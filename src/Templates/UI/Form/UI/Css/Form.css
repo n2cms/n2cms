@@ -1,0 +1,17 @@
+.question 
+{
+	margin-bottom:5px;
+}
+.question .label
+{
+	width:120px;
+	float:left;
+}
+.alternatives input
+{
+	vertical-align:middle;
+}
+.alternatives label
+{
+	margin-right:10px;
+}

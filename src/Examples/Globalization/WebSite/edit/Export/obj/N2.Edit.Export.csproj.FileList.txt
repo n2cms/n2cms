@@ -1,0 +1,9 @@
+..\..\bin\ProjectComments.xml
+..\..\bin\N2.Edit.Export.dll
+..\..\bin\N2.Edit.Export.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\N2.Edit.Export.dll
+obj\Release\N2.Edit.Export.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\N2.Edit.Export.dll
+obj\Debug\N2.Edit.Export.pdb

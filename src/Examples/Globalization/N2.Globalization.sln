@@ -1,0 +1,84 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageSwitcher", "LanguageSwitcher\LanguageSwitcher.csproj", "{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "C:\...\WebSite\", "WebSite", "{5146398B-84CA-4368-8966-9CBEEDE823E6}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = "SAK"
+		SccAuxPath = "SAK"
+		SccLocalPath = "SAK"
+		SccProvider = "SAK"
+		Debug.AspNetCompiler.VirtualPath = "/WebSite"
+		Debug.AspNetCompiler.PhysicalPath = "..\WebSite\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\WebSite\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/WebSite"
+		Release.AspNetCompiler.PhysicalPath = "..\WebSite\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\WebSite\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1540"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs01.codeplex.com/
+		SccProjectUniqueName0 = LanguageSwitcher\\LanguageSwitcher.csproj
+		SccProjectName0 = LanguageSwitcher
+		SccLocalPath0 = LanguageSwitcher
+		SccWebProject1 = true
+		SccProjectUniqueName1 = WebSite
+		SccProjectName1 = WebSite
+		SccLocalPath1 = WebSite
+		SccProjectEnlistmentChoice1 = 2
+		SccLocalPath2 = .
+	EndGlobalSection
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|.NET.ActiveCfg = Release|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Debug|.NET.ActiveCfg = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Debug|.NET.Build.0 = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Debug|Any CPU.ActiveCfg = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Debug|Mixed Platforms.Build.0 = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Release|.NET.ActiveCfg = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Release|.NET.Build.0 = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Release|Any CPU.ActiveCfg = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
+		{5146398B-84CA-4368-8966-9CBEEDE823E6}.Release|Mixed Platforms.Build.0 = Debug|.NET
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

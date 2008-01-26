@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<castle>
+  <components>
+    <component id="n2.sitesProvider" service="N2.Web.ISitesProvider, N2" type="N2.Web.DynamicSitesProvider, N2" />
+
+    <component id="n2.urlParser.multipleSite" service="N2.Web.IUrlParser, N2" type="N2.Web.MultipleHostsUrlParser, N2" />
+  </components>
+</castle>

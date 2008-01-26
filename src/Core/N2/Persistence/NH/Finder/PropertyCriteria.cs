@@ -1,0 +1,78 @@
+using System;
+using N2.Persistence.Finder;
+
+namespace N2.Persistence.NH.Finder
+{
+	/// <summary>
+	/// The criteria building block of a query. Compares a property to value.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	public class PropertyCriteria<T> : IComparisonCriteria<T>
+	{
+		private string name;
+		private Operator op;
+		private QueryBuilder query;
+
+		public PropertyCriteria(QueryBuilder query, string name)
+		{
+			op = query.CurrentOperator;
+			this.query = query;
+			this.name = name;
+		}
+
+		#region IEqualityCriteria<T> Members
+
+		public IQueryAction Eq(T value)
+		{
+			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.Equal, value));
+			return query;
+		}
+
+		public IQueryAction NotEq(T value)
+		{
+			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.NotEqual, value));
+			return query;
+		}
+
+		public IQueryAction In(params T[] anyOf)
+		{
+			throw new NotImplementedException("not yet");
+		}
+
+		#endregion
+
+		#region ICriteria<T> Members
+
+		public IQueryAction Gt(T value)
+		{
+			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.GreaterThan, value));
+			return query;
+		}
+
+		public IQueryAction Ge(T value)
+		{
+			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.GreaterOrEqual, value));
+			return query;
+		}
+
+		public IQueryAction Lt(T value)
+		{
+			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.LessThan, value));
+			return query;
+		}
+
+		public IQueryAction Le(T value)
+		{
+			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.LessOrEqual, value));
+			return query;
+		}
+
+		public IQueryAction Between(T lowerBound, T upperBound)
+		{
+			query.Criterias.Add(new PropertyBetweenHqlProvider<T>(op, name, lowerBound, upperBound));
+			return query;
+		}
+
+		#endregion
+	}
+}

@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="N2.Factory" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Factory.cs</FileName>
+      <HashCode>AAAAAgAAAAAAgQAAAAAAAAAAFCBARAQAwAABBAAAAAI=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Instance" />
+    </ShowAsAssociation>
+    <AssociationLine Name="Instance" Type="N2.Engine.IFactory">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.796" Y="0.331" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Class>
+  <Interface Name="N2.Persistence.IPersistenceManager" Collapsed="true">
+    <Position X="3.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Persistence\IPersistenceManager.cs</FileName>
+      <HashCode>AAAAgMAAEIAQgQCIgAAAAAAQCgUAEAAAEAAAAAAAIAI=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="N2.Web.IUrlRewriter" Collapsed="true">
+    <Position X="3.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Web\IUrlRewriter.cs</FileName>
+      <HashCode>AQAEgACBAAAAAAAEAAAAAAAAAAAIEAAAAIAAAAAAAQA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="N2.Integrity.IIntegrityManager" Collapsed="true">
+    <Position X="3.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Integrity\IIntegrityManager.cs</FileName>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAAAKAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="N2.Engine.IFactory" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Engine\IFactory.cs</FileName>
+      <HashCode>AAAAAgAAAAAAgQAAAAAAAAAAEAAARAAAgAAABAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Configuration" />
+      <Property Name="Persister" />
+      <Property Name="Rewriter" />
+      <Property Name="Definitions" />
+      <Property Name="IntegrityManager" />
+      <Property Name="SecurityManager" />
+    </ShowAsAssociation>
+    <AssociationLine Name="Configuration" Type="N2.Configuration.IConfigurationManager" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="1.938" />
+        <Point X="2.875" Y="1.938" />
+        <Point X="2.875" Y="1.938" />
+        <Point X="3.75" Y="1.938" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.331" Y="0.069" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Persister" Type="N2.Persistence.IPersistenceManager" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="2" />
+        <Point X="2.438" Y="2" />
+        <Point X="2.438" Y="3.062" />
+        <Point X="3.75" Y="3.062" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.54" Y="0.058" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Rewriter" Type="N2.Web.IUrlRewriter" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="2.25" />
+        <Point X="2.146" Y="2.25" />
+        <Point X="2.146" Y="6.5" />
+        <Point X="3.75" Y="6.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.841" Y="0.068" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Definitions" Type="N2.Definitions.IDefinitionManager" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="2.062" />
+        <Point X="2.354" Y="2.062" />
+        <Point X="2.354" Y="3.875" />
+        <Point X="3.75" Y="3.875" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.529" Y="0.057" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="IntegrityManager" Type="N2.Integrity.IIntegrityManager" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="2.125" />
+        <Point X="2.271" Y="2.125" />
+        <Point X="2.271" Y="4.625" />
+        <Point X="3.75" Y="4.625" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.289" Y="0.058" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="SecurityManager" Type="N2.Security.ISecurityManager" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="2.188" />
+        <Point X="2.208" Y="2.188" />
+        <Point X="2.208" Y="5.5" />
+        <Point X="3.75" Y="5.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.362" Y="0.058" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Interface>
+  <Interface Name="N2.Definitions.IDefinitionManager" Collapsed="true">
+    <Position X="3.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Definitions\IDefinitionManager.cs</FileName>
+      <HashCode>AIAAAAAAAAAAAQAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="N2.Configuration.IConfigurationManager" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration\IConfigurationManager.cs</FileName>
+      <HashCode>QIAAAAIAgACZAAARCAQgAAAACAAAAYCAACBAAAAQAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="N2.Security.ISecurityManager" Collapsed="true">
+    <Position X="3.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Security\ISecurityManager.cs</FileName>
+      <HashCode>AAAAAAAAAACAAIABAAAAAAAACAAACAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>

@@ -1,0 +1,98 @@
+using System.Collections.Generic;
+using N2.Edit.Wizard.Items;
+using N2.Persistence;
+using N2.Web;
+
+namespace N2.Edit.Wizard
+{
+	public class LocationWizard
+	{
+		private Settings wizardSettings;
+		//private Settings templateSettings;
+
+		private readonly IPersister persister;
+		private readonly Site site;
+
+		public LocationWizard(IPersister persister, Site site)
+		{
+			this.persister = persister;
+			this.site = site;
+			wizardSettings = new Settings("Wizard", string.Empty, "Wizard settings");
+			//templateSettings = new Settings("Templates", string.Empty, "Templates");
+		}
+
+		public virtual Settings WizardSettings
+		{
+			get { return wizardSettings; }
+			set { wizardSettings = value; }
+		}
+
+		//public virtual Settings TemplateSettings
+		//{
+		//    get { return templateSettings; }
+		//    set { templateSettings = value; }
+		//}
+
+		public virtual IList<MagicLocation> GetLocations()
+		{
+			List<MagicLocation> locations = new List<MagicLocation>();
+			foreach (ContentItem child in GetWizardContainer().GetChildren())
+			{
+				locations.Add(child as MagicLocation);
+			}
+			return locations;
+		}
+
+		//public virtual IList<Template> GetTemplates()
+		//{
+		//    List<Template> templates = new List<Template>();
+		//    foreach (ContentItem child in GetTemplatesContainer().GetChildren())
+		//    {
+		//        templates.Add(child as Template);
+		//    }
+		//    return templates;
+		//}
+
+		public virtual Wonderland GetWizardContainer()
+		{
+			ContentItem root = persister.Get(site.RootItemID);
+			Wonderland container = root.GetChild(WizardSettings.Name) as Wonderland;
+			if(container == null)
+			{
+				container = new Wonderland();
+				container.Parent = root;
+				container.Title = WizardSettings.Title;
+				container.Name = WizardSettings.Name;
+				container.ZoneName = WizardSettings.ZoneName;
+				persister.Save(container);
+			}
+			return container;
+		}
+
+		//public virtual TemplateContainer GetTemplatesContainer()
+		//{
+		//    ContentItem root = persister.Get(site.RootItemID);
+		//    TemplateContainer container = root.GetChild(WizardSettings.Name) as TemplateContainer;
+		//    if (container == null)
+		//    {
+		//        container = new TemplateContainer();
+		//        container.Parent = root;
+		//        container.Title = TemplateSettings.Title;
+		//        container.Name = TemplateSettings.Name;
+		//        container.ZoneName = TemplateSettings.ZoneName;
+		//        persister.Save(container);
+		//    }
+		//    return container;
+		//}
+		public Items.MagicLocation AddLocation(ContentItem location, string discriminator, string title, string zone)
+		{
+			Items.MagicLocation ml = Context.Definitions.CreateInstance<Items.MagicLocation>(GetWizardContainer());
+			ml.Location = location;
+			ml.ItemDiscriminator = discriminator;
+			ml.Title = title;
+			ml.ItemZoneName = zone;
+			Context.Persister.Save(ml);
+			return ml;
+		}
+	}
+}

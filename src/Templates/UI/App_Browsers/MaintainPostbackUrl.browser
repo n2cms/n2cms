@@ -1,0 +1,7 @@
+<browsers>
+	<browser refID="Default">
+		<controlAdapters>
+			<adapter controlType="System.Web.UI.HtmlControls.HtmlForm" adapterType="N2.Templates.Web.Adapters.FormAdapter, N2.Templates"/>
+		</controlAdapters>
+	</browser>
+</browsers>

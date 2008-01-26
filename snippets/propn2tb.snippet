@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+		<Title>propn2tb</Title>
+		<Shortcut>propn2tb</Shortcut>
+      <Description>Create a new N2 Text Property</Description>
+      <Author>Cristian Libardo</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Detail Property Name</ToolTip>
+          <Default>MyProperty</Default>
+        </Literal>
+        <Object>
+          <ID>type</ID>
+          <ToolTip>Property Type</ToolTip>
+          <Default>string</Default>
+        </Object>
+        <Literal>
+          <ID>defaultValue</ID>
+          <ToolTip>Default Value</ToolTip>
+          <Default>string.Empty</Default>
+        </Literal>
+        <Literal>
+          <ID>sortOrder</ID>
+          <ToolTip>Sort Order</ToolTip>
+          <Default>100</Default>
+        </Literal>
+	  </Declarations>
+      <Code Language="csharp">
+        <![CDATA[
+[N2.Details.EditableTextBox("$name$", $sortOrder$)]
+public virtual $type$ $name$
+{
+    get { return ($type$)(GetDetail("$name$") ?? $defaultValue$); }
+    set { SetDetail("$name$", value, $defaultValue$); }
+}
+$end$]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

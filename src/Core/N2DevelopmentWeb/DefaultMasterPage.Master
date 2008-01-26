@@ -1,0 +1,28 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DefaultMasterPage.Master.cs" Inherits="N2.TemplateWeb.DefaultMasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title><%= CurrentItem.Title %></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+		<n2:SlidingCurtain runat="server">
+			<n2:DragDropControlPanel runat="server" />
+		</n2:SlidingCurtain>
+		<asp:SiteMapDataSource ID="smds" runat="server" SiteMapProvider="PublicSiteMap" StartFromCurrentNode="false" ShowStartingNode="false" />
+        <asp:Menu ID="m" runat="server" DataSourceID="smds" Orientation="Horizontal">
+			<DynamicSelectedStyle BackColor="red" />
+			<StaticSelectedStyle BackColor="red" />
+        </asp:Menu>
+        <hr />
+        <n2:Display PropertyName="Title" runat="server" />
+        <div>
+            <asp:SiteMapPath ID="SiteMapPath1" runat="server" />
+            <hr />
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"/>
+        </div>
+    </form>
+</body>
+</html>

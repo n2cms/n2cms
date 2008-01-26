@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+	<subclass name="N2.TemplateWeb.Domain.MyItemSubData,N2.TemplateWeb" extends="N2.ContentItem,N2" discriminator-value="MyItemSubData">
+	</subclass>
+</hibernate-mapping>

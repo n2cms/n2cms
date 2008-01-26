@@ -1,0 +1,13 @@
+ascx
+aspx
+config
+css
+gif
+htm
+html
+jpg
+js
+master
+png
+resx
+txt

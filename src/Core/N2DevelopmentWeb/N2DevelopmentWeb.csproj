@@ -1,0 +1,430 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9B7BAF3D-561F-45C0-A530-59F012798781}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2DevelopmentWeb</RootNamespace>
+    <AssemblyName>N2DevelopmentWeb</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Publish|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=1.2.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\NHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate.Caches.SysCache, Version=1.2.0.2001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\NHibernate.Caches.SysCache.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\Definitions.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Editables.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Test.Designer.cs">
+      <DependentUpon>Test.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\TitleDetail.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TitleDetail.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.da.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.da.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.it.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Zones.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.resx</DependentUpon>
+    </Compile>
+    <Compile Include="AutomaticallyUpdatedTest.aspx.cs">
+      <DependentUpon>AutomaticallyUpdatedTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AutomaticallyUpdatedTest.aspx.designer.cs">
+      <DependentUpon>AutomaticallyUpdatedTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Customization\MyEditableAttribute.cs" />
+    <Compile Include="Customization\PublishAttribute.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Domain\AbstractCustomItem.cs" />
+    <Compile Include="Domain\Class1.cs" />
+    <Compile Include="Domain\ControlPanel.cs" />
+    <Compile Include="Domain\ItemCreator.cs" />
+    <Compile Include="Domain\ItemWithChildItem.cs">
+    </Compile>
+    <Compile Include="Domain\MyItemWithLinks.cs" />
+    <Compile Include="Domain\MyUnmappedItem1.cs" />
+    <Compile Include="Domain\MyUnmappedItem2.cs" />
+    <Compile Include="Domain\MyUnmappedItem3.cs" />
+    <Compile Include="Domain\MyUnmappedItem.cs" />
+    <Compile Include="Domain\MyItemSubData.cs" />
+    <Compile Include="Domain\MyItemData.cs" />
+    <Compile Include="Domain\MySpecialPageData.cs" />
+    <Compile Include="Domain\MyPageData.cs" />
+    <Compile Include="Domain\SecondItemData.cs" />
+    <Compile Include="Domain\StartPage.cs" />
+    <Compile Include="Domain\UnallowedItem.cs" />
+    <Compile Include="DSVTest.aspx.cs">
+      <DependentUpon>DSVTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DSVTest.aspx.designer.cs">
+      <DependentUpon>DSVTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FilterTest.aspx.cs">
+      <DependentUpon>FilterTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FilterTest.aspx.designer.cs">
+      <DependentUpon>FilterTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="itemwithchild.aspx.cs">
+      <DependentUpon>itemwithchild.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="itemwithchild.aspx.designer.cs">
+      <DependentUpon>itemwithchild.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OperationsWatcher.cs" />
+    <Compile Include="Plugins\allowed.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>allowed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\allowed.aspx.designer.cs">
+      <DependentUpon>allowed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Normal.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Normal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Normal.aspx.designer.cs">
+      <DependentUpon>Normal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\unallowed.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>unallowed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\unallowed.aspx.designer.cs">
+      <DependentUpon>unallowed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DefaultMasterPage.Master.cs">
+      <DependentUpon>DefaultMasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultMasterPage.Master.designer.cs">
+      <DependentUpon>DefaultMasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\ItemSelector.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>ItemSelector.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\ItemSelector.aspx.designer.cs">
+      <DependentUpon>ItemSelector.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\LinkedDetail.aspx.cs">
+      <DependentUpon>LinkedDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\LinkedDetail.aspx.designer.cs">
+      <DependentUpon>LinkedDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\NonDynamicUcTest.ascx.cs">
+      <DependentUpon>NonDynamicUcTest.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\NonDynamicUcTest.ascx.designer.cs">
+      <DependentUpon>NonDynamicUcTest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Special.aspx.cs">
+      <DependentUpon>Special.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Special.aspx.designer.cs">
+      <DependentUpon>Special.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Uc\ControlPanel.ascx.cs">
+      <DependentUpon>ControlPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Uc\ControlPanel.ascx.designer.cs">
+      <DependentUpon>ControlPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Uc\ItemCreatorUI.ascx.cs">
+      <DependentUpon>ItemCreatorUI.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Uc\ItemCreatorUI.ascx.designer.cs">
+      <DependentUpon>ItemCreatorUI.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Uc\MySpecialItem.ascx.cs">
+      <DependentUpon>MySpecialItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Uc\MySpecialItem.ascx.designer.cs">
+      <DependentUpon>MySpecialItem.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Uc\MyItem.ascx.cs">
+      <DependentUpon>MyItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Uc\MyItem.ascx.designer.cs">
+      <DependentUpon>MyItem.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Uc\UCEditorTest.ascx.cs">
+      <DependentUpon>UCEditorTest.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Uc\UCEditorTest.ascx.designer.cs">
+      <DependentUpon>UCEditorTest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UnmappedItem.aspx.cs">
+      <DependentUpon>UnmappedItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UnmappedItem.aspx.designer.cs">
+      <DependentUpon>UnmappedItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ItemEditorTesting.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>ItemEditorTesting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ItemEditorTesting.aspx.designer.cs">
+      <DependentUpon>ItemEditorTesting.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\N2.Parts\N2.Parts.csproj">
+      <Project>{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}</Project>
+      <Name>N2.Parts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DefaultMasterPage.Master" />
+    <Content Include="JavaScript\AdapterUtils.js" />
+    <Content Include="JavaScript\MenuAdapter.js" />
+    <Content Include="JavaScript\TreeViewAdapter.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Theme1\Menu.css" />
+    <Content Include="App_Themes\Theme1\TreeView.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Theme1\Basic.skin" />
+    <Content Include="Templates\Special.aspx" />
+    <Content Include="Uc\MySpecialItem.ascx" />
+    <Content Include="Uc\MyItem.ascx" />
+    <Content Include="Uc\UCEditorTest.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Browsers\AnyBrowser.browser" />
+    <Content Include="AutomaticallyUpdatedTest.aspx" />
+    <Content Include="DSVTest.aspx" />
+    <Content Include="FilterTest.aspx" />
+    <Content Include="Plugins\allowed.aspx" />
+    <Content Include="Plugins\Normal.aspx" />
+    <Content Include="Plugins\unallowed.aspx" />
+    <Content Include="Templates\LinkedDetail.aspx" />
+    <Content Include="Templates\NonDynamicUcTest.ascx" />
+    <Content Include="UnmappedItem.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Test.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Test.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Templates\ItemSelector.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="various.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MultipleSites.config" />
+    <Content Include="VariousOutput.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Toolbar.da.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.da.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Toolbar.it.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.it.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Toolbar.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TitleDetail.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>TitleDetail.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Editables.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Definitions.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Zones.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.designer.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="ChangedOwner.hbm.xml" />
+    <Content Include="App_Themes\Theme1\Test.css" />
+    <Content Include="bin\Castle.Core.dll" />
+    <Content Include="bin\Castle.DynamicProxy.dll" />
+    <Content Include="bin\Castle.DynamicProxy2.dll" />
+    <Content Include="bin\Castle.MicroKernel.dll" />
+    <Content Include="bin\Castle.Windsor.dll" />
+    <Content Include="bin\Iesi.Collections.dll" />
+    <Content Include="bin\log4net.dll" />
+    <Content Include="bin\N2.dll" />
+    <Content Include="bin\N2.Parts.dll" />
+    <Content Include="bin\N2.Parts.pdb" />
+    <Content Include="bin\N2.pdb" />
+    <Content Include="bin\N2.XML" />
+    <Content Include="bin\NHibernate.dll" />
+    <Content Include="itemwithchild.aspx" />
+    <Content Include="Uc\ControlPanel.ascx" />
+    <Content Include="Uc\ItemCreatorUI.ascx" />
+    <Content Include="ItemEditorTesting.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="cp\" />
+    <Folder Include="upload\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2470</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

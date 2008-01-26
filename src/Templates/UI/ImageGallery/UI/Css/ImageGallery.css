@@ -1,0 +1,30 @@
+body {background-color:#000}
+body #page {background-color:#333;color:#ccc;min-height:500px;}
+.path a.current {color:#ccc}
+
+#next img,
+#prev img
+{
+	border:solid 2px white;
+}
+#prev
+{
+	float:left;
+	margin:0 10px 0 0;
+}
+#next
+{
+	float:right;
+	margin:0 0 0 0 10px;
+}
+#title
+{
+}
+.nav
+{
+	margin-bottom:10px;
+}
+#large img
+{
+	border:solid 5px white;
+}

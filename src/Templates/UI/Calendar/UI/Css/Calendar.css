@@ -1,0 +1,45 @@
+.calendarTeaser
+{
+	overflow:hidden;
+}
+
+.calendarTeaser td td,
+.calendarTeaser th
+{
+	padding:1px;
+	text-align:center;
+}
+.calendarTeaser .otherMonth a
+{
+	opacity:.25;
+}
+.calendarTeaser .selectedDay a
+{
+	font-weight:bold;
+}
+
+.list a
+{
+	display:block;
+	font-weight:bold;
+}
+.intro
+{
+	display:block;
+}
+
+.calendarTeaser .calendar
+{
+	width:100%;
+}
+.calendarTeaser .boxTitle td
+{
+	padding:3px 2px;
+	font-weight:bold;
+}
+.calendarTeaser .calendar a
+{
+	display:block;
+	padding:2px;
+	text-align:center;
+}

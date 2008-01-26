@@ -1,0 +1,180 @@
+- remove dependency on global resource stuff for edit mode toolbar
+- global static extension property
+
+TODO:
+- documentation & programmability
+	- more snippets & templates
+	- namespace documentation
+
+- engine
+	- isearchable
+	- rule based integrity
+	- enable different persistence managers/containers
+	- change logging mechanism (empty logger)
+	- soft configuration storage
+		- per user
+		- per session?
+		- per request?
+		- per site
+	- improve register class
+		- create container control
+		- fluent api
+	- separate site provider from url parsing
+	- create an abstraction for nodes in edit mode
+	- edit tree abstraction
+		- tree item interface
+		- non-item elements
+		- more than 1 persister
+	- relations/links
+		- figure if relations should be changed to new items on copy
+	- xml writer/reader
+		- filters?
+	- improve objectdatasources
+		- filters
+		- finder?
+	- overridable details (recursive)
+		- figure out a way to include recursive/dynamic details in the engine
+	- configuration
+		- set up definitions & constraints
+	- implement event broker functionality
+	- put web stuff in a separate assembly
+	- finder 2.0
+		- optimize queries
+	- something mvc:ish
+	- static content export
+	- installation: display default content packages
+	- security context
+
+- templates
+	- scrum project
+		- projects
+		- project backlog
+		- sprint
+		- task
+			- move task to sprint
+			- move task between zones in a sprint
+			- drag&drop speed
+		- subtask
+		- create sprint wizard
+		- create task wizard
+		- create many tasks wizard
+		- create project wizard
+	- page template system
+	- wiki
+	- framework
+		- paging
+	- surveys
+	- blog
+		- comments
+		- captcha
+	- forum
+	- guest book
+	- bug reporting
+	- newsletter
+	- layout
+		- another layout
+	- lucene search
+	- link page
+	- xsl template
+		- atom source
+		- rss source
+	- facebook integration
+	- registration form
+	- google maps integration
+
+- modules
+	- linktracker & icons
+	- improve on export/import options 
+		- filters
+		- replace existing items
+	- free text search plugin (lucene)
+	- improve link-checker plugin
+	- statistics
+		- live statistics
+		- historical
+	- add castle ijob
+	- monorail/ms mvc integration
+	- static html site export
+	- check broken links
+
+- edit mode
+	- file manager
+		- hide buttons while uploading etc.
+		- hide buttons instead of moving off but still taking place
+		- focus window when it's hidden behind
+		- upload without opening window
+		- quicker file selection tools
+	- save & publish, save version, save and stay here
+	- put info in rel tag
+	- shorten id
+	- templates
+	- ajax hover info
+	- improve the itemlisteditor
+		- don't load fields until click
+	- reversable actions (undo)
+		- iiaction
+		- keeps memory per session?
+	- install update instruction for web.config update
+	- closable fieldset
+	- show the current action as selected
+	- improve the tree navigation
+		- lazy(ajax)load deep items in tree
+	- file manager
+		- select and expand to currently selected file
+		- n2 file system
+		- file upload event
+	- fieldset for page types
+	- swedish localization
+	- help
+
+- versions
+	- show diff
+- tests
+	- watin
+	- clear session
+- drag&drop
+	- scroll screen when reaching edge
+- mono
+	- look into it
+	- expression builders
+	- url rewriting
+	- http modules
+	
+	
+- idéer
+- Någon form av translate-funktion, där man definierar en strängs
+översättnings i de språk som är aktuella för siten. Administration via
+webgränssnitt. I OOiS använder vi detta dels för språköversättning på
+knappar och dylikt och dels använder vi det likt episervers dynamic
+properties.
+- Skapa default-värden för fliken SEO, där man kan definiera upp olika
+uppsättningar som man sedan kan välja per sida eller skriva in custom om
+man hellre vill det. Skulle också vilja se en utökning av fälten så man
+kan ställa in t.ex. author, robots osv.
+- Om man har en sida som är publicerad i N2 så läggs ändringar ut skarpt
+så fort man trycker "save" va? Jag skulle vilja ha en knapp som heter
+Publish så att man kan spara arbetskopior och sedan aktivera publikt när
+man jobbat klart med sidan. Det finns då alltså alltid minst 1 version
+högre än den i dagsläget publika sidan som är en arbetskopia.
+- Möjlighet att skapa egna roller (grupper)
+- Möjlighet att styra dels vilka roller/användare som får läsa en sida,
+och dels vem som får redigera sidan.
+- Utökad filhantering med möjlighet att flytta filer, ange
+meta-information för sökningar, och rättighetsstyra filer och mappar.
+- Sortering internt av en nods childs, förslagsvis via drag-drop
+istället för episervers index-nummer.
+- Publicera/avpublicera en sida och hela dess understruktur.
+- Definiera upp globala properties som gäller för en sida. T.ex. "Hide
+in menus", "Hide in search", "Hide if no access" osv som man kan kryssa
+i på sidnivå. Typ som du har under "Advanced"... Visible, Show Title osv.
+- På sidnivå kunna sätta att en icke default login-sida ska visas om
+användaren inte har access.
+- Nytt fält för "URI Name" istället för att använda Name till fin-urlar,
+detta för att kunna sätta komprimerade namn utan mellanslag osv om man vill.
+- Cache-inställningar på sidnivå för att bestämma om sidan får cachas
+och hur länge. Skulle även vilja ha en generell objekt-cache som man kan
+använda i kod för att minnescacha t.ex. resultat från en funktion, delar
+av en sida osv.
+- Ett generellt ställe att lägga in custom plugins (typ actionwindow i
+epi) där man kan slänga in funktioner som prenumeranthantering,
+bannerhantering osv.

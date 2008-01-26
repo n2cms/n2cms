@@ -1,0 +1,21 @@
+
+NOPE:
+	- change publicsitemap so that key != item id??
+- tweaka objektmodellen
+	- attributbaserad nhibernatemappning http://www.ayende.com/Blog/PermaLink,guid,3458f674-4b22-4c9a-be95-c5aeedbd9a6b.aspx
+	- activerecord http://www.castleproject.org/index.php/ActiveRecord:How_to:Web_applications
+- AppRelativeTemplateSourceDirectory - kolla upp
+- förbättra editläget
+	- fixa så edit toolbar hänger med i explorer (skippa)
+- editormodifierattribute
+	- make it possible to set properties on properties e.g. OtherMonthDayStyle.ForeColor (override attribute instad)
+- caching
+	- expire outputcached pages
+
+PROBZ:
+- ej sql server
+An error has occurred while establishing a connection to the server.  When connecting to SQL Server 2005, this failure may be caused by the fact that under the default settings SQL Server does not allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
+
+Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code.
+
+Exception Details: System.Data.SqlClient.SqlException: An error has occurred while establishing a connection to the server.  When connecting to SQL Server 2005, this failure may be caused by the fact that under the default settings SQL Server does not allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)

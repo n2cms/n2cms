@@ -1,0 +1,735 @@
+- engine
+	- changed the abstracteditable attribute (breaking change)
+	- moved nhibernate mappings to a single file
+	- simplified configuration of alternative mapping file
+	- changed the settings functionality to work without castle
+	- upgraded nhibernate to 1.2.1
+	- autoinitialize attribute for plugin initializers
+	- changed casing on plugin (breaking change) and other micellanious tweaks
+	- localizable editables, containers, definitions and zones
+- edit
+	- added save unpublished version to editing workflow
+	- added a divider container (hr)
+	- upgraded tinymce to 2.1.3
+	- help system for details
+	- widened and beefed text size in tinymce html text editor
+	- edit children shortcut
+- templates
+	- added a SEO facility (adds SEO fields to page types)
+	- moved some operations on the page to a "page modifier" component
+	- moved some item types to the UI project
+	- new tabs theme; khaki, pink, sky, tomato
+	- new urchin tracker version
+	- smtp now allows user and password
+	- form radio buttons can now be displayed horizontally
+- bugfixes
+	- fixed an error in the parts sliding panel related to resource paths
+	- themes defined in web.config breaks edit
+	- fixed settings in medium trust example
+- modules
+	- items moved out of trash are not unexpired
+	- items moved into trash are now expired
+- drag&drop
+	- panel maintains openedness
+
+N2 1.3.1
+- documentation & programmability
+	- page & item templates with definition and view
+	- moved examples to n2 solution
+	- added parts example
+- engine
+	- copy items without name to same location
+	- changed name from n2.factory to n2.context
+	- fallback to recreate engine to recover from failure during initialization
+	- edit, create and delete from control panel
+	- get urls to edit mode, new and delete
+	- switched jquery to minified (was packed)
+	- anonymous tweaks
+	- changed name of item attribute to definition attribute
+	- used discriminator instad of type in link to edit new item
+- drag&drop
+	- sliding control panel
+	- framed editing
+	- can now copy itmes using ctrl+drag
+- edit
+	- replaced context menu
+	- can now drag&drop copy items with ctrl key
+- templates
+	- simplified poll part usage
+	- added adapter to maintain postback url
+	- tweaks
+	- added credits
+	- google analytics
+	- social bookmarking
+- bugfixes
+	- relative image urls on versions interface
+	- fix copied item beeing persisted even the name was occupied
+	- fixed updatesortorder not beeing called when saving items
+- tests
+	- exception asserts
+
+N2 1.3
+- edit
+	- drag&drop items
+		- rearrange items
+		- add new items
+		- edit existing items
+		- delete items
+		- move nested items
+		- security check
+	- upgraded jquery to 1.2.1
+	- javascript changes
+- engine
+	- introduced n2.mediumtrust
+	- introduced n2.parts
+	- changed getdefinition from type name to discriminator
+	- moved the ajax request handler to the n2 assembly
+- bugfixes
+	- fixed test connection
+	- name editor validates invalid characters
+	- querystring parameters are appended to rewrite path
+	- fixed item selector error when wrong path
+	- file upload in internet explorer
+	- applied fix to problem with multiple child editors (thanks akrosoft)
+- templates 
+	- minor tweaks
+	- two column item
+	- text item
+	- random image item
+	- above zone
+
+N2 1.2.5
+- engine
+	- definition refiner:
+		- allowed children
+		- restrict parents
+		- available zones
+		- allowed zones
+		- ...
+	- assembly applicable IntegrityMapping attribute
+	- flag on the item attribute to mark types as eligible for root or start page
+	- changed discriminator from namespace to class name (breaking change)
+	- created tree helper
+	- created link helper
+	- filters
+		- composite filter
+		- navigation filter
+		- published filter
+		- visible filter
+	- css class on editable image
+	- upgraded castle components to rc3
+	- various tweaks and comments
+- edit
+	- updated and improved the installation experience
+	- upload export file during installation
+	- changed treeview control
+	- added small tellers on new, expired or secured items
+	- multiple file upload
+	- upgraded
+		- jquery 1.1.4
+		- tiny mce 2.1.2
+- templates
+	- a darkish striped theme
+	- rss feeds and syndicatable items
+	- customized forms
+- bugfixes
+	- displayables through the display control now supports postbacks
+	- fixed editablechildren
+		- unsaved containing item -> exception
+		- adding child items to new item
+	- saving data item when not displaying items hides tree
+	- support tinymce editors in a hidden tabs
+	- expand to current in edit mode even though not displayed
+N2 1.2.4
+- engine
+	- a new importer/exporter
+		- handles relations
+		- compression
+		- binary attachments
+		- skip root import option
+	- item finder
+		- count
+		- in
+- edit
+	- added a wizard plugin
+	- tweaked ui
+	- lesser scripts and style sheets
+- templates
+	- horizontal + vertical menu
+	- event calendar
+- bugfixes
+	- fixed empty published in with editable published range 
+	- the currentitem expression builder can now be used on the page template
+	- insert before and after now works again
+	- style tweak
+	- error finding type with a discriminator with item finder
+- modules
+	- add location to wizard
+	- tweaked trashcan
+	
+N2 1.2.3
+- engine
+	- item.published is now nullable (database changes)
+	- added some hooks for saving an unpublished version of an item
+	- tweaked definitions
+	- reorganized persistence classes
+	- added editable attributes to edit more items at once
+		- EditableItem attribute: edit item referenced by a property
+		- WithEditableChild attribute: edit child item with a certain name
+	- added the option to query on item types when using the finder
+	- abstraction for client editable services properties (similar to editable stuff)
+	- a simple date picker with editable attribute
+	- moved updating, saving and versioning from item editor control to edit manager service
+	- details
+		- added a editable link, and made it displayable
+		- added an editable image, and made it displayable
+		- made the editable item displayable (pages -> link, nonpages -> loads user control)
+	- switched addchild to addto on the content item
+	- made an inheritable FindGeneric for strongly typed access to start and root pages
+	- created a hierarchy construct
+	- resource registration helper
+	- on page editing (v 0.2)
+		- display/edit control
+		- control panel
+	- added more options to the editable text box
+	- another overload for finder's filter
+	- removed ContentItem.Definition
+	- reworked definitions
+	- the persister now updates sort order when saving items
+	- option to disable versioning
+	- moved versioning to a version manager
+	- option to disable plugins
+	- upgraded castle components
+	- moved event handling functionality of security and integrity into "enforcers"
+	- new filters
+		- page filter
+		- inverse filter
+	- moved more functionality into the content item
+		- IsAuthorized
+		- Add user control in zone
+	- tweaked the way non-page item data is resolved during loading
+	- tweaked link tracker
+	- removed old finders
+	- changed name of persister
+	- moved responsibility of traversing children when parsing urls to the content item
+	- editors no longer have full access
+- edit
+	- changed the order of versions to changed instead of expires
+	- moved out versioning functionality to separate project
+	- changed the way delete works when right-clicking
+	- improved new item editor interface
+		- choose wether to create before, one level down or after
+		- choose zone
+	- tweaked styles
+	- changed login screen
+- bugfixes
+	- fixed bug in integrity manager not finding name clashes
+	- fixed an escaping problem in the item selector when having ' in an item's name
+	- fixed problem with Find.Parents
+	- fixed file selector selecting folders and closing
+	- itemdatsource onfiltering now takes place even if there are no filters
+	- fixed potential problem with page names and many dots (.)
+	- fixed name editor not handling multiple illegal characters
+	- fixed iconurl and virtual paths
+	- fix edit unpublished version 
+	- item finder can now find all items including versions without where
+	- virtual directory fix
+- modules
+	- splitted trashcan plugin into two projects and moved it
+- more fleshed out templates
+	- framework
+		- skinnable
+		- runtime layout change
+		- menu
+		- path
+		- first layout
+		- item icons
+		- image resizing
+		- display current page toolbar button
+	- start page
+	- text page
+	- redirect
+	- simple image gallery
+	- simple news archive
+		- news page
+		- news list
+		- sidebar news part
+	- simple site map
+	- database search
+		- filter by parent
+	- faq
+	- basic statistics
+		- latest changes
+		- number of visitors
+		- number of pages
+	- control panel
+	- teaser
+	- poll
+	- added the structural page interface
+	- membership- and role providers
+
+N2 1.2.2
+- engine
+	- plug in system for right click menu
+	- added an overload for setdetail that removes the detail when it's equal to the default value
+	- improved the definition model to allow greater inheritance and wrote some tests
+	- removed items allowed only in zones not to show up when creating new item from the tree
+	- changed the AllowedParentsAttribute to use an enum instead of boolean
+	- added a parent item filter
+	- typefinder api tweaking
+	- added optional properties to the security manager for changing admins and editors
+- edit
+	- now uses jquery.treeview for treeview
+	- right-click menu
+	- moved localized texts to global resources
+	- toggle setting of info and zones is remembered
+	- updated tinymce to 2.1.1.1
+- bugfixes
+	- now it isn't as easy to delete stuff in the file cabinet
+	- fixed error with itemeditorlist and new items
+	- edit editable checkbox style sheet fix
+	- fixed error with urlrewriter where unknown path gave exception instead of 404
+	- fixed urlparser so it can handle hashs
+	- fixed item's expiry date is set when restoring versions
+
+N2 1.2.1
+- tests
+	- switched to MbUnit
+	- sped up tests through fixture setups
+- engine
+	- tweaked mappings: access=field
+	- ensureBinFolderAssembliesLoaded now defualts to true
+	- added type caching to AppDomainTypeFinder
+	- finder 2.0
+		- fluent syntax
+		- find properties
+		- find details by name and value
+		- find details by value
+		- find details in collection
+		- support brackets
+		- order by
+	- EditableChildrenAttribute (add & edit & delete items in zone)
+- edit
+	- fixed search navigation (uses finder api)
+- bugfixes
+	- fiexed issue with configuration of optional assembly names in type finder
+	- applied patch suppllied by Michele, url rewriter hides custom query strings
+	- available zones are inherited
+	- tab panel forgets current tab upon postback
+
+N2 1.2.0
+- engine
+	- moved to castle windsor container for dependency injection
+		- removed the configuration classes
+		- moved configuration to windsor style xml
+	- broke out model finding functionality into separate classes
+	- broke out nhibernate persistence mechanism into separate classes
+	- changed the plugin initializer interface
+	- moved nhibernate persistence classes to a separate namespace
+	- replaced urlrewritermodule and sessionclosermodule with a single initializer http module
+	- changed the way items gets their dependency on url rewriter and definition manager
+	- removed the IUrlRewriter interface (breaking change)
+	- moved url parsing functionality into separate class (use Factory.UrlParser)
+	- introduced a sites provider concept and fixed absolute urls to other sites
+	- introduced a site concept and deprecated the multiplesiterewriter
+	- added a request life cycle handler and further abstracted the http context from certain services
+	- tried to optimize item mappings to reduce database traffic for common situations
+	- cleanup
+
+N2 1.1.10:
+- engine
+	- editor container concept
+		- fieldset container
+		- tab panel container
+	- included an editable checkbox attribute
+	- included an editable name attribute
+	- included an editable title attribute
+	- refactored the editable functionality (breaking changes on the EditableAttribute)
+
+N2 1.1.9:
+- plugins
+	- link tracker plugin
+- edit mode
+	- splitter
+	- display page info (type) when editing
+	- revamp, improve and make the edit mode java scripts object oriented 
+		- jQuery
+	- updated tinyMCE to 2.1.0
+	- danish translation (thanks sten j)
+	- changed icons
+- bugsquashing
+	- fixed an issue with detail deletes not cascading
+	- fixed a possible issue with deleted files and new folders beeing selected
+
+N2 1.1.8:
+- engine
+	- new configuration using a configuration sections
+		- section handler
+		- xsd file for intellisense
+	- a brand new plugin initializer
+	- a fist version of the finder
+		- find items by default properties
+		- find items by details
+		- sorting results
+- bugfix
+	- fixed a bad mistake in the security manager's authorize request handler
+- tests
+	- configuration
+- other
+	- nhibernate 1.2 CR
+
+N2 1.1.7:
+- engine improvements
+	- added a configuration option to select specific assemblies to be loaded at startup
+	- added an option to explicitly load assemblies in bin folder making sure these are loaded even at application restarts
+	- replaced static relationship to factory on contentitem dynamically set at creation
+- documentation
+	- more code comments
+- bugfix
+	- fixed a possible issue with the name editor and & or / in the title
+	- replaced a confusing exception from the name editor when no title editor is defined.
+	- fixed an issue with unicode characters and the item & url selectors
+	- removed url encoding of the url property
+	- fixed an issue with the tashcan plugin that could be created manually
+
+N2 1.1.6:
+- engine improvements
+	- upload defaults to ~/upload
+- plugins
+	- xml writer/reader
+		- write xml tree
+		- read xml tree
+		- serialize objects with base 64
+- edit mode
+	- upgraded tinymce editor to 2.0.9
+
+N2 1.1.5:
+- engine improvements
+	- added a restrict to assembly loading pattern used to speed up loading times
+- edit mode
+	- revamped the GUI somewhat
+- plugins
+	- a trashcan plugin
+- tests
+	- some tests for the securty manager
+- bugfix
+	- fixed an issue with allowedchildren & move
+	- fixed an issue in security manager
+	- moved the initialization to init because because app domain might not be loaded earlier
+
+N2 1.1.4:
+- engine improvements
+	- added a duplicatefilter
+	- changed the names of the item reference on details and detailcollection to EnclosingItem
+	- worked on the relationfinder to decrease the number joins
+	- cleanup
+	- evolved the home-baked DI mechanism somewhat to decrease coupling
+- tests
+	- more tests, better code coverage
+- documentation
+	- updated the model	view
+- bugfix
+	- resolved a problem with allowedchildren
+
+N2 1.1.3:
+- engine improvements
+	- url rewriter now handles more characters in a page name & name editor acts accordingly
+	- some cleanup
+	- some changes to improve testability and make it work without a http context
+	- unit tests for persister
+- bugfix
+	- fixed a problem occurring on web site projects that caused url rewriting to stop working
+	- improved replaceversion behaviour into somethig more sane
+- other
+	- nhibernate 1.2 beta 3
+
+N2 1.1.2:
+- engine improvements
+	- persister.relationfinder class (used to find relations between items)
+	- details in a collection get the same name as the collection
+- bugfix
+	- couldn't delete previous versions
+	- exception in the wrong place when using an invalid path in the zone control (now it gracefully ignores it)
+	
+N2 1.1.1:
+- engine improvements
+	- implement allowed children as well as allowed parents
+	- item list move enumerator to subclass
+- imrove edit mode
+	- improve html for detail groups
+	- display referencing items when deleting
+- bugfix
+	- Any global resource file caused a crash in edit mode
+	- Added fix to sorting in tabular navigation (thanks viktor)
+	
+N2 1.1b:
+- engine improvements
+	- detailcollection feature
+		- modify content detail
+		- database & mappings
+		- create
+		- delete
+		- modify
+		- made it work with versioning
+			- cloning
+			- save version
+			- re-publish previous version
+	- link feature
+		- list outbound
+		- list inbound
+		- delete orphaned links
+		- make it work with versioning
+	- displayableattribute -> idisplayable used by editabletextboxattribute and editablefreetextareaattribute
+	- zone control path
+	- reorganized and specialized exceptions
+	- reworked editable concept
+		- split into user control attribute
+		- give the attribute the responsibility of creating editors
+		- removed the detaileditor control
+		- changed DetailName -> Name
+		- changed DisplayName -> Title
+	- implemented granular permissions
+		- toolbar plugins
+		- detail editors
+		- item types
+- edit mode
+	- globalization
+		- english localization
+		- italian localization
+- bugfix
+	- savedby is actually updated
+	- thighter zone constraints - cannot create an item in a zone where it isn't allowed
+- misc
+	- changed length on detail string value to get varchar(max) in mssql 2005
+	
+N2 1.0.35:
+- engine improvements
+	- changes in how assemblies are investigated
+	- some some cleanup in persistencemanger
+	- configurable editor css file
+	- the itemeditor only sets detail values once
+	- the itemeditor now retrieves values from definition manager
+	- the modification of editors is moved to the editor modifier attribute. This should open for more advanced applications when overriding the attribute.
+	- new option to get children based on type
+	- added a filter concept and some filters
+		- access filter
+		- count filter
+		- type filter
+		- zone filter
+	- added a couple of events that can be used to interact with with the factory.
+	- added a parameter that can be used in objectdatasources to access content data
+	- implemented detail groups = cluster
+- bugfix
+	- replace version, fixed a bug leading to extra details beeing left in the database
+	- sorting in table navigation
+	- fixed a problem with url rewriting and permissions (user isn't logged in at begin request)
+	
+N2 1.0:
+- engine improvements:
+	- Focus editor option on editable details
+	- Updated nhibernate references to 1.2 beta 2
+	- Objectdatasource
+		- select, update, delete, insert
+		- events
+		- children data source view
+		- query data source view
+	- Moved intantiating of managers/providers to factory static constructor
+	- Harmonized initialization arguments
+	- DisplayableLiteralAttribute
+	- Moved IsAllowed to security manager
+	- Updated security manager with IsAllowed, IsEdtor and IsAdmin
+	- Editable options required and regular expression validation
+- edit mode improvements
+	- Option to use old sql parser instead of SMO in diagnose.aspx
+	- Sorting in tabular navigation
+	- Changed icon and tooltips for hierarchical navigation
+	- Search "navigation"
+- bugfix
+	- Caught an exception when logging in whithout membership tables
+	- Select the same item in the toolbar and in the navigation when saving or moving, etc
+	- Fix in diagnose.aspx, it seems like referenced assemblies are checked as soon as we enter a function (SMO is not always availble)
+	- Added scrollbars when opening file selector through FreeTextArea
+	- Persister.List now considers parameters after the first
+	- Fixed a problem with the NameEditor and it's comparison
+	- Fixed a problem with replaceversion causing problems when republishing versions
+	- Security manager actually works
+	- Fixed sorting with non-page items
+	- Fixed exception when editing parent after editing via table or search
+	
+N2 1.0 rc2:
+- engine improvements
+	- option to databind editors/display
+	- options to disable security 
+	- cancellable persistence operations
+	- multiple host rewriter can now find pages on other N2 sites
+	- most providers/managers are hidden behind interfaces
+	- EditableUrlAttribute
+- edit mode improvements
+	- gave the page a somewhat lighter look
+	- refresh script only updates frames
+	- splitted file manager and like selector
+	- configurable first navigation and preview pages
+	- url&item selectors can now link to items on other sites
+- bugfix
+	- exception when trying to find items when strange urls (sometimes noticeable in the file selector)
+
+N2 1.0 rc1:
+- engine improvements
+	- non-dynamic user control base class
+- edit mode improvements
+	- new & inproved url selectors
+	- tooltip on items available for new item
+	- new items are actually sorted
+- bugfix
+	- absolute urls in text editor
+	- problem with unicode characters in file manager folders (restricted to alphanumeric)
+
+N2 0.29:
+- engine improvements
+	- transition to item definitions
+	- manager contructor moved to initialize function for ease of configuration
+	
+N2 0.28:
+- engine improvements
+	- cachable content (through nhibernate)
+	- Predefined editable attributes: textbox and freetextarea
+	- displayable attribute & display control
+- imrove edit mode
+	- make some extra attempts to initialize treeview links
+
+N2 0.27:
+- engine improvements
+	- security/roles
+	- membership pages (uncomplete)
+	- better expression builders
+
+N2 0.26
+- library improvements
+	- multiple templates for content items
+
+N2 0.25
+- imrove edit mode
+	- item versions
+	- allow virtual path for toolbar plugins
+
+N2 0.24
+- editmode improvements
+	- table navigation plugin improved
+- library improvements
+	- all executing assemblies (except known patterns) are now investigated
+- examples
+	- simple examples are now available without library project
+
+N2 0.23:
+- förbättra editläge
+	- ibland väljs inte sidorna riktigt när man klickar på dom (mysko)
+		- delay när länkarna görs om med javascript, kolla om man tydliggöra vilka som är klara att klickas
+	- diagnose sidan förbättrad
+	- plugin options
+	- leta efter toolbar plugins i alla assemblies
+- bugfix 
+	- kan ej skapa dataitem via högerfliken
+- snippets & templates
+	- the detail property snippet included
+
+N2 0.22:
+- snygga upp i träsket
+	- extenda abstrakt klass
+	- DoubleDetail
+- förbättra editläge
+	- mozilla filupload
+	- toolbarknappplugins
+	- navigeringsplugin
+		- snygga till
+		- flytta till frame
+		- tabelläge
+- bugfix
+	- NameOccupiedException visar samma på båda
+	- Bara 1 HasEditableAttribute möjlig
+
+N2 0.20:
+- snygga upp i träsket
+	- integrity via events
+	- HasEditable för att regga properties som inte finns på aktuell klass
+	- Ta bort Rewriter.Rewrites.Clear() från Save
+	- Flytta session
+	- integrity via events
+	- förenkla page/data relationen
+	- flytta isär till två httpmoduler
+- bugfix file selector
+- fixa så att en overridad url funkar
+
+N2 0.18:
+- snygga upp i träsket
+	- hitta en balans mellan factory, persistence och urlrewriter
+	- fixa multipla hosts
+	- fixa rewritesCache
+	- olika detailtyper int, datetime, string, bool...?
+- förbättra editläge
+	- masterpage för sidor i framen
+	- relayout
+
+N2 0.1 - 0.17:
+- fixa så att template med QS hittas av sitemapprovidern
+- ta bort IItem
+- förbättra editläge
+	- klickbara ikoner på sub-data-items
+- rätta bugg med flera dller
+- fixa så att contentitems inte behöver ha hbm.xml
+- httpmodule som alternativ till att ärva global
+- loginsida
+- ta bort Factory.CurrentData
+- datafactory -> factory
+- integrity
+	- filtrera på zonename när man kommer via sida
+	- integritetshanterare
+- expandera trädet till vald nod
+- edit sparaknapp
+- fixa så att man kan sätta properties på editorer
+	- EditorModifierAttribute
+	- GetConverter
+- dynamiska userkontroller med Item data (a la webparts)
+	- runtimeparametrar till site map provider
+	- kontrollera när dataitems visas i trädet
+	- schysstare editeringsgränssnitt
+	- zoneväljare
+	- datalager
+	- zone kontroll
+- förbättra editläge
+	- filväljaren är ful & tråkig
+- filhanterare
+	- fixa problem med ej valbara filer (zip, m.m.)
+	- ta bort filer
+- flytta ihop urlskapningen och urlparsandet (mer coupling, hmm)
+- events
+- VirtualPathUtility/ResolveUrl
+- få det att funka med virtella kataloger
+- få det att funka med web site projects
+- en vettig template web
+- snygga upp editläget
+- itemtyper editnamn
+- system för vilka sidor som får finnas under vilka
+- ta bort getvalue & setvalue
+- usercontrol som redigerare
+- hantera sidor utan url
+- hantera stackobjekt som är null
+- sidor vs. dataitems
+- förbättra editläge
+	- edit css
+- upload av filer
+- diagnostics page
+- log in to edit mode
+- validering
+- texteditor
+	- tiny mce
+		- infoga bild
+	- utvärdera freetextbox, tinymce, fckeditor
+- urlrewriting
+- namespace
+- expressions http://msdn2.microsoft.com/en-us/library/d5bd1tad.aspx
+- tweaka objektmodellen
+	- session per request 
+		http://www.castleproject.org/index.php/ActiveRecord:How_to:Enable_Session_per_Request
+		http://hammett.castleproject.org/?p=18
+- connection string a la 2.0
+- flytta&kopiera

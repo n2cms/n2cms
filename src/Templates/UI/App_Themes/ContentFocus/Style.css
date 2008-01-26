@@ -1,0 +1,229 @@
+/********* GLOBALS *********/
+
+* {margin:0;padding:0}
+body {font-family:Arial,SansSerif;font-size:.9em;}
+a img,table {border:0}
+dl,ol,ul {list-style:none}
+button,select,textarea,input {font:100% serif}
+table {border-collapse:collapse}
+caption,th,td {text-align:left}
+h1,h2,h3,h4,h5,h6,p {margin:.35em 0;}
+
+/* colors */
+#header h2 a { color:#fff; }
+a { color:#4fa600; text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:visited { color:#3f9600; }
+
+/* clearfix */
+#page:after, .cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+#page, .cf { display: inline-block; }
+* html #page, * html .cf { height: 1px; }
+#footer .n2{color:#a2a796;float:right;margin-top:10px;font-size:.8em;}
+
+
+/********* LAYOUT *********/
+
+body
+{
+    margin:0;
+}
+#wrap
+{
+    width:900px;
+    margin:0 auto;
+}
+#page
+{
+    padding:15px 15px 6px 15px;
+}
+.secondary
+{
+    width:170px;
+    float:left;
+    margin-bottom:1px;
+}
+#main
+{
+    width:500px;
+    float:left;
+    margin:0 15px;
+    padding-bottom:15px;
+}
+
+
+
+/********* STYLE *********/
+
+body
+{
+	background-color:#cce5a2;
+}
+#header
+{
+	background:#a2a796 url(top.gif) no-repeat;
+	height:100px;
+}
+#page
+{
+	background:#fff url(content_bottom.gif) no-repeat 50% 100%;
+}
+
+/*box*/
+.boxTitle,
+.secondary h4
+{
+    background:#9ea391 url(secondary_header.gif) no-repeat;
+    margin:0;
+    padding:5px 10px;
+    color:#fff;
+}
+.secondary h4 a{color:#fff;}
+.secondary .box
+{
+    background:#eaf2db url(secondary_borders.gif) no-repeat -170px 100%;
+    _height:1px;
+    padding-bottom:10px;
+}
+.secondary .box .inner
+{
+    background:transparent url(secondary_borders.gif) no-repeat;
+    padding:10px 10px 0 10px;
+}
+
+/*top*/
+#header 
+{
+    position:relative;
+}
+#header h2
+{
+    margin:0;
+    padding:20px 30px;
+    position:absolute;
+    bottom:15px;
+}
+#header img
+{
+    position:absolute;
+    top:15px;
+    right:15px;
+}
+
+/*secondary*/
+.secondary .uc
+{
+    margin-bottom:15px;
+}
+
+/*menu*/
+.horizontalMenu
+{
+	position:absolute;
+	top:75px;	
+	left:25px;
+}
+.horizontalMenu li
+{
+	float:left;
+}
+.horizontalMenu a
+{
+	color:#fff;
+	display:block;
+	padding:2px 5px;
+}
+.horizontalMenu .current > a,
+.horizontalMenu .trail > a
+{
+    font-weight:bold;
+}
+.verticalMenu a,
+.menu a
+{
+    display:block;
+    padding:2px 0;
+    _height:1px;
+    color:#333;
+}
+.verticalMenu ul ul,
+.menu ul ul
+{
+    margin:0 0 5px 10px;
+}
+.verticalMenu .trail > a,
+.verticalMenu .current > a,
+.menu .trail > a,
+.menu .current > a
+{
+    color:#389000;
+}
+.verticalMenu .current > a,
+.menu .current > a
+{
+    font-weight:bold;
+}
+
+/* lists */
+.list .a0
+{
+    background: #f4f8ed url(list_dark.gif) no-repeat 50% -1px;
+}
+.list,
+.list .a1
+{
+    background: #fff url(list_light.gif) no-repeat 50% -1px;
+}
+.list
+{
+    padding-bottom:6px;
+    background-position:50% 100%;
+}
+.list .item
+{
+	padding:5px;
+}
+/*path*/
+.path .current
+{
+    color:#333;
+}
+.path a.current:hover
+{
+    cursor:default;
+    text-decoration:none;
+}
+
+/*sitemap*/
+#main ul
+{
+	list-style:circle;
+	margin-left:20px;
+}
+
+/** ELEMENTS **/
+.date
+{
+	font-size:x-small;
+	color:#333;
+	display:block;
+}
+
+/*columns*/
+.columns .left
+{
+	float:left;
+	width:245px;
+}
+.columns .right
+{
+	float:right;
+	width:245px;
+}
+
+
+
+/* drag&drop */
+.dragDrop .secondary .uc { margin-bottom:0;}
+.dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
+.dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}

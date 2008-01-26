@@ -1,0 +1,13 @@
+fieldset
+{
+	float:left;
+}
+.referencingItems
+{
+	width:45%;
+	margin-right:10px;
+}
+.referencedItems
+{
+	width:45%;
+}

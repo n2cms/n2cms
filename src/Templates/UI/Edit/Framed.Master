@@ -1,0 +1,28 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Framed.master.cs" Inherits="N2.Edit.Framed" meta:resourceKey="FramedResource" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head id="Head1" runat="server">
+        <title id="title" runat="server"></title>
+        <link rel="stylesheet" href="Css/All.css" type="text/css" />
+        <link rel="stylesheet" href="Css/Framed.css" type="text/css" />
+        <%--<link rel="stylesheet" href="Css/Framed.css" type="text/css" />
+        <link rel="stylesheet" href="Css/gridView.css" type="text/css" />--%>
+        <!--[if lte IE 6]>
+            <link href="Css/IE6.css" rel="stylesheet" type="text/css" />
+        <![endif]-->
+        <asp:ContentPlaceHolder ID="Head" runat="server" />
+    </head>
+    <body class="framed">
+        <form id="f" runat="server">
+            <div id="toolbar" class="toolbar">
+				<span style="float:right;">&nbsp;</span>
+                <asp:ContentPlaceHolder ID="Toolbar" runat="server" />
+            </div>
+            <asp:ContentPlaceHolder ID="Outside" runat="server" />
+            <div id="content" class="content">
+                <h1 id="h1" runat="server" />
+                <asp:ContentPlaceHolder ID="Content" runat="server" />
+            </div>
+        </form>
+    </body>
+</html>

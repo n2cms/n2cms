@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <members>
+    <member name="R:Project">
+      <summary>API reference for N2.dll, the core library of N2 CMS.</summary>
+    </member>
+    <member name="N:N2">
+      <summary>Contains the most commonly used classes.</summary>
+    </member>
+  </members>
+</doc>

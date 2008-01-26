@@ -1,0 +1,38 @@
+<!--
+    You can find existing browser definitions at
+    <windir>\Microsoft.NET\Framework\<ver>\CONFIG\Browsers
+-->
+<browsers>
+	<browser id="AnyBrowser" parentID="Mozilla">
+		<identification>
+			<userAgent match="^(?'browser'.*?)/v{0,1}(?'version'(?'major'\d*).(?'minor'\d*))" />
+		</identification>
+		<capabilities>
+			<capability name="browser" value="${browser}" />
+			<capability name="version" value="${version}" />
+			<capability name="majorversion" value="${major}" />
+			<capability name="minorversion" value="${minor}" />
+			<capability name="activexcontrols" value="true" />
+			<capability name="backgroundsounds" value="true" />
+			<capability name="cookies" value="true" />
+			<capability name="css1" value="true" />
+			<capability name="css2" value="true" />
+			<capability name="ecmascriptversion" value="1.2" />
+			<capability name="frames" value="true" />
+			<capability name="javaapplets" value="true" />
+			<capability name="javascript" value="true" />
+			<capability name="jscriptversion" value="5.0" />
+			<capability name="supportsCallback" value="true" />
+			<capability name="supportsFileUpload" value="true" />
+			<capability name="supportsMultilineTextBoxDisplay" value="true" />
+			<capability name="supportsMaintainScrollPositionOnPostback" value="true" />
+			<capability name="supportsVCard" value="true" />
+			<capability name="supportsXmlHttp" value="true" />
+			<capability name="tables" value="true" />
+			<capability name="vbscript" value="false" />
+			<capability name="w3cdomversion" value="1.0" />
+			<capability name="xml" value="true" />
+		</capabilities>
+		<controlAdapters markupTextWriterType="System.Web.UI.HtmlTextWriter"></controlAdapters>
+	</browser>
+</browsers>

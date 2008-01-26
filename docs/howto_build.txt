@@ -1,0 +1,6 @@
+- download the code, obviously
+- set Templates/N2.Templates.UI as default project
+- try to compile
+- fix references path on some of the projects (project properties, references
+  path, add [solutionfolder]\lib to the list
+- Build and start the templates site Ctrl+F5

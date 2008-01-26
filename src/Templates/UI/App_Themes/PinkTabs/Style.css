@@ -1,0 +1,248 @@
+/********* GLOBALS *********/
+
+* {margin:0;padding:0}
+body {font-family:Arial,SansSerif;font-size:.9em;}
+a img,table {border:0}
+dl,ol,ul {list-style:none}
+button,select,textarea,input {font:100% serif}
+table {border-collapse:collapse}
+caption,th,td {text-align:left}
+h1,h2,h3,h4,h5,h6,p {margin:.35em 0;}
+h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
+
+/* colors */
+#header h2 a { color:#fff; font-style:italic; font-weight:normal; }
+a { color:#468966; text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:visited { color:#569976; }
+#footer .n2{color:#ccc;float:right;margin-top:10px;font-size:.8em;}
+
+/* clearfix */
+#page:after, .cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+#page, .cf { display: inline-block; }
+* html #page, * html .cf { height: 1px; }
+
+
+
+/********* LAYOUT *********/
+
+body
+{
+    margin:0;
+}
+#wrap
+{
+}
+#page,#footer
+{
+    width:900px;
+    margin:0 auto;
+    padding:15px 15px 6px 15px;
+}
+.secondary
+{
+    width:170px;
+    float:left;
+    margin-bottom:1px;
+}
+#main
+{
+    width:500px;
+    float:left;
+    margin:5px 15px;
+    padding-bottom:15px;
+}
+
+
+
+/********* STYLE *********/
+
+body
+{
+	background:#FFF;
+}
+#header
+{
+	background:#9dbde1 url(TopBg.gif) repeat-x 0% 100%;
+	height:100px;
+}
+#page
+{
+}
+
+/*box*/
+.boxTitle,
+.secondary h4
+{
+	font-family:Georgia,"Times New Roman",Times,serif;
+	font-style:italic; 
+	font-weight:normal; 
+    background:transparent url(SidebarLeftBg.gif) no-repeat 100% 0%;
+    margin:0;
+    padding:15px 10px 0 10px;
+    color:#333;
+    text-align:center;
+}
+.secondary .box
+{
+    _height:1px;
+    background:transparent url(SidebarLeftBg.gif) no-repeat 100% 100%;
+    padding:10px 20px 20px 10px;
+}
+#extras .boxTitle,
+#extras h4
+{
+    background:transparent url(SidebarRightBg.gif) no-repeat 0% 0%;
+}
+#extras .box
+{
+    background:transparent url(SidebarRightBg.gif) no-repeat 0% 100%;
+    padding:10px 10px 20px 20px;
+}
+
+/*top*/
+#header 
+{
+	position:relative;
+}
+#header .top
+{
+	width:900px;
+	margin:0 auto;
+}
+#header .top
+{
+	padding-top:35px;
+}
+#header img
+{
+	vertical-align:text-bottom;
+}
+#header h2
+{
+	display:inline;
+}
+
+/*secondary*/
+.secondary .uc
+{
+    margin-bottom:15px;
+}
+
+/*menu*/
+.horizontalMenu
+{
+	position:absolute;
+	bottom:0px;	
+	left:20px;
+}
+.horizontalMenu li
+{
+	float:left;
+	background:transparent url(MenuDimmed.gif) no-repeat 0% 100%;
+	padding-left:12px;
+}
+.horizontalMenu a
+{
+	color:#333;
+	background:transparent url(MenuDimmed.gif) no-repeat 100% 100%;
+	display:block;
+	padding:6px 18px 4px 4px;
+}
+.horizontalMenu li.current, .horizontalMenu li.current a,
+.horizontalMenu li.trail, .horizontalMenu li.trail a
+{
+	background-image:url(MenuSelected.gif);
+}
+
+.horizontalMenu .current > a,
+.horizontalMenu .trail > a
+{
+    font-weight:bold;
+}
+.verticalMenu a,
+.menu a
+{
+    display:block;
+    padding:2px 0;
+    _height:1px;
+    color:#333;
+}
+.verticalMenu ul ul,
+.menu ul ul
+{
+    margin:0 0 5px 10px;
+}
+.verticalMenu .trail > a,
+.verticalMenu .current > a,
+.menu .trail > a,
+.menu .current > a
+{
+    color:#468966;
+}
+.verticalMenu .current > a,
+.menu .current > a
+{
+    font-weight:bold;
+}
+
+/* lists */
+.list .a0
+{
+    background: #f4f8ed;
+}
+.list
+{
+    padding-bottom:6px;
+    background-position:50% 100%;
+}
+.list .item
+{
+	padding:5px;
+}
+
+/*path*/
+.path .current
+{
+    color:#333;
+}
+.path a.current:hover
+{
+    cursor:default;
+    text-decoration:none;
+}
+
+/*sitemap*/
+#main ul
+{
+	list-style:circle;
+	margin-left:20px;
+}
+
+
+/** ELEMENTS **/
+.date
+{
+	font-size:x-small;
+	color:#333;
+	display:block;
+}
+
+/*columns*/
+.columns .left
+{
+	float:left;
+	width:245px;
+}
+.columns .right
+{
+	float:right;
+	width:245px;
+}
+
+
+
+/* drag&drop */
+.dragDrop .secondary .uc { margin-bottom:0;}
+.dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
+.dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}

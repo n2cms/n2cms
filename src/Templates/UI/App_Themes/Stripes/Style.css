@@ -1,0 +1,289 @@
+/********* GLOBALS *********/
+
+* {margin:0;padding:0}
+body {font-family:Constantia,"Lucida Fax","Palatino Linotype",serif;font-size:.9em;}
+a img,table {border:0}
+a img{vertical-align:middle;}
+dl,ol,ul {list-style:none}
+button,select,textarea,input {font:100% serif}
+table {border-collapse:collapse}
+caption,th,td {text-align:left;vertical-align:top;}
+h1,h2,h3,h4,h5,h6,p {margin:.35em 0;font-family:Cambria,"Hoefler Text","Palatino Linotype",Palatino,"Trebuchet MS",serif}
+
+/* colors */
+#header h2 a { color:#478db3; }
+a { color:#478db3; text-decoration:none; }
+a:hover { text-decoration:underline; }
+a:visited { color:#5bb4e5; }
+
+/* clearfix */
+#page:after, .cf:after, #content:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+#page, .cf, #content { display: inline-block; }
+* html #page, * html .cf, * html #content { height: 1px; }
+#footer{width:900px;margin:0 auto;}
+#footer .n2{color:#333;float:right;margin-bottom:10px;font-size:.8em;}
+
+/********* LAYOUT *********/
+
+body
+{
+    margin:0;
+}
+#wrap
+{
+    margin:0 auto;
+}
+#header
+{
+}
+#header .uc
+{
+	width:900px;
+    margin:0 auto;
+}
+#page
+{
+    width:900px;
+    margin:0 auto;
+}
+#content
+{
+    padding-top:15px;
+	position:relative;
+	width:715px;
+	float:right;
+	margin-bottom:45px;
+}
+.secondary
+{
+	float:left;
+    width:170px;
+    margin-top:15px;
+}
+
+#main
+{
+	_display:inline;
+    width:500px;
+    float:left;
+    margin:5px 15px;
+    padding-bottom:15px;
+}
+
+#content .secondary
+{
+	margin-top:0;
+}
+
+/********* STYLE *********/
+
+body
+{
+	background:#000 url(bg.gif) 50% 0%;
+}
+#wrap
+{
+}
+#header
+{
+	background:url(top_bg.gif) 50% 0%;
+}
+#content
+{
+	background:#fff url(page_bottom.gif) no-repeat 50% 100%;
+}
+
+/*box*/
+.boxTitle,
+.secondary h4 {padding:0 5px;color:#d0cfcb;}
+.secondary h4 a { color:#d0cfcb;}
+#menu .box { color:#d0cfcb;}
+#content .boxTitle,
+#content .secondary h4
+{
+    color:#414141;
+}
+.secondary .box
+{
+    background:transparent url(menu_bg.gif) no-repeat 50% 100%;
+    _height:1px;
+    padding-bottom:10px;
+}
+.secondary .box .inner
+{
+    padding:10px 10px 0 10px;
+    background:transparent url(menu_bg.gif) no-repeat 50% 0%;
+}
+
+#content .secondary .box
+{
+    background:transparent url(secondary_bg.gif) no-repeat 50% 100%;
+}
+#content .secondary .box .inner
+{
+    background:transparent url(secondary_bg.gif) no-repeat 50% 0%;
+}
+/*top*/
+#header
+{
+    position:relative;
+}
+.top h2
+{
+    margin:0;
+    padding:54px 0 10px 15px;
+}
+.top
+{
+	position:relative;
+}
+.top img
+{
+    position:absolute;
+    top:15px;
+    right:15px;
+}
+
+/*secondary*/
+.secondary .uc
+{
+    margin-bottom:15px;
+}
+
+/*menu*/
+#header .horizontalMenu
+{
+	padding:60px 100px 10px 200px;
+	width:600px;
+}
+.horizontalMenu li
+{
+	display:inline;
+}
+.horizontalMenu a
+{
+	color:#fff;
+	margin-right:10px;
+}
+.horizontalMenu .current > a,
+.horizontalMenu .trail > a
+{
+    font-weight:bold;
+	color:#0096DB;
+}
+.verticalMenu a,
+.menu a
+{
+    display:block;
+    padding:2px 0;
+    _height:1px;
+    color:#fff;
+}
+.verticalMenu ul ul,
+.menu ul ul
+{
+    margin:0 0 5px 10px;
+}
+.verticalMenu .trail > a,
+.verticalMenu .current > a,
+.menu .trail > a,
+.menu .current > a
+{
+    color:#0096DB;
+}
+.verticalMenu .current > a,
+.menu .current > a
+{
+    font-weight:bold;
+}
+
+/* lists */
+.list .a0
+{
+    background: #f4f8ed url(list_dark.gif) no-repeat 50% -1px;
+}
+.list,
+.list .a1
+{
+    background: #fff url(list_light.gif) no-repeat 50% -1px;
+}
+.list
+{
+    padding-bottom:6px;
+    background-position:50% 100%;
+}
+.list .item
+{
+	padding:5px;
+}
+
+/*path*/
+.path
+{
+	margin-top:10px;
+}
+.path .current
+{
+    color:#414141;
+}
+.path a.current:hover
+{
+    cursor:default;
+    text-decoration:none;
+}
+
+/*sitemap*/
+#main ul
+{
+	list-style:circle;
+	margin-left:20px;
+}
+
+
+
+/** ELEMENTS **/
+.date
+{
+	font-size:x-small;
+	color:#414141;
+	display:block;
+}
+
+.intro
+{
+	font-style:italic;
+	font-size:1.2em;
+}
+.list .intro
+{
+	font-style:normal;
+	font-size:1em;
+}
+body #page
+{
+	background-color:Transparent;
+}
+
+/*columns*/
+.columns .left
+{
+	float:left;
+	width:245px;
+}
+.columns .right
+{
+	float:right;
+	width:245px;
+}
+
+/* drag&drop */
+.dragDrop .secondary .uc { margin-bottom:0;}
+.dragDrop .SiteLeft,.dragDrop .SiteTop {}
+.dragDrop .SiteRight { background-color:#fef;}
+.dragDrop .Left {}
+.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
+
+.socialBookmarks a
+{
+	white-space:nowrap;
+}

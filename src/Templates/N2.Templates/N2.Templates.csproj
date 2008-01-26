@@ -1,0 +1,113 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2.Templates</RootNamespace>
+    <AssemblyName>N2.Templates</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Details\LayoutSelectorAttribute.cs" />
+    <Compile Include="Details\DropDownAttribute.cs" />
+    <Compile Include="Details\ThemeSelectorAttribute.cs" />
+    <Compile Include="Find.cs" />
+    <Compile Include="Imaging\ImageResizer.cs" />
+    <Compile Include="Items\AbstractItem.cs" />
+    <Compile Include="Items\AbstractContentPage.cs" />
+    <Compile Include="Items\AbstractPage.cs" />
+    <Compile Include="Items\IStructuralPage.cs" />
+    <Compile Include="Items\RootPage.cs" />
+    <Compile Include="Items\SidebarItem.cs" />
+    <Compile Include="Items\StartPage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemplatesInitializer.cs" />
+    <Compile Include="Web\Adapters\FormAdapter.cs" />
+    <Compile Include="Web\Adapters\ImageAdapter.cs" />
+    <Compile Include="Web\Adapters\MenuAdapter.cs" />
+    <Compile Include="Web\Adapters\UserControlWrapperAdapter.cs" />
+    <Compile Include="Web\Adapters\WebControlAdapterExtender.cs" />
+    <Compile Include="Web\IPageModifier.cs" />
+    <Compile Include="Web\IPageModifierContainer.cs" />
+    <Compile Include="Web\MasterPageModifier.cs" />
+    <Compile Include="Web\TemplatePageModifier.cs" />
+    <Compile Include="Web\ThemeModifier.cs" />
+    <Compile Include="Web\UI\TemplateUserControl2.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\TemplateMasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\TemplatePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\TemplateUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\WebControls\Box.cs" />
+    <Compile Include="Web\UI\WebControls\Menu.cs" />
+    <Compile Include="Web\UI\WebControls\Path.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Syndication\N2.Templates.Syndication.csproj">
+      <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
+      <Name>N2.Templates.Syndication</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,54 @@
+#content .singleColumn
+{
+	padding:0 15px;
+}
+table
+{
+	width:100%;
+}
+td
+{
+	padding-right:10px;
+}
+.c3 td
+{
+	width:33%;
+}
+.c4 td
+{
+	width:25%;
+}
+
+.task
+{
+	background-color:#eee;
+	padding:5px;
+	margin:5px 0;
+	border:solid 1px #ddd;
+}
+.task .task
+{
+	background-color:#ddd;
+}
+.task h4
+{
+	cursor:pointer;
+}
+.dragDrop .task
+{
+	margin:0;
+}
+.contextMenu
+{
+	background-color:#fff;
+	border:solid 2px silver;
+}
+.contextMenu a
+{
+	display:block;
+	padding:2px;
+}
+.contextMenu a:hover
+{
+	background-color:Silver;
+}

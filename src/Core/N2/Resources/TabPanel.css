@@ -1,0 +1,63 @@
+.tabs
+{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	display:block;
+	position:relative;
+	top:1px;
+	margin:0 8px;
+}
+.tabs li
+{
+	margin:0;
+	float:left;
+	border:solid 1px #c3c0bd;
+	background-color:#c3c0bd;
+	border-collapse:collapse;
+	margin-left:2px;
+	display:block;
+}
+.tabs a
+{
+	display:block;
+	padding:2px 4px;
+	text-decoration:none;
+}
+.tabs .selected
+{
+	background-color:White;
+	border-bottom:none;
+	padding-bottom:1px;
+	font-weight:bold;
+}
+.tabPanel
+{
+	border:solid 1px #c3c0bd;
+	padding:10px;
+	position:relative;
+	left:-10px;
+}
+.tabContentHidden
+{
+	position:absolute;
+	top:-10000px;
+	left:-10000px;
+}
+
+
+.tabs:after 
+{
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.tabs {display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .tabs {height: 1%;}
+.tabs {display: block;}
+/* End hide from IE-mac */

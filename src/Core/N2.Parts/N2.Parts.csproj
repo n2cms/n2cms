@@ -1,0 +1,113 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2.Parts</RootNamespace>
+    <AssemblyName>N2.Parts</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MicroKernel, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Castle.MicroKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Web\ItemCopyer.cs" />
+    <Compile Include="Web\EditUrlProvider.cs" />
+    <Compile Include="Web\ItemMover.cs" />
+    <Compile Include="Web\CreateUrlProvider.cs" />
+    <Compile Include="PartInitializer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\ItemDeleter.cs" />
+    <Compile Include="Web\PartsAjaxService.cs" />
+    <Compile Include="Web\UI\WebControls\DragDropControlPanel.cs" />
+    <Compile Include="Web\UI\WebControls\DragItem.cs" />
+    <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
+    <Compile Include="Web\UI\WebControls\DropPoint.cs" />
+    <Compile Include="Web\UI\WebControls\Parts.cs" />
+    <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
+    <Compile Include="Web\UI\WebControls\Toolbar.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\UI\WebControls\Parts.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\UI\WebControls\Parts.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\UI\WebControls\page_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\UI\WebControls\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\UI\WebControls\layout_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\UI\WebControls\page_refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\UI\WebControls\SlidingCurtain_bg.png" />
+    <EmbeddedResource Include="Web\UI\WebControls\SlidingCurtain_bg_bottom.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

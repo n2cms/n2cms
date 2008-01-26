@@ -1,0 +1,409 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D42D096E-399D-4618-AEB4-9B023BA1316D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2.Templates.UI</RootNamespace>
+    <AssemblyName>N2.Templates.UI</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="default.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\PlugIns.cs" />
+    <Compile Include="App_GlobalResources\Definitions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\EditableContainers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Editables.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Zones.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.resx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Items\LayoutParts\Columns.cs" />
+    <Compile Include="Items\LayoutParts\HorizontalMenu.cs" />
+    <Compile Include="Items\LayoutParts\Menu.cs" />
+    <Compile Include="Items\LayoutParts\Top.cs" />
+    <Compile Include="Items\LayoutParts\VerticalMenu.cs" />
+    <Compile Include="Items\Parts\ControlPanel.cs" />
+    <Compile Include="Items\Parts\RandomImage.cs" />
+    <Compile Include="Items\Parts\Teaser.cs" />
+    <Compile Include="Items\Parts\TextItem.cs" />
+    <Compile Include="Items\Redirect.cs" />
+    <Compile Include="Items\RootParts\Statistics.cs" />
+    <Compile Include="Items\SiteMap.cs" />
+    <Compile Include="Items\TextPage.cs" />
+    <Compile Include="Layouts\Empty.Master.cs">
+      <DependentUpon>Empty.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Empty.Master.designer.cs">
+      <DependentUpon>Empty.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\Parts\HorizontalMenu.ascx.cs">
+      <DependentUpon>HorizontalMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Parts\HorizontalMenu.ascx.designer.cs">
+      <DependentUpon>HorizontalMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\Parts\VerticalMenu.ascx.cs">
+      <DependentUpon>VerticalMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Parts\VerticalMenu.ascx.designer.cs">
+      <DependentUpon>VerticalMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\Parts\Columns.ascx.cs">
+      <DependentUpon>Columns.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Parts\Columns.ascx.designer.cs">
+      <DependentUpon>Columns.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Parts\ControlPanel.ascx.cs">
+      <DependentUpon>ControlPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\ControlPanel.ascx.designer.cs">
+      <DependentUpon>ControlPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Parts\RandomImage.ascx.cs">
+      <DependentUpon>RandomImage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\RandomImage.ascx.designer.cs">
+      <DependentUpon>RandomImage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Parts\Statistics.ascx.cs">
+      <DependentUpon>Statistics.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\Statistics.ascx.designer.cs">
+      <DependentUpon>Statistics.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Parts\Teaser.ascx.cs">
+      <DependentUpon>Teaser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\Teaser.ascx.designer.cs">
+      <DependentUpon>Teaser.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Parts\Text.ascx.cs">
+      <DependentUpon>Text.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\Text.ascx.designer.cs">
+      <DependentUpon>Text.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Secured\Go.aspx.cs">
+      <DependentUpon>Go.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secured\Go.aspx.designer.cs">
+      <DependentUpon>Go.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Image.ashx.cs">
+      <DependentUpon>Image.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\Parts\Menu.ascx.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Parts\Menu.ascx.designer.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\Parts\Top.ascx.cs">
+      <DependentUpon>Top.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Parts\Top.ascx.designer.cs">
+      <DependentUpon>Top.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\ThreeColumns.Master.cs">
+      <DependentUpon>ThreeColumns.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\ThreeColumns.Master.designer.cs">
+      <DependentUpon>ThreeColumns.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Redirect.aspx.cs">
+      <DependentUpon>Redirect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Redirect.aspx.designer.cs">
+      <DependentUpon>Redirect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secured\Root.aspx.cs">
+      <DependentUpon>Root.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secured\Root.aspx.designer.cs">
+      <DependentUpon>Root.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteMap.aspx.cs">
+      <DependentUpon>SiteMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteMap.aspx.designer.cs">
+      <DependentUpon>SiteMap.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Text.aspx.cs">
+      <DependentUpon>Text.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Text.aspx.designer.cs">
+      <DependentUpon>Text.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\N2.Parts\N2.Parts.csproj">
+      <Project>{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}</Project>
+      <Name>N2.Parts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\N2.Templates\N2.Templates.csproj">
+      <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
+      <Name>N2.Templates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Syndication\N2.Templates.Syndication.csproj">
+      <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
+      <Name>N2.Templates.Syndication</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Layouts\ThreeColumns.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
+    <Content Include="App_Themes\ContentFocus\content_top.gif" />
+    <Content Include="App_Themes\ContentFocus\_style_template.gif" />
+    <Content Include="Secured\Root.aspx" />
+    <Content Include="Secured\Web.config" />
+    <Content Include="Text.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Browsers\AnyBrowser.browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Browsers\CSSFriendlyAdapters.browser" />
+    <Content Include="Layouts\Parts\Menu.ascx" />
+    <Content Include="Layouts\Parts\Top.ascx" />
+    <Content Include="Redirect.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\ContentFocus\list_dark.gif" />
+    <Content Include="App_Themes\ContentFocus\list_light.gif" />
+    <Content Include="App_Themes\ContentFocus\secondary_borders.gif" />
+    <Content Include="App_Themes\ContentFocus\top.gif" />
+    <Content Include="Parts\Statistics.ascx" />
+    <Content Include="Secured\Go.aspx" />
+    <Content Include="Image.ashx" />
+    <Content Include="Img\eye.png" />
+    <Content Include="Img\page_gear.png" />
+    <Content Include="Img\page_go.png" />
+    <Content Include="Img\page_white_link.png" />
+    <Content Include="Img\page_white_star.png" />
+    <Content Include="Img\page_world.png" />
+    <Content Include="Img\sitemap.png" />
+    <Content Include="SiteMap.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\ContentFocus\secondary_header.gif" />
+    <Content Include="App_Themes\ContentFocus\Style.css" />
+    <Content Include="App_Themes\Plain\Style.css" />
+    <Content Include="App_Themes\Stripes\bg.gif" />
+    <Content Include="App_Themes\Stripes\top_bg.gif" />
+    <Content Include="App_Themes\Stripes\menu_bg.gif" />
+    <Content Include="App_Themes\Stripes\page_bottom.gif" />
+    <Content Include="App_Themes\Stripes\page_top.gif" />
+    <Content Include="App_Themes\Stripes\secondary_bg.gif" />
+    <Content Include="App_Themes\Stripes\sidebar_bg.gif" />
+    <Content Include="App_Themes\Stripes\Style.css" />
+    <Content Include="App_Themes\Stripes\top_bg.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Img\controller.png" />
+    <Content Include="Img\heart.png" />
+    <Content Include="Img\photos.png" />
+    <Content Include="Img\text_align_left.png" />
+    <Content Include="Img\text_columns.png" />
+    <Content Include="Layouts\Empty.Master" />
+    <Content Include="Layouts\Parts\HorizontalMenu.ascx" />
+    <Content Include="Layouts\Parts\VerticalMenu.ascx" />
+    <Content Include="Layouts\Parts\Columns.ascx" />
+    <Content Include="Parts\ControlPanel.ascx" />
+    <Content Include="Parts\RandomImage.ascx" />
+    <Content Include="Parts\Teaser.ascx" />
+    <Content Include="Parts\Text.ascx" />
+    <Content Include="Secured\Edit.css" />
+    <Content Include="Upload\lav.jpg" />
+    <Content Include="Upload\n2.gif" />
+    <Content Include="Upload\skal.jpg" />
+    <Content Include="Upload\Sunset.jpg" />
+    <Content Include="Upload\thorn.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Browsers\MaintainPostbackUrl.browser" />
+    <Content Include="App_Themes\GreenFloater\n2menu.css" />
+    <Content Include="App_Themes\GreenFloater\PageBgBottom.gif" />
+    <Content Include="App_Themes\GreenFloater\PageBgTop.gif" />
+    <Content Include="App_Themes\GreenFloater\SidebarBg.gif" />
+    <Content Include="App_Themes\GreenFloater\Style.css" />
+    <Content Include="App_Themes\GreenFloater\SubMenu.gif" />
+    <Content Include="App_Themes\GreenFloater\TopMenu.gif" />
+    <Content Include="App_Themes\KhakiTabs\MenuDimmed.gif" />
+    <Content Include="App_Themes\KhakiTabs\MenuSelected.gif" />
+    <Content Include="App_Themes\KhakiTabs\SidebarLeftBg.gif" />
+    <Content Include="App_Themes\KhakiTabs\SidebarRightBg.gif" />
+    <Content Include="App_Themes\KhakiTabs\Style.css" />
+    <Content Include="App_Themes\KhakiTabs\TopBg.gif" />
+    <Content Include="App_Themes\PinkTabs\MenuDimmed.gif" />
+    <Content Include="App_Themes\PinkTabs\MenuSelected.gif" />
+    <Content Include="App_Themes\PinkTabs\SidebarLeftBg.gif" />
+    <Content Include="App_Themes\PinkTabs\SidebarRightBg.gif" />
+    <Content Include="App_Themes\PinkTabs\Style.css" />
+    <Content Include="App_Themes\PinkTabs\TopBg.gif" />
+    <Content Include="App_Themes\SkyTabs\MenuDimmed.gif" />
+    <Content Include="App_Themes\SkyTabs\MenuSelected.gif" />
+    <Content Include="App_Themes\SkyTabs\SidebarLeftBg.gif" />
+    <Content Include="App_Themes\SkyTabs\SidebarRightBg.gif" />
+    <Content Include="App_Themes\SkyTabs\Style.css" />
+    <Content Include="App_Themes\SkyTabs\TopBg.gif" />
+    <Content Include="App_Themes\TomatoTabs\MenuDimmed.gif" />
+    <Content Include="App_Themes\TomatoTabs\MenuSelected.gif" />
+    <Content Include="App_Themes\TomatoTabs\SidebarLeftBg.gif" />
+    <Content Include="App_Themes\TomatoTabs\SidebarRightBg.gif" />
+    <Content Include="App_Themes\TomatoTabs\Style.css" />
+    <Content Include="App_Themes\TomatoTabs\TopBg.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Editables.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\EditableContainers.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Definitions.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Zones.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Js\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1923</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

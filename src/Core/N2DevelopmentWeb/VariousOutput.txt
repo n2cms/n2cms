@@ -1,0 +1,50 @@
+
+        <div style="height:66px;overflow:auto;border:solid 1px silver">
+        assemblies
+        <asp:Repeater ID="rptAssemblies" runat="server" DataSource=<%# System.AppDomain.CurrentDomain.GetAssemblies() %>>
+            <ItemTemplate>
+                <li style="<%# GetFilteredAssembliyList().Contains((System.Reflection.Assembly)Container.DataItem) ? "font-weight:bold" : "" %>">
+                    <%# Eval("FullName") %><br />
+                </li>
+            </ItemTemplate>
+        </asp:Repeater>
+        </div>
+
+        <div style="height:66px;overflow:auto;border:solid 1px silver">
+        query
+        <asp:Repeater ID="Repeater1" runat="server" DataSource=<%# Request.QueryString.Keys %>>
+            <ItemTemplate>
+                <li><%# Container.DataItem %>=<%# Request.QueryString[(string)Container.DataItem]%></li>
+            </ItemTemplate>
+        </asp:Repeater>
+        </div>
+        <div style="height:66px;overflow:auto;border:solid 1px silver">
+        authorization<br />
+        Everyone <%= this.Page.User.IsInRole("Everyone") %><br />
+        Editor <%= this.Page.User.IsInRole("Editor") %><br />
+        Administrator <%= this.Page.User.IsInRole("Administrator") %><br />
+        Identity <%= DataBinder.Eval(this.Page.User, "Identity") %><br />
+        Identity.Name <%= DataBinder.Eval(this.Page.User, "Identity.Name") %><br />
+        Identity.IsAuthenticated <%= DataBinder.Eval(this.Page.User, "Identity.IsAuthenticated") %><br />
+        
+        </div>
+        <div style="height: 66px; overflow: auto; border: solid 1px silver">
+            connection strings
+            <asp:Repeater ID="Repeater2" runat="server" DataSource="<%# System.Configuration.ConfigurationManager.ConnectionStrings %>">
+                <ItemTemplate>
+                    <li>
+                        <%# Container.DataItem %>
+                    </li>
+                </ItemTemplate>
+            </asp:Repeater>
+        </div>
+
+        log
+        <textarea style="width:88%;height:55px;font-size:smaller;"><%= N2.TemplateWeb.OperationsWatcher.LogText %></textarea>
+        <asp:Repeater ID="Repeater3" runat="server" DataSource="<%# System.Configuration.ConfigurationManager.ConnectionStrings %>">
+            <ItemTemplate>
+                <li>
+                    <%# Container.DataItem %>
+                </li>
+            </ItemTemplate>
+        </asp:Repeater>

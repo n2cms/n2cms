@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<castle>
+  <components>
+    <component id="n2.definitionBuilder">
+      <parameters>
+        <typeFinder>${n2.typeFinder.fake}</typeFinder>
+      </parameters>
+    </component>
+    <component id="n2.itemFinder">
+      <parameters>
+        <sessionProvider>${n2.sessionProvider.fake}</sessionProvider>
+      </parameters>
+    </component>
+    <component id="n2.repository.nh">
+      <parameters>
+        <sessionProvider>${n2.sessionProvider.fake}</sessionProvider>
+      </parameters>
+    </component>
+    <component id="n2.repository">
+      <parameters>
+        <sessionProvider>${n2.sessionProvider.fake}</sessionProvider>
+      </parameters>
+    </component>
+    <component id="n2.persistence">
+      <parameters>
+        <sessionProvider>${n2.sessionProvider.fake}</sessionProvider>
+        <itemRepository>${n2.repository.nh}</itemRepository>
+        <linkRepository>${n2.repository.nh}</linkRepository>
+        <finder>${n2.itemFinder}</finder>
+      </parameters>
+    </component>
+    <component id="n2.typeFinder">
+      <parameters>
+        <typeFinder>${n2.typeFinder.fake}</typeFinder>
+      </parameters>
+    </component>
+    <component id="n2.configurationBuilder">
+      <parameters>
+        <Properties>#{nhSettings}</Properties>
+        <typeFinder>${n2.typeFinder.fake}</typeFinder>
+      </parameters>
+    </component>
+  </components>
+</castle>
