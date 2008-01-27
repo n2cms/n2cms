@@ -1,7 +1,13 @@
 The templates project is a somewhat more complete implementation of the N2 CMS
 engine.
 
-WHAT'S HERE
+
+HOW TO RUN:
+
+* Open src\Templates\N2.Templates-vs2008.sln and hit ctrl+F5
+
+
+WHAT'S HERE:
 
 UI
 Templates and other user interface related files for the templates project. 
@@ -21,12 +27,3 @@ A library used by the Poll and Form modules.
 
 Syndication
 A library that enables items to be syndicated (RSS). 
-
-
-
-
-HOW TO RUN
-
-To run the examples rebuild the entire solution. Then run the batch files 
-located in the Tasks folder. First run "prepare.bat" then the copy_*.bat 
-to copy the edit interface and dll:s to the example folder.
