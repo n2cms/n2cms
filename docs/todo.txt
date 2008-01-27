@@ -1,6 +1,5 @@
 - remove dependency on global resource stuff for edit mode toolbar
 - do something about right-click menu not closing during click in whole window frame
-- save security options recursively
 - warning that checking all security options means all have access
 - prevent trash and other auto-items from beeing unnedingly created
 

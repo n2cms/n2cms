@@ -385,6 +385,7 @@
     <Content Include="bin\N2.pdb" />
     <Content Include="bin\N2.XML" />
     <Content Include="bin\NHibernate.dll" />
+    <Content Include="Css\Editor.css" />
     <Content Include="itemwithchild.aspx" />
     <Content Include="Uc\ControlPanel.ascx" />
     <Content Include="Uc\ItemCreatorUI.ascx" />
