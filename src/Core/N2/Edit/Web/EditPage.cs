@@ -2,6 +2,7 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Resources;
 
 namespace N2.Edit.Web
 {
@@ -103,7 +104,14 @@ else window.location = '{2}';";
 		}
 		protected string GetGlobalResourceString(string className, string resourceKey)
 		{
-			return (string)GetGlobalResourceObject(className, resourceKey);
+            try
+            {
+                return (string)GetGlobalResourceObject(className, resourceKey);
+            }
+            catch(MissingManifestResourceException)
+            {
+                return null;
+            }
 		} 
 
 		#endregion

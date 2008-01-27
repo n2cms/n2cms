@@ -138,12 +138,15 @@ namespace N2.Details
 		protected override Control AddEditor(Control container)
 		{
 			TextBox tb = CreateEditor();
+            tb.ID = Name;
 			ModifyEditor(tb);
 			container.Controls.Add(tb);
 
 			return tb;
 		}
 
+        /// <summary>Instantiates the text box control.</summary>
+        /// <returns>A text box.</returns>
 		protected virtual TextBox CreateEditor()
 		{
 			return new TextBox();

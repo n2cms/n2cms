@@ -8,8 +8,7 @@ using N2.Web.UI;
 namespace N2.Definitions
 {
 	/// <summary>
-	/// This class is responsible for inspecting available types and providing 
-	/// item definitions to the definition manager.
+	/// Inspects available types in the AppDomain and builds item definitions.
 	/// </summary>
 	public class DefinitionBuilder
 	{
@@ -54,20 +53,16 @@ namespace N2.Definitions
 
 		protected List<ItemDefinition> FindDefinitions()
 		{
-			IList<Type> itemTypes = FindTypes();
 			List<ItemDefinition> definitions = new List<ItemDefinition>();
-			foreach (Type itemType in itemTypes)
+            foreach (Type itemType in FindConcreteTypes())
 			{
-				if (!itemType.IsAbstract)
-				{
-					ItemDefinition definition = new ItemDefinition(itemType, UseBackwardsCompatibleDiscriminator);
-					definition.Editables = editableExplorer.Find(definition.ItemType);
-					definition.Containers = containableExplorer.Find(definition.ItemType);
-					definition.Modifiers = modifierExplorer.Find(definition.ItemType);
-					definition.Displayables = displayableExplorer.Find(definition.ItemType);
-					definition.RootContainer = hierarchyBuilder.Build(definition.Containers, definition.Editables);
-					definitions.Add(definition);
-				}
+				ItemDefinition definition = new ItemDefinition(itemType, UseBackwardsCompatibleDiscriminator);
+				definition.Editables = editableExplorer.Find(definition.ItemType);
+				definition.Containers = containableExplorer.Find(definition.ItemType);
+				definition.Modifiers = modifierExplorer.Find(definition.ItemType);
+				definition.Displayables = displayableExplorer.Find(definition.ItemType);
+				definition.RootContainer = hierarchyBuilder.Build(definition.Containers, definition.Editables);
+				definitions.Add(definition);
 			}
 			definitions.Sort();
 			return definitions;
@@ -111,63 +106,17 @@ namespace N2.Definitions
 			}
 		}
 
-		protected IList<Type> FindTypes()
+        /// <summary>Enumerates concrete item types provided by the type finder.</summary>
+        /// <returns>An enumeration of types derived from <see cref="N2.ContentItem"/>.</returns>
+		protected IEnumerable<Type> FindConcreteTypes()
 		{
-			List<Type> itemTypes = new List<Type>();
 			foreach(Type t in typeFinder.Find(typeof (ContentItem)))
 			{
-				if(!t.IsAbstract)
+				if(t != null && !t.IsAbstract)
 				{
-					itemTypes.Add(t);
+                    yield return t;
 				}
 			}
-			return itemTypes;
 		}
-
-		///// <summary>Gets the <see cref="ItemAttribute"/> of a certain type.</summary>
-		///// <returns>The existing attribute or a new attribute.</returns>
-		//protected virtual ItemAttribute GetItemAttribute(Type itemType)
-		//{
-		//    foreach (ItemAttribute a in itemType.GetCustomAttributes(typeof (ItemAttribute), false))
-		//        return a;
-
-		//    return new ItemAttribute(itemType.Name, itemType.FullName, string.Empty, itemType.FullName, 1000);
-		//}
-
-		//protected virtual IList<AvailableZoneAttribute> GetAvailableZones(Type itemType)
-		//{
-		//    List<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
-		//    foreach (AvailableZoneAttribute a in itemType.GetCustomAttributes(typeof (AvailableZoneAttribute), true))
-		//        availableZones.Add(a);
-		//    return availableZones;
-		//}
-
-		//protected virtual IList<string> GetAllowedZones(Type itemType)
-		//{
-		//    List<string> allowedZoneNames = new List<string>();
-		//    foreach (AllowedZonesAttribute a in itemType.GetCustomAttributes(typeof (AllowedZonesAttribute), true))
-		//    {
-		//        foreach (string zoneName in a.ZoneNames)
-		//        {
-		//            allowedZoneNames.Add(zoneName);
-		//        }
-		//    }
-		//    return allowedZoneNames;
-		//}
-
-		//protected virtual IList<string> GetAuthorizedRoles(Type itemType)
-		//{
-		//    List<string> authorizedRoles = null;
-		//    foreach (ItemAuthorizedRolesAttribute a in itemType.GetCustomAttributes(typeof (ItemAuthorizedRolesAttribute), true))
-		//    {
-		//        if (authorizedRoles == null)
-		//            authorizedRoles = new List<string>();
-		//        foreach (string role in a.Roles)
-		//            if (!authorizedRoles.Contains(role))
-		//                authorizedRoles.Add(role);
-		//    }
-
-		//    return authorizedRoles;
-		//}
 	}
 }

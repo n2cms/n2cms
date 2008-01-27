@@ -72,29 +72,16 @@ namespace LanguageSwitcher
 		 * 
 		 * */
 
-		public override Control AddTo(Control container)
-		{
-			AddLabel(container);
-			DropDownList ddl = new DropDownList();
-			foreach (string lang in getLanguageList())
-				ddl.Items.Add(lang);
-			ddl.AutoPostBack = true;
-			ddl.SelectedIndexChanged += new EventHandler(ddl_SelectedIndexChanged);
-			container.Controls.Add(ddl);
-			return ddl;
-		}
-
-		/// <summary>Is invoked when adding the label.</summary>
-		/// <param name="container">The container control for the label.</param>
-		protected virtual Label AddLabel(Control container)
-		{
-			Label label = new Label();
-			label.ID = "lbl" + this.Name;
-			label.Text = this.Title;
-			label.CssClass = "editorLabel";
-			container.Controls.Add(label);
-			return label;
-		}
+        protected override Control AddEditor(Control container)
+        {
+            DropDownList ddl = new DropDownList();
+            foreach (string lang in getLanguageList())
+                ddl.Items.Add(lang);
+            ddl.AutoPostBack = true;
+            ddl.SelectedIndexChanged += new EventHandler(ddl_SelectedIndexChanged);
+            container.Controls.Add(ddl);
+            return ddl;
+        }
 
 		/**
 		 * Invoked when the language is changed

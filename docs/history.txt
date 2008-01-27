@@ -28,6 +28,7 @@ N2 1.3.2
 	- fixed an error in the parts sliding panel related to resource paths
 	- themes defined in web.config breaks edit
 	- fixed settings in medium trust example
+	- required on editabletextbox now actually works
 - modules
 	- items moved out of trash are not unexpired
 	- items moved into trash are now expired

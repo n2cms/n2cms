@@ -480,8 +480,8 @@
 			opener: "<span class='opener'><img src='img/ico/bullet_arrow_down.gif' alt='more options'/></span>",
 			closedClass: "closed"
 		};
-		$.extend(settings, options);
-
+		$.extend(settings, options || {});
+		
 		var closable = false;
 		var $menu = this;
 
