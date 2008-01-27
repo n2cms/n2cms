@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using N2.Security;
 
 namespace N2.Edit.Security
 {
@@ -25,24 +26,43 @@ namespace N2.Edit.Security
 
 		protected void btnSave_Command(object sender, CommandEventArgs e)
 		{
-			if (AllSelected(cblAllowedRoles))
-			{
-				SelectedItem.AuthorizedRoles.Clear();
-			}
-			else
-			{
-				foreach (ListItem item in cblAllowedRoles.Items)
-				{
-					N2.Security.AuthorizedRole temp = new N2.Security.AuthorizedRole(this.SelectedItem, item.Value);
-					int roleIndex = SelectedItem.AuthorizedRoles.IndexOf(temp);
-					if (!item.Selected && roleIndex >= 0)
-						SelectedItem.AuthorizedRoles.RemoveAt(roleIndex);
-					else if (item.Selected && roleIndex < 0)
-						SelectedItem.AuthorizedRoles.Add(temp);
-				}
-			}
-			Engine.Persister.Save(SelectedItem);
+            ApplyRoles(SelectedItem);
 		}
+
+        protected void btnSaveRecursive_Command(object sender, CommandEventArgs e)
+		{
+            ApplyRolesRecursive(SelectedItem);
+		}
+
+        private void ApplyRolesRecursive(ContentItem item)
+        {
+            ApplyRoles(item);
+            foreach (ContentItem child in item.GetChildren())
+            {
+                ApplyRolesRecursive(child);
+            }
+        }
+
+        private void ApplyRoles(ContentItem item)
+        {
+            if (AllSelected(cblAllowedRoles))
+            {
+                item.AuthorizedRoles.Clear();
+            }
+            else
+            {
+                foreach (ListItem li in cblAllowedRoles.Items)
+                {
+                    AuthorizedRole temp = new AuthorizedRole(item, li.Value);
+                    int roleIndex = item.AuthorizedRoles.IndexOf(temp);
+                    if (!li.Selected && roleIndex >= 0)
+                        item.AuthorizedRoles.RemoveAt(roleIndex);
+                    else if (li.Selected && roleIndex < 0)
+                        item.AuthorizedRoles.Add(temp);
+                }
+            }
+            Engine.Persister.Save(item);
+        }
 
 		private bool AllSelected(CheckBoxList cbl)
 		{
@@ -85,8 +105,20 @@ namespace N2.Edit.Security
 		{
 			if(Server.GetLastError().GetType() == typeof(System.Reflection.TargetInvocationException))
 			{
-				string html = "<html><body><h1>This feature is not set up correctly or disabled</h1><p><i>Check &lt;configuration&gt; &lt;system.web&gt; &lt;membership&gt; ... in web.config</i></p><pre><h3>" + Server.GetLastError().Message + "</h3>" + Server.GetLastError().ToString() + "</pre></body></html>";
-				Response.Write(html);
+                string html = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
+<html>
+    <head>
+	    <link rel=""stylesheet"" href=""../Css/All.css"" type=""text/css"" />
+        <link rel=""stylesheet"" href=""../Css/Framed.css"" type=""text/css"" />
+    </head>
+    <body><div class='content'>
+        <h1>This feature might not have been enabled in web.config. Please look into ASP.NET roles configuration.</h1>
+        <p><i>Check &lt;configuration&gt; &lt;system.web&gt; &lt;roleManager&gt; ... in web.config</i></p><pre><h3>"
+                    + Server.GetLastError().Message 
+                    + "</h3>" 
+                    + Server.GetLastError().ToString() + "</pre></div></body></html>";
+
+                Response.Write(html);
 				Server.ClearError();
 			}
 			else

@@ -13,9 +13,5 @@ namespace N2.Templates.UI
 {
 	public partial class Default : Web.UI.TemplatePage<Items.StartPage>
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-			
-		}
 	}
 }

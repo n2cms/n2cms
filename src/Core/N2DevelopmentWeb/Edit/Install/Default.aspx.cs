@@ -134,14 +134,15 @@ namespace N2.Edit.Install
 				cvRoot.IsValid = ddlRoot.SelectedIndex > 0;
 				if (cvRoot.IsValid)
 				{
-					ContentItem root = im.InsertRootNode(Type.GetType(ddlRoot.SelectedValue), "root", "Root node created by installation");
+					ContentItem root = im.InsertRootNode(Type.GetType(ddlRoot.SelectedValue), "root", "Root node");
 
 					if (root.ID == Status.RootItemID)
 					{
 						ltRootNode.Text = "<span class='ok'>Root node inserted.</span>";
 						phSame.Visible = false;
 						phDiffer.Visible = false;
-					}
+                        rootId = root.ID;
+                    }
 					else
 					{
 						ltRootNode.Text = string.Format(
@@ -166,7 +167,7 @@ namespace N2.Edit.Install
 							phSame.Visible = false;
 							phDiffer.Visible = true;
 							startId = startPage.ID;
-						}
+                        }
 					}
 
 				}

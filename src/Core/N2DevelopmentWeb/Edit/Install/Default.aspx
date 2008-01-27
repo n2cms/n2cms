@@ -56,8 +56,12 @@
 				<p class="ok"><b>Advice: </b>There are already root and start nodes. If you create more they will become detached items unless you point them out in web.config (which makes the existing nodes detached instead).</p>
             </asp:Literal>
             <p>
-                N2 needs a root node and a start node in order to operate. Select type of item to insert as root node (required) and start page (optional) respectively.
+                N2 needs a root node and a start page in order to function correctly. These two nodes may be the same page if you don't forsee using multiple domains. This gives you the choice of:
             </p>
+            <ul>
+                <li>Either, Select type of item to insert as root node AND start page (select first drop down only)</li>
+                <li>Or, select type of item to insert as root node, and another type to add as start page (select both drop downs)</li>
+            </ul>
             <p>
             	<asp:DropDownList ID="ddlRoot" runat="server" />
 			    <asp:DropDownList ID="ddlStartPage" runat="server" />
@@ -114,7 +118,7 @@
         <n2:TabPanel runat="server" tooltip="5. Finishing touches">
             <p><b>IMPORTANT!</b> Change the default password in web.config. If you've installed, configured and created an administrator account using a membership provider, comment out this section entirely.</p>
             <p><b>Advice:</b> remove the installation directory to prevent nasty surprises.</p>
-            <p>Good luck and happy editing.</p>
+            <p>Good luck and happy <a href="..">editing</a>.</p>
             <p>/Cristian</p>
         </n2:TabPanel>
     </form>

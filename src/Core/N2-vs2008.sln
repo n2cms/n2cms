@@ -64,7 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Edit", "Edit", "{5186B58A-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{6E0DECFB-AD5C-48D2-919C-F599C0B9D3B8}"
 	ProjectSection(SolutionItems) = preProject
-		Templates\readme.txt = Templates\readme.txt
+		..\Templates\readme.txt = ..\Templates\readme.txt
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}

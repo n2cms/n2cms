@@ -4,10 +4,10 @@
     <link rel="stylesheet" href="Css/exportImport.css" type="text/css" />
 </asp:Content>
 <asp:Content ID="CT" ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" AccessKey="C" meta:resourceKey="hlCancel"><img src="../img/ico/cancel.gif" /> cancel</asp:HyperLink>
+    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" AccessKey="C" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
-    <h1>Export & Import</h1>
+    <h1>Export & Import</h1> 
     <n2:TabPanel id="tpExport" runat="server" ToolTip="Export">
 		<div>
 		    <asp:Button ID="btnExport" runat="server" CssClass="command" OnCommand="btnExport_Command" CausesValidation="false" meta:resourceKey="btnExport" Text="Export these items" />

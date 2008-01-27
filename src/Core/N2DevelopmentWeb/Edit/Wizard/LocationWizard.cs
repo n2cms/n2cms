@@ -18,7 +18,6 @@ namespace N2.Edit.Wizard
 			this.persister = persister;
 			this.site = site;
 			wizardSettings = new Settings("Wizard", string.Empty, "Wizard settings");
-			//templateSettings = new Settings("Templates", string.Empty, "Templates");
 		}
 
 		public virtual Settings WizardSettings
@@ -26,12 +25,6 @@ namespace N2.Edit.Wizard
 			get { return wizardSettings; }
 			set { wizardSettings = value; }
 		}
-
-		//public virtual Settings TemplateSettings
-		//{
-		//    get { return templateSettings; }
-		//    set { templateSettings = value; }
-		//}
 
 		public virtual IList<MagicLocation> GetLocations()
 		{
@@ -42,16 +35,6 @@ namespace N2.Edit.Wizard
 			}
 			return locations;
 		}
-
-		//public virtual IList<Template> GetTemplates()
-		//{
-		//    List<Template> templates = new List<Template>();
-		//    foreach (ContentItem child in GetTemplatesContainer().GetChildren())
-		//    {
-		//        templates.Add(child as Template);
-		//    }
-		//    return templates;
-		//}
 
 		public virtual Wonderland GetWizardContainer()
 		{
@@ -69,24 +52,10 @@ namespace N2.Edit.Wizard
 			return container;
 		}
 
-		//public virtual TemplateContainer GetTemplatesContainer()
-		//{
-		//    ContentItem root = persister.Get(site.RootItemID);
-		//    TemplateContainer container = root.GetChild(WizardSettings.Name) as TemplateContainer;
-		//    if (container == null)
-		//    {
-		//        container = new TemplateContainer();
-		//        container.Parent = root;
-		//        container.Title = TemplateSettings.Title;
-		//        container.Name = TemplateSettings.Name;
-		//        container.ZoneName = TemplateSettings.ZoneName;
-		//        persister.Save(container);
-		//    }
-		//    return container;
-		//}
-		public Items.MagicLocation AddLocation(ContentItem location, string discriminator, string title, string zone)
+        public Items.MagicLocation AddLocation(ContentItem location, string discriminator, string title, string zone)
 		{
-			Items.MagicLocation ml = Context.Definitions.CreateInstance<Items.MagicLocation>(GetWizardContainer());
+            ContentItem wonderland = GetWizardContainer();
+			Items.MagicLocation ml = Context.Definitions.CreateInstance<Items.MagicLocation>(wonderland);
 			ml.Location = location;
 			ml.ItemDiscriminator = discriminator;
 			ml.Title = title;

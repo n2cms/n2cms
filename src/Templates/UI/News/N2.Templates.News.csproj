@@ -97,6 +97,10 @@
     <Content Include="UI\NewsList.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Syndication\N2.Templates.Syndication.csproj">
       <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
       <Name>N2.Templates.Syndication</Name>
@@ -104,10 +108,6 @@
     <ProjectReference Include="..\..\N2.Templates\N2.Templates.csproj">
       <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
       <Name>N2.Templates</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\N2\N2.csproj">
-      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
-      <Name>N2</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -2,18 +2,19 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{B09CC999-A6F7-4D48-90C8-7256197B7815}"
 	ProjectSection(SolutionItems) = preProject
-		lib\Castle.Core.dll = lib\Castle.Core.dll
-		lib\Castle.DynamicProxy.dll = lib\Castle.DynamicProxy.dll
-		lib\Castle.DynamicProxy2.dll = lib\Castle.DynamicProxy2.dll
-		lib\Castle.MicroKernel.dll = lib\Castle.MicroKernel.dll
-		lib\Castle.Windsor.dll = lib\Castle.Windsor.dll
-		lib\Iesi.Collections.dll = lib\Iesi.Collections.dll
-		lib\log4net.dll = lib\log4net.dll
-		lib\MbUnit.Framework.dll = lib\MbUnit.Framework.dll
-		lib\NHibernate.Caches.SysCache.dll = lib\NHibernate.Caches.SysCache.dll
-		lib\NHibernate.dll = lib\NHibernate.dll
-		lib\readme.txt = lib\readme.txt
-		lib\Rhino.Mocks.dll = lib\Rhino.Mocks.dll
+		..\..\lib\Castle.Core.dll = ..\..\lib\Castle.Core.dll
+		..\..\lib\Castle.DynamicProxy.dll = ..\..\lib\Castle.DynamicProxy.dll
+		..\..\lib\Castle.DynamicProxy2.dll = ..\..\lib\Castle.DynamicProxy2.dll
+		..\..\lib\Castle.MicroKernel.dll = ..\..\lib\Castle.MicroKernel.dll
+		..\..\lib\Castle.Windsor.dll = ..\..\lib\Castle.Windsor.dll
+		..\..\lib\Iesi.Collections.dll = ..\..\lib\Iesi.Collections.dll
+		..\..\lib\ILMerge.exe = ..\..\lib\ILMerge.exe
+		..\..\lib\log4net.dll = ..\..\lib\log4net.dll
+		..\..\lib\MbUnit.Framework.dll = ..\..\lib\MbUnit.Framework.dll
+		..\..\lib\NHibernate.Caches.SysCache.dll = ..\..\lib\NHibernate.Caches.SysCache.dll
+		..\..\lib\NHibernate.dll = ..\..\lib\NHibernate.dll
+		..\..\lib\readme.txt = ..\..\lib\readme.txt
+		..\..\lib\Rhino.Mocks.dll = ..\..\lib\Rhino.Mocks.dll
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
@@ -21,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{B09CC999-A6F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{6E0DECFB-AD5C-48D2-919C-F599C0B9D3B8}"
 	ProjectSection(SolutionItems) = preProject
-		Templates\readme.txt = Templates\readme.txt
+		readme.txt = readme.txt
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
@@ -29,16 +30,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{4A67B3CD-93C4-4597-BA8C-BDEE6B9AB601}"
 	ProjectSection(SolutionItems) = preProject
-		..\docs\history.txt = ..\docs\history.txt
-		..\docs\readme.txt = ..\docs\readme.txt
-		..\docs\templates_readme.txt = ..\docs\templates_readme.txt
-		..\docs\todo.txt = ..\docs\todo.txt
+		..\..\docs\history.txt = ..\..\docs\history.txt
+		..\..\docs\License.txt = ..\..\docs\License.txt
+		..\..\docs\readme.txt = ..\..\docs\readme.txt
+		..\..\docs\templates_readme.txt = ..\..\docs\templates_readme.txt
+		..\..\docs\todo.txt = ..\..\docs\todo.txt
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2", "..\N2\N2.csproj", "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.UI", "UI\N2.Templates.UI.csproj", "{D42D096E-399D-4618-AEB4-9B023BA1316D}"
 EndProject
@@ -64,8 +64,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates", "N2.Template
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Syndication", "Syndication\N2.Templates.Syndication.csproj", "{37C742D0-28E5-459E-80B9-9E645E932CB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Parts", "..\N2.Parts\N2.Parts.csproj", "{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Calendar", "UI\Calendar\N2.Templates.Calendar.csproj", "{F4ED449A-0D11-48B1-A964-9A0984FB613A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Rss", "UI\RSS\N2.Templates.Rss.csproj", "{556470CD-D806-4D1C-9C27-AE9617CC776C}"
@@ -74,6 +72,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Form", "UI\For
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.SEO", "SEO\N2.Templates.SEO.csproj", "{5516D131-2DB8-4DE6-8D5D-238AB63F6EEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2", "..\Core\N2\N2.csproj", "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{E805572F-7DC9-46C7-8190-2F9C4DA0EA01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Parts", "..\Core\N2.Parts\N2.Parts.csproj", "{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,12 +85,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Publish|Any CPU.ActiveCfg = Publish|Any CPU
-		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Publish|Any CPU.Build.0 = Publish|Any CPU
-		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D42D096E-399D-4618-AEB4-9B023BA1316D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D42D096E-399D-4618-AEB4-9B023BA1316D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D42D096E-399D-4618-AEB4-9B023BA1316D}.Publish|Any CPU.ActiveCfg = Release|Any CPU
@@ -159,12 +157,6 @@ Global
 		{37C742D0-28E5-459E-80B9-9E645E932CB8}.Publish|Any CPU.Build.0 = Release|Any CPU
 		{37C742D0-28E5-459E-80B9-9E645E932CB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37C742D0-28E5-459E-80B9-9E645E932CB8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Publish|Any CPU.ActiveCfg = Release|Any CPU
-		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Publish|Any CPU.Build.0 = Release|Any CPU
-		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F4ED449A-0D11-48B1-A964-9A0984FB613A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F4ED449A-0D11-48B1-A964-9A0984FB613A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4ED449A-0D11-48B1-A964-9A0984FB613A}.Publish|Any CPU.ActiveCfg = Release|Any CPU
@@ -189,9 +181,25 @@ Global
 		{5516D131-2DB8-4DE6-8D5D-238AB63F6EEC}.Publish|Any CPU.Build.0 = Release|Any CPU
 		{5516D131-2DB8-4DE6-8D5D-238AB63F6EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5516D131-2DB8-4DE6-8D5D-238AB63F6EEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Publish|Any CPU.ActiveCfg = Publish|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Publish|Any CPU.Build.0 = Publish|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Publish|Any CPU.Build.0 = Release|Any CPU
+		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72} = {E805572F-7DC9-46C7-8190-2F9C4DA0EA01}
+		{33048F9C-BFFF-4F93-9D26-8D52B2783E3D} = {E805572F-7DC9-46C7-8190-2F9C4DA0EA01}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 18

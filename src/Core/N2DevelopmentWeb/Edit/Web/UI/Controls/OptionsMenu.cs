@@ -17,7 +17,8 @@ namespace N2.Edit.Web.UI.Controls
 	{
 		protected override void OnPreRender(System.EventArgs e)
 		{
-			Register.JavaScript(Page, "$('#" + ClientID + "').n2optionmenu();", ScriptOptions.DocumentReady);
+            string script = string.Format("$('#{0}').n2optionmenu({{opener:\"<span class='opener'><img src='{1}' alt='more options'/></span>\"}});", ClientID, Utility.ToAbsolute("~/Edit/img/ico/bullet_arrow_down.gif"));
+			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
 			base.OnPreRender(e);
 		}
 

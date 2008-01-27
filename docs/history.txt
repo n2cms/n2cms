@@ -14,6 +14,7 @@
 	- help system for details
 	- widened and beefed text size in tinymce html text editor
 	- edit children shortcut
+	- save permissions recursively
 - templates
 	- added a SEO facility (adds SEO fields to page types)
 	- moved some operations on the page to a "page modifier" component

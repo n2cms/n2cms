@@ -437,13 +437,13 @@
 	};
 
 	$.fn.n2contextmenu = function(menu,options){
-		options = options || {};
-		$.extend(options, {offsetX: -10, offsetY: -10});
+		var settings = {offsetX: -10, offsetY: -10};
+		$.extend(settings, options);
 
 		var $m = $(menu).appendTo(document.body).n2hide();
 		this.bind('contextmenu', function(e){
 			if(!e.ctrlKey){
-				show(e, $m, options);
+				show(e, $m, settings);
 				return false;
 			}
 		});
@@ -474,14 +474,14 @@
  */
 
 (function($) {
-	$.fn.n2optionmenu = function(settings){
-		settings = settings || {};
-		$.extend(settings, {
+	$.fn.n2optionmenu = function(options){
+		settings = {
 			wrapper: "<div class='commandOptions closed'></div>",
 			opener: "<span class='opener'><img src='img/ico/bullet_arrow_down.gif' alt='more options'/></span>",
 			closedClass: "closed"
-		});
-		
+		};
+		$.extend(settings, options);
+
 		var closable = false;
 		var $menu = this;
 

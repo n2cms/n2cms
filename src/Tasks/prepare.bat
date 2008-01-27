@@ -54,7 +54,6 @@ xcopy /Y "..\..\lib\NHibernate.Caches.SysCache.dll" .\Deploy\Bin
 xcopy /Y "..\..\lib\NHibernate.dll" .\Deploy\Bin
 xcopy /Y "..\Core\N2DevelopmentWeb\bin\N2.dll" .\Deploy\Bin
 xcopy /Y "..\Core\N2DevelopmentWeb\bin\N2.Edit*.dll" .\Deploy\Bin
-xcopy /Y "..\Core\N2DevelopmentWeb\bin\N2.Installation.dll" .\Deploy\Bin
 xcopy /Y "..\Core\N2DevelopmentWeb\bin\N2.Parts.dll" .\Deploy\Bin
 
 echo Copying documentation
