@@ -1,0 +1,157 @@
+/* clearfix */
+.cf:after,
+.editDetail:after,
+.toolbar:after
+{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.cf,
+.editDetail,
+.toolbar
+{display: inline-block;}
+/* Hides from IE-mac \*/
+* html .cf,
+* html .editDetail,
+* html .toolbar
+{height: 1%;}
+.cf,
+.editDetail,
+.toolbar{display: block;}
+/* End hide from IE-mac */
+
+html body
+{
+	font-family:Arial, Sans-Serif;
+	font-size:12px;
+    color:#333333;
+    overflow:auto;
+    margin:0;
+	padding:0;
+}
+a
+{
+	color:#333333;
+	text-decoration:none;
+}
+a:hover
+{
+	text-decoration:underline;
+}
+img
+{
+	border:none;
+}
+a img
+{
+	vertical-align:middle;
+	text-decoration:none;
+}
+h1
+{
+	margin:4px 0;
+	font-size:1.5em;
+}
+h2
+{
+	border-top:solid 1px silver;
+	margin:5px 0;
+	padding-top:5px;
+	font-size:1.2em;
+	width:95%;
+}
+td
+{
+	vertical-align:top;
+}
+
+/* toolbar */
+.toolbar
+{
+    min-width:640px;
+}
+.toolbar .command
+{
+	padding:4px;
+	margin:1px 0;
+	overflow:hidden;
+	text-decoration:none;
+	font-weight:bold;
+	float:left;
+	overflow:hidden;
+	font-size:1.2em;
+	line-height:20px;
+}
+.toolbar .toggled,
+.toolbar .command:hover
+{
+	background-color:#f7f7f7;
+	border:solid 1px #dedad7;
+	padding:3px;
+}
+.toolbar .command:active
+{
+	background-color:#dedad7;
+}
+.toolbar a.plain,
+.toolbar a.cancel
+{
+	font-size:1em;
+	font-weight:normal;
+}
+fieldset
+{
+	margin-bottom:10px;
+}
+.toolbar .command img
+{
+	position:relative;
+	top:-2px;
+}
+.toolbar .command[disabled=disabled]
+{
+	color:Gray;
+	opacity:.5;
+}
+
+.commandOptions 
+{
+	float:left;
+}
+.toolbar .rightAligned
+{
+	float:right;
+}
+
+/* button/option drop down */
+.commandOptions
+{
+	position:relative;
+}
+.commandOptions .optionGroup
+{
+	padding:0 1px;
+	position:absolute;
+	background-color:#fff;
+	border:solid 1px #DEDAD7;
+	top:-1px;
+	left:-2px;
+	z-index:9999;
+}
+.closed .optionGroup
+{
+	top:-9999px;
+	left:-9999px;
+}
+.commandOptions .optionGroup a
+{
+	float:none;
+	display:block;
+	width:240px;
+}
+.commandOptions .opener
+{
+	float:left;
+	display:block;
+	padding:10px 10px 10px 1px;
+	position:relative;
+	cursor:pointer;
+	cursor:hand;
+}

@@ -1,0 +1,78 @@
+﻿/* Toolbar */
+.toolbar
+{
+	background:#c3c0bd url(../img/toolbar_bg.gif) repeat-x 0% 100%;
+}
+.toolbar .left
+{
+	float:left;
+	padding-left:6px;
+	background:url(../img/toolbar_area_left.gif) no-repeat 0% 100%;
+}
+.toolbar .right
+{
+	float:left;
+	padding-right:6px;
+	background:url(../img/toolbar_area_right.gif) no-repeat 100% 100%;
+	padding-bottom:1px;
+}
+.toolbar .navigation,
+.toolbar .preview
+{
+	float:left;
+	background:#ffffff url(../img/toolbar_area_bg.gif) repeat-x 0% 100%;
+}
+.toolbar .navigation
+{
+}
+.toolbar .preview
+{
+}
+
+/* Navigation */
+.toolbar .logout
+{
+	float:right;
+	margin-right:8px;
+}
+.toolbar a.logout:hover
+{
+	background-color:Transparent;
+}
+
+#logo
+{
+	float:right;
+}
+
+
+#splitter 
+{
+	height: 500px;
+}
+#splitter #leftPane 
+{
+	overflow: hidden;
+	width: 200px;		/* optional, initial splitbar position */
+	min-width: 50px;	/* optional */
+	/* No margin or border allowed */
+}
+#splitter #rightPane 
+{
+	min-width: 50px;
+	overflow: hidden;
+	/* No margin or border allowed */
+}
+#splitter .vsplitbar 
+{
+	width: 2px;
+	background-color: #c3c0bd;
+	border-width:0 1px;
+	border-color:#a9a6a3;
+	border-style:solid;
+}
+#splitter .vsplitbar.active, #splitter .vsplitbar:hover 
+{
+	background-color: #a9a6a3;
+}
+#splitter iframe{width:100%;}
