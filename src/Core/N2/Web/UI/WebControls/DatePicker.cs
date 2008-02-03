@@ -56,7 +56,7 @@ namespace N2.Web.UI.WebControls
 			set
 			{
 				Text = value != null 
-					? value.Value.ToShortDateString() 
+					? value.Value.ToString() 
 					: null;
 			}
 		}

@@ -24,6 +24,14 @@ namespace N2.TemplateWeb.Domain
 	public class MyPageData : AbstractCustomItem
 	{
 
+		[N2.Details.Editable("Start date", typeof(DatePicker), "SelectedDate", 10)]
+		public virtual DateTime? MyProperty
+		{
+			get { return (DateTime?)(GetDetail("MyProperty")); }
+			set { SetDetail("MyProperty", value); }
+		}
+
+
 		[EditableChildren("Left", "Left", 70, ContainerName = "special")]
 		public virtual IList<ContentItem> Left
 		{
