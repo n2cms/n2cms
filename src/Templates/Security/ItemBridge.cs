@@ -1,14 +1,24 @@
+using N2.Definitions;
+using N2.Persistence.Finder;
+using N2.Persistence;
+using N2.Web;
+
 namespace N2.Templates.Security
 {
+	/// <summary>
+	/// Provides access to users and roles stored as nodes in the item 
+	/// hierarchy.
+	/// </summary>
 	public class ItemBridge
 	{
-		readonly Definitions.IDefinitionManager definitions;
-		Persistence.Finder.IItemFinder finder;
-		readonly Persistence.IPersister persister;
+		readonly private IDefinitionManager definitions;
+		readonly private IItemFinder finder;
+		readonly private IPersister persister;
 		private string userContainerName = "TemplateUsers";
 		private int userContainerParentID = 1;
+		private string[] defaultRoles = new string[] { "Everyone", "Editors", "Administrators" };
 
-		public ItemBridge(Definitions.IDefinitionManager definitions, Persistence.Finder.IItemFinder finder, Persistence.IPersister persister, N2.Web.Site site)
+		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, Site site)
 		{
 			this.definitions = definitions;
 			this.finder = finder;
@@ -16,10 +26,9 @@ namespace N2.Templates.Security
 			this.userContainerParentID = site.RootItemID;
 		}
 
-		public Persistence.Finder.IItemFinder Finder
+		public IItemFinder Finder
 		{
 			get { return finder; }
-			set { finder = value; }
 		}
 		
 		protected int UserContainerParentID
@@ -34,9 +43,15 @@ namespace N2.Templates.Security
 			set { userContainerName = value; }
 		}
 
+		public string[] DefaultRoles
+		{
+			get { return defaultRoles; }
+			set { defaultRoles = value; }
+		}
+
 		public virtual Items.User CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
 		{
-			Items.User u = definitions.CreateInstance<Items.User>(GetUserContainer());
+			Items.User u = definitions.CreateInstance<Items.User>(GetUserContainer(true));
 			u.Title = username;
 			u.Name = username;
 			u.Password = password;
@@ -53,18 +68,25 @@ namespace N2.Templates.Security
 
 		public virtual Items.User GetUser(string username)
 		{
-			return GetUserContainer().GetChild(username) as Items.User;
+			Items.UserList users = GetUserContainer(false);
+			if(users == null)
+				return null;
+			return users.GetChild(username) as Items.User;
 		}
 
-		public virtual Items.UserList GetUserContainer()
+		public virtual Items.UserList GetUserContainer(bool create)
 		{
 			ContentItem parent = persister.Get(UserContainerParentID);
 			Items.UserList m = parent.GetChild(UserContainerName) as Items.UserList;
-			if (m == null)
+			if (m == null && create)
 			{
 				m = Context.Definitions.CreateInstance<Items.UserList>(parent);
 				m.Title = "Users";
 				m.Name = UserContainerName;
+				foreach (string role in DefaultRoles)
+				{
+					m.AddRole(role);
+				}
 				
 				persister.Save(m);
 			}

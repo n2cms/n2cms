@@ -4,6 +4,10 @@ using System.Web.Security;
 
 namespace N2.Templates.Security
 {
+	/// <summary>
+	/// Implements the default ASP.NET membership provider. Stores users as 
+	/// nodes in the N2 item hierarchy.
+	/// </summary>
 	public class TemplateMembershipProvider : MembershipProvider
 	{
 		protected ItemBridge Bridge
@@ -86,15 +90,21 @@ namespace N2.Templates.Security
 
 		public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords)
 		{
+			MembershipUserCollection muc = new MembershipUserCollection();
+			Items.UserList userContainer = Bridge.GetUserContainer(false);
+			if (userContainer == null)
+			{
+				totalRecords = 0;
+				return muc;
+			}
 			IList<ContentItem> users = Bridge.Finder
 				.Where.Detail("Email").Eq(emailToMatch)
 				.And.Type.Eq(typeof(Items.User))
-				.Filters(new Collections.ParentFilter(Bridge.GetUserContainer()))
+				.And.Parent.Eq(userContainer)
 				.Select();
 			totalRecords = users.Count;
 			Collections.CountFilter.Filter(users, pageIndex * pageSize, pageSize);
 
-			MembershipUserCollection muc = new MembershipUserCollection();
 			foreach (Items.User u in users)
 				muc.Add(u.GetMembershipUser(Name));
 			return muc;
@@ -121,13 +131,22 @@ namespace N2.Templates.Security
 
 		public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
 		{
-			return Bridge.GetUserContainer().GetMembershipUsers(Name, pageIndex * pageSize, pageSize, out totalRecords);
+			Items.UserList users = Bridge.GetUserContainer(false);
+			if (users == null)
+			{
+				totalRecords = 0;
+				return new MembershipUserCollection();
+			}
+			return users.GetMembershipUsers(Name, pageIndex * pageSize, pageSize, out totalRecords);
 		}
 
 		public override int GetNumberOfUsersOnline()
 		{
+			Items.UserList users = Bridge.GetUserContainer(false);
+			if (users == null)
+				return 0;
 			int online = 0;
-			foreach (Items.User u in Bridge.GetUserContainer().Children)
+			foreach (Items.User u in users.Children)
 				if (u.LastActivityDate < DateTime.Now.AddMinutes(-20))
 					online++;
 			return online;
@@ -155,10 +174,13 @@ namespace N2.Templates.Security
 
 		public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
 		{
+			Items.UserList userContainer = Bridge.GetUserContainer(false);
+			if (userContainer == null)
+				return null;
 			IList<ContentItem> users = Bridge.Finder
 				.Where.Detail("ProviderUserKey").Eq(providerUserKey)
 				.And.Type.Eq(typeof(Items.User))
-				.Filters(new Collections.ParentFilter(Bridge.GetUserContainer()))
+				.And.Parent.Eq(userContainer)
 				.Select();
 			foreach (Items.User u in users)
 			{
@@ -171,10 +193,13 @@ namespace N2.Templates.Security
 
 		public override string GetUserNameByEmail(string email)
 		{
+			Items.UserList userContainer = Bridge.GetUserContainer(false);
+			if (userContainer == null)
+				return null;
 			IList<ContentItem> users = Bridge.Finder
 				.Where.Detail("Email").Eq(email)
 				.And.Type.Eq(typeof(Items.User))
-				.Filters(new Collections.ParentFilter(Bridge.GetUserContainer()))
+				.And.Parent.Eq(userContainer)
 				.Select();
 			foreach (Items.User u in users)
 				return u.Name;

@@ -2,15 +2,46 @@ using System;
 using System.Web.Security;
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace N2.Templates.Security.Items
 {
+	public class EditableRolesAttribute : AbstractEditableAttribute
+	{
+		public override bool UpdateItem(ContentItem item, Control editor)
+		{
+			return false;
+		}
+
+		public override void UpdateEditor(ContentItem item, Control editor)
+		{
+			DetailCollection dc = item.GetDetailCollection("Roles", false);
+			if (dc != null)
+			{
+				string roles = string.Empty;
+				foreach (string role in dc)
+				{
+					roles += role + ", ";
+				}
+				Literal l = (Literal)editor;
+				l.Text = roles.TrimEnd(',', ' ');
+			}
+		}
+
+		protected override Control AddEditor(Control container)
+		{
+			Literal l = new Literal();
+			container.Controls.Add(l);
+			return l;
+		}
+	}
+
 	[Definition("User", "User")]
 	[RestrictParents(typeof (UserList))]
 	[WithEditableName("Username", 10)]
 	[WithEditableTitle("First and last name", 100)]
-	public class User : AbstractItem
+	public class User : N2.ContentItem
 	{
 		[EditableTextBox("Password", 20)]
 		public virtual string Password
@@ -103,9 +134,15 @@ namespace N2.Templates.Security.Items
 			set { SetDetail("LastLockoutDate", value < new DateTime(2000, 1, 1) ? null : value); }
 		}
 
+		[EditableRoles(Title = "Roles", SortOrder = 110)]
 		public virtual DetailCollection Roles
 		{
 			get { return GetDetailCollection("Roles", true); }
+		}
+
+		public override bool IsPage
+		{
+			get { return false; }
 		}
 
 		public override string IconUrl

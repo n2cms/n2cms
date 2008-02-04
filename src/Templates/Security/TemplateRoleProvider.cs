@@ -39,7 +39,7 @@ namespace N2.Templates.Security
 
 		public override void CreateRole(string roleName)
 		{
-			Items.UserList ul = Bridge.GetUserContainer();
+			Items.UserList ul = Bridge.GetUserContainer(true);
 			ul.AddRole(roleName);
 			Context.Persister.Save(ul);
 		}
@@ -49,7 +49,7 @@ namespace N2.Templates.Security
 			if(throwOnPopulatedRole && GetUsersInRole(roleName).Length > 0)
 				throw new N2Exception("Role {0} cannot be deleted since it has users attached to it.", roleName);
 			
-			Items.UserList ul = Bridge.GetUserContainer();
+			Items.UserList ul = Bridge.GetUserContainer(true);
 			ul.RemoveRole(roleName);
 			Context.Persister.Save(ul);
 			return true;
@@ -66,7 +66,10 @@ namespace N2.Templates.Security
 
 		public override string[] GetAllRoles()
 		{
-			return Bridge.GetUserContainer().GetRoleNames();
+			Items.UserList users = Bridge.GetUserContainer(false);
+			if (users == null)
+				return Bridge.DefaultRoles;
+			return users.GetRoleNames();
 		}
 
 		public override string[] GetRolesForUser(string username)
@@ -88,7 +91,14 @@ namespace N2.Templates.Security
 		public override bool IsUserInRole(string username, string roleName)
 		{
 			Items.User u = Bridge.GetUser(username);
-			return u.Roles.Contains(roleName);
+			foreach(string userRole in u.Roles)
+			{
+				if (userRole.Equals(roleName))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
@@ -109,7 +119,7 @@ namespace N2.Templates.Security
 
 		public override bool RoleExists(string roleName)
 		{
-			return 0 < Array.IndexOf<string>(Bridge.GetUserContainer().GetRoleNames(), roleName);
+			return 0 < Array.IndexOf<string>(GetAllRoles(), roleName);
 		}
 
 		private static string[] ToArray(IList<ContentItem> items)

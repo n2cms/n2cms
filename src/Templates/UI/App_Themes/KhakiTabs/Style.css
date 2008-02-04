@@ -134,7 +134,8 @@ body
 {
 	position:absolute;
 	bottom:0px;	
-	left:20px;
+	margin-left:-460px;
+	left:50%;
 }
 .horizontalMenu li
 {

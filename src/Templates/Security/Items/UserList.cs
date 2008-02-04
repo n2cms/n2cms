@@ -6,19 +6,22 @@ using N2.Collections;
 using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
 
 namespace N2.Templates.Security.Items
 {
 	[Definition("User List", "UserList", "", "", 2000)]
-	[RestrictParents(typeof (RootPage))]
 	[WithEditableTitle("Title", 10)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
-	public class UserList : AbstractItem
+	public class UserList : N2.ContentItem
 	{
 		public override string IconUrl
 		{
 			get { return "~/Edit/Img/Ico/Png/group.png"; }
+		}
+
+		public override bool IsPage
+		{
+			get { return false; }
 		}
 
 		[EditableTextBox("Roles", 100, TextMode=TextBoxMode.MultiLine)]
@@ -34,11 +37,16 @@ namespace N2.Templates.Security.Items
 			return Roles.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 		}
 
+		/// <summary>Adds a role if not already present.</summary>
+		/// <param name="roleName">The role to add.</param>
 		public virtual void AddRole(string roleName)
 		{
-			Roles += Environment.NewLine + roleName;
+			if(Array.IndexOf<string>(GetRoleNames(), roleName) < 0)
+				Roles += Environment.NewLine + roleName;
 		}
 
+		/// <summary>Removes a role if existing.</summary>
+		/// <param name="roleName">The role to remove.</param>
 		public virtual void RemoveRole(string roleName)
 		{
 			List<string> roles = new List<string>();

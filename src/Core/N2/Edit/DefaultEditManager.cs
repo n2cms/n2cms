@@ -231,14 +231,27 @@ namespace N2.Edit
 
 			if (!string.IsNullOrEmpty(attribute.GlobalResourceClassName))
 			{
-				ResourceManager rm = new ResourceManager(
-					"Resources." + attribute.GlobalResourceClassName,
-					Assembly.Load("App_GlobalResources"));
+				string baseName = "Resources." + attribute.GlobalResourceClassName;
+				ResourceManager rm = new ResourceManager(baseName, Assembly.Load("App_GlobalResources"));
 
-				attribute.Title = rm.GetString(attribute.Name + ".Title");
-				attribute.ToolTip = rm.GetString(attribute.Name + ".ToolTip");
+				TryCatch<MissingManifestResourceException>(delegate { attribute.Title = rm.GetString(attribute.Name + ".Title"); });
+				TryCatch<MissingManifestResourceException>(delegate { attribute.ToolTip = rm.GetString(attribute.Name + ".ToolTip"); });
 			}
-		} 
+		}
+
+		private delegate void AnonymousDelegate();
+
+		private void TryCatch<T>(AnonymousDelegate func) where T:Exception
+		{
+			try
+			{
+				func.Invoke();
+			}
+			catch (T)
+			{
+				//swallow
+			}
+		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
 		/// <param name="itemType">The type of content item whose editors to add.</param>

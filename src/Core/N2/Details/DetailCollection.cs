@@ -211,8 +211,11 @@ namespace N2.Details
 		/// <returns>True if the collection contains the value.</returns>
 		public bool Contains(object value)
 		{
+			if (value == null)
+				return false;
+
 			foreach (ContentDetail detail in this.Details)
-				if (detail.Value == value)
+				if (value.Equals(detail.Value))
 					return true;
 			return false;
 		}
