@@ -20,6 +20,8 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using System.IO;
+using System.Diagnostics;
 
 namespace N2.Edit
 {
@@ -232,24 +234,23 @@ namespace N2.Edit
 			if (!string.IsNullOrEmpty(attribute.GlobalResourceClassName))
 			{
 				string baseName = "Resources." + attribute.GlobalResourceClassName;
-				ResourceManager rm = new ResourceManager(baseName, Assembly.Load("App_GlobalResources"));
 
-				TryCatch<MissingManifestResourceException>(delegate { attribute.Title = rm.GetString(attribute.Name + ".Title"); });
-				TryCatch<MissingManifestResourceException>(delegate { attribute.ToolTip = rm.GetString(attribute.Name + ".ToolTip"); });
+				attribute.Title = GetGlobalResourceString(baseName, attribute.Name + ".Title") ?? attribute.Title;
+				attribute.ToolTip = GetGlobalResourceString(baseName, attribute.Name + ".ToolTip") ?? attribute.ToolTip;
 			}
 		}
 
-		private delegate void AnonymousDelegate();
-
-		private void TryCatch<T>(AnonymousDelegate func) where T:Exception
+		private string GetGlobalResourceString(string baseName, string key)
 		{
 			try
 			{
-				func.Invoke();
+				ResourceManager rm = new ResourceManager(baseName, Assembly.Load("App_GlobalResources"));
+				return rm.GetString(key);
 			}
-			catch (T)
+			catch (Exception ex)
 			{
-				//swallow
+				Debug.WriteLine(ex.Message);
+				return null;
 			}
 		}
 

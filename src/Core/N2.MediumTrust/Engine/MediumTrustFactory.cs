@@ -17,6 +17,8 @@ using N2.Persistence.NH.Finder;
 using N2.Security;
 using N2.Serialization;
 using N2.Web;
+using Castle.Core;
+using N2.Parts.Web;
 
 namespace N2.MediumTrust.Engine
 {
@@ -66,7 +68,17 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(INHRepository<int, ContentItem>)] = itemRepository = new NHRepository<int, ContentItem>(sessionProvider);
 			Resolves[typeof(INHRepository<int, LinkDetail>)] = linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
 			Resolves[typeof(IPersister)] = persister = new DefaultPersister(itemRepository, linkRepository, finder);
-			Resolves[typeof(IUrlParser)] = urlParser = new DefaultUrlParser(persister, webContext, notifier, site);
+
+			if (configSection.MultipleSites)
+			{
+				ISitesProvider sitesProvider = new DynamicSitesProvider(persister, site.RootItemID);
+				Resolves[typeof(ISitesProvider)] = sitesProvider;
+				Resolves[typeof(IUrlParser)] = urlParser = new MultipleHostsUrlParser(persister, webContext, notifier, site.RootItemID, sitesProvider);
+			}
+			else
+			{
+				Resolves[typeof(IUrlParser)] = urlParser = new DefaultUrlParser(persister, webContext, notifier, site);
+			}
 			Resolves[typeof(ISecurityManager)] = securityManager = new DefaultSecurityManager(webContext);
 			Resolves[typeof(ISecurityEnforcer)] = securityEnforcer = new SecurityEnforcer(persister, securityManager, urlParser, webContext);
 			Resolves[typeof(IVersionManager)] = versioner = new VersionManager(persister, itemRepository);
@@ -91,12 +103,33 @@ namespace N2.MediumTrust.Engine
 			}
 
 			EditableHierarchyBuilder<IServiceEditable> hierarchyBuilder = new EditableHierarchyBuilder<IServiceEditable>();
-			Resolves[typeof (ISettingsProvider)] = new SettingsProvider( settingsManager, hierarchyBuilder);
-			
+			Resolves[typeof(ISettingsProvider)] = new SettingsProvider(settingsManager, hierarchyBuilder);
+
 			securityEnforcer.Start();
 			integrityEnforcer.Start();
 
-			//SettingsFacility sf = new SettingsFacility();
+			RegisterParts();
+		}
+
+		private void RegisterParts()
+		{
+			AjaxRequestDispatcher dispatcher = new AjaxRequestDispatcher(securityManager);
+			AddComponent(typeof(AjaxRequestDispatcher), dispatcher);
+			CreateUrlProvider cup = new CreateUrlProvider(persister, editManager, definitions, dispatcher);
+			cup.Start();
+			AddComponent(typeof(CreateUrlProvider), cup);
+			ItemDeleter id = new ItemDeleter(persister, dispatcher);
+			id.Start();
+			AddComponent(typeof(ItemDeleter), id);
+			EditUrlProvider eud = new EditUrlProvider(persister, editManager, dispatcher);
+			eud.Start();
+			AddComponent(typeof(EditUrlProvider), eud);
+			ItemMover im = new ItemMover(persister, dispatcher);
+			im.Start();
+			AddComponent(typeof(ItemMover), im);
+			ItemCopyer ic = new ItemCopyer(persister, dispatcher);
+			ic.Start();
+			AddComponent(typeof(ItemCopyer), ic);
 		}
 
 		#region Properties
@@ -154,7 +187,11 @@ namespace N2.MediumTrust.Engine
 
 		public T Resolve<T>() where T : class
 		{
-			return Resolves[typeof(T)] as T;
+			Type t = typeof(T);
+			if (Resolves.ContainsKey(t))
+				return Resolves[t] as T;
+			else
+				throw new N2Exception("Couldn't find any component of the type " + t);
 		}
 
 		public object Resolve(string key)

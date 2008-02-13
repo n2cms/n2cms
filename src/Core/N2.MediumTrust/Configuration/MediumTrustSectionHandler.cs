@@ -45,5 +45,12 @@ namespace N2.MediumTrust.Configuration
 			get { return (int)base["startPageID"]; ; }
 			set { base["startPageID"] = value; }
 		}
+
+		[ConfigurationProperty("multipleSites", DefaultValue = false)]
+		public bool MultipleSites
+		{
+			get { return (bool)base["multipleSites"]; }
+			set { base["multipleSites"] = value; }
+		}
 	}
 }

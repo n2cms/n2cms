@@ -238,7 +238,7 @@ namespace N2.Web
 		/// <returns>True if the item is a startpage or a rootpage</returns>
 		public virtual bool IsRootOrStartpage(ContentItem item)
 		{
-			return item.ID == CurrentSite.StartPageID;
+			return item.ID == CurrentSite.StartPageID || item.ID == CurrentSite.RootItemID;
 		}
 		#endregion
 	}

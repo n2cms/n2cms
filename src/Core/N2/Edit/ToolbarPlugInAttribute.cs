@@ -13,17 +13,61 @@ using System.Web;
 using System.Security.Principal;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using N2.Definitions;
+using System.Web.UI.WebControls;
 
 namespace N2.Edit
 {
+	public class ToolbarAreaAttribute : Attribute, IContainable
+	{
+		private string containerName;
+		private int sortOrder;
+		private string name;
+
+		public int SortOrder
+		{
+			get { return sortOrder; }
+			set { sortOrder = value; }
+		}
+
+		public string ContainerName
+		{
+			get { return containerName; }
+			set { containerName = value; }
+		}
+
+		public string Name
+		{
+			get { return name; }
+			set { name = value; }
+		}
+		
+
+		public Control AddTo(Control container)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool IsAuthorized(IPrincipal user)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int CompareTo(IContainable other)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
 	/// <summary>
 	/// An attribute defining a toolbar item in edit mode.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true)]
-	public class ToolbarPlugInAttribute : EditingPlugInAttribute, IComparable<ToolbarPlugInAttribute>
+	public class ToolbarPlugInAttribute : EditingPlugInAttribute, IComparable<ToolbarPlugInAttribute>, IContainable
 	{
 		#region Fields
 		ToolbarArea area;
+		private string containerName;
 		#endregion
 
 		#region Constructors
@@ -63,6 +107,11 @@ namespace N2.Edit
 		#endregion
 
 		#region Properties
+		protected override string ArrayVariableName
+		{
+			get { return "toolbarPlugIns"; }
+		}
+
 		public ToolbarArea Area
 		{
 			get { return area; }
@@ -70,18 +119,37 @@ namespace N2.Edit
 		}
 		#endregion
 
-		#region IComparable<ToolbarPlugInAttribute> Members
+		#region IContainable Members
+
+		public string ContainerName
+		{
+			get { return containerName; }
+			set { containerName = value; }
+		}
+
+		public Control AddTo(Control container)
+		{
+			Literal l = new Literal();
+			l.Text = Name;
+			container.Controls.Add(l);
+			return l;
+		}
+		#endregion
+
+		#region IComparable<...> Members
 
 		public int CompareTo(ToolbarPlugInAttribute other)
 		{
 			return base.CompareTo(other);
 		}
 
-		#endregion
-
-		protected override string ArrayVariableName
+		int IComparable<IContainable>.CompareTo(IContainable other)
 		{
-			get { return "toolbarPlugIns"; }
+			return this.SortOrder - other.SortOrder;
 		}
+
+		#endregion
+		
+		
 	}
 }

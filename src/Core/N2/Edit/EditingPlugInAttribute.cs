@@ -90,7 +90,7 @@ namespace N2.Edit
 		/// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
 		/// <param name="user">The user to check.</param>
 		/// <returns>True if the user is null or no permissions are required or the user has permissions.</returns>
-		internal bool IsAuthorized(IPrincipal user)
+		public bool IsAuthorized(IPrincipal user)
 		{
 			if (user == null || authorizedRoles == null)
 				return true;
@@ -141,7 +141,10 @@ namespace N2.Edit
 
 		public int CompareTo(EditingPlugInAttribute other)
 		{
-			return SortOrder - other.SortOrder;
+			if (SortOrder != other.SortOrder)
+				return SortOrder - other.SortOrder;
+			else
+				return Name.CompareTo(other.Name);
 		}
 
 		#region Equals & GetHashCode Methods

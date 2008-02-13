@@ -8,6 +8,10 @@
 </head>
 <body>
     <form id="form1" runat="server">
+		<n2:SlidingCurtain runat="server">
+			<n2:DragDropControlPanel runat="server" />
+		</n2:SlidingCurtain>
+		
         <asp:SiteMapDataSource ID="smds" runat="server" />
         <asp:Menu runat="server" DataSourceID="smds"></asp:Menu>
         <asp:SiteMapPath runat="server" />
@@ -15,6 +19,8 @@
             <n2:Display runat="server" PropertyName="Title" />
             <asp:Literal runat="server" Text="<%$ CurrentItem: Text %>" />
         </div>
+        <hr />
+        <n2:DroppableZone ZoneName="Content" runat="server" />
     </form>
 </body>
 </html>

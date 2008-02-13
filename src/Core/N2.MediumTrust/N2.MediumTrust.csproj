@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C73D1464-44C7-4E21-9691-3FB40CC42B23}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -66,6 +66,10 @@
     <Compile Include="Web\InitializerModule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\N2.Parts\N2.Parts.csproj">
+      <Project>{33048F9C-BFFF-4F93-9D26-8D52B2783E3D}</Project>
+      <Name>N2.Parts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>

@@ -98,10 +98,15 @@ namespace N2.Persistence.NH
 				{
 					if (unsavedItem.VersionOf == null)
 						unsavedItem.Updated = DateTime.Now;
-					if (unsavedItem.Name.Length == 0)
+					if (string.IsNullOrEmpty(unsavedItem.Name))
 						unsavedItem.Name = null;
 
 					itemRepository.SaveOrUpdate(unsavedItem);
+					if (string.IsNullOrEmpty(unsavedItem.Name))
+					{
+						unsavedItem.Name = unsavedItem.ID.ToString();
+						itemRepository.Save(unsavedItem);
+					}
 
 					unsavedItem.AddTo(unsavedItem.Parent);
 

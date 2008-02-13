@@ -1,3 +1,6 @@
+- MediumTrust: Throw exception when configuration item isn't found
+- Parts: Throw friendly exception when page isn't found
+
 TODO:
 - documentation & programmability
 	- more snippets & templates
@@ -7,6 +10,7 @@ TODO:
 		- recursive properties
 
 - engine
+	- Man kan inte gruppera contentitems i edit-läget?
 	- removed dependency on global resource stuff for edit mode toolbar
 	- do something about right-click menu not closing during click in whole window frame
 	- warning that checking all security options means all have access

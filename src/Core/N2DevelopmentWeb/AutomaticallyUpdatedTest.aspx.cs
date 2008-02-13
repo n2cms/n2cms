@@ -16,6 +16,8 @@ namespace N2.TemplateWeb
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			CurrentItem.Updated = DateTime.Now;
+
+			
 		}
 
 	}

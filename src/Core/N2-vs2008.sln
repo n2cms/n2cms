@@ -86,8 +86,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tasks", "tasks", "{F3A9EE88
 		..\Tasks\copy_parts.bat = ..\Tasks\copy_parts.bat
 		..\Tasks\copy_simplewebsite.bat = ..\Tasks\copy_simplewebsite.bat
 		..\Tasks\copy_templates.bat = ..\Tasks\copy_templates.bat
-		..\Tasks\prepare.bat = ..\Tasks\prepare.bat
-		..\Tasks\prepare_ilmerge.bat = ..\Tasks\prepare_ilmerge.bat
 		..\Tasks\readme.txt = ..\Tasks\readme.txt
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject

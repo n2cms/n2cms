@@ -137,7 +137,6 @@ namespace N2.Parts.Web.UI.WebControls
 		{
 			DoneDraggingLink.NavigateUrl = CurrentItem.Url;
 			DoneDraggingLink.Text = FormatImageAndText(Page.ClientScript.GetWebResourceUrl(typeof(DragDropControlPanel), "N2.Parts.Web.UI.WebControls.page_refresh.png"), DoneText);
-			DoneDraggingLink.Target = "_top";
 			DoneDraggingLink.CssClass = "editMode";
 			container.Controls.Add(DoneDraggingLink);
 		}

@@ -73,46 +73,6 @@
     <Content Include="Global.asax" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_GlobalResources\Definitions.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Definitions.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Editables.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Editables.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Test.Designer.cs">
-      <DependentUpon>Test.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="App_GlobalResources\TitleDetail.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TitleDetail.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Toolbar.da.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.da.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Toolbar.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Toolbar.it.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.it.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\Zones.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Zones.resx</DependentUpon>
-    </Compile>
     <Compile Include="AutomaticallyUpdatedTest.aspx.cs">
       <DependentUpon>AutomaticallyUpdatedTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -320,11 +280,6 @@
     <Content Include="UnmappedItem.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\Test.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Test.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Templates\ItemSelector.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -335,41 +290,6 @@
     <Content Include="VariousOutput.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\Toolbar.da.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.da.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Toolbar.it.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.it.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Toolbar.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\TitleDetail.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>TitleDetail.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Editables.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Editables.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Definitions.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Definitions.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\Zones.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Zones.designer.cs</LastGenOutput>
-    </Content>
     <EmbeddedResource Include="ChangedOwner.hbm.xml" />
     <Content Include="App_Themes\Theme1\Test.css" />
     <Content Include="bin\Castle.Core.dll" />
@@ -396,6 +316,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="App_GlobalResources\" />
     <Folder Include="cp\" />
     <Folder Include="upload\" />
   </ItemGroup>

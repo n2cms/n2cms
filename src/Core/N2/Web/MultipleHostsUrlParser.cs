@@ -55,7 +55,7 @@ namespace N2.Web
 
 		public override ContentItem Parse(string url)
 		{
-			if (url.StartsWith("/"))
+			if (url.StartsWith("/") || url.StartsWith("~/"))
 				return base.Parse(url);
 			else
 			{

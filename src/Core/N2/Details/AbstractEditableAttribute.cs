@@ -256,18 +256,25 @@ namespace N2.Details
 			return false;
 		}
 
-		public int CompareTo(IContainable other)
+		int IComparable<IContainable>.CompareTo(IContainable other)
 		{
-			return SortOrder - other.SortOrder;
+			int delta = SortOrder - other.SortOrder;
+			return delta != 0 ? delta : Name.CompareTo(other.Name);
 		}
 
 		/// <summary>Compares the sort order of editable attributes.</summary>
 		public int CompareTo(IEditable other)
 		{
-			if (other != null)
+			if (SortOrder != other.SortOrder)
 				return SortOrder - other.SortOrder;
+			else if (Title != null && other.Title != null)
+				return Title.CompareTo(other.Title);
+			else if (Title != null)
+				return -1;
+			else if (other.Title != null)
+				return 1;
 			else
-				return SortOrder - 0;
+				return 0;
 		}
 
 		#endregion

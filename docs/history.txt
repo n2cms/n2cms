@@ -2,6 +2,9 @@
 	- fixed datepicker loosing time
 	- user container isn't created until a user is
 	- worked around problem with templates IsInRole not working correctly
+	- problems with empty names on parts when medium trust
+- engine
+	- option for multiple sites when medium trust
 
 N2 1.3.2
 - engine

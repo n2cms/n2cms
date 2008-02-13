@@ -30,10 +30,8 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Edit
 {
-	[NavigationPlugIn("Copy", "copy", "javascript:n2nav.memorize('{selected}','copy');", "", "~/edit/img/ico/page_copy.gif", 50)]
-	[ToolbarPlugIn("", "copy", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Navigation, "", "~/edit/img/ico/page_copy.gif", 40, 
-		ToolTip = "copy",
-		GlobalResourceClassName = "Toolbar")]
+	[NavigationPlugIn("Copy", "copy", "javascript:n2nav.memorize('{selected}','copy');", "", "~/edit/img/ico/page_copy.gif", 50, GlobalResourceClassName="Navigation")]
+	[ToolbarPlugIn("", "copy", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Navigation, "", "~/edit/img/ico/page_copy.gif", 40, ToolTip = "copy", GlobalResourceClassName = "Toolbar")]
     public partial class Copy : Web.EditPage
     {
 		protected N2.ContentItem MemorizedItem;

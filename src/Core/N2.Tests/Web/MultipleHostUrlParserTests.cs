@@ -219,64 +219,49 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateCurrentStartItemUrl()
 		{
-			using (mocks.Record())
-			{
-				CreateItems();
-				Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
-				Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
-				mocks.ReplayAll();
+			CreateItems();
+			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
+			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
+			mocks.ReplayAll();
 
-				string url = parser.BuildUrl(item1);
-				Assert.AreEqual("/", url);
-			}
+			string url = parser.BuildUrl(item1);
+			Assert.AreEqual("/", url);
 		}
 
 		[Test]
 		public void CanBuildUrlOnCurrentSite()
 		{
-			using (mocks.Record())
-			{
-				CreateItems();
-				Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
-				Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
-				Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
-				mocks.ReplayAll();
+			CreateItems();
+			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
+			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com").Repeat.Any();
+			mocks.ReplayAll();
 
-				string url = parser.BuildUrl(item1_1);
-				Assert.AreEqual("/item1_1.aspx", url);
-			}
+			string url = parser.BuildUrl(item1_1);
+			Assert.AreEqual("/item1_1.aspx", url);
 		}
 
 		[Test]
 		public void CanBuildUrlOnOtherSiteStartPage()
 		{
-			using (mocks.Record())
-			{
-				CreateItems();
-				Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
-				Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
-				Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
-				mocks.ReplayAll();
+			CreateItems();
+			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
+			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com").Repeat.Any();
+			mocks.ReplayAll();
 
-				string url = parser.BuildUrl(item2);
-				Assert.AreEqual("http://n2.libardo.com/", url);
-			}
+			string url = parser.BuildUrl(item2);
+			Assert.AreEqual("http://n2.libardo.com/", url);
 		}
 
 		[Test]
 		public void CanBuildUrlOnOtherSitePage()
 		{
-			using (mocks.Record())
-			{
-				CreateItems();
-				Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
-				Expect.On(wrapper).Call(wrapper.CurrentHost).Return("n2.libardo.com");
-				Expect.On(wrapper).Call(wrapper.CurrentHost).Return("n2.libardo.com");
-				mocks.ReplayAll();
+			CreateItems();
+			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
+			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("n2.libardo.com").Repeat.Any();
+			mocks.ReplayAll();
 
-				string url = parser.BuildUrl(item1_1);
-				Assert.AreEqual("http://www.n2cms.com/item1_1.aspx", url);
-			}
+			string url = parser.BuildUrl(item1_1);
+			Assert.AreEqual("http://www.n2cms.com/item1_1.aspx", url);
 		}
 		#endregion
 	}

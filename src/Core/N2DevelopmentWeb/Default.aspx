@@ -29,10 +29,11 @@
     <n2:DroppableZone ZoneName="RightColumn" runat="server" />--%>
     
     <n2:Toolbar runat="server" />
-    <b>The N2DevelopmentWeb project is mess caused by incremental development and testing of new features in N2. You shouldn't really look at it. Please look at the examples instead.</b>
+    <p><b>The N2DevelopmentWeb project is mess caused by incremental development and testing of new features in N2. You shouldn't really look at it. Please look at the examples instead.</b></p>
+    
     <N2:EditableDisplay PropertyName="Text" runat="server" />
     <hr />
-    <%= DateTime.Now %>
+    <%= System.Threading.Thread.CurrentThread.CurrentCulture.Name %><%= DateTime.Now %>
     <a href="#" onclick="$('html').load('/ html');">RELOAD</a>
     <style>
         td{vertical-align:top;}
