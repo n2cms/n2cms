@@ -71,17 +71,18 @@ ul
 {
 	display:block;
 	background:#dedad7 none no-repeat 5px 50%;
-	padding:5px 5px 5px 25px;
 	margin:10px 0;
 	position:relative;
 	left:-10px;
 	border:solid 1px #cecac7;
+	padding:5px 5px 5px 24px;
 }
 
 /* validation */
 .validator
 {
-	background-image:url(../img/ico/exclamation.gif);
+	background:#eeeae7 url(../img/ico/exclamation.gif) no-repeat 4px 50%;
+	padding:5px 5px 5px 24px;
 }
 .validator ul
 {
