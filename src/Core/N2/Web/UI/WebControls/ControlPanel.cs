@@ -226,7 +226,6 @@ namespace N2.Web.UI.WebControls
 			hlDelete.NavigateUrl = N2.Context.Instance.EditManager.GetDeleteUrl(CurrentItem);
 
 			hlDelete.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/delete.gif"), DeleteText);
-			hlDelete.Target = "_top";
 			hlDelete.CssClass = "delete";
 			Controls.Add(hlDelete);
 		}
@@ -235,7 +234,6 @@ namespace N2.Web.UI.WebControls
 		{
 			hlNew.NavigateUrl = N2.Context.Instance.EditManager.GetSelectNewItemUrl(CurrentItem);
 			hlNew.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/add.gif"), NewText);
-			hlNew.Target = "_top";
 			hlNew.CssClass = "new";
 			Controls.Add(hlNew);
 		}
@@ -244,7 +242,6 @@ namespace N2.Web.UI.WebControls
 		{
 			hlEdit.NavigateUrl = N2.Context.Instance.EditManager.GetEditExistingItemUrl(CurrentItem);
 			hlEdit.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/page_edit.gif"), EditText);
-			hlEdit.Target = "_top";
 			hlEdit.CssClass = "edit";
 			Controls.Add(hlEdit);
 		}

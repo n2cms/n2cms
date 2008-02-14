@@ -1,5 +1,9 @@
 - MediumTrust: Throw exception when configuration item isn't found
 - Parts: Throw friendly exception when page isn't found
+- Sort buttons toolbar
+- Better toolbar plugin model
+- css copy warning 
+- remove menu parts from templates - move to master page
 
 TODO:
 - documentation & programmability

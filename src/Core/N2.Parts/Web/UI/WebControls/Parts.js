@@ -258,7 +258,12 @@ var SlidingCurtain = function(selector){
 			cookie.create("sc_open", "true", 1);
 		},
 		close: function(e){
-			$sc.animate(closedPos).removeClass("opened");
+			if(e){
+				$sc.animate(closedPos);
+			}else{
+				$sc.css(closedPos);
+			}
+			$sc.removeClass("opened");
 			cookie.erase("sc_open");
 		}
 	};
