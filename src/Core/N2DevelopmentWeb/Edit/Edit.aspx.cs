@@ -7,7 +7,7 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
-	[NavigationPlugIn("Edit", "edit", "../edit.aspx?selected={selected}", "preview", "~/edit/img/ico/page_edit.gif", 20)]
+	[NavigationPlugIn("Edit", "edit", "../edit.aspx?selected={selected}", "preview", "~/edit/img/ico/page_edit.gif", 20, GlobalResourceClassName = "Navigation")]
 	[ToolbarPlugIn("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
 	public partial class Edit : EditPage
 	{

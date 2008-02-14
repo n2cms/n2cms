@@ -12,7 +12,7 @@ using N2.Security;
 
 namespace N2.Edit.Security
 {
-	[N2.Edit.ToolbarPlugIn("", "security", "~/Edit/Security/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/lock.gif", 100, ToolTip = "allowed roles for selected item")]
+	[N2.Edit.ToolbarPlugIn("", "security", "~/Edit/Security/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/lock.gif", 100, ToolTip = "allowed roles for selected item", GlobalResourceClassName = "Toolbar")]
 	public partial class Default : Web.EditPage
 	{
 		protected void Page_Load(object sender, EventArgs e)

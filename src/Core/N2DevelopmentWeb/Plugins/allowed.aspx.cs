@@ -11,7 +11,8 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.TemplateWeb.Plugins
 {
-	[N2.Edit.ToolbarPlugIn("allowed", "allowed", "/plugins/allowed.aspx", N2.Edit.ToolbarArea.Preview)]
+	[N2.Edit.ToolbarPlugIn("allowed", "allowed", "/plugins/allowed.aspx", N2.Edit.ToolbarArea.Preview, GlobalResourceClassName = "N2Dev")]
+	[N2.Edit.ToolbarPlugIn("localized", "localized", "/plugins/allowed.aspx", N2.Edit.ToolbarArea.Preview, GlobalResourceClassName = "N2Dev")]
 	[N2.Edit.PlugInAuthorizedRolesAttribute("admin")]
 	public partial class allowed : System.Web.UI.Page
 	{

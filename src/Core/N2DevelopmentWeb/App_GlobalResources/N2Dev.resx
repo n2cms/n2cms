@@ -117,46 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="copy.Title" xml:space="preserve">
-    <value />
+  <data name="localized.Title" xml:space="preserve">
+    <value>in english</value>
   </data>
-  <data name="copy.ToolTip" xml:space="preserve">
-    <value>copia elemento</value>
-  </data>
-  <data name="delete.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="delete.ToolTip" xml:space="preserve">
-    <value>cancella elemento</value>
-  </data>
-  <data name="edit.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="edit.ToolTip" xml:space="preserve">
-    <value>edita elemento</value>
-  </data>
-  <data name="move.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="move.ToolTip" xml:space="preserve">
-    <value>taglia elemento</value>
-  </data>
-  <data name="new.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="new.ToolTip" xml:space="preserve">
-    <value>nuovo elemento</value>
-  </data>
-  <data name="paste.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="paste.ToolTip" xml:space="preserve">
-    <value>inserisci elemento tagliato o copiato</value>
-  </data>
-  <data name="versions.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="versions.ToolTip" xml:space="preserve">
-    <value>versini precedenti</value>
+  <data name="localized.ToolTip" xml:space="preserve">
+    <value>english tooltip</value>
   </data>
 </root>

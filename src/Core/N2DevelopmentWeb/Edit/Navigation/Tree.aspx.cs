@@ -24,9 +24,7 @@ using System.Web.UI.WebControls;
 
 namespace N2.Edit.Navigation
 {
-	[ToolbarPlugIn("", "tree", "navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/sitemap_color.gif", -30,
-	   ToolTip = "hierarchical navigation",
-	   GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugIn("", "tree", "navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/sitemap_color.gif", -30, ToolTip = "hierarchical navigation", GlobalResourceClassName = "Toolbar")]
 	public partial class Tree : NavigationPage
 	{
 		#region Page and Control Event Handlers

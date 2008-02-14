@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Edit.Edit" Title="Edit" %>
+<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Edit.Edit" Title="Edit" culture="auto" meta:resourcekey="PageResource1" uiculture="auto" %>
 <%@ Import namespace="N2"%>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <%@ Register Src="AvailableZones.ascx" TagName="AvailableZones" TagPrefix="uc1" %>
@@ -14,7 +14,9 @@
 			<n2:ItemDataSource id="idsChildren" runat="server" PageFilter="true" ZoneName="" />
 			<asp:Repeater runat="server" DataSourceID="idsChildren">
 				<ItemTemplate>
-					<asp:HyperLink CssClass="command plain" NavigateUrl="<%# Engine.EditManager.GetEditExistingItemUrl((ContentItem)Container.DataItem) %>" runat="server">Edit <%# Eval("Title") %></asp:HyperLink>
+					<asp:HyperLink CssClass="command plain" 
+						NavigateUrl="<%# Engine.EditManager.GetEditExistingItemUrl((ContentItem)Container.DataItem) %>" 
+						runat="server" meta:resourcekey="HyperLinkResource1">Edit <%# Eval("Title") %></asp:HyperLink>
 				</ItemTemplate>
 			</asp:Repeater>
 		</edit:OptionsMenu>
@@ -34,12 +36,18 @@
     </div>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page, click here to edit it." CssClass="versionInfo info" Visible="false"/>
-	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item, click here to edit the currently published version." CssClass="versionInfo info" Visible="false"/>
+	<asp:HyperLink ID="hlNewerVersion" runat="server" 
+		Text="There is a newer unpublished version of this page, click here to edit it." 
+		CssClass="versionInfo info" Visible="False" 
+		meta:resourcekey="hlNewerVersionResource1"/>
+	<asp:HyperLink ID="hlOlderVersion" runat="server" 
+		Text="This is a version of another item, click here to edit the currently published version." 
+		CssClass="versionInfo info" Visible="False" 
+		meta:resourcekey="hlOlderVersionResource1"/>
     <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="validator info" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
+    
     <n2:ItemEditor ID="ie" runat="server" />
-    
-    
+        
     <script type="text/javascript">
 		$(document).ready(function(){
 			$(".helpPanel").click(function(){

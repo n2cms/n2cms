@@ -135,6 +135,15 @@
   <data name="edit.ToolTip" xml:space="preserve">
     <value>edita elemento</value>
   </data>
+  <data name="filemanager.ToolTip" xml:space="preserve">
+    <value>Cartella immagini e documenti</value>
+  </data>
+  <data name="import/export.ToolTip" xml:space="preserve">
+    <value>Importa ed esporta elementi</value>
+  </data>
+  <data name="linktracker.ToolTip" xml:space="preserve">
+    <value>Mostra links</value>
+  </data>
   <data name="move.Title" xml:space="preserve">
     <value />
   </data>
@@ -153,10 +162,31 @@
   <data name="paste.ToolTip" xml:space="preserve">
     <value>inserisci elemento tagliato o copiato</value>
   </data>
+  <data name="search.ToolTip" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="security.ToolTip" xml:space="preserve">
+    <value>Impostazioni di sicurezza per l'elemento selezionato</value>
+  </data>
+  <data name="settings.ToolTip" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="table.ToolTip" xml:space="preserve">
+    <value>Naviga tramite tabella</value>
+  </data>
+  <data name="tree.ToolTip" xml:space="preserve">
+    <value>Naviga normalmente</value>
+  </data>
+  <data name="users.ToolTip" xml:space="preserve">
+    <value>Administrazione utenti</value>
+  </data>
   <data name="versions.Title" xml:space="preserve">
     <value />
   </data>
   <data name="versions.ToolTip" xml:space="preserve">
     <value>versioni precedenti</value>
+  </data>
+  <data name="wizard.ToolTip" xml:space="preserve">
+    <value>Crea elementi predefiniti</value>
   </data>
 </root>

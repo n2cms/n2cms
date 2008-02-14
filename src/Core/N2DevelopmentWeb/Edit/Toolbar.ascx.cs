@@ -29,7 +29,7 @@ namespace N2.Edit
 				Control container = (pluginAttribute.Area == ToolbarArea.Preview) 
 					? plhFrame 
 					: plhNavigation;
-				pluginAttribute.AddTo(container, SelectedItem);
+				pluginAttribute.AddTo(container);
 			}
 		}
 

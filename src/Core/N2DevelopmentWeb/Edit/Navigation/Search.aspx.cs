@@ -27,9 +27,7 @@ using System.Text.RegularExpressions;
 
 namespace N2.Edit.Navigation
 {
-	[ToolbarPlugIn("", "search", "navigation/search.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/page_find.gif", -15,
-	   ToolTip = "search",
-	   GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugIn("", "search", "navigation/search.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/page_find.gif", -15, ToolTip = "search", GlobalResourceClassName = "Toolbar")]
 	public partial class Search : NavigationPage
 	{
 		protected override void OnLoad(EventArgs e)

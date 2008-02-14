@@ -100,9 +100,9 @@ namespace N2.Edit
 			return false;
 		}
 
-		public virtual Control AddTo(Control container, ContentItem selectedItem)
+		public virtual Control AddTo(Control container)
 		{
-			HtmlAnchor a = CreateAnchor(container, selectedItem);
+			HtmlAnchor a = CreateAnchor(container);
 			container.Controls.Add(a);
 
 			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName,
@@ -113,25 +113,25 @@ namespace N2.Edit
 			return a;
 		}
 
-		private HtmlAnchor CreateAnchor(Control container, ContentItem selectedItem)
+		private HtmlAnchor CreateAnchor(Control container)
 		{
 			HtmlAnchor a = new HtmlAnchor();
 			a.ID = "h" + Name;
 			a.HRef = UrlFormat
 				.Replace("~/", Utility.ToAbsolute("~/"))
-				.Replace("{selected}", HttpUtility.UrlEncode(selectedItem.RewrittenUrl))
+				.Replace("{selected}", "")
 				.Replace("{memory}", "")
 				.Replace("{action}", "");
 
 			a.Target = Target;
 			a.Attributes["class"] = "command";
-			a.Title = ToolTip;
+			a.Title = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
+
+			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
 			if (string.IsNullOrEmpty(IconUrl))
-				a.InnerHtml = Title;
+				a.InnerHtml = title;
 			else
-				a.InnerHtml = string.Format("<img src='{0}'/>{1}",
-				                            Utility.ToAbsolute(IconUrl),
-				                            Title);
+				a.InnerHtml = string.Format("<img src='{0}'/>{1}", Utility.ToAbsolute(IconUrl), title);
 			return a;
 		}
 

@@ -277,9 +277,6 @@
     <Content Include="App_LocalResources\Delete.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\Edit.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="App_LocalResources\Framed.Master.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -1069,6 +1066,15 @@
       <LastGenOutput>Toolbar.da.designer.cs</LastGenOutput>
     </Content>
     <Content Include="Settings\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Edit.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Navigation.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Navigation.it.resx">
       <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="SqlScript\Upgrade_0.18.sql" />

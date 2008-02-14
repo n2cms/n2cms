@@ -231,27 +231,13 @@ namespace N2.Edit
 			else
 				throw new N2Exception("A plugin named '{0}' is already defined, assembly: {1}", attribute.Name, a.FullName);
 
-			if (!string.IsNullOrEmpty(attribute.GlobalResourceClassName))
-			{
-				string baseName = "Resources." + attribute.GlobalResourceClassName;
+			//if (!string.IsNullOrEmpty(attribute.GlobalResourceClassName))
+			//{
+			//    string baseName = "Resources." + attribute.GlobalResourceClassName;
 
-				attribute.Title = GetGlobalResourceString(baseName, attribute.Name + ".Title") ?? attribute.Title;
-				attribute.ToolTip = GetGlobalResourceString(baseName, attribute.Name + ".ToolTip") ?? attribute.ToolTip;
-			}
-		}
-
-		private string GetGlobalResourceString(string baseName, string key)
-		{
-			try
-			{
-				ResourceManager rm = new ResourceManager(baseName, Assembly.Load("App_GlobalResources"));
-				return rm.GetString(key);
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine(ex.Message);
-				return null;
-			}
+			//    attribute.Title = Utility.GetResourceString(baseName, attribute.Name + ".Title") ?? attribute.Title;
+			//    attribute.ToolTip = Utility.GetResourceString(baseName, attribute.Name + ".ToolTip") ?? attribute.ToolTip;
+			//}
 		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>

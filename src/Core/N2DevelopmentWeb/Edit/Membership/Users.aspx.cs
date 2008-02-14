@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Edit.Membership
 {
-	[N2.Edit.ToolbarPlugIn("", "users", "~/Edit/Membership/Users.aspx", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/group_key.gif", 110, ToolTip = "administrate users", AuthorizedRoles = new string[] { "Administrators", "Admin" })]
+	[N2.Edit.ToolbarPlugIn("", "users", "~/Edit/Membership/Users.aspx", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/group_key.gif", 110, ToolTip = "administrate users", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
 	public partial class Users : System.Web.UI.Page
 	{
 		protected void Page_Load(object sender, EventArgs e)

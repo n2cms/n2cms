@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Resources;
 using System.Web;
 using N2.Integrity;
+using System.Diagnostics;
 
 namespace N2
 {
@@ -279,12 +280,41 @@ namespace N2
 		{
 			try
 			{
-				return HttpContext.GetGlobalResourceObject(classKey, resourceKey) as string;
+				if (classKey != null && resourceKey != null && HttpContext.Current != null)
+					return HttpContext.GetGlobalResourceObject(classKey, resourceKey) as string;
 			}
-			catch (MissingManifestResourceException)
+			catch (MissingManifestResourceException ex)
 			{
-				return null; // it's okay to use default text
+				Debug.WriteLine(ex.Message);
 			}
+			return null; // it's okay to use default text
+		}
+
+		/// <summary>Gets a local resource string.</summary>
+		/// <param name="resourceKey">The key in the resource file.</param>
+		/// <returns>The string if possible, otherwise null.</returns>
+		public static string GetLocalResourceString(string resourceKey)
+		{
+			try
+			{
+				if (resourceKey != null && HttpContext.Current != null)
+					return HttpContext.GetLocalResourceObject(HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath, resourceKey) as string;
+			}
+			catch (InvalidOperationException ex)
+			{
+				Debug.WriteLine(ex.Message);
+			}
+			return null; // it's okay to use default text
+		}
+
+		/// <summary>Tries to get a global or local resource string.</summary>
+		/// <param name="classKey">The name of the global resource file.</param>
+		/// <param name="resourceKey">The key in the resource file.</param>
+		/// <returns>The string if possible, otherwise null.</returns>
+		public static string GetResourceString(string classKey, string resourceKey)
+		{
+			return GetGlobalResourceString(classKey, resourceKey) ?? GetLocalResourceString(resourceKey);
+			return null;
 		}
 	}
 }

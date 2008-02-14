@@ -11,7 +11,7 @@ namespace N2.Edit.Navigation
 
 			foreach (NavigationPlugInAttribute a in N2.Context.Instance.EditManager.GetNavigationPlugIns(Page.User))
 			{
-				a.AddTo(plhMenuItems, selectedItem);
+				a.AddTo(plhMenuItems);
 			}
 			base.OnInit(e);
 		}

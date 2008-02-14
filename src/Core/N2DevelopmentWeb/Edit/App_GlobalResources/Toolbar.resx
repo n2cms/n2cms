@@ -141,6 +141,12 @@
   <data name="filemanager.ToolTip" xml:space="preserve">
     <value>file manager</value>
   </data>
+  <data name="logout.LogoutText" xml:space="preserve">
+    <value>&lt;img src='img/ico/key.gif' alt='key'/&gt;</value>
+  </data>
+  <data name="logout.ToolTipFormat" xml:space="preserve">
+    <value>Logout {0}</value>
+  </data>
   <data name="move.Title" xml:space="preserve">
     <value />
   </data>

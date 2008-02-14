@@ -18,12 +18,12 @@ namespace N2.Edit
 			Register.JQuery(Page);
 		}
 
-		protected override void OnLoad(EventArgs e)
+		protected override void OnPreRender(EventArgs e)
 		{
-			base.OnLoad(e);
-
 			title.Text = Page.Title;
 			h1.InnerHtml = Page.Title;
+
+			base.OnPreRender(e);
 		}
 	}
 }

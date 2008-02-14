@@ -73,6 +73,16 @@
     <Content Include="Global.asax" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\N2Dev.it.designer.cs">
+      <DependentUpon>N2Dev.it.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\N2Dev.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>N2Dev.resx</DependentUpon>
+    </Compile>
     <Compile Include="AutomaticallyUpdatedTest.aspx.cs">
       <DependentUpon>AutomaticallyUpdatedTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -290,6 +300,16 @@
     <Content Include="VariousOutput.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_GlobalResources\N2Dev.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>N2Dev.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\N2Dev.it.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>N2Dev.it.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="ChangedOwner.hbm.xml" />
     <Content Include="App_Themes\Theme1\Test.css" />
     <Content Include="bin\Castle.Core.dll" />
@@ -316,7 +336,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="App_GlobalResources\" />
     <Folder Include="cp\" />
     <Folder Include="upload\" />
   </ItemGroup>

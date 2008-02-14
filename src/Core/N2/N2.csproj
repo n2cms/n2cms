@@ -311,6 +311,7 @@
     <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
     <Compile Include="Edit\CreationPosition.cs" />
     <Compile Include="Edit\Settings\SettingsManager.cs" />
+    <Compile Include="Edit\ToolbarAreaAttribute.cs" />
     <Compile Include="Installation\DatabaseStatus.cs" />
     <Compile Include="Installation\InstallationManager.cs" />
     <Compile Include="Installation\SqlServerType.cs" />
@@ -438,6 +439,7 @@
     <Compile Include="Web\UI\WebControls\IItemEditor.cs" />
     <Compile Include="Web\UI\WebControls\ItemEditorList.cs" />
     <Compile Include="Web\UI\WebControls\ItemEditorSavingMode.cs" />
+    <Compile Include="Web\UI\WebControls\StyleSheet.cs" />
     <Compile Include="Web\UI\WebControls\TabPanel.cs" />
     <Compile Include="Serialization\ElementWriter.cs" />
     <Compile Include="Serialization\ItemXmlWriter.cs" />

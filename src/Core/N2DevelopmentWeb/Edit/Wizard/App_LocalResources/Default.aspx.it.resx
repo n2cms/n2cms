@@ -117,70 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="copy.Title" xml:space="preserve">
+  <data name="btnAddResource1.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="btnAddResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="copy.ToolTip" xml:space="preserve">
-    <value>Kopier artikel inklusiv under artikler</value>
-  </data>
-  <data name="delete.Title" xml:space="preserve">
+  <data name="ddlTypesResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="delete.ToolTip" xml:space="preserve">
-    <value>Slet artikel inklusiv under artikler</value>
+  <data name="hlCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="edit.Title" xml:space="preserve">
+  <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="edit.ToolTip" xml:space="preserve">
-    <value>Rediger valgle artikel</value>
-  </data>
-  <data name="move.Title" xml:space="preserve">
+  <data name="hlNewResource1.Text" xml:space="preserve">
     <value />
   </data>
-  <data name="move.ToolTip" xml:space="preserve">
-    <value>Klip valgte artikel (vælg bestemmelse sted og indsæt for at flytte)</value>
-  </data>
-  <data name="new.Title" xml:space="preserve">
+  <data name="imgIcoResource1.AlternateText" xml:space="preserve">
     <value />
   </data>
-  <data name="new.ToolTip" xml:space="preserve">
-    <value>Opret ny artikel under valgte artikel</value>
-  </data>
-  <data name="paste.Title" xml:space="preserve">
+  <data name="imgIcoResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="paste.ToolTip" xml:space="preserve">
-    <value>Indsæt artikel i hukommelsen</value>
+  <data name="LabelResource1.Text" xml:space="preserve">
+    <value>Title</value>
   </data>
-  <data name="search.Title" xml:space="preserve">
+  <data name="LabelResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="search.ToolTip" xml:space="preserve">
-    <value>Søg artikler</value>
+  <data name="LabelResource2.Text" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="settings.Title" xml:space="preserve">
+  <data name="LabelResource2.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="settings.ToolTip" xml:space="preserve">
-    <value>Indstillinger</value>
+  <data name="LabelResource3.Text" xml:space="preserve">
+    <value>Added</value>
   </data>
-  <data name="table.Title" xml:space="preserve">
+  <data name="LabelResource3.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="table.ToolTip" xml:space="preserve">
-    <value>Tabular navigation</value>
+  <data name="PageResource1.Title" xml:space="preserve">
+    <value>Wizard</value>
   </data>
-  <data name="tree.Title" xml:space="preserve">
+  <data name="tpAddResource1.GroupingText" xml:space="preserve">
     <value />
   </data>
-  <data name="tree.ToolTip" xml:space="preserve">
-    <value>Hierarkisk navigation</value>
+  <data name="tpAddResource1.ToolTip" xml:space="preserve">
+    <value>Add location</value>
   </data>
-  <data name="versions.Title" xml:space="preserve">
+  <data name="tpTypeResource1.GroupingText" xml:space="preserve">
     <value />
   </data>
-  <data name="versions.ToolTip" xml:space="preserve">
-    <value>Forrige version</value>
+  <data name="tpTypeResource1.ToolTip" xml:space="preserve">
+    <value>Select type</value>
+  </data>
+  <data name="txtTitleResource1.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txtTitleResource1.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

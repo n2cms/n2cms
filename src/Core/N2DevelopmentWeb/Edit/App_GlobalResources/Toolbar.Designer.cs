@@ -133,6 +133,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;img src=&apos;img/ico/key.gif&apos; alt=&apos;key&apos;/&gt;.
+        /// </summary>
+        internal static string logout_LogoutText {
+            get {
+                return ResourceManager.GetString("logout.LogoutText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout {0}.
+        /// </summary>
+        internal static string logout_ToolTipFormat {
+            get {
+                return ResourceManager.GetString("logout.ToolTipFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string move_Title {

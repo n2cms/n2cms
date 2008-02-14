@@ -124,7 +124,7 @@
     <value>Nuovo "{0}"</value>
   </data>
   <data name="EditPage.TitleFormat.Update" xml:space="preserve">
-    <value>Edit "{0}"</value>
+    <value>Edita "{0}"</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>cancella</value>
