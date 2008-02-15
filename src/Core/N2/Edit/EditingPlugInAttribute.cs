@@ -102,9 +102,8 @@ namespace N2.Edit
 
 		public virtual Control AddTo(Control container)
 		{
-			HtmlAnchor a = CreateAnchor(container);
-			container.Controls.Add(a);
-
+			HtmlAnchor a = AddAnchor(container);
+			
 			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName,
 			                                                     string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}",
 			                                                                   a.ClientID,
@@ -113,7 +112,7 @@ namespace N2.Edit
 			return a;
 		}
 
-		private HtmlAnchor CreateAnchor(Control container)
+		private HtmlAnchor AddAnchor(Control container)
 		{
 			HtmlAnchor a = new HtmlAnchor();
 			a.ID = "h" + Name;
@@ -132,6 +131,8 @@ namespace N2.Edit
 				a.InnerHtml = title;
 			else
 				a.InnerHtml = string.Format("<img src='{0}'/>{1}", Utility.ToAbsolute(IconUrl), title);
+
+			container.Controls.Add(a);
 			return a;
 		}
 

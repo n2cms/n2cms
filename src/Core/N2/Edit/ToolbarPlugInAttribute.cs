@@ -65,7 +65,6 @@ namespace N2.Edit
 		} 
 		#endregion
 
-		#region Properties
 		protected override string ArrayVariableName
 		{
 			get { return "toolbarPlugIns"; }
@@ -76,25 +75,13 @@ namespace N2.Edit
 			get { return area; }
 			set { area = value; }
 		}
-		#endregion
-
-		#region IContainable Members
-
+		
 		public string ContainerName
 		{
 			get { return containerName; }
 			set { containerName = value; }
 		}
-
-		public Control AddTo(Control container)
-		{
-			Literal l = new Literal();
-			l.Text = Name;
-			container.Controls.Add(l);
-			return l;
-		}
-		#endregion
-
+		
 		#region IComparable<...> Members
 
 		public int CompareTo(ToolbarPlugInAttribute other)
