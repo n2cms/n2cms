@@ -7,9 +7,9 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $("#nav a[@target=preview]").click(function(){
-            n2nav.setupToolbar(this.href);
+            n2nav.setupToolbar(this.rel);
         }).bind("contextmenu", function(){
-            n2nav.setupToolbar(this.href);
+            n2nav.setupToolbar(this.rel);
         })
         .n2contextmenu("#contextMenu");
     });

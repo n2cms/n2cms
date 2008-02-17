@@ -79,15 +79,5 @@ namespace N2.Templates.Items
 			get { return (string)(GetDetail("SmtpPassword") ?? string.Empty); }
 			set { SetDetail("SmtpPassword", value, string.Empty); }
 		}
-
-		public virtual SmtpClient GetSmtpClient()
-		{
-			SmtpClient sc = new SmtpClient(SmtpHost, SmtpPort);
-			if (SmtpUser.Length > 0)
-			{
-				sc.Credentials = new NetworkCredential(SmtpUser, SmtpPassword);
-			}
-			return sc;
-		}
 	}
 }

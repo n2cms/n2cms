@@ -1,6 +1,7 @@
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Collections.Generic;
 
 namespace N2.Web
 {
@@ -17,6 +18,7 @@ namespace N2.Web
 		private string href;
 		private string className;
 		private string query = string.Empty;
+		private IDictionary<string, string> attributes = new Dictionary<string, string>();
 		#endregion
 
 		#region Constructor
@@ -65,6 +67,13 @@ namespace N2.Web
 		#endregion
 
 		#region Properties
+		
+
+		public IDictionary<string, string> Attributes
+		{
+			get { return attributes; }
+			set { attributes = value; }
+		}
 
 		public string Text
 		{
@@ -123,6 +132,8 @@ namespace N2.Web
 				HtmlGenericControl span = new HtmlGenericControl("span");
 				if (!string.IsNullOrEmpty(Title))
 					span.Attributes["title"] = Title;
+				foreach (KeyValuePair<string,string> pair in Attributes)
+					span.Attributes[pair.Key] = pair.Value;
 				span.InnerHtml = Text;
 				return span;
 			}
@@ -135,6 +146,8 @@ namespace N2.Web
 				a.Target = Target;
 				if (!string.IsNullOrEmpty(ClassName))
 					a.Attributes["class"] = ClassName;
+				foreach (KeyValuePair<string, string> pair in Attributes)
+					a.Attributes[pair.Key] = pair.Value;
 				return a;
 			}
 		}
@@ -158,6 +171,9 @@ namespace N2.Web
 				sb.AppendFormat(" class=\"{0}\"", ClassName);
 			if (!string.IsNullOrEmpty(Title))
 				sb.AppendFormat(" title=\"{0}\"", Title);
+			foreach (KeyValuePair<string, string> pair in Attributes)
+				sb.AppendFormat(" {0}=\"{1}\"", pair.Key, pair.Value);
+			
 			sb.Append(">");
 
 			sb.Append(Text);
@@ -259,6 +275,12 @@ namespace N2.Web
 			if (q.Length > 0)
 				q += "&";
 			q += key + "=" + value;
+		}
+
+		public ILinkBuilder Attribute(string key, string value)
+		{
+			Attributes[key] = value;
+			return this;
 		}
 
 		#endregion

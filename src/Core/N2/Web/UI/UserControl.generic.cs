@@ -29,7 +29,11 @@ namespace N2.Web.UI
 	public class UserControl<TPage> : UserControl, IPageItemContainer
 		where TPage : N2.ContentItem
 	{
-		#region Properties
+		/// <summary>Gets the current CMS Engine.</summary>
+		public N2.Engine.IEngine Engine
+		{
+			get { return N2.Context.Instance; }
+		}
 
 		private TPage currentPage = null;
 		/// <summary>Gets the current page item.</summary>
@@ -48,11 +52,7 @@ namespace N2.Web.UI
 		{
 			get { return this.CurrentPage; }
 		}
-		
-		#endregion
-
-		#region IPageItemContainer & IItemContainer Members
-
+	
 		ContentItem IPageItemContainer.CurrentPage
 		{
 			get { return this.CurrentPage; }
@@ -62,7 +62,5 @@ namespace N2.Web.UI
 		{
 			get { return this.CurrentItem; }
 		}
-
-		#endregion
 	}
 }

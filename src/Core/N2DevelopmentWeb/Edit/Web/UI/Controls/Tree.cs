@@ -11,25 +11,24 @@ namespace N2.Edit.Web.UI.Controls
 {
 	public class Tree : Control, IItemContainer
 	{
-		private ContentItem currentItem;
-		private ContentItem rootItem;
+		private ContentItem currentItem = null;
+		private ContentItem rootItem = null;
 		private string target = "preview";
 		private readonly IList<string> icons = new List<string>();
 
 		public Tree()
 		{
-			rootItem = Find.RootItem;
 		}
 
 		public ContentItem CurrentItem
 		{
-			get { return currentItem; }
+			get { return currentItem ?? Find.CurrentPage; }
 			set { currentItem = value; }
 		}
 
-		public ContentItem RootItem
+		public ContentItem RootNode
 		{
-			get { return rootItem; }
+			get { return rootItem ?? Find.RootItem; }
 			set { rootItem = value; }
 		}
 
@@ -41,19 +40,16 @@ namespace N2.Edit.Web.UI.Controls
 
 		public override void DataBind()
 		{
-			base.DataBind();
 			EnsureChildControls();
+			base.DataBind();
 		}
 
 		protected override void CreateChildControls()
 		{
 			ItemFilter[] filters = GetFilters();
-			N2.Web.Tree t = N2.Web.Tree.From(Find.RootItem)
+			N2.Web.Tree t = N2.Web.Tree.From(RootNode)
 				.OpenTo(CurrentItem ?? Find.StartPage).Filters(filters)
-				.LinkProvider(delegate(ContentItem item)
-								{
-									return BuildLink(item, CurrentItem);
-								});
+				.LinkProvider(BuildLink);
 			Control ul = t.ToControl();
 			Controls.Add(ul);
 
@@ -73,7 +69,7 @@ namespace N2.Edit.Web.UI.Controls
 					: new ItemFilter[] { new PageFilter(), new AccessFilter(Page.User, N2.Context.SecurityManager) };
 		}
 
-		private ILinkBuilder BuildLink(ContentItem item, ContentItem selectedItem)
+		private ILinkBuilder BuildLink(ContentItem item)
 		{
 			StringBuilder className = new StringBuilder();
 
@@ -89,7 +85,7 @@ namespace N2.Edit.Web.UI.Controls
 			if (item.Expires.HasValue && item.Expires <= DateTime.Now)
 				className.Append("expired ");
 
-			if (item == selectedItem)
+			if (item == CurrentItem)
 				className.Append("selected ");
 
 			if (!item.Visible)
@@ -105,14 +101,9 @@ namespace N2.Edit.Web.UI.Controls
 				iconIndex = icons.Count;
 				icons.Add(iconUrl);
 			}
-			className.Append("i" + iconIndex + " ");
+			className.Append("i" + iconIndex);
 
-			ILinkBuilder builder = Link.To(item).Target(target).Href(item.RewrittenUrl);
-			if (className.Length > 0)
-			{
-				--className.Length; // remove trailing whitespace
-				builder.Class(className.ToString());
-			}
+			ILinkBuilder builder = Link.To(item).Target(target).Href(item.RewrittenUrl).Class(className.ToString()).Attribute("rel", item.Path);
 
 			return builder;
 		}

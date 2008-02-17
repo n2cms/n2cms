@@ -1,55 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Font Name="Tahoma" Size="8.25" />
   <Class Name="N2.ContentItem">
-    <Position X="1" Y="1" Width="1.75" />
-    <TypeIdentifier>
-      <FileName>ContentItem.cs</FileName>
-      <HashCode>EAEAJI0AQASBiEZsiSIEQAwABgAsQIQKaAQQiFAEFhA=</HashCode>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="VersionOf" />
-      <Property Name="Parent" />
-    </ShowAsAssociation>
+    <Position X="2.5" Y="1" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="VersionOf" Type="N2.ContentItem" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="2.562" Y="8.497" />
-        <Point X="2.562" Y="8.807" />
-        <Point X="3.042" Y="8.807" />
-        <Point X="3.042" Y="8.278" />
-        <Point X="2.75" Y="8.278" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.352" Y="-0.327" />
-      </MemberNameLabel>
-    </AssociationLine>
     <AssociationLine Name="Parent" Type="N2.ContentItem" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="1" Y="1.245" />
-        <Point X="0.625" Y="1.245" />
-        <Point X="0.625" Y="0.625" />
-        <Point X="1.25" Y="0.625" />
-        <Point X="1.25" Y="1" />
+        <Point X="2.5" Y="1.227" />
+        <Point X="1.615" Y="1.227" />
+        <Point X="1.615" Y="0.625" />
+        <Point X="2.75" Y="0.625" />
+        <Point X="2.75" Y="1" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.682" Y="0.133" />
+        <Position X="0.453" Y="0.123" />
       </MemberNameLabel>
     </AssociationLine>
-    <Lollipop Position="1.033" />
-  </Class>
-  <Class Name="N2.Details.ContentDetail" Collapsed="true">
-    <Position X="4.25" Y="2.25" Width="1.5" />
+    <AssociationLine Name="Children" Type="N2.ContentItem" ManuallyRouted="true">
+      <Path>
+        <Point X="3.121" Y="1" />
+        <Point X="3.121" Y="0.51" />
+        <Point X="3.642" Y="0.51" />
+        <Point X="3.642" Y="1" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.119" Y="0.539" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <FileName>Details\ContentDetail.cs</FileName>
-      <HashCode>AAIAAAAAAAAAgCAMgEIAAAQAAAAEAIAAAAAgAAgAEhA=</HashCode>
+      <HashCode>EAEAJI1AUASBgEZsiSIEUAwQBggsTIQKaAQQCFAEFhA=</HashCode>
+      <FileName>ContentItem.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="EnclosingItem" />
-      <Property Name="EnclosingCollection" />
+      <Property Name="Parent" />
+      <Property Name="VersionOf" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Details" />
+      <Property Name="DetailCollections" />
+      <Property Name="Children" />
+      <Property Name="AuthorizedRoles" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="1.356" />
+  </Class>
+  <Class Name="N2.Details.ContentDetail" Collapsed="true">
+    <Position X="6" Y="2.25" Width="1.5" />
     <AssociationLine Name="EnclosingItem" Type="N2.ContentItem">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.308" Y="0.05" />
@@ -57,127 +53,105 @@
     </AssociationLine>
     <AssociationLine Name="EnclosingCollection" Type="N2.Details.DetailCollection" FixedFromPoint="true">
       <Path>
-        <Point X="4.5" Y="2.25" />
-        <Point X="4.5" Y="1.509" />
+        <Point X="6.25" Y="2.25" />
+        <Point X="6.25" Y="1.509" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-1.331" Y="0.225" />
       </MemberNameLabel>
     </AssociationLine>
-    <Lollipop Position="0.908" />
-  </Class>
-  <Class Name="N2.Details.BooleanDetail" Collapsed="true">
-    <Position X="4.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <FileName>Details\BooleanDetail.cs</FileName>
-      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAQEAA=</HashCode>
-    </TypeIdentifier>
-    <InheritanceLine Type="N2.Details.ContentDetail" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.5" Y="2.759" />
-        <Point X="4.5" Y="3.312" />
-        <Point X="4.75" Y="3.312" />
-      </Path>
-    </InheritanceLine>
-  </Class>
-  <Class Name="N2.Details.DateTimeDetail" Collapsed="true">
-    <Position X="4.75" Y="5.25" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>Details\DateTimeDetail.cs</FileName>
-      <HashCode>AAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAgAAAAEAA=</HashCode>
-    </TypeIdentifier>
-    <InheritanceLine Type="N2.Details.ContentDetail" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.5" Y="2.759" />
-        <Point X="4.5" Y="5.562" />
-        <Point X="4.75" Y="5.562" />
-      </Path>
-    </InheritanceLine>
-  </Class>
-  <Class Name="N2.Details.DoubleDetail" Collapsed="true">
-    <Position X="4.75" Y="6.75" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>Details\DoubleDetail.cs</FileName>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABgAAAAEAA=</HashCode>
-    </TypeIdentifier>
-    <InheritanceLine Type="N2.Details.ContentDetail" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.5" Y="2.759" />
-        <Point X="4.5" Y="7.062" />
-        <Point X="4.75" Y="7.062" />
-      </Path>
-    </InheritanceLine>
-  </Class>
-  <Class Name="N2.Details.IntegerDetail" Collapsed="true">
-    <Position X="4.75" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>Details\IntegerDetail.cs</FileName>
-      <HashCode>AAAAAAAAAAAAAAAEAAAABAAAAAAAAAAAAAAgAAAAEAA=</HashCode>
-    </TypeIdentifier>
-    <InheritanceLine Type="N2.Details.ContentDetail" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.5" Y="2.759" />
-        <Point X="4.5" Y="4.062" />
-        <Point X="4.75" Y="4.062" />
-      </Path>
-    </InheritanceLine>
-  </Class>
-  <Class Name="N2.Details.LinkDetail" Collapsed="true">
-    <Position X="4.75" Y="6" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>Details\LinkDetail.cs</FileName>
-      <HashCode>AAAAAAAAAAIAAAACAAIAAAAAAAAAAAAAAAIgAAAAEAA=</HashCode>
-    </TypeIdentifier>
-    <InheritanceLine Type="N2.Details.ContentDetail" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.5" Y="2.759" />
-        <Point X="4.5" Y="6.312" />
-        <Point X="4.75" Y="6.312" />
-      </Path>
-    </InheritanceLine>
-  </Class>
-  <Class Name="N2.Details.ObjectDetail" Collapsed="true">
-    <Position X="4.75" Y="7.5" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>Details\ObjectDetail.cs</FileName>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAgAAAAEAA=</HashCode>
-    </TypeIdentifier>
-    <InheritanceLine Type="N2.Details.ContentDetail" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.5" Y="2.759" />
-        <Point X="4.5" Y="7.812" />
-        <Point X="4.75" Y="7.812" />
-      </Path>
-    </InheritanceLine>
-  </Class>
-  <Class Name="N2.Details.StringDetail" Collapsed="true">
-    <Position X="4.75" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>Details\StringDetail.cs</FileName>
-      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAgAAAgAAAAEAA=</HashCode>
-    </TypeIdentifier>
-    <InheritanceLine Type="N2.Details.ContentDetail" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.5" Y="2.759" />
-        <Point X="4.5" Y="4.812" />
-        <Point X="4.75" Y="4.812" />
-      </Path>
-    </InheritanceLine>
-  </Class>
-  <Class Name="N2.Details.DetailCollection" Collapsed="true">
-    <Position X="4.25" Y="1" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>Details\DetailCollection.cs</FileName>
-      <HashCode>AGIAAEAAAACBgAA4CQIAFAQgAAAEAAAACAAAAABUIjA=</HashCode>
+      <HashCode>AAIAAAAAAAAAgCAMgEIAAAQAAAAEAIAAAAAgAAgAEhA=</HashCode>
+      <FileName>Details\ContentDetail.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="EnclosingItem" />
+      <Property Name="EnclosingCollection" />
     </ShowAsAssociation>
+    <Lollipop Position="1.21" />
+  </Class>
+  <Class Name="N2.Details.BooleanDetail" Collapsed="true">
+    <Position X="7" Y="3" Width="1.5" />
+    <InheritanceLine Type="N2.Details.ContentDetail" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="2.759" />
+        <Point X="6.75" Y="3.312" />
+        <Point X="7" Y="3.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAQEAA=</HashCode>
+      <FileName>Details\BooleanDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="N2.Details.DateTimeDetail" Collapsed="true">
+    <Position X="7" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAgAAAAEAA=</HashCode>
+      <FileName>Details\DateTimeDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="N2.Details.DoubleDetail" Collapsed="true">
+    <Position X="7" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABgAAAAEAA=</HashCode>
+      <FileName>Details\DoubleDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="N2.Details.IntegerDetail" Collapsed="true">
+    <Position X="7" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAABAAAAAAAAAAAAAAgAAAAEAA=</HashCode>
+      <FileName>Details\IntegerDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="N2.Details.LinkDetail" Collapsed="true">
+    <Position X="7" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAACAAIAAAAAAAAAAAAAAAIgAAAAEAA=</HashCode>
+      <FileName>Details\LinkDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="N2.Details.ObjectDetail" Collapsed="true">
+    <Position X="7" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAgAAAAEAA=</HashCode>
+      <FileName>Details\ObjectDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="N2.Details.StringDetail" Collapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAgAAAgAAAAEAA=</HashCode>
+      <FileName>Details\StringDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="N2.Details.DetailCollection" Collapsed="true">
+    <Position X="6" Y="1" Width="1.5" />
     <AssociationLine Name="EnclosingItem" Type="N2.ContentItem">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.318" Y="0.039" />
       </MemberNameLabel>
     </AssociationLine>
-    <Lollipop Position="0.908" />
+    <TypeIdentifier>
+      <HashCode>AGIAAEAAAACBgAA4CQIAFAQgAAAEAAAACAAAAABUIjA=</HashCode>
+      <FileName>Details\DetailCollection.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EnclosingItem" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Details" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="1.179" />
   </Class>
+  <Class Name="N2.Security.AuthorizedRole" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAgAAMkEIAABAAAAAACIAAAAAAAAAAAhA=</HashCode>
+      <FileName>Security\AuthorizedRole.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>

@@ -569,7 +569,7 @@ n2nav.displaySelection = function(el){
 n2nav.onTargetClick = function(el){
     n2nav.displaySelection(el);
     if(n2nav.onUrlSelected)
-		n2nav.onUrlSelected(n2nav.toRelativeUrl(el.href));
+		n2nav.onUrlSelected(el.rel);
 }
 n2nav.getJQuery = function(){
 	return n2nav.linkContainerId + " a";
@@ -589,14 +589,13 @@ n2nav.setupLinks = function(containerId){
 n2nav.previewClickHandler = function(event){
 	var a = n2nav.findLink(event.target);
     n2nav.onTargetClick(a)
-    n2nav.setupToolbar(a.href);
+    n2nav.setupToolbar(a.rel);
 }
 n2nav.targetHandlers["preview"] = function(a,i) {
-    var relativeUrl = n2nav.toRelativeUrl(a.href);
     $(a).addClass("enabled").bind("click", null, n2nav.previewClickHandler);
 }
-n2nav.setupToolbar = function(href){
-	if(window.top.n2)window.top.n2.setupToolbar(href.replace(/.*?:\/\/.*?\//, "/"));
+n2nav.setupToolbar = function(url){
+	if(window.top.n2)window.top.n2.setupToolbar(url.replace(/.*?:\/\/.*?\//, "/"));
 }
 
 

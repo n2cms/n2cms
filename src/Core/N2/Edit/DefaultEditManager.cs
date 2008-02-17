@@ -124,7 +124,7 @@ namespace N2.Edit
 		public string GetNavigationUrl(ContentItem selectedItem)
 		{
 			return string.Format(EditTreeUrlFormat,
-				HttpUtility.UrlEncode(selectedItem.RewrittenUrl));
+				HttpUtility.UrlEncode(selectedItem.Path));
 		}
 
 		/// <summary>Gets the url for the preview frame.</summary>
@@ -230,14 +230,6 @@ namespace N2.Edit
 				navigationPlugIns.Add(attribute as NavigationPlugInAttribute);
 			else
 				throw new N2Exception("A plugin named '{0}' is already defined, assembly: {1}", attribute.Name, a.FullName);
-
-			//if (!string.IsNullOrEmpty(attribute.GlobalResourceClassName))
-			//{
-			//    string baseName = "Resources." + attribute.GlobalResourceClassName;
-
-			//    attribute.Title = Utility.GetResourceString(baseName, attribute.Name + ".Title") ?? attribute.Title;
-			//    attribute.ToolTip = Utility.GetResourceString(baseName, attribute.Name + ".ToolTip") ?? attribute.ToolTip;
-			//}
 		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
@@ -451,7 +443,7 @@ namespace N2.Edit
 		private string FormatUrl(ContentItem selectedItem, string path)
 		{
 			string url = Utility.ToAbsolute(path);
-			url += "?selected=" + HttpUtility.UrlEncode(selectedItem.RewrittenUrl);
+			url += "?selected=" + HttpUtility.UrlEncode(selectedItem.Path);
 			return url;
 		}
 
@@ -538,7 +530,7 @@ namespace N2.Edit
 				throw new N2Exception("Cannot insert item before or after the root page.");
 
 			string url = string.Format("~/edit/edit.aspx?selected={0}&discriminator={1}&zoneName={2}",
-				HttpUtility.UrlEncode(parent.RewrittenUrl),
+				HttpUtility.UrlEncode(parent.Path),
 				HttpUtility.UrlEncode(definition.Discriminator),
 				HttpUtility.UrlEncode(zoneName));
 			if (position == CreationPosition.Before)
@@ -553,7 +545,7 @@ namespace N2.Edit
 		/// <returns>The url to the edit page</returns>
 		public string GetEditExistingItemUrl(ContentItem item)
 		{
-			return string.Format("~/edit/edit.aspx?selected={0}", HttpUtility.UrlEncode(item.RewrittenUrl));
+			return string.Format("~/edit/edit.aspx?selected={0}", HttpUtility.UrlEncode(item.Path));
 		}
 		#endregion
 	}

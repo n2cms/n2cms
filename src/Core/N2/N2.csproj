@@ -32,7 +32,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\N2.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -310,8 +311,10 @@
     <Compile Include="Details\EditableLinkAttribute.cs" />
     <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
     <Compile Include="Edit\CreationPosition.cs" />
+    <Compile Include="Edit\Navigator.cs" />
     <Compile Include="Edit\Settings\SettingsManager.cs" />
     <Compile Include="Edit\ToolbarAreaAttribute.cs" />
+    <Compile Include="INode.cs" />
     <Compile Include="Installation\DatabaseStatus.cs" />
     <Compile Include="Installation\InstallationManager.cs" />
     <Compile Include="Installation\SqlServerType.cs" />

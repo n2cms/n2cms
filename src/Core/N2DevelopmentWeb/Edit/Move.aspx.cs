@@ -30,22 +30,16 @@ namespace N2.Edit
 	[ToolbarPlugIn("", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Navigation, "", "~/Edit/Img/Ico/cut.gif", 30, ToolTip = "move", GlobalResourceClassName = "Toolbar")]
 	public partial class Move : EditPage
 	{
-		protected ContentItem MemorizedItem;
-
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			string memory = Request.QueryString["memory"];
-			MemorizedItem = N2.Context.UrlParser.Parse(memory);
-			if (MemorizedItem == null)
-				throw  new ArgumentException("memory", "Couldn't find any item with the url " + memory);
-
 			if (!IsPostBack)
 			{
 				try
 				{
 					pnlNewName.Visible = false;
-					Engine.Persister.Move(MemorizedItem, SelectedItem);
-					Refresh(MemorizedItem, ToolbarArea.Both);
+					ContentItem toMove = MemorizedItem;
+					Engine.Persister.Move(toMove, SelectedItem);
+					Refresh(toMove, ToolbarArea.Both);
 				}
 				catch (NameOccupiedException ex)
 				{

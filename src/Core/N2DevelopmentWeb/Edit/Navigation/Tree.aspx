@@ -32,8 +32,8 @@
 			        tolerance: 'pointer',
 			        drop: function(e, ui) {
 						var action = e.ctrlKey ? "copy" : "move";
-			            var to = this.href.replace(/.*?:\/\/.*?\//, "/");
-			            var from = ui.element.href.replace(/.*?:\/\/.*?\//, "/");
+			            var to = this.rel;
+			            var from = ui.element.rel;
 						parent.preview.location = "../paste.aspx?action="
 							+ action 
 							+ "&memory=" 

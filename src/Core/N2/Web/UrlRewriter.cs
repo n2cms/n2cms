@@ -118,20 +118,6 @@ namespace N2.Web
 			return item.RewrittenUrl;
 		}
 
-		//protected virtual string AppendExistingQueryString(string url, IWebContext context)
-		//{
-		//    StringBuilder builder = new StringBuilder(url);
-		//    foreach (string key in context.Request.QueryString.AllKeys)
-		//    {
-		//        if (!key.Equals("item", StringComparison.InvariantCultureIgnoreCase)
-		//            || key.Equals("page", StringComparison.InvariantCultureIgnoreCase))
-		//        {
-		//            builder.AppendFormat("&{0}={1}", key, context.Request.QueryString[key]);
-		//        }
-		//    }
-		//    return builder.ToString();
-		//}
-
 		protected virtual bool IsRewritable(HttpRequest request)
 		{
 			return request.Url.AbsolutePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)

@@ -38,8 +38,7 @@ namespace N2.Templates.Form.UI
 			mm.Subject = CurrentItem.MailSubject;
 			mm.Body = sb.ToString();
 
-			SmtpClient sc = Find.RootItem.GetSmtpClient();
-			sc.Send(mm);
+			Engine.Resolve<Services.IMailSender>().Send(mm);
 
 			mv.ActiveViewIndex = 1;
 		}

@@ -28,6 +28,12 @@ namespace N2.Web.UI
     public abstract class Page<TPage> : System.Web.UI.Page, IPageItemContainer 
         where TPage : N2.ContentItem
     {
+		/// <summary>Gets the current CMS Engine.</summary>
+		public N2.Engine.IEngine Engine
+		{
+			get { return N2.Context.Instance; }
+		}
+
 		/// <summary>Gets the content item associated with this page.</summary>
         public virtual TPage CurrentPage
         {
@@ -39,8 +45,6 @@ namespace N2.Web.UI
 			get { return CurrentPage; }
 		}
 
-		#region IPageItemContainer & IItemContainer Members
-
 		ContentItem IPageItemContainer.CurrentPage
         {
             get { return this.CurrentPage; }
@@ -49,7 +53,5 @@ namespace N2.Web.UI
 		{
 			get { return this.CurrentPage; }
 		}
-
-        #endregion
     }
 }

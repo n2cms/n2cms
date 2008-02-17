@@ -11,10 +11,15 @@ namespace N2.Web.UI
 		where TPage : N2.ContentItem
 		where TItem : N2.ContentItem
 	{
-		#region Properties
+		/// <summary>Gets the current CMS Engine.</summary>
+		public N2.Engine.IEngine Engine
+		{
+			get { return N2.Context.Instance; }
+		}
 
 		private TItem currentData;
 		/// <summary>Gets the current data item.</summary>
+		[Obsolete("Use CurrentItem to access part specific data.")]
 		public virtual TItem CurrentData
 		{
 			get { return this.currentData ?? ItemUtility.CurrentContentItem as TItem; }
@@ -37,9 +42,6 @@ namespace N2.Web.UI
 				return false;
 			}
 		}
-		#endregion
-
-		#region IDataItemContainer & IItemContainer Members
 
 		ContentItem IDataItemContainer.CurrentData
 		{
@@ -50,7 +52,5 @@ namespace N2.Web.UI
 		{
 			get { return this.CurrentData; }
 		}
-
-		#endregion
 	}
 }

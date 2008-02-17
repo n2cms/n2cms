@@ -28,7 +28,6 @@ namespace N2.Edit
 {
     public partial class Default : Web.EditPage
 	{
-		#region Page Event Handlers
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -36,7 +35,7 @@ namespace N2.Edit
 			try
 			{
 				// These fields are used client side to store selected items
-				Page.ClientScript.RegisterHiddenField("selected", SelectedItem.RewrittenUrl);
+				Page.ClientScript.RegisterHiddenField("selected", SelectedItem.Path);
 				Page.ClientScript.RegisterHiddenField("memory", "");
 				Page.ClientScript.RegisterHiddenField("action", "");
 			}
@@ -49,6 +48,5 @@ namespace N2.Edit
 					Response.Write("Error: Couldn't find '" + url + "'.");
 			}
 		}
-		#endregion
 	}
 }

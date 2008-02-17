@@ -24,6 +24,7 @@ namespace N2.Web.UI.WebControls
 	{
 		private char whitespaceReplacement = '-';
 		private bool toLower;
+		private bool ascii;
 
 		#region Constructor
 
@@ -61,11 +62,12 @@ namespace N2.Web.UI.WebControls
 					if (tbTitle != null)
 					{
 						string s = script + Environment.NewLine +
-						           string.Format("$('#{0}').bind('change', function(){{updateName('{0}','{1}', '{2}', {3});}});", 
+						           string.Format("$('#{0}').bind('change', function(){{updateName('{0}','{1}', '{2}', {3}, {4});}});", 
 												 tbTitle.ClientID,
 						                         ClientID,
 												 WhitespaceReplacement,
-												 ToLower.ToString().ToLower());
+												 ToLower.ToString().ToLower(),
+												 Ascii.ToString().ToLower());
 						Register.JavaScript(Page, s, ScriptPosition.Header, ScriptOptions.DocumentReady);
 					}
 				}
@@ -82,11 +84,16 @@ namespace N2.Web.UI.WebControls
 
 		private const string script =
 			@"
-function updateName(titleid,nameid,whitespace,tolower){
+function updateName(titleid,nameid,whitespace,tolower,ascii){
     var titleBox=document.getElementById(titleid);
 	
-	var name = titleBox.value.replace(/[%?&/+:]|[.]+$/g, '').replace(/[.]+/g, '.').replace(/\s+/g,whitespace);
-	if(tolower)name = name.toLowerCase();
+	var name = titleBox.value.replace(/[%?&/+:<>]|[.]+$/g, '').replace(/[.]+/g, '.').replace(/\s+/g,whitespace);
+	if(tolower) name = name.toLowerCase();
+	if(ascii) name = name
+		.replace(/[åä]/g, 'a').replace(/[ÅÄ]/g, 'A')
+		.replace(/æ/g, 'ae').replace(/Æ/g, 'ae')
+		.replace(/[öø]/g, 'o').replace(/[ÖØ]/g, 'O')
+		.replace(/[^a-zA-Z0-9_-]/g, '');
     
 	var nameBox=document.getElementById(nameid);
 	nameBox.value = name;
@@ -123,6 +130,12 @@ function updateName(titleid,nameid,whitespace,tolower){
 		{
 			get { return toLower; }
 			set { toLower = value; }
+		}
+
+		public bool Ascii
+		{
+			get { return ascii; }
+			set { ascii = value; }
 		}
 
 		/// <summary>Validates the name editor's value checking uniqueness and lenght.</summary>

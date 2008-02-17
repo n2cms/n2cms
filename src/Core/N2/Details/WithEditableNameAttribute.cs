@@ -36,6 +36,7 @@ namespace N2.Details
     {
     	private char whitespaceReplacement = '-';
 		private bool toLower = true;
+		private bool ascii = false;
 
     	/// <summary>
 		/// Creates a new instance of the WithEditableAttribute class with default values.
@@ -68,6 +69,14 @@ namespace N2.Details
     		set { toLower = value; }
     	}
 
+		/// <summary>Gets or sets wether non-ascii characters will be removed from the name.</summary>
+		public bool Ascii
+		{
+			get { return ascii; }
+			set { ascii = value; }
+		}
+
+
     	public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			NameEditor ne = (NameEditor)editor;
@@ -92,6 +101,7 @@ namespace N2.Details
 			ne.CssClass = "nameEditor";
 			ne.WhitespaceReplacement = WhitespaceReplacement;
 			ne.ToLower = ToLower;
+			ne.Ascii = Ascii;
 			container.Controls.Add(ne);
 			return ne;
 		}

@@ -55,9 +55,7 @@ else window.location = '{2}';";
 				GetNavigationUrl(item), // 1
 				GetPreviewUrl(item), // 2
 				item.ID, // 3
-				item.RewrittenUrl, // 4
-				DataBinder.Eval(SelectedItem, "ID"), // 5
-				DataBinder.Eval(SelectedItem, "RewrittenUrl") // 6
+				item.Path // 4
 				);
 
 			ClientScript.RegisterClientScriptBlock(
@@ -85,14 +83,8 @@ else window.location = '{2}';";
 
 		protected virtual void RegisterSetupToolbarScript(ContentItem item)
 		{
-			string script = string.Format(SetupToolbarScriptFormat,
-				item.RewrittenUrl,
-				item.ID);
-
-			ClientScript.RegisterClientScriptBlock(
-				typeof(EditPage),
-				"AddSetupToolbarScript",
-				script, true);
+			string script = string.Format(SetupToolbarScriptFormat, item.Path, item.ID);
+			ClientScript.RegisterClientScriptBlock(typeof(EditPage), "AddSetupToolbarScript", script, true);
 		}
 
 		#endregion
@@ -186,7 +178,7 @@ else window.location = '{2}';";
 			get { return (int)(ViewState["SelectedItemID"] ?? 0); }
 			set { ViewState["SelectedItemID"] = value; }
 		}
-
+		
 		private ContentItem selectedItem = null;
 
 		/// <summary>Gets the currently selected item by the tree menu in edit mode.</summary>
@@ -197,7 +189,7 @@ else window.location = '{2}';";
 				return selectedItem ?? 
 					(selectedItem = GetFromViewState() 
 						?? GetFromUrl() 
-						?? N2.Context.UrlParser.StartPage);
+						?? Engine.UrlParser.StartPage);
 			}
 			set
 			{
@@ -209,6 +201,13 @@ else window.location = '{2}';";
 					SelectedItemID = 0;
 			}
 		}
+
+		private ContentItem memorizedItem = null;
+		protected ContentItem MemorizedItem
+		{
+			get { return memorizedItem ?? (memorizedItem = Engine.Resolve<Navigator>().Navigate(Request.QueryString["memory"])); }
+		}
+
 		#endregion
 
 		#region Helper Methods
@@ -216,7 +215,7 @@ else window.location = '{2}';";
 		private ContentItem GetFromViewState()
 		{
 			if (SelectedItemID != 0)
-				return N2.Context.Persister.Get(SelectedItemID);
+				return Engine.Persister.Get(SelectedItemID);
 			return null;
 		}
 
@@ -224,11 +223,11 @@ else window.location = '{2}';";
 		{
 			string selected = GetSelectedUrl();
 			if (!string.IsNullOrEmpty(selected))
-				return N2.Context.UrlParser.Parse(selected);
+				return Engine.Resolve<Navigator>().Navigate(selected);
 
 			string itemId = Request["item"];
 			if (!string.IsNullOrEmpty(itemId))
-				return N2.Context.Persister.Get(int.Parse(itemId));
+				return Engine.Persister.Get(int.Parse(itemId));
 
 			return null;
 		}

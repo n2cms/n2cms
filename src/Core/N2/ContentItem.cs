@@ -49,7 +49,7 @@ namespace N2
     /// }
     /// </example>
 	[Serializable, RestrictParents(typeof(ContentItem)), DebuggerDisplay("{Name} [{ID}]")]
-	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, IContainable
+	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, IContainable, INode
     {
         #region Constructor
         /// <summary>Creates a new instance of the ContentItem.</summary>
@@ -215,17 +215,7 @@ namespace N2
 		/// <summary>Gets the public url to this item. This is computed by walking the parent path and prepending their names to the url.</summary>
 		public virtual string Url
 		{
-			get
-			{
-				if (url == null)
-				{
-					if (urlParser != null)
-						url = urlParser.BuildUrl(this);
-					else
-						url = RewrittenUrl;
-				}
-				return url;
-			}
+			get { return url ?? (url = (urlParser != null) ? urlParser.BuildUrl(this) : RewrittenUrl); }
 		}
 
 		/// <summary>Gets the template that handle the presentation of this content item. For non page items (IsPage) this can be a user control (ascx).</summary>
@@ -451,17 +441,25 @@ namespace N2
         {
 			if (string.IsNullOrEmpty(childName))
 				return null;
+
 			int slashIndex = childName.IndexOf('/');
-			ContentItem child;
 			if (slashIndex > 0)
 			{
-				child = FindChild(childName.Substring(0, slashIndex));
-				if(child != null)
-					child = child.GetChild(childName.Substring(slashIndex + 1));
+				ContentItem child = FindChild(childName.Substring(0, slashIndex));
+				if (child != null)
+					return child.GetChild(childName.Substring(slashIndex + 1));
+				else
+					return null;
+			}
+			else if (slashIndex == 0)
+			{
+				if (childName.Length == 1)
+					return this;
+				else
+					return GetChild(childName.Substring(1));
 			}
 			else
-				child = FindChild(childName);
-			return child;
+				return FindChild(childName);
         }
 
 		private ContentItem FindChild(string childName)
@@ -649,5 +647,35 @@ namespace N2
 		}
 
 		#endregion
-    }
+
+		#region INode Members
+
+		public string Path
+		{
+			get
+			{
+				string path = "/";
+				for (ContentItem item = this; item.Parent != null; item = item.Parent )
+				{
+					path = "/" + item.Name + path;
+				}
+				return path;
+			}
+		}
+
+		IEnumerable<INode> INode.GetChildren()
+		{
+			foreach (ContentItem item in GetChildren())
+			{
+				yield return item;
+			}
+		}
+
+		//void INode.AddTo(INode parent)
+		//{
+		//    AddTo(parent as ContentItem);
+		//}
+
+		#endregion
+	}
 }

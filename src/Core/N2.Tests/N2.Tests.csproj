@@ -137,6 +137,8 @@
     <Compile Include="Edit\Items\ItemWithModification.cs" />
     <Compile Include="Edit\Items\ItemWithRequiredProperty.cs" />
     <Compile Include="Edit\Items\SeveralPlugins.cs" />
+    <Compile Include="Edit\NavigatorTests.cs" />
+    <Compile Include="NodeTests.cs" />
     <Compile Include="Persistence\FindTests.cs" />
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="Persistence\NH\PersisterIntegrityTests.cs" />

@@ -4,25 +4,20 @@
 	<asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-    <n2:tabpanel ID="tpType" runat="server" ToolTip="Select type" 
-		CssClass="tabPanel" meta:resourcekey="tpTypeResource1" RegisterTabCss="False">
+    <n2:tabpanel ID="tpType" runat="server" ToolTip="Select type" CssClass="tabPanel" meta:resourcekey="tpTypeResource1" RegisterTabCss="False">
         <asp:Repeater ID="rptLocations" runat="server">
             <ItemTemplate>
 			    <div class="type cf">
-				    <asp:HyperLink ID="hlNew" 
-						NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' 
-						ToolTip='<%# Eval("ToolTip") %>' runat="server" 
-						meta:resourcekey="hlNewResource1"><asp:Image ID="imgIco" 
-						ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" 
-						meta:resourcekey="imgIcoResource1" />
-                        <%# Eval("Title") %></asp:HyperLink>
+				    <asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
+						<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
+                        <%# Eval("Title") %>
+                    </asp:HyperLink>
 				    <%# Eval("Description") %>
 			    </div>
             </ItemTemplate>
         </asp:Repeater>
     </n2:tabpanel>
-    <n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add location" 
-		CssClass="tabPanel" meta:resourcekey="tpAddResource1" RegisterTabCss="False">
+    <n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add location" CssClass="tabPanel" meta:resourcekey="tpAddResource1" RegisterTabCss="False">
         <asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">
             <asp:View runat="server">
                 <div class="cf">

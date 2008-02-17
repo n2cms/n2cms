@@ -38,6 +38,12 @@ namespace N2.Web
 		/// <returns>The same object for chaining.</returns>
 		ILinkBuilder AddQuery(string key, string value);
 
+		/// <summary>Sets an attribute on the link.</summary>
+		/// <param name="key">The attribute name.</param>
+		/// <param name="value">The attribute value.</param>
+		/// <returns>The same object for chaining.</returns>
+		ILinkBuilder Attribute(string key, string value);
+
 		/// <summary>Gets the link's string representation.</summary>
 		/// <returns>A string anchor.</returns>
 		string ToString();

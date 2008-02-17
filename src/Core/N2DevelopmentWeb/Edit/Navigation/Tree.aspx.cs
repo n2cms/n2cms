@@ -21,24 +21,20 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Web;
 
 namespace N2.Edit.Navigation
 {
 	[ToolbarPlugIn("", "tree", "navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/sitemap_color.gif", -30, ToolTip = "hierarchical navigation", GlobalResourceClassName = "Toolbar")]
 	public partial class Tree : NavigationPage
 	{
-		#region Page and Control Event Handlers
-		
-		protected override void OnLoad(EventArgs e)
+		protected override void OnInit(EventArgs e)
 		{
-			base.OnLoad(e);
-
-			if (!IsPostBack)
-			{
-				siteTreeView.CurrentItem = SelectedItem;
-				siteTreeView.DataBind();
-			}
+			siteTreeView.RootNode = RootNode;
+			siteTreeView.CurrentItem = SelectedItem;
+			siteTreeView.DataBind();
+	
+			base.OnInit(e);
 		}
-		#endregion
 	}
 }

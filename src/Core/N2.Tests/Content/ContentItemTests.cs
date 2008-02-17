@@ -313,7 +313,7 @@ namespace N2.Tests.Content
 		}
 
 		[Test]
-		public void GetChild_CantFindChildWhenTrailingSlash()
+		public void GetChild_DoesntFindChild_WhenTrailingSlash()
 		{
 			AnItem root = CreateOneItem<AnItem>(1, "root", null);
 			AnItem item1 = CreateOneItem<AnItem>(2, "item1", root);
