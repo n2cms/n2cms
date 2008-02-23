@@ -1114,7 +1114,7 @@
     <Content Include="img\shading.png" />
     <Content Include="img\SlidingCurtain_bg.png" />
     <Content Include="img\SlidingCurtain_bg_bottom.png" />
-    <Content Include="Js\jquery-1.2.2.js" />
+    <Content Include="Js\jquery-1.2.3.js" />
     <Content Include="Js\jquery.ui.js" />
     <Content Include="Js\tiny_mce\plugins\advimage\img\sample.gif" />
     <Content Include="Js\tiny_mce\plugins\media\img\flash.gif" />
