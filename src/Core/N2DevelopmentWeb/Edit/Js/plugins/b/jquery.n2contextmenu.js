@@ -1,9 +1,4 @@
-﻿(function(v) {
-	alert(v);
-})("hej");
-
-
-/*
+﻿/*
  * n2contextmenu 0.2 - Copyright (c) 2007 Cristian Libardo
  */
 

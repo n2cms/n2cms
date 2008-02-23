@@ -25,5 +25,5 @@ var cookie = {
 	erase: function(name) {
 		cookie.create(name,"",-1);
 	}
-}
+};
 
