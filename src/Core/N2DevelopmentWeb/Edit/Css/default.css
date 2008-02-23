@@ -1,6 +1,12 @@
-﻿/* Toolbar */
+﻿body
+{
+	background:#fff;
+}
+
+/* Toolbar */
 .toolbar
 {
+	position:relative;
 	background:#c3c0bd url(../img/toolbar_bg.gif) repeat-x 0% 100%;
 }
 .toolbar .left
@@ -13,8 +19,8 @@
 {
 	float:left;
 	padding-right:6px;
+	padding-bottom:2px;
 	background:url(../img/toolbar_area_right.gif) no-repeat 100% 100%;
-	padding-bottom:1px;
 }
 .toolbar .navigation,
 .toolbar .preview
@@ -22,18 +28,16 @@
 	float:left;
 	background:#ffffff url(../img/toolbar_area_bg.gif) repeat-x 0% 100%;
 }
-.toolbar .navigation
-{
-}
-.toolbar .preview
-{
-}
 
 /* Navigation */
+.toolbar .command img
+{
+	margin:2px 0;
+}
 .toolbar .logout
 {
 	float:right;
-	margin-right:8px;
+	margin:2px 50px 0 0;
 }
 .toolbar a.logout:hover
 {
@@ -42,7 +46,9 @@
 
 #logo
 {
-	float:right;
+	position:absolute;
+	right:0;
+	bottom:0;
 }
 
 

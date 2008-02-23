@@ -4,6 +4,9 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" ID="cc" runat="server">
+
+[<%= SelectedItem %>]
+
     <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType" >
 		<asp:Repeater ID="rptTypes" runat="server">
 			<ItemTemplate>

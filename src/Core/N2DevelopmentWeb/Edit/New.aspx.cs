@@ -36,15 +36,6 @@ namespace N2.Edit
 		ItemDefinition ParentItemDefinition = null;
 		protected string ZoneName = null;
 
-        protected void Page_Init(object sender, EventArgs e)
-        {
-			hlCancel.NavigateUrl = SelectedItem.Url;
-			if (SelectedItem.Parent == null)
-			{
-				rblPosition.Enabled = false;
-			}
-        }
-
 		public ContentItem ActualItem
 		{
 			get
@@ -55,6 +46,15 @@ namespace N2.Edit
 					return base.SelectedItem.Parent;
 			}
 		}
+
+        protected void Page_Init(object sender, EventArgs e)
+        {
+			hlCancel.NavigateUrl = SelectedItem.Url;
+			if (SelectedItem.Parent == null)
+			{
+				rblPosition.Enabled = false;
+			}
+        }
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -90,7 +90,7 @@ namespace N2.Edit
 		private void LoadAllowedTypes()
 		{
 			int allowedChildrenCount = ParentItemDefinition.AllowedChildren.Count;
-			IList<ItemDefinition> allowedChildren = ParentItemDefinition.GetAllowedChildren(ZoneName, this.User);
+			IList<ItemDefinition> allowedChildren = Engine.Definitions.GetAllowedChildren(ParentItemDefinition, ZoneName, this.User);
 
 			if (allowedChildrenCount == 0)
 			{
