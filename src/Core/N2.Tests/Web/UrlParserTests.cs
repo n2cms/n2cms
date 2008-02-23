@@ -26,7 +26,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseStartPageUrl()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/");
 			Assert.AreEqual(startItem, parsedItem);
@@ -35,7 +35,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemOneLevelDown()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/item1.aspx");
 			Assert.AreEqual(item1, parsedItem);
@@ -44,7 +44,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemTwoLevelsDown()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/item1/item1_1.aspx");
 			Assert.AreEqual(item1_1, parsedItem);
@@ -53,7 +53,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemOneStepOneLevelDown()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/item2.aspx");
 			Assert.AreEqual(item2, parsedItem);
@@ -62,7 +62,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemOneStepTwoLevelsDown()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/item2/item2_1.aspx");
 			Assert.AreEqual(item2_1, parsedItem);
@@ -71,7 +71,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void ParseNonExistantItemYeldsNull()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/item3.aspx");
 			Assert.IsNull(parsedItem);
@@ -80,7 +80,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemWithMixedCase()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/iTeM2/ItEm2_1.AsPx");
 			Assert.AreEqual(item2_1, parsedItem);
@@ -89,7 +89,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemWithHash()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/item1.aspx#someHash");
 			Assert.AreEqual(item1, parsedItem);
@@ -100,7 +100,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseDataItemOnStartPage()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/?item=6");
 			Assert.AreEqual(data1, parsedItem);
@@ -109,7 +109,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseDataItemOneLevelDown()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/item2.aspx?item=7");
 			Assert.AreEqual(data2, parsedItem);
@@ -118,7 +118,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseDataItemTwoLevelsDown()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/item2/item2_1.aspx?item=8");
 			Assert.AreEqual(data3, parsedItem);
@@ -138,7 +138,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseDataItemWithMixedCase()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			ContentItem parsedItem = parser.Parse("/?iTeM=6");
 			Assert.AreEqual(data1, parsedItem);
@@ -151,7 +151,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateStartItemUrl()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			string url = parser.BuildUrl(startItem);
 			Assert.AreEqual("/", url);
@@ -160,7 +160,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateItemOneLevelDownUrl()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			string url = parser.BuildUrl(item1);
 			Assert.AreEqual("/item1.aspx", url);
@@ -169,7 +169,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateItemOneStepTwoLevelsDownUrl()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			string url = parser.BuildUrl(item2_1);
 			Assert.AreEqual("/item2/item2_1.aspx", url);
@@ -181,7 +181,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateDataItemUrlOnStartPage()
 		{
-			CreateItems();
+			CreateItems(true);
 			string url = parser.BuildUrl(data1);
 			Assert.AreEqual("/?item=6", url);
 		}
@@ -189,7 +189,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateDataItemUrlOnPageOneLevelDown()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			string url = parser.BuildUrl(data2);
 			Assert.AreEqual("/item2.aspx?item=7", url);
@@ -198,7 +198,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateDataItemUrlOnPageTwoLevelsDown()
 		{
-			CreateItems();
+			CreateItems(true);
 
 			string url = parser.BuildUrl(data3);
 			Assert.AreEqual("/item2/item2_1.aspx?item=8", url);

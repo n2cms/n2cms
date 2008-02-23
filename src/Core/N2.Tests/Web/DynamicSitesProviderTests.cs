@@ -13,7 +13,7 @@ namespace N2.Tests.Web
 	{
 		protected SiteProvidingItem CreateTheItemTree()
 		{
-			int id = 0;
+			int id = 22;
 			SiteProvidingItem rootItem = CreateOneItem<SiteProvidingItem>(++id, id.ToString(), null);
 			SiteProvidingItem site1 = CreateOneItem<SiteProvidingItem>(++id, id.ToString(), rootItem);
 			SiteProvidingItem site2 = CreateOneItem<SiteProvidingItem>(++id, id.ToString(), rootItem);
@@ -29,53 +29,37 @@ namespace N2.Tests.Web
 			return rootItem;
 		}
 
-		protected override T CreateOneItem<T>(int id, string name, ContentItem parent)
-		{
-			T item = base.CreateOneItem<T>(id, name, parent);
-			Expect.On(persister).Call(persister.Get(item.ID)).Return(item);
-			return item;
-		}
-
 		[Test]
 		public void CanFindSiteOnRootItem()
 		{
-			using (mocks.Record())
-			{
-				ContentItem rootItem = CreateTheItemTree();
-				mocks.ReplayAll();
+			ContentItem rootItem = CreateTheItemTree();
+			mocks.ReplayAll();
 
-				DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, rootItem.ID);
-				sitesProvider.RecursionDepth = 0;
-				Assert.AreEqual(1, sitesProvider.GetSites().Count);
-			}
+			DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, rootItem.ID);
+			sitesProvider.RecursionDepth = 0;
+			Assert.AreEqual(1, sitesProvider.GetSites().Count);
 		}
 
 		[Test]
 		public void CanFindSitesOneDepthDown()
 		{
-			using (mocks.Record())
-			{
-				ContentItem rootItem = CreateTheItemTree();
-				mocks.ReplayAll();
+			ContentItem rootItem = CreateTheItemTree();
+			mocks.ReplayAll();
 
-				DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, rootItem.ID);
-				sitesProvider.RecursionDepth = 1;
-				Assert.AreEqual(3, sitesProvider.GetSites().Count);
-			}
+			DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, rootItem.ID);
+			sitesProvider.RecursionDepth = 1;
+			Assert.AreEqual(3, sitesProvider.GetSites().Count);
 		}
 
 		[Test]
 		public void CanFindSitesTwoDepthsDown()
 		{
-			using (mocks.Record())
-			{
-				ContentItem rootItem = CreateTheItemTree();
-				mocks.ReplayAll();
+			ContentItem rootItem = CreateTheItemTree();
+			mocks.ReplayAll();
 
-				DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, rootItem.ID);
-				sitesProvider.RecursionDepth = 2;
-				Assert.AreEqual(5, sitesProvider.GetSites().Count);
-			}
+			DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, rootItem.ID);
+			sitesProvider.RecursionDepth = 2;
+			Assert.AreEqual(5, sitesProvider.GetSites().Count);
 		}
 	}
 }

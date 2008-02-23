@@ -28,7 +28,7 @@ namespace N2.Tests
 
 		protected virtual IPersister CreatePersister()
 		{
-			IPersister persister = mocks.CreateMock<IPersister>();
+			IPersister persister = mocks.Stub<IPersister>();
 			
 			persister.ItemSaving += null;
 			saving = LastCall.IgnoreArguments().Repeat.Any().GetEventRaiser();

@@ -60,12 +60,6 @@ namespace N2.Tests.Security
 
 			mocks.Replay(persister);
 		}
-
-		[TearDown]
-		public void TearDown()
-		{
-			mocks.VerifyAll();
-		}
 		#endregion
 
 		[Test]

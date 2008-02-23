@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 
 using N2;
+using N2.Integrity;
 
 namespace N2.Tests.Integrity.Definitions
 {
-	[N2.Integrity.RestrictParents(N2.Integrity.AllowedTypes.None)] // no parents allowed
+	[Definition]
+	[RestrictParents(AllowedTypes.None)] // no parents allowed
 	public class StartPage : N2.ContentItem
 	{
 	}

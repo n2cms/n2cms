@@ -18,7 +18,7 @@ namespace N2.Tests
 			mocks = new MockRepository();
 		}
 
-		//[TearDown]
+		[TearDown]
 		public virtual void TearDown()
 		{
 			if (mocks != null)

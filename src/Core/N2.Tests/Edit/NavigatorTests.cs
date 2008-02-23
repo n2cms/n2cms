@@ -64,5 +64,23 @@ namespace N2.Tests.Edit
 
 			Assert.AreSame(item1_item12, navigatedItem);
 		}
+
+		[Test]
+		public void CanNavigateToRoot()
+		{
+			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
+			ContentItem item1 = CreateOneItem<AnItem>(2, "item1", root);
+			
+			IPersister persister = mocks.CreateMock<IPersister>();
+			Expect.Call(persister.Get(1)).Return(root);
+
+			mocks.ReplayAll();
+
+			Navigator n = new Navigator(persister, new Site(1));
+
+			ContentItem navigatedItem = n.Navigate("/");
+
+			Assert.AreSame(root, navigatedItem);
+		}
 	}
 }

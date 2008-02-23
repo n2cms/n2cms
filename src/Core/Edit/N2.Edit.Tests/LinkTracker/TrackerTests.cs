@@ -16,7 +16,6 @@ namespace N2.Tests.Edit.LinkTracker
 	public class TrackerTests : ItemPersistenceMockingBase
 	{
 		#region SetUp
-		IEngine engine;
 		Tracker linkFactory;
 		IUrlParser parser;
 
@@ -51,14 +50,8 @@ namespace N2.Tests.Edit.LinkTracker
 				mocks.Replay(notifier);
 			return notifier;
 		}
-
-		[TearDown]
-		public void TearDown()
-		{
-			mocks.ReplayAll();
-			mocks.VerifyAll();
-		} 
 		#endregion
+
 
 		[Test]
 		public void TrackSingleLink()

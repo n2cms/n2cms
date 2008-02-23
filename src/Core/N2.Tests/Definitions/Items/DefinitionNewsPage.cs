@@ -4,6 +4,7 @@ using System.Text;
 
 namespace N2.Tests.Definitions.Items
 {
+	[Definition]
 	[N2.Web.UI.FieldSet("specific", "News specific", 100)]
 	public class DefinitionNewsPage : DefinitionTextPage
 	{

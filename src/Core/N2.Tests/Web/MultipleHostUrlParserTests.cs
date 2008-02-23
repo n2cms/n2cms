@@ -208,9 +208,9 @@ namespace N2.Tests.Web
 
 		private void CreateItemsAndBuildExpectations(string host, string url)
 		{
-			CreateItems();
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return(host);
-			Expect.On(wrapper).Call(wrapper.ToAppRelative(url)).Return(url);
+			CreateItems(true);
+			Expect.On(wrapper).Call(wrapper.CurrentHost).Return(host).Repeat.Any();
+			Expect.On(wrapper).Call(wrapper.ToAppRelative(url)).Return(url).Repeat.Any();
 			mocks.ReplayAll();
 		}
 		#endregion
@@ -219,8 +219,8 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateCurrentStartItemUrl()
 		{
-			CreateItems();
-			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
+			CreateItems(true);
+			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
 			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
 			mocks.ReplayAll();
 
@@ -231,8 +231,8 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanBuildUrlOnCurrentSite()
 		{
-			CreateItems();
-			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
+			CreateItems(true);
+			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
 			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com").Repeat.Any();
 			mocks.ReplayAll();
 
@@ -243,8 +243,8 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanBuildUrlOnOtherSiteStartPage()
 		{
-			CreateItems();
-			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
+			CreateItems(true);
+			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
 			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com").Repeat.Any();
 			mocks.ReplayAll();
 
@@ -255,8 +255,8 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanBuildUrlOnOtherSitePage()
 		{
-			CreateItems();
-			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
+			CreateItems(true);
+			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx").Repeat.Any();
 			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("n2.libardo.com").Repeat.Any();
 			mocks.ReplayAll();
 

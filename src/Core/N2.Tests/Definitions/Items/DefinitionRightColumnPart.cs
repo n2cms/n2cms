@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using N2.Integrity;
 
 namespace N2.Tests.Definitions.Items
 {
-	[N2.Integrity.AllowedZones("Right")]
+	[Definition]
+	[AllowedZones("Right")]
 	public abstract class DefinitionRightColumnPart : N2.ContentItem
 	{
 		public override bool IsPage

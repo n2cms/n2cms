@@ -24,13 +24,8 @@ namespace N2.Tests.Web
 
 			wrapper = CreateWrapper(true);
 
-			notifier = mocks.DynamicMock<IItemNotifier>();
+			notifier = mocks.Stub<IItemNotifier>();
 			site = new Site(1);
-		}
-
-		protected void CreateItems()
-		{
-			CreateItems(true);
 		}
 
 		protected void CreateItems(bool replay)

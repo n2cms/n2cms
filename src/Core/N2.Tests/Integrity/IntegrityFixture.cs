@@ -69,24 +69,23 @@ namespace N2.Tests.Integrity
 		[Test]
 		public void ValidateRootDefinition()
 		{
-			ItemDefinition definition = engine.Definitions.GetDefinition(typeof(Definitions.Root));
+			ItemDefinition rootDefinition = engine.Definitions.GetDefinition(typeof(Definitions.Root));
 			ItemDefinition startPageDefinition = engine.Definitions.GetDefinition(typeof(Definitions.StartPage));
-			EnumerableAssert.Contains(definition.AllowedChildren, startPageDefinition);
-			//Assert.AreEqual(1, definition.AllowedZoneNames.Count);
-			Assert.IsNull(definition.AuthorizedRoles);
-			Assert.AreEqual(0, definition.AvailableZones.Count);
-			Assert.AreEqual(0, definition.Containers.Count);
-			Assert.AreEqual("", definition.Description);
-			Assert.AreEqual(typeof(Definitions.Root).Name, definition.Discriminator);
-			Assert.AreEqual(1, definition.Displayables.Count);
-			Assert.AreEqual(0, definition.Editables.Count);
-			EnumerableAssert.Contains(definition.GetAllowedChildren(null, null), startPageDefinition);
-			Assert.AreEqual(0, definition.GetEditables(null).Count);
-			Assert.AreEqual(0, definition.GetModifiers("Title").Count); 
-			Assert.AreEqual(0, definition.Modifiers.Count);
-			Assert.AreEqual(1000, definition.SortOrder);
-			Assert.AreEqual(typeof(Definitions.Root).Name, definition.Title);
-			Assert.AreEqual(typeof(Definitions.Root).FullName, definition.ToolTip);
+			
+			EnumerableAssert.Contains(rootDefinition.AllowedChildren, startPageDefinition);
+			Assert.IsNull(rootDefinition.AuthorizedRoles);
+			Assert.AreEqual(0, rootDefinition.AvailableZones.Count);
+			Assert.AreEqual(0, rootDefinition.Containers.Count);
+			Assert.IsEmpty(rootDefinition.Description);
+			Assert.AreEqual(typeof(Definitions.Root).Name, rootDefinition.Discriminator);
+			Assert.AreEqual(1, rootDefinition.Displayables.Count);
+			Assert.AreEqual(0, rootDefinition.Editables.Count);
+			EnumerableAssert.Contains(engine.Definitions.GetAllowedChildren(rootDefinition, null, null), startPageDefinition);
+			Assert.AreEqual(0, rootDefinition.GetEditables(null).Count);
+			Assert.AreEqual(0, rootDefinition.GetModifiers("Title").Count); 
+			Assert.AreEqual(0, rootDefinition.Modifiers.Count);
+			Assert.AreEqual(0, rootDefinition.SortOrder);
+			Assert.AreEqual(typeof(Definitions.Root).Name, rootDefinition.Title);
 		}
 
 		[Test]

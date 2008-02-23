@@ -1,5 +1,6 @@
 namespace N2.Tests.Definitions.Items
 {
+	[Definition]
 	[N2.Integrity.RestrictParents(typeof(DefinitionNewsPage))]
 	[N2.Integrity.AllowedZones("", "Right")]
 	public class DefinitionNewsList : DefinitionRightColumnPart

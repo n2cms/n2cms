@@ -19,7 +19,7 @@ namespace N2.Tests.Web
 		public override void SetUp()
 		{
 			base.SetUp();
-			IPersister persister = mocks.CreateMock<IPersister>();
+			IPersister persister = mocks.Stub<IPersister>();
 			parser = mocks.CreateMock<IUrlParser>();
 			Expect.On(parser).Call(parser.DefaultExtension).Return(".aspx").Repeat.AtLeastOnce();
 			rewriter = new UrlRewriter(persister, parser);
@@ -70,6 +70,8 @@ namespace N2.Tests.Web
 		{
 			ContentItem root = CreateOneItem<PageItem>(1, "root", null);
 			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+
+			Expect.On(parser).Call(parser.Parse("/one.aspx")).Return(one).Repeat.Any();
 			
 			IWebContext context1 = MockContext(one, "happy=false");
 			context1.RewritePath("/default.aspx?page=2&happy=false");
@@ -92,7 +94,6 @@ namespace N2.Tests.Web
 			Expect.On(context).Call(context.QueryString).Return(query).Repeat.AtLeastOnce();
 			Expect.On(context).Call(context.Request).Return(request).Repeat.Any();
 			Expect.On(context).Call(context.RelativeUrl).Return("/one.aspx").Repeat.Any();
-			Expect.On(parser).Call(parser.Parse("/one.aspx")).Return(one);
 			return context;
 		}
 	}

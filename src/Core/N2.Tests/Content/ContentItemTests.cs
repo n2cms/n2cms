@@ -313,13 +313,33 @@ namespace N2.Tests.Content
 		}
 
 		[Test]
-		public void GetChild_DoesntFindChild_WhenTrailingSlash()
+		public void GetChild_CanFindCurrentItem()
 		{
 			AnItem root = CreateOneItem<AnItem>(1, "root", null);
 			AnItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 			AnItem item2 = CreateOneItem<AnItem>(3, "item2", item1);
 
-			Assert.IsNull(root.GetChild("item1/item2/"));
+			Assert.AreEqual(root.GetChild("/"), root);
+		}
+
+		[Test]
+		public void GetChild_CanFindItem_WhenTrailingSlash()
+		{
+			AnItem root = CreateOneItem<AnItem>(1, "root", null);
+			AnItem item1 = CreateOneItem<AnItem>(2, "item1", root);
+			AnItem item2 = CreateOneItem<AnItem>(3, "item2", item1);
+
+			Assert.AreEqual(root.GetChild("/item1/"), item1);
+		}
+
+		[Test]
+		public void GetChild_FindGrandChild_WhenTrailingSlash()
+		{
+			AnItem root = CreateOneItem<AnItem>(1, "root", null);
+			AnItem item1 = CreateOneItem<AnItem>(2, "item1", root);
+			AnItem item2 = CreateOneItem<AnItem>(3, "item2", item1);
+
+			Assert.AreEqual(root.GetChild("item1/item2/"), item2);
 		}
 
 		[Test]
@@ -352,14 +372,5 @@ namespace N2.Tests.Content
 
 			Assert.AreEqual("TheValue", clonedRoot.GetDetailCollection("TheDetailCollection", false)[0]);
 		}
-
-		//[Test]
-		//public void CanCastStringDetailToString()
-		//{
-		//    ContentItem root = CreateOneItem<AnItem>(1, "root", null);
-		//    root["TheDetail"] = "Hello";
-		//    string value = (string)root.Details["TheDetail"];
-		//    Assert.AreEqual("Hello", value);
-		//}
 	}
 }
