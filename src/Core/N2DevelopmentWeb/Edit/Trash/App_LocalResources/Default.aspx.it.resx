@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnClear.Text" xml:space="preserve">
-    <value>&lt;img src='../img/ico/delete.gif' /&gt; svuota</value>
+    <value>&lt;img src='../img/ico/delete.gif' /&gt; Svuota</value>
   </data>
   <data name="btnClear.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>&lt;img src='../img/ico/cancel.gif' /&gt; cancella</value>
+    <value>Indietro</value>
   </data>
   <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />

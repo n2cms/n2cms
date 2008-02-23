@@ -522,7 +522,6 @@
     <Content Include="Js\ContextMenu.js" />
     <Content Include="Js\FileSelection.js" />
     <Content Include="Js\ItemSelection.js" />
-    <Content Include="Js\plugins.js" />
     <Content Include="Css\Web.config" />
     <Content Include="img\Web.config" />
     <Content Include="App_LocalResources\AffectedItems.ascx.resx">
@@ -1123,14 +1122,12 @@
     <Content Include="img\SlidingCurtain_bg.png" />
     <Content Include="img\SlidingCurtain_bg_bottom.png" />
     <Content Include="Js\jquery-1.2.3.js" />
-    <Content Include="Js\jquery.ui.js" />
     <Content Include="Js\plugins\cookies.js" />
     <Content Include="Js\plugins\jquery.n2optionmenu.js" />
     <Content Include="Js\plugins\jquery.splitter.js" />
     <Content Include="Js\plugins\jquery.treeview.js" />
     <Content Include="Js\plugins\n2.js" />
-    <Content Include="Js\jquery.ui\ui.droppable.ext.js" />
-    <Content Include="Js\jquery.ui\ui.droppable.js" />
+    <Content Include="Js\jquery.ui\3_ui.droppable.js" />
     <Content Include="Js\tiny_mce\plugins\advimage\img\sample.gif" />
     <Content Include="Js\tiny_mce\plugins\media\img\flash.gif" />
     <Content Include="Js\tiny_mce\plugins\media\img\flv_player.swf" />
@@ -1150,12 +1147,17 @@
     <Content Include="Js\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Js\jquery.ui\ui.draggable.ext.js" />
-    <Content Include="Js\jquery.ui\ui.draggable.js" />
-    <Content Include="Js\jquery.ui\ui.mouse.js" />
+    <Content Include="Js\jquery.ui\0_jquery.dimensions.js" />
+    <Content Include="Js\jquery.ui\2_ui.draggable.js" />
+    <Content Include="Js\jquery.ui\1_ui.mouse.js" />
+    <Content Include="Js\jquery.ui\4_ui.draggable.ext.js" />
+    <Content Include="Js\jquery.ui\5_ui.droppable.ext.js" />
     <Content Include="Js\plugins.ashx" />
     <Content Include="Js\jquery.ashx" />
     <Content Include="Js\plugins\jquery.n2contextmenu.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Js\plugins\b\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
