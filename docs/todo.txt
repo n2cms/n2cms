@@ -2,13 +2,14 @@
 - Parts: Throw friendly exception when page isn't found
 - Sort buttons toolbar
 - Better toolbar plugin model
-- css copy warning 
 - remove menu parts from templates - move to master page
 - move sites initialization to after context.instance is set
 - bug: select items outside of start page
 - implement INode for edit mode integration
-- require definition attribute
 - allow other than content items to be edited
+- filemanager ie6 css
+- filemanager expand to action
+- upgrade jquery ui
 
 TODO:
 - documentation & programmability
