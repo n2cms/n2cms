@@ -5,21 +5,15 @@ using System.Collections;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
-using log4net;
 using System.Diagnostics;
 
 namespace N2.TemplateWeb
 {
     public class Global : System.Web.HttpApplication
     {
-		public static log4net.ILog log;
-
         protected void Application_Start(object sender, EventArgs e)
         {
 			AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
-			log4net.Config.XmlConfigurator.Configure();
-			//log = LogManager.GetLogger("default");
-			//log.Error("Application_Start");
 			Debug.WriteLine("Application_Start");
         }
 

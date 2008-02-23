@@ -45,10 +45,6 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate, Version=1.2.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\NHibernate.dll</HintPath>
@@ -312,19 +308,6 @@
     </Content>
     <EmbeddedResource Include="ChangedOwner.hbm.xml" />
     <Content Include="App_Themes\Theme1\Test.css" />
-    <Content Include="bin\Castle.Core.dll" />
-    <Content Include="bin\Castle.DynamicProxy.dll" />
-    <Content Include="bin\Castle.DynamicProxy2.dll" />
-    <Content Include="bin\Castle.MicroKernel.dll" />
-    <Content Include="bin\Castle.Windsor.dll" />
-    <Content Include="bin\Iesi.Collections.dll" />
-    <Content Include="bin\log4net.dll" />
-    <Content Include="bin\N2.dll" />
-    <Content Include="bin\N2.Parts.dll" />
-    <Content Include="bin\N2.Parts.pdb" />
-    <Content Include="bin\N2.pdb" />
-    <Content Include="bin\N2.XML" />
-    <Content Include="bin\NHibernate.dll" />
     <Content Include="Css\Editor.css" />
     <Content Include="itemwithchild.aspx" />
     <Content Include="Uc\ControlPanel.ascx" />

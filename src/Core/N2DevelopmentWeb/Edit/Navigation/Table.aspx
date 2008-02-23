@@ -8,7 +8,7 @@
         <title>Navigation</title>
         <link rel="stylesheet" href="../Css/All.css" type="text/css" />
         <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
-        <script src="../Js/plugins.js?v4" type="text/javascript" ></script>
+        <script src="../Js/plugins.ashx" type="text/javascript" ></script>
     </head>
 <body class="navigation table">
     <form id="form1" runat="server">

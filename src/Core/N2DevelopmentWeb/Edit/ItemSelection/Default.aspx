@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
-    <script src="../Js/plugins.js?v4" type="text/javascript" ></script>
+    <script src="../Js/plugins.ashx" type="text/javascript" ></script>
     <script src="../Js/UrlSelection.js" type="text/javascript" ></script>
     <script src="../Js/ItemSelection.js" type="text/javascript" ></script>
 </asp:Content>

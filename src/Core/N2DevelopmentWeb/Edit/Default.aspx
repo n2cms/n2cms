@@ -8,7 +8,7 @@
 		<title>Edit</title>
         <link rel="stylesheet" href="Css/All.css" type="text/css" />
         <link rel="stylesheet" href="Css/Default.css" type="text/css" />
-        <script src="Js/plugins.js?v4" type="text/javascript" ></script>
+        <script src="Js/plugins.ashx" type="text/javascript" ></script>
         <!--[if IE 6]>
 		<link rel="stylesheet" href="Css/IE6.css" type="text/css" />
 		<![endif]-->

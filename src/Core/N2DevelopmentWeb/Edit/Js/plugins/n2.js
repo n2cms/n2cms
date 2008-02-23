@@ -101,7 +101,7 @@ $(document).ready( function() {
 
 
 
-
+alert("framemanager");
 
 // DEFAULT
 var frameManager = function(){

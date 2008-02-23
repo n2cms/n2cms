@@ -163,7 +163,7 @@ namespace N2.Parts.Web.UI.WebControls
 		private void RegisterScripts()
 		{
 			Register.JQuery(Page);
-			Register.JavaScript(Page, "~/edit/js/jquery.ui.js");
+			Register.JavaScript(Page, "~/edit/js/jquery.ui.ashx");
 			if (string.IsNullOrEmpty(DragDropScriptUrl))
 				Register.JavaScript(Page, typeof (DragDropControlPanel), "N2.Parts.Web.UI.WebControls.Parts.js");
 			else

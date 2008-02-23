@@ -5,7 +5,7 @@
 <%@ Register Src="ItemInfo.ascx" TagName="ItemInfo" TagPrefix="uc1" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/edit.css" type="text/css" />
-	<script src="Js/plugins.js?v5" type="text/javascript" ></script>
+	<script src="Js/plugins.ashx" type="text/javascript" ></script>
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">

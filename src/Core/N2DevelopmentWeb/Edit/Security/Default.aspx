@@ -1,7 +1,7 @@
 <%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
-	<script src="../Js/plugins.js?v5" type="text/javascript" ></script>
+	<script src="../Js/plugins.ashx" type="text/javascript" ></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
 	<edit:OptionsMenu id="om" runat="server">
