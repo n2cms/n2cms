@@ -19,8 +19,6 @@ namespace N2.Edit
 
 		public ContentItem Navigate(ContentItem startingPoint, string path)
 		{
-			if (path.EndsWith("/"))
-				path = path.TrimEnd('/');
 			return startingPoint.GetChild(path);
 		}	
 
@@ -31,12 +29,12 @@ namespace N2.Edit
 			{
 				if (path.StartsWith("~"))
 				{
-					return Navigate(persister.Get(site.StartPageID), path.Substring(2));
+					return Navigate(persister.Get(site.StartPageID), path.Substring(1));
 				}
 				throw new ArgumentException("The path must start with a slash '/'", "path");
 			}
 
-			return Navigate(persister.Get(site.RootItemID), path.Substring(1));
+			return Navigate(persister.Get(site.RootItemID), path);
 		}
 	}
 }

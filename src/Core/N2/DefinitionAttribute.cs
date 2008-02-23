@@ -30,10 +30,19 @@ namespace N2
     [AttributeUsage(AttributeTargets.Class)]
 	public class DefinitionAttribute : Attribute, IDefinitionRefiner
     {
-		#region Constructors
-		/// <summary>
-		/// Initializes a new instance of ItemAttribute class.
-		/// </summary>
+		private string title;
+		private string name;
+		private int sortOrder = 0;
+		private string toolTip = string.Empty;
+		private string description = string.Empty;
+    	private bool mayBeRoot = false;
+    	private bool mayBeStartPage = false;
+		
+		public DefinitionAttribute()
+		{
+		}
+
+		/// <summary>Initializes a new instance of ItemAttribute class.</summary>
 		/// <param name="title">The title used when presenting this item type to editors.</param>
 		public DefinitionAttribute(string title)
 		{
@@ -63,19 +72,7 @@ namespace N2
 			this.toolTip = toolTip;
 			this.sortOrder = sortOrder;
 		}
-		#endregion
 
-		#region Private Fields
-		private string title;
-		private string name;
-		private int sortOrder = 0;
-		private string toolTip;
-		private string description;
-    	private bool mayBeRoot = false;
-    	private bool mayBeStartPage = false;
-		#endregion
-
-		#region Properties
 		/// <summary>Gets or sets the name used when presenting this item type to editors.</summary>
         public string Title
         {
@@ -125,11 +122,14 @@ namespace N2
     		set { mayBeRoot = value; }
     	}
 
-    	#endregion
-
+		/// <summary>Updates the item definition with the attribute.</summary>
 		public void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
     	{
-    		definition.DefinitionAttribute = this;
+			if (string.IsNullOrEmpty(Title))
+				Title = definition.ItemType.Name;
+
+			definition.DefinitionAttribute = this;
+			definition.IsDefined = true;
     	}
     }
 }

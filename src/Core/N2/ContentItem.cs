@@ -443,23 +443,25 @@ namespace N2
 				return null;
 
 			int slashIndex = childName.IndexOf('/');
-			if (slashIndex > 0)
-			{
-				ContentItem child = FindChild(childName.Substring(0, slashIndex));
-				if (child != null)
-					return child.GetChild(childName.Substring(slashIndex + 1));
-				else
-					return null;
-			}
-			else if (slashIndex == 0)
+			if (slashIndex == 0) // starts with slash
 			{
 				if (childName.Length == 1)
 					return this;
 				else
 					return GetChild(childName.Substring(1));
 			}
-			else
+			else if (slashIndex > 0) // contains a slash further down
+			{
+				ContentItem child = FindChild(childName.Substring(0, slashIndex));
+				if (child != null)
+					return child.GetChild(childName.Substring(slashIndex));
+				else
+					return null;
+			}
+			else // no slash, only a name
+			{
 				return FindChild(childName);
+			}
         }
 
 		private ContentItem FindChild(string childName)

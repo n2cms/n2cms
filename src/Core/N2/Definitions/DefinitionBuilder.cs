@@ -18,8 +18,7 @@ namespace N2.Definitions
 		private readonly AttributeExplorer<IDisplayable> displayableExplorer;
 		private readonly AttributeExplorer<IEditable> editableExplorer;
 		private readonly AttributeExplorer<IEditableContainer> containableExplorer;
-		private bool useBackwardsCompatibleDiscriminator = false;
-
+		
 		public DefinitionBuilder(ITypeFinder typeFinder)
 			: this(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>())
 		{
@@ -36,10 +35,11 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets or sets wether the definitions use full name space as discriminator for backward compatibility.</summary>
+		[Obsolete("UseBackwardsCompatibleDiscriminator is now deprecated, please update your code.")]
 		public bool UseBackwardsCompatibleDiscriminator
 		{
-			get { return useBackwardsCompatibleDiscriminator; }
-			set { useBackwardsCompatibleDiscriminator = value; }
+			get { return false; }
+			set { throw new N2Exception("UseBackwardsCompatibleDiscriminator is now deprecated, please update your code.") ; }
 		}
 
 		/// <summary>Builds item definitions in the current environment.</summary>
@@ -56,7 +56,7 @@ namespace N2.Definitions
 			List<ItemDefinition> definitions = new List<ItemDefinition>();
             foreach (Type itemType in FindConcreteTypes())
 			{
-				ItemDefinition definition = new ItemDefinition(itemType, UseBackwardsCompatibleDiscriminator);
+				ItemDefinition definition = new ItemDefinition(itemType);
 				definition.Editables = editableExplorer.Find(definition.ItemType);
 				definition.Containers = containableExplorer.Find(definition.ItemType);
 				definition.Modifiers = modifierExplorer.Find(definition.ItemType);

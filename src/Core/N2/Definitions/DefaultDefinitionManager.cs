@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using N2.Persistence;
+using System.Security.Principal;
 
 namespace N2.Definitions
 {
@@ -28,20 +29,15 @@ namespace N2.Definitions
 	/// </summary>
 	public class DefaultDefinitionManager : IDefinitionManager
 	{
-		#region Fields
 		private readonly IDictionary<Type, ItemDefinition> definitions;
-		readonly IItemNotifier notifier;
-		#endregion 
+		private readonly IItemNotifier notifier;
 
-		#region Constructors (1)
 		public DefaultDefinitionManager(DefinitionBuilder builder, IItemNotifier notifier)
 		{
 			definitions = builder.GetDefinitions();
 			this.notifier = notifier;
 		}
-		#endregion 
 
-		#region Methods (10)
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
 		public T CreateInstance<T>(ContentItem parentItem) where T : ContentItem
@@ -103,6 +99,32 @@ namespace N2.Definitions
 		{
 			return definitions.Values;
 		}
-		#endregion
+
+		/// <summary>Gets items allowed below this item in a certain zone.</summary>
+		/// <param name="zone">The zone whose allowed child item types to get.</param>
+		/// <param name="user">The user whose access to query.</param>
+		/// <returns>A list of items allowed in the zone the user is authorized to create.</returns>
+		public IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zone, IPrincipal user)
+		{
+			if (!definition.HasZone(zone))
+				throw new N2Exception("The definition '{0}' does not allow a zone named '{1}'.", definition.Title, zone);
+
+			List<ItemDefinition> allowedChildItems = new List<ItemDefinition>();
+			foreach (ItemDefinition childItem in definition.AllowedChildren)
+			{
+				if (!childItem.IsDefined)
+					continue;
+				if (!childItem.Enabled)
+					continue;
+				if (!definition.IsAllowedInZone(zone, childItem.AllowedZoneNames))
+					continue;
+				if (!childItem.IsAuthorized(user))
+					continue;
+
+				allowedChildItems.Add(childItem);
+			}
+			allowedChildItems.Sort();
+			return allowedChildItems;
+		}
 	}
 }

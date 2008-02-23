@@ -304,6 +304,8 @@
     <Compile Include="Definitions\IDefinitionRefiner.cs" />
     <Compile Include="Definitions\IInheritableDefinitionRefiner.cs" />
     <Compile Include="Definitions\IUniquelyNamed.cs" />
+    <Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />
+    <Compile Include="Definitions\ReplaceParentDefinitionAttribute.cs" />
     <Compile Include="Details\AbstractDisplayableAttribute.cs" />
     <Compile Include="Details\DisplayableImageAttribute.cs" />
     <Compile Include="Details\EditableImageAttribute.cs" />

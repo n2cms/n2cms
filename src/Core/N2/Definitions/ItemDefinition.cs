@@ -50,6 +50,8 @@ namespace N2.Definitions
 		private IList<IDisplayable> displayables;
 		private IList<string> authorizedRoles;
 		private IEditableContainer rootContainer = null;
+		private bool enabled = true;
+		private bool isDefined = false;
 
 		#endregion
 
@@ -58,22 +60,11 @@ namespace N2.Definitions
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
 		public ItemDefinition(Type itemType)
-			: this(itemType, false)
 		{
-		}
-
-		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
-		/// <param name="itemType">The item type to define.</param>
-		/// <param name="useBackwardCompatibleDiscriminator">After version 1.2.4 the default string used to match a certain type in the database changed from the types full name to the class name.</param>
-		public ItemDefinition(Type itemType, bool useBackwardCompatibleDiscriminator)
-		{
-			if (!itemType.IsSubclassOf(typeof(ContentItem)))
-				throw new N2Exception(
-					"Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName);
+			if (!itemType.IsSubclassOf(typeof(ContentItem))) throw new N2Exception("Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName);
 
 			this.itemType = itemType;
-			definitionAttribute = new DefinitionAttribute(itemType.Name, 
-				useBackwardCompatibleDiscriminator ? itemType.FullName : itemType.Name, string.Empty, itemType.FullName, 1000);
+			definitionAttribute = new DefinitionAttribute(itemType.Name, itemType.Name, string.Empty, itemType.FullName, 1000);
 		}
 
 		#endregion
@@ -84,14 +75,14 @@ namespace N2.Definitions
 		public DefinitionAttribute DefinitionAttribute
 		{
 			get { return definitionAttribute; }
-			set { definitionAttribute = value; }
+			internal set { definitionAttribute = value; }
 		}
 
 		/// <summary>Gets roles or users allowed to edit items defined by this definition.</summary>
 		public IList<string> AuthorizedRoles
 		{
 			get { return authorizedRoles; }
-			set { authorizedRoles = value; }
+			internal set { authorizedRoles = value; }
 		}
 
 		/// <summary>Gets the name used when presenting this item class to editors.</summary>
@@ -104,6 +95,20 @@ namespace N2.Definitions
 		public string Discriminator
 		{
 			get { return definitionAttribute.Name ?? ItemType.Name; }
+		}
+
+		/// <summary>Definitions which are not enabled are not available when creating new items.</summary>
+		public bool Enabled
+		{
+			get { return enabled; }
+			set { enabled = value; }
+		}
+
+		/// <summary>Gets or sets wheter this definition has been defined. Weirdly enough a definition may exist without beeing defined. To define a definition the class must implement the <see cref="N2.DefinitionAttribute"/> attribute.</summary>
+		public bool IsDefined
+		{
+			get { return isDefined; }
+			internal set { isDefined = value; }
 		}
 
 		/// <summary>Gets the order of this item type when selecting new item in edit mode.</summary>
@@ -134,14 +139,13 @@ namespace N2.Definitions
 		public IList<AvailableZoneAttribute> AvailableZones
 		{
 			get { return availableZones; }
-			set { availableZones = value; }
 		}
 
 		/// <summary>Gets zones this class of items can be placed in.</summary>
 		public IList<string> AllowedZoneNames
 		{
 			get { return allowedZoneNames; }
-			set { allowedZoneNames = value; }
+			internal set { allowedZoneNames = value; }
 		}
 
 		/// <summary>Gets the IconUrl returned by a new instance of the item.</summary>
@@ -190,7 +194,6 @@ namespace N2.Definitions
 		public IList<ItemDefinition> AllowedChildren
 		{
 			get { return allowedChildren; }
-			set { allowedChildren = value; }
 		}
 
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
@@ -210,26 +213,6 @@ namespace N2.Definitions
 		#endregion
 
 		#region Methods
-
-		/// <summary>Gets items allowed below this item in a certain zone.</summary>
-		/// <param name="zone">The zone whose allowed child item types to get.</param>
-		/// <param name="user">The user whose access to query.</param>
-		/// <returns>A list of items allowed in the zone the user is authorized to create.</returns>
-		public IList<ItemDefinition> GetAllowedChildren(string zone, IPrincipal user)
-		{
-			if (!HasZone(zone))
-				throw new N2Exception("The definition '{0}' does not allow a zone named '{1}'.", Title, zone);
-
-			List<ItemDefinition> allowedChildItems = new List<ItemDefinition>();
-			foreach (ItemDefinition childItem in allowedChildren)
-			{
-				if (IsAllowedInZone(zone, childItem.AllowedZoneNames))
-					if (childItem.IsAuthorized(user))
-						allowedChildItems.Add(childItem);
-			}
-			allowedChildItems.Sort();
-			return allowedChildItems;
-		}
 
 		/// <summary>Find out if this item is allowed in a zone.</summary>
 		/// <param name="zone"></param>
@@ -287,9 +270,7 @@ namespace N2.Definitions
 
 		#endregion
 
-		#region Private Helper Methods
-
-		private bool HasZone(string zone)
+		public bool HasZone(string zone)
 		{
 			if (string.IsNullOrEmpty(zone))
 				return true;
@@ -301,7 +282,7 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Used to determine wether a child definition is allowed in a zone.</summary>
-		private bool IsAllowedInZone(string zone, ICollection<string> allowed)
+		public bool IsAllowedInZone(string zone, ICollection<string> allowed)
 		{
 			if (string.IsNullOrEmpty(zone))
 			{
@@ -318,7 +299,7 @@ namespace N2.Definitions
 			return false;
 		}
 
-		private bool IsAuthorized(IPrincipal user)
+		public bool IsAuthorized(IPrincipal user)
 		{
 			if (user == null || authorizedRoles == null)
 				return true;
@@ -335,8 +316,6 @@ namespace N2.Definitions
 		{
 			return AllowedChildren.Contains(child);
 		}
-
-		#endregion
 
 		#region IComparable<ItemDefinition> Members
 

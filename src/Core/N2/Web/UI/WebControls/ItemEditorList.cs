@@ -71,9 +71,14 @@ namespace N2.Web.UI.WebControls
 			get { return deletedIndexes; }
 		}
 
+		public IDefinitionManager Definitions
+		{
+			get { return N2.Context.Definitions; }
+		}
+
 		public ItemDefinition CurrentItemDefinition
 		{
-			get { return N2.Context.Definitions.GetDefinition(Type.GetType(ParentItemType)); }
+			get { return Definitions.GetDefinition(Type.GetType(ParentItemType)); }
 		}
 
 		#endregion
@@ -106,11 +111,10 @@ namespace N2.Web.UI.WebControls
 				CreateItemEditor(item);
 			}
 
-			foreach (ItemDefinition definition in CurrentItemDefinition.GetAllowedChildren(ZoneName, Page.User))
+			foreach (ItemDefinition definition in Definitions.GetAllowedChildren(CurrentItemDefinition, ZoneName, Page.User))
 			{
-				types.Items.Add(
-					new ListItem(definition.Title,
-								 string.Format("{0},{1}", definition.ItemType.FullName, definition.ItemType.Assembly.FullName)));
+				ListItem li = new ListItem(definition.Title, string.Format("{0},{1}", definition.ItemType.FullName, definition.ItemType.Assembly.FullName));
+				types.Items.Add(li);
 			}
 
 			base.CreateChildControls();

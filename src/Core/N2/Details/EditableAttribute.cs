@@ -31,6 +31,11 @@ namespace N2.Details
     [AttributeUsage(AttributeTargets.Property)]
     public class EditableAttribute : AbstractEditableAttribute
     {
+		private Type controlType;
+		private string controlPropertyName;
+		private bool dataBind = false;
+		private bool focus = false;
+
 		#region Constructors
 		/// <summary>Default/empty constructor.</summary>
 		public EditableAttribute()
@@ -50,28 +55,6 @@ namespace N2.Details
 			this.ControlType = editorType;
 			this.ControlPropertyName = editorPropertyName;
 		} 
-		#endregion
-
-		#region Private Fields
-		private bool required;
-		private string validationExpression;
-		#endregion
-
-		#region Public Properties
-
-		/// <summary>Gets or sets a regular expression passed to a regularexpressionvalidator during editing.</summary>
-		public string ValidationExpression
-		{
-			get { return validationExpression; }
-			set { validationExpression = value; }
-		}
-
-		/// <summary>Gets or sets wheter a requiredfieldvalidator should be added and associated with the editor for this detail.</summary>
-		public bool Required
-		{
-			get { return required; }
-			set { required = value; }
-		}		
 		#endregion
 
 		#region Methods
@@ -166,13 +149,6 @@ namespace N2.Details
 				editor.Focus();
 		}
 		#endregion
-
-        #region Private Fields
-        private Type controlType;
-        private string controlPropertyName;
-        private bool dataBind = false;
-        private bool focus = false;
-        #endregion
 
         #region Properties
         /// <summary>Gets or sets whether the control should be databound when it's added to a page.</summary>

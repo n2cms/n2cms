@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace N2.Definitions
 {
@@ -47,5 +48,7 @@ namespace N2.Definitions
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
 		ContentItem CreateInstance(Type itemType, ContentItem parent);
+
+		IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zone, IPrincipal user);
 	}
 }

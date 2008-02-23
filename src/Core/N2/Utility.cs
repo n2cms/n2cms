@@ -314,7 +314,6 @@ namespace N2
 		public static string GetResourceString(string classKey, string resourceKey)
 		{
 			return GetGlobalResourceString(classKey, resourceKey) ?? GetLocalResourceString(resourceKey);
-			return null;
 		}
 	}
 }

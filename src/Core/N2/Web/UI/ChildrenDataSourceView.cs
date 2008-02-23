@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web;
+using N2.Definitions;
 
 namespace N2.Web.UI
 {
@@ -90,13 +91,20 @@ namespace N2.Web.UI
 
 			if (e.AffectedItem != null)
 			{
-				Definitions.ItemDefinition parentDefinition = Engine.Definitions.GetDefinition(parentItem.GetType());
+				IDefinitionManager definitions = Engine.Definitions;
+				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem.GetType());
+
 				if (parentDefinition.IsChildAllowed(parentDefinition))
+				{
 					e.AffectedItem = Engine.Definitions.CreateInstance(parentItem.GetType(), parentItem);
-				else if (parentDefinition.GetAllowedChildren(null, HttpContext.Current.User).Count > 0)
-					e.AffectedItem = Engine.Definitions.CreateInstance(parentDefinition.GetAllowedChildren(null, HttpContext.Current.User)[0].ItemType, parentItem);
-				else
-					throw new N2.Definitions.NoItemAllowedException(parentItem);
+					return;
+				}
+				foreach (ItemDefinition definition in definitions.GetAllowedChildren(parentDefinition, null, HttpContext.Current.User))
+				{
+					e.AffectedItem = definitions.CreateInstance(definition.ItemType, parentItem);
+					return;
+				}
+				throw new N2.Definitions.NoItemAllowedException(parentItem);
 			}
 		}
 		#endregion
