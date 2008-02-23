@@ -1116,6 +1116,14 @@
     <Content Include="img\SlidingCurtain_bg_bottom.png" />
     <Content Include="Js\jquery-1.2.3.js" />
     <Content Include="Js\jquery.ui.js" />
+    <Content Include="Js\plugins\cookies.js" />
+    <Content Include="Js\plugins\header.txt" />
+    <Content Include="Js\plugins\jquery.n2optionmenu.js" />
+    <Content Include="Js\plugins\jquery.splitter.js" />
+    <Content Include="Js\plugins\jquery.treeview.js" />
+    <Content Include="Js\plugins\n2.js" />
+    <Content Include="Js\plugins\ui.droppable.ext.js" />
+    <Content Include="Js\plugins\ui.droppable.js" />
     <Content Include="Js\tiny_mce\plugins\advimage\img\sample.gif" />
     <Content Include="Js\tiny_mce\plugins\media\img\flash.gif" />
     <Content Include="Js\tiny_mce\plugins\media\img\flv_player.swf" />
@@ -1133,6 +1141,10 @@
     <Content Include="Js\tiny_mce\plugins\_template\readme.txt" />
     <Content Include="Js\tiny_mce\tiny_mce_dev.js" />
     <Content Include="Js\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Js\plugins\compile.bat" />
+    <None Include="Js\plugins\jquery.n2contextmenu" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
