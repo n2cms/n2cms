@@ -1,4 +1,9 @@
-﻿/*
+﻿(function(v) {
+	alert(v);
+})("hej");
+
+
+/*
  * n2contextmenu 0.2 - Copyright (c) 2007 Cristian Libardo
  */
 
@@ -44,3 +49,4 @@
 		return this.css({position:"absolute", left: "-9999px", top: "-9999px"});
 	}
 })(jQuery);
+

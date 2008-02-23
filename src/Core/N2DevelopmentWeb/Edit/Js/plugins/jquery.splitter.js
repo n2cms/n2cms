@@ -159,3 +159,4 @@
 			Math.round((group[0][opts.offsetAdjust] - group._borderAdjust - splitbar._adjust)/2)]);
 	});
 };
+
