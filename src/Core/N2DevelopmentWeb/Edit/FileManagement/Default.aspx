@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="Css/filemanager.css" type="text/css" />    
     <script src="../Js/plugins.ashx" type="text/javascript" ></script>
     <script src="../Js/UrlSelection.js" type="text/javascript" ></script>
-	<script src="../Js/FileSelection.js" type="text/javascript" ></script>
+	<script src="Js/FileSelection.js" type="text/javascript" ></script>
     <script src="Js/jquery.MultiFile.js" type="text/javascript" ></script>
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
@@ -26,15 +26,14 @@
             <asp:RegularExpressionValidator ID="revFolder" ControlToValidate="txtFolder" ValidationExpression="^[0-9a-zA-Z_\-]{1,}$" ErrorMessage="Only alphanumeric characters supported." runat="server"  meta:resourceKey="revFolder"/>
         </div>
         <div id="upload" class="actionPanel uploadPanel">
-            <asp:FileUpload ID="fileUpload" runat="server" CssClass="multi {STRING: {remove:'<img src=../img/ico/bullet_delete.gif/>'}}" />
-            <asp:Button ID="btnUpload" runat="server" OnClick="OnUploadClick" Text="Upload" />
-            <input type="button" onclick="n2nav.onCancel();" value="Cancel" />
+			<asp:FileUpload ID="fileUpload" runat="server" CssClass="multi {STRING: {remove:'<img style='border:solid 1px red;' src=../img/ico/bullet_delete.gif/>'}}" />
+			<asp:Button ID="btnUpload" runat="server" OnClick="OnUploadClick" Text="Upload" />
+			<input type="button" onclick="n2nav.onCancel();" value="Cancel" />
         </div>
     </div>
     <div id="tree">
         <asp:SiteMapDataSource ID="smds" runat="server" SiteMapProvider="FileSiteMap" />
-        <edit:TreeView ID="fileView" runat="server" DataSourceID="smds" 
-            OnTreeNodeDataBound="fileView_TreeNodeDataBound" ExpandDepth="10" />
+        <edit:TreeView ID="fileView" runat="server" DataSourceID="smds" OnTreeNodeDataBound="fileView_TreeNodeDataBound" ExpandDepth="10" />
     </div>
     <script type="text/javascript">
         $(document).ready(function(){

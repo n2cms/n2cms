@@ -7,7 +7,7 @@ using System.Web.Services.Protocols;
 
 namespace N2.Edit.Js
 {
-	public class jquery : DirectoryCompiler
+	public class jqueryUi : DirectoryCompiler
 	{
 		public override string FolderUrl
 		{

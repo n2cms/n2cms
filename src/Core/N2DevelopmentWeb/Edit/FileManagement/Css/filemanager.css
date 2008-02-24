@@ -79,6 +79,7 @@ a.enabled
 {
     padding:10px;
 	height:auto;
+	_height:1px;
 	overflow:visible;
     margin-bottom:10px;
     border:solid 1px #DEDAD7;

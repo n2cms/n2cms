@@ -226,7 +226,7 @@ ul.dir li { padding: 2px 0 0 16px; }
 .treeview .last { background-image: url(../img/tv/tv-item-last.gif); }
 .treeview .lastCollapsable { background-image: url(../img/tv/tv-collapsable-last.gif); }
 .treeview .lastExpandable { background-image: url(../img/tv/tv-expandable-last.gif); }
-.treeview a { display:block; }
+.treeview a { padding-right:5px; }
 .treeview a img { margin-right:1px; }
 .droppable-hover{background-color:#eee;}
 

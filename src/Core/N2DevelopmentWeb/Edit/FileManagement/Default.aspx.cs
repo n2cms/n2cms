@@ -46,11 +46,7 @@ namespace N2.Edit.FileManagement
 			base.OnInit(e);
 
 			string postBackUrl = Request.Form[selectedUrl.UniqueID];
-			selectedUrl.Value = string.IsNullOrEmpty(postBackUrl)
-			                    	?
-			                    		Request.QueryString["selectedUrl"]
-			                    	:
-			                    		postBackUrl;
+			selectedUrl.Value = string.IsNullOrEmpty(postBackUrl) ? Request.QueryString["selectedUrl"] : postBackUrl;
 
 			btnDelete.Attributes["onclick"] = string.Format(
 				"return confirm('{0}' + document.getElementById('{1}').value);",
@@ -84,8 +80,15 @@ namespace N2.Edit.FileManagement
 				e.Node.ImageUrl = "../img/ico/page_white.gif";
 				e.Node.Target = "file";
 			}
-			if (VirtualPathUtility.ToAbsolute(e.Node.NavigateUrl) == OpenerInputUrl)
+			if (IsSelected(e.Node.NavigateUrl))
 				e.Node.Select();
+		}
+
+		private string lastUrl = null;
+		private bool IsSelected(string navigateUrl)
+		{
+			string url = Utility.ToAbsolute(navigateUrl);
+			return (lastUrl != null) ? url == lastUrl : url == OpenerInputUrl;
 		}
 
 		protected void OnUploadClick(object sender, EventArgs e)
@@ -101,6 +104,7 @@ namespace N2.Edit.FileManagement
 
 						if (!FileManager.CancelUploading(url))
 						{
+							lastUrl = url;
 							string path = Server.MapPath(url);
 							file.SaveAs(path);
 							FileManager.InvokeUploaded(url);
@@ -114,6 +118,7 @@ namespace N2.Edit.FileManagement
 		protected void OnCreateFolderClick(object sender, EventArgs e)
 		{
 			string url = SelectedUrl + "/" + txtFolder.Text;
+			lastUrl = url;
 			string path = Server.MapPath(url);
 			Directory.CreateDirectory(path);
 

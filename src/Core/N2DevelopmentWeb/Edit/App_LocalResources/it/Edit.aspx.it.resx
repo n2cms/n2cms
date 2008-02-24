@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnSave.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/disk.gif' /&gt; salva</value>
+    <value>&lt;img src='img/ico/disk.gif' /&gt; Salva</value>
   </data>
   <data name="EditPage.TitleFormat.New" xml:space="preserve">
     <value>Nuovo "{0}"</value>
@@ -127,10 +127,10 @@
     <value>Edita "{0}"</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>cancella</value>
+    <value>Cancella</value>
   </data>
   <data name="hlEditParent.Text" xml:space="preserve">
-    <value>edita pagina precedente</value>
+    <value>Edita pagina precedente</value>
   </data>
   <data name="vsEdit.HeaderText" xml:space="preserve">
     <value>L'elemento non ha potuto essere salvato. Controlla quanto segue:</value>

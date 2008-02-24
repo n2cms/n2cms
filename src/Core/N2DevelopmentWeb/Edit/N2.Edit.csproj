@@ -520,8 +520,8 @@
     <Content Include="img\tv\tv-item.gif" />
     <Content Include="ItemInfo.ascx" />
     <Content Include="Js\ContextMenu.js" />
-    <Content Include="Js\FileSelection.js" />
-    <Content Include="Js\ItemSelection.js" />
+    <Content Include="FileManagement\Js\FileSelection.js" />
+    <Content Include="ItemSelection\Js\ItemSelection.js" />
     <Content Include="Css\Web.config" />
     <Content Include="img\Web.config" />
     <Content Include="App_LocalResources\AffectedItems.ascx.resx">

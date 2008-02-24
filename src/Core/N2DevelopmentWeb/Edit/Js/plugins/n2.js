@@ -18,10 +18,13 @@ n2nav.displaySelection = function(el){
     $(".selected").removeClass("selected");
     $(el).addClass("selected");
 }
+n2nav.getUrl = function(a){
+	return a.rel;
+}
 n2nav.onTargetClick = function(el){
     n2nav.displaySelection(el);
     if(n2nav.onUrlSelected)
-		n2nav.onUrlSelected(el.rel);
+		n2nav.onUrlSelected(n2nav.getUrl(el));
 }
 n2nav.getJQuery = function(){
 	return n2nav.linkContainerId + " a";
@@ -41,7 +44,7 @@ n2nav.setupLinks = function(containerId){
 n2nav.previewClickHandler = function(event){
 	var a = n2nav.findLink(event.target);
     n2nav.onTargetClick(a)
-    n2nav.setupToolbar(a.rel);
+    n2nav.setupToolbar(n2nav.getUrl(a));
 }
 n2nav.targetHandlers["preview"] = function(a,i) {
     $(a).addClass("enabled").bind("click", null, n2nav.previewClickHandler);

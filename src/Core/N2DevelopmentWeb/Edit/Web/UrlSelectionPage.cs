@@ -12,7 +12,6 @@ namespace N2.Edit.Web
 {
 	public class UrlSelectionPage : EditPage
 	{
-		#region Properties
 		/// <summary>Gets the client id of the input control that should get the selected url.</summary>
 		protected string OpenerInputId
 		{
@@ -50,9 +49,7 @@ namespace N2.Edit.Web
 				+ "&availableModes=" + AvailableModes
 				+ "&selected=" + Server.UrlEncode(OpenerInputUrl);
 		}
-		#endregion
-
-
+		
 
 		protected override void OnLoad(EventArgs e)
 		{

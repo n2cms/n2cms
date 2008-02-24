@@ -45,6 +45,8 @@
     </div>
     </td><td>
 
+[<a href="<%= CurrentPage.FileUrl %>"><%= CurrentPage.FileUrl %></a>]
+
     <div class="content">
     <!--
         N2.Factory.UrlParser.StartPage <%= N2.Context.UrlParser.StartPage %><br />

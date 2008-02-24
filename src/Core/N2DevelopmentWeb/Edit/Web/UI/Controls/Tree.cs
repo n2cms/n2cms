@@ -103,7 +103,7 @@ namespace N2.Edit.Web.UI.Controls
 			}
 			className.Append("i" + iconIndex);
 
-			ILinkBuilder builder = Link.To(item).Target(target).Href(item.RewrittenUrl).Class(className.ToString()).Attribute("rel", item.Path);
+			ILinkBuilder builder = Link.To(item).Target(target).Class(className.ToString()).Attribute("rel", item.Path);
 
 			return builder;
 		}

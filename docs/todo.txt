@@ -7,9 +7,6 @@
 - bug: select items outside of start page
 - implement INode for edit mode integration
 - allow other than content items to be edited
-- filemanager ie6 css
-- filemanager expand to action
-- upgrade jquery ui
 
 TODO:
 - documentation & programmability

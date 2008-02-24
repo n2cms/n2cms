@@ -110,6 +110,7 @@
     <Compile Include="Domain\MyItemData.cs" />
     <Compile Include="Domain\MySpecialPageData.cs" />
     <Compile Include="Domain\MyPageData.cs" />
+    <Compile Include="Domain\Redirect.cs" />
     <Compile Include="Domain\SecondItemData.cs" />
     <Compile Include="Domain\StartPage.cs" />
     <Compile Include="Domain\UnallowedItem.cs" />
