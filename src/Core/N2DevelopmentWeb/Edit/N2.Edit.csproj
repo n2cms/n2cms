@@ -157,8 +157,8 @@
       <DependentUpon>ItemInfo.ascx</DependentUpon>
     </Compile>
     <Compile Include="Js\DirectoryCompiler.cs" />
-    <Compile Include="Js\jquery.ashx.cs">
-      <DependentUpon>jquery.ashx</DependentUpon>
+    <Compile Include="Js\jquery.ui.ashx.cs">
+      <DependentUpon>jquery.ui.ashx</DependentUpon>
     </Compile>
     <Compile Include="Js\plugins.ashx.cs">
       <DependentUpon>plugins.ashx</DependentUpon>
@@ -1153,7 +1153,7 @@
     <Content Include="Js\jquery.ui\4_ui.draggable.ext.js" />
     <Content Include="Js\jquery.ui\5_ui.droppable.ext.js" />
     <Content Include="Js\plugins.ashx" />
-    <Content Include="Js\jquery.ashx" />
+    <Content Include="Js\jquery.ui.ashx" />
     <Content Include="Js\plugins\jquery.n2contextmenu.js" />
   </ItemGroup>
   <ItemGroup>

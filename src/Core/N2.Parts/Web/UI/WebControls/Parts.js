@@ -48,7 +48,12 @@ DragDrop.prototype = {
 		$(".definition").draggable({
 			helper: t.dragHelper,
 			stop: t.dragStop,
-			dropHandler: function(s,d){return t.createIn(s,d);}
+			start: function(){
+				var s = this;
+				t.dropHandler = function(d,ctrl){
+					t.createIn(s.id, d);
+				};
+			}
 		});
 	},
 
@@ -56,14 +61,17 @@ DragDrop.prototype = {
 		$('.zoneItem').draggable({
 			dragPrevention: 'a,input,textarea,select',
 			helper: t.dragHelper,
+			cursorAt: {top:8, left:8},
 			stop: t.dragStop,
-			dropHandler: function(s,d,ctrl){
-				if(ctrl)
-					return t.copyTo(s,d);
-				else
-					return t.moveTo(s,d);
-			},
-			cursorAt: {top:8, left:8}
+			start: function(){
+				var s = this;
+				t.dropHandler = function(d,ctrl){
+					if(ctrl)
+						return t.copyTo(s.id,d);
+					else
+						return t.moveTo(s.id,d);
+				}
+			}
 		}).each(function(){
 			var zoneId = this.id;
 			$(this).children(".titleBar").find("img").each(function(){
@@ -92,7 +100,7 @@ DragDrop.prototype = {
 				drop: function(ev, ui) {
 					if(n2dragging){
 						n2dragging = false;
-						ui.draggable.options.dropHandler(ui.element.id,this.id,ev.ctrlKey);
+						t.dropHandler(this.id,ev.ctrlKey);
 					}
 				}
 			});
