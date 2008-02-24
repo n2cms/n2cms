@@ -143,6 +143,9 @@ namespace N2.Edit.FileManagement
 					else if (Directory.Exists(path))
 						Directory.Delete(path, true);
 					FileManager.InvokeDeleted(selectedUrl.Value);
+
+					lastUrl = SelectedUrl.Substring(0, SelectedUrl.TrimEnd('/').LastIndexOf('/'));
+					
 					DataBind();
 				}
 				SelectedUrl = string.Empty;
