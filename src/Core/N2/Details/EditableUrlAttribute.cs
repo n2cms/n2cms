@@ -18,6 +18,8 @@
 #endregion
 
 using System;
+using System.Web.UI;
+using N2.Web.UI.WebControls;
 
 namespace N2.Details
 {
@@ -31,14 +33,58 @@ namespace N2.Details
 	/// }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableUrlAttribute : EditableAttribute
+	public class EditableUrlAttribute : AbstractEditableAttribute
 	{
+		private UrlSelectorMode openingMode = UrlSelectorMode.Items;
+		private UrlSelectorMode availableModes = UrlSelectorMode.All;
+
+		public UrlSelectorMode AvailableModes
+		{
+			get { return availableModes; }
+			set { availableModes = value; }
+		}
+
+		public UrlSelectorMode OpeningMode
+		{
+			get { return openingMode; }
+			set { openingMode = value; }
+		}
+
 		/// <summary>Initializes a new instance of the EditableUrlAttribute class.</summary>
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public EditableUrlAttribute(string title, int sortOrder)
-			: base(title, typeof(N2.Web.UI.WebControls.UrlSelector), "Url", sortOrder)
+			: base(title, sortOrder)
 		{
+		}
+
+		public override bool UpdateItem(ContentItem item, System.Web.UI.Control editor)
+		{
+			UrlSelector selector = (UrlSelector)editor;
+			if(selector.Url != (string)item[Name])
+			{
+				item[Name] = selector.Url;
+				return true;
+			}
+			return false;
+		}
+
+		public override void UpdateEditor(ContentItem item, System.Web.UI.Control editor)
+		{
+			UrlSelector selector = (UrlSelector)editor;
+			selector.Url = (string)item[Name];
+		}
+
+		protected override Control AddEditor(Control container)
+		{
+			UrlSelector selector = new UrlSelector();
+			selector.ID = this.Name;
+			selector.AvailableModes = AvailableModes;
+			selector.DefaultMode = OpeningMode;
+
+			container.Controls.Add(selector);
+
+			return selector;
 		}
 	}
 }

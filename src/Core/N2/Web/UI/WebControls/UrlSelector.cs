@@ -31,8 +31,6 @@ namespace N2.Web.UI.WebControls
 	/// <summary>An input box that can be updated with the url from the file selector popup in edit mode.</summary>
 	public class UrlSelector : TextBox
 	{
-		#region Properties
-
 		private string script =
 			@"
 function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableModes){{
@@ -92,8 +90,6 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 			get { return ViewState["AvailableModes"] != null ? (UrlSelectorMode) ViewState["AvailableModes"] : UrlSelectorMode.All; }
 			set { ViewState["AvailableModes"] = value; }
 		}
-
-		#endregion
 
 		#region Methods
 

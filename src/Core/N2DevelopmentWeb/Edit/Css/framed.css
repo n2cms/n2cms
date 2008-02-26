@@ -7,7 +7,7 @@ body
 {
 	position:fixed;
 	background:#fff url(../img/framed_toolbar.gif) repeat-x;
-	z-index:1000;
+	z-index:10;
 	top:0;
 	left:0;
 	padding:1px 16px;
@@ -43,7 +43,7 @@ label
 }
 #toolbar
 {
-	z-index:7777;
+	z-index:77;
 }
 #toolbar label
 {
@@ -356,7 +356,7 @@ ul.dir li { padding: 2px 0 0 16px; }
 .tabs
 {
 	margin-left:0;
-	z-index:100;
+	z-index:5;
 }
 .tabs li
 {

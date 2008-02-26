@@ -2,6 +2,7 @@
 	- upgraded to jquery 1.2.3
 	- upgraded draggables & droppables
 	- filemanager expand to action
+	- upgraded timymce to 3.0.1
 - engine
 	- option for multiple sites when medium trust
 	- replace non unicode (Ascii option on name editor)
