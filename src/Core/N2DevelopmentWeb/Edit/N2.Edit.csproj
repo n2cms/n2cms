@@ -163,6 +163,9 @@
     <Compile Include="Js\plugins.ashx.cs">
       <DependentUpon>plugins.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Js\tinymce.ashx.cs">
+      <DependentUpon>tinymce.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Login.aspx</DependentUpon>
@@ -958,7 +961,7 @@
     <Content Include="Js\tiny_mce\utils\validate.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Js\plugins\b\" />
+    <Content Include="Js\tinymce.ashx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

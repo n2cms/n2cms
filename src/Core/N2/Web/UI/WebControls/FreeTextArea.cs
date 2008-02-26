@@ -64,11 +64,11 @@ namespace N2.Web.UI.WebControls
 		plugins : '{1}',
 	    content_css : '{2}',
 		theme : 'advanced',
-		plugins : 'style,layer,table,advimage,advlink,iespell,flash,searchreplace,print,contextmenu,paste,fullscreen,noneditable',
+		plugins : 'style,layer,table,advimage,advlink,iespell,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups',
 		theme_advanced_buttons1_add_before : '',
 		theme_advanced_buttons1_add : 'sup,|,print,fullscreen,|,search,replace,iespell',
 		theme_advanced_buttons2_add_before: 'cut,copy,paste,pastetext,pasteword,|',
-		theme_advanced_buttons2_add : '|,table,flash,insertlayer',
+		theme_advanced_buttons2_add : '|,table,media,insertlayer,inlinepopups',
 		theme_advanced_buttons3 : '',
         theme_advanced_buttons3_add_before : '',
 		theme_advanced_buttons3_add : '',
@@ -76,12 +76,7 @@ namespace N2.Web.UI.WebControls
 		theme_advanced_toolbar_location : 'top',
 		theme_advanced_toolbar_align : 'left',
 		theme_advanced_path_location : 'bottom',
-	    plugin_insertdate_dateFormat : '%Y-%m-%d',
-	    plugin_insertdate_timeFormat : '%H:%M:%S',
-		extended_valid_elements : 'hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style],pre[class],code[class]',
-		external_link_list_url : 'example_link_list.js',
-		external_image_list_url : 'example_image_list.js',
-		flash_external_list_url : 'example_flash_list.js',
+		extended_valid_elements : 'hr[class|width|size|noshade],span[class|align|style],pre[class],code[class]',
 		file_browser_callback : 'fileBrowserCallBack',
 		theme_advanced_resize_horizontal : false,
 		theme_advanced_resizing : true,
@@ -135,8 +130,7 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			Page.ClientScript.RegisterClientScriptInclude("tiny_mce.js",
-			                                              Utility.ToAbsolute("~/edit/js/tiny_mce/tiny_mce.js?v3"));
+			Page.ClientScript.RegisterClientScriptInclude("tiny_mce.js", Utility.ToAbsolute("~/edit/js/tiny_mce/tiny_mce.js"));
 			Page.ClientScript.RegisterClientScriptBlock(typeof (FreeTextArea), "fileBrowserCallBack", fileBrowserCallBack, true);
 
 			string script = string.Format(scriptFormat,
