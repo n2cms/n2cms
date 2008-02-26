@@ -146,18 +146,15 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void CanCreateInstanceWithNullParent()
 		{
-			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-			ContentItem item = definition.CreateInstance(null);
+			ContentItem item = engine.Definitions.CreateInstance(typeof (ItemWithDetails), null);
 			Assert.AreEqual(typeof (ItemWithDetails), item.GetType());
 		}
 
 		[Test]
 		public void CanCreateInstanceWithAllowedParent()
 		{
-			ItemDefinition definition1 = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-			ItemDefinition definition2 = engine.Definitions.GetDefinition(typeof (ItemInZone1Or2));
-			ContentItem item1 = definition1.CreateInstance(null);
-			ContentItem item2 = definition2.CreateInstance(item1);
+			ContentItem item1 = engine.Definitions.CreateInstance(typeof(ItemWithDetails), null);
+			ContentItem item2 = engine.Definitions.CreateInstance(typeof(ItemInZone1Or2), item1);
 			Assert.AreEqual(typeof (ItemWithDetails), item1.GetType());
 			Assert.AreEqual(typeof (ItemInZone1Or2), item2.GetType());
 		}

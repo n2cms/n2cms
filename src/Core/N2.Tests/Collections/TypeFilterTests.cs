@@ -68,7 +68,7 @@ namespace N2.Tests.Collections
 		[Test]
 		public void CanFilterTwoItemsWithFilterInstanceAndInverse()
 		{
-			ItemFilter filter = new TypeFilter(true, typeof(FirstItem));
+			ItemFilter filter = new InverseFilter(new TypeFilter(typeof(FirstItem)));
 			ItemList list = CreateList();
 			filter.Filter(list);
 			Assert.AreEqual(2, list.Count);
