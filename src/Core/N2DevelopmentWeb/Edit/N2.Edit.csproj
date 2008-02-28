@@ -72,7 +72,6 @@
     <EmbeddedResource Include="SqlScript\Create.sql" />
     <EmbeddedResource Include="SqlScript\Drop.sql" />
     <EmbeddedResource Include="SqlScript\Truncate.sql" />
-    <EmbeddedResource Include="SqlScript\Upgrade_0.16.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +96,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Toolbar.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\Toolbar.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.nl.resx</DependentUpon>
     </Compile>
     <Compile Include="AvailableZones.ascx.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
@@ -666,7 +671,74 @@
     <Content Include="Navigation\App_LocalResources\Navigation.it.resx">
       <SubType>Designer</SubType>
     </Content>
-    <EmbeddedResource Include="SqlScript\Upgrade_0.18.sql" />
+    <Content Include="App_LocalResources\ItemInfo.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\ItemInfo.ascx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\AffectedItems.ascx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\AvailableZones.ascx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Copy.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Delete.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Edit.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Framed.Master.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Login.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Move.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\New.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Paste.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Toolbar.ascx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="FileManagement\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ItemSelection\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Toolbar.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Search.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Settings.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Table.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Tree.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Settings\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Framed.Master" />
     <Content Include="Navigation\ContextMenu.ascx" />
     <Content Include="Navigation\Search.aspx" />
@@ -675,14 +747,10 @@
     <Content Include="Paste.aspx" />
     <EmbeddedResource Include="SqlScript\CreateMembership.sql" />
     <Content Include="ItemSelection\Default.aspx" />
-    <EmbeddedResource Include="SqlScript\Upgrade_0.37.sql" />
     <Content Include="ReferencingItems.ascx" />
     <Content Include="Settings\Default.aspx" />
     <Content Include="Toolbar.ascx" />
     <Content Include="Versions.aspx" />
-    <EmbeddedResource Include="SqlScript\Upgrade_0.25.sql" />
-    <EmbeddedResource Include="SqlScript\Upgrade_0.21.sql" />
-    <EmbeddedResource Include="SqlScript\Upgrade_0.20.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\N2\N2.csproj">

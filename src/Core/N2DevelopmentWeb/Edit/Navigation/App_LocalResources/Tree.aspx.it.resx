@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="copy.Title" xml:space="preserve">
+    <value>Copia</value>
+  </data>
+  <data name="delete.Title" xml:space="preserve">
+    <value>Cancella</value>
+  </data>
+  <data name="edit.Title" xml:space="preserve">
+    <value>Edita</value>
+  </data>
+  <data name="move.Title" xml:space="preserve">
+    <value>Taglia</value>
+  </data>
+  <data name="new.Title" xml:space="preserve">
+    <value>Nuovo</value>
+  </data>
+  <data name="paste.Title" xml:space="preserve">
+    <value>Inserisci</value>
+  </data>
   <data name="treePage.Title" xml:space="preserve">
     <value>Tree Navigation</value>
   </data>

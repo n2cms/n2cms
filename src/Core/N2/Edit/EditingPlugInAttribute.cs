@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Diagnostics;
 
 namespace N2.Edit
 {
@@ -103,16 +104,13 @@ namespace N2.Edit
 		public virtual Control AddTo(Control container)
 		{
 			HtmlAnchor a = AddAnchor(container);
-			
-			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName,
-			                                                     string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}",
-			                                                                   a.ClientID,
-			                                                                   UrlFormat.Replace("~/", Utility.ToAbsolute("~/"))));
+
+			RegisterToolbarUrl(container, a.ClientID);
 
 			return a;
 		}
 
-		private HtmlAnchor AddAnchor(Control container)
+		protected virtual HtmlAnchor AddAnchor(Control container)
 		{
 			HtmlAnchor a = new HtmlAnchor();
 			a.ID = "h" + Name;
@@ -134,6 +132,12 @@ namespace N2.Edit
 
 			container.Controls.Add(a);
 			return a;
+		}
+
+		protected virtual void RegisterToolbarUrl(Control container, string clientID)
+		{
+			string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, Utility.ToAbsolute(UrlFormat));
+			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
 		}
 
 		#endregion

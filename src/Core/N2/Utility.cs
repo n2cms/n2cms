@@ -281,11 +281,12 @@ namespace N2
 			try
 			{
 				if (classKey != null && resourceKey != null && HttpContext.Current != null)
+				{
 					return HttpContext.GetGlobalResourceObject(classKey, resourceKey) as string;
+				}
 			}
-			catch (MissingManifestResourceException ex)
+			catch (MissingManifestResourceException)
 			{
-				Debug.WriteLine(ex.Message);
 			}
 			return null; // it's okay to use default text
 		}
@@ -298,11 +299,15 @@ namespace N2
 			try
 			{
 				if (resourceKey != null && HttpContext.Current != null)
+				{
 					return HttpContext.GetLocalResourceObject(HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath, resourceKey) as string;
+				}
 			}
-			catch (InvalidOperationException ex)
+			catch (InvalidOperationException)
 			{
-				Debug.WriteLine(ex.Message);
+			}
+			catch (MissingManifestResourceException)
+			{
 			}
 			return null; // it's okay to use default text
 		}
@@ -313,7 +318,10 @@ namespace N2
 		/// <returns>The string if possible, otherwise null.</returns>
 		public static string GetResourceString(string classKey, string resourceKey)
 		{
-			return GetGlobalResourceString(classKey, resourceKey) ?? GetLocalResourceString(resourceKey);
+			if(classKey != null)
+				return GetGlobalResourceString(classKey, resourceKey) ?? GetLocalResourceString(resourceKey);
+			else
+				return GetLocalResourceString(resourceKey);
 		}
 	}
 }

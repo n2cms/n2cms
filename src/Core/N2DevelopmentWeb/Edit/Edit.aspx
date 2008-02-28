@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Edit.Edit" Title="Edit" culture="auto" meta:resourcekey="PageResource1" uiculture="auto" %>
+<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Edit.Edit" Title="Edit" meta:resourcekey="PageResource1" %>
 <%@ Import namespace="N2"%>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <%@ Register Src="AvailableZones.ascx" TagName="AvailableZones" TagPrefix="uc1" %>
@@ -16,11 +16,11 @@
 				<ItemTemplate>
 					<asp:HyperLink CssClass="command plain" 
 						NavigateUrl="<%# Engine.EditManager.GetEditExistingItemUrl((ContentItem)Container.DataItem) %>" 
-						runat="server" meta:resourcekey="HyperLinkResource1">Edit <%# Eval("Title") %></asp:HyperLink>
+						runat="server"><%# Eval("Title") %></asp:HyperLink>
 				</ItemTemplate>
 			</asp:Repeater>
 		</edit:OptionsMenu>
-		<asp:HyperLink ID="hlZones" runat="server" CssClass="showZones command" AccessKey="z" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Zones</asp:HyperLink>
+		<asp:HyperLink ID="hlZones" runat="server" CssClass="showZones command" AccessKey="z" meta:resourceKey="hlZones" NavigateUrl="javascript:void(0);">Zones</asp:HyperLink>
 		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" AccessKey="i" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>
     </div>
     <edit:OptionsMenu id="om" runat="server">
