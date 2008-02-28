@@ -113,7 +113,7 @@ namespace N2.Integrity
 		/// <exception cref="N2Exception"></exception>
 		public virtual N2Exception GetDeleteException(ContentItem item)
         {
-			if (urlParser.IsRootOrStartpage(item))
+			if (urlParser.IsRootOrStartPage(item))
 				return new CannotDeleteRootException();
 
 			return null;

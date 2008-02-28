@@ -40,7 +40,7 @@ namespace N2.Edit
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-			if (N2.Context.UrlParser.IsRootOrStartpage(SelectedItem))
+			if (N2.Context.UrlParser.IsRootOrStartPage(SelectedItem))
 			{
 				cvDelete.IsValid = false;
 				this.btnDelete.Enabled = false;

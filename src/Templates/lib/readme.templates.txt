@@ -1,0 +1,1 @@
+The templates relies on N2.dll och N2.Parts.dll and a few other libraries.

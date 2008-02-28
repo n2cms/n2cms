@@ -24,10 +24,10 @@ namespace N2.Web
 		/// <returns>A friendly url to the supplied item.</returns>
 		string BuildUrl(ContentItem item);
 
-		/// <summary>Check if an item is startpage or root page</summary>
-		/// <param name="item">The item to compare</param>
-		/// <returns>True if the item is a startpage or a rootpage</returns>
-		bool IsRootOrStartpage(ContentItem item);
+		/// <summary>Checks if an item is start or root page</summary>
+		/// <param name="item">The item to check</param>
+		/// <returns>True if the item is a start page or a root page</returns>
+		bool IsRootOrStartPage(ContentItem item);
 
 		/// <summary>Finds an item by traversing names from the starting point root.</summary>
 		/// <param name="url">The url that should be traversed.</param>

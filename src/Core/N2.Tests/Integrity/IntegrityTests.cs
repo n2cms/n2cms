@@ -263,7 +263,7 @@ namespace N2.Tests.Integrity
 			Page page = new Page();
 
 			mocks.Record();
-			Expect.On(parser).Call(parser.IsRootOrStartpage(page)).Return(false);
+			Expect.On(parser).Call(parser.IsRootOrStartPage(page)).Return(false);
 			mocks.Replay(parser);
 
 			bool canDelete = integrityManger.CanDelete(page);
@@ -278,7 +278,7 @@ namespace N2.Tests.Integrity
 			Page page = new Page();
 
 			mocks.Record();
-			Expect.On(parser).Call(parser.IsRootOrStartpage(page)).Return(false);
+			Expect.On(parser).Call(parser.IsRootOrStartPage(page)).Return(false);
 			mocks.Replay(parser);
 
 			deleting.Raise(persister, new CancellableItemEventArgs(page));
@@ -292,7 +292,7 @@ namespace N2.Tests.Integrity
 			StartPage startPage = new StartPage();
 
 			mocks.Record();
-			Expect.On(parser).Call(parser.IsRootOrStartpage(startPage)).Return(true);
+			Expect.On(parser).Call(parser.IsRootOrStartPage(startPage)).Return(true);
 			mocks.Replay(parser);
 
 			bool canDelete = integrityManger.CanDelete(startPage);
@@ -307,7 +307,7 @@ namespace N2.Tests.Integrity
 			StartPage startPage = new StartPage();
 
 			mocks.Record();
-			Expect.On(parser).Call(parser.IsRootOrStartpage(startPage)).Return(true);
+			Expect.On(parser).Call(parser.IsRootOrStartPage(startPage)).Return(true);
 			mocks.Replay(parser);
 
 			deleting.Raise(persister, new CancellableItemEventArgs(startPage));

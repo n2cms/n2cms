@@ -75,7 +75,7 @@ namespace N2.Web
         public override SiteMapNode GetParentNode(SiteMapNode node)
         {
             ContentItem item = Context.Persister.Get(int.Parse(node.Key));
-            if(item != null && item.Parent != null && !Context.UrlParser.IsRootOrStartpage(item))
+            if(item != null && item.Parent != null && !Context.UrlParser.IsRootOrStartPage(item))
                 return Convert((ContentItem)item.Parent);
             else
                 return null;

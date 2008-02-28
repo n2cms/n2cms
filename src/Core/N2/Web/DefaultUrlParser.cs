@@ -11,7 +11,7 @@ namespace N2.Web
 	/// Creates unique urls for items and finds the corresponding item from
 	/// such an url.
 	/// </summary>
-	public class DefaultUrlParser : N2.Web.IUrlParser
+	public class DefaultUrlParser : IUrlParser
 	{
 		private Persistence.IPersister persister;
 		private Web.Site defaultSite;
@@ -33,7 +33,7 @@ namespace N2.Web
 			this.persister = persister;
 			this.webContext = webContext;
 			this.defaultSite = site;
-			notifier.ItemCreated += new EventHandler<N2.Persistence.ItemEventArgs>(OnItemCreated);
+			notifier.ItemCreated += OnItemCreated;
 		}
 		#endregion
 
@@ -206,14 +206,14 @@ namespace N2.Web
 			// Walk the item's parent items to compute it's url
 			do
 			{
-				if (IsRootOrStartpage(current))
-					break;
+				if (IsStartPage(current))
+					return ToAbsolute(url, item);
 				if (current.IsPage)
 					url = "/" + current.Name + url;
 				current = current.Parent;
 			} while (current != null);
 
-			return ToAbsolute(url, item);
+			return item.RewrittenUrl;
 		}
 
 		/// <summary>Handles virtual directories and non-page items.</summary>
@@ -233,12 +233,20 @@ namespace N2.Web
 				return url + "?item=" + item.ID;
 		}
 
-		/// <summary>Check if an item is startpage or root page</summary>
+		/// <summary>Checks if an item is startpage or root page</summary>
 		/// <param name="item">The item to compare</param>
 		/// <returns>True if the item is a startpage or a rootpage</returns>
-		public virtual bool IsRootOrStartpage(ContentItem item)
+		public virtual bool IsRootOrStartPage(ContentItem item)
 		{
 			return item.ID == CurrentSite.StartPageID || item.ID == CurrentSite.RootItemID;
+		}
+
+		/// <summary>Checks if an item is the startpage</summary>
+		/// <param name="item">The item to compare</param>
+		/// <returns>True if the item is a startpage</returns>
+		public virtual bool IsStartPage(ContentItem item)
+		{
+			return item.ID == CurrentSite.StartPageID;
 		}
 		#endregion
 	}

@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="N2, Version=1.0.302.2339, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\N2.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -97,10 +101,6 @@
     <Content Include="UI\NewsList.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\N2\N2.csproj">
-      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
-      <Name>N2</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Syndication\N2.Templates.Syndication.csproj">
       <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
       <Name>N2.Templates.Syndication</Name>

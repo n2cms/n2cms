@@ -75,7 +75,7 @@ namespace N2.Web
 			// Walk the item's parent items to compute it's url
 			do
 			{
-				if (IsRootOrStartpage(current))
+				if (IsRootOrStartPage(current))
 					break;
 				if (current.IsPage)
 					url = "/" + current.Name + url;
@@ -93,12 +93,12 @@ namespace N2.Web
 			}
 		}
 
-		public override bool IsRootOrStartpage(ContentItem item)
+		public override bool IsRootOrStartPage(ContentItem item)
 		{
 			foreach (Site site in Sites)
 				if (item.ID == site.StartPageID)
 					return true;
-			return base.IsRootOrStartpage(item);
+			return base.IsRootOrStartPage(item);
 		}
 
 		public virtual Site GetSite(string host)

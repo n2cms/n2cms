@@ -22,6 +22,7 @@
 	- css copy warning 
 	- filemanager upload ie6 css
 	- fixed edit mode localization
+	- fixed url parser not generating working urls for items outside the startpage
 
 N2 1.3.2
 - engine

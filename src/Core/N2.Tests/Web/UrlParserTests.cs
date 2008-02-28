@@ -208,7 +208,7 @@ namespace N2.Tests.Web
 
 		#region GetPathAndQuery Tests
 		[Test]
-		public void CanFindRootUrl()
+		public void CanFind_RootUrl()
 		{
 			mocks.ReplayAll();
 
@@ -217,7 +217,7 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanFindSimpleUrl()
+		public void CanFind_SimpleUrl()
 		{
 			mocks.ReplayAll();
 
@@ -226,7 +226,7 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanFindUrlWithQueryString()
+		public void CanFind_UrlWithQueryString()
 		{
 			mocks.ReplayAll();
 
@@ -235,7 +235,7 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanFindDeepUrlWithQueryStrings()
+		public void CanFind_DeepUrl_WithQueryStrings()
 		{
 			mocks.ReplayAll();
 
@@ -244,12 +244,30 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanFindUrlWithHash()
+		public void CanFind_UrlWithHash()
 		{
 			mocks.ReplayAll();
 
 			string url = parser.GetPathAndQuery("http://www.n2cms.com/item1.aspx#theHash");
 			Assert.AreEqual("/item1.aspx#theHash", url);
+		}
+
+		[Test]
+		public void PagesOutsideStartPage_AreReferenced_ThroughTheirRewrittenUrl()
+		{
+			notifier = mocks.Stub<IItemNotifier>();
+			site = new Site(10, 1);
+			parser = new DefaultUrlParser(persister, wrapper, notifier, site);
+
+			CreateItems(false);
+			ContentItem root = CreateOneItem<PageItem>(10, "root", null);
+			startItem.AddTo(root);
+			ContentItem outside1 = CreateOneItem<PageItem>(11, "outside1", root);
+
+			mocks.ReplayAll();
+
+			Assert.AreEqual(parser.BuildUrl(root), root.RewrittenUrl);
+			Assert.AreEqual(parser.BuildUrl(outside1), outside1.RewrittenUrl);
 		}
 
 		#endregion
