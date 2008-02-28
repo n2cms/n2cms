@@ -25,8 +25,8 @@ namespace N2.Web.UI.WebControls
 		private char whitespaceReplacement = '-';
 		private bool toLower;
 		private bool ascii;
-
-		#region Constructor
+		private string prefix = string.Empty;
+		private string suffix = string.Empty;
 
 		/// <summary>Constructs the name editor.</summary>
 		public NameEditor()
@@ -35,14 +35,26 @@ namespace N2.Web.UI.WebControls
 			CssClass = "nameEditor";
 		}
 
-		#endregion
-
 		/// <summary>Gets or sets the name of the editor containing the title to input in the name editor.</summary>
 		public string TitleEditorName
 		{
 			get { return (string) (ViewState["TitleEditorName"] ?? "Title"); }
 			set { ViewState["TitleEditorName"] = value; }
 		}
+
+
+		public string Prefix
+		{
+			get { return prefix; }
+			set { prefix = value; }
+		}
+
+		public string Suffix
+		{
+			get { return suffix; }
+			set { suffix = value; }
+		}
+
 
 		#region Methods
 
@@ -175,11 +187,18 @@ function updateName(titleid,nameid,whitespace,tolower,ascii){
 			}
 		}
 
+		public override void RenderBeginTag(HtmlTextWriter writer)
+		{
+			writer.Write(Prefix);
+			base.RenderBeginTag(writer);
+		}
+
 		/// <summary>Renders an additional asterix when validation didn't pass.</summary>
 		/// <param name="writer">The writer to render the asterix to.</param>
 		public override void RenderEndTag(HtmlTextWriter writer)
 		{
 			base.RenderEndTag(writer);
+			writer.Write(Suffix);
 			if (!IsValid)
 				writer.Write("<span style='color:red'>*</span>");
 		}

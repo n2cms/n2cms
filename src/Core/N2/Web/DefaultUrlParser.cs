@@ -16,7 +16,7 @@ namespace N2.Web
 		private Persistence.IPersister persister;
 		private Web.Site defaultSite;
 		private readonly IWebContext webContext;
-		private string defaultExtension = ".aspx";
+		private string defaultExtension = null;
 		private readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
         private string defaultContentPage = "/default.aspx";
 
@@ -55,7 +55,7 @@ namespace N2.Web
 		/// <summary>Gets or sets the default file extension. The default extension should be something that is handled by the .net isapi such as '.aspx'.</summary>
 		public string DefaultExtension
 		{
-			get { return defaultExtension; }
+			get { return defaultExtension ?? ContentItem.DefaultExtension; }
 			set { defaultExtension = value; }
 		}
 

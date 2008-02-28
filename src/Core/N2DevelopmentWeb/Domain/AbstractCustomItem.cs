@@ -1,5 +1,6 @@
 using System;
 using System.Web.UI.WebControls;
+using N2.Details;
 
 namespace N2.TemplateWeb.Domain
 {
@@ -11,6 +12,7 @@ namespace N2.TemplateWeb.Domain
     [N2.Web.UI.TabPanel("links", "Links", 210)]
     [N2.Web.UI.TabPanel("default", "Default", 200)]
     [N2.Web.UI.TabPanel("special", "Special stuff", 220)]
+	[WithEditableTitle]
     public abstract class AbstractCustomItem : N2.ContentItem
     {
 		public AbstractCustomItem()
@@ -19,12 +21,5 @@ namespace N2.TemplateWeb.Domain
 		}
 		DateTime newedDate;
 		public virtual DateTime NewedDate { get{return newedDate;} }
-
-        [N2.Details.EditableTextBox("Title", 10, Required = true)]
-        public override string Title
-        {
-            get { return base.Title; }
-            set { base.Title = value; }
-        }
     }
 }

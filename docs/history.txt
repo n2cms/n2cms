@@ -11,6 +11,8 @@
 	- replace parent definition attribute
 	- replace definitions attribute
 	- definition attribute is now required
+	- upsized title editor
+	- added some hints around name editor
 - bugfixes
 	- fixed datepicker loosing time
 	- user container isn't created until a user is

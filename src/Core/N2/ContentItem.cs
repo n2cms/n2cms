@@ -679,5 +679,16 @@ namespace N2
 		//}
 
 		#endregion
+
+		#region Statics
+
+		static string defaultExtension = ".aspx";
+		public static string DefaultExtension
+		{
+			get { return defaultExtension; }
+			set { defaultExtension = value; }
+		}
+
+		#endregion
 	}
 }

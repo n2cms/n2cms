@@ -92,6 +92,8 @@ namespace N2.Details
 		{
 			NameEditor ne = (NameEditor)editor;
 			ne.Text = item.Name;
+			ne.Prefix = item.Parent != null ? "/../" : "/";
+			ne.Suffix = ContentItem.DefaultExtension;
 		}
 
 		protected override Control AddEditor(Control container)
