@@ -23,6 +23,8 @@
 	- filemanager upload ie6 css
 	- fixed edit mode localization
 	- fixed url parser not generating working urls for items outside the startpage
+- templates
+	- form: multiple selection option
 
 N2 1.3.2
 - engine

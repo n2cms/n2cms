@@ -14,6 +14,7 @@ using N2.Definitions;
 
 namespace N2.Templates.Survey.Items
 {
+	[Definition("Multiple Select (check boxes)")]
 	public class MultipleSelect : N2.Templates.Survey.Items.OptionSelectQuestion, IContainable
 	{
 		[EditableCheckBox("Display vertically", 19)]
