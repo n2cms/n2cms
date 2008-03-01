@@ -114,7 +114,7 @@ namespace N2.Persistence
 		/// <summary>Search for items based on properties and details.</summary>
 		public static Finder.IItemFinder Items
 		{
-			get { return Context.Instance.Resolve<Finder.IItemFinder>(); }
+			get { return Context.Current.Resolve<Finder.IItemFinder>(); }
 		}
 		
 		/// <summary>Determines wether an item is below a certain ancestral item.</summary>

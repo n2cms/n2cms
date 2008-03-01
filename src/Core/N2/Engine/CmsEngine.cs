@@ -147,20 +147,38 @@ namespace N2.Engine
 			return Container.Resolve(key);
 		}
 
+		/// <summary>Registers a component in the IoC container.</summary>
+		/// <param name="key">A unique key.</param>
+		/// <param name="classType">The type of component to register.</param>
 		public void AddComponent(string key, Type classType)
 		{
 			Container.AddComponent(key, classType);
 		}
 
+		/// <summary>Registers a component in the IoC container.</summary>
+		/// <param name="key">A unique key.</param>
+		/// <param name="serviceType">The type of service to provide.</param>
+		/// <param name="classType">The type of component to register.</param>
 		public void AddComponent(string key, Type serviceType, Type classType)
 		{
 			Container.AddComponent(key, serviceType, classType);
+		}
+
+		/// <summary>Adds a compnent instance to the container.</summary>
+		/// <param name="key">A unique key.</param>
+		/// <param name="serviceType">The type of service to provide.</param>
+		/// <param name="instance">The service instance to add.</param>
+		public void AddComponentInstance(string key, Type serviceType, object instance)
+		{
+			Container.Kernel.AddComponentInstance(key, serviceType, instance);
 		}
 
 		public void AddFacility(string key, object facility)
 		{
 			if (facility is IFacility)
 				Container.AddFacility(key, facility as IFacility);
+			else
+				throw new ArgumentException("Only classes implementing Castle.MicroKernel.IFacilty are supported.");
 		}
 
 		public void Release(object instance)

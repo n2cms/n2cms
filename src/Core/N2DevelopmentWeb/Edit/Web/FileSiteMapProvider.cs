@@ -71,7 +71,7 @@ namespace N2.Edit.Web
 
         protected override SiteMapNode GetRootNodeCore()
         {
-            return NewNode(N2.Context.Instance.EditManager.GetUploadFolderUrl());
+            return NewNode(N2.Context.Current.EditManager.GetUploadFolderUrl());
         }
     }
 }

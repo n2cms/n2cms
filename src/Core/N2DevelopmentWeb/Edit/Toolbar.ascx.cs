@@ -24,7 +24,7 @@ namespace N2.Edit
 
 		private void LoadToolbarPlugIns()
 		{
-			foreach (ToolbarPlugInAttribute pluginAttribute in N2.Context.Instance.EditManager.GetToolbarPlugIns(this.Page.User))
+			foreach (ToolbarPlugInAttribute pluginAttribute in N2.Context.Current.EditManager.GetToolbarPlugIns(this.Page.User))
 			{
 				Control container = (pluginAttribute.Area == ToolbarArea.Preview) 
 					? plhFrame 

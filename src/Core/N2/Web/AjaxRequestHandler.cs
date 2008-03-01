@@ -20,7 +20,7 @@ namespace N2.Web
 
 		public void ProcessRequest(HttpContext context)
 		{
-			AjaxRequestDispatcher dispatcher = Context.Instance.Resolve<AjaxRequestDispatcher>();
+			AjaxRequestDispatcher dispatcher = Context.Current.Resolve<AjaxRequestDispatcher>();
 			string response = dispatcher.Handle(context);
 			context.Response.ContentType = "text/plain";
 			context.Response.Write(response);

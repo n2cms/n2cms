@@ -4,9 +4,9 @@
 - Better toolbar plugin model
 - remove menu parts from templates - move to master page
 - move sites initialization to after context.instance is set
-- bug: select items outside of start page
 - implement INode for edit mode integration
 - allow other than content items to be edited
+- implement security context
 
 TODO:
 - documentation & programmability

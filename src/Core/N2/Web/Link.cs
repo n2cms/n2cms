@@ -75,13 +75,13 @@ namespace N2.Web
 			set { attributes = value; }
 		}
 
-		public string Text
+		public string Contents
 		{
 			get { return text; }
 			set { text = value; }
 		}
 
-		public string Title
+		public string ToolTip
 		{
 			get { return title; }
 			set { title = value; }
@@ -93,7 +93,7 @@ namespace N2.Web
 			set { target = value; }
 		}
 
-		public string Href
+		public string Url
 		{
 			get 
 			{
@@ -119,30 +119,30 @@ namespace N2.Web
 
 		private void UpdateFrom(ILink link)
 		{
-			Href = link.Href;
+			Url = link.Url;
 			Target = link.Target;
-			Text = link.Text;
-			Title = link.Title;
+			Contents = link.Contents;
+			ToolTip = link.ToolTip;
 		}
 
 		public Control ToControl()
 		{
-			if (string.IsNullOrEmpty(Href))
+			if (string.IsNullOrEmpty(Url))
 			{
 				HtmlGenericControl span = new HtmlGenericControl("span");
-				if (!string.IsNullOrEmpty(Title))
-					span.Attributes["title"] = Title;
+				if (!string.IsNullOrEmpty(ToolTip))
+					span.Attributes["title"] = ToolTip;
 				foreach (KeyValuePair<string,string> pair in Attributes)
 					span.Attributes[pair.Key] = pair.Value;
-				span.InnerHtml = Text;
+				span.InnerHtml = Contents;
 				return span;
 			}
 			else
 			{
 				HtmlAnchor a = new HtmlAnchor();
-				a.Title = Title;
-				a.InnerHtml = Text;
-				a.HRef = Href;
+				a.Title = ToolTip;
+				a.InnerHtml = Contents;
+				a.HRef = Url;
 				a.Target = Target;
 				if (!string.IsNullOrEmpty(ClassName))
 					a.Attributes["class"] = ClassName;
@@ -155,30 +155,30 @@ namespace N2.Web
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			if (string.IsNullOrEmpty(Href))
+			if (string.IsNullOrEmpty(Url))
 			{
 				sb.Append("<span");
 			}
 			else
 			{
 				sb.Append("<a href=\"");
-				sb.Append(Href);
+				sb.Append(Url);
 				sb.Append("\"");
 				if (!string.IsNullOrEmpty(Target))
 					sb.AppendFormat(" target=\"{0}\"", Target);
 			}
 			if (!string.IsNullOrEmpty(className))
 				sb.AppendFormat(" class=\"{0}\"", ClassName);
-			if (!string.IsNullOrEmpty(Title))
-				sb.AppendFormat(" title=\"{0}\"", Title);
+			if (!string.IsNullOrEmpty(ToolTip))
+				sb.AppendFormat(" title=\"{0}\"", ToolTip);
 			foreach (KeyValuePair<string, string> pair in Attributes)
 				sb.AppendFormat(" {0}=\"{1}\"", pair.Key, pair.Value);
 			
 			sb.Append(">");
 
-			sb.Append(Text);
+			sb.Append(Contents);
 
-			if (string.IsNullOrEmpty(Href))
+			if (string.IsNullOrEmpty(Url))
 				sb.Append("</span>");
 			else
 				sb.Append("</a>");
@@ -190,7 +190,7 @@ namespace N2.Web
 
 		#region Static Methods
 
-		public static ILinkBuilder To(ContentItem linkTarget)
+		public static ILinkBuilder To(ILink linkTarget)
 		{
 			if (linkTarget != null)
 				return new Link(linkTarget);
@@ -210,13 +210,13 @@ namespace N2.Web
 
 		ILinkBuilder ILinkBuilder.Text(string text)
 		{
-			Text = text;
+			Contents = text;
 			return this;
 		}
 
 		ILinkBuilder ILinkBuilder.Title(string title)
 		{
-			Title = title;
+			ToolTip = title;
 			return this;
 		}
 

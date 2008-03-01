@@ -39,7 +39,7 @@ namespace N2.Web
 
 			Debug.WriteLine("Global: Init");
 			N2.Context.Initialize(false);
-			N2.Context.Instance.Attach(this);
+			N2.Context.Current.Attach(this);
         }
 
 		public override void Dispose()

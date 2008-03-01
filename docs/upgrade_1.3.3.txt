@@ -1,0 +1,12 @@
+A plugin named 'versions' is already defined, assembly: N2.Edit.Versions
+- delete bin\n2.edit.versions.dll
+
+There is a component already registered for the given key n2.parts.createHandler
+- delete bin\n2.parts.dll
+
+Could not load file or assembly 'N2.Parts' or one of its dependencies. 
+- remove any project references to n2.parts
+- remove in web.config: <add tagPrefix="n2" assembly="N2.Parts" namespace="N2.Parts.Web.UI.WebControls"/>
+
+Unknown server tag 'n2:Toolbar'.
+- change code to <n2:DraggableToolbar

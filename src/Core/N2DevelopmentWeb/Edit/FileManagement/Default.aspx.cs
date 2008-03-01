@@ -156,7 +156,7 @@ namespace N2.Edit.FileManagement
 		{
 			if (deleting)
 			{
-				string uploadFolder = N2.Context.Instance.EditManager.GetUploadFolderUrl();
+				string uploadFolder = N2.Context.Current.EditManager.GetUploadFolderUrl();
 				args.IsValid = !string.IsNullOrEmpty(SelectedUrl)
 				               && !uploadFolder.Equals(SelectedUrl, StringComparison.InvariantCultureIgnoreCase);
 			}

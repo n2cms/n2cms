@@ -68,7 +68,7 @@ namespace N2.Edit.Web
 
 		protected static Engine.IEngine Engine
 		{
-			get { return N2.Context.Instance; }
+			get { return N2.Context.Current; }
 		}
     }
 }

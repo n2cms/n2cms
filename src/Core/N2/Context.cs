@@ -11,6 +11,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Web;
+using System;
 
 namespace N2
 {
@@ -59,7 +60,7 @@ namespace N2
 		#region Properties: Persister, Definitions, Integrity, UrlParser, CurrentPage
 
 		/// <summary>Gets the factory intsance used to hold together N2.</summary>
-		public static Engine.IEngine Instance
+		public static Engine.IEngine Current
 		{
 			get
 			{
@@ -72,34 +73,40 @@ namespace N2
 			}
 		}
 
+		[Obsolete("Name changed to Current")]
+		public static Engine.IEngine Instance
+		{
+			get { return Current; }
+		}
+
 		/// <summary>Gets N2 persistence manager used for database persistence of content.</summary>
 		public static Persistence.IPersister Persister
 		{
-			get { return Instance.Persister; }
+			get { return Current.Persister; }
 		}
 
 		/// <summary>Gets N2 definition manager</summary>
 		public static Definitions.IDefinitionManager Definitions
 		{
-			get { return Instance.Definitions; }
+			get { return Current.Definitions; }
 		}
         
 		/// <summary>Gets N2 integrity manager </summary>
 		public static Integrity.IIntegrityManager IntegrityManager
         {
-			get { return Instance.IntegrityManager; }
+			get { return Current.IntegrityManager; }
         }
 
 		/// <summary>Gets N2 security manager responsible of item access checks.</summary>
 		public static Security.ISecurityManager SecurityManager
 		{
-			get { return Instance.SecurityManager; }
+			get { return Current.SecurityManager; }
 		}
 
 		/// <summary>Gets the url parser responsible of mapping urls to items and back again.</summary>
 		public static Web.IUrlParser UrlParser
 		{
-			get { return Instance.UrlParser; }
+			get { return Current.UrlParser; }
 		}
 
         /// <summary>Gets the current page. This is retrieved by the page querystring.</summary>

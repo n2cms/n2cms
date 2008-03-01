@@ -28,7 +28,7 @@
     
     <n2:DroppableZone ZoneName="RightColumn" runat="server" />--%>
     
-    <n2:Toolbar runat="server" />
+    <n2:DraggableToolbar runat="server" />
     <p><b>The N2DevelopmentWeb project is mess caused by incremental development and testing of new features in N2. You shouldn't really look at it. Please look at the examples instead.</b></p>
     
     <N2:EditableDisplay PropertyName="Text" runat="server" />

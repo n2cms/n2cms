@@ -165,7 +165,7 @@ else window.location = '{2}';";
 
 		public virtual Engine.IEngine Engine
 		{
-			get { return N2.Context.Instance; }
+			get { return N2.Context.Current; }
 		}
 
 		public override string ID

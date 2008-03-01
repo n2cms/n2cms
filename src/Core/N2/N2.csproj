@@ -281,6 +281,7 @@
     <EmbeddedResource Include="Definitions\definitions.castle.config" />
     <None Include="FactoryModel.cd" />
     <None Include="ContentModel.cd" />
+    <EmbeddedResource Include="Parts\parts.castle.config" />
     <EmbeddedResource Include="Integrity\integrity.castle.config" />
     <EmbeddedResource Include="Security\security.castle.config" />
     <EmbeddedResource Include="Web\web.castle.config" />
@@ -330,6 +331,17 @@
     <Compile Include="Integrity\RestrictParentsAttribute.cs" />
     <Compile Include="Obsolete\ItemAttribute.cs" />
     <Compile Include="Obsolete\PlugInAttribute.cs" />
+    <Compile Include="Parts\CreateUrlProvider.cs" />
+    <Compile Include="Parts\EditUrlProvider.cs" />
+    <Compile Include="Parts\ItemCopyer.cs" />
+    <Compile Include="Parts\ItemDeleter.cs" />
+    <Compile Include="Parts\ItemMover.cs" />
+    <Compile Include="Parts\PartsAjaxService.cs" />
+    <Compile Include="Web\UI\WebControls\DragDropControlPanel.cs" />
+    <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
+    <Compile Include="Web\UI\WebControls\DropPoint.cs" />
+    <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
+    <Compile Include="Web\UI\WebControls\DragToolbar.cs" />
     <Compile Include="Persistence\GenericFind.cs" />
     <Compile Include="Persistence\IVersionManager.cs" />
     <Compile Include="Persistence\NH\Finder\AbstractInHqlProvider.cs" />
@@ -480,6 +492,14 @@
   <ItemGroup>
     <EmbeddedResource Include="Mappings\MySQL.hbm.xml" />
     <EmbeddedResource Include="Mappings\Default.hbm.xml" />
+    <EmbeddedResource Include="Resources\delete.png" />
+    <EmbeddedResource Include="Resources\layout_edit.png" />
+    <EmbeddedResource Include="Resources\page_edit.png" />
+    <EmbeddedResource Include="Resources\page_refresh.png" />
+    <EmbeddedResource Include="Resources\Parts.css" />
+    <EmbeddedResource Include="Resources\Parts.js" />
+    <EmbeddedResource Include="Resources\SlidingCurtain_bg.png" />
+    <EmbeddedResource Include="Resources\SlidingCurtain_bg_bottom.png" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

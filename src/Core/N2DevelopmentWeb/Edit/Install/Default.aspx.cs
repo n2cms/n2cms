@@ -23,7 +23,7 @@ namespace N2.Edit.Install
 			get
 			{ 
 				if (currentInstallationManager == null)
-					currentInstallationManager = new InstallationManager(N2.Context.Instance);
+					currentInstallationManager = new InstallationManager(N2.Context.Current);
 				return currentInstallationManager; 
 			}
 		}

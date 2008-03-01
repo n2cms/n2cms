@@ -20,7 +20,7 @@ namespace N2.TemplateWeb {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Parts.Web.UI.WebControls.DroppableZone Left;
+        protected global::N2.Web.UI.WebControls.DroppableZone Left;
         
         /// <summary>
         /// MainDataContainer control.
@@ -29,7 +29,7 @@ namespace N2.TemplateWeb {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Parts.Web.UI.WebControls.DroppableZone MainDataContainer;
+        protected global::N2.Web.UI.WebControls.DroppableZone MainDataContainer;
         
         /// <summary>
         /// ids control.

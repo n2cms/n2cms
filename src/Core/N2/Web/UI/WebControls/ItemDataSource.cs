@@ -127,7 +127,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual IEngine Engine
 		{
-			get { return N2.Context.Instance; }
+			get { return N2.Context.Current; }
 		}
 
 		protected virtual ChildrenDataSourceView GetChildrenView()

@@ -27,7 +27,7 @@ namespace N2.Web.UI.WebControls
 		public ItemEditor()
 		{
 			CssClass = "itemEditor";
-			Engine = N2.Context.Instance;
+			Engine = N2.Context.Current;
 		}
 
 		public ItemEditor(ContentItem item)

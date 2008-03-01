@@ -17,6 +17,7 @@ namespace N2.Web
 
 		public delegate ILinkBuilder LinkProviderDelegate(ContentItem currentItem);
 		public delegate string ClassProviderDelegate(ContentItem currentItem);
+
 		private LinkProviderDelegate linkProvider;
 		private ClassProviderDelegate classProvider;
 		private ItemFilter[] filters = null;

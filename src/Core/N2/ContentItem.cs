@@ -28,6 +28,7 @@ using System.Web.UI;
 using N2.Definitions;
 using N2.Integrity;
 using N2UI = N2.Web.UI;
+using System.Text;
 
 namespace N2
 {
@@ -51,16 +52,6 @@ namespace N2
 	[Serializable, RestrictParents(typeof(ContentItem)), DebuggerDisplay("{Name} [{ID}]")]
 	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, IContainable, INode
     {
-        #region Constructor
-        /// <summary>Creates a new instance of the ContentItem.</summary>
-		public ContentItem()
-        {
-			created = DateTime.Now;
-			updated = DateTime.Now;
-			published = DateTime.Now;
-        }
-        #endregion
-
         #region Private Fields
         [Persistence.DoNotCopy]
 		private int id;
@@ -89,6 +80,27 @@ namespace N2
 		private IDictionary<string, Details.DetailCollection> detailCollections = new Dictionary<string, Details.DetailCollection>();
 		private Web.IUrlParser urlParser;
         #endregion
+
+        #region Constructor
+        /// <summary>Creates a new instance of the ContentItem.</summary>
+		public ContentItem()
+        {
+			created = DateTime.Now;
+			updated = DateTime.Now;
+			published = DateTime.Now;
+        }
+        #endregion
+
+		#region Statics
+
+		static string defaultExtension = ".aspx";
+		public static string DefaultExtension
+		{
+			get { return defaultExtension; }
+			set { defaultExtension = value; }
+		}
+
+		#endregion
 
 		#region Public Properties (persisted)
 		/// <summary>Gets or sets item ID.</summary>
@@ -652,12 +664,13 @@ namespace N2
 
 		#region INode Members
 
+		/// <summary>The logical path to the node from the root node.</summary>
 		public string Path
 		{
 			get
 			{
 				string path = "/";
-				for (ContentItem item = this; item.Parent != null; item = item.Parent )
+				for (ContentItem item = this; item.Parent != null; item = item.Parent)
 				{
 					path = "/" + item.Name + path;
 				}
@@ -665,30 +678,57 @@ namespace N2
 			}
 		}
 
-		IEnumerable<INode> INode.GetChildren()
+		string INode.PreviewUrl
 		{
-			foreach (ContentItem item in GetChildren())
+			get { return Url; }
+		}
+
+		string INode.ClassNames
+		{
+			get
 			{
-				yield return item;
+				StringBuilder className = new StringBuilder();
+
+				if (!Published.HasValue || Published > DateTime.Now)
+					className.Append("unpublished ");
+				else if (Published > DateTime.Now.AddDays(-1))
+					className.Append("day ");
+				else if (Published > DateTime.Now.AddDays(-7))
+					className.Append("week ");
+				else if (Published > DateTime.Now.AddMonths(-1))
+					className.Append("month ");
+
+				if (Expires.HasValue && Expires <= DateTime.Now)
+					className.Append("expired ");
+
+				if (!Visible)
+					className.Append("invisible ");
+
+				if (AuthorizedRoles != null && AuthorizedRoles.Count > 0)
+					className.Append("locked ");
+
+				return className.ToString();
 			}
 		}
 
-		//void INode.AddTo(INode parent)
-		//{
-		//    AddTo(parent as ContentItem);
-		//}
+		#region ILink Members
 
-		#endregion
-
-		#region Statics
-
-		static string defaultExtension = ".aspx";
-		public static string DefaultExtension
+		string Web.ILink.Contents
 		{
-			get { return defaultExtension; }
-			set { defaultExtension = value; }
+			get { return Title; }
 		}
 
+		string Web.ILink.ToolTip
+		{
+			get { return string.Empty; }
+		}
+
+		string Web.ILink.Target
+		{
+			get { return string.Empty; }
+		}
+
+		#endregion
 		#endregion
 	}
 }

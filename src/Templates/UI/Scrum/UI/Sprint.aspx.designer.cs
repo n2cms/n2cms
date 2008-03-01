@@ -19,40 +19,5 @@ namespace N2.Templates.Scrum.UI {
     /// </remarks>
     public partial class Sprint {
         
-        /// <summary>
-        /// zPending control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Parts.Web.UI.WebControls.DroppableZone zPending;
-        
-        /// <summary>
-        /// zInProgress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Parts.Web.UI.WebControls.DroppableZone zInProgress;
-        
-        /// <summary>
-        /// zDone control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Parts.Web.UI.WebControls.DroppableZone zDone;
-        
-        /// <summary>
-        /// zImpediments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Parts.Web.UI.WebControls.DroppableZone zImpediments;
     }
 }

@@ -24,7 +24,7 @@ namespace N2.Edit
 	{
 		public static bool DisplayDataItems
 		{
-			get { return Context.Instance.Resolve<Settings.NavigationSettings>().DisplayDataItems; }
+			get { return Context.Current.Resolve<Settings.NavigationSettings>().DisplayDataItems; }
 		}
 	}
 }

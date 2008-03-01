@@ -42,7 +42,7 @@ namespace N2.Edit
 		private string editPreviewUrlFormat = "{0}";
 		private string editorCssUrl = "~/Edit/Css/Editor.css";
 		private string uploadFolderUrl = "~/Upload";
-		private bool enableVersioning = false;
+		private bool enableVersioning = true;
 		#endregion
 
 		#region Constructors

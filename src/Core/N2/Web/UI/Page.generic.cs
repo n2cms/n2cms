@@ -31,7 +31,7 @@ namespace N2.Web.UI
 		/// <summary>Gets the current CMS Engine.</summary>
 		public N2.Engine.IEngine Engine
 		{
-			get { return N2.Context.Instance; }
+			get { return N2.Context.Current; }
 		}
 
 		/// <summary>Gets the content item associated with this page.</summary>

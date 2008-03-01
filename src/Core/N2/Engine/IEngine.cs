@@ -85,7 +85,13 @@ namespace N2.Engine
 		/// <param name="serviceType">The service interface of the component.</param>
 		/// <param name="classType">The type of component.</param>
 		void AddComponent(string key, Type serviceType, Type classType);
-
+		
+		/// <summary>Adds a compnent instance to the container.</summary>
+		/// <param name="key">A unique key.</param>
+		/// <param name="serviceType">The type of service to provide.</param>
+		/// <param name="instance">The service instance to add.</param>
+		void AddComponentInstance(string key, Type serviceType, object instance);
+	
 		/// <summary>Adds a "facility" to the IoC container. Unless this has been changed it's assumed that tihs is a <see cref="Castle.MicroKernel.IFacility"/>.</summary>
 		/// <param name="key">The name of the facility.</param>
 		/// <param name="facility">The facility instance.</param>

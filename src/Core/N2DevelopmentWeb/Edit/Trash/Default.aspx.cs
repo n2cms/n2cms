@@ -9,7 +9,7 @@ namespace N2.Edit.Trash
 	{
 		protected Trashcan.TrashHandler Trash
 		{
-			get { return N2.Context.Instance.Resolve<Trashcan.TrashHandler>(); }
+			get { return N2.Context.Current.Resolve<Trashcan.TrashHandler>(); }
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -60,7 +60,7 @@ namespace N2.Edit.Trash
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
 		{
-			return N2.Context.Instance.EditManager.GetNavigationUrl(selectedItem);
+			return N2.Context.Current.EditManager.GetNavigationUrl(selectedItem);
 		}
 
 		protected virtual void RegisterRefreshNavigationScript(ContentItem item)

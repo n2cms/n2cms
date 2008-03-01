@@ -38,7 +38,7 @@ namespace N2.Edit.Wizard
 
 		private LocationWizard Wizard
 		{
-			get { return N2.Context.Instance.Resolve<LocationWizard>(); }
+			get { return N2.Context.Current.Resolve<LocationWizard>(); }
 		}
 
 		protected virtual string GetEditUrl(MagicLocation location)

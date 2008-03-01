@@ -223,7 +223,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddDeleteButton()
 		{
-			hlDelete.NavigateUrl = N2.Context.Instance.EditManager.GetDeleteUrl(CurrentItem);
+			hlDelete.NavigateUrl = N2.Context.Current.EditManager.GetDeleteUrl(CurrentItem);
 
 			hlDelete.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/delete.gif"), DeleteText);
 			hlDelete.CssClass = "delete";
@@ -232,7 +232,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddCreateNewButton()
 		{
-			hlNew.NavigateUrl = N2.Context.Instance.EditManager.GetSelectNewItemUrl(CurrentItem);
+			hlNew.NavigateUrl = N2.Context.Current.EditManager.GetSelectNewItemUrl(CurrentItem);
 			hlNew.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/add.gif"), NewText);
 			hlNew.CssClass = "new";
 			Controls.Add(hlNew);
@@ -240,7 +240,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddEditButton()
 		{
-			hlEdit.NavigateUrl = N2.Context.Instance.EditManager.GetEditExistingItemUrl(CurrentItem);
+			hlEdit.NavigateUrl = N2.Context.Current.EditManager.GetEditExistingItemUrl(CurrentItem);
 			hlEdit.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/page_edit.gif"), EditText);
 			hlEdit.CssClass = "edit";
 			Controls.Add(hlEdit);
@@ -265,7 +265,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddEditModeButton()
 		{
-			hlEditMode.NavigateUrl = N2.Context.Instance.EditManager.GetEditModeUrl(CurrentItem);
+			hlEditMode.NavigateUrl = N2.Context.Current.EditManager.GetEditModeUrl(CurrentItem);
 			hlEditMode.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/sitemap_color.gif"), EditModeText);
 			hlEditMode.Target = "_top";
 			hlEditMode.CssClass = "editMode";
@@ -317,7 +317,7 @@ namespace N2.Web.UI.WebControls
 
 			foreach (IItemEditor itemEditor in itemEditors)
 			{
-				N2.Context.Instance.EditManager.Save(itemEditor, Page.User);
+				N2.Context.Current.EditManager.Save(itemEditor, Page.User);
 			}
 
 			Page.Response.Redirect(Find.CurrentPage.Url);

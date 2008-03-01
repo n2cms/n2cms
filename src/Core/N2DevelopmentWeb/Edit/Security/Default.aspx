@@ -21,9 +21,8 @@
 		ErrorMessage="At least one role must be selected" 
 		OnServerValidate="cvSomethingSelected_ServerValidate" 
 		meta:resourcekey="cvSomethingSelectedResource1" />
-    <asp:CheckBoxList ID="cblAllowedRoles" runat="server" DataSourceID="odsRoles" 
+    <asp:CheckBoxList ID="cblAllowedRoles" runat="server" 
 		CssClass="cbl" OnSelectedIndexChanged="cblAllowedRoles_SelectedIndexChanged" 
 		OnDataBound="cblAllowedRoles_DataBound" 
 		meta:resourcekey="cblAllowedRolesResource1" />
-    <asp:ObjectDataSource ID="odsRoles" runat="server" TypeName="System.Web.Security.Roles" SelectMethod="GetAllRoles" />
 </asp:Content>

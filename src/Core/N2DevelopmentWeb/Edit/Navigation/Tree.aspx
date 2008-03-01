@@ -21,10 +21,6 @@
             $(document).ready(function(){
                 $("#nav").treeview({collapsed: true});
                 
-                for(var i=0; i<icons.length; ++i){
-                    $(".i" + i).prepend("<img src='" + icons[i] + "' alt='icon'/>");
-                }
-                
                 var dragMemory = null;
                 $("#nav li li a").draggable({
 					snapDistance: 5,

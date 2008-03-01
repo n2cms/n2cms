@@ -18,7 +18,7 @@ using N2.Security;
 using N2.Serialization;
 using N2.Web;
 using Castle.Core;
-using N2.Parts.Web;
+using N2.Parts;
 
 namespace N2.MediumTrust.Engine
 {
@@ -114,22 +114,22 @@ namespace N2.MediumTrust.Engine
 		private void RegisterParts()
 		{
 			AjaxRequestDispatcher dispatcher = new AjaxRequestDispatcher(securityManager);
-			AddComponent(typeof(AjaxRequestDispatcher), dispatcher);
+			AddComponentInstance("AjaxRequestDispatcher", typeof(AjaxRequestDispatcher), dispatcher);
 			CreateUrlProvider cup = new CreateUrlProvider(persister, editManager, definitions, dispatcher);
 			cup.Start();
-			AddComponent(typeof(CreateUrlProvider), cup);
+			AddComponentInstance("CreateUrlProvider", typeof(CreateUrlProvider), cup);
 			ItemDeleter id = new ItemDeleter(persister, dispatcher);
 			id.Start();
-			AddComponent(typeof(ItemDeleter), id);
+			AddComponentInstance("ItemDeleter", typeof(ItemDeleter), id);
 			EditUrlProvider eud = new EditUrlProvider(persister, editManager, dispatcher);
 			eud.Start();
-			AddComponent(typeof(EditUrlProvider), eud);
+			AddComponentInstance("EditUrlProvider", typeof(EditUrlProvider), eud);
 			ItemMover im = new ItemMover(persister, dispatcher);
 			im.Start();
-			AddComponent(typeof(ItemMover), im);
+			AddComponentInstance("ItemMover", typeof(ItemMover), im);
 			ItemCopyer ic = new ItemCopyer(persister, dispatcher);
 			ic.Start();
-			AddComponent(typeof(ItemCopyer), ic);
+			AddComponentInstance("ItemCopyer", typeof(ItemCopyer), ic);
 		}
 
 		#region Properties
@@ -224,7 +224,12 @@ namespace N2.MediumTrust.Engine
 			throw new NotImplementedException();
 		} 
 
+		[Obsolete("Use AddComponentInstance")]
 		public void AddComponent(Type serviceType, object instance)
+		{
+			AddComponentInstance(serviceType.FullName, serviceType, instance);
+		}
+		public void AddComponentInstance(string key, Type serviceType, object instance)
 		{
 			Resolves[serviceType] = instance;
 		}

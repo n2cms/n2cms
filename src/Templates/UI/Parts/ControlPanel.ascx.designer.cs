@@ -28,13 +28,5 @@ namespace N2.Templates.UI.Parts {
         /// </remarks>
         protected global::N2.Web.UI.WebControls.Display dt;
         
-        /// <summary>
-        /// cp control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Parts.Web.UI.WebControls.DragDropControlPanel cp;
     }
 }

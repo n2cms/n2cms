@@ -36,14 +36,5 @@ namespace N2.TemplateWeb.Uc {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnPostback;
-        
-        /// <summary>
-        /// SubDataContainer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Parts.Web.UI.WebControls.DroppableZone SubDataContainer;
     }
 }

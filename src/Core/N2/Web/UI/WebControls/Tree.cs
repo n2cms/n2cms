@@ -66,7 +66,7 @@ namespace N2.Web.UI.WebControls
 
 		private ItemFilter[] GetFilters()
 		{
-			bool displayDataItems = N2.Context.Instance.Resolve<Edit.Settings.NavigationSettings>().DisplayDataItems;
+			bool displayDataItems = N2.Context.Current.Resolve<Edit.Settings.NavigationSettings>().DisplayDataItems;
 			return displayDataItems
 			       	? new ItemFilter[] { new AccessFilter(Page.User, N2.Context.SecurityManager) }
 			       	: new ItemFilter[] { new PageFilter(), new AccessFilter(Page.User, N2.Context.SecurityManager) };

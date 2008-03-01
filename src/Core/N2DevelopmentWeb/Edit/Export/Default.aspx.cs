@@ -67,7 +67,7 @@ namespace N2.Edit.Export
 			{
 				using (Stream s = File.OpenRead(UploadedFilePath))
 				{
-					N2XmlReader xr = new N2XmlReader(N2.Context.Instance);
+					N2XmlReader xr = new N2XmlReader(N2.Context.Current);
 					importedItems.CurrentData = xr.Read(s);
 				}
 			}
@@ -86,7 +86,7 @@ namespace N2.Edit.Export
 			}
 			catch (WrongVersionException)
 			{
-				N2XmlReader xr = new N2XmlReader(N2.Context.Instance);
+				N2XmlReader xr = new N2XmlReader(N2.Context.Current);
 				ContentItem item = xr.Read(fuImport.FileContent);
 				record = CreateRecord(item);
 			}
@@ -105,7 +105,7 @@ namespace N2.Edit.Export
 			}
 			catch (WrongVersionException)
 			{
-				N2XmlReader xr = new N2XmlReader(N2.Context.Instance);
+				N2XmlReader xr = new N2XmlReader(N2.Context.Current);
 				ContentItem item = xr.Read(File.OpenRead(UploadedFilePath));
 				record = CreateRecord(item);
 			}

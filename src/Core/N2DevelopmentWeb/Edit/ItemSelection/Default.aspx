@@ -20,9 +20,6 @@
 	        n2nav.parentInputId = '<%= OpenerInputId %>';
             n2nav.setupLinks('#tree');
             $("#tree").treeview({collapsed: true});
-            for(var i=0; i<icons.length; ++i){
-                $(".i" + i).prepend("<img src='" + icons[i] + "' alt='icon'/>");
-            }
         });
     </script>
 </asp:Content>

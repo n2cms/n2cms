@@ -59,7 +59,7 @@ namespace N2.TemplateWeb
 
     	protected IList<Assembly> GetFilteredAssembliyList()
 		{
-			return N2.Context.Instance.Resolve<N2.Engine.ITypeFinder>().GetAssemblies();
+			return N2.Context.Current.Resolve<N2.Engine.ITypeFinder>().GetAssemblies();
 		}
     }
 

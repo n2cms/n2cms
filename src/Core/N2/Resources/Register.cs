@@ -6,6 +6,9 @@ using System.Web.UI.WebControls;
 
 [assembly: WebResource("N2.Resources.jquery-1.2.3.min.js", "text/javascript")]
 
+[assembly: WebResource("N2.Resources.Parts.css", "text/css")]
+[assembly: WebResource("N2.Resources.Parts.js", "text/javascript")]
+
 namespace N2.Resources
 {
 	/// <summary>
@@ -20,6 +23,11 @@ namespace N2.Resources
 		public static void StyleSheet(Page page, Type type, string resourceName)
 		{
 			StyleSheet(page, page.ClientScript.GetWebResourceUrl(type, resourceName), Media.All);
+		}
+
+		public static void Parts(Page page)
+		{
+
 		}
 
 		/// <summary>Register a style sheet reference in the page's header.</summary>

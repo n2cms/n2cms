@@ -24,7 +24,7 @@ namespace N2.Edit.Web.UI.Controls
 		public ServiceEditor()
 		{
 			this.CssClass = "serviceEditor";
-			this.Engine = N2.Context.Instance;
+			this.Engine = N2.Context.Current;
 		} 
 		#endregion
 

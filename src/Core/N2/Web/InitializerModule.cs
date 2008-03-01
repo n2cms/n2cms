@@ -16,7 +16,7 @@ namespace N2.Web
 		{
 			Debug.WriteLine("InitializerModule: Init");
 			Context.Initialize(false);
-			Context.Instance.Attach(context);
+			Context.Current.Attach(context);
 		}
 
 		public void Dispose()

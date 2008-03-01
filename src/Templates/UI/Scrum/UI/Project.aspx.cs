@@ -1,6 +1,5 @@
 using System;
 using N2.Collections;
-using N2.Parts.Web.UI.WebControls;
 using N2.Persistence.Finder;
 using N2.Templates.Scrum.Items;
 

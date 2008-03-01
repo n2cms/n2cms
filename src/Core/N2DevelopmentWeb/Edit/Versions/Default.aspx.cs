@@ -23,7 +23,7 @@ namespace N2.Edit.Versions
 			hlCancel.NavigateUrl = SelectedItem.Url;
 			
 			persister = N2.Context.Persister;
-			versioner = N2.Context.Instance.Resolve<Persistence.IVersionManager>();
+			versioner = N2.Context.Current.Resolve<Persistence.IVersionManager>();
 
 			publishedItem = SelectedItem.VersionOf ?? SelectedItem;
 

@@ -15,6 +15,17 @@ namespace N2.Edit.Security
 	[N2.Edit.ToolbarPlugIn("", "security", "~/Edit/Security/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/lock.gif", 100, ToolTip = "allowed roles for selected item", GlobalResourceClassName = "Toolbar")]
 	public partial class Default : Web.EditPage
 	{
+		protected override void OnInit(EventArgs e)
+		{
+			if (Roles.Enabled)
+				cblAllowedRoles.DataSource = Roles.GetAllRoles();
+			else
+				cblAllowedRoles.DataSource = new string[] { "Everyone", "Editors", "Administrators" };
+			cblAllowedRoles.DataBind();
+			base.OnInit(e);
+		}
+
+
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			hlCancel.NavigateUrl = SelectedItem.Url;
@@ -27,11 +38,15 @@ namespace N2.Edit.Security
 		protected void btnSave_Command(object sender, CommandEventArgs e)
 		{
             ApplyRoles(SelectedItem);
+
+			base.Refresh(SelectedItem, ToolbarArea.Navigation);
 		}
 
         protected void btnSaveRecursive_Command(object sender, CommandEventArgs e)
 		{
             ApplyRolesRecursive(SelectedItem);
+
+			base.Refresh(SelectedItem, ToolbarArea.Navigation);
 		}
 
         private void ApplyRolesRecursive(ContentItem item)

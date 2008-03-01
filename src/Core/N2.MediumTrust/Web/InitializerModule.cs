@@ -8,7 +8,7 @@ namespace N2.MediumTrust.Web
 		public void Init(HttpApplication context)
 		{
 			Context.Initialize(new MediumTrustFactory());
-			Context.Instance.Attach(context);
+			Context.Current.Attach(context);
 		}
 
 		public void Dispose()

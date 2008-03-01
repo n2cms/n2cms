@@ -111,7 +111,7 @@ namespace N2.Web.UI.WebControls
 			get
 			{
 				return (string) ViewState["CssFile"]
-				       ?? N2.Context.Instance.EditManager.GetEditorCssUrl();
+				       ?? N2.Context.Current.EditManager.GetEditorCssUrl();
 			}
 			set { ViewState["CssFile"] = value; }
 		}

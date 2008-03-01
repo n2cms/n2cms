@@ -1,9 +1,12 @@
+N2 1.3.3
 - edit
 	- upgraded to jquery 1.2.3
 	- upgraded draggables & droppables
 	- filemanager expand to action
 	- upgraded timymce to 3.0.1
-	- added dutch translations (thank you MartijnRasenberg)
+	- added dutch translations (thanks to MartijnRasenberg)
+	- moved security module into edit
+	- moved versions module into edit
 - engine
 	- option for multiple sites when medium trust
 	- replace non unicode (Ascii option on name editor)
@@ -13,6 +16,7 @@
 	- definition attribute is now required
 	- upsized title editor
 	- added some hints around name editor
+	- moved n2.parts into n2.dll
 - bugfixes
 	- fixed datepicker loosing time
 	- user container isn't created until a user is
@@ -23,6 +27,7 @@
 	- filemanager upload ie6 css
 	- fixed edit mode localization
 	- fixed url parser not generating working urls for items outside the startpage
+	- fixed security editor not updating navigation tree on changes
 - templates
 	- form: multiple selection option
 

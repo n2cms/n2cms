@@ -4,6 +4,12 @@ using System.Text;
 
 namespace N2.Definitions
 {
+	/// <summary>
+	/// Disables an item definition. Can be used to create a better 
+	/// implementation of a definition in an existing solution. Note that this
+	/// attribute doesn't modify any existing data. It only removes types from 
+	/// the items that can be created.
+	/// </summary>
 	public class ReplaceDefinitionsAttribute : Attribute, IDefinitionRefiner
 	{
 		Type[] replacedDefinitions;
@@ -11,6 +17,11 @@ namespace N2.Definitions
 		public ReplaceDefinitionsAttribute(params Type[] replacedDefinitions)
 		{
 			this.replacedDefinitions = replacedDefinitions;
+		}
+
+		public ReplaceDefinitionsAttribute(Type replacedDefinition)
+		{
+			this.replacedDefinitions = new Type[] { replacedDefinition };
 		}
 
 		public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
