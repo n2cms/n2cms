@@ -1,1 +1,1 @@
-Drop N2 release files here.
+Make sure N2 deploy file are here and ..\Edit
