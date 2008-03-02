@@ -55,7 +55,7 @@ namespace N2.MediumTrust.Engine
 		{
 			configSection = (MediumTrustSectionHandler)WebConfigurationManager.GetSection("n2/mediumTrust");
 
-			Resolves[typeof(Site)] = site = new Site(configSection.RootItemID, configSection.StartPageID);
+			AddComponentInstance("site", typeof(Site), site = new Site(configSection.RootItemID, configSection.StartPageID));
 			Resolves[typeof(IWebContext)] = webContext = new WebContextWrapper();
 			Resolves[typeof(IItemNotifier)] = notifier = new DefaultItemNotifier();
 			Resolves[typeof(ITypeFinder)] = typeFinder = new MediumTrustTypeFinder();
@@ -92,6 +92,7 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(Importer)] = new Importer(persister, xmlReader);
 			Resolves[typeof(ItemXmlWriter)] = xmlWriter = new ItemXmlWriter(definitions, urlParser);
 			Resolves[typeof(Exporter)] = new Exporter(xmlWriter);
+			AddComponentInstance("navigator", typeof(Navigator), new Navigator(persister, site));
 
 			AttributeExplorer<IServiceEditable> serviceExplorer = new AttributeExplorer<IServiceEditable>();
 			AttributeExplorer<IEditableContainer> containerExplorer = new AttributeExplorer<IEditableContainer>();

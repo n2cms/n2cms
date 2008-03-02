@@ -39,7 +39,6 @@
 @xcopy /Y "..\..\lib\NHibernate.dll" ..\Output\Core\Bin >> Temp\output.core.log
 @xcopy /Y "..\Core\N2DevelopmentWeb\bin\N2.dll" ..\Output\Core\Bin >> Temp\output.core.log
 @xcopy /Y "..\Core\N2DevelopmentWeb\bin\N2.Edit*.dll" ..\Output\Core\Bin >> Temp\output.core.log
-@xcopy /Y "..\Core\N2DevelopmentWeb\bin\N2.Parts.dll" ..\Output\Core\Bin >> Temp\output.core.log
 
 @echo DONE!
 @Pause

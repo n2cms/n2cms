@@ -6,7 +6,7 @@ using N2.Templates.Items;
 namespace N2.Templates.News.Items
 {
 	[Definition("News List", "NewsList", "A news list box that can be displayed in a column.", "", 160)]
-	[AllowedZones("RecursiveRight", "Right")]
+	[AllowedZones("RecursiveRight", "Right", "Left")]
 	public class NewsList : SidebarItem
 	{
 		[EditableLink("News container", 100)]

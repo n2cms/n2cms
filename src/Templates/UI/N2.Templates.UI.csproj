@@ -60,7 +60,7 @@
     <Content Include="default.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\PlugIns.cs" />
+    <Content Include="App_Code\DisplayPage-PlugIn.cs" />
     <Compile Include="App_GlobalResources\Definitions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

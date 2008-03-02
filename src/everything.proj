@@ -1,8 +1,201 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
 	<PropertyGroup>
-		
+		<Deploy-RootFolder>Deploy</Deploy-RootFolder>
+		<Source-LibraryFolder>..\lib</Source-LibraryFolder>
+		<ILMerge>$(Source-LibraryFolder)\ILMerge.exe</ILMerge>
 	</PropertyGroup>
+
+	<Target Name="Build">
+		<CallTarget Targets="Core-Build"/>
+		<CallTarget Targets="Templates-Build"/>
+		<CallTarget Targets="Examples-Build"/>
+	</Target>
+
+	<Target Name="Deploy">
+		<CallTarget Targets="Core-Deploy"/>
+		<CallTarget Targets="Templates-Deploy"/>
+		<CallTarget Targets="Examples-Deploy"/>
+	</Target>
+	
+	<Target Name="Clean-Deploy">
+		<RemoveDir Directories="$(Deploy-RootFolder)"/>
+	</Target>
+	
+	<!-- CORE -->
+	
+	<PropertyGroup>
+		<SourceCore-SolutionFolder>Core</SourceCore-SolutionFolder>
+		<SourceCore-WebFolder>$(SourceCore-SolutionFolder)\N2DevelopmentWeb</SourceCore-WebFolder>
+
+		<DeployCore-EditFolder>$(Deploy-RootFolder)\Core\Edit</DeployCore-EditFolder>
+		<DeployCore-BinFolder>$(Deploy-RootFolder)\Core\Bin</DeployCore-BinFolder>
+	</PropertyGroup>
+
 	<ItemGroup>
-		
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\Iesi.Collections.dll"/>
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\Castle.Core.dll"/>
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\Castle.DynamicProxy2.dll"/>
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\Castle.DynamicProxy.dll"/>
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\Castle.MicroKernel.dll"/>
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\Castle.Windsor.dll"/>
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\log4net.dll"/>
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\NHibernate.Caches.SysCache.dll"/>
+		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\NHibernate.dll"/>
+		<SourceCore-BinFiles Include="$(SourceCore-WebFolder)\Bin\N2.dll"/>
+		<SourceCore-BinFiles Include="$(SourceCore-WebFolder)\Bin\N2.Edit*.dll"/>
+
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.ascx"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.aspx"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.ashx"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.config"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.css"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.gif"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.png"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.jpg"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.htm"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.html"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.js"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.master"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.png"/>
+		<SourceCore-EditFiles Include="$(SourceCore-WebFolder)\Edit\**\*.resx"/>
+
+		<CoreDeploy-MergedDll Include="$(DeployCore-BinFolder)\N2.Edit*.dll"/>
 	</ItemGroup>
+
+	<Target Name="Core-Build">
+		<MSBuild Projects="$(SourceCore-SolutionFolder)\N2-vs2008.sln" />
+	</Target>
+
+	<Target Name="Core-Deploy" DependsOnTargets="Clean-Deploy;Core-Build">
+		<MakeDir Directories="$(DeployCore-BinFolder)"/>
+		<Copy SourceFiles="@(SourceCore-BinFiles)" DestinationFolder="$(DeployCore-BinFolder)" />
+
+		<MakeDir Directories="$(DeployCore-EditFolder)"/>
+		<Copy SourceFiles="@(SourceCore-EditFiles)" DestinationFolder="$(DeployCore-EditFolder)\%(RecursiveDir)" />
+	</Target>
+
+	<Target Name="Core-ILMergeDeploy" DependsOnTargets="Core-Deploy">
+		<Exec Command="$(ILMerge) /ndebug /out:$(Deploy-RootFolder)\N2.Edit.dll $(DeployCore-BinFolder)\N2.Edit.dll /log $(DeployCore-BinFolder)\N2.Edit.Export.dll $(DeployCore-BinFolder)\N2.Edit.Install.dll $(DeployCore-BinFolder)\N2.Edit.LinkTracker.dll $(DeployCore-BinFolder)\N2.Edit.Membership.dll $(DeployCore-BinFolder)\N2.Edit.Trash.dll $(DeployCore-BinFolder)\N2.Edit.Wizard.dll $(DeployCore-BinFolder)\N2.Installation.dll"/>
+		<Delete Files="@(CoreDeploy-MergedDll)"/>
+		<Copy SourceFiles="$(Deploy-RootFolder)\N2.Edit.dll" DestinationFiles="$(DeployCore-BinFolder)\N2.Edit.dll"/>
+		<Delete Files="$(Deploy-RootFolder)\N2.Edit.dll"/>
+	</Target>
+
+	
+	<!-- TEMPLATES -->
+
+	<PropertyGroup>
+		<SourceTemplates-SolutionFolder>Templates</SourceTemplates-SolutionFolder>
+		<SourceTemplates-SolutionFile>$(SourceTemplates-SolutionFolder)\N2.Templates-vs2008.sln</SourceTemplates-SolutionFile>
+		<SourceTemplates-UIFolder>$(SourceTemplates-SolutionFolder)\UI</SourceTemplates-UIFolder>
+
+		<DeployTemplates-UIFolder>$(Deploy-RootFolder)\Templates</DeployTemplates-UIFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<CoreDeploy-AllFiles Include="$(Deploy-RootFolder)\Core\**\*.*" Exclude="$(Deploy-RootFolder)\Core\**\N2.Edit.*.dll" />
+
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.ascx"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.aspx"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.ashx"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.config"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.css"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.gif"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.png"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.jpg"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.htm"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.html"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.js"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.master"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.png"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.resx"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.mdf"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*.ldf"/>
+		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*-PlugIn.cs"/>
+
+		<SourceTemplates-BinFiles Include="$(SourceTemplates-UIFolder)\Bin\*.dll"/>
+	</ItemGroup>
+
+	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
+		<Copy SourceFiles="$(SourceCore-WebFolder)\bin\N2.dll" DestinationFolder="$(SourceTemplates-SolutionFolder)\lib" />
+		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(SourceTemplates-UIFolder)\%(RecursiveDir)" />
+	</Target>
+	
+	<Target Name="Templates-Build" DependsOnTargets="Templates-PrepareDependencies">
+		<MSBuild Projects="$(SourceTemplates-SolutionFile)" />
+	</Target>
+
+	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build">
+		<MakeDir Directories="$(DeployTemplates-UIFolder)"/>
+		<Copy SourceFiles="@(SourceTemplates-UIFiles)" DestinationFolder="$(DeployTemplates-UIFolder)\%(RecursiveDir)" />
+
+		<MakeDir Directories="$(DeployTemplates-BinFolder)"/>
+		<Copy SourceFiles="@(SourceTemplates-BinFiles)" DestinationFolder="$(DeployTemplates-UIFolder)\Bin" />
+	</Target>
+
+	
+	<!-- EXAMPLES -->
+	
+	<PropertyGroup>
+		<Examples-BaseFolder>Examples</Examples-BaseFolder>
+		<Examples-GlobalizationFolder>$(Examples-BaseFolder)\Globalization</Examples-GlobalizationFolder>
+		<Examples-MediumTrustFolder>$(Examples-BaseFolder)\MediumTrust</Examples-MediumTrustFolder>
+		<Examples-PartsFolder>$(Examples-BaseFolder)\Parts</Examples-PartsFolder>
+		<Examples-SimpleFolder>$(Examples-BaseFolder)\SimpleWebSite</Examples-SimpleFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Examples-DependencyFiles Include="$(Examples-GlobalizationFolder)\WebSite\Bin\N2*.dll"/>
+		<!--<Examples-DependencyFiles Include="$(Examples-GlobalizationFolder)\WebSite\Edit\**\*.*"/>-->
+	</ItemGroup>
+
+	<Target Name="Examples-Globalization-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
+		<Copy SourceFiles="$(SourceCore-WebFolder)\bin\N2.dll" DestinationFolder="$(Examples-GlobalizationFolder)\Lib" />
+		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-GlobalizationFolder)\WebSite\%(RecursiveDir)" />
+		<Copy SourceFiles="$(Examples-GlobalizationFolder)\Lib\edit-web.config" DestinationFiles="$(Examples-GlobalizationFolder)\WebSite\Edit\web.config"/>
+	</Target>
+	<Target Name="Examples-MediumTrust-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
+		<!-- Medium trust-->
+		<Copy SourceFiles="$(DeployCore-BinFolder)\N2.dll" DestinationFolder="$(Examples-MediumTrustFolder)\Lib" />
+		<Copy SourceFiles="$(DeployCore-BinFolder)\N2.Edit.dll" DestinationFolder="$(Examples-MediumTrustFolder)\Lib" />
+		<Copy SourceFiles="$(Source-LibraryFolder)\Castle.Core.dll" DestinationFolder="$(Examples-MediumTrustFolder)\Lib" />
+		<Copy SourceFiles="$(SourceCore-SolutionFolder)\N2.MediumTrust\bin\N2.MediumTrust.dll" DestinationFolder="$(Examples-MediumTrustFolder)\Lib" />
+		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\WebProject\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-Parts-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
+		<!-- Parts -->
+		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-PartsFolder)\WebSite\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
+		<!-- Simple web site -->
+		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-SimpleFolder)\CS\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-VisualBasic-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
+		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-SimpleFolder)\VB\%(RecursiveDir)" />
+	</Target>
+
+	<Target Name="Example-Globalization-Build" DependsOnTargets="Examples-Globalization-PrepareDependencies">
+		<MSBuild Projects="$(Examples-GlobalizationFolder)\N2.Globalization.sln"/>
+	</Target>
+	<Target Name="Example-MediumTrust-Build" DependsOnTargets="Examples-MediumTrust-PrepareDependencies">
+		<MSBuild Projects="$(Examples-MediumTrustFolder)\N2.Examples.MediumTrust-vs2008.sln"/>
+	</Target>
+	<Target Name="Example-Parts-Build" DependsOnTargets="Examples-Parts-PrepareDependencies">
+		<MSBuild Projects="$(Examples-PartsFolder)\Parts_Example.sln"/>
+	</Target>
+	<Target Name="Example-SimpleCSharp-Build" DependsOnTargets="Examples-CSharp-PrepareDependencies">
+		<MSBuild Projects="$(Examples-SimpleFolder)\Simple_CSharp_Example.sln"/>
+	</Target>
+	<Target Name="Example-SimpleVisualBasic-Build" DependsOnTargets="Examples-VisualBasic-PrepareDependencies">
+		<MSBuild Projects="$(Examples-SimpleFolder)\Simple_VisualBasic_Example.sln"/>
+	</Target>
+
+	<Target Name="Examples-Build">
+		<CallTarget Targets="Example-SimpleCSharp-Build;Example-SimpleVisualBasic-Build;Example-Parts-Build;Example-MediumTrust-Build;Example-Globalization-Build"/>
+	</Target>
+
+	<Target Name="Examples-Deploy">
+		
+	</Target>
 </Project>

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnClear.Text" xml:space="preserve">
-    <value>&lt;img src='../img/ico/delete.gif' /&gt; Prullenbak legen</value>
+    <value>Prullenbak legen</value>
   </data>
   <data name="btnClear.ToolTip" xml:space="preserve">
     <value />
