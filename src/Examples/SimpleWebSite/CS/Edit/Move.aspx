@@ -3,7 +3,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnMove" runat="server" OnClick="OnMoveClick" CssClass="command" meta:resourceKey="btnMove">try again</asp:LinkButton>
-    <asp:HyperLink ID="btnCancel" runat="server" Text="cancel" CssClass="command" meta:resourceKey="hlCancel"/>
+    <asp:HyperLink ID="btnCancel" runat="server" Text="cancel" CssClass="command cancel" meta:resourceKey="hlCancel"/>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">

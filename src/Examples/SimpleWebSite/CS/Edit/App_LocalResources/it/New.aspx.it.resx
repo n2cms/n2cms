@@ -148,7 +148,7 @@
                     &lt;/ul&gt;&lt;/blockquote&gt;</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>cancella</value>
+    <value>Cancella</value>
   </data>
   <data name="NewPage.Title.NoneAllowed" xml:space="preserve">
     <value>Nessun elemento è abilitato sotto "{0}"</value>
@@ -158,5 +158,17 @@
   </data>
   <data name="rblZone_default.Text" xml:space="preserve">
     <value>Normale</value>
+  </data>
+  <data name="tpPosition.ToolTip" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="tpType.ToolTip" xml:space="preserve">
+    <value>Tipo di elemento</value>
+  </data>
+  <data name="tpZone.ToolTip" xml:space="preserve">
+    <value>Zona</value>
+  </data>
+  <data name="DefaultResource.Title" xml:space="preserve">
+    <value>Crea nuovo elemento</value>
   </data>
 </root>

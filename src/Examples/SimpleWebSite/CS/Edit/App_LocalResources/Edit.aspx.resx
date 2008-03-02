@@ -120,8 +120,59 @@
   <data name="btnSave.Text" xml:space="preserve">
     <value>&lt;img src='img/ico/disk.gif' /&gt; Save and publish</value>
   </data>
+  <data name="btnSave.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="btnSaveUnpublished.Text" xml:space="preserve">
     <value>Save an unpublished version</value>
+  </data>
+  <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="hlCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="hlCancel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="hlEditParent.Text" xml:space="preserve">
+    <value>Edit parent</value>
+  </data>
+  <data name="hlEditParent.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="hlInfo.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="hlInfo.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="hlNewerVersionResource1.Text" xml:space="preserve">
+    <value>There is a newer unpublished version of this page, click here to edit it.</value>
+  </data>
+  <data name="hlNewerVersionResource1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="hlOlderVersionResource1.Text" xml:space="preserve">
+    <value>This is a version of another item, click here to edit the currently published version.</value>
+  </data>
+  <data name="hlOlderVersionResource1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HyperLinkResource1.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HyperLinkResource1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PageResource1.Title" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="vsEdit.HeaderText" xml:space="preserve">
+    <value>The item couldn't be saved. Please look at the following:</value>
+  </data>
+  <data name="vsEdit.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="EditPage.TitleFormat.New" xml:space="preserve">
     <value>New "{0}"</value>
@@ -129,16 +180,7 @@
   <data name="EditPage.TitleFormat.Update" xml:space="preserve">
     <value>Edit "{0}"</value>
   </data>
-  <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="hlEditParent.Text" xml:space="preserve">
-    <value>Edit parent</value>
-  </data>
   <data name="SavedFormat" xml:space="preserve">
     <value>'{0}' saved, redirecting...</value>
-  </data>
-  <data name="vsEdit.HeaderText" xml:space="preserve">
-    <value>The item couldn't be saved. Please look at the following:</value>
   </data>
 </root>

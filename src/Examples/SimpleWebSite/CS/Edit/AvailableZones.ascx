@@ -5,16 +5,14 @@
 		<HeaderTemplate><dl></HeaderTemplate>
 		<ItemTemplate>
 			<dt>
-				<asp:HyperLink ID="hlNew" meta:resourceKey="hlNew" runat="server" ToolTip="new item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>" Text="<%# GetNewDataItemText(Container.DataItem) %>" />
+				<asp:HyperLink ID="hlNew" meta:resourceKey="hlNew" runat="server" ToolTip="New item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>" Text="<%# GetNewDataItemText(Container.DataItem) %>" />
 				<strong><%# GetZoneString((string)Eval("ZoneName")) ?? Eval("Title") %></strong>
 			</dt>
 			<asp:Repeater ID="rptItems" runat="server" DataSource="<%# GetItemsInZone(Container.DataItem) %>">
 				<HeaderTemplate><dd class="items"></HeaderTemplate>
 				<ItemTemplate>
 					<div class="edit">
-						<asp:HyperLink runat="server" 
-							Text="<%# GetEditDataItemText(Container.DataItem) %>" 
-							NavigateUrl="<%# GetEditDataItemUrl(Container.DataItem) %>" />
+						<asp:HyperLink runat="server" Text="<%# GetEditDataItemText(Container.DataItem) %>" NavigateUrl="<%# GetEditDataItemUrl(Container.DataItem) %>" />
 					</div>
 				</ItemTemplate>
 				<FooterTemplate></dd></FooterTemplate>

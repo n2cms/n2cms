@@ -11,3 +11,6 @@ n2nav.setOpenerSelected = function(relativeUrl) {
 n2nav.onUrlSelected = function(rewrittenUrl) {
 	this.setOpenerSelected(rewrittenUrl);
 }
+n2nav.getUrl = function(a){
+	return decodeURIComponent(n2nav.toRelativeUrl(a.href));
+}

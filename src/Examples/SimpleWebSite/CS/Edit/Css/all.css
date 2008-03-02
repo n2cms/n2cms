@@ -133,7 +133,7 @@ fieldset
 	border:solid 1px #DEDAD7;
 	top:-1px;
 	left:-2px;
-	z-index:9999;
+	z-index:99;
 }
 .closed .optionGroup
 {

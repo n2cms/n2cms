@@ -8,7 +8,7 @@
         <title>Navigation</title>
         <link rel="stylesheet" href="../Css/All.css" type="text/css" />
         <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
-        <script src="../Js/plugins.js?v4" type="text/javascript" ></script>
+        <script src="../Js/plugins.ashx" type="text/javascript" ></script>
     </head>
 <body class="navigation search">
     <form id="form1" runat="server">
@@ -25,6 +25,7 @@
                         <asp:TemplateColumn>
                             <ItemTemplate>
                                 <a onclick="<%# Eval("RewrittenUrl", "if(window.top.n2)window.top.n2.setupToolbar('{0}');") %>"
+									rel='<%# Eval("Path") %>'
                                     href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("RewrittenUrl")) %>' 
                                     style='<%# ((int)Eval("Children.Count")==0) ? "display:none" : "" %>'
                                     title='<%# (int)Eval("Children.Count") %>'>
@@ -35,6 +36,7 @@
                         <asp:TemplateColumn>
                             <ItemTemplate>
                                 <asp:HyperLink ID="hlIconShow" runat="server" Target="preview" 
+									rel='<%# Eval("Path") %>'
                                     NavigateUrl='<%# Eval("RewrittenUrl") %>'>
                                     <img src="<%# Eval("IconUrl") %>" />
                                 </asp:HyperLink>
@@ -43,6 +45,7 @@
                         <asp:TemplateColumn HeaderText="Title" meta:resourceKey="colTitle" >
                             <ItemTemplate>
                                 <asp:HyperLink ID="hlShow" runat="server" Target="preview" 
+									rel='<%# Eval("Path") %>'
                                     NavigateUrl='<%# Eval("RewrittenUrl") %>'>
                                     <%# Eval("Title")%>
                                 </asp:HyperLink>

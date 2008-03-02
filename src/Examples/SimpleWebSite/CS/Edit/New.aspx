@@ -1,9 +1,10 @@
-<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.New" Title="Create new item" %>
+<%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.New" Title="Create new item" meta:resourceKey="DefaultResource" %>
 <%@ Import namespace="N2.Definitions"%>
 <asp:Content ContentPlaceHolderID="Toolbar" ID="ct" runat="server">
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" ID="cc" runat="server">
+
     <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType" >
 		<asp:Repeater ID="rptTypes" runat="server">
 			<ItemTemplate>

@@ -2,9 +2,9 @@
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
-    <script src="../Js/plugins.js?v4" type="text/javascript" ></script>
+    <script src="../Js/plugins.ashx" type="text/javascript" ></script>
     <script src="../Js/UrlSelection.js" type="text/javascript" ></script>
-    <script src="../Js/ItemSelection.js" type="text/javascript" ></script>
+    <script src="Js/ItemSelection.js" type="text/javascript" ></script>
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:HyperLink ID="hlFiles" runat="server" CssClass="command switch" NavigateUrl="../FileManagement/Default.aspx" meta:resourceKey="hlFiles">files</asp:HyperLink>
@@ -20,9 +20,6 @@
 	        n2nav.parentInputId = '<%= OpenerInputId %>';
             n2nav.setupLinks('#tree');
             $("#tree").treeview({collapsed: true});
-            for(var i=0; i<icons.length; ++i){
-                $(".i" + i).prepend("<img src='" + icons[i] + "' alt='icon'/>");
-            }
         });
     </script>
 </asp:Content>

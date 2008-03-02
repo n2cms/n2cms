@@ -3,11 +3,11 @@
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnCopy" meta:resourceKey="btnCopy" runat="server" OnClick="OnCopyClick" CssClass="command"><img src='img/ico/page_copy.gif' /> try again</asp:LinkButton>
-    <asp:HyperLink ID="btnCancel" meta:resourceKey="btnCancel" runat="server" CssClass="command"><img src='img/ico/cancel.gif' /> cancel</asp:HyperLink>
+    <asp:HyperLink ID="btnCancel" meta:resourceKey="btnCancel" runat="server" CssClass="command cancel"><img src='img/ico/cancel.gif' /> cancel</asp:HyperLink>
 </asp:Content>
 
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-    <asp:CustomValidator id="cvCopy" meta:resourceKey="cvCopy" runat="server" CssClass="validator" />
+    <asp:CustomValidator id="cvCopy" meta:resourceKey="cvCopy" runat="server" CssClass="validator info" />
     
     <asp:Panel ID="pnlNewName" runat="server" CssClass="formField" Visible="false">
 		<asp:Label ID="lblNewName" runat="server" AssociatedControlID="txtNewName" meta:resourceKey="lblNewName" Text="New name" />

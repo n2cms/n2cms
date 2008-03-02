@@ -121,7 +121,7 @@
     <value>OK</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
-    <value>cancella</value>
+    <value>Cancella</value>
   </data>
   <data name="cvDeleteRoot.ErrorMessage" xml:space="preserve">
     <value>La cartella principale non può essere cancellata</value>
@@ -130,22 +130,22 @@
     <value>File Manager</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/cancel.gif" /&gt; cancella</value>
+    <value>Indietro</value>
   </data>
   <data name="hlItems.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page.gif" /&gt; pagine</value>
+    <value>&lt;img src="../img/ico/page.gif" /&gt; Pagine</value>
   </data>
   <data name="hlNewFolder.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/folder_add.gif" /&gt; cartella</value>
+    <value>&lt;img src="../img/ico/folder_add.gif" /&gt; Cartella</value>
   </data>
   <data name="hlUpload.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; upload file</value>
+    <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; Upload file</value>
   </data>
   <data name="lblFolder.Text" xml:space="preserve">
-    <value>nome di cartella</value>
+    <value>Nome di cartella</value>
   </data>
   <data name="lblUpload.Text" xml:space="preserve">
-    <value>seleziona documento</value>
+    <value>Seleziona documento</value>
   </data>
   <data name="revFolder.ErrorMessage" xml:space="preserve">
     <value>Solo lettere e numeri sono consentiti</value>

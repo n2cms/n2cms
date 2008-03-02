@@ -7,7 +7,7 @@ body
 {
 	position:fixed;
 	background:#fff url(../img/framed_toolbar.gif) repeat-x;
-	z-index:1000;
+	z-index:10;
 	top:0;
 	left:0;
 	padding:1px 16px;
@@ -43,7 +43,7 @@ label
 }
 #toolbar
 {
-	z-index:7777;
+	z-index:77;
 }
 #toolbar label
 {
@@ -71,17 +71,21 @@ ul
 {
 	display:block;
 	background:#dedad7 none no-repeat 5px 50%;
-	padding:5px 5px 5px 25px;
 	margin:10px 0;
 	position:relative;
 	left:-10px;
 	border:solid 1px #cecac7;
+	padding:5px 5px 5px 24px;
 }
 
 /* validation */
 .validator
 {
-	background-image:url(../img/ico/exclamation.gif);
+	display:block;
+	padding:5px 5px 5px 24px;
+	margin:10px 0;
+	background:#eeeae7 url(../img/ico/exclamation.gif) no-repeat 4px 50%;
+	padding:5px 5px 5px 24px;
 }
 .validator ul
 {
@@ -222,7 +226,7 @@ ul.dir li { padding: 2px 0 0 16px; }
 .treeview .last { background-image: url(../img/tv/tv-item-last.gif); }
 .treeview .lastCollapsable { background-image: url(../img/tv/tv-collapsable-last.gif); }
 .treeview .lastExpandable { background-image: url(../img/tv/tv-expandable-last.gif); }
-.treeview a { display:block; }
+.treeview a { padding-right:5px; }
 .treeview a img { margin-right:1px; }
 .droppable-hover{background-color:#eee;}
 
@@ -352,7 +356,7 @@ ul.dir li { padding: 2px 0 0 16px; }
 .tabs
 {
 	margin-left:0;
-	z-index:100;
+	z-index:5;
 }
 .tabs li
 {
