@@ -115,6 +115,17 @@
 		<SourceTemplates-UIFiles Include="$(SourceTemplates-UIFolder)\**\*-PlugIn.cs"/>
 
 		<SourceTemplates-BinFiles Include="$(SourceTemplates-UIFolder)\Bin\*.dll"/>
+
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.UI.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Calendar.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Faq.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Form.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.ImageGallery.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.News.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Poll.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.RSS.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Search.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Survey.dll" />
 	</ItemGroup>
 
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
@@ -130,10 +141,23 @@
 		<MakeDir Directories="$(DeployTemplates-UIFolder)"/>
 		<Copy SourceFiles="@(SourceTemplates-UIFiles)" DestinationFolder="$(DeployTemplates-UIFolder)\%(RecursiveDir)" />
 
-		<MakeDir Directories="$(DeployTemplates-BinFolder)"/>
+		<MakeDir Directories="$(DeployTemplates-UIFolder)\Bin"/>
 		<Copy SourceFiles="@(SourceTemplates-BinFiles)" DestinationFolder="$(DeployTemplates-UIFolder)\Bin" />
 	</Target>
 
+	<Target Name="Templates-ILMergeDeploy" DependsOnTargets="Templates-Deploy">
+		<Exec Command="$(ILMerge) /ndebug /out:$(Deploy-RootFolder)\N2.Templates.UI.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.UI.dll /log $(DeployTemplates-UIFolder)\Bin\N2.Templates.Calendar.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.Faq.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.Form.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.ImageGallery.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.News.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.Poll.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.RSS.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.Search.dll $(DeployTemplates-UIFolder)\Bin\N2.Templates.Survey.dll"/>
+		<Delete Files="@(TemplatesDeploy-MergedDll)"/>
+		<Copy SourceFiles="$(Deploy-RootFolder)\N2.Templates.UI.dll" DestinationFolder="$(DeployTemplates-UIFolder)\Bin"/>
+		<Delete Files="$(Deploy-RootFolder)\N2.Templates.UI.dll"/>
+	</Target>
+
+	<!--<ItemGroup>
+		<TemplatesDeploy-AllFiles Include="$(DeployTemplates-UIFolder)\**\*.*" />
+	</ItemGroup>-->
+	
+	<Target Name="Templates-Implemenatation-Deploy" DependsOnTargets="Templates-ILMergeDeploy">
+	</Target>
 	
 	<!-- EXAMPLES -->
 	
@@ -144,11 +168,6 @@
 		<Examples-PartsFolder>$(Examples-BaseFolder)\Parts</Examples-PartsFolder>
 		<Examples-SimpleFolder>$(Examples-BaseFolder)\SimpleWebSite</Examples-SimpleFolder>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Examples-DependencyFiles Include="$(Examples-GlobalizationFolder)\WebSite\Bin\N2*.dll"/>
-		<!--<Examples-DependencyFiles Include="$(Examples-GlobalizationFolder)\WebSite\Edit\**\*.*"/>-->
-	</ItemGroup>
 
 	<Target Name="Examples-Globalization-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
 		<Copy SourceFiles="$(SourceCore-WebFolder)\bin\N2.dll" DestinationFolder="$(Examples-GlobalizationFolder)\Lib" />
