@@ -4,23 +4,27 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
+            <!-- We can output raw content data into the template like this -->
     <title><%= CurrentPage.Title %></title>
 </head>
 <body>
     <form id="form1" runat="server">
-        <h1>N2 Example Site</h1>
+        <h5 class="header">The N2 Example Site</h5>
         <div class="menu">
-			<asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" SiteMapProvider="PublicSiteMap" ShowStartingNode="false" />
-			<asp:Menu ID="Menu1" runat="server" DataSourceID="SiteMapDataSource1" Orientation="Horizontal" StaticSelectedStyle-Font-Bold="true">
+			<asp:SiteMapDataSource ID="N2SiteMap" runat="server" SiteMapProvider="PublicSiteMap" ShowStartingNode="false" />
+			<asp:Menu ID="Menu1" runat="server" DataSourceID="N2SiteMap" Orientation="Horizontal" StaticSelectedStyle-Font-Bold="true">
 				<DynamicMenuStyle CssClass="subMenu" />
 				<DynamicHoverStyle CssClass="menuHover" />
 				<StaticHoverStyle CssClass="menuHover" />
 			</asp:Menu>
         </div>
-        <asp:SiteMapPath runat="server" CssClass="breadcrumb" />
-        <h2><n2:Display ID="Display1" PropertyName="Title" runat="server" /></h2>
+        <asp:SiteMapPath ID="Path" runat="server" CssClass="breadcrumb" />
+        
+        <!-- The display control uses the default presentation for an item's property, the title in this case uses header 1 -->
+        <n2:Display ID="TitleDisplay" PropertyName="Title" runat="server" />
         <div>
-            <asp:Literal ID="Literal1" Text="<%$ CurrentPage: Text %>" runat="server" />
+            <!-- This is a way to inject data into a webforms control, in this case we're injecting the current page's text property -->
+            <asp:Literal ID="TextLiteral" Text="<%$ CurrentPage: Text %>" runat="server" />
         </div>
     </form>
 </body>

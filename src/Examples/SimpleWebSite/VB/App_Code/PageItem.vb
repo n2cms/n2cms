@@ -9,7 +9,7 @@
 ''' in this class it's Title and Name are also editable. This is because of the
 ''' abstract/MustInherit base class <see cref="MyItemBase"/> it inherits.
 ''' </remarks>
-<N2.Item("Default page", "PageItem")> _
+<N2.Definition("Default page")> _
 Public Class PageItem
     Inherits MyItemBase
 

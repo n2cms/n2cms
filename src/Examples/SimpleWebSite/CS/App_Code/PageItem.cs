@@ -17,7 +17,7 @@ using System.Web.UI.HtmlControls;
 /// in this class it's Title and Name are also editable. This is because of the 
 /// abstract base class <see cref="MyItemBase"/> it derives from.
 /// </summary>
-[N2.Item("Default page", "PageItem")]
+[N2.Definition("Default page")]
 public class PageItem : MyItemBase
 {
 	[N2.Details.EditableFreeTextArea("Text", 100)]

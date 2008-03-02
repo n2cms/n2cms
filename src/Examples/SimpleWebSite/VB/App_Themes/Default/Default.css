@@ -13,12 +13,13 @@ form
 	border-color:White;
 	border-style:solid;
 }
-h1
+.header
 {
 	padding:20px;
 	color:White;
 	background-color:lightslategray;
 	margin:0;
+	font-size:2em;
 }
 a
 {
