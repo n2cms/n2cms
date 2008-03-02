@@ -22,7 +22,7 @@ namespace MediumTrustTest
 		{
 			base.Init();
 
-			MediumTrustFactory factory = ((MediumTrustFactory) N2.Context.Instance);
+			MediumTrustFactory factory = ((MediumTrustFactory) N2.Context.Current);
 			Site site = factory.Resolve<Site>();
 			IPersister persister = factory.Resolve<IPersister>();
 
@@ -36,7 +36,7 @@ namespace MediumTrustTest
 		private void StartWizard(MediumTrustFactory factory, IPersister persister, Site site)
 		{
 			LocationWizard wizard = new LocationWizard(persister, site);
-			factory.AddComponent(typeof (LocationWizard), wizard);
+			factory.AddComponentInstance(typeof (LocationWizard).FullName, typeof (LocationWizard), wizard);
 		}
 
 		private void StartTrash(MediumTrustFactory factory, IPersister persister, Site site)
@@ -45,8 +45,8 @@ namespace MediumTrustTest
 			TrashHandler handler = new TrashHandler(persister, definitions, site);
 			DeleteInterceptor interceptor = new DeleteInterceptor(persister, handler);
 			interceptor.Start();
-			factory.AddComponent(typeof (TrashHandler), handler);
-			factory.AddComponent(typeof(DeleteInterceptor), interceptor);
+			factory.AddComponentInstance(typeof(TrashHandler).FullName, typeof(TrashHandler), handler);
+			factory.AddComponentInstance(typeof(DeleteInterceptor).FullName, typeof(DeleteInterceptor), interceptor);
 		}
 
 		private void StartTracker(MediumTrustFactory factory, IPersister persister)
@@ -55,7 +55,7 @@ namespace MediumTrustTest
 			IUrlParser parser = factory.Resolve<IUrlParser>();
 			Tracker tracker = new Tracker(persister, finder, parser);
 			tracker.Start();
-			factory.AddComponent(typeof (Tracker), tracker);
+			factory.AddComponentInstance(typeof(Tracker).FullName, typeof(Tracker), tracker);
 		}
 
 		protected void Application_End(object sender, EventArgs e)

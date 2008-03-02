@@ -44,15 +44,19 @@
   <ItemGroup>
     <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Castle.Core.dll</HintPath>
+      <HintPath>..\Lib\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="N2, Version=1.0.301.36265, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="N2, Version=1.0.303.37315, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Tasks\runtime\Bin\N2.dll</HintPath>
+      <HintPath>..\Lib\N2.dll</HintPath>
     </Reference>
-    <Reference Include="N2.Edit, Version=1.0.302.38953, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="N2.Edit, Version=1.0.303.987, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\N2.Edit.dll</HintPath>
+      <HintPath>..\Lib\N2.Edit.dll</HintPath>
+    </Reference>
+    <Reference Include="N2.MediumTrust, Version=1.0.303.23318, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\N2.MediumTrust.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -94,12 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\N2.MediumTrust\N2.MediumTrust.csproj">
-      <Project>{C73D1464-44C7-4E21-9691-3FB40CC42B23}</Project>
-      <Name>N2.MediumTrust</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

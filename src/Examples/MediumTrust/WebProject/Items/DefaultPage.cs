@@ -4,6 +4,7 @@ using N2.Integrity;
 
 namespace MediumTrustTest.Items
 {
+	[Definition("Default page")]
 	[WithEditableTitle("Title", 10)]
 	[WithEditableName("Name", 20)]
 	[WithEditablePublishedRange("Published between", 30)]
