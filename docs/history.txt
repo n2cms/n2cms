@@ -30,6 +30,8 @@ N2 1.3.3
 	- fixed security editor not updating navigation tree on changes
 - templates
 	- form: multiple selection option
+- solution
+	- prepared some build files
 
 N2 1.3.2
 - engine
