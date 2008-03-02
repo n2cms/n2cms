@@ -13,7 +13,7 @@ using N2.Integrity;
 using N2.Web.UI;
 
 [Definition("Columns")]
-[AllowedZones("Content")]
+[AllowedZones("Content")] // <-- This tells N2 that we may have columns in our "Content" zone.
 public class Columns : AbstractItem
 {
 	public const string WideNarrow = "Wide-Narrow";

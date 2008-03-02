@@ -12,7 +12,7 @@ using N2.Integrity;
 /// abstract base class <see cref="AbstractPage"/> it derives from.
 /// </summary>
 [Definition("Empty page", "EmptyPage")]
-[AvailableZone("Content", "Content")]
+[AvailableZone("Content", "Content")] // <-- This tells N2 that there is a zone called "Content"
 public class EmptyPage : AbstractPage
 {
 }

@@ -7,10 +7,10 @@
     <title><%= CurrentPage.Title %></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-		<n2:SlidingCurtain ID="SlidingCurtain1" runat="server" BottomBgUrl="~/edit/img/SlidingCurtain_bg_bottom.png" VerticalBgUrl="~/edit/img/SlidingCurtain_bg.png">
-			<n2:DragDropControlPanel ID="DragDropControlPanel1" runat="server" QuickEditLink-Visible="false" />
-		</n2:SlidingCurtain>
+	<n2:SlidingCurtain ID="SlidingCurtain1" runat="server" BottomBgUrl="~/edit/img/SlidingCurtain_bg_bottom.png" VerticalBgUrl="~/edit/img/SlidingCurtain_bg.png">
+		<n2:DragDropControlPanel ID="DragDropControlPanel1" runat="server" QuickEditLink-Visible="false" />
+	</n2:SlidingCurtain>
+   <form id="form1" runat="server">
 
         <div class="menu">
 			<asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" SiteMapProvider="PublicSiteMap" ShowStartingNode="false" />
