@@ -1,6 +1,5 @@
 @echo off
-ECHO Assuming MSBuild location %windir%\Microsoft.NET\Framework\v3.5\MSBuild.exe 
-ECHO BUILDING N2
+ECHO DEPLOYING N2...
 
 msbuild.bat /target:Deploy
 

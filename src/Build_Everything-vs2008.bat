@@ -1,5 +1,5 @@
 @echo off
-ECHO BUILDING N2
+ECHO BUILDING N2...
 
 msbuild.bat
 
