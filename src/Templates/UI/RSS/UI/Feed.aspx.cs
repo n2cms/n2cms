@@ -14,7 +14,7 @@ namespace N2.Templates.Rss.UI
 			if (Request["hungry"] == "yes")
 			{
 				Response.ContentType = "text/xml";
-				N2.Context.Instance.Resolve<RssWriter>().Write(Response.Output, CurrentItem);
+				Engine.Resolve<RssWriter>().Write(Response.Output, CurrentItem);
 				Response.End();
 			}
 		}
