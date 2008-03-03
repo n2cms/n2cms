@@ -13,6 +13,7 @@
 	</Target>
 
 	<Target Name="Deploy">
+		<CallTarget Targets="Source-Deploy"/>
 		<CallTarget Targets="Core-Deploy"/>
 		<CallTarget Targets="Templates-Deploy"/>
 		<CallTarget Targets="Examples-Deploy"/>
@@ -31,6 +32,20 @@
 		<DeployCore-EditFolder>$(Deploy-RootFolder)\Core\Edit</DeployCore-EditFolder>
 		<DeployCore-BinFolder>$(Deploy-RootFolder)\Core\Bin</DeployCore-BinFolder>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<Source-Exclude Include="..\**\.svn\**\*"/> <!-- any svn cache folder-->
+		<Source-Exclude Include="**\obj\**\*"/> <!-- build target folders-->
+		<Source-Exclude Include="**\bin\**\*" />
+		<Source-Exclude Include="**\PrecompiledWeb\**\*"/>
+		<Source-Exclude Include="**\Ankh.Load"/> <!-- a few uninteresting files -->
+		<Source-Exclude Include="**\*.sln.cache"/>
+		<Source-Exclude Include="**\*.suo" />
+		<Source-Exclude Include="$(Deploy-RootFolder)\**\*" /> <!--anything that has been deployed-->
+		<Source-Exclude Include="**\Edit\**\*" Exclude="$(SourceCore-WebFolder)\**\*" /> <!-- any edit folder except the development one-->
+
+		<Source-Files Include="..\**\*" Exclude="@(Source-Exclude)" /> <!-- everything but for exceptions -->
+	</ItemGroup>
 
 	<ItemGroup>
 		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\Iesi.Collections.dll"/>
@@ -242,5 +257,9 @@
 		<Copy SourceFiles="@(ExampleSource-PartsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Parts\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-SimpleFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Simple\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-TemplatesImplementationFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesImplementation\%(RecursiveDir)" />
+	</Target>
+
+	<Target Name="Source-Deploy" DependsOnTargets="Clean-Deploy">
+		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(Deploy-RootFolder)\Source\%(RecursiveDir)"  />
 	</Target>
 </Project>
