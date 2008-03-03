@@ -1,5 +1,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
 
+	<!-- GENERAL -->
+	
 	<PropertyGroup>
 		<Deploy-RootFolder>Deploy</Deploy-RootFolder>
 		<Source-LibraryFolder>..\lib</Source-LibraryFolder>
@@ -12,16 +14,24 @@
 		<CallTarget Targets="Examples-Build"/>
 	</Target>
 
-	<Target Name="Deploy">
-		<CallTarget Targets="Source-Deploy"/>
+	<Target Name="Deploy" DependsOnTargets="Clean-Deploy">
 		<CallTarget Targets="Core-Deploy"/>
 		<CallTarget Targets="Templates-Deploy"/>
 		<CallTarget Targets="Examples-Deploy"/>
+		<CallTarget Targets="Source-Deploy"/>
+	</Target>
+
+	<Target Name="PrepareDependencies">
+		<CallTarget Targets="Templates-PrepareDependencies"/>
+		<CallTarget Targets="Examples-PrepareDependencies"/>
 	</Target>
 	
 	<Target Name="Clean-Deploy">
 		<RemoveDir Directories="$(Deploy-RootFolder)"/>
 	</Target>
+	
+	
+	
 	
 	<!-- CORE -->
 	
@@ -32,20 +42,6 @@
 		<DeployCore-EditFolder>$(Deploy-RootFolder)\Core\Edit</DeployCore-EditFolder>
 		<DeployCore-BinFolder>$(Deploy-RootFolder)\Core\Bin</DeployCore-BinFolder>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Source-Exclude Include="..\**\.svn\**\*"/> <!-- any svn cache folder-->
-		<Source-Exclude Include="**\obj\**\*"/> <!-- build target folders-->
-		<Source-Exclude Include="**\bin\**\*" />
-		<Source-Exclude Include="**\PrecompiledWeb\**\*"/>
-		<Source-Exclude Include="**\Ankh.Load"/> <!-- a few uninteresting files -->
-		<Source-Exclude Include="**\*.sln.cache"/>
-		<Source-Exclude Include="**\*.suo" />
-		<Source-Exclude Include="$(Deploy-RootFolder)\**\*" /> <!--anything that has been deployed-->
-		<Source-Exclude Include="**\Edit\**\*" Exclude="$(SourceCore-WebFolder)\**\*" /> <!-- any edit folder except the development one-->
-
-		<Source-Files Include="..\**\*" Exclude="@(Source-Exclude)" /> <!-- everything but for exceptions -->
-	</ItemGroup>
 
 	<ItemGroup>
 		<SourceCore-BinFiles Include="$(Source-LibraryFolder)\Iesi.Collections.dll"/>
@@ -98,6 +94,8 @@
 	</Target>
 
 	
+	
+	
 	<!-- TEMPLATES -->
 
 	<PropertyGroup>
@@ -146,6 +144,7 @@
 
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
 		<Copy SourceFiles="$(SourceCore-WebFolder)\bin\N2.dll" DestinationFolder="$(SourceTemplates-SolutionFolder)\lib" />
+		<Copy SourceFiles="$(Source-LibraryFolder)\Castle.Core.dll" DestinationFolder="$(SourceTemplates-SolutionFolder)\lib" />
 		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(SourceTemplates-UIFolder)\%(RecursiveDir)" />
 	</Target>
 	
@@ -168,6 +167,9 @@
 		<Delete Files="$(Deploy-RootFolder)\N2.Templates.UI.dll"/>
 	</Target>
 
+	
+	
+	
 	<!-- EXAMPLES -->
 	
 	<PropertyGroup>
@@ -208,6 +210,14 @@
 		<Copy SourceFiles="$(DeployTemplates-UIFolder)\Bin\N2.dll" DestinationFolder="$(Examples-TemplatesImplementationFolder)\Lib" />
 		<Copy SourceFiles="$(DeployTemplates-UIFolder)\Bin\N2.Templates.dll" DestinationFolder="$(Examples-TemplatesImplementationFolder)\Lib" />
 		<Copy SourceFiles="@(TemplatesDeploy-AllFiles)" DestinationFolder="$(Examples-TemplatesImplementationFolder)\WebProject\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-PrepareDependencies">
+		<CallTarget Targets="Examples-Globalization-PrepareDependencies"/>
+		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
+		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
+		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
+		<CallTarget Targets="Examples-VisualBasic-PrepareDependencies"/>
+		<CallTarget Targets="Examples-TemplatesImplementation-PrepareDependencies"/>
 	</Target>
 
 	<Target Name="Example-Globalization-Build" DependsOnTargets="Examples-Globalization-PrepareDependencies">
@@ -258,6 +268,32 @@
 		<Copy SourceFiles="@(ExampleSource-SimpleFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Simple\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-TemplatesImplementationFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesImplementation\%(RecursiveDir)" />
 	</Target>
+
+	
+	
+	
+	<!-- SOURCE -->
+	
+	<ItemGroup>
+		<!-- any svn cache folder-->
+		<Source-Exclude Include="..\**\.svn\**\*"/>
+		<!-- build target folders-->
+		<Source-Exclude Include="..\**\obj\**\*"/>
+		<Source-Exclude Include="..\**\bin\**\*" Exclude="..src\$(Examples-BaseFolder)\**\bin\N2.dll" />
+		<Source-Exclude Include="..\**\PrecompiledWeb\**\*"/>
+		<!-- uninteresting files -->
+		<Source-Exclude Include="..\**\Ankh.Load"/>
+		<Source-Exclude Include="..\**\*.sln.cache"/>
+		<Source-Exclude Include="..\**\*.suo" />
+		<Source-Exclude Include="..\**\Thumbs.db" />
+		<!--anything that has been deployed-->
+		<Source-Exclude Include="..\src\$(Deploy-RootFolder)\**\*" />
+		<!-- any edit folder except the development one -->
+		<Source-Exclude Include="..\**\Edit\**\*" Exclude="..\src\$(SourceCore-SolutionFolder)\**\*" />
+ 
+		<!-- everything but for exceptions -->
+		<Source-Files Include="..\**\*" Exclude="@(Source-Exclude)" />
+	</ItemGroup>
 
 	<Target Name="Source-Deploy" DependsOnTargets="Clean-Deploy">
 		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(Deploy-RootFolder)\Source\%(RecursiveDir)"  />
