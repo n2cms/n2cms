@@ -59,7 +59,11 @@ namespace N2.Edit.FileManagement
 			if (!IsPostBack)
 			{
 				hlItems.Visible = IsOpened && AllModesAvailable;
-				hlItems.NavigateUrl = AppendQueryString("../ItemSelection/Default.aspx");
+				string itemsUrl = AppendQueryString("../ItemSelection/Default.aspx");
+				hlItems.NavigateUrl = itemsUrl;
+				if (AllModesAvailable && string.IsNullOrEmpty(Request.QueryString["redirect"]) && !string.IsNullOrEmpty(selectedUrl.Value) && !selectedUrl.Value.StartsWith(Engine.EditManager.GetUploadFolderUrl()))
+					Response.Redirect(itemsUrl);
+
 				if (!IsOpened)
 					hlCancel.NavigateUrl = SelectedItem.Url;
 			}

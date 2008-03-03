@@ -11,11 +11,6 @@ namespace N2.Web.UI
 		where TPage : N2.ContentItem
 		where TItem : N2.ContentItem
 	{
-		/// <summary>Gets the current CMS Engine.</summary>
-		public N2.Engine.IEngine Engine
-		{
-			get { return N2.Context.Current; }
-		}
 
 		private TItem currentData;
 		/// <summary>Gets the current data item.</summary>

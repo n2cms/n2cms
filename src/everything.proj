@@ -179,6 +179,7 @@
 		<Examples-PartsFolder>$(Examples-BaseFolder)\Parts</Examples-PartsFolder>
 		<Examples-SimpleFolder>$(Examples-BaseFolder)\SimpleWebSite</Examples-SimpleFolder>
 		<Examples-TemplatesImplementationFolder>$(Examples-BaseFolder)\TemplatesImplementation</Examples-TemplatesImplementationFolder>
+		<Examples-MultipleDomainsFolder>$(Examples-BaseFolder)\MultipleDomains</Examples-MultipleDomainsFolder>
 		<Deploy-ExamplesFolder>$(Deploy-RootFolder)\Examples</Deploy-ExamplesFolder>
 	</PropertyGroup>
 
@@ -211,6 +212,9 @@
 		<Copy SourceFiles="$(DeployTemplates-UIFolder)\Bin\N2.Templates.dll" DestinationFolder="$(Examples-TemplatesImplementationFolder)\Lib" />
 		<Copy SourceFiles="@(TemplatesDeploy-AllFiles)" DestinationFolder="$(Examples-TemplatesImplementationFolder)\WebProject\%(RecursiveDir)" />
 	</Target>
+	<Target Name="Examples-MultipleDomains-PrepareDependencies" DependsOnTargets="Core-ILMergeDeploy">
+		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\%(RecursiveDir)" />
+	</Target>
 	<Target Name="Examples-PrepareDependencies">
 		<CallTarget Targets="Examples-Globalization-PrepareDependencies"/>
 		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
@@ -218,6 +222,7 @@
 		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
 		<CallTarget Targets="Examples-VisualBasic-PrepareDependencies"/>
 		<CallTarget Targets="Examples-TemplatesImplementation-PrepareDependencies"/>
+		<CallTarget Targets="Examples-MultipleSite-PrepareDependencies"/>
 	</Target>
 
 	<Target Name="Example-Globalization-Build" DependsOnTargets="Examples-Globalization-PrepareDependencies">
@@ -259,6 +264,7 @@
 		<ExampleSource-PartsFiles Include="$(Examples-PartsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 		<ExampleSource-SimpleFiles Include="$(Examples-SimpleFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 		<ExampleSource-TemplatesImplementationFiles Include="$(Examples-TemplatesImplementationFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+		<ExampleSource-MultipleDomainsFiles Include="$(Examples-MultipleDomainsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 	</ItemGroup>
 	
 	<Target Name="Examples-Deploy" DependsOnTargets="Examples-Build">
@@ -267,6 +273,7 @@
 		<Copy SourceFiles="@(ExampleSource-PartsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Parts\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-SimpleFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Simple\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-TemplatesImplementationFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesImplementation\%(RecursiveDir)" />
+		<Copy SourceFiles="@(ExampleSource-MultipleDomainsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MultipleDomains\%(RecursiveDir)" />
 	</Target>
 
 	

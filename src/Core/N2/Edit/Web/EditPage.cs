@@ -179,22 +179,18 @@ else window.location = '{2}';";
 			set { ViewState["SelectedItemID"] = value; }
 		}
 		
-		private ContentItem selectedItem = null;
-
 		/// <summary>Gets the currently selected item by the tree menu in edit mode.</summary>
 		public virtual ContentItem SelectedItem
 		{
 			get
 			{
-				return selectedItem ?? 
-					(selectedItem = GetFromViewState() 
-						?? GetFromUrl() 
-						?? Engine.UrlParser.StartPage);
+				ContentItem selectedItem = GetFromViewState()
+					?? GetFromUrl()
+					?? Engine.UrlParser.StartPage;
+				return selectedItem;
 			}
 			set
 			{
-				selectedItem = value;
-
 				if (value != null)
 					SelectedItemID = value.ID;
 				else
@@ -221,9 +217,13 @@ else window.location = '{2}';";
 
 		private ContentItem GetFromUrl()
 		{
-			string selected = GetSelectedUrl();
+			string selected = GetSelectedPath();
 			if (!string.IsNullOrEmpty(selected))
 				return Engine.Resolve<Navigator>().Navigate(selected);
+
+			string selectedUrl = Request["selectedUrl"];
+			if (!string.IsNullOrEmpty(selectedUrl))
+				return Engine.UrlParser.Parse(selectedUrl);
 
 			string itemId = Request["item"];
 			if (!string.IsNullOrEmpty(itemId))
@@ -232,7 +232,7 @@ else window.location = '{2}';";
 			return null;
 		}
 
-		protected string GetSelectedUrl()
+		protected string GetSelectedPath()
 		{
 			return Request["selected"];
 		}

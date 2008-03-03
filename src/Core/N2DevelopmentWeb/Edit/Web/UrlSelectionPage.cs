@@ -21,7 +21,7 @@ namespace N2.Edit.Web
 		/// <summary>Gets the selected url from the calling page.</summary>
 		protected string OpenerInputUrl
 		{
-			get { return Request.QueryString["selected"]; }
+			get { return Request.QueryString["selectedUrl"]; }
 		}
 
 		/// <summary>Gets wether the dialog is to return a value to an input in the opener window.</summary>
@@ -45,9 +45,10 @@ namespace N2.Edit.Web
 		protected string AppendQueryString(string baseUrl)
 		{
 			return baseUrl += "?tbid=" + OpenerInputId
+				+ "&redirect=false"
 				+ "&defaultMode=" + DefaultMode 
 				+ "&availableModes=" + AvailableModes
-				+ "&selected=" + Server.UrlEncode(OpenerInputUrl);
+				+ "&selectedUrl=" + Server.UrlEncode(OpenerInputUrl);
 		}
 		
 

@@ -48,7 +48,7 @@ namespace N2.Web.UI.WebControls
     var srcField;
 	function fileBrowserCallBack(field_name, url, destinationType, win) {{
         srcField = win.document.forms[0].elements[field_name];
-        var fileSelectorWindow = window.open(fileBrowserUrl + '?availableModes=All&tbid='+ srcField.id +'&destinationType='+ destinationType +'&selected='+ encodeURIComponent(url), 'FileBrowser', popupOptions);
+        var fileSelectorWindow = window.open(fileBrowserUrl + '?availableModes=All&tbid='+ srcField.id +'&destinationType='+ destinationType +'&selectedUrl='+ encodeURIComponent(url), 'FileBrowser', popupOptions);
         fileSelectorWindow.focus();
 	}}
     function onFileSelected(selectedUrl){{

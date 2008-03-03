@@ -39,7 +39,7 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 				+ '?tbid=' + tbId 
 				+ '&defaultMode=' + defaultMode 
 				+ '&availableModes=' + availableModes
-				+ '&selected=' + encodeURIComponent(tb.value),
+				+ '&selectedUrl=' + encodeURIComponent(tb.value),
 		null, 
 		popupOptions);
 }}

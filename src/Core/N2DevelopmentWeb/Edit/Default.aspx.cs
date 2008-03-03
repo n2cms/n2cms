@@ -41,7 +41,7 @@ namespace N2.Edit
 			}
 			catch(NullReferenceException ex)
 			{
-				string url = GetSelectedUrl();
+				string url = GetSelectedPath();
 				if(url == null)
 					throw  new N2Exception("Couldn't get the start page, this usually indicates a configuration or installation problem. The start page must be inserted and it's id must be configured in web.config.", ex);
 				else 
