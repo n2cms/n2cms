@@ -61,7 +61,10 @@ namespace N2.Web
 			{
 				string host = GetHost(url);
 				Site site = GetSite(host);
-				return TryLoadingFromQueryString(url) ?? Parse(Persister.Get(site.StartPageID), GetPathAndQuery(url));
+				if (site != null)
+					return TryLoadingFromQueryString(url) ?? Parse(Persister.Get(site.StartPageID), GetPathAndQuery(url));
+				else
+					return TryLoadingFromQueryString(url);
 			}
 		}
 

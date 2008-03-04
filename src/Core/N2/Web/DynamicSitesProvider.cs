@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace N2.Web
 {
@@ -42,15 +43,25 @@ namespace N2.Web
 		#region Methods
 		public virtual ICollection<Site> GetSites()
 		{
-			if (RecursionDepth < 0)
-				throw new N2Exception("The DynamicSitesProvider requires the RecursionDepth property to be at least 0");
+			//try
+			//{
+				if (RecursionDepth < 0)
+					throw new N2Exception("The DynamicSitesProvider requires the RecursionDepth property to be at least 0");
 
-			List<Site> sites = new List<Site>();
-			ContentItem rootItem = persister.Get(rootItemID);
+				List<Site> sites = new List<Site>();
+				ContentItem rootItem = persister.Get(rootItemID);
 
-			AppendSitesRecursive(sites, rootItem, 0);
+				AppendSitesRecursive(sites, rootItem, 0);
 
-			return sites;
+				return sites;
+			//}
+			//catch (Exception ex)
+			//{
+			//    //TODO: check out
+			//    // too bad: probably some serious error but we can't throw here because this might screw up the installation
+			//    Trace.TraceError(ex.ToString());
+			//    return new Site[0];
+			//}
 		}
 
 		protected virtual void AppendSitesRecursive(List<Site> sites, ContentItem currentItem, int currentDepth)

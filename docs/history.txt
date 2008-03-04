@@ -1,8 +1,10 @@
-- edit
-	- url selector now displays items if the url doesn't seem to be a file
-	- url selector now more correctly selects items on other sites
 - examples
 	- included multiple domains example
+- bugfixes
+	- url selector now displays items if the url doesn't seem to be a file
+	- url selector now more correctly selects items on other sites
+	- multiplehosts url parser doesn't throw up on urls to external sites
+
 N2 1.3.3
 - edit
 	- upgraded to jquery 1.2.3

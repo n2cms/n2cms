@@ -113,6 +113,8 @@ namespace N2.Web
 
 		protected virtual ContentItem Parse(ContentItem current, string url)
 		{
+			if (current == null) throw new ArgumentNullException("current");
+
 			url = CleanUrl(url);
 
 			if (url.Length == 0)
