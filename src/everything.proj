@@ -267,7 +267,7 @@
 		<ExampleSource-MultipleDomainsFiles Include="$(Examples-MultipleDomainsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 	</ItemGroup>
 	
-	<Target Name="Examples-Deploy" DependsOnTargets="Examples-Build">
+	<Target Name="Examples-Deploy" DependsOnTargets="Examples-PrepareDependencies">
 		<Copy SourceFiles="@(ExampleSource-GlobalizationFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Globalization\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-MediumTrustFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MediumTrust\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-PartsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Parts\%(RecursiveDir)" />

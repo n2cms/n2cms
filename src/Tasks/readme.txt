@@ -1,1 +1,0 @@
-NOTE: These files are obsolete. There is now an msbuild file (../everything.proj) that should take care of things.
