@@ -10,7 +10,7 @@ namespace N2.Templates.Security
 	{
 		protected ItemBridge Bridge
 		{
-			get { return Context.Instance.Resolve<ItemBridge>(); }
+			get { return Context.Current.Resolve<ItemBridge>(); }
 		}
 
 		public override void AddUsersToRoles(string[] usernames, string[] roleNames)

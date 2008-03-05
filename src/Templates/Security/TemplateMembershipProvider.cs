@@ -12,7 +12,7 @@ namespace N2.Templates.Security
 	{
 		protected ItemBridge Bridge
 		{
-			get { return Context.Instance.Resolve<ItemBridge>(); }
+			get { return Context.Current.Resolve<ItemBridge>(); }
 		}
 
 		private string applicationName = "N2.Templates.Membership";

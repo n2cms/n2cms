@@ -10,7 +10,7 @@ namespace N2.Templates.UI.Parts
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			if(N2.Context.Instance.SecurityManager.IsEditor(Page.User))
+			if(N2.Context.Current.SecurityManager.IsEditor(Page.User))
 				DataBind();
 			else
 				Visible = false;

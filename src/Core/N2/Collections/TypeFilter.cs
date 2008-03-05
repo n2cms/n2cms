@@ -36,6 +36,13 @@ namespace N2.Collections
 			this.allowedTypes = allowedTypes;
 		}
 
+		/// <summary>Instantiates a type filter that will filter anythning but the supplied types (and subclasses).</summary>
+		/// <param name="allowedTypes">Types that will match.</param>
+		public TypeFilter(IEnumerable<Type> allowedTypes)
+		{
+			this.allowedTypes = allowedTypes;
+		}
+
 		/// <summary>Instantiats a type filter that will filter based on the supplied types. The types will be kept or filtered out depending on the inverse parameter.</summary>
 		/// <param name="inverse">True means that supplied types will be removed when filtering.</param>
 		/// <param name="allowedTypes">The types that will match or the inverse based on the inverse parameter.</param>

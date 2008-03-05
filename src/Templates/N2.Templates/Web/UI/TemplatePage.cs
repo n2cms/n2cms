@@ -12,7 +12,7 @@ namespace N2.Templates.Web.UI
 
 		protected override void OnPreInit(EventArgs e)
 		{
-			N2.Context.Instance.Resolve<IPageModifierContainer>().Modify(this);
+			Engine.Resolve<IPageModifierContainer>().Modify(this);
 
 			base.OnPreInit(e);
 		}
