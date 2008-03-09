@@ -18,6 +18,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Resources;
+using N2.Engine;
 
 namespace N2.Web.UI.WebControls
 {
@@ -83,6 +84,13 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return (string)(ViewState["EditText"] ?? "Edit page"); }
 			set { ViewState["EditText"] = value; }
+		}
+
+		/// <summary>Gets or sets the the text on the edit page button.</summary>
+		public string PublishText
+		{
+			get { return (string)(ViewState["PublishText"] ?? "Publish page"); }
+			set { ViewState["PublishText"] = value; }
 		}
 
 		/// <summary>Gets or sets the text on the delete button.</summary>
@@ -175,6 +183,11 @@ namespace N2.Web.UI.WebControls
 			get{return btnCancel;}
 		}
 
+		public virtual IEngine Engine
+		{
+			get { return N2.Context.Current; }
+		}
+
 		public virtual ContentItem CurrentItem
 		{
 			get { return Find.CurrentPage; }
@@ -217,13 +230,25 @@ namespace N2.Web.UI.WebControls
 			AddQuickEditButton();
 			AddEditModeButton();
 			AddCreateNewButton();
+			//if (CurrentItem.VersionOf != null)
+			//{
+			//    AddPublishButton();
+			//}
 			AddEditButton();
 			AddDeleteButton();
 		}
 
+		//private void AddPublishButton()
+		//{
+		//    LinkButton btnPublish = new LinkButton();
+		//    btnPublish.Text = PublishText;
+		//    btnPublish.Click += new EventHandler(btnPublish_Click);
+		//    Controls.Add(btnPublish);
+		//}
+
 		protected virtual void AddDeleteButton()
 		{
-			hlDelete.NavigateUrl = N2.Context.Current.EditManager.GetDeleteUrl(CurrentItem);
+			hlDelete.NavigateUrl = Engine.EditManager.GetDeleteUrl(CurrentItem);
 
 			hlDelete.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/delete.gif"), DeleteText);
 			hlDelete.CssClass = "delete";
@@ -232,7 +257,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddCreateNewButton()
 		{
-			hlNew.NavigateUrl = N2.Context.Current.EditManager.GetSelectNewItemUrl(CurrentItem);
+			hlNew.NavigateUrl = Engine.EditManager.GetSelectNewItemUrl(CurrentItem);
 			hlNew.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/add.gif"), NewText);
 			hlNew.CssClass = "new";
 			Controls.Add(hlNew);
@@ -240,7 +265,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddEditButton()
 		{
-			hlEdit.NavigateUrl = N2.Context.Current.EditManager.GetEditExistingItemUrl(CurrentItem);
+			hlEdit.NavigateUrl = Engine.EditManager.GetEditExistingItemUrl(CurrentItem);
 			hlEdit.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/page_edit.gif"), EditText);
 			hlEdit.CssClass = "edit";
 			Controls.Add(hlEdit);
@@ -265,7 +290,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddEditModeButton()
 		{
-			hlEditMode.NavigateUrl = N2.Context.Current.EditManager.GetEditModeUrl(CurrentItem);
+			hlEditMode.NavigateUrl = Engine.EditManager.GetEditModeUrl(CurrentItem);
 			hlEditMode.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/sitemap_color.gif"), EditModeText);
 			hlEditMode.Target = "_top";
 			hlEditMode.CssClass = "editMode";
@@ -279,6 +304,49 @@ namespace N2.Web.UI.WebControls
 			hlQuickEdit.CssClass = "quickEdit";
 			Controls.Add(hlQuickEdit);
 		}
+
+		private class PublishEditor : IItemEditor
+		{
+			public PublishEditor(ContentItem item)
+			{
+				this.currentItem = item;
+			}
+
+			ItemEditorVersioningMode versioningMode = ItemEditorVersioningMode.SaveAsMaster;
+			string zoneName = null;
+			IDictionary<string, Control> addedEditors = new Dictionary<string, Control>();
+			readonly ContentItem currentItem;
+
+			public ItemEditorVersioningMode VersioningMode
+			{
+				get { return versioningMode; }
+				set { versioningMode = value; }
+			}
+
+			public string ZoneName
+			{
+				get { return zoneName; }
+				set { zoneName = value; }
+			}
+
+			public IDictionary<string, Control> AddedEditors
+			{
+				get { return addedEditors; }
+				set { addedEditors = value; }
+			}
+
+			public event EventHandler<N2.Persistence.ItemEventArgs> Saved;
+			
+			public ContentItem CurrentItem
+			{
+				get { return currentItem; }
+			}
+		}
+
+		//void btnPublish_Click(object sender, EventArgs e)
+		//{
+		//    Engine.EditManager.Save(new PublishEditor(CurrentItem), Page.User);
+		//}
 
 		private void btnSave_Command(object sender, CommandEventArgs e)
 		{
@@ -317,7 +385,7 @@ namespace N2.Web.UI.WebControls
 
 			foreach (IItemEditor itemEditor in itemEditors)
 			{
-				N2.Context.Current.EditManager.Save(itemEditor, Page.User);
+				Engine.EditManager.Save(itemEditor, Page.User);
 			}
 
 			Page.Response.Redirect(Find.CurrentPage.Url);

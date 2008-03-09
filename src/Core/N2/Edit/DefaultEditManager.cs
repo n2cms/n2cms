@@ -545,7 +545,10 @@ namespace N2.Edit
 		/// <returns>The url to the edit page</returns>
 		public string GetEditExistingItemUrl(ContentItem item)
 		{
-			return string.Format("~/edit/edit.aspx?selected={0}", HttpUtility.UrlEncode(item.Path));
+			if(item.VersionOf == null)
+				return string.Format("~/edit/edit.aspx?selected={0}", HttpUtility.UrlEncode(item.Path));
+			else
+				return string.Format("~/edit/edit.aspx?selectedUrl={0}", HttpUtility.UrlEncode(item.RewrittenUrl));
 		}
 		#endregion
 	}

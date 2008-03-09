@@ -1,3 +1,5 @@
+- edit
+	- preview changes
 - examples
 	- included multiple domains example
 - bugfixes

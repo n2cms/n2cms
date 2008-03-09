@@ -65,7 +65,8 @@ namespace N2
         private DateTime? published = DateTime.Now;
         private DateTime? expires = null;
         private int sortOrder;
-        private string url = null;
+		[Persistence.DoNotCopy]
+		private string url = null;
         private bool visible = true;
 		[Persistence.DoNotCopy]
 		private ContentItem versionOf = null;
@@ -227,7 +228,13 @@ namespace N2
 		/// <summary>Gets the public url to this item. This is computed by walking the parent path and prepending their names to the url.</summary>
 		public virtual string Url
 		{
-			get { return url ?? (url = (urlParser != null) ? urlParser.BuildUrl(this) : RewrittenUrl); }
+			get 
+			{ 
+				return url ?? (url = 
+					(urlParser != null && VersionOf == null) 
+						? urlParser.BuildUrl(this) 
+						: RewrittenUrl); 
+			}
 		}
 
 		/// <summary>Gets the template that handle the presentation of this content item. For non page items (IsPage) this can be a user control (ascx).</summary>
@@ -543,7 +550,8 @@ namespace N2
 		public virtual ContentItem Clone(bool includeChildren)
         {
 			ContentItem cloned = (ContentItem)MemberwiseClone();
-            cloned.ID = 0;
+            cloned.id = 0;
+			cloned.url = null;
 
 			CloneDetails(cloned);
 			CloneChildren(includeChildren, cloned);

@@ -4,6 +4,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{6873E9E6-2
 	ProjectSection(SolutionItems) = preProject
 		..\..\docs\ContentModel.png = ..\..\docs\ContentModel.png
 		..\..\docs\DBChanges.txt = ..\..\docs\DBChanges.txt
+		..\..\docs\favicon.ico = ..\..\docs\favicon.ico
 		..\..\docs\history.txt = ..\..\docs\history.txt
 		..\..\docs\howto_build.txt = ..\..\docs\howto_build.txt
 		..\..\docs\install.txt = ..\..\docs\install.txt
