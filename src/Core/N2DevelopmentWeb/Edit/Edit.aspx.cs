@@ -173,13 +173,30 @@ namespace N2.Edit
 			Validate();
 			if (IsValid)
 			{
-				ie.VersioningMode = (ie.CurrentItem.VersionOf == null)
-					? ItemEditorVersioningMode.VersionOnly
-					: ItemEditorVersioningMode.SaveOnly;
-				ContentItem savedVersion = ie.Save();
+				ContentItem savedVersion = SaveVersion();
 				string redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
 				Response.Redirect(redirectUrl);
 			}
+		}
+
+		protected void OnPreviewCommand(object sender, CommandEventArgs e)
+		{
+			Validate();
+			if (IsValid)
+			{
+				INode savedVersion = SaveVersion();
+				string redirectUrl = savedVersion.PreviewUrl;
+				Response.Redirect(redirectUrl);
+			}
+		}
+
+		private ContentItem SaveVersion()
+		{
+			ie.VersioningMode = (ie.CurrentItem.VersionOf == null)
+				? ItemEditorVersioningMode.VersionOnly
+				: ItemEditorVersioningMode.SaveOnly;
+			ContentItem savedVersion = ie.Save();
+			return savedVersion;
 		}
 
 		private void MoveItem(ContentItem currentItem, int offset, int referenceItemID)

@@ -14,6 +14,7 @@ using Rhino.Mocks;
 using N2.Persistence;
 using N2.Tests.Edit.Items;
 using System.Security.Principal;
+using System.Web;
 
 namespace N2.Tests.Edit
 {
@@ -646,6 +647,38 @@ namespace N2.Tests.Edit
 
 			Assert.IsNotNull(currentMaster.Published);
 			Assert.Greater(currentMaster.Published, DateTime.Now.AddSeconds(-10));
+		}
+
+		[Test]
+		public void GetEditUrl_OfPublishedRoot_UsesPath()
+		{
+			ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
+			string editUrl = this.editManager.GetEditExistingItemUrl(root);
+
+			Assert.AreEqual("~/edit/edit.aspx?selected=" + HttpUtility.UrlEncode("/"), editUrl);
+		}
+
+		[Test]
+		public void GetEditUrl_OfPublishedSubPage_UsesPath()
+		{
+			ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
+			ContentItem item = CreateOneItem<ComplexContainersItem>(2, "child", root);
+			string editUrl = this.editManager.GetEditExistingItemUrl(item);
+
+			Assert.AreEqual("~/edit/edit.aspx?selected=" + HttpUtility.UrlEncode("/child/"), editUrl);
+		}
+
+		[Test]
+		public void GetEditUrl_OfUnpublishedVersion_RevertsToIdentity()
+		{
+			ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
+			ContentItem item = CreateOneItem<ComplexContainersItem>(2, "child", root);
+			ContentItem versionOfItem = CreateOneItem<ComplexContainersItem>(3, "child", null);
+			versionOfItem.VersionOf = item;
+
+			string editUrl = this.editManager.GetEditExistingItemUrl(versionOfItem);
+
+			Assert.AreEqual("~/edit/edit.aspx?selectedUrl=" + HttpUtility.UrlEncode("/default.aspx?page=3"), editUrl);
 		}
 
 		bool savingVersionEventInvoked = false;

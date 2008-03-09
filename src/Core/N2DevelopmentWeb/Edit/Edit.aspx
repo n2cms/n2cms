@@ -14,9 +14,7 @@
 			<n2:ItemDataSource id="idsChildren" runat="server" PageFilter="true" ZoneName="" />
 			<asp:Repeater runat="server" DataSourceID="idsChildren">
 				<ItemTemplate>
-					<asp:HyperLink CssClass="command plain" 
-						NavigateUrl="<%# Engine.EditManager.GetEditExistingItemUrl((ContentItem)Container.DataItem) %>" 
-						runat="server"><%# Eval("Title") %></asp:HyperLink>
+					<asp:HyperLink Text='<%# Eval("Title") %>' NavigateUrl="<%# Engine.EditManager.GetEditExistingItemUrl((ContentItem)Container.DataItem) %>" CssClass="command plain" runat="server"/>
 				</ItemTemplate>
 			</asp:Repeater>
 		</edit:OptionsMenu>
@@ -26,6 +24,7 @@
     <edit:OptionsMenu id="om" runat="server">
 		<asp:LinkButton ID="btnSave" OnCommand="OnSaveCommand" runat="server" CssClass="command" AccessKey="s" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
 		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command" AccessKey="p" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
+		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command" meta:resourceKey="btnPreview">Preview changes</asp:LinkButton>
     </edit:OptionsMenu>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" AccessKey="c" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
@@ -36,14 +35,8 @@
     </div>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-	<asp:HyperLink ID="hlNewerVersion" runat="server" 
-		Text="There is a newer unpublished version of this page, click here to edit it." 
-		CssClass="versionInfo info" Visible="False" 
-		meta:resourcekey="hlNewerVersionResource1"/>
-	<asp:HyperLink ID="hlOlderVersion" runat="server" 
-		Text="This is a version of another item, click here to edit the currently published version." 
-		CssClass="versionInfo info" Visible="False" 
-		meta:resourcekey="hlOlderVersionResource1"/>
+	<asp:HyperLink ID="hlNewerVersion" runat="server" Text="There is a newer unpublished version of this page." CssClass="versionInfo info" Visible="False" meta:resourcekey="hlNewerVersionResource1"/>
+	<asp:HyperLink ID="hlOlderVersion" runat="server" Text="This is a version of another item." CssClass="versionInfo info" Visible="False" meta:resourcekey="hlOlderVersionResource1"/>
     <asp:ValidationSummary ID="vsEdit" runat="server" CssClass="validator info" HeaderText="The item couldn't be saved. Please look at the following:" meta:resourceKey="vsEdit"/>
     
     <n2:ItemEditor ID="ie" runat="server" />
