@@ -6,6 +6,7 @@
 	- url selector now displays items if the url doesn't seem to be a file
 	- url selector now more correctly selects items on other sites
 	- multiplehosts url parser doesn't throw up on urls to external sites
+	- create item through the edit interface
 
 N2 1.3.3
 - edit

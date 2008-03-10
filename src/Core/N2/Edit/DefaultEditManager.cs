@@ -421,7 +421,7 @@ namespace N2.Edit
 		/// <returns>The url to the edit interface.</returns>
 		public string GetEditModeUrl(ContentItem selectedItem)
 		{
-			return FormatUrl(selectedItem, "~/edit/default.aspx");
+			return FormatSelectedUrl(selectedItem, "~/edit/default.aspx");
 		}
 
 		/// <summary>Gets the url to the select type of item to create.</summary>
@@ -429,7 +429,15 @@ namespace N2.Edit
 		/// <returns>The url to the select new item to create page.</returns>
 		public string GetSelectNewItemUrl(ContentItem selectedItem)
 		{
-			return FormatUrl(selectedItem, "~/edit/new.aspx");
+			return FormatSelectedUrl(selectedItem, "~/edit/new.aspx");
+		}
+
+		/// <summary>Gets the url to the select type of item to create.</summary>
+		/// <param name="selectedItem">The currently selected item.</param>
+		/// <returns>The url to the select new item to create page.</returns>
+		public string GetSelectNewItemUrl(ContentItem selectedItem, string zoneName)
+		{
+			return FormatSelectedUrl(selectedItem, "~/edit/new.aspx?zoneName=" + zoneName);
 		}
 
 		/// <summary>Gets the url to the delete item page.</summary>
@@ -437,14 +445,14 @@ namespace N2.Edit
 		/// <returns>The url to the delete page.</returns>
 		public string GetDeleteUrl(ContentItem selectedItem)
 		{
-			return FormatUrl(selectedItem, "~/edit/delete.aspx");
+			return FormatSelectedUrl(selectedItem, "~/edit/delete.aspx");
 		}
 
-		private string FormatUrl(ContentItem selectedItem, string path)
+		private string FormatSelectedUrl(ContentItem selectedItem, string path)
 		{
 			string url = Utility.ToAbsolute(path);
-			url += "?selected=" + HttpUtility.UrlEncode(selectedItem.Path);
-			return url;
+			return url + (url.Contains("?") ? "&" : "?") + 
+				"selected=" + HttpUtility.UrlEncode(selectedItem.Path);
 		}
 
 		#region Helper Methods

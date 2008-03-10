@@ -90,6 +90,12 @@ namespace N2.Edit
 		/// <returns>The url to the select new item to create page.</returns>
 		string GetSelectNewItemUrl(ContentItem selectedItem);
 
+		/// <summary>Gets the url to the select type of item to create.</summary>
+		/// <param name="selectedItem">The currently selected item.</param>
+		/// <param name="zoneName">The zone to select.</param>
+		/// <returns>The url to the select new item to create page.</returns>
+		string GetSelectNewItemUrl(ContentItem selectedItem, string zoneName);
+
 		/// <summary>Gets the url to the delete item page.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>The url to the delete page.</returns>

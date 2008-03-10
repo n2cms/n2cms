@@ -35,7 +35,8 @@ namespace N2.Edit
         protected string GetNewDataItemUrl(object dataItem)
         {
             N2.Integrity.AvailableZoneAttribute a = (N2.Integrity.AvailableZoneAttribute)dataItem;
-            return string.Format("new.aspx?selected={0}&zoneName={1}", Server.UrlEncode(CurrentItem.RewrittenUrl), a.ZoneName);
+
+			return N2.Context.Current.EditManager.GetSelectNewItemUrl(CurrentItem, a.ZoneName);
         }
 
         protected string GetEditDataItemText(object dataItem)
