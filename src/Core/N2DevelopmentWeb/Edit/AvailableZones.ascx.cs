@@ -46,8 +46,7 @@ namespace N2.Edit
         }
         protected string GetEditDataItemUrl(object dataItem)
         {
-            ContentItem item = (ContentItem)dataItem;
-            return "edit.aspx?selected=" + Server.UrlEncode(item.RewrittenUrl);
+            return N2.Context.Current.EditManager.GetEditExistingItemUrl((ContentItem)dataItem);
         }
 
         protected IList<ContentItem> GetItemsInZone(object dataItem)
