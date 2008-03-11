@@ -186,4 +186,22 @@
   <data name="versions.ToolTip" xml:space="preserve">
     <value>Previous versions</value>
   </data>
+  <data name="filemanager.ToolTip" xml:space="preserve">
+    <value>Upload and organize files</value>
+  </data>
+  <data name="import/export.ToolTip" xml:space="preserve">
+    <value>Import/Export content items</value>
+  </data>
+  <data name="linktracker.ToolTip" xml:space="preserve">
+    <value>Display inbound/outbound links to/from the current item</value>
+  </data>
+  <data name="security.ToolTip" xml:space="preserve">
+    <value>Change page permissions</value>
+  </data>
+  <data name="users.ToolTip" xml:space="preserve">
+    <value>Manage users</value>
+  </data>
+  <data name="wizard.ToolTip" xml:space="preserve">
+    <value>Recall and define default type/location combinations for quick creation</value>
+  </data>
 </root>

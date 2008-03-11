@@ -1,5 +1,7 @@
 - edit
 	- preview changes
+	- translations: toolbar buttons, user editor
+	- updated dutch translation
 - examples
 	- included multiple domains example
 - bugfixes

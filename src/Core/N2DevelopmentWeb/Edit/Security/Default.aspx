@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" culture="auto" meta:resourcekey="PageResource1" uiculture="auto" %>
+<%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" meta:resourcekey="PageResource1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 	<script src="../Js/plugins.ashx" type="text/javascript" ></script>

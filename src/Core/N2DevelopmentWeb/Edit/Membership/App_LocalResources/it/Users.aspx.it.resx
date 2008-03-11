@@ -147,4 +147,16 @@
   <data name="PageResource1.Title" xml:space="preserve">
     <value>Utenti</value>
   </data>
+  <data name="bcCreated.HeaderText" xml:space="preserve">
+    <value>Creato</value>
+  </data>
+  <data name="bcEmail.HeaderText" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="bcOnline.HeaderText" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="bcUserName.HeaderText" xml:space="preserve">
+    <value>Nome utente</value>
+  </data>
 </root>

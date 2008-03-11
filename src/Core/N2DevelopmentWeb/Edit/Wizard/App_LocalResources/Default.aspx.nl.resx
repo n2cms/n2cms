@@ -117,73 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="copy.Title" xml:space="preserve">
+  <data name="btnAddResource1.Text" xml:space="preserve">
+    <value>Toevoegen</value>
+  </data>
+  <data name="btnAddResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="copy.ToolTip" xml:space="preserve">
-    <value>Kopieer het item inclusief onderliggende items</value>
-  </data>
-  <data name="DefaultResource.Title" xml:space="preserve">
-    <value>Website beheer</value>
-  </data>
-  <data name="delete.Title" xml:space="preserve">
+  <data name="ddlTypesResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="delete.ToolTip" xml:space="preserve">
-    <value>Verwijder het item inclusief onderliggende items</value>
+  <data name="hlCancel.Text" xml:space="preserve">
+    <value>Annuleer</value>
   </data>
-  <data name="edit.Title" xml:space="preserve">
+  <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="edit.ToolTip" xml:space="preserve">
-    <value>Wijzig het gekozen item</value>
-  </data>
-  <data name="move.Title" xml:space="preserve">
+  <data name="imgIcoResource1.AlternateText" xml:space="preserve">
     <value />
   </data>
-  <data name="move.ToolTip" xml:space="preserve">
-    <value>Knip het geselecteerde item (kies het doel en plak om te verplaatsen)</value>
-  </data>
-  <data name="new.Title" xml:space="preserve">
+  <data name="imgIcoResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="new.ToolTip" xml:space="preserve">
-    <value>Maak een nieuw item aan onder het gekozen item</value>
+  <data name="LabelResource1.Text" xml:space="preserve">
+    <value>Titel</value>
   </data>
-  <data name="paste.Title" xml:space="preserve">
+  <data name="LabelResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="paste.ToolTip" xml:space="preserve">
-    <value>Plak het item in het geheugen</value>
+  <data name="LabelResource2.Text" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="search.Title" xml:space="preserve">
+  <data name="LabelResource2.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="search.ToolTip" xml:space="preserve">
-    <value>Zoek items</value>
+  <data name="LabelResource3.Text" xml:space="preserve">
+    <value>Toegevoegd</value>
   </data>
-  <data name="settings.Title" xml:space="preserve">
+  <data name="LabelResource3.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="settings.ToolTip" xml:space="preserve">
-    <value>Instellingen</value>
+  <data name="PageResource1.Title" xml:space="preserve">
+    <value>Wizard</value>
   </data>
-  <data name="table.Title" xml:space="preserve">
+  <data name="tpAddResource1.GroupingText" xml:space="preserve">
     <value />
   </data>
-  <data name="table.ToolTip" xml:space="preserve">
-    <value>Navigeer mbv een tabel</value>
+  <data name="tpAddResource1.ToolTip" xml:space="preserve">
+    <value>Locatie toevoegen</value>
   </data>
-  <data name="tree.Title" xml:space="preserve">
+  <data name="tpTypeResource1.GroupingText" xml:space="preserve">
     <value />
   </data>
-  <data name="tree.ToolTip" xml:space="preserve">
-    <value>Navigeer mbv een boomstructuur</value>
+  <data name="tpTypeResource1.ToolTip" xml:space="preserve">
+    <value>Kies het type</value>
   </data>
-  <data name="versions.Title" xml:space="preserve">
+  <data name="txtTitleResource1.Text" xml:space="preserve">
     <value />
   </data>
-  <data name="versions.ToolTip" xml:space="preserve">
-    <value>Vorige versies</value>
+  <data name="txtTitleResource1.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

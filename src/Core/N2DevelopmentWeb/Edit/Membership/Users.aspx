@@ -1,7 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="N2.Edit.Membership.Users" Title="Users" culture="auto" meta:resourcekey="PageResource1" uiculture="auto" %>
+<%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="N2.Edit.Membership.Users" Title="Users" meta:resourcekey="PageResource1" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:HyperLink runat="server" NavigateUrl="New.aspx" CssClass="command" 
-		meta:resourcekey="HyperLinkResource1">new</asp:HyperLink>
+    <asp:HyperLink runat="server" NavigateUrl="New.aspx" CssClass="command" meta:resourcekey="HyperLinkResource1">new</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="Content" runat="server">
     <asp:DataGrid ID="dgrUsers" runat="server" DataSourceID="odsUsers" 
@@ -9,17 +8,17 @@
 		OnItemCommand="odsUsers_ItemCommand" DataKeyField="UserName" BorderWidth="0px" 
 		CssClass="gv" meta:resourcekey="dgrUsersResource1">
         <Columns>
-            <asp:BoundColumn DataField="UserName" HeaderText="User name" />
-            <asp:BoundColumn DataField="Email" HeaderText="email" />
-            <asp:BoundColumn DataField="CreationDate" HeaderText="created" />
-            <asp:BoundColumn DataField="IsOnline" HeaderText="online" />
-            <asp:BoundColumn DataField="IsLockedOut" HeaderText="locked out" />
-            <asp:BoundColumn DataField="IsApproved" HeaderText="approved" />
-            <asp:BoundColumn DataField="LastLockoutDate" HeaderText="last locked out" />
-            <asp:BoundColumn DataField="LastLoginDate" HeaderText="last login" />
-            <asp:BoundColumn DataField="LastActivityDate" HeaderText="last activity" />
-            <asp:BoundColumn DataField="LastPasswordChangedDate" HeaderText="last password change" />
-            <asp:BoundColumn DataField="Comment" HeaderText="comment" />
+            <asp:BoundColumn DataField="UserName" HeaderText="User name" meta:resourcekey="bcUserName"/>
+            <asp:BoundColumn DataField="Email" HeaderText="email" meta:resourcekey="bcEmail"/>
+            <asp:BoundColumn DataField="CreationDate" HeaderText="created" meta:resourcekey="bcCreated"/>
+            <asp:BoundColumn DataField="IsOnline" HeaderText="online" meta:resourcekey="bcOnline"/>
+            <asp:BoundColumn DataField="IsLockedOut" HeaderText="locked out" meta:resourcekey="bcLockedOut"/>
+            <asp:BoundColumn DataField="IsApproved" HeaderText="approved" meta:resourcekey="bcApproved" />
+            <asp:BoundColumn DataField="LastLockoutDate" HeaderText="last locked out" meta:resourcekey="bcLockOutDate"/>
+            <asp:BoundColumn DataField="LastLoginDate" HeaderText="last login" meta:resourcekey="bcLogin"/>
+            <asp:BoundColumn DataField="LastActivityDate" HeaderText="last activity" meta:resourcekey="bcActivity"/>
+            <asp:BoundColumn DataField="LastPasswordChangedDate" HeaderText="last password change" meta:resourcekey="bcPasswordChanged"/>
+            <asp:BoundColumn DataField="Comment" HeaderText="comment" meta:resourcekey="bcComment"/>
             <asp:HyperLinkColumn DataNavigateUrlField="UserName" 
 				DataNavigateUrlFormatString="Password.aspx?user={0}" Text="password" 
 				meta:resourcekey="HyperLinkColumnResource1" />

@@ -118,19 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="copy.Title" xml:space="preserve">
-    <value>Kopieer het item</value>
+    <value>Kopieer</value>
   </data>
   <data name="delete.Title" xml:space="preserve">
-    <value>Verwijder het item</value>
+    <value>Verwijder</value>
   </data>
   <data name="edit.Title" xml:space="preserve">
-    <value>Wijzig het gekozen item</value>
+    <value>Wijzig</value>
   </data>
   <data name="move.Title" xml:space="preserve">
-    <value>Knip het geselecteerde item</value>
+    <value>Knip</value>
   </data>
   <data name="new.Title" xml:space="preserve">
-    <value>Maak een nieuw item</value>
+    <value>Nieuw</value>
+  </data>
+  <data name="paste.Title" xml:space="preserve">
+    <value>Plakken</value>
   </data>
   <data name="treePage.Title" xml:space="preserve">
     <value>Tabel navigatie</value>

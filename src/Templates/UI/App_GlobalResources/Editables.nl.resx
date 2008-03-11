@@ -117,73 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="copy.Title" xml:space="preserve">
-    <value />
+  <data name="advanced.TabText" xml:space="preserve">
+    <value>Geavanceerd</value>
   </data>
-  <data name="copy.ToolTip" xml:space="preserve">
-    <value>Kopieer het item inclusief onderliggende items</value>
+  <data name="FooterText.Title" xml:space="preserve">
+    <value>Voettekst</value>
   </data>
-  <data name="DefaultResource.Title" xml:space="preserve">
-    <value>Website beheer</value>
+  <data name="HostName.HelpTitle" xml:space="preserve">
+    <value>In een multisite omgeving gebruikt om te bepalen welke de startpagina is</value>
   </data>
-  <data name="delete.Title" xml:space="preserve">
-    <value />
+  <data name="HostName.Title" xml:space="preserve">
+    <value>Hostnaam</value>
   </data>
-  <data name="delete.ToolTip" xml:space="preserve">
-    <value>Verwijder het item inclusief onderliggende items</value>
+  <data name="Image.HelpTitle" xml:space="preserve">
+    <value>Getoond boven het hoofditem</value>
   </data>
-  <data name="edit.Title" xml:space="preserve">
-    <value />
+  <data name="Image.Title" xml:space="preserve">
+    <value>Hoofd plaatje</value>
   </data>
-  <data name="edit.ToolTip" xml:space="preserve">
-    <value>Wijzig het gekozen item</value>
+  <data name="Images.Title" xml:space="preserve">
+    <value>Plaatjes (een url per regel)</value>
   </data>
-  <data name="move.Title" xml:space="preserve">
-    <value />
+  <data name="LatestChangesMaxCount.Title" xml:space="preserve">
+    <value>Laatste wiizigingen hoogste aantal</value>
   </data>
-  <data name="move.ToolTip" xml:space="preserve">
-    <value>Knip het geselecteerde item (kies het doel en plak om te verplaatsen)</value>
+  <data name="Layout.Title" xml:space="preserve">
+    <value>Site Layout</value>
   </data>
-  <data name="new.Title" xml:space="preserve">
-    <value />
+  <data name="LinkText.Title" xml:space="preserve">
+    <value>Gerelateerde link tekst</value>
   </data>
-  <data name="new.ToolTip" xml:space="preserve">
-    <value>Maak een nieuw item aan onder het gekozen item</value>
+  <data name="LinkUrl.Title" xml:space="preserve">
+    <value>Gerelateerde link url</value>
   </data>
-  <data name="paste.Title" xml:space="preserve">
-    <value />
+  <data name="Name.HelpTitle" xml:space="preserve">
+    <value>Weergegeven in de adresbalkk van de browser.</value>
   </data>
-  <data name="paste.ToolTip" xml:space="preserve">
-    <value>Plak het item in het geheugen</value>
+  <data name="Name.Title" xml:space="preserve">
+    <value>Bestandsnaam</value>
   </data>
-  <data name="search.Title" xml:space="preserve">
-    <value />
+  <data name="Published.BetweenText" xml:space="preserve">
+    <value>en</value>
   </data>
-  <data name="search.ToolTip" xml:space="preserve">
-    <value>Zoek items</value>
+  <data name="Published.CheckBoxText" xml:space="preserve">
+    <value>Gepubliceerd tussen</value>
   </data>
-  <data name="settings.Title" xml:space="preserve">
-    <value />
+  <data name="Published.HelpTitle" xml:space="preserve">
+    <value>Deze pagina is voor bezoekers beschikbaar tussen deze data. Een lege start datum geeft aan dat het item nog niet is gepubliceerd, een lege einddatum betekent dat de pagina niet vervalt.</value>
   </data>
-  <data name="settings.ToolTip" xml:space="preserve">
-    <value>Instellingen</value>
+  <data name="RedirectUrl.Title" xml:space="preserve">
+    <value>Verwijzing naar</value>
   </data>
-  <data name="table.Title" xml:space="preserve">
-    <value />
+  <data name="ShowTitle.HelpTitle" xml:space="preserve">
+    <value>Uitzetten om de pagina titel niet te tonen</value>
   </data>
-  <data name="table.ToolTip" xml:space="preserve">
-    <value>Navigeer mbv een tabel</value>
+  <data name="ShowTitle.Title" xml:space="preserve">
+    <value>Toon pagina titel</value>
   </data>
-  <data name="tree.Title" xml:space="preserve">
-    <value />
+  <data name="SmtpHost.Title" xml:space="preserve">
+    <value>Host</value>
   </data>
-  <data name="tree.ToolTip" xml:space="preserve">
-    <value>Navigeer mbv een boomstructuur</value>
+  <data name="SmtpPassword" xml:space="preserve">
+    <value>Wachtwoord</value>
   </data>
-  <data name="versions.Title" xml:space="preserve">
-    <value />
+  <data name="SmtpPort.Title" xml:space="preserve">
+    <value>Poort</value>
   </data>
-  <data name="versions.ToolTip" xml:space="preserve">
-    <value>Vorige versies</value>
+  <data name="SmtpUser.Title" xml:space="preserve">
+    <value>Gebruiker</value>
+  </data>
+  <data name="Text.HelpTitle" xml:space="preserve">
+    <value>De standaard tekst op de pagina.</value>
+  </data>
+  <data name="Text.Title" xml:space="preserve">
+    <value>Standaard tekst</value>
+  </data>
+  <data name="Theme.Title" xml:space="preserve">
+    <value>Site thema</value>
+  </data>
+  <data name="Title.HelpTitle" xml:space="preserve">
+    <value>Wordt weergegeven in de kop van de pagina en in menu's.</value>
+  </data>
+  <data name="Title.Title" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="Visible.HelpTitle" xml:space="preserve">
+    <value>Uitzetten betekent verbergen in menu's maar wel direct benaderbaar.</value>
+  </data>
+  <data name="Visible.Title" xml:space="preserve">
+    <value>Zichtbaar in menu's</value>
   </data>
 </root>

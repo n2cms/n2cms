@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Export.Default" %>
+<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Export.Default" meta:resourcekey="PageResource1" %>
 <%@ Register Src="../AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 <asp:Content ID="CH" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/exportImport.css" type="text/css" />
@@ -7,15 +7,14 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" AccessKey="C" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
-    <h1>Export & Import</h1> 
-    <n2:TabPanel id="tpExport" runat="server" ToolTip="Export">
+    <n2:tabpanel id="tpExport" runat="server" ToolTip="Export" meta:resourceKey="tpExport" >
 		<div>
 		    <asp:Button ID="btnExport" runat="server" CssClass="command" OnCommand="btnExport_Command" CausesValidation="false" meta:resourceKey="btnExport" Text="Export these items" />
 		</div>
-		<h4>Exported items</h4>
+		<n2:h4 runat="server" Text="Exported items" meta:resourceKey="exportedItems" />
 		<uc1:AffectedItems id="exportedItems" runat="server" />		
-    </n2:TabPanel>
-    <n2:TabPanel runat="server" ToolTip="Import">
+    </n2:tabpanel>
+    <n2:tabpanel runat="server" ToolTip="Import" meta:resourceKey="tpImport">
         <asp:CustomValidator id="cvImport" runat="server" CssClass="validator" meta:resourceKey="cvImport" Display="Dynamic"/>
 	    <asp:MultiView ID="uploadFlow" runat="server" ActiveViewIndex="0">
 		    <asp:View ID="uploadView" runat="server">
@@ -28,12 +27,12 @@
 		    </asp:View>
 		    <asp:View ID="preView" runat="server">
 		        <div>
-		            <asp:CheckBox ID="chkSkipRoot" runat="server" Text="Skip imported root item" ToolTip="Checking this options cause the first level item not to be imported, and it's children to be added to the selected item's children" />
+		            <asp:CheckBox ID="chkSkipRoot" runat="server" Text="Skip imported root item" ToolTip="Checking this options cause the first level item not to be imported, and it's children to be added to the selected item's children" meta:resourceKey="chkSkipRoot" />
 		        </div>
 			    <asp:Button ID="btnImportUploaded" runat="server" Text="Import" OnClick="btnImportUploaded_Click"  meta:resourceKey="btnImportUploaded"/>
-			    <h4>Imported Items</h4>
+			    <n2:h4 runat="server" Text="Imported Items" meta:resourceKey="importedItems" />
 			    <uc1:AffectedItems id="importedItems" runat="server" />
-			    <h4>Attachments</h4>
+			    <n2:h4 runat="server" Text="Attachments" meta:resourceKey="attachments" />
 			    <asp:Repeater ID="rptAttachments" runat="server">
 			        <ItemTemplate>
 			            <div class="file"><asp:Image runat="server" ImageUrl="~/edit/img/ico/page_white.gif" alt="file" /><%# Eval("Url") %> <span class="warning"><%# CheckExists((string)Eval("Url")) %></span></div>
@@ -41,5 +40,5 @@
 			    </asp:Repeater>
 		    </asp:View>
 	    </asp:MultiView>
-    </n2:TabPanel>
+    </n2:tabpanel>
 </asp:Content>

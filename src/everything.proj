@@ -138,6 +138,8 @@
 		<Copy SourceFiles="$(Core-WebFolder)\bin\N2.dll" DestinationFolder="$(Templates-SolutionFolder)\lib" />
 		<Copy SourceFiles="$(Source-LibraryFolder)\Castle.Core.dll" DestinationFolder="$(Templates-SolutionFolder)\lib" />
 		<CallTarget Targets="Rebuild-CoreDeploy-AllFiles" />
+
+		<CreateItem Include="$(Deploy-RootFolder)\Core\**\*"><Output TaskParameter="Include" ItemName="CoreDeploy-AllFiles"/></CreateItem>
 		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Templates-UIFolder)\%(RecursiveDir)" />
 	</Target>
 	

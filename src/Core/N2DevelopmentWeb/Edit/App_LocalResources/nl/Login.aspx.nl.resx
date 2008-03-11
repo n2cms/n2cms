@@ -117,8 +117,44 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Login1.CreateUserText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login1.FailureText" xml:space="preserve">
+    <value>Inloggen is niet gelukt.Probeer het nogmaals a.u.b..</value>
+  </data>
+  <data name="Login1.HelpPageText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login1.InstructionText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login1.LoginButtonText" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Login1.PasswordLabelText" xml:space="preserve">
+    <value>Wachtwoord:</value>
+  </data>
+  <data name="Login1.PasswordRecoveryText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login1.PasswordRequiredErrorMessage" xml:space="preserve">
+    <value>Het wachtwoord is vereist.</value>
+  </data>
+  <data name="Login1.RememberMeText" xml:space="preserve">
+    <value>Onthoud mij volgende keer.</value>
+  </data>
   <data name="Login1.TitleText" xml:space="preserve">
     <value>&lt;h1&gt;Login&lt;/h1&gt;</value>
+  </data>
+  <data name="Login1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login1.UserNameLabelText" xml:space="preserve">
+    <value>Gebruikersnaam:</value>
+  </data>
+  <data name="Login1.UserNameRequiredErrorMessage" xml:space="preserve">
+    <value>Gebruikersnaam is verplicht.</value>
   </data>
   <data name="LoginPage.Title" xml:space="preserve">
     <value>Login</value>

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnAddResource1.Text" xml:space="preserve">
-    <value>Aggiungi</value>
+    <value>Add</value>
   </data>
   <data name="btnAddResource1.ToolTip" xml:space="preserve">
     <value />
@@ -127,7 +127,7 @@
     <value />
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancella</value>
+    <value>Cancel</value>
   </data>
   <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />
@@ -139,37 +139,37 @@
     <value />
   </data>
   <data name="LabelResource1.Text" xml:space="preserve">
-    <value>Rubrica</value>
+    <value>Title</value>
   </data>
   <data name="LabelResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="LabelResource2.Text" xml:space="preserve">
-    <value>Tipo</value>
+    <value>Type</value>
   </data>
   <data name="LabelResource2.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="LabelResource3.Text" xml:space="preserve">
-    <value>Aggiunti</value>
+    <value>Added</value>
   </data>
   <data name="LabelResource3.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
-    <value>Mago creatore di pagine</value>
+    <value>Wizard</value>
   </data>
   <data name="tpAddResource1.GroupingText" xml:space="preserve">
     <value />
   </data>
   <data name="tpAddResource1.ToolTip" xml:space="preserve">
-    <value>Aggiungi posto</value>
+    <value>Add location</value>
   </data>
   <data name="tpTypeResource1.GroupingText" xml:space="preserve">
     <value />
   </data>
   <data name="tpTypeResource1.ToolTip" xml:space="preserve">
-    <value>Seleziona tipo</value>
+    <value>Select type</value>
   </data>
   <data name="txtTitleResource1.Text" xml:space="preserve">
     <value />

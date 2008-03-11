@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ButtonColumnResource1.Text" xml:space="preserve">
-    <value>delete</value>
+    <value>Delete</value>
   </data>
   <data name="dgrUsersResource1.Caption" xml:space="preserve">
     <value />
@@ -133,18 +133,51 @@
     <value />
   </data>
   <data name="HyperLinkColumnResource1.Text" xml:space="preserve">
-    <value>password</value>
+    <value>Password</value>
   </data>
   <data name="HyperLinkColumnResource2.Text" xml:space="preserve">
-    <value>edit</value>
+    <value>Edit</value>
   </data>
   <data name="HyperLinkResource1.Text" xml:space="preserve">
-    <value>new</value>
+    <value>New</value>
   </data>
   <data name="HyperLinkResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
     <value>Users</value>
+  </data>
+  <data name="bcActivity.HeaderText" xml:space="preserve">
+    <value>Last activity</value>
+  </data>
+  <data name="bcApproved.HeaderText" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="bcComment.HeaderText" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="bcCreated.HeaderText" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="bcEmail.HeaderText" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="bcLockedOut.HeaderText" xml:space="preserve">
+    <value>Locked out</value>
+  </data>
+  <data name="bcLockOutDate.HeaderText" xml:space="preserve">
+    <value>Locked out</value>
+  </data>
+  <data name="bcLogin.HeaderText" xml:space="preserve">
+    <value>Logged in</value>
+  </data>
+  <data name="bcOnline.HeaderText" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="bcPasswordChanged.HeaderText" xml:space="preserve">
+    <value>Password changed</value>
+  </data>
+  <data name="bcUserName.HeaderText" xml:space="preserve">
+    <value>User name</value>
   </data>
 </root>

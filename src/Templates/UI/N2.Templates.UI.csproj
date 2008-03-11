@@ -66,20 +66,50 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Definitions.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Definitions.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\Definitions.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.nl.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\EditableContainers.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EditableContainers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\EditableContainers.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\EditableContainers.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.nl.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Editables.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Editables.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Editables.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\Editables.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\Toolbar.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.nl.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Zones.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Zones.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\Zones.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.nl.resx</DependentUpon>
     </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -378,7 +408,33 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Content Include="App_GlobalResources\Definitions.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\EditableContainers.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Editables.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Toolbar.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Zones.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Js\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -396,7 +452,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1923</DevelopmentServerPort>
+          <DevelopmentServerPort>2342</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
