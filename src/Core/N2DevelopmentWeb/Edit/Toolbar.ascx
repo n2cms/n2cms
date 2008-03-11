@@ -8,7 +8,7 @@
             <asp:PlaceHolder runat="server" ID="plhFrame" />
         </div></div></div>
 
-        <a id="logo" href="http://n2cms.com/" title="Go to the home of N2 CMS"><img src="img/toolbar_logo.gif" alt="N2" /></a>
+        <a id="logo" href="http://n2cms.com/" title="Visit the home of N2 CMS"><img src="img/toolbar_logo.png" alt="N2 CMS" /></a>
         <asp:LoginStatus ID="logout" runat="server" CssClass="logout command" LogoutText="<img src='img/ico/key.gif' alt='key'/>logout" meta:resourcekey="logout" />
 	</div>
 </div>
