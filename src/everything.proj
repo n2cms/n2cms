@@ -232,6 +232,7 @@
 	</Target>
 	<Target Name="Examples-MultipleDomains-PrepareDependencies" DependsOnTargets="Core-Deploy">
 		<CallTarget Targets="Rebuild-CoreDeploy-AllFiles" />
+		<CreateItem Include="$(Deploy-RootFolder)\Core\**\*"><Output TaskParameter="Include" ItemName="CoreDeploy-AllFiles"/></CreateItem>
 		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\%(RecursiveDir)" />
 	</Target>
 	<Target Name="Examples-PrepareDependencies">

@@ -166,12 +166,24 @@ namespace N2.Web
 				{
 					// item takes priority over page
 					if (query.StartsWith("item=", StringComparison.InvariantCultureIgnoreCase))
-						return int.Parse(query.Substring(5));
-					else if(query.StartsWith("page=", StringComparison.InvariantCultureIgnoreCase))
-						pageID = int.Parse(query.Substring(5));
+					{
+						pageID = TryParse(query.Substring(5)) ?? pageID;
+					}
+					else if (query.StartsWith("page=", StringComparison.InvariantCultureIgnoreCase))
+					{
+						pageID = TryParse(query.Substring(5)) ?? pageID;
+					}
 				}
 			}
 			return pageID;
+		}
+
+		private int? TryParse(string possibleNumber)
+		{
+			int id;
+			if (int.TryParse(possibleNumber, out id))
+				return id;
+			return null;
 		}
 
 		private static char[] segmentSplitChars = new char[] { '~', '/' };

@@ -43,7 +43,7 @@ namespace N2.TemplateWeb.Domain
 			get { return GetChildren("Right"); }
 		}
 
-		[EditableFreeTextArea("Text", 110, ContainerName="default")]
+		[EditableFreeTextArea("Text", 110, ContainerName="default", Required = true)]
 		public virtual string Text
 		{
 			get { return (string) GetDetail("Text"); }
