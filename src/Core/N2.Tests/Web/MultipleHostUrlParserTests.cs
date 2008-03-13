@@ -206,6 +206,22 @@ namespace N2.Tests.Web
 			Assert.AreSame(data2, parser.Parse("/item2_1.aspx?item=7"));
 		}
 
+		[Test]
+		public void ParsePage_WithNonInteger_PageQueryString_ReturnsNull()
+		{
+			CreateItemsAndBuildExpectations("n2.libardo.com", "http://www.externalsite.com/somepage.html?item=this_isnt_a_number");
+
+			Assert.IsNull(parser.Parse("http://www.externalsite.com/somepage.html?item=this_isnt_a_number"));
+		}
+
+		[Test]
+		public void ParsePage_WithNonInteger_ItemQueryString_ReturnsNull()
+		{
+			CreateItemsAndBuildExpectations("n2.libardo.com", "http://www.externalsite.com/somepage.html?item=this_isnt_a_number");
+
+			Assert.IsNull(parser.Parse("http://www.externalsite.com/somepage.html?item=this_isnt_a_number"));
+		}
+
 		private void CreateItemsAndBuildExpectations(string host, string url)
 		{
 			CreateItems(true);
