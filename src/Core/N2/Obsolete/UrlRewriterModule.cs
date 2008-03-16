@@ -22,11 +22,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace N2.Web
 {
     /// <summary>A HttpModule that ensures that N2 is initialized in a web context.</summary>
     [Obsolete("Use InitializerModule instead.")]
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class UrlRewriterModule : IHttpModule
     {
         public void Dispose()

@@ -24,11 +24,13 @@ using System.Text;
 using System.Reflection;
 using System.Configuration;
 using System.Web.Configuration;
+using System.ComponentModel;
 
 namespace N2.Configuration
 {
 	/// <summary>Implementation of a N2 configuration source that reads settings from the N2ConfigurationSectionHandler from web.config.</summary>
 	[Obsolete("Replaced by castle windsor configuration")]
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class DefaultConfiguration : IConfiguration
 	{
 		public DefaultConfiguration()

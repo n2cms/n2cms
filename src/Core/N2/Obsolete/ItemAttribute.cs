@@ -1,8 +1,10 @@
 using System;
+using System.ComponentModel;
 
 namespace N2
 {
 	[Obsolete("Changed name to DefinitionAttribute.")]
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class ItemAttribute : DefinitionAttribute
 	{
 		/// <summary>

@@ -21,6 +21,7 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 
 namespace N2.Integrity
 {
@@ -30,6 +31,7 @@ namespace N2.Integrity
 	/// <see cref="AllowedChildrenAttribute"/>, the union of these two are 
 	/// considered to be allowed.</summary>
 	[Obsolete("Name changed to RestrictParentsAttribute."), AttributeUsage(AttributeTargets.Class)]
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class AllowedParentsAttribute : RestrictParentsAttribute
 	{
 		/// <summary>Initializes a new instance of the RestrictParentsAttribute which is used to restrict which types of items may be added below which.</summary>

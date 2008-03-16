@@ -1,5 +1,6 @@
 using System;
 using N2.Plugin;
+using System.ComponentModel;
 
 namespace N2.PlugIn
 {
@@ -8,6 +9,7 @@ namespace N2.PlugIn
 	/// that is invoked when the factory is started.
 	/// </summary>
 	[Obsolete("Changed casing to N2.Plugin.PluginAttribute. Please also check your IPluginInitializers.")]
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class PlugInAttribute : PluginAttribute
 	{
 		/// <summary>Creates a new instance of the PlugInAttribute class.</summary>

@@ -23,11 +23,13 @@ using System.Collections.Generic;
 using System.Web.Configuration;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.ComponentModel;
 
 namespace N2.Configuration
 {
 	/// <summary>Classes implementing this interface can be used to provide N2 configuration.</summary>
 	[Obsolete("Replaced by castle windsor configuration")]
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public interface IConfiguration
 	{
 	}

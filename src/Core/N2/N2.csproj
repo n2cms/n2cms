@@ -337,9 +337,13 @@
     <Compile Include="Parts\ItemDeleter.cs" />
     <Compile Include="Parts\ItemMover.cs" />
     <Compile Include="Parts\PartsAjaxService.cs" />
+    <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
+    <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
+    <Compile Include="Web\UI\WebControls\DisplayTemplateContainer.cs" />
     <Compile Include="Web\UI\WebControls\DragDropControlPanel.cs" />
     <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
     <Compile Include="Web\UI\WebControls\DropPoint.cs" />
+    <Compile Include="Web\UI\WebControls\HasValue.cs" />
     <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
     <Compile Include="Web\UI\WebControls\DragToolbar.cs" />
     <Compile Include="Persistence\GenericFind.cs" />

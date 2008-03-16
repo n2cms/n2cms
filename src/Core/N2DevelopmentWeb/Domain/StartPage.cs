@@ -31,5 +31,14 @@ namespace N2.TemplateWeb.Domain
 			get { return (string) (GetDetail("Host") ?? ""); }
 			set { SetDetail("Host", value); }
 		}
+
+
+		[N2.Details.EditableImage("ImageUrl", 100)]
+		public virtual string ImageUrl
+		{
+			get { return (string)(GetDetail("ImageUrl") ?? string.Empty); }
+			set { SetDetail("ImageUrl", value, string.Empty); }
+		}
+
 	}
 }

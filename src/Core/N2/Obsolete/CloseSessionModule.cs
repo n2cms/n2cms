@@ -22,11 +22,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace N2.Web
 {
     /// <summary>A HttpModule that ensures that the NHibernate session is closed.</summary>
 	[Obsolete("Use InitializerModule instead.")]
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class CloseSessionModule : IHttpModule
     {
         public void Dispose()

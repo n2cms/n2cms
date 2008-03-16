@@ -69,7 +69,7 @@ namespace N2.Details
 		public static Control AddImage(Control container, ContentItem item, string detailName, string cssClass, string altText)
 		{
 			string imageUrl = item[detailName] as string;
-			if (imageUrl != null)
+			if (!string.IsNullOrEmpty(imageUrl))
 			{
 				Image image = new Image();
 				image.ImageUrl = imageUrl;

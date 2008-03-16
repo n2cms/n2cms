@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System;
+using System.ComponentModel;
 
 namespace N2
 {
@@ -59,7 +60,7 @@ namespace N2
 
 		#region Properties: Persister, Definitions, Integrity, UrlParser, CurrentPage
 
-		/// <summary>Gets the factory intsance used to hold together N2.</summary>
+		/// <summary>Gets the singleton N2 engine used to access N2 services.</summary>
 		public static Engine.IEngine Current
 		{
 			get
@@ -73,6 +74,8 @@ namespace N2
 			}
 		}
 
+		/// <summary>Access to the singleton N2 engine. This property has been deprecated in favor for 'Current'.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		[Obsolete("Name changed to Current")]
 		public static Engine.IEngine Instance
 		{

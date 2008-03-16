@@ -1,3 +1,9 @@
+- engine
+	- option on displayable to swallow exceptions
+	- StartPage expression builder
+	- HasValue expression builder
+	- HasValue control
+	- Display control now features header and footer templates
 - edit
 	- preview changes
 	- translations: toolbar buttons, user editor
@@ -9,6 +15,7 @@
 	- url selector now more correctly selects items on other sites
 	- multiplehosts url parser doesn't throw up on urls to external sites, really!
 	- create/edit parts through the edit interface
+	- fixed image with no src displayed from displayable
 
 N2 1.3.3
 - edit

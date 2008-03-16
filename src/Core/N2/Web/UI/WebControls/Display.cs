@@ -15,30 +15,32 @@ using System;
 using System.Reflection;
 using System.Web.UI;
 using N2.Details;
+using System.ComponentModel;
 
 namespace N2.Web.UI.WebControls
 {
-	/// <summary>Container control for displayable items.</summary>
+	/// <summary>
+	/// Control used to display content on a web forms page. The control will 
+	/// look for an attribute implementing IDisplayable on the property 
+	/// referenced by the PropertyName on the display control.
+	/// </summary>
+	/// <example>
+	/// <!-- Displays the page title using the default displayable. -->
+	/// &lt;n2:Display PropertyName="Title" runat="server" /&gt;
+	/// </example>
+	[PersistChildren(false)]
+	[ParseChildren(true)]
 	public class Display : Control, IItemContainer
 	{
-		#region Private Members
-
 		private IDisplayable displayable = null;
 		private Control displayer;
-
-		#endregion
-
-		#region Properties
+		ITemplate headerTemplate;
+		ITemplate footerTemplate;
 
 		/// <summary>Gets the displayable attribute</summary>
 		public IDisplayable Displayable
 		{
-			get
-			{
-				if (displayable == null)
-					displayable = GetDisplayableAttribute(PropertyName, CurrentItem);
-				return displayable;
-			}
+			get { return displayable ?? (displayable = GetDisplayableAttribute(PropertyName, CurrentItem)); }
 		}
 
 		/// <summary>Gets the control responsible of displaying the detail.</summary>
@@ -47,6 +49,7 @@ namespace N2.Web.UI.WebControls
 			get { return displayer; }
 		}
 
+		/// <summary>Use the displayer and the values from this path.</summary>
 		public string Path
 		{
 			get { return (string) (ViewState["Path"] ?? string.Empty); }
@@ -60,31 +63,31 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["PropertyName"] = value; }
 		}
 
-		#endregion
-
-		#region Methods
-
-		private static IDisplayable GetDisplayableAttribute(string propertyName, ContentItem item)
+		/// <summary>Prevent this control from throwing exceptions when irregularities are discovered, e.g. there is no property with the given name on the page.</summary>
+		public bool SwallowExceptions
 		{
-			if (item == null)
-				throw new ArgumentNullException("item");
-
-			PropertyInfo pi = item.GetType().GetProperty(propertyName);
-			if (pi == null)
-			{
-				throw new N2Exception("No property {0} found the item of type {1}", propertyName, item.GetType());
-			}
-			else
-			{
-				IDisplayable[] attributes = (IDisplayable[]) pi.GetCustomAttributes(typeof (IDisplayable), false);
-				if (attributes.Length == 0)
-				{
-					throw new N2Exception("No attribute implementing IDisplayable found on the property {0} of the type {1}",
-					                      propertyName, item.GetType());
-				}
-				return attributes[0];
-			}
+			get { return (bool)(ViewState["SwallowExceptions"] ?? false); }
+			set { ViewState["SwallowExceptions"] = value; }
 		}
+
+		/// <summary>Inserted before the display control if a control was added.</summary>
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(DisplayTemplateContainer))]
+		public virtual ITemplate HeaderTemplate
+		{
+			get { return this.headerTemplate; }
+			set { this.headerTemplate = value; }
+		}
+
+		/// <summary>Added after the display control if a control was added.</summary>
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(DisplayTemplateContainer))]
+		public virtual ITemplate FooterTemplate
+		{
+			get { return this.footerTemplate; }
+			set { this.footerTemplate = value; }
+		}
+ 
+
+
 
 		protected override void OnInit(EventArgs e)
 		{
@@ -92,21 +95,65 @@ namespace N2.Web.UI.WebControls
 			base.OnInit(e);
 		}
 
-		protected override void CreateChildControls()
-		{
-			base.CreateChildControls();
-		}
-
 		protected void AddDisplayable()
 		{
-			IDisplayable displayable = GetDisplayableAttribute(PropertyName, CurrentItem);
-			if (displayable != null)
+			if (Displayable != null)
 			{
-				displayer = displayable.AddTo(CurrentItem, PropertyName, this);
+				displayer = Displayable.AddTo(CurrentItem, PropertyName, this);
+
+				if (displayer != null)
+				{
+					if (HeaderTemplate != null)
+					{
+						Control header = new DisplayTemplateContainer();
+						this.Controls.AddAt(0, header);
+
+						HeaderTemplate.InstantiateIn(header);
+					}
+
+					if (FooterTemplate != null)
+					{
+						Control footer = new DisplayTemplateContainer();
+						this.Controls.Add(footer);
+
+						FooterTemplate.InstantiateIn(footer);
+					}
+				}
 			}
 		}
 
-		#endregion
+
+		private IDisplayable GetDisplayableAttribute(string propertyName, ContentItem item)
+		{
+			if (item == null)
+			{
+				return Throw<IDisplayable>(new ArgumentNullException("item"));
+			}
+
+			PropertyInfo pi = item.GetType().GetProperty(propertyName);
+			if (pi == null)
+			{
+				return Throw<IDisplayable>(new N2Exception("No property {0} found the item of type {1}", propertyName, item.GetType()));
+			}
+			else
+			{
+				IDisplayable[] attributes = (IDisplayable[])pi.GetCustomAttributes(typeof(IDisplayable), false);
+				if (attributes.Length == 0)
+				{
+					return Throw<IDisplayable>(new N2Exception("No attribute implementing IDisplayable found on the property {0} of the type {1}",
+										  propertyName, item.GetType()));
+				}
+				return attributes[0];
+			}
+		}
+
+		private T Throw<T>(Exception ex)
+			where T : class
+		{
+			if (SwallowExceptions)
+				return null;
+			throw ex;
+		}
 
 		#region IItemContainer Members
 

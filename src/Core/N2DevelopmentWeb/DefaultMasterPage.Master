@@ -21,7 +21,32 @@
         <div>
             <asp:SiteMapPath ID="SiteMapPath1" runat="server" />
             <hr />
+            
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"/>
+            
+            StartPage expression builder:
+            [<asp:Image runat="server" ImageUrl='<%$ StartPage: ImageUrl %>' />]
+            CurrentPage expression builder (only on start page):
+			[<asp:Image runat="server" ImageUrl='<%$ CurrentPage: ImageUrl %>' Visible='<%$ HasValue: ImageUrl %>' />]
+			Display with path:
+			[<n2:Display PropertyName="ImageUrl" runat="server" Path="/" />]
+			Display without path (only on start page):
+			[<n2:Display PropertyName="ImageUrl" runat="server" SwallowExceptions="true" />]
+			Display with templates (only when image added):
+			[<n2:Display PropertyName="ImageUrl" runat="server" SwallowExceptions="true">
+				<HeaderTemplate>
+					(
+				</HeaderTemplate>
+				<FooterTemplate>
+					)
+				</FooterTemplate>
+			</n2:Display>]
+            <n2:HasValue PropertyName="ImageUrl" runat="server">
+				Image present
+            </n2:HasValue>
+            <n2:HasValue PropertyName="ImageUrl" Inverse="true" runat="server">
+				Image not present
+            </n2:HasValue>
         </div>
     </form>
 </body>
