@@ -5,6 +5,7 @@
 	- HasValue control
 	- Display control now features header and footer templates
 	- default sitemap provider can be configured to disable security trimming
+	- exception from the security enforcer can be cancelled by the use of an event
 - edit
 	- preview changes
 	- translations: toolbar buttons, user editor

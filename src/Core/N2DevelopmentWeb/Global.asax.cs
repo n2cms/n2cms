@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Diagnostics;
+using N2.Persistence;
 
 namespace N2.TemplateWeb
 {
@@ -33,7 +34,14 @@ namespace N2.TemplateWeb
 			Debug.WriteLine("Init");
 			//log.Error("Init");
             N2.Context.UrlParser.PageNotFound += new EventHandler<N2.Web.PageNotFoundEventArgs>(UrlParser_PageNotFound);
+			N2.Context.Current.Resolve<Security.ISecurityEnforcer>().AuthorizationFailed += new EventHandler<CancellableItemEventArgs>(Global_AuthorizationFailed);
         }
+
+		void Global_AuthorizationFailed(object sender, CancellableItemEventArgs e)
+		{
+			if(Context.Request["overrideSecurity"] == "true")
+				e.Cancel = true;
+		}
 
         protected void Application_End(object sender, EventArgs e)
         {

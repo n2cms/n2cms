@@ -4,11 +4,22 @@ using System.Text;
 using Castle.Core;
 using System.Diagnostics;
 using System.Security.Principal;
+using N2.Persistence;
 
 namespace N2.Security
 {
+	/// <summary>
+	/// Checks against unauthorized requests, and updates of content items.
+	/// </summary>
 	public class SecurityEnforcer : ISecurityEnforcer, IStartable
 	{
+		/// <summary>
+		/// Is invoked when a security violation is encountered. The security 
+		/// exception can be cancelled by setting the cancel property on the event 
+		/// arguments.
+		/// </summary>
+		public event EventHandler<CancellableItemEventArgs> AuthorizationFailed;
+
 		private Persistence.IPersister persister;
 		private ISecurityManager security;
 		private Web.IUrlParser urlParser;
@@ -56,16 +67,26 @@ namespace N2.Security
 		{
 			string filePath = context.Request.Url.AbsolutePath.ToLower();
 			string pathWithQuery = context.Request.Url.PathAndQuery;
-			if (filePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
-				&& !filePath.StartsWith(context.ToAbsolute("~/edit/"), StringComparison.InvariantCultureIgnoreCase))
+			if (IsSecurableResource(context, filePath))
 			{
 				ContentItem item = urlParser.Parse(pathWithQuery);
 				if (item != null && !security.IsAuthorized(item, context.CurrentUser))
 				{
-					Debug.WriteLine("Permission denied to item " + item.ID + " for user " + System.Web.UI.DataBinder.Eval(context, "CurrentUser.Identity.Name"));
-					throw new N2.Security.PermissionDeniedException(item, context.CurrentUser);
+					CancellableItemEventArgs args = new CancellableItemEventArgs(item);
+					if (AuthorizationFailed != null)
+						AuthorizationFailed.Invoke(this, args);
+
+					if (!args.Cancel)
+						throw new N2.Security.PermissionDeniedException(item, context.CurrentUser);
 				}
 			}
+		}
+
+		private bool IsSecurableResource(Web.IWebContext context, string filePath)
+		{
+			return (filePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
+					|| filePath.EndsWith(".aspx", StringComparison.InvariantCultureIgnoreCase)
+				) && !filePath.StartsWith(context.ToAbsolute("~/edit/"), StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		/// <summary>Is invoked when an item is saved.</summary>
