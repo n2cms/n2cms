@@ -26,7 +26,7 @@
             <asp:RegularExpressionValidator ID="revFolder" ControlToValidate="txtFolder" ValidationExpression="^[0-9a-zA-Z_\-]{1,}$" ErrorMessage="Only alphanumeric characters supported." runat="server"  meta:resourceKey="revFolder"/>
         </div>
         <div id="upload" class="actionPanel uploadPanel">
-			<asp:FileUpload ID="fileUpload" runat="server" CssClass="multi {STRING: {remove:'<img style='border:solid 1px red;' src=../img/ico/bullet_delete.gif/>'}}" />
+			<asp:FileUpload ID="fileUpload" runat="server" CssClass="multi" />
 			<asp:Button ID="btnUpload" runat="server" OnClick="OnUploadClick" Text="Upload" />
 			<input type="button" onclick="n2nav.onCancel();" value="Cancel" />
         </div>

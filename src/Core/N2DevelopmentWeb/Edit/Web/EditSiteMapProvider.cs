@@ -24,6 +24,7 @@ using System.Collections.Specialized;
 using System.Text;
 using N2.Web;
 using N2.Edit.Settings;
+using N2.Collections;
 
 namespace N2.Edit.Web
 {
@@ -59,10 +60,15 @@ namespace N2.Edit.Web
             return null;
         }
 
-        protected override bool IsDisplayable(ContentItem item)
-        {
-            return DisplayDataItems || item.IsPage;
-        }
+		protected override IEnumerable<N2.Collections.ItemFilter> GetFilters()
+		{
+			IList<ItemFilter> filters = new List<ItemFilter>();
+			if(!DisplayDataItems)
+				filters.Add(new PageFilter());
+			if (SecurityTrimmingEnabled)
+				filters.Add(new AccessFilter());
+			return filters;
+		}
 
 		public override SiteMapNode FindSiteMapNode(string rawUrl)
 		{
