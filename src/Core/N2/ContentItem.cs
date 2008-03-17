@@ -519,6 +519,14 @@ namespace N2
 			return new Collections.ItemList(Children, filters);
 		}
 
+		/// <summary>Gets children applying filters.</summary>
+		/// <param name="filters">The filters to apply on the children.</param>
+		/// <returns>A list of filtered child items.</returns>
+		public virtual Collections.ItemList GetChildren(IEnumerable<Collections.ItemFilter> filters)
+		{
+			return new Collections.ItemList(Children, filters);
+		}
+
 		#endregion
 
 		#region IComparable & IComparable<ContentItem> Members

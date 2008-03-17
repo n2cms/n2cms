@@ -50,5 +50,12 @@ namespace N2.Details
 		{
 			return new FreeTextArea();
 		}
+
+		protected override Control AddRequiredFieldValidator(Control container, Control editor)
+		{
+			RequiredFieldValidator rfv = base.AddRequiredFieldValidator(container, editor) as RequiredFieldValidator;
+			rfv.EnableClientScript = false;
+			return rfv;
+		}
 	}
 }

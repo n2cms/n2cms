@@ -8,6 +8,8 @@
 - allow other than content items to be edited
 - implement security context
 - publish directly from preview changes
+- dashboard
+- webdav
 
 TODO:
 - documentation & programmability

@@ -21,27 +21,28 @@ using System;
 using System.Web;
 using System.Collections.Generic;
 using System.Text;
+using N2.Collections;
 
 namespace N2.Web
 {
     /// <summary>
-	/// Default site map provider for N2 CMS.
+	/// A site map provider implementation for N2 CMS content pages.
 	/// </summary>
     public class PublicSiteMapProvider : SiteMapProvider
     {
+		public override void Initialize(string name, System.Collections.Specialized.NameValueCollection attributes)
+		{
+			if (attributes["securityTrimmingEnabled"] == null)
+				attributes["securityTrimmingEnabled"] = "true";
+
+			base.Initialize(name, attributes);
+		}
+
         protected virtual SiteMapNode Convert(ContentItem item)
         {
             if (item != null)
                 return new PublicSiteMapNode(this, item);
             return null;
-        }
-
-        protected virtual bool IsDisplayable(ContentItem item)
-        {
-            return item.IsPage // display only pages...
-                && item.Visible // ... that are visible...
-                && item.Published < DateTime.Now // ...and are published...
-                && (!item.Expires.HasValue || item.Expires > DateTime.Now); // ...and arn't expired.
         }
 
         public override SiteMapNode FindSiteMapNode(string rawUrl)
@@ -64,13 +65,27 @@ namespace N2.Web
 			ContentItem item = (node != null) ? Context.Persister.Get(int.Parse(node.Key)) : null; 
 			
             // Add published nodes that are pages
-			if(item != null)
-				foreach (ContentItem child in item.GetChildren())
-					if(IsDisplayable(child))
-						nodes.Add(Convert(child));
+			if (item != null)
+			{
+				IEnumerable<ItemFilter> filters = GetFilters();
+
+				foreach (ContentItem child in item.GetChildren(filters))
+					nodes.Add(Convert(child));
+			}
 
             return nodes;
         }
+
+		protected virtual IEnumerable<ItemFilter> GetFilters()
+		{
+			IList<ItemFilter> filters = new List<ItemFilter>();
+			filters.Add(new PageFilter());
+			filters.Add(new VisibleFilter());
+			filters.Add(new PublishedFilter());
+			if (SecurityTrimmingEnabled)
+				filters.Add(new AccessFilter());
+			return filters;
+		}
 
         public override SiteMapNode GetParentNode(SiteMapNode node)
         {

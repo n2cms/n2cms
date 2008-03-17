@@ -2,8 +2,8 @@
 <%@ OutputCache CacheProfile="DefaultCache" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-[[<%= System.Web.SiteMap.CurrentNode %>]]
-[[<%= CurrentPage.ID %>]]
+securitytrimminenabled: [[<%= System.Web.SiteMap.Provider.SecurityTrimmingEnabled %>]]
+currentpage id: [[<%= CurrentPage.ID %>]]
   <%--  
     <h1><%= CurrentPage.Title %></h1>
     

@@ -368,7 +368,7 @@ namespace N2.Details
 		/// <summary>Adds a regular expression validator.</summary>
 		/// <param name="container">The container control for this validator.</param>
 		/// <param name="editor">The editor control to validate.</param>
-		protected virtual void AddRegularExpressionValidator(Control container, Control editor)
+		protected virtual Control AddRegularExpressionValidator(Control container, Control editor)
 		{
 			RegularExpressionValidator rev = new RegularExpressionValidator();
 			rev.ID = Name + "_rev";
@@ -378,12 +378,14 @@ namespace N2.Details
 			rev.Text = GetLocalizedText("ValidationText") ?? ValidationText;
 			rev.ErrorMessage = GetLocalizedText("ValidationMessage") ?? ValidationMessage;
 			container.Controls.Add(rev);
+
+			return rev;
 		}
 
 		/// <summary>Adds a required field validator.</summary>
 		/// <param name="container">The container control for this validator.</param>
 		/// <param name="editor">The editor control to validate.</param>
-		protected virtual void AddRequiredFieldValidator(Control container, Control editor)
+		protected virtual Control AddRequiredFieldValidator(Control container, Control editor)
 		{
 			RequiredFieldValidator rfv = new RequiredFieldValidator();
 			rfv.ID = Name + "_rfv";
@@ -392,6 +394,8 @@ namespace N2.Details
 			rfv.Text = GetLocalizedText("RequiredText") ?? RequiredText;
 			rfv.ErrorMessage = GetLocalizedText("RequiredMessage") ?? RequiredMessage;
 			container.Controls.Add(rfv);
+
+			return rfv;
 		}
 
 		/// <summary>Adds the editor control to the edit panel. This method is invoked by <see cref="AddTo"/> and the editor is prepended a label and wrapped in a panel. To remove these controls also override the <see cref="AddTo"/> method.</summary>

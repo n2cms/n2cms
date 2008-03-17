@@ -4,6 +4,7 @@
 	- HasValue expression builder
 	- HasValue control
 	- Display control now features header and footer templates
+	- default sitemap provider can be configured to disable security trimming
 - edit
 	- preview changes
 	- translations: toolbar buttons, user editor
