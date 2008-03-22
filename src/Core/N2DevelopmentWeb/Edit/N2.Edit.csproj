@@ -1061,6 +1061,10 @@
     <Content Include="Js\tiny_mce\utils\validate.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="img\ico\png\book_next.png" />
+    <Content Include="img\ico\png\book_previous.png" />
+    <Content Include="img\ico\png\zoom.png" />
+    <Content Include="img\toolbar_logo.png" />
     <Content Include="Js\tinymce.ashx" />
     <Content Include="Security\Default.aspx" />
     <Content Include="Versions\Css\Versions.css" />
@@ -1083,7 +1087,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3139</DevelopmentServerPort>
+          <DevelopmentServerPort>2341</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

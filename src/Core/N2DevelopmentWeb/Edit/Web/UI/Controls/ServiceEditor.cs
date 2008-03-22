@@ -69,7 +69,7 @@ namespace N2.Edit.Web.UI.Controls
 			editors = new Dictionary<string, Control>();
 			IEditableContainer rootContainer = this.Settings.RootContainer;
 			AddEditorsRecursive(this, rootContainer);
-			AddValidatorsToPageRecursive(this);
+			//AddValidatorsToPageRecursive(this);
 		}
 
 		protected virtual void InitEditors()
@@ -107,15 +107,15 @@ namespace N2.Edit.Web.UI.Controls
 					AddEditorsRecursive(added, subContained);
 		}
 
-		/// <summary>Adds validators to the current page's validator collection.</summary>
-		/// <param name="c">The container control whose validators are added.</param>
-		protected virtual void AddValidatorsToPageRecursive(Control validatorContainer)
-		{
-			if (validatorContainer is IValidator)
-				this.Page.Validators.Add((IValidator)validatorContainer);
-			foreach (Control childControl in validatorContainer.Controls)
-				AddValidatorsToPageRecursive(childControl);
-		}
+		///// <summary>Adds validators to the current page's validator collection.</summary>
+		///// <param name="c">The container control whose validators are added.</param>
+		//protected virtual void AddValidatorsToPageRecursive(Control validatorContainer)
+		//{
+		//    if (validatorContainer is IValidator)
+		//        this.Page.Validators.Add((IValidator)validatorContainer);
+		//    foreach (Control childControl in validatorContainer.Controls)
+		//        AddValidatorsToPageRecursive(childControl);
+		//}
 
 		public void Save()
 		{

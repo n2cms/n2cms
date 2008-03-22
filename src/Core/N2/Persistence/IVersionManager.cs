@@ -10,7 +10,7 @@ namespace N2.Persistence
 	/// </summary>
 	public interface IVersionManager
 	{
-		/// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item.</summary>
+		/// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item and returns the previously published item.</summary>
 		/// <param name="currentItem">The item that will be stored as a previous version.</param>
 		/// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
 		/// <returns>The previously published version.</returns>

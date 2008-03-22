@@ -6,10 +6,12 @@
 	- Display control now features header and footer templates
 	- default sitemap provider can be configured to disable security trimming
 	- exception from the security enforcer can be cancelled by the use of an event
+	- versions of an item lists the published item's children (and parts)
 - edit
 	- preview changes
 	- translations: toolbar buttons, user editor
 	- updated dutch translation
+	- improvements on the preview workflow
 - examples
 	- included multiple domains example
 - bugfixes
@@ -19,6 +21,7 @@
 	- create/edit parts through the edit interface
 	- fixed image with no src displayed from displayable
 	- fixed remove file selected for upload in certain browsers
+	- editabletextbox now considers rows definition
 
 N2 1.3.3
 - edit

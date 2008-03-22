@@ -516,7 +516,7 @@ namespace N2
 		/// <returns>A list of filtered child items.</returns>
 		public virtual Collections.ItemList GetChildren(params Collections.ItemFilter[] filters)
 		{
-			return new Collections.ItemList(Children, filters);
+			return GetChildren(filters as IEnumerable<Collections.ItemFilter>);
 		}
 
 		/// <summary>Gets children applying filters.</summary>
@@ -524,7 +524,8 @@ namespace N2
 		/// <returns>A list of filtered child items.</returns>
 		public virtual Collections.ItemList GetChildren(IEnumerable<Collections.ItemFilter> filters)
 		{
-			return new Collections.ItemList(Children, filters);
+			IEnumerable<ContentItem> items = VersionOf == null ? Children : VersionOf.Children;
+			return new Collections.ItemList(items, filters);
 		}
 
 		#endregion

@@ -124,7 +124,7 @@
     <value />
   </data>
   <data name="btnSaveUnpublished.Text" xml:space="preserve">
-    <value>Save an unpublished version</value>
+    <value>&lt;img src='img/ico/png/book_next.png' /&gt; Save an unpublished version</value>
   </data>
   <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
     <value>Save changes to an unpublished version but don't publish it</value>
@@ -184,7 +184,7 @@
     <value>'{0}' saved, redirecting...</value>
   </data>
   <data name="btnPreview.Text" xml:space="preserve">
-    <value>Preview changes</value>
+    <value>&lt;img src='img/ico/png/zoom.png' /&gt; Preview changes</value>
   </data>
   <data name="btnPreview.ToolTip" xml:space="preserve">
     <value>Preview an unpublished version of these changes</value>

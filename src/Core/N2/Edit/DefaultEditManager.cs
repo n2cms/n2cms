@@ -270,11 +270,12 @@ namespace N2.Edit
 
 		/// <summary>Adds validators to the current page's validator collection.</summary>
 		/// <param name="c">The container control whose validators are added.</param>
-		public virtual void AddValidatorsToPageRecursive(Control validatorContainer)
+		public virtual void AddValidatorsToPageRecursive(Control control)
 		{
-			if (validatorContainer is IValidator)
-				validatorContainer.Page.Validators.Add((IValidator)validatorContainer);
-			foreach (Control childControl in validatorContainer.Controls)
+			IValidator validator = control as IValidator;
+			if (validator != null && !control.Page.Validators.Contains(validator))
+				control.Page.Validators.Add((IValidator)control);
+			foreach (Control childControl in control.Controls)
 				AddValidatorsToPageRecursive(childControl);
 		}
 		#endregion

@@ -186,6 +186,7 @@ namespace N2.Edit
 			{
 				INode savedVersion = SaveVersion();
 				string redirectUrl = savedVersion.PreviewUrl;
+				redirectUrl += (redirectUrl.Contains("?") ? "&" : "?") + "preview=true";
 				Response.Redirect(redirectUrl);
 			}
 		}

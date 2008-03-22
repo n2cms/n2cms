@@ -79,16 +79,16 @@ namespace N2.Web.UI.WebControls
 			set { doneDraggingLink = value; }
 		}
 
-		protected override void AddControlPanelControls()
+		protected override void AddControlPanelControls(ControlPanelState state)
 		{
-			if (GetState() == ControlPanelState.DragDrop)
+			if (state == ControlPanelState.DragDrop)
 			{
 				AddDoneButtons(this);
 				AddDefinitions(this);
 			}
 			else
 			{
-				base.AddControlPanelControls();
+				base.AddControlPanelControls(state);
 			}
 		}
 

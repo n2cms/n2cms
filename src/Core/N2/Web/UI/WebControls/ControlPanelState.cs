@@ -13,6 +13,7 @@ namespace N2.Web.UI.WebControls
 		Hidden,
 		Visible,
 		Editing,
-		DragDrop
+		DragDrop,
+		Previewing
 	}
 }

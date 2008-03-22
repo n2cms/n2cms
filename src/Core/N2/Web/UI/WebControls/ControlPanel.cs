@@ -37,7 +37,9 @@ namespace N2.Web.UI.WebControls
 		private readonly HyperLink hlEdit = new HyperLink();
 		private readonly HyperLink hlDelete = new HyperLink();
 		private readonly LinkButton btnSave = new LinkButton();
-		private readonly LinkButton btnCancel = new LinkButton();
+		private readonly LinkButton btnPublish = new LinkButton();
+		private readonly HyperLink hlCancel = new HyperLink();
+		private readonly LinkButton btnCancelVersion = new LinkButton();
 
 		#endregion
 
@@ -86,11 +88,25 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["EditText"] = value; }
 		}
 
-		/// <summary>Gets or sets the the text on the edit page button.</summary>
+		/// <summary>Gets or sets the the text on the publish page button.</summary>
 		public string PublishText
 		{
 			get { return (string)(ViewState["PublishText"] ?? "Publish page"); }
 			set { ViewState["PublishText"] = value; }
+		}
+
+		/// <summary>Gets or sets the the text on the publish page button.</summary>
+		public string CancelVersionText
+		{
+			get { return (string)(ViewState["CancelVersionText"] ?? "Delete version"); }
+			set { ViewState["CancelVersionText"] = value; }
+		}
+		
+		/// <summary>Gets or sets the the text on the publish page button.</summary>
+		public string BackToEditText
+		{
+			get { return (string)(ViewState["BackToEditText"] ?? EditText); }
+			set { ViewState["BackToEditText"] = value; }
 		}
 
 		/// <summary>Gets or sets the text on the delete button.</summary>
@@ -103,7 +119,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the edit mode link text.</summary>
 		public string EditModeText
 		{
-			get { return (string) (ViewState["EditModeText"] ?? "To edit mode"); }
+			get { return (string) (ViewState["EditModeText"] ?? "Administrate site"); }
 			set { ViewState["EditModeText"] = value; }
 		}
 
@@ -178,9 +194,9 @@ namespace N2.Web.UI.WebControls
 		}
 
 		[NotifyParentProperty(true)]
-		public LinkButton CancelButton
+		public HyperLink CancelButton
 		{
-			get{return btnCancel;}
+			get{return hlCancel;}
 		}
 
 		public virtual IEngine Engine
@@ -200,20 +216,23 @@ namespace N2.Web.UI.WebControls
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			if (GetState() != ControlPanelState.Hidden)
-				AddControlPanelControls();
+			ControlPanelState state = GetState();
+			if (state != ControlPanelState.Hidden)
+			{
+				AddControlPanelControls(state);
+			}
 		}
 
-		protected virtual void AddControlPanelControls()
+		protected virtual void AddControlPanelControls(ControlPanelState state)
 		{
-			if (GetState() == ControlPanelState.Visible)
-			{
+			if (state == ControlPanelState.Visible)
 				AddEditButtons();
-			}
-			else if (GetState() == ControlPanelState.Editing)
-			{
+			else if (state == ControlPanelState.Editing)
 				AddSaveCancelButtons();
-			}
+			else if (state == ControlPanelState.Previewing)
+				AddPreviewButtons();
+			else
+				throw new N2Exception("Unknown control panel state: " + state);
 		}
 
 		protected virtual void AddSaveCancelButtons()
@@ -230,21 +249,9 @@ namespace N2.Web.UI.WebControls
 			AddQuickEditButton();
 			AddEditModeButton();
 			AddCreateNewButton();
-			//if (CurrentItem.VersionOf != null)
-			//{
-			//    AddPublishButton();
-			//}
-			AddEditButton();
+			AddEditButton(EditText);
 			AddDeleteButton();
 		}
-
-		//private void AddPublishButton()
-		//{
-		//    LinkButton btnPublish = new LinkButton();
-		//    btnPublish.Text = PublishText;
-		//    btnPublish.Click += new EventHandler(btnPublish_Click);
-		//    Controls.Add(btnPublish);
-		//}
 
 		protected virtual void AddDeleteButton()
 		{
@@ -263,21 +270,20 @@ namespace N2.Web.UI.WebControls
 			Controls.Add(hlNew);
 		}
 
-		protected virtual void AddEditButton()
+		protected virtual void AddEditButton(string editText)
 		{
 			hlEdit.NavigateUrl = Engine.EditManager.GetEditExistingItemUrl(CurrentItem);
-			hlEdit.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/page_edit.gif"), EditText);
+			hlEdit.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/page_edit.gif"), editText);
 			hlEdit.CssClass = "edit";
 			Controls.Add(hlEdit);
 		}
 
 		protected virtual void AddCancelButton()
 		{
-			btnCancel.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/cancel.gif"), CancelText);
-			btnCancel.CssClass = "cancel";
-			Controls.Add(btnCancel);
-			btnCancel.CausesValidation = false;
-			btnCancel.Command += btnCancel_Command;
+			hlCancel.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/cancel.gif"), CancelText);
+			hlCancel.NavigateUrl = Engine.EditManager.GetPreviewUrl(CurrentItem);
+			hlCancel.CssClass = "cancel";
+			Controls.Add(hlCancel);
 		}
 
 		protected virtual void AddSaveButton()
@@ -285,7 +291,7 @@ namespace N2.Web.UI.WebControls
 			btnSave.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/disk.gif"), SaveText);
 			btnSave.CssClass = "save";
 			Controls.Add(btnSave);
-			btnSave.Command += btnSave_Command;
+			btnSave.Command += delegate { Save(); };
 		}
 
 		protected virtual void AddEditModeButton()
@@ -305,57 +311,55 @@ namespace N2.Web.UI.WebControls
 			Controls.Add(hlQuickEdit);
 		}
 
-		private class PublishEditor : IItemEditor
+		protected virtual void AddPreviewButtons()
 		{
-			public PublishEditor(ContentItem item)
-			{
-				this.currentItem = item;
-			}
+			AddPublishButton();
+			AddEditButton(BackToEditText);
+			AddCancelVersionButton();
+		}
 
-			ItemEditorVersioningMode versioningMode = ItemEditorVersioningMode.SaveAsMaster;
-			string zoneName = null;
-			IDictionary<string, Control> addedEditors = new Dictionary<string, Control>();
-			readonly ContentItem currentItem;
+		private void AddPublishButton()
+		{
+			btnPublish.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/disk.gif"), PublishText);
+			btnPublish.CssClass = "publish";
+			Controls.Add(btnPublish);
+			btnPublish.Command += delegate { Publish(); };
+		}
 
-			public ItemEditorVersioningMode VersioningMode
-			{
-				get { return versioningMode; }
-				set { versioningMode = value; }
-			}
+		private void AddCancelVersionButton()
+		{
+			btnCancelVersion.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/cancel.gif"), CancelVersionText);
+			btnCancelVersion.CssClass = "cancel";
+			Controls.Add(btnCancelVersion);
+			btnCancelVersion.Command += delegate { CancelVersion(); };
+		}
 
-			public string ZoneName
-			{
-				get { return zoneName; }
-				set { zoneName = value; }
-			}
+		private void CancelVersion()
+		{
+			if (CurrentItem.VersionOf == null) throw new N2Exception("Cannot publish item that is not a version of another item");
 
-			public IDictionary<string, Control> AddedEditors
-			{
-				get { return addedEditors; }
-				set { addedEditors = value; }
-			}
-
-			public event EventHandler<N2.Persistence.ItemEventArgs> Saved;
+			ContentItem published = CurrentItem.VersionOf;
 			
-			public ContentItem CurrentItem
-			{
-				get { return currentItem; }
-			}
+			Engine.Persister.Delete(CurrentItem);
+
+			RedirectTo(published);
 		}
 
-		//void btnPublish_Click(object sender, EventArgs e)
-		//{
-		//    Engine.EditManager.Save(new PublishEditor(CurrentItem), Page.User);
-		//}
-
-		private void btnSave_Command(object sender, CommandEventArgs e)
+		private void Publish()
 		{
-			Save();
+			if (CurrentItem.VersionOf == null) throw new N2Exception("Cannot publish item that is not a version of another item");
+
+			ContentItem published = CurrentItem.VersionOf;
+			
+			Engine.Resolve<Persistence.IVersionManager>().ReplaceVersion(published, CurrentItem);
+
+			RedirectTo(published);
 		}
 
-		private void btnCancel_Command(object sender, CommandEventArgs e)
+		protected void RedirectTo(ContentItem item)
 		{
-			Page.Response.Redirect(Find.CurrentPage.Url);
+			string url = Engine.EditManager.GetPreviewUrl(item); ;
+			Page.Response.Redirect(url);
 		}
 
 		protected override void Render(HtmlTextWriter writer)
@@ -388,7 +392,7 @@ namespace N2.Web.UI.WebControls
 				Engine.EditManager.Save(itemEditor, Page.User);
 			}
 
-			Page.Response.Redirect(Find.CurrentPage.Url);
+			RedirectTo(CurrentItem);
 		}
 
 		protected virtual IList<IItemEditor> GetEditedItems()
@@ -495,6 +499,8 @@ namespace N2.Web.UI.WebControls
 					return ControlPanelState.Editing;
 				else if (Request["edit"] == "drag")
 					return ControlPanelState.DragDrop;
+				else if (Request["preview"] == "true")
+					return ControlPanelState.Previewing;
 				else
 					return ControlPanelState.Visible;
 			}
@@ -506,6 +512,46 @@ namespace N2.Web.UI.WebControls
 			return string.Format("<img src='{0}' alt='icon'/>{1}", iconUrl, text);
 		}
 
+		#endregion
+
+		#region class PublishEditor
+		private class PublishEditor : IItemEditor
+		{
+			public PublishEditor(ContentItem item)
+			{
+				this.currentItem = item;
+			}
+
+			ItemEditorVersioningMode versioningMode = ItemEditorVersioningMode.SaveAsMaster;
+			string zoneName = null;
+			IDictionary<string, Control> addedEditors = new Dictionary<string, Control>();
+			readonly ContentItem currentItem;
+
+			public ItemEditorVersioningMode VersioningMode
+			{
+				get { return versioningMode; }
+				set { versioningMode = value; }
+			}
+
+			public string ZoneName
+			{
+				get { return zoneName; }
+				set { zoneName = value; }
+			}
+
+			public IDictionary<string, Control> AddedEditors
+			{
+				get { return addedEditors; }
+				set { addedEditors = value; }
+			}
+
+			public event EventHandler<N2.Persistence.ItemEventArgs> Saved;
+
+			public ContentItem CurrentItem
+			{
+				get { return currentItem; }
+			}
+		}
 		#endregion
 	}
 }
