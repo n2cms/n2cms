@@ -124,7 +124,7 @@
     <value />
   </data>
   <data name="btnSaveUnpublished.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/png/book_next.png' /&gt; Save an unpublished version</value>
+    <value>&lt;img src='img/ico/png/book_next.png' /&gt; Save but don't publish</value>
   </data>
   <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
     <value>Save changes to an unpublished version but don't publish it</value>

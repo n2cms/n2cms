@@ -119,7 +119,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the edit mode link text.</summary>
 		public string EditModeText
 		{
-			get { return (string) (ViewState["EditModeText"] ?? "Administrate site"); }
+			get { return (string) (ViewState["EditModeText"] ?? "Administer site"); }
 			set { ViewState["EditModeText"] = value; }
 		}
 

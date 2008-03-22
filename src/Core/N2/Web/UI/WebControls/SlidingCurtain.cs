@@ -42,7 +42,7 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["StyleSheetUrl"] = value; }
 		}
 
-		private static readonly string scriptFormat = "SlidingCurtain('#{0}');";
+		private static readonly string scriptFormat = "SlidingCurtain('#{0}',{1});";
 
 		protected override void OnPreRender(System.EventArgs e)
 		{
@@ -53,7 +53,8 @@ namespace N2.Web.UI.WebControls
 			Register.JavaScript(Page, ScriptUrl);
 			Register.StyleSheet(Page, StyleSheetUrl);
 
-			string startupScript = string.Format(scriptFormat, ClientID);
+			bool isOpen = (ControlPanel.GetState() == ControlPanelState.Previewing);
+			string startupScript = string.Format(scriptFormat, ClientID, isOpen.ToString().ToLower());
 			Register.JavaScript(Page, startupScript, ScriptOptions.DocumentReady);
 
 			base.OnPreRender(e);

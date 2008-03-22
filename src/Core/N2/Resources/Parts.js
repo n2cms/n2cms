@@ -247,7 +247,7 @@ var cookie = {
 
 
 
-var SlidingCurtain = function(selector){
+var SlidingCurtain = function(selector,startsOpen){
 	var $sc = $(selector);
 	var closedPos = {top: (18-$sc.height()) + "px", left: "-156px"};
 	var openPos = {top: "0px", left: "0px"};
@@ -276,7 +276,9 @@ var SlidingCurtain = function(selector){
 		}
 	};
 	
-	if(curtain.isOpen()){
+	if (startsOpen) {
+		$sc.animate(openPos).addClass("opened");
+	} else if (curtain.isOpen()) {
 		curtain.open();
 	} else {
 		curtain.close();
