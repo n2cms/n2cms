@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="Layouts/Default.Master" AutoEventWireup="true" CodeBehind="Container.aspx.cs" Inherits="N2.Templates.News.UI.Container" Title="" %>
+<%@ Page Language="C#" MasterPageFile="~/Layouts/Top+SubMenu.Master" AutoEventWireup="true" CodeBehind="Container.aspx.cs" Inherits="N2.Templates.News.UI.Container" Title="" %>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <n2:Path ID="p1" runat="server" />
     <n2:EditableDisplay PropertyName="Title" runat="server" />

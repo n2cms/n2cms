@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="Layouts/Default.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.ImageGallery.UI.Default" %>
+<%@ Page Language="C#" MasterPageFile="~/Layouts/Top+SubMenu.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.ImageGallery.UI.Default" %>
 <asp:Content ID="c" ContentPlaceHolderID="Content" runat="server">
     <n2:ItemDataSource id="idsImages" runat="server" />
     <asp:Repeater runat="server" DataSourceID="idsImages">

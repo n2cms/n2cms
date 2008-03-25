@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using N2.Integrity;
 using N2.Details;
+using N2.Templates.Items;
 
-namespace N2.Templates.Items.RootParts
+namespace N2.Templates.UI.Items.RootParts
 {
 	[Definition("Statistics", "Statistics")]
 	[WithEditableTitle("Title", 10)]

@@ -7,25 +7,25 @@ namespace N2.Templates.Items
 	/// <summary>
 	/// A page item with a convenient set of properties defined by default.
 	/// </summary>
-	[WithEditableName("Name", 20, ContainerName = "content"),
-		WithEditablePublishedRange("Published Between", 30, ContainerName = "advanced", BetweenText = " and ")]
-	[TabPanel("advanced", "Advanced", 100)]
-	[AvailableZone("Right", "Right"),
-		AvailableZone("Left", "Left"),
-		AvailableZone("Content", "Content"),
-		AvailableZone("Recursive Right", "RecursiveRight"), 
-		AvailableZone("Recursive Above", "RecursiveAbove")]
+	[WithEditableName("Name", 20, ContainerName = Tabs.Content),
+		WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
+	[TabPanel(Tabs.Advanced, "Advanced", 100)]
+	[AvailableZone("Right", Zones.Right),
+		AvailableZone("Left", Zones.Left),
+		AvailableZone("Content", Zones.Content),
+		AvailableZone("Recursive Right", Zones.RecursiveRight),
+		AvailableZone("Recursive Above", Zones.RecursiveAbove)]
 	[RestrictParents(typeof(IStructuralPage))]
 	public abstract class AbstractContentPage : AbstractPage
 	{
-		[EditableCheckBox("Visible", 40, ContainerName = "advanced")]
+		[EditableCheckBox("Visible", 40, ContainerName = Tabs.Advanced)]
 		public override bool Visible
 		{
 			get{return base.Visible;}
 			set{base.Visible = value;}
 		}
 
-		[EditableFreeTextArea("Text", 100, ContainerName = "content")]
+		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
 		public virtual string Text
 		{
 			get { return (string) (GetDetail("Text") ?? string.Empty); }

@@ -12,8 +12,13 @@
 	- translations: toolbar buttons, user editor
 	- updated dutch translation
 	- improvements on the preview workflow
+		- publish directly from preview changes/collapsable preview frame
 - examples
 	- included multiple domains example
+- templates
+	- moved menus and top part into the layout (alternative to parts)
+	- changed themes
+	- added check for theme and layout existance before applying theme
 - bugfixes
 	- url selector now displays items if the url doesn't seem to be a file
 	- url selector now more correctly selects items on other sites

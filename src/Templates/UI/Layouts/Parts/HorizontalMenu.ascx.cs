@@ -2,7 +2,7 @@ using N2.Resources;
 
 namespace N2.Templates.UI.Layouts.Parts
 {
-	public partial class HorizontalMenu : Web.UI.TemplateUserControl<Items.AbstractContentPage, Items.LayoutParts.HorizontalMenu>
+	public partial class HorizontalMenu : Web.UI.TemplateUserControl<Templates.Items.AbstractContentPage, Items.LayoutParts.HorizontalMenu>
 	{
 		protected override void OnInit(System.EventArgs e)
 		{

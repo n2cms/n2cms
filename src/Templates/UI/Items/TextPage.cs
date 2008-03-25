@@ -1,8 +1,9 @@
 using System.Text.RegularExpressions;
 using N2.Details;
 using N2.Templates.Syndication;
+using N2.Templates.Items;
 
-namespace N2.Templates.Items
+namespace N2.Templates.UI.Items
 {
 	/// <summary>
 	/// A page containing textual information.

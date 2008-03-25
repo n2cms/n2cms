@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using N2.Integrity;
 using System.Web.UI.WebControls;
+using N2.Templates.Items;
 
-namespace N2.Templates.Items.LayoutParts
+namespace N2.Templates.UI.Items.LayoutParts
 {
 	[N2.Definition("Top", "Top")]
 	[N2.Web.UI.FieldSet("top", "Top", 100)]

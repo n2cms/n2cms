@@ -129,26 +129,26 @@ body
 }
 
 /*menu*/
-.horizontalMenu
+.topMenu
 {
 	display:block;
 }
-.horizontalMenu li
+.topMenu li
 {
 	float:left;
 }
-.horizontalMenu a
+.topMenu a
 {
 	color:#fff;
 	display:block;
 	padding:5px 5px;
 }
-.horizontalMenu .current > a,
-.horizontalMenu .trail > a
+.topMenu .current > a,
+.topMenu .trail > a
 {
     font-weight:bold;
 }
-.verticalMenu a,
+.subMenu a,
 .menu a
 {
     display:block;
@@ -156,19 +156,19 @@ body
     _height:1px;
     color:#333;
 }
-.verticalMenu ul ul,
+.subMenu ul ul,
 .menu ul ul
 {
     margin:0 0 5px 10px;
 }
-.verticalMenu .trail > a,
-.verticalMenu .current > a,
+.subMenu .trail > a,
+.subMenu .current > a,
 .menu .trail > a,
 .menu .current > a
 {
     color:#0096DB;
 }
-.verticalMenu .current > a,
+.subMenu .current > a,
 .menu .current > a
 {
     font-weight:bold;

@@ -1,11 +1,9 @@
-body {background-color:#000}
-body #page {background-color:#333;color:#ccc;min-height:500px;}
-.path a.current {color:#ccc}
+body #page {min-height:500px;}
 
 #next img,
 #prev img
 {
-	border:solid 2px white;
+	border:solid 3px #333;
 }
 #prev
 {
@@ -17,14 +15,11 @@ body #page {background-color:#333;color:#ccc;min-height:500px;}
 	float:right;
 	margin:0 0 0 0 10px;
 }
-#title
-{
-}
 .nav
 {
 	margin-bottom:10px;
 }
 #large img
 {
-	border:solid 5px white;
+	border:solid 5px #333;
 }

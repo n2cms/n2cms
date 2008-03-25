@@ -1,6 +1,7 @@
 using N2.Integrity;
+using N2.Templates.Items;
 
-namespace N2.Templates.Items.LayoutParts
+namespace N2.Templates.UI.Items.LayoutParts
 {
 	[Definition("Two column container", "Columns")]
 	[AvailableZone("Left", "ColumnLeft"), AvailableZone("Right", "ColumnRight")]

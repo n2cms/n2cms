@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ThreeColumns.Master.cs" Inherits="N2.Templates.UI.Layouts.DefaultLayout" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Top+SubMenu.Master.cs" Inherits="N2.Templates.UI.Layouts.DefaultLayout" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -43,7 +43,7 @@
 						</asp:ContentPlaceHolder>
                     </div>
                 </div>
-                <div id="footer"><%= N2.Templates.Find.StartPage.FooterText %> <a class="n2" title="N2, an open source ASP.NET CMS" href="http://n2cms.com/">powered by n2</a></div>
+                <div id="footer"><%--<%= N2.Templates.Find.StartPage.FooterText %>--%> <a class="n2" title="N2, an open source ASP.NET CMS" href="http://n2cms.com/">powered by n2</a></div>
             </asp:ContentPlaceHolder>
         </div>
     </form>

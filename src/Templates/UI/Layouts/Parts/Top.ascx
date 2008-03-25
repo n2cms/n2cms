@@ -1,5 +1,3 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Top.ascx.cs" Inherits="N2.Templates.UI.Layouts.Parts.Top" %>
-<% if(CurrentItem.LogoUrl.Length > 0) {%>
-<a href="<%=CurrentItem.LogoLinkUrl%>"><n2:Display PropertyName="LogoUrl" runat="server" /></a>
-<%}%>
-<h2 runat="server" visible='<%$ Code: CurrentItem.Title.Length>0 %>'><a href="<%= CurrentItem.TopTextUrl %>"><%= CurrentItem.Title %></a></h2>
+<a class="siteLogo" visible="<%$ HasValue: LogoUrl %>" href="<%$ CurrentItem: LogoLinkUrl %>" runat="server"><n2:Display PropertyName="LogoUrl" runat="server" /></a>
+<h2 class="siteHeader" runat="server" visible='<%$ HasValue: Title %>'><a href="<%= CurrentItem.TopTextUrl %>"><%= CurrentItem.Title %></a></h2>

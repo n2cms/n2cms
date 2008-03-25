@@ -1,11 +1,12 @@
 using N2.Details;
 using N2.Integrity;
+using N2.Templates.Items;
 
 namespace N2.Templates.Advertisement.Items
 {
 	[Definition("Tracking script", "Tracking", SortOrder = 2000)]
-	[RestrictParents(typeof(Templates.Items.StartPage))]
-	[AllowedZones("SiteRight")]
+	[RestrictParents(typeof(AbstractStartPage))]
+	[AllowedZones(Zones.SiteRight)]
 	public class Tracking : Templates.Items.AbstractItem
 	{
 		[EditableCheckBox("Enabled", 100)]

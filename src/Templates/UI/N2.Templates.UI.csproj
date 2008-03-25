@@ -131,8 +131,10 @@
     <Compile Include="Items\Parts\Teaser.cs" />
     <Compile Include="Items\Parts\TextItem.cs" />
     <Compile Include="Items\Redirect.cs" />
+    <Compile Include="Items\RootPage.cs" />
     <Compile Include="Items\RootParts\Statistics.cs" />
     <Compile Include="Items\SiteMap.cs" />
+    <Compile Include="Items\StartPage.cs" />
     <Compile Include="Items\TextPage.cs" />
     <Compile Include="Layouts\Empty.Master.cs">
       <DependentUpon>Empty.Master</DependentUpon>
@@ -148,6 +150,13 @@
     <Compile Include="Layouts\Parts\HorizontalMenu.ascx.designer.cs">
       <DependentUpon>HorizontalMenu.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\Parts\SubMenu.ascx.cs">
+      <DependentUpon>SubMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Parts\SubMenu.ascx.designer.cs">
+      <DependentUpon>SubMenu.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Layouts\Parts\VerticalMenu.ascx.cs">
       <DependentUpon>VerticalMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -161,6 +170,13 @@
     </Compile>
     <Compile Include="Layouts\Parts\Columns.ascx.designer.cs">
       <DependentUpon>Columns.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\Top+SubMenu.Master.cs">
+      <DependentUpon>Top+SubMenu.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Top+SubMenu.Master.designer.cs">
+      <DependentUpon>Top+SubMenu.Master</DependentUpon>
     </Compile>
     <Compile Include="Parts\ControlPanel.ascx.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
@@ -274,7 +290,6 @@
   <ItemGroup>
     <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
     <Content Include="App_Themes\ContentFocus\content_top.gif" />
-    <Content Include="App_Themes\ContentFocus\_style_template.gif" />
     <Content Include="Secured\Root.aspx" />
     <Content Include="Secured\Web.config" />
     <Content Include="Text.aspx" />
@@ -337,7 +352,6 @@
     <Content Include="Parts\Text.ascx" />
     <Content Include="Secured\Edit.css" />
     <Content Include="Upload\lav.jpg" />
-    <Content Include="Upload\n2.gif" />
     <Content Include="Upload\skal.jpg" />
     <Content Include="Upload\Sunset.jpg" />
     <Content Include="Upload\thorn.jpg" />
@@ -435,6 +449,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Layouts\Parts\SubMenu.ascx" />
+    <Content Include="Layouts\Top+SubMenu.Master" />
+    <Content Include="Upload\logo_white.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Js\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -452,7 +471,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2342</DevelopmentServerPort>
+          <DevelopmentServerPort>2697</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

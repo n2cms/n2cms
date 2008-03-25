@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Layouts/ThreeColumns.Master" Theme="ContentFocus" AutoEventWireup="true" CodeBehind="Text.aspx.cs" Inherits="N2.Templates.UI.Text" Title="Untitled Page" %>
+<%@ Page Language="C#" MasterPageFile="~/Layouts/Top+SubMenu.Master" Theme="ContentFocus" AutoEventWireup="true" CodeBehind="Text.aspx.cs" Inherits="N2.Templates.UI.Text" Title="Untitled Page" %>
 <asp:Content ID="c" ContentPlaceHolderID="Content" runat="server">
     <n2:EditableDisplay ID="dim" PropertyName="Image" runat="server" />
     <n2:Path ID="p1" runat="server" />

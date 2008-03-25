@@ -5,7 +5,7 @@ using N2.Collections;
 
 namespace N2.Templates
 {
-	public sealed class Find : N2.Persistence.GenericFind<Items.RootPage,Items.StartPage>
+	public sealed class Find : N2.Persistence.GenericFind<Items.AbstractRootPage,Items.AbstractStartPage>
 	{
 		/// <summary>
 		/// Gets the item at the specified level.

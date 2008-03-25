@@ -72,6 +72,8 @@ namespace N2.Trashcan
 		{
 			ExpireTrashedItem(item);
 			item.AddTo(TrashContainer);
+
+			persister.Save(item);
 		}
 
 		public virtual void ExpireTrashedItem(ContentItem item)
@@ -82,8 +84,6 @@ namespace N2.Trashcan
 			item[DeletedDate] = DateTime.Now;
 			item.Expires = DateTime.Now;
 			item.Name = item.ID.ToString();
-
-			persister.Save(item);
 		}
 
 		/// <summary>Restores an item to the original location.</summary>

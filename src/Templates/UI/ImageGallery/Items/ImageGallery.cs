@@ -10,40 +10,55 @@ using System.Web.UI.HtmlControls;
 using N2.Integrity;
 using N2.Details;
 using N2.Templates.Items;
+using N2.Web.UI;
 
 namespace N2.Templates.ImageGallery.Items
 {
 	[Definition("Image Gallery", "ImageGallery", "Displays an image with next/previous thumbnails", "", 220)]
 	[RestrictParents(typeof(IStructuralPage))]
+	[FieldSet(ImageGallery.GallerySettings, "Gallery Settings", 500, ContainerName = Tabs.Content)]
 	public class ImageGallery : AbstractContentPage
 	{
-		[EditableTextBox("Max Image Width", 200, ContainerName = "advanced")]
+		#region GallerySettings
+		public const string GallerySettings = "gallerySettings";
+
+		[EditableTextBox("Max Image Width", 200, ContainerName = GallerySettings)]
 		public virtual int MaxImageWidth
 		{
 			get { return (int)(GetDetail("MaxImageWidth") ?? 490); }
 			set { SetDetail("MaxImageWidth", value); }
 		}
 
-		[EditableTextBox("Max Image Height", 210, ContainerName = "advanced")]
+		[EditableTextBox("Max Image Height", 210, ContainerName = GallerySettings)]
 		public virtual int MaxImageHeight
 		{
 			get { return (int)(GetDetail("MaxImageHeight") ?? 490); }
 			set { SetDetail("MaxImageHeight", value); }
 		}
 
-		[EditableTextBox("Max Thumbnail Width", 220, ContainerName = "advanced")]
+		[EditableTextBox("Max Thumbnail Width", 220, ContainerName = GallerySettings)]
 		public virtual int MaxThumbnailWidth
 		{
 			get { return (int)(GetDetail("MaxThumbnailWidth") ?? 70); }
 			set { SetDetail("MaxThumbnailWidth", value); }
 		}
 
-		[EditableTextBox("Max Thumbnail Height", 230, ContainerName = "advanced")]
+		[EditableTextBox("Max Thumbnail Height", 230, ContainerName = GallerySettings)]
 		public virtual int MaxThumbnailHeight
 		{
 			get { return (int)(GetDetail("MaxThumbnailHeight") ?? 55); }
 			set { SetDetail("MaxThumbnailHeight", value); }
-		}
+		} 
+		#endregion
+
+
+		//[N2.Details.EditableChildren("GalleryItems", 600)]
+		//public virtual string GalleryItems
+		//{
+		//    get { return (string)(GetDetail("GalleryItems") ?? string.Empty); }
+		//    set { SetDetail("GalleryItems", value, string.Empty); }
+		//}
+
 
 		public override string IconUrl
 		{

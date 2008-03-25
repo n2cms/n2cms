@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="Layouts/Default.Master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.Calendar.UI.Default" %>
+<%@ Page MasterPageFile="~/Layouts/Top+SubMenu.Master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.Calendar.UI.Default" %>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
     <n2:Path ID="p1" runat="server" />
     <n2:EditableDisplay PropertyName="Title" runat="server" />

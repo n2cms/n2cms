@@ -19,10 +19,11 @@ namespace N2.Templates.Details
 			string path = container.Page.Server.MapPath("~/App_Themes/");
 
 			yield return new ListItem();
-			foreach(string file in Directory.GetDirectories(path))
+			foreach(string directoryPath in Directory.GetDirectories(path))
 			{
-				string fileName = Path.GetFileName(file);
-				yield return new ListItem(fileName);
+				string directoryName = Path.GetFileName(directoryPath);
+				if(!directoryName.StartsWith("."))
+					yield return new ListItem(directoryName);
 			}
 		}
 	}

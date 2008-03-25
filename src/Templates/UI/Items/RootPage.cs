@@ -5,8 +5,9 @@ using System.Text;
 using N2.Details;
 using N2.Integrity;
 using System.Net.Mail;
+using N2.Templates.Items;
 
-namespace N2.Templates.Items
+namespace N2.Templates.UI.Items
 {
 	[Definition("Root Page", "RootPage", "A root page used to organize start pages.", "", 0, MayBeRoot = true)]
 	[RestrictParents(AllowedTypes.None)]
@@ -16,7 +17,7 @@ namespace N2.Templates.Items
 	[AvailableZone("Above", "Above")]
 	[AvailableZone("Below", "Below")]
 	[N2.Web.UI.TabPanel("smtp", "Smtp settings", 30)]
-	public class RootPage : AbstractContentPage, N2.Web.ISitesProvider
+	public class RootPage : AbstractRootPage
 	{
 		public override string TemplateUrl
 		{
@@ -39,18 +40,7 @@ namespace N2.Templates.Items
 			}
 		}
 
-		#region ISitesProvider Members
-
-		public ICollection<N2.Web.Site> GetSites()
-		{
-			List<N2.Web.Site> sites = new List<N2.Web.Site>();
-			foreach (StartPage page in GetChildren<StartPage>())
-				sites.Add(new N2.Web.Site(this.ID, page.ID, page.HostName));
-			return sites;
-		}
-
-		#endregion
-
+		
 
 		[EditableTextBox("Smtp Host", 100, ContainerName = "smtp")]
 		public virtual string SmtpHost

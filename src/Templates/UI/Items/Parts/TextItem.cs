@@ -1,7 +1,8 @@
 using N2.Details;
 using N2.Integrity;
+using N2.Templates.Items;
 
-namespace N2.Templates.Items.Parts
+namespace N2.Templates.UI.Items.Parts
 {
 	[Definition("Text", "Text")]
 	[AllowedZones("Content", "ColumnLeft", "ColumnRight")]

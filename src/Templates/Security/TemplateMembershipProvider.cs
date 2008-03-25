@@ -178,7 +178,7 @@ namespace N2.Templates.Security
 			if (userContainer == null)
 				return null;
 			IList<ContentItem> users = Bridge.Finder
-				.Where.Detail("ProviderUserKey").Eq(providerUserKey)
+				.Where.Detail("ProviderUserKey").Like(providerUserKey.ToString())
 				.And.Type.Eq(typeof(Items.User))
 				.And.Parent.Eq(userContainer)
 				.Select();

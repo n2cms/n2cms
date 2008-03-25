@@ -2,7 +2,7 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Templates.UI.Layouts.Parts
 {
-	public partial class VerticalMenu : Web.UI.TemplateUserControl<Items.AbstractContentPage, Items.LayoutParts.VerticalMenu>
+	public partial class VerticalMenu : Web.UI.TemplateUserControl<Templates.Items.AbstractContentPage, Items.LayoutParts.VerticalMenu>
 	{
 		protected H4 h;
 		protected override void OnInit(System.EventArgs e)
