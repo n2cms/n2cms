@@ -14,7 +14,7 @@ namespace N2.Templates.Rss
 	{
 		private readonly IDefinitionManager definitions;
 		private string checkBoxText = "Make available for syndication.";
-		private string containerName = "content";
+		private string containerName = Tabs.Content;
 		private int sortOrder = 30;
 		public static readonly string SyndicatableDetailName = "Syndicate";
 

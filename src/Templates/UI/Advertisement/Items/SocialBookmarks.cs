@@ -8,7 +8,7 @@ namespace N2.Templates.Advertisement.Items
 {
 	[Definition("Social bookmarks")]
 	[RestrictParents(typeof(Templates.Items.AbstractContentPage))]
-	[AllowedZones("SiteRight", "Right", "RecursiveRight", "SiteLeft")]
+	[AllowedZones(Zones.SiteRight, Zones.Right, Zones.RecursiveRight, Zones.SiteLeft)]
 	[WithEditableTitle("Title", 90)]
 	public class SocialBookmarks : AbstractItem
 	{

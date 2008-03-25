@@ -7,7 +7,7 @@ using N2.Templates.Items;
 namespace N2.Templates.UI.Items.Parts
 {
 	[Definition("Teaser", "Teaser")]
-	[AllowedZones("RecursiveRight", "Right", "Left")]
+	[AllowedZones(Zones.RecursiveRight, Zones.Right, Zones.Left)]
 	[WithEditableTitle("Title", 10)]
 	public class Teaser : AbstractItem
 	{

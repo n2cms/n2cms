@@ -21,7 +21,7 @@ namespace N2.Templates.News.Items
 			get { return "~/News/UI/Img/newspaper.png"; }
 		}
 
-		[EditableTextBox("Introduction", 90, ContainerName = "content", TextMode = TextBoxMode.MultiLine, Rows = 4,
+		[EditableTextBox("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4,
 			Columns = 80)]
 		public virtual string Introduction
 		{

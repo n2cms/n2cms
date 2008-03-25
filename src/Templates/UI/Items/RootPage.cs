@@ -11,9 +11,9 @@ namespace N2.Templates.UI.Items
 {
 	[Definition("Root Page", "RootPage", "A root page used to organize start pages.", "", 0, MayBeRoot = true)]
 	[RestrictParents(AllowedTypes.None)]
-	[AvailableZone("Left", "Left")]
+	[AvailableZone("Left", Zones.Left)]
 	[AvailableZone("Center", "Center")]
-	[AvailableZone("Right", "Right")]
+	[AvailableZone("Right", Zones.Right)]
 	[AvailableZone("Above", "Above")]
 	[AvailableZone("Below", "Below")]
 	[N2.Web.UI.TabPanel("smtp", "Smtp settings", 30)]

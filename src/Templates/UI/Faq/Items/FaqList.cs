@@ -19,7 +19,7 @@ namespace N2.Templates.Faq.Items
 	public class FaqList : AbstractContentPage
 	{
 
-		[N2.Details.EditableChildren("Questions", "Questions", 110, ContainerName="content")]
+		[N2.Details.EditableChildren("Questions", "Questions", 110, ContainerName=Tabs.Content)]
 		public virtual IList<Faq> Questions
 		{
 			get { return GetChildren<Faq>("Questions"); }

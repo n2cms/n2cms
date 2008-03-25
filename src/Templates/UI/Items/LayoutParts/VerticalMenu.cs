@@ -5,7 +5,7 @@ namespace N2.Templates.UI.Items.LayoutParts
 {
 	[Definition("Vertical menu", "VerticalMenu")]
 	[RestrictParents(typeof(StartPage))] // The menu is placed on the start page and displayed on all underlying pages
-	[AllowedZones("SiteLeft")]
+	[AllowedZones(Zones.SiteLeft)]
 	public class VerticalMenu : SidebarItem
 	{
 		[N2.Details.EditableTextBox("Starting depth", 100)]

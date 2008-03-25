@@ -11,14 +11,14 @@ namespace N2.Templates.Calendar.Items
 	[RestrictParents(typeof(Calendar))]
 	public class Event : AbstractContentPage, ISyndicatable
 	{
-		[Editable("Event date", typeof(N2.Web.UI.WebControls.DatePicker), "SelectedDate", 22, ContainerName = "content")]
+		[Editable("Event date", typeof(N2.Web.UI.WebControls.DatePicker), "SelectedDate", 22, ContainerName = Tabs.Content)]
 		public virtual DateTime? EventDate
 		{
 			get { return (DateTime?)GetDetail("EventDate"); }
 			set { SetDetail("EventDate", value); }
 		}
 
-		[EditableTextBox("Introduction", 90, ContainerName = "content", TextMode = TextBoxMode.MultiLine, Rows = 4, Columns = 80)]
+		[EditableTextBox("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4, Columns = 80)]
 		public virtual string Introduction
 		{
 			get { return (string)(GetDetail("Introduction") ?? string.Empty); }

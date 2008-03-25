@@ -10,7 +10,7 @@ namespace N2.Templates.UI.Items.RootParts
 	[Definition("Statistics", "Statistics")]
 	[WithEditableTitle("Title", 10)]
 	[RestrictParents(typeof(RootPage))]
-	[AllowedZones("Left", "Center", "Right")]
+	[AllowedZones(Zones.Left, "Center", Zones.Right)]
 	public class Statistics : AbstractItem
 	{
 		public override string TemplateUrl

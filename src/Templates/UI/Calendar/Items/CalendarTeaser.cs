@@ -5,7 +5,7 @@ using N2.Integrity;
 namespace N2.Templates.Calendar.Items
 {
 	[Definition("Calendar Teaser", "CalendarTeaser")]
-	[AllowedZones("RecursiveRight", "Right")]
+	[AllowedZones(Zones.RecursiveRight, Zones.Right)]
 	public class CalendarTeaser : Templates.Items.SidebarItem
 	{
 		[EditableLink("Calendar container", 100)]

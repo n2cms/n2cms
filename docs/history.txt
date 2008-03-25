@@ -19,6 +19,7 @@
 	- moved menus and top part into the layout (alternative to parts)
 	- changed themes
 	- added check for theme and layout existance before applying theme
+	- added constants for zones and tabs
 - bugfixes
 	- url selector now displays items if the url doesn't seem to be a file
 	- url selector now more correctly selects items on other sites

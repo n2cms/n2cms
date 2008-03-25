@@ -8,10 +8,10 @@ using N2.Web.UI;
 namespace N2.Templates.Scrum.Items
 {
 	[Definition("Scrum Project", "ScrumProject", SortOrder = 1000)]
-	[WithEditablePublishedRange("Published Between", 30, ContainerName = "advanced", BetweenText = " and ")]
+	[WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
 	[AvailableZone("Deferred", "Deferred")]
 	[AvailableZone("Planned", "Planned")]
-	[TabPanel("advanced", "Advanced", 100)]
+	[TabPanel(Tabs.Advanced, "Advanced", 100)]
 	[RestrictParents(typeof(IStructuralPage))]
 	public class ScrumProject : TaskContainer
 	{

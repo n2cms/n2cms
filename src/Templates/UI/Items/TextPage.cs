@@ -12,14 +12,14 @@ namespace N2.Templates.UI.Items
 		"A simple text page. It displays a vertical menu, the content and provides a sidebar column", "", 20)]
 	public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
 	{
-		[EditableImage("Image", 90, ContainerName = "content", CssClass = "main")]
+		[EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
 		{
 			get { return (string)(GetDetail("Image") ?? string.Empty); }
 			set { SetDetail("Image", value, string.Empty); }
 		}
 
-		[EditableCheckBox("Show Title", 60, ContainerName = "advanced")]
+		[EditableCheckBox("Show Title", 60, ContainerName = Tabs.Advanced)]
 		public virtual bool ShowTitle
 		{
 			get { return (bool)(GetDetail("ShowTitle") ?? true); }

@@ -5,7 +5,7 @@ using N2.Templates.Items;
 namespace N2.Templates.UI.Items.Parts
 {
 	[Definition("Control Panel", "ControlPanel")]
-	[AllowedZones("RecursiveRight", "Right", "SiteLeft", "SiteRight")]
+	[AllowedZones(Zones.RecursiveRight, Zones.Right, Zones.SiteLeft, Zones.SiteRight)]
 	[WithEditableTitle("Title", 10)]
 	public class ControlPanel : SidebarItem
 	{

@@ -128,7 +128,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3260</DevelopmentServerPort>
+          <DevelopmentServerPort>3148</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/News/UI</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

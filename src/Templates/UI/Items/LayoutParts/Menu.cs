@@ -8,7 +8,7 @@ namespace N2.Templates.UI.Items.LayoutParts
 {
 	[Definition("Menu", "Menu")]
 	[RestrictParents(typeof(StartPage))] // The menu is placed on the start page and displayed on all underlying pages
-	[AllowedZones("SiteLeft")]
+	[AllowedZones(Zones.SiteLeft)]
 	public class Menu : SidebarItem
 	{
 		public override string TemplateUrl

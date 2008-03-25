@@ -13,7 +13,7 @@ using IDataItemContainer=N2.Web.UI.IDataItemContainer;
 namespace N2.Templates.Poll.Items
 {
 	[Definition("Poll", "Poll")]
-	[AllowedZones("Left", "Right", "RightRecursive")]
+	[AllowedZones(Zones.Left, Zones.Right, Zones.RecursiveRight)]
 	[RestrictParents(typeof (AbstractContentPage))]
 	[AllowedChildren(typeof(SingleSelect))]
 	[FieldSet("questionContainer", "Question", 100)]
