@@ -79,9 +79,9 @@
             </p>
             <ul>
                 <li>
-					Either select type of 
+					Either select one type of 
 					<asp:DropDownList ID="ddlRoot" runat="server" />
-					and
+					and one 
 					<asp:DropDownList ID="ddlStartPage" runat="server" />
 					to 
 					<asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="insert" ToolTip="Insert different root and start nodes" CausesValidation="false" />
@@ -95,16 +95,16 @@
 					<asp:Button ID="btnInsertRootOnly" runat="server" OnClick="btnInsertRootOnly_Click" Text="insert" ToolTip="Insert one node as root and start" CausesValidation="false" />.
 				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" />
 				</li>
+                <li>
+					Or, select an export file 
+					<asp:FileUpload ID="fileUpload" runat="server" />
+					<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="dynamic" />
+					(*.n2.xml) to
+					<asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="upload and insert" ToolTip="Upload root node." CausesValidation="false" />
+				</li>
             </ul>
-            <p>
-            </p><p>
-                Instead of inserting root and start nodes you can upload an export file to insert.
-            </p><p>
-                <asp:FileUpload ID="fileUpload" runat="server" />
-                <asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="dynamic" />
-                <asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="Upload and insert" ToolTip="Upload root node." CausesValidation="false" />
-
-                <br /><br /><asp:Literal ID="ltRootNode" runat="server" />  
+			<p>
+                <asp:Literal ID="ltRootNode" runat="server" />  
             </p>
 <asp:PlaceHolder ID="phSame" runat="server" Visible="false">
             <h4>Example web.config with same root as start page</h4>
