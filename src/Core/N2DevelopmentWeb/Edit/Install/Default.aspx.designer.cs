@@ -74,6 +74,7 @@ namespace N2.Edit.Install {
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRoot;
 		protected global::System.Web.UI.WebControls.DropDownList ddlStartPage;
+		protected global::System.Web.UI.WebControls.DropDownList ddlRootAndStart;
 		protected global::System.Web.UI.WebControls.PlaceHolder phSame;
 		protected global::System.Web.UI.WebControls.PlaceHolder phDiffer;
         
@@ -95,6 +96,7 @@ namespace N2.Edit.Install {
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltRootNode;
 		protected global::System.Web.UI.WebControls.CustomValidator cvRoot;
+		protected global::System.Web.UI.WebControls.CustomValidator cvRootAndStart;
 
     }
 }

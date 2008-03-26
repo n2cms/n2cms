@@ -6,7 +6,7 @@ namespace N2.Installation
 {
 	public class DatabaseStatus
 	{
-		private bool connection = false;
+		private bool isConnected = false;
 		private bool schema = false;
 		private bool installation = false;
 		private int items = 0;
@@ -22,6 +22,13 @@ namespace N2.Installation
 		private ContentItem rootItem = null;
 		private ContentItem startPage = null;
 		private string itemsError = null;
+		private string connectionType = null;
+
+		public string ConnectionType
+		{
+			get { return connectionType; }
+			set { connectionType = value; }
+		}
 
 		public int AuthorizedRoles
 		{
@@ -47,16 +54,16 @@ namespace N2.Installation
 			set { items = value; }
 		}
 
-		public bool Schema
+		public bool HasSchema
 		{
 			get { return schema; }
 			set { schema = value; }
 		}
 
-		public bool Connection
+		public bool IsConnected
 		{
-			get { return connection; }
-			set { connection = value; }
+			get { return isConnected; }
+			set { isConnected = value; }
 		}
 
 		public string ConnectionError
@@ -107,7 +114,7 @@ namespace N2.Installation
 			set { rootItemID = value; }
 		}
 
-		public bool Installation
+		public bool IsInstalled
 		{
 			get { return installation; }
 			set { installation = value; }
@@ -130,11 +137,11 @@ namespace N2.Installation
 			{
 				return string.Format("There is a root item but couldn't find a start page with the id: {0}", RootItemID);
 			}
-			else if (Schema)
+			else if (HasSchema)
 			{
-				return string.Format("The database is installed but there is not root item with the id: {0}", RootItemID);
+				return string.Format("The database is installed but there is no root item with the id: {0}", RootItemID);
 			}
-			else if(Connection)
+			else if(IsConnected)
 			{
 				return string.Format(
 					"The connection to the database seems fine but the database tables might not be created (error message: {0})",
@@ -164,7 +171,7 @@ namespace N2.Installation
 
 		public string ToConnectionStatusString()
 		{
-			return Connection
+			return IsConnected
 					? "Database connection OK."
 					: string.Format("<span title='{0}'>Couldn't open connection to database.</span><!--{1}-->", ConnectionError, ConnectionException);
 		}

@@ -1,5 +1,6 @@
 - new treemenu
 - installermodule
+- restrictparents: NewRestrictionAttribute
 - MediumTrust: Throw exception when configured content type isn't found
 - Parts: Throw friendly exception when page isn't found
 - Sort buttons toolbar

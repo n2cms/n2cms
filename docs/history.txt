@@ -7,12 +7,14 @@
 	- default sitemap provider can be configured to disable security trimming
 	- exception from the security enforcer can be cancelled by the use of an event
 	- versions of an item lists the published item's children (and parts)
+	- installermodule - checks database connection on start
 - edit
 	- preview changes
 	- translations: toolbar buttons, user editor
 	- updated dutch translation
 	- improvements on the preview workflow
 		- publish directly from preview changes/collapsable preview frame
+	- improved installation experience
 - examples
 	- included multiple domains example
 - templates

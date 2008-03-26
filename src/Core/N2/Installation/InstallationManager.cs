@@ -152,11 +152,11 @@ namespace N2.Installation
 				status.RootItemID = engine.Resolve<Site>().RootItemID;
 				status.StartPage = engine.Persister.Get(status.StartPageID);
 				status.RootItem = engine.Persister.Get(status.RootItemID);
-				status.Installation = status.RootItem != null && status.StartPage != null;
+				status.IsInstalled = status.RootItem != null && status.StartPage != null;
 			} 
 			catch (Exception ex)
 			{
-				status.Installation = false;
+				status.IsInstalled = false;
 				status.ItemsError = ex.Message;
 			}
 		}
@@ -173,11 +173,11 @@ namespace N2.Installation
 					status.DetailCollections = session.CreateCriteria(typeof(DetailCollection)).List().Count;
 					status.AuthorizedRoles = session.CreateCriteria(typeof(AuthorizedRole)).List().Count;
 				}
-				status.Schema = true;
+				status.HasSchema = true;
 			}
 			catch(Exception ex)
 			{
-				status.Schema = false;
+				status.HasSchema = false;
 				status.SchemaError = ex.Message;
 				status.SchemaException = ex;
 			}
@@ -191,13 +191,14 @@ namespace N2.Installation
 				{
 					conn.Open();
 					conn.Close();
+					status.ConnectionType = conn.GetType().Name;
 				}
-				status.Connection = true;
+				status.IsConnected = true;
 				status.ConnectionError = null;
 			}
 			catch(Exception ex)
 			{
-				status.Connection = false;
+				status.IsConnected = false;
 				status.ConnectionError = ex.Message;
 				status.ConnectionException = ex;
 			}

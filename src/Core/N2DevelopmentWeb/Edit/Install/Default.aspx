@@ -7,7 +7,15 @@
     <title>Install N2</title>
     <link rel="stylesheet" type="text/css" href="../css/all.css" />
     <link rel="stylesheet" type="text/css" href="../css/framed.css" />
-    <style>a{color:#00e;}li{margin-bottom:10px}form{padding:20px}.warning{color:#f00;}.ok{color:#0d0;}textarea{width:80%;height:120px}</style>
+    <style>
+    	form{font-size:1.1em;width:800px;margin:10px auto;}
+    	a{color:#00e;}
+    	li{margin-bottom:10px}
+    	form{padding:20px}
+    	.warning{color:#f00;}
+    	.ok{color:#0d0;}
+    	textarea{width:80%;height:120px}
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -15,7 +23,7 @@
         <asp:Literal ID="ltStartupError" runat="server" />
 
         <n2:TabPanel ToolTip="1. Welcome" runat="server">
-            <p class='<%# Status.Installation ? "ok" : "warning" %>'>
+            <p class='<%# Status.IsInstalled ? "ok" : "warning" %>'>
 				<b> Advice: </b> <%# GetStatusText() %>
             </p>
             <p>To install N2 you need to create a database, update the connection string in web.config, create the tables needed by N2, add the root node to the database and make sure the root node's id is configured in web.config.</p>
@@ -25,48 +33,70 @@
         </n2:TabPanel>
         
         <n2:TabPanel ToolTip="2. Database connection" runat="server">
-            <asp:Literal runat="server" Visible='<%# Status.Connection %>'>
+            <asp:Literal runat="server" Visible='<%# Status.IsConnected %>'>
 				<p class="ok"><b>Advice: </b>Since your database seems connected you may skip this step.</p>
             </asp:Literal>
             <p>
-                First make sure you have database available and <a href="http://n2cms.com/Documentation/Connection strings.aspx">configure connection string and database dialect</a>.
+                First make sure you have database available and <a href="http://n2cms.com/Documentation/Connection strings.aspx">configure connection string and database dialect</a> in web.config.
             </p>
-            <p>Once you're done you can test the connetion</p>
+            <p>Once you're done you can <asp:Button ID="btnTest" runat="server" OnClick="btnTest_Click" Text="test the connection" CausesValidation="false" /></p>
             <p>
-                <asp:Button ID="btnTest" runat="server" OnClick="btnTest_Click" Text="Test connection" CausesValidation="false" />
-				<br /><br /><asp:Label ID="lblStatus" runat="server" />
+                <asp:Label ID="lblStatus" runat="server" />
             </p>
         </n2:TabPanel>
         
         <n2:TabPanel ToolTip="3. Database tables" runat="server">
-            <asp:Literal runat="server" Visible='<%# Status.Schema %>'>
-				<p class="ok"><b>Advice: </b>The database tables are already there. You can move to the next tab (if you create them again you will delete any existing content).</p>
+            <asp:Literal runat="server" Visible='<%# Status.HasSchema %>'>
+				<p class="ok"><b>Advice: </b>The database tables are okay. You can move to the next tab (if you create them again you will delete any existing content).</p>
+            </asp:Literal>
+            <asp:Literal runat="server" Visible='<%# !Status.IsConnected %>'>
+				<p class="warning"><b>Advice: </b>Go back and check database connection.</p>
             </asp:Literal>
             <p>
-                When the connection is OK you should create the database tables needed by N2. To do this you can either <a href="http://n2cms.com/Documentation/The database.aspx">create the tables using one of these scripts</a> or install clicking this button: 
+				Assuming the database connection is okay (step 2) you can 
+				<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="create tables" OnClientClick="return confirm('Creating database tables will destory any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false" />
+				or 
+				<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="generate sql script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
+				for the connection type <%= Status.ConnectionType %>.
+				You can also download sql scripts from 
+                <a href="http://n2cms.com/Documentation/The database.aspx">the n2 cms home page</a> 
+                (if you're using MySQL this is the preferred option).
             </p>
             <p>
-                <asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="Create tables" OnClientClick="return confirm('Creating database tables will destory any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false" />
-                <br /><br /><asp:Label CssClass="ok" runat="server" ID="lblInstall" />
+                <asp:Label CssClass="ok" runat="server" ID="lblInstall" />
             </p>
         </n2:TabPanel>
         
         <n2:TabPanel ToolTip="4. Root items" runat="server">
-            <asp:Literal runat="server" Visible='<%# Status.Installation %>'>
+            <asp:Literal runat="server" Visible='<%# Status.IsInstalled %>'>
 				<p class="ok"><b>Advice: </b>There are already root and start nodes. If you create more they will become detached items unless you point them out in web.config (which makes the existing nodes detached instead).</p>
             </asp:Literal>
+            <asp:Literal runat="server" Visible='<%# !Status.HasSchema %>'>
+				<p class="warning"><b>Advice: </b>Go back and check database connection and tables.</p>
+            </asp:Literal>
             <p>
-                N2 needs a root node and a start page in order to function correctly. These two nodes may be the same page if you don't forsee using multiple domains. This gives you the choice of:
+                N2 needs a root node and a start page in order to function correctly. These two "nodes" may be the same page for simple sites, e.g. if you don't forsee using multiple domains.
             </p>
             <ul>
-                <li>Either, Select type of item to insert as root node AND start page (select first drop down only)</li>
-                <li>Or, select type of item to insert as root node, and another type to add as start page (select both drop downs)</li>
+                <li>
+					Either select type of 
+					<asp:DropDownList ID="ddlRoot" runat="server" />
+					and
+					<asp:DropDownList ID="ddlStartPage" runat="server" />
+					to 
+					<asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="insert" ToolTip="Insert different root and start nodes" CausesValidation="false" />
+					as <b>two different</b> nodes.
+				    <asp:CustomValidator ID="cvRootAndStart" runat="server" ErrorMessage="Root and start type required" />
+				</li>
+                <li>
+					Or use the <b>same page</b> for both
+					<asp:DropDownList ID="ddlRootAndStart" runat="server" />
+					to
+					<asp:Button ID="btnInsertRootOnly" runat="server" OnClick="btnInsertRootOnly_Click" Text="insert" ToolTip="Insert one node as root and start" CausesValidation="false" />.
+				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" />
+				</li>
             </ul>
             <p>
-            	<asp:DropDownList ID="ddlRoot" runat="server" />
-			    <asp:DropDownList ID="ddlStartPage" runat="server" />
-			    <asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="Insert" ToolTip="Insert root (and start) node" CausesValidation="false" />
-			    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" />
             </p><p>
                 Instead of inserting root and start nodes you can upload an export file to insert.
             </p><p>
@@ -118,6 +148,10 @@
         <n2:TabPanel runat="server" tooltip="5. Finishing touches">
             <p><b>IMPORTANT!</b> Change the default password in web.config. If you've installed, configured and created an administrator account using a membership provider, comment out this section entirely.</p>
             <p><b>Advice:</b> remove the installation directory to prevent nasty surprises.</p>
+            <p>It's advisable to 
+				<asp:Button runat="server" OnClick="btnRestart_Click" Text="restart" CausesValidation="false" />
+				before you continue.
+            </p>
             <p>Good luck and happy <a href="..">editing</a>.</p>
             <p>/Cristian</p>
         </n2:TabPanel>
