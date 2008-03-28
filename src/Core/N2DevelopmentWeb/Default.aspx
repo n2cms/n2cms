@@ -2,8 +2,14 @@
 <%@ OutputCache CacheProfile="DefaultCache" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-securitytrimminenabled: [[<%= System.Web.SiteMap.Provider.SecurityTrimmingEnabled %>]]
-currentpage id: [[<%= CurrentPage.ID %>]]
+trimming: [[<%= System.Web.SiteMap.Provider.SecurityTrimmingEnabled %>]]
+id: [[<%= CurrentPage.ID %>]]
+root: [[<%= N2.Find.RootItem.ID %>]]
+start: [[<%= N2.Find.StartPage.ID%>]]
+current: [[<%= N2.Find.CurrentPage.ID%>]]
+parent: [[<%= N2.Utility.Evaluate(CurrentPage, "Parent.ID") %>]]
+#children: [[<%= CurrentPage.Children.Count %>]]
+
   <%--  
     <h1><%= CurrentPage.Title %></h1>
     
