@@ -7,6 +7,7 @@ using System.Web.Services.Protocols;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Web;
+using System.IO;
 
 namespace N2.Edit.Navigation
 {
@@ -24,9 +25,21 @@ namespace N2.Edit.Navigation
 				.From(selectedNode, 2)
 				.LinkProvider(BuildLink)
 				.ToControl();
-			tn.ChildrenOnly = true;
+			
 			Web.UI.Controls.Tree.AppendExpanderNodeRecursive(tn, Web.UI.Controls.Tree.GetFilters(context.User));
-			tn.RenderControl(new HtmlTextWriter(context.Response.Output));
+
+			RenderControls(tn.Controls, context.Response.Output);
+		}
+
+		private static void RenderControls(IEnumerable controls, TextWriter output)
+		{
+			using (HtmlTextWriter writer = new HtmlTextWriter(output))
+			{
+				foreach (Control childNode in controls)
+				{
+					childNode.RenderControl(writer);
+				}
+			}
 		}
 
 		public ILinkBuilder BuildLink(INode node)

@@ -313,7 +313,6 @@
     <Compile Include="Details\DisplayableAnchorAttribute.cs" />
     <Compile Include="Details\EditableLinkAttribute.cs" />
     <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
-    <Compile Include="Edit\AjaxTreeHandler.cs" />
     <Compile Include="Edit\CreationPosition.cs" />
     <Compile Include="Edit\Navigator.cs" />
     <Compile Include="Edit\Settings\SettingsManager.cs" />

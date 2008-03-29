@@ -8,6 +8,7 @@
 	- exception from the security enforcer can be cancelled by the use of an event
 	- versions of an item lists the published item's children (and parts)
 	- installermodule - checks database connection on start
+	- tweaked the tree & link implementations
 - edit
 	- preview changes
 	- translations: toolbar buttons, user editor
