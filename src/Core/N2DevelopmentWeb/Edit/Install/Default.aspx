@@ -69,7 +69,7 @@
         
         <n2:TabPanel ToolTip="4. Root items" runat="server">
             <asp:Literal runat="server" Visible='<%# Status.IsInstalled %>'>
-				<p class="ok"><b>Advice: </b>There are already root and start nodes. If you create more they will become detached items unless you point them out in web.config (which makes the existing nodes detached instead).</p>
+				<p class="ok"><b>Advice: </b>There are already root and start nodes. If you create more they will become detached nodes cluttering your database unless you point them out in web.config (which makes the existing nodes detached instead).</p>
             </asp:Literal>
             <asp:Literal runat="server" Visible='<%# !Status.HasSchema %>'>
 				<p class="warning"><b>Advice: </b>Go back and check database connection and tables.</p>
@@ -86,19 +86,19 @@
 					to 
 					<asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="insert" ToolTip="Insert different root and start nodes" CausesValidation="false" />
 					as <b>two different</b> nodes.
-				    <asp:CustomValidator ID="cvRootAndStart" runat="server" ErrorMessage="Root and start type required" />
+				    <asp:CustomValidator ID="cvRootAndStart" runat="server" ErrorMessage="Root and start type required" Display="Dynamic" />
 				</li>
                 <li>
-					Or use the <b>same page</b> for both
+					Or use the <b>one node</b> for both
 					<asp:DropDownList ID="ddlRootAndStart" runat="server" />
 					to
 					<asp:Button ID="btnInsertRootOnly" runat="server" OnClick="btnInsertRootOnly_Click" Text="insert" ToolTip="Insert one node as root and start" CausesValidation="false" />.
-				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" />
+				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
 				</li>
                 <li>
 					Or, select an export file 
 					<asp:FileUpload ID="fileUpload" runat="server" />
-					<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="dynamic" />
+					<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" />
 					(*.n2.xml) to
 					<asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="upload and insert" ToolTip="Upload root node." CausesValidation="false" />
 				</li>

@@ -320,6 +320,7 @@
     <Compile Include="INode.cs" />
     <Compile Include="Installation\DatabaseStatus.cs" />
     <Compile Include="Installation\InstallationManager.cs" />
+    <Compile Include="Installation\InstallerHint.cs" />
     <Compile Include="Installation\InstallerModule.cs" />
     <Compile Include="Installation\SqlServerType.cs" />
     <Compile Include="Obsolete\Factory.cs" />

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using N2.Definitions;
+using N2.Installation;
 
 namespace N2
 {
@@ -16,8 +17,7 @@ namespace N2
 		private int sortOrder = 0;
 		private string toolTip = string.Empty;
 		private string description = string.Empty;
-    	private bool mayBeRoot = false;
-    	private bool mayBeStartPage = false;
+		private InstallerHint installer = InstallerHint.Default;
 		
 		public DefinitionAttribute()
 		{
@@ -89,19 +89,14 @@ namespace N2
 			set { toolTip = value; }
 		}
 
-		/// <summary>Gets or sets wether this items should be considered as start page by the installer.</summary>
-		public bool MayBeStartPage
-    	{
-    		get { return mayBeStartPage; }
-    		set { mayBeStartPage = value; }
-    	}
-
-		/// <summary>Gets or sets wether this items should be considered as root by the installer.</summary>
-    	public bool MayBeRoot
-    	{
-    		get { return mayBeRoot; }
-    		set { mayBeRoot = value; }
-    	}
+		/// <summary>
+		/// Gets or sets how to treat this definition during installation.
+		/// </summary>
+		public InstallerHint Installer
+		{
+			get { return installer; }
+			set { installer = value; }
+		}
 
 		/// <summary>Updates the item definition with the attribute.</summary>
 		public void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)

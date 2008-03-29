@@ -3,10 +3,11 @@ using N2.Definitions;
 using N2.Details;
 using N2.Edit.Wizard.Details;
 using N2.Integrity;
+using N2.Installation;
 
 namespace N2.Edit.Wizard.Items
 {
-	[Definition("Magic location", "MagicLocation")]
+	[Definition("Magic location", "MagicLocation", Installer = InstallerHint.NeverRootOrStartPage)]
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
 	public class MagicLocation : ContentItem

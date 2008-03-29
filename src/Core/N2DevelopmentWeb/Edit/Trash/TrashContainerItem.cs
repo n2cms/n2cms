@@ -10,10 +10,11 @@ using System.Web.UI.HtmlControls;
 using N2.Integrity;
 using N2.Definitions;
 using N2.Details;
+using N2.Installation;
 
 namespace N2.Trashcan
 {
-	[Definition("Trash", "TrashContainerItem")]
+	[Definition("Trash", "TrashContainerItem", Installer = InstallerHint.NeverRootOrStartPage)]
 	[AllowedChildren(typeof(ContentItem))]
 	[ItemAuthorizedRoles(Roles = new string[0])]
 	public class TrashContainerItem : N2.ContentItem
@@ -24,7 +25,6 @@ namespace N2.Trashcan
 			get { return (int)(GetDetail("KeepDays") ?? 31); }
 			set { SetDetail<int>("KeepDays", value); }
 		}
-
 
 		[EditableCheckBox("Enabled", 80)]
 		public virtual bool Enabled

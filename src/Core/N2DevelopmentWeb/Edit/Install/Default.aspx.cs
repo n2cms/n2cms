@@ -44,26 +44,34 @@ namespace N2.Edit.Install
 			{
 				try
 				{
-					ICollection<ItemDefinition> definitions = N2.Context.Definitions.GetDefinitions();
-					ICollection<ItemDefinition> rootDefinitions = new List<ItemDefinition>();
-					ICollection<ItemDefinition> startPageDefinitions = new List<ItemDefinition>();
+					ICollection<ItemDefinition> preferredRoots = new List<ItemDefinition>();
+					ICollection<ItemDefinition> preferredStartPages = new List<ItemDefinition>();
 
-					foreach (ItemDefinition d in definitions)
+					ICollection<ItemDefinition> fallbackRoots = new List<ItemDefinition>();
+					ICollection<ItemDefinition> fallbackStartPages = new List<ItemDefinition>();
+
+					foreach (ItemDefinition d in N2.Context.Definitions.GetDefinitions())
 					{
-						if(d.DefinitionAttribute.MayBeRoot)
-							rootDefinitions.Add(d);
-						if(d.DefinitionAttribute.MayBeStartPage)
-							startPageDefinitions.Add(d);
+						InstallerHint hint = d.DefinitionAttribute.Installer;
+
+						if (Is(hint, InstallerHint.PreferredRootPage))
+							preferredRoots.Add(d);
+						if (Is(hint, InstallerHint.PreferredStartPage))
+							preferredStartPages.Add(d);
+						if (!Is(hint, InstallerHint.NeverRootPage))
+							fallbackRoots.Add(d);
+						if (!Is(hint, InstallerHint.NeverStartPage))
+							fallbackStartPages.Add(d);
 					}
 
-					if (rootDefinitions.Count == 0)
-						rootDefinitions = definitions;
-					if (startPageDefinitions.Count == 0)
-						startPageDefinitions = definitions;
+					if (preferredRoots.Count == 0)
+						preferredRoots = fallbackRoots;
+					if (preferredStartPages.Count == 0)
+						preferredStartPages = fallbackStartPages;
 
-					LoadRootTypes(ddlRoot, rootDefinitions, "[root node]");
-					LoadStartTypes(ddlStartPage, startPageDefinitions);
-					LoadRootTypes(ddlRootAndStart, rootDefinitions, "[root and start node]");
+					LoadRootTypes(ddlRoot, preferredRoots, "[root node]");
+					LoadStartTypes(ddlStartPage, preferredStartPages, "[start node]");
+					LoadRootTypes(ddlRootAndStart, preferredRoots, "[root and start node]");
 				}
 				catch (Exception ex)
 				{
@@ -73,10 +81,15 @@ namespace N2.Edit.Install
 			}
 		}
 
-		private void LoadStartTypes(ListControl lc, ICollection<ItemDefinition> startPageDefinitions)
+		private static bool Is(InstallerHint flags, InstallerHint expected)
+		{
+			return (flags & expected) == expected;
+		}
+
+		private void LoadStartTypes(ListControl lc, ICollection<ItemDefinition> startPageDefinitions, string initialText)
 		{
 			lc.Items.Clear();
-			lc.Items.Add("[start node]");
+			lc.Items.Add(initialText);
 			foreach (ItemDefinition d in startPageDefinitions)
 			{
 				lc.Items.Add(new ListItem(d.Title, d.ItemType.AssemblyQualifiedName));
@@ -276,10 +289,12 @@ namespace N2.Edit.Install
 				phDiffer.Visible = false;
 				rootId = root.ID;
 			}
+			
+			// try to find a suitable start page
 			foreach(ContentItem item in root.Children)
 			{
 				ItemDefinition id = N2.Context.Definitions.GetDefinition(item.GetType());
-				if(id.DefinitionAttribute.MayBeStartPage)
+				if(Is(id.DefinitionAttribute.Installer, InstallerHint.PreferredStartPage))
 				{
 					if (item.ID == Status.StartPageID && root.ID == Status.RootItemID)
 					{
