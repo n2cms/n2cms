@@ -206,6 +206,7 @@
     <Compile Include="Web\MultipleHostUrlParserTests.cs" />
     <Compile Include="Web\PageItem.cs" />
     <Compile Include="Web\SiteProvidingItem.cs" />
+    <Compile Include="Web\TreeNodeTests.cs" />
     <Compile Include="Web\TreeTests.cs" />
     <Compile Include="Web\UrlParserTests.cs" />
     <Compile Include="Web\UrlRewriterTests.cs" />

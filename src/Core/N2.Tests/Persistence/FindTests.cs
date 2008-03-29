@@ -55,6 +55,18 @@ namespace N2.Tests.Persistence
 			EnumerableAssert.Count(0, Find.EnumerateParents(a_a, a_a));
 		}
 
+		[Test]
+		public void EnumerateParents_CanIncludeSelf_Same_InitialAndLast()
+		{
+			EnumerableAssert.Count(1, Find.EnumerateParents(a_a, a_a, true));
+		}
+
+		[Test]
+		public void EnumerateParents_CanIncludeSelf_Different_InitialAndLast()
+		{
+			EnumerableAssert.Count(2, Find.EnumerateParents(a_a, a, true));
+		}
+
 		[Test, ExpectedArgumentNullException]
 		public void EnumerateParents_BoltsOnNullInitialItem()
 		{

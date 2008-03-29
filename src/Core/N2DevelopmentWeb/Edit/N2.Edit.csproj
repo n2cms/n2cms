@@ -192,6 +192,9 @@
     <Compile Include="Navigation\ContextMenu.ascx.designer.cs">
       <DependentUpon>ContextMenu.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Navigation\LoadTree.ashx.cs">
+      <DependentUpon>LoadTree.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Navigation\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1065,12 +1068,25 @@
     <Content Include="img\ico\png\book_previous.png" />
     <Content Include="img\ico\png\zoom.png" />
     <Content Include="img\toolbar_logo.png" />
+    <Content Include="img\treeview\collapsable-last.gif" />
+    <Content Include="img\treeview\collapsable.gif" />
+    <Content Include="img\treeview\expandable-last.gif" />
+    <Content Include="img\treeview\expandable.gif" />
+    <Content Include="img\treeview\leaf-last.gif" />
+    <Content Include="img\treeview\leaf.gif" />
+    <Content Include="img\treeview\root.gif" />
+    <Content Include="img\treeview\spacer.gif" />
+    <Content Include="img\treeview\spinner.gif" />
+    <Content Include="Js\jquery.ui\jquery.SimpleTree.js" />
     <Content Include="Js\tinymce.ashx" />
     <Content Include="Security\Default.aspx" />
     <Content Include="Versions\Css\Versions.css" />
     <Content Include="Versions\Default.aspx" />
     <Content Include="Versions\img\book_previous.gif" />
     <Content Include="Versions\img\bullet_star.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Navigation\LoadTree.ashx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
@@ -1087,7 +1103,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4981</DevelopmentServerPort>
+          <DevelopmentServerPort>2784</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

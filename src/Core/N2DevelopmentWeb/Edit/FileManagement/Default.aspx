@@ -32,7 +32,7 @@
         </div>
     </div>
     <div id="tree">
-        <asp:SiteMapDataSource ID="smds" runat="server" SiteMapProvider="FileSiteMap" />
+        <asp:SiteMapDataSource ID="smds" runat="server" />
         <edit:TreeView ID="fileView" runat="server" DataSourceID="smds" OnTreeNodeDataBound="fileView_TreeNodeDataBound" ExpandDepth="10" />
     </div>
     <script type="text/javascript">

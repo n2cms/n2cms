@@ -27,7 +27,7 @@ namespace N2.Parts
 			get { return "create"; }
 		}
 
-		public override NameValueCollection Handle(NameValueCollection request)
+		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
 			NameValueCollection response = new NameValueCollection();
 			response["url"] = GetRedirectUrl(request); ;

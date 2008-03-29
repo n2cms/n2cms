@@ -51,21 +51,36 @@ namespace N2.Persistence
 
 		/// <summary>Enumerates parents of the initial item.</summary>
 		/// <param name="initialItem">The page whose parents will be enumerated. The page itself will not appear in the enumeration.</param>
-		/// <param name="lastItem">The last page of the enumeration. The enumeration will contain this page.</param>
+		/// <param name="lastAncestor">The last page of the enumeration. The enumeration will contain this page.</param>
 		/// <returns>An enumeration of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
-		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastItem)
+		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor)
+		{
+			return EnumerateParents(initialItem, lastAncestor, false);
+		}
+
+		/// <summary>Enumerates parents of the initial item.</summary>
+		/// <param name="initialItem">The page whose parents will be enumerated. The page itself will appear in the enumeration if includeSelf is applied.</param>
+		/// <param name="lastAncestor">The last page of the enumeration. The enumeration will contain this page.</param>
+		/// <param name="includeSelf">Include the lanitialItem in the enumeration.</param>
+		/// <returns>An enumeration of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
+		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor, bool includeSelf)
 		{
 			if (initialItem == null) throw new ArgumentNullException("initialItem");
 
-			if (initialItem != lastItem)
+			ContentItem item;
+			if(includeSelf)
+				item = initialItem;
+			else if (initialItem != lastAncestor)
+				item = initialItem.Parent;
+			else
+				yield break;
+
+			while (item != null)
 			{
-				ContentItem item = initialItem;
-				while (null != (item = item.Parent))
-				{
-					yield return item;
-					if (item == lastItem)
-						break;
-				}
+				yield return item;
+				if (item == lastAncestor)
+					break;
+				item = item.Parent;
 			}
 		}
 

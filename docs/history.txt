@@ -15,6 +15,7 @@
 	- improvements on the preview workflow
 		- publish directly from preview changes/collapsable preview frame
 	- improved installation experience
+	- new treemenu: lazy load with ajax
 - examples
 	- included multiple domains example
 - templates

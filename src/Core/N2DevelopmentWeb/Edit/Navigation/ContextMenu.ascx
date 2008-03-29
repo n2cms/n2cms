@@ -5,12 +5,15 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        $("#nav a[@target=preview]").click(function(){
+	function setUpContextMenu(container){
+        $("a[@target=preview]", container).click(function(){
             n2nav.setupToolbar(this.rel);
         }).bind("contextmenu", function(){
             n2nav.setupToolbar(this.rel);
         })
         .n2contextmenu("#contextMenu");
+	};
+    $(document).ready(function(){
+		setUpContextMenu("#nav");
     });
 </script>

@@ -20,7 +20,7 @@ namespace N2.Parts
 			get { return "delete"; }
 		}
 
-		public override NameValueCollection Handle(NameValueCollection request)
+		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
 			ContentItem item = persister.Get(int.Parse(request["item"]));
 			if (item == null)

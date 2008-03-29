@@ -94,7 +94,7 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanSetAndAddQueryStrings()
+		public void CanSetAndAdd_QueryStrings()
 		{
 			PageItem item = CreateOneItem<PageItem>(1, "yoda", null);
 
@@ -104,7 +104,7 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanAddMultipleQueryStrings()
+		public void CanAdd_Multiple_QueryStrings()
 		{
 			PageItem item = CreateOneItem<PageItem>(1, "yoda", null);
 
@@ -114,13 +114,23 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanRemoveQueryStrings()
+		public void CanRemove_QueryStrings()
 		{
 			PageItem item = CreateOneItem<PageItem>(1, "yoda", null);
 
 			string anchor = Link.To(item).Query("feedingTime=soon&hungry=yes").AddQuery("hungry", null).ToString();
 
 			Assert.AreEqual("<a href=\"/yoda.aspx?feedingTime=soon\">yoda</a>", anchor);
+		}
+
+		[Test]
+		public void Attributes_AreRendered()
+		{
+			PageItem item = CreateOneItem<PageItem>(1, "yoda", null);
+
+			string anchor = Link.To(item).Attribute("rel", "/yoda").ToString();
+
+			Assert.AreEqual("<a href=\"/yoda.aspx\" rel=\"/yoda\">yoda</a>", anchor);
 		}
 	}
 }

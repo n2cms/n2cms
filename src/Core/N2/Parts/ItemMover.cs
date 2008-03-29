@@ -22,7 +22,7 @@ namespace N2.Parts
 			get { return "copy"; }
 		}
 
-		public override NameValueCollection Handle(NameValueCollection request)
+		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
 			CopyItem(request);
 			return new NameValueCollection();

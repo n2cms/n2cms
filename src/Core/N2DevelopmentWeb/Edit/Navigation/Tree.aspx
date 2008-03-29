@@ -14,43 +14,49 @@
     </head>
 <body class="navigation tree">
     <form id="form1" runat="server">
-        <div id="nav" class="tree">
+        <div id="nav" class="tree">        
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#nav").treeview({collapsed: true});
-                
+                $("#nav").SimpleTree({
+					success: function(el){
+						toDraggable(el);
+						n2nav.refreshLinks(el);
+						setUpContextMenu(el);
+					}
+				});
+
                 var dragMemory = null;
-                $("#nav li li a").draggable({
-					snapDistance: 5,
-					start : function(e,ui){
-						dragMemory = this.rel;
+                function toDraggable(container){
+					$("a", container).draggable({
+						snapDistance: 5,
+						start : function(e,ui){
+							dragMemory = this.rel;
 
-						$("#nav li a").droppable({
-							accept: '#nav li li',
-							hoverClass: 'droppable-hover',
-							tolerance: 'pointer',
-							drop: function(e, ui) {
-								var action = e.ctrlKey ? "copy" : "move";
-								var to = this.rel;
-								var from = dragMemory;
-								parent.preview.location = "../paste.aspx?action="
-									+ action 
-									+ "&memory=" 
-									+ encodeURIComponent(from)
-									+ "&selected=" 
-									+ encodeURIComponent(to);
-							}
-						});
+							$("#nav li a").droppable({
+								accept: '#nav li li',
+								hoverClass: 'droppable-hover',
+								tolerance: 'pointer',
+								drop: function(e, ui) {
+									var action = e.ctrlKey ? "copy" : "move";
+									var to = this.rel;
+									var from = dragMemory;
+									parent.preview.location = "../paste.aspx?action=" + action 
+										+ "&memory=" + encodeURIComponent(from)
+										+ "&selected=" + encodeURIComponent(to);
+								}
+							});
 
-					},
-					helper: 'clone'
-                });
-	            
-                $("#nav .locked").append("<img src='<%= VirtualPathUtility.ToAbsolute("~/Edit/Img/Ico/bullet_key.gif") %>' alt='new'/>");
-                $("#nav .unpublished").append("<img src='<%= VirtualPathUtility.ToAbsolute("~/Edit/Img/Ico/bullet_arrow_down.gif") %>' alt='new'/>");
-                $("#nav .expired").append("<img src='<%= VirtualPathUtility.ToAbsolute("~/Edit/Img/Ico/bullet_arrow_top.gif") %>' alt='new'/>");
+						},
+						helper: 'clone'
+					});
+		        }
+		        toDraggable("#nav li li");
+		        
+                $("#nav .locked").append("<img src='<%= N2.Utility.ToAbsolute("~/Edit/Img/Ico/bullet_key.gif") %>' alt='secured'/>");
+                $("#nav .unpublished").append("<img src='<%= N2.Utility.ToAbsolute("~/Edit/Img/Ico/bullet_arrow_down.gif") %>' alt='pending publish'/>");
+                $("#nav .expired").append("<img src='<%= N2.Utility.ToAbsolute("~/Edit/Img/Ico/bullet_arrow_top.gif") %>' alt='expired'/>");
             });
         </script>
         <nav:ContextMenu id="cm" runat="server" />

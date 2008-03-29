@@ -31,9 +31,13 @@ namespace N2.Edit.Navigation
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			base.OnInit(e);
+			smds.Provider = new Web.EditSiteMapProvider();
+			smp.Provider = new Web.EditSiteMapProvider();
+
 			idsItems.Filtering += new EventHandler<N2.Collections.ItemListEventArgs>(FilterByIsPage);
 			idsItems.Selected += new EventHandler<N2.Collections.ItemListEventArgs>(FilterByIsPage);
+
+			base.OnInit(e);
 		}
 
 		void FilterByIsPage(object sender, N2.Collections.ItemListEventArgs e)

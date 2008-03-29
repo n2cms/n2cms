@@ -5,6 +5,8 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using N2.Collections;
 using N2.Persistence.NH.Finder;
+using N2.Web.UI.WebControls;
+using System.IO;
 
 namespace N2.Web
 {
@@ -19,7 +21,7 @@ namespace N2.Web
 		public delegate string ClassProviderDelegate(ContentItem currentItem);
 
 		private LinkProviderDelegate linkProvider;
-		private ClassProviderDelegate classProvider;
+		private ClassProviderDelegate classProvider = delegate { return string.Empty; };
 		private ItemFilter[] filters = null;
 
 		#region Constructor
@@ -28,10 +30,6 @@ namespace N2.Web
 		{
 			this.builder = builder;
 			linkProvider = Link.To;
-			classProvider = delegate
-			                	{
-			                		return string.Empty;
-			                	};
 		}
 
 		#endregion
@@ -77,94 +75,58 @@ namespace N2.Web
 			return t;
 		}
 
+		public static Tree From(ContentItem root, int depth)
+		{
+			Tree t = new Tree(new TreeHierarchyBuilder(root, depth));
+			return t;
+		}
+
 		public static Tree Between(ContentItem initialItem, ContentItem lastAncestor)
 		{
 			Tree t = new Tree(new BranchHierarchyBuilder(initialItem, lastAncestor));
 			return t;
 		}
 
+		public static Tree Between(ContentItem initialItem, ContentItem lastAncestor, bool appendAdditionalLevel)
+		{
+			Tree t = new Tree(new BranchHierarchyBuilder(initialItem, lastAncestor, appendAdditionalLevel));
+			return t;
+		}
+
 		#endregion
 
-		#region ToString
 		public override string ToString()
 		{
 			IHierarchyNavigator<ContentItem> navigator = new ItemHierarchyNavigator(builder, filters);
 
 			StringBuilder sb = new StringBuilder();
-
-			using (new StringWrapper(sb, "<ul>", "</ul>"))
+			using (HtmlTextWriter writer = new HtmlTextWriter(new StringWriter(sb)))
 			{
-				AppendRecursive(navigator, sb);
+				Control root = ToControl();
+				root.RenderControl(writer);
 			}
-
 			return sb.ToString();
 		}
-
-		private void AppendRecursive(IHierarchyNavigator<ContentItem> position, StringBuilder sb)
-		{
-			string liStartTag = GetLiStartTag(position);
-
-			using (new StringWrapper(sb, liStartTag, "</li>"))
-			{
-				string link = linkProvider(position.Current).ToString();
-				sb.Append(link);
-
-				if (position.HasChildren)
-				{
-					using (new StringWrapper(sb, "<ul>", "</ul>"))
-					{
-						foreach (IHierarchyNavigator<ContentItem> childNavigator in position.Children)
-						{
-							AppendRecursive(childNavigator, sb);
-						}
-					}
-				}
-			}
-		}
-
-		private string GetLiStartTag(IHierarchyNavigator<ContentItem> position)
-		{
-			string className = classProvider(position.Current);
-			return string.IsNullOrEmpty(className) 
-			       	? "<li>" 
-			       	: string.Format("<li class=\"{0}\">", className);
-		}
-
-		#endregion
-
-		#region ToControl
 
 		public Control ToControl()
 		{
 			IHierarchyNavigator<ContentItem> navigator = new ItemHierarchyNavigator(builder, filters);
-
-			Control ul = new HtmlGenericControl("ul");
-			AddRecursive(navigator, ul);
-			return ul;
+			return BuildNodesRecursive(navigator);
 		}
 
-		private void AddRecursive(IHierarchyNavigator<ContentItem> position, Control container)
+		private TreeNode BuildNodesRecursive(IHierarchyNavigator<ContentItem> navigator)
 		{
-			HtmlGenericControl li = new HtmlGenericControl("li");
-			container.Controls.Add(li);
-			
-			string className = classProvider(position.Current);
-			if(!string.IsNullOrEmpty(className) )
-				li.Attributes["class"] = className;
+			ContentItem item = navigator.Current;
 
-			li.Controls.Add(linkProvider(position.Current).ToControl());
+			TreeNode node = new TreeNode(item, linkProvider(item).ToControl());
+			node.LiClass = classProvider(item);
 
-			if(position.HasChildren)
+			foreach (IHierarchyNavigator<ContentItem> childNavigator in navigator.Children)
 			{
-				Control ul = new HtmlGenericControl("ul");
-				li.Controls.Add(ul);
-				foreach (IHierarchyNavigator<ContentItem> childNavigator in position.Children)
-				{
-					AddRecursive(childNavigator, ul);
-				}
+				TreeNode childNode = BuildNodesRecursive(childNavigator);
+				node.Controls.Add(childNode);
 			}
+			return node;
 		}
-
-		#endregion
 	}
 }

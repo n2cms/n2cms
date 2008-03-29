@@ -34,7 +34,7 @@ namespace N2.Tests.Collections
 		#endregion
 
 		[Test]
-		public void CanBuildHierarchyBranch()
+		public void CanBuild_HierarchyBranch()
 		{
 			HierarchyNode<ContentItem> node = new BranchHierarchyBuilder(a_a_a, null).Build();
 			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(node);
@@ -44,7 +44,31 @@ namespace N2.Tests.Collections
 		}
 
 		[Test]
-		public void CanBuildCompleteHierarchyTree()
+		public void CanBuild_HierarchyBranch_AndAddInitialsChildren_WithSame_InitialAsLast()
+		{
+			HierarchyNode<ContentItem> node = new BranchHierarchyBuilder(a, a, true).Build();
+			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(node);
+			EnumerableAssert.Count(3, ih.EnumerateAllItems());
+		}
+
+		[Test]
+		public void CanBuild_HierarchyBranch_WithDifferent_InitialAsLast()
+		{
+			HierarchyNode<ContentItem> node = new BranchHierarchyBuilder(a_a, a).Build();
+			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(node);
+			EnumerableAssert.Count(3, ih.EnumerateAllItems());
+		}
+
+		[Test]
+		public void CanBuild_HierarchyBranch_AndAddInitialsChildren_WithDifferent_InitialAsLast()
+		{
+			HierarchyNode<ContentItem> node = new BranchHierarchyBuilder(a_a, a, true).Build();
+			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(node);
+			EnumerableAssert.Count(5, ih.EnumerateAllItems());
+		}
+
+		[Test]
+		public void CanBuild_Complete_HierarchyTree()
 		{
 			HierarchyNode<ContentItem> node = new TreeHierarchyBuilder(a).Build();
 			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(node);
@@ -52,7 +76,7 @@ namespace N2.Tests.Collections
 		}
 
 		[Test]
-		public void CanBuildPartialHierarchyTree()
+		public void CanBuild_Partial_HierarchyTree()
 		{
 			HierarchyNode<ContentItem> node = new TreeHierarchyBuilder(a_a).Build();
 			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(node);
@@ -60,7 +84,7 @@ namespace N2.Tests.Collections
 		}
 
 		[Test]
-		public void BuildHierarchyTree_OtherNodesAreNotIncluded()
+		public void BuildHierarchyTree_OtherNodes_AreNotIncluded()
 		{
 			HierarchyNode<ContentItem> node = new TreeHierarchyBuilder(a_b).Build();
 			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(node);

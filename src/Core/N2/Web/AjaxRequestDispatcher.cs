@@ -50,8 +50,8 @@ namespace N2.Web
 					if (service.RequiresEditAccess && !security.IsEditor(context.User))
 						throw new PermissionDeniedException(null, context.User);
 
-					NameValueCollection response = service.Handle(context.Request.QueryString);
-					return ToJson(response);
+					string responseText = service.Handle(context.Request.QueryString);
+					return responseText;
 				}
 				else
 					throw new N2Exception("Couln't find any handler for the action: " + action);
@@ -60,20 +60,6 @@ namespace N2.Web
 			{
 				return WriteException(ex, context.User);
 			}
-		}
-
-		protected string ToJson(NameValueCollection response)
-		{
-			StringBuilder sb = new StringBuilder();
-			using(new N2.Persistence.NH.Finder.StringWrapper(sb, "{", "}"))
-			{
-				sb.AppendFormat("{0}: {1}", "error", "false");
-				foreach(string key in response.Keys)
-				{
-					sb.AppendFormat(",{0}: '{1}'", key, response[key]);
-				}
-			}
-			return sb.ToString();
 		}
 
 		protected string WriteException(Exception ex, IPrincipal user)

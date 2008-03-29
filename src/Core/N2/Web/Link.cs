@@ -2,6 +2,8 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
+using System.IO;
+using N2.Web.UI.WebControls;
 
 namespace N2.Web
 {
@@ -127,62 +129,22 @@ namespace N2.Web
 
 		public Control ToControl()
 		{
-			if (string.IsNullOrEmpty(Url))
+			A a = new A(Url, Target, ToolTip, Contents, ClassName);
+			foreach(KeyValuePair<string,string> pair in Attributes)
 			{
-				HtmlGenericControl span = new HtmlGenericControl("span");
-				if (!string.IsNullOrEmpty(ToolTip))
-					span.Attributes["title"] = ToolTip;
-				foreach (KeyValuePair<string,string> pair in Attributes)
-					span.Attributes[pair.Key] = pair.Value;
-				span.InnerHtml = Contents;
-				return span;
+				a.Attributes[pair.Key] = pair.Value;
 			}
-			else
-			{
-				HtmlAnchor a = new HtmlAnchor();
-				a.Title = ToolTip;
-				a.InnerHtml = Contents;
-				a.HRef = Url;
-				a.Target = Target;
-				if (!string.IsNullOrEmpty(ClassName))
-					a.Attributes["class"] = ClassName;
-				foreach (KeyValuePair<string, string> pair in Attributes)
-					a.Attributes[pair.Key] = pair.Value;
-				return a;
-			}
+			return a;
 		}
 
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			if (string.IsNullOrEmpty(Url))
+			using (HtmlTextWriter writer = new HtmlTextWriter(new StringWriter(sb)))
 			{
-				sb.Append("<span");
+				Control anchor = ToControl();
+				anchor.RenderControl(writer);
 			}
-			else
-			{
-				sb.Append("<a href=\"");
-				sb.Append(Url);
-				sb.Append("\"");
-				if (!string.IsNullOrEmpty(Target))
-					sb.AppendFormat(" target=\"{0}\"", Target);
-			}
-			if (!string.IsNullOrEmpty(className))
-				sb.AppendFormat(" class=\"{0}\"", ClassName);
-			if (!string.IsNullOrEmpty(ToolTip))
-				sb.AppendFormat(" title=\"{0}\"", ToolTip);
-			foreach (KeyValuePair<string, string> pair in Attributes)
-				sb.AppendFormat(" {0}=\"{1}\"", pair.Key, pair.Value);
-			
-			sb.Append(">");
-
-			sb.Append(Contents);
-
-			if (string.IsNullOrEmpty(Url))
-				sb.Append("</span>");
-			else
-				sb.Append("</a>");
-
 			return sb.ToString();
 		}
 

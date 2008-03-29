@@ -24,9 +24,9 @@
                     <Columns>
                         <asp:TemplateColumn>
                             <ItemTemplate>
-                                <a onclick="<%# Eval("RewrittenUrl", "if(window.top.n2)window.top.n2.setupToolbar('{0}');") %>"
+                                <a onclick="<%# Eval("Path", "if(window.top.n2)window.top.n2.setupToolbar('{0}');") %>"
 									rel='<%# Eval("Path") %>'
-                                    href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("RewrittenUrl")) %>' 
+                                    href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("Path")) %>' 
                                     style='<%# ((int)Eval("Children.Count")==0) ? "display:none" : "" %>'
                                     title='<%# (int)Eval("Children.Count") %>'>
                                     <img src="../Img/Ico/bullet_toggle_plus.gif" />

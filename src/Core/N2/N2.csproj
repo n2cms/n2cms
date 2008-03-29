@@ -313,6 +313,7 @@
     <Compile Include="Details\DisplayableAnchorAttribute.cs" />
     <Compile Include="Details\EditableLinkAttribute.cs" />
     <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
+    <Compile Include="Edit\AjaxTreeHandler.cs" />
     <Compile Include="Edit\CreationPosition.cs" />
     <Compile Include="Edit\Navigator.cs" />
     <Compile Include="Edit\Settings\SettingsManager.cs" />
@@ -340,11 +341,13 @@
     <Compile Include="Parts\PartsAjaxService.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
+    <Compile Include="Web\UI\WebControls\A.cs" />
     <Compile Include="Web\UI\WebControls\DisplayTemplateContainer.cs" />
     <Compile Include="Web\UI\WebControls\DragDropControlPanel.cs" />
     <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
     <Compile Include="Web\UI\WebControls\DropPoint.cs" />
     <Compile Include="Web\UI\WebControls\HasValue.cs" />
+    <Compile Include="Web\UI\WebControls\Li.cs" />
     <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
     <Compile Include="Web\UI\WebControls\DragToolbar.cs" />
     <Compile Include="Persistence\GenericFind.cs" />
@@ -466,6 +469,8 @@
     <Compile Include="Serialization\ElementWriter.cs" />
     <Compile Include="Serialization\ItemXmlWriter.cs" />
     <Compile Include="Web\UI\WebControls\Tree.cs" />
+    <Compile Include="Web\UI\WebControls\TreeNode.cs" />
+    <Compile Include="Web\UI\WebControls\Ul.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\TabPanel.css" />

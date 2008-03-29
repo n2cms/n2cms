@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using N2.Web;
+using System.Text;
 
 namespace N2.Parts
 {
@@ -23,7 +24,27 @@ namespace N2.Parts
 			get { return true; }
 		}
 
-		public abstract NameValueCollection Handle(NameValueCollection request);
+		public string Handle(NameValueCollection request)
+		{
+			NameValueCollection response = HandleRequest(request);
+			return ToJson(response);
+		}
+
+		protected string ToJson(NameValueCollection response)
+		{
+			StringBuilder sb = new StringBuilder();
+			using (new N2.Persistence.NH.Finder.StringWrapper(sb, "{", "}"))
+			{
+				sb.AppendFormat("{0}: {1}", "error", "false");
+				foreach (string key in response.Keys)
+				{
+					sb.AppendFormat(",{0}: '{1}'", key, response[key]);
+				}
+			}
+			return sb.ToString();
+		}
+
+		public abstract NameValueCollection HandleRequest(NameValueCollection request);
 
 		public void Start()
 		{

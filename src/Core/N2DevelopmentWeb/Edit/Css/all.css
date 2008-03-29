@@ -155,3 +155,89 @@ fieldset
 	cursor:pointer;
 	cursor:hand;
 }
+
+/* treeview */
+
+.tree
+{
+}
+.tree a
+{
+	color:#000;
+	text-decoration:none;
+}
+.tree li, .tree ul
+{
+	list-style: none;
+	background-color:#ffffff;
+}
+.tree li
+{
+	padding:0;
+	line-height:18px;
+	margin: 0;
+	cursor: default;
+	white-space: nowrap;
+	background: transparent none no-repeat 0 0;
+}
+.tree li li
+{
+	padding-left:16px;
+}
+.tree ul
+{
+	margin:0;
+	padding:0;
+}
+.tree li.leaf
+{
+	background-image: url(../img/treeview/leaf.gif);
+}
+.tree li.leaf-last
+{
+	background-image: url(../img/treeview/leaf-last.gif);
+}
+
+.tree .folder-close
+{
+	background-image: url(../img/treeview/expandable.gif);
+}
+.tree .folder-close-last
+{
+	background-image: url(../img/treeview/expandable-last.gif);
+}
+.tree .folder-open
+{
+	background-image: url(../img/treeview/collapsable.gif);
+}
+.tree .folder-open-last
+{
+	background-image: url(../img/treeview/collapsable-last.gif);
+}
+.tree .root{
+	background-image: url(../img/treeview/root.gif) no-repeat 16px 2px #ffffff;
+}
+.tree .toggler
+{
+	float:left;
+	margin-left:-18px;
+	height:16px;
+	width:16px;
+	background-image:url(../img/treeview/spacer.gif);
+	cursor:pointer;
+}
+.tree ul.ajax
+{
+	background: url(../img/treeview/spinner.gif) no-repeat 0 0 #ffffff;
+	height: 16px;
+}
+.tree ul.ajax li
+{
+	display:none;
+}
+
+.tree .active{
+	background-color:#F7BE77;
+	padding:1px 2px;
+	border: 1px dashed #444;
+}

@@ -12,7 +12,7 @@ namespace N2.Edit.ItemSelection
 				hlFiles.Visible = AllModesAvailable;
 				hlFiles.NavigateUrl = AppendQueryString("../FileManagement/Default.aspx");
 			}
-			siteTreeView.CurrentItem = SelectedItem;
+			siteTreeView.SelectedItem = SelectedItem;
 			siteTreeView.DataBind();
 
 			foreach (ContentItem item in Find.EnumerateTree(Find.RootItem))

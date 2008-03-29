@@ -43,7 +43,7 @@ namespace N2.Edit.FileManagement
 
 		protected override void OnInit(EventArgs e)
 		{
-			base.OnInit(e);
+			smds.Provider = new Web.FileSiteMapProvider();
 
 			string postBackUrl = Request.Form[selectedUrl.UniqueID];
 			selectedUrl.Value = string.IsNullOrEmpty(postBackUrl) ? Request.QueryString["selectedUrl"] : postBackUrl;
@@ -52,6 +52,8 @@ namespace N2.Edit.FileManagement
 				"return confirm('{0}' + document.getElementById('{1}').value);",
 				"Confirm delete: ",
 				selectedUrl.ClientID);
+
+			base.OnInit(e);
 		}
 
 		protected override void OnLoad(EventArgs e)

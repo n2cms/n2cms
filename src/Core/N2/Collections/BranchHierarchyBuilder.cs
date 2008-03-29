@@ -9,6 +9,14 @@ namespace N2.Collections
 	{
 		private readonly ContentItem initialItem;
 		private readonly ContentItem lastAncestor;
+		bool appendAdditionalLevel = false;
+
+		public BranchHierarchyBuilder(ContentItem initialItem, ContentItem lastAncestor, bool appendAdditionalLevel)
+		{
+			this.initialItem = initialItem;
+			this.lastAncestor = lastAncestor;
+			this.appendAdditionalLevel = appendAdditionalLevel;
+		}
 
 		public BranchHierarchyBuilder(ContentItem initialItem, ContentItem lastAncestor)
 		{
@@ -18,17 +26,20 @@ namespace N2.Collections
 
 		public override HierarchyNode<ContentItem> Build()
 		{
-			if (initialItem == lastAncestor)
+			if (initialItem == lastAncestor && !appendAdditionalLevel)
 			{
 				return new HierarchyNode<ContentItem>(initialItem);
 			}
 
 			HierarchyNode<ContentItem> previousNode = null;
-			foreach (ContentItem currentItem in Find.EnumerateParents(initialItem, lastAncestor))
+			foreach (ContentItem currentItem in Find.EnumerateParents(initialItem, lastAncestor, appendAdditionalLevel))
 			{
 				HierarchyNode<ContentItem> currentNode = new HierarchyNode<ContentItem>(currentItem);
 				if (previousNode != null)
+				{
 					previousNode.Parent = currentNode;
+				}
+
 				foreach (ContentItem childItem in GetChildren(currentItem))
 				{
 					if (previousNode != null && previousNode.Current == childItem)

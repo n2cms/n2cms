@@ -22,7 +22,7 @@ namespace N2.Parts
 			get { return "move"; }
 		}
 
-		public override NameValueCollection Handle(NameValueCollection request)
+		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
 			MoveItem(request);
 			return new NameValueCollection();

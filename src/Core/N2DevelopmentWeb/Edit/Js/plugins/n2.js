@@ -26,16 +26,16 @@ n2nav.onTargetClick = function(el){
     if(n2nav.onUrlSelected)
 		n2nav.onUrlSelected(n2nav.getUrl(el));
 }
-n2nav.getJQuery = function(){
-	return n2nav.linkContainerId + " a";
-}
 n2nav.targetHandlers = new Array();
 n2nav.handleLink = function(i,a){
 	if(n2nav.targetHandlers[a.target])
 		n2nav.targetHandlers[a.target](a,i);
 }
-n2nav.refreshLinks = function(){
-	$(this.getJQuery()).each( n2nav.handleLink );
+n2nav.refreshLinks = function(container){
+	if(!container){
+		container = n2nav.linkContainerId;
+	}
+	$("a", n2nav.linkContainerId).each( n2nav.handleLink );
 }
 n2nav.setupLinks = function(containerId){
 	this.linkContainerId = containerId;
@@ -49,8 +49,9 @@ n2nav.previewClickHandler = function(event){
 n2nav.targetHandlers["preview"] = function(a,i) {
     $(a).addClass("enabled").bind("click", null, n2nav.previewClickHandler);
 }
-n2nav.setupToolbar = function(url){
-	if(window.top.n2)window.top.n2.setupToolbar(url.replace(/.*?:\/\/.*?\//, "/"));
+n2nav.setupToolbar = function(path){
+	if(window.top.n2)
+		window.top.n2.setupToolbar(path);
 }
 
 

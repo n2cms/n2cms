@@ -153,10 +153,11 @@ else window.location = '{2}';";
 
 		protected string GetBreadcrumbPath(ContentItem item)
 		{
-			string breadcrumb = "";
-			for (; item != null; item = item.Parent)
-				breadcrumb = item.Name + "/" + breadcrumb;
-			return breadcrumb;
+			return item.Path;
+			//string breadcrumb = "";
+			//for (; item != null; item = item.Parent)
+			//    breadcrumb = item.Name + "/" + breadcrumb;
+			//return breadcrumb;
 		}
 
 		#endregion

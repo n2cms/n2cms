@@ -120,7 +120,7 @@ namespace N2.Edit
 		{
 			if (ie.CurrentItem.Parent != null)
 				hlEditParent.NavigateUrl =
-					string.Format("edit.aspx?selected={0}", Server.UrlEncode(ie.CurrentItem.Parent.RewrittenUrl));
+					string.Format("edit.aspx?selected={0}", Server.UrlEncode(ie.CurrentItem.Parent.Path));
 			else
 				hlEditParent.Visible = false;
 		}

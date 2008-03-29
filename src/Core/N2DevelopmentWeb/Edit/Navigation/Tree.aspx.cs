@@ -31,7 +31,7 @@ namespace N2.Edit.Navigation
 		protected override void OnInit(EventArgs e)
 		{
 			siteTreeView.RootNode = RootNode;
-			siteTreeView.CurrentItem = SelectedItem;
+			siteTreeView.SelectedItem = SelectedItem;
 			siteTreeView.DataBind();
 	
 			base.OnInit(e);

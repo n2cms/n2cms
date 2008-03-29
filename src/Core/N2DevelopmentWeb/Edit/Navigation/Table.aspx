@@ -13,10 +13,10 @@
 <body class="navigation table">
     <form id="form1" runat="server">
         <div id="nav" class="list">
-            <asp:SiteMapDataSource ID="smds" runat="server" SiteMapProvider="EditSiteMap" />
-            <asp:SiteMapPath ID="smp" runat="server" SiteMapProvider="EditSiteMap" CssClass="path" SkipLinkText="">
+            <asp:SiteMapDataSource ID="smds" runat="server" />
+            <asp:SiteMapPath ID="smp" runat="server" CssClass="path" SkipLinkText="">
                 <NodeTemplate>
-                    <a class="enabled" onclick="<%# Eval("CurrentItem.RewrittenUrl", "window.top.n2.setupToolbar('{0}');") %>"
+                    <a class="enabled" onclick="<%# Eval("CurrentItem.Path", "window.top.n2.setupToolbar('{0}');") %>"
 						rel='<%# Eval("CurrentItem.Path") %>'
                         href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("CurrentItem.RewrittenUrl")) %>'>
                         <asp:Image ImageUrl='<%# Eval("CurrentItem.IconUrl") %>' runat="server" />
@@ -33,7 +33,7 @@
                 <Columns>
                     <asp:TemplateColumn>
                         <ItemTemplate>
-                            <a onclick="<%# Eval("RewrittenUrl", "window.top.n2.setupToolbar('{0}');") %>"
+                            <a onclick="<%# Eval("Path", "window.top.n2.setupToolbar('{0}');") %>"
 								rel='<%# Eval("Path") %>'
                                 href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("RewrittenUrl")) %>' 
                                 style='<%# ((int)Eval("Children.Count")==0) ? "display:none" : "" %>'

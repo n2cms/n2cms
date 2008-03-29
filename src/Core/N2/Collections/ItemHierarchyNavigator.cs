@@ -59,7 +59,9 @@ namespace N2.Collections
 			foreach (HierarchyNode<ContentItem> childNode in node.Children)
 			{
 				foreach (ContentItem childItem in EnumerateItemsRecursive(childNode))
+				{
 					yield return childItem;
+				}
 			}
 		}
 

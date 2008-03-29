@@ -9,7 +9,7 @@ start: [[<%= N2.Find.StartPage.ID%>]]
 current: [[<%= N2.Find.CurrentPage.ID%>]]
 parent: [[<%= N2.Utility.Evaluate(CurrentPage, "Parent.ID") %>]]
 #children: [[<%= CurrentPage.Children.Count %>]]
-
+#total: [[<%= N2.Find.Items.All.Count() %>]]
   <%--  
     <h1><%= CurrentPage.Title %></h1>
     

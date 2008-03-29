@@ -16,7 +16,7 @@ namespace N2.Web
 
 		/// <summary>Processes the request and returns a response.</summary>
 		/// <param name="request">The request to handle, usually the query string collection.</param>
-		/// <returns>A response collection that should make sense to the client.</returns>
-		NameValueCollection Handle(NameValueCollection request);
+		/// <returns>A response string that should make sense to the client.</returns>
+		string Handle(NameValueCollection request);
 	}
 }
