@@ -15,16 +15,32 @@ namespace N2.Edit.Install
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			ddlCNs.DataSource = ConfigurationManager.ConnectionStrings;
-			ddlCNs.DataBind();
-			ddlCNs.SelectedIndexChanged += new EventHandler(ddlCNs_SelectedIndexChanged);
-			sdsItems.ConnectionString = ddlCNs.SelectedValue;
+			rptCns.DataSource = ConfigurationManager.ConnectionStrings;
+			rptCns.DataBind();
+
+			string connectionStringName = Request.QueryString["cn"] ?? ConfigurationManager.ConnectionStrings[0].Name;
+			sdsItems.ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+
+			if (!IsPostBack)
+			{
+				LoadItems();
+			}
 			base.OnInit(e);
 		}
 
-		void ddlCNs_SelectedIndexChanged(object sender, EventArgs e)
+		private void LoadItems()
 		{
-			sdsItems.ConnectionString = ddlCNs.SelectedValue;
+			gvItems.DataSourceID = sdsItems.ID;
+			try
+			{
+				lblError.Text = "";
+				gvItems.DataBind();
+			}
+			catch (Exception ex)
+			{
+				gvItems.DataSourceID = "";
+				lblError.Text = ex.Message;
+			}
 		}
 	}
 }
