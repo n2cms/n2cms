@@ -184,8 +184,8 @@ namespace N2.Edit.Install
 				if (!cvRoot.IsValid)
 					return;
 
-				ContentItem root = im.InsertRootNode(Type.GetType(ddlRoot.SelectedValue), "root", "Root node");
-
+				ContentItem root = im.InsertRootNode(Type.GetType(ddlRootAndStart.SelectedValue), "root", "Root node");
+				
 				if (root.ID == Status.RootItemID)
 				{
 					ltRootNode.Text = "<span class='ok'>Root node inserted.</span>";

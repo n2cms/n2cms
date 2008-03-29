@@ -13,9 +13,18 @@ namespace N2.Edit.Install
 {
 	public partial class Fix : System.Web.UI.Page
 	{
-		protected void Page_Load(object sender, EventArgs e)
+		protected override void OnInit(EventArgs e)
 		{
+			ddlCNs.DataSource = ConfigurationManager.ConnectionStrings;
+			ddlCNs.DataBind();
+			ddlCNs.SelectedIndexChanged += new EventHandler(ddlCNs_SelectedIndexChanged);
+			sdsItems.ConnectionString = ddlCNs.SelectedValue;
+			base.OnInit(e);
+		}
 
+		void ddlCNs_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			sdsItems.ConnectionString = ddlCNs.SelectedValue;
 		}
 	}
 }
