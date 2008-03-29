@@ -24,13 +24,13 @@ namespace N2.Templates.Scrum.Commands
 			get { return false; }
 		}
 
-		public NameValueCollection Handle(NameValueCollection request)
+		public string Handle(NameValueCollection request)
 		{
 			ScrumSprint sprint = Context.Persister.Get<ScrumSprint>(int.Parse(request["item"]));
 			ScrumProject project = sprint.Project;
 			project.CurrentSprint = sprint;
 			Context.Persister.Save(project);
-			return new NameValueCollection();
+			return "{}";
 		}
 	}
 }

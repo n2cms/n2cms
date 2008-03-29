@@ -5,13 +5,14 @@ using N2.Integrity;
 using N2.Web;
 using N2.Web.UI;
 using N2.Templates.Items;
+using N2.Installation;
 
 namespace N2.Templates.UI.Items
 {
 	/// <summary>
 	/// The initial page of the site.
 	/// </summary>
-	[Definition("Start Page", "StartPage", "A start page template. It displays a horizontal meny but no vertical menu.", "", 10, MayBeRoot = true, MayBeStartPage = true)]
+	[Definition("Start Page", "StartPage", "A start page template. It displays a horizontal meny but no vertical menu.", "", 10, Installer = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(RootPage))]
 	[AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
 	[FieldSet("siteArea", "Site", 70, ContainerName = Tabs.Advanced)]

@@ -6,10 +6,11 @@ using N2.Details;
 using N2.Integrity;
 using System.Net.Mail;
 using N2.Templates.Items;
+using N2.Installation;
 
 namespace N2.Templates.UI.Items
 {
-	[Definition("Root Page", "RootPage", "A root page used to organize start pages.", "", 0, MayBeRoot = true)]
+	[Definition("Root Page", "RootPage", "A root page used to organize start pages.", "", 0, Installer = InstallerHint.PreferredRootPage)]
 	[RestrictParents(AllowedTypes.None)]
 	[AvailableZone("Left", Zones.Left)]
 	[AvailableZone("Center", "Center")]
