@@ -24,17 +24,18 @@ namespace N2.Edit
 
 		private void LoadToolbarPlugIns()
 		{
-			foreach (ToolbarPlugInAttribute pluginAttribute in N2.Context.Current.EditManager.GetToolbarPlugIns(this.Page.User))
+			foreach (ToolbarPlugInAttribute plugin in N2.Context.Current.EditManager.GetToolbarPlugIns(this.Page.User))
 			{
-				Control container = (pluginAttribute.Area == ToolbarArea.Preview) 
+				Control container = (plugin.Area == ToolbarArea.Preview) 
 					? plhFrame 
 					: plhNavigation;
 				
 				HtmlGenericControl command = new HtmlGenericControl("div");
+				command.Attributes["id"] = plugin.Name;
 				command.Attributes["class"] = "toolbarItem";
 				container.Controls.Add(command);
 
-				pluginAttribute.AddTo(command);
+				plugin.AddTo(command);
 			}
 		}
 

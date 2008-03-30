@@ -533,10 +533,7 @@
     <Content Include="img\tab.gif" />
     <Content Include="img\tab_selected.gif" />
     <Content Include="img\toolbar_area_bg.gif" />
-    <Content Include="img\toolbar_area_left.gif" />
-    <Content Include="img\toolbar_area_right.gif" />
     <Content Include="img\toolbar_bg.gif" />
-    <Content Include="img\toolbar_logo.gif" />
     <Content Include="img\tv\tv-collapsable-last.gif" />
     <Content Include="img\tv\tv-collapsable.gif" />
     <Content Include="img\tv\tv-expandable-last.gif" />
@@ -810,7 +807,6 @@
     <Content Include="Js\plugins\cookies.js" />
     <Content Include="Js\plugins\jquery.n2optionmenu.js" />
     <Content Include="Js\plugins\jquery.splitter.js" />
-    <Content Include="Js\plugins\jquery.treeview.js" />
     <Content Include="Js\plugins\n2.js" />
     <Content Include="Js\jquery.ui\3_ui.droppable.js" />
     <Content Include="Js\Web.config" />
@@ -1067,7 +1063,6 @@
     <Content Include="img\ico\png\book_next.png" />
     <Content Include="img\ico\png\book_previous.png" />
     <Content Include="img\ico\png\zoom.png" />
-    <Content Include="img\toolbar_logo.png" />
     <Content Include="img\treeview\collapsable-last.gif" />
     <Content Include="img\treeview\collapsable.gif" />
     <Content Include="img\treeview\expandable-last.gif" />
@@ -1086,6 +1081,12 @@
     <Content Include="Versions\img\bullet_star.gif" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="img\n2.gif" />
+    <Content Include="img\toolarea_bg.gif" />
+    <Content Include="img\toolarea_end.gif" />
+    <Content Include="img\toolarea_separator.gif" />
+    <Content Include="img\toolitem_hover.gif" />
+    <Content Include="img\toolitem_separator.gif" />
     <Content Include="Navigation\LoadTree.ashx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
