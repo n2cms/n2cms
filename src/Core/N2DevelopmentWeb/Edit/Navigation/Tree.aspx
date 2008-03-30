@@ -19,6 +19,8 @@
         </div>
         <script type="text/javascript">
             $(document).ready(function(){
+				toolbarSelect("tree");
+            
                 $("#nav").SimpleTree({
 					success: function(el){
 						toDraggable(el);

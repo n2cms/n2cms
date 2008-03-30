@@ -20,6 +20,7 @@
 	- added /edit/install/fix.aspx for more direct database access
 	- improved installer hints on item definition
 	- new top toolbar design
+	- select current frame in toolbar
 - examples
 	- included multiple domains example
 - templates

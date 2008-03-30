@@ -8,6 +8,12 @@
     <title>Settings</title>
     <link rel="stylesheet" href="../Css/All.css" type="text/css" />
     <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
+	<script src="../Js/plugins.ashx" type="text/javascript" ></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+			toolbarSelect("settings");
+		});
+	</script>
 </head>
 <body class="navigation settings">
     <form id="form1" runat="server">

@@ -2,9 +2,14 @@
 <%@ Import namespace="N2.Definitions"%>
 <asp:Content ContentPlaceHolderID="Toolbar" ID="ct" runat="server">
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">cancel</asp:HyperLink>
+    <script src="Js/plugins.ashx" type="text/javascript" ></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+			toolbarSelect("new");
+		});
+	</script>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" ID="cc" runat="server">
-
     <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType" >
 		<asp:Repeater ID="rptTypes" runat="server">
 			<ItemTemplate>

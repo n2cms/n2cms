@@ -11,6 +11,11 @@ namespace N2.Edit
 	[ToolbarPlugIn("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
 	public partial class Edit : EditPage
 	{
+		protected bool CreatingNew
+		{
+			get { return Request["discriminator"] != null; }
+		}
+
 		protected override void OnInit(EventArgs e)
 		{
 			if (Request["cancel"] == "reloadTop")

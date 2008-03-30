@@ -6,6 +6,11 @@
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/edit.css" type="text/css" />
 	<script src="Js/plugins.ashx" type="text/javascript" ></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+			toolbarSelect('<%= CreatingNew ? "new" : "edit" %>');
+		});
+	</script>
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">

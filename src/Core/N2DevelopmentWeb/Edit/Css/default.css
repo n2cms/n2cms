@@ -9,6 +9,10 @@
 		.toolbar .last .right { background-image:url(../img/toolarea_end.gif); }
 
 /* Navigation */
+.toolbar a
+{
+	-moz-outline-style:none;
+}
 .toolbar .toolbarItem
 {
 	height:40px;
@@ -26,11 +30,13 @@
 		padding:10px 5px 5px 5px;
 	}
 
-.toolbar .toolbarItem.hover
+.toolbar .toolbarItem.hover,
+.toolbar .toolbarItem.selected
 {
 	background:transparent url(../img/toolitem_hover.gif) no-repeat 100% 100%;
 }
-	.toolbar .toolbarItem.hover .command
+	.toolbar .toolbarItem.hover .command,
+	.toolbar .toolbarItem.selected .command
 	{
 		background:transparent url(../img/toolitem_hover.gif) no-repeat 0% 100%;
 		position:relative;

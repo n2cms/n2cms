@@ -163,8 +163,24 @@ frameManager.prototype = {
 	refresh: function(navigationUrl, previewUrl){
 		this.refreshNavigation(navigationUrl);
 		this.refreshPreview(previewUrl);
+	},
+	select: function(name){
+		$("#" + name)
+			.siblings().removeClass("selected").end()
+			.addClass("selected").focus();
+	},
+	unselect: function(name){
+		$("#" + name).removeClass("selected");
 	}
 }
 
-
+function toolbarSelect(name){
+	if(window.top.n2)
+	{
+		window.top.n2.select(name);
+		$(window).unload(function(){
+			window.top.n2.unselect(name);
+		});
+	}
+}
 

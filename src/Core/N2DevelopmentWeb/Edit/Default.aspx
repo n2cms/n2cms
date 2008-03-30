@@ -14,9 +14,8 @@
 		<![endif]-->
 		
         <script type="text/javascript">
-			var n2;
 			$(document).ready(function(){
-				n2 = new frameManager();
+				window.n2 = new frameManager();
 				n2.initFrames();
 			});
         </script>
