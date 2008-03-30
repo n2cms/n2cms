@@ -85,8 +85,8 @@ a.enabled
     border:solid 1px #DEDAD7;
     background-color:#F7F7F7;
 }
-.upload .treeview,
-.newFolder .treeview
+.upload .tree,
+.newFolder .tree
 {
 	display:none;
 }

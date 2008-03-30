@@ -127,7 +127,7 @@ frameManager.prototype = {
 		$("#splitter *").height(this.contentHeight());
 	},
 	contentHeight: function() {
-		return document.documentElement.clientHeight - (jQuery.browser.msie ? 41 : 42);
+		return document.documentElement.clientHeight - (jQuery.browser.msie ? 50 : 51);
 	},
 	getSelected: function(){
 		return this.currentUrl;

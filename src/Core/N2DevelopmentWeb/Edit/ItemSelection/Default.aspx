@@ -12,14 +12,14 @@
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
     <input type="hidden" id="selectedUrl" runat="server" />
-    <div id="tree">
+    <div id="tree" class="tree">
         <edit:Tree ID="siteTreeView" runat="server" Target="link" />
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
 	        n2nav.parentInputId = '<%= OpenerInputId %>';
             n2nav.setupLinks('#tree');
-            $("#tree").treeview({collapsed: true});
+			$("#tree").SimpleTree();
         });
     </script>
 </asp:Content>

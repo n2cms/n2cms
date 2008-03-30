@@ -45,7 +45,7 @@
 		    n2nav.selectionInputId = '#<%= selectedUrl.ClientID %>';
 		    n2nav.parentInputId = '<%= OpenerInputId %>';
 		    n2nav.setupLinks('#tree');
-            $("#tree").treeview({collapsed: true});
+			$("#tree").SimpleTree();
         });
     </script>
 </asp:Content>
