@@ -25,7 +25,8 @@ using N2.Web;
 
 namespace N2.Edit.Navigation
 {
-	[ToolbarPlugIn("", "tree", "navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/sitemap_color.gif", -30, ToolTip = "hierarchical navigation", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("", "tree", "navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/sitemap_color.gif", -30, ToolTip = "hierarchical navigation", GlobalResourceClassName = "Toolbar")]
+	[SortPlugin]
 	public partial class Tree : NavigationPage
 	{
 		protected override void OnInit(EventArgs e)

@@ -49,12 +49,12 @@ namespace N2.Edit
 		/// <summary>Gets toolbar plugins for the edit mode.</summary>
 		/// <param name="user">The user whose permissions will filter return plugins.</param>
 		/// <returns>A list of toolbar plpugins.</returns>
-		IList<ToolbarPlugInAttribute> GetToolbarPlugIns(IPrincipal user);
+		IList<ToolbarPluginAttribute> GetToolbarPlugIns(IPrincipal user);
 
 		/// <summary>Gets navigation plugins for the edit mode.</summary>
 		/// <param name="user">The user whose permissions will filter return plugins.</param>
 		/// <returns>A list of navigation plpugins.</returns>
-		IList<NavigationPlugInAttribute> GetNavigationPlugIns(IPrincipal user);
+		IList<NavigationPluginAttribute> GetNavigationPlugIns(IPrincipal user);
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
 		/// <param name="itemType">The type of content item whose editors to add.</param>

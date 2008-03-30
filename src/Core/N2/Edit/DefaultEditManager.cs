@@ -36,8 +36,8 @@ namespace N2.Edit
 		private readonly IDefinitionManager definitions;
 		private readonly IPersister persister;
 		private readonly IVersionManager versioner;
-		private List<ToolbarPlugInAttribute> toolbarPlugIns = null;
-		private List<NavigationPlugInAttribute> navigationPlugIns = null;
+		private List<ToolbarPluginAttribute> toolbarPlugIns = null;
+		private List<NavigationPluginAttribute> navigationPlugIns = null;
 		private string editTreeUrlFormat = "Navigation/Tree.aspx?selected={0}";
 		private string editPreviewUrlFormat = "{0}";
 		private string editorCssUrl = "~/Edit/Css/Editor.css";
@@ -63,8 +63,8 @@ namespace N2.Edit
 			{
 				if (toolbarPlugIns == null)
 				{
-					toolbarPlugIns = new List<ToolbarPlugInAttribute>();
-					navigationPlugIns = new List<NavigationPlugInAttribute>();
+					toolbarPlugIns = new List<ToolbarPluginAttribute>();
+					navigationPlugIns = new List<NavigationPluginAttribute>();
 
 					// Find all plugins
 					foreach (Assembly a in typeFinder.GetAssemblies())
@@ -154,14 +154,14 @@ namespace N2.Edit
 
 		/// <summary>Get all toolbar plugins in the application</summary>
 		/// <returns>A list of toolbar plugins</returns>
-		public IList<ToolbarPlugInAttribute> GetToolbarPlugIns()
+		public IList<ToolbarPluginAttribute> GetToolbarPlugIns()
 		{
 			return toolbarPlugIns;
 		}
 
 		/// <summary>Get all navigation plugins in the application</summary>
 		/// <returns>A list of navigation plugins</returns>
-		public IList<NavigationPlugInAttribute> GetNavigationPlugIns()
+		public IList<NavigationPluginAttribute> GetNavigationPlugIns()
 		{
 			return navigationPlugIns;
 		}
@@ -169,10 +169,10 @@ namespace N2.Edit
 		/// <summary>Get toolbar plugins the user has permissions to</summary>
 		/// <param name="user">The user whose permissions should filter the plugins.</param>
 		/// <returns>A filtered list of toolbar plugins</returns>
-		public IList<ToolbarPlugInAttribute> GetToolbarPlugIns(IPrincipal user)
+		public IList<ToolbarPluginAttribute> GetToolbarPlugIns(IPrincipal user)
 		{
-			List<ToolbarPlugInAttribute> plugins = new List<ToolbarPlugInAttribute>();
-			foreach (ToolbarPlugInAttribute plugin in GetToolbarPlugIns())
+			List<ToolbarPluginAttribute> plugins = new List<ToolbarPluginAttribute>();
+			foreach (ToolbarPluginAttribute plugin in GetToolbarPlugIns())
 				if (plugin.IsAuthorized(user) && plugin.Enabled)
 					plugins.Add(plugin);
 			return plugins;
@@ -181,10 +181,10 @@ namespace N2.Edit
 		/// <summary>Gets navigation plugins for the edit mode..</summary>
 		/// <param name="user">The user whose permissions will filter return plugins.</param>
 		/// <returns>A list of navigation plpugins.</returns>
-		public IList<NavigationPlugInAttribute> GetNavigationPlugIns(IPrincipal user)
+		public IList<NavigationPluginAttribute> GetNavigationPlugIns(IPrincipal user)
 		{
-			List<NavigationPlugInAttribute> plugins = new List<NavigationPlugInAttribute>();
-			foreach (NavigationPlugInAttribute plugin in GetNavigationPlugIns())
+			List<NavigationPluginAttribute> plugins = new List<NavigationPluginAttribute>();
+			foreach (NavigationPluginAttribute plugin in GetNavigationPlugIns())
 				if (plugin.IsAuthorized(user) && plugin.Enabled)
 					plugins.Add(plugin);
 			return plugins;
@@ -194,13 +194,13 @@ namespace N2.Edit
 		{
 			try
 			{
-				foreach (EditingPlugInAttribute attribute in a.GetCustomAttributes(typeof(EditingPlugInAttribute), false))
+				foreach (EditingPluginAttribute attribute in a.GetCustomAttributes(typeof(EditingPluginAttribute), false))
 				{
 					AppendEditingPlugin(a, attribute);
 				}
 				foreach (Type t in a.GetTypes())
 				{
-					foreach (EditingPlugInAttribute attribute in t.GetCustomAttributes(typeof(EditingPlugInAttribute), false))
+					foreach (EditingPluginAttribute attribute in t.GetCustomAttributes(typeof(EditingPluginAttribute), false))
 					{
 						if (attribute.Name == null)
 							attribute.Name = t.Name;
@@ -220,14 +220,14 @@ namespace N2.Edit
 			}
 		}
 
-		private void AppendEditingPlugin(Assembly a, EditingPlugInAttribute attribute)
+		private void AppendEditingPlugin(Assembly a, EditingPluginAttribute attribute)
 		{
 			if (attribute.Name == null)
 				throw new N2Exception("The plugin '{0}' referencing '{1}' in the assembly '{2}' has no name", attribute.Title, attribute.UrlFormat, a.FullName);
-			else if (attribute is ToolbarPlugInAttribute && !toolbarPlugIns.Contains(attribute as ToolbarPlugInAttribute))
-				toolbarPlugIns.Add(attribute as ToolbarPlugInAttribute);
-			else if (attribute is NavigationPlugInAttribute && !navigationPlugIns.Contains(attribute as NavigationPlugInAttribute))
-				navigationPlugIns.Add(attribute as NavigationPlugInAttribute);
+			else if (attribute is ToolbarPluginAttribute && !toolbarPlugIns.Contains(attribute as ToolbarPluginAttribute))
+				toolbarPlugIns.Add(attribute as ToolbarPluginAttribute);
+			else if (attribute is NavigationPluginAttribute && !navigationPlugIns.Contains(attribute as NavigationPluginAttribute))
+				navigationPlugIns.Add(attribute as NavigationPluginAttribute);
 			else
 				throw new N2Exception("A plugin named '{0}' is already defined, assembly: {1}", attribute.Name, a.FullName);
 		}

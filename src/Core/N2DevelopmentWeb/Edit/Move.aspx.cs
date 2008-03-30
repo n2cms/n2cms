@@ -26,8 +26,8 @@ using N2.Integrity;
 
 namespace N2.Edit
 {
-	[NavigationPlugIn("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "~/edit/img/ico/cut.gif", 40, GlobalResourceClassName="Navigation")]
-	[ToolbarPlugIn("", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Navigation, "", "~/Edit/Img/Ico/cut.gif", 30, ToolTip = "move", GlobalResourceClassName = "Toolbar")]
+	[NavigationPlugin("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "~/edit/img/ico/cut.gif", 40, GlobalResourceClassName="Navigation")]
+	[ToolbarPlugin("", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Navigation, "", "~/Edit/Img/Ico/cut.gif", 30, ToolTip = "move", GlobalResourceClassName = "Toolbar")]
 	public partial class Move : EditPage
 	{
 		protected void Page_Load(object sender, EventArgs e)

@@ -58,7 +58,7 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>Inserted before the display control if a control was added.</summary>
-		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(DisplayTemplateContainer))]
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
 		public virtual ITemplate HeaderTemplate
 		{
 			get { return this.headerTemplate; }
@@ -66,7 +66,7 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>Added after the display control if a control was added.</summary>
-		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(DisplayTemplateContainer))]
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
 		public virtual ITemplate FooterTemplate
 		{
 			get { return this.footerTemplate; }
@@ -92,7 +92,7 @@ namespace N2.Web.UI.WebControls
 				{
 					if (HeaderTemplate != null)
 					{
-						Control header = new DisplayTemplateContainer();
+						Control header = new SimpleTemplateContainer();
 						this.Controls.AddAt(0, header);
 
 						HeaderTemplate.InstantiateIn(header);
@@ -100,7 +100,7 @@ namespace N2.Web.UI.WebControls
 
 					if (FooterTemplate != null)
 					{
-						Control footer = new DisplayTemplateContainer();
+						Control footer = new SimpleTemplateContainer();
 						this.Controls.Add(footer);
 
 						FooterTemplate.InstantiateIn(footer);

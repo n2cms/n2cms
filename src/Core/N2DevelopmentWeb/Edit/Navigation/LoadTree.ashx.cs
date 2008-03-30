@@ -11,19 +11,16 @@ using System.IO;
 
 namespace N2.Edit.Navigation
 {
-	public class LoadTree : IHttpHandler
+	public class LoadTree : HelpfulHandler
 	{
-		ContentItem selectedNode;
-
-		public void ProcessRequest(HttpContext context)
+		public override void ProcessRequest(HttpContext context)
 		{
-			string path = context.Request["selected"];
-			selectedNode = N2.Context.Current.Resolve<N2.Edit.Navigator>().Navigate(path);
+			ContentItem selectedNode = GetSelectedItem(context.Request.QueryString);
 			
 			context.Response.ContentType = "text/plain";
 			TreeNode tn = (TreeNode)N2.Web.Tree
 				.From(selectedNode, 2)
-				.LinkProvider(BuildLink)
+				.LinkProvider(delegate(ContentItem node) { return BuildLink(node, selectedNode); })
 				.ToControl();
 			
 			Web.UI.Controls.Tree.AppendExpanderNodeRecursive(tn, Web.UI.Controls.Tree.GetFilters(context.User));
@@ -42,7 +39,7 @@ namespace N2.Edit.Navigation
 			}
 		}
 
-		public ILinkBuilder BuildLink(INode node)
+		public ILinkBuilder BuildLink(INode node, ContentItem selectedNode)
 		{
 			string className = node.ClassNames;
 
@@ -51,11 +48,6 @@ namespace N2.Edit.Navigation
 				.Attribute("rel", node.Path);
 
 			return builder;
-		}
-
-		public bool IsReusable
-		{
-			get { return false; }
 		}
 	}
 }

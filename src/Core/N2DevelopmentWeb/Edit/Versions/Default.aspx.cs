@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace N2.Edit.Versions
 {
-	[ToolbarPlugIn("", "versions", "~/Edit/Versions/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview",  "~/Edit/Versions/Img/book_previous.gif", 90, ToolTip = "versions", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("", "versions", "~/Edit/Versions/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview",  "~/Edit/Versions/Img/book_previous.gif", 90, ToolTip = "versions", GlobalResourceClassName = "Toolbar")]
 	public partial class Default : Web.EditPage
 	{
 		ContentItem publishedItem;

@@ -1,7 +1,6 @@
 - restrictparents: NewRestrictionAttribute
 - MediumTrust: Throw exception when configured content type isn't found
 - Parts: Throw friendly exception when page isn't found
-- Sort buttons toolbar
 - Better toolbar plugin model
 - move sites initialization to after context.instance is set
 - implement INode for edit mode integration

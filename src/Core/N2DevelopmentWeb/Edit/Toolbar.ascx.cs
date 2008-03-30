@@ -24,7 +24,7 @@ namespace N2.Edit
 
 		private void LoadToolbarPlugIns()
 		{
-			foreach (ToolbarPlugInAttribute plugin in N2.Context.Current.EditManager.GetToolbarPlugIns(this.Page.User))
+			foreach (ToolbarPluginAttribute plugin in N2.Context.Current.EditManager.GetToolbarPlugIns(this.Page.User))
 			{
 				Control container = (plugin.Area == ToolbarArea.Preview) 
 					? plhFrame 
@@ -41,7 +41,7 @@ namespace N2.Edit
 
 		#region PlugIn Methods
 
-		private string CheckTranslation(ToolbarPlugInAttribute a, string possibleResourceKey)
+		private string CheckTranslation(ToolbarPluginAttribute a, string possibleResourceKey)
 		{
 			if (possibleResourceKey != null)
 			{

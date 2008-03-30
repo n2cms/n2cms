@@ -22,6 +22,7 @@
 	- new top toolbar design
 	- select current frame in toolbar
 	- tweaked edit design
+	- Sort pages from buttons on the toolbar
 - examples
 	- included multiple domains example
 - templates

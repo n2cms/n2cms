@@ -22,10 +22,27 @@ namespace N2.Web.UI.WebControls
 		private HyperLink dragModeLink = new HyperLink();
 		private HyperLink doneDraggingLink = new HyperLink();
 
+		ITemplate dragdropHeaderTemplate;
+		ITemplate dragdropFooterTemplate;
+
 		public string DragDropScriptUrl
 		{
 			get { return (string) (ViewState["DragDropScriptUrl"] ?? string.Empty); }
 			set { ViewState["DragDropScriptUrl"] = value; }
+		}
+
+
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate DragDropHeaderTemplate
+		{
+			get { return this.dragdropHeaderTemplate; }
+			set { this.dragdropHeaderTemplate = value; }
+		}
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate DragDropFooterTemplate
+		{
+			get { return this.dragdropFooterTemplate; }
+			set { this.dragdropFooterTemplate = value; }
 		}
 
 		public string DragDropStyleSheetUrl
@@ -83,8 +100,12 @@ namespace N2.Web.UI.WebControls
 		{
 			if (state == ControlPanelState.DragDrop)
 			{
+				CheckAndAppendTemplate(DragDropHeaderTemplate, this);
+
 				AddDoneButtons(this);
 				AddDefinitions(this);
+
+				CheckAndAppendTemplate(DragDropFooterTemplate, this);
 			}
 			else
 			{

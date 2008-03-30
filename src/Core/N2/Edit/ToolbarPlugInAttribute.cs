@@ -22,7 +22,7 @@ namespace N2.Edit
 	/// An attribute defining a toolbar item in edit mode.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true)]
-	public class ToolbarPlugInAttribute : EditingPlugInAttribute, IComparable<ToolbarPlugInAttribute>, IContainable
+	public class ToolbarPluginAttribute : EditingPluginAttribute, IComparable<ToolbarPluginAttribute>, IContainable
 	{
 		#region Fields
 		ToolbarArea area;
@@ -31,7 +31,7 @@ namespace N2.Edit
 
 		#region Constructors
 		/// <summary>Defines a toolbar link.</summary>
-		public ToolbarPlugInAttribute()
+		public ToolbarPluginAttribute()
 		{
 		}
 
@@ -40,7 +40,7 @@ namespace N2.Edit
 		/// <param name="name">The name of this plugin (must be unique).</param>
 		/// <param name="urlFormat">The url format for the url for this plugin where {selected} is the rewritten url of the currently selected item, {memory} is a cut or copied page url {action} is either move or copy.</param>
 		/// <param name="area">The area to put the link.</param>		
-		public ToolbarPlugInAttribute(string title, string name, string urlFormat, ToolbarArea area)
+		public ToolbarPluginAttribute(string title, string name, string urlFormat, ToolbarArea area)
 		{
 			this.Title = title;
 			this.Name = name;
@@ -56,7 +56,7 @@ namespace N2.Edit
 		/// <param name="target">The target of the link.</param>	
 		/// <param name="iconUrl">An url to an icon.</param>
 		/// <param name="sortOrder">The order of this link</param>
-		public ToolbarPlugInAttribute(string title, string name, string urlFormat, ToolbarArea area, string target, string iconUrl, int sortOrder)
+		public ToolbarPluginAttribute(string title, string name, string urlFormat, ToolbarArea area, string target, string iconUrl, int sortOrder)
 			: this(title, name, urlFormat, area)
 		{
 			this.Target = target;
@@ -67,7 +67,7 @@ namespace N2.Edit
 
 		protected override string ArrayVariableName
 		{
-			get { return "toolbarPlugIns"; }
+			get { return "toolbarPlugIns";}
 		}
 
 		public ToolbarArea Area
@@ -84,7 +84,7 @@ namespace N2.Edit
 		
 		#region IComparable<...> Members
 
-		public int CompareTo(ToolbarPlugInAttribute other)
+		public int CompareTo(ToolbarPluginAttribute other)
 		{
 			return base.CompareTo(other);
 		}

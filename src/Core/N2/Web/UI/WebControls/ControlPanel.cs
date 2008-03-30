@@ -15,6 +15,8 @@ namespace N2.Web.UI.WebControls
 	/// start editing and saving changes. This control is in the early stages 
 	/// and changes made through this are not version managed.
 	/// </summary>
+	[PersistChildren(false)]
+	[ParseChildren(true)]
 	public class ControlPanel : Control, IItemContainer
 	{
 		#region Fields
@@ -209,16 +211,43 @@ namespace N2.Web.UI.WebControls
 			{
 				AddControlPanelControls(state);
 			}
+			else
+			{
+				CheckAndAppendTemplate(HiddenTemplate, this);
+			}
+		}
+
+		protected void CheckAndAppendTemplate(ITemplate template, Control container)
+		{
+			if (template != null)
+			{
+				Control templateContainer = new SimpleTemplateContainer();
+				container.Controls.Add(templateContainer);
+
+				template.InstantiateIn(templateContainer);
+			}
 		}
 
 		protected virtual void AddControlPanelControls(ControlPanelState state)
 		{
 			if (state == ControlPanelState.Visible)
+			{
+				CheckAndAppendTemplate(VisibleHeaderTemplate, this);
 				AddEditButtons();
+				CheckAndAppendTemplate(VisibleFooterTemplate, this);
+			}
 			else if (state == ControlPanelState.Editing)
+			{
+				CheckAndAppendTemplate(EditingHeaderTemplate, this);
 				AddSaveCancelButtons();
+				CheckAndAppendTemplate(EditingFooterTemplate, this);
+			}
 			else if (state == ControlPanelState.Previewing)
+			{
+				CheckAndAppendTemplate(PreviewingHeaderTemplate, this);
 				AddPreviewButtons();
+				CheckAndAppendTemplate(PreviewingFooterTemplate, this);
+			}
 			else
 				throw new N2Exception("Unknown control panel state: " + state);
 		}
@@ -541,5 +570,67 @@ namespace N2.Web.UI.WebControls
 			}
 		}
 		#endregion
+
+
+		ITemplate hiddenTemplate;
+
+		ITemplate visibleHeaderTemplate;
+		ITemplate visibleFooterTemplate;
+
+		ITemplate editingHeaderTemplate;
+		ITemplate editingFooterTemplate;
+
+		ITemplate previewingHeaderTemplate;
+		ITemplate previewingFooterTemplate;
+
+
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate HiddenTemplate
+		{
+			get { return this.hiddenTemplate; }
+			set { this.hiddenTemplate = value; }
+		}
+
+
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate VisibleHeaderTemplate
+		{
+			get { return this.visibleHeaderTemplate; }
+			set { this.visibleHeaderTemplate = value; }
+		}
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate VisibleFooterTemplate
+		{
+			get { return this.visibleFooterTemplate; }
+			set { this.visibleFooterTemplate = value; }
+		}
+
+
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate EditingHeaderTemplate
+		{
+			get { return this.editingHeaderTemplate; }
+			set { this.editingHeaderTemplate = value; }
+		}
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate EditingFooterTemplate
+		{
+			get { return this.editingFooterTemplate; }
+			set { this.editingFooterTemplate = value; }
+		}
+
+
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate PreviewingHeaderTemplate
+		{
+			get { return this.previewingHeaderTemplate; }
+			set { this.previewingHeaderTemplate = value; }
+		}
+		[DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+		public virtual ITemplate PreviewingFooterTemplate
+		{
+			get { return this.previewingFooterTemplate; }
+			set { this.previewingFooterTemplate = value; }
+		}
 	}
 }

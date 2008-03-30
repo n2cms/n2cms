@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace N2.Edit
 {
-	public abstract class EditingPlugInAttribute : Attribute, IComparable<EditingPlugInAttribute>
+	public abstract class EditingPluginAttribute : Attribute, IComparable<EditingPluginAttribute>
 	{
 		private string[] authorizedRoles;
 		private bool enabled = true;
@@ -82,11 +82,11 @@ namespace N2.Edit
 			set { enabled = value; }
 		}
 
+		protected abstract string ArrayVariableName { get; }
+
 		#endregion
 
 		#region Methods
-
-		protected abstract string ArrayVariableName { get; }
 
 		/// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
 		/// <param name="user">The user to check.</param>
@@ -105,7 +105,7 @@ namespace N2.Edit
 		{
 			HtmlAnchor a = AddAnchor(container);
 
-			RegisterToolbarUrl(container, a.ClientID);
+			RegisterToolbarUrl(container, a.ClientID, Utility.ToAbsolute(UrlFormat));
 
 			return a;
 		}
@@ -116,7 +116,7 @@ namespace N2.Edit
 			a.ID = "h" + Name;
 			a.HRef = UrlFormat
 				.Replace("~/", Utility.ToAbsolute("~/"))
-				.Replace("{selected}", "")
+				.Replace("{selected}", HttpUtility.UrlEncode("/"))
 				.Replace("{memory}", "")
 				.Replace("{action}", "");
 
@@ -128,15 +128,15 @@ namespace N2.Edit
 			if (string.IsNullOrEmpty(IconUrl))
 				a.InnerHtml = title;
 			else
-				a.InnerHtml = string.Format("<img src='{0}'/>{1}", Utility.ToAbsolute(IconUrl), title);
+				a.InnerHtml = string.Format("<img src='{0}' alt=''/>{1}", Utility.ToAbsolute(IconUrl), title);
 
 			container.Controls.Add(a);
 			return a;
 		}
 
-		protected virtual void RegisterToolbarUrl(Control container, string clientID)
+		protected virtual void RegisterToolbarUrl(Control container, string clientID, string urlFormat)
 		{
-			string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, Utility.ToAbsolute(UrlFormat));
+			string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, urlFormat);
 			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
 		}
 
@@ -144,7 +144,7 @@ namespace N2.Edit
 
 		#region IComparable<EditingPlugInAttribute> Members
 
-		public int CompareTo(EditingPlugInAttribute other)
+		public int CompareTo(EditingPluginAttribute other)
 		{
 			if (SortOrder != other.SortOrder)
 				return SortOrder - other.SortOrder;
@@ -158,7 +158,7 @@ namespace N2.Edit
 		{
 			if (obj == null || !obj.GetType().IsAssignableFrom(GetType()))
 				return false;
-			return Name == ((EditingPlugInAttribute) obj).Name;
+			return Name == ((EditingPluginAttribute) obj).Name;
 		}
 
 		public override int GetHashCode()

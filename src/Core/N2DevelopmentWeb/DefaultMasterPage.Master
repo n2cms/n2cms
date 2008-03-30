@@ -9,7 +9,17 @@
 <body>
     <form id="form1" runat="server">
 		<n2:SlidingCurtain runat="server">
-			<n2:DragDropControlPanel runat="server" />
+			<n2:DragDropControlPanel runat="server">
+				<DragDropFooterTemplate>[DragDropFooterTemplate]</DragDropFooterTemplate>
+				<DragDropHeaderTemplate>[DragDropHeaderTemplate]</DragDropHeaderTemplate>
+				<EditingFooterTemplate>[EditingFooterTemplate]</EditingFooterTemplate>
+				<EditingHeaderTemplate>[EditingHeaderTemplate]</EditingHeaderTemplate>
+				<HiddenTemplate>[HiddenTemplate]</HiddenTemplate>
+				<PreviewingFooterTemplate>[PreviewingFooterTemplate]</PreviewingFooterTemplate>
+				<PreviewingHeaderTemplate>[PreviewingHeaderTemplate]</PreviewingHeaderTemplate>
+				<VisibleFooterTemplate>[VisibleFooterTemplate]</VisibleFooterTemplate>
+				<VisibleHeaderTemplate>[VisibleHeaderTemplate]</VisibleHeaderTemplate>
+			</n2:DragDropControlPanel>
 		</n2:SlidingCurtain>
 		<asp:SiteMapDataSource ID="smds" runat="server" SiteMapProvider="PublicSiteMap" StartFromCurrentNode="false" ShowStartingNode="false" />
         <asp:Menu ID="m" runat="server" DataSourceID="smds" Orientation="Horizontal">
@@ -25,13 +35,13 @@
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"/>
             
             StartPage expression builder:
-            [<asp:Image runat="server" ImageUrl='<%$ StartPage: ImageUrl %>' />]
+            [<asp:Image runat="server" ImageUrl='<%$ StartPage: ImageUrl %>' />[
             CurrentPage expression builder (only on start page):
-			[<asp:Image runat="server" ImageUrl='<%$ CurrentPage: ImageUrl %>' Visible='<%$ HasValue: ImageUrl %>' />]
+			[<asp:Image runat="server" ImageUrl='<%$ CurrentPage: ImageUrl %>' Visible='<%$ HasValue: ImageUrl %>' />[
 			Display with path:
-			[<n2:Display PropertyName="ImageUrl" runat="server" Path="/" />]
+			[<n2:Display PropertyName="ImageUrl" runat="server" Path="/" />[
 			Display without path (only on start page):
-			[<n2:Display PropertyName="ImageUrl" runat="server" SwallowExceptions="true" />]
+			[<n2:Display PropertyName="ImageUrl" runat="server" SwallowExceptions="true" />[
 			Display with templates (only when image added):
 			[<n2:Display PropertyName="ImageUrl" runat="server" SwallowExceptions="true">
 				<HeaderTemplate>
@@ -40,7 +50,7 @@
 				<FooterTemplate>
 					)
 				</FooterTemplate>
-			</n2:Display>]
+			</n2:Display>[
             <n2:HasValue PropertyName="ImageUrl" runat="server">
 				Image present
             </n2:HasValue>

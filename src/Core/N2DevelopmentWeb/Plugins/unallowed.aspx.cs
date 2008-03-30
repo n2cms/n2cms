@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.TemplateWeb.Plugins
 {
-	[N2.Edit.ToolbarPlugIn("unallowed", "unallowed", "/plugins/unallowed.aspx", N2.Edit.ToolbarArea.Preview)]
+	[N2.Edit.ToolbarPlugin("unallowed", "unallowed", "/plugins/unallowed.aspx", N2.Edit.ToolbarArea.Preview)]
 	[N2.Edit.PlugInAuthorizedRoles("NonExistantRole")]
 	public partial class unallowed : System.Web.UI.Page
 	{

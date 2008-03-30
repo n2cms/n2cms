@@ -5,7 +5,7 @@ using N2.Edit.Wizard.Items;
 
 namespace N2.Edit.Wizard
 {
-	[ToolbarPlugIn("", "wizard", "~/Edit/Wizard/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Wizard/Img/wand.png", 5, ToolTip = "create items in default locations", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("", "wizard", "~/Edit/Wizard/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Wizard/Img/wand.png", 5, ToolTip = "create items in default locations", GlobalResourceClassName = "Toolbar")]
 	public partial class Default : Web.EditPage
 	{
 		protected TextBox txtTitle;

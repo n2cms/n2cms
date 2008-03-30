@@ -332,7 +332,9 @@
     <Compile Include="Integrity\IntegrityEnforcer.cs" />
     <Compile Include="Integrity\RestrictParentsAttribute.cs" />
     <Compile Include="Obsolete\ItemAttribute.cs" />
+    <Compile Include="Obsolete\NavigationPlugInAttribute.cs" />
     <Compile Include="Obsolete\PlugInAttribute.cs" />
+    <Compile Include="Obsolete\ToolbarPlugInAttribute.cs" />
     <Compile Include="Parts\CreateUrlProvider.cs" />
     <Compile Include="Parts\EditUrlProvider.cs" />
     <Compile Include="Parts\ItemCopyer.cs" />
@@ -342,7 +344,7 @@
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\UI\WebControls\A.cs" />
-    <Compile Include="Web\UI\WebControls\DisplayTemplateContainer.cs" />
+    <Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
     <Compile Include="Web\UI\WebControls\DragDropControlPanel.cs" />
     <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
     <Compile Include="Web\UI\WebControls\DropPoint.cs" />

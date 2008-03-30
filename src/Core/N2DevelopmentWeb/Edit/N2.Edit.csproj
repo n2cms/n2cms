@@ -192,6 +192,7 @@
     <Compile Include="Navigation\ContextMenu.ascx.designer.cs">
       <DependentUpon>ContextMenu.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Navigation\HelpfulHandler.cs" />
     <Compile Include="Navigation\LoadTree.ashx.cs">
       <DependentUpon>LoadTree.ashx</DependentUpon>
     </Compile>
@@ -204,6 +205,13 @@
     </Compile>
     <Compile Include="Navigation\NavigationPage.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Navigation\SortDown.ashx.cs">
+      <DependentUpon>SortDown.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\SortPlugin.cs" />
+    <Compile Include="Navigation\SortUp.ashx.cs">
+      <DependentUpon>SortUp.ashx</DependentUpon>
     </Compile>
     <Compile Include="Navigation\Table.aspx.cs">
       <DependentUpon>Table.aspx</DependentUpon>
@@ -1089,6 +1097,12 @@
     <Content Include="img\toolitem_separator.gif" />
     <Content Include="Navigation\LoadTree.ashx" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Navigation\SortUp.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Navigation\SortDown.ashx" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -1103,9 +1117,9 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1239</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>3825</DevelopmentServerPort>
+          <DevelopmentServerVPath>/Edit/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

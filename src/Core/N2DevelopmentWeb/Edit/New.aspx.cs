@@ -29,8 +29,8 @@ using N2.Integrity;
 
 namespace N2.Edit
 {
-	[NavigationPlugIn("New", "new", "../new.aspx?selected={selected}", "preview", "~/edit/img/ico/add.gif", 10, GlobalResourceClassName="Navigation")]
-	[ToolbarPlugIn("", "new", "new.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/add.gif", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
+	[NavigationPlugin("New", "new", "../new.aspx?selected={selected}", "preview", "~/edit/img/ico/add.gif", 10, GlobalResourceClassName="Navigation")]
+	[ToolbarPlugin("", "new", "new.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/add.gif", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;

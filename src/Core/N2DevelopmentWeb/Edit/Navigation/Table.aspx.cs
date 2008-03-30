@@ -26,7 +26,7 @@ using System.Web.UI.WebControls;
 
 namespace N2.Edit.Navigation
 {
-	[ToolbarPlugIn("", "table", "navigation/table.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/table.gif", -20, ToolTip = "tabular navigation", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("", "table", "navigation/table.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/table.gif", -20, ToolTip = "tabular navigation", GlobalResourceClassName = "Toolbar")]
 	public partial class Table : NavigationPage, N2.Web.UI.IItemContainer
 	{
 		protected override void OnInit(EventArgs e)

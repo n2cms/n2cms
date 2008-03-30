@@ -380,21 +380,21 @@ namespace N2.Tests.Edit
 		[Test]
 		public void CanGetNavigationPlugIns()
 		{
-			IList<NavigationPlugInAttribute> plugIns = editManager.GetNavigationPlugIns();
+			IList<NavigationPluginAttribute> plugIns = editManager.GetNavigationPlugIns();
 			Assert.AreEqual(2, plugIns.Count);
 		}
 
 		[Test]
 		public void CanGetSortNavigationPlugIns()
 		{
-			IList<NavigationPlugInAttribute> plugIns = editManager.GetNavigationPlugIns();
+			IList<NavigationPluginAttribute> plugIns = editManager.GetNavigationPlugIns();
 			Assert.AreEqual(2, plugIns.Count);
 
-			NavigationPlugInAttribute plugin1 = plugIns[0];
+			NavigationPluginAttribute plugin1 = plugIns[0];
 			Assert.AreEqual("chill", plugin1.Name);
 			Assert.AreEqual("Chill in", plugin1.Title);
 
-			NavigationPlugInAttribute plugin2 = plugIns[1];
+			NavigationPluginAttribute plugin2 = plugIns[1];
 			Assert.AreEqual("buzz", plugin2.Name);
 			Assert.AreEqual("Buzz out", plugin2.Title);
 		}
@@ -403,7 +403,7 @@ namespace N2.Tests.Edit
 		public void DoesntGetNavigationPluginsThatRequiresSpecialAuthorization()
 		{
 			IPrincipal user = CreateUser("Joe", "Carpenter");
-			IList<NavigationPlugInAttribute> plugIns = editManager.GetNavigationPlugIns(user);
+			IList<NavigationPluginAttribute> plugIns = editManager.GetNavigationPlugIns(user);
 			Assert.AreEqual(1, plugIns.Count);
 		}
 
@@ -411,7 +411,7 @@ namespace N2.Tests.Edit
 		public void CanGetRestrictedNavigationPluginsIfAuthorized()
 		{
 			IPrincipal user = CreateUser("Bill", "ÜberEditor");
-			IList<NavigationPlugInAttribute> plugIns = editManager.GetNavigationPlugIns(user);
+			IList<NavigationPluginAttribute> plugIns = editManager.GetNavigationPlugIns(user);
 			Assert.AreEqual(2, plugIns.Count);
 		}
 
@@ -419,21 +419,21 @@ namespace N2.Tests.Edit
 		[Test]
 		public void CanGetToolbarPlugIns()
 		{
-			IList<ToolbarPlugInAttribute> plugIns = editManager.GetToolbarPlugIns();
+			IList<ToolbarPluginAttribute> plugIns = editManager.GetToolbarPlugIns();
 			Assert.AreEqual(2, plugIns.Count);
 		}
 
 		[Test]
 		public void CanGetSortToolbarPlugIns()
 		{
-			IList<ToolbarPlugInAttribute> plugIns = editManager.GetToolbarPlugIns();
+			IList<ToolbarPluginAttribute> plugIns = editManager.GetToolbarPlugIns();
 			Assert.AreEqual(2, plugIns.Count);
 
-			ToolbarPlugInAttribute plugin1 = plugIns[0];
+			ToolbarPluginAttribute plugin1 = plugIns[0];
 			Assert.AreEqual("peace", plugin1.Name);
 			Assert.AreEqual("Don't worry be happy", plugin1.Title);
 
-			ToolbarPlugInAttribute plugin2 = plugIns[1];
+			ToolbarPluginAttribute plugin2 = plugIns[1];
 			Assert.AreEqual("panic", plugin2.Name);
 			Assert.AreEqual("Worry we're coming", plugin2.Title);
 		}
@@ -442,7 +442,7 @@ namespace N2.Tests.Edit
 		public void DoesntGetToolbarPluginsThatRequiresSpecialAuthorization()
 		{
 			IPrincipal user = CreateUser("Joe", "Carpenter");
-			IList<ToolbarPlugInAttribute> plugIns = editManager.GetToolbarPlugIns(user);
+			IList<ToolbarPluginAttribute> plugIns = editManager.GetToolbarPlugIns(user);
 			Assert.AreEqual(1, plugIns.Count);
 		}
 
@@ -450,7 +450,7 @@ namespace N2.Tests.Edit
 		public void CanGetRestrictedToolbarPluginsIfAuthorized()
 		{
 			IPrincipal user = CreateUser("Bill", "ÜberEditor");
-			IList<ToolbarPlugInAttribute> plugIns = editManager.GetToolbarPlugIns(user);
+			IList<ToolbarPluginAttribute> plugIns = editManager.GetToolbarPlugIns(user);
 			Assert.AreEqual(2, plugIns.Count);
 		}
 

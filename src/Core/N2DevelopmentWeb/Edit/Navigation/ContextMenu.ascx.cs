@@ -9,7 +9,7 @@ namespace N2.Edit.Navigation
 		{
 			ContentItem selectedItem = ((NavigationPage) Page).SelectedItem;
 
-			foreach (NavigationPlugInAttribute a in N2.Context.Current.EditManager.GetNavigationPlugIns(Page.User))
+			foreach (NavigationPluginAttribute a in N2.Context.Current.EditManager.GetNavigationPlugIns(Page.User))
 			{
 				a.AddTo(plhMenuItems);
 			}

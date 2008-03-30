@@ -1,7 +1,7 @@
 ﻿body { background:#fff; }
 
 /* Toolbar */
-.toolbar { position:relative; background:#d6d9d8 url(../img/toolbar_bg.gif) repeat-x 0% 100%; height:50px; min-width:700px; }
+.toolbar { position:relative; background:#d6d9d8 url(../img/toolbar_bg.gif) repeat-x 0% 100%; height:50px; min-width:700px; overflow:hidden; }
 
 	.toolbar .area { float:left; background:#ffffff url(../img/toolarea_bg.gif) repeat-x 100% 100%; padding-left:10px; }
 
@@ -22,7 +22,7 @@
 	cursor:hand;
 	cursor:pointer;
 }
-	.toolbar .toolbarItem .command
+	.toolbar .command
 	{
 		float:left;
 		display:block;
@@ -30,13 +30,13 @@
 		padding:20px 5px 5px 5px;
 	}
 
-.toolbar .toolbarItem.hover,
-.toolbar .toolbarItem.selected
+.toolbar .hover,
+.toolbar .selected
 {
-	background:transparent url(../img/toolitem_hover.gif) no-repeat 100% 100%;
+	background-image:url(../img/toolitem_hover.gif);
 }
-	.toolbar .toolbarItem.hover .command,
-	.toolbar .toolbarItem.selected .command
+	.toolbar .hover .command,
+	.toolbar .selected .command
 	{
 		background:transparent url(../img/toolitem_hover.gif) no-repeat 0% 100%;
 		position:relative;
@@ -52,10 +52,11 @@
 	bottom:15px;
 	padding:1px;
 }
-.toolbar a.logout:hover
-{
-	background-color:Transparent;
-}
+.toolbar .sort { padding:16px 5px 4px 5px; height:30px; }
+.toolbar .hover .sort { padding:16px 0px 4px 10px; }
+.toolbar .sort a { height:12px; width:15px; display:block; overflow:hidden; }
+.toolbar .sort a:hover {}
+
 
 #logo
 {
