@@ -19,6 +19,7 @@
 	- new treemenu: lazy load with ajax
 	- added /edit/install/fix.aspx for more direct database access
 	- improved installer hints on item definition
+	- new top toolbar design
 - examples
 	- included multiple domains example
 - templates

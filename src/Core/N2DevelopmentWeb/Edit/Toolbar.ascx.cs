@@ -29,7 +29,12 @@ namespace N2.Edit
 				Control container = (pluginAttribute.Area == ToolbarArea.Preview) 
 					? plhFrame 
 					: plhNavigation;
-				pluginAttribute.AddTo(container);
+				
+				HtmlGenericControl command = new HtmlGenericControl("div");
+				command.Attributes["class"] = "toolbarItem";
+				container.Controls.Add(command);
+
+				pluginAttribute.AddTo(command);
 			}
 		}
 

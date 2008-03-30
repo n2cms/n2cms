@@ -1,12 +1,10 @@
 /* clearfix */
 .cf:after,
 .editDetail:after,
-.toolbar:after
-{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.toolbar:after {content:".";display:block;height:0;clear:both;visibility:hidden;}
 .cf,
 .editDetail,
-.toolbar
-{display: inline-block;}
+.toolbar {display: inline-block;}
 /* Hides from IE-mac \*/
 * html .cf,
 * html .editDetail,
@@ -67,35 +65,8 @@ td
 {
     min-width:640px;
 }
-.toolbar .command
-{
-	padding:4px;
-	margin:1px 0;
-	overflow:hidden;
-	text-decoration:none;
-	font-weight:bold;
-	float:left;
-	overflow:hidden;
-	font-size:1.2em;
-	line-height:20px;
-}
-.toolbar .toggled,
-.toolbar .command:hover
-{
-	background-color:#f7f7f7;
-	border:solid 1px #dedad7;
-	padding:3px;
-}
-.toolbar .command:active
-{
-	background-color:#dedad7;
-}
-.toolbar a.plain,
-.toolbar a.cancel
-{
-	font-size:1em;
-	font-weight:normal;
-}
+
+
 fieldset
 {
 	margin-bottom:10px;

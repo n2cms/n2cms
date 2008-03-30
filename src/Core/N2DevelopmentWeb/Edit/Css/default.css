@@ -1,43 +1,49 @@
-﻿body
-{
-	background:#fff;
-}
+﻿body { background:#fff; }
 
 /* Toolbar */
-.toolbar
-{
-	position:relative;
-	background:#c3c0bd url(../img/toolbar_bg.gif) repeat-x 0% 100%;
-}
-.toolbar .left
-{
-	float:left;
-	padding-left:6px;
-	background:url(../img/toolbar_area_left.gif) no-repeat 0% 100%;
-}
-.toolbar .right
-{
-	float:left;
-	padding-right:6px;
-	padding-bottom:2px;
-	background:url(../img/toolbar_area_right.gif) no-repeat 100% 100%;
-}
-.toolbar .navigation,
-.toolbar .preview
-{
-	float:left;
-	background:#ffffff url(../img/toolbar_area_bg.gif) repeat-x 0% 100%;
-}
+.toolbar { position:relative; background:#d6d9d8 url(../img/toolbar_bg.gif) repeat-x 0% 100%; border-bottom:solid 1px #a5acb0; height:40px; }
+
+	.toolbar .area { float:left; background:#ffffff url(../img/toolarea_bg.gif) repeat-x 100% 100%; padding-left:10px; }
+
+		.toolbar .right { padding-right:20px; background:transparent url(../img/toolarea_separator.gif) no-repeat 100% 100%; height:40px; float:left; }
+		.toolbar .last .right { background-image:url(../img/toolarea_end.gif); }
 
 /* Navigation */
-.toolbar .command img
+.toolbar .toolbarItem
 {
-	margin:2px 0;
+	height:40px;
+	float:left;
+	padding-right:5px;
+	background:transparent url(../img/toolitem_separator.gif) no-repeat 100% 100%;
+	cursor:hand;
+	cursor:pointer;
 }
+	.toolbar .toolbarItem .command
+	{
+		float:left;
+		display:block;
+		height:25px;
+		padding:10px 5px 5px 5px;
+	}
+
+.toolbar .toolbarItem.hover
+{
+	background:transparent url(../img/toolitem_hover.gif) no-repeat 100% 100%;
+}
+	.toolbar .toolbarItem.hover .command
+	{
+		background:transparent url(../img/toolitem_hover.gif) no-repeat 0% 100%;
+		position:relative;
+		left:-5px;
+		padding:11px 0px 4px 10px;
+	}
+
 .toolbar .logout
 {
-	float:right;
-	margin:2px 50px 0 0;
+	display:block;
+	position:absolute;
+	right:55px;
+	bottom:12px;
 }
 .toolbar a.logout:hover
 {
@@ -47,38 +53,14 @@
 #logo
 {
 	position:absolute;
-	right:0;
-	bottom:0;
+	right:15px;
+	bottom:10px;
 }
 
 
-#splitter 
-{
-	height: 500px;
-}
-#splitter #leftPane 
-{
-	overflow: hidden;
-	width: 200px;		/* optional, initial splitbar position */
-	min-width: 50px;	/* optional */
-	/* No margin or border allowed */
-}
-#splitter #rightPane 
-{
-	min-width: 50px;
-	overflow: hidden;
-	/* No margin or border allowed */
-}
-#splitter .vsplitbar 
-{
-	width: 2px;
-	background-color: #c3c0bd;
-	border-width:0 1px;
-	border-color:#a9a6a3;
-	border-style:solid;
-}
-#splitter .vsplitbar.active, #splitter .vsplitbar:hover 
-{
-	background-color: #a9a6a3;
-}
-#splitter iframe{width:100%;}
+#splitter { height: 500px; }
+#splitter #leftPane { overflow: hidden; width: 200px; min-width: 50px; }
+#splitter #rightPane { min-width: 50px; overflow: hidden; }
+#splitter .vsplitbar { width: 3px; background-color: #d1d4d3; border-width:0 1px; border-color:#a9a6a3; border-style:solid; }
+#splitter .vsplitbar.active, #splitter .vsplitbar:hover { background-color: #a5acb0; }
+#splitter iframe{ width:100%; }
