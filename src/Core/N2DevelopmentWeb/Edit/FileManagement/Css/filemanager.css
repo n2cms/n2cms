@@ -49,12 +49,12 @@ a.enabled
 .upload .command,
 .newFolder .command
 {
-	visibility:hidden;
+	display:none;
 }
 .upload .cancel,
 .newFolder .cancel
 {
-	visibility:visible;
+	display:block;
 }
 
 

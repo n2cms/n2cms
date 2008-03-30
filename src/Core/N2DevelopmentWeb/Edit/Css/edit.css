@@ -131,14 +131,14 @@ input.disabled,
 /* tab overrides */
 .tabPanel
 {
-	background:#fff url(../img/framed_toolbar.gif) repeat-x;
 	margin-bottom:10px;
 }
+/*
 .tabs
 {
 	left:-10px;
 }
-
+*/
 .tabPanel fieldset
 {
 	left:0;

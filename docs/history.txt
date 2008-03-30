@@ -21,6 +21,7 @@
 	- improved installer hints on item definition
 	- new top toolbar design
 	- select current frame in toolbar
+	- tweaked edit design
 - examples
 	- included multiple domains example
 - templates

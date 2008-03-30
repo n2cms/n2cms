@@ -19,7 +19,11 @@
         $(document).ready(function(){
 	        n2nav.parentInputId = '<%= OpenerInputId %>';
             n2nav.setupLinks('#tree');
-			$("#tree").SimpleTree();
-        });
+			$("#tree").SimpleTree({
+				success: function(el){
+					n2nav.setupLinks('#tree');
+				}
+			});
+		});
     </script>
 </asp:Content>

@@ -119,9 +119,11 @@ fieldset
 }
 .commandOptions .opener
 {
+	background:transparent url(../img/framed_opener.gif) no-repeat 0% 100%;
+	height:12px;
 	float:left;
 	display:block;
-	padding:10px 10px 10px 1px;
+	padding:12px 10px 8px 2px;
 	position:relative;
 	cursor:pointer;
 	cursor:hand;

@@ -1072,7 +1072,7 @@
     <Content Include="img\treeview\root.gif" />
     <Content Include="img\treeview\spacer.gif" />
     <Content Include="img\treeview\spinner.gif" />
-    <Content Include="Js\jquery.ui\jquery.SimpleTree.js" />
+    <Content Include="Js\plugins\jquery.SimpleTree.js" />
     <Content Include="Js\tinymce.ashx" />
     <Content Include="Security\Default.aspx" />
     <Content Include="Versions\Css\Versions.css" />
@@ -1104,7 +1104,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4745</DevelopmentServerPort>
+          <DevelopmentServerPort>1239</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

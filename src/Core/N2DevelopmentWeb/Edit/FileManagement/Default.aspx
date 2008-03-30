@@ -7,11 +7,6 @@
     <script src="../Js/UrlSelection.js" type="text/javascript" ></script>
 	<script src="Js/FileSelection.js" type="text/javascript" ></script>
     <script src="Js/jquery.MultiFile.js" type="text/javascript" ></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("filemanager");
-		});
-	</script>
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:HyperLink ID="hlItems" runat="server" CssClass="command switch" NavigateUrl="../ItemSelection/Default.aspx" meta:resourceKey="hlItems">items</asp:HyperLink>
@@ -36,12 +31,14 @@
 			<input type="button" onclick="n2nav.onCancel();" value="Cancel" />
         </div>
     </div>
-    <div id="tree">
+    <div id="tree" class="tree">
         <asp:SiteMapDataSource ID="smds" runat="server" />
         <edit:TreeView ID="fileView" runat="server" DataSourceID="smds" OnTreeNodeDataBound="fileView_TreeNodeDataBound" ExpandDepth="10" />
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
+			toolbarSelect("filemanager");
+			
 		    n2nav.selectionInputId = '#<%= selectedUrl.ClientID %>';
 		    n2nav.parentInputId = '<%= OpenerInputId %>';
 		    n2nav.setupLinks('#tree');

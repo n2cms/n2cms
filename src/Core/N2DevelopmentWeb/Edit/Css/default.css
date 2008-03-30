@@ -49,7 +49,8 @@
 	display:block;
 	position:absolute;
 	right:60px;
-	bottom:18px;
+	bottom:15px;
+	padding:1px;
 }
 .toolbar a.logout:hover
 {
@@ -60,13 +61,13 @@
 {
 	position:absolute;
 	right:15px;
-	bottom:17px;
+	bottom:15px;
 }
 
 
 #splitter { height: 500px; }
 #splitter #leftPane { overflow: hidden; width: 200px; min-width: 50px; }
 #splitter #rightPane { min-width: 50px; overflow: hidden; }
-#splitter .vsplitbar { width: 3px; background-color: #d1d4d3; border-width:0 1px; border-color:#a9a6a3; border-style:solid; }
+#splitter .vsplitbar { width: 5px; background: #cdd0cf url(../img/splitter.gif) no-repeat 50% 50%; }
 #splitter .vsplitbar.active, #splitter .vsplitbar:hover { background-color: #a5acb0; }
 #splitter iframe{ width:100%; }

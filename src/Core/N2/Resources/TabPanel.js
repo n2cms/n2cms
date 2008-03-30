@@ -44,19 +44,29 @@ $.fn.n2tabs_createContainer = function(firstContents){
 }
 
 // creates a tab element
-$.fn.n2tabs_createTab = function(containerQuery, tabContents){
-    containerQuery.append("<li><a href='#" + tabContents.id + "'>" + tabContents.title + "</a></li>");
+$.fn.n2tabs_createTab = function(containerQuery, tabContents, index){
+	var li = "<li>";
+	if(index == 0)
+		li = "<li class='first'>";
+    containerQuery.append(li + "<a href='#" + tabContents.id + "'>" + tabContents.title + "</a></li>");
 }
 
 // creates tab elements (ul:s and li:s) above the first tab content element
 $.fn.n2tabs_buildTabs = function(tabSettings){
-    tabSettings.query.each( function(){
-        tabSettings.container.n2tabs_createTab(tabSettings.container, this);
+	var lastIndex = tabSettings.query.length - 1;
+    tabSettings.query.each( function(i){
+		var className = "tab";
+		if(i == 0) className = className  + " first";
+		if(i == lastIndex) className = className  + " last";
+        tabSettings.container.n2tabs_createTab(tabSettings.container, this, className);
     });
     $("a", tabSettings.container).each(function(i){
         tabSettings.tabs[i] = $(this);
     }).click(function(){
-        if(this.hash!=location.hash)$.fn.n2tabs_show($(this.hash),$(this));else return false;
+        if(this.hash!=location.hash)
+			$.fn.n2tabs_show($(this.hash),$(this));
+		else 
+			return false;
     });
 }
 
