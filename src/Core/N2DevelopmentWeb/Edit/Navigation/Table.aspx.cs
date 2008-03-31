@@ -29,13 +29,24 @@ namespace N2.Edit.Navigation
 	[ToolbarPlugin("", "table", "navigation/table.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/table.gif", -20, ToolTip = "tabular navigation", GlobalResourceClassName = "Toolbar")]
 	public partial class Table : NavigationPage, N2.Web.UI.IItemContainer
 	{
+		protected PlaceHolder phPath;
+
+		protected IEnumerable<ContentItem> Parents
+		{
+			get
+			{
+				List<ContentItem> items = new List<ContentItem>(Find.EnumerateParents(SelectedItem, null, true));
+				items.Reverse();
+				return items;
+			}
+		}
+
 		protected override void OnInit(EventArgs e)
 		{
-			smds.Provider = new Web.EditSiteMapProvider();
-			smp.Provider = new Web.EditSiteMapProvider();
-
 			idsItems.Filtering += new EventHandler<N2.Collections.ItemListEventArgs>(FilterByIsPage);
 			idsItems.Selected += new EventHandler<N2.Collections.ItemListEventArgs>(FilterByIsPage);
+
+			phPath.DataBind();
 
 			base.OnInit(e);
 		}

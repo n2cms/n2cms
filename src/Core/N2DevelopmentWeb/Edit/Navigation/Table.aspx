@@ -18,18 +18,42 @@
 <body class="navigation table">
     <form id="form1" runat="server">
         <div id="nav" class="list">
-            <asp:SiteMapDataSource ID="smds" runat="server" />
+			
+			<asp:PlaceHolder ID="phPath" runat="server" >
+				<asp:Repeater runat="server" ID="rptPath" DataSource="<%# Parents %>">
+					<ItemTemplate>
+						<ul>
+						<li>
+							<a class="enabled" onclick="<%# Eval("Path", "window.top.n2.setupToolbar('{0}');") %>"
+								rel='<%# Eval("Path") %>'
+								href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("Path")) %>'>
+								<asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
+								<%# Eval("Title") %>
+							</a>
+						</li>
+					</ItemTemplate>
+				</asp:Repeater>
+				<asp:Repeater runat="server" ID="Repeater1" DataSource="<%# Parents %>">
+					<ItemTemplate>
+						</ul>
+					</ItemTemplate>
+				</asp:Repeater>
+			</asp:PlaceHolder>
+			
+			
+			
+            <%--<asp:SiteMapDataSource ID="smds" runat="server" />
             <asp:SiteMapPath ID="smp" runat="server" CssClass="path" SkipLinkText="">
                 <NodeTemplate>
                     <a class="enabled" onclick="<%# Eval("CurrentItem.Path", "window.top.n2.setupToolbar('{0}');") %>"
 						rel='<%# Eval("CurrentItem.Path") %>'
-                        href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("CurrentItem.RewrittenUrl")) %>'>
+                        href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("CurrentItem.Path")) %>'>
                         <asp:Image ImageUrl='<%# Eval("CurrentItem.IconUrl") %>' runat="server" />
                         <%# Container.SiteMapNode.Title %>
                     </a>
                 </NodeTemplate>
                 <CurrentNodeStyle CssClass="selected" />
-            </asp:SiteMapPath>
+            </asp:SiteMapPath>--%>
 
             <n2:ItemDataSource ID="idsItems" runat="server" />
             <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" runat="server" DataKeyField="ID"
@@ -40,7 +64,7 @@
                         <ItemTemplate>
                             <a onclick="<%# Eval("Path", "window.top.n2.setupToolbar('{0}');") %>"
 								rel='<%# Eval("Path") %>'
-                                href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("RewrittenUrl")) %>' 
+                                href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("Path")) %>' 
                                 style='<%# ((int)Eval("Children.Count")==0) ? "display:none" : "" %>'
                                 title='<%# (int)Eval("Children.Count") %>'>
                                 <img src="../Img/Ico/bullet_toggle_plus.gif" />
