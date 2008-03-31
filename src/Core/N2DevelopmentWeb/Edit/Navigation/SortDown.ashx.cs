@@ -17,7 +17,7 @@ namespace N2.Edit.Navigation
 			{
 				IList<ContentItem> siblings = selectedNode.Parent.Children;
 				int index = siblings.IndexOf(selectedNode);
-				if (index + 1 < siblings.Count - 1)
+				if (index + 1 < siblings.Count)
 				{
 					Utility.MoveToIndex(siblings, selectedNode, index + 1);
 					foreach (ContentItem changed in Utility.UpdateSortOrder(siblings))

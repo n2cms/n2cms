@@ -9,7 +9,7 @@
         </div></div></div>
 
         <a id="logo" href="http://n2cms.com/" title="To the home of N2 CMS"><img src="img/n2.gif" alt="N2 CMS" /></a>
-        <asp:LoginStatus ID="logout" runat="server" CssClass="logout" LogoutText="<img src='img/ico/key.gif' alt='key'/>logout" meta:resourcekey="logout" />
+        <asp:LoginStatus ID="logout" runat="server" CssClass="logout" LogoutText="<img src='img/ico/key.gif' alt='logout'/>logout" meta:resourcekey="logout" />
 	</div>
 </div>
 

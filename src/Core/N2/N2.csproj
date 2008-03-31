@@ -511,7 +511,6 @@
     <EmbeddedResource Include="Resources\Parts.css" />
     <EmbeddedResource Include="Resources\Parts.js" />
     <EmbeddedResource Include="Resources\SlidingCurtain_bg.png" />
-    <EmbeddedResource Include="Resources\SlidingCurtain_bg_bottom.png" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

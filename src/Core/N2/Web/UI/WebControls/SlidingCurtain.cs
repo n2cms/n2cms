@@ -4,7 +4,6 @@ using N2.Resources;
 using N2.Web.UI.WebControls;
 
 [assembly: WebResource("N2.Resources.SlidingCurtain_bg.png", "image/png")]
-[assembly: WebResource("N2.Resources.SlidingCurtain_bg_bottom.png", "image/png")]
 
 namespace N2.Web.UI.WebControls
 {

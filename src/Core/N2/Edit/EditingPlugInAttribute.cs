@@ -128,7 +128,7 @@ namespace N2.Edit
 			if (string.IsNullOrEmpty(IconUrl))
 				a.InnerHtml = title;
 			else
-				a.InnerHtml = string.Format("<img src='{0}' alt=''/>{1}", Utility.ToAbsolute(IconUrl), title);
+				a.InnerHtml = string.Format("<img src='{0}' alt='{1}'/>{2}", Utility.ToAbsolute(IconUrl), Name, title);
 
 			container.Controls.Add(a);
 			return a;

@@ -526,7 +526,7 @@ namespace N2.Web.UI.WebControls
 
 		protected string FormatImageAndText(string iconUrl, string text)
 		{
-			return string.Format("<img src='{0}' alt='icon'/>{1}", iconUrl, text);
+			return string.Format("<img src='{0}' alt=''/>{1}", iconUrl, text);
 		}
 
 		#endregion
