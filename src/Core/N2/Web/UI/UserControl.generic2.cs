@@ -39,8 +39,13 @@ namespace N2.Web.UI
 
 		ContentItem IDataItemContainer.CurrentItem
 		{
-			get { return this.currentItem; }
-			set { this.currentItem = (TItem)value; }
+			get { return currentItem; }
+			set { currentItem = (TItem)value; }
+		}
+
+		ContentItem IItemContainer.CurrentItem
+		{
+			get { return currentItem; }
 		}
 	}
 }

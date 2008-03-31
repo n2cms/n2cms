@@ -5,7 +5,9 @@ using System.Web.UI;
 
 namespace N2.Web.UI
 {
-	/// <summary>A user control base used to for quick access to content data.</summary>
+	/// <summary>
+	/// A user control base used to for quick access to content data.
+	/// </summary>
 	/// <typeparam name="TPage">The type of page item this user control will have to deal with.</typeparam>
 	public class UserControl<TPage> : UserControl, IPageItemContainer
 		where TPage : N2.ContentItem
@@ -23,8 +25,13 @@ namespace N2.Web.UI
 			get 
 			{
 				if (currentPage == null)
-					currentPage = (TPage)ItemUtility.FindCurrentItem(this.Parent) ?? (TPage)N2.Context.CurrentPage;
-				return (TPage)N2.Context.CurrentPage; 
+				{
+					if (Page is IItemContainer)
+						currentPage = (TPage)((IItemContainer)Page).CurrentItem;
+					else
+						currentPage = (TPage)N2.Context.CurrentPage;
+				}
+				return currentPage; 
 			}
 		}
 

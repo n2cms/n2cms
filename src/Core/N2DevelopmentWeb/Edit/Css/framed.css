@@ -130,10 +130,14 @@ ul
 .gv tr,
 .gv th,
 .gv td { border:solid 1px #e0e0e0; border-collapse:collapse; }
+
 .gv th,
 .gv td { padding:2px; background:#fff none; }
+
 .gv th { text-align:left; background:#f7f7f7 none; }
+
 .gv .alt td { background:#f7f7f7 none; }
+
 .gv a { display:block; }
 
 
