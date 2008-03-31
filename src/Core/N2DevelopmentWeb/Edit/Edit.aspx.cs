@@ -141,7 +141,7 @@ namespace N2.Edit
 
 		private void LoadInfo()
 		{
-			ucInfo.CurrentData = ie.CurrentItem;
+			ucInfo.CurrentItem = ie.CurrentItem;
 			ucInfo.DataBind();
 		}
 

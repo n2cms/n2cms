@@ -40,7 +40,7 @@ namespace N2.Edit.Export
 		{
 			base.OnPreRender(e);
 
-			exportedItems.CurrentData = SelectedItem;
+			exportedItems.CurrentItem = SelectedItem;
 			tpExport.DataBind();
 		}
 
@@ -61,7 +61,7 @@ namespace N2.Edit.Export
 			try
 			{
 				IImportRecord record = Engine.Resolve<Importer>().Read(UploadedFilePath);
-				importedItems.CurrentData = record.RootItem;
+				importedItems.CurrentItem = record.RootItem;
 				rptAttachments.DataSource = record.Attachments;
 			}
 			catch(WrongVersionException)
@@ -69,7 +69,7 @@ namespace N2.Edit.Export
 				using (Stream s = File.OpenRead(UploadedFilePath))
 				{
 					N2XmlReader xr = new N2XmlReader(N2.Context.Current);
-					importedItems.CurrentData = xr.Read(s);
+					importedItems.CurrentItem = xr.Read(s);
 				}
 			}
 			uploadFlow.ActiveViewIndex = 1;

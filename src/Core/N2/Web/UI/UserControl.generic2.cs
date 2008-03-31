@@ -11,20 +11,19 @@ namespace N2.Web.UI
 		where TPage : N2.ContentItem
 		where TItem : N2.ContentItem
 	{
+		private TItem currentItem;
 
-		private TItem currentData;
 		/// <summary>Gets the current data item.</summary>
 		[Obsolete("Use CurrentItem to access part specific data.")]
 		public virtual TItem CurrentData
 		{
-			get { return this.currentData ?? ItemUtility.CurrentContentItem as TItem; }
-			set { this.currentData = value; }
+			get { return CurrentItem; }
 		}
 
 		/// <summary>Gets the current data item.</summary>
 		public new TItem CurrentItem
 		{
-			get { return this.CurrentData; }
+			get { return this.currentItem; }
 		}
 
 		/// <summary>Gets whether the current data item is referenced in the query string. This usually occurs when the item is selected in edit mode.</summary>
@@ -38,14 +37,10 @@ namespace N2.Web.UI
 			}
 		}
 
-		ContentItem IDataItemContainer.CurrentData
+		ContentItem IDataItemContainer.CurrentItem
 		{
-			get { return this.CurrentData; }
-			set { this.CurrentData = (TItem)value; }
-		}
-		ContentItem IItemContainer.CurrentItem
-		{
-			get { return this.CurrentData; }
+			get { return this.currentItem; }
+			set { this.currentItem = (TItem)value; }
 		}
 	}
 }

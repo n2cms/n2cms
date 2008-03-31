@@ -9,6 +9,7 @@
 	- versions of an item lists the published item's children (and parts)
 	- installermodule - checks database connection on start
 	- tweaked the tree & link implementations
+	- removed CurrentData from the parts template base class (use CurrentItem)
 - edit
 	- preview changes
 	- translations: toolbar buttons, user editor

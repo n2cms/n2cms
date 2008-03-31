@@ -80,7 +80,7 @@ namespace N2.Edit
 			                        GetBreadcrumbPath(SelectedItem),
 			                        MemorizedItem.Name);
 
-			itemsToMove.CurrentData = MemorizedItem;
+			itemsToMove.CurrentItem = MemorizedItem;
 			itemsToMove.DataBind();
 		}
 

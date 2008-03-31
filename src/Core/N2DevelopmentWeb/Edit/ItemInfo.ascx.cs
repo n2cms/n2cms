@@ -21,19 +21,10 @@ namespace N2.Edit
 		#region IDataItemContainer Members
 
 		public ContentItem currentData;
-		public ContentItem CurrentData
+		public ContentItem CurrentItem
 		{
 			get { return currentData; }
 			set { currentData = value; }
-		}
-
-		#endregion
-
-		#region IItemContainer Members
-
-		public ContentItem CurrentItem
-		{
-			get { return CurrentData; }
 		}
 
 		#endregion

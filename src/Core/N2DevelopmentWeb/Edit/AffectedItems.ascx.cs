@@ -20,7 +20,7 @@ namespace N2.Edit
             this.Controls.Clear();
             HtmlGenericControl ul = new HtmlGenericControl("ul");
             this.Controls.Add(ul);
-            AddChildrenRecursive(CurrentData, ul);
+            AddChildrenRecursive(CurrentItem, ul);
         }
 
         private void AddChildrenRecursive(N2.ContentItem item, HtmlGenericControl container)
@@ -39,20 +39,11 @@ namespace N2.Edit
             }
 		}
 
-		#region IDataItemContainer & IItemContainer Members
-
 		private ContentItem currentData;
-		public N2.ContentItem CurrentData
+		public N2.ContentItem CurrentItem
 		{
 			get { return currentData; }
 			set { currentData = value; }
 		}
-
-		public ContentItem CurrentItem
-		{
-			get { return CurrentData; }
-		}
-
-		#endregion
 	}
 }
