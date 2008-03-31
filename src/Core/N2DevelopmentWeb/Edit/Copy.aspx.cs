@@ -58,7 +58,7 @@ namespace N2.Edit
 				GetBreadcrumbPath(SelectedItem), 
 				MemorizedItem.Name);
 
-			itemsToCopy.CurrentData = MemorizedItem;
+			itemsToCopy.CurrentItem = MemorizedItem;
 			itemsToCopy.DataBind();
 		}
 

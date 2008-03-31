@@ -14,7 +14,7 @@ namespace N2.Edit
         protected void Page_Init(object sender, EventArgs e)
         {
 			hlCancel.NavigateUrl = SelectedItem.Url;
-			itemsToDelete.CurrentData = SelectedItem;
+			itemsToDelete.CurrentItem = SelectedItem;
             itemsToDelete.DataBind();
 			referencingItems.Item = SelectedItem;
 			referencingItems.DataBind();
