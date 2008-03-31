@@ -30,24 +30,20 @@ namespace N2.Edit.Navigation
 			div.Attributes["class"] = "sort command";
 			container.Controls.Add(div);
 
-			HtmlAnchor up = AddSortAnchor(div, "Navigation/sortUp.ashx?selected={selected}", "~/Edit/img/Ico/bullet_arrow_up.gif", "up");
+			HtmlAnchor up = AddSortAnchor(div, "Navigation/sortUp.ashx?selected=" + GetSelectedPath(container), "~/Edit/img/Ico/bullet_arrow_up.gif", "up");
 			RegisterToolbarUrl(container, up.ClientID, "Navigation/sortUp.ashx?selected={selected}");
 
-			HtmlAnchor down = AddSortAnchor(div, "Navigation/sortDown.ashx?selected={selected}", "~/Edit/img/Ico/bullet_arrow_down.gif", "down");
+			HtmlAnchor down = AddSortAnchor(div, "Navigation/sortDown.ashx?selected=" + GetSelectedPath(container), "~/Edit/img/Ico/bullet_arrow_down.gif", "down");
 			RegisterToolbarUrl(container, down.ClientID, "Navigation/sortDown.ashx?selected={selected}");
 
 			return div;
 		}
 
-		protected virtual HtmlAnchor AddSortAnchor(Control container, string urlFormat, string iconUrl, string key)
+		protected virtual HtmlAnchor AddSortAnchor(Control container, string url, string iconUrl, string key)
 		{
 			HtmlAnchor a = new HtmlAnchor();
 			a.ID = key + Name;
-			a.HRef = urlFormat
-				.Replace("~/", Utility.ToAbsolute("~/"))
-				.Replace("{selected}", "")
-				.Replace("{memory}", "")
-				.Replace("{action}", "");
+			a.HRef = url;
 
 			a.Target = Target;
 			a.Attributes["class"] = key;

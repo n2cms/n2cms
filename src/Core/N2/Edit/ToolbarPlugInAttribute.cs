@@ -24,10 +24,8 @@ namespace N2.Edit
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true)]
 	public class ToolbarPluginAttribute : EditingPluginAttribute, IComparable<ToolbarPluginAttribute>, IContainable
 	{
-		#region Fields
 		ToolbarArea area;
 		private string containerName;
-		#endregion
 
 		#region Constructors
 		/// <summary>Defines a toolbar link.</summary>
@@ -95,7 +93,5 @@ namespace N2.Edit
 		}
 
 		#endregion
-		
-		
 	}
 }

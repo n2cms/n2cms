@@ -31,7 +31,7 @@ namespace N2.Edit
 				{
 					return Navigate(persister.Get(site.StartPageID), path.Substring(1));
 				}
-				throw new ArgumentException("The path must start with a slash '/'", "path");
+				throw new ArgumentException("The path must start with a slash '/', was '" + path + "'", "path");
 			}
 
 			return Navigate(persister.Get(site.RootItemID), path);

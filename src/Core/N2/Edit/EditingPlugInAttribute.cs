@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Diagnostics;
+using N2.Edit.Web;
 
 namespace N2.Edit
 {
@@ -86,8 +87,6 @@ namespace N2.Edit
 
 		#endregion
 
-		#region Methods
-
 		/// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
 		/// <param name="user">The user to check.</param>
 		/// <returns>True if the user is null or no permissions are required or the user has permissions.</returns>
@@ -116,7 +115,7 @@ namespace N2.Edit
 			a.ID = "h" + Name;
 			a.HRef = UrlFormat
 				.Replace("~/", Utility.ToAbsolute("~/"))
-				.Replace("{selected}", HttpUtility.UrlEncode("/"))
+				.Replace("{selected}", GetSelectedPath(container))
 				.Replace("{memory}", "")
 				.Replace("{action}", "");
 
@@ -134,13 +133,21 @@ namespace N2.Edit
 			return a;
 		}
 
+		protected string GetSelectedPath(Control container)
+		{
+			if (container.Page is EditPage)
+			{
+				EditPage ep = container.Page as EditPage;
+				return HttpUtility.UrlEncode(ep.SelectedItem.Path);
+			}
+			return HttpUtility.UrlEncode("/");
+		}
+
 		protected virtual void RegisterToolbarUrl(Control container, string clientID, string urlFormat)
 		{
 			string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, urlFormat);
 			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
 		}
-
-		#endregion
 
 		#region IComparable<EditingPlugInAttribute> Members
 
