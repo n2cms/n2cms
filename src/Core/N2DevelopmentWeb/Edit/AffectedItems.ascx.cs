@@ -8,10 +8,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using N2.Web.UI;
 
 namespace N2.Edit
 {
-    public partial class AffectedItems : System.Web.UI.UserControl, N2.Web.UI.IDataItemContainer
+    public partial class AffectedItems : System.Web.UI.UserControl, IContentTemplate
     {
         protected override void OnDataBinding(EventArgs e)
         {
@@ -39,11 +40,11 @@ namespace N2.Edit
             }
 		}
 
-		private ContentItem currentData;
+		private ContentItem currentItem;
 		public N2.ContentItem CurrentItem
 		{
-			get { return currentData; }
-			set { currentData = value; }
+			get { return currentItem; }
+			set { currentItem = value; }
 		}
 	}
 }

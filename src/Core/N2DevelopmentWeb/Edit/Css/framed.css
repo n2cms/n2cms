@@ -154,7 +154,7 @@ a.enabled img { visibility:visible; }
 
 
 /* NAVIGATCONTEXTMENU */
-#contextMenu { border:solid 1px silver; background:#fff; }
+#contextMenu { border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; }
 #contextMenu a { display:block; padding:3px 6px; white-space:nowrap; margin:1px; }
 #contextMenu a:hover { background-color:#f7f7f7; border:solid 1px #dedad7; padding:2px 5px; text-decoration:none; }
 #contextMenu a img { margin-right:3px; }
@@ -202,7 +202,7 @@ a.title { white-space:nowrap; }
 
 	.tree .toggler { float:left; margin-left:-18px; height:16px; width:16px; 	background-image:url(../img/treeview/spacer.gif); cursor:pointer; }
 
-	.tree ul.ajax { background: url(../img/treeview/spinner.gif) no-repeat 0 0 #ffffff; height: 16px; }
+	.tree ul.ajax { background: url(../img/treeview/spinner.gif) no-repeat 0 0 #ffffff; height: 16px; display:none; }
 		.tree ul.ajax li { display:none; }
 
 	.tree .active{ background-color:#F7BE77; padding:1px 2px; border: 1px dashed #444; }

@@ -7,7 +7,11 @@ using N2.Definitions;
 
 namespace N2.Web.UI
 {
-    public class ItemUtility
+	/// <summary>
+	/// Some helpful methods that havn't founda better place yet (use at your 
+	/// own risk).
+	/// </summary>
+    public static class ItemUtility
     {
 		public static T FindInParents<T>(Control parentControl) where T:class
 		{
@@ -105,6 +109,19 @@ namespace N2.Web.UI
 				foreach(T match in FindInChildren<T>(child))
 					yield return match as T;
 			}
+		}
+
+		public static T EnsureType<T>(ContentItem item)
+			where T: ContentItem
+		{
+			if (item != null && !(item is T))
+			{
+				throw new N2Exception("Cannot cast the current page " + item
+					+ " from type '" + item.GetType()
+					+ "' to type '" + typeof(T)
+					+ "' required by this class. It might help to change the generic argument of this class to something more else (like N2.ContentItem) or moving a user control to a page with the correct type or overriding the TemplateUrl property and referencing a more specific template.");
+			}
+			return (T)item;
 		}
 	}
 }

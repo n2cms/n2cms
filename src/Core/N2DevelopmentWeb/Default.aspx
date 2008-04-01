@@ -10,6 +10,7 @@ current: [[<%= N2.Find.CurrentPage.ID%>]]
 parent: [[<%= N2.Utility.Evaluate(CurrentPage, "Parent.ID") %>]]
 #children: [[<%= CurrentPage.Children.Count %>]]
 #total: [[<%= N2.Find.Items.All.Count() %>]]
+name : [[<asp:Literal runat="server" Text="<%$ Code: CurrentPage.Name %>" />]]
   <%--  
     <h1><%= CurrentPage.Title %></h1>
     

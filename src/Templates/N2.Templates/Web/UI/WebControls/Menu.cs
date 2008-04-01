@@ -6,7 +6,7 @@ using N2.Web.UI;
 
 namespace N2.Templates.Web.UI.WebControls
 {
-	public class Menu : ItemAwareControl, IPageItemContainer
+	public class Menu : ItemAwareControl, IContentTemplate
 	{
 		private ItemFilter[] filters = null;
 

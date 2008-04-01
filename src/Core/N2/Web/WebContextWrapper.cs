@@ -27,6 +27,12 @@ namespace N2.Web
 			get { return IsInWebContext ? CurrentHttpContext.Items : null; }
 		}
 
+		/// <summary>The handler associated with this request.</summary>
+		public virtual IHttpHandler CurrentHandler 
+		{
+			get { return IsInWebContext ? CurrentHttpContext.Handler : null; }
+		}
+
 		/// <summary>Gets the current host name.</summary>
 		public virtual string CurrentHost
 		{

@@ -640,8 +640,8 @@ namespace N2
 			if (!TemplateUrl.EndsWith(".ascx", StringComparison.InvariantCultureIgnoreCase))
 				throw new N2Exception("Cannot add {0} defined by {1}'s TemplateUrl property to a page. Either refrain from adding this item to a page or override TemplateUrl and have it return the url to a user control.", TemplateUrl, GetType());
 			Control templateItem = container.Page.LoadControl(TemplateUrl);
-			if (templateItem is N2UI.IDataItemContainer)
-				(templateItem as N2UI.IDataItemContainer).CurrentItem = this;
+			if (templateItem is N2UI.IContentTemplate)
+				(templateItem as N2UI.IContentTemplate).CurrentItem = this;
 			container.Controls.Add(templateItem);
 			return templateItem;
 		}

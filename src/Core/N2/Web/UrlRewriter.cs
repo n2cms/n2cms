@@ -1,25 +1,3 @@
-#region License
-
-/* Copyright (C) 2007 Cristian Libardo
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
- */
-
-#endregion
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,18 +19,20 @@ namespace N2.Web
 
 		private readonly IDictionary<string, string> rewritesCache = new Dictionary<string, string>();
 		private readonly IUrlParser urlParser;
+		private readonly IWebContext webContext;
 
 		#endregion
 
 		#region Constructor
 
 		/// <summary>Creates a new instance of the UrlRewriter.</summary>
-		public UrlRewriter(IPersister persister, IUrlParser urlParser)
+		public UrlRewriter(IPersister persister, IUrlParser urlParser, IWebContext webContext)
 		{
 			this.urlParser = urlParser;
 			persister.ItemDeleted += ItemChangedEventHandler;
 			persister.ItemMoved += ItemChangedEventHandler;
 			persister.ItemSaved += ItemChangedEventHandler;
+			this.webContext = webContext;
 		}
 
 		#endregion
@@ -71,13 +51,13 @@ namespace N2.Web
 
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		/// <param name="context">The context to perform the rewriting on.</param>
-		public virtual void RewriteRequest(IWebContext context)
+		public virtual void RewriteRequest()
 		{
-			if (IsRewritable(context.Request))
+			if (IsRewritable(webContext.Request))
 			{
-				string requestedUrl = context.RelativeUrl;
+				string requestedUrl = webContext.RelativeUrl;
 				string rewrittenUrl;
-				string key = context.Request.Url.Authority + requestedUrl;
+				string key = webContext.Request.Url.Authority + requestedUrl;
 				if (RewritesCache.ContainsKey(key))
 				{
 					rewrittenUrl = RewritesCache[key];
@@ -86,7 +66,7 @@ namespace N2.Web
 				{
 					try
 					{
-						rewritesCache[key] = rewrittenUrl = GetRewrittenUrl(context);
+						rewritesCache[key] = rewrittenUrl = GetRewrittenUrl(webContext);
 					}
 					catch (InvalidPathException ex)
 					{
@@ -95,10 +75,10 @@ namespace N2.Web
 					}
 				}
 
-				if (string.IsNullOrEmpty(context.QueryString))
-					context.RewritePath(rewrittenUrl);
+				if (string.IsNullOrEmpty(webContext.QueryString))
+					webContext.RewritePath(rewrittenUrl);
 				else
-					context.RewritePath(rewrittenUrl + "&" + context.QueryString);
+					webContext.RewritePath(rewrittenUrl + "&" + webContext.QueryString);
 			}
 		}
 
@@ -138,6 +118,23 @@ namespace N2.Web
 		private void ItemChangedEventHandler(object sender, ItemEventArgs e)
 		{
 			OnSiteMapChanged(e.AffectedItem);
+		}
+
+		#endregion
+
+		#region IUrlRewriter Members
+
+		public void InjectContentPage()
+		{
+			IHttpHandler handler = webContext.CurrentHandler;
+			if (handler is UI.IContentTemplate)
+			{
+				UI.IContentTemplate template = handler as UI.IContentTemplate;
+				ContentItem item = webContext.RequestItems["N2.Factory.CurrentPage"] as ContentItem;
+				if (item == null)
+					item = urlParser.Parse(webContext.RelativeUrl);
+				template.CurrentItem = item;
+			}
 		}
 
 		#endregion

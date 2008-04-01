@@ -11,22 +11,18 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Edit
 {
-	public partial class ItemInfo : System.Web.UI.UserControl, N2.Web.UI.IDataItemContainer
+	public partial class ItemInfo : System.Web.UI.UserControl
 	{
 		protected Definitions.ItemDefinition CurrentDefinition
 		{
 			get { return N2.Context.Definitions.GetDefinition(CurrentItem.GetType()); }
 		}
 
-		#region IDataItemContainer Members
-
-		public ContentItem currentData;
+		public ContentItem currentItem;
 		public ContentItem CurrentItem
 		{
-			get { return currentData; }
-			set { currentData = value; }
+			get { return currentItem; }
+			set { currentItem = value; }
 		}
-
-		#endregion
 	}
 }

@@ -9,46 +9,41 @@ namespace N2.Web.UI
 	/// A user control base used to for quick access to content data.
 	/// </summary>
 	/// <typeparam name="TPage">The type of page item this user control will have to deal with.</typeparam>
-	public class UserControl<TPage> : UserControl, IPageItemContainer
+	public abstract class UserControl<TPage> : UserControl, IItemContainer
 		where TPage : N2.ContentItem
 	{
+		private TPage currentPage = null;
+
 		/// <summary>Gets the current CMS Engine.</summary>
 		public N2.Engine.IEngine Engine
 		{
 			get { return N2.Context.Current; }
 		}
 
-		private TPage currentPage = null;
 		/// <summary>Gets the current page item.</summary>
 		public virtual TPage CurrentPage
 		{
-			get 
+			get
 			{
 				if (currentPage == null)
 				{
-					if (Page is IItemContainer)
-						currentPage = (TPage)((IItemContainer)Page).CurrentItem;
-					else
-						currentPage = (TPage)N2.Context.CurrentPage;
+					IItemContainer page = Page as IItemContainer;
+					ContentItem item = (page != null) ? page.CurrentItem : N2.Context.CurrentPage;
+					currentPage = ItemUtility.EnsureType<TPage>(item);
 				}
-				return currentPage; 
+				return currentPage;
 			}
 		}
 
-		/// <summary>Gets the current page item.</summary>
-		public TPage CurrentItem
+		/// <summary>This is most likely the same as CurrentPage unles you're in a user control dynamically added as a part.</summary>
+		public virtual TPage CurrentItem
 		{
-			get { return this.CurrentPage; }
-		}
-	
-		ContentItem IPageItemContainer.CurrentPage
-		{
-			get { return this.CurrentPage; }
+			get { return CurrentPage; }
 		}
 
 		ContentItem IItemContainer.CurrentItem
 		{
-			get { return this.CurrentItem; }
+			get { return CurrentPage; }
 		}
 	}
 }

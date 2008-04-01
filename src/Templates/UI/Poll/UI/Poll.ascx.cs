@@ -33,7 +33,7 @@ namespace N2.Templates.Poll.UI
 			if (Page.IsValid)
 			{
 				int selectedItem = int.Parse(lcAlternatives.SelectedValue);
-				CurrentItem.AddAnswer(N2.Context.Persister, selectedItem);
+				CurrentItem.AddAnswer(Engine.Persister, selectedItem);
 				Response.Cookies.Add(CurrentItem.GetAnsweredCookie(selectedItem));
 				Response.Redirect(CurrentPage.Url);
 			}

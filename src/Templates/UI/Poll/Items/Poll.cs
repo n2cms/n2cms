@@ -8,7 +8,6 @@ using N2.Persistence;
 using N2.Templates.Items;
 using N2.Templates.Survey.Items;
 using N2.Web.UI;
-using IDataItemContainer=N2.Web.UI.IDataItemContainer;
 
 namespace N2.Templates.Poll.Items
 {
@@ -40,7 +39,7 @@ namespace N2.Templates.Poll.Items
 				c = container.Page.LoadControl("~/Poll/UI/Result.ascx");
 			else
 				c = container.Page.LoadControl(TemplateUrl);
-			(c as IDataItemContainer).CurrentData = this;
+			(c as IContentTemplate).CurrentItem = this;
 			container.Controls.Add(c);
 			return c;
 		}

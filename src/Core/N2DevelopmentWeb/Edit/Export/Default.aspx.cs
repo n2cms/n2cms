@@ -5,7 +5,7 @@ using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Serialization;
 using N2.Xml;
-using IDataItemContainer=N2.Web.UI.IDataItemContainer;
+using N2.Web.UI;
 
 namespace N2.Edit.Export
 {
@@ -16,8 +16,8 @@ namespace N2.Edit.Export
 
 		#region Control Fields & Property
 
-		protected IDataItemContainer exportedItems;
-		protected IDataItemContainer importedItems;
+		protected IContentTemplate exportedItems;
+		protected IContentTemplate importedItems;
 		protected Repeater rptAttachments;
 
 		public string UploadedFilePath

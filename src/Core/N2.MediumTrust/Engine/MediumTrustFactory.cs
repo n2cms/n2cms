@@ -85,7 +85,7 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(IEditManager)] = editManager = new DefaultEditManager(typeFinder, definitions, persister, versioner);
 			Resolves[typeof(IIntegrityManager)] = integrityManager = new DefaultIntegrityManager(definitions, urlParser);
 			Resolves[typeof(IIntegrityEnforcer)] = integrityEnforcer = new IntegrityEnforcer(persister, integrityManager);
-			Resolves[typeof(IUrlRewriter)] = rewriter = new UrlRewriter(persister, urlParser);
+			Resolves[typeof(IUrlRewriter)] = rewriter = new UrlRewriter(persister, urlParser, webContext);
 			Resolves[typeof(NavigationSettings)] = new NavigationSettings(webContext);
 			Resolves[typeof(IRequestLifeCycleHandler)] = lifeCycleHandler = new DefaultRequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider, webContext);
 			Resolves[typeof(ItemXmlReader)] = xmlReader = new ItemXmlReader(definitions);

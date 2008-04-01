@@ -6,7 +6,8 @@ namespace N2.Web.UI
 {
     /// <summary>MasterPage base class providing easy access to current page item.</summary>
     /// <typeparam name="T">The type of content item for this masterpage</typeparam>
-    public class MasterPage<TPage> : System.Web.UI.MasterPage, IPageItemContainer where TPage : N2.ContentItem
+    public abstract class MasterPage<TPage> : System.Web.UI.MasterPage, IItemContainer 
+		where TPage : N2.ContentItem
     {
 		public virtual TPage CurrentPage
 		{
@@ -19,10 +20,6 @@ namespace N2.Web.UI
 
 		#region IItemContainer Members
 
-		ContentItem IPageItemContainer.CurrentPage
-		{
-			get { return this.CurrentPage; }
-		}
 		ContentItem IItemContainer.CurrentItem
 		{
 			get { return this.CurrentPage; }

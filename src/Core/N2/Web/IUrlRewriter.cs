@@ -11,7 +11,9 @@ namespace N2.Web
 	public interface IUrlRewriter
 	{
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
-		/// <param name="context">The context to perform the rewriting on.</param>
-		void RewriteRequest(IWebContext context);
+		void RewriteRequest();
+
+		/// <summary>Makes sure the page handler is given the content item associated with the request.</summary>
+		void InjectContentPage();
 	}
 }

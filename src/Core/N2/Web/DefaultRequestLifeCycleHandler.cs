@@ -2,6 +2,7 @@ using System;
 using System.Web;
 using N2.Persistence.NH;
 using N2.Security;
+using System.Diagnostics;
 
 namespace N2.Web
 {
@@ -11,16 +12,10 @@ namespace N2.Web
 	/// </summary>
 	public class DefaultRequestLifeCycleHandler : IRequestLifeCycleHandler
 	{
-		#region Private Fields
-
 		private readonly IUrlRewriter rewriter;
 		private readonly ISecurityEnforcer security;
 		private readonly ISessionProvider sessionProvider;
 		private readonly IWebContext webContext;
-
-		#endregion
-
-		#region Constructor
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="rewriter">The class that performs url rewriting.</param>
@@ -36,10 +31,6 @@ namespace N2.Web
 			this.webContext = webContext;
 		}
 
-		#endregion
-
-		#region Methods
-
 		/// <summary>Subscribes to applications events.</summary>
 		/// <param name="application">The application.</param>
 		public void Init(HttpApplication application)
@@ -47,11 +38,17 @@ namespace N2.Web
 			application.BeginRequest += Application_BeginRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
 			application.EndRequest += Application_EndRequest;
+			application.AcquireRequestState += Application_AcquireRequestState;
+		}
+
+		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
+		{
+			rewriter.InjectContentPage();
 		}
 
 		protected virtual void Application_BeginRequest(object sender, EventArgs e)
 		{
-			rewriter.RewriteRequest(webContext);
+			rewriter.RewriteRequest();
 		}
 
 		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
@@ -64,7 +61,5 @@ namespace N2.Web
 			sessionProvider.Flush();
 			sessionProvider.Dispose();
 		}
-
-		#endregion
 	}
 }

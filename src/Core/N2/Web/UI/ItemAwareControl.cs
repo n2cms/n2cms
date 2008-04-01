@@ -8,13 +8,7 @@ namespace N2.Web.UI
 	/// </summary>
 	public abstract class ItemAwareControl : Control, IItemContainer
 	{
-		#region [rgn] Fields (1)
-
 		private ContentItem currentItem = null;
-
-		#endregion [rgn]
-
-		#region [rgn] Properties (1)
 
 		/// <summary>Gets or sets a relative path to the item whose children should be listed by this datasource.</summary>
 		/// <example>
@@ -34,9 +28,7 @@ namespace N2.Web.UI
 			}
 		}
 		
-		#endregion [rgn]
 
-		#region IItemContainer Members
 		public virtual ContentItem CurrentItem
 		{
 			get
@@ -51,7 +43,10 @@ namespace N2.Web.UI
 				}
 				return currentItem;
 			}
+			set
+			{
+				currentItem = value;
+			}
 		}
-		#endregion
 	}
 }

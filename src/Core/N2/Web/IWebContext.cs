@@ -28,6 +28,9 @@ namespace N2.Web
 		/// <summary>The current response object.</summary>
 		HttpResponse Response { get; }
 
+		/// <summary>The handler associated with this request.</summary>
+		IHttpHandler CurrentHandler { get; }
+		
 		/// <summary>Gets the url relative to the application root.</summary>
 		string RelativeUrl { get; }
 

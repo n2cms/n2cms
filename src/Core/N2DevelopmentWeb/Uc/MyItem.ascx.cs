@@ -25,5 +25,10 @@ namespace N2.TemplateWeb.Uc
 			count++;
 			this.label2.Text = count.ToString();
 		}
+
+		protected string GetTitleNow()
+		{
+			return CurrentItem.Title;
+		}
     }
 }
