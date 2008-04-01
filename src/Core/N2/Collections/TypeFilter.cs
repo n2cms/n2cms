@@ -70,8 +70,9 @@ namespace N2.Collections
 		#region Static Methods
 		public static void Filter(IList<ContentItem> items, params Type[] allowedTypes)
 		{
-			Filter(false, items, allowedTypes);
+			ItemFilter.Filter(items, new TypeFilter(allowedTypes));
 		}
+		[Obsolete]
 		public static void Filter(bool inverse, IList<ContentItem> items, params Type[] allowedTypes)
 		{
 			ItemFilter.Filter(items, new TypeFilter(inverse, allowedTypes));

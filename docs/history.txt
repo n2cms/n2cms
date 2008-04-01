@@ -9,7 +9,7 @@
 	- versions of an item lists the published item's children (and parts)
 	- installermodule - checks database connection on start
 	- tweaked the tree & link implementations
-	- removed CurrentData from the parts template base class (use CurrentItem) (breaking change)
+	- removed CurrentData from the parts template base class (use CurrentItem) (potentially breaking change)
 	- current page is injected on the template during acquire request state
 - edit
 	- preview changes

@@ -163,10 +163,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\PublicSiteMapProvider.cs" />
     <Compile Include="Web\UI\IItemContainer.cs" />
-    <Compile Include="Web\UI\IDataItemContainer.cs">
+    <Compile Include="Obsolete\IDataItemContainer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web\UI\IPageItemContainer.cs" />
+    <Compile Include="Obsolete\IPageItemContainer.cs" />
     <Compile Include="Web\UI\MasterPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
