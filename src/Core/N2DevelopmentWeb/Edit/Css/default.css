@@ -1,11 +1,11 @@
 ﻿body { background:#fff; }
 
 /* Toolbar */
-.toolbar { position:relative; background:#d1d4d3 url(../img/toolbar_bg.gif) repeat-x 0% 100%; min-width:700px; }
+.toolbar { background:#d1d4d3 url(../img/toolbar_bg.gif) repeat-x 0% 100%; min-width:700px; }
 
 	.toolbar .area { float:left; background:#ffffff url(../img/toolarea_bg.gif) repeat-x 100% 100%; padding-left:10px; height:50px; overflow:hidden; }
 
-		.toolbar .right { padding-right:20px; background:transparent url(../img/toolarea_separator.gif) no-repeat 100% 100%; height:50px; float:left; overflow:hidden; }
+		.toolbar .right { padding-right:20px; background:transparent url(../img/toolarea_separator.gif) no-repeat 100% 100%; float:left; height:50px; _overflow:hidden; }
 		.toolbar .last .right { background-image:url(../img/toolarea_end.gif); }
 
 /* Navigation */

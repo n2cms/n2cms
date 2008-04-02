@@ -9,6 +9,10 @@
 - dashboard
 - webdav
 - configure away modules
+- nunit
+- fix content item injection
+- nhibernate 2
+- move n2.mediumtrust -> n2
 
 TODO:
 - documentation & programmability

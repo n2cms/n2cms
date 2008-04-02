@@ -7,7 +7,7 @@
     <title><%= CurrentPage.Title %></title>
 </head>
 <body>
-	<n2:SlidingCurtain runat="server" BottomBgUrl="~/edit/img/SlidingCurtain_bg_bottom.png" VerticalBgUrl="~/edit/img/SlidingCurtain_bg.png">
+	<n2:SlidingCurtain runat="server" BackgroundUrl="~/Edit/Img/SlidingCurtain_bg.png">
 		<n2:DragDropControlPanel runat="server" QuickEditLink-Visible="false" />
 	</n2:SlidingCurtain>
 

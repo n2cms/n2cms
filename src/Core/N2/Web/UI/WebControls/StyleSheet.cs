@@ -12,7 +12,12 @@ namespace N2.Web.UI.WebControls
 {
 	public class StyleSheet : Control
 	{
-		public string CssUrl { get; set; }
+        private string cssUrl;
+		public string CssUrl 
+        {
+            get { return cssUrl; }
+            set { cssUrl = value; }
+        }
 
 		protected override void OnPreRender(EventArgs e)
 		{

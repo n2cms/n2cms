@@ -126,15 +126,16 @@ namespace N2.Web
 
 		public void InjectContentPage()
 		{
-			IHttpHandler handler = webContext.CurrentHandler;
-			if (handler is UI.IContentTemplate)
-			{
-				UI.IContentTemplate template = handler as UI.IContentTemplate;
-				ContentItem item = webContext.RequestItems["N2.Factory.CurrentPage"] as ContentItem;
-				if (item == null)
-					item = urlParser.Parse(webContext.RelativeUrl);
-				template.CurrentItem = item;
-			}
+            // TODO: fix
+            //IHttpHandler handler = webContext.CurrentHandler;
+            //if (handler is UI.IContentTemplate)
+            //{
+            //    UI.IContentTemplate template = handler as UI.IContentTemplate;
+            //    ContentItem item = webContext.RequestItems["N2.Factory.CurrentPage"] as ContentItem;
+            //    if (item == null)
+            //        item = urlParser.Parse(webContext.RelativeUrl);
+            //    template.CurrentItem = item;
+            //}
 		}
 
 		#endregion

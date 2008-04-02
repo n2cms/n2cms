@@ -96,7 +96,7 @@
 	</ItemGroup>
 
 	<Target Name="Core-Deploy" DependsOnTargets="Clean-Deploy;Core-Build">
-		<CreateItem Include="$(Core-WebFolder)\Bin\*.dll;$(Core-WebFolder)\Bin\N2.xml" Exclude="$(Core-WebFolder)\Bin\N2DevelopmentWeb.dll">
+		<CreateItem Include="$(Core-WebFolder)\Bin\*.dll" Exclude="$(Core-WebFolder)\Bin\N2DevelopmentWeb.dll">
 			<Output TaskParameter="Include" ItemName="Core-BinFiles"/>
 		</CreateItem>
 

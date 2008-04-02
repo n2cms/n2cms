@@ -22,7 +22,7 @@ namespace N2.Web.UI
 		/// <summary>Gets the content item associated with this page.</summary>
         public virtual TPage CurrentPage
         {
-            get { return currentPage ?? (currentPage = (TPage)N2.Context.CurrentPage); }
+            get { return currentPage ?? (currentPage = ItemUtility.EnsureType<TPage>(N2.Context.CurrentPage)); }
 			set { currentPage = value; }
         }
 
@@ -42,9 +42,8 @@ namespace N2.Web.UI
 		ContentItem IContentTemplate.CurrentItem
 		{
 			get { return CurrentPage; }
-			set { CurrentPage = (TPage)value; }
+			set { CurrentPage = ItemUtility.EnsureType<TPage>(value); }
 		}
-
 		#endregion
 	}
 }

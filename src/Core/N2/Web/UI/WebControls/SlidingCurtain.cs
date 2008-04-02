@@ -17,16 +17,10 @@ namespace N2.Web.UI.WebControls
 			base.OnInit(e);
 		}
 
-		public string VerticalBgUrl
+		public string BackgroundUrl
 		{
 			get { return (string)(ViewState["VerticalBgUrl"] ?? string.Empty); }
 			set { ViewState["VerticalBgUrl"] = value; }
-		}
-
-		public string BottomBgUrl
-		{
-			get { return (string)(ViewState["BottomBgUrl"] ?? string.Empty); }
-			set { ViewState["BottomBgUrl"] = value; }
 		}
 
 		public string ScriptUrl
@@ -69,18 +63,12 @@ namespace N2.Web.UI.WebControls
 			writer.Write("<div id='");
 			writer.Write(ClientID);
 			writer.Write("' class='sc'");
-			if(BottomBgUrl.Length > 0)
+			if (BackgroundUrl.Length > 0)
 			{
-				WriteBgStyle(BottomBgUrl, writer);
+				WriteBgStyle(BackgroundUrl, writer);
 			}
 			writer.Write(">");
-
-			writer.Write("<div class='scContent'");
-			if (VerticalBgUrl.Length > 0)
-			{
-				WriteBgStyle(VerticalBgUrl, writer);
-			}
-			writer.Write(">");
+			writer.Write("<div class='scContent'>");
 
 			base.Render(writer);
 			writer.Write("<span class='close'>&laquo;</span><span class='open'>&raquo;</span>");
