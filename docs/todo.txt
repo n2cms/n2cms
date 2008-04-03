@@ -13,6 +13,7 @@
 - fix content item injection
 - nhibernate 2
 - move n2.mediumtrust -> n2
+- diff
 
 TODO:
 - documentation & programmability

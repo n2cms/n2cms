@@ -1,0 +1,15 @@
+
+The focus for this release is the editing experience. The interface has undergone a facelif and I've finally added a lazily loaded (ajax) tree menu that should speed things up on large sites. Also, it's easier to sort pages, and you can preview changes before they are published.
+
+Other changes include a more understandable installer, and a few programmability improvements in the form of a couple of new expression builders and a helpful web control. All of this is topped with minor api improvements and a thin layer of bugfixes.
+
+First time with N2?
+
+    * Download some examples (below). Run in visual studio to figure out the basics.
+    * Look at the documentation
+    * Try a working implementation
+    * Planning to build a site on top of the templates? I can recommend using the templates example (below) as a starting point.
+
+
+Enjoy!
+

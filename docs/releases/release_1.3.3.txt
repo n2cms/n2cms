@@ -1,0 +1,9 @@
+Welcome to a brand new version of N2 CMS.
+
+This release brings a few minor improvements, bugfixes and some potentially 
+breaking rearrangements in the code (check the FAQ for upgrading help). jQuery 
+and TinyMCE components were also upgraded. The whole changelog is here.
+
+I havn't assembled all the source codes yet, but if you're in a hurry you may 
+get it from the svn repository. If you're new to N2 I'd anyhow recommend you 
+start with the Examples (below).

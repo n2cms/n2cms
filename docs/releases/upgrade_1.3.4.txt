@@ -1,0 +1,6 @@
+Some possibly breaking changes might be custom toolbar plugins or 
+IDataItemContainers but for most solutions a recompile should do it.
+
+If you extended the code in the templates project you'll need to fix some 
+compile errors. There is also a new master page that includes the menu instead 
+of parts. Please post in the forum if you're having troubles in this area.
