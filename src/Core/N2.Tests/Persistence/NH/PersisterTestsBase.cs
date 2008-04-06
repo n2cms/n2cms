@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;

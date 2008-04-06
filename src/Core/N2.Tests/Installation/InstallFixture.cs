@@ -1,10 +1,10 @@
 using System;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Tests.Persistence.Definitions;
 
 namespace N2.Tests.Installation
 {
-	[TestFixture, TestCategory("Integration")]
+	[TestFixture]
 	public class InstallFixture : PersistenceAwareBase
 	{
 		[Test]

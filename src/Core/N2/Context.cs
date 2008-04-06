@@ -124,7 +124,7 @@ namespace N2
 
 					if (item == null)
 					{
-						item = GetPageOrStartPage(context);
+						item = UrlParser.Parse(context.Request.RawUrl) ?? UrlParser.StartPage;
 						context.Items["N2.Factory.CurrentPage"] = item;
 					}
 
@@ -133,19 +133,6 @@ namespace N2
 				return null;
             }
         }
-
-		private static ContentItem GetPageOrStartPage(HttpContext context)
-		{
-			string page = context.Request["page"];
-			if (!string.IsNullOrEmpty(page))
-			{
-				return Persister.Get(int.Parse(page)) ?? UrlParser.StartPage;
-			}
-			else
-			{
-				return UrlParser.StartPage;
-			}
-		}
         #endregion
 	}
 }

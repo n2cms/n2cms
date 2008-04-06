@@ -18,12 +18,12 @@ namespace N2.Edit
 		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
-		string GetNavigationUrl(ContentItem selectedItem);
+		string GetNavigationUrl(INode selectedItem);
 
 		/// <summary>Gets the url for the preview frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
-		string GetPreviewUrl(ContentItem selectedItem);
+		string GetPreviewUrl(INode selectedItem);
 
 		/// <summary>Gets the text editor css url.</summary>
 		/// <returns>An url to a style sheet.</returns>

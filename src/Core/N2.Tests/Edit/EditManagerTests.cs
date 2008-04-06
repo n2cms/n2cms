@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Details;
 using N2.Edit;
 using N2.Engine;
@@ -334,28 +334,28 @@ namespace N2.Tests.Edit
 			Assert.AreEqual(2, p.Validators.Count);
 		}
 
-		[Test, ExpectedArgumentNullException]
+		[Test, ExpectedException(typeof(ArgumentNullException))]
 		public void UpdateEditors_PukesOnNullItem()
 		{
 			Dictionary<string, Control> editors = CreateEditorsForComplexContainersItem();
 			editManager.UpdateEditors(null, editors, null);
 		}
 
-		[Test, ExpectedArgumentNullException]
+		[Test, ExpectedException(typeof(ArgumentNullException))]
 		public void UpdateEditors_PukesOnNullAddedEditors()
 		{
 			ContentItem item = new ComplexContainersItem();
 			editManager.UpdateEditors(item, null, null);
 		}
 
-		[Test, ExpectedArgumentNullException]
+		[Test, ExpectedException(typeof(ArgumentNullException))]
 		public void UpdateItem_PukesOnNullItem()
 		{
 			Dictionary<string, Control> editors = CreateEditorsForComplexContainersItem();
 			editManager.UpdateItem(null, editors, null);
 		}
 
-		[Test, ExpectedArgumentNullException]
+		[Test, ExpectedException(typeof(ArgumentNullException))]
 		public void UpdateItem_PukesOnNullAddedEditors()
 		{
 			ContentItem item = new ComplexContainersItem();

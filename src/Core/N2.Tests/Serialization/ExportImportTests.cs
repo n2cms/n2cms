@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Web;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Serialization;
 using N2.Tests.Serialization.Items;
 
@@ -65,7 +65,7 @@ namespace N2.Tests.Serialization
 			IImportRecord record = ImportFromString(xml, CreateImporter());
 			XmlableItem readItem = (XmlableItem)record.RootItem;
 			Assert.AreEqual(item.ID, readItem.ID);
-			FileAssert.NotExists(path);
+			Assert.That(!File.Exists(path));
 			
 			CreateImporter().Import(record, destination, ImportOption.All);
 			Assert.AreEqual(0, readItem.ID);
@@ -73,7 +73,7 @@ namespace N2.Tests.Serialization
 			Assert.AreEqual(item.Name, readItem.Name);
 			Assert.AreEqual("/Serialization/TestFile.txt", readItem.TextFile);
 
-			FileAssert.Exists(path);
+			Assert.That(File.Exists(path));
 			Assert.AreEqual("Just a little file.", File.ReadAllText(path));
 		}
 

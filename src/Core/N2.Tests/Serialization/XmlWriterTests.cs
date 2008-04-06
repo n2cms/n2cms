@@ -4,12 +4,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Definitions;
 using N2.Details;
 using N2.Security;
 using N2.Serialization;
 using N2.Tests.Serialization.Items;
+using NUnit.Framework.Extensions;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Serialization
 {
@@ -362,7 +364,7 @@ namespace N2.Tests.Serialization
 
 			axw.Write(item, xtw);
 
-			Assert.Contains(sb.ToString(), "DA IMAGE");
+			Assert.That(sb.ToString(), Text.Contains("DA IMAGE"));
 		}
 	}
 }

@@ -1,4 +1,4 @@
-using MbUnit.Framework;
+using NUnit.Framework;
 
 namespace N2.Tests.Persistence.NH
 {

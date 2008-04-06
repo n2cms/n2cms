@@ -1,7 +1,7 @@
 using System;
 using System.Xml;
 using System.Xml.XPath;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Serialization;
 
 namespace N2.Tests.Serialization.Items

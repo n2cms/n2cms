@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Rhino.Mocks;
 using N2.Persistence;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Web;
 using Rhino.Mocks.Interfaces;
 using System.Web;

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Collections;
 using N2.Integrity;
+using NUnit.Framework.Extensions;
 
 namespace N2.Tests.Utility
 {

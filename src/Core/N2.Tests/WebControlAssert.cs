@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
-using MbUnit.Framework;
+using NUnit.Framework;
 
 namespace N2.Tests
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using N2;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Persistence.NH;
 using N2.Persistence;
 

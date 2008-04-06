@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;
@@ -11,6 +11,9 @@ using N2.Web;
 using N2.Web.UI;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
+using System.Diagnostics;
+using NUnit.Framework.SyntaxHelpers;
+using NUnit.Framework.Constraints;
 
 namespace N2.Tests.Integrity
 {
@@ -124,12 +127,15 @@ namespace N2.Tests.Integrity
 			Assert.IsFalse(canMove, "The page could be moved onto itself.");
 		}
 
-		[Test, ExpectedException(typeof (DestinationOnOrBelowItselfException))]
+		[Test]
 		public void CannotMoveItemOntoItselfEvent()
 		{
 			Page page = new Page();
 
-			moving.Raise(persister, new CancellableDestinationEventArgs(page, page));
+			ExceptionAssert.InnerException<DestinationOnOrBelowItselfException>(delegate
+			{
+				moving.Raise(persister, new CancellableDestinationEventArgs(page, page));
+			});
 		}
 
 		[Test]
@@ -142,13 +148,16 @@ namespace N2.Tests.Integrity
 			Assert.IsFalse(canMove, "The page could be moved below itself.");
 		}
 
-		[Test, ExpectedException(typeof (DestinationOnOrBelowItselfException))]
+		[Test]
 		public void CannotMoveItemBelowItselfEvent()
 		{
 			Page page = new Page();
 			Page page2 = CreateOneItem<Page>(2, "Rutger", page);
 
-			moving.Raise(persister, new CancellableDestinationEventArgs(page, page2));
+			ExceptionAssert.InnerException<DestinationOnOrBelowItselfException>(delegate
+			{
+				moving.Raise(persister, new CancellableDestinationEventArgs(page, page2));
+			});
 		}
 
 		[Test]
@@ -162,14 +171,17 @@ namespace N2.Tests.Integrity
 			Assert.IsFalse(canMove, "The page could be moved even though the name was occupied.");
 		}
 
-		[Test, ExpectedException(typeof (NameOccupiedException))]
+		[Test]
 		public void CannotMoveIfNameIsOccupiedEvent()
 		{
 			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
 			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", null);
 
-			moving.Raise(persister, new CancellableDestinationEventArgs(page3, startPage));
+			ExceptionAssert.InnerException<NameOccupiedException>(delegate
+			{
+				moving.Raise(persister, new CancellableDestinationEventArgs(page3, startPage));
+			});
 		}
 
 		[Test]
@@ -182,13 +194,16 @@ namespace N2.Tests.Integrity
 			Assert.IsFalse(canMove, "The start page could be moved even though a page isn't an allowed destination.");
 		}
 
-		[Test, ExpectedException(typeof (NotAllowedParentException))]
+		[Test]
 		public void CannotMoveIfTypeIsntAllowedEvent()
 		{
 			StartPage startPage = new StartPage();
 			Page page = new Page();
 
-			moving.Raise(persister, new CancellableDestinationEventArgs(startPage, page));
+			ExceptionAssert.InnerException<NotAllowedParentException>(delegate
+			{
+				moving.Raise(persister, new CancellableDestinationEventArgs(startPage, page));
+			});
 		}
 
 		#endregion
@@ -224,14 +239,17 @@ namespace N2.Tests.Integrity
 			Assert.IsFalse(canCopy, "The page could be copied even though the name was occupied.");
 		}
 
-		[Test, ExpectedException(typeof (NameOccupiedException))]
+		[Test]
 		public void CannotCopyIfNameIsOccupiedEvent()
 		{
 			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
 			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", null);
 
-			copying.Raise(persister, new CancellableDestinationEventArgs(page3, startPage));
+			ExceptionAssert.InnerException<NameOccupiedException>(delegate
+			{
+				copying.Raise(persister, new CancellableDestinationEventArgs(page3, startPage));
+			});
 		}
 
 		[Test]
@@ -244,13 +262,16 @@ namespace N2.Tests.Integrity
 			Assert.IsFalse(canCopy, "The start page could be copied even though a page isn't an allowed destination.");
 		}
 
-		[Test, ExpectedException(typeof (NotAllowedParentException))]
+		[Test]
 		public void CannotCopyIfTypeIsntAllowedEvent()
 		{
 			StartPage startPage = new StartPage();
 			Page page = new Page();
 
-			copying.Raise(persister, new CancellableDestinationEventArgs(startPage, page));
+			ExceptionAssert.InnerException<NotAllowedParentException>(delegate
+			{
+				copying.Raise(persister, new CancellableDestinationEventArgs(startPage, page));
+			});
 		}
 
 		#endregion
@@ -301,7 +322,7 @@ namespace N2.Tests.Integrity
 			mocks.Verify(parser);
 		}
 
-		[Test, ExpectedException(typeof (CannotDeleteRootException))]
+		[Test]
 		public void CannotDeleteStartPageEvent()
 		{
 			StartPage startPage = new StartPage();
@@ -310,8 +331,10 @@ namespace N2.Tests.Integrity
 			Expect.On(parser).Call(parser.IsRootOrStartPage(startPage)).Return(true);
 			mocks.Replay(parser);
 
-			deleting.Raise(persister, new CancellableItemEventArgs(startPage));
-
+			ExceptionAssert.InnerException<CannotDeleteRootException>(delegate
+			{
+				deleting.Raise(persister, new CancellableItemEventArgs(startPage));
+			});
 			mocks.Verify(parser);
 		}
 
@@ -360,7 +383,7 @@ namespace N2.Tests.Integrity
 			Assert.IsFalse(isUnique, "Shouldn't have been locally unique.");
 		}
 
-		[Test, ExpectedException(typeof (NameOccupiedException))]
+		[Test]
 		public void CannotSaveNotLocallyUniqueItemEvent()
 		{
 			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
@@ -368,7 +391,10 @@ namespace N2.Tests.Integrity
 			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", startPage);
 
-			saving.Raise(persister, new CancellableItemEventArgs(page3));
+			ExceptionAssert.InnerException<NameOccupiedException>(delegate
+			{
+				saving.Raise(persister, new CancellableItemEventArgs(page3));
+			});
 		}
 
 		[Test]
@@ -381,13 +407,16 @@ namespace N2.Tests.Integrity
 			Assert.IsFalse(canSave, "Could save even though the start page isn't below a page.");
 		}
 
-		[Test, ExpectedException(typeof (NotAllowedParentException))]
+		[Test]
 		public void CannotSaveUnallowedItemEvent()
 		{
 			Page page = CreateOneItem<Page>(1, "John", null);
 			StartPage startPage = CreateOneItem<StartPage>(2, "Leonidas", page);
 
-			saving.Raise(persister, new CancellableItemEventArgs(startPage));
+			ExceptionAssert.InnerException<NotAllowedParentException>(delegate
+			{
+				saving.Raise(persister, new CancellableItemEventArgs(startPage));
+			});
 		}
 
 		#endregion

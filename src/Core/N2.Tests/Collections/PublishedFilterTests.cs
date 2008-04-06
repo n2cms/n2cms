@@ -1,5 +1,5 @@
 using System;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Collections;
 
 namespace N2.Tests.Collections

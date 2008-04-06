@@ -1,4 +1,4 @@
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Engine;
 using N2.Installation;
 using N2.Persistence.NH;

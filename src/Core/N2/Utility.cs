@@ -66,6 +66,8 @@ namespace N2
 		/// <param name="expression">The expression to evaluate.</param>
 		public static object Evaluate(object item, string expression)
 		{
+			if (item == null) return null;
+
 			PropertyInfo info = item.GetType().GetProperty(expression);
 			if (info != null)
 				return info.GetValue(item, new object[0]);

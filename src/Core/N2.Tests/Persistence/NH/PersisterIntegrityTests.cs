@@ -1,4 +1,4 @@
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Integrity;
 using N2.Tests.Persistence.NH;
 using N2.Web;

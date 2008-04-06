@@ -121,7 +121,7 @@ namespace N2.Edit
 		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
-		public string GetNavigationUrl(ContentItem selectedItem)
+		public string GetNavigationUrl(INode selectedItem)
 		{
 			return string.Format(EditTreeUrlFormat,
 				HttpUtility.UrlEncode(selectedItem.Path));
@@ -130,11 +130,11 @@ namespace N2.Edit
 		/// <summary>Gets the url for the preview frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
-		public string GetPreviewUrl(ContentItem selectedItem)
+		public string GetPreviewUrl(INode selectedItem)
 		{
 			return string.Format(EditPreviewUrlFormat,
-				selectedItem.RewrittenUrl,
-				HttpUtility.UrlEncode(selectedItem.RewrittenUrl)
+				selectedItem.PreviewUrl,
+				HttpUtility.UrlEncode(selectedItem.PreviewUrl)
 				);
 		}
 

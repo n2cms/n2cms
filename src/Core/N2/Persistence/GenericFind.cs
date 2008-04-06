@@ -84,13 +84,36 @@ namespace N2.Persistence
 			}
 		}
 
+		/// <summary>Enumerates the trail of items from the last ancestor to the deepest child.</summary>
+		/// <param name="deepestChild">The page whose parents will be enumerated. The page itself will appear in the enumeration if includeSelf is applied.</param>
+		/// <param name="lastAncestor">The first page of the enumeration.</param>
+		/// <param name="includeSelf">Include the deepest child in the enumeration.</param>
+		/// <returns>An enumeration of the from the ancestor uptil the deepest child.</returns>
+		public static IEnumerable<ContentItem> EnumerateBetween(ContentItem lastAncestor, ContentItem deepestChild, bool includeDeepestChild)
+		{
+			IList<ContentItem> items = ListParents(deepestChild, lastAncestor, includeDeepestChild);
+			for (int i = items.Count-1; i >= 0; --i)
+			{
+				yield return items[i];
+			}
+		}
+
 		/// <summary>Creates a list of the parents of the initial item.</summary>
 		/// <param name="initialItem">The page whose parents will be enumerated. The page itself will not appear in the enumeration.</param>
-		/// <param name="lastItem">The last page of the enumeration. The enumeration will contain this page.</param>
+		/// <param name="lastAncestor">The last page of the enumeration. The enumeration will contain this page.</param>
 		/// <returns>A list of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
-		public static IList<ContentItem> ListParents(ContentItem initialItem, ContentItem lastItem)
+		public static IList<ContentItem> ListParents(ContentItem initialItem, ContentItem lastAncestor, bool includeInitialItem)
 		{
-			return new List<ContentItem>(EnumerateParents(initialItem, lastItem));
+			return new List<ContentItem>(EnumerateParents(initialItem, lastAncestor, includeInitialItem));
+		}
+
+		/// <summary>Creates a list of the parents of the initial item.</summary>
+		/// <param name="initialItem">The page whose parents will be enumerated. The page itself will not appear in the enumeration.</param>
+		/// <param name="lastAncestor">The last page of the enumeration. The enumeration will contain this page.</param>
+		/// <returns>A list of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
+		public static IList<ContentItem> ListParents(ContentItem initialItem, ContentItem lastAncestor)
+		{
+			return new List<ContentItem>(EnumerateParents(initialItem, lastAncestor));
 		}
 
 		/// <summary>Creates a list of the parents of the initial item.</summary>
@@ -126,6 +149,16 @@ namespace N2.Persistence
 			}
 		}
 
+		public static IEnumerable<T> OfType<T>(IEnumerable<ContentItem> items)
+			where T: ContentItem
+		{
+			foreach (ContentItem item in items)
+			{
+				if (item is T)
+					yield return item as T;
+			}
+		}
+
 		/// <summary>Search for items based on properties and details.</summary>
 		public static Finder.IItemFinder Items
 		{
@@ -142,6 +175,20 @@ namespace N2.Persistence
 			if (ancestor == null) throw new ArgumentNullException("ancestor");
 
 			return In(ancestor, EnumerateParents(item));
+		}
+
+		/// <summary>Gets an item at a certain level from the last ancestor.</summary>
+		/// <param name="initialItem">The item at the greatest depth.</param>
+		/// <param name="lastAncestor">The root node for this operation.</param>
+		/// <param name="depth">The depth counting from the last ancestor to retrieve an item from.</param>
+		/// <returns>The item at the specified depth, or null if this is outside bounds.</returns>
+		public static ContentItem AtLevel(ContentItem initialItem, ContentItem lastAncestor, int depth)
+		{
+			IList<ContentItem> path = ListParents(initialItem, lastAncestor, true);
+			int index = path.Count - depth;
+			if (index >= 0 && index < path.Count)
+				return path[index];
+			return null;
 		}
 
 		/// <summary>Determines wether an item is below a certain ancestral item or is the ancestral item.</summary>

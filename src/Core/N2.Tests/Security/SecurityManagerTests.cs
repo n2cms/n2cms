@@ -4,7 +4,7 @@ using System.Text;
 using System.Security.Principal;
 
 using N2;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Security;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
@@ -253,13 +253,16 @@ namespace N2.Tests.Security
 			saving.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
 		}
 
-		[Test, ExpectedException(typeof(N2.Security.PermissionDeniedException))]
+		[Test]
 		public void UserCannotSaveInaccessibleItem()
 		{
 			ContentItem root = SetupNormalUserAndCreateRestrictedItem();
 			mocks.ReplayAll();
 
-			saving.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
+			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			{
+				saving.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
+			});
 		}
 
 		[Test]
@@ -271,13 +274,16 @@ namespace N2.Tests.Security
 			deleting.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
 		}
 
-		[Test, ExpectedException(typeof(N2.Security.PermissionDeniedException))]
+		[Test]
 		public void UserCannotDeleteInaccessibleItem()
 		{
 			ContentItem root = SetupNormalUserAndCreateRestrictedItem();
 			mocks.ReplayAll();
 
-			deleting.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
+			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			{
+				deleting.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
+			});
 		}
 
 		[Test]
@@ -290,24 +296,30 @@ namespace N2.Tests.Security
 			moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
 		}
 
-		[Test, ExpectedException(typeof(N2.Security.PermissionDeniedException))]
+		[Test]
 		public void UserCannotMoveInaccessibleItem()
 		{
 			ContentItem source = SetupNormalUserAndCreateRestrictedItem();
 			ContentItem destination = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			mocks.ReplayAll();
 
-			moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			{
+				moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			});
 		}
 
-		[Test, ExpectedException(typeof(N2.Security.PermissionDeniedException))]
+		[Test]
 		public void UserCannotMoveToInaccessibleItem()
 		{
 			ContentItem destination = SetupNormalUserAndCreateRestrictedItem();
 			ContentItem source = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			
 			mocks.ReplayAll();
-			moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			{
+				moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			});
 		}
 
 		[Test]
@@ -320,24 +332,30 @@ namespace N2.Tests.Security
 			copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
 		}
 
-		[Test, ExpectedException(typeof(N2.Security.PermissionDeniedException))]
+		[Test]
 		public void UserCannotCopyInaccessibleItem()
 		{
 			ContentItem source = SetupNormalUserAndCreateRestrictedItem();
 			ContentItem destination = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			mocks.ReplayAll();
 
-			copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			{
+				copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			});
 		}
 
-		[Test, ExpectedException(typeof(N2.Security.PermissionDeniedException))]
+		[Test]
 		public void UserCannotCopyToInaccessibleItem()
 		{
 			ContentItem destination = SetupNormalUserAndCreateRestrictedItem();
 			ContentItem source = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			mocks.ReplayAll();
 
-			copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			{
+				copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			});
 		}
 
 		[Test]

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Definitions;
 using N2.Persistence.NH;
 using N2.Web.UI;

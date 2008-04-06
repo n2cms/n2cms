@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Plugin;
 using N2.Engine;
 using Rhino.Mocks;

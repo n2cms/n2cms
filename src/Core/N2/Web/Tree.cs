@@ -23,6 +23,7 @@ namespace N2.Web
 		private LinkProviderDelegate linkProvider;
 		private ClassProviderDelegate classProvider = delegate { return string.Empty; };
 		private ItemFilter[] filters = null;
+		private bool exclude = false;
 
 		#region Constructor
 
@@ -65,6 +66,12 @@ namespace N2.Web
 			return this;
 		}
 
+		public Tree ExcludeRoot(bool exclude)
+		{
+			this.exclude = exclude;
+			return this;
+		}
+
 		#endregion
 
 		#region Static Methods
@@ -83,14 +90,18 @@ namespace N2.Web
 
 		public static Tree Between(ContentItem initialItem, ContentItem lastAncestor)
 		{
-			Tree t = new Tree(new BranchHierarchyBuilder(initialItem, lastAncestor));
-			return t;
+			return new Tree(new BranchHierarchyBuilder(initialItem, lastAncestor));
+		}
+
+		public static Tree Between(ContentItem initialItem, ContentItem lastAncestor, bool appendAdditionalLevel, int startingDepth)
+		{
+			lastAncestor = Find.AtLevel(initialItem, lastAncestor, startingDepth);
+			return new Tree(new BranchHierarchyBuilder(initialItem, lastAncestor ?? initialItem, lastAncestor != null && appendAdditionalLevel));
 		}
 
 		public static Tree Between(ContentItem initialItem, ContentItem lastAncestor, bool appendAdditionalLevel)
 		{
-			Tree t = new Tree(new BranchHierarchyBuilder(initialItem, lastAncestor, appendAdditionalLevel));
-			return t;
+			return new Tree(new BranchHierarchyBuilder(initialItem, lastAncestor, appendAdditionalLevel));
 		}
 
 		#endregion
@@ -111,7 +122,9 @@ namespace N2.Web
 		public Control ToControl()
 		{
 			IHierarchyNavigator<ContentItem> navigator = new ItemHierarchyNavigator(builder, filters);
-			return BuildNodesRecursive(navigator);
+			TreeNode rootNode = BuildNodesRecursive(navigator);
+			rootNode.ChildrenOnly = exclude;
+			return rootNode;
 		}
 
 		private TreeNode BuildNodesRecursive(IHierarchyNavigator<ContentItem> navigator)

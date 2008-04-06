@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Castle.Windsor;
 using N2.Edit.Settings;
 using System.Web.UI.WebControls;

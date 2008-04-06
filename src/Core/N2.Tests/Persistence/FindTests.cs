@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Tests.Collections;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Persistence
 {
@@ -67,7 +68,7 @@ namespace N2.Tests.Persistence
 			EnumerableAssert.Count(2, Find.EnumerateParents(a_a, a, true));
 		}
 
-		[Test, ExpectedArgumentNullException]
+		[Test, ExpectedException(typeof(ArgumentNullException))]
 		public void EnumerateParents_BoltsOnNullInitialItem()
 		{
 			EnumerableAssert.Count(0, Find.EnumerateParents(null, a_a));
@@ -134,6 +135,55 @@ namespace N2.Tests.Persistence
 		{
 			bool isIn = Find.In(a_a_b, new ContentItem[] { a_a_a, a_a, a, a_b, a_b_b });
 			Assert.IsFalse(isIn);
+		}
+
+		[Test]
+		public void AtLevel_FindsItem_InTheMiddle()
+		{
+			ContentItem found = Find.AtLevel(a_a_a, a, 2);
+			Assert.That(found, Is.EqualTo(a_a));
+		}
+
+		[Test]
+		public void AtLevel_FindsItem_WhenStartingPoint_IsInTheMiddle()
+		{
+			ContentItem found = Find.AtLevel(a_a, a, 2);
+			Assert.That(found, Is.EqualTo(a_a));
+		}
+
+		[Test]
+		public void AtLevel_ReturnsNull_WhenStartingPoint_IsBelowCurrent()
+		{
+			ContentItem found = Find.AtLevel(a, a, 2);
+			Assert.That(found, Is.Null);
+		}
+
+		[Test]
+		public void AtLevel_FindsItem_SameAs_StartingPoint()
+		{
+			ContentItem found = Find.AtLevel(a_a_a, a, 3);
+			Assert.That(found, Is.EqualTo(a_a_a));
+		}
+
+		[Test]
+		public void AtLevel_FindsItem_SameAs_Root()
+		{
+			ContentItem found = Find.AtLevel(a_a_a, a, 1);
+			Assert.That(found, Is.EqualTo(a));
+		}
+
+		[Test]
+		public void AtLevel_ReturnsNull_WhenOutSideBounds_Upper()
+		{
+			ContentItem found = Find.AtLevel(a_a_a, a, 4);
+			Assert.That(found, Is.Null);
+		}
+
+		[Test]
+		public void AtLevel_ReturnsNull_WhenOutSideBounds_Lower()
+		{
+			ContentItem found = Find.AtLevel(a_a_a, a, 0);
+			Assert.That(found, Is.Null);
 		}
 	}
 }

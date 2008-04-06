@@ -1,6 +1,6 @@
 using System;
 using System.Security.Principal;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Collections;
 using N2.Engine;
 using N2.Security;

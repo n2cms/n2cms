@@ -1,5 +1,5 @@
 using System.Web.UI.HtmlControls;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Web;
 
 namespace N2.Tests.Web
