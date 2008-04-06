@@ -1,3 +1,6 @@
+- edit: remove templateurl from default viewed page
+
+
 N2 1.3.4
 - engine
 	- option on displayable to swallow exceptions

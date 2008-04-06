@@ -12,6 +12,14 @@ Shows a solution for handling content in different languages.
 Parts
 Shows an implementation of zones and "parts".
 
+MediumTrust
+An application configured for medium trust. A starting point if you're planning to run N2 in medium trust environments.
+
+TemplatesImplementation
+A proposed way to work with the existing templates. The templates are compiled and run in the same site but there is an implementation project where changes are made.
+
+Mvc
+An example of N2 running with the ASP.NET MVC framework.
 
 HOW TO RUN
 

@@ -1,0 +1,23 @@
+﻿<Dictionary>
+    <Words>
+        <Deprecated>
+            <!-- Words that should be flagged as obsolete. -->
+        </Deprecated>
+        <Recognized>
+            <!-- Words that should not cause a violation. -->
+
+            <!-- Model View Controller -->
+            <Word>MVC</Word>
+        </Recognized>
+        <Unrecognized>
+            <!-- Words that should cause a violation. -->
+        </Unrecognized>
+    </Words>
+    <Acronyms>
+        <CasingExceptions>
+            <!-- Exceptions to the acronym casing rules. Add a justification comment for each new string. -->
+
+            <!--<Acronym>SSL</Acronym>-->
+        </CasingExceptions>
+    </Acronyms>
+</Dictionary>

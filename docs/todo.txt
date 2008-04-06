@@ -13,7 +13,8 @@
 - fix content item injection
 - nhibernate 2
 - move n2.mediumtrust -> n2
-- diff
+- diff feature
+- remove requirement of virtual methods
 
 TODO:
 - documentation & programmability
