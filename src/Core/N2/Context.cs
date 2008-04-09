@@ -117,20 +117,7 @@ namespace N2
         {
             get
             {
-				HttpContext context = HttpContext.Current;
-				if (context != null)
-				{
-					ContentItem item = context.Items["N2.Factory.CurrentPage"] as ContentItem;
-
-					if (item == null)
-					{
-						item = UrlParser.Parse(context.Request.RawUrl) ?? UrlParser.StartPage;
-						context.Items["N2.Factory.CurrentPage"] = item;
-					}
-
-					return item;
-				}
-				return null;
+				return Current.UrlParser.CurrentPage;
             }
         }
         #endregion

@@ -15,5 +15,7 @@ namespace N2.Web
 
 		/// <summary>Makes sure the page handler is given the content item associated with the request.</summary>
 		void InjectContentPage();
+
+		void UpdateCurrentPage();
 	}
 }

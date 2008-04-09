@@ -9,12 +9,12 @@
 - dashboard
 - webdav
 - configure away modules
-- nunit
 - fix content item injection
 - nhibernate 2
-- move n2.mediumtrust -> n2
 - diff feature
 - remove requirement of virtual methods
+- mediumtrust+change name on item -> page not found
+- templates: add notfound page config to start page
 
 TODO:
 - documentation & programmability

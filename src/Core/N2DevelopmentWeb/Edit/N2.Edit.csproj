@@ -827,7 +827,6 @@
     <Content Include="Js\jquery.ui\5_ui.droppable.ext.js" />
     <Content Include="Js\plugins.ashx" />
     <Content Include="Js\jquery.ui.ashx" />
-    <Content Include="Js\plugins\jquery.n2contextmenu.js" />
     <Content Include="Js\tiny_mce\langs\en.js" />
     <Content Include="Js\tiny_mce\license.txt" />
     <Content Include="Js\tiny_mce\plugins\advhr\css\advhr.css" />
@@ -1101,6 +1100,7 @@
     <Content Include="Navigation\SortUp.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Js\plugins\jquery.n2contextmenu-0.3.js" />
     <Content Include="Navigation\SortDown.ashx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -1116,14 +1116,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
-          <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>3825</DevelopmentServerPort>
-          <DevelopmentServerVPath>/Edit/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

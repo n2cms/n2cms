@@ -17,7 +17,7 @@ namespace N2.Tests.Web
 		public override void SetUp()
 		{
 			base.SetUp();
-			parser = new DefaultUrlParser(persister, wrapper, notifier, site);
+			parser = new UrlParser(persister, wrapper, notifier, site);
 		}
 
 		#endregion
@@ -257,7 +257,7 @@ namespace N2.Tests.Web
 		{
 			notifier = mocks.Stub<IItemNotifier>();
 			site = new Site(10, 1);
-			parser = new DefaultUrlParser(persister, wrapper, notifier, site);
+			parser = new UrlParser(persister, wrapper, notifier, site);
 
 			CreateItems(false);
 			ContentItem root = CreateOneItem<PageItem>(10, "root", null);

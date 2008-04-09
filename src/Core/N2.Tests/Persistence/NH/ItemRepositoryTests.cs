@@ -283,7 +283,7 @@ namespace N2.Tests.Persistence.NH
 				IDefinitionManager definitions = new DefaultDefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
 				DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(definitions);
 				configurationBuilder.Properties.Add("hibernate.connection.provider", "NHibernate.Connection.DriverConnectionProvider");
-				configurationBuilder.Properties.Add("hibernate.connection.connection_string_name", "LocalSqlServer");
+				configurationBuilder.Properties.Add("hibernate.connection.connection_string_name", "TestConnection");
 				configurationBuilder.Properties.Add("hibernate.show_sql", "true");
 				configurationBuilder.Properties.Add("hibernate.cache.use_second_level_cache", "false");
 				configurationBuilder.Properties.Add("hibernate.connection.driver_class", "NHibernate.Driver.SqlClientDriver");

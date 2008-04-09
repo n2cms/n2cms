@@ -63,21 +63,21 @@ namespace N2.Security
 
 		/// <summary>Checks that the current user is authorized to access the current item.</summary>
 		/// <param name="context">The context of the request.</param>
-		public virtual void AuthorizeRequest(Web.IWebContext context)
+		public virtual void AuthorizeRequest()
 		{
-			string filePath = context.Request.Url.AbsolutePath.ToLower();
-			string pathWithQuery = context.Request.Url.PathAndQuery;
-			if (IsSecurableResource(context, filePath))
+			string filePath = webContext.AbsolutePath;
+			string pathWithQuery = webContext.RawUrl;
+			if (IsSecurableResource(webContext, filePath))
 			{
 				ContentItem item = urlParser.Parse(pathWithQuery);
-				if (item != null && !security.IsAuthorized(item, context.CurrentUser))
+				if (item != null && !security.IsAuthorized(item, webContext.User))
 				{
 					CancellableItemEventArgs args = new CancellableItemEventArgs(item);
 					if (AuthorizationFailed != null)
 						AuthorizationFailed.Invoke(this, args);
 
 					if (!args.Cancel)
-						throw new N2.Security.PermissionDeniedException(item, context.CurrentUser);
+						throw new N2.Security.PermissionDeniedException(item, webContext.User);
 				}
 			}
 		}
@@ -93,9 +93,9 @@ namespace N2.Security
 		/// <param name="item">The item that is to be saved.</param>
 		protected virtual void OnItemSaving(ContentItem item)
 		{
-			if (!security.IsAuthorized(item, this.webContext.CurrentUser))
-				throw new PermissionDeniedException(item, this.webContext.CurrentUser);
-			IPrincipal user = this.webContext.CurrentUser;
+			if (!security.IsAuthorized(item, this.webContext.User))
+				throw new PermissionDeniedException(item, this.webContext.User);
+			IPrincipal user = this.webContext.User;
 			if (user != null)
 				item.SavedBy = user.Identity.Name;
 			else
@@ -107,15 +107,15 @@ namespace N2.Security
 		/// <param name="destination">The destination for the item.</param>
 		protected virtual void OnItemMoving(ContentItem source, ContentItem destination)
 		{
-			if (!security.IsAuthorized(source, this.webContext.CurrentUser) || !security.IsAuthorized(destination, this.webContext.CurrentUser))
-				throw new PermissionDeniedException(source, this.webContext.CurrentUser);
+			if (!security.IsAuthorized(source, this.webContext.User) || !security.IsAuthorized(destination, this.webContext.User))
+				throw new PermissionDeniedException(source, this.webContext.User);
 		}
 
 		/// <summary>Is invoked when an item is to be deleted.</summary>
 		/// <param name="item">The item to delete.</param>
 		protected virtual void OnItemDeleting(ContentItem item)
 		{
-			IPrincipal user = webContext.CurrentUser;
+			IPrincipal user = webContext.User;
 			if (!security.IsAuthorized(item, user))
 				throw new PermissionDeniedException(item, user);
 		}
@@ -125,8 +125,8 @@ namespace N2.Security
 		/// <param name="destination">The destination for the copied item.</param>
 		protected virtual void OnItemCopying(ContentItem source, ContentItem destination)
 		{
-			if (!security.IsAuthorized(source, this.webContext.CurrentUser) || !security.IsAuthorized(destination, this.webContext.CurrentUser))
-				throw new PermissionDeniedException(source, this.webContext.CurrentUser);
+			if (!security.IsAuthorized(source, this.webContext.User) || !security.IsAuthorized(destination, this.webContext.User))
+				throw new PermissionDeniedException(source, this.webContext.User);
 		}
 		#endregion
 

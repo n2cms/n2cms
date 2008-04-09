@@ -323,6 +323,13 @@
     <Compile Include="Installation\InstallerHint.cs" />
     <Compile Include="Installation\InstallerModule.cs" />
     <Compile Include="Installation\SqlServerType.cs" />
+    <Compile Include="MediumTrust\Configuration\MediumTrustSectionHandler.cs" />
+    <Compile Include="MediumTrust\Configuration\TypeCollection.cs" />
+    <Compile Include="MediumTrust\Configuration\TypeElement.cs" />
+    <Compile Include="MediumTrust\Engine\MediumTrustFactory.cs" />
+    <Compile Include="MediumTrust\Engine\MediumTrustTypeFinder.cs" />
+    <Compile Include="MediumTrust\Persistence\NH\MediumTrustNHBuilder.cs" />
+    <Compile Include="MediumTrust\Web\InitializerModule.cs" />
     <Compile Include="Obsolete\Factory.cs" />
     <Compile Include="Integrity\IntegrityMappingAttribute.cs" />
     <Compile Include="Integrity\AllowedZones.cs" />
@@ -343,6 +350,8 @@
     <Compile Include="Parts\PartsAjaxService.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
+    <Compile Include="Web\IIS5WebContext.cs" />
+    <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\IContentTemplate.cs" />
     <Compile Include="Web\UI\WebControls\A.cs" />
     <Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
@@ -512,9 +521,12 @@
     <EmbeddedResource Include="Resources\Parts.css" />
     <EmbeddedResource Include="Resources\Parts.js" />
     <EmbeddedResource Include="Resources\SlidingCurtain_bg.png" />
+    <EmbeddedResource Include="MediumTrust\Mappings\MediumTrust.hbm.xml" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Web\n2.notweb.xml" />
+    <EmbeddedResource Include="Web\n2.iis5.xml" />
     <EmbeddedResource Include="Resources\jquery-1.2.3.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

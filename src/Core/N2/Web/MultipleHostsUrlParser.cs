@@ -8,7 +8,7 @@ namespace N2.Web
 	/// <summary>
 	/// Parses urls in a multiple host environment.
 	/// </summary>
-	public class MultipleHostsUrlParser : DefaultUrlParser
+	public class MultipleHostsUrlParser : UrlParser
 	{
 		#region Private Fields
 
@@ -46,7 +46,7 @@ namespace N2.Web
 
 		public override Site CurrentSite
 		{
-			get { return GetSite(WebContext.CurrentHost) ?? base.CurrentSite; }
+			get { return GetSite(WebContext.Host) ?? base.CurrentSite; }
 		}
 
 		#endregion

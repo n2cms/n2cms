@@ -206,7 +206,6 @@
 		<Copy SourceFiles="$(DeployCore-BinFolder)\N2.dll" DestinationFolder="$(Examples-MediumTrustFolder)\Lib" />
 		<Copy SourceFiles="$(DeployCore-BinFolder)\N2.Edit.dll" DestinationFolder="$(Examples-MediumTrustFolder)\Lib" />
 		<Copy SourceFiles="$(Source-LibraryFolder)\Castle.Core.dll" DestinationFolder="$(Examples-MediumTrustFolder)\Lib" />
-		<Copy SourceFiles="$(Core-SolutionFolder)\N2.MediumTrust\bin\N2.MediumTrust.dll" DestinationFolder="$(Examples-MediumTrustFolder)\Lib" />
 		<CallTarget Targets="Rebuild-CoreDeploy-AllFiles" />
 		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\WebProject\%(RecursiveDir)" />
 	</Target>

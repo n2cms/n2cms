@@ -14,7 +14,7 @@ namespace N2.Security
 		/// </summary>
 		event EventHandler<CancellableItemEventArgs> AuthorizationFailed;
 		
-		void AuthorizeRequest(N2.Web.IWebContext context);
+		void AuthorizeRequest();
 		void Start();
 	}
 }

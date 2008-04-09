@@ -10,11 +10,17 @@ using System.Collections.Generic;
 using System.Reflection;
 using N2.Details;
 using N2.TemplateWeb.Domain;
+using N2.Web;
 
 namespace N2.TemplateWeb
 {
     public partial class Default : N2.Web.UI.Page<Domain.MyPageData>
     {
+		protected IWebContext WC
+		{
+			get { return N2.Context.Current.Resolve<IWebContext>(); }
+		}
+
     	protected HyperLink HyperLink1;
 
         protected void Page_Load(object sender, EventArgs e)

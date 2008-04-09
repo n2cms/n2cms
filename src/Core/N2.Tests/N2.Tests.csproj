@@ -71,7 +71,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=1.2.0.2003, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate, Version=2.0.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
     </Reference>
@@ -148,6 +148,8 @@
     <Compile Include="Edit\Items\ItemWithRequiredProperty.cs" />
     <Compile Include="Edit\Items\SeveralPlugins.cs" />
     <Compile Include="Edit\NavigatorTests.cs" />
+    <Compile Include="MediumTrust\EngineTests.cs" />
+    <Compile Include="MediumTrust\MediumTrustPage.cs" />
     <Compile Include="NodeTests.cs" />
     <Compile Include="Persistence\FindTests.cs" />
     <Compile Include="ExceptionAssert.cs" />
@@ -219,8 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="N2.Tests.mbunit" />
-    <EmbeddedResource Include="n2.configuration.parameters.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2\N2.csproj">

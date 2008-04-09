@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Security.Principal;
 using System.Web;
+using System.Diagnostics;
+using System.Collections.Specialized;
 
 namespace N2.Web
 {
@@ -8,11 +10,20 @@ namespace N2.Web
 	/// A wrapper for web methods and properties available through 
 	/// <see cref="System.Web.HttpContext.Current"/>.
 	/// </summary>
-	public class WebContextWrapper : IWebContext
+	public class RequestContext : IWebContext
 	{
+		public RequestContext()
+		{
+		}
+
 		public HttpContext CurrentHttpContext
 		{
-			get { return HttpContext.Current; }
+			get 
+			{
+				if (HttpContext.Current == null)
+					throw new N2Exception("Tried to retrieve HttpContext.Current but it's null. This may happen when working outside a request or when doing stuff after the context has been recycled.");
+				return HttpContext.Current; 
+			}
 		}
 
 		/// <summary>Gets wether there is a web context availabe.</summary>
@@ -28,53 +39,104 @@ namespace N2.Web
 		}
 
 		/// <summary>The handler associated with this request.</summary>
-		public virtual IHttpHandler CurrentHandler 
+		public virtual IHttpHandler Handler 
 		{
-			get { return IsInWebContext ? CurrentHttpContext.Handler : null; }
+			get { return CurrentHttpContext.Handler; }
 		}
 
 		/// <summary>Gets the current host name.</summary>
-		public virtual string CurrentHost
+		public virtual string Host
 		{
-			get { return IsInWebContext ? CurrentHttpContext.Request.Url.Authority : null; }
-		}
-
-		/// <summary>Gets the current user in the web execution context.</summary>
-		public virtual IPrincipal CurrentUser
-		{
-			get { return IsInWebContext ? CurrentHttpContext.User : null; }
-		}
-
-		/// <summary>The current request object.</summary>
-		public virtual HttpRequest Request
-		{
-			get { return CurrentHttpContext != null ? CurrentHttpContext.Request : null; }
-		}
-
-		/// <summary>The current request object.</summary>
-		public virtual HttpResponse Response
-		{
-			get { return CurrentHttpContext != null ? CurrentHttpContext.Response : null; }
+			get { return Request.Url.Authority; }
 		}
 
 		/// <summary>Gets the url relative to the application root.</summary>
-		public virtual string RelativeUrl
+		public virtual string RawUrl
 		{
-			get { return Request.AppRelativeCurrentExecutionFilePath; }
+			get { return Request.RawUrl; }
 		}
 
 		/// <summary>Gets the application root path.</summary>
-		public string ApplicationUrl
+		public virtual string ApplicationUrl
 		{
 			get { return Request.ApplicationPath; }
 		}
 
 		/// <summary>Gets the current request's query string.</summary>
-		public string QueryString
+		public virtual NameValueCollection QueryString
 		{
-			get { return Request.QueryString.ToString(); }
+			get { return Request.QueryString; }
 		}
 
+		/// <summary>Gets the current request's query string.</summary>
+		public virtual string Query
+		{
+			get { return QueryString.ToString(); }
+		}
+
+		/// <summary>The path to the requested resource without query string.</summary>
+		public virtual string AbsolutePath
+		{
+			get
+			{
+				return PathPart(RawUrl);
+			}
+		}
+
+		/// <summary>Retrieves the path part of an url, e.g. /path/to/page.aspx.</summary>
+		public static string PathPart(string url)
+		{
+			int queryIndex = url.IndexOf('?');
+			if (queryIndex >= 0)
+				return url.Substring(0, queryIndex);
+			else
+				return url;
+		}
+
+		/// <summary>Retrieves the query part of an url, e.g. page=12&value=something.</summary>
+		public static string QueryPart(string url)
+		{
+			int queryIndex = url.IndexOf('?');
+			if (queryIndex >= 0)
+				return url.Substring(queryIndex + 1);
+			return string.Empty;
+		}
+
+		/// <summary>The physical path on disk to the requested resource.</summary>
+		public virtual string PhysicalPath
+		{
+			get { return Request.PhysicalPath; }
+		}
+
+		/// <summary>Gets the current user in the web execution context.</summary>
+		public virtual IPrincipal User
+		{
+			get { return CurrentHttpContext.User; }
+		}
+
+		/// <summary>A page instance stored in the request context.</summary>
+		public ContentItem CurrentPage
+		{
+			get { return RequestItems["CurrentPage"] as ContentItem; }
+			set { RequestItems["CurrentPage"] = value; }
+		}
+
+		/// <summary>The current request object.</summary>
+		public virtual HttpRequest Request
+		{
+			get { return CurrentHttpContext.Request; }
+		}
+
+		public virtual HttpCookieCollection Cookies
+		{
+			get { return Request.Cookies; }
+		}
+
+		/// <summary>The current request object.</summary>
+		public virtual HttpResponse Response
+		{
+			get { return CurrentHttpContext.Response; }
+		}
 
 		/// <summary>Converts a virtual url to an absolute url.</summary>
 		/// <param name="virtualPath">The virtual url to make absolute.</param>

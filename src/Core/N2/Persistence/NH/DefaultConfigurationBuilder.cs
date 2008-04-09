@@ -20,7 +20,7 @@ namespace N2.Persistence.NH
 		#region Private Fields
 
 		private readonly IDefinitionManager definitions;
-		private IDictionary properties = new ListDictionary();
+		private IDictionary<string, string> properties = new Dictionary<string, string>();
 		private IList<Assembly> assemblies = new List<Assembly>();
 
 		private string generatedHbmFormat =
@@ -51,7 +51,7 @@ namespace N2.Persistence.NH
 		}
 
 		/// <summary>Gets NHibernate configuration properties.</summary>
-		public IDictionary Properties
+		public IDictionary<string,string> Properties
 		{
 			get { return properties; }
 			set { properties = value; }
@@ -166,7 +166,10 @@ namespace N2.Persistence.NH
 		/// <param name="cfg"></param>
 		protected virtual void AddProperties(NHibernate.Cfg.Configuration cfg)
 		{
-			cfg.AddProperties(Properties);
+			foreach (KeyValuePair<string, string> pair in Properties)
+			{
+				cfg.SetProperty(pair.Key, pair.Value);
+			}
 		}
 
 		/// <summary>Builds a configuration and returns a new <see cref="NHibernate.ISessionFactory"/></summary>

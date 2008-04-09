@@ -8,11 +8,11 @@ using System.Collections;
 namespace N2.Tests.Fakes
 {
 	/// <summary>A wrapper for static web methods.</summary>
-	public class FakeWebContextWrapper : N2.Web.WebContextWrapper
+	public class FakeWebContextWrapper : N2.Web.RequestContext
 	{
 		public IPrincipal currentUser = SecurityUtilities.CreatePrincipal("admin");
 
-		public override IPrincipal CurrentUser
+		public override IPrincipal User
 		{
 			get { return currentUser; }
 		}

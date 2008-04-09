@@ -132,7 +132,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFindASite()
 		{
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
+			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com");
 			mocks.ReplayAll();
 
 			Assert.AreSame(sites[1], parser.CurrentSite);
@@ -141,7 +141,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFindSiteWithPort()
 		{
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com:8080");
+			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com:8080");
 			mocks.ReplayAll();
 
 			Assert.AreSame(sites[3], parser.CurrentSite);
@@ -150,7 +150,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void FallbacksToDefaultSite()
 		{
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.siteX.com");
+			Expect.On(wrapper).Call(wrapper.Host).Return("www.siteX.com");
 			mocks.ReplayAll();
 
 			Assert.AreSame(site, parser.CurrentSite);
@@ -225,7 +225,7 @@ namespace N2.Tests.Web
 		private void CreateItemsAndBuildExpectations(string host, string url)
 		{
 			CreateItems(true);
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return(host).Repeat.Any();
+			Expect.On(wrapper).Call(wrapper.Host).Return(host).Repeat.Any();
 			Expect.On(wrapper).Call(wrapper.ToAppRelative(url)).Return(url).Repeat.Any();
 			mocks.ReplayAll();
 		}
@@ -237,7 +237,7 @@ namespace N2.Tests.Web
 		{
 			CreateItems(true);
 			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com");
+			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com");
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item1);
@@ -249,7 +249,7 @@ namespace N2.Tests.Web
 		{
 			CreateItems(true);
 			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com").Repeat.Any();
+			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com").Repeat.Any();
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item1_1);
@@ -261,7 +261,7 @@ namespace N2.Tests.Web
 		{
 			CreateItems(true);
 			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("www.n2cms.com").Repeat.Any();
+			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com").Repeat.Any();
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item2);
@@ -273,7 +273,7 @@ namespace N2.Tests.Web
 		{
 			CreateItems(true);
 			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx").Repeat.Any();
-			Expect.On(wrapper).Call(wrapper.CurrentHost).Return("n2.libardo.com").Repeat.Any();
+			Expect.On(wrapper).Call(wrapper.Host).Return("n2.libardo.com").Repeat.Any();
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item1_1);

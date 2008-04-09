@@ -97,18 +97,17 @@ namespace N2.Tests.Integrity
 			engine.Persister.Delete(realRoot);
 		}
 
-		[Test, ExpectedException(typeof(N2.Definitions.NotAllowedParentException))]
-		public void RootIsntAllowedBelowAllowedItemBelowRoot()
+		[Test]
+		public void Root_IsntAllowed_BelowAllowedItem_BelowRoot()
 		{
 			ContentItem root = CreateItemBelow(null, typeof(Definitions.Page));
-			try
+
+			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
 				CreateItemBelow(root, typeof(Definitions.StartPage));
-			}
-			finally
-			{
-				engine.Persister.Delete(root);
-			}
+			});
+		
+			engine.Persister.Delete(root);
 		}
 
 		private Definitions.StartPage CreateRoot()

@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using System.Reflection;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests
 {
@@ -41,11 +43,15 @@ namespace N2.Tests
 			{
 				method.Invoke();
 			}
+			catch (TargetInvocationException ex)
+			{
+				Assert.That(ex.InnerException, Is.TypeOf(typeof(T)));
+			}
 			catch (T ex)
 			{
 				return ex;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Assert.Fail("Expected exception '" + typeof(T).FullName + "' but got exception '" + ex.GetType() + "'.");
 				return null;

@@ -35,7 +35,7 @@ namespace N2.MediumTrust.Engine
 		private readonly IWebContext webContext;
 		private readonly ISecurityEnforcer securityEnforcer;
 		private readonly Site site;
-		private readonly DefaultRequestLifeCycleHandler lifeCycleHandler;
+		private readonly RequestLifeCycleHandler lifeCycleHandler;
 		private readonly ItemFinder finder;
 		private readonly IDictionary<Type, object> resolves = new Dictionary<Type, object>();
 		private readonly VersionManager versioner;
@@ -56,7 +56,7 @@ namespace N2.MediumTrust.Engine
 			configSection = (MediumTrustSectionHandler)WebConfigurationManager.GetSection("n2/mediumTrust");
 
 			AddComponentInstance("site", typeof(Site), site = new Site(configSection.RootItemID, configSection.StartPageID));
-			Resolves[typeof(IWebContext)] = webContext = new WebContextWrapper();
+			Resolves[typeof(IWebContext)] = webContext = new N2.Web.RequestContext();
 			Resolves[typeof(IItemNotifier)] = notifier = new DefaultItemNotifier();
 			Resolves[typeof(ITypeFinder)] = typeFinder = new MediumTrustTypeFinder();
 			Resolves[typeof(DefinitionBuilder)] = definitionBuilder = new DefinitionBuilder(typeFinder);
@@ -77,7 +77,7 @@ namespace N2.MediumTrust.Engine
 			}
 			else
 			{
-				Resolves[typeof(IUrlParser)] = urlParser = new DefaultUrlParser(persister, webContext, notifier, site);
+				Resolves[typeof(IUrlParser)] = urlParser = new UrlParser(persister, webContext, notifier, site);
 			}
 			Resolves[typeof(ISecurityManager)] = securityManager = new DefaultSecurityManager(webContext);
 			Resolves[typeof(ISecurityEnforcer)] = securityEnforcer = new SecurityEnforcer(persister, securityManager, urlParser, webContext);
@@ -85,9 +85,9 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(IEditManager)] = editManager = new DefaultEditManager(typeFinder, definitions, persister, versioner);
 			Resolves[typeof(IIntegrityManager)] = integrityManager = new DefaultIntegrityManager(definitions, urlParser);
 			Resolves[typeof(IIntegrityEnforcer)] = integrityEnforcer = new IntegrityEnforcer(persister, integrityManager);
-			Resolves[typeof(IUrlRewriter)] = rewriter = new UrlRewriter(persister, urlParser, webContext);
+			Resolves[typeof(IUrlRewriter)] = rewriter = new UrlRewriter(urlParser, webContext);
 			Resolves[typeof(NavigationSettings)] = new NavigationSettings(webContext);
-			Resolves[typeof(IRequestLifeCycleHandler)] = lifeCycleHandler = new DefaultRequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider, webContext);
+			Resolves[typeof(IRequestLifeCycleHandler)] = lifeCycleHandler = new RequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider);
 			Resolves[typeof(ItemXmlReader)] = xmlReader = new ItemXmlReader(definitions);
 			Resolves[typeof(Importer)] = new Importer(persister, xmlReader);
 			Resolves[typeof(ItemXmlWriter)] = xmlWriter = new ItemXmlWriter(definitions, urlParser);

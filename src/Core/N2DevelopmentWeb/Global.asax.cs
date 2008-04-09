@@ -20,7 +20,7 @@ namespace N2.TemplateWeb
 
         void UrlParser_PageNotFound(object sender, N2.Web.PageNotFoundEventArgs e)
         {
-            e.AffectedItem = N2.Context.Persister.Get(3);
+            //e.AffectedItem = N2.Context.Persister.Get(3);
         }
 
 		void CurrentDomain_DomainUnload(object sender, EventArgs e)

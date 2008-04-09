@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 using N2.Persistence;
+using N2.Web.UI;
 
 namespace N2.Web
 {
@@ -15,37 +16,15 @@ namespace N2.Web
 	/// </summary>
 	public class UrlRewriter : IUrlRewriter
 	{
-		#region Private Fields
-
-		private readonly IDictionary<string, string> rewritesCache = new Dictionary<string, string>();
 		private readonly IUrlParser urlParser;
 		private readonly IWebContext webContext;
 
-		#endregion
-
-		#region Constructor
-
 		/// <summary>Creates a new instance of the UrlRewriter.</summary>
-		public UrlRewriter(IPersister persister, IUrlParser urlParser, IWebContext webContext)
+		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
 		{
 			this.urlParser = urlParser;
-			persister.ItemDeleted += ItemChangedEventHandler;
-			persister.ItemMoved += ItemChangedEventHandler;
-			persister.ItemSaved += ItemChangedEventHandler;
 			this.webContext = webContext;
 		}
-
-		#endregion
-
-		#region Properties
-
-		/// <summary>The currently built rewrites cache.</summary>
-		protected virtual IDictionary<string, string> RewritesCache
-		{
-			get { return rewritesCache; }
-		}
-
-		#endregion
 
 		#region Rewrite Methods
 
@@ -53,91 +32,50 @@ namespace N2.Web
 		/// <param name="context">The context to perform the rewriting on.</param>
 		public virtual void RewriteRequest()
 		{
-			if (IsRewritable(webContext.Request))
+			string requestedUrl = webContext.AbsolutePath;
+			ContentItem currentPage = webContext.CurrentPage;
+			if (IsRewritable(requestedUrl) && currentPage != null)
 			{
-				string requestedUrl = webContext.RelativeUrl;
-				string rewrittenUrl;
-				string key = webContext.Request.Url.Authority + requestedUrl;
-				if (RewritesCache.ContainsKey(key))
-				{
-					rewrittenUrl = RewritesCache[key];
-				}
-				else
-				{
-					try
-					{
-						rewritesCache[key] = rewrittenUrl = GetRewrittenUrl(webContext);
-					}
-					catch (InvalidPathException ex)
-					{
-						Trace.TraceWarning(ex.ToString());
-						return;
-					}
-				}
+				string rewrittenUrl = currentPage.RewrittenUrl;
 
-				if (string.IsNullOrEmpty(webContext.QueryString))
+				if (webContext.QueryString.Count == 0)
 					webContext.RewritePath(rewrittenUrl);
 				else
-					webContext.RewritePath(rewrittenUrl + "&" + webContext.QueryString);
+					webContext.RewritePath(rewrittenUrl + "&" + webContext.Query);
 			}
 		}
 
-		/// <summary>Clears rewrites cache.</summary>
-		public virtual void ClearRewrites()
+		protected virtual bool IsRewritable(string requestedUrl)
 		{
-			rewritesCache.Clear();
-		}
-
-		protected virtual string GetRewrittenUrl(IWebContext context)
-		{
-			ContentItem item = urlParser.Parse(context.RelativeUrl);
-
-			if (item == null)
-				throw new InvalidPathException(context.RelativeUrl);
-
-			return item.RewrittenUrl;
-		}
-
-		protected virtual bool IsRewritable(HttpRequest request)
-		{
-			return request.Url.AbsolutePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
-			       && !File.Exists(request.PhysicalPath);
-		}
-
-		/// <summary>Is invoked when the site maps is changed. Clears rewrites.</summary>
-		/// <param name="item">The item responsible of the change.</param>
-		protected virtual void OnSiteMapChanged(ContentItem item)
-		{
-			ClearRewrites();
+			return requestedUrl.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
+			       && !File.Exists(webContext.PhysicalPath);
 		}
 
 		#endregion
 
-		#region Event Handler Methods
-
-		private void ItemChangedEventHandler(object sender, ItemEventArgs e)
+		public void UpdateCurrentPage()
 		{
-			OnSiteMapChanged(e.AffectedItem);
+			try
+			{
+				if (webContext.AbsolutePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
+					|| webContext.QueryString["page"] != null)
+				{
+					webContext.CurrentPage = urlParser.Parse(webContext.RawUrl);
+				}
+			}
+			catch (Exception ex)
+			{
+				Trace.WriteLine(ex.ToString());
+			}
 		}
-
-		#endregion
-
-		#region IUrlRewriter Members
 
 		public void InjectContentPage()
 		{
-            // TODO: fix
-            //IHttpHandler handler = webContext.CurrentHandler;
-            //if (handler is UI.IContentTemplate)
-            //{
-            //    UI.IContentTemplate template = handler as UI.IContentTemplate;
-            //    ContentItem item = webContext.RequestItems["N2.Factory.CurrentPage"] as ContentItem;
-            //    if (item == null)
-            //        item = urlParser.Parse(webContext.RelativeUrl);
-            //    template.CurrentItem = item;
-            //}
+			IContentTemplate template = webContext.Handler as IContentTemplate;
+			if (template != null)
+			{
+				template.CurrentItem = webContext.CurrentPage;
+			}
 		}
-
-		#endregion
 	}
 }

@@ -2,15 +2,32 @@
 <%@ OutputCache CacheProfile="DefaultCache" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-trimming: [[<%= System.Web.SiteMap.Provider.SecurityTrimmingEnabled %>]]
-id: [[<%= CurrentPage.ID %>]]
-root: [[<%= N2.Find.RootItem.ID %>]]
-start: [[<%= N2.Find.StartPage.ID%>]]
-current: [[<%= N2.Find.CurrentPage.ID%>]]
-parent: [[<%= N2.Utility.Evaluate(CurrentPage, "Parent.ID") %>]]
-#children: [[<%= CurrentPage.Children.Count %>]]
-#total: [[<%= N2.Find.Items.All.Count() %>]]
-name : [[<asp:Literal runat="server" Text="<%$ Code: CurrentPage.Name %>" />]]
+<textarea style="height:100px; width:33%; float:left;">
+trimming:	<%= System.Web.SiteMap.Provider.SecurityTrimmingEnabled %>
+id:			<%= CurrentPage.ID %>
+root:		<%= N2.Find.RootItem.ID %>
+start:		<%= N2.Find.StartPage.ID%>
+current:	<%= N2.Find.CurrentPage.ID%>
+parent:		<%= N2.Utility.Evaluate(CurrentPage, "Parent.ID") %>
+#children:	<%= CurrentPage.Children.Count %>
+#total:		<%= N2.Find.Items.All.Count() %>
+name :		<asp:Literal runat="server" Text="<%$ Code: CurrentPage.Name %>" />
+</textarea>
+<textarea style="height:100px; width:33%; float:left;">
+AbsolutePath		<%= WC.AbsolutePath			%>
+ApplicationUrl		<%= WC.ApplicationUrl		%>
+ContentPage			<%= WC.CurrentPage			%>
+Cookies.Count		<%= WC.Cookies.Count		%>
+Handler.GetType()	<%= WC.Handler.GetType()	%>
+Host				<%= WC.Host					%>
+IsInWebContext		<%= WC.IsInWebContext		%>
+RawUrl				<%= WC.RawUrl				%>
+PhysicalPath		<%= WC.PhysicalPath			%>
+QueryString			<%= WC.Query				%>
+RequestItems.Count	<%= WC.RequestItems.Count	%>
+User.Identity.Name	<%= WC.User.Identity.Name	%>
+</textarea>
+
   <%--  
     <h1><%= CurrentPage.Title %></h1>
     

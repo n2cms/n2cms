@@ -11,7 +11,7 @@ namespace N2.Web
 	/// Creates unique urls for items and finds the corresponding item from
 	/// such an url.
 	/// </summary>
-	public class DefaultUrlParser : IUrlParser
+	public class UrlParser : IUrlParser
 	{
 		private Persistence.IPersister persister;
 		private Web.Site defaultSite;
@@ -23,12 +23,12 @@ namespace N2.Web
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
 		#region Constructor
-		public DefaultUrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, int rootItemID)
+		public UrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, int rootItemID)
 			: this(persister, webContext, notifier, new Site(rootItemID))
 		{
 		}
 
-		public DefaultUrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, Web.Site site)
+		public UrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, Web.Site site)
 		{
 			this.persister = persister;
 			this.webContext = webContext;
@@ -44,6 +44,16 @@ namespace N2.Web
 		{
 			get { return defaultSite; }
 			set { defaultSite = value; }
+		}
+
+		/// <summary>Parses the current url to retrieve the current page.</summary>
+		public ContentItem CurrentPage
+		{
+			get 
+			{
+				return webContext.CurrentPage 
+					?? (webContext.CurrentPage = Parse(webContext.RawUrl));
+			}
 		}
 
 		/// <summary>Gets the current site.</summary>

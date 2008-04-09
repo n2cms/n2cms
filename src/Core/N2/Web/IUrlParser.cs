@@ -16,6 +16,9 @@ namespace N2.Web
 		/// <summary>Gets the current start page.</summary>
 		ContentItem StartPage { get; }
 
+		/// <summary>Parses the current url to retrieve the current page.</summary>
+		ContentItem CurrentPage { get; }
+
 		/// <summary>Gets the current site.</summary>
 		Site CurrentSite { get; }
 

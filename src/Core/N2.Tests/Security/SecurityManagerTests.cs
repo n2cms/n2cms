@@ -417,7 +417,7 @@ namespace N2.Tests.Security
 
 		private ContentItem CreateUserAndItem()
 		{
-			Expect.On(context).Call(context.CurrentUser).Return(CreatePrincipal("JustAnyGuy")).Repeat.Any();
+			Expect.On(context).Call(context.User).Return(CreatePrincipal("JustAnyGuy")).Repeat.Any();
 			mocks.Replay(context);
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
@@ -426,7 +426,7 @@ namespace N2.Tests.Security
 
 		private ContentItem SetupNormalUserAndCreateRestrictedItem()
 		{
-			Expect.On(context).Call(context.CurrentUser).Return(CreatePrincipal("JustAnyGuy")).Repeat.Any();
+			Expect.On(context).Call(context.User).Return(CreatePrincipal("JustAnyGuy")).Repeat.Any();
 			mocks.Replay(context);
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
