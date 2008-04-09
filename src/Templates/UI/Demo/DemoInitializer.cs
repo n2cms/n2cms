@@ -6,9 +6,6 @@ using N2;
 using N2.Plugin;
 using N2.Serialization;
 using N2.Templates.Items;
-using N2.Templates.News.Items;
-using N2.Templates.Calendar.Items;
-using N2.Templates.UI.Items;
 
 namespace Demo
 {
@@ -72,7 +69,7 @@ namespace Demo
 
 			ContentItem imported = record.RootItem;
 
-			RootPage rootPage = factory.Persister.Get<RootPage>(factory.UrlParser.CurrentSite.RootItemID);
+			AbstractRootPage rootPage = factory.Persister.Get<AbstractRootPage>(factory.UrlParser.CurrentSite.RootItemID);
 
 			factory.SecurityManager.ScopeEnabled = false;
 			((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = false;
@@ -83,38 +80,38 @@ namespace Demo
 			imp.Import(record, rootPage, ImportOption.Children);
 
 			foreach(ContentItem item in rootPage.Children)
-				if (item is StartPage)
+				if (item is AbstractStartPage)
 					factory.Resolve<N2.Web.Site>().StartPageID = item.ID;
 
 			factory.Persister.Save(rootPage);
 
-			foreach (NewsList nl in Find.Items.Where.Type.Eq(typeof(NewsList)).Select())
-			{
-				foreach (NewsContainer nc in Find.Items.Where.Type.Eq(typeof (NewsContainer)).Select())
-				{
-					nl.Container = nc;
-					News n = factory.Definitions.CreateInstance<News>(nc);
-					n.Title = "Demo site created";
-					n.Introduction = "Today at " + DateTime.Now + " a demo site was generated for your convenience.";
-					n.Text = "<p>Download the template web if you like.</p>";
-					n["Syndicate"] = true;
-					factory.Persister.Save(n);
-				}
-			}
+			//foreach (NewsList nl in Find.Items.Where.Type.Eq(typeof(NewsList)).Select())
+			//{
+			//    foreach (NewsContainer nc in Find.Items.Where.Type.Eq(typeof (NewsContainer)).Select())
+			//    {
+			//        nl.Container = nc;
+			//        News n = factory.Definitions.CreateInstance<News>(nc);
+			//        n.Title = "Demo site created";
+			//        n.Introduction = "Today at " + DateTime.Now + " a demo site was generated for your convenience.";
+			//        n.Text = "<p>Download the template web if you like.</p>";
+			//        n["Syndicate"] = true;
+			//        factory.Persister.Save(n);
+			//    }
+			//}
 
-			foreach (CalendarTeaser ct in Find.Items.Where.Type.Eq(typeof(CalendarTeaser)).Select())
-			{
-				foreach (Calendar c in Find.Items.Where.Type.Eq(typeof(Calendar)).Select())
-				{
-					ct.Container = c;
-					Event e = factory.Definitions.CreateInstance<Event>(c);
-					e.Title = "Demo site scheduled for deletion";
-					e.Introduction = "30 minutes from now the demo site will be re-created.";
-					e.EventDate = DateTime.Now.AddMinutes(30);
-					e["Syndicate"] = true;
-					factory.Persister.Save(e);
-				}
-			}
+			//foreach (CalendarTeaser ct in Find.Items.Where.Type.Eq(typeof(CalendarTeaser)).Select())
+			//{
+			//    foreach (Calendar c in Find.Items.Where.Type.Eq(typeof(Calendar)).Select())
+			//    {
+			//        ct.Container = c;
+			//        Event e = factory.Definitions.CreateInstance<Event>(c);
+			//        e.Title = "Demo site scheduled for deletion";
+			//        e.Introduction = "30 minutes from now the demo site will be re-created.";
+			//        e.EventDate = DateTime.Now.AddMinutes(30);
+			//        e["Syndicate"] = true;
+			//        factory.Persister.Save(e);
+			//    }
+			//}
 
 			ClearPreviousVersions(factory, rootPage);
 

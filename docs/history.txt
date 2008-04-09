@@ -1,6 +1,7 @@
 - edit: remove templateurl from default viewed page
 - friendlier urls without * mapping (iis 5)
 - moved n2.mediumtrust -> n2
+- improved contextmenu
 
 N2 1.3.4
 - engine

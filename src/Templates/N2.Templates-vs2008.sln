@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{B09CC999-A6F
 		..\..\lib\ILMerge.exe = ..\..\lib\ILMerge.exe
 		..\..\lib\log4net.dll = ..\..\lib\log4net.dll
 		..\..\lib\MbUnit.Framework.dll = ..\..\lib\MbUnit.Framework.dll
-		lib\N2.dll = lib\N2.dll
 		lib\N2.Parts.dll = lib\N2.Parts.dll
 		..\..\lib\NHibernate.Caches.SysCache.dll = ..\..\lib\NHibernate.Caches.SysCache.dll
 		..\..\lib\NHibernate.dll = ..\..\lib\NHibernate.dll

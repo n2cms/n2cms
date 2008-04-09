@@ -7,6 +7,7 @@
 		<Source-LibraryFolder>..\lib</Source-LibraryFolder>
 		<ILMerge>$(Source-LibraryFolder)\ILMerge.exe</ILMerge>
 	</PropertyGroup>
+	
 	<Import  Project="$(Source-LibraryFolder)\MSBuild.Community.Tasks.Targets"/>
 
 	<Target Name="Build">
@@ -52,8 +53,14 @@
 		<CallTarget Targets="Templates-PrepareDependencies"/>
 		<CallTarget Targets="Examples-PrepareDependencies"/>
 	</Target>
-	
+
+	<ItemGroup>
+		<DeployedDependecies Include="Examples\**\N2*.dll"/>
+		<DeployedDependecies Include="Templates\**\N2*.dll"/>
+	</ItemGroup>
+
 	<Target Name="Clean-Deploy">
+		<Delete Files="@(DeployedDependecies)" />
 		<RemoveDir Directories="$(Deploy-RootFolder)"/>
 	</Target>
 	

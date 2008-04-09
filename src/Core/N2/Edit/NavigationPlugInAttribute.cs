@@ -31,7 +31,7 @@ namespace N2.Edit
 		} 
 		#endregion 
 
-		#region IComparable<NavigationPlugInAttribute> Members
+		#region IComparable<NavigationPluginAttribute> Members
 
 		public int CompareTo(NavigationPluginAttribute other)
 		{
