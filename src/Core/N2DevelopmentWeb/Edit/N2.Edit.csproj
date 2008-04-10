@@ -1100,6 +1100,7 @@
     <Content Include="Navigation\SortUp.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Js\plugins\jquery.autoscroll.js" />
     <Content Include="Js\plugins\jquery.n2contextmenu-0.3.js" />
     <Content Include="Navigation\SortDown.ashx" />
   </ItemGroup>

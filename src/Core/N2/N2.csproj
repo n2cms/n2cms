@@ -261,7 +261,7 @@
     <Compile Include="Web\IWebContext.cs" />
     <Compile Include="Web\MultipleHostsUrlParser.cs" />
     <Compile Include="Web\DynamicSitesProvider.cs" />
-    <Compile Include="Web\DefaultRequestLifeCycleHandler.cs" />
+    <Compile Include="Web\RequestLifeCycleHandler.cs" />
     <Compile Include="Web\Site.cs" />
     <Compile Include="Web\TemplateNotFoundException.cs" />
     <Compile Include="Definitions\EditorContainerAttribute.cs" />
@@ -272,8 +272,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\UI\WebControls\FieldSet.cs" />
-    <Compile Include="Web\DefaultUrlParser.cs" />
-    <Compile Include="Web\WebContextWrapper.cs" />
+    <Compile Include="Web\UrlParser.cs" />
+    <Compile Include="Web\RequestContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Edit\edit.castle.config" />
