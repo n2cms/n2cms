@@ -129,8 +129,16 @@ namespace N2
 		/// <summary>Gets or sets the item's name. This is used to compute the item's url and can be used to uniquely identify the item among other items on the same level.</summary>
 		public virtual string Name
 		{
-			get { return name ?? (ID > 0 ? ID.ToString() : string.Empty); }
-			set { name = value; }
+			get 
+			{ 
+				return name 
+					?? (ID > 0 ? ID.ToString() : string.Empty); 
+			}
+			set 
+			{ 
+				name = value; 
+				url = null;  
+			}
 		}
 
 		/// <summary>Gets or sets zone name which is associated with data items and their placement on a page.</summary>
