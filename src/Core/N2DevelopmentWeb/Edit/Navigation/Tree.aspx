@@ -33,6 +33,9 @@
                 function toDraggable(container){
 					$("a", container).draggable({
 						snapDistance: 5,
+						stop : function(e,ui){
+							$.autoscroll.stop();
+						},
 						start : function(e,ui){
 							dragMemory = this.rel;
 
@@ -49,7 +52,8 @@
 										+ "&selected=" + encodeURIComponent(to);
 								}
 							});
-
+							
+							$.autoscroll.start();
 						},
 						helper: 'clone'
 					});

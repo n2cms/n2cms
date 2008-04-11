@@ -27,7 +27,7 @@ namespace N2.Web.UI.WebControls
 
 		public string DragDropScriptUrl
 		{
-			get { return (string) (ViewState["DragDropScriptUrl"] ?? string.Empty); }
+			get { return (string) (ViewState["DragDropScriptUrl"] ?? "~/Edit/Js/parts.js"); }
 			set { ViewState["DragDropScriptUrl"] = value; }
 		}
 
@@ -47,7 +47,7 @@ namespace N2.Web.UI.WebControls
 
 		public string DragDropStyleSheetUrl
 		{
-			get { return (string)(ViewState["DragDropStyleSheetUrl"] ?? string.Empty); }
+			get { return (string)(ViewState["DragDropStyleSheetUrl"] ?? "~/Edit/Css/Parts.css"); }
 			set { ViewState["DragDropStyleSheetUrl"] = value; }
 		}
 
@@ -175,20 +175,14 @@ namespace N2.Web.UI.WebControls
 
 		private void RegisterStyles()
 		{
-			if(string.IsNullOrEmpty(DragDropStyleSheetUrl))
-				Register.StyleSheet(Page, typeof (DragDropControlPanel), "N2.Resources.Parts.css");
-			else 
-				Register.StyleSheet(Page, DragDropStyleSheetUrl, Media.All);
+			Register.StyleSheet(Page, DragDropStyleSheetUrl, Media.All);
 		}
 
 		private void RegisterScripts()
 		{
 			Register.JQuery(Page);
 			Register.JavaScript(Page, "~/edit/js/jquery.ui.ashx");
-			if (string.IsNullOrEmpty(DragDropScriptUrl))
-				Register.JavaScript(Page, typeof (DragDropControlPanel), "N2.Resources.Parts.js");
-			else
-				Register.JavaScript(Page, DragDropScriptUrl);
+			Register.JavaScript(Page, DragDropScriptUrl);
 
 			Register.JavaScript(Page, @"if(typeof dragItems != 'undefined')
 	window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);

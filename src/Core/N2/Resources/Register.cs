@@ -6,9 +6,6 @@ using System.Web.UI.WebControls;
 
 [assembly: WebResource("N2.Resources.jquery-1.2.3.min.js", "text/javascript")]
 
-[assembly: WebResource("N2.Resources.Parts.css", "text/css")]
-[assembly: WebResource("N2.Resources.Parts.js", "text/javascript")]
-
 namespace N2.Resources
 {
 	/// <summary>

@@ -3,9 +3,6 @@ using System.Web.UI;
 using N2.Definitions;
 using N2.Web.UI.WebControls;
 
-[assembly: WebResource("N2.Resources.delete.png", "image/png")]
-[assembly: WebResource("N2.Resources.page_edit.png", "image/png")]
-
 namespace N2.Web.UI.WebControls
 {
 	public class DraggableToolbar : Control
@@ -61,13 +58,13 @@ namespace N2.Web.UI.WebControls
 					writer.Write(" style='background-image:url({0});'", gripperImageUrl);
 				}
 				writer.Write(">");
-				writer.Write("<img src='{0}' class='delete' alt='delete'", GetDeleteIcon());
+				writer.Write("<img src='{0}' class='delete' alt='delete'", Utility.ToAbsolute("~/Edit/img/ico/png/delete.png"));
 				if(bindButtons)
 				{
 					writer.Write(" onclick=\"n2ddcp.del('{0}');\"", ClientID);
 				}
 				writer.Write("/>");
-				writer.Write("<img src='{0}' class='edit' alt='edit'", GetEditIcon());
+				writer.Write("<img src='{0}' class='edit' alt='edit'", Utility.ToAbsolute("~/Edit/img/ico/png/pencil.png"));
 				if (bindButtons)
 				{
 					writer.Write(" onclick=\"n2ddcp.edit('{0}');\"", ClientID);
@@ -76,16 +73,6 @@ namespace N2.Web.UI.WebControls
 				writer.Write(Definition.Title);
 				writer.Write("</div>");
 			}
-		}
-
-		private string GetEditIcon()
-		{
-			return Page.ClientScript.GetWebResourceUrl(typeof (DraggableToolbar), "N2.Resources.page_edit.png");
-		}
-
-		private string GetDeleteIcon()
-		{
-			return Page.ClientScript.GetWebResourceUrl(typeof (DraggableToolbar), "N2.Resources.delete.png");
 		}
 	}
 }

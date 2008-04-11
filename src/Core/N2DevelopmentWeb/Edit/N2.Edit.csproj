@@ -538,9 +538,7 @@
     <Content Include="img\ico\wrench.gif" />
     <Content Include="img\login_bg.gif" />
     <Content Include="img\login_panel.gif" />
-    <Content Include="img\tab.gif" />
     <Content Include="img\tab_selected.gif" />
-    <Content Include="img\toolbar_area_bg.gif" />
     <Content Include="img\toolbar_bg.gif" />
     <Content Include="img\tv\tv-collapsable-last.gif" />
     <Content Include="img\tv\tv-collapsable.gif" />
@@ -810,7 +808,6 @@
     <Content Include="img\ico\png\star.png" />
     <Content Include="img\shading.png" />
     <Content Include="img\SlidingCurtain_bg.png" />
-    <Content Include="img\SlidingCurtain_bg_bottom.png" />
     <Content Include="Js\jquery-1.2.3.js" />
     <Content Include="Js\plugins\cookies.js" />
     <Content Include="Js\plugins\jquery.n2optionmenu.js" />
@@ -1100,8 +1097,21 @@
     <Content Include="Navigation\SortUp.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Js\plugins\jquery.autoscroll.js" />
-    <Content Include="Js\plugins\jquery.n2contextmenu-0.3.js" />
+    <Content Include="Css\Parts.css" />
+    <Content Include="img\framed_opener.gif" />
+    <Content Include="img\ico\png\pencil.png" />
+    <Content Include="img\part_bg.png" />
+    <Content Include="img\pencil.png" />
+    <Content Include="img\shading_blue.png" />
+    <Content Include="img\shading_green.png" />
+    <Content Include="img\shading_purple.png" />
+    <Content Include="img\splitter.gif" />
+    <Content Include="img\tabs_base.gif" />
+    <Content Include="img\tabs_begin.gif" />
+    <Content Include="img\tab_end.gif" />
+    <Content Include="Js\jquery.ui\jquery.autoscroll.js" />
+    <Content Include="Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
+    <Content Include="Js\parts.js" />
     <Content Include="Navigation\SortDown.ashx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

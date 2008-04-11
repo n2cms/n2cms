@@ -3,8 +3,6 @@ using System.Web.UI;
 using N2.Resources;
 using N2.Web.UI.WebControls;
 
-[assembly: WebResource("N2.Resources.SlidingCurtain_bg.png", "image/png")]
-
 namespace N2.Web.UI.WebControls
 {
 	public class SlidingCurtain : Control
@@ -25,13 +23,13 @@ namespace N2.Web.UI.WebControls
 
 		public string ScriptUrl
 		{
-			get { return (string)(ViewState["ScriptUrl"] ?? GetWebResourceUrl("N2.Resources.Parts.js")); }
+			get { return (string)(ViewState["ScriptUrl"] ?? "~/Edit/Js/parts.js"); }
 			set { ViewState["ScriptUrl"] = value; }
 		}
 
 		public string StyleSheetUrl
 		{
-			get { return (string)(ViewState["StyleSheetUrl"] ?? GetWebResourceUrl("N2.Resources.Parts.css")); }
+			get { return (string)(ViewState["StyleSheetUrl"] ?? "~/Edit/Css/Parts.css"); }
 			set { ViewState["StyleSheetUrl"] = value; }
 		}
 

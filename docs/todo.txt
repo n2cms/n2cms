@@ -158,8 +158,6 @@ TODO:
 - tests
 	- watin
 	- clear session
-- drag&drop
-	- scroll screen when reaching edge
 - mono
 	- look into it
 	- expression builders

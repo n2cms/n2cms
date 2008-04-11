@@ -11,35 +11,28 @@
  */
 
 $.autoscroll = {
-	settings: 	{},
+	settings: 	null,
 	interval: 	0,
 	event: 		null,
 
 	init: function(opts) {
-		$.autoscroll.settings = {
-			step: 		80,
-			trigger:	75,
-			interval: 	80,
-			mod_key: 	17
-		};
-		
-		if (opts) {
-			for (o in opts) {
-				$.autoscroll.settings[o] = opts[o];
-			}
-		}
-
+		$.autoscroll.settings = $.extend({step: 20, trigger: 40, interval: 100}, opts || {});
 		document.onmousemove= $.autoscroll.setMouseEvent;
-		document.onkeydown 	= $.autoscroll.setKeyEvent;
-		document.onkeyup	= function(){ clearInterval($.autoscroll.interval); $.autoscroll.interval = 0; };
 	},
-
-	setKeyEvent: function(e) {
-		var e = e || window.event;
-		var k = e.charCode ? e.charCode : e.keyCode ? e.keyCode : e.which;
-		if ($.autoscroll.interval == 0 && ($.autoscroll.settings.mod_key == k)) {
+	
+	start: function(){
+		if(!$.autoscroll.settings){
+			$.autoscroll.init();
+		}
+		
+		if ($.autoscroll.interval == 0) {
 			$.autoscroll.interval = setInterval($.autoscroll.step, $.autoscroll.settings.interval);
 		}
+	},
+	
+	stop: function(){
+		clearInterval($.autoscroll.interval); 
+		$.autoscroll.interval = 0;
 	},
 
 	setMouseEvent: function(e) {

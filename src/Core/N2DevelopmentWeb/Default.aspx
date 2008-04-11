@@ -2,6 +2,14 @@
 <%@ OutputCache CacheProfile="DefaultCache" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+<style>
+	.droppable-active
+	{
+		border:solid 1px red;
+	}
+</style>
+
+
 <textarea style="height:100px; width:33%; float:left;">
 trimming:	<%= System.Web.SiteMap.Provider.SecurityTrimmingEnabled %>
 id:			<%= CurrentPage.ID %>
@@ -13,6 +21,8 @@ parent:		<%= N2.Utility.Evaluate(CurrentPage, "Parent.ID") %>
 #total:		<%= N2.Find.Items.All.Count() %>
 name :		<asp:Literal runat="server" Text="<%$ Code: CurrentPage.Name %>" />
 </textarea>
+
+
 <textarea style="height:100px; width:33%; float:left;">
 AbsolutePath		<%= WC.AbsolutePath			%>
 ApplicationUrl		<%= WC.ApplicationUrl		%>

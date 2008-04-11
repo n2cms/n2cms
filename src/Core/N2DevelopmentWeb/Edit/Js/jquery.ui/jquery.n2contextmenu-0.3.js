@@ -42,6 +42,20 @@
 
 		$m.n2showat(x, y);
 	};
+	
+	var findFrame = function(name){
+		for(var i = 0; i < window.frames.length; i++){
+			if(window.frames[i].name == name){
+				return window.frames[i];
+			}
+		}
+		for(var i = 0; i < window.top.frames.length; i++){
+			if(window.top.frames[i].name == name){
+				return window.top.frames[i];
+			}
+		}
+		return null;
+	};
 
 	$.fn.n2contextmenu = function(menu,options) {
 		options = $.extend({offsetX: -10, offsetY: -10, showing: function(){}, appendTo: document.body}, options || {});
@@ -76,9 +90,11 @@
 		return this.bind('contextmenu', function(e) {
 			$(e.target).click().each(function() {
 				var $t = $(this);
-				if($t.is("a")) {
-					window.location = $t[0].href;
-				}
+				$t.parents().andSelf().filter("a").each(function(){
+					var f = findFrame(this.target) || window;
+					f.location = this.href;
+					hideAll();
+				});
 			});
 			e.stopPropagation();
 			e.preventDefault();
