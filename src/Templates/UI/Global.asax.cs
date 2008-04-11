@@ -5,6 +5,7 @@ using System.Collections;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
+using System.Diagnostics;
 
 namespace N2.Templates.UI
 {
@@ -13,6 +14,7 @@ namespace N2.Templates.UI
 
 		protected void Application_Start(object sender, EventArgs e)
 		{
+			Debug.Write("start");
 		}
 
 		protected void Application_End(object sender, EventArgs e)
