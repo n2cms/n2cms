@@ -20,11 +20,12 @@ namespace N2.TemplateWeb.Domain
 	[WithEditable("Hello", typeof (TextBox), "Text", 220, "Hello", ContainerName = "special")]
 	[TabPanel("teasers", "Teasers", 1240)]
 	[EditableChildren("Sub items", "Right", 0, ContainerName="teasers")]
-	[WithEditablePublishedRange("Publish between", 20)]
+	[WithEditablePublishedRange("Publish between", 20, ContainerName="default")]
+	[TabPanel("ádvanced", "Advanced", 1040)]
 	public class MyPageData : AbstractCustomItem
 	{
 
-		[N2.Details.Editable("Start date", typeof(DatePicker), "SelectedDate", 10)]
+		[N2.Details.Editable("Start date", typeof(DatePicker), "SelectedDate", 10, ContainerName = "ádvanced")]
 		public virtual DateTime? MyProperty
 		{
 			get { return (DateTime?)(GetDetail("MyProperty")); }
@@ -88,7 +89,7 @@ namespace N2.TemplateWeb.Domain
 			set { SetDetail("MyFile", value); }
 		}
 
-		[EditableTextBox("MyLabel", 100)]
+		[EditableTextBox("MyLabel", 100, ContainerName = "ádvanced")]
 		public virtual string MyLabel
 		{
 			get { return (string)(GetDetail("MyLabel") ?? string.Empty); }

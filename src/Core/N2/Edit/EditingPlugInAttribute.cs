@@ -111,6 +111,9 @@ namespace N2.Edit
 
 		protected virtual HtmlAnchor AddAnchor(Control container)
 		{
+			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
+			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
+			
 			HtmlAnchor a = new HtmlAnchor();
 			a.ID = "h" + Name;
 			a.HRef = UrlFormat
@@ -121,13 +124,12 @@ namespace N2.Edit
 
 			a.Target = Target;
 			a.Attributes["class"] = "command";
-			a.Title = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
+			a.Title = tooltip;
 
-			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
 			if (string.IsNullOrEmpty(IconUrl))
 				a.InnerHtml = title;
 			else
-				a.InnerHtml = string.Format("<img src='{0}' alt='{1}'/>{2}", Utility.ToAbsolute(IconUrl), Name, title);
+				a.InnerHtml = string.Format("<img src='{0}' alt='{1}'/>{2}", Utility.ToAbsolute(IconUrl), tooltip, title);
 
 			container.Controls.Add(a);
 			return a;

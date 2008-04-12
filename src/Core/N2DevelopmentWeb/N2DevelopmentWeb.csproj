@@ -96,7 +96,6 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Domain\AbstractCustomItem.cs" />
-    <Compile Include="Domain\Class1.cs" />
     <Compile Include="Domain\ControlPanel.cs" />
     <Compile Include="Domain\ItemCreator.cs" />
     <Compile Include="Domain\ItemWithChildItem.cs">

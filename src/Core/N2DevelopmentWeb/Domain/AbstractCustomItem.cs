@@ -12,7 +12,7 @@ namespace N2.TemplateWeb.Domain
     [N2.Web.UI.TabPanel("links", "Links", 210)]
     [N2.Web.UI.TabPanel("default", "Default", 200)]
     [N2.Web.UI.TabPanel("special", "Special stuff", 220)]
-	[WithEditableTitle]
+	[WithEditableTitle(ContainerName = "default")]
     public abstract class AbstractCustomItem : N2.ContentItem
     {
 		public AbstractCustomItem()

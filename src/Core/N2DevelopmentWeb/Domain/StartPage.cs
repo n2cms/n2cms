@@ -33,7 +33,7 @@ namespace N2.TemplateWeb.Domain
 		}
 
 
-		[N2.Details.EditableImage("ImageUrl", 100)]
+		[N2.Details.EditableImage("ImageUrl", 100, ContainerName = "default")]
 		public virtual string ImageUrl
 		{
 			get { return (string)(GetDetail("ImageUrl") ?? string.Empty); }
