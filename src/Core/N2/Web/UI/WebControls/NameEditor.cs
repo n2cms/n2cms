@@ -15,6 +15,9 @@ namespace N2.Web.UI.WebControls
 		private bool ascii;
 		private string prefix = string.Empty;
 		private string suffix = string.Empty;
+		private string uniqueNameErrorFormat = "Another item already has the name '{0}'.";
+		private string nameTooLongErrorFormat = "Name too long, the full url cannot exceed 260 characters: {0}";
+		private string invalidCharactersErrorFormat = "Invalid characters in path, % ? & / : + not allowed.";
 
 		/// <summary>Constructs the name editor.</summary>
 		public NameEditor()
@@ -30,7 +33,6 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["TitleEditorName"] = value; }
 		}
 
-
 		public string Prefix
 		{
 			get { return prefix; }
@@ -43,6 +45,41 @@ namespace N2.Web.UI.WebControls
 			set { suffix = value; }
 		}
 
+		public char WhitespaceReplacement
+		{
+			get { return whitespaceReplacement; }
+			set { whitespaceReplacement = value; }
+		}
+
+		public bool ToLower
+		{
+			get { return toLower; }
+			set { toLower = value; }
+		}
+
+		public bool Ascii
+		{
+			get { return ascii; }
+			set { ascii = value; }
+		}
+
+		public string UniqueNameErrorFormat
+		{
+			get { return uniqueNameErrorFormat; }
+			set { uniqueNameErrorFormat = value; }
+		}
+
+		public string NameTooLongErrorFormat
+		{
+			get { return nameTooLongErrorFormat; }
+			set { nameTooLongErrorFormat = value; }
+		}
+
+		public string InvalidCharactersErrorFormat
+		{
+			get { return invalidCharactersErrorFormat; }
+			set { invalidCharactersErrorFormat = value; }
+		}
 
 		#region Methods
 
@@ -120,29 +157,9 @@ function updateName(titleid,nameid,whitespace,tolower,ascii){
 			set { ViewState["IsValid"] = value; }
 		}
 
-		public char WhitespaceReplacement
-		{
-			get { return whitespaceReplacement; }
-			set { whitespaceReplacement = value; }
-		}
-
-		public bool ToLower
-		{
-			get { return toLower; }
-			set { toLower = value; }
-		}
-
-		public bool Ascii
-		{
-			get { return ascii; }
-			set { ascii = value; }
-		}
-
 		/// <summary>Validates the name editor's value checking uniqueness and lenght.</summary>
 		public void Validate()
 		{
-			IsValid = true;
-
 			ContentItem currentItem = ItemUtility.FindCurrentItem(Parent);
 
 			if (currentItem != null)
@@ -153,26 +170,29 @@ function updateName(titleid,nameid,whitespace,tolower,ascii){
 					if (!N2.Context.IntegrityManager.IsLocallyUnique(Text, currentItem))
 					{
 						//Another item with the same parent and the same name was found 
-						ErrorMessage = string.Format("Another item already has the name '{0}'.", Text);
+						ErrorMessage = string.Format(UniqueNameErrorFormat, Text);
 						IsValid = false;
 						return;
 					}
+
 					// Ensure that the path isn't longer than 260 characters
-					if (currentItem.Parent != null &&
-					    (currentItem.Parent.Url.Length > 248 || currentItem.Parent.Url.Length + Text.Length > 260))
+					if (currentItem.Parent != null && (currentItem.Parent.Url.Length > 248 || currentItem.Parent.Url.Length + Text.Length > 260))
 					{
-						ErrorMessage = string.Format("Name too long, the full url cannot exceed 260 characters: {0}", Text);
+						ErrorMessage = string.Format(NameTooLongErrorFormat, Text);
 						IsValid = false;
 						return;
 					}
-					if(Text.IndexOfAny(new char[]{'?', '&', '/', '+', ':', '%'}) > 0)
+
+					if(Text.IndexOfAny(new char[]{'?', '&', '/', '+', ':', '%'}) >= 0)
 					{
-						ErrorMessage = "Invalid characters in path, % ? & / : + not allowed.";
+						ErrorMessage = InvalidCharactersErrorFormat;
 						IsValid = false;
 						return;
 					}
 				}
 			}
+
+			IsValid = true;
 		}
 
 		public override void RenderBeginTag(HtmlTextWriter writer)

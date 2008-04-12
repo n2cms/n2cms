@@ -1,5 +1,6 @@
 - bugfixes
 	- fixed wrong preview url when changing item name
+	- names are now actually validated against ?
 - edit
 	- scroll screen when reaching edge (tree + drag&drop)
 	- improved contextmenu

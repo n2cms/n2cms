@@ -14,7 +14,6 @@
 - diff feature
 - remove requirement of virtual methods
 - better validation (jquery?)
-- stronger validation for names
 
 TODO:
 - documentation & programmability
