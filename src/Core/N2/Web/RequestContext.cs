@@ -14,6 +14,7 @@ namespace N2.Web
 	{
 		public RequestContext()
 		{
+			Debug.WriteLine("RequestContext");
 		}
 
 		public HttpContext CurrentHttpContext
@@ -143,7 +144,7 @@ namespace N2.Web
 		/// <returns>The absolute url.</returns>
 		public virtual string ToAbsolute(string virtualPath)
 		{
-			return VirtualPathUtility.ToAbsolute(virtualPath);
+			return Utility.ToAbsolute(virtualPath);
 		}
 
 		/// <summary>Converts an absolute url to an app relative url.</summary>
@@ -151,7 +152,9 @@ namespace N2.Web
 		/// <returns>An app relative url.</returns>
 		public virtual string ToAppRelative(string virtualPath)
 		{
-			return VirtualPathUtility.ToAppRelative(virtualPath);
+			if (virtualPath != null && virtualPath.StartsWith(Utility.WebRootPath, System.StringComparison.InvariantCultureIgnoreCase))
+				return "~/" + virtualPath.Substring(Utility.WebRootPath.Length);
+			return virtualPath;
 		}
 
 		/// <summary>Maps a virtual path to a physical disk path.</summary>
@@ -164,8 +167,9 @@ namespace N2.Web
 
 		/// <summary>Assigns a rewrite path.</summary>
 		/// <param name="path">The path to the template that will handle the request.</param>
-		public void RewritePath(string path)
+		public virtual void RewritePath(string path)
 		{
+			Debug.WriteLine("Rewriting '" + RawUrl + "' to '" + path + "'");
 			CurrentHttpContext.RewritePath(path, false);
 		}
 	}

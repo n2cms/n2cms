@@ -34,44 +34,46 @@ namespace N2.Web
 
 		public override string RawUrl
 		{
-			get
+			get { return ExtractUrl(base.RawUrl); }
+		}
+
+		private string ExtractUrl(string rawUrl)
+		{
+			string qs = QueryPart(rawUrl);
+			if (qs.StartsWith("404"))
 			{
-				string qs = Request.QueryString.ToString();
-				if (qs.StartsWith("404"))
+				Match m = pathExpression.Match(HttpUtility.UrlDecode(qs));
+				if (m.Success)
 				{
-					Match m = pathExpression.Match(HttpUtility.UrlDecode(qs));
-					if (m.Success)
-					{
-						return m.Groups[1].Value;
-					}
+					return m.Groups[1].Value;
 				}
-				return base.RawUrl;
 			}
+			return rawUrl;
 		}
 
 		public override string PhysicalPath
 		{
-			get
-			{
-				return MapPath(AbsolutePath);
-			}
+			get { return MapPath(AbsolutePath); }
 		}
 
 		public override string Query
 		{
-			get
-			{
-				return QueryPart(RawUrl);
-			}
+			get { return QueryPart(RawUrl); }
 		}
 
 		public override NameValueCollection QueryString
 		{
-			get
-			{
-				string q = QueryPart(RawUrl);
-				return ToNameValueCollection(q);
-			}
+			get { return ToNameValueCollection(QueryPart(RawUrl)); }
+		}
+
+		public override string ToAppRelative(string virtualPath)
+		{
+			return base.ToAppRelative(ExtractUrl(virtualPath));
+		}
+
+		public override string ToAbsolute(string virtualPath)
+		{
+			return base.ToAppRelative(base.ToAbsolute(virtualPath));
 		}
 
 		private static NameValueCollection ToNameValueCollection(string query)

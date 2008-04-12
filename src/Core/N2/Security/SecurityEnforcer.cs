@@ -65,11 +65,11 @@ namespace N2.Security
 		/// <param name="context">The context of the request.</param>
 		public virtual void AuthorizeRequest()
 		{
-			string filePath = webContext.AbsolutePath;
-			string pathWithQuery = webContext.RawUrl;
-			if (IsSecurableResource(webContext, filePath))
+			ContentItem item = webContext.CurrentPage;
+			if (item != null)
 			{
-				ContentItem item = urlParser.Parse(pathWithQuery);
+				string filePath = webContext.AbsolutePath;
+				string pathWithQuery = webContext.RawUrl;
 				if (item != null && !security.IsAuthorized(item, webContext.User))
 				{
 					CancellableItemEventArgs args = new CancellableItemEventArgs(item);
@@ -82,12 +82,12 @@ namespace N2.Security
 			}
 		}
 
-		private bool IsSecurableResource(Web.IWebContext context, string filePath)
-		{
-			return (filePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
-					|| filePath.EndsWith(".aspx", StringComparison.InvariantCultureIgnoreCase)
-				) && !filePath.StartsWith(context.ToAbsolute("~/edit/"), StringComparison.InvariantCultureIgnoreCase);
-		}
+		//private bool IsSecurableResource(Web.IWebContext context, string filePath)
+		//{
+		//    return (filePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
+		//            || filePath.EndsWith(".aspx", StringComparison.InvariantCultureIgnoreCase)
+		//        ) && !filePath.StartsWith(context.ToAbsolute("~/edit/"), StringComparison.InvariantCultureIgnoreCase);
+		//}
 
 		/// <summary>Is invoked when an item is saved.</summary>
 		/// <param name="item">The item that is to be saved.</param>

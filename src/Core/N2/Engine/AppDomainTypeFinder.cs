@@ -129,7 +129,6 @@ namespace N2.Engine
 			if (EnableTypeCaching)
 				typeCache[requestedType.FullName] = types;
 
-			Debug.WriteLine(string.Format("AppDomainTypeFinder.Find: Found {0} types.", types.Count));
 			return types;
 		}
 
@@ -144,7 +143,6 @@ namespace N2.Engine
 				AddAssembliesInAppDomain(addedAssemblyNames, assemblies);
 			AddConfiguredAssemblies(addedAssemblyNames, assemblies);
 
-			Debug.WriteLine(string.Format("AppDomainTypeFinder: {0} assemblies found.", assemblies.Count));
 			return assemblies;
 		}
 
@@ -159,8 +157,6 @@ namespace N2.Engine
 				{
 					if (!addedAssemblyNames.Contains(assembly.FullName))
 					{
-						Debug.WriteLine("AppDomainTypeFinder: found assembly in domain " + assembly.FullName);
-
 						assemblies.Add(assembly);
 						addedAssemblyNames.Add(assembly.FullName);
 					}
@@ -176,8 +172,6 @@ namespace N2.Engine
 				Assembly assembly = Assembly.Load(assemblyName);
 				if (!addedAssemblyNames.Contains(assembly.FullName))
 				{
-					Debug.WriteLine("AppDomainTypeFinder: adding configured assembly " + assemblyName);
-
 					assemblies.Add(assembly);
 					addedAssemblyNames.Add(assembly.FullName);
 				}
@@ -206,8 +200,6 @@ namespace N2.Engine
 		/// <param name="directoryPath">The physical path to a directory containing dlls to load in the app domain.</param>
 		protected virtual void LoadMatchingAssemblies(string directoryPath)
 		{
-			Debug.WriteLine("AppDomainTypeFinder: looking for assemblies in folder " + directoryPath);
-
 			List<string> loadedAssemblyNames = new List<string>();
 			foreach (Assembly a in GetAssemblies())
 			{
@@ -221,7 +213,6 @@ namespace N2.Engine
 					Assembly a = Assembly.ReflectionOnlyLoadFrom(dllPath);
 					if (Matches(a.FullName) && !loadedAssemblyNames.Contains(a.FullName))
 					{
-						Debug.WriteLine("AppDomainTypeFinder.LoadMatchingAssemblies loading " + a.FullName);
 						App.Load(a.FullName);
 					}
 				}

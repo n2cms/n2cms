@@ -9,8 +9,7 @@
 	}
 </style>
 
-
-<textarea style="height:100px; width:33%; float:left;">
+<textarea style="height:100px; width:30%;">
 trimming:	<%= System.Web.SiteMap.Provider.SecurityTrimmingEnabled %>
 id:			<%= CurrentPage.ID %>
 root:		<%= N2.Find.RootItem.ID %>
@@ -23,7 +22,7 @@ name :		<asp:Literal runat="server" Text="<%$ Code: CurrentPage.Name %>" />
 </textarea>
 
 
-<textarea style="height:100px; width:33%; float:left;">
+<textarea style="height:100px; width:30%;">
 AbsolutePath		<%= WC.AbsolutePath			%>
 ApplicationUrl		<%= WC.ApplicationUrl		%>
 ContentPage			<%= WC.CurrentPage			%>

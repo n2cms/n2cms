@@ -13,9 +13,8 @@
 - nhibernate 2
 - diff feature
 - remove requirement of virtual methods
-- mediumtrust+change name on item -> page not found
-- templates: add notfound page config to start page
 - better validation (jquery?)
+- stronger validation for names
 
 TODO:
 - documentation & programmability

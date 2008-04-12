@@ -450,6 +450,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.aspx" />
+    <Content Include="favicon.ico" />
     <Content Include="Layouts\Parts\SubMenu.ascx" />
     <Content Include="Layouts\Top+SubMenu.Master" />
     <Content Include="Upload\logo_white.png" />

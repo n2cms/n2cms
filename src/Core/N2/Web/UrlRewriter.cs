@@ -16,13 +16,24 @@ namespace N2.Web
 	/// </summary>
 	public class UrlRewriter : IUrlRewriter
 	{
+		private readonly string defaultExtension;
 		private readonly IUrlParser urlParser;
 		private readonly IWebContext webContext;
+
+		//private string[] ignoredExtensions = new string[] { ".gif", ".jpg", ".jpeg", ".png", ".axd", ".js", ".ashx", ".css" };
+
+		///// <summary>Extensions that are ignored by the url rewriter.</summary>
+		//public string[] IgnoredExtensions
+		//{
+		//    get { return ignoredExtensions; }
+		//    set { ignoredExtensions = value; }
+		//}
 
 		/// <summary>Creates a new instance of the UrlRewriter.</summary>
 		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
 		{
 			this.urlParser = urlParser;
+			this.defaultExtension = urlParser.DefaultExtension;
 			this.webContext = webContext;
 		}
 
@@ -34,21 +45,33 @@ namespace N2.Web
 		{
 			string requestedUrl = webContext.AbsolutePath;
 			ContentItem currentPage = webContext.CurrentPage;
-			if (IsRewritable(requestedUrl) && currentPage != null)
+			if (HasContentExtension(requestedUrl) && !File.Exists(webContext.PhysicalPath) && currentPage != null)
 			{
 				string rewrittenUrl = currentPage.RewrittenUrl;
 
-				if (webContext.QueryString.Count == 0)
+				if (string.IsNullOrEmpty(webContext.Query))
 					webContext.RewritePath(rewrittenUrl);
 				else
 					webContext.RewritePath(rewrittenUrl + "&" + webContext.Query);
 			}
 		}
 
-		protected virtual bool IsRewritable(string requestedUrl)
+
+		private bool HasContentExtension(string requestedUrl)
 		{
-			return requestedUrl.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
-			       && !File.Exists(webContext.PhysicalPath);
+			if (requestedUrl.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
+			{
+				return true;
+			}
+			return false;
+			//else
+			//{
+			//    foreach (string extension in ignoredExtensions)
+			//    {
+			//        if (requestedUrl.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase))
+			//            return false;
+			//    }
+			//}
 		}
 
 		#endregion
@@ -57,10 +80,16 @@ namespace N2.Web
 		{
 			try
 			{
-				if (webContext.AbsolutePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
-					|| webContext.QueryString["page"] != null)
+				if (HasContentExtension(webContext.AbsolutePath) || webContext.QueryString["page"] != null)
 				{
-					webContext.CurrentPage = urlParser.Parse(webContext.RawUrl);
+					ContentItem page = urlParser.Parse(webContext.RawUrl);
+
+					if (webContext.CurrentPage == null)
+						Debug.WriteLine("Setting CurrentPage to '" + page + "'");
+					else
+						Debug.WriteLine("Changing CurrentPage from '" + webContext.CurrentPage + "' to '" + page  + "'");
+
+					webContext.CurrentPage = page;
 				}
 			}
 			catch (Exception ex)

@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using N2.Persistence;
+using System.Diagnostics;
 
 namespace N2.Web
 {
@@ -144,6 +145,8 @@ namespace N2.Web
                 return StartPage;
             }
 
+			Debug.WriteLine("Not found Url: " + url);
+
             PageNotFoundEventArgs args = new PageNotFoundEventArgs(null);
             if (PageNotFound != null)
                 PageNotFound(this, args);
@@ -152,8 +155,9 @@ namespace N2.Web
 
 		private string CleanUrl(string url)
 		{
-			if(url.StartsWith(webContext.ApplicationUrl))
-				url = url.Substring(webContext.ApplicationUrl.Length);
+			url = webContext.ToAppRelative(url);
+			//if(url.StartsWith(webContext.ApplicationUrl))
+			//    url = url.Substring(webContext.ApplicationUrl.Length);
 			url = url.TrimStart('~', '/');
 			int queryIndex = url.IndexOf('?');
 			if (queryIndex >= 0)
