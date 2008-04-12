@@ -6,6 +6,7 @@
 	- scroll screen when reaching edge (tree + drag&drop)
 	- improved contextmenu
 	- remove templateurl from default viewed page
+	- updated with dutch translation from martijn
 - core
 	- moved n2.mediumtrust -> n2
 	- moved some embedded scripts to /edit

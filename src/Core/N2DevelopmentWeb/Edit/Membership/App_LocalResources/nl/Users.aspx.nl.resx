@@ -117,6 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="bcActivity.HeaderText" xml:space="preserve">
+    <value>Laatste activiteit</value>
+  </data>
+  <data name="bcApproved.HeaderText" xml:space="preserve">
+    <value>Goedgekeurd</value>
+  </data>
+  <data name="bcComment.HeaderText" xml:space="preserve">
+    <value>Opmerking</value>
+  </data>
+  <data name="bcCreated.HeaderText" xml:space="preserve">
+    <value>Aangemaakt</value>
+  </data>
+  <data name="bcEmail.HeaderText" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="bcLockedOut.HeaderText" xml:space="preserve">
+    <value>Geblokkeerd</value>
+  </data>
+  <data name="bcLockOutDate.HeaderText" xml:space="preserve">
+    <value>Geblokkeerd</value>
+  </data>
+  <data name="bcLogin.HeaderText" xml:space="preserve">
+    <value>Ingelogd</value>
+  </data>
+  <data name="bcOnline.HeaderText" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="bcPasswordChanged.HeaderText" xml:space="preserve">
+    <value>Wachtwoord gewijzigd</value>
+  </data>
+  <data name="bcUserName.HeaderText" xml:space="preserve">
+    <value>Gebruikersnaam</value>
+  </data>
   <data name="ButtonColumnResource1.Text" xml:space="preserve">
     <value>verwijder</value>
   </data>
