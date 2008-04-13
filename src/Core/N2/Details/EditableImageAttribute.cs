@@ -73,7 +73,7 @@ namespace N2.Details
 			{
 				Image image = new Image();
 				image.ImageUrl = imageUrl;
-				image.AlternateText = altText;
+				image.Attributes["alt"] = altText;
 				image.CssClass = cssClass;
 				container.Controls.Add(image);
 				return image;

@@ -53,8 +53,8 @@
                     </div>
                 </div>
                 <div id="footer">
-					<n2:Display PropertyName="FooterText" Path="/" />
-					<a class="n2" title="N2, an open source ASP.NET CMS" href="http://n2cms.com/">powered by n2</a>
+					<n2:Display PropertyName="FooterText" Path="/" runat="server" />
+					<a class="n2" title="N2, an open source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
 				</div>
             </asp:ContentPlaceHolder>
         </div>
