@@ -51,7 +51,6 @@
 				distance: 5, 
 				stop: t.dragStop,
 				start: function(){
-					console.log(this);
 					$.autoscroll.start();
 					
 					var s = this;
@@ -69,7 +68,6 @@
 				cursorAt: {top:8, left:8},
 				stop: t.dragStop,
 				start: function(){
-					console.log(this);
 					$.autoscroll.start();
 					
 					var s = this;

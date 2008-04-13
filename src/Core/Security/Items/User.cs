@@ -4,38 +4,10 @@ using N2.Details;
 using N2.Integrity;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using N2.Security.Details;
 
-namespace N2.Templates.Security.Items
+namespace N2.Security.Items
 {
-	public class EditableRolesAttribute : AbstractEditableAttribute
-	{
-		public override bool UpdateItem(ContentItem item, Control editor)
-		{
-			return false;
-		}
-
-		public override void UpdateEditor(ContentItem item, Control editor)
-		{
-			DetailCollection dc = item.GetDetailCollection("Roles", false);
-			if (dc != null)
-			{
-				string roles = string.Empty;
-				foreach (string role in dc)
-				{
-					roles += role + ", ";
-				}
-				Literal l = (Literal)editor;
-				l.Text = roles.TrimEnd(',', ' ');
-			}
-		}
-
-		protected override Control AddEditor(Control container)
-		{
-			Literal l = new Literal();
-			container.Controls.Add(l);
-			return l;
-		}
-	}
 
 	[Definition("User", "User")]
 	[RestrictParents(typeof (UserList))]

@@ -14,6 +14,8 @@
 - diff feature
 - remove requirement of virtual methods
 - better validation (jquery?)
+- google analytics plugin
+- xhtml & wai
 
 TODO:
 - documentation & programmability

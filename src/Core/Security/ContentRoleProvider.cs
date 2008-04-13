@@ -4,9 +4,9 @@ using System.Text;
 using System.Web.Security;
 using System.Collections;
 
-namespace N2.Templates.Security
+namespace N2.Security
 {
-	public class TemplateRoleProvider : RoleProvider
+	public class ContentRoleProvider : RoleProvider
 	{
 		protected ItemBridge Bridge
 		{

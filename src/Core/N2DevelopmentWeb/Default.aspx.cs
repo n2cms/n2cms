@@ -67,6 +67,12 @@ namespace N2.TemplateWeb
 		{
 			return N2.Context.Current.Resolve<N2.Engine.ITypeFinder>().GetAssemblies();
 		}
+
+		protected void Unnamed3_Click(object sender, EventArgs e)
+		{
+			Button b = sender as Button;
+			b.Text += ".";
+		}
     }
 
 	//[N2.Item("Special page")]

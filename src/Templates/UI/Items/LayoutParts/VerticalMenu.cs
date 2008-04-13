@@ -1,5 +1,6 @@
 using N2.Integrity;
 using N2.Templates.Items;
+using N2.Definitions;
 
 namespace N2.Templates.UI.Items.LayoutParts
 {

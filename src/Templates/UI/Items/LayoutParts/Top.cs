@@ -5,6 +5,7 @@ using N2.Integrity;
 using System.Web.UI.WebControls;
 using N2.Templates.Items;
 using N2.Details;
+using N2.Definitions;
 
 namespace N2.Templates.UI.Items.LayoutParts
 {
@@ -12,6 +13,7 @@ namespace N2.Templates.UI.Items.LayoutParts
 	[N2.Web.UI.FieldSet("top", "Top", 100)]
 	[RestrictParents(typeof(StartPage))] // The top region is placed on the start page and displayed on all underlying pages
 	[AllowedZones("SiteTop")]
+	[ReplaceDefinitions(typeof(Menu), typeof(VerticalMenu), typeof(HorizontalMenu))] // The menu part has been deprecated and moved into the master page
 	public class Top : AbstractItem
 	{
 		[Displayable(typeof(N2.Web.UI.WebControls.H2), "Text")]

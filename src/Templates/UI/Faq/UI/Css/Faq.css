@@ -7,3 +7,41 @@
 	padding:5px 0;
 	margin-bottom:5px;
 }
+
+#page .bubble
+{
+	position:relative;
+	height:1px;
+	margin:0;
+}
+
+.bubble .inner
+{
+	position:absolute;
+	left:155px;
+	top:-20px;
+	width:200px;
+}
+.bubble .inner div
+{
+	background: transparent url(../img/bubble_right.png) no-repeat;
+	_background-image: url(../img/bubble_right.gif);
+}
+.bubble .inner .text
+{
+	padding:20px 40px;
+}
+.bubble .inner .bottom
+{
+	padding: 12px;
+	background-position: 0% 100%;
+}
+#menu .bubble .inner
+{
+	left:-185px;
+}
+#menu .bubble .inner div
+{
+	background-image: url(../img/bubble_left.png);
+	_background-image: url(../img/bubble_left.gif);
+}

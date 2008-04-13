@@ -61,6 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\DisplayPage-PlugIn.cs" />
+    <Compile Include="404.aspx.cs">
+      <DependentUpon>404.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="App_GlobalResources\Definitions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

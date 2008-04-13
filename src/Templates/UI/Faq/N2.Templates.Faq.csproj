@@ -58,9 +58,17 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Items\BubbleItem.cs" />
     <Compile Include="Items\Faq.cs" />
     <Compile Include="Items\FaqList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Bubble.ascx.cs">
+      <DependentUpon>Bubble.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Bubble.ascx.designer.cs">
+      <DependentUpon>Bubble.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UI\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -90,9 +98,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UI\Bubble.ascx" />
     <Content Include="UI\Css\Faq.css" />
     <Content Include="UI\Default.aspx" />
     <Content Include="UI\Faq.ascx" />
+    <Content Include="UI\Img\bubble_left.gif" />
+    <Content Include="UI\Img\bubble_left.png" />
+    <Content Include="UI\Img\bubble_right.gif" />
+    <Content Include="UI\Img\bubble_right.png" />
     <Content Include="UI\Img\help.png" />
     <Content Include="UI\Img\information.png" />
     <Content Include="UI\Layouts\Default.Master" />

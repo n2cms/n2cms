@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Web.Security;
 
-namespace N2.Templates.Security
+namespace N2.Security
 {
 	/// <summary>
 	/// Implements the default ASP.NET membership provider. Stores users as 
 	/// nodes in the N2 item hierarchy.
 	/// </summary>
-	public class TemplateMembershipProvider : MembershipProvider
+	public class ContentMembershipProvider : MembershipProvider
 	{
 		protected ItemBridge Bridge
 		{

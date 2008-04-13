@@ -1,7 +1,7 @@
 namespace N2.Templates.Web.UI
 {
 	public class TemplateUserControl<TPage, TItem> : N2.Web.UI.UserControl<TPage, TItem>
-		where TPage : Items.AbstractPage
+		where TPage : ContentItem
 		where TItem : ContentItem
 	{
 		private string cssClass;

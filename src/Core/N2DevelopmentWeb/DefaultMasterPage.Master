@@ -26,13 +26,18 @@
 			<DynamicSelectedStyle BackColor="red" />
 			<StaticSelectedStyle BackColor="red" />
         </asp:Menu>
-        <hr />
+        
         <n2:Display PropertyName="Title" runat="server" />
+        
+        <p>The <b>N2DevelopmentWeb</b> web project is mess caused by incremental development and testing of new features in N2. You shouldn't really look at it. Please look at the <b>examples</b> or the <b>templates</b> instead.</p>
+    
         <div>
             <asp:SiteMapPath ID="SiteMapPath1" runat="server" />
             <hr />
             
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"/>
+            
+            <hr />
             
             StartPage expression builder:
             [<asp:Image runat="server" ImageUrl='<%$ StartPage: ImageUrl %>' />[

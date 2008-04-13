@@ -56,8 +56,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Survey", "Surv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Poll", "UI\Poll\N2.Templates.Poll.csproj", "{3F87BD2B-8331-4F42-A98C-70291ABAF4B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Security", "Security\N2.Templates.Security.csproj", "{CB6A29C5-8355-4C4C-B437-619F652B7540}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Scrum", "UI\Scrum\N2.Templates.Scrum.csproj", "{5ACE012F-5031-45F2-ABB9-AC3C23C692C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Advertisement", "UI\Advertisement\N2.Templates.Advertisement.csproj", "{23172B6B-3956-4109-997E-47819DEAB65A}"
@@ -127,12 +125,6 @@ Global
 		{3F87BD2B-8331-4F42-A98C-70291ABAF4B7}.Publish|Any CPU.Build.0 = Release|Any CPU
 		{3F87BD2B-8331-4F42-A98C-70291ABAF4B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F87BD2B-8331-4F42-A98C-70291ABAF4B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Publish|Any CPU.ActiveCfg = Release|Any CPU
-		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Publish|Any CPU.Build.0 = Release|Any CPU
-		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5ACE012F-5031-45F2-ABB9-AC3C23C692C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5ACE012F-5031-45F2-ABB9-AC3C23C692C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ACE012F-5031-45F2-ABB9-AC3C23C692C6}.Publish|Any CPU.ActiveCfg = Release|Any CPU

@@ -7,7 +7,7 @@ using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
 
-namespace N2.Templates.Security.Items
+namespace N2.Security.Items
 {
 	[Definition("User List", "UserList", "", "", 2000)]
 	[WithEditableTitle("Title", 10)]

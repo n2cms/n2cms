@@ -3,7 +3,7 @@ using N2.Persistence.Finder;
 using N2.Persistence;
 using N2.Web;
 
-namespace N2.Templates.Security
+namespace N2.Security
 {
 	/// <summary>
 	/// Provides access to users and roles stored as nodes in the item 

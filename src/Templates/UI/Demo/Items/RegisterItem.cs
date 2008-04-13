@@ -11,64 +11,85 @@ using N2.Integrity;
 using N2.Details;
 using N2;
 using N2.Web.UI;
-using N2.Web.UI.WebControls;
 
-namespace Demo
+namespace Demo.Items
 {
-	[Definition("Register for login", "Register")]
+	[Definition("Demo Registration", "Register")]
     [AllowedZones("Right")]
 	[RestrictParents(typeof(N2.Templates.Items.IStructuralPage))]
-	[WithEditableTitle("Title", 20)]
-    public class RegisterItem : N2.Templates.Items.AbstractItem
+	[TabPanel("web", "Web", 10)]
+	[TabPanel("mail", "E-Mail", 20)]
+	[TabPanel("auto", "Auto Login", 30)]
+	[WithEditableTitle("Title", 20, ContainerName = "web")]
+	public class RegisterItem : N2.Templates.Items.AbstractItem
 	{
-		[Editable("Text", typeof(TextBox), "Text", 100)]
-		[EditorModifier("TextMode", TextBoxMode.MultiLine)]
+		[EditableFreeTextArea("Text", 90, ContainerName = "web")]
 		public virtual string Text
 		{
 			get { return (string)GetDetail("Text"); }
 			set { SetDetail("Text", value); }
 		}
 
-		[Editable("Submit Text", typeof(TextBox), "Text", 100)]
-		[EditorModifier("TextMode", TextBoxMode.MultiLine)]
+		[EditableFreeTextArea("AuthenticatedText", 95, ContainerName = "web")]
+		public virtual string AuthenticatedText
+		{
+			get { return (string)GetDetail("AuthenticatedText"); }
+			set { SetDetail("AuthenticatedText", value); }
+		}
+
+		[EditableFreeTextArea("Submit Text", 100, ContainerName = "web")]
 		public virtual string SubmitText
 		{
 			get { return (string)GetDetail("SubmitText"); }
 			set { SetDetail("SubmitText", value); }
 		}
 
-		[Editable("From", typeof(TextBox), "Text", 200)]
+
+		[EditableTextBox("Username", 220, ContainerName = "auto")]
+		public virtual string Username
+		{
+			get { return (string)GetDetail("Username"); }
+			set { SetDetail("Username", value, string.Empty); }
+		}
+
+		[EditableTextBox("Password", 230, ContainerName = "auto")]
+		public virtual string Password
+		{
+			get { return (string)GetDetail("Password"); }
+			set { SetDetail("Password", value, string.Empty); }
+		}
+
+
+
+		[EditableTextBox("From", 200, ContainerName = "mail")]
 		public virtual string From
 		{
 			get { return (string)GetDetail("From"); }
 			set { SetDetail("From", value); }
 		}
 
-		[Editable("CC", typeof(TextBox), "Text", 210)]
-		//[EditorModifier("Enabled", false)]
+		[EditableTextBox("CC", 210, ContainerName = "mail")]
 		public virtual string CC
 		{
 			get { return (string)GetDetail("CC"); }
 			set { SetDetail("CC", value); }
 		}
 
-		[Editable("Subject", typeof(TextBox), "Text", 210)]
-		//[EditorModifier("Enabled", false)]
+		[EditableTextBox("Subject", 210, ContainerName = "mail")]
 		public virtual string Subject
 		{
 			get { return (string)GetDetail("Subject"); }
 			set { SetDetail("Subject", value); }
 		}
 
-		[Editable("Mail Body", typeof(TextBox), "Text", 220)]
-		[EditorModifier("TextMode", TextBoxMode.MultiLine)]
-		[EditorModifier("Rows", 10)]
-		//[EditorModifier("Enabled", false)]
+		[EditableTextBox("Mail Body", 220, TextMode = TextBoxMode.MultiLine, Rows = 10, ContainerName = "mail")]
 		public virtual string Body
 		{
 			get { return (string)GetDetail("Body"); }
 			set { SetDetail("Body", value); }
 		}
+
+
 
 		public override string TemplateUrl
 		{
