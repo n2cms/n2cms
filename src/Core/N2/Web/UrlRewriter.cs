@@ -82,7 +82,7 @@ namespace N2.Web
 			{
 				if (HasContentExtension(webContext.AbsolutePath) || webContext.QueryString["page"] != null)
 				{
-					ContentItem page = urlParser.Parse(webContext.RawUrl);
+					ContentItem page = urlParser.ParsePage(webContext.RawUrl);
 
 					if (webContext.CurrentPage == null)
 						Debug.WriteLine("Setting CurrentPage to '" + page + "'");

@@ -241,13 +241,6 @@
     <Compile Include="Layouts\Parts\Top.ascx.designer.cs">
       <DependentUpon>Top.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Layouts\ThreeColumns.Master.cs">
-      <DependentUpon>ThreeColumns.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Layouts\ThreeColumns.Master.designer.cs">
-      <DependentUpon>ThreeColumns.Master</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Redirect.aspx.cs">
       <DependentUpon>Redirect.aspx</DependentUpon>
@@ -287,9 +280,6 @@
       <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
       <Name>N2.Templates.Syndication</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Layouts\ThreeColumns.Master" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\ContentFocus\content_bottom.gif" />

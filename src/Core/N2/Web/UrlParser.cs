@@ -110,13 +110,20 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
 
-			return TryLoadingFromQueryString(url) ?? Parse(StartPage, url);
+			return TryLoadingFromQueryString(url, "item", "page") ?? Parse(StartPage, url);
+		}
+
+		public virtual ContentItem ParsePage(string url)
+		{
+			if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
+
+			return TryLoadingFromQueryString(url, "page") ?? Parse(StartPage, url);
 		}
 
 		#region Parse Helper Methods
-		protected virtual ContentItem TryLoadingFromQueryString(string url)
+		protected virtual ContentItem TryLoadingFromQueryString(string url, params string[] parameters)
 		{
-			int? itemID = FindQueryStringReference(url);
+			int? itemID = FindQueryStringReference(url, parameters);
 			if (itemID.HasValue)
 				return Persister.Get(itemID.Value);
 			return null;
@@ -155,41 +162,38 @@ namespace N2.Web
 
 		private string CleanUrl(string url)
 		{
+			url = RequestContext.PathPart(url);
 			url = webContext.ToAppRelative(url);
-			//if(url.StartsWith(webContext.ApplicationUrl))
-			//    url = url.Substring(webContext.ApplicationUrl.Length);
 			url = url.TrimStart('~', '/');
-			int queryIndex = url.IndexOf('?');
-			if (queryIndex >= 0)
-				url = url.Substring(0, queryIndex);
-			int hashIndex = url.IndexOf('#');
-			if (hashIndex >= 0)
-				url = url.Substring(0, hashIndex);
 			if (url.EndsWith(DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
 				url = url.Substring(0, url.Length - DefaultExtension.Length);
 			return url;
 		}
 
-		private int? FindQueryStringReference(string url)
+		private int? FindQueryStringReference(string url, params string[] parameters)
 		{
-			int? pageID = null;
-			string[] urlQueryPair = url.Split('?');
-			if (urlQueryPair.Length > 1)
+			string queryString = RequestContext.QueryPart(url);
+			if (!string.IsNullOrEmpty(queryString))
 			{
-				foreach (string query in urlQueryPair[1].Split('&'))
-				{
-					// item takes priority over page
-					if (query.StartsWith("item=", StringComparison.InvariantCultureIgnoreCase))
+				string[] queries = queryString.Split('&');
+
+				foreach (string parameter in parameters)
+				{ 
+					int parameterLength = parameter.Length + 1;
+					foreach (string query in queries)
 					{
-						pageID = TryParse(query.Substring(5)) ?? pageID;
-					}
-					else if (query.StartsWith("page=", StringComparison.InvariantCultureIgnoreCase))
-					{
-						pageID = TryParse(query.Substring(5)) ?? pageID;
+						if (query.StartsWith(parameter + "=", StringComparison.InvariantCultureIgnoreCase))
+						{
+							int id;
+							if (int.TryParse(query.Substring(parameterLength), out id))
+							{
+								return id;
+							}
+						}
 					}
 				}
 			}
-			return pageID;
+			return null;
 		}
 
 		private int? TryParse(string possibleNumber)

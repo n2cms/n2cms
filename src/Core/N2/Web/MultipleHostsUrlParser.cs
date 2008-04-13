@@ -68,6 +68,21 @@ namespace N2.Web
 			}
 		}
 
+		public override ContentItem ParsePage(string url)
+		{
+			if (url.StartsWith("/") || url.StartsWith("~/"))
+				return base.ParsePage(url);
+			else
+			{
+				string host = GetHost(url);
+				Site site = GetSite(host);
+				if (site != null)
+					return TryLoadingFromQueryString(url, "item", "page") ?? Parse(Persister.Get(site.StartPageID), GetPathAndQuery(url));
+				else
+					return TryLoadingFromQueryString(url, "page");
+			}
+		}
+
 		public override string BuildUrl(ContentItem item)
 		{
 			if (item == null) throw new ArgumentNullException("item");

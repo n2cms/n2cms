@@ -36,5 +36,10 @@ namespace N2.Web
 		/// <param name="url">The url that should be traversed.</param>
 		/// <returns>The content item matching the supplied url.</returns>
 		ContentItem Parse(string url);
+
+		/// <summary>Finds a page by traversing names from the start page.</summary>
+		/// <param name="url">The url that should be traversed.</param>
+		/// <returns>The content page matching the supplied url.</returns>
+		ContentItem ParsePage(string url);
 	}
 }

@@ -21,7 +21,7 @@ namespace N2.Templates.Search.Items
 		protected virtual List<ItemFilter> GetFilters()
 		{
 			List<ItemFilter> filters = new List<ItemFilter>();
-			filters.Add(new AccessFilter());
+			filters.Add(new NavigationFilter());
 			if (SearchRoot != null)
 				filters.Add(new ParentFilter(SearchRoot));
 			return filters;

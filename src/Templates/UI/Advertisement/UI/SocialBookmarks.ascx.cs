@@ -5,9 +5,9 @@ namespace N2.Templates.Advertisement.UI
 {
 	public partial class SocialBookmarks : Web.UI.TemplateUserControl<Templates.Items.AbstractPage, Items.SocialBookmarks>
 	{
-		protected void Page_Load(object sender, EventArgs e)
+		protected override void OnInit(EventArgs e)
 		{
-
+			base.OnInit(e);
 		}
 
 		protected string BookmarkUrl
