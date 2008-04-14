@@ -813,15 +813,9 @@
     <Content Include="Js\plugins\jquery.n2optionmenu.js" />
     <Content Include="Js\plugins\jquery.splitter.js" />
     <Content Include="Js\plugins\n2.js" />
-    <Content Include="Js\jquery.ui\3_ui.droppable.js" />
     <Content Include="Js\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Js\jquery.ui\0_jquery.dimensions.js" />
-    <Content Include="Js\jquery.ui\2_ui.draggable.js" />
-    <Content Include="Js\jquery.ui\1_ui.mouse.js" />
-    <Content Include="Js\jquery.ui\4_ui.draggable.ext.js" />
-    <Content Include="Js\jquery.ui\5_ui.droppable.ext.js" />
     <Content Include="Js\plugins.ashx" />
     <Content Include="Js\jquery.ui.ashx" />
     <Content Include="Js\tiny_mce\langs\en.js" />
@@ -1109,8 +1103,12 @@
     <Content Include="img\tabs_base.gif" />
     <Content Include="img\tabs_begin.gif" />
     <Content Include="img\tab_end.gif" />
+    <Content Include="Js\jquery.ui\0_jquery.dimensions.js" />
     <Content Include="Js\jquery.ui\jquery.autoscroll.js" />
     <Content Include="Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
+    <Content Include="Js\jquery.ui\ui.base.js" />
+    <Content Include="Js\jquery.ui\ui.draggable.js" />
+    <Content Include="Js\jquery.ui\ui.droppable.js" />
     <Content Include="Js\parts.js" />
     <Content Include="Navigation\SortDown.ashx" />
   </ItemGroup>

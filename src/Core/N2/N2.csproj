@@ -231,8 +231,8 @@
     <Compile Include="Persistence\NH\NHTransaction.cs" />
     <Compile Include="Persistence\NH\RepositoryHelper.cs" />
     <Compile Include="Persistence\Parameter.cs" />
-    <Compile Include="Plugin\IPluginInitializerInvoker.cs" />
-    <Compile Include="Plugin\PluginInitializerInvoker.cs" />
+    <Compile Include="Plugin\IPluginBootstrapper.cs" />
+    <Compile Include="Plugin\PluginBootstrapper.cs" />
     <Compile Include="Web\IRequestLifeCycleHandler.cs" />
     <Compile Include="Web\ISitesSource.cs" />
     <Compile Include="Web\ISitesProvider.cs" />
@@ -326,6 +326,7 @@
     <Compile Include="MediumTrust\Configuration\MediumTrustSectionHandler.cs" />
     <Compile Include="MediumTrust\Configuration\TypeCollection.cs" />
     <Compile Include="MediumTrust\Configuration\TypeElement.cs" />
+    <Compile Include="MediumTrust\Engine\MediumTrustEngine.cs" />
     <Compile Include="MediumTrust\Engine\MediumTrustFactory.cs" />
     <Compile Include="MediumTrust\Engine\MediumTrustTypeFinder.cs" />
     <Compile Include="MediumTrust\Persistence\NH\MediumTrustNHBuilder.cs" />
@@ -348,6 +349,7 @@
     <Compile Include="Parts\ItemDeleter.cs" />
     <Compile Include="Parts\ItemMover.cs" />
     <Compile Include="Parts\PartsAjaxService.cs" />
+    <Compile Include="Plugin\IAutoStart.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\IIS5WebContext.cs" />

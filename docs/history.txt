@@ -7,11 +7,14 @@
 	- improved contextmenu
 	- remove templateurl from default viewed page
 	- updated with dutch translation from martijn
+	- added mediumtrust configuration generator
 - core
 	- moved n2.mediumtrust -> n2
 	- moved some embedded scripts to /edit
 	- friendlier urls without * mapping (iis 5)
 	- changed url parsing
+	- changed and improved the medium trust engine
+	- removed requirement to configure item types in medium trust
 - templates
 	- add notfound page config to start page
 	- search filters with navigation filter

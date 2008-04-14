@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using Castle.Core;
 using N2.Persistence;
+using N2.Plugin;
 
 namespace N2.Trashcan
 {
 	/// <summary>
 	/// Intercepts delete operations.
 	/// </summary>
-	public class DeleteInterceptor : IStartable
+	public class DeleteInterceptor : IStartable, IAutoStart
 	{
 		private readonly IPersister persister;
 		private readonly TrashHandler trashHandler;

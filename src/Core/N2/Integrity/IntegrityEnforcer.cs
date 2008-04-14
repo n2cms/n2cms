@@ -1,6 +1,7 @@
 using System;
 using Castle.Core;
 using N2.Persistence;
+using N2.Plugin;
 
 namespace N2.Integrity
 {
@@ -8,7 +9,7 @@ namespace N2.Integrity
 	/// Subscribes to persister envents and throws exceptions if something 
 	/// illegal is about to be done.
 	/// </summary>
-	public class IntegrityEnforcer : IIntegrityEnforcer, IStartable
+	public class IntegrityEnforcer : IIntegrityEnforcer, IStartable, IAutoStart
 	{
 		private readonly IPersister persister;
 		private readonly IIntegrityManager integrity;
@@ -99,6 +100,15 @@ namespace N2.Integrity
 			persister.ItemDeleting -= ItemDeletingEvenHandler;
 			persister.ItemMoving -= ItemMovingEvenHandler;
 			persister.ItemSaving -= ItemSavingEvenHandler;
+		}
+
+		#endregion
+
+		#region IAutoStart Members
+
+		void IAutoStart.Start()
+		{
+			throw new NotImplementedException();
 		}
 
 		#endregion

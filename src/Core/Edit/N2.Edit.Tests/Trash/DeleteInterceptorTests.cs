@@ -1,5 +1,5 @@
 using System;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Persistence;
 using N2.Web;
 using Rhino.Mocks;
@@ -130,12 +130,14 @@ namespace N2.Trashcan.Tests
 		}
 
 		[Test]
+		[Ignore]
 		public void Item_MovedOutOfTrash_IsCheckedForNameClashes()
 		{
 			Assert.Fail("TODO");
 		}
 
 		[Test]
+		[Ignore]
 		public void Item_MovedIntoTrash_GetsPreviousLocation_AsFormerLocation()
 		{
 			Assert.Fail("TODO");

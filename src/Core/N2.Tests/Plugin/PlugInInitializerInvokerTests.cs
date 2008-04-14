@@ -32,7 +32,7 @@ namespace N2.Tests.PlugIn
 
 			mocks.ReplayAll();
 
-			PluginInitializerInvoker invoker = new PluginInitializerInvoker(typeFinder);
+			PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
 			invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
 			
 			mocks.VerifyAll();
@@ -52,7 +52,7 @@ namespace N2.Tests.PlugIn
 
 			mocks.ReplayAll();
 
-			PluginInitializerInvoker invoker = new PluginInitializerInvoker(typeFinder);
+			PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
 			invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
 
 			mocks.VerifyAll();

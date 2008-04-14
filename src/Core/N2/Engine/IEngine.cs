@@ -38,7 +38,7 @@ namespace N2.Engine
 		/// <summary>Gets the class responsible for plugins in edit mode.</summary>
 		IEditManager EditManager { get; }
 
-		void InitializePlugIns();
+		void InitializePlugins();
 
 		/// <summary>Attaches to the appropriate events for usage with ASP.NET.</summary>
 		/// <param name="application">A recently initialized http application.</param>
@@ -48,6 +48,11 @@ namespace N2.Engine
 		/// <typeparam name="T">The type of service to resolve.</typeparam>
 		/// <returns>An instance of the resolved service.</returns>
 		T Resolve<T>() where T : class;
+
+		/// <summary>Resolves a service configured for the factory.</summary>
+		/// <param name="serviceType">The type of service to resolve.</param>
+		/// <returns>An instance of the resolved service.</returns>
+		object Resolve(Type serviceType);
 
 		/// <summary>Resolves a named service configured for the factory.</summary>
 		/// <param name="key">The name of the service to resolve.</param>

@@ -230,6 +230,9 @@ namespace N2.Resources
 			PlaceHolder holder = page.Items["N2.Resources.holder"] as PlaceHolder;
 			if (holder == null)
 			{
+				if (page.Header == null)
+					throw new N2Exception("Couldn't find the page header. The register command needs the tag <header runat='server'> somewhere in the page template, master page or a user control.");
+
 				page.Items["N2.Resources.holder"] = holder = new PlaceHolder();
 				if (page.Header.Controls.Count > 0)
 					page.Header.Controls.AddAt(1, holder);

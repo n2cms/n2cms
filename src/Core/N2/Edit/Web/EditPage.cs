@@ -14,8 +14,13 @@ namespace N2.Edit.Web
     {
 		protected override void OnInit(EventArgs e)
 		{
-			N2.Resources.Register.JQuery(this);
+			RegisterScripts();
 			base.OnInit(e);
+		}
+
+		protected virtual void RegisterScripts()
+		{
+			N2.Resources.Register.JQuery(this);
 		}
 
     	#region Refresh Methods

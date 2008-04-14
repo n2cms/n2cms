@@ -7,6 +7,8 @@ namespace N2.Templates.Advertisement.UI
 	{
 		protected override void OnInit(EventArgs e)
 		{
+			DataBind();
+			
 			base.OnInit(e);
 		}
 

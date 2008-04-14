@@ -14,7 +14,6 @@ namespace N2.TemplateWeb
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-			AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
 			Debug.WriteLine("Application_Start");
         }
 
@@ -22,11 +21,6 @@ namespace N2.TemplateWeb
         {
             //e.AffectedItem = N2.Context.Persister.Get(3);
         }
-
-		void CurrentDomain_DomainUnload(object sender, EventArgs e)
-		{
-			Debug.WriteLine("CurrentDomain_DomainUnload");
-		}
 
 		public override void Init()
 		{

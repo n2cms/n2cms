@@ -25,8 +25,7 @@ namespace N2.Engine
 		private string assemblyRestrictToLoadingPattern = ".*";
 		private IList assemblyNames = new ArrayList();
 		private IDictionary<string, IList<Type>> typeCache = new Dictionary<string, IList<Type>>();
-		private bool enableTypeCaching = true;
-
+		
 		#endregion
 
 		#region Constructors
@@ -34,15 +33,6 @@ namespace N2.Engine
 		/// <summary>Creates a new instance of the AppDomainTypeFinder.</summary>
 		public AppDomainTypeFinder()
 		{
-			App.AssemblyLoad += new AssemblyLoadEventHandler(App_AssemblyLoad);
-		}
-
-		private void App_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
-		{
-			if (EnableTypeCaching && Matches(args.LoadedAssembly.FullName))
-			{
-				typeCache.Clear();
-			}
 		}
 
 		#endregion
@@ -53,13 +43,6 @@ namespace N2.Engine
 		public virtual AppDomain App
 		{
 			get { return AppDomain.CurrentDomain; }
-		}
-
-		/// <summary>Gets or sets wether found types should be cached.</summary>
-		public bool EnableTypeCaching
-		{
-			get { return enableTypeCaching; }
-			set { enableTypeCaching = value; }
 		}
 
 		/// <summary>Gets or sets wether N2 should iterate assemblies in the app domain when loading N2 types. Loading patterns are applied when loading these assemblies.</summary>
@@ -98,9 +81,6 @@ namespace N2.Engine
 		/// <returns>A list of types found in the app domain.</returns>
 		public virtual IList<Type> Find(Type requestedType)
 		{
-			if (EnableTypeCaching && typeCache.ContainsKey(requestedType.FullName))
-				return typeCache[requestedType.FullName];
-
 			List<Type> types = new List<Type>();
 			foreach (Assembly a in GetAssemblies())
 			{
@@ -124,9 +104,6 @@ namespace N2.Engine
 					throw new N2Exception("Error getting types from assembly " + a.FullName + loaderErrors, ex);
 				}
 			}
-
-			if (EnableTypeCaching)
-				typeCache[requestedType.FullName] = types;
 
 			return types;
 		}

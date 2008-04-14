@@ -45,6 +45,10 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NHibernate, Version=1.2.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\lib\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -63,6 +67,7 @@
     <Content Include="install.sqlserver2000.sql" />
     <Content Include="install.sqlserver2005.sql" />
     <Content Include="InstallationScripts.aspx" />
+    <Content Include="MediumTrust.aspx" />
     <Content Include="Troubleshooting.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Web.config" />
@@ -88,6 +93,13 @@
     </Compile>
     <Compile Include="Fix.aspx.designer.cs">
       <DependentUpon>Fix.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MediumTrust.aspx.cs">
+      <DependentUpon>MediumTrust.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MediumTrust.aspx.designer.cs">
+      <DependentUpon>MediumTrust.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

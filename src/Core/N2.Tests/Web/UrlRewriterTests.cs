@@ -34,7 +34,7 @@ namespace N2.Tests.Web
 
 			IWebContext context = mocks.CreateMock<IWebContext>();
 			Expect.On(context).Call(context.CurrentPage).Return(two).Repeat.Once();
-			Expect.On(context).Call(context.QueryString).Return(new NameValueCollection()).Repeat.Once();
+			Expect.On(context).Call(context.Query).Return("").Repeat.Once();
 			Expect.On(context).Call(context.AbsolutePath).Return("/one/two.aspx").Repeat.Any();
 			Expect.On(context).Call(context.RawUrl).Return("/one/two.aspx").Repeat.Any();
 			Expect.On(context).Call(context.PhysicalPath).Return(AppDomain.CurrentDomain.BaseDirectory + "\\one\\two.aspx").Repeat.Any();
@@ -55,8 +55,7 @@ namespace N2.Tests.Web
 
 			IWebContext context = mocks.CreateMock<IWebContext>();
 			Expect.On(context).Call(context.CurrentPage).Return(two).Repeat.Any();
-			Expect.On(context).Call(context.QueryString).Return(ToNameValueCollection("happy=true&flip=feet"));
-			Expect.On(context).Call(context.Query).Return("happy=true&flip=feet");
+			Expect.On(context).Call(context.Query).Return("happy=true&flip=feet").Repeat.Any();
 			Expect.On(context).Call(context.AbsolutePath).Return("/one/two.aspx").Repeat.Any();
 			Expect.On(context).Call(context.RawUrl).Return("/one/two.aspx").Repeat.Any();
 			Expect.On(context).Call(context.PhysicalPath).Return(AppDomain.CurrentDomain.BaseDirectory + "\\one\\two.aspx").Repeat.Any();
@@ -86,11 +85,12 @@ namespace N2.Tests.Web
 			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
 			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
 
-			Expect.On(parser).Call(parser.Parse("/one/two.aspx")).Return(two);
+			Expect.On(parser).Call(parser.ParsePage("/one/two.aspx")).Return(two);
 			
 			IWebContext context = mocks.CreateMock<IWebContext>();
 			Expect.On(context).Call(context.AbsolutePath).Return("/one/two.aspx");
 			Expect.On(context).Call(context.RawUrl).Return("/one/two.aspx");
+			Expect.Call(context.CurrentPage).Return(null);
 			Expect.Call(delegate{ context.CurrentPage = two; });
 			
 			mocks.ReplayAll();
@@ -106,11 +106,33 @@ namespace N2.Tests.Web
 			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
 			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
 
-			Expect.On(parser).Call(parser.Parse("/default.aspx?page=3")).Return(two);
+			Expect.On(parser).Call(parser.ParsePage("/default.aspx?page=3")).Return(two);
 
 			IWebContext context = mocks.CreateMock<IWebContext>();
 			Expect.On(context).Call(context.AbsolutePath).Return("/default.aspx");
 			Expect.On(context).Call(context.RawUrl).Return("/default.aspx?page=3");
+			Expect.Call(context.CurrentPage).Return(null);
+			Expect.Call(delegate { context.CurrentPage = two; });
+
+			mocks.ReplayAll();
+
+			UrlRewriter rewriter = new UrlRewriter(parser, context);
+			rewriter.UpdateCurrentPage();
+		}
+
+		[Test]
+		public void UpdateContentPage_WithItemReference_UpdatesWithPage()
+		{
+			ContentItem root = CreateOneItem<PageItem>(1, "root", null);
+			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
+
+			Expect.On(parser).Call(parser.ParsePage("/default.aspx?page=3&item=2")).Return(two);
+
+			IWebContext context = mocks.CreateMock<IWebContext>();
+			Expect.On(context).Call(context.AbsolutePath).Return("/default.aspx");
+			Expect.On(context).Call(context.RawUrl).Return("/default.aspx?page=3&item=2");
+			Expect.Call(context.CurrentPage).Return(null);
 			Expect.Call(delegate { context.CurrentPage = two; });
 
 			mocks.ReplayAll();

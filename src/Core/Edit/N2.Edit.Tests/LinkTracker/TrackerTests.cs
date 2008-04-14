@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using N2.Edit.LinkTracker;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Engine;
 using N2.Persistence;

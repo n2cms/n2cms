@@ -122,10 +122,11 @@ namespace N2.Engine
 			Resolve<IRequestLifeCycleHandler>().Init(application);
 		}
 
-		public void InitializePlugIns()
+		public void InitializePlugins()
 		{
-			Debug.WriteLine("DefaultFactory: initializing plugins");
-			IPluginInitializerInvoker invoker = Container.Resolve<IPluginInitializerInvoker>();
+			Debug.WriteLine("CmsEngine: initializing plugins");
+
+			IPluginBootstrapper invoker = Container.Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
 		}
 
@@ -136,7 +137,12 @@ namespace N2.Engine
 		/// <summary>Resolves a service configured in the factory.</summary>
 		public T Resolve<T>() where T:class 
 		{
-			return container.Resolve<T>();
+			return Container.Resolve<T>();
+		}
+
+		public object Resolve(Type serviceType)
+		{
+			return Container.Resolve(serviceType);
 		}
 
 		/// <summary>Resolves a named service configured in the factory.</summary>

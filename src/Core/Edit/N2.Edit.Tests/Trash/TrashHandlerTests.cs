@@ -1,9 +1,11 @@
 using System;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Definitions;
 using N2.Persistence;
 using N2.Web;
 using Rhino.Mocks;
+using N2.MediumTrust.Engine;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Trashcan.Tests
 {
@@ -59,6 +61,31 @@ namespace N2.Trashcan.Tests
 			Assert.AreEqual(root, item[TrashHandler.FormerParent]);
 			Assert.IsNull(item[TrashHandler.FormerExpires]);
 			Assert.Less(DateTime.Now.AddSeconds(-10), (DateTime)item[TrashHandler.DeletedDate]);
+		}
+
+		[Test]
+		public void Throwing_IsIntercepted_InMediumTrust()
+		{
+			MediumTrustEngine engine = new MediumTrustEngine(new ThreadContext());
+			engine.InitializePlugins();
+			engine.SecurityManager.Enabled = false;
+
+			ContentItem root = new ThrowableItem();
+			root.Name = "root";
+
+			ContentItem item = new ThrowableItem();
+			item.Name = "bin's destiny";
+			item.AddTo(root);
+
+			engine.Persister.Save(root);
+			engine.Resolve<Site>().RootItemID = root.ID;
+			engine.Resolve<Site>().StartPageID = root.ID;
+
+			engine.Persister.Delete(item);
+
+			Assert.That(root.Children.Count, Is.EqualTo(1));
+			Assert.That(root.Children[0], Is.TypeOf(typeof(TrashContainerItem)));
+			Assert.That(root.Children[0].Children[0], Is.EqualTo(item));
 		}
 
 		#region Helper methods

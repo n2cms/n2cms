@@ -8,23 +8,31 @@ using N2.Definitions;
 
 namespace N2.Edit.Settings
 {
-	public class SettingsFinder : AbstractFacility
+	public class SettingsFinder : IFacility
 	{
+		IKernel kernel;
 		private SettingsManager settingsManager;
 
-		protected override void Init()
+		public void Init(IKernel kernel, Castle.Core.Configuration.IConfiguration facilityConfig)
 		{
-			settingsManager = Kernel.Resolve<SettingsManager>(new Hashtable());
+			this.kernel = kernel;
+			settingsManager = kernel.Resolve<SettingsManager>(new Hashtable());
 
 			HandleRegisteredComponents();
 
-			Kernel.ComponentRegistered += Kernel_ComponentRegistered;
-			Kernel.ComponentUnregistered += Kernel_ComponentUnregistered;
+			kernel.ComponentRegistered += Kernel_ComponentRegistered;
+			kernel.ComponentUnregistered += Kernel_ComponentUnregistered;
+		}
+
+		public void Terminate()
+		{
+			kernel.ComponentRegistered -= Kernel_ComponentRegistered;
+			kernel.ComponentUnregistered -= Kernel_ComponentUnregistered;
 		}
 
 		private void HandleRegisteredComponents()
 		{
-			foreach (GraphNode node in Kernel.GraphNodes)
+			foreach (GraphNode node in kernel.GraphNodes)
 			{
 				if (node is ComponentModel)
 				{

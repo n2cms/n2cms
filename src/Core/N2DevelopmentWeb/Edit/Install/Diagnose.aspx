@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
+<head id="Head1" runat="server">
     <title>Diagnose N2</title>
     <link rel="stylesheet" href="Css/All.css" type="text/css" />
     <style>
@@ -105,28 +105,28 @@
                         <b><%# Eval("Title") %></b> - <%# Eval("ItemType") %> (<%# Eval("Discriminator") %>)
                     </td><td>
                         <!-- Child definitions -->
-                        <asp:Repeater runat="server" DataSource='<%# Eval("AllowedChildren") %>'>
+                        <asp:Repeater ID="Repeater1" runat="server" DataSource='<%# Eval("AllowedChildren") %>'>
                             <ItemTemplate> * <%# Eval("Title")%><br></ItemTemplate>
                         </asp:Repeater>
                     </td><td>
                         <!-- Available zones -->
-                        <asp:Repeater runat="server" DataSource='<%# Eval("AvailableZones") %>'>
+                        <asp:Repeater ID="Repeater2" runat="server" DataSource='<%# Eval("AvailableZones") %>'>
                             <ItemTemplate> * <%# Eval("ZoneName") %> (<%# Eval("Title") %>)<br></ItemTemplate>
                         </asp:Repeater>
                     </td><td>
                         <!-- Allowed in zone -->
-                        <asp:Repeater runat="server" DataSource='<%# Eval("AllowedZoneNames") %>'>
+                        <asp:Repeater ID="Repeater3" runat="server" DataSource='<%# Eval("AllowedZoneNames") %>'>
                             <ItemTemplate> * <%# Container.DataItem %><br></ItemTemplate>
                         </asp:Repeater>
                     </td><td>
                         <!-- Editable attributes -->
-                        <asp:Repeater runat="server" DataSource='<%# Eval("Editables") %>'>
+                        <asp:Repeater ID="Repeater4" runat="server" DataSource='<%# Eval("Editables") %>'>
                             <ItemTemplate> * <%# Eval("Title")%> (<%# Eval("Name")%>)<br></ItemTemplate>
                         </asp:Repeater>
                     </td><td>
                         <!-- Displayable attributes -->
-                        <asp:Repeater runat="server" DataSource='<%# Eval("Displayables") %>'>
-                            <ItemTemplate> * <%# Eval("Name")%><br></ItemTemplate>
+                        <asp:Repeater ID="Repeater5" runat="server" DataSource='<%# Eval("Displayables") %>'>
+                            <ItemTemplate> * <%# ((N2.Details.IDisplayable)Container.DataItem).Name %><br></ItemTemplate>
                         </asp:Repeater>
                     </td></tr>
                 </ItemTemplate>

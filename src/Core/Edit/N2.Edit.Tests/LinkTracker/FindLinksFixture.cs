@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MbUnit.Framework;
+using NUnit.Framework;
 using N2.Edit.LinkTracker;
 
 namespace N2.Tests.Edit.LinkTracker

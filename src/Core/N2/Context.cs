@@ -34,7 +34,7 @@ namespace N2
 			if (instance == null || forceRecreate)
 			{
 				instance = CreateEngineInstance();
-				instance.InitializePlugIns();
+				instance.InitializePlugins();
 				Debug.WriteLine("Factory.Initialize: Created factory instance.");
 			}
 			else if (instance != null)

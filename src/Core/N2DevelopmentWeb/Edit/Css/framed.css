@@ -3,6 +3,8 @@ body
 {
 	background-color:#fff;
 }
+a img { margin-right:1px; vertical-align:middle; }
+
 .toolbar
 {
 	position:fixed;
@@ -182,7 +184,7 @@ a.title { white-space:nowrap; }
 /* tree */
 
 .tree {}
-	.tree a { color:#000; text-decoration:none; }
+	.tree a { color:#000; text-decoration:none; line-height:18px; padding:0 4px 0 1px; }
 
 	.tree li, 
 	.tree ul { list-style: none; background-color:#ffffff; padding:0; margin:0; }
@@ -216,7 +218,6 @@ a.title { white-space:nowrap; }
 .type a { display:block; padding:2px 0; }
 .type a:hover { background-color:#f8f8f8; }
 .type .title { font-weight:bold; }
-.type a img { margin-right:2px; vertical-align:middle; }
 
 
 .position

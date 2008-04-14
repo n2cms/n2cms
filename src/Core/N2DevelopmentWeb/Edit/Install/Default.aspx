@@ -148,6 +148,7 @@
         <n2:TabPanel runat="server" tooltip="5. Finishing touches">
             <p><b>IMPORTANT!</b> Change the default password in web.config. If you've installed, configured and created an administrator account using a membership provider, comment out this section entirely.</p>
             <p><b>Advice:</b> remove the installation directory to prevent nasty surprises.</p>
+            <p>Are you planning to release this site in medium trust? <a href="MediumTrust.aspx">Try the medium trust web.config file generator.</a></p>
             <p>It's advisable to 
 				<asp:Button runat="server" OnClick="btnRestart_Click" Text="restart" CausesValidation="false" />
 				before you continue.

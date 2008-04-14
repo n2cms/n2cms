@@ -7,8 +7,8 @@ namespace N2.Trashcan
 	{
 		public void Initialize(Engine.IEngine engine)
 		{
-			engine.AddComponent("n2.deleteInterceptor", typeof(DeleteInterceptor));
 			engine.AddComponent("n2.trash", typeof(TrashHandler));
+			engine.AddComponent("n2.deleteInterceptor", typeof(DeleteInterceptor));
 		}
 	}
 }

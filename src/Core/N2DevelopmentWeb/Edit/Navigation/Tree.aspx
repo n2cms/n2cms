@@ -32,7 +32,8 @@
                 var dragMemory = null;
                 function toDraggable(container){
 					$("a", container).draggable({
-						snapDistance: 8,
+						delay: 100,
+						cursorAt: {top: 8, left:8},
 						stop : function(e,ui){
 							$.autoscroll.stop();
 						},

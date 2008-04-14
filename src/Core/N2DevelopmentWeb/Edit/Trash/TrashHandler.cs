@@ -28,20 +28,20 @@ namespace N2.Trashcan
 		public const string DeletedDate = "DeletedDate";
 		readonly IPersister persister;
 		readonly IDefinitionManager definitions;
-		readonly int rootItemID;
+		readonly Site site;
 
 		public TrashHandler(IPersister persister, IDefinitionManager definitions, Site site)
 		{
 			this.persister = persister;
 			this.definitions = definitions;
-			rootItemID = site.RootItemID;
+			this.site = site;
 		}
 
 		public TrashContainerItem TrashContainer
 		{
 			get
 			{
-				ContentItem rootItem = persister.Get(rootItemID);
+				ContentItem rootItem = persister.Get(site.RootItemID);
 				TrashContainerItem trashContainer = rootItem.GetChild("Trash") as TrashContainerItem;
 				if (trashContainer == null)
 				{

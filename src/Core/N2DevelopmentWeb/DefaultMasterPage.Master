@@ -44,7 +44,7 @@
             CurrentPage expression builder (only on start page):
 			[<asp:Image runat="server" ImageUrl='<%$ CurrentPage: ImageUrl %>' Visible='<%$ HasValue: ImageUrl %>' />[
 			Display with path:
-			[<n2:Display PropertyName="ImageUrl" runat="server" Path="/" />[
+			[<n2:Display PropertyName="ImageUrl" runat="server" Path="/" SwallowExceptions="true" />[
 			Display without path (only on start page):
 			[<n2:Display PropertyName="ImageUrl" runat="server" SwallowExceptions="true" />[
 			Display with templates (only when image added):

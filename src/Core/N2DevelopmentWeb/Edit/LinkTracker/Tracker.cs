@@ -12,11 +12,12 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Castle.Core;
+using N2.Plugin;
 
 namespace N2.Edit.LinkTracker
 {
 	/// <summary>This class examines saved items and keeps tracks of links in html.</summary>
-	public class Tracker : IStartable
+	public class Tracker : IStartable, IAutoStart
 	{
 		public const string LinkDetailName = "TrackedLinks";
 		Persistence.IPersister persister;

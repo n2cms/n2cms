@@ -1,5 +1,6 @@
 using System.Web;
 using N2.MediumTrust.Engine;
+using N2.Engine;
 
 namespace N2.MediumTrust.Web
 {
@@ -7,8 +8,10 @@ namespace N2.MediumTrust.Web
 	{
 		public void Init(HttpApplication context)
 		{
-			Context.Initialize(new MediumTrustFactory());
+			IEngine engine = new MediumTrustEngine();
+			Context.Initialize(engine);
 			Context.Current.Attach(context);
+			engine.InitializePlugins();
 		}
 
 		public void Dispose()
