@@ -12,10 +12,9 @@
 - fix content item injection
 - nhibernate 2
 - diff feature
-- remove requirement of virtual methods
 - better validation (jquery?)
 - google analytics plugin
-- xhtml & wai
+- templates: categories
 
 TODO:
 - documentation & programmability

@@ -10,6 +10,9 @@ using N2.Engine;
 using System.Reflection;
 using N2.Persistence;
 using N2.Details;
+using N2.Tests.Persistence.Definitions;
+using NUnit.Framework.SyntaxHelpers;
+using System.Diagnostics;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -188,6 +191,114 @@ namespace N2.Tests.Persistence.NH
 			}
 		}
 
+		[Test]
+		public void ItemClasses_MayHaveNonVirtualProperties()
+		{
+			using (repository)
+			{
+				ContentItem item = CreateOneItem<Definitions.NonVirtualItem>(0, "item", null);
+				repository.Save(item);
+				repository.Flush();
+
+				repository.Delete(item);
+				repository.Flush();
+			}
+		}
+
+		[Test]
+		public void ItemClasses_MayHaveNonVirtualProperties_LazyLoading()
+		{
+			NonVirtualItem item;
+			NonVirtualItem item2;
+			NonVirtualItem item3;
+			NonVirtualItem item4;
+			NonVirtualItem item5;
+
+			using (repository)
+			{
+				item = CreateOneItem<NonVirtualItem>(0, "item", null);
+				item2 = CreateOneItem<NonVirtualItem>(0, "item2", item);
+				item3 = CreateOneItem<NonVirtualItem>(0, "item3", item2);
+				item4 = CreateOneItem<NonVirtualItem>(0, "item4", item3);
+				item5 = CreateOneItem<NonVirtualItem>(0, "item5", item4);
+
+				item.IntProperty = 1;
+				item2.IntProperty = 2;
+				item3.IntProperty = 3;
+				item4.IntProperty = 4;
+				item5.IntProperty = 5;
+
+				repository.Save(item);
+				repository.Flush();
+			}
+
+			using (repository)
+			{
+				Debug.WriteLine("A");
+				
+				Debug.WriteLine("one");
+				item = repository.Get<NonVirtualItem>(item.ID);
+				Debug.WriteLine("one.2");
+				Assert.That(item.Name, Is.EqualTo("item"));
+				Debug.WriteLine("one.3");
+				Assert.That(item["IntProperty"], Is.EqualTo(1));
+
+				Debug.WriteLine("two");
+				Assert.That(item.Children.Count, Is.EqualTo(1));
+				Debug.WriteLine("two.2");
+				Assert.That(item.Children[0].Name, Is.EqualTo("item2"));
+				Debug.WriteLine("two.3");
+				Assert.That(item.Children[0]["IntProperty"], Is.EqualTo(2));
+
+				Debug.WriteLine("three");
+				Assert.That(item.Children[0].Children.Count, Is.EqualTo(1));
+				Debug.WriteLine("three.2");
+				Assert.That(item.Children[0].Children[0].Name, Is.EqualTo("item3"));
+				Debug.WriteLine("three.3");
+				Assert.That(item.Children[0].Children[0]["IntProperty"], Is.EqualTo(3));
+
+				Debug.WriteLine("four");
+				Assert.That(item.Children[0].Children[0].Children.Count, Is.EqualTo(1));
+				Debug.WriteLine("four.2");
+				Assert.That(item.Children[0].Children[0].Children[0].Name, Is.EqualTo("item4"));
+				Debug.WriteLine("four.3");
+				Assert.That(item.Children[0].Children[0].Children[0]["IntProperty"], Is.EqualTo(4));
+
+				Debug.WriteLine("five");
+				Assert.That(item.Children[0].Children[0].Children[0].Children.Count, Is.EqualTo(1));
+				Debug.WriteLine("four.2");
+				Assert.That(item.Children[0].Children[0].Children[0].Children[0].Name, Is.EqualTo("item5"));
+				Debug.WriteLine("four.3");
+				Assert.That(item.Children[0].Children[0].Children[0].Children[0]["IntProperty"], Is.EqualTo(5));
+			}
+
+			using (repository)
+			{
+				Debug.WriteLine("B");
+				item4 = repository.Get<NonVirtualItem>(item4.ID);
+				item = repository.Get<NonVirtualItem>(item.ID);
+				item.LinkProperty = item4;
+				repository.Save(item);
+				repository.Flush();
+			}
+
+			using (repository)
+			{
+				Debug.WriteLine("C");
+				item = repository.Get<NonVirtualItem>(item.ID);
+				Assert.That(item.IntProperty, Is.EqualTo(1));
+				Assert.That(item.LinkProperty, Is.EqualTo(item4));
+				Assert.That(item.LinkProperty.Parent, Is.EqualTo(item3));
+			}
+
+			using (repository)
+			{
+				Debug.WriteLine("deleting");
+				repository.Delete(repository.Get(item.ID));
+				repository.Flush();
+			}
+		}
+
 		[Test, Ignore("Any way to do this?")]
 		public void OtherSideOfReferenceIsRemoved()
 		{
@@ -272,25 +383,25 @@ namespace N2.Tests.Persistence.NH
 
 		private ISessionProvider CreateSessionProvider()
 		{
-			MockRepository mocks = new MockRepository(); 
-			using (mocks.Record())
-			{
-				ITypeFinder typeFinder = mocks.CreateMock<ITypeFinder>();
-				Expect.On(typeFinder).Call(typeFinder.GetAssemblies()).Return(new Assembly[] { typeof(N2.Context).Assembly });
-				Expect.On(typeFinder).Call(typeFinder.Find(typeof(ContentItem))).Return(new Type[] { typeof(Definitions.PersistableItem1) });
-				mocks.ReplayAll();
+			MockRepository mocks = new MockRepository();
+			ITypeFinder typeFinder = mocks.CreateMock<ITypeFinder>();
+			Expect.On(typeFinder).Call(typeFinder.GetAssemblies())
+				.Return(new Assembly[] { typeof(N2.Context).Assembly }).Repeat.Any();
+			Expect.On(typeFinder).Call(typeFinder.Find(typeof(ContentItem)))
+				.Return(new Type[] { typeof(Definitions.PersistableItem1), typeof(Definitions.NonVirtualItem) });
+			mocks.ReplayAll();
 
-				IDefinitionManager definitions = new DefaultDefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
-				DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(definitions);
-				configurationBuilder.Properties.Add("hibernate.connection.provider", "NHibernate.Connection.DriverConnectionProvider");
-				configurationBuilder.Properties.Add("hibernate.connection.connection_string_name", "TestConnection");
-				configurationBuilder.Properties.Add("hibernate.show_sql", "true");
-				configurationBuilder.Properties.Add("hibernate.cache.use_second_level_cache", "false");
-				configurationBuilder.Properties.Add("hibernate.connection.driver_class", "NHibernate.Driver.SqlClientDriver");
-				configurationBuilder.Properties.Add("hibernate.dialect", "NHibernate.Dialect.MsSql2005Dialect");
+			IDefinitionManager definitions = new DefaultDefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
+			DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(definitions);
+			configurationBuilder.Properties.Add("hibernate.connection.provider", "NHibernate.Connection.DriverConnectionProvider");
+			configurationBuilder.Properties.Add("hibernate.connection.connection_string_name", "TestConnection");
+			configurationBuilder.Properties.Add("hibernate.show_sql", "true");
+			configurationBuilder.Properties.Add("hibernate.cache.use_second_level_cache", "false");
+			configurationBuilder.Properties.Add("hibernate.connection.driver_class", "NHibernate.Driver.SqlClientDriver");
+			configurationBuilder.Properties.Add("hibernate.dialect", "NHibernate.Dialect.MsSql2005Dialect");
 
-				return new DefaultSessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
-			}
+			return new DefaultSessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
+			
 		}
 	}
 }

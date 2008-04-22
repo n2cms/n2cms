@@ -26,7 +26,7 @@ namespace N2.Persistence.NH
 		private string generatedHbmFormat =
 			@"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">
-    <subclass name=""{0},{1}"" extends=""{2},{3}"" discriminator-value=""{4}"">
+    <subclass name=""{0},{1}"" extends=""{2},{3}"" discriminator-value=""{4}"" lazy=""false"">
     </subclass>
 </hibernate-mapping>
 ";

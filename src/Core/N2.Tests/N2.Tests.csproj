@@ -151,6 +151,7 @@
     <Compile Include="MediumTrust\EngineTests.cs" />
     <Compile Include="MediumTrust\MediumTrustPage.cs" />
     <Compile Include="NodeTests.cs" />
+    <Compile Include="Persistence\Definitions\NonVirtualItem.cs" />
     <Compile Include="Persistence\FindTests.cs" />
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="Persistence\NH\PersisterIntegrityTests.cs" />
