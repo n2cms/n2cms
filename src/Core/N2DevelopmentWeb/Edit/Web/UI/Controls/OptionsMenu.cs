@@ -10,23 +10,12 @@
 
 using System.Web.UI;
 using N2.Resources;
+using System;
 
 namespace N2.Edit.Web.UI.Controls
 {
-	public class OptionsMenu : Control
+	[Obsolete("Moved to N2.dll")]
+	public class OptionsMenu : N2.Web.UI.WebControls.OptionsMenu
 	{
-		protected override void OnPreRender(System.EventArgs e)
-		{
-            string script = string.Format("$('#{0}').n2optionmenu({{opener:\"<span class='opener'><img src='{1}' alt='more options'/></span>\"}});", ClientID, Utility.ToAbsolute("~/Edit/img/ico/bullet_arrow_down.gif"));
-			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
-			base.OnPreRender(e);
-		}
-
-		protected override void Render(HtmlTextWriter writer)
-		{
-			writer.Write("<div id='" + ClientID + "' class='optionGroup'>");
-			RenderChildren(writer);
-			writer.Write("</div>");
-		}
 	}
 }

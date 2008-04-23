@@ -13,7 +13,7 @@
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
     <n2:tabpanel ID="tpType" runat="server" ToolTip="Select type" CssClass="tabPanel" meta:resourcekey="tpTypeResource1" RegisterTabCss="False">
-        <asp:Repeater ID="rptLocations" runat="server">
+        <n2:Repeater ID="rptLocations" runat="server">
             <ItemTemplate>
 			    <div class="type cf">
 				    <asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
@@ -23,7 +23,10 @@
 				    <%# Eval("Description") %>
 			    </div>
             </ItemTemplate>
-        </asp:Repeater>
+            <EmptyTemplate>
+				<asp:Label runat="server" ID="lblNoItems" meta:resourcekey="lblNoItems" Text="No locations added." />
+            </EmptyTemplate>
+        </n2:Repeater>
     </n2:tabpanel>
     <n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add location" CssClass="tabPanel" meta:resourcekey="tpAddResource1" RegisterTabCss="False">
         <asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">

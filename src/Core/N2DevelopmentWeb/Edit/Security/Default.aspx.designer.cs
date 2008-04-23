@@ -20,7 +20,7 @@ namespace N2.Edit.Security {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.OptionsMenu om;
+        protected global::N2.Web.UI.WebControls.OptionsMenu om;
         
         /// <summary>
         /// btnSave control.

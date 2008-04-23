@@ -21,6 +21,7 @@
 		};
 		var openMenu = function(e){
 			e.stopPropagation();
+			e.preventDefault();
 			closable = false;
 			$wrapper.parent().toggleClass(settings.closedClass);
 			setTimeout(function(){closable = true;}, 10);

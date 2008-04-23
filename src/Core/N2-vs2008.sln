@@ -114,7 +114,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit.Tests", "Edit\N2.Ed
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Security", "Security\N2.Security.csproj", "{CB6A29C5-8355-4C4C-B437-619F652B7540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "N2DevelopmentWeb\Edit\Globalization\Globalization.csproj", "{387B682B-E4B0-4292-ACD1-F3EF29C76025}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit.Globalization", "N2DevelopmentWeb\Edit\Globalization\N2.Edit.Globalization.csproj", "{387B682B-E4B0-4292-ACD1-F3EF29C76025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

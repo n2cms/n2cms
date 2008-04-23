@@ -256,7 +256,7 @@ a.title { white-space:nowrap; }
 	list-style-type:none;
 	padding:0;
 	display:block;
-	margin:0 10px;
+	margin:10px 10px 0 10px;
 	background: transparent url(../img/tabs_begin.gif) no-repeat 0% 100%;
 	padding-left:5px;
 	height:35px;
@@ -308,7 +308,7 @@ a.title { white-space:nowrap; }
 	background:#fff url(../img/tabs_base.gif) repeat-x;
 	border:solid 1px #c0c3c2;
 	border-top-style:none;
-	padding:10px;
+	padding:15px 10px;
 	position:relative;
 	left:-10px;
 	top:-5px;

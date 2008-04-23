@@ -356,6 +356,8 @@
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\IContentTemplate.cs" />
     <Compile Include="Web\UI\WebControls\A.cs" />
+    <Compile Include="Web\UI\WebControls\OptionsMenu.cs" />
+    <Compile Include="Web\UI\WebControls\Repeater.cs" />
     <Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
     <Compile Include="Web\UI\WebControls\DragDropControlPanel.cs" />
     <Compile Include="Web\UI\WebControls\DroppableZone.cs" />

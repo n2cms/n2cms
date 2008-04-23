@@ -14,7 +14,7 @@
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
-		<edit:OptionsMenu id="om2" runat="server">
+		<n2:OptionsMenu id="om2" runat="server">
 			<asp:HyperLink ID="hlEditParent" runat="server" CssClass="editParent command" AccessKey="p" meta:resourceKey="hlEditParent">Edit parent</asp:HyperLink>
 			<n2:ItemDataSource id="idsChildren" runat="server" PageFilter="true" ZoneName="" />
 			<asp:Repeater runat="server" DataSourceID="idsChildren">
@@ -22,15 +22,16 @@
 					<asp:HyperLink Text='<%# Eval("Title") %>' NavigateUrl="<%# Engine.EditManager.GetEditExistingItemUrl((ContentItem)Container.DataItem) %>" CssClass="command plain" runat="server"/>
 				</ItemTemplate>
 			</asp:Repeater>
-		</edit:OptionsMenu>
+		</n2:OptionsMenu>
+		
 		<asp:HyperLink ID="hlZones" runat="server" CssClass="showZones command" AccessKey="z" meta:resourceKey="hlZones" NavigateUrl="javascript:void(0);">Zones</asp:HyperLink>
 		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" AccessKey="i" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>
     </div>
-    <edit:OptionsMenu id="om" runat="server">
+    <n2:OptionsMenu id="om" runat="server">
 		<asp:LinkButton ID="btnSave" OnCommand="OnSaveCommand" runat="server" CssClass="command" AccessKey="s" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
 		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command" AccessKey="p" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command" meta:resourceKey="btnPreview">Preview changes</asp:LinkButton>
-    </edit:OptionsMenu>
+    </n2:OptionsMenu>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" AccessKey="c" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="co" ContentPlaceHolderID="Outside" runat="server">
