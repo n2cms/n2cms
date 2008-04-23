@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using N2.Web;
 using NHibernate;
+using System;
 
 namespace N2.Persistence.NH
 {
@@ -23,6 +24,7 @@ namespace N2.Persistence.NH
 		public DefaultSessionProvider(IConfigurationBuilder builder, IWebContext webContext)
 		{
 			nhSessionFactory = builder.BuildSessionFactory();
+			Debug.WriteLine("Built Session Factory " + DateTime.Now);
 			this.webContext = webContext;
 		}
 

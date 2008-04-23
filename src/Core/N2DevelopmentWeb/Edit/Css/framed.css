@@ -202,7 +202,7 @@ a.title { white-space:nowrap; }
 
 	.tree .root{ background-image: url(../img/treeview/root.gif) no-repeat 16px 2px #ffffff; }
 
-	.tree .toggler { float:left; margin-left:-18px; height:16px; width:16px; 	background-image:url(../img/treeview/spacer.gif); cursor:pointer; }
+	.tree .toggler { float:left; margin-left:-18px; padding:0; height:16px; width:16px; background-image:url(../img/treeview/spacer.gif); cursor:pointer; }
 
 	.tree ul.ajax { background: url(../img/treeview/spinner.gif) no-repeat 0 0 #ffffff; height: 16px; display:none; }
 		.tree ul.ajax li { display:none; }

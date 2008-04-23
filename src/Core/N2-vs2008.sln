@@ -114,6 +114,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit.Tests", "Edit\N2.Ed
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Security", "Security\N2.Security.csproj", "{CB6A29C5-8355-4C4C-B437-619F652B7540}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globalization", "N2DevelopmentWeb\Edit\Globalization\Globalization.csproj", "{387B682B-E4B0-4292-ACD1-F3EF29C76025}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -307,6 +309,21 @@ Global
 		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Publish|.NET.ActiveCfg = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Publish|Any CPU.Build.0 = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Publish|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Publish|Mixed Platforms.Build.0 = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Release|.NET.ActiveCfg = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -320,6 +337,7 @@ Global
 		{408BB005-77D9-4EED-A2BA-5F96D0C471F2} = {5186B58A-8906-4B63-BD6E-816FA1B717FD}
 		{40DCCAEC-A0D0-4B08-8660-76BEB27B96F5} = {5186B58A-8906-4B63-BD6E-816FA1B717FD}
 		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D} = {5186B58A-8906-4B63-BD6E-816FA1B717FD}
+		{387B682B-E4B0-4292-ACD1-F3EF29C76025} = {5186B58A-8906-4B63-BD6E-816FA1B717FD}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

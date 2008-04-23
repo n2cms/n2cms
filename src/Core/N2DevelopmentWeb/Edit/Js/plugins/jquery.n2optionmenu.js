@@ -10,21 +10,26 @@
 			closedClass: "closed"
 		};
 		$.extend(settings, options || {});
-		
+
 		var closable = false;
 		var $menu = this;
 
-		var $wrapper = $menu.wrap(settings.wrapper).parent();
-		$menu.children().slice(0,1).clone(true).insertBefore($menu)
-			.after(settings.opener).next().click(function(){
-				closable = false;
-				$wrapper.toggleClass(settings.closedClass);
-				setTimeout(function(){closable = true;}, 10);
-			});
-		$(document.body).click(function(){
+		var $wrapper = $menu.wrap(settings.wrapper);
+		var closeMenu = function(){
 			if(closable)
-				$wrapper.addClass(settings.closedClass);
-		});
+				$wrapper.parent().addClass(settings.closedClass);
+		};
+		var openMenu = function(e){
+			e.stopPropagation();
+			closable = false;
+			$wrapper.parent().toggleClass(settings.closedClass);
+			setTimeout(function(){closable = true;}, 10);
+		};
+		$menu.children().slice(0,1).clone(true).insertBefore($menu)
+			.bind('contextmenu', openMenu)
+			.after(settings.opener)
+			.next().click(openMenu);
+		$(document.body).click(closeMenu);
 		return $menu;
 	}
 })(jQuery);

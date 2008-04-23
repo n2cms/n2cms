@@ -82,13 +82,13 @@ namespace N2.Persistence.NH
 		/// <returns></returns>
 		public virtual NHibernate.Cfg.Configuration BuildConfiguration()
 		{
-			Debug.WriteLine("DefaultConfigurationBuilder: Building configuration");
+			Debug.WriteLine("DefaultConfigurationBuilder: Building configuration " + DateTime.Now);
 			NHibernate.Cfg.Configuration cfg = new NHibernate.Cfg.Configuration();
 			AddProperties(cfg);
 			AddDefaultMappings(cfg);
 			AddAssemblies(cfg);
 			GenerateMappings(cfg);
-			Debug.WriteLine("DefaultConfigurationBuilder: Built configuration");
+			Debug.WriteLine("DefaultConfigurationBuilder: Built configuration " + DateTime.Now);
 
 			return cfg;
 		}
@@ -176,7 +176,7 @@ namespace N2.Persistence.NH
 		/// <returns>A new <see cref="NHibernate.ISessionFactory"/>.</returns>
 		public ISessionFactory BuildSessionFactory()
 		{
-			Debug.WriteLine("Building Session Factory");
+			Debug.WriteLine("Building Session Factory " + DateTime.Now);
 			return BuildConfiguration().BuildSessionFactory();
 		}
 
