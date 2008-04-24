@@ -281,6 +281,7 @@
     <EmbeddedResource Include="Definitions\definitions.castle.config" />
     <None Include="FactoryModel.cd" />
     <None Include="ContentModel.cd" />
+    <EmbeddedResource Include="Globalization\globalization.castle.config" />
     <EmbeddedResource Include="Parts\parts.castle.config" />
     <EmbeddedResource Include="Integrity\integrity.castle.config" />
     <EmbeddedResource Include="Security\security.castle.config" />
@@ -298,6 +299,7 @@
     <Compile Include="Collections\PageFilter.cs" />
     <Compile Include="Collections\ParentFilter.cs" />
     <Compile Include="Collections\PublishedFilter.cs" />
+    <Compile Include="Collections\RecursiveFinder.cs" />
     <Compile Include="Collections\TreeHierarchyBuilder.cs" />
     <Compile Include="Collections\VisibleFilter.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
@@ -311,6 +313,7 @@
     <Compile Include="Details\DisplayableImageAttribute.cs" />
     <Compile Include="Details\EditableImageAttribute.cs" />
     <Compile Include="Details\DisplayableAnchorAttribute.cs" />
+    <Compile Include="Details\EditableLanguagesDropDownAttribute.cs" />
     <Compile Include="Details\EditableLinkAttribute.cs" />
     <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
     <Compile Include="Edit\CreationPosition.cs" />
@@ -319,7 +322,12 @@
     <Compile Include="Edit\Navigator.cs" />
     <Compile Include="Edit\Settings\SettingsManager.cs" />
     <Compile Include="Edit\ToolbarAreaAttribute.cs" />
+    <Compile Include="Edit\Web\EditUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Globalization\ILanguageGateway.cs" />
     <Compile Include="Globalization\ILanguageRoot.cs" />
+    <Compile Include="Globalization\LanguageGateway.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="Installation\DatabaseStatus.cs" />
     <Compile Include="Installation\InstallationManager.cs" />

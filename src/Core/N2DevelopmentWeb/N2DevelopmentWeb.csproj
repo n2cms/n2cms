@@ -100,6 +100,7 @@
     <Compile Include="Domain\ItemCreator.cs" />
     <Compile Include="Domain\ItemWithChildItem.cs">
     </Compile>
+    <Compile Include="Domain\LanguageRoot.cs" />
     <Compile Include="Domain\MyItemWithLinks.cs" />
     <Compile Include="Domain\MyUnmappedItem1.cs" />
     <Compile Include="Domain\MyUnmappedItem2.cs" />

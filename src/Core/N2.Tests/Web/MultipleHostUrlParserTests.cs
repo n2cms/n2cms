@@ -12,14 +12,14 @@ namespace N2.Tests.Web
 	{
 		class StaticSitesProvider : ISitesProvider
 		{
-			ICollection<Site> sites;
+			IEnumerable<Site> sites;
 
-			public StaticSitesProvider(ICollection<Site> sites)
+			public StaticSitesProvider(IEnumerable<Site> sites)
 			{
 				this.sites = sites;
 			}
 
-			public ICollection<Site> GetSites()
+			public IEnumerable<Site> GetSites()
 			{
 				return sites;
 			}

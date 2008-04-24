@@ -9,6 +9,8 @@ namespace N2.Web
 	/// </summary>
 	public interface ISitesProvider
 	{
-		ICollection<Site> GetSites();
+		/// <summary>Gets site roots configured for this installation.</summary>
+		/// <returns>An enumeration of sites.</returns>
+		IEnumerable<Site> GetSites();
 	}
 }

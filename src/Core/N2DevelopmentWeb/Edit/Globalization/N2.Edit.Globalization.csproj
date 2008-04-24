@@ -52,6 +52,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LanguageInitializer.cs" />
     <Compile Include="LanguageMenu.ascx.cs">
       <DependentUpon>LanguageMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

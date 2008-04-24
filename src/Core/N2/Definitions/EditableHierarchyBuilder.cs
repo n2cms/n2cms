@@ -30,14 +30,13 @@ namespace N2.Definitions
 				if (container.ContainerName != null)
 				{
 					if (container.ContainerName == container.Name)
-						throw new N2Exception(
-							"The container '{0}' cannot reference itself as containing container. Change the ContainerName property.",
-							container.Name);
+						throw new N2Exception("The container '{0}' cannot reference itself as containing container. Change the ContainerName property.", container.Name);
+
 					IEditableContainer parentContainer = FindContainer(container.ContainerName, containers);
+					
 					if (parentContainer == null)
-						throw new N2Exception(
-							"The container '{0}' references another containing container '{1}' that doesn't seem to be defined. Either add a container with this name or remove the reference to that container.",
-							container.Name, container.ContainerName);
+						throw new N2Exception("The container '{0}' references another containing container '{1}' that doesn't seem to be defined. Either add a container with this name or remove the reference to that container.", container.Name, container.ContainerName);
+					
 					parentContainer.AddContained(container);
 				}
 				else
@@ -59,8 +58,7 @@ namespace N2.Definitions
 			return null;
 		}
 
-		private static void AddEditorsToContainers(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers,
-		                                    IEnumerable<T> editables)
+		private static void AddEditorsToContainers(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers, IEnumerable<T> editables)
 		{
 			foreach (T editable in editables)
 			{
@@ -68,9 +66,7 @@ namespace N2.Definitions
 				{
 					IEditableContainer container = FindContainer(editable.ContainerName, containers);
 					if (container == null)
-						throw new N2Exception(
-							"The editor '{0}' references a container '{1}' that doesn't seem to be defined. Either add a container with this name or remove the reference to that container.",
-							editable.Name, editable.ContainerName);
+						throw new N2Exception("The editor '{0}' references a container '{1}' that doesn't seem to be defined. Either add a container with this name or remove the reference to that container.", editable.Name, editable.ContainerName);
 					container.AddContained(editable);
 				}
 				else

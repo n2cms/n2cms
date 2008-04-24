@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using N2.Globalization;
+using N2.Details;
+using N2.Web.UI;
+
+namespace N2.Tests.Globalization.Items
+{
+	[FieldSet("globalization", "Globalization", 200)]
+	public class LanguageRoot : ContentItem, ILanguageRoot
+	{
+		[EditableTextBox("FlagUrl", 100, ContainerName = "globalization")]
+		public virtual string FlagUrl
+		{
+			get { return (string)(GetDetail("FlagUrl") ?? string.Empty); }
+			set { SetDetail("FlagUrl", value, string.Empty); }
+		}
+
+		[EditableTextBox("LanguageTitle", 110, ContainerName = "globalization")]
+		public virtual string LanguageTitle
+		{
+			get { return (string)(GetDetail("LanguageTitle") ?? string.Empty); }
+			set { SetDetail("LanguageTitle", value, string.Empty); }
+		}
+
+		[EditableTextBox("LanguageCode", 120, ContainerName = "globalization")]
+		public virtual string LanguageCode
+		{
+			get { return (string)(GetDetail("LanguageCode") ?? string.Empty); }
+			set { SetDetail("LanguageCode", value, string.Empty); }
+		}
+	}
+}
