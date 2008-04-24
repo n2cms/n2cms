@@ -148,6 +148,7 @@
     <Compile Include="Edit\Items\ItemWithRequiredProperty.cs" />
     <Compile Include="Edit\Items\SeveralPlugins.cs" />
     <Compile Include="Edit\NavigatorTests.cs" />
+    <Compile Include="Globalization\LanguageRootTests.cs" />
     <Compile Include="MediumTrust\EngineTests.cs" />
     <Compile Include="MediumTrust\MediumTrustPage.cs" />
     <Compile Include="NodeTests.cs" />

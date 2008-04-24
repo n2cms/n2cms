@@ -11,6 +11,8 @@ namespace N2.Edit
 	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
 	public partial class Edit : EditPage
 	{
+		protected PlaceHolder phPluginArea;
+
 		protected bool CreatingNew
 		{
 			get { return Request["discriminator"] != null; }
@@ -23,6 +25,7 @@ namespace N2.Edit
 			else
 				hlCancel.NavigateUrl = Request["returnUrl"] ?? (SelectedItem.VersionOf ?? SelectedItem).Url;
 
+			InitPlugins();
 			InitItemEditor();
 			InitTitle();
 			base.OnInit(e);
@@ -70,6 +73,14 @@ namespace N2.Edit
 			string url = Utility.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
 			hlOlderVersion.NavigateUrl = url;
 			hlOlderVersion.Visible = true;
+		}
+
+		private void InitPlugins()
+		{
+			foreach(EditToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
+			{
+				plugin.AddTo(phPluginArea);
+			}
 		}
 
 		private void InitTitle()

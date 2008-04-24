@@ -22,7 +22,7 @@ namespace N2.Edit
 	/// An attribute defining a toolbar item in edit mode.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true)]
-	public class ToolbarPluginAttribute : EditingPluginAttribute, IComparable<ToolbarPluginAttribute>, IContainable
+	public class ToolbarPluginAttribute : LinkPluginAttribute, IContainable
 	{
 		ToolbarArea area;
 		private string containerName;
@@ -81,11 +81,6 @@ namespace N2.Edit
 		}
 		
 		#region IComparable<...> Members
-
-		public int CompareTo(ToolbarPluginAttribute other)
-		{
-			return base.CompareTo(other);
-		}
 
 		int IComparable<IContainable>.CompareTo(IContainable other)
 		{

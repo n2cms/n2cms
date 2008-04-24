@@ -314,9 +314,12 @@
     <Compile Include="Details\EditableLinkAttribute.cs" />
     <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
     <Compile Include="Edit\CreationPosition.cs" />
+    <Compile Include="Edit\EditToolbarPluginAttribute.cs" />
+    <Compile Include="Edit\LinkPluginAttribute.cs" />
     <Compile Include="Edit\Navigator.cs" />
     <Compile Include="Edit\Settings\SettingsManager.cs" />
     <Compile Include="Edit\ToolbarAreaAttribute.cs" />
+    <Compile Include="Globalization\ILanguageRoot.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="Installation\DatabaseStatus.cs" />
     <Compile Include="Installation\InstallationManager.cs" />
@@ -387,7 +390,7 @@
     <Compile Include="Details\WithEditableChildAttribute.cs" />
     <Compile Include="Details\EditableItemAttribute.cs" />
     <Compile Include="Details\EditableChildrenAttribute.cs" />
-    <Compile Include="Edit\EditingPlugInAttribute.cs" />
+    <Compile Include="Edit\AdministrativePlugInAttribute.cs" />
     <Compile Include="Edit\NavigationPlugInAttribute.cs" />
     <Compile Include="Edit\Settings\EditableCheckBoxAttribute.cs" />
     <Compile Include="Edit\Settings\ISettingsProvider.cs" />

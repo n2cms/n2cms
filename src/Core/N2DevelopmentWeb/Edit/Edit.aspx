@@ -23,7 +23,7 @@
 				</ItemTemplate>
 			</asp:Repeater>
 		</n2:OptionsMenu>
-		
+		<asp:PlaceHolder runat="server" ID="phPluginArea" />
 		<asp:HyperLink ID="hlZones" runat="server" CssClass="showZones command" AccessKey="z" meta:resourceKey="hlZones" NavigateUrl="javascript:void(0);">Zones</asp:HyperLink>
 		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" AccessKey="i" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>
     </div>

@@ -46,15 +46,22 @@ namespace N2.Edit
 		/// <returns>An url to the upload root.</returns>
 		string GetUploadFolderUrl();
 
-		/// <summary>Gets toolbar plugins for the edit mode.</summary>
-		/// <param name="user">The user whose permissions will filter return plugins.</param>
-		/// <returns>A list of toolbar plpugins.</returns>
-		IList<ToolbarPluginAttribute> GetToolbarPlugIns(IPrincipal user);
+		///// <summary>Gets toolbar plugins for the edit mode.</summary>
+		///// <param name="user">The user whose permissions will filter return plugins.</param>
+		///// <returns>A list of toolbar plpugins.</returns>
+		//IList<ToolbarPluginAttribute> GetToolbarPlugIns(IPrincipal user);
 
-		/// <summary>Gets navigation plugins for the edit mode.</summary>
-		/// <param name="user">The user whose permissions will filter return plugins.</param>
-		/// <returns>A list of navigation plpugins.</returns>
-		IList<NavigationPluginAttribute> GetNavigationPlugIns(IPrincipal user);
+		///// <summary>Gets navigation plugins for the edit mode.</summary>
+		///// <param name="user">The user whose permissions will filter return plugins.</param>
+		///// <returns>A list of navigation plpugins.</returns>
+		//IList<NavigationPluginAttribute> GetNavigationPlugIns(IPrincipal user);
+
+		/// <summary>Gets edit mode plugins found in the environment sorted and filtered by the given user.</summary>
+		/// <typeparam name="T">The type of plugin to get.</typeparam>
+		/// <param name="user">The user that should be authorized for the plugin.</param>
+		/// <returns>An enumeration of plugins.</returns>
+		IEnumerable<T> GetPlugins<T>(IPrincipal user)
+			where T : AdministrativePluginAttribute;
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
 		/// <param name="itemType">The type of content item whose editors to add.</param>

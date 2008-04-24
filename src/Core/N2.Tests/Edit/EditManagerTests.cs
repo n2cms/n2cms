@@ -15,6 +15,7 @@ using N2.Persistence;
 using N2.Tests.Edit.Items;
 using System.Security.Principal;
 using System.Web;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Edit
 {
@@ -380,15 +381,15 @@ namespace N2.Tests.Edit
 		[Test]
 		public void CanGetNavigationPlugIns()
 		{
-			IList<NavigationPluginAttribute> plugIns = editManager.GetNavigationPlugIns();
-			Assert.AreEqual(2, plugIns.Count);
+			IEnumerable<NavigationPluginAttribute> plugIns = editManager.GetPlugins<NavigationPluginAttribute>();
+			EnumerableAssert.Count(2, plugIns);
 		}
 
 		[Test]
-		public void CanGetSortNavigationPlugIns()
+		public void CanGet_SortNavigation_PlugIns()
 		{
-			IList<NavigationPluginAttribute> plugIns = editManager.GetNavigationPlugIns();
-			Assert.AreEqual(2, plugIns.Count);
+			IList<NavigationPluginAttribute> plugIns = new List<NavigationPluginAttribute>(editManager.GetPlugins<NavigationPluginAttribute>());
+			EnumerableAssert.Count(2, plugIns);
 
 			NavigationPluginAttribute plugin1 = plugIns[0];
 			Assert.AreEqual("chill", plugin1.Name);
@@ -400,34 +401,34 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void DoesntGetNavigationPluginsThatRequiresSpecialAuthorization()
+		public void Doesnt_GetNavigationPlugins_ThatRequires_SpecialAuthorization()
 		{
 			IPrincipal user = CreateUser("Joe", "Carpenter");
-			IList<NavigationPluginAttribute> plugIns = editManager.GetNavigationPlugIns(user);
-			Assert.AreEqual(1, plugIns.Count);
+			IEnumerable<NavigationPluginAttribute> plugIns = editManager.GetPlugins<NavigationPluginAttribute>(user);
+			EnumerableAssert.Count(1, plugIns);
 		}
 
 		[Test]
-		public void CanGetRestrictedNavigationPluginsIfAuthorized()
+		public void CanGet_Restricted_NavigationPlugins_IfAuthorized()
 		{
 			IPrincipal user = CreateUser("Bill", "ÜberEditor");
-			IList<NavigationPluginAttribute> plugIns = editManager.GetNavigationPlugIns(user);
-			Assert.AreEqual(2, plugIns.Count);
+			IEnumerable<NavigationPluginAttribute> plugIns = editManager.GetPlugins<NavigationPluginAttribute>(user);
+			EnumerableAssert.Count(2, plugIns);
 		}
 
 
 		[Test]
-		public void CanGetToolbarPlugIns()
+		public void CanGet_ToolbarPlugIns()
 		{
-			IList<ToolbarPluginAttribute> plugIns = editManager.GetToolbarPlugIns();
-			Assert.AreEqual(2, plugIns.Count);
+			IEnumerable<ToolbarPluginAttribute> plugIns = editManager.GetPlugins<ToolbarPluginAttribute>();
+			EnumerableAssert.Count(2, plugIns);
 		}
 
 		[Test]
 		public void CanGetSortToolbarPlugIns()
 		{
-			IList<ToolbarPluginAttribute> plugIns = editManager.GetToolbarPlugIns();
-			Assert.AreEqual(2, plugIns.Count);
+			IList<ToolbarPluginAttribute> plugIns = new List<ToolbarPluginAttribute>(editManager.GetPlugins<ToolbarPluginAttribute>());
+			EnumerableAssert.Count(2, plugIns);
 
 			ToolbarPluginAttribute plugin1 = plugIns[0];
 			Assert.AreEqual("peace", plugin1.Name);
@@ -439,23 +440,23 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void DoesntGetToolbarPluginsThatRequiresSpecialAuthorization()
+		public void Doesnt_GetToolbarPlugins_ThatRequires_SpecialAuthorization()
 		{
 			IPrincipal user = CreateUser("Joe", "Carpenter");
-			IList<ToolbarPluginAttribute> plugIns = editManager.GetToolbarPlugIns(user);
-			Assert.AreEqual(1, plugIns.Count);
+			IEnumerable<ToolbarPluginAttribute> plugIns = editManager.GetPlugins<ToolbarPluginAttribute>(user);
+			EnumerableAssert.Count(1, plugIns);
 		}
 
 		[Test]
-		public void CanGetRestrictedToolbarPluginsIfAuthorized()
+		public void CanGet_AllRestrictedToolbarPlugins_IfAuthorized()
 		{
 			IPrincipal user = CreateUser("Bill", "ÜberEditor");
-			IList<ToolbarPluginAttribute> plugIns = editManager.GetToolbarPlugIns(user);
-			Assert.AreEqual(2, plugIns.Count);
+			IEnumerable<ToolbarPluginAttribute> plugIns = editManager.GetPlugins<ToolbarPluginAttribute>(user);
+			EnumerableAssert.Count(2, plugIns);
 		}
 
 		[Test]
-		public void AddingEditorInvokesEvent()
+		public void AddingEditor_InvokesEvent()
 		{
 			Control editorContainer = new Control();
 			editManager.AddedEditor += new EventHandler<N2.Web.UI.ControlEventArgs>(editManager_AddedEditor);

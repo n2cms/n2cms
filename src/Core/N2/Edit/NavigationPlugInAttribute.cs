@@ -9,7 +9,7 @@ namespace N2.Edit
 	/// An attribute defining a right-click item in the navigation pane.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true)]
-	public class NavigationPluginAttribute : EditingPluginAttribute, IComparable<NavigationPluginAttribute>
+	public class NavigationPluginAttribute : LinkPluginAttribute
 	{
 		#region Constructors
 		public NavigationPluginAttribute()
@@ -30,16 +30,6 @@ namespace N2.Edit
 			this.SortOrder = sortOrder;
 		} 
 		#endregion 
-
-		#region IComparable<NavigationPluginAttribute> Members
-
-		public int CompareTo(NavigationPluginAttribute other)
-		{
-			return base.CompareTo(other);
-		}
-
-		#endregion
-
 
 		protected override string ArrayVariableName
 		{
