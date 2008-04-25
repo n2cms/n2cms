@@ -444,6 +444,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.aspx" />
+    <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
     <Content Include="favicon.ico" />
     <Content Include="Layouts\Parts\SubMenu.ascx" />
     <Content Include="Layouts\Top+SubMenu.Master" />

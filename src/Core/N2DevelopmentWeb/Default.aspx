@@ -2,6 +2,8 @@
 <%@ OutputCache CacheProfile="DefaultCache" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+[[<%= CurrentPage.IntegerValue++ %>]]
+
 <textarea style="height:100px; width:30%;">
 trimming:	<%= System.Web.SiteMap.Provider.SecurityTrimmingEnabled %>
 id:		<%= CurrentPage.ID %>

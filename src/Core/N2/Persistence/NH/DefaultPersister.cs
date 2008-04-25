@@ -16,7 +16,7 @@ using System.Diagnostics;
 using N2.Collections;
 using N2.Details;
 using N2.Persistence.Finder;
-using NHibernate.Expression;
+using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {

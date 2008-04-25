@@ -16,8 +16,9 @@
 	- changed and improved the medium trust engine
 	- removed requirement to configure item types in medium trust
 	- remove requirement of virtual methods
-	- refactored the edit mode plugin model
-	- added edit page plugin attribute
+	- refactored the toolbar plugin model
+	- added edit page toolbar plugin attribute
+	- upgraded to nhibernate 2 alpha
 - templates
 	- add notfound page config to start page
 	- search filters with navigation filter

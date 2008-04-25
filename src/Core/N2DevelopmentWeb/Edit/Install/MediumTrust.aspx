@@ -21,7 +21,8 @@
 			
 			<!-- NHibernate is the object relational mapper used for N2 -->
 			<nhProperties>
-				<% foreach (DictionaryEntry property in NhProperties) {%><add key="<%= property.Key %>" value="<%= property.Value %>"/>
+				<% foreach (System.Collections.Generic.KeyValuePair<string, string> property in NhProperties)
+				   {%><add key="<%= property.Key %>" value="<%= property.Value %>"/>
 				<% } %>
 			</nhProperties>
 		</mediumTrust>

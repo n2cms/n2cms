@@ -29,7 +29,7 @@
 
 using System.Data;
 using NHibernate;
-using NHibernate.Expression;
+using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {

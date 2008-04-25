@@ -1,7 +1,5 @@
 - restrictparents: NewRestrictionAttribute
-- MediumTrust: Throw exception when configured content type isn't found
 - Parts: Throw friendly exception when page isn't found
-- Better toolbar plugin model
 - move sites initialization to after context.instance is set
 - implement INode for edit mode integration
 - allow other than content items to be edited
@@ -10,11 +8,11 @@
 - webdav
 - configure away modules
 - fix content item injection
-- nhibernate 2
 - diff feature
-- better validation (jquery?)
+- better validation (jquery?, nhibernate.validation)
 - google analytics plugin
 - templates: categories
+- nhibernate.search
 
 TODO:
 - documentation & programmability

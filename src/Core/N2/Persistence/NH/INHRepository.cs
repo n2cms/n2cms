@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using NHibernate.Expression;
+using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {

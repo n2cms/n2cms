@@ -8,14 +8,15 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Integrity;
+using N2.Details;
 
 namespace N2.Templates.Faq.Items
 {
-	[Definition]
+	[Definition("Bubble")]
 	[AllowedZones(Zones.Left, Zones.Right)]
 	public class BubbleItem : Templates.Items.AbstractItem
 	{
-		[N2.Details.EditableFreeTextArea("Text", 100)]
+		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text
 		{
 			get { return (string)(GetDetail("Text") ?? string.Empty); }

@@ -52,7 +52,9 @@ namespace N2.Persistence.NH
 		{
 			if (Session == null)
 			{
-				Session = OpenSessionWithOptionalInterceptor();
+				ISession s = OpenSessionWithOptionalInterceptor();
+				s.FlushMode = FlushMode.Commit;
+				Session = s;
 			}
 			return Session;
 		}

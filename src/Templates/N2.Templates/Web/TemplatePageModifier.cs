@@ -8,14 +8,11 @@ namespace N2.Templates.Web
 	{
 		private readonly IList<IPageModifier> modifiers;
 
-		public TemplatePageModifier(params IPageModifier[] modifiers)
-		{
-			this.modifiers = new List<IPageModifier>(modifiers);
-		}
-
 		public TemplatePageModifier()
-			:this(new ThemeModifier(), new MasterPageModifier())
 		{
+			this.modifiers = new List<IPageModifier>();
+			this.modifiers.Add(new ThemeModifier());
+			this.modifiers.Add(new MasterPageModifier());
 		}
 
 		public void Add(IPageModifier modifier)

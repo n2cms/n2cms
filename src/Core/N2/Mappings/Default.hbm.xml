@@ -36,7 +36,7 @@
 		</subclass>
 
 		<subclass name="N2.Details.LinkDetail,N2" discriminator-value="Link">
-			<many-to-one name="LinkedItem" column="LinkValue" class="N2.ContentItem,N2" />
+			<many-to-one name="LinkedItem" column="LinkValue" class="N2.ContentItem,N2" lazy="proxy" />
 		</subclass>
 
 		<subclass name="N2.Details.DoubleDetail,N2" discriminator-value="Double">
@@ -59,7 +59,6 @@
 
 	<!-- ContentItem -->
 	<class name="N2.ContentItem,N2" table="n2Item">
-		<!--batch-size="10">-->
 		<cache usage="read-write" />
 
 		<id name="ID" column="ID" type="Int32" unsaved-value="0" access="field.lowercase">
@@ -78,7 +77,7 @@
 		<property name="Visible"	type="Boolean" not-null="true" access="field.camelcase" />
 		<property name="SavedBy"	type="String" length="50" access="field.camelcase" />
 
-		<many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />
+		<many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
 		<many-to-one name="Parent"		column="ParentID"		class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />
 
 		<bag name="Children" cascade="all" generic="true" inverse="true" order-by="SortOrder" lazy="true">

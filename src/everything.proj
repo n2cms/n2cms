@@ -78,7 +78,7 @@
 	</PropertyGroup>
 
 	<Target Name="Core-PrepareDependencies">
-		<Copy SourceFiles="$(Source-LibraryFolder)\NHibernate.Caches.SysCache.dll" DestinationFolder="$(Core-WebFolder)\Bin"/>
+		<Copy SourceFiles="$(Source-LibraryFolder)\NHibernate.Caches.SysCache2.dll" DestinationFolder="$(Core-WebFolder)\Bin"/>
 	</Target>
 	
 	<Target Name="Core-Build" DependsOnTargets="Core-PrepareDependencies">
@@ -119,7 +119,7 @@
 		</CreateItem>		
 		<Delete Files="@(CoreDeploy-EditBinFiles)"/>
 
-		<Exec Command="$(ILMerge) /ndebug /out:$(DeployCore-BinFolder)\N2.Edit.dll $(Core-WebFolder)\Bin\N2.Edit.dll /log $(Core-WebFolder)\Bin\N2.Edit.Export.dll $(Core-WebFolder)\Bin\N2.Edit.Install.dll $(Core-WebFolder)\Bin\N2.Edit.LinkTracker.dll $(Core-WebFolder)\Bin\N2.Edit.Membership.dll $(Core-WebFolder)\Bin\N2.Edit.Trash.dll $(Core-WebFolder)\Bin\N2.Edit.Wizard.dll $(Core-WebFolder)\Bin\N2.Installation.dll"/>
+		<Exec Command="$(ILMerge) /ndebug /out:$(DeployCore-BinFolder)\N2.Edit.dll $(Core-WebFolder)\Bin\N2.Edit.dll /log $(Core-WebFolder)\Bin\N2.Edit.Export.dll $(Core-WebFolder)\Bin\N2.Edit.Globalization.dll $(Core-WebFolder)\Bin\N2.Edit.Install.dll $(Core-WebFolder)\Bin\N2.Edit.LinkTracker.dll $(Core-WebFolder)\Bin\N2.Edit.Membership.dll $(Core-WebFolder)\Bin\N2.Edit.Trash.dll $(Core-WebFolder)\Bin\N2.Edit.Wizard.dll $(Core-WebFolder)\Bin\N2.Installation.dll"/>
 	</Target>
 
 	<Target Name="Rebuild-CoreDeploy-AllFiles">

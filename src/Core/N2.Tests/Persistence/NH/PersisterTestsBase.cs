@@ -47,12 +47,12 @@ namespace N2.Tests.Persistence.NH
 
 		private static void SetConfigurationProperties(DefaultConfigurationBuilder configurationBuilder)
 		{
-			configurationBuilder.Properties["hibernate.connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
-			configurationBuilder.Properties["hibernate.connection.connection_string_name"] = "TestConnection";
+			configurationBuilder.Properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
+			configurationBuilder.Properties["connection.connection_string_name"] = "TestConnection";
 
-			configurationBuilder.Properties["hibernate.cache.use_second_level_cache"] = "false";
-			configurationBuilder.Properties["hibernate.connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
-			configurationBuilder.Properties["hibernate.dialect"] = "NHibernate.Dialect.MsSql2005Dialect";
+			configurationBuilder.Properties["cache.use_second_level_cache"] = "false";
+			configurationBuilder.Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
+			configurationBuilder.Properties["dialect"] = "NHibernate.Dialect.MsSql2005Dialect";
 		}
 
 		[SetUp]

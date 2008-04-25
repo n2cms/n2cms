@@ -8,7 +8,7 @@ namespace N2.Templates.Items
 	{
 		#region ISitesProvider Members
 
-		public ICollection<N2.Web.Site> GetSites()
+		public IEnumerable<N2.Web.Site> GetSites()
 		{
 			List<N2.Web.Site> sites = new List<N2.Web.Site>();
 			foreach (AbstractStartPage page in GetChildren<AbstractStartPage>())

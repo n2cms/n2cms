@@ -114,7 +114,7 @@ namespace N2.Tests.Persistence.NH
 
 			using (repository)
 			{
-				ICollection<ContentItem> items = repository.FindAll(NHibernate.Expression.Expression.Gt("ID", 1));
+				ICollection<ContentItem> items = repository.FindAll(NHibernate.Criterion.Expression.Gt("ID", 1));
 				Assert.AreEqual(2, items.Count);
 				repository.Flush();
 			}
@@ -393,12 +393,12 @@ namespace N2.Tests.Persistence.NH
 
 			IDefinitionManager definitions = new DefaultDefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
 			DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(definitions);
-			configurationBuilder.Properties.Add("hibernate.connection.provider", "NHibernate.Connection.DriverConnectionProvider");
-			configurationBuilder.Properties.Add("hibernate.connection.connection_string_name", "TestConnection");
-			configurationBuilder.Properties.Add("hibernate.show_sql", "true");
-			configurationBuilder.Properties.Add("hibernate.cache.use_second_level_cache", "false");
-			configurationBuilder.Properties.Add("hibernate.connection.driver_class", "NHibernate.Driver.SqlClientDriver");
-			configurationBuilder.Properties.Add("hibernate.dialect", "NHibernate.Dialect.MsSql2005Dialect");
+			configurationBuilder.Properties.Add("connection.provider", "NHibernate.Connection.DriverConnectionProvider");
+			configurationBuilder.Properties.Add("connection.connection_string_name", "TestConnection");
+			configurationBuilder.Properties.Add("show_sql", "true");
+			configurationBuilder.Properties.Add("cache.use_second_level_cache", "false");
+			configurationBuilder.Properties.Add("connection.driver_class", "NHibernate.Driver.SqlClientDriver");
+			configurationBuilder.Properties.Add("dialect", "NHibernate.Dialect.MsSql2005Dialect");
 
 			return new DefaultSessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
 			

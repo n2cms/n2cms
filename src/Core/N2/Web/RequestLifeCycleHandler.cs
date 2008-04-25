@@ -62,7 +62,6 @@ namespace N2.Web
 
 		protected virtual void Application_EndRequest(object sender, EventArgs e)
 		{
-			sessionProvider.Flush();
 			sessionProvider.Dispose();
 		}
 	}

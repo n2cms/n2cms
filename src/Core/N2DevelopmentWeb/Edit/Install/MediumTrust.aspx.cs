@@ -62,18 +62,16 @@ namespace N2.Edit.Install
 			}
 		}
 
-		protected IEnumerable NhProperties
+		protected IEnumerable<KeyValuePair<string,string>> NhProperties
 		{
 			get
 			{
-				try
+				foreach (KeyValuePair<string, string> entry in Engine.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildConfiguration().Properties)
 				{
-					IDictionary properties = Engine.Resolve<N2.Persistence.NH.IConfigurationBuilder>().BuildConfiguration().Properties;
-					return properties;
-				}
-				catch(Exception ex)
-				{
-					return new DictionaryEntry[] { new DictionaryEntry("error", ex.Message) };
+					if ("use_reflection_optimizer" == (string)entry.Key)
+						yield return new KeyValuePair<string, string>(entry.Key, "false");
+					else
+						yield return entry;
 				}
 			}
 		}

@@ -130,8 +130,8 @@ namespace N2.TemplateWeb.Domain
 		[Editable("Integer value", typeof (TextBox), "Text", 100, ContainerName = "special")]
 		public virtual int IntegerValue
 		{
-			get { return Convert.ToInt32((GetDetail("IntegerValue") ?? 0)); }
-			set { SetDetail<double>("IntegerValue", value); }
+			get { return Convert.ToInt32(GetDetail("IntegerValue") ?? 0); }
+			set { SetDetail("IntegerValue", value); }
 		}
 	}
 }
