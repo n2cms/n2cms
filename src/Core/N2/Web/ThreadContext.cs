@@ -5,6 +5,7 @@ using System.Threading;
 using System.Collections;
 using System.Security.Principal;
 using System.IO;
+using System.Collections.Specialized;
 
 namespace N2.Web
 {
@@ -12,6 +13,8 @@ namespace N2.Web
 	{
 		[ThreadStatic]
 		private static IDictionary items = new Hashtable();
+		[ThreadStatic]
+		private static NameValueCollection queryString = new NameValueCollection();
 		static string baseDirectory;
 
 		static ThreadContext()
@@ -27,6 +30,11 @@ namespace N2.Web
 		public override IDictionary RequestItems
 		{
 			get { return items; }
+		}
+
+		public override NameValueCollection QueryString
+		{
+			get { return queryString; }
 		}
 
 		public override IPrincipal User
