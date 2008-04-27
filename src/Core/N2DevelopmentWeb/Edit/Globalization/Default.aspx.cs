@@ -7,14 +7,30 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using N2.Edit.Web;
+using N2.Globalization;
 
-namespace Globalization
+namespace N2.Edit.Globalization
 {
-	public partial class _Default : System.Web.UI.Page
+	[ToolbarPlugin("", "globalization", "~/Edit/Globalization/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/world.gif", 150, ToolTip = "view translations", GlobalResourceClassName = "Toolbar")]
+	public partial class _Default : EditPage
 	{
-		protected void Page_Load(object sender, EventArgs e)
+		protected override void OnInit(EventArgs e)
 		{
+			hlCancel.NavigateUrl = SelectedNode.PreviewUrl;
 
+			rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetTranslationOptions(SelectedItem, true);
+			DataBind();
+
+			base.OnInit(e);
+		}
+
+		protected string GetClass()
+		{
+			string className = (bool)Eval("IsNew") ? "new" : "existing";
+			if (SelectedItem == (ContentItem)Eval("ExistingItem"))
+				className += " current";
+			return className;
 		}
 	}
 }

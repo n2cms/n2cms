@@ -4,7 +4,7 @@ using System.Text;
 
 namespace N2.Globalization
 {
-	public interface ILanguageRoot
+	public interface ILanguage
 	{
 		string FlagUrl { get; }
 		string LanguageTitle { get; }

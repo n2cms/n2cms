@@ -43,31 +43,31 @@ namespace N2.Details
 			DropDownList ddl = new DropDownList();
 			if (!Required)
 				ddl.Items.Add(new ListItem());
-			foreach (CultureInfo culture in GetCultures())
+			foreach (RegionInfo culture in GetCultures())
 			{
-				ddl.Items.Add(new ListItem(culture.EnglishName, culture.TwoLetterISOLanguageName.ToLowerInvariant()));
+				ddl.Items.Add(new ListItem(culture.DisplayName, culture.TwoLetterISORegionName));
 			}
 			container.Controls.Add(ddl);
 			return ddl;
 		}
 
-		private static IEnumerable<CultureInfo> GetCultures()
-		{	
-			Dictionary<string, CultureInfo> cultures = new Dictionary<string, CultureInfo>(StringComparer.Ordinal);
+		private static IEnumerable<RegionInfo> GetCultures()
+		{
+			Dictionary<string, RegionInfo> cultures = new Dictionary<string, RegionInfo>(StringComparer.InvariantCultureIgnoreCase);
 			foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
 			{
 				RegionInfo region = new RegionInfo(culture.LCID);
-				string key = culture.TwoLetterISOLanguageName.ToLowerInvariant();
+				string key = region.TwoLetterISORegionName;
 				if (!cultures.ContainsKey(key))
 				{
-					cultures.Add(key, culture);
+					cultures.Add(key, region);
 				}
 			}
 
-			List < CultureInfo > list = new List<CultureInfo>(cultures.Values);
-			list.Sort(delegate(CultureInfo first, CultureInfo second) 
-						{ 
-							return first.EnglishName.CompareTo(second.EnglishName); 
+			List<RegionInfo> list = new List<RegionInfo>(cultures.Values);
+			list.Sort(delegate(RegionInfo first, RegionInfo second) 
+						{
+							return first.DisplayName.CompareTo(second.DisplayName); 
 						});
 			return list;
 		}

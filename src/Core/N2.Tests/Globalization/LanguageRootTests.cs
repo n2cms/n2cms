@@ -9,6 +9,8 @@ using Rhino.Mocks;
 using N2.Web;
 using N2.Persistence.NH;
 using N2.Tests.Persistence;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace N2.Tests.Globalization
 {
@@ -63,7 +65,7 @@ namespace N2.Tests.Globalization
 		public void CanList_LanguageRoots()
 		{
 			LanguageGateway gateway = engine.Resolve<LanguageGateway>();
-			IList<ILanguageRoot> languageRoot = new List<ILanguageRoot>(gateway.GetLanguages());
+			IList<ILanguage> languageRoot = new List<ILanguage>(gateway.GetLanguages());
 
 			Assert.That(languageRoot.Count, Is.EqualTo(3));
 		}
@@ -194,7 +196,7 @@ namespace N2.Tests.Globalization
 			swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
 			engine.Persister.Save(swedishSub);
 
-			IList<TranslationOption> options = new List<TranslationOption>(lg.GetTranslationOptions(englishSub));
+			IList<TranslationOption> options = new List<TranslationOption>(lg.GetTranslationOptions(englishSub, false));
 
 			Assert.That(options.Count, Is.EqualTo(2));
 			Assert.That(options[0].IsNew, Is.False);
@@ -202,10 +204,27 @@ namespace N2.Tests.Globalization
 		}
 
 		[Test]
+		public void GetsTranslationOptions_CanIncludeCurrent()
+		{
+			LanguageGateway lg = engine.Resolve<LanguageGateway>();
+
+			ContentItem englishSub = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+			engine.Persister.Save(englishSub);
+
+			ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
+			swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
+			engine.Persister.Save(swedishSub);
+
+			IList<TranslationOption> options = new List<TranslationOption>(lg.GetTranslationOptions(englishSub, true));
+
+			Assert.That(options.Count, Is.EqualTo(3));
+		}
+
+		[Test]
 		public void GetTranslationOptions_OnNonTranslatedPage_DoesntThrowExceptions()
 		{
 			LanguageGateway lg = engine.Resolve<LanguageGateway>();
-			IEnumerable<TranslationOption> options = lg.GetTranslationOptions(root);
+			IEnumerable<TranslationOption> options = lg.GetTranslationOptions(root, false);
 			EnumerableAssert.Count(0, options);
 		}
 	}

@@ -20,8 +20,11 @@ namespace N2.Edit.Globalization
 
 		protected override void OnPreRender(EventArgs e)
 		{
-			rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetTranslationOptions(SelectedItem);
-			DataBind();
+			if (SelectedItem.ID != 0)
+			{
+				rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetTranslationOptions(SelectedItem, false);
+				DataBind();
+			}
 			this.Visible = rptLanguages.Items.Count > 0;
 
 			base.OnPreRender(e);

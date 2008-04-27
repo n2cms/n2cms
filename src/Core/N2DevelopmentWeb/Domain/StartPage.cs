@@ -11,7 +11,7 @@ namespace N2DevelopmentWeb.Domain
 	[Definition("Start page", "Startpage", "", "Click to use this type.", -20)]//, MayBeRoot = true, MayBeStartPage = true)]
 	[RestrictParents(typeof (StartPage), typeof(RootPage))]
 	[TabPanel("globalization", "Globalization", 1020)]
-	public class StartPage : MyPageData, ISitesSource, ILanguageRoot
+	public class StartPage : MyPageData, ISitesSource, ILanguage
 	{
 		[EditableCheckBox("A checkbox", 20, ContainerName="default")]
 		public virtual bool BoolProperty

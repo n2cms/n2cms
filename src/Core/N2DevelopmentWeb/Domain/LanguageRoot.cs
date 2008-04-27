@@ -17,7 +17,7 @@ namespace N2DevelopmentWeb.Domain
 {
 	[Definition]
 	[TabPanel("globalization", "Globalization", 200)]
-	public class LanguageRoot : MyPageData, ILanguageRoot
+	public class LanguageRoot : MyPageData, ILanguage
 	{
 		[EditableTextBox("FlagUrl", 100, ContainerName = "globalization")]
 		public virtual string FlagUrl

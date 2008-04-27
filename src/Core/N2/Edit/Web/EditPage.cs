@@ -184,6 +184,11 @@ else window.location = '{2}';";
 			get { return (int)(ViewState["SelectedItemID"] ?? 0); }
 			set { ViewState["SelectedItemID"] = value; }
 		}
+
+		protected virtual INode SelectedNode
+		{
+			get { return SelectedItem as INode; }
+		}
 		
 		/// <summary>Gets the currently selected item by the tree menu in edit mode.</summary>
 		public virtual ContentItem SelectedItem

@@ -13,6 +13,7 @@
 - google analytics plugin
 - templates: categories
 - nhibernate.search
+- pluggable workflow steps, e.g. change name if existing
 
 TODO:
 - documentation & programmability

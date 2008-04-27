@@ -39,13 +39,13 @@ namespace N2.Globalization
 			this.site = site;
 		}
 
-		private ILanguageRoot GetLanguageAncestor(ContentItem item)
+		private ILanguage GetLanguageAncestor(ContentItem item)
 		{
 			foreach (ContentItem ancestor in Find.EnumerateParents(item, null, true))
 			{
-				if (ancestor is ILanguageRoot)
+				if (ancestor is ILanguage)
 				{
-					return ancestor as ILanguageRoot;
+					return ancestor as ILanguage;
 				}
 			}
 			return null;
@@ -54,7 +54,7 @@ namespace N2.Globalization
 		void persister_ItemSaved(object sender, ItemEventArgs e)
 		{
 			ContentItem item = e.AffectedItem;
-			ILanguageRoot language = GetLanguageAncestor(item);
+			ILanguage language = GetLanguageAncestor(item);
 			if(language != null)
 			{
 				int languageKey = item.ID;
@@ -68,18 +68,18 @@ namespace N2.Globalization
 			}
 		}
 
-		public IEnumerable<ILanguageRoot> GetLanguages()
+		public IEnumerable<ILanguage> GetLanguages()
 		{
-			return new RecursiveFinder().Find<ILanguageRoot>(persister.Get(site.RootItemID), RecursionDepth);
+			return new RecursiveFinder().Find<ILanguage>(persister.Get(site.RootItemID), RecursionDepth);
 		}
 
 		public IEnumerable<ContentItem> FindTranslations(ContentItem item)
 		{
 			if (item == null) throw new ArgumentNullException("item");
-			if (item is ILanguageRoot)
+			if (item is ILanguage)
 			{
 				List<ContentItem> languages = new List<ContentItem>();
-				foreach (ILanguageRoot language in GetLanguages())
+				foreach (ILanguage language in GetLanguages())
 				{
 					languages.Add(language as ContentItem);
 				}
@@ -93,29 +93,30 @@ namespace N2.Globalization
 			return finder.Where.Detail(LanguageKey).Eq(key).Select();
 		}
 
-		public IEnumerable<TranslationOption> GetTranslationOptions(ContentItem item)
+		public IEnumerable<TranslationOption> GetTranslationOptions(ContentItem item, bool includeCurrent)
 		{
-			ILanguageRoot itemlanguage = GetLanguageAncestor(item);
+			ILanguage itemlanguage = GetLanguageAncestor(item);
 			if (itemlanguage == null)
 				yield break;
 
 			IEnumerable<ContentItem> translations = FindTranslations(item);
-			IEnumerable<ILanguageRoot> languages = GetLanguages();
+			IEnumerable<ILanguage> languages = GetLanguages();
 
-			foreach (ILanguageRoot language in languages)
+			foreach (ILanguage language in languages)
 			{
-				if (language != itemlanguage)
+				if (language != itemlanguage || includeCurrent)
 				{
 					ContentItem translation = GetTranslation(translations, language);
 					if (translation != null)
 					{
-						yield return new TranslationOption(editManager.GetEditExistingItemUrl(translation), false, language);
+						string url = editManager.GetEditExistingItemUrl(translation);
+						yield return new TranslationOption(url, language, translation);
 					}
 					else
 					{
 						ContentItem translatedParent = GetTranslatedParent(item, language);
 						string url = GetCreateNewUrl(item, translatedParent);
-						yield return new TranslationOption(url, true, language);
+						yield return new TranslationOption(url, language, translation);
 					}
 				}
 			}
@@ -129,7 +130,7 @@ namespace N2.Globalization
 			return url;
 		}
 
-		private ContentItem GetTranslatedParent(ContentItem item, ILanguageRoot language)
+		private ContentItem GetTranslatedParent(ContentItem item, ILanguage language)
 		{
 			ContentItem parent = item.Parent;
 			IEnumerable<ContentItem> translationsOfParent = FindTranslations(parent);
@@ -137,11 +138,11 @@ namespace N2.Globalization
 			return translatedParent;
 		}
 
-		private ContentItem GetTranslation(IEnumerable<ContentItem> translations, ILanguageRoot language)
+		private ContentItem GetTranslation(IEnumerable<ContentItem> translations, ILanguage language)
 		{
 			foreach (ContentItem translation in translations)
 			{
-				ILanguageRoot translationLanguage = GetLanguageAncestor(translation);
+				ILanguage translationLanguage = GetLanguageAncestor(translation);
 				if (language == translationLanguage)
 					return translation;
 			}
