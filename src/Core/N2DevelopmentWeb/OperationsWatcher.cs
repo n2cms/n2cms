@@ -9,7 +9,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Text;
 
-namespace N2.TemplateWeb
+namespace N2DevelopmentWeb
 {
 	public static class OperationsWatcher
 	{

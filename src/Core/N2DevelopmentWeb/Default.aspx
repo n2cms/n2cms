@@ -1,4 +1,4 @@
-<%@ Page Theme="Theme1" MasterPageFile="~/DefaultMasterPage.Master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.TemplateWeb.Default" %>
+<%@ Page Theme="Theme1" MasterPageFile="~/DefaultMasterPage.Master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2DevelopmentWeb.Default" %>
 <%@ OutputCache CacheProfile="DefaultCache" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 

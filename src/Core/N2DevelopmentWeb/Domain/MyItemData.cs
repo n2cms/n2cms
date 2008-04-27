@@ -3,8 +3,9 @@ using N2.Details;
 using N2.Integrity;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2;
 
-namespace N2.TemplateWeb.Domain
+namespace N2DevelopmentWeb.Domain
 {
 	[Definition("My data", "DataItem")]
 	[AvailableZone("Main", "Main"),

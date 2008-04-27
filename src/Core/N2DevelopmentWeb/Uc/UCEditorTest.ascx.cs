@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-namespace N2.TemplateWeb.Uc
+namespace N2DevelopmentWeb.Uc
 {
     public partial class UCEditorTest : System.Web.UI.UserControl
     {

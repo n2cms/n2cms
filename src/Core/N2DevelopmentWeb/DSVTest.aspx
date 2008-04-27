@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="~/DefaultMasterPage.Master" Language="C#" AutoEventWireup="true" CodeBehind="DSVTest.aspx.cs" Inherits="N2.TemplateWeb.DSVTest" %>
+<%@ Page MasterPageFile="~/DefaultMasterPage.Master" Language="C#" AutoEventWireup="true" CodeBehind="DSVTest.aspx.cs" Inherits="N2DevelopmentWeb.DSVTest" %>
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div><n2:Display ID="Display2" runat="server" PropertyName="Text"></n2:Display></div>
     

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.TemplateWeb {
+namespace N2DevelopmentWeb {
     
     
     public partial class Default {

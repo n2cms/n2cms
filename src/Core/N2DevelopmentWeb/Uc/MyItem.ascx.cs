@@ -9,9 +9,9 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-namespace N2.TemplateWeb.Uc
+namespace N2DevelopmentWeb.Uc
 {
-    public partial class MyItem : N2.Web.UI.UserControl<N2.ContentItem, N2.TemplateWeb.Domain.MyItemData>
+    public partial class MyItem : N2.Web.UI.UserControl<N2.ContentItem, N2DevelopmentWeb.Domain.MyItemData>
     {
         protected void Page_Load(object sender, EventArgs e)
         {

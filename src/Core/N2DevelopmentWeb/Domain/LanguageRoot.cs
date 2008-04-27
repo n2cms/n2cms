@@ -11,7 +11,7 @@ using N2;
 using N2.Globalization;
 using N2.Details;
 using N2.Web.UI;
-using N2.TemplateWeb.Domain;
+using N2DevelopmentWeb.Domain;
 
 namespace N2DevelopmentWeb.Domain
 {

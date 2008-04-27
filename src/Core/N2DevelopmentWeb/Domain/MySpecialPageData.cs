@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-namespace N2.TemplateWeb.Domain
+namespace N2DevelopmentWeb.Domain
 {
     [N2.Definition("My special page")]
     [N2.Integrity.RestrictParents(typeof(MyPageData))]

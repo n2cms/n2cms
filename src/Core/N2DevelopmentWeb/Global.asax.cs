@@ -7,8 +7,9 @@ using System.Web.Security;
 using System.Web.SessionState;
 using System.Diagnostics;
 using N2.Persistence;
+using N2.Security;
 
-namespace N2.TemplateWeb
+namespace N2DevelopmentWeb
 {
     public class Global : System.Web.HttpApplication
     {
@@ -28,7 +29,7 @@ namespace N2.TemplateWeb
 			Debug.WriteLine("Init");
 			//log.Error("Init");
             N2.Context.UrlParser.PageNotFound += new EventHandler<N2.Web.PageNotFoundEventArgs>(UrlParser_PageNotFound);
-			N2.Context.Current.Resolve<Security.ISecurityEnforcer>().AuthorizationFailed += new EventHandler<CancellableItemEventArgs>(Global_AuthorizationFailed);
+			N2.Context.Current.Resolve<ISecurityEnforcer>().AuthorizationFailed += new EventHandler<CancellableItemEventArgs>(Global_AuthorizationFailed);
         }
 
 		void Global_AuthorizationFailed(object sender, CancellableItemEventArgs e)

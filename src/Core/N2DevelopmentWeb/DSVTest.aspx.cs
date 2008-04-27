@@ -8,8 +8,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using N2;
 
-namespace N2.TemplateWeb
+namespace N2DevelopmentWeb
 {
 	public partial class DSVTest : N2.Web.UI.Page<Domain.AbstractCustomItem>
 	{

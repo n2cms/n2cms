@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/DefaultMasterPage.Master" AutoEventWireup="true" CodeBehind="LinkedDetail.aspx.cs" Inherits="N2.TemplateWeb.Templates.LinkedDetail" Title="Untitled Page" %>
+<%@ Page Language="C#" MasterPageFile="~/DefaultMasterPage.Master" AutoEventWireup="true" CodeBehind="LinkedDetail.aspx.cs" Inherits="N2DevelopmentWeb.Templates.LinkedDetail" Title="Untitled Page" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 	<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Do some serious stuff" /><br />
 	<asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="It's time to stop laughing" /><br />

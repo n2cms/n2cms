@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using N2.Integrity;
-using N2.TemplateWeb.Domain;
+using N2DevelopmentWeb.Domain;
 
 namespace N2DevelopmentWeb.Domain
 {

@@ -9,8 +9,9 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using N2.Web.UI.WebControls;
 using N2.Web.UI;
+using N2;
 
-namespace N2.TemplateWeb.Customization
+namespace N2DevelopmentWeb.Customization
 {
 	public class PublishAttribute : N2.Details.EditableCheckBox
 	{

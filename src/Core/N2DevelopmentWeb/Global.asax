@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="N2.TemplateWeb.Global" Language="C#" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="N2DevelopmentWeb.Global" Language="C#" %>

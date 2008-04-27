@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-namespace N2.TemplateWeb.Plugins
+namespace N2DevelopmentWeb.Plugins
 {
 	[N2.Edit.ToolbarPlugin("unallowed", "unallowed", "/plugins/unallowed.aspx", N2.Edit.ToolbarArea.Preview)]
 	[N2.Edit.PlugInAuthorizedRoles("NonExistantRole")]

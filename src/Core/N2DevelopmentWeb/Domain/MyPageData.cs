@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
-using N2.TemplateWeb.Customization;
+using N2DevelopmentWeb.Customization;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2;
 
-namespace N2.TemplateWeb.Domain
+namespace N2DevelopmentWeb.Domain
 {
 	[Definition("My page", "PageItem", "This is the default item in the test project", "Click to use this type.", -10)]
 	[RestrictParents(typeof (MyPageData))]
@@ -82,7 +83,7 @@ namespace N2.TemplateWeb.Domain
 		}
 
 		[Editable("My File", typeof (FileSelector), "Url", 90, ContainerName="links")]
-		[Serialization.FileAttachment]
+		[N2.Serialization.FileAttachment]
 		public virtual string MyFile
 		{
 			get { return (string) GetDetail("MyFile") ?? ""; }

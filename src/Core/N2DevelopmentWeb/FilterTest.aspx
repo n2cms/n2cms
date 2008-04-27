@@ -1,4 +1,4 @@
-<%@ Page MasterPageFile="~/DefaultMasterPage.Master" Language="C#" AutoEventWireup="true" CodeBehind="FilterTest.aspx.cs" Inherits="N2.TemplateWeb.FilterTest" %>
+<%@ Page MasterPageFile="~/DefaultMasterPage.Master" Language="C#" AutoEventWireup="true" CodeBehind="FilterTest.aspx.cs" Inherits="N2DevelopmentWeb.FilterTest" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 	access filter:
 	<asp:GridView ID="gvAccess" runat="server" AutoGenerateColumns="false" DataSource='<%# new N2.Collections.ItemList(this.CurrentPage.Children, new N2.Collections.AccessFilter()) %>'>
@@ -25,7 +25,7 @@
 	</asp:GridView>
 
 	type filter:
-	<asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="false" DataSource='<%# new N2.Collections.ItemList(this.CurrentPage.Children, new N2.Collections.TypeFilter(typeof(N2.TemplateWeb.Domain.MyPageData))) %>'>
+	<asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="false" DataSource='<%# new N2.Collections.ItemList(this.CurrentPage.Children, new N2.Collections.TypeFilter(typeof(N2DevelopmentWeb.Domain.MyPageData))) %>'>
 		<Columns>
 			<asp:BoundField DataField="Title" />
 			<asp:BoundField DataField="Name" />

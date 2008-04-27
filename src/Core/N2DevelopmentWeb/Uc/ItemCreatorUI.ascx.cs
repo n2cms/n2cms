@@ -1,6 +1,6 @@
 using System;
 using N2;
-using N2.TemplateWeb.Domain;
+using N2DevelopmentWeb.Domain;
 using N2.Web.UI;
 
 namespace N2DevelopmentWeb.Uc

@@ -328,6 +328,7 @@
     <Compile Include="Globalization\ILanguageGateway.cs" />
     <Compile Include="Globalization\ILanguageRoot.cs" />
     <Compile Include="Globalization\LanguageGateway.cs" />
+    <Compile Include="Globalization\TranslationOption.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="Installation\DatabaseStatus.cs" />
     <Compile Include="Installation\InstallationManager.cs" />

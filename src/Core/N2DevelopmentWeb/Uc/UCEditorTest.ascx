@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UCEditorTest.ascx.cs" Inherits="N2.TemplateWeb.Uc.UCEditorTest" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UCEditorTest.ascx.cs" Inherits="N2DevelopmentWeb.Uc.UCEditorTest" %>
 y<asp:DropDownList ID="year" runat="server">
     <asp:ListItem>2006</asp:ListItem>
     <asp:ListItem>2007</asp:ListItem>

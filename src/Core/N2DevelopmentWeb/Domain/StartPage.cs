@@ -2,12 +2,16 @@ using System.Collections.Generic;
 using N2.Details;
 using N2.Integrity;
 using N2.Web;
+using N2.Globalization;
+using N2.Web.UI;
+using N2;
 
-namespace N2.TemplateWeb.Domain
+namespace N2DevelopmentWeb.Domain
 {
 	[Definition("Start page", "Startpage", "", "Click to use this type.", -20)]//, MayBeRoot = true, MayBeStartPage = true)]
-	[RestrictParents(typeof (StartPage))]
-	public class StartPage : MyPageData, ISitesSource
+	[RestrictParents(typeof (StartPage), typeof(RootPage))]
+	[TabPanel("globalization", "Globalization", 1020)]
+	public class StartPage : MyPageData, ISitesSource, ILanguageRoot
 	{
 		[EditableCheckBox("A checkbox", 20, ContainerName="default")]
 		public virtual bool BoolProperty
@@ -40,5 +44,30 @@ namespace N2.TemplateWeb.Domain
 			set { SetDetail("ImageUrl", value, string.Empty); }
 		}
 
+
+		#region ILanguageRoot Members
+
+		[N2.Details.EditableImage("FlagUrl", 100, ContainerName = "globalization")]
+		public virtual string FlagUrl
+		{
+			get { return (string)(GetDetail("FlagUrl") ?? string.Empty); }
+			set { SetDetail("FlagUrl", value, string.Empty); }
+		}
+
+		[EditableTextBox("LanguageTitle", 200, ContainerName = "globalization")]
+		public virtual string LanguageTitle
+		{
+			get { return (string) (GetDetail("LanguageTitle") ?? ""); }
+			set { SetDetail("LanguageTitle", value); }
+		}
+
+		[EditableLanguagesDropDown("LanguageCode", 300, ContainerName = "globalization")]
+		public virtual string LanguageCode
+		{
+			get { return (string)(GetDetail("LanguageCode") ?? ""); }
+			set { SetDetail("LanguageCode", value); }
+		}
+
+		#endregion
 	}
 }

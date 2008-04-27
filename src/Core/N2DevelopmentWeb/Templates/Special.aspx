@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Special.aspx.cs" Inherits="N2.TemplateWeb.Templates.Special" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Special.aspx.cs" Inherits="N2DevelopmentWeb.Templates.Special" %>
 
 <%@ Register Src="NonDynamicUcTest.ascx" TagName="NonDynamicUcTest" TagPrefix="uc1" %>
 

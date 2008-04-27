@@ -9,10 +9,11 @@ using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using System.Reflection;
 using N2.Details;
-using N2.TemplateWeb.Domain;
+using N2DevelopmentWeb.Domain;
 using N2.Web;
+using N2;
 
-namespace N2.TemplateWeb
+namespace N2DevelopmentWeb
 {
     public partial class Default : N2.Web.UI.Page<Domain.MyPageData>
     {

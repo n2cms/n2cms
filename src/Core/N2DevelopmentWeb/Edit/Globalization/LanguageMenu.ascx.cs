@@ -18,13 +18,13 @@ namespace N2.Edit.Globalization
 	{
 		protected Repeater rptLanguages;
 
-		protected override void OnInit(EventArgs e)
+		protected override void OnPreRender(EventArgs e)
 		{
-			rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetLanguages();
+			rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetTranslationOptions(SelectedItem);
 			DataBind();
 			this.Visible = rptLanguages.Items.Count > 0;
 
-			base.OnInit(e);
+			base.OnPreRender(e);
 		}
 	}
 }

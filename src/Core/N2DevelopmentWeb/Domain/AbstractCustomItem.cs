@@ -2,7 +2,7 @@ using System;
 using System.Web.UI.WebControls;
 using N2.Details;
 
-namespace N2.TemplateWeb.Domain
+namespace N2DevelopmentWeb.Domain
 {
     //	N2.Details.WithEditable("Title", typeof(TextBox), "Text", 10, "Title", Focus=true),
 	//	N2.Details.WithEditable("Name", typeof(N2.Web.UI.WebControls.NameEditor), "Text", 20, "Name"),

@@ -40,7 +40,7 @@
         </div>
 
         log
-        <textarea style="width:88%;height:55px;font-size:smaller;"><%= N2.TemplateWeb.OperationsWatcher.LogText %></textarea>
+        <textarea style="width:88%;height:55px;font-size:smaller;"><%= N2DevelopmentWeb.OperationsWatcher.LogText %></textarea>
         <asp:Repeater ID="Repeater3" runat="server" DataSource="<%# System.Configuration.ConfigurationManager.ConnectionStrings %>">
             <ItemTemplate>
                 <li>

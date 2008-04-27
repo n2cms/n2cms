@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("N2.TemplateWeb")]
+[assembly: AssemblyTitle("N2DevelopmentWeb")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("N2.TemplateWeb")]
+[assembly: AssemblyProduct("N2DevelopmentWeb")]
 [assembly: AssemblyCopyright("Copyright © Crisitan Libardo 2006")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.TemplateWeb.Uc {
+namespace N2DevelopmentWeb.Uc {
     
     
     public partial class MyItem {

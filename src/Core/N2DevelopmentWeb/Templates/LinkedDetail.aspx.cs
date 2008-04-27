@@ -8,8 +8,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using N2.Details;
 
-namespace N2.TemplateWeb.Templates
+namespace N2DevelopmentWeb.Templates
 {
 	public partial class LinkedDetail : N2.Web.UI.Page<Domain.MyItemWithLinks>
 	{
@@ -23,13 +24,13 @@ namespace N2.TemplateWeb.Templates
 
 		protected void Button1_Click(object sender, EventArgs e)
 		{
-			Details.DetailCollection dc = CurrentItem.GetDetailCollection("relatedList", true);
+			DetailCollection dc = CurrentItem.GetDetailCollection("relatedList", true);
 			dc.AddRange(CurrentItem.Parent.Children);
 			this.DataBind();
 		}
 		protected void Button2_Click(object sender, EventArgs e)
 		{
-			Details.DetailCollection dc = CurrentItem.GetDetailCollection("relatedList2", true);
+			DetailCollection dc = CurrentItem.GetDetailCollection("relatedList2", true);
 			dc.AddRange(CurrentItem.Parent.Children);
 			this.DataBind();
 		}

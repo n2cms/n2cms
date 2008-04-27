@@ -25,16 +25,9 @@ namespace N2.Persistence.NH
 	/// </summary>
 	public class DefaultPersister : IPersister
 	{
-		#region Private Fields
-
 		private readonly IRepository<int, ContentItem> itemRepository;
 		private readonly INHRepository<int, LinkDetail> linkRepository;
 		private readonly IItemFinder finder;
-		private bool autoFlush = false;
-
-		#endregion
-
-		#region Constructor & Initialize
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
 		public DefaultPersister(IRepository<int, ContentItem> itemRepository, INHRepository<int, LinkDetail> linkRepository,
@@ -46,18 +39,6 @@ namespace N2.Persistence.NH
 
 			Debug.WriteLine("DefaultPersistenceManager: ctor");
 		}
-
-		#endregion
-
-		#region Properties
-
-		public bool AutoFlush
-		{
-			get { return autoFlush; }
-			set { autoFlush = value; }
-		}
-
-		#endregion
 
 		#region Load, Save, & Delete Methods
 
@@ -112,8 +93,6 @@ namespace N2.Persistence.NH
 
 					EnsureSortOrder(unsavedItem);
 
-					if (AutoFlush)
-						itemRepository.Flush();
 					transaction.Commit();
 				}
 				OnSaved(new ItemEventArgs(unsavedItem));
@@ -160,8 +139,6 @@ namespace N2.Persistence.NH
 				{
 					DeleteRecursive(itemNoMore);
 
-					if (AutoFlush)
-						itemRepository.Flush();
 					transaction.Commit();
 				}
 				OnDeleted(new ItemEventArgs(itemNoMore));
@@ -191,8 +168,6 @@ namespace N2.Persistence.NH
 			foreach (ContentItem previousVersion in finder.Where.VersionOf.Eq(itemNoMore).Select())
 			{
 				itemRepository.Delete(previousVersion);
-				if (AutoFlush)
-					itemRepository.Flush();
 			}
 		}
 
@@ -241,9 +216,6 @@ namespace N2.Persistence.NH
 				{
 					source.AddTo(destination);
 					itemRepository.Save(source);
-					if (AutoFlush)
-						itemRepository.Flush();
-
 					transaction.Commit();
 				}
 				OnMoved(new DestinationEventArgs(source, destination));

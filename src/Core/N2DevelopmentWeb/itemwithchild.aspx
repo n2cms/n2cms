@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="itemwithchild.aspx.cs" Inherits="N2.TemplateWeb.itemwithchildren" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="itemwithchild.aspx.cs" Inherits="N2DevelopmentWeb.itemwithchildren" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -13,7 +13,7 @@
         <hr />
         ChildItem: <%= CurrentPage.ChildItem.Text %>
         <hr />
-        MyChildItem: <%= ((N2.TemplateWeb.Domain.MyItemData)CurrentPage.GetChild("MyChildItem")).Text %>
+        MyChildItem: <%= ((N2DevelopmentWeb.Domain.MyItemData)CurrentPage.GetChild("MyChildItem")).Text %>
     </div>
     </form>
 </body>

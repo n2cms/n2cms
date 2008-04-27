@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-namespace N2.TemplateWeb.Templates
+namespace N2DevelopmentWeb.Templates
 {
 	public partial class NonDynamicUcTest : N2.Web.UI.UserControl<Domain.MySpecialPageData>
 	{

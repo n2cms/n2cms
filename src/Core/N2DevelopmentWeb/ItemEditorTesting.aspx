@@ -15,7 +15,7 @@
     <form id="form1" runat="server">
     <div>
         <asp:Button ID="btnSave" runat="server" Text="save" OnClick="btnSave_Click" />
-        <n2:ItemEditor ID="ieItem" runat="server" ParentItemID="1" ItemTypeName="N2.TemplateWeb.Domain.MyPageData,N2DevelopmentWeb" />
+        <n2:ItemEditor ID="ieItem" runat="server" ParentItemID="1" ItemTypeName="N2DevelopmentWeb.Domain.MyPageData,N2DevelopmentWeb" />
     </div>
     </form>
 </body>
