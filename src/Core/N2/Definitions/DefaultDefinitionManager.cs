@@ -50,6 +50,8 @@ namespace N2.Definitions
 				item.Parent = parentItem;
 			}
 			notifier.Notifiy(item);
+			if (ItemCreated != null)
+				ItemCreated.Invoke(this, new ItemEventArgs(item));
 		}
 
 		/// <summary>Gets the definition for a certain item type.</summary>
@@ -107,5 +109,8 @@ namespace N2.Definitions
 			allowedChildItems.Sort();
 			return allowedChildItems;
 		}
+
+		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
+		public event EventHandler<ItemEventArgs> ItemCreated;
 	}
 }

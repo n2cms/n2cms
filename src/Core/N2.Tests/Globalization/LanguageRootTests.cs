@@ -26,7 +26,8 @@ namespace N2.Tests.Globalization
 		public override void TestFixtureSetUp()
 		{
 			base.TestFixtureSetUp();
-			engine.AddComponent("LanguageGateway", typeof(LanguageGateway));
+			engine.AddComponent("LanguageGateway", typeof(ILanguageGateway), typeof(LanguageGateway));
+			engine.AddComponent("LanguageInterceptor", typeof(LanguageInterceptor));
 		}
 
 		[SetUp]
@@ -64,7 +65,7 @@ namespace N2.Tests.Globalization
 		[Test]
 		public void CanList_LanguageRoots()
 		{
-			LanguageGateway gateway = engine.Resolve<LanguageGateway>();
+			ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
 			IList<ILanguage> languageRoot = new List<ILanguage>(gateway.GetLanguages());
 
 			Assert.That(languageRoot.Count, Is.EqualTo(3));
@@ -131,7 +132,7 @@ namespace N2.Tests.Globalization
 		[Test]
 		public void CanRetrieve_Translations_OfTheSamePage()
 		{
-			LanguageGateway lg = engine.Resolve<LanguageGateway>();
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 
 			ContentItem englishSub = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
 			engine.Persister.Save(englishSub);
@@ -147,7 +148,7 @@ namespace N2.Tests.Globalization
 		[Test]
 		public void FindTranslations_OnLanguageRoot_FindsOtherLanguageRoots()
 		{
-			LanguageGateway lg = engine.Resolve<LanguageGateway>();
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 
 			IEnumerable<ContentItem> translations = lg.FindTranslations(english);
 
@@ -167,7 +168,7 @@ namespace N2.Tests.Globalization
 			swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
 			engine.Persister.Save(swedishSub);
 
-			LanguageGateway lg = engine.Resolve<LanguageGateway>();
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 
 			IEnumerable<ContentItem> translations = lg.FindTranslations(english);
 
@@ -179,7 +180,7 @@ namespace N2.Tests.Globalization
 		[Test]
 		public void FindTransaltion_OnNonTranslatedPages_YieldsEmptyCollection()
 		{
-			LanguageGateway lg = engine.Resolve<LanguageGateway>();
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 			IEnumerable<ContentItem> translations = lg.FindTranslations(root);
 			EnumerableAssert.Count(0, translations);
 		}
@@ -187,7 +188,7 @@ namespace N2.Tests.Globalization
 		[Test]
 		public void GetsTranslationOptions_ForSingleItem()
 		{
-			LanguageGateway lg = engine.Resolve<LanguageGateway>();
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 
 			ContentItem englishSub = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
 			engine.Persister.Save(englishSub);
@@ -206,8 +207,6 @@ namespace N2.Tests.Globalization
 		[Test]
 		public void GetsTranslationOptions_CanIncludeCurrent()
 		{
-			LanguageGateway lg = engine.Resolve<LanguageGateway>();
-
 			ContentItem englishSub = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
 			engine.Persister.Save(englishSub);
 
@@ -215,6 +214,7 @@ namespace N2.Tests.Globalization
 			swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
 			engine.Persister.Save(swedishSub);
 
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 			IList<TranslationOption> options = new List<TranslationOption>(lg.GetTranslationOptions(englishSub, true));
 
 			Assert.That(options.Count, Is.EqualTo(3));
@@ -223,9 +223,84 @@ namespace N2.Tests.Globalization
 		[Test]
 		public void GetTranslationOptions_OnNonTranslatedPage_DoesntThrowExceptions()
 		{
-			LanguageGateway lg = engine.Resolve<LanguageGateway>();
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 			IEnumerable<TranslationOption> options = lg.GetTranslationOptions(root, false);
 			EnumerableAssert.Count(0, options);
+		}
+
+		[Test]
+		public void TranslationsOfPage_AreMoved_AlongWithOriginalPage()
+		{
+			ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+			engine.Persister.Save(english1);
+			ContentItem english2 = CreateOneItem<Items.TranslatedPage>(0, "english2", english);
+			engine.Persister.Save(english2);
+
+			ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
+			swedish1[LanguageGateway.LanguageKey] = english1.ID;
+			engine.Persister.Save(swedish1);
+			ContentItem swedish2 = CreateOneItem<Items.TranslatedPage>(0, "swedish2", swedish);
+			swedish2[LanguageGateway.LanguageKey] = english2.ID;
+			engine.Persister.Save(swedish2);
+
+			// Swedish translation to the corresponding location
+			engine.Persister.Move(english2, english1);
+
+			Assert.That(swedish1.Children.Count, Is.EqualTo(1));
+			Assert.That(swedish.Children.Count, Is.EqualTo(1));
+			Assert.That(swedish1.Children[0], Is.EqualTo(swedish2));
+		}
+
+		[Test]
+		public void TranslationsOfPage_AreIgnored_IfTheDestination_IsNotTranslated()
+		{
+			ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+			engine.Persister.Save(english1);
+			ContentItem english2 = CreateOneItem<Items.TranslatedPage>(0, "english2", english);
+			engine.Persister.Save(english2);
+
+			ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
+			engine.Persister.Save(swedish1);
+			ContentItem swedish2 = CreateOneItem<Items.TranslatedPage>(0, "swedish2", swedish);
+			swedish2[LanguageGateway.LanguageKey] = english2.ID;
+			engine.Persister.Save(swedish2);
+
+			// swedish2 is not moved since swedish1 isn't translated
+			engine.Persister.Move(english2, english1);
+
+			Assert.That(swedish1.Children.Count, Is.EqualTo(0));
+			Assert.That(swedish.Children.Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void TranslationsOfPage_AreDeleted_AlongWithOriginalTranslation()
+		{
+			ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+			engine.Persister.Save(english1);
+			
+			ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
+			swedish1[LanguageGateway.LanguageKey] = english1.ID;
+			engine.Persister.Save(swedish1);
+
+			engine.Persister.Delete(english1);
+
+			Assert.That(swedish.Children.Count, Is.EqualTo(0));
+			Assert.That(engine.Persister.Get(swedish1.ID), Is.Null);
+		}
+
+		[Test]
+		public void NewTranslations_InheritsSortOrder_FromPreviousTranslation()
+		{
+			ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+			english1.SortOrder = 123;
+			engine.Persister.Save(english1);
+
+			engine.Resolve<IWebContext>().QueryString[LanguageGateway.LanguageKey] = english1.ID.ToString();
+			ContentItem swedish1 = engine.Definitions.CreateInstance<Items.TranslatedPage>(swedish);
+			engine.Persister.Save(swedish1);
+			engine.Resolve<IWebContext>().QueryString.Remove(LanguageGateway.LanguageKey);
+
+			Assert.That(swedish1.SortOrder, Is.EqualTo(english1.SortOrder));
 		}
 	}
 }

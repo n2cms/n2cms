@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using N2.Persistence;
 
 namespace N2.Definitions
 {
@@ -49,6 +50,14 @@ namespace N2.Definitions
 		/// <returns>A new instance of an item.</returns>
 		ContentItem CreateInstance(Type itemType, ContentItem parent);
 
+		/// <summary>Gets a list of children allowed below a certain type of item and zone by a user.</summary>
+		/// <param name="definition">The type of parent item.</param>
+		/// <param name="zone">The zone name.</param>
+		/// <param name="user">The user to use for filtering by access rights.</param>
+		/// <returns>A list of definitions allowed by the given criterias.</returns>
 		IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zone, IPrincipal user);
+
+		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
+		event EventHandler<ItemEventArgs> ItemCreated;
 	}
 }

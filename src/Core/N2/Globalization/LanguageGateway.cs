@@ -11,12 +11,11 @@ using N2.Definitions;
 
 namespace N2.Globalization
 {
-	public class LanguageGateway : ILanguageGateway, IStartable
+	public class LanguageGateway : ILanguageGateway
 	{
 		public const string LanguageKey = "LanguageKey";
 
 		private readonly IPersister persister;
-		private readonly IWebContext context;
 		private readonly IItemFinder finder;
 		private readonly IEditManager editManager;
 		private readonly IDefinitionManager definitions;
@@ -29,17 +28,16 @@ namespace N2.Globalization
 			set { recursionDepth = value; }
 		}
 
-		public LanguageGateway(IPersister persister, IWebContext context, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, Site site)
+		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, Site site)
 		{
 			this.persister = persister;
-			this.context = context;
 			this.finder = finder;
 			this.editManager = editManager;
 			this.definitions = definitions;
 			this.site = site;
 		}
 
-		private ILanguage GetLanguageAncestor(ContentItem item)
+		public ILanguage GetLanguageAncestor(ContentItem item)
 		{
 			foreach (ContentItem ancestor in Find.EnumerateParents(item, null, true))
 			{
@@ -49,23 +47,6 @@ namespace N2.Globalization
 				}
 			}
 			return null;
-		}
-
-		void persister_ItemSaved(object sender, ItemEventArgs e)
-		{
-			ContentItem item = e.AffectedItem;
-			ILanguage language = GetLanguageAncestor(item);
-			if(language != null)
-			{
-				int languageKey = item.ID;
-				if (context.QueryString[LanguageKey] != null)
-					int.TryParse(context.QueryString[LanguageKey], out languageKey);
-				if (item[LanguageKey] == null)
-				{
-					item[LanguageKey] = languageKey;
-					persister.Save(item);
-				}
-			}
 		}
 
 		public IEnumerable<ILanguage> GetLanguages()
@@ -138,6 +119,11 @@ namespace N2.Globalization
 			return translatedParent;
 		}
 
+		public ContentItem GetTranslation(ContentItem item, ILanguage language)
+		{
+			return GetTranslation(FindTranslations(item), language);
+		}
+
 		private ContentItem GetTranslation(IEnumerable<ContentItem> translations, ILanguage language)
 		{
 			foreach (ContentItem translation in translations)
@@ -148,19 +134,5 @@ namespace N2.Globalization
 			}
 			return null;
 		}
-
-		#region IStartable Members
-
-		public void Start()
-		{
-			persister.ItemSaved += persister_ItemSaved;
-		}
-
-		public void Stop()
-		{
-			persister.ItemSaved -= persister_ItemSaved; ;
-		}
-
-		#endregion
 	}
 }

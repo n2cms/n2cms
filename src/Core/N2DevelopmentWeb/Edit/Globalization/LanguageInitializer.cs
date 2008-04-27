@@ -18,6 +18,7 @@ namespace N2.Edit.Globalization
 		public void Initialize(N2.Engine.IEngine engine)
 		{
 			engine.AddComponent("n2.languageGateway", typeof(ILanguageGateway), typeof(LanguageGateway));
+			engine.AddComponent("n2.languageInterceptor", typeof(LanguageInterceptor));
 		}
 	}
 }
