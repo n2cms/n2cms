@@ -14,13 +14,12 @@ using System.Globalization;
 
 namespace N2.Tests.Globalization
 {
-	[TestFixture]
-	public class LanguageRootTests : PersistenceAwareBase
+	public abstract class LanguageRootTests : PersistenceAwareBase
 	{
-		ContentItem root;
-		ContentItem english;
-		ContentItem swedish;
-		ContentItem italian;
+		protected ContentItem root;
+		protected ContentItem english;
+		protected ContentItem swedish;
+		protected ContentItem italian;
 
 		[TestFixtureSetUp]
 		public override void TestFixtureSetUp()
@@ -35,24 +34,10 @@ namespace N2.Tests.Globalization
 		{
 			base.SetUp();
 
-			root = engine.Definitions.CreateInstance<Items.TranslatedPage>(null);
-			engine.Persister.Save(root);
-			
-			english = engine.Definitions.CreateInstance<Items.LanguageRoot>(root);
-			english.Name = english.Title = "english";
-			engine.Persister.Save(english);
-
-			swedish = engine.Definitions.CreateInstance<Items.LanguageRoot>(root);
-			swedish.Name = swedish.Title = "swedish"; 
-			engine.Persister.Save(swedish);
-			
-			italian = engine.Definitions.CreateInstance<Items.LanguageRoot>(root);
-			italian.Name = italian.Title = "italian"; 
-			engine.Persister.Save(italian);
-
-			engine.Resolve<Site>().RootItemID = root.ID;
-			engine.Resolve<Site>().StartPageID = root.ID;
+			CreatePageStructure();
 		}
+
+		protected abstract void CreatePageStructure();
 
 		[TearDown]
 		public override void TearDown()
@@ -123,8 +108,10 @@ namespace N2.Tests.Globalization
 
 			using (engine.Persister)
 			{
-				ContentItem englishSub = engine.Persister.Get(english.ID).Children[0];
-				ContentItem swedishSub = engine.Persister.Get(swedish.ID).Children[0];
+				english = engine.Persister.Get(english.ID);
+				swedish = engine.Persister.Get(swedish.ID);
+				ContentItem englishSub = english.Children[english.Children.Count - 1];
+				ContentItem swedishSub = swedish.Children[swedish.Children.Count - 1];
 				Assert.That(swedishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub[LanguageGateway.LanguageKey]));
 			}
 		}
@@ -231,6 +218,8 @@ namespace N2.Tests.Globalization
 		[Test]
 		public void TranslationsOfPage_AreMoved_AlongWithOriginalPage()
 		{
+			int initialCount = swedish.Children.Count;
+			
 			ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
 			engine.Persister.Save(english1);
 			ContentItem english2 = CreateOneItem<Items.TranslatedPage>(0, "english2", english);
@@ -247,13 +236,15 @@ namespace N2.Tests.Globalization
 			engine.Persister.Move(english2, english1);
 
 			Assert.That(swedish1.Children.Count, Is.EqualTo(1));
-			Assert.That(swedish.Children.Count, Is.EqualTo(1));
+			Assert.That(swedish.Children.Count, Is.EqualTo(1 + initialCount));
 			Assert.That(swedish1.Children[0], Is.EqualTo(swedish2));
 		}
 
 		[Test]
 		public void TranslationsOfPage_AreIgnored_IfTheDestination_IsNotTranslated()
 		{
+			int initialCount = swedish.Children.Count;
+
 			ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
 			engine.Persister.Save(english1);
 			ContentItem english2 = CreateOneItem<Items.TranslatedPage>(0, "english2", english);
@@ -269,12 +260,14 @@ namespace N2.Tests.Globalization
 			engine.Persister.Move(english2, english1);
 
 			Assert.That(swedish1.Children.Count, Is.EqualTo(0));
-			Assert.That(swedish.Children.Count, Is.EqualTo(2));
+			Assert.That(swedish.Children.Count, Is.EqualTo(2 + initialCount));
 		}
 
 		[Test]
 		public void TranslationsOfPage_AreDeleted_AlongWithOriginalTranslation()
 		{
+			int initialCount = swedish.Children.Count;
+
 			ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
 			engine.Persister.Save(english1);
 			
@@ -284,7 +277,7 @@ namespace N2.Tests.Globalization
 
 			engine.Persister.Delete(english1);
 
-			Assert.That(swedish.Children.Count, Is.EqualTo(0));
+			Assert.That(swedish.Children.Count, Is.EqualTo(0 + initialCount));
 			Assert.That(engine.Persister.Get(swedish1.ID), Is.Null);
 		}
 
