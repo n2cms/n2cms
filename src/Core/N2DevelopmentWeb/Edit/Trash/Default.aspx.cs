@@ -1,15 +1,14 @@
 using System;
 using System.Web;
 using System.Web.UI.WebControls;
-using N2.Trashcan;
 
 namespace N2.Edit.Trash
 {
 	public partial class Default : N2.Web.UI.Page<TrashContainerItem>
 	{
-		protected Trashcan.TrashHandler Trash
+		protected ITrashHandler Trash
 		{
-			get { return N2.Context.Current.Resolve<Trashcan.TrashHandler>(); }
+			get { return N2.Context.Current.Resolve<ITrashHandler>(); }
 		}
 
 		protected override void OnLoad(EventArgs e)

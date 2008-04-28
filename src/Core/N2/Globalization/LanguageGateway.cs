@@ -37,7 +37,7 @@ namespace N2.Globalization
 			this.site = site;
 		}
 
-		public ILanguage GetLanguageAncestor(ContentItem item)
+		public ILanguage FindLanguage(ContentItem item)
 		{
 			foreach (ContentItem ancestor in Find.EnumerateParents(item, null, true))
 			{
@@ -76,7 +76,7 @@ namespace N2.Globalization
 
 		public IEnumerable<TranslationOption> GetTranslationOptions(ContentItem item, bool includeCurrent)
 		{
-			ILanguage itemlanguage = GetLanguageAncestor(item);
+			ILanguage itemlanguage = FindLanguage(item);
 			if (itemlanguage == null)
 				yield break;
 
@@ -128,7 +128,7 @@ namespace N2.Globalization
 		{
 			foreach (ContentItem translation in translations)
 			{
-				ILanguage translationLanguage = GetLanguageAncestor(translation);
+				ILanguage translationLanguage = FindLanguage(translation);
 				if (language == translationLanguage)
 					return translation;
 			}

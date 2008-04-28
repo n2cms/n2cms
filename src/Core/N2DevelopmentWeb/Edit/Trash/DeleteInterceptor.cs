@@ -5,7 +5,7 @@ using Castle.Core;
 using N2.Persistence;
 using N2.Plugin;
 
-namespace N2.Trashcan
+namespace N2.Edit.Trash
 {
 	/// <summary>
 	/// Intercepts delete operations.
@@ -13,9 +13,9 @@ namespace N2.Trashcan
 	public class DeleteInterceptor : IStartable, IAutoStart
 	{
 		private readonly IPersister persister;
-		private readonly TrashHandler trashHandler;
+		private readonly ITrashHandler trashHandler;
 
-		public DeleteInterceptor(IPersister persister, TrashHandler trashHandler)
+		public DeleteInterceptor(IPersister persister, ITrashHandler trashHandler)
 		{
 			this.persister = persister;
 			this.trashHandler = trashHandler;
@@ -24,14 +24,14 @@ namespace N2.Trashcan
 		public void Start()
 		{
 			persister.ItemDeleting += ItemDeletingEventHandler;
-			persister.ItemMoved += ItemMovedEventHandler;
+			persister.ItemMoving += ItemMovedEventHandler;
 			persister.ItemCopied += ItemCopiedEventHandler;
 		}
 
 		public void Stop()
 		{
 			persister.ItemDeleting -= ItemDeletingEventHandler;
-			persister.ItemMoved -= ItemMovedEventHandler;
+			persister.ItemMoving -= ItemMovedEventHandler;
 			persister.ItemCopied -= ItemCopiedEventHandler;
 		}
 
@@ -41,19 +41,19 @@ namespace N2.Trashcan
 			{
 				trashHandler.RestoreValues(e.AffectedItem);
 			}
-			else if (IsInTrash(e.Destination))
+			else if (trashHandler.IsInTrash(e.Destination))
 			{
 				trashHandler.ExpireTrashedItem(e.AffectedItem);
 			}
 		}
 
-		private void ItemMovedEventHandler(object sender, DestinationEventArgs e)
+		private void ItemMovedEventHandler(object sender, CancellableDestinationEventArgs e)
 		{
 			if (LeavingTrash(e))
 			{
 				trashHandler.RestoreValues(e.AffectedItem);
 			}
-			else if (IsInTrash(e.Destination))
+			else if (trashHandler.IsInTrash(e.Destination))
 			{
 				trashHandler.ExpireTrashedItem(e.AffectedItem);
 			}
@@ -70,12 +70,7 @@ namespace N2.Trashcan
 
 		private bool LeavingTrash(DestinationEventArgs e)
 		{
-			return e.AffectedItem["DeletedDate"] != null && !IsInTrash(e.Destination);
-		}
-
-		private bool IsInTrash(ContentItem item)
-		{
-			return Find.IsDescendantOrSelf(item, trashHandler.TrashContainer);
+			return e.AffectedItem["DeletedDate"] != null && !trashHandler.IsInTrash(e.Destination);
 		}
 	}
 }

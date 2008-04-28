@@ -14,13 +14,13 @@ using N2.Definitions;
 using N2.Persistence;
 using N2.Web;
 
-namespace N2.Trashcan
+namespace N2.Edit.Trash
 {
 	/// <summary>
 	/// Can throw and restore items. Thrown items are moved to a trash 
 	/// container item.
 	/// </summary>
-	public class TrashHandler
+	public class TrashHandler : ITrashHandler
 	{
 		public const string FormerName = "FormerName";
 		public const string FormerParent = "FormerParent";
@@ -35,6 +35,11 @@ namespace N2.Trashcan
 			this.persister = persister;
 			this.definitions = definitions;
 			this.site = site;
+		}
+
+		ITrashCan ITrashHandler.TrashContainer
+		{
+			get { return TrashContainer as ITrashCan; }
 		}
 
 		public TrashContainerItem TrashContainer
@@ -84,6 +89,8 @@ namespace N2.Trashcan
 			item[DeletedDate] = DateTime.Now;
 			item.Expires = DateTime.Now;
 			item.Name = item.ID.ToString();
+
+			persister.Save(item);
 		}
 
 		/// <summary>Restores an item to the original location.</summary>
@@ -107,6 +114,13 @@ namespace N2.Trashcan
 			item["FormerParent"] = null;
 			item["FormerExpires"] = null;
 			item["DeletedDate"] = null;
+
+			persister.Save(item);
+		}
+
+		public bool IsInTrash(ContentItem item)
+		{
+			return Find.IsDescendantOrSelf(item, TrashContainer);
 		}
 	}
 }

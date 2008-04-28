@@ -10,6 +10,8 @@ namespace N2.Globalization
 {
 	public class LanguageInterceptor : IStartable
 	{
+		private const string DeletingKey = "LanguageInterceptor_Deleting";
+
 		private readonly IPersister persister;
 		private readonly IDefinitionManager definitions;
 		private readonly IWebContext context;
@@ -29,7 +31,7 @@ namespace N2.Globalization
 		{
 			persister.ItemSaved += persister_ItemSaved;
 			persister.ItemMoved += persister_ItemMoved;
-			persister.ItemDeleted += persister_ItemDeleted;
+			persister.ItemDeleting += persister_ItemDeleting;
 			definitions.ItemCreated += definitions_ItemCreated;
 		}
 
@@ -46,19 +48,29 @@ namespace N2.Globalization
 			}
 		}
 
-		void persister_ItemDeleted(object sender, ItemEventArgs e)
+		void persister_ItemDeleting(object sender, CancellableItemEventArgs e)
 		{
+			// prevent infinite recursion
+			if(context.RequestItems[DeletingKey] != null)
+				return;
+
 			ContentItem item = e.AffectedItem;
-			foreach (ContentItem translatedItem in gateway.FindTranslations(item))
+			using(new DictionaryScope(context.RequestItems, DeletingKey, item))
 			{
-				persister.Delete(translatedItem);
+				foreach (ContentItem translatedItem in gateway.FindTranslations(item))
+				{
+					if (translatedItem != item)
+					{
+						persister.Delete(translatedItem);
+					}
+				}
 			}
 		}
 
 		void persister_ItemMoved(object sender, DestinationEventArgs e)
 		{
 			ContentItem item = e.AffectedItem;
-			ILanguage language = gateway.GetLanguageAncestor(item);
+			ILanguage language = gateway.FindLanguage(item);
 			
 			if (language != null)
 			{
@@ -66,7 +78,7 @@ namespace N2.Globalization
 			
 				foreach (ContentItem translatedItem in gateway.FindTranslations(item))
 				{
-					ILanguage translationsLanguage = gateway.GetLanguageAncestor(translatedItem);
+					ILanguage translationsLanguage = gateway.FindLanguage(translatedItem);
 					ContentItem translatedDestination = gateway.GetTranslation(destination, translationsLanguage);
 					if (translationsLanguage != language && translatedDestination != null && translatedItem.Parent != translatedDestination)
 					{
@@ -79,7 +91,7 @@ namespace N2.Globalization
 		void persister_ItemSaved(object sender, ItemEventArgs e)
 		{
 			ContentItem item = e.AffectedItem;
-			ILanguage language = gateway.GetLanguageAncestor(item);
+			ILanguage language = gateway.FindLanguage(item);
 			if (language != null)
 			{
 				int languageKey = item.ID;
@@ -99,7 +111,7 @@ namespace N2.Globalization
 		{
 			persister.ItemSaved -= persister_ItemSaved;
 			persister.ItemMoved -= persister_ItemMoved;
-			persister.ItemDeleted -= persister_ItemDeleted;
+			persister.ItemDeleting -= persister_ItemDeleting;
 		}
 
 		#endregion
