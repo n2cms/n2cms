@@ -115,7 +115,7 @@ namespace N2.Xml
 			Dictionary<string, string> attributes = GetAttributes(navigator);
 
 			ItemDefinition definition = FindDefinition(attributes);
-			ContentItem item = definition.CreateInstance(null);
+			ContentItem item = engine.Definitions.CreateInstance(definition.ItemType, null);
 
 			OnSettingDefaultAttributes(attributes, item);
 
