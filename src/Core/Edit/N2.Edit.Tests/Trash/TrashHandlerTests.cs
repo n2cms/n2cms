@@ -6,6 +6,7 @@ using N2.Web;
 using Rhino.Mocks;
 using N2.MediumTrust.Engine;
 using NUnit.Framework.SyntaxHelpers;
+using N2.Edit.Trash;
 
 namespace N2.Trashcan.Tests
 {
@@ -18,8 +19,8 @@ namespace N2.Trashcan.Tests
 			IDefinitionManager definitions = mocks.CreateMock<IDefinitionManager>();
 
 			IPersister persister = mocks.CreateMock<IPersister>();
-			Expect.Call(persister.Get(1)).Return(root);
-			Expect.Call(delegate { persister.Save(item); });
+			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
+			Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
 			
 			Site site = new Site(1);
 			
@@ -104,8 +105,8 @@ namespace N2.Trashcan.Tests
 		private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)
 		{
 			IPersister persister = mocks.CreateMock<IPersister>();
-			Expect.Call(persister.Get(1)).Return(root);
-			Expect.Call(delegate { persister.Save(item); });
+			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
+			Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
 			return persister;
 		}
 

@@ -4,6 +4,7 @@ using N2.Persistence;
 using N2.Web;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
+using N2.Edit.Trash;
 
 namespace N2.Trashcan.Tests
 {
@@ -28,7 +29,7 @@ namespace N2.Trashcan.Tests
 			IEventRaiser invokeDelete = LastCall.IgnoreArguments().GetEventRaiser();
 			persister.ItemCopied += null;
 			LastCall.IgnoreArguments();
-			persister.ItemMoved += null;
+			persister.ItemMoving += null;
 			LastCall.IgnoreArguments();
 
 			TrashHandler th = mocks.CreateMock<TrashHandler>(persister, null, new Site(1));
@@ -56,7 +57,7 @@ namespace N2.Trashcan.Tests
 			LastCall.IgnoreArguments();
 			persister.ItemCopied += null;
 			LastCall.IgnoreArguments();
-			persister.ItemMoved += null;
+			persister.ItemMoving += null;
 			IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
 			TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, new Site(1));
@@ -82,7 +83,7 @@ namespace N2.Trashcan.Tests
 			LastCall.IgnoreArguments();
 			persister.ItemCopied += null;
 			IEventRaiser invokeCopied = LastCall.IgnoreArguments().GetEventRaiser();
-			persister.ItemMoved += null;
+			persister.ItemMoving += null;
 			LastCall.IgnoreArguments();
 
 			TrashHandler th = mocks.CreateMock<TrashHandler>(persister, null, new Site(1));
@@ -112,7 +113,7 @@ namespace N2.Trashcan.Tests
 			LastCall.IgnoreArguments();
 			persister.ItemCopied += null;
 			LastCall.IgnoreArguments();
-			persister.ItemMoved += null;
+			persister.ItemMoving += null;
 			IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
 			TrashHandler th = mocks.CreateMock<TrashHandler>(persister, null, new Site(1));

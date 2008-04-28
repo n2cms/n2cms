@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Edit.Trash;
 
 namespace N2.Trashcan.Tests
 {
