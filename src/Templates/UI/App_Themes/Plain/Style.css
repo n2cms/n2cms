@@ -54,18 +54,24 @@ body { margin:0; background-color:#ffd451; }
 
 /*menu*/
 .topMenu { position:absolute; bottom:0px; left:20px; }
-.topMenu li { float:left; }
-.topMenu a,
-.topMenu a:visited { color:#fff; display:block; padding:5px; }
-.topMenu .current a,
-.topMenu .trail a,
-.topMenu .current a:visited,
-.topMenu .trail a:visited { font-weight:bold; background-color:#fff; color:#333; margin:0 5px; padding:5px 10px; }
+	.topMenu li { float:left; }
+	.topMenu a,
+	.topMenu a:visited { color:#fff; display:block; padding:5px; }
+	.topMenu .current a,
+	.topMenu .trail a,
+	.topMenu .current a:visited,
+	.topMenu .trail a:visited { font-weight:bold; background-color:#fff; color:#333; margin:0 5px; padding:5px 10px; }
 
-.subMenu a { display:block; padding:2px 0; _height:1px; color:#333; }
-.subMenu ul { margin:0 0 5px 15px; }
-.subMenu .trail > a { color:#0096DB; }
-.subMenu .current > a { color:#0096DB; font-weight:bold; }
+.languageMenu { position:absolute; bottom:5px; right:20px; }
+	.languageMenu a { opacity:.4;}
+	.languageMenu .current { cursor:default; opacity:1;}
+	.languageMenu a:hover { opacity:1;}
+
+.subMenu{}
+	.subMenu a { display:block; padding:2px 0; _height:1px; color:#333; }
+	.subMenu ul { margin:0 0 5px 15px; }
+	.subMenu .trail > a { color:#0096DB; }
+	.subMenu .current > a { color:#0096DB; font-weight:bold; }
 
 /* lists */
 .list .a0 { background: #f4f8ed; }

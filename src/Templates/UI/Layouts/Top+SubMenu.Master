@@ -1,5 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Top+SubMenu.master.cs" Inherits="N2.Templates.UI.Layouts.Top_SubMenu" %>
 <%@ Register TagPrefix="parts" TagName="SubMenu" Src="Parts/SubMenu.ascx" %>
+<%@ Register TagPrefix="parts" TagName="TopMenu" Src="Parts/TopMenu.ascx" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
@@ -21,15 +22,15 @@
         <div id="wrap">
             <asp:ContentPlaceHolder ID="Top" runat="server">
                 <div id="header">
-                    <n2:Display ID="Display1" PropertyName="Header" Path="/" runat="server" />
-                    <n2:Menu ID="tm" BranchMode="false" runat="server" MaxLevels='2' CssClass="topMenu menu" />
+                    <n2:Display ID="dh" PropertyName="Header" Path="/" runat="server" />
+                    <parts:TopMenu runat="server" />
                 </div>
             </asp:ContentPlaceHolder>
             <asp:ContentPlaceHolder ID="PageArea" runat="server">
                 <div id="page">
                     <asp:ContentPlaceHolder ID="Menu" runat="server">
                         <div id="menu" class="secondary">
-							<parts:SubMenu StartLevel="2" runat="server" />
+							<parts:SubMenu ID="sm" StartLevel="2" runat="server" />
                             <n2:DroppableZone ID="zsl" ZoneName="SiteLeft" runat="server" Path="/" />
                             <n2:DroppableZone ID="zl" ZoneName="Left" runat="server" />
                         </div>
@@ -38,7 +39,7 @@
 						<asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
 							<div id="main">
 								<n2:Zone ID="za" runat="server" ZoneName="RecursiveAbove" />
-								<n2:DraggableToolbar ID="DraggableToolbar1" runat="server" />
+								<n2:DraggableToolbar ID="dt" runat="server" />
 								<asp:ContentPlaceHolder ID="Content" runat="server"/>
 								<n2:DroppableZone ID="zc" ZoneName="Content" runat="server" />
 							</div>

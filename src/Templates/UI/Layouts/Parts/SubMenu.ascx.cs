@@ -8,30 +8,34 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using N2.Collections;
 
 namespace N2.Templates.UI.Layouts.Parts
 {
 	public partial class SubMenu : N2.Templates.Web.UI.TemplateUserControl<ContentItem>
 	{
+		public ContentItem StartPage
+		{
+			get { return m.StartPage; }
+			set { m.StartPage = value; }
+		}
+
 		public int StartLevel
 		{
-			get { return sm.StartLevel; }
-			set { sm.StartLevel = value; }
+			get { return m.StartLevel; }
+			set { m.StartLevel = value; }
 		}
 
 		protected override void OnInit(EventArgs e)
 		{
-			InitSubMenu();
-			base.OnInit(e);
-		}
-
-		private void InitSubMenu()
-		{
-			ContentItem branchRoot = Find.FindAncestorAtLevel(2);
-			if (branchRoot != null)
+			ContentItem branchRoot = Find.FindAncestorAtLevel(2, Find.EnumerateParents(CurrentPage, StartPage), CurrentPage);
+			
+			if (branchRoot != null && branchRoot.GetChildren(new NavigationFilter()).Count > 0)
 				hsm.Text = N2.Web.Link.To(branchRoot).ToString();
 			else
 				this.Visible = false;
+
+			base.OnInit(e);
 		}
 	}
 }

@@ -61,10 +61,16 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 
 /*menu*/
 .topMenu { width:700px; padding-left:200px; position:absolute; top:110px; left:50%; margin-left:-450px; }
-.topMenu li { display:inline; }
-.topMenu a { color:#fff; margin-right:10px; }
-.topMenu .current a,
-.topMenu .trail a { font-weight:bold; color:#0096DB; }
+	.topMenu li { display:inline; }
+	.topMenu a { color:#fff; margin-right:10px; }
+	.topMenu .current a,
+	.topMenu .trail a { font-weight:bold; color:#0096DB; }
+
+.languageMenu { width:150px; position:absolute; top:110px; left:50%; margin-left:285px; text-align:right; }
+	.languageMenu a { opacity:.4;}
+	.languageMenu .current { cursor:default; opacity:1;}
+	.languageMenu a:hover { opacity:1;}
+
 .subMenu a { display:block; padding:2px 0; _height:1px; color:#fff; }
 .subMenu ul { margin:0 0 5px 10px; }
 .subMenu .trail > a,

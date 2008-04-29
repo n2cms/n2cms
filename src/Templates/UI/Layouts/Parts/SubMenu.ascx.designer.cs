@@ -32,12 +32,12 @@ namespace N2.Templates.UI.Layouts.Parts {
         protected global::N2.Templates.Web.UI.WebControls.Box bsm;
         
         /// <summary>
-        /// sm control.
+        /// m control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Templates.Web.UI.WebControls.Menu sm;
+        protected global::N2.Templates.Web.UI.WebControls.Menu m;
     }
 }

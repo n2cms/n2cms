@@ -161,6 +161,13 @@
     <Compile Include="Layouts\Parts\SubMenu.ascx.designer.cs">
       <DependentUpon>SubMenu.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\Parts\TopMenu.ascx.cs">
+      <DependentUpon>TopMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\Parts\TopMenu.ascx.designer.cs">
+      <DependentUpon>TopMenu.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Layouts\Parts\VerticalMenu.ascx.cs">
       <DependentUpon>VerticalMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -352,13 +359,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\MaintainPostbackUrl.browser" />
-    <Content Include="App_Themes\GreenFloater\n2menu.css" />
-    <Content Include="App_Themes\GreenFloater\PageBgBottom.gif" />
-    <Content Include="App_Themes\GreenFloater\PageBgTop.gif" />
-    <Content Include="App_Themes\GreenFloater\SidebarBg.gif" />
-    <Content Include="App_Themes\GreenFloater\Style.css" />
-    <Content Include="App_Themes\GreenFloater\SubMenu.gif" />
-    <Content Include="App_Themes\GreenFloater\TopMenu.gif" />
     <Content Include="App_Themes\KhakiTabs\MenuDimmed.gif" />
     <Content Include="App_Themes\KhakiTabs\MenuSelected.gif" />
     <Content Include="App_Themes\KhakiTabs\SidebarLeftBg.gif" />
@@ -447,6 +447,7 @@
     <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
     <Content Include="favicon.ico" />
     <Content Include="Layouts\Parts\SubMenu.ascx" />
+    <Content Include="Layouts\Parts\TopMenu.ascx" />
     <Content Include="Layouts\Top+SubMenu.Master" />
     <Content Include="Upload\logo_white.png" />
   </ItemGroup>

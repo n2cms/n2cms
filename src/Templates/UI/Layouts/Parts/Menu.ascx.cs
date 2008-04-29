@@ -13,9 +13,5 @@ namespace N2.Templates.UI.Layouts.Parts
 {
 	public partial class Menu : Web.UI.TemplateUserControl<Templates.Items.AbstractContentPage, Items.LayoutParts.Menu>
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

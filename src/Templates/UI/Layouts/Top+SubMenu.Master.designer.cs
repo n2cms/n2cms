@@ -68,22 +68,13 @@ namespace N2.Templates.UI.Layouts {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder Top;
         
         /// <summary>
-        /// Display1 control.
+        /// dh control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Display Display1;
-        
-        /// <summary>
-        /// tm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Templates.Web.UI.WebControls.Menu tm;
+        protected global::N2.Web.UI.WebControls.Display dh;
         
         /// <summary>
         /// PageArea control.
@@ -102,6 +93,15 @@ namespace N2.Templates.UI.Layouts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder Menu;
+        
+        /// <summary>
+        /// sm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Templates.UI.Layouts.Parts.SubMenu sm;
         
         /// <summary>
         /// zsl control.
@@ -140,13 +140,13 @@ namespace N2.Templates.UI.Layouts {
         protected global::N2.Web.UI.WebControls.Zone za;
         
         /// <summary>
-        /// DraggableToolbar1 control.
+        /// dt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.DraggableToolbar DraggableToolbar1;
+        protected global::N2.Web.UI.WebControls.DraggableToolbar dt;
         
         /// <summary>
         /// Content control.

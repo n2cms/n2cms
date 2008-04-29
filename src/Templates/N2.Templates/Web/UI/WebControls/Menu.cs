@@ -10,7 +10,13 @@ namespace N2.Templates.Web.UI.WebControls
 	{
 		private ItemFilter[] filters = null;
 
-		#region [rgn] Properties (1)
+		private ContentItem startPage;
+
+		public ContentItem StartPage
+		{
+			get { return startPage ?? Find.ClosestStartPage; }
+			set { startPage = value; }
+		}
 
 		public int StartLevel
 		{
@@ -36,20 +42,16 @@ namespace N2.Templates.Web.UI.WebControls
 			set { ViewState["CssClass"] = value; }
 		}
 
-		
-
-
-		#endregion [rgn]
-
 		public Menu()
 		{
 			Filters = new ItemFilter[] {new NavigationFilter()};
 		}
+
 		#region Methods
 
 		protected override void CreateChildControls()
 		{
-			Control ul = BuildControlHierarchy(CurrentPage, Find.StartPage);
+			Control ul = BuildControlHierarchy(CurrentPage, StartPage);
 			if (ul != null)
 				Controls.Add(ul);
 
@@ -133,7 +135,7 @@ namespace N2.Templates.Web.UI.WebControls
 
 		private ContentItem GetStartingPoint()
 		{
-			return Find.FindAncestorAtLevel(StartLevel);
+			return Find.FindAncestorAtLevel(StartLevel, Find.EnumerateParents(CurrentPage, StartPage, true), CurrentPage);
 		}
 
 		private static IEnumerable<ContentItem> GetAncestors(ContentItem currentItem, ContentItem startPage)

@@ -57,15 +57,19 @@ body { margin:0; background:#FFF url(TopBg.gif) repeat-x; }
 
 /*menu*/
 .topMenu { position:absolute; bottom:0px; width:900px; }
-.topMenu li { float:left; background:transparent url(MenuDimmed.gif) no-repeat 0% 0%; padding-left:10px; _width:100px; }
-.topMenu a { display:block; padding:10px 14px 4px 4px; color:#333; background:transparent url(MenuDimmed.gif) no-repeat 100% 0%; height:16px; }
-.topMenu li.current, 
-.topMenu li.current a,
-.topMenu li.trail, 
-.topMenu li.trail a { background-image:url(MenuSelected.gif); }
+	.topMenu li { float:left; background:transparent url(MenuDimmed.gif) no-repeat 0% 0%; padding-left:10px; _width:100px; }
+	.topMenu a { display:block; padding:10px 14px 4px 4px; color:#333; background:transparent url(MenuDimmed.gif) no-repeat 100% 0%; height:16px; }
+	.topMenu li.current, 
+	.topMenu li.current a,
+	.topMenu li.trail, 
+	.topMenu li.trail a { background-image:url(MenuSelected.gif); }
+	.topMenu .current a,
+	.topMenu .trail a { font-weight:bold; }
 
-.topMenu .current a,
-.topMenu .trail a { font-weight:bold; }
+.languageMenu { position:absolute; bottom:5px; right:20px; }
+	.languageMenu a { opacity:.4;}
+	.languageMenu .current { cursor:default; opacity:1;}
+	.languageMenu a:hover { opacity:1;}
 
 .subMenu a { display:block; padding:2px 0; _height:1px; color:#333; }
 ul.subMenu ul { margin:0 0 5px 15px; }

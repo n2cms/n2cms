@@ -63,6 +63,11 @@ body { margin:0; background-color:#cce5a2; }
 	.topMenu .current a,
 	.topMenu .trail a { font-weight:bold; }
 
+.languageMenu { position:absolute; bottom:10px; right:20px; }
+	.languageMenu a { opacity:.4;}
+	.languageMenu .current { cursor:default; opacity:1;}
+	.languageMenu a:hover { opacity:1;}
+
 .subMenu {}
 	.menu ul ul { margin:0 0 5px 10px; }
 	.subMenu a,

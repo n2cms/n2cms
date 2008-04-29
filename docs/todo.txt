@@ -13,7 +13,13 @@
 - google analytics plugin
 - templates: categories
 - nhibernate.search
-- pluggable workflow steps, e.g. change name if existing
+- pluggable workflow steps
+	- before: check name already exists
+	- handle upon user input: 
+		- allow change duplicate name
+		- warn inbound links
+		- warn translated pages
+	- after: warnings, notifications: e.g. warn that translated pages were also affected
 
 TODO:
 - documentation & programmability

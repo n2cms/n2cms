@@ -20,7 +20,7 @@ namespace N2.Templates.Web.UI.WebControls
 		{
 			PrependAnchor(Find.CurrentPage, "current");
 
-			foreach (ContentItem parent in Find.EnumerateParents(Find.CurrentPage, Find.StartPage))
+			foreach (ContentItem parent in Find.EnumerateParents(Find.CurrentPage, Find.ClosestStartPage))
 			{
 				Controls.AddAt(0, new LiteralControl(SeparatorText));
 				PrependAnchor(parent, null);

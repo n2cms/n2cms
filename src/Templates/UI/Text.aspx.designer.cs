@@ -23,13 +23,13 @@ namespace N2.Templates.UI {
         protected global::N2.Web.UI.WebControls.EditableDisplay dim;
         
         /// <summary>
-        /// p1 control.
+        /// p control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Templates.Web.UI.WebControls.Path p1;
+        protected global::N2.Templates.Web.UI.WebControls.Path p;
         
         /// <summary>
         /// dti control.

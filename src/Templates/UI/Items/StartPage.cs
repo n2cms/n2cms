@@ -6,6 +6,8 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Templates.Items;
 using N2.Installation;
+using N2.Globalization;
+using System.Globalization;
 
 namespace N2.Templates.UI.Items
 {
@@ -13,10 +15,10 @@ namespace N2.Templates.UI.Items
 	/// The initial page of the site.
 	/// </summary>
 	[Definition("Start Page", "StartPage", "A start page template. It displays a horizontal meny but no vertical menu.", "", 10, Installer = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage)]
-	[RestrictParents(typeof(RootPage))]
+	[RestrictParents(typeof(RootPage), typeof(StartPage))]
 	[AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
-	[FieldSet("siteArea", "Site", 70, ContainerName = Tabs.Advanced)]
-	public class StartPage : AbstractStartPage
+	[TabPanel("siteArea", "Site", 70)]
+	public class StartPage : AbstractStartPage, ILanguage
 	{
 		[EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
@@ -55,5 +57,38 @@ namespace N2.Templates.UI.Items
 		{
 			get { return "~/Img/page_world.png"; }
 		}
+
+		#region ILanguage Members
+
+		public string FlagUrl
+		{
+			get 
+			{
+				if (string.IsNullOrEmpty(LanguageCode))
+					return "";
+				else
+					return string.Format("~/Edit/Globalization/flags/{0}.png", LanguageCode);
+			}
+		}
+
+		[EditableLanguagesDropDown("Language", 100, ContainerName = "siteArea")]
+		public string LanguageCode
+		{
+			get { return (string)GetDetail("LanguageCode"); }
+			set { SetDetail("LanguageCode", value); }
+		}
+
+		public string LanguageTitle
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(LanguageCode))
+					return "";
+				else
+					return new RegionInfo(LanguageCode).DisplayName;
+			}
+		}
+
+		#endregion
 	}
 }

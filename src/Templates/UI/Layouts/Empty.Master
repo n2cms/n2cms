@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <asp:ContentPlaceHolder ID="PageArea" runat="server"/>
+        <asp:ContentPlaceHolder ID="PageArea" runat="server"><asp:ContentPlaceHolder ID="Content" runat="server"/></asp:ContentPlaceHolder>
     </div>
     </form>
 </body>
