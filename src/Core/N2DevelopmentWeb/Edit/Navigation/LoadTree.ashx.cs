@@ -5,9 +5,10 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Web.UI;
+using System.IO;
 using N2.Web.UI.WebControls;
 using N2.Web;
-using System.IO;
+using N2.Collections;
 
 namespace N2.Edit.Navigation
 {
@@ -18,12 +19,15 @@ namespace N2.Edit.Navigation
 			ContentItem selectedNode = GetSelectedItem(context.Request.QueryString);
 			
 			context.Response.ContentType = "text/plain";
+			
+			ItemFilter[] filters = Web.UI.Controls.Tree.GetFilters(context.User);
 			TreeNode tn = (TreeNode)N2.Web.Tree
 				.From(selectedNode, 2)
 				.LinkProvider(delegate(ContentItem node) { return BuildLink(node, selectedNode); })
+				.Filters(filters)
 				.ToControl();
 			
-			Web.UI.Controls.Tree.AppendExpanderNodeRecursive(tn, Web.UI.Controls.Tree.GetFilters(context.User));
+			Web.UI.Controls.Tree.AppendExpanderNodeRecursive(tn, filters);
 
 			RenderControls(tn.Controls, context.Response.Output);
 		}

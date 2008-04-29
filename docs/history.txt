@@ -25,6 +25,8 @@ N2 1.3.5
 	- fixed wrong preview url when changing item name
 	- names are now actually validated against ?
 	- toolbar buttons hints
+	- part isn't set as current page instead of page under certain circumstances
+	- ajax tree respects item filter setting
 
 N2 1.3.4
 - engine

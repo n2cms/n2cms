@@ -53,7 +53,7 @@ namespace N2.Web
 			get 
 			{
 				return webContext.CurrentPage 
-					?? (webContext.CurrentPage = Parse(webContext.RawUrl));
+					?? (webContext.CurrentPage = ParsePage(webContext.RawUrl));
 			}
 		}
 
