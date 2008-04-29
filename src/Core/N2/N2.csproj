@@ -334,7 +334,7 @@
     <Compile Include="Globalization\ILanguage.cs" />
     <Compile Include="Globalization\LanguageGateway.cs" />
     <Compile Include="Globalization\LanguageInterceptor.cs" />
-    <Compile Include="Globalization\TranslationOption.cs" />
+    <Compile Include="Globalization\TranslateSpecification.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="Installation\DatabaseStatus.cs" />
     <Compile Include="Installation\InstallationManager.cs" />

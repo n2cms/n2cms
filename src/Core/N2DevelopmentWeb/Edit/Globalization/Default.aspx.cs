@@ -19,7 +19,7 @@ namespace N2.Edit.Globalization
 		{
 			hlCancel.NavigateUrl = SelectedNode.PreviewUrl;
 
-			rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetTranslationOptions(SelectedItem, true);
+			rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetEditTranslations(SelectedItem, true);
 			DataBind();
 
 			base.OnInit(e);

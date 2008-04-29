@@ -22,7 +22,7 @@ namespace N2.Edit.Globalization
 		{
 			if (SelectedItem.ID != 0)
 			{
-				rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetTranslationOptions(SelectedItem, false);
+				rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetEditTranslations(SelectedItem, false);
 				DataBind();
 			}
 			this.Visible = rptLanguages.Items.Count > 0;

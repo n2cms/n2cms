@@ -70,7 +70,7 @@ namespace N2.Globalization
 		void persister_ItemMoved(object sender, DestinationEventArgs e)
 		{
 			ContentItem item = e.AffectedItem;
-			ILanguage language = gateway.FindLanguage(item);
+			ILanguage language = gateway.GetLanguage(item);
 			
 			if (language != null)
 			{
@@ -78,7 +78,7 @@ namespace N2.Globalization
 			
 				foreach (ContentItem translatedItem in gateway.FindTranslations(item))
 				{
-					ILanguage translationsLanguage = gateway.FindLanguage(translatedItem);
+					ILanguage translationsLanguage = gateway.GetLanguage(translatedItem);
 					ContentItem translatedDestination = gateway.GetTranslation(destination, translationsLanguage);
 					if (translationsLanguage != language && translatedDestination != null && translatedItem.Parent != translatedDestination)
 					{
@@ -91,7 +91,7 @@ namespace N2.Globalization
 		void persister_ItemSaved(object sender, ItemEventArgs e)
 		{
 			ContentItem item = e.AffectedItem;
-			ILanguage language = gateway.FindLanguage(item);
+			ILanguage language = gateway.GetLanguage(item);
 			if (language != null)
 			{
 				int languageKey = item.ID;
