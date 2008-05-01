@@ -25,15 +25,6 @@ namespace N2.Globalization
 			this.gateway = gateway;
 		}
 
-		#region IStartable Members
-
-		public void Start()
-		{
-			persister.ItemSaved += persister_ItemSaved;
-			persister.ItemMoved += persister_ItemMoved;
-			persister.ItemDeleting += persister_ItemDeleting;
-			definitions.ItemCreated += definitions_ItemCreated;
-		}
 
 		void definitions_ItemCreated(object sender, ItemEventArgs e)
 		{
@@ -51,11 +42,11 @@ namespace N2.Globalization
 		void persister_ItemDeleting(object sender, CancellableItemEventArgs e)
 		{
 			// prevent infinite recursion
-			if(context.RequestItems[DeletingKey] != null)
+			if (context.RequestItems[DeletingKey] != null)
 				return;
 
 			ContentItem item = e.AffectedItem;
-			using(new DictionaryScope(context.RequestItems, DeletingKey, item))
+			using (new DictionaryScope(context.RequestItems, DeletingKey, item))
 			{
 				foreach (ContentItem translatedItem in gateway.FindTranslations(item))
 				{
@@ -71,11 +62,11 @@ namespace N2.Globalization
 		{
 			ContentItem item = e.AffectedItem;
 			ILanguage language = gateway.GetLanguage(item);
-			
+
 			if (language != null)
 			{
 				ContentItem destination = e.Destination;
-			
+
 				foreach (ContentItem translatedItem in gateway.FindTranslations(item))
 				{
 					ILanguage translationsLanguage = gateway.GetLanguage(translatedItem);
@@ -101,10 +92,33 @@ namespace N2.Globalization
 				}
 				if (item[LanguageGateway.LanguageKey] == null)
 				{
+					if (languageKey != item.ID)
+						EnsureLanguageKeyOnInitialTranslation(item, languageKey);
+					
 					item[LanguageGateway.LanguageKey] = languageKey;
 					persister.Save(item);
 				}
 			}
+		}
+
+		private void EnsureLanguageKeyOnInitialTranslation(ContentItem item, int languageKey)
+		{	
+			ContentItem initialTranslation = persister.Get(languageKey);
+			if (initialTranslation[LanguageGateway.LanguageKey] == null)
+			{
+				initialTranslation[LanguageGateway.LanguageKey] = languageKey;
+				persister.Save(initialTranslation);
+			}
+		}
+
+		#region IStartable Members
+
+		public void Start()
+		{
+			persister.ItemSaved += persister_ItemSaved;
+			persister.ItemMoved += persister_ItemMoved;
+			persister.ItemDeleting += persister_ItemDeleting;
+			definitions.ItemCreated += definitions_ItemCreated;
 		}
 
 		public void Stop()
@@ -112,6 +126,7 @@ namespace N2.Globalization
 			persister.ItemSaved -= persister_ItemSaved;
 			persister.ItemMoved -= persister_ItemMoved;
 			persister.ItemDeleting -= persister_ItemDeleting;
+			definitions.ItemCreated -= definitions_ItemCreated;
 		}
 
 		#endregion

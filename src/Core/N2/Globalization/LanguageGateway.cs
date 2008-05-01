@@ -107,7 +107,7 @@ namespace N2.Globalization
 		{
 			ItemDefinition definition = definitions.GetDefinition(item.GetType());
 			string url = editManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
-			url += "&" + LanguageKey + "=" + item.ID;
+			url += "&" + LanguageKey + "=" + (item[LanguageKey] ?? item.ID);
 			return url;
 		}
 
