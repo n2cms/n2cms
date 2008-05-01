@@ -19,7 +19,7 @@
 				<FooterTemplate></tr></FooterTemplate>
 			</asp:Repeater>
 
-			<tr><lang:Languages runat="server" DataSource='<%# gateway.GetEditTranslations(SelectedItem, true) %>' /></tr>
+			<tr class="selected"><lang:Languages runat="server" DataSource='<%# gateway.GetEditTranslations(SelectedItem, true) %>' /></tr>
 		</thead>
 		<tbody>
 			<asp:Repeater runat="server" DataSource="<%# SelectedItem.GetChildren() %>">
