@@ -312,6 +312,13 @@
     <Compile Include="LanguageMenu.ascx.designer.cs">
       <DependentUpon>LanguageMenu.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Languages.ascx.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Languages.ascx.designer.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -332,6 +339,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="flags\Web.config" />
+    <Content Include="Languages.ascx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
