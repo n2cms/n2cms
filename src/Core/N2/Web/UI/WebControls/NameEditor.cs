@@ -98,28 +98,26 @@ namespace N2.Web.UI.WebControls
 					TextBox tbTitle = itemEditor.AddedEditors[TitleEditorName] as TextBox;
 					if (tbTitle != null)
 					{
-						string s = script + Environment.NewLine +
-						           string.Format("$('#{0}').bind('change', function(){{updateName('{0}','{1}', '{2}', {3}, {4});}});", 
+						string s = updateNameScript + Environment.NewLine +
+						           string.Format("$('#{0}').blur(function(){{updateName('{0}','{1}', '{2}', {3}, {4});}});", 
 												 tbTitle.ClientID,
 						                         ClientID,
 												 WhitespaceReplacement,
 												 ToLower.ToString().ToLower(),
 												 Ascii.ToString().ToLower());
-						Register.JavaScript(Page, s, ScriptPosition.Header, ScriptOptions.DocumentReady);
+						Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
 					}
 				}
 				catch (KeyNotFoundException ex)
 				{
-					throw new N2Exception(
-						"No editor definition found for the Title property. The NameEditor copies the title and adjusts it for beeing part of the url. Either add a title editor or use another control to edit the name.",
-						ex);
+					throw new N2Exception("No editor definition found for the Title property. The NameEditor copies the title and adjusts it for beeing part of the url. Either add a title editor or use another control to edit the name.", ex);
 				}
 			}
 		}
 
 		#region OnPreRender Helpers
 
-		private const string script =
+		private const string updateNameScript =
 			@"
 function updateName(titleid,nameid,whitespace,tolower,ascii){
     var titleBox=document.getElementById(titleid);

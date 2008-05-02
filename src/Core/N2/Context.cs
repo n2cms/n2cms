@@ -68,7 +68,10 @@ namespace N2
 				if (instance == null)
 				{
 					Initialize(false);
-					instance.Attach(HttpContext.Current.ApplicationInstance);
+					if (HttpContext.Current != null)
+					{
+						instance.Attach(HttpContext.Current.ApplicationInstance);
+					}
 				}
 				return instance;
 			}

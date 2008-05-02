@@ -16,6 +16,7 @@ N2 1.3.5
 	- refactored the toolbar plugin model
 	- added edit page toolbar plugin attribute
 	- upgraded to nhibernate 2 alpha
+	- updated mvc examples for current release
 - templates
 	- add notfound page config to start page
 	- search filters with navigation filter
@@ -27,6 +28,7 @@ N2 1.3.5
 	- toolbar buttons hints
 	- part isn't set as current page instead of page under certain circumstances
 	- ajax tree respects item filter setting
+	- fixed nameditor update problem in IE
 
 N2 1.3.4
 - engine

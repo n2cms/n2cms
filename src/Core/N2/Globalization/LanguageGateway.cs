@@ -88,6 +88,9 @@ namespace N2.Globalization
 				if (language != itemlanguage || includeCurrent)
 				{
 					ContentItem translation = GetTranslation(translations, language);
+					if (translation == null && language == itemlanguage)
+						translation = item;
+
 					if (translation != null)
 					{
 						string url = editManager.GetEditExistingItemUrl(translation);

@@ -149,8 +149,12 @@ namespace N2.Persistence
 			}
 		}
 
+		/// <summary>Filters items not of the given type and return an enumeration.</summary>
+		/// <typeparam name="T">The typeof item to return.</typeparam>
+		/// <param name="items">The input enumeration to filter.</param>
+		/// <returns>An enumeration items of the supplied type.</returns>
 		public static IEnumerable<T> OfType<T>(IEnumerable<ContentItem> items)
-			where T: ContentItem
+			where T: class
 		{
 			foreach (ContentItem item in items)
 			{

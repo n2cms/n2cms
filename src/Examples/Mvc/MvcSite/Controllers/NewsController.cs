@@ -13,7 +13,7 @@ namespace MvcTest.Controllers
 	[Controls(typeof(NewsPage))]
 	public class NewsController : ContentController<NewsPage>
 	{
-		public override void Index()
+		public override ActionResult Index()
 		{
 			var vd = new NewsViewData 
 			{ 
@@ -21,22 +21,22 @@ namespace MvcTest.Controllers
 				Back = CurrentItem.Parent,
 				Comments = CurrentItem.GetComments() 
 			};
-			RenderView("index", vd);
+			return RenderView("index", vd);
 		}
 
-		public void Comment()
+		public ActionResult Comment()
 		{
-			RenderView("Comment", CurrentItem);
+			return RenderView("Comment", CurrentItem);
 		}
 
-		public void Submit(string title, string text)
+		public ActionResult Submit(string title, string text)
 		{
 			CommentItem comment = Engine.Definitions.CreateInstance<CommentItem>(CurrentItem);
 			comment.Title = Server.HtmlEncode(title);
 			comment.Text = Server.HtmlEncode(text);
 			Engine.Persister.Save(comment);
 
-			RedirectToAction("index");
+			return RedirectToAction("index");
 		}
 	}
 }

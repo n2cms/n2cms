@@ -40,6 +40,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{B09CC999-A6F
 		..\..\lib\nunit.framework.extensions.dll = ..\..\lib\nunit.framework.extensions.dll
 		..\..\lib\readme.txt = ..\..\lib\readme.txt
 		..\..\lib\Rhino.Mocks.dll = ..\..\lib\Rhino.Mocks.dll
+		..\..\lib\System.Web.Abstractions.dll = ..\..\lib\System.Web.Abstractions.dll
+		..\..\lib\System.Web.Mvc.dll = ..\..\lib\System.Web.Mvc.dll
+		..\..\lib\System.Web.Routing.dll = ..\..\lib\System.Web.Routing.dll
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
@@ -119,6 +122,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Security", "Security\N2.Security.csproj", "{CB6A29C5-8355-4C4C-B437-619F652B7540}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit.Globalization", "N2DevelopmentWeb\Edit\Globalization\N2.Edit.Globalization.csproj", "{387B682B-E4B0-4292-ACD1-F3EF29C76025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Extensions", "N2.Extensions\N2.Extensions.csproj", "{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Extensions.Tests", "N2.Extensions.Tests\N2.Extensions.Tests.csproj", "{84876FD2-9055-4A02-A163-1495E5659BC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{6AB25EA3-591C-499B-8932-12C6AD7C2359}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -328,6 +337,36 @@ Global
 		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Release|Any CPU.Build.0 = Release|Any CPU
 		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{387B682B-E4B0-4292-ACD1-F3EF29C76025}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Publish|.NET.ActiveCfg = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Publish|Any CPU.Build.0 = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Publish|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Publish|Mixed Platforms.Build.0 = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Release|.NET.ActiveCfg = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Publish|.NET.ActiveCfg = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Publish|Any CPU.ActiveCfg = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Publish|Any CPU.Build.0 = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Publish|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Publish|Mixed Platforms.Build.0 = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Release|.NET.ActiveCfg = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -342,6 +381,8 @@ Global
 		{40DCCAEC-A0D0-4B08-8660-76BEB27B96F5} = {5186B58A-8906-4B63-BD6E-816FA1B717FD}
 		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D} = {5186B58A-8906-4B63-BD6E-816FA1B717FD}
 		{387B682B-E4B0-4292-ACD1-F3EF29C76025} = {5186B58A-8906-4B63-BD6E-816FA1B717FD}
+		{84876FD2-9055-4A02-A163-1495E5659BC7} = {6AB25EA3-591C-499B-8932-12C6AD7C2359}
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497} = {6AB25EA3-591C-499B-8932-12C6AD7C2359}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
