@@ -65,8 +65,10 @@ namespace N2.Web.Mvc
 			
 			string url = item.Url;
 			string defaultController = GetControllerName(item.GetType());
-			string requestedController = (string)values["controller"];
-			
+			string requestedController = defaultController;
+			if (values.ContainsKey("controller"))
+				requestedController = (string)values["controller"];
+
 			if (string.Equals(defaultController, requestedController, StringComparison.InvariantCultureIgnoreCase))
 			{
 				return new VirtualPathData(this, url + QuerySeparator(url) + "action=" + action);

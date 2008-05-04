@@ -8,7 +8,7 @@
 		<ILMerge>$(Source-LibraryFolder)\ILMerge.exe</ILMerge>
 	</PropertyGroup>
 	
-	<Import  Project="$(Source-LibraryFolder)\MSBuild.Community.Tasks.Targets"/>
+	<Import Project="$(Source-LibraryFolder)\MSBuild.Community.Tasks.Targets"/>
 
 	<Target Name="Build">
 		<CallTarget Targets="Core-Build"/>
@@ -57,10 +57,12 @@
 	<ItemGroup>
 		<DeployedDependecies Include="Examples\**\N2*.dll"/>
 		<DeployedDependecies Include="Templates\**\N2*.dll"/>
+		<PrecompiledWebs Include="Examples\**\PrecompiledWeb"/>
 	</ItemGroup>
 
 	<Target Name="Clean-Deploy">
 		<Delete Files="@(DeployedDependecies)" />
+		<RemoveDir Directories="@(PrecompiledWebs)"/>
 		<RemoveDir Directories="$(Deploy-RootFolder)"/>
 	</Target>
 	
@@ -199,6 +201,7 @@
 		<Examples-SimpleFolder>$(Examples-BaseFolder)\SimpleWebSite</Examples-SimpleFolder>
 		<Examples-TemplatesImplementationFolder>$(Examples-BaseFolder)\TemplatesImplementation</Examples-TemplatesImplementationFolder>
 		<Examples-MultipleDomainsFolder>$(Examples-BaseFolder)\MultipleDomains</Examples-MultipleDomainsFolder>
+		<Examples-MvcFolder>$(Examples-BaseFolder)\Mvc</Examples-MvcFolder>
 		<Deploy-ExamplesFolder>$(Deploy-RootFolder)\Examples</Deploy-ExamplesFolder>
 	</PropertyGroup>
 
@@ -241,6 +244,16 @@
 		<CreateItem Include="$(Deploy-RootFolder)\Core\**\*"><Output TaskParameter="Include" ItemName="CoreDeploy-AllFiles"/></CreateItem>
 		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\%(RecursiveDir)" />
 	</Target>
+	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Core-Deploy">
+		<Copy SourceFiles="$(Core-WebFolder)\Bin\N2.dll" DestinationFolder="$(Examples-MvcFolder)\Lib" />
+		<Copy SourceFiles="$(Core-SolutionFolder)\N2.Extensions\bin\N2.Extensions.dll" DestinationFolder="$(Examples-MvcFolder)\Lib" />
+		<CallTarget Targets="Rebuild-CoreDeploy-AllFiles" />
+		<CreateItem Include="$(Deploy-RootFolder)\Core\**\*">
+			<Output TaskParameter="Include" ItemName="CoreDeploy-AllFiles"/>
+		</CreateItem>
+		<Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-MvcFolder)\MvcSite\%(RecursiveDir)" />
+	</Target>
+	
 	<Target Name="Examples-PrepareDependencies">
 		<CallTarget Targets="Examples-Globalization-PrepareDependencies"/>
 		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
@@ -249,6 +262,7 @@
 		<CallTarget Targets="Examples-VisualBasic-PrepareDependencies"/>
 		<CallTarget Targets="Examples-TemplatesImplementation-PrepareDependencies"/>
 		<CallTarget Targets="Examples-MultipleDomains-PrepareDependencies"/>
+		<CallTarget Targets="Examples-Mvc-PrepareDependencies"/>
 	</Target>
 
 	<Target Name="Example-Globalization-Build" DependsOnTargets="Examples-Globalization-PrepareDependencies">
@@ -269,9 +283,12 @@
 	<Target Name="Examples-TemplatesImplementation-Build" DependsOnTargets="Examples-TemplatesImplementation-PrepareDependencies">
 		<MSBuild Projects="$(Examples-TemplatesImplementationFolder)\MyProject-vs2008.sln" />
 	</Target>
+	<Target Name="Examples-Mvc-Build" DependsOnTargets="Examples-Mvc-PrepareDependencies">
+		<MSBuild Projects="$(Examples-MvcFolder)\N2.Web.Mvc.sln" />
+	</Target>
 
 	<Target Name="Examples-Build">
-		<CallTarget Targets="Example-SimpleCSharp-Build;Example-SimpleVisualBasic-Build;Example-Parts-Build;Example-MediumTrust-Build;Example-Globalization-Build"/>
+		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Example-Parts-Build; Example-MediumTrust-Build; Example-Globalization-Build; Examples-Mvc-Build"/>
 	</Target>
 
 	<ItemGroup>
@@ -291,6 +308,7 @@
 		<ExampleSource-SimpleFiles Include="$(Examples-SimpleFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 		<ExampleSource-TemplatesImplementationFiles Include="$(Examples-TemplatesImplementationFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 		<ExampleSource-MultipleDomainsFiles Include="$(Examples-MultipleDomainsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+		<ExampleSource-MvcFiles Include="$(Examples-MvcFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 	</ItemGroup>
 	
 	<Target Name="Examples-Deploy" DependsOnTargets="Examples-PrepareDependencies">
@@ -300,6 +318,7 @@
 		<Copy SourceFiles="@(ExampleSource-SimpleFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Simple\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-TemplatesImplementationFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesImplementation\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-MultipleDomainsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MultipleDomains\%(RecursiveDir)" />
+		<Copy SourceFiles="@(ExampleSource-MvcFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\%(RecursiveDir)" />
 	</Target>
 
 	
