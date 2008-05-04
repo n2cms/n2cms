@@ -152,7 +152,7 @@
     <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
     <Compile Include="Globalization\Items\LanguageRoot.cs" />
     <Compile Include="Globalization\Items\TranslatedPage.cs" />
-    <Compile Include="Globalization\LanguageRootTests.cs" />
+    <Compile Include="Globalization\GlobalizationTests.cs" />
     <Compile Include="MediumTrust\EngineTests.cs" />
     <Compile Include="MediumTrust\MediumTrustPage.cs" />
     <Compile Include="NodeTests.cs" />

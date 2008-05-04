@@ -86,6 +86,7 @@
     <Compile Include="Web\Adapters\WebControlAdapterExtender.cs" />
     <Compile Include="Web\IPageModifier.cs" />
     <Compile Include="Web\IPageModifierContainer.cs" />
+    <Compile Include="Web\LanguageModifier.cs" />
     <Compile Include="Web\MasterPageModifier.cs" />
     <Compile Include="Web\TemplatePageModifier.cs" />
     <Compile Include="Web\ThemeModifier.cs" />

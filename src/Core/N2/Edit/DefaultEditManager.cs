@@ -12,6 +12,9 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Collections;
+using N2.Edit.Settings;
+using N2.Security;
 
 namespace N2.Edit
 {
@@ -21,25 +24,27 @@ namespace N2.Edit
 	/// </summary>
 	public class DefaultEditManager : IEditManager
 	{
-		#region Fields
 		private readonly IDefinitionManager definitions;
 		private readonly IPersister persister;
 		private readonly IVersionManager versioner;
+		private readonly NavigationSettings settings;
+		private readonly ISecurityManager securityManager;
 		private IList<AdministrativePluginAttribute> plugins = null;
 		private string editTreeUrlFormat = "Navigation/Tree.aspx?selected={0}";
 		private string editPreviewUrlFormat = "{0}";
 		private string editorCssUrl = "~/Edit/Css/Editor.css";
 		private string uploadFolderUrl = "~/Upload";
 		private bool enableVersioning = true;
-		#endregion
 
 		#region Constructors
-		public DefaultEditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner)
+		public DefaultEditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
 			this.versioner = versioner;
-			
+			this.settings = settings;
+			this.securityManager = securityManager;
+
 			this.plugins = FindPlugins(typeFinder);
 		}
 
@@ -485,30 +490,6 @@ namespace N2.Edit
 					yield return plugin as T;
 		}
 
-		///// <summary>Get toolbar plugins the user has permissions to</summary>
-		///// <param name="user">The user whose permissions should filter the plugins.</param>
-		///// <returns>A filtered list of toolbar plugins</returns>
-		//private IList<ToolbarPluginAttribute> GetToolbarPlugIns(IPrincipal user)
-		//{
-		//    List<ToolbarPluginAttribute> plugins = new List<ToolbarPluginAttribute>();
-		//    foreach (ToolbarPluginAttribute plugin in toolbarPlugIns)
-		//        if (plugin.IsAuthorized(user) && plugin.Enabled)
-		//            plugins.Add(plugin);
-		//    return plugins;
-		//}
-
-		///// <summary>Gets navigation plugins for the edit mode..</summary>
-		///// <param name="user">The user whose permissions will filter return plugins.</param>
-		///// <returns>A list of navigation plpugins.</returns>
-		//private IList<NavigationPluginAttribute> GetNavigationPlugIns(IPrincipal user)
-		//{
-		//    List<NavigationPluginAttribute> plugins = new List<NavigationPluginAttribute>();
-		//    foreach (NavigationPluginAttribute plugin in navigationPlugIns)
-		//        if (plugin.IsAuthorized(user) && plugin.Enabled)
-		//            plugins.Add(plugin);
-		//    return plugins;
-		//}
-
 		private IEnumerable<AdministrativePluginAttribute> FindPluginsIn(Assembly a)
 		{
 			foreach (AdministrativePluginAttribute attribute in a.GetCustomAttributes(typeof(AdministrativePluginAttribute), false))
@@ -530,6 +511,16 @@ namespace N2.Edit
 					yield return attribute;
 				}
 			}
+		}
+
+		public ItemFilter GetEditorFilter(IPrincipal user)
+		{
+			ItemFilter filter = new AccessFilter(user, securityManager);
+			if (!settings.DisplayDataItems)
+			{
+				filter = new CompositeFilter(new PageFilter(), filter);
+			}
+			return filter;
 		}
 
 		#endregion

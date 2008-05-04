@@ -25,8 +25,10 @@ namespace N2.Edit.Globalization
 		protected string GetClass()
 		{
 			string className = (bool)Eval("IsNew") ? "new" : "existing";
+
 			if (SelectedItem == (ContentItem)Eval("ExistingItem"))
 				className += " current";
+
 			return className;
 		}
 	}

@@ -67,10 +67,9 @@ namespace N2.Edit.Trash
 		public bool CanThrow(ContentItem affectedItem)
 		{
 			TrashContainerItem trash = TrashContainer;
-			return trash != null 
+			return trash != null
 				&& trash.Enabled
-				&& trash != affectedItem 
-				&& trash != affectedItem.Parent;
+				&& !IsInTrash(affectedItem);
 		}
 
 		public virtual void Throw(ContentItem item)

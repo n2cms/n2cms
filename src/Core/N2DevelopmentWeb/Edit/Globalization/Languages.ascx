@@ -1,9 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Languages.ascx.cs" Inherits="N2.Edit.Globalization.Languages" %>
 <asp:Repeater ID="rptLang" runat="server" DataSource='<%# DataSource %>'>
 	<ItemTemplate>
-		<td>
-			<asp:HyperLink ID="HyperLink1" NavigateUrl='<%# Eval("EditUrl") %>' CssClass='<%# GetClass() %>' runat="server">
-				<%# Eval("ExistingItem.Title") ?? "Create" %>
+		<td class="item">
+			<asp:HyperLink ID="hlEdit" NavigateUrl='<%# Eval("EditUrl") %>' CssClass='<%# GetClass() %>' runat="server" ToolTip='<%# Eval("ExistingItem.Updated") %>'>
+				<asp:Literal ID="ltCreateNew" runat="server" Text='create new' Visible='<%# (bool)Eval("IsNew") %>' meta:resourceKey="ltCreateNew" />
+				
+				<asp:Image ID="imgNew" ImageUrl='<%# Eval("ExistingItem.IconUrl")%>' AlternateText="icon" runat="server" Visible='<%# !(bool)Eval("IsNew") %>'/>
+				<asp:Literal ID="ltExisting" runat="server" Text='<%# Eval("ExistingItem.Title") ?? "(untitled)" %>' meta:resourceKey="ltExisting" Visible='<%# !(bool)Eval("IsNew") %>'/>
 			</asp:HyperLink>
 		</td>
 	</ItemTemplate>

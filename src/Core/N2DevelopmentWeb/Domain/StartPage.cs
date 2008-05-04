@@ -47,11 +47,18 @@ namespace N2DevelopmentWeb.Domain
 
 		#region ILanguageRoot Members
 
-		[N2.Details.EditableImage("FlagUrl", 100, ContainerName = "globalization")]
 		public virtual string FlagUrl
 		{
-			get { return (string)(GetDetail("FlagUrl") ?? string.Empty); }
-			set { SetDetail("FlagUrl", value, string.Empty); }
+			get 
+			{
+				if (string.IsNullOrEmpty(LanguageCode))
+					return null;
+				else
+				{
+					string[] parts = LanguageCode.Split('-');
+					return "/edit/globalization/flags/" + parts[parts.Length-1] + ".png";
+				}
+			}
 		}
 
 		[EditableTextBox("LanguageTitle", 200, ContainerName = "globalization")]

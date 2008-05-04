@@ -7,7 +7,10 @@ using System.Web.UI;
 
 namespace N2.Details
 {
-	public class EditableLanguagesDropDownAttribute : AbstractEditableAttribute
+	/// <summary>
+	/// An editable drop down with cultures/languages.
+	/// </summary>
+	public class EditableLanguagesDropDownAttribute : EditableDropDownAttribute
 	{
 		public EditableLanguagesDropDownAttribute()
 		{
@@ -18,58 +21,20 @@ namespace N2.Details
 		{
 		}
 
-		public override bool UpdateItem(ContentItem item, Control editor)
+		protected override ListItem[] GetListItems()
 		{
-			DropDownList ddl = editor as DropDownList;
-			if (!ddl.SelectedValue.Equals(item[Name] as string, StringComparison.InvariantCultureIgnoreCase))
+			List<CultureInfo> cultures = new List<CultureInfo>(CultureInfo.GetCultures(CultureTypes.SpecificCultures));
+			cultures.Sort(delegate(CultureInfo first, CultureInfo second)
 			{
-				item[Name] = ddl.SelectedValue;
-				return true;
-			}
-			return false;
-		}
+				return first.DisplayName.CompareTo(second.DisplayName);
+			});
 
-		public override void UpdateEditor(ContentItem item, Control editor)
-		{
-			DropDownList ddl = editor as DropDownList;
-			if (item[Name] != null)
+			ListItem[] items = new ListItem[cultures.Count];
+			for (int i = 0; i < cultures.Count; i++)
 			{
-				ddl.SelectedValue = item[Name] as string;
+				items[i] = new ListItem(cultures[i].DisplayName, cultures[i].Name);
 			}
-		}
-
-		protected override Control AddEditor(Control container)
-		{
-			DropDownList ddl = new DropDownList();
-			if (!Required)
-				ddl.Items.Add(new ListItem());
-			foreach (RegionInfo culture in GetCultures())
-			{
-				ddl.Items.Add(new ListItem(culture.DisplayName, culture.TwoLetterISORegionName));
-			}
-			container.Controls.Add(ddl);
-			return ddl;
-		}
-
-		private static IEnumerable<RegionInfo> GetCultures()
-		{
-			Dictionary<string, RegionInfo> cultures = new Dictionary<string, RegionInfo>(StringComparer.InvariantCultureIgnoreCase);
-			foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
-			{
-				RegionInfo region = new RegionInfo(culture.LCID);
-				string key = region.TwoLetterISORegionName;
-				if (!cultures.ContainsKey(key))
-				{
-					cultures.Add(key, region);
-				}
-			}
-
-			List<RegionInfo> list = new List<RegionInfo>(cultures.Values);
-			list.Sort(delegate(RegionInfo first, RegionInfo second) 
-						{
-							return first.DisplayName.CompareTo(second.DisplayName); 
-						});
-			return list;
+			return items;
 		}
 	}
 }

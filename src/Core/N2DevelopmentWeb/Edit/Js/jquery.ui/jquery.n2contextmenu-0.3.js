@@ -58,7 +58,7 @@
 	};
 
 	$.fn.n2contextmenu = function(menu,options) {
-		options = $.extend({offsetX: -10, offsetY: -10, showing: function(){}, appendTo: document.body}, options || {});
+		options = $.extend({offsetX: -2, offsetY: -2, showing: function(){}, appendTo: document.body}, options || {});
 
 		var $m = $(menu)
 			.appendTo(options.appendTo)

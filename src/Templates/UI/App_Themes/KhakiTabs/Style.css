@@ -20,7 +20,8 @@ a:hover { text-decoration:underline; }
 #page, .cf { display: inline-block; }
 * html #page, * html .cf { height: 1px; }
 
-#footer .n2{color:#ccc;float:right;margin-top:10px;font-size:.8em;}
+#footer {margin-top:10px;color:#ccc;}
+	#footer .n2{color:#ccc;float:right;font-size:.8em;}
 
 
 /********* LAYOUT *********/

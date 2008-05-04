@@ -23,19 +23,19 @@ namespace N2.Edit.Trash
 
 		public void Start()
 		{
-			persister.ItemDeleting += ItemDeletingEventHandler;
-			persister.ItemMoving += ItemMovedEventHandler;
-			persister.ItemCopied += ItemCopiedEventHandler;
+			persister.ItemDeleting += OnItemDeleting;
+			persister.ItemMoving += OnItemMoved;
+			persister.ItemCopied += OnItemCopied;
 		}
 
 		public void Stop()
 		{
-			persister.ItemDeleting -= ItemDeletingEventHandler;
-			persister.ItemMoving -= ItemMovedEventHandler;
-			persister.ItemCopied -= ItemCopiedEventHandler;
+			persister.ItemDeleting -= OnItemDeleting;
+			persister.ItemMoving -= OnItemMoved;
+			persister.ItemCopied -= OnItemCopied;
 		}
 
-		private void ItemCopiedEventHandler(object sender, DestinationEventArgs e)
+		private void OnItemCopied(object sender, DestinationEventArgs e)
 		{
 			if(LeavingTrash(e))
 			{
@@ -47,7 +47,7 @@ namespace N2.Edit.Trash
 			}
 		}
 
-		private void ItemMovedEventHandler(object sender, CancellableDestinationEventArgs e)
+		private void OnItemMoved(object sender, CancellableDestinationEventArgs e)
 		{
 			if (LeavingTrash(e))
 			{
@@ -59,7 +59,7 @@ namespace N2.Edit.Trash
 			}
 		}
 
-		private void ItemDeletingEventHandler(object sender, CancellableItemEventArgs e)
+		private void OnItemDeleting(object sender, CancellableItemEventArgs e)
 		{
 			if (trashHandler.CanThrow(e.AffectedItem))
 			{

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using N2.Templates.Items;
 using N2.Templates.Web.UI;
+using N2.Globalization;
 
 namespace N2.Templates.Web
 {
@@ -13,6 +14,12 @@ namespace N2.Templates.Web
 			this.modifiers = new List<IPageModifier>();
 			this.modifiers.Add(new ThemeModifier());
 			this.modifiers.Add(new MasterPageModifier());
+		}
+
+		public TemplatePageModifier(ILanguageGateway gateway)
+			: this()
+		{
+			this.modifiers.Add(new LanguageModifier(gateway));
 		}
 
 		public void Add(IPageModifier modifier)

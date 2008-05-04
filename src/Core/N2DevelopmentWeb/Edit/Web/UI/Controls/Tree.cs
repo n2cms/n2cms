@@ -47,31 +47,31 @@ namespace N2.Edit.Web.UI.Controls
 
 		protected override void CreateChildControls()
 		{
-			ItemFilter[] filters = GetFilters(Page.User);
+			ItemFilter filter = N2.Context.Current.EditManager.GetEditorFilter(Page.User);
 
 			Control tree = N2.Web.Tree.Between(SelectedItem, RootNode, true)
 				.OpenTo(SelectedItem)
-				.Filters(filters)
+				.Filters(filter)
 				.LinkProvider(BuildLink)
 				.ToControl();
 
-			AppendExpanderNodeRecursive(tree, filters);
+			AppendExpanderNodeRecursive(tree, filter);
 
 			Controls.Add(tree);
 			
 			base.CreateChildControls();
 		}
 
-		public static void AppendExpanderNodeRecursive(Control tree, ItemFilter[] filters)
+		public static void AppendExpanderNodeRecursive(Control tree, ItemFilter filter)
 		{
 			TreeNode tn = tree as TreeNode;
 			if (tn != null)
 			{
 				foreach (Control child in tn.Controls)
 				{
-					AppendExpanderNodeRecursive(child, filters);
+					AppendExpanderNodeRecursive(child, filter);
 				}
-				if (tn.Controls.Count == 0 && tn.Node.GetChildren(filters).Count > 0)
+				if (tn.Controls.Count == 0 && tn.Node.GetChildren(filter).Count > 0)
 				{
 					AppendExpanderNode(tn);
 				}
@@ -85,14 +85,6 @@ namespace N2.Edit.Web.UI.Controls
 
 			tn.UlClass = "ajax";
 			tn.Controls.Add(li);
-		}
-
-		public static ItemFilter[] GetFilters(IPrincipal user)
-		{
-			bool displayDataItems = N2.Context.Current.Resolve<Settings.NavigationSettings>().DisplayDataItems;
-			return displayDataItems
-					? new ItemFilter[] { new AccessFilter(user, N2.Context.SecurityManager) }
-					: new ItemFilter[] { new PageFilter(), new AccessFilter(user, N2.Context.SecurityManager) };
 		}
 
 		private ILinkBuilder BuildLink(INode node)

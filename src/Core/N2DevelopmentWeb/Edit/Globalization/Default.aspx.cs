@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Globalization;
 using System.Collections.Generic;
+using N2.Collections;
 
 namespace N2.Edit.Globalization
 {
@@ -26,11 +27,27 @@ namespace N2.Edit.Globalization
 
 			hlCancel.NavigateUrl = SelectedNode.PreviewUrl;
 
-			//rptLanguages.DataSource = gateway.GetEditTranslations(SelectedItem, true);
-			//rptLanguages.DataSource = gateway.GetAvailableLanguages();
 			DataBind();
 
 			base.OnInit(e);
+		}
+
+		protected IEnumerable<ContentItem> GetChildren()
+		{
+			foreach (ContentItem item in SelectedItem.GetChildren(Engine.EditManager.GetEditorFilter(User)))
+			{
+				if (!(item is ILanguage))
+					yield return item;
+			}
+		}
+
+		protected IEnumerable<TranslateSpecification> GetTranslations(ContentItem item)
+		{
+			foreach (TranslateSpecification translate in gateway.GetEditTranslations(item, true))
+			{
+				translate.EditUrl += "&returnUrl=" + Server.UrlEncode(Request.RawUrl);
+				yield return translate;
+			}
 		}
 	}
 }

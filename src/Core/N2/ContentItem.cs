@@ -447,16 +447,42 @@ namespace N2
 
 		#region AddTo & GetChild & GetChildren
 
+		private const int SortOrderTreshold = 9999;
+
 		/// <summary>Adds an item to the children of this item updating it's parent refernce.</summary>
 		/// <param name="newParent">The new parent of the item. If this parameter is null the item is detached from the hierarchical structure.</param>
 		public virtual void AddTo(ContentItem newParent)
 		{
 			if (Parent != null && Parent != newParent && Parent.Children.Contains(this))
 				Parent.Children.Remove(this);
+			
 			Parent = newParent;
+			
 			if (newParent != null && !newParent.Children.Contains(this))
 			{
-				newParent.Children.Add(this);
+				IList<ContentItem> siblings = newParent.Children;
+				if (siblings.Count > 0)
+				{
+					int lastOrder = siblings[siblings.Count - 1].SortOrder;
+
+					for (int i = siblings.Count - 2; i >= 0; i--)
+					{
+						if (siblings[i].SortOrder < lastOrder - SortOrderTreshold)
+						{
+							siblings.Insert(i + 1, this);
+							return;
+						}
+						lastOrder = siblings[i].SortOrder;
+					}
+
+					if (lastOrder > SortOrderTreshold)
+					{
+						siblings.Insert(0, this);
+						return;
+					}
+				}
+
+				siblings.Add(this);
 			}
 		}
 

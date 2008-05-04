@@ -311,6 +311,7 @@
     <Compile Include="Definitions\ReplaceParentDefinitionAttribute.cs" />
     <Compile Include="Details\AbstractDisplayableAttribute.cs" />
     <Compile Include="Details\DisplayableImageAttribute.cs" />
+    <Compile Include="Details\EditableDropDownAttribute.cs" />
     <Compile Include="Details\EditableImageAttribute.cs" />
     <Compile Include="Details\DisplayableAnchorAttribute.cs" />
     <Compile Include="Details\EditableLanguagesDropDownAttribute.cs" />

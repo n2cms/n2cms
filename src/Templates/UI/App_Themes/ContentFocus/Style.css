@@ -8,7 +8,8 @@ button,select,textarea,input {font:100% serif}
 table {border-collapse:collapse}
 caption,th,td {text-align:left}
 h1,h2,h3,h4,h5,h6,p {margin:.35em 0;}
-#footer .n2{color:#a2a796;float:right;margin-top:10px;font-size:.8em;}
+#footer {margin-top:10px;}
+	#footer .n2{color:#a2a796;float:right;font-size:.8em;}
 
 /* colors */
 #header h2 a { color:#fff; }

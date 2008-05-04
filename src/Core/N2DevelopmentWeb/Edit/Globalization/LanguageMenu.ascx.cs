@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Edit.Web;
 using N2.Globalization;
+using System.Collections.Generic;
 
 namespace N2.Edit.Globalization
 {
@@ -18,15 +19,34 @@ namespace N2.Edit.Globalization
 	{
 		protected Repeater rptLanguages;
 
+		protected bool CreatingNew
+		{
+			get { return Request["discriminator"] != null; }
+		}
+		protected ILanguageGateway Gateway
+		{
+			get { return Engine.Resolve<ILanguageGateway>(); }
+		}
+		protected ILanguage CurrentLanguage
+		{
+			get { return Gateway.GetLanguage(SelectedItem); }
+		}
+
 		protected override void OnPreRender(EventArgs e)
 		{
-			if (SelectedItem.ID != 0)
+			List<TranslateSpecification> translations = new List<TranslateSpecification>(Gateway.GetEditTranslations(SelectedItem, false));
+			if (translations.Count > 0)
 			{
-				rptLanguages.DataSource = Engine.Resolve<ILanguageGateway>().GetEditTranslations(SelectedItem, false);
+				if (!CreatingNew)
+				{
+					rptLanguages.DataSource = translations;
+				}
 				DataBind();
 			}
-			this.Visible = rptLanguages.Items.Count > 0;
-
+			else
+			{
+				Visible = false;
+			}
 			base.OnPreRender(e);
 		}
 	}

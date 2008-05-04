@@ -1,9 +1,8 @@
 ﻿/* FRAMED */
-body
-{
-	background-color:#fff;
-}
-a img { margin-right:1px; vertical-align:middle; }
+body { background-color:#fff; }
+
+a img,
+.command img{ margin-right:1px; vertical-align:middle; }
 
 .toolbar
 {
@@ -16,31 +15,39 @@ a img { margin-right:1px; vertical-align:middle; }
 	padding:0 16px;
 	border-bottom:solid 1px #dedad7;
 }
+	.toolbar a,
 	.toolbar .command
 	{
-		padding:4px;
-		margin-top:1px;
+		display:block;
+		float:left;
+		color:#4f5559;
+	}
+	.toolbar .command
+	{
+		height:20px;
+		padding:6px 4px 2px 4px;
+		
+		margin:1px 0;
 		overflow:hidden;
 		text-decoration:none;
 		font-weight:bold;
 		float:left;
 		overflow:hidden;
 		font-size:1.2em;
-		line-height:20px;
 	}
 	.toolbar .toggled,
 	.toolbar .command:hover
 	{
 		background-color:#f7f7f7;
 		border:solid 1px #dedad7;
-		padding:3px;
+		padding:5px 3px 1px 3px;
 	}
 	.toolbar .command:active
 	{
 		background-color:#dedad7;
 	}
-	.toolbar a.plain,
-	.toolbar a.cancel
+ 	.toolbar .plain,
+	.toolbar .cancel
 	{
 		font-size:1em;
 		font-weight:normal;
@@ -51,12 +58,6 @@ a img { margin-right:1px; vertical-align:middle; }
 	_margin-top:40px;
 }
 
-.toolbar a
-{
-	display:block;
-	float:left;
-	color:#4f5559;
-}
 
 select,
 input,
@@ -336,6 +337,10 @@ a.title { white-space:nowrap; }
 
 /* command options opener */
 
+.commandOptions
+{
+	height:30px;
+}
 .commandOptions .optionGroup a
 {
 	float:none;
@@ -348,7 +353,7 @@ a.title { white-space:nowrap; }
 	height:10px;
 	float:left;
 	display:block;
-	padding:12px 10px 8px 2px;
+	padding:12px 8px 8px 2px;
 	position:relative;
 	cursor:pointer;
 	cursor:hand;

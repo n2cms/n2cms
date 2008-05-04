@@ -34,7 +34,7 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 				#menu { float:left; }
 				#extras { float:right; }
 				#main { width:500px; float:left; padding-bottom:15px; background:#fff; }
-		#footer {width:900px; margin:0 auto; padding:15px; }
+		#footer {width:690px; margin:0 auto; padding:15px 15px 15px 200px; color:#666;}
 			#footer .n2{color:#333;float:right;margin-bottom:10px;font-size:.8em;}
 
 /* top */

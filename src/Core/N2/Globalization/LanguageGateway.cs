@@ -51,7 +51,13 @@ namespace N2.Globalization
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
-			return new RecursiveFinder().Find<ILanguage>(persister.Get(site.RootItemID), RecursionDepth);
+			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(site.RootItemID), RecursionDepth))
+			{
+				if (!string.IsNullOrEmpty(language.LanguageCode))
+				{
+					yield return language;
+				}
+			}
 		}
 
 		public IEnumerable<ContentItem> FindTranslations(ContentItem item)
@@ -91,27 +97,23 @@ namespace N2.Globalization
 					if (translation == null && language == itemlanguage)
 						translation = item;
 
+					ItemDefinition definition = definitions.GetDefinition(item.GetType());
 					if (translation != null)
 					{
 						string url = editManager.GetEditExistingItemUrl(translation);
-						yield return new TranslateSpecification(url, language, translation);
+						yield return new TranslateSpecification(url, language, translation, definition);
 					}
 					else
 					{
 						ContentItem translatedParent = GetTranslatedParent(item, language);
-						string url = GetCreateNewUrl(item, translatedParent);
-						yield return new TranslateSpecification(url, language, translation);
+
+						string url = editManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
+						url += "&" + LanguageKey + "=" + (item[LanguageKey] ?? item.ID);
+
+						yield return new TranslateSpecification(url, language, translation, definition);
 					}
 				}
 			}
-		}
-
-		private string GetCreateNewUrl(ContentItem item, ContentItem translatedParent)
-		{
-			ItemDefinition definition = definitions.GetDefinition(item.GetType());
-			string url = editManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
-			url += "&" + LanguageKey + "=" + (item[LanguageKey] ?? item.ID);
-			return url;
 		}
 
 		private ContentItem GetTranslatedParent(ContentItem item, ILanguage language)

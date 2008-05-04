@@ -11,15 +11,16 @@ using N2.Persistence.NH;
 using N2.Tests.Persistence;
 using System.Diagnostics;
 using System.Globalization;
+using N2.Tests.Globalization.Items;
 
 namespace N2.Tests.Globalization
 {
-	public abstract class LanguageRootTests : PersistenceAwareBase
+	public abstract class GlobalizationTests : PersistenceAwareBase
 	{
 		protected ContentItem root;
-		protected ContentItem english;
-		protected ContentItem swedish;
-		protected ContentItem italian;
+		protected LanguageRoot english;
+		protected LanguageRoot swedish;
+		protected LanguageRoot italian;
 
 		[TestFixtureSetUp]
 		public override void TestFixtureSetUp()
@@ -108,8 +109,8 @@ namespace N2.Tests.Globalization
 
 			using (engine.Persister)
 			{
-				english = engine.Persister.Get(english.ID);
-				swedish = engine.Persister.Get(swedish.ID);
+				english = engine.Persister.Get<LanguageRoot>(english.ID);
+				swedish = engine.Persister.Get<LanguageRoot>(swedish.ID);
 				ContentItem englishSub = english.Children[english.Children.Count - 1];
 				ContentItem swedishSub = swedish.Children[swedish.Children.Count - 1];
 				Assert.That(swedishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub[LanguageGateway.LanguageKey]));
@@ -117,7 +118,7 @@ namespace N2.Tests.Globalization
 		}
 
 		[Test]
-		public void CanRetrieve_Translations_OfTheSamePage()
+		public void CanRetrieve_Translations_OfATranslatedPage()
 		{
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 
@@ -133,7 +134,7 @@ namespace N2.Tests.Globalization
 		}
 
 		[Test]
-		public void FindTranslations_OnLanguageRoot_FindsOtherLanguageRoots()
+		public void FindTranslations_OfLanguageRoot_FindsOtherLanguageRoots()
 		{
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 
@@ -143,6 +144,24 @@ namespace N2.Tests.Globalization
 			EnumerableAssert.Contains(translations, english);
 			EnumerableAssert.Contains(translations, swedish);
 			EnumerableAssert.Contains(translations, italian);
+		}
+
+		[Test]
+		public void FindTranslations_OfSwedishLanguageRoot_FindsAllLanguageRoots()
+		{
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
+			IEnumerable<ContentItem> translations = lg.FindTranslations(swedish);
+
+			EnumerableAssert.Count(3, translations);
+		}
+
+		[Test]
+		public void FindTranslations_OfItalianLanguageRoot_FindsAllLanguageRoots()
+		{
+			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
+			IEnumerable<ContentItem> translations = lg.FindTranslations(italian);
+
+			EnumerableAssert.Count(3, translations);
 		}
 
 		[Test]
@@ -310,6 +329,37 @@ namespace N2.Tests.Globalization
 
 			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub.ID));
 			Assert.That(swedishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub.ID));
+		}
+
+		[Test]
+		public void MovingOutLanguageRoot_DoesNotAffect_OtherLanguageRoots()
+		{
+			TranslatedPage trash = CreateOneItem<TranslatedPage>(0, "trash", root);
+			engine.Persister.Save(trash);
+
+			engine.Persister.Move(swedish, trash);
+			Assert.That(swedish.Parent, Is.EqualTo(trash)); 
+			Assert.That(trash.Children.Count, Is.EqualTo(1));
+			Assert.That(trash.Children[0], Is.EqualTo(swedish));
+		}
+
+		[Test]
+		public void MovingLanguageRoot_DoesNotAffect_OtherLanguageRoots()
+		{
+			int initialCount = english.Children.Count;
+
+			engine.Persister.Move(italian, english);
+			Assert.That(italian.Parent, Is.EqualTo(english));
+			Assert.That(english.Children.Count, Is.EqualTo(initialCount + 1));
+		}
+
+		[Test]
+		public void DeletingLanguageRoot_DoesNotAffect_OtherLanguageRoots()
+		{
+			engine.Persister.Delete(italian);
+
+			Assert.That(engine.Persister.Get(english.ID), Is.EqualTo(english));
+			Assert.That(engine.Persister.Get(swedish.ID), Is.EqualTo(swedish));
 		}
 	}
 }

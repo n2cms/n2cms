@@ -452,6 +452,7 @@
     <Content Include="Upload\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Themes\N2\" />
     <Folder Include="Js\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

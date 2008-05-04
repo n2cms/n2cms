@@ -7,7 +7,7 @@ using N2.Web;
 namespace N2.Tests.Globalization
 {
 	[TestFixture]
-	public class IntermixedLanguageStructureTests : LanguageRootTests
+	public class IntermixedLanguageStructureTests : GlobalizationTests
 	{
 		protected override void CreatePageStructure()
 		{
@@ -15,14 +15,17 @@ namespace N2.Tests.Globalization
 			engine.Persister.Save(root);
 
 			english = engine.Definitions.CreateInstance<Items.LanguageRoot>(root);
+			english.LanguageCode = "en-GB";
 			english.Name = english.Title = "english";
 			engine.Persister.Save(english);
 
 			swedish = engine.Definitions.CreateInstance<Items.LanguageRoot>(english);
+			swedish.LanguageCode = "sv-SE";
 			swedish.Name = swedish.Title = "swedish";
 			engine.Persister.Save(swedish);
 
 			italian = engine.Definitions.CreateInstance<Items.LanguageRoot>(swedish);
+			italian.LanguageCode = "it-IT";
 			italian.Name = italian.Title = "italian";
 			engine.Persister.Save(italian);
 

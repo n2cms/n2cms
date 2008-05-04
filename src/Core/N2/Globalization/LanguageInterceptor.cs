@@ -30,12 +30,21 @@ namespace N2.Globalization
 		{
 			if (context.QueryString[LanguageGateway.LanguageKey] != null)
 			{
-				int languageKey;
-				if (int.TryParse(context.QueryString[LanguageGateway.LanguageKey], out languageKey))
-				{
-					ContentItem translation = persister.Get(languageKey);
-					e.AffectedItem.SortOrder = translation.SortOrder;
-				}
+				if (e.AffectedItem is ILanguage)
+					return;
+
+				UpdateSortOrder(e.AffectedItem);
+			}
+		}
+
+		private void UpdateSortOrder(ContentItem item)
+		{
+			int languageKey;
+			if (int.TryParse(context.QueryString[LanguageGateway.LanguageKey], out languageKey))
+			{
+				ContentItem translation = persister.Get(languageKey);
+				if(translation != null)
+					item.SortOrder = translation.SortOrder;
 			}
 		}
 
@@ -48,12 +57,20 @@ namespace N2.Globalization
 			ContentItem item = e.AffectedItem;
 			using (new DictionaryScope(context.RequestItems, DeletingKey, item))
 			{
-				foreach (ContentItem translatedItem in gateway.FindTranslations(item))
+				if (item is ILanguage)
+					return;
+				
+				DeleteTranslations(item);
+			}
+		}
+
+		private void DeleteTranslations(ContentItem item)
+		{
+			foreach (ContentItem translatedItem in gateway.FindTranslations(item))
+			{
+				if (translatedItem != item)
 				{
-					if (translatedItem != item)
-					{
-						persister.Delete(translatedItem);
-					}
+					persister.Delete(translatedItem);
 				}
 			}
 		}
@@ -61,20 +78,27 @@ namespace N2.Globalization
 		void persister_ItemMoved(object sender, DestinationEventArgs e)
 		{
 			ContentItem item = e.AffectedItem;
+			if (item is ILanguage)
+				return;
 			ILanguage language = gateway.GetLanguage(item);
 
 			if (language != null)
 			{
 				ContentItem destination = e.Destination;
 
-				foreach (ContentItem translatedItem in gateway.FindTranslations(item))
+				MoveTranslations(item, language, destination);
+			}
+		}
+
+		private void MoveTranslations(ContentItem item, ILanguage language, ContentItem destination)
+		{
+			foreach (ContentItem translatedItem in gateway.FindTranslations(item))
+			{
+				ILanguage translationsLanguage = gateway.GetLanguage(translatedItem);
+				ContentItem translatedDestination = gateway.GetTranslation(destination, translationsLanguage);
+				if (translationsLanguage != language && translatedDestination != null && translatedItem.Parent != translatedDestination)
 				{
-					ILanguage translationsLanguage = gateway.GetLanguage(translatedItem);
-					ContentItem translatedDestination = gateway.GetTranslation(destination, translationsLanguage);
-					if (translationsLanguage != language && translatedDestination != null && translatedItem.Parent != translatedDestination)
-					{
-						persister.Move(translatedItem, translatedDestination);
-					}
+					persister.Move(translatedItem, translatedDestination);
 				}
 			}
 		}
@@ -85,19 +109,24 @@ namespace N2.Globalization
 			ILanguage language = gateway.GetLanguage(item);
 			if (language != null)
 			{
-				int languageKey = item.ID;
-				if (context.QueryString[LanguageGateway.LanguageKey] != null)
-				{
-					int.TryParse(context.QueryString[LanguageGateway.LanguageKey], out languageKey);
-				}
-				if (item[LanguageGateway.LanguageKey] == null)
-				{
-					if (languageKey != item.ID)
-						EnsureLanguageKeyOnInitialTranslation(item, languageKey);
-					
-					item[LanguageGateway.LanguageKey] = languageKey;
-					persister.Save(item);
-				}
+				UpdateLanguageKey(item);
+			}
+		}
+
+		private void UpdateLanguageKey(ContentItem item)
+		{
+			int languageKey = item.ID;
+			if (context.QueryString[LanguageGateway.LanguageKey] != null)
+			{
+				int.TryParse(context.QueryString[LanguageGateway.LanguageKey], out languageKey);
+			}
+			if (item[LanguageGateway.LanguageKey] == null)
+			{
+				if (languageKey != item.ID)
+					EnsureLanguageKeyOnInitialTranslation(item, languageKey);
+
+				item[LanguageGateway.LanguageKey] = languageKey;
+				persister.Save(item);
 			}
 		}
 

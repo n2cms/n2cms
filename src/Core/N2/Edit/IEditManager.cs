@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Web.UI;
 using N2.Definitions;
 using N2.Web.UI.WebControls;
+using N2.Collections;
 namespace N2.Edit
 {
 	/// <summary>
@@ -107,5 +108,7 @@ namespace N2.Edit
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>The url to the delete page.</returns>
 		string GetDeleteUrl(ContentItem selectedItem);
+
+		ItemFilter GetEditorFilter(IPrincipal user);
 	}
 }

@@ -62,6 +62,8 @@
             <n2:HasValue PropertyName="ImageUrl" Inverse="true" runat="server">
 				Image not present
             </n2:HasValue>
+            <hr />
+            changepath: <n2:Display ID="changepath" PropertyName="Title" runat="server" Path="/" />
         </div>
     </form>
 </body>

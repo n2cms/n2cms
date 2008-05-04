@@ -19,6 +19,7 @@ namespace N2.Web.UI.WebControls
 	[ParseChildren(true)]
 	public class Display : Control, IItemContainer
 	{
+		bool isAdded = false;
 		private IDisplayable displayable = null;
 		private Control displayer;
 		ITemplate headerTemplate;
@@ -40,7 +41,22 @@ namespace N2.Web.UI.WebControls
 		public string Path
 		{
 			get { return (string) (ViewState["Path"] ?? string.Empty); }
-			set { ViewState["Path"] = value; }
+			set 
+			{ 
+				ViewState["Path"] = value; 
+				currentItem = null;
+				ReAddDisplayable();
+			}
+		}
+
+		private void ReAddDisplayable()
+		{
+			if (isAdded)
+			{
+				ClearChildViewState();
+				Controls.Clear();
+				AddDisplayable();
+			}
 		}
 
 		/// <summary>The name of the property on the content item whose value is displayed with the Display control.</summary>
@@ -72,13 +88,11 @@ namespace N2.Web.UI.WebControls
 			get { return this.footerTemplate; }
 			set { this.footerTemplate = value; }
 		}
- 
-
-
 
 		protected override void OnInit(EventArgs e)
 		{
 			AddDisplayable();
+			isAdded = true;
 			base.OnInit(e);
 		}
 
@@ -154,9 +168,16 @@ namespace N2.Web.UI.WebControls
 				{
 					currentItem = ItemUtility.FindCurrentItem(Parent);
 					if (!string.IsNullOrEmpty(Path))
+					{
 						currentItem = ItemUtility.WalkPath(currentItem, Path);
+					}
 				}
 				return currentItem;
+			}
+			set
+			{
+				currentItem = value;
+				ReAddDisplayable();
 			}
 		}
 

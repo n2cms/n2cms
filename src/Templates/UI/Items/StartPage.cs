@@ -67,7 +67,10 @@ namespace N2.Templates.UI.Items
 				if (string.IsNullOrEmpty(LanguageCode))
 					return "";
 				else
-					return string.Format("~/Edit/Globalization/flags/{0}.png", LanguageCode);
+				{
+					string[] parts = LanguageCode.Split('-');
+					return string.Format("~/Edit/Globalization/flags/{0}.png", parts[parts.Length - 1]);
+				}
 			}
 		}
 

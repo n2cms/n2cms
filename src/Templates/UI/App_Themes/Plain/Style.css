@@ -32,7 +32,8 @@ body { margin:0; background-color:#ffd451; }
 				#menu { float:left; }
 				#extras { float:right; }
 				#main { width:500px; float:left; padding-bottom:15px; }
-		#footer .n2{color:#ECAC00;float:right;padding:15px;font-size:.8em;}
+		#footer {margin-top:10px;color:#ECAC00;}
+			#footer .n2{color:#ECAC00;float:right;padding:0 15px;font-size:.8em;}
 
 
 /*box*/
