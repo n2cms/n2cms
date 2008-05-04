@@ -12,6 +12,5 @@
 	</div>
 	<hr />
 	<%= N2.Web.Link.To(ViewData.Back).Text("Back").Class("back") %>
-	<span class="comment"><%= Html.ActionLink("Comment", "comment", new { })%></span>
 	<%= Html.ActionLink<MvcTest.Controllers.NewsController>(x => x.Comment(), "Comment", new {Class = "comment"}) %>
 </asp:Content>	
