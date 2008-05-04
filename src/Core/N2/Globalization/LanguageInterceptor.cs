@@ -122,18 +122,20 @@ namespace N2.Globalization
 			}
 			if (item[LanguageGateway.LanguageKey] == null)
 			{
-				if (languageKey != item.ID)
-					EnsureLanguageKeyOnInitialTranslation(item, languageKey);
-
 				item[LanguageGateway.LanguageKey] = languageKey;
 				persister.Save(item);
+
+				if (languageKey != item.ID)
+				{
+					EnsureLanguageKeyOnInitialTranslation(item, languageKey);
+				}
 			}
 		}
 
 		private void EnsureLanguageKeyOnInitialTranslation(ContentItem item, int languageKey)
 		{	
 			ContentItem initialTranslation = persister.Get(languageKey);
-			if (initialTranslation[LanguageGateway.LanguageKey] == null)
+			if (initialTranslation != null && initialTranslation[LanguageGateway.LanguageKey] == null)
 			{
 				initialTranslation[LanguageGateway.LanguageKey] = languageKey;
 				persister.Save(initialTranslation);

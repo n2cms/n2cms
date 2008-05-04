@@ -62,8 +62,8 @@ namespace N2.Web.Mvc
 				item = values["ContentItem"] as ContentItem;
 			if (values.ContainsKey("action"))
 				action = (string)values["action"];
-			
-			string url = item.Url;
+
+			string url = item.Url.TrimStart('/');
 			string defaultController = GetControllerName(item.GetType());
 			string requestedController = defaultController;
 			if (values.ContainsKey("controller"))

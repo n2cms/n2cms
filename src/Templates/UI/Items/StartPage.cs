@@ -88,7 +88,7 @@ namespace N2.Templates.UI.Items
 				if (string.IsNullOrEmpty(LanguageCode))
 					return "";
 				else
-					return new RegionInfo(LanguageCode).DisplayName;
+					return new CultureInfo(LanguageCode).DisplayName;
 			}
 		}
 
