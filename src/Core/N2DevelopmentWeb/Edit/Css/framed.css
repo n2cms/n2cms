@@ -170,10 +170,10 @@ a.title { white-space:nowrap; }
 
 /* tree */
 
-.nav .selected { font-weight:bold; border: 1px dotted #CCC; }
+.nav .selected { font-weight:bold; border: 1px dotted #CCC; margin:0;}
 
 .tree { }
-	.tree a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; border:solid 1px #fff; }
+	.tree a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px;}
 	
 	.tree li, 
 	.tree ul { padding:0; margin:0; display:block; clear:both; padding-bottom:1px; }
