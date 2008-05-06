@@ -21,6 +21,7 @@ N2 1.3.5
 	- moved control over edit mode filtering to edit manager
 	- introduced new globalization functionality
 	- moved items may not be inserted instead of appended when last items have a high sort order
+	- option to keep the name updated
 - modules
 	- localization overview & control module
 - templates

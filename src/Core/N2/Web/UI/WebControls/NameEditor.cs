@@ -10,6 +10,9 @@ namespace N2.Web.UI.WebControls
 	/// <summary>A webcontrol that pulls out the page title and transforms it into a web-compatible name that can be used in url's</summary>
 	public class NameEditor : TextBox, IValidator
 	{
+		private CheckBox keepUpdated = new CheckBox();
+		private bool showKeepUpdated = true;
+
 		private char whitespaceReplacement = '-';
 		private bool toLower;
 		private bool ascii;
@@ -81,14 +84,31 @@ namespace N2.Web.UI.WebControls
 			set { invalidCharactersErrorFormat = value; }
 		}
 
+		public bool ShowKeepUpdated
+		{
+			get { return showKeepUpdated; }
+			set { showKeepUpdated = value; }
+		}
+
+		public CheckBox KeepUpdated
+		{
+			get { return keepUpdated; }
+		}
 		#region Methods
+
+		protected override void CreateChildControls()
+		{
+			keepUpdated.ID = "ku";
+			keepUpdated.Checked = true;
+			this.Controls.Add(keepUpdated);
+
+			base.CreateChildControls();
+		}
 
 		/// <summary>Initializes the name editor attaching to the title control onchange event.</summary>
 		/// <param name="e">ignored</param>
 		protected override void OnPreRender(EventArgs e)
 		{
-			base.OnPreRender(e);
-
 			IItemEditor itemEditor = ItemUtility.FindInParents<IItemEditor>(Parent);
 
 			if (itemEditor != null)
@@ -98,13 +118,16 @@ namespace N2.Web.UI.WebControls
 					TextBox tbTitle = itemEditor.AddedEditors[TitleEditorName] as TextBox;
 					if (tbTitle != null)
 					{
+						keepUpdated.Visible = ShowKeepUpdated;
+
 						string s = updateNameScript + Environment.NewLine +
-						           string.Format("$('#{0}').blur(function(){{updateName('{0}','{1}', '{2}', {3}, {4});}});", 
+						           string.Format(startupScriptFormat, 
 												 tbTitle.ClientID,
 						                         ClientID,
 												 WhitespaceReplacement,
 												 ToLower.ToString().ToLower(),
-												 Ascii.ToString().ToLower());
+												 Ascii.ToString().ToLower(),
+												 ShowKeepUpdated ? keepUpdated.ClientID : "");
 						Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
 					}
 				}
@@ -113,15 +136,29 @@ namespace N2.Web.UI.WebControls
 					throw new N2Exception("No editor definition found for the Title property. The NameEditor copies the title and adjusts it for beeing part of the url. Either add a title editor or use another control to edit the name.", ex);
 				}
 			}
+
+			base.OnPreRender(e);
 		}
 
 		#region OnPreRender Helpers
 
+		private const string startupScriptFormat = @"
+var invokeUpdateName = function(){{
+	updateName('{0}', '{1}', '{2}', {3}, {4}, '{5}');
+}};
+$('#{0}').blur(invokeUpdateName);
+if('{5}'){{
+	var chk = document.getElementById('{5}');
+	var eq = getName('{0}', '{2}', {3}, {4}) == document.getElementById('{1}').value;
+	chk.checked = eq;
+	$(chk).click(invokeUpdateName);
+}}
+";
+
 		private const string updateNameScript =
 			@"
-function updateName(titleid,nameid,whitespace,tolower,ascii){
+function getName(titleid, whitespace, tolower, ascii){
     var titleBox=document.getElementById(titleid);
-	
 	var name = titleBox.value.replace(/[%?&/+:<>]|[.]+$/g, '').replace(/[.]+/g, '.').replace(/\s+/g,whitespace);
 	if(tolower) name = name.toLowerCase();
 	if(ascii) name = name
@@ -129,9 +166,12 @@ function updateName(titleid,nameid,whitespace,tolower,ascii){
 		.replace(/æ/g, 'ae').replace(/Æ/g, 'ae')
 		.replace(/[öø]/g, 'o').replace(/[ÖØ]/g, 'O')
 		.replace(/[^a-zA-Z0-9_-]/g, '');
-    
-	var nameBox=document.getElementById(nameid);
-	nameBox.value = name;
+	return name;
+}
+function updateName(titleid, nameid, whitespace, tolower, ascii, checkboxid){
+	var name = getName(titleid, whitespace, tolower, ascii);
+    if(checkboxid && document.getElementById(checkboxid).checked)
+		document.getElementById(nameid).value = name;
 }
 ";
 
@@ -207,6 +247,7 @@ function updateName(titleid,nameid,whitespace,tolower,ascii){
 			writer.Write(Suffix);
 			if (!IsValid)
 				writer.Write("<span style='color:red'>*</span>");
+			keepUpdated.RenderControl(writer);
 		}
 
 		#endregion
