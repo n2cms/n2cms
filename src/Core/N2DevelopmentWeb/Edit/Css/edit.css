@@ -60,8 +60,6 @@
 /* Edit details */
 .content fieldset
 {
-	position:relative;
-	left:-10px;
 	clear:left;
 	padding:10px;
 }
