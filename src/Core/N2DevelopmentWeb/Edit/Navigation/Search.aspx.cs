@@ -24,6 +24,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
+using N2.Persistence.Finder;
 
 namespace N2.Edit.Navigation
 {
@@ -42,7 +43,7 @@ namespace N2.Edit.Navigation
 			this.dgrItems.DataBind();
 		}
 
-		private N2.Persistence.Finder.IQueryAction CreateQuery()
+		private IQueryEnding CreateQuery()
 		{
 			string likeQuery = "%" + this.txtQuery.Text + "%";
 			N2.Persistence.Finder.IQueryAction query = N2.Find.Items
@@ -50,9 +51,11 @@ namespace N2.Edit.Navigation
 				.Or.SavedBy.Like(likeQuery)
 				.Or.Title.Like(likeQuery)
 				.Or.Detail().Like(likeQuery);
+
 			if (Regex.IsMatch(this.txtQuery.Text, @"^\d+$", RegexOptions.Compiled))
 				query = query.Or.ID.Eq(int.Parse(this.txtQuery.Text));
-			return query;
+
+			return query.Filters(Engine.EditManager.GetEditorFilter(Page.User));
 		}
 	}
 }

@@ -24,24 +24,12 @@
             <asp:RequiredFieldValidator ID="rfvQuery" ControlToValidate="txtQuery" runat="server" ErrorMessage="*" meta:resourceKey="rfvQuery" Display="Dynamic" />
             <n2:ItemDataSource ID="idsItems" runat="server" />
             <div id="nav" class="nav">
-                <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" DataMember="Query" runat="server" DataKeyField="ID"
-                    AutoGenerateColumns="false" 
-                    CssClass="gv" AlternatingItemStyle-CssClass="alt" UseAccessibleHeader="true">
+                <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" DataMember="Query" runat="server" DataKeyField="ID" AutoGenerateColumns="false" CssClass="gv" AlternatingItemStyle-CssClass="alt" UseAccessibleHeader="true">
                     <Columns>
-                        <asp:TemplateColumn>
-                            <ItemTemplate>
-                                <asp:HyperLink ID="hlIconShow" runat="server" Target="preview" 
-									rel='<%# Eval("Path") %>'
-                                    NavigateUrl='<%# Eval("RewrittenUrl") %>'>
-                                    <img src="<%# Eval("IconUrl") %>" />
-                                </asp:HyperLink>
-                            </ItemTemplate>
-                        </asp:TemplateColumn>
                         <asp:TemplateColumn HeaderText="Title" meta:resourceKey="colTitle" >
                             <ItemTemplate>
-                                <asp:HyperLink ID="hlShow" runat="server" Target="preview" 
-									rel='<%# Eval("Path") %>'
-                                    NavigateUrl='<%# Eval("RewrittenUrl") %>'>
+                                <asp:HyperLink ID="hlShow" runat="server" Target="preview" rel='<%# Eval("Path") %>' NavigateUrl='<%# Eval("PreviewUrl") %>'>
+                                    <img src="<%# Eval("IconUrl") %>" />
                                     <%# Eval("Title")%>
                                 </asp:HyperLink>
                             </ItemTemplate>

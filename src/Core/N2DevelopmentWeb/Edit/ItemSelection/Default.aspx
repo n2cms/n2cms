@@ -21,7 +21,7 @@
             n2nav.setupLinks('#tree');
 			$("#tree").SimpleTree({
 				success: function(el){
-					n2nav.setupLinks('#tree');
+					n2nav.refreshLinks(el);
 				}
 			});
 		});

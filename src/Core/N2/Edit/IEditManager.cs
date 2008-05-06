@@ -109,6 +109,9 @@ namespace N2.Edit
 		/// <returns>The url to the delete page.</returns>
 		string GetDeleteUrl(ContentItem selectedItem);
 
+		/// <summary>Gets the filter to be applied to items displayed in edit mode.</summary>
+		/// <param name="user">The user for whom to apply the filter.</param>
+		/// <returns>A filter.</returns>
 		ItemFilter GetEditorFilter(IPrincipal user);
 	}
 }
