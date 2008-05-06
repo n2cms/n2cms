@@ -107,6 +107,9 @@ namespace N2.Globalization
 					{
 						ContentItem translatedParent = GetTranslatedParent(item, language);
 
+						if (translatedParent == null)
+							continue;
+
 						string url = editManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
 						url += "&" + LanguageKey + "=" + (item[LanguageKey] ?? item.ID);
 

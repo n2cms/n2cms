@@ -9,12 +9,12 @@
         <title>Navigation</title>
         <link rel="stylesheet" href="../Css/All.css" type="text/css" />
         <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
-        <script src="../Js/plugins.ashx" type="text/javascript" ></script>
+        <script src="../Js/plugins.ashx?v2" type="text/javascript" ></script>
         <script src="../Js/jquery.ui.ashx" type="text/javascript" ></script>
     </head>
 <body class="navigation tree">
     <form id="form1" runat="server">
-        <div id="nav" class="tree">        
+        <div id="nav" class="tree nav">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
         <script type="text/javascript">

@@ -5,6 +5,7 @@ N2 1.3.5
 	- remove templateurl from default viewed page
 	- updated with dutch translation from martijn
 	- added mediumtrust configuration generator
+	- removed tabular navigation
 - core
 	- moved n2.mediumtrust -> n2
 	- moved some embedded scripts to /edit
@@ -34,6 +35,8 @@ N2 1.3.5
 	- part isn't set as current page instead of page under certain circumstances
 	- ajax tree respects item filter setting
 	- fixed nameditor update problem in IE
+	- changed edit styles to avoid fieldset position relative bug in ie7
+	- fixed wicked styles in the tree when ie6+7
 
 N2 1.3.4
 - engine

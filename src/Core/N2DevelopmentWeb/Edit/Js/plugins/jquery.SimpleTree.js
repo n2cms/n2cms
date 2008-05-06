@@ -61,7 +61,7 @@ $.fn.SimpleTree = function(opt){
 		};
 		TREE.setEventToggler = function (obj)
 		{
-			$(obj).prepend('<a class="toggler"></a>');
+			$(obj).prepend('<span class="toggler">&nbsp;</span>');
 			$('>.toggler', obj).bind('click', function(){
 
 				var childUl = $('>ul',obj);

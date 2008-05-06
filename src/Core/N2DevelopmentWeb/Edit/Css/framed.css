@@ -133,33 +133,19 @@ ul
 .gv tr,
 .gv th,
 .gv td { border:solid 1px #e0e0e0; border-collapse:collapse; }
-
 .gv th,
 .gv td { padding:2px; background:#fff none; }
-
 .gv th { text-align:left; background:#f7f7f7 none; }
-
 .gv .alt td { background:#f7f7f7 none; }
-
 .gv a { display:block; }
 
 
 
 
-/* NAVIGATION */
-body.navigation { padding:5px; }
-.selected { color:#000000; font-weight:bold; }
-.nav a { text-decoration:none; color:#bbbbbb; }
-.nav a.enabled { color:#333333; }
-a.node img { visibility:hidden; }
-a.enabled img { visibility:visible; }
-
-
-
 /* NAVIGATCONTEXTMENU */
 #contextMenu { border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; }
-#contextMenu a { display:block; padding:3px 6px; white-space:nowrap; margin:1px; }
-#contextMenu a:hover { background-color:#f7f7f7; border:solid 1px #dedad7; padding:2px 5px; text-decoration:none; }
+#contextMenu a { display:block; padding:3px 6px; white-space:nowrap; margin:1px; border:solid 1px #fff; }
+#contextMenu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
 #contextMenu a img { margin-right:3px; }
 
 
@@ -184,31 +170,28 @@ a.title { white-space:nowrap; }
 
 /* tree */
 
-.tree {}
-	.tree a { color:#000; text-decoration:none; line-height:18px; padding:0 4px 0 1px; }
+.nav .selected { font-weight:bold; border: 1px dotted #CCC; }
 
+.tree { }
+	.tree a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; border:solid 1px #fff; }
+	
 	.tree li, 
-	.tree ul { list-style: none; background-color:#ffffff; padding:0; margin:0; }
+	.tree ul { padding:0; margin:0; display:block; clear:both; padding-bottom:1px; }
 
-	.tree li { line-height:18px; cursor: default; white-space: nowrap; background: transparent none no-repeat 0 0; }
-
-		.tree li li { padding-left:16px; }
-		.tree li.leaf { background-image: url(../img/treeview/leaf.gif); }
-		.tree li.leaf-last { background-image: url(../img/treeview/leaf-last.gif); }
-
+	.tree li { background: transparent none no-repeat 0 0; list-style: none; position:relative; }
+	.tree li.leaf { background-image: url(../img/treeview/leaf.gif); }
+	.tree li.leaf-last { background-image: url(../img/treeview/leaf-last.gif); }
 	.tree .folder-close { background-image: url(../img/treeview/expandable.gif); }
 	.tree .folder-close-last { background-image: url(../img/treeview/expandable-last.gif); }
 	.tree .folder-open { background-image: url(../img/treeview/collapsable.gif); }
 	.tree .folder-open-last { background-image: url(../img/treeview/collapsable-last.gif); }
 
-	.tree .root{ background-image: url(../img/treeview/root.gif) no-repeat 16px 2px #ffffff; }
+		.tree li li { padding-left:16px; }
 
-	.tree .toggler { float:left; margin-left:-18px; padding:0; height:16px; width:16px; background-image:url(../img/treeview/spacer.gif); cursor:pointer; }
+	.tree .toggler { left:0; position:absolute; height:16px; width:16px; background-image:url(../img/treeview/spacer.gif); cursor:pointer; }
 
 	.tree ul.ajax { background: url(../img/treeview/spinner.gif) no-repeat 0 0 #ffffff; height: 16px; display:none; }
 		.tree ul.ajax li { display:none; }
-
-	.tree .active{ background-color:#F7BE77; padding:1px 2px; border: 1px dashed #444; }
 
 
 
@@ -358,3 +341,5 @@ a.title { white-space:nowrap; }
 	cursor:pointer;
 	cursor:hand;
 }
+
+.date { white-space:nowrap;}

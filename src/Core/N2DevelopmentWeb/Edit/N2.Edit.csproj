@@ -213,13 +213,6 @@
     <Compile Include="Navigation\SortUp.ashx.cs">
       <DependentUpon>SortUp.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Navigation\Table.aspx.cs">
-      <DependentUpon>Table.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Navigation\Table.aspx.designer.cs">
-      <DependentUpon>Table.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Navigation\Tree.aspx.cs">
       <DependentUpon>Tree.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -762,7 +755,6 @@
     <Content Include="Framed.Master" />
     <Content Include="Navigation\ContextMenu.ascx" />
     <Content Include="Navigation\Search.aspx" />
-    <Content Include="Navigation\Table.aspx" />
     <Content Include="Navigation\Tree.aspx" />
     <Content Include="Paste.aspx" />
     <Content Include="Security\App_LocalResources\Default.aspx.it.resx">

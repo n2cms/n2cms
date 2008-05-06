@@ -65,10 +65,9 @@
 	bottom:15px;
 }
 
-
-#splitter { height: 500px; }
-#splitter #leftPane { overflow: hidden; width: 200px; min-width: 50px; }
-#splitter #rightPane { min-width: 50px; overflow: hidden; }
+#splitter { height: 510px; }
+#leftPane { width: 200px; min-width: 50px; float:left; }
+#rightPane { min-width: 50px; overflow: hidden; width:790px; float:left; }
 #splitter .vsplitbar { width: 5px; background: #d3d6d5 url(../img/splitter.gif) no-repeat 50% 50%; }
 #splitter .vsplitbar.active, #splitter .vsplitbar:hover { background-color: #a5acb0; }
 #splitter iframe{ width:100%; }

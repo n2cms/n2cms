@@ -23,22 +23,11 @@
             <asp:ImageButton ID="btnSerach" runat="server" ImageUrl="../Img/Ico/find.gif" OnClick="btnSerach_Click" CssClass="btn" meta:resourceKey="btnSearch" />
             <asp:RequiredFieldValidator ID="rfvQuery" ControlToValidate="txtQuery" runat="server" ErrorMessage="*" meta:resourceKey="rfvQuery" Display="Dynamic" />
             <n2:ItemDataSource ID="idsItems" runat="server" />
-            <div id="nav">
+            <div id="nav" class="nav">
                 <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" DataMember="Query" runat="server" DataKeyField="ID"
                     AutoGenerateColumns="false" 
                     CssClass="gv" AlternatingItemStyle-CssClass="alt" UseAccessibleHeader="true">
                     <Columns>
-                        <asp:TemplateColumn>
-                            <ItemTemplate>
-                                <a onclick="<%# Eval("Path", "if(window.top.n2)window.top.n2.setupToolbar('{0}');") %>"
-									rel='<%# Eval("Path") %>'
-                                    href='<%# "Table.aspx?selected=" + Server.UrlEncode((string)Eval("Path")) %>' 
-                                    style='<%# ((int)Eval("Children.Count")==0) ? "display:none" : "" %>'
-                                    title='<%# (int)Eval("Children.Count") %>'>
-                                    <img src="../Img/Ico/bullet_toggle_plus.gif" />
-                                </a>
-                            </ItemTemplate>
-                        </asp:TemplateColumn>
                         <asp:TemplateColumn>
                             <ItemTemplate>
                                 <asp:HyperLink ID="hlIconShow" runat="server" Target="preview" 
@@ -57,12 +46,7 @@
                                 </asp:HyperLink>
                             </ItemTemplate>
                         </asp:TemplateColumn>
-                        <asp:TemplateColumn HeaderText="Name" meta:resourceKey="colName">
-                            <ItemTemplate>
-                                <%# Eval("Name") %>
-                            </ItemTemplate>
-                        </asp:TemplateColumn>
-                        <asp:TemplateColumn HeaderText="Publ." meta:resourceKey="colPublished" >
+                        <asp:TemplateColumn HeaderText="Publ." meta:resourceKey="colPublished" ItemStyle-CssClass="date">
                             <ItemTemplate>
                                 <%# Eval("Published", "{0:yyy-MM-dd}") %>-<%# Eval("Expires", "{0:yyy-MM-dd}") %>
                             </ItemTemplate>
