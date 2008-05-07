@@ -60,10 +60,6 @@
 					});
 		        }
 		        toDraggable("#nav li li");
-		        
-                $("#nav .locked").append("<img src='<%= N2.Utility.ToAbsolute("~/Edit/Img/Ico/bullet_key.gif") %>' alt='secured'/>");
-                $("#nav .unpublished").append("<img src='<%= N2.Utility.ToAbsolute("~/Edit/Img/Ico/bullet_arrow_down.gif") %>' alt='pending publish'/>");
-                $("#nav .expired").append("<img src='<%= N2.Utility.ToAbsolute("~/Edit/Img/Ico/bullet_arrow_top.gif") %>' alt='expired'/>");
             });
         </script>
         <nav:ContextMenu id="cm" runat="server" />

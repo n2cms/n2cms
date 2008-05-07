@@ -35,7 +35,7 @@ n2nav.refreshLinks = function(container){
 	if(!container){
 		container = n2nav.linkContainerId;
 	}
-	$("a", n2nav.linkContainerId).each( n2nav.handleLink );
+	$("a", container).each( n2nav.handleLink );
 }
 n2nav.setupLinks = function(containerId){
 	this.linkContainerId = containerId;

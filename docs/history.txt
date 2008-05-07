@@ -38,6 +38,8 @@ N2 1.3.5
 	- fixed nameditor update problem in IE
 	- changed edit styles to avoid fieldset position relative bug in ie7
 	- fixed wicked styles in the tree when ie6+7
+	- fixed item selection when venturing into ajax updated regions
+	- css fix expired items
 
 N2 1.3.4
 - engine

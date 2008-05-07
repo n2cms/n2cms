@@ -169,8 +169,6 @@ a.title { white-space:nowrap; }
 .navigation form { padding:5px; }
 .nav .selected { font-weight:bold; border: 1px dotted #CCC; margin:0;}
 
-
-
 /* tree */
 
 .tree { }
@@ -215,6 +213,11 @@ a.title { white-space:nowrap; }
 #nav .unpublished,
 #nav .expired,
 #nav .locked { color:#C66; }
+
+#nav .locked { padding-right:16px; background:transparent url(../Img/Ico/bullet_key.gif) no-repeat 100% 50%; }
+#nav .unpublished { padding-right:16px; background:transparent url(../Img/Ico/bullet_arrow_down.gif) no-repeat 100% 50%; }
+#nav .expired { padding-right:16px; background:transparent url(../Img/Ico/bullet_arrow_top.gif) no-repeat 100% 50%; }
+
 
 /* TABS */
 
