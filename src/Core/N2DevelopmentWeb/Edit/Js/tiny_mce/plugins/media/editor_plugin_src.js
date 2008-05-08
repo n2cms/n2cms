@@ -1,5 +1,5 @@
 /**
- * $Id: editor_plugin_src.js 615 2008-02-20 23:18:01Z spocke $
+ * $Id: editor_plugin_src.js 763 2008-04-03 13:25:45Z spocke $
  *
  * @author Moxiecode
  * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
@@ -47,7 +47,8 @@
 					mceItemRealMedia : 'realmedia'
 				};
 
-				ed.dom.loadCSS(url + "/css/content.css");
+				if (ed.settings.content_css !== false)
+					ed.dom.loadCSS(url + "/css/content.css");
 
 				if (ed.theme.onResolveName) {
 					ed.theme.onResolveName.add(function(th, o) {
@@ -223,8 +224,13 @@
 				p.src = ed.convertURL(p.src, 'src', n);
 
 			each (p, function(v, k) {
-				if (!/^(width|height|codebase|classid)$/.test(k))
+				if (!/^(width|height|codebase|classid)$/.test(k)) {
+					// Use url instead of src in IE for Windows media
+					if (o.type == 'application/x-mplayer2' && k == 'src')
+						k = 'url';
+
 					dom.add(ob, 'span', {mce_name : 'param', name : k, '_value' : v});
+				}
 			});
 
 			dom.add(ob, 'span', tinymce.extend({mce_name : 'embed', type : o.type}, p));

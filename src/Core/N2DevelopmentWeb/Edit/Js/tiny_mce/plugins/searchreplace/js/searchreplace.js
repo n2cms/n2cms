@@ -7,6 +7,9 @@ var SearchReplaceDialog = {
 		this.switchMode(m);
 
 		f[m + '_panel_searchstring'].value = tinyMCEPopup.getWindowArg("search_string");
+
+		// Focus input field
+		f[m + '_panel_searchstring'].focus();
 	},
 
 	switchMode : function(m) {
@@ -89,6 +92,10 @@ var SearchReplaceDialog = {
 
 		se.collapse(b);
 		r = se.getRng();
+
+		// Whats the point
+		if (!s)
+			return;
 
 		if (tinymce.isIE) {
 			if (r.findText(s, b ? -1 : 1, fl)) {

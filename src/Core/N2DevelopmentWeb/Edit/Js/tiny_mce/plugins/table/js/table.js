@@ -9,6 +9,8 @@ function insertTable() {
 	var html = '', capEl, elm;
 	var cellLimit, rowLimit, colLimit;
 
+	tinyMCEPopup.restoreSelection();
+
 	if (!AutoValidator.validate(formObj)) {
 		alert(inst.getLang('invalid_data'));
 		return false;
@@ -85,13 +87,23 @@ function insertTable() {
 			elm.insertBefore(capEl, elm.firstChild);
 		}
 
-		dom.setAttrib(elm, 'width', width, true);
+		if (width && /(pt|em|cm)$/.test(width)) {
+			dom.setStyle(elm, 'width', width);
+			dom.setAttrib(elm, 'width', '');
+		} else {
+			dom.setAttrib(elm, 'width', width, true);
+			dom.setStyle(elm, 'width', '');
+		}
 
 		// Remove these since they are not valid XHTML
 		dom.setAttrib(elm, 'borderColor', '');
 		dom.setAttrib(elm, 'bgColor', '');
 		dom.setAttrib(elm, 'background', '');
-		dom.setAttrib(elm, 'height', '');
+
+		if (height) {
+			dom.setStyle(elm, 'height', height);
+			dom.setAttrib(elm, 'height', '');
+		}
 
 		if (background != '')
 			elm.style.backgroundImage = "url('" + background + "')";
@@ -136,7 +148,22 @@ function insertTable() {
 	html += makeAttrib('border', border);
 	html += makeAttrib('cellpadding', cellpadding);
 	html += makeAttrib('cellspacing', cellspacing);
-	html += makeAttrib('width', width);
+
+	if (width && /(pt|em|cm)$/.test(width)) {
+		if (style)
+			style += '; ';
+
+		style += 'width: ' + width;
+	} else
+		html += makeAttrib('width', width);
+
+/*	if (height) {
+		if (style)
+			style += '; ';
+
+		style += 'height: ' + height;
+	}*/
+
 	//html += makeAttrib('height', height);
 	//html += makeAttrib('bordercolor', bordercolor);
 	//html += makeAttrib('bgcolor', bgcolor);
@@ -261,12 +288,13 @@ function init() {
 	}
 
 	addClassesToList('class', "table_styles");
+	TinyMCE_EditableSelects.init();
 
 	// Update form
 	selectByValue(formObj, 'align', align);
 	selectByValue(formObj, 'frame', frame);
 	selectByValue(formObj, 'rules', rules);
-	selectByValue(formObj, 'class', className);
+	selectByValue(formObj, 'class', className, true, true);
 	formObj.cols.value = cols;
 	formObj.rows.value = rows;
 	formObj.border.value = border;

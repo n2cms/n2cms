@@ -25,6 +25,40 @@
 				ed.execCommand("mceInsertContent", false, '<a href="' + dom.encode(v) + '">' + ed.selection.getContent() + '</a>');
 			});*/
 
+			ed.onPaste.add(function(ed, e) {
+				function removeStyles(e) {
+					e = e.target;
+
+					if (e.nodeType == 1) {
+						e.style.cssText = '';
+
+						each(ed.dom.select('*', e), function(e) {
+							e.style.cssText = '';
+						});
+					}
+				};
+
+				Event.add(ed.getDoc(), 'DOMNodeInserted', removeStyles);
+
+				window.setTimeout(function() {
+					Event.remove(ed.getDoc(), 'DOMNodeInserted', removeStyles);
+				}, 0);
+			});
+
+			ed.onKeyUp.add(function(ed, e) {
+				var h, b;
+
+				// If backspace or delete key
+				if (e.keyCode == 46 || e.keyCode == 8) {
+					b = ed.getBody();
+					h = b.innerHTML;
+
+					// If there is no text content or images or hr elements then remove everything
+					if (b.childNodes.length == 1 && !/<(img|hr)/.test(h) && tinymce.trim(h.replace(/<[^>]+>/g, '')).length == 0)
+						ed.setContent('', {format : 'raw'});
+				}
+			});
+
 			// Workaround for FormatBlock bug, http://bugs.webkit.org/show_bug.cgi?id=16004
 			ed.addCommand('FormatBlock', function(u, v) {
 				var dom = ed.dom, e = dom.getParent(ed.selection.getNode(), dom.isBlock);
@@ -94,7 +128,7 @@
 					t.selElm = null;
 			});
 
-			ed.onBeforeExecCommand.add(function(ed, c, b) {
+/*			ed.onBeforeExecCommand.add(function(ed, c, b) {
 				var r = t.bookmarkRng;
 
 				// Restore selection
@@ -103,12 +137,12 @@
 					t.bookmarkRng = null;
 					//console.debug('restore', r.startContainer, r.startOffset, r.endContainer, r.endOffset);
 				}
-			});
+			});*/
 
 			ed.onInit.add(function() {
 				t._fixWebKitSpans();
 
-				ed.windowManager.onOpen.add(function() {
+/*				ed.windowManager.onOpen.add(function() {
 					var r = ed.selection.getRng();
 
 					// Store selection if valid
@@ -120,7 +154,7 @@
 
 				ed.windowManager.onClose.add(function() {
 					t.bookmarkRng = null;
-				});
+				});*/
 
 				if (isOldWebKit)
 					t._patchSafari2x(ed);
@@ -233,6 +267,18 @@
 				o.content = o.content.replace(/ id=\"undefined\"/g, '');
 			});
 		},
+
+		getInfo : function() {
+			return {
+				longname : 'Safari compatibility',
+				author : 'Moxiecode Systems AB',
+				authorurl : 'http://tinymce.moxiecode.com',
+				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/safari',
+				version : tinymce.majorVersion + "." + tinymce.minorVersion
+			};
+		},
+
+		// Internal methods
 
 		_fixWebKitSpans : function() {
 			var t = this, ed = t.editor;

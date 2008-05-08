@@ -1,5 +1,5 @@
 /**
- * $Id: editor_plugin_src.js 615 2008-02-20 23:18:01Z spocke $
+ * $Id: editor_plugin_src.js 738 2008-03-20 20:00:48Z spocke $
  *
  * @author Moxiecode
  * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
@@ -17,28 +17,34 @@
 			// Register commands
 			ed.addCommand('mcePasteText', function(ui, v) {
 				if (ui) {
-					ed.windowManager.open({
-						file : url + '/pastetext.htm',
-						width : 450,
-						height : 400,
-						inline : 1
-					}, {
-						plugin_url : url
-					});
+					if ((ed.getParam('paste_use_dialog', true)) || (!tinymce.isIE)) {
+						ed.windowManager.open({
+							file : url + '/pastetext.htm',
+							width : 450,
+							height : 400,
+							inline : 1
+						}, {
+							plugin_url : url
+						});
+					} else
+						t._insertText(clipboardData.getData("Text"), true);
 				} else
 					t._insertText(v.html, v.linebreaks);
 			});
 
 			ed.addCommand('mcePasteWord', function(ui, v) {
 				if (ui) {
-					ed.windowManager.open({
-						file : url + '/pasteword.htm',
-						width : 450,
-						height : 400,
-						inline : 1
-					}, {
-						plugin_url : url
-					});
+					if ((ed.getParam('paste_use_dialog', true)) || (!tinymce.isIE)) {
+						ed.windowManager.open({
+							file : url + '/pasteword.htm',
+							width : 450,
+							height : 400,
+							inline : 1
+						}, {
+							plugin_url : url
+						});
+					} else
+						t._insertText(t._clipboardHTML());
 				} else
 					t._insertWordContent(v);
 			});
@@ -277,28 +283,27 @@
 		},
 
 		_convertMiddots : function(div, search, class_name) {
-			var mdot = String.fromCharCode(183);
-			var bull = String.fromCharCode(8226);
+			var ed = this.editor, mdot = String.fromCharCode(183), bull = String.fromCharCode(8226);
+			var nodes, prevul, i, p, ul, li, np, cp, li;
 
-			var nodes = div.getElementsByTagName("p");
-			var prevul;
-			for (var i=0; i<nodes.length; i++) {
-				var p = nodes[i];
+			nodes = div.getElementsByTagName("p");
+			for (i=0; i<nodes.length; i++) {
+				p = nodes[i];
 
 				// Is middot
 				if (p.innerHTML.indexOf(search) == 0) {
-					var ul = document.createElement("ul");
+					ul = ed.dom.create("ul");
 
 					if (class_name)
 						ul.className = class_name;
 
 					// Add the first one
-					var li = document.createElement("li");
+					li = ed.dom.create("li");
 					li.innerHTML = p.innerHTML.replace(new RegExp('' + mdot + '|' + bull + '|--list--|&nbsp;', "gi"), '');
 					ul.appendChild(li);
 
 					// Add the rest
-					var np = p.nextSibling;
+					np = p.nextSibling;
 					while (np) {
 						// If the node is whitespace, then
 						// ignore it and continue on.
@@ -312,7 +317,7 @@
 										// Second level of nesting
 										if (!prevul) {
 												prevul = ul;
-												ul = document.createElement("ul");
+												ul = ed.dom.create("ul");
 												prevul.appendChild(ul);
 										}
 										np.innerHTML = np.innerHTML.replace(/^o/, '');
@@ -332,8 +337,8 @@
 										break;
 							}
 
-						var cp = np.nextSibling;
-						var li = document.createElement("li");
+						cp = np.nextSibling;
+						li = ed.dom.create("li");
 						li.innerHTML = np.innerHTML.replace(new RegExp('' + mdot + '|' + bull + '|--list--|&nbsp;', "gi"), '');
 						np.parentNode.removeChild(np);
 						ul.appendChild(li);
