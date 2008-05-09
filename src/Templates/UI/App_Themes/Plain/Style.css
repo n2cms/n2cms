@@ -26,7 +26,7 @@ a:visited { color:#5bb4e5; }
 body { margin:0; background-color:#ffd451; }
 	#wrap { width:900px; margin:0 auto; }
 		#header { height:100px; background:#ecac00; }
-		#page { padding:15px 15px 6px 15px; background:#fff url(content_bottom.gif) no-repeat 50% 100%; }
+		#page { padding:15px 15px 6px 15px; background-color:#fff; }
 			#content { margin-left:185px; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; }

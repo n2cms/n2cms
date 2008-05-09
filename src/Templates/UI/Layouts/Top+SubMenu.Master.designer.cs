@@ -14,22 +14,22 @@ namespace N2.Templates.UI.Layouts {
     public partial class Top_SubMenu {
         
         /// <summary>
-        /// Head1 control.
+        /// h control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        protected global::System.Web.UI.HtmlControls.HtmlHead h;
         
         /// <summary>
-        /// Title1 control.
+        /// t control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTitle Title1;
+        protected global::System.Web.UI.HtmlControls.HtmlTitle t;
         
         /// <summary>
         /// F control.
@@ -77,6 +77,15 @@ namespace N2.Templates.UI.Layouts {
         protected global::N2.Web.UI.WebControls.Display dh;
         
         /// <summary>
+        /// tm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Templates.UI.Layouts.Parts.TopMenu tm;
+        
+        /// <summary>
         /// PageArea control.
         /// </summary>
         /// <remarks>
@@ -84,6 +93,15 @@ namespace N2.Templates.UI.Layouts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder PageArea;
+        
+        /// <summary>
+        /// PageTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder PageTop;
         
         /// <summary>
         /// Menu control.

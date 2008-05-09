@@ -23,7 +23,7 @@ namespace N2DevelopmentWeb.Domain
 	[EditableChildren("Sub items", "Right", 0, ContainerName="teasers")]
 	[WithEditablePublishedRange("Publish between", 20, ContainerName="default")]
 	[TabPanel("advanced", "Advanced", 1040)]
-	public class MyPageData : AbstractCustomItem
+	public class MyPageData : AbstractCustomItem, INode
 	{
 
 		[N2.Details.Editable("Start date", typeof(DatePicker), "SelectedDate", 10, ContainerName = "advanced")]
@@ -133,6 +133,11 @@ namespace N2DevelopmentWeb.Domain
 		{
 			get { return Convert.ToInt32(GetDetail("IntegerValue") ?? 0); }
 			set { SetDetail("IntegerValue", value); }
+		}
+
+		public virtual string PreviewUrl
+		{
+			get { return RewrittenUrl; }
 		}
 	}
 }

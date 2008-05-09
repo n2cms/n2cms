@@ -5,7 +5,7 @@ using N2.Templates.Items;
 namespace N2.Templates.UI.Items.Parts
 {
 	[Definition("Text", "Text")]
-	[AllowedZones("Content", "ColumnLeft", "ColumnRight")]
+	[AllowedZones(Zones.Content, Zones.Left, Zones.Right)]
 	public class TextItem : AbstractItem
 	{
 		[EditableFreeTextArea("Text", 100)]

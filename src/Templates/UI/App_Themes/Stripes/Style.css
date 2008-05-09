@@ -28,8 +28,8 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 			#header .top {height:90px; background:url(top_bg.gif) 50% 0%;  }
 				#header .top h2 {width:900px; left:50%; margin-left:-450px; position:absolute; }
 				#header .top .siteLogo {width:900px; left:50%; margin-left:-450px; position:absolute; }
-		#page { width:900px; margin:0 auto; padding-bottom:3px; background:#fff url(page_bottom.gif) no-repeat 100% 100%; }
-			#content { float:right; width:685px; padding:15px; background:#fff url(page_top.gif) no-repeat 100% 0%; }
+		#page { width:900px; margin:0 auto; padding-bottom:3px; background:#fff url(page_bg.gif) no-repeat 100% 100%; }
+			#content { float:right; width:685px; padding:15px; background:#fff url(page_bg.gif) no-repeat 100% 0%; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; }
 				#extras { float:right; }

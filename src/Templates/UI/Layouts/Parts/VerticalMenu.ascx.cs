@@ -9,7 +9,7 @@ namespace N2.Templates.UI.Layouts.Parts
 		{
 			base.OnInit(e);
 
-			ContentItem branchRoot = Find.FindAncestorAtLevel(CurrentItem.StartingDepth);
+			ContentItem branchRoot = Find.AncestorAtLevel(CurrentItem.StartingDepth);
 			if(branchRoot != null)
 				h.Text = N2.Web.Link.To(branchRoot).ToString();
 			else

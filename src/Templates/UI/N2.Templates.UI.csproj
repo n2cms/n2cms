@@ -444,6 +444,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.aspx" />
+    <Content Include="App_Themes\N2\amazed.gif" />
+    <Content Include="App_Themes\N2\body_bg.gif" />
+    <Content Include="App_Themes\N2\happy.gif" />
+    <Content Include="App_Themes\N2\logo.gif" />
+    <Content Include="App_Themes\N2\manic.gif" />
+    <Content Include="App_Themes\N2\menuselection_bg.gif" />
+    <Content Include="App_Themes\N2\menu_bg.gif" />
+    <Content Include="App_Themes\N2\page_bg.gif" />
+    <Content Include="App_Themes\N2\Style.css" />
+    <Content Include="App_Themes\N2\tab_bg.gif" />
+    <Content Include="App_Themes\N2\tab_item.gif" />
+    <Content Include="App_Themes\N2\tab_item2.gif" />
     <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
     <Content Include="favicon.ico" />
     <Content Include="Layouts\Parts\SubMenu.ascx" />
@@ -452,7 +464,6 @@
     <Content Include="Upload\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Themes\N2\" />
     <Folder Include="Js\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

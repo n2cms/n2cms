@@ -9,6 +9,11 @@
 	padding:1px;
 	text-align:center;
 }
+.calendarTeaser th
+{
+	font-size:.6em;
+	font-weight:normal;
+}
 .calendarTeaser .otherMonth a
 {
 	opacity:.25;
@@ -17,7 +22,6 @@
 {
 	font-weight:bold;
 }
-
 .list a
 {
 	display:block;
@@ -28,18 +32,9 @@
 	display:block;
 }
 
-.calendarTeaser .calendar
-{
-	width:100%;
-}
-.calendarTeaser .boxTitle td
-{
-	padding:3px 2px;
-	font-weight:bold;
-}
 .calendarTeaser .calendar a
 {
 	display:block;
-	padding:2px;
+	padding:1px;
 	text-align:center;
 }

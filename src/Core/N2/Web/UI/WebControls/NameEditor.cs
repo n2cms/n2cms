@@ -149,8 +149,9 @@ var invokeUpdateName = function(){{
 $('#{0}').blur(invokeUpdateName);
 if('{5}'){{
 	var chk = document.getElementById('{5}');
-	var eq = getName('{0}', '{2}', {3}, {4}) == document.getElementById('{1}').value;
-	chk.checked = eq;
+	var name = getName('{0}', '{2}', {3}, {4});
+	var title = document.getElementById('{1}').value
+	chk.checked = !name || !title || (name == title);
 	$(chk).click(invokeUpdateName);
 }}
 ";

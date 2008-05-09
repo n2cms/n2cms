@@ -28,14 +28,19 @@ namespace N2.Templates.UI.Layouts.Parts
 
 		protected override void OnInit(EventArgs e)
 		{
-			ContentItem branchRoot = Find.FindAncestorAtLevel(2, Find.EnumerateParents(CurrentPage, StartPage), CurrentPage);
-			
+			Page.InitComplete += InitMenu;
+
+			base.OnInit(e);
+		}
+
+		private void InitMenu(object sender, EventArgs e)
+		{
+			ContentItem branchRoot = Find.AncestorAtLevel(StartLevel, Find.EnumerateParents(CurrentPage, StartPage), CurrentPage);
+
 			if (branchRoot != null && branchRoot.GetChildren(new NavigationFilter()).Count > 0)
 				hsm.Text = N2.Web.Link.To(branchRoot).ToString();
 			else
 				this.Visible = false;
-
-			base.OnInit(e);
 		}
 	}
 }

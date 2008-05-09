@@ -135,7 +135,7 @@ namespace N2.Templates.Web.UI.WebControls
 
 		private ContentItem GetStartingPoint()
 		{
-			return Find.FindAncestorAtLevel(StartLevel, Find.EnumerateParents(CurrentPage, StartPage, true), CurrentPage);
+			return Find.AncestorAtLevel(StartLevel, Find.EnumerateParents(CurrentPage, StartPage, true), CurrentPage);
 		}
 
 		private static IEnumerable<ContentItem> GetAncestors(ContentItem currentItem, ContentItem startPage)

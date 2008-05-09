@@ -26,7 +26,20 @@ namespace N2.Templates.UI.Layouts
 			zsl.CurrentItem = language;
 			dft.CurrentItem = language;
 
+			tm.MaxLevels = int.Parse(ConfigurationManager.AppSettings[Page.Theme + ".MenuHandoverLevel"] ?? "2");
+			sm.StartLevel = int.Parse(ConfigurationManager.AppSettings[Page.Theme + ".MenuHandoverLevel"] ?? "2");
+
 			base.OnInit(e);
+		}
+
+		protected string GetBodyClass()
+		{
+			if (CurrentPage != null)
+			{
+				string className = CurrentPage.GetType().Name;
+				return className.Substring(0, 1).ToLower() + className.Substring(1);
+			}
+			return null;
 		}
 	}
 }

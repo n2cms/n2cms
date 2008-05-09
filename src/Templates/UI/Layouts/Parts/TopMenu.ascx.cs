@@ -15,11 +15,17 @@ namespace N2.Templates.UI.Layouts.Parts
 {
 	public partial class TopMenu : N2.Templates.Web.UI.TemplateUserControl<ContentItem>
 	{
+		public int MaxLevels
+		{
+			get { return tm.MaxLevels; }
+			set { tm.MaxLevels = value; }
+		}
+
 		protected ILanguageGateway languages;
 		protected override void OnInit(EventArgs e)
 		{
 			languages = Engine.Resolve<ILanguageGateway>();
-
+			
 			rptLanguages.DataSource = GetTranslations();
 			DataBind();
 

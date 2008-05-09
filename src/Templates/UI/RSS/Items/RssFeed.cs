@@ -11,7 +11,7 @@ namespace N2.Templates.Rss.Items
 	[RestrictParents(typeof (IStructuralPage))]
 	[WithEditableTitle("Title", 10),
 	 WithEditableName("Name", 20)]
-	public class RssFeed : ContentItem, IFeed
+	public class RssFeed : ContentItem, IFeed, INode
 	{
 		[EditableLink("Feed root", 90)]
 		public virtual ContentItem FeedRoot
@@ -60,10 +60,12 @@ namespace N2.Templates.Rss.Items
 
 		public override string Url
 		{
-			get
-			{
-				return base.Url + "?hungry=yes";
-			}
+			get { return base.Url + "?hungry=yes"; }
+		}
+
+		public string PreviewUrl
+		{
+			get { return base.RewrittenUrl; }
 		}
 
 		public virtual IEnumerable<ISyndicatable> GetItems()

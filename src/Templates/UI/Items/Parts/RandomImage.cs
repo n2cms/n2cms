@@ -7,7 +7,7 @@ using N2.Templates.Items;
 namespace N2.Templates.UI.Items.Parts
 {
 	[Definition("Random image", "RandomImage")]
-	[AllowedZones("Content", "RecursiveAbove", "ColumnLeft", "ColumnRight")]
+	[AllowedZones(Zones.Content, Zones.RecursiveAbove, Zones.Left, Zones.Right)]
 	public class RandomImage : AbstractItem
 	{
 		[DisplayableImage(CssClass = "main")]

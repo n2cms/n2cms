@@ -279,7 +279,6 @@
     <EmbeddedResource Include="Edit\edit.castle.config" />
     <EmbeddedResource Include="Engine\engine.castle.config" />
     <EmbeddedResource Include="Definitions\definitions.castle.config" />
-    <None Include="FactoryModel.cd" />
     <None Include="ContentModel.cd" />
     <EmbeddedResource Include="Globalization\globalization.castle.config" />
     <EmbeddedResource Include="Parts\parts.castle.config" />

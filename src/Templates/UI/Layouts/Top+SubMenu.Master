@@ -4,10 +4,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
-<head id="Head1" runat="server">
-    <title id="Title1" runat="server" title='<%$ CurrentPage: Title %>' />
+<head id="h" runat="server">
+    <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
 </head>
-<body>
+<body class="<%= GetBodyClass() %>">
     <form id="F" runat="server">
 		<n2:SlidingCurtain ID="sc" runat="server">
 			<n2:DragDropControlPanel ID="cp" runat="server" QuickEditLink-Visible="false">
@@ -19,18 +19,20 @@
 				</VisibleFooterTemplate>
 			</n2:DragDropControlPanel>
 		</n2:SlidingCurtain>
+		
         <div id="wrap">
             <asp:ContentPlaceHolder ID="Top" runat="server">
                 <div id="header">
                     <n2:Display ID="dh" PropertyName="Header" Path="/" runat="server" />
-                    <parts:TopMenu runat="server" />
+                    <parts:TopMenu ID="tm" runat="server" />
                 </div>
             </asp:ContentPlaceHolder>
             <asp:ContentPlaceHolder ID="PageArea" runat="server">
                 <div id="page">
+					<asp:ContentPlaceHolder ID="PageTop" runat="server" />
                     <asp:ContentPlaceHolder ID="Menu" runat="server">
                         <div id="menu" class="secondary">
-							<parts:SubMenu ID="sm" StartLevel="2" runat="server" />
+							<parts:SubMenu ID="sm" runat="server" />
                             <n2:DroppableZone ID="zsl" ZoneName="SiteLeft" runat="server" Path="/" />
                             <n2:DroppableZone ID="zl" ZoneName="Left" runat="server" />
                         </div>

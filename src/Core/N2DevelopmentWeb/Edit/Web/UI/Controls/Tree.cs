@@ -16,6 +16,7 @@ namespace N2.Edit.Web.UI.Controls
 		private ContentItem selectedtItem = null;
 		private ContentItem rootItem = null;
 		private string target = "preview";
+		private bool preview = true;
 
 		public Tree()
 		{
@@ -31,6 +32,12 @@ namespace N2.Edit.Web.UI.Controls
 		{
 			get { return rootItem ?? Find.RootItem; }
 			set { rootItem = value; }
+		}
+
+		public bool Preview
+		{
+			get { return preview; }
+			set { preview = value; }
 		}
 
 		public string Target
@@ -96,6 +103,9 @@ namespace N2.Edit.Web.UI.Controls
 			ILinkBuilder builder = Link.To(node).Target(target).Class(className)
 				.Text("<img src='" + Utility.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
 				.Attribute("rel", node.Path);
+
+			if (Preview)
+				builder.Href(node.PreviewUrl);
 
 			return builder;
 		}
