@@ -6,7 +6,8 @@ using N2.Templates.Items;
 namespace N2.Templates.News.Items
 {
 	[Definition("News List", "NewsList", "A news list box that can be displayed in a column.", "", 160)]
-	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left)]
+	[WithEditableTitle("Title", 10, Required = false)]
+	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content)]
 	public class NewsList : SidebarItem
 	{
 		[EditableLink("News container", 100)]
@@ -16,7 +17,6 @@ namespace N2.Templates.News.Items
 			set { SetDetail("Container", value); }
 		}
 
-
 		[EditableTextBox("Max news", 120)]
 		public virtual int MaxNews
 		{
@@ -24,10 +24,9 @@ namespace N2.Templates.News.Items
 			set { SetDetail("MaxNews", value, 3); }
 		}
 
-
 		public override string TemplateUrl
 		{
-			get { return "~/News/UI/NewsList.ascx"; }
+			get { return ZoneName == Zones.Content ? "~/News/UI/NewsList.ascx" :  "~/News/UI/NewsBox.ascx"; }
 		}
 
 		public override string IconUrl

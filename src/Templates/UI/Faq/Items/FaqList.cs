@@ -16,7 +16,7 @@ namespace N2.Templates.Faq.Items
 	[Definition("Frequently Asked Questions", "FaqList", "A list of frequently asked questions with answers.", "", 200)]
 	[AvailableZone("Questions", "Questions")]
 	[RestrictParents(typeof(IStructuralPage))]
-	public class FaqList : AbstractContentPage
+	public class FaqList : AbstractContentPage, IStructuralPage
 	{
 
 		[N2.Details.EditableChildren("Questions", "Questions", 110, ContainerName=Tabs.Content)]

@@ -131,6 +131,7 @@
     <Compile Include="Items\LayoutParts\Top.cs" />
     <Compile Include="Items\LayoutParts\VerticalMenu.cs" />
     <Compile Include="Items\Parts\ControlPanel.cs" />
+    <Compile Include="Items\Parts\BoxedTextItem.cs" />
     <Compile Include="Items\Parts\RandomImage.cs" />
     <Compile Include="Items\Parts\Teaser.cs" />
     <Compile Include="Items\Parts\TextItem.cs" />
@@ -139,6 +140,15 @@
     <Compile Include="Items\RootParts\Statistics.cs" />
     <Compile Include="Items\SiteMap.cs" />
     <Compile Include="Items\StartPage.cs" />
+    <Compile Include="Parts\Empty.ascx.cs">
+      <DependentUpon>Empty.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\Empty.ascx.designer.cs">
+      <DependentUpon>Empty.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TabPanel\TabsItem.cs">
+    </Compile>
     <Compile Include="Items\TextPage.cs" />
     <Compile Include="Layouts\Empty.Master.cs">
       <DependentUpon>Empty.Master</DependentUpon>
@@ -188,6 +198,13 @@
     </Compile>
     <Compile Include="Layouts\Top+SubMenu.Master.designer.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Parts\BoxedText.ascx.cs">
+      <DependentUpon>BoxedText.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\BoxedText.ascx.designer.cs">
+      <DependentUpon>BoxedText.ascx</DependentUpon>
     </Compile>
     <Compile Include="Parts\ControlPanel.ascx.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
@@ -276,6 +293,13 @@
     </Compile>
     <Compile Include="Text.aspx.designer.cs">
       <DependentUpon>Text.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TabPanel\TabsInterface.ascx.cs">
+      <DependentUpon>TabsInterface.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TabPanel\TabsInterface.ascx.designer.cs">
+      <DependentUpon>TabsInterface.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -444,27 +468,39 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="404.aspx" />
-    <Content Include="App_Themes\N2\amazed.gif" />
-    <Content Include="App_Themes\N2\body_bg.gif" />
-    <Content Include="App_Themes\N2\happy.gif" />
-    <Content Include="App_Themes\N2\logo.gif" />
-    <Content Include="App_Themes\N2\manic.gif" />
-    <Content Include="App_Themes\N2\menuselection_bg.gif" />
-    <Content Include="App_Themes\N2\menu_bg.gif" />
-    <Content Include="App_Themes\N2\page_bg.gif" />
-    <Content Include="App_Themes\N2\Style.css" />
-    <Content Include="App_Themes\N2\tab_bg.gif" />
-    <Content Include="App_Themes\N2\tab_item.gif" />
-    <Content Include="App_Themes\N2\tab_item2.gif" />
+    <Content Include="App_Themes\Corporate\amazed.gif" />
+    <Content Include="App_Themes\Corporate\body_bg.gif" />
+    <Content Include="App_Themes\Corporate\happy.gif" />
+    <Content Include="App_Themes\Corporate\logo.gif" />
+    <Content Include="App_Themes\Corporate\manic.gif" />
+    <Content Include="App_Themes\Corporate\menuselection_bg.gif" />
+    <Content Include="App_Themes\Corporate\menu_bg.gif" />
+    <Content Include="App_Themes\Corporate\page_bg.gif" />
+    <Content Include="App_Themes\Corporate\Style.css" />
+    <Content Include="App_Themes\Corporate\tab_bg.gif" />
+    <Content Include="App_Themes\Corporate\tab_item.gif" />
+    <Content Include="App_Themes\Corporate\tab_item2.gif" />
+    <Content Include="App_Themes\n2cms.com\bg.gif" />
+    <Content Include="App_Themes\n2cms.com\body_bg.gif" />
+    <Content Include="App_Themes\n2cms.com\line_bg.gif" />
+    <Content Include="App_Themes\n2cms.com\logo.gif" />
+    <Content Include="App_Themes\n2cms.com\menu_selected.gif" />
+    <Content Include="App_Themes\n2cms.com\Style.css" />
     <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
     <Content Include="favicon.ico" />
+    <Content Include="Img\application_view_columns.png" />
+    <Content Include="Img\tab.png" />
+    <Content Include="Parts\Empty.ascx" />
+    <Content Include="TabPanel\TabPanel.css" />
+    <Content Include="TabPanel\TabPanel.js" />
     <Content Include="Layouts\Parts\SubMenu.ascx" />
     <Content Include="Layouts\Parts\TopMenu.ascx" />
     <Content Include="Layouts\Top+SubMenu.Master" />
+    <Content Include="Parts\BoxedText.ascx" />
+    <Content Include="TabPanel\TabsInterface.ascx" />
+    <Content Include="TabPanel\tabs_bg.gif" />
+    <Content Include="TabPanel\tab_selected.gif" />
     <Content Include="Upload\logo_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Js\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

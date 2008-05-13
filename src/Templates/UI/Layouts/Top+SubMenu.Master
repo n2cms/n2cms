@@ -29,7 +29,9 @@
             </asp:ContentPlaceHolder>
             <asp:ContentPlaceHolder ID="PageArea" runat="server">
                 <div id="page">
-					<asp:ContentPlaceHolder ID="PageTop" runat="server" />
+					<asp:ContentPlaceHolder ID="PageTop" runat="server">
+						<n2:EditableDisplay PropertyName="TopImage" runat="server" SwallowExceptions="true" />
+					</asp:ContentPlaceHolder>
                     <asp:ContentPlaceHolder ID="Menu" runat="server">
                         <div id="menu" class="secondary">
 							<parts:SubMenu ID="sm" runat="server" />

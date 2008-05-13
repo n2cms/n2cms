@@ -11,6 +11,11 @@ namespace N2.Templates.News.Items
 	[RestrictParents(typeof (NewsContainer))]
 	public class News : AbstractContentPage, ISyndicatable
 	{
+		public News()
+		{
+			Visible = false;
+		}
+
 		public override void AddTo(ContentItem newParent)
 		{
 			Utility.Insert(this, newParent, "Published DESC");

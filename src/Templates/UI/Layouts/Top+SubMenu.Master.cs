@@ -22,12 +22,16 @@ namespace N2.Templates.UI.Layouts
 			languages = N2.Context.Current.Resolve<ILanguageGateway>();
 
 			ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
+			
 			dh.CurrentItem = language;
-			zsl.CurrentItem = language;
-			dft.CurrentItem = language;
-
 			tm.MaxLevels = int.Parse(ConfigurationManager.AppSettings[Page.Theme + ".MenuHandoverLevel"] ?? "2");
-			sm.StartLevel = int.Parse(ConfigurationManager.AppSettings[Page.Theme + ".MenuHandoverLevel"] ?? "2");
+
+			if (zsl != null)
+			{
+				zsl.CurrentItem = language;
+				dft.CurrentItem = language;
+				sm.StartLevel = int.Parse(ConfigurationManager.AppSettings[Page.Theme + ".MenuHandoverLevel"] ?? "2");
+			}
 
 			base.OnInit(e);
 		}
