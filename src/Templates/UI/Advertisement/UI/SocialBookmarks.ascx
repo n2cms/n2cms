@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SocialBookmarks.ascx.cs" Inherits="N2.Templates.Advertisement.UI.SocialBookmarks" %>
-<%@ Register TagPrefix="adv" Namespace="N2.Templates.Advertisement.UI.WebControls" Assembly="N2.Templates.Advertisement" %>
 <script runat="server">
 	public class Bookmark
 	{
