@@ -17,19 +17,8 @@ namespace N2.Templates.Items
 			set { SetDetail("HostName", value); }
 		}
 
-		[Details.ThemeSelector("Theme", 74, ContainerName = SiteArea)]
-		public virtual string Theme
-		{
-			get { return (string)(GetDetail("Theme") ?? string.Empty); }
-			set { SetDetail("Theme", value); }
-		}
-
-		[Details.LayoutSelector("Layout", 76, ContainerName = SiteArea)]
-		public virtual string Layout
-		{
-			get { return (string)(GetDetail("Layout") ?? "~/Layouts/DefaultLayout.Master"); }
-			set { SetDetail("Layout", value); }
-		}
+		public abstract string Theme { get; set; }
+		public abstract string Layout { get; set; }
 
 		[EditableLink("Not found page", 78, ContainerName = SiteArea, HelpText = "Display this page when the requested URL isn't found")]
 		public virtual ContentItem NotFoundPage
@@ -37,7 +26,6 @@ namespace N2.Templates.Items
 			get { return (ContentItem)GetDetail("NotFoundPage"); }
 			set { SetDetail("NotFoundPage", value); }
 		}
-
 
 		public IEnumerable<Site> GetSites()
 		{
