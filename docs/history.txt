@@ -23,6 +23,7 @@ N2 1.3.5
 	- introduced new globalization functionality
 	- moved items may not be inserted instead of appended when last items have a high sort order
 	- option to keep the name updated
+	- added a disable definition attribute
 - modules
 	- localization overview & control module
 - templates
@@ -31,6 +32,11 @@ N2 1.3.5
 	- fixed social bookmarks xhtml compliance
 	- implemented content globalization in the templates
 	- new theme: corporate
+	- some parts are now allowed in more zones
+	- new theme: n2cms.com
+	- changed the image gallery
+	- new part: tabs
+	- news list in content area
 - bugfixes
 	- fixed wrong preview url when changing item name
 	- names are now actually validated against ?

@@ -33,9 +33,6 @@
 		<CreateItem Include="$(Deploy-RootFolder)\Source\**\*"><Output TaskParameter="Include" ItemName="SourceDeploy-AllFiles"/></CreateItem>
 		<Zip Files="@(SourceDeploy-AllFiles)" ZipFileName="$(Deploy-RootFolder)\N2_Source.zip" />
 
-		<CreateItem Include="$(Examples-GlobalizationFolder)\**\*"><Output TaskParameter="Include" ItemName="GlobalizatioExampleDeploy-AllFiles"/></CreateItem>
-		<Zip Files="@(GlobalizatioExampleDeploy-AllFiles)" ZipFileName="$(Deploy-RootFolder)\N2_GlobalizatioExample.zip" />
-
 		<CreateItem Include="$(Examples-MediumTrustFolder)\**\*"><Output TaskParameter="Include" ItemName="MediumTrustExampleDeploy-AllFiles"/></CreateItem>
 		<Zip Files="@(MediumTrustExampleDeploy-AllFiles)" ZipFileName="$(Deploy-RootFolder)\N2_MediumTrustExample.zip" />
 
@@ -172,6 +169,7 @@
 
 	<ItemGroup>
 		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.UI.dll" />
+		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Advertisement.dll" />
 		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Calendar.dll" />
 		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Faq.dll" />
 		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Form.dll" />
@@ -185,7 +183,7 @@
 
 	<Target Name="Templates-ILMerge-Deploy" DependsOnTargets="Templates-Build">
 		<Delete Files="@(TemplatesDeploy-MergedDll)"/>
-		<Exec Command="$(ILMerge) /ndebug /out:$(DeployTemplates-UIFolder)\Bin\N2.Templates.UI.dll $(Templates-UIFolder)\Bin\N2.Templates.UI.dll /log $(Templates-UIFolder)\Bin\N2.Templates.Calendar.dll $(Templates-UIFolder)\Bin\N2.Templates.Faq.dll $(Templates-UIFolder)\Bin\N2.Templates.Form.dll $(Templates-UIFolder)\Bin\N2.Templates.ImageGallery.dll $(Templates-UIFolder)\Bin\N2.Templates.News.dll $(Templates-UIFolder)\Bin\N2.Templates.Poll.dll $(Templates-UIFolder)\Bin\N2.Templates.RSS.dll $(Templates-UIFolder)\Bin\N2.Templates.Search.dll $(Templates-UIFolder)\Bin\N2.Templates.Survey.dll"/>
+		<Exec Command="$(ILMerge) /ndebug /out:$(DeployTemplates-UIFolder)\Bin\N2.Templates.UI.dll $(Templates-UIFolder)\Bin\N2.Templates.UI.dll /log $(Templates-UIFolder)\Bin\N2.Templates.Advertisement.dll $(Templates-UIFolder)\Bin\N2.Templates.Calendar.dll $(Templates-UIFolder)\Bin\N2.Templates.Faq.dll $(Templates-UIFolder)\Bin\N2.Templates.Form.dll $(Templates-UIFolder)\Bin\N2.Templates.ImageGallery.dll $(Templates-UIFolder)\Bin\N2.Templates.News.dll $(Templates-UIFolder)\Bin\N2.Templates.Poll.dll $(Templates-UIFolder)\Bin\N2.Templates.RSS.dll $(Templates-UIFolder)\Bin\N2.Templates.Search.dll $(Templates-UIFolder)\Bin\N2.Templates.Survey.dll"/>
 	</Target>
 
 	
@@ -195,7 +193,7 @@
 	
 	<PropertyGroup>
 		<Examples-BaseFolder>Examples</Examples-BaseFolder>
-		<Examples-GlobalizationFolder>$(Examples-BaseFolder)\Globalization</Examples-GlobalizationFolder>
+		<Examples-GlobalizationFolder>$(Examples-BaseFolder)\OldGlobalization</Examples-GlobalizationFolder>
 		<Examples-MediumTrustFolder>$(Examples-BaseFolder)\MediumTrust</Examples-MediumTrustFolder>
 		<Examples-PartsFolder>$(Examples-BaseFolder)\Parts</Examples-PartsFolder>
 		<Examples-SimpleFolder>$(Examples-BaseFolder)\SimpleWebSite</Examples-SimpleFolder>
@@ -255,7 +253,6 @@
 	</Target>
 	
 	<Target Name="Examples-PrepareDependencies">
-		<CallTarget Targets="Examples-Globalization-PrepareDependencies"/>
 		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
 		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
 		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
@@ -266,7 +263,7 @@
 	</Target>
 
 	<Target Name="Example-Globalization-Build" DependsOnTargets="Examples-Globalization-PrepareDependencies">
-		<MSBuild Projects="$(Examples-GlobalizationFolder)\N2.Globalization.sln"/>
+		<MSBuild Projects="$(Examples-GlobalizationFolder)\OldGlobalization-vs2005.sln"/>
 	</Target>
 	<Target Name="Example-MediumTrust-Build" DependsOnTargets="Examples-MediumTrust-PrepareDependencies">
 		<MSBuild Projects="$(Examples-MediumTrustFolder)\N2.Examples.MediumTrust-vs2008.sln"/>
@@ -288,7 +285,7 @@
 	</Target>
 
 	<Target Name="Examples-Build">
-		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Example-Parts-Build; Example-MediumTrust-Build; Example-Globalization-Build; Examples-Mvc-Build"/>
+		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Example-Parts-Build; Example-MediumTrust-Build; Examples-Mvc-Build"/>
 	</Target>
 
 	<ItemGroup>
@@ -312,7 +309,6 @@
 	</ItemGroup>
 	
 	<Target Name="Examples-Deploy" DependsOnTargets="Examples-PrepareDependencies">
-		<Copy SourceFiles="@(ExampleSource-GlobalizationFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Globalization\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-MediumTrustFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MediumTrust\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-PartsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Parts\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-SimpleFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Simple\%(RecursiveDir)" />
