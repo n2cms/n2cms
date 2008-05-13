@@ -8,6 +8,7 @@ using N2.Templates.Items;
 using N2.Installation;
 using N2.Globalization;
 using System.Globalization;
+using N2.Serialization;
 
 namespace N2.Templates.UI.Items
 {
@@ -20,6 +21,15 @@ namespace N2.Templates.UI.Items
 	[TabPanel("siteArea", "Site", 70)]
 	public class StartPage : AbstractStartPage, ILanguage
 	{
+		[FileAttachment]
+		[EditableImage("Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
+		public virtual string TopImage
+		{
+			get { return (string)(GetDetail("TopImage") ?? string.Empty); }
+			set { SetDetail("TopImage", value, string.Empty); }
+		}
+
+		[FileAttachment]
 		[EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
 		{
@@ -46,6 +56,20 @@ namespace N2.Templates.UI.Items
 		{
 			get { return (LayoutParts.Top)GetDetail("Header"); }
 			set { SetDetail("Header", value); }
+		}
+
+		[Details.ThemeSelector("Theme", 74, ContainerName = SiteArea)]
+		public override string Theme
+		{
+			get { return (string)(GetDetail("Theme") ?? string.Empty); }
+			set { SetDetail("Theme", value); }
+		}
+
+		[Details.LayoutSelector("Layout", 76, ContainerName = SiteArea)]
+		public override string Layout
+		{
+			get { return (string)GetDetail("Layout") ?? "~/Layouts/Top+SubMenu.Master"; }
+			set { SetDetail("Layout", value); }
 		}
 
 		public override string TemplateUrl

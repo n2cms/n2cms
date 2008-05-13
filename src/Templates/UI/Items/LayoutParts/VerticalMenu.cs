@@ -4,6 +4,7 @@ using N2.Definitions;
 
 namespace N2.Templates.UI.Items.LayoutParts
 {
+	[Disable]
 	[Definition("Vertical menu", "VerticalMenu")]
 	[RestrictParents(typeof(StartPage))] // The menu is placed on the start page and displayed on all underlying pages
 	[AllowedZones(Zones.SiteLeft)]
@@ -19,14 +20,6 @@ namespace N2.Templates.UI.Items.LayoutParts
 		public override string TemplateUrl
 		{
 			get { return "~/Layouts/Parts/VerticalMenu.ascx"; }
-		}
-
-		public override string IconUrl
-		{
-			get
-			{
-				return "~/Img/page_white_link.png";
-			}
 		}
 	}
 }

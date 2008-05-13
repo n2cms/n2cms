@@ -5,7 +5,7 @@ using N2.Templates.Items;
 namespace N2.Templates.UI.Items.Parts
 {
 	[Definition("Text", "Text")]
-	[AllowedZones(Zones.Content, Zones.Left, Zones.Right)]
+	[AllowedZones(Zones.Content, Zones.Left, Zones.Right, Zones.RecursiveAbove, Zones.RecursiveLeft, Zones.RecursiveRight, Zones.SiteLeft, Zones.SiteRight)]
 	public class TextItem : AbstractItem
 	{
 		[EditableFreeTextArea("Text", 100)]
@@ -17,18 +17,12 @@ namespace N2.Templates.UI.Items.Parts
 		
 		public override string TemplateUrl
 		{
-			get
-			{
-				return "~/Parts/Text.ascx";
-			}
+			get { return "~/Parts/Text.ascx"; }
 		}
 
 		public override string IconUrl
 		{
-			get
-			{
-				return "~/Img/text_align_left.png";
-			}
+			get { return "~/Img/text_align_left.png"; }
 		}
 	}
 }

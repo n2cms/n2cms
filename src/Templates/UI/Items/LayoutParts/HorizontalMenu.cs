@@ -5,6 +5,7 @@ using N2.Definitions;
 
 namespace N2.Templates.UI.Items.LayoutParts
 {
+	[Disable]
 	[Definition("Horizontal Menu", "HorizontalMenu")]
 	[RestrictParents(typeof(StartPage))] // The menu is placed on the start page and displayed on all underlying pages
 	[AllowedZones("SiteTop")]
@@ -27,14 +28,6 @@ namespace N2.Templates.UI.Items.LayoutParts
 		public override string TemplateUrl
 		{
 			get { return "~/Layouts/Parts/HorizontalMenu.ascx"; }
-		}
-
-		public override string IconUrl
-		{
-			get
-			{
-				return "~/Img/page_white_link.png";
-			}
 		}
 	}
 }
