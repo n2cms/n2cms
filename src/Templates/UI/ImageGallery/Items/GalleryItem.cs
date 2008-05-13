@@ -24,6 +24,13 @@ namespace N2.Templates.ImageGallery.Items
 			set { base.SetDetail("ImageUrl", value); }
 		}
 
+		[EditableFreeTextArea("Text", 40)]
+		public virtual string Text
+		{
+			get { return (string)(GetDetail("Text") ?? string.Empty); }
+			set { SetDetail("Text", value, string.Empty); }
+		}
+
 		public virtual string ResizedImageUrl
 		{
 			get { return Web.Adapters.ImageAdapter.GetResizedImageUrl(ImageUrl, Gallery.MaxImageWidth, Gallery.MaxImageHeight); }

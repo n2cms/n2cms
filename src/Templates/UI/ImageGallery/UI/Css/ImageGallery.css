@@ -1,25 +1,4 @@
-body #page {min-height:500px;}
-
-#next img,
-#prev img
-{
-	border:solid 3px #333;
-}
-#prev
-{
-	float:left;
-	margin:0 10px 0 0;
-}
-#next
-{
-	float:right;
-	margin:0 0 0 0 10px;
-}
-.nav
-{
-	margin-bottom:10px;
-}
-#large img
-{
-	border:solid 5px #333;
-}
+.thumbnail { opacity:.4; display:block; float:left; }
+.thumbnail:hover, .selected { opacity:1; }
+#thumbnails .text { display:none; }
+.thumbnail {margin-bottom:10px;margin-right:5px;}

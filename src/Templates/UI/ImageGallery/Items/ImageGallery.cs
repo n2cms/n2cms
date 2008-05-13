@@ -25,14 +25,14 @@ namespace N2.Templates.ImageGallery.Items
 		[EditableTextBox("Max Image Width", 200, ContainerName = GallerySettings)]
 		public virtual int MaxImageWidth
 		{
-			get { return (int)(GetDetail("MaxImageWidth") ?? 490); }
+			get { return (int)(GetDetail("MaxImageWidth") ?? 685); }
 			set { SetDetail("MaxImageWidth", value); }
 		}
 
 		[EditableTextBox("Max Image Height", 210, ContainerName = GallerySettings)]
 		public virtual int MaxImageHeight
 		{
-			get { return (int)(GetDetail("MaxImageHeight") ?? 490); }
+			get { return (int)(GetDetail("MaxImageHeight") ?? 685); }
 			set { SetDetail("MaxImageHeight", value); }
 		}
 
@@ -46,19 +46,10 @@ namespace N2.Templates.ImageGallery.Items
 		[EditableTextBox("Max Thumbnail Height", 230, ContainerName = GallerySettings)]
 		public virtual int MaxThumbnailHeight
 		{
-			get { return (int)(GetDetail("MaxThumbnailHeight") ?? 55); }
+			get { return (int)(GetDetail("MaxThumbnailHeight") ?? 60); }
 			set { SetDetail("MaxThumbnailHeight", value); }
 		} 
 		#endregion
-
-
-		//[N2.Details.EditableChildren("GalleryItems", 600)]
-		//public virtual string GalleryItems
-		//{
-		//    get { return (string)(GetDetail("GalleryItems") ?? string.Empty); }
-		//    set { SetDetail("GalleryItems", value, string.Empty); }
-		//}
-
 
 		public override string IconUrl
 		{

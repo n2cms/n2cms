@@ -74,13 +74,6 @@
     </Compile>
     <Compile Include="Items\GalleryItem.cs" />
     <Compile Include="Items\ImageGallery.cs" />
-    <Compile Include="UI\Layouts\Default.Master.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\Layouts\Default.Master.designer.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="UI\GalleryItem.ascx" />
+    <Content Include="UI\Img\bg.gif" />
     <Content Include="UI\Img\photo.png" />
     <Content Include="UI\Img\photos.png" />
-    <Content Include="UI\Layouts\Default.Master" />
     <Content Include="UI\Css\ImageGallery.css" />
     <Content Include="UI\n2gallery\n2gallery.js" />
   </ItemGroup>
@@ -118,7 +111,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1951</DevelopmentServerPort>
+          <DevelopmentServerPort>4122</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
