@@ -8,11 +8,17 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Collections.Specialized;
+using N2.Engine;
 
 namespace N2.Edit.Navigation
 {
 	public abstract class HelpfulHandler : IHttpHandler
 	{
+		protected IEngine Engine
+		{
+			get { return N2.Context.Current; }
+		}
+
 		public virtual bool IsReusable
 		{
 			get { return true; }

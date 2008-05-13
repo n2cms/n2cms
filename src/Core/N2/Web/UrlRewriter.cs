@@ -20,15 +20,6 @@ namespace N2.Web
 		private readonly IUrlParser urlParser;
 		private readonly IWebContext webContext;
 
-		//private string[] ignoredExtensions = new string[] { ".gif", ".jpg", ".jpeg", ".png", ".axd", ".js", ".ashx", ".css" };
-
-		///// <summary>Extensions that are ignored by the url rewriter.</summary>
-		//public string[] IgnoredExtensions
-		//{
-		//    get { return ignoredExtensions; }
-		//    set { ignoredExtensions = value; }
-		//}
-
 		/// <summary>Creates a new instance of the UrlRewriter.</summary>
 		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
 		{
@@ -45,7 +36,7 @@ namespace N2.Web
 		{
 			string requestedUrl = webContext.AbsolutePath;
 			ContentItem currentPage = webContext.CurrentPage;
-			if (HasContentExtension(requestedUrl) && !File.Exists(webContext.PhysicalPath) && currentPage != null)
+			if (!File.Exists(webContext.PhysicalPath) && currentPage != null)
 			{
 				string rewrittenUrl = currentPage.RewrittenUrl;
 
@@ -56,7 +47,6 @@ namespace N2.Web
 			}
 		}
 
-
 		private bool HasContentExtension(string requestedUrl)
 		{
 			if (requestedUrl.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
@@ -64,14 +54,6 @@ namespace N2.Web
 				return true;
 			}
 			return false;
-			//else
-			//{
-			//    foreach (string extension in ignoredExtensions)
-			//    {
-			//        if (requestedUrl.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase))
-			//            return false;
-			//    }
-			//}
 		}
 
 		#endregion
@@ -87,10 +69,12 @@ namespace N2.Web
 					if (webContext.CurrentPage == null)
 						Debug.WriteLine("Setting CurrentPage to '" + page + "'");
 					else
-						Debug.WriteLine("Changing CurrentPage from '" + webContext.CurrentPage + "' to '" + page  + "'");
+						Debug.WriteLine("Changing CurrentPage from '" + webContext.CurrentPage + "' to '" + page + "'");
 
 					webContext.CurrentPage = page;
 				}
+				else if (webContext.AbsolutePath == "/")
+					webContext.CurrentPage = urlParser.StartPage;
 			}
 			catch (Exception ex)
 			{

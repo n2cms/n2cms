@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit.Web;
 using N2.Web.UI.WebControls;
+using N2.Persistence;
 
 namespace N2.Edit
 {
@@ -222,7 +223,10 @@ namespace N2.Edit
 			IList<ContentItem> siblings = currentItem.Parent.Children;
 			int itemAfterIndex = siblings.IndexOf(referenceItem);
 			Utility.MoveToIndex(siblings, currentItem, itemAfterIndex + offset);
-			Utility.UpdateSortOrder(siblings);
+			foreach (ContentItem updatedItem in Utility.UpdateSortOrder(siblings))
+			{
+				Engine.Persister.Save(updatedItem);
+			}
 		}
 	}
 }

@@ -57,7 +57,7 @@ namespace N2.Web.UI.WebControls
 			{
 				foreach (ItemDefinition definition in PageDefinition.AllowedChildren)
 				{
-					if (IsAllowedInAZone(definition))
+					if (IsAllowedInAZone(definition) && definition.Enabled && definition.IsAuthorized(Page.User))
 					{
 						yield return definition;
 					}

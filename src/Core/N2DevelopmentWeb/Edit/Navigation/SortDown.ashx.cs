@@ -21,7 +21,7 @@ namespace N2.Edit.Navigation
 				{
 					Utility.MoveToIndex(siblings, selectedNode, index + 1);
 					foreach (ContentItem changed in Utility.UpdateSortOrder(siblings))
-						N2.Context.Current.Persister.Save(changed);
+						Engine.Persister.Save(changed);
 				}
 			}
 

@@ -59,6 +59,8 @@ namespace N2.Definitions
 		/// <returns>The definition matching a certain item type.</returns>
 		public virtual ItemDefinition GetDefinition(Type itemType)
 		{
+			if (itemType == null) throw new ArgumentNullException("itemType");
+
 			if(definitions.ContainsKey(itemType))
 				return definitions[itemType];
 			else
@@ -70,6 +72,8 @@ namespace N2.Definitions
 		/// <returns>The definition matching the string.</returns>
 		public ItemDefinition GetDefinition(string discriminator)
 		{
+			if (discriminator == null) throw new ArgumentNullException("discriminator");
+
 			foreach(ItemDefinition definition in definitions.Values)
 				if(definition.Discriminator == discriminator)
 					return definition;

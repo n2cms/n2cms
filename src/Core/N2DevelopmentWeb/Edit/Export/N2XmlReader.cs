@@ -47,8 +47,7 @@ namespace N2.Xml
 
 		private IEngine engine;
 		private bool keepItemID = false;
-		private bool useDiscriminator = false;
-		//private IList<N2.Collections.ItemFilter> preFilters = new List<N2.Collections.ItemFilter>();
+		private bool useDiscriminator = true;
 
 		#endregion
 

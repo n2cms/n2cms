@@ -101,10 +101,16 @@ namespace N2.Persistence.NH
 				Debug.WriteLine("NHPersistenceManager.Save cancelled " + unsavedItem);
 		}
 
-		private static void EnsureSortOrder(ContentItem unsavedItem)
+		private void EnsureSortOrder(ContentItem unsavedItem)
 		{
 			if (unsavedItem.Parent != null)
-				Utility.UpdateSortOrder(unsavedItem.Parent.Children);
+			{
+				IEnumerable<ContentItem> updatedItems = Utility.UpdateSortOrder(unsavedItem.Parent.Children);
+				foreach (ContentItem updatedItem in updatedItems)
+				{
+					itemRepository.SaveOrUpdate(updatedItem);
+				}
+			}
 		}
 
 		#region Save Helper Methods
