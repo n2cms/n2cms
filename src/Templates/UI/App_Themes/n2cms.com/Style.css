@@ -139,3 +139,6 @@ img.main {margin-bottom:15px;}
 #thumbnails:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 #page { display: inline-block; }
 * html #thumbnails { height: 1px; }
+
+.faqList h1 { margin-bottom:0; }
+.faqList .list { margin-bottom:0; }

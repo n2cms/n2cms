@@ -88,10 +88,6 @@
       <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
       <Name>N2.Templates</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Syndication\N2.Templates.Syndication.csproj">
-      <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
-      <Name>N2.Templates.Syndication</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\export.n2.xml.gz" />

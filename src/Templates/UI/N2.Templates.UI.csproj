@@ -42,6 +42,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="N2, Version=1.0.302.2339, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\N2.dll</HintPath>
@@ -147,6 +151,7 @@
     <Compile Include="Parts\Empty.ascx.designer.cs">
       <DependentUpon>Empty.ascx</DependentUpon>
     </Compile>
+    <Compile Include="SEO\SEOInitializer.cs" />
     <Compile Include="TabPanel\TabsItem.cs">
     </Compile>
     <Compile Include="Items\TextPage.cs" />
@@ -306,10 +311,6 @@
     <ProjectReference Include="..\N2.Templates\N2.Templates.csproj">
       <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
       <Name>N2.Templates</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Syndication\N2.Templates.Syndication.csproj">
-      <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
-      <Name>N2.Templates.Syndication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

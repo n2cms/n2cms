@@ -70,6 +70,9 @@
     <Compile Include="Items\IStructuralPage.cs" />
     <Compile Include="Items\SidebarItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SEO\SEODefinitionAppender.cs" />
+    <Compile Include="SEO\SEOPageModifier.cs" />
+    <Compile Include="SEO\TitleAndMetaTagApplyer.cs" />
     <Compile Include="Services\NotFoundHandler.cs" />
     <Compile Include="Services\NotFoundInitializer.cs" />
     <Compile Include="Services\SmtpMailSender.cs" />
@@ -77,6 +80,9 @@
     <Compile Include="Services\IMailSender.cs" />
     <Compile Include="Services\DynamicMailSender.cs" />
     <Compile Include="Services\StaticMailSender.cs" />
+    <Compile Include="Syndication\IFeed.cs" />
+    <Compile Include="Syndication\ISyndicatable.cs" />
+    <Compile Include="Syndication\RssWriter.cs" />
     <Compile Include="Tabs.cs" />
     <Compile Include="TemplatesInitializer.cs" />
     <Compile Include="Web\Adapters\FormAdapter.cs" />
@@ -106,12 +112,6 @@
     <Compile Include="Web\UI\WebControls\Menu.cs" />
     <Compile Include="Web\UI\WebControls\Path.cs" />
     <Compile Include="Zones.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Syndication\N2.Templates.Syndication.csproj">
-      <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
-      <Name>N2.Templates.Syndication</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

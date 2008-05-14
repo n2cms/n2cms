@@ -92,10 +92,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Syndication\N2.Templates.Syndication.csproj">
-      <Project>{37C742D0-28E5-459E-80B9-9E645E932CB8}</Project>
-      <Name>N2.Templates.Syndication</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\N2.Templates\N2.Templates.csproj">
       <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
       <Name>N2.Templates</Name>

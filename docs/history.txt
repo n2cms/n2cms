@@ -37,6 +37,7 @@ N2 1.3.5
 	- changed the image gallery
 	- new part: tabs
 	- news list in content area
+	- consolidated syndication and seo libraries into temlpates.dll
 - bugfixes
 	- fixed wrong preview url when changing item name
 	- names are now actually validated against ?
