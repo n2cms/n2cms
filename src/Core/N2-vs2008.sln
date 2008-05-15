@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{6873E9E6-2
 		..\..\docs\install.txt = ..\..\docs\install.txt
 		..\..\docs\License.txt = ..\..\docs\License.txt
 		..\..\docs\nodo.txt = ..\..\docs\nodo.txt
-		..\..\docs\readme.txt = ..\..\docs\readme.txt
 		..\..\docs\runtime_readme.txt = ..\..\docs\runtime_readme.txt
 		..\..\docs\solution_overview.txt = ..\..\docs\solution_overview.txt
 		..\..\docs\templates_readme.txt = ..\..\docs\templates_readme.txt

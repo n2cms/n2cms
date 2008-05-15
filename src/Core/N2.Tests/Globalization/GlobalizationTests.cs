@@ -361,5 +361,17 @@ namespace N2.Tests.Globalization
 			Assert.That(engine.Persister.Get(english.ID), Is.EqualTo(english));
 			Assert.That(engine.Persister.Get(swedish.ID), Is.EqualTo(swedish));
 		}
+
+		[Test]
+		public void LanguageRoot_WithEmptyLanguageCode_DoesntCode_LanguageKey()
+		{
+			english.LanguageCode = "";
+
+			ContentItem englishSub = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+
+			engine.Persister.Save(englishSub);
+
+			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.Null);
+		}
 	}
 }

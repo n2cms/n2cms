@@ -5,6 +5,7 @@
 	<PropertyGroup>
 		<Deploy-RootFolder>Deploy</Deploy-RootFolder>
 		<Source-LibraryFolder>..\lib</Source-LibraryFolder>
+		<Source-DocumentationFolder>..\docs</Source-DocumentationFolder>
 		<ILMerge>$(Source-LibraryFolder)\ILMerge.exe</ILMerge>
 	</PropertyGroup>
 	
@@ -72,6 +73,7 @@
 		<Core-SolutionFolder>Core</Core-SolutionFolder>
 		<Core-WebFolder>$(Core-SolutionFolder)\N2DevelopmentWeb</Core-WebFolder>
 
+		<DeployCore-Folder>$(Deploy-RootFolder)\Core</DeployCore-Folder>
 		<DeployCore-EditFolder>$(Deploy-RootFolder)\Core\Edit</DeployCore-EditFolder>
 		<DeployCore-BinFolder>$(Deploy-RootFolder)\Core\Bin</DeployCore-BinFolder>
 	</PropertyGroup>
@@ -99,6 +101,11 @@
 		<Core-EditFiles Include="$(Core-WebFolder)\Edit\**\*.master"/>
 		<Core-EditFiles Include="$(Core-WebFolder)\Edit\**\*.png"/>
 		<Core-EditFiles Include="$(Core-WebFolder)\Edit\**\*.resx"/>
+
+		<Core-TextFiles Include="$(Source-DocumentationFolder)\history.txt" />
+		<Core-TextFiles Include="$(Source-DocumentationFolder)\install.txt" />
+		<Core-TextFiles Include="$(Source-DocumentationFolder)\license.txt" />
+		<Core-TextFiles Include="$(Source-DocumentationFolder)\n2_readme.txt" />
 	</ItemGroup>
 
 	<Target Name="Core-Deploy" DependsOnTargets="Clean-Deploy;Core-Build">
@@ -108,7 +115,7 @@
 
 		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(DeployCore-BinFolder)" />
 		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(DeployCore-EditFolder)\%(RecursiveDir)" />
-
+		<Copy SourceFiles="@(Core-TextFiles)" DestinationFolder="$(DeployCore-Folder)" />
 		<CallTarget Targets="Core-ILMerge-Deploy"/>
 	</Target>
 
@@ -163,7 +170,8 @@
 			<Output TaskParameter="Include" ItemName="Templates-BinFiles"/>
 		</CreateItem>
 		<Copy SourceFiles="@(Templates-BinFiles)" DestinationFolder="$(DeployTemplates-UIFolder)\Bin" />
-
+		<Copy SourceFiles="@(Core-TextFiles)" DestinationFolder="$(DeployTemplates-UIFolder)" />
+		
 		<CallTarget Targets="Templates-ILMerge-Deploy"/>
 	</Target>
 
@@ -315,6 +323,10 @@
 		<Copy SourceFiles="@(ExampleSource-TemplatesImplementationFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesImplementation\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-MultipleDomainsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MultipleDomains\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-MvcFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\%(RecursiveDir)" />
+
+		<Copy SourceFiles="@(Core-TextFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Simple" />
+		<Copy SourceFiles="@(Core-TextFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesImplementation" />
+		<Copy SourceFiles="@(Core-TextFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
 	</Target>
 
 	

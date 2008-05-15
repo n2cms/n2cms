@@ -107,7 +107,7 @@ namespace N2.Globalization
 		{
 			ContentItem item = e.AffectedItem;
 			ILanguage language = gateway.GetLanguage(item);
-			if (language != null)
+			if (language != null && !string.IsNullOrEmpty(language.LanguageCode))
 			{
 				UpdateLanguageKey(item);
 			}
