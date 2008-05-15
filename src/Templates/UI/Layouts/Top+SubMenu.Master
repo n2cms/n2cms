@@ -51,7 +51,7 @@
 								<div id="extras" class="secondary">
 									<n2:Zone ID="zrr" ZoneName="RecursiveRight" runat="server" />
 									<n2:DroppableZone ID="zr" ZoneName="Right" runat="server" />
-									<n2:DroppableZone ID="zsr" ZoneName="SiteRight" runat="server" />
+									<n2:DroppableZone ID="zsr" ZoneName="SiteRight" runat="server" Path="/" />
 								</div>
 							</asp:ContentPlaceHolder>
 						</asp:ContentPlaceHolder>
