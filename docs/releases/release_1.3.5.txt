@@ -1,0 +1,10 @@
+This release brings a well rounded batch of tweaks and fixes most notably of which is a new languaging feature.
+
+First time with N2?
+
+    * Download template implementation (below). Run in visual Studio.
+    * Look at the documentation
+    * Try a working implementation
+
+Enjoy!
+

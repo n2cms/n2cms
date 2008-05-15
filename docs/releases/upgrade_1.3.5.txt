@@ -1,0 +1,5 @@
+This release consolidates some libraries:
+* n2.mediumtrust -> n2
+* n2.templates.security -> n2.security
+* n2.templates.syndication -> n2.templates (+ .ui)
+* n2.templates.seo -> n2.templates (+ .ui)
