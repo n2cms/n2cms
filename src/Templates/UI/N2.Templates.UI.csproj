@@ -379,7 +379,6 @@
     <Content Include="Secured\Edit.css" />
     <Content Include="Upload\lav.jpg" />
     <Content Include="Upload\skal.jpg" />
-    <Content Include="Upload\Sunset.jpg" />
     <Content Include="Upload\thorn.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -502,6 +501,13 @@
     <Content Include="TabPanel\tabs_bg.gif" />
     <Content Include="TabPanel\tab_selected.gif" />
     <Content Include="Upload\logo_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Data\ContentFocus_SampleData.gz" />
+    <None Include="App_Data\Corporate_SampleData.gz" />
+    <None Include="App_Data\DarkStrips_SampleData.gz" />
+    <None Include="App_Data\KhakiTabs_SampleData.gz" />
+    <None Include="App_Data\Plain_SampleData.gz" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

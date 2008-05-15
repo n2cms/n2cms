@@ -79,7 +79,7 @@
             </p>
             <ul>
                 <li>
-					Either select one type of 
+					Either, Select one 
 					<asp:DropDownList ID="ddlRoot" runat="server" />
 					and one 
 					<asp:DropDownList ID="ddlStartPage" runat="server" />
@@ -89,18 +89,29 @@
 				    <asp:CustomValidator ID="cvRootAndStart" runat="server" ErrorMessage="Root and start type required" Display="Dynamic" />
 				</li>
                 <li>
-					Or use the <b>one node</b> for both
+					Or, use the <b>one node</b> for both
 					<asp:DropDownList ID="ddlRootAndStart" runat="server" />
 					to
 					<asp:Button ID="btnInsertRootOnly" runat="server" OnClick="btnInsertRootOnly_Click" Text="insert" ToolTip="Insert one node as root and start" CausesValidation="false" />.
 				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
 				</li>
+				<li>
+					<table><tr><td>
+						Or, select one of these existing export file to insert:
+					</td><td>
+						<asp:RadioButtonList ID="rblExports" runat="server" />
+					</td><td>
+						and 
+						<asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="insert" ToolTip="Insert existing export" CausesValidation="false" />
+						<asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" />
+					</td></tr></table>
+				</li>
                 <li>
 					Or, select an export file 
 					<asp:FileUpload ID="fileUpload" runat="server" />
-					<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" />
 					(*.n2.xml) to
 					<asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="upload and insert" ToolTip="Upload root node." CausesValidation="false" />
+					<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" />
 				</li>
             </ul>
 			<p>
@@ -156,6 +167,7 @@
             <p>Good luck and happy <a href="..">editing</a>.</p>
             <p>/Cristian</p>
         </n2:TabPanel>
+        <asp:Label ID="errorLabel" runat="server" CssClass="errorLabel" />
     </form>
 </body>
 </html>

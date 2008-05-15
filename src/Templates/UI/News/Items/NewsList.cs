@@ -7,7 +7,7 @@ namespace N2.Templates.News.Items
 {
 	[Definition("News List", "NewsList", "A news list box that can be displayed in a column.", "", 160)]
 	[WithEditableTitle("Title", 10, Required = false)]
-	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content)]
+	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft, Zones.ColumnRight)]
 	public class NewsList : SidebarItem
 	{
 		[EditableLink("News container", 100)]
@@ -26,7 +26,7 @@ namespace N2.Templates.News.Items
 
 		public override string TemplateUrl
 		{
-			get { return ZoneName == Zones.Content ? "~/News/UI/NewsList.ascx" :  "~/News/UI/NewsBox.ascx"; }
+			get { return ZoneName != Zones.Content && ZoneName != Zones.ColumnLeft && ZoneName != Zones.ColumnRight ? "~/News/UI/NewsBox.ascx" : "~/News/UI/NewsList.ascx"; }
 		}
 
 		public override string IconUrl

@@ -6,24 +6,18 @@ using N2.Templates.Items;
 
 namespace N2.Templates.UI.Items
 {
-	[N2.Definition("Site Map", "SiteMap", "Displays all pages", "", 120)]
+	[N2.Definition("Site Map", "SiteMap", "Displays all pages", "", 420)]
 	[RestrictParents(typeof(IStructuralPage))]
 	public class SiteMap : AbstractContentPage, IStructuralPage
 	{
-
 		public override string IconUrl
 		{
-			get
-			{
-				return "~/Img/sitemap.png";
-			}
+			get { return "~/Img/sitemap.png"; }
 		}
+
 		public override string TemplateUrl
 		{
-			get
-			{
-				return "~/SiteMap.aspx";
-			}
+			get { return "~/SiteMap.aspx"; }
 		}
 	}
 }

@@ -13,7 +13,7 @@ using N2.Details;
 namespace N2.Templates.Faq.Items
 {
 	[Definition("Bubble")]
-	[AllowedZones(Zones.Left, Zones.Right)]
+	[AllowedZones(Zones.Left, Zones.Right, Zones.ColumnLeft, Zones.ColumnRight)]
 	public class BubbleItem : Templates.Items.AbstractItem
 	{
 		[EditableFreeTextArea("Text", 100)]

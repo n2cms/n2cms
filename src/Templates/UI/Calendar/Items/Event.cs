@@ -11,6 +11,11 @@ namespace N2.Templates.Calendar.Items
 	[RestrictParents(typeof(Calendar))]
 	public class Event : AbstractContentPage, ISyndicatable
 	{
+		public Event()
+		{
+			this.Visible = false;
+		}
+
 		[Editable("Event date", typeof(N2.Web.UI.WebControls.DatePicker), "SelectedDate", 22, ContainerName = Tabs.Content)]
 		public virtual DateTime? EventDate
 		{

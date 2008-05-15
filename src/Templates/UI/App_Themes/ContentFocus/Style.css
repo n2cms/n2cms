@@ -7,7 +7,7 @@ dl,ol,ul {list-style:none}
 button,select,textarea,input {font:100% serif}
 table {border-collapse:collapse}
 caption,th,td {text-align:left}
-h1,h2,h3,h4,h5,h6,p {margin:.35em 0;}
+h1,h2,h3,h4,h5,h6,p {margin:.25em 0 .5em 0;}
 #footer {margin-top:10px;}
 	#footer .n2{color:#a2a796;float:right;font-size:.8em;}
 
@@ -15,7 +15,6 @@ h1,h2,h3,h4,h5,h6,p {margin:.35em 0;}
 #header h2 a { color:#fff; }
 a { color:#4fa600; text-decoration:none; }
 a:hover { text-decoration:underline; }
-a:visited { color:#3f9600; }
 
 /* clearfix */
 #page:after, 
@@ -34,7 +33,7 @@ body { margin:0; background-color:#cce5a2; }
 		#page { padding:15px 15px 6px 15px; background:#fff url(content_bottom.gif) no-repeat 50% 100%; }
 			#content { margin-left:185px; }
 				.secondary { width:170px; margin-bottom:1px; }
-				#menu { float:left; }
+				#menu { float:left; margin-bottom:15px; }
 				#extras { float:right; }
 				#main { width:500px; float:left; padding-bottom:15px; }
 
@@ -49,7 +48,7 @@ body { margin:0; background-color:#cce5a2; }
 
 /*top*/
 #header { position:relative; }
-	#header .siteHeader { margin:0; padding:30px; }
+	#header .siteHeader { margin:0; padding:25px; }
 	#header .siteLogo { float:right; padding:20px 30px; }
 
 /*secondary*/
@@ -100,7 +99,7 @@ body { margin:0; background-color:#cce5a2; }
 
 
 /* drag&drop */
-.dragDrop .secondary .uc { margin-bottom:0;}
+.dragDrop .secondary .uc { margin-bottom:0; border:solid 1px red}
 .dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
 .dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
 

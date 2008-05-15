@@ -7,6 +7,7 @@ N2 1.3.5
 	- added mediumtrust configuration generator
 	- removed tabular navigation
 	- tinymce to 3.0.8 (fixes problem with headings in the editor)
+	- installer now lists .gz files in /app_data to use as content
 - core
 	- moved n2.mediumtrust -> n2
 	- moved some embedded scripts to /edit

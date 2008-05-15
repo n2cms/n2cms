@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div id="footer">
-					<a class="n2" title="N2, ASP.NET Open Source CMS" href="http://n2cms.com/">powered by n2 cms</a>
+					<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
 					<n2:Display ID="dft" PropertyName="FooterText" Path="/" runat="server" />
 				</div>
             </asp:ContentPlaceHolder>

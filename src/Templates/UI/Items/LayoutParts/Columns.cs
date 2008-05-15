@@ -10,18 +10,12 @@ namespace N2.Templates.UI.Items.LayoutParts
 	{
 		public override string TemplateUrl
 		{
-			get
-			{
-				return "~/Layouts/Parts/Columns.ascx";
-			}
+			get { return "~/Layouts/Parts/Columns.ascx"; }
 		}
 
 		public override string IconUrl
 		{
-			get
-			{
-				return "~/Img/text_columns.png";
-			}
+			get { return "~/Img/text_columns.png"; }
 		}
 	}
 }

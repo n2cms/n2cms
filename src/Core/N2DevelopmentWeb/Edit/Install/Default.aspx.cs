@@ -6,11 +6,14 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Installation;
 using System.Web;
+using System.IO;
 
 namespace N2.Edit.Install
 {
 	public partial class _Default : Page
 	{
+		protected CustomValidator cvExisting;
+		protected Label errorLabel;
 		protected FileUpload fileUpload;
 
 		private InstallationManager currentInstallationManager;
@@ -18,7 +21,9 @@ namespace N2.Edit.Install
 
 		protected int rootId;
 		protected int startId;
-	
+
+		protected RadioButtonList rblExports;
+
 		public InstallationManager CurrentInstallationManager
 		{
 			get
@@ -72,11 +77,24 @@ namespace N2.Edit.Install
 					LoadRootTypes(ddlRoot, preferredRoots, "[root node]");
 					LoadStartTypes(ddlStartPage, preferredStartPages, "[start node]");
 					LoadRootTypes(ddlRootAndStart, preferredRoots, "[root and start node]");
+					LoadExistingExports(rblExports);
 				}
 				catch (Exception ex)
 				{
 					ltStartupError.Text = "<li style='color:red'>Ooops, something is wrong: " + ex.Message + "</li>";
 					return;
+				}
+			}
+		}
+
+		private void LoadExistingExports(RadioButtonList rbl)
+		{
+			string dir = Server.MapPath("~/App_Data");
+			if (Directory.Exists(dir))
+			{
+				foreach (string file in Directory.GetFiles(dir, "*.gz"))
+				{
+					rbl.Items.Add(new ListItem(Path.GetFileName(file)));
 				}
 			}
 		}
@@ -138,8 +156,11 @@ namespace N2.Edit.Install
 			}
 			else
 			{
-				im.Install();
-				lblInstall.Text = "Database created, now insert root items.";
+				if (ExecuteWithErrorHandling(im.Install) != null)
+				{
+					if(ExecuteWithErrorHandling(im.Install) == null)
+						lblInstall.Text = "Database created, now insert root items.";
+				}
 			}
 		}
 
@@ -222,20 +243,33 @@ namespace N2.Edit.Install
 			}
 		}
 
+		protected void btnInsertExport_Click(object sender, EventArgs e)
+		{
+			cvExisting.IsValid = rblExports.SelectedIndex >= 0;
+			if (!cvExisting.IsValid)
+				return;
+			
+			string path = Path.Combine(Server.MapPath("~/App_Data"), rblExports.SelectedValue);
+			ExecuteWithErrorHandling(delegate { InsertFromFile(path); });
+		}
+
+		private void InsertFromFile(string path)
+		{
+			InstallationManager im = CurrentInstallationManager;
+			using (Stream read = File.OpenRead(path))
+			{
+				ContentItem root = im.InsertExportFile(read, path);
+				InsertRoot(root);
+			}
+		}
+
 		protected void btnUpload_Click(object sender, EventArgs e)
 		{
 			Validate();
 			if(!IsValid)
 				return;
 
-			try
-			{
-				InstallFromUpload();
-			}
-			catch (Exception ex)
-			{
-				ltRootNode.Text = string.Format("<span class='warning'>{0}</span>", ex.Message);
-			}
+			ExecuteWithErrorHandling(InstallFromUpload);
 		}
 
 		protected void btnRestart_Click(object sender, EventArgs e)
@@ -274,6 +308,11 @@ namespace N2.Edit.Install
 			InstallationManager im = CurrentInstallationManager;
 			ContentItem root = im.InsertExportFile(fileUpload.FileContent, fileUpload.FileName);
 
+			InsertRoot(root);
+		}
+
+		private void InsertRoot(ContentItem root)
+		{
 			if (root.ID == Status.RootItemID)
 			{
 				ltRootNode.Text = "<span class='ok'>Root node inserted.</span>";
@@ -289,12 +328,12 @@ namespace N2.Edit.Install
 				phDiffer.Visible = false;
 				rootId = root.ID;
 			}
-			
+
 			// try to find a suitable start page
-			foreach(ContentItem item in root.Children)
+			foreach (ContentItem item in root.Children)
 			{
 				ItemDefinition id = N2.Context.Definitions.GetDefinition(item.GetType());
-				if(Is(id.DefinitionAttribute.Installer, InstallerHint.PreferredStartPage))
+				if (Is(id.DefinitionAttribute.Installer, InstallerHint.PreferredStartPage))
 				{
 					if (item.ID == Status.StartPageID && root.ID == Status.RootItemID)
 					{
@@ -310,6 +349,28 @@ namespace N2.Edit.Install
 					}
 					break;
 				}
+			}
+		}
+
+		public delegate void Execute();
+
+		protected Exception ExecuteWithErrorHandling(Execute action)
+		{
+			return ExecuteWithErrorHandling<Exception>(action);
+		}
+
+		protected T ExecuteWithErrorHandling<T>(Execute action)
+			where T:Exception
+		{
+			try
+			{
+				action();
+				return null;
+			}
+			catch (T ex)
+			{
+				errorLabel.Text = "<b>" + ex.Message + "</b>" + ex.StackTrace;
+				return ex;
 			}
 		}
 	}
