@@ -15,7 +15,15 @@ namespace N2.Templates.UI
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			Response.Redirect(CurrentPage.Url);
+			if (CurrentPage.Redirect301)
+			{
+				Response.Status = "301 Moved Permanently";
+				Response.AddHeader("Location", CurrentPage.Url);
+			}
+			else
+			{
+				Response.Redirect(CurrentPage.Url);
+			}
 		}
 	}
 }

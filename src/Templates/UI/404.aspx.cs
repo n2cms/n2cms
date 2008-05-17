@@ -17,8 +17,13 @@ namespace N2.Templates.UI
 			N2.ContentItem page = N2.Templates.Find.StartPage.NotFoundPage;
 			if (page != null)
 			{
-				Server.Transfer(page.RewrittenUrl);
+				Server.Execute(page.RewrittenUrl);
 			}
-		}
+			else
+			{
+				Response.Write("<html><body><h1>404 Not Found</h1></body></html>");
+			}
+			Response.Status = "404 Not Found";
+		}	
 	}
 }

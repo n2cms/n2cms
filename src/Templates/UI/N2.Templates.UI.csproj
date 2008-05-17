@@ -50,6 +50,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\N2.dll</HintPath>
     </Reference>
+    <Reference Include="N2.Security, Version=1.0.305.39436, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\N2.Security.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -136,6 +140,8 @@
     <Compile Include="Items\LayoutParts\VerticalMenu.cs" />
     <Compile Include="Items\Parts\ControlPanel.cs" />
     <Compile Include="Items\Parts\BoxedTextItem.cs" />
+    <Compile Include="Items\Parts\RegisterItem.cs" />
+    <Compile Include="Items\Parts\LoginItem.cs" />
     <Compile Include="Items\Parts\RandomImage.cs" />
     <Compile Include="Items\Parts\Teaser.cs" />
     <Compile Include="Items\Parts\TextItem.cs" />
@@ -144,12 +150,26 @@
     <Compile Include="Items\RootParts\Statistics.cs" />
     <Compile Include="Items\SiteMap.cs" />
     <Compile Include="Items\StartPage.cs" />
+    <Compile Include="Parts\Login.ascx.cs">
+      <DependentUpon>Login.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\Login.ascx.designer.cs">
+      <DependentUpon>Login.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Parts\Empty.ascx.cs">
       <DependentUpon>Empty.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Parts\Empty.ascx.designer.cs">
       <DependentUpon>Empty.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Parts\Register.ascx.cs">
+      <DependentUpon>Register.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parts\Register.ascx.designer.cs">
+      <DependentUpon>Register.ascx</DependentUpon>
     </Compile>
     <Compile Include="SEO\SEOInitializer.cs" />
     <Compile Include="TabPanel\TabsItem.cs">
@@ -490,7 +510,9 @@
     <Content Include="favicon.ico" />
     <Content Include="Img\application_view_columns.png" />
     <Content Include="Img\tab.png" />
+    <Content Include="Parts\Login.ascx" />
     <Content Include="Parts\Empty.ascx" />
+    <Content Include="Parts\Register.ascx" />
     <Content Include="TabPanel\TabPanel.css" />
     <Content Include="TabPanel\TabPanel.js" />
     <Content Include="Layouts\Parts\SubMenu.ascx" />

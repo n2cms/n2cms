@@ -153,6 +153,7 @@
 
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Core-Deploy">
 		<Copy SourceFiles="$(Core-WebFolder)\bin\N2.dll" DestinationFolder="$(Templates-SolutionFolder)\lib" />
+		<Copy SourceFiles="$(Deploy-RootFolder)\Core\bin\N2.Security.dll" DestinationFolder="$(Templates-SolutionFolder)\lib" />
 		<Copy SourceFiles="$(Source-LibraryFolder)\Castle.Core.dll" DestinationFolder="$(Templates-SolutionFolder)\lib" />
 		<CallTarget Targets="Rebuild-CoreDeploy-AllFiles" />
 

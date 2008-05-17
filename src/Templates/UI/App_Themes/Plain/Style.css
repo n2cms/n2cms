@@ -97,3 +97,7 @@ body { margin:0; background-color:#ffd451; }
 .dragDrop .secondary .uc { margin-bottom:0;}
 .dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
 .dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
+
+.login .tb { width:130px; }
+.login .ff { margin-bottom:5px; }
+.register td { padding:0 5px 5px 0; }
