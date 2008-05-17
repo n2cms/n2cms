@@ -4,6 +4,7 @@ using System.Text;
 using N2.Details;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Security;
 
 namespace N2.Security.Details
 {
@@ -11,29 +12,51 @@ namespace N2.Security.Details
 	{
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
-			return false;
+			CheckBoxList cbl = editor as CheckBoxList;
+			List<string> roles = new List<string>();
+			foreach (ListItem li in cbl.Items)
+				if (li.Selected)
+					roles.Add(li.Value);
+
+			DetailCollection dc = item.GetDetailCollection("Roles", true);
+			dc.Replace(roles);
+
+			return true;
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
+			CheckBoxList cbl = editor as CheckBoxList;
 			DetailCollection dc = item.GetDetailCollection("Roles", false);
 			if (dc != null)
 			{
-				string roles = string.Empty;
 				foreach (string role in dc)
 				{
-					roles += role + ", ";
+					ListItem li = cbl.Items.FindByValue(role);
+					if (li != null)
+					{
+						li.Selected = true;
+					}
+					else
+					{
+						li = new ListItem(role);
+						li.Selected = true;
+						li.Attributes["style"] = "color:silver";
+						cbl.Items.Add(li);
+					}
 				}
-				Literal l = (Literal)editor;
-				l.Text = roles.TrimEnd(',', ' ');
 			}
 		}
 
 		protected override Control AddEditor(Control container)
 		{
-			Literal l = new Literal();
-			container.Controls.Add(l);
-			return l;
+			CheckBoxList cbl = new CheckBoxList();
+			foreach (string role in Roles.GetAllRoles())
+			{
+				cbl.Items.Add(role);
+			}
+			container.Controls.Add(cbl);
+			return cbl;
 		}
 	}
 

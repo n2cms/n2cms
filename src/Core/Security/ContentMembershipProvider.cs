@@ -15,7 +15,7 @@ namespace N2.Security
 			get { return Context.Current.Resolve<ItemBridge>(); }
 		}
 
-		private string applicationName = "N2.Templates.Membership";
+		private string applicationName = "N2.Security";
 
 		public override string ApplicationName
 		{
@@ -40,6 +40,7 @@ namespace N2.Security
 				return false;
 			u.PasswordQuestion = newPasswordQuestion;
 			u.PasswordAnswer = newPasswordAnswer;
+			Bridge.Save(u);
 			return true;
 		}
 
@@ -208,7 +209,7 @@ namespace N2.Security
 
 		public override int MaxInvalidPasswordAttempts
 		{
-			get { return 3; }
+			get { return 4; }
 		}
 
 		public override int MinRequiredNonAlphanumericCharacters
@@ -264,14 +265,22 @@ namespace N2.Security
 			if (u == null)
 				return false;
 			u.IsLockedOut = false;
+			Bridge.Save(u);
 			return true;
 		}
 
 		public override void UpdateUser(MembershipUser user)
 		{
+			if (user == null) throw new ArgumentNullException("user");
+
 			Items.User u = Bridge.GetUser(user.UserName);
 			if (u != null)
+			{
 				u.UpdateFromMembershipUser(user);
+				Bridge.Save(u);
+			}
+			else
+				throw new N2Exception("User '" + user.UserName + "' not found.");
 		}
 
 		public override bool ValidateUser(string username, string password)

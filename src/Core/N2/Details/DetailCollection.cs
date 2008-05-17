@@ -328,6 +328,34 @@ namespace N2.Details
 			#endregion
 		} 
 		#endregion
+
+		public IList<T> ToList<T>()
+		{
+			List<T> list = new List<T>();
+			foreach (ContentDetail cd in this.Details)
+			{
+				list.Add((T)cd.Value);
+			}
+			return list;
+		}
+
+		public IEnumerable<T> Enumerate<T>()
+		{
+			foreach (ContentDetail cd in this.Details)
+			{
+				yield return (T)cd.Value;
+			}
+		}
+
+		public T[] ToArray<T>()
+		{
+			T[] list = new T[Details.Count];
+			for (int i = 0; i < list.Length; i++)
+			{
+				list[i] = (T)Details[i].Value;
+			}
+			return list;
+		}
 	}
 }
 

@@ -80,16 +80,22 @@ namespace N2.Security
 			Items.UserList m = parent.GetChild(UserContainerName) as Items.UserList;
 			if (m == null && create)
 			{
-				m = Context.Definitions.CreateInstance<Items.UserList>(parent);
-				m.Title = "Users";
-				m.Name = UserContainerName;
-				foreach (string role in DefaultRoles)
-				{
-					m.AddRole(role);
-				}
-				
-				persister.Save(m);
+				m = CreateUserContainer(parent);
 			}
+			return m;
+		}
+
+		protected Items.UserList CreateUserContainer(ContentItem parent)
+		{
+			Items.UserList m = Context.Definitions.CreateInstance<Items.UserList>(parent);
+			m.Title = "Users";
+			m.Name = UserContainerName;
+			foreach (string role in DefaultRoles)
+			{
+				m.AddRole(role);
+			}
+
+			persister.Save(m);
 			return m;
 		}
 

@@ -11,22 +11,42 @@ namespace N2.Security.Items
 
 	[Definition("User", "User")]
 	[RestrictParents(typeof (UserList))]
-	[WithEditableName("Username", 10)]
-	[WithEditableTitle("First and last name", 100)]
+	//[WithEditableName("Username", 10)]
+	//[WithEditableTitle("First and last name", 100)]
 	public class User : N2.ContentItem
 	{
-		[EditableTextBox("Password", 20)]
+		[EditableTextBox("Title", 10, Required = true)]
+		public override string Title
+		{
+			get { return base.Title; }
+			set { base.Title = value; }
+		}
+
+		[EditableTextBox("Title", 20, Required = true)]
+		public override string Name
+		{
+			get { return base.Name; }
+			set { base.Name = value; }
+		}
+
+		[EditableTextBox("Password", 30)]
 		public virtual string Password
 		{
 			get { return (string) (GetDetail("Password") ?? string.Empty); }
 			set { SetDetail("Password", value, string.Empty); }
 		}
 
-		[EditableTextBox("Email", 110)]
+		[EditableTextBox("Email", 40)]
 		public virtual string Email
 		{
 			get { return (string) (GetDetail("Email") ?? string.Empty); }
 			set { SetDetail("Email", value, string.Empty); }
+		}
+
+		[EditableRoles(Title = "Roles", SortOrder = 50)]
+		public virtual DetailCollection Roles
+		{
+			get { return GetDetailCollection("Roles", true); }
 		}
 
 		[EditableTextBox("PasswordQuestion", 120)]
@@ -43,21 +63,21 @@ namespace N2.Security.Items
 			set { SetDetail("PasswordAnswer", value, string.Empty); }
 		}
 
-		[EditableCheckBox("IsOnline", 140)]
+		[EditableCheckBox("Is Online", 140)]
 		public virtual bool IsOnline
 		{
 			get { return (bool) (GetDetail("IsOnline") ?? false); }
 			set { SetDetail("IsOnline", value, false); }
 		}
 
-		[EditableCheckBox("IsApproved", 140)]
+		[EditableCheckBox("Is Approved", 142)]
 		public virtual bool IsApproved
 		{
 			get { return (bool) (GetDetail("IsApproved") ?? false); }
 			set { SetDetail("IsApproved", value, false); }
 		}
 
-		[EditableCheckBox("IsLockedOut", 140)]
+		[EditableCheckBox("Is Locked Out", 144)]
 		public virtual bool IsLockedOut
 		{
 			get { return (bool) (GetDetail("IsLockedOut") ?? false); }
@@ -70,46 +90,39 @@ namespace N2.Security.Items
 			set { SetDetail("ProviderUserKey", value); }
 		}
 
-
-		[EditableTextBox("Comment", 100)]
+		[EditableTextBox("Comment", 150)]
 		public virtual string Comment
 		{
 			get { return (string) (GetDetail("Comment") ?? string.Empty); }
 			set { SetDetail("Comment", value, string.Empty); }
 		}
 
-		[EditableTextBox("LastLoginDate", 100)]
+		[EditableTextBox("Last Login Date", 160)]
 		public virtual DateTime LastLoginDate
 		{
 			get { return (DateTime) (GetDetail("LastLoginDate") ?? Published.Value); }
 			set { SetDetail("LastLoginDate", value, Published.Value); }
 		}
 
-		[EditableTextBox("LastActivityDate", 100)]
+		[EditableTextBox("Last Activity Date", 162)]
 		public virtual DateTime LastActivityDate
 		{
 			get { return (DateTime) (GetDetail("LastActivityDate") ?? Published.Value); }
 			set { SetDetail("LastActivityDate", value, Published.Value); }
 		}
 
-		[EditableTextBox("LastPasswordChangedDate", 100)]
+		[EditableTextBox("Last Password Changed Date", 164)]
 		public virtual DateTime LastPasswordChangedDate
 		{
 			get { return (DateTime) (GetDetail("LastPasswordChangedDate") ?? Published.Value); }
 			set { SetDetail("LastPasswordChangedDate", value, Published.Value); }
 		}
 
-		[EditableTextBox("LastLockoutDate", 100)]
+		[EditableTextBox("Last Lockout Date", 166)]
 		public virtual DateTime? LastLockoutDate
 		{
 			get { return (DateTime?) GetDetail("LastLockoutDate"); }
 			set { SetDetail("LastLockoutDate", value < new DateTime(2000, 1, 1) ? null : value); }
-		}
-
-		[EditableRoles(Title = "Roles", SortOrder = 110)]
-		public virtual DetailCollection Roles
-		{
-			get { return GetDetailCollection("Roles", true); }
 		}
 
 		public override bool IsPage
