@@ -311,9 +311,12 @@ namespace N2.Installation
 			IDriver driver = (IDriver) Activator.CreateInstance(driverType);
 
 			IDbConnection conn = driver.CreateConnection();
-			conn.ConnectionString = (string) cfg.Properties[Environment.ConnectionString] ??
-			                        ConfigurationManager.ConnectionStrings[
-			                        	(string) cfg.Properties[Environment.ConnectionStringName]].ConnectionString;
+			if (cfg.Properties.ContainsKey(Environment.ConnectionString))
+				conn.ConnectionString = (string)cfg.Properties[Environment.ConnectionString];
+			else if (cfg.Properties.ContainsKey(Environment.ConnectionStringName))
+				conn.ConnectionString = ConfigurationManager.ConnectionStrings[(string)cfg.Properties[Environment.ConnectionStringName]].ConnectionString;
+			else
+				throw new Exception("Didn't find a confgiured connection string or connection string name in the nhibernate configuration.");
 			return conn;
 		}
 
