@@ -1,5 +1,20 @@
-This release consolidates some libraries:
-* n2.mediumtrust -> n2
-* n2.templates.security -> n2.security
-* n2.templates.syndication -> n2.templates (+ .ui)
-* n2.templates.seo -> n2.templates (+ .ui)
+- Remove deprecated assemblies:
+	- N2.MediumTrust.dll
+	- N2.Templates.Security.dll
+	- N2.Templates.Syndication.dll
+	- N2.templates.SEO.dll
+- Update nhibernate configuration remove "hibernate." from configuration keys, e.g.
+	- "hibernate.connection.provider" -> "connection.provider"
+- Change roles and membership providers:
+	<membership defaultProvider="ContentMembershipProvider">
+		<providers>
+			<clear/>
+			<add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Security"/>
+		</providers>
+	</membership>
+	<roleManager enabled="true" defaultProvider="ContentRoleProvider">
+		<providers>
+			<clear/>
+			<add name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Security"/>
+		</providers>
+	</roleManager>

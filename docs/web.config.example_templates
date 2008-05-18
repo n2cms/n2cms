@@ -22,28 +22,28 @@
 			<startPageID>3</startPageID>
 			<nhSettings>
 				<dictionary>
-					<entry key="hibernate.connection.provider">NHibernate.Connection.DriverConnectionProvider</entry>
-					<entry key="hibernate.connection.connection_string_name">N2CMS</entry>
+					<entry key="connection.provider">NHibernate.Connection.DriverConnectionProvider</entry>
+					<entry key="connection.connection_string_name">N2CMS</entry>
 
 					<!-- set use_second_level_cache to true and uncomment this to enable cache -->
-					<entry key="hibernate.cache.use_second_level_cache">true</entry>
-					<entry key="hibernate.cache.use_query_cache">true</entry>
-					<entry key="hibernate.cache.provider_class">NHibernate.Caches.SysCache.SysCacheProvider,NHibernate.Caches.SysCache</entry>
+					<entry key="cache.use_second_level_cache">true</entry>
+					<entry key="cache.use_query_cache">true</entry>
+					<entry key="cache.provider_class">NHibernate.Caches.SysCache.SysCacheProvider,NHibernate.Caches.SysCache</entry>
 
 					<!-- SQL Server 2005 -->
-					<entry key="hibernate.connection.driver_class">NHibernate.Driver.SqlClientDriver</entry>
-					<entry key="hibernate.dialect">NHibernate.Dialect.MsSql2005Dialect</entry>
+					<entry key="connection.driver_class">NHibernate.Driver.SqlClientDriver</entry>
+					<entry key="dialect">NHibernate.Dialect.MsSql2005Dialect</entry>
 					<!-- SQLite
-					  <entry key="hibernate.connection.driver_class">NHibernate.Driver.SQLite20Driver</entry>
-					  <entry key="hibernate.dialect">NHibernate.Dialect.SQLiteDialect</entry>
+					  <entry key="connection.driver_class">NHibernate.Driver.SQLite20Driver</entry>
+					  <entry key="dialect">NHibernate.Dialect.SQLiteDialect</entry>
 					  -->
 					<!-- SQL Server 2000 
-					  <entry key="hibernate.connection.driver_class">NHibernate.Driver.SqlClientDriver</entry>
-					  <entry key="hibernate.dialect">NHibernate.Dialect.MsSql2000Dialect</entry>
+					  <entry key="connection.driver_class">NHibernate.Driver.SqlClientDriver</entry>
+					  <entry key="dialect">NHibernate.Dialect.MsSql2000Dialect</entry>
 					  -->
 					<!-- MySQL 
-					  <entry key="hibernate.connection.driver_class">NHibernate.Driver.MySqlDataDriver</entry>
-					  <entry key="hibernate.dialect">NHibernate.Dialect.MySQL5Dialect</entry>
+					  <entry key="connection.driver_class">NHibernate.Driver.MySqlDataDriver</entry>
+					  <entry key="dialect">NHibernate.Dialect.MySQL5Dialect</entry>
 					  -->
 				</dictionary>
 			</nhSettings>
@@ -75,7 +75,9 @@
 		</pages>
 
 		<httpModules>
-			<add name="n2.initializer" type="N2.Web.InitializerModule,N2"/>
+			<add name="n2.installer" type="N2.Installation.InstallerModule, N2"/>
+			<add name="n2.initializer" type="N2.Web.InitializerModule, N2"/>
+			<!--<add name="n2.mediumTrustInitializer" type="N2.MediumTrust.Web.InitializerModule, N2"/>-->
 		</httpModules>
 
 		<httpHandlers>
@@ -107,18 +109,20 @@
 			</forms>
 		</authentication>
 
-		<customErrors mode="Off"/>
+		<customErrors mode="Off">
+			<error statusCode="404" redirect="~/404.aspx" />
+		</customErrors>
 
-		<membership defaultProvider="TemplateMembershipProvider">
+		<membership defaultProvider="ContentMembershipProvider">
 			<providers>
 				<clear/>
-				<add name="TemplateMembershipProvider" type="N2.Templates.Security.TemplateMembershipProvider, N2.Templates.Security" />
+				<add name="ContentMembershipProvider" type="N2.Security.ContentMembershipProvider, N2.Security" />
 			</providers>
 		</membership>
-		<roleManager enabled="true" defaultProvider="TemplateRoleProvider">
+		<roleManager enabled="true" defaultProvider="ContentRoleProvider">
 			<providers>
 				<clear/>
-				<add name="TemplateRoleProvider" type="N2.Templates.Security.TemplateRoleProvider, N2.Templates.Security" />
+				<add name="ContentRoleProvider" type="N2.Security.ContentRoleProvider, N2.Security" />
 			</providers>
 		</roleManager>
 	</system.web>

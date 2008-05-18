@@ -1,3 +1,12 @@
+From pre v.1.3.5:
+- Remove deprecated assemblies:
+	- N2.MediumTrust.dll
+	- N2.Templates.Security.dll
+	- N2.Templates.Syndication.dll
+	- N2.templates.SEO.dll
+- Update nhibernate configuration remove "hibernate." from configuration keys, e.g.
+	- "hibernate.connection.provider" -> "connection.provider"
+
 From pre v1.3.2:
 
 - Remove deprecated assemblies:

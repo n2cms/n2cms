@@ -22,7 +22,7 @@
 			</n2:DragDropControlPanel>
 		</n2:SlidingCurtain>
 		<asp:SiteMapDataSource ID="smds" runat="server" SiteMapProvider="PublicSiteMap" StartFromCurrentNode="false" ShowStartingNode="false" />
-        <asp:Menu ID="m" runat="server" DataSourceID="smds" Orientation="Horizontal">
+        <asp:Menu ID="m" runat="server" DataSourceID="smds" Orientation="Horizontal" MaximumDynamicDisplayLevels="1">
 			<DynamicSelectedStyle BackColor="red" />
 			<StaticSelectedStyle BackColor="red" />
         </asp:Menu>
