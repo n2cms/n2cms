@@ -45,9 +45,14 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NHibernate, Version=2.0.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
@@ -68,10 +73,6 @@
     <Content Include="Login.aspx" />
     <Content Include="Move.aspx" />
     <Content Include="New.aspx" />
-    <EmbeddedResource Include="SqlScript\Check.sql" />
-    <EmbeddedResource Include="SqlScript\Create.sql" />
-    <EmbeddedResource Include="SqlScript\Drop.sql" />
-    <EmbeddedResource Include="SqlScript\Truncate.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,17 @@
     <Compile Include="Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Export\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Export\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Export\DefinitionNotFoundException.cs" />
+    <Compile Include="Export\InvalidXmlException.cs" />
+    <Compile Include="Export\N2XmlReader.cs" />
+    <Compile Include="Export\N2XmlWriter.cs" />
     <Compile Include="FileManagement\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -153,6 +165,34 @@
     </Compile>
     <Compile Include="Framed.Master.designer.cs">
       <DependentUpon>Framed.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Install\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Install\Diagnose.aspx.cs">
+      <DependentUpon>Diagnose.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\Diagnose.aspx.designer.cs">
+      <DependentUpon>Diagnose.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Install\Fix.aspx.cs">
+      <DependentUpon>Fix.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\Fix.aspx.designer.cs">
+      <DependentUpon>Fix.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Install\MediumTrust.aspx.cs">
+      <DependentUpon>MediumTrust.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\MediumTrust.aspx.designer.cs">
+      <DependentUpon>MediumTrust.aspx</DependentUpon>
     </Compile>
     <Compile Include="ItemInfo.ascx.cs">
       <DependentUpon>ItemInfo.ascx</DependentUpon>
@@ -177,6 +217,34 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Membership\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\New.aspx.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Membership\New.aspx.designer.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\Password.aspx.cs">
+      <DependentUpon>Password.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Membership\Password.aspx.designer.cs">
+      <DependentUpon>Password.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\Users.aspx.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Membership\Users.aspx.designer.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
     <Compile Include="Move.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -763,7 +831,21 @@
     <Content Include="Security\App_LocalResources\Default.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <EmbeddedResource Include="SqlScript\CreateMembership.sql" />
+    <Content Include="Export\App_LocalResources\Default.aspx.it.resx" />
+    <Content Include="Export\App_LocalResources\Default.aspx.nl.resx" />
+    <Content Include="Export\App_LocalResources\Default.aspx.resx" />
+    <Content Include="Membership\App_LocalResources\Edit.aspx.resx" />
+    <Content Include="Membership\App_LocalResources\it\Edit.aspx.it.resx" />
+    <Content Include="Membership\App_LocalResources\it\New.aspx.it.resx" />
+    <Content Include="Membership\App_LocalResources\it\Password.aspx.it.resx" />
+    <Content Include="Membership\App_LocalResources\it\Users.aspx.it.resx" />
+    <Content Include="Membership\App_LocalResources\New.aspx.resx" />
+    <Content Include="Membership\App_LocalResources\nl\Edit.aspx.nl.resx" />
+    <Content Include="Membership\App_LocalResources\nl\New.aspx.nl.resx" />
+    <Content Include="Membership\App_LocalResources\nl\Password.aspx.nl.resx" />
+    <Content Include="Membership\App_LocalResources\nl\Users.aspx.nl.resx" />
+    <Content Include="Membership\App_LocalResources\Password.aspx.resx" />
+    <Content Include="Membership\App_LocalResources\Users.aspx.resx" />
     <Content Include="Versions\App_LocalResources\Versions.aspx.da.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -1084,6 +1166,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Css\Parts.css" />
+    <Content Include="Export\Css\exportImport.css" />
+    <Content Include="Export\Default.aspx" />
     <Content Include="img\framed_opener.gif" />
     <Content Include="img\ico\png\pencil.png" />
     <Content Include="img\part_bg.png" />
@@ -1102,7 +1186,22 @@
     <Content Include="Js\jquery.ui\ui.draggable.js" />
     <Content Include="Js\jquery.ui\ui.droppable.js" />
     <Content Include="Js\parts.js" />
+    <Content Include="Membership\Css\Membership.css" />
+    <Content Include="Membership\Edit.aspx" />
+    <Content Include="Membership\New.aspx" />
+    <Content Include="Membership\Password.aspx" />
+    <Content Include="Membership\Users.aspx" />
     <Content Include="Navigation\SortDown.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Install\Default.aspx" />
+    <Content Include="Install\Diagnose.aspx" />
+    <Content Include="Install\Fix.aspx" />
+    <Content Include="Install\MediumTrust.aspx" />
+    <Content Include="Membership\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Install\Web.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

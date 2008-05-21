@@ -128,7 +128,7 @@
 		</CreateItem>		
 		<Delete Files="@(CoreDeploy-EditBinFiles)"/>
 
-		<Exec Command="$(ILMerge) /ndebug /out:$(DeployCore-BinFolder)\N2.Edit.dll $(Core-WebFolder)\Bin\N2.Edit.dll /log $(Core-WebFolder)\Bin\N2.Edit.Export.dll $(Core-WebFolder)\Bin\N2.Edit.Globalization.dll $(Core-WebFolder)\Bin\N2.Edit.Install.dll $(Core-WebFolder)\Bin\N2.Edit.LinkTracker.dll $(Core-WebFolder)\Bin\N2.Edit.Membership.dll $(Core-WebFolder)\Bin\N2.Edit.Trash.dll $(Core-WebFolder)\Bin\N2.Edit.Wizard.dll $(Core-WebFolder)\Bin\N2.Installation.dll"/>
+		<Exec Command="$(ILMerge) /ndebug /out:$(DeployCore-BinFolder)\N2.Edit.dll $(Core-WebFolder)\Bin\N2.Edit.dll /log $(Core-WebFolder)\Bin\N2.Edit.Globalization.dll $(Core-WebFolder)\Bin\N2.Edit.LinkTracker.dll $(Core-WebFolder)\Bin\N2.Edit.Trash.dll $(Core-WebFolder)\Bin\N2.Edit.Wizard.dll"/>
 	</Target>
 
 	<Target Name="Rebuild-CoreDeploy-AllFiles">
@@ -178,7 +178,7 @@
 		<Copy SourceFiles="@(Templates-BinFiles)" DestinationFolder="$(DeployTemplates-UIFolder)\Bin" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployTemplates-Folder)" />
 
-		<CallTarget Targets="Templates-ILMerge-Deploy"/>
+		<!--<CallTarget Targets="Templates-ILMerge-Deploy"/>-->
 	</Target>
 
 	<ItemGroup>
@@ -195,10 +195,10 @@
 		<TemplatesDeploy-MergedDll Include="$(DeployTemplates-UIFolder)\Bin\N2.Templates.Survey.dll" />
 	</ItemGroup>
 
-	<Target Name="Templates-ILMerge-Deploy" DependsOnTargets="Templates-Build">
+	<!--<Target Name="Templates-ILMerge-Deploy" DependsOnTargets="Templates-Build">
 		<Delete Files="@(TemplatesDeploy-MergedDll)"/>
 		<Exec Command="$(ILMerge) /ndebug /out:$(DeployTemplates-UIFolder)\Bin\N2.Templates.UI.dll $(Templates-UIFolder)\Bin\N2.Templates.UI.dll /log $(Templates-UIFolder)\Bin\N2.Templates.Advertisement.dll $(Templates-UIFolder)\Bin\N2.Templates.Calendar.dll $(Templates-UIFolder)\Bin\N2.Templates.Faq.dll $(Templates-UIFolder)\Bin\N2.Templates.Form.dll $(Templates-UIFolder)\Bin\N2.Templates.ImageGallery.dll $(Templates-UIFolder)\Bin\N2.Templates.News.dll $(Templates-UIFolder)\Bin\N2.Templates.Poll.dll $(Templates-UIFolder)\Bin\N2.Templates.RSS.dll $(Templates-UIFolder)\Bin\N2.Templates.Search.dll $(Templates-UIFolder)\Bin\N2.Templates.Survey.dll"/>
-	</Target>
+	</Target>-->
 
 	
 	

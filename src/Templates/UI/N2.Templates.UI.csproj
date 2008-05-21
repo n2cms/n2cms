@@ -73,6 +73,22 @@
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Advertisement\Items\SocialBookmarks.cs" />
+    <Compile Include="Advertisement\Items\Tracking.cs" />
+    <Compile Include="Advertisement\UI\SocialBookmarks.ascx.cs">
+      <DependentUpon>SocialBookmarks.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Advertisement\UI\SocialBookmarks.ascx.designer.cs">
+      <DependentUpon>SocialBookmarks.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Advertisement\UI\UrchinTracking.ascx.cs">
+      <DependentUpon>UrchinTracking.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Advertisement\UI\UrchinTracking.ascx.designer.cs">
+      <DependentUpon>UrchinTracking.ascx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\Definitions.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -123,6 +139,30 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.nl.resx</DependentUpon>
     </Compile>
+    <Compile Include="Calendar\Items\Calendar.cs" />
+    <Compile Include="Calendar\Items\CalendarTeaser.cs" />
+    <Compile Include="Calendar\Items\Event.cs" />
+    <Compile Include="Calendar\UI\CalendarTeaser.ascx.cs">
+      <DependentUpon>CalendarTeaser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Calendar\UI\CalendarTeaser.ascx.designer.cs">
+      <DependentUpon>CalendarTeaser.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\UI\Container.aspx.cs">
+      <DependentUpon>Container.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Calendar\UI\Container.aspx.designer.cs">
+      <DependentUpon>Container.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Calendar\UI\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Calendar\UI\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -130,8 +170,64 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Faq\Items\BubbleItem.cs" />
+    <Compile Include="Faq\Items\Faq.cs" />
+    <Compile Include="Faq\Items\FaqList.cs" />
+    <Compile Include="Faq\UI\Bubble.ascx.cs">
+      <DependentUpon>Bubble.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Faq\UI\Bubble.ascx.designer.cs">
+      <DependentUpon>Bubble.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Faq\UI\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Faq\UI\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Faq\UI\Faq.ascx.cs">
+      <DependentUpon>Faq.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Faq\UI\Faq.ascx.designer.cs">
+      <DependentUpon>Faq.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Items\Form.cs" />
+    <Compile Include="Form\Items\FormPage.cs" />
+    <Compile Include="Form\UI\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Form\UI\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Form\UI\Form.ascx.cs">
+      <DependentUpon>Form.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Form\UI\Form.ascx.designer.cs">
+      <DependentUpon>Form.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="ImageGallery\Items\GalleryItem.cs" />
+    <Compile Include="ImageGallery\Items\ImageGallery.cs" />
+    <Compile Include="ImageGallery\UI\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImageGallery\UI\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ImageGallery\UI\GalleryItem.ascx.cs">
+      <DependentUpon>GalleryItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImageGallery\UI\GalleryItem.ascx.designer.cs">
+      <DependentUpon>GalleryItem.ascx</DependentUpon>
     </Compile>
     <Compile Include="Items\LayoutParts\Columns.cs" />
     <Compile Include="Items\LayoutParts\HorizontalMenu.cs" />
@@ -150,6 +246,44 @@
     <Compile Include="Items\RootParts\Statistics.cs" />
     <Compile Include="Items\SiteMap.cs" />
     <Compile Include="Items\StartPage.cs" />
+    <Compile Include="News\Items\News.cs" />
+    <Compile Include="News\Items\NewsContainer.cs" />
+    <Compile Include="News\Items\NewsList.cs" />
+    <Compile Include="News\UI\Container.aspx.cs">
+      <DependentUpon>Container.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="News\UI\Container.aspx.designer.cs">
+      <DependentUpon>Container.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="News\UI\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="News\UI\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="News\UI\Layouts\Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="News\UI\Layouts\Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="News\UI\NewsBox.ascx.cs">
+      <DependentUpon>NewsBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="News\UI\NewsBox.ascx.designer.cs">
+      <DependentUpon>NewsBox.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="News\UI\NewsList.ascx.cs">
+      <DependentUpon>NewsList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="News\UI\NewsList.ascx.designer.cs">
+      <DependentUpon>NewsList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Parts\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -170,6 +304,49 @@
     </Compile>
     <Compile Include="Parts\Register.ascx.designer.cs">
       <DependentUpon>Register.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Poll\Details\PollCreatorDetailAttribute.cs" />
+    <Compile Include="Poll\Items\Poll.cs" />
+    <Compile Include="Poll\UI\Poll.ascx.cs">
+      <DependentUpon>Poll.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Poll\UI\Poll.ascx.designer.cs">
+      <DependentUpon>Poll.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Poll\UI\Result.ascx.cs">
+      <DependentUpon>Result.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Poll\UI\Result.ascx.designer.cs">
+      <DependentUpon>Result.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="RSS\Items\RssFeed.cs" />
+    <Compile Include="RSS\Items\Subscribe.cs" />
+    <Compile Include="RSS\SyndicatableDefinitionAppender.cs" />
+    <Compile Include="RSS\SyndicationInitializer.cs" />
+    <Compile Include="RSS\UI\Feed.aspx.cs">
+      <DependentUpon>Feed.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RSS\UI\Feed.aspx.designer.cs">
+      <DependentUpon>Feed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RSS\UI\Subscribe.ascx.cs">
+      <DependentUpon>Subscribe.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RSS\UI\Subscribe.ascx.designer.cs">
+      <DependentUpon>Subscribe.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Search\Items\AbstractSearch.cs" />
+    <Compile Include="Search\Items\DatabaseSearch.cs" />
+    <Compile Include="Search\UI\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Search\UI\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="SEO\SEOInitializer.cs" />
     <Compile Include="TabPanel\TabsItem.cs">
@@ -331,6 +508,10 @@
     <ProjectReference Include="..\N2.Templates\N2.Templates.csproj">
       <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
       <Name>N2.Templates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Survey\N2.Templates.Survey.csproj">
+      <Project>{E750B8F9-9DC4-48C2-A5EE-D7C96F80933C}</Project>
+      <Name>N2.Templates.Survey</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -507,7 +688,28 @@
     <Content Include="App_Themes\n2cms\menu_selected.gif" />
     <Content Include="App_Themes\n2cms\Style.css" />
     <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
+    <Content Include="Calendar\UI\CalendarTeaser.ascx" />
+    <Content Include="Calendar\UI\Container.aspx" />
+    <Content Include="Calendar\UI\Css\Calendar.css" />
+    <Content Include="Calendar\UI\Default.aspx" />
+    <Content Include="Calendar\UI\Img\calendar.png" />
+    <Content Include="Calendar\UI\Img\calendar_view_day.png" />
+    <Content Include="Calendar\UI\Img\calendar_view_month.png" />
+    <Content Include="Faq\UI\Bubble.ascx" />
+    <Content Include="Faq\UI\Css\Faq.css" />
+    <Content Include="Faq\UI\Default.aspx" />
+    <Content Include="Faq\UI\Faq.ascx" />
+    <Content Include="Faq\UI\Img\bubble_left.gif" />
+    <Content Include="Faq\UI\Img\bubble_left.png" />
+    <Content Include="Faq\UI\Img\bubble_right.gif" />
+    <Content Include="Faq\UI\Img\bubble_right.png" />
+    <Content Include="Faq\UI\Img\help.png" />
+    <Content Include="Faq\UI\Img\information.png" />
     <Content Include="favicon.ico" />
+    <Content Include="Form\UI\Css\Form.css" />
+    <Content Include="Form\UI\Default.aspx" />
+    <Content Include="Form\UI\Form.ascx" />
+    <Content Include="Form\UI\Img\report.png" />
     <Content Include="Img\application_view_columns.png" />
     <Content Include="Img\tab.png" />
     <Content Include="Parts\Login.ascx" />
@@ -530,6 +732,88 @@
     <None Include="App_Data\DarkStrips_SampleData.gz" />
     <None Include="App_Data\KhakiTabs_SampleData.gz" />
     <None Include="App_Data\Plain_SampleData.gz" />
+    <Content Include="News\UI\Layouts\Default.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Form\UI\App_LocalResources\Form.ascx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Form\UI\App_LocalResources\Form.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Form\UI\App_LocalResources\Form.ascx.sv.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ImageGallery\UI\Css\ImageGallery.css" />
+    <Content Include="ImageGallery\UI\Default.aspx" />
+    <Content Include="ImageGallery\UI\GalleryItem.ascx" />
+    <Content Include="ImageGallery\UI\Img\photo.png" />
+    <Content Include="ImageGallery\UI\Img\photos.png" />
+    <Content Include="News\UI\Container.aspx" />
+    <Content Include="News\UI\Css\News.css" />
+    <Content Include="News\UI\Default.aspx" />
+    <Content Include="News\UI\Img\newspaper.png" />
+    <Content Include="News\UI\Img\newspaper_go.png" />
+    <Content Include="News\UI\Img\newspaper_link.png" />
+    <Content Include="News\UI\NewsBox.ascx" />
+    <Content Include="News\UI\NewsList.ascx" />
+    <Content Include="Poll\UI\Css\Poll.css" />
+    <Content Include="Poll\UI\Img\chart_curve.png" />
+    <Content Include="Poll\UI\Img\chart_curve_add.png" />
+    <Content Include="Poll\UI\Img\chart_curve_delete.png" />
+    <Content Include="Poll\UI\Img\chart_curve_edit.png" />
+    <Content Include="Poll\UI\Img\chart_curve_error.png" />
+    <Content Include="Poll\UI\Img\chart_curve_go.png" />
+    <Content Include="Poll\UI\Img\chart_curve_link.png" />
+    <Content Include="Poll\UI\Img\chart_line.png" />
+    <Content Include="Poll\UI\Img\chart_line_add.png" />
+    <Content Include="Poll\UI\Img\chart_line_delete.png" />
+    <Content Include="Poll\UI\Img\chart_line_edit.png" />
+    <Content Include="Poll\UI\Img\chart_line_error.png" />
+    <Content Include="Poll\UI\Img\chart_line_link.png" />
+    <Content Include="Poll\UI\Img\chart_organisation.png" />
+    <Content Include="Poll\UI\Img\chart_organisation_add.png" />
+    <Content Include="Poll\UI\Img\chart_organisation_delete.png" />
+    <Content Include="Poll\UI\Img\chart_pie.png" />
+    <Content Include="Poll\UI\Img\chart_pie_add.png" />
+    <Content Include="Poll\UI\Img\chart_pie_delete.png" />
+    <Content Include="Poll\UI\Img\chart_pie_edit.png" />
+    <Content Include="Poll\UI\Img\chart_pie_error.png" />
+    <Content Include="Poll\UI\Poll.ascx" />
+    <Content Include="Poll\UI\Result.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Advertisement\UI\Img\delicious.png" />
+    <Content Include="Advertisement\UI\Img\digg.png" />
+    <Content Include="Advertisement\UI\Img\dotnetkicks.png" />
+    <Content Include="Advertisement\UI\Img\dzone.png" />
+    <Content Include="Advertisement\UI\Img\google.png" />
+    <Content Include="Advertisement\UI\Img\live.png" />
+    <Content Include="Advertisement\UI\Img\netscape.gif" />
+    <Content Include="Advertisement\UI\Img\reddit.png" />
+    <Content Include="Advertisement\UI\Img\slashdot.png" />
+    <Content Include="Advertisement\UI\Img\technorati.png" />
+    <Content Include="Advertisement\UI\Img\yahoomyweb.png" />
+    <Content Include="Advertisement\UI\SocialBookmarks.ascx" />
+    <Content Include="Advertisement\UI\UrchinTracking.ascx" />
+    <Content Include="Poll\UI\App_LocalResources\Poll.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Poll\UI\App_LocalResources\Poll.ascx.sv.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="RSS\UI\Feed.aspx" />
+    <Content Include="RSS\UI\Img\bullet_feed.png" />
+    <Content Include="RSS\UI\Img\feed.png" />
+    <Content Include="RSS\UI\Img\feed_link.png" />
+    <Content Include="RSS\UI\Img\rss.png" />
+    <Content Include="RSS\UI\Subscribe.ascx" />
+    <Content Include="Search\UI\Css\Search.css" />
+    <Content Include="Search\UI\Default.aspx" />
+    <Content Include="Search\UI\Img\zoom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Form\UI\Layouts\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

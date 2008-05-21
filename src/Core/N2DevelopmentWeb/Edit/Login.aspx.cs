@@ -52,7 +52,7 @@ namespace N2.Edit
 					e.Authenticated = true;
 					FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
 				}
-				else if (Membership.ValidateUser(Login1.UserName, Login1.Password))
+				else if (System.Web.Security.Membership.ValidateUser(Login1.UserName, Login1.Password))
 				{
 					e.Authenticated = true;
 					FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);

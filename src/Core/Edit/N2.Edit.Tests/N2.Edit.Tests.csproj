@@ -64,13 +64,13 @@
       <Project>{4B026365-D03B-40B4-862B-11608BA756B0}</Project>
       <Name>N2.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\N2DevelopmentWeb\Edit\Export\N2.Edit.Export.csproj">
-      <Project>{616D818B-2EE2-4862-984A-6EC3386C5D6F}</Project>
-      <Name>N2.Edit.Export</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\N2DevelopmentWeb\Edit\LinkTracker\N2.Edit.LinkTracker.csproj">
       <Project>{D0269A39-A5CC-409D-AC06-3B0548DE6D98}</Project>
       <Name>N2.Edit.LinkTracker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\N2DevelopmentWeb\Edit\N2.Edit.csproj">
+      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
+      <Name>N2.Edit</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\N2DevelopmentWeb\Edit\Trash\N2.Edit.Trash.csproj">
       <Project>{408BB005-77D9-4EED-A2BA-5F96D0C471F2}</Project>
