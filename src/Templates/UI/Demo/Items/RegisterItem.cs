@@ -14,7 +14,7 @@ using N2.Web.UI;
 
 namespace Demo.Items
 {
-	[Definition("Demo Registration", "Register")]
+	[Definition("Demo Registration", "DemoRegister")]
     [AllowedZones("Right")]
 	[RestrictParents(typeof(N2.Templates.Items.IStructuralPage))]
 	[TabPanel("web", "Web", 10)]
