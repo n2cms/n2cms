@@ -11,6 +11,7 @@
 	- fixed old web.config reference
 - core
 	- removed some obsolte code: CloseSessionModule, IDataItemContainer, NavigationPlugInAttribute, PlugInAttribute, ToolbarPlugInAttribute, UrlRewriterModule
+	- rearranged the solution hopefully making it simpler and more understandable
 
 N2 1.3.5
 - edit

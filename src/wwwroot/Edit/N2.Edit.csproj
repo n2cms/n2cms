@@ -1,0 +1,1252 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2.Edit</RootNamespace>
+    <AssemblyName>N2.Edit</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Publish|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NHibernate, Version=2.0.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AffectedItems.ascx" />
+    <Content Include="Copy.aspx" />
+    <Content Include="Css\edit.css" />
+    <Content Include="Css\editor.css" />
+    <Content Include="Css\default.css" />
+    <Content Include="Css\all.css" />
+    <Content Include="FileManagement\Css\filemanager.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="Delete.aspx" />
+    <Content Include="Edit.aspx" />
+    <Content Include="FileManagement\Default.aspx" />
+    <Content Include="Login.aspx" />
+    <Content Include="Move.aspx" />
+    <Content Include="New.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AffectedItems.ascx.cs">
+      <DependentUpon>AffectedItems.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AffectedItems.ascx.designer.cs">
+      <DependentUpon>AffectedItems.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.da.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.da.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.it.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\Toolbar.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="AvailableZones.ascx.cs">
+      <DependentUpon>AvailableZones.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AvailableZones.ascx.designer.cs">
+      <DependentUpon>AvailableZones.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Copy.aspx.cs">
+      <DependentUpon>Copy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Copy.aspx.designer.cs">
+      <DependentUpon>Copy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Delete.aspx.cs">
+      <DependentUpon>Delete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Delete.aspx.designer.cs">
+      <DependentUpon>Delete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Export\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Export\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Export\DefinitionNotFoundException.cs" />
+    <Compile Include="Export\InvalidXmlException.cs" />
+    <Compile Include="Export\N2XmlReader.cs" />
+    <Compile Include="Export\N2XmlWriter.cs" />
+    <Compile Include="FileManagement\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FileManagement\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FileManagement\FileEventArgs.cs" />
+    <Compile Include="FileManagement\FileManager.cs" />
+    <Compile Include="Framed.Master.cs">
+      <DependentUpon>Framed.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Framed.Master.designer.cs">
+      <DependentUpon>Framed.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Install\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Install\Diagnose.aspx.cs">
+      <DependentUpon>Diagnose.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\Diagnose.aspx.designer.cs">
+      <DependentUpon>Diagnose.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Install\Fix.aspx.cs">
+      <DependentUpon>Fix.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\Fix.aspx.designer.cs">
+      <DependentUpon>Fix.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Install\MediumTrust.aspx.cs">
+      <DependentUpon>MediumTrust.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\MediumTrust.aspx.designer.cs">
+      <DependentUpon>MediumTrust.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ItemInfo.ascx.cs">
+      <DependentUpon>ItemInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemInfo.ascx.designer.cs">
+      <DependentUpon>ItemInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Js\DirectoryCompiler.cs" />
+    <Compile Include="Js\jquery.ui.ashx.cs">
+      <DependentUpon>jquery.ui.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Js\plugins.ashx.cs">
+      <DependentUpon>plugins.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Js\tinymce.ashx.cs">
+      <DependentUpon>tinymce.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Membership\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\New.aspx.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Membership\New.aspx.designer.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\Password.aspx.cs">
+      <DependentUpon>Password.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Membership\Password.aspx.designer.cs">
+      <DependentUpon>Password.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\Users.aspx.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Membership\Users.aspx.designer.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Move.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Move.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Move.aspx.designer.cs">
+      <DependentUpon>Move.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\ContextMenu.ascx.cs">
+      <DependentUpon>ContextMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Navigation\ContextMenu.ascx.designer.cs">
+      <DependentUpon>ContextMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\HelpfulHandler.cs" />
+    <Compile Include="Navigation\LoadTree.ashx.cs">
+      <DependentUpon>LoadTree.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Navigation\Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\NavigationPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Navigation\SortDown.ashx.cs">
+      <DependentUpon>SortDown.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\SortPlugin.cs" />
+    <Compile Include="Navigation\SortUp.ashx.cs">
+      <DependentUpon>SortUp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\Tree.aspx.cs">
+      <DependentUpon>Tree.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Navigation\Tree.aspx.designer.cs">
+      <DependentUpon>Tree.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paste.aspx.cs">
+      <DependentUpon>Paste.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paste.aspx.designer.cs">
+      <DependentUpon>Paste.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="New.aspx.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="New.aspx.designer.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PersonalSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ItemSelection\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ItemSelection\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ReferencingItems.ascx.cs">
+      <DependentUpon>ReferencingItems.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReferencingItems.ascx.designer.cs">
+      <DependentUpon>ReferencingItems.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Security\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Security\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Settings\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbar.ascx.cs">
+      <DependentUpon>Toolbar.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Toolbar.ascx.designer.cs">
+      <DependentUpon>Toolbar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Versions\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Versions\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Web\EditSiteMapNode.cs" />
+    <Compile Include="Web\EditUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\FileSiteMapNode.cs" />
+    <Compile Include="Web\FileSiteMapProvider.cs" />
+    <Compile Include="Web\EditSiteMapProvider.cs" />
+    <Compile Include="Web\UI\Controls\FieldSet.cs" />
+    <Compile Include="Web\UI\Controls\InfoLabel.cs" />
+    <Compile Include="Web\UI\Controls\OptionsMenu.cs" />
+    <Compile Include="Web\UI\Controls\ServiceEditor.cs" />
+    <Compile Include="Web\UI\Controls\Tree.cs" />
+    <Compile Include="Web\UI\Controls\TreeView.cs" />
+    <Compile Include="Web\UrlSelectionPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\it\AffectedItems.ascx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\AvailableZones.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Copy.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Delete.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Framed.Master.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Login.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Move.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\New.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Paste.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="AvailableZones.ascx" />
+    <Content Include="Css\framed.css" />
+    <Content Include="Css\IE6.css" />
+    <Content Include="img\bg.gif" />
+    <Content Include="img\framed_bg.gif" />
+    <Content Include="img\framed_toolbar.gif" />
+    <Content Include="img\framed_top.gif" />
+    <Content Include="img\grid_alt.gif" />
+    <Content Include="img\ico\accept.gif" />
+    <Content Include="img\ico\add.gif" />
+    <Content Include="img\ico\bin.gif" />
+    <Content Include="img\ico\bin_closed.gif" />
+    <Content Include="img\ico\bin_empty.gif" />
+    <Content Include="img\ico\bullet_add.gif" />
+    <Content Include="img\ico\bullet_arrow_bottom.gif" />
+    <Content Include="img\ico\bullet_arrow_down.gif" />
+    <Content Include="img\ico\bullet_arrow_top.gif" />
+    <Content Include="img\ico\bullet_arrow_up.gif" />
+    <Content Include="img\ico\bullet_delete.gif" />
+    <Content Include="img\ico\bullet_disk.gif" />
+    <Content Include="img\ico\bullet_error.gif" />
+    <Content Include="img\ico\bullet_key.gif" />
+    <Content Include="img\ico\bullet_star.gif" />
+    <Content Include="img\ico\bullet_toggle_plus.gif" />
+    <Content Include="img\ico\bullet_wrench.gif" />
+    <Content Include="img\ico\cancel.gif" />
+    <Content Include="img\ico\comment.gif" />
+    <Content Include="img\ico\control_rewind.gif" />
+    <Content Include="img\ico\control_start.gif" />
+    <Content Include="img\ico\cross.gif" />
+    <Content Include="img\ico\cut.gif" />
+    <Content Include="img\ico\delete.gif" />
+    <Content Include="img\ico\disk.gif" />
+    <Content Include="img\ico\email.gif" />
+    <Content Include="img\ico\exclamation.gif" />
+    <Content Include="img\ico\feed.gif" />
+    <Content Include="img\ico\find.gif" />
+    <Content Include="img\ico\flag_blue.gif" />
+    <Content Include="img\ico\folder.gif" />
+    <Content Include="img\ico\folder_add.gif" />
+    <Content Include="img\ico\folder_delete.gif" />
+    <Content Include="img\ico\group.gif" />
+    <Content Include="img\ico\group_key.gif" />
+    <Content Include="img\ico\information.gif" />
+    <Content Include="img\ico\key.gif" />
+    <Content Include="img\ico\lightning.gif" />
+    <Content Include="img\ico\lock.gif" />
+    <Content Include="img\ico\new.gif" />
+    <Content Include="img\ico\newspaper.gif" />
+    <Content Include="img\ico\newspaper_add.gif" />
+    <Content Include="img\ico\package.gif" />
+    <Content Include="img\ico\package_come_and_go.gif" />
+    <Content Include="img\ico\page.gif" />
+    <Content Include="img\ico\page_add.gif" />
+    <Content Include="img\ico\page_attach.gif" />
+    <Content Include="img\ico\page_code.gif" />
+    <Content Include="img\ico\page_copy.gif" />
+    <Content Include="img\ico\page_delete.gif" />
+    <Content Include="img\ico\page_edit.gif" />
+    <Content Include="img\ico\page_error.gif" />
+    <Content Include="img\ico\page_find.gif" />
+    <Content Include="img\ico\page_gear.gif" />
+    <Content Include="img\ico\page_go.gif" />
+    <Content Include="img\ico\page_green.gif" />
+    <Content Include="img\ico\page_key.gif" />
+    <Content Include="img\ico\page_lightning.gif" />
+    <Content Include="img\ico\page_link.gif" />
+    <Content Include="img\ico\page_paintbrush.gif" />
+    <Content Include="img\ico\page_paste.gif" />
+    <Content Include="img\ico\page_red.gif" />
+    <Content Include="img\ico\page_refresh.gif" />
+    <Content Include="img\ico\page_rewind.gif" />
+    <Content Include="img\ico\page_save.gif" />
+    <Content Include="img\ico\page_white.gif" />
+    <Content Include="img\ico\page_white_add.gif" />
+    <Content Include="img\ico\page_white_copy.gif" />
+    <Content Include="img\ico\page_white_delete.gif" />
+    <Content Include="img\ico\page_white_edit.gif" />
+    <Content Include="img\ico\page_white_error.gif" />
+    <Content Include="img\ico\page_white_find.gif" />
+    <Content Include="img\ico\page_white_get.gif" />
+    <Content Include="img\ico\page_white_key.gif" />
+    <Content Include="img\ico\page_white_lightning.gif" />
+    <Content Include="img\ico\page_white_link.gif" />
+    <Content Include="img\ico\page_white_magnify.gif" />
+    <Content Include="img\ico\page_white_paste.gif" />
+    <Content Include="img\ico\page_white_put.gif" />
+    <Content Include="img\ico\page_white_stack.gif" />
+    <Content Include="img\ico\page_white_text.gif" />
+    <Content Include="img\ico\page_white_wrench.gif" />
+    <Content Include="img\ico\page_world.gif" />
+    <Content Include="img\ico\plugin.gif" />
+    <Content Include="img\ico\png\accept.png" />
+    <Content Include="img\ico\png\add.png" />
+    <Content Include="img\ico\png\anchor.png" />
+    <Content Include="img\ico\png\bin.png" />
+    <Content Include="img\ico\png\bin_closed.png" />
+    <Content Include="img\ico\png\bin_empty.png" />
+    <Content Include="img\ico\png\bullet_add.png" />
+    <Content Include="img\ico\png\bullet_arrow_bottom.png" />
+    <Content Include="img\ico\png\bullet_arrow_down.png" />
+    <Content Include="img\ico\png\bullet_arrow_top.png" />
+    <Content Include="img\ico\png\bullet_arrow_up.png" />
+    <Content Include="img\ico\png\bullet_delete.png" />
+    <Content Include="img\ico\png\bullet_disk.png" />
+    <Content Include="img\ico\png\bullet_error.png" />
+    <Content Include="img\ico\png\bullet_go.png" />
+    <Content Include="img\ico\png\bullet_key.png" />
+    <Content Include="img\ico\png\bullet_star.png" />
+    <Content Include="img\ico\png\bullet_toggle_plus.png" />
+    <Content Include="img\ico\png\bullet_wrench.png" />
+    <Content Include="img\ico\png\cancel.png" />
+    <Content Include="img\ico\png\comment.png" />
+    <Content Include="img\ico\png\control_rewind.png" />
+    <Content Include="img\ico\png\control_start.png" />
+    <Content Include="img\ico\png\cross.png" />
+    <Content Include="img\ico\png\cut.png" />
+    <Content Include="img\ico\png\delete.png" />
+    <Content Include="img\ico\png\disk.png" />
+    <Content Include="img\ico\png\email.png" />
+    <Content Include="img\ico\png\feed.png" />
+    <Content Include="img\ico\png\find.png" />
+    <Content Include="img\ico\png\flag_blue.png" />
+    <Content Include="img\ico\png\folder.png" />
+    <Content Include="img\ico\png\folder_add.png" />
+    <Content Include="img\ico\png\folder_delete.png" />
+    <Content Include="img\ico\png\group.png" />
+    <Content Include="img\ico\png\group_key.png" />
+    <Content Include="img\ico\png\information.png" />
+    <Content Include="img\ico\png\key.png" />
+    <Content Include="img\ico\png\lightning.png" />
+    <Content Include="img\ico\png\lock.png" />
+    <Content Include="img\ico\png\new.png" />
+    <Content Include="img\ico\png\newspaper.png" />
+    <Content Include="img\ico\png\newspaper_add.png" />
+    <Content Include="img\ico\png\package.png" />
+    <Content Include="img\ico\png\package_come_and_go.png" />
+    <Content Include="img\ico\png\page.png" />
+    <Content Include="img\ico\png\page_add.png" />
+    <Content Include="img\ico\png\page_attach.png" />
+    <Content Include="img\ico\png\page_code.png" />
+    <Content Include="img\ico\png\page_copy.png" />
+    <Content Include="img\ico\png\page_delete.png" />
+    <Content Include="img\ico\png\page_edit.png" />
+    <Content Include="img\ico\png\page_error.png" />
+    <Content Include="img\ico\png\page_find.png" />
+    <Content Include="img\ico\png\page_gear.png" />
+    <Content Include="img\ico\png\page_go.png" />
+    <Content Include="img\ico\png\page_green.png" />
+    <Content Include="img\ico\png\page_key.png" />
+    <Content Include="img\ico\png\page_lightning.png" />
+    <Content Include="img\ico\png\page_link.png" />
+    <Content Include="img\ico\png\page_paintbrush.png" />
+    <Content Include="img\ico\png\page_paste.png" />
+    <Content Include="img\ico\png\page_red.png" />
+    <Content Include="img\ico\png\page_refresh.png" />
+    <Content Include="img\ico\png\page_rewind.png" />
+    <Content Include="img\ico\png\page_save.png" />
+    <Content Include="img\ico\png\page_white.png" />
+    <Content Include="img\ico\png\page_white_add.png" />
+    <Content Include="img\ico\png\page_white_copy.png" />
+    <Content Include="img\ico\png\page_white_delete.png" />
+    <Content Include="img\ico\png\page_white_edit.png" />
+    <Content Include="img\ico\png\page_white_error.png" />
+    <Content Include="img\ico\png\page_white_find.png" />
+    <Content Include="img\ico\png\page_white_get.png" />
+    <Content Include="img\ico\png\page_white_key.png" />
+    <Content Include="img\ico\png\page_white_lightning.png" />
+    <Content Include="img\ico\png\page_white_link.png" />
+    <Content Include="img\ico\png\page_white_magnify.png" />
+    <Content Include="img\ico\png\page_white_paste.png" />
+    <Content Include="img\ico\png\page_white_put.png" />
+    <Content Include="img\ico\png\page_white_stack.png" />
+    <Content Include="img\ico\png\page_white_text.png" />
+    <Content Include="img\ico\png\page_white_wrench.png" />
+    <Content Include="img\ico\png\page_world.png" />
+    <Content Include="img\ico\png\plugin.png" />
+    <Content Include="img\ico\png\printer.png" />
+    <Content Include="img\ico\png\script.png" />
+    <Content Include="img\ico\png\server_edit.png" />
+    <Content Include="img\ico\png\sitemap.png" />
+    <Content Include="img\ico\png\sitemap_color.png" />
+    <Content Include="img\ico\png\table.png" />
+    <Content Include="img\ico\png\tag_blue.png" />
+    <Content Include="img\ico\png\user.png" />
+    <Content Include="img\ico\png\user_add.png" />
+    <Content Include="img\ico\png\user_delete.png" />
+    <Content Include="img\ico\png\user_edit.png" />
+    <Content Include="img\ico\png\world.png" />
+    <Content Include="img\ico\png\wrench.png" />
+    <Content Include="img\ico\printer.gif" />
+    <Content Include="img\ico\script.gif" />
+    <Content Include="img\ico\server_edit.gif" />
+    <Content Include="img\ico\sitemap.gif" />
+    <Content Include="img\ico\sitemap_color.gif" />
+    <Content Include="img\ico\table.gif" />
+    <Content Include="img\ico\tag_blue.gif" />
+    <Content Include="img\ico\user.gif" />
+    <Content Include="img\ico\user_add.gif" />
+    <Content Include="img\ico\user_delete.gif" />
+    <Content Include="img\ico\user_edit.gif" />
+    <Content Include="img\ico\world.gif" />
+    <Content Include="img\ico\wrench.gif" />
+    <Content Include="img\login_bg.gif" />
+    <Content Include="img\login_panel.gif" />
+    <Content Include="img\tab_selected.gif" />
+    <Content Include="img\toolbar_bg.gif" />
+    <Content Include="img\tv\tv-collapsable-last.gif" />
+    <Content Include="img\tv\tv-collapsable.gif" />
+    <Content Include="img\tv\tv-expandable-last.gif" />
+    <Content Include="img\tv\tv-expandable.gif" />
+    <Content Include="img\tv\tv-item-last.gif" />
+    <Content Include="img\tv\tv-item.gif" />
+    <Content Include="ItemInfo.ascx" />
+    <Content Include="Js\ContextMenu.js" />
+    <Content Include="FileManagement\Js\FileSelection.js" />
+    <Content Include="ItemSelection\Js\ItemSelection.js" />
+    <Content Include="Css\Web.config" />
+    <Content Include="img\Web.config" />
+    <Content Include="App_LocalResources\AffectedItems.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\AvailableZones.ascx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Copy.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Default.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Delete.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Edit.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Framed.Master.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Login.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Move.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\New.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Paste.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Js\UrlSelection.js" />
+    <Content Include="Navigation\App_LocalResources\Search.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Settings.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Table.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Tree.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="FileManagement\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ItemSelection\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="FileManagement\App_LocalResources\Default.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ItemSelection\App_LocalResources\Default.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Tree.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Settings.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Table.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Search.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Toolbar.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\Toolbar.ascx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\AffectedItems.ascx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\AvailableZones.ascx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Copy.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Default.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Delete.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Edit.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Framed.Master.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Login.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Move.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\New.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Paste.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\da\Toolbar.ascx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Toolbar.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Toolbar.it.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.it.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Toolbar.da.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.da.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Settings\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\Edit.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Navigation.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Navigation.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\ItemInfo.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\it\ItemInfo.ascx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\AffectedItems.ascx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\AvailableZones.ascx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Copy.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Delete.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Edit.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Framed.Master.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Login.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Move.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\New.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Paste.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_LocalResources\nl\Toolbar.ascx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="FileManagement\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ItemSelection\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\Toolbar.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Search.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Settings.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Table.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Navigation\App_LocalResources\Tree.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Settings\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Framed.Master" />
+    <Content Include="Navigation\ContextMenu.ascx" />
+    <Content Include="Navigation\Search.aspx" />
+    <Content Include="Navigation\Tree.aspx" />
+    <Content Include="Paste.aspx" />
+    <Content Include="Security\App_LocalResources\Default.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Security\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Export\App_LocalResources\Default.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Export\App_LocalResources\Default.aspx.nl.resx" />
+    <Content Include="Export\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\Edit.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\it\Edit.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\it\New.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\it\Password.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\it\Users.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\New.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\nl\Edit.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\nl\New.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\nl\Password.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\nl\Users.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\Password.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Membership\App_LocalResources\Users.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Versions\App_LocalResources\Versions.aspx.da.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Versions\App_LocalResources\Versions.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Versions\App_LocalResources\Versions.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Versions\App_LocalResources\Versions.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ItemSelection\Default.aspx" />
+    <Content Include="ReferencingItems.ascx" />
+    <Content Include="Settings\Default.aspx" />
+    <Content Include="Toolbar.ascx" />
+    <Content Include="Versions.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FileManagement\Js\jquery.MultiFile.js" />
+    <Content Include="img\gripper.gif" />
+    <Content Include="img\ico\png\help.png" />
+    <Content Include="img\ico\png\script_edit.png" />
+    <Content Include="img\ico\png\shape_move_front.png" />
+    <Content Include="img\ico\png\star.png" />
+    <Content Include="img\shading.png" />
+    <Content Include="img\SlidingCurtain_bg.png" />
+    <Content Include="Js\jquery-1.2.3.js" />
+    <Content Include="Js\plugins\cookies.js" />
+    <Content Include="Js\plugins\jquery.n2optionmenu.js" />
+    <Content Include="Js\plugins\jquery.splitter.js" />
+    <Content Include="Js\plugins\n2.js" />
+    <Content Include="Js\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Js\plugins.ashx" />
+    <Content Include="Js\jquery.ui.ashx" />
+    <Content Include="Js\tiny_mce\langs\en.js" />
+    <Content Include="Js\tiny_mce\license.txt" />
+    <Content Include="Js\tiny_mce\plugins\advhr\css\advhr.css" />
+    <Content Include="Js\tiny_mce\plugins\advhr\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\advhr\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\advhr\js\rule.js" />
+    <Content Include="Js\tiny_mce\plugins\advhr\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\advhr\rule.htm" />
+    <Content Include="Js\tiny_mce\plugins\advimage\css\advimage.css" />
+    <Content Include="Js\tiny_mce\plugins\advimage\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\advimage\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\advimage\image.htm" />
+    <Content Include="Js\tiny_mce\plugins\advimage\img\sample.gif" />
+    <Content Include="Js\tiny_mce\plugins\advimage\js\image.js" />
+    <Content Include="Js\tiny_mce\plugins\advimage\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\advlink\css\advlink.css" />
+    <Content Include="Js\tiny_mce\plugins\advlink\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\advlink\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\advlink\js\advlink.js" />
+    <Content Include="Js\tiny_mce\plugins\advlink\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\advlink\link.htm" />
+    <Content Include="Js\tiny_mce\plugins\autosave\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\autosave\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\bbcode\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\bbcode\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\compat2x\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\compat2x\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\contextmenu\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\contextmenu\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\directionality\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\directionality\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\emotions\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\emotions\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\emotions\emotions.htm" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-cool.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-cry.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-embarassed.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-foot-in-mouth.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-frown.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-innocent.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-kiss.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-laughing.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-money-mouth.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-sealed.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-smile.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-surprised.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-tongue-out.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-undecided.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-wink.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\img\smiley-yell.gif" />
+    <Content Include="Js\tiny_mce\plugins\emotions\js\emotions.js" />
+    <Content Include="Js\tiny_mce\plugins\emotions\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\example\dialog.htm" />
+    <Content Include="Js\tiny_mce\plugins\example\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\example\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\example\img\example.gif" />
+    <Content Include="Js\tiny_mce\plugins\example\js\dialog.js" />
+    <Content Include="Js\tiny_mce\plugins\example\langs\en.js" />
+    <Content Include="Js\tiny_mce\plugins\example\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\fullpage\css\fullpage.css" />
+    <Content Include="Js\tiny_mce\plugins\fullpage\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\fullpage\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\fullpage\fullpage.htm" />
+    <Content Include="Js\tiny_mce\plugins\fullpage\js\fullpage.js" />
+    <Content Include="Js\tiny_mce\plugins\fullpage\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\fullscreen\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\fullscreen\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\fullscreen\fullscreen.htm" />
+    <Content Include="Js\tiny_mce\plugins\iespell\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\iespell\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\alert.gif" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\button.gif" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\buttons.gif" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\confirm.gif" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\corners.gif" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\horizontal.gif" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\vertical.gif" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\window.css" />
+    <Content Include="Js\tiny_mce\plugins\inlinepopups\template.htm" />
+    <Content Include="Js\tiny_mce\plugins\insertdatetime\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\insertdatetime\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\layer\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\layer\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\media\css\content.css" />
+    <Content Include="Js\tiny_mce\plugins\media\css\media.css" />
+    <Content Include="Js\tiny_mce\plugins\media\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\media\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\media\img\flash.gif" />
+    <Content Include="Js\tiny_mce\plugins\media\img\flv_player.swf" />
+    <Content Include="Js\tiny_mce\plugins\media\img\quicktime.gif" />
+    <Content Include="Js\tiny_mce\plugins\media\img\realmedia.gif" />
+    <Content Include="Js\tiny_mce\plugins\media\img\shockwave.gif" />
+    <Content Include="Js\tiny_mce\plugins\media\img\trans.gif" />
+    <Content Include="Js\tiny_mce\plugins\media\img\windowsmedia.gif" />
+    <Content Include="Js\tiny_mce\plugins\media\js\embed.js" />
+    <Content Include="Js\tiny_mce\plugins\media\js\media.js" />
+    <Content Include="Js\tiny_mce\plugins\media\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\media\media.htm" />
+    <Content Include="Js\tiny_mce\plugins\nonbreaking\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\nonbreaking\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\noneditable\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\noneditable\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\pagebreak\css\content.css" />
+    <Content Include="Js\tiny_mce\plugins\pagebreak\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\pagebreak\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\pagebreak\img\pagebreak.gif" />
+    <Content Include="Js\tiny_mce\plugins\pagebreak\img\trans.gif" />
+    <Content Include="Js\tiny_mce\plugins\paste\blank.htm" />
+    <Content Include="Js\tiny_mce\plugins\paste\css\blank.css" />
+    <Content Include="Js\tiny_mce\plugins\paste\css\pasteword.css" />
+    <Content Include="Js\tiny_mce\plugins\paste\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\paste\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\paste\js\pastetext.js" />
+    <Content Include="Js\tiny_mce\plugins\paste\js\pasteword.js" />
+    <Content Include="Js\tiny_mce\plugins\paste\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\paste\pastetext.htm" />
+    <Content Include="Js\tiny_mce\plugins\paste\pasteword.htm" />
+    <Content Include="Js\tiny_mce\plugins\preview\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\preview\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\preview\example.html" />
+    <Content Include="Js\tiny_mce\plugins\preview\jscripts\embed.js" />
+    <Content Include="Js\tiny_mce\plugins\print\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\print\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\safari\blank.htm" />
+    <Content Include="Js\tiny_mce\plugins\safari\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\safari\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\save\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\save\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\searchreplace\css\searchreplace.css" />
+    <Content Include="Js\tiny_mce\plugins\searchreplace\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\searchreplace\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\searchreplace\js\searchreplace.js" />
+    <Content Include="Js\tiny_mce\plugins\searchreplace\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\searchreplace\searchreplace.htm" />
+    <Content Include="Js\tiny_mce\plugins\spellchecker\css\content.css" />
+    <Content Include="Js\tiny_mce\plugins\spellchecker\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\spellchecker\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\spellchecker\img\wline.gif" />
+    <Content Include="Js\tiny_mce\plugins\style\css\props.css" />
+    <Content Include="Js\tiny_mce\plugins\style\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\style\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\style\js\props.js" />
+    <Content Include="Js\tiny_mce\plugins\style\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\style\props.htm" />
+    <Content Include="Js\tiny_mce\plugins\table\cell.htm" />
+    <Content Include="Js\tiny_mce\plugins\table\css\cell.css" />
+    <Content Include="Js\tiny_mce\plugins\table\css\row.css" />
+    <Content Include="Js\tiny_mce\plugins\table\css\table.css" />
+    <Content Include="Js\tiny_mce\plugins\table\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\table\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\table\js\cell.js" />
+    <Content Include="Js\tiny_mce\plugins\table\js\merge_cells.js" />
+    <Content Include="Js\tiny_mce\plugins\table\js\row.js" />
+    <Content Include="Js\tiny_mce\plugins\table\js\table.js" />
+    <Content Include="Js\tiny_mce\plugins\table\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\table\merge_cells.htm" />
+    <Content Include="Js\tiny_mce\plugins\table\row.htm" />
+    <Content Include="Js\tiny_mce\plugins\table\table.htm" />
+    <Content Include="Js\tiny_mce\plugins\template\blank.htm" />
+    <Content Include="Js\tiny_mce\plugins\template\css\template.css" />
+    <Content Include="Js\tiny_mce\plugins\template\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\template\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\template\js\template.js" />
+    <Content Include="Js\tiny_mce\plugins\template\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\plugins\template\template.htm" />
+    <Content Include="Js\tiny_mce\plugins\visualchars\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\visualchars\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\abbr.htm" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\acronym.htm" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\attributes.htm" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\cite.htm" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\css\attributes.css" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\css\popup.css" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\css\xhtmlxtras.css" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\del.htm" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\editor_plugin.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\editor_plugin_src.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\ins.htm" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\js\abbr.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\js\acronym.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\js\attributes.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\js\cite.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\js\del.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\js\element_common.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\js\ins.js" />
+    <Content Include="Js\tiny_mce\plugins\xhtmlxtras\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\about.htm" />
+    <Content Include="Js\tiny_mce\themes\advanced\anchor.htm" />
+    <Content Include="Js\tiny_mce\themes\advanced\charmap.htm" />
+    <Content Include="Js\tiny_mce\themes\advanced\color_picker.htm" />
+    <Content Include="Js\tiny_mce\themes\advanced\editor_template.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\editor_template_src.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\image.htm" />
+    <Content Include="Js\tiny_mce\themes\advanced\img\colorpicker.jpg" />
+    <Content Include="Js\tiny_mce\themes\advanced\img\icons.gif" />
+    <Content Include="Js\tiny_mce\themes\advanced\js\about.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\js\anchor.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\js\charmap.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\js\color_picker.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\js\image.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\js\link.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\js\source_editor.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\langs\en.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\langs\en_dlg.js" />
+    <Content Include="Js\tiny_mce\themes\advanced\link.htm" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\content.css" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\dialog.css" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\img\buttons.png" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\img\items.gif" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\img\menu_arrow.gif" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\img\menu_check.gif" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\img\progress.gif" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\img\tabs.gif" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\default\ui.css" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\o2k7\content.css" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\o2k7\dialog.css" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\o2k7\img\button_bg.png" />
+    <Content Include="Js\tiny_mce\themes\advanced\skins\o2k7\ui.css" />
+    <Content Include="Js\tiny_mce\themes\advanced\source_editor.htm" />
+    <Content Include="Js\tiny_mce\themes\simple\editor_template.js" />
+    <Content Include="Js\tiny_mce\themes\simple\editor_template_src.js" />
+    <Content Include="Js\tiny_mce\themes\simple\img\icons.gif" />
+    <Content Include="Js\tiny_mce\themes\simple\langs\en.js" />
+    <Content Include="Js\tiny_mce\themes\simple\skins\default\content.css" />
+    <Content Include="Js\tiny_mce\themes\simple\skins\default\ui.css" />
+    <Content Include="Js\tiny_mce\themes\simple\skins\o2k7\content.css" />
+    <Content Include="Js\tiny_mce\themes\simple\skins\o2k7\img\button_bg.png" />
+    <Content Include="Js\tiny_mce\themes\simple\skins\o2k7\ui.css" />
+    <Content Include="Js\tiny_mce\tiny_mce.js" />
+    <Content Include="Js\tiny_mce\tiny_mce_popup.js" />
+    <Content Include="Js\tiny_mce\tiny_mce_src.js" />
+    <Content Include="Js\tiny_mce\utils\editable_selects.js" />
+    <Content Include="Js\tiny_mce\utils\form_utils.js" />
+    <Content Include="Js\tiny_mce\utils\mclayer.js" />
+    <Content Include="Js\tiny_mce\utils\mctabs.js" />
+    <Content Include="Js\tiny_mce\utils\validate.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="img\ico\png\book_next.png" />
+    <Content Include="img\ico\png\book_previous.png" />
+    <Content Include="img\ico\png\zoom.png" />
+    <Content Include="img\treeview\collapsable-last.gif" />
+    <Content Include="img\treeview\collapsable.gif" />
+    <Content Include="img\treeview\expandable-last.gif" />
+    <Content Include="img\treeview\expandable.gif" />
+    <Content Include="img\treeview\leaf-last.gif" />
+    <Content Include="img\treeview\leaf.gif" />
+    <Content Include="img\treeview\root.gif" />
+    <Content Include="img\treeview\spacer.gif" />
+    <Content Include="img\treeview\spinner.gif" />
+    <Content Include="Js\plugins\jquery.SimpleTree.js" />
+    <Content Include="Js\tinymce.ashx" />
+    <Content Include="Security\Default.aspx" />
+    <Content Include="Versions\Css\Versions.css" />
+    <Content Include="Versions\Default.aspx" />
+    <Content Include="Versions\img\book_previous.gif" />
+    <Content Include="Versions\img\bullet_star.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="img\n2.gif" />
+    <Content Include="img\toolarea_bg.gif" />
+    <Content Include="img\toolarea_end.gif" />
+    <Content Include="img\toolarea_separator.gif" />
+    <Content Include="img\toolitem_hover.gif" />
+    <Content Include="img\toolitem_separator.gif" />
+    <Content Include="Navigation\LoadTree.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Navigation\SortUp.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Css\Parts.css" />
+    <Content Include="Export\Css\exportImport.css" />
+    <Content Include="Export\Default.aspx" />
+    <Content Include="img\framed_opener.gif" />
+    <Content Include="img\ico\png\pencil.png" />
+    <Content Include="img\part_bg.png" />
+    <Content Include="img\pencil.png" />
+    <Content Include="img\shading_blue.png" />
+    <Content Include="img\shading_green.png" />
+    <Content Include="img\shading_purple.png" />
+    <Content Include="img\splitter.gif" />
+    <Content Include="img\tabs_base.gif" />
+    <Content Include="img\tabs_begin.gif" />
+    <Content Include="img\tab_end.gif" />
+    <Content Include="Js\jquery.ui\0_jquery.dimensions.js" />
+    <Content Include="Js\jquery.ui\jquery.autoscroll.js" />
+    <Content Include="Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
+    <Content Include="Js\jquery.ui\ui.base.js" />
+    <Content Include="Js\jquery.ui\ui.draggable.js" />
+    <Content Include="Js\jquery.ui\ui.droppable.js" />
+    <Content Include="Js\parts.js" />
+    <Content Include="Membership\Css\Membership.css" />
+    <Content Include="Membership\Edit.aspx" />
+    <Content Include="Membership\New.aspx" />
+    <Content Include="Membership\Password.aspx" />
+    <Content Include="Membership\Users.aspx" />
+    <Content Include="Navigation\SortDown.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Install\Default.aspx" />
+    <Content Include="Install\Diagnose.aspx" />
+    <Content Include="Install\Fix.aspx" />
+    <Content Include="Install\MediumTrust.aspx" />
+    <Content Include="Membership\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Install\Web.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

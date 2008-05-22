@@ -1,0 +1,357 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{387B682B-E4B0-4292-ACD1-F3EF29C76025}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2.Edit.Globalization</RootNamespace>
+    <AssemblyName>N2.Edit.Globalization</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="flags\ad.png" />
+    <Content Include="flags\ae.png" />
+    <Content Include="flags\af.png" />
+    <Content Include="flags\ag.png" />
+    <Content Include="flags\ai.png" />
+    <Content Include="flags\al.png" />
+    <Content Include="flags\am.png" />
+    <Content Include="flags\an.png" />
+    <Content Include="flags\ao.png" />
+    <Content Include="flags\ar.png" />
+    <Content Include="flags\as.png" />
+    <Content Include="flags\at.png" />
+    <Content Include="flags\au.png" />
+    <Content Include="flags\aw.png" />
+    <Content Include="flags\ax.png" />
+    <Content Include="flags\az.png" />
+    <Content Include="flags\ba.png" />
+    <Content Include="flags\bb.png" />
+    <Content Include="flags\bd.png" />
+    <Content Include="flags\be.png" />
+    <Content Include="flags\bf.png" />
+    <Content Include="flags\bg.png" />
+    <Content Include="flags\bh.png" />
+    <Content Include="flags\bi.png" />
+    <Content Include="flags\bj.png" />
+    <Content Include="flags\bm.png" />
+    <Content Include="flags\bn.png" />
+    <Content Include="flags\bo.png" />
+    <Content Include="flags\br.png" />
+    <Content Include="flags\bs.png" />
+    <Content Include="flags\bt.png" />
+    <Content Include="flags\bv.png" />
+    <Content Include="flags\bw.png" />
+    <Content Include="flags\by.png" />
+    <Content Include="flags\bz.png" />
+    <Content Include="flags\ca.png" />
+    <Content Include="flags\catalonia.png" />
+    <Content Include="flags\cc.png" />
+    <Content Include="flags\cd.png" />
+    <Content Include="flags\cf.png" />
+    <Content Include="flags\cg.png" />
+    <Content Include="flags\ch.png" />
+    <Content Include="flags\ci.png" />
+    <Content Include="flags\ck.png" />
+    <Content Include="flags\cl.png" />
+    <Content Include="flags\cm.png" />
+    <Content Include="flags\cn.png" />
+    <Content Include="flags\co.png" />
+    <Content Include="flags\cr.png" />
+    <Content Include="flags\cs.png" />
+    <Content Include="flags\cu.png" />
+    <Content Include="flags\cv.png" />
+    <Content Include="flags\cx.png" />
+    <Content Include="flags\cy.png" />
+    <Content Include="flags\cz.png" />
+    <Content Include="flags\de.png" />
+    <Content Include="flags\dj.png" />
+    <Content Include="flags\dk.png" />
+    <Content Include="flags\dm.png" />
+    <Content Include="flags\do.png" />
+    <Content Include="flags\dz.png" />
+    <Content Include="flags\ec.png" />
+    <Content Include="flags\ee.png" />
+    <Content Include="flags\eg.png" />
+    <Content Include="flags\eh.png" />
+    <Content Include="flags\en.png" />
+    <Content Include="flags\er.png" />
+    <Content Include="flags\es.png" />
+    <Content Include="flags\et.png" />
+    <Content Include="flags\eu.png" />
+    <Content Include="flags\fam.png" />
+    <Content Include="flags\fi.png" />
+    <Content Include="flags\fj.png" />
+    <Content Include="flags\fk.png" />
+    <Content Include="flags\fm.png" />
+    <Content Include="flags\fo.png" />
+    <Content Include="flags\fr.png" />
+    <Content Include="flags\ga.png" />
+    <Content Include="flags\gb.png" />
+    <Content Include="flags\gd.png" />
+    <Content Include="flags\ge.png" />
+    <Content Include="flags\gf.png" />
+    <Content Include="flags\gh.png" />
+    <Content Include="flags\gi.png" />
+    <Content Include="flags\gl.png" />
+    <Content Include="flags\gm.png" />
+    <Content Include="flags\gn.png" />
+    <Content Include="flags\gp.png" />
+    <Content Include="flags\gq.png" />
+    <Content Include="flags\gr.png" />
+    <Content Include="flags\gs.png" />
+    <Content Include="flags\gt.png" />
+    <Content Include="flags\gu.png" />
+    <Content Include="flags\gw.png" />
+    <Content Include="flags\gy.png" />
+    <Content Include="flags\hk.png" />
+    <Content Include="flags\hm.png" />
+    <Content Include="flags\hn.png" />
+    <Content Include="flags\hr.png" />
+    <Content Include="flags\ht.png" />
+    <Content Include="flags\hu.png" />
+    <Content Include="flags\id.png" />
+    <Content Include="flags\ie.png" />
+    <Content Include="flags\il.png" />
+    <Content Include="flags\in.png" />
+    <Content Include="flags\io.png" />
+    <Content Include="flags\iq.png" />
+    <Content Include="flags\ir.png" />
+    <Content Include="flags\is.png" />
+    <Content Include="flags\it.png" />
+    <Content Include="flags\jm.png" />
+    <Content Include="flags\jo.png" />
+    <Content Include="flags\jp.png" />
+    <Content Include="flags\ke.png" />
+    <Content Include="flags\kg.png" />
+    <Content Include="flags\kh.png" />
+    <Content Include="flags\ki.png" />
+    <Content Include="flags\km.png" />
+    <Content Include="flags\kn.png" />
+    <Content Include="flags\kp.png" />
+    <Content Include="flags\kr.png" />
+    <Content Include="flags\kw.png" />
+    <Content Include="flags\ky.png" />
+    <Content Include="flags\kz.png" />
+    <Content Include="flags\la.png" />
+    <Content Include="flags\lb.png" />
+    <Content Include="flags\lc.png" />
+    <Content Include="flags\li.png" />
+    <Content Include="flags\lk.png" />
+    <Content Include="flags\lr.png" />
+    <Content Include="flags\ls.png" />
+    <Content Include="flags\lt.png" />
+    <Content Include="flags\lu.png" />
+    <Content Include="flags\lv.png" />
+    <Content Include="flags\ly.png" />
+    <Content Include="flags\ma.png" />
+    <Content Include="flags\mc.png" />
+    <Content Include="flags\md.png" />
+    <Content Include="flags\me.png" />
+    <Content Include="flags\mg.png" />
+    <Content Include="flags\mh.png" />
+    <Content Include="flags\mk.png" />
+    <Content Include="flags\ml.png" />
+    <Content Include="flags\mm.png" />
+    <Content Include="flags\mn.png" />
+    <Content Include="flags\mo.png" />
+    <Content Include="flags\mp.png" />
+    <Content Include="flags\mq.png" />
+    <Content Include="flags\mr.png" />
+    <Content Include="flags\ms.png" />
+    <Content Include="flags\mt.png" />
+    <Content Include="flags\mu.png" />
+    <Content Include="flags\mv.png" />
+    <Content Include="flags\mw.png" />
+    <Content Include="flags\mx.png" />
+    <Content Include="flags\my.png" />
+    <Content Include="flags\mz.png" />
+    <Content Include="flags\na.png" />
+    <Content Include="flags\nc.png" />
+    <Content Include="flags\ne.png" />
+    <Content Include="flags\nf.png" />
+    <Content Include="flags\ng.png" />
+    <Content Include="flags\ni.png" />
+    <Content Include="flags\nl.png" />
+    <Content Include="flags\no.png" />
+    <Content Include="flags\np.png" />
+    <Content Include="flags\nr.png" />
+    <Content Include="flags\nu.png" />
+    <Content Include="flags\nz.png" />
+    <Content Include="flags\om.png" />
+    <Content Include="flags\pa.png" />
+    <Content Include="flags\pe.png" />
+    <Content Include="flags\pf.png" />
+    <Content Include="flags\pg.png" />
+    <Content Include="flags\ph.png" />
+    <Content Include="flags\pk.png" />
+    <Content Include="flags\pl.png" />
+    <Content Include="flags\pm.png" />
+    <Content Include="flags\pn.png" />
+    <Content Include="flags\pr.png" />
+    <Content Include="flags\ps.png" />
+    <Content Include="flags\pt.png" />
+    <Content Include="flags\pw.png" />
+    <Content Include="flags\py.png" />
+    <Content Include="flags\qa.png" />
+    <Content Include="flags\re.png" />
+    <Content Include="flags\ro.png" />
+    <Content Include="flags\rs.png" />
+    <Content Include="flags\ru.png" />
+    <Content Include="flags\rw.png" />
+    <Content Include="flags\sa.png" />
+    <Content Include="flags\sb.png" />
+    <Content Include="flags\sc.png" />
+    <Content Include="flags\scotland.png" />
+    <Content Include="flags\sd.png" />
+    <Content Include="flags\se.png" />
+    <Content Include="flags\sg.png" />
+    <Content Include="flags\sh.png" />
+    <Content Include="flags\si.png" />
+    <Content Include="flags\sj.png" />
+    <Content Include="flags\sk.png" />
+    <Content Include="flags\sl.png" />
+    <Content Include="flags\sm.png" />
+    <Content Include="flags\sn.png" />
+    <Content Include="flags\so.png" />
+    <Content Include="flags\sr.png" />
+    <Content Include="flags\st.png" />
+    <Content Include="flags\sv.png" />
+    <Content Include="flags\sy.png" />
+    <Content Include="flags\sz.png" />
+    <Content Include="flags\tc.png" />
+    <Content Include="flags\td.png" />
+    <Content Include="flags\tf.png" />
+    <Content Include="flags\tg.png" />
+    <Content Include="flags\th.png" />
+    <Content Include="flags\tj.png" />
+    <Content Include="flags\tk.png" />
+    <Content Include="flags\tl.png" />
+    <Content Include="flags\tm.png" />
+    <Content Include="flags\tn.png" />
+    <Content Include="flags\to.png" />
+    <Content Include="flags\tr.png" />
+    <Content Include="flags\tt.png" />
+    <Content Include="flags\tv.png" />
+    <Content Include="flags\tw.png" />
+    <Content Include="flags\tz.png" />
+    <Content Include="flags\ua.png" />
+    <Content Include="flags\ug.png" />
+    <Content Include="flags\um.png" />
+    <Content Include="flags\us.png" />
+    <Content Include="flags\uy.png" />
+    <Content Include="flags\uz.png" />
+    <Content Include="flags\va.png" />
+    <Content Include="flags\vc.png" />
+    <Content Include="flags\ve.png" />
+    <Content Include="flags\vg.png" />
+    <Content Include="flags\vi.png" />
+    <Content Include="flags\vn.png" />
+    <Content Include="flags\vu.png" />
+    <Content Include="flags\wales.png" />
+    <Content Include="flags\wf.png" />
+    <Content Include="flags\ws.png" />
+    <Content Include="flags\ye.png" />
+    <Content Include="flags\yt.png" />
+    <Content Include="flags\za.png" />
+    <Content Include="flags\zm.png" />
+    <Content Include="flags\zw.png" />
+    <Content Include="LanguageMenu.ascx" />
+    <Content Include="Styles.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Default.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LanguageInitializer.cs" />
+    <Compile Include="LanguageMenu.ascx.cs">
+      <DependentUpon>LanguageMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LanguageMenu.ascx.designer.cs">
+      <DependentUpon>LanguageMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages.ascx.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Languages.ascx.designer.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="flags\Web.config" />
+    <Content Include="Languages.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Languages.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
