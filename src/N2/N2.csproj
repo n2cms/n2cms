@@ -534,9 +534,9 @@
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Resources\jquery-1.2.5.min.js" />
     <EmbeddedResource Include="Web\n2.notweb.xml" />
     <EmbeddedResource Include="Web\n2.iis5.xml" />
-    <EmbeddedResource Include="Resources\jquery-1.2.3.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

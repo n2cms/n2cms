@@ -4,6 +4,7 @@
 	- consolidated a gazillion projects into N2.Templates.UI
 - edit
 	- consolidated a few edit modules: N2.Edit.Export, N2.Edit.Membership, N2.Edit.Install
+	- upgraded to jquery-1.2.5
 - bugfixes
 	- editable roles can now add/remove roles
 	- fixed changes through membersihp provider not beeing persisted
@@ -15,6 +16,7 @@
 	- rearranged the solution hopefully making it simpler and more understandable
 	- moved sorting into a service
 	- moved build scripts to trunk root
+	- upgraded to rhino mocks 1.5
 
 N2 1.3.5
 - edit

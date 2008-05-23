@@ -910,7 +910,6 @@
     <Content Include="img\ico\png\star.png" />
     <Content Include="img\shading.png" />
     <Content Include="img\SlidingCurtain_bg.png" />
-    <Content Include="Js\jquery-1.2.3.js" />
     <Content Include="Js\plugins\cookies.js" />
     <Content Include="Js\plugins\jquery.n2optionmenu.js" />
     <Content Include="Js\plugins\jquery.splitter.js" />
@@ -1230,6 +1229,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Install\Web.config" />
+    <Content Include="Js\jquery-1.2.5.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
