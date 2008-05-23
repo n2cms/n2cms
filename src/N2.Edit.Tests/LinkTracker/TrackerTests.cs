@@ -43,7 +43,7 @@ namespace N2.Tests.Edit.LinkTracker
 
 		private IItemNotifier CreateNotifier(bool replay)
 		{
-			IItemNotifier notifier = mocks.CreateMock<IItemNotifier>();
+			IItemNotifier notifier = mocks.StrictMock<IItemNotifier>();
 			notifier.ItemCreated += null;
 			LastCall.IgnoreArguments().Repeat.Any();
 			if (replay)

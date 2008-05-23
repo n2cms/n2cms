@@ -18,7 +18,7 @@ namespace N2.Trashcan.Tests
 		{
 			base.SetUp();
 
-			persister = mocks.CreateMock<IPersister>();
+			persister = mocks.StrictMock<IPersister>();
 			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
 		}
 
@@ -32,7 +32,7 @@ namespace N2.Trashcan.Tests
 			persister.ItemMoving += null;
 			LastCall.IgnoreArguments();
 
-			TrashHandler th = mocks.CreateMock<TrashHandler>(persister, null, new Site(1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Site(1));
 			Expect.Call(delegate { th.Throw(item); });
 
 			mocks.ReplayAll();
@@ -86,7 +86,7 @@ namespace N2.Trashcan.Tests
 			persister.ItemMoving += null;
 			LastCall.IgnoreArguments();
 
-			TrashHandler th = mocks.CreateMock<TrashHandler>(persister, null, new Site(1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Site(1));
 			th.RestoreValues(item);
 
 			mocks.ReplayAll();
@@ -116,7 +116,7 @@ namespace N2.Trashcan.Tests
 			persister.ItemMoving += null;
 			IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
-			TrashHandler th = mocks.CreateMock<TrashHandler>(persister, null, new Site(1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Site(1));
 			th.ExpireTrashedItem(item);
 
 			mocks.ReplayAll();

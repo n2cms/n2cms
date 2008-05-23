@@ -16,9 +16,9 @@ namespace N2.Trashcan.Tests
 		[Test]
 		public void ThrownItem_IsMovedToTrashcan()
 		{
-			IDefinitionManager definitions = mocks.CreateMock<IDefinitionManager>();
+			IDefinitionManager definitions = mocks.StrictMock<IDefinitionManager>();
 
-			IPersister persister = mocks.CreateMock<IPersister>();
+			IPersister persister = mocks.StrictMock<IPersister>();
 			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
 			Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
 			
@@ -104,7 +104,7 @@ namespace N2.Trashcan.Tests
 
 		private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)
 		{
-			IPersister persister = mocks.CreateMock<IPersister>();
+			IPersister persister = mocks.StrictMock<IPersister>();
 			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
 			Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
 			return persister;
@@ -112,7 +112,7 @@ namespace N2.Trashcan.Tests
 
 		private IDefinitionManager MockDefinitions()
 		{
-			return mocks.CreateMock<IDefinitionManager>();
+			return mocks.StrictMock<IDefinitionManager>();
 		}
 
 		#endregion
