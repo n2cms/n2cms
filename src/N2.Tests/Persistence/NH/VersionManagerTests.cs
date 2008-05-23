@@ -26,7 +26,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			mocks = new MockRepository();
 
-			ITypeFinder typeFinder = mocks.CreateMock<ITypeFinder>();
+			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
 			Expect.On(typeFinder)
 				.Call(typeFinder.GetAssemblies())
 				.Return(new Assembly[] { typeof(Definitions.PersistableItem1).Assembly })

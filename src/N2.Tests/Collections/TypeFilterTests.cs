@@ -57,13 +57,13 @@ namespace N2.Tests.Collections
 			Assert.IsFalse(filter.Match(new SecondItem()));
 		}
 
-		[Test]
-		public void CanFilterTwoItemsWithStaticMethodAndInverse()
-		{
-			ItemList list = CreateList();
-			TypeFilter.Filter(true, list, typeof(FirstItem));
-			Assert.AreEqual(2, list.Count);
-		}
+		//[Test]
+		//public void CanFilterTwoItemsWithStaticMethodAndInverse()
+		//{
+		//    ItemList list = CreateList();
+		//    TypeFilter.Filter(true, list, typeof(FirstItem));
+		//    Assert.AreEqual(2, list.Count);
+		//}
 
 		[Test]
 		public void CanFilterTwoItemsWithFilterInstanceAndInverse()

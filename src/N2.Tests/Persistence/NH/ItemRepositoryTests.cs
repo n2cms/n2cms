@@ -384,7 +384,7 @@ namespace N2.Tests.Persistence.NH
 		private ISessionProvider CreateSessionProvider()
 		{
 			MockRepository mocks = new MockRepository();
-			ITypeFinder typeFinder = mocks.CreateMock<ITypeFinder>();
+			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
 			Expect.On(typeFinder).Call(typeFinder.GetAssemblies())
 				.Return(new Assembly[] { typeof(N2.Context).Assembly }).Repeat.Any();
 			Expect.On(typeFinder).Call(typeFinder.Find(typeof(ContentItem)))

@@ -1,13 +1,23 @@
 A few minimal implementations of N2 CMS.
 
+
+HOW TO BUILD
+
+In order to run the examples you'll need to update certain dependencien on N2 
+core and edit. Running ..\Prepare_Dependencies-vs2008.bat should do it.
+
+You are very welcome to let me know about your build experiences in the forum
+so I can improve this document with commmon gotchas.
+
+
 WHAT'S HERE
 
 SimpleWebSite
 A basic implementation showing how to define content and bind data to a page 
-template.
+template in C# and VB.NET.
 
-Globalization
-Shows a solution for handling content in different languages.
+OldGlobalization
+Shows an old solution for handling content in different languages.
 
 Parts
 Shows an implementation of zones and "parts".
@@ -20,9 +30,3 @@ A proposed way to work with the existing templates. The templates are compiled a
 
 Mvc
 An example of N2 running with the ASP.NET MVC framework.
-
-HOW TO RUN
-
-To run the examples rebuild the entire solution. Then run the batch files 
-located in the Tasks folder. First run "prepare.bat" then the copy_*.bat 
-to copy the edit interface and dll:s to the example web site folder.

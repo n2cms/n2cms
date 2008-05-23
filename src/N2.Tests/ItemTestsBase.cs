@@ -47,7 +47,7 @@ namespace N2.Tests
 		protected IWebContext CreateWebContext(bool replay)
 		{
 			requestItems = new Dictionary<string, object>();
-			IWebContext context = mocks.CreateMock<N2.Web.IWebContext>();
+			IWebContext context = mocks.StrictMock<N2.Web.IWebContext>();
 			Expect.On(context).Call(context.RequestItems).Return(requestItems).Repeat.Any();
 			
 			if(replay)

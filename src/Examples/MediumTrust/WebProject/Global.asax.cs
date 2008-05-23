@@ -7,7 +7,6 @@ using N2.Edit.Wizard;
 using N2.MediumTrust.Engine;
 using N2.Persistence;
 using N2.Persistence.Finder;
-using N2.Trashcan;
 using N2.Web;
 
 namespace MediumTrustTest

@@ -21,7 +21,7 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 			persister = mocks.Stub<IPersister>();
-			parser = mocks.CreateMock<IUrlParser>();
+			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser).Call(parser.DefaultExtension).Return(".aspx").Repeat.Any();
 		}
 
@@ -32,7 +32,7 @@ namespace N2.Tests.Web
 			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
 			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
 
-			IWebContext context = mocks.CreateMock<IWebContext>();
+			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.CurrentPage).Return(two).Repeat.Once();
 			Expect.On(context).Call(context.Query).Return("").Repeat.Once();
 			Expect.On(context).Call(context.AbsolutePath).Return("/one/two.aspx").Repeat.Any();
@@ -53,7 +53,7 @@ namespace N2.Tests.Web
 			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
 			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
 
-			IWebContext context = mocks.CreateMock<IWebContext>();
+			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.CurrentPage).Return(two).Repeat.Any();
 			Expect.On(context).Call(context.Query).Return("happy=true&flip=feet").Repeat.Any();
 			Expect.On(context).Call(context.AbsolutePath).Return("/one/two.aspx").Repeat.Any();
@@ -87,7 +87,7 @@ namespace N2.Tests.Web
 
 			Expect.On(parser).Call(parser.ParsePage("/one/two.aspx")).Return(two);
 			
-			IWebContext context = mocks.CreateMock<IWebContext>();
+			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.AbsolutePath).Return("/one/two.aspx");
 			Expect.On(context).Call(context.RawUrl).Return("/one/two.aspx");
 			Expect.Call(context.CurrentPage).Return(null);
@@ -108,7 +108,7 @@ namespace N2.Tests.Web
 
 			Expect.On(parser).Call(parser.ParsePage("/default.aspx?page=3")).Return(two);
 
-			IWebContext context = mocks.CreateMock<IWebContext>();
+			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.AbsolutePath).Return("/default.aspx");
 			Expect.On(context).Call(context.RawUrl).Return("/default.aspx?page=3");
 			Expect.Call(context.CurrentPage).Return(null);
@@ -129,7 +129,7 @@ namespace N2.Tests.Web
 
 			Expect.On(parser).Call(parser.ParsePage("/default.aspx?page=3&item=2")).Return(two);
 
-			IWebContext context = mocks.CreateMock<IWebContext>();
+			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.AbsolutePath).Return("/default.aspx");
 			Expect.On(context).Call(context.RawUrl).Return("/default.aspx?page=3&item=2");
 			Expect.Call(context.CurrentPage).Return(null);
@@ -166,7 +166,7 @@ namespace N2.Tests.Web
 
 		private IWebContext MockContext(ContentItem one, string query)
 		{
-			IWebContext context = mocks.CreateMock<IWebContext>();
+			IWebContext context = mocks.StrictMock<IWebContext>();
 			HttpRequest request = new HttpRequest(AppDomain.CurrentDomain.BaseDirectory + "test.aspx", "http://n2cms.com/one/two.aspx" + (query.Length > 0 ? "?" : string.Empty) + query, "");
 			Expect.On(context).Call(context.Query).Return(query).Repeat.AtLeastOnce();
 			Expect.On(context).Call(context.Request).Return(request).Repeat.Any();

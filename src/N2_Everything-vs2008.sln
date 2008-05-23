@@ -65,6 +65,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit.Wizard", "wwwroot\E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit.Tests", "N2.Edit.Tests\N2.Edit.Tests.csproj", "{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}"
+	ProjectSection(SolutionItems) = preProject
+		..\build.bat = ..\build.bat
+		..\Build_Everything-vs2008.bat = ..\Build_Everything-vs2008.bat
+		..\Deploy_Everything-vs2008.bat = ..\Deploy_Everything-vs2008.bat
+		..\everything.proj = ..\everything.proj
+		..\Prepare_Dependencies-vs2008.bat = ..\Prepare_Dependencies-vs2008.bat
+		..\readme.txt = ..\readme.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

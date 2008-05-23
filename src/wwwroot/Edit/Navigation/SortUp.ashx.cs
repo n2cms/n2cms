@@ -14,17 +14,8 @@ namespace N2.Edit.Navigation
 		public override void ProcessRequest(HttpContext context)
 		{
 			ContentItem selectedNode = GetSelectedItem(context.Request.QueryString);
-			if (selectedNode.Parent != null)
-			{
-				IList<ContentItem> siblings = selectedNode.Parent.Children;
-				int index = siblings.IndexOf(selectedNode);
-				if (index > 0)
-				{
-					Utility.MoveToIndex(siblings, selectedNode, index - 1);
-					foreach (ContentItem changed in Utility.UpdateSortOrder(siblings))
-						Engine.Persister.Save(changed);
-				}
-			}
+			Engine.Resolve<ITreeSorter>().MoveUp(selectedNode);
+
 			context.Response.Redirect("Tree.aspx?selected=" + HttpUtility.UrlEncode(selectedNode.Path));
 		}
 	}

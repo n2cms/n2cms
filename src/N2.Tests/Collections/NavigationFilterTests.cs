@@ -18,13 +18,13 @@ namespace N2.Tests.Collections
 		{
 			base.SetUp();
 			
-			ISecurityManager security = mocks.CreateMock<ISecurityManager>();
+			ISecurityManager security = mocks.StrictMock<ISecurityManager>();
 			Expect.On(security).Call(security.IsAuthorized(null, null)).IgnoreArguments().Repeat.Any().Do(
 				new IsAuthorizedDelegate(delegate(ContentItem item, IPrincipal user)
 				                         	{
 				                         		return (item.AuthorizedRoles == null || item.AuthorizedRoles.Count == 0);
 				                         	}));
-			IEngine engine = mocks.CreateMock<IEngine>();
+			IEngine engine = mocks.StrictMock<IEngine>();
 			Expect.On(engine).Call(engine.SecurityManager).Return(security);
 			mocks.ReplayAll();
 

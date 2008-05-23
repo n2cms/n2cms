@@ -33,7 +33,7 @@ namespace N2.Tests.Security
 			base.SetUp();
 
 			CreatePersister();
-			parser = mocks.CreateMock<N2.Web.IUrlParser>();
+			parser = mocks.StrictMock<N2.Web.IUrlParser>();
 			context = CreateWebContext(false);
 
 			security = new DefaultSecurityManager(context);
@@ -259,7 +259,7 @@ namespace N2.Tests.Security
 			ContentItem root = SetupNormalUserAndCreateRestrictedItem();
 			mocks.ReplayAll();
 
-			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
 				saving.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
 			});
@@ -280,7 +280,7 @@ namespace N2.Tests.Security
 			ContentItem root = SetupNormalUserAndCreateRestrictedItem();
 			mocks.ReplayAll();
 
-			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
 				deleting.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
 			});
@@ -303,7 +303,7 @@ namespace N2.Tests.Security
 			ContentItem destination = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			mocks.ReplayAll();
 
-			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
 				moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
 			});
@@ -316,7 +316,7 @@ namespace N2.Tests.Security
 			ContentItem source = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			
 			mocks.ReplayAll();
-			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
 				moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
 			});
@@ -339,7 +339,7 @@ namespace N2.Tests.Security
 			ContentItem destination = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			mocks.ReplayAll();
 
-			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
 				copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
 			});
@@ -352,7 +352,7 @@ namespace N2.Tests.Security
 			ContentItem source = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			mocks.ReplayAll();
 
-			ExceptionAssert.InnerException<PermissionDeniedException>(delegate
+			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
 				copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
 			});

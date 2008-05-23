@@ -22,7 +22,7 @@ namespace N2.Tests.Serialization
 		{
 			base.SetUp();
 
-			definitions = mocks.CreateMock<IDefinitionManager>();
+			definitions = mocks.StrictMock<IDefinitionManager>();
 			Expect.On(definitions)
 				.Call(definitions.GetDefinition(typeof(XmlableItem)))
 				.Return(new ItemDefinition(typeof(XmlableItem)))
@@ -42,7 +42,7 @@ namespace N2.Tests.Serialization
 				.Repeat.Any();
 			mocks.Replay(definitions);
 			
-			parser = mocks.CreateMock<IUrlParser>();
+			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser)
 				.Call(parser.BuildUrl(null))
 				.IgnoreArguments()
@@ -59,7 +59,7 @@ namespace N2.Tests.Serialization
 				.Repeat.Any();
 			mocks.Replay(parser);
 
-			persister = mocks.CreateMock<IPersister>();
+			persister = mocks.StrictMock<IPersister>();
 			persister.Save(null);
 			LastCall.IgnoreArguments().Repeat.Any();
 			mocks.Replay(persister);

@@ -9,9 +9,12 @@
 	- fixed changes through membersihp provider not beeing persisted
 	- fixed check connection on install screen
 	- fixed old web.config reference
+	- fixed item sorting when pages intermixed with items
 - core
 	- removed some obsolte code: CloseSessionModule, IDataItemContainer, NavigationPlugInAttribute, PlugInAttribute, ToolbarPlugInAttribute, UrlRewriterModule
 	- rearranged the solution hopefully making it simpler and more understandable
+	- moved sorting into a service
+	- moved build scripts to trunk root
 
 N2 1.3.5
 - edit

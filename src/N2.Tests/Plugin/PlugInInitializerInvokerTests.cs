@@ -21,13 +21,13 @@ namespace N2.Tests.PlugIn
 		[Test]
 		public void AssemblyDefinedPlugin_IsInvoked()
 		{
-			ITypeFinder typeFinder = mocks.CreateMock<ITypeFinder>();
+			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
 			Expect.Call(typeFinder.GetAssemblies())
 				.Return(new Assembly[] { typeof(PlugIn1).Assembly });
 			Expect.Call(typeFinder.Find(typeof(IPluginInitializer)))
 				.Return(new Type[] { typeof(PlugIn1) });
 
-			IEngine engine = mocks.CreateMock<IEngine>();
+			IEngine engine = mocks.StrictMock<IEngine>();
 			Expect.Call(engine.Persister).Return(null);
 
 			mocks.ReplayAll();
@@ -41,13 +41,13 @@ namespace N2.Tests.PlugIn
 		[Test]
 		public void AutoInitializePlugin_IsInvoked()
 		{
-			ITypeFinder typeFinder = mocks.CreateMock<ITypeFinder>();
+			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
 			Expect.Call(typeFinder.GetAssemblies())
 				.Return(new Assembly[] {});
 			Expect.Call(typeFinder.Find(typeof(IPluginInitializer)))
 				.Return(new Type[] { typeof(PlugIn2) });
 
-			IEngine engine = mocks.CreateMock<IEngine>();
+			IEngine engine = mocks.StrictMock<IEngine>();
 			Expect.Call(engine.Definitions).Return(null);
 
 			mocks.ReplayAll();

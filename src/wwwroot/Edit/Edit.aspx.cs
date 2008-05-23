@@ -170,13 +170,13 @@ namespace N2.Edit
 
 				if (Request["before"] != null)
 				{
-					int itemAfterID = int.Parse(Request["before"]);
-					MoveItem(currentItem, 0, itemAfterID);
+					ContentItem before = Engine.Persister.Get(int.Parse(Request["before"]));
+					Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.Before, before);
 				}
 				else if (Request["after"] != null)
 				{
-					int itemBeforeID = int.Parse(Request["after"]);
-					MoveItem(currentItem, 1, itemBeforeID);
+					ContentItem after = Engine.Persister.Get(int.Parse(Request["after"]));
+					Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.After, after);
 				}
 
 				Refresh(currentItem.VersionOf ?? currentItem, ToolbarArea.Both);
@@ -215,18 +215,6 @@ namespace N2.Edit
 				: ItemEditorVersioningMode.SaveOnly;
 			ContentItem savedVersion = ie.Save();
 			return savedVersion;
-		}
-
-		private void MoveItem(ContentItem currentItem, int offset, int referenceItemID)
-		{
-			ContentItem referenceItem = Engine.Persister.Get(referenceItemID);
-			IList<ContentItem> siblings = currentItem.Parent.Children;
-			int itemAfterIndex = siblings.IndexOf(referenceItem);
-			Utility.MoveToIndex(siblings, currentItem, itemAfterIndex + offset);
-			foreach (ContentItem updatedItem in Utility.UpdateSortOrder(siblings))
-			{
-				Engine.Persister.Save(updatedItem);
-			}
 		}
 	}
 }

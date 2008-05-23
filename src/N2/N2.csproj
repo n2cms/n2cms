@@ -310,12 +310,15 @@
     <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
     <Compile Include="Edit\CreationPosition.cs" />
     <Compile Include="Edit\EditToolbarPluginAttribute.cs" />
+    <Compile Include="Edit\ITreeSorter.cs" />
     <Compile Include="Edit\LinkPluginAttribute.cs" />
     <Compile Include="Edit\Navigator.cs" />
+    <Compile Include="Edit\NodePosition.cs" />
     <Compile Include="Edit\Settings\SettingsManager.cs" />
     <Compile Include="Edit\ToolbarAreaAttribute.cs" />
     <Compile Include="Edit\Trash\ITrashCan.cs" />
     <Compile Include="Edit\Trash\ITrashHandler.cs" />
+    <Compile Include="Edit\TreeSorter.cs" />
     <Compile Include="Edit\Web\EditUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

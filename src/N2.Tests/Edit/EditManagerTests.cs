@@ -45,8 +45,8 @@ namespace N2.Tests.Edit
 			mocks.Replay(notifier);
 			DefaultDefinitionManager definitions = new DefaultDefinitionManager(builder, notifier);
 			
-			persister = mocks.CreateMock<IPersister>();
-			versioner = mocks.CreateMock<IVersionManager>();
+			persister = mocks.StrictMock<IPersister>();
+			versioner = mocks.StrictMock<IVersionManager>();
 			editManager = new DefaultEditManager(typeFinder, definitions, persister, versioner, null, null);
 			editManager.EnableVersioning = true;
 		}
@@ -296,7 +296,7 @@ namespace N2.Tests.Edit
 			IDictionary<string, Control> added = editManager.AddEditors(typeof(ComplexContainersItem), editorContainer, null);
 			Assert.AreEqual(5, added.Count);
 
-			IItemEditor editor = mocks.CreateMock<IItemEditor>();
+			IItemEditor editor = mocks.StrictMock<IItemEditor>();
 			using (mocks.Record())
 			{
 				Expect.Call(editor.CurrentItem).Return(item).Repeat.Any();
@@ -698,7 +698,7 @@ namespace N2.Tests.Edit
 
 		private IItemEditor SimulateEditor(ContentItem item, ItemEditorVersioningMode versioningMode)
 		{
-			IItemEditor editor = mocks.CreateMock<IItemEditor>();
+			IItemEditor editor = mocks.StrictMock<IItemEditor>();
 
 			Dictionary<string, Control> editors = CreateEditorsForComplexContainersItem();
 
@@ -743,8 +743,8 @@ namespace N2.Tests.Edit
 
 		private IPrincipal CreateUser(string name, params string[] roles)
 		{
-			IPrincipal user = mocks.CreateMock<IPrincipal>();
-			IIdentity identity = mocks.CreateMock<IIdentity>();
+			IPrincipal user = mocks.StrictMock<IPrincipal>();
+			IIdentity identity = mocks.StrictMock<IIdentity>();
 
 			Expect.On(user).Call(user.Identity).Return(identity).Repeat.AtLeastOnce();
 			Expect.On(user)

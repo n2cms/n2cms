@@ -39,7 +39,7 @@ namespace N2.Tests.Integrity
 
 			CreatePersister();
 
-			parser = mocks.CreateMock<IUrlParser>();
+			parser = mocks.StrictMock<IUrlParser>();
 
 			ITypeFinder typeFinder = CreateTypeFinder();
 			EditableHierarchyBuilder<IEditable> hierarchyBuilder = new EditableHierarchyBuilder<IEditable>();
@@ -57,7 +57,7 @@ namespace N2.Tests.Integrity
 
 		private ITypeFinder CreateTypeFinder()
 		{
-			ITypeFinder typeFinder = mocks.CreateMock<ITypeFinder>();
+			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
 			Expect.On(typeFinder)
 				.Call(typeFinder.GetAssemblies())
 				.Return(new Assembly[] {typeof (AlternativePage).Assembly})
@@ -132,7 +132,7 @@ namespace N2.Tests.Integrity
 		{
 			Page page = new Page();
 
-			ExceptionAssert.InnerException<DestinationOnOrBelowItselfException>(delegate
+			ExceptionAssert.Throws<DestinationOnOrBelowItselfException>(delegate
 			{
 				moving.Raise(persister, new CancellableDestinationEventArgs(page, page));
 			});
@@ -154,7 +154,7 @@ namespace N2.Tests.Integrity
 			Page page = new Page();
 			Page page2 = CreateOneItem<Page>(2, "Rutger", page);
 
-			ExceptionAssert.InnerException<DestinationOnOrBelowItselfException>(delegate
+			ExceptionAssert.Throws<DestinationOnOrBelowItselfException>(delegate
 			{
 				moving.Raise(persister, new CancellableDestinationEventArgs(page, page2));
 			});
@@ -178,7 +178,7 @@ namespace N2.Tests.Integrity
 			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", null);
 
-			ExceptionAssert.InnerException<NameOccupiedException>(delegate
+			ExceptionAssert.Throws<NameOccupiedException>(delegate
 			{
 				moving.Raise(persister, new CancellableDestinationEventArgs(page3, startPage));
 			});
@@ -200,7 +200,7 @@ namespace N2.Tests.Integrity
 			StartPage startPage = new StartPage();
 			Page page = new Page();
 
-			ExceptionAssert.InnerException<NotAllowedParentException>(delegate
+			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
 				moving.Raise(persister, new CancellableDestinationEventArgs(startPage, page));
 			});
@@ -246,7 +246,7 @@ namespace N2.Tests.Integrity
 			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", null);
 
-			ExceptionAssert.InnerException<NameOccupiedException>(delegate
+			ExceptionAssert.Throws<NameOccupiedException>(delegate
 			{
 				copying.Raise(persister, new CancellableDestinationEventArgs(page3, startPage));
 			});
@@ -268,7 +268,7 @@ namespace N2.Tests.Integrity
 			StartPage startPage = new StartPage();
 			Page page = new Page();
 
-			ExceptionAssert.InnerException<NotAllowedParentException>(delegate
+			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
 				copying.Raise(persister, new CancellableDestinationEventArgs(startPage, page));
 			});
@@ -331,7 +331,7 @@ namespace N2.Tests.Integrity
 			Expect.On(parser).Call(parser.IsRootOrStartPage(startPage)).Return(true);
 			mocks.Replay(parser);
 
-			ExceptionAssert.InnerException<CannotDeleteRootException>(delegate
+			ExceptionAssert.Throws<CannotDeleteRootException>(delegate
 			{
 				deleting.Raise(persister, new CancellableItemEventArgs(startPage));
 			});
@@ -391,7 +391,7 @@ namespace N2.Tests.Integrity
 			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", startPage);
 
-			ExceptionAssert.InnerException<NameOccupiedException>(delegate
+			ExceptionAssert.Throws<NameOccupiedException>(delegate
 			{
 				saving.Raise(persister, new CancellableItemEventArgs(page3));
 			});
@@ -413,7 +413,7 @@ namespace N2.Tests.Integrity
 			Page page = CreateOneItem<Page>(1, "John", null);
 			StartPage startPage = CreateOneItem<StartPage>(2, "Leonidas", page);
 
-			ExceptionAssert.InnerException<NotAllowedParentException>(delegate
+			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
 				saving.Raise(persister, new CancellableItemEventArgs(startPage));
 			});

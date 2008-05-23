@@ -37,6 +37,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,6 +90,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -114,40 +118,44 @@
     <Compile Include="Collections\ZoneFilterTests.cs" />
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
-    <Compile Include="Definitions\AttributeReference.cs" />
-    <Compile Include="Definitions\DefinitionFixture.cs" />
-    <Compile Include="Definitions\Definitions\ItemWithNestedContainers.cs" />
-    <Compile Include="Definitions\Definitions\Details\CustomizedEditableAttribute.cs" />
-    <Compile Include="Definitions\Definitions\ItemWithDetails.cs" />
-    <Compile Include="Definitions\Definitions\ItemWithFieldSet.cs" />
-    <Compile Include="Definitions\Definitions\ItemWithoutZones.cs" />
-    <Compile Include="Definitions\Definitions\ItemInZone1Or2.cs" />
-    <Compile Include="Definitions\Definitions\SideshowItem.cs" />
-    <Compile Include="Definitions\Definitions\SubItemWithDetails.cs" />
-    <Compile Include="Definitions\DefinitionTests.cs" />
-    <Compile Include="Definitions\EditableExplorerTests.cs" />
-    <Compile Include="Definitions\Items\DefinitionAutoCreatedItem.cs" />
-    <Compile Include="Definitions\Items\DefinitionMenuItem.cs" />
-    <Compile Include="Definitions\Items\DefinitionNewsList.cs" />
-    <Compile Include="Definitions\Items\DefinitionNewsPage.cs" />
-    <Compile Include="Definitions\Items\DefinitionOne.cs" />
-    <Compile Include="Definitions\Items\DefinitionReplaced.cs" />
-    <Compile Include="Definitions\Items\DefinitionReplacement.cs" />
-    <Compile Include="Definitions\Items\DefinitionReplacesNumbers.cs" />
-    <Compile Include="Definitions\Items\DefinitionRightColumnPart.cs" />
-    <Compile Include="Definitions\Items\DefinitionRightColumnTeaser.cs" />
-    <Compile Include="Definitions\Items\DefinitionStartPage.cs" />
-    <Compile Include="Definitions\Items\DefinitionTextItem.cs" />
-    <Compile Include="Definitions\Items\DefinitionTextPage.cs" />
-    <Compile Include="Definitions\Items\DefinitionTwo.cs" />
-    <Compile Include="Definitions\Items\DefinitionTwoColumnPage.cs" />
-    <Compile Include="Definitions\Items\DefinitionUndefined.cs" />
-    <Compile Include="Definitions\Items\ILeftColumnlPage.cs" />
+    <Compile Include="Edit\Settings\Definitions\AttributeReference.cs" />
+    <Compile Include="Edit\Settings\Definitions\DefinitionFixture.cs" />
+    <Compile Include="Edit\Settings\Definitions\Definitions\ItemWithNestedContainers.cs" />
+    <Compile Include="Edit\Settings\Definitions\Definitions\Details\CustomizedEditableAttribute.cs" />
+    <Compile Include="Edit\Settings\Definitions\Definitions\ItemWithDetails.cs" />
+    <Compile Include="Edit\Settings\Definitions\Definitions\ItemWithFieldSet.cs" />
+    <Compile Include="Edit\Settings\Definitions\Definitions\ItemWithoutZones.cs" />
+    <Compile Include="Edit\Settings\Definitions\Definitions\ItemInZone1Or2.cs" />
+    <Compile Include="Edit\Settings\Definitions\Definitions\SideshowItem.cs" />
+    <Compile Include="Edit\Settings\Definitions\Definitions\SubItemWithDetails.cs" />
+    <Compile Include="Edit\Settings\Definitions\DefinitionTests.cs" />
+    <Compile Include="Edit\Settings\Definitions\EditableExplorerTests.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionAutoCreatedItem.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionMenuItem.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionNewsList.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionNewsPage.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionOne.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionReplaced.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionReplacement.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionReplacesNumbers.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionRightColumnPart.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionRightColumnTeaser.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionStartPage.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionTextItem.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionTextPage.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionTwo.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionTwoColumnPage.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\DefinitionUndefined.cs" />
+    <Compile Include="Edit\Settings\Definitions\Items\ILeftColumnlPage.cs" />
     <Compile Include="Edit\Items\ComplexContainersItem.cs" />
     <Compile Include="Edit\Items\ItemWithModification.cs" />
     <Compile Include="Edit\Items\ItemWithRequiredProperty.cs" />
+    <Compile Include="Edit\Items\NormalItem.cs" />
+    <Compile Include="Edit\Items\NormalPage.cs" />
     <Compile Include="Edit\Items\SeveralPlugins.cs" />
     <Compile Include="Edit\NavigatorTests.cs" />
+    <Compile Include="Edit\WhileSortingTreeOfPages.cs" />
+    <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
     <Compile Include="Globalization\FlatLanguageStructureTests.cs" />
     <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
     <Compile Include="Globalization\Items\LanguageRoot.cs" />

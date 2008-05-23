@@ -80,8 +80,8 @@ namespace N2.Tests.Collections
 
 		protected IPrincipal CreateUser()
 		{
-			IPrincipal user = mocks.CreateMock<IPrincipal>();
-			IIdentity identity = mocks.CreateMock<IIdentity>();
+			IPrincipal user = mocks.StrictMock<IPrincipal>();
+			IIdentity identity = mocks.StrictMock<IIdentity>();
 
 			Expect.On(user).Call(user.Identity).Return(identity).Repeat.Any();
 			Expect.On(identity).Call(identity.Name).Return("JustAnotherUser").Repeat.Any();

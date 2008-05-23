@@ -16,7 +16,7 @@ namespace N2.Tests
 		{
 			base.SetUp();
 
-			typeFinder = mocks.CreateMock<ITypeFinder>();
+			typeFinder = mocks.StrictMock<ITypeFinder>();
 			Expect.On(typeFinder).Call(typeFinder.Find(typeof(ContentItem))).Return(GetTypes()).Repeat.Any();
 			Expect.On(typeFinder).Call(typeFinder.GetAssemblies()).Return(new Assembly[] { typeof(TypeFindingBase).Assembly }).Repeat.Any();
 			mocks.Replay(typeFinder);

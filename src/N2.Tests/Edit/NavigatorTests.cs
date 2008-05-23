@@ -20,7 +20,7 @@ namespace N2.Tests.Edit
 			ContentItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 			ContentItem item1_item12 = CreateOneItem<AnItem>(2, "item1.2", item1);
 
-			IPersister persister = mocks.CreateMock<IPersister>();
+			IPersister persister = mocks.StrictMock<IPersister>();
 			Expect.Call(persister.Get(1)).Return(root);
 
 			mocks.ReplayAll();
@@ -39,7 +39,7 @@ namespace N2.Tests.Edit
 			ContentItem start = CreateOneItem<AnItem>(2, "start", root);
 			ContentItem item1_item12 = CreateOneItem<AnItem>(2, "item1", start);
 
-			IPersister persister = mocks.CreateMock<IPersister>();
+			IPersister persister = mocks.StrictMock<IPersister>();
 			Expect.Call(persister.Get(2)).Return(start);
 
 			mocks.ReplayAll();
@@ -71,7 +71,7 @@ namespace N2.Tests.Edit
 			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
 			ContentItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 			
-			IPersister persister = mocks.CreateMock<IPersister>();
+			IPersister persister = mocks.StrictMock<IPersister>();
 			Expect.Call(persister.Get(1)).Return(root);
 
 			mocks.ReplayAll();
