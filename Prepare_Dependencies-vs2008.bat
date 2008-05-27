@@ -1,2 +1,2 @@
 @echo off
-cmd /c "build.bat everything.proj /target:PrepareDependencies" & pause & exit 
+cmd /c "build.bat /target:PrepareDependencies" & pause & exit 

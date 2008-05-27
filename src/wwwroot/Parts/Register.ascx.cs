@@ -11,7 +11,7 @@ using System.Web.UI.WebControls.WebParts;
 
 namespace N2.Templates.UI.Parts
 {
-	public partial class Register : Templates.Web.UI.TemplateUserControl<ContentItem, Items.Parts.RegisterItem>
+	public partial class Register : Templates.Web.UI.TemplateUserControl<ContentItem, Items.Parts.UserRegistration>
 	{
 		protected override void OnInit(EventArgs e)
 		{

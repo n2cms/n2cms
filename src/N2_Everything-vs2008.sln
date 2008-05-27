@@ -70,7 +70,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{CC6F803A
 		..\build.bat = ..\build.bat
 		..\Build_Everything-vs2008.bat = ..\Build_Everything-vs2008.bat
 		..\Deploy_Everything-vs2008.bat = ..\Deploy_Everything-vs2008.bat
-		..\everything.proj = ..\everything.proj
+		..\msbuild.proj = ..\msbuild.proj
 		..\Prepare_Dependencies-vs2008.bat = ..\Prepare_Dependencies-vs2008.bat
 		..\readme.txt = ..\readme.txt
 	EndProjectSection

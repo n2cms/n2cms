@@ -7,10 +7,10 @@ using N2.Security.Details;
 
 namespace N2.Templates.UI.Items.Parts
 {
-	[Definition("Register", "Register")]
+	[Definition("Register", "UserRegistration")]
 	[AllowedZones(Zones.Content)]
 	[N2.Web.UI.FieldSet("verification", "Verification", 40)]
-	public class RegisterItem : AbstractItem
+	public class UserRegistration : AbstractItem
 	{
 		private const string VerificationBody = @"Please verify your e-mail. Click here:
 {VerificationUrl}";

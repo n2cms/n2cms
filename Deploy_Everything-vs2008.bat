@@ -1,2 +1,2 @@
 @echo off
-cmd /c "build.bat everything.proj /target:Deploy" & pause & exit
+cmd /c "build.bat /target:Deploy" & pause & exit

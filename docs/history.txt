@@ -19,6 +19,7 @@
 	- moved build scripts to trunk root
 	- upgraded to rhino mocks 1.5
 	- improved installation experience
+	- page authorized roles are now inherited to new child pages
 
 N2 1.3.5
 - edit

@@ -141,7 +141,7 @@
 	<!-- TEMPLATES -->
 
 	<PropertyGroup>
-		<Templates-SolutionFolder>.</Templates-SolutionFolder>
+		<Templates-SolutionFolder>.\src</Templates-SolutionFolder>
 		<Templates-SolutionFile>$(Templates-SolutionFolder)\N2_Everything-vs2008.sln</Templates-SolutionFile>
 		<Templates-UIFolder>$(Templates-SolutionFolder)\wwwroot</Templates-UIFolder>
 
@@ -172,9 +172,10 @@
 		<Templates-Exclude Include="$(Templates-UIFolder)\**\*.user" />
 		<Templates-Exclude Include="$(Templates-UIFolder)\**\*.db" />
 		<Templates-Exclude Include="$(Templates-UIFolder)\**\*.cs" />
+		<Templates-Exclude Include="$(Templates-UIFolder)\**\*.csproj" />
 
+		<Templates-Exclude Include="$(Templates-UIFolder)\*\bin\**\*" />
 		<Templates-Exclude Include="$(Templates-UIFolder)\**\Demo\**\*" />
-		<Templates-Exclude Include="$(Templates-UIFolder)\**\Demo*" />
 		<Templates-Exclude Include="$(Templates-UIFolder)\**\Scrum\**\*" />
 
 		<Templates-AllFiles Include="$(Templates-UIFolder)\**\*" Exclude="@(Templates-Exclude)"/>

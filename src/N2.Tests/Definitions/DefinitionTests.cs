@@ -8,6 +8,7 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Tests.Definitions.Items;
 using N2.Web.UI;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Definitions
 {
@@ -354,6 +355,18 @@ namespace N2.Tests.Definitions
 
 			Assert.IsNotNull(definition.Title);
 			Assert.IsNotEmpty(definition.Title);
+		}
+
+		[Test]
+		public void Item_Inherits_AllowedRoles_FromParent()
+		{
+			DefinitionTextPage page = definitions.CreateInstance<DefinitionTextPage>(null);
+			page.AuthorizedRoles.Add(new N2.Security.AuthorizedRole(page, "Administrators"));
+
+			DefinitionTextPage child = definitions.CreateInstance<DefinitionTextPage>(page);
+			Assert.That(child.AuthorizedRoles.Count, Is.EqualTo(1));
+			Assert.That(child.AuthorizedRoles[0].Role, Is.EqualTo("Administrators"));
+			Assert.That(child.AuthorizedRoles[0].EnclosingItem, Is.EqualTo(child));
 		}
 	}
 }

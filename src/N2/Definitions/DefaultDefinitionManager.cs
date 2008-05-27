@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using N2.Persistence;
 using System.Security.Principal;
+using N2.Security;
 
 namespace N2.Definitions
 {
@@ -48,6 +49,8 @@ namespace N2.Definitions
 					throw new NotAllowedParentException(itemDefinition, parentItem.GetType());
 
 				item.Parent = parentItem;
+				foreach (AuthorizedRole role in parentItem.AuthorizedRoles)
+					item.AuthorizedRoles.Add(new AuthorizedRole(item, role.Role));
 			}
 			notifier.Notifiy(item);
 			if (ItemCreated != null)
