@@ -53,18 +53,12 @@ namespace N2.Templates.ImageGallery.Items
 
 		public override string IconUrl
 		{
-			get
-			{
-				return "~/ImageGallery/UI/Img/Photos.png";
-			}
+			get { return "~/ImageGallery/UI/Img/Photos.png"; }
 		}
 
 		public override string TemplateUrl
 		{
-			get
-			{
-				return "~/ImageGallery/UI/Default.aspx";
-			}
+			get { return "~/ImageGallery/UI/Default.aspx"; }
 		}
 	}
 }

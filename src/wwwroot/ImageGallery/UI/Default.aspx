@@ -7,7 +7,7 @@
 		<n2:ItemDataSource id="idsImages" runat="server" />
 		<asp:Repeater runat="server" DataSourceID="idsImages">
 			<ItemTemplate>
-				<a href='<%# Eval("ResizedImageUrl") %>' class="thumbnail">
+				<a id="t<%# Eval("ID") %>" href='<%# Eval("ResizedImageUrl") %>' class="thumbnail">
 					<img alt='<%# Eval("Title") %>' src='<%# Eval("ThumbnailImageUrl") %>' />
 				</a>
 				<div class="text">
@@ -28,7 +28,7 @@
 				
 				return false;
 			};
-			$(".thumbnail").click(show).slice(0,1).each(show);
+			$(".thumbnail").click(show).filter(location.hash || "*").slice(0,1).each(show);
 		});
     </script>
 </asp:Content>

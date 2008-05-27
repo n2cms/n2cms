@@ -1,2 +1,0 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GalleryItem.ascx.cs" Inherits="N2.Templates.ImageGallery.UI.GalleryItem" %>
-<asp:Image runat="server" ImageUrl="<%$ CurrentItem: ImageUrl %>" Width="500" Height="400" />

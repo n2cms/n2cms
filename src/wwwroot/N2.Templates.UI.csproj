@@ -214,13 +214,6 @@
     <Compile Include="ImageGallery\UI\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ImageGallery\UI\GalleryItem.ascx.cs">
-      <DependentUpon>GalleryItem.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ImageGallery\UI\GalleryItem.ascx.designer.cs">
-      <DependentUpon>GalleryItem.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Items\LayoutParts\Columns.cs" />
     <Compile Include="Items\LayoutParts\HorizontalMenu.cs" />
     <Compile Include="Items\LayoutParts\Menu.cs" />
@@ -746,7 +739,6 @@
     </Content>
     <Content Include="ImageGallery\UI\Css\ImageGallery.css" />
     <Content Include="ImageGallery\UI\Default.aspx" />
-    <Content Include="ImageGallery\UI\GalleryItem.ascx" />
     <Content Include="ImageGallery\UI\Img\photo.png" />
     <Content Include="ImageGallery\UI\Img\photos.png" />
     <Content Include="News\UI\Container.aspx" />

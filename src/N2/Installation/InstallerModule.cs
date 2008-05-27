@@ -3,32 +3,55 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Diagnostics;
+using N2.Web;
+using System.Configuration;
 
 namespace N2.Installation
 {
 	public class InstallerModule : IHttpModule
 	{
-		public void Dispose()
-		{
-		}
+		HttpApplication context;
+		bool isChecked = false;
 
-		static bool alreadyChecked = false;
 		public void Init(HttpApplication context)
 		{
-			if (!alreadyChecked)
-			{
-				alreadyChecked = true;
+			this.context = context;
+			N2.Context.Initialize(false);
+			context.BeginRequest += context_BeginRequest;
+		}
 
-				Context.Initialize(false);
-				InstallationManager im = new InstallationManager(Context.Current);
-				DatabaseStatus status = im.GetStatus();
-				if (!status.IsInstalled)
-				{
-					string message = "There seems to be a problem with the configuration and/or database. Please check the web configuration and navigate to the installer located at /edit/install. Available information: " 
-						+ status.ToStatusString();
-					throw new N2Exception(message);
-				}
+		void context_BeginRequest(object sender, EventArgs e)
+		{
+			if (isChecked || IsEditing() || AllowRedirectToInstallPage())
+				return;
+			else
+				isChecked = true;
+
+			context.BeginRequest -= context_BeginRequest;
+
+			InstallationManager im = new InstallationManager(N2.Context.Current);
+			
+			DatabaseStatus status = im.GetStatus();
+			if (!status.IsInstalled)
+			{
+				string url = ConfigurationManager.AppSettings["N2.InstallUrl"] ?? "~/Edit/Install/Begin/Default.aspx";
+				context.Response.Redirect(url);
 			}
+		}
+
+		private static bool AllowRedirectToInstallPage()
+		{
+			return string.Equals(ConfigurationManager.AppSettings["N2.AllowRedirectToInstallPage"], "true", StringComparison.InvariantCultureIgnoreCase);
+		}
+
+		private static bool IsEditing()
+		{
+			IWebContext web = N2.Context.Current.Resolve<IWebContext>();
+			return web.ToAppRelative(web.AbsolutePath).StartsWith("~/Edit", StringComparison.InvariantCultureIgnoreCase);
+		}
+
+		public void Dispose()
+		{
 		}
 	}
 }

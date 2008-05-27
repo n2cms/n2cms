@@ -9,26 +9,39 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using N2.Integrity;
 using N2.Details;
+using N2.Web.UI;
 
 namespace N2.Templates.ImageGallery.Items
 {
 	[Definition("Gallery Item", "GalleryItem")]
 	[RestrictParents(typeof(ImageGallery))]
-	[WithEditableTitle("Title", 10)]
-	public class GalleryItem : Templates.Items.AbstractItem
+	[TabPanel("advanced", "Advanced", 100)]
+	public class GalleryItem : Templates.Items.AbstractPage
 	{
-		[EditableImage("Image", 30)]
+		public GalleryItem()
+		{
+			Visible = false;
+		}
+
+		[EditableImage("Image", 30, ContainerName = Tabs.Content)]
 		public virtual string ImageUrl
 		{
 			get { return (string)base.GetDetail("ImageUrl"); }
 			set { base.SetDetail("ImageUrl", value); }
 		}
 
-		[EditableFreeTextArea("Text", 40)]
+		[EditableFreeTextArea("Text", 40, ContainerName = Tabs.Content)]
 		public virtual string Text
 		{
 			get { return (string)(GetDetail("Text") ?? string.Empty); }
 			set { SetDetail("Text", value, string.Empty); }
+		}
+
+		[EditableCheckBox("Visible", 40, ContainerName = Tabs.Advanced)]
+		public override bool Visible
+		{
+			get { return base.Visible; }
+			set { base.Visible = value; }
 		}
 
 		public virtual string ResizedImageUrl
@@ -48,18 +61,17 @@ namespace N2.Templates.ImageGallery.Items
 
 		public override string IconUrl
 		{
-			get
-			{
-				return "~/ImageGallery/UI/Img/Photo.png";
-			}
+			get { return "~/ImageGallery/UI/Img/Photo.png"; }
+		}
+
+		public override string Url
+		{
+			get { return Parent.Url + "?item=" + ID+ "#t" + ID; }
 		}
 
 		public override string TemplateUrl
 		{
-			get
-			{
-				return "~/ImageGallery/UI/GalleryItem.ascx";
-			}
+			get { return "~/ImageGallery/UI/Default.aspx"; }
 		}
 	}
 }

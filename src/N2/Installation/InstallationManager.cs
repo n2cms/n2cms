@@ -19,14 +19,10 @@ namespace N2.Installation
 {
 	public class InstallationManager
 	{
-		#region Constructor
-
 		public InstallationManager(IEngine engine)
 		{
 			this.engine = engine;
 		}
-
-		#endregion
 
 		#region Constants
 
