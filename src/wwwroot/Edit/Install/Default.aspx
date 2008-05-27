@@ -19,11 +19,11 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <h1>Install N2</h1>
         <asp:Literal ID="ltStartupError" runat="server" />
 
         <n2:TabPanel ToolTip="1. Welcome" runat="server">
-            <p class='<%# Status.IsInstalled ? "ok" : "warning" %>'>
+            <h1>Install N2 CMS</h1>
+			<p class='<%# Status.IsInstalled ? "ok" : "warning" %>'>
 				<b> Advice: </b> <%# GetStatusText() %>
             </p>
             <p>To install N2 you need to create a database, update the connection string in web.config, create the tables needed by N2, add the root node to the database and make sure the root node's id is configured in web.config.</p>
@@ -33,6 +33,7 @@
         </n2:TabPanel>
         
         <n2:TabPanel ToolTip="2. Database connection" runat="server">
+            <h1>Check database connection</h1>
             <asp:Literal runat="server" Visible='<%# Status.IsConnected %>'>
 				<p class="ok"><b>Advice: </b>Since your database seems connected you may skip this step.</p>
             </asp:Literal>
@@ -46,6 +47,7 @@
         </n2:TabPanel>
         
         <n2:TabPanel ToolTip="3. Database tables" runat="server">
+			<h1>Create datbase tables</h1>
             <asp:Literal runat="server" Visible='<%# Status.HasSchema %>'>
 				<p class="ok"><b>Advice: </b>The database tables are okay. You can move to the next tab (if you create them again you will delete any existing content).</p>
             </asp:Literal>
@@ -67,7 +69,8 @@
             </p>
         </n2:TabPanel>
         
-        <n2:TabPanel ToolTip="4. Root items" runat="server">
+        <n2:TabPanel ToolTip="4. Root node" runat="server">
+			<h1>Insert root node (required)</h1>
             <asp:Literal runat="server" Visible='<%# Status.IsInstalled %>'>
 				<p class="ok"><b>Advice: </b>There are already root and start nodes. If you create more they will become detached nodes cluttering your database unless you point them out in web.config (which makes the existing nodes detached instead).</p>
             </asp:Literal>
@@ -157,6 +160,7 @@
         </n2:TabPanel>
         
         <n2:TabPanel runat="server" tooltip="5. Finishing touches">
+			<h1>Almost done!</h1>
             <p><b>IMPORTANT!</b> Change the default password in web.config. If you've installed, configured and created an administrator account using a membership provider, comment out this section entirely.</p>
             <p><b>Advice:</b> remove the installation directory to prevent nasty surprises.</p>
             <p>Are you planning to release this site in medium trust? <a href="MediumTrust.aspx">Try the medium trust web.config file generator.</a></p>

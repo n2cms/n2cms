@@ -166,6 +166,13 @@
     <Compile Include="Framed.Master.designer.cs">
       <DependentUpon>Framed.Master</DependentUpon>
     </Compile>
+    <Compile Include="Install\Begin\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Install\Begin\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Install\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1228,8 +1235,12 @@
     <Content Include="Membership\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Install\Begin\Default.aspx" />
     <Content Include="Install\Web.config" />
     <Content Include="Js\jquery-1.2.5.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Install\Begin\Web.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
