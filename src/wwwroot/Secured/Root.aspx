@@ -1,5 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Layouts/Empty.Master" AutoEventWireup="true"
-	CodeBehind="Root.aspx.cs" Inherits="N2.Templates.UI.Secured.Root" Title="Root" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Root.aspx.cs" Inherits="N2.Templates.UI.Secured.Root" Title="Root" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
