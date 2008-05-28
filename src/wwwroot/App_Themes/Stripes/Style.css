@@ -85,7 +85,7 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 .list .item { padding:5px; }
 
 /* path */
-.path { margin-top:10px; }
+.path { margin-bottom:10px; }
 .path .current { color:#414141; }
 .path a.current:hover { cursor:default; text-decoration:none; }
 
@@ -112,3 +112,15 @@ body #page { background-color:Transparent; }
 .dragDrop .Right,.dragDrop .Content { background-color:#eef;}
 
 .socialBookmarks a { white-space:nowrap; }
+
+/* login */
+.login .tb { width:130px; }
+.login .ff { margin-bottom:5px; }
+.register td { padding:0 5px 5px 0; }
+
+/* gallery */
+.thumbnail { opacity:.4; }
+.thumbnail:hover, .selected { opacity:1; }
+#thumbnails {padding-bottom:10px;}
+#thumbnails .text { display:none; }
+.thumbnail {margin-bottom:10px;margin-right:5px;}

@@ -128,6 +128,7 @@ img.main {margin-bottom:15px;}
 .list .item { padding:5px; }
 
 /* path */
+.path { margin-bottom:10px; }
 .path .current { color:#333; }
 .path a.current:hover { cursor:default; text-decoration:none; }
 
@@ -145,3 +146,15 @@ img.main {margin-bottom:15px;}
 .dragDrop .secondary .uc { margin-bottom:0;}
 .dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
 .dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
+
+/* login */
+.login .tb { width:130px; }
+.login .ff { margin-bottom:5px; }
+.register td { padding:0 5px 5px 0; }
+
+/* gallery */
+.thumbnail { opacity:.4; }
+.thumbnail:hover, .selected { opacity:1; }
+#thumbnails {padding-bottom:10px;}
+#thumbnails .text { display:none; }
+.thumbnail {margin-bottom:10px;margin-right:5px;}

@@ -18,18 +18,18 @@ namespace N2.Templates.Items
 	[RestrictParents(typeof(IStructuralPage))]
 	public abstract class AbstractContentPage : AbstractPage
 	{
-		[EditableCheckBox("Visible", 40, ContainerName = Tabs.Advanced)]
-		public override bool Visible
-		{
-			get{return base.Visible;}
-			set{base.Visible = value;}
-		}
-
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
 		public virtual string Text
 		{
 			get { return (string) (GetDetail("Text") ?? string.Empty); }
 			set { SetDetail("Text", value, string.Empty); }
+		}
+
+		[EditableCheckBox("Visible", 40, ContainerName = Tabs.Advanced)]
+		public override bool Visible
+		{
+			get { return base.Visible; }
+			set { base.Visible = value; }
 		}
 	}
 }

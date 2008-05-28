@@ -1,8 +1,5 @@
 <%@ Page MasterPageFile="~/Layouts/Top+SubMenu.Master" Language="C#" AutoEventWireup="true" CodeBehind="Container.aspx.cs" Inherits="N2.Templates.Calendar.UI.Container" %>
-<asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-    <n2:Path ID="p1" runat="server" />
-    <n2:EditableDisplay PropertyName="Title" runat="server" />
-    <n2:EditableDisplay PropertyName="Text" runat="server" />
+<asp:Content ID="cpc" ContentPlaceHolderID="PostContent" runat="server">
     <asp:Repeater ID="rc" runat="server">
         <HeaderTemplate><div class="list"></HeaderTemplate>
         <ItemTemplate>

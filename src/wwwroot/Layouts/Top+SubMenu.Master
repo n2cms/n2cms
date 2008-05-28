@@ -6,6 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="h" runat="server">
     <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
+    <asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
 <body class="<%= GetBodyClass() %>">
     <form id="F" runat="server">
@@ -27,7 +28,7 @@
                     <parts:TopMenu ID="tm" runat="server" />
                 </div>
             </asp:ContentPlaceHolder>
-            <asp:ContentPlaceHolder ID="PageArea" runat="server">
+            <asp:ContentPlaceHolder ID="PageWrapper" runat="server">
                 <div id="page">
 					<asp:ContentPlaceHolder ID="PageTop" runat="server">
 						<n2:EditableDisplay PropertyName="TopImage" runat="server" SwallowExceptions="true" />
@@ -42,10 +43,21 @@
                     <div id="content" class="cf">
 						<asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
 							<div id="main">
-								<n2:Zone ID="za" runat="server" ZoneName="RecursiveAbove" />
-								<n2:DraggableToolbar ID="dt" runat="server" />
-								<asp:ContentPlaceHolder ID="Content" runat="server"/>
-								<n2:DroppableZone ID="zc" ZoneName="Content" runat="server" />
+								<asp:ContentPlaceHolder ID="PreContent" runat="server">
+									<n2:DraggableToolbar ID="dt" runat="server" />
+									<n2:Zone ID="za" runat="server" ZoneName="RecursiveAbove" />
+								</asp:ContentPlaceHolder>
+								<asp:ContentPlaceHolder ID="Content" runat="server">
+									<n2:Path ID="p" runat="server" />
+									<n2:EditableDisplay ID="dim" PropertyName="Image" SwallowExceptions="true" runat="server" />
+									<asp:ContentPlaceHolder ID="TextContent" runat="server">
+										<n2:EditableDisplay ID="dti" PropertyName="Title" SwallowExceptions="true" runat="server" />
+										<n2:EditableDisplay ID="dte" PropertyName="Text" runat="server" />
+									</asp:ContentPlaceHolder>
+								</asp:ContentPlaceHolder>
+								<asp:ContentPlaceHolder ID="PostContent" runat="server">
+									<n2:DroppableZone ID="zc" ZoneName="Content" runat="server" />
+								</asp:ContentPlaceHolder>
 							</div>
 							<asp:ContentPlaceHolder ID="Sidebar" runat="server">
 								<div id="extras" class="secondary">

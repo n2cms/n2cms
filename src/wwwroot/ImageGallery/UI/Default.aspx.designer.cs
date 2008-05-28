@@ -14,6 +14,15 @@ namespace N2.Templates.ImageGallery.UI {
     public partial class Default {
         
         /// <summary>
+        /// p control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Templates.Web.UI.WebControls.Path p;
+        
+        /// <summary>
         /// idsImages control.
         /// </summary>
         /// <remarks>

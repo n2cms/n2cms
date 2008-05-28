@@ -27,6 +27,13 @@ namespace N2.Templates.Items
 			set { SetDetail("NotFoundPage", value); }
 		}
 
+		[EditableCheckBox("Show Breadcrumb", 110, ContainerName = SiteArea)]
+		public virtual bool ShowBreadcrumb
+		{
+			get { return (bool)(GetDetail("ShowBreadcrumb") ?? true); }
+			set { SetDetail("ShowBreadcrumb", value, true); }
+		}
+
 		public IEnumerable<Site> GetSites()
 		{
 			yield return new Site(Parent.ID, ID, HostName);

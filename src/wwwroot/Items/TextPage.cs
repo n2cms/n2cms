@@ -19,16 +19,9 @@ namespace N2.Templates.UI.Items
 			set { SetDetail("Image", value, string.Empty); }
 		}
 
-		[EditableCheckBox("Show Title", 60, ContainerName = Tabs.Advanced)]
-		public virtual bool ShowTitle
-		{
-			get { return (bool)(GetDetail("ShowTitle") ?? true); }
-			set { SetDetail("ShowTitle", value, true); }
-		}
-
 		public override string TemplateUrl
 		{
-			get { return "~/Text.aspx"; }
+			get { return "~/UI/Text.aspx"; }
 		}
 
 		public string Summary

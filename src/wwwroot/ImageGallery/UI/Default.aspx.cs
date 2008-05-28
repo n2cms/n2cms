@@ -16,7 +16,6 @@ namespace N2.Templates.ImageGallery.UI
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			N2.Resources.Register.JQuery(this);
-			N2.Resources.Register.StyleSheet(this, VirtualPathUtility.ToAbsolute("~/ImageGallery/UI/Css/ImageGallery.css"), N2.Resources.Media.All);
 		}
 	}
 }

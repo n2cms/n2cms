@@ -44,13 +44,6 @@ namespace N2.Templates.UI.Items
 			set { SetDetail("FooterText", value, string.Empty); }
 		}
 
-		[EditableCheckBox("Show Title", 60, ContainerName = Tabs.Advanced)]
-		public virtual bool ShowTitle
-		{
-			get { return (bool)(GetDetail("ShowTitle") ?? true); }
-			set { SetDetail("ShowTitle", value, true); }
-		}
-
 		[N2.Details.EditableItem("Header", 100, ContainerName = "siteArea")]
 		public virtual LayoutParts.Top Header
 		{

@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.Templates.Faq.UI {
+namespace N2.Templates.UI {
     
     
-    public partial class Default {
+    public partial class Text {
     }
 }

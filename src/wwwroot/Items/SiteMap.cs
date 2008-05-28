@@ -17,7 +17,7 @@ namespace N2.Templates.UI.Items
 
 		public override string TemplateUrl
 		{
-			get { return "~/SiteMap.aspx"; }
+			get { return "~/UI/SiteMap.aspx"; }
 		}
 	}
 }

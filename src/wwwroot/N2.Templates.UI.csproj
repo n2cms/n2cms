@@ -61,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\DisplayPage-PlugIn.cs" />
-    <Compile Include="404.aspx.cs">
+    <Compile Include="UI\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -221,11 +221,11 @@
     <Compile Include="Items\LayoutParts\VerticalMenu.cs" />
     <Compile Include="Items\Parts\ControlPanel.cs" />
     <Compile Include="Items\Parts\BoxedTextItem.cs" />
-    <Compile Include="Items\Parts\RegisterItem.cs" />
     <Compile Include="Items\Parts\LoginItem.cs" />
     <Compile Include="Items\Parts\RandomImage.cs" />
     <Compile Include="Items\Parts\Teaser.cs" />
     <Compile Include="Items\Parts\TextItem.cs" />
+    <Compile Include="Items\Parts\UserRegistration.cs" />
     <Compile Include="Items\Redirect.cs" />
     <Compile Include="Items\RootPage.cs" />
     <Compile Include="Items\RootParts\Statistics.cs" />
@@ -337,13 +337,6 @@
     <Compile Include="TabPanel\TabsItem.cs">
     </Compile>
     <Compile Include="Items\TextPage.cs" />
-    <Compile Include="Layouts\Empty.Master.cs">
-      <DependentUpon>Empty.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Layouts\Empty.Master.designer.cs">
-      <DependentUpon>Empty.Master</DependentUpon>
-    </Compile>
     <Compile Include="Layouts\Parts\HorizontalMenu.ascx.cs">
       <DependentUpon>HorizontalMenu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -453,11 +446,11 @@
       <DependentUpon>Top.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Redirect.aspx.cs">
+    <Compile Include="UI\Redirect.aspx.cs">
       <DependentUpon>Redirect.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Redirect.aspx.designer.cs">
+    <Compile Include="UI\Redirect.aspx.designer.cs">
       <DependentUpon>Redirect.aspx</DependentUpon>
     </Compile>
     <Compile Include="Secured\Root.aspx.cs">
@@ -467,18 +460,18 @@
     <Compile Include="Secured\Root.aspx.designer.cs">
       <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SiteMap.aspx.cs">
+    <Compile Include="UI\SiteMap.aspx.cs">
       <DependentUpon>SiteMap.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="SiteMap.aspx.designer.cs">
+    <Compile Include="UI\SiteMap.aspx.designer.cs">
       <DependentUpon>SiteMap.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Text.aspx.cs">
+    <Compile Include="UI\Text.aspx.cs">
       <DependentUpon>Text.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Text.aspx.designer.cs">
+    <Compile Include="UI\Text.aspx.designer.cs">
       <DependentUpon>Text.aspx</DependentUpon>
     </Compile>
     <Compile Include="TabPanel\TabsInterface.ascx.cs">
@@ -512,7 +505,7 @@
     <Content Include="App_Themes\ContentFocus\content_top.gif" />
     <Content Include="Secured\Root.aspx" />
     <Content Include="Secured\Web.config" />
-    <Content Include="Text.aspx" />
+    <Content Include="UI\Text.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\AnyBrowser.browser" />
@@ -521,7 +514,7 @@
     <Content Include="App_Browsers\CSSFriendlyAdapters.browser" />
     <Content Include="Layouts\Parts\Menu.ascx" />
     <Content Include="Layouts\Parts\Top.ascx" />
-    <Content Include="Redirect.aspx" />
+    <Content Include="UI\Redirect.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\ContentFocus\list_dark.gif" />
@@ -538,7 +531,7 @@
     <Content Include="Img\page_white_star.png" />
     <Content Include="Img\page_world.png" />
     <Content Include="Img\sitemap.png" />
-    <Content Include="SiteMap.aspx" />
+    <Content Include="UI\SiteMap.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
@@ -550,8 +543,6 @@
     <Content Include="App_Themes\Stripes\bg.gif" />
     <Content Include="App_Themes\Stripes\top_bg.gif" />
     <Content Include="App_Themes\Stripes\menu_bg.gif" />
-    <Content Include="App_Themes\Stripes\page_bottom.gif" />
-    <Content Include="App_Themes\Stripes\page_top.gif" />
     <Content Include="App_Themes\Stripes\secondary_bg.gif" />
     <Content Include="App_Themes\Stripes\sidebar_bg.gif" />
     <Content Include="App_Themes\Stripes\Style.css" />
@@ -562,7 +553,6 @@
     <Content Include="Img\photos.png" />
     <Content Include="Img\text_align_left.png" />
     <Content Include="Img\text_columns.png" />
-    <Content Include="Layouts\Empty.Master" />
     <Content Include="Layouts\Parts\HorizontalMenu.ascx" />
     <Content Include="Layouts\Parts\VerticalMenu.ascx" />
     <Content Include="Layouts\Parts\Columns.ascx" />
@@ -661,7 +651,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="404.aspx" />
+    <Content Include="UI\404.aspx" />
     <Content Include="App_Themes\Corporate\amazed.gif" />
     <Content Include="App_Themes\Corporate\body_bg.gif" />
     <Content Include="App_Themes\Corporate\happy.gif" />
@@ -737,7 +727,6 @@
     <Content Include="Form\UI\App_LocalResources\Form.ascx.sv.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ImageGallery\UI\Css\ImageGallery.css" />
     <Content Include="ImageGallery\UI\Default.aspx" />
     <Content Include="ImageGallery\UI\Img\photo.png" />
     <Content Include="ImageGallery\UI\Img\photos.png" />

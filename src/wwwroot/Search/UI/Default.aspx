@@ -1,9 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Layouts/Top+SubMenu.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.Search.UI.Default" Title="Untitled Page" %>
-<asp:Content ID="c" ContentPlaceHolderID="Content" runat="server">
-    <n2:Path ID="p1" runat="server" />
-    <n2:Display PropertyName="Title" runat="server" />
-    <n2:Display PropertyName="Text" runat="server" />
-    
+<asp:Content ID="c" ContentPlaceHolderID="PostContent" runat="server">
     <asp:TextBox ID="txtQuery" runat="server"></asp:TextBox>
     <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
     

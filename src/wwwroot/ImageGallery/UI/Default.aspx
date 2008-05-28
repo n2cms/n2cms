@@ -1,5 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="~/Layouts/Top+SubMenu.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Templates.ImageGallery.UI.Default" %>
 <asp:Content ID="c" ContentPlaceHolderID="ContentAndSidebar" runat="server">
+	<n2:Path ID="p" runat="server" Visible="<%$ StartPage: ShowBreadcrumb %>" />
 	<n2:EditableDisplay PropertyName="Title" runat="server" />
 	<n2:EditableDisplay PropertyName="Text" runat="server" />
 	

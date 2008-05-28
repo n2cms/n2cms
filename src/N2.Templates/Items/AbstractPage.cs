@@ -27,6 +27,13 @@ namespace N2.Templates.Items
 			}
 		}
 
+		[EditableCheckBox("Show Title", 60, ContainerName = Tabs.Advanced)]
+		public virtual bool ShowTitle
+		{
+			get { return (bool)(GetDetail("ShowTitle") ?? true); }
+			set { SetDetail("ShowTitle", value, true); }
+		}
+
 		public override ItemList GetChildren(string childZoneName)
 		{
 			if (VersionOf != null)

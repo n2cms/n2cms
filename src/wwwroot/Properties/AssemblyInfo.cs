@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("N2.Templates.UI")]
-[assembly: AssemblyCopyright("Copyright © 2007 Crisitan Libardo")]
+[assembly: AssemblyCopyright("Copyright © 2007-2008 Crisitan Libardo")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible to COM components.  If you need to access a type in this assembly from COM, set the ComVisible attribute to true on that type.

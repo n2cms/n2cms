@@ -32,6 +32,15 @@ namespace N2.Templates.UI.Layouts {
         protected global::System.Web.UI.HtmlControls.HtmlTitle t;
         
         /// <summary>
+        /// Head control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder Head;
+        
+        /// <summary>
         /// F control.
         /// </summary>
         /// <remarks>
@@ -86,13 +95,13 @@ namespace N2.Templates.UI.Layouts {
         protected global::N2.Templates.UI.Layouts.Parts.TopMenu tm;
         
         /// <summary>
-        /// PageArea control.
+        /// PageWrapper control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder PageArea;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder PageWrapper;
         
         /// <summary>
         /// PageTop control.
@@ -149,13 +158,13 @@ namespace N2.Templates.UI.Layouts {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentAndSidebar;
         
         /// <summary>
-        /// za control.
+        /// PreContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Zone za;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder PreContent;
         
         /// <summary>
         /// dt control.
@@ -167,6 +176,15 @@ namespace N2.Templates.UI.Layouts {
         protected global::N2.Web.UI.WebControls.DraggableToolbar dt;
         
         /// <summary>
+        /// za control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.Zone za;
+        
+        /// <summary>
         /// Content control.
         /// </summary>
         /// <remarks>
@@ -174,6 +192,60 @@ namespace N2.Templates.UI.Layouts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder Content;
+        
+        /// <summary>
+        /// p control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Templates.Web.UI.WebControls.Path p;
+        
+        /// <summary>
+        /// dim control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.EditableDisplay dim;
+        
+        /// <summary>
+        /// TextContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder TextContent;
+        
+        /// <summary>
+        /// dti control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.EditableDisplay dti;
+        
+        /// <summary>
+        /// dte control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.EditableDisplay dte;
+        
+        /// <summary>
+        /// PostContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder PostContent;
         
         /// <summary>
         /// zc control.

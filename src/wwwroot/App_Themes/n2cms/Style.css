@@ -142,3 +142,15 @@ img.main {margin-bottom:15px;}
 
 .faqList h1 { margin-bottom:0; }
 .faqList .list { margin-bottom:0; }
+
+/* login */
+.login .tb { width:130px; }
+.login .ff { margin-bottom:5px; }
+.register td { padding:0 5px 5px 0; }
+
+/* gallery */
+.thumbnail { opacity:.4; }
+.thumbnail:hover, .selected { opacity:1; }
+#thumbnails {padding-bottom:10px;}
+#thumbnails .text { display:none; }
+.thumbnail {margin-bottom:10px;margin-right:5px;}

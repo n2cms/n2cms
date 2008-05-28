@@ -38,7 +38,7 @@ namespace N2.Templates.UI.Items
 
 		public override string TemplateUrl
 		{
-			get { return "~/Redirect.aspx"; }
+			get { return "~/UI/Redirect.aspx"; }
 		}
 
 		public override string IconUrl
