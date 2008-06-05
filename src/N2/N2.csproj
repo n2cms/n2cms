@@ -534,7 +534,7 @@
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Resources\jquery-1.2.5.min.js" />
+    <EmbeddedResource Include="Resources\jquery-1.2.6.min.js" />
     <EmbeddedResource Include="Web\n2.notweb.xml" />
     <EmbeddedResource Include="Web\n2.iis5.xml" />
   </ItemGroup>

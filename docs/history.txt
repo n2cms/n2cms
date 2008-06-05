@@ -7,7 +7,6 @@
 	- moved corporate & n2cms menulevel handoff to skin file
 - edit
 	- consolidated a few edit modules: N2.Edit.Export, N2.Edit.Membership, N2.Edit.Install
-	- upgraded to jquery-1.2.5
 - bugfixes
 	- editable roles can now add/remove roles
 	- fixed changes through membersihp provider not beeing persisted
@@ -22,6 +21,7 @@
 	- upgraded to rhino mocks 1.5
 	- improved installation experience
 	- page authorized roles are now inherited to new child pages
+	- upgraded jquery to 1.2.6
 
 N2 1.3.5
 - edit

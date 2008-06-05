@@ -4,7 +4,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
-[assembly: WebResource("N2.Resources.jquery-1.2.5.min.js", "text/javascript")]
+[assembly: WebResource("N2.Resources.jquery-1.2.6.min.js", "text/javascript")]
 
 namespace N2.Resources
 {
@@ -207,9 +207,9 @@ namespace N2.Resources
 		public static void JQuery(Page page)
 		{
 #if DEBUG
-			JavaScript(page, Utility.ToAbsolute("~/Edit/Js/jquery-1.2.5.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, Utility.ToAbsolute("~/Edit/Js/jquery-1.2.6.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
 #else
-			JavaScript(page, typeof(Register), "N2.Resources.jquery-1.2.5.min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, typeof(Register), "N2.Resources.jquery-1.2.6.min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #endif
 		}
 

@@ -1237,10 +1237,10 @@
   <ItemGroup>
     <Content Include="Install\Begin\Default.aspx" />
     <Content Include="Install\Web.config" />
-    <Content Include="Js\jquery-1.2.5.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Install\Begin\Web.config" />
+    <Content Include="Js\jquery-1.2.6.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
