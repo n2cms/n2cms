@@ -26,13 +26,11 @@ namespace N2.Templates.UI.Layouts
 			if(p != null) p.Visible = Find.ClosestStartPage.ShowBreadcrumb;
 			if(dti != null) dti.Visible = CurrentPage["ShowTitle"] != null && (bool)CurrentPage["ShowTitle"];
 			if(dh != null) dh.CurrentItem = language;
-			if(tm != null) tm.MaxLevels = int.Parse(ConfigurationManager.AppSettings[Page.Theme + ".MenuHandoverLevel"] ?? "2");
 
 			if (zsl != null)
 			{
 				zsl.CurrentItem = language;
 				dft.CurrentItem = language;
-				sm.StartLevel = int.Parse(ConfigurationManager.AppSettings[Page.Theme + ".MenuHandoverLevel"] ?? "2");
 			}
 
 			base.OnInit(e);

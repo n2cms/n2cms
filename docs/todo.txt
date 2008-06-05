@@ -6,6 +6,8 @@
 - implement security context
 - dashboard
 - webdav
+- rebuild configuration
+- content item runtime attributes
 - configure away modules
 - fix content item injection
 - diff feature

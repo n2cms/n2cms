@@ -501,8 +501,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
-    <Content Include="App_Themes\ContentFocus\content_top.gif" />
     <Content Include="Secured\Root.aspx" />
     <Content Include="Secured\Web.config" />
     <Content Include="UI\Text.aspx" />
@@ -517,10 +515,6 @@
     <Content Include="UI\Redirect.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Themes\ContentFocus\list_dark.gif" />
-    <Content Include="App_Themes\ContentFocus\list_light.gif" />
-    <Content Include="App_Themes\ContentFocus\secondary_borders.gif" />
-    <Content Include="App_Themes\ContentFocus\top.gif" />
     <Content Include="Parts\Statistics.ascx" />
     <Content Include="Secured\Go.aspx" />
     <Content Include="Image.ashx" />
@@ -537,8 +531,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Themes\ContentFocus\secondary_header.gif" />
-    <Content Include="App_Themes\ContentFocus\Style.css" />
     <Content Include="App_Themes\Plain\Style.css" />
     <Content Include="App_Themes\Stripes\bg.gif" />
     <Content Include="App_Themes\Stripes\top_bg.gif" />
@@ -715,6 +707,8 @@
     <None Include="App_Data\DarkStrips_SampleData.gz" />
     <None Include="App_Data\KhakiTabs_SampleData.gz" />
     <None Include="App_Data\Plain_SampleData.gz" />
+    <Content Include="App_Themes\n2cms\Menu.skin" />
+    <Content Include="App_Themes\Corporate\Menu.skin" />
     <Content Include="News\UI\Layouts\Default.Master" />
   </ItemGroup>
   <ItemGroup>
@@ -777,6 +771,14 @@
     <Content Include="Advertisement\UI\Img\yahoomyweb.png" />
     <Content Include="Advertisement\UI\SocialBookmarks.ascx" />
     <Content Include="Advertisement\UI\UrchinTracking.ascx" />
+    <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
+    <Content Include="App_Themes\ContentFocus\content_top.gif" />
+    <Content Include="App_Themes\ContentFocus\list_dark.gif" />
+    <Content Include="App_Themes\ContentFocus\list_light.gif" />
+    <Content Include="App_Themes\ContentFocus\secondary_borders.gif" />
+    <Content Include="App_Themes\ContentFocus\secondary_header.gif" />
+    <Content Include="App_Themes\ContentFocus\Style.css" />
+    <Content Include="App_Themes\ContentFocus\top.gif" />
     <Content Include="Poll\UI\App_LocalResources\Poll.ascx.resx">
       <SubType>Designer</SubType>
     </Content>

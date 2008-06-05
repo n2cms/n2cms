@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TopMenu.ascx.cs" Inherits="N2.Templates.UI.Layouts.Parts.TopMenu" %>
-<n2:Menu ID="tm" BranchMode="false" runat="server" CssClass="topMenu menu" />
+<n2:Menu ID="tm" BranchMode="false" runat="server" CssClass="topMenu menu" SkinID="topMenu" MaxLevels="2" />
 
 <div class="languageMenu">
 	<asp:Repeater ID="rptLanguages" runat="server">

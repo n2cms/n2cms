@@ -55,7 +55,7 @@ body { margin:0; padding:0; background:#fff url(body_bg.gif) repeat-x; }
 img.main {margin-bottom:15px;}
 
 /* menu */
-.menu {list-style:none; }
+.menu li {list-style:none; }
 
 .topMenu 
 { 

@@ -4,6 +4,7 @@
 	- consolidated a gazillion projects into N2.Templates.UI
 	- gallery images are now easier to edit
 	- refactored the UI code (more stuff into the master page)
+	- moved corporate & n2cms menulevel handoff to skin file
 - edit
 	- consolidated a few edit modules: N2.Edit.Export, N2.Edit.Membership, N2.Edit.Install
 	- upgraded to jquery-1.2.5

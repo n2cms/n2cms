@@ -1,0 +1,2 @@
+﻿<n2:Menu runat="server" SkinID="topMenu" MaxLevels="3" />
+<n2:Menu runat="server" SkinID="subMenu" StartLevel="3" />
