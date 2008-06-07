@@ -2,18 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using System.Configuration;
 
 namespace N2.Tests.NewVersion
 {
     [TestFixture]
     public class FactoryFixture
     {
-        N2.Engine.CmsEngine engine;
+        N2.Engine.ContentEngine engine;
 
         [SetUp]
         public virtual void SetUp()
         {
-            engine = new N2.Engine.CmsEngine();
+			engine = new N2.Engine.ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
         }
 
         [Test]

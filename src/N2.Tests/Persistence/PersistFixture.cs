@@ -142,7 +142,7 @@ namespace N2.Tests.Persistence
 			using (engine.Persister)
 			{
 				// check that everything is still there in the next session
-				root = engine.UrlParser.StartPage;
+				root = engine.Persister.Get(root.ID);
 				Assert.AreEqual(root.Children.Count, 2);
 				Assert.AreEqual(root.GetChildren(new N2.Collections.AccessFilter(null, engine.SecurityManager)).Count, 2);
 				Assert.IsNotNull(root.GetChild("item1"));

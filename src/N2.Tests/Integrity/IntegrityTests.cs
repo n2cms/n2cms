@@ -23,7 +23,7 @@ namespace N2.Tests.Integrity
 		private IPersister persister;
 		private IDefinitionManager definitions;
 		private IUrlParser parser;
-		private DefaultIntegrityManager integrityManger;
+		private IntegrityManager integrityManger;
 
 		private IEventRaiser moving;
 		private IEventRaiser copying;
@@ -49,8 +49,8 @@ namespace N2.Tests.Integrity
 				                      new AttributeExplorer<IEditableContainer>());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			definitions = new DefaultDefinitionManager(builder, notifier);
-			integrityManger = new DefaultIntegrityManager(definitions, parser);
+			definitions = new DefinitionManager(builder, notifier);
+			integrityManger = new IntegrityManager(definitions, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger);
 			enforcer.Start();
 		}

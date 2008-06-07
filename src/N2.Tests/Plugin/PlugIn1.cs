@@ -6,7 +6,7 @@ namespace N2.Tests.PlugIn
 {
 	public class PlugIn1 : IPluginInitializer
 	{
-		public void Initialize(Engine.IEngine engine)
+		public void Initialize(N2.Engine.IEngine engine)
 		{
 			object ignored = engine.Persister;
 		}

@@ -16,8 +16,8 @@ namespace N2.Tests.Persistence.NH
 	[TestFixture]
 	public class VersionManagerTests : ItemTestsBase
 	{
-		DefaultPersister persister;
-		DefaultSessionProvider sessionProvider;
+		ContentPersister persister;
+		SessionProvider sessionProvider;
 		IItemFinder finder;
 		VersionManager versioner;
 
@@ -38,18 +38,18 @@ namespace N2.Tests.Persistence.NH
 
 			mocks.ReplayAll();
 
-			IDefinitionManager definitions = new DefaultDefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
-			DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(definitions);
+			IDefinitionManager definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions);
 			SetConfigurationProperties(configurationBuilder);
 
-			sessionProvider = new DefaultSessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
+			sessionProvider = new SessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
 
 			finder = new ItemFinder(sessionProvider, definitions);
 
 			mocks.VerifyAll();
 		}
 
-		private static void SetConfigurationProperties(DefaultConfigurationBuilder configurationBuilder)
+		private static void SetConfigurationProperties(ConfigurationBuilder configurationBuilder)
 		{
 			configurationBuilder.Properties[NHibernate.Cfg.Environment.ConnectionProvider] = "NHibernate.Connection.DriverConnectionProvider";
 			configurationBuilder.Properties[NHibernate.Cfg.Environment.ConnectionStringName] = "TestConnection";
@@ -67,7 +67,7 @@ namespace N2.Tests.Persistence.NH
 			IRepository<int, ContentItem> itemRepository = new NHRepository<int, ContentItem>(sessionProvider);
 			INHRepository<int, LinkDetail> linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
 
-			persister = new DefaultPersister(itemRepository, linkRepository, finder);
+			persister = new ContentPersister(itemRepository, linkRepository, finder);
 			versioner = new VersionManager(persister, itemRepository);
 		}
 

@@ -10,7 +10,7 @@ namespace N2.Integrity
 	/// not allowing recusive parent-child relationships, siblings with the 
 	/// same name and un-allowed parent-child combinations.
 	/// </summary>
-    public class DefaultIntegrityManager : IIntegrityManager
+    public class IntegrityManager : IIntegrityManager
     {
 		#region Private Fields
 		private readonly Web.IUrlParser urlParser;
@@ -18,10 +18,10 @@ namespace N2.Integrity
 		#endregion
 
 		#region Constructor
-		/// <summary>Creates a new instance of the <see cref="DefaultIntegrityManager"/>.</summary>
+		/// <summary>Creates a new instance of the <see cref="IntegrityManager"/>.</summary>
 		/// <param name="definitions">The definition manager.</param>
 		/// <param name="urlParser"></param>
-		public DefaultIntegrityManager(Definitions.IDefinitionManager definitions, Web.IUrlParser urlParser)
+		public IntegrityManager(Definitions.IDefinitionManager definitions, Web.IUrlParser urlParser)
 		{
 			this.definitions = definitions;
 			this.urlParser = urlParser;

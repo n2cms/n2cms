@@ -13,6 +13,8 @@ using System.Runtime.CompilerServices;
 using System.Web;
 using System;
 using System.ComponentModel;
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace N2
 {
@@ -53,7 +55,35 @@ namespace N2
 		/// <returns>A new factory.</returns>
 		public static Engine.IEngine CreateEngineInstance()
 		{
-			return new Engine.CmsEngine();
+			System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~/");
+
+			AspNetHostingPermissionLevel level = GetCurrentTrustLevel();
+			if (level > AspNetHostingPermissionLevel.Medium)
+				return new Engine.ContentEngine(cfg);
+			else if (level == AspNetHostingPermissionLevel.Medium)
+				return new MediumTrust.Engine.MediumTrustEngine(cfg);
+			else
+				throw new ConfigurationErrorsException("N2 CMS needs at least Medium trust level to operate. Current trust level: " + level);
+		}
+
+		private static AspNetHostingPermissionLevel GetCurrentTrustLevel()
+		{
+			AspNetHostingPermissionLevel[] levels = new AspNetHostingPermissionLevel[] { AspNetHostingPermissionLevel.Unrestricted, AspNetHostingPermissionLevel.High, AspNetHostingPermissionLevel.Medium, AspNetHostingPermissionLevel.Low, AspNetHostingPermissionLevel.Minimal };
+			foreach (AspNetHostingPermissionLevel trustLevel in levels)
+			{
+				try
+				{
+					new AspNetHostingPermission(trustLevel).Demand();
+				}
+				catch (System.Security.SecurityException)
+				{
+					continue;
+				}
+
+				return trustLevel;
+			}
+
+			return AspNetHostingPermissionLevel.None;
 		}
 
 		#endregion

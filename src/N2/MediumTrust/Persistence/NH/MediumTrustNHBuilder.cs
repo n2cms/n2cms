@@ -6,7 +6,7 @@ using N2.Persistence.NH;
 
 namespace N2.MediumTrust.Persistence.NH
 {
-	public class MediumTrustNHBuilder : DefaultConfigurationBuilder
+	public class MediumTrustNHBuilder : ConfigurationBuilder
 	{
 		private readonly MediumTrustSectionHandler configSection;
 

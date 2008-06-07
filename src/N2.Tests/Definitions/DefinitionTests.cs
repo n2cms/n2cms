@@ -18,7 +18,7 @@ namespace N2.Tests.Definitions
 		#region Setup
 
 		private IPrincipal user;
-		private DefaultDefinitionManager definitions;
+		private DefinitionManager definitions;
 
 		protected override Type[] GetTypes()
 		{
@@ -59,7 +59,7 @@ namespace N2.Tests.Definitions
 				                      new AttributeExplorer<IEditableContainer>());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			definitions = new DefaultDefinitionManager(builder, notifier);
+			definitions = new DefinitionManager(builder, notifier);
 		}
 
 		#endregion

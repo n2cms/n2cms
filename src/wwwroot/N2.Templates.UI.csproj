@@ -487,13 +487,13 @@
       <Project>{CB6A29C5-8355-4C4C-B437-619F652B7540}</Project>
       <Name>N2.Security</Name>
     </ProjectReference>
-    <ProjectReference Include="..\N2.Templates\N2.Templates.csproj">
-      <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
-      <Name>N2.Templates</Name>
-    </ProjectReference>
     <ProjectReference Include="..\N2.Templates.Survey\N2.Templates.Survey.csproj">
       <Project>{E750B8F9-9DC4-48C2-A5EE-D7C96F80933C}</Project>
       <Name>N2.Templates.Survey</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\N2.Templates\N2.Templates.csproj">
+      <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
+      <Name>N2.Templates</Name>
     </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>

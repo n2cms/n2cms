@@ -42,7 +42,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\N2.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Publish|AnyCPU' ">
     <OutputPath>bin\Publish\</OutputPath>
@@ -187,9 +188,7 @@
     <Compile Include="Collections\DuplicateFilter.cs" />
     <Compile Include="Engine\WebAppTypeFinder.cs" />
     <Compile Include="Obsolete\InitializationElement.cs" />
-    <Compile Include="Obsolete\DefaultConfiguration.cs" />
     <Compile Include="Obsolete\EditElement.cs" />
-    <Compile Include="Obsolete\IConfiguration.cs" />
     <Compile Include="Definitions\IContainable.cs" />
     <Compile Include="Definitions\IEditableContainer.cs" />
     <Compile Include="Definitions\IDefinitionManagerDependency.cs" />
@@ -292,6 +291,10 @@
     <Compile Include="Collections\RecursiveFinder.cs" />
     <Compile Include="Collections\TreeHierarchyBuilder.cs" />
     <Compile Include="Collections\VisibleFilter.cs" />
+    <Compile Include="Configuration\DatabaseFlavour.cs" />
+    <Compile Include="Configuration\DatabaseSection.cs" />
+    <Compile Include="Configuration\SectionGroup.cs" />
+    <Compile Include="Configuration\EngineSection.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
@@ -531,6 +534,7 @@
     <EmbeddedResource Include="Resources\layout_edit.png" />
     <EmbeddedResource Include="Resources\page_refresh.png" />
     <EmbeddedResource Include="MediumTrust\Mappings\MediumTrust.hbm.xml" />
+    <EmbeddedResource Include="Configuration\castle.config" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -9,12 +9,12 @@ namespace N2.Definitions
 	/// <summary>
 	/// Stores item definitions and constructs new items.
 	/// </summary>
-	public class DefaultDefinitionManager : IDefinitionManager
+	public class DefinitionManager : IDefinitionManager
 	{
 		private readonly IDictionary<Type, ItemDefinition> definitions;
 		private readonly IItemNotifier notifier;
 
-		public DefaultDefinitionManager(DefinitionBuilder builder, IItemNotifier notifier)
+		public DefinitionManager(DefinitionBuilder builder, IItemNotifier notifier)
 		{
 			definitions = builder.GetDefinitions();
 			this.notifier = notifier;

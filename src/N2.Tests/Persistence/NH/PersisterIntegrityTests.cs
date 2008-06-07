@@ -18,7 +18,7 @@ namespace N2.Tests.Persistence.NH
 			parser = mocks.StrictMock<IUrlParser>();
 			mocks.ReplayAll();
 
-			DefaultIntegrityManager integrity = new DefaultIntegrityManager(definitions, parser);
+			IntegrityManager integrity = new IntegrityManager(definitions, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity);
 			enforcer.Start();
 		}

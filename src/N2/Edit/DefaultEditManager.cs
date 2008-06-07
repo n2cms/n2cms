@@ -22,7 +22,7 @@ namespace N2.Edit
 	/// Class responsible for plugins in edit mode, knowling links to edit 
 	/// pages and saving interaction.
 	/// </summary>
-	public class DefaultEditManager : IEditManager
+	public class EditManager : IEditManager
 	{
 		private readonly IDefinitionManager definitions;
 		private readonly IPersister persister;
@@ -37,7 +37,7 @@ namespace N2.Edit
 		private bool enableVersioning = true;
 
 		#region Constructors
-		public DefaultEditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings)
+		public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings)
 		{
 			this.definitions = definitions;
 			this.persister = persister;

@@ -52,7 +52,7 @@ namespace N2.Tests.Edit.Settings
 		[Test]
 		public void CanUpdateService()
 		{
-			N2.Engine.CmsEngine f = new N2.Engine.CmsEngine();
+			N2.Engine.ContentEngine f = new N2.Engine.ContentEngine(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.None));
 			f.AddComponent("usefulService", typeof(Services.IVeryUsefulService), typeof(Services.VeryUsefulService));
 			f.AddFacility("settingsLocator", new SettingsFinder());
 

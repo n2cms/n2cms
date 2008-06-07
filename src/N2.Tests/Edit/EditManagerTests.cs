@@ -22,7 +22,7 @@ namespace N2.Tests.Edit
 	[TestFixture]
 	public class EditManagerTests : TypeFindingBase
 	{
-		DefaultEditManager editManager;
+		EditManager editManager;
 		IPersister persister;
 		IVersionManager versioner;
 
@@ -43,11 +43,11 @@ namespace N2.Tests.Edit
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, hierarchyBuilder, new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			DefaultDefinitionManager definitions = new DefaultDefinitionManager(builder, notifier);
+			DefinitionManager definitions = new DefinitionManager(builder, notifier);
 			
 			persister = mocks.StrictMock<IPersister>();
 			versioner = mocks.StrictMock<IVersionManager>();
-			editManager = new DefaultEditManager(typeFinder, definitions, persister, versioner, null, null);
+			editManager = new EditManager(typeFinder, definitions, persister, versioner, null, null);
 			editManager.EnableVersioning = true;
 		}
 		

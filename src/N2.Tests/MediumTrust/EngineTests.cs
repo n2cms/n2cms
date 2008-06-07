@@ -5,33 +5,55 @@ using NUnit.Framework;
 using N2.MediumTrust.Engine;
 using N2.Persistence;
 using NUnit.Framework.SyntaxHelpers;
+using System.Configuration;
+using System.Net.Mail;
 
 namespace N2.Tests.MediumTrust
 {
 	[TestFixture]
 	public class EngineTests
 	{
-		[Test]
-		public void CanInstantiateEngine()
+		MediumTrustEngine engine;
+
+		[SetUp]
+		public void SetUp()
 		{
-			MediumTrustEngine engine = new MediumTrustEngine();
+			engine = new MediumTrustEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
+		}
+
+		[Test]
+		public void CanInstantiate_MediumTrustEngine()
+		{
+			Assert.That(engine, Is.Not.Null);
 		}
 
 		[Test]
 		public void CanResolve_AddedComponent()
 		{
-			MediumTrustEngine engine = new MediumTrustEngine();
 			engine.AddComponent("my.component", typeof(MyComponent));
 
-			MyComponent mc = engine.Resolve<MyComponent>();
+			var sc = engine.Resolve<MyComponent>();
+			Assert.That(sc, Is.Not.Null);
+		}
+
+		[Test]
+		public void CanResolve_AddedComponent_WithDependencies()
+		{
+			engine.AddComponent("my.component", typeof(MyComponentWithDependencies));
+
+			var mc = engine.Resolve<MyComponentWithDependencies>();
 			Assert.That(mc, Is.Not.Null);
 			Assert.That(mc.persister, Is.Not.Null);
 		}
 
 		public class MyComponent
 		{
+		}
+
+		public class MyComponentWithDependencies
+		{
 			public IPersister persister;
-			public MyComponent(IPersister persister)
+			public MyComponentWithDependencies(IPersister persister)
 			{
 				this.persister = persister;
 			}

@@ -391,8 +391,8 @@ namespace N2.Tests.Persistence.NH
 				.Return(new Type[] { typeof(Definitions.PersistableItem1), typeof(Definitions.NonVirtualItem) });
 			mocks.ReplayAll();
 
-			IDefinitionManager definitions = new DefaultDefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
-			DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(definitions);
+			IDefinitionManager definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions);
 			configurationBuilder.Properties.Add("connection.provider", "NHibernate.Connection.DriverConnectionProvider");
 			configurationBuilder.Properties.Add("connection.connection_string_name", "TestConnection");
 			configurationBuilder.Properties.Add("show_sql", "true");
@@ -400,7 +400,7 @@ namespace N2.Tests.Persistence.NH
 			configurationBuilder.Properties.Add("connection.driver_class", "NHibernate.Driver.SqlClientDriver");
 			configurationBuilder.Properties.Add("dialect", "NHibernate.Dialect.MsSql2005Dialect");
 
-			return new DefaultSessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
+			return new SessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
 			
 		}
 	}

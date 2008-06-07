@@ -1,6 +1,7 @@
 using System.Web;
 using N2.MediumTrust.Engine;
 using N2.Engine;
+using System.Web.Configuration;
 
 namespace N2.MediumTrust.Web
 {
@@ -8,7 +9,7 @@ namespace N2.MediumTrust.Web
 	{
 		public void Init(HttpApplication context)
 		{
-			IEngine engine = new MediumTrustEngine();
+			IEngine engine = new MediumTrustEngine(WebConfigurationManager.OpenWebConfiguration(null));
 			Context.Initialize(engine);
 			Context.Current.Attach(context);
 			engine.InitializePlugins();

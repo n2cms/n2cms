@@ -8,20 +8,20 @@ namespace N2.Persistence.NH
 	/// <summary>
 	/// Provides access to opened nhibernate sessions.
 	/// </summary>
-	public class DefaultSessionProvider : ISessionProvider
+	public class SessionProvider : ISessionProvider
 	{
 		private static string RequestItemsKey = "SessionProvider.Session";
 		private IInterceptor interceptor;
 		private readonly IWebContext webContext;
 		private readonly ISessionFactory nhSessionFactory;
 		
-		public DefaultSessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext)
+		public SessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext)
 			: this(builder, webContext)
 		{
 			this.interceptor = interceptor;
 		}
 
-		public DefaultSessionProvider(IConfigurationBuilder builder, IWebContext webContext)
+		public SessionProvider(IConfigurationBuilder builder, IWebContext webContext)
 		{
 			nhSessionFactory = builder.BuildSessionFactory();
 			Debug.WriteLine("Built Session Factory " + DateTime.Now);

@@ -141,29 +141,6 @@ namespace N2.Tests.Web
 			rewriter.UpdateCurrentPage();
 		}
 
-		[Test]
-		[Ignore("Rewrite caching removed: dubious performance benefit")]
-		public void DoesntCacheUrlParameters()
-		{
-			ContentItem root = CreateOneItem<PageItem>(1, "root", null);
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
-
-			Expect.On(parser).Call(parser.Parse("/one.aspx")).Return(one).Repeat.Any();
-
-			IWebContext context = MockContext(one, "happy=false");
-			context.RewritePath("/default.aspx?page=2&happy=false");
-			LastCall.Repeat.Once();
-
-			//IWebContext context2 = MockContext(one, string.Empty);
-			//context2.RewritePath("/default.aspx?page=2");
-			//LastCall.Repeat.Once();
-
-			mocks.ReplayAll();
-
-			UrlRewriter rewriter = new UrlRewriter(parser, context);
-			rewriter.RewriteRequest();
-		}
-
 		private IWebContext MockContext(ContentItem one, string query)
 		{
 			IWebContext context = mocks.StrictMock<IWebContext>();

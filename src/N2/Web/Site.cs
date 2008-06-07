@@ -10,14 +10,17 @@ namespace N2.Web
 	/// </summary>
 	public class Site
 	{
-		#region Fields
 		private int startPageID;
 		private int rootItemID;
 		private string host;
 		private Dictionary<string, object> settings = new Dictionary<string, object>();
-		#endregion
 
-		#region Constructors
+		public Site(Configuration.EngineSection config)
+		{
+			this.rootItemID = config.RootPageID;
+			this.startPageID = config.StartPageID;
+		}
+
 		public Site(int rootItemID)
 		{
 			this.rootItemID = rootItemID;
@@ -35,8 +38,6 @@ namespace N2.Web
 		{
 			this.host = host;
 		}
-
-		#endregion
 
 		#region Properties
 		public int StartPageID

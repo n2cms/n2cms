@@ -8,6 +8,8 @@ using System.Reflection;
 using N2.Definitions;
 using NHibernate;
 using NHibernate.Mapping;
+using N2.Configuration;
+using System.Configuration;
 
 namespace N2.Persistence.NH
 {
@@ -15,24 +17,68 @@ namespace N2.Persistence.NH
 	/// Builds NHibernate configuration by reading hbm files and generating 
 	/// mappings for item types without hbm.xml mappings files.
 	/// </summary>
-	public class DefaultConfigurationBuilder : IConfigurationBuilder
+	public class ConfigurationBuilder : IConfigurationBuilder
 	{
-		#region Private Fields
-
 		private readonly IDefinitionManager definitions;
 		private IDictionary<string, string> properties = new Dictionary<string, string>();
 		private IList<Assembly> assemblies = new List<Assembly>();
-
-		private string generatedHbmFormat =
-			@"<?xml version=""1.0"" encoding=""utf-16""?>
+		private string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
+		private string generatedHbmFormat = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">
     <subclass name=""{0},{1}"" extends=""{2},{3}"" discriminator-value=""{4}"" lazy=""false"">
     </subclass>
 </hibernate-mapping>
 ";
 
-		private string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
-		#endregion
+		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
+		public ConfigurationBuilder(IDefinitionManager definitions)
+		{
+			this.definitions = definitions;
+		}
+
+		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
+		public ConfigurationBuilder(IDefinitionManager definitions, DatabaseSection config)
+		{
+			this.definitions = definitions;
+
+			if (config == null)
+				config = new DatabaseSection();
+			SetupProperties(config);
+		}
+
+		/// <summary>Sets properties configuration dictionary based on configuration in the database section.</summary>
+		/// <param name="config">The database section configuration.</param>
+		protected void SetupProperties(DatabaseSection config)
+		{
+			Properties["connection.connection_string_name"] = config.ConnectionStringName;
+			Properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
+
+			switch (config.Dialect)
+			{
+				case DatabaseFlavour.MySql:
+					Properties["connection.driver_class"] = "NHibernate.Driver.MySqlDataDriver";
+					Properties["dialect"] = "NHibernate.Dialect.MySQL5Dialect";
+					break;
+				case DatabaseFlavour.SqLite:
+					Properties["connection.driver_class"] = "NHibernate.Driver.SQLite20Driver";
+					Properties["dialect"] = "NHibernate.Dialect.SQLiteDialect";
+					break;
+				case DatabaseFlavour.SqlServer2000:
+					Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
+					Properties["dialect"] = "NHibernate.Dialect.MsSql2000Dialect";
+					break;
+				case DatabaseFlavour.SqlServer2005:
+					Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
+					Properties["dialect"] = "NHibernate.Dialect.MsSql2005Dialect";
+					break;
+				default:
+					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
+			}
+
+			Properties["cache.use_second_level_cache"] = config.Caching.ToString().ToLower();
+			Properties["cache.use_query_cache"] = config.Caching.ToString().ToLower();
+			Properties["cache.provider_class"] = config.CacheProviderClass;
+		}
 
 		#region Properties
 
@@ -66,29 +112,17 @@ namespace N2.Persistence.NH
 
 		#endregion
 
-		#region Constructor
-
-		/// <summary>Creates a new instance of the <see cref="DefaultConfigurationBuilder"/>.</summary>
-		public DefaultConfigurationBuilder(IDefinitionManager definitions)
-		{
-			this.definitions = definitions;
-		}
-
-		#endregion
-
 		#region Methods
 
 		/// <summary>Builds a <see cref="NHibernate.Cfg.Configuration"/> by adding properties, default assemblies and generating class mappings for unmapped types.</summary>
 		/// <returns></returns>
 		public virtual NHibernate.Cfg.Configuration BuildConfiguration()
 		{
-			Debug.WriteLine("DefaultConfigurationBuilder: Building configuration " + DateTime.Now);
 			NHibernate.Cfg.Configuration cfg = new NHibernate.Cfg.Configuration();
 			AddProperties(cfg);
 			AddDefaultMappings(cfg);
 			AddAssemblies(cfg);
 			GenerateMappings(cfg);
-			Debug.WriteLine("DefaultConfigurationBuilder: Built configuration " + DateTime.Now);
 
 			return cfg;
 		}

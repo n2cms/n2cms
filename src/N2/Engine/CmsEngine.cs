@@ -13,10 +13,14 @@
 using System;
 using System.Diagnostics;
 using System.Web;
+
 using Castle.MicroKernel;
 using Castle.Windsor;
 using Castle.Windsor.Configuration;
 using Castle.Windsor.Configuration.Interpreters;
+using Castle.Core.Resource;
+using Castle.Windsor.Installer;
+
 using N2.Definitions;
 using N2.Edit;
 using N2.Integrity;
@@ -24,6 +28,8 @@ using N2.Persistence;
 using N2.Plugin;
 using N2.Security;
 using N2.Web;
+using N2.Configuration;
+using System.Configuration;
 
 namespace N2.Engine
 {
@@ -31,37 +37,29 @@ namespace N2.Engine
 	/// This principal gateway to N2 serivecs. The class is responsible for 
 	/// initializing and providing access to the services that compose N2.
 	/// </summary>
-	public class CmsEngine : IEngine
+	public class ContentEngine : IEngine
 	{
-		#region Private Fields
-
 		private IWindsorContainer container;
 
-		#endregion
-
-		#region Constructors
-
-		public CmsEngine(IWindsorContainer container)
+		/// <summary>Sets the windsdor container to the given container.</summary>
+		/// <param name="container">An previously prepared windsor container.</param>
+		public ContentEngine(IWindsorContainer container)
 		{
 			this.container = container;
 		}
 
-		public CmsEngine()
-			: this(new WindsorContainer(new XmlInterpreter()))
+		/// <summary>Tries to determine runtime parameters from the given configuration.</summary>
+		/// <param name="config">The configuration to use.</param>
+		public ContentEngine(System.Configuration.Configuration config)
 		{
+			IResource resource = DetermineResource(config);
+			
+			container = new WindsorContainer();
+			
+			RegisterConfigurationSections(config);
+			ProcessResource(resource);
+			InstallComponents();
 		}
-
-		public CmsEngine(IConfigurationInterpreter configurationInterpreter)
-			: this(new WindsorContainer(configurationInterpreter))
-		{
-		}
-
-		public CmsEngine(string xmlFile)
-			: this(new WindsorContainer(xmlFile))
-		{
-		}
-
-		#endregion
 
 		#region Properties
 
@@ -117,6 +115,66 @@ namespace N2.Engine
 
 		#region Methods
 
+		/// <summary>Either reads the castle configuration from the castle configuration section or uses a default configuration compiled into the n2 assembly.</summary>
+		/// <param name="n2group">The n2 configuration group from the configuration file.</param>
+		/// <returns>A castle IResource used to build the inversion of control container.</returns>
+		protected IResource DetermineResource(System.Configuration.Configuration config)
+		{
+			SectionGroup n2group = config.GetSectionGroup("n2") as SectionGroup;
+			object castleSection = config.GetSection("castle");
+			IResource resource;
+			if (castleSection != null)
+			{
+				resource = new ConfigResource();
+			}
+			else if (n2group != null)
+			{
+				if (n2group.Engine != null)
+					resource = new AssemblyResource(n2group.Engine.CastleConfiguration);
+				else
+					resource = new AssemblyResource("assembly://N2/Configuration/castle.configuration.xml");
+			}
+			else
+			{
+				throw new ConfigurationErrorsException("Couldn't not find a suitable configuration section for n2 cms. Either add an n2/engine or a castle configuartion section to web.config. Note that this section may have changed from previous versions. Please verify that the configuartion is properly updated.");
+			}
+			return resource;
+		}
+
+
+		/// <summary>Registers configuration sections into the container. These may be used as input for various components.</summary>
+		/// <param name="n2group">The n2 congiuration group.</param>
+		protected void RegisterConfigurationSections(System.Configuration.Configuration config)
+		{
+			object nhConfiguration = config.GetSection("hibernate-configuration");
+			if (nhConfiguration != null)
+				container.Kernel.AddComponentInstance("hibernate-configuration", nhConfiguration);
+			SectionGroup n2group = config.GetSectionGroup("n2") as SectionGroup;
+			if (n2group != null)
+			{
+				foreach (ConfigurationSection section in n2group.Sections)
+				{
+					container.Kernel.AddComponentInstance(section.SectionInformation.Name, section);
+				}
+			}
+		}
+
+		/// <summary>Processes the castle resource and build the castle configuration store.</summary>
+		/// <param name="resource">The resource to use. This may be derived from the castle section in web.config or a default xml compiled into the assembly.</param>
+		protected void ProcessResource(IResource resource)
+		{
+			XmlInterpreter interpreter = new XmlInterpreter(resource);
+			interpreter.ProcessResource(resource, container.Kernel.ConfigurationStore);
+		}
+
+		/// <summary>Sets up components in the inversion of control container.</summary>
+		protected void InstallComponents()
+		{
+			DefaultComponentInstaller installer = new DefaultComponentInstaller();
+			installer.SetUp(container, container.Kernel.ConfigurationStore);
+		}
+
+
 		public void Attach(HttpApplication application)
 		{
 			Resolve<IRequestLifeCycleHandler>().Init(application);
@@ -124,7 +182,7 @@ namespace N2.Engine
 
 		public void InitializePlugins()
 		{
-			Debug.WriteLine("CmsEngine: initializing plugins");
+			Debug.WriteLine("ContentEngine: initializing plugins");
 
 			IPluginBootstrapper invoker = Container.Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());

@@ -3,6 +3,7 @@ using N2.Engine;
 using N2.Installation;
 using N2.Persistence.NH;
 using N2.Security;
+using System.Configuration;
 
 namespace N2.Tests
 {
@@ -13,7 +14,7 @@ namespace N2.Tests
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetUp()
 		{
-			engine = new CmsEngine();
+			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
 			engine.Resolve<ISecurityEnforcer>().Start();
 		}
 
@@ -24,9 +25,9 @@ namespace N2.Tests
 			engine.Persister.Dispose();
 		}
 
-		protected virtual DefaultPersister GetNHibernatePersistenceManager()
+		protected virtual ContentPersister GetNHibernatePersistenceManager()
 		{
-			return engine.Persister as DefaultPersister;
+			return engine.Persister as ContentPersister;
 		}
 
 		protected virtual void CreateDatabaseSchema()

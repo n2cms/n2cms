@@ -23,14 +23,14 @@ namespace N2.Persistence.NH
 	/// <summary>
 	/// A wrapper for NHibernate persistence functionality.
 	/// </summary>
-	public class DefaultPersister : IPersister
+	public class ContentPersister : IPersister
 	{
 		private readonly IRepository<int, ContentItem> itemRepository;
 		private readonly INHRepository<int, LinkDetail> linkRepository;
 		private readonly IItemFinder finder;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public DefaultPersister(IRepository<int, ContentItem> itemRepository, INHRepository<int, LinkDetail> linkRepository,
+		public ContentPersister(IRepository<int, ContentItem> itemRepository, INHRepository<int, LinkDetail> linkRepository,
 		                        IItemFinder finder)
 		{
 			this.itemRepository = itemRepository;

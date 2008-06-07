@@ -156,6 +156,7 @@
     <Compile Include="Edit\NavigatorTests.cs" />
     <Compile Include="Edit\WhileSortingTreeOfPages.cs" />
     <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
+    <Compile Include="Engine\ContentEngineTests.cs" />
     <Compile Include="Globalization\FlatLanguageStructureTests.cs" />
     <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
     <Compile Include="Globalization\Items\LanguageRoot.cs" />
@@ -235,6 +236,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EmbeddedResource Include="test.castle.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2\N2.csproj">

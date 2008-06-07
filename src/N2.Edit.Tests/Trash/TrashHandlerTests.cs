@@ -7,6 +7,7 @@ using Rhino.Mocks;
 using N2.MediumTrust.Engine;
 using NUnit.Framework.SyntaxHelpers;
 using N2.Edit.Trash;
+using System.Configuration;
 
 namespace N2.Trashcan.Tests
 {
@@ -67,7 +68,7 @@ namespace N2.Trashcan.Tests
 		[Test]
 		public void Throwing_IsIntercepted_InMediumTrust()
 		{
-			MediumTrustEngine engine = new MediumTrustEngine(new ThreadContext());
+			MediumTrustEngine engine = new MediumTrustEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), new ThreadContext());
 			engine.InitializePlugins();
 			engine.SecurityManager.Enabled = false;
 

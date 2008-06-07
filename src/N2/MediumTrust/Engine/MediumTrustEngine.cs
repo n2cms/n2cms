@@ -24,6 +24,7 @@ using N2.Edit.Settings;
 using N2.Plugin;
 using N2.Parts;
 using Castle.Core;
+using N2.Configuration;
 
 namespace N2.MediumTrust.Engine
 {
@@ -43,7 +44,7 @@ namespace N2.MediumTrust.Engine
 		private readonly ItemFinder finder;
 		private readonly IDictionary<Type, object> resolves = new Dictionary<Type, object>();
 		private readonly VersionManager versioner;
-		private readonly DefaultConfigurationBuilder nhBuilder;
+		private readonly ConfigurationBuilder nhBuilder;
 		private readonly DefaultItemNotifier notifier;
 		private readonly ITypeFinder typeFinder;
 		private readonly IntegrityEnforcer integrityEnforcer;
@@ -54,30 +55,34 @@ namespace N2.MediumTrust.Engine
 		private readonly DefinitionBuilder definitionBuilder;
 		private readonly NHibernate.IInterceptor interceptor;
 		private readonly MediumTrustSectionHandler configSection;
+		private readonly IWebContext webContext;
 
-		public MediumTrustEngine()
-			: this(null)
+		public MediumTrustEngine(System.Configuration.Configuration config)
+			: this(config, null)
 		{
+
 		}
 
-		/// <summary>Used for test.</summary>
-		public MediumTrustEngine(IWebContext webContext)
+		public MediumTrustEngine(System.Configuration.Configuration config, IWebContext webContext)
 		{
-			configSection = (MediumTrustSectionHandler)WebConfigurationManager.GetSection("n2/mediumTrust");
-
+			System.Configuration.ConfigurationSectionGroup group = config.GetSectionGroup("n2");
+			configSection = (MediumTrustSectionHandler)group.Sections["mediumTrust"];
+			
 			AddComponentInstance("site", typeof(Site), site = new Site(configSection.RootItemID, configSection.StartPageID));
-			Resolves[typeof(IWebContext)] = webContext ?? (webContext = new N2.Web.RequestContext());
+			if (webContext == null)
+				webContext = new N2.Web.RequestContext();
+			Resolves[typeof(IWebContext)] = this.webContext = webContext;
 			Resolves[typeof(IItemNotifier)] = notifier = new DefaultItemNotifier();
 			Resolves[typeof(ITypeFinder)] = typeFinder = new MediumTrustTypeFinder(webContext);
 			Resolves[typeof(DefinitionBuilder)] = definitionBuilder = new DefinitionBuilder(typeFinder);
-			Resolves[typeof(IDefinitionManager)] = definitions = new DefaultDefinitionManager(definitionBuilder, notifier);
-			Resolves[typeof(IConfigurationBuilder)] = nhBuilder = new MediumTrustNHBuilder(definitions);
+			Resolves[typeof(IDefinitionManager)] = definitions = new DefinitionManager(definitionBuilder, notifier);
+			Resolves[typeof(IConfigurationBuilder)] = nhBuilder = CreateConfigurationBuilder(group);
 			Resolves[typeof(NHibernate.IInterceptor)] = interceptor = new NotifyingInterceptor(notifier);
-			Resolves[typeof(ISessionProvider)] = sessionProvider = new DefaultSessionProvider(nhBuilder, interceptor, webContext);
+			Resolves[typeof(ISessionProvider)] = sessionProvider = new SessionProvider(nhBuilder, interceptor, webContext);
 			Resolves[typeof(IItemFinder)] = finder = new ItemFinder(sessionProvider, definitions);
 			Resolves[typeof(INHRepository<int, ContentItem>)] = itemRepository = new NHRepository<int, ContentItem>(sessionProvider);
 			Resolves[typeof(INHRepository<int, LinkDetail>)] = linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
-			Resolves[typeof(IPersister)] = persister = new DefaultPersister(itemRepository, linkRepository, finder);
+			Resolves[typeof(IPersister)] = persister = new ContentPersister(itemRepository, linkRepository, finder);
 
 			if (configSection.MultipleSites)
 			{
@@ -94,8 +99,8 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(IVersionManager)] = versioner = new VersionManager(persister, itemRepository);
 			NavigationSettings settings = new NavigationSettings(webContext);
 			Resolves[typeof(NavigationSettings)] = settings;
-			Resolves[typeof(IEditManager)] = editManager = new DefaultEditManager(typeFinder, definitions, persister, versioner, securityManager, settings);
-			Resolves[typeof(IIntegrityManager)] = integrityManager = new DefaultIntegrityManager(definitions, urlParser);
+			Resolves[typeof(IEditManager)] = editManager = new EditManager(typeFinder, definitions, persister, versioner, securityManager, settings);
+			Resolves[typeof(IIntegrityManager)] = integrityManager = new IntegrityManager(definitions, urlParser);
 			Resolves[typeof(IIntegrityEnforcer)] = integrityEnforcer = new IntegrityEnforcer(persister, integrityManager);
 			Resolves[typeof(IUrlRewriter)] = rewriter = new UrlRewriter(urlParser, webContext);
 			Resolves[typeof(IRequestLifeCycleHandler)] = lifeCycleHandler = new RequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider, webContext);
@@ -122,6 +127,13 @@ namespace N2.MediumTrust.Engine
 			integrityEnforcer.Start();
 
 			RegisterParts();
+		}
+
+		private ConfigurationBuilder CreateConfigurationBuilder(System.Configuration.ConfigurationSectionGroup group)
+		{
+			NHibernate.Cfg.Environment.UseReflectionOptimizer = false;
+			DatabaseSection database = (DatabaseSection)group.Sections["database"];
+			return new ConfigurationBuilder(definitions, database);
 		}
 
 		private void RegisterParts()

@@ -11,7 +11,7 @@ using Rhino.Mocks;
 namespace N2.Tests.Edit
 {
 	[TestFixture]
-	class NavigatorTests : ItemTestsBase
+	public class NavigatorTests : ItemTestsBase
 	{
 		[Test]
 		public void CanNavigateFromRoot()
