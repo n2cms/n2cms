@@ -1,5 +1,5 @@
 /**
- * $Id: editor_plugin_src.js 738 2008-03-20 20:00:48Z spocke $
+ * $Id: editor_plugin_src.js 839 2008-05-06 15:42:26Z spocke $
  *
  * @author Moxiecode
  * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
@@ -155,7 +155,7 @@
 					}
 				} 
 			
-				this.editor.execCommand("mceInsertRawHTML", false, content); 
+				this.editor.execCommand("mceInsertRawHTML", false, this.editor.dom.encode(content)); 
 			}
 		},
 

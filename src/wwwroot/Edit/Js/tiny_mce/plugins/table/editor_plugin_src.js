@@ -1,5 +1,5 @@
 /**
- * $Id: editor_plugin_src.js 824 2008-04-28 15:12:06Z spocke $
+ * $Id: editor_plugin_src.js 853 2008-05-27 08:05:35Z spocke $
  *
  * @author Moxiecode
  * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
@@ -676,7 +676,7 @@
 								var cpos = getCellPos(grid, tdElm);
 
 								// Only one row, remove whole table
-								if (grid.length == 1) {
+								if (grid.length == 1 && tableElm.nodeName == 'TBODY') {
 									inst.dom.remove(inst.dom.getParent(tableElm, "table"));
 									return true;
 								}
@@ -799,7 +799,7 @@
 								var lastTDElm = null;
 
 								// Only one col, remove whole table
-								if (grid.length > 1 && grid[0].length <= 1) {
+								if ((grid.length > 1 && grid[0].length <= 1) && tableElm.nodeName == 'TBODY') {
 									inst.dom.remove(inst.dom.getParent(tableElm, "table"));
 									return true;
 								}
