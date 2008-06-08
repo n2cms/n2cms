@@ -144,8 +144,8 @@ namespace N2.Installation
 		{
 			try
 			{
-				status.StartPageID = engine.Resolve<Site>().StartPageID;
-				status.RootItemID = engine.Resolve<Site>().RootItemID;
+				status.StartPageID = engine.Resolve<IHost>().DefaultSite.StartPageID;
+				status.RootItemID = engine.Resolve<IHost>().DefaultSite.RootItemID;
 				status.StartPage = engine.Persister.Get(status.StartPageID);
 				status.RootItem = engine.Persister.Get(status.RootItemID);
 				status.IsInstalled = status.RootItem != null && status.StartPage != null;
@@ -220,7 +220,7 @@ namespace N2.Installation
 		/// <returns>A diagnostic string about the root node.</returns>
 		public string CheckRootItem()
 		{
-			int rootID = engine.Resolve<Site>().RootItemID;
+			int rootID = engine.Resolve<IHost>().DefaultSite.RootItemID;
 			ContentItem rootItem = engine.Persister.Get(rootID);
 			if (rootItem != null)
 				return String.Format("Root node OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
@@ -234,7 +234,7 @@ namespace N2.Installation
 		/// <returns>A diagnostic string about the root node.</returns>
 		public string CheckStartPage()
 		{
-			int startID = engine.Resolve<Site>().StartPageID;
+			int startID = engine.Resolve<IHost>().DefaultSite.StartPageID;
 			ContentItem startPage = engine.Persister.Get(startID);
 			if(startPage != null)
 				return String.Format("Root node OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",

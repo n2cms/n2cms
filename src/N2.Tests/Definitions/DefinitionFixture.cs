@@ -65,11 +65,6 @@ namespace N2.Tests.Definitions
 			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
 			Assert.IsNotNull(definition);
 			EnumerableAssert.Contains(definition.AllowedChildren, engine.Definitions.GetDefinition(typeof(ItemInZone1Or2)));
-			//Assert.AreEqual(1, definition.AllowedChildTypes.Count);
-			//foreach (Type t in definition.AllowedChildTypes)
-			//    Assert.AreEqual(typeof (ItemInZone1Or2), t);
-			//foreach (Type t in definition.AllowedParentTypes)
-			//    Assert.AreEqual(typeof (ItemInZone1Or2), t);
 		}
 
 		[Test]

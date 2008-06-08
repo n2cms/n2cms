@@ -30,7 +30,7 @@ namespace N2.Tests.Edit.LinkTracker
 
 			IWebContext wrapper = CreateWrapper(true);
 			IItemNotifier notifier = CreateNotifier(true);
-			parser = new UrlParser(persister, wrapper, notifier, 1);
+			parser = new UrlParser(persister, wrapper, notifier, new Host(wrapper, 1, 1));
 
 			root = CreateOneItem<Items.TrackableItem>(1, "root", null);
 			item1 = CreateOneItem<Items.TrackableItem>(2, "item1", root);

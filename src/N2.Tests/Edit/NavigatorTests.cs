@@ -25,7 +25,7 @@ namespace N2.Tests.Edit
 
 			mocks.ReplayAll();
 
-			Navigator n = new Navigator(persister, new Site(1));
+			Navigator n = new Navigator(persister, new Host(null, 1, 1));
 
 			ContentItem navigatedItem = n.Navigate("/item1/item1.2");
 
@@ -44,7 +44,7 @@ namespace N2.Tests.Edit
 
 			mocks.ReplayAll();
 
-			Navigator n = new Navigator(persister, new Site(1, 2));
+			Navigator n = new Navigator(persister, new Host(null, 1, 2));
 
 			ContentItem navigatedItem = n.Navigate("~/item1");
 
@@ -76,7 +76,7 @@ namespace N2.Tests.Edit
 
 			mocks.ReplayAll();
 
-			Navigator n = new Navigator(persister, new Site(1));
+			Navigator n = new Navigator(persister, new Host(null, 1, 1));
 
 			ContentItem navigatedItem = n.Navigate("/");
 

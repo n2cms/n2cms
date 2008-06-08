@@ -31,9 +31,8 @@ namespace N2.Security
 	/// Manages security by subscribing to persister events and providing 
 	/// methods to authorize request event.
 	/// </summary>
-	public class DefaultSecurityManager : ISecurityManager
+	public class SecurityManager : ISecurityManager
 	{
-		#region Private Fields
 		private Web.IWebContext webContext;
 		
 		private bool enabled = true;
@@ -42,11 +41,9 @@ namespace N2.Security
 		IList editorRoles = new List<string>();
 		IList adminNames = new List<string>();
 		IList adminRoles = new List<string>();
-		#endregion
-
-		#region Constructor & Initialize
+		
 		/// <summary>Creates a new instance of the security manager.</summary>
-		public DefaultSecurityManager(Web.IWebContext webContext)
+		public SecurityManager(Web.IWebContext webContext)
 		{
 			this.webContext = webContext;
 
@@ -55,8 +52,6 @@ namespace N2.Security
 			this.AdminRoles = new string[] { "Administrators" };
 			this.EditorRoles = new string[] { "Administrators", "Editors" };
 		}
-
-		#endregion
 
 		#region Properties
 		/// <summary>

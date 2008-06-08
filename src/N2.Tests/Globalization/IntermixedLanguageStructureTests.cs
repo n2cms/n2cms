@@ -29,8 +29,8 @@ namespace N2.Tests.Globalization
 			italian.Name = italian.Title = "italian";
 			engine.Persister.Save(italian);
 
-			engine.Resolve<Site>().RootItemID = root.ID;
-			engine.Resolve<Site>().StartPageID = root.ID;
+			engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;
+			engine.Resolve<IHost>().DefaultSite.StartPageID = root.ID;
 		}
 	}
 }

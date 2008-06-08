@@ -8,13 +8,13 @@ namespace N2.Edit
 {
 	public class Navigator
 	{
-		IPersister persister;
-		Site site;
+		private readonly IPersister persister;
+		private readonly IHost host;
 
-		public Navigator(IPersister persister, Site site)
+		public Navigator(IPersister persister, IHost host)
 		{
 			this.persister = persister;
-			this.site = site;
+			this.host = host;
 		}
 
 		public ContentItem Navigate(ContentItem startingPoint, string path)
@@ -29,12 +29,12 @@ namespace N2.Edit
 			{
 				if (path.StartsWith("~"))
 				{
-					return Navigate(persister.Get(site.StartPageID), path.Substring(1));
+					return Navigate(persister.Get(host.CurrentSite.StartPageID), path.Substring(1));
 				}
 				throw new ArgumentException("The path must start with a slash '/', was '" + path + "'", "path");
 			}
 
-			return Navigate(persister.Get(site.RootItemID), path);
+			return Navigate(persister.Get(host.CurrentSite.RootItemID), path);
 		}
 	}
 }

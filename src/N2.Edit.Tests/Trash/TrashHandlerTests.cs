@@ -23,11 +23,9 @@ namespace N2.Trashcan.Tests
 			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
 			Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
 			
-			Site site = new Site(1);
-			
 			mocks.ReplayAll();
 			
-			TrashHandler th = new TrashHandler(persister, definitions, site);
+			TrashHandler th = new TrashHandler(persister, definitions, new Host(null, 1, 1));
 			th.Throw(item);
 
 			Assert.AreEqual(trash, item.Parent);
@@ -80,8 +78,8 @@ namespace N2.Trashcan.Tests
 			item.AddTo(root);
 
 			engine.Persister.Save(root);
-			engine.Resolve<Site>().RootItemID = root.ID;
-			engine.Resolve<Site>().StartPageID = root.ID;
+			engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;
+			engine.Resolve<IHost>().DefaultSite.StartPageID = root.ID;
 
 			engine.Persister.Delete(item);
 
@@ -96,11 +94,10 @@ namespace N2.Trashcan.Tests
 		{
 			IDefinitionManager definitions = MockDefinitions();
 			IPersister persister = MockPersister(root, trash, item);
-			Site site = new Site(1);
-
+			
 			mocks.ReplayAll();
 
-			return new TrashHandler(persister, definitions, site);
+			return new TrashHandler(persister, definitions, new Host(null, 1, 1));
 		}
 
 		private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)

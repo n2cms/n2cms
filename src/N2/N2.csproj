@@ -295,6 +295,9 @@
     <Compile Include="Configuration\DatabaseSection.cs" />
     <Compile Include="Configuration\SectionGroup.cs" />
     <Compile Include="Configuration\EngineSection.cs" />
+    <Compile Include="Configuration\SiteElement.cs" />
+    <Compile Include="Configuration\SiteSection.cs" />
+    <Compile Include="Configuration\SitesSection.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
@@ -365,6 +368,8 @@
     <Compile Include="Plugin\IAutoStart.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
+    <Compile Include="Web\Host.cs" />
+    <Compile Include="Web\IHost.cs" />
     <Compile Include="Web\IIS5WebContext.cs" />
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\IContentTemplate.cs" />

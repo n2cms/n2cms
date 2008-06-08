@@ -32,7 +32,7 @@ namespace N2.Trashcan.Tests
 			persister.ItemMoving += null;
 			LastCall.IgnoreArguments();
 
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Site(1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Host(null, 1, 1));
 			Expect.Call(delegate { th.Throw(item); });
 
 			mocks.ReplayAll();
@@ -60,7 +60,7 @@ namespace N2.Trashcan.Tests
 			persister.ItemMoving += null;
 			IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
-			TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, new Site(1));
+			TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, new Host(null, 1, 1));
 			th.RestoreValues(item);
 
 			mocks.ReplayAll();
@@ -86,7 +86,7 @@ namespace N2.Trashcan.Tests
 			persister.ItemMoving += null;
 			LastCall.IgnoreArguments();
 
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Site(1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Host(null, 1, 1));
 			th.RestoreValues(item);
 
 			mocks.ReplayAll();
@@ -116,7 +116,7 @@ namespace N2.Trashcan.Tests
 			persister.ItemMoving += null;
 			IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Site(1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Host(null, 1, 1));
 			th.ExpireTrashedItem(item);
 
 			mocks.ReplayAll();

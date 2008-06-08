@@ -14,37 +14,33 @@ namespace N2.Web
 	/// </summary>
 	public class UrlParser : IUrlParser
 	{
-		private Persistence.IPersister persister;
-		private Web.Site defaultSite;
+		private readonly Persistence.IPersister persister;
+		private readonly IHost host;
 		private readonly IWebContext webContext;
-		private string defaultExtension = null;
 		private readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
-        private string defaultContentPage = "/default.aspx";
+		
+		private string defaultExtension = null;
+		private string defaultContentPage = "/default.aspx";
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
-		#region Constructor
-		public UrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, int rootItemID)
-			: this(persister, webContext, notifier, new Site(rootItemID))
-		{
-		}
 
-		public UrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, Web.Site site)
+		public UrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, IHost host)
 		{
 			this.persister = persister;
 			this.webContext = webContext;
-			this.defaultSite = site;
+			this.host = host;
+
 			notifier.ItemCreated += OnItemCreated;
 		}
-		#endregion
+
 
 		#region Properties
 
 		/// <summary>Gets the current site.</summary>
 		public Web.Site DefaultSite
 		{
-			get { return defaultSite; }
-			set { defaultSite = value; }
+			get { return host.DefaultSite; }
 		}
 
 		/// <summary>Parses the current url to retrieve the current page.</summary>

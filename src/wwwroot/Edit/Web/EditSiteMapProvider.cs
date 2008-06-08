@@ -84,7 +84,7 @@ namespace N2.Edit.Web
 
         protected override System.Web.SiteMapNode GetRootNodeCore()
         {
-			return Convert((ContentItem)Engine.Persister.Get(Engine.Resolve<Site>().RootItemID));
+			return Convert((ContentItem)Engine.Persister.Get(Engine.Resolve<IHost>().DefaultSite.RootItemID));
         }
     }
 }

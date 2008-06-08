@@ -21,7 +21,7 @@ namespace N2.Tests.Collections
 			base.SetUp();
 
 			persister = mocks.DynamicMock<N2.Persistence.IPersister>();
-			security = new DefaultSecurityManager(base.CreateWebContext(true));
+			security = new SecurityManager(base.CreateWebContext(true));
 		}
 
 		[Test]

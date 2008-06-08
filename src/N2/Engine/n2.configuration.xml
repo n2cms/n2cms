@@ -10,9 +10,10 @@
 	<include uri="assembly://N2/Parts/parts.castle.config"/>
 	<include uri="assembly://N2/Serialization/serialization.castle.config"/>
 	<components>
-		<component id="n2.defaultSite">
+		<component id="n2.siteSection" type="N2.Configuration.SiteSection, N2">
 			<parameters>
-				<rootItemID>#{rootItemID}</rootItemID>
+				<RootID>#{rootItemID}</RootID>
+				<StartPageID>#{startPageID}</StartPageID>
 			</parameters>
 		</component>
 		<component id="n2.configurationBuilder">

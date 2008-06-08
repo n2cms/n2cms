@@ -19,7 +19,7 @@ namespace N2.Globalization
 		private readonly IItemFinder finder;
 		private readonly IEditManager editManager;
 		private readonly IDefinitionManager definitions;
-		private readonly Site site;
+		private readonly IHost host;
 		private int recursionDepth = 3;
 		
 		public int RecursionDepth
@@ -28,13 +28,13 @@ namespace N2.Globalization
 			set { recursionDepth = value; }
 		}
 
-		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, Site site)
+		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host)
 		{
 			this.persister = persister;
 			this.finder = finder;
 			this.editManager = editManager;
 			this.definitions = definitions;
-			this.site = site;
+			this.host = host;
 		}
 
 		public ILanguage GetLanguage(ContentItem item)
@@ -51,7 +51,7 @@ namespace N2.Globalization
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
-			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(site.RootItemID), RecursionDepth))
+			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(host.DefaultSite.RootItemID), RecursionDepth))
 			{
 				if (!string.IsNullOrEmpty(language.LanguageCode))
 				{

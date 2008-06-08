@@ -12,7 +12,7 @@ namespace N2.Tests.Web
 	{
 		protected IWebContext wrapper;
 		protected IItemNotifier notifier;
-		protected Site site;
+		protected IHost host;
 		protected UrlParser parser;
 		protected PageItem startItem, item1, item1_1, item2, item2_1;
 		protected DataItem data1, data2, data3;
@@ -25,7 +25,7 @@ namespace N2.Tests.Web
 			wrapper = CreateWrapper(true);
 
 			notifier = mocks.Stub<IItemNotifier>();
-			site = new Site(1);
+			host = new Host(wrapper, 1, 1);
 		}
 
 		protected void CreateItems(bool replay)

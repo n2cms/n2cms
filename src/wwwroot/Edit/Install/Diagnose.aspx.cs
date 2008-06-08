@@ -154,7 +154,7 @@ namespace N2.Edit.Install
 				ddlTypes.Visible = false;
 
 
-				if (itemID == N2.Context.Current.Resolve<Site>().RootItemID)
+				if (itemID == N2.Context.Current.Resolve<IHost>().DefaultSite.RootItemID)
 					lblInsert.Text =
 						string.Format("Inserted root node with id {0} which matches root node in web.config. Great!", itemID);
 				else

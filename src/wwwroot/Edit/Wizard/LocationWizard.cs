@@ -8,15 +8,13 @@ namespace N2.Edit.Wizard
 	public class LocationWizard
 	{
 		private Settings wizardSettings;
-		//private Settings templateSettings;
-
 		private readonly IPersister persister;
-		private readonly Site site;
+		private readonly IHost host;
 
-		public LocationWizard(IPersister persister, Site site)
+		public LocationWizard(IPersister persister, IHost host)
 		{
 			this.persister = persister;
-			this.site = site;
+			this.host = host;
 			wizardSettings = new Settings("Wizard", string.Empty, "Wizard settings");
 		}
 
@@ -38,7 +36,7 @@ namespace N2.Edit.Wizard
 
 		public virtual Wonderland GetWizardContainer()
 		{
-			ContentItem root = persister.Get(site.RootItemID);
+			ContentItem root = persister.Get(host.DefaultSite.RootItemID);
 			Wonderland container = root.GetChild(WizardSettings.Name) as Wonderland;
 			if(container == null)
 			{

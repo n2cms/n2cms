@@ -18,12 +18,12 @@ namespace N2.Security
 		private int userContainerParentID = 1;
 		private string[] defaultRoles = new string[] { "Everyone", "Editors", "Administrators" };
 
-		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, Site site)
+		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, IHost host)
 		{
 			this.definitions = definitions;
 			this.finder = finder;
 			this.persister = persister;
-			this.userContainerParentID = site.RootItemID;
+			this.userContainerParentID = host.DefaultSite.RootItemID;
 		}
 
 		public IItemFinder Finder

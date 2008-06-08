@@ -26,15 +26,15 @@ namespace N2.Edit.Trash
 		public const string FormerParent = "FormerParent";
 		public const string FormerExpires = "FormerExpires";
 		public const string DeletedDate = "DeletedDate";
-		readonly IPersister persister;
-		readonly IDefinitionManager definitions;
-		readonly Site site;
+		private readonly IPersister persister;
+		private readonly IDefinitionManager definitions;
+		private readonly IHost host;
 
-		public TrashHandler(IPersister persister, IDefinitionManager definitions, Site site)
+		public TrashHandler(IPersister persister, IDefinitionManager definitions, IHost host)
 		{
 			this.persister = persister;
 			this.definitions = definitions;
-			this.site = site;
+			this.host = host;
 		}
 
 		ITrashCan ITrashHandler.TrashContainer
@@ -46,7 +46,7 @@ namespace N2.Edit.Trash
 		{
 			get
 			{
-				ContentItem rootItem = persister.Get(site.RootItemID);
+				ContentItem rootItem = persister.Get(host.DefaultSite.RootItemID);
 				TrashContainerItem trashContainer = rootItem.GetChild("Trash") as TrashContainerItem;
 				if (trashContainer == null)
 				{

@@ -10,31 +10,16 @@ namespace N2.Web
 	/// </summary>
 	public class MultipleHostsUrlParser : UrlParser
 	{
-		#region Private Fields
-
 		private IList<Site> sites = new List<Site>();
 
-		#endregion
 
-		#region Constructors
-
-		public MultipleHostsUrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, int rootItemID,
-		                              ISitesProvider sitesProvider)
-			: base(persister, webContext, notifier, rootItemID)
+		public MultipleHostsUrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, ISitesProvider sitesProvider)
+			: base(persister, webContext, notifier, host)
 		{
 			foreach (Site s in sitesProvider.GetSites())
 				Sites.Add(s);
 		}
 
-		public MultipleHostsUrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, Site defaultSite,
-		                              ISitesProvider sitesProvider)
-			: base(persister, webContext, notifier, defaultSite)
-		{
-			foreach (Site s in sitesProvider.GetSites())
-				Sites.Add(s);
-		}
-
-		#endregion
 
 		#region Properties
 

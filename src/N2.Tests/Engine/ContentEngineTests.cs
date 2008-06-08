@@ -26,9 +26,9 @@ namespace N2.Tests.Engine
 		[Test]
 		public void CanAssignRootAndStartPageID()
 		{
-			var site = engine.Resolve<Site>();
-			Assert.That(site.RootItemID, Is.EqualTo(2));
-			Assert.That(site.StartPageID, Is.EqualTo(3));
+			var host = engine.Resolve<IHost>();
+			Assert.That(host.DefaultSite.RootItemID, Is.EqualTo(2));
+			Assert.That(host.DefaultSite.StartPageID, Is.EqualTo(3));
 		}
 
 		[Test]

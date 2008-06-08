@@ -44,12 +44,12 @@ namespace N2.Tests.Web
 		protected MultipleHostsUrlParser CreateUrlParser()
 		{
 			sites = new Site[] { 
-				site,
+				host.DefaultSite,
 				new Site(1, 2/*item1.ID*/, "www.n2cms.com"), 
 				new Site(1, 4/*item2.ID*/, "n2.libardo.com"), 
 				new Site(1, 5/*item2_1.ID*/, "www.n2cms.com:8080") 
 			};
-			MultipleHostsUrlParser parser = new MultipleHostsUrlParser(persister, wrapper, notifier, site, new StaticSitesProvider(sites));
+			MultipleHostsUrlParser parser = new MultipleHostsUrlParser(persister, wrapper, notifier, host, new StaticSitesProvider(sites));
 			return parser;
 		}
 
@@ -153,7 +153,7 @@ namespace N2.Tests.Web
 			Expect.On(wrapper).Call(wrapper.Host).Return("www.siteX.com");
 			mocks.ReplayAll();
 
-			Assert.AreSame(site, parser.CurrentSite);
+			Assert.AreSame(host.DefaultSite, parser.CurrentSite);
 		}
 		#endregion
 

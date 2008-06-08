@@ -39,7 +39,7 @@ namespace N2.MediumTrust.Engine
 		private readonly IEditManager editManager;
 		private readonly ISessionProvider sessionProvider;
 		private readonly ISecurityEnforcer securityEnforcer;
-		private readonly Site site;
+		private readonly IHost host;
 		private readonly RequestLifeCycleHandler lifeCycleHandler;
 		private readonly ItemFinder finder;
 		private readonly IDictionary<Type, object> resolves = new Dictionary<Type, object>();
@@ -68,7 +68,7 @@ namespace N2.MediumTrust.Engine
 			System.Configuration.ConfigurationSectionGroup group = config.GetSectionGroup("n2");
 			configSection = (MediumTrustSectionHandler)group.Sections["mediumTrust"];
 			
-			AddComponentInstance("site", typeof(Site), site = new Site(configSection.RootItemID, configSection.StartPageID));
+			AddComponentInstance("host", typeof(IHost), host = new Host(webContext, configSection.RootItemID, configSection.StartPageID));
 			if (webContext == null)
 				webContext = new N2.Web.RequestContext();
 			Resolves[typeof(IWebContext)] = this.webContext = webContext;
@@ -86,15 +86,15 @@ namespace N2.MediumTrust.Engine
 
 			if (configSection.MultipleSites)
 			{
-				ISitesProvider sitesProvider = new DynamicSitesProvider(persister, site.RootItemID);
+				ISitesProvider sitesProvider = new DynamicSitesProvider(persister, host.DefaultSite.RootItemID);
 				Resolves[typeof(ISitesProvider)] = sitesProvider;
-				Resolves[typeof(IUrlParser)] = urlParser = new MultipleHostsUrlParser(persister, webContext, notifier, site.RootItemID, sitesProvider);
+				Resolves[typeof(IUrlParser)] = urlParser = new MultipleHostsUrlParser(persister, webContext, notifier, host, sitesProvider);
 			}
 			else
 			{
-				Resolves[typeof(IUrlParser)] = urlParser = new UrlParser(persister, webContext, notifier, site);
+				Resolves[typeof(IUrlParser)] = urlParser = new UrlParser(persister, webContext, notifier, host);
 			}
-			Resolves[typeof(ISecurityManager)] = securityManager = new DefaultSecurityManager(webContext);
+			Resolves[typeof(ISecurityManager)] = securityManager = new SecurityManager(webContext);
 			Resolves[typeof(ISecurityEnforcer)] = securityEnforcer = new SecurityEnforcer(persister, securityManager, urlParser, webContext);
 			Resolves[typeof(IVersionManager)] = versioner = new VersionManager(persister, itemRepository);
 			NavigationSettings settings = new NavigationSettings(webContext);
@@ -109,7 +109,7 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(ItemXmlWriter)] = xmlWriter = new ItemXmlWriter(definitions, urlParser);
 			Resolves[typeof(Exporter)] = new Exporter(xmlWriter);
 			AddComponentInstance("initializerInvoker", typeof(IPluginBootstrapper), new PluginBootstrapper(typeFinder));
-			AddComponentInstance("navigator", typeof(Navigator), new Navigator(persister, site));
+			AddComponentInstance("navigator", typeof(Navigator), new Navigator(persister, host));
 
 			AttributeExplorer<IServiceEditable> serviceExplorer = new AttributeExplorer<IServiceEditable>();
 			AttributeExplorer<IEditableContainer> containerExplorer = new AttributeExplorer<IEditableContainer>();

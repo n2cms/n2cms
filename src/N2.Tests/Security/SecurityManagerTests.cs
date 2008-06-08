@@ -16,7 +16,7 @@ namespace N2.Tests.Security
 	{
 		#region Fields
 		N2.Persistence.IPersister persister;
-		DefaultSecurityManager security;
+		SecurityManager security;
 		N2.Web.IUrlParser parser;
 		N2.Web.IWebContext context;
 
@@ -36,7 +36,7 @@ namespace N2.Tests.Security
 			parser = mocks.StrictMock<N2.Web.IUrlParser>();
 			context = CreateWebContext(false);
 
-			security = new DefaultSecurityManager(context);
+			security = new SecurityManager(context);
 			SecurityEnforcer enforcer = new SecurityEnforcer(persister, security, parser, context);
 			enforcer.Start();
 		}

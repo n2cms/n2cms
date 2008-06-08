@@ -15,12 +15,6 @@ namespace N2.Web
 		private string host;
 		private Dictionary<string, object> settings = new Dictionary<string, object>();
 
-		public Site(Configuration.EngineSection config)
-		{
-			this.rootItemID = config.RootPageID;
-			this.startPageID = config.StartPageID;
-		}
-
 		public Site(int rootItemID)
 		{
 			this.rootItemID = rootItemID;

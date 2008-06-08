@@ -17,7 +17,7 @@ namespace N2.Tests.Web
 		public override void SetUp()
 		{
 			base.SetUp();
-			parser = new UrlParser(persister, wrapper, notifier, site);
+			parser = new UrlParser(persister, wrapper, notifier, host);
 		}
 
 		#endregion
@@ -256,8 +256,8 @@ namespace N2.Tests.Web
 		public void PagesOutsideStartPage_AreReferenced_ThroughTheirRewrittenUrl()
 		{
 			notifier = mocks.Stub<IItemNotifier>();
-			site = new Site(10, 1);
-			parser = new UrlParser(persister, wrapper, notifier, site);
+			host = new Host(null, 10, 1);
+			parser = new UrlParser(persister, wrapper, notifier, host);
 
 			CreateItems(false);
 			ContentItem root = CreateOneItem<PageItem>(10, "root", null);
