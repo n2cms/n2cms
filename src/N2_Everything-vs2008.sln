@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F3B1-439D-BA8E-F5E923B327CA}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\ContentModel.png = ..\docs\ContentModel.png
-		..\docs\DBChanges.txt = ..\docs\DBChanges.txt
 		..\docs\favicon.ico = ..\docs\favicon.ico
 		..\docs\history.txt = ..\docs\history.txt
 		..\docs\howto_build.txt = ..\docs\howto_build.txt

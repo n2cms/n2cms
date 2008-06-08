@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Persistence;
 using N2.Web;
+using N2.Configuration;
 
 namespace N2.Tests.Web
 {
@@ -41,7 +42,7 @@ namespace N2.Tests.Web
 		}
 
 		Site[] sites;
-		protected MultipleHostsUrlParser CreateUrlParser()
+		protected MultipleSitesParser CreateUrlParser()
 		{
 			sites = new Site[] { 
 				host.DefaultSite,
@@ -49,13 +50,13 @@ namespace N2.Tests.Web
 				new Site(1, 4/*item2.ID*/, "n2.libardo.com"), 
 				new Site(1, 5/*item2_1.ID*/, "www.n2cms.com:8080") 
 			};
-			MultipleHostsUrlParser parser = new MultipleHostsUrlParser(persister, wrapper, notifier, host, new StaticSitesProvider(sites));
+			MultipleSitesParser parser = new MultipleSitesParser(persister, wrapper, notifier, host, new StaticSitesProvider(sites), new HostSection() { MultipleSites = true, DynamicSites = true });
 			return parser;
 		}
 
-		protected MultipleHostsUrlParser MultipleParser
+		protected MultipleSitesParser MultipleParser
 		{
-			get { return parser as MultipleHostsUrlParser; }
+			get { return parser as MultipleSitesParser; }
 		}
 		#endregion
 

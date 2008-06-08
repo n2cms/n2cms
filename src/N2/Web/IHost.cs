@@ -7,6 +7,6 @@ namespace N2.Web
 	{
 		Site CurrentSite { get; }
 		Site DefaultSite { get; set; }
-		ICollection<Site> Sites { get; }
+		IList<Site> Sites { get; }
 	}
 }

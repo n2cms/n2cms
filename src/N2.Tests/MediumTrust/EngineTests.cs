@@ -18,7 +18,7 @@ namespace N2.Tests.MediumTrust
 		[SetUp]
 		public void SetUp()
 		{
-			engine = new MediumTrustEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
+			engine = new MediumTrustEngine();
 		}
 
 		[Test]

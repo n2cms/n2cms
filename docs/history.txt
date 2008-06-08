@@ -23,7 +23,7 @@
 	- improved installation experience
 	- page authorized roles are now inherited to new child pages
 	- upgraded jquery to 1.2.6
-	- reverted to configuration section based approach (part 1)
+	- reverted to configuration section based approach
 	- introduced a host concept to partially replace and abstract site
 
 N2 1.3.5

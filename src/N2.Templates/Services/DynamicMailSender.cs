@@ -14,24 +14,24 @@ namespace N2.Templates.Services
 	public class DynamicMailSender : SmtpMailSender
 	{
 		IPersister persister;
-		Site site;
+		IHost host;
 
-		public DynamicMailSender(IPersister persister, Site site)
+		public DynamicMailSender(IPersister persister, IHost host)
 		{
 			this.persister = persister;
-			this.site = site;
+			this.host = host;
 		}
 
 		protected override SmtpClient GetSmtpClient()
 		{
-			ContentItem root = persister.Get(site.RootItemID);
+			ContentItem root = persister.Get(host.DefaultSite.RootItemID);
 
-			string host = root["SmtpHost"] as string;
+			string smtpHost = root["SmtpHost"] as string;
 			int port = (int)(root["SmtpPort"] != null ? root["SmtpPort"] : 25);
 			string user = root["SmtpUser"] as string;
 			string password = root["SmtpPassword"] as string;
 
-			return CreateSmtpClient(host, port, user, password);
+			return CreateSmtpClient(smtpHost, port, user, password);
 		}
 	}
 }

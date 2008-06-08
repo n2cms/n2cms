@@ -23,7 +23,7 @@ namespace N2.Engine
 		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu";
 
 		private string assemblyRestrictToLoadingPattern = ".*";
-		private IList assemblyNames = new ArrayList();
+		private IList<string> assemblyNames = new List<string>();
 		private IDictionary<string, IList<Type>> typeCache = new Dictionary<string, IList<Type>>();
 		
 		#endregion
@@ -53,7 +53,7 @@ namespace N2.Engine
 		}
 
 		/// <summary>Gets or sets assemblies loaded a startup in addition to those loaded in the AppDomain.</summary>
-		public IList AssemblyNames
+		public IList<string> AssemblyNames
 		{
 			get { return assemblyNames; }
 			set { assemblyNames = value; }

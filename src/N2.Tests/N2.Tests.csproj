@@ -116,8 +116,9 @@
     <Compile Include="Collections\Items\FirstItem.cs" />
     <Compile Include="Collections\TypeFilterTests.cs" />
     <Compile Include="Collections\ZoneFilterTests.cs" />
-    <Compile Include="Content\AnItem.cs" />
-    <Compile Include="Content\ContentItemTests.cs" />
+    <Compile Include="Engine\MultipleSitesContentEngineTests.cs" />
+    <Compile Include="Fakes\Content\AnItem.cs" />
+    <Compile Include="Fakes\Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AttributeReference.cs" />
     <Compile Include="Definitions\DefinitionFixture.cs" />
     <Compile Include="Definitions\Definitions\Details\CustomizedEditableAttribute.cs" />
@@ -236,6 +237,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Engine\MultipleSites.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Engine\MultipleSites.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="test.castle.config" />
   </ItemGroup>
   <ItemGroup>

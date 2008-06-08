@@ -7,11 +7,11 @@ namespace N2.Configuration
 {
 	public class SiteElement : ConfigurationElement
 	{
-		[ConfigurationProperty("startPageID", DefaultValue = 1)]
-		public int StartPageID
+		[ConfigurationProperty("id", DefaultValue = 1)]
+		public int ID
 		{
-			get { return (int)base["startPageID"]; }
-			set { base["startPageID"] = value; }
+			get { return (int)base["id"]; }
+			set { base["id"] = value; }
 		}
 
 		[ConfigurationProperty("name", DefaultValue = "assembly://N2/Configuration/castle.configuration.xml")]

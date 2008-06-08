@@ -2,22 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using N2.Persistence;
+using N2.Configuration;
 
 namespace N2.Web
 {
 	/// <summary>
 	/// Parses urls in a multiple host environment.
 	/// </summary>
-	public class MultipleHostsUrlParser : UrlParser
+	public class MultipleSitesParser : UrlParser
 	{
 		private IList<Site> sites = new List<Site>();
 
 
-		public MultipleHostsUrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, ISitesProvider sitesProvider)
+		public MultipleSitesParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, ISitesProvider sitesProvider, HostSection config)
 			: base(persister, webContext, notifier, host)
 		{
-			foreach (Site s in sitesProvider.GetSites())
+			if (config == null) throw new ArgumentNullException("config");
+
+			foreach (Site s in host.Sites)
 				Sites.Add(s);
+			if(config.DynamicSites)
+				foreach (Site s in sitesProvider.GetSites())
+					Sites.Add(s);
 		}
 
 

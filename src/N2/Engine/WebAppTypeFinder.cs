@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.Reflection;
+using N2.Configuration;
+using System.Web.Configuration;
 
 namespace N2.Engine
 {
@@ -12,24 +14,22 @@ namespace N2.Engine
 	/// </summary>
 	public class WebAppTypeFinder : AppDomainTypeFinder
 	{
-		#region Private Fields
 		private Web.IWebContext webContext;
 		private bool ensureBinFolderAssembliesLoaded = true;
 		private bool binFolderAssembliesLoaded = false; 
-		#endregion
 
-		#region Constructor
 		public WebAppTypeFinder(Web.IWebContext webContext)
 		{
 			this.webContext = webContext;
 		}
 
-		public WebAppTypeFinder(Web.IWebContext webContext, bool ensureBinFolderAssembliesLoaded)
+		public WebAppTypeFinder(Web.IWebContext webContext, EngineSection engineConfiguration)
 		{
 			this.webContext = webContext;
-			this.ensureBinFolderAssembliesLoaded = ensureBinFolderAssembliesLoaded;
+			this.ensureBinFolderAssembliesLoaded = engineConfiguration.DynamicDiscovery;
+			foreach (AssemblyInfo assembly in engineConfiguration.Assemblies)
+				AssemblyNames.Add(assembly.Assembly);
 		}
-		#endregion
 
 		#region Properties
 		/// <summary>Gets or sets wether assemblies in the bin folder of the web application should be specificly checked for beeing loaded on application load. This is need in situations where plugins need to be loaded in the AppDomain after the application been reloaded.</summary>

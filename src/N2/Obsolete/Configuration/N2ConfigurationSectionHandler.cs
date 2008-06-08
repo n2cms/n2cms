@@ -9,13 +9,19 @@
 #endregion
 
 using System.Configuration;
+using System;
 
 namespace N2.Configuration
 {
     /// <summary>
     /// May be used in the future.
     /// </summary>
+	[Obsolete]
 	public class N2ConfigurationSectionHandler : ConfigurationSectionGroup
     {
+		public N2ConfigurationSectionHandler()
+		{
+			throw new ConfigurationErrorsException("The N2ConfigurationSectionHandler has been deprecated. Please use 'N2.Configuration.SectionGroup, N2' instead.");
+		}
 	}
 }

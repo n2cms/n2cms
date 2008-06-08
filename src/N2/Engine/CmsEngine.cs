@@ -52,11 +52,14 @@ namespace N2.Engine
 		/// <param name="config">The configuration to use.</param>
 		public ContentEngine(System.Configuration.Configuration config)
 		{
-			IResource resource = DetermineResource(config);
-			
 			container = new WindsorContainer();
 			
 			RegisterConfigurationSections(config);
+			HostSection host = (HostSection)config.GetSection("n2/host");
+			EngineSection engine = (EngineSection)config.GetSection("n2/engine");
+			if (host != null && host.MultipleSites)
+				ProcessResource(new AssemblyResource(engine.MultipleSitesConfiguration));
+			IResource resource = DetermineResource(config);
 			ProcessResource(resource);
 			InstallComponents();
 		}
@@ -136,7 +139,7 @@ namespace N2.Engine
 			}
 			else
 			{
-				throw new ConfigurationErrorsException("Couldn't not find a suitable configuration section for n2 cms. Either add an n2/engine or a castle configuartion section to web.config. Note that this section may have changed from previous versions. Please verify that the configuartion is properly updated.");
+				throw new ConfigurationErrorsException("Couldn't find a suitable configuration section for n2 cms. Either add an n2/engine or a castle configuartion section to web.config. Note that this section may have changed from previous versions. Please verify that the configuartion is properly updated.");
 			}
 			return resource;
 		}

@@ -15,6 +15,8 @@ using System;
 using System.ComponentModel;
 using System.Configuration;
 using System.Web.Configuration;
+using System.Security;
+using N2.Engine;
 
 namespace N2
 {
@@ -31,16 +33,16 @@ namespace N2
     	/// <summary>Initializes a static instance of the N2 factory.</summary>
 		/// <param name="forceRecreate">Creates a new factory instance even though the factory has been previously initialized.</param>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public static void Initialize(bool forceRecreate)
+		public static IEngine Initialize(bool forceRecreate)
 		{
 			if (instance == null || forceRecreate)
 			{
 				instance = CreateEngineInstance();
 				instance.InitializePlugins();
-				Debug.WriteLine("Factory.Initialize: Created factory instance.");
 			}
 			else if (instance != null)
 				Trace.TraceInformation("Factory.Initialize: Instance already created");
+			return instance;
 		}
 
 		/// <summary>Sets the static factory instance to the supplied factory. Use this method to supply your own factory implementation.</summary>
@@ -55,35 +57,15 @@ namespace N2
 		/// <returns>A new factory.</returns>
 		public static Engine.IEngine CreateEngineInstance()
 		{
-			System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~/");
-
-			AspNetHostingPermissionLevel level = GetCurrentTrustLevel();
-			if (level > AspNetHostingPermissionLevel.Medium)
-				return new Engine.ContentEngine(cfg);
-			else if (level == AspNetHostingPermissionLevel.Medium)
-				return new MediumTrust.Engine.MediumTrustEngine(cfg);
-			else
-				throw new ConfigurationErrorsException("N2 CMS needs at least Medium trust level to operate. Current trust level: " + level);
-		}
-
-		private static AspNetHostingPermissionLevel GetCurrentTrustLevel()
-		{
-			AspNetHostingPermissionLevel[] levels = new AspNetHostingPermissionLevel[] { AspNetHostingPermissionLevel.Unrestricted, AspNetHostingPermissionLevel.High, AspNetHostingPermissionLevel.Medium, AspNetHostingPermissionLevel.Low, AspNetHostingPermissionLevel.Minimal };
-			foreach (AspNetHostingPermissionLevel trustLevel in levels)
+			try
 			{
-				try
-				{
-					new AspNetHostingPermission(trustLevel).Demand();
-				}
-				catch (System.Security.SecurityException)
-				{
-					continue;
-				}
-
-				return trustLevel;
+				System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~/");
+				return new Engine.ContentEngine(cfg);
 			}
-
-			return AspNetHostingPermissionLevel.None;
+			catch(SecurityException)
+			{
+				return new MediumTrust.Engine.MediumTrustEngine();
+			}
 		}
 
 		#endregion

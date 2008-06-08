@@ -66,7 +66,7 @@ namespace N2.Trashcan.Tests
 		[Test]
 		public void Throwing_IsIntercepted_InMediumTrust()
 		{
-			MediumTrustEngine engine = new MediumTrustEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), new ThreadContext());
+			MediumTrustEngine engine = new MediumTrustEngine(new ThreadContext());
 			engine.InitializePlugins();
 			engine.SecurityManager.Enabled = false;
 

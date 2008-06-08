@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using N2.Configuration;
 
 namespace N2.Web
 {
@@ -8,27 +9,27 @@ namespace N2.Web
 	{
 		private readonly IWebContext context;
 		private Site defaultSite;
+		private IList<Site> sites = new List<Site>();
 
-		public Host(IWebContext context, Configuration.SiteSection config)
+		public Host(IWebContext context, HostSection host)
 		{
-			defaultSite = new Site(config.RootPageID, config.StartPageID);
-		}
-
-		public Host(IWebContext context, Configuration.SitesSection config)
-		{
-			defaultSite = new Site(config.RootID, config.StartPageID);
+			defaultSite = new Site(host.RootID, host.StartPageID);
+			foreach (SiteElement site in host.Sites)
+			{
+				Sites.Add(new Site(host.RootID, site.ID, site.Name));
+			}
 		}
 
 		public Host(IWebContext context, int rootItemID, int startPageID)
+			: this(context, new Site(rootItemID, startPageID))
 		{
-			this.context = context;
-			this.defaultSite = new Site(rootItemID, startPageID);
 		}
 
 		public Host(IWebContext context, Site defaultSite)
 		{
 			this.context = context;
 			this.defaultSite = defaultSite;
+			sites.Add(defaultSite);
 		}
 
 		public Site DefaultSite
@@ -42,9 +43,9 @@ namespace N2.Web
 			get { return defaultSite; }
 		}
 
-		public ICollection<Site> Sites
+		public IList<Site> Sites
 		{
-			get { return null; }
+			get { return sites; }
 		}
 	}
 }

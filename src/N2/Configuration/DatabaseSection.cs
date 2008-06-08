@@ -29,7 +29,7 @@ namespace N2.Configuration
 		}
 
 		[ConfigurationProperty("flavour", DefaultValue = DatabaseFlavour.SqlServer2005)]
-		public DatabaseFlavour Dialect
+		public DatabaseFlavour Flavour
 		{
 			get { return (DatabaseFlavour)base["flavour"]; }
 			set { base["flavour"] = value; }

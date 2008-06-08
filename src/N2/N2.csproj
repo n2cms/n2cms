@@ -93,7 +93,7 @@
     <Compile Include="Collections\ItemList.generic.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
-    <Compile Include="Configuration\N2ConfigurationSectionHandler.cs" />
+    <Compile Include="Obsolete\Configuration\N2ConfigurationSectionHandler.cs" />
     <Compile Include="Definitions\IDefinitionManager.cs" />
     <Compile Include="Definitions\DefaultDefinitionManager.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
@@ -293,11 +293,11 @@
     <Compile Include="Collections\VisibleFilter.cs" />
     <Compile Include="Configuration\DatabaseFlavour.cs" />
     <Compile Include="Configuration\DatabaseSection.cs" />
+    <Compile Include="Configuration\HostSection.cs" />
     <Compile Include="Configuration\SectionGroup.cs" />
     <Compile Include="Configuration\EngineSection.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
-    <Compile Include="Configuration\SiteSection.cs" />
-    <Compile Include="Configuration\SitesSection.cs" />
+    <Compile Include="Configuration\SiteElementCollection.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
@@ -342,14 +342,13 @@
     <Compile Include="Installation\InstallerHint.cs" />
     <Compile Include="Installation\InstallerModule.cs" />
     <Compile Include="Installation\SqlServerType.cs" />
-    <Compile Include="MediumTrust\Configuration\MediumTrustSectionHandler.cs" />
-    <Compile Include="MediumTrust\Configuration\TypeCollection.cs" />
-    <Compile Include="MediumTrust\Configuration\TypeElement.cs" />
+    <Compile Include="Obsolete\Configuration\MediumTrustSectionHandler.cs" />
+    <Compile Include="Obsolete\Configuration\TypeCollection.cs" />
+    <Compile Include="Obsolete\Configuration\TypeElement.cs" />
     <Compile Include="MediumTrust\Engine\MediumTrustEngine.cs" />
     <Compile Include="MediumTrust\Engine\MediumTrustFactory.cs" />
     <Compile Include="MediumTrust\Engine\MediumTrustTypeFinder.cs" />
     <Compile Include="MediumTrust\Persistence\NH\MediumTrustNHBuilder.cs" />
-    <Compile Include="MediumTrust\Web\InitializerModule.cs" />
     <Compile Include="Obsolete\Factory.cs" />
     <Compile Include="Integrity\IntegrityMappingAttribute.cs" />
     <Compile Include="Integrity\AllowedZones.cs" />
@@ -358,6 +357,7 @@
     <Compile Include="Integrity\TypeIntegrityAttribute.cs" />
     <Compile Include="Integrity\IntegrityEnforcer.cs" />
     <Compile Include="Integrity\RestrictParentsAttribute.cs" />
+    <Compile Include="Obsolete\InitializerModule.cs" />
     <Compile Include="Obsolete\ItemAttribute.cs" />
     <Compile Include="Parts\CreateUrlProvider.cs" />
     <Compile Include="Parts\EditUrlProvider.cs" />
@@ -543,6 +543,7 @@
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Web\n2.multiplesites.xml" />
     <EmbeddedResource Include="Resources\jquery-1.2.6.min.js" />
     <EmbeddedResource Include="Web\n2.notweb.xml" />
     <EmbeddedResource Include="Web\n2.iis5.xml" />

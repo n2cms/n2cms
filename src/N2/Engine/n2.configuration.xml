@@ -10,7 +10,7 @@
 	<include uri="assembly://N2/Parts/parts.castle.config"/>
 	<include uri="assembly://N2/Serialization/serialization.castle.config"/>
 	<components>
-		<component id="n2.siteSection" type="N2.Configuration.SiteSection, N2">
+		<component id="n2.siteSection" type="N2.Configuration.HostSection, N2">
 			<parameters>
 				<RootID>#{rootItemID}</RootID>
 				<StartPageID>#{startPageID}</StartPageID>

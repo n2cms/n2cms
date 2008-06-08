@@ -25,6 +25,7 @@ using N2.Plugin;
 using N2.Parts;
 using Castle.Core;
 using N2.Configuration;
+using N2.Globalization;
 
 namespace N2.MediumTrust.Engine
 {
@@ -54,29 +55,30 @@ namespace N2.MediumTrust.Engine
 		private readonly ItemXmlWriter xmlWriter;
 		private readonly DefinitionBuilder definitionBuilder;
 		private readonly NHibernate.IInterceptor interceptor;
-		private readonly MediumTrustSectionHandler configSection;
 		private readonly IWebContext webContext;
 
-		public MediumTrustEngine(System.Configuration.Configuration config)
-			: this(config, null)
+		public MediumTrustEngine()
+			: this(null)
 		{
 
 		}
 
-		public MediumTrustEngine(System.Configuration.Configuration config, IWebContext webContext)
+		public MediumTrustEngine(IWebContext webContext)
 		{
-			System.Configuration.ConfigurationSectionGroup group = config.GetSectionGroup("n2");
-			configSection = (MediumTrustSectionHandler)group.Sections["mediumTrust"];
+			HostSection hostConfiguration = (HostSection)WebConfigurationManager.GetSection("n2/host");
+			EngineSection engineConfiguration = (EngineSection)WebConfigurationManager.GetSection("n2/engine");
+			DatabaseSection databaseConfiguration = (DatabaseSection)WebConfigurationManager.GetSection("n2/database");
 			
-			AddComponentInstance("host", typeof(IHost), host = new Host(webContext, configSection.RootItemID, configSection.StartPageID));
+			AddComponentInstance("host", typeof(IHost), host = new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
 			if (webContext == null)
 				webContext = new N2.Web.RequestContext();
 			Resolves[typeof(IWebContext)] = this.webContext = webContext;
 			Resolves[typeof(IItemNotifier)] = notifier = new DefaultItemNotifier();
-			Resolves[typeof(ITypeFinder)] = typeFinder = new MediumTrustTypeFinder(webContext);
+			Resolves[typeof(ITypeFinder)] = typeFinder = new MediumTrustTypeFinder(webContext, engineConfiguration);
 			Resolves[typeof(DefinitionBuilder)] = definitionBuilder = new DefinitionBuilder(typeFinder);
 			Resolves[typeof(IDefinitionManager)] = definitions = new DefinitionManager(definitionBuilder, notifier);
-			Resolves[typeof(IConfigurationBuilder)] = nhBuilder = CreateConfigurationBuilder(group);
+			NHibernate.Cfg.Environment.UseReflectionOptimizer = false;
+			Resolves[typeof(IConfigurationBuilder)] = nhBuilder = new ConfigurationBuilder(definitions, databaseConfiguration);
 			Resolves[typeof(NHibernate.IInterceptor)] = interceptor = new NotifyingInterceptor(notifier);
 			Resolves[typeof(ISessionProvider)] = sessionProvider = new SessionProvider(nhBuilder, interceptor, webContext);
 			Resolves[typeof(IItemFinder)] = finder = new ItemFinder(sessionProvider, definitions);
@@ -84,11 +86,11 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(INHRepository<int, LinkDetail>)] = linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
 			Resolves[typeof(IPersister)] = persister = new ContentPersister(itemRepository, linkRepository, finder);
 
-			if (configSection.MultipleSites)
+			if (hostConfiguration.MultipleSites)
 			{
 				ISitesProvider sitesProvider = new DynamicSitesProvider(persister, host.DefaultSite.RootItemID);
 				Resolves[typeof(ISitesProvider)] = sitesProvider;
-				Resolves[typeof(IUrlParser)] = urlParser = new MultipleHostsUrlParser(persister, webContext, notifier, host, sitesProvider);
+				Resolves[typeof(IUrlParser)] = urlParser = new MultipleSitesParser(persister, webContext, notifier, host, sitesProvider, hostConfiguration);
 			}
 			else
 			{
@@ -108,6 +110,7 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(Importer)] = new Importer(persister, xmlReader);
 			Resolves[typeof(ItemXmlWriter)] = xmlWriter = new ItemXmlWriter(definitions, urlParser);
 			Resolves[typeof(Exporter)] = new Exporter(xmlWriter);
+			AddComponentInstance("", typeof(ILanguageGateway), new LanguageGateway(persister, finder, editManager, definitions, host));
 			AddComponentInstance("initializerInvoker", typeof(IPluginBootstrapper), new PluginBootstrapper(typeFinder));
 			AddComponentInstance("navigator", typeof(Navigator), new Navigator(persister, host));
 
@@ -127,13 +130,6 @@ namespace N2.MediumTrust.Engine
 			integrityEnforcer.Start();
 
 			RegisterParts();
-		}
-
-		private ConfigurationBuilder CreateConfigurationBuilder(System.Configuration.ConfigurationSectionGroup group)
-		{
-			NHibernate.Cfg.Environment.UseReflectionOptimizer = false;
-			DatabaseSection database = (DatabaseSection)group.Sections["database"];
-			return new ConfigurationBuilder(definitions, database);
 		}
 
 		private void RegisterParts()

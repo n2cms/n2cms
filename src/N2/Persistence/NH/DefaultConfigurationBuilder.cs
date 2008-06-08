@@ -53,7 +53,7 @@ namespace N2.Persistence.NH
 			Properties["connection.connection_string_name"] = config.ConnectionStringName;
 			Properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
 
-			switch (config.Dialect)
+			switch (config.Flavour)
 			{
 				case DatabaseFlavour.MySql:
 					Properties["connection.driver_class"] = "NHibernate.Driver.MySqlDataDriver";

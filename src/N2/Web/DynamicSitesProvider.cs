@@ -25,10 +25,13 @@ namespace N2.Web
 			this.rootItemID = rootItemID;
 		}
 
-		public DynamicSitesProvider(Persistence.IPersister persister, Site defaultSite)
+		public DynamicSitesProvider(Persistence.IPersister persister, IHost host)
 		{
+			if (persister == null) throw new ArgumentNullException("persister");
+			if (host == null) throw new ArgumentNullException("host");
+
 			this.persister = persister;
-			this.rootItemID = defaultSite.RootItemID;
+			this.rootItemID = host.DefaultSite.RootItemID;
 		} 
 		#endregion
 

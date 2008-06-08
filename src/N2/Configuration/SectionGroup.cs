@@ -15,5 +15,9 @@ namespace N2.Configuration
 		{
 			get { return (DatabaseSection)Sections["database"]; }
 		}
+		public HostSection Host
+		{
+			get { return (HostSection)Sections["host"]; }
+		}
 	}
 }

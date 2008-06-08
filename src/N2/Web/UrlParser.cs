@@ -27,6 +27,8 @@ namespace N2.Web
 
 		public UrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, IHost host)
 		{
+			if (host == null) throw new ArgumentNullException("host");
+
 			this.persister = persister;
 			this.webContext = webContext;
 			this.host = host;

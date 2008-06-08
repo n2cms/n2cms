@@ -37,5 +37,14 @@ namespace N2.Tests.Engine
 			var cb = (ConfigurationBuilder)engine.Resolve<IConfigurationBuilder>();
 			Assert.That(cb.Properties.Count, Is.GreaterThan(0));
 		}
+
+		[Test]
+		public void SitesAreSetup()
+		{
+			var host = engine.Resolve<IHost>();
+			Assert.That(host.Sites.Count, Is.EqualTo(3));
+			Assert.That(host.Sites[0].Host, Is.EqualTo("alpha.localhost.com"));
+			Assert.That(host.Sites[0].StartPageID, Is.EqualTo(4));
+		}
 	}
 }

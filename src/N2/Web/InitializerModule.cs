@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -14,14 +15,12 @@ namespace N2.Web
 	{
 		public void Init(HttpApplication context)
 		{
-			Debug.WriteLine("InitializerModule: Init");
-			Context.Initialize(false);
-			Context.Current.Attach(context);
+			IEngine engine = Context.Initialize(false);
+			engine.Attach(context);
 		}
 
 		public void Dispose()
 		{
-			Debug.WriteLine("InitializerModule: Dispose");
 		}
 	}
 }
