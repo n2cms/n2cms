@@ -116,9 +116,9 @@
     <Compile Include="Collections\Items\FirstItem.cs" />
     <Compile Include="Collections\TypeFilterTests.cs" />
     <Compile Include="Collections\ZoneFilterTests.cs" />
+    <Compile Include="Content\AnItem.cs" />
+    <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Engine\MultipleSitesContentEngineTests.cs" />
-    <Compile Include="Fakes\Content\AnItem.cs" />
-    <Compile Include="Fakes\Content\ContentItemTests.cs" />
     <Compile Include="Definitions\AttributeReference.cs" />
     <Compile Include="Definitions\DefinitionFixture.cs" />
     <Compile Include="Definitions\Definitions\Details\CustomizedEditableAttribute.cs" />
@@ -240,6 +240,11 @@
     <Content Include="Engine\MultipleSites.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\.svn\all-wcprops" />
+    <None Include="Content\.svn\entries" />
+    <None Include="Content\.svn\format" />
+    <None Include="Content\.svn\text-base\AnItem.cs.svn-base" />
+    <None Include="Content\.svn\text-base\ContentItemTests.cs.svn-base" />
     <None Include="Engine\MultipleSites.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -277,6 +282,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\.svn\prop-base\" />
+    <Folder Include="Content\.svn\props\" />
+    <Folder Include="Content\.svn\tmp\prop-base\" />
+    <Folder Include="Content\.svn\tmp\props\" />
+    <Folder Include="Content\.svn\tmp\text-base\" />
     <Folder Include="Xml\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
