@@ -7,6 +7,9 @@ using N2.Definitions;
 using N2.Installation;
 using System.Web;
 using System.IO;
+using System.Web.Configuration;
+using N2.Configuration;
+using System.Configuration;
 
 namespace N2.Edit.Install
 {
@@ -19,8 +22,16 @@ namespace N2.Edit.Install
 		private InstallationManager currentInstallationManager;
 		private DatabaseStatus status;
 
-		protected int rootId;
-		protected int startId;
+		protected int rootId
+		{
+			get { return (int)(ViewState["rootId"] ?? 0); }
+			set { ViewState["rootId"] = value; }
+		}
+		protected int startId
+		{
+			get { return (int)(ViewState["startId"] ?? 0); }
+			set { ViewState["startId"] = value; }
+		}
 
 		protected RadioButtonList rblExports;
 
@@ -51,6 +62,7 @@ namespace N2.Edit.Install
 				{
 					ICollection<ItemDefinition> preferredRoots = new List<ItemDefinition>();
 					ICollection<ItemDefinition> preferredStartPages = new List<ItemDefinition>();
+					ICollection<ItemDefinition> preferredRootAndStartPages = new List<ItemDefinition>();
 
 					ICollection<ItemDefinition> fallbackRoots = new List<ItemDefinition>();
 					ICollection<ItemDefinition> fallbackStartPages = new List<ItemDefinition>();
@@ -63,6 +75,8 @@ namespace N2.Edit.Install
 							preferredRoots.Add(d);
 						if (Is(hint, InstallerHint.PreferredStartPage))
 							preferredStartPages.Add(d);
+						if(Is(hint, InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage))
+							preferredRootAndStartPages.Add(d);
 						if (!Is(hint, InstallerHint.NeverRootPage))
 							fallbackRoots.Add(d);
 						if (!Is(hint, InstallerHint.NeverStartPage))
@@ -76,7 +90,7 @@ namespace N2.Edit.Install
 
 					LoadRootTypes(ddlRoot, preferredRoots, "[root node]");
 					LoadStartTypes(ddlStartPage, preferredStartPages, "[start node]");
-					LoadRootTypes(ddlRootAndStart, preferredRoots, "[root and start node]");
+					LoadRootTypes(ddlRootAndStart, preferredRootAndStartPages, "[root and start node]");
 					LoadExistingExports(rblExports);
 				}
 				catch (Exception ex)
@@ -235,6 +249,7 @@ namespace N2.Edit.Install
 					phSame.Visible = true;
 					phDiffer.Visible = false;
 					rootId = root.ID;
+					startId = root.ID;
 				}
 			}
 			catch (Exception ex)
@@ -270,6 +285,25 @@ namespace N2.Edit.Install
 				return;
 
 			ExecuteWithErrorHandling(InstallFromUpload);
+		}
+
+		protected void btnUpdateWebConfig_Click(object sender, EventArgs e)
+		{
+			if (ExecuteWithErrorHandling(SaveConfiguration) == null)
+			{
+				lblWebConfigUpdated.Text = "Configuration updated.";
+			}
+		}
+
+		private void SaveConfiguration()
+		{
+			System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~");
+
+			HostSection host = (HostSection)cfg.GetSection("n2/host");
+			host.RootID = rootId;
+			host.StartPageID = startId;
+
+			cfg.Save();
 		}
 
 		protected void btnRestart_Click(object sender, EventArgs e)
@@ -327,6 +361,8 @@ namespace N2.Edit.Install
 				phSame.Visible = true;
 				phDiffer.Visible = false;
 				rootId = root.ID;
+				startId = root.ID;
+				phSame.DataBind();
 			}
 
 			// try to find a suitable start page
@@ -349,6 +385,7 @@ namespace N2.Edit.Install
 					}
 					break;
 				}
+				phDiffer.DataBind();
 			}
 		}
 

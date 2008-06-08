@@ -123,40 +123,30 @@
 <asp:PlaceHolder ID="phSame" runat="server" Visible="false">
             <h4>Example web.config with same root as start page</h4>
             <p>
-                <textarea rows="5">
+                <textarea rows="4">
 ...
-<castle>
-    <properties>
-        <rootItemID><%# rootId %></rootItemID>
-        <nhSettings><!-- leave these as they are --></nhSettings>
-    </properties>
-    <include uri="assembly://N2/Engine/n2.configuration.xml"/>
-</castle>
+	<n2>
+		<host rootID="<%# rootId %>" startPageID="<%# startId %>"/>
+		...
+	</n2>
 ...</textarea>
+				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" />
             </p>
 </asp:PlaceHolder>
 <asp:PlaceHolder ID="phDiffer" runat="server" Visible="false">
             <h4>Example web.config with different root as start pages</h4>
             <p>
-                <textarea rows="5">
+                <textarea rows="4">
 ...
-<castle>
-    <properties>
-        <nhSettings><!-- leave these as they are --></nhSettings>
-    </properties>
-    <include uri="assembly://N2/Engine/n2.configuration.xml"/>
-    <components>
-      <component id="n2.defaultSite">
-        <parameters>
-          <rootItemID><%# rootId %></rootItemID>
-          <startPageID><%# startId %></startPageID>
-        </parameters>
-      </component>
-    </components>
-</castle>
+	<n2>
+		<host rootID="<%# rootId %>" startPageID="<%# startId %>"/>
+		...
+	</n2>
 ...</textarea>
+				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" />
             </p>
 </asp:PlaceHolder>
+			<p><asp:Label runat="server" ID="lblWebConfigUpdated" /></p>
         </n2:TabPanel>
         
         <n2:TabPanel runat="server" tooltip="5. Finishing touches">
