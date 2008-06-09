@@ -22,7 +22,7 @@ namespace N2.Installation
 
 		void context_BeginRequest(object sender, EventArgs e)
 		{
-			if (isChecked || IsEditing() || AllowRedirectToInstallPage())
+			if (isChecked || IsEditing() || !AllowRedirectToInstallPage())
 				return;
 			else
 				isChecked = true;

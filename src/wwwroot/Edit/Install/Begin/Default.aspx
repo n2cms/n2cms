@@ -26,10 +26,11 @@
 		</ul>
 		<div class="tabPanel">
 			<h1>Welcome to N2 CMS</h1>
-			<p>This is the first step to install the database get started with N2 CMS.</p>
+			<p>This is the first step towards installing the database getting started with <a href="http://n2cms.com/">N2 CMS</a>.</p>
 			<p>To continue to the installation you will have to provide a username and password. Unless you changed it (as you should) the username is "<strong>admin</strong>" and the password is "<strong>changeme</strong>".</p>
-			<p>Okay, <a href="../default.aspx">please start the installation process &raquo;</a></p>
-			<p><em>Already installed the database? Then there might be a problem with the database connection. To ensure that this screen doesn't appear to unsuspecting visitors you should remove &lt;add name="n2.installer" type="N2.Installation.InstallerModule, N2" /&gt; from the &lt;httpModules&gt; section in web.config.</em></p>
+			<p>Yeah yeah, <a href="../default.aspx">please <strong>start the installation</strong> process &raquo;</a></p>
+			<p><strong>Downloaded the trunk (svn)?</strong> You may want to <a href="http://n2cms.com/upload/app_data.zip">get an SQL Server Express database</a> and unzip into [path to www root]\App_Data</p>
+			<p><strong>Already installed the database?</strong> Then there might be a problem with the database connection. To ensure that this screen doesn't appear to unsuspecting visitors you should remove &lt;add name="n2.installer" type="N2.Installation.InstallerModule, N2" /&gt; from the &lt;httpModules&gt; section in web.config.</p>
 		</div>
     </div>
     </form>

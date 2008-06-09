@@ -16,6 +16,8 @@ namespace N2.Edit.Navigation
 	{
 		public override void ProcessRequest(HttpContext context)
 		{
+            string target = context.Request["target"] ?? "preview";
+
 			ContentItem selectedNode = GetSelectedItem(context.Request.QueryString);
 			
 			context.Response.ContentType = "text/plain";
@@ -23,11 +25,11 @@ namespace N2.Edit.Navigation
 			ItemFilter filter = N2.Context.Current.EditManager.GetEditorFilter(context.User);
 			TreeNode tn = (TreeNode)N2.Web.Tree
 				.From(selectedNode, 2)
-				.LinkProvider(delegate(ContentItem node) { return BuildLink(node, selectedNode); })
+				.LinkProvider(delegate(ContentItem node) { return BuildLink(node, selectedNode, target); })
 				.Filters(filter)
 				.ToControl();
 			
-			Web.UI.Controls.Tree.AppendExpanderNodeRecursive(tn, filter);
+			Web.UI.Controls.Tree.AppendExpanderNodeRecursive(tn, filter, target);
 
 			RenderControls(tn.Controls, context.Response.Output);
 		}
@@ -43,11 +45,11 @@ namespace N2.Edit.Navigation
 			}
 		}
 
-		public ILinkBuilder BuildLink(INode node, ContentItem selectedNode)
+        public ILinkBuilder BuildLink(INode node, ContentItem selectedNode, string target)
 		{
 			string className = node.ClassNames;
 
-			ILinkBuilder builder = Link.To(node).Target("preview").Class(className)
+			ILinkBuilder builder = Link.To(node).Target(target).Class(className)
 				.Text("<img src='" + Utility.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
 				.Attribute("rel", node.Path);
 

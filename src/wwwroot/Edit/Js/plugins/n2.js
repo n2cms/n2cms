@@ -28,8 +28,9 @@ n2nav.onTargetClick = function(el){
 }
 n2nav.targetHandlers = new Array();
 n2nav.handleLink = function(i,a){
-	if(n2nav.targetHandlers[a.target])
-		n2nav.targetHandlers[a.target](a,i);
+	if(n2nav.targetHandlers[a.target]){
+        n2nav.targetHandlers[a.target](a,i);
+	}
 }
 n2nav.refreshLinks = function(container){
 	if(!container){

@@ -62,33 +62,33 @@ namespace N2.Edit.Web.UI.Controls
 				.LinkProvider(BuildLink)
 				.ToControl();
 
-			AppendExpanderNodeRecursive(tree, filter);
+			AppendExpanderNodeRecursive(tree, filter, Target);
 
 			Controls.Add(tree);
 			
 			base.CreateChildControls();
 		}
 
-		public static void AppendExpanderNodeRecursive(Control tree, ItemFilter filter)
+		public static void AppendExpanderNodeRecursive(Control tree, ItemFilter filter, string target)
 		{
 			TreeNode tn = tree as TreeNode;
 			if (tn != null)
 			{
 				foreach (Control child in tn.Controls)
 				{
-					AppendExpanderNodeRecursive(child, filter);
+					AppendExpanderNodeRecursive(child, filter, target);
 				}
 				if (tn.Controls.Count == 0 && tn.Node.GetChildren(filter).Count > 0)
 				{
-					AppendExpanderNode(tn);
+					AppendExpanderNode(tn, target);
 				}
 			}
 		}
 
-		public static void AppendExpanderNode(TreeNode tn)
+		public static void AppendExpanderNode(TreeNode tn, string target)
 		{
 			Li li = new Li();
-			li.Text = "{url:../Navigation/LoadTree.ashx?selected=" + HttpUtility.UrlEncode(tn.Node.Path) + "}";
+			li.Text = "{url:../Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path) + "}";
 
 			tn.UlClass = "ajax";
 			tn.Controls.Add(li);

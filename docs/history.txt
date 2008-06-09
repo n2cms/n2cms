@@ -15,6 +15,8 @@
 	- fixed check connection on install screen
 	- fixed old web.config reference
 	- fixed item sorting when pages intermixed with items
+	- fixed item selector navigating as well as selecting
+	- fixed installer module not redirecting as it should
 - core
 	- removed some obsolte code: CloseSessionModule, IDataItemContainer, NavigationPlugInAttribute, PlugInAttribute, ToolbarPlugInAttribute, UrlRewriterModule
 	- rearranged the solution hopefully making it simpler and more understandable
