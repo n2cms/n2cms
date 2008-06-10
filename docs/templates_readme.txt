@@ -20,15 +20,5 @@ file in an IIS directory and run. To install in another database read install.tx
 WHAT'S HERE
 
 - The templates implementation files and compiled "code-behind": /... and N2.Templates?.dll
-- The core N2 library: N2.dll
-- Edit interface files and compiled "code-behind": /edit and N2.Edit.dll
-- Optional edit mode components: /edit/... and N2.Edit.?.dll
-	* Export & import 
-	* Install interface
-	* Link tracker
-	* User & membership manager
-	* Content access interface
-	* Trashcan
-	* Versioning
-	* Default template & location wizard 
-- Drag & drop functionality
+- The core N2 library: N2.dll and N2.Security.dll
+- Edit interface files and compiled "code-behind": /edit/* and N2.Edit.dll

@@ -506,9 +506,6 @@
     <Content Include="UI\Text.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Browsers\AnyBrowser.browser" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="App_Browsers\CSSFriendlyAdapters.browser" />
     <Content Include="Layouts\Parts\Menu.ascx" />
     <Content Include="Layouts\Parts\Top.ascx" />
@@ -702,6 +699,7 @@
     <Content Include="Upload\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Browsers\genericmozilla5.browser" />
     <None Include="App_Data\ContentFocus_SampleData.gz" />
     <None Include="App_Data\Corporate_SampleData.gz" />
     <None Include="App_Data\DarkStrips_SampleData.gz" />

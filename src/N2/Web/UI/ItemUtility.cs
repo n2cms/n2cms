@@ -32,13 +32,19 @@ namespace N2.Web.UI
 		public static ContentItem WalkPath(ContentItem startItem, string path)
 		{
 			// find starting point
-			if (path.StartsWith("/"))
-				startItem = Context.UrlParser.StartPage;
+            if (path.StartsWith("/"))
+            {
+                startItem = Context.Current.Persister.Get(Context.Current.Host.DefaultSite.RootItemID);
+                path = path.Substring(1);
+            }
+            else if (path.StartsWith("~/"))
+            {
+                startItem = Context.Current.UrlParser.StartPage;
+                path = path.Substring(2);
+            }
 
 			// walk path
 			ContentItem item = startItem;
-			if (path.StartsWith(Utility.ToAbsolute("~/")))
-				path = path.Substring(Utility.ToAbsolute("~/").Length);
 			string[] names = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 			foreach (string name in names)
 			{

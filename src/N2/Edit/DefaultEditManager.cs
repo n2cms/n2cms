@@ -15,6 +15,7 @@ using N2.Web.UI.WebControls;
 using N2.Collections;
 using N2.Edit.Settings;
 using N2.Security;
+using N2.Configuration;
 
 namespace N2.Edit
 {
@@ -30,13 +31,17 @@ namespace N2.Edit
 		private readonly NavigationSettings settings;
 		private readonly ISecurityManager securityManager;
 		private IList<AdministrativePluginAttribute> plugins = null;
-		private string editTreeUrlFormat = "Navigation/Tree.aspx?selected={0}";
+        private string editTreeUrl = "Navigation/Tree.aspx";
+		private string editTreeUrlFormat = "{1}?selected={0}";
 		private string editPreviewUrlFormat = "{0}";
 		private string editorCssUrl = "~/Edit/Css/Editor.css";
 		private string uploadFolderUrl = "~/Upload";
-		private bool enableVersioning = true;
+        private string editItemUrl = "~/edit/edit.aspx";
+        private string editInterfaceUrl = "~/edit/default.aspx";
+        private string newItemUrl = "~/edit/new.aspx";
+        private string deleteItemUrl = "~/edit/delete.aspx";
+        private bool enableVersioning = true;
 
-		#region Constructors
 		public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings)
 		{
 			this.definitions = definitions;
@@ -48,31 +53,53 @@ namespace N2.Edit
 			this.plugins = FindPlugins(typeFinder);
 		}
 
-		/// <summary>Finds and sorts plugin defined in known assemblies.</summary>
-		/// <returns>A sorted list of plugins.</returns>
-		protected virtual IList<AdministrativePluginAttribute> FindPlugins(ITypeFinder typeFinder)
-		{
-			List<AdministrativePluginAttribute> foundPlugins = new List<AdministrativePluginAttribute>();
-			foreach (Assembly assembly in typeFinder.GetAssemblies())
-			{
-				foreach (AdministrativePluginAttribute plugin in FindPluginsIn(assembly))
-				{
-					if (plugin.Name == null)
-						throw new N2Exception("A plugin in the assembly '{0}' has no name. The plugin is likely defined on the assembly ([assembly:...]). Try assigning the plugin a unique name and recompiling.", assembly.FullName);
-					else if (foundPlugins.Contains(plugin))
-						throw new N2Exception("A plugin of the type '{0}' named '{1}' is already defined, assembly: {2}", plugin.GetType().FullName,  plugin.Name, assembly.FullName);
+        public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings, EditSection config)
+            : this(typeFinder, definitions, persister, versioner, securityManager, settings)
+        {
+            EditTreeUrl = config.EditTreeUrl;
+            EditPreviewUrlFormat = config.EditPreviewUrlFormat;
+            EditorCssUrl = config.EditorCssUrl;
+            UploadFolderUrl = config.UploadFolderUrl;
+            EditItemUrl = config.EditItemUrl;
+            EditInterfaceUrl = config.EditInterfaceUrl;
+            NewItemUrl = config.NewItemUrl;
+            DeleteItemUrl = config.DeleteItemUrl;
+            EnableVersioning = config.EnableVersioning;
+        }
 
-					foundPlugins.Add(plugin);
-				}
-			}
-			foundPlugins.Sort();
-			return foundPlugins;
-		}
+        #region Properties
 
-		#endregion
+        public string EditInterfaceUrl
+        {
+            get { return editInterfaceUrl; }
+            set { editInterfaceUrl = value; }
+        }
 
-		#region Properties
-		/// <summary>Gets an alternative tree url format when edit mode is displayed.</summary>
+        public string EditTreeUrl
+        {
+            get { return editTreeUrl; }
+            set { editTreeUrl = value; }
+        }
+
+        public string DeleteItemUrl
+        {
+            get { return deleteItemUrl; }
+            set { deleteItemUrl = value; }
+        }
+
+        public string NewItemUrl
+        {
+            get { return newItemUrl; }
+            set { newItemUrl = value; }
+        }
+
+        public string EditItemUrl
+        {
+            get { return editItemUrl; }
+            set { editItemUrl = value; }
+        }
+
+        /// <summary>Gets an alternative tree url format when edit mode is displayed.</summary>
 		/// <remarks>Accepted format value is {0} for url encoded selected item.</remarks>
 		public string EditTreeUrlFormat
 		{
@@ -111,13 +138,33 @@ namespace N2.Edit
 		#endregion
 
 		#region Methods
+        /// <summary>Finds and sorts plugin defined in known assemblies.</summary>
+        /// <returns>A sorted list of plugins.</returns>
+        protected virtual IList<AdministrativePluginAttribute> FindPlugins(ITypeFinder typeFinder)
+        {
+            List<AdministrativePluginAttribute> foundPlugins = new List<AdministrativePluginAttribute>();
+            foreach (Assembly assembly in typeFinder.GetAssemblies())
+            {
+                foreach (AdministrativePluginAttribute plugin in FindPluginsIn(assembly))
+                {
+                    if (plugin.Name == null)
+                        throw new N2Exception("A plugin in the assembly '{0}' has no name. The plugin is likely defined on the assembly ([assembly:...]). Try assigning the plugin a unique name and recompiling.", assembly.FullName);
+                    else if (foundPlugins.Contains(plugin))
+                        throw new N2Exception("A plugin of the type '{0}' named '{1}' is already defined, assembly: {2}", plugin.GetType().FullName, plugin.Name, assembly.FullName);
+
+                    foundPlugins.Add(plugin);
+                }
+            }
+            foundPlugins.Sort();
+            return foundPlugins;
+        }
+
 		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
 		public string GetNavigationUrl(INode selectedItem)
 		{
-			return string.Format(EditTreeUrlFormat,
-				HttpUtility.UrlEncode(selectedItem.Path));
+            return string.Format(EditTreeUrlFormat, HttpUtility.UrlEncode(selectedItem.Path), EditTreeUrl);
 		}
 
 		/// <summary>Gets the url for the preview frame.</summary>
@@ -199,10 +246,8 @@ namespace N2.Edit
 		/// <param name="user">The current user.</param>
 		public virtual void UpdateEditors(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			if (item == null)
-				throw new ArgumentNullException("item");
-			if (addedEditors == null)
-				throw new ArgumentNullException("addedEditors");
+			if (item == null) throw new ArgumentNullException("item");
+			if (addedEditors == null) throw new ArgumentNullException("addedEditors");
 
 			ItemDefinition definition = definitions.GetDefinition(item.GetType());
 			ApplyModifications(definition, addedEditors);
@@ -234,10 +279,8 @@ namespace N2.Edit
 		/// <returns>Whether any property on the item was updated.</returns>
 		public bool UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			if (item == null)
-				throw new ArgumentNullException("item");
-			if (addedEditors == null)
-				throw new ArgumentNullException("addedEditors");
+			if (item == null) throw new ArgumentNullException("item");
+			if (addedEditors == null) throw new ArgumentNullException("addedEditors");
 
 			bool updated = false;
 			ItemDefinition definition = definitions.GetDefinition(item.GetType());
@@ -335,7 +378,7 @@ namespace N2.Edit
 		/// <returns>The url to the edit interface.</returns>
 		public string GetEditModeUrl(ContentItem selectedItem)
 		{
-			return FormatSelectedUrl(selectedItem, "~/edit/default.aspx");
+            return FormatSelectedUrl(selectedItem, EditInterfaceUrl);
 		}
 
 		/// <summary>Gets the url to the select type of item to create.</summary>
@@ -343,7 +386,7 @@ namespace N2.Edit
 		/// <returns>The url to the select new item to create page.</returns>
 		public string GetSelectNewItemUrl(ContentItem selectedItem)
 		{
-			return FormatSelectedUrl(selectedItem, "~/edit/new.aspx");
+			return FormatSelectedUrl(selectedItem, NewItemUrl);
 		}
 
 		/// <summary>Gets the url to the select type of item to create.</summary>
@@ -351,7 +394,7 @@ namespace N2.Edit
 		/// <returns>The url to the select new item to create page.</returns>
 		public string GetSelectNewItemUrl(ContentItem selectedItem, string zoneName)
 		{
-			return FormatSelectedUrl(selectedItem, "~/edit/new.aspx?zoneName=" + zoneName);
+			return FormatSelectedUrl(selectedItem, NewItemUrl + "?zoneName=" + zoneName);
 		}
 
 		/// <summary>Gets the url to the delete item page.</summary>
@@ -359,7 +402,7 @@ namespace N2.Edit
 		/// <returns>The url to the delete page.</returns>
 		public string GetDeleteUrl(ContentItem selectedItem)
 		{
-			return FormatSelectedUrl(selectedItem, "~/edit/delete.aspx");
+			return FormatSelectedUrl(selectedItem, DeleteItemUrl);
 		}
 
 		private string FormatSelectedUrl(ContentItem selectedItem, string path)
@@ -449,7 +492,8 @@ namespace N2.Edit
 			if (selected == null)
 				throw new N2Exception("Cannot insert item before or after the root page.");
 
-			string url = string.Format("~/edit/edit.aspx?selected={0}&discriminator={1}&zoneName={2}",
+			string url = string.Format("{0}?selected={1}&discriminator={2}&zoneName={3}",
+                EditItemUrl, 
 				HttpUtility.UrlEncode(parent.Path),
 				HttpUtility.UrlEncode(definition.Discriminator),
 				HttpUtility.UrlEncode(zoneName));
@@ -466,9 +510,9 @@ namespace N2.Edit
 		public string GetEditExistingItemUrl(ContentItem item)
 		{
 			if(item.VersionOf == null)
-				return string.Format("~/edit/edit.aspx?selected={0}", HttpUtility.UrlEncode(item.Path));
+                return string.Format("{0}?selected={1}", EditItemUrl, HttpUtility.UrlEncode(item.Path));
 			else
-				return string.Format("~/edit/edit.aspx?selectedUrl={0}", HttpUtility.UrlEncode(item.RewrittenUrl));
+				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.RewrittenUrl));
 		}
 
 		#region IEditManager Members

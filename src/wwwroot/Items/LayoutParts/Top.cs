@@ -17,7 +17,7 @@ namespace N2.Templates.UI.Items.LayoutParts
 	public class Top : AbstractItem
 	{
 		[Displayable(typeof(N2.Web.UI.WebControls.H2), "Text")]
-		[Editable("Top text", typeof(TextBox), "Text", 40, ContainerName = "top")]
+		[EditableTextBox("Top text", 40, ContainerName = "top")]
 		public override string Title
 		{
 			get { return base.Title; }

@@ -101,7 +101,11 @@ textarea
 {
 	vertical-align:middle;
 }
-.nameEditor, .titleEditor, .urlSelector
+.nameEditor
+{
+	width:142px;
+}
+.titleEditor, .urlSelector, .textEditor
 {
 	width:284px;
 }

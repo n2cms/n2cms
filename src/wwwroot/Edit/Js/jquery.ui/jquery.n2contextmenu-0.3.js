@@ -43,19 +43,19 @@
 		$m.n2showat(x, y);
 	};
 	
-	var findFrame = function(name){
-		for(var i = 0; i < window.frames.length; i++){
-			if(window.frames[i].name == name){
-				return window.frames[i];
-			}
-		}
-		for(var i = 0; i < window.top.frames.length; i++){
-			if(window.top.frames[i].name == name){
-				return window.top.frames[i];
-			}
-		}
-		return null;
-	};
+//	var findFrame = function(name){
+//		for(var i = 0; i < window.frames.length; i++){
+//			if(window.frames[i].name == name){
+//				return window.frames[i];
+//			}
+//		}
+//		for(var i = 0; i < window.top.frames.length; i++){
+//			if(window.top.frames[i].name == name){
+//				return window.top.frames[i];
+//			}
+//		}
+//		return null;
+//	};
 
 	$.fn.n2contextmenu = function(menu,options) {
 		options = $.extend({offsetX: -2, offsetY: -2, showing: function(){}, appendTo: document.body}, options || {});
@@ -89,9 +89,9 @@
 	$.fn.n2rightToLeftClick = function() {
 		return this.bind('contextmenu', function(e) {
 			$(e.target).click().each(function() {
-				var $t = $(this);
-				$t.parents().andSelf().filter("a").each(function(){
-					var f = findFrame(this.target) || window;
+				$(this).parents().andSelf().filter("a").each(function(){
+				    //var f = findFrame(this.target) || window;
+				    var f = window.frames[this.target] || window.top.frames[this.target] || window;
 					f.location = this.href;
 					hideAll();
 				});

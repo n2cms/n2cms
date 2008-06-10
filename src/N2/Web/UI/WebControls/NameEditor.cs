@@ -25,7 +25,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Constructs the name editor.</summary>
 		public NameEditor()
 		{
-			MaxLength = 242;
+			MaxLength = 60;
 			CssClass = "nameEditor";
 		}
 

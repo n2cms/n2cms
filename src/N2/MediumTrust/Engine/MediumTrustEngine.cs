@@ -189,6 +189,11 @@ namespace N2.MediumTrust.Engine
 			get { return editManager; }
 		}
 
+        public IHost Host
+        {
+            get { return host; }
+        }
+
 		public IDictionary<Type, object> Resolves
 		{
 			get { return resolves; }
@@ -299,5 +304,5 @@ namespace N2.MediumTrust.Engine
 		}
 
 		#endregion
-	}
+    }
 }

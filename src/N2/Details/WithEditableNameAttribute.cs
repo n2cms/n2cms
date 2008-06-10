@@ -35,7 +35,7 @@ namespace N2.Details
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public WithEditableNameAttribute(string title, int sortOrder)
-			: base(title, "URI Name", sortOrder)
+			: base(title, "Name", sortOrder)
 		{
 		}
 
@@ -96,8 +96,31 @@ namespace N2.Details
 		{
 			NameEditor ne = (NameEditor)editor;
 			ne.Text = item.Name;
-			ne.Prefix = item.Parent != null ? "/../" : "/";
+			ne.Prefix = "/";
 			ne.Suffix = ContentItem.DefaultExtension;
+            try
+            {
+                if (Context.UrlParser.StartPage == item || item.Parent == null)
+                {
+                    ne.Prefix = "";
+                    ne.Suffix = "";
+                }
+                else if (Context.UrlParser.StartPage != item.Parent)
+                {
+                    string parentUrl = item.Parent.Url;
+                    if (!parentUrl.Contains("?"))
+                    {
+                        int aspxIndex = parentUrl.IndexOf(ContentItem.DefaultExtension, StringComparison.InvariantCultureIgnoreCase);
+                        string prefix = parentUrl.Substring(0, aspxIndex) + "/";
+                        if (prefix.Length > 60)
+                            prefix = prefix.Substring(0, 50) + ".../";
+                        ne.Prefix = prefix;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
 		}
 
 		protected override Control AddEditor(Control container)

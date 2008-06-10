@@ -1,0 +1,6 @@
+- Change configuration (see example.web.config)
+	- create <configSections><section name="n2"...
+	- create <n2> section and update settings from the castle section
+	- remove <configSections><section name="castle"...
+	- remove <castle> section
+- Search your soulution for web controls Path="/" and replace with Path="~/"

@@ -1,6 +1,10 @@
-- download the code, obviously
-- set Templates/N2.Templates.UI as default project
-- try to compile
-- fix references path on some of the projects (project properties, references
-  path, add [solutionfolder]\lib to the list
-- Build and start the templates site Ctrl+F5
+Main solution (core + edit + templates):
+- Download the code, obviously
+- Set Templates/N2.Templates.UI as "StartUp Project"
+- Compile and run (Ctrl+F5)
+- If you get errors about database connection or see an install screen:
+	- Either, download an sql express database and put in your wwwroot/app_data
+	- Or, create a database manually and reference it from web.config
+
+Examples:
+- Run Prepare_Dependencies-vs2008.bat to copy core and edit to the examples

@@ -6,6 +6,10 @@ using System.Web.Configuration;
 
 namespace N2.Configuration
 {
+    /// <summary>
+    /// Configuration related to inversion of control and the dynamic aspects 
+    /// of n2 definition.
+    /// </summary>
 	public class EngineSection : ConfigurationSection
 	{
 		[ConfigurationProperty("castleConfiguration", DefaultValue = "assembly://N2/Configuration/castle.config")]

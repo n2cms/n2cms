@@ -8,7 +8,10 @@ namespace N2.Configuration
 	{
 		SqlServer2005,
 		SqlServer2000,
+        SqlCe,
 		MySql,
-		SqLite
+		SqLite,
+        Firebird,
+        Generic
 	}
 }

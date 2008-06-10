@@ -5,6 +5,10 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
+    /// <summary>
+    /// Section configuring host settings such as root, and start node ids and 
+    /// multiple sites.
+    /// </summary>
 	public class HostSection : ConfigurationSection
 	{
 		[ConfigurationProperty("rootID", DefaultValue = 1)]

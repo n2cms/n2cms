@@ -55,14 +55,6 @@ namespace N2.Persistence.NH
 
 			switch (config.Flavour)
 			{
-				case DatabaseFlavour.MySql:
-					Properties["connection.driver_class"] = "NHibernate.Driver.MySqlDataDriver";
-					Properties["dialect"] = "NHibernate.Dialect.MySQL5Dialect";
-					break;
-				case DatabaseFlavour.SqLite:
-					Properties["connection.driver_class"] = "NHibernate.Driver.SQLite20Driver";
-					Properties["dialect"] = "NHibernate.Dialect.SQLiteDialect";
-					break;
 				case DatabaseFlavour.SqlServer2000:
 					Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
 					Properties["dialect"] = "NHibernate.Dialect.MsSql2000Dialect";
@@ -71,13 +63,38 @@ namespace N2.Persistence.NH
 					Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
 					Properties["dialect"] = "NHibernate.Dialect.MsSql2005Dialect";
 					break;
-				default:
+                case DatabaseFlavour.SqlCe:
+                    Properties["connection.driver_class"] = "NHibernate.Driver.SqlServerCeDriver";
+					Properties["dialect"] = "NHibernate.Dialect.MsSqlCeDialect";
+					break;
+                case DatabaseFlavour.MySql:
+                    Properties["connection.driver_class"] = "NHibernate.Driver.MySqlDataDriver";
+                    Properties["dialect"] = "NHibernate.Dialect.MySQL5Dialect";
+                    break;
+                case DatabaseFlavour.SqLite:
+                    Properties["connection.driver_class"] = "NHibernate.Driver.SQLite20Driver";
+                    Properties["dialect"] = "NHibernate.Dialect.SQLiteDialect";
+                    break;
+                case DatabaseFlavour.Firebird:
+                    Properties["connection.driver_class"] = "NHibernate.Driver.FirebirdDriver";
+                    Properties["dialect"] = "NHibernate.Dialect.FirebirdDialect";
+                    break;
+                case DatabaseFlavour.Generic:
+                    Properties["connection.driver_class"] = "NHibernate.Driver.OleDbDriver";
+                    Properties["dialect"] = "NHibernate.Dialect.GenericDialect";
+                    break;
+                default:
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
 
 			Properties["cache.use_second_level_cache"] = config.Caching.ToString().ToLower();
 			Properties["cache.use_query_cache"] = config.Caching.ToString().ToLower();
 			Properties["cache.provider_class"] = config.CacheProviderClass;
+
+            foreach (string key in config.Properties.AllKeys)
+            {
+                Properties[key] = config.Properties[key].Value;
+            }
 		}
 
 		#region Properties

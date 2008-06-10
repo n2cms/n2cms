@@ -30,7 +30,6 @@ TODO:
 	- tips & tricks
 		- change the public url extension
 		- recursive properties
-		- improve installation experience: restrict which types may be root and/or start pages
 
 - engine
 	- Man kan inte gruppera contentitems i edit-läget?
@@ -38,7 +37,6 @@ TODO:
 	- do something about right-click menu not closing during click in whole window frame
 	- warning that checking all security options means all have access
 	- consider interface for root and start pages
-	- consider INode
 	- isearchable
 	- rule based integrity
 	- enable different persistence managers/containers

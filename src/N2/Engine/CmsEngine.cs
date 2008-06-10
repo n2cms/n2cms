@@ -114,6 +114,10 @@ namespace N2.Engine
 			get { return container.Resolve<IEditManager>(); }
 		}
 
+        public IHost Host
+        {
+            get { return container.Resolve<IHost>(); }
+        }
 		#endregion
 
 		#region Methods
@@ -254,5 +258,5 @@ namespace N2.Engine
 		}
 
 		#endregion
-	}
+    }
 }

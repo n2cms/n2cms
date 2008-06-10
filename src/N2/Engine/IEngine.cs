@@ -38,6 +38,9 @@ namespace N2.Engine
 		/// <summary>Gets the class responsible for plugins in edit mode.</summary>
 		IEditManager EditManager { get; }
 
+        /// <summary>The base of the web site.</summary>
+        IHost Host { get; }
+
 		void InitializePlugins();
 
 		/// <summary>Attaches to the appropriate events for usage with ASP.NET.</summary>

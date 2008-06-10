@@ -9,31 +9,24 @@ This is the edit interface for the N2 CMS. Through this interface non-technical
 editors can edit and manage content items. Parts of the edit functionality is
 organized in optional modules. The N2.Edit project provides interfaces for 
 organizing, navigating, creating, editing, movig, copying, sorting, searching 
-and deleting content. There is also a simple file manager.
-
-* N2.Edit.Export
-Content import & export interface.
-
-* N2.Edit.Install
-Database installation interface.
+and deleting content. There is also a simple file manager, content import & 
+export, installation interface, user administration, content access rights 
+editor, content versioning interface.
 
 * N2.Edit.LinkTracker
 Html link tracker.
 
-* N2.Edit.Membership
-User administration.
-
-* N2.Edit.Security
-Content access rights editor.
-
 * N2.Edit.Trash
 Trashcan interface.
 
-* N2.Edit.Versions
-Content versioning interface.
-
 * N2.Edit.Wizard
 Default content type and location interface.
+
+* N2.Extensions
+Integration with ASP.NET MVC.
+
+* N2.Security
+Membership and role providers. Stores users as content items.
 
 * N2.Templates
 The templates project is an implementation of the N2 CMS. It can be used either
@@ -42,52 +35,13 @@ The library project with the same name contains a few basic item definitions,
 some specialized editable details and a few web controls.
 
 * N2.Templates.UI
-Interface files for the templates implementation.
-
-* N2.Templates.Calendar
-Event calendar functionality.
-
-* N2.Templates.Faq
-Frequently asked questions functionality.
-
-* N2.Templates.Form
-Customized form functionality.
-
-* N2.Templates.ImageGallery
-Image gallery.
-
-* N2.Templates.News
-News functionality.
-
-* N2.Templates.Poll
-Poll question functionality.
-
-* N2.Templates.Rss
-Syndication interface files.
-
-* N2.Templates.Search
-Content search functionality.
-
-* N2.Templates.Security
-ASP.NET membership provider stored as content items.
+Interface files for the templates implementation. Event calendar functionality, 
+frequently asked questions functionality, customized form functionality, image 
+gallery, news functionality, poll question functionality, syndication interface 
+files, content search functionality and content syndication functionality.
 
 * N2.Templates.Survey
 Library project used by poll and form projects.
 
-* N2.Templates.Syndication
-Syndication functionality.
-
-* N2.Installation
-Installation manager used to query about database status and install database schema.
-
-* N2.Parts
-Drag & drop functionality.
-
-* N2.Tests
+* N2.Tests, N2.Extensions.Tests, N2.Edit.Tests
 Unit tests for the N2 library.
-
-* N2.Trashcan
-Trashcan library.
-
-* N2.Xml
-Deprecated library with content serialization functionality.

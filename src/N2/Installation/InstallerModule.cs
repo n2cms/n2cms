@@ -5,48 +5,54 @@ using System.Web;
 using System.Diagnostics;
 using N2.Web;
 using System.Configuration;
+using N2.Configuration;
+using System.Web.Configuration;
+using N2.Engine;
 
 namespace N2.Installation
 {
+    /// <summary>
+    /// Performs a database check to detect wether the site has been 
+    /// installed. This may cause a redirect for installed sites if there is a
+    /// problem connecting to the database. Therefore it's advisable to remove
+    /// this http module once the site has been installed.
+    /// </summary>
 	public class InstallerModule : IHttpModule
 	{
-		HttpApplication context;
-		bool isChecked = false;
+        private InstallerSection config;
+        private HttpApplication context;
+        private IEngine engine;
+        private bool alreadyChecked = false;
 
-		public void Init(HttpApplication context)
+		public void Init(HttpApplication application)
 		{
-			this.context = context;
-			N2.Context.Initialize(false);
-			context.BeginRequest += context_BeginRequest;
+            config = (InstallerSection)WebConfigurationManager.GetSection("n2/installer");
+            if (config != null && config.CheckInstallationStatus)
+            {
+                this.context = application;
+                engine = N2.Context.Initialize(false);
+                application.BeginRequest += context_BeginRequest;
+            }
 		}
 
 		void context_BeginRequest(object sender, EventArgs e)
 		{
-			if (isChecked || IsEditing() || !AllowRedirectToInstallPage())
+			if (alreadyChecked || IsEditing())
 				return;
 			else
-				isChecked = true;
+				alreadyChecked = true;
 
-			context.BeginRequest -= context_BeginRequest;
-
-			InstallationManager im = new InstallationManager(N2.Context.Current);
-			
+			InstallationManager im = new InstallationManager(engine);
 			DatabaseStatus status = im.GetStatus();
 			if (!status.IsInstalled)
 			{
-				string url = ConfigurationManager.AppSettings["N2.InstallUrl"] ?? "~/Edit/Install/Begin/Default.aspx";
-				context.Response.Redirect(url);
+				context.Response.Redirect(config.InstallUrl);
 			}
 		}
 
-		private static bool AllowRedirectToInstallPage()
+		private bool IsEditing()
 		{
-			return string.Equals(ConfigurationManager.AppSettings["N2.AllowRedirectToInstallPage"], "true", StringComparison.InvariantCultureIgnoreCase);
-		}
-
-		private static bool IsEditing()
-		{
-			IWebContext web = N2.Context.Current.Resolve<IWebContext>();
+			IWebContext web = engine.Resolve<IWebContext>();
 			return web.ToAppRelative(web.AbsolutePath).StartsWith("~/Edit", StringComparison.InvariantCultureIgnoreCase);
 		}
 

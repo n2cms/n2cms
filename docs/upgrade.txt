@@ -1,4 +1,11 @@
-From pre v.1.3.5:
+From pre v1.4.0:
+- Change configuration (see example.web.config)
+	- create <configSections><section name="n2"...
+	- create <n2> section and update settings from the castle section
+	- remove <configSections><section name="castle"...
+	- remove <castle> section
+
+From pre v1.3.5:
 - Remove deprecated assemblies:
 	- N2.MediumTrust.dll
 	- N2.Templates.Security.dll

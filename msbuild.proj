@@ -150,6 +150,7 @@
 	</PropertyGroup>
 
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Core-PrepareDependencies">
+    <Message Text="Core, Edit and Templates are now married so nothing needs to be done here." />
 	</Target>
 
 	<Target Name="Templates-Build" DependsOnTargets="Core-Build;Templates-PrepareDependencies">

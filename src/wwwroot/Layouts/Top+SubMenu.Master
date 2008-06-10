@@ -24,7 +24,7 @@
         <div id="wrap">
             <asp:ContentPlaceHolder ID="Top" runat="server">
                 <div id="header">
-                    <n2:Display ID="dh" PropertyName="Header" Path="/" runat="server" />
+                    <n2:Display ID="dh" PropertyName="Header" Path="~/" runat="server" />
                     <parts:TopMenu ID="tm" runat="server" />
                 </div>
             </asp:ContentPlaceHolder>
@@ -36,7 +36,7 @@
                     <asp:ContentPlaceHolder ID="Menu" runat="server">
                         <div id="menu" class="secondary">
 							<parts:SubMenu ID="sm" runat="server" />
-                            <n2:DroppableZone ID="zsl" ZoneName="SiteLeft" runat="server" Path="/" />
+                            <n2:DroppableZone ID="zsl" ZoneName="SiteLeft" runat="server" Path="~/" />
                             <n2:DroppableZone ID="zl" ZoneName="Left" runat="server" />
                         </div>
                     </asp:ContentPlaceHolder>
@@ -63,7 +63,7 @@
 								<div id="extras" class="secondary">
 									<n2:Zone ID="zrr" ZoneName="RecursiveRight" runat="server" />
 									<n2:DroppableZone ID="zr" ZoneName="Right" runat="server" />
-									<n2:DroppableZone ID="zsr" ZoneName="SiteRight" runat="server" Path="/" />
+									<n2:DroppableZone ID="zsr" ZoneName="SiteRight" runat="server" Path="~/" />
 								</div>
 							</asp:ContentPlaceHolder>
 						</asp:ContentPlaceHolder>
@@ -71,7 +71,7 @@
                 </div>
                 <div id="footer">
 					<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
-					<n2:Display ID="dft" PropertyName="FooterText" Path="/" runat="server" />
+					<n2:Display ID="dft" PropertyName="FooterText" Path="~/" runat="server" />
 				</div>
             </asp:ContentPlaceHolder>
         </div>
