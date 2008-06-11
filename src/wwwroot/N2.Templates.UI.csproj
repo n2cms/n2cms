@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\DisplayPage-PlugIn.cs" />
+    <Compile Include="Layouts\Parts\Translation.cs" />
     <Compile Include="UI\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

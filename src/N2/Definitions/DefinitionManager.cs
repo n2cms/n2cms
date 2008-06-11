@@ -40,7 +40,10 @@ namespace N2.Definitions
 
 		protected virtual void OnItemCreating(ContentItem item, ContentItem parentItem)
 		{
-			if(parentItem != null)
+            item.Created = DateTime.Now;
+            item.Updated = DateTime.Now;
+            item.Published = DateTime.Now;
+            if (parentItem != null)
 			{
 				ItemDefinition parentDefinition = GetDefinition(parentItem.GetType());
 				ItemDefinition itemDefinition = GetDefinition(item.GetType());

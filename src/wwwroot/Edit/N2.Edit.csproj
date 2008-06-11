@@ -45,6 +45,10 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=2.0.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
@@ -165,6 +169,28 @@
     </Compile>
     <Compile Include="Framed.Master.designer.cs">
       <DependentUpon>Framed.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Globalization\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\LanguageInitializer.cs" />
+    <Compile Include="Globalization\LanguageMenu.ascx.cs">
+      <DependentUpon>LanguageMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Globalization\LanguageMenu.ascx.designer.cs">
+      <DependentUpon>LanguageMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\Languages.ascx.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Globalization\Languages.ascx.designer.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
     </Compile>
     <Compile Include="Install\Begin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1239,8 +1265,272 @@
     <Content Include="Install\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Globalization\Default.aspx" />
+    <Content Include="Globalization\LanguageMenu.ascx" />
+    <Content Include="Globalization\Languages.ascx" />
+    <Content Include="Globalization\Styles.css" />
     <Content Include="Install\Begin\Web.config" />
     <Content Include="Js\jquery-1.2.6.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Globalization\App_LocalResources\Languages.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Globalization\flags\ad.png" />
+    <Content Include="Globalization\flags\ae.png" />
+    <Content Include="Globalization\flags\af.png" />
+    <Content Include="Globalization\flags\ag.png" />
+    <Content Include="Globalization\flags\ai.png" />
+    <Content Include="Globalization\flags\al.png" />
+    <Content Include="Globalization\flags\am.png" />
+    <Content Include="Globalization\flags\an.png" />
+    <Content Include="Globalization\flags\ao.png" />
+    <Content Include="Globalization\flags\ar.png" />
+    <Content Include="Globalization\flags\as.png" />
+    <Content Include="Globalization\flags\at.png" />
+    <Content Include="Globalization\flags\au.png" />
+    <Content Include="Globalization\flags\aw.png" />
+    <Content Include="Globalization\flags\ax.png" />
+    <Content Include="Globalization\flags\az.png" />
+    <Content Include="Globalization\flags\ba.png" />
+    <Content Include="Globalization\flags\bb.png" />
+    <Content Include="Globalization\flags\bd.png" />
+    <Content Include="Globalization\flags\be.png" />
+    <Content Include="Globalization\flags\bf.png" />
+    <Content Include="Globalization\flags\bg.png" />
+    <Content Include="Globalization\flags\bh.png" />
+    <Content Include="Globalization\flags\bi.png" />
+    <Content Include="Globalization\flags\bj.png" />
+    <Content Include="Globalization\flags\bm.png" />
+    <Content Include="Globalization\flags\bn.png" />
+    <Content Include="Globalization\flags\bo.png" />
+    <Content Include="Globalization\flags\br.png" />
+    <Content Include="Globalization\flags\bs.png" />
+    <Content Include="Globalization\flags\bt.png" />
+    <Content Include="Globalization\flags\bv.png" />
+    <Content Include="Globalization\flags\bw.png" />
+    <Content Include="Globalization\flags\by.png" />
+    <Content Include="Globalization\flags\bz.png" />
+    <Content Include="Globalization\flags\ca.png" />
+    <Content Include="Globalization\flags\catalonia.png" />
+    <Content Include="Globalization\flags\cc.png" />
+    <Content Include="Globalization\flags\cd.png" />
+    <Content Include="Globalization\flags\cf.png" />
+    <Content Include="Globalization\flags\cg.png" />
+    <Content Include="Globalization\flags\ch.png" />
+    <Content Include="Globalization\flags\ci.png" />
+    <Content Include="Globalization\flags\ck.png" />
+    <Content Include="Globalization\flags\cl.png" />
+    <Content Include="Globalization\flags\cm.png" />
+    <Content Include="Globalization\flags\cn.png" />
+    <Content Include="Globalization\flags\co.png" />
+    <Content Include="Globalization\flags\cr.png" />
+    <Content Include="Globalization\flags\cs.png" />
+    <Content Include="Globalization\flags\cu.png" />
+    <Content Include="Globalization\flags\cv.png" />
+    <Content Include="Globalization\flags\cx.png" />
+    <Content Include="Globalization\flags\cy.png" />
+    <Content Include="Globalization\flags\cz.png" />
+    <Content Include="Globalization\flags\de.png" />
+    <Content Include="Globalization\flags\dj.png" />
+    <Content Include="Globalization\flags\dk.png" />
+    <Content Include="Globalization\flags\dm.png" />
+    <Content Include="Globalization\flags\do.png" />
+    <Content Include="Globalization\flags\dz.png" />
+    <Content Include="Globalization\flags\ec.png" />
+    <Content Include="Globalization\flags\ee.png" />
+    <Content Include="Globalization\flags\eg.png" />
+    <Content Include="Globalization\flags\eh.png" />
+    <Content Include="Globalization\flags\en.png" />
+    <Content Include="Globalization\flags\er.png" />
+    <Content Include="Globalization\flags\es.png" />
+    <Content Include="Globalization\flags\et.png" />
+    <Content Include="Globalization\flags\eu.png" />
+    <Content Include="Globalization\flags\fam.png" />
+    <Content Include="Globalization\flags\fi.png" />
+    <Content Include="Globalization\flags\fj.png" />
+    <Content Include="Globalization\flags\fk.png" />
+    <Content Include="Globalization\flags\fm.png" />
+    <Content Include="Globalization\flags\fo.png" />
+    <Content Include="Globalization\flags\fr.png" />
+    <Content Include="Globalization\flags\ga.png" />
+    <Content Include="Globalization\flags\gb.png" />
+    <Content Include="Globalization\flags\gd.png" />
+    <Content Include="Globalization\flags\ge.png" />
+    <Content Include="Globalization\flags\gf.png" />
+    <Content Include="Globalization\flags\gh.png" />
+    <Content Include="Globalization\flags\gi.png" />
+    <Content Include="Globalization\flags\gl.png" />
+    <Content Include="Globalization\flags\gm.png" />
+    <Content Include="Globalization\flags\gn.png" />
+    <Content Include="Globalization\flags\gp.png" />
+    <Content Include="Globalization\flags\gq.png" />
+    <Content Include="Globalization\flags\gr.png" />
+    <Content Include="Globalization\flags\gs.png" />
+    <Content Include="Globalization\flags\gt.png" />
+    <Content Include="Globalization\flags\gu.png" />
+    <Content Include="Globalization\flags\gw.png" />
+    <Content Include="Globalization\flags\gy.png" />
+    <Content Include="Globalization\flags\hk.png" />
+    <Content Include="Globalization\flags\hm.png" />
+    <Content Include="Globalization\flags\hn.png" />
+    <Content Include="Globalization\flags\hr.png" />
+    <Content Include="Globalization\flags\ht.png" />
+    <Content Include="Globalization\flags\hu.png" />
+    <Content Include="Globalization\flags\id.png" />
+    <Content Include="Globalization\flags\ie.png" />
+    <Content Include="Globalization\flags\il.png" />
+    <Content Include="Globalization\flags\in.png" />
+    <Content Include="Globalization\flags\io.png" />
+    <Content Include="Globalization\flags\iq.png" />
+    <Content Include="Globalization\flags\ir.png" />
+    <Content Include="Globalization\flags\is.png" />
+    <Content Include="Globalization\flags\it.png" />
+    <Content Include="Globalization\flags\jm.png" />
+    <Content Include="Globalization\flags\jo.png" />
+    <Content Include="Globalization\flags\jp.png" />
+    <Content Include="Globalization\flags\ke.png" />
+    <Content Include="Globalization\flags\kg.png" />
+    <Content Include="Globalization\flags\kh.png" />
+    <Content Include="Globalization\flags\ki.png" />
+    <Content Include="Globalization\flags\km.png" />
+    <Content Include="Globalization\flags\kn.png" />
+    <Content Include="Globalization\flags\kp.png" />
+    <Content Include="Globalization\flags\kr.png" />
+    <Content Include="Globalization\flags\kw.png" />
+    <Content Include="Globalization\flags\ky.png" />
+    <Content Include="Globalization\flags\kz.png" />
+    <Content Include="Globalization\flags\la.png" />
+    <Content Include="Globalization\flags\lb.png" />
+    <Content Include="Globalization\flags\lc.png" />
+    <Content Include="Globalization\flags\li.png" />
+    <Content Include="Globalization\flags\lk.png" />
+    <Content Include="Globalization\flags\lr.png" />
+    <Content Include="Globalization\flags\ls.png" />
+    <Content Include="Globalization\flags\lt.png" />
+    <Content Include="Globalization\flags\lu.png" />
+    <Content Include="Globalization\flags\lv.png" />
+    <Content Include="Globalization\flags\ly.png" />
+    <Content Include="Globalization\flags\ma.png" />
+    <Content Include="Globalization\flags\mc.png" />
+    <Content Include="Globalization\flags\md.png" />
+    <Content Include="Globalization\flags\me.png" />
+    <Content Include="Globalization\flags\mg.png" />
+    <Content Include="Globalization\flags\mh.png" />
+    <Content Include="Globalization\flags\mk.png" />
+    <Content Include="Globalization\flags\ml.png" />
+    <Content Include="Globalization\flags\mm.png" />
+    <Content Include="Globalization\flags\mn.png" />
+    <Content Include="Globalization\flags\mo.png" />
+    <Content Include="Globalization\flags\mp.png" />
+    <Content Include="Globalization\flags\mq.png" />
+    <Content Include="Globalization\flags\mr.png" />
+    <Content Include="Globalization\flags\ms.png" />
+    <Content Include="Globalization\flags\mt.png" />
+    <Content Include="Globalization\flags\mu.png" />
+    <Content Include="Globalization\flags\mv.png" />
+    <Content Include="Globalization\flags\mw.png" />
+    <Content Include="Globalization\flags\mx.png" />
+    <Content Include="Globalization\flags\my.png" />
+    <Content Include="Globalization\flags\mz.png" />
+    <Content Include="Globalization\flags\na.png" />
+    <Content Include="Globalization\flags\nc.png" />
+    <Content Include="Globalization\flags\ne.png" />
+    <Content Include="Globalization\flags\nf.png" />
+    <Content Include="Globalization\flags\ng.png" />
+    <Content Include="Globalization\flags\ni.png" />
+    <Content Include="Globalization\flags\nl.png" />
+    <Content Include="Globalization\flags\no.png" />
+    <Content Include="Globalization\flags\np.png" />
+    <Content Include="Globalization\flags\nr.png" />
+    <Content Include="Globalization\flags\nu.png" />
+    <Content Include="Globalization\flags\nz.png" />
+    <Content Include="Globalization\flags\om.png" />
+    <Content Include="Globalization\flags\pa.png" />
+    <Content Include="Globalization\flags\pe.png" />
+    <Content Include="Globalization\flags\pf.png" />
+    <Content Include="Globalization\flags\pg.png" />
+    <Content Include="Globalization\flags\ph.png" />
+    <Content Include="Globalization\flags\pk.png" />
+    <Content Include="Globalization\flags\pl.png" />
+    <Content Include="Globalization\flags\pm.png" />
+    <Content Include="Globalization\flags\pn.png" />
+    <Content Include="Globalization\flags\pr.png" />
+    <Content Include="Globalization\flags\ps.png" />
+    <Content Include="Globalization\flags\pt.png" />
+    <Content Include="Globalization\flags\pw.png" />
+    <Content Include="Globalization\flags\py.png" />
+    <Content Include="Globalization\flags\qa.png" />
+    <Content Include="Globalization\flags\re.png" />
+    <Content Include="Globalization\flags\ro.png" />
+    <Content Include="Globalization\flags\rs.png" />
+    <Content Include="Globalization\flags\ru.png" />
+    <Content Include="Globalization\flags\rw.png" />
+    <Content Include="Globalization\flags\sa.png" />
+    <Content Include="Globalization\flags\sb.png" />
+    <Content Include="Globalization\flags\sc.png" />
+    <Content Include="Globalization\flags\scotland.png" />
+    <Content Include="Globalization\flags\sd.png" />
+    <Content Include="Globalization\flags\se.png" />
+    <Content Include="Globalization\flags\sg.png" />
+    <Content Include="Globalization\flags\sh.png" />
+    <Content Include="Globalization\flags\si.png" />
+    <Content Include="Globalization\flags\sj.png" />
+    <Content Include="Globalization\flags\sk.png" />
+    <Content Include="Globalization\flags\sl.png" />
+    <Content Include="Globalization\flags\sm.png" />
+    <Content Include="Globalization\flags\sn.png" />
+    <Content Include="Globalization\flags\so.png" />
+    <Content Include="Globalization\flags\sr.png" />
+    <Content Include="Globalization\flags\st.png" />
+    <Content Include="Globalization\flags\sv.png" />
+    <Content Include="Globalization\flags\sy.png" />
+    <Content Include="Globalization\flags\sz.png" />
+    <Content Include="Globalization\flags\tc.png" />
+    <Content Include="Globalization\flags\td.png" />
+    <Content Include="Globalization\flags\tf.png" />
+    <Content Include="Globalization\flags\tg.png" />
+    <Content Include="Globalization\flags\th.png" />
+    <Content Include="Globalization\flags\tj.png" />
+    <Content Include="Globalization\flags\tk.png" />
+    <Content Include="Globalization\flags\tl.png" />
+    <Content Include="Globalization\flags\tm.png" />
+    <Content Include="Globalization\flags\tn.png" />
+    <Content Include="Globalization\flags\to.png" />
+    <Content Include="Globalization\flags\tr.png" />
+    <Content Include="Globalization\flags\tt.png" />
+    <Content Include="Globalization\flags\tv.png" />
+    <Content Include="Globalization\flags\tw.png" />
+    <Content Include="Globalization\flags\tz.png" />
+    <Content Include="Globalization\flags\ua.png" />
+    <Content Include="Globalization\flags\ug.png" />
+    <Content Include="Globalization\flags\um.png" />
+    <Content Include="Globalization\flags\us.png" />
+    <Content Include="Globalization\flags\uy.png" />
+    <Content Include="Globalization\flags\uz.png" />
+    <Content Include="Globalization\flags\va.png" />
+    <Content Include="Globalization\flags\vc.png" />
+    <Content Include="Globalization\flags\ve.png" />
+    <Content Include="Globalization\flags\vg.png" />
+    <Content Include="Globalization\flags\vi.png" />
+    <Content Include="Globalization\flags\vn.png" />
+    <Content Include="Globalization\flags\vu.png" />
+    <Content Include="Globalization\flags\wales.png" />
+    <Content Include="Globalization\flags\wf.png" />
+    <Content Include="Globalization\flags\ws.png" />
+    <Content Include="Globalization\flags\ye.png" />
+    <Content Include="Globalization\flags\yt.png" />
+    <Content Include="Globalization\flags\za.png" />
+    <Content Include="Globalization\flags\zm.png" />
+    <Content Include="Globalization\flags\zw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Globalization\flags\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Globalization\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

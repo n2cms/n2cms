@@ -125,21 +125,11 @@ namespace N2.Edit
 		{
 			LoadZones();
 			LoadInfo();
-			LoadEditParentLink();
 
 			if (!IsPostBack)
 				RegisterSetupToolbarScript(SelectedItem);
 
 			base.OnLoad(e);
-		}
-
-		private void LoadEditParentLink()
-		{
-			if (ie.CurrentItem.Parent != null)
-				hlEditParent.NavigateUrl =
-					string.Format("edit.aspx?selected={0}", Server.UrlEncode(ie.CurrentItem.Parent.Path));
-			else
-				hlEditParent.Visible = false;
 		}
 
 		private void LoadZones()

@@ -21,5 +21,14 @@ namespace N2.Edit.Globalization {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hlCancel;
+        
+        /// <summary>
+        /// cvGlobalizationDisabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvGlobalizationDisabled;
     }
 }

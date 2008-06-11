@@ -100,7 +100,7 @@
 			<one-to-many class="N2.Details.DetailCollection, N2"/>
 		</map>
 
-		<bag name="AuthorizedRoles" inverse="true" cascade="all-delete-orphan" generic="true" fetch="join" lazy="false">
+		<bag name="AuthorizedRoles" inverse="true" cascade="all-delete-orphan" generic="true" fetch="join" lazy="true">
 			<cache usage="read-write" />
 			<key column="ItemID"/>
 			<one-to-many class="N2.Security.AuthorizedRole, N2"/>

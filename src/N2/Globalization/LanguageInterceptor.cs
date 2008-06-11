@@ -5,9 +5,14 @@ using Castle.Core;
 using N2.Persistence;
 using N2.Web;
 using N2.Definitions;
+using N2.Configuration;
 
 namespace N2.Globalization
 {
+    /// <summary>
+    /// Intercepts and acts upon operations on the node tree. The purpose is to 
+    /// keep the language branches synchronized.
+    /// </summary>
 	public class LanguageInterceptor : IStartable
 	{
 		private const string DeletingKey = "LanguageInterceptor_Deleting";
@@ -16,6 +21,13 @@ namespace N2.Globalization
 		private readonly IDefinitionManager definitions;
 		private readonly IWebContext context;
 		private readonly ILanguageGateway gateway;
+        private bool enabled = true;
+
+        public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway, GlobalizationSection config)
+            : this(persister, definitions, context, gateway)
+        {
+            enabled = config.Enabled;
+        }
 
 		public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway)
 		{
@@ -146,18 +158,24 @@ namespace N2.Globalization
 
 		public void Start()
 		{
-			persister.ItemSaved += persister_ItemSaved;
-			persister.ItemMoved += persister_ItemMoved;
-			persister.ItemDeleting += persister_ItemDeleting;
-			definitions.ItemCreated += definitions_ItemCreated;
+            if (enabled)
+            {
+                persister.ItemSaved += persister_ItemSaved;
+                persister.ItemMoved += persister_ItemMoved;
+                persister.ItemDeleting += persister_ItemDeleting;
+                definitions.ItemCreated += definitions_ItemCreated;
+            }
 		}
 
 		public void Stop()
 		{
-			persister.ItemSaved -= persister_ItemSaved;
-			persister.ItemMoved -= persister_ItemMoved;
-			persister.ItemDeleting -= persister_ItemDeleting;
-			definitions.ItemCreated -= definitions_ItemCreated;
+            if (enabled)
+            {
+                persister.ItemSaved -= persister_ItemSaved;
+                persister.ItemMoved -= persister_ItemMoved;
+                persister.ItemDeleting -= persister_ItemDeleting;
+                definitions.ItemCreated -= definitions_ItemCreated;
+            }
 		}
 
 		#endregion

@@ -22,13 +22,16 @@ namespace N2.Edit.Globalization
 
 		protected override void OnInit(EventArgs e)
 		{
-			gateway = Engine.Resolve<ILanguageGateway>();
-			languages = gateway.GetAvailableLanguages();
+            hlCancel.NavigateUrl = SelectedNode.PreviewUrl;
+            
+            gateway = Engine.Resolve<ILanguageGateway>();
 
-			hlCancel.NavigateUrl = SelectedNode.PreviewUrl;
+            cvGlobalizationDisabled.IsValid = gateway.Enabled;
 
-			DataBind();
+            languages = gateway.GetAvailableLanguages();
 
+            DataBind();
+            
 			base.OnInit(e);
 		}
 

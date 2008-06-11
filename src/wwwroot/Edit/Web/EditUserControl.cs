@@ -2,11 +2,20 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Engine;
 
 namespace N2.Edit.Web
 {
-	public class EditUserControl : UserControl
+    /// <summary>
+    /// Base class for user controls in the edit interface.
+    /// </summary>
+	public abstract class EditUserControl : UserControl
 	{
+        protected IEngine Engine
+        {
+            get { return N2.Context.Current; }
+        }
+
 		protected N2.ContentItem SelectedItem
 		{
 			get
@@ -14,11 +23,11 @@ namespace N2.Edit.Web
 				string itemId = Request.QueryString["item"];
 				string selected = Request.QueryString["selected"];
 				if (!string.IsNullOrEmpty(selected))
-					return N2.Context.UrlParser.Parse(selected);
+					return Engine.UrlParser.Parse(selected);
 				if (!string.IsNullOrEmpty(itemId))
-					return N2.Context.Persister.Get(int.Parse(itemId));
+                    return Engine.Persister.Get(int.Parse(itemId));
 				else
-					return N2.Context.UrlParser.StartPage;
+                    return Engine.UrlParser.StartPage;
 			}
 		}
 	}

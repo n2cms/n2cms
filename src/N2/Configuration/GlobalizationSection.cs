@@ -10,5 +10,11 @@ namespace N2.Configuration
     /// </summary>
     public class GlobalizationSection : ConfigurationSection
     {
+        [ConfigurationProperty("enabled", DefaultValue = false)]
+        public bool Enabled
+        {
+            get { return (bool)base["enabled"]; }
+            set { base["enabled"] = value; }
+        }
     }
 }

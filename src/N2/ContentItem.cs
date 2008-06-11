@@ -86,9 +86,6 @@ namespace N2
         /// <summary>Creates a new instance of the ContentItem.</summary>
 		public ContentItem()
         {
-			created = DateTime.Now;
-			updated = DateTime.Now;
-			published = DateTime.Now;
         }
         #endregion
 

@@ -13,6 +13,8 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" AccessKey="C" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
+    <asp:CustomValidator CssClass="validator info" Text="Globalization is not enabled." runat="server" ID="cvGlobalizationDisabled" meta:resourceKey="cvGlobalizationDisabled" />
+    
 	<div class="languages">
 		<table class="gv"><thead>
 			<asp:Repeater runat="server" DataSource='<%# GetTranslations(SelectedItem) %>'>

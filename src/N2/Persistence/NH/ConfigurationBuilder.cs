@@ -87,8 +87,8 @@ namespace N2.Persistence.NH
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
 
-			Properties["cache.use_second_level_cache"] = config.Caching.ToString().ToLower();
-			Properties["cache.use_query_cache"] = config.Caching.ToString().ToLower();
+            Properties["cache.use_second_level_cache"] = config.Caching.ToString();
+            Properties["cache.use_query_cache"] = config.Caching.ToString();
 			Properties["cache.provider_class"] = config.CacheProviderClass;
 
             foreach (string key in config.Properties.AllKeys)

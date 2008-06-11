@@ -120,7 +120,6 @@
     <Compile Include="Persistence\CancellableItemEventArgs.cs" />
     <Compile Include="Persistence\DestinationEventArgs.cs" />
     <Compile Include="Persistence\IPersister.cs" />
-    <Compile Include="Persistence\NH\DefaultPersister.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />
     <Compile Include="Security\ISecurityManager.cs" />
     <Compile Include="Security\PermissionDeniedException.cs" />
@@ -235,8 +234,6 @@
     <Compile Include="Persistence\IFinder.cs" />
     <Compile Include="Persistence\IRelationFinder.cs" />
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
-    <Compile Include="Persistence\NH\DefaultConfigurationBuilder.cs" />
-    <Compile Include="Persistence\NH\DefaultSessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />
     <Compile Include="Plugin\PluginAttribute.cs" />
     <Compile Include="Security\AuthorizedRolesAttribute.cs" />
@@ -367,6 +364,9 @@
     <Compile Include="Parts\ItemMover.cs" />
     <Compile Include="Parts\PartsAjaxService.cs" />
     <Compile Include="Persistence\ItemNotifier.cs" />
+    <Compile Include="Persistence\NH\ConfigurationBuilder.cs" />
+    <Compile Include="Persistence\NH\ContentPersister.cs" />
+    <Compile Include="Persistence\NH\SessionProvider.cs" />
     <Compile Include="Plugin\IAutoStart.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />

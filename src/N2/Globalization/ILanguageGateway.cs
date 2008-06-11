@@ -9,6 +9,9 @@ namespace N2.Globalization
 	/// </summary>
 	public interface ILanguageGateway
 	{
+        /// <summary>Get wether the language functionality is enabled.</summary>
+        bool Enabled { get; }
+
 		/// <summary>Gets available translations for a certain item.</summary>
 		/// <param name="item">The item whose translations to get..</param>
 		/// <returns>An enumeration of content itmes that are translations of the given item. The item itself is included.</returns>

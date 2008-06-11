@@ -9,6 +9,7 @@ using N2.Persistence.Finder;
 using N2.Edit;
 using N2.Definitions;
 using N2.Security;
+using N2.Configuration;
 
 namespace N2.Globalization
 {
@@ -22,8 +23,15 @@ namespace N2.Globalization
 		private readonly IDefinitionManager definitions;
 		private readonly IHost host;
 		private int recursionDepth = 3;
-        ISecurityManager security;
-        IWebContext context;
+        private ISecurityManager security;
+        private IWebContext context;
+        private bool enabled = true;
+
+        public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context, GlobalizationSection config)
+            : this(persister, finder, editManager, definitions, host, security, context)
+        {
+            this.Enabled = config.Enabled;
+        }
 
 		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context)
 		{
@@ -34,6 +42,12 @@ namespace N2.Globalization
 			this.host = host;
             this.security = security;
             this.context = context;
+        }
+
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
         }
 
         public int RecursionDepth
@@ -147,5 +161,5 @@ namespace N2.Globalization
 			}
 			return null;
 		}
-	}
+    }
 }

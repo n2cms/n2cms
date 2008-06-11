@@ -14,15 +14,6 @@
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
-		<n2:OptionsMenu id="om2" runat="server">
-			<asp:HyperLink ID="hlEditParent" runat="server" CssClass="editParent command" AccessKey="p" meta:resourceKey="hlEditParent">Edit parent</asp:HyperLink>
-			<n2:ItemDataSource id="idsChildren" runat="server" PageFilter="true" ZoneName="" />
-			<asp:Repeater runat="server" DataSourceID="idsChildren">
-				<ItemTemplate>
-					<asp:HyperLink Text='<%# Eval("Title") %>' NavigateUrl="<%# Engine.EditManager.GetEditExistingItemUrl((ContentItem)Container.DataItem) %>" CssClass="command plain" runat="server"/>
-				</ItemTemplate>
-			</asp:Repeater>
-		</n2:OptionsMenu>
 		<asp:PlaceHolder runat="server" ID="phPluginArea" />
 		<asp:HyperLink ID="hlZones" runat="server" CssClass="showZones command" AccessKey="z" meta:resourceKey="hlZones" NavigateUrl="javascript:void(0);">Zones</asp:HyperLink>
 		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" AccessKey="i" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>

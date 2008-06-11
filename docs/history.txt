@@ -10,6 +10,8 @@
 	- consolidated a few edit modules: N2.Edit.Export, N2.Edit.Membership, N2.Edit.Install
 	- updated tinymce to 3.0.9
 	- installer can update web.config
+	- removed "edit parent"
+	- globalization interface moved into n2.edit
 - bugfixes
 	- editable roles can now add/remove roles
 	- fixed changes through membersihp provider not beeing persisted
@@ -39,6 +41,8 @@
 	- introduced a host concept to partially replace and abstract site
 	- tweaked name editor
 	- changed web control Path behaviour "/" -> "~/" (breaking change)
+	- option to disable globalization (localize content: /edit/globalization/default.aspx)
+	- changed authorized roles to lazy
 
 N2 1.3.5
 - edit
