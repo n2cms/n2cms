@@ -95,7 +95,6 @@
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Obsolete\Configuration\N2ConfigurationSectionHandler.cs" />
     <Compile Include="Definitions\IDefinitionManager.cs" />
-    <Compile Include="Definitions\DefaultDefinitionManager.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
@@ -109,7 +108,6 @@
     <Compile Include="Details\StringDetail.cs" />
     <Compile Include="Details\DateTimeDetail.cs" />
     <Compile Include="Details\ObjectDetail.cs" />
-    <Compile Include="Edit\DefaultEditManager.cs" />
     <Compile Include="Edit\ToolbarArea.cs" />
     <Compile Include="Edit\ToolbarPlugInAttribute.cs" />
     <Compile Include="Obsolete\AllowedParentsAttribute.cs" />
@@ -126,7 +124,6 @@
     <Compile Include="Security\AuthorizedRole.cs" />
     <Compile Include="Security\ISecurityManager.cs" />
     <Compile Include="Security\PermissionDeniedException.cs" />
-    <Compile Include="Security\DefaultSecurityManager.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
@@ -229,7 +226,6 @@
     <Compile Include="Web\IUrlParser.cs" />
     <Compile Include="Web\IUrlParserDependency.cs" />
     <Compile Include="Engine\ITypeFinder.cs" />
-    <Compile Include="Engine\CmsEngine.cs" />
     <Compile Include="Integrity\AllowedChildrenAttribute.cs" />
     <Compile Include="Integrity\CannotDeleteRootException.cs" />
     <Compile Include="Integrity\DestinationOnOrBelowItselfException.cs" />
@@ -239,7 +235,6 @@
     <Compile Include="Persistence\IFinder.cs" />
     <Compile Include="Persistence\IRelationFinder.cs" />
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
-    <Compile Include="Persistence\DefaultItemNotifier.cs" />
     <Compile Include="Persistence\NH\DefaultConfigurationBuilder.cs" />
     <Compile Include="Persistence\NH\DefaultSessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />
@@ -303,6 +298,7 @@
     <Compile Include="Configuration\SiteElementCollection.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
     <Compile Include="Definitions\DefinitionBuilder.cs" />
+    <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
     <Compile Include="Definitions\IDefinitionRefiner.cs" />
     <Compile Include="Definitions\IInheritableDefinitionRefiner.cs" />
@@ -318,6 +314,7 @@
     <Compile Include="Details\EditableLinkAttribute.cs" />
     <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
     <Compile Include="Edit\CreationPosition.cs" />
+    <Compile Include="Edit\EditManager.cs" />
     <Compile Include="Edit\EditToolbarPluginAttribute.cs" />
     <Compile Include="Edit\ITreeSorter.cs" />
     <Compile Include="Edit\LinkPluginAttribute.cs" />
@@ -331,6 +328,7 @@
     <Compile Include="Edit\Web\EditUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Engine\ContentEngine.cs" />
     <Compile Include="Globalization\Action.cs" />
     <Compile Include="Globalization\DictionaryScope.cs" />
     <Compile Include="Globalization\Scope.cs" />
@@ -368,7 +366,9 @@
     <Compile Include="Parts\ItemDeleter.cs" />
     <Compile Include="Parts\ItemMover.cs" />
     <Compile Include="Parts\PartsAjaxService.cs" />
+    <Compile Include="Persistence\ItemNotifier.cs" />
     <Compile Include="Plugin\IAutoStart.cs" />
+    <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\Host.cs" />

@@ -46,7 +46,7 @@ namespace N2.MediumTrust.Engine
 		private readonly IDictionary<Type, object> resolves = new Dictionary<Type, object>();
 		private readonly VersionManager versioner;
 		private readonly ConfigurationBuilder nhBuilder;
-		private readonly DefaultItemNotifier notifier;
+		private readonly ItemNotifier notifier;
 		private readonly ITypeFinder typeFinder;
 		private readonly IntegrityEnforcer integrityEnforcer;
 		private readonly NHRepository<int, ContentItem> itemRepository;
@@ -73,7 +73,7 @@ namespace N2.MediumTrust.Engine
 			if (webContext == null)
 				webContext = new N2.Web.RequestContext();
 			Resolves[typeof(IWebContext)] = this.webContext = webContext;
-			Resolves[typeof(IItemNotifier)] = notifier = new DefaultItemNotifier();
+			Resolves[typeof(IItemNotifier)] = notifier = new ItemNotifier();
 			Resolves[typeof(ITypeFinder)] = typeFinder = new MediumTrustTypeFinder(webContext, engineConfiguration);
 			Resolves[typeof(DefinitionBuilder)] = definitionBuilder = new DefinitionBuilder(typeFinder);
 			Resolves[typeof(IDefinitionManager)] = definitions = new DefinitionManager(definitionBuilder, notifier);

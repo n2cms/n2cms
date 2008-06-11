@@ -25,10 +25,10 @@ using System.Text;
 namespace N2.Persistence
 {
 	/// <summary>Intercepts content items loads and injects dependencies such as definition manager and url rewriter.</summary>
-	public class DefaultItemNotifier: IItemNotifier
+	public class ItemNotifier: IItemNotifier
 	{
 		/// <summary>Creates a new instance of the NHItemDependencyHandler.</summary>
-		public DefaultItemNotifier()
+		public ItemNotifier()
 		{
 			count++;
 		}

@@ -40,7 +40,7 @@
         <Properties>#{nhSettings}</Properties>
       </parameters>
     </component>
-    <component id="n2.itemNotifier" service="N2.Persistence.IItemNotifier, N2" type="N2.Persistence.DefaultItemNotifier, N2"/>
+    <component id="n2.itemNotifier" service="N2.Persistence.IItemNotifier, N2" type="N2.Persistence.ItemNotifier, N2"/>
     <component id="n2.interceptor" service="NHibernate.IInterceptor, NHibernate" type="N2.Persistence.NH.NotifyingInterceptor, N2"/>
     <component id="n2.repository" service="N2.Persistence.IRepository`2, N2" type="N2.Persistence.NH.NHRepository`2, N2"/>
     <component id="n2.repository.nh" service="N2.Persistence.NH.INHRepository`2, N2" type="N2.Persistence.NH.NHRepository`2, N2"/>
