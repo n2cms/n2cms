@@ -8,6 +8,7 @@ using Castle.Core;
 using N2.Persistence.Finder;
 using N2.Edit;
 using N2.Definitions;
+using N2.Security;
 
 namespace N2.Globalization
 {
@@ -21,21 +22,25 @@ namespace N2.Globalization
 		private readonly IDefinitionManager definitions;
 		private readonly IHost host;
 		private int recursionDepth = 3;
-		
-		public int RecursionDepth
-		{
-			get { return recursionDepth; }
-			set { recursionDepth = value; }
-		}
+        ISecurityManager security;
+        IWebContext context;
 
-		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host)
+		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context)
 		{
 			this.persister = persister;
 			this.finder = finder;
 			this.editManager = editManager;
 			this.definitions = definitions;
 			this.host = host;
-		}
+            this.security = security;
+            this.context = context;
+        }
+
+        public int RecursionDepth
+        {
+            get { return recursionDepth; }
+            set { recursionDepth = value; }
+        }
 
 		public ILanguage GetLanguage(ContentItem item)
 		{
@@ -77,7 +82,7 @@ namespace N2.Globalization
 				return new ContentItem[0];
 
 			int key = (int)item[LanguageKey];
-			return finder.Where.Detail(LanguageKey).Eq(key).Select();
+			return finder.Where.Detail(LanguageKey).Eq(key).Filters(new AccessFilter(context.User, security)).Select();
 		}
 
 		public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent)

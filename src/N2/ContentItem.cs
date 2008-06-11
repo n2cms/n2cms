@@ -683,7 +683,7 @@ namespace N2
 		/// <summary>Gets wether a certain user is authorized to view this item.</summary>
 		/// <param name="user">The user to check.</param>
 		/// <returns>True if the item is open for all or the user has the required permissions.</returns>
-		public bool IsAuthorized(IPrincipal user)
+		public virtual bool IsAuthorized(IPrincipal user)
 		{
 			if (AuthorizedRoles == null || AuthorizedRoles.Count == 0)
 			{

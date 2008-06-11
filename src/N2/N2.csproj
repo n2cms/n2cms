@@ -294,6 +294,7 @@
     <Compile Include="Configuration\DatabaseFlavour.cs" />
     <Compile Include="Configuration\DatabaseSection.cs" />
     <Compile Include="Configuration\EditSection.cs" />
+    <Compile Include="Configuration\GlobalizationSection.cs" />
     <Compile Include="Configuration\HostSection.cs" />
     <Compile Include="Configuration\InstallerSection.cs" />
     <Compile Include="Configuration\SectionGroup.cs" />

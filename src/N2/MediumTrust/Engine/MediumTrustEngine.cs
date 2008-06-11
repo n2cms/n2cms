@@ -110,7 +110,7 @@ namespace N2.MediumTrust.Engine
 			Resolves[typeof(Importer)] = new Importer(persister, xmlReader);
 			Resolves[typeof(ItemXmlWriter)] = xmlWriter = new ItemXmlWriter(definitions, urlParser);
 			Resolves[typeof(Exporter)] = new Exporter(xmlWriter);
-			AddComponentInstance("", typeof(ILanguageGateway), new LanguageGateway(persister, finder, editManager, definitions, host));
+			AddComponentInstance("", typeof(ILanguageGateway), new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
 			AddComponentInstance("initializerInvoker", typeof(IPluginBootstrapper), new PluginBootstrapper(typeFinder));
 			AddComponentInstance("navigator", typeof(Navigator), new Navigator(persister, host));
 

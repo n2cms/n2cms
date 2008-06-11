@@ -1,10 +1,11 @@
+- allow non root-path to act as start page
+- dashboard
 - restrictparents: NewRestrictionAttribute
 - Parts: Throw friendly exception when page isn't found
 - move sites initialization to after context.instance is set
 - implement INode for edit mode integration
 - allow other than content items to be edited
 - implement security context
-- dashboard
 - webdav
 - rebuild configuration
 - content item runtime attributes
@@ -15,6 +16,7 @@
 - google analytics plugin
 - templates: categories
 - nhibernate.search
+- action based authorization
 - pluggable workflow steps
 	- before: check name already exists
 	- handle upon user input: 

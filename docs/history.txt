@@ -1,3 +1,4 @@
+1.4
 - templates
 	- login part
 	- register part with email verification
@@ -19,6 +20,7 @@
 	- fixed installer module not redirecting as it should
 	- replaced AnyBrowser with genericmozilla5.browser
 	- fixed context menu double right click bug
+	- get translations now filters by access
 - core
 	- removed some obsolte code: CloseSessionModule, IDataItemContainer, NavigationPlugInAttribute, PlugInAttribute, ToolbarPlugInAttribute, UrlRewriterModule
 	- rearranged the solution hopefully making it simpler and more understandable

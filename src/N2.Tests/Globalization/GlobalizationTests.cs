@@ -183,6 +183,21 @@ namespace N2.Tests.Globalization
 			EnumerableAssert.DoesntContain(translations, swedishSub);
 		}
 
+        [Test]
+        public void FindTranslations_DoesntYield_PagesWithoutAccess()
+        {
+            var englishSub = CreateOneItem<TranslatedPageWithAuthorization>(0, "english1", english);
+            engine.Persister.Save(englishSub);
+
+            var swedishSub = CreateOneItem<TranslatedPage>(0, "swedish1", swedish);
+            swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
+            engine.Persister.Save(swedishSub);
+
+            englishSub.Authorize = false;
+            var lg = engine.Resolve<ILanguageGateway>();
+            EnumerableAssert.Count(1, lg.FindTranslations(swedishSub));
+        }
+
 		[Test]
 		public void FindTransaltion_OnNonTranslatedPages_YieldsEmptyCollection()
 		{
