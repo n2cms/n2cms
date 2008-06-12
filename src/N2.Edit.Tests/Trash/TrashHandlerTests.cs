@@ -31,7 +31,7 @@ namespace N2.Trashcan.Tests
 			Assert.AreEqual(trash, item.Parent);
 
 			mocks.VerifyAll();
-		}
+        }
 
 		[Test]
 		public void ThrownItem_IsExpired()

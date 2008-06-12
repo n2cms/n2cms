@@ -24,7 +24,7 @@ namespace N2.Configuration
         /// NHibernate.Cache.NoCacheProvider,NHibernate
         /// NHibernate.Cache.HashtableCacheProvider,NHibernate
         /// </remarks>
-		[ConfigurationProperty("cacheProviderClass", DefaultValue = "NHibernate.Caches.SysCache2.SysCacheProvider,NHibernate.Caches.SysCache2")]
+        [ConfigurationProperty("cacheProviderClass", DefaultValue = "NHibernate.Cache.HashtableCacheProvider, NHibernate")]
 		public string CacheProviderClass
 		{
 			get { return (string)base["cacheProviderClass"]; }

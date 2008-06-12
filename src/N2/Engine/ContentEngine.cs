@@ -30,6 +30,7 @@ using N2.Security;
 using N2.Web;
 using N2.Configuration;
 using System.Configuration;
+using Castle.Windsor.Configuration.AppDomain;
 
 namespace N2.Engine
 {
@@ -128,9 +129,9 @@ namespace N2.Engine
 		protected IResource DetermineResource(System.Configuration.Configuration config)
 		{
 			SectionGroup n2group = config.GetSectionGroup("n2") as SectionGroup;
-			object castleSection = config.GetSection("castle");
+            object castleSection = config.GetSection("castle");
 			IResource resource;
-			if (castleSection != null)
+            if (castleSection != null && castleSection is CastleSectionHandler)
 			{
 				resource = new ConfigResource();
 			}

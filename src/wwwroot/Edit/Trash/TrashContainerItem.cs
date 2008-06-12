@@ -11,12 +11,14 @@ using N2.Integrity;
 using N2.Definitions;
 using N2.Details;
 using N2.Installation;
+using N2.Definitions.Edit.Trash;
 
 namespace N2.Edit.Trash
 {
 	[Definition("Trash", "TrashContainerItem", Installer = InstallerHint.NeverRootOrStartPage)]
 	[AllowedChildren(typeof(ContentItem))]
 	[ItemAuthorizedRoles(Roles = new string[0])]
+    [NotThrowable]
 	public class TrashContainerItem : N2.ContentItem, ITrashCan
 	{
 		[EditableTextBox("Number of days to keep deleted items", 100)]

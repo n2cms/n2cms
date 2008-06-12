@@ -297,6 +297,7 @@
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
+    <Compile Include="Edit\Trash\NotThrowableAttribute.cs" />
     <Compile Include="Definitions\IDefinitionRefiner.cs" />
     <Compile Include="Definitions\IInheritableDefinitionRefiner.cs" />
     <Compile Include="Definitions\IUniquelyNamed.cs" />

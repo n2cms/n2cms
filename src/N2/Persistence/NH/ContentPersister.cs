@@ -17,6 +17,7 @@ using N2.Collections;
 using N2.Details;
 using N2.Persistence.Finder;
 using NHibernate.Criterion;
+using NHibernate;
 
 namespace N2.Persistence.NH
 {
@@ -36,8 +37,6 @@ namespace N2.Persistence.NH
 			this.itemRepository = itemRepository;
 			this.linkRepository = linkRepository;
 			this.finder = finder;
-
-			Debug.WriteLine("DefaultPersistenceManager: ctor");
 		}
 
 		#region Load, Save, & Delete Methods
@@ -47,10 +46,22 @@ namespace N2.Persistence.NH
 		/// <returns>The item if one with a matching id was found, otherwise null.</returns>
 		public virtual ContentItem Get(int id)
 		{
-			ContentItem item = itemRepository.Get(id);
-			if (ItemLoaded != null)
-				ItemLoaded.Invoke(this, new ItemEventArgs(item));
-			return item;
+            try
+            {
+                // workaround: session.Get seems to cause the 2:nd level cache items to be thrown away
+                ContentItem item = itemRepository.Get(id);
+                if (ItemLoaded != null)
+                {
+                    ItemEventArgs args = new ItemEventArgs(item);
+                    ItemLoaded.Invoke(this, args);
+                    return args.AffectedItem;
+                }
+                return item;
+            }
+            catch (ObjectNotFoundException)
+            {
+                return null;
+            }
 		}
 
 		/// <summary>Gets an item by id</summary>
@@ -59,10 +70,7 @@ namespace N2.Persistence.NH
 		/// <returns>The item if one with a matching id was found, otherwise null.</returns>
 		public virtual T Get<T>(int id) where T : ContentItem
 		{
-			T item = itemRepository.Get<T>(id);
-			if (ItemLoaded != null)
-				ItemLoaded.Invoke(this, new ItemEventArgs(item));
-			return item;
+            return (T)Get(id);
 		}
 
 		/// <summary>Saves or updates an item storing it in database</summary>
@@ -74,7 +82,8 @@ namespace N2.Persistence.NH
 
 			if (!args.Cancel)
 			{
-				Trace.TraceInformation("NHPersistenceManager.Save " + unsavedItem);
+                unsavedItem = args.AffectedItem;
+
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
 					if (unsavedItem.VersionOf == null)
@@ -97,8 +106,6 @@ namespace N2.Persistence.NH
 				}
 				OnSaved(new ItemEventArgs(unsavedItem));
 			}
-			else
-				Debug.WriteLine("NHPersistenceManager.Save cancelled " + unsavedItem);
 		}
 
 		private void EnsureSortOrder(ContentItem unsavedItem)
@@ -139,6 +146,8 @@ namespace N2.Persistence.NH
 			OnDeleting(args);
 			if (!args.Cancel)
 			{
+                itemNoMore = args.AffectedItem;
+
 				Trace.TraceInformation("NHPersistenceManager.Delete" + itemNoMore);
 
 				using (ITransaction transaction = itemRepository.BeginTransaction())
@@ -149,8 +158,6 @@ namespace N2.Persistence.NH
 				}
 				OnDeleted(new ItemEventArgs(itemNoMore));
 			}
-			else
-				Debug.WriteLine("NHPersistenceManager.Delete cancelled " + itemNoMore);
 		}
 
 		#region Delete Helper Methods
@@ -218,6 +225,9 @@ namespace N2.Persistence.NH
 
 			if (!args.Cancel)
 			{
+                source = args.AffectedItem;
+                destination = args.Destination;
+
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
 					source.AddTo(destination);
@@ -240,8 +250,6 @@ namespace N2.Persistence.NH
 		{
 			if (ItemMoving != null)
 				ItemMoving.Invoke(this, args);
-			if (args.Cancel)
-				Debug.WriteLine("NHPersistenceManager.Move cancelled " + args.AffectedItem);
 		}
 
 		private void OnMoved(DestinationEventArgs args)
@@ -268,9 +276,14 @@ namespace N2.Persistence.NH
 		/// <returns>The copied item</returns>
 		public virtual ContentItem Copy(ContentItem source, ContentItem destination, bool includeChildren)
 		{
-			if (ShouldCopy(source, destination))
+            CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(source, destination);
+            OnCopying(args);
+
+            if (!args.Cancel)
 			{
-				Trace.TraceInformation("NHPersistenceManager.Copy " + source);
+                source = args.AffectedItem;
+                destination = args.Destination;
+
 				ContentItem cloned = source.Clone(includeChildren);
 
 				cloned.Parent = destination;
@@ -281,22 +294,15 @@ namespace N2.Persistence.NH
 
 				return cloned;
 			}
-			else
-			{
-				Debug.WriteLine("NHPersistenceManager.Copy cancel " + source);
-				return null;
-			}
+			return null;
 		}
 
 		/// <summary>Invokes copying events and checks whether the copy operation should be performed.</summary>
 		/// <returns>True if the copying should proceed.</returns>
-		private bool ShouldCopy(ContentItem source, ContentItem destination)
+		private void OnCopying(CancellableDestinationEventArgs args)
 		{
-			CancellableDestinationEventArgs cdea = new CancellableDestinationEventArgs(source, destination);
 			if (ItemCopying != null)
-				ItemCopying.Invoke(this, cdea);
-
-			return !cdea.Cancel;
+				ItemCopying.Invoke(this, args);
 		}
 
 		#endregion

@@ -1,3 +1,4 @@
+- neverdeletable
 - allow non root-path to act as start page
 - dashboard
 - restrictparents: NewRestrictionAttribute

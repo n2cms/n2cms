@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -43,7 +43,7 @@
   <ItemGroup>
     <Reference Include="N2, Version=1.0.301.3349, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\N2.dll</HintPath>
+      <HintPath>..\..\..\N2\bin\N2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

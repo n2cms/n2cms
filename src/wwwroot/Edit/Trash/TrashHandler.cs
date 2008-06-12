@@ -1,18 +1,9 @@
-#region License
-/* Copyright (C) 2006-2007 Cristian Libardo
- *
- * This is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version.
- */
-#endregion
-
 using System;
 using Castle.Core;
 using N2.Definitions;
 using N2.Persistence;
 using N2.Web;
+using N2.Definitions.Edit.Trash;
 
 namespace N2.Edit.Trash
 {
@@ -66,10 +57,12 @@ namespace N2.Edit.Trash
 
 		public bool CanThrow(ContentItem affectedItem)
 		{
+            bool throwable = affectedItem.GetType().GetCustomAttributes(typeof(NotThrowableAttribute), true).Length == 0;
 			TrashContainerItem trash = TrashContainer;
 			return trash != null
 				&& trash.Enabled
-				&& !IsInTrash(affectedItem);
+				&& !IsInTrash(affectedItem)
+                && throwable;
 		}
 
 		public virtual void Throw(ContentItem item)

@@ -4,6 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Edit.Trash;
+using N2.Edit.Tests.Trash;
 
 namespace N2.Trashcan.Tests
 {
@@ -12,6 +13,7 @@ namespace N2.Trashcan.Tests
 		protected MockRepository mocks;
 		protected ThrowableItem root;
 		protected ThrowableItem item;
+        protected NonThrowableItem nonThrowable;
 		protected TrashContainerItem trash;
 
 		[SetUp]
@@ -21,7 +23,8 @@ namespace N2.Trashcan.Tests
 
 			root = CreateItem<ThrowableItem>(1, "root", null);
 			item = CreateItem<ThrowableItem>(2, "item", root);
-			trash = CreateItem<TrashContainerItem>(3, "Trash", root);
+            trash = CreateItem<TrashContainerItem>(3, "Trash", root);
+            nonThrowable = CreateItem<NonThrowableItem>(4, "neverInTrash", root);
 		}
 
 		[TearDown]

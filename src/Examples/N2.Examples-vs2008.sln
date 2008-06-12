@@ -1,12 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleWebSite", "SimpleWebSite", "{D037EABD-718B-468A-A23D-4439AF936DCD}"
-	ProjectSection(FolderStartupServices) = postProject
-		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Globalization", "Globalization", "{7A3B7AC9-1865-4DE3-9621-5FE8F48DE1BB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simple Web Site", "Simple Web Site", "{D037EABD-718B-468A-A23D-4439AF936DCD}"
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
@@ -16,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parts", "Parts", "{11653C5A
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MediumTrust", "MediumTrust", "{85019B1D-187F-42E4-97DC-8E0BF58F23B7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Medium Trust", "Medium Trust", "{85019B1D-187F-42E4-97DC-8E0BF58F23B7}"
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
@@ -69,33 +64,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "VB", "SimpleWebSite\VB\", "
 		VWDPort = "1561"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageSwitcher", "Globalization\LanguageSwitcher\LanguageSwitcher.csproj", "{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}"
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebSite", "Globalization\WebSite\", "{8AB97DB0-11B8-4118-A297-A70B05A9A64F}"
-	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""
-		SccAuxPath = ""
-		SccLocalPath = ""
-		SccProvider = ""
-		TargetFramework = "2.0"
-		ProjectReferences = "{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}|LanguageSwitcher.dll;"
-		Debug.AspNetCompiler.VirtualPath = "/WebSite"
-		Debug.AspNetCompiler.PhysicalPath = "Globalization\WebSite\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\WebSite\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/WebSite"
-		Release.AspNetCompiler.PhysicalPath = "Globalization\WebSite\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\WebSite\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "1540"
-	EndProjectSection
-EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebSite", "Parts\WebSite\", "{F1BA6158-426A-4E18-AD8F-F0CF2E8FE0E4}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = ""
@@ -121,6 +89,12 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebSite", "Parts\WebSite\",
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediumTrustTest", "MediumTrust\WebProject\MediumTrustTest.csproj", "{23188961-CC8E-4D05-BC09-C6BE83D17640}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mvc", "Mvc", "{FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates Implementation", "Templates Implementation", "{91671D3F-E6C3-412B-89FF-BC14C0A0DE39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject", "TemplatesImplementation\WebProject\MyProject.csproj", "{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,26 +126,6 @@ Global
 		{6F26C30B-F727-44BA-8F41-24B199D0AC1C}.Release|Any CPU.ActiveCfg = Debug|.NET
 		{6F26C30B-F727-44BA-8F41-24B199D0AC1C}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
 		{6F26C30B-F727-44BA-8F41-24B199D0AC1C}.Release|Mixed Platforms.Build.0 = Debug|.NET
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|.NET.ActiveCfg = Release|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Debug|.NET.ActiveCfg = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Debug|.NET.Build.0 = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Debug|Any CPU.ActiveCfg = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Debug|Mixed Platforms.Build.0 = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Release|.NET.ActiveCfg = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Release|.NET.Build.0 = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F}.Release|Mixed Platforms.Build.0 = Debug|.NET
 		{F1BA6158-426A-4E18-AD8F-F0CF2E8FE0E4}.Debug|.NET.ActiveCfg = Debug|.NET
 		{F1BA6158-426A-4E18-AD8F-F0CF2E8FE0E4}.Debug|.NET.Build.0 = Debug|.NET
 		{F1BA6158-426A-4E18-AD8F-F0CF2E8FE0E4}.Debug|Any CPU.ActiveCfg = Debug|.NET
@@ -192,6 +146,16 @@ Global
 		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Any CPU.Build.0 = Release|Any CPU
 		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|.NET.ActiveCfg = Release|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -199,10 +163,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7FC2ECE2-AB05-47B4-B7CE-87E965D66401} = {D037EABD-718B-468A-A23D-4439AF936DCD}
 		{6F26C30B-F727-44BA-8F41-24B199D0AC1C} = {D037EABD-718B-468A-A23D-4439AF936DCD}
-		{EC4BA1D5-C26E-4C8F-818C-B1054834EA08} = {7A3B7AC9-1865-4DE3-9621-5FE8F48DE1BB}
-		{8AB97DB0-11B8-4118-A297-A70B05A9A64F} = {7A3B7AC9-1865-4DE3-9621-5FE8F48DE1BB}
 		{F1BA6158-426A-4E18-AD8F-F0CF2E8FE0E4} = {11653C5A-A506-484F-B7FC-6CC9E0413633}
 		{23188961-CC8E-4D05-BC09-C6BE83D17640} = {85019B1D-187F-42E4-97DC-8E0BF58F23B7}
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3} = {91671D3F-E6C3-412B-89FF-BC14C0A0DE39}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 7

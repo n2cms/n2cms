@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Reflection;
-using System.Web.Configuration;
 using System.Diagnostics;
+
+using Castle.Core;
 
 using N2.Engine;
 using N2.Persistence;
@@ -23,9 +24,9 @@ using N2.MediumTrust.Persistence.NH;
 using N2.Edit.Settings;
 using N2.Plugin;
 using N2.Parts;
-using Castle.Core;
 using N2.Configuration;
 using N2.Globalization;
+using System.Web.Configuration;
 
 namespace N2.MediumTrust.Engine
 {
@@ -65,10 +66,13 @@ namespace N2.MediumTrust.Engine
 
 		public MediumTrustEngine(IWebContext webContext)
 		{
-			HostSection hostConfiguration = (HostSection)WebConfigurationManager.GetSection("n2/host");
-			EngineSection engineConfiguration = (EngineSection)WebConfigurationManager.GetSection("n2/engine");
-			DatabaseSection databaseConfiguration = (DatabaseSection)WebConfigurationManager.GetSection("n2/database");
-			
+            HostSection hostConfiguration = (HostSection)AddConfigurationSection("n2/host");
+            EngineSection engineConfiguration = (EngineSection)AddConfigurationSection("n2/engine");
+            DatabaseSection databaseConfiguration = (DatabaseSection)AddConfigurationSection("n2/database");
+            AddConfigurationSection("n2/globalization");
+            AddConfigurationSection("n2/edit");
+            AddConfigurationSection("n2/installer");
+
 			AddComponentInstance("host", typeof(IHost), host = new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
 			if (webContext == null)
 				webContext = new N2.Web.RequestContext();
@@ -130,7 +134,15 @@ namespace N2.MediumTrust.Engine
 			integrityEnforcer.Start();
 
 			RegisterParts();
-		}
+        }
+
+        private object AddConfigurationSection(string sectionName)
+        {
+            object section = WebConfigurationManager.GetSection(sectionName);
+            if (section != null)
+                AddComponentInstance(section.GetType().FullName, section.GetType(), section);
+            return section;
+        }
 
 		private void RegisterParts()
 		{

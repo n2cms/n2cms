@@ -5,15 +5,15 @@ using N2.Integrity;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using N2.Security.Details;
+using N2.Definitions;
+using N2.Definitions.Edit.Trash;
 
 namespace N2.Security.Items
 {
-
 	[Definition("User", "User")]
 	[RestrictParents(typeof (UserList))]
-	//[WithEditableName("Username", 10)]
-	//[WithEditableTitle("First and last name", 100)]
-	public class User : N2.ContentItem
+    [NotThrowable]
+    public class User : N2.ContentItem
 	{
 		[EditableTextBox("Title", 10, Required = true)]
 		public override string Title

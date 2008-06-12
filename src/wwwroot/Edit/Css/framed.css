@@ -1,5 +1,6 @@
 ﻿/* FRAMED */
 body { background-color:#fff; }
+#content { padding-bottom:10px;}
 
 a img,
 .command img{ margin-right:1px; vertical-align:middle; }

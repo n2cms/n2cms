@@ -43,6 +43,7 @@
 	- changed web control Path behaviour "/" -> "~/" (breaking change)
 	- option to disable globalization (localize content: /edit/globalization/default.aspx)
 	- changed authorized roles to lazy
+	- added the NotThrowable attribute which should be treated as expected
 
 N2 1.3.5
 - edit

@@ -220,13 +220,6 @@
     <Compile Include="Install\Fix.aspx.designer.cs">
       <DependentUpon>Fix.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Install\MediumTrust.aspx.cs">
-      <DependentUpon>MediumTrust.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Install\MediumTrust.aspx.designer.cs">
-      <DependentUpon>MediumTrust.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ItemInfo.ascx.cs">
       <DependentUpon>ItemInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1257,7 +1250,6 @@
     <Content Include="Install\Default.aspx" />
     <Content Include="Install\Diagnose.aspx" />
     <Content Include="Install\Fix.aspx" />
-    <Content Include="Install\MediumTrust.aspx" />
     <Content Include="Membership\Web.config" />
   </ItemGroup>
   <ItemGroup>

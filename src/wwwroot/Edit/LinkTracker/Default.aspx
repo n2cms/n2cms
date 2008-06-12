@@ -21,7 +21,7 @@
 	<edit:FieldSet class="referencedItems" runat="server" Legend="Items referenced by this item" meta:resourceKey="referencedItems">
 		<asp:Repeater runat="server" ID="rptReferencedItems">
 			<ItemTemplate>
-				<div><a href='<%# Eval("Url") %>'><img src='<%# Eval("IconUrl") %>' /><%# Eval("Title") %></a></div>
+				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" /><%# Eval("Title") %></a></div>
 			</ItemTemplate>
 		</asp:Repeater>	
 	</edit:FieldSet>

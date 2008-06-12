@@ -6,13 +6,15 @@ using N2.Collections;
 using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
+using N2.Definitions.Edit.Trash;
 
 namespace N2.Security.Items
 {
 	[Definition("User List", "UserList", "", "", 2000)]
 	[WithEditableTitle("Title", 10)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
-	public class UserList : N2.ContentItem
+    [NotThrowable]
+    public class UserList : N2.ContentItem
 	{
 		public override string IconUrl
 		{

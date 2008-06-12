@@ -4,13 +4,15 @@ using N2.Details;
 using N2.Edit.Wizard.Details;
 using N2.Integrity;
 using N2.Installation;
+using N2.Definitions.Edit.Trash;
 
 namespace N2.Edit.Wizard.Items
 {
 	[Definition("Magic location", "MagicLocation", Installer = InstallerHint.NeverRootOrStartPage)]
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
-	public class MagicLocation : ContentItem
+    [NotThrowable]
+    public class MagicLocation : ContentItem
 	{
 		[EditableLink("Location", 100)]
 		public virtual ContentItem Location
