@@ -1,4 +1,3 @@
-- neverdeletable
 - allow non root-path to act as start page
 - dashboard
 - restrictparents: NewRestrictionAttribute
@@ -25,6 +24,7 @@
 		- warn inbound links
 		- warn translated pages
 	- after: warnings, notifications: e.g. warn that translated pages were also affected
+- fixer for obsolete content
 
 TODO:
 - documentation & programmability

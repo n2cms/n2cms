@@ -54,7 +54,7 @@ namespace N2.Tests
 		#region WebContext
 		protected virtual IWebContext CreateWrapper(bool replay)
 		{
-			IWebContext wrapper = mocks.StrictMock<IWebContext>();
+            IWebContext wrapper = mocks.DynamicMock<IWebContext>();
 			Expect.On(wrapper).Call(wrapper.ToAppRelative(null)).IgnoreArguments().Do(new ToAppRelativeDelegate(ToAppRelative)).Repeat.Any();
 			Expect.On(wrapper).Call(wrapper.ToAbsolute(null)).IgnoreArguments().Do(new ToAbsoluteDelegate(ToAbsolute)).Repeat.Any();
 			Expect.On(wrapper).Call(wrapper.ApplicationUrl).Return("/").Repeat.Any();

@@ -23,6 +23,7 @@
 	- replaced AnyBrowser with genericmozilla5.browser
 	- fixed context menu double right click bug
 	- get translations now filters by access
+	- items outside of sites when multiple sites now get a working url
 - core
 	- removed some obsolte code: CloseSessionModule, IDataItemContainer, NavigationPlugInAttribute, PlugInAttribute, ToolbarPlugInAttribute, UrlRewriterModule
 	- rearranged the solution hopefully making it simpler and more understandable

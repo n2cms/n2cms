@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using N2.Persistence;
 using N2.Configuration;
+using System.Diagnostics;
 
 namespace N2.Web
 {
@@ -12,6 +13,7 @@ namespace N2.Web
 	public class MultipleSitesParser : UrlParser
 	{
 		private IList<Site> sites = new List<Site>();
+        private string protocol = "http://";
 
 
 		public MultipleSitesParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, ISitesProvider sitesProvider, HostSection config)
@@ -19,15 +21,22 @@ namespace N2.Web
 		{
 			if (config == null) throw new ArgumentNullException("config");
 
-			foreach (Site s in host.Sites)
-				Sites.Add(s);
 			if(config.DynamicSites)
 				foreach (Site s in sitesProvider.GetSites())
 					Sites.Add(s);
+			foreach (Site s in host.Sites)
+                if(!Sites.Contains(s))
+				    Sites.Add(s);
 		}
 
 
 		#region Properties
+
+        private string Protocol
+        {
+            get { return protocol; }
+            set { protocol = value; }
+        }
 
 		public IList<Site> Sites
 		{
@@ -90,17 +99,31 @@ namespace N2.Web
 					url = "/" + current.Name + url;
 				current = current.Parent;
 			} while (current != null);
-
-			if (current.ID == CurrentSite.StartPageID)
-				return ToAbsolute(url, item);
-			else
-			{
-				foreach (Site site in Sites)
-					if (current.ID == site.StartPageID)
-						return "http://" + site.Host + ToAbsolute(url, item);
-				return "http://" + DefaultSite.Host + ToAbsolute(url, item);
-			}
+            
+            if (current == null)
+            {
+                return item.RewrittenUrl;
+            }
+            else if (current.ID == CurrentSite.StartPageID)
+            {
+                return ToAbsolute(url, item);
+            }
+            else
+            {
+                foreach (Site site in Sites)
+                    if (current.ID == site.StartPageID)
+                        return GetHostedUrl(item, url, site);
+                return GetHostedUrl(item, url, DefaultSite);// "http://" + DefaultSite.Host + ToAbsolute(url, item);
+            }
 		}
+
+        private string GetHostedUrl(ContentItem item, string url, Site site)
+        {
+            if (string.IsNullOrEmpty(site.Host))
+                return item.RewrittenUrl;
+            else
+                return Protocol + site.Host + ToAbsolute(url, item);
+        }
 
 		public override bool IsRootOrStartPage(ContentItem item)
 		{

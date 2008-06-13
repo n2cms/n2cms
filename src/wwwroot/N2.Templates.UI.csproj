@@ -203,9 +203,6 @@
     <Compile Include="Form\UI\Form.ascx.designer.cs">
       <DependentUpon>Form.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="ImageGallery\Items\GalleryItem.cs" />
     <Compile Include="ImageGallery\Items\ImageGallery.cs" />
     <Compile Include="ImageGallery\UI\Default.aspx.cs">
@@ -537,7 +534,6 @@
     <Content Include="App_Themes\Stripes\sidebar_bg.gif" />
     <Content Include="App_Themes\Stripes\Style.css" />
     <Content Include="App_Themes\Stripes\top_bg.png" />
-    <Content Include="Global.asax" />
     <Content Include="Img\controller.png" />
     <Content Include="Img\heart.png" />
     <Content Include="Img\photos.png" />

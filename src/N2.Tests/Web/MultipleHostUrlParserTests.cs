@@ -1,16 +1,22 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Persistence;
 using N2.Web;
 using N2.Configuration;
+using NUnit.Framework.SyntaxHelpers;
+using System.Diagnostics;
 
 namespace N2.Tests.Web
 {
 	[TestFixture]
 	public class MultipleHostUrlParserTests : ParserTestsBase
 	{
+        protected string currentHost = "www.n2cms.com";
+        MultipleSitesParser multipleParser;
+
 		class StaticSitesProvider : ISitesProvider
 		{
 			IEnumerable<Site> sites;
@@ -33,7 +39,10 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 
-			parser = CreateUrlParser();
+            Expect.On(wrapper).Call(wrapper.Host)
+                .Do(new Func<string>(delegate { return currentHost; })).Repeat.Any();
+
+            parser = multipleParser = CreateUrlParser();
 		}
 
 		protected override IWebContext CreateWrapper(bool replay)
@@ -45,7 +54,7 @@ namespace N2.Tests.Web
 		protected MultipleSitesParser CreateUrlParser()
 		{
 			sites = new Site[] { 
-				host.DefaultSite,
+                host.DefaultSite,
 				new Site(1, 2/*item1.ID*/, "www.n2cms.com"), 
 				new Site(1, 4/*item2.ID*/, "n2.libardo.com"), 
 				new Site(1, 5/*item2_1.ID*/, "www.n2cms.com:8080") 
@@ -133,7 +142,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFindASite()
 		{
-			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com");
+            currentHost = "www.n2cms.com";
 			mocks.ReplayAll();
 
 			Assert.AreSame(sites[1], parser.CurrentSite);
@@ -142,7 +151,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFindSiteWithPort()
 		{
-			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com:8080");
+            currentHost = "www.n2cms.com:8080";
 			mocks.ReplayAll();
 
 			Assert.AreSame(sites[3], parser.CurrentSite);
@@ -151,7 +160,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void FallbacksToDefaultSite()
 		{
-			Expect.On(wrapper).Call(wrapper.Host).Return("www.siteX.com");
+            currentHost = "www.siteX.com";
 			mocks.ReplayAll();
 
 			Assert.AreSame(host.DefaultSite, parser.CurrentSite);
@@ -162,7 +171,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseStartPageUrl()
 		{
-			CreateItemsAndBuildExpectations("www.n2cms.com", "/");
+            CreateItemsAndBuildExpectations("www.n2cms.com", "/");
 
 			Assert.AreSame(item1, parser.Parse("/"));
 		}
@@ -226,19 +235,17 @@ namespace N2.Tests.Web
 		private void CreateItemsAndBuildExpectations(string host, string url)
 		{
 			CreateItems(true);
-			Expect.On(wrapper).Call(wrapper.Host).Return(host).Repeat.Any();
-			Expect.On(wrapper).Call(wrapper.ToAppRelative(url)).Return(url).Repeat.Any();
+            currentHost = host;
 			mocks.ReplayAll();
 		}
 		#endregion
 
 		#region Build Url Tests
+        
 		[Test]
 		public void CanCreateCurrentStartItemUrl()
 		{
 			CreateItems(true);
-			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
-			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com");
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item1);
@@ -249,8 +256,7 @@ namespace N2.Tests.Web
 		public void CanBuildUrlOnCurrentSite()
 		{
 			CreateItems(true);
-			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx");
-			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com").Repeat.Any();
+            currentHost = "www.n2cms.com";
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item1_1);
@@ -261,8 +267,7 @@ namespace N2.Tests.Web
 		public void CanBuildUrlOnOtherSiteStartPage()
 		{
 			CreateItems(true);
-			//Expect.On(wrapper).Call(wrapper.ToAbsolute("~/")).Return("/");
-			Expect.On(wrapper).Call(wrapper.Host).Return("www.n2cms.com").Repeat.Any();
+            currentHost = "www.n2cms.com";
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item2);
@@ -273,13 +278,33 @@ namespace N2.Tests.Web
 		public void CanBuildUrlOnOtherSitePage()
 		{
 			CreateItems(true);
-			Expect.On(wrapper).Call(wrapper.ToAbsolute("~/item1_1.aspx")).Return("/item1_1.aspx").Repeat.Any();
-			Expect.On(wrapper).Call(wrapper.Host).Return("n2.libardo.com").Repeat.Any();
+            currentHost = "n2.libardo.com"; 
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item1_1);
 			Assert.AreEqual("http://www.n2cms.com/item1_1.aspx", url);
 		}
+
+        [Test]
+        public void ReferencesItems_OutsideAllSites_ByRewrittenUrl()
+        {
+            currentHost = "www.n2cms.com";
+            ContentItem itemOnTheOutside = CreateOneItem<PageItem>(99, "item4", startItem);
+
+            mocks.ReplayAll();
+
+            string url = parser.BuildUrl(itemOnTheOutside);
+            Assert.That(url, Is.EqualTo("/default.aspx?page=99"));
+        }
+
+        [Test]
+        public void DoesntAddDefaultSiteTwice()
+        {
+            int count = (from s in multipleParser.Sites where string.IsNullOrEmpty(s.Host) select 1).Count();
+
+            Assert.That(count, Is.EqualTo(1));
+        }
+
 		#endregion
 	}
 }

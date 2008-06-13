@@ -221,13 +221,13 @@
     <Compile Include="SecurityUtilities.cs" />
     <Compile Include="Security\Items\SecurityPage.cs" />
     <Compile Include="Security\SecurityManagerTests.cs" />
-    <Compile Include="Web\DataItem.cs" />
     <Compile Include="Web\DynamicSitesProviderTests.cs" />
+    <Compile Include="Web\Items\DataItem.cs" />
+    <Compile Include="Web\Items\PageItem.cs" />
+    <Compile Include="Web\Items\SiteProvidingItem.cs" />
     <Compile Include="Web\LinkTests.cs" />
     <Compile Include="Web\ParserTestsBase.cs" />
     <Compile Include="Web\MultipleHostUrlParserTests.cs" />
-    <Compile Include="Web\PageItem.cs" />
-    <Compile Include="Web\SiteProvidingItem.cs" />
     <Compile Include="Web\TreeNodeTests.cs" />
     <Compile Include="Web\TreeTests.cs" />
     <Compile Include="Web\UrlParserTests.cs" />
