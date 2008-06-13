@@ -11,12 +11,16 @@ namespace N2.Web
 		private Site defaultSite;
 		private IList<Site> sites = new List<Site>();
 
-		public Host(IWebContext context, HostSection host)
+		public Host(IWebContext context, HostSection config)
 		{
-			defaultSite = new Site(host.RootID, host.StartPageID);
-			foreach (SiteElement site in host.Sites)
+			defaultSite = new Site(config.RootID, config.StartPageID);
+			foreach (SiteElement site in config.Sites)
 			{
-				Sites.Add(new Site(host.RootID, site.ID, site.Name));
+                Site s = new Site(config.RootID, site.ID, site.Name);
+                s.Wildcards = site.Wildcards || config.Wildcards;
+                foreach (string key in site.Settings.AllKeys)
+                    s.Settings[key] = site.Settings[key].Value;
+                Sites.Add(s);
 			}
 		}
 

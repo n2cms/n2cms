@@ -31,15 +31,23 @@ namespace N2.Configuration
 		{
 			get { return (bool)base["multipleSites"]; }
 			set { base["multipleSites"] = value; }
-		}
+        }
 
-		/// <summary>Examine content nodes to find items that are site providers.</summary>
-		[ConfigurationProperty("dynamicSites", DefaultValue = true)]
-		public bool DynamicSites
-		{
-			get { return (bool)base["dynamicSites"]; }
-			set { base["dynamicSites"] = value; }
-		}
+        /// <summary>Examine content nodes to find items that are site providers.</summary>
+        [ConfigurationProperty("dynamicSites", DefaultValue = true)]
+        public bool DynamicSites
+        {
+            get { return (bool)base["dynamicSites"]; }
+            set { base["dynamicSites"] = value; }
+        }
+
+        /// <summary>Use wildcard matching for hostnames, e.g. both n2cms.com and www.n2cms.com.</summary>
+        [ConfigurationProperty("wildcards", DefaultValue = false)]
+        public bool Wildcards
+        {
+            get { return (bool)base["wildcards"]; }
+            set { base["wildcards"] = value; }
+        }
 
 		[ConfigurationProperty("sites")]
 		public SiteElementCollection Sites

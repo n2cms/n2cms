@@ -19,6 +19,21 @@ namespace N2.Configuration
 		{
 			get { return (string)base["name"]; }
 			set { base["name"] = value; }
-		}
+        }
+
+        /// <summary>Use wildcard matching for this hostname, e.g. both n2cms.com and www.n2cms.com.</summary>
+        [ConfigurationProperty("wildcards", DefaultValue = false)]
+        public bool Wildcards
+        {
+            get { return (bool)base["wildcards"]; }
+            set { base["wildcards"] = value; }
+        }
+
+        /// <summary>Per site settings passed on to the site object.</summary>
+        [ConfigurationProperty("settings")]
+        public KeyValueConfigurationCollection Settings
+        {
+            get { return (KeyValueConfigurationCollection)base["settings"]; }
+        }
 	}
 }

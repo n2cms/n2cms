@@ -46,7 +46,7 @@ namespace N2.Web
 		}
 
 		/// <summary>Gets the current host name.</summary>
-		public virtual string Host
+		public virtual string Authority
 		{
 			get { return Request.Url.Authority; }
 		}

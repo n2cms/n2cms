@@ -13,7 +13,7 @@ namespace N2.Web
 	public class MultipleSitesParser : UrlParser
 	{
 		private IList<Site> sites = new List<Site>();
-        private string protocol = "http://";
+        private string scheme = "http";
 
 
 		public MultipleSitesParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, ISitesProvider sitesProvider, HostSection config)
@@ -21,21 +21,30 @@ namespace N2.Web
 		{
 			if (config == null) throw new ArgumentNullException("config");
 
-			if(config.DynamicSites)
-				foreach (Site s in sitesProvider.GetSites())
-					Sites.Add(s);
-			foreach (Site s in host.Sites)
-                if(!Sites.Contains(s))
-				    Sites.Add(s);
+            if (config.DynamicSites)
+            {
+                foreach (Site s in sitesProvider.GetSites())
+                {
+                    Sites.Add(s);
+                }
+            }
+            foreach (Site s in host.Sites)
+            {
+                if (!Sites.Contains(s))
+                {
+                    Sites.Add(s);
+                }
+            }
 		}
 
 
 		#region Properties
 
-        private string Protocol
+        /// <summary>The default scheme to use when creating external url's. Default is http.</summary>
+        private string Scheme
         {
-            get { return protocol; }
-            set { protocol = value; }
+            get { return scheme; }
+            set { scheme = value; }
         }
 
 		public IList<Site> Sites
@@ -46,7 +55,7 @@ namespace N2.Web
 
 		public override Site CurrentSite
 		{
-			get { return GetSite(WebContext.Host) ?? base.CurrentSite; }
+			get { return GetSite(WebContext.Authority) ?? base.CurrentSite; }
 		}
 
 		#endregion
@@ -113,16 +122,16 @@ namespace N2.Web
                 foreach (Site site in Sites)
                     if (current.ID == site.StartPageID)
                         return GetHostedUrl(item, url, site);
-                return GetHostedUrl(item, url, DefaultSite);// "http://" + DefaultSite.Host + ToAbsolute(url, item);
+                return GetHostedUrl(item, url, DefaultSite);
             }
 		}
 
         private string GetHostedUrl(ContentItem item, string url, Site site)
         {
-            if (string.IsNullOrEmpty(site.Host))
+            if (string.IsNullOrEmpty(site.Authority))
                 return item.RewrittenUrl;
             else
-                return Protocol + site.Host + ToAbsolute(url, item);
+                return Scheme + "://" + site.Authority + ToAbsolute(url, item);
         }
 
 		public override bool IsRootOrStartPage(ContentItem item)
@@ -133,10 +142,10 @@ namespace N2.Web
 			return base.IsRootOrStartPage(item);
 		}
 
-		public virtual Site GetSite(string host)
+		public virtual Site GetSite(string authority)
 		{
 			foreach (Site site in Sites)
-				if (site.Host == host)
+				if (site.Is(authority))
 					return site;
 			return null;
 		}

@@ -32,8 +32,8 @@ namespace N2.Web
 		/// <summary>A page instance stored in the request context.</summary>
 		ContentItem CurrentPage { get; set; }
 
-		/// <summary>Gets the current host name, e.g. www.n2cms.com.</summary>
-		string Host { get; }
+		/// <summary>Gets the current host name and any port information, e.g. www.n2cms.com:80.</summary>
+		string Authority { get; }
 
 		/// <summary>Gets the url relative to the application root.</summary>
 		string RawUrl { get; }

@@ -39,7 +39,7 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 
-            Expect.On(wrapper).Call(wrapper.Host)
+            Expect.On(wrapper).Call(wrapper.Authority)
                 .Do(new Func<string>(delegate { return currentHost; })).Repeat.Any();
 
             parser = multipleParser = CreateUrlParser();
@@ -300,7 +300,7 @@ namespace N2.Tests.Web
         [Test]
         public void DoesntAddDefaultSiteTwice()
         {
-            int count = (from s in multipleParser.Sites where string.IsNullOrEmpty(s.Host) select 1).Count();
+            int count = (from s in multipleParser.Sites where string.IsNullOrEmpty(s.Authority) select 1).Count();
 
             Assert.That(count, Is.EqualTo(1));
         }

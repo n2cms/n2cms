@@ -12,7 +12,8 @@ namespace N2.Web
 	{
 		private int startPageID;
 		private int rootItemID;
-		private string host;
+		private string authority;
+        private bool wildcards;
 		private Dictionary<string, object> settings = new Dictionary<string, object>();
 
 		public Site(int rootItemID)
@@ -30,10 +31,17 @@ namespace N2.Web
 		public Site(int rootItemID, int startPageID, string host)
 			: this(rootItemID, startPageID)
 		{
-			this.host = host;
+			this.authority = host;
 		}
 
-		#region Properties
+        #region Properties
+        /// <summary>Matches hosts that ends with the site's authority, e.g. match both www.n2cms.com and n2cms.com.</summary>
+        public bool Wildcards
+        {
+            get { return wildcards; }
+            set { wildcards = value; }
+        }
+
 		public int StartPageID
 		{
 			get { return startPageID; }
@@ -46,11 +54,19 @@ namespace N2.Web
 			set { rootItemID = value; }
 		}
 
-		public string Host
+        /// <summary>The domain name plus and any port information, e.g. n2cms.com:80</summary>
+		public string Authority
 		{
-			get { return host; }
-			set { host = value; }
+			get { return authority; }
+			set { authority = value; }
 		}
+
+        [Obsolete("The name has changed to Authority.")]
+        public string Host
+        {
+            get { return authority; }
+            set { authority = value; }
+        }
 
 		public IDictionary<string, object> Settings
 		{
@@ -61,7 +77,7 @@ namespace N2.Web
 		#region ToString
 		public override string ToString()
 		{
-			return base.ToString() + " (" + this.Host + ")";
+			return base.ToString() + " (" + this.Authority + ")";
 		}
 		public override bool Equals(object obj)
 		{
@@ -70,7 +86,7 @@ namespace N2.Web
 				Site other = obj as Site;
 				return other.rootItemID == this.rootItemID
 					&& other.startPageID == this.startPageID
-					&& other.host == this.host;
+					&& other.authority == this.authority;
 			}
 			return base.Equals(obj);
 		}
@@ -78,9 +94,18 @@ namespace N2.Web
 		{
 			unchecked
 			{
-				return this.host.GetHashCode() + this.rootItemID.GetHashCode() + this.startPageID.GetHashCode();
+				return this.authority.GetHashCode() + this.rootItemID.GetHashCode() + this.startPageID.GetHashCode();
 			}
 		}
 		#endregion
-	}
+
+        public bool Is(string matchAgainstAuthority)
+        {
+            if (Authority == matchAgainstAuthority)
+                return true;
+            else if(Wildcards && matchAgainstAuthority.EndsWith("." + Authority))
+                return true;
+            return false;
+        }
+    }
 }

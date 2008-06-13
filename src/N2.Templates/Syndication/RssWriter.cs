@@ -58,7 +58,7 @@ namespace N2.Templates.Syndication
 
 		private string GetLink(string url)
 		{
-			return "http://" + context.Host + url;
+			return "http://" + context.Authority + url;
 		}
 
 		private void WriteItem(ISyndicatable item, XmlTextWriter xtw)
