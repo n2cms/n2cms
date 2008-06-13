@@ -96,6 +96,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates Implementation", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject", "TemplatesImplementation\WebProject\MyProject.csproj", "{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Multiple Sites", "Multiple Sites", "{B19718DD-E889-4797-BDE4-86CDD3646624}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "MultipleDomains", "MultipleDomains\", "{D1E62802-918B-4926-8F62-6A6B9EB4670C}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFramework = "2.0"
+		Debug.AspNetCompiler.VirtualPath = "/MultipleDomains"
+		Debug.AspNetCompiler.PhysicalPath = "MultipleDomains\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\MultipleDomains\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/MultipleDomains"
+		Release.AspNetCompiler.PhysicalPath = "MultipleDomains\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\MultipleDomains\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "3686"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -156,6 +178,16 @@ Global
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Debug|.NET.ActiveCfg = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Debug|.NET.Build.0 = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Debug|Any CPU.ActiveCfg = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Debug|Mixed Platforms.Build.0 = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Release|.NET.ActiveCfg = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Release|.NET.Build.0 = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Release|Any CPU.ActiveCfg = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C}.Release|Mixed Platforms.Build.0 = Debug|.NET
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,6 +198,7 @@ Global
 		{F1BA6158-426A-4E18-AD8F-F0CF2E8FE0E4} = {11653C5A-A506-484F-B7FC-6CC9E0413633}
 		{23188961-CC8E-4D05-BC09-C6BE83D17640} = {85019B1D-187F-42E4-97DC-8E0BF58F23B7}
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3} = {91671D3F-E6C3-412B-89FF-BC14C0A0DE39}
+		{D1E62802-918B-4926-8F62-6A6B9EB4670C} = {B19718DD-E889-4797-BDE4-86CDD3646624}
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 7

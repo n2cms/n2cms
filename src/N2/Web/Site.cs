@@ -35,6 +35,12 @@ namespace N2.Web
 		}
 
         #region Properties
+        public object this[string key]
+        {
+            get { return Settings.ContainsKey(key) ? Settings[key] : null; }
+            set { Settings[key] = value; }
+        }
+
         /// <summary>Matches hosts that ends with the site's authority, e.g. match both www.n2cms.com and n2cms.com.</summary>
         public bool Wildcards
         {

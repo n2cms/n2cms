@@ -1,6 +1,6 @@
 ﻿body 
 {
-	background-color:gray;
+	background-color:#F2F2F2;
 	font-family:Arial;
 }
 form
@@ -17,7 +17,7 @@ form
 {
 	padding:20px;
 	color:White;
-	background-color:grey;
+	background-color:#CBE4F8;
 	margin:0;
 	font-size:2em;
 	font-weight:bold;
@@ -28,7 +28,7 @@ a
 }
 .menu
 {
-	background-color:lightgrey;
+	background-color:#F2F2F2;
 	font-size:.8em;
 	padding:0 10px;
 }
@@ -39,7 +39,7 @@ a
 }
 .menu table
 {
-	background-color:lightgrey;
+	background-color:F2F2F2;
 }
 .languages
 {
@@ -52,7 +52,7 @@ a
 }
 .menuHover
 {
-	background-color:lightslategray;
+	background-color:#8DC3F2;
 	color:White;
 }
 .menuHover a
@@ -61,7 +61,7 @@ a
 }
 .subMenu
 {
-	border-left:solid 3px lightslategray;
+	border-left:solid 3px #8DC3F2;
 }
 .breadcrumb
 {
