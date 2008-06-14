@@ -364,5 +364,10 @@ namespace N2.Persistence.NH
 		}
 
 		#endregion
-	}
+
+        public IRepository<int, ContentItem> Repository
+        {
+            get { return this.itemRepository; }
+        }
+    }
 }

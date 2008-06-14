@@ -231,7 +231,6 @@
     <Compile Include="Persistence\Comparison.cs" />
     <Compile Include="Persistence\DoNotCopyAttribute.cs" />
     <Compile Include="Persistence\NH\IConfigurationBuilder.cs" />
-    <Compile Include="Persistence\IFinder.cs" />
     <Compile Include="Persistence\IRelationFinder.cs" />
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />

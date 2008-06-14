@@ -257,7 +257,7 @@ namespace N2
 			get { return Utility.ToAbsolute("~/edit/img/ico/" + (IsPage ? "page.gif" : "page_white.gif")); }
         }
 
-		/// <summary>Gets the non-rewritten url to this item (e.g. "/default.aspx?page=1"). This is used to uniquely identify this item. Non-page items have two query string properties; page and item (e.g. "/default.aspx?page=1&amp;item&#61;27").</summary>
+		/// <summary>Gets the non-friendly url to this item (e.g. "/default.aspx?page=1"). This is used to uniquely identify this item. Non-page items have two query string properties; page and item (e.g. "/default.aspx?page=1&amp;item&#61;27").</summary>
         public virtual string RewrittenUrl
         {
             get

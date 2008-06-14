@@ -21,7 +21,7 @@ namespace N2.Persistence
 		/// <summary>Gets the site's root items.</summary>
 		public static TRoot RootItem
 		{
-			get { return Context.Persister.Get<TRoot>(Context.UrlParser.CurrentSite.RootItemID); }
+			get { return (TRoot)Context.Persister.Repository.Load(Context.UrlParser.CurrentSite.RootItemID); }
 		}
 
 		/// <summary>Gets the currently displayed page (based on the query string).</summary>

@@ -26,7 +26,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseStartPageUrl()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/");
 			Assert.AreEqual(startItem, parsedItem);
@@ -35,7 +35,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemOneLevelDown()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item1.aspx");
 			Assert.AreEqual(item1, parsedItem);
@@ -44,7 +44,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemTwoLevelsDown()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item1/item1_1.aspx");
 			Assert.AreEqual(item1_1, parsedItem);
@@ -53,7 +53,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemOneStepOneLevelDown()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item2.aspx");
 			Assert.AreEqual(item2, parsedItem);
@@ -62,7 +62,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemOneStepTwoLevelsDown()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item2/item2_1.aspx");
 			Assert.AreEqual(item2_1, parsedItem);
@@ -71,7 +71,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void ParseNonExistantItemYeldsNull()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item3.aspx");
 			Assert.IsNull(parsedItem);
@@ -80,7 +80,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemWithMixedCase()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/iTeM2/ItEm2_1.AsPx");
 			Assert.AreEqual(item2_1, parsedItem);
@@ -89,7 +89,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseItemWithHash()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item1.aspx#someHash");
 			Assert.AreEqual(item1, parsedItem);
@@ -100,7 +100,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseDataItemOnStartPage()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/?item=6");
 			Assert.AreEqual(data1, parsedItem);
@@ -109,7 +109,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseDataItemOneLevelDown()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item2.aspx?item=7");
 			Assert.AreEqual(data2, parsedItem);
@@ -118,7 +118,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseDataItemTwoLevelsDown()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item2/item2_1.aspx?item=8");
 			Assert.AreEqual(data3, parsedItem);
@@ -127,9 +127,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void ParseNonExistantDataItemReturnsPage()
 		{
-			CreateItems(false);
-			Expect.On(persister).Call(persister.Get(32)).Return(null);
-			mocks.ReplayAll();
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/item2/item2_1.aspx?item=32");
 			Assert.AreEqual(item2_1, parsedItem);
@@ -138,7 +136,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParseDataItemWithMixedCase()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			ContentItem parsedItem = parser.Parse("/?iTeM=6");
 			Assert.AreEqual(data1, parsedItem);
@@ -151,7 +149,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateStartItemUrl()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			string url = parser.BuildUrl(startItem);
 			Assert.AreEqual("/", url);
@@ -160,7 +158,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateItemOneLevelDownUrl()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			string url = parser.BuildUrl(item1);
 			Assert.AreEqual("/item1.aspx", url);
@@ -169,7 +167,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateItemOneStepTwoLevelsDownUrl()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			string url = parser.BuildUrl(item2_1);
 			Assert.AreEqual("/item2/item2_1.aspx", url);
@@ -181,7 +179,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateDataItemUrlOnStartPage()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 			string url = parser.BuildUrl(data1);
 			Assert.AreEqual("/?item=6", url);
 		}
@@ -189,7 +187,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateDataItemUrlOnPageOneLevelDown()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			string url = parser.BuildUrl(data2);
 			Assert.AreEqual("/item2.aspx?item=7", url);
@@ -198,7 +196,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateDataItemUrlOnPageTwoLevelsDown()
 		{
-			CreateItems(true);
+			CreateDefaultStructure(true);
 
 			string url = parser.BuildUrl(data3);
 			Assert.AreEqual("/item2/item2_1.aspx?item=8", url);
@@ -259,7 +257,7 @@ namespace N2.Tests.Web
 			host = new Host(null, 10, 1);
 			parser = new UrlParser(persister, wrapper, notifier, host);
 
-			CreateItems(false);
+			CreateDefaultStructure(false);
 			ContentItem root = CreateOneItem<PageItem>(10, "root", null);
 			startItem.AddTo(root);
 			ContentItem outside1 = CreateOneItem<PageItem>(11, "outside1", root);

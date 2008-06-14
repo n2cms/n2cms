@@ -46,7 +46,8 @@
 	- changed authorized roles to lazy
 	- added the NotThrowable attribute which should be treated as expected
 	- site wildcard mapping and per site settings
-
+	- added a workaround that prevents a mandatory database hit when getting start page
+	
 N2 1.3.5
 - edit
 	- scroll screen when reaching edge (tree + drag&drop)

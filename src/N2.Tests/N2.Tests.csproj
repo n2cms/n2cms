@@ -213,7 +213,6 @@
     <Compile Include="Persistence\NH\ItemRepositoryTests.cs" />
     <Compile Include="Persistence\NH\PersisterTests.cs" />
     <Compile Include="Persistence\PersistFixture.cs" />
-    <Compile Include="Persistence\RelationFinderFixture.cs" />
     <Compile Include="Plugin\PlugIn1.cs" />
     <Compile Include="Plugin\PlugInInitializerInvokerTests.cs" />
     <Compile Include="Program.cs" />

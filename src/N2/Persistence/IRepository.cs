@@ -32,6 +32,12 @@ using System.Data;
 
 namespace N2.Persistence
 {
+    /// <summary>
+    /// The repository is a single point for database operations. All 
+    /// persistence operations on database should pass through here.
+    /// </summary>
+    /// <typeparam name="TKey">The primary key type.</typeparam>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
 	public interface IRepository<TKey, TEntity> : IDisposable
 	{
 		/// <summary>

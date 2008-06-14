@@ -13,7 +13,8 @@ namespace N2.Tests
 	public class ItemPersistenceMockingBase : ItemTestsBase
 	{
 		protected IPersister persister;
-		protected IEventRaiser saving;
+        protected IRepository<int, ContentItem> repository;
+        protected IEventRaiser saving;
 
 		delegate void SaveDelegate(ContentItem item);
 		public delegate string ToAppRelativeDelegate(string path);
@@ -28,27 +29,20 @@ namespace N2.Tests
 
 		protected virtual IPersister CreatePersister()
 		{
-			IPersister persister = mocks.Stub<IPersister>();
-			
-			persister.ItemSaving += null;
-			saving = LastCall.IgnoreArguments().Repeat.Any().GetEventRaiser();
-			
-			persister.Save(null);
-			LastCall.IgnoreArguments().Do(new SaveDelegate(Save)).Repeat.Any();
+            repository = mocks.Stub<IRepository<int, ContentItem>>();
+            var linkRepository = mocks.Stub<N2.Persistence.NH.INHRepository<int, N2.Details.LinkDetail>>();
+            var finder = mocks.Stub<N2.Persistence.Finder.IItemFinder>();
+            persister = new N2.Persistence.NH.ContentPersister(repository, linkRepository, finder);
 
 			return persister;
-		}
-
-		private void Save(ContentItem item)
-		{
-			saving.Raise(null, new CancellableItemEventArgs(item));
 		}
 
 		protected override T CreateOneItem<T>(int itemID, string name, ContentItem parent)
 		{
 			T item = base.CreateOneItem<T>(itemID, name, parent);
-			Expect.On(persister).Call(persister.Get(itemID)).Return(item).Repeat.Any();
-			return item;
+            Expect.On(repository).Call(repository.Get(itemID)).Return(item).Repeat.Any();
+            Expect.On(repository).Call(repository.Load(itemID)).Return(item).Repeat.Any();
+            return item;
 		}
 
 		#region WebContext

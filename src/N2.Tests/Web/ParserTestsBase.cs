@@ -28,7 +28,7 @@ namespace N2.Tests.Web
 			host = new Host(wrapper, 1, 1);
 		}
 
-		protected void CreateItems(bool replay)
+		protected void CreateDefaultStructure(bool replay)
 		{
 			startItem = CreateOneItem<PageItem>(1, "root", null);
 			item1 = CreateOneItem<PageItem>(2, "item1", startItem);
@@ -41,7 +41,7 @@ namespace N2.Tests.Web
 			data3 = CreateOneItem<DataItem>(8, "data3", item2_1);
 
 			if(replay)
-				mocks.Replay(persister);
+				mocks.Replay(repository);
 		}
 	}
 }

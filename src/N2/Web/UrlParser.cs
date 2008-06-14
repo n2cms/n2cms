@@ -71,7 +71,10 @@ namespace N2.Web
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage
 		{
-			get { return Persister.Get(this.CurrentSite.StartPageID); }
+			get 
+            {
+                return Persister.Repository.Load(this.CurrentSite.StartPageID);
+            }
 		}
 
 		protected Persistence.IPersister Persister
@@ -108,7 +111,8 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
 
-			return TryLoadingFromQueryString(url, "item", "page") ?? Parse(StartPage, url);
+            ContentItem startingPoint = StartPage;
+			return TryLoadingFromQueryString(url, "item", "page") ?? Parse(startingPoint, url);
 		}
 
 		public virtual ContentItem ParsePage(string url)
