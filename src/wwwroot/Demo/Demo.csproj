@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Demo</RootNamespace>
     <AssemblyName>Demo</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,24 +42,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Deploy\Core\Bin\N2.Edit.dll</HintPath>
     </Reference>
+    <Reference Include="N2.Templates, Version=1.0.400.24224, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="N2.Templates.UI, Version=1.0.303.316, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Deploy\Templates\Bin\N2.Templates.UI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Extensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -82,12 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Register.ascx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\N2.Templates\N2.Templates.csproj">
-      <Project>{03E2B45D-886A-479B-A8CA-0FE27EAAEF34}</Project>
-      <Name>N2.Templates</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Resources\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\export.n2.xml.gz" />

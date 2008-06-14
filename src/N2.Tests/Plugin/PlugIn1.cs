@@ -6,9 +6,11 @@ namespace N2.Tests.PlugIn
 {
 	public class PlugIn1 : IPluginInitializer
 	{
+        public bool IsInitialized { get; set; }
+
 		public void Initialize(N2.Engine.IEngine engine)
 		{
-			object ignored = engine.Persister;
+            IsInitialized = true;
 		}
 	}
 }

@@ -21,8 +21,9 @@ namespace Demo.Items
 	[TabPanel("mail", "E-Mail", 20)]
 	[TabPanel("auto", "Auto Login", 30)]
 	[WithEditableTitle("Title", 20, ContainerName = "web")]
-	public class RegisterItem : N2.Templates.Items.AbstractItem
+	public class RegisterItem : ContentItem
 	{
+
 		[EditableFreeTextArea("Text", 90, ContainerName = "web")]
 		public virtual string Text
 		{
@@ -169,9 +170,9 @@ namespace Demo.Items
 		//    }
 		//}
 
-		//public override bool IsPage
-		//{
-		//    get { return false; }
-		//}
+        //public override bool IsPage
+        //{
+        //    get { return false; }
+        //}
 	}
 }

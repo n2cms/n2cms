@@ -36,8 +36,10 @@ namespace N2.Templates.Items
 
 		public IEnumerable<Site> GetSites()
 		{
-			yield return new Site(Parent.ID, ID, HostName);
-			yield return new Site(Parent.ID, ID, "www." + HostName);
+            Site s = new Site(Parent.ID, ID, HostName);
+            s.Wildcards = true;
+
+            return new Site[] { s };
 		}
 	}
 }

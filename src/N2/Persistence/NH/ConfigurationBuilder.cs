@@ -41,8 +41,13 @@ namespace N2.Persistence.NH
 		{
 			this.definitions = definitions;
 
-			if (config == null)
-				config = new DatabaseSection();
+			if (config == null) config = new DatabaseSection();
+
+            if (!string.IsNullOrEmpty(config.HibernateMapping))
+                DefaultMapping = config.HibernateMapping;
+            else if (config.Flavour == DatabaseFlavour.MySql)
+                DefaultMapping = "N2.Mappings.MySQL.hbm.xml, N2";
+
 			SetupProperties(config);
 		}
 
@@ -91,9 +96,9 @@ namespace N2.Persistence.NH
             Properties["cache.use_query_cache"] = config.Caching.ToString();
 			Properties["cache.provider_class"] = config.CacheProviderClass;
 
-            foreach (string key in config.Properties.AllKeys)
+            foreach (string key in config.HibernateProperties.AllKeys)
             {
-                Properties[key] = config.Properties[key].Value;
+                Properties[key] = config.HibernateProperties[key].Value;
             }
 		}
 

@@ -72,7 +72,7 @@
         <n2:TabPanel ToolTip="4. Root node" runat="server">
 			<h1>Insert root node (required)</h1>
             <asp:Literal runat="server" Visible='<%# Status.IsInstalled %>'>
-				<p class="ok"><b>Advice: </b>There are already root and start nodes. If you create more they will become detached nodes cluttering your database unless you point them out in web.config (which makes the existing nodes detached instead).</p>
+				<p class="ok"><b>Advice: </b>There root and start nodes are configured and present in the database. If you create more they will become detached nodes cluttering your database unless you point them out in web.config (which makes the existing nodes detached instead).</p>
             </asp:Literal>
             <asp:Literal runat="server" Visible='<%# !Status.HasSchema %>'>
 				<p class="warning"><b>Advice: </b>Go back and check database connection and tables.</p>

@@ -6,6 +6,7 @@
 	- gallery images are now easier to edit
 	- refactored the UI code (more stuff into the master page)
 	- moved corporate & n2cms menulevel handoff to skin file
+	- template multiple site start page now uses wildcard mapping
 - edit
 	- consolidated a few edit modules: N2.Edit.Export, N2.Edit.Membership, N2.Edit.Install
 	- updated tinymce to 3.0.9

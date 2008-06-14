@@ -12,8 +12,6 @@ namespace Demo
 	[AutoInitialize]
 	public class DemoInitializer : IPluginInitializer
 	{
-		#region IPlugInInitializer Members
-
 		public void Initialize(N2.Engine.IEngine factory)
 		{
 			if (ConfigurationManager.AppSettings["ResetData"] == "true")
@@ -37,7 +35,8 @@ namespace Demo
 			File.Copy(server.MapPath("~/Demo/Resources/lav.jpg"), server.MapPath("~/upload/lav.jpg"), true);
 			File.Copy(server.MapPath("~/Demo/Resources/skal.jpg"), server.MapPath("~/upload/skal.jpg"), true);
 			File.Copy(server.MapPath("~/Demo/Resources/thorn.jpg"), server.MapPath("~/upload/thorn.jpg"), true);
-		}
+            File.Copy(server.MapPath("~/Demo/Resources/logo_white.png"), server.MapPath("~/upload/logo_white.png"), true);
+        }
 
 		public static void FileManager_FileUploading(object sender, N2.Edit.FileManagement.FileEventArgs e)
 		{
@@ -81,7 +80,7 @@ namespace Demo
 
 			foreach(ContentItem item in rootPage.Children)
 				if (item is AbstractStartPage)
-					factory.Resolve<N2.Web.Site>().StartPageID = item.ID;
+					factory.Resolve<N2.Web.IHost>().DefaultSite.StartPageID = item.ID;
 
 			factory.Persister.Save(rootPage);
 
@@ -138,7 +137,5 @@ namespace Demo
 			foreach (ContentItem version in factory.Resolve<N2.Persistence.Finder.IItemFinder>().Where.VersionOf.Eq(rootPage).Select())
 				factory.Persister.Delete(version);
 		}
-
-		#endregion
 	}
 }

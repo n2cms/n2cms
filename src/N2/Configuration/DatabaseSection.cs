@@ -45,13 +45,21 @@ namespace N2.Configuration
 		{
 			get { return (DatabaseFlavour)base["flavour"]; }
 			set { base["flavour"] = value; }
-		}
+        }
+
+        /// <summary>The resource name and assembly of the base nhibernate mapping file, e.g. "N2.Mappings.Default.hbm.xml, N2"</summary>
+        [ConfigurationProperty("hibernateMapping")]
+        public string HibernateMapping
+        {
+            get { return (string)base["hibernateMapping"]; }
+            set { base["hibernateMapping"] = value; }
+        }
 
         /// <summary>Additional nhibernate properties applied after the default flavour-based configuration.</summary>
-        [ConfigurationProperty("properties")]
-        public NameValueConfigurationCollection Properties
+        [ConfigurationProperty("hibernateProperties")]
+        public NameValueConfigurationCollection HibernateProperties
         {
-            get { return (NameValueConfigurationCollection)base["properties"]; }
+            get { return (NameValueConfigurationCollection)base["hibernateProperties"]; }
         }
 	}
 }

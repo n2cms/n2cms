@@ -6,4 +6,6 @@
 - Search your soulution for web controls Path="/" and replace with Path="~/":
 	- "/" now refers to the root page
 	- "~/" now refers to the current start page
-- The Site implementation has changed, update site.Host -> site.Authority
+- The Site implementation has changed
+	- change ..Resolve<Site> to ..Resolve<IHost>().DefaultSite
+	- update site.Host -> site.Authority
