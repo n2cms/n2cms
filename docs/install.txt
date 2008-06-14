@@ -1,8 +1,16 @@
-- Compile and run the application
+- Compile and run the application (Ctrl+F5)
 - Browse to /edit/install (use admin/changeme to log in)
 - Follow the instructions on the installation page (also below)
 	- Create an empty database in your server of choice. 
 	- Update the connection string in web.config.
-	- If you can't use the web based installation interface you can find create database scripts on http://n2cms.com/Documentation/The%20database.aspx.
-	- Now you need to insert the first node, I strongly recommend using the installation page to do this
-	- IMPORTANT! Change the default password in web.config. If you've installed, configured and created an administrator account using a membership provider, comment out this section entirely. 
+	- Update the database flavour attribute in the n2/database 
+	  section.
+	- If you can't use the web based installation interface you 
+	  can find create database scripts on:
+	  http://n2cms.com/Documentation/The database.aspx.
+	- Now you need to insert the first node, I strongly recommend 
+	  using the installation page to do this.
+	- IMPORTANT! Change the default password in web.config. If 
+	  you've installed, configured and created an administrator 
+	  account using a membership provider, comment out this 
+	  section entirely. 

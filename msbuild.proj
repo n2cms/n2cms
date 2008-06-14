@@ -249,6 +249,10 @@
 	</Target>
 
 	<Target Name="Examples-PrepareDependencies">
+		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
+		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
+		<CallTarget Targets="Examples-MultipleDomains-PrepareDependencies"/>
+
 		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
 		<CallTarget Targets="Examples-VisualBasic-PrepareDependencies"/>
 		<CallTarget Targets="Examples-TemplatesImplementation-PrepareDependencies"/>
@@ -301,7 +305,7 @@
 		<ExampleSource-MvcFiles Include="$(Examples-MvcFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 	</ItemGroup>
 
-	<Target Name="Examples-Deploy" DependsOnTargets="Examples-PrepareDependencies">
+	<Target Name="Examples-Deploy" DependsOnTargets="Examples-CSharp-PrepareDependencies;Examples-TemplatesImplementation-PrepareDependencies;Examples-TemplatesImplementation-PrepareDependencies;Examples-Mvc-PrepareDependencies">
 		<Message Text="Deploying Examples"/>
 
 		<CreateItem Include="$(Deploy-RootFolder)\Core\**\*" Exclude="$(Deploy-RootFolder)\Core\*.txt">

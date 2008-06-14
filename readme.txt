@@ -1,5 +1,5 @@
-In order to run the examples and the templates you'll need to update certain 
-dependencies. Running Prepare_Dependencies-vs2008.bat should do it.
+In order to run the examples you'll need to update certain dependencies. 
+Running Prepare_Dependencies-vs2008.bat should do it.
 
 The solution uses an Sql Express 2005 database. If you can't use Sql Express 
 you'll need to perform a few additional steps:
