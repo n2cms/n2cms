@@ -6,6 +6,8 @@ using N2.Plugin;
 using N2.Engine;
 using Rhino.Mocks;
 using System.Reflection;
+using NUnit.Framework.SyntaxHelpers;
+using N2.Tests.Plugin;
 
 namespace N2.Tests.PlugIn
 {
@@ -34,8 +36,9 @@ namespace N2.Tests.PlugIn
 			mocks.ReplayAll();
 
 			PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
+            PlugIn1.WasInitialized = false;
 			invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
-			
+            Assert.That(PlugIn1.WasInitialized, Is.True);
 			mocks.VerifyAll();
 		}
 
@@ -51,25 +54,76 @@ namespace N2.Tests.PlugIn
 			mocks.ReplayAll();
 
 			PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
+            PlugIn2.WasInitialized = false;
 			invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
-
+            Assert.That(PlugIn2.WasInitialized, Is.True);
 			mocks.VerifyAll();
 		}
 
         [Test]
-        public void InitializersAreExecuted_AfterOnePlugin_ThrowsException()
+        public void Initializers_AreExecuted_AfterException()
         {
             ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
             Expect.Call(typeFinder.GetAssemblies())
                 .Return(new Assembly[] { });
             Expect.Call(typeFinder.Find(typeof(IPluginInitializer)))
-                .Return(new Type[] { typeof(PlugIn2) });
+                .Return(new Type[] { typeof(ThrowingPlugin1), typeof(PlugIn2) });
 
             mocks.ReplayAll();
 
             PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
-            invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
+            PlugIn2.WasInitialized = false;
 
+            PluginInitializationException ex = ExceptionAssert.Throws<PluginInitializationException>(delegate
+            {
+                invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
+            });
+            Assert.That(PlugIn2.WasInitialized, Is.True);
+        }
+
+        [Test]
+        public void InnerException_IsInnerException_OfInitializationException()
+        {
+            ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
+            Expect.Call(typeFinder.GetAssemblies())
+                .Return(new Assembly[] { });
+            Expect.Call(typeFinder.Find(typeof(IPluginInitializer)))
+                .Return(new Type[] { typeof(ThrowingPlugin1), typeof(PlugIn2) });
+
+            mocks.ReplayAll();
+
+            PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
+            PlugIn2.WasInitialized = false;
+
+            PluginInitializationException ex = ExceptionAssert.Throws<PluginInitializationException>(delegate
+            {
+                invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
+            });
+            Assert.That(ex.InnerException, Is.TypeOf(typeof(SomeException)));
+            Assert.That(ex.Message.Contains("ThrowingPlugin1 isn't happy."));
+        }
+
+        [Test]
+        public void InnerExceptions_AreAdded_ToInitializationException()
+        {
+            ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
+            Expect.Call(typeFinder.GetAssemblies())
+                .Return(new Assembly[] { });
+            Expect.Call(typeFinder.Find(typeof(IPluginInitializer)))
+                .Return(new Type[] { typeof(ThrowingPlugin1), typeof(PlugIn2), typeof(ThrowingPlugin2)});
+
+            mocks.ReplayAll();
+
+            PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
+            PlugIn2.WasInitialized = false;
+
+            PluginInitializationException ex = ExceptionAssert.Throws<PluginInitializationException>(delegate
+            {
+                invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
+            });
+            Assert.That(ex.InnerExceptions.Length, Is.EqualTo(2));
+            Assert.That(ex.Message.Contains("ThrowingPlugin1 isn't happy."));
+            Assert.That(ex.Message.Contains("ThrowingPlugin2 is really mad."));
         }
 	}
 }

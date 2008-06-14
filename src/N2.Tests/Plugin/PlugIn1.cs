@@ -6,11 +6,11 @@ namespace N2.Tests.PlugIn
 {
 	public class PlugIn1 : IPluginInitializer
 	{
-        public bool IsInitialized { get; set; }
+        public static bool WasInitialized { get; set; }
 
 		public void Initialize(N2.Engine.IEngine engine)
 		{
-            IsInitialized = true;
+            WasInitialized = true;
 		}
 	}
 }

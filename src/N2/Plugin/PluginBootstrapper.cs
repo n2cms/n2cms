@@ -43,8 +43,28 @@ namespace N2.Plugin
 		/// <summary>Invokes the initialize method on the supplied plugins.</summary>
 		public void InitializePlugins(IEngine engine, IEnumerable<IPluginDefinition> plugins)
 		{
-			foreach (IPluginDefinition plugin in plugins)
-				plugin.Initialize(engine);
+            List<Exception> exceptions = new List<Exception>();
+            foreach (IPluginDefinition plugin in plugins)
+            {
+                try
+                {
+                    plugin.Initialize(engine);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
+                }
+            }
+            if (exceptions.Count > 0)
+            {
+                string message = "While initializing {0} plugin(s) threw an exception. Please review the stack trace to find out what went wrong.";
+                message = string.Format(message, exceptions.Count);
+
+                foreach (Exception ex in exceptions)
+                    message += Environment.NewLine + Environment.NewLine + "- " + ex.Message;
+
+                throw new PluginInitializationException(message, exceptions.ToArray());
+            }
 		}
 	}
 }

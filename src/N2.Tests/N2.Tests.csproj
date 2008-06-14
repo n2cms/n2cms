@@ -173,6 +173,7 @@
     <Compile Include="Persistence\NH\PersisterTestsBase.cs" />
     <Compile Include="Persistence\NH\VersionManagerTests.cs" />
     <Compile Include="Plugin\PlugIn2.cs" />
+    <Compile Include="Plugin\SomeException.cs" />
     <Compile Include="Plugin\ThrowingPlugin1.cs" />
     <Compile Include="Plugin\ThrowingPlugin2.cs" />
     <Compile Include="Resources\RegisterTests.cs" />

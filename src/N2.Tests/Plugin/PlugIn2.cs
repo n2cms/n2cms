@@ -5,10 +5,11 @@ namespace N2.Tests.PlugIn
 	[AutoInitialize]
 	public class PlugIn2 : IPluginInitializer
 	{
-        public bool IsInitialized { get; set; }
+        public static bool WasInitialized { get; set; }
 
 		public void Initialize(N2.Engine.IEngine engine)
 		{
+            WasInitialized = true;
 		}
 	}
 }

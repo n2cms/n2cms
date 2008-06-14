@@ -368,6 +368,7 @@
     <Compile Include="Persistence\NH\ContentPersister.cs" />
     <Compile Include="Persistence\NH\SessionProvider.cs" />
     <Compile Include="Plugin\IAutoStart.cs" />
+    <Compile Include="Plugin\PluginInitializationException.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
