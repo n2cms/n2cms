@@ -7,7 +7,7 @@ namespace N2.Templates.Items
 	/// <summary>
 	/// A page item with a convenient set of properties defined by default.
 	/// </summary>
-	[WithEditableName("Name", 20, ContainerName = Tabs.Content),
+	[WithEditableName("Name", 20, ContainerName = Tabs.Content, Ascii = true),
 		WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
 	[TabPanel(Tabs.Advanced, "Advanced", 100)]
 	[AvailableZone("Right", Zones.Right),

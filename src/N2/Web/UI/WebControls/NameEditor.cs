@@ -129,6 +129,8 @@ namespace N2.Web.UI.WebControls
 												 Ascii.ToString().ToLower(),
 												 ShowKeepUpdated ? keepUpdated.ClientID : "");
 						Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
+                        tbTitle.Attributes["onblur"] = "invokeUpdateName();";
+                        Attributes["onfocus"] = "invokeUpdateName();";
 					}
 				}
 				catch (KeyNotFoundException ex)
@@ -146,7 +148,6 @@ namespace N2.Web.UI.WebControls
 var invokeUpdateName = function(){{
 	updateName('{0}', '{1}', '{2}', {3}, {4}, '{5}');
 }};
-$('#{0}').blur(invokeUpdateName);
 if('{5}'){{
 	var chk = document.getElementById('{5}');
 	var name = getName('{0}', '{2}', {3}, {4});

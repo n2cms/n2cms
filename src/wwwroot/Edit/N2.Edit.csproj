@@ -373,9 +373,6 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Web\EditSiteMapNode.cs" />
-    <Compile Include="Web\EditUserControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Web\FileSiteMapNode.cs" />
     <Compile Include="Web\FileSiteMapProvider.cs" />
     <Compile Include="Web\EditSiteMapProvider.cs" />
@@ -860,7 +857,9 @@
     <Content Include="Export\App_LocalResources\Default.aspx.it.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Export\App_LocalResources\Default.aspx.nl.resx" />
+    <Content Include="Export\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Export\App_LocalResources\Default.aspx.resx">
       <SubType>Designer</SubType>
     </Content>

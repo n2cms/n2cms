@@ -12,7 +12,7 @@ using N2.Edit.Web;
 
 namespace N2.Edit.Globalization
 {
-	public partial class Languages : EditUserControl
+	public partial class Languages : EditPageUserControl
 	{
 		private object dataSource;
 

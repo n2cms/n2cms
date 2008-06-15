@@ -323,6 +323,9 @@
     <Compile Include="Edit\Trash\ITrashCan.cs" />
     <Compile Include="Edit\Trash\ITrashHandler.cs" />
     <Compile Include="Edit\TreeSorter.cs" />
+    <Compile Include="Edit\Web\EditPageUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Edit\Web\EditUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
