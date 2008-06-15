@@ -41,6 +41,15 @@ namespace N2.Edit.Export {
         protected global::System.Web.UI.WebControls.CheckBox chkDefinedDetails;
         
         /// <summary>
+        /// chkAttachments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkAttachments;
+        
+        /// <summary>
         /// cvImport control.
         /// </summary>
         /// <remarks>

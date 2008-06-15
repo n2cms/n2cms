@@ -52,7 +52,9 @@ namespace N2.Edit.Export
 		{
             ExportOptions options = ExportOptions.Default;
             if (chkDefinedDetails.Checked)
-                options |= ExportOptions.DefinedDetails;
+                options |= ExportOptions.OnlyDefinedDetails;
+            if (chkAttachments.Checked)
+                options |= ExportOptions.ExcludeAttachments;
 
 			Engine.Resolve<Exporter>().Export(SelectedItem, options, Response);
 		}

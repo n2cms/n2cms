@@ -44,14 +44,15 @@ namespace N2.Serialization
 
         private IEnumerable<IXmlWriter> GetWriters(ExportOptions options)
         {
-            if((options & ExportOptions.DefinedDetails) == ExportOptions.DefinedDetails)
+            if((options & ExportOptions.OnlyDefinedDetails) == ExportOptions.OnlyDefinedDetails)
                 yield return new DefinedDetailXmlWriter(definitions);
             else
                 yield return new DetailXmlWriter();
 			yield return new DetailCollectionXmlWriter();
 			yield return new ChildXmlWriter();
 			yield return new AuthorizationXmlWriter();
-			yield return new AttachmentXmlWriter(new AttributeExplorer<IAttachmentHandler>());
+            if ((options & ExportOptions.ExcludeAttachments) == ExportOptions.Default)
+			    yield return new AttachmentXmlWriter(new AttributeExplorer<IAttachmentHandler>());
         }
 
 		protected virtual void WriteDefaultAttributes(ElementWriter itemElement, ContentItem item)

@@ -18,7 +18,10 @@
 		    <asp:Button ID="btnExport" runat="server" CssClass="command" OnCommand="btnExport_Command" CausesValidation="false" meta:resourceKey="btnExport" Text="Export these items" />
 		</div>
 		<div>
-		    <asp:CheckBox ID="chkDefinedDetails" runat="server" Text="Only defined data"  meta:resourceKey="chkDefinedDetails" />
+		    <asp:CheckBox ID="chkDefinedDetails" runat="server" Text="Exclude computer generated data"  meta:resourceKey="chkDefinedDetails" />
+		</div>
+		<div>
+		    <asp:CheckBox ID="chkAttachments" runat="server" Text="Don't export attachments"  meta:resourceKey="chkAttachments" />
 		</div>
 		<n2:h4 runat="server" Text="Exported items" meta:resourceKey="exportedItems" />
 		<uc1:AffectedItems id="exportedItems" runat="server" />		

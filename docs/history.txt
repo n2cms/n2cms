@@ -16,6 +16,7 @@
 	- removed "edit parent"
 	- globalization interface moved into n2.edit
 	- option to only export defined details
+	- option to exclude attachments from export
 - bugfixes
 	- editable roles can now add/remove roles
 	- fixed changes through membersihp provider not beeing persisted

@@ -163,6 +163,15 @@
     <value>Import</value>
   </data>
   <data name="chkDefinedDetails.Text" xml:space="preserve">
-    <value>Only export defined data</value>
+    <value>Exclude computer generated data</value>
+  </data>
+  <data name="chkAttachments.Text" xml:space="preserve">
+    <value>Don't export attachments</value>
+  </data>
+  <data name="chkAttachments.ToolTip" xml:space="preserve">
+    <value>Remove attachments such as images or documents from the export file (reduces size)</value>
+  </data>
+  <data name="chkDefinedDetails.ToolTip" xml:space="preserve">
+    <value>Export only data inputted by a user (cleans export file from deprecated information and computer generated data)</value>
   </data>
 </root>

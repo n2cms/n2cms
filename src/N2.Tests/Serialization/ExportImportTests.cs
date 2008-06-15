@@ -17,7 +17,7 @@ namespace N2.Tests.Serialization
 		{
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 
-			ContentItem readItem = ExportAndImport(item);
+			ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
 			Assert.AreEqual(item.ID, readItem.ID);
 			Assert.AreEqual(item.Title, readItem.Title);
@@ -29,7 +29,7 @@ namespace N2.Tests.Serialization
         {
             XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 
-            ContentItem readItem = ExportAndImport(item);
+            ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
             Assert.That(item, Is.TypeOf(typeof(XmlableItem)));
         }
@@ -42,8 +42,7 @@ namespace N2.Tests.Serialization
             item.TextFile = "<p>One two three.</p>";
             item["NotExported"] = "Please don't export me.";
 
-            string xml = ExportToString(item, new Exporter(new ItemXmlWriter(definitions, parser)), ExportOptions.DefinedDetails);
-            XmlableItem readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+            XmlableItem readItem = (XmlableItem)ExportAndImport(item, ExportOptions.OnlyDefinedDetails);
 
             Assert.That(readItem.ImageUrl, Is.EqualTo("/hello.jpg"));
             Assert.That(readItem.TextFile, Is.EqualTo("<p>One two three.</p>"));
@@ -51,11 +50,11 @@ namespace N2.Tests.Serialization
         }
 
 		[Test]
-		public void CanExportSimpleItemWithAttachment()
+		public void CanExport_SimpleItem_WithAttachment()
 		{
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 			item.ImageUrl = "/hello.jpg";
-			ContentItem readItem = ExportAndImport(item);
+            ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
 			Assert.AreEqual(item.ID, readItem.ID);
 			Assert.AreEqual(item.Title, readItem.Title);
@@ -64,19 +63,33 @@ namespace N2.Tests.Serialization
 		}
 
 		[Test]
-		public void CanExportSimpleItemWithFakeAttachment()
+		public void CanExport_SimpleItem_WithFakeAttachment()
 		{
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 			item.ImageUrl = "/hello.jpg";
 
-			XmlableItem readItem = (XmlableItem)ExportAndImport(item);
+            XmlableItem readItem = (XmlableItem)ExportAndImport(item, ExportOptions.Default);
 
 			Assert.AreEqual(item.ID, readItem.ID);
 			Assert.AreEqual(item.Title, readItem.Title);
 			Assert.AreEqual(item.Name, readItem.Name);
 			Assert.AreEqual("/hello.jpg", readItem.ImageUrl);
-			Assert.IsTrue((bool)readItem["wasRead"], "Fake attachment wasn't read.");
-		}
+            Assert.That(item["wasWritten"], Is.True, "Attachment wasn't written.");
+            Assert.That(readItem["wasRead"], Is.True, "Attachment wasn't read.");
+        }
+
+        [Test]
+        public void CanExport_SimpleItem_WithFakeAttachment_ExcludingAttachments()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.ImageUrl = "/hello.jpg";
+
+            XmlableItem readItem = (XmlableItem)ExportAndImport(item, ExportOptions.ExcludeAttachments);
+
+            Assert.AreEqual("/hello.jpg", readItem.ImageUrl);
+            Assert.That(item["wasWritten"], Is.Null, "Attachment was written.");
+            Assert.That(readItem["wasRead"], Is.Null, "Attachment was read.");
+        }
 
 		[Test]
 		public void CanExportSimpleItemWithFileAttachment()
@@ -84,8 +97,8 @@ namespace N2.Tests.Serialization
 			XmlableItem destination = new XmlableItem();
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 			item.TextFile = "/Serialization/TestFile.txt";
-			
-			string xml = ExportToString(item, CreateExporter());
+
+            string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
 			string path = AppDomain.CurrentDomain.BaseDirectory + @"\Serialization\TestFile.txt";
 			File.Delete(path);
 			
@@ -477,9 +490,9 @@ Public License instead of this License.
 		}
 
 
-		private ContentItem ExportAndImport(ContentItem item)
+		private ContentItem ExportAndImport(ContentItem item, ExportOptions options)
 		{
-			string xml = ExportToString(item, CreateExporter());
+			string xml = ExportToString(item, CreateExporter(), options);
 			return ImportFromString(xml, CreateImporter()).RootItem;
 		}
 
@@ -490,10 +503,6 @@ Public License instead of this License.
 			return importer.Read(sr);
 		}
 
-        private static string ExportToString(ContentItem item, Exporter exporter)
-        {
-            return ExportToString(item, exporter, ExportOptions.Default);
-        }
 		private static string ExportToString(ContentItem item, Exporter exporter, ExportOptions options)
 		{
 			StringBuilder sb = new StringBuilder();

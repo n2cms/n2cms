@@ -66,12 +66,10 @@ namespace N2.Tests.Serialization
 		{
 			return new Exporter(new ItemXmlWriter(definitions, parser));
 		}
-
 		protected ItemXmlReader CreateReader()
 		{
 			return new ItemXmlReader(definitions);
 		}
-
 		protected Importer CreateImporter()
 		{
 			return new Importer(persister, new ItemXmlReader(definitions));
