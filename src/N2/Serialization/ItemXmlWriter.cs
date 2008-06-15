@@ -5,58 +5,54 @@ using N2.Web;
 
 namespace N2.Serialization
 {
-	public class ItemXmlWriter : IXmlWriter
+    /// <summary>
+    /// A content item xml serializer.
+    /// </summary>
+	public class ItemXmlWriter
 	{
-		private readonly IEnumerable<IXmlWriter> writers;
 		private readonly IDefinitionManager definitions;
 		private readonly IUrlParser parser;
 
 		public ItemXmlWriter(IDefinitionManager definitions, IUrlParser parser)
-			: this(definitions, parser, DefaultWriters())
-		{
-		}
-
-		public ItemXmlWriter(IDefinitionManager definitions, IUrlParser parser, IEnumerable<IXmlWriter> writers)
 		{
 			this.definitions = definitions;
 			this.parser = parser;
-			this.writers = writers;
 		}
 
-		public virtual void Write(ContentItem item, XmlTextWriter writer)
+        public virtual void Write(ContentItem item, ExportOptions options, XmlTextWriter writer)
 		{
-			WriteSingleItem(item, writer);
+			WriteSingleItem(item, options, writer);
 
 			foreach(ContentItem child in item.Children)
 			{
-				Write(child, writer);
+				Write(child, options, writer);
 			}
 		}
 
-		private static IEnumerable<IXmlWriter> DefaultWriters()
-		{
-			return new IXmlWriter[]
-				{
-					new DetailXmlWriter(),
-					new DetailCollectionXmlWriter(),
-					new ChildXmlWriter(),
-					new AuthorizationXmlWriter(),
-					new AttachmentXmlWriter(new AttributeExplorer<IAttachmentHandler>())
-				};
-		}
-
-		public virtual void WriteSingleItem(ContentItem item, XmlTextWriter writer)
+		public virtual void WriteSingleItem(ContentItem item, ExportOptions options, XmlTextWriter writer)
 		{
 			using (ElementWriter itemElement = new ElementWriter("item", writer))
 			{
 				WriteDefaultAttributes(itemElement, item);
 
-				foreach(IXmlWriter xmlWriter in writers)
+				foreach(IXmlWriter xmlWriter in GetWriters(options))
 				{
 					xmlWriter.Write(item, writer);
 				}
 			}
 		}
+
+        private IEnumerable<IXmlWriter> GetWriters(ExportOptions options)
+        {
+            if((options & ExportOptions.DefinedDetails) == ExportOptions.DefinedDetails)
+                yield return new DefinedDetailXmlWriter(definitions);
+            else
+                yield return new DetailXmlWriter();
+			yield return new DetailCollectionXmlWriter();
+			yield return new ChildXmlWriter();
+			yield return new AuthorizationXmlWriter();
+			yield return new AttachmentXmlWriter(new AttributeExplorer<IAttachmentHandler>());
+        }
 
 		protected virtual void WriteDefaultAttributes(ElementWriter itemElement, ContentItem item)
 		{

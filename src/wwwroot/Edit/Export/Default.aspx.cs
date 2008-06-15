@@ -50,7 +50,11 @@ namespace N2.Edit.Export
 
 		protected void btnExport_Command(object sender, CommandEventArgs e)
 		{
-			Engine.Resolve<Exporter>().Export(SelectedItem, Response);
+            ExportOptions options = ExportOptions.Default;
+            if (chkDefinedDetails.Checked)
+                options |= ExportOptions.DefinedDetails;
+
+			Engine.Resolve<Exporter>().Export(SelectedItem, options, Response);
 		}
 
 		protected void btnVerify_Click(object sender, EventArgs e)

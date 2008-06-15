@@ -1,15 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <castle>
-	<include uri="assembly://N2/Engine/engine.castle.config"/>
-	<include uri="assembly://N2/Integrity/integrity.castle.config"/>
-	<include uri="assembly://N2/Security/security.castle.config"/>
-	<include uri="assembly://N2/Definitions/definitions.castle.config"/>
-	<include uri="assembly://N2/Edit/edit.castle.config"/>
-	<include uri="assembly://N2/Web/web.castle.config"/>
-	<include uri="assembly://N2/Persistence/NH/persistence.castle.config"/>
-	<include uri="assembly://N2/Parts/parts.castle.config"/>
-	<include uri="assembly://N2/Serialization/serialization.castle.config"/>
-	<components>
+	<include uri="assembly://N2/Configuration/castle.config"/>
+  <components>
 		<component id="n2.siteSection" type="N2.Configuration.HostSection, N2">
 			<parameters>
 				<RootID>#{rootItemID}</RootID>

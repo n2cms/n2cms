@@ -1,10 +1,10 @@
 using System.Configuration;
 using System;
 
-namespace N2.MediumTrust.Configuration
+namespace N2.Configuration
 {
-	[Obsolete]
-	public class TypeCollection : ConfigurationElementCollection
+    [ConfigurationCollection(typeof(TypeElement))]
+    public class TypeElementCollection : ConfigurationElementCollection
 	{
 		protected override ConfigurationElement CreateNewElement()
 		{

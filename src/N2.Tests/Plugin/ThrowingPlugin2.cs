@@ -9,9 +9,11 @@ namespace N2.Tests.Plugin
     [AutoInitialize]
     public class ThrowingPlugin2 : IPluginInitializer
     {
+        public static bool Throw { get; set; }
         public void Initialize(N2.Engine.IEngine engine)
         {
-            throw new N2Exception("ThrowingPlugin2 is really mad.");
+            if (Throw)
+                throw new N2Exception("ThrowingPlugin2 is really mad.");
         }
     }
 }

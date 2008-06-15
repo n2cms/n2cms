@@ -17,6 +17,9 @@
 		<div>
 		    <asp:Button ID="btnExport" runat="server" CssClass="command" OnCommand="btnExport_Command" CausesValidation="false" meta:resourceKey="btnExport" Text="Export these items" />
 		</div>
+		<div>
+		    <asp:CheckBox ID="chkDefinedDetails" runat="server" Text="Only defined data"  meta:resourceKey="chkDefinedDetails" />
+		</div>
 		<n2:h4 runat="server" Text="Exported items" meta:resourceKey="exportedItems" />
 		<uc1:AffectedItems id="exportedItems" runat="server" />		
     </n2:tabpanel>
@@ -25,10 +28,14 @@
 	    <asp:MultiView ID="uploadFlow" runat="server" ActiveViewIndex="0">
 		    <asp:View ID="uploadView" runat="server">
 			    <div class="upload">
-				    <asp:FileUpload ID="fuImport" runat="server" />
-				    <asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fuImport" runat="server" ErrorMessage="*"  meta:resourceKey="rfvImport"/>
-				    <asp:Button ID="btnVerify" runat="server" Text="Upload and examine" OnClick="btnVerify_Click" Display="Dynamic" meta:resourceKey="btnVerify"/>
-				    <asp:Button ID="btnUploadImport" runat="server" Text="Import here" OnClick="btnUploadImport_Click"  meta:resourceKey="btnUploadImport"/>
+				    <div>
+				        <asp:FileUpload ID="fuImport" runat="server" />
+				        <asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fuImport" runat="server" ErrorMessage="*"  meta:resourceKey="rfvImport"/>
+				    </div>
+				    <div>
+				        <asp:Button ID="btnVerify" runat="server" Text="Upload and examine" OnClick="btnVerify_Click" Display="Dynamic" meta:resourceKey="btnVerify"/>
+				        <asp:Button ID="btnUploadImport" runat="server" Text="Import here" OnClick="btnUploadImport_Click"  meta:resourceKey="btnUploadImport"/>
+				    </div>
 			    </div>
 		    </asp:View>
 		    <asp:View ID="preView" runat="server">

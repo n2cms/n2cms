@@ -99,15 +99,11 @@
 				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
 				</li>
 				<li>
-					<table><tr><td>
-						Or, select one of these existing export file to insert:
-					</td><td>
-						<asp:RadioButtonList ID="rblExports" runat="server" />
-					</td><td>
-						and 
-						<asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="insert" ToolTip="Insert existing export" CausesValidation="false" />
-						<asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" />
-					</td></tr></table>
+				    Or, select one of these existing export file to insert:<br />
+						<asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Flow" />
+					to 
+					<asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="insert" ToolTip="Insert existing export" CausesValidation="false" />
+					<asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" />
 				</li>
                 <li>
 					Or, select an export file 

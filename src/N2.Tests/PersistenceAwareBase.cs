@@ -15,6 +15,7 @@ namespace N2.Tests
 		public virtual void TestFixtureSetUp()
 		{
 			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
+            engine.Initialize();
 			engine.Resolve<ISecurityEnforcer>().Start();
 		}
 
@@ -32,14 +33,14 @@ namespace N2.Tests
 
 		protected virtual void CreateDatabaseSchema()
 		{
-			InstallationManager im = new InstallationManager(engine);
+            InstallationManager im = engine.Resolve<InstallationManager>();
 			im.Install();
 		}
 
 		protected virtual void DropDatabaseSchema()
 		{
-			InstallationManager im = new InstallationManager(engine);
-			im.DropDatabaseTables();
+            InstallationManager im = engine.Resolve<InstallationManager>();
+            im.DropDatabaseTables();
 		}
 	}
 }

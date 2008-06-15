@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\DisplayPage-PlugIn.cs" />
+    <Compile Include="Layouts\IBreadcrumb.cs" />
     <Compile Include="Layouts\Parts\Translation.cs" />
     <Compile Include="Obsolete\Global.cs" />
     <Compile Include="UI\404.aspx.cs">

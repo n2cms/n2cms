@@ -19,7 +19,6 @@ namespace N2.Edit.Install
 		protected Label errorLabel;
 		protected FileUpload fileUpload;
 
-		private InstallationManager currentInstallationManager;
 		private DatabaseStatus status;
 
 		protected int rootId
@@ -37,10 +36,7 @@ namespace N2.Edit.Install
 
 		public InstallationManager CurrentInstallationManager
 		{
-			get
-			{
-				return currentInstallationManager ?? (currentInstallationManager = new InstallationManager(N2.Context.Current));
-			}
+			get { return N2.Context.Current.Resolve<InstallationManager>(); }
 		}
 
 		public DatabaseStatus Status

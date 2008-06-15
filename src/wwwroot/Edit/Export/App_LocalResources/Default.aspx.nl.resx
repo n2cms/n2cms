@@ -118,51 +118,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annuleer</value>
   </data>
   <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
-    <value>Export &amp; Import items</value>
+    <value>Exporteer &amp; Importeer items</value>
   </data>
   <data name="attachments.Text" xml:space="preserve">
-    <value>Attachments</value>
+    <value>Bijlages</value>
   </data>
   <data name="btnExport.Text" xml:space="preserve">
-    <value>Export these items</value>
+    <value>Exporteer deze items</value>
   </data>
   <data name="btnImportUploaded.Text" xml:space="preserve">
-    <value>Import</value>
+    <value>Importeren</value>
   </data>
   <data name="btnUploadImport.Text" xml:space="preserve">
-    <value>Upload and import here</value>
+    <value>Uploaden en hier importeren</value>
   </data>
   <data name="btnVerify.Text" xml:space="preserve">
-    <value>Upload and verify</value>
+    <value>Uploaden en controleren</value>
   </data>
   <data name="chkSkipRoot.Text" xml:space="preserve">
-    <value>Skip imported root item</value>
+    <value>Geimporteerde root overslaan</value>
   </data>
   <data name="chkSkipRoot.ToolTip" xml:space="preserve">
-    <value>Checking this options cause the first level item not to be imported, and it's children to be added to the selected item's children</value>
+    <value>Deze optie aanzetten zorgt er voor dat het 1e niveau niet geimporteerd wordt en de onderliggende items toegevoegd aan het geselecteerde item</value>
   </data>
   <data name="exportedItems.Text" xml:space="preserve">
-    <value>Exported Items</value>
+    <value>Geexporteerde items</value>
   </data>
   <data name="h1.Text" xml:space="preserve">
-    <value>Export &amp; Import</value>
+    <value>Exporteer &amp; Importeer</value>
   </data>
   <data name="importedItems.Text" xml:space="preserve">
-    <value>Imported Items</value>
+    <value>Geimporteerde items</value>
   </data>
   <data name="tpExport.ToolTip" xml:space="preserve">
-    <value>Export</value>
+    <value>Exporteer</value>
   </data>
   <data name="tpImport.ToolTip" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="chkDefinedDetails.Text" xml:space="preserve">
-    <value>Only export defined data</value>
+    <value>Importeer</value>
   </data>
 </root>

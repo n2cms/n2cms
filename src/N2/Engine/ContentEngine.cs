@@ -62,7 +62,7 @@ namespace N2.Engine
 				ProcessResource(new AssemblyResource(engine.MultipleSitesConfiguration));
 			IResource resource = DetermineResource(config);
 			ProcessResource(resource);
-			InstallComponents();
+            InstallComponents();
 		}
 
 		#region Properties
@@ -188,10 +188,8 @@ namespace N2.Engine
 			Resolve<IRequestLifeCycleHandler>().Init(application);
 		}
 
-		public void InitializePlugins()
+		public void Initialize()
 		{
-			Debug.WriteLine("ContentEngine: initializing plugins");
-
 			IPluginBootstrapper invoker = Container.Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
 		}

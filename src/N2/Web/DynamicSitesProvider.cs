@@ -49,15 +49,27 @@ namespace N2.Web
 		{
 			if (RecursionDepth < 0) throw new N2Exception("The DynamicSitesProvider requires the RecursionDepth property to be at least 0");
 
-			ContentItem rootItem = persister.Get(rootItemID);
+            ContentItem rootItem = null;
+            try
+            {
+                rootItem = persister.Get(rootItemID);
+                if (rootItem == null)
+                    yield break;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("DynamicSitesProvider.GetSites:" + ex);
+                yield break;
+            }
 
-			foreach (ISitesSource source in new RecursiveFinder().Find<ISitesSource>(rootItem, RecursionDepth))
-			{
-				foreach (Site s in source.GetSites())
-				{
-					yield return s;
-				}
-			}
+            foreach (ISitesSource source in new RecursiveFinder().Find<ISitesSource>(rootItem, RecursionDepth))
+            {
+                foreach (Site s in source.GetSites())
+                {
+                    yield return s;
+                }
+            }
+
 		}
 		#endregion
 	}

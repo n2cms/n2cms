@@ -10,6 +10,8 @@ using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Web.UI;
 using Rhino.Mocks;
+using System.Configuration;
+using N2.Configuration;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -37,22 +39,11 @@ namespace N2.Tests.Persistence.NH
 			mocks.Replay(typeFinder);
 
 			definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions);
-			SetConfigurationProperties(configurationBuilder);
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, (DatabaseSection)ConfigurationManager.GetSection("n2/database"));
 
 			sessionProvider = new SessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
 
 			finder = new ItemFinder(sessionProvider, definitions);
-		}
-
-		private static void SetConfigurationProperties(ConfigurationBuilder configurationBuilder)
-		{
-			configurationBuilder.Properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
-			configurationBuilder.Properties["connection.connection_string_name"] = "TestConnection";
-
-			configurationBuilder.Properties["cache.use_second_level_cache"] = "false";
-			configurationBuilder.Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
-			configurationBuilder.Properties["dialect"] = "NHibernate.Dialect.MsSql2005Dialect";
 		}
 
 		[SetUp]

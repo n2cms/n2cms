@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using N2.Details;
+using System.Collections.Generic;
 
 namespace N2.Serialization
 {
@@ -12,12 +13,17 @@ namespace N2.Serialization
 		{
 			using (new ElementWriter("details", writer))
 			{
-				foreach (ContentDetail detail in item.Details.Values)
+                foreach (ContentDetail detail in GetDetails(item))
 				{
 					WriteDetail(detail, writer);
 				}
 			}
 		}
+
+        protected virtual IEnumerable<ContentDetail> GetDetails(ContentItem item)
+        {
+            return item.Details.Values;
+        }
 
 		public virtual void WriteDetail(ContentDetail detail, XmlTextWriter writer)
 		{

@@ -38,7 +38,7 @@ namespace N2
 			if (instance == null || forceRecreate)
 			{
 				instance = CreateEngineInstance();
-				instance.InitializePlugins();
+				instance.Initialize();
 			}
 			else if (instance != null)
 				Trace.TraceInformation("Factory.Initialize: Instance already created");

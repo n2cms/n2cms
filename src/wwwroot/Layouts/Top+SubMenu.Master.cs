@@ -10,11 +10,17 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Templates.Items;
 using N2.Globalization;
+using N2.Templates.Web.UI.WebControls;
 
 namespace N2.Templates.UI.Layouts
 {
-	public partial class Top_SubMenu : Templates.Web.UI.TemplateMasterPage<ContentItem>
+    public partial class Top_SubMenu : Templates.Web.UI.TemplateMasterPage<ContentItem>, IBreadcrumb
 	{
+        public Path Breadcrumb
+        {
+            get { return this.p; }
+        }
+
 		protected ILanguageGateway languages;
 
 		protected override void OnInit(EventArgs e)

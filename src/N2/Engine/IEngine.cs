@@ -41,7 +41,10 @@ namespace N2.Engine
         /// <summary>The base of the web site.</summary>
         IHost Host { get; }
 
-		void InitializePlugins();
+        /// <summary>
+        /// Initialize components and plugins in the N2 CMS environment.
+        /// </summary>
+		void Initialize();
 
 		/// <summary>Attaches to the appropriate events for usage with ASP.NET.</summary>
 		/// <param name="application">A recently initialized http application.</param>

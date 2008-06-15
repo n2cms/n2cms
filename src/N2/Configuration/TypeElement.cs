@@ -1,9 +1,8 @@
 using System.Configuration;
 using System;
 
-namespace N2.MediumTrust.Configuration
+namespace N2.Configuration
 {
-	[Obsolete]
 	public class TypeElement : ConfigurationElement
 	{
 		[ConfigurationProperty("typeName", IsKey = true)]

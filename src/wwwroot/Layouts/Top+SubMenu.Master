@@ -1,80 +1,81 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Top+SubMenu.master.cs" Inherits="N2.Templates.UI.Layouts.Top_SubMenu" %>
+
 <%@ Register TagPrefix="parts" TagName="SubMenu" Src="Parts/SubMenu.ascx" %>
 <%@ Register TagPrefix="parts" TagName="TopMenu" Src="Parts/TopMenu.ascx" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
     <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
     <asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
 <body class="<%= GetBodyClass() %>">
     <form id="F" runat="server">
-		<n2:SlidingCurtain ID="sc" runat="server">
-			<n2:DragDropControlPanel ID="cp" runat="server" QuickEditLink-Visible="false">
-				<VisibleFooterTemplate>
-					<script type="text/javascript">
+    <n2:SlidingCurtain ID="sc" runat="server">
+        <n2:DragDropControlPanel ID="cp" runat="server" QuickEditLink-Visible="false">
+            <VisibleFooterTemplate>
+
+                <script type="text/javascript">
 						if(window.top != window && window.top.n2)
 							window.top.n2.select("Go");
-					</script>
-				</VisibleFooterTemplate>
-			</n2:DragDropControlPanel>
-		</n2:SlidingCurtain>
-		
-        <div id="wrap">
-            <asp:ContentPlaceHolder ID="Top" runat="server">
-                <div id="header">
-                    <n2:Display ID="dh" PropertyName="Header" Path="~/" runat="server" />
-                    <parts:TopMenu ID="tm" runat="server" />
-                </div>
-            </asp:ContentPlaceHolder>
-            <asp:ContentPlaceHolder ID="PageWrapper" runat="server">
-                <div id="page">
-					<asp:ContentPlaceHolder ID="PageTop" runat="server">
-						<n2:EditableDisplay PropertyName="TopImage" runat="server" SwallowExceptions="true" />
-					</asp:ContentPlaceHolder>
-                    <asp:ContentPlaceHolder ID="Menu" runat="server">
-                        <div id="menu" class="secondary">
-							<parts:SubMenu ID="sm" runat="server" />
-                            <n2:DroppableZone ID="zsl" ZoneName="SiteLeft" runat="server" Path="~/" />
-                            <n2:DroppableZone ID="zl" ZoneName="Left" runat="server" />
-                        </div>
-                    </asp:ContentPlaceHolder>
-                    <div id="content" class="cf">
-						<asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
-							<div id="main">
-								<asp:ContentPlaceHolder ID="PreContent" runat="server">
-									<n2:DraggableToolbar ID="dt" runat="server" />
-									<n2:Zone ID="za" runat="server" ZoneName="RecursiveAbove" />
-								</asp:ContentPlaceHolder>
-								<asp:ContentPlaceHolder ID="Content" runat="server">
-									<n2:Path ID="p" runat="server" />
-									<n2:EditableDisplay ID="dim" PropertyName="Image" SwallowExceptions="true" runat="server" />
-									<asp:ContentPlaceHolder ID="TextContent" runat="server">
-										<n2:EditableDisplay ID="dti" PropertyName="Title" SwallowExceptions="true" runat="server" />
-										<n2:EditableDisplay ID="dte" PropertyName="Text" runat="server" />
-									</asp:ContentPlaceHolder>
-								</asp:ContentPlaceHolder>
-								<asp:ContentPlaceHolder ID="PostContent" runat="server">
-									<n2:DroppableZone ID="zc" ZoneName="Content" runat="server" />
-								</asp:ContentPlaceHolder>
-							</div>
-							<asp:ContentPlaceHolder ID="Sidebar" runat="server">
-								<div id="extras" class="secondary">
-									<n2:Zone ID="zrr" ZoneName="RecursiveRight" runat="server" />
-									<n2:DroppableZone ID="zr" ZoneName="Right" runat="server" />
-									<n2:DroppableZone ID="zsr" ZoneName="SiteRight" runat="server" Path="~/" />
-								</div>
-							</asp:ContentPlaceHolder>
-						</asp:ContentPlaceHolder>
+                </script>
+
+            </VisibleFooterTemplate>
+        </n2:DragDropControlPanel>
+    </n2:SlidingCurtain>
+    <div id="wrap">
+        <asp:ContentPlaceHolder ID="Top" runat="server">
+            <div id="header">
+                <n2:Display ID="dh" PropertyName="Header" Path="~/" runat="server" />
+                <parts:TopMenu ID="tm" runat="server" />
+            </div>
+        </asp:ContentPlaceHolder>
+        <asp:ContentPlaceHolder ID="PageWrapper" runat="server">
+            <div id="page">
+                <asp:ContentPlaceHolder ID="PageTop" runat="server">
+                    <n2:EditableDisplay PropertyName="TopImage" runat="server" SwallowExceptions="true" />
+                </asp:ContentPlaceHolder>
+                <asp:ContentPlaceHolder ID="Menu" runat="server">
+                    <div id="menu" class="secondary">
+                        <parts:SubMenu ID="sm" runat="server" />
+                        <n2:DroppableZone ID="zsl" ZoneName="SiteLeft" runat="server" Path="~/" />
+                        <n2:DroppableZone ID="zl" ZoneName="Left" runat="server" />
                     </div>
+                </asp:ContentPlaceHolder>
+                <div id="content" class="cf">
+                    <asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
+                        <div id="main">
+                            <asp:ContentPlaceHolder ID="PreContent" runat="server">
+                                <n2:DraggableToolbar ID="dt" runat="server" />
+                                <n2:Zone ID="za" runat="server" ZoneName="RecursiveAbove" />
+                            </asp:ContentPlaceHolder>
+                            <asp:ContentPlaceHolder ID="Content" runat="server">
+                                <n2:Path ID="p" runat="server" />
+                                <n2:EditableDisplay ID="dim" PropertyName="Image" SwallowExceptions="true" runat="server" />
+                                <asp:ContentPlaceHolder ID="TextContent" runat="server">
+                                    <n2:EditableDisplay ID="dti" PropertyName="Title" SwallowExceptions="true" runat="server" />
+                                    <n2:EditableDisplay ID="dte" PropertyName="Text" runat="server" />
+                                </asp:ContentPlaceHolder>
+                            </asp:ContentPlaceHolder>
+                            <asp:ContentPlaceHolder ID="PostContent" runat="server">
+                                <n2:DroppableZone ID="zc" ZoneName="Content" runat="server" />
+                            </asp:ContentPlaceHolder>
+                        </div>
+                        <asp:ContentPlaceHolder ID="Sidebar" runat="server">
+                            <div id="extras" class="secondary">
+                                <n2:Zone ID="zrr" ZoneName="RecursiveRight" runat="server" />
+                                <n2:DroppableZone ID="zr" ZoneName="Right" runat="server" />
+                                <n2:DroppableZone ID="zsr" ZoneName="SiteRight" runat="server" Path="~/" />
+                            </div>
+                        </asp:ContentPlaceHolder>
+                    </asp:ContentPlaceHolder>
                 </div>
-                <div id="footer">
-					<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
-					<n2:Display ID="dft" PropertyName="FooterText" Path="~/" runat="server" />
-				</div>
-            </asp:ContentPlaceHolder>
-        </div>
+            </div>
+            <div id="footer">
+                <a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
+                <n2:Display ID="dft" PropertyName="FooterText" Path="~/" runat="server" />
+            </div>
+        </asp:ContentPlaceHolder>
+    </div>
     </form>
 </body>
 </html>

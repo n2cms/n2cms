@@ -261,6 +261,7 @@
     <EmbeddedResource Include="Engine\engine.castle.config" />
     <EmbeddedResource Include="Definitions\definitions.castle.config" />
     <None Include="ContentModel.cd" />
+    <EmbeddedResource Include="Installation\installation.castle.config" />
     <EmbeddedResource Include="Globalization\globalization.castle.config" />
     <EmbeddedResource Include="Parts\parts.castle.config" />
     <EmbeddedResource Include="Integrity\integrity.castle.config" />
@@ -341,12 +342,10 @@
     <Compile Include="Installation\InstallerModule.cs" />
     <Compile Include="Installation\SqlServerType.cs" />
     <Compile Include="Obsolete\Configuration\MediumTrustSectionHandler.cs" />
-    <Compile Include="Obsolete\Configuration\TypeCollection.cs" />
-    <Compile Include="Obsolete\Configuration\TypeElement.cs" />
+    <Compile Include="Configuration\TypeElementCollection.cs" />
+    <Compile Include="Configuration\TypeElement.cs" />
     <Compile Include="MediumTrust\Engine\MediumTrustEngine.cs" />
-    <Compile Include="MediumTrust\Engine\MediumTrustFactory.cs" />
     <Compile Include="MediumTrust\Engine\MediumTrustTypeFinder.cs" />
-    <Compile Include="MediumTrust\Persistence\NH\MediumTrustNHBuilder.cs" />
     <Compile Include="Obsolete\Factory.cs" />
     <Compile Include="Integrity\IntegrityMappingAttribute.cs" />
     <Compile Include="Integrity\AllowedZones.cs" />
@@ -370,6 +369,8 @@
     <Compile Include="Plugin\IAutoStart.cs" />
     <Compile Include="Plugin\PluginInitializationException.cs" />
     <Compile Include="Security\SecurityManager.cs" />
+    <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
+    <Compile Include="Serialization\ExportOptions.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\Host.cs" />

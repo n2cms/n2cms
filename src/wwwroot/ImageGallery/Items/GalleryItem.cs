@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using N2.Integrity;
 using N2.Details;
 using N2.Web.UI;
+using N2.Serialization;
 
 namespace N2.Templates.ImageGallery.Items
 {
@@ -24,7 +25,8 @@ namespace N2.Templates.ImageGallery.Items
 		}
 
 		[EditableImage("Image", 30, ContainerName = Tabs.Content)]
-		public virtual string ImageUrl
+        [FileAttachment]
+        public virtual string ImageUrl
 		{
 			get { return (string)base.GetDetail("ImageUrl"); }
 			set { base.SetDetail("ImageUrl", value); }

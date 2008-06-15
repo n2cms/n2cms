@@ -20,7 +20,6 @@ using N2.Serialization;
 using N2.MediumTrust.Configuration;
 using N2.Details;
 using N2.Persistence.Finder;
-using N2.MediumTrust.Persistence.NH;
 using N2.Edit.Settings;
 using N2.Plugin;
 using N2.Parts;
@@ -213,7 +212,7 @@ namespace N2.MediumTrust.Engine
 		#endregion
 
 		#region Methods
-		public void InitializePlugins()
+		public void Initialize()
 		{
 			Debug.WriteLine("MediumTrustEngine: initializing plugins");
 

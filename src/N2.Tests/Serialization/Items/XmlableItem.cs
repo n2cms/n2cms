@@ -15,7 +15,7 @@ namespace N2.Tests.Serialization.Items
 			get { return (string)(GetDetail("ImageUrl") ?? string.Empty); }
 			set { SetDetail("ImageUrl", value); }
 		}
-		[Details.EditableImage("TextFile", 100)]
+		[Details.EditableFreeTextArea("TextFile", 100)]
 		[FileAttachment]
 		public virtual string TextFile
 		{

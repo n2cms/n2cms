@@ -13,6 +13,8 @@ using N2.Details;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework.SyntaxHelpers;
 using System.Diagnostics;
+using N2.Configuration;
+using System.Configuration;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -392,16 +394,9 @@ namespace N2.Tests.Persistence.NH
 			mocks.ReplayAll();
 
 			IDefinitionManager definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions);
-			configurationBuilder.Properties.Add("connection.provider", "NHibernate.Connection.DriverConnectionProvider");
-			configurationBuilder.Properties.Add("connection.connection_string_name", "TestConnection");
-			configurationBuilder.Properties.Add("show_sql", "true");
-			configurationBuilder.Properties.Add("cache.use_second_level_cache", "false");
-			configurationBuilder.Properties.Add("connection.driver_class", "NHibernate.Driver.SqlClientDriver");
-			configurationBuilder.Properties.Add("dialect", "NHibernate.Dialect.MsSql2005Dialect");
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, (DatabaseSection)ConfigurationManager.GetSection("n2/database"));
 
 			return new SessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
-			
 		}
 	}
 }

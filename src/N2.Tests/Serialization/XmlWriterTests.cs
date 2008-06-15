@@ -340,7 +340,7 @@ namespace N2.Tests.Serialization
 			xmlOutput.WriteStartDocument();
 			xmlOutput.WriteStartElement("n2");
 
-			writer.Write(item, xmlOutput);
+			writer.Write(item, ExportOptions.Default, xmlOutput);
 
 			xmlOutput.WriteEndElement();
 			xmlOutput.WriteEndDocument();

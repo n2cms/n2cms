@@ -8,6 +8,10 @@ using System.Configuration;
 using N2.Configuration;
 using System.Web.Configuration;
 using N2.Engine;
+using N2.Persistence.NH;
+using N2.Persistence;
+using N2.Definitions;
+using N2.Serialization;
 
 namespace N2.Installation
 {
@@ -30,8 +34,9 @@ namespace N2.Installation
             if (config != null && config.CheckInstallationStatus)
             {
                 this.context = application;
-                engine = N2.Context.Initialize(false);
                 application.BeginRequest += context_BeginRequest;
+
+                engine = N2.Context.Initialize(false);
             }
 		}
 
@@ -42,7 +47,7 @@ namespace N2.Installation
 			else
 				alreadyChecked = true;
 
-			InstallationManager im = new InstallationManager(engine);
+            InstallationManager im = engine.Resolve<InstallationManager>();
 			DatabaseStatus status = im.GetStatus();
 			if (!status.IsInstalled)
 			{

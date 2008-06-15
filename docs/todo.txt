@@ -1,6 +1,8 @@
+- select pages when navigating in preview
 - error handling with email option
 - handle not-mapped types
 - allow non root-path to act as start page
+- wiki
 - dashboard
 - restrictparents: NewRestrictionAttribute
 - Parts: Throw friendly exception when page isn't found

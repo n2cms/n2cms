@@ -78,13 +78,13 @@
 	<!-- CORE -->
 
 	<Target Name="Core-PrepareDependencies">
-		<Copy SourceFiles="$(Source-LibraryFolder)\NHibernate.Caches.SysCache2.dll" DestinationFolder="$(Core-WebFolder)\Bin"/>
+    <Message Text="..." />
 	</Target>
 
 	<Target Name="Core-Build" DependsOnTargets="Core-PrepareDependencies">
 		<Message Text="Building Core"/>
 
-		<MSBuild Projects="$(Core-SolutionFolder)\N2_Everything-vs2008.sln" />
+		<MSBuild Projects="$(Core-SolutionFolder)\N2_Everything-vs2008.sln"  />
 	</Target>
 
 	<ItemGroup>
@@ -118,16 +118,18 @@
 		<Delete Files="$(Core-WebFolder)\Bin\N2.Edit.Globalization.dll;$(Core-WebFolder)\Bin\N2.Edit.LinkTracker.dll;$(Core-WebFolder)\Bin\N2.Edit.Trash.dll;$(Core-WebFolder)\Bin\N2.Edit.Wizard.dll"/>
 	</Target>
 
-	<Target Name="Core-Deploy" DependsOnTargets="Core-Build;Core-ILMerge">
-		<Message Text="Deploying Core"/>
+  <Target Name="Core-Deploy">
+    <!--DependsOnTargets="Core-Build">-->
+    <Message Text="Deploying Core"/>
 
-		<CreateItem Include="$(Core-WebFolder)\Bin\*.dll" Exclude="$(Core-WebFolder)\Bin\N2.Templates*;$(Core-WebFolder)\Bin\Demo*">
-			<Output TaskParameter="Include" ItemName="Core-BinFiles"/>
-		</CreateItem>
-		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(DeployCore-Folder)\Bin" />
-		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(DeployCore-Folder)\Edit\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployCore-Folder)" />
-	</Target>
+    <CreateItem Include="$(Core-WebFolder)\Bin\*.dll" Exclude="$(Core-WebFolder)\Bin\N2.Edit*;$(Core-WebFolder)\Bin\N2.Templates*;$(Core-WebFolder)\Bin\Demo*">
+      <Output TaskParameter="Include" ItemName="Core-BinFiles"/>
+    </CreateItem>
+    <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(DeployCore-Folder)\Bin" />
+    <Exec Command="$(ILMerge) /ndebug /log /out:$(DeployCore-Folder)\Bin\N2.Edit.dll $(Core-WebFolder)\Bin\N2.Edit.dll $(Core-WebFolder)\Bin\N2.Edit.LinkTracker.dll $(Core-WebFolder)\Bin\N2.Edit.Trash.dll $(Core-WebFolder)\Bin\N2.Edit.Wizard.dll"/>
+    <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(DeployCore-Folder)\Edit\%(RecursiveDir)" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployCore-Folder)" />
+  </Target>
 
 	<Target Name="Rebuild-CoreDeploy-AllFiles" DependsOnTargets="Core-Deploy">
 		<CreateItem Include="$(Deploy-RootFolder)\Core\**\*" Exclude="$(Deploy-RootFolder)\Core\*.txt">
@@ -150,7 +152,9 @@
 	</PropertyGroup>
 
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Core-PrepareDependencies">
-    <Message Text="Core, Edit and Templates are now married so nothing needs to be done here." />
+    <Copy SourceFiles="$(Source-LibraryFolder)\NHibernate.Caches.SysCache2.dll" DestinationFolder="$(Templates-UIFolder)\Bin"/>
+    <Copy SourceFiles="$(Source-LibraryFolder)\System.Data.SQLite.dll" DestinationFolder="$(Templates-UIFolder)\Bin"/>
+    <Copy SourceFiles="$(Source-LibraryFolder)\MySql.Data.dll" DestinationFolder="$(Templates-UIFolder)\Bin"/>
 	</Target>
 
 	<Target Name="Templates-Build" DependsOnTargets="Core-Build;Templates-PrepareDependencies">
@@ -183,7 +187,7 @@
 	</ItemGroup>
 
 
-	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Core-ILMerge">
+	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build">
 		<Message Text="Deploying Templates"/>
 
 		<Delete Files="$(Templates-UIFolder)\Bin\Demo.dll" />

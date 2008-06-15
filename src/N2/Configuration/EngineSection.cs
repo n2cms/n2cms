@@ -34,10 +34,18 @@ namespace N2.Configuration
 			set { base["dynamicDiscovery"] = value; }
 		}
 
+        /// <summary>Additional assemblies assemblies investigated while investigating the environemnt, e.g. to find item definitions.</summary>
 		[ConfigurationProperty("assemblies")]
 		public AssemblyCollection Assemblies
 		{
 			get { return (AssemblyCollection)base["assemblies"]; }
-		}
+        }
+
+        ///// <summary>Types not to include when investigating the environment.</summary>
+        //[ConfigurationProperty("excludeTypes")]
+        //public TypeElementCollection ExcludeTypes
+        //{
+        //    get { return (TypeElementCollection)base["excludeTypes"]; }
+        //}
 	}
 }

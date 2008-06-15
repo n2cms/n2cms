@@ -74,10 +74,12 @@ namespace N2.Tests.PlugIn
             PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
             PlugIn2.WasInitialized = false;
 
+            ThrowingPlugin1.Throw = true;
             PluginInitializationException ex = ExceptionAssert.Throws<PluginInitializationException>(delegate
             {
                 invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
             });
+            ThrowingPlugin1.Throw = false;
             Assert.That(PlugIn2.WasInitialized, Is.True);
         }
 
@@ -95,10 +97,12 @@ namespace N2.Tests.PlugIn
             PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
             PlugIn2.WasInitialized = false;
 
+            ThrowingPlugin1.Throw = true;
             PluginInitializationException ex = ExceptionAssert.Throws<PluginInitializationException>(delegate
             {
                 invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
             });
+            ThrowingPlugin1.Throw = false;
             Assert.That(ex.InnerException, Is.TypeOf(typeof(SomeException)));
             Assert.That(ex.Message.Contains("ThrowingPlugin1 isn't happy."));
         }
@@ -117,10 +121,14 @@ namespace N2.Tests.PlugIn
             PluginBootstrapper invoker = new PluginBootstrapper(typeFinder);
             PlugIn2.WasInitialized = false;
 
+            ThrowingPlugin1.Throw = true;
+            ThrowingPlugin2.Throw = true;
             PluginInitializationException ex = ExceptionAssert.Throws<PluginInitializationException>(delegate
             {
                 invoker.InitializePlugins(engine, invoker.GetPluginDefinitions());
             });
+            ThrowingPlugin1.Throw = false; 
+            ThrowingPlugin2.Throw = false; 
             Assert.That(ex.InnerExceptions.Length, Is.EqualTo(2));
             Assert.That(ex.Message.Contains("ThrowingPlugin1 isn't happy."));
             Assert.That(ex.Message.Contains("ThrowingPlugin2 is really mad."));

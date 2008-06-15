@@ -6,6 +6,8 @@ using N2.Serialization;
 using N2.Tests.Serialization.Items;
 using N2.Web;
 using Rhino.Mocks;
+using N2.Engine;
+using System.Reflection;
 
 namespace N2.Tests.Serialization
 {
@@ -13,34 +15,25 @@ namespace N2.Tests.Serialization
 	{
 		private delegate string BuildUrl(ContentItem item);
 		private delegate ContentItem CreateInstance(Type t, ContentItem parent);
-		private IDefinitionManager definitions;
-		private IUrlParser parser;
-		private IPersister persister;
-			
+		protected IDefinitionManager definitions;
+        protected IUrlParser parser;
+        protected IPersister persister;
+		
+        
+
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			definitions = mocks.StrictMock<IDefinitionManager>();
-			Expect.On(definitions)
-				.Call(definitions.GetDefinition(typeof(XmlableItem)))
-				.Return(new ItemDefinition(typeof(XmlableItem)))
-				.Repeat.Any();
-			Expect.On(definitions)
-				.Call(definitions.GetDefinitions())
-				.Return(new ItemDefinition[] {new ItemDefinition(typeof(XmlableItem))})
-				.Repeat.Any();
-			Expect.On(definitions)
-				.Call(definitions.CreateInstance(typeof (XmlableItem), null))
-				.Do(new CreateInstance(delegate (Type itemType, ContentItem parent)
-										{
-											ContentItem item = Activator.CreateInstance(itemType) as ContentItem;
-											item.Parent = parent;
-											return item;
-										}))
-				.Repeat.Any();
-			mocks.Replay(definitions);
+            var finder = mocks.StrictMock<ITypeFinder>();
+            Expect.Call(finder.GetAssemblies()).Return(new Assembly[] { typeof(XmlableItem).Assembly }); 
+            Expect.Call(finder.Find(typeof(ContentItem))).Return(new Type[] { typeof(XmlableItem) });
+            mocks.Replay(finder);
+            var notifier = mocks.Stub<IItemNotifier>();
+            mocks.Replay(notifier);
+
+            definitions = new DefinitionManager(new DefinitionBuilder(finder), notifier);
 			
 			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser)

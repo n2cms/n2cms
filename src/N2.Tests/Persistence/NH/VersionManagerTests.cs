@@ -10,6 +10,8 @@ using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Web.UI;
 using Rhino.Mocks;
+using System.Configuration;
+using N2.Configuration;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -27,36 +29,21 @@ namespace N2.Tests.Persistence.NH
 			mocks = new MockRepository();
 
 			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
-			Expect.On(typeFinder)
-				.Call(typeFinder.GetAssemblies())
-				.Return(new Assembly[] { typeof(Definitions.PersistableItem1).Assembly })
-				.Repeat.Any();
-			Expect.On(typeFinder)
-				.Call(typeFinder.Find(typeof(ContentItem)))
-				.Return(new Type[] { typeof(Definitions.PersistableItem1) })
-				.Repeat.AtLeastOnce();
+			Expect.On(typeFinder).Call(typeFinder.GetAssemblies())
+				.Return(new Assembly[] { typeof(Definitions.PersistableItem1).Assembly }).Repeat.Any();
+			Expect.On(typeFinder).Call(typeFinder.Find(typeof(ContentItem)))
+				.Return(new Type[] { typeof(Definitions.PersistableItem1) }).Repeat.AtLeastOnce();
 
 			mocks.ReplayAll();
 
 			IDefinitionManager definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions);
-			SetConfigurationProperties(configurationBuilder);
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, (DatabaseSection)ConfigurationManager.GetSection("n2/database"));
 
 			sessionProvider = new SessionProvider(configurationBuilder, new Fakes.FakeWebContextWrapper());
 
 			finder = new ItemFinder(sessionProvider, definitions);
 
 			mocks.VerifyAll();
-		}
-
-		private static void SetConfigurationProperties(ConfigurationBuilder configurationBuilder)
-		{
-			configurationBuilder.Properties[NHibernate.Cfg.Environment.ConnectionProvider] = "NHibernate.Connection.DriverConnectionProvider";
-			configurationBuilder.Properties[NHibernate.Cfg.Environment.ConnectionStringName] = "TestConnection";
-
-			configurationBuilder.Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = "false";
-			configurationBuilder.Properties[NHibernate.Cfg.Environment.ConnectionDriver] = "NHibernate.Driver.SqlClientDriver";
-			configurationBuilder.Properties[NHibernate.Cfg.Environment.Dialect] = "NHibernate.Dialect.MsSql2005Dialect";
 		}
 
 		[SetUp]

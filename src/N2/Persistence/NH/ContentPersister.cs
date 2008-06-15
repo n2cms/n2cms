@@ -46,22 +46,14 @@ namespace N2.Persistence.NH
 		/// <returns>The item if one with a matching id was found, otherwise null.</returns>
 		public virtual ContentItem Get(int id)
 		{
-            try
+            ContentItem item = itemRepository.Get(id);
+            if (ItemLoaded != null)
             {
-                // workaround: session.Get seems to cause the 2:nd level cache items to be thrown away
-                ContentItem item = itemRepository.Get(id);
-                if (ItemLoaded != null)
-                {
-                    ItemEventArgs args = new ItemEventArgs(item);
-                    ItemLoaded.Invoke(this, args);
-                    return args.AffectedItem;
-                }
-                return item;
+                ItemEventArgs args = new ItemEventArgs(item);
+                ItemLoaded.Invoke(this, args);
+                return args.AffectedItem;
             }
-            catch (ObjectNotFoundException)
-            {
-                return null;
-            }
+            return item;
 		}
 
 		/// <summary>Gets an item by id</summary>

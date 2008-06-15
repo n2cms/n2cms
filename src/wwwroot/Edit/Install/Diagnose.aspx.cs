@@ -94,7 +94,7 @@ namespace N2.Edit.Install
 
 		private InstallationManager CurrentInstallationManager
 		{
-			get { return new InstallationManager(N2.Context.Current); }
+			get { return N2.Context.Current.Resolve<InstallationManager>(); }
 		}
 
 		private void CheckDatabase()

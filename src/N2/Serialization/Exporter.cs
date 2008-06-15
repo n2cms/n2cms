@@ -25,14 +25,14 @@ namespace N2.Serialization
 			set { xmlFormatting = value; }
 		}
 
-		public virtual void Export(ContentItem item, HttpResponse response)
+        public virtual void Export(ContentItem item, ExportOptions options, HttpResponse response)
 		{
 			response.ContentType = GetContentType();
 			response.AppendHeader("Content-Disposition", "attachment;filename=" + GetExportFilename(item));
 
 			using (TextWriter output = GetTextWriter(response))
 			{
-				Export(item, output);
+				Export(item, options, output);
 				output.Flush();
 			}
 			response.End();
@@ -53,7 +53,7 @@ namespace N2.Serialization
 			return Regex.Replace(item.Title.Replace(' ', '_'), "[^a-zA-Z0-9_-]", "") + ".n2.xml";
 		}
 
-		public virtual void Export(ContentItem item, TextWriter output)
+        public virtual void Export(ContentItem item, ExportOptions options, TextWriter output)
 		{
 			XmlTextWriter xmlOutput = new XmlTextWriter(output);
 			xmlOutput.Formatting = XmlFormatting;
@@ -65,7 +65,7 @@ namespace N2.Serialization
 				envelope.WriteAttribute("exportVersion", 2);
 				envelope.WriteAttribute("exportDate", DateTime.Now);
 
-				itemWriter.Write(item, xmlOutput);
+				itemWriter.Write(item, options, xmlOutput);
 			}
 
 			xmlOutput.WriteEndDocument();

@@ -5,6 +5,7 @@ using System.Web;
 using NUnit.Framework;
 using N2.Serialization;
 using N2.Tests.Serialization.Items;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Serialization
 {
@@ -12,7 +13,7 @@ namespace N2.Tests.Serialization
 	public class ExportImportTests : SerializationTestsBase
 	{
 		[Test]
-		public void CanExportSimpleItem()
+		public void ExportedImportedItem_KeepsBasicAttributes()
 		{
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 
@@ -21,7 +22,33 @@ namespace N2.Tests.Serialization
 			Assert.AreEqual(item.ID, readItem.ID);
 			Assert.AreEqual(item.Title, readItem.Title);
 			Assert.AreEqual(item.Name, readItem.Name);
-		}
+        }
+
+        [Test]
+        public void ExportedImportedItem_MaintainsSameType()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+
+            ContentItem readItem = ExportAndImport(item);
+
+            Assert.That(item, Is.TypeOf(typeof(XmlableItem)));
+        }
+
+        [Test]
+        public void CanExport_SimpleItem_AndIgnore_NotDefinedData()
+        {
+            XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+            item.ImageUrl = "/hello.jpg";
+            item.TextFile = "<p>One two three.</p>";
+            item["NotExported"] = "Please don't export me.";
+
+            string xml = ExportToString(item, new Exporter(new ItemXmlWriter(definitions, parser)), ExportOptions.DefinedDetails);
+            XmlableItem readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+            Assert.That(readItem.ImageUrl, Is.EqualTo("/hello.jpg"));
+            Assert.That(readItem.TextFile, Is.EqualTo("<p>One two three.</p>"));
+            Assert.That(readItem["NotExported"], Is.Null);
+        }
 
 		[Test]
 		public void CanExportSimpleItemWithAttachment()
@@ -436,7 +463,7 @@ Public License instead of this License.
 
 			StringBuilder sb = new StringBuilder();
 			HttpResponse hr  = new HttpResponse(new StringWriter(sb));
-			exporter.Export(item, hr);
+			exporter.Export(item, ExportOptions.Default, hr);
 			char[] buf = new char[sb.Length];
 			sb.CopyTo(0, buf, 0, sb.Length);
 
@@ -463,12 +490,16 @@ Public License instead of this License.
 			return importer.Read(sr);
 		}
 
-		private static string ExportToString(ContentItem item, Exporter exporter)
+        private static string ExportToString(ContentItem item, Exporter exporter)
+        {
+            return ExportToString(item, exporter, ExportOptions.Default);
+        }
+		private static string ExportToString(ContentItem item, Exporter exporter, ExportOptions options)
 		{
 			StringBuilder sb = new StringBuilder();
 			StringWriter sw = new StringWriter(sb);
 
-			exporter.Export(item, sw);
+            exporter.Export(item, options, sw);
 
 			return sb.ToString();
 		}

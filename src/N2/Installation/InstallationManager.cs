@@ -14,14 +14,31 @@ using NHibernate;
 using NHibernate.Driver;
 using NHibernate.Tool.hbm2ddl;
 using Environment=NHibernate.Cfg.Environment;
+using N2.Persistence;
 
 namespace N2.Installation
 {
+    /// <summary>
+    /// Wraps functionality to request database status and generate n2's 
+    /// database schema on multiple database flavours.
+    /// </summary>
 	public class InstallationManager
 	{
-		public InstallationManager(IEngine engine)
+        IConfigurationBuilder configurationBuilder;
+        IDefinitionManager definitions;
+        Importer importer;
+        IPersister persister;
+        ISessionProvider sessionProvider;
+        IHost host;
+        
+        public InstallationManager(IHost host, IDefinitionManager definitions, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder)
 		{
-			this.engine = engine;
+            this.host = host;
+            this.definitions = definitions;
+            this.importer = importer;
+            this.persister = persister;
+            this.sessionProvider = sessionProvider;
+            this.configurationBuilder = configurationBuilder;
 		}
 
 		#region Constants
@@ -43,12 +60,6 @@ namespace N2.Installation
 
 		public const string UpgradeSqlServer2005_1_1 = "N2.Installation.SqlScripts.Upgrade.SQLServer2005.1.1.sql";
 		public const string DropTables = "N2.Installation.SqlScripts.Drop.1.1.sql";
-
-		#endregion
-
-		#region Private Members
-
-		private IEngine engine;
 
 		#endregion
 
@@ -110,21 +121,21 @@ namespace N2.Installation
 		/// <summary>Executes sql create database scripts.</summary>
 		public void Install()
 		{
-			NHibernate.Cfg.Configuration cfg = engine.Resolve<IConfigurationBuilder>().BuildConfiguration();
+			NHibernate.Cfg.Configuration cfg = configurationBuilder.BuildConfiguration();
 			SchemaExport exporter = new SchemaExport(cfg);
 			exporter.Create(true, true);
 		}
 
 		public void ExportSchema(TextWriter output)
 		{
-			NHibernate.Cfg.Configuration cfg = engine.Resolve<IConfigurationBuilder>().BuildConfiguration();
+            NHibernate.Cfg.Configuration cfg = configurationBuilder.BuildConfiguration();
 			SchemaExport exporter = new SchemaExport(cfg);
 			exporter.Execute(true, false, false, true, null, output);
 		}
 
 		public void DropDatabaseTables()
 		{
-			NHibernate.Cfg.Configuration cfg = engine.Resolve<IConfigurationBuilder>().BuildConfiguration();
+            NHibernate.Cfg.Configuration cfg = configurationBuilder.BuildConfiguration();
 			SchemaExport exporter = new SchemaExport(cfg);
 			exporter.Drop(true, true);
 		}
@@ -144,10 +155,10 @@ namespace N2.Installation
 		{
 			try
 			{
-				status.StartPageID = engine.Resolve<IHost>().DefaultSite.StartPageID;
-				status.RootItemID = engine.Resolve<IHost>().DefaultSite.RootItemID;
-				status.StartPage = engine.Persister.Get(status.StartPageID);
-				status.RootItem = engine.Persister.Get(status.RootItemID);
+				status.StartPageID = host.DefaultSite.StartPageID;
+                status.RootItemID = host.DefaultSite.RootItemID;
+				status.StartPage = persister.Get(status.StartPageID);
+				status.RootItem = persister.Get(status.RootItemID);
 				status.IsInstalled = status.RootItem != null && status.StartPage != null;
 			} 
 			catch (Exception ex)
@@ -161,9 +172,9 @@ namespace N2.Installation
 		{
 			try
 			{
-				using (ISessionProvider sp = engine.Resolve<ISessionProvider>())
+				using (sessionProvider)
 				{
-					ISession session = sp.GetOpenedSession();
+                    ISession session = sessionProvider.GetOpenedSession();
 					status.Items = session.CreateCriteria(typeof (ContentItem)).List().Count;
 					status.Details = session.CreateCriteria(typeof(ContentDetail)).List().Count;
 					status.DetailCollections = session.CreateCriteria(typeof(DetailCollection)).List().Count;
@@ -204,9 +215,9 @@ namespace N2.Installation
 		/// <returns>A string with diagnostic information about the database.</returns>
 		public string CheckDatabase()
 		{
-			using (ISessionProvider sp = engine.Resolve<ISessionProvider>())
+            using (sessionProvider)
 			{
-				ISession session = sp.GetOpenedSession();
+                ISession session = sessionProvider.GetOpenedSession();
 				int itemCount = session.CreateCriteria(typeof (ContentItem)).List().Count;
 				int detailCount = session.CreateCriteria(typeof (ContentDetail)).List().Count;
 				int allowedRoleCount = session.CreateCriteria(typeof (AuthorizedRole)).List().Count;
@@ -220,12 +231,12 @@ namespace N2.Installation
 		/// <returns>A diagnostic string about the root node.</returns>
 		public string CheckRootItem()
 		{
-			int rootID = engine.Resolve<IHost>().DefaultSite.RootItemID;
-			ContentItem rootItem = engine.Persister.Get(rootID);
+			int rootID = host.DefaultSite.RootItemID;
+			ContentItem rootItem = persister.Get(rootID);
 			if (rootItem != null)
 				return String.Format("Root node OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
 									 rootItem.ID, rootItem.Name, rootItem.GetType(),
-									 engine.Definitions.GetDefinition(rootItem.GetType()), rootItem.Published, rootItem.Expires);
+									 definitions.GetDefinition(rootItem.GetType()), rootItem.Published, rootItem.Expires);
 			else
 				return "No root item found with the id: " + rootID;
 		}
@@ -234,31 +245,31 @@ namespace N2.Installation
 		/// <returns>A diagnostic string about the root node.</returns>
 		public string CheckStartPage()
 		{
-			int startID = engine.Resolve<IHost>().DefaultSite.StartPageID;
-			ContentItem startPage = engine.Persister.Get(startID);
+			int startID = host.DefaultSite.StartPageID;
+			ContentItem startPage = persister.Get(startID);
 			if(startPage != null)
 				return String.Format("Root node OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
 									 startPage.ID, startPage.Name, startPage.GetType(),
-									 engine.Definitions.GetDefinition(startPage.GetType()), startPage.Published, startPage.Expires);
+									 definitions.GetDefinition(startPage.GetType()), startPage.Published, startPage.Expires);
 			else
 				return "No start page found with the id: " + startID;
 		}
 
 		public ContentItem InsertRootNode(Type type, string name, string title)
 		{
-			ContentItem item = engine.Definitions.CreateInstance(type, null);
+			ContentItem item = definitions.CreateInstance(type, null);
 			item.Name = name;
 			item.Title = title;
-			engine.Persister.Save(item);
+			persister.Save(item);
 			return item;
 		}
 
 		public ContentItem InsertStartPage(Type type, ContentItem root, string name, string title)
 		{
-			ContentItem item = engine.Definitions.CreateInstance(type, root);
+			ContentItem item = definitions.CreateInstance(type, root);
 			item.Name = name;
 			item.Title = title;
-			engine.Persister.Save(item);
+			persister.Save(item);
 			return item;
 		}
 
@@ -301,7 +312,7 @@ namespace N2.Installation
 
 		public IDbConnection GetConnection()
 		{
-			NHibernate.Cfg.Configuration cfg = engine.Resolve<IConfigurationBuilder>().BuildConfiguration();
+			NHibernate.Cfg.Configuration cfg = configurationBuilder.BuildConfiguration();
 			string driverName = (string) cfg.Properties[Environment.ConnectionDriver];
 			Type driverType = NHibernate.Util.ReflectHelper.ClassForName(driverName);
 			IDriver driver = (IDriver) Activator.CreateInstance(driverType);
@@ -320,9 +331,8 @@ namespace N2.Installation
 
 		public ContentItem InsertExportFile(Stream stream, string filename)
 		{
-			Importer i = engine.Resolve<Importer>();
-			IImportRecord record = i.Read(stream, filename);
-			i.Import(record, null, ImportOption.All);
+			IImportRecord record = importer.Read(stream, filename);
+            importer.Import(record, null, ImportOption.All);
 
 			return record.RootItem;
 		}
