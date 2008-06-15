@@ -237,6 +237,15 @@
     <Compile Include="Js\tinymce.ashx.cs">
       <DependentUpon>tinymce.ashx</DependentUpon>
     </Compile>
+    <Compile Include="LinkTracker\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LinkTracker\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LinkTracker\LinkTrackerInitializer.cs" />
+    <Compile Include="LinkTracker\Tracker.cs" />
     <Compile Include="Login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Login.aspx</DependentUpon>
@@ -365,6 +374,17 @@
     <Compile Include="Toolbar.ascx.designer.cs">
       <DependentUpon>Toolbar.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Trash\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Trash\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Trash\DeleteInterceptor.cs" />
+    <Compile Include="Trash\TrashcanInitializer.cs" />
+    <Compile Include="Trash\TrashContainerItem.cs" />
+    <Compile Include="Trash\TrashHandler.cs" />
     <Compile Include="Versions\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -385,6 +405,21 @@
     <Compile Include="Web\UrlSelectionPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Wizard\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wizard\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Details\EditableDefinitionAttribute.cs" />
+    <Compile Include="Wizard\Items\MagicLocation.cs" />
+    <Compile Include="Wizard\Items\Template.cs" />
+    <Compile Include="Wizard\Items\TemplateContainer.cs" />
+    <Compile Include="Wizard\Items\Wonderland.cs" />
+    <Compile Include="Wizard\LocationWizard.cs" />
+    <Compile Include="Wizard\Settings.cs" />
+    <Compile Include="Wizard\WizardInitialzer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\it\AffectedItems.ascx.it.resx">
@@ -1520,6 +1555,40 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Globalization\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="LinkTracker\Css\linktracker.css" />
+    <Content Include="LinkTracker\Default.aspx" />
+    <Content Include="LinkTracker\Img\link_break.gif" />
+    <Content Include="Trash\Default.aspx" />
+    <Content Include="Trash\img\bin.gif" />
+    <Content Include="Trash\img\bin_closed.gif" />
+    <Content Include="Trash\img\bin_empty.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Trash\App_LocalResources\Default.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Trash\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Trash\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Wizard\Default.aspx" />
+    <Content Include="Wizard\Img\brick.png" />
+    <Content Include="Wizard\Img\bricks.png" />
+    <Content Include="Wizard\Img\brick_add.png" />
+    <Content Include="Wizard\Img\wand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Wizard\App_LocalResources\Default.aspx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Wizard\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Wizard\App_LocalResources\Default.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

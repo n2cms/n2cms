@@ -2,18 +2,21 @@ N2 is a lightweight CMS framework for ASP.NET that helps you build great web
 sites that anyone can update.
 
 Major Changes
-Functionality wise this release brings a login and user registration parts and 
-improved installer. The primary changes include project rearrangements based on 
-feedback and pain reports and a much easier configuration.
+Thanks to questions and pain reports the primary target for this release was
+the installation experience along with a more understandable configuration. I
+hope a lot more things will work out of the box or with a little configuration.
+
+Functionality-wise there are new parts for login and user registration and a 
+whole slew of minor tweaks and fixes. Also upgraded tinymce, and nhibernate.
 
 First time with N2?
-* Download template implementation (below). Run in visual Studio.
-* Look at the documentation
-* Try a working implementation
+* Try the demo site
+* Download templates + sample project (below) and open the project in Visual Studio.
+* Look at the [url:documentation
 
 Upgrading?
-* Create a copy of the site
+* Create a backup of the site and database
+* Read upgrade_1.4.txt (there's a few breaking changes)
 * Drop the compiled runtime
-* Read upgrade_1.3.5.txt
 
 Enjoy!

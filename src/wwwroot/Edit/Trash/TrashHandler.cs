@@ -4,6 +4,7 @@ using N2.Definitions;
 using N2.Persistence;
 using N2.Web;
 using N2.Definitions.Edit.Trash;
+using N2.Security;
 
 namespace N2.Edit.Trash
 {
@@ -45,9 +46,9 @@ namespace N2.Edit.Trash
 					trashContainer.Name = "Trash";
 					trashContainer.Title = "Trash";
 					trashContainer.Visible = false;
-					trashContainer.AuthorizedRoles.Add(new Security.AuthorizedRole(trashContainer, "admin"));
-					trashContainer.AuthorizedRoles.Add(new Security.AuthorizedRole(trashContainer, "Editors"));
-					trashContainer.AuthorizedRoles.Add(new Security.AuthorizedRole(trashContainer, "Administrators"));
+					trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "admin"));
+					trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Editors"));
+					trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Administrators"));
 					trashContainer.SortOrder = int.MaxValue - 1000000;
 					persister.Save(trashContainer);
 				}

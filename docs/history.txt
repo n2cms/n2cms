@@ -10,13 +10,13 @@
 	- breadcrumb is not displayed on start page
 	- switched default database to sqlite
 - edit
-	- consolidated a few edit modules: N2.Edit.Export, N2.Edit.Membership, N2.Edit.Install
 	- updated tinymce to 3.0.9
 	- installer can update web.config
 	- removed "edit parent"
 	- globalization interface moved into n2.edit
 	- option to only export defined details
 	- option to exclude attachments from export
+	- consolidated a few edit modules: N2.Edit.* -> N2.Edit
 - bugfixes
 	- editable roles can now add/remove roles
 	- fixed changes through membersihp provider not beeing persisted
