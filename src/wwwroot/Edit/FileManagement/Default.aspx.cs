@@ -144,11 +144,19 @@ namespace N2.Edit.FileManagement
 
 				if (!FileManager.CancelDeleting(selectedUrl.Value))
 				{
-					if (File.Exists(path))
-						File.Delete(path);
-					else if (Directory.Exists(path))
-						Directory.Delete(path, true);
-					FileManager.InvokeDeleted(selectedUrl.Value);
+                    try
+                    {
+                        if (File.Exists(path))
+                            File.Delete(path);
+                        else if (Directory.Exists(path))
+                            Directory.Delete(path, true);
+                        FileManager.InvokeDeleted(selectedUrl.Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.Write(ex.ToString());
+                        cvDeleteProblem.IsValid = false;
+                    }
 
 					lastUrl = SelectedUrl.Substring(0, SelectedUrl.TrimEnd('/').LastIndexOf('/'));
 					

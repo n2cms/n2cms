@@ -7,14 +7,14 @@ namespace N2.Configuration
 {
 	public class SiteElement : ConfigurationElement
 	{
-		[ConfigurationProperty("id", DefaultValue = 1)]
+		[ConfigurationProperty("id", IsRequired = true)]
 		public int ID
 		{
 			get { return (int)base["id"]; }
 			set { base["id"] = value; }
 		}
 
-		[ConfigurationProperty("name", DefaultValue = "assembly://N2/Configuration/castle.configuration.xml")]
+		[ConfigurationProperty("name", IsRequired = true, IsKey = true)]
 		public string Name
 		{
 			get { return (string)base["name"]; }

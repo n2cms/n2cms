@@ -123,6 +123,9 @@
   <data name="btnDelete.Text" xml:space="preserve">
     <value>&lt;img src="../img/ico/delete.gif" /&gt; Delete</value>
   </data>
+  <data name="cvDeleteProblem.ErrorMessage" xml:space="preserve">
+    <value>Error deleting file/folder. Possible causes include read-only files and insufficient permissions to the upload directory on the server.</value>
+  </data>
   <data name="cvDeleteRoot.ErrorMessage" xml:space="preserve">
     <value>The main folder cannot be deleted</value>
   </data>

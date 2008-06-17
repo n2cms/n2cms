@@ -1,3 +1,4 @@
+- restructure examples
 - select pages when navigating in preview
 - error handling with email option
 - handle not-mapped types

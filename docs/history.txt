@@ -1,3 +1,5 @@
+- friendlier error message when deleting files and no access
+
 1.4
 - templates
 	- login part

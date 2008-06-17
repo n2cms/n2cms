@@ -260,6 +260,7 @@
     <EmbeddedResource Include="Edit\edit.castle.config" />
     <EmbeddedResource Include="Engine\engine.castle.config" />
     <EmbeddedResource Include="Definitions\definitions.castle.config" />
+    <None Include="Configuration\example.web.config" />
     <None Include="ContentModel.cd" />
     <EmbeddedResource Include="Installation\installation.castle.config" />
     <EmbeddedResource Include="Globalization\globalization.castle.config" />
