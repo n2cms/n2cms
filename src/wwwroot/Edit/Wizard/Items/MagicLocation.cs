@@ -8,7 +8,7 @@ using N2.Definitions.Edit.Trash;
 
 namespace N2.Edit.Wizard.Items
 {
-	[Definition("Magic location", "MagicLocation", Installer = InstallerHint.NeverRootOrStartPage)]
+	[Definition("Magic Location", "MagicLocation", Installer = InstallerHint.NeverRootOrStartPage)]
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
     [NotThrowable]

@@ -71,7 +71,7 @@ namespace N2.Edit.Install
 							preferredRoots.Add(d);
 						if (Is(hint, InstallerHint.PreferredStartPage))
 							preferredStartPages.Add(d);
-						if(Is(hint, InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage))
+                        if (Is(hint, InstallerHint.PreferredRootPage) || Is(hint, InstallerHint.PreferredStartPage))
 							preferredRootAndStartPages.Add(d);
 						if (!Is(hint, InstallerHint.NeverRootPage))
 							fallbackRoots.Add(d);

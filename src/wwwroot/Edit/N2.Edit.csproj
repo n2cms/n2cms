@@ -414,8 +414,6 @@
     </Compile>
     <Compile Include="Wizard\Details\EditableDefinitionAttribute.cs" />
     <Compile Include="Wizard\Items\MagicLocation.cs" />
-    <Compile Include="Wizard\Items\Template.cs" />
-    <Compile Include="Wizard\Items\TemplateContainer.cs" />
     <Compile Include="Wizard\Items\Wonderland.cs" />
     <Compile Include="Wizard\LocationWizard.cs" />
     <Compile Include="Wizard\Settings.cs" />
