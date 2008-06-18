@@ -7,10 +7,11 @@ using System.Web.UI;
 using N2.Security.Details;
 using N2.Definitions;
 using N2.Definitions.Edit.Trash;
+using N2.Installation;
 
 namespace N2.Security.Items
 {
-	[Definition("User", "User")]
+	[Definition("User", "User", Installer = InstallerHint.NeverRootOrStartPage)]
 	[RestrictParents(typeof (UserList))]
     [NotThrowable]
     public class User : N2.ContentItem

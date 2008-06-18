@@ -14,9 +14,10 @@ h1,h2,h3,h4,h5,h6,.date { font-family: Trebuchet MS,Arial,Sans-Serif; color:#a5a
 h1 { font-style:italic; border-bottom: solid 2px #f8f9f9; font-weight:normal; letter-spacing:-2px; }
 h2,h3 { font-weight:normal; letter-spacing:-1px; }
 /* clearfix */
-#page:after, .cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-#page, .cf { display: inline-block; }
-* html #page, * html .cf { height: 1px; }
+.cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.cf { display: inline-block; }
+* html .cf { height: 1px; }
+#page {overflow:auto;}
 
 
 /********* layout *********/
@@ -30,8 +31,8 @@ body { margin:0; padding:0; background:#fff url(body_bg.gif) repeat-x; }
 				#menu { padding:0 15px;}
 				#extras { }
 				#main { width:500px; float:left; padding-left:15px; }
-		#footer { color:#BCC5C1; padding:10px 25px; background: transparent url(bg.gif) repeat-x; }
-			#footer .n2 { color:#BCC5C1; float:right; font-size:.8em; }
+		#footer { color:#BCC5C1; padding:10px 25px; background: transparent url(bg.gif) repeat-x; height:30px; }
+			#footer .n2 { color:#BCC5C1; font-size:.8em; position:absolute; right:50%; margin-right:-440px }
 
 .boxTitle,
 .secondary h4 { margin:0; padding:5px 10px; font-size:1.2em; background: transparent url(line_bg.gif) repeat-x 0% 100%; font-style:italic; }
@@ -58,7 +59,8 @@ img.main {margin-bottom:15px;}
 
 
 /* menu */
-.menu { list-style:none; font-family: Trebuchet MS,Arial,Sans-Serif; }
+.menu { font-family: Trebuchet MS,Arial,Sans-Serif; }
+.menu li { list-style:none; }
 
 .topMenu { position:absolute; bottom:9px; font-size:1.2em; padding-left:5px; margin:0; padding:0;letter-spacing:-1px; font-style:italic; }
 	.topMenu li { float:left; }
@@ -71,7 +73,7 @@ img.main {margin-bottom:15px;}
 	.topMenu .current li a,
 	.topMenu .trail li a { color:#A5AEB6; }
 
-		.topMenu li ul { display:none; padding:0; width:900px; font-size:.8em; position:absolute; top:25px; left:0; height:auto; font-style:normal; }
+		.topMenu li ul { display:none; padding:0; margin:0; width:900px; font-size:.8em; position:absolute; top:25px; left:0; height:auto; font-style:normal; }
 		.topMenu .current ul, 
 		.topMenu .trail ul { display:block }
 
@@ -137,7 +139,6 @@ img.main {margin-bottom:15px;}
 	padding:15px;
 }
 #thumbnails:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-#page { display: inline-block; }
 * html #thumbnails { height: 1px; }
 
 .faqList h1 { margin-bottom:0; }

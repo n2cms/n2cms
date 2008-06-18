@@ -1,23 +1,19 @@
 /* clearfix */
 .cf:after,
 .editDetail:after,
-.toolbar:after,
 .tree li:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
 
 .cf,
 .editDetail,
-.toolbar, 
 .tree li { display: inline-block; }
 
 /* Hides from IE-mac \*/
 * html .cf,
 * html .editDetail,
-* html .toolbar,
 * html .tree li { height: 1%; }
 
 .cf,
 .editDetail,
-.toolbar,
 .tree li { display: block; }
 /* End hide from IE-mac */
 

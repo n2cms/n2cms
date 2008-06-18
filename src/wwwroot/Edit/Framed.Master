@@ -14,10 +14,9 @@
     </head>
     <body class="framed">
         <form id="f" runat="server">
-            <div id="toolbar" class="toolbar">
-				<span style="float:right;">&nbsp;</span>
+            <div id="toolbar" class="toolbar"><div class="inner">
                 <asp:ContentPlaceHolder ID="Toolbar" runat="server" />
-            </div>
+            </div></div>
             <asp:ContentPlaceHolder ID="Outside" runat="server" />
             <div id="content" class="content">
                 <h1 id="h1" runat="server" />

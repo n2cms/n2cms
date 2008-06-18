@@ -26,36 +26,12 @@ using N2.Parts;
 using N2.Configuration;
 using N2.Globalization;
 using System.Web.Configuration;
+using N2.Installation;
 
 namespace N2.MediumTrust.Engine
 {
 	public class MediumTrustEngine : IEngine
 	{
-		private readonly IPersister persister;
-		private readonly IUrlParser urlParser;
-		private readonly IUrlRewriter rewriter;
-		private readonly IDefinitionManager definitions;
-		private readonly IIntegrityManager integrityManager;
-		private readonly ISecurityManager securityManager;
-		private readonly IEditManager editManager;
-		private readonly ISessionProvider sessionProvider;
-		private readonly ISecurityEnforcer securityEnforcer;
-		private readonly IHost host;
-		private readonly RequestLifeCycleHandler lifeCycleHandler;
-		private readonly ItemFinder finder;
-		private readonly IDictionary<Type, object> resolves = new Dictionary<Type, object>();
-		private readonly VersionManager versioner;
-		private readonly ConfigurationBuilder nhBuilder;
-		private readonly ItemNotifier notifier;
-		private readonly ITypeFinder typeFinder;
-		private readonly IntegrityEnforcer integrityEnforcer;
-		private readonly NHRepository<int, ContentItem> itemRepository;
-		private readonly NHRepository<int, LinkDetail> linkRepository;
-		private readonly ItemXmlReader xmlReader;
-		private readonly ItemXmlWriter xmlWriter;
-		private readonly DefinitionBuilder definitionBuilder;
-		private readonly NHibernate.IInterceptor interceptor;
-		private readonly IWebContext webContext;
 
 		public MediumTrustEngine()
 			: this(null)
@@ -63,6 +39,19 @@ namespace N2.MediumTrust.Engine
 
 		}
 
+        
+        ISecurityManager securityManager;
+        IDefinitionManager definitions;
+        IUrlParser urlParser;
+        IEditManager editManager;
+        IUrlRewriter rewriter;
+        IIntegrityManager integrityManager;
+        IHost host;
+        IRequestLifeCycleHandler lifeCycleHandler;
+        IPersister persister;
+
+        IDictionary<Type, object> resolves = new Dictionary<Type, object>();
+            
 		public MediumTrustEngine(IWebContext webContext)
 		{
             HostSection hostConfiguration = (HostSection)AddConfigurationSection("n2/host");
@@ -72,67 +61,68 @@ namespace N2.MediumTrust.Engine
             AddConfigurationSection("n2/edit");
             AddConfigurationSection("n2/installer");
 
-			AddComponentInstance("host", typeof(IHost), host = new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
+            host = AddComponentInstance<IHost>(new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
 			if (webContext == null)
 				webContext = new N2.Web.RequestContext();
-			Resolves[typeof(IWebContext)] = this.webContext = webContext;
-			Resolves[typeof(IItemNotifier)] = notifier = new ItemNotifier();
-			Resolves[typeof(ITypeFinder)] = typeFinder = new MediumTrustTypeFinder(webContext, engineConfiguration);
-			Resolves[typeof(DefinitionBuilder)] = definitionBuilder = new DefinitionBuilder(typeFinder);
-			Resolves[typeof(IDefinitionManager)] = definitions = new DefinitionManager(definitionBuilder, notifier);
+            AddComponentInstance<IWebContext>(webContext);
+
+            IItemNotifier notifier = AddComponentInstance<IItemNotifier>(new ItemNotifier());
+            ITypeFinder typeFinder = AddComponentInstance<ITypeFinder>(new MediumTrustTypeFinder(webContext, engineConfiguration));
+            DefinitionBuilder definitionBuilder = AddComponentInstance<DefinitionBuilder>(new DefinitionBuilder(typeFinder));
+			definitions = AddComponentInstance<IDefinitionManager>(new DefinitionManager(definitionBuilder, notifier));
 			NHibernate.Cfg.Environment.UseReflectionOptimizer = false;
-			Resolves[typeof(IConfigurationBuilder)] = nhBuilder = new ConfigurationBuilder(definitions, databaseConfiguration);
-			Resolves[typeof(NHibernate.IInterceptor)] = interceptor = new NotifyingInterceptor(notifier);
-			Resolves[typeof(ISessionProvider)] = sessionProvider = new SessionProvider(nhBuilder, interceptor, webContext);
-			Resolves[typeof(IItemFinder)] = finder = new ItemFinder(sessionProvider, definitions);
-			Resolves[typeof(INHRepository<int, ContentItem>)] = itemRepository = new NHRepository<int, ContentItem>(sessionProvider);
-			Resolves[typeof(INHRepository<int, LinkDetail>)] = linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
-			Resolves[typeof(IPersister)] = persister = new ContentPersister(itemRepository, linkRepository, finder);
+            IConfigurationBuilder nhBuilder = AddComponentInstance<IConfigurationBuilder>(new ConfigurationBuilder(definitions, databaseConfiguration));
+            NHibernate.IInterceptor interceptor = AddComponentInstance<NHibernate.IInterceptor>(new NotifyingInterceptor(notifier));
+            ISessionProvider sessionProvider = AddComponentInstance<ISessionProvider>(new SessionProvider(nhBuilder, interceptor, webContext));
+            IItemFinder finder = AddComponentInstance<IItemFinder>(new ItemFinder(sessionProvider, definitions));
+			INHRepository<int, ContentItem> itemRepository = AddComponentInstance<INHRepository<int, ContentItem>>(new NHRepository<int, ContentItem>(sessionProvider));
+            INHRepository<int, LinkDetail> linkRepository = AddComponentInstance<INHRepository<int, LinkDetail>>(new NHRepository<int, LinkDetail>(sessionProvider));
+            persister = AddComponentInstance<IPersister>(new ContentPersister(itemRepository, linkRepository, finder));
 
 			if (hostConfiguration.MultipleSites)
 			{
-				ISitesProvider sitesProvider = new DynamicSitesProvider(persister, host.DefaultSite.RootItemID);
-				Resolves[typeof(ISitesProvider)] = sitesProvider;
-				Resolves[typeof(IUrlParser)] = urlParser = new MultipleSitesParser(persister, webContext, notifier, host, sitesProvider, hostConfiguration);
+                ISitesProvider sitesProvider = AddComponentInstance<ISitesProvider>(new DynamicSitesProvider(persister, host.DefaultSite.RootItemID));
+				urlParser = AddComponentInstance<IUrlParser>(new MultipleSitesParser(persister, webContext, notifier, host, sitesProvider, hostConfiguration));
 			}
 			else
 			{
-				Resolves[typeof(IUrlParser)] = urlParser = new UrlParser(persister, webContext, notifier, host);
+				urlParser = AddComponentInstance<IUrlParser>(new UrlParser(persister, webContext, notifier, host));
 			}
-			Resolves[typeof(ISecurityManager)] = securityManager = new SecurityManager(webContext);
-			Resolves[typeof(ISecurityEnforcer)] = securityEnforcer = new SecurityEnforcer(persister, securityManager, urlParser, webContext);
-			Resolves[typeof(IVersionManager)] = versioner = new VersionManager(persister, itemRepository);
-			NavigationSettings settings = new NavigationSettings(webContext);
-			Resolves[typeof(NavigationSettings)] = settings;
-			Resolves[typeof(IEditManager)] = editManager = new EditManager(typeFinder, definitions, persister, versioner, securityManager, settings);
-			Resolves[typeof(IIntegrityManager)] = integrityManager = new IntegrityManager(definitions, urlParser);
-			Resolves[typeof(IIntegrityEnforcer)] = integrityEnforcer = new IntegrityEnforcer(persister, integrityManager);
-			Resolves[typeof(IUrlRewriter)] = rewriter = new UrlRewriter(urlParser, webContext);
-			Resolves[typeof(IRequestLifeCycleHandler)] = lifeCycleHandler = new RequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider, webContext);
-			Resolves[typeof(ItemXmlReader)] = xmlReader = new ItemXmlReader(definitions);
-			Resolves[typeof(Importer)] = new Importer(persister, xmlReader);
-			Resolves[typeof(ItemXmlWriter)] = xmlWriter = new ItemXmlWriter(definitions, urlParser);
-			Resolves[typeof(Exporter)] = new Exporter(xmlWriter);
-			AddComponentInstance("", typeof(ILanguageGateway), new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
-			AddComponentInstance("initializerInvoker", typeof(IPluginBootstrapper), new PluginBootstrapper(typeFinder));
-			AddComponentInstance("navigator", typeof(Navigator), new Navigator(persister, host));
+            
+            securityManager = AddComponentInstance<ISecurityManager>(new SecurityManager(webContext));
+            ISecurityEnforcer securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
+            IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(persister, itemRepository));
+			NavigationSettings settings = AddComponentInstance<NavigationSettings>(new NavigationSettings(webContext));
+            editManager = AddComponentInstance<IEditManager>(new EditManager(typeFinder, definitions, persister, versioner, securityManager, settings));
+            integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
+            IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
+            rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext));
+            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider, webContext));
+            ItemXmlReader xmlReader = AddComponentInstance<ItemXmlReader>(new ItemXmlReader(definitions));
+            Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
+            ItemXmlWriter xmlWriter = AddComponentInstance<ItemXmlWriter>(new ItemXmlWriter(definitions, urlParser));
+			AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
+            AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
+            AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
+            AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
+            AddComponentInstance<Navigator>(new Navigator(persister, host));
 
 			AttributeExplorer<IServiceEditable> serviceExplorer = new AttributeExplorer<IServiceEditable>();
 			AttributeExplorer<IEditableContainer> containerExplorer = new AttributeExplorer<IEditableContainer>();
 			SettingsManager settingsManager = new SettingsManager(serviceExplorer, containerExplorer);
-
-			foreach (KeyValuePair<Type, object> pair in resolves)
-			{
-				settingsManager.Handle(pair.Key.Name, pair.Value.GetType());
-			}
-
 			EditableHierarchyBuilder<IServiceEditable> hierarchyBuilder = new EditableHierarchyBuilder<IServiceEditable>();
-			Resolves[typeof(ISettingsProvider)] = new SettingsProvider(settingsManager, hierarchyBuilder);
+            AddComponentInstance<ISettingsProvider>(new SettingsProvider(settingsManager, hierarchyBuilder));
+            AjaxRequestDispatcher dispatcher = AddComponentInstance<AjaxRequestDispatcher>(new AjaxRequestDispatcher(securityManager));
+            CreateUrlProvider cup = AddComponentInstance<CreateUrlProvider>(new CreateUrlProvider(persister, editManager, definitions, dispatcher));
+            ItemDeleter id = AddComponentInstance<ItemDeleter>(new ItemDeleter(persister, dispatcher));
+            EditUrlProvider eud = AddComponentInstance<EditUrlProvider>(new EditUrlProvider(persister, editManager, dispatcher));
+            ItemMover im = AddComponentInstance<ItemMover>(new ItemMover(persister, dispatcher));
+            ItemCopyer ic = AddComponentInstance<ItemCopyer>(new ItemCopyer(persister, dispatcher));
 
-			securityEnforcer.Start();
-			integrityEnforcer.Start();
-
-			RegisterParts();
+            foreach (KeyValuePair<Type, object> pair in resolves)
+            {
+                settingsManager.Handle(pair.Key.Name, pair.Value.GetType());
+            }
         }
 
         private object AddConfigurationSection(string sectionName)
@@ -142,27 +132,6 @@ namespace N2.MediumTrust.Engine
                 AddComponentInstance(section.GetType().FullName, section.GetType(), section);
             return section;
         }
-
-		private void RegisterParts()
-		{
-			AjaxRequestDispatcher dispatcher = new AjaxRequestDispatcher(securityManager);
-			AddComponentInstance("AjaxRequestDispatcher", typeof(AjaxRequestDispatcher), dispatcher);
-			CreateUrlProvider cup = new CreateUrlProvider(persister, editManager, definitions, dispatcher);
-			cup.Start();
-			AddComponentInstance("CreateUrlProvider", typeof(CreateUrlProvider), cup);
-			ItemDeleter id = new ItemDeleter(persister, dispatcher);
-			id.Start();
-			AddComponentInstance("ItemDeleter", typeof(ItemDeleter), id);
-			EditUrlProvider eud = new EditUrlProvider(persister, editManager, dispatcher);
-			eud.Start();
-			AddComponentInstance("EditUrlProvider", typeof(EditUrlProvider), eud);
-			ItemMover im = new ItemMover(persister, dispatcher);
-			im.Start();
-			AddComponentInstance("ItemMover", typeof(ItemMover), im);
-			ItemCopyer ic = new ItemCopyer(persister, dispatcher);
-			ic.Start();
-			AddComponentInstance("ItemCopyer", typeof(ItemCopyer), ic);
-		}
 
 		#region Properties
 		public IPersister Persister
@@ -305,6 +274,11 @@ namespace N2.MediumTrust.Engine
 		{
 			AddComponentInstance(serviceType.FullName, serviceType, instance);
 		}
+        private T AddComponentInstance<T>(T instance)
+        {
+            AddComponentInstance(typeof(T).Name, typeof(T), instance);
+            return instance;
+        }
 		public void AddComponentInstance(string key, Type serviceType, object instance)
 		{
 			Resolves[serviceType] = instance;

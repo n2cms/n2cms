@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TabsInterface.ascx.cs" Inherits="N2.Templates.UI.TabPanel.TabsInterface" %>
-<div>
+<div id="tabs">
 	<%= CurrentItem.Text %>
 </div>
 
@@ -21,7 +21,7 @@ jQuery.extend(jQuery.expr[':'], {
 });
 
 $(document).ready(function(){
-	$("h2", "#main").each(function(i){
+	$("h2", "#tabs").each(function(i){
 		$(this).hide()
 			.nextAll(":until(h2)")
 			.wrapAll("<div class='tabPanel' title='" + this.innerHTML + "'></div>");

@@ -10,12 +10,13 @@ a img,
 	position:fixed;
 	_position:absolute;
 	background:#fff url(../img/framed_toolbar.gif) repeat-x;
-	z-index:10;
 	top:0;
 	left:0;
-	padding:0 16px;
+	width:100%;
 	border-bottom:solid 1px #dedad7;
+	height:30px;
 }
+	.toolbar .inner { margin: 0 10px;}
 	.toolbar a,
 	.toolbar .command
 	{
@@ -303,7 +304,7 @@ a.title { white-space:nowrap; }
 {
 	float:none;
 	display:block;
-	width:240px;
+	width:280px;
 }
 .commandOptions .opener
 {

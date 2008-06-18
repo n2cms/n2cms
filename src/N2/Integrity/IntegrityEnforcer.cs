@@ -108,7 +108,7 @@ namespace N2.Integrity
 
 		void IAutoStart.Start()
 		{
-			throw new NotImplementedException();
+            Start();
 		}
 
 		#endregion
