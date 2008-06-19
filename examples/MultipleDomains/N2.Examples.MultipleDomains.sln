@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "wwwroot\", "{E2865DA0-19DE-4DB0-BA0E-BBDDE4740A8E}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFramework = "2.0"
+		Debug.AspNetCompiler.VirtualPath = "/wwwroot"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\oss\n2cms\trunk\examples\MultipleDomains\wwwroot\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/wwwroot"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\oss\n2cms\trunk\examples\MultipleDomains\wwwroot\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "3160"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{96C18A34-1492-4C25-B678-4A6884D4AFE6}"
+	ProjectSection(SolutionItems) = preProject
+		readme.txt.txt = readme.txt.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2865DA0-19DE-4DB0-BA0E-BBDDE4740A8E}.Debug|.NET.ActiveCfg = Debug|.NET
+		{E2865DA0-19DE-4DB0-BA0E-BBDDE4740A8E}.Debug|.NET.Build.0 = Debug|.NET
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

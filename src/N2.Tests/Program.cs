@@ -8,6 +8,8 @@ namespace N2.Tests
 	{
 		static void Main(string[] args)
 		{
+            N2.Engine.IEngine e = N2.Context.Current;
+
 			//Persistence.PersistFixture pf = new N2.Tests.Persistence.PersistFixture();
 			//pf.SetUp();
 			//pf.InsertRootNode();

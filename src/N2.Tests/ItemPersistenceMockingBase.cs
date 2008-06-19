@@ -30,6 +30,8 @@ namespace N2.Tests
 		protected virtual IPersister CreatePersister()
 		{
             repository = mocks.Stub<IRepository<int, ContentItem>>();
+            var transaction = mocks.Stub<ITransaction>();
+            Expect.Call(repository.BeginTransaction()).Return(transaction).Repeat.Any();
             var linkRepository = mocks.Stub<N2.Persistence.NH.INHRepository<int, N2.Details.LinkDetail>>();
             var finder = mocks.Stub<N2.Persistence.Finder.IItemFinder>();
             persister = new N2.Persistence.NH.ContentPersister(repository, linkRepository, finder);

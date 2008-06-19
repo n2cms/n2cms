@@ -59,7 +59,11 @@ namespace N2
 		{
 			try
 			{
-				System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~/");
+				var cfg =
+					System.Web.Hosting.HostingEnvironment.IsHosted
+						? WebConfigurationManager.OpenWebConfiguration("~/")
+						: ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+				
 				return new Engine.ContentEngine(cfg);
 			}
 			catch(SecurityException)
@@ -91,7 +95,7 @@ namespace N2
 
 		/// <summary>Access to the singleton N2 engine. This property has been deprecated in favor for 'Current'.</summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		[Obsolete("Name changed to Current")]
+		[Obsolete("Name changed to Current", true)]
 		public static Engine.IEngine Instance
 		{
 			get { return Current; }

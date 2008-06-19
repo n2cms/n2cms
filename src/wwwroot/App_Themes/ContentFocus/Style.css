@@ -17,11 +17,8 @@ a { color:#4fa600; text-decoration:none; }
 a:hover { text-decoration:underline; }
 
 /* clearfix */
-#page:after, 
 .cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-#page, 
-.cf { display: inline-block; }
-* html #page, 
+>.cf { display: inline-block; }
 * html .cf { height: 1px; }
 
 
@@ -30,7 +27,7 @@ a:hover { text-decoration:underline; }
 body { margin:0; background-color:#cce5a2; }
 	#wrap { width:900px; margin:0 auto; }
 		#header { height:100px; background:#a2a796 url(top.gif) no-repeat; }
-		#page { padding:15px 15px 6px 15px; background:#fff url(content_bottom.gif) no-repeat 50% 100%; }
+		#page { overflow:auto; padding:15px 15px 6px 15px; background:#fff url(content_bottom.gif) no-repeat 50% 100%; }
 			#content { 	width:685px; float:right; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; margin-bottom:15px; }

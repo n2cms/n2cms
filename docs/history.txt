@@ -1,4 +1,10 @@
 - friendlier error message when deleting files and no access
+- fixed problems with installer and only start page
+- fixed firefox 3 css issues
+- applied patch: Engine cannot be instantiated without ASP.Net runtime (from esteewhy)
+- moved examples
+- changed example databases to sqlite
+- moved Edit project file location
 
 1.4
 - templates

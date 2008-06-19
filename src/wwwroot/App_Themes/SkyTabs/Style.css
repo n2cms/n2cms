@@ -16,9 +16,9 @@ a:hover { text-decoration:underline; }
 #page a:visited { color:#785E32; }
 
 /* clearfix */
-#page:after, .cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-#page, .cf { display: inline-block; }
-* html #page, * html .cf { height: 1px; }
+.cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+>.cf { display: inline-block; }
+* html .cf { height: 1px; }
 
 #footer {margin-top:10px;color:#ccc;}
 	#footer .n2{color:#ccc;float:right;font-size:.8em;}
@@ -30,7 +30,7 @@ body { margin:0; background:#FFF url(TopBg.gif) repeat-x; }
 		#header { height:100px; position:relative; }
 			#header .siteLogo { vertical-align:bottom; }
 			#header .siteHeader a { color:#fff; font-style:italic; font-weight:normal;}
-		#page { padding:15px; }
+		#page { padding:15px; overflow:auto; }
 			#content { margin-left:180px; }
 				.secondary { width:170px; float:left; margin-bottom:1px; }
 				#main { width:500px; float:left; padding-bottom:15px; }

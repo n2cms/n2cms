@@ -60,10 +60,10 @@
     <Content Include="default.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\DisplayPage-PlugIn.cs" />
     <Compile Include="Layouts\IBreadcrumb.cs" />
     <Compile Include="Layouts\Parts\Translation.cs" />
     <Compile Include="Obsolete\Global.cs" />
+    <Content Include="PlugIns\DisplayPage.cs" />
     <Compile Include="UI\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -793,6 +793,7 @@
     <Content Include="Search\UI\Img\zoom.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="Form\UI\Layouts\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

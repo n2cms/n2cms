@@ -15,9 +15,9 @@ a:hover { text-decoration:underline; }
 a:visited { color:#5bb4e5; }
 
 /* clearfix */
-#page:after, .cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-#page, .cf { display: inline-block; }
-* html #page, * html .cf { height: 1px; }
+.cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+>.cf { display: inline-block; }
+* html .cf { height: 1px; }
 
 
 
@@ -26,7 +26,7 @@ a:visited { color:#5bb4e5; }
 body { margin:0; background-color:#ffd451; }
 	#wrap { width:900px; margin:0 auto; }
 		#header { height:100px; background:#ecac00; }
-		#page { padding:15px 15px 6px 15px; background-color:#fff; }
+		#page { padding:15px 15px 6px 15px; background-color:#fff; overflow:auto; }
 			#content { 	width:685px; float:right; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; }

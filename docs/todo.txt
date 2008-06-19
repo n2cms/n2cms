@@ -1,7 +1,9 @@
+- investigate strange problem selecting page translations when editing a page
 - restructure examples
 - select pages when navigating in preview
 - error handling with email option
 - handle not-mapped types
+- filters -> pipes
 - allow non root-path to act as start page
 - wiki
 - dashboard

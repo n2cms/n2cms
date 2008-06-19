@@ -35,7 +35,7 @@ namespace N2.Tests.Edit.LinkTracker
 			root = CreateOneItem<Items.TrackableItem>(1, "root", null);
 			item1 = CreateOneItem<Items.TrackableItem>(2, "item1", root);
 			item2 = CreateOneItem<Items.TrackableItem>(3, "item2", root);
-			mocks.Replay(persister);
+			mocks.Replay(persister.Repository);
 
 			linkFactory = new Tracker(persister, null, parser);
 			linkFactory.Start();

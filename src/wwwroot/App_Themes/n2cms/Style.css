@@ -15,9 +15,8 @@ h1 { font-style:italic; border-bottom: solid 2px #f8f9f9; font-weight:normal; le
 h2,h3 { font-weight:normal; letter-spacing:-1px; }
 /* clearfix */
 .cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
-.cf { display: inline-block; }
+>.cf { display: inline-block; }
 * html .cf { height: 1px; }
-#page {overflow:auto;}
 
 
 /********* layout *********/
@@ -25,7 +24,7 @@ h2,h3 { font-weight:normal; letter-spacing:-1px; }
 body { margin:0; padding:0; background:#fff url(body_bg.gif) repeat-x; }
 	#wrap { }
 		#header { width:900px; margin:0 auto; height:70px; }
-		#page { width:900px; margin:0 auto; background: transparent url(bg.gif) repeat-x; padding:20px 0;}
+		#page { width:900px; margin:0 auto; background: transparent url(bg.gif) repeat-x; padding:20px 0; overflow:auto;}
 			#content { }
 				.secondary { width:170px; float:right; margin-bottom:1px;}
 				#menu { padding:0 15px;}
