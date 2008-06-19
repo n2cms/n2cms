@@ -5,6 +5,7 @@
 - moved examples
 - changed example databases to sqlite
 - moved Edit project file location
+- applied dutch translations
 
 1.4
 - templates

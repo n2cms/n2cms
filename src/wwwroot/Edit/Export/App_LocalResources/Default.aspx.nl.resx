@@ -162,4 +162,16 @@
   <data name="tpImport.ToolTip" xml:space="preserve">
     <value>Importeer</value>
   </data>
+  <data name="chkAttachments.Text" xml:space="preserve">
+    <value>Bijlagen niet exporteren</value>
+  </data>
+  <data name="chkAttachments.ToolTip" xml:space="preserve">
+    <value>Verwijder bijlagen zoals plaatjes en documenten uit de export (verkleint de grootte)</value>
+  </data>
+  <data name="chkDefinedDetails.Text" xml:space="preserve">
+    <value>Automatisch gegenereerde data uitsluiten</value>
+  </data>
+  <data name="chkDefinedDetails.ToolTip" xml:space="preserve">
+    <value>Exporteer alleen door een gebruiker ingegeven data (verwijdert niet meer gebruikte informatie en automatisch gegenereerde informatie uit het export bestand)</value>
+  </data>
 </root>
