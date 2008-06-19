@@ -1,1 +1,0 @@
-Make sure N2 deploy file are here and ..\Edit
