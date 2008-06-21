@@ -30,5 +30,10 @@ namespace N2.Edit.Web.UI.Controls
 			}
 			base.RenderBeginTag(writer);
 		}
+        public override void RenderEndTag(HtmlTextWriter writer)
+        {
+            base.RenderEndTag(writer);
+            writer.Write("<br/>");
+        }
 	}
 }

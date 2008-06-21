@@ -64,7 +64,14 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return (string) ViewState["PropertyName"] ?? ""; }
 			set { ViewState["PropertyName"] = value; }
-		}
+        }
+
+        /// <summary>A format to use for the html output of this displayable. E.g. &lt;span class='something'&gt;{0}&lt;/span&gt;.</summary>
+        public string Format
+        {
+            get { return (string)ViewState["Format"] ?? ""; }
+            set { ViewState["Format"] = value; }
+        }
 
 		/// <summary>Prevent this control from throwing exceptions when irregularities are discovered, e.g. there is no property with the given name on the page.</summary>
 		public bool SwallowExceptions
@@ -134,15 +141,15 @@ namespace N2.Web.UI.WebControls
 			PropertyInfo pi = item.GetType().GetProperty(propertyName);
 			if (pi == null)
 			{
-				return Throw<IDisplayable>(new N2Exception("No property {0} found the item of type {1}", propertyName, item.GetType()));
+                return Throw<IDisplayable>(new N2Exception("No property '{0}' found on the item #{1} of type '{2}'.", propertyName, item.ID, item.GetType()));
 			}
 			else
 			{
 				IDisplayable[] attributes = (IDisplayable[])pi.GetCustomAttributes(typeof(IDisplayable), false);
 				if (attributes.Length == 0)
 				{
-					return Throw<IDisplayable>(new N2Exception("No attribute implementing IDisplayable found on the property {0} of the type {1}",
-										  propertyName, item.GetType()));
+					return Throw<IDisplayable>(new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}",
+										  propertyName, item.ID, item.GetType()));
 				}
 				return attributes[0];
 			}
@@ -155,6 +162,29 @@ namespace N2.Web.UI.WebControls
 				return null;
 			throw ex;
 		}
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            string format = Format;
+            if (!string.IsNullOrEmpty(format))
+            {
+                int index = format.IndexOf("{0}");
+                if (index > 0)
+                {
+                    writer.Write(format.Substring(0, index));
+                    base.Render(writer);
+                    writer.Write(format.Substring(index + 3));
+                }
+                else
+                {
+                    writer.Write(format);
+                }
+            }
+            else
+            {
+                base.Render(writer);
+            }
+        }
 
 		#region IItemContainer Members
 

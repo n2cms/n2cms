@@ -8,7 +8,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>N2.Templates.UI</RootNamespace>
+    <RootNamespace>N2.Templates</RootNamespace>
     <AssemblyName>N2.Templates.UI</AssemblyName>
     <SccProjectName>
     </SccProjectName>
@@ -481,6 +481,29 @@
     <Compile Include="TabPanel\TabsInterface.ascx.designer.cs">
       <DependentUpon>TabsInterface.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Wiki\Items\Wiki.cs" />
+    <Compile Include="Wiki\Items\WikiArticle.cs" />
+    <Compile Include="Wiki\UI\EditArticle.aspx.cs">
+      <DependentUpon>EditArticle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\EditArticle.aspx.designer.cs">
+      <DependentUpon>EditArticle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Wiki\UI\Wiki.aspx.cs">
+      <DependentUpon>Wiki.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\Wiki.aspx.designer.cs">
+      <DependentUpon>Wiki.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Wiki\UI\WikiArticle.aspx.cs">
+      <DependentUpon>WikiArticle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\WikiArticle.aspx.designer.cs">
+      <DependentUpon>WikiArticle.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2.Security\N2.Security.csproj">
@@ -791,6 +814,9 @@
     <Content Include="Search\UI\Css\Search.css" />
     <Content Include="Search\UI\Default.aspx" />
     <Content Include="Search\UI\Img\zoom.png" />
+    <Content Include="Wiki\UI\EditArticle.aspx" />
+    <Content Include="Wiki\UI\Wiki.aspx" />
+    <Content Include="Wiki\UI\WikiArticle.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

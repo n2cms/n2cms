@@ -11,15 +11,17 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Web;
+using System.Diagnostics;
+using System.Configuration;
 
 using Castle.MicroKernel;
+using Castle.Core.Resource;
 using Castle.Windsor;
 using Castle.Windsor.Configuration;
 using Castle.Windsor.Configuration.Interpreters;
-using Castle.Core.Resource;
 using Castle.Windsor.Installer;
+using Castle.Windsor.Configuration.AppDomain;
 
 using N2.Definitions;
 using N2.Edit;
@@ -29,8 +31,6 @@ using N2.Plugin;
 using N2.Security;
 using N2.Web;
 using N2.Configuration;
-using System.Configuration;
-using Castle.Windsor.Configuration.AppDomain;
 
 namespace N2.Engine
 {
@@ -131,20 +131,22 @@ namespace N2.Engine
 			SectionGroup n2group = config.GetSectionGroup("n2") as SectionGroup;
             object castleSection = config.GetSection("castle");
 			IResource resource;
-            if (castleSection != null && castleSection is CastleSectionHandler)
+            if (n2group != null)
 			{
-				resource = new ConfigResource();
-			}
-			else if (n2group != null)
-			{
-				if (n2group.Engine != null)
-					resource = new AssemblyResource(n2group.Engine.CastleConfiguration);
-				else
+				if (n2group.Engine == null)
 					resource = new AssemblyResource("assembly://N2/Configuration/castle.configuration.xml");
+				else if (!string.IsNullOrEmpty(n2group.Engine.CastleSection))
+                    resource = new ConfigResource(n2group.Engine.CastleSection);
+                else
+                    resource = new AssemblyResource(n2group.Engine.CastleConfiguration);
 			}
-			else
+            else if (castleSection != null)
+            {
+                resource = new ConfigResource();
+            }
+            else 
 			{
-				throw new ConfigurationErrorsException("Couldn't find a suitable configuration section for n2 cms. Either add an n2/engine or a castle configuartion section to web.config. Note that this section may have changed from previous versions. Please verify that the configuartion is properly updated.");
+				throw new ConfigurationErrorsException("Couldn't find a suitable configuration section for N2 CMS. Either add an n2/engine or a castle configuartion section to web.config. Note that this section may have changed from previous versions. Please verify that the configuartion is properly updated.");
 			}
 			return resource;
 		}

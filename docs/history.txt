@@ -1,11 +1,5 @@
-- friendlier error message when deleting files and no access
-- fixed problems with installer and only start page
-- fixed firefox 3 css issues
-- applied patch: Engine cannot be instantiated without ASP.Net runtime (from esteewhy)
-- moved examples
-- changed example databases to sqlite
-- moved Edit project file location
-- applied dutch translations
+- format option on display property
+- fixed problem using traditional castle section
 
 1.4
 - templates
@@ -39,6 +33,14 @@
 	- get translations now filters by access
 	- items outside of sites when multiple sites now get a working url
 	- ie7 name updates more often
+	- friendlier error message when deleting files and no access
+	- fixed problems with installer and only start page
+	- fixed firefox 3 css issues
+	- applied patch: Engine cannot be instantiated without ASP.Net runtime (from esteewhy)
+	- moved examples
+	- changed example databases to sqlite
+	- moved Edit project file location
+	- applied dutch translations
 - core
 	- removed some obsolte code: CloseSessionModule, IDataItemContainer, NavigationPlugInAttribute, PlugInAttribute, ToolbarPlugInAttribute, UrlRewriterModule
 	- rearranged the solution hopefully making it simpler and more understandable

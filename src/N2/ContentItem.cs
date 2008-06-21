@@ -29,6 +29,7 @@ using N2.Definitions;
 using N2.Integrity;
 using N2UI = N2.Web.UI;
 using System.Text;
+using N2.Details;
 
 namespace N2
 {
@@ -142,49 +143,56 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets zone name which is associated with data items and their placement on a page.</summary>
-		public virtual string ZoneName
+        [DisplayableLiteral]
+        public virtual string ZoneName
 		{
 			get { return zoneName; }
 			set { zoneName = value; }
 		}
 
 		/// <summary>Gets or sets when this item was initially created.</summary>
-		public virtual DateTime Created
+        [DisplayableLiteral]
+        public virtual DateTime Created
 		{
 			get { return created; }
 			set { created = value; }
 		}
 
 		/// <summary>Gets or sets the date this item was updated.</summary>
-		public virtual DateTime Updated
+        [DisplayableLiteral]
+        public virtual DateTime Updated
 		{
 			get { return updated; }
 			set { updated = value; }
 		}
 
 		/// <summary>Gets or sets the publish date of this item.</summary>
-		public virtual DateTime? Published
+		[DisplayableLiteral]
+        public virtual DateTime? Published
 		{
 			get { return published; }
 			set { published = value; }
 		}
 
 		/// <summary>Gets or sets the expiration date of this item.</summary>
-		public virtual DateTime? Expires
+        [DisplayableLiteral]
+        public virtual DateTime? Expires
 		{
 			get { return expires; }
 			set { expires = value != DateTime.MinValue ? value : null; }
 		}
 
 		/// <summary>Gets or sets the sort order of this item.</summary>
-		public virtual int SortOrder
+        [DisplayableLiteral]
+        public virtual int SortOrder
 		{
 			get { return sortOrder; }
 			set { sortOrder = value; }
 		}
 
 		/// <summary>Gets or sets whether this item is visible. This is normally used to control it's visibility in the site map provider.</summary>
-		public virtual bool Visible
+        [DisplayableLiteral]
+        public virtual bool Visible
 		{
 			get { return visible; }
 			set { visible = value; }
@@ -198,7 +206,8 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the name of the identity who saved this item.</summary>
-		public virtual string SavedBy
+        [DisplayableLiteral]
+        public virtual string SavedBy
 		{
 			get { return savedBy; }
 			set { savedBy = value; }

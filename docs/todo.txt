@@ -1,11 +1,12 @@
+- membership
+- more ff3
 - investigate strange problem selecting page translations when editing a page
-- restructure examples
 - select pages when navigating in preview
+- wiki
 - error handling with email option
 - handle not-mapped types
-- filters -> pipes
 - allow non root-path to act as start page
-- wiki
+- filters -> pipes
 - dashboard
 - restrictparents: NewRestrictionAttribute
 - Parts: Throw friendly exception when page isn't found
@@ -13,7 +14,6 @@
 - implement INode for edit mode integration
 - allow other than content items to be edited
 - implement security context
-- webdav
 - rebuild configuration
 - content item runtime attributes
 - configure away modules
@@ -32,6 +32,9 @@
 		- warn translated pages
 	- after: warnings, notifications: e.g. warn that translated pages were also affected
 - fixer for obsolete content
+- change url rewriting strategy
+- import: handle unmapped types
+- webdav
 
 TODO:
 - documentation & programmability
@@ -177,9 +180,7 @@ TODO:
 	- expression builders
 	- url rewriting
 	- http modules
-	
-	
-- idéer
+
 - Någon form av translate-funktion, där man definierar en strängs
 översättnings i de språk som är aktuella för siten. Administration via
 webgränssnitt. I OOiS använder vi detta dels för språköversättning på
@@ -189,12 +190,6 @@ properties.
 uppsättningar som man sedan kan välja per sida eller skriva in custom om
 man hellre vill det. Skulle också vilja se en utökning av fälten så man
 kan ställa in t.ex. author, robots osv.
-- Om man har en sida som är publicerad i N2 så läggs ändringar ut skarpt
-så fort man trycker "save" va? Jag skulle vilja ha en knapp som heter
-Publish så att man kan spara arbetskopior och sedan aktivera publikt när
-man jobbat klart med sidan. Det finns då alltså alltid minst 1 version
-högre än den i dagsläget publika sidan som är en arbetskopia.
-- Möjlighet att skapa egna roller (grupper)
 - Möjlighet att styra dels vilka roller/användare som får läsa en sida,
 och dels vem som får redigera sidan.
 - Utökad filhantering med möjlighet att flytta filer, ange
@@ -207,8 +202,6 @@ in menus", "Hide in search", "Hide if no access" osv som man kan kryssa
 i på sidnivå. Typ som du har under "Advanced"... Visible, Show Title osv.
 - På sidnivå kunna sätta att en icke default login-sida ska visas om
 användaren inte har access.
-- Nytt fält för "URI Name" istället för att använda Name till fin-urlar,
-detta för att kunna sätta komprimerade namn utan mellanslag osv om man vill.
 - Cache-inställningar på sidnivå för att bestämma om sidan får cachas
 och hur länge. Skulle även vilja ha en generell objekt-cache som man kan
 använda i kod för att minnescacha t.ex. resultat från en funktion, delar

@@ -16,16 +16,12 @@
 /* Info */
 .infoBox label
 {
-	width:auto;
-	float:none;
-	display:block;
-	clear:none;
+	margin-right:5px;
 }
 .infoBox span
 {
 	font-weight:bold;
-	display:block;
-	margin-bottom:5px;
+	vertical-align:middle;
 }
 
 /* Zones */
