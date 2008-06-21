@@ -1,5 +1,8 @@
 namespace N2.Serialization
 {
+    /// <summary>
+    /// A binary attachment to serialized items.
+    /// </summary>
 	public class Attachment
 	{
 		private readonly IAttachmentHandler handler;

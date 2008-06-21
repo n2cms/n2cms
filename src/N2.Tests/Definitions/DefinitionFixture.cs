@@ -6,6 +6,7 @@ using N2.Details;
 using N2.Integrity;
 using N2.Tests.Definitions.Definitions;
 using N2.Tests.Definitions.Definitions.Details;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Definitions
 {
@@ -165,7 +166,7 @@ namespace N2.Tests.Definitions
 		public void HasCorrectNumberOfDisplayableAttributes()
 		{
 			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-			Assert.AreEqual(3, definition.Displayables.Count);
+			Assert.That(definition.Displayables.Count, Is.EqualTo(11));
 		}
 
 		[Test]

@@ -30,7 +30,7 @@
             </div>
         </asp:ContentPlaceHolder>
         <asp:ContentPlaceHolder ID="PageWrapper" runat="server">
-            <div id="page">
+            <div id="page" class="cf">
                 <asp:ContentPlaceHolder ID="PageTop" runat="server">
                     <n2:EditableDisplay PropertyName="TopImage" runat="server" SwallowExceptions="true" />
                 </asp:ContentPlaceHolder>

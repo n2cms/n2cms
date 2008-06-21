@@ -1,3 +1,4 @@
+@import url(../../Layouts/Defaults.css);
 /********* GLOBALS *********/
 
 * {margin:0;padding:0}
@@ -14,19 +15,13 @@ a { color:#0096db; text-decoration:none; }
 a:hover { text-decoration:underline; }
 a:visited { color:#5bb4e5; }
 
-/* clearfix */
-.cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
->.cf { display: inline-block; }
-* html .cf { height: 1px; }
-
-
 
 /********* LAYOUT *********/
 
 body { margin:0; background-color:#ffd451; }
 	#wrap { width:900px; margin:0 auto; }
 		#header { height:100px; background:#ecac00; }
-		#page { padding:15px 15px 6px 15px; background-color:#fff; overflow:auto; }
+		#page { padding:15px 15px 6px 15px; background-color:#fff; }
 			#content { 	width:685px; float:right; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; }

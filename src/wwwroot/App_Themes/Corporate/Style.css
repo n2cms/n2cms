@@ -1,3 +1,4 @@
+@import url(../../Layouts/Defaults.css);
 /********* globals *********/
 
 * {margin:0;padding:0}
@@ -14,11 +15,6 @@ a { color:#0096db; text-decoration:none; }
 a:hover { text-decoration:underline; }
 h1,h2,h3,h4,h5,h6,.date { font-family: Trebuchet MS,Arial,Sans-Serif; color:#bcc5c1; }
 
-/* clearfix */
-.cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
->.cf { display: inline-block; }
-* html .cf { height: 1px; }
-
 
 
 /********* layout *********/
@@ -26,7 +22,7 @@ h1,h2,h3,h4,h5,h6,.date { font-family: Trebuchet MS,Arial,Sans-Serif; color:#bcc
 body { margin:0; padding:0; background:#fff url(body_bg.gif) repeat-x; }
 	#wrap { width:920px; margin:0 auto; }
 		#header { height:150px; }
-		#page { margin:15px 0; background: transparent url(page_bg.gif) no-repeat 50% 100%; padding:0 25px 25px 25px; overflow:auto;}
+		#page { margin:15px 0; background: transparent url(page_bg.gif) no-repeat 50% 100%; padding:0 25px 25px 25px; }
 			#content { }
 				.secondary { width:150px; float:right; margin-bottom:1px;}
 				#menu { border-left: solid 1px #dfe5e6; padding-left:15px;}

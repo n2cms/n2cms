@@ -4,6 +4,10 @@ using N2.Resources;
 
 namespace N2.Web.UI.WebControls
 {
+    /// <summary>
+    /// A panel that is made into a tab panel throgh jquery client side 
+    /// scripting.
+    /// </summary>
 	public class TabPanel : Panel
 	{
 		public TabPanel()

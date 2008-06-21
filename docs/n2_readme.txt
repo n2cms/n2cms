@@ -38,14 +38,15 @@ Prepare_Dependencies-vs2008.bat should do this for you. The examples:
   shared hosting providers).
 * MultipleDomains: How to run a single N2 installation with multiple domains
 * Mvc: Integration with the ASP.NET MVC framework
-* OldGlobalization: This example is deprecated. There is a new globalization 
+* Old\Globalization: This example is deprecated. There is a new globalization 
   approach.
 * Parts: Bare minimum project using "parts", i.e. drag'n'drop components on a 
   page.
-* SimpleWebSite: Very simple web sites in C# and Visual Basic (least noise for 
-  grokking the basics).
-* TemplatesImplementation: A proposed approach at integrating with the 
-  templates project.
+* MinimalVisualBasic: Very simple web site in Visual Basic. This project includes
+  the least amount of noise for grasping the basic model.
+* MinimalCSharp: Very simple web site in C#. This project includes the least 
+  amount of noise for grasping the basic model.
+* TemplatesSite: A proposed approach at integrating with the templates project.
 
 
 CONTRIBUTORS
@@ -54,4 +55,4 @@ CONTRIBUTORS
 * Sten Johanneson
 * Michele Scaramal
 * Martijn Rasenberg
-* esteewhy
+* Esteewhy

@@ -1,3 +1,4 @@
+@import url(../../Layouts/Defaults.css);
 /********* GLOBALS *********/
 
 * {margin:0;padding:0}
@@ -15,10 +16,6 @@ a { color:#478db3; text-decoration:none; }
 a:hover { text-decoration:underline; }
 a:visited { color:#5bb4e5; }
 
-/* clearfix */
-.cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
->.cf { display: inline-block; }
-* html .cf { height: 1px; }
 
 /********* LAYOUT *********/
 
@@ -28,8 +25,8 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 			#header .top {height:90px; background:url(top_bg.gif) 50% 0%;  }
 				#header .top h2 {width:900px; left:50%; margin-left:-450px; position:absolute; }
 				#header .top .siteLogo {width:900px; left:50%; margin-left:-450px; position:absolute; }
-		#page { overflow:auto; width:900px; margin:0 auto; padding-bottom:3px; background:#fff url(page_bg.gif) no-repeat 100% 100%; }
-			#content { overflow:auto; float:right; width:685px; padding:15px; background:#fff url(page_bg.gif) no-repeat 100% 0%; }
+		#page { width:900px; margin:0 auto; padding-bottom:3px; background:#fff url(page_bg.gif) no-repeat 100% 100%; }
+			#content { float:right; width:685px; padding:15px; background:#fff url(page_bg.gif) no-repeat 100% 0%; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; }
 				#extras { float:right; }

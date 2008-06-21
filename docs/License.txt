@@ -1,6 +1,6 @@
 N2 Content Management System
 
-Copyright (C) 2007 Cristian Libardo, cristian at libardo dot com
+Copyright (C) 2006-2008 Cristian Libardo, cristian at libardo dot com
 
 		  GNU LESSER GENERAL PUBLIC LICENSE
 		       Version 2.1, February 1999

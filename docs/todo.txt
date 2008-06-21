@@ -1,5 +1,5 @@
-- membership
 - more ff3
+- globalization: relink items, show items on other language branches
 - investigate strange problem selecting page translations when editing a page
 - select pages when navigating in preview
 - wiki

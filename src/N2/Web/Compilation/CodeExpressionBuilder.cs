@@ -1,6 +1,6 @@
-/**
- * Kudos to InfinitesLoop, http://weblogs.asp.net/infinitiesloop/archive/2006/08/09/The-CodeExpressionBuilder.aspx
- */
+//
+// Kudos to InfinitesLoop, http://weblogs.asp.net/infinitiesloop/archive/2006/08/09/The-CodeExpressionBuilder.aspx
+//
 using System;
 using System.Web.Compilation;
 using System.CodeDom;

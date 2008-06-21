@@ -5,8 +5,10 @@ using N2.Definitions;
 namespace N2.Integrity
 {
 	/// <summary>
-	/// Class decoration that lets N2 which zones a data item can be bound to 
-	/// (ZoneName).
+	/// Class decoration that lets N2 which zones a data item can be added to. 
+	/// This is mostly a hint for the user interface. Placing an item in a zone
+    /// merly means assigning the child item's ZoneName property a meaningful 
+    /// string.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class)]
 	public class AllowedZonesAttribute : Attribute, IInheritableDefinitionRefiner

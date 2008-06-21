@@ -5,6 +5,7 @@ using System.Text;
 using N2;
 using NUnit.Framework;
 using N2.Definitions;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Integrity
 {
@@ -78,7 +79,7 @@ namespace N2.Tests.Integrity
 			Assert.AreEqual(0, rootDefinition.Containers.Count);
 			Assert.IsEmpty(rootDefinition.Description);
 			Assert.AreEqual(typeof(Definitions.Root).Name, rootDefinition.Discriminator);
-			Assert.AreEqual(1, rootDefinition.Displayables.Count);
+			Assert.That(rootDefinition.Displayables.Count, Is.EqualTo(9));
 			Assert.AreEqual(0, rootDefinition.Editables.Count);
 			EnumerableAssert.Contains(engine.Definitions.GetAllowedChildren(rootDefinition, null, null), startPageDefinition);
 			Assert.AreEqual(0, rootDefinition.GetEditables(null).Count);
