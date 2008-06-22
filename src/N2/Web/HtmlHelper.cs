@@ -42,5 +42,10 @@ namespace N2.Web
         {
             return new TagBuilder("img", string.Empty).Attr("src", url).Attr("alt", alt);
         }
+
+        public TagBuilder Radio(string name, string value)
+        {
+            return new TagBuilder("input", string.Empty).Attr("type", "radio").Attr("name", name).Attr("value", value);
+        }
     }
 }

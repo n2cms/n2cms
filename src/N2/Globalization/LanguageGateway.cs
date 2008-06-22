@@ -161,5 +161,76 @@ namespace N2.Globalization
 			}
 			return null;
 		}
+
+        /// <summary>Associate these items from different language branches as the same translated page. If a language branch already contains an associated item that item will be de-associated and be removed as a translation.</summary>
+        /// <param name="items">The translations to associate with each other.</param>
+        public void Associate(IEnumerable<ContentItem> items)
+        {
+            EnsureNoLanguageRoots(items);
+
+            ContentItem appointedMaster = AppointMaster(items);
+            foreach (ContentItem itemToSave in UpdateLanguageKeys(items, appointedMaster))
+            {
+                persister.Save(itemToSave);
+            }
+        }
+
+        /// <summary>Throws an exception if any of the items is a language root.</summary>
+        /// <param name="items"></param>
+        protected void EnsureNoLanguageRoots(IEnumerable<ContentItem> items)
+        {
+            foreach (ContentItem item in items)
+                if (item == GetLanguage(item))
+                    throw new N2Exception("Cannot associate " + item.Name + " #" + item.ID + " since it's a language root.");
+        }
+
+        /// <summary>Determines the preferred "master" or picks the first one.</summary>
+        /// <param name="items"></param>
+        /// <returns>An item whose id will be used as language key.</returns>
+        protected ContentItem AppointMaster(IEnumerable<ContentItem> items)
+        {
+            ContentItem appointedMaster = null;
+            foreach (ContentItem item in items)
+            {
+                appointedMaster = item;
+                if (appointedMaster[LanguageKey] != null)
+                    break;
+            }
+            foreach (ContentItem item in items)
+            {
+                if (item[LanguageGateway.LanguageKey] != null && item.ID == (int)item[LanguageGateway.LanguageKey])
+                {
+                    appointedMaster = item;
+                    break;
+                }
+            }
+            if (appointedMaster[LanguageGateway.LanguageKey] == null)
+                appointedMaster[LanguageGateway.LanguageKey] = appointedMaster.ID;
+            return appointedMaster;
+        }
+
+        /// <summary>Updates language keys and removes language keys from any existing translations within a certain language branch.</summary>
+        /// <param name="items"></param>
+        /// <param name="appointedMaster"></param>
+        /// <returns>Items that have been updated as a result of the operation.</returns>
+        protected IEnumerable<ContentItem> UpdateLanguageKeys(IEnumerable<ContentItem> items, ContentItem appointedMaster)
+        {
+            foreach (ContentItem item in items)
+            {
+                ILanguage language = GetLanguage(item);
+                ContentItem existingTranslation = GetTranslation(appointedMaster, language);
+                if (item == existingTranslation)
+                {
+                    continue;
+                }
+                else if (existingTranslation != null)
+                {
+                    existingTranslation[LanguageGateway.LanguageKey] = null;
+                    yield return existingTranslation;
+                }
+                item[LanguageGateway.LanguageKey] = appointedMaster[LanguageGateway.LanguageKey];
+                yield return item;
+            }
+        }
     }
 }

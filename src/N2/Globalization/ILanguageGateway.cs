@@ -37,5 +37,9 @@ namespace N2.Globalization
 		/// <param name="language">The language to look for.</param>
 		/// <returns>A translated item or null.</returns>
 		ContentItem GetTranslation(ContentItem item, ILanguage language);
-	}
+
+        /// <summary>Associate these items from different language branches as the same translated page. If a language branch already contains an associated item that item will be de-associated and be removed as a translation.</summary>
+        /// <param name="items">The translations to associate with each other.</param>
+        void Associate(IEnumerable<ContentItem> items);
+    }
 }

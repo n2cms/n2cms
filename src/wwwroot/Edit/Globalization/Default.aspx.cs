@@ -27,22 +27,23 @@ namespace N2.Edit.Globalization
             gateway = Engine.Resolve<ILanguageGateway>();
 
             cvGlobalizationDisabled.IsValid = gateway.Enabled;
-            IEnumerator<ContentItem> enumerator = gateway.FindTranslations(SelectedItem).GetEnumerator();
-            cvOutsideGlobalization.IsValid = enumerator.MoveNext();
+            bool isGlobalized = gateway.GetLanguage(SelectedItem) != null;
+            cvOutsideGlobalization.IsValid = isGlobalized;
 
-            languages = gateway.GetAvailableLanguages();
-
-            DataBind();
-            
+            if (gateway.Enabled && isGlobalized)
+            {
+                languages = gateway.GetAvailableLanguages();
+                DataBind();
+            }
 			base.OnInit(e);
 		}
 
 		protected IEnumerable<ContentItem> GetChildren(bool getPages)
 		{
             ItemList items = new ItemList();
-            foreach (ContentItem language in gateway.FindTranslations(SelectedItem))
+            foreach (ContentItem parent in gateway.FindTranslations(SelectedItem))
             {
-                foreach (ContentItem child in language.GetChildren(Engine.EditManager.GetEditorFilter(User)))
+                foreach (ContentItem child in parent.GetChildren(Engine.EditManager.GetEditorFilter(User)))
                 {
                     if(!items.ContainsAny(gateway.FindTranslations(child)))
                     {
@@ -74,5 +75,31 @@ namespace N2.Edit.Globalization
 				yield return translate;
 			}
 		}
+
+        protected void btnAssociate_Click(object sender, EventArgs args)
+        {
+            List<ContentItem> items = GetSelectedItems();
+            if (items.Count < 2)
+            {
+                cvAssociate.IsValid = false;
+                return;
+            }
+            gateway.Associate(items);
+
+            DataBind();
+        }
+
+        private List<ContentItem> GetSelectedItems()
+        {
+            List<ContentItem> items = new List<ContentItem>();
+            foreach (ILanguage language in gateway.GetAvailableLanguages())
+            {
+                string selectedId = Request[language.LanguageCode];
+                int id;
+                if (int.TryParse(selectedId, out id))
+                    items.Add(Engine.Persister.Get(id));
+            }
+            return items;
+        }
 	}
 }

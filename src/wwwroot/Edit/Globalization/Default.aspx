@@ -14,9 +14,9 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
-    <asp:CustomValidator CssClass="validator info" Text="Globalization is not enabled." runat="server" ID="cvGlobalizationDisabled" meta:resourceKey="cvGlobalizationDisabled" Display="Dynamic" />
-    <asp:CustomValidator CssClass="validator info" Text="This page cannot be translated." runat="server" ID="cvOutsideGlobalization" meta:resourceKey="cvOutsideGlobalization" Display="Dynamic" />
-    
+    <asp:CustomValidator Text="Globalization is not enabled." ID="cvGlobalizationDisabled" meta:resourceKey="cvGlobalizationDisabled" Display="Dynamic" CssClass="validator info" runat="server" />
+    <asp:CustomValidator Text="This page cannot be translated." ID="cvOutsideGlobalization" meta:resourceKey="cvOutsideGlobalization" Display="Dynamic" CssClass="validator info" runat="server" />
+	<asp:CustomValidator Text="Select at least two items to associate." ID="cvAssociate" meta:resourceKey="cvAssociate" runat="server" CssClass="validator info" Display="Dynamic" />
 	<div class="languages">
 		<table class="gv">
 		    <thead>
@@ -54,5 +54,6 @@
 				<FooterTemplate></tbody></FooterTemplate>
 			</asp:Repeater>
 		</table>
+		<asp:Button ID="btnAssociate" runat="server" Text="Associate" OnClick="btnAssociate_Click" meta:resourceKey="btnAssociate" />
 	</div>
 </asp:Content>

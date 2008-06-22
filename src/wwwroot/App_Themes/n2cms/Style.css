@@ -13,9 +13,10 @@ a:hover { text-decoration:underline; }
 h1,h2,h3,h4,h5,h6,.date { font-family: Trebuchet MS,Arial,Sans-Serif; color:#a5aeb6; }
 h1 { font-style:italic; border-bottom: solid 2px #f8f9f9; font-weight:normal; letter-spacing:-2px; }
 h2,h3 { font-weight:normal; letter-spacing:-1px; }
+
 /* clearfix */
 .cf:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
->.cf { display: inline-block; }
+.cf { *display: inline-block; }
 * html .cf { height: 1px; }
 
 

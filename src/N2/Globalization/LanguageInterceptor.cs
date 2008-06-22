@@ -131,17 +131,17 @@ namespace N2.Globalization
 			if (context.QueryString[LanguageGateway.LanguageKey] != null)
 			{
 				int.TryParse(context.QueryString[LanguageGateway.LanguageKey], out languageKey);
-			}
-			if (item[LanguageGateway.LanguageKey] == null)
-			{
-				item[LanguageGateway.LanguageKey] = languageKey;
-				persister.Save(item);
+                if (item[LanguageGateway.LanguageKey] == null)
+                {
+                    item[LanguageGateway.LanguageKey] = languageKey;
+                    persister.Save(item);
 
-				if (languageKey != item.ID)
-				{
-					EnsureLanguageKeyOnInitialTranslation(item, languageKey);
-				}
-			}
+                    if (languageKey != item.ID)
+                    {
+                        EnsureLanguageKeyOnInitialTranslation(item, languageKey);
+                    }
+                }
+            }
 		}
 
 		private void EnsureLanguageKeyOnInitialTranslation(ContentItem item, int languageKey)

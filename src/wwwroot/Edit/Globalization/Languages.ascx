@@ -2,6 +2,7 @@
 <asp:Repeater ID="rptLang" runat="server" DataSource='<%# DataSource %>'>
 	<ItemTemplate>
 		<td class="item">
+		    <%# (bool)Eval("IsNew") || Eval("ExistingItem") == Eval("Language") ? null : Html.Radio((string)Eval("Language.LanguageCode"), Eval("ExistingItem.ID").ToString()).Attr("style", "float:left") %>
 			<asp:HyperLink ID="hlEdit" NavigateUrl='<%# Eval("EditUrl") %>' CssClass='<%# GetClass() %>' runat="server" ToolTip='<%# Eval("ExistingItem.Updated") %>'>
 				<asp:Literal ID="ltCreateNew" runat="server" Text='create new' Visible='<%# (bool)Eval("IsNew") %>' meta:resourceKey="ltCreateNew" />
 				

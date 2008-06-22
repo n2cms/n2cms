@@ -1,6 +1,8 @@
 - format option on display property
-- fixed problem using traditional castle section
-- globalization: show items on other language branches
+- fixed problem when using traditional castle section
+- globalization: 
+	- show items on other language branches
+	- associate translations
 
 1.4
 - templates

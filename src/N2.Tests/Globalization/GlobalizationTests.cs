@@ -12,6 +12,7 @@ using N2.Tests.Persistence;
 using System.Diagnostics;
 using System.Globalization;
 using N2.Tests.Globalization.Items;
+using N2.Engine;
 
 namespace N2.Tests.Globalization
 {
@@ -58,17 +59,17 @@ namespace N2.Tests.Globalization
 		}
 
 		[Test]
-		public void LanguageKey_IsAddedTo_SavedItem()
+		public void LanguageKey_IsNotAddedTo_LonelySavedItem()
 		{
 			ContentItem englishSub = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
 
 			engine.Persister.Save(englishSub);
 
-			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub.ID));
+			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.Null);
 		}
 
 		[Test]
-		public void LanguageKey_IsNotAddedTo_ItemsOutsideA_LanguageRoot()
+		public void LanguageKey_IsNotAddedTo_ItemsOutside_OfLanguageRoots()
 		{
 			ContentItem page = CreateOneItem<Items.TranslatedPage>(0, "page", root);
 
@@ -126,9 +127,10 @@ namespace N2.Tests.Globalization
 			engine.Persister.Save(englishSub);
 
 			ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
-			swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
-			engine.Persister.Save(swedishSub);
-
+            using (new LanguageKeyScope(engine, englishSub.ID))
+            {
+                engine.Persister.Save(swedishSub);
+            }
 			IEnumerable<ContentItem> translations = lg.FindTranslations(englishSub);
 			EnumerableAssert.Count(2, translations);
 		}
@@ -215,9 +217,10 @@ namespace N2.Tests.Globalization
 			engine.Persister.Save(englishSub);
 
 			ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
-			swedishSub[LanguageGateway.LanguageKey] = englishSub.ID;
-			engine.Persister.Save(swedishSub);
-
+            using (new LanguageKeyScope(engine, englishSub.ID))
+            {
+                engine.Persister.Save(swedishSub);
+            }
 			IList<TranslateSpecification> options = new List<TranslateSpecification>(lg.GetEditTranslations(englishSub, false));
 
 			Assert.That(options.Count, Is.EqualTo(2));
@@ -255,16 +258,20 @@ namespace N2.Tests.Globalization
 			int initialCount = swedish.Children.Count;
 			
 			ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
-			engine.Persister.Save(english1);
-			ContentItem english2 = CreateOneItem<Items.TranslatedPage>(0, "english2", english);
+            engine.Persister.Save(english1);
+            ContentItem english2 = CreateOneItem<Items.TranslatedPage>(0, "english2", english);
 			engine.Persister.Save(english2);
 
 			ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
-			swedish1[LanguageGateway.LanguageKey] = english1.ID;
-			engine.Persister.Save(swedish1);
+            using (new LanguageKeyScope(engine, english1.ID))
+            {
+                engine.Persister.Save(swedish1);
+            }
 			ContentItem swedish2 = CreateOneItem<Items.TranslatedPage>(0, "swedish2", swedish);
-			swedish2[LanguageGateway.LanguageKey] = english2.ID;
-			engine.Persister.Save(swedish2);
+            using (new LanguageKeyScope(engine, english2.ID))
+            {
+                engine.Persister.Save(swedish2);
+            }
 
 			// Swedish translation to the corresponding location
 			engine.Persister.Move(english2, english1);
@@ -287,8 +294,10 @@ namespace N2.Tests.Globalization
 			ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
 			engine.Persister.Save(swedish1);
 			ContentItem swedish2 = CreateOneItem<Items.TranslatedPage>(0, "swedish2", swedish);
-			swedish2[LanguageGateway.LanguageKey] = english2.ID;
-			engine.Persister.Save(swedish2);
+            using (new LanguageKeyScope(engine, english2.ID))
+            {
+                engine.Persister.Save(swedish2);
+            }
 
 			// swedish2 is not moved since swedish1 isn't translated
 			engine.Persister.Move(english2, english1);
@@ -306,9 +315,10 @@ namespace N2.Tests.Globalization
 			engine.Persister.Save(english1);
 			
 			ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
-			swedish1[LanguageGateway.LanguageKey] = english1.ID;
-			engine.Persister.Save(swedish1);
-
+            using (new LanguageKeyScope(engine, english1.ID))
+            {
+                engine.Persister.Save(swedish1);
+            }
 			engine.Persister.Delete(english1);
 
 			Assert.That(swedish.Children.Count, Is.EqualTo(0 + initialCount));
@@ -388,5 +398,100 @@ namespace N2.Tests.Globalization
 
 			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.Null);
 		}
+
+        [Test]
+        public void CanAssociateItems()
+        {
+            ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+            engine.Persister.Save(english1);
+
+            ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
+            engine.Persister.Save(swedish1);
+
+            ContentItem italian1 = CreateOneItem<Items.TranslatedPage>(0, "italian1", italian);
+            engine.Persister.Save(italian1);
+
+            ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
+            gateway.Associate(new ContentItem[] { english1, swedish1, italian1 });
+
+            var translations = gateway.FindTranslations(english1);
+            EnumerableAssert.Count(3, translations);
+            EnumerableAssert.Contains(translations, english1);
+            EnumerableAssert.Contains(translations, swedish1);
+            EnumerableAssert.Contains(translations, italian1);
+        }
+
+        [Test]
+        public void CanChangeAssociation()
+        {
+            ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+            engine.Persister.Save(english1);
+            
+            var scope = new LanguageKeyScope(engine, english1.ID);
+            ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
+            engine.Persister.Save(swedish1);
+
+            ContentItem italian1 = CreateOneItem<Items.TranslatedPage>(0, "italian1", italian);
+            engine.Persister.Save(italian1);
+            scope.Dispose();
+
+            ContentItem italian2 = CreateOneItem<Items.TranslatedPage>(0, "italian2", italian);
+            engine.Persister.Save(italian2);
+
+            ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
+            gateway.Associate(new ContentItem[] { english1, italian2 });
+           
+            var translations = gateway.FindTranslations(english1);
+            EnumerableAssert.Count(3, translations);
+            EnumerableAssert.Contains(translations, english1);
+            EnumerableAssert.Contains(translations, swedish1);
+            EnumerableAssert.Contains(translations, italian2);
+        }
+
+        [Test]
+        public void DoesntDeassociate_UnrelatedItems()
+        {
+            ContentItem english1 = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
+            engine.Persister.Save(english1);
+
+            var scope = new LanguageKeyScope(engine, english1.ID);
+            ContentItem swedish1 = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
+            engine.Persister.Save(swedish1);
+
+            ContentItem italian1 = CreateOneItem<Items.TranslatedPage>(0, "italian1", italian);
+            engine.Persister.Save(italian1);
+            scope.Dispose();
+
+            ContentItem italian2 = CreateOneItem<Items.TranslatedPage>(0, "italian2", italian);
+            engine.Persister.Save(italian2);
+
+            ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
+            gateway.Associate(new ContentItem[] { swedish1, italian2 });
+
+            var translations = gateway.FindTranslations(english1);
+            EnumerableAssert.Count(3, translations);
+            EnumerableAssert.Contains(translations, english1);
+            EnumerableAssert.Contains(translations, swedish1);
+            EnumerableAssert.Contains(translations, italian2);
+        }
+
+        private class LanguageKeyScope : IDisposable
+        {
+            IWebContext context;
+            public LanguageKeyScope(IEngine engine, int key)
+            {
+                context = engine.Resolve<IWebContext>();
+                context.QueryString[LanguageGateway.LanguageKey] = key.ToString();
+            }
+
+            #region IDisposable Members
+
+            public void Dispose()
+            {
+                context.QueryString.Remove(LanguageGateway.LanguageKey);
+            }
+
+            #endregion
+        }
 	}
 }

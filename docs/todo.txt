@@ -1,7 +1,7 @@
-- globalization: relink items
 - investigate strange problem selecting page translations when editing a page
 - select pages when navigating in preview
 - wiki
+- output cache invalidation support
 - error handling with email option
 - handle not-mapped types
 - allow non root-path to act as start page
