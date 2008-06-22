@@ -29,5 +29,5 @@ namespace N2.Collections
 		}
 
 		#endregion
-	}
+    }
 }

@@ -39,7 +39,7 @@ namespace N2.Web
 
 		private string ExtractUrl(string rawUrl)
 		{
-			string qs = QueryPart(rawUrl);
+            string qs = Url.QueryPart(rawUrl);
 			if (qs.StartsWith("404"))
 			{
 				Match m = pathExpression.Match(HttpUtility.UrlDecode(qs));
@@ -58,12 +58,12 @@ namespace N2.Web
 
 		public override string Query
 		{
-			get { return QueryPart(RawUrl); }
+            get { return Url.QueryPart(RawUrl); }
 		}
 
 		public override NameValueCollection QueryString
 		{
-			get { return ToNameValueCollection(QueryPart(RawUrl)); }
+            get { return ToNameValueCollection(Url.QueryPart(RawUrl)); }
 		}
 
 		public override string ToAppRelative(string virtualPath)

@@ -120,6 +120,9 @@
   <data name="cvGlobalizationDisabled.Text" xml:space="preserve">
     <value>Globalization is not enabled. Update the web configuration file to enable it.</value>
   </data>
+  <data name="cvOutsideGlobalization.Text" xml:space="preserve">
+    <value>This page cannot be translated. Add it to a language root in to enable globalization.</value>
+  </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>

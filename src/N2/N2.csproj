@@ -373,11 +373,14 @@
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
+    <Compile Include="Web\AnchorBuilder.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\Host.cs" />
+    <Compile Include="Web\HtmlHelper.cs" />
     <Compile Include="Web\IHost.cs" />
     <Compile Include="Web\IIS5WebContext.cs" />
+    <Compile Include="Web\TagBuilder.cs" />
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\IContentTemplate.cs" />
     <Compile Include="Web\UI\WebControls\A.cs" />
@@ -512,6 +515,7 @@
     <Compile Include="Web\UI\WebControls\Tree.cs" />
     <Compile Include="Web\UI\WebControls\TreeNode.cs" />
     <Compile Include="Web\UI\WebControls\Ul.cs" />
+    <Compile Include="Web\Url.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\TabPanel.css" />

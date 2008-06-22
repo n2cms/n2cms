@@ -11,7 +11,7 @@
 <body class="<%= GetBodyClass() %>">
     <form id="F" runat="server">
     <n2:SlidingCurtain ID="sc" runat="server">
-        <n2:DragDropControlPanel ID="cp" runat="server" QuickEditLink-Visible="false">
+        <n2:DragDropControlPanel ID="cp" runat="server">
             <VisibleFooterTemplate>
 
                 <script type="text/javascript">

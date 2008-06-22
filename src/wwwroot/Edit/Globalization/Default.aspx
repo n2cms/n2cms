@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../Framed.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Globalization._Default" %>
 <%@ Register TagPrefix="lang" TagName="Languages" Src="Languages.ascx" %>
+<%@ Import Namespace="N2.Web" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Styles.css" type="text/css" />
     <script src="../Js/plugins.ashx" type="text/javascript" ></script>
@@ -10,33 +11,48 @@
 	</script>
 </asp:Content>
 <asp:Content ID="CT" ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" AccessKey="C" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
+    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="CC" ContentPlaceHolderID="Content" runat="server">
-    <asp:CustomValidator CssClass="validator info" Text="Globalization is not enabled." runat="server" ID="cvGlobalizationDisabled" meta:resourceKey="cvGlobalizationDisabled" />
+    <asp:CustomValidator CssClass="validator info" Text="Globalization is not enabled." runat="server" ID="cvGlobalizationDisabled" meta:resourceKey="cvGlobalizationDisabled" Display="Dynamic" />
+    <asp:CustomValidator CssClass="validator info" Text="This page cannot be translated." runat="server" ID="cvOutsideGlobalization" meta:resourceKey="cvOutsideGlobalization" Display="Dynamic" />
     
 	<div class="languages">
-		<table class="gv"><thead>
-			<asp:Repeater runat="server" DataSource='<%# GetTranslations(SelectedItem) %>'>
-				<HeaderTemplate><tr class="th"></HeaderTemplate>
-				<ItemTemplate>
-					<td>
-						<asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText="flag" runat="server" /> <%# Eval("Language.LanguageTitle") %> (<%# Eval("Language.LanguageCode") %>)
-					</td>
-				</ItemTemplate>	
-				<FooterTemplate></tr></FooterTemplate>
-			</asp:Repeater>
+		<table class="gv">
+		    <thead>
+			    <asp:Repeater runat="server" DataSource='<%# GetTranslations(SelectedItem) %>'>
+				    <HeaderTemplate><tr class="th"><td></td></HeaderTemplate>
+				    <ItemTemplate>
+					    <td><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText="flag" runat="server" /> <%# Eval("Language.LanguageTitle") %> (<%# Eval("Language.LanguageCode") %>)</td>
+				    </ItemTemplate>	
+				    <FooterTemplate></tr></FooterTemplate>
+			    </asp:Repeater>
 
-			<tr class="selected"><lang:Languages runat="server" DataSource='<%# gateway.GetEditTranslations(SelectedItem, true) %>' /></tr>
-		</thead>
-		<tbody>
-			<asp:Repeater runat="server" DataSource="<%# GetChildren() %>">
+			    <tr class="selected">
+			        <td><%# SelectedItem.Parent != null ? Html.A(Html.Url("Default.aspx").AppendQuery("selected", SelectedItem.Parent.Path), Html.Img("../img/ico/png/bullet_toggle_minus.png", "up")) : null %></td>
+			        <lang:Languages runat="server" DataSource='<%# GetTranslations(SelectedItem) %>' />
+                </tr>
+		    </thead>
+			<asp:Repeater runat="server" DataSource="<%# GetChildren(true) %>">
+				<HeaderTemplate><tbody></HeaderTemplate>
 				<ItemTemplate>
-					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %>">
+					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %> i<%# Container.ItemIndex %>">
+					    <td><%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 ? Html.A(Html.Url("Default.aspx").AppendQuery("selected", ((N2.ContentItem)Container.DataItem).Path), Html.Img("../img/ico/png/bullet_toggle_plus.png", "down")) : null %></td>
 						<lang:Languages runat="server" DataSource='<%# GetTranslations((N2.ContentItem)Container.DataItem) %>' />
 					</tr>
 				</ItemTemplate>
+				<FooterTemplate></tbody></FooterTemplate>
 			</asp:Repeater>
-		</tbody></table>
+			<asp:Repeater runat="server" DataSource="<%# GetChildren(false) %>">
+			    <HeaderTemplate><tbody></HeaderTemplate>
+				<ItemTemplate>
+					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %> i<%# Container.ItemIndex %>">
+					    <td><%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 ? Html.A(Html.Url("Default.aspx").AppendQuery("selected", ((N2.ContentItem)Container.DataItem).Path), Html.Img("../img/ico/png/bullet_toggle_plus.png", "down")) : null %></td>
+						<lang:Languages runat="server" DataSource='<%# GetTranslations((N2.ContentItem)Container.DataItem) %>' />
+					</tr>
+				</ItemTemplate>
+				<FooterTemplate></tbody></FooterTemplate>
+			</asp:Repeater>
+		</table>
 	</div>
 </asp:Content>

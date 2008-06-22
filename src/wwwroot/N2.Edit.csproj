@@ -1572,6 +1572,7 @@
     <Content Include="Edit\Wizard\Img\wand.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Edit\img\ico\png\bullet_toggle_minus.png" />
     <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.it.resx">
       <SubType>Designer</SubType>
     </Content>

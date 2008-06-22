@@ -101,6 +101,13 @@ namespace N2.Collections
 			Sort(new ItemComparer<T>(sortExpression));
 		}
 
+        public bool ContainsAny(IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                if (Contains(item))
+                    return true;
+            return false;
+        }
 		#endregion
 
 		#region IHierarchicalEnumerable Members

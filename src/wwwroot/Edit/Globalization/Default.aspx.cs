@@ -23,10 +23,12 @@ namespace N2.Edit.Globalization
 		protected override void OnInit(EventArgs e)
 		{
             hlCancel.NavigateUrl = SelectedNode.PreviewUrl;
-            
+
             gateway = Engine.Resolve<ILanguageGateway>();
 
             cvGlobalizationDisabled.IsValid = gateway.Enabled;
+            IEnumerator<ContentItem> enumerator = gateway.FindTranslations(SelectedItem).GetEnumerator();
+            cvOutsideGlobalization.IsValid = enumerator.MoveNext();
 
             languages = gateway.GetAvailableLanguages();
 
@@ -35,20 +37,40 @@ namespace N2.Edit.Globalization
 			base.OnInit(e);
 		}
 
-		protected IEnumerable<ContentItem> GetChildren()
+		protected IEnumerable<ContentItem> GetChildren(bool getPages)
 		{
-			foreach (ContentItem item in SelectedItem.GetChildren(Engine.EditManager.GetEditorFilter(User)))
-			{
-				if (!(item is ILanguage))
-					yield return item;
-			}
+            ItemList items = new ItemList();
+            foreach (ContentItem language in gateway.FindTranslations(SelectedItem))
+            {
+                foreach (ContentItem child in language.GetChildren(Engine.EditManager.GetEditorFilter(User)))
+                {
+                    if(!items.ContainsAny(gateway.FindTranslations(child)))
+                    {
+                        items.Add(child);
+                    }
+                }
+            }
+            items.Sort();
+
+            foreach (ContentItem item in items)
+            {
+                if (item is ILanguage)
+                    continue;
+                else if (item.IsPage == getPages)
+                    yield return item;
+            }
 		}
+
+        protected string ReturnUrl
+        {
+            get { return Server.UrlEncode(Request.RawUrl); }
+        }
 
 		protected IEnumerable<TranslateSpecification> GetTranslations(ContentItem item)
 		{
 			foreach (TranslateSpecification translate in gateway.GetEditTranslations(item, true))
 			{
-				translate.EditUrl += "&returnUrl=" + Server.UrlEncode(Request.RawUrl);
+				translate.EditUrl += "&returnUrl=" + ReturnUrl;
 				yield return translate;
 			}
 		}

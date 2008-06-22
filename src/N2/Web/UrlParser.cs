@@ -164,7 +164,7 @@ namespace N2.Web
 
 		private string CleanUrl(string url)
 		{
-			url = RequestContext.PathPart(url);
+            url = Url.PathPart(url);
 			url = webContext.ToAppRelative(url);
 			url = url.TrimStart('~', '/');
 			if (url.EndsWith(DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
@@ -174,7 +174,7 @@ namespace N2.Web
 
 		private int? FindQueryStringReference(string url, params string[] parameters)
 		{
-			string queryString = RequestContext.QueryPart(url);
+            string queryString = Url.QueryPart(url);
 			if (!string.IsNullOrEmpty(queryString))
 			{
 				string[] queries = queryString.Split('&');

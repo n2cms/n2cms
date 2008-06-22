@@ -17,20 +17,19 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 .dropZone .droppable-active { background:url(../img/shading_green.png); border:solid 2px #6c6; margin:4px 0; margin-right:-1px; }
 .dropZone .droppable-hover { background-color:#8e8; border-color:#8e8; padding:4px; margin:0; }
 
-
-.definitions,.controlPanel .new { border-top:solid 1px #dedad7; padding-top:5px; margin-top:5px; }
-.definition { cursor:move; padding:1px;}
-:hover.definition { background-image:url(../img/part_bg.png) }
-.definitionimg { vertical-align:middle;margin-right:1px;}
-* html .masked select { visibility:hidden;}
-
-.sc { background:transparent url(../img/SlidingCurtain_bg.png) no-repeat 100% 100%; padding:0 7px 5px 0; position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; }
-.sc .scContent { width:150px; background-color:#fff; padding:10px 5px 15px 10px; }
+.sc { background:transparent url(../img/SlidingCurtain_bg.png) no-repeat 100% 100%; padding:0 4px 5px 0; position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; }
+.sc .scContent { width:168px; background-color:#fff; padding:10px 0 15px 0; }
 .controlPanel img { margin-right:2px; border:none; vertical-align:middle;}
 .controlPanel a,.controlPanel a:visited { color:#333;}
-.controlPanel a {display:block; text-decoration:none; margin-right:2px;}
+.controlPanel a {display:block; text-decoration:none; margin-right:2px; padding:0 8px 1px 10px;}
 .sc .open,.sc .close { background-color:transparent; position:absolute; bottom:3px; right:3px; cursor:pointer; cursor:hand; padding:15px 2px 1px 5px; display:block; font-weight:bold;}
 .sc .close {display:none;}
 .opened .open {display:none;}
 .opened .close {display:inline;}
+
+.definitions,.controlPanel .new { border-top:solid 1px #dedad7; padding-top:5px; margin-top:5px; }
+.definition { cursor:move; padding:0 8px 1px 10px; }
+:hover.definition { background-image:url(../img/part_bg.png) }
+.definitionimg { vertical-align:middle;margin-right:1px;}
+* html .masked select { visibility:hidden;}
 

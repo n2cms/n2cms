@@ -15,15 +15,15 @@
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
 		<asp:PlaceHolder runat="server" ID="phPluginArea" />
-		<asp:HyperLink ID="hlZones" runat="server" CssClass="showZones command" AccessKey="z" meta:resourceKey="hlZones" NavigateUrl="javascript:void(0);">Zones</asp:HyperLink>
-		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" AccessKey="i" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>
+		<asp:HyperLink ID="hlZones" runat="server" CssClass="showZones command" meta:resourceKey="hlZones" NavigateUrl="javascript:void(0);">Zones</asp:HyperLink>
+		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>
     </div>
     <n2:OptionsMenu id="om" runat="server">
-		<asp:LinkButton ID="btnSave" OnCommand="OnSaveCommand" runat="server" CssClass="command" AccessKey="s" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
-		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command" AccessKey="p" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
+		<asp:LinkButton ID="btnSave" OnCommand="OnSaveCommand" runat="server" CssClass="command" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
+		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command" meta:resourceKey="btnPreview">Preview changes</asp:LinkButton>
     </n2:OptionsMenu>
-    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" AccessKey="c" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
+    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="co" ContentPlaceHolderID="Outside" runat="server">
 	<div class="right">

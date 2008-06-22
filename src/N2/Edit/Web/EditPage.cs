@@ -174,6 +174,11 @@ else window.location = '{2}';";
 			get { return N2.Context.Current; }
 		}
 
+        public N2.Web.HtmlHelper Html
+        {
+            get { return new N2.Web.HtmlHelper(this, SelectedItem); }
+        }
+
 		public override string ID
 		{
 			get { return base.ID ?? "P"; }

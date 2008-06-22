@@ -234,12 +234,14 @@
     <Compile Include="Web\LinkTests.cs" />
     <Compile Include="Web\ParserTestsBase.cs" />
     <Compile Include="Web\MultipleHostUrlParserTests.cs" />
+    <Compile Include="Web\TagBuilderTests.cs" />
     <Compile Include="Web\TreeNodeTests.cs" />
     <Compile Include="Web\TreeTests.cs" />
     <Compile Include="Web\UrlParserTests.cs" />
     <Compile Include="Web\UrlRewriterTests.cs" />
     <Compile Include="Serialization\Items\XmlableItem.cs" />
     <Compile Include="Serialization\XmlWriterTests.cs" />
+    <Compile Include="Web\UrlTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

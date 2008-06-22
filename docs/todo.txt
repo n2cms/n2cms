@@ -1,5 +1,4 @@
-- more ff3
-- globalization: relink items, show items on other language branches
+- globalization: relink items
 - investigate strange problem selecting page translations when editing a page
 - select pages when navigating in preview
 - wiki
@@ -9,6 +8,8 @@
 - filters -> pipes
 - dashboard
 - restrictparents: NewRestrictionAttribute
+- smart format
+- decouple item definition and editing from n2.contentitem
 - Parts: Throw friendly exception when page isn't found
 - move sites initialization to after context.instance is set
 - implement INode for edit mode integration

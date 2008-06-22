@@ -4,5 +4,5 @@
 .languages .current {font-weight:bold;}
 .languages .new {padding-left:24px; background:transparent url(../img/ico/add.gif) no-repeat 7px 50%; font-style:italic;}
 .languages .th td { font-weight:bold; background-color:#F7F7F7; padding:4px 8px; }
-.languages .selected td { border-bottom:solid 5px #E0E0E0; }
+.languages tbody .i0 td { border-top:solid 5px #E0E0E0; }
 .languages tbody .item {padding-left:15px;}

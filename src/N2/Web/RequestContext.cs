@@ -80,39 +80,8 @@ namespace N2.Web
 		{
 			get
 			{
-				return PathPart(RawUrl);
+				return Url.PathPart(RawUrl);
 			}
-		}
-
-		public static string RemoveHash(string url)
-		{
-			int hashIndex = url.IndexOf('#');
-			if (hashIndex >= 0)
-				url = url.Substring(0, hashIndex);
-			return url;
-		}
-
-		/// <summary>Retrieves the path part of an url, e.g. /path/to/page.aspx.</summary>
-		public static string PathPart(string url)
-		{
-			url = RemoveHash(url);
-
-			int queryIndex = url.IndexOf('?');
-			if (queryIndex >= 0)
-				url = url.Substring(0, queryIndex);
-
-			return url;
-		}
-
-		/// <summary>Retrieves the query part of an url, e.g. page=12&value=something.</summary>
-		public static string QueryPart(string url)
-		{
-			url = RemoveHash(url);
-
-			int queryIndex = url.IndexOf('?');
-			if (queryIndex >= 0)
-				return url.Substring(queryIndex + 1);
-			return string.Empty;
 		}
 
 		/// <summary>The physical path on disk to the requested resource.</summary>

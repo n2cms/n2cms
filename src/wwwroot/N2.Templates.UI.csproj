@@ -799,6 +799,7 @@
     <Content Include="App_Themes\ContentFocus\secondary_header.gif" />
     <Content Include="App_Themes\ContentFocus\Style.css" />
     <Content Include="App_Themes\ContentFocus\top.gif" />
+    <Content Include="Layouts\Defaults.css" />
     <Content Include="Poll\UI\App_LocalResources\Poll.ascx.resx">
       <SubType>Designer</SubType>
     </Content>

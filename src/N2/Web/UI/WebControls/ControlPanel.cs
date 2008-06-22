@@ -88,7 +88,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the the text on the publish page button.</summary>
 		public string CancelVersionText
 		{
-			get { return (string)(ViewState["CancelVersionText"] ?? "Delete version"); }
+			get { return (string)(ViewState["CancelVersionText"] ?? "Discard changes"); }
 			set { ViewState["CancelVersionText"] = value; }
 		}
 		
@@ -325,6 +325,7 @@ namespace N2.Web.UI.WebControls
 			hlQuickEdit.NavigateUrl = GetQuickEditUrl("true");
 			hlQuickEdit.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/png/script_edit.png"), QuickEditText);
 			hlQuickEdit.CssClass = "quickEdit";
+            hlQuickEdit.Visible = false;
 			Controls.Add(hlQuickEdit);
 		}
 
@@ -347,6 +348,7 @@ namespace N2.Web.UI.WebControls
 		{
 			btnCancelVersion.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/cancel.gif"), CancelVersionText);
 			btnCancelVersion.CssClass = "cancel";
+            btnCancelVersion.OnClientClick = "return confirm('Are you certain?');";
 			Controls.Add(btnCancelVersion);
 			btnCancelVersion.Command += delegate { CancelVersion(); };
 		}

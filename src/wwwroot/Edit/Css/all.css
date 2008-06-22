@@ -5,7 +5,7 @@
 
 .cf,
 .editDetail,
-.tree li { display: inline-block; }
+.tree li { *display: inline-block; }
 
 /* Hides from IE-mac \*/
 * html .cf,
@@ -17,7 +17,7 @@
 .tree li { display: block; }
 /* End hide from IE-mac */
 
-html body
+html body, td
 {
 	font-family:Arial, Sans-Serif;
 	font-size:12px;
