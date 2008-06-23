@@ -8,7 +8,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>N2.Edit</RootNamespace>
+    <RootNamespace>N2</RootNamespace>
     <AssemblyName>N2.Edit</AssemblyName>
     <SccProjectName>
     </SccProjectName>
@@ -100,6 +100,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Toolbar.nl.resx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\App_GlobalResources\Toolbar.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.nl.resx</DependentUpon>
+    </Compile>
     <Compile Include="Edit\AvailableZones.ascx.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -183,6 +188,13 @@
     </Compile>
     <Compile Include="Edit\Globalization\Languages.ascx.designer.cs">
       <DependentUpon>Languages.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Edit\Globalization\Translate.aspx.cs">
+      <DependentUpon>Translate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\Globalization\Translate.aspx.designer.cs">
+      <DependentUpon>Translate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Edit\Install\Begin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1572,6 +1584,7 @@
     <Content Include="Edit\Wizard\Img\wand.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Edit\Globalization\Translate.aspx" />
     <Content Include="Edit\img\ico\png\bullet_toggle_minus.png" />
     <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.it.resx">
       <SubType>Designer</SubType>

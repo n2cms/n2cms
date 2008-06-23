@@ -1,8 +1,5 @@
-﻿.languages a{display:block; padding:1px; _height:1px;}
-.languages td { padding:1px 4px; }
-.languages a img {margin-left:5px;}
+﻿.languages a { display:inline;}
 .languages .current {font-weight:bold;}
-.languages .new {padding-left:24px; background:transparent url(../img/ico/add.gif) no-repeat 7px 50%; font-style:italic;}
+.languages .new {padding-left:40px; background:transparent url(../img/ico/add.gif) no-repeat 24px 50%; font-style:italic;}
 .languages .th td { font-weight:bold; background-color:#F7F7F7; padding:4px 8px; }
 .languages tbody .i0 td { border-top:solid 5px #E0E0E0; }
-.languages tbody .item {padding-left:15px;}

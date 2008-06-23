@@ -7,8 +7,8 @@ using System.Reflection;
 
 namespace N2.Edit
 {
-	[NavigationPlugin("Delete", "delete", "../delete.aspx?selected={selected}&alert=true", "preview", "~/edit/img/ico/delete.gif", 30, GlobalResourceClassName="Navigation")]
-	[ToolbarPlugin("", "delete", "delete.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/delete.gif", 60, ToolTip = "delete", GlobalResourceClassName = "Toolbar")]
+    [NavigationLinkPlugin("Delete", "delete", "../delete.aspx?selected={selected}&alert=true", Targets.Preview, "~/edit/img/ico/delete.gif", 30, GlobalResourceClassName = "Navigation")]
+	[ToolbarPlugin("", "delete", "delete.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/delete.gif", 60, ToolTip = "delete", GlobalResourceClassName = "Toolbar")]
 	public partial class Delete : Web.EditPage
     {
         protected void Page_Init(object sender, EventArgs e)

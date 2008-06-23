@@ -37,7 +37,7 @@ namespace N2.Edit
 		private string editorCssUrl = "~/Edit/Css/Editor.css";
 		private string uploadFolderUrl = "~/Upload";
         private string editItemUrl = "~/edit/edit.aspx";
-        private string editInterfaceUrl = "~/edit/default.aspx";
+        private string editInterfaceUrl = "~/edit/";
         private string newItemUrl = "~/edit/new.aspx";
         private string deleteItemUrl = "~/edit/delete.aspx";
         private bool enableVersioning = true;
@@ -372,11 +372,17 @@ namespace N2.Edit
 				throw new ArgumentException("Unexpected versioning mode.");
 			}
 		}
+        /// <summary>Gets the url to the edit interface.</summary>
+        /// <returns>The url to the edit interface.</returns>
+        public string GetEditInterfaceUrl()
+        {
+            return Utility.ToAbsolute(EditInterfaceUrl);
+        }
 
 		/// <summary>Gets the url to the edit interface.</summary>
 		/// <param name="selectedItem">The item to select in edit mode.</param>
 		/// <returns>The url to the edit interface.</returns>
-		public string GetEditModeUrl(ContentItem selectedItem)
+		public string GetEditInterfaceUrl(ContentItem selectedItem)
 		{
             return FormatSelectedUrl(selectedItem, EditInterfaceUrl);
 		}

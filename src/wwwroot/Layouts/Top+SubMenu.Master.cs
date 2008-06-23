@@ -27,7 +27,7 @@ namespace N2.Templates.UI.Layouts
 		{
 			languages = N2.Context.Current.Resolve<ILanguageGateway>();
 
-			ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
+            ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
 
 			if (p != null) p.Visible = N2.Templates.Find.ClosestStartPage.ShowBreadcrumb;
 			if (dti != null) dti.Visible = CurrentPage["ShowTitle"] != null && (bool)CurrentPage["ShowTitle"];

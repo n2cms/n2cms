@@ -8,10 +8,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using N2.Edit;
 
 namespace N2.Templates.UI.Secured
 {
-	public partial class Go : N2.Edit.Web.EditPage
+    [ToolbarPlugin("", "", "~/Secured/Go.aspx?selected={selected}", N2.Edit.ToolbarArea.Preview, "_top", "~/Img/eye.png", 0, Name = "Go")]
+    public partial class Go : N2.Edit.Web.EditPage
 	{
 		protected override void OnInit(EventArgs e)
 		{

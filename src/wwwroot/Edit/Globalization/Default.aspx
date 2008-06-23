@@ -23,7 +23,7 @@
 			    <asp:Repeater runat="server" DataSource='<%# GetTranslations(SelectedItem) %>'>
 				    <HeaderTemplate><tr class="th"><td></td></HeaderTemplate>
 				    <ItemTemplate>
-					    <td><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText="flag" runat="server" /> <%# Eval("Language.LanguageTitle") %> (<%# Eval("Language.LanguageCode") %>)</td>
+					    <td title='<%# Eval("Language.LanguageCode") %>'><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText='<%# Eval("Language.LanguageCode", "{0} flag") %>' runat="server" /> <%# Eval("Language.LanguageTitle") %></td>
 				    </ItemTemplate>	
 				    <FooterTemplate></tr></FooterTemplate>
 			    </asp:Repeater>

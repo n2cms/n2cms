@@ -9,7 +9,7 @@ using N2.Web.UI;
 
 namespace N2.Edit.Export
 {
-	[ToolbarPlugin("", "exportimport", "~/Edit/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/package_come_and_go.gif", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("", "exportimport", "~/Edit/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/package_come_and_go.gif", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage
 	{
 		protected Control tpExport;

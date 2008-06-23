@@ -296,6 +296,9 @@
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
+    <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
+    <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
+    <Compile Include="Edit\Targets.cs" />
     <Compile Include="Edit\Trash\NotThrowableAttribute.cs" />
     <Compile Include="Definitions\IDefinitionRefiner.cs" />
     <Compile Include="Definitions\IInheritableDefinitionRefiner.cs" />
@@ -331,6 +334,7 @@
     <Compile Include="Engine\ContentEngine.cs" />
     <Compile Include="Globalization\Action.cs" />
     <Compile Include="Globalization\DictionaryScope.cs" />
+    <Compile Include="Globalization\NavigationTranslationsPluginAttribute.cs" />
     <Compile Include="Globalization\Scope.cs" />
     <Compile Include="Globalization\ILanguageGateway.cs" />
     <Compile Include="Globalization\ILanguage.cs" />

@@ -8,8 +8,8 @@ using N2.Persistence;
 
 namespace N2.Edit
 {
-	[NavigationPlugin("Edit", "edit", "../edit.aspx?selected={selected}", "preview", "~/edit/img/ico/page_edit.gif", 20, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, "preview", "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
+    [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/page_edit.gif", 20, GlobalResourceClassName = "Navigation")]
+	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
 	public partial class Edit : EditPage
 	{
 		protected PlaceHolder phPluginArea;

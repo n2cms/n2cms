@@ -78,7 +78,7 @@ namespace N2.Edit
 		{
 			get { return containerName; }
 			set { containerName = value; }
-		}
+        }
 		
 		#region IComparable<...> Members
 

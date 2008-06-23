@@ -14,7 +14,7 @@ namespace N2.Web.UI.WebControls
 		public FreeTextArea()
 		{
 			TextMode = TextBoxMode.MultiLine;
-			CssClass = "FreeTextArea";
+			CssClass = "freeTextArea";
 		}
 
 		#endregion

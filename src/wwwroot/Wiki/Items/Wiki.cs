@@ -12,7 +12,7 @@ using N2.Integrity;
 
 namespace N2.Templates.Wiki.Items
 {
-    [Definition(SortOrder = 2000)]
+    [Definition(SortOrder = 460)]
     [RestrictParents(typeof(IStructuralPage))]
     public class Wiki : AbstractContentPage
     {

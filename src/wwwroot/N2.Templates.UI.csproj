@@ -63,7 +63,6 @@
     <Compile Include="Layouts\IBreadcrumb.cs" />
     <Compile Include="Layouts\Parts\Translation.cs" />
     <Compile Include="Obsolete\Global.cs" />
-    <Content Include="PlugIns\DisplayPage.cs" />
     <Compile Include="UI\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

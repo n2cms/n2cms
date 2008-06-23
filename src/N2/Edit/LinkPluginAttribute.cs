@@ -76,6 +76,12 @@ namespace N2.Edit
 			return a;
 		}
 
+        protected virtual void RegisterToolbarUrl(Control container, string clientID, string urlFormat)
+        {
+            string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, urlFormat);
+            container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
+        }
+
 		protected virtual HtmlAnchor AddAnchor(Control container)
 		{
 			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
@@ -100,12 +106,6 @@ namespace N2.Edit
 
 			container.Controls.Add(a);
 			return a;
-		}
-
-		protected virtual void RegisterToolbarUrl(Control container, string clientID, string urlFormat)
-		{
-			string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, urlFormat);
-			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
 		}
 	}
 }

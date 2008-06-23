@@ -139,7 +139,7 @@ namespace N2.Details
 		{
 			TextBox tb = CreateEditor();
             tb.ID = Name;
-            tb.CssClass = "textEditor";
+            tb.CssClass += " textEditor";
 			ModifyEditor(tb);
 			container.Controls.Add(tb);
 

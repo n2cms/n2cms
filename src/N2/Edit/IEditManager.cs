@@ -47,16 +47,6 @@ namespace N2.Edit
 		/// <returns>An url to the upload root.</returns>
 		string GetUploadFolderUrl();
 
-		///// <summary>Gets toolbar plugins for the edit mode.</summary>
-		///// <param name="user">The user whose permissions will filter return plugins.</param>
-		///// <returns>A list of toolbar plpugins.</returns>
-		//IList<ToolbarPluginAttribute> GetToolbarPlugIns(IPrincipal user);
-
-		///// <summary>Gets navigation plugins for the edit mode.</summary>
-		///// <param name="user">The user whose permissions will filter return plugins.</param>
-		///// <returns>A list of navigation plpugins.</returns>
-		//IList<NavigationPluginAttribute> GetNavigationPlugIns(IPrincipal user);
-
 		/// <summary>Gets edit mode plugins found in the environment sorted and filtered by the given user.</summary>
 		/// <typeparam name="T">The type of plugin to get.</typeparam>
 		/// <param name="user">The user that should be authorized for the plugin.</param>
@@ -88,10 +78,14 @@ namespace N2.Edit
 		/// <param name="user">The user that is performing the saving.</param>
 		ContentItem Save(IItemEditor itemEditor, IPrincipal user);
 
-		/// <summary>Gets the url to the edit interface.</summary>
+		/// <summary>Gets the url to the edit interface with a certain item selected.</summary>
 		/// <param name="selectedItem">The item to select in edit mode.</param>
 		/// <returns>The url to the edit interface.</returns>
-		string GetEditModeUrl(ContentItem selectedItem);
+		string GetEditInterfaceUrl(ContentItem selectedItem);
+
+        /// <summary>Gets the url to the edit interface.</summary>
+        /// <returns>The url to the edit interface.</returns>
+        string GetEditInterfaceUrl();
 
 		/// <summary>Gets the url to the select type of item to create.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>

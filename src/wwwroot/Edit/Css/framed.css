@@ -79,6 +79,7 @@ label
 #toolbar
 {
 	z-index:77;
+	white-space:nowrap;
 }
 #toolbar label
 {
@@ -145,12 +146,13 @@ ul
 
 
 /* NAVIGATCONTEXTMENU */
-#contextMenu { border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; min-width:75px; }
-#contextMenu a { display:block; padding:1px; white-space:nowrap; margin:1px; border:solid 1px #fff; }
+#contextMenu { min-width:75px; border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; }
+#contextMenu a { margin:1px; }
 #contextMenu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
-#contextMenu a img { margin-right:3px; }
-
-
+#contextMenu .command { display:block; padding:1px; white-space:nowrap; border:solid 1px #fff; }
+#contextMenu .command img { margin-right:3px; }
+#contextMenu .separator { border-bottom:solid 1px #dedad7; margin:0 1px;}
+#contextMenu .languages { display:block; width:75px; }
 
 /* NAVIGATIONTABLE */
 .path { display:block; }
@@ -174,7 +176,7 @@ a.title { white-space:nowrap; }
 /* tree */
 
 .tree { }
-	.tree a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px;}
+	.nav a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px;}
 	
 	.tree li, 
 	.tree ul { padding:0; margin:0; display:block; clear:both; padding-bottom:1px; }
@@ -319,3 +321,4 @@ a.title { white-space:nowrap; }
 }
 
 .date { white-space:nowrap;}
+

@@ -4,7 +4,7 @@
 	position:absolute;
 	top:40px;
 	right:10px;
-	width:200px;
+	width:220px;
 	background-color:White;
 	z-index:10;
 }
@@ -60,9 +60,13 @@
 	padding:10px;
 }
 
-textarea
+textarea.textEditor
 {
 	width:580px;
+}
+textarea.freeTextArea
+{
+	height:380px;
 }
 .itemEditor .editDetail
 {

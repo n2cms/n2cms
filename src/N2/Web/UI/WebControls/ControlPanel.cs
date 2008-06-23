@@ -43,6 +43,12 @@ namespace N2.Web.UI.WebControls
 
 		#region Properties
 
+        public bool EnableEditInterfaceIntegration
+        {
+            get { return (bool)(ViewState["EnableEditInterfaceIntegration"] ?? true); }
+            set { ViewState["EnableEditInterfaceIntegration"] = value; }
+        }
+
 		/// <summary>Gets or sets the url to a style sheet added to the page when editing.</summary>
 		public string StyleSheetUrl
 		{
@@ -206,16 +212,19 @@ namespace N2.Web.UI.WebControls
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			ControlPanelState state = GetState();
-			if (state != ControlPanelState.Hidden)
-			{
-				AddControlPanelControls(state);
-			}
-			else
-			{
-				CheckAndAppendTemplate(HiddenTemplate, this);
-			}
+            EnsureChildControls();
 		}
+
+        protected override void CreateChildControls()
+        {
+            ControlPanelState state = GetState();
+            if (state != ControlPanelState.Hidden)
+                AddControlPanelControls(state);
+            else
+                CheckAndAppendTemplate(HiddenTemplate, this);
+
+            base.CreateChildControls();
+        }
 
 		protected void CheckAndAppendTemplate(ITemplate template, Control container)
 		{
@@ -228,6 +237,10 @@ namespace N2.Web.UI.WebControls
 			}
 		}
 
+        string scriptFormat = @"if(window.top != window && window.top.n2){{
+    window.top.n2.setupToolbar('{0}');
+    window.top.n2.refreshNavigation('{1}');
+}}";
 		protected virtual void AddControlPanelControls(ControlPanelState state)
 		{
 			if (state == ControlPanelState.Visible)
@@ -235,6 +248,13 @@ namespace N2.Web.UI.WebControls
 				CheckAndAppendTemplate(VisibleHeaderTemplate, this);
 				AddEditButtons();
 				CheckAndAppendTemplate(VisibleFooterTemplate, this);
+
+                if (EnableEditInterfaceIntegration && Page.Request.UrlReferrer != null && !OriginatesFromEdit(Page.Request.UrlReferrer.PathAndQuery))
+                {
+                    string url = N2.Context.Current.EditManager.GetNavigationUrl(CurrentItem);
+                    string script = string.Format(scriptFormat, CurrentItem.Path, url);
+                    Page.ClientScript.RegisterStartupScript(typeof(ControlPanel), "updateNavigation", script, true);
+                }
 			}
 			else if (state == ControlPanelState.Editing)
 			{
@@ -273,7 +293,6 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddDeleteButton()
 		{
 			hlDelete.NavigateUrl = Engine.EditManager.GetDeleteUrl(CurrentItem);
-
 			hlDelete.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/delete.gif"), DeleteText);
 			hlDelete.CssClass = "delete";
 			Controls.Add(hlDelete);
@@ -313,7 +332,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddEditModeButton()
 		{
-			hlEditMode.NavigateUrl = Engine.EditManager.GetEditModeUrl(CurrentItem);
+			hlEditMode.NavigateUrl = Engine.EditManager.GetEditInterfaceUrl(CurrentItem);
 			hlEditMode.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/sitemap_color.gif"), EditModeText);
 			hlEditMode.Target = "_top";
 			hlEditMode.CssClass = "editMode";
@@ -391,6 +410,12 @@ namespace N2.Web.UI.WebControls
 		#endregion
 
 		#region Methods
+
+        protected bool OriginatesFromEdit(string referrerUrl)
+        {
+            string editUrl = N2.Context.Current.EditManager.GetEditInterfaceUrl();
+            return referrerUrl.StartsWith(editUrl, StringComparison.InvariantCultureIgnoreCase);
+        }
 
 		/// <summary>Gets the url for editing the page directly.</summary>
 		public virtual string GetQuickEditUrl(string editParameter)

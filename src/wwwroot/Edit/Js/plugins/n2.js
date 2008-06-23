@@ -112,8 +112,8 @@ frameManager.prototype = {
 	initFrames: function() {
 		$("#splitter").splitter({
 			type: 'v',
-			initA: true,	// use width of A (#leftPane) from styles
-			accessKey: '|'
+			initA: true	// use width of A (#leftPane) from styles
+			
 		});
 		var t = this;
 		$(document).ready(function(){
@@ -156,10 +156,12 @@ frameManager.prototype = {
 		}
 	},
 	refreshNavigation: function(navigationUrl){
-		document.getElementById('navigation').src = navigationUrl;
+		var nav = document.getElementById('navigation');
+		nav.src = navigationUrl;
 	},
 	refreshPreview: function(previewUrl){
-		document.getElementById('preview').src = previewUrl;
+		var prev = document.getElementById('preview');
+		prev.src = previewUrl;
 	},
 	refresh: function(navigationUrl, previewUrl){
 		this.refreshNavigation(navigationUrl);

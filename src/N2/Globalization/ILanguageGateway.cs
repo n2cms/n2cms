@@ -20,7 +20,12 @@ namespace N2.Globalization
 		/// <summary>Gets the language of an item.</summary>
 		/// <param name="item">The item whose language to get.</param>
 		/// <returns>The item's language or null.</returns>
-		ILanguage GetLanguage(ContentItem item);
+        ILanguage GetLanguage(ContentItem item);
+
+        /// <summary>Gets the language with a certain language code.</summary>
+        /// <param name="languageCode">The language code to find a matching language for.</param>
+        /// <returns>The language with the code or null.</returns>
+        ILanguage GetLanguage(string languageCode);
 
 		/// <summary>Gets an enumeration of translation options for edit mode.</summary>
 		/// <param name="item">The item beeing edited.</param>

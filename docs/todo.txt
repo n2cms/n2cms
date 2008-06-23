@@ -1,5 +1,3 @@
-- investigate strange problem selecting page translations when editing a page
-- select pages when navigating in preview
 - wiki
 - output cache invalidation support
 - error handling with email option

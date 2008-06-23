@@ -16,7 +16,7 @@ namespace N2.Edit.Navigation
 	{
 		public override void ProcessRequest(HttpContext context)
 		{
-            string target = context.Request["target"] ?? "preview";
+            string target = context.Request["target"] ?? Targets.Preview;
 
 			ContentItem selectedNode = GetSelectedItem(context.Request.QueryString);
 			

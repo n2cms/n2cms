@@ -15,14 +15,14 @@ namespace N2.Templates.UI.Items
 	/// <summary>
 	/// The initial page of the site.
 	/// </summary>
-	[Definition("Start Page", "StartPage", "A start page template. It displays a horizontal meny but no vertical menu.", "", 10, Installer = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage)]
+	[Definition("Start Page", "StartPage", "A start page template. It displays a horizontal meny but no vertical menu.", "", 440, Installer = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(RootPage), typeof(StartPage))]
 	[AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
 	[TabPanel("siteArea", "Site", 70)]
 	public class StartPage : AbstractStartPage, ILanguage
 	{
 		[FileAttachment]
-		[EditableImage("Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
+		[EditableImage("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string TopImage
 		{
 			get { return (string)(GetDetail("TopImage") ?? string.Empty); }
@@ -30,35 +30,35 @@ namespace N2.Templates.UI.Items
 		}
 
 		[FileAttachment]
-		[EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+		[EditableImage("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
 		{
 			get { return (string)(GetDetail("Image") ?? string.Empty); }
 			set { SetDetail("Image", value, string.Empty); }
 		}
 
-		[EditableTextBox("Footer Text", 80, ContainerName = "siteArea", TextMode = TextBoxMode.MultiLine, Rows = 4)]
+        [EditableTextBox("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 4)]
 		public virtual string FooterText
 		{
 			get { return (string)(GetDetail("FooterText") ?? string.Empty); }
 			set { SetDetail("FooterText", value, string.Empty); }
 		}
 
-		[N2.Details.EditableItem("Header", 100, ContainerName = "siteArea")]
+		[EditableItem("Header", 100, ContainerName = SiteArea)]
 		public virtual LayoutParts.Top Header
 		{
 			get { return (LayoutParts.Top)GetDetail("Header"); }
 			set { SetDetail("Header", value); }
 		}
 
-		[Details.ThemeSelector("Theme", 74, ContainerName = SiteArea)]
+        [Details.ThemeSelector("Theme", 74, ContainerName = LayoutArea)]
 		public override string Theme
 		{
 			get { return (string)(GetDetail("Theme") ?? string.Empty); }
 			set { SetDetail("Theme", value); }
 		}
 
-		[Details.LayoutSelector("Layout", 76, ContainerName = SiteArea)]
+        [Details.LayoutSelector("Layout", 76, ContainerName = LayoutArea)]
 		public override string Layout
 		{
 			get { return (string)GetDetail("Layout") ?? "~/Layouts/Top+SubMenu.Master"; }
@@ -91,7 +91,7 @@ namespace N2.Templates.UI.Items
 			}
 		}
 
-		[EditableLanguagesDropDown("Language", 100, ContainerName = "siteArea")]
+        [EditableLanguagesDropDown("Language", 100, ContainerName = MiscArea)]
 		public string LanguageCode
 		{
 			get { return (string)GetDetail("LanguageCode"); }

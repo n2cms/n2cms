@@ -3,6 +3,10 @@
 - globalization: 
 	- show items on other language branches
 	- associate translations
+- upsized free text editor
+- select pages when navigating in preview
+- separator
+- languages in right-click menu
 
 1.4
 - templates

@@ -45,7 +45,7 @@ namespace N2.Configuration
             set { base["editItemUrl"] = value; }
         }
 
-        [ConfigurationProperty("editInterfaceUrl", DefaultValue = "~/edit/default.aspx")]
+        [ConfigurationProperty("editInterfaceUrl", DefaultValue = "~/edit/")]
         public string EditInterfaceUrl
         {
             get { return (string)base["editInterfaceUrl"]; }

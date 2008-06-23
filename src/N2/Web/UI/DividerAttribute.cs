@@ -19,7 +19,7 @@ namespace N2.Web.UI
 
 		public override Control AddTo(Control container)
 		{
-			HR hr = new HR();
+			Hr hr = new Hr();
 			container.Controls.Add(hr);
 			return hr;
 		}

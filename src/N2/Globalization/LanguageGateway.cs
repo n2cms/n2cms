@@ -68,6 +68,22 @@ namespace N2.Globalization
 			return null;
 		}
 
+        /// <summary>Gets the language with a certain language code.</summary>
+        /// <param name="languageCode">The language code to find a matching language for.</param>
+        /// <returns>The language with the code or null.</returns>
+        public ILanguage GetLanguage(string languageCode)
+        {
+            if(languageCode == null) throw new ArgumentNullException("languageCode");
+
+            foreach (ILanguage language in GetAvailableLanguages())
+            {
+                if (languageCode.Equals(language.LanguageCode, StringComparison.InvariantCultureIgnoreCase))
+                    return language;
+            }
+
+            return null;
+        }
+
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
 			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(host.DefaultSite.RootItemID), RecursionDepth))

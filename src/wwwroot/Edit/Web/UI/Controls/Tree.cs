@@ -15,7 +15,7 @@ namespace N2.Edit.Web.UI.Controls
 	{
 		private ContentItem selectedtItem = null;
 		private ContentItem rootItem = null;
-		private string target = "preview";
+		private string target = Targets.Preview;
 		private bool preview = true;
 
 		public Tree()

@@ -13,12 +13,11 @@
     <n2:SlidingCurtain ID="sc" runat="server">
         <n2:DragDropControlPanel ID="cp" runat="server">
             <VisibleFooterTemplate>
-
                 <script type="text/javascript">
-						if(window.top != window && window.top.n2)
-							window.top.n2.select("Go");
+					if(window.top != window && window.top.n2){
+						window.top.n2.select("Go");
+					}
                 </script>
-
             </VisibleFooterTemplate>
         </n2:DragDropControlPanel>
     </n2:SlidingCurtain>

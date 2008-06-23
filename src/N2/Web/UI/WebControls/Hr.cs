@@ -5,7 +5,7 @@ namespace N2.Web.UI.WebControls
 	/// <summary>
 	/// A horizontal ruler.
 	/// </summary>
-	public class HR : Control
+	public class Hr : Control
 	{
 		public string CssClass
 		{
