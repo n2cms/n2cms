@@ -1,4 +1,6 @@
-- wiki
+- wiki part 2
+- idispatcher
+- queue of t
 - output cache invalidation support
 - error handling with email option
 - handle not-mapped types

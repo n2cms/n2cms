@@ -7,9 +7,8 @@ using N2.Edit;
 [assembly: NavigationLinkPlugin("Buzz out", "buzz", "~/alarm.aspx", "preview", "/icons/buzz.gif", 40)]
 namespace N2.Tests.Edit.Items
 {
-	[ToolbarPlugin("Worry we're coming", "panic", "/run.aspx", ToolbarArea.Preview, SortOrder=20)]
-	[NavigationLinkPlugin("Chill in", "chill", "~/freeze.aspx", "preview", "/icons/chill.gif", 30)]
-	[N2.Edit.PlugInAuthorizedRoles("ÜberEditor")]
+    [ToolbarPlugin("Worry we're coming", "panic", "/run.aspx", ToolbarArea.Preview, SortOrder = 20, AuthorizedRoles = new string[] { "ÜberEditor" })]
+	[NavigationLinkPlugin("Chill in", "chill", "~/freeze.aspx", "preview", "/icons/chill.gif", 30, AuthorizedRoles = new string[]{"ÜberEditor"})]
 	public class SeveralPlugins
 	{
 	}

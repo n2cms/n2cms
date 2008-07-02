@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 2007 Cristian Libardo
+/* Copyright (C) 2007-2008 Cristian Libardo
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -37,11 +37,11 @@ namespace N2
 		{
 			if (instance == null || forceRecreate)
 			{
+                Debug.WriteLine("Constructing " + DateTime.Now);
 				instance = CreateEngineInstance();
-				instance.Initialize();
+                Debug.WriteLine("Initializing " + DateTime.Now);
+                instance.Initialize();
 			}
-			else if (instance != null)
-				Trace.TraceInformation("Factory.Initialize: Instance already created");
 			return instance;
 		}
 
@@ -59,15 +59,15 @@ namespace N2
 		{
 			try
 			{
-				var cfg =
-					System.Web.Hosting.HostingEnvironment.IsHosted
-						? WebConfigurationManager.OpenWebConfiguration("~/")
-						: ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+				var cfg = System.Web.Hosting.HostingEnvironment.IsHosted
+				    ? WebConfigurationManager.OpenWebConfiguration("~/")
+				    : ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 				
 				return new Engine.ContentEngine(cfg);
 			}
 			catch(SecurityException)
 			{
+                Trace.WriteLine("Caught SecurityException, Reverting to MediumTrustEngine");
 				return new MediumTrust.Engine.MediumTrustEngine();
 			}
 		}
@@ -134,10 +134,7 @@ namespace N2
         /// <summary>Gets the current page. This is retrieved by the page querystring.</summary>
         public static ContentItem CurrentPage
         {
-            get
-            {
-				return Current.UrlParser.CurrentPage;
-            }
+            get { return Current.UrlParser.CurrentPage; }
         }
         #endregion
 	}

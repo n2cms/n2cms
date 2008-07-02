@@ -167,6 +167,8 @@
     <Compile Include="Globalization\Items\LanguageRoot.cs" />
     <Compile Include="Globalization\Items\TranslatedPage.cs" />
     <Compile Include="Globalization\GlobalizationTests.cs" />
+    <Compile Include="Globalization\Items\TranslatedPageWithAuthorization.cs" />
+    <Compile Include="Globalization\Items\TrashCan.cs" />
     <Compile Include="MediumTrust\EngineTests.cs" />
     <Compile Include="MediumTrust\MediumTrustPage.cs" />
     <Compile Include="NodeTests.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="Persistence\NH\PersisterTestsBase.cs" />
     <Compile Include="Persistence\NH\VersionManagerTests.cs" />
     <Compile Include="Plugin\PlugIn2.cs" />
+    <Compile Include="Plugin\PluginFinderTests.cs" />
     <Compile Include="Plugin\SomeException.cs" />
     <Compile Include="Plugin\ThrowingPlugin1.cs" />
     <Compile Include="Plugin\ThrowingPlugin2.cs" />

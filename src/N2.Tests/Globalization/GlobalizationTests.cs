@@ -475,6 +475,19 @@ namespace N2.Tests.Globalization
             EnumerableAssert.Contains(translations, italian2);
         }
 
+        [Test]
+        public void GetLanguage_DoesntGetLanguageRoots_WithNoLanguageCode()
+        {
+            english.LanguageCode = "";
+            engine.Persister.Save(english);
+
+            ContentItem page = CreateOneItem<Items.TranslatedPage>(0, "page", english);
+            engine.Persister.Save(page);
+
+            ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
+            Assert.That(gateway.GetLanguage(page), Is.Null);
+        }
+
         private class LanguageKeyScope : IDisposable
         {
             IWebContext context;

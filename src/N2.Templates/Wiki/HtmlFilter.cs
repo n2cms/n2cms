@@ -1,0 +1,61 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace N2.Templates.Wiki
+{
+    public class HtmlFilter
+    {
+        Regex tagExpression = new Regex(@"<(?<slash>/?)\s*?(?<tag>\w+)\s?(?<attr>[^>]*?)(?<close>/>|>|$)");
+        Regex attrExpression = new Regex(@"(?<attr>\S*?)=(?<val>(""[^""]*"")|('[^']*')|(\S*))");
+        Regex stripExpression = new Regex(@"<[^>]*>");
+
+        public HtmlFilter()
+        {
+            SafeTags = new string[]{
+                "b", "del", "i", "ins", "u", "font", "big", "small", "sub", 
+                "sup", "h1", "h2", "h3", "h4", "h5", "h6", "cite", "code", 
+                "em", "s", "strike", "strong", "tt", "var", "div", "center", 
+                "blockquote", "ol", "ul", "dl", "table", "caption", "pre", 
+                "ruby", "rt", "rb", "rp", "p", "span", "u", "br", "hr", "li", 
+                "dt", "dd", "td", "th", "tr", "a", "img"
+            };
+            SafeAttributes = new string[]{
+                "href", "title", "target", "rel", "src", "alt"
+            };
+        }
+        public string[] SafeTags { get; set; }
+        public string[] SafeAttributes { get; set; }
+
+        public string FilterHtml(string html)
+        {
+            return tagExpression.Replace(html, delegate(Match match)
+            {
+                string tag = match.Groups["tag"].Value.ToLower();
+                bool isSafe = Array.IndexOf(SafeTags, tag) >= 0;
+                if(!isSafe)
+                    return string.Empty;
+                string slash = match.Groups["slash"].Value;
+                string attributesPortion = match.Groups["attr"].Value;
+                string filteredAttributes = string.Empty;
+                foreach (Match attrMatch in attrExpression.Matches(attributesPortion))
+                {
+                    string attr = attrMatch.Groups["attr"].Value.ToLower();
+                    if (Array.IndexOf(SafeAttributes, attr) >= 0)
+                    {
+                        string value = attrMatch.Groups["val"].Value;
+                        filteredAttributes += " " + attr + "=" + value;
+                    }
+                }
+                string close = match.Groups["close"].Value;
+                return "<" + slash + tag + filteredAttributes + close;
+            });
+        }
+
+        public string StripHtml(string html)
+        {
+            return stripExpression.Replace(html, string.Empty);
+        }
+    }
+}

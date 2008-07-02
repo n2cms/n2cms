@@ -3,3 +3,6 @@
     <span class="date"><%= CurrentItem.Published %></span>
     <n2:EditableDisplay PropertyName="Text" runat="server" />
 </asp:Content>
+<asp:Content ContentPlaceHolderID="Sidebar" runat="server">
+    <n2:EditableDisplay PropertyName="SidebarText" runat="server" />
+</asp:Content>

@@ -17,7 +17,8 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 .dropZone .droppable-active { background:url(../img/shading_green.png); border:solid 2px #6c6; margin:4px 0; margin-right:-1px; }
 .dropZone .droppable-hover { background-color:#8e8; border-color:#8e8; padding:4px; margin:0; }
 
-.sc { background:transparent url(../img/SlidingCurtain_bg.png) no-repeat 100% 100%; padding:0 4px 5px 0; position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; }
+.sc { background:transparent url(../img/SlidingCurtain_bg.png) no-repeat 100% 100%; padding:0 4px 5px 0; position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; opacity:.5; }
+.opened {opacity:.9}
 .sc .scContent { width:168px; background-color:#fff; padding:10px 0 15px 0; }
 .controlPanel img { margin-right:2px; border:none; vertical-align:middle;}
 .controlPanel a,.controlPanel a:visited { color:#333;}

@@ -10,6 +10,7 @@ using N2.Edit;
 using N2.Definitions;
 using N2.Security;
 using N2.Configuration;
+using N2.Edit.Trash;
 
 namespace N2.Globalization
 {
@@ -62,7 +63,10 @@ namespace N2.Globalization
 			{
 				if (ancestor is ILanguage)
 				{
-					return ancestor as ILanguage;
+					ILanguage language = ancestor as ILanguage;
+                    if (string.IsNullOrEmpty(language.LanguageCode))
+                        continue;
+                    return language;
 				}
 			}
 			return null;
@@ -86,7 +90,7 @@ namespace N2.Globalization
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
-			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(host.DefaultSite.RootItemID), RecursionDepth))
+			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(host.DefaultSite.RootItemID), RecursionDepth, typeof(ITrashCan)))
 			{
 				if (!string.IsNullOrEmpty(language.LanguageCode))
 				{

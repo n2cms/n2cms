@@ -47,7 +47,7 @@ namespace N2.Tests.Edit
 			
 			persister = mocks.StrictMock<IPersister>();
 			versioner = mocks.StrictMock<IVersionManager>();
-			editManager = new EditManager(typeFinder, definitions, persister, versioner, null, null);
+			editManager = new EditManager(typeFinder, definitions, persister, versioner, null, null, null);
 			editManager.EnableVersioning = true;
 		}
 		
@@ -379,83 +379,6 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void CanGetNavigationPlugIns()
-		{
-			IEnumerable<NavigationPluginAttribute> plugIns = editManager.GetPlugins<NavigationPluginAttribute>();
-			EnumerableAssert.Count(2, plugIns);
-		}
-
-		[Test]
-		public void CanGet_SortNavigation_PlugIns()
-		{
-			IList<NavigationPluginAttribute> plugIns = new List<NavigationPluginAttribute>(editManager.GetPlugins<NavigationPluginAttribute>());
-			EnumerableAssert.Count(2, plugIns);
-
-			NavigationPluginAttribute plugin1 = plugIns[0];
-			Assert.AreEqual("chill", plugin1.Name);
-			Assert.AreEqual("Chill in", plugin1.Title);
-
-			NavigationPluginAttribute plugin2 = plugIns[1];
-			Assert.AreEqual("buzz", plugin2.Name);
-			Assert.AreEqual("Buzz out", plugin2.Title);
-		}
-
-		[Test]
-		public void Doesnt_GetNavigationPlugins_ThatRequires_SpecialAuthorization()
-		{
-			IPrincipal user = CreateUser("Joe", "Carpenter");
-			IEnumerable<NavigationPluginAttribute> plugIns = editManager.GetPlugins<NavigationPluginAttribute>(user);
-			EnumerableAssert.Count(1, plugIns);
-		}
-
-		[Test]
-		public void CanGet_Restricted_NavigationPlugins_IfAuthorized()
-		{
-			IPrincipal user = CreateUser("Bill", "ÜberEditor");
-			IEnumerable<NavigationPluginAttribute> plugIns = editManager.GetPlugins<NavigationPluginAttribute>(user);
-			EnumerableAssert.Count(2, plugIns);
-		}
-
-
-		[Test]
-		public void CanGet_ToolbarPlugIns()
-		{
-			IEnumerable<ToolbarPluginAttribute> plugIns = editManager.GetPlugins<ToolbarPluginAttribute>();
-			EnumerableAssert.Count(2, plugIns);
-		}
-
-		[Test]
-		public void CanGetSortToolbarPlugIns()
-		{
-			IList<ToolbarPluginAttribute> plugIns = new List<ToolbarPluginAttribute>(editManager.GetPlugins<ToolbarPluginAttribute>());
-			EnumerableAssert.Count(2, plugIns);
-
-			ToolbarPluginAttribute plugin1 = plugIns[0];
-			Assert.AreEqual("peace", plugin1.Name);
-			Assert.AreEqual("Don't worry be happy", plugin1.Title);
-
-			ToolbarPluginAttribute plugin2 = plugIns[1];
-			Assert.AreEqual("panic", plugin2.Name);
-			Assert.AreEqual("Worry we're coming", plugin2.Title);
-		}
-
-		[Test]
-		public void Doesnt_GetToolbarPlugins_ThatRequires_SpecialAuthorization()
-		{
-			IPrincipal user = CreateUser("Joe", "Carpenter");
-			IEnumerable<ToolbarPluginAttribute> plugIns = editManager.GetPlugins<ToolbarPluginAttribute>(user);
-			EnumerableAssert.Count(1, plugIns);
-		}
-
-		[Test]
-		public void CanGet_AllRestrictedToolbarPlugins_IfAuthorized()
-		{
-			IPrincipal user = CreateUser("Bill", "ÜberEditor");
-			IEnumerable<ToolbarPluginAttribute> plugIns = editManager.GetPlugins<ToolbarPluginAttribute>(user);
-			EnumerableAssert.Count(2, plugIns);
-		}
-
-		[Test]
 		public void AddingEditor_InvokesEvent()
 		{
 			Control editorContainer = new Control();
@@ -737,29 +660,6 @@ namespace N2.Tests.Edit
 			Assert.AreEqual("three", item.MyProperty2);
 			Assert.AreEqual("rock", item.MyProperty3);
 			Assert.IsTrue(item.MyProperty4);
-		}
-
-		private delegate bool IsInRole(string role);
-
-		private IPrincipal CreateUser(string name, params string[] roles)
-		{
-			IPrincipal user = mocks.StrictMock<IPrincipal>();
-			IIdentity identity = mocks.StrictMock<IIdentity>();
-
-			Expect.On(user).Call(user.Identity).Return(identity).Repeat.AtLeastOnce();
-			Expect.On(user)
-				.Call(user.IsInRole(null))
-				.IgnoreArguments()
-				.Repeat.Any()
-				.Do(new IsInRole(delegate(string role)
-									{
-										return Array.IndexOf<string>(roles, role) >= 0;
-									}));
-			mocks.Replay(user);
-
-			Expect.On(identity).Call(identity.Name).Return(name).Repeat.AtLeastOnce();
-			mocks.Replay(identity);
-			return user;
 		}
 	}
 }

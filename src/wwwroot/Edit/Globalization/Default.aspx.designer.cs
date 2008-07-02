@@ -50,6 +50,33 @@ namespace N2.Edit.Globalization {
         protected global::System.Web.UI.WebControls.CustomValidator cvAssociate;
         
         /// <summary>
+        /// cvEnable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvEnable;
+        
+        /// <summary>
+        /// cvLanguageRoots control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvLanguageRoots;
+        
+        /// <summary>
+        /// pnlLanguages control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlLanguages;
+        
+        /// <summary>
         /// btnAssociate control.
         /// </summary>
         /// <remarks>
@@ -57,5 +84,14 @@ namespace N2.Edit.Globalization {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAssociate;
+        
+        /// <summary>
+        /// btnEnable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEnable;
     }
 }

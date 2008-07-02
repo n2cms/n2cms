@@ -17,6 +17,7 @@ namespace N2.Web
         private string path;
         private string query;
         private string fragment;
+
         public Url(Url other)
         {
             scheme = other.scheme;
@@ -25,7 +26,14 @@ namespace N2.Web
             query = other.query;
             fragment = other.fragment;
         }
-
+        public Url(string scheme, string authority, string path, string query, string fragment)
+        {
+            this.scheme = scheme;
+            this.authority = authority;
+            this.path = path;
+            this.query = query;
+            this.fragment = fragment;
+        }
         public Url(string url)
         {
             if (url != null)
@@ -194,7 +202,7 @@ namespace N2.Web
             Url clone = new Url(this);
             if (string.IsNullOrEmpty(query))
                 clone.query = keyValue;
-            else
+            else if(!string.IsNullOrEmpty(keyValue))
                 clone.query += "&amp;" + keyValue;
             return clone;
         }

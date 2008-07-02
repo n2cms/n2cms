@@ -200,7 +200,6 @@
     <Compile Include="Details\LinkDetail.cs" />
     <Compile Include="Definitions\NotAllowedParentException.cs" />
     <Compile Include="Edit\IEditManager.cs" />
-    <Compile Include="Edit\PlugInAuthorizedRolesAttribute.cs" />
     <Compile Include="Edit\Web\EditPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -260,6 +259,7 @@
     <EmbeddedResource Include="Engine\engine.castle.config" />
     <EmbeddedResource Include="Definitions\definitions.castle.config" />
     <None Include="ContentModel.cd" />
+    <EmbeddedResource Include="Plugin\plugin.castle.config" />
     <EmbeddedResource Include="Installation\installation.castle.config" />
     <EmbeddedResource Include="Globalization\globalization.castle.config" />
     <EmbeddedResource Include="Parts\parts.castle.config" />
@@ -296,6 +296,7 @@
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
+    <Compile Include="Plugin\IPlugin.cs" />
     <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
     <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
     <Compile Include="Edit\Targets.cs" />
@@ -373,6 +374,8 @@
     <Compile Include="Persistence\NH\ContentPersister.cs" />
     <Compile Include="Persistence\NH\SessionProvider.cs" />
     <Compile Include="Plugin\IAutoStart.cs" />
+    <Compile Include="Plugin\IPluginFinder.cs" />
+    <Compile Include="Plugin\PluginFinder.cs" />
     <Compile Include="Plugin\PluginInitializationException.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />

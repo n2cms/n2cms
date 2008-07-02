@@ -35,13 +35,15 @@ namespace N2
 {
     /// <summary>
     /// The base of N2 content items. All content pages and data items are 
-    /// derived from this item. During initialization the CMS looks for classes
-    /// deriving from <see cref="ContentItem"/> and makes them available for
+    /// derived from this item. During the initialization phase the CMS looks 
+    /// for classes deriving from <see cref="ContentItem"/> marked with the 
+    /// <see cref="DefinitionAttribute"/> and makes them available for
     /// editing and storage in the database.
     /// </summary>
     /// <example>
     /// // Since the class is inheriting <see cref="ContentItem"/> it's 
     /// // recognized by the CMS and made available for editing.
+    /// [Definition]
     /// public class MyPage : N2.ContentItem
     /// {
     ///		public override string TemplateUrl
@@ -50,6 +52,12 @@ namespace N2
     ///		}
     /// }
     /// </example>
+    /// <remarks>
+    /// Note that the class name (e.g. MyPage) is used as discriminator when
+    /// retrieving items from database storage. If you change the class name 
+    /// you should manually change the discriminator in the database or set the 
+    /// name of the definition attribute, e.g. [Definition("Title", "OldClassName")]
+    /// </remarks>
 	[Serializable, RestrictParents(typeof(ContentItem)), DebuggerDisplay("{Name} [{ID}]")]
 	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, IContainable, INode
     {
@@ -81,6 +89,7 @@ namespace N2
 		[Persistence.DoNotCopy]
 		private IDictionary<string, Details.DetailCollection> detailCollections = new Dictionary<string, Details.DetailCollection>();
 		private Web.IUrlParser urlParser;
+
         #endregion
 
         #region Constructor

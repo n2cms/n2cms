@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Diagnostics;
 using N2.Edit.Web;
+using N2.Plugin;
 
 namespace N2.Edit
 {
@@ -12,9 +13,8 @@ namespace N2.Edit
 	/// Classes extending this abstract class are collected and may be 
 	/// retrieved by user interfaces in the editing interface.
 	/// </summary>
-	public abstract class AdministrativePluginAttribute : Attribute, IComparable<AdministrativePluginAttribute>
+	public abstract class AdministrativePluginAttribute : Attribute, IComparable<IPlugin>, IPlugin
 	{
-		
 		private string[] authorizedRoles;
 		private bool enabled = true;
 		private string name;
@@ -71,11 +71,11 @@ namespace N2.Edit
 				return HttpUtility.UrlEncode(ep.SelectedItem.Path);
 			}
 			return HttpUtility.UrlEncode("/");
-		}
+        }
 
-		#region IComparable<EditingPlugInAttribute> Members
+        #region IComparable<IPlugin> Members
 
-		public int CompareTo(AdministrativePluginAttribute other)
+        public int CompareTo(IPlugin other)
 		{
 			if (SortOrder != other.SortOrder)
 				return SortOrder - other.SortOrder;

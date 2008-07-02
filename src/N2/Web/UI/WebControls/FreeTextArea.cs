@@ -42,7 +42,7 @@ namespace N2.Web.UI.WebControls
         elements : '{0}',
 		plugins : '{1}',
 	    content_css : '{2}',
-		theme : 'advanced',
+		theme : '{5}',
 		plugins : 'style,layer,table,advimage,advlink,iespell,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,inlinepopups',
 		theme_advanced_buttons1_add_before : '',
 		theme_advanced_buttons1_add : 'sup,|,print,fullscreen,|,search,replace,iespell',
@@ -83,7 +83,13 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return (string) ViewState["FileBrowserUrl"] ?? Utility.ToAbsolute("~/Edit/FileManagement/default.aspx"); }
 			set { ViewState["FileBrowserUrl"] = value; }
-		}
+        }
+
+        public string Theme
+        {
+            get { return (string)ViewState["Theme"] ?? "advanced"; }
+            set { ViewState["Theme"] = value; }
+        }
 
 		public string CssFile
 		{
@@ -117,7 +123,8 @@ namespace N2.Web.UI.WebControls
 			                              Plugins,
 			                              CssFile,
 			                              PopupOptions,
-			                              FileBrowserUrl
+			                              FileBrowserUrl, // {4}
+                                          Theme
 				);
 			Page.ClientScript.RegisterClientScriptBlock(typeof (FreeTextArea), ClientID, script, true);
 		}

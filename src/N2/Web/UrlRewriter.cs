@@ -10,7 +10,7 @@ using N2.Web.UI;
 namespace N2.Web
 {
 	/// <summary>
-	/// Search crawler (and user) friendly url rewriter for N2 cms. The 
+	/// Search crawler (and user) friendly url rewriter for N2 CMS. The 
 	/// rewriter walks the tree structure using the page's names to find the 
 	/// appropriate name.
 	/// </summary>
@@ -34,16 +34,11 @@ namespace N2.Web
 		/// <param name="context">The context to perform the rewriting on.</param>
 		public virtual void RewriteRequest()
 		{
-			string requestedUrl = webContext.AbsolutePath;
 			ContentItem currentPage = webContext.CurrentPage;
 			if (!File.Exists(webContext.PhysicalPath) && currentPage != null)
 			{
-				string rewrittenUrl = currentPage.RewrittenUrl;
-
-				if (string.IsNullOrEmpty(webContext.Query))
-					webContext.RewritePath(rewrittenUrl);
-				else
-					webContext.RewritePath(rewrittenUrl + "&" + webContext.Query);
+				Url rewrittenUrl = currentPage.RewrittenUrl;
+                webContext.RewritePath(rewrittenUrl.AppendQuery(webContext.Query));
 			}
 		}
 

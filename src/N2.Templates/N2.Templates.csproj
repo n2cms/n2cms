@@ -49,7 +49,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +106,33 @@
     <Compile Include="Web\UI\WebControls\Box.cs" />
     <Compile Include="Web\UI\WebControls\Menu.cs" />
     <Compile Include="Web\UI\WebControls\Path.cs" />
+    <Compile Include="Wiki\Fragment.cs" />
+    <Compile Include="Wiki\HtmlFilter.cs" />
+    <Compile Include="Wiki\IFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\TemplateFragmenter.cs" />
+    <Compile Include="Wiki\IRenderer.cs" />
+    <Compile Include="Wiki\Fragmenters\UserInfoFragmenter.cs" />
+    <Compile Include="Wiki\IArticle.cs" />
+    <Compile Include="Wiki\ITemplateRenderer.cs" />
+    <Compile Include="Wiki\IWikiTemplate.cs" />
+    <Compile Include="Wiki\Renderers\ExternalLinkRenderer.cs" />
+    <Compile Include="Wiki\Renderers\InternalLinkRenderer.cs" />
+    <Compile Include="Wiki\Renderers\TemplateRenderer.cs" />
+    <Compile Include="Wiki\Renderers\TextRenderer.cs" />
+    <Compile Include="Wiki\Renderers\UserInfoRenderer.cs" />
+    <Compile Include="Wiki\RenderingContext.cs" />
+    <Compile Include="Wiki\Web\WikiUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\WikiInitializer.cs" />
+    <Compile Include="Wiki\WikiRenderer.cs" />
+    <Compile Include="Wiki\WikiTemplateAttribute.cs" />
+    <Compile Include="Wiki\WikiTextAttribute.cs" />
+    <Compile Include="Wiki\Fragmenters\ExternalLinkFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\AbstractFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\InternalLinkFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\TextFragmenter.cs" />
+    <Compile Include="Wiki\WikiParser.cs" />
     <Compile Include="Zones.cs" />
   </ItemGroup>
   <ItemGroup>

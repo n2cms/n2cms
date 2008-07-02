@@ -7,10 +7,11 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Collections.Generic;
 using N2.Edit.Web;
 using N2.Globalization;
-using System.Collections.Generic;
 using N2.Collections;
+using N2.Configuration;
 
 namespace N2.Edit.Globalization
 {
@@ -24,19 +25,29 @@ namespace N2.Edit.Globalization
 		{
             hlCancel.NavigateUrl = SelectedNode.PreviewUrl;
 
+            Initialize();
+			base.OnInit(e);
+		}
+
+        private void Initialize()
+        {
             gateway = Engine.Resolve<ILanguageGateway>();
 
             cvGlobalizationDisabled.IsValid = gateway.Enabled;
             bool isGlobalized = gateway.GetLanguage(SelectedItem) != null;
             cvOutsideGlobalization.IsValid = isGlobalized;
+            btnEnable.Visible = !gateway.Enabled;
 
             if (gateway.Enabled && isGlobalized)
             {
                 languages = gateway.GetAvailableLanguages();
                 DataBind();
             }
-			base.OnInit(e);
-		}
+            else
+            {
+                pnlLanguages.Visible = false;
+            }
+        }
 
 		protected IEnumerable<ContentItem> GetChildren(bool getPages)
 		{
@@ -87,6 +98,27 @@ namespace N2.Edit.Globalization
             gateway.Associate(items);
 
             DataBind();
+        }
+
+        protected void btnEnable_Click(object sender, EventArgs args)
+        {
+            try
+            {
+                System.Configuration.Configuration cfg = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
+
+                N2.Configuration.GlobalizationSection globalization = (GlobalizationSection)cfg.GetSection("n2/globalization");
+                globalization.Enabled = true;
+
+                cfg.Save();
+
+                cvLanguageRoots.IsValid = Engine.Resolve<ILanguageGateway>().GetAvailableLanguages().GetEnumerator().MoveNext();
+                Initialize();
+            }
+            catch (Exception ex)
+            {
+                Trace.Write(ex.ToString());
+                cvEnable.IsValid = false;
+            }
         }
 
         private List<ContentItem> GetSelectedItems()

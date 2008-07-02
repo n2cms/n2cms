@@ -16,6 +16,7 @@ using N2.Collections;
 using N2.Edit.Settings;
 using N2.Security;
 using N2.Configuration;
+using N2.Plugin;
 
 namespace N2.Edit
 {
@@ -29,8 +30,8 @@ namespace N2.Edit
 		private readonly IPersister persister;
 		private readonly IVersionManager versioner;
 		private readonly NavigationSettings settings;
-		private readonly ISecurityManager securityManager;
-		private IList<AdministrativePluginAttribute> plugins = null;
+        private readonly IPluginFinder pluginFinder;
+        private readonly ISecurityManager securityManager;
         private string editTreeUrl = "Navigation/Tree.aspx";
 		private string editTreeUrlFormat = "{1}?selected={0}";
 		private string editPreviewUrlFormat = "{0}";
@@ -42,19 +43,18 @@ namespace N2.Edit
         private string deleteItemUrl = "~/edit/delete.aspx";
         private bool enableVersioning = true;
 
-		public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings)
+		public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
 			this.versioner = versioner;
 			this.settings = settings;
 			this.securityManager = securityManager;
-
-			this.plugins = FindPlugins(typeFinder);
+            this.pluginFinder = pluginFinder;
 		}
 
-        public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings, EditSection config)
-            : this(typeFinder, definitions, persister, versioner, securityManager, settings)
+        public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings, IPluginFinder pluginFinder, EditSection config)
+            : this(typeFinder, definitions, persister, versioner, securityManager, pluginFinder, settings)
         {
             EditTreeUrl = config.EditTreeUrl;
             EditPreviewUrlFormat = config.EditPreviewUrlFormat;
@@ -138,26 +138,6 @@ namespace N2.Edit
 		#endregion
 
 		#region Methods
-        /// <summary>Finds and sorts plugin defined in known assemblies.</summary>
-        /// <returns>A sorted list of plugins.</returns>
-        protected virtual IList<AdministrativePluginAttribute> FindPlugins(ITypeFinder typeFinder)
-        {
-            List<AdministrativePluginAttribute> foundPlugins = new List<AdministrativePluginAttribute>();
-            foreach (Assembly assembly in typeFinder.GetAssemblies())
-            {
-                foreach (AdministrativePluginAttribute plugin in FindPluginsIn(assembly))
-                {
-                    if (plugin.Name == null)
-                        throw new N2Exception("A plugin in the assembly '{0}' has no name. The plugin is likely defined on the assembly ([assembly:...]). Try assigning the plugin a unique name and recompiling.", assembly.FullName);
-                    else if (foundPlugins.Contains(plugin))
-                        throw new N2Exception("A plugin of the type '{0}' named '{1}' is already defined, assembly: {2}", plugin.GetType().FullName, plugin.Name, assembly.FullName);
-
-                    foundPlugins.Add(plugin);
-                }
-            }
-            foundPlugins.Sort();
-            return foundPlugins;
-        }
 
 		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
@@ -527,40 +507,7 @@ namespace N2.Edit
 		public IEnumerable<T> GetPlugins<T>(IPrincipal user)
 			where T: AdministrativePluginAttribute
 		{
-			foreach (T plugin in GetPlugins<T>())
-				if (plugin.IsAuthorized(user))
-					yield return plugin;
-		}
-
-		public IEnumerable<T> GetPlugins<T>()
-			where T : AdministrativePluginAttribute
-		{
-			foreach (AdministrativePluginAttribute plugin in plugins)
-				if (plugin is T)
-					yield return plugin as T;
-		}
-
-		private IEnumerable<AdministrativePluginAttribute> FindPluginsIn(Assembly a)
-		{
-			foreach (AdministrativePluginAttribute attribute in a.GetCustomAttributes(typeof(AdministrativePluginAttribute), false))
-			{
-				yield return attribute;
-			}
-			foreach (Type t in a.GetTypes())
-			{
-				foreach (AdministrativePluginAttribute attribute in t.GetCustomAttributes(typeof(AdministrativePluginAttribute), false))
-				{
-					if (attribute.Name == null)
-						attribute.Name = t.Name;
-
-					foreach (PlugInAuthorizedRolesAttribute rolesAttribute in t.GetCustomAttributes(typeof(PlugInAuthorizedRolesAttribute), false))
-					{
-						attribute.AuthorizedRoles = rolesAttribute.Roles;
-					}
-
-					yield return attribute;
-				}
-			}
+            return pluginFinder.GetPlugins<T>(user);
 		}
 
 		public ItemFilter GetEditorFilter(IPrincipal user)

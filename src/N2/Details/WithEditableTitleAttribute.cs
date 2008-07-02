@@ -59,13 +59,7 @@ namespace N2.Details
 			titleTextBox.Text = item.Title;
 
 			if (Focus)
-				titleTextBox.PreRender += FocusSender;
-		}
-
-    	static void FocusSender(object sender, EventArgs e)
-		{
-			TextBox titleTextBox = (TextBox)sender;
-			titleTextBox.Focus();
+                titleTextBox.PreRender += delegate { titleTextBox.Focus(); };
 		}
 
 		protected override Control AddEditor(Control container)

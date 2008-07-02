@@ -14,7 +14,36 @@ namespace N2.Templates.Wiki.Items
 {
     [Definition]
     [RestrictParents(typeof(Wiki))]
-    public class WikiArticle : AbstractContentPage
+    public class WikiArticle : AbstractContentPage, IArticle
     {
+        public WikiArticle()
+        {
+            Visible = false;
+        }
+
+        public string Action { get; set; }
+
+        [WikiText("Wiki", 100, ContainerName = Tabs.Content)]
+        public override string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
+        public override string TemplateUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Action))
+                    return base.TemplateUrl;
+                else
+                    throw new NotImplementedException();
+            }
+        }
+
+        public virtual ContentItem WikiRoot
+        {
+            get { return this.Parent; }
+        }
     }
 }

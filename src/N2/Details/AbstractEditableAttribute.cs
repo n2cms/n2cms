@@ -6,6 +6,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Security;
+using N2.Engine;
 
 namespace N2.Details
 {
@@ -16,7 +17,6 @@ namespace N2.Details
 	/// </summary>
 	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable
 	{
-		#region Fields
 		private string[] authorizedRoles;
 		private string containerName = null;
 		private string name;
@@ -32,8 +32,7 @@ namespace N2.Details
 		private string helpTitle;
 		private string helpText;
 		private string localizationClassKey = "Editables";
-
-		#endregion
+        private IEngine engine = null;
 
 		#region Properties
 
@@ -86,6 +85,13 @@ namespace N2.Details
 			set { validationText = value; }
 		}
 
+        /// <summary>Gets the current Content Engine.</summary>
+        /// <remarks>Note that a setter is made available for testing purposes only and there shouldn't be any need to use it. It's also important not to call this property from the constructor.</remarks>
+        protected virtual IEngine Engine
+        {
+            get { return engine ?? N2.Context.Current; }
+            set { engine = value; }
+        }
 		#endregion
 
 		#region Constructors

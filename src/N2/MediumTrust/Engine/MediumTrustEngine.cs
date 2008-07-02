@@ -93,7 +93,8 @@ namespace N2.MediumTrust.Engine
             ISecurityEnforcer securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
             IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(persister, itemRepository));
 			NavigationSettings settings = AddComponentInstance<NavigationSettings>(new NavigationSettings(webContext));
-            editManager = AddComponentInstance<IEditManager>(new EditManager(typeFinder, definitions, persister, versioner, securityManager, settings));
+            IPluginFinder pluginFinder = new PluginFinder(typeFinder);
+            editManager = AddComponentInstance<IEditManager>(new EditManager(typeFinder, definitions, persister, versioner, securityManager, pluginFinder, settings));
             integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
             IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
             rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext));
