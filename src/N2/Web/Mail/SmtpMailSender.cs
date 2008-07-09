@@ -4,7 +4,7 @@ using System.Text;
 using System.Net.Mail;
 using System.Net;
 
-namespace N2.Templates.Services
+namespace N2.Web.Mail
 {
 	public abstract class SmtpMailSender : IMailSender
 	{
@@ -24,9 +24,13 @@ namespace N2.Templates.Services
 
 		protected SmtpClient CreateSmtpClient(string host, int port, string user, string password)
 		{
-			if (string.IsNullOrEmpty(host)) throw new ArgumentNullException("host");
+            SmtpClient client;
 
-			SmtpClient client = new SmtpClient(host, port);
+            if (string.IsNullOrEmpty(host))
+                client = new SmtpClient();
+            else
+                client = new SmtpClient(host, port);
+
 			if (!string.IsNullOrEmpty(user))
 			{
 				client.Credentials = new NetworkCredential(user, password);

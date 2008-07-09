@@ -92,7 +92,7 @@ body { margin:0; background-color:#cce5a2; }
 .columns .right { float:right; width:245px; }
 
 /* drag&drop */
-.dragDrop .secondary .uc { margin-bottom:0; border:solid 1px red}
+.dragDrop .secondary .uc { margin-bottom:0; }
 .dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
 .dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
 

@@ -359,9 +359,9 @@ namespace N2.Persistence.NH.Finder
 
 		public IList<T> Select<T>() where T : ContentItem
 		{
-			ItemList<T> items = new ItemList<T>(
-				CreateQuery().Enumerable<T>(),
-				Filters ?? new ItemFilter[0]);
+            ItemList<T> items = new ItemList<T>(
+                CreateQuery().Enumerable<T>(), 
+                new CompositeFilter(Filters ?? new ItemFilter[0]));
 
 			if (SortExpression != null)
 				items.Sort(SortExpression);

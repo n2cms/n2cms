@@ -11,7 +11,7 @@ namespace N2.Web
     	event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
 		/// <summary>Gets the default file extension. The default extension should be something that is handled by the .net isapi such as '.aspx'.</summary>
-		string DefaultExtension { get; }
+		string Extension { get; }
 
 		/// <summary>Gets the current start page.</summary>
 		ContentItem StartPage { get; }

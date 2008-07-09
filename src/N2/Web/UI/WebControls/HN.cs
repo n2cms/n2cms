@@ -5,14 +5,14 @@ using System.Web.UI;
 
 namespace N2.Web.UI.WebControls
 {
-	public class H1 : HN { }
-	public class H2 : HN { protected override int DefaultLevel { get { return 2; } } }
-	public class H3 : HN { protected override int DefaultLevel { get { return 3; } } }
-	public class H4 : HN { protected override int DefaultLevel { get { return 4; } } }
-	public class H5 : HN { protected override int DefaultLevel { get { return 5; } } }
-	public class H6 : HN { protected override int DefaultLevel { get { return 6; } } }
+	public class H1 : Hn { }
+	public class H2 : Hn { protected override int DefaultLevel { get { return 2; } } }
+	public class H3 : Hn { protected override int DefaultLevel { get { return 3; } } }
+	public class H4 : Hn { protected override int DefaultLevel { get { return 4; } } }
+	public class H5 : Hn { protected override int DefaultLevel { get { return 5; } } }
+	public class H6 : Hn { protected override int DefaultLevel { get { return 6; } } }
 
-	public class HN : Control, ITextControl
+	public class Hn : Control, ITextControl
 	{
 		public int Level
 		{

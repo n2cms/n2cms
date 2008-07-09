@@ -97,6 +97,11 @@ namespace N2.Edit.Install
 			}
 		}
 
+        protected override void OnError(EventArgs e)
+        {
+            errorLabel.Text = FormatException(Server.GetLastError());
+        }
+
 		private void LoadExistingExports(RadioButtonList rbl)
 		{
 			string dir = Server.MapPath("~/App_Data");
@@ -402,9 +407,16 @@ namespace N2.Edit.Install
 			}
 			catch (T ex)
 			{
-				errorLabel.Text = "<b>" + ex.Message + "</b>" + ex.StackTrace;
+                errorLabel.Text = FormatException(ex);
 				return ex;
 			}
 		}
+
+        private static string FormatException(Exception ex)
+        {
+            if (ex == null)
+                return "Unknown error";
+            return "<b>" + ex.Message + "</b>" + ex.StackTrace;
+        }
 	}
 }

@@ -22,7 +22,7 @@ namespace N2.Tests.Web
 			base.SetUp();
 			persister = mocks.Stub<IPersister>();
 			parser = mocks.StrictMock<IUrlParser>();
-			Expect.On(parser).Call(parser.DefaultExtension).Return(".aspx").Repeat.Any();
+			Expect.On(parser).Call(parser.Extension).Return(".aspx").Repeat.Any();
 		}
 
 		[Test]
@@ -55,11 +55,11 @@ namespace N2.Tests.Web
 
 			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.CurrentPage).Return(two).Repeat.Any();
-            Expect.On(context).Call(context.Query).Return("happy=true&amp;flip=feet").Repeat.Any();
+            Expect.On(context).Call(context.Query).Return("happy=true&flip=feet").Repeat.Any();
 			Expect.On(context).Call(context.AbsolutePath).Return("/one/two.aspx").Repeat.Any();
 			Expect.On(context).Call(context.RawUrl).Return("/one/two.aspx").Repeat.Any();
 			Expect.On(context).Call(context.PhysicalPath).Return(AppDomain.CurrentDomain.BaseDirectory + "\\one\\two.aspx").Repeat.Any();
-            context.RewritePath("/default.aspx?page=3&amp;happy=true&amp;flip=feet");
+            context.RewritePath("/default.aspx?page=3&happy=true&flip=feet");
 			LastCall.Repeat.Once();
 			mocks.ReplayAll();
 

@@ -12,24 +12,26 @@ using System.Text.RegularExpressions;
 
 namespace N2.Templates.Wiki.UI
 {
-    public partial class SubmitArticle : Templates.Web.UI.TemplatePage<Items.Wiki>
+    public partial class SubmitArticle : WikiTemplatePage
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
-
+            base.OnInit(e);
         }
 
-        protected void Submit_Click(object sender, EventArgs args)
-        {
-            HtmlFilter filter = Engine.Resolve<HtmlFilter>();
-            Items.WikiArticle article = Engine.Definitions.CreateInstance<Items.WikiArticle>(CurrentPage);
-            string title = filter.StripHtml(txtTitle.Text);
-            article.Title = title;
-            article.Name = Regex.Replace(title, "[ ?&:<>*/]*", "-");
-            article.Text = filter.FilterHtml(txtText.Text);
-            Engine.Persister.Save(article);
+        //protected void Submit_Click(object sender, EventArgs args)
+        //{
+        //    if (!IsAuthorized)
+        //        return;
 
-            Response.Redirect(article.Url);
-        }
+        //    HtmlFilter filter = Engine.Resolve<HtmlFilter>();
+        //    Items.WikiArticle article = Engine.Definitions.CreateInstance<Items.WikiArticle>(CurrentPage);
+        //    article.Title = filter.StripHtml(CurrentPage.ActionParameter);
+        //    article.Name = filter.CleanUrl(CurrentPage.ActionParameter);
+        //    article.Text = filter.FilterHtml(txtText.Text);
+        //    Engine.Persister.Save(article);
+
+        //    Response.Redirect(article.Url);
+        //}
     }
 }

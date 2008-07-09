@@ -32,20 +32,18 @@ namespace N2.Collections
 	/// <typeparam name="T">The type of item to list.</typeparam>
 	public class ItemList<T> : List<T>, IHierarchicalEnumerable where T : ContentItem
 	{
-		#region Constructors
+        #region Constructors
 
-		/// <summary>Initializes an empty instance of the ItemList class.</summary>
-		public ItemList()
-		{
-		}
+        /// <summary>Initializes an empty instance of the ItemList class.</summary>
+        public ItemList()
+        {
+        }
 
-		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
-		/// <param name="items">The gross enumeration of items to initialize with.</param>
-		/// <param name="filters">The filters that should be applied to the gross collection.</param>
-		public ItemList(IEnumerable<T> items, params ItemFilter[] filters)
-		{
-			AddRange(items, filters);
-		}
+        /// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
+        public ItemList(IEnumerable<T> items)
+            : base(items)
+        {
+        }
 
 		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
 		/// <param name="items">The full enumeration of items to initialize with.</param>
@@ -55,13 +53,13 @@ namespace N2.Collections
 			AddRange(items, filters);
 		}
 
-		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
-		/// <param name="items">The full enumeration of items to initialize with.</param>
-		/// <param name="filters">The filters that should be applied to the full collection.</param>
-		public ItemList(IEnumerable<T> items, IEnumerable<ItemFilter> filters)
-		{
-			AddRange(items, filters);
-		}
+        ///// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
+        ///// <param name="items">The full enumeration of items to initialize with.</param>
+        ///// <param name="filters">The filters that should be applied to the full collection.</param>
+        //public ItemList(IEnumerable<T> items, IEnumerable<ItemFilter> filters)
+        //{
+        //    AddRange(items, filters);
+        //}
 
 		#endregion
 

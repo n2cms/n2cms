@@ -45,11 +45,11 @@ namespace N2.Templates.Wiki
 
         #region IRenderer Members
 
-        public Control AddTo(Control container, RenderingContext context)
+        public Control AddTo(Control container, ViewContext context)
         {
             Control template = container.Page.LoadControl(VirtualPath);
             if (template is IWikiTemplate)
-                (template as IWikiTemplate).WikiContext = context;
+                (template as IWikiTemplate).Viewed = context;
             container.Controls.Add(template);
             return template;
         }

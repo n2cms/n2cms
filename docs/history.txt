@@ -1,3 +1,4 @@
+- error handling with email option
 - format option on display property
 - fixed problem when using traditional castle section
 - globalization: 
@@ -9,7 +10,18 @@
 - languages in right-click menu
 - PlugInAuthorizedRolesAttribute removed 
 - plugins refactored
-- wiki part 1
+- refactored nh configuration builder
+- wiki part
+	- syntax
+	- fragmenters and renderes: external link, heading, internal link, template, text, userinfo
+	- wiki template plugins
+	- ui
+	- configurable authorization
+- configurable default extension
+- children of thrown items are expired
+- configurable cache support
+- output cache invalidation support
+- filters += pipes
 
 1.4
 - templates

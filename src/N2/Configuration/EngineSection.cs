@@ -49,11 +49,17 @@ namespace N2.Configuration
 			get { return (AssemblyCollection)base["assemblies"]; }
         }
 
-        ///// <summary>Types not to include when investigating the environment.</summary>
-        //[ConfigurationProperty("excludeTypes")]
-        //public TypeElementCollection ExcludeTypes
-        //{
-        //    get { return (TypeElementCollection)base["excludeTypes"]; }
-        //}
+        [ConfigurationProperty("extension", DefaultValue = ".aspx")]
+        public string Extension
+        {
+            get { return (string)base["extension"]; }
+            set { base["extension"] = value; }
+        }
+
+        [ConfigurationProperty("errors")]
+        public ErrorsElement Errors
+        {
+            get { return (ErrorsElement)base["errors"]; }
+        }
 	}
 }

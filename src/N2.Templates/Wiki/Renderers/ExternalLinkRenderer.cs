@@ -10,7 +10,7 @@ namespace N2.Templates.Wiki.Renderers
     {
         #region IRenderer Members
 
-        public Control AddTo(Control container, RenderingContext context)
+        public Control AddTo(Control container, ViewContext context)
         {
             string link = context.Fragment.Value.Trim('[', ']');
             HtmlAnchor a = new HtmlAnchor();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using NHibernate;
 
 namespace N2.Persistence.NH
 {
@@ -10,29 +11,33 @@ namespace N2.Persistence.NH
 
 		public NHTransaction(ISessionProvider sessionProvider)
 		{
-			transaction = sessionProvider.GetOpenedSession().BeginTransaction();
+            ISession session = sessionProvider.GetOpenedSession();
+			transaction = session.Transaction;
+            if (!transaction.IsActive)
+                transaction.Begin();
 		}
 
 		#region ITransaction Members
 
 		public void Commit()
 		{
-			transaction.Commit();
+            if(!transaction.WasCommitted && !transaction.WasRolledBack)
+			    transaction.Commit();
 		}
 
 		public void Rollback()
 		{
-			transaction.Rollback();
+            if (!transaction.WasCommitted && !transaction.WasRolledBack)
+                transaction.Rollback();
 		}
 
 		#endregion
 
 		#region IDisposable Members
 
-		public void Dispose()
+        void IDisposable.Dispose()
 		{
-			if (!transaction.WasCommitted && !transaction.WasRolledBack)
-				Rollback();
+			Rollback();
 			transaction.Dispose();
 		}
 

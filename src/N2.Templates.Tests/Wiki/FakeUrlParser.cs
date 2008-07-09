@@ -12,7 +12,7 @@ namespace N2.Templates.Tests.Wiki
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
-        public string DefaultExtension
+        public string Extension
         {
             get { throw new NotImplementedException(); }
         }

@@ -3,6 +3,7 @@ using N2.Integrity;
 using N2.Web.UI.WebControls;
 using N2.Web.UI;
 using N2.Templates.Items;
+using N2.Templates.Web.UI.WebControls;
 
 namespace N2.Templates.UI.Items
 {
@@ -15,7 +16,7 @@ namespace N2.Templates.UI.Items
 		WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
 	[TabPanel(Tabs.Advanced, "Advanced", 100)]
 	[RestrictParents(typeof(IStructuralPage))]
-	public class Redirect : AbstractPage, IStructuralPage
+	public class Redirect : AbstractPage, IStructuralPage, IBreadcrumbAppearance
 	{
 		public override string Url
 		{
@@ -45,5 +46,14 @@ namespace N2.Templates.UI.Items
 		{
 			get { return "~/Img/page_go.png"; }
 		}
-	}
+
+        #region IBreadcrumbAppearance Members
+
+        public bool VisibleInBreadcrumb
+        {
+            get { return false; }
+        }
+
+        #endregion
+    }
 }

@@ -56,6 +56,8 @@ namespace N2.MediumTrust.Engine
 		{
             HostSection hostConfiguration = (HostSection)AddConfigurationSection("n2/host");
             EngineSection engineConfiguration = (EngineSection)AddConfigurationSection("n2/engine");
+            if (engineConfiguration != null)
+                Url.DefaultExtension = engineConfiguration.Extension;
             DatabaseSection databaseConfiguration = (DatabaseSection)AddConfigurationSection("n2/database");
             AddConfigurationSection("n2/globalization");
             AddConfigurationSection("n2/edit");
@@ -98,7 +100,8 @@ namespace N2.MediumTrust.Engine
             integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
             IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
             rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext));
-            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider, webContext));
+            IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler());
+            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider, webContext, errorHandler));
             ItemXmlReader xmlReader = AddComponentInstance<ItemXmlReader>(new ItemXmlReader(definitions));
             Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
             ItemXmlWriter xmlWriter = AddComponentInstance<ItemXmlWriter>(new ItemXmlWriter(definitions, urlParser));

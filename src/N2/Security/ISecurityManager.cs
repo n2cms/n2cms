@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 using System.Web;
+using System.Collections.Generic;
 namespace N2.Security
 {
 	/// <summary>
@@ -35,5 +36,8 @@ namespace N2.Security
 
 		/// <summary>Gets or sets wether this security manager is enabled in the current scope. In a web application this is equivalent to a request.</summary>
 		bool ScopeEnabled { get; set; }
-	}
+
+        /// <summary>Finds out wether a user has one of the given accesses.</summary>
+        bool IsAuthorized(IPrincipal user, IEnumerable<string> roles);
+    }
 }

@@ -1,6 +1,9 @@
 using System.Web.UI;
 using System.Web.UI.Adapters;
 using System.Web.UI.HtmlControls;
+using N2.Web;
+using System;
+using System.Diagnostics;
 
 namespace N2.Templates.Web.Adapters
 {
@@ -32,7 +35,11 @@ namespace N2.Templates.Web.Adapters
 			foreach (string key in form.Attributes.Keys)
 				writer.WriteAttribute(key, form.Attributes[key]);
 
-			writer.WriteAttribute("action", Page.Request.RawUrl);
+            string url = Page.Request.QueryString["postback"];
+            if (string.IsNullOrEmpty(url))
+                writer.WriteAttribute("action", Page.Request.RawUrl);
+            else
+                writer.WriteAttribute("action", url);
 		}
 	}
 }

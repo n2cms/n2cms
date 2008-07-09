@@ -11,7 +11,7 @@ namespace N2.Templates.Wiki.Renderers
     {
         #region IControlRenderer Members
 
-        public Control AddTo(Control container, RenderingContext context)
+        public Control AddTo(Control container, ViewContext context)
         {
             Literal l = new Literal();
             l.Text = context.Fragment.Value;

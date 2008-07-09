@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 namespace N2.Serialization
 {
     /// <summary>
@@ -31,7 +33,7 @@ namespace N2.Serialization
 		public bool HasContents
 		{
 			get { return FileContents != null && FileContents.Length > 0; }
-		}
+        }
 
 		public byte[] FileContents
 		{
@@ -40,7 +42,7 @@ namespace N2.Serialization
 
 		public virtual void Import()
 		{
-			handler.Import(this);
-		}
+            handler.Import(this);
+        }
 	}
 }

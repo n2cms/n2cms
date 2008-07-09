@@ -23,12 +23,23 @@ namespace N2.Collections
 					items.RemoveAt(i);
 		}
 
+        /// <summary>Filters the supplied items according to the current filter type.</summary>
+        /// <param name="items">The initial item enumeration.</param>
+        /// <returns>The filtered item enumeration.</returns>
+        public virtual IEnumerable<T> Pipe<T>(IEnumerable<T> items)
+            where T : ContentItem
+        {
+            foreach (T item in items)
+                if (Match(item))
+                    yield return item;
+        }
+
 		/// <summary>Applies a filter on a list of items.</summary>
 		/// <param name="items">The items to filter.</param>
 		/// <param name="filter">The filter to apply.</param>
 		public static void Filter(IList<ContentItem> items, ItemFilter filter)
 		{
 			filter.Filter(items);
-		}
+        }
 	}
 }

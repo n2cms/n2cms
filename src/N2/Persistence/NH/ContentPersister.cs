@@ -49,9 +49,7 @@ namespace N2.Persistence.NH
             ContentItem item = itemRepository.Get(id);
             if (ItemLoaded != null)
             {
-                ItemEventArgs args = new ItemEventArgs(item);
-                ItemLoaded.Invoke(this, args);
-                return args.AffectedItem;
+                return Invoke(ItemLoaded, new ItemEventArgs(item)).AffectedItem; 
             }
             return item;
 		}
@@ -69,9 +67,7 @@ namespace N2.Persistence.NH
 		/// <param name="unsavedItem">Item to save</param>
 		public virtual void Save(ContentItem unsavedItem)
 		{
-			CancellableItemEventArgs args = new CancellableItemEventArgs(unsavedItem);
-			OnSaving(args);
-
+			CancellableItemEventArgs args = Invoke(ItemSaving, new CancellableItemEventArgs(unsavedItem));
 			if (!args.Cancel)
 			{
                 unsavedItem = args.AffectedItem;
@@ -96,7 +92,7 @@ namespace N2.Persistence.NH
 
 					transaction.Commit();
 				}
-				OnSaved(new ItemEventArgs(unsavedItem));
+                Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
 			}
 		}
 
@@ -112,30 +108,11 @@ namespace N2.Persistence.NH
 			}
 		}
 
-		#region Save Helper Methods
-
-		/// <summary>Invokes saving events and checks whether the operation should be performed.</summary>
-		protected virtual void OnSaving(CancellableItemEventArgs args)
-		{
-			if (ItemSaving != null && args.AffectedItem.VersionOf == null)
-				ItemSaving.Invoke(this, args);
-		}
-
-		/// <summary>Invokes the saved event.</summary>
-		protected virtual void OnSaved(ItemEventArgs args)
-		{
-			if (ItemSaved != null && args.AffectedItem.VersionOf == null)
-				ItemSaved.Invoke(this, args);
-		}
-
-		#endregion
-
 		/// <summary>Deletes an item an all sub-items</summary>
 		/// <param name="itemNoMore">The item to delete</param>
 		public void Delete(ContentItem itemNoMore)
 		{
-			CancellableItemEventArgs args = new CancellableItemEventArgs(itemNoMore);
-			OnDeleting(args);
+            CancellableItemEventArgs args = Invoke(ItemDeleting, new CancellableItemEventArgs(itemNoMore));
 			if (!args.Cancel)
 			{
                 itemNoMore = args.AffectedItem;
@@ -148,7 +125,7 @@ namespace N2.Persistence.NH
 
 					transaction.Commit();
 				}
-				OnDeleted(new ItemEventArgs(itemNoMore));
+                Invoke(ItemDeleted, new ItemEventArgs(itemNoMore)); 
 			}
 		}
 
@@ -187,20 +164,6 @@ namespace N2.Persistence.NH
 			}
 		}
 
-		/// <summary>Invokes deleting events and checks whether the operation should be performed.</summary>
-		protected virtual void OnDeleting(CancellableItemEventArgs args)
-		{
-			if (ItemDeleting != null && args.AffectedItem.VersionOf == null)
-				ItemDeleting.Invoke(this, args);
-		}
-
-		/// <summary>Invokes deleted events.</summary>
-		protected virtual void OnDeleted(ItemEventArgs args)
-		{
-			if (ItemDeleted != null && args.AffectedItem.VersionOf == null)
-				ItemDeleted.Invoke(this, args);
-		}
-
 		#endregion
 
 		#endregion
@@ -212,8 +175,7 @@ namespace N2.Persistence.NH
 		/// <param name="destination">The destination below which to place the item</param>
 		public virtual void Move(ContentItem source, ContentItem destination)
 		{
-			CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(source, destination);
-			OnMoving(args);
+            CancellableDestinationEventArgs args = Invoke(ItemMoving, new CancellableDestinationEventArgs(source, destination)); 
 
 			if (!args.Cancel)
 			{
@@ -226,31 +188,9 @@ namespace N2.Persistence.NH
 					itemRepository.Save(source);
 					transaction.Commit();
 				}
-				OnMoved(new DestinationEventArgs(source, destination));
+				Invoke(ItemMoved, new DestinationEventArgs(source, destination));
 			}
 		}
-
-		/// <summary>Persists changes.</summary>
-		public void Flush()
-		{
-			itemRepository.Flush();
-		}
-
-		#region Move Helper Methods
-
-		private void OnMoving(CancellableDestinationEventArgs args)
-		{
-			if (ItemMoving != null)
-				ItemMoving.Invoke(this, args);
-		}
-
-		private void OnMoved(DestinationEventArgs args)
-		{
-			if (ItemMoved != null)
-				ItemMoved.Invoke(this, args);
-		}
-
-		#endregion
 
 		/// <summary>Copies an item and all sub-items to a destination</summary>
 		/// <param name="source">The item to copy</param>
@@ -268,8 +208,7 @@ namespace N2.Persistence.NH
 		/// <returns>The copied item</returns>
 		public virtual ContentItem Copy(ContentItem source, ContentItem destination, bool includeChildren)
 		{
-            CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(source, destination);
-            OnCopying(args);
+            CancellableDestinationEventArgs args = Invoke(ItemCopying, new CancellableDestinationEventArgs(source, destination));
 
             if (!args.Cancel)
 			{
@@ -281,38 +220,11 @@ namespace N2.Persistence.NH
 				cloned.Parent = destination;
 				Save(cloned);
 
-				if (ItemCopied != null)
-					ItemCopied.Invoke(this, new DestinationEventArgs(cloned, destination));
+                Invoke(ItemCopied, new DestinationEventArgs(cloned, destination));
 
 				return cloned;
 			}
 			return null;
-		}
-
-		/// <summary>Invokes copying events and checks whether the copy operation should be performed.</summary>
-		/// <returns>True if the copying should proceed.</returns>
-		private void OnCopying(CancellableDestinationEventArgs args)
-		{
-			if (ItemCopying != null)
-				ItemCopying.Invoke(this, args);
-		}
-
-		#endregion
-
-		#region List Methods
-
-		/// <summary>Gets child itms recursively.</summary>
-		/// <param name="item">The item whose offspring to get. The item itself is not returned.</param>
-		/// <param name="preFilters">Filters to apply before recursing into the next level.</param>
-		/// <returns>A list of children and the rest of the offspring of an item.</returns>
-		/// <remarks>This method does not consider authorization. The items are retrieved by recursively querying for items child items.</remarks>
-		public virtual IList<ContentItem> GetChildrenRecursive(ContentItem item, params ItemFilter[] preFilters)
-		{
-			ItemList items = new ItemList(item.Children, preFilters);
-			int count = items.Count;
-			for (int i = 0; i < count; i++)
-				items.AddRange(GetChildrenRecursive(items[i]));
-			return items;
 		}
 
 		#endregion
@@ -357,9 +269,21 @@ namespace N2.Persistence.NH
 
 		#endregion
 
+        /// <summary>Persists changes.</summary>
+        public void Flush()
+        {
+            itemRepository.Flush();
+        }
         public IRepository<int, ContentItem> Repository
         {
             get { return this.itemRepository; }
+        }
+        protected virtual T Invoke<T>(EventHandler<T> handler, T args)
+            where T : ItemEventArgs
+        {
+            if (handler != null && args.AffectedItem.VersionOf == null)
+                handler.Invoke(this, args);
+            return args;
         }
     }
 }

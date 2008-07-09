@@ -18,6 +18,14 @@ namespace N2.Configuration
 			set { base["caching"] = value; }
 		}
 
+        /// <summary>Whether cacheing should be enabled.</summary>
+        [ConfigurationProperty("tryLocatingHbmResources")]
+        public bool TryLocatingHbmResources
+		{
+            get { return (bool)base["tryLocatingHbmResources"]; }
+            set { base["tryLocatingHbmResources"] = value; }
+		}
+
         /// <summary>The nhibernate cache provider class to use.</summary>
         /// <remarks>
         /// Other cache providers:

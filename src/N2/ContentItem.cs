@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 2007 Cristian Libardo
+/* Copyright (C) 2006-2008 Cristian Libardo
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -30,6 +30,7 @@ using N2.Integrity;
 using N2UI = N2.Web.UI;
 using System.Text;
 using N2.Details;
+using N2.Collections;
 
 namespace N2
 {
@@ -102,17 +103,6 @@ namespace N2
         }
         #endregion
 
-		#region Statics
-
-		static string defaultExtension = ".aspx";
-		public static string DefaultExtension
-		{
-			get { return defaultExtension; }
-			set { defaultExtension = value; }
-		}
-
-		#endregion
-
 		#region Public Properties (persisted)
 		/// <summary>Gets or sets item ID.</summary>
 		public virtual int ID
@@ -129,7 +119,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the item's title. This is used in edit mode and probably in a custom implementation.</summary>
-		[Details.Displayable(typeof(Web.UI.WebControls.HN), "Text")]
+		[Details.Displayable(typeof(Web.UI.WebControls.Hn), "Text")]
 		public virtual string Title
 		{
 			get { return title; }
@@ -139,16 +129,8 @@ namespace N2
 		/// <summary>Gets or sets the item's name. This is used to compute the item's url and can be used to uniquely identify the item among other items on the same level.</summary>
 		public virtual string Name
 		{
-			get 
-			{ 
-				return name 
-					?? (ID > 0 ? ID.ToString() : string.Empty); 
-			}
-			set 
-			{ 
-				name = value; 
-				url = null;  
-			}
+			get { return name ?? (ID > 0 ? ID.ToString() : string.Empty); }
+			set { name = value; url = null;  }
 		}
 
 		/// <summary>Gets or sets zone name which is associated with data items and their placement on a page.</summary>
@@ -275,19 +257,19 @@ namespace N2
 			get { return Utility.ToAbsolute("~/edit/img/ico/" + (IsPage ? "page.gif" : "page_white.gif")); }
         }
 
-		/// <summary>Gets the non-friendly url to this item (e.g. "/default.aspx?page=1"). This is used to uniquely identify this item. Non-page items have two query string properties; page and item (e.g. "/default.aspx?page=1&amp;item&#61;27").</summary>
+		/// <summary>Gets the non-friendly url to this item (e.g. "/default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/default.aspx?page=1&amp;item&#61;27").</summary>
         public virtual string RewrittenUrl
         {
             get
             {
                 if (IsPage)
                 {
-                    return Utility.ToAbsolute(TemplateUrl) + "?page=" + ID;
+                    return Web.Url.Parse(Utility.ToAbsolute(TemplateUrl)).AppendQuery("page", ID);
                 }
 
                 for (ContentItem ancestorItem = Parent; ancestorItem != null; ancestorItem = ancestorItem.Parent)
                     if (ancestorItem.IsPage)
-                        return Utility.ToAbsolute(ancestorItem.TemplateUrl) + string.Format("?page={0}&item={1}", ancestorItem.ID, ID);
+                        return Web.Url.Parse(Utility.ToAbsolute(ancestorItem.TemplateUrl)).AppendQuery("page", ancestorItem.ID).AppendQuery("item", ID);
 
 				if (VersionOf != null)
 					return VersionOf.TemplateUrl;
@@ -336,7 +318,7 @@ namespace N2
 		/// <returns>The item's name.</returns>
         public override string ToString()
         {
-            return Name ?? string.Empty;
+            return Name + "#" + ID;
         }
 		#endregion
 
@@ -559,8 +541,10 @@ namespace N2
 		/// <remarks>This method is used by N2 when when non-page items are added to a zone on a page and in edit mode when displaying which items are placed in a certain zone. Keep this in mind when overriding this method.</remarks>
         public virtual Collections.ItemList GetChildren(string childZoneName)
         {
-			return GetChildren(new Collections.ZoneFilter(childZoneName), 
-				new Collections.AccessFilter());
+			return GetChildren(
+                new CompositeFilter(
+                    new Collections.ZoneFilter(childZoneName), 
+                    new Collections.AccessFilter()));
         }
 
 		/// <summary>Gets children applying filters.</summary>
@@ -568,16 +552,16 @@ namespace N2
 		/// <returns>A list of filtered child items.</returns>
 		public virtual Collections.ItemList GetChildren(params Collections.ItemFilter[] filters)
 		{
-			return GetChildren(filters as IEnumerable<Collections.ItemFilter>);
+			return GetChildren(new CompositeFilter(filters));
 		}
 
 		/// <summary>Gets children applying filters.</summary>
 		/// <param name="filters">The filters to apply on the children.</param>
 		/// <returns>A list of filtered child items.</returns>
-		public virtual Collections.ItemList GetChildren(IEnumerable<Collections.ItemFilter> filters)
+		public virtual Collections.ItemList GetChildren(ItemFilter filter)
 		{
 			IEnumerable<ContentItem> items = VersionOf == null ? Children : VersionOf.Children;
-			return new Collections.ItemList(items, filters);
+			return new Collections.ItemList(items, filter);
 		}
 
 		#endregion
@@ -799,5 +783,5 @@ namespace N2
 
 		#endregion
 		#endregion
-	}
+    }
 }

@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using N2.Persistence;
 using System.Diagnostics;
+using N2.Configuration;
 
 namespace N2.Web
 {
@@ -19,7 +20,7 @@ namespace N2.Web
 		private readonly IWebContext webContext;
 		private readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
 		
-		private string defaultExtension = null;
+		private string extension = null;
 		private string defaultContentPage = "/default.aspx";
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
@@ -34,7 +35,7 @@ namespace N2.Web
 			this.host = host;
 
 			notifier.ItemCreated += OnItemCreated;
-		}
+        }
 
 
 		#region Properties
@@ -62,10 +63,10 @@ namespace N2.Web
 		}
 
 		/// <summary>Gets or sets the default file extension. The default extension should be something that is handled by the .net isapi such as '.aspx'.</summary>
-		public string DefaultExtension
+		public string Extension
 		{
-			get { return defaultExtension ?? ContentItem.DefaultExtension; }
-			set { defaultExtension = value; }
+			get { return extension ?? Url.DefaultExtension; }
+			set { extension = value; }
 		}
 
 		/// <summary>Gets the current start page.</summary>
@@ -167,8 +168,8 @@ namespace N2.Web
             url = Url.PathPart(url);
 			url = webContext.ToAppRelative(url);
 			url = url.TrimStart('~', '/');
-			if (url.EndsWith(DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
-				url = url.Substring(0, url.Length - DefaultExtension.Length);
+			if (url.EndsWith(Extension, StringComparison.InvariantCultureIgnoreCase))
+				url = url.Substring(0, url.Length - Extension.Length);
 			return url;
 		}
 
@@ -259,7 +260,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(url))
 				url = this.webContext.ToAbsolute("~/");
 			else
-				url = this.webContext.ToAbsolute("~" + url + DefaultExtension);
+				url = this.webContext.ToAbsolute("~" + url + Extension);
 
 			if (item.IsPage)
 				return url;

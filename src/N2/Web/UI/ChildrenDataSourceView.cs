@@ -13,7 +13,7 @@ namespace N2.Web.UI
 		#region Private Fields
 		private ContentItem parentItem = null;
 		private Collections.ItemList allItems = null;
-		private IEnumerable<Collections.ItemFilter> filters;
+        private Collections.CompositeFilter filter;
 		#endregion
 
 		#region Constructors
@@ -34,12 +34,18 @@ namespace N2.Web.UI
 				this.allItems = null;
 				this.OnDataSourceViewChanged(EventArgs.Empty);
 			}
-		}
+        }
 
+        public Collections.CompositeFilter Filter
+        {
+            get { return filter; }
+            set { filter = value; }
+        }
+
+        [Obsolete("Use Filter instaed")]
 		public IEnumerable<Collections.ItemFilter> Filters
 		{
-			get { return filters; }
-			set { filters = value; }
+			set { filter = new Collections.CompositeFilter(value); }
 		}
 
 		public override bool CanInsert
@@ -116,12 +122,12 @@ namespace N2.Web.UI
 			}
 
 			OnFiltering(args);
-			if (Filters != null || (selectingArgs.Arguments.StartRowIndex >= 0 && selectingArgs.Arguments.MaximumRows > 0))
+			if (Filter != null || (selectingArgs.Arguments.StartRowIndex >= 0 && selectingArgs.Arguments.MaximumRows > 0))
 			{
 				Collections.ItemList filteredItems = args.Items;
 				
-				if (Filters != null)
-					filteredItems = new Collections.ItemList(filteredItems, Filters);
+				if (Filter != null)
+					filteredItems = new Collections.ItemList(filteredItems, Filter);
 
 				if (selectingArgs.Arguments.StartRowIndex >= 0 && selectingArgs.Arguments.MaximumRows > 0)
 					filteredItems = new Collections.ItemList(filteredItems, new Collections.CountFilter(selectingArgs.Arguments.StartRowIndex, selectingArgs.Arguments.MaximumRows));

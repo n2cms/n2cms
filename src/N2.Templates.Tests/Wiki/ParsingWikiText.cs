@@ -231,5 +231,23 @@ namespace N2.Templates.Tests.Wiki
             Assert.That(fragments[6].Name, Is.EqualTo("ExternalLink"));
             Assert.That(fragments[7].Name, Is.EqualTo("Text"));
         }
+
+        [Test]
+        public void CanParse_Heading1()
+        {
+            IList<Fragment> fragments = parser.Parse("=Heading 1=").ToList();
+            Assert.That(fragments.Count, Is.EqualTo(1));
+            Assert.That(fragments[0].Name, Is.EqualTo("Heading"));
+            Assert.That(fragments[0].Value, Is.EqualTo("=Heading 1="));
+        }
+
+        [Test]
+        public void CanParse_Heading2()
+        {
+            IList<Fragment> fragments = parser.Parse("==Heading 2==").ToList();
+            Assert.That(fragments.Count, Is.EqualTo(1));
+            Assert.That(fragments[0].Name, Is.EqualTo("Heading"));
+            Assert.That(fragments[0].Value, Is.EqualTo("==Heading 2=="));
+        }
     }
 }

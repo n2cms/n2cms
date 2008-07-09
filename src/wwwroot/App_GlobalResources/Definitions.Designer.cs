@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redirection.
+        ///   Looks up a localized string similar to Redirect.
         /// </summary>
         internal static string Redirect_Title {
             get {

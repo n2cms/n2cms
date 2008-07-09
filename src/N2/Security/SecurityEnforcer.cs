@@ -83,13 +83,6 @@ namespace N2.Security
 			}
 		}
 
-		//private bool IsSecurableResource(Web.IWebContext context, string filePath)
-		//{
-		//    return (filePath.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase)
-		//            || filePath.EndsWith(".aspx", StringComparison.InvariantCultureIgnoreCase)
-		//        ) && !filePath.StartsWith(context.ToAbsolute("~/edit/"), StringComparison.InvariantCultureIgnoreCase);
-		//}
-
 		/// <summary>Is invoked when an item is saved.</summary>
 		/// <param name="item">The item that is to be saved.</param>
 		protected virtual void OnItemSaving(ContentItem item)

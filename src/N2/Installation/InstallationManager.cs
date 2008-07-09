@@ -30,7 +30,7 @@ namespace N2.Installation
         IPersister persister;
         ISessionProvider sessionProvider;
         IHost host;
-        
+
         public InstallationManager(IHost host, IDefinitionManager definitions, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder)
 		{
             this.host = host;
@@ -40,60 +40,11 @@ namespace N2.Installation
             this.sessionProvider = sessionProvider;
             this.configurationBuilder = configurationBuilder;
 		}
-
-		#region Constants
-
-		public const string CreateSqlServer2005ResourceKey = "N2.Installation.SqlScripts.Create.SQLServer2005.sql";
-		public const string CreateSqlServer2000ResourceKey = "N2.Installation.SqlScripts.Create.SQLServer2000.sql";
-		public const string CreateMySQLResourceKey = "N2.Installation.SqlScripts.Create.MySQL.sql";
-		public const string CreateSQLiteResourceKey = "N2.Installation.SqlScripts.Create.SQLite.sql";
-
-		public const string ConfigurationCompleteResourceKey = "N2.Installation.Configurations.Web.config";
-		public const string ConfigurationSqlServer2005ResourceKey = "N2.Installation.Configurations.Web.SqlServer2005.config";
-
-		public const string ConfigurationSqlServer2005ExpressResourceKey =
-			"N2.Installation.Configurations.Web.SqlServer2005Express.config";
-
-		public const string ConfigurationSqlServer2000ResourceKey = "N2.Installation.Configurations.Web.SqlServer2000.config";
-		public const string ConfigurationMySQLResourceKey = "N2.Installation.Configurations.Web.MySQL.config";
-		public const string ConfigurationSQLiteResourceKey = "N2.Installation.Configurations.Web.SQLite.config";
-
-		public const string UpgradeSqlServer2005_1_1 = "N2.Installation.SqlScripts.Upgrade.SQLServer2005.1.1.sql";
-		public const string DropTables = "N2.Installation.SqlScripts.Drop.1.1.sql";
-
-		#endregion
-
-		#region Static Methods
-
-		private static string GetCreateResourceKey(SqlServerType serverType)
-		{
-			string[] resourceKeys = new string[]
-				{
-					CreateSqlServer2005ResourceKey,
-					CreateSqlServer2005ResourceKey,
-					CreateSqlServer2000ResourceKey,
-					null,
-					CreateMySQLResourceKey,
-					CreateSQLiteResourceKey,
-					CreateMySQLResourceKey
-				};
-			return resourceKeys[(int) serverType];
-		}
-
-		private static string GetConfigurationResourceKey(SqlServerType serverType)
-		{
-			string[] resourceKeys = new string[]
-				{
-					ConfigurationSqlServer2005ResourceKey,
-					ConfigurationSqlServer2005ResourceKey,
-					ConfigurationSqlServer2000ResourceKey,
-					null,
-					ConfigurationMySQLResourceKey,
-					ConfigurationSQLiteResourceKey,
-					ConfigurationCompleteResourceKey
-				};
-			return resourceKeys[(int) serverType];
-		}
+        NHibernate.Cfg.Configuration cfg;
+        protected NHibernate.Cfg.Configuration Cfg
+        {
+            get { return cfg ?? (cfg = configurationBuilder.BuildConfiguration()); }
+        }
 
 		public static string GetResourceString(string resourceKey)
 		{
@@ -102,41 +53,37 @@ namespace N2.Installation
 			return sr.ReadToEnd();
 		}
 
-		#endregion
-
 		#region Methods
 
-		/// <summary>Upgrades to the latest version of N2</summary>
-		public void Upgrade(Version fromFileVersion)
-		{
-			long oneWayToDoIt = fromFileVersion.Major*1000000
-			                    + fromFileVersion.MajorRevision*1000
-			                    + fromFileVersion.Minor;
-			if (oneWayToDoIt < 25000 || oneWayToDoIt > 1100000)
-				throw new N2Exception("Can only upgrade from version 0.25 through 1.0.37");
+        /// <summary>Upgrades to the latest version of N2</summary>
+        public void Upgrade(Version fromFileVersion)
+        {
+            throw new N2Exception("Cannot upgrade.");
+            //long oneWayToDoIt = fromFileVersion.Major * 1000000
+            //                    + fromFileVersion.MajorRevision * 1000
+            //                    + fromFileVersion.Minor;
+            //if (oneWayToDoIt < 25000 || oneWayToDoIt > 1100000)
+            //    throw new N2Exception("Can only upgrade from version 0.25 through 1.0.37");
 
-			ExecuteSqlResource(UpgradeSqlServer2005_1_1);
-		}
+            //ExecuteSqlResource(UpgradeSqlServer2005_1_1);
+        }
 
 		/// <summary>Executes sql create database scripts.</summary>
 		public void Install()
 		{
-			NHibernate.Cfg.Configuration cfg = configurationBuilder.BuildConfiguration();
-			SchemaExport exporter = new SchemaExport(cfg);
+			SchemaExport exporter = new SchemaExport(Cfg);
 			exporter.Create(true, true);
 		}
 
 		public void ExportSchema(TextWriter output)
 		{
-            NHibernate.Cfg.Configuration cfg = configurationBuilder.BuildConfiguration();
-			SchemaExport exporter = new SchemaExport(cfg);
+			SchemaExport exporter = new SchemaExport(Cfg);
 			exporter.Execute(true, false, false, true, null, output);
 		}
 
 		public void DropDatabaseTables()
 		{
-            NHibernate.Cfg.Configuration cfg = configurationBuilder.BuildConfiguration();
-			SchemaExport exporter = new SchemaExport(cfg);
+			SchemaExport exporter = new SchemaExport(Cfg);
 			exporter.Drop(true, true);
 		}
 
@@ -312,16 +259,15 @@ namespace N2.Installation
 
 		public IDbConnection GetConnection()
 		{
-			NHibernate.Cfg.Configuration cfg = configurationBuilder.BuildConfiguration();
-			string driverName = (string) cfg.Properties[Environment.ConnectionDriver];
+			string driverName = (string) Cfg.Properties[Environment.ConnectionDriver];
 			Type driverType = NHibernate.Util.ReflectHelper.ClassForName(driverName);
 			IDriver driver = (IDriver) Activator.CreateInstance(driverType);
 
 			IDbConnection conn = driver.CreateConnection();
-			if (cfg.Properties.ContainsKey(Environment.ConnectionString))
-				conn.ConnectionString = (string)cfg.Properties[Environment.ConnectionString];
-			else if (cfg.Properties.ContainsKey(Environment.ConnectionStringName))
-				conn.ConnectionString = ConfigurationManager.ConnectionStrings[(string)cfg.Properties[Environment.ConnectionStringName]].ConnectionString;
+			if (Cfg.Properties.ContainsKey(Environment.ConnectionString))
+				conn.ConnectionString = (string)Cfg.Properties[Environment.ConnectionString];
+			else if (Cfg.Properties.ContainsKey(Environment.ConnectionStringName))
+				conn.ConnectionString = ConfigurationManager.ConnectionStrings[(string)Cfg.Properties[Environment.ConnectionStringName]].ConnectionString;
 			else
 				throw new Exception("Didn't find a confgiured connection string or connection string name in the nhibernate configuration.");
 			return conn;

@@ -6,6 +6,6 @@ namespace N2.Templates.Wiki
 {
     public interface IWikiTemplate
     {
-        RenderingContext WikiContext { get; set; }
+        ViewContext Viewed { get; set; }
     }
 }

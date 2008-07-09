@@ -7,7 +7,8 @@ namespace N2.Serialization
 	public class ReadingJournal : IImportRecord
 	{
 		private readonly IList<ContentItem> readItems = new List<ContentItem>();
-		private readonly IList<Attachment> attachments = new List<Attachment>();
+        private readonly IList<Attachment> attachments = new List<Attachment>();
+        private readonly IList<Attachment> failedAttachments = new List<Attachment>();
 
 		public event EventHandler<ItemEventArgs> ItemAdded;
 
@@ -64,5 +65,14 @@ namespace N2.Serialization
 			}
 			return null;
 		}
-	}
+
+        #region IImportRecord Members
+
+        public IList<Attachment> FailedAttachments
+        {
+            get { return failedAttachments; }
+        }
+
+        #endregion
+    }
 }

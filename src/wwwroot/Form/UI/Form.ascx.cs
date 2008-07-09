@@ -8,6 +8,7 @@ using N2.Templates.Items;
 using N2.Templates.Survey.Web.UI;
 using N2.Templates.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Web.Mail;
 
 namespace N2.Templates.Form.UI
 {
@@ -38,7 +39,7 @@ namespace N2.Templates.Form.UI
 			mm.Subject = CurrentItem.MailSubject;
 			mm.Body = sb.ToString();
 
-			Engine.Resolve<Services.IMailSender>().Send(mm);
+			Engine.Resolve<IMailSender>().Send(mm);
 
 			mv.ActiveViewIndex = 1;
 		}

@@ -11,11 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Templates.Wiki.UI
 {
-    public partial class WikiArticle : Templates.Web.UI.TemplatePage<Items.WikiArticle>
+    public partial class WikiArticle : WikiTemplatePage
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

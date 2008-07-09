@@ -24,12 +24,19 @@ namespace N2.Templates.Items
 		public abstract string Theme { get; set; }
 		public abstract string Layout { get; set; }
 
-        [EditableLink("Not found page", 78, ContainerName = MiscArea, HelpText = "Display this page when the requested URL isn't found")]
+        [EditableLink("Not Found Page (404)", 78, ContainerName = MiscArea, HelpText = "Display this page when the requested URL isn't found")]
 		public virtual ContentItem NotFoundPage
 		{
 			get { return (ContentItem)GetDetail("NotFoundPage"); }
 			set { SetDetail("NotFoundPage", value); }
-		}
+        }
+
+        [EditableLink("Error Page (500)", 79, ContainerName = MiscArea, HelpText = "Display this page when an unhandled exception occurs.")]
+        public virtual ContentItem ErrorPage
+        {
+            get { return (ContentItem)GetDetail("ErrorPage"); }
+            set { SetDetail("ErrorPage", value); }
+        }
 
 		[EditableCheckBox("Show Breadcrumb", 110, ContainerName = LayoutArea)]
 		public virtual bool ShowBreadcrumb
@@ -40,7 +47,7 @@ namespace N2.Templates.Items
 
 		public IEnumerable<Site> GetSites()
 		{
-            Site s = new Site(Parent.ID, ID, HostName);
+            Site s = new Site((Parent ?? this).ID, ID, HostName);
             s.Wildcards = true;
 
             return new Site[] { s };

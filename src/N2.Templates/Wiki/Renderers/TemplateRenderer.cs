@@ -16,7 +16,7 @@ namespace N2.Templates.Wiki.Renderers
         }
         #region IRenderer Members
 
-        public Control AddTo(Control container, RenderingContext context)
+        public Control AddTo(Control container, ViewContext context)
         {
             string fragment = context.Fragment.Value;
             string key = fragment.Substring(2, fragment.Length -4).ToLower();

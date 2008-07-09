@@ -5,6 +5,7 @@ using System.Net.Mail;
 using N2.Persistence;
 using N2.Web;
 using System.Net;
+using N2.Web.Mail;
 
 namespace N2.Templates.Services
 {

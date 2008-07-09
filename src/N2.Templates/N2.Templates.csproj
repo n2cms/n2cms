@@ -46,12 +46,18 @@
       <HintPath>..\..\lib\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\MailConfigSource.cs" />
+    <Compile Include="Configuration\OutputCacheElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\TemplatesSection.cs" />
     <Compile Include="Details\LayoutSelectorAttribute.cs" />
     <Compile Include="Details\DropDownAttribute.cs" />
     <Compile Include="Details\ThemeSelectorAttribute.cs" />
@@ -70,11 +76,8 @@
     <Compile Include="SEO\TitleAndMetaTagApplyer.cs" />
     <Compile Include="Services\NotFoundHandler.cs" />
     <Compile Include="Services\NotFoundInitializer.cs" />
-    <Compile Include="Services\SmtpMailSender.cs" />
     <Compile Include="Services\FakeMailSender.cs" />
-    <Compile Include="Services\IMailSender.cs" />
     <Compile Include="Services\DynamicMailSender.cs" />
-    <Compile Include="Services\StaticMailSender.cs" />
     <Compile Include="Syndication\IFeed.cs" />
     <Compile Include="Syndication\ISyndicatable.cs" />
     <Compile Include="Syndication\RssWriter.cs" />
@@ -104,9 +107,12 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\UI\WebControls\Box.cs" />
+    <Compile Include="Web\UI\WebControls\IBreadcrumbAppearance.cs" />
     <Compile Include="Web\UI\WebControls\Menu.cs" />
     <Compile Include="Web\UI\WebControls\Path.cs" />
     <Compile Include="Wiki\Fragment.cs" />
+    <Compile Include="Wiki\Fragmenters\CommentFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\HeadingFragmenter.cs" />
     <Compile Include="Wiki\HtmlFilter.cs" />
     <Compile Include="Wiki\IFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\TemplateFragmenter.cs" />
@@ -114,13 +120,17 @@
     <Compile Include="Wiki\Fragmenters\UserInfoFragmenter.cs" />
     <Compile Include="Wiki\IArticle.cs" />
     <Compile Include="Wiki\ITemplateRenderer.cs" />
+    <Compile Include="Wiki\IWiki.cs" />
     <Compile Include="Wiki\IWikiTemplate.cs" />
+    <Compile Include="Wiki\Renderers\CommentRenderer.cs" />
     <Compile Include="Wiki\Renderers\ExternalLinkRenderer.cs" />
+    <Compile Include="Wiki\Renderers\HeadingRenderer.cs" />
     <Compile Include="Wiki\Renderers\InternalLinkRenderer.cs" />
     <Compile Include="Wiki\Renderers\TemplateRenderer.cs" />
     <Compile Include="Wiki\Renderers\TextRenderer.cs" />
     <Compile Include="Wiki\Renderers\UserInfoRenderer.cs" />
-    <Compile Include="Wiki\RenderingContext.cs" />
+    <Compile Include="Wiki\ViewContext.cs" />
+    <Compile Include="Wiki\Utility.cs" />
     <Compile Include="Wiki\Web\WikiUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

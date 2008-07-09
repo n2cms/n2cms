@@ -9,6 +9,7 @@ namespace N2.Configuration
 		public string TypeName
 		{
 			get { return (string)base["typeName"]; }
+            set { base["typeName"] = value; }
 		}
 	}
 }

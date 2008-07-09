@@ -58,7 +58,9 @@ namespace N2.Engine
 			RegisterConfigurationSections(config);
 			HostSection host = (HostSection)config.GetSection("n2/host");
 			EngineSection engine = (EngineSection)config.GetSection("n2/engine");
-			if (host != null && host.MultipleSites)
+            if (engine != null)
+                Url.DefaultExtension = engine.Extension;
+            if (host != null && host.MultipleSites)
 				ProcessResource(new AssemblyResource(engine.MultipleSitesConfiguration));
 			IResource resource = DetermineResource(config);
 			ProcessResource(resource);

@@ -50,7 +50,7 @@ namespace N2.Templates.Tests.Wiki
 
         #region IRenderer Members
 
-        public System.Web.UI.Control AddTo(System.Web.UI.Control container, RenderingContext context)
+        public System.Web.UI.Control AddTo(System.Web.UI.Control container, ViewContext context)
         {
             Literal l = new Literal();
             l.Text = "Template:" + Name;

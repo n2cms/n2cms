@@ -24,7 +24,7 @@ namespace N2.Web
 		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
 		{
 			this.urlParser = urlParser;
-			this.defaultExtension = urlParser.DefaultExtension;
+			this.defaultExtension = urlParser.Extension;
 			this.webContext = webContext;
 		}
 
@@ -44,7 +44,7 @@ namespace N2.Web
 
 		private bool HasContentExtension(string requestedUrl)
 		{
-			if (requestedUrl.EndsWith(urlParser.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
+			if (requestedUrl.EndsWith(urlParser.Extension, StringComparison.InvariantCultureIgnoreCase))
 			{
 				return true;
 			}

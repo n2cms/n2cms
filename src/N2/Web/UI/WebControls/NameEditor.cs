@@ -20,7 +20,7 @@ namespace N2.Web.UI.WebControls
 		private string suffix = string.Empty;
 		private string uniqueNameErrorFormat = "Another item already has the name '{0}'.";
 		private string nameTooLongErrorFormat = "Name too long, the full url cannot exceed 260 characters: {0}";
-		private string invalidCharactersErrorFormat = "Invalid characters in path, % ? & / : + not allowed.";
+		private string invalidCharactersErrorFormat = "Invalid characters in path, % ? & / : + . not allowed.";
 
 		/// <summary>Constructs the name editor.</summary>
 		public NameEditor()
@@ -161,7 +161,7 @@ if('{5}'){{
 			@"
 function getName(titleid, whitespace, tolower, ascii){
     var titleBox=document.getElementById(titleid);
-	var name = titleBox.value.replace(/[%?&/+:<>]|[.]+$/g, '').replace(/[.]+/g, '.').replace(/\s+/g,whitespace);
+	var name = titleBox.value.replace(/[%?&/+:<>]|[.]+$/g, '').replace(/[.]+/g, '-').replace(/\s+/g,whitespace);
 	if(tolower) name = name.toLowerCase();
 	if(ascii) name = name
 		.replace(/[åä]/g, 'a').replace(/[ÅÄ]/g, 'A')

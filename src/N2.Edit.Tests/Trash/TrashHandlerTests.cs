@@ -15,7 +15,7 @@ namespace N2.Trashcan.Tests
 	public class TrashHandlerTests : TrashTestBase
 	{
 		[Test]
-		public void ThrownItem_IsMovedToTrashcan()
+		public void ThrownItem_IsMoved_ToTrashcan()
 		{
 			IDefinitionManager definitions = mocks.StrictMock<IDefinitionManager>();
 
@@ -40,7 +40,39 @@ namespace N2.Trashcan.Tests
 			th.Throw(item);
 
 			Assert.Less(DateTime.Now.AddSeconds(-10), item.Expires);
-		}
+        }
+
+        [Test]
+        public void ChildrenOf_ThrownItem_AreExpired()
+        {
+            TrashHandler th = CreateTrashHandler();
+
+            var child1 = CreateItem<ThrowableItem>(5, "child1", item);
+            var child2 = CreateItem<ThrowableItem>(6, "child2", child1);
+
+            th.Throw(item);
+
+            Assert.That(child1.Expires, Is.Not.Null);
+            Assert.That(child2.Expires, Is.Not.Null);
+            Assert.That(child1.Expires, Is.GreaterThan(DateTime.Now.AddSeconds(-10)));
+            Assert.That(child2.Expires, Is.GreaterThan(DateTime.Now.AddSeconds(-10)));
+        }
+
+        [Test]
+        public void ChildrenOf_RestoredItems_AreUnExpired()
+        {
+            TrashHandler th = CreateTrashHandler();
+
+            var child1 = CreateItem<ThrowableItem>(5, "child1", item);
+            var child2 = CreateItem<ThrowableItem>(6, "child2", child1);
+
+            th.Throw(item);
+
+            th.Restore(item);
+
+            Assert.That(child1.Expires, Is.Null);
+            Assert.That(child2.Expires, Is.Null);
+        }
 
 		[Test]
 		public void ThrownItem_NameIsCleared()
@@ -52,7 +84,7 @@ namespace N2.Trashcan.Tests
 		}
 
 		[Test]
-		public void ThrownItem_OldValuesAreStoredInDetailBag()
+		public void ThrownItem_OldValues_AreStored_InDetailBag()
 		{
 			TrashHandler th = CreateTrashHandler();
 			th.Throw(item);
@@ -94,6 +126,11 @@ namespace N2.Trashcan.Tests
 		{
 			IDefinitionManager definitions = MockDefinitions();
 			IPersister persister = MockPersister(root, trash, item);
+            Expect.Call(delegate { persister.Move(null, null); }).IgnoreArguments()
+                .Do(new Action<ContentItem, ContentItem>(delegate(ContentItem source, ContentItem destination)
+                {
+                    source.AddTo(destination);
+                })).Repeat.Any();
 			
 			mocks.ReplayAll();
 

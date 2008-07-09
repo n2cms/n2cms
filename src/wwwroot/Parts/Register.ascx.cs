@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using N2.Web.Mail;
 
 namespace N2.Templates.UI.Parts
 {
@@ -57,7 +58,7 @@ namespace N2.Templates.UI.Parts
 				string subject = CurrentItem.VerificationSubject;
 				string body = CurrentItem.VerificationText.Replace("{VerificationUrl}", url);
 
-				Engine.Resolve<Templates.Services.IMailSender>().Send(CurrentItem.VerificationSender, UserCreator.Email, subject, body);
+				Engine.Resolve<IMailSender>().Send(CurrentItem.VerificationSender, UserCreator.Email, subject, body);
 			}
 
 			if (CurrentItem.SuccessPage != null)

@@ -7,6 +7,6 @@ namespace N2.Templates.Wiki
 {
     public interface IRenderer
     {
-        Control AddTo(Control container, RenderingContext context);
+        Control AddTo(Control container, ViewContext context);
     }
 }

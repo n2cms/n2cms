@@ -19,7 +19,7 @@ namespace N2.Tests.Collections
 			base.SetUp();
 			
 			ISecurityManager security = mocks.StrictMock<ISecurityManager>();
-			Expect.On(security).Call(security.IsAuthorized(null, null)).IgnoreArguments().Repeat.Any().Do(
+			Expect.On(security).Call(security.IsAuthorized((ContentItem)null, null)).IgnoreArguments().Repeat.Any().Do(
 				new IsAuthorizedDelegate(delegate(ContentItem item, IPrincipal user)
 				                         	{
 				                         		return (item.AuthorizedRoles == null || item.AuthorizedRoles.Count == 0);

@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml.XPath;
 using N2.Details;
 using N2.Persistence;
+using System.Diagnostics;
 
 namespace N2.Serialization
 {
@@ -82,7 +83,15 @@ namespace N2.Serialization
 			{
 				foreach(Attachment a in record.Attachments)
 				{
-					a.Import();
+                    try
+                    {
+                        a.Import();
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.Write(ex);
+                        record.FailedAttachments.Add(a);
+                    }
 				}
 			}
 		}

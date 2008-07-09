@@ -182,8 +182,6 @@
   <ItemGroup>
     <Compile Include="Collections\DuplicateFilter.cs" />
     <Compile Include="Engine\WebAppTypeFinder.cs" />
-    <Compile Include="Obsolete\InitializationElement.cs" />
-    <Compile Include="Obsolete\EditElement.cs" />
     <Compile Include="Definitions\IContainable.cs" />
     <Compile Include="Definitions\IEditableContainer.cs" />
     <Compile Include="Definitions\IDefinitionManagerDependency.cs" />
@@ -276,6 +274,7 @@
     <Compile Include="Collections\HierarchyBuilder.cs" />
     <Compile Include="Collections\ItemHierarchyNavigator.cs" />
     <Compile Include="Collections\NavigationFilter.cs" />
+    <Compile Include="Collections\NullFilter.cs" />
     <Compile Include="Collections\PageFilter.cs" />
     <Compile Include="Collections\ParentFilter.cs" />
     <Compile Include="Collections\PublishedFilter.cs" />
@@ -285,6 +284,8 @@
     <Compile Include="Configuration\DatabaseFlavour.cs" />
     <Compile Include="Configuration\DatabaseSection.cs" />
     <Compile Include="Configuration\EditSection.cs" />
+    <Compile Include="Configuration\ErrorAction.cs" />
+    <Compile Include="Configuration\ErrorsElement.cs" />
     <Compile Include="Configuration\GlobalizationSection.cs" />
     <Compile Include="Configuration\HostSection.cs" />
     <Compile Include="Configuration\InstallerSection.cs" />
@@ -292,6 +293,7 @@
     <Compile Include="Configuration\EngineSection.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
     <Compile Include="Configuration\SiteElementCollection.cs" />
+    <Compile Include="Configuration\WebSection.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />
@@ -381,12 +383,18 @@
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
     <Compile Include="Web\AnchorBuilder.cs" />
+    <Compile Include="Web\Caching\ContentCacheDependency.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
+    <Compile Include="Web\ErrorHandler.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlHelper.cs" />
+    <Compile Include="Web\IErrorHandler.cs" />
     <Compile Include="Web\IHost.cs" />
     <Compile Include="Web\IIS5WebContext.cs" />
+    <Compile Include="Web\Mail\IMailSender.cs" />
+    <Compile Include="Web\Mail\SmtpMailSender.cs" />
+    <Compile Include="Web\Mail\StaticMailSender.cs" />
     <Compile Include="Web\TagBuilder.cs" />
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\IContentTemplate.cs" />

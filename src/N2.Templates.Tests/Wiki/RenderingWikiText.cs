@@ -118,6 +118,46 @@ namespace N2.Templates.Tests.Wiki
             Assert.That(html, Is.EqualTo("Template:FakeTemplate"));
         }
 
+        [Test]
+        public void CanRender_Heading1()
+        {
+            string html = ParseAndRenderWikiText("=Heading 1=");
+
+            Assert.That(html, Is.EqualTo("<h1>Heading 1</h1>"));
+        }
+
+        [Test]
+        public void CanRender_Heading2()
+        {
+            string html = ParseAndRenderWikiText("==Heading 2==");
+
+            Assert.That(html, Is.EqualTo("<h2>Heading 2</h2>"));
+        }
+
+        [Test]
+        public void CanRender_Heading3()
+        {
+            string html = ParseAndRenderWikiText("===Heading 3===");
+
+            Assert.That(html, Is.EqualTo("<h3>Heading 3</h3>"));
+        }
+
+        [Test]
+        public void CanRender_Heading4()
+        {
+            string html = ParseAndRenderWikiText("====Heading 4====");
+
+            Assert.That(html, Is.EqualTo("<h4>Heading 4</h4>"));
+        }
+
+        [Test]
+        public void RendersComments_WithoutTreatingContents_AsMarkup()
+        {
+            string html = ParseAndRenderWikiText("(=I'm not a heading=)");
+
+            Assert.That(html, Is.EqualTo("=I'm not a heading="));
+        }
+
         private string ParseAndRenderWikiText(string text)
         {
             var buf = new StringBuilder();

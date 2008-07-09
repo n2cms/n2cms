@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace N2.Templates.Wiki
+{
+    public static class Utility
+    {
+        public static string CapitalizeFirstLetter(string name)
+        {
+            return name[0].ToString().ToUpper() + name.Substring(1);
+        }    
+    }
+}

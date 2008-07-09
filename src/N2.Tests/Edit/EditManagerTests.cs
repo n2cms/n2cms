@@ -602,7 +602,7 @@ namespace N2.Tests.Edit
 
 			string editUrl = this.editManager.GetEditExistingItemUrl(versionOfItem);
 
-			Assert.AreEqual("~/edit/edit.aspx?selectedUrl=" + HttpUtility.UrlEncode("/default.aspx?page=3"), editUrl);
+			Assert.That(editUrl, Is.EqualTo("~/edit/edit.aspx?selectedUrl=" + HttpUtility.UrlEncode("/default.aspx?page=3")));
 		}
 
 		bool savingVersionEventInvoked = false;

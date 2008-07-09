@@ -66,11 +66,6 @@ namespace N2.Plugin
                     if (attribute.Name == null)
                         attribute.Name = t.Name;
 
-                    //foreach (PlugInAuthorizedRolesAttribute rolesAttribute in t.GetCustomAttributes(typeof(PlugInAuthorizedRolesAttribute), false))
-                    //{
-                    //    attribute.AuthorizedRoles = rolesAttribute.Roles;
-                    //}
-
                     yield return attribute;
                 }
             }

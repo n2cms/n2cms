@@ -11,11 +11,11 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Templates.Wiki.UI
 {
-    public partial class Wiki : Templates.Web.UI.TemplatePage<Items.Wiki>
+    public partial class Wiki : WikiTemplatePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            N2.Resources.Register.StyleSheet(this, "~/Wiki/UI/Wiki.css");
         }
     }
 }

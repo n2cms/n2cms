@@ -4,19 +4,23 @@ using System.Text;
 using System.Net.Mail;
 using System.Net;
 
-namespace N2.Templates.Services
+namespace N2.Web.Mail
 {
 	public class StaticMailSender : SmtpMailSender
 	{
 		string host;
 		int port = 25;
 		string user = null;
-		string password = null;
+        string password = null;
 
-		public StaticMailSender(string host)
-		{
-			this.host = host;
-		}
+        public StaticMailSender()
+        {
+        }
+
+        public StaticMailSender(string host)
+        {
+            this.host = host;
+        }
 
 		public StaticMailSender(string host, int port)
 			: this(host)

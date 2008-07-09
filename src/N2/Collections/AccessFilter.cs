@@ -9,8 +9,9 @@ namespace N2.Collections
 	/// Filter based on user access and security.
 	/// </summary>
 	public class AccessFilter : ItemFilter
-	{
-		#region Constructors
+    {
+        private IPrincipal user;
+        private ISecurityManager securityManager;
 
 		public AccessFilter()
 			: this(HttpContext.Current != null ? HttpContext.Current.User : null, Context.SecurityManager)
@@ -22,17 +23,6 @@ namespace N2.Collections
 			this.user = user;
 			this.securityManager = securityManager;
 		}
-
-		#endregion
-
-		#region Private Members
-
-		private IPrincipal user;
-		private ISecurityManager securityManager;
-
-		#endregion
-
-		#region Properties
 
 		public IPrincipal User
 		{
@@ -46,16 +36,10 @@ namespace N2.Collections
 			set { securityManager = value; }
 		}
 
-		#endregion
-
-		#region Methods
-
 		public override bool Match(ContentItem item)
 		{
 			return SecurityManager.IsAuthorized(item, User);
 		}
-
-		#endregion
 
 		#region Static Methods
 

@@ -12,9 +12,11 @@ namespace N2.Templates.Wiki
 
         public WikiParser()
         {
+            fragmenters.Add(new CommentFragmenter());
             fragmenters.Add(new UserInfoFragmenter());
             fragmenters.Add(new InternalLinkFragmenter());
             fragmenters.Add(new ExternalLinkFragmenter());
+            fragmenters.Add(new HeadingFragmenter());
             fragmenters.Add(new TemplateFragmenter());
             fragmenters.Add(new TextFragmenter());
         }
@@ -29,34 +31,6 @@ namespace N2.Templates.Wiki
             var list = new List<Fragment>();
             Fragment(text, 0, list);
             return list;
-
-            //int index = 0;
-
-            //Regex expr = new Regex("(?<link>\\[.*?\\]+)");//Regex("((?<link>[.*?])|(?<plugin>{.*?}))");
-            //MatchCollection matches = expr.Matches(text);
-            //foreach (Match m in matches)
-            //{
-            //    foreach (Capture c in m.Captures)
-            //    {
-            //        if (c.Index > index)
-            //            yield return new TextFragment(text.Substring(index, c.Index - index));
-
-            //        index = c.Index + c.Length;
-            //        string value = c.Value.Substring(1, c.Value.Length - 2);
-            //        if (value.StartsWith("["))
-            //        {
-            //            yield return new TextFragment(value);
-            //            continue;
-            //        }
-
-            //        Fragment f = CreateFragment(value);
-            //        f.Parse(value);
-            //        yield return f;
-
-            //    }
-            //}
-            //if (index < text.Length - 1)
-            //    yield return new TextFragment(text.Substring(index, text.Length - index));
         }
 
         private void Fragment(string text, int fragmenterIndex, IList<Fragment> fragments)

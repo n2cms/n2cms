@@ -396,10 +396,12 @@
     <Compile Include="Edit\Versions\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Edit\Web\EditSiteMapNode.cs" />
-    <Compile Include="Edit\Web\FileSiteMapNode.cs" />
-    <Compile Include="Edit\Web\FileSiteMapProvider.cs" />
-    <Compile Include="Edit\Web\EditSiteMapProvider.cs" />
+    <Compile Include="Edit\Web\FileSiteMapNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Edit\Web\FileSiteMapProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Edit\Web\UI\Controls\FieldSet.cs" />
     <Compile Include="Edit\Web\UI\Controls\InfoLabel.cs" />
     <Compile Include="Edit\Web\UI\Controls\OptionsMenu.cs" />

@@ -14,7 +14,7 @@ namespace N2.Web
 	{
 		public RequestContext()
 		{
-			Debug.WriteLine("RequestContext");
+			Debug.WriteLine("RequestContext:ctor");
 		}
 
 		public HttpContext CurrentHttpContext

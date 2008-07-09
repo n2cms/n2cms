@@ -29,11 +29,11 @@
 }
 .bubble .inner .text
 {
-	padding:20px 40px;
+	padding:30px 40px 5px 40px;
 }
 .bubble .inner .bottom
 {
-	padding: 12px;
+	padding: 11px;
 	background-position: 0% 100%;
 }
 #menu .bubble .inner

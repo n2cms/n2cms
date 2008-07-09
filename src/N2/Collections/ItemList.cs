@@ -14,19 +14,27 @@ namespace N2.Collections
 		{
 		}
 
-		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
+        /// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
+        public ItemList(IEnumerable<ContentItem> items)
+            : base(items)
+        {
+        }
+
+        /// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
 		/// <param name="items">The gross enumeration of items to initialize with.</param>
 		/// <param name="filters">The filters that should be applied to the gross collection.</param>
-		public ItemList(IEnumerable<ContentItem> items, params ItemFilter[] filters) : base(items, filters)
-		{
+		public ItemList(IEnumerable<ContentItem> items, ItemFilter filter)
+            : base(filter.Pipe(items))
+        {
 		}
 
-		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
-		/// <param name="items">The gross enumeration of items to initialize with.</param>
-		/// <param name="filters">The filters that should be applied to the gross collection.</param>
-		public ItemList(IEnumerable<ContentItem> items, IEnumerable<ItemFilter> filters) : base(items, filters)
-		{
-		}
+        ///// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
+        ///// <param name="items">The gross enumeration of items to initialize with.</param>
+        ///// <param name="filters">The filters that should be applied to the gross collection.</param>
+        //public ItemList(IEnumerable<ContentItem> items, IEnumerable<ItemFilter> filters) 
+        //    : base(new CompositeFilter(filters).Pipe(items))
+        //{
+        //}
 
 		#endregion
     }

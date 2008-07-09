@@ -7,10 +7,11 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using N2.Web;
 
 namespace N2.Templates.UI
 {
-	public class _404 : Page
+	public class NotFound404 : Page
 	{
 		protected override void OnInit(EventArgs args)
 		{
@@ -21,14 +22,18 @@ namespace N2.Templates.UI
 				N2.ContentItem page = N2.Templates.Find.StartPage.NotFoundPage;
 				if (page != null)
 				{
-					Server.Execute(page.RewrittenUrl);
-					return;
-				}
+                    var wc = N2.Context.Current.Resolve<N2.Web.IWebContext>();
+                    wc.CurrentPage = page;
+                    Server.Execute(Url.Parse(page.RewrittenUrl).AppendQuery("postback", page.Url));
+                    Response.End();
+                    return;
+                }
 			}
 			catch
 			{
 			}
 			Response.Write("<html><body><h1>404 Not Found</h1></body></html>");
+            Response.End();
 		}
 	}
 }

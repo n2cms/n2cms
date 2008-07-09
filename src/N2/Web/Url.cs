@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
+using System.Collections.Specialized;
 
 namespace N2.Web
 {
     /// <summary>
     /// A lightweight and somewhat forgiving URI helper class.
     /// </summary>
-    public struct Url
+    public class Url
     {
-        public const string Amp = "&amp;";
+        public const string Amp = "&";
 
         private string scheme;
         private string authority;
@@ -38,7 +39,7 @@ namespace N2.Web
         {
             if (url != null)
             {
-                int queryIndex = url.IndexOf('?');
+                int queryIndex = QueryIndex(url);
                 int hashIndex = url.IndexOf('#', queryIndex > 0 ? queryIndex : 0);
                 int authorityIndex = url.IndexOf("://");
 
@@ -103,35 +104,36 @@ namespace N2.Web
         public string Scheme
         {
             get { return scheme; }
-            set { scheme = value; }
         }
 
         /// <summary>The domain name and port information.</summary>
         public string Authority
         {
             get { return authority; }
-            set { authority = value; }
         }
 
-        /// <summary>The path after domain name and before query string.</summary>
+        /// <summary>The path after domain name and before query string, e.g. /path/to/a/pate.aspx.</summary>
         public string Path
         {
             get { return path; }
-            set { path = value; }
         }
 
-        /// <summary>The query string.</summary>
+        /// <summary>The query string, e.g. key=value.</summary>
         public string Query
         {
             get { return query; }
-            set { query = value; }
+        }
+
+        /// <summary>The combination of the path and the query string, e.g. /path.aspx?key=value.</summary>
+        public string PathAndQuery
+        {
+            get { return string.IsNullOrEmpty(Query) ? Path : Path + "?" + Query; }
         }
 
         /// <summary>The bookmark.</summary>
         public string Fragment
         {
             get { return fragment; }
-            set { fragment = value; }
         }
 
         public override string ToString()
@@ -163,7 +165,7 @@ namespace N2.Web
         {
             url = RemoveHash(url);
 
-            int queryIndex = url.IndexOf('?');
+            int queryIndex = QueryIndex(url);
             if (queryIndex >= 0)
                 url = url.Substring(0, queryIndex);
 
@@ -175,14 +177,26 @@ namespace N2.Web
         {
             url = RemoveHash(url);
 
-            int queryIndex = url.IndexOf('?');
+            int queryIndex = QueryIndex(url);
             if (queryIndex >= 0)
                 return url.Substring(queryIndex + 1);
             return string.Empty;
         }
 
+        private static int QueryIndex(string url)
+        {
+            return url.IndexOf('?');
+        }
+
+        static string defaultExtension = ".aspx";
+        public static string DefaultExtension
+        {
+            get { return defaultExtension; }
+            set { defaultExtension = value; }
+        }
+
         /// <summary>Removes the hash (#...) from an url.</summary>
-        /// <param name="url">The url that might hav a hash in it.</param>
+        /// <param name="url">An url that might hav a hash in it.</param>
         /// <returns>An url without the hash part.</returns>
         public static string RemoveHash(string url)
         {
@@ -192,9 +206,19 @@ namespace N2.Web
             return url;
         }
 
+        public static Url Parse(string url)
+        {
+            return new Url(url);
+        }
+
         public Url AppendQuery(string key, string value)
         {
             return AppendQuery(key + "=" + HttpUtility.UrlEncode(value));
+        }
+
+        public Url AppendQuery(string key, int value)
+        {
+            return AppendQuery(key + "=" + value);
         }
 
         public Url AppendQuery(string keyValue)
@@ -203,17 +227,17 @@ namespace N2.Web
             if (string.IsNullOrEmpty(query))
                 clone.query = keyValue;
             else if(!string.IsNullOrEmpty(keyValue))
-                clone.query += "&amp;" + keyValue;
+                clone.query += Amp + keyValue;
             return clone;
         }
 
-        public Url SetQuery(string key, string value)
+        public Url UpdateQuery(string key, string value)
         {
             if (query == null)
                 return AppendQuery(key, value);
 
             Url clone = new Url(this);
-            string[] queries = query.Split(new string[] { Amp, "&" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] queries = query.Split(new string[] { Amp, "&amp;" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < queries.Length; i++)
             {
                 if (queries[i].StartsWith(key + "=", StringComparison.InvariantCultureIgnoreCase))
@@ -226,16 +250,68 @@ namespace N2.Web
             return AppendQuery(key, value);
         }
 
-        public Url SetQuery(string keyValue)
+        public Url UpdateQuery(string keyValue)
         {
             if (query == null)
                 return AppendQuery(keyValue);
 
             int eqIndex = keyValue.IndexOf('=');
             if (eqIndex >= 0)
-                return SetQuery(keyValue.Substring(0, eqIndex), keyValue.Substring(eqIndex + 1));
+                return UpdateQuery(keyValue.Substring(0, eqIndex), keyValue.Substring(eqIndex + 1));
             else
-                return SetQuery(keyValue, string.Empty);
+                return UpdateQuery(keyValue, string.Empty);
+        }
+
+        public Url SetScheme(string scheme)
+        {
+            return new Url(scheme, this.authority, this.path, this.query, this.fragment);
+        }
+
+        public Url SetAuthority(string authority)
+        {
+            return new Url(this.scheme, authority, this.path, this.query, this.fragment);
+        }
+
+        public Url SetPath(string path)
+        {
+            int queryIndex = QueryIndex(path);
+            return new Url(this.scheme, this.authority, queryIndex < 0 ? path : path.Substring(0, queryIndex), this.query, this.fragment);
+        }
+
+        public Url SetQuery(string query)
+        {
+            return new Url(this.scheme, this.authority, this.path, query, this.fragment);
+        }
+
+        public Url SetFragment(string fragment)
+        {
+            return new Url(this.scheme, this.authority, this.path, this.query, fragment);
+        }
+
+        public Url AppendSegment(string segment)
+        {
+            string newPath;
+            if (path.Length == 0)
+                newPath = "/" + segment + Url.DefaultExtension;
+            else if (path == "/")
+                newPath = path + segment + Url.DefaultExtension;
+            else
+            {
+                int extensionIndex = path.LastIndexOf(Url.DefaultExtension);
+                if (extensionIndex >= 0)
+                    newPath = path.Insert(extensionIndex, "/" + segment);
+                else
+                    newPath = path + "/" + segment;
+            }
+            return new Url(scheme, authority, newPath, query, fragment);
+        }
+
+        public Url AppendQuery(NameValueCollection queryString)
+        {
+            Url u = new Url(scheme, authority, path, query, fragment);
+            foreach (string key in queryString.AllKeys)
+                u = u.UpdateQuery(key, queryString[key]);
+            return u;
         }
     }
 }

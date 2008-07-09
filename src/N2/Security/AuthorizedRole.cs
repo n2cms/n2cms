@@ -29,6 +29,8 @@ namespace N2.Security
 	/// </summary>
 	public class AuthorizedRole: Authorization, ICloneable
 	{
+        public const string Everyone = "Everyone";
+
 		#region Constructors
 		/// <summary>Creates a new (empty) instance of the AuthorizedRole class.</summary>
 		public AuthorizedRole()
@@ -76,7 +78,7 @@ namespace N2.Security
 		/// <summary>Gets wether this role referrs to everyone, i.e. the unauthenticated user.</summary>
 		public virtual bool IsEveryone
 		{
-			get { return role == "Everyone"; }
+			get { return role == Everyone; }
 		}
 
 		#endregion

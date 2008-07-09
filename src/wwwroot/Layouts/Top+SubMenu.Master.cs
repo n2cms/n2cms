@@ -14,13 +14,8 @@ using N2.Templates.Web.UI.WebControls;
 
 namespace N2.Templates.UI.Layouts
 {
-    public partial class Top_SubMenu : Templates.Web.UI.TemplateMasterPage<ContentItem>, IBreadcrumb
+    public partial class Top_SubMenu : Templates.Web.UI.TemplateMasterPage<ContentItem>
 	{
-        public Path Breadcrumb
-        {
-            get { return this.p; }
-        }
-
 		protected ILanguageGateway languages;
 
 		protected override void OnInit(EventArgs e)

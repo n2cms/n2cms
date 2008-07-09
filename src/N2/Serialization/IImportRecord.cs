@@ -6,6 +6,7 @@ namespace N2.Serialization
 	{
 		IList<ContentItem> ReadItems { get; }
 		ContentItem RootItem { get; }
-		IList<Attachment> Attachments { get; }
-	}
+        IList<Attachment> Attachments { get; }
+        IList<Attachment> FailedAttachments { get; }
+    }
 }

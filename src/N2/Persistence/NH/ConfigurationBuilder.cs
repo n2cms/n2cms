@@ -10,6 +10,8 @@ using NHibernate;
 using NHibernate.Mapping;
 using N2.Configuration;
 using System.Configuration;
+using NHibernate.Cfg;
+using System.Text;
 
 namespace N2.Persistence.NH
 {
@@ -19,16 +21,17 @@ namespace N2.Persistence.NH
 	/// </summary>
 	public class ConfigurationBuilder : IConfigurationBuilder
 	{
+        private bool tryLocatingHbmResources = false;
 		private readonly IDefinitionManager definitions;
 		private IDictionary<string, string> properties = new Dictionary<string, string>();
 		private IList<Assembly> assemblies = new List<Assembly>();
 		private string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
-		private string generatedHbmFormat = @"<?xml version=""1.0"" encoding=""utf-16""?>
+        private string mappingFormat = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">
-    <subclass name=""{0},{1}"" extends=""{2},{3}"" discriminator-value=""{4}"" lazy=""false"">
-    </subclass>
+{0}
 </hibernate-mapping>
 ";
+        private string classFormat = @"<subclass name=""{0}"" extends=""{1}"" discriminator-value=""{2}"" lazy=""false""/>";
 
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
 		public ConfigurationBuilder(IDefinitionManager definitions)
@@ -49,6 +52,8 @@ namespace N2.Persistence.NH
                 DefaultMapping = "N2.Mappings.MySQL.hbm.xml, N2";
 
 			SetupProperties(config);
+
+            TryLocatingHbmResources = config.TryLocatingHbmResources;
 		}
 
 		/// <summary>Sets properties configuration dictionary based on configuration in the database section.</summary>
@@ -102,20 +107,19 @@ namespace N2.Persistence.NH
             }
 		}
 
-		#region Properties
+        #region Properties
+
+        public bool TryLocatingHbmResources
+        {
+            get { return tryLocatingHbmResources; }
+            set { tryLocatingHbmResources = value; }
+        }
 
 		/// <summary>Gets assemblies that will be added to the NHibernate configuration.</summary>
 		public IList<Assembly> Assemblies
 		{
 			get { return assemblies; }
 			set { assemblies = value; }
-		}
-
-		/// <summary>Gets or sets a hbm format stirng used when generating item class mappings.</summary>
-		public string GeneratedHbmFormat
-		{
-			get { return generatedHbmFormat; }
-			set { generatedHbmFormat = value; }
 		}
 
 		/// <summary>Gets NHibernate configuration properties.</summary>
@@ -163,38 +167,69 @@ namespace N2.Persistence.NH
 			}
 		}
 
+        private IEnumerable<Type> EnumerateDefinedTypes()
+        {
+            List<Type> types = new List<Type>();
+            foreach (ItemDefinition definition in definitions.GetDefinitions())
+            {
+                foreach (Type t in EnumerateBaseTypes(definition.ItemType))
+                {
+                    if (t.IsSubclassOf(typeof(ContentItem)) && !types.Contains(t))
+                    {
+                        int index = types.IndexOf(t.BaseType);
+                        types.Insert(index + 1, t);
+                    }
+                }
+            }
+            return types;
+        }
+
 		/// <summary>Generates subclasses nhibernate xml configuration as an alternative to NHibernate definition file and adds them to the configuration.</summary>
 		/// <param name="cfg">The nhibernate configuration to build.</param>
 		protected virtual void GenerateMappings(NHibernate.Cfg.Configuration cfg)
 		{
-			foreach(ItemDefinition definition in definitions.GetDefinitions())
-			{
-				if (!IsMapped(cfg, definition.ItemType))
-				{
-					foreach (Type t in EnumerateBaseTypes(definition.ItemType))
-					{
-						if (t.IsSubclassOf(typeof (ContentItem)))
-						{
-							if (!IsMapped(cfg, t))
-							{
-								Stream hbmXmlStream = t.Assembly.GetManifestResourceStream(t.FullName + ".hbm.xml");
-								if (hbmXmlStream == null)
-								{
-									AddGeneratedClassMapping(cfg, t);
-								}
-								else
-								{
-									using (hbmXmlStream)
-									{
-										cfg.AddInputStream(hbmXmlStream);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+            Debug.Write("Adding ");
+            //Mappings mappings = cfg.CreateMappings();
+            StringBuilder mappings = new StringBuilder();
+            foreach (Type t in EnumerateDefinedTypes())
+            {
+                //PersistentClass superClass = mappings.GetClass(t.BaseType);
+                //PersistentClass contentClass = new SingleTableSubclass(superClass);
+                //contentClass.EntityName = t.FullName;
+                //contentClass.IsLazy = false;
+                //contentClass.ClassName = GetName(t);
+                //contentClass.DiscriminatorValue = GetDiscriminator(t);
+                //mappings.AddClass(contentClass);
+
+                if (!TryLocatingHbmResources)
+                {
+                    AddGeneratedClassMapping(mappings, t);
+                }
+                else
+                {
+                    Stream hbmXmlStream = t.Assembly.GetManifestResourceStream(t.FullName + ".hbm.xml");
+                    if (hbmXmlStream == null)
+                    {
+                        AddGeneratedClassMapping(mappings, t);
+                    }
+                    else
+                    {
+                        using (hbmXmlStream)
+                        {
+                            cfg.AddInputStream(hbmXmlStream);
+                        }
+                    }
+                }
+
+                Debug.Write(t.Name + " ");
+            }
+            cfg.AddXml(string.Format(mappingFormat, mappings));
 		}
+
+        private static string GetName(Type t)
+        {
+            return t.FullName + ", " + t.Assembly.FullName.Split(',')[0];
+        }
 
 		/// <summary>Enumerates base type chain of the supplied type.</summary>
 		/// <param name="t">The type whose base types will be enumerated.</param>
@@ -251,16 +286,9 @@ namespace N2.Persistence.NH
 		/// <summary>Generates the configuration xml for a subclass without any properties and adds it to the NHibernate configuration.</summary>
 		/// <param name="cfg">The current nhhibernate configuration.</param>
 		/// <param name="itemType">The type to to generate a subclassed NHibernate hbm xml for.</param>
-		protected virtual void AddGeneratedClassMapping(NHibernate.Cfg.Configuration cfg, Type itemType)
+		protected virtual void AddGeneratedClassMapping(StringBuilder mappings, Type itemType)
 		{
-			string discriminator = GetDiscriminator(itemType);
-			string xml = string.Format(GeneratedHbmFormat,
-			                           itemType.FullName,
-			                           itemType.Assembly.FullName.Split(',')[0],
-			                           itemType.BaseType.FullName,
-									   itemType.BaseType.Assembly.FullName.Split(',')[0],
-			                           discriminator);
-			cfg.AddXml(xml);
+            mappings.AppendFormat(classFormat, GetName(itemType), GetName(itemType.BaseType), GetDiscriminator(itemType));
 		}
 
 		private string GetDiscriminator(Type itemType)

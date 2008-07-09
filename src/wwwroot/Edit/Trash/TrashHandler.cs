@@ -83,7 +83,8 @@ namespace N2.Edit.Trash
 			item.Expires = DateTime.Now;
 			item.Name = item.ID.ToString();
 
-			persister.Save(item);
+            foreach (ContentItem child in item.Children)
+                ExpireTrashedItem(child);
 		}
 
 		/// <summary>Restores an item to the original location.</summary>
@@ -92,7 +93,7 @@ namespace N2.Edit.Trash
 		{
 			ContentItem parent = (ContentItem)item["FormerParent"];
 			RestoreValues(item);
-
+            persister.Save(item);
 			persister.Move(item, parent);
 		}
 
@@ -108,7 +109,8 @@ namespace N2.Edit.Trash
 			item["FormerExpires"] = null;
 			item["DeletedDate"] = null;
 
-			persister.Save(item);
+            foreach (ContentItem child in item.Children)
+                RestoreValues(child);
 		}
 
 		public bool IsInTrash(ContentItem item)

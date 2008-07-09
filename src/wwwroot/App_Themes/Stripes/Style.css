@@ -9,12 +9,11 @@ dl,ol,ul {list-style:none}
 button,select,textarea,input {font:100% serif}
 table {border-collapse:collapse}
 caption,th,td {text-align:left;vertical-align:top;}
-h1,h2,h3,h4,h5,h6,p {margin:.35em 0;font-family:Cambria,"Hoefler Text","Palatino Linotype",Palatino,"Trebuchet MS",serif}
+h1,h2,h3,h4,h5,h6,p {margin:.4em 0;font-family:Cambria,"Hoefler Text","Palatino Linotype",Palatino,"Trebuchet MS",serif}
 
 /* colors */
 a { color:#478db3; text-decoration:none; }
 a:hover { text-decoration:underline; }
-a:visited { color:#5bb4e5; }
 
 
 /********* LAYOUT *********/

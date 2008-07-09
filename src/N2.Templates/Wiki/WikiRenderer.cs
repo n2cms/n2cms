@@ -13,11 +13,13 @@ namespace N2.Templates.Wiki
 
         public WikiRenderer(IPluginFinder pluginFinder)
         {
+            Map["Comment"] = new CommentRenderer();
             Map["UserInfo"] = new UserInfoRenderer();
             Map["InternalLink"] = new InternalLinkRenderer();
             Map["ExternalLink"] = new ExternalLinkRenderer();
             Map["Text"] = FallbackRenderer = new TextRenderer();
             Map["Template"] = new TemplateRenderer(pluginFinder.GetPlugins<ITemplateRenderer>());
+            Map["Heading"] = new HeadingRenderer();
         }
 
         public IRenderer FallbackRenderer { get; set; }
@@ -28,12 +30,11 @@ namespace N2.Templates.Wiki
             set { map = value; }
         }
 
-        public void AddTo(IEnumerable<Fragment> fragments, Control container, ContentItem wiki, ContentItem article)
+        public void AddTo(IEnumerable<Fragment> fragments, Control container, IWiki wiki, ContentItem article)
         {
-
             foreach (Fragment f in fragments)
             {
-                var ctx = new RenderingContext { Article = article, Wiki = wiki, Fragment = f };
+                var ctx = new ViewContext { Article = article as IArticle, Fragment = f };
                 if (Map.ContainsKey(f.Name))
                     Map[f.Name].AddTo(container, ctx);
                 else if (FallbackRenderer != null)

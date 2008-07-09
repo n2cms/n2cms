@@ -14,13 +14,5 @@ namespace N2.Templates.UI
 {
 	public partial class Default : Web.UI.TemplatePage<Items.StartPage>
 	{
-        protected override void OnLoad(EventArgs e)
-        {
-            if (Master is IBreadcrumb)
-            {
-                (Master as IBreadcrumb).Breadcrumb.Visible = false;
-            }
-            base.OnLoad(e);
-        }
 	}
 }

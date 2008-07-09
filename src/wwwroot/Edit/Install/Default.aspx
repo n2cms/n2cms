@@ -156,7 +156,7 @@
             <p>Good luck and happy <a href="..">editing</a>.</p>
             <p>/Cristian</p>
         </n2:TabPanel>
-        <asp:Label ID="errorLabel" runat="server" CssClass="errorLabel" />
+        <asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" />
     </form>
 </body>
 </html>

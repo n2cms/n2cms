@@ -180,7 +180,16 @@ namespace N2.Security
 					return true;
 			return false;
 		}
+
+        public bool IsAuthorized(IPrincipal user, IEnumerable<string> roles)
+        {
+            foreach (string role in roles)
+                if (user.IsInRole(role) || AuthorizedRole.Everyone.Equals(role, StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+            return false;
+        }
+
 		#endregion
 
-	}
+    }
 }

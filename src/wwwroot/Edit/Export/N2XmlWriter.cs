@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using N2.Collections;
 
 namespace N2.Xml
 {
@@ -167,7 +168,7 @@ namespace N2.Xml
 
 		protected virtual IEnumerable<ContentItem> GetChildren(ContentItem item)
 		{
-			return new N2.Collections.ItemList(item.Children, this.Filters);
+			return new N2.Collections.ItemList(item.Children, new CompositeFilter(Filters));
 		}
 
 		protected string GetDateTimeString(DateTime date)

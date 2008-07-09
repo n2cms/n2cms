@@ -9,6 +9,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Templates.Items;
 using N2.Integrity;
+using System.Collections.Generic;
+using N2.Web;
 
 namespace N2.Templates.Wiki.Items
 {
@@ -16,18 +18,69 @@ namespace N2.Templates.Wiki.Items
     [RestrictParents(typeof(Wiki))]
     public class WikiArticle : AbstractContentPage, IArticle
     {
+        protected static Dictionary<string, string> actions = new Dictionary<string, string>();
+        static WikiArticle()
+        {
+            actions["submit"] = "~/Wiki/UI/SubmitArticle.aspx";
+            actions["modify"] = "~/Wiki/UI/EditArticle.aspx";
+            actions["history"] = "~/Wiki/UI/History.aspx";
+        }
+
         public WikiArticle()
         {
             Visible = false;
         }
 
         public string Action { get; set; }
+        public string ActionParameter { get; set; }
 
-        [WikiText("Wiki", 100, ContainerName = Tabs.Content)]
+        [WikiText("Wiki Text", 100, ContainerName = Tabs.Content)]
         public override string Text
         {
             get { return base.Text; }
             set { base.Text = value; }
+        }
+
+        public string AppendUrl(string action)
+        {
+            return new Url(Url).AppendSegment(action);
+        }
+
+        public override ContentItem GetChild(string childName)
+        {
+            ContentItem article = base.GetChild(childName);
+            if (article == null)
+            {
+                string[] action = GetSegments(childName);
+                if (actions.ContainsKey(action[0]))
+                {
+                    Action = action[0];
+                    ActionParameter = action[1];
+                    return this;
+                }
+            }
+            return article;
+        }
+
+        public override string SavedBy
+        {
+            get
+            {
+                string name = base.SavedBy;
+                if (string.IsNullOrEmpty(name))
+                    name = (string)this["SavedByAddress"] ?? string.Empty;
+                return name;
+            }
+            set { base.SavedBy = value; }
+        }
+
+        protected string[] GetSegments(string path)
+        {
+            int slashIndex = path.IndexOf('/');
+            if (slashIndex < 0)
+                return new string[] { path.ToLower(), string.Empty };
+            else
+                return new string[] { path.Substring(0, slashIndex).ToLower(), path.Substring(slashIndex + 1) };
         }
 
         public override string TemplateUrl
@@ -36,14 +89,16 @@ namespace N2.Templates.Wiki.Items
             {
                 if (string.IsNullOrEmpty(Action))
                     return base.TemplateUrl;
+                else if (actions.ContainsKey(Action))
+                    return actions[Action];
                 else
-                    throw new NotImplementedException();
+                    throw new N2Exception("Invalid action '" + Action + "'.");
             }
         }
 
-        public virtual ContentItem WikiRoot
+        public virtual IWiki WikiRoot
         {
-            get { return this.Parent; }
+            get { return this.Parent as IWiki; }
         }
     }
 }

@@ -48,24 +48,22 @@ namespace N2.Web
             // Add published nodes that are pages
 			if (item != null)
 			{
-				IEnumerable<ItemFilter> filters = GetFilters();
-
-				foreach (ContentItem child in item.GetChildren(filters))
+				foreach (ContentItem child in item.GetChildren(GetFilter()))
 					nodes.Add(Convert(child));
 			}
 
             return nodes;
         }
 
-		protected virtual IEnumerable<ItemFilter> GetFilters()
+        protected virtual ItemFilter GetFilter()
 		{
-			IList<ItemFilter> filters = new List<ItemFilter>();
+			List<ItemFilter> filters = new List<ItemFilter>();
 			filters.Add(new PageFilter());
 			filters.Add(new VisibleFilter());
 			filters.Add(new PublishedFilter());
 			if (SecurityTrimmingEnabled)
 				filters.Add(new AccessFilter());
-			return filters;
+			return new CompositeFilter(filters.ToArray());
 		}
 
         public override SiteMapNode GetParentNode(SiteMapNode node)

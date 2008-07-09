@@ -1,5 +1,5 @@
 ﻿using System;
-namespace N2.Templates.Services
+namespace N2.Web.Mail
 {
 	public interface IMailSender
 	{

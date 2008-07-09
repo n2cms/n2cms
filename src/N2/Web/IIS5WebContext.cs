@@ -27,7 +27,7 @@ namespace N2.Web
 	{
 		public IIS5RequestContext()
 		{
-			Debug.WriteLine("IIS5WebContext");
+            Debug.WriteLine("IIS5WebContext:ctor");
 		}
 
 		Regex pathExpression = new Regex(".*?://.*?(/.*)");

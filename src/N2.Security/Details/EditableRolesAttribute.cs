@@ -18,7 +18,7 @@ namespace N2.Security.Details
 				if (li.Selected)
 					roles.Add(li.Value);
 
-			DetailCollection dc = item.GetDetailCollection("Roles", true);
+			DetailCollection dc = item.GetDetailCollection(Name, true);
 			dc.Replace(roles);
 
 			return true;
@@ -27,7 +27,7 @@ namespace N2.Security.Details
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
 			CheckBoxList cbl = editor as CheckBoxList;
-			DetailCollection dc = item.GetDetailCollection("Roles", false);
+			DetailCollection dc = item.GetDetailCollection(Name, false);
 			if (dc != null)
 			{
 				foreach (string role in dc)

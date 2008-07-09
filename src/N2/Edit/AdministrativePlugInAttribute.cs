@@ -17,8 +17,8 @@ namespace N2.Edit
 	{
 		private string[] authorizedRoles;
 		private bool enabled = true;
-		private string name;
-		private int sortOrder = int.MaxValue;
+        private string name;
+        private int sortOrder = int.MaxValue;
 
 		#region Public Properties
 

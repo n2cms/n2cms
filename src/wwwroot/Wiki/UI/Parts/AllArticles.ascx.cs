@@ -8,15 +8,23 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using N2.Templates.Wiki.Web;
 
 namespace N2.Templates.Wiki.UI.Parts
 {
     [WikiTemplate("~/Wiki/UI/Parts/AllArticles.ascx")]
-    public partial class AllArticles : System.Web.UI.UserControl
+    public partial class AllArticles : WikiUserControl<Items.WikiArticle>
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
+            rptArticles.DataSource = N2.Find.Items
+                .Where.Type.Eq(typeof(Items.WikiArticle))
+                .And.Parent.Eq((ContentItem)Viewed.Article.WikiRoot)
+                .OrderBy.Title.Asc.Select();
 
+            DataBind();
+
+            base.OnInit(e);
         }
     }
 }

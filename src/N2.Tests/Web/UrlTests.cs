@@ -171,21 +171,21 @@ namespace N2.Tests.Web
         {
             Url u = "/?somekey=somevalue";
             u = u.AppendQuery("key", "value");
-            Assert.That(u.Query, Is.EqualTo("somekey=somevalue&amp;key=value"));
+            Assert.That(u.Query, Is.EqualTo("somekey=somevalue&key=value"));
         }
         [Test]
         public void CanAppend_KeyValuePair_ToExistingQueryString()
         {
             Url u = "/?somekey=somevalue";
             u = u.AppendQuery("key=value");
-            Assert.That(u.Query, Is.EqualTo("somekey=somevalue&amp;key=value"));
+            Assert.That(u.Query, Is.EqualTo("somekey=somevalue&key=value"));
         }
 
         [Test]
         public void CanSet_KeyAndValue_ToEmptyQueryString()
         {
             Url u = "/";
-            u = u.SetQuery("key", "value");
+            u = u.UpdateQuery("key", "value");
             Assert.That(u.Query, Is.EqualTo("key=value"));
         }
 
@@ -193,7 +193,7 @@ namespace N2.Tests.Web
         public void CanSet_KeyValuePair_ToEmptyQueryString()
         {
             Url u = "/";
-            u = u.SetQuery("key=value");
+            u = u.UpdateQuery("key=value");
             Assert.That(u.Query, Is.EqualTo("key=value"));
         }
 
@@ -201,29 +201,29 @@ namespace N2.Tests.Web
         public void CanSet_KeyAndValue_ToExistingQueryString()
         {
             Url u = "/?somekey=somevalue";
-            u = u.SetQuery("key", "value");
-            Assert.That(u.Query, Is.EqualTo("somekey=somevalue&amp;key=value"));
+            u = u.UpdateQuery("key", "value");
+            Assert.That(u.Query, Is.EqualTo("somekey=somevalue&key=value"));
         }
         [Test]
         public void CanSet_KeyValuePair_ToExistingQueryString()
         {
             Url u = "/?somekey=somevalue";
-            u = u.SetQuery("key=value");
-            Assert.That(u.Query, Is.EqualTo("somekey=somevalue&amp;key=value"));
+            u = u.UpdateQuery("key=value");
+            Assert.That(u.Query, Is.EqualTo("somekey=somevalue&key=value"));
         }
 
         [Test]
         public void CanReplaceValue_OnExistingQueryString_UsingKeyAndValue()
         {
             Url u = "/?key=somevalue";
-            u = u.SetQuery("key", "someothervalue");
+            u = u.UpdateQuery("key", "someothervalue");
             Assert.That(u.Query, Is.EqualTo("key=someothervalue"));
         }
         [Test]
         public void CanReplaceValue_OnExistingQueryString_UsingKeyValuePair()
         {
             Url u = "/?key=somevalue";
-            u = u.SetQuery("key=someothervalue");
+            u = u.UpdateQuery("key=someothervalue");
             Assert.That(u.Query, Is.EqualTo("key=someothervalue"));
         }
 
@@ -234,12 +234,92 @@ namespace N2.Tests.Web
             u = u.AppendQuery("key", "cristian & maria");
             Assert.That(u.Query, Is.EqualTo("key=cristian+%26+maria"));
         }
+
         [Test]
         public void SetValue_IsUrlEncoded()
         {
             Url u = "/key=sometihng";
-            u = u.SetQuery("key", "cristian & maria");
+            u = u.UpdateQuery("key", "cristian & maria");
             Assert.That(u.Query, Is.EqualTo("key=cristian+%26+maria"));
+        }
+
+        [Test]
+        public void CanSetScheme()
+        {
+            Url u = "http://n2cms.com/test.aspx?key=value";
+            u = u.SetScheme("https");
+            Assert.That(u.ToString(), Is.EqualTo("https://n2cms.com/test.aspx?key=value"));
+        }
+
+        [Test]
+        public void CanSetAuthority()
+        {
+            Url u = "http://n2cms.com/test.aspx?key=value";
+            u = u.SetAuthority("n2cms.com:8080");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com:8080/test.aspx?key=value"));
+        }
+
+        [Test]
+        public void CanSetPath()
+        {
+            Url u = "http://n2cms.com/test.aspx?key=value";
+            u = u.SetPath("/test2.aspx");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2.aspx?key=value"));
+        }
+
+        [Test]
+        public void CanSetQuery()
+        {
+            Url u = "http://n2cms.com/test.aspx?key=value";
+            u = u.SetQuery("key2=value2");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test.aspx?key2=value2"));
+        }
+
+        [Test]
+        public void CanSetFragment()
+        {
+            Url u = "http://n2cms.com/test.aspx?key=value#fragment";
+            u = u.SetFragment("fragment2");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test.aspx?key=value#fragment2"));
+        }
+
+        [Test]
+        public void CanAppendSegment()
+        {
+            Url u = "http://n2cms.com/test.aspx?key=value";
+            u = u.AppendSegment("test2");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test/test2.aspx?key=value"));
+        }
+
+        [Test]
+        public void CanAppendSegment_ToEmptyPath()
+        {
+            Url u = "http://n2cms.com";
+            u = u.AppendSegment("test2");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2.aspx"));
+        }
+
+        [Test]
+        public void CanAppendSegment_ToEmptyPath2()
+        {
+            Url u = "http://n2cms.com/";
+            u = u.AppendSegment("test2");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2.aspx"));
+        }
+
+        [Test]
+        public void CanSetPath_WithQueryString()
+        {
+            Url u = "http://n2cms.com/some/path.aspx?existing=query";
+            u = u.SetPath("/new/path?new=querystring");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/new/path?existing=query"));
+        }
+
+        [Test]
+        public void CanCombine_PathAndQuery()
+        {
+            Url u = "http://n2cms.com/some/path.aspx?existing=query";
+            Assert.That(u.PathAndQuery, Is.EqualTo("/some/path.aspx?existing=query"));
         }
     }
 }

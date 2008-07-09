@@ -30,7 +30,7 @@ namespace N2.Templates.UI
 			context.Response.ContentType = "image/jpeg";
 
 			string path = context.Server.MapPath(imageUrl);
-			//context.Response.Cache.SetExpires(DateTime.Now.AddHours(1));
+            //context.Response.Cache.SetExpires(DateTime.Now.AddHours(1));
 			//context.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate | HttpCacheability.Public);
 			//context.Response.Cache.SetValidUntilExpires(true);
 			Imaging.ImageResizer ir = new Imaging.ImageResizer();
