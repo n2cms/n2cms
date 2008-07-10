@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using Castle.Core;
+using System.Collections.Specialized;
 
 namespace N2.Security
 {
@@ -37,27 +38,44 @@ namespace N2.Security
 		
 		private bool enabled = true;
 
-		IList editorNames = new List<string>();
-		IList editorRoles = new List<string>();
-		IList adminNames = new List<string>();
-		IList adminRoles = new List<string>();
+        string[] editorNames = new string[0];
+        string[] editorRoles = new string[] { "Editors" };
+        string[] adminNames = new string[] { "admin" };
+        string[] adminRoles = new string[] { "Administrators" };
 		
 		/// <summary>Creates a new instance of the security manager.</summary>
 		public SecurityManager(Web.IWebContext webContext)
 		{
 			this.webContext = webContext;
+        }
 
-			this.AdminNames = new string[] { "admin" };
-			this.EditorNames = this.AdminNames;
-			this.AdminRoles = new string[] { "Administrators" };
-			this.EditorRoles = new string[] { "Administrators", "Editors" };
-		}
+        /// <summary>Creates a new instance of the security manager.</summary>
+        public SecurityManager(Web.IWebContext webContext, Configuration.EditSection config)
+        {
+            this.webContext = webContext;
+
+            if (config.Editors.Users != null)
+                editorNames = ToArray(config.Editors.Users);
+            if (config.Editors.Roles != null)
+                editorRoles = ToArray(config.Editors.Roles);
+            if (config.Administrators.Users != null)
+                adminNames = ToArray(config.Administrators.Users);
+            if (config.Administrators.Roles != null)
+                adminRoles = ToArray(config.Administrators.Roles);
+        }
+
+        private static string[] ToArray(StringCollection list)
+        {
+            string[] array = new string[list.Count];
+            list.CopyTo(array, 0);
+            return array;
+        }
 
 		#region Properties
 		/// <summary>
 		/// Gets or sets user names considered as editors.
 		/// </summary>
-		public IList EditorNames
+		public string[] EditorNames
 		{
 			get { return editorNames; }
 			set { editorNames = value; }
@@ -66,7 +84,7 @@ namespace N2.Security
 		/// <summary>
 		/// Gets or sets roles considered as editors.
 		/// </summary>
-		public IList EditorRoles
+        public string[] EditorRoles
 		{
 			get { return editorRoles; }
 			set { editorRoles = value; }
@@ -75,7 +93,7 @@ namespace N2.Security
 		/// <summary>
 		/// Gets or sets user names considered as administrators.
 		/// </summary>
-		public IList AdminNames
+        public string[] AdminNames
 		{
 			get { return adminNames; }
 			set { adminNames = value; }
@@ -84,7 +102,7 @@ namespace N2.Security
 		/// <summary>
 		/// Gets or sets roles considered as administrators.
 		/// </summary>
-		public IList AdminRoles
+        public string[] AdminRoles
 		{
 			get { return adminRoles; }
 			set { adminRoles = value; }
@@ -165,7 +183,7 @@ namespace N2.Security
 			return item.IsAuthorized(principal);
 		}
 
-		private bool HasName(IPrincipal user, IEnumerable names)
+		private bool HasName(IPrincipal user, string[] names)
 		{
 			foreach(string name in names)
 				if(user.Identity.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
@@ -173,7 +191,7 @@ namespace N2.Security
 			return false;
 		}
 
-		private bool IsInRole(IPrincipal user, IEnumerable roles)
+        private bool IsInRole(IPrincipal user, string[] roles)
 		{
 			foreach(string role in roles)
 				if(user.IsInRole(role))

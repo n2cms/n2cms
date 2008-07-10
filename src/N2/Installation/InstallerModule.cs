@@ -23,15 +23,15 @@ namespace N2.Installation
     /// </summary>
 	public class InstallerModule : IHttpModule
 	{
-        private InstallerSection config;
+        private EditSection config;
         private HttpApplication context;
         private IEngine engine;
         private bool alreadyChecked = false;
 
 		public void Init(HttpApplication application)
 		{
-            config = (InstallerSection)WebConfigurationManager.GetSection("n2/installer");
-            if (config != null && config.CheckInstallationStatus)
+            config = (EditSection)WebConfigurationManager.GetSection("n2/edit");
+            if (config != null && config.Installer.CheckInstallationStatus)
             {
                 this.context = application;
                 application.BeginRequest += context_BeginRequest;
@@ -51,7 +51,7 @@ namespace N2.Installation
 			DatabaseStatus status = im.GetStatus();
 			if (!status.IsInstalled)
 			{
-				context.Response.Redirect(config.InstallUrl);
+                context.Response.Redirect(config.Installer.InstallUrl);
 			}
 		}
 

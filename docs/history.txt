@@ -22,6 +22,9 @@
 - configurable cache support
 - output cache invalidation support
 - filters += pipes
+- editor roles configuration
+- moved installer configuraiton -> <edit><installer... (update web.config)
+- added profile provider
 
 1.4
 - templates

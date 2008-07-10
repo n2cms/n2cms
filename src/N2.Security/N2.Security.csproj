@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentProfileProvider.cs" />
     <Compile Include="Details\EditableRolesAttribute.cs" />
     <Compile Include="ItemBridge.cs" />
     <Compile Include="Items\UserList.cs" />

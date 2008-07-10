@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
+using System.Web.Configuration;
 
 namespace N2.Configuration
 {
@@ -10,6 +11,29 @@ namespace N2.Configuration
     /// </summary>
     public class EditSection : ConfigurationSection
     {
+        [ConfigurationProperty("installer")]
+        public InstallerElement Installer
+        {
+            get { return (InstallerElement)base["installer"]; }
+            set { base["editTreeUrl"] = value; }
+        }
+
+        /// <summary>Users and roles considered editors.</summary>
+        [ConfigurationProperty("editors")]
+        public EditAccess Editors
+        {
+            get { return (EditAccess)base["editors"]; }
+            set { base["editors"] = value; }
+        }
+
+        /// <summary>Users and roles considered administrators.</summary>
+        [ConfigurationProperty("administrators")]
+        public EditAccess Administrators
+        {
+            get { return (EditAccess)base["administrators"]; }
+            set { base["administrators"] = value; }
+        }
+
         [ConfigurationProperty("editTreeUrl", DefaultValue = "Navigation/Tree.aspx")]
         public string EditTreeUrl
         {
