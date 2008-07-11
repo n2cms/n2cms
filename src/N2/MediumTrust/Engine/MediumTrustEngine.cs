@@ -20,13 +20,13 @@ using N2.Serialization;
 using N2.MediumTrust.Configuration;
 using N2.Details;
 using N2.Persistence.Finder;
-using N2.Edit.Settings;
 using N2.Plugin;
 using N2.Parts;
 using N2.Configuration;
 using N2.Globalization;
 using System.Web.Configuration;
 using N2.Installation;
+using System.Configuration;
 
 namespace N2.MediumTrust.Engine
 {
@@ -56,16 +56,22 @@ namespace N2.MediumTrust.Engine
 		{
             HostSection hostConfiguration = (HostSection)AddConfigurationSection("n2/host");
             EngineSection engineConfiguration = (EngineSection)AddConfigurationSection("n2/engine");
-            if (engineConfiguration != null)
-                Url.DefaultExtension = engineConfiguration.Extension;
+            if (engineConfiguration == null)
+                throw new ConfigurationErrorsException("Couldn't find the n2/engine configuration section. Please check the configuration.");
+            Url.DefaultExtension = engineConfiguration.Extension;
             DatabaseSection databaseConfiguration = (DatabaseSection)AddConfigurationSection("n2/database");
             AddConfigurationSection("n2/globalization");
             AddConfigurationSection("n2/edit");
             AddConfigurationSection("n2/installer");
 
             host = AddComponentInstance<IHost>(new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
-			if (webContext == null)
-				webContext = new N2.Web.RequestContext();
+            if (webContext == null)
+            {
+                if (engineConfiguration.IsWeb)
+                    webContext = new RequestContext();
+                else
+                    webContext = new ThreadContext();
+            }
             AddComponentInstance<IWebContext>(webContext);
 
             IItemNotifier notifier = AddComponentInstance<IItemNotifier>(new ItemNotifier());
@@ -94,7 +100,7 @@ namespace N2.MediumTrust.Engine
             securityManager = AddComponentInstance<ISecurityManager>(new SecurityManager(webContext));
             ISecurityEnforcer securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
             IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(persister, itemRepository));
-			NavigationSettings settings = AddComponentInstance<NavigationSettings>(new NavigationSettings(webContext));
+			N2.Edit.Settings.NavigationSettings settings = AddComponentInstance<N2.Edit.Settings.NavigationSettings>(new N2.Edit.Settings.NavigationSettings(webContext));
             IPluginFinder pluginFinder = new PluginFinder(typeFinder);
             editManager = AddComponentInstance<IEditManager>(new EditManager(typeFinder, definitions, persister, versioner, securityManager, pluginFinder, settings));
             integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
@@ -111,11 +117,11 @@ namespace N2.MediumTrust.Engine
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
             AddComponentInstance<Navigator>(new Navigator(persister, host));
 
-			AttributeExplorer<IServiceEditable> serviceExplorer = new AttributeExplorer<IServiceEditable>();
+			AttributeExplorer<N2.Edit.Settings.IServiceEditable> serviceExplorer = new AttributeExplorer<N2.Edit.Settings.IServiceEditable>();
 			AttributeExplorer<IEditableContainer> containerExplorer = new AttributeExplorer<IEditableContainer>();
-			SettingsManager settingsManager = new SettingsManager(serviceExplorer, containerExplorer);
-			EditableHierarchyBuilder<IServiceEditable> hierarchyBuilder = new EditableHierarchyBuilder<IServiceEditable>();
-            AddComponentInstance<ISettingsProvider>(new SettingsProvider(settingsManager, hierarchyBuilder));
+			N2.Edit.Settings.SettingsManager settingsManager = new N2.Edit.Settings.SettingsManager(serviceExplorer, containerExplorer);
+			EditableHierarchyBuilder<N2.Edit.Settings.IServiceEditable> hierarchyBuilder = new EditableHierarchyBuilder<N2.Edit.Settings.IServiceEditable>();
+            AddComponentInstance<N2.Edit.Settings.ISettingsProvider>(new N2.Edit.Settings.SettingsProvider(settingsManager, hierarchyBuilder));
             AjaxRequestDispatcher dispatcher = AddComponentInstance<AjaxRequestDispatcher>(new AjaxRequestDispatcher(securityManager));
             CreateUrlProvider cup = AddComponentInstance<CreateUrlProvider>(new CreateUrlProvider(persister, editManager, definitions, dispatcher));
             ItemDeleter id = AddComponentInstance<ItemDeleter>(new ItemDeleter(persister, dispatcher));

@@ -50,6 +50,7 @@ namespace N2.Security
         public override ProfileInfoCollection FindInactiveProfilesByUserName(ProfileAuthenticationOption authenticationOption, string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
         {
             Trace.TraceWarning("ContentProfileProvider.FindInactiveProfilesByUserName Not Implemented");
+            totalRecords = 0;
             return new ProfileInfoCollection();
         }
 
@@ -75,6 +76,7 @@ namespace N2.Security
         public override ProfileInfoCollection GetAllInactiveProfiles(ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords)
         {
             Trace.TraceWarning("ContentProfileProvider.GetAllInactiveProfiles Not Implemented");
+            totalRecords = 0;
             return new ProfileInfoCollection();
         }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace N2.Definitions.Edit.Trash
+namespace N2.Edit.Trash
 {
     /// <summary>
     /// When used on an item definition this attribute prevents it from beeing 

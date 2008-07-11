@@ -157,7 +157,7 @@ namespace N2.Web
 
         public static implicit operator Url(string url)
         {
-            return new Url(url);
+            return Parse(url);
         }
 
         /// <summary>Retrieves the path part of an url, e.g. /path/to/page.aspx.</summary>
@@ -208,6 +208,8 @@ namespace N2.Web
 
         public static Url Parse(string url)
         {
+            if (url.StartsWith("~"))
+                url = Utility.ToAbsolute(url);
             return new Url(url);
         }
 
@@ -288,22 +290,27 @@ namespace N2.Web
             return new Url(this.scheme, this.authority, this.path, this.query, fragment);
         }
 
-        public Url AppendSegment(string segment)
+        public Url AppendSegment(string segment, string extension)
         {
             string newPath;
             if (path.Length == 0)
-                newPath = "/" + segment + Url.DefaultExtension;
+                newPath = "/" + segment + extension;
             else if (path == "/")
-                newPath = path + segment + Url.DefaultExtension;
+                newPath = path + segment + extension;
             else
             {
-                int extensionIndex = path.LastIndexOf(Url.DefaultExtension);
+                int extensionIndex = path.LastIndexOf(extension);
                 if (extensionIndex >= 0)
                     newPath = path.Insert(extensionIndex, "/" + segment);
                 else
                     newPath = path + "/" + segment;
             }
             return new Url(scheme, authority, newPath, query, fragment);
+        }
+
+        public Url AppendSegment(string segment)
+        {
+            return AppendSegment(segment, DefaultExtension);
         }
 
         public Url AppendQuery(NameValueCollection queryString)

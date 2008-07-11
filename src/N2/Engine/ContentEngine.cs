@@ -56,12 +56,18 @@ namespace N2.Engine
 			container = new WindsorContainer();
 			
 			RegisterConfigurationSections(config);
-			HostSection host = (HostSection)config.GetSection("n2/host");
-			EngineSection engine = (EngineSection)config.GetSection("n2/engine");
-            if (engine != null)
-                Url.DefaultExtension = engine.Extension;
-            if (host != null && host.MultipleSites)
-				ProcessResource(new AssemblyResource(engine.MultipleSitesConfiguration));
+			HostSection hostConfig = (HostSection)config.GetSection("n2/host");
+			EngineSection engineConfig = (EngineSection)config.GetSection("n2/engine");
+            if (engineConfig != null)
+            {
+                Url.DefaultExtension = engineConfig.Extension;
+                if (!engineConfig.IsWeb)
+                    container.Kernel.AddComponentInstance("n2.webContext.notWeb", typeof(IWebContext), new ThreadContext());
+            }
+            if (hostConfig != null && hostConfig.MultipleSites)
+            {
+                ProcessResource(new AssemblyResource(engineConfig.MultipleSitesConfiguration));
+            }
 			IResource resource = DetermineResource(config);
 			ProcessResource(resource);
             InstallComponents();

@@ -30,7 +30,7 @@ namespace N2.Web
 
         public Url Url(string url)
         {
-            return new Url(url);
+            return Web.Url.Parse(url);
         }
 
         public TagBuilder A(string url, string text)

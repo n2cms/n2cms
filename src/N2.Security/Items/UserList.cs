@@ -6,7 +6,7 @@ using N2.Collections;
 using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
-using N2.Definitions.Edit.Trash;
+using N2.Edit.Trash;
 using N2.Installation;
 
 namespace N2.Security.Items

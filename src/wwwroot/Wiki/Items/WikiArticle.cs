@@ -43,7 +43,7 @@ namespace N2.Templates.Wiki.Items
 
         public string AppendUrl(string action)
         {
-            return new Url(Url).AppendSegment(action);
+            return N2.Web.Url.Parse(Url).AppendSegment(action);
         }
 
         public override ContentItem GetChild(string childName)

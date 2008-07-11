@@ -1,5 +1,6 @@
 - node based file tree
 - idispatcher & content controller -> N2.dll
+- circuitbreaker
 - queue of t
 - handle not-mapped types
 - allow non root-path to act as start page

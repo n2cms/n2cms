@@ -4,7 +4,7 @@ using N2.Details;
 using N2.Edit.Wizard.Details;
 using N2.Integrity;
 using N2.Installation;
-using N2.Definitions.Edit.Trash;
+using N2.Edit.Trash;
 
 namespace N2.Edit.Wizard.Items
 {

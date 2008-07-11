@@ -59,7 +59,7 @@ namespace N2
     /// you should manually change the discriminator in the database or set the 
     /// name of the definition attribute, e.g. [Definition("Title", "OldClassName")]
     /// </remarks>
-	[Serializable, RestrictParents(typeof(ContentItem)), DebuggerDisplay("{Name} [{ID}]")]
+	[Serializable, RestrictParents(typeof(ContentItem)), DebuggerDisplay("{Name}#{ID}")]
 	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, IContainable, INode
     {
         #region Private Fields
@@ -519,7 +519,7 @@ namespace N2
 
 		private ContentItem FindChild(string childName)
 		{
-			foreach (ContentItem child in Children)
+			foreach (ContentItem child in GetChildren(new NullFilter()))
 			{
 				if (string.Equals(childName, child.Name, StringComparison.InvariantCultureIgnoreCase))
 					return child;

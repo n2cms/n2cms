@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using N2.Security.Details;
 using N2.Definitions;
-using N2.Definitions.Edit.Trash;
+using N2.Edit.Trash;
 using N2.Installation;
 
 namespace N2.Security.Items

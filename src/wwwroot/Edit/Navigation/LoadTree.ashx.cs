@@ -50,6 +50,7 @@ namespace N2.Edit.Navigation
 			string className = node.ClassNames;
 
 			ILinkBuilder builder = Link.To(node).Target(target).Class(className)
+                .Href(node.PreviewUrl)
 				.Text("<img src='" + Utility.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
 				.Attribute("rel", node.Path);
 

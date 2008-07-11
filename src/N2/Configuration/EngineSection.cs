@@ -35,6 +35,14 @@ namespace N2.Configuration
         }
 
         /// <summary>Read the windsor inversion of control container configuration from this configuration section instead of the location configured by <see cref="CastleConfiguration"/>.</summary>
+        [ConfigurationProperty("isWeb", DefaultValue = true)]
+        public bool IsWeb
+        {
+            get { return (bool)base["isWeb"]; }
+            set { base["isWeb"] = value; }
+        }
+
+        /// <summary>Read the windsor inversion of control container configuration from this configuration section instead of the location configured by <see cref="CastleConfiguration"/>.</summary>
         [ConfigurationProperty("castleSection")]
         public string CastleSection
         {

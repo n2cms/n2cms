@@ -160,6 +160,23 @@
     </Compile>
     <Compile Include="Edit\FileManagement\FileEventArgs.cs" />
     <Compile Include="Edit\FileManagement\FileManager.cs" />
+    <Compile Include="Edit\FileSystem\Directory.aspx.cs">
+      <DependentUpon>Directory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\FileSystem\Directory.aspx.designer.cs">
+      <DependentUpon>Directory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Edit\FileSystem\File.aspx.cs">
+      <DependentUpon>File.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\FileSystem\File.aspx.designer.cs">
+      <DependentUpon>File.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Edit\FileSystem\Items\Directory.cs" />
+    <Compile Include="Edit\FileSystem\Items\File.cs" />
+    <Compile Include="Edit\FileSystem\Items\RootDirectory.cs" />
     <Compile Include="Edit\Framed.Master.cs">
       <DependentUpon>Framed.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1586,6 +1603,8 @@
     <Content Include="Edit\Wizard\Img\wand.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Edit\FileSystem\Directory.aspx" />
+    <Content Include="Edit\FileSystem\File.aspx" />
     <Content Include="Edit\Globalization\Translate.aspx" />
     <Content Include="Edit\img\ico\png\bullet_toggle_minus.png" />
     <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.it.resx">

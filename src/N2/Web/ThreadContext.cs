@@ -44,7 +44,7 @@ namespace N2.Web
 
 		public override string MapPath(string path)
 		{
-			path = path.Replace("~/", ".\\").Replace('/', '\\');
+			path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
 			return Path.Combine(baseDirectory, path);
 		}
 	}
