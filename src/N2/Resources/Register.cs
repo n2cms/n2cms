@@ -111,7 +111,7 @@ namespace N2.Resources
 
 		private static string EmbedDocumentReady(string script)
 		{
-			return "$(document).ready(function(){" + script + "});";
+			return "jQuery(document).ready(function(){" + script + "});";
 		}
 
 		public static void JavaScript(Page page, string script, ScriptOptions options)
@@ -159,16 +159,6 @@ namespace N2.Resources
 				writer.Write("</script>");
 			}
 		}
-
-		//private class DocumentReady : Control
-		//{
-		//    protected override void Render(HtmlTextWriter writer)
-		//    {
-		//        writer.Write("$(document).ready(function(){");
-		//        base.Render(writer);
-		//        writer.Write("});");
-		//    }
-		//}
 
 		private static Literal AddString(string script, Control holder, bool priority)
 		{
@@ -243,7 +233,7 @@ namespace N2.Resources
 		}
 
 		#region TabPanel
-		private static readonly string tabPanelFormat = @"$('{0}').n2tabs(null,location.hash);";
+		private static readonly string tabPanelFormat = @"jQuery('{0}').n2tabs(null,location.hash);";
 
 		public static void TabPanel(Page page, string selector, bool registerTabCss)
 		{

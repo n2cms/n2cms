@@ -10,7 +10,7 @@ namespace N2.Templates.UI.Layouts.Parts
 			{ 
 				Register.JQuery(Page);
 				Register.JavaScript(Page, "~/Js/n2menu.js");
-				Register.JavaScript(Page, "$('.horizontalMenu > ul').n2menu();", ScriptOptions.DocumentReady);
+                Register.JavaScript(Page, "jQuery('.horizontalMenu > ul').n2menu();", ScriptOptions.DocumentReady);
 			}
 			base.OnInit(e);
 		}

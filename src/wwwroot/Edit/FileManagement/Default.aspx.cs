@@ -46,7 +46,7 @@ namespace N2.Edit.FileManagement
 					Response.Redirect(itemsUrl);
 
 				if (!IsOpened)
-					hlCancel.NavigateUrl = SelectedItem.Url;
+                    hlCancel.NavigateUrl = CancelUrl();
 			}
 
 			base.OnLoad(e);

@@ -128,7 +128,7 @@ namespace N2.Web.UI.WebControls
 					filters.Add(new ZoneFilter(ZoneName));
 				if (PageFilter)
 					filters.Add(new PageFilter());
-				childrenView.Filters = filters;
+				childrenView.Filter = new CompositeFilter(filters);
 			}
 			return childrenView;
 		}

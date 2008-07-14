@@ -21,6 +21,9 @@ namespace N2.Edit
 		{
 			base.OnDataBinding(e);
 
+            if (Item == null || Item.ID == 0)
+                return;
+
 			ItemList referrers = new ItemList();
 			AddReferencesRecursive(Item, referrers);
 			N2.Collections.DuplicateFilter.FilterDuplicates(referrers);

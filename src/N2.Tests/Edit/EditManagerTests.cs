@@ -202,7 +202,7 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void DoesntSaveVersionForNewItems()
+		public void DoesntSaveVersion_ForNewItems()
 		{
 			ComplexContainersItem item = new ComplexContainersItem();
 			item.ID = 0;
@@ -235,7 +235,7 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void CanSaveItemAndVersion()
+		public void CanSave_ItemAndVersion()
 		{
 			ComplexContainersItem item = new ComplexContainersItem();
 			item.ID = 28;
@@ -252,7 +252,7 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void CanSaveVersionOnly()
+		public void CanSave_VersionOnly()
 		{
 			ComplexContainersItem item = new ComplexContainersItem();
 			item.ID = 28;
@@ -400,7 +400,7 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void SavingVersionInvokesEvent()
+		public void SavingVersion_InvokesEvent()
 		{
 			savingVersionEventInvoked = false; 
 			ComplexContainersItem item = new ComplexContainersItem();
@@ -604,6 +604,39 @@ namespace N2.Tests.Edit
 
 			Assert.That(editUrl, Is.EqualTo("~/edit/edit.aspx?selectedUrl=" + HttpUtility.UrlEncode("/default.aspx?page=3")));
 		}
+
+        [Test]
+        public void GetEditNewPageUrl_Below()
+        {
+            ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
+            ContentItem item = CreateOneItem<ComplexContainersItem>(2, "child", root);
+
+            string editUrl = this.editManager.GetEditNewPageUrl(item, new ItemDefinition(typeof(ComplexContainersItem)), null, CreationPosition.Below);
+
+            Assert.That(editUrl, Is.EqualTo("/edit/edit.aspx?selected=" + HttpUtility.UrlEncode("/child/") + "&discriminator=ComplexContainersItem&zoneName="));
+        }
+
+        [Test]
+        public void GetEditNewPageUrl_After()
+        {
+            ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
+            ContentItem item = CreateOneItem<ComplexContainersItem>(2, "child", root);
+
+            string editUrl = this.editManager.GetEditNewPageUrl(item, new ItemDefinition(typeof(ComplexContainersItem)), null, CreationPosition.After);
+
+            Assert.That(editUrl, Is.EqualTo("/edit/edit.aspx?selected=" + HttpUtility.UrlEncode(root.Path) + "&discriminator=ComplexContainersItem&zoneName=&after=" + HttpUtility.UrlEncode(item.Path)));
+        }
+
+        [Test]
+        public void GetEditNewPageUrl_Before()
+        {
+            ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
+            ContentItem item = CreateOneItem<ComplexContainersItem>(2, "child", root);
+
+            string editUrl = this.editManager.GetEditNewPageUrl(item, new ItemDefinition(typeof(ComplexContainersItem)), null, CreationPosition.Before);
+
+            Assert.That(editUrl, Is.EqualTo("/edit/edit.aspx?selected=" + HttpUtility.UrlEncode(root.Path) + "&discriminator=ComplexContainersItem&zoneName=&before=" + HttpUtility.UrlEncode(item.Path)));
+        }
 
 		bool savingVersionEventInvoked = false;
 		void editManager_SavingVersion(object sender, CancellableItemEventArgs e)

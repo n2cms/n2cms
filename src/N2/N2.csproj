@@ -299,6 +299,9 @@
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
+    <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
+    <Compile Include="Obsolete\InstallerSection.cs" />
+    <Compile Include="Persistence\IActiveContent.cs" />
     <Compile Include="Plugin\IPlugin.cs" />
     <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
     <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
@@ -383,7 +386,6 @@
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
-    <Compile Include="Web\AnchorBuilder.cs" />
     <Compile Include="Web\Caching\ContentCacheDependency.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />

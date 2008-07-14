@@ -9,6 +9,7 @@ using N2.Installation;
 using N2.Globalization;
 using System.Globalization;
 using N2.Serialization;
+using N2.Edit.FileSystem;
 
 namespace N2.Templates.UI.Items
 {
@@ -19,7 +20,7 @@ namespace N2.Templates.UI.Items
 	[RestrictParents(typeof(RootPage), typeof(StartPage))]
 	[AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
 	[TabPanel("siteArea", "Site", 70)]
-	public class StartPage : AbstractStartPage, ILanguage
+	public class StartPage : AbstractStartPage, ILanguage, IFileSystemContainer
 	{
 		[FileAttachment]
 		[EditableImage("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]

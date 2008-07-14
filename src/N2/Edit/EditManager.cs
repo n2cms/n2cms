@@ -144,7 +144,7 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public string GetNavigationUrl(INode selectedItem)
 		{
-            return string.Format(EditTreeUrlFormat, HttpUtility.UrlEncode(selectedItem.Path), EditTreeUrl);
+            return string.Format(EditTreeUrlFormat, selectedItem.Path, EditTreeUrl);
 		}
 
 		/// <summary>Gets the url for the preview frame.</summary>
@@ -395,7 +395,7 @@ namespace N2.Edit
 		{
 			string url = Utility.ToAbsolute(path);
 			return url + (url.Contains("?") ? "&" : "?") + 
-				"selected=" + HttpUtility.UrlEncode(selectedItem.Path);
+				"selected=" + selectedItem.Path;
 		}
 
 		#region Helper Methods
@@ -478,15 +478,15 @@ namespace N2.Edit
 			if (selected == null)
 				throw new N2Exception("Cannot insert item before or after the root page.");
 
-			string url = string.Format("{0}?selected={1}&discriminator={2}&zoneName={3}",
-                EditItemUrl, 
-				HttpUtility.UrlEncode(parent.Path),
-				HttpUtility.UrlEncode(definition.Discriminator),
-				HttpUtility.UrlEncode(zoneName));
-			if (position == CreationPosition.Before)
-				url += "&before=" + selected.ID;
-			else if (position == CreationPosition.After)
-				url += "&after=" + selected.ID;
+            N2.Web.Url url = EditItemUrl;
+            url = url.AppendQuery("selected", parent.Path);
+            url = url.AppendQuery("discriminator", definition.Discriminator);
+            url = url.AppendQuery("zoneName", zoneName);
+
+            if (position == CreationPosition.Before)
+                url = url.AppendQuery("before", selected.Path);
+            else if (position == CreationPosition.After)
+                url = url.AppendQuery("after", selected.Path);
 			return url;
 		}
 
@@ -496,7 +496,7 @@ namespace N2.Edit
 		public string GetEditExistingItemUrl(ContentItem item)
 		{
 			if(item.VersionOf == null)
-                return string.Format("{0}?selected={1}", EditItemUrl, HttpUtility.UrlEncode(item.Path));
+                return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
 			else
 				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.RewrittenUrl));
 		}

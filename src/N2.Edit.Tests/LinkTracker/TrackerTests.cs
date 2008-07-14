@@ -9,6 +9,7 @@ using N2.Persistence;
 using Rhino.Mocks.Interfaces;
 using N2.Web;
 using N2.Details;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Edit.LinkTracker
 {
@@ -86,12 +87,15 @@ namespace N2.Tests.Edit.LinkTracker
 
 			root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
 			persister.Save(root);
-			Assert.AreEqual(item1, root.GetDetailCollection("TrackedLinks", false)[0]);
+            var links = root.GetDetailCollection("TrackedLinks", false);
+            Assert.That(links, Is.Not.Null);
+			Assert.That(links[0], Is.EqualTo(item1));
 			root["TestDetail"] = "<a href='/item2.aspx'>first item</a>";
 			persister.Save(root);
 
-			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
-			Assert.AreEqual(item2, links[0]);
+			links = root.GetDetailCollection("TrackedLinks", false);
+            Assert.That(links, Is.Not.Null);
+            Assert.That(links[0], Is.EqualTo(item2));
 		}
 
 		[Test]

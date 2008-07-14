@@ -72,26 +72,33 @@ namespace N2.Persistence.NH
 			{
                 unsavedItem = args.AffectedItem;
 
-				using (ITransaction transaction = itemRepository.BeginTransaction())
-				{
-					if (unsavedItem.VersionOf == null)
-						unsavedItem.Updated = DateTime.Now;
-					if (string.IsNullOrEmpty(unsavedItem.Name))
-						unsavedItem.Name = null;
+                if (unsavedItem is IActiveContent)
+                {
+                    (unsavedItem as IActiveContent).Save();
+                }
+                else
+                {
+                    using (ITransaction transaction = itemRepository.BeginTransaction())
+                    {
+                        if (unsavedItem.VersionOf == null)
+                            unsavedItem.Updated = DateTime.Now;
+                        if (string.IsNullOrEmpty(unsavedItem.Name))
+                            unsavedItem.Name = null;
 
-					itemRepository.SaveOrUpdate(unsavedItem);
-					if (string.IsNullOrEmpty(unsavedItem.Name))
-					{
-						unsavedItem.Name = unsavedItem.ID.ToString();
-						itemRepository.Save(unsavedItem);
-					}
+                        itemRepository.SaveOrUpdate(unsavedItem);
+                        if (string.IsNullOrEmpty(unsavedItem.Name))
+                        {
+                            unsavedItem.Name = unsavedItem.ID.ToString();
+                            itemRepository.Save(unsavedItem);
+                        }
 
-					unsavedItem.AddTo(unsavedItem.Parent);
+                        unsavedItem.AddTo(unsavedItem.Parent);
 
-					EnsureSortOrder(unsavedItem);
+                        EnsureSortOrder(unsavedItem);
 
-					transaction.Commit();
-				}
+                        transaction.Commit();
+                    }
+                }
                 Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
 			}
 		}
@@ -119,12 +126,19 @@ namespace N2.Persistence.NH
 
 				Trace.TraceInformation("NHPersistenceManager.Delete" + itemNoMore);
 
-				using (ITransaction transaction = itemRepository.BeginTransaction())
-				{
-					DeleteRecursive(itemNoMore);
+                if (itemNoMore is IActiveContent)
+                {
+                    (itemNoMore as IActiveContent).Delete();
+                }
+                else
+                {
+                    using (ITransaction transaction = itemRepository.BeginTransaction())
+                    {
+                        DeleteRecursive(itemNoMore);
 
-					transaction.Commit();
-				}
+                        transaction.Commit();
+                    }
+                }
                 Invoke(ItemDeleted, new ItemEventArgs(itemNoMore)); 
 			}
 		}
@@ -135,8 +149,9 @@ namespace N2.Persistence.NH
 		{
 			DeletePreviousVersions(itemNoMore);
 
-			while (itemNoMore.Children.Count > 0)
-				DeleteRecursive(itemNoMore.Children[0]);
+            List<ContentItem> children = new List<ContentItem>(itemNoMore.Children);
+			foreach(ContentItem child in children)
+                DeleteRecursive(child);
 
 			itemNoMore.AddTo(null);
 
@@ -182,12 +197,19 @@ namespace N2.Persistence.NH
                 source = args.AffectedItem;
                 destination = args.Destination;
 
-				using (ITransaction transaction = itemRepository.BeginTransaction())
-				{
-					source.AddTo(destination);
-					itemRepository.Save(source);
-					transaction.Commit();
-				}
+                if (source is IActiveContent)
+                {
+                    (source as IActiveContent).MoveTo(destination);
+                }
+                else
+                {
+                    using (ITransaction transaction = itemRepository.BeginTransaction())
+                    {
+                        source.AddTo(destination);
+                        itemRepository.Save(source);
+                        transaction.Commit();
+                    }
+                }
 				Invoke(ItemMoved, new DestinationEventArgs(source, destination));
 			}
 		}
@@ -215,14 +237,21 @@ namespace N2.Persistence.NH
                 source = args.AffectedItem;
                 destination = args.Destination;
 
-				ContentItem cloned = source.Clone(includeChildren);
+                if (source is IActiveContent)
+                {
+                    return (source as IActiveContent).CopyTo(destination);
+                }
+                else
+                {
+                    ContentItem cloned = source.Clone(includeChildren);
 
-				cloned.Parent = destination;
-				Save(cloned);
+                    cloned.Parent = destination;
+                    Save(cloned);
 
-                Invoke(ItemCopied, new DestinationEventArgs(cloned, destination));
+                    Invoke(ItemCopied, new DestinationEventArgs(cloned, destination));
 
-				return cloned;
+                    return cloned;
+                }
 			}
 			return null;
 		}

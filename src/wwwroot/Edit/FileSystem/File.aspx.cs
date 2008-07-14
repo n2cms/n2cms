@@ -14,6 +14,10 @@ namespace N2.Edit.FileSystem
 {
     public partial class File1 : EditPage
     {
+        protected Items.File SelectedFile
+        {
+            get { return SelectedItem as Items.File; }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             Title = SelectedItem.Title;

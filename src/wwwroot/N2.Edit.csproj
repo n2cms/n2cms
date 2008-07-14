@@ -135,7 +135,6 @@
     </Compile>
     <Compile Include="Edit\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Edit\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
@@ -167,6 +166,7 @@
     <Compile Include="Edit\FileSystem\Directory.aspx.designer.cs">
       <DependentUpon>Directory.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\FileSystem\Editables\EditableUploadAttribute.cs" />
     <Compile Include="Edit\FileSystem\File.aspx.cs">
       <DependentUpon>File.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -176,6 +176,8 @@
     </Compile>
     <Compile Include="Edit\FileSystem\Items\Directory.cs" />
     <Compile Include="Edit\FileSystem\Items\File.cs" />
+    <Compile Include="Edit\FileSystem\Items\AbstractDirectory.cs" />
+    <Compile Include="Edit\FileSystem\Items\AbstractNode.cs" />
     <Compile Include="Edit\FileSystem\Items\RootDirectory.cs" />
     <Compile Include="Edit\Framed.Master.cs">
       <DependentUpon>Framed.Master</DependentUpon>

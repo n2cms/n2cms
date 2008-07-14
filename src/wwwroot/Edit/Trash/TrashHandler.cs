@@ -31,45 +31,41 @@ namespace N2.Edit.Trash
 
 		ITrashCan ITrashHandler.TrashContainer
 		{
-			get { return TrashContainer as ITrashCan; }
+			get { return GetTrashContainer(true) as ITrashCan; }
 		}
 
-		public TrashContainerItem TrashContainer
+		public TrashContainerItem GetTrashContainer(bool create)
 		{
-			get
+			ContentItem rootItem = persister.Get(host.DefaultSite.RootItemID);
+			TrashContainerItem trashContainer = rootItem.GetChild("Trash") as TrashContainerItem;
+			if (create && trashContainer == null)
 			{
-				ContentItem rootItem = persister.Get(host.DefaultSite.RootItemID);
-				TrashContainerItem trashContainer = rootItem.GetChild("Trash") as TrashContainerItem;
-				if (trashContainer == null)
-				{
-					trashContainer = definitions.CreateInstance<TrashContainerItem>(rootItem);
-					trashContainer.Name = "Trash";
-					trashContainer.Title = "Trash";
-					trashContainer.Visible = false;
-					trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "admin"));
-					trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Editors"));
-					trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Administrators"));
-					trashContainer.SortOrder = int.MaxValue - 1000000;
-					persister.Save(trashContainer);
-				}
-				return trashContainer;
+				trashContainer = definitions.CreateInstance<TrashContainerItem>(rootItem);
+				trashContainer.Name = "Trash";
+				trashContainer.Title = "Trash";
+				trashContainer.Visible = false;
+				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "admin"));
+				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Editors"));
+				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Administrators"));
+				trashContainer.SortOrder = int.MaxValue - 1000000;
+				persister.Save(trashContainer);
 			}
+			return trashContainer;
 		}
 
 		public bool CanThrow(ContentItem affectedItem)
 		{
+			TrashContainerItem trash = GetTrashContainer(false);
+            bool enabled = trash == null || trash.Enabled;
+            bool alreadyThrown = IsInTrash(affectedItem);
             bool throwable = affectedItem.GetType().GetCustomAttributes(typeof(NotThrowableAttribute), true).Length == 0;
-			TrashContainerItem trash = TrashContainer;
-			return trash != null
-				&& trash.Enabled
-				&& !IsInTrash(affectedItem)
-                && throwable;
+			return enabled && !alreadyThrown && throwable;
 		}
 
 		public virtual void Throw(ContentItem item)
 		{
 			ExpireTrashedItem(item);
-			item.AddTo(TrashContainer);
+            item.AddTo(GetTrashContainer(true));
 
 			persister.Save(item);
 		}
@@ -115,7 +111,8 @@ namespace N2.Edit.Trash
 
 		public bool IsInTrash(ContentItem item)
 		{
-			return Find.IsDescendantOrSelf(item, TrashContainer);
+            TrashContainerItem trash = GetTrashContainer(false);
+			return trash != null && Find.IsDescendantOrSelf(item, trash);
 		}
 	}
 }

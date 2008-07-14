@@ -22,7 +22,6 @@ namespace N2.Tests.Web
 			base.SetUp();
 			persister = mocks.Stub<IPersister>();
 			parser = mocks.StrictMock<IUrlParser>();
-			Expect.On(parser).Call(parser.Extension).Return(".aspx").Repeat.Any();
 		}
 
 		[Test]

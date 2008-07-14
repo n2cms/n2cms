@@ -227,6 +227,12 @@ namespace N2
 		#endregion
 
 		#region Public Properties (generated)
+        /// <summary>The default file extension for this content item, e.g. ".aspx".</summary>
+        public virtual string Extension
+        {
+            get { return Web.Url.DefaultExtension; }
+        }
+
 		/// <summary>Gets whether this item is a page. This is used for and site map purposes.</summary>
 		public virtual bool IsPage
 		{

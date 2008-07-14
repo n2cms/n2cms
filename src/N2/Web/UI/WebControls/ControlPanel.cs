@@ -420,10 +420,8 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets the url for editing the page directly.</summary>
 		public virtual string GetQuickEditUrl(string editParameter)
 		{
-			string url = Request.RawUrl;
-			url += (url.IndexOf('?') >= 0) ? "&" : "?";
-			url += "edit=" + editParameter;
-			return url;
+			Url url = Request.RawUrl;
+            return url.UpdateQuery("edit", editParameter);
 		}
 
 		/// <summary>Saves edited fields.</summary>

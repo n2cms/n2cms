@@ -20,7 +20,7 @@ namespace N2.Edit.Versions
 
 		protected override void OnInit(EventArgs e)
 		{
-			hlCancel.NavigateUrl = SelectedItem.Url;
+            hlCancel.NavigateUrl = CancelUrl();
 			
 			persister = N2.Context.Persister;
 			versioner = N2.Context.Current.Resolve<Persistence.IVersionManager>();

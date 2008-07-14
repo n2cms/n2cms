@@ -36,9 +36,6 @@ namespace N2.Templates.Items
 
 		public override ItemList GetChildren(string childZoneName)
 		{
-			if (VersionOf != null)
-				return VersionOf.GetChildren(childZoneName);
-
 			ItemList items = base.GetChildren(childZoneName);
 			if (childZoneName.StartsWith("Recursive") && Parent is AbstractContentPage)
 			{

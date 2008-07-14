@@ -13,7 +13,8 @@ namespace N2.Edit
     {
         protected void Page_Init(object sender, EventArgs e)
         {
-			hlCancel.NavigateUrl = SelectedItem.Url;
+            hlCancel.NavigateUrl = CancelUrl();
+
 			itemsToDelete.CurrentItem = SelectedItem;
             itemsToDelete.DataBind();
 			referencingItems.Item = SelectedItem;
@@ -42,7 +43,7 @@ namespace N2.Edit
 		{
 			string message = string.Format(GetLocalResourceString("confirm.message"), this.SelectedItem.Title, this.SelectedItem.Url);
 			ClientScript.RegisterClientScriptBlock(typeof(Delete), "confirm",
-				string.Format(@"$(document).ready( function() {{
+                string.Format(@"jQuery(document).ready( function() {{
 	if(confirm('{0}')){{
 		{1};
 	}}else{{

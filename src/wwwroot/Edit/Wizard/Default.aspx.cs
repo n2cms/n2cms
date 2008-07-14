@@ -15,7 +15,7 @@ namespace N2.Edit.Wizard
 		{
 			base.OnInit(e);
 
-			hlCancel.NavigateUrl = SelectedItem.Url;
+            hlCancel.NavigateUrl = CancelUrl();
 
 			txtTitle.Text = SelectedItem.Title;
 			ItemDefinition d = Engine.Definitions.GetDefinition(SelectedItem.GetType());

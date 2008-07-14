@@ -33,7 +33,7 @@ namespace N2.Edit.Export
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			hlCancel.NavigateUrl = SelectedItem.Url;
+            hlCancel.NavigateUrl = CancelUrl();
 		}
 
 		protected override void OnPreRender(EventArgs e)

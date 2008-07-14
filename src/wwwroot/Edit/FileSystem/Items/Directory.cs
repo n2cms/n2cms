@@ -13,124 +13,98 @@ using System.IO;
 using N2.Collections;
 using N2.Web;
 using System.Diagnostics;
+using N2.Edit.Trash;
+using N2.Details;
+using N2.Persistence;
 
-namespace N2.Edit.FileSystem
+namespace N2.Edit.FileSystem.Items
 {
-    [RestrictParents(typeof(Directory))]
-    public class Directory : ContentItem, INode
+    [Definition]
+    [RestrictParents(typeof(AbstractDirectory))]
+    public class Directory : AbstractDirectory, IActiveContent
     {
-        public virtual string PhysicalPath { get; set; }
-
-        public override string IconUrl
-        {
-            get { return "~/Edit/img/ico/folder.gif"; }
-        }
-
-        public override string TemplateUrl
-        {
-            get { return "~/Edit/FileSystem/Directory.aspx"; }
-        }
-
-        string INode.PreviewUrl
-        {
-            get { return N2.Web.Url.Parse(Utility.ToAbsolute(TemplateUrl)).AppendQuery("selected", Path); }
-        }
-
         public override void AddTo(ContentItem newParent)
         {
-            if (newParent is Directory)
+            if (newParent is AbstractDirectory)
             {
-                Directory dir = newParent as Directory;
-                string path = System.IO.Path.Combine(dir.PhysicalPath, Name);
-                if (System.IO.Directory.Exists(path))
+                AbstractDirectory dir = newParent as AbstractDirectory;
+                string from = PhysicalPath;
+                string to = System.IO.Path.Combine(dir.PhysicalPath, Name);
+                if (System.IO.Directory.Exists(to))
                     throw new NameOccupiedException(this, newParent);
-                System.IO.Directory.Move(PhysicalPath, path);
-                PhysicalPath = path;
+
+                if (from != null)
+                    System.IO.Directory.Move(from, to);
+                else
+                    System.IO.Directory.CreateDirectory(to);
+                PhysicalPath = to;
                 Parent = newParent;
             }
-            else
+            else if(newParent != null)
             {
                 new N2Exception(newParent + " is not a Directory. AddTo only works on directories.");
             }
         }
 
-        protected void AddToContentItem(ContentItem newParent)
-        {
-            base.AddTo(newParent);
-        }
+        #region IActiveRecord Members
 
-        public IList<File> GetFiles()
+        public void Save()
         {
-            try
+            string expectedPath = System.IO.Path.Combine(Directory.PhysicalPath, Name);
+            if (expectedPath != PhysicalPath)
             {
-                DirectoryInfo currentDirectory = new DirectoryInfo(PhysicalPath);
-                FileInfo[] filesInDirectory = currentDirectory.GetFiles();
-                List<File> files = new List<File>(filesInDirectory.Length);
-                foreach (FileInfo fi in filesInDirectory)
+                if (PhysicalPath != null)
                 {
-                    files.Add(CreateFile(fi));
+                    System.IO.Directory.Move(PhysicalPath, expectedPath);
                 }
-                return files;
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                Trace.TraceWarning(ex.ToString());
-                return new List<File>();
-            }
-        }
-
-        protected File CreateFile(FileInfo file)
-        {
-            File f = new File();
-            f.Name = file.Name;
-            f.Title = file.Name;
-            f.Size = file.Length;
-            f.Updated = file.LastWriteTime;
-            f.Created = file.CreationTime;
-            f.PhysicalPath = file.FullName;
-            f.Parent = this;
-            return f;
-        }
-
-        public IList<Directory> GetDirectories()
-        {
-            try
-            {
-                DirectoryInfo currentDirectory = new DirectoryInfo(PhysicalPath);
-                DirectoryInfo[] subDirectories = currentDirectory.GetDirectories();
-                List<Directory> directories = new List<Directory>(subDirectories.Length);
-                foreach (DirectoryInfo subDirectory in subDirectories)
+                else
                 {
-                    if((subDirectory.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
-                        directories.Add(CreateDirectory(subDirectory));
+                    System.IO.Directory.CreateDirectory(expectedPath);
                 }
-                return directories;
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                Trace.TraceWarning(ex.ToString());
-                return new List<Directory>();
+                PhysicalPath = expectedPath;
             }
         }
 
-        private Directory CreateDirectory(DirectoryInfo directory)
+        public void Delete()
         {
-            Directory d = new Directory();
-            d.Name = directory.Name;
-            d.Title = directory.Name;
-            d.Updated = directory.LastWriteTime;
-            d.Created = directory.CreationTime;
-            d.PhysicalPath = directory.FullName;
-            d.Parent = this;
-            return d;
+            System.IO.Directory.Delete(PhysicalPath);
         }
 
-        public override N2.Collections.ItemList GetChildren(ItemFilter filter)
+        public void MoveTo(ContentItem destination)
         {
-            ItemList items = new ItemList();
-            items.AddRange(filter.Pipe(GetDirectories()));
-            items.AddRange(filter.Pipe(GetFiles()));
-            return items;
+            AbstractDirectory.EnsureDirectory(destination);
+
+            Directory d = destination as Directory;
+            string from = PhysicalPath;
+            string to = System.IO.Path.Combine(d.PhysicalPath, Name);
+            if (System.IO.File.Exists(to))
+                throw new NameOccupiedException(this, destination);
+
+            System.IO.Directory.Move(from, to);
+            PhysicalPath = to;
+            Parent = destination;
         }
+
+        public ContentItem CopyTo(ContentItem destination)
+        {
+            AbstractDirectory.EnsureDirectory(destination);
+
+            Directory d = destination as Directory;
+            string from = PhysicalPath;
+            string to = System.IO.Path.Combine(d.PhysicalPath, Name);
+            if (System.IO.File.Exists(to))
+                throw new NameOccupiedException(this, destination);
+
+            System.IO.Directory.CreateDirectory(to);
+            Directory copy = (Directory)destination.GetChild(Name);
+            foreach (Directory childDir in GetDirectories())
+                childDir.CopyTo(copy);
+            foreach (File f in GetFiles())
+                f.CopyTo(copy);
+
+            return copy;
+        }
+
+        #endregion
     }
 }

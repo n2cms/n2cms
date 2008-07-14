@@ -32,7 +32,7 @@ namespace N2.Edit.Navigation
 		private void RegisterClientSideScripts()
 		{
 			string script = @"
-$(document).ready( function() {
+jQuery(document).ready( function() {
 	n2nav.setupLinks('#nav');
 });";
 			Page.ClientScript.RegisterStartupScript(typeof(NavigationPage), "NavigationPage.ClientScript", script, true);

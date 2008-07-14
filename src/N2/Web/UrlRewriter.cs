@@ -16,7 +16,6 @@ namespace N2.Web
 	/// </summary>
 	public class UrlRewriter : IUrlRewriter
 	{
-		private readonly string defaultExtension;
 		private readonly IUrlParser urlParser;
 		private readonly IWebContext webContext;
 
@@ -24,7 +23,7 @@ namespace N2.Web
 		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
 		{
 			this.urlParser = urlParser;
-			this.defaultExtension = urlParser.Extension;
+			//this.defaultExtension = urlParser.Extension;
 			this.webContext = webContext;
 		}
 
@@ -44,7 +43,7 @@ namespace N2.Web
 
 		private bool HasContentExtension(string requestedUrl)
 		{
-			if (requestedUrl.EndsWith(urlParser.Extension, StringComparison.InvariantCultureIgnoreCase))
+			if (requestedUrl.EndsWith(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
 			{
 				return true;
 			}

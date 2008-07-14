@@ -12,6 +12,7 @@
     <AssemblyName>N2.Edit.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\FileSystemTests.cs" />
+    <Compile Include="FileSystem\RootNode.cs" />
     <Compile Include="LinkTracker\FindLinksFixture.cs" />
     <Compile Include="LinkTracker\Items\TrackableItem.cs" />
     <Compile Include="LinkTracker\TrackerTests.cs" />
@@ -114,4 +116,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>del /S /Q $(TargetDir)FileSystem\Upload\*</PreBuildEvent>
+  </PropertyGroup>
 </Project>

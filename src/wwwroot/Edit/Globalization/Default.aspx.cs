@@ -23,7 +23,7 @@ namespace N2.Edit.Globalization
 
 		protected override void OnInit(EventArgs e)
 		{
-            hlCancel.NavigateUrl = SelectedNode.PreviewUrl;
+            hlCancel.NavigateUrl = CancelUrl();
 
             Initialize();
 			base.OnInit(e);

@@ -21,10 +21,10 @@ namespace N2.Edit
 
 		protected override void OnInit(EventArgs e)
 		{
-			if (Request["cancel"] == "reloadTop")
-				hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
-			else
-				hlCancel.NavigateUrl = Request["returnUrl"] ?? (SelectedItem.VersionOf ?? SelectedItem).Url;
+            if (Request["cancel"] == "reloadTop")
+                hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
+            else
+                hlCancel.NavigateUrl = CancelUrl();
 
 			InitPlugins();
 			InitItemEditor();
@@ -106,13 +106,19 @@ namespace N2.Edit
 			string discriminator = Request["discriminator"];
 			if(!string.IsNullOrEmpty(discriminator))
 			{
-				ie.ItemTypeName = Engine.Definitions.GetDefinition(discriminator).ItemType.AssemblyQualifiedName;
-				ie.ParentItemID = SelectedItem.ID;
+                ie.Discriminator = Engine.Definitions.GetDefinition(discriminator).Discriminator;
+                ie.ParentPath = SelectedItem.Path;
 			}
 			else if (!string.IsNullOrEmpty(dataType))
 			{
-				ie.ItemTypeName = dataType;
-				ie.ParentItemID = SelectedItem.ID;
+                Type t = Type.GetType(dataType);
+                if (t == null)
+                    throw new ArgumentException("Couldn't load a type of the given parameter '" + dataType + "'", "dataType");
+                ItemDefinition d = Engine.Definitions.GetDefinition(discriminator);
+                if(d == null)
+                    throw new N2Exception("Couldn't find any definition for type '" + t + "'");
+                ie.Discriminator = d.Discriminator;
+				ie.ParentPath = SelectedItem.Path;
 			}
 			else
 			{
@@ -160,13 +166,15 @@ namespace N2.Edit
 
 				if (Request["before"] != null)
 				{
-					ContentItem before = Engine.Persister.Get(int.Parse(Request["before"]));
+					//ContentItem before = Engine.Persister.Get(int.Parse(Request["before"]));
+                    ContentItem before = Engine.Resolve<N2.Edit.Navigator>().Navigate(Request["before"]);
 					Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.Before, before);
 				}
 				else if (Request["after"] != null)
 				{
-					ContentItem after = Engine.Persister.Get(int.Parse(Request["after"]));
-					Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.After, after);
+					//ContentItem after = Engine.Persister.Get(int.Parse(Request["after"]));
+                    ContentItem after = Engine.Resolve<N2.Edit.Navigator>().Navigate(Request["after"]); 
+                    Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.After, after);
 				}
 
 				Refresh(currentItem.VersionOf ?? currentItem, ToolbarArea.Both);

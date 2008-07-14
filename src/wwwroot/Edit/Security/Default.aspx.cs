@@ -28,7 +28,7 @@ namespace N2.Edit.Security
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			hlCancel.NavigateUrl = SelectedItem.Url;
+            hlCancel.NavigateUrl = CancelUrl();
 		}
 
 		protected void cblAllowedRoles_SelectedIndexChanged(object sender, EventArgs e)

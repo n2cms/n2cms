@@ -8,12 +8,15 @@ namespace N2.Persistence.NH
 	public class NHTransaction : ITransaction
 	{
 		NHibernate.ITransaction transaction;
+        bool isOriginator = true;
 
 		public NHTransaction(ISessionProvider sessionProvider)
 		{
             ISession session = sessionProvider.GetOpenedSession();
 			transaction = session.Transaction;
-            if (!transaction.IsActive)
+            if (transaction.IsActive)
+                isOriginator = false; // The method that first opened the transaction should also close it
+            else
                 transaction.Begin();
 		}
 
@@ -21,7 +24,7 @@ namespace N2.Persistence.NH
 
 		public void Commit()
 		{
-            if(!transaction.WasCommitted && !transaction.WasRolledBack)
+            if(isOriginator && !transaction.WasCommitted && !transaction.WasRolledBack)
 			    transaction.Commit();
 		}
 

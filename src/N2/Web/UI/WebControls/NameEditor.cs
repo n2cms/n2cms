@@ -115,10 +115,10 @@ namespace N2.Web.UI.WebControls
 			{
 				try
 				{
-					TextBox tbTitle = itemEditor.AddedEditors[TitleEditorName] as TextBox;
-					if (tbTitle != null)
+					if (itemEditor.AddedEditors.ContainsKey(TitleEditorName))
 					{
-						keepUpdated.Visible = ShowKeepUpdated;
+                        TextBox tbTitle = itemEditor.AddedEditors[TitleEditorName] as TextBox;
+                        keepUpdated.Visible = ShowKeepUpdated;
 
 						string s = updateNameScript + Environment.NewLine +
 						           string.Format(startupScriptFormat, 
@@ -153,7 +153,7 @@ if('{5}'){{
 	var name = getName('{0}', '{2}', {3}, {4});
 	var title = document.getElementById('{1}').value
 	chk.checked = !name || !title || (name == title);
-	$(chk).click(invokeUpdateName);
+	jQuery(chk).click(invokeUpdateName);
 }}
 ";
 

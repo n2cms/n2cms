@@ -21,7 +21,12 @@ namespace N2.Edit.Web
 		protected virtual void RegisterScripts()
 		{
 			N2.Resources.Register.JQuery(this);
-		}
+        }
+
+        protected virtual string CancelUrl()
+        {
+            return Request["returnUrl"] ?? (SelectedItem.VersionOf as INode ?? SelectedNode).PreviewUrl;
+        }
 
     	#region Refresh Methods
 		private const string RefreshBothFormat = @"

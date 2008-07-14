@@ -15,12 +15,18 @@ namespace N2.Edit.Tests.FileSystem
     [TestFixture]
     public class FileSystemTests : ItemPersistenceMockingBase
     {
+        RootNode root;
         RootDirectory upload;
+        Engine.IEngine engine;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            Engine.IEngine engine = N2.Context.Current;
+            engine = N2.Context.Current;
+            root = engine.Definitions.CreateInstance<RootNode>(null);
+            engine.Persister.Save(root);
+            engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;
+            engine.Resolve<IHost>().DefaultSite.StartPageID = root.ID;
             Url.DefaultExtension = "/";
         }
 
@@ -184,11 +190,86 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanMove_RootDirectory_ToContentItem()
         {
-            var trash = new N2.Edit.Trash.TrashContainerItem();
-            upload.AddTo(trash);
+            upload.AddTo(root);
 
-            Assert.That(upload.Parent, Is.EqualTo(trash));
-            Assert.That(trash.Children.Count, Is.EqualTo(1));
+            Assert.That(upload.Parent, Is.EqualTo(root));
+            Assert.That(root.Children.Contains(upload));
+        }
+
+        [Test]
+        public void CanMoveFile()
+        {
+            Move(delegate(File from, Directory to)
+            {
+                from.MoveTo(to);
+            });
+        }
+
+        [Test]
+        public void CanMoveFile_UsingPersister()
+        {
+            Move(delegate(File from, Directory to)
+            {
+                engine.Persister.Move(from, to);
+            });
+        }
+
+        private void Move(Action<File, Directory> moveAction)
+        {
+            Directory d1 = (Directory)upload.GetChild("Folder1");
+            Directory d2 = (Directory)upload.GetChild("Folder 2");
+            File f = (File)d1.GetChild("File1.txt");
+            try
+            {
+                moveAction(f, d2);
+                Assert.That(d1.GetChild("File1.txt"), Is.Null);
+                Assert.That(f.Parent, Is.EqualTo(d2));
+                Assert.That(d2.GetChild("File1.txt"), Is.Not.Null);
+            }
+            finally
+            {
+                try { f.MoveTo(d1); }
+                catch { }
+            }
+        }
+
+        [Test]
+        public void CanCopyAndDeleteFile()
+        {
+            CopyAndDelete(delegate(File from, Directory to)
+            {
+                return from.CopyTo(to);
+            });
+        }
+
+        [Test]
+        public void CanCopyAndDeleteFile_UsingPersister()
+        {
+            CopyAndDelete(delegate(File from, Directory to)
+            {
+                return persister.Copy(from, to);
+            });
+        }
+
+        private void CopyAndDelete(Func<File, Directory, ContentItem> copyAction)
+        {
+            Directory d1 = (Directory)upload.GetChild("Folder1");
+            Directory d2 = (Directory)upload.GetChild("Folder 2");
+            File f = (File)d1.GetChild("File1.txt");
+            File fCopy = null;
+            try
+            {
+                fCopy = (File)copyAction(f, d2);
+                Assert.That(d2.GetChild("File1.txt"), Is.Not.Null);
+                Assert.That(fCopy.Parent, Is.EqualTo(d2));
+                Assert.That(d1.GetChild("File1.txt"), Is.Not.Null);
+                Assert.That(f.Parent, Is.EqualTo(d1));
+            }
+            finally
+            {
+                if (fCopy != null)
+                    fCopy.Delete();
+            }
         }
     }
 }

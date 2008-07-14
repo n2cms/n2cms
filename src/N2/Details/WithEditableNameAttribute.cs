@@ -98,7 +98,7 @@ namespace N2.Details
 			NameEditor ne = (NameEditor)editor;
 			ne.Text = item.Name;
 			ne.Prefix = "/";
-			ne.Suffix = Url.DefaultExtension;
+			ne.Suffix = item.Extension;
             try
             {
                 if (Context.UrlParser.StartPage == item || item.Parent == null)
@@ -111,7 +111,7 @@ namespace N2.Details
                     string parentUrl = item.Parent.Url;
                     if (!parentUrl.Contains("?"))
                     {
-                        int aspxIndex = parentUrl.IndexOf(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase);
+                        int aspxIndex = parentUrl.IndexOf(item.Extension, StringComparison.InvariantCultureIgnoreCase);
                         string prefix = parentUrl.Substring(0, aspxIndex) + "/";
                         if (prefix.Length > 60)
                             prefix = prefix.Substring(0, 50) + ".../";

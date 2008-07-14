@@ -49,7 +49,7 @@ namespace N2.Edit
 
         protected void Page_Init(object sender, EventArgs e)
         {
-			hlCancel.NavigateUrl = SelectedItem.Url;
+            hlCancel.NavigateUrl = CancelUrl();
 			if (SelectedItem.Parent == null)
 			{
 				rblPosition.Enabled = false;

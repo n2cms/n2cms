@@ -9,18 +9,22 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Integrity;
 using N2.Web;
+using N2.Persistence;
+using N2.Edit.Trash;
+using N2.Details;
 
-namespace N2.Edit.FileSystem
+namespace N2.Edit.FileSystem.Items
 {
-    [RestrictParents(typeof(Directory))]
-    public class File : ContentItem, INode
+    [Definition]
+    [RestrictParents(typeof(AbstractDirectory))]
+    [Editables.EditableUpload(Title = "Upload", Name = "Name")]
+    public class File : AbstractNode, INode, IActiveContent
     {
         public long Size { get; set; }
-        public virtual string PhysicalPath { get; set; }
 
         public override string IconUrl
         {
-            get { return "~/Edit/img/ico/page_white_text"; }
+            get { return "~/Edit/img/ico/page_white.gif"; }
         }
 
         public override string TemplateUrl
@@ -28,27 +32,65 @@ namespace N2.Edit.FileSystem
             get { return "~/Edit/FileSystem/File.aspx"; }
         }
 
-        string INode.PreviewUrl
-        {
-            get { return N2.Web.Url.Parse(Utility.ToAbsolute(TemplateUrl)).AppendQuery("selected", Path); }
-        }
-
         public override void AddTo(ContentItem newParent)
         {
-            if (newParent is Directory)
+            if (newParent != null)
+                MoveTo(newParent);
+        }
+
+        #region IActiveRecord Members
+
+        public void Save()
+        {
+            string expectedPath = System.IO.Path.Combine(Directory.PhysicalPath, Name);
+            if (expectedPath != PhysicalPath)
             {
-                Directory dir = newParent as Directory;
-                string path = System.IO.Path.Combine(dir.PhysicalPath, Name);
-                if (System.IO.File.Exists(path))
-                    throw new NameOccupiedException(this, newParent);
-                System.IO.File.Move(PhysicalPath, path);
-                PhysicalPath = path;
-                Parent = newParent;
-            }
-            else
-            {
-                new N2Exception(newParent + " is not a Directory. AddTo only works on directories.");
+                if (PhysicalPath != null)
+                {
+                    System.IO.Directory.Move(PhysicalPath, expectedPath);
+                }
+                else
+                {
+                    System.IO.Directory.CreateDirectory(expectedPath);
+                }
+                PhysicalPath = expectedPath;
             }
         }
+
+        public void Delete()
+        {
+            System.IO.File.Delete(PhysicalPath);
+        }
+
+        public void MoveTo(ContentItem destination)
+        {
+            AbstractDirectory.EnsureDirectory(destination);
+
+            AbstractDirectory d = destination as AbstractDirectory;
+            string from = PhysicalPath;
+            string to = System.IO.Path.Combine(d.PhysicalPath, Name);
+            if (System.IO.File.Exists(to))
+                throw new NameOccupiedException(this, destination);
+
+            System.IO.File.Move(from, to);
+            PhysicalPath = to;
+            Parent = destination;
+        }
+
+        public ContentItem CopyTo(ContentItem destination)
+        {
+            AbstractDirectory.EnsureDirectory(destination);
+
+            Directory d = destination as Directory;
+            string from = PhysicalPath;
+            string to = System.IO.Path.Combine(d.PhysicalPath, Name);
+            if (System.IO.File.Exists(to))
+                throw new NameOccupiedException(this, destination);
+
+            System.IO.File.Copy(from, to);
+            return (File)destination.GetChild(Name);
+        }
+
+        #endregion
     }
 }
