@@ -117,6 +117,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>del /S /Q $(TargetDir)FileSystem\Upload\*</PreBuildEvent>
+    <PreBuildEvent>rmdir /S /Q $(TargetDir)FileSystem\Upload\</PreBuildEvent>
   </PropertyGroup>
 </Project>

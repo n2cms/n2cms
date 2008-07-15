@@ -13,7 +13,7 @@ namespace N2.Web.Mvc
 		{
 			ContentItem item = CurrentItem;
 			
-			return RenderView(item.TemplateUrl, item);
+			return View(item.TemplateUrl, item);
 		}
 	}
 }

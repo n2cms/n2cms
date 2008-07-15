@@ -21,12 +21,12 @@ namespace MvcTest.Controllers
 				Back = CurrentItem.Parent,
 				Comments = CurrentItem.GetComments() 
 			};
-			return RenderView("index", vd);
+            return View("index", vd);
 		}
 
 		public ActionResult Comment()
 		{
-			return RenderView("Comment", CurrentItem);
+            return View("Comment", CurrentItem);
 		}
 
 		public ActionResult Submit(string title, string text)

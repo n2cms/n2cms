@@ -56,5 +56,10 @@ namespace N2.Edit.FileSystem.Items
             AbstractNode otherNode = obj as AbstractNode;
             return otherNode != null && PhysicalPath == otherNode.PhysicalPath;
         }
+
+        public override int GetHashCode()
+        {
+            return ("" + PhysicalPath + ID).GetHashCode();
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace MvcTest.Controllers
 	{
 		public override ActionResult Index()
 		{
-			return RenderView("Index", new NewsContainerViewData { Container = CurrentItem, News = CurrentItem.GetNews()});
+			return View("Index", new NewsContainerViewData { Container = CurrentItem, News = CurrentItem.GetNews()});
 		}
 	}
 }
