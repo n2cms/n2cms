@@ -80,7 +80,7 @@
     <Message Text="Building Core"/>
 
     <Copy SourceFiles="@(Core-Dependencies)" DestinationFolder="$(WebFolder)\Bin\" />
-    <MSBuild Projects="$(SolutionFolder)\N2_Everything-vs2008.sln" />
+    <MSBuild Projects="$(SolutionFolder)\N2.Everything-vs2008.sln" />
   </Target>
 
   <ItemGroup>
