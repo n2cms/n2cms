@@ -30,11 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="N2, Version=1.0.305.30814, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="N2, Version=1.0.401.43124, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\N2.dll</HintPath>
     </Reference>
-    <Reference Include="N2.Extensions, Version=1.0.305.32466, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="N2.Extensions, Version=1.0.401.43128, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\N2.Extensions.dll</HintPath>
     </Reference>
@@ -160,7 +160,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3877</DevelopmentServerPort>
+          <DevelopmentServerPort>49414</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

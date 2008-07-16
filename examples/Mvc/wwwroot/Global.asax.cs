@@ -16,6 +16,7 @@ namespace MvcTest
 			IRouteHandler routeHandler = new MvcRouteHandler();
 			
 			routes.Add(new ContentRoute(engine, routeHandler));
+            
 			routes.MapRoute("Default", "{controller}/{action}/{id}", new { action = "Index" }, new { controller = @"[^\.]*" });
 		}
 

@@ -17,7 +17,6 @@ namespace MvcTest.Models
 	[Definition("Content Page", "Test", Installer = N2.Installation.InstallerHint.PreferredStartPage)]
 	public class ContentPage : AbstractPage
 	{
-
 		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text
 		{

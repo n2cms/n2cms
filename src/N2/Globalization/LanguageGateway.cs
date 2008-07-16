@@ -28,10 +28,10 @@ namespace N2.Globalization
         private IWebContext context;
         private bool enabled = true;
 
-        public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context, GlobalizationSection config)
+        public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context, EngineSection config)
             : this(persister, finder, editManager, definitions, host, security, context)
         {
-            this.Enabled = config.Enabled;
+            this.Enabled = config.Globalization.Enabled;
         }
 
 		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context)

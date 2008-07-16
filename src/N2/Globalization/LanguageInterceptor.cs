@@ -23,10 +23,10 @@ namespace N2.Globalization
 		private readonly ILanguageGateway gateway;
         private bool enabled = true;
 
-        public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway, GlobalizationSection config)
+        public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway, EngineSection config)
             : this(persister, definitions, context, gateway)
         {
-            enabled = config.Enabled;
+            enabled = config.Globalization.Enabled;
         }
 
 		public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway)

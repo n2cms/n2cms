@@ -53,6 +53,14 @@ namespace N2.Configuration
 		public SiteElementCollection Sites
 		{
 			get { return (SiteElementCollection)base["sites"]; }
-		}
+            set { base["sites"] = value; }
+        }
+
+        [ConfigurationProperty("web")]
+        public WebElement Web
+        {
+            get { return (WebElement)base["web"]; }
+            set { base["web"] = value; }
+        }
 	}
 }

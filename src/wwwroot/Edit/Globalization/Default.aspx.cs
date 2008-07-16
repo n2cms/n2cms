@@ -106,8 +106,8 @@ namespace N2.Edit.Globalization
             {
                 System.Configuration.Configuration cfg = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
 
-                N2.Configuration.GlobalizationSection globalization = (GlobalizationSection)cfg.GetSection("n2/globalization");
-                globalization.Enabled = true;
+                EngineSection engineConfiguration = (EngineSection)cfg.GetSection("n2/engine");
+                engineConfiguration.Globalization.Enabled = true;
 
                 cfg.Save();
 

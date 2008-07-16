@@ -287,14 +287,14 @@
     <Compile Include="Configuration\EditSection.cs" />
     <Compile Include="Configuration\ErrorAction.cs" />
     <Compile Include="Configuration\ErrorsElement.cs" />
-    <Compile Include="Configuration\GlobalizationSection.cs" />
+    <Compile Include="Configuration\GlobalizationElement.cs" />
     <Compile Include="Configuration\HostSection.cs" />
     <Compile Include="Configuration\InstallerElement.cs" />
     <Compile Include="Configuration\SectionGroup.cs" />
     <Compile Include="Configuration\EngineSection.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
     <Compile Include="Configuration\SiteElementCollection.cs" />
-    <Compile Include="Configuration\WebSection.cs" />
+    <Compile Include="Configuration\WebElement.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />

@@ -58,16 +58,16 @@ namespace N2.MediumTrust.Engine
             EngineSection engineConfiguration = (EngineSection)AddConfigurationSection("n2/engine");
             if (engineConfiguration == null)
                 throw new ConfigurationErrorsException("Couldn't find the n2/engine configuration section. Please check the configuration.");
-            Url.DefaultExtension = engineConfiguration.Extension;
             DatabaseSection databaseConfiguration = (DatabaseSection)AddConfigurationSection("n2/database");
             AddConfigurationSection("n2/globalization");
             AddConfigurationSection("n2/edit");
             AddConfigurationSection("n2/installer");
 
             host = AddComponentInstance<IHost>(new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
-            if (webContext == null)
+            if (hostConfiguration == null)
             {
-                if (engineConfiguration.IsWeb)
+                Url.DefaultExtension = hostConfiguration.Web.Extension;
+                if (hostConfiguration.Web.IsWeb)
                     webContext = new RequestContext();
                 else
                     webContext = new ThreadContext();

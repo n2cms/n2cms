@@ -25,7 +25,7 @@ h2,h3 { font-weight:normal; letter-spacing:-1px; }
 body { margin:0; padding:0; background:#fff url(body_bg.gif) repeat-x; }
 	#wrap { }
 		#header { width:900px; margin:0 auto; height:70px; }
-		#page { width:900px; margin:0 auto; background: transparent url(bg.gif) repeat-x; padding:20px 0; overflow:auto;}
+		#page { width:900px; margin:0 auto; background: transparent url(bg.gif) repeat-x; padding:20px 0; }
 			#content { }
 				.secondary { width:170px; float:right; margin-bottom:1px;}
 				#menu { padding:0 15px;}

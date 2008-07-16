@@ -58,10 +58,10 @@ namespace N2.Engine
 			RegisterConfigurationSections(config);
 			HostSection hostConfig = (HostSection)config.GetSection("n2/host");
 			EngineSection engineConfig = (EngineSection)config.GetSection("n2/engine");
-            if (engineConfig != null)
+            if (hostConfig != null)
             {
-                Url.DefaultExtension = engineConfig.Extension;
-                if (!engineConfig.IsWeb)
+                Url.DefaultExtension = hostConfig.Web.Extension;
+                if (!hostConfig.Web.IsWeb)
                     container.Kernel.AddComponentInstance("n2.webContext.notWeb", typeof(IWebContext), new ThreadContext());
             }
             if (hostConfig != null && hostConfig.MultipleSites)
