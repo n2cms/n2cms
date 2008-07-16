@@ -24,6 +24,11 @@ namespace MvcTest.Models
 			get { return false; }
 		}
 
+        public override string IconUrl
+        {
+            get { return "~/Content/comment.png"; }
+        }
+
 		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text
 		{

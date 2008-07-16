@@ -28,7 +28,7 @@
 - node based file tree
 	- create, rename, move, delete folder
 	- upload, rename, move, delete file
-- updated mvc example to latest asp.net mvc release
+- updated mvc example to asp.net mvc preview 4
 
 1.4
 - templates

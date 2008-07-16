@@ -237,7 +237,7 @@
     <Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\wwwroot\%(RecursiveDir)" />
   </Target>
   <Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Core-Deploy;Rebuild-CoreDeploy-AllFiles">
-    <Copy SourceFiles="$(WebFolder)\Bin\N2.dll; $(SolutionFolder)\N2.Extensions\bin\N2.Extensions.dll; $(LibFolder)\System.Web.Abstractions.dll; $(LibFolder)\System.Web.Mvc.dll; $(LibFolder)\System.Web.Routing.dll"
+    <Copy SourceFiles="$(WebFolder)\Bin\N2.dll; $(SolutionFolder)\N2.Extensions\bin\N2.Extensions.dll; $(LibFolder)\Microsoft.Web.Mvc.dll; $(LibFolder)\System.Web.Abstractions.dll; $(LibFolder)\System.Web.Mvc.dll; $(LibFolder)\System.Web.Routing.dll"
 			  DestinationFolder="$(Examples-MvcFolder)\Lib" />
     <Copy SourceFiles="@(CoreDeploy-AllFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\%(RecursiveDir)" />
   </Target>
