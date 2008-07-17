@@ -528,6 +528,7 @@
     <Compile Include="Wiki\UI\Parts\EditArticle.ascx.designer.cs">
       <DependentUpon>EditArticle.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Wiki\UI\WikiTemplates\DefaultWikiTemplateAttribute.cs" />
     <Compile Include="Wiki\UI\WikiTemplates\LatestArticles.ascx.cs">
       <DependentUpon>LatestArticles.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -541,6 +542,13 @@
     </Compile>
     <Compile Include="Wiki\UI\WikiTemplates\LinkFromParameter.ascx.designer.cs">
       <DependentUpon>LinkFromParameter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Wiki\UI\WikiTemplates\PageName.ascx.cs">
+      <DependentUpon>PageName.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\WikiTemplates\PageName.ascx.designer.cs">
+      <DependentUpon>PageName.ascx</DependentUpon>
     </Compile>
     <Compile Include="Wiki\UI\WikiTemplates\Search.ascx.cs">
       <DependentUpon>Search.ascx</DependentUpon>
@@ -585,6 +593,9 @@
       <DependentUpon>Article.aspx</DependentUpon>
     </Compile>
     <Compile Include="Wiki\UI\WikiTemplatePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\WikiTemplates\WikiTemplate.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
@@ -910,6 +921,7 @@
     <Content Include="Wiki\UI\Parts\EditArticle.ascx" />
     <Content Include="Wiki\UI\WikiTemplates\LatestArticles.ascx" />
     <Content Include="Wiki\UI\WikiTemplates\LinkFromParameter.ascx" />
+    <Content Include="Wiki\UI\WikiTemplates\PageName.ascx" />
     <Content Include="Wiki\UI\WikiTemplates\Search.ascx" />
     <Content Include="Wiki\UI\Parts\WikiPart.ascx" />
     <Content Include="Wiki\UI\Search.aspx" />

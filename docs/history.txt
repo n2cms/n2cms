@@ -25,6 +25,7 @@
 - editor roles configuration
 - moved installer configuraiton -> <edit><installer... (update web.config)
 - added profile provider
+- iactivecontent: overrides persistence
 - node based file tree
 	- create, rename, move, delete folder
 	- upload, rename, move, delete file
