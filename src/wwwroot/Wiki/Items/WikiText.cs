@@ -21,6 +21,11 @@ namespace N2.Templates.Wiki.Items
             get { return "~/Wiki/UI/Parts/WikiPart.ascx"; }
         }
 
+        public override string IconUrl
+        {
+            get { return "~/Wiki/UI/Img/part_wiki.gif"; }
+        }
+
         #region IArticle Members
 
         [WikiText("Wiki Text", 100)]

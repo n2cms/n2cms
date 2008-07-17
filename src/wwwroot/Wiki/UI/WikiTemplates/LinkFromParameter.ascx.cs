@@ -8,10 +8,12 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using N2.Templates.Wiki.Web;
 
-namespace N2.Templates.Wiki.UI.Parts
+namespace N2.Templates.Wiki.UI.WikiTemplates
 {
-    public partial class WikiPart : N2.Templates.Web.UI.TemplateUserControl<ContentItem, Items.WikiText>
+    [WikiTemplate("~/Wiki/UI/WikiTemplates/LinkFromParameter.ascx")]
+    public partial class LinkFromParameter : WikiUserControl<Items.WikiArticle>
     {
     }
 }

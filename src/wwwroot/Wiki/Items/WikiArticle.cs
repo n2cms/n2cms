@@ -21,14 +21,19 @@ namespace N2.Templates.Wiki.Items
         protected static Dictionary<string, string> actions = new Dictionary<string, string>();
         static WikiArticle()
         {
-            actions["submit"] = "~/Wiki/UI/SubmitArticle.aspx";
-            actions["modify"] = "~/Wiki/UI/EditArticle.aspx";
+            actions["submit"] = "~/Wiki/UI/Submit.aspx";
+            actions["modify"] = "~/Wiki/UI/Edit.aspx";
             actions["history"] = "~/Wiki/UI/History.aspx";
         }
 
         public WikiArticle()
         {
             Visible = false;
+        }
+
+        public override string IconUrl
+        {
+            get { return "~/Wiki/UI/Img/article_wiki.gif"; }
         }
 
         public string Action { get; set; }
@@ -88,7 +93,7 @@ namespace N2.Templates.Wiki.Items
             get
             {
                 if (string.IsNullOrEmpty(Action))
-                    return base.TemplateUrl;
+                    return "~/Wiki/UI/Article.aspx";
                 else if (actions.ContainsKey(Action))
                     return actions[Action];
                 else

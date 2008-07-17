@@ -11,6 +11,15 @@
 namespace N2.Templates.Wiki.UI.WikiTemplates {
     
     
-    public partial class WikiPart {
+    public partial class LatestArticles {
+        
+        /// <summary>
+        /// rptArticles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptArticles;
     }
 }

@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.Templates.Wiki.UI.WikiTemplates {
+namespace N2.Templates.Wiki.UI {
     
     
-    public partial class WikiPart {
+    public partial class EditArticle {
     }
 }

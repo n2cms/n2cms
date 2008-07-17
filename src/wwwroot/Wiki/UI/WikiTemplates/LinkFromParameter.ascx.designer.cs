@@ -11,6 +11,6 @@
 namespace N2.Templates.Wiki.UI.WikiTemplates {
     
     
-    public partial class WikiPart {
+    public partial class LinkFromParameter {
     }
 }

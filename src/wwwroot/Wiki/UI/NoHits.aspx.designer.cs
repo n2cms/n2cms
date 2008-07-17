@@ -8,9 +8,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.Templates.Wiki.UI.WikiTemplates {
+namespace N2.Templates.Wiki.UI {
     
     
-    public partial class WikiPart {
+    public partial class NoHits {
+        
+        /// <summary>
+        /// edText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.EditableDisplay edText;
     }
 }

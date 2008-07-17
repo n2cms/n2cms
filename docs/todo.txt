@@ -1,6 +1,9 @@
 - node based file tree
 	- consider security (create root directory)
 	- friendly error when moving to illegal locations
+- wiki
+	- categories
+	- nested articles
 - idispatcher & content controller -> N2.dll
 - circuitbreaker
 - queue of t
@@ -102,7 +105,6 @@ TODO:
 		- create many tasks wizard
 		- create project wizard
 	- page template system
-	- wiki
 	- framework
 		- paging
 	- surveys

@@ -486,12 +486,12 @@
     <Compile Include="Wiki\Items\Wiki.cs" />
     <Compile Include="Wiki\Items\WikiArticle.cs" />
     <Compile Include="Wiki\Items\WikiText.cs" />
-    <Compile Include="Wiki\UI\EditArticle.aspx.cs">
-      <DependentUpon>EditArticle.aspx</DependentUpon>
+    <Compile Include="Wiki\UI\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Wiki\UI\EditArticle.aspx.designer.cs">
-      <DependentUpon>EditArticle.aspx</DependentUpon>
+    <Compile Include="Wiki\UI\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Wiki\UI\History.aspx.cs">
       <DependentUpon>History.aspx</DependentUpon>
@@ -500,18 +500,25 @@
     <Compile Include="Wiki\UI\History.aspx.designer.cs">
       <DependentUpon>History.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Wiki\UI\Parts\ActionParameter.ascx.cs">
+    <Compile Include="Wiki\UI\NoHits.aspx.cs">
+      <DependentUpon>NoHits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\NoHits.aspx.designer.cs">
+      <DependentUpon>NoHits.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Wiki\UI\WikiTemplates\ActionParameter.ascx.cs">
       <DependentUpon>ActionParameter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Wiki\UI\Parts\ActionParameter.ascx.designer.cs">
+    <Compile Include="Wiki\UI\WikiTemplates\ActionParameter.ascx.designer.cs">
       <DependentUpon>ActionParameter.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Wiki\UI\Parts\AllArticles.ascx.cs">
+    <Compile Include="Wiki\UI\WikiTemplates\AllArticles.ascx.cs">
       <DependentUpon>AllArticles.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Wiki\UI\Parts\AllArticles.ascx.designer.cs">
+    <Compile Include="Wiki\UI\WikiTemplates\AllArticles.ascx.designer.cs">
       <DependentUpon>AllArticles.ascx</DependentUpon>
     </Compile>
     <Compile Include="Wiki\UI\Parts\EditArticle.ascx.cs">
@@ -521,18 +528,25 @@
     <Compile Include="Wiki\UI\Parts\EditArticle.ascx.designer.cs">
       <DependentUpon>EditArticle.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Wiki\UI\Parts\LatestArticles.ascx.cs">
+    <Compile Include="Wiki\UI\WikiTemplates\LatestArticles.ascx.cs">
       <DependentUpon>LatestArticles.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Wiki\UI\Parts\LatestArticles.ascx.designer.cs">
+    <Compile Include="Wiki\UI\WikiTemplates\LatestArticles.ascx.designer.cs">
       <DependentUpon>LatestArticles.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Wiki\UI\Parts\Search.ascx.cs">
+    <Compile Include="Wiki\UI\WikiTemplates\LinkFromParameter.ascx.cs">
+      <DependentUpon>LinkFromParameter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\WikiTemplates\LinkFromParameter.ascx.designer.cs">
+      <DependentUpon>LinkFromParameter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Wiki\UI\WikiTemplates\Search.ascx.cs">
       <DependentUpon>Search.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Wiki\UI\Parts\Search.ascx.designer.cs">
+    <Compile Include="Wiki\UI\WikiTemplates\Search.ascx.designer.cs">
       <DependentUpon>Search.ascx</DependentUpon>
     </Compile>
     <Compile Include="Wiki\UI\Parts\WikiPart.ascx.cs">
@@ -542,19 +556,19 @@
     <Compile Include="Wiki\UI\Parts\WikiPart.ascx.designer.cs">
       <DependentUpon>WikiPart.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Wiki\UI\SearchArticle.aspx.cs">
-      <DependentUpon>SearchArticle.aspx</DependentUpon>
+    <Compile Include="Wiki\UI\Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Wiki\UI\SearchArticle.aspx.designer.cs">
-      <DependentUpon>SearchArticle.aspx</DependentUpon>
+    <Compile Include="Wiki\UI\Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Wiki\UI\SubmitArticle.aspx.cs">
-      <DependentUpon>SubmitArticle.aspx</DependentUpon>
+    <Compile Include="Wiki\UI\Submit.aspx.cs">
+      <DependentUpon>Submit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Wiki\UI\SubmitArticle.aspx.designer.cs">
-      <DependentUpon>SubmitArticle.aspx</DependentUpon>
+    <Compile Include="Wiki\UI\Submit.aspx.designer.cs">
+      <DependentUpon>Submit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Wiki\UI\Wiki.aspx.cs">
       <DependentUpon>Wiki.aspx</DependentUpon>
@@ -563,12 +577,12 @@
     <Compile Include="Wiki\UI\Wiki.aspx.designer.cs">
       <DependentUpon>Wiki.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Wiki\UI\WikiArticle.aspx.cs">
-      <DependentUpon>WikiArticle.aspx</DependentUpon>
+    <Compile Include="Wiki\UI\Article.aspx.cs">
+      <DependentUpon>Article.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Wiki\UI\WikiArticle.aspx.designer.cs">
-      <DependentUpon>WikiArticle.aspx</DependentUpon>
+    <Compile Include="Wiki\UI\Article.aspx.designer.cs">
+      <DependentUpon>Article.aspx</DependentUpon>
     </Compile>
     <Compile Include="Wiki\UI\WikiTemplatePage.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -885,19 +899,24 @@
     <Content Include="Search\UI\Default.aspx" />
     <Content Include="Search\UI\Img\zoom.png" />
     <Content Include="UI\500.aspx" />
-    <Content Include="Wiki\UI\EditArticle.aspx" />
+    <Content Include="Wiki\UI\Edit.aspx" />
     <Content Include="Wiki\UI\History.aspx" />
-    <Content Include="Wiki\UI\Parts\ActionParameter.ascx" />
-    <Content Include="Wiki\UI\Parts\AllArticles.ascx" />
+    <Content Include="Wiki\UI\img\article_wiki.gif" />
+    <Content Include="Wiki\UI\img\page_wiki.gif" />
+    <Content Include="Wiki\UI\img\part_wiki.gif" />
+    <Content Include="Wiki\UI\NoHits.aspx" />
+    <Content Include="Wiki\UI\WikiTemplates\ActionParameter.ascx" />
+    <Content Include="Wiki\UI\WikiTemplates\AllArticles.ascx" />
     <Content Include="Wiki\UI\Parts\EditArticle.ascx" />
-    <Content Include="Wiki\UI\Parts\LatestArticles.ascx" />
-    <Content Include="Wiki\UI\Parts\Search.ascx" />
+    <Content Include="Wiki\UI\WikiTemplates\LatestArticles.ascx" />
+    <Content Include="Wiki\UI\WikiTemplates\LinkFromParameter.ascx" />
+    <Content Include="Wiki\UI\WikiTemplates\Search.ascx" />
     <Content Include="Wiki\UI\Parts\WikiPart.ascx" />
-    <Content Include="Wiki\UI\SearchArticle.aspx" />
-    <Content Include="Wiki\UI\SubmitArticle.aspx" />
+    <Content Include="Wiki\UI\Search.aspx" />
+    <Content Include="Wiki\UI\Submit.aspx" />
     <Content Include="Wiki\UI\Wiki.aspx" />
     <Content Include="Wiki\UI\Wiki.css" />
-    <Content Include="Wiki\UI\WikiArticle.aspx" />
+    <Content Include="Wiki\UI\Article.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

@@ -17,49 +17,69 @@ namespace N2.Templates.Wiki.Items
 {
     [Definition(SortOrder = 460)]
     [RestrictParents(typeof(IStructuralPage))]
+    [N2.Web.UI.TabPanel(Wiki.WikiTab, "Wiki", 110)]
     public class Wiki : WikiArticle, IWiki
     {
+        public const string WikiTab = "wiki";
         static Wiki()
         {
-            actions["search"] = "~/Wiki/UI/SearchArticle.aspx";
+            actions["search"] = "~/Wiki/UI/Search.aspx";
+            actions["nohits"] = "~/Wiki/UI/NoHits.aspx";
         }
         public Wiki()
         {
             Visible = true;
         }
 
-        [WikiText("Submit Text", 110, ContainerName = Tabs.Content)]
+        public static string DefaultSubmitText = "<p>Please write some content for the article '{{actionparameter}}'.</p>";
+        [WikiText("Submit Text", 110, ContainerName = Wiki.WikiTab)]
         public virtual string SubmitText
         {
-            get { return (string)(GetDetail("SubmitText") ?? string.Empty); }
-            set { SetDetail("SubmitText", value, string.Empty); }
+            get { return (string)(GetDetail("SubmitText") ?? DefaultSubmitText); }
+            set { SetDetail("SubmitText", value, DefaultHistoryText); }
         }
 
-        [WikiText("Modify Text", 110, ContainerName = Tabs.Content)]
+        public static string DefaultModifyText = "<p>Please write the updated content for '{{actionparameter}}'.</p>";
+        [WikiText("Modify Text", 110, ContainerName = Wiki.WikiTab)]
         public virtual string ModifyText
         {
-            get { return (string)(GetDetail("ModifyText") ?? string.Empty); }
-            set { SetDetail("ModifyText", value, string.Empty); }
+            get { return (string)(GetDetail("ModifyText") ?? DefaultModifyText); }
+            set { SetDetail("ModifyText", value, DefaultHistoryText); }
         }
 
-        [WikiText("History Text", 110, ContainerName = Tabs.Content)]
+        public static string DefaultHistoryText = "<p>These are the current and past revisions of '{{linkfromparameter}}'.</p>";
+        [WikiText("History Text", 110, ContainerName = Wiki.WikiTab)]
         public virtual string HistoryText
         {
-            get { return (string)(GetDetail("HistoryText") ?? string.Empty); }
-            set { SetDetail("HistoryText", value, string.Empty); }
+            get { return (string)(GetDetail("HistoryText") ?? DefaultHistoryText); }
+            set { SetDetail("HistoryText", value, DefaultHistoryText); }
         }
 
-        [WikiText("Search Text", 110, ContainerName = Tabs.Content)]
+        public static string DefaultSearchText = "<p>Your search for '{{linkfromparameter}}' yelded the following results:</p>";
+        [WikiText("Search Text", 110, ContainerName = Wiki.WikiTab)]
         public virtual string SearchText
         {
-            get { return (string)(GetDetail("SearchText") ?? string.Empty); }
-            set { SetDetail("SearchText", value, string.Empty); }
+            get { return (string)(GetDetail("SearchText") ?? DefaultSearchText); }
+            set { SetDetail("SearchText", value, DefaultSearchText); }
         }
 
-        [EditableRoles(Title = "Require these roles to input or change information.")]
+        public static string DefaultNoHitsText = "<p>Your search for '{{linkfromparameter}}' yelded no results. You may submit new article with the name '{{linkfromparameter}}'.</p>";
+        [WikiText("Search No Hits Text", 111, ContainerName = Wiki.WikiTab)]
+        public virtual string NoHitsText
+        {
+            get { return (string)(GetDetail("NoHitsText") ?? DefaultNoHitsText); }
+            set { SetDetail("NoHitsText", value, DefaultNoHitsText); }
+        }
+
+        [EditableRoles(Title = "Require these roles to input or change information.", ContainerName = Wiki.WikiTab)]
         public virtual IEnumerable<string> ModifyRoles
         {
             get { return GetDetailCollection("ModifyRoles", true).Enumerate<string>(); }
+        }
+
+        public override string IconUrl
+        {
+            get { return "~/Wiki/UI/Img/page_wiki.gif"; }
         }
 
         public override IWiki WikiRoot

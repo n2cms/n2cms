@@ -14,7 +14,7 @@
 - wiki part
 	- syntax
 	- fragmenters and renderes: external link, heading, internal link, template, text, userinfo
-	- wiki template plugins
+	- wiki template plugins: actionparameter, allarticles, latestarticles, linkfromparameter, search
 	- ui
 	- configurable authorization
 - configurable default extension
