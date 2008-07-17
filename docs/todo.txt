@@ -4,6 +4,37 @@
 - wiki
 	- categories
 	- nested articles
+	- images + upload
+		- [[Image:wiki.png]]
+		- [[Image:wiki.png|Wikipedia, The Free Encyclopedia.]]
+		- Floating to the right side of the page using the frame attribute and a caption: [[Image:wiki.png|frame|Wikipedia Encyclopedia]]
+		- Floating to the right side of the page using the thumb attribute and a caption: [[Image:wiki.png|thumb|Wikipedia Encyclopedia]]
+		- Floating to the right side of the page without a caption: [[Image:wiki.png|right|Wikipedia Encyclopedia]]
+		- [[Image:wiki.png|30 px]]
+		- Linking directly to the description page of an image: [[:Image:wiki.png]]
+		- Linking directly to an image without displaying it: [[:media:wiki.png|Image of the jigsaw globe logo]]
+	- <!-- comment here -->
+	- __TOC__ 
+	- __NOTOC__ 
+	- Variables: 
+		{{CURRENTWEEK}},{{CURRENTDOW}}, {{CURRENTMONTH}}, {{CURRENTMONTHNAME}}, {{CURRENTDAY}}, {{CURRENTDAYNAME}}, {{CURRENTYEAR}}, {{CURRENTTIME}}, {{NUMBEROFARTICLES}}, {{NUMBEROFUSERS}}, {{NAMESPACE}}, {{REVISIONID}}
+		{{localurl:pagename}} 	/wiki/Pagename
+		{{localurl:Wikipedia:Sandbox|action=edit}} 	/w/index.php?title=Wikipedia:Sandbox&action=edit
+		{{fullurl:pagename}} 	http://en.wikipedia.org/wiki/Pagename
+		{{fullurl:pagename|query_string}} 	http://en.wikipedia.org/w/index.php?title=Pagename&query_string
+		{{SERVER}} 	http://en.wikipedia.org
+		{{ns:1...~}} 	Talk
+		{{SITENAME}} 	Wikipedia
+	- language codes
+	- single tilde
+	- Automatically hide stuff in parentheses: [[kingdom (biology)|]].
+		- Automatically hide namespace: [[Wikipedia:Village Pump|]].
+		- Or both: [[Wikipedia: Manual of Style (headings)|]]
+		- But not: [[Wikipedia: Manual of Style#Links|]]
+	- Endings blended into the links: San Francisco also has [[public transport]]ation.
+	- Same target, different name: San Francisco also has [[public transport|public transportation]].
+
+	
 - idispatcher & content controller -> N2.dll
 - circuitbreaker
 - queue of t

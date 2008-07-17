@@ -12,8 +12,8 @@ using N2.Templates.Wiki.Web;
 
 namespace N2.Templates.Wiki.UI.WikiTemplates
 {
-    [WikiTemplate("~/Wiki/UI/WikiTemplates/LinkFromParameter.ascx")]
-    public partial class LinkFromParameter : WikiUserControl<Items.WikiArticle>
+    [DefaultWikiTemplate]
+    public partial class LinkFromParameter : WikiTemplate
     {
     }
 }

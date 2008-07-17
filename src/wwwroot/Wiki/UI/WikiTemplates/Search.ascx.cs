@@ -13,8 +13,8 @@ using N2.Web;
 
 namespace N2.Templates.Wiki.UI.WikiTemplates
 {
-    [WikiTemplate("~/Wiki/UI/WikiTemplates/Search.ascx")]
-    public partial class Search : WikiUserControl<Items.WikiArticle>
+    [DefaultWikiTemplate]
+    public partial class Search : WikiTemplate
     {
         protected override void OnInit(EventArgs e)
         {

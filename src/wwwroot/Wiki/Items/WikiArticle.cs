@@ -18,12 +18,12 @@ namespace N2.Templates.Wiki.Items
     [RestrictParents(typeof(Wiki))]
     public class WikiArticle : AbstractContentPage, IArticle
     {
-        protected static Dictionary<string, string> actions = new Dictionary<string, string>();
         static WikiArticle()
         {
-            actions["submit"] = "~/Wiki/UI/Submit.aspx";
-            actions["modify"] = "~/Wiki/UI/Edit.aspx";
-            actions["history"] = "~/Wiki/UI/History.aspx";
+            ActionTemplates["index"] = "~/Wiki/UI/Article.aspx";
+            ActionTemplates["submit"] = "~/Wiki/UI/Submit.aspx";
+            ActionTemplates["modify"] = "~/Wiki/UI/Edit.aspx";
+            ActionTemplates["history"] = "~/Wiki/UI/History.aspx";
         }
 
         public WikiArticle()
@@ -36,6 +36,7 @@ namespace N2.Templates.Wiki.Items
             get { return "~/Wiki/UI/Img/article_wiki.gif"; }
         }
 
+        protected static Dictionary<string, string> ActionTemplates = new Dictionary<string, string>();
         public string Action { get; set; }
         public string ActionParameter { get; set; }
 
@@ -57,7 +58,7 @@ namespace N2.Templates.Wiki.Items
             if (article == null)
             {
                 string[] action = GetSegments(childName);
-                if (actions.ContainsKey(action[0]))
+                if (ActionTemplates.ContainsKey(action[0]))
                 {
                     Action = action[0];
                     ActionParameter = action[1];
@@ -94,10 +95,10 @@ namespace N2.Templates.Wiki.Items
             {
                 if (string.IsNullOrEmpty(Action))
                     return "~/Wiki/UI/Article.aspx";
-                else if (actions.ContainsKey(Action))
-                    return actions[Action];
+                else if (ActionTemplates.ContainsKey(Action))
+                    return ActionTemplates[Action];
                 else
-                    throw new N2Exception("Invalid action '" + Action + "'.");
+                    throw new N2Exception("Invalid action '{0}'.", Action);
             }
         }
 

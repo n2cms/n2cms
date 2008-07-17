@@ -12,8 +12,8 @@ using N2.Templates.Wiki.Web;
 
 namespace N2.Templates.Wiki.UI.WikiTemplates
 {
-    [WikiTemplate("~/Wiki/UI/WikiTemplates/LatestArticles.ascx")]
-    public partial class LatestArticles : WikiUserControl<Items.WikiArticle>
+    [DefaultWikiTemplate]
+    public partial class LatestArticles : WikiTemplate
     {
         protected override void OnInit(EventArgs e)
         {

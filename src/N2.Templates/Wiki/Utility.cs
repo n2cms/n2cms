@@ -8,6 +8,8 @@ namespace N2.Templates.Wiki
     {
         public static string CapitalizeFirstLetter(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return name;
             return name[0].ToString().ToUpper() + name.Substring(1);
         }    
     }

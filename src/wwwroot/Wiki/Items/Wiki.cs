@@ -23,8 +23,8 @@ namespace N2.Templates.Wiki.Items
         public const string WikiTab = "wiki";
         static Wiki()
         {
-            actions["search"] = "~/Wiki/UI/Search.aspx";
-            actions["nohits"] = "~/Wiki/UI/NoHits.aspx";
+            ActionTemplates["search"] = "~/Wiki/UI/Search.aspx";
+            ActionTemplates["nohits"] = "~/Wiki/UI/NoHits.aspx";
         }
         public Wiki()
         {

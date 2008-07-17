@@ -19,7 +19,7 @@ namespace N2.Templates.Wiki
             VirtualPath = virtualPath;
         }
 
-        public string VirtualPath { get; set; }
+        public virtual string VirtualPath { get; set; }
 
         #region IPlugin Members
 

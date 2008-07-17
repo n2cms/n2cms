@@ -12,8 +12,8 @@ using N2.Templates.Wiki.Web;
 
 namespace N2.Templates.Wiki.UI.WikiTemplates
 {
-    [WikiTemplate("~/Wiki/UI/WikiTemplates/AllArticles.ascx")]
-    public partial class AllArticles : WikiUserControl<Items.WikiArticle>
+    [DefaultWikiTemplate]
+    public partial class AllArticles : WikiTemplate
     {
         protected override void OnInit(EventArgs e)
         {
