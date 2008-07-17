@@ -36,6 +36,7 @@ namespace N2.Tests.Edit.LinkTracker
 			root = CreateOneItem<Items.TrackableItem>(1, "root", null);
 			item1 = CreateOneItem<Items.TrackableItem>(2, "item1", root);
 			item2 = CreateOneItem<Items.TrackableItem>(3, "item2", root);
+
 			mocks.Replay(persister.Repository);
 
 			linkFactory = new Tracker(persister, null, parser);
@@ -70,14 +71,21 @@ namespace N2.Tests.Edit.LinkTracker
 		{
 			mocks.ReplayAll();
 
-			root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
-			persister.Save(root);
-			Assert.AreEqual(1, root.GetDetailCollection("TrackedLinks", false).Count);
-			root["TestDetail"] = null;
-			persister.Save(root);
+            using (persister)
+            {
+                root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
+                persister.Save(root);
 
-			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
-			Assert.AreEqual(0, links.Count);
+                Assert.AreEqual(1, root.GetDetailCollection("TrackedLinks", false).Count);
+            }
+            using (persister)
+            {
+                root["TestDetail"] = null;
+                persister.Save(root);
+
+                DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
+                Assert.AreEqual(0, links.Count);
+            }
 		}
 
 		[Test]
@@ -85,17 +93,25 @@ namespace N2.Tests.Edit.LinkTracker
 		{
 			mocks.ReplayAll();
 
-			root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
-			persister.Save(root);
-            var links = root.GetDetailCollection("TrackedLinks", false);
-            Assert.That(links, Is.Not.Null);
-			Assert.That(links[0], Is.EqualTo(item1));
-			root["TestDetail"] = "<a href='/item2.aspx'>first item</a>";
-			persister.Save(root);
+            using (persister)
+            {
+                root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
+                persister.Save(root);
 
-			links = root.GetDetailCollection("TrackedLinks", false);
-            Assert.That(links, Is.Not.Null);
-            Assert.That(links[0], Is.EqualTo(item2));
+                var links = root.GetDetailCollection("TrackedLinks", false);
+                Assert.That(links, Is.Not.Null);
+                Assert.That(links[0], Is.EqualTo(item1));
+            }
+
+            using (persister)
+            {
+                root["TestDetail"] = "<a href='/item2.aspx'>first item</a>";
+                persister.Save(root);
+
+                var links = root.GetDetailCollection("TrackedLinks", false);
+                Assert.That(links, Is.Not.Null);
+                Assert.That(links[0], Is.EqualTo(item2));
+            }
 		}
 
 		[Test]

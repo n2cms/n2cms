@@ -31,12 +31,13 @@ namespace N2.Tests
 		{
             repository = mocks.Stub<IRepository<int, ContentItem>>();
             var transaction = mocks.Stub<ITransaction>();
+            mocks.Replay(transaction);
+
             Expect.Call(repository.BeginTransaction()).Return(transaction).Repeat.Any();
             var linkRepository = mocks.Stub<N2.Persistence.NH.INHRepository<int, N2.Details.LinkDetail>>();
             var finder = mocks.Stub<N2.Persistence.Finder.IItemFinder>();
-            persister = new N2.Persistence.NH.ContentPersister(repository, linkRepository, finder);
 
-			return persister;
+            return persister = new N2.Persistence.NH.ContentPersister(repository, linkRepository, finder);
 		}
 
 		protected override T CreateOneItem<T>(int itemID, string name, ContentItem parent)

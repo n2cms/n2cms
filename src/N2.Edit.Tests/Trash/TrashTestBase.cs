@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Edit.Trash;
 using N2.Edit.Tests.Trash;
+using N2.Tests.Persistence;
 
 namespace N2.Trashcan.Tests
 {

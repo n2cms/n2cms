@@ -98,8 +98,13 @@ namespace N2.Trashcan.Tests
 		[Test]
 		public void Throwing_IsIntercepted_InMediumTrust()
 		{
-			MediumTrustEngine engine = new MediumTrustEngine(new ThreadContext());
+			MediumTrustEngine engine = new MediumTrustEngine();
+
 			engine.Initialize();
+            using (engine.Persister)
+            {
+                engine.Resolve<N2.Installation.InstallationManager>().Install();
+            }
 			engine.SecurityManager.Enabled = false;
 
 			ContentItem root = new ThrowableItem();
