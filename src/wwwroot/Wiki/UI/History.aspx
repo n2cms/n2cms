@@ -4,8 +4,8 @@
     | <a href="<%= CurrentPage.AppendUrl("Modify") %>">Modify</a>
     | History
     </div>
-    <div class="message"><n2:EditableDisplay runat="server" PropertyName="HistoryText" Path="<%$ CurrentPage: WikiRoot.Path %>" /></div>
     <h1>History of <%= CurrentPage.Title %></h1>
+    <div class="message"><n2:EditableDisplay ID="dText" runat="server" PropertyName="HistoryText" Path="<%$ CurrentPage: WikiRoot.Path %>" /></div>
     <asp:Repeater runat="server" ID="rptArticles" runat="server">
         <HeaderTemplate>
             <div title="<%# CurrentPage.ID %>" class="item">

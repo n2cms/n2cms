@@ -18,6 +18,7 @@ namespace N2.Templates.Wiki.Items
     [Definition(SortOrder = 460)]
     [RestrictParents(typeof(IStructuralPage))]
     [N2.Web.UI.TabPanel(Wiki.WikiTab, "Wiki", 110)]
+    [AllowedChildren(typeof(Rss.Items.Subscribe))]
     public class Wiki : WikiArticle, IWiki
     {
         public const string WikiTab = "wiki";
@@ -71,7 +72,7 @@ namespace N2.Templates.Wiki.Items
             set { SetDetail("NoHitsText", value, DefaultNoHitsText); }
         }
 
-        [EditableRoles(Title = "Require these roles to input or change information.", ContainerName = Wiki.WikiTab)]
+        [EditableRoles(Title = "Role required for write access", ContainerName = Wiki.WikiTab)]
         public virtual IEnumerable<string> ModifyRoles
         {
             get { return GetDetailCollection("ModifyRoles", true).Enumerate<string>(); }

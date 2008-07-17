@@ -10,12 +10,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Templates.Wiki.Web;
 using N2.Persistence;
+using N2.Templates.Rss;
 
 namespace N2.Templates.Wiki.UI.Parts
 {
     public partial class EditArticle : WikiUserControl<Items.WikiArticle>
     {
         public bool IsNew { get; set; }
+        public string Text { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
@@ -54,6 +56,7 @@ namespace N2.Templates.Wiki.UI.Parts
             }
             article["SavedDate"] = DateTime.Now;
             article["SavedByAddress"] = Request.UserHostAddress;
+            article[SyndicatableDefinitionAppender.SyndicatableDetailName] = CurrentPage.WikiRoot[SyndicatableDefinitionAppender.SyndicatableDetailName];
             article.Text = filter.FilterHtml(txtText.Text);
             Engine.Persister.Save(article);
 

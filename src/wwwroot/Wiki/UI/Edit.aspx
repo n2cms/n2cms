@@ -5,6 +5,6 @@
     | Modify
     | <a href="<%= CurrentPage.AppendUrl("History") %>">History</a>
     </div>
-    <div class="message"><n2:EditableDisplay runat="server" PropertyName="ModifyText" Path="<%$ CurrentPage: WikiRoot.Path %>" /></div>
-    <parts:EditArticle runat="server" IsNew="false" />
+    <%--<div class="message"><n2:EditableDisplay runat="server" PropertyName="ModifyText" Path="<%$ CurrentPage: WikiRoot.Path %>" /></div>--%>
+    <parts:EditArticle runat="server" IsNew="false" Text="<%$ CurrentPage: WikiRoot.ModifyText %>" />
 </asp:Content>

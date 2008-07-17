@@ -14,6 +14,15 @@ namespace N2.Templates.Wiki.UI {
     public partial class History {
         
         /// <summary>
+        /// dText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.EditableDisplay dText;
+        
+        /// <summary>
         /// rptArticles control.
         /// </summary>
         /// <remarks>

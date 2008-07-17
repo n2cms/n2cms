@@ -4,6 +4,7 @@ using N2.Templates.Web;
 using System;
 using N2.Templates.Configuration;
 using N2.Web.Mail;
+using System.Configuration;
 
 namespace N2.Templates
 {
@@ -13,7 +14,7 @@ namespace N2.Templates
 		public void Initialize(IEngine engine)
 		{
 			engine.AddComponent("n2.templates.pagemodifier", typeof(IPageModifierContainer), typeof (TemplatePageModifier));
-            TemplatesSection config = engine.Resolve<TemplatesSection>();
+            TemplatesSection config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
             if (config == null || config.MailConfiguration == MailConfigSource.ContentRootOrConfiguration)
             {
                 engine.AddComponent("n2.templtaes.contentMailSender", typeof(IMailSender), typeof(Services.DynamicMailSender));

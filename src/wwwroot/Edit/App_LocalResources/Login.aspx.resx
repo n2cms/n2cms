@@ -142,7 +142,7 @@
     <value>Password is required.</value>
   </data>
   <data name="Login1.RememberMeText" xml:space="preserve">
-    <value>Remember me next time.</value>
+    <value>Remember me</value>
   </data>
   <data name="Login1.TitleText" xml:space="preserve">
     <value>&lt;h1&gt;Log in&lt;/h1&gt;</value>

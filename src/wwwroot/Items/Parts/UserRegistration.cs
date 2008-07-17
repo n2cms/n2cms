@@ -9,13 +9,14 @@ namespace N2.Templates.UI.Items.Parts
 {
 	[Definition("Register", "UserRegistration")]
 	[AllowedZones(Zones.Content)]
+	[N2.Web.UI.FieldSet("registration", "Registration", 30)]
 	[N2.Web.UI.FieldSet("verification", "Verification", 40)]
 	public class UserRegistration : AbstractItem
 	{
 		private const string VerificationBody = @"Please verify your e-mail. Click here:
 {VerificationUrl}";
 
-		[EditableLink("Success Page", 10)]
+        [EditableLink("Success Page", 10, ContainerName = "registration")]
 		public virtual ContentItem SuccessPage
 		{
 			get { return (ContentItem)GetDetail("SuccessPage"); }
@@ -57,7 +58,7 @@ namespace N2.Templates.UI.Items.Parts
 			set { SetDetail("VerificationSender", value, string.Empty); }
 		}
 
-		[EditableRoles(Title = "Assign users to these roles")]
+		[EditableRoles(Title = "Assign users to these roles", ContainerName = "registration")]
 		public virtual DetailCollection Roles
 		{
 			get { return GetDetailCollection("Roles", true); }

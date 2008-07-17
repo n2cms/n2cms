@@ -19,7 +19,7 @@
 					Text="*" Display="Dynamic" />
 			</div>
 			<div class="ff remember">
-				<asp:CheckBox ID="RememberMe" runat="server" Text="Remember me next time." />
+				<asp:CheckBox ID="RememberMe" runat="server" Text="Remember me" />
 			</div>
 			<div class="bf">
 				<asp:Button ID="LoginButton" runat="server" CommandName="Login" Text="Log In" ValidationGroup="Login1" />

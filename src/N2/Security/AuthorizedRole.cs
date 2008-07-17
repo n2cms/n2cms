@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Security.Principal;
 
 namespace N2.Security
 {
@@ -29,7 +30,13 @@ namespace N2.Security
 	/// </summary>
 	public class AuthorizedRole: Authorization, ICloneable
 	{
+        /// <summary>The role considered as everyone.</summary>
         public const string Everyone = "Everyone";
+        /// <summary>Access to an anonymous user principal.</summary>
+        public static IPrincipal AnonymousUser
+        {
+            get { return new GenericPrincipal(new GenericIdentity("Anonymous"), new string[] { "Everyone" }); }
+        }
 
 		#region Constructors
 		/// <summary>Creates a new (empty) instance of the AuthorizedRole class.</summary>
@@ -83,6 +90,9 @@ namespace N2.Security
 
 		#endregion
 
+        /// <summary>Determines wether a user is permitted according to this role.</summary>
+        /// <param name="user">The user to check.</param>
+        /// <returns>True if the user is permitted.</returns>
 		public override bool IsAuthorized(System.Security.Principal.IPrincipal user)
 		{
 			if (IsEveryone)

@@ -7,7 +7,7 @@ namespace N2.Templates.Rss.Items
 {
 	[Definition("Subscribe", "Subscribe", "An RSS feed subscription box. An RSS link is also added to the page enabling subscription through the browser's address field.", "", 370)]
 	[RestrictParents(typeof (IStructuralPage))]
-	[AllowedZones(Zones.Right, Zones.RecursiveRight, "SiteWideRight")]
+	[AllowedZones(Zones.Right, Zones.Left, Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteRight, Zones.SiteLeft)]
 	public class Subscribe : SidebarItem
 	{
 		[EditableLink("Feed", 50)]

@@ -11,12 +11,13 @@ using N2.Templates.Items;
 using N2.Integrity;
 using System.Collections.Generic;
 using N2.Web;
+using N2.Templates.Syndication;
 
 namespace N2.Templates.Wiki.Items
 {
     [Definition]
     [RestrictParents(typeof(Wiki))]
-    public class WikiArticle : AbstractContentPage, IArticle
+    public class WikiArticle : AbstractContentPage, IArticle, ISyndicatable
     {
         static WikiArticle()
         {
@@ -106,5 +107,14 @@ namespace N2.Templates.Wiki.Items
         {
             get { return this.Parent as IWiki; }
         }
+
+        #region ISyndicatable Members
+
+        public string Summary
+        {
+            get { return ""; }
+        }
+
+        #endregion
     }
 }

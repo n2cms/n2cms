@@ -15,5 +15,6 @@ namespace N2.Templates.Wiki
         string ActionParameter { get; }
         
         IWiki WikiRoot { get; }
+        object this[string detailName] { get; }
     }
 }

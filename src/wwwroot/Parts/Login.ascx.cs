@@ -9,6 +9,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Templates.UI.Items.Parts;
+using System.Security.Principal;
 
 namespace N2.Templates.UI.Parts
 {
@@ -24,7 +25,10 @@ namespace N2.Templates.UI.Parts
 
 		void Status_LoggedOut(object sender, EventArgs e)
 		{
-			Response.Redirect((CurrentItem.LogoutPage ?? Find.StartPage).Url);
+            if (CurrentItem.LogoutPage != null)
+                Response.Redirect(CurrentItem.LogoutPage.Url);
+            else if (!CurrentPage.IsAuthorized(N2.Security.AuthorizedRole.AnonymousUser))
+                Response.Redirect(Find.StartPage.Url);
 		}
 
 		void LoginBox_Authenticate(object sender, AuthenticateEventArgs e)
