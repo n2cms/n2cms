@@ -12,6 +12,7 @@ namespace N2.Configuration
 		MySql,
 		SqLite,
         Firebird,
-        Generic
+        Generic,
+        Jet
 	}
 }

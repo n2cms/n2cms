@@ -55,5 +55,19 @@ namespace N2.Templates.Wiki
         }
 
         #endregion
+
+        public override bool Equals(object obj)
+        {
+            ITemplateRenderer other = obj as ITemplateRenderer;
+            if (other == null)
+                return false;
+            else
+                return Name.Equals(other.Name);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

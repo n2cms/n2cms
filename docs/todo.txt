@@ -5,7 +5,8 @@
 	- categories
 	- nested articles
 	- track back links
-	- images + upload
+	- code formatting
+	- images
 		- [[Image:wiki.png]]
 		- [[Image:wiki.png|Wikipedia, The Free Encyclopedia.]]
 		- Floating to the right side of the page using the frame attribute and a caption: [[Image:wiki.png|frame|Wikipedia Encyclopedia]]
@@ -14,6 +15,7 @@
 		- [[Image:wiki.png|30 px]]
 		- Linking directly to the description page of an image: [[:Image:wiki.png]]
 		- Linking directly to an image without displaying it: [[:media:wiki.png|Image of the jigsaw globe logo]]
+	- image/media upload
 	- <!-- comment here -->
 	- __TOC__ 
 	- __NOTOC__ 
@@ -34,8 +36,6 @@
 		- But not: [[Wikipedia: Manual of Style#Links|]]
 	- Endings blended into the links: San Francisco also has [[public transport]]ation.
 	- Same target, different name: San Francisco also has [[public transport|public transportation]].
-
-	
 - idispatcher & content controller -> N2.dll
 - circuitbreaker
 - queue of t

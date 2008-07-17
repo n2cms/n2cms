@@ -93,6 +93,10 @@ namespace N2.Persistence.NH
                     Properties["connection.driver_class"] = "NHibernate.Driver.OleDbDriver";
                     Properties["dialect"] = "NHibernate.Dialect.GenericDialect";
                     break;
+                case DatabaseFlavour.Jet:
+                    Properties["connection.driver_class"] = "NHibernate.JetDriver.JetDriver, NHibernate.JetDriver";
+                    Properties["dialect"] = "NHibernate.JetDriver.JetDialect, NHibernate.JetDriver";
+                    break;
                 default:
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
