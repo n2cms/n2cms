@@ -61,6 +61,10 @@
 		<Zip Files="@(MultipleDomainsExampleDeploy-AllFiles)" ZipFileName="$(Deploy-Folder)\N2_MultipleDomainsExample.zip" />
 	</Target>-->
 
+  <Target Name="Test">
+    <NUnit Assemblies="$(SolutionFolder)\N2.Tests\bin\N2.Tests.exe" ToolPath="$(LibFolder)" />
+  </Target>
+
   <Target Name="PrepareDependencies">
     <CallTarget Targets="Examples-PrepareDependencies"/>
   </Target>

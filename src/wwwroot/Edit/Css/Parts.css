@@ -12,6 +12,8 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 .dragging { cursor:move; }
 
 .dropPoint { height:16px; margin:5px 0; background:url(../img/shading_blue.png); border:solid 1px #e3e5e4;}
+.dropPoint .dpLabel { font:11px Arial, Sans-Serif; position:absolute; padding:1px 0 0 4px; color:#333}
+.droppable-hover .dpLabel { font-weight:bold; }
 :hover.dropPoint { border-color:#d1d4d3; background:url(../img/shading_purple.png); }
 
 .dropZone .droppable-active { background:url(../img/shading_green.png); border:solid 2px #6c6; margin:4px 0; margin-right:-1px; }

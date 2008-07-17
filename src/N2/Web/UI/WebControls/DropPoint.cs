@@ -8,6 +8,7 @@ namespace N2.Web.UI.WebControls
 		private readonly string zoneName;
 		private readonly ContentItem item;
 		private readonly CreationPosition position;
+        private string text;
 		
 		public DropPoint(string zoneName, ContentItem item, CreationPosition position, string backImageUrl)
 		{
@@ -21,7 +22,13 @@ namespace N2.Web.UI.WebControls
 				ID = "dp_" + item.ID + "_" + zoneName;
 			else
 				ID = "dp_" + item.ID;
-		}
+        }
+
+        public string Text
+        {
+            get { return text; }
+            set { text = value; }
+        }
 
 		protected override void OnInit(System.EventArgs e)
 		{
@@ -42,5 +49,17 @@ namespace N2.Web.UI.WebControls
 					              ClientID, zoneName, item.ID));
 			}
 		}
+
+        protected override void CreateChildControls()
+        {
+            if (!string.IsNullOrEmpty(Text))
+            {
+                Label l = new Label();
+                l.Text = Text;
+                l.CssClass = "dpLabel";
+                this.Controls.AddAt(0, l);
+            }
+            base.CreateChildControls();
+        }
 	}
 }

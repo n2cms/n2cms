@@ -579,7 +579,7 @@ namespace N2.Tests.Edit
 			ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
 			string editUrl = this.editManager.GetEditExistingItemUrl(root);
 
-			Assert.AreEqual("~/edit/edit.aspx?selected=" + HttpUtility.UrlEncode("/"), editUrl);
+			Assert.AreEqual("~/edit/edit.aspx?selected=/", editUrl);
 		}
 
 		[Test]
@@ -589,7 +589,7 @@ namespace N2.Tests.Edit
 			ContentItem item = CreateOneItem<ComplexContainersItem>(2, "child", root);
 			string editUrl = this.editManager.GetEditExistingItemUrl(item);
 
-			Assert.AreEqual("~/edit/edit.aspx?selected=" + HttpUtility.UrlEncode("/child/"), editUrl);
+            Assert.AreEqual("~/edit/edit.aspx?selected=/child/", editUrl);
 		}
 
 		[Test]

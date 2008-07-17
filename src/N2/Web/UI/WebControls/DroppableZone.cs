@@ -91,7 +91,8 @@ namespace N2.Web.UI.WebControls
 			{
 				if(za.ZoneName == ZoneName)
 				{
-					dp.ToolTip = za.Title;
+                    dp.ToolTip = ZoneName;
+                    dp.Text = za.Title;
 				}
 			}
 		}
