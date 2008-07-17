@@ -272,7 +272,7 @@
     <MSBuild Projects="$(Examples-TemplatesSiteFolder)\MyProject-vs2008.sln" />
   </Target>
   <Target Name="Examples-Mvc-Build" DependsOnTargets="Examples-Mvc-PrepareDependencies">
-    <MSBuild Projects="$(Examples-MvcFolder)\N2.Web.Mvc.sln" />
+    <MSBuild Projects="$(Examples-MvcFolder)\Mvc_Example.sln" />
   </Target>
 
   <Target Name="Examples-Build">
