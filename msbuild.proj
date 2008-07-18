@@ -64,8 +64,8 @@
   <Target Name="Test">
     <CallTarget Targets="Build" />
     <NUnit Assemblies="$(SolutionFolder)\N2.Tests\bin\N2.Tests.exe" ToolPath="$(LibFolder)"  />
-    <NUnit Assemblies="$(SolutionFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe" ToolPath="$(LibFolder)" />
-    <NUnit Assemblies="$(SolutionFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe" ToolPath="$(LibFolder)" />
+    <NUnit Assemblies="$(SolutionFolder)\N2.Templates.Tests\bin\Debug\N2.Templates.Tests.exe" ToolPath="$(LibFolder)" />
+    <NUnit Assemblies="$(SolutionFolder)\N2.Extensions.Tests\bin\Debug\N2.Extensions.Tests.exe" ToolPath="$(LibFolder)" />
     <NUnit Assemblies="$(SolutionFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" ToolPath="$(LibFolder)" />
   </Target>
 
