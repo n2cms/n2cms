@@ -21,6 +21,7 @@ namespace N2.Edit.FileSystem.Items
 {
     [Definition]
     [RestrictParents(typeof(AbstractDirectory))]
+    [WithEditableName]
     public class Directory : AbstractDirectory, IActiveContent
     {
         public override void AddTo(ContentItem newParent)

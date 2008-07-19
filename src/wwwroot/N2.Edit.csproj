@@ -167,6 +167,7 @@
     <Compile Include="Edit\FileSystem\Directory.aspx.designer.cs">
       <DependentUpon>Directory.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\FileSystem\Editables\EditableFolderPathAttribute.cs" />
     <Compile Include="Edit\FileSystem\Editables\EditableUploadAttribute.cs" />
     <Compile Include="Edit\FileSystem\File.aspx.cs">
       <DependentUpon>File.aspx</DependentUpon>

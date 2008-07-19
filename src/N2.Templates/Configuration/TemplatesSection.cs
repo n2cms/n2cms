@@ -9,11 +9,32 @@ namespace N2.Templates.Configuration
 {
     public class TemplatesSection : ConfigurationSection
     {
-        static OutputCacheParameters defaultOutputCacheParameters = new OutputCacheParameters();
+        static OutputCacheParameters outputCacheParameters = new OutputCacheParameters();
+        static bool outputCacheEnabled = false;
 
-        public static OutputCacheParameters DefaultOutputCacheParameters
+        public static bool OutputCacheEnabled
         {
-            get { return TemplatesSection.defaultOutputCacheParameters; }
+            get { return TemplatesSection.outputCacheEnabled; }
+        }
+
+        public static OutputCacheParameters OutputCacheParameters
+        {
+            get
+            {
+                OutputCacheParameters parameters = new OutputCacheParameters();
+                parameters.CacheProfile = outputCacheParameters.CacheProfile;
+                parameters.Duration = outputCacheParameters.Duration;
+                parameters.Enabled = outputCacheParameters.Enabled;
+                parameters.Location = outputCacheParameters.Location;
+                parameters.NoStore = outputCacheParameters.NoStore;
+                parameters.SqlDependency = outputCacheParameters.SqlDependency;
+                parameters.VaryByContentEncoding = outputCacheParameters.VaryByContentEncoding;
+                parameters.VaryByControl = parameters.VaryByControl;
+                parameters.VaryByCustom = parameters.VaryByCustom;
+                parameters.VaryByHeader = parameters.VaryByHeader;
+                parameters.VaryByParam = parameters.VaryByParam;
+                return parameters;
+            }
         }
 
         static TemplatesSection()
@@ -21,14 +42,11 @@ namespace N2.Templates.Configuration
             TemplatesSection config = WebConfigurationManager.GetSection("n2/templates") as TemplatesSection;
             if (config != null && config.OutputCache.Enabled)
             {
-                defaultOutputCacheParameters.Enabled = config.OutputCache.Enabled;
-                defaultOutputCacheParameters.VaryByParam = config.OutputCache.VaryByParam;
-                defaultOutputCacheParameters.CacheProfile = config.OutputCache.CacheProfile;
-                defaultOutputCacheParameters.Duration = config.OutputCache.Duration;
-            }
-            else
-            {
-                defaultOutputCacheParameters.Enabled = false;
+                outputCacheEnabled = true;
+                outputCacheParameters.Enabled = config.OutputCache.Enabled;
+                outputCacheParameters.VaryByParam = config.OutputCache.VaryByParam;
+                outputCacheParameters.CacheProfile = config.OutputCache.CacheProfile;
+                outputCacheParameters.Duration = config.OutputCache.Duration;
             }
         }
 

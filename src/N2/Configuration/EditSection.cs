@@ -34,6 +34,13 @@ namespace N2.Configuration
             set { base["administrators"] = value; }
         }
 
+        [ConfigurationProperty("uploadFolders")]
+        public FileSystemFolderCollection UploadFolders
+        {
+            get { return (FileSystemFolderCollection)base["uploadFolders"]; }
+            set { base["uploadFolders"] = value; }
+        }
+
         [ConfigurationProperty("editTreeUrl", DefaultValue = "Navigation/Tree.aspx")]
         public string EditTreeUrl
         {

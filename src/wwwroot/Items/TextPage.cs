@@ -2,6 +2,8 @@ using System.Text.RegularExpressions;
 using N2.Details;
 using N2.Templates.Syndication;
 using N2.Templates.Items;
+using System.Web.UI.WebControls;
+using N2.Serialization;
 
 namespace N2.Templates.UI.Items
 {
@@ -12,7 +14,15 @@ namespace N2.Templates.UI.Items
 		"A simple text page. It displays a vertical menu, the content and provides a sidebar column", "", 20)]
 	public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
 	{
-		[EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+
+        [N2.Details.EditableEnum("Test", 0, typeof(System.Web.ApplicationShutdownReason))]
+        public virtual System.Web.ApplicationShutdownReason Test
+        {
+            get { return (System.Web.ApplicationShutdownReason)(GetDetail("Test") ?? System.Web.ApplicationShutdownReason.HttpRuntimeClose); }
+            set { SetDetail("Test", (int)value, (int)System.Web.ApplicationShutdownReason.HttpRuntimeClose); }
+        }
+
+		[FileAttachment, EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
 		{
 			get { return (string)(GetDetail("Image") ?? string.Empty); }

@@ -126,11 +126,23 @@ namespace N2
 			set { title = value; }
 		}
 
+        private static char[] invalidCharacters = new char[] { '%', '?', '&', '/', ':' };
 		/// <summary>Gets or sets the item's name. This is used to compute the item's url and can be used to uniquely identify the item among other items on the same level.</summary>
 		public virtual string Name
 		{
-			get { return name ?? (ID > 0 ? ID.ToString() : string.Empty); }
-			set { name = value; url = null;  }
+			get 
+            { 
+                return name ?? (ID > 0 ? ID.ToString() : null); 
+            }
+			set 
+            {
+                if (value != null && value.IndexOfAny(invalidCharacters) >= 0) throw new N2Exception("Invalid characters in name, '%', '?', '&', '/', ':', '+', '.' not allowed.");
+                if (string.IsNullOrEmpty(value))
+                    name = null;
+                else
+                    name = value; 
+                url = null;  
+            }
 		}
 
 		/// <summary>Gets or sets zone name which is associated with data items and their placement on a page.</summary>

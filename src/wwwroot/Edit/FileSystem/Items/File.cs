@@ -17,7 +17,7 @@ namespace N2.Edit.FileSystem.Items
 {
     [Definition]
     [RestrictParents(typeof(AbstractDirectory))]
-    [Editables.EditableUpload(Title = "Upload", Name = "Name")]
+    [Editables.EditableUpload]
     public class File : AbstractNode, INode, IActiveContent
     {
         public long Size { get; set; }

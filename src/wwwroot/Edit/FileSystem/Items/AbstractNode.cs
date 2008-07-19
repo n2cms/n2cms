@@ -13,7 +13,6 @@ using N2.Edit.Trash;
 namespace N2.Edit.FileSystem.Items
 {
     [NotThrowable]
-    [WithEditableName]
     public abstract class AbstractNode : ContentItem, INode
     {
         public override string Title

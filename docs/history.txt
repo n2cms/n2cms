@@ -19,8 +19,10 @@
 	- configurable authorization
 - configurable default extension
 - children of thrown items are expired
-- configurable cache support
-- output cache invalidation support
+- configurable output cache
+	- duration etc.
+	- don't cache authenticated users
+	- invalidate on content changes
 - filters += pipes
 - editor roles configuration
 - moved installer configuraiton -> <edit><installer... (update web.config)
@@ -29,7 +31,9 @@
 - node based file tree
 	- create, rename, move, delete folder
 	- upload, rename, move, delete file
+	- configure allowed upload paths
 - updated mvc example to asp.net mvc preview 4
+- editable enum drop down
 
 1.4
 - templates

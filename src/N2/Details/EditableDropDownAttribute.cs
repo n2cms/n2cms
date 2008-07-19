@@ -24,26 +24,43 @@ namespace N2.Details
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			DropDownList ddl = editor as DropDownList;
-			if (!ddl.SelectedValue.Equals(item[Name] as string, StringComparison.InvariantCultureIgnoreCase))
+			if (!ddl.SelectedValue.Equals(GetValue(item), StringComparison.InvariantCultureIgnoreCase))
 			{
-				item[Name] = ddl.SelectedValue;
+                item[Name] = GetValue(ddl);
 				return true;
 			}
 			return false;
 		}
+
+        /// <summary>Gets the object to store as content from the drop down list editor.</summary>
+        /// <param name="ddl">The editor.</param>
+        /// <returns>The value to store.</returns>
+        protected virtual object GetValue(DropDownList ddl)
+        {
+            return ddl.SelectedValue;
+        }
 
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
 			DropDownList ddl = editor as DropDownList;
 			if (item[Name] != null)
 			{
-				ddl.SelectedValue = item[Name] as string;
+                ddl.SelectedValue = GetValue(item);
 			}
-		}
+        }
+
+        /// <summary>Gets a string value from the drop down list editor from the content item.</summary>
+        /// <param name="item">The item containing the value.</param>
+        /// <returns>A string to use as selected value.</returns>
+        protected virtual string GetValue(ContentItem item)
+        {
+            return item[Name] as string;
+        }
 
 		protected override Control AddEditor(Control container)
 		{
 			DropDownList ddl = new DropDownList();
+            ddl.ID = Name;
 			if (!Required)
 				ddl.Items.Add(new ListItem());
 

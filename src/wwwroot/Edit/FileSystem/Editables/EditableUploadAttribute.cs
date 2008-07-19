@@ -14,6 +14,11 @@ namespace N2.Edit.FileSystem.Editables
 {
     public class EditableUploadAttribute : AbstractEditableAttribute
     {
+        public EditableUploadAttribute()
+        {
+            Title = "Upload";
+            Name = "Name";
+        }
         private class CompositeEditor : Control
         {
             public HtmlInputFile Upload = new HtmlInputFile();

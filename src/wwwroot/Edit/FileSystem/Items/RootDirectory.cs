@@ -21,6 +21,7 @@ namespace N2.Edit.FileSystem.Items
     [Definition("File Folder", SortOrder = 600)]
     [RestrictParents(typeof(IFileSystemContainer))]
     [ItemAuthorizedRoles("Administrators", "admin")]
+    [Editables.EditableFolderPath]
     public class RootDirectory : AbstractDirectory
     {
         public RootDirectory()

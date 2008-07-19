@@ -2,7 +2,7 @@
 <asp:Repeater runat="server" ID="rptItems">
 	<HeaderTemplate><ul></HeaderTemplate>
 	<ItemTemplate>
-		<li><a href='<%# Eval("Url") %>'><img src='<%# Eval("IconUrl") %>' /><%# Eval("Title") %></a></li>
+		<li><a href='<%# Eval("Url") %>'><asp:Image runat="server" ImageUrl='<%# Eval("IconUrl") %>' AlternateText='<%# Eval("Name") %>' /><%# Eval("Title") %></a></li>
 	</ItemTemplate>
 	<FooterTemplate></ul></FooterTemplate>
 </asp:Repeater>

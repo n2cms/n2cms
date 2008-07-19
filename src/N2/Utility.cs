@@ -44,10 +44,12 @@ namespace N2
 			if(value != null)
 			{
 				TypeConverter converter = TypeDescriptor.GetConverter(destinationType);
-				if (converter != null && converter.CanConvertFrom(value.GetType()))
-					return converter.ConvertFrom(value);
-				else if (!destinationType.IsAssignableFrom(value.GetType()))
-					return System.Convert.ChangeType(value, destinationType);
+                if (converter != null && converter.CanConvertFrom(value.GetType()))
+                    return converter.ConvertFrom(value);
+                else if (destinationType.IsEnum && value is int)
+                    return Enum.ToObject(destinationType, (int)value);
+                else if (!destinationType.IsAssignableFrom(value.GetType()))
+                    return System.Convert.ChangeType(value, destinationType);
 			}
 			return value;
 		}

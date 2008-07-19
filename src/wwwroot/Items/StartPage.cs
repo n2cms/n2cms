@@ -22,16 +22,14 @@ namespace N2.Templates.UI.Items
 	[TabPanel("siteArea", "Site", 70)]
 	public class StartPage : AbstractStartPage, ILanguage, IFileSystemContainer
 	{
-		[FileAttachment]
-		[EditableImage("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
+		[FileAttachment, EditableImage("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string TopImage
 		{
 			get { return (string)(GetDetail("TopImage") ?? string.Empty); }
 			set { SetDetail("TopImage", value, string.Empty); }
 		}
 
-		[FileAttachment]
-		[EditableImage("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+		[FileAttachment, EditableImage("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
 		{
 			get { return (string)(GetDetail("Image") ?? string.Empty); }

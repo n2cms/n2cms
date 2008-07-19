@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using N2.Templates.Items;
 using N2.Details;
 using N2.Definitions;
+using N2.Serialization;
 
 namespace N2.Templates.UI.Items.LayoutParts
 {
@@ -31,7 +32,7 @@ namespace N2.Templates.UI.Items.LayoutParts
 			set { SetDetail("TopTextUrl", value, "/"); }
 		}
 
-		[EditableImage("Logo", 50, ContainerName = "top", Alt="Logo")]
+        [FileAttachment, EditableImage("Logo", 50, ContainerName = "top", Alt = "Logo")]
 		public virtual string LogoUrl
 		{
 			get { return (string)(GetDetail("LogoUrl") ?? string.Empty); }
@@ -47,18 +48,12 @@ namespace N2.Templates.UI.Items.LayoutParts
 
 		public override string TemplateUrl
 		{
-			get
-			{
-				return "~/Layouts/Parts/Top.ascx";
-			}
+			get { return "~/Layouts/Parts/Top.ascx"; }
 		}
 
 		public override string IconUrl
 		{
-			get
-			{
-				return "~/Img/page_white_star.png";
-			}
+			get { return "~/Img/page_white_star.png"; }
 		}
 	}
 }
