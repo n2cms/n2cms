@@ -1,6 +1,6 @@
 namespace N2.Templates.Web.UI
 {
-	public class TemplateUserControl<TPage, TItem> : N2.Web.UI.UserControl<TPage, TItem>
+	public class TemplateUserControl<TPage, TItem> : N2.Web.UI.ContentUserControl<TPage, TItem>
 		where TPage : ContentItem
 		where TItem : ContentItem
 	{

@@ -157,7 +157,7 @@
     <Compile Include="Web\UI\MasterPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\UI\UserControl.generic.cs">
+    <Compile Include="Web\UI\ContentUserControl.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\UI\WebControls\Zone.cs" />
@@ -174,7 +174,7 @@
     </Compile>
     <Compile Include="Web\UI\WebControls\ZoneSelector.cs" />
     <Compile Include="Web\UrlRewriter.cs" />
-    <Compile Include="Web\UI\Page.generic.cs">
+    <Compile Include="Web\UI\ContentPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Integrity\AvailableZoneAttribute.cs" />
@@ -245,7 +245,7 @@
     <Compile Include="Web\UI\FieldSetAttribute.cs" />
     <Compile Include="Web\UI\TabPanelAttribute.cs" />
     <Compile Include="Web\UI\TemplateUrlEventArgs.cs" />
-    <Compile Include="Web\UI\UserControl.generic2.cs">
+    <Compile Include="Web\UI\ContentUserControl.generic2.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\UI\WebControls\FieldSet.cs" />
@@ -292,6 +292,7 @@
     <Compile Include="Configuration\GlobalizationElement.cs" />
     <Compile Include="Configuration\HostSection.cs" />
     <Compile Include="Configuration\InstallerElement.cs" />
+    <Compile Include="Configuration\OutputCacheElement.cs" />
     <Compile Include="Configuration\SectionGroup.cs" />
     <Compile Include="Configuration\EngineSection.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
@@ -304,6 +305,15 @@
     <Compile Include="Details\EditableEnumAttribute.cs" />
     <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
     <Compile Include="Obsolete\InstallerSection.cs" />
+    <Compile Include="Obsolete\Page.generic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Obsolete\UserControl.generic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Obsolete\UserControl.generic2.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Persistence\IActiveContent.cs" />
     <Compile Include="Plugin\IPlugin.cs" />
     <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
@@ -389,7 +399,6 @@
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
-    <Compile Include="Web\Caching\ContentCacheDependency.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
@@ -403,7 +412,16 @@
     <Compile Include="Web\Mail\StaticMailSender.cs" />
     <Compile Include="Web\TagBuilder.cs" />
     <Compile Include="Web\ThreadContext.cs" />
+    <Compile Include="Web\UI\CacheManager.cs" />
+    <Compile Include="Web\UI\ContentCacheDependency.cs" />
+    <Compile Include="Web\UI\ICacheManager.cs" />
     <Compile Include="Web\UI\IContentTemplate.cs" />
+    <Compile Include="Web\UI\ContentPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\ContentUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\UI\WebControls\A.cs" />
     <Compile Include="Web\UI\WebControls\OptionsMenu.cs" />
     <Compile Include="Web\UI\WebControls\Repeater.cs" />

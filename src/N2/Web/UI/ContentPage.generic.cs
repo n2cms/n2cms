@@ -4,9 +4,11 @@ using N2.Engine;
 
 namespace N2.Web.UI
 {
-    /// <summary>Page base class that provides easy access to the current page item.</summary>
+    /// <summary>
+    /// Page base class that provides easy access to the current page item.
+    /// </summary>
 	/// <typeparam name="PageT">The type of content item served by the page inheriting this class.</typeparam>
-    public abstract class Page<TPage> : System.Web.UI.Page, IItemContainer, IContentTemplate
+    public abstract class ContentPage<TPage> : System.Web.UI.Page, IItemContainer, IContentTemplate
         where TPage : N2.ContentItem
     {
 		private TPage currentPage = null;
@@ -31,6 +33,26 @@ namespace N2.Web.UI
 		{
 			get { return CurrentPage; }
 		}
+
+        protected virtual bool AllowOutputCache
+        {
+            get { return true; }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            if (AllowOutputCache && (User == null || !User.Identity.IsAuthenticated))
+            {
+                ICacheManager cacheManager = Engine.Resolve<ICacheManager>();
+                if (cacheManager.Enabled)
+                {
+                    InitOutputCache(cacheManager.GetOutputCacheParameters());
+                    cacheManager.AddCacheInvalidation(this);
+                }
+            }
+            
+            base.OnInit(e);
+        }
 
 		#region IContentTemplate Members
 

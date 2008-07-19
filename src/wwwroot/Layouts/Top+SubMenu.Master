@@ -48,6 +48,7 @@
                                 <n2:Zone ID="za" runat="server" ZoneName="RecursiveAbove" />
                             </asp:ContentPlaceHolder>
                             <asp:ContentPlaceHolder ID="Content" runat="server">
+                                <%= DateTime.Now %>
                                 <n2:Path ID="p" runat="server" VisibilityLevel="2" />
                                 <n2:EditableDisplay ID="dim" PropertyName="Image" SwallowExceptions="true" runat="server" />
                                 <asp:ContentPlaceHolder ID="TextContent" runat="server">

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 
-namespace N2.Templates.Configuration
+namespace N2.Configuration
 {
     public class OutputCacheElement : ConfigurationElement
     {

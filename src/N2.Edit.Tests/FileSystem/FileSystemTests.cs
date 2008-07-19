@@ -36,7 +36,8 @@ namespace N2.Edit.Tests.FileSystem
             base.SetUp();
             upload = new RootDirectory();
             upload.Title = "Upload";
-            upload.Name = "bin/FileSystem/Upload";
+            upload.Name = "Upload";
+            upload.PhysicalPath = N2.Context.Current.Resolve<IWebContext>().MapPath("~/bin/FileSystem/Upload");
         }
 
         [Test]

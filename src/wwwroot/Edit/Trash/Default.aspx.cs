@@ -4,7 +4,7 @@ using System.Web.UI.WebControls;
 
 namespace N2.Edit.Trash
 {
-	public partial class Default : N2.Web.UI.Page<TrashContainerItem>
+	public partial class Default : N2.Web.UI.ContentPage<TrashContainerItem>
 	{
 		protected ITrashHandler Trash
 		{

@@ -5,7 +5,7 @@ using N2.Web.UI;
 
 namespace N2.Templates.Rss.UI
 {
-	public partial class Feed : Page<RssFeed>
+	public partial class Feed : ContentPage<RssFeed>
 	{
 		protected override void OnInit(EventArgs e)
 		{

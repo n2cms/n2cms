@@ -62,5 +62,12 @@ namespace N2.Configuration
             get { return (WebElement)base["web"]; }
             set { base["web"] = value; }
         }
+
+        /// <summary>Configures output cache for the templates.</summary>
+        [ConfigurationProperty("outputCache")]
+        public OutputCacheElement OutputCache
+        {
+            get { return (OutputCacheElement)base["outputCache"]; }
+        }
 	}
 }

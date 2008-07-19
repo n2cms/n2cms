@@ -9,7 +9,7 @@ namespace N2.Web.UI
 	/// A user control base used to for quick access to content data.
 	/// </summary>
 	/// <typeparam name="TPage">The type of page item this user control will have to deal with.</typeparam>
-	public abstract class UserControl<TPage> : UserControl, IItemContainer
+    public abstract class ContentUserControl<TPage> : System.Web.UI.UserControl, IItemContainer
 		where TPage : N2.ContentItem
 	{
 		private TPage currentPage = null;

@@ -27,6 +27,7 @@ using N2.Globalization;
 using System.Web.Configuration;
 using N2.Installation;
 using System.Configuration;
+using N2.Web.UI;
 
 namespace N2.MediumTrust.Engine
 {
@@ -118,6 +119,7 @@ namespace N2.MediumTrust.Engine
             EditUrlProvider eud = AddComponentInstance<EditUrlProvider>(new EditUrlProvider(persister, editManager, dispatcher));
             ItemMover im = AddComponentInstance<ItemMover>(new ItemMover(persister, dispatcher));
             ItemCopyer ic = AddComponentInstance<ItemCopyer>(new ItemCopyer(persister, dispatcher));
+            AddComponentInstance<ICacheManager>(new CacheManager(webContext, persister, hostConfiguration));
 
             foreach (KeyValuePair<Type, object> pair in resolves)
             {

@@ -34,6 +34,10 @@
 	- configure allowed upload paths
 - updated mvc example to asp.net mvc preview 4
 - editable enum drop down
+- renamed n2.web.ui.page -> contentpage
+- renamed n2.web.ui.usercontrol -> contentusercontrol
+- moved n2.templates.survey -> n2.templates.ui
+- moved output caching configuration n2.templates -> n2
 
 1.4
 - templates

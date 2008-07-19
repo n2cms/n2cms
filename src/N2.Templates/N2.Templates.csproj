@@ -54,9 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\MailConfigSource.cs" />
-    <Compile Include="Configuration\OutputCacheElement.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Configuration\TemplatesSection.cs" />
     <Compile Include="Details\LayoutSelectorAttribute.cs" />
     <Compile Include="Details\DropDownAttribute.cs" />

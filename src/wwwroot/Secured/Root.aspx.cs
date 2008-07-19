@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Templates.UI.Secured
 {
-	public partial class Root : N2.Web.UI.Page<Items.RootPage>
+	public partial class Root : N2.Web.UI.ContentPage<Items.RootPage>
 	{
 	}
 }

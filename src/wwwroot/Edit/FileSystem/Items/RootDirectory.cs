@@ -30,14 +30,19 @@ namespace N2.Edit.FileSystem.Items
             SortOrder = 10000;
         }
 
+        private string physicalPath = null;
         public override string PhysicalPath
         {
             get 
             {
-                Url u = Utility.ToAbsolute("~/");
-                return GetWebContext().MapPath(u.AppendSegment(Name, ""));; 
+                if (physicalPath == null)
+                {
+                    Url u = Utility.ToAbsolute("~/");
+                    physicalPath = GetWebContext().MapPath(u.AppendSegment(Name, "")); ;
+                }
+                return physicalPath;
             }
-            set { throw new InvalidOperationException("Cannot set the root directory's physical path, use Upload property instead.");}
+            set { physicalPath = value;}
         }
 
         private IWebContext GetWebContext()
