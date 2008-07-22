@@ -21,12 +21,12 @@ namespace N2.Edit.Install
 
 		private DatabaseStatus status;
 
-		protected int rootId
+		protected int RootId
 		{
 			get { return (int)(ViewState["rootId"] ?? 0); }
 			set { ViewState["rootId"] = value; }
 		}
-		protected int startId
+		protected int StartId
 		{
 			get { return (int)(ViewState["startId"] ?? 0); }
 			set { ViewState["startId"] = value; }
@@ -213,9 +213,10 @@ namespace N2.Edit.Install
 						"<span class='warning'>Start page inserted but you must update web.config with root item id: <b>{0}</b> and start page id: <b>{1}</b></span>", root.ID, startPage.ID);
 					phSame.Visible = false;
 					phDiffer.Visible = true;
-					rootId = root.ID;
-					startId = startPage.ID;
+					RootId = root.ID;
+					StartId = startPage.ID;
                 }
+                phDiffer.DataBind();
 			}
 			catch (Exception ex)
 			{
@@ -240,7 +241,7 @@ namespace N2.Edit.Install
 					ltRootNode.Text = "<span class='ok'>Root node inserted.</span>";
 					phSame.Visible = false;
 					phDiffer.Visible = false;
-					rootId = root.ID;
+					RootId = root.ID;
 				}
 				else
 				{
@@ -249,9 +250,10 @@ namespace N2.Edit.Install
 						root.ID);
 					phSame.Visible = true;
 					phDiffer.Visible = false;
-					rootId = root.ID;
-					startId = root.ID;
+					RootId = root.ID;
+					StartId = root.ID;
 				}
+                phSame.DataBind();
 			}
 			catch (Exception ex)
 			{
@@ -281,9 +283,9 @@ namespace N2.Edit.Install
 
 		protected void btnUpload_Click(object sender, EventArgs e)
 		{
-			Validate();
-			if(!IsValid)
-				return;
+            rfvUpload.IsValid = fileUpload.PostedFile != null && fileUpload.PostedFile.FileName.Length > 0;
+            if (!rfvUpload.IsValid)
+                return;
 
 			ExecuteWithErrorHandling(InstallFromUpload);
 		}
@@ -301,8 +303,8 @@ namespace N2.Edit.Install
 			System.Configuration.Configuration cfg = WebConfigurationManager.OpenWebConfiguration("~");
 
 			HostSection host = (HostSection)cfg.GetSection("n2/host");
-			host.RootID = rootId;
-			host.StartPageID = startId;
+			host.RootID = RootId;
+			host.StartPageID = StartId;
 
 			cfg.Save();
 		}
@@ -361,8 +363,8 @@ namespace N2.Edit.Install
 					root.ID);
 				phSame.Visible = true;
 				phDiffer.Visible = false;
-				rootId = root.ID;
-				startId = root.ID;
+				RootId = root.ID;
+				StartId = root.ID;
 				phSame.DataBind();
 			}
 
@@ -382,7 +384,7 @@ namespace N2.Edit.Install
 							"<span class='warning'>Start page inserted but you must update web.config with root item id: <b>{0}</b> and start page id: <b>{1}</b></span>", root.ID, item.ID);
 						phSame.Visible = false;
 						phDiffer.Visible = true;
-						startId = item.ID;
+						StartId = item.ID;
 					}
 					break;
 				}

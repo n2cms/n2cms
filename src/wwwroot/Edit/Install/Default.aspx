@@ -122,11 +122,11 @@
                 <textarea rows="4">
 ...
 	<n2>
-		<host rootID="<%# rootId %>" startPageID="<%# startId %>"/>
+		<host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
 		...
 	</n2>
 ...</textarea>
-				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" />
+				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" CausesValidation="false" />
             </p>
 </asp:PlaceHolder>
 <asp:PlaceHolder ID="phDiffer" runat="server" Visible="false">
@@ -135,7 +135,7 @@
                 <textarea rows="4">
 ...
 	<n2>
-		<host rootID="<%# rootId %>" startPageID="<%# startId %>"/>
+		<host rootID="<%# RootId %>" startPageID="<%# StartId %>"/>
 		...
 	</n2>
 ...</textarea>

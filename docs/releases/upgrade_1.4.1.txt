@@ -1,3 +1,4 @@
+- Remove /bin/N2.Templates.Survey.dll
 - Update configuration (see example.web.config and defaults.web.config)
 	- in <configSections><section name="n2"...
 		- remove <section name="installer"...
@@ -9,4 +10,4 @@
 	- N2.Web.UI.Page<T> -> ContentPage<T>
 	- N2.Web.UI.UserControl<T> -> ContentUserControl<T>
 - Recompile. Depending on your integration level this could be painless (some namespaces changed, removing explicit namespace and ctrl+. should help you find the new location)
-- Please ask about other changes in the forum
+- Please ask about other problems in the forum
