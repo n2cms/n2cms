@@ -321,5 +321,13 @@ namespace N2.Tests.Web
             Url u = "http://n2cms.com/some/path.aspx?existing=query";
             Assert.That(u.PathAndQuery, Is.EqualTo("/some/path.aspx?existing=query"));
         }
+
+        [Test]
+        public void CanParsePath_WithSlashInQuery()
+        {
+            Url u = "/UI/500.aspx?aspxerrorpath=/default.aspx";
+            Assert.That(u.Path, Is.EqualTo("/UI/500.aspx"));
+            Assert.That(u.Query, Is.EqualTo("aspxerrorpath=/default.aspx"));
+        }
     }
 }

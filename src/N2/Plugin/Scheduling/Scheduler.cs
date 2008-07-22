@@ -4,6 +4,8 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading;
 using Castle.Core;
+using System.Runtime.CompilerServices;
+using N2.Web;
 
 namespace N2.Plugin.Scheduling
 {
@@ -15,13 +17,15 @@ namespace N2.Plugin.Scheduling
     {
         IList<ScheduledAction> actions;
         IHeart heart;
+        IErrorHandler errorHandler;
 
         public Engine.Function<WaitCallback, bool> QueueUserWorkItem = ThreadPool.QueueUserWorkItem;
 
-        public Scheduler(IPluginFinder plugins, IHeart heart)
+        public Scheduler(IPluginFinder plugins, IHeart heart, IErrorHandler errorHandler)
         {
             actions = new List<ScheduledAction>(InstantiateActions(plugins));
             this.heart = heart;
+            this.errorHandler = errorHandler;
         }
 
         public IList<ScheduledAction> Actions
@@ -55,6 +59,7 @@ namespace N2.Plugin.Scheduling
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         void heart_Beat(object sender, EventArgs e)
         {
             for (int i = 0; i < actions.Count; i++)
@@ -63,11 +68,19 @@ namespace N2.Plugin.Scheduling
                 if (!action.IsExecuting && action.LastExecuted.Add(action.Interval) < Utility.CurrentTime())
                 {
                     action.IsExecuting = true;
-                    QueueUserWorkItem(delegate  {
-                                                    action.Execute();
-                                                    action.LastExecuted = Utility.CurrentTime();
-                                                    action.IsExecuting = false;
-                                                });
+                    QueueUserWorkItem(delegate  
+                    {
+                        try
+                        {
+                            action.Execute();
+                        }
+                        catch (Exception ex)
+                        {
+                            errorHandler.Handle(ex);
+                        }
+                        action.LastExecuted = Utility.CurrentTime();
+                        action.IsExecuting = false;
+                    });
 
                     if (action.Repeat == Repeat.Once)
                     {

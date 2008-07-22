@@ -30,6 +30,12 @@ namespace N2.Edit.Tests.FileSystem
             Url.DefaultExtension = "/";
         }
 
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            Url.DefaultExtension = ".aspx";
+        }
+
         [SetUp]
         public override void SetUp()
         {

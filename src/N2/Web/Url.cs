@@ -62,7 +62,7 @@ namespace N2.Web
                     if (slashIndex > 0)
                     {
                         authority = url.Substring(authorityIndex + 3, slashIndex - authorityIndex - 3);
-                        if (queryIndex >= 0)
+                        if (queryIndex >= slashIndex)
                             path = url.Substring(slashIndex, queryIndex - slashIndex);
                         else if (hashIndex >= 0)
                             path = url.Substring(slashIndex, hashIndex - slashIndex);

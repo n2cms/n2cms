@@ -89,7 +89,7 @@ namespace N2.Tests.Web
 			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.AbsolutePath).Return("/one/two.aspx");
 			Expect.On(context).Call(context.RawUrl).Return("/one/two.aspx");
-			Expect.Call(context.CurrentPage).Return(null);
+			Expect.Call(context.CurrentPage).Return(null).Repeat.Any();
 			Expect.Call(delegate{ context.CurrentPage = two; });
 			
 			mocks.ReplayAll();
@@ -110,7 +110,7 @@ namespace N2.Tests.Web
 			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.AbsolutePath).Return("/default.aspx");
 			Expect.On(context).Call(context.RawUrl).Return("/default.aspx?page=3");
-			Expect.Call(context.CurrentPage).Return(null);
+            Expect.Call(context.CurrentPage).Return(null).Repeat.Any();
 			Expect.Call(delegate { context.CurrentPage = two; });
 
 			mocks.ReplayAll();
@@ -131,7 +131,7 @@ namespace N2.Tests.Web
 			IWebContext context = mocks.StrictMock<IWebContext>();
 			Expect.On(context).Call(context.AbsolutePath).Return("/default.aspx");
 			Expect.On(context).Call(context.RawUrl).Return("/default.aspx?page=3&item=2");
-			Expect.Call(context.CurrentPage).Return(null);
+            Expect.Call(context.CurrentPage).Return(null).Repeat.Any();
 			Expect.Call(delegate { context.CurrentPage = two; });
 
 			mocks.ReplayAll();

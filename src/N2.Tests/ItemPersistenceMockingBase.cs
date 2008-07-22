@@ -7,6 +7,7 @@ using NUnit.Framework;
 using N2.Web;
 using Rhino.Mocks.Interfaces;
 using System.Web;
+using N2.Persistence.NH;
 
 namespace N2.Tests
 {
@@ -19,33 +20,53 @@ namespace N2.Tests
 		delegate void SaveDelegate(ContentItem item);
 		public delegate string ToAppRelativeDelegate(string path);
 		public delegate string ToAbsoluteDelegate(string path);
+        protected List<ContentItem> database = new List<ContentItem>();
 
 		[SetUp]
 		public override void  SetUp()
 		{
  			base.SetUp();
 			persister = CreatePersister();
+            database = new List<ContentItem>();
 		}
+
+        protected ContentItem FindById(int id)
+        {
+            return database.Find(
+                delegate(ContentItem item)
+                {
+                    return item.ID == id;
+                });
+        }
 
 		protected virtual IPersister CreatePersister()
 		{
             repository = mocks.Stub<IRepository<int, ContentItem>>();
+            Expect.Call(repository.Get(0)).IgnoreArguments().Do(new Func<int, ContentItem>(FindById)).Repeat.Any();
+            Expect.Call(repository.Load(0)).IgnoreArguments().Do(new Func<int, ContentItem>(FindById)).Repeat.Any();
             var transaction = mocks.Stub<ITransaction>();
-            mocks.Replay(transaction);
-
+            transaction.Replay();
             Expect.Call(repository.BeginTransaction()).Return(transaction).Repeat.Any();
-            var linkRepository = mocks.Stub<N2.Persistence.NH.INHRepository<int, N2.Details.LinkDetail>>();
-            var finder = mocks.Stub<N2.Persistence.Finder.IItemFinder>();
+            repository.Replay();
 
-            return persister = new N2.Persistence.NH.ContentPersister(repository, linkRepository, finder);
+            var linkRepository = mocks.Stub<N2.Persistence.NH.INHRepository<int, N2.Details.LinkDetail>>();
+            linkRepository.Replay();
+            var finder = mocks.Stub<N2.Persistence.Finder.IItemFinder>();
+            finder.Replay();
+            return persister = new ContentPersister(repository, linkRepository, finder);
 		}
 
 		protected override T CreateOneItem<T>(int itemID, string name, ContentItem parent)
 		{
-			T item = base.CreateOneItem<T>(itemID, name, parent);
-            Expect.On(repository).Call(repository.Get(itemID)).Return(item).Repeat.Any();
-            Expect.On(repository).Call(repository.Load(itemID)).Return(item).Repeat.Any();
+            T item = base.CreateOneItem<T>(itemID, name, parent);
+            database.Add(item);
             return item;
+            //repository.BackToRecord(BackToRecordOptions.None);
+            //T item = base.CreateOneItem<T>(itemID, name, parent);
+            //Expect.On(repository).Call(repository.Get(itemID)).Return(item).Repeat.Any();
+            //Expect.On(repository).Call(repository.Load(itemID)).Return(item).Repeat.Any();
+            //repository.Replay();
+            //return item;
 		}
 
 		#region WebContext
