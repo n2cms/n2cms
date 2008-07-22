@@ -9,6 +9,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using N2.Security;
+using N2.Configuration;
+using System.Collections.Generic;
 
 namespace N2.Edit.Security
 {
@@ -17,17 +19,46 @@ namespace N2.Edit.Security
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			if (Roles.Enabled)
-				cblAllowedRoles.DataSource = Roles.GetAllRoles();
-			else
-				cblAllowedRoles.DataSource = new string[] { "Everyone", "Editors", "Administrators" };
+            string[] roles;
+            if (Roles.Enabled)
+                roles = Roles.GetAllRoles();
+            else
+                roles = GetRoles();
+            cblAllowedRoles.DataSource = roles;
 			cblAllowedRoles.DataBind();
 			base.OnInit(e);
 		}
 
+        private string[] GetRoles()
+        {
+            List<string> roles = new List<string>();
+            roles.Add(AuthorizedRole.Everyone);
+            if (Engine.SecurityManager is N2.Security.SecurityManager)
+            {
+                SecurityManager sm = Engine.SecurityManager as SecurityManager;
+                roles.AddRange(sm.EditorRoles);
+                roles.AddRange(sm.AdminRoles);
+            }
+            else
+            {
+                roles.Add("Administrators");
+            }
+
+            return roles.ToArray();
+        }
+
+        private object SecurityManager(SecurityManager securityManager)
+        {
+            throw new NotImplementedException();
+        }
+
+        
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
+            // Set text for everyone
+            cbEveryone.Text = AuthorizedRole.Everyone;
+
             hlCancel.NavigateUrl = CancelUrl();
 		}
 
@@ -60,8 +91,10 @@ namespace N2.Edit.Security
 
         private void ApplyRoles(ContentItem item)
         {
-            if (AllSelected(cblAllowedRoles))
+            // Check if everyone is checked
+            if (cbEveryone.Checked)
             {
+                // Clear the current roles
                 item.AuthorizedRoles.Clear();
             }
             else
@@ -89,6 +122,8 @@ namespace N2.Edit.Security
 
 		private bool NoneSelected(CheckBoxList cbl)
 		{
+            if (cbEveryone.Checked)
+                return false;
 			foreach (ListItem item in cbl.Items)
 				if (item.Selected)
 					return false;
@@ -99,17 +134,32 @@ namespace N2.Edit.Security
 		{
 			if (SelectedItem.AuthorizedRoles.Count == 0)
 			{
-				foreach (ListItem item in cblAllowedRoles.Items)
-					item.Selected = true;
+                // Everyone is allowed
+                cbEveryone.Checked = true;
+                cblAllowedRoles.Enabled = false;
+
+				/*foreach (ListItem item in cblAllowedRoles.Items)
+					item.Selected = true;*/
 			}
 			else
 			{
+                // Uncheck everyone
+                cbEveryone.Checked = false;
+                cblAllowedRoles.Enabled = true;
+                
+                // Check all allowed roles
 				foreach (N2.Security.AuthorizedRole allowedRole in SelectedItem.AuthorizedRoles)
 				{
 					cblAllowedRoles.Items.FindByValue(allowedRole.Role).Selected = true;
 				}
 			}
 		}
+
+        protected void cbEveryone_CheckedChanged(object sender, EventArgs e)
+        {
+            // Check if the user checked everyone
+            cblAllowedRoles.Enabled = !cbEveryone.Checked;
+        }
 
 		protected void cvSomethingSelected_ServerValidate(object source, ServerValidateEventArgs args)
 		{

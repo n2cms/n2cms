@@ -15,6 +15,7 @@ namespace N2.Edit.Web
 		protected override void OnInit(EventArgs e)
 		{
 			RegisterScripts();
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
 			base.OnInit(e);
 		}
 

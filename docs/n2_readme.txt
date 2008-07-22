@@ -56,3 +56,4 @@ CONTRIBUTORS
 * Michele Scaramal
 * Martijn Rasenberg
 * Esteewhy
+* Geert van Horrik

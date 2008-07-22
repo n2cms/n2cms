@@ -48,6 +48,7 @@
 	- moved namespace n2.parts -> n2.web.parts
 	- moved installer configuraiton -> <edit><installer... (update web.config)
 	- utility.toabsolute -> web.url.toabsolute
+- can now explicitly set roles + improved usability (thanks to Geert van Horrik)
 
 1.4
 - templates
