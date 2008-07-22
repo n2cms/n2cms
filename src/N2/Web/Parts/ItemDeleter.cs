@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using N2.Persistence;
 using N2.Web;
 
-namespace N2.Parts
+namespace N2.Web.Parts
 {
 	public class ItemDeleter : PartsAjaxService
 	{

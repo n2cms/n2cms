@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using N2.Web;
 using System.Web.UI.HtmlControls;
 
-namespace N2.Globalization
+namespace N2.Engine.Globalization
 {
     /// <summary>
     /// Adds language icons to the right-click menu in the navigation pane.
@@ -33,7 +33,7 @@ namespace N2.Globalization
 
             foreach (ILanguage language in gateway.GetAvailableLanguages())
             {
-                Url url = Utility.ToAbsolute("~/Edit/Globalization/Translate.aspx");
+                Url url = N2.Web.Url.ToAbsolute("~/Edit/Globalization/Translate.aspx");
                 url = url.AppendQuery("language", language.LanguageCode);
                 url = url.AppendQuery("selected={selected}");
 
@@ -43,7 +43,7 @@ namespace N2.Globalization
                 h.NavigateUrl = url;
                 h.CssClass = "language";
                 h.ToolTip = language.LanguageTitle;
-                h.Text = string.Format("<img src='{0}' alt=''/>", Utility.ToAbsolute(language.FlagUrl));
+                h.Text = string.Format("<img src='{0}' alt=''/>", N2.Web.Url.ToAbsolute(language.FlagUrl));
                 div.Controls.Add(h);
 
                 RegisterToolbarUrl(container, h.ClientID, url);

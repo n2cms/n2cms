@@ -6,7 +6,7 @@ using N2.Edit;
 using N2.Persistence;
 using N2.Web;
 
-namespace N2.Parts
+namespace N2.Web.Parts
 {
 	public class CreateUrlProvider : PartsAjaxService
 	{
@@ -55,7 +55,7 @@ namespace N2.Parts
 				url = editManager.GetEditNewPageUrl(beforeItem, definition, zone, CreationPosition.Before);
 			}
 
-			url = Utility.ToAbsolute(url);
+			url = N2.Web.Url.ToAbsolute(url);
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
 				url += "&returnUrl=" + HttpUtility.UrlEncode(request["returnUrl"]);
 			return url;

@@ -161,7 +161,7 @@ namespace N2.Definitions
 					}
 					catch (Exception ex)
 					{
-						Trace.WriteLine(ex);
+						Trace.TraceWarning(ex.ToString());
 						iconUrl = "";
 					}
 				}

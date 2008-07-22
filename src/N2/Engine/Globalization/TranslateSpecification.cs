@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using N2.Definitions;
 
-namespace N2.Globalization
+namespace N2.Engine.Globalization
 {
 	/// <summary>
 	/// Information used by the edit interface about an existing or potential translation.
@@ -64,7 +64,7 @@ namespace N2.Globalization
 		{
 			string flagUrl = language.FlagUrl;
 			if (string.IsNullOrEmpty(flagUrl))
-				return string.Format(Utility.ToAbsolute("~/Edit/Globalization/flags/{0}.png"), language.LanguageCode);
+				return string.Format(N2.Web.Url.ToAbsolute("~/Edit/Globalization/flags/{0}.png"), language.LanguageCode);
 			else
 				return flagUrl;
 		}

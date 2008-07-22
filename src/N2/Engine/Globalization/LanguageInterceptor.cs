@@ -7,7 +7,7 @@ using N2.Web;
 using N2.Definitions;
 using N2.Configuration;
 
-namespace N2.Globalization
+namespace N2.Engine.Globalization
 {
     /// <summary>
     /// Intercepts and acts upon operations on the node tree. The purpose is to 

@@ -112,7 +112,7 @@ namespace N2.Web
             get { return authority; }
         }
 
-        /// <summary>The path after domain name and before query string, e.g. /path/to/a/pate.aspx.</summary>
+        /// <summary>The path after domain name and before query string, e.g. /path/to/a/page.aspx.</summary>
         public string Path
         {
             get { return path; }
@@ -152,6 +152,8 @@ namespace N2.Web
 
         public static implicit operator string(Url u)
         {
+            if (u == null)
+                return null;
             return u.ToString();
         }
 
@@ -208,8 +210,11 @@ namespace N2.Web
 
         public static Url Parse(string url)
         {
-            if (url.StartsWith("~"))
-                url = Utility.ToAbsolute(url);
+            if (url == null)
+                return null;
+            else if (url.StartsWith("~"))
+                url = ToAbsolute(url);
+
             return new Url(url);
         }
 
@@ -276,6 +281,8 @@ namespace N2.Web
 
         public Url SetPath(string path)
         {
+            if (path.StartsWith("~"))
+                path = ToAbsolute(path);
             int queryIndex = QueryIndex(path);
             return new Url(this.scheme, this.authority, queryIndex < 0 ? path : path.Substring(0, queryIndex), this.query, this.fragment);
         }
@@ -319,6 +326,58 @@ namespace N2.Web
             foreach (string key in queryString.AllKeys)
                 u = u.UpdateQuery(key, queryString[key]);
             return u;
+        }
+
+        /// <summary>Converts a possibly relative to an absolute url.</summary>
+        /// <param name="url">The url to convert.</param>
+        /// <returns>The absolute url.</returns>
+        public static string ToAbsolute(string path)
+        {
+            if (!string.IsNullOrEmpty(path) && path[0] == '~' && path.Length > 1)
+                return ApplicationPath + path.Substring(2);
+            else if (path == "~")
+                return ApplicationPath;
+            return path;
+        }
+
+        /// <summary>Converts a virtual path to a relative path, e.g. /myapp/path/to/a/page.aspx -> ~/path/to/a/page.aspx</summary>
+        /// <param name="path">The virtual path.</param>
+        /// <returns>A relative path</returns>
+        public static string ToRelative(string path)
+        {
+            if (!string.IsNullOrEmpty(path) && path.StartsWith(ApplicationPath))
+                return "~/" + path.Substring(ApplicationPath.Length);
+            return path;
+        }
+
+        private static string applicationPath = null;
+        /// <summary>Gets the root path of the web application. e.g. "/" if the application doesn't run in a virtual directory.</summary>
+        public static string ApplicationPath
+        {
+            get
+            {
+                if (applicationPath == null)
+                {
+                    try
+                    {
+                        applicationPath = VirtualPathUtility.ToAbsolute("~/");
+                    }
+                    catch
+                    {
+                        return "/";
+                    }
+                }
+                return applicationPath;
+            }
+            set { applicationPath = value; }
+        }
+
+        private static string serverUrl = null;
+        /// <summary>The address to the server where the site is running.</summary>
+        public static string ServerUrl
+        {
+            get { return serverUrl; }
+            set { serverUrl = value; }
         }
     }
 }

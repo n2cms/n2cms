@@ -12,7 +12,7 @@ namespace N2.Web
 	public interface IWebContext
 	{
 		/// <summary>Gets wether there is a web context availabe.</summary>
-		bool IsInWebContext { get; }
+		bool IsWeb { get; }
 
 		/// <summary>Gets a dictionary of request scoped items.</summary>
 		IDictionary RequestItems { get; }

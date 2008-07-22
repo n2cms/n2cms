@@ -7,6 +7,7 @@ using System.Resources;
 using System.Web;
 using N2.Integrity;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2
 {
@@ -15,26 +16,6 @@ namespace N2
 	/// </summary>
 	public class Utility
 	{
-		private static string webRootPath = null;
-		
-		/// <summary>Gets the root path of the web application. e.g. "/" if the application doesn't run in a virtual directory.</summary>
-		public static string WebRootPath
-		{
-			get { return webRootPath ?? (webRootPath = GetRootPath()); }
-		}
-
-		private static string GetRootPath()
-		{
-			try
-			{
-				return VirtualPathUtility.ToAbsolute("~/");
-			}
-			catch
-			{
-				return "/";
-			}
-		}
-
 		/// <summary>Converts a value to a destination type.</summary>
 		/// <param name="value">The value to convert.</param>
 		/// <param name="destinationType">The type to convert the value to.</param>
@@ -254,16 +235,6 @@ namespace N2
 			return false;
 		}
 
-		/// <summary>Converts a possibly relative to an absolute url.</summary>
-		/// <param name="url">The url to convert.</param>
-		/// <returns>The absolute url.</returns>
-		public static string ToAbsolute(string url)
-		{
-			if (!string.IsNullOrEmpty(url) && url[0] == '~' && url.Length > 1)
-				return WebRootPath + url.Substring(2);
-			return url;
-		}
-
 		/// <summary>Gets a global resource string.</summary>
 		/// <param name="classKey">The name of the global resource file.</param>
 		/// <param name="resourceKey">The key in the resource file.</param>
@@ -315,5 +286,13 @@ namespace N2
 			else
 				return GetLocalResourceString(resourceKey);
 		}
+
+        public static Function<DateTime> CurrentTime = delegate { return DateTime.Now; };
+
+        [Obsolete("Moved to N2.Web.Url.ToAbsolute")]
+        public static string ToAbsolute(string relativePath)
+        {
+            return N2.Web.Url.ToAbsolute(relativePath);
+        }
 	}
 }

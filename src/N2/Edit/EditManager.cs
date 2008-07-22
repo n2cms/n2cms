@@ -162,14 +162,14 @@ namespace N2.Edit
 		/// <returns>An url to a style sheet.</returns>
 		public string GetEditorCssUrl()
 		{
-			return Utility.ToAbsolute(EditorCssUrl);
+			return N2.Web.Url.ToAbsolute(EditorCssUrl);
 		}
 
 		/// <summary>Gets the url to the upload folder.</summary>
 		/// <returns>An url to the upload root.</returns>
 		public string GetUploadFolderUrl()
 		{
-			return Utility.ToAbsolute(UploadFolderUrl);
+			return N2.Web.Url.ToAbsolute(UploadFolderUrl);
 		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
@@ -356,7 +356,7 @@ namespace N2.Edit
         /// <returns>The url to the edit interface.</returns>
         public string GetEditInterfaceUrl()
         {
-            return Utility.ToAbsolute(EditInterfaceUrl);
+            return N2.Web.Url.ToAbsolute(EditInterfaceUrl);
         }
 
 		/// <summary>Gets the url to the edit interface.</summary>
@@ -393,7 +393,7 @@ namespace N2.Edit
 
 		private string FormatSelectedUrl(ContentItem selectedItem, string path)
 		{
-			string url = Utility.ToAbsolute(path);
+			string url = N2.Web.Url.ToAbsolute(path);
 			return url + (url.Contains("?") ? "&" : "?") + 
 				"selected=" + selectedItem.Path;
 		}

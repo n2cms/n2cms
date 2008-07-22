@@ -71,7 +71,7 @@ namespace N2.Edit
 		{
 			HtmlAnchor a = AddAnchor(container);
 
-			RegisterToolbarUrl(container, a.ClientID, Utility.ToAbsolute(UrlFormat));
+			RegisterToolbarUrl(container, a.ClientID, N2.Web.Url.ToAbsolute(UrlFormat));
 
 			return a;
 		}
@@ -90,7 +90,7 @@ namespace N2.Edit
 			HtmlAnchor a = new HtmlAnchor();
 			a.ID = "h" + Name;
 			a.HRef = UrlFormat
-				.Replace("~/", Utility.ToAbsolute("~/"))
+				.Replace("~/", N2.Web.Url.ToAbsolute("~/"))
 				.Replace("{selected}", GetSelectedPath(container))
 				.Replace("{memory}", "")
 				.Replace("{action}", "");
@@ -102,7 +102,7 @@ namespace N2.Edit
 			if (string.IsNullOrEmpty(IconUrl))
 				a.InnerHtml = title;
 			else
-				a.InnerHtml = string.Format("<img src='{0}' alt='{1}'/>{2}", Utility.ToAbsolute(IconUrl), tooltip, title);
+				a.InnerHtml = string.Format("<img src='{0}' alt='{1}'/>{2}", N2.Web.Url.ToAbsolute(IconUrl), tooltip, title);
 
 			container.Controls.Add(a);
 			return a;

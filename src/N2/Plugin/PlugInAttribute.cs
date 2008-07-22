@@ -24,7 +24,8 @@ namespace N2.Plugin
 		/// <param name="title">The title of the plugin.</param>
 		/// <param name="name">The name of the plugin.</param>
 		/// <param name="initializerTypeName">The name of the type responsible for initializing this plugin.</param>
-		public PluginAttribute(string title, string name, string initializerTypeName)
+		[Obsolete]
+        public PluginAttribute(string title, string name, string initializerTypeName)
 		{
 			this.title = title;
 			this.name = name;

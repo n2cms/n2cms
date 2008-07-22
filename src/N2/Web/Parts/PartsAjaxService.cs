@@ -5,7 +5,7 @@ using System.Text;
 using Castle.Core;
 using N2.Plugin;
 
-namespace N2.Parts
+namespace N2.Web.Parts
 {
 	/// <summary>
 	/// Ajax service that adds itself to the ajax request dispatecher upon start.

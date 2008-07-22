@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace N2.Globalization
+namespace N2.Engine.Globalization
 {
 	public interface ILanguage
 	{

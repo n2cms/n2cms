@@ -5,13 +5,13 @@ using System.Text;
 using N2.Persistence;
 using N2.Web;
 
-namespace N2.Parts
+namespace N2.Web.Parts
 {
-	public class ItemCopyer : PartsAjaxService
+	public class ItemMover : PartsAjaxService
 	{
 		private readonly IPersister persister;
 
-		public ItemCopyer(IPersister persister, AjaxRequestDispatcher dispatcher)
+		public ItemMover(IPersister persister, AjaxRequestDispatcher dispatcher)
 			: base(dispatcher)
 		{
 			this.persister = persister;
@@ -19,27 +19,24 @@ namespace N2.Parts
 
 		public override string Name
 		{
-			get { return "copy"; }
+			get { return "move"; }
 		}
 
 		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
-			CopyItem(request);
+			MoveItem(request);
 			return new NameValueCollection();
 		}
 
-		private void CopyItem(NameValueCollection request)
+		private void MoveItem(NameValueCollection request)
 		{
 			ContentItem item = persister.Get(int.Parse(request["item"]));
 			ContentItem parent;
 
-			item = item.Clone(true);
 			item.ZoneName = request["zone"];
 
 			string before = request["before"];
 			string below = request["below"];
-
-
 			if (!string.IsNullOrEmpty(below))
 			{
 				parent = persister.Get(int.Parse(below));

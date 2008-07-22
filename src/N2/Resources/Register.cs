@@ -41,7 +41,7 @@ namespace N2.Resources
 		/// <param name="media">The media type to assign, e.g. print.</param>
 		public static void StyleSheet(Page page, string resourceUrl, Media media)
 		{
-			resourceUrl = Utility.ToAbsolute(resourceUrl);
+			resourceUrl = N2.Web.Url.ToAbsolute(resourceUrl);
 
 			if (page.Items[resourceUrl] == null)
 			{
@@ -176,7 +176,7 @@ namespace N2.Resources
 			HtmlGenericControl script = new HtmlGenericControl("script");
 			page.Items[resourceUrl] = script;
 
-			resourceUrl = Utility.ToAbsolute(resourceUrl);
+			resourceUrl = N2.Web.Url.ToAbsolute(resourceUrl);
 
 			script.Attributes["src"] = resourceUrl;
 			script.Attributes["type"] = "text/javascript";
@@ -197,7 +197,7 @@ namespace N2.Resources
 		public static void JQuery(Page page)
 		{
 #if DEBUG
-			JavaScript(page, Utility.ToAbsolute("~/Edit/Js/jquery-1.2.6.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, N2.Web.Url.ToAbsolute("~/Edit/Js/jquery-1.2.6.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
 #else
 			JavaScript(page, typeof(Register), "N2.Resources.jquery-1.2.6.min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #endif

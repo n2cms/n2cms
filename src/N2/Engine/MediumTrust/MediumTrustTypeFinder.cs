@@ -6,7 +6,7 @@ using N2.Engine;
 using N2.Web;
 using N2.Configuration;
 
-namespace N2.MediumTrust.Engine
+namespace N2.Engine.MediumTrust
 {
 	public class MediumTrustTypeFinder : WebAppTypeFinder
 	{

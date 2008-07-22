@@ -147,9 +147,9 @@ namespace N2.Web
                 return StartPage;
             }
 
-			Debug.WriteLine("Not found Url: " + url);
+            Debug.WriteLine("No content at: " + url);
 
-            PageNotFoundEventArgs args = new PageNotFoundEventArgs(null);
+            PageNotFoundEventArgs args = new PageNotFoundEventArgs(url);
             if (PageNotFound != null)
                 PageNotFound(this, args);
             return args.AffectedItem;

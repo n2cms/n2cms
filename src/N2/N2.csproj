@@ -227,7 +227,6 @@
     <Compile Include="Persistence\Comparison.cs" />
     <Compile Include="Persistence\DoNotCopyAttribute.cs" />
     <Compile Include="Persistence\NH\IConfigurationBuilder.cs" />
-    <Compile Include="Persistence\IRelationFinder.cs" />
     <Compile Include="Persistence\NH\ISessionProvider.cs" />
     <Compile Include="Plugin\IPluginInitializer.cs" />
     <Compile Include="Plugin\PluginAttribute.cs" />
@@ -257,10 +256,9 @@
     <EmbeddedResource Include="Engine\engine.castle.config" />
     <EmbeddedResource Include="Definitions\definitions.castle.config" />
     <None Include="ContentModel.cd" />
+    <EmbeddedResource Include="Web\Parts\parts.castle.config" />
+    <EmbeddedResource Include="Engine\Globalization\globalization.castle.config" />
     <EmbeddedResource Include="Plugin\plugin.castle.config" />
-    <EmbeddedResource Include="Installation\installation.castle.config" />
-    <EmbeddedResource Include="Globalization\globalization.castle.config" />
-    <EmbeddedResource Include="Parts\parts.castle.config" />
     <EmbeddedResource Include="Integrity\integrity.castle.config" />
     <EmbeddedResource Include="Security\security.castle.config" />
     <EmbeddedResource Include="Web\web.castle.config" />
@@ -281,6 +279,7 @@
     <Compile Include="Collections\RecursiveFinder.cs" />
     <Compile Include="Collections\TreeHierarchyBuilder.cs" />
     <Compile Include="Collections\VisibleFilter.cs" />
+    <Compile Include="Configuration\SchedulerElement.cs" />
     <Compile Include="Configuration\DatabaseFlavour.cs" />
     <Compile Include="Configuration\DatabaseSection.cs" />
     <Compile Include="Configuration\EditAccess.cs" />
@@ -304,6 +303,35 @@
     <Compile Include="Definitions\DisableAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
     <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
+    <Compile Include="Engine\Function.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Globalization\Action.cs" />
+    <Compile Include="Engine\Globalization\DictionaryScope.cs" />
+    <Compile Include="Engine\Globalization\ILanguage.cs" />
+    <Compile Include="Engine\Globalization\ILanguageGateway.cs" />
+    <Compile Include="Engine\Globalization\LanguageGateway.cs" />
+    <Compile Include="Engine\Globalization\LanguageInterceptor.cs" />
+    <Compile Include="Engine\Globalization\NavigationTranslationsPluginAttribute.cs" />
+    <Compile Include="Engine\Globalization\Scope.cs" />
+    <Compile Include="Engine\Globalization\TranslateSpecification.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
+    <Compile Include="Installation\DatabaseStatus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Installation\InstallationManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Installation\InstallerHint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Installation\InstallerModule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Installation\SqlServerType.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Obsolete\InstallerSection.cs" />
     <Compile Include="Obsolete\Page.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -352,26 +380,10 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Engine\ContentEngine.cs" />
-    <Compile Include="Globalization\Action.cs" />
-    <Compile Include="Globalization\DictionaryScope.cs" />
-    <Compile Include="Globalization\NavigationTranslationsPluginAttribute.cs" />
-    <Compile Include="Globalization\Scope.cs" />
-    <Compile Include="Globalization\ILanguageGateway.cs" />
-    <Compile Include="Globalization\ILanguage.cs" />
-    <Compile Include="Globalization\LanguageGateway.cs" />
-    <Compile Include="Globalization\LanguageInterceptor.cs" />
-    <Compile Include="Globalization\TranslateSpecification.cs" />
     <Compile Include="INode.cs" />
-    <Compile Include="Installation\DatabaseStatus.cs" />
-    <Compile Include="Installation\InstallationManager.cs" />
-    <Compile Include="Installation\InstallerHint.cs" />
-    <Compile Include="Installation\InstallerModule.cs" />
-    <Compile Include="Installation\SqlServerType.cs" />
     <Compile Include="Obsolete\Configuration\MediumTrustSectionHandler.cs" />
     <Compile Include="Configuration\TypeElementCollection.cs" />
     <Compile Include="Configuration\TypeElement.cs" />
-    <Compile Include="MediumTrust\Engine\MediumTrustEngine.cs" />
-    <Compile Include="MediumTrust\Engine\MediumTrustTypeFinder.cs" />
     <Compile Include="Obsolete\Factory.cs" />
     <Compile Include="Integrity\IntegrityMappingAttribute.cs" />
     <Compile Include="Integrity\AllowedZones.cs" />
@@ -382,12 +394,6 @@
     <Compile Include="Integrity\RestrictParentsAttribute.cs" />
     <Compile Include="Obsolete\InitializerModule.cs" />
     <Compile Include="Obsolete\ItemAttribute.cs" />
-    <Compile Include="Parts\CreateUrlProvider.cs" />
-    <Compile Include="Parts\EditUrlProvider.cs" />
-    <Compile Include="Parts\ItemCopyer.cs" />
-    <Compile Include="Parts\ItemDeleter.cs" />
-    <Compile Include="Parts\ItemMover.cs" />
-    <Compile Include="Parts\PartsAjaxService.cs" />
     <Compile Include="Persistence\ItemNotifier.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilder.cs" />
     <Compile Include="Persistence\NH\ContentPersister.cs" />
@@ -396,6 +402,13 @@
     <Compile Include="Plugin\IPluginFinder.cs" />
     <Compile Include="Plugin\PluginFinder.cs" />
     <Compile Include="Plugin\PluginInitializationException.cs" />
+    <Compile Include="Plugin\Scheduling\Heart.cs" />
+    <Compile Include="Plugin\Scheduling\ScheduledAction.cs" />
+    <Compile Include="Plugin\Scheduling\IHeart.cs" />
+    <Compile Include="Plugin\Scheduling\Repeat.cs" />
+    <Compile Include="Plugin\Scheduling\ScheduleExecutionAttribute.cs" />
+    <Compile Include="Plugin\Scheduling\Scheduler.cs" />
+    <Compile Include="Plugin\Scheduling\TimeUnit.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
@@ -410,6 +423,12 @@
     <Compile Include="Web\Mail\IMailSender.cs" />
     <Compile Include="Web\Mail\SmtpMailSender.cs" />
     <Compile Include="Web\Mail\StaticMailSender.cs" />
+    <Compile Include="Web\Parts\CreateUrlProvider.cs" />
+    <Compile Include="Web\Parts\EditUrlProvider.cs" />
+    <Compile Include="Web\Parts\ItemCopyer.cs" />
+    <Compile Include="Web\Parts\ItemDeleter.cs" />
+    <Compile Include="Web\Parts\ItemMover.cs" />
+    <Compile Include="Web\Parts\PartsAjaxService.cs" />
     <Compile Include="Web\TagBuilder.cs" />
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\CacheManager.cs" />
@@ -584,6 +603,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Installation\installation.castle.config" />
     <EmbeddedResource Include="Mappings\MySQL.hbm.xml" />
     <EmbeddedResource Include="Mappings\Default.hbm.xml" />
     <EmbeddedResource Include="Resources\layout_edit.png" />

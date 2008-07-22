@@ -75,7 +75,7 @@ namespace N2.Web.UI.WebControls
 
 		private void WriteBgStyle(string url, HtmlTextWriter writer)
 		{
-			url = Utility.ToAbsolute(url);
+			url = N2.Web.Url.ToAbsolute(url);
 			writer.Write(" style='background-image:url({0});'", url);
 		}
 	}

@@ -12,7 +12,7 @@ using N2.Security;
 using N2.Configuration;
 using N2.Edit.Trash;
 
-namespace N2.Globalization
+namespace N2.Engine.Globalization
 {
 	public class LanguageGateway : ILanguageGateway
 	{

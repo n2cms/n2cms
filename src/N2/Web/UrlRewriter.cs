@@ -23,7 +23,6 @@ namespace N2.Web
 		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
 		{
 			this.urlParser = urlParser;
-			//this.defaultExtension = urlParser.Extension;
 			this.webContext = webContext;
 		}
 
@@ -60,10 +59,7 @@ namespace N2.Web
 				{
 					ContentItem page = urlParser.ParsePage(webContext.RawUrl);
 
-					if (webContext.CurrentPage == null)
-						Debug.WriteLine("Setting CurrentPage to '" + page + "'");
-					else
-						Debug.WriteLine("Changing CurrentPage from '" + webContext.CurrentPage + "' to '" + page + "'");
+					Debug.WriteLine("CurrentPage <- " + page);
 
 					webContext.CurrentPage = page;
 				}
@@ -72,7 +68,7 @@ namespace N2.Web
 			}
 			catch (Exception ex)
 			{
-				Trace.WriteLine(ex.ToString());
+				Trace.TraceWarning(ex.ToString());
 			}
 		}
 

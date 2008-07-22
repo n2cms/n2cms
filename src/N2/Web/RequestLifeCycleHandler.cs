@@ -47,6 +47,12 @@ namespace N2.Web
 
 		protected virtual void Application_BeginRequest(object sender, EventArgs e)
 		{
+            if (Url.ServerUrl == null && webContext.IsWeb)
+            {
+                bool isHttps = webContext.Request.ServerVariables["HTTPS"] == "ON";
+                Url.ServerUrl = isHttps ? "https://" : "http://" + webContext.Authority + "/";
+            }
+
 			rewriter.UpdateCurrentPage();
 			rewriter.RewriteRequest();
 		}

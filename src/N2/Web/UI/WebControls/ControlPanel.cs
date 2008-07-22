@@ -278,7 +278,7 @@ namespace N2.Web.UI.WebControls
 			AddCancelButton();
 
 			Register.JQuery(Page);
-			Register.StyleSheet(Page, Utility.ToAbsolute(StyleSheetUrl), Media.All);
+			Register.StyleSheet(Page, N2.Web.Url.ToAbsolute(StyleSheetUrl), Media.All);
 		}
 
 		protected virtual void AddEditButtons()
@@ -293,7 +293,7 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddDeleteButton()
 		{
 			hlDelete.NavigateUrl = Engine.EditManager.GetDeleteUrl(CurrentItem);
-			hlDelete.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/delete.gif"), DeleteText);
+			hlDelete.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/delete.gif"), DeleteText);
 			hlDelete.CssClass = "delete";
 			Controls.Add(hlDelete);
 		}
@@ -301,7 +301,7 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddCreateNewButton()
 		{
 			hlNew.NavigateUrl = Engine.EditManager.GetSelectNewItemUrl(CurrentItem);
-			hlNew.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/add.gif"), NewText);
+			hlNew.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/add.gif"), NewText);
 			hlNew.CssClass = "new";
 			Controls.Add(hlNew);
 		}
@@ -309,14 +309,14 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddEditButton(string editText)
 		{
 			hlEdit.NavigateUrl = Engine.EditManager.GetEditExistingItemUrl(CurrentItem);
-			hlEdit.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/page_edit.gif"), editText);
+			hlEdit.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/page_edit.gif"), editText);
 			hlEdit.CssClass = "edit";
 			Controls.Add(hlEdit);
 		}
 
 		protected virtual void AddCancelButton()
 		{
-			hlCancel.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/cancel.gif"), CancelText);
+			hlCancel.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/cancel.gif"), CancelText);
 			hlCancel.NavigateUrl = Engine.EditManager.GetPreviewUrl(CurrentItem);
 			hlCancel.CssClass = "cancel";
 			Controls.Add(hlCancel);
@@ -324,7 +324,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddSaveButton()
 		{
-			btnSave.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/disk.gif"), SaveText);
+			btnSave.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/disk.gif"), SaveText);
 			btnSave.CssClass = "save";
 			Controls.Add(btnSave);
 			btnSave.Command += delegate { Save(); };
@@ -333,7 +333,7 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddEditModeButton()
 		{
 			hlEditMode.NavigateUrl = Engine.EditManager.GetEditInterfaceUrl(CurrentItem);
-			hlEditMode.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/sitemap_color.gif"), EditModeText);
+			hlEditMode.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/sitemap_color.gif"), EditModeText);
 			hlEditMode.Target = "_top";
 			hlEditMode.CssClass = "editMode";
 			Controls.Add(hlEditMode);
@@ -342,7 +342,7 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddQuickEditButton()
 		{
 			hlQuickEdit.NavigateUrl = GetQuickEditUrl("true");
-			hlQuickEdit.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/png/script_edit.png"), QuickEditText);
+			hlQuickEdit.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/png/script_edit.png"), QuickEditText);
 			hlQuickEdit.CssClass = "quickEdit";
             hlQuickEdit.Visible = false;
 			Controls.Add(hlQuickEdit);
@@ -357,7 +357,7 @@ namespace N2.Web.UI.WebControls
 
 		private void AddPublishButton()
 		{
-			btnPublish.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/disk.gif"), PublishText);
+			btnPublish.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/disk.gif"), PublishText);
 			btnPublish.CssClass = "publish";
 			Controls.Add(btnPublish);
 			btnPublish.Command += delegate { Publish(); };
@@ -365,7 +365,7 @@ namespace N2.Web.UI.WebControls
 
 		private void AddCancelVersionButton()
 		{
-			btnCancelVersion.Text = FormatImageAndText(Utility.ToAbsolute("~/edit/img/ico/cancel.gif"), CancelVersionText);
+			btnCancelVersion.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/cancel.gif"), CancelVersionText);
 			btnCancelVersion.CssClass = "cancel";
             btnCancelVersion.OnClientClick = "return confirm('Are you certain?');";
 			Controls.Add(btnCancelVersion);

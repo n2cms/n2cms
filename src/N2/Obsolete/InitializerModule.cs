@@ -1,5 +1,5 @@
 using System.Web;
-using N2.MediumTrust.Engine;
+using N2.Engine.MediumTrust;
 using N2.Engine;
 using System.Web.Configuration;
 using System;

@@ -23,7 +23,14 @@ namespace N2.Configuration
 		{
 			get { return (int)base["startPageID"]; }
 			set { base["startPageID"] = value; }
-		}
+        }
+
+        [ConfigurationProperty("serverAddress")]
+        public string ServerAddress
+        {
+            get { return (string)base["serverAddress"]; }
+            set { base["serverAddress"] = value; }
+        }
 
 		/// <summary>Enable multiple sites functionality.</summary>
 		[ConfigurationProperty("multipleSites", DefaultValue = false)]

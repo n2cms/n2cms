@@ -12,12 +12,7 @@ namespace N2.Web
 	/// </summary>
 	public class RequestContext : IWebContext
 	{
-		public RequestContext()
-		{
-			Debug.WriteLine("RequestContext:ctor");
-		}
-
-		public HttpContext CurrentHttpContext
+        public virtual HttpContext CurrentHttpContext
 		{
 			get 
 			{
@@ -28,15 +23,15 @@ namespace N2.Web
 		}
 
 		/// <summary>Gets wether there is a web context availabe.</summary>
-		public bool IsInWebContext
+		public virtual bool IsWeb
 		{
-			get { return CurrentHttpContext != null; }
+            get { return HttpContext.Current != null; }
 		}
 
 		/// <summary>Gets a dictionary of request scoped items.</summary>
 		public virtual IDictionary RequestItems
 		{
-			get { return IsInWebContext ? CurrentHttpContext.Items : null; }
+			get { return IsWeb ? CurrentHttpContext.Items : null; }
 		}
 
 		/// <summary>The handler associated with this request.</summary>
@@ -125,7 +120,7 @@ namespace N2.Web
 		/// <returns>The absolute url.</returns>
 		public virtual string ToAbsolute(string virtualPath)
 		{
-			return Utility.ToAbsolute(virtualPath);
+			return N2.Web.Url.ToAbsolute(virtualPath);
 		}
 
 		/// <summary>Converts an absolute url to an app relative url.</summary>
@@ -133,8 +128,8 @@ namespace N2.Web
 		/// <returns>An app relative url.</returns>
 		public virtual string ToAppRelative(string virtualPath)
 		{
-			if (virtualPath != null && virtualPath.StartsWith(Utility.WebRootPath, System.StringComparison.InvariantCultureIgnoreCase))
-				return "~/" + virtualPath.Substring(Utility.WebRootPath.Length);
+			if (virtualPath != null && virtualPath.StartsWith(Url.ApplicationPath, System.StringComparison.InvariantCultureIgnoreCase))
+				return "~/" + virtualPath.Substring(Url.ApplicationPath.Length);
 			return virtualPath;
 		}
 
@@ -153,5 +148,5 @@ namespace N2.Web
 			Debug.WriteLine("Rewriting '" + RawUrl + "' to '" + path + "'");
 			CurrentHttpContext.RewritePath(path, false);
 		}
-	}
+    }
 }

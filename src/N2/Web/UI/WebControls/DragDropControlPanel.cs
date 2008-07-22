@@ -125,7 +125,7 @@ namespace N2.Web.UI.WebControls
 				div.Attributes["title"] = definition.ToolTip;
 				div.Attributes["id"] = definition.Discriminator;
 				div.Attributes["class"] = "definition " + definition.Discriminator;
-				div.InnerHtml = FormatImageAndText(Utility.ToAbsolute(definition.IconUrl), definition.Title);
+				div.InnerHtml = FormatImageAndText(N2.Web.Url.ToAbsolute(definition.IconUrl), definition.Title);
 				definitions.Controls.Add(div);
 			}
 		}

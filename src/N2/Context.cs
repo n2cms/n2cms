@@ -17,6 +17,7 @@ using System.Configuration;
 using System.Web.Configuration;
 using System.Security;
 using N2.Engine;
+using N2.Engine.MediumTrust;
 
 namespace N2
 {
@@ -57,19 +58,24 @@ namespace N2
 		/// <returns>A new factory.</returns>
 		public static Engine.IEngine CreateEngineInstance()
 		{
-			try
-			{
-				var cfg = System.Web.Hosting.HostingEnvironment.IsHosted
-				    ? WebConfigurationManager.OpenWebConfiguration("~/")
-				    : ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-				
-				return new Engine.ContentEngine(cfg);
-			}
-			catch(SecurityException)
-			{
-                Trace.WriteLine("Caught SecurityException, Reverting to MediumTrustEngine");
-				return new MediumTrust.Engine.MediumTrustEngine();
-			}
+            try
+            {
+                var cfg = System.Web.Hosting.HostingEnvironment.IsHosted
+                    ? WebConfigurationManager.OpenWebConfiguration("~")
+                    : ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                return new Engine.ContentEngine(cfg);
+            }
+            catch (SecurityException)
+            {
+                Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine.");
+                return new MediumTrustEngine();
+            }
+            catch (ConfigurationErrorsException ex)
+            {
+                Trace.TraceWarning("Caught InvalidOperationException. This can happen when running a web site project in a virtual directory.");
+                return new Engine.ContentEngine();
+            }
 		}
 
 		#endregion

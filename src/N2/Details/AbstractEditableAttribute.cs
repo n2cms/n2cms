@@ -226,7 +226,7 @@ namespace N2.Details
 			img.ID = "hi_" + Name;
 			img.Attributes["class"] = "help";
 			img.Attributes["title"] = tooltip;
-			img.Src = Utility.ToAbsolute("~/Edit/Img/Ico/Png/help.png");
+			img.Src = N2.Web.Url.ToAbsolute("~/Edit/Img/Ico/Png/help.png");
 			container.Controls.Add(img);
 			return img;
 		}

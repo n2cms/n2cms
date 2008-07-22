@@ -81,7 +81,7 @@ namespace N2.Web.UI.WebControls
 
 		public string FileBrowserUrl
 		{
-			get { return (string) ViewState["FileBrowserUrl"] ?? Utility.ToAbsolute("~/Edit/FileManagement/default.aspx"); }
+			get { return (string) ViewState["FileBrowserUrl"] ?? N2.Web.Url.ToAbsolute("~/Edit/FileManagement/default.aspx"); }
 			set { ViewState["FileBrowserUrl"] = value; }
         }
 
@@ -115,7 +115,7 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			Page.ClientScript.RegisterClientScriptInclude("tiny_mce.js", Utility.ToAbsolute("~/edit/js/tiny_mce/tiny_mce.js"));
+			Page.ClientScript.RegisterClientScriptInclude("tiny_mce.js", N2.Web.Url.ToAbsolute("~/edit/js/tiny_mce/tiny_mce.js"));
 			Page.ClientScript.RegisterClientScriptBlock(typeof (FreeTextArea), "fileBrowserCallBack", fileBrowserCallBack, true);
 
 			string script = string.Format(scriptFormat,

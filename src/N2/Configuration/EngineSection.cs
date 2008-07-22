@@ -63,5 +63,12 @@ namespace N2.Configuration
             get { return (GlobalizationElement)base["globalization"]; }
             set { base["globalization"] = value; }
         }
+
+        [ConfigurationProperty("scheduler")]
+        public SchedulerElement Scheduler
+        {
+            get { return (SchedulerElement)base["scheduler"]; }
+            set { base["scheduler"] = value; }
+        }
 	}
 }

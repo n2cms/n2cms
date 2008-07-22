@@ -13,14 +13,21 @@ namespace N2.Edit
 	/// Classes extending this abstract class are collected and may be 
 	/// retrieved by user interfaces in the editing interface.
 	/// </summary>
-	public abstract class AdministrativePluginAttribute : Attribute, IComparable<IPlugin>, IPlugin
+	public abstract class AdministrativePluginAttribute : Attribute, IPlugin
 	{
 		private string[] authorizedRoles;
 		private bool enabled = true;
         private string name;
         private int sortOrder = int.MaxValue;
+        private Type decorates;
 
-		#region Public Properties
+        #region Public Properties
+
+        public Type Decorates
+        {
+            get { return decorates; }
+            set { decorates = value; }
+        }
 
 		public string Name
 		{

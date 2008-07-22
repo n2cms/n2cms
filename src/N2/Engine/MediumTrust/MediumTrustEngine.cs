@@ -21,15 +21,15 @@ using N2.MediumTrust.Configuration;
 using N2.Details;
 using N2.Persistence.Finder;
 using N2.Plugin;
-using N2.Parts;
+using N2.Web.Parts;
 using N2.Configuration;
-using N2.Globalization;
+using N2.Engine.Globalization;
 using System.Web.Configuration;
 using N2.Installation;
 using System.Configuration;
 using N2.Web.UI;
 
-namespace N2.MediumTrust.Engine
+namespace N2.Engine.MediumTrust
 {
 	public class MediumTrustEngine : IEngine
 	{
@@ -263,12 +263,19 @@ namespace N2.MediumTrust.Engine
 
 		public void AddFacility(string key, object facility)
 		{
-			Trace.WriteLine("MediumTrustEngine.AddFacility not implemented: " + key);
+            Trace.TraceError("MediumTrustEngine.AddFacility not implemented: " + key);
 		}
 
 		public void Release(object instance)
 		{
-			Trace.WriteLine("MediumTrustEngine.Release not implemented: " + instance);
+            foreach (KeyValuePair<Type, object> pair in resolves)
+            {
+                if (pair.Value == instance)
+                {
+                    resolves.Remove(pair.Key);
+                    break;
+                }
+            }
 		}
 
 		[Obsolete("Use AddComponentInstance")]

@@ -136,7 +136,7 @@ namespace N2
             }
 			set 
             {
-                if (value != null && value.IndexOfAny(invalidCharacters) >= 0) throw new N2Exception("Invalid characters in name, '%', '?', '&', '/', ':', '+', '.' not allowed.");
+                //if (value != null && value.IndexOfAny(invalidCharacters) >= 0) throw new N2Exception("Invalid characters in name, '%', '?', '&', '/', ':', '+', '.' not allowed.");
                 if (string.IsNullOrEmpty(value))
                     name = null;
                 else
@@ -272,7 +272,7 @@ namespace N2
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
 		public virtual string IconUrl
         {
-			get { return Utility.ToAbsolute("~/edit/img/ico/" + (IsPage ? "page.gif" : "page_white.gif")); }
+			get { return N2.Web.Url.ToAbsolute("~/edit/img/ico/" + (IsPage ? "page.gif" : "page_white.gif")); }
         }
 
 		/// <summary>Gets the non-friendly url to this item (e.g. "/default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/default.aspx?page=1&amp;item&#61;27").</summary>
@@ -282,12 +282,12 @@ namespace N2
             {
                 if (IsPage)
                 {
-                    return Web.Url.Parse(Utility.ToAbsolute(TemplateUrl)).AppendQuery("page", ID);
+                    return Web.Url.Parse(N2.Web.Url.ToAbsolute(TemplateUrl)).AppendQuery("page", ID);
                 }
 
                 for (ContentItem ancestorItem = Parent; ancestorItem != null; ancestorItem = ancestorItem.Parent)
                     if (ancestorItem.IsPage)
-                        return Web.Url.Parse(Utility.ToAbsolute(ancestorItem.TemplateUrl)).AppendQuery("page", ancestorItem.ID).AppendQuery("item", ID);
+                        return Web.Url.Parse(N2.Web.Url.ToAbsolute(ancestorItem.TemplateUrl)).AppendQuery("page", ancestorItem.ID).AppendQuery("item", ID);
 
 				if (VersionOf != null)
 					return VersionOf.TemplateUrl;

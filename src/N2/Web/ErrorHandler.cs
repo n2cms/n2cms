@@ -16,6 +16,11 @@ namespace N2.Web
         string mailFrom = null;
         long errorCount = 0;
 
+        int maxErrorReportsPerHour = -1;
+        object syncLock = new object();
+        long errorsThisHour = 0;
+        int hour = DateTime.Now.Hour;
+
         public long ErrorCount
         {
             get { return errorCount; }
@@ -30,6 +35,7 @@ namespace N2.Web
             action = config.Errors.Action;
             mailTo = config.Errors.MailTo;
             mailFrom = config.Errors.MailFrom;
+            maxErrorReportsPerHour = config.Errors.MaxErrorReportsPerHour;
         }
 
         public ErrorHandler(EngineSection config, IMailSender mailSender)
@@ -49,20 +55,56 @@ namespace N2.Web
 
             if (ex != null)
             {
-                Trace.WriteLine("ErrorHandler.Handle: " + ex);
+                Trace.TraceError("ErrorHandler.Handle: " + ex);
                 if (action == ErrorAction.Email)
                 {
                     try
                     {
                         if (mailSender != null && !string.IsNullOrEmpty(mailTo))
-                            mailSender.Send(mailFrom ?? "errors@somesite.com", mailTo, "Error Report: " + ex.Message, ex.ToString());
+                        {
+                            lock (syncLock)
+                            {
+                                if (DateTime.Now.Hour == hour)
+                                {
+                                    ++errorsThisHour;
+                                }
+                                else
+                                {
+                                    hour = DateTime.Now.Hour;
+                                    errorsThisHour = 0;
+                                }
+                                if (maxErrorReportsPerHour < 0 || errorsThisHour <= maxErrorReportsPerHour)
+                                    mailSender.Send(mailFrom ?? "errors@somesite.com", mailTo, "Error Report: " + ex.Message, FormatError(ex));
+                            }
+                        }
                     }
                     catch (Exception ex2)
                     {
-                        Trace.WriteLine("ErrorHandler.Handle: exception handling exception" + ex2);
+                        Trace.TraceError("ErrorHandler.Handle: exception handling exception" + ex2);
                     }
                 }
             }
+        }
+
+        private static string FormatError(Exception ex)
+        {
+            HttpContext ctx = HttpContext.Current;
+            StringBuilder body = new StringBuilder();
+            if (ctx != null)
+            {
+                if (ctx.Request != null)
+                {
+                    body.Append("Url: ").AppendLine(ctx.Request.RawUrl);
+                    body.Append("Referrer: ").AppendLine(ctx.Request.UrlReferrer.ToString());
+                    body.Append("User Address: ").AppendLine(ctx.Request.UserHostAddress);
+                }
+                if (ctx.User != null)
+                {
+                    body.Append("User: ").AppendLine(ctx.User.Identity.Name);
+                }
+            }
+            body.Append(ex.ToString());
+            return body.ToString();            
         }
     }
 }

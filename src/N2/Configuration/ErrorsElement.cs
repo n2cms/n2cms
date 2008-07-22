@@ -14,6 +14,14 @@ namespace N2.Configuration
             set { base["action"] = value; }
         }
 
+        /// <summary>A negative value is treated as unlimited number of errors.</summary>
+        [ConfigurationProperty("maxErrorReportsPerHour", DefaultValue = 60)]
+        public int MaxErrorReportsPerHour
+        {
+            get { return (int)base["maxErrorReportsPerHour"]; }
+            set { base["maxErrorReportsPerHour"] = value; }
+        }
+
         [ConfigurationProperty("mailTo")]
         public string MailTo
         {

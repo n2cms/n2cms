@@ -65,6 +65,7 @@ namespace N2.Plugin
                 {
                     if (attribute.Name == null)
                         attribute.Name = t.Name;
+                    attribute.Decorates = t;
 
                     yield return attribute;
                 }

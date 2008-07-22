@@ -58,7 +58,7 @@ namespace N2.Web
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("DynamicSitesProvider.GetSites:" + ex);
+                Trace.TraceWarning("DynamicSitesProvider.GetSites:" + ex);
                 yield break;
             }
 

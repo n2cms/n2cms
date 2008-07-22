@@ -11,7 +11,7 @@ namespace N2.Web.UI.WebControls
 			CssClass = "itemSelector urlSelector";
 			DefaultMode = UrlSelectorMode.Items;
 			AvailableModes = UrlSelectorMode.Items;
-			BrowserUrl = Utility.ToAbsolute("~/Edit/ItemSelection/Default.aspx");
+			BrowserUrl = N2.Web.Url.ToAbsolute("~/Edit/ItemSelection/Default.aspx");
 		}
 
 		/// <summary>Gets the selected item or null if none is selected.</summary>

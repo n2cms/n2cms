@@ -61,7 +61,7 @@ else window.location = '{2}';";
 				format = RefreshNavigationFormat;
 
 			string script = string.Format(format,
-				Utility.ToAbsolute("~/Edit/Default.aspx"), // 0
+				N2.Web.Url.ToAbsolute("~/Edit/Default.aspx"), // 0
 				GetNavigationUrl(item), // 1
 				GetPreviewUrl(item), // 2
 				item.ID, // 3

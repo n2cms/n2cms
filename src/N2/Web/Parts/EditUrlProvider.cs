@@ -7,7 +7,7 @@ using N2.Edit;
 using N2.Persistence;
 using N2.Web;
 
-namespace N2.Parts
+namespace N2.Web.Parts
 {
 	public class EditUrlProvider : PartsAjaxService
 	{
@@ -37,7 +37,7 @@ namespace N2.Parts
 		{
 			ContentItem item = persister.Get(int.Parse(request["item"]));
 			string url = editManager.GetEditExistingItemUrl(item);
-			url = Utility.ToAbsolute(url);
+			url = N2.Web.Url.ToAbsolute(url);
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
 				url += "&returnUrl=" + HttpUtility.UrlEncode(request["returnUrl"]);
 			return url;

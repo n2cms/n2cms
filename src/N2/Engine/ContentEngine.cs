@@ -42,6 +42,27 @@ namespace N2.Engine
 	{
 		private IWindsorContainer container;
 
+        public ContentEngine()
+        {
+            container = new WindsorContainer();
+
+            HostSection hostConfig = AddComponentInstance<HostSection>(ConfigurationManager.GetSection("n2/host"));
+            EngineSection engineConfig = AddComponentInstance<EngineSection>(ConfigurationManager.GetSection("n2/engine"));
+            DatabaseSection dbConfig = AddComponentInstance<DatabaseSection>(ConfigurationManager.GetSection("n2/database"));
+            EditSection editConfig = AddComponentInstance<EditSection>(ConfigurationManager.GetSection("n2/edit"));
+
+            InitializeEnvironment(hostConfig, engineConfig);
+            IResource resource = DetermineResource(engineConfig, ConfigurationManager.GetSection("castle") != null);
+            ProcessResource(resource);
+            InstallComponents();
+        }
+
+        protected T AddComponentInstance<T>(object instance) where T: class
+        {
+            AddComponentInstance(typeof(T).Name, typeof(T), instance);
+            return instance as T;
+        }
+
 		/// <summary>Sets the windsdor container to the given container.</summary>
 		/// <param name="container">An previously prepared windsor container.</param>
 		public ContentEngine(IWindsorContainer container)
@@ -58,20 +79,26 @@ namespace N2.Engine
 			RegisterConfigurationSections(config);
 			HostSection hostConfig = (HostSection)config.GetSection("n2/host");
 			EngineSection engineConfig = (EngineSection)config.GetSection("n2/engine");
-            if (hostConfig != null)
+            InitializeEnvironment(hostConfig, engineConfig);
+			IResource resource = DetermineResource(engineConfig, config.GetSection("castle") != null);
+			ProcessResource(resource);
+            InstallComponents();
+		}
+
+        private void InitializeEnvironment(HostSection hostConfig, EngineSection engineConfig)
+        {
+            if (hostConfig != null && engineConfig != null)
             {
                 Url.DefaultExtension = hostConfig.Web.Extension;
                 if (!hostConfig.Web.IsWeb)
                     container.Kernel.AddComponentInstance("n2.webContext.notWeb", typeof(IWebContext), new ThreadContext());
+
+                if (hostConfig.MultipleSites)
+                {
+                    ProcessResource(new AssemblyResource(engineConfig.MultipleSitesConfiguration));
+                }
             }
-            if (hostConfig != null && hostConfig.MultipleSites)
-            {
-                ProcessResource(new AssemblyResource(engineConfig.MultipleSitesConfiguration));
-            }
-			IResource resource = DetermineResource(config);
-			ProcessResource(resource);
-            InstallComponents();
-		}
+        }
 
 		#region Properties
 
@@ -134,29 +161,23 @@ namespace N2.Engine
 		/// <summary>Either reads the castle configuration from the castle configuration section or uses a default configuration compiled into the n2 assembly.</summary>
 		/// <param name="n2group">The n2 configuration group from the configuration file.</param>
 		/// <returns>A castle IResource used to build the inversion of control container.</returns>
-		protected IResource DetermineResource(System.Configuration.Configuration config)
+        protected IResource DetermineResource(EngineSection engineConfig, bool hasCastleSection)
 		{
-			SectionGroup n2group = config.GetSectionGroup("n2") as SectionGroup;
-            object castleSection = config.GetSection("castle");
-			IResource resource;
-            if (n2group != null)
+            if (engineConfig != null)
 			{
-				if (n2group.Engine == null)
-					resource = new AssemblyResource("assembly://N2/Configuration/castle.configuration.xml");
-				else if (!string.IsNullOrEmpty(n2group.Engine.CastleSection))
-                    resource = new ConfigResource(n2group.Engine.CastleSection);
+				if (!string.IsNullOrEmpty(engineConfig.CastleSection))
+                    return new ConfigResource(engineConfig.CastleSection);
                 else
-                    resource = new AssemblyResource(n2group.Engine.CastleConfiguration);
+                    return new AssemblyResource(engineConfig.CastleConfiguration);
 			}
-            else if (castleSection != null)
+            else if (hasCastleSection)
             {
-                resource = new ConfigResource();
+                return new ConfigResource();
             }
             else 
 			{
 				throw new ConfigurationErrorsException("Couldn't find a suitable configuration section for N2 CMS. Either add an n2/engine or a castle configuartion section to web.config. Note that this section may have changed from previous versions. Please verify that the configuartion is properly updated.");
 			}
-			return resource;
 		}
 
 

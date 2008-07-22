@@ -55,7 +55,7 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 		/// <summary>Url to the page responsible for selecting urls.</summary>
 		public string BrowserUrl
 		{
-			get { return (string) ViewState["BrowserUrl"] ?? Utility.ToAbsolute("~/Edit/FileManagement/default.aspx"); }
+			get { return (string) ViewState["BrowserUrl"] ?? N2.Web.Url.ToAbsolute("~/Edit/FileManagement/default.aspx"); }
 			set { ViewState["BrowserUrl"] = value; }
 		}
 
@@ -124,7 +124,7 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 			hib.Value = ButtonText;
 			Controls.Add(hib);
 			hib.Attributes["onclick"] = string.Format(OpenPopupFormat,
-			                                          VirtualPathUtility.ToAbsolute(BrowserUrl),
+                                                      N2.Web.Url.ToAbsolute(BrowserUrl),
 			                                          ClientID,
 			                                          PopupOptions,
 			                                          DefaultMode,

@@ -58,13 +58,13 @@ namespace N2.Web.UI.WebControls
 					writer.Write(" style='background-image:url({0});'", gripperImageUrl);
 				}
 				writer.Write(">");
-				writer.Write("<img src='{0}' class='delete' alt='delete'", Utility.ToAbsolute("~/Edit/img/ico/png/delete.png"));
+				writer.Write("<img src='{0}' class='delete' alt='delete'", N2.Web.Url.ToAbsolute("~/Edit/img/ico/png/delete.png"));
 				if(bindButtons)
 				{
 					writer.Write(" onclick=\"n2ddcp.del('{0}');\"", ClientID);
 				}
 				writer.Write("/>");
-				writer.Write("<img src='{0}' class='edit' alt='edit'", Utility.ToAbsolute("~/Edit/img/ico/png/pencil.png"));
+				writer.Write("<img src='{0}' class='edit' alt='edit'", N2.Web.Url.ToAbsolute("~/Edit/img/ico/png/pencil.png"));
 				if (bindButtons)
 				{
 					writer.Write(" onclick=\"n2ddcp.edit('{0}');\"", ClientID);
