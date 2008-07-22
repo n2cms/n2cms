@@ -74,6 +74,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snipp
 		..\snippets\N2 Page Template.zip = ..\snippets\N2 Page Template.zip
 		..\snippets\propn2.snippet = ..\snippets\propn2.snippet
 		..\snippets\propn2enum.snippet = ..\snippets\propn2enum.snippet
+		..\snippets\propn2tb.snippet = ..\snippets\propn2tb.snippet
+		..\snippets\readme.txt = ..\snippets\readme.txt
 	EndProjectSection
 EndProject
 Global

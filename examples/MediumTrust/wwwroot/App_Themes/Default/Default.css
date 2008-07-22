@@ -1,0 +1,71 @@
+﻿body 
+{
+	background-color:Salmon;
+	font-family:Arial;
+}
+form
+{
+	background-color:White;
+	width:680px;
+	margin:10px auto;
+	padding:10px;
+	border-width:3px;
+	border-color:White;
+	border-style:solid;
+}
+.header
+{
+	padding:20px;
+	color:White;
+	background-color:Pink;
+	margin:0;
+	font-size:2em;
+}
+a
+{
+	color:Pink;
+}
+.menu
+{
+	background-color:Salmon;
+	font-size:.8em;
+	padding:0 10px;
+}
+.menu a
+{
+	color:White;
+	display:block;
+	padding:2px;
+}
+.menu table
+{
+	background-color:Salmon;
+}
+.languages
+{
+	padding-top:5px;
+	float:right;
+}
+.languages a
+{
+	display:inline;
+}
+.menuHover
+{
+	background-color:Pink;
+	color:White;
+}
+.menuHover a
+{
+	color:White;
+}
+.subMenu
+{
+	border-left:solid 3px Pink;
+}
+.breadcrumb
+{
+	margin-top:10px;
+	display:block;
+	font-size:.8em;
+}

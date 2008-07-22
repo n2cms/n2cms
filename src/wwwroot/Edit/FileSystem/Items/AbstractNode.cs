@@ -43,7 +43,7 @@ namespace N2.Edit.FileSystem.Items
 
         string INode.PreviewUrl
         {
-            get { return N2.Web.Url.Parse(Utility.ToAbsolute(TemplateUrl)).AppendQuery("selected", Path); }
+            get { return N2.Web.Url.Parse(TemplateUrl).AppendQuery("selected", Path); }
         }
 
         public override bool Equals(object obj)

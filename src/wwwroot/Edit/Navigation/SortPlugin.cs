@@ -49,7 +49,7 @@ namespace N2.Edit.Navigation
 			a.Attributes["class"] = key;
 			a.Title = Utility.GetResourceString(GlobalResourceClassName, key + Name + ".ToolTip") ?? ToolTip;
 
-			a.InnerHtml = string.Format("<img src='{0}' alt=''/>", Utility.ToAbsolute(iconUrl));
+			a.InnerHtml = string.Format("<img src='{0}' alt=''/>", N2.Web.Url.ToAbsolute(iconUrl));
 
 			container.Controls.Add(a);
 			return a;

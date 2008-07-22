@@ -9,7 +9,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Templates.Items;
-using N2.Globalization;
+using N2.Engine.Globalization;
 using N2.Templates.Web.UI.WebControls;
 
 namespace N2.Templates.UI.Layouts

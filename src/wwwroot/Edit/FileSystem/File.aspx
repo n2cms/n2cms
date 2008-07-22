@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
     <a href="<%= SelectedItem.Url %>">
-        <img src="<%= N2.Utility.ToAbsolute(SelectedItem.IconUrl) %>" alt="icon" />
+        <img src="<%= N2.Web.Url.ToAbsolute(SelectedItem.IconUrl) %>" alt="icon" />
         <%= SelectedItem.Title %>
         (<%= SelectedFile.Size / 1024 %> kB)
     </a>

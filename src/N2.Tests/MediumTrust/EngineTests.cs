@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using N2.MediumTrust.Engine;
+using N2.Engine.MediumTrust;
 using N2.Persistence;
 using NUnit.Framework.SyntaxHelpers;
 using System.Configuration;

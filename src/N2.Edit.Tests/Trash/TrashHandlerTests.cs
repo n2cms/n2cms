@@ -4,7 +4,7 @@ using N2.Definitions;
 using N2.Persistence;
 using N2.Web;
 using Rhino.Mocks;
-using N2.MediumTrust.Engine;
+using N2.Engine.MediumTrust;
 using NUnit.Framework.SyntaxHelpers;
 using N2.Edit.Trash;
 using System.Configuration;

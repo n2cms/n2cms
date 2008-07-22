@@ -92,10 +92,12 @@ namespace N2.Edit.FileSystem.Items
             return items;
         }
 
-        public static void EnsureDirectory(ContentItem item)
+        public static AbstractDirectory EnsureDirectory(ContentItem item)
         {
-            if (!(item is Directory))
-                new N2Exception(item + " is not a Directory.");
+            if (item is AbstractDirectory)
+                return item as AbstractDirectory;
+            else
+                throw new N2Exception(item + " is not a Directory.");
         }
     }
 }

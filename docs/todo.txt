@@ -1,9 +1,6 @@
-- keepalive
-- aggregator
-- node based file tree
-	- friendly error when no write access
 - wiki
 	- categories
+	- comments
 	- nested articles
 	- track back links
 	- code formatting

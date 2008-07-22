@@ -83,6 +83,8 @@ namespace N2.Templates.Wiki.Items
 
         protected string[] GetSegments(string path)
         {
+            if (path == null)
+                return new string[] { string.Empty, string.Empty };
             int slashIndex = path.IndexOf('/');
             if (slashIndex < 0)
                 return new string[] { path.ToLower(), string.Empty };

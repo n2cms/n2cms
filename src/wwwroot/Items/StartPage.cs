@@ -6,7 +6,7 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Templates.Items;
 using N2.Installation;
-using N2.Globalization;
+using N2.Engine.Globalization;
 using System.Globalization;
 using N2.Serialization;
 using N2.Edit.FileSystem;

@@ -42,7 +42,7 @@ namespace N2.Edit
         protected string GetEditDataItemText(object dataItem)
         {
             ContentItem item = (ContentItem)dataItem;
-            return string.Format("<img src='{0}'>{1}", VirtualPathUtility.ToAbsolute(item.IconUrl), string.IsNullOrEmpty(item.Title) ? "(untitled)" : item.Title );
+            return string.Format("<img src='{0}'>{1}", N2.Web.Url.ToAbsolute(item.IconUrl), string.IsNullOrEmpty(item.Title) ? "(untitled)" : item.Title);
         }
         protected string GetEditDataItemUrl(object dataItem)
         {

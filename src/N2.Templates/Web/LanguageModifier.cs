@@ -4,7 +4,7 @@ using System.Text;
 
 using N2.Templates.Web.UI;
 using N2.Templates.Items;
-using N2.Globalization;
+using N2.Engine.Globalization;
 
 namespace N2.Templates.Web
 {

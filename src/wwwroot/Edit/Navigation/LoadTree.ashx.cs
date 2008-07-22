@@ -51,7 +51,7 @@ namespace N2.Edit.Navigation
 
 			ILinkBuilder builder = Link.To(node).Target(target).Class(className)
                 .Href(node.PreviewUrl)
-				.Text("<img src='" + Utility.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
+                .Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
 				.Attribute("rel", node.Path);
 
 			return builder;

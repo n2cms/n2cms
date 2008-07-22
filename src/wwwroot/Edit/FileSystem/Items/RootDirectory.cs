@@ -37,7 +37,7 @@ namespace N2.Edit.FileSystem.Items
             {
                 if (physicalPath == null)
                 {
-                    Url u = Utility.ToAbsolute("~/");
+                    Url u = N2.Web.Url.Parse("~/");
                     physicalPath = GetWebContext().MapPath(u.AppendSegment(Name, "")); ;
                 }
                 return physicalPath;

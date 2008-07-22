@@ -62,6 +62,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Layouts\Parts\Translation.cs" />
+    <Compile Include="News\Items\RssAggregator.cs" />
+    <Compile Include="News\UI\RssAggregator.ascx.cs">
+      <DependentUpon>RssAggregator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="News\UI\RssAggregator.ascx.designer.cs">
+      <DependentUpon>RssAggregator.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Obsolete\Global.cs" />
     <Compile Include="Survey\Details\EditableOptionsAttribute.cs" />
     <Compile Include="Survey\Items\ISurvey.cs" />
@@ -903,6 +911,7 @@
     <Content Include="App_Themes\ContentFocus\Style.css" />
     <Content Include="App_Themes\ContentFocus\top.gif" />
     <Content Include="Layouts\Defaults.css" />
+    <Content Include="News\UI\RssAggregator.ascx" />
     <Content Include="Poll\UI\App_LocalResources\Poll.ascx.resx">
       <SubType>Designer</SubType>
     </Content>

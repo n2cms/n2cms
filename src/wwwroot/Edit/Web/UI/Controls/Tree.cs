@@ -101,7 +101,7 @@ namespace N2.Edit.Web.UI.Controls
 				className += "selected ";
 			
 			ILinkBuilder builder = Link.To(node).Target(target).Class(className)
-				.Text("<img src='" + Utility.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
+                .Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
 				.Attribute("rel", node.Path);
 
 			if (Preview)

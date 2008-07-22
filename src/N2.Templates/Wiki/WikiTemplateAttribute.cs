@@ -24,7 +24,7 @@ namespace N2.Templates.Wiki
         #region IPlugin Members
 
         public string Name { get; set; }
-
+        public Type Decorates { get; set; }
         public int SortOrder { get; set; }
 
         public bool IsAuthorized(IPrincipal user)

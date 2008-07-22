@@ -58,6 +58,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Themes\Default\Default.css" />
     <Content Include="Default.aspx" />
     <Content Include="Watch.ascx" />
     <Content Include="Web.config" />

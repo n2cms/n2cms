@@ -64,14 +64,14 @@ namespace N2.Edit
 
 		private void DisplayThisHasNewerVersionInfo(ContentItem itemToLink)
 		{
-			string url = Utility.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
+            string url = N2.Web.Url.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
 			hlNewerVersion.NavigateUrl = url;
 			hlNewerVersion.Visible = true;
 		}
 
 		private void DisplayThisIsVersionInfo(ContentItem itemToLink)
 		{
-			string url = Utility.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
+            string url = N2.Web.Url.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
 			hlOlderVersion.NavigateUrl = url;
 			hlOlderVersion.Visible = true;
 		}

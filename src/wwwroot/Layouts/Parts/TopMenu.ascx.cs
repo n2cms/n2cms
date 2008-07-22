@@ -9,7 +9,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Collections.Generic;
-using N2.Globalization;
+using N2.Engine.Globalization;
 
 namespace N2.Templates.UI.Layouts.Parts
 {

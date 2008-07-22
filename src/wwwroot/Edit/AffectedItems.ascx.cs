@@ -27,7 +27,7 @@ namespace N2.Edit
         private void AddChildrenRecursive(N2.ContentItem item, HtmlGenericControl container)
         {
             HtmlGenericControl li = new HtmlGenericControl("li");
-            li.InnerHtml = string.Format("<a href='{0}'><img src='{1}'/>{2}</a>", item.Url, VirtualPathUtility.ToAbsolute(item.IconUrl), item.Title);
+            li.InnerHtml = string.Format("<a href='{0}'><img src='{1}'/>{2}</a>", item.Url, N2.Web.Url.ToAbsolute(item.IconUrl), item.Title);
             container.Controls.Add(li);
 
             if (item.Children.Count > 0)

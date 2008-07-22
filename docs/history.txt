@@ -8,15 +8,12 @@
 - select pages when navigating in preview
 - separator
 - languages in right-click menu
-- PlugInAuthorizedRolesAttribute removed 
-- plugins refactored
-- refactored nh configuration builder
 - wiki part
 	- syntax
 	- fragmenters and renderes: external link, heading, internal link, template, text, userinfo
 	- wiki template plugins: actionparameter, allarticles, latestarticles, linkfromparameter, search
 	- ui
-	- configurable authorization
+	- configurable write authorization
 - configurable default extension
 - children of thrown items are expired
 - configurable output cache
@@ -25,7 +22,6 @@
 	- invalidate on content changes
 - filters += pipes
 - editor roles configuration
-- moved installer configuraiton -> <edit><installer... (update web.config)
 - added profile provider
 - iactivecontent: overrides persistence
 - node based file tree
@@ -34,10 +30,23 @@
 	- configure allowed upload paths
 - updated mvc example to asp.net mvc preview 4
 - editable enum drop down
-- renamed n2.web.ui.page -> contentpage
-- renamed n2.web.ui.usercontrol -> contentusercontrol
-- moved n2.templates.survey -> n2.templates.ui
-- moved output caching configuration n2.templates -> n2
+- scheduling support
+- keepalive scheduled service
+- rss aggregator (templates)
+- node based file tree
+	- friendly error when no write access
+- refactored
+	- plugins
+	- removed PlugInAuthorizedRolesAttribute
+	- nh configuration builder
+	- renamed n2.web.ui.page -> contentpage
+	- renamed n2.web.ui.usercontrol -> contentusercontrol
+	- moved project n2.templates.survey -> n2.templates.ui
+	- moved configuration for output caching n2.templates -> n2
+	- moved namespace n2.globalization -> n2.engine.globalization
+	- moved namespace n2.mediumtrust -> n2.engine.mediumtrust
+	- moved namespace n2.parts -> n2.web.parts
+	- moved installer configuraiton -> <edit><installer... (update web.config)
 
 1.4
 - templates

@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace MediumTrustTest
 {
-	public partial class _Default : N2.Web.UI.Page<Items.DefaultPage>
+    public partial class _Default : N2.Web.UI.ContentPage<Items.DefaultPage>
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{

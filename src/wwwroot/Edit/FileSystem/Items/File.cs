@@ -12,6 +12,7 @@ using N2.Web;
 using N2.Persistence;
 using N2.Edit.Trash;
 using N2.Details;
+using System.Diagnostics;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -45,50 +46,78 @@ namespace N2.Edit.FileSystem.Items
             string expectedPath = System.IO.Path.Combine(Directory.PhysicalPath, Name);
             if (expectedPath != PhysicalPath)
             {
-                if (PhysicalPath != null)
+                try
                 {
-                    System.IO.Directory.Move(PhysicalPath, expectedPath);
+                    if (PhysicalPath != null)
+                    {
+                        System.IO.Directory.Move(PhysicalPath, expectedPath);
+                    }
+                    else
+                    {
+                        System.IO.Directory.CreateDirectory(expectedPath);
+                    }
+                    PhysicalPath = expectedPath;
                 }
-                else
+                catch (Exception ex)
                 {
-                    System.IO.Directory.CreateDirectory(expectedPath);
+                    Trace.TraceError(ex.ToString());
                 }
-                PhysicalPath = expectedPath;
             }
         }
 
         public void Delete()
         {
-            System.IO.File.Delete(PhysicalPath);
+            try
+            {
+                System.IO.File.Delete(PhysicalPath);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.ToString());
+            }
         }
 
         public void MoveTo(ContentItem destination)
         {
-            AbstractDirectory.EnsureDirectory(destination);
+            AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
-            AbstractDirectory d = destination as AbstractDirectory;
             string from = PhysicalPath;
             string to = System.IO.Path.Combine(d.PhysicalPath, Name);
             if (System.IO.File.Exists(to))
                 throw new NameOccupiedException(this, destination);
 
-            System.IO.File.Move(from, to);
-            PhysicalPath = to;
-            Parent = destination;
+            try
+            {
+                System.IO.File.Move(from, to);
+                PhysicalPath = to;
+                Parent = destination;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.ToString());
+            }
         }
 
         public ContentItem CopyTo(ContentItem destination)
         {
-            AbstractDirectory.EnsureDirectory(destination);
+            AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
-            Directory d = destination as Directory;
             string from = PhysicalPath;
             string to = System.IO.Path.Combine(d.PhysicalPath, Name);
             if (System.IO.File.Exists(to))
                 throw new NameOccupiedException(this, destination);
 
-            System.IO.File.Copy(from, to);
-            return (File)destination.GetChild(Name);
+
+            try
+            {
+                System.IO.File.Copy(from, to);
+                return (File)destination.GetChild(Name);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.ToString());
+                return this;
+            }
         }
 
         #endregion

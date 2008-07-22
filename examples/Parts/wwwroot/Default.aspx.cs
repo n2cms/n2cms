@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-public partial class _Default : N2.Web.UI.Page<EmptyPage>
+public partial class _Default : N2.Web.UI.ContentPage<EmptyPage>
 {
     protected void Page_Load(object sender, EventArgs e)
     {

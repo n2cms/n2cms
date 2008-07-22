@@ -72,7 +72,7 @@ namespace N2.Edit.FileManagement
 		private string lastUrl = null;
 		private bool IsSelected(string navigateUrl)
 		{
-			string url = Utility.ToAbsolute(navigateUrl);
+			string url = N2.Web.Url.ToAbsolute(navigateUrl);
 			return (lastUrl != null) ? url == lastUrl : url == OpenerInputUrl;
 		}
 

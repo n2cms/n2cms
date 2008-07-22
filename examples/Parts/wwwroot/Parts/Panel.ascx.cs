@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-public partial class Parts_Panel : N2.Web.UI.UserControl<AbstractPage, Panel>
+public partial class Parts_Panel : N2.Web.UI.ContentUserControl<AbstractPage, Panel>
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{

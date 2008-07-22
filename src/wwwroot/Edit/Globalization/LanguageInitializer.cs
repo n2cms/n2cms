@@ -8,7 +8,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Plugin;
-using N2.Globalization;
+using N2.Engine.Globalization;
 
 namespace N2.Edit.Globalization
 {

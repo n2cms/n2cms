@@ -4,7 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using N2.Web;
 using N2.Tests.Globalization.Items;
-using N2.Globalization;
+using N2.Engine.Globalization;
 using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Globalization

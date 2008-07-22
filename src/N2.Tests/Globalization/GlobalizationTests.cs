@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using N2.Globalization;
+using N2.Engine.Globalization;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using N2.Persistence;

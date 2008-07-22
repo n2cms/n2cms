@@ -16,7 +16,7 @@ namespace N2.Templates.Services
 	/// Makes sure the not found page is displayed whenever an url not leading 
 	/// to a page is used.
 	/// </summary>
-	public class NotFoundHandler : IStartable
+	public class NotFoundHandler : IStartable, IAutoStart
 	{
 		IUrlParser parser;
 		
@@ -28,7 +28,7 @@ namespace N2.Templates.Services
 		void parser_PageNotFound(object sender, PageNotFoundEventArgs e)
 		{
 			AbstractStartPage startPage = parser.StartPage as AbstractStartPage;
-			if (startPage != null && startPage.NotFoundPage != null)
+			if (startPage != null && startPage.NotFoundPage != null && !e.Url.StartsWith("edit/", StringComparison.InvariantCultureIgnoreCase))
 			{
 				e.AffectedItem = startPage.NotFoundPage;
 			}
@@ -43,5 +43,14 @@ namespace N2.Templates.Services
 		{
 			parser.PageNotFound -= parser_PageNotFound;
 		}
-	}
+
+        #region IAutoStart Members
+
+        void IAutoStart.Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }
