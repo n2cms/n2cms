@@ -34,7 +34,7 @@
 - keepalive scheduled service
 - rss aggregator (templates)
 - node based file tree
-	- friendly error when no write access
+	- friendlier (no) error when no write access
 - refactored
 	- plugins
 	- removed PlugInAuthorizedRolesAttribute
@@ -47,6 +47,7 @@
 	- moved namespace n2.mediumtrust -> n2.engine.mediumtrust
 	- moved namespace n2.parts -> n2.web.parts
 	- moved installer configuraiton -> <edit><installer... (update web.config)
+	- utility.toabsolute -> web.url.toabsolute
 
 1.4
 - templates
