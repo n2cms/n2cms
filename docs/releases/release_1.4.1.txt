@@ -1,0 +1,17 @@
+N2 is a lightweight CMS framework for ASP.NET. It helps you build great web 
+sites that anyone can update.
+
+Major Changes
+Along with the general round of updates and tweaks this release adds wiki 
+functionality, scheduling support, a node based file tree (move files, etc.) 
+more configuration options (output cache, editor roles, scheduling). See 
+the list at history.txt: http://code.google.com/p/n2cms/source/browse/trunk/docs/history.txt
+
+First time with N2?
+* Try the demo site: http://templates.n2cms.com/
+* Download templates + sample project (below) and open the project in Visual Studio.
+* Look at the documentation: http://n2cms.com/Documentation/Startup_guide/Installation.aspx
+
+Upgrading? Read upgrade_1.4.1.txt, backup, drop the compiled runtime and recompile.
+
+Enjoy!

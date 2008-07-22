@@ -1,3 +1,4 @@
+1.4.1
 - error handling with email option
 - format option on display property
 - fixed problem when using traditional castle section
