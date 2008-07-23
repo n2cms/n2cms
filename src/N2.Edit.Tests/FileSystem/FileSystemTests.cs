@@ -9,6 +9,7 @@ using N2.Tests;
 using N2.Edit.FileSystem;
 using N2.Web;
 using System.Configuration;
+using N2.Engine;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -22,7 +23,7 @@ namespace N2.Edit.Tests.FileSystem
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            engine = N2.Context.Current;
+            N2.Context.Initialize(engine = new ContentEngine());
             root = engine.Definitions.CreateInstance<RootNode>(null);
             engine.Persister.Save(root);
             engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;

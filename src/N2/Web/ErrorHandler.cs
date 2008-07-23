@@ -55,7 +55,7 @@ namespace N2.Web
 
             if (ex != null)
             {
-                Trace.TraceError("ErrorHandler.Handle: " + ex);
+                Trace.TraceError("ErrorHandler.Handle: " + FormatError(ex));
                 if (action == ErrorAction.Email)
                 {
                     try

@@ -42,25 +42,22 @@ namespace N2.Engine
 	{
 		private IWindsorContainer container;
 
+        /// <summary>
+        /// Creates an instance of the content engine using known configuration sections.
+        /// </summary>
         public ContentEngine()
         {
             container = new WindsorContainer();
 
-            HostSection hostConfig = AddComponentInstance<HostSection>(ConfigurationManager.GetSection("n2/host"));
-            EngineSection engineConfig = AddComponentInstance<EngineSection>(ConfigurationManager.GetSection("n2/engine"));
-            DatabaseSection dbConfig = AddComponentInstance<DatabaseSection>(ConfigurationManager.GetSection("n2/database"));
-            EditSection editConfig = AddComponentInstance<EditSection>(ConfigurationManager.GetSection("n2/edit"));
+            HostSection hostConfig = AddComponentInstance<HostSection>(ConfigurationManager.GetSection("n2/host") as HostSection);
+            EngineSection engineConfig = AddComponentInstance<EngineSection>(ConfigurationManager.GetSection("n2/engine") as EngineSection);
+            DatabaseSection dbConfig = AddComponentInstance<DatabaseSection>(ConfigurationManager.GetSection("n2/database") as DatabaseSection);
+            EditSection editConfig = AddComponentInstance<EditSection>(ConfigurationManager.GetSection("n2/edit") as EditSection);
 
             InitializeEnvironment(hostConfig, engineConfig);
             IResource resource = DetermineResource(engineConfig, ConfigurationManager.GetSection("castle") != null);
             ProcessResource(resource);
             InstallComponents();
-        }
-
-        protected T AddComponentInstance<T>(object instance) where T: class
-        {
-            AddComponentInstance(typeof(T).Name, typeof(T), instance);
-            return instance as T;
         }
 
 		/// <summary>Sets the windsdor container to the given container.</summary>
@@ -273,6 +270,12 @@ namespace N2.Engine
 		{
 			Container.Kernel.AddComponentInstance(key, serviceType, instance);
 		}
+
+        public T AddComponentInstance<T>(T instance) where T : class
+        {
+            AddComponentInstance(typeof(T).Name, typeof(T), instance);
+            return instance as T;
+        }
 
 		public void AddFacility(string key, object facility)
 		{
