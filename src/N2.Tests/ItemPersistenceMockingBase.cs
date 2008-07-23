@@ -61,12 +61,6 @@ namespace N2.Tests
             T item = base.CreateOneItem<T>(itemID, name, parent);
             database.Add(item);
             return item;
-            //repository.BackToRecord(BackToRecordOptions.None);
-            //T item = base.CreateOneItem<T>(itemID, name, parent);
-            //Expect.On(repository).Call(repository.Get(itemID)).Return(item).Repeat.Any();
-            //Expect.On(repository).Call(repository.Load(itemID)).Return(item).Repeat.Any();
-            //repository.Replay();
-            //return item;
 		}
 
 		#region WebContext

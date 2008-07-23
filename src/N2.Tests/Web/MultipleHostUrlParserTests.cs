@@ -234,7 +234,7 @@ namespace N2.Tests.Web
 
 		private void CreateItemsAndBuildExpectations(string host, string url)
 		{
-			CreateDefaultStructure(true);
+			CreateDefaultStructure();
             currentHost = host;
 			mocks.ReplayAll();
 		}
@@ -245,7 +245,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanCreateCurrentStartItemUrl()
 		{
-			CreateDefaultStructure(true);
+			CreateDefaultStructure();
 			mocks.ReplayAll();
 
 			string url = parser.BuildUrl(item1);
@@ -255,7 +255,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanBuildUrlOnCurrentSite()
 		{
-			CreateDefaultStructure(true);
+			CreateDefaultStructure();
             currentHost = "www.n2cms.com";
 			mocks.ReplayAll();
 
@@ -266,7 +266,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanBuildUrlOnOtherSiteStartPage()
 		{
-			CreateDefaultStructure(true);
+			CreateDefaultStructure();
             currentHost = "www.n2cms.com";
 			mocks.ReplayAll();
 
@@ -277,7 +277,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanBuildUrlOnOtherSitePage()
 		{
-			CreateDefaultStructure(true);
+			CreateDefaultStructure();
             currentHost = "n2.libardo.com"; 
 			mocks.ReplayAll();
 
