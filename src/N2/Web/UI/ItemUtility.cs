@@ -125,7 +125,7 @@ namespace N2.Web.UI
 				throw new N2Exception("Cannot cast the current page " + item
 					+ " from type '" + item.GetType()
 					+ "' to type '" + typeof(T)
-					+ "' required by this template. It might help to change the generic argument of the template to something more else (like N2.ContentItem) or moving a user control to a page with the correct type or overriding the TemplateUrl property and referencing a more specific template.");
+					+ "' required by this template. It might help to change the generic argument of the template to something less explicit (like N2.ContentItem) or moving a user control to a page with the correct type or overriding the TemplateUrl property and referencing a more specific template.");
 			}
 			return (T)item;
 		}

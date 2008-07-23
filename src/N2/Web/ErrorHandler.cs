@@ -95,7 +95,8 @@ namespace N2.Web
                 if (ctx.Request != null)
                 {
                     body.Append("Url: ").AppendLine(ctx.Request.RawUrl);
-                    body.Append("Referrer: ").AppendLine(ctx.Request.UrlReferrer.ToString());
+                    if(ctx.Request.UrlReferrer != null)
+                        body.Append("Referrer: ").AppendLine(ctx.Request.UrlReferrer.ToString());
                     body.Append("User Address: ").AppendLine(ctx.Request.UserHostAddress);
                 }
                 if (ctx.User != null)
