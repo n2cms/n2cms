@@ -18,11 +18,11 @@ namespace N2.Templates
             TemplatesSection config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
             if (config == null || config.MailConfiguration == MailConfigSource.ContentRootOrConfiguration)
             {
-                engine.AddComponent("n2.templtaes.contentMailSender", typeof(IMailSender), typeof(Services.DynamicMailSender));
+                engine.AddComponent("n2.templates.contentMailSender", typeof(IMailSender), typeof(Services.DynamicMailSender));
             }
             else
             {
-                engine.AddComponent("n2.templtaes.fakeMailSender", typeof(IMailSender), typeof(Services.FakeMailSender));
+                engine.AddComponent("n2.templates.fakeMailSender", typeof(IMailSender), typeof(Services.FakeMailSender));
             }
             engine.AddComponent("n2.templates.notFoundHandler", typeof(NotFoundHandler));
             engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
