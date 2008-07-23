@@ -5,6 +5,9 @@ using N2.Engine.Globalization;
 
 namespace N2.Templates.Web
 {
+    /// <summary>
+    /// Performs operations on the page template on each request.
+    /// </summary>
 	public class TemplatePageModifier : IPageModifierContainer
 	{
 		private readonly IList<IPageModifier> modifiers;

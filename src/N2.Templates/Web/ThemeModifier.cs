@@ -6,6 +6,9 @@ using System.IO;
 
 namespace N2.Templates.Web
 {
+    /// <summary>
+    /// Sets the theme of the page template.
+    /// </summary>
 	public class ThemeModifier : IPageModifier
 	{
 		bool themeVerified = false;

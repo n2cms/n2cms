@@ -53,6 +53,7 @@
 - components are now started after plugin initialization
 - added login page property on start page (templates)
 - deprecated installermodule
+- moved layout declaration to web.config
 
 1.4
 - templates

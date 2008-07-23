@@ -22,7 +22,7 @@ namespace N2.Templates.Items
 		}
 
 		public abstract string Theme { get; set; }
-		public abstract string Layout { get; set; }
+		//public abstract string Layout { get; set; }
 
         [EditableLink("Not Found Page (404)", 77, ContainerName = MiscArea, HelpText = "Display this page when the requested URL isn't found")]
 		public virtual ContentItem NotFoundPage

@@ -1,23 +1,27 @@
 using System.IO;
+using N2.Templates.Configuration;
+using System.Configuration;
 namespace N2.Templates.Web
 {
+    /// <summary>
+    /// Applies the template defined in the n2/templates configuration section 
+    /// to the page.
+    /// </summary>
 	public class MasterPageModifier : IPageModifier
 	{
-		bool layoutVerified = false;
+        TemplatesSection config;
+
+        public MasterPageModifier()
+        {
+            config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
+        }
 
 		public void Modify<T>(UI.TemplatePage<T> page) 
 			where T : Items.AbstractPage
 		{
-			string layout = Find.StartPage.Layout;
-			if (!layoutVerified && layout != null)
-			{
-				if(File.Exists(page.Server.MapPath(layout)))
-					layoutVerified = true;
-			}
-
-			if (layoutVerified)
-			{
-				page.MasterPageFile = layout;
+            if (config != null && !string.IsNullOrEmpty(config.MasterPageFile))
+            {
+            	page.MasterPageFile = config.MasterPageFile;
 			}
 		}
 	}

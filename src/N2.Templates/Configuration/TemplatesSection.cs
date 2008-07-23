@@ -16,5 +16,14 @@ namespace N2.Templates.Configuration
             get { return (MailConfigSource)base["mailConfiguration"]; }
             set { base["mailConfiguration"] = value; }
         }
+
+        /// <summary>The database flavour decides which propertes the nhibernate configuration will receive.</summary>
+        [ConfigurationProperty("masterPageFile", DefaultValue = "~/Layouts/Top+SubMenu.Master")]
+        public string MasterPageFile
+        {
+            get { return (string)base["masterPageFile"]; }
+            set { base["masterPageFile"] = value; }
+        }
+
     }
 }

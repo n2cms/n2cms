@@ -57,12 +57,12 @@ namespace N2.Templates.UI.Items
 			set { SetDetail("Theme", value); }
 		}
 
-        [Details.LayoutSelector("Layout", 76, ContainerName = LayoutArea)]
-		public override string Layout
-		{
-			get { return (string)GetDetail("Layout") ?? "~/Layouts/Top+SubMenu.Master"; }
-			set { SetDetail("Layout", value); }
-		}
+        //[Details.LayoutSelector("Layout", 76, ContainerName = LayoutArea)]
+        //public override string Layout
+        //{
+        //    get { return (string)GetDetail("Layout") ?? "~/Layouts/Top+SubMenu.Master"; }
+        //    set { SetDetail("Layout", value); }
+        //}
 
 		public override string TemplateUrl
 		{
