@@ -236,20 +236,25 @@
     <Compile Include="Security\Items\SecurityPage.cs" />
     <Compile Include="Security\SecurityManagerTests.cs" />
     <Compile Include="Web\DynamicSitesProviderTests.cs" />
+    <Compile Include="Web\Items\CustomExtensionPage.cs" />
     <Compile Include="Web\Items\DataItem.cs" />
     <Compile Include="Web\Items\PageItem.cs" />
     <Compile Include="Web\Items\SiteProvidingItem.cs" />
     <Compile Include="Web\LinkTests.cs" />
+    <Compile Include="Web\MspxExtensionUrlParserTests.cs" />
     <Compile Include="Web\ParserTestsBase.cs" />
     <Compile Include="Web\MultipleHostUrlParserTests.cs" />
+    <Compile Include="Web\SlashExtensionUrlParserTests.cs" />
     <Compile Include="Web\TagBuilderTests.cs" />
     <Compile Include="Web\TreeNodeTests.cs" />
     <Compile Include="Web\TreeTests.cs" />
+    <Compile Include="Web\UrlParserPathAndQueryTests.cs" />
     <Compile Include="Web\UrlParserTests.cs" />
     <Compile Include="Web\UrlRewriterTests.cs" />
     <Compile Include="Serialization\Items\XmlableItem.cs" />
     <Compile Include="Serialization\XmlWriterTests.cs" />
     <Compile Include="Web\UrlTests.cs" />
+    <Compile Include="Web\AbstractExtensionUrlParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -13,7 +13,8 @@ namespace N2.Tests
 {
 	public class ItemPersistenceMockingBase : ItemTestsBase
 	{
-		protected IPersister persister;
+        protected string currentHost = "www.n2cms.com";
+        protected IPersister persister;
         protected IRepository<int, ContentItem> repository;
         protected IEventRaiser saving;
 
@@ -70,6 +71,7 @@ namespace N2.Tests
 			Expect.On(wrapper).Call(wrapper.ToAppRelative(null)).IgnoreArguments().Do(new ToAppRelativeDelegate(ToAppRelative)).Repeat.Any();
 			Expect.On(wrapper).Call(wrapper.ToAbsolute(null)).IgnoreArguments().Do(new ToAbsoluteDelegate(ToAbsolute)).Repeat.Any();
 			Expect.On(wrapper).Call(wrapper.ApplicationUrl).Return("/").Repeat.Any();
+            Expect.On(wrapper).Call(wrapper.Authority).Do(new Func<string>(delegate { return currentHost; })).Repeat.Any();
 
 			if (replay)
 				mocks.Replay(wrapper);

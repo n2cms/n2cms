@@ -523,27 +523,49 @@ namespace N2
 			}
 			else if (slashIndex > 0) // contains a slash further down
 			{
-				ContentItem child = FindChild(childName.Substring(0, slashIndex));
-				if (child != null)
-					return child.GetChild(childName.Substring(slashIndex));
-				else
-					return null;
+                string nameSegment = childName.Substring(0, slashIndex);
+                foreach (ContentItem child in GetChildren(new NullFilter()))
+                {
+                    if (child.Equals(nameSegment))
+                    {
+                        return child.GetChild(childName.Substring(slashIndex));
+                    }
+                }
+                return null;
+
+                //ContentItem child = FindChild(childName.Substring(0, slashIndex));
+                //if (child != null)
+                //    return child.GetChild(childName.Substring(slashIndex));
+                //else
+                //    return null;
 			}
 			else // no slash, only a name
 			{
-				return FindChild(childName);
-			}
+                foreach (ContentItem child in GetChildren(new NullFilter()))
+                {
+                    if (child.Equals(childName))
+                    {
+                        return child;
+                    }
+                }
+                return null;
+            }
         }
 
-		private ContentItem FindChild(string childName)
-		{
-			foreach (ContentItem child in GetChildren(new NullFilter()))
-			{
-				if (string.Equals(childName, child.Name, StringComparison.InvariantCultureIgnoreCase))
-					return child;
-			}
-			return null;
-		}
+        protected virtual bool Equals(string name)
+        {
+            return Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) || (Name + Extension).Equals(name, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        //private ContentItem FindChild(string childName)
+        //{
+        //    foreach (ContentItem child in GetChildren(new NullFilter()))
+        //    {
+        //        if (string.Equals(childName, child.Name, StringComparison.InvariantCultureIgnoreCase))
+        //            return child;
+        //    }
+        //    return null;
+        //}
 
 		/// <summary>Gets child items the current user is allowed to access.</summary>
 		/// <returns>A list of content items.</returns>

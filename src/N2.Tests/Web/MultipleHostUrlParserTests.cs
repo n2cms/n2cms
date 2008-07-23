@@ -14,7 +14,6 @@ namespace N2.Tests.Web
 	[TestFixture]
 	public class MultipleHostUrlParserTests : ParserTestsBase
 	{
-        protected string currentHost = "www.n2cms.com";
         MultipleSitesParser multipleParser;
 
 		class StaticSitesProvider : ISitesProvider
@@ -39,10 +38,7 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 
-            Expect.On(wrapper).Call(wrapper.Authority)
-                .Do(new Func<string>(delegate { return currentHost; })).Repeat.Any();
-
-            parser = multipleParser = CreateUrlParser();
+            multipleParser = (MultipleSitesParser)parser;
 		}
 
 		protected override IWebContext CreateWrapper(bool replay)
@@ -51,7 +47,7 @@ namespace N2.Tests.Web
 		}
 
 		Site[] sites;
-		protected MultipleSitesParser CreateUrlParser()
+		protected override  UrlParser CreateUrlParser()
 		{
 			sites = new Site[] { 
                 host.DefaultSite,

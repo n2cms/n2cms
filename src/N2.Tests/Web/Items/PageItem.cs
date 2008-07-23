@@ -8,7 +8,7 @@ namespace N2.Tests.Web
 		{
 			get
 			{
-				return "/" + Name + ".aspx";
+				return "/" + Name + Extension;
 			}
 		}
 
