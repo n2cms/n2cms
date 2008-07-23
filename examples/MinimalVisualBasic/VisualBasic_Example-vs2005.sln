@@ -1,12 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "C:\...\wwwroot\", "wwwroot", "{B5513FDD-11C6-4138-BC6C-4890D708DEA8}"
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "wwwroot\", "{B5513FDD-11C6-4138-BC6C-4890D708DEA8}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = ""
 		SccAuxPath = ""
 		SccLocalPath = ""
 		SccProvider = ""
+		TargetFramework = "2.0"
 		Debug.AspNetCompiler.VirtualPath = "/wwwroot"
 		Debug.AspNetCompiler.PhysicalPath = "wwwroot\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
@@ -22,6 +23,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "C:\...\wwwroot\", "wwwroot"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "1561"
+		VWDVirtualPath = "/"
 	EndProjectSection
 EndProject
 Global
