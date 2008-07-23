@@ -1,11 +1,30 @@
-From pre v1.4.0:
+To v.1.4.1:
+- Remove /bin/N2.Templates.Survey.dll
+- Update configuration (see example.web.config and defaults.web.config)
+	- in <configSections><section name="n2"...
+		- remove <section name="installer"...
+		- remove <section name="globalization"
+	- in <n2>...
+		- move <n2><globalizatoin... to <n2><engine><globalization...
+		- move <n2><installer... to <n2><edit><installer...
+	- in <httpModules>
+		- remove <add name="n2.installer" type="N2.Installation.InstallerModule, N2" />
+- Rename base class:
+	- N2.Web.UI.Page<T> -> ContentPage<T>
+	- N2.Web.UI.UserControl<T> -> ContentUserControl<T>
+- Recompile. Depending on your integration level this could be painless (some namespaces changed, removing explicit namespace and ctrl+. should help you find the new location)
+- Please ask about other problems in the forum
+
+
+To v1.4.0:
 - Change configuration (see example.web.config)
 	- create <configSections><section name="n2"...
 	- create <n2> section and update settings from the castle section
 	- remove <configSections><section name="castle"...
 	- remove <castle> section
 
-From pre v1.3.5:
+
+To v1.3.5:
 - Remove deprecated assemblies:
 	- N2.MediumTrust.dll
 	- N2.Templates.Security.dll
@@ -14,58 +33,11 @@ From pre v1.3.5:
 - Update nhibernate configuration remove "hibernate." from configuration keys, e.g.
 	- "hibernate.connection.provider" -> "connection.provider"
 
-From pre v1.3.2:
+
+To v1.3.2:
 
 - Remove deprecated assemblies:
 	- N2.Trashcan.dll
 	- N2.Installation.dll
 	- N2.Xml.dll
 	- N2.Edit.*.dll
-
-
-From pre v1.1:
-
-- Replace N2 files with the new ones
-	- /bin
-	- /edit
-- Update web.config
-	- change configSections (remove nhibernate and n2, add castle), like this:
-		<configSections>
-			<section name="castle" type="Castle.Windsor.Configuration.AppDomain.CastleSectionHandler, Castle.Windsor" />
-		</configSections>
-	- add a castle section, like this:
-		  <castle>
-			<properties>
-			  <!-- Required properties -->
-			  <rootItemID>1</rootItemID>
-			  <nhSettings>
-				<dictionary>
-				  <entry key="hibernate.connection.provider">NHibernate.Connection.DriverConnectionProvider</entry>
-				  <entry key="hibernate.connection.connection_string_name">LocalSqlServer</entry>
-				  <entry key="hibernate.cache.use_second_level_cache">false</entry>
-				  <!-- MS SQL 2005 settings -->
-				  <entry key="hibernate.connection.driver_class">NHibernate.Driver.SqlClientDriver</entry>
-				  <entry key="hibernate.dialect">NHibernate.Dialect.MsSql2005Dialect</entry>
-				</dictionary>
-			  </nhSettings>
-			</properties>
-
-			<!-- Include default configuration settings -->
-			<include uri="assembly://N2/Engine/n2.configuration.xml"/>
-			
-			<!-- Configuration of the services goes here, e.g. -->
-			<components>
-			  <component id="n2.typeFinder">
-				<parameters>
-				  <!--<EnsureBinFolderAssembliesLoaded>false</EnsureBinFolderAssembliesLoaded>-->
-				  <AssemblyNames>
-					<list>
-					  <item>N2.Trashcan</item>
-					</list>
-				  </AssemblyNames>
-				</parameters>
-			  </component>
-			</components>
-		  </castle>
-	- remove nhibernate and n2 sections
-- Recompile and pray
