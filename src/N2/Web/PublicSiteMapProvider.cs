@@ -33,11 +33,18 @@ namespace N2.Web
             // If the first letter of the url is a number then the rawUrl probably is
             // the key of a previously generated SiteMapNode. This is an odd behaviour 
             // of the site map provider model
-            ContentItem item = (rawUrl[0]>'0' && rawUrl[0]<='9') ?
-                Context.Persister.Get(int.Parse(rawUrl)) :
-                Context.UrlParser.Parse(rawUrl);
+            try
+            {
+                ContentItem item = (rawUrl[0] > '0' && rawUrl[0] <= '9') ?
+                    Context.Persister.Get(int.Parse(rawUrl)) :
+                    Context.UrlParser.Parse(rawUrl);
 
-            return Convert(item);
+                return Convert(item);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public override SiteMapNodeCollection GetChildNodes(SiteMapNode node)
@@ -77,7 +84,14 @@ namespace N2.Web
 
         protected override SiteMapNode GetRootNodeCore()
         {
-			return Convert(Context.UrlParser.StartPage);
+            try
+            {
+                return Convert(Context.UrlParser.StartPage);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
