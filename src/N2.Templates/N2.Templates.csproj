@@ -72,9 +72,9 @@
     <Compile Include="SEO\SEOPageModifier.cs" />
     <Compile Include="SEO\TitleAndMetaTagApplyer.cs" />
     <Compile Include="Services\NotFoundHandler.cs" />
-    <Compile Include="Services\NotFoundInitializer.cs" />
     <Compile Include="Services\FakeMailSender.cs" />
     <Compile Include="Services\DynamicMailSender.cs" />
+    <Compile Include="Services\PermissionDeniedHandler.cs" />
     <Compile Include="Syndication\IFeed.cs" />
     <Compile Include="Syndication\ISyndicatable.cs" />
     <Compile Include="Syndication\RssWriter.cs" />

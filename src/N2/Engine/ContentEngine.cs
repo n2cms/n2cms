@@ -31,6 +31,7 @@ using N2.Plugin;
 using N2.Security;
 using N2.Web;
 using N2.Configuration;
+using Castle.Core;
 
 namespace N2.Engine
 {
@@ -220,7 +221,34 @@ namespace N2.Engine
 		{
 			IPluginBootstrapper invoker = Container.Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
+
+            StartComponents(container.Kernel);
 		}
+
+        private static void StartComponents(IKernel kernel)
+        {
+            INamingSubSystem naming = kernel.GetSubSystem(SubSystemConstants.NamingKey) as INamingSubSystem;
+            foreach (GraphNode node in kernel.GraphNodes)
+            {
+                ComponentModel model = node as ComponentModel;
+                if (model != null)
+                {
+                    if (typeof(IStartable).IsAssignableFrom(model.Implementation) || typeof(IAutoStart).IsAssignableFrom(model.Implementation))
+                    {
+                        IHandler h = naming.GetHandler(model.Name);
+                        if (h.CurrentState == HandlerState.Valid)
+                        {
+                            object component = kernel[model.Name];
+                            if (component is IStartable)
+                                (component as IStartable).Start();
+                            else if (component is IAutoStart)
+                                (component as IAutoStart).Start();
+                        }
+                    }
+                }
+            }
+            kernel.AddFacility<Castle.Facilities.Startable.StartableFacility>();
+        }
 
 		#endregion
 

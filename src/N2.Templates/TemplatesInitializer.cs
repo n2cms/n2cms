@@ -5,6 +5,7 @@ using System;
 using N2.Templates.Configuration;
 using N2.Web.Mail;
 using System.Configuration;
+using N2.Templates.Services;
 
 namespace N2.Templates
 {
@@ -23,6 +24,8 @@ namespace N2.Templates
             {
                 engine.AddComponent("n2.templtaes.fakeMailSender", typeof(IMailSender), typeof(Services.FakeMailSender));
             }
-		}
+            engine.AddComponent("n2.templates.notFoundHandler", typeof(NotFoundHandler));
+            engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
+        }
 	}
 }

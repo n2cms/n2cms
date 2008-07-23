@@ -36,6 +36,7 @@ namespace N2.Web
             mailTo = config.Errors.MailTo;
             mailFrom = config.Errors.MailFrom;
             maxErrorReportsPerHour = config.Errors.MaxErrorReportsPerHour;
+            mailSender = new StaticMailSender();
         }
 
         public ErrorHandler(EngineSection config, IMailSender mailSender)

@@ -65,13 +65,13 @@ namespace N2.Web.UI
             }
             parameters.Enabled = enabled;
             parameters.Location = OutputCacheLocation.Server;
-            //parameters.NoStore = outputCacheParameters.NoStore;
-            //parameters.SqlDependency = outputCacheParameters.SqlDependency;
-            //parameters.VaryByContentEncoding = outputCacheParameters.VaryByContentEncoding;
-            //parameters.VaryByControl = parameters.VaryByControl;
-            //parameters.VaryByCustom = parameters.VaryByCustom;
-            //parameters.VaryByHeader = parameters.VaryByHeader;
-            parameters.VaryByParam = parameters.VaryByParam;
+            //parameters.NoStore = NoStore;
+            //parameters.SqlDependency = SqlDependency;
+            //parameters.VaryByContentEncoding = VaryByContentEncoding;
+            //parameters.VaryByControl = VaryByControl;
+            //parameters.VaryByCustom = VaryByCustom;
+            //parameters.VaryByHeader = VaryByHeader;
+            parameters.VaryByParam = varyByParam;
             return parameters;
         }
     }

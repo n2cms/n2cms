@@ -74,5 +74,5 @@ namespace N2.Web
 		/// <summary>Assigns a rewrite path.</summary>
 		/// <param name="path">The path to the template that will handle the request.</param>
 		void RewritePath(string path);
-	}
+    }
 }

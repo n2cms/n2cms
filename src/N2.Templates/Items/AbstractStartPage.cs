@@ -24,18 +24,25 @@ namespace N2.Templates.Items
 		public abstract string Theme { get; set; }
 		public abstract string Layout { get; set; }
 
-        [EditableLink("Not Found Page (404)", 78, ContainerName = MiscArea, HelpText = "Display this page when the requested URL isn't found")]
+        [EditableLink("Not Found Page (404)", 77, ContainerName = MiscArea, HelpText = "Display this page when the requested URL isn't found")]
 		public virtual ContentItem NotFoundPage
 		{
 			get { return (ContentItem)GetDetail("NotFoundPage"); }
 			set { SetDetail("NotFoundPage", value); }
         }
 
-        [EditableLink("Error Page (500)", 79, ContainerName = MiscArea, HelpText = "Display this page when an unhandled exception occurs.")]
+        [EditableLink("Error Page (500)", 78, ContainerName = MiscArea, HelpText = "Display this page when an unhandled exception occurs.")]
         public virtual ContentItem ErrorPage
         {
             get { return (ContentItem)GetDetail("ErrorPage"); }
             set { SetDetail("ErrorPage", value); }
+        }
+
+        [EditableLink("Login Page", 79, ContainerName = MiscArea, HelpText = "Page to display when authorization to a page fails.")]
+        public virtual ContentItem LoginPage
+        {
+            get { return (ContentItem)GetDetail("LoginPage"); }
+            set { SetDetail("LoginPage", value); }
         }
 
 		[EditableCheckBox("Show Breadcrumb", 110, ContainerName = LayoutArea)]

@@ -50,6 +50,8 @@
 	- moved installer configuraiton -> <edit><installer... (update web.config)
 	- utility.toabsolute -> web.url.toabsolute
 - can now explicitly set roles + improved usability (thanks to Geert van Horrik)
+- components are now started after plugin initialization
+- added login page property on start page (templates)
 
 1.4
 - templates
