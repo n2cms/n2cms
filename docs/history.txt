@@ -52,6 +52,7 @@
 - can now explicitly set roles + improved usability (thanks to Geert van Horrik)
 - components are now started after plugin initialization
 - added login page property on start page (templates)
+- deprecated installermodule
 
 1.4
 - templates

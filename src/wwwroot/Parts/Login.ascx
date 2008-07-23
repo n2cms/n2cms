@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Login.ascx.cs" Inherits="N2.Templates.UI.Parts.Login" %>
 <n2:H4 Text="<%$ CurrentItem: Title %>" Visible="<%$ HasValue: Title %>" runat="server" />
-<n2:Box runat="server">
+<n2:Box runat="server" DefaultButton="LoginButton">
 	<asp:LoginStatus ID="Status" runat="server" LogoutText="<%$ CurrentItem: LogoutText %>" LoginText="" />
 	<asp:Login ID="LoginBox" runat="server" FailureText="<%$ CurrentItem: FailureText %>" VisibleWhenLoggedIn="false">
 		<LayoutTemplate>

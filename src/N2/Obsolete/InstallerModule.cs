@@ -21,6 +21,7 @@ namespace N2.Installation
     /// problem connecting to the database. Therefore it's advisable to remove
     /// this http module once the site has been installed.
     /// </summary>
+    [Obsolete]
 	public class InstallerModule : IHttpModule
 	{
         private EditSection config;

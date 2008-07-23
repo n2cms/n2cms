@@ -320,18 +320,17 @@
     <Compile Include="Installation\DatabaseStatus.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Installation\InstallationChecker.cs" />
     <Compile Include="Installation\InstallationManager.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Installation\InstallerHint.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Installation\InstallerModule.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Installation\SqlServerType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Obsolete\InstallerModule.cs" />
     <Compile Include="Obsolete\InstallerSection.cs" />
     <Compile Include="Obsolete\Page.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
