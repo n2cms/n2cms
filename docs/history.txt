@@ -54,6 +54,7 @@
 - added login page property on start page (templates)
 - deprecated installermodule
 - moved layout declaration to web.config
+- IIS7 configuration
 
 1.4
 - templates
