@@ -127,7 +127,7 @@
 
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(DeployFolder)\Core\Bin" />
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(DeployFolder)\Core\Edit\%(RecursiveDir)" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Deploy-CoreFolder)" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Core" />
   </Target>
 
 
