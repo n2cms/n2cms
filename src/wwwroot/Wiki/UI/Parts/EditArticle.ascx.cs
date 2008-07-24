@@ -31,6 +31,13 @@ namespace N2.Templates.Wiki.UI.Parts
                 txtText.Text = CurrentPage.Text;
             }
             phSubmit.Visible = cvAuthorized.IsValid = IsAuthorized;
+            if (!string.IsNullOrEmpty(Text))
+            {
+                WikiParser parser = Engine.Resolve<WikiParser>();
+                WikiRenderer renderer = Engine.Resolve<WikiRenderer>();
+                renderer.AddTo(parser.Parse(Text), pnlMessage, CurrentPage.WikiRoot, CurrentPage);
+
+            }
             base.OnInit(e);
         }
 

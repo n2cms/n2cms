@@ -30,6 +30,7 @@ namespace N2.Web.UI.WebControls
 		private readonly LinkButton btnPublish = new LinkButton();
 		private readonly HyperLink hlCancel = new HyperLink();
 		private readonly LinkButton btnCancelVersion = new LinkButton();
+        private bool displayQuickEdit = false;
 
 		#endregion
 
@@ -124,7 +125,13 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return (string) (ViewState["SaveText"] ?? "Save"); }
 			set { ViewState["SaveText"] = value; }
-		}
+        }
+
+        public bool DisplayQuickEdit
+        {
+            get { return displayQuickEdit; }
+            set { displayQuickEdit = value; }
+        }
 
 		/// <summary>Gets or sets the cancel button text.</summary>
 		public string CancelText
@@ -138,7 +145,6 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
 				return hlQuickEdit;
 			}
 		}
@@ -148,7 +154,6 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
 				return hlEditMode;
 			}
 		}
@@ -158,7 +163,6 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
 				return hlNew;
 			}
 		}
@@ -168,7 +172,6 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
 				return hlEdit;
 			}
 		}
@@ -178,7 +181,6 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
 				return hlDelete;
 			}
 		}
@@ -186,13 +188,19 @@ namespace N2.Web.UI.WebControls
 		[NotifyParentProperty(true)]
 		public LinkButton SaveButton
 		{
-			get{return btnSave;}
+            get
+            {
+                return btnSave;
+            }
 		}
 
 		[NotifyParentProperty(true)]
 		public HyperLink CancelButton
 		{
-			get{return hlCancel;}
+            get
+            {
+                return hlCancel;
+            }
 		}
 
 		public virtual IEngine Engine
@@ -344,7 +352,7 @@ namespace N2.Web.UI.WebControls
 			hlQuickEdit.NavigateUrl = GetQuickEditUrl("true");
 			hlQuickEdit.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/png/script_edit.png"), QuickEditText);
 			hlQuickEdit.CssClass = "quickEdit";
-            hlQuickEdit.Visible = false;
+            hlQuickEdit.Visible = DisplayQuickEdit;
 			Controls.Add(hlQuickEdit);
 		}
 

@@ -37,18 +37,18 @@ namespace N2.Templates.Wiki.Items
         public virtual string SubmitText
         {
             get { return (string)(GetDetail("SubmitText") ?? DefaultSubmitText); }
-            set { SetDetail("SubmitText", value, DefaultHistoryText); }
+            set { SetDetail("SubmitText", value, DefaultSubmitText); }
         }
 
-        public static string DefaultModifyText = "<p>Please write the updated content for '{{actionparameter}}'.</p>";
+        public static string DefaultModifyText = "<p>Please write the updated content for '{{pagename}}'.</p>";
         [WikiText("Modify Text", 110, ContainerName = Wiki.WikiTab)]
         public virtual string ModifyText
         {
             get { return (string)(GetDetail("ModifyText") ?? DefaultModifyText); }
-            set { SetDetail("ModifyText", value, DefaultHistoryText); }
+            set { SetDetail("ModifyText", value, DefaultModifyText); }
         }
 
-        public static string DefaultHistoryText = "<p>These are the current and past revisions of '{{linkfromparameter}}'.</p>";
+        public static string DefaultHistoryText = "<p>These are the current and past revisions of '{{pagename}}'.</p>";
         [WikiText("History Text", 110, ContainerName = Wiki.WikiTab)]
         public virtual string HistoryText
         {

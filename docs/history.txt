@@ -1,3 +1,6 @@
+- included jet driver
+- exception when accessing control panel components
+
 1.4.1
 - error handling with email option
 - format option on display property

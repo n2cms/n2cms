@@ -298,10 +298,13 @@ namespace N2.Engine
 		{
 			Container.Kernel.AddComponentInstance(key, serviceType, instance);
 		}
-
+    
         public T AddComponentInstance<T>(T instance) where T : class
         {
-            AddComponentInstance(typeof(T).Name, typeof(T), instance);
+            if (instance != null)
+            {
+                AddComponentInstance(typeof(T).Name, typeof(T), instance);
+            }
             return instance as T;
         }
 

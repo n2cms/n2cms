@@ -41,6 +41,15 @@ namespace N2.Templates.Wiki.UI.Parts {
         protected global::N2.Web.UI.WebControls.H1 h1;
         
         /// <summary>
+        /// pnlMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlMessage;
+        
+        /// <summary>
         /// txtText control.
         /// </summary>
         /// <remarks>

@@ -25,7 +25,7 @@ namespace N2.Templates.Wiki
             PlaceHolder ph = new PlaceHolder();
             container.Controls.Add(ph);
 
-            renderer.AddTo(parser.Parse((string)item[detailName]), container, (item as IArticle).WikiRoot, item);
+            renderer.AddTo(parser.Parse((string)item[detailName]), ph, (item as IArticle).WikiRoot, item);
             
             return ph;
         }
