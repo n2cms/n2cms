@@ -2,10 +2,11 @@ using Castle.Core;
 using N2.Templates.Items;
 using N2.Templates.Web;
 using N2.Templates.Web.UI;
+using N2.Plugin;
 
 namespace N2.Templates.SEO
 {
-	public class SEOPageModifier : IPageModifier, IStartable
+	public class SEOPageModifier : IPageModifier, IStartable, IAutoStart
 	{
 		private readonly IPageModifierContainer modifierContainer;
 

@@ -1,4 +1,5 @@
 - wiki
+	- show only articles in search results
 	- categories
 	- comments
 	- nested articles
