@@ -66,6 +66,7 @@ namespace N2.Persistence
 		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor, bool includeSelf)
 		{
 			if (initialItem == null) throw new ArgumentNullException("initialItem");
+            if (initialItem.VersionOf != null) initialItem = initialItem.VersionOf;
 
 			ContentItem item;
 			if(includeSelf)
@@ -141,6 +142,8 @@ namespace N2.Persistence
 		/// <returns>An enumeration of all children of an item.</returns>
 		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item)
 		{
+            if (item.VersionOf != null) item = item.VersionOf;
+
 			foreach (ContentItem child in item.Children)
 			{
 				yield return child;

@@ -1,5 +1,7 @@
 - included jet driver
 - exception when accessing control panel components
+- fixed problem previewing versions
+- removed test detail on text page
 
 1.4.1
 - error handling with email option
