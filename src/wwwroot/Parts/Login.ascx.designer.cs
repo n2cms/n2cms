@@ -14,6 +14,15 @@ namespace N2.Templates.UI.Parts {
     public partial class Login {
         
         /// <summary>
+        /// boxLogin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Templates.Web.UI.WebControls.Box boxLogin;
+        
+        /// <summary>
         /// Status control.
         /// </summary>
         /// <remarks>
