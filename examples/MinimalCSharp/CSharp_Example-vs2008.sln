@@ -23,6 +23,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "wwwroot\", "{B1D
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "1547"
+		VWDVirtualPath = "/"
 	EndProjectSection
 EndProject
 Global

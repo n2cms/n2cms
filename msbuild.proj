@@ -269,10 +269,10 @@
     <MSBuild Projects="$(Examples-PartsFolder)\Parts_Example.sln"/>
   </Target>
   <Target Name="Example-SimpleCSharp-Build" DependsOnTargets="Examples-CSharp-PrepareDependencies">
-    <MSBuild Projects="$(Examples-CSharp)\CSharp_Example.sln"/>
+    <MSBuild Projects="$(Examples-CSharp)\CSharp_Example-vs2008.sln"/>
   </Target>
   <Target Name="Example-SimpleVisualBasic-Build" DependsOnTargets="Examples-VisualBasic-PrepareDependencies">
-    <MSBuild Projects="$(Examples-VisualBasic)\VisualBasic_Example.sln"/>
+    <MSBuild Projects="$(Examples-VisualBasic)\VisualBasic_Example-vs2008.sln"/>
   </Target>
   <Target Name="Examples-TemplatesSite-Build" DependsOnTargets="Examples-TemplatesSite-PrepareDependencies">
     <MSBuild Projects="$(Examples-TemplatesSiteFolder)\MyProject-vs2008.sln" />

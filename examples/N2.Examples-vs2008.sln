@@ -93,7 +93,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "MinimalVisualBas
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "1561"
+		VWDPort = "54033"
 		VWDVirtualPath = "/"
 	EndProjectSection
 EndProject
