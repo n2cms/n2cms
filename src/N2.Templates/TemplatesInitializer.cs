@@ -24,7 +24,7 @@ namespace N2.Templates
             {
                 engine.AddComponent("n2.templates.fakeMailSender", typeof(IMailSender), typeof(Services.FakeMailSender));
             }
-            engine.AddComponent("n2.templates.notFoundHandler", typeof(NotFoundHandler));
+            //engine.AddComponent("n2.templates.notFoundHandler", typeof(NotFoundHandler));
             engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
         }
 	}

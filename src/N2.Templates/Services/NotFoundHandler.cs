@@ -20,18 +20,18 @@ namespace N2.Templates.Services
 	{
 		IUrlParser parser;
 		
-		public NotFoundHandler(IUrlParser parser)
+		public NotFoundHandler(IUrlParser parser, IWebContext context)
 		{
 			this.parser = parser;
 		}
 
 		void parser_PageNotFound(object sender, PageNotFoundEventArgs e)
 		{
-			AbstractStartPage startPage = parser.StartPage as AbstractStartPage;
-			if (startPage != null && startPage.NotFoundPage != null && !e.Url.StartsWith("edit/", StringComparison.InvariantCultureIgnoreCase))
-			{
-				e.AffectedItem = startPage.NotFoundPage;
-			}
+            AbstractStartPage startPage = parser.StartPage as AbstractStartPage;
+            if (startPage != null && startPage.NotFoundPage != null && !e.Url.StartsWith("edit/", StringComparison.InvariantCultureIgnoreCase))
+            {
+                e.AffectedItem = startPage.NotFoundPage;
+            }
 		}
 
 		public void Start()
