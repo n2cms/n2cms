@@ -87,7 +87,7 @@ namespace N2.Edit.Install
 					LoadRootTypes(ddlRoot, preferredRoots, "[root node]");
 					LoadStartTypes(ddlStartPage, preferredStartPages, "[start node]");
 					LoadRootTypes(ddlRootAndStart, preferredRootAndStartPages, "[root and start node]");
-					LoadExistingExports(rblExports);
+					LoadExistingExports();
 				}
 				catch (Exception ex)
 				{
@@ -102,16 +102,18 @@ namespace N2.Edit.Install
             errorLabel.Text = FormatException(Server.GetLastError());
         }
 
-		private void LoadExistingExports(RadioButtonList rbl)
+		private void LoadExistingExports()
 		{
 			string dir = Server.MapPath("~/App_Data");
 			if (Directory.Exists(dir))
 			{
 				foreach (string file in Directory.GetFiles(dir, "*.gz"))
 				{
-					rbl.Items.Add(new ListItem(Path.GetFileName(file)));
+					rblExports.Items.Add(new ListItem(Path.GetFileName(file)));
 				}
 			}
+
+            btnInsertExport.Enabled = rblExports.Items.Count > 0;
 		}
 
 		private static bool Is(InstallerHint flags, InstallerHint expected)

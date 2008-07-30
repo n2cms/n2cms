@@ -30,12 +30,19 @@ namespace N2.Templates.UI.Items
 			set { base.SetDetail("RedirectUrl", value); }
 		}
 
-		[N2.Details.EditableCheckBox("301 (permanent) redirect", 100, ContainerName = Tabs.Advanced)]
+		[EditableCheckBox("301 (permanent) redirect", 100, ContainerName = Tabs.Advanced)]
 		public virtual bool Redirect301
 		{
 			get { return (bool)(GetDetail("Redirect301") ?? false); }
 			set { SetDetail("Redirect301", value, false); }
-		}
+        }
+
+        [EditableCheckBox("Visible", 40, ContainerName = Tabs.Advanced)]
+        public override bool Visible
+        {
+            get { return base.Visible; }
+            set { base.Visible = value; }
+        }
 
 		public override string TemplateUrl
 		{
