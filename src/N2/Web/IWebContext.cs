@@ -9,7 +9,7 @@ namespace N2.Web
 	/// <summary>
 	/// A mockable wrapper for operations on the http context.
 	/// </summary>
-	public interface IWebContext
+    public interface IWebContext : IClosable
 	{
 		/// <summary>Gets wether there is a web context availabe.</summary>
 		bool IsWeb { get; }

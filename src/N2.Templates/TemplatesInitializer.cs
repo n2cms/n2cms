@@ -28,4 +28,14 @@ namespace N2.Templates
             engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
         }
 	}
+
+    [N2.Plugin.Scheduling.ScheduleExecution(10)]
+    public class Test : N2.Plugin.Scheduling.ScheduledAction
+    {
+        public override void Execute()
+        {
+            var count = N2.Context.Current.Resolve<N2.Web.IWebContext>().RequestItems.Count;
+            System.Diagnostics.Debug.WriteLine(count);
+        }
+    }
 }

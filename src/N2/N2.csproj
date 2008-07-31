@@ -342,6 +342,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Persistence\IActiveContent.cs" />
+    <Compile Include="Persistence\NH\SessionContext.cs" />
     <Compile Include="Plugin\IPlugin.cs" />
     <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
     <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
@@ -411,11 +412,13 @@
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
+    <Compile Include="Web\AdaptiveContext.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlHelper.cs" />
+    <Compile Include="Web\IEndable.cs" />
     <Compile Include="Web\IErrorHandler.cs" />
     <Compile Include="Web\IHost.cs" />
     <Compile Include="Web\IIS5WebContext.cs" />
@@ -573,6 +576,7 @@
     <Compile Include="Web\UI\WebControls\TreeNode.cs" />
     <Compile Include="Web\UI\WebControls\Ul.cs" />
     <Compile Include="Web\Url.cs" />
+    <Compile Include="Web\WebRequestContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\TabPanel.css" />

@@ -54,10 +54,10 @@ namespace N2.Engine.MediumTrust
             if (engineConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/engine configuration section. Please check the web configuration.");
 
             Url.DefaultExtension = hostConfiguration.Web.Extension;
-            if (hostConfiguration.Web.IsWeb)
-                webContext = new RequestContext();
-            else
+            if (!hostConfiguration.Web.IsWeb)
                 webContext = new ThreadContext();
+            else
+                webContext = new AdaptiveContext();
     
             DatabaseSection databaseConfiguration = (DatabaseSection)AddConfigurationSection("n2/database");
             AddConfigurationSection("n2/edit");
@@ -98,7 +98,7 @@ namespace N2.Engine.MediumTrust
             IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
             rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext));
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler());
-            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, sessionProvider, webContext, errorHandler));
+            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, webContext, errorHandler));
             ItemXmlReader xmlReader = AddComponentInstance<ItemXmlReader>(new ItemXmlReader(definitions));
             Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
             ItemXmlWriter xmlWriter = AddComponentInstance<ItemXmlWriter>(new ItemXmlWriter(definitions, urlParser));

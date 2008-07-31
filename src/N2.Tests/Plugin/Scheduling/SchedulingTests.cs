@@ -40,9 +40,12 @@ namespace N2.Tests.Plugin.Scheduling
             errorHandler = mocks.DynamicMock<IErrorHandler>();
             mocks.Replay(errorHandler);
 
+            var ctx = mocks.DynamicMock<IWebContext>();
+            mocks.Replay(ctx);
+
             IPluginFinder plugins = new PluginFinder(types);
 
-            scheduler = new Scheduler(plugins, heart, errorHandler);
+            scheduler = new Scheduler(plugins, heart, ctx, errorHandler);
             scheduler.QueueUserWorkItem = delegate(WaitCallback function)
             {
                 function(null);
@@ -131,7 +134,7 @@ namespace N2.Tests.Plugin.Scheduling
             RepeatAction repeat = SelectThe<RepeatAction>();
 
             mocks.BackToRecord(errorHandler);
-            errorHandler.Handle(ex);
+            errorHandler.Notify(ex);
             mocks.ReplayAll();
 
             raiser.Raise(null, new EventArgs());

@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Diagnostics;
 using System.Collections.Specialized;
+using System;
 
 namespace N2.Web
 {
@@ -10,35 +11,16 @@ namespace N2.Web
 	/// A wrapper for web methods and properties available through 
 	/// <see cref="System.Web.HttpContext.Current"/>.
 	/// </summary>
-	public class RequestContext : IWebContext
+	public abstract class RequestContext : IWebContext
 	{
-        public virtual HttpContext CurrentHttpContext
-		{
-			get 
-			{
-				if (HttpContext.Current == null)
-					throw new N2Exception("Tried to retrieve HttpContext.Current but it's null. This may happen when working outside a request or when doing stuff after the context has been recycled.");
-				return HttpContext.Current; 
-			}
-		}
-
 		/// <summary>Gets wether there is a web context availabe.</summary>
 		public virtual bool IsWeb
 		{
             get { return HttpContext.Current != null; }
 		}
 
-		/// <summary>Gets a dictionary of request scoped items.</summary>
-		public virtual IDictionary RequestItems
-		{
-			get { return IsWeb ? CurrentHttpContext.Items : null; }
-		}
-
-		/// <summary>The handler associated with this request.</summary>
-		public virtual IHttpHandler Handler 
-		{
-			get { return CurrentHttpContext.Handler; }
-		}
+        public abstract IDictionary RequestItems { get; }
+        public abstract IHttpHandler Handler { get; }
 
 		/// <summary>Gets the current host name.</summary>
 		public virtual string Authority
@@ -85,34 +67,11 @@ namespace N2.Web
 			get { return Request.PhysicalPath; }
 		}
 
-		/// <summary>Gets the current user in the web execution context.</summary>
-		public virtual IPrincipal User
-		{
-			get { return CurrentHttpContext.User; }
-		}
-
 		/// <summary>A page instance stored in the request context.</summary>
 		public ContentItem CurrentPage
 		{
 			get { return RequestItems["CurrentPage"] as ContentItem; }
 			set { RequestItems["CurrentPage"] = value; }
-		}
-
-		/// <summary>The current request object.</summary>
-		public virtual HttpRequest Request
-		{
-			get { return CurrentHttpContext.Request; }
-		}
-
-		public virtual HttpCookieCollection Cookies
-		{
-			get { return Request.Cookies; }
-		}
-
-		/// <summary>The current request object.</summary>
-		public virtual HttpResponse Response
-		{
-			get { return CurrentHttpContext.Response; }
 		}
 
 		/// <summary>Converts a virtual url to an absolute url.</summary>
@@ -136,17 +95,33 @@ namespace N2.Web
 		/// <summary>Maps a virtual path to a physical disk path.</summary>
 		/// <param name="path">The path to map. E.g. "~/bin"</param>
 		/// <returns>The physical path. E.g. "c:\inetpub\wwwroot\bin"</returns>
-		public virtual string MapPath(string path)
-		{
-			return CurrentHttpContext.Server.MapPath(path);
-		}
+        public abstract string MapPath(string path);
 
 		/// <summary>Assigns a rewrite path.</summary>
 		/// <param name="path">The path to the template that will handle the request.</param>
-		public virtual void RewritePath(string path)
-		{
-			Debug.WriteLine("Rewriting '" + RawUrl + "' to '" + path + "'");
-			CurrentHttpContext.RewritePath(path, false);
-		}
+        public abstract void RewritePath(string path);
+
+        public abstract IPrincipal User { get; }
+
+        public abstract HttpRequest Request { get; }
+
+        public abstract HttpResponse Response { get; }
+
+        public abstract HttpCookieCollection Cookies { get; }
+
+        public virtual void Dispose()
+        {
+            string[] keys = new string[RequestItems.Keys.Count];
+            RequestItems.Keys.CopyTo(keys, 0);
+
+            foreach (string key in keys)
+            {
+                IClosable value = RequestItems[key] as IClosable;
+                if (value != null)
+                {
+                    (value as IClosable).Dispose();
+                }
+            }
+        }
     }
 }

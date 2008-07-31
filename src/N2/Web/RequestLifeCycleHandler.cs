@@ -14,7 +14,6 @@ namespace N2.Web
 	{
 		private readonly IUrlRewriter rewriter;
 		private readonly ISecurityEnforcer security;
-		private readonly ISessionProvider sessionProvider;
 		private readonly IWebContext webContext;
         private readonly IErrorHandler errorHandler;
 
@@ -23,11 +22,10 @@ namespace N2.Web
 		/// <param name="security">The class that can authorize a request.</param>
 		/// <param name="sessionProvider">The class that provides NHibernate sessions.</param>
 		/// <param name="webContext">The web context wrapper.</param>
-        public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, ISessionProvider sessionProvider, IWebContext webContext, IErrorHandler errorHandler)
+        public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler)
 		{
 			this.rewriter = rewriter;
 			this.security = security;
-			this.sessionProvider = sessionProvider;
 			this.webContext = webContext;
             this.errorHandler = errorHandler;
 		}
@@ -67,16 +65,16 @@ namespace N2.Web
 			security.AuthorizeRequest();
 		}
 
-		protected virtual void Application_EndRequest(object sender, EventArgs e)
-		{
-			sessionProvider.Dispose();
+        protected virtual void Application_EndRequest(object sender, EventArgs e)
+        {
+            webContext.Dispose();
         }
 
         protected virtual void Application_Error(object sender, EventArgs e)
         {
             HttpApplication application = sender as HttpApplication;
             if(application != null)
-                errorHandler.Handle(application.Server.GetLastError());
+                errorHandler.Notify(application.Server.GetLastError());
         }
 	}
 }

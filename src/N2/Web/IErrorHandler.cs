@@ -3,6 +3,6 @@ namespace N2.Web
 {
     public interface IErrorHandler
     {
-        void Handle(Exception ex);
+        void Notify(Exception ex);
     }
 }

@@ -17,14 +17,16 @@ namespace N2.Plugin.Scheduling
     {
         IList<ScheduledAction> actions;
         IHeart heart;
+        Web.IWebContext context;
         IErrorHandler errorHandler;
 
         public Engine.Function<WaitCallback, bool> QueueUserWorkItem = ThreadPool.QueueUserWorkItem;
 
-        public Scheduler(IPluginFinder plugins, IHeart heart, IErrorHandler errorHandler)
+        public Scheduler(IPluginFinder plugins, IHeart heart, Web.IWebContext context, IErrorHandler errorHandler)
         {
             actions = new List<ScheduledAction>(InstantiateActions(plugins));
             this.heart = heart;
+            this.context = context;
             this.errorHandler = errorHandler;
         }
 
@@ -76,7 +78,10 @@ namespace N2.Plugin.Scheduling
                         }
                         catch (Exception ex)
                         {
-                            errorHandler.Handle(ex);
+                            errorHandler.Notify(ex);
+                        }
+                        finally
+                        {
                         }
                         action.LastExecuted = Utility.CurrentTime();
                         action.IsExecuting = false;

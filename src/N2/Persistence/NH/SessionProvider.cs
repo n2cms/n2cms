@@ -42,11 +42,15 @@ namespace N2.Persistence.NH
 
 		public virtual ISession Session
 		{
-			get { return webContext.RequestItems[RequestItemsKey] as ISession; }
-			set { webContext.RequestItems[RequestItemsKey] = value; }
+			get 
+            {
+                SessionContext ctx = webContext.RequestItems[RequestItemsKey] as SessionContext;
+                if (ctx != null)
+                    return ctx.Session;
+                return null;
+            }
+			set { webContext.RequestItems[RequestItemsKey] = new SessionContext(this, value); }
 		}
-
-		#region ISessionProvider Members
 
 		public virtual ISession GetOpenedSession()
 		{
@@ -69,8 +73,6 @@ namespace N2.Persistence.NH
 		{
 			EndSession(false);
 		}
-
-		#endregion
 
 		protected virtual ISession OpenSessionWithOptionalInterceptor()
 		{

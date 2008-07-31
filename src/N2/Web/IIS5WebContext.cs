@@ -23,7 +23,7 @@ namespace N2.Web
 	/// &lt;/castle&gt;
 	/// ...
 	/// </example>
-	public class IIS5RequestContext : RequestContext
+	public class IIS5RequestContext : WebRequestContext
 	{
 		public IIS5RequestContext()
 		{

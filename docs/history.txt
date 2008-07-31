@@ -2,6 +2,7 @@
 - exception when accessing control panel components
 - fixed problem previewing versions
 - removed test detail on text page
+- refactored nh session disposal
 
 1.4.1
 - error handling with email option

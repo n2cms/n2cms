@@ -7,8 +7,10 @@ using System.Collections;
 
 namespace N2.Tests.Fakes
 {
-	/// <summary>A wrapper for static web methods.</summary>
-	public class FakeWebContextWrapper : N2.Web.RequestContext
+	/// <summary>
+    /// A wrapper for static web methods.
+    /// </summary>
+	public class FakeWebContextWrapper : N2.Web.ThreadContext
 	{
 		public IPrincipal currentUser = SecurityUtilities.CreatePrincipal("admin");
 

@@ -45,7 +45,7 @@ namespace N2.Web
             this.mailSender = mailSender;
         }
 
-        public void Handle(Exception ex)
+        public void Notify(Exception ex)
         {
             errorCount++;
 
