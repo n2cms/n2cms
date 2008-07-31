@@ -43,14 +43,5 @@ namespace N2.Templates.Services
 		{
 			parser.PageNotFound -= parser_PageNotFound;
 		}
-
-        #region IAutoStart Members
-
-        void IAutoStart.Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }
