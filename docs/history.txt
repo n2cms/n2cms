@@ -3,6 +3,7 @@
 - fixed problem previewing versions
 - removed test detail on text page
 - refactored nh session disposal
+- database support for scheduler
 
 1.4.1
 - error handling with email option

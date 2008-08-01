@@ -34,8 +34,8 @@ namespace N2.Templates
     {
         public override void Execute()
         {
-            var count = N2.Context.Current.Resolve<N2.Web.IWebContext>().RequestItems.Count;
-            System.Diagnostics.Debug.WriteLine(count);
+            var count = N2.Find.Items.All.Count();
+            System.Diagnostics.Debug.WriteLine("# items: " + count);
         }
     }
 }

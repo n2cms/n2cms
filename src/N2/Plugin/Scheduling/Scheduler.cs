@@ -20,8 +20,6 @@ namespace N2.Plugin.Scheduling
         Web.IWebContext context;
         IErrorHandler errorHandler;
 
-        public Engine.Function<WaitCallback, bool> QueueUserWorkItem = ThreadPool.QueueUserWorkItem;
-
         public Scheduler(IPluginFinder plugins, IHeart heart, Web.IWebContext context, IErrorHandler errorHandler)
         {
             actions = new List<ScheduledAction>(InstantiateActions(plugins));
@@ -50,6 +48,8 @@ namespace N2.Plugin.Scheduling
             }
         }
 
+        public Engine.Function<WaitCallback, bool> QueueUserWorkItem = ThreadPool.QueueUserWorkItem;
+
         private IEnumerable<ScheduledAction> InstantiateActions(IPluginFinder plugins)
         {
             foreach (ScheduleExecutionAttribute attr in plugins.GetPlugins<ScheduleExecutionAttribute>())
@@ -67,7 +67,7 @@ namespace N2.Plugin.Scheduling
             for (int i = 0; i < actions.Count; i++)
             {
                 ScheduledAction action = actions[i];
-                if (!action.IsExecuting && action.LastExecuted.Add(action.Interval) < Utility.CurrentTime())
+                if (action.ShouldExecute())
                 {
                     action.IsExecuting = true;
                     QueueUserWorkItem(delegate  
@@ -75,16 +75,37 @@ namespace N2.Plugin.Scheduling
                         try
                         {
                             action.Execute();
+                            action.ErrorCount = 0;
+                        }
+                        catch (Exception ex)
+                        {
+                            action.ErrorCount++;
+                            errorHandler.Notify(ex);
+                        }
+                        finally
+                        {
+                            try
+                            {
+                                IClosable closable = action as IClosable;
+                                if (closable != null)
+                                    closable.Dispose();
+                            }
+                            catch (Exception ex)
+                            {
+                                errorHandler.Notify(ex);
+                            }
+                        }
+                        action.LastExecuted = Utility.CurrentTime();
+                        action.IsExecuting = false;
+
+                        try
+                        {
+                            context.Dispose();
                         }
                         catch (Exception ex)
                         {
                             errorHandler.Notify(ex);
                         }
-                        finally
-                        {
-                        }
-                        action.LastExecuted = Utility.CurrentTime();
-                        action.IsExecuting = false;
                     });
 
                     if (action.Repeat == Repeat.Once)

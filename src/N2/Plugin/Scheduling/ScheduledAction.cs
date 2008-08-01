@@ -14,9 +14,16 @@ namespace N2.Plugin.Scheduling
         public abstract void Execute();
 
         private TimeSpan interval = new TimeSpan(0, 1, 0);
-        DateTime lastExecuted = DateTime.MinValue;
-        Repeat repeat = Repeat.Once;
-        bool isExecuting = false;
+        private DateTime? lastExecuted;
+        private Repeat repeat = Repeat.Once;
+        private bool isExecuting = false;
+        private int errorCount = 0;
+
+        public int ErrorCount
+        {
+            get { return errorCount; }
+            set { errorCount = value; }
+        }
 
         public bool IsExecuting
         {
@@ -30,7 +37,7 @@ namespace N2.Plugin.Scheduling
             set { interval = value; }
         }
 
-        public DateTime LastExecuted
+        public DateTime? LastExecuted
         {
             get { return lastExecuted; }
             set { lastExecuted = value; }
@@ -40,6 +47,11 @@ namespace N2.Plugin.Scheduling
         {
             get { return repeat; }
             set { repeat = value; }
+        }
+
+        public virtual bool ShouldExecute()
+        {
+            return !IsExecuting && (!LastExecuted.HasValue || LastExecuted.Value.Add(Interval) < Utility.CurrentTime());
         }
     }
 }

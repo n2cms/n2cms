@@ -116,15 +116,6 @@ namespace N2.Tests.Plugin.Scheduling
             }
         }
 
-        private class ThrowingAction : ScheduledAction
-        {
-            public Exception ExceptionToThrow { get; set; }
-            public override void Execute()
-            {
-                throw ExceptionToThrow;
-            }
-        }
-
         [Test]
         public void WillCatchErrors_AndContinueExecution_OfOtherActions()
         {
@@ -143,9 +134,48 @@ namespace N2.Tests.Plugin.Scheduling
             Assert.That(repeat.executions, Is.EqualTo(1));
         }
 
+        [Test]
+        public void Action_WithIClosableInterface_AreDisposed()
+        {
+            var action = new ClosableAction();
+            scheduler.Actions.Insert(0, action);
+            raiser.Raise(null, new EventArgs());
+            Assert.That(action.wasExecuted);
+            Assert.That(action.wasClosed);
+        }
+
         private T SelectThe<T>() where T: ScheduledAction
         {
             return (from a in scheduler.Actions where a.GetType() == typeof(T) select a).Single() as T;
+        }
+
+        private class ClosableAction : ScheduledAction, N2.Web.IClosable
+        {
+            public bool wasExecuted = false;
+            public bool wasClosed = false;
+
+            public override void Execute()
+            {
+                wasExecuted = true;
+            }
+
+            #region IDisposable Members
+
+            public void Dispose()
+            {
+                wasClosed = true;
+            }
+
+            #endregion
+        }
+
+        private class ThrowingAction : ScheduledAction
+        {
+            public Exception ExceptionToThrow { get; set; }
+            public override void Execute()
+            {
+                throw ExceptionToThrow;
+            }
         }
     }
 }

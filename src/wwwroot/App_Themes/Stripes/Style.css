@@ -74,9 +74,9 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 .subMenu .current > a { font-weight:bold; }
 
 /* lists */
-.list .a0 { background: #f4f8ed url(list_dark.gif) no-repeat 50% -1px; }
+.list .a0 { background: #f4f8ed; }
 .list,
-.list .a1 { background: #fff url(list_light.gif) no-repeat 50% -1px; }
+.list .a1 { background: #fff; }
 .list { padding-bottom:6px; background-position:50% 100%; }
 .list .item { padding:5px; }
 
