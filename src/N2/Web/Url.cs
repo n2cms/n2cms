@@ -12,6 +12,7 @@ namespace N2.Web
     public class Url
     {
         public const string Amp = "&";
+        private static string[] querySplitter = new string[] { "&amp;", Amp };
 
         private string scheme;
         private string authority;
@@ -27,6 +28,7 @@ namespace N2.Web
             query = other.query;
             fragment = other.fragment;
         }
+
         public Url(string scheme, string authority, string path, string query, string fragment)
         {
             this.scheme = scheme;
@@ -35,6 +37,7 @@ namespace N2.Web
             this.query = query;
             this.fragment = fragment;
         }
+
         public Url(string url)
         {
             if (url != null)
@@ -118,10 +121,36 @@ namespace N2.Web
             get { return path; }
         }
 
+        public string ApplicationRelativePath
+        {
+            get
+            {
+                string appPath = ApplicationPath;
+                if (appPath.Equals("/"))
+                    return "~" + Path;
+                else if (Path.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase))
+                    return Path.Substring(appPath.Length);
+                else
+                    return Path;
+            }
+        }
+
         /// <summary>The query string, e.g. key=value.</summary>
         public string Query
         {
             get { return query; }
+        }
+
+        public string Extension
+        {
+            get
+            {
+                int dotIndex = path.IndexOf(".");
+                if (dotIndex >= 0)
+                    return path.Substring(dotIndex);
+                else
+                    return null;
+            }
         }
 
         /// <summary>The combination of the path and the query string, e.g. /path.aspx?key=value.</summary>
@@ -218,6 +247,31 @@ namespace N2.Web
             return new Url(url);
         }
 
+        public string GetQuery(string key)
+        {
+            IDictionary<string, string> queries = GetQueries();
+            if (queries.ContainsKey(key))
+                return queries[key];
+            return null;
+        }
+
+        public IDictionary<string, string> GetQueries()
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            if (query == null)
+                return dictionary;
+
+            string[] queries = query.Split(querySplitter, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < queries.Length; i++)
+            {
+                string q = queries[i];
+                int eqIndex = q.IndexOf("=");
+                if (eqIndex >= 0)
+                    dictionary[q.Substring(0, eqIndex)] = q.Substring(eqIndex + 1);
+            }
+            return dictionary;
+        }
+
         public Url AppendQuery(string key, string value)
         {
             return AppendQuery(key + "=" + HttpUtility.UrlEncode(value));
@@ -238,35 +292,52 @@ namespace N2.Web
             return clone;
         }
 
-        public Url UpdateQuery(string key, string value)
+        public Url SetQueryParameter(string key, string value)
         {
             if (query == null)
                 return AppendQuery(key, value);
 
             Url clone = new Url(this);
-            string[] queries = query.Split(new string[] { Amp, "&amp;" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] queries = query.Split(querySplitter, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < queries.Length; i++)
             {
                 if (queries[i].StartsWith(key + "=", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    queries[i] = key + "=" + HttpUtility.UrlEncode(value);
-                    clone.query = string.Join(Amp, queries);
-                    return clone;
+                    if (value != null)
+                    {
+                        queries[i] = key + "=" + HttpUtility.UrlEncode(value);
+                        clone.query = string.Join(Amp, queries);
+                        return clone;
+                    }
+                    else
+                    {
+                        if (queries.Length == 1)
+                            clone.query = null;
+                        else if (query.Length == 2)
+                            clone.query = queries[i == 0 ? 1 : 0];
+                        else if (i == 0)
+                            clone.query = string.Join(Amp, queries, 1, queries.Length - 1);
+                        else if(i == queries.Length - 1)
+                            clone.query = string.Join(Amp, queries, 0, queries.Length - 1);
+                        else
+                            clone.query = string.Join(Amp, queries, 0, i) + Amp + string.Join(Amp, queries, i + 1, queries.Length - i - 1);
+                        return clone;
+                    }
                 }
             }
             return AppendQuery(key, value);
         }
 
-        public Url UpdateQuery(string keyValue)
+        public Url SetQueryParameter(string keyValue)
         {
             if (query == null)
                 return AppendQuery(keyValue);
 
             int eqIndex = keyValue.IndexOf('=');
             if (eqIndex >= 0)
-                return UpdateQuery(keyValue.Substring(0, eqIndex), keyValue.Substring(eqIndex + 1));
+                return SetQueryParameter(keyValue.Substring(0, eqIndex), keyValue.Substring(eqIndex + 1));
             else
-                return UpdateQuery(keyValue, string.Empty);
+                return SetQueryParameter(keyValue, string.Empty);
         }
 
         public Url SetScheme(string scheme)
@@ -324,7 +395,7 @@ namespace N2.Web
         {
             Url u = new Url(scheme, authority, path, query, fragment);
             foreach (string key in queryString.AllKeys)
-                u = u.UpdateQuery(key, queryString[key]);
+                u = u.SetQueryParameter(key, queryString[key]);
             return u;
         }
 

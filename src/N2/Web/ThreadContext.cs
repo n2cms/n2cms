@@ -6,18 +6,30 @@ using System.Collections;
 using System.Security.Principal;
 using System.IO;
 using System.Collections.Specialized;
+using System.Web;
 
 namespace N2.Web
 {
-	public class ThreadContext : RequestContext, IDisposable
-	{
+    /// <summary>
+    /// A thread local context. It's used to store the nhibernate session 
+    /// instance in situations where we don't have a request available such
+    /// as code executed by the scheduler.
+    /// </summary>
+	public class ThreadContext : IWebContext
+    {
+        private static string baseDirectory;
+        
+        [ThreadStatic]
+        private ContentItem currentPage;
 		[ThreadStatic]
 		private static IDictionary items;
+		[ThreadStatic]
+        private Url localUrl = new Url("/");
         [ThreadStatic]
-        private static NameValueCollection queryString;
-		static string baseDirectory;
+        private Url hostUrl = new Url("http://localhost");
 
-		static ThreadContext()
+        
+        static ThreadContext()
 		{
 			baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			int binIndex = baseDirectory.IndexOf("\\bin\\");
@@ -27,60 +39,95 @@ namespace N2.Web
 				baseDirectory = baseDirectory.Substring(0, baseDirectory.Length - 4);
         }
 
-        public override System.Web.IHttpHandler Handler
-        {
-            get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
-        }
 
-		public override IDictionary RequestItems
+		public virtual IDictionary RequestItems
 		{
             get { return items ?? (items = new Hashtable()); }
 		}
 
-		public override NameValueCollection QueryString
-		{
-			get { return queryString ?? (queryString = new NameValueCollection()); }
-		}
-
-		public override IPrincipal User
+		public virtual IPrincipal User
 		{
 			get { return Thread.CurrentPrincipal; }
 		}
 
-		public override string MapPath(string path)
-		{
-			path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
-			return Path.Combine(baseDirectory, path);
-		}
+        public bool IsWeb
+        {
+            get { return false; }
+        }
 
-        public override System.Web.HttpRequest Request
+        public ContentItem CurrentPage
+        {
+            get { return currentPage; }
+            set { currentPage = value; }
+        }
+
+        public virtual void Dispose()
+        {
+            string[] keys = new string[RequestItems.Keys.Count];
+            RequestItems.Keys.CopyTo(keys, 0);
+
+            foreach (string key in keys)
+            {
+                IClosable value = RequestItems[key] as IClosable;
+                if (value != null)
+                {
+                    (value as IClosable).Dispose();
+                }
+            }
+            items = null;
+        }
+
+        public virtual Url LocalUrl
+        {
+            get { return localUrl; }
+            set { localUrl = value; }
+        }
+        
+        public virtual Url HostUrl
+        {
+            get { return hostUrl; }
+            set { hostUrl = value; }
+        }
+
+        public virtual string MapPath(string path)
+        {
+            path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
+            return Path.Combine(baseDirectory, path);
+        }
+
+        public virtual IHttpHandler Handler
         {
             get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
         }
 
-        public override System.Web.HttpResponse Response
+        public virtual HttpRequest Request
         {
             get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
         }
 
-        public override System.Web.HttpCookieCollection Cookies
+        public virtual HttpResponse Response
         {
             get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
         }
 
-        public override void RewritePath(string path)
+        public virtual string PhysicalPath
+        {
+            get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
+        }
+
+        public virtual void RewritePath(string path)
         {
             throw new NotSupportedException("In thread context. No handler when not running in http web context.");
         }
 
-        #region IDisposable Members
-
-        public void Dispose()
+        public virtual string ToAbsolute(string virtualPath)
         {
-            items = null;
-            queryString = null;
+            throw new NotSupportedException("In thread context. No handler when not running in http web context.");
         }
 
-        #endregion
+        public virtual string ToAppRelative(string virtualPath)
+        {
+            throw new NotSupportedException("In thread context. No handler when not running in http web context.");
+        }
     }
 }

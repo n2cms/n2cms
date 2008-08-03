@@ -20,7 +20,7 @@ namespace N2.Templates.UI.Items
 	{
 		public override string Url
 		{
-			get { return RedirectUrl; }
+			get { return N2.Web.Url.ToAbsolute(RedirectUrl); }
 		}
 
 		[Editable("Redirect to", typeof(UrlSelector), "Url", 40, ContainerName = Tabs.Content, Required = true)]

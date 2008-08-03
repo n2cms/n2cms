@@ -6,18 +6,12 @@ namespace N2.Tests.Web
 	{
 		public override string Url
 		{
-			get
-			{
-				return "/" + Name + Extension;
-			}
+			get { return "/" + Name + Extension; }
 		}
 
 		public override string RewrittenUrl
 		{
-			get
-			{
-				return TemplateUrl.Replace("~/", "/") + "?page=" + ID;
-			}
+			get { return TemplateUrl.TrimStart('~') + "?page=" + ID; }
 		}
 
 		public override ItemList GetChildren()

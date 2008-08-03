@@ -7,7 +7,7 @@ using System.Collections.Specialized;
 namespace N2.Web
 {
 	/// <summary>
-	/// A mockable wrapper for operations on the http context.
+	/// A mockable interface for operations that targets the the http context.
 	/// </summary>
     public interface IWebContext : IClosable
 	{
@@ -29,32 +29,17 @@ namespace N2.Web
 		/// <summary>The handler associated with this request.</summary>
 		IHttpHandler Handler { get; }
 
+        /// <summary>The physical path on disk to the requested page.</summary>
+        string PhysicalPath { get; }
+
 		/// <summary>A page instance stored in the request context.</summary>
 		ContentItem CurrentPage { get; set; }
 
-		/// <summary>Gets the current host name and any port information, e.g. www.n2cms.com:80.</summary>
-		string Authority { get; }
-
-		/// <summary>Gets the url relative to the application root.</summary>
-		string RawUrl { get; }
-
-		/// <summary>The absolute path to the requested page without query string.</summary>
-		string AbsolutePath { get; }
-
-		/// <summary>The request's cookie collection.</summary>
-		HttpCookieCollection Cookies { get; }
-
-		/// <summary>Gets the application root path.</summary>
-		string ApplicationUrl { get; }
-
-		/// <summary>Gets the current request's query string.</summary>
-		string Query { get; }
-
-		/// <summary>Gets the current request's query string.</summary>
-		NameValueCollection QueryString { get; }
-
-		/// <summary>The physical path on disk to the requested page.</summary>
-		string PhysicalPath { get; }
+        /// <summary>The local part of the requested path, e.g. /path/to/a/page.aspx?some=query.</summary>
+        Url LocalUrl { get; }
+        
+        /// <summary>The host part of the requested url, e.g. http://n2cms.com/.</summary>
+        Url HostUrl { get; }
 
 		/// <summary>Converts a virtual path to an an absolute path. E.g. ~/hello.aspx -> /MyVirtualDirectory/hello.aspx.</summary>
 		/// <param name="virtualPath">The virtual url to make absolute.</param>
@@ -71,8 +56,8 @@ namespace N2.Web
 		/// <returns>The physical path. E.g. "c:\inetpub\wwwroot\bin"</returns>
 		string MapPath(string path);
 
-		/// <summary>Assigns a rewrite path.</summary>
-		/// <param name="path">The path to the template that will handle the request.</param>
+        /// <summary>Rewrites the request to the given path.</summary>
+        /// <param name="path">The path to the template that will handle the request.</param>
 		void RewritePath(string path);
     }
 }

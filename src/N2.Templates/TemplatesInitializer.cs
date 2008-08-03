@@ -24,18 +24,7 @@ namespace N2.Templates
             {
                 engine.AddComponent("n2.templates.fakeMailSender", typeof(IMailSender), typeof(Services.FakeMailSender));
             }
-            //engine.AddComponent("n2.templates.notFoundHandler", typeof(NotFoundHandler));
             engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
         }
 	}
-
-    [N2.Plugin.Scheduling.ScheduleExecution(10)]
-    public class Test : N2.Plugin.Scheduling.ScheduledAction
-    {
-        public override void Execute()
-        {
-            var count = N2.Find.Items.All.Count();
-            System.Diagnostics.Debug.WriteLine("# items: " + count);
-        }
-    }
 }

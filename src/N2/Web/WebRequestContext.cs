@@ -11,7 +11,7 @@ namespace N2.Web
     /// <summary>
     /// A request context class that interacts with HttpContext.Current.
     /// </summary>
-    public class WebRequestContext : RequestContext
+    public class WebRequestContext : IWebContext
     {
         /// <summary>Provides access to HttpContext.Current.</summary>
         protected virtual HttpContext CurrentHttpContext
@@ -24,50 +24,114 @@ namespace N2.Web
             }
         }
 
+        public bool IsWeb
+        {
+            get { return true; }
+        }
+
         /// <summary>Gets a dictionary of request scoped items.</summary>
-        public override IDictionary RequestItems
+        public IDictionary RequestItems
         {
             get { return CurrentHttpContext.Items; }
         }
 
-        /// <summary>The handler associated with this request.</summary>
-        public override IHttpHandler Handler
+        /// <summary>A page instance stored in the request context.</summary>
+        public ContentItem CurrentPage
+        {
+            get { return RequestItems["CurrentPage"] as ContentItem; }
+            set { RequestItems["CurrentPage"] = value; }
+        }
+
+        /// <summary>The handler associated with the current request.</summary>
+        public IHttpHandler Handler
         {
             get { return CurrentHttpContext.Handler; }
         }
 
         /// <summary>The current request object.</summary>
-        public override HttpRequest Request
+        public HttpRequest Request
         {
             get { return CurrentHttpContext.Request; }
         }
 
-        public override HttpCookieCollection Cookies
+        /// <summary>The physical path on disk to the requested resource.</summary>
+        public virtual string PhysicalPath
         {
-            get { return Request.Cookies; }
+            get { return Request.PhysicalPath; }
+        }
+
+        /// <summary>The local part of the requested path, e.g. /path/to/a/page.aspx?some=query.</summary>
+        public Url LocalUrl
+        {
+            get { return Url.Parse(Request.RawUrl); }
+        }
+
+        /// <summary>The host part of the requested url, e.g. http://n2cms.com/.</summary>
+        public Url HostUrl
+        {
+            get { return new Url(Request.Url.Scheme, Request.Url.Authority, null, null, null); }
         }
 
         /// <summary>The current request object.</summary>
-        public override HttpResponse Response
+        public HttpResponse Response
         {
             get { return CurrentHttpContext.Response; }
         }
 
         /// <summary>Gets the current user in the web execution context.</summary>
-        public override IPrincipal User
+        public IPrincipal User
         {
             get { return CurrentHttpContext.User; }
         }
 
-        public override string MapPath(string path)
+        /// <summary>Converts a virtual url to an absolute url.</summary>
+        /// <param name="virtualPath">The virtual url to make absolute.</param>
+        /// <returns>The absolute url.</returns>
+        public virtual string ToAbsolute(string virtualPath)
+        {
+            return N2.Web.Url.ToAbsolute(virtualPath);
+        }
+
+        /// <summary>Converts an absolute url to an app relative url.</summary>
+        /// <param name="virtualPath">The absolute url to convert.</param>
+        /// <returns>An app relative url.</returns>
+        public virtual string ToAppRelative(string virtualPath)
+        {
+            if (virtualPath != null && virtualPath.StartsWith(Url.ApplicationPath, System.StringComparison.InvariantCultureIgnoreCase))
+                return "~/" + virtualPath.Substring(Url.ApplicationPath.Length);
+            return virtualPath;
+        }
+
+        /// <summary>Maps a virtual path to a physical disk path.</summary>
+        /// <param name="path">The path to map. E.g. "~/bin"</param>
+        /// <returns>The physical path. E.g. "c:\inetpub\wwwroot\bin"</returns>
+        public string MapPath(string path)
         {
             return CurrentHttpContext.Server.MapPath(path);
         }
 
-        public override void RewritePath(string path)
+        /// <summary>Assigns a rewrite path.</summary>
+        /// <param name="path">The path to the template that will handle the request.</param>
+        public void RewritePath(string path)
         {
-            Debug.WriteLine("Rewriting '" + RawUrl + "' to '" + path + "'");
+            Debug.WriteLine("Rewriting '" + LocalUrl + "' to '" + path + "'");
             CurrentHttpContext.RewritePath(path, false);
+        }
+
+        /// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
+        public virtual void Dispose()
+        {
+            string[] keys = new string[RequestItems.Keys.Count];
+            RequestItems.Keys.CopyTo(keys, 0);
+
+            foreach (string key in keys)
+            {
+                IClosable value = RequestItems[key] as IClosable;
+                if (value != null)
+                {
+                    (value as IClosable).Dispose();
+                }
+            }
         }
     }
 }

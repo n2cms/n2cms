@@ -36,7 +36,7 @@ namespace N2.Installation
 
         private bool IsEditing()
         {
-            return context.ToAppRelative(context.AbsolutePath).StartsWith("~/edit", StringComparison.InvariantCultureIgnoreCase);
+            return context.ToAppRelative(context.LocalUrl).StartsWith("~/edit", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public void Stop()

@@ -40,7 +40,7 @@ namespace N2.Engine.Globalization
 
 		void definitions_ItemCreated(object sender, ItemEventArgs e)
 		{
-			if (context.QueryString[LanguageGateway.LanguageKey] != null)
+            if (GetLanguageKey() != null)
 			{
 				if (e.AffectedItem is ILanguage)
 					return;
@@ -49,10 +49,15 @@ namespace N2.Engine.Globalization
 			}
 		}
 
+        private string GetLanguageKey()
+        {
+            return context.LocalUrl.GetQuery(LanguageGateway.LanguageKey);
+        }
+
 		private void UpdateSortOrder(ContentItem item)
 		{
 			int languageKey;
-			if (int.TryParse(context.QueryString[LanguageGateway.LanguageKey], out languageKey))
+            if (int.TryParse(GetLanguageKey(), out languageKey))
 			{
 				ContentItem translation = persister.Get(languageKey);
 				if(translation != null)
@@ -128,9 +133,10 @@ namespace N2.Engine.Globalization
 		private void UpdateLanguageKey(ContentItem item)
 		{
 			int languageKey = item.ID;
-			if (context.QueryString[LanguageGateway.LanguageKey] != null)
+            string languageKeyString = GetLanguageKey();
+			if (languageKeyString != null)
 			{
-				int.TryParse(context.QueryString[LanguageGateway.LanguageKey], out languageKey);
+				int.TryParse(languageKeyString, out languageKey);
                 if (item[LanguageGateway.LanguageKey] == null)
                 {
                     item[LanguageGateway.LanguageKey] = languageKey;

@@ -47,8 +47,7 @@ namespace N2.Web
 		{
             if (Url.ServerUrl == null && webContext.IsWeb)
             {
-                bool isHttps = webContext.Request.ServerVariables["HTTPS"] == "ON";
-                Url.ServerUrl = isHttps ? "https://" : "http://" + webContext.Authority + "/";
+                Url.ServerUrl = webContext.HostUrl;
             }
 
 			rewriter.UpdateCurrentPage();

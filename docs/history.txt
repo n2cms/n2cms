@@ -3,7 +3,9 @@
 - fixed problem previewing versions
 - removed test detail on text page
 - refactored nh session disposal
-- database support for scheduler
+- database support for scheduler (requestcontext -> adaptivecontext + webrequestcontext + threadcontext)
+- refactored iwebcontext
+- url support for extension
 
 1.4.1
 - error handling with email option

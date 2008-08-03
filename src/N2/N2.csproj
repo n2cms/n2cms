@@ -249,7 +249,6 @@
     </Compile>
     <Compile Include="Web\UI\WebControls\FieldSet.cs" />
     <Compile Include="Web\UrlParser.cs" />
-    <Compile Include="Web\RequestContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Edit\edit.castle.config" />
@@ -421,7 +420,6 @@
     <Compile Include="Web\IClosable.cs" />
     <Compile Include="Web\IErrorHandler.cs" />
     <Compile Include="Web\IHost.cs" />
-    <Compile Include="Web\IIS5WebContext.cs" />
     <Compile Include="Web\Mail\IMailSender.cs" />
     <Compile Include="Web\Mail\SmtpMailSender.cs" />
     <Compile Include="Web\Mail\StaticMailSender.cs" />
@@ -586,9 +584,6 @@
     <EmbeddedResource Include="Engine\n2.configuration.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Web\n2.multiplehosts.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\add.gif" />
     <EmbeddedResource Include="Resources\bin.gif" />
     <EmbeddedResource Include="Resources\delete.gif" />
@@ -618,7 +613,6 @@
     <EmbeddedResource Include="Web\n2.multiplesites.xml" />
     <EmbeddedResource Include="Resources\jquery-1.2.6.min.js" />
     <EmbeddedResource Include="Web\n2.notweb.xml" />
-    <EmbeddedResource Include="Web\n2.iis5.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

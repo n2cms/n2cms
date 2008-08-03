@@ -36,18 +36,18 @@ namespace N2.Web
 			if (!File.Exists(webContext.PhysicalPath) && currentPage != null)
 			{
 				Url rewrittenUrl = currentPage.RewrittenUrl;
-                webContext.RewritePath(rewrittenUrl.AppendQuery(webContext.Query));
+                webContext.RewritePath(rewrittenUrl.AppendQuery(webContext.LocalUrl.Query));
 			}
 		}
 
-		private bool HasContentExtension(string requestedUrl)
-		{
-			if (requestedUrl.EndsWith(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
-			{
-				return true;
-			}
-			return false;
-		}
+        //private bool HasContentExtension(string requestedUrl)
+        //{
+        //    if (requestedUrl.EndsWith(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
 		#endregion
 
@@ -55,15 +55,15 @@ namespace N2.Web
 		{
 			try
 			{
-				if (HasContentExtension(webContext.AbsolutePath) || webContext.QueryString["page"] != null)
+				if (IsUpdatable(webContext.LocalUrl))
 				{
-					ContentItem page = urlParser.ParsePage(webContext.RawUrl);
+					ContentItem page = urlParser.ParsePage(webContext.LocalUrl);
 
 					Debug.WriteLine("CurrentPage <- " + page);
 
 					webContext.CurrentPage = page;
 				}
-				else if (webContext.AbsolutePath == "/")
+                else if (webContext.LocalUrl == "/")
 					webContext.CurrentPage = urlParser.StartPage;
 			}
 			catch (Exception ex)
@@ -71,6 +71,17 @@ namespace N2.Web
 				Trace.TraceWarning(ex.ToString());
 			}
 		}
+
+        private bool IsUpdatable(Url url)
+        {
+            string extension = url.Extension;
+            if(extension == null || extension.Equals(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
+                return true;
+            else if(url.GetQuery("page") != null)
+                return true;
+            
+            return false;
+        }
 
 		public void InjectContentPage()
 		{

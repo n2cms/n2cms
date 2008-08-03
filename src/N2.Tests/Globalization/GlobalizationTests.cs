@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Globalization;
 using N2.Tests.Globalization.Items;
 using N2.Engine;
+using System.Linq;
 
 namespace N2.Tests.Globalization
 {
@@ -86,9 +87,10 @@ namespace N2.Tests.Globalization
 
 			ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
 
-			engine.Resolve<IWebContext>().QueryString[LanguageGateway.LanguageKey] = englishSub.ID.ToString();
-			engine.Persister.Save(swedishSub);
-			engine.Resolve<IWebContext>().QueryString.Remove(LanguageGateway.LanguageKey);
+            using (new LanguageKeyScope(engine, englishSub.ID))
+            {
+                engine.Persister.Save(swedishSub);
+            }
 
 			Assert.That(swedishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub[LanguageGateway.LanguageKey]));
 		}
@@ -103,9 +105,10 @@ namespace N2.Tests.Globalization
 
 				ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
 
-				engine.Resolve<IWebContext>().QueryString[LanguageGateway.LanguageKey] = englishSub.ID.ToString();
-				engine.Persister.Save(swedishSub);
-				engine.Resolve<IWebContext>().QueryString.Remove(LanguageGateway.LanguageKey);
+                using (new LanguageKeyScope(engine, englishSub.ID))
+                {
+                    engine.Persister.Save(swedishSub);
+                }
 			}
 
 			using (engine.Persister)
@@ -131,8 +134,8 @@ namespace N2.Tests.Globalization
             {
                 engine.Persister.Save(swedishSub);
             }
-			IEnumerable<ContentItem> translations = lg.FindTranslations(englishSub);
-			EnumerableAssert.Count(2, translations);
+			var translations = lg.FindTranslations(englishSub);
+            Assert.That(translations.Count(), Is.EqualTo(2));
 		}
 
 		[Test]
@@ -140,31 +143,31 @@ namespace N2.Tests.Globalization
 		{
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 
-			IEnumerable<ContentItem> translations = lg.FindTranslations(english);
+			var translations = lg.FindTranslations(english);
 
-			EnumerableAssert.Count(3, translations);
-			EnumerableAssert.Contains(translations, english);
-			EnumerableAssert.Contains(translations, swedish);
-			EnumerableAssert.Contains(translations, italian);
+            Assert.That(translations.Count(), Is.EqualTo(3));
+            Assert.That(translations.Contains(english));
+			Assert.That(translations.Contains(swedish));
+            Assert.That(translations.Contains(italian));
 		}
 
 		[Test]
 		public void FindTranslations_OfSwedishLanguageRoot_FindsAllLanguageRoots()
 		{
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
-			IEnumerable<ContentItem> translations = lg.FindTranslations(swedish);
+			var translations = lg.FindTranslations(swedish);
 
-			EnumerableAssert.Count(3, translations);
-		}
+            Assert.That(translations.Count(), Is.EqualTo(3));
+        }
 
 		[Test]
 		public void FindTranslations_OfItalianLanguageRoot_FindsAllLanguageRoots()
 		{
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
-			IEnumerable<ContentItem> translations = lg.FindTranslations(italian);
+			var translations = lg.FindTranslations(italian);
 
-			EnumerableAssert.Count(3, translations);
-		}
+            Assert.That(translations.Count(), Is.EqualTo(3));
+        }
 
 		[Test]
 		public void FindTranslations_OnLanguageRoot_FindsOtherLanguageRoots_ButNotChildPages()
@@ -178,11 +181,11 @@ namespace N2.Tests.Globalization
 
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
 
-			IEnumerable<ContentItem> translations = lg.FindTranslations(english);
+			var translations = lg.FindTranslations(english);
 
-			EnumerableAssert.Count(3, translations);
-			EnumerableAssert.DoesntContain(translations, englishSub);
-			EnumerableAssert.DoesntContain(translations, swedishSub);
+            Assert.That(translations.Count(), Is.EqualTo(3));
+            Assert.That(translations.Contains(englishSub), Is.False);
+            Assert.That(translations.Contains(swedishSub), Is.False);
 		}
 
         [Test]
@@ -197,16 +200,17 @@ namespace N2.Tests.Globalization
 
             englishSub.Authorize = false;
             var lg = engine.Resolve<ILanguageGateway>();
-            EnumerableAssert.Count(1, lg.FindTranslations(swedishSub));
+            var translations = lg.FindTranslations(swedishSub);
+            Assert.That(translations.Count(), Is.EqualTo(1));
         }
 
 		[Test]
 		public void FindTransaltion_OnNonTranslatedPages_YieldsEmptyCollection()
 		{
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
-			IEnumerable<ContentItem> translations = lg.FindTranslations(root);
-			EnumerableAssert.Count(0, translations);
-		}
+			var translations = lg.FindTranslations(root);
+            Assert.That(translations.Count(), Is.EqualTo(0));
+        }
 
 		[Test]
 		public void GetsTranslationOptions_ForSingleItem()
@@ -332,25 +336,25 @@ namespace N2.Tests.Globalization
 			english1.SortOrder = 123;
 			engine.Persister.Save(english1);
 
-			engine.Resolve<IWebContext>().QueryString[LanguageGateway.LanguageKey] = english1.ID.ToString();
-			ContentItem swedish1 = engine.Definitions.CreateInstance<Items.TranslatedPage>(swedish);
-			engine.Persister.Save(swedish1);
-			engine.Resolve<IWebContext>().QueryString.Remove(LanguageGateway.LanguageKey);
-
-			Assert.That(swedish1.SortOrder, Is.EqualTo(english1.SortOrder));
+            using (new LanguageKeyScope(engine, english1.ID))
+            {
+                ContentItem swedish1 = engine.Definitions.CreateInstance<Items.TranslatedPage>(swedish);
+                engine.Persister.Save(swedish1);
+                Assert.That(swedish1.SortOrder, Is.EqualTo(english1.SortOrder));
+            }
 		}
 
 		[Test]
 		public void LanguageKey_IsSetOnOriginalItem_WhenSavingOtherItem()
 		{
 			ContentItem englishSub = CreateOneItem<Items.TranslatedPage>(0, "english1", english);
-			engine.Resolve<INHRepository<int, ContentItem>>().Save(englishSub); // bypass events
+			engine.Persister.Repository.Save(englishSub); // bypass events
 
 			ContentItem swedishSub = CreateOneItem<Items.TranslatedPage>(0, "swedish1", swedish);
-
-			engine.Resolve<IWebContext>().QueryString[LanguageGateway.LanguageKey] = englishSub.ID.ToString();
-			engine.Persister.Save(swedishSub);
-			engine.Resolve<IWebContext>().QueryString.Remove(LanguageGateway.LanguageKey);
+            using (new LanguageKeyScope(engine, englishSub.ID))
+            {
+                engine.Persister.Save(swedishSub);
+            }
 
 			Assert.That(englishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub.ID));
 			Assert.That(swedishSub[LanguageGateway.LanguageKey], Is.EqualTo(englishSub.ID));
@@ -442,10 +446,10 @@ namespace N2.Tests.Globalization
             gateway.Associate(new ContentItem[] { english1, italian2 });
            
             var translations = gateway.FindTranslations(english1);
-            EnumerableAssert.Count(3, translations);
-            EnumerableAssert.Contains(translations, english1);
-            EnumerableAssert.Contains(translations, swedish1);
-            EnumerableAssert.Contains(translations, italian2);
+            Assert.That(translations.Count(), Is.EqualTo(3));
+            Assert.That(translations.Contains(english1));
+            Assert.That(translations.Contains(swedish1));
+            Assert.That(translations.Contains(italian2));
         }
 
         [Test]
@@ -469,10 +473,10 @@ namespace N2.Tests.Globalization
             gateway.Associate(new ContentItem[] { swedish1, italian2 });
 
             var translations = gateway.FindTranslations(english1);
-            EnumerableAssert.Count(3, translations);
-            EnumerableAssert.Contains(translations, english1);
-            EnumerableAssert.Contains(translations, swedish1);
-            EnumerableAssert.Contains(translations, italian2);
+            Assert.That(translations.Count(), Is.EqualTo(3));
+            Assert.That(translations.Contains(english1));
+            Assert.That(translations.Contains(swedish1));
+            Assert.That(translations.Contains(italian2));
         }
 
         [Test]
@@ -490,18 +494,18 @@ namespace N2.Tests.Globalization
 
         private class LanguageKeyScope : IDisposable
         {
-            IWebContext context;
+            ThreadContext context;
             public LanguageKeyScope(IEngine engine, int key)
             {
-                context = engine.Resolve<IWebContext>();
-                context.QueryString[LanguageGateway.LanguageKey] = key.ToString();
+                context = (ThreadContext)engine.Resolve<IWebContext>();
+                context.LocalUrl = context.LocalUrl.SetQueryParameter(LanguageGateway.LanguageKey, key.ToString());
             }
 
             #region IDisposable Members
 
             public void Dispose()
             {
-                context.QueryString.Remove(LanguageGateway.LanguageKey);
+                context.LocalUrl = context.LocalUrl.SetQueryParameter(LanguageGateway.LanguageKey, null);
             }
 
             #endregion

@@ -55,7 +55,7 @@ namespace N2.Web
 
 		public override Site CurrentSite
 		{
-			get { return GetSite(WebContext.Authority) ?? base.CurrentSite; }
+			get { return GetSite(WebContext.HostUrl.Authority) ?? base.CurrentSite; }
 		}
 
 		#endregion

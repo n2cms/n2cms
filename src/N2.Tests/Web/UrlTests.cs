@@ -185,7 +185,7 @@ namespace N2.Tests.Web
         public void CanSet_KeyAndValue_ToEmptyQueryString()
         {
             Url u = "/";
-            u = u.UpdateQuery("key", "value");
+            u = u.SetQueryParameter("key", "value");
             Assert.That(u.Query, Is.EqualTo("key=value"));
         }
 
@@ -193,7 +193,7 @@ namespace N2.Tests.Web
         public void CanSet_KeyValuePair_ToEmptyQueryString()
         {
             Url u = "/";
-            u = u.UpdateQuery("key=value");
+            u = u.SetQueryParameter("key=value");
             Assert.That(u.Query, Is.EqualTo("key=value"));
         }
 
@@ -201,14 +201,14 @@ namespace N2.Tests.Web
         public void CanSet_KeyAndValue_ToExistingQueryString()
         {
             Url u = "/?somekey=somevalue";
-            u = u.UpdateQuery("key", "value");
+            u = u.SetQueryParameter("key", "value");
             Assert.That(u.Query, Is.EqualTo("somekey=somevalue&key=value"));
         }
         [Test]
         public void CanSet_KeyValuePair_ToExistingQueryString()
         {
             Url u = "/?somekey=somevalue";
-            u = u.UpdateQuery("key=value");
+            u = u.SetQueryParameter("key=value");
             Assert.That(u.Query, Is.EqualTo("somekey=somevalue&key=value"));
         }
 
@@ -216,14 +216,14 @@ namespace N2.Tests.Web
         public void CanReplaceValue_OnExistingQueryString_UsingKeyAndValue()
         {
             Url u = "/?key=somevalue";
-            u = u.UpdateQuery("key", "someothervalue");
+            u = u.SetQueryParameter("key", "someothervalue");
             Assert.That(u.Query, Is.EqualTo("key=someothervalue"));
         }
         [Test]
         public void CanReplaceValue_OnExistingQueryString_UsingKeyValuePair()
         {
             Url u = "/?key=somevalue";
-            u = u.UpdateQuery("key=someothervalue");
+            u = u.SetQueryParameter("key=someothervalue");
             Assert.That(u.Query, Is.EqualTo("key=someothervalue"));
         }
 
@@ -239,7 +239,7 @@ namespace N2.Tests.Web
         public void SetValue_IsUrlEncoded()
         {
             Url u = "/key=sometihng";
-            u = u.UpdateQuery("key", "cristian & maria");
+            u = u.SetQueryParameter("key", "cristian & maria");
             Assert.That(u.Query, Is.EqualTo("key=cristian+%26+maria"));
         }
 
@@ -328,6 +328,123 @@ namespace N2.Tests.Web
             Url u = "/UI/500.aspx?aspxerrorpath=/default.aspx";
             Assert.That(u.Path, Is.EqualTo("/UI/500.aspx"));
             Assert.That(u.Query, Is.EqualTo("aspxerrorpath=/default.aspx"));
+        }
+
+        [Test]
+        public void CanDetermine_DefaultExtension()
+        {
+            Url u = "/path/to/page.aspx";
+            Assert.That(u.Extension, Is.EqualTo(".aspx"));
+        }
+
+        [Test]
+        public void CanDetermine_HtmlExtension()
+        {
+            Url u = "/path/to/page.html";
+            Assert.That(u.Extension, Is.EqualTo(".html"));
+        }
+
+        [Test]
+        public void CanDetermine_NoExtension()
+        {
+            Url u = "/path/to/page";
+            Assert.That(u.Extension, Is.Null);
+        }
+
+        [Test]
+        public void CanDetermine_NoExtension_WhenTrailingSlash()
+        {
+            Url u = "/path/to/page/";
+            Assert.That(u.Extension, Is.Null);
+        }
+
+        [Test]
+        public void CanGet_QueryDictionary()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing");
+            var q = u.GetQueries();
+            Assert.That(q.Count, Is.EqualTo(1));
+            Assert.That(q["something"], Is.EqualTo("someotherthing"));
+        }
+
+        [Test]
+        public void CanGet_EmptyQueryDictionary()
+        {
+            Url u = new Url("/hello.aspx");
+            var q = u.GetQueries();
+            Assert.That(q.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CanGet_Query()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing");
+            var q = u.GetQuery("something");
+            Assert.That(q, Is.EqualTo("someotherthing"));
+        }
+
+        [Test]
+        public void Getting_NonExistantQuery_GivesNull()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing");
+            var q = u.GetQuery("nothing");
+            Assert.That(q, Is.Null);
+        }
+
+        [Test]
+        public void Getting_Query_WhenNoQueries_GivesNull()
+        {
+            Url u = new Url("/hello.aspx");
+            var q = u.GetQuery("something");
+            Assert.That(q, Is.Null);
+        }
+
+        [Test]
+        public void UpdatingQueryToNull_WhenSingleParameter_RemovesItFromUrl()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing");
+            u = u.SetQueryParameter("something", null);
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
+        }
+
+        [Test]
+        public void UpdatingQueryToNull_ReturnsOtherParameter_WhenUpdatingFirst()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing&query=value");
+            u = u.SetQueryParameter("something", null);
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx?query=value"));
+        }
+
+        [Test]
+        public void UpdatingQueryToNull_ReturnsOtherParameter_WhenUpdatingSecond()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing&query=value");
+            u = u.SetQueryParameter("query", null);
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx?something=someotherthing"));
+        }
+
+        [Test]
+        public void UpdatingQueryToNull_ReturnsOtherParameters_WhenUpdatingFirst()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing&query=value&query3=value3");
+            u = u.SetQueryParameter("something", null);
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx?query=value&query3=value3"));
+        }
+
+        [Test]
+        public void UpdatingQueryToNull_ReturnsOtherParameters_WhenUpdatingInMiddle()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing&query=value&query3=value3");
+            u = u.SetQueryParameter("query", null);
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx?something=someotherthing&query3=value3"));
+        }
+
+        [Test]
+        public void UpdatingQueryToNull_ReturnsOtherParameters_WhenUpdatingLast()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing&query=value&query3=value3");
+            u = u.SetQueryParameter("query3", null);
+            Assert.That(u.ToString(), Is.EqualTo("/hello.aspx?something=someotherthing&query=value"));
         }
     }
 }

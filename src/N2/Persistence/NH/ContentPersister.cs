@@ -124,7 +124,7 @@ namespace N2.Persistence.NH
 			{
                 itemNoMore = args.AffectedItem;
 
-				Trace.TraceInformation("NHPersistenceManager.Delete" + itemNoMore);
+				Trace.TraceInformation("NHPersistenceManager.Delete " + itemNoMore);
 
                 if (itemNoMore is IActiveContent)
                 {

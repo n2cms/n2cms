@@ -68,10 +68,14 @@ namespace N2.Tests
 		protected virtual IWebContext CreateWrapper(bool replay)
 		{
             IWebContext wrapper = mocks.DynamicMock<IWebContext>();
-			Expect.On(wrapper).Call(wrapper.ToAppRelative(null)).IgnoreArguments().Do(new ToAppRelativeDelegate(ToAppRelative)).Repeat.Any();
-			Expect.On(wrapper).Call(wrapper.ToAbsolute(null)).IgnoreArguments().Do(new ToAbsoluteDelegate(ToAbsolute)).Repeat.Any();
-			Expect.On(wrapper).Call(wrapper.ApplicationUrl).Return("/").Repeat.Any();
-            Expect.On(wrapper).Call(wrapper.Authority).Do(new Func<string>(delegate { return currentHost; })).Repeat.Any();
+			Expect.Call(wrapper.ToAppRelative(null)).IgnoreArguments().Do(new ToAppRelativeDelegate(ToAppRelative)).Repeat.Any();
+			Expect.Call(wrapper.ToAbsolute(null)).IgnoreArguments().Do(new ToAbsoluteDelegate(ToAbsolute)).Repeat.Any();
+            Expect.Call(wrapper.HostUrl).IgnoreArguments().Do(new Func<Url>(delegate 
+                { 
+                    return new Url("http://" + currentHost); 
+                })).Repeat.Any();
+            //Expect.On(wrapper).Call(wrapper.ApplicationUrl).Return("/").Repeat.Any();
+            //Expect.On(wrapper).Call(wrapper.Authority).Do(new Func<string>(delegate { return currentHost; })).Repeat.Any();
 
 			if (replay)
 				mocks.Replay(wrapper);

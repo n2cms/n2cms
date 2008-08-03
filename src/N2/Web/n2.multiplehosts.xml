@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<castle>
-  <components>
-	  <component id="n2.multipleSitesParser"	service="N2.Web.IUrlParser, N2"					type="N2.Web.MultipleSitesParser, N2" />
-  </components>
-</castle>

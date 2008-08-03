@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<castle>
-	<components>
-		<component id="n2.iis5requestContext" service="N2.Web.IWebContext, N2" type="N2.Web.IIS5RequestContext, N2"/>
-	</components>
-</castle>

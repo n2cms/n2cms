@@ -69,8 +69,8 @@ namespace N2.Security
 			ContentItem item = webContext.CurrentPage;
 			if (item != null)
 			{
-				string filePath = webContext.AbsolutePath;
-				string pathWithQuery = webContext.RawUrl;
+				//string filePath = webContext.AbsolutePath;
+				//string pathWithQuery = webContext.RawUrl;
 				if (item != null && !security.IsAuthorized(item, webContext.User))
 				{
 					CancellableItemEventArgs args = new CancellableItemEventArgs(item);
