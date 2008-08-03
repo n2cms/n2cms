@@ -3,11 +3,13 @@ using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Items;
+using N2.Persistence;
 
 namespace N2.Templates.UI.Items.Parts
 {
 	[Definition("Random image", "RandomImage")]
 	[AllowedZones(Zones.Content, Zones.RecursiveAbove, Zones.Left, Zones.Right)]
+    [NotVersionable]
 	public class RandomImage : AbstractItem
 	{
 		[DisplayableImage(CssClass = "main")]

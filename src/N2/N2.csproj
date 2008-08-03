@@ -342,6 +342,7 @@
     </Compile>
     <Compile Include="Persistence\IActiveContent.cs" />
     <Compile Include="Persistence\NH\SessionContext.cs" />
+    <Compile Include="Persistence\NotVersionableAttribute.cs" />
     <Compile Include="Plugin\IPlugin.cs" />
     <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
     <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />

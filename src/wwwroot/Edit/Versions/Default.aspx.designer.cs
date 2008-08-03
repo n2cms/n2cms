@@ -23,6 +23,15 @@ namespace N2.Edit.Versions {
         protected global::System.Web.UI.WebControls.HyperLink hlCancel;
         
         /// <summary>
+        /// cvVersionable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvVersionable;
+        
+        /// <summary>
         /// gvHistory control.
         /// </summary>
         /// <remarks>

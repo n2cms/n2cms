@@ -6,6 +6,7 @@
 - database support for scheduler (requestcontext -> adaptivecontext + webrequestcontext + threadcontext)
 - refactored iwebcontext
 - url support for extension
+- [NotVersionable] support
 
 1.4.1
 - error handling with email option

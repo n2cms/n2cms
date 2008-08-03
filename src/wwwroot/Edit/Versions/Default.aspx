@@ -12,7 +12,8 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
-	<h1>Versions</h1>
+	<h1>Versions of '<%= SelectedItem.Title %>'</h1>
+	<asp:CustomValidator ID="cvVersionable" runat="server" Text="This item is not versionable." CssClass="validator info" meta:resourceKey="cvVersionable" Display="Dynamic" />
     <asp:GridView ID="gvHistory" runat="server" AutoGenerateColumns="false" DataKeyNames="ID" CssClass="gv" AlternatingRowStyle-CssClass="alt" UseAccessibleHeader="true" BorderWidth="0" OnRowCommand="gvHistory_RowCommand" OnRowDeleting="gvHistory_RowDeleting">
 		<Columns>
             <asp:TemplateField HeaderText="V" meta:resourceKey="v" ItemStyle-CssClass="Version">

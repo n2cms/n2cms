@@ -21,6 +21,9 @@ namespace N2.Edit.Versions
 		protected override void OnInit(EventArgs e)
 		{
             hlCancel.NavigateUrl = CancelUrl();
+
+            bool isVersionable = SelectedItem.GetType().GetCustomAttributes(typeof(Persistence.NotVersionableAttribute), true).Length == 0;
+            cvVersionable.IsValid = isVersionable;
 			
 			persister = N2.Context.Persister;
 			versioner = N2.Context.Current.Resolve<Persistence.IVersionManager>();

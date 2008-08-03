@@ -1,4 +1,3 @@
-- nonversionable
 - wiki
 	- show only articles in search results
 	- categories

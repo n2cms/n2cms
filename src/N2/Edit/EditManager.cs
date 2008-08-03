@@ -288,8 +288,8 @@ namespace N2.Edit
 				ContentItem itemToUpdate = item.VersionOf;
 				if (itemToUpdate == null) throw new ArgumentException("Expected the current item to be a version of another item.", "itemEditor");
 
-				if (EnableVersioning)
-					SaveVersion(itemToUpdate);
+                if (ShouldStoreVersion(item))
+                    SaveVersion(itemToUpdate);
 
 				DateTime? published = itemToUpdate.Published;
 				bool wasUpdated = UpdateItem(itemToUpdate, itemEditor.AddedEditors, user);
@@ -313,7 +313,7 @@ namespace N2.Edit
 			// when an item is saved but a version is stored before the item is updated
 			else if (mode == ItemEditorVersioningMode.VersionAndSave)
 			{
-				if (EnableVersioning && !IsNew(item))
+                if (ShouldStoreVersion(item))
 					SaveVersion(item);
 
 				DateTime? initialPublished = item.Published;
@@ -335,8 +335,8 @@ namespace N2.Edit
 			// when making a version without saving the item
 			else if (mode == ItemEditorVersioningMode.VersionOnly)
 			{
-				if(!IsNew(item))
-					item = SaveVersion(item);
+                if (ShouldStoreVersion(item))
+                    item = SaveVersion(item);
 
 				bool wasUpdated = UpdateItem(item, itemEditor.AddedEditors, user);
 				if (wasUpdated || IsNew(item))
@@ -352,6 +352,11 @@ namespace N2.Edit
 				throw new ArgumentException("Unexpected versioning mode.");
 			}
 		}
+
+        private bool ShouldStoreVersion(ContentItem item)
+        {
+            return EnableVersioning && !IsNew(item) && item.GetType().GetCustomAttributes(typeof(Persistence.NotVersionableAttribute), true).Length == 0;
+        }
         /// <summary>Gets the url to the edit interface.</summary>
         /// <returns>The url to the edit interface.</returns>
         public string GetEditInterfaceUrl()

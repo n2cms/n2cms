@@ -124,6 +124,7 @@
     <Compile Include="Collections\ZoneFilterTests.cs" />
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
+    <Compile Include="Edit\Items\NotVersionableItem.cs" />
     <Compile Include="Engine\MultipleSitesContentEngineTests.cs" />
     <Compile Include="Definitions\AttributeReference.cs" />
     <Compile Include="Definitions\DefinitionFixture.cs" />

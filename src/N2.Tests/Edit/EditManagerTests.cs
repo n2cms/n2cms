@@ -31,7 +31,8 @@ namespace N2.Tests.Edit
 			return new Type[]{
 				typeof(ComplexContainersItem),
 				typeof(ItemWithRequiredProperty),
-				typeof(ItemWithModification)
+				typeof(ItemWithModification),
+                typeof(NotVersionableItem)
 			};
 		}
 
@@ -418,6 +419,22 @@ namespace N2.Tests.Edit
 
 			Assert.IsTrue(savingVersionEventInvoked, "The saving version event wasn't invoked");
 		}
+
+        [Test]
+        public void SavingItem_ThatIsNotVersionable_DoesntStoreVersion()
+        {
+            NotVersionableItem item = new NotVersionableItem();
+            item.ID = 123;
+
+            Expect.Call(versioner.SaveVersion(item)).Repeat.Never();
+            mocks.ReplayAll();
+
+            var editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
+            DoTheSaving(null, editor);
+
+            mocks.VerifyAll();
+            //versioner.AssertWasNotCalled(delegate(VersionManager vm) { vm.SaveVersion(item); });
+        }
 
 		[Test]
 		public void SavingVersionEvent_IsNotInvoked_WhenNewItem()

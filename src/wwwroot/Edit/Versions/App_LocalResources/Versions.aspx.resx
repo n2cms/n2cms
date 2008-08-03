@@ -144,4 +144,7 @@
   <data name="VersionsPage.Title" xml:space="preserve">
     <value>Versions</value>
   </data>
+  <data name="cvVersionable.Text" xml:space="preserve">
+    <value>This item is not versionable.</value>
+  </data>
 </root>
