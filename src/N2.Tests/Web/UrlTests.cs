@@ -296,15 +296,31 @@ namespace N2.Tests.Web
         {
             Url u = "http://n2cms.com";
             u = u.AppendSegment("test2");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2"));
+        }
+
+        [Test]
+        public void CanAppendSegment_UsingDefaultExtension_ToEmptyPath()
+        {
+            Url u = "http://n2cms.com";
+            u = u.AppendSegment("test2", true);
             Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2.aspx"));
         }
 
         [Test]
-        public void CanAppendSegment_ToEmptyPath2()
+        public void CanAppendSegment_WithoutUsingDefaultExtension_ToEmptyPath()
+        {
+            Url u = "http://n2cms.com";
+            u = u.AppendSegment("test2", false);
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2"));
+        }
+
+        [Test]
+        public void CanAppendSegment_ToEmptyPath_WithTrailingSlash()
         {
             Url u = "http://n2cms.com/";
             u = u.AppendSegment("test2");
-            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2.aspx"));
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2"));
         }
 
         [Test]

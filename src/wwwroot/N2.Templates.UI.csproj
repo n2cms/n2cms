@@ -507,6 +507,13 @@
     <Compile Include="Wiki\Items\Wiki.cs" />
     <Compile Include="Wiki\Items\WikiArticle.cs" />
     <Compile Include="Wiki\Items\WikiText.cs" />
+    <Compile Include="Wiki\UI\Version.aspx.cs">
+      <DependentUpon>Version.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\Version.aspx.designer.cs">
+      <DependentUpon>Version.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Wiki\UI\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -527,6 +534,13 @@
     </Compile>
     <Compile Include="Wiki\UI\NoHits.aspx.designer.cs">
       <DependentUpon>NoHits.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Wiki\UI\Upload.aspx.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wiki\UI\Upload.aspx.designer.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
     </Compile>
     <Compile Include="Wiki\UI\WikiTemplates\ActionParameter.ascx.cs">
       <DependentUpon>ActionParameter.ascx</DependentUpon>
@@ -928,12 +942,14 @@
     <Content Include="Search\UI\Default.aspx" />
     <Content Include="Search\UI\Img\zoom.png" />
     <Content Include="UI\500.aspx" />
+    <Content Include="Wiki\UI\Version.aspx" />
     <Content Include="Wiki\UI\Edit.aspx" />
     <Content Include="Wiki\UI\History.aspx" />
     <Content Include="Wiki\UI\img\article_wiki.gif" />
     <Content Include="Wiki\UI\img\page_wiki.gif" />
     <Content Include="Wiki\UI\img\part_wiki.gif" />
     <Content Include="Wiki\UI\NoHits.aspx" />
+    <Content Include="Wiki\UI\Upload.aspx" />
     <Content Include="Wiki\UI\WikiTemplates\ActionParameter.ascx" />
     <Content Include="Wiki\UI\WikiTemplates\AllArticles.ascx" />
     <Content Include="Wiki\UI\Parts\EditArticle.ascx" />

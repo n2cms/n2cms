@@ -8,6 +8,6 @@ namespace N2.Templates.Wiki
     {
         ContentItem GetChild(string name);
         IEnumerable<string> ModifyRoles { get; }
-        string Url { get; }
+        string UploadFolder { get; }
     }
 }

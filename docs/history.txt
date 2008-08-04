@@ -7,6 +7,20 @@
 - refactored iwebcontext
 - url support for extension
 - [NotVersionable] support
+- wiki
+	- external link name
+	- Same target, different name: San Francisco also has [[public transport|public transportation]].
+	- Image: [[Image:wiki.png]]
+	- Image: [[Image:wiki.png|Wikipedia, The Free Encyclopedia.]]
+	- Image: Upload
+	- Security lift: Can display version
+	- wiki defaults to textarea instad of freetextarea (configurable)
+	- parses newlines in wiki text
+	- formatting: ''italic'', '''bold''', '''''bold italic'''''
+	- unordered lists (*)
+	- ordered lists (#)
+	- show only articles in search results
+
 
 1.4.1
 - error handling with email option

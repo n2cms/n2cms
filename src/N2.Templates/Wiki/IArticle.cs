@@ -10,6 +10,7 @@ namespace N2.Templates.Wiki
         DateTime Updated { get; }
         string Title { get; }
         string Text { get; }
+        string Url { get; }
         string SavedBy { get; }
         string Action { get; }
         string ActionParameter { get; }

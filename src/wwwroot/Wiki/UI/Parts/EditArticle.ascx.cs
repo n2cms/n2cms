@@ -11,6 +11,9 @@ using System.Web.UI.WebControls.WebParts;
 using N2.Templates.Wiki.Web;
 using N2.Persistence;
 using N2.Templates.Rss;
+using N2.Templates.Configuration;
+using System.Web.Configuration;
+using N2.Resources;
 
 namespace N2.Templates.Wiki.UI.Parts
 {
@@ -36,8 +39,13 @@ namespace N2.Templates.Wiki.UI.Parts
                 WikiParser parser = Engine.Resolve<WikiParser>();
                 WikiRenderer renderer = Engine.Resolve<WikiRenderer>();
                 renderer.AddTo(parser.Parse(Text), pnlMessage, CurrentPage.WikiRoot, CurrentPage);
-
             }
+
+            TemplatesSection config = WebConfigurationManager.GetSection("n2/templates") as TemplatesSection;
+            txtText.EnableFreeTextArea = config != null && config.Wiki.FreeTextMode;
+
+            Register.JQuery(Page);
+
             base.OnInit(e);
         }
 

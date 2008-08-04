@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Collections.Generic;
+using N2.Collections;
 
 namespace N2.Templates.Wiki.UI
 {
@@ -18,8 +19,11 @@ namespace N2.Templates.Wiki.UI
         {
             IList<ContentItem> hits = N2.Find.Items
                 .Where.Parent.Eq((ContentItem)CurrentPage.WikiRoot)
-                .And.OpenBracket().Title.Like("%" + CurrentPage.ActionParameter + "%")
-                .Or.Detail("Text").Like("%" + CurrentPage.ActionParameter + "%").CloseBracket()
+                .And.OpenBracket()
+                    .Title.Like("%" + CurrentPage.ActionParameter + "%")
+                    .Or.Detail("Text").Like("%" + CurrentPage.ActionParameter + "%")
+                .CloseBracket()
+                .Filters(new AccessFilter(Page.User, Engine.SecurityManager), new PageFilter())
                 .Select();
             
             if (hits.Count == 0)

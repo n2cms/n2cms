@@ -6,6 +6,10 @@ using N2.Templates.Wiki.Fragmenters;
 
 namespace N2.Templates.Wiki
 {
+    /// <summary>
+    /// Turns a chunk of wiki formatted text into fragments that can be 
+    /// consumed by a wiki renderer.
+    /// </summary>
     public class WikiParser
     {
         IList<IFragmenter> fragmenters = new List<IFragmenter>();
@@ -18,6 +22,10 @@ namespace N2.Templates.Wiki
             fragmenters.Add(new ExternalLinkFragmenter());
             fragmenters.Add(new HeadingFragmenter());
             fragmenters.Add(new TemplateFragmenter());
+            fragmenters.Add(new LineFragmenter());
+            fragmenters.Add(new FormatFragmenter());
+            fragmenters.Add(new UnorderedListFragmenter());
+            fragmenters.Add(new OrderedListFragmenter());
             fragmenters.Add(new TextFragmenter());
         }
 
@@ -40,11 +48,18 @@ namespace N2.Templates.Wiki
 
             IFragmenter fragmenter = fragmenters[fragmenterIndex];
             int index = 0;
+            Fragment lastFragment = null;
             foreach (Fragment f in fragmenter.GetFragments(text))
             {
                 if (f.StartIndex > index)
                 {
                     Fragment(text.Substring(index, f.StartIndex - index), fragmenterIndex + 1, fragments);
+                }
+                if (lastFragment != null)
+                {
+                    f.Previous = lastFragment;
+                    lastFragment.Next = f;
+                    lastFragment = f;
                 }
                 fragments.Add(f);
                 index = f.StartIndex + f.Length;
@@ -52,19 +67,5 @@ namespace N2.Templates.Wiki
             if (index < text.Length)
                 Fragment(text.Substring(index), fragmenterIndex + 1, fragments);
         }
-
-        //protected virtual Fragmenter CreateFragment(string value)
-        //{
-        //    string key = string.Empty;
-        //    int colonIndex = value.IndexOf(':');
-        //    if (colonIndex > 0)
-        //    {
-        //        key = value.Substring(0, colonIndex);
-        //    }
-        //    if (map.ContainsKey(key))
-        //        return map[key].Construct();
-        //    else
-        //        return new TextFragment(value);
-        //}
     }
 }

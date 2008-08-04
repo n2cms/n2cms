@@ -99,15 +99,21 @@ namespace N2.Web.UI.WebControls
 				       ?? N2.Context.Current.EditManager.GetEditorCssUrl();
 			}
 			set { ViewState["CssFile"] = value; }
-		}
+        }
 
-		public virtual string PopupOptions
-		{
-			get { return (string) ViewState["PopupOptions"] ?? "height=600,width=400,resizable=yes,status=yes,scrollbars=yes"; }
-			set { ViewState["PopupOptions"] = value; }
-		}
+        public virtual string PopupOptions
+        {
+            get { return (string)ViewState["PopupOptions"] ?? "height=600,width=400,resizable=yes,status=yes,scrollbars=yes"; }
+            set { ViewState["PopupOptions"] = value; }
+        }
 
-		#endregion
+        public virtual bool EnableFreeTextArea
+        {
+            get { return (bool)(ViewState["EnableFreeTextArea"] ?? true); }
+            set { ViewState["EnableFreeTextArea"] = value; }
+        }
+
+        #endregion
 
 		#region Methods
 
@@ -115,18 +121,21 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			Page.ClientScript.RegisterClientScriptInclude("tiny_mce.js", N2.Web.Url.ToAbsolute("~/edit/js/tiny_mce/tiny_mce.js"));
-			Page.ClientScript.RegisterClientScriptBlock(typeof (FreeTextArea), "fileBrowserCallBack", fileBrowserCallBack, true);
+            if (EnableFreeTextArea)
+            {
+                Page.ClientScript.RegisterClientScriptInclude("tiny_mce.js", N2.Web.Url.ToAbsolute("~/edit/js/tiny_mce/tiny_mce.js"));
+                Page.ClientScript.RegisterClientScriptBlock(typeof(FreeTextArea), "fileBrowserCallBack", fileBrowserCallBack, true);
 
-			string script = string.Format(scriptFormat,
-			                              ClientID,
-			                              Plugins,
-			                              CssFile,
-			                              PopupOptions,
-			                              FileBrowserUrl, // {4}
-                                          Theme
-				);
-			Page.ClientScript.RegisterClientScriptBlock(typeof (FreeTextArea), ClientID, script, true);
+                string script = string.Format(scriptFormat,
+                                              ClientID,
+                                              Plugins,
+                                              CssFile,
+                                              PopupOptions,
+                                              FileBrowserUrl, // {4}
+                                              Theme
+                    );
+                Page.ClientScript.RegisterClientScriptBlock(typeof(FreeTextArea), ClientID, script, true);
+            }
 		}
 
 		#endregion

@@ -12,10 +12,11 @@ namespace N2.Templates.Wiki.Renderers
 
         public Control AddTo(Control container, ViewContext context)
         {
-            string link = context.Fragment.Value.Trim('[', ']');
+            string[] link = context.Fragment.Value.Trim('[', ']').Split('|');
             HtmlAnchor a = new HtmlAnchor();
-            a.HRef = link;
-            a.InnerHtml = link;
+            a.HRef = link[0];
+            a.InnerHtml = link.Length > 1 ? link[1] : link[0];
+            a.Attributes["rel"] = "nofollow"; // fight linkspam
             container.Controls.Add(a);
             return a;
         }

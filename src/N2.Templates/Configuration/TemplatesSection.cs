@@ -25,5 +25,13 @@ namespace N2.Templates.Configuration
             set { base["masterPageFile"] = value; }
         }
 
+        /// <summary>Configuration related to the wiki module.</summary>
+        [ConfigurationProperty("wiki")]
+        public WikiElement Wiki
+        {
+            get { return (WikiElement)base["wiki"]; }
+            set { base["wiki"] = value; }
+        }
+
     }
 }

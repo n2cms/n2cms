@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Configuration\MailConfigSource.cs" />
     <Compile Include="Configuration\TemplatesSection.cs" />
+    <Compile Include="Configuration\WikiElement.cs" />
     <Compile Include="Details\LayoutSelectorAttribute.cs" />
     <Compile Include="Details\DropDownAttribute.cs" />
     <Compile Include="Details\ThemeSelectorAttribute.cs" />
@@ -109,7 +110,11 @@
     <Compile Include="Web\UI\WebControls\Path.cs" />
     <Compile Include="Wiki\Fragment.cs" />
     <Compile Include="Wiki\Fragmenters\CommentFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\OrderedListFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\HeadingFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\LineFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\FormatFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\UnorderedListFragmenter.cs" />
     <Compile Include="Wiki\HtmlFilter.cs" />
     <Compile Include="Wiki\IFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\TemplateFragmenter.cs" />
@@ -123,6 +128,9 @@
     <Compile Include="Wiki\Renderers\ExternalLinkRenderer.cs" />
     <Compile Include="Wiki\Renderers\HeadingRenderer.cs" />
     <Compile Include="Wiki\Renderers\InternalLinkRenderer.cs" />
+    <Compile Include="Wiki\Renderers\LineRenderer.cs" />
+    <Compile Include="Wiki\Renderers\FormatRenderer.cs" />
+    <Compile Include="Wiki\Renderers\ListRenderer.cs" />
     <Compile Include="Wiki\Renderers\TemplateRenderer.cs" />
     <Compile Include="Wiki\Renderers\TextRenderer.cs" />
     <Compile Include="Wiki\Renderers\UserInfoRenderer.cs" />

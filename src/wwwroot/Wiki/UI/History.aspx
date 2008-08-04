@@ -19,7 +19,7 @@
         <ItemTemplate>
             <div title="<%# Eval("ID") %>" class="item">
                 <span><%# Eval("Expires")%></span>
-                <a href="<%# Eval("Url") %>">
+                <a href="<%# N2.Web.Url.Parse(CurrentPage.Url).AppendSegment("version").AppendSegment(Eval("ID").ToString(), true) %>">
                     <%# Eval("Title") %>
                 </a>
                  by <%# Eval("SavedBy") %>

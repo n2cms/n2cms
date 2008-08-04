@@ -32,6 +32,14 @@ namespace N2.Templates.Wiki.Items
             Visible = true;
         }
 
+        public static string DefaultUploadFolder = "/Upload/Wiki/";
+        [WikiText("Upload Folder", 100, ContainerName = Wiki.WikiTab)]
+        public virtual string UploadFolder
+        {
+            get { return (string)(GetDetail("UploadFolder") ?? DefaultUploadFolder); }
+            set { SetDetail("UploadFolder", value, DefaultUploadFolder); }
+        }
+
         public static string DefaultSubmitText = "<p>Please write some content for the article '{{actionparameter}}'.</p>";
         [WikiText("Submit Text", 110, ContainerName = Wiki.WikiTab)]
         public virtual string SubmitText

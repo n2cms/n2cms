@@ -25,6 +25,8 @@ namespace N2.Templates.Wiki.Items
             ActionTemplates["submit"] = "~/Wiki/UI/Submit.aspx";
             ActionTemplates["modify"] = "~/Wiki/UI/Edit.aspx";
             ActionTemplates["history"] = "~/Wiki/UI/History.aspx";
+            ActionTemplates["upload"] = "~/Wiki/UI/Upload.aspx";
+            ActionTemplates["version"] = "~/Wiki/UI/Version.aspx";
         }
 
         public WikiArticle()

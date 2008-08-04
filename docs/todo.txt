@@ -1,20 +1,26 @@
+- wiki versions permissions
 - wiki
-	- show only articles in search results
 	- categories
-	- comments
 	- nested articles
 	- track back links
 	- code formatting
+	- unordered lists
+		- **
+		- ***
+	- ordered lists
+		- ##
+		- ###
+	- indent
+		- :
+		- ::
+		- :::
 	- images
-		- [[Image:wiki.png]]
-		- [[Image:wiki.png|Wikipedia, The Free Encyclopedia.]]
 		- Floating to the right side of the page using the frame attribute and a caption: [[Image:wiki.png|frame|Wikipedia Encyclopedia]]
 		- Floating to the right side of the page using the thumb attribute and a caption: [[Image:wiki.png|thumb|Wikipedia Encyclopedia]]
 		- Floating to the right side of the page without a caption: [[Image:wiki.png|right|Wikipedia Encyclopedia]]
 		- [[Image:wiki.png|30 px]]
 		- Linking directly to the description page of an image: [[:Image:wiki.png]]
 		- Linking directly to an image without displaying it: [[:media:wiki.png|Image of the jigsaw globe logo]]
-	- image/media upload
 	- <!-- comment here -->
 	- __TOC__ 
 	- __NOTOC__ 
@@ -34,7 +40,6 @@
 		- Or both: [[Wikipedia: Manual of Style (headings)|]]
 		- But not: [[Wikipedia: Manual of Style#Links|]]
 	- Endings blended into the links: San Francisco also has [[public transport]]ation.
-	- Same target, different name: San Francisco also has [[public transport|public transportation]].
 - idispatcher & content controller -> N2.dll
 - circuitbreaker
 - queue of t

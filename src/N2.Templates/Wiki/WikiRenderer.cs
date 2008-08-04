@@ -4,22 +4,30 @@ using System.Text;
 using System.Web.UI;
 using N2.Templates.Wiki.Renderers;
 using N2.Plugin;
+using N2.Web;
 
 namespace N2.Templates.Wiki
 {
+    /// <summary>
+    /// Turns a stream of wiki fragments into asp.net controls responsible for 
+    /// rendering the user interface.
+    /// </summary>
     public class WikiRenderer
     {
         IDictionary<string, IRenderer> map = new Dictionary<string, IRenderer>();
 
-        public WikiRenderer(IPluginFinder pluginFinder)
+        public WikiRenderer(IPluginFinder pluginFinder, IWebContext webContext)
         {
             Map["Comment"] = new CommentRenderer();
             Map["UserInfo"] = new UserInfoRenderer();
-            Map["InternalLink"] = new InternalLinkRenderer();
+            Map["InternalLink"] = new InternalLinkRenderer(webContext);
             Map["ExternalLink"] = new ExternalLinkRenderer();
             Map["Text"] = FallbackRenderer = new TextRenderer();
             Map["Template"] = new TemplateRenderer(pluginFinder.GetPlugins<ITemplateRenderer>());
             Map["Heading"] = new HeadingRenderer();
+            Map["Line"] = new LineRenderer();
+            Map["OrderedList"] = Map["UnorderedList"] = new ListRenderer();
+            Map["Format"] = new FormatRenderer();
         }
 
         public IRenderer FallbackRenderer { get; set; }

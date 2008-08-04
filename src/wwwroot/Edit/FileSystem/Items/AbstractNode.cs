@@ -9,10 +9,11 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using N2.Details;
 using N2.Edit.Trash;
+using N2.Persistence;
 
 namespace N2.Edit.FileSystem.Items
 {
-    [NotThrowable]
+    [NotThrowable, NotVersionable]
     public abstract class AbstractNode : ContentItem, INode
     {
         public override string Title

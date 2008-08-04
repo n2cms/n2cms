@@ -371,24 +371,36 @@ namespace N2.Web
         public Url AppendSegment(string segment, string extension)
         {
             string newPath;
-            if (path.Length == 0)
+            if (string.IsNullOrEmpty(path))
                 newPath = "/" + segment + extension;
             else if (path == "/")
                 newPath = path + segment + extension;
-            else
+            else if (extension != null)
             {
                 int extensionIndex = path.LastIndexOf(extension);
                 if (extensionIndex >= 0)
                     newPath = path.Insert(extensionIndex, "/" + segment);
+                else if(path.EndsWith("/"))
+                    newPath = path + segment;
                 else
                     newPath = path + "/" + segment;
             }
+            else if (path.EndsWith("/"))
+                newPath = path + segment;
+            else
+                newPath = path + "/" + segment;
+
             return new Url(scheme, authority, newPath, query, fragment);
         }
 
         public Url AppendSegment(string segment)
         {
-            return AppendSegment(segment, DefaultExtension);
+            return AppendSegment(segment, Extension);
+        }
+
+        public Url AppendSegment(string segment, bool useDefaultExtension)
+        {
+            return AppendSegment(segment, useDefaultExtension ? DefaultExtension : Extension);
         }
 
         public Url AppendQuery(NameValueCollection queryString)
