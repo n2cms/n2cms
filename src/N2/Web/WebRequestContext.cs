@@ -121,15 +121,15 @@ namespace N2.Web
         /// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
         public virtual void Dispose()
         {
-            string[] keys = new string[RequestItems.Keys.Count];
+            object[] keys = new object[RequestItems.Keys.Count];
             RequestItems.Keys.CopyTo(keys, 0);
 
-            foreach (string key in keys)
+            foreach (object key in keys)
             {
                 IClosable value = RequestItems[key] as IClosable;
                 if (value != null)
                 {
-                    (value as IClosable).Dispose();
+                    value.Dispose();
                 }
             }
         }
