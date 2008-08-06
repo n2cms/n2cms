@@ -8,5 +8,6 @@ namespace N2.Templates.Wiki
     {
         public IArticle Article { get; set; }
         public Fragment Fragment { get; set; }
+        public IDictionary<string, object> State { get; set; }
     }
 }

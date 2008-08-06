@@ -3,3 +3,4 @@
 .cf { *display: inline-block; }
 * html .cf { height: 1px; }
 a img { border:none; vertical-align:middle; }
+.menu,.menu ul { list-style-type:none;}

@@ -110,10 +110,12 @@
     <Compile Include="Web\UI\WebControls\Path.cs" />
     <Compile Include="Wiki\Fragment.cs" />
     <Compile Include="Wiki\Fragmenters\CommentFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\ListFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\OrderedListFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\HeadingFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\LineFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\FormatFragmenter.cs" />
+    <Compile Include="Wiki\Fragmenters\RegexFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\UnorderedListFragmenter.cs" />
     <Compile Include="Wiki\HtmlFilter.cs" />
     <Compile Include="Wiki\IFragmenter.cs" />
@@ -131,8 +133,10 @@
     <Compile Include="Wiki\Renderers\LineRenderer.cs" />
     <Compile Include="Wiki\Renderers\FormatRenderer.cs" />
     <Compile Include="Wiki\Renderers\ListRenderer.cs" />
+    <Compile Include="Wiki\Renderers\OrderedListRenderer.cs" />
     <Compile Include="Wiki\Renderers\TemplateRenderer.cs" />
     <Compile Include="Wiki\Renderers\TextRenderer.cs" />
+    <Compile Include="Wiki\Renderers\UnorderedListRenderer.cs" />
     <Compile Include="Wiki\Renderers\UserInfoRenderer.cs" />
     <Compile Include="Wiki\ViewContext.cs" />
     <Compile Include="Wiki\Utility.cs" />
@@ -144,7 +148,6 @@
     <Compile Include="Wiki\WikiTemplateAttribute.cs" />
     <Compile Include="Wiki\WikiTextAttribute.cs" />
     <Compile Include="Wiki\Fragmenters\ExternalLinkFragmenter.cs" />
-    <Compile Include="Wiki\Fragmenters\AbstractFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\InternalLinkFragmenter.cs" />
     <Compile Include="Wiki\Fragmenters\TextFragmenter.cs" />
     <Compile Include="Wiki\WikiParser.cs" />

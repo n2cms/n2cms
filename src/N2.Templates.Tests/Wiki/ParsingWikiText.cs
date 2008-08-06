@@ -6,6 +6,7 @@ using NUnit.Framework;
 using N2.Templates.Wiki;
 using NUnit.Framework.SyntaxHelpers;
 using N2.Templates.Wiki.Fragmenters;
+using NUnit.Framework.Extensions;
 
 namespace N2.Templates.Tests.Wiki
 {
@@ -248,6 +249,172 @@ namespace N2.Templates.Tests.Wiki
             Assert.That(fragments.Count, Is.EqualTo(1));
             Assert.That(fragments[0].Name, Is.EqualTo("Heading"));
             Assert.That(fragments[0].Value, Is.EqualTo("==Heading 2=="));
+        }
+
+        [RowTest]
+        [Row("* List item contents", "UnorderedList", "*")]
+        [Row("** List item contents", "UnorderedList", "**")]
+        [Row("*** List item contents", "UnorderedList", "***")]
+        [Row("# List item contents", "OrderedList", "#")]
+        [Row("## List item contents", "OrderedList", "##")]
+        [Row("### List item contents", "OrderedList", "###")]
+        public void Lists_CanContainChildFragments_WithText(string input, string expectedName, string expectedValue)
+        {
+            var fragments = parser.Parse(input).ToList();
+            Assert.That(fragments.Count, Is.EqualTo(1), "'" + input + "' resulted in too many fragments.");
+            Assert.That(fragments[0].Name, Is.EqualTo(expectedName));
+            Assert.That(fragments[0].Value, Is.EqualTo(expectedValue));
+            
+            var children = fragments[0].ChildFragments.ToList();
+            Assert.That(children.Count, Is.EqualTo(1));
+            Assert.That(children[0].Name, Is.EqualTo("Text"));
+            Assert.That(children[0].Value, Is.EqualTo("List item contents"));
+        }
+
+        [Test]
+        public void List_MayContain_LinkAndText()
+        {
+            var fragments = parser.Parse("* [[Link]] Text").ToList();
+            Assert.That(fragments.Count, Is.EqualTo(1));
+            Assert.That(fragments[0].ChildFragments.Count, Is.EqualTo(2));
+            Assert.That(fragments[0].ChildFragments[0].Name, Is.EqualTo("InternalLink"));
+            Assert.That(fragments[0].ChildFragments[1].Name, Is.EqualTo("Text"));
+        }
+
+        [Test]
+        public void DoesntInsertLineFragment_BetweenListFragments()
+        {
+            string input = @"* Line 1
+* Line 2";
+            var fragments = parser.Parse(input).ToList();
+
+            Assert.That(fragments.Count, Is.EqualTo(2));
+            Assert.That(fragments[0].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[1].Name, Is.EqualTo("UnorderedList"));
+        }
+
+        [Test]
+        public void AppendsToParentFragment_WhenParsingNestedList()
+        {
+            string input = @"* List 1
+** List 1.1";
+            var fragments = parser.Parse(input).ToList();
+
+            Assert.That(fragments.Count, Is.EqualTo(1));
+            Assert.That(fragments[0].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[0].InnerContents, Is.EqualTo("List 1"));
+            Assert.That(fragments[0].ChildFragments.Count, Is.EqualTo(2));
+            Assert.That(fragments[0].ChildFragments[1].Name, Is.EqualTo("UnorderedList"));
+        }
+
+        [Test]
+        public void AppendsSubsequentFragment_ToMasterList_AfterNestedList()
+        {
+            string input = @"* List 1
+** List 1.1
+* List 2";
+            var fragments = parser.Parse(input).ToList();
+
+            Assert.That(fragments.Count, Is.EqualTo(2));
+            Assert.That(fragments[0].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[0].InnerContents, Is.EqualTo("List 1"));
+            Assert.That(fragments[0].ChildFragments.Count, Is.EqualTo(2));
+            Assert.That(fragments[0].ChildFragments[1].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[1].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[1].InnerContents, Is.EqualTo("List 2"));
+        }
+
+        [Test]
+        public void AppendsSubsequentFragment_ToMasterList_AfterSeveralNestedItems()
+        {
+            string input = @"* List 1
+** List 1.1
+** List 1.2
+* List 2";
+            var fragments = parser.Parse(input).ToList();
+
+            Assert.That(fragments.Count, Is.EqualTo(2));
+            Assert.That(fragments[0].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[0].InnerContents, Is.EqualTo("List 1"));
+            Assert.That(fragments[0].ChildFragments.Count, Is.EqualTo(3));
+            Assert.That(fragments[0].ChildFragments[1].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[1].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[1].InnerContents, Is.EqualTo("List 2"));
+        }
+
+        [Test]
+        public void ChildFragments_ReferToEachOther()
+        {
+            string input = @"* List 1
+** List 1.1
+** List 1.2";
+            var fragments = parser.Parse(input).ToList();
+            var children = fragments[0].ChildFragments;
+
+            Assert.That(children[0].Next, Is.SameAs(children[1]));
+            Assert.That(children[1].Previous, Is.SameAs(children[0]));
+        }
+        
+
+        [Test]
+        public void AppendsSubsequentFragment_ToMasterList_AfterHorriblyNestedList()
+        {
+            string input = @"* List 1
+** List 1.1
+*** List 1.1.1
+* List 2";
+            var fragments = parser.Parse(input).ToList();
+
+            Assert.That(fragments.Count, Is.EqualTo(2));
+            Assert.That(fragments[0].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[0].InnerContents, Is.EqualTo("List 1"));
+            Assert.That(fragments[0].ChildFragments.Count, Is.EqualTo(2));
+            var list11 = fragments[0].ChildFragments[1];
+            Assert.That(list11.ChildFragments.Count, Is.EqualTo(2));
+            Assert.That(list11.ChildFragments[1].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[1].Name, Is.EqualTo("UnorderedList"));
+            Assert.That(fragments[1].InnerContents, Is.EqualTo("List 2"));
+        }
+
+        [Test]
+        public void UnderstandingNewLineMatches()
+        {
+            string input = @"hello
+world";
+            var m = System.Text.RegularExpressions.Regex.Matches(input, @"[\r\n]+", System.Text.RegularExpressions.RegexOptions.CultureInvariant | System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.IgnorePatternWhitespace | System.Text.RegularExpressions.RegexOptions.Multiline);
+            Assert.That(m[0].Value, Is.EqualTo(Environment.NewLine));
+            Assert.That(m.Count, Is.EqualTo(1));
+            Assert.That(m[0].Index, Is.EqualTo(5));
+            Assert.That(m[0].Length, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void UnderstandingDotMatches()
+        {
+            string txt = @"hello
+world";
+            var m = System.Text.RegularExpressions.Regex.Matches(txt, @"^.*$[\r\n]*", System.Text.RegularExpressions.RegexOptions.CultureInvariant | System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.IgnorePatternWhitespace | System.Text.RegularExpressions.RegexOptions.Multiline);
+            Assert.That(m.Count, Is.EqualTo(2));
+            Assert.That(m[0].Value, Is.EqualTo("hello" + Environment.NewLine));
+            Assert.That(m[1].Value, Is.EqualTo("world"));
+        }
+
+        [Test]
+        public void Next_PointsTo_NextFragment()
+        {
+            string input = "hello [[world]]";
+            var fragments = parser.Parse(input).ToList();
+            Assert.That(fragments[0].Next, Is.SameAs(fragments[1]));
+            Assert.That(fragments[1].Next, Is.Null);
+        }
+
+        [Test]
+        public void Previous_PointsTo_PreviousFragment()
+        {
+            string input = "hello [[world]]";
+            var fragments = parser.Parse(input).ToList();
+            Assert.That(fragments[0].Previous, Is.Null); 
+            Assert.That(fragments[1].Previous, Is.SameAs(fragments[0]));
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Text;
 
 namespace N2.Templates.Wiki.Fragmenters
 {
-    public class LineFragmenter : AbstractFragmenter
+    public class LineFragmenter : RegexFragmenter
     {
         public LineFragmenter()
+            : base(@"[\r\n]*(</?\s*(br|p)(\s[^>]>|>))[\r\n]*|[\r\n]+")
         {
-            Expression = CreateExpression(@"[\r\n]*(</?\s*(br|p)(\s[^>]>|>))[\r\n]*|[\r\n]+"); 
         }
     }
 }

@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace N2.Templates.Wiki.Fragmenters
 {
-    public class UserInfoFragmenter : AbstractFragmenter
+    public class UserInfoFragmenter : RegexFragmenter
     {
         public UserInfoFragmenter()
+            : base("[~]{3,5}")
         {
-            Expression = CreateExpression("[~]{3,5}");
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Text;
 
 namespace N2.Templates.Wiki.Fragmenters
 {
-    public class FormatFragmenter : AbstractFragmenter
+    public class FormatFragmenter : RegexFragmenter
     {
         public FormatFragmenter()
+            :base("'{2,}[^']+?'{2,}")
         {
-            Expression = CreateExpression("'{2,}[^']+?'{2,}");
         }
     }
 }

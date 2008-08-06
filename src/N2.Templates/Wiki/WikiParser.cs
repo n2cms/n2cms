@@ -17,19 +17,19 @@ namespace N2.Templates.Wiki
         public WikiParser()
         {
             fragmenters.Add(new CommentFragmenter());
+            fragmenters.Add(new UnorderedListFragmenter());
+            fragmenters.Add(new OrderedListFragmenter());
             fragmenters.Add(new UserInfoFragmenter());
             fragmenters.Add(new InternalLinkFragmenter());
             fragmenters.Add(new ExternalLinkFragmenter());
             fragmenters.Add(new HeadingFragmenter());
             fragmenters.Add(new TemplateFragmenter());
-            fragmenters.Add(new LineFragmenter());
             fragmenters.Add(new FormatFragmenter());
-            fragmenters.Add(new UnorderedListFragmenter());
-            fragmenters.Add(new OrderedListFragmenter());
+            fragmenters.Add(new LineFragmenter());
             fragmenters.Add(new TextFragmenter());
         }
 
-        public void Add(AbstractFragmenter fragment)
+        public void Add(RegexFragmenter fragment)
         {
             fragmenters.Add(fragment);
         }
@@ -48,20 +48,17 @@ namespace N2.Templates.Wiki
 
             IFragmenter fragmenter = fragmenters[fragmenterIndex];
             int index = 0;
-            Fragment lastFragment = null;
             foreach (Fragment f in fragmenter.GetFragments(text))
             {
                 if (f.StartIndex > index)
                 {
                     Fragment(text.Substring(index, f.StartIndex - index), fragmenterIndex + 1, fragments);
                 }
-                if (lastFragment != null)
+                if (!string.IsNullOrEmpty(f.InnerContents))
                 {
-                    f.Previous = lastFragment;
-                    lastFragment.Next = f;
-                    lastFragment = f;
+                    Fragment(f.InnerContents, 0, f.ChildFragments);
                 }
-                fragments.Add(f);
+                fragmenter.Add(f, fragments);
                 index = f.StartIndex + f.Length;
             }
             if (index < text.Length)

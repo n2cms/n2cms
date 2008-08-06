@@ -7,11 +7,11 @@ using System.Web.UI;
 
 namespace N2.Templates.Wiki.Fragmenters
 {
-    public class InternalLinkFragmenter : AbstractFragmenter
+    public class InternalLinkFragmenter : RegexFragmenter
     {
         public InternalLinkFragmenter()
+            : base(@"\[\[[^\[\]]*?\]\]")
         {
-            Expression = CreateExpression(@"\[\[[^\[\]]*?\]\]");
         }
     }
 }

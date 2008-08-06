@@ -38,7 +38,7 @@ namespace N2.Templates.Wiki.UI.Parts
             {
                 WikiParser parser = Engine.Resolve<WikiParser>();
                 WikiRenderer renderer = Engine.Resolve<WikiRenderer>();
-                renderer.AddTo(parser.Parse(Text), pnlMessage, CurrentPage.WikiRoot, CurrentPage);
+                renderer.AddTo(parser.Parse(Text), pnlMessage, CurrentPage);
             }
 
             TemplatesSection config = WebConfigurationManager.GetSection("n2/templates") as TemplatesSection;

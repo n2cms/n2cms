@@ -323,7 +323,57 @@ Line 2
         {
             string input = @"* Text";
             string output = ParseAndRenderWikiText(input);
-            Assert.That(output, Is.EqualTo("<li>Text</li>"));
+            Assert.That(output, Is.EqualTo("<ul><li>Text</li></ul>"));
+        }
+
+        [Test]
+        public void CanNest_UnorderedLists()
+        {
+            string input = @"* Text
+** Child Text";
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ul><li>Text<ul><li>Child Text</li></ul></li></ul>"));
+        }
+
+        [Test]
+        public void CanNest_AndUnnest_UnorderedLists()
+        {
+            string input = @"* Text 1
+** Child Text
+* Text 2";
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ul><li>Text 1<ul><li>Child Text</li></ul></li><li>Text 2</li></ul>"));
+        }
+
+        [Test]
+        public void CanNest_AndUnnest_UnorderedLists_WithSeveralChildren()
+        {
+            string input = @"* Text 1
+** Child Text 1
+** Child Text 2
+* Text 2";
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ul><li>Text 1<ul><li>Child Text 1</li><li>Child Text 2</li></ul></li><li>Text 2</li></ul>"));
+        }
+
+        [Test]
+        public void CanNest_AndUnnest_UnorderedLists_WithThreeLevels()
+        {
+            string input = @"* Text 1
+** Child Text 1
+*** Grandchild Text 1
+** Child Text 2
+* Text 2";
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ul><li>Text 1<ul><li>Child Text 1<ul><li>Grandchild Text 1</li></ul></li><li>Child Text 2</li></ul></li><li>Text 2</li></ul>"));
+        }
+
+        [Test]
+        public void OrderedLists_MayContain_ChildFragments()
+        {
+            string input = "* [[existing-article]] Text";
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ul><li><a href=\"/wiki/existing-article.aspx\">existing-article</a> Text</li></ul>"));
         }
 
         [Test]
@@ -331,7 +381,16 @@ Line 2
         {
             string input = @"# Text";
             string output = ParseAndRenderWikiText(input);
-            Assert.That(output, Is.EqualTo("<li>Text</li>"));
+            Assert.That(output, Is.EqualTo("<ol><li>Text</li></ol>"));
+        }
+
+        [Test]
+        public void CanNest_OrderedLists()
+        {
+            string input = @"# Text
+## Child Text";
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ol><li>Text<ol><li>Child Text</li></ol></li></ol>"));
         }
 
         private string ParseAndRenderWikiText(string text)
@@ -340,7 +399,7 @@ Line 2
             using (var writer = new HtmlTextWriter(new StringWriter(buf)))
             {
                 Page container = new Page();
-                renderer.AddTo(parser.Parse(text), container, wiki, article);
+                renderer.AddTo(parser.Parse(text), container, article);
                 container.RenderControl(writer);
             }
             return buf.ToString();

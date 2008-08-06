@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace N2.Templates.Wiki.Fragmenters
 {
-    public class CommentFragmenter : AbstractFragmenter
+    public class CommentFragmenter : RegexFragmenter
     {
         public CommentFragmenter()
+            : base(@"[(][^)]+?[)]+")
         {
-            Expression = CreateExpression(@"[(][^)]+?[)]+"); 
         }
     }
 }

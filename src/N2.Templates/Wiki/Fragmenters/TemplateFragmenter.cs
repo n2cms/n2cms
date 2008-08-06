@@ -5,11 +5,11 @@ using System.Text.RegularExpressions;
 
 namespace N2.Templates.Wiki.Fragmenters
 {
-    public class TemplateFragmenter : AbstractFragmenter
+    public class TemplateFragmenter : RegexFragmenter
     {
         public TemplateFragmenter()
+            : base("{{.+?}}")
         {
-            Expression = new Regex("{{.+?}}");
         }
     }
 }

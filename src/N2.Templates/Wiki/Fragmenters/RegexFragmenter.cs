@@ -10,8 +10,13 @@ namespace N2.Templates.Wiki.Fragmenters
     /// <summary>
     /// Base class implementing some common functionality for fragmenters.
     /// </summary>
-    public abstract class AbstractFragmenter : IFragmenter
+    public abstract class RegexFragmenter : IFragmenter
     {
+        public RegexFragmenter(string expression)
+        {
+            Expression = CreateExpression(expression);
+        }
+
         protected virtual string Name
         {
             get { return GetType().Name.Replace("Fragmenter", ""); }
@@ -30,15 +35,28 @@ namespace N2.Templates.Wiki.Fragmenters
             }
         }
 
+        public virtual void Add(Fragment fragment, IList<Fragment> fragments)
+        {
+            if (fragments.Count > 0)
+            {
+                Fragment previousFragment = fragments[fragments.Count - 1];
+                fragment.Previous = previousFragment;
+                previousFragment.Next = fragment;
+            }
+            fragments.Add(fragment);
+        }
+
         protected virtual Fragment CreateFragment(Match m)
         {
             Fragment f = new Fragment
             {
                 Name = this.Name,
-                Value = m.Value,
                 StartIndex = m.Index,
-                Length = m.Length
+                Length = m.Length,
+                InnerContents = m.Groups["Contents"].Success ? m.Groups["Contents"].Value : "",
+                Value = m.Groups["Value"].Success ? m.Groups["Value"].Value : m.Value
             };
+
             return f;
         }
 

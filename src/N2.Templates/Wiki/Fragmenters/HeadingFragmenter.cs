@@ -4,11 +4,11 @@ using System.Text;
 
 namespace N2.Templates.Wiki.Fragmenters
 {
-    public class HeadingFragmenter : AbstractFragmenter
+    public class HeadingFragmenter : RegexFragmenter
     {
         public HeadingFragmenter()
+            : base(@"=+[^=\]]*?=+")
         {
-            Expression = CreateExpression(@"=+[^=\]]*?=+");
         }
     }
 }

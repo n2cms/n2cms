@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace N2.Templates.Wiki.Fragmenters
 {
-    public class TextFragmenter : AbstractFragmenter
+    public class TextFragmenter : RegexFragmenter
     {
         public TextFragmenter()
+            : base(".+")
         {
-            Expression = CreateExpression(".+"); 
         }
     }
 }

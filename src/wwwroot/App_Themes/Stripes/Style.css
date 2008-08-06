@@ -5,7 +5,6 @@
 body {font-family:Constantia,"Lucida Fax","Palatino Linotype",serif;font-size:.9em;}
 a img,table {border:0}
 a img{vertical-align:middle;}
-dl,ol,ul {list-style:none}
 button,select,textarea,input {font:100% serif}
 table {border-collapse:collapse}
 caption,th,td {text-align:left;vertical-align:top;}
@@ -87,6 +86,7 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 
 /* sitemap */
 #main ul { list-style:circle; margin-left:20px; }
+#main ol { margin-left:20px; }
 
 /* date */
 .date { font-size:x-small; color:#414141; display:block; }
