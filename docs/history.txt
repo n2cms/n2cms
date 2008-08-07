@@ -21,7 +21,7 @@
 	- wiki supports nested content in lists
 	- unordered lists (*, **, ***)
 	- ordered lists (#, ##, ###)
-
+- containers may now be secured without securint contained editables
 
 1.4.1
 - error handling with email option

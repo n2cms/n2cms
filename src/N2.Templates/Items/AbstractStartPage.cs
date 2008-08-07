@@ -6,8 +6,8 @@ using N2.Details;
 
 namespace N2.Templates.Items
 {
-    [N2.Web.UI.FieldSet("layoutArea", "Layout", 75, ContainerName = AbstractStartPage.SiteArea)]
-    [N2.Web.UI.FieldSet("miscArea", "Miscellaneous", 80, ContainerName = AbstractStartPage.SiteArea)]
+    [N2.Web.UI.FieldSet(AbstractStartPage.LayoutArea, "Layout", 75, ContainerName = AbstractStartPage.SiteArea, AuthorizedRoles = new string[] { "Administrators" })]
+    [N2.Web.UI.FieldSet(AbstractStartPage.MiscArea, "Miscellaneous", 80, ContainerName = AbstractStartPage.SiteArea, AuthorizedRoles = new string[] { "Administrators" })]
     public abstract class AbstractStartPage : AbstractContentPage, IStructuralPage, ISitesSource
 	{
         public const string SiteArea = "siteArea";
@@ -22,7 +22,6 @@ namespace N2.Templates.Items
 		}
 
 		public abstract string Theme { get; set; }
-		//public abstract string Layout { get; set; }
 
         [EditableLink("Not Found Page (404)", 77, ContainerName = MiscArea, HelpText = "Display this page when the requested URL isn't found")]
 		public virtual ContentItem NotFoundPage

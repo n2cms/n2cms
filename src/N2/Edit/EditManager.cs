@@ -233,7 +233,8 @@ namespace N2.Edit
 			ApplyModifications(definition, addedEditors);
 			foreach (IEditable e in definition.GetEditables(user))
 			{
-				e.UpdateEditor(item, addedEditors[e.Name]);
+                if(addedEditors.ContainsKey(e.Name) && addedEditors[e.Name] != null)
+				    e.UpdateEditor(item, addedEditors[e.Name]);
 			}
 		}
 
