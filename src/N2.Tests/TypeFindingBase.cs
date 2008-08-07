@@ -25,23 +25,24 @@ namespace N2.Tests
 
         protected IPrincipal CreateUser(string name, params string[] roles)
         {
-            IPrincipal user = mocks.StrictMock<IPrincipal>();
-            IIdentity identity = mocks.StrictMock<IIdentity>();
+            return base.CreatePrincipal(name, roles);
+            //IPrincipal user = mocks.StrictMock<IPrincipal>();
+            //IIdentity identity = mocks.StrictMock<IIdentity>();
 
-            Expect.On(user).Call(user.Identity).Return(identity).Repeat.AtLeastOnce();
-            Expect.On(user)
-                .Call(user.IsInRole(null))
-                .IgnoreArguments()
-                .Repeat.Any()
-                .Do(new IsInRole(delegate(string role)
-                {
-                    return Array.IndexOf<string>(roles, role) >= 0;
-                }));
-            mocks.Replay(user);
+            //Expect.On(user).Call(user.Identity).Return(identity).Repeat.AtLeastOnce();
+            //Expect.On(user)
+            //    .Call(user.IsInRole(null))
+            //    .IgnoreArguments()
+            //    .Repeat.Any()
+            //    .Do(new IsInRole(delegate(string role)
+            //    {
+            //        return Array.IndexOf<string>(roles, role) >= 0;
+            //    }));
+            //mocks.Replay(user);
 
-            Expect.On(identity).Call(identity.Name).Return(name).Repeat.AtLeastOnce();
-            mocks.Replay(identity);
-            return user;
+            //Expect.On(identity).Call(identity.Name).Return(name).Repeat.AtLeastOnce();
+            //mocks.Replay(identity);
+            //return user;
         }
 
         private delegate bool IsInRole(string role);

@@ -30,7 +30,8 @@ namespace N2.Definitions
 		private int sortOrder;
 		private string containerName;
 		private string[] authorizedRoles = null;
-		private string localizationClassKey = "EditableContainers";
+        private string[] authorizedUsers = null;
+        private string localizationClassKey = "EditableContainers";
 
 		#endregion
 
@@ -62,14 +63,21 @@ namespace N2.Definitions
 		{
 			get { return containerName; }
 			set { containerName = value; }
-		}
+        }
 
-		/// <summary>Gets or sets roles allowed to access this container.</summary>
-		public string[] AuthorizedRoles
-		{
-			get { return authorizedRoles; }
-			set { authorizedRoles = value; }
-		}
+        /// <summary>Gets or sets users allowed to access this container.</summary>
+        public string[] AuthorizedUsers
+        {
+            get { return authorizedUsers; }
+            set { authorizedUsers = value; }
+        }
+
+        /// <summary>Gets or sets roles allowed to access this container.</summary>
+        public string[] AuthorizedRoles
+        {
+            get { return authorizedRoles; }
+            set { authorizedRoles = value; }
+        }
 
 		public string LocalizationClassKey
 		{
@@ -92,8 +100,12 @@ namespace N2.Definitions
 				return false;
 
 			foreach (string role in authorizedRoles)
-				if (string.Equals(user.Identity.Name, role, StringComparison.OrdinalIgnoreCase) || user.IsInRole(role))
+				if (user.IsInRole(role))
 					return true;
+            if (authorizedUsers != null)
+                foreach (string name in authorizedUsers)
+                    if (string.Equals(user.Identity.Name, name, StringComparison.OrdinalIgnoreCase))
+                        return true;
 			return false;
 		}
 

@@ -19,7 +19,6 @@ namespace N2.Templates.UI.Items
 	[Definition("Start Page", "StartPage", "A start page template. It displays a horizontal meny but no vertical menu.", "", 440, Installer = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(RootPage), typeof(StartPage))]
 	[AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
-	[TabPanel("siteArea", "Site", 70)]
 	public class StartPage : AbstractStartPage, ILanguage, IFileSystemContainer
 	{
 		[FileAttachment, EditableImage("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]

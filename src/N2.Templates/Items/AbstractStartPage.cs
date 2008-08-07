@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using N2.Web;
 using N2.Details;
+using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
-    [N2.Web.UI.FieldSet(AbstractStartPage.LayoutArea, "Layout", 75, ContainerName = AbstractStartPage.SiteArea, AuthorizedRoles = new string[] { "Administrators" })]
-    [N2.Web.UI.FieldSet(AbstractStartPage.MiscArea, "Miscellaneous", 80, ContainerName = AbstractStartPage.SiteArea, AuthorizedRoles = new string[] { "Administrators" })]
+    [TabPanel("siteArea", "Site", 70, AuthorizedUsers = new string[] { "admin" }, AuthorizedRoles = new string[] { "Administrators" })]
+    [FieldSet(AbstractStartPage.LayoutArea, "Layout", 75, ContainerName = AbstractStartPage.SiteArea)]
+    [FieldSet(AbstractStartPage.MiscArea, "Miscellaneous", 80, ContainerName = AbstractStartPage.SiteArea)]
     public abstract class AbstractStartPage : AbstractContentPage, IStructuralPage, ISitesSource
 	{
         public const string SiteArea = "siteArea";

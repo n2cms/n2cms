@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace N2.Tests.Globalization
 {
-	public abstract class GlobalizationTests : PersistenceAwareBase
+	public abstract class GlobalizationTests : DatabasePreparingBase
 	{
 		protected ContentItem root;
 		protected LanguageRoot english;

@@ -22,6 +22,7 @@
 	- unordered lists (*, **, ***)
 	- ordered lists (#, ##, ###)
 - containers may now be secured without securint contained editables
+- containers can now be secured by either user or role name
 
 1.4.1
 - error handling with email option
