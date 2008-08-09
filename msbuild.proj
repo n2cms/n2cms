@@ -27,7 +27,7 @@
     <CallTarget Targets="Examples-Build"/>
   </Target>
 
-  <Target Name="Deploy">
+  <Target Name="Deploy" DependsOnTargets="Clean-Deploy">
     <Message Text="Deploying Everything"/>
 
     <CallTarget Targets="Core-Deploy"/>
@@ -37,17 +37,17 @@
   </Target>
 
   <Target Name="ZipDeploy" DependsOnTargets="Deploy">
-    <CreateItem Include="$(DeployFolder)\Core\**\*"><Output TaskParameter="Include" ItemName="ZipDeploy-Core"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Core)" ZipFileName="$(DeployFolder)\N2_CompiledRuntime.zip" />
+    <CreateItem Include="$(DeployFolder)\Core\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Core"/></CreateItem>
+		<Zip Files="@(ZipDeploy-Core)" WorkingDirectory="$(DeployFolder)" ZipFileName="N2_CompiledRuntime.zip" />
 
-		<CreateItem Include="$(DeployFolder)\Templates\**\*"><Output TaskParameter="Include" ItemName="ZipDeploy-Templates"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Templates)" ZipFileName="$(DeployFolder)\N2_CompiledTemplates.zip" />
+		<CreateItem Include="$(DeployFolder)\Templates\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Templates"/></CreateItem>
+		<Zip Files="@(ZipDeploy-Templates)" WorkingDirectory="$(DeployFolder)" ZipFileName="N2_CompiledTemplates.zip" />
 
-		<CreateItem Include="$(DeployFolder)\Source\**\*"><Output TaskParameter="Include" ItemName="ZipDeploy-Source"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Source)" ZipFileName="$(DeployFolder)\N2_Source.zip" />
+		<CreateItem Include="$(DeployFolder)\Source\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Source"/></CreateItem>
+		<Zip Files="@(ZipDeploy-Source)" WorkingDirectory="$(DeployFolder)" ZipFileName="N2_Source.zip" />
 
-		<CreateItem Include="$(Examples-Folder)\**\*"><Output TaskParameter="Include" ItemName="ZipDeploy-Examples"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Examples)" ZipFileName="$(DeployFolder)\N2_Examples.zip" />
+		<CreateItem Include="$(Examples-Folder)\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Examples"/></CreateItem>
+		<Zip Files="@(ZipDeploy-Examples)" WorkingDirectory="$(DeployFolder)" ZipFileName="N2_Examples.zip" />
 	</Target>
 
   <Target Name="Test" DependsOnTargets="Test-PrepareDependencies">
@@ -282,32 +282,38 @@
     <ExampleSource-MvcFiles Include="$(Examples-MvcFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
   </ItemGroup>
 
-  <Target Name="Examples-Deploy" DependsOnTargets="Examples-CSharp-PrepareDependencies;Examples-TemplatesSite-PrepareDependencies;Examples-TemplatesSite-PrepareDependencies;Examples-Mvc-PrepareDependencies">
+  <Target Name="Examples-Deploy" DependsOnTargets="Examples-TemplatesSite-PrepareDependencies">
     <Message Text="Deploying Examples"/>
 
     <CreateItem Include="$(DeployFolder)\Core\**\*" Exclude="$(DeployFolder)\Core\*.txt">
       <Output TaskParameter="Include" ItemName="CoreDeploy-ForExampleDeploy"/>
     </CreateItem>
 
-    <Copy SourceFiles="@(ExampleSource-VBFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\VB\%(RecursiveDir)" />
-    <Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\VB" />
-    <Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\VB\Snippets" />
+    <Copy SourceFiles="@(ExampleSource-VBFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\VB\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Core-BinFiles)"         DestinationFolder="$(Deploy-ExamplesFolder)\VB\wwwroot\Bin" />
+    <Copy SourceFiles="@(Core-EditFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\VB\wwwroot\Edit\%(RecursiveDir)" />
+    <Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Deploy-ExamplesFolder)\VB" />
+    <Copy SourceFiles="@(Snippets)"              DestinationFolder="$(Deploy-ExamplesFolder)\VB\Snippets" />
 
-    <Copy SourceFiles="@(ExampleSource-CSFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\CS\%(RecursiveDir)" />
-    <Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\CS" />
-    <Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\CS\Snippets" />
+    <Copy SourceFiles="@(ExampleSource-CSFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\CS\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Core-BinFiles)"         DestinationFolder="$(Deploy-ExamplesFolder)\CS\wwwroot\Bin" />
+    <Copy SourceFiles="@(Core-EditFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\CS\wwwroot\Edit\%(RecursiveDir)" />
+    <Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Deploy-ExamplesFolder)\CS" />
+    <Copy SourceFiles="@(Snippets)"              DestinationFolder="$(Deploy-ExamplesFolder)\CS\Snippets" />
 
     <Copy SourceFiles="@(ExampleSource-TemplatesSiteFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\%(RecursiveDir)" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite" />
-    <Copy SourceFiles="@(Snippets)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\Snippets" />
+    <Copy SourceFiles="@(TextFiles)"                        DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite" />
+    <Copy SourceFiles="@(Snippets)"                         DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\Snippets" />
     <Copy SourceFiles="$(SrcFolder)\N2\Bin\N2.dll;$(LibFolder)\Castle.Core.dll" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\Lib" />
-    <Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\%(RecursiveDir)" />
+    <Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)"      DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\%(RecursiveDir)" />
 
-    <Copy SourceFiles="@(ExampleSource-MvcFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\%(RecursiveDir)" />
-    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
-    <Copy SourceFiles="@(Snippets)" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Snippets" />
+    <Copy SourceFiles="@(ExampleSource-MvcFiles)"       DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Core-BinFiles)"                DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Bin" />
+    <Copy SourceFiles="@(Core-EditFiles)"               DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Edit\%(RecursiveDir)" />
+    <Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
+    <Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Snippets" />
     <Copy SourceFiles="$(SrcFolder)\N2\Bin\N2.dll;$(SrcFolder)\N2.Extensions\Bin\N2.Extensions.dll" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Lib" />
-    <Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\wwwroot\%(RecursiveDir)" />
+    <Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)"  DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\wwwroot\%(RecursiveDir)" />
   </Target>
 
   <Target Name="Examples-Deploy-LessInteresting">

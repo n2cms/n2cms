@@ -220,6 +220,7 @@ namespace N2.Web
         }
 
         static string defaultExtension = ".aspx";
+        /// <summary>The extension used for url's to content items.</summary>
         public static string DefaultExtension
         {
             get { return defaultExtension; }
@@ -395,7 +396,10 @@ namespace N2.Web
 
         public Url AppendSegment(string segment)
         {
-            return AppendSegment(segment, Extension);
+            if(string.IsNullOrEmpty(Path) || Path == "/")
+                return AppendSegment(segment, DefaultExtension);
+            else
+                return AppendSegment(segment, Extension);
         }
 
         public Url AppendSegment(string segment, bool useDefaultExtension)

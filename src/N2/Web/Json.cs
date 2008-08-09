@@ -10,7 +10,7 @@ namespace N2.Web
     /// </summary>
     public static class Json
     {
-        public static string ToObject(NameValueCollection collection)
+        public static string ToObject(IDictionary<string, object> collection)
         {
             if (collection.Count == 0)
                 return "{}";
@@ -19,7 +19,11 @@ namespace N2.Web
         
             foreach (string key in collection.Keys)
             {
-                sb.Append(key).Append(":'").Append(collection[key]).Append("',");
+                object value = collection[key];
+                if(value is string)
+                    sb.Append(key).Append(":'").Append(value).Append("',");
+                else
+                    sb.Append(key).Append(":").Append(value).Append(",");
             }
             sb.Length--; // remove trailing comma
             return sb.Append("}").ToString();

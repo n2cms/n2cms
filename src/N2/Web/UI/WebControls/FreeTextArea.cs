@@ -72,10 +72,11 @@ namespace N2.Web.UI.WebControls
 
         protected virtual string GetOverridesJson()
         {
-            NameValueCollection overrides = new NameValueCollection();
+            IDictionary<string, object> overrides = new Dictionary<string, object>();
             overrides["elements"] = ((string)Page.Items[ElementsKey]).TrimStart(',');
-            overrides["content_css"] = configCssUrl; ;
-            overrides.Add(configSettings);
+            overrides["content_css"] = configCssUrl;
+            foreach (string key in configSettings.AllKeys)
+                overrides[key] = configSettings[key];
             return Json.ToObject(overrides);
         }
 	}

@@ -21,5 +21,13 @@ namespace N2.Configuration
             get { return (bool)base["isWeb"]; }
             set { base["isWeb"] = value; }
         }
+
+        /// <summary>Enables rewriting of requests to the page handler of a certain content item.</summary>
+        [ConfigurationProperty("EnableRewrite", DefaultValue = true)]
+        public bool EnableRewrite
+        {
+            get { return (bool)base["EnableRewrite"]; }
+            set { base["EnableRewrite"] = value; }
+        }
     }
 }

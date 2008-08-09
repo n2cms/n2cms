@@ -75,7 +75,7 @@ namespace N2.Web
         private bool IsUpdatable(Url url)
         {
             string extension = url.Extension;
-            if(extension == null || extension.Equals(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
+            if((extension == null && string.IsNullOrEmpty(Url.DefaultExtension)) || extension.Equals(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
                 return true;
             else if(url.GetQuery("page") != null)
                 return true;

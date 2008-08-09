@@ -3,6 +3,7 @@ using System.Web;
 using N2.Persistence.NH;
 using N2.Security;
 using System.Diagnostics;
+using N2.Configuration;
 
 namespace N2.Web
 {
@@ -16,6 +17,18 @@ namespace N2.Web
 		private readonly ISecurityEnforcer security;
 		private readonly IWebContext webContext;
         private readonly IErrorHandler errorHandler;
+        private bool enableRewrite = true;
+
+		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
+		/// <param name="rewriter">The class that performs url rewriting.</param>
+		/// <param name="security">The class that can authorize a request.</param>
+		/// <param name="sessionProvider">The class that provides NHibernate sessions.</param>
+		/// <param name="webContext">The web context wrapper.</param>
+        public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, HostSection config)
+            : this(rewriter, security, webContext, errorHandler)
+        {
+            enableRewrite = config.Web.EnableRewrite;
+        }
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="rewriter">The class that performs url rewriting.</param>
@@ -51,7 +64,8 @@ namespace N2.Web
             }
 
 			rewriter.UpdateCurrentPage();
-			rewriter.RewriteRequest();
+            if(enableRewrite)
+                rewriter.RewriteRequest();
 		}
 
 		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
