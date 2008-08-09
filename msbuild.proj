@@ -38,16 +38,16 @@
 
   <Target Name="ZipDeploy" DependsOnTargets="Deploy">
     <CreateItem Include="$(DeployFolder)\Core\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Core"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Core)" WorkingDirectory="$(DeployFolder)" ZipFileName="N2_CompiledRuntime.zip" />
+		<Zip Files="@(ZipDeploy-Core)" WorkingDirectory="$(DeployFolder)" ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
 
 		<CreateItem Include="$(DeployFolder)\Templates\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Templates"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Templates)" WorkingDirectory="$(DeployFolder)" ZipFileName="N2_CompiledTemplates.zip" />
+		<Zip Files="@(ZipDeploy-Templates)" WorkingDirectory="$(DeployFolder)" ZipFileName="$(DeployFolder)\CompiledTemplates.zip" />
 
 		<CreateItem Include="$(DeployFolder)\Source\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Source"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Source)" WorkingDirectory="$(DeployFolder)" ZipFileName="N2_Source.zip" />
+		<Zip Files="@(ZipDeploy-Source)" WorkingDirectory="$(DeployFolder)" ZipFileName="$(DeployFolder)\Source.zip" />
 
 		<CreateItem Include="$(Examples-Folder)\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Examples"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Examples)" WorkingDirectory="$(DeployFolder)" ZipFileName="N2_Examples.zip" />
+		<Zip Files="@(ZipDeploy-Examples)" WorkingDirectory="$(DeployFolder)" ZipFileName="$(DeployFolder)\Examples.zip" />
 	</Target>
 
   <Target Name="Test" DependsOnTargets="Test-PrepareDependencies">

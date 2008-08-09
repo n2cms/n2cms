@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Reflection;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -11,32 +12,36 @@ namespace N2.Edit
 	[ToolbarPlugin("", "delete", "delete.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/delete.gif", 60, ToolTip = "delete", GlobalResourceClassName = "Toolbar")]
 	public partial class Delete : Web.EditPage
     {
-        protected void Page_Init(object sender, EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             hlCancel.NavigateUrl = CancelUrl();
 
-			itemsToDelete.CurrentItem = SelectedItem;
+            itemsToDelete.CurrentItem = SelectedItem;
             itemsToDelete.DataBind();
-			referencingItems.Item = SelectedItem;
-			referencingItems.DataBind();
-        }
-        protected void Page_Load(object sender, EventArgs e)
-        {
-			if (N2.Context.UrlParser.IsRootOrStartPage(SelectedItem))
-			{
-				cvDelete.IsValid = false;
-				this.btnDelete.Enabled = false;
-			}
-			else
-			{
+            referencingItems.Item = SelectedItem;
+            referencingItems.DataBind();
 
-				if (!IsPostBack && Request["alert"] != null && Boolean.Parse(Request["alert"]))
-				{
-					RegisterConfirmAlert();
-				}
-			}
-			this.Title = string.Format(GetLocalResourceString("DeletePage.TitleFormat"), 
-				SelectedItem.Title);
+            base.OnInit(e);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (N2.Context.UrlParser.IsRootOrStartPage(SelectedItem))
+            {
+                cvDelete.IsValid = false;
+                this.btnDelete.Enabled = false;
+            }
+            else
+            {
+                if (!IsPostBack && Request["alert"] != null && Boolean.Parse(Request["alert"]))
+                {
+                    RegisterConfirmAlert();
+                }
+            }
+            this.Title = string.Format(GetLocalResourceString("DeletePage.TitleFormat"),
+                SelectedItem.Title);
+
+            base.OnLoad(e);
         }
 
 		private void RegisterConfirmAlert()
@@ -55,12 +60,21 @@ namespace N2.Edit
         protected void OnDeleteClick(object sender, EventArgs e)
         {
             ContentItem parent = this.SelectedItem.Parent;
-			N2.Context.Persister.Delete(this.SelectedItem);
+            try
+            {
+                N2.Context.Persister.Delete(this.SelectedItem);
 
-			if (parent != null)
-				Refresh(parent, ToolbarArea.Both);
-			else
-				Refresh(N2.Context.UrlParser.StartPage, ToolbarArea.Both);
+                if (parent != null)
+                    Refresh(parent, ToolbarArea.Both);
+                else
+                    Refresh(N2.Context.UrlParser.StartPage, ToolbarArea.Both);
+            }
+            catch (Exception ex)
+            {
+                Engine.Resolve<IErrorHandler>().Notify(ex);
+                cvException.IsValid = false;
+                cvException.Text = ex.Message;
+            }
         }
     }
 }

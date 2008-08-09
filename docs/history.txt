@@ -29,6 +29,7 @@
 	- moved edit edit.editorCssUrl -> edit.tinyMCE.cssUrl
 - enabled iframe for tinyMCE editor
 - trash handler now notifies the world through events
+- added error handling for exceptions during move,copy,delete,save to the edit interface
 
 1.4.1
 - error handling with email option

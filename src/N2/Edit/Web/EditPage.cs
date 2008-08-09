@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Resources;
+using N2.Web;
 
 namespace N2.Edit.Web
 {
@@ -151,7 +152,7 @@ else window.location = '{2}';";
 
 		protected void SetErrorMessage(BaseValidator validator, Exception exception)
 		{
-			Trace.Write(exception.ToString());
+            Engine.Resolve<IErrorHandler>().Notify(exception);
 
 			SetErrorMessage(validator, exception.Message);
 		}

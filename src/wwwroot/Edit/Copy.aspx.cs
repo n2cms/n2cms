@@ -81,7 +81,7 @@ namespace N2.Edit
 			{
 				SetErrorMessage(this.cvCopy, ex);
 			}
-			catch (N2Exception ex)
+			catch (Exception ex)
 			{
 				SetErrorMessage(this.cvCopy, ex);
 			}

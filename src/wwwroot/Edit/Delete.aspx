@@ -3,7 +3,6 @@
 <%@ Register Src="ReferencingItems.ascx" TagName="ReferencingItems" TagPrefix="uc1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-    <link rel="stylesheet" href="Css/delete.css" type="text/css" />
 	<script src="Js/plugins.ashx" type="text/javascript" ></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -17,6 +16,7 @@
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
     <asp:CustomValidator ID="cvDelete" runat="server" CssClass="validator info" meta:resourceKey="cvDelete" Display="Dynamic" />
+    <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />
     <table><tr><td>
 		<edit:FieldSet class="affectedItems" runat="server" Legend="Affected items" meta:resourceKey="affectedItems">
 			<uc1:AffectedItems id="itemsToDelete" runat="server" />

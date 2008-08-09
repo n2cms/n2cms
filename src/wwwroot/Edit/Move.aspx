@@ -8,6 +8,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <asp:CustomValidator id="cvMove" runat="server" CssClass="validator info" meta:resourceKey="cvMove"/>
+    <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />
     
     <asp:Panel ID="pnlNewName" runat="server" CssClass="formField">
 		<asp:Label ID="lblNewName" runat="server" Text="New name"  meta:resourceKey="lblNewName" AssociatedControlID="txtNewName" />

@@ -14,30 +14,30 @@ namespace N2.Edit
 		{
 			if (!IsPostBack)
 			{
-				try
-				{
-					pnlNewName.Visible = false;
-					ContentItem toMove = MemorizedItem;
-					Engine.Persister.Move(toMove, SelectedItem);
-					Refresh(toMove, ToolbarArea.Both);
-				}
-				catch (NameOccupiedException ex)
-				{
-					SetErrorMessage(cvMove, ex);
-					pnlNewName.Visible = true;
-				}
-				catch (DestinationOnOrBelowItselfException ex)
-				{
-					SetErrorMessage(cvMove, ex);
-				}
-				catch (NotAllowedParentException ex)
-				{
-					SetErrorMessage(cvMove, ex);
-				}
-				catch (N2Exception ex)
-				{
-					SetErrorMessage(cvMove, ex);
-				}
+                try
+                {
+                    pnlNewName.Visible = false;
+                    ContentItem toMove = MemorizedItem;
+                    Engine.Persister.Move(toMove, SelectedItem);
+                    Refresh(toMove, ToolbarArea.Both);
+                }
+                catch (NameOccupiedException ex)
+                {
+                    SetErrorMessage(cvMove, ex);
+                    pnlNewName.Visible = true;
+                }
+                catch (DestinationOnOrBelowItselfException ex)
+                {
+                    SetErrorMessage(cvMove, ex);
+                }
+                catch (NotAllowedParentException ex)
+                {
+                    SetErrorMessage(cvMove, ex);
+                }
+                catch (Exception ex)
+                {
+                    SetErrorMessage(cvMove, ex);
+                }
 
 				LoadDefaultsAndInfo();
 			}

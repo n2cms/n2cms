@@ -5,6 +5,7 @@ using N2.Definitions;
 using N2.Edit.Web;
 using N2.Web.UI.WebControls;
 using N2.Persistence;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -158,30 +159,42 @@ namespace N2.Edit
 			Validate();
 			if (IsValid)
 			{
-				ie.VersioningMode = (ie.CurrentItem.VersionOf == null)
-					? ItemEditorVersioningMode.VersionAndSave
-					: ItemEditorVersioningMode.SaveAsMaster;
-				ie.Save();
-				ContentItem currentItem = ie.CurrentItem;
-
-				if (Request["before"] != null)
-				{
-					//ContentItem before = Engine.Persister.Get(int.Parse(Request["before"]));
-                    ContentItem before = Engine.Resolve<N2.Edit.Navigator>().Navigate(Request["before"]);
-					Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.Before, before);
-				}
-				else if (Request["after"] != null)
-				{
-					//ContentItem after = Engine.Persister.Get(int.Parse(Request["after"]));
-                    ContentItem after = Engine.Resolve<N2.Edit.Navigator>().Navigate(Request["after"]); 
-                    Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.After, after);
-				}
-
-				Refresh(currentItem.VersionOf ?? currentItem, ToolbarArea.Both);
-				Title = string.Format(GetLocalResourceString("SavedFormat"), currentItem.Title);
-				ie.Visible = false;
+                try
+                {
+                    SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Engine.Resolve<IErrorHandler>().Notify(ex);
+                    cvException.IsValid = false;
+                    cvException.ErrorMessage = ex.Message;
+                }
 			}
 		}
+
+        private void SaveChanges()
+        {
+            ie.VersioningMode = (ie.CurrentItem.VersionOf == null)
+                ? ItemEditorVersioningMode.VersionAndSave
+                : ItemEditorVersioningMode.SaveAsMaster;
+            ie.Save();
+            ContentItem currentItem = ie.CurrentItem;
+
+            if (Request["before"] != null)
+            {
+                ContentItem before = Engine.Resolve<N2.Edit.Navigator>().Navigate(Request["before"]);
+                Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.Before, before);
+            }
+            else if (Request["after"] != null)
+            {
+                ContentItem after = Engine.Resolve<N2.Edit.Navigator>().Navigate(Request["after"]);
+                Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.After, after);
+            }
+
+            Refresh(currentItem.VersionOf ?? currentItem, ToolbarArea.Both);
+            Title = string.Format(GetLocalResourceString("SavedFormat"), currentItem.Title);
+            ie.Visible = false;
+        }
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
