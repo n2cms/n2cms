@@ -29,6 +29,7 @@ namespace N2.Edit.Trash
 			this.host = host;
 		}
 
+        /// <summary>The container of thrown items.</summary>
 		ITrashCan ITrashHandler.TrashContainer
 		{
 			get { return GetTrashContainer(true) as ITrashCan; }
@@ -53,6 +54,9 @@ namespace N2.Edit.Trash
 			return trashContainer;
 		}
 
+        /// <summary>Checks if the trash is enabled, the item is not already thrown and for the NotThrowable attribute.</summary>
+        /// <param name="affectedItem">The item to check.</param>
+        /// <returns>True if the item may be thrown.</returns>
 		public bool CanThrow(ContentItem affectedItem)
 		{
 			TrashContainerItem trash = GetTrashContainer(false);
@@ -62,14 +66,26 @@ namespace N2.Edit.Trash
 			return enabled && !alreadyThrown && throwable;
 		}
 
+        /// <summary>Throws an item in a way that it later may be restored to it's original location at a later stage.</summary>
+        /// <param name="item">The item to throw.</param>
 		public virtual void Throw(ContentItem item)
 		{
-			ExpireTrashedItem(item);
-            item.AddTo(GetTrashContainer(true));
+            CancellableItemEventArgs args = Invoke<CancellableItemEventArgs>(ItemThrowing, new CancellableItemEventArgs(item));
+            if (!args.Cancel)
+            {
+                item = args.AffectedItem;
 
-			persister.Save(item);
+                ExpireTrashedItem(item);
+                item.AddTo(GetTrashContainer(true));
+
+                persister.Save(item);
+
+                Invoke<ItemEventArgs>(ItemThrowed, new ItemEventArgs(item));
+            }
 		}
 
+        /// <summary>Expires an item that has been thrown so that it's not accessible to external users.</summary>
+        /// <param name="item">The item to restore.</param>
 		public virtual void ExpireTrashedItem(ContentItem item)
 		{
 			item[FormerName] = item.Name;
@@ -109,10 +125,28 @@ namespace N2.Edit.Trash
                 RestoreValues(child);
 		}
 
+        /// <summary>Determines wether an item has been thrown away.</summary>
+        /// <param name="item">The item to check.</param>
+        /// <returns>True if the item is in the scraps.</returns>
 		public bool IsInTrash(ContentItem item)
 		{
             TrashContainerItem trash = GetTrashContainer(false);
 			return trash != null && Find.IsDescendantOrSelf(item, trash);
 		}
-	}
+
+        protected virtual T Invoke<T>(EventHandler<T> handler, T args)
+            where T : ItemEventArgs
+        {
+            if (handler != null && args.AffectedItem.VersionOf == null)
+                handler.Invoke(this, args);
+            return args;
+        }
+
+        /// <summary>Occurs before an item is thrown.</summary>
+        public event EventHandler<CancellableItemEventArgs> ItemThrowing;
+        /// <summary>Occurs after an item has been thrown.</summary>
+        public event EventHandler<ItemEventArgs> ItemThrowed;
+
+        
+    }
 }

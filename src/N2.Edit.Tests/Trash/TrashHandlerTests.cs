@@ -125,6 +125,50 @@ namespace N2.Trashcan.Tests
 			Assert.That(root.Children[0].Children[0], Is.EqualTo(item));
 		}
 
+        [Test]
+        public void ThrashHandler_Throw_WillInvokeEvents()
+        {
+            var definitions = mocks.Stub<IDefinitionManager>();
+
+            IPersister persister = mocks.StrictMock<IPersister>();
+            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
+            Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
+
+            mocks.ReplayAll();
+
+            TrashHandler th = new TrashHandler(persister, definitions, new Host(null, 1, 1));
+
+            bool throwingWasInvoked = false;
+            bool throwedWasInvoked = false;
+            th.ItemThrowing += delegate { throwingWasInvoked = true; };
+            th.ItemThrowed += delegate { throwedWasInvoked = true; };
+            th.Throw(item);
+
+            Assert.That(throwingWasInvoked);
+            Assert.That(throwedWasInvoked);
+
+            mocks.VerifyAll();
+        }
+
+        [Test]
+        public void ThrashHandler_Throw_CanBeCancelled()
+        {
+            var definitions = mocks.Stub<IDefinitionManager>();
+
+            IPersister persister = mocks.StrictMock<IPersister>();
+            Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
+            Expect.Call(delegate { persister.Save(item); }).Repeat.Never();
+
+            mocks.ReplayAll();
+
+            TrashHandler th = new TrashHandler(persister, definitions, new Host(null, 1, 1));
+
+            th.ItemThrowing += delegate(object sender, CancellableItemEventArgs args) { args.Cancel = true; };
+            th.Throw(item);
+
+            mocks.VerifyAll();
+        }
+
 		#region Helper methods
 
 		private TrashHandler CreateTrashHandler()
