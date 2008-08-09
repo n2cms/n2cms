@@ -35,7 +35,6 @@ namespace N2.Edit
         private string editTreeUrl = "Navigation/Tree.aspx";
 		private string editTreeUrlFormat = "{1}?selected={0}";
 		private string editPreviewUrlFormat = "{0}";
-		private string editorCssUrl = "~/Edit/Css/Editor.css";
 		private string uploadFolderUrl = "~/Upload";
         private string editItemUrl = "~/edit/edit.aspx";
         private string editInterfaceUrl = "~/edit/";
@@ -58,7 +57,6 @@ namespace N2.Edit
         {
             EditTreeUrl = config.EditTreeUrl;
             EditPreviewUrlFormat = config.EditPreviewUrlFormat;
-            EditorCssUrl = config.EditorCssUrl;
             UploadFolderUrl = config.UploadFolderUrl;
             EditItemUrl = config.EditItemUrl;
             EditInterfaceUrl = config.EditInterfaceUrl;
@@ -115,13 +113,6 @@ namespace N2.Edit
 			set { editPreviewUrlFormat = value; }
 		}
 
-		/// <summary>Gets or sets the free text area editor css file url.</summary>
-		public string EditorCssUrl
-		{
-			get { return editorCssUrl; }
-			set { editorCssUrl = value; }
-		}
-
 		/// <summary>Gets or sets file upload folder.</summary>
 		public string UploadFolderUrl
 		{
@@ -156,13 +147,6 @@ namespace N2.Edit
 				selectedItem.PreviewUrl,
 				HttpUtility.UrlEncode(selectedItem.PreviewUrl)
 				);
-		}
-
-		/// <summary>Gets the text editor css url.</summary>
-		/// <returns>An url to a style sheet.</returns>
-		public string GetEditorCssUrl()
-		{
-			return N2.Web.Url.ToAbsolute(EditorCssUrl);
 		}
 
 		/// <summary>Gets the url to the upload folder.</summary>

@@ -23,6 +23,11 @@
 	- ordered lists (#, ##, ###)
 - containers may now be secured without securint contained editables
 - containers can now be secured by either user or role name
+- n2/edit/tinyMCE config section
+	- enable=false tinymce
+	- settings key value collection
+	- moved edit edit.editorCssUrl -> edit.tinyMCE.cssUrl
+- enabled iframe for tinyMCE editor
 
 1.4.1
 - error handling with email option

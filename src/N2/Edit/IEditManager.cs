@@ -26,10 +26,6 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		string GetPreviewUrl(INode selectedItem);
 
-		/// <summary>Gets the text editor css url.</summary>
-		/// <returns>An url to a style sheet.</returns>
-		string GetEditorCssUrl();
-
 		/// <summary>Gets the url to edit page creating new items.</summary>
 		/// <param name="selected">The selected item.</param>
 		/// <param name="definition">The type of item to edit.</param>

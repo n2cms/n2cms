@@ -295,6 +295,7 @@
     <Compile Include="Configuration\EngineSection.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
     <Compile Include="Configuration\SiteElementCollection.cs" />
+    <Compile Include="Configuration\TinyMCEElement.cs" />
     <Compile Include="Configuration\WebElement.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
     <Compile Include="Definitions\DefinitionBuilder.cs" />
@@ -421,6 +422,7 @@
     <Compile Include="Web\IClosable.cs" />
     <Compile Include="Web\IErrorHandler.cs" />
     <Compile Include="Web\IHost.cs" />
+    <Compile Include="Web\Json.cs" />
     <Compile Include="Web\Mail\IMailSender.cs" />
     <Compile Include="Web\Mail\SmtpMailSender.cs" />
     <Compile Include="Web\Mail\StaticMailSender.cs" />
@@ -611,6 +613,7 @@
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Resources\FreeTextArea.js" />
     <EmbeddedResource Include="Web\n2.multiplesites.xml" />
     <EmbeddedResource Include="Resources\jquery-1.2.6.min.js" />
     <EmbeddedResource Include="Web\n2.notweb.xml" />

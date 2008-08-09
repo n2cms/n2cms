@@ -29,21 +29,8 @@ namespace N2.Web.Parts
 		public string Handle(NameValueCollection request)
 		{
 			NameValueCollection response = HandleRequest(request);
-			return ToJson(response);
-		}
-
-		protected string ToJson(NameValueCollection response)
-		{
-			StringBuilder sb = new StringBuilder();
-			using (new N2.Persistence.NH.Finder.StringWrapper(sb, "{", "}"))
-			{
-				sb.AppendFormat("{0}: {1}", "error", "false");
-				foreach (string key in response.Keys)
-				{
-					sb.AppendFormat(",{0}: '{1}'", key, response[key]);
-				}
-			}
-			return sb.ToString();
+            response["error"] = "false";
+			return Json.ToObject(response);
 		}
 
 		public abstract NameValueCollection HandleRequest(NameValueCollection request);

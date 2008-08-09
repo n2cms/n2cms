@@ -5,6 +5,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 [assembly: WebResource("N2.Resources.jquery-1.2.6.min.js", "text/javascript")]
+[assembly: WebResource("N2.Resources.FreeTextArea.js", "text/javascript")]
 
 namespace N2.Resources
 {

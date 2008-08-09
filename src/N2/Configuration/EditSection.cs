@@ -55,13 +55,6 @@ namespace N2.Configuration
             set { base["editPreviewUrlFormat"] = value; }
         }
 
-        [ConfigurationProperty("editorCssUrl", DefaultValue = "~/Edit/Css/Editor.css")]
-        public string EditorCssUrl
-        {
-            get { return (string)base["editorCssUrl"]; }
-            set { base["editorCssUrl"] = value; }
-        }
-
         [ConfigurationProperty("uploadFolderUrl", DefaultValue = "~/Upload")]
         public string UploadFolderUrl
         {
@@ -102,6 +95,13 @@ namespace N2.Configuration
         {
             get { return (bool)base["enableVersioning"]; }
             set { base["enableVersioning"] = value; }
+        }
+
+        [ConfigurationProperty("tinyMCE")]
+        public TinyMCEElement TinyMCE
+        {
+            get { return (TinyMCEElement)base["tinyMCE"]; }
+            set { base["tinyMCE"] = value; }
         }
     }
 }
