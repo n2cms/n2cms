@@ -223,7 +223,20 @@ namespace N2.Engine
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
 
             StartComponents(container.Kernel);
+            container.Kernel.ComponentCreated += Kernel_ComponentCreated;
 		}
+
+        void Kernel_ComponentCreated(ComponentModel model, object instance)
+        {
+            if (instance is IStartable)
+                return;
+
+            IAutoStart startable = instance as IAutoStart;
+            if (startable != null)
+            {
+                startable.Start();
+            }
+        }
 
         private static void StartComponents(IKernel kernel)
         {
