@@ -27,7 +27,7 @@ namespace N2.Web
         public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, HostSection config)
             : this(rewriter, security, webContext, errorHandler)
         {
-            enableRewrite = config.Web.EnableRewrite;
+            enableRewrite = config.Web.RewriteEnabled;
         }
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>

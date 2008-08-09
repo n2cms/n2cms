@@ -23,11 +23,11 @@ namespace N2.Configuration
         }
 
         /// <summary>Enables rewriting of requests to the page handler of a certain content item.</summary>
-        [ConfigurationProperty("EnableRewrite", DefaultValue = true)]
-        public bool EnableRewrite
+        [ConfigurationProperty("rewriteEnabled", DefaultValue = true)]
+        public bool RewriteEnabled
         {
-            get { return (bool)base["EnableRewrite"]; }
-            set { base["EnableRewrite"] = value; }
+            get { return (bool)base["rewriteEnabled"]; }
+            set { base["rewriteEnabled"] = value; }
         }
     }
 }
