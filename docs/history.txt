@@ -21,6 +21,7 @@
 	- wiki supports nested content in lists
 	- unordered lists (*, **, ***)
 	- ordered lists (#, ##, ###)
+	- create template
 - containers may now be secured without securint contained editables
 - containers can now be secured by either user or role name
 - n2/edit/tinyMCE config section
