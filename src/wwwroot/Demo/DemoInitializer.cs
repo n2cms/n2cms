@@ -68,7 +68,7 @@ namespace Demo
 
 			ContentItem imported = record.RootItem;
 
-			AbstractRootPage rootPage = factory.Persister.Get<AbstractRootPage>(factory.UrlParser.CurrentSite.RootItemID);
+			AbstractRootPage rootPage = factory.Persister.Get<AbstractRootPage>(factory.Host.CurrentSite.RootItemID);
 
 			factory.SecurityManager.ScopeEnabled = false;
 			((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = false;

@@ -52,8 +52,8 @@
 		<CreateItem Include="$(DeployFolder)\Examples\VB\**"><Output TaskParameter="Include" ItemName="ZipDeploy-VBExample"/></CreateItem>
 		<Zip Files="@(ZipDeploy-VBExample)" WorkingDirectory="$(DeployFolder)\Examples\VB" ZipFileName="$(DeployFolder)\VB_Example.zip" />
 
-		<CreateItem Include="$(DeployFolder)\Examples\TemplateSite\**"><Output TaskParameter="Include" ItemName="ZipDeploy-TemplateExample"/></CreateItem>
-		<Zip Files="@(ZipDeploy-TemplateExample)" WorkingDirectory="$(DeployFolder)\Examples\TemplateSite" ZipFileName="$(DeployFolder)\Template_Example.zip" />
+		<CreateItem Include="$(DeployFolder)\Examples\TemplatesSite\**"><Output TaskParameter="Include" ItemName="ZipDeploy-TemplateExample"/></CreateItem>
+		<Zip Files="@(ZipDeploy-TemplateExample)" WorkingDirectory="$(DeployFolder)\Examples\TemplatesSite" ZipFileName="$(DeployFolder)\Template_Example.zip" />
 
 		<CreateItem Include="$(DeployFolder)\Examples\Mvc\**"><Output TaskParameter="Include" ItemName="ZipDeploy-MvcExample"/></CreateItem>
 		<Zip Files="@(ZipDeploy-MvcExample)" WorkingDirectory="$(DeployFolder)\Examples\Mvc" ZipFileName="$(DeployFolder)\Mvc_Example.zip" />
@@ -67,8 +67,8 @@
     <Message Text="Testing: $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe"/>
     <NUnit Assemblies="$(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe" ToolPath="$(LibFolder)" />
 
-    <Message Text="Testing: $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe"/>
-    <NUnit Assemblies="$(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe" ToolPath="$(LibFolder)" />
+    <!--<Message Text="Testing: $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe"/>
+    <NUnit Assemblies="$(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe" ToolPath="$(LibFolder)" />-->
 
     <Message Text="Testing: $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe"/>
     <NUnit Assemblies="$(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" ToolPath="$(LibFolder)" />

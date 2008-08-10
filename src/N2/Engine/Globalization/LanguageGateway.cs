@@ -90,7 +90,7 @@ namespace N2.Engine.Globalization
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
-			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(host.DefaultSite.RootItemID), RecursionDepth, typeof(ITrashCan)))
+			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(host.CurrentSite.RootItemID), RecursionDepth, typeof(ITrashCan)))
 			{
 				if (!string.IsNullOrEmpty(language.LanguageCode))
 				{

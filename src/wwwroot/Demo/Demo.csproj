@@ -32,20 +32,27 @@
   <ItemGroup>
     <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
+      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="N2, Version=1.0.303.37546, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\N2.dll</HintPath>
+      <HintPath>..\bin\N2.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="N2.Edit, Version=1.0.303.297, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Deploy\Core\Bin\N2.Edit.dll</HintPath>
+      <HintPath>..\Bin\N2.Edit.dll</HintPath>
     </Reference>
-    <Reference Include="N2.Templates, Version=1.0.400.24224, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="N2.Templates, Version=1.0.400.24224, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\N2.Templates.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="N2.Templates.UI, Version=1.0.303.316, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Deploy\Templates\Bin\N2.Templates.UI.dll</HintPath>
+      <HintPath>..\Bin\N2.Templates.UI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

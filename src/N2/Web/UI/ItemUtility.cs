@@ -34,7 +34,7 @@ namespace N2.Web.UI
 			// find starting point
             if (path.StartsWith("/"))
             {
-                startItem = Context.Current.Persister.Get(Context.Current.Host.DefaultSite.RootItemID);
+                startItem = Context.Current.Persister.Get(Context.Current.Host.CurrentSite.RootItemID);
                 path = path.Substring(1);
             }
             else if (path.StartsWith("~/"))
