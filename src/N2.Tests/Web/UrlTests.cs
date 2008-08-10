@@ -18,6 +18,7 @@ namespace N2.Tests.Web
             Assert.That(u.Path, Is.EqualTo("/"));
             Assert.That(u.ToString(), Is.EqualTo("/"));
         }
+
         [Test]
         public void CanConstruct_StrangeHomePath()
         {
@@ -25,6 +26,7 @@ namespace N2.Tests.Web
             Assert.That(u.Path, Is.EqualTo("/"));
             Assert.That(u.ToString(), Is.EqualTo("/"));
         }
+
         [Test]
         public void CanConstruct_AbsoluteLocalPath()
         {
@@ -32,6 +34,7 @@ namespace N2.Tests.Web
             Assert.That(u.Path, Is.EqualTo("/hello.aspx"));
             Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
         }
+
         [Test]
         public void CanConstruct_AbsoluteLocalPath_WithQuery()
         {
@@ -40,6 +43,7 @@ namespace N2.Tests.Web
             Assert.That(u.Query, Is.EqualTo("something=someotherthing"));
             Assert.That(u.ToString(), Is.EqualTo("/hello.aspx?something=someotherthing"));
         }
+
         [Test]
         public void CanConstruct_AbsoluteLocalPath_WithFragment()
         {
@@ -48,6 +52,7 @@ namespace N2.Tests.Web
             Assert.That(u.Fragment, Is.EqualTo("somebookmark"));
             Assert.That(u.ToString(), Is.EqualTo("/hello.aspx#somebookmark"));
         }
+
         [Test]
         public void CanConstruct_AbsoluteLocalPath_WithQuery_AndFragment()
         {
@@ -66,6 +71,7 @@ namespace N2.Tests.Web
             Assert.That(u.Authority, Is.EqualTo("somesite"));
             Assert.That(u.ToString(), Is.EqualTo("http://somesite/"));
         }
+
         [Test]
         public void CanConstruct_FromHostName_WithoutTrailingSlash()
         {
@@ -75,6 +81,7 @@ namespace N2.Tests.Web
             Assert.That(u.Path, Is.EqualTo("/"));
             Assert.That(u.ToString(), Is.EqualTo("http://somesite/"));
         }
+
         [Test]
         public void CanConstruct_FromHostName_WithPort()
         {
@@ -83,6 +90,7 @@ namespace N2.Tests.Web
             Assert.That(u.Authority, Is.EqualTo("somesite:8080"));
             Assert.That(u.ToString(), Is.EqualTo("http://somesite:8080/"));
         }
+
         [Test]
         public void CanConstruct_FromHostName_WithPath()
         {
@@ -92,6 +100,7 @@ namespace N2.Tests.Web
             Assert.That(u.Path, Is.EqualTo("/some/path"));
             Assert.That(u.ToString(), Is.EqualTo("http://somesite/some/path"));
         }
+
         [Test]
         public void CanConstruct_FromHostName_WithPath_AndQuery()
         {
@@ -102,6 +111,7 @@ namespace N2.Tests.Web
             Assert.That(u.Query, Is.EqualTo("key=value"));
             Assert.That(u.ToString(), Is.EqualTo("http://somesite/some/path?key=value"));
         }
+
         [Test]
         public void CanConstruct_FromHostName_WithPath_AndFragment()
         {
@@ -112,6 +122,7 @@ namespace N2.Tests.Web
             Assert.That(u.Fragment, Is.EqualTo("somebookmark"));
             Assert.That(u.ToString(), Is.EqualTo("http://somesite/some/path#somebookmark"));
         }
+
         [Test]
         public void CanConstruct_FromHostName_WithPath_AndQuery_AndFragment()
         {
@@ -134,6 +145,7 @@ namespace N2.Tests.Web
             Assert.That(u.Query, Is.EqualTo("key=value"));
             Assert.That(u.Fragment, Is.EqualTo("bookmark"));
         }
+
         [Test]
         public void CanImplicitlyConvert_ToString()
         {
@@ -308,6 +320,38 @@ namespace N2.Tests.Web
         }
 
         [Test]
+        public void CanPrependSegment_ToEmptyPath()
+        {
+            Url u = "http://n2cms.com";
+            u = u.PrependSegment("test2");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2.aspx"));
+        }
+
+        [Test]
+        public void CanPrependSegment_ToSimplePath()
+        {
+            Url u = "http://n2cms.com/test.aspx";
+            u = u.PrependSegment("test2");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2/test.aspx"));
+        }
+
+        [Test]
+        public void CanControlExtension_WhilePrependingPath_ToEmptyPath()
+        {
+            Url u = "http://n2cms.com/";
+            u = u.PrependSegment("test", ".html");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test.html"));
+        }
+
+        [Test]
+        public void CanControlExtension_WhilePrependingPath()
+        {
+            Url u = "http://n2cms.com/test.aspx";
+            u = u.PrependSegment("test2", ".html");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2/test.html"));
+        }
+
+        [Test]
         public void WillNotUse_DefaultExtension_WhenAppendingSegment_ToPathWithNoExtension()
         {
             Url u = "http://n2cms.com/test";
@@ -388,6 +432,13 @@ namespace N2.Tests.Web
         {
             Url u = "/path/to/page/";
             Assert.That(u.Extension, Is.Null);
+        }
+
+        [Test]
+        public void CanSplitPath_IntoPathWithoutExtension()
+        {
+            Url u = new Url("/hello.aspx?something=someotherthing");
+            Assert.That(u.PathWithoutExtension, Is.EqualTo("/hello"));
         }
 
         [Test]

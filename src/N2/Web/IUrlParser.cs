@@ -16,9 +16,6 @@ namespace N2.Web
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		ContentItem CurrentPage { get; }
 
-		/// <summary>Gets the current site.</summary>
-		Site CurrentSite { get; }
-
 		/// <summary>Calculates an item url by walking it's parent path.</summary>
 		/// <param name="item">The item whose url to compute.</param>
 		/// <returns>A friendly url to the supplied item.</returns>

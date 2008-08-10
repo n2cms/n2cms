@@ -22,10 +22,9 @@ namespace N2.Tests.Edit
 
 			IPersister persister = mocks.StrictMock<IPersister>();
 			Expect.Call(persister.Get(1)).Return(root);
-
 			mocks.ReplayAll();
 
-			Navigator n = new Navigator(persister, new Host(null, 1, 1));
+            Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 1));
 
 			ContentItem navigatedItem = n.Navigate("/item1/item1.2");
 
@@ -44,7 +43,7 @@ namespace N2.Tests.Edit
 
 			mocks.ReplayAll();
 
-			Navigator n = new Navigator(persister, new Host(null, 1, 2));
+            Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 2));
 
 			ContentItem navigatedItem = n.Navigate("~/item1");
 
@@ -76,7 +75,7 @@ namespace N2.Tests.Edit
 
 			mocks.ReplayAll();
 
-			Navigator n = new Navigator(persister, new Host(null, 1, 1));
+            Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 1));
 
 			ContentItem navigatedItem = n.Navigate("/");
 

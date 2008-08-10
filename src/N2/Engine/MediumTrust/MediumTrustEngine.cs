@@ -98,12 +98,12 @@ namespace N2.Engine.MediumTrust
             IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
             rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext));
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler());
-            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, webContext, errorHandler));
             ItemXmlReader xmlReader = AddComponentInstance<ItemXmlReader>(new ItemXmlReader(definitions));
-            Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
             ItemXmlWriter xmlWriter = AddComponentInstance<ItemXmlWriter>(new ItemXmlWriter(definitions, urlParser));
-			AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
-            AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
+            Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
+            InstallationManager installer = AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
+            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, webContext, errorHandler, installer));
+            AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
             AddComponentInstance<Navigator>(new Navigator(persister, host));

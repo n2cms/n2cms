@@ -15,6 +15,7 @@ namespace N2.Tests.Engine
 	public class MultipleSitesContentEngineTests
 	{
 		ContentEngine engine;
+        IHost host;
 
 		[SetUp]
 		public void SetUp()
@@ -22,6 +23,7 @@ namespace N2.Tests.Engine
 			string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Engine\\MultipleSites.exe");
 			var cfg = ConfigurationManager.OpenExeConfiguration(path);
 			engine = new ContentEngine(cfg);
+            host = engine.Resolve<IHost>();
 		}
 
 		[Test]
@@ -35,34 +37,34 @@ namespace N2.Tests.Engine
         public void MultipleSitesParser_LoadsConfiguredSites()
         {
             var parser = (MultipleSitesParser)engine.Resolve<IUrlParser>();
-            Assert.That(parser.Sites.Count, Is.EqualTo(4));
+            Assert.That(host.Sites.Count, Is.EqualTo(4));
         }
 
         [Test]
         public void MultipleSitesParser_HonorsWildcardsMapping()
         {
             var parser = (MultipleSitesParser)engine.Resolve<IUrlParser>();
-            Assert.That(parser.Sites[0].Is("alpha.localhost.com"), Is.True);
-            Assert.That(parser.Sites[0].Is("www.alpha.localhost.com"), Is.False);
-            Assert.That(parser.Sites[3].Is("mysite.com"), Is.True);
-            Assert.That(parser.Sites[3].Is("www.mysite.com"), Is.True);
+            Assert.That(host.Sites[0].Is("alpha.localhost.com"), Is.True);
+            Assert.That(host.Sites[0].Is("www.alpha.localhost.com"), Is.False);
+            Assert.That(host.Sites[3].Is("mysite.com"), Is.True);
+            Assert.That(host.Sites[3].Is("www.mysite.com"), Is.True);
         }
 
         [Test]
         public void MultipleSitesParser_CanConfigureWildcardmapping_PerSite()
         {
             var parser = (MultipleSitesParser)engine.Resolve<IUrlParser>();
-            Assert.That(parser.Sites[0].Wildcards, Is.False);
-            Assert.That(parser.Sites[1].Wildcards, Is.False);
-            Assert.That(parser.Sites[2].Wildcards, Is.False);
-            Assert.That(parser.Sites[3].Wildcards, Is.True);
+            Assert.That(host.Sites[0].Wildcards, Is.False);
+            Assert.That(host.Sites[1].Wildcards, Is.False);
+            Assert.That(host.Sites[2].Wildcards, Is.False);
+            Assert.That(host.Sites[3].Wildcards, Is.True);
         }
 
         [Test]
         public void MultipleSitesParser_Loads_SiteSettings()
         {
             var parser = (MultipleSitesParser)engine.Resolve<IUrlParser>();
-            Assert.That(parser.Sites[0].Settings["nextSite"], Is.EqualTo("http://beta.localhost.com"));
+            Assert.That(host.Sites[0].Settings["nextSite"], Is.EqualTo("http://beta.localhost.com"));
         }
 	}
 }

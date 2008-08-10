@@ -15,10 +15,10 @@ namespace N2.Web
 	/// </summary>
 	public class UrlParser : IUrlParser
 	{
-		private readonly Persistence.IPersister persister;
-		private readonly IHost host;
-		private readonly IWebContext webContext;
-		private readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
+        protected readonly Persistence.IPersister persister;
+		protected readonly IHost host;
+        protected readonly IWebContext webContext;
+        protected readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
 		
 		private string defaultContentPage = "/default.aspx";
 
@@ -39,11 +39,11 @@ namespace N2.Web
 
 		#region Properties
 
-		/// <summary>Gets the current site.</summary>
-		public Web.Site DefaultSite
-		{
-			get { return host.DefaultSite; }
-		}
+        ///// <summary>Gets the current site.</summary>
+        //public Web.Site DefaultSite
+        //{
+        //    get { return host.DefaultSite; }
+        //}
 
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		public ContentItem CurrentPage
@@ -55,28 +55,19 @@ namespace N2.Web
 			}
 		}
 
-		/// <summary>Gets the current site.</summary>
-		public virtual Web.Site CurrentSite
-		{
-			get { return DefaultSite; }
-		}
+        ///// <summary>Gets the current site.</summary>
+        //public virtual Web.Site CurrentSite
+        //{
+        //    get { return DefaultSite; }
+        //}
 
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage
 		{
 			get 
             {
-                return Persister.Repository.Load(this.CurrentSite.StartPageID);
+                return persister.Repository.Load(host.CurrentSite.StartPageID);
             }
-		}
-
-		protected Persistence.IPersister Persister
-		{
-			get { return persister; }
-		}
-		protected IWebContext WebContext
-		{
-			get { return webContext; }
 		}
 
         /// <summary>Gets or sets the default content document name. This is usually "/default.aspx".</summary>
@@ -120,7 +111,7 @@ namespace N2.Web
 		{
 			int? itemID = FindQueryStringReference(url, parameters);
 			if (itemID.HasValue)
-				return Persister.Get(itemID.Value);
+				return persister.Get(itemID.Value);
 			return null;
 		}
 
@@ -202,24 +193,24 @@ namespace N2.Web
 		private static char[] segmentSplitChars = new char[] { '~', '/' };
 		private string[] Segment(string rawUrl)
 		{
-			rawUrl = GetPathAndQuery(rawUrl);
+            rawUrl = Url.Parse(rawUrl).PathAndQuery; //GetPathAndQuery(rawUrl);
 
 			string relativeUrlWithoutQueryString = this.webContext.ToAppRelative(rawUrl.Split('?', '#')[0]);
 			return relativeUrlWithoutQueryString.Split(segmentSplitChars, StringSplitOptions.RemoveEmptyEntries);
 		}
 
-		public virtual string GetPathAndQuery(string rawUrl)
-		{
-			if (!rawUrl.StartsWith("/"))
-			{
-				Match m = pathAndQueryIntoGroup.Match(rawUrl);
-				if (m != null && m.Groups.Count > 1)
-				{
-					rawUrl = m.Groups[1].Value;
-				}
-			}
-			return rawUrl;
-		}
+        //public virtual string GetPathAndQuery(string rawUrl)
+        //{
+        //    if (!rawUrl.StartsWith("/"))
+        //    {
+        //        Match m = pathAndQueryIntoGroup.Match(rawUrl);
+        //        if (m != null && m.Groups.Count > 1)
+        //        {
+        //            rawUrl = m.Groups[1].Value;
+        //        }
+        //    }
+        //    return rawUrl;
+        //}
 		#endregion
 
 		/// <summary>Calculates an item url by walking it's parent path.</summary>
@@ -249,7 +240,7 @@ namespace N2.Web
 		/// <returns>The absolute url to the item.</returns>
 		protected virtual string ToAbsolute(string url, ContentItem item)
 		{
-			if (string.IsNullOrEmpty(url))
+			if (string.IsNullOrEmpty(url) || url == "/")
 				url = this.webContext.ToAbsolute("~/");
 			else
 				url = this.webContext.ToAbsolute("~" + url + item.Extension);
@@ -265,7 +256,7 @@ namespace N2.Web
 		/// <returns>True if the item is a startpage or a rootpage</returns>
 		public virtual bool IsRootOrStartPage(ContentItem item)
 		{
-			return item.ID == CurrentSite.StartPageID || item.ID == CurrentSite.RootItemID;
+            return item.ID == host.CurrentSite.RootItemID || IsStartPage(item);
 		}
 
 		/// <summary>Checks if an item is the startpage</summary>
@@ -273,7 +264,7 @@ namespace N2.Web
 		/// <returns>True if the item is a startpage</returns>
 		public virtual bool IsStartPage(ContentItem item)
 		{
-			return item.ID == CurrentSite.StartPageID;
+            return item.ID == host.CurrentSite.StartPageID;
 		}
 		#endregion
 	}

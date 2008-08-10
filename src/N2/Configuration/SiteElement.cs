@@ -6,13 +6,21 @@ using System.Configuration;
 namespace N2.Configuration
 {
 	public class SiteElement : ConfigurationElement
-	{
-		[ConfigurationProperty("id", IsRequired = true)]
-		public int ID
-		{
-			get { return (int)base["id"]; }
-			set { base["id"] = value; }
-		}
+    {
+        [ConfigurationProperty("id", IsRequired = true)]
+        public int ID
+        {
+            get { return (int)base["id"]; }
+            set { base["id"] = value; }
+        }
+
+        /// <summary>Optional configuration. When set this features allows multiple sites to coexist in the same database.</summary>
+        [ConfigurationProperty("rootID")]
+        public int? RootID
+        {
+            get { return (int?)base["rootID"]; }
+            set { base["rootID"] = value; }
+        }
 
 		[ConfigurationProperty("name", IsRequired = true, IsKey = true)]
 		public string Name

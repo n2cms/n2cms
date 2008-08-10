@@ -12,10 +12,6 @@ namespace N2.Web
 	/// </summary>
 	public class MultipleSitesParser : UrlParser
 	{
-		private IList<Site> sites = new List<Site>();
-        private string scheme = "http";
-
-
 		public MultipleSitesParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, ISitesProvider sitesProvider, HostSection config)
 			: base(persister, webContext, notifier, host)
 		{
@@ -23,40 +19,30 @@ namespace N2.Web
 
             if (config.DynamicSites)
             {
-                foreach (Site s in sitesProvider.GetSites())
-                {
-                    Sites.Add(s);
-                }
-            }
-            foreach (Site s in host.Sites)
-            {
-                if (!Sites.Contains(s))
-                {
-                    Sites.Add(s);
-                }
+                host.AddSites(sitesProvider.GetSites());
             }
 		}
 
 
 		#region Properties
 
-        /// <summary>The default scheme to use when creating external url's. Default is http.</summary>
-        private string Scheme
-        {
-            get { return scheme; }
-            set { scheme = value; }
-        }
+        ///// <summary>The default scheme to use when creating external url's. Default is http.</summary>
+        //private string Scheme
+        //{
+        //    get { return scheme; }
+        //    set { scheme = value; }
+        //}
 
-		public IList<Site> Sites
-		{
-			get { return sites; }
-			set { sites = value; }
-		}
+        //public IList<Site> Sites
+        //{
+        //    get { return sites; }
+        //    set { sites = value; }
+        //}
 
-		public override Site CurrentSite
-		{
-			get { return GetSite(WebContext.HostUrl.Authority) ?? base.CurrentSite; }
-		}
+        //public override Site CurrentSite
+        //{
+        //    get { return GetSite(WebContext.HostUrl.Authority) ?? base.CurrentSite; }
+        //}
 
 		#endregion
 
@@ -68,10 +54,9 @@ namespace N2.Web
 				return base.Parse(url);
 			else
 			{
-				string host = GetHost(url);
-				Site site = GetSite(host);
+                Site site = host.GetSite(url);
 				if (site != null)
-					return TryLoadingFromQueryString(url) ?? Parse(Persister.Get(site.StartPageID), GetPathAndQuery(url));
+					return TryLoadingFromQueryString(url) ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
 				else
 					return TryLoadingFromQueryString(url);
 			}
@@ -83,10 +68,10 @@ namespace N2.Web
 				return base.ParsePage(url);
 			else
 			{
-				string host = GetHost(url);
-				Site site = GetSite(host);
+				//string host = GetHost(url);
+				Site site = host.GetSite(url);
 				if (site != null)
-					return TryLoadingFromQueryString(url, "item", "page") ?? Parse(Persister.Get(site.StartPageID), GetPathAndQuery(url));
+					return TryLoadingFromQueryString(url, "item", "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
 				else
 					return TryLoadingFromQueryString(url, "page");
 			}
@@ -97,32 +82,39 @@ namespace N2.Web
 			if (item == null) throw new ArgumentNullException("item");
 
 			ContentItem current = item;
-			string url = string.Empty;
 
-			// Walk the item's parent items to compute it's url
-			do
-			{
-				if (IsRootOrStartPage(current))
-					break;
-				if (current.IsPage)
-					url = "/" + current.Name + url;
-				current = current.Parent;
-			} while (current != null);
+            // non-pages don't build url's
+			while (current != null && !current.IsPage)
+            {
+                current = current.Parent;
+            }
+            
+            // build path until start page
+            Url url = new Url("/");
+            while (current != null && !IsStartPage(current))
+            {
+                url = url.PrependSegment(current.Name, null);
+                current = current.Parent;
+            }
             
             if (current == null)
             {
+                // no start page found
                 return item.RewrittenUrl;
             }
-            else if (current.ID == CurrentSite.StartPageID)
+            else if (current.ID == host.CurrentSite.StartPageID)
             {
+                // the start page belongs to the current site, use relative url
                 return ToAbsolute(url, item);
             }
             else
             {
-                foreach (Site site in Sites)
+                // find the start page and use it's host name
+                foreach (Site site in host.Sites)
                     if (current.ID == site.StartPageID)
                         return GetHostedUrl(item, url, site);
-                return GetHostedUrl(item, url, DefaultSite);
+                // revert to default site
+                return GetHostedUrl(item, url, host.DefaultSite);
             }
 		}
 
@@ -131,32 +123,32 @@ namespace N2.Web
             if (string.IsNullOrEmpty(site.Authority))
                 return item.RewrittenUrl;
             else
-                return Scheme + "://" + site.Authority + ToAbsolute(url, item);
+                return Url.Parse(ToAbsolute(url, item)).SetAuthority(site.Authority);
         }
 
-		public override bool IsRootOrStartPage(ContentItem item)
-		{
-			foreach (Site site in Sites)
-				if (item.ID == site.StartPageID)
-					return true;
-			return base.IsRootOrStartPage(item);
-		}
+        public override bool IsStartPage(ContentItem item)
+        {
+            foreach (Site site in host.Sites)
+                if (item.ID == site.StartPageID)
+                    return true;
+            return false;
+        }
 
-		public virtual Site GetSite(string authority)
-		{
-			foreach (Site site in Sites)
-				if (site.Is(authority))
-					return site;
-			return null;
-		}
+        //public virtual Site GetSite(string authority)
+        //{
+        //    foreach (Site site in host.Sites)
+        //        if (site.Is(authority))
+        //            return site;
+        //    return null;
+        //}
 
-		public virtual string GetHost(string url)
-		{
-			Match m = Regex.Match(url, @"^\w+?://([^/]+)", RegexOptions.Compiled);
-			if (m != null && m.Groups.Count > 1)
-				return m.Groups[1].Value.ToLower();
-			return null;
-		}
+        //public virtual string GetHost(string url)
+        //{
+        //    Match m = Regex.Match(url, @"^\w+?://([^/]+)", RegexOptions.Compiled);
+        //    if (m != null && m.Groups.Count > 1)
+        //        return m.Groups[1].Value.ToLower();
+        //    return null;
+        //}
 
 		#endregion
 	}

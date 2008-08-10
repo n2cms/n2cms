@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using N2.Web;
 
 namespace N2.Persistence
 {
@@ -21,7 +22,7 @@ namespace N2.Persistence
 		/// <summary>Gets the site's root items.</summary>
 		public static TRoot RootItem
 		{
-			get { return (TRoot)Context.Persister.Repository.Load(Context.UrlParser.CurrentSite.RootItemID); }
+			get { return (TRoot)Context.Persister.Repository.Load(Context.Current.Resolve<IHost>().CurrentSite.RootItemID); }
 		}
 
 		/// <summary>Gets the currently displayed page (based on the query string).</summary>

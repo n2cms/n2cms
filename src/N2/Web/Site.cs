@@ -83,7 +83,7 @@ namespace N2.Web
 		#region ToString
 		public override string ToString()
 		{
-			return base.ToString() + " (" + this.Authority + ")";
+			return base.ToString() + " [" + authority + "] #" + startPageID;
 		}
 		public override bool Equals(object obj)
 		{

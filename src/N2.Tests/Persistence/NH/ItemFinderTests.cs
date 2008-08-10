@@ -7,6 +7,7 @@ using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Tests.Persistence.Definitions;
+using N2.Web;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -35,8 +36,8 @@ namespace N2.Tests.Persistence.NH
 			item2 = CreatePageBelowStartPage(2);
 			item3 = CreatePageBelowStartPage(3);
 
-			engine.UrlParser.CurrentSite.RootItemID = rootItem.ID;
-			engine.UrlParser.CurrentSite.StartPageID = startPage.ID;
+			engine.Resolve<IHost>().DefaultSite.RootItemID = rootItem.ID;
+			engine.Resolve<IHost>().DefaultSite.StartPageID = startPage.ID;
 
 			ISessionProvider sessionProvider = engine.Resolve<ISessionProvider>();
 			finder = new ItemFinder(sessionProvider, engine.Definitions);

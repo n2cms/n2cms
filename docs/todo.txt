@@ -1,4 +1,3 @@
-- tinymce iframe (extended_valid_elements : "iframe[src|width|height|name|align]")
 - delete restrictions
 - wiki
 	- categories
@@ -10,6 +9,7 @@
 		- ::
 		- :::
 	- images
+		- resize
 		- Floating to the right side of the page using the frame attribute and a caption: [[Image:wiki.png|frame|Wikipedia Encyclopedia]]
 		- Floating to the right side of the page using the thumb attribute and a caption: [[Image:wiki.png|thumb|Wikipedia Encyclopedia]]
 		- Floating to the right side of the page without a caption: [[Image:wiki.png|right|Wikipedia Encyclopedia]]

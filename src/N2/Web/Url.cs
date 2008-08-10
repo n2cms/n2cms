@@ -145,11 +145,23 @@ namespace N2.Web
         {
             get
             {
-                int dotIndex = path.IndexOf(".");
+                int dotIndex = path.LastIndexOf(".");
                 if (dotIndex >= 0)
                     return path.Substring(dotIndex);
                 else
                     return null;
+            }
+        }
+
+        public string PathWithoutExtension
+        {
+            get
+            {
+                int dotIndex = path.LastIndexOf(".");
+                if (dotIndex >= 0)
+                    return path.Substring(0, dotIndex);
+                else
+                    return path;
             }
         }
 
@@ -348,7 +360,7 @@ namespace N2.Web
 
         public Url SetAuthority(string authority)
         {
-            return new Url(this.scheme, authority, this.path, this.query, this.fragment);
+            return new Url(this.scheme ?? "http", authority, this.path, this.query, this.fragment);
         }
 
         public Url SetPath(string path)
@@ -372,10 +384,8 @@ namespace N2.Web
         public Url AppendSegment(string segment, string extension)
         {
             string newPath;
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path) || path == "/")
                 newPath = "/" + segment + extension;
-            else if (path == "/")
-                newPath = path + segment + extension;
             else if (extension != null)
             {
                 int extensionIndex = path.LastIndexOf(extension);
@@ -405,6 +415,31 @@ namespace N2.Web
         public Url AppendSegment(string segment, bool useDefaultExtension)
         {
             return AppendSegment(segment, useDefaultExtension ? DefaultExtension : Extension);
+        }
+
+        public Url PrependSegment(string segment, string extension)
+        {
+            string newPath;
+            if (string.IsNullOrEmpty(path) || path == "/")
+                newPath = "/" + segment + extension;
+            else if (extension != Extension)
+            {
+                newPath = "/" + segment + PathWithoutExtension + extension;
+            }
+            else
+            {
+                newPath = "/" + segment + path;
+            }
+
+            return new Url(scheme, authority, newPath, query, fragment);
+        }
+
+        public Url PrependSegment(string segment)
+        {
+            if (string.IsNullOrEmpty(Path) || Path == "/")
+                return PrependSegment(segment, DefaultExtension);
+            else
+                return PrependSegment(segment, Extension);
         }
 
         public Url AppendQuery(NameValueCollection queryString)

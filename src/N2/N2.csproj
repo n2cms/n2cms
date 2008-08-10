@@ -320,7 +320,6 @@
     <Compile Include="Installation\DatabaseStatus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Installation\InstallationChecker.cs" />
     <Compile Include="Installation\InstallationManager.cs">
       <SubType>Code</SubType>
     </Compile>

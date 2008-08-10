@@ -22,7 +22,7 @@ namespace N2.Tests.Web
         {
             mocks.ReplayAll();
 
-            string url = parser.GetPathAndQuery("http://www.n2cms.com/");
+            string url = Url.Parse("http://www.n2cms.com/").PathAndQuery;
             Assert.AreEqual("/", url);
         }
 
@@ -31,7 +31,7 @@ namespace N2.Tests.Web
         {
             mocks.ReplayAll();
 
-            string url = parser.GetPathAndQuery("http://www.n2cms.com/item1.aspx");
+            string url = Url.Parse("http://www.n2cms.com/item1.aspx").PathAndQuery;
             Assert.AreEqual("/item1.aspx", url);
         }
 
@@ -40,7 +40,7 @@ namespace N2.Tests.Web
         {
             mocks.ReplayAll();
 
-            string url = parser.GetPathAndQuery("http://www.n2cms.com/item1.aspx?item=1");
+            string url = Url.Parse("http://www.n2cms.com/item1.aspx?item=1").PathAndQuery;
             Assert.AreEqual("/item1.aspx?item=1", url);
         }
 
@@ -49,7 +49,7 @@ namespace N2.Tests.Web
         {
             mocks.ReplayAll();
 
-            string url = parser.GetPathAndQuery("http://www.n2cms.com/item1/item2/item3/item4.aspx?item=1&page=2&optional=yes");
+            string url = Url.Parse("http://www.n2cms.com/item1/item2/item3/item4.aspx?item=1&page=2&optional=yes").PathAndQuery;
             Assert.AreEqual("/item1/item2/item3/item4.aspx?item=1&page=2&optional=yes", url);
         }
 
@@ -58,15 +58,15 @@ namespace N2.Tests.Web
         {
             mocks.ReplayAll();
 
-            string url = parser.GetPathAndQuery("http://www.n2cms.com/item1.aspx#theHash");
-            Assert.AreEqual("/item1.aspx#theHash", url);
+            string url = Url.Parse("http://www.n2cms.com/item1.aspx#theHash").PathAndQuery;
+            Assert.AreEqual("/item1.aspx", url);
         }
 
         [Test]
         public void PagesOutsideStartPage_AreReferenced_ThroughTheirRewrittenUrl()
         {
             notifier = mocks.Stub<IItemNotifier>();
-            host = new Host(null, 10, 1);
+            host = new Host(wrapper, 10, 1);
             parser = new UrlParser(persister, wrapper, notifier, host);
 
             CreateDefaultStructure();

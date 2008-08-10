@@ -5,21 +5,22 @@ using N2.Configuration;
 
 namespace N2.Web
 {
-	public class Host : N2.Web.IHost
+	public class Host : IHost
 	{
 		private readonly IWebContext context;
 		private Site defaultSite;
-		private IList<Site> sites = new List<Site>();
+		private List<Site> sites = new List<Site>();
 
 		public Host(IWebContext context, HostSection config)
 		{
+            this.context = context;
 			defaultSite = new Site(config.RootID, config.StartPageID);
-			foreach (SiteElement site in config.Sites)
+			foreach (SiteElement configElement in config.Sites)
 			{
-                Site s = new Site(config.RootID, site.ID, site.Name);
-                s.Wildcards = site.Wildcards || config.Wildcards;
-                foreach (string key in site.Settings.AllKeys)
-                    s.Settings[key] = site.Settings[key].Value;
+                Site s = new Site(configElement.RootID ?? config.RootID, configElement.ID, configElement.Name);
+                s.Wildcards = configElement.Wildcards || config.Wildcards;
+                foreach (string key in configElement.Settings.AllKeys)
+                    s.Settings[key] = configElement.Settings[key].Value;
                 Sites.Add(s);
 			}
 		}
@@ -44,12 +45,29 @@ namespace N2.Web
 
 		public Site CurrentSite
 		{
-			get { return defaultSite; }
-		}
+            get { return GetSite(context.HostUrl) ?? DefaultSite; }
+        }
+
+        public Site GetSite(Url host)
+        {
+            foreach (Site site in Sites)
+                if (site.Is(host.Authority))
+                    return site;
+            return null;
+        }
 
 		public IList<Site> Sites
 		{
 			get { return sites; }
 		}
-	}
+
+        public void AddSites(IEnumerable<Site> sitesToAdd)
+        {
+            foreach (Site s in sitesToAdd)
+            {
+                if (!sites.Contains(s))
+                    sites.Add(s);
+            }
+        }
+    }
 }

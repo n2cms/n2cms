@@ -260,6 +260,9 @@
     <Compile Include="Serialization\XmlWriterTests.cs" />
     <Compile Include="Web\UrlTests.cs" />
     <Compile Include="Web\AbstractExtensionUrlParserTests.cs" />
+    <Compile Include="Web\WhileBuildingUrlsWhenMultipleSites.cs" />
+    <Compile Include="Web\WhileDealingWithHostNames.cs" />
+    <Compile Include="Web\WhileParsingUrlsWhenMultipleSites.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
