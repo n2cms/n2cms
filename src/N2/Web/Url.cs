@@ -386,15 +386,15 @@ namespace N2.Web
             string newPath;
             if (string.IsNullOrEmpty(path) || path == "/")
                 newPath = "/" + segment + extension;
-            else if (extension != null)
+            else if (!string.IsNullOrEmpty(extension))
             {
                 int extensionIndex = path.LastIndexOf(extension);
                 if (extensionIndex >= 0)
                     newPath = path.Insert(extensionIndex, "/" + segment);
                 else if(path.EndsWith("/"))
-                    newPath = path + segment;
+                    newPath = path + segment + extension;
                 else
-                    newPath = path + "/" + segment;
+                    newPath = path + "/" + segment + extension;
             }
             else if (path.EndsWith("/"))
                 newPath = path + segment;

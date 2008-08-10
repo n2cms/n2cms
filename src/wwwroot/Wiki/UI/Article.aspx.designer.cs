@@ -12,5 +12,32 @@ namespace N2.Templates.Wiki.UI {
     
     
     public partial class WikiArticle {
+        
+        /// <summary>
+        /// zrr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.DroppableZone zrr;
+        
+        /// <summary>
+        /// zr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.DroppableZone zr;
+        
+        /// <summary>
+        /// zsr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.DroppableZone zsr;
     }
 }

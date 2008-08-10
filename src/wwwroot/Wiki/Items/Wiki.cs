@@ -33,7 +33,7 @@ namespace N2.Templates.Wiki.Items
         }
 
         public static string DefaultUploadFolder = "/Upload/Wiki/";
-        [WikiText("Upload Folder", 100, ContainerName = Wiki.WikiTab)]
+        [EditableTextBox("Upload Folder", 100, ContainerName = Wiki.WikiTab)]
         public virtual string UploadFolder
         {
             get { return (string)(GetDetail("UploadFolder") ?? DefaultUploadFolder); }

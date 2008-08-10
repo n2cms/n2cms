@@ -158,10 +158,10 @@ if('{5}'){{
 ";
 
 		private const string updateNameScript =
-			@"
+            @"
 function getName(titleid, whitespace, tolower, ascii){
     var titleBox=document.getElementById(titleid);
-	var name = titleBox.value.replace(/[%?&/+:<>]|[.]+$/g, '').replace(/[.]+/g, '-').replace(/\s+/g,whitespace);
+	var name = titleBox.value.replace(/[.]+/g, '-').replace(/[%?&/+:<>]/g, '').replace(/\s+/g, whitespace).replace(/[-]+/g, '-').replace(/[-]+$/g, '');
 	if(tolower) name = name.toLowerCase();
 	if(ascii) name = name
 		.replace(/[åä]/g, 'a').replace(/[ÅÄ]/g, 'A')

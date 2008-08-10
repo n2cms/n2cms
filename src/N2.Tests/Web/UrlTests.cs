@@ -312,11 +312,51 @@ namespace N2.Tests.Web
         }
 
         [Test]
+        public void CanAppendSegment_UsingDefaultExtension_ToPathWithNoExtension()
+        {
+            Url u = "http://n2cms.com/path";
+            u = u.AppendSegment("test2", true);
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/path/test2.aspx"));
+        }
+
+        [Test]
+        public void CanAppendSegment_UsingDefaultExtension_ToPathWithTrailingSlash()
+        {
+            Url u = "http://n2cms.com/path/";
+            u = u.AppendSegment("test2", true);
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/path/test2.aspx"));
+        }
+
+        //[Test]
+        //public void CanAppendSegment_UsingDefaultExtension_ToPathWithOtherExtension()
+        //{
+        //    Url u = "http://n2cms.com/path.html";
+        //    u = u.AppendSegment("test2", true);
+        //    Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/path/test2.aspx"));
+        //}
+
+        [Test]
         public void CanAppendSegment_UsingDefaultExtension_ToEmptyPath()
         {
             Url u = "http://n2cms.com";
             u = u.AppendSegment("test2", true);
             Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test2.aspx"));
+        }
+
+        [Test]
+        public void CanAppendSegment_ToPathWithoutExtension()
+        {
+            Url u = "http://n2cms.com/wiki";
+            u = u.AppendSegment("test");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/wiki/test"));
+        }
+
+        [Test]
+        public void CanAppendSegment_ToPathWithTrailingSlash()
+        {
+            Url u = "http://n2cms.com/wiki/";
+            u = u.AppendSegment("test");
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/wiki/test"));
         }
 
         [Test]
@@ -365,6 +405,14 @@ namespace N2.Tests.Web
             Url u = "http://n2cms.com/test.html";
             u = u.AppendSegment("test2");
             Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/test/test2.html"));
+        }
+
+        [Test]
+        public void CanAppendSegment_WithoutUsingDefaultExtension()
+        {
+            Url u = "http://n2cms.com/hello";
+            u = u.AppendSegment("test2", false);
+            Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/hello/test2"));
         }
 
         [Test]

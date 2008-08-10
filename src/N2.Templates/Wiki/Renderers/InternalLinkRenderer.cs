@@ -59,7 +59,7 @@ namespace N2.Templates.Wiki.Renderers
             }
             else
             {
-                string url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment("Upload", true).AppendQuery("parameter", fragments[0].Trim()).AppendQuery("returnUrl", context.Article.Url);
+                string url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment("Upload").AppendQuery("parameter", fragments[0].Trim()).AppendQuery("returnUrl", context.Article.Url);
                 return AppendAnchor(container, name, url, false);
             }
         }
@@ -86,7 +86,7 @@ namespace N2.Templates.Wiki.Renderers
         {
             string[] fragments = fragment.Split('|');
             ContentItem existingArticle = context.Article.WikiRoot.GetChild(fragments[0]);
-            Url url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment(fragments[0], true);
+            Url url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment(fragments[0]);
             bool exists = existingArticle == null || existingArticle != context.Article.WikiRoot;
             return AppendAnchor(container, fragments.Length > 1 ? fragments[1] : fragments[0], url, exists);
         }

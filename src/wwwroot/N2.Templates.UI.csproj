@@ -613,13 +613,6 @@
     <Compile Include="Wiki\UI\Submit.aspx.designer.cs">
       <DependentUpon>Submit.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Wiki\UI\Wiki.aspx.cs">
-      <DependentUpon>Wiki.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Wiki\UI\Wiki.aspx.designer.cs">
-      <DependentUpon>Wiki.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Wiki\UI\Article.aspx.cs">
       <DependentUpon>Article.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -960,7 +953,6 @@
     <Content Include="Wiki\UI\Parts\WikiPart.ascx" />
     <Content Include="Wiki\UI\Search.aspx" />
     <Content Include="Wiki\UI\Submit.aspx" />
-    <Content Include="Wiki\UI\Wiki.aspx" />
     <Content Include="Wiki\UI\Wiki.css" />
     <Content Include="Wiki\UI\Article.aspx" />
   </ItemGroup>
