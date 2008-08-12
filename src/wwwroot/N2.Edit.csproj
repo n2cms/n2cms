@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -245,6 +245,13 @@
     </Compile>
     <Compile Include="Edit\Install\Fix.aspx.designer.cs">
       <DependentUpon>Fix.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Edit\Install\FixClass.aspx.cs">
+      <DependentUpon>FixClass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\Install\FixClass.aspx.designer.cs">
+      <DependentUpon>FixClass.aspx</DependentUpon>
     </Compile>
     <Compile Include="Edit\ItemInfo.ascx.cs">
       <DependentUpon>ItemInfo.ascx</DependentUpon>
@@ -1626,6 +1633,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Edit\Install\FixClass.aspx" />
     <Content Include="Edit\KeepAlive\Web.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

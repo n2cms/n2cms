@@ -295,6 +295,14 @@ namespace N2.Web
             return AppendQuery(key + "=" + value);
         }
 
+        public Url AppendQuery(string key, object value)
+        {
+            if (value == null)
+                return this;
+            else
+                return AppendQuery(key + "=" + value.ToString());
+        }
+
         public Url AppendQuery(string keyValue)
         {
             Url clone = new Url(this);

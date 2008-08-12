@@ -1,4 +1,5 @@
-- deal with unmapped types
+- msi installer
+- update sandcastle documentation
 - errors redirect
 - delete restrictions
 - wiki

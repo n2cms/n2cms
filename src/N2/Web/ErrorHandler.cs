@@ -5,11 +5,22 @@ using System.Diagnostics;
 using System.Web;
 using N2.Configuration;
 using N2.Web.Mail;
+using NHibernate;
+using N2.Security;
+using N2.Persistence.NH;
 
 namespace N2.Web
 {
+    /// <summary>
+    /// Is notified of errors in the web context and tries to do something barely useful about them.
+    /// </summary>
     public class ErrorHandler : N2.Web.IErrorHandler
     {
+        ISecurityManager security;
+        IWebContext context;
+
+        string connectionString = "N2CMS";
+
         ErrorAction action = ErrorAction.None;
         IMailSender mailSender = null;
         string mailTo = null;
@@ -21,17 +32,23 @@ namespace N2.Web
         long errorsThisHour = 0;
         int hour = DateTime.Now.Hour;
 
+        /// <summary>Total number of errors since startup.</summary>
         public long ErrorCount
         {
             get { return errorCount; }
         }
 
-        public ErrorHandler()
+        public ErrorHandler(IWebContext context, ISecurityManager security)
         {
+            this.context = context;
+            this.security = security;
         }
 
-        public ErrorHandler(EngineSection config)
+        public ErrorHandler(IWebContext context, ISecurityManager security, DatabaseSection databaseConfig, EngineSection config)
+            : this(context, security)
         {
+            connectionString = databaseConfig.ConnectionStringName;
+
             action = config.Errors.Action;
             mailTo = config.Errors.MailTo;
             mailFrom = config.Errors.MailFrom;
@@ -39,8 +56,8 @@ namespace N2.Web
             mailSender = new StaticMailSender();
         }
 
-        public ErrorHandler(EngineSection config, IMailSender mailSender)
-            :this(config)
+        public ErrorHandler(IWebContext context, ISecurityManager security, IMailSender mailSender, DatabaseSection databaseConfig, EngineSection config)
+            :this(context, security, databaseConfig, config)
         {
             this.mailSender = mailSender;
         }
@@ -61,28 +78,39 @@ namespace N2.Web
                 {
                     try
                     {
-                        if (mailSender != null && !string.IsNullOrEmpty(mailTo))
-                        {
-                            lock (syncLock)
-                            {
-                                if (DateTime.Now.Hour == hour)
-                                {
-                                    ++errorsThisHour;
-                                }
-                                else
-                                {
-                                    hour = DateTime.Now.Hour;
-                                    errorsThisHour = 0;
-                                }
-                                if (maxErrorReportsPerHour < 0 || errorsThisHour <= maxErrorReportsPerHour)
-                                    mailSender.Send(mailFrom ?? "errors@somesite.com", mailTo, "Error Report: " + ex.Message, FormatError(ex));
-                            }
-                        }
+                        TryNotifyingByEmail(ex);
                     }
                     catch (Exception ex2)
                     {
                         Trace.TraceError("ErrorHandler.Handle: exception handling exception" + ex2);
                     }
+                    if (ex is WrongClassException && security.IsAdmin(context.User))
+                    {
+                        WrongClassException wex = ex as WrongClassException;
+                        string url = Url.Parse("~/Edit/Install/FixClass.aspx").AppendQuery("cn", connectionString).AppendQuery("class", wex.EntityName).AppendQuery("id", wex.Identifier);
+                        context.Response.Redirect(url);
+                    }
+                }
+            }
+        }
+
+        private void TryNotifyingByEmail(Exception ex)
+        {
+            if (mailSender != null && !string.IsNullOrEmpty(mailTo))
+            {
+                lock (syncLock)
+                {
+                    if (DateTime.Now.Hour == hour)
+                    {
+                        ++errorsThisHour;
+                    }
+                    else
+                    {
+                        hour = DateTime.Now.Hour;
+                        errorsThisHour = 0;
+                    }
+                    if (maxErrorReportsPerHour < 0 || errorsThisHour <= maxErrorReportsPerHour)
+                        mailSender.Send(mailFrom ?? "errors@somesite.com", mailTo, "Error Report: " + ex.Message, FormatError(ex));
                 }
             }
         }

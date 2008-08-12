@@ -36,6 +36,7 @@
 - changed the way database integrity is checked
 - allowed to multiple sites to reference different root nodes
 - configuration support for observed extensions
+- deal with unmapped types (fix page)
 
 1.4.1
 - error handling with email option

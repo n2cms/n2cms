@@ -25,7 +25,10 @@ namespace N2.Web
 		/// <summary>Creates a new instance of the UrlRewriter.</summary>
 		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
 		{
-			this.urlParser = urlParser;
+            if (urlParser == null) throw new ArgumentNullException("urlParser");
+            if (webContext == null) throw new ArgumentNullException("webContext");
+            
+            this.urlParser = urlParser;
 			this.webContext = webContext;
 		}
 
@@ -33,9 +36,11 @@ namespace N2.Web
         public UrlRewriter(IUrlParser urlParser, IWebContext webContext, Configuration.HostSection config)
             : this(urlParser, webContext)
         {
+            if (config == null) throw new ArgumentNullException("config");
+
             rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
             StringCollection additionalExtensions = config.Web.ObservedExtensions;
-            if (additionalExtensions.Count > 0)
+            if (additionalExtensions != null && additionalExtensions.Count > 0)
             {
                 observedExtensions = new string[additionalExtensions.Count + 1];
                 additionalExtensions.CopyTo(observedExtensions, 1);
