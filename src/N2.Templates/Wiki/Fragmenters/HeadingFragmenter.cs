@@ -7,7 +7,7 @@ namespace N2.Templates.Wiki.Fragmenters
     public class HeadingFragmenter : RegexFragmenter
     {
         public HeadingFragmenter()
-            : base(@"=+[^=\]]*?=+")
+            : base(@"(?<Value>=+)(?<Contents>[^=\]]*?)=+[\r\n]*")
         {
         }
     }

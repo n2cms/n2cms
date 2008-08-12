@@ -393,6 +393,24 @@ Line 2
             Assert.That(output, Is.EqualTo("<ol><li>Text<ol><li>Child Text</li></ol></li></ol>"));
         }
 
+        [Test]
+        public void WillNotAdd_LineBreak_AfterHeading()
+        {
+            string input = @"==Heading==
+";
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<h2>Heading</h2>"));
+        }
+
+        [Test]
+        public void WillNotAdd_LineBreak_AfterUnorderedList()
+        {
+            string input = @"* Heading
+";
+            string output = ParseAndRenderWikiText(input);
+            Assert.That(output, Is.EqualTo("<ul><li>Heading</li></ul>"));
+        }
+
         private string ParseAndRenderWikiText(string text)
         {
             var buf = new StringBuilder();

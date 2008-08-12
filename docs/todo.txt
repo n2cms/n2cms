@@ -1,3 +1,5 @@
+- deal with unmapped types
+- errors redirect
 - delete restrictions
 - wiki
 	- categories

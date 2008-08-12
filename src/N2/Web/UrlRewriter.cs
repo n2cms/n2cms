@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using N2.Persistence;
 using N2.Web.UI;
+using System.Collections.Specialized;
 
 namespace N2.Web
 {
@@ -16,6 +17,8 @@ namespace N2.Web
 	/// </summary>
 	public class UrlRewriter : IUrlRewriter
 	{
+        private bool rewriteEmptyExtension = false;
+        string[] observedExtensions = new string[] { ".aspx" };
 		private readonly IUrlParser urlParser;
 		private readonly IWebContext webContext;
 
@@ -25,6 +28,20 @@ namespace N2.Web
 			this.urlParser = urlParser;
 			this.webContext = webContext;
 		}
+
+        /// <summary>Creates a new instance of the UrlRewriter.</summary>
+        public UrlRewriter(IUrlParser urlParser, IWebContext webContext, Configuration.HostSection config)
+            : this(urlParser, webContext)
+        {
+            rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
+            StringCollection additionalExtensions = config.Web.ObservedExtensions;
+            if (additionalExtensions.Count > 0)
+            {
+                observedExtensions = new string[additionalExtensions.Count + 1];
+                additionalExtensions.CopyTo(observedExtensions, 1);
+            }
+            observedExtensions[0] = config.Web.Extension;
+        }
 
 		#region Rewrite Methods
 
@@ -75,16 +92,18 @@ namespace N2.Web
         private bool IsUpdatable(Url url)
         {
             string extension = url.Extension;
-            if (extension == null)
+            if (rewriteEmptyExtension && string.IsNullOrEmpty(extension))
                 return true;
-            else if (Url.DefaultExtension.Equals(extension, StringComparison.InvariantCultureIgnoreCase))
-                return true;
-            else if(url.GetQuery("page") != null)
+            foreach (string observed in observedExtensions)
+                if (string.Equals(observed, extension, StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+            if(url.GetQuery("page") != null)
                 return true;
 
             return false;
         }
 
+        /// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		public void InjectContentPage()
 		{
 			IContentTemplate template = webContext.Handler as IContentTemplate;

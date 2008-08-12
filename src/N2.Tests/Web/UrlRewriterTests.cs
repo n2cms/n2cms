@@ -7,6 +7,8 @@ using N2.Persistence;
 using N2.Web;
 using Rhino.Mocks;
 using System.Collections.Specialized;
+using N2.Configuration;
+using System.Configuration;
 
 namespace N2.Tests.Web
 {
@@ -91,7 +93,104 @@ namespace N2.Tests.Web
 
 			UrlRewriter rewriter = new UrlRewriter(parser, context);
 			rewriter.UpdateCurrentPage();
-		}
+        }
+
+        [Test]
+        public void UpdatesCurrentPage_WhenExtension_IsAspx()
+        {
+            ContentItem root = CreateOneItem<PageItem>(1, "root", null);
+            ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+            
+            Expect.On(parser).Call(parser.ParsePage("/one.aspx")).Return(one);
+
+            IWebContext context = mocks.StrictMock<IWebContext>();
+            Expect.Call(context.LocalUrl).Return(new Url("/one.aspx")).Repeat.Any();
+            Expect.Call(context.CurrentPage).Return(null).Repeat.Any();
+            Expect.Call(delegate { context.CurrentPage = one; });
+
+            mocks.ReplayAll();
+
+            UrlRewriter rewriter = new UrlRewriter(parser, context);
+            rewriter.UpdateCurrentPage();
+        }
+
+        [Test]
+        public void UpdatesCurrentPage_WhenExtension_IsConfiguredAsObserved()
+        {
+            ContentItem root = CreateOneItem<PageItem>(1, "root", null);
+            ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+
+            Expect.On(parser).Call(parser.ParsePage("/one.htm")).Return(one);
+
+            IWebContext context = mocks.StrictMock<IWebContext>();
+            Expect.Call(context.LocalUrl).Return(new Url("/one.htm")).Repeat.Any();
+            Expect.Call(context.CurrentPage).Return(null).Repeat.Any();
+            Expect.Call(delegate { context.CurrentPage = one; });
+
+            mocks.ReplayAll();
+
+            HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } };
+
+            UrlRewriter rewriter = new UrlRewriter(parser, context, config);
+            rewriter.UpdateCurrentPage();
+        }
+
+        [Test]
+        public void DoesntUpdateCurrentPage_WhenExtension_IsHtml()
+        {
+            ContentItem root = CreateOneItem<PageItem>(1, "root", null);
+            ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+
+            Expect.On(parser).Call(parser.ParsePage("/one.html")).Repeat.Never();
+
+            IWebContext context = mocks.StrictMock<IWebContext>();
+            Expect.Call(context.LocalUrl).Return(new Url("/one.html")).Repeat.Any();
+            Expect.Call(context.CurrentPage).Return(null).Repeat.Any();
+            
+            mocks.ReplayAll();
+
+            UrlRewriter rewriter = new UrlRewriter(parser, context);
+            rewriter.UpdateCurrentPage();
+        }
+
+        [Test]
+        public void DoesntUpdateCurrentPage_WhenExtension_IsEmpty()
+        {
+            ContentItem root = CreateOneItem<PageItem>(1, "root", null);
+            ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+
+            Expect.On(parser).Call(parser.ParsePage("/one")).Repeat.Never();
+
+            IWebContext context = mocks.StrictMock<IWebContext>();
+            Expect.Call(context.LocalUrl).Return(new Url("/one")).Repeat.Any();
+            Expect.Call(context.CurrentPage).Return(null).Repeat.Any();
+
+            mocks.ReplayAll();
+
+            UrlRewriter rewriter = new UrlRewriter(parser, context);
+            rewriter.UpdateCurrentPage();
+        }
+
+        [Test]
+        public void UpdatesCurrentPage_WhenEmptyExtension_IsConfiguredAsObserved()
+        {
+            ContentItem root = CreateOneItem<PageItem>(1, "root", null);
+            ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+
+            Expect.On(parser).Call(parser.ParsePage("/one")).Return(one);
+
+            IWebContext context = mocks.StrictMock<IWebContext>();
+            Expect.Call(context.LocalUrl).Return(new Url("/one")).Repeat.Any();
+            Expect.Call(context.CurrentPage).Return(null).Repeat.Any();
+            Expect.Call(delegate { context.CurrentPage = one; });
+
+            mocks.ReplayAll();
+
+            HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection() } };
+
+            UrlRewriter rewriter = new UrlRewriter(parser, context, config);
+            rewriter.UpdateCurrentPage();
+        }
 
 		[Test]
 		public void UpdateContentPage_WithRewrittenUrl()

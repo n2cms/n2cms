@@ -5,3 +5,4 @@ fieldset { padding:10px; }
 .controls { float:right; }
 .message, h1 { clear:left; }
 .error { clear:both; margin-bottom:10px; }
+#main ul { margin-top:0 }
