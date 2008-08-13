@@ -239,7 +239,8 @@ namespace N2.Templates.Tests.Wiki
             IList<Fragment> fragments = parser.Parse("=Heading 1=").ToList();
             Assert.That(fragments.Count, Is.EqualTo(1));
             Assert.That(fragments[0].Name, Is.EqualTo("Heading"));
-            Assert.That(fragments[0].Value, Is.EqualTo("=Heading 1="));
+            Assert.That(fragments[0].Value, Is.EqualTo("="));
+            Assert.That(fragments[0].InnerContents, Is.EqualTo("Heading 1"));
         }
 
         [Test]
@@ -248,7 +249,8 @@ namespace N2.Templates.Tests.Wiki
             IList<Fragment> fragments = parser.Parse("==Heading 2==").ToList();
             Assert.That(fragments.Count, Is.EqualTo(1));
             Assert.That(fragments[0].Name, Is.EqualTo("Heading"));
-            Assert.That(fragments[0].Value, Is.EqualTo("==Heading 2=="));
+            Assert.That(fragments[0].Value, Is.EqualTo("=="));
+            Assert.That(fragments[0].InnerContents, Is.EqualTo("Heading 2"));
         }
 
         [RowTest]
