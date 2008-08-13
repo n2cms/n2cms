@@ -12,7 +12,7 @@
     <form id="form1" runat="server">
     <div>
         <asp:Label CssClass="msg" runat="server" ID="lblResult" />
-        <h1>Invalid item in database</h1>
+        <h1>Invalid item(s) in database</h1>
         <p>An invalid class was found in the database (NHibernate.InvalidClassException). A few possible explanations:</p>
         <ul>
             <li><b>Missing dll.</b> A dll containing class definitions (e.g. n2.edit.dll) is no longer available in the /bin folder</li>
@@ -34,14 +34,14 @@ public class MyPage...</code></pre>
         <p>
             To fix it you can either </p>
             <ul>
-            <li>Act intelligently upon the information above</li>
+            <li>Act intelligently upon the this information.</li>
             <li>Try <asp:Button OnClientClick="return confirm('The nodes and all their CHILD nodes will be DELETED completly and irrecoverably. You can't get them back afterwards. Please note that child nodes of other types that could otherwise work also will be deleted. Delete?')" runat="server" Text="deleting" OnClick="btnDelete_Click" /> the offending nodes (use at own risk).</li>
             <li>
                 Try <asp:Button OnClientClick="return confirm('This option may result in an invalid database state such as stale data and traumatized application logic. Please use with caution. Continue?');" ID="Button1" runat="server" Text="changing" OnClick="btnChange_Click" /> them 
                 into a <asp:DropDownList ID="ddlType" runat="server" DataTextField="Title" DataValueField="Discriminator" /> (use with caution).
             </li>
         </ul>
-        <p>These are are the classes in the database that don't match any content class definition in the application:</p>
+        <p>These are are the problematic classes in the database. Their type/discriminator doesn't match any content class definition (class name or attribute name/discriminator) in the application:</p>
         <asp:DataGrid ID="dgrItems" runat="server"></asp:DataGrid>
 
     </div>

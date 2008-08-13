@@ -1,6 +1,5 @@
 - msi installer
 - update sandcastle documentation
-- errors redirect
 - delete restrictions
 - wiki
 	- categories

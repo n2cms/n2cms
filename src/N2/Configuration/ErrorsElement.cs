@@ -5,6 +5,9 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
+    /// <summary>
+    /// Configuration related to errors handling and reporting.
+    /// </summary>
     public class ErrorsElement : ConfigurationElement
     {
         [ConfigurationProperty("action", DefaultValue = ErrorAction.None)]
@@ -12,6 +15,14 @@ namespace N2.Configuration
         {
             get { return (ErrorAction)base["action"]; }
             set { base["action"] = value; }
+        }
+
+        /// <summary>A negative value is treated as unlimited number of errors.</summary>
+        [ConfigurationProperty("handleWrongClassException", DefaultValue = true)]
+        public bool HandleWrongClassException
+        {
+            get { return (bool)base["handleWrongClassException"]; }
+            set { base["handleWrongClassException"] = value; }
         }
 
         /// <summary>A negative value is treated as unlimited number of errors.</summary>

@@ -19,8 +19,6 @@ namespace N2.Web
         ISecurityManager security;
         IWebContext context;
 
-        string connectionString = "N2CMS";
-
         ErrorAction action = ErrorAction.None;
         IMailSender mailSender = null;
         string mailTo = null;
@@ -31,6 +29,7 @@ namespace N2.Web
         object syncLock = new object();
         long errorsThisHour = 0;
         int hour = DateTime.Now.Hour;
+        bool handleWrongClassException = true;
 
         /// <summary>Total number of errors since startup.</summary>
         public long ErrorCount
@@ -44,20 +43,19 @@ namespace N2.Web
             this.security = security;
         }
 
-        public ErrorHandler(IWebContext context, ISecurityManager security, DatabaseSection databaseConfig, EngineSection config)
+        public ErrorHandler(IWebContext context, ISecurityManager security, EngineSection config)
             : this(context, security)
         {
-            connectionString = databaseConfig.ConnectionStringName;
-
             action = config.Errors.Action;
             mailTo = config.Errors.MailTo;
             mailFrom = config.Errors.MailFrom;
             maxErrorReportsPerHour = config.Errors.MaxErrorReportsPerHour;
+            handleWrongClassException = config.Errors.HandleWrongClassException;
             mailSender = new StaticMailSender();
         }
 
-        public ErrorHandler(IWebContext context, ISecurityManager security, IMailSender mailSender, DatabaseSection databaseConfig, EngineSection config)
-            :this(context, security, databaseConfig, config)
+        public ErrorHandler(IWebContext context, ISecurityManager security, IMailSender mailSender, EngineSection config)
+            :this(context, security, config)
         {
             this.mailSender = mailSender;
         }
@@ -84,10 +82,10 @@ namespace N2.Web
                     {
                         Trace.TraceError("ErrorHandler.Handle: exception handling exception" + ex2);
                     }
-                    if (ex is WrongClassException && security.IsAdmin(context.User))
+                    WrongClassException wex = ex as WrongClassException;
+                    if (wex != null && handleWrongClassException && security.IsAdmin(context.User))
                     {
-                        WrongClassException wex = ex as WrongClassException;
-                        string url = Url.Parse("~/Edit/Install/FixClass.aspx").AppendQuery("cn", connectionString).AppendQuery("class", wex.EntityName).AppendQuery("id", wex.Identifier);
+                        string url = Url.Parse("~/Edit/Install/FixClass.aspx").AppendQuery("id", wex.Identifier);
                         context.Response.Redirect(url);
                     }
                 }
