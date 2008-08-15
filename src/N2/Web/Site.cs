@@ -105,9 +105,14 @@ namespace N2.Web
 		}
 		#endregion
 
-        public bool Is(string matchAgainstAuthority)
+        /// <summary>Checks the site against a certain host name and port number (authority).</summary>
+        /// <param name="matchAgainstAuthority">The requested host.</param>
+        /// <returns>True if the site matches.</returns>
+        public virtual bool Is(string matchAgainstAuthority)
         {
-            if (Authority == matchAgainstAuthority)
+            if (string.IsNullOrEmpty(matchAgainstAuthority))
+                return false;
+            else if (Authority == matchAgainstAuthority)
                 return true;
             else if(Wildcards && matchAgainstAuthority.EndsWith("." + Authority))
                 return true;

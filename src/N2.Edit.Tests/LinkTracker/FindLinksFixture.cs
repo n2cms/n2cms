@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using N2.Edit.LinkTracker;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Edit.LinkTracker
 {
@@ -24,7 +25,7 @@ namespace N2.Tests.Edit.LinkTracker
 		[SetUp]
 		public void SetUp()
 		{
-			linkFactory = new Tracker(null, null, null);
+			linkFactory = new Tracker(null, null, null, null);
 		}
 
 		[Test]

@@ -80,6 +80,41 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snipp
 		..\snippets\readme.txt = ..\snippets\readme.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE03-488C-B53D-989700FE6018}"
+	ProjectSection(SolutionItems) = preProject
+		..\lib\Castle.Core.dll = ..\lib\Castle.Core.dll
+		..\lib\Castle.DynamicProxy2.dll = ..\lib\Castle.DynamicProxy2.dll
+		..\lib\Castle.MicroKernel.dll = ..\lib\Castle.MicroKernel.dll
+		..\lib\Castle.Windsor.dll = ..\lib\Castle.Windsor.dll
+		..\lib\ICSharpCode.SharpZipLib.dll = ..\lib\ICSharpCode.SharpZipLib.dll
+		..\lib\Iesi.Collections.dll = ..\lib\Iesi.Collections.dll
+		..\lib\ILMerge.exe = ..\lib\ILMerge.exe
+		..\lib\log4net.dll = ..\lib\log4net.dll
+		..\lib\Microsoft.Web.Mvc.dll = ..\lib\Microsoft.Web.Mvc.dll
+		..\lib\MSBuild.Community.Tasks.dll = ..\lib\MSBuild.Community.Tasks.dll
+		..\lib\MSBuild.Community.Tasks.Targets = ..\lib\MSBuild.Community.Tasks.Targets
+		..\lib\MySql.Data.dll = ..\lib\MySql.Data.dll
+		..\lib\NHibernate.Caches.SysCache2.dll = ..\lib\NHibernate.Caches.SysCache2.dll
+		..\lib\NHibernate.dll = ..\lib\NHibernate.dll
+		..\lib\NHibernate.JetDriver.dll = ..\lib\NHibernate.JetDriver.dll
+		..\lib\NHibernate.Linq.dll = ..\lib\NHibernate.Linq.dll
+		..\lib\nunit-console-runner.dll = ..\lib\nunit-console-runner.dll
+		..\lib\nunit-console.exe = ..\lib\nunit-console.exe
+		..\lib\nunit-console.exe.config = ..\lib\nunit-console.exe.config
+		..\lib\nunit.core.dll = ..\lib\nunit.core.dll
+		..\lib\nunit.core.interfaces.dll = ..\lib\nunit.core.interfaces.dll
+		..\lib\nunit.framework.dll = ..\lib\nunit.framework.dll
+		..\lib\nunit.framework.extensions.dll = ..\lib\nunit.framework.extensions.dll
+		..\lib\nunit.util.dll = ..\lib\nunit.util.dll
+		..\lib\readme.txt = ..\lib\readme.txt
+		..\lib\Rhino.Mocks.dll = ..\lib\Rhino.Mocks.dll
+		..\lib\Rhino.Mocks.License.txt = ..\lib\Rhino.Mocks.License.txt
+		..\lib\System.Data.SQLite.DLL = ..\lib\System.Data.SQLite.DLL
+		..\lib\System.Web.Abstractions.dll = ..\lib\System.Web.Abstractions.dll
+		..\lib\System.Web.Mvc.dll = ..\lib\System.Web.Mvc.dll
+		..\lib\System.Web.Routing.dll = ..\lib\System.Web.Routing.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

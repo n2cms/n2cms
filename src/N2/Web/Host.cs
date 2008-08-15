@@ -50,6 +50,8 @@ namespace N2.Web
 
         public Site GetSite(Url host)
         {
+            if (host == null)
+                return null;
             foreach (Site site in Sites)
                 if (site.Is(host.Authority))
                     return site;

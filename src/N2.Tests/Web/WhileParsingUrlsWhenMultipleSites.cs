@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using N2.Web;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web
 {
@@ -91,6 +92,13 @@ namespace N2.Tests.Web
             CreateItemsAndBuildExpectations("n2.libardo.com", "http://www.externalsite.com/somepage.html?item=this_isnt_a_number");
 
             Assert.IsNull(parser.Parse("http://www.externalsite.com/somepage.html?item=this_isnt_a_number"));
+        }
+
+        [Test]
+        public void ParsePage_DoesntThrowException_WhenGivenEmail()
+        {
+            var item = parser.Parse("mailto:cristian@somesite.com");
+            Assert.That(item, Is.Null);
         }
 
         private void CreateItemsAndBuildExpectations(string host, string url)

@@ -37,6 +37,7 @@
 - allowed to multiple sites to reference different root nodes
 - configuration support for observed extensions
 - deal with unmapped types (fix page)
+- fixed linking to email in multiple host scenario
 
 1.4.1
 - error handling with email option
@@ -95,6 +96,7 @@
 - deprecated installermodule
 - moved layout declaration to web.config
 - IIS7 configuration
+- fixed problem when using email
 
 1.4
 - templates

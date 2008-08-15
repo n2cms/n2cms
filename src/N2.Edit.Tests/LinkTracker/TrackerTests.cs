@@ -29,15 +29,15 @@ namespace N2.Tests.Edit.LinkTracker
 		{
 			base.SetUp();
 
-			IWebContext wrapper = CreateWrapper(true);
-			IItemNotifier notifier = CreateNotifier(true);
+			var wrapper = CreateWrapper(true);
+			var notifier = CreateNotifier(true);
 			parser = new UrlParser(persister, wrapper, notifier, new Host(wrapper, 1, 1));
 
 			root = CreateOneItem<Items.TrackableItem>(1, "root", null);
 			item1 = CreateOneItem<Items.TrackableItem>(2, "item1", root);
 			item2 = CreateOneItem<Items.TrackableItem>(3, "item2", root);
 
-			linkFactory = new Tracker(persister, null, parser);
+			linkFactory = new Tracker(persister, null, parser, null);
 			linkFactory.Start();
 		}
 

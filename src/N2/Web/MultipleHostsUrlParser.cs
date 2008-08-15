@@ -23,29 +23,6 @@ namespace N2.Web
             }
 		}
 
-
-		#region Properties
-
-        ///// <summary>The default scheme to use when creating external url's. Default is http.</summary>
-        //private string Scheme
-        //{
-        //    get { return scheme; }
-        //    set { scheme = value; }
-        //}
-
-        //public IList<Site> Sites
-        //{
-        //    get { return sites; }
-        //    set { sites = value; }
-        //}
-
-        //public override Site CurrentSite
-        //{
-        //    get { return GetSite(WebContext.HostUrl.Authority) ?? base.CurrentSite; }
-        //}
-
-		#endregion
-
 		#region Methods
 
 		public override ContentItem Parse(string url)
@@ -56,9 +33,9 @@ namespace N2.Web
 			{
                 Site site = host.GetSite(url);
 				if (site != null)
-					return TryLoadingFromQueryString(url) ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
+                    return TryLoadingFromQueryString(url, "item", "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
 				else
-					return TryLoadingFromQueryString(url);
+                    return TryLoadingFromQueryString(url, "item", "page");
 			}
 		}
 
@@ -68,10 +45,9 @@ namespace N2.Web
 				return base.ParsePage(url);
 			else
 			{
-				//string host = GetHost(url);
 				Site site = host.GetSite(url);
 				if (site != null)
-					return TryLoadingFromQueryString(url, "item", "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
+					return TryLoadingFromQueryString(url, "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
 				else
 					return TryLoadingFromQueryString(url, "page");
 			}

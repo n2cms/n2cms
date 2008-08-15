@@ -2,6 +2,7 @@
 - update sandcastle documentation
 - delete restrictions
 - wiki
+	- discuss
 	- categories
 	- nested articles
 	- track back links

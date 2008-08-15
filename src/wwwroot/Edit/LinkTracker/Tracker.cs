@@ -23,12 +23,14 @@ namespace N2.Edit.LinkTracker
 		Persistence.IPersister persister;
 		Persistence.Finder.IItemFinder find;
 		N2.Web.IUrlParser urlParser;
+        N2.Web.IErrorHandler errorHandler;
 
-		public Tracker(Persistence.IPersister persister, Persistence.Finder.IItemFinder find, N2.Web.IUrlParser urlParser)
+        public Tracker(Persistence.IPersister persister, Persistence.Finder.IItemFinder find, N2.Web.IUrlParser urlParser, N2.Web.IErrorHandler errorHandler)
 		{
 			this.persister = persister;
 			this.find = find;
 			this.urlParser = urlParser;
+            this.errorHandler = errorHandler;
 		}
 
 		void persister_ItemSaving(object sender, N2.Persistence.CancellableItemEventArgs e)
@@ -67,6 +69,11 @@ namespace N2.Edit.LinkTracker
 				{
 					foreach (string link in FindLinks(((StringDetail)detail).StringValue))
 					{
+                        if (string.IsNullOrEmpty(link))
+                            continue;
+                        else if (!(link.StartsWith("/") || link.StartsWith("~") || link.Contains("://")))
+                            continue;
+
 						try
 						{
 							ContentItem referencedItem = urlParser.Parse(link);
@@ -75,9 +82,9 @@ namespace N2.Edit.LinkTracker
 								items.Add(referencedItem);
 							}
 						}
-						catch (HttpException ex)
+						catch (Exception ex)
 						{
-							Trace.TraceWarning(ex.Message);
+                            errorHandler.Notify(ex);
 						}
 					}
 				}
