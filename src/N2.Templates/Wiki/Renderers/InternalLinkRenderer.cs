@@ -86,12 +86,18 @@ namespace N2.Templates.Wiki.Renderers
         {
             string[] fragments = fragment.Split('|');
             ContentItem existingArticle = context.Article.WikiRoot.GetChild(fragments[0]);
-            Url url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment(fragments[0]);
-            bool exists = existingArticle == null || existingArticle != context.Article.WikiRoot;
-            return AppendAnchor(container, fragments.Length > 1 ? fragments[1] : fragments[0], url, exists);
+            if (existingArticle == null || existingArticle != context.Article.WikiRoot)
+            {
+                return AppendAnchor(container, fragments.Length > 1 ? fragments[1] : fragments[0], existingArticle.Url, true);
+            }
+            else
+            {
+                string url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment(fragments[0]);
+                return AppendAnchor(container, fragments.Length > 1 ? fragments[1] : fragments[0], url, false);
+            }
         }
 
-        private static Control AppendAnchor(Control container, string name, Url url, bool exists)
+        private static Control AppendAnchor(Control container, string name, string url, bool exists)
         {
             HtmlAnchor a = new HtmlAnchor();
             a.HRef = url;

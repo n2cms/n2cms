@@ -10,7 +10,7 @@ namespace N2.Templates.Wiki
         protected Regex tagExpression = new Regex(@"<(?<slash>/?)\s*?(?<tag>\w+)\s?(?<attr>[^>]*?)(?<close>/>|>|$)");
         protected Regex attrExpression = new Regex(@"(?<attr>\S*?)=(?<val>(""[^""]*"")|('[^']*')|(\S*))");
         protected Regex stripExpression = new Regex(@"<[^>]*>");
-        protected Regex cleanUrlExpression = new Regex(@"[?&:<>*/]+");
+        protected Regex cleanUrlExpression = new Regex(@"[?&:<>*/ ]+");
         
         public HtmlFilter()
         {

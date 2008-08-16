@@ -45,9 +45,7 @@ namespace N2.Templates.Tests.Wiki
             Expect.Call(pluginFinder.GetPlugins<ITemplateRenderer>()).Return(new ITemplateRenderer[] { new FakeTemplateRenderer() });
             mocks.ReplayAll();
 
-            var webContext = new ThreadContext();
-
-            renderer = new WikiRenderer(pluginFinder, webContext);
+            renderer = new WikiRenderer(pluginFinder, new ThreadContext());
         }
 
         [Test]
@@ -88,6 +86,14 @@ namespace N2.Templates.Tests.Wiki
             string html = ParseAndRenderWikiText("[[existing-article]]");
 
             Assert.That(html, Is.EqualTo("<a href=\"/wiki/existing-article.aspx\">existing-article</a>"));
+        }
+
+        [Test]
+        public void CanRender_InternalLink_ToExistingArticle_WithWhiteSpace()
+        {
+            string html = ParseAndRenderWikiText("[[existing article]]");
+
+            Assert.That(html, Is.EqualTo("<a href=\"/wiki/existing-article.aspx\">existing article</a>"));
         }
 
         [Test]
@@ -207,7 +213,7 @@ namespace N2.Templates.Tests.Wiki
         {
             string html = ParseAndRenderWikiText("[[Image:n2.png]]");
 
-            Assert.That(html, Is.EqualTo("<a href=\"/wiki/Upload.aspx?parameter=n2.png&returnUrl=%2fexisting-article.aspx\" class=\"new\">n2.png</a>"));
+            Assert.That(html, Is.EqualTo("<a href=\"/wiki/Upload.aspx?parameter=n2.png&returnUrl=%2fwiki%2fexisting-article.aspx\" class=\"new\">n2.png</a>"));
         }
 
         [Test]

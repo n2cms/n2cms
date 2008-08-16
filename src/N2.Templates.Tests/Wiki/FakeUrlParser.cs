@@ -8,8 +8,6 @@ namespace N2.Templates.Tests.Wiki
 {
     public class FakeUrlParser : IUrlParser
     {
-        #region IUrlParser Members
-
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
         public string Extension
@@ -34,7 +32,12 @@ namespace N2.Templates.Tests.Wiki
 
         public string BuildUrl(ContentItem item)
         {
-            return "/" + item.Name + ".aspx";
+            Url url = "/" + item.Name + ".aspx";
+            foreach (ContentItem parent in Find.EnumerateParents(item))
+            {
+                url = url.PrependSegment(parent.Name);
+            }
+            return url;
         }
 
         public bool IsRootOrStartPage(ContentItem item)
@@ -51,7 +54,5 @@ namespace N2.Templates.Tests.Wiki
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }
