@@ -110,9 +110,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE0
 		..\lib\Rhino.Mocks.dll = ..\lib\Rhino.Mocks.dll
 		..\lib\Rhino.Mocks.License.txt = ..\lib\Rhino.Mocks.License.txt
 		..\lib\System.Data.SQLite.DLL = ..\lib\System.Data.SQLite.DLL
-		..\lib\System.Web.Abstractions.dll = ..\lib\System.Web.Abstractions.dll
 		..\lib\System.Web.Mvc.dll = ..\lib\System.Web.Mvc.dll
-		..\lib\System.Web.Routing.dll = ..\lib\System.Web.Routing.dll
 	EndProjectSection
 EndProject
 Global

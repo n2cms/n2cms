@@ -15,7 +15,9 @@
     <WebFolder>.\src\wwwroot</WebFolder>
     <EditFolder>.\src\wwwroot\Edit</EditFolder>
 
-    <DeployFolder>.\Deploy</DeployFolder>
+    <Examples-Folder>.\examples</Examples-Folder>
+
+    <DeployFolder>.\output</DeployFolder>
   </PropertyGroup>
 
   <Import Project="$(LibFolder)\MSBuild.Community.Tasks.Targets"/>
@@ -36,27 +38,26 @@
     <CallTarget Targets="Source-Deploy"/>
   </Target>
 
-  <Target Name="ZipDeploy" DependsOnTargets="Deploy">
-    <CreateItem Include="$(DeployFolder)\Core\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Core"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Core)" WorkingDirectory="$(DeployFolder)\Core" ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
+  <Target Name="Zip">
+    <ItemGroup>
+      <ZipDeploy-Core Include="$(DeployFolder)\Core\**" />
+      <ZipDeploy-Templates Include="$(DeployFolder)\Templates\**" />
+      <ZipDeploy-Source Include="$(DeployFolder)\Source\**" />
+      <ZipDeploy-CSExample Include="$(DeployFolder)\Examples\CS\**" />
+      <ZipDeploy-VBExample Include="$(DeployFolder)\Examples\VB\**" />
+      <ZipDeploy-TemplateExample Include="$(DeployFolder)\Examples\TemplatesSite\**" />
+      <ZipDeploy-MvcExample Include="$(DeployFolder)\Examples\Mvc\**" />
+    </ItemGroup>
 
-		<CreateItem Include="$(DeployFolder)\Templates\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Templates"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Templates)" WorkingDirectory="$(DeployFolder)\Templates" ZipFileName="$(DeployFolder)\CompiledTemplates.zip" />
-
-		<CreateItem Include="$(DeployFolder)\Source\**"><Output TaskParameter="Include" ItemName="ZipDeploy-Source"/></CreateItem>
-		<Zip Files="@(ZipDeploy-Source)" WorkingDirectory="$(DeployFolder)\Source" ZipFileName="$(DeployFolder)\Source.zip" />
-
-		<CreateItem Include="$(DeployFolder)\Examples\CS\**"><Output TaskParameter="Include" ItemName="ZipDeploy-CSExample"/></CreateItem>
-		<Zip Files="@(ZipDeploy-CSExample)" WorkingDirectory="$(DeployFolder)\Examples\CS" ZipFileName="$(DeployFolder)\CS_Example.zip" />
-
-		<CreateItem Include="$(DeployFolder)\Examples\VB\**"><Output TaskParameter="Include" ItemName="ZipDeploy-VBExample"/></CreateItem>
-		<Zip Files="@(ZipDeploy-VBExample)" WorkingDirectory="$(DeployFolder)\Examples\VB" ZipFileName="$(DeployFolder)\VB_Example.zip" />
-
-		<CreateItem Include="$(DeployFolder)\Examples\TemplatesSite\**"><Output TaskParameter="Include" ItemName="ZipDeploy-TemplateExample"/></CreateItem>
+    <Error Condition="'@(ZipDeploy-Core)' == ''" Text="Nothing in '$(DeployFolder)'. Do deploy first." />
+    
+		<Zip Files="@(ZipDeploy-Core)"            WorkingDirectory="$(DeployFolder)\Core"                   ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
+		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(DeployFolder)\Templates"              ZipFileName="$(DeployFolder)\CompiledTemplates.zip" />
+		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(DeployFolder)\Source"                 ZipFileName="$(DeployFolder)\Source.zip" />
+		<Zip Files="@(ZipDeploy-CSExample)"       WorkingDirectory="$(DeployFolder)\Examples\CS"            ZipFileName="$(DeployFolder)\CS_Example.zip" />
+		<Zip Files="@(ZipDeploy-VBExample)"       WorkingDirectory="$(DeployFolder)\Examples\VB"            ZipFileName="$(DeployFolder)\VB_Example.zip" />
 		<Zip Files="@(ZipDeploy-TemplateExample)" WorkingDirectory="$(DeployFolder)\Examples\TemplatesSite" ZipFileName="$(DeployFolder)\Template_Example.zip" />
-
-		<CreateItem Include="$(DeployFolder)\Examples\Mvc\**"><Output TaskParameter="Include" ItemName="ZipDeploy-MvcExample"/></CreateItem>
-		<Zip Files="@(ZipDeploy-MvcExample)" WorkingDirectory="$(DeployFolder)\Examples\Mvc" ZipFileName="$(DeployFolder)\Mvc_Example.zip" />
+		<Zip Files="@(ZipDeploy-MvcExample)"      WorkingDirectory="$(DeployFolder)\Examples\Mvc"           ZipFileName="$(DeployFolder)\Mvc_Example.zip" />
 	</Target>
 
   <Target Name="Test" DependsOnTargets="Test-PrepareDependencies">
@@ -143,25 +144,24 @@
 
   <Target Name="Templates-Deploy" DependsOnTargets="Core-Build">
     <ItemGroup>
-      <Templates-Exclude  Include="$(WebFolder)\**\.svn\**\*;
-                                 $(WebFolder)\**\obj\**\*;
-                                 $(WebFolder)\**\PrecompiledWeb\**\*.*;
-                                 $(WebFolder)\**\bin\**\*;
-                                 $(WebFolder)\**\Ankh.Load;
-                                 $(WebFolder)\**\*.sln.cache;
-                                 $(WebFolder)\**\*.suo;
-                                 $(WebFolder)\**\*.pdb;
-                                 $(WebFolder)\**\*.vssscc;
-                                 $(WebFolder)\**\*.vspscc;
-                                 $(WebFolder)\**\*.user;
-                                 $(WebFolder)\**\*.db;
-                                 $(WebFolder)\**\*.cs;
-                                 $(WebFolder)\**\*.csproj;
-                                 $(WebFolder)\*\bin\**\*;
-                                 $(WebFolder)\**\Demo\**\*;
-                                 $(WebFolder)\**\Scrum\**\*" />
-
-      <Templates-AllFiles Include="$(WebFolder)\**\*" Exclude="@(Templates-Exclude)"/>
+      <Templates-AllFiles Include="$(WebFolder)\**\*" 
+                          Exclude="$(WebFolder)\**\.svn\**\*;
+                                   $(WebFolder)\**\obj\**\*;
+                                   $(WebFolder)\**\PrecompiledWeb\**\*.*;
+                                   $(WebFolder)\**\bin\**\*;
+                                   $(WebFolder)\**\Ankh.Load;
+                                   $(WebFolder)\**\*.sln.cache;
+                                   $(WebFolder)\**\*.suo;
+                                   $(WebFolder)\**\*.pdb;
+                                   $(WebFolder)\**\*.vssscc;
+                                   $(WebFolder)\**\*.vspscc;
+                                   $(WebFolder)\**\*.user;
+                                   $(WebFolder)\**\*.db;
+                                   $(WebFolder)\**\*.cs;
+                                   $(WebFolder)\**\*.csproj;
+                                   $(WebFolder)\*\bin\**\*;
+                                   $(WebFolder)\**\Demo\**\*;
+                                   $(WebFolder)\**\Scrum\**\*" />
     </ItemGroup>
 
     <Delete Files="$(WebFolder)\Bin\Demo.dll" />
@@ -179,7 +179,6 @@
   <!-- EXAMPLES -->
 
   <PropertyGroup>
-    <Examples-Folder>.\examples</Examples-Folder>
     <Examples-GlobalizationFolder>$(Examples-Folder)\Old\Globalization</Examples-GlobalizationFolder>
     <Examples-MediumTrustFolder>$(Examples-Folder)\MediumTrust</Examples-MediumTrustFolder>
     <Examples-PartsFolder>$(Examples-Folder)\Parts</Examples-PartsFolder>
@@ -227,7 +226,10 @@
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\wwwroot\Edit\%(RecursiveDir)" />
   </Target>
   <Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
-    <Copy SourceFiles="$(WebFolder)\Bin\N2.dll; $(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; $(LibFolder)\Microsoft.Web.Mvc.dll; $(LibFolder)\System.Web.Abstractions.dll; $(LibFolder)\System.Web.Mvc.dll; $(LibFolder)\System.Web.Routing.dll"
+    <Copy SourceFiles="$(WebFolder)\Bin\N2.dll; 
+                      $(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
+                      $(LibFolder)\Microsoft.Web.Mvc.dll; 
+                      $(LibFolder)\System.Web.Mvc.dll;"
 			  DestinationFolder="$(Examples-MvcFolder)\Lib" />
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Bin" />
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Edit\%(RecursiveDir)" />
@@ -272,14 +274,14 @@
 
   <ItemGroup>
     <ExampleSource-Exclude Include="$(Examples-Folder)\**\.svn\**\*;
-                           $(Examples-Folder)\**\obj\**\*;
-                           $(Examples-Folder)\**\PrecompiledWeb\**\*.*;
-                           $(Examples-Folder)\**\Ankh.Load;
-                           $(Examples-Folder)\**\*.sln.cache;
-                           $(Examples-Folder)\**\*.suo;
-                           $(Examples-Folder)\**\bin\Debug\*.*;
-                           $(Examples-Folder)\**\bin\Release\*.*;
-                           $(Examples-Folder)\**\*.pdb" />
+                                   $(Examples-Folder)\**\obj\**\*;
+                                   $(Examples-Folder)\**\PrecompiledWeb\**\*.*;
+                                   $(Examples-Folder)\**\Ankh.Load;
+                                   $(Examples-Folder)\**\*.sln.cache;
+                                   $(Examples-Folder)\**\*.suo;
+                                   $(Examples-Folder)\**\bin\Debug\*.*;
+                                   $(Examples-Folder)\**\bin\Release\*.*;
+                                   $(Examples-Folder)\**\*.pdb" />
 
     <ExampleSource-GlobalizationFiles Include="$(Examples-GlobalizationFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
     <ExampleSource-MediumTrustFiles Include="$(Examples-MediumTrustFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
@@ -342,20 +344,18 @@
 
   <Target Name="Source-Deploy">
     <ItemGroup>
-      <Source-Exclude Include=".\**\.svn\**\*"/>
-      <Source-Exclude Include=".\**\obj\**\*"/>
-      <Source-Exclude Include=".\**\bin\**\*" Exclude="..src\$(Examples-Folder)\**\bin\N2.dll" />
-      <Source-Exclude Include=".\**\PrecompiledWeb\**\*"/>
-      <Source-Exclude Include=".\**\Ankh.Load"/>
-      <Source-Exclude Include=".\**\*.sln.cache"/>
-      <Source-Exclude Include=".\**\*.suo" />
-      <Source-Exclude Include=".\**\Thumbs.db" />
-      <Source-Exclude Include=".\Deploy\**\*" />
-      <!-- edit folders in examples -->
-      <Source-Exclude Include=".\**\Edit\**\*" Exclude="$(SrcFolder)\**\*" />
-
-      <!-- everything except exceptions -->
-      <Source-Files Include=".\**\*" Exclude="@(Source-Exclude)" />
+      <Source-Files Include=".\**\*" 
+                    Exclude=".\**\.svn\**\*;
+                              .\**\obj\**\*;
+                              .\**\bin\**\*;
+                              .\**\PrecompiledWeb\**\*;
+                              .\**\Ankh.Load;
+                              .\**\*.sln.cache;
+                              .\**\*.suo;
+                              .\**\Thumbs.db;
+                              $(DeployFolder)\**\*;
+                              $(SrcFolder)\N2.DocSite\**;
+                              $(Examples-Folder)\**\Edit\**\*" />
     </ItemGroup>
     
     <Copy SourceFiles="@(Source-Files)" DestinationFolder="$(DeployFolder)\Source\%(RecursiveDir)"  />

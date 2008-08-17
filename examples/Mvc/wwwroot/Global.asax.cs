@@ -13,17 +13,21 @@ namespace MvcTest
 	{
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
-			IRouteHandler routeHandler = new MvcRouteHandler();
-			
-			routes.Add(new ContentRoute(engine, routeHandler));
-            
-			routes.MapRoute("Default", "{controller}/{action}/{id}", new { action = "Index" }, new { controller = @"[^\.]*" });
-		}
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.Add(new ContentRoute(engine, new MvcRouteHandler()));
+            routes.MapRoute(
+               "Default",                                              // Route name
+               "{controller}/{action}/{id}",                           // URL with parameters
+               new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
+            );
+        }
 
-		protected void Application_Start(object sender, EventArgs e)
-		{
-			N2.Context.Initialize(false);
-			RegisterRoutes(RouteTable.Routes, N2.Context.Current);
-		}
+        public override void Init()
+        {
+            IEngine engine = N2.Context.Initialize(false);
+            RegisterRoutes(RouteTable.Routes, engine);
+
+            base.Init();
+        }
 	}
 }
