@@ -90,13 +90,15 @@
   </Target>
 
 
+  
   <!-- CORE -->
+  
   <Target Name="Core-PrepareDependencies">
     <Copy SourceFiles="@(Core-Dependencies)" DestinationFolder="$(WebFolder)\Bin\" />
   </Target>
 
   <Target Name="Core-Build" DependsOnTargets="Core-PrepareDependencies">
-    <MSBuild Projects="$(SrcFolder)\N2.Everything-vs2008.sln" />
+    <MSBuild Projects="$(SrcFolder)\N2.Everything-vs2008.sln" Properties="Configuration=Release" />
   </Target>
 
   <ItemGroup>
@@ -125,7 +127,9 @@
   </ItemGroup>
 
   <Target Name="Rebuild-Core-BinFiles" DependsOnTargets="Core-Build">
-    <CreateItem Include="$(WebFolder)\Bin\*.dll" Exclude="$(WebFolder)\Bin\N2.Templates*;$(WebFolder)\Bin\Demo*">
+    <CreateItem Include="$(WebFolder)\Bin\*.dll;
+                         $(WebFolder)\Bin\N2.xml;" 
+                Exclude="$(WebFolder)\Bin\N2.Templates*;$(WebFolder)\Bin\Demo*">
       <Output TaskParameter="Include" ItemName="Core-BinFiles"/>
     </CreateItem>
   </Target>
@@ -141,7 +145,7 @@
 
   <!-- TEMPLATES -->
 
-  <Target Name="Templates-RebuildFiles" DependsOnTargets="Core-Build">
+  <Target Name="Rebuild-TemplateFiles" DependsOnTargets="Core-Build">
     <ItemGroup>
       <Templates-InterfaceFiles Include="$(WebFolder)\**\*"
                           Exclude="$(WebFolder)\**\.svn\**\*;
@@ -168,7 +172,7 @@
     </CreateItem>
   </Target>
 
-  <Target Name="Templates-Deploy" DependsOnTargets="Templates-RebuildFiles">
+  <Target Name="Templates-Deploy" DependsOnTargets="Rebuild-TemplateFiles">
     <Copy SourceFiles="@(Templates-InterfaceFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\%(RecursiveDir)" />
     <Copy SourceFiles="@(Templates-BinFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\Bin" />
     <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Templates" />
@@ -179,7 +183,6 @@
   <!-- EXAMPLES -->
 
   <PropertyGroup>
-    <Examples-GlobalizationFolder>$(Examples-Folder)\Old\Globalization</Examples-GlobalizationFolder>
     <Examples-MediumTrustFolder>$(Examples-Folder)\MediumTrust</Examples-MediumTrustFolder>
     <Examples-PartsFolder>$(Examples-Folder)\Parts</Examples-PartsFolder>
     <Examples-VisualBasic>$(Examples-Folder)\MinimalVisualBasic</Examples-VisualBasic>
@@ -190,12 +193,6 @@
     <Deploy-ExamplesFolder>$(DeployFolder)\Examples</Deploy-ExamplesFolder>
   </PropertyGroup>
 
-  <Target Name="Examples-Globalization-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
-    <Copy SourceFiles="$(WebFolder)\bin\N2.dll" DestinationFolder="$(Examples-GlobalizationFolder)\Lib" />
-    <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-GlobalizationFolder)\wwwroot\Bin" />
-    <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-GlobalizationFolder)\wwwroot\Edit\%(RecursiveDir)" />
-    <Copy SourceFiles="$(Examples-GlobalizationFolder)\Lib\edit-web.config" DestinationFiles="$(Examples-GlobalizationFolder)\wwwroot\Edit\web.config"/>
-  </Target>
   <Target Name="Examples-MediumTrust-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\wwwroot\Bin" />
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\wwwroot\Edit\%(RecursiveDir)" />
@@ -217,7 +214,7 @@
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-VisualBasic)\wwwroot\Bin" />
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-VisualBasic)\wwwroot\Edit\%(RecursiveDir)" />
   </Target>
-  <Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Templates-RebuildFiles">
+  <Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Rebuild-TemplateFiles">
     <Copy SourceFiles="@(Templates-InterfaceFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\%(RecursiveDir)" />
     <Copy SourceFiles="@(Templates-BinFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\bin" />
   </Target>
@@ -245,9 +242,6 @@
     <CallTarget Targets="Examples-Mvc-PrepareDependencies"/>
   </Target>
 
-  <Target Name="Example-Globalization-Build" DependsOnTargets="Examples-Globalization-PrepareDependencies">
-    <MSBuild Projects="$(Examples-GlobalizationFolder)\OldGlobalization-vs2005.sln"/>
-  </Target>
   <Target Name="Example-MediumTrust-Build" DependsOnTargets="Examples-MediumTrust-PrepareDependencies">
     <MSBuild Projects="$(Examples-MediumTrustFolder)\N2.Examples.MediumTrust-vs2008.sln"/>
   </Target>
@@ -282,7 +276,6 @@
                                    $(Examples-Folder)\**\bin\Release\*.*;
                                    $(Examples-Folder)\**\*.pdb" />
 
-    <ExampleSource-GlobalizationFiles Include="$(Examples-GlobalizationFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
     <ExampleSource-MediumTrustFiles Include="$(Examples-MediumTrustFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
     <ExampleSource-PartsFiles Include="$(Examples-PartsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
     <ExampleSource-CSFiles Include="$(Examples-CSharp)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
@@ -314,7 +307,6 @@
     <Copy SourceFiles="@(ExampleSource-TemplatesSiteFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\%(RecursiveDir)" />
     <Copy SourceFiles="@(TextFiles)"                        DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite" />
     <Copy SourceFiles="@(Snippets)"                         DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\Snippets" />
-    <Copy SourceFiles="$(SrcFolder)\N2\Bin\N2.dll;$(LibFolder)\Castle.Core.dll" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\Lib" />
     <Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)"      DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\%(RecursiveDir)" />
 
     <Copy SourceFiles="@(ExampleSource-MvcFiles)"       DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\%(RecursiveDir)" />
@@ -322,7 +314,6 @@
     <Copy SourceFiles="@(Core-EditFiles)"               DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Edit\%(RecursiveDir)" />
     <Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
     <Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Snippets" />
-    <Copy SourceFiles="$(SrcFolder)\N2\Bin\N2.dll;$(SrcFolder)\N2.Extensions\Bin\N2.Extensions.dll" DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Lib" />
     <Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)"  DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\wwwroot\%(RecursiveDir)" />
   </Target>
 

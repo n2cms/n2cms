@@ -72,22 +72,31 @@ namespace N2.Web
             if (ex != null)
             {
                 Trace.TraceError("ErrorHandler.Handle: " + FormatError(ex));
+                
+                UpdateErrorCount();
                 if (action == ErrorAction.Email)
                 {
-                    try
-                    {
-                        TryNotifyingByEmail(ex);
-                    }
-                    catch (Exception ex2)
-                    {
-                        Trace.TraceError("ErrorHandler.Handle: exception handling exception" + ex2);
-                    }
-                    WrongClassException wex = ex as WrongClassException;
-                    if (wex != null && handleWrongClassException && security.IsAdmin(context.User))
-                    {
-                        string url = Url.Parse("~/Edit/Install/FixClass.aspx").AppendQuery("id", wex.Identifier);
-                        context.Response.Redirect(url);
-                    }
+                    TryNotifyingByEmail(ex);
+                }
+                if (handleWrongClassException)
+                {
+                    TryHandleWrongClassException(ex);
+                }
+            }
+        }
+
+        private void UpdateErrorCount()
+        {
+            lock (syncLock)
+            {
+                if (DateTime.Now.Hour == hour)
+                {
+                    ++errorsThisHour;
+                }
+                else
+                {
+                    hour = DateTime.Now.Hour;
+                    errorsThisHour = 0;
                 }
             }
         }
@@ -96,20 +105,25 @@ namespace N2.Web
         {
             if (mailSender != null && !string.IsNullOrEmpty(mailTo))
             {
-                lock (syncLock)
+                try
                 {
-                    if (DateTime.Now.Hour == hour)
-                    {
-                        ++errorsThisHour;
-                    }
-                    else
-                    {
-                        hour = DateTime.Now.Hour;
-                        errorsThisHour = 0;
-                    }
                     if (maxErrorReportsPerHour < 0 || errorsThisHour <= maxErrorReportsPerHour)
                         mailSender.Send(mailFrom ?? "errors@somesite.com", mailTo, "Error Report: " + ex.Message, FormatError(ex));
                 }
+                catch (Exception ex2)
+                {
+                    Trace.TraceError("ErrorHandler.Handle: exception handling exception" + ex2);
+                }
+            }
+        }
+
+        private void TryHandleWrongClassException(Exception ex)
+        {
+            WrongClassException wex = ex as WrongClassException;
+            if (wex != null && security.IsAdmin(context.User))
+            {
+                string url = Url.Parse("~/Edit/Install/FixClass.aspx").AppendQuery("id", wex.Identifier);
+                context.Response.Redirect(url);
             }
         }
 
