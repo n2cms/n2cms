@@ -17,7 +17,7 @@
 {
 	height:50px;
 	float:left;
-	padding-right:5px;
+	padding-right:2px;
 	background:transparent url(../img/toolitem_separator.gif) no-repeat 100% 100%;
 	cursor:hand;
 	cursor:pointer;
@@ -27,7 +27,7 @@
 		float:left;
 		display:block;
 		height:25px;
-		padding:20px 5px 5px 5px;
+		padding:20px 8px 5px 5px;
 	}
 
 .toolbar .hover,
@@ -41,7 +41,7 @@
 		background:transparent url(../img/toolitem_hover.gif) no-repeat 0% 100%;
 		position:relative;
 		left:-5px;
-		padding:19px 0px 6px 10px;
+		padding:19px 3px 6px 10px;
 	}
 
 .toolbar .logout

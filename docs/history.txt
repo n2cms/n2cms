@@ -39,6 +39,7 @@
 - configuration support for observed extensions
 - deal with unmapped types (fix page)
 - fixed linking to email in multiple host scenario
+- increased toolbar buttons click area
 
 1.4.1
 - error handling with email option
