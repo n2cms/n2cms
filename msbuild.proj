@@ -141,10 +141,9 @@
 
   <!-- TEMPLATES -->
 
-
-  <Target Name="Templates-Deploy" DependsOnTargets="Core-Build">
+  <Target Name="Templates-RebuildFiles" DependsOnTargets="Core-Build">
     <ItemGroup>
-      <Templates-AllFiles Include="$(WebFolder)\**\*" 
+      <Templates-InterfaceFiles Include="$(WebFolder)\**\*"
                           Exclude="$(WebFolder)\**\.svn\**\*;
                                    $(WebFolder)\**\obj\**\*;
                                    $(WebFolder)\**\PrecompiledWeb\**\*.*;
@@ -159,17 +158,18 @@
                                    $(WebFolder)\**\*.db;
                                    $(WebFolder)\**\*.cs;
                                    $(WebFolder)\**\*.csproj;
-                                   $(WebFolder)\*\bin\**\*;
+                                   $(WebFolder)\**\bin\**\*;
                                    $(WebFolder)\**\Demo\**\*;
                                    $(WebFolder)\**\Scrum\**\*" />
     </ItemGroup>
-
-    <Delete Files="$(WebFolder)\Bin\Demo.dll" />
-    <Copy SourceFiles="@(Templates-AllFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\%(RecursiveDir)" />
-
+    <Delete Files="$(WebFolder)\Bin\Demo.dll" Condition="Exists('$(WebFolder)\Bin\Demo.dll')" />
     <CreateItem Include="$(WebFolder)\Bin\*.dll">
       <Output TaskParameter="Include" ItemName="Templates-BinFiles"/>
     </CreateItem>
+  </Target>
+
+  <Target Name="Templates-Deploy" DependsOnTargets="Templates-RebuildFiles">
+    <Copy SourceFiles="@(Templates-InterfaceFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\%(RecursiveDir)" />
     <Copy SourceFiles="@(Templates-BinFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\Bin" />
     <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Templates" />
   </Target>
@@ -199,7 +199,11 @@
   <Target Name="Examples-MediumTrust-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\wwwroot\Bin" />
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\wwwroot\Edit\%(RecursiveDir)" />
-    <Delete Files="$(Examples-MediumTrustFolder)\wwwroot\bin\MySql*;$(Examples-MediumTrustFolder)\wwwroot\bin\System.Data.SQLite*" ContinueOnError="true"/>
+    <ItemGroup>
+      <UnsafeDlls Include="$(Examples-MediumTrustFolder)\**\MySql*;
+                           $(Examples-MediumTrustFolder)\**\System.Data.SQLite*" />
+    </ItemGroup>
+    <Delete Files="@(UnsafeDlls)"/>
   </Target>
   <Target Name="Examples-Parts-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-PartsFolder)\wwwroot\Bin" />
@@ -213,26 +217,21 @@
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-VisualBasic)\wwwroot\Bin" />
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-VisualBasic)\wwwroot\Edit\%(RecursiveDir)" />
   </Target>
-  <Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Templates-Deploy">
-    <Copy SourceFiles="$(WebFolder)\Bin\N2.dll;$(WebFolder)\Bin\N2.Templates.dll"
-			  DestinationFolder="$(Examples-TemplatesSiteFolder)\Lib" />
-    <CreateItem Include="$$(DeployFolder)\Templates\wwwroot\**\*">
-      <Output TaskParameter="Include" ItemName="TemplatesDeploy-AllFiles"/>
-    </CreateItem>
-    <Copy SourceFiles="@(TemplatesDeploy-AllFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\%(RecursiveDir)" />
+  <Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Templates-RebuildFiles">
+    <Copy SourceFiles="@(Templates-InterfaceFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Templates-BinFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\bin" />
   </Target>
   <Target Name="Examples-MultipleDomains-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\wwwroot\Bin" />
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\wwwroot\Edit\%(RecursiveDir)" />
   </Target>
   <Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
-    <Copy SourceFiles="$(WebFolder)\Bin\N2.dll; 
-                      $(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
-                      $(LibFolder)\Microsoft.Web.Mvc.dll; 
-                      $(LibFolder)\System.Web.Mvc.dll;"
-			  DestinationFolder="$(Examples-MvcFolder)\Lib" />
+    <Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
+                       $(LibFolder)\Microsoft.Web.Mvc.dll; 
+                       $(LibFolder)\System.Web.Mvc.dll;"
+			    DestinationFolder="$(Examples-MvcFolder)\wwwroot\Bin" />
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Bin" />
-    <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Edit\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 
   <Target Name="Examples-PrepareDependencies">

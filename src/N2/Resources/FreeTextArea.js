@@ -32,7 +32,8 @@ function fileBrowserCallBack(field_name, url, destinationType, win) {
 function onFileSelected(selectedUrl) {
     srcField.value = selectedUrl;
 }
-function freeTextArea_init(fileBrowser, overrides){
+function freeTextArea_init(fileBrowser, overrides) {
+    fileBrowserUrl = fileBrowser;
     jQuery.extend(freeTextArea_settings, overrides);
     tinyMCE.init(freeTextArea_settings);
 }

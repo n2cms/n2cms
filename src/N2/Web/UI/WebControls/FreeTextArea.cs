@@ -7,6 +7,7 @@ using N2.Resources;
 using N2.Configuration;
 using System.Web.Configuration;
 using System.Configuration;
+using System.Text;
 
 namespace N2.Web.UI.WebControls
 {
@@ -77,7 +78,31 @@ namespace N2.Web.UI.WebControls
             overrides["content_css"] = configCssUrl;
             foreach (string key in configSettings.AllKeys)
                 overrides[key] = configSettings[key];
-            return Json.ToObject(overrides);
+            return ToJsonString(overrides);
         }
+
+        protected static string ToJsonString(IDictionary<string, object> collection)
+        {
+            if (collection.Count == 0)
+                return "{}";
+
+            StringBuilder sb = new StringBuilder("{");
+
+            foreach (string key in collection.Keys)
+            {
+                object value = collection[key];
+                sb.Append("'").Append(key).Append("': ");
+                if (value is string)
+                    sb.Append("'").Append(value).Append("'");
+                else if (value is bool)
+                    sb.Append(value.ToString().ToLower());
+                else
+                    sb.Append(value);
+                sb.Append(",");
+            }
+            sb.Length--; // remove trailing comma
+            return sb.Append("}").ToString();
+        }
+
 	}
 }
