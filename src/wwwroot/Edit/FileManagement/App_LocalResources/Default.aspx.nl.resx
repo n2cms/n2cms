@@ -123,6 +123,9 @@
   <data name="btnDelete.Text" xml:space="preserve">
     <value>&lt;img src="../img/ico/delete.gif" /&gt; Verwijder</value>
   </data>
+  <data name="cvDeleteProblem.ErrorMessage" xml:space="preserve">
+    <value>Fout bij het verwijderen van het bestand of de map. Het is mogelijk dat het bestand alleen-lezen is of dat onvoldoende rechten beschikbaar zijn.</value>
+  </data>
   <data name="cvDeleteRoot.ErrorMessage" xml:space="preserve">
     <value>De hoofdmap kan niet worden verwijderd</value>
   </data>
