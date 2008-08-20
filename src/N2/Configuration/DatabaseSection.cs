@@ -69,5 +69,12 @@ namespace N2.Configuration
         {
             get { return (NameValueConfigurationCollection)base["hibernateProperties"]; }
         }
+
+        /// <summary>NHibernate mappings added in addition to the hibernateMapping.</summary>
+        [ConfigurationProperty("mappings")]
+        public MappingCollection Mappings
+        {
+            get { return (MappingCollection)this["mappings"]; }
+        }
 	}
 }

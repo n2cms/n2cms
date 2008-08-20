@@ -25,6 +25,7 @@ namespace N2.Persistence.NH
 		private readonly IDefinitionManager definitions;
 		private IDictionary<string, string> properties = new Dictionary<string, string>();
 		private IList<Assembly> assemblies = new List<Assembly>();
+        private IList<string> mappingNames = new List<string>();
 		private string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
         private string mappingFormat = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">
@@ -52,9 +53,18 @@ namespace N2.Persistence.NH
                 DefaultMapping = "N2.Mappings.MySQL.hbm.xml, N2";
 
 			SetupProperties(config);
+            SetupMappings(config);
 
             TryLocatingHbmResources = config.TryLocatingHbmResources;
 		}
+
+        private void SetupMappings(DatabaseSection config)
+        {
+            foreach (MappingElement me in config.Mappings)
+            {
+                mappingNames.Add(me.Name);
+            }
+        }
 
 		/// <summary>Sets properties configuration dictionary based on configuration in the database section.</summary>
 		/// <param name="config">The database section configuration.</param>
@@ -150,20 +160,29 @@ namespace N2.Persistence.NH
 		{
 			NHibernate.Cfg.Configuration cfg = new NHibernate.Cfg.Configuration();
 			AddProperties(cfg);
-			AddDefaultMappings(cfg);
+			AddMapping(cfg, DefaultMapping);
+            AddMappings(cfg);
 			AddAssemblies(cfg);
 			GenerateMappings(cfg);
 
 			return cfg;
 		}
 
-		/// <summary>Adds known mappings to the configuration.</summary>
+        protected virtual void AddMappings(NHibernate.Cfg.Configuration cfg)
+        {
+            foreach (string mappingName in this.mappingNames)
+            {
+                AddMapping(cfg, mappingName);
+            }
+        }
+
+		/// <summary>Adds mappings to the configuration.</summary>
 		/// <param name="cfg">The configuration to add the mappings to.</param>
-		protected virtual void AddDefaultMappings(NHibernate.Cfg.Configuration cfg)
+		protected virtual void AddMapping(NHibernate.Cfg.Configuration cfg, string name)
 		{
-			if(!string.IsNullOrEmpty(DefaultMapping))
+            if (!string.IsNullOrEmpty(name))
 			{
-				string[] pathAssemblyPair = DefaultMapping.Split(',');
+                string[] pathAssemblyPair = name.Split(',');
 				if (pathAssemblyPair.Length != 2) throw new ArgumentException( "Expected the property DefaultMapping to be in the format [manifest resource path],[assembly name] but was: " + DefaultMapping);
 
 				Assembly a = Assembly.Load(pathAssemblyPair[1]);
@@ -193,18 +212,9 @@ namespace N2.Persistence.NH
 		protected virtual void GenerateMappings(NHibernate.Cfg.Configuration cfg)
 		{
             Debug.Write("Adding ");
-            //Mappings mappings = cfg.CreateMappings();
             StringBuilder mappings = new StringBuilder();
             foreach (Type t in EnumerateDefinedTypes())
             {
-                //PersistentClass superClass = mappings.GetClass(t.BaseType);
-                //PersistentClass contentClass = new SingleTableSubclass(superClass);
-                //contentClass.EntityName = t.FullName;
-                //contentClass.IsLazy = false;
-                //contentClass.ClassName = GetName(t);
-                //contentClass.DiscriminatorValue = GetDiscriminator(t);
-                //mappings.AddClass(contentClass);
-
                 if (!TryLocatingHbmResources)
                 {
                     AddGeneratedClassMapping(mappings, t);

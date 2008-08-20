@@ -42,6 +42,7 @@
 - increased toolbar buttons click area
 - updated dutch translation
 - tinymce 3.1.1
+- configurable additional nhibernate mappings
 
 1.4.1
 - error handling with email option
