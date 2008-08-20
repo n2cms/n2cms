@@ -62,6 +62,10 @@ var SearchReplaceDialog = {
 
 		switch (a) {
 			case 'all':
+				// Move caret to beginning of text
+				ed.execCommand('SelectAll');
+				ed.selection.collapse(true);
+
 				if (tinymce.isIE) {
 					while (r.findText(s, b ? -1 : 1, fl)) {
 						r.scrollIntoView();
@@ -79,14 +83,16 @@ var SearchReplaceDialog = {
 				}
 
 				if (fo)
-					wm.alert(ed.getLang('searchreplace_dlg.allreplaced'));
+					tinyMCEPopup.alert(ed.getLang('searchreplace_dlg.allreplaced'));
 				else
-					wm.alert(ed.getLang('searchreplace_dlg.notfound'));
+					tinyMCEPopup.alert(ed.getLang('searchreplace_dlg.notfound'));
 
 				return;
 
 			case 'current':
-				replace();
+				if (!ed.selection.isCollapsed())
+					replace();
+
 				break;
 		}
 
@@ -102,12 +108,12 @@ var SearchReplaceDialog = {
 				r.scrollIntoView();
 				r.select();
 			} else
-				wm.alert(ed.getLang('searchreplace_dlg.notfound'));
+				tinyMCEPopup.alert(ed.getLang('searchreplace_dlg.notfound'));
 
 			tinyMCEPopup.storeSelection();
 		} else {
 			if (!w.find(s, ca, b, false, false, false, false))
-				wm.alert(ed.getLang('searchreplace_dlg.notfound'));
+				tinyMCEPopup.alert(ed.getLang('searchreplace_dlg.notfound'));
 			else
 				fix();
 		}

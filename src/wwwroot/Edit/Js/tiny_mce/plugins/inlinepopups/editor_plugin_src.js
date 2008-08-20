@@ -1,5 +1,5 @@
 /**
- * $Id: editor_plugin_src.js 809 2008-04-17 14:41:31Z spocke $
+ * $Id: editor_plugin_src.js 898 2008-07-12 15:01:39Z spocke $
  *
  * @author Moxiecode
  * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
@@ -254,7 +254,7 @@
 			});
 
 			// Setup blocker
-			if (t.count == 0 && t.editor.getParam('dialog_type') == 'modal') {
+			if (t.count == 0 && t.editor.getParam('dialog_type', 'modal') == 'modal') {
 				DOM.add(DOM.doc.body, 'div', {
 					id : 'mceModalBlocker',
 					'class' : (t.editor.settings.inlinepopups_skin || 'clearlooks2') + '_modalBlocker',
@@ -264,6 +264,9 @@
 				DOM.show('mceModalBlocker'); // Reduces flicker in IE
 			} else
 				DOM.setStyle('mceModalBlocker', 'z-index', t.zIndex - 1);
+
+			if (tinymce.isIE6 || (tinymce.isIE && !DOM.boxModel))
+				DOM.setStyles('mceModalBlocker', {position : 'absolute', width : vp.w - 2, height : vp.h - 2});
 
 			t.focus(id);
 			t._fixIELayout(id, 1);
@@ -351,6 +354,10 @@
 					'class' : 'mceEventBlocker ' + (t.editor.settings.inlinepopups_skin || 'clearlooks2'),
 					style : {left : vp.x, top : vp.y, zIndex : t.zIndex + 1}
 				});
+
+				if (tinymce.isIE6 || (tinymce.isIE && !DOM.boxModel))
+					DOM.setStyles('mceEventBlocker', {position : 'absolute', width : vp.w - 2, height : vp.h - 2});
+
 				eb = new Element('mceEventBlocker');
 				eb.update();
 

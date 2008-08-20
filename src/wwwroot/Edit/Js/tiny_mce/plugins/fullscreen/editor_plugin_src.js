@@ -1,5 +1,5 @@
 /**
- * $Id: editor_plugin_src.js 766 2008-04-03 20:37:06Z spocke $
+ * $Id: editor_plugin_src.js 885 2008-06-22 19:23:20Z spocke $
  *
  * @author Moxiecode
  * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
@@ -71,7 +71,7 @@
 					if (tinymce.isIE)
 						vp.h -= 1;
 
-					n = DOM.add(DOM.doc.body, 'div', {id : 'mce_fullscreen_container', style : 'position:absolute;top:0;left:0;width:' + vp.w + 'px;height:' + vp.h + 'px;z-index:200000;'});
+					n = DOM.add(DOM.doc.body, 'div', {id : 'mce_fullscreen_container', style : 'position:' + (tinymce.isIE6 || (tinymce.isIE && !DOM.boxModel) ? 'absolute' : 'fixed') + ';top:0;left:0;width:' + vp.w + 'px;height:' + vp.h + 'px;z-index:200000;'});
 					DOM.add(n, 'div', {id : 'mce_fullscreen'});
 
 					tinymce.each(ed.settings, function(v, n) {

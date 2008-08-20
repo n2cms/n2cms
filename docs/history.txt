@@ -40,6 +40,8 @@
 - deal with unmapped types (fix page)
 - fixed linking to email in multiple host scenario
 - increased toolbar buttons click area
+- updated dutch translation
+- tinymce 3.1.1
 
 1.4.1
 - error handling with email option
