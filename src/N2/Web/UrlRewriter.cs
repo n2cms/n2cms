@@ -7,6 +7,7 @@ using System.Web;
 using N2.Persistence;
 using N2.Web.UI;
 using System.Collections.Specialized;
+using N2.Configuration;
 
 namespace N2.Web
 {
@@ -17,6 +18,7 @@ namespace N2.Web
 	/// </summary>
 	public class UrlRewriter : IUrlRewriter
 	{
+        private RewriteMethod rewrite = RewriteMethod.RewriteRequest;
         private bool rewriteEmptyExtension = false;
         string[] observedExtensions = new string[] { ".aspx" };
 		private readonly IUrlParser urlParser;
@@ -38,6 +40,7 @@ namespace N2.Web
         {
             if (config == null) throw new ArgumentNullException("config");
 
+            rewrite = config.Web.Rewrite;
             rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
             StringCollection additionalExtensions = config.Web.ObservedExtensions;
             if (additionalExtensions != null && additionalExtensions.Count > 0)
@@ -48,30 +51,25 @@ namespace N2.Web
             observedExtensions[0] = config.Web.Extension;
         }
 
-		#region Rewrite Methods
-
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		/// <param name="context">The context to perform the rewriting on.</param>
 		public virtual void RewriteRequest()
 		{
-			ContentItem currentPage = webContext.CurrentPage;
+            if (rewrite == RewriteMethod.None)
+                return;
+            
+            ContentItem currentPage = webContext.CurrentPage;
 			if (!File.Exists(webContext.PhysicalPath) && currentPage != null)
 			{
-				Url rewrittenUrl = currentPage.RewrittenUrl;
-                webContext.RewritePath(rewrittenUrl.AppendQuery(webContext.LocalUrl.Query));
+				Url url = Url.Parse(currentPage.RewrittenUrl).AppendQuery(webContext.LocalUrl.Query);
+
+                if (rewrite == RewriteMethod.RewriteRequest)
+                    webContext.RewritePath(url);
+                else
+                    webContext.TransferRequest(url);
 			}
 		}
 
-        //private bool HasContentExtension(string requestedUrl)
-        //{
-        //    if (requestedUrl.EndsWith(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
-        //    {
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-		#endregion
 
 		public void UpdateCurrentPage()
 		{

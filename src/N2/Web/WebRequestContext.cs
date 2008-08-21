@@ -118,6 +118,11 @@ namespace N2.Web
             CurrentHttpContext.RewritePath(path, false);
         }
 
+        public void TransferRequest(string path)
+        {
+            CurrentHttpContext.Server.TransferRequest(Url.Parse(path).AppendQuery("postback", LocalUrl), true);
+        }
+
         /// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
         public virtual void Dispose()
         {

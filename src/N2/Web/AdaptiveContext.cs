@@ -119,6 +119,11 @@ namespace N2.Web
             CurrentContext.RewritePath(path);
         }
 
+        public void TransferRequest(string path)
+        {
+            CurrentContext.TransferRequest(path);
+        }
+
         /// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
         public void Dispose()
         {

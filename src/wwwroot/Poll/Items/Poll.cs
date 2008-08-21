@@ -12,7 +12,7 @@ using N2.Web.UI;
 namespace N2.Templates.Poll.Items
 {
 	[Definition("Poll", "Poll")]
-	[AllowedZones(Zones.Left, Zones.Right, Zones.RecursiveRight)]
+	[AllowedZones(Zones.Left, Zones.Right, Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteLeft, Zones.SiteRight)]
 	[RestrictParents(typeof (AbstractContentPage))]
 	[AllowedChildren(typeof(SingleSelect))]
 	[FieldSet("questionContainer", "Question", 100)]

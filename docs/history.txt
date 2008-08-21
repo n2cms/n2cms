@@ -43,6 +43,8 @@
 - updated dutch translation
 - tinymce 3.1.1
 - configurable additional nhibernate mappings
+- changed medium trust initialization 
+- configurable rewrite method (None, RewriteRequest, TransferRequest)
 
 1.4.1
 - error handling with email option

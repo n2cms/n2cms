@@ -54,27 +54,37 @@ namespace N2
 			instance = engine;
 		}
 
+        private static System.Configuration.Configuration GetConfiguration()
+        {
+            try
+            {
+                return System.Web.Hosting.HostingEnvironment.IsHosted
+                    ? WebConfigurationManager.OpenWebConfiguration("~")
+                    : ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceWarning("Error reading configuration. This has happened when running a web site project in a virtual directory (reason unknown). " + ex);
+                return null;
+            }
+        }
+
 		/// <summary>Creates a factory instance and adds a http application injecting facility.</summary>
 		/// <returns>A new factory.</returns>
 		public static Engine.IEngine CreateEngineInstance()
 		{
             try
             {
-                var cfg = System.Web.Hosting.HostingEnvironment.IsHosted
-                    ? WebConfigurationManager.OpenWebConfiguration("~")
-                    : ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-                return new Engine.ContentEngine(cfg);
+                System.Configuration.Configuration config = GetConfiguration();
+                if (config == null)
+                    return new Engine.ContentEngine();
+                else
+                    return new Engine.ContentEngine(config);
             }
-            catch (SecurityException)
+            catch (SecurityException ex)
             {
-                Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine.");
+                Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
                 return new MediumTrustEngine();
-            }
-            catch (ConfigurationErrorsException ex)
-            {
-                Trace.TraceWarning("Caught InvalidOperationException. This can happen when running a web site project in a virtual directory.");
-                return new Engine.ContentEngine();
             }
 		}
 

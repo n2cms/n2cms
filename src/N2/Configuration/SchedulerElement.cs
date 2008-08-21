@@ -28,7 +28,7 @@ namespace N2.Configuration
             set { base["keepAlive"] = value; }
         }
 
-        [ConfigurationProperty("keepAlivePath", DefaultValue = "~/edit/keepalive/ping.aspx")]
+        [ConfigurationProperty("keepAlivePath", DefaultValue = "~/edit/keepalive/ping.ashx")]
         public string KeepAlivePath
         {
             get { return (string)base["keepAlivePath"]; }

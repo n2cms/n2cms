@@ -59,5 +59,9 @@ namespace N2.Web
         /// <summary>Rewrites the request to the given path.</summary>
         /// <param name="path">The path to the template that will handle the request.</param>
 		void RewritePath(string path);
+
+        /// <summary>Transferes the request to the given path.</summary>
+        /// <param name="path">The path to the template that will handle the request.</param>
+		void TransferRequest(string path);
     }
 }

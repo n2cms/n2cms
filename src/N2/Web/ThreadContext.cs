@@ -129,5 +129,10 @@ namespace N2.Web
         {
             throw new NotSupportedException("In thread context. No handler when not running in http web context.");
         }
+
+        public void TransferRequest(string path)
+        {
+            throw new NotSupportedException("In thread context. No handler when not running in http web context.");
+        }
     }
 }

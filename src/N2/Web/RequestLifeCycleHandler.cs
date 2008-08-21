@@ -20,7 +20,6 @@ namespace N2.Web
         private readonly IErrorHandler errorHandler;
         private readonly InstallationManager installer;
 
-        private bool enableRewrite = true;
         private bool initialized = false;
         private bool checkInstallation = false;
         private string installerUrl = "~/Edit/Install/Begin/Default.aspx";
@@ -33,7 +32,6 @@ namespace N2.Web
         public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer, EditSection editConfig, HostSection hostConfig)
             : this(rewriter, security, webContext, errorHandler, installer)
         {
-            enableRewrite = hostConfig.Web.RewriteEnabled;
             checkInstallation = editConfig.Installer.CheckInstallationStatus;
             installerUrl = editConfig.Installer.InstallUrl;
         }
@@ -69,7 +67,8 @@ namespace N2.Web
 		{
             if (!initialized)
             {
-                // we need to have reached begin request before we can do certain things
+                // we need to have reached begin request before we can do certain 
+                // things in IIS7. concurrency isn't crucial here.
                 initialized = true;
                 if (webContext.IsWeb)
                 {
@@ -81,8 +80,7 @@ namespace N2.Web
             }
 
 			rewriter.UpdateCurrentPage();
-            if(enableRewrite)
-                rewriter.RewriteRequest();
+            rewriter.RewriteRequest();
 		}
 
         private void CheckInstallation()
