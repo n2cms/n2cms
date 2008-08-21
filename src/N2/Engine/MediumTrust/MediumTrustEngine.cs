@@ -47,21 +47,17 @@ namespace N2.Engine.MediumTrust
             
 		public MediumTrustEngine()
 		{
-            IWebContext webContext;
-            HostSection hostConfiguration = (HostSection)AddConfigurationSection("n2/host");
-            EngineSection engineConfiguration = (EngineSection)AddConfigurationSection("n2/engine");
-            if (hostConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/host configuration section. Please check the web configuration.");
-            if (engineConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/engine configuration section. Please check the web configuration.");
-
-            Url.DefaultExtension = hostConfiguration.Web.Extension;
-            if (!hostConfiguration.Web.IsWeb)
-                webContext = new ThreadContext();
-            else
-                webContext = new AdaptiveContext();
-    
+            EditSection editConfiguration = (EditSection)AddConfigurationSection("n2/edit");
             DatabaseSection databaseConfiguration = (DatabaseSection)AddConfigurationSection("n2/database");
-            AddConfigurationSection("n2/edit");
-
+            if (databaseConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/database configuration section. Please check the web configuration.");
+            HostSection hostConfiguration = (HostSection)AddConfigurationSection("n2/host");
+            if (hostConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/host configuration section. Please check the web configuration.");
+            EngineSection engineConfiguration = (EngineSection)AddConfigurationSection("n2/engine");
+            if (engineConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/engine configuration section. Please check the web configuration.");
+            
+            Url.DefaultExtension = hostConfiguration.Web.Extension;
+            IWebContext webContext = new AdaptiveContext();
+    
             host = AddComponentInstance<IHost>(new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
             AddComponentInstance<IWebContext>(webContext);
 
@@ -92,7 +88,7 @@ namespace N2.Engine.MediumTrust
             ISecurityEnforcer securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
             IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(persister, itemRepository));
 			N2.Edit.Settings.NavigationSettings settings = AddComponentInstance<N2.Edit.Settings.NavigationSettings>(new N2.Edit.Settings.NavigationSettings(webContext));
-            IPluginFinder pluginFinder = new PluginFinder(typeFinder);
+            IPluginFinder pluginFinder = AddComponentInstance<IPluginFinder>(new PluginFinder(typeFinder));
             editManager = AddComponentInstance<IEditManager>(new EditManager(typeFinder, definitions, persister, versioner, securityManager, pluginFinder, settings));
             integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
             IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
@@ -102,7 +98,7 @@ namespace N2.Engine.MediumTrust
             ItemXmlWriter xmlWriter = AddComponentInstance<ItemXmlWriter>(new ItemXmlWriter(definitions, urlParser));
             Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
             InstallationManager installer = AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
-            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, webContext, errorHandler, installer));
+            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, webContext, errorHandler, installer, editConfiguration, hostConfiguration));
             AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));

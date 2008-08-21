@@ -2,10 +2,11 @@ using Castle.Core;
 using N2.Definitions;
 using N2.Details;
 using N2.Web.UI;
+using N2.Plugin;
 
 namespace N2.Templates.SEO
 {
-	public class SEODefinitionAppender : IStartable
+	public class SEODefinitionAppender : IStartable, IAutoStart
 	{
 		private readonly IDefinitionManager definitions;
 		private string titleTitle = "Page title";

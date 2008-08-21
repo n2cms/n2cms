@@ -6,6 +6,7 @@ using N2.Persistence;
 using N2.Web;
 using N2.Definitions;
 using N2.Configuration;
+using N2.Plugin;
 
 namespace N2.Engine.Globalization
 {
@@ -13,7 +14,7 @@ namespace N2.Engine.Globalization
     /// Intercepts and acts upon operations on the node tree. The purpose is to 
     /// keep the language branches synchronized.
     /// </summary>
-	public class LanguageInterceptor : IStartable
+	public class LanguageInterceptor : IStartable, IAutoStart
 	{
 		private const string DeletingKey = "LanguageInterceptor_Deleting";
 
