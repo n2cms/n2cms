@@ -28,7 +28,7 @@ namespace N2.Web.UI.WebControls
 
 		public ContentItem RootItem
 		{
-			get { return rootItem; }
+			get { return rootItem ?? Find.RootItem; }
 			set { rootItem = value; }
 		}
 
@@ -47,7 +47,7 @@ namespace N2.Web.UI.WebControls
 		protected override void CreateChildControls()
 		{
 			ItemFilter[] filters = GetFilters();
-			Web.Tree t = N2.Web.Tree.From(Find.RootItem)
+			Web.Tree t = N2.Web.Tree.From(RootItem)
 				.OpenTo(CurrentItem).Filters(filters)
 				.LinkProvider(delegate(ContentItem item)
 								{
