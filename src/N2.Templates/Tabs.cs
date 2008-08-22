@@ -9,7 +9,7 @@ namespace N2.Templates
 	/// strings for better compile-time checking. Please note that you still 
 	/// need to make sure the zone is defined for the container you chose.
 	/// </summary> 
-	public static class Tabs
+	public class Tabs
 	{
 		/// <summary>The default content tab when editing.</summary>
 		public const string Content = "content";

@@ -8,7 +8,7 @@ namespace N2.Templates
 	/// Provides access to some zone-related constants. Use these constants 
 	/// instead of strings for better compile-time checking.
 	/// </summary>
-	public static class Zones
+	public class Zones
 	{
 		/// <summary>Right column on whole site.</summary>
 		public const string SiteRight = "SiteRight";
