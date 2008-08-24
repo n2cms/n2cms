@@ -8,10 +8,10 @@ dl,ol,ul {list-style:none}
 button,select,textarea,input {font:100% serif}
 table {border-collapse:collapse}
 caption,th,td {text-align:left}
-h1,h2,h3,h4,h5,h6,p {margin:.25em 0 .5em 0;}
+h1,h2,h3,h4,h5,h6,p {margin:.5em 0 .5em 0;}
+h1{font-size:1.8em;}h2{font-size:1.4em;}
 #footer {margin-top:10px;}
 	#footer .n2{color:#a2a796;float:right;font-size:.8em;}
-
 /* colors */
 #header h2 a { color:#fff; }
 a { color:#4fa600; text-decoration:none; }
@@ -68,10 +68,12 @@ body { margin:0; background-color:#cce5a2; }
 	.subMenu a { display:block; padding:2px 0; _height:1px; color:#333; }
 	.subMenu .trail > a { color:#389000; }
 	.subMenu .current > a { color:#389000; font-weight:bold; }
+	.subMenu ul { margin-left:20px; }
 
 /* lists */
 .list { padding-bottom:6px; background-position:50% 100%; }
 	.list .item { padding:5px; }
+    .list a { display:block; font-weight:bold; }
 	.list .a0 { background: #f4f8ed url(list_dark.gif) no-repeat 50% -1px; }
 	.list,
 	.list .a1 { background: #fff url(list_light.gif) no-repeat 50% -1px; }
@@ -84,8 +86,11 @@ body { margin:0; background-color:#cce5a2; }
 /* sitemap */
 #main ul { list-style:circle; margin-left:20px; }
 
+/* content */
+.introduction { font-size:1.1em; font-style:italic; }
+
 /** date **/
-.date { font-size:x-small; color:#333; display:block; }
+.date { font-size:small; color:#666; display:block; }
 
 /* columns */
 .columns .left { float:left; width:245px; }
@@ -107,3 +112,6 @@ body { margin:0; background-color:#cce5a2; }
 #thumbnails {padding-bottom:10px;}
 #thumbnails .text { display:none; }
 .thumbnail {margin-bottom:10px;margin-right:5px;}
+
+/* news */
+.intro {font-size:1.1em;font-style:italic;}

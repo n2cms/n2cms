@@ -492,6 +492,18 @@ namespace N2.Tests.Globalization
             Assert.That(gateway.GetLanguage(page), Is.Null);
         }
 
+        [Test]
+        public void AvailableLanguages_AreRefreshed_WhenNewLanguageNode_IsAdded()
+        {
+            LanguageRoot dutch = new LanguageRoot();
+            dutch.LanguageCode = "nl-NL";
+            dutch.AddTo(root);
+            engine.Persister.Save(dutch);
+
+            ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
+            Assert.That(gateway.GetAvailableLanguages().Count(), Is.EqualTo(4));
+        }
+
         private class LanguageKeyScope : IDisposable
         {
             ThreadContext context;

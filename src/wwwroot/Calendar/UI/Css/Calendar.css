@@ -22,19 +22,13 @@
 {
 	font-weight:bold;
 }
-.list a
+table.calendar
 {
-	display:block;
-	font-weight:bold;
+    margin:0 auto;
 }
-.intro
-{
-	display:block;
-}
-
 .calendarTeaser .calendar a
 {
 	display:block;
-	padding:1px;
+	padding:2px;
 	text-align:center;
 }

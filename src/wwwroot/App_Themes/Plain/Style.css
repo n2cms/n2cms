@@ -9,6 +9,7 @@ button,select,textarea,input {font:100% serif}
 table {border-collapse:collapse}
 caption,th,td {text-align:left}
 h1,h2,h3,h4,h5,h6,p {margin:.35em 0;}
+h1{font-size:1.8em;}h2{font-size:1.4em;}
 
 /* colors */
 a { color:#0096db; text-decoration:none; }
@@ -81,6 +82,9 @@ body { margin:0; background-color:#ffd451; }
 
 /* sitemap */
 #main ul { list-style:circle; margin-left:20px; }
+
+/* content */
+.introduction { font-size:1.1em; font-style:italic; }
 
 /* date */
 .date { font-size:x-small; color:#333; display:block; }

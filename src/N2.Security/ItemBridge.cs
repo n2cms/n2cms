@@ -16,7 +16,7 @@ namespace N2.Security
 		readonly private IPersister persister;
 		private string userContainerName = "TemplateUsers";
 		private int userContainerParentID = 1;
-		private string[] defaultRoles = new string[] { "Everyone", "Editors", "Administrators" };
+		private string[] defaultRoles = new string[] { "Everyone", "Members", "Editors", "Administrators" };
 
 		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, IHost host)
 		{

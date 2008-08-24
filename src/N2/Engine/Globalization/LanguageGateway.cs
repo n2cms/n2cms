@@ -11,9 +11,13 @@ using N2.Definitions;
 using N2.Security;
 using N2.Configuration;
 using N2.Edit.Trash;
+using N2.Plugin;
 
 namespace N2.Engine.Globalization
 {
+    /// <summary>
+    /// Globalization handler.
+    /// </summary>
 	public class LanguageGateway : ILanguageGateway
 	{
 		public const string LanguageKey = "LanguageKey";

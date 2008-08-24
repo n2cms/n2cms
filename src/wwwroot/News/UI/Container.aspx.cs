@@ -18,7 +18,6 @@ namespace N2.Templates.News.UI
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			Resources.Register.StyleSheet(this, "~/News/UI/Css/News.css", N2.Resources.Media.All);
 
 			idsNews.Filtering += new EventHandler<N2.Collections.ItemListEventArgs>(idsNews_Filtering);
 		}

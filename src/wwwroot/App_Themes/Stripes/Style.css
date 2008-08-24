@@ -88,8 +88,11 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 #main ul { list-style:circle; margin-left:20px; }
 #main ol { margin-left:20px; }
 
+/* content */
+.introduction { font-size:1.1em; font-style:italic; }
+
 /* date */
-.date { font-size:x-small; color:#414141; display:block; }
+.date { font-size:small; color:#414141; display:block; }
 
 /* intro */
 .intro { font-style:italic; font-size:1.2em; }

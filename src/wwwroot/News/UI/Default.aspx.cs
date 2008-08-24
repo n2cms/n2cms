@@ -13,10 +13,5 @@ namespace N2.Templates.News.UI
 {
 	public partial class Default : Web.UI.TemplatePage<Items.News>
 	{
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			Resources.Register.StyleSheet(this, "~/News/UI/Css/News.css", N2.Resources.Media.All);
-		}
 	}
 }

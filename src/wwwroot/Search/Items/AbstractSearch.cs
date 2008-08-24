@@ -11,7 +11,7 @@ namespace N2.Templates.Search.Items
 	{
 		public abstract ICollection<ContentItem> Search(string query);
 
-		[EditableLink("Search Root", 100)]
+		[EditableLink("Search Root", 100, ContainerName = Tabs.Content)]
 		public virtual ContentItem SearchRoot
 		{
 			get { return (ContentItem) GetDetail("SearchRoot"); }

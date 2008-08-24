@@ -7,7 +7,7 @@
             <div class="item i<%# Container.ItemIndex %> a<%# Container.ItemIndex % 2 %>">
                 <span class="date"><%# Eval("Published") %></span>
                 <a href='<%# Eval("Url") %>'><%# Eval("Title") %></a>
-                <p class="intro"><%# Eval("Introduction") %></p>
+                <p><%# Eval("Introduction") %></p>
             </div>
         </ItemTemplate>
         <FooterTemplate></div></FooterTemplate>

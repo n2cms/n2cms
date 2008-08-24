@@ -32,7 +32,6 @@
 - enabled iframe for tinyMCE editor
 - trash handler now notifies the world through events
 - added error handling for exceptions during move,copy,delete,save to the edit interface
-- nhibernate CR1
 - start added IAutoStart components
 - changed the way database integrity is checked
 - allowed to multiple sites to reference different root nodes
@@ -45,6 +44,8 @@
 - configurable additional nhibernate mappings
 - changed medium trust initialization 
 - configurable rewrite method (None, RewriteRequest, TransferRequest)
+- nhibernate 2 GA
+- templates css housekeeping
 
 1.4.1
 - error handling with email option

@@ -7,11 +7,11 @@ using N2.Web;
 
 namespace N2.Web.Parts
 {
-	public class ItemMover : PartsAjaxService
+	public class ItemCopyer : PartsAjaxService
 	{
 		private readonly IPersister persister;
 
-		public ItemMover(IPersister persister, AjaxRequestDispatcher dispatcher)
+		public ItemCopyer(IPersister persister, AjaxRequestDispatcher dispatcher)
 			: base(dispatcher)
 		{
 			this.persister = persister;
@@ -19,24 +19,27 @@ namespace N2.Web.Parts
 
 		public override string Name
 		{
-			get { return "move"; }
+			get { return "copy"; }
 		}
 
 		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
-			MoveItem(request);
+			CopyItem(request);
 			return new NameValueCollection();
 		}
 
-		private void MoveItem(NameValueCollection request)
+		private void CopyItem(NameValueCollection request)
 		{
 			ContentItem item = persister.Get(int.Parse(request["item"]));
 			ContentItem parent;
 
+			item = item.Clone(true);
 			item.ZoneName = request["zone"];
 
 			string before = request["before"];
 			string below = request["below"];
+
+
 			if (!string.IsNullOrEmpty(below))
 			{
 				parent = persister.Get(int.Parse(below));
