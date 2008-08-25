@@ -59,7 +59,7 @@ namespace N2.Web
                 return;
             
             ContentItem currentPage = webContext.CurrentPage;
-			if (!File.Exists(webContext.PhysicalPath) && currentPage != null)
+            if (currentPage != null && !File.Exists(webContext.PhysicalPath) && !Directory.Exists(webContext.PhysicalPath))
 			{
 				Url url = Url.Parse(currentPage.RewrittenUrl).AppendQuery(webContext.LocalUrl.Query);
 
@@ -95,6 +95,7 @@ namespace N2.Web
         private bool IsUpdatable(Url url)
         {
             string extension = url.Extension;
+            Debug.WriteLine("extension: " + extension);
             if (rewriteEmptyExtension && string.IsNullOrEmpty(extension))
                 return true;
             foreach (string observed in observedExtensions)

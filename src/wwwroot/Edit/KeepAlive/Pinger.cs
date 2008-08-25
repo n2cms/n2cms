@@ -41,7 +41,8 @@ namespace N2.Edit.KeepAlive
                 using (WebClient wc = new WebClient())
                 {
                     wc.Headers["N2KeepAlive"] = "true";
-                    string response = wc.DownloadString(url.SetPath(config.Scheduler.KeepAlivePath));
+                    url = url.SetPath(config.Scheduler.KeepAlivePath);
+                    string response = wc.DownloadString(url);
                     Debug.WriteLine("Ping " + url + ": " + response);
                 }
             }

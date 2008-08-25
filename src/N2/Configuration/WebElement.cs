@@ -24,7 +24,7 @@ namespace N2.Configuration
         [ConfigurationProperty("observeEmptyExtension")]
         public bool ObserveEmptyExtension
         {
-            get { return (bool)base["observeEmptyExtension"] || string.IsNullOrEmpty(Extension); }
+            get { return (bool)base["observeEmptyExtension"] || string.IsNullOrEmpty(Extension) || Extension == "/"; }
             set { base["observeEmptyExtension"] = value; }
         }
 

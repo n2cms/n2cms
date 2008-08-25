@@ -115,12 +115,14 @@ namespace N2.Web
         public void RewritePath(string path)
         {
             Debug.WriteLine("Rewriting '" + LocalUrl + "' to '" + path + "'");
-            CurrentHttpContext.RewritePath(path, false);
+            // the whitespace is a workaround for strange IIS7 rewrite behaviour
+            CurrentHttpContext.RewritePath(path + "                                        ", false);
         }
 
         public void TransferRequest(string path)
         {
-            CurrentHttpContext.Server.TransferRequest(Url.Parse(path).AppendQuery("postback", LocalUrl), true);
+            string url = Url.Parse(path).AppendQuery("postback", LocalUrl);
+            CurrentHttpContext.Server.TransferRequest(url, true);
         }
 
         /// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
