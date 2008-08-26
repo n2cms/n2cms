@@ -78,7 +78,14 @@ namespace N2.Edit.Trash
                 ExpireTrashedItem(item);
                 item.AddTo(GetTrashContainer(true));
 
-                persister.Save(item);
+                try
+                {
+                    persister.Save(item);
+                }
+                catch (PermissionDeniedException ex)
+                {
+                    throw new PermissionDeniedException("Permission denied while moving item to trash. Try disabling security checks using N2.Context.Security or preventing items from beeing moved to the trash with the [NonThrowable] attribute", ex);
+                }
 
                 Invoke<ItemEventArgs>(ItemThrowed, new ItemEventArgs(item));
             }

@@ -95,7 +95,6 @@ namespace N2.Web
         private bool IsUpdatable(Url url)
         {
             string extension = url.Extension;
-            Debug.WriteLine("extension: " + extension);
             if (rewriteEmptyExtension && string.IsNullOrEmpty(extension))
                 return true;
             foreach (string observed in observedExtensions)

@@ -115,8 +115,7 @@ namespace N2.Web
         public void RewritePath(string path)
         {
             Debug.WriteLine("Rewriting '" + LocalUrl + "' to '" + path + "'");
-            // the whitespace is a workaround for strange IIS7 rewrite behaviour
-            CurrentHttpContext.RewritePath(path + "                                        ", false);
+            CurrentHttpContext.RewritePath(path, false);
         }
 
         public void TransferRequest(string path)

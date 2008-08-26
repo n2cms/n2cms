@@ -15,7 +15,14 @@ namespace N2.Security
 		{
 			this.user = user;
 			this.item = item;
-		}
+        }
+
+        public PermissionDeniedException(string message, PermissionDeniedException innerException)
+            : base(message, innerException)
+        {
+            this.user = innerException.User;
+            this.item = innerException.Item;
+        }
 
 		#region Private Members
 		private ContentItem item;
