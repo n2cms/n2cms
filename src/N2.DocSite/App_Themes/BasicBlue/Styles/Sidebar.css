@@ -1,0 +1,79 @@
+/*
+ * DocSite Stylesheet
+ * written by Dave Sexton
+ * http://www.codeplex.com/DocProject
+ */
+#sidebar_button_container
+{
+  border-right: solid 4px #CBCBCB;
+	width: 210px !important;
+	height: 24px;
+	/* IE6 */
+	position: absolute;
+	width: 207px;
+	border-right-width: 7px;
+}
+
+#sidebar_button_container div
+{
+	border-top: solid 2px #C8E5FF;
+	border-left: solid 2px #C8E5FF;
+	border-right: solid 2px #C8E5FF;
+	padding-bottom: 2px;
+	height: 20px;
+	line-height: 20px;
+	width: auto !important;
+	width: 103px; /* IE6 */
+}
+
+#sidebar_contents_button
+{
+	position: absolute;
+	left: 0;
+	right: 50%;
+	text-align: center;
+}
+
+#sidebar_index_button
+{
+	position: absolute;
+	right: 0;
+	left: 50%;
+	text-align: center;
+}
+
+#sidebar_contents
+{
+}
+
+div.sidebar_content_visible
+{
+  position: absolute !important;
+	left: 0px;
+	right: 0px;
+	top: 24px;
+	bottom: 0px;
+	margin: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	/* IE6 */
+	position: static;
+	margin-top: 24px;
+	width: 100%;
+	height: 100%;
+}
+
+div.sidebar_content_hidden
+{
+	display: none;
+}
+
+#docsite_index
+{
+	padding-bottom: 6px;
+}
+
+#docsite_toc
+{
+}
+

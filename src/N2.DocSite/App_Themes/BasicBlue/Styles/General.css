@@ -1,0 +1,251 @@
+#docsite_admin
+{
+	font-size: .9em;
+}
+
+.docsite_admin_section
+{
+	color: Gray;
+	margin-top: 10px;
+	padding-left: 3px;
+	font-size: 1.2em;
+	border-bottom: dashed 1px Gray;
+	height: auto !important;
+	height: 1.5em;
+	width: 100%;
+	font-weight: bold;
+	background-color: #DBEEFF;
+	/* IE only */
+	filter:progid:DXImageTransform.Microsoft.Gradient(startColorStr=#FFCBDEFF, endColorStr=#FFFFFFFF, gradientType=1);
+}
+
+#docsite_page_header
+{
+	text-indent: 10px;
+	color: #6C917C;
+	min-height: 1.5em;
+	height: auto !important;
+	height: 1.5em;
+	background-color: #DBEEFF;
+	/* IE only */
+	filter:progid:DXImageTransform.Microsoft.Gradient(startColorStr=#FFCBDEFF, endColorStr=#FFFFFFFF, gradientType=1);
+}
+
+.docsite_page_options
+{
+	padding-top: 6px;
+	text-align: center;
+	background-color: #CBDEFF;
+	min-height: 1px;
+	height: auto !important;
+	height: 1px; /* IE6 */
+	/* IE only */
+	filter:progid:DXImageTransform.Microsoft.Gradient(startColorStr=#FFFFFFFF, endColorStr=#FFCBDEFF, gradientType=1);
+}
+
+#docsite_page_footer
+{
+	margin-top: 2px;
+	min-height: 1.5em;
+	height: auto !important;
+	height: 1.5em;
+	background-color: #DBEEFF;
+	/* IE only */
+	filter:progid:DXImageTransform.Microsoft.Gradient(startColorStr=#FFCBDEFF, endColorStr=#FFFFFFFF, gradientType=0);
+}
+
+#docsite_login
+{
+	font-size: 1.2em;
+	min-height: 100px;
+	height: auto !important;
+	height: 100px;
+}
+
+.docsite_login_control
+{
+	min-height: 100px;
+	height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#docsite_index_keywordslist
+{
+	text-align: left;
+	text-indent: 1.5em;
+}
+
+.docsite_index_keyword
+{
+	white-space: nowrap;
+}
+
+.docsite_index_keyword_removebutton
+{
+	position: relative;
+	top: .8em;
+}
+
+.docsite_index_selectedletter
+{
+	text-indent: 2px;
+	color: #6C917C;
+}
+
+.letter_bar
+{
+	padding-top: 3px;
+}
+
+.textlink, .textlink:link, .textlink:visited, .textlink:hover, .textlink:active
+{	
+	text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+	font-weight: normal;
+	margin: 2px;
+	padding: 0;
+}
+
+h1
+{
+	font-size: 2.1em;
+}
+
+h2
+{
+	font-size: 1.6em;
+}
+
+h3
+{
+	color: Navy;
+	font-size: 1.35em;
+}
+
+h4
+{
+	font-size: 1.3em;
+	font-weight: bold;
+}
+
+h5
+{
+	font-size: 1.25em;
+	text-indent: 15px;
+}
+
+h6
+{
+	font-size: 1.2em;
+	text-indent: 15px;
+}
+
+.nofloat
+{
+	float: none !important;
+}
+
+.small
+{
+	font-size: smaller;
+}
+
+.special
+{
+	color: #6C917C;
+}
+
+.subscript
+{
+	position: relative;
+	top: .8em;
+	font-size: x-small;
+}
+
+.center
+{
+	text-align: center;
+	vertical-align: middle;
+}
+
+.nowrap
+{
+	white-space: nowrap;
+}
+
+table, td, th
+{
+	font-size: .95em;
+}
+
+.table_header_row
+{
+	background-color: #FCFCFC;
+}
+
+.table_info
+{
+	font-size: .8em;
+	border-width: 1px;
+}
+
+fieldset
+{
+	padding: 0 8px 8px 8px;
+}
+
+legend
+{
+	font-family: Tahoma, Arial;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.update_progress
+{
+	padding: 8px;
+	font: bold 17px Tahoma, Arial;
+	text-align: left;
+	width: 550px;
+}
+
+.update_progress_message
+{
+	color: Gray;
+	font-weight: normal;
+	font-size: 12px;
+	margin-left: 15px;
+}
+
+#update_progress_floatright
+{
+	float: right;
+	padding-top: 2px;
+	padding-right: 15px;
+	font-weight: normal;
+	font-size: smaller;
+}
+
+.content_padding
+{
+	padding: 5px;
+}
+
+.content_padding_vertical
+{
+	padding: 15px 0 5px 0;
+}
+
+.content_padding_horizontal
+{
+	padding: 0 10px 0 10px;
+}
+
+.content_margin_bottom
+{
+	margin-bottom: 10px;
+}

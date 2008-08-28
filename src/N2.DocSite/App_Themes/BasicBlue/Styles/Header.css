@@ -1,0 +1,51 @@
+.docsite_logo
+{
+	float: left;
+	margin: 5px;
+}
+
+#docsite_header_title
+{
+	padding-top: 5px;
+}
+
+#docsite_header_company
+{
+	margin-top: 2px;
+	margin-left: 2px;
+	float: left;
+}
+
+#docsite_header_links
+{
+	margin: 5px;
+	float: right;
+}
+
+#docsite_header_search
+{
+	position: absolute;
+	right: 8px;
+	top: 20px;
+	margin-top: 14px;
+	height: 23px;
+}
+
+.docsite_search_input
+{
+	margin-top: 1px;
+	float: left;
+	border: solid 1px Silver;
+	padding-left: 2px;
+	width: 170px;
+	height: 16px;
+}
+
+.docsite_search_button
+{
+	margin-right: 3px;
+	padding: 1px;
+	border: solid 1px Silver;
+	text-align: center;
+	vertical-align: middle;
+}

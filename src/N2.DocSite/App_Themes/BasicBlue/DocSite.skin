@@ -1,0 +1,70 @@
+<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+<asp:ImageButton runat="server" SkinID="SyncTocImageButton" CssClass="toc_sync_button" 
+                 ImageUrl="Images/DocSiteSync.gif" 
+                 onmouseover="this.className='toc_sync_button toc_sync_button_hot';"
+                 onmouseout="this.className='toc_sync_button';" />
+
+<asp:ImageButton runat="server" SkinID="PrintImageButton" CssClass="toc_print_button"
+                 ImageUrl="Images/DocSitePrint.gif"
+                 onmouseover="this.className='toc_print_button toc_print_button_hot';"
+                 onmouseout="this.className='toc_print_button';" />
+
+<asp:ImageButton runat="server" SkinID="EmailImageButton" CssClass="toc_email_button"
+                 ImageUrl="Images/DocSiteEmail.gif"
+                 onmouseover="this.className='toc_email_button toc_email_button_hot';"
+                 onmouseout="this.className='toc_email_button';" />
+
+<asp:ImageButton runat="server" SkinID="SaveImageButton" CssClass="toc_save_button"
+                 ImageUrl="Images/DocSiteSave.gif"
+                 onmouseover="this.className='toc_save_button toc_save_button_hot';"
+                 onmouseout="this.className='toc_save_button';" />
+
+<asp:ImageButton runat="server" SkinID="BookmarkImageButton" CssClass="toc_bookmark_button"
+                 ImageUrl="Images/DocSiteBookmark.gif"
+                 onmouseover="this.className='toc_bookmark_button toc_bookmark_button_hot';"
+                 onmouseout="this.className='toc_bookmark_button';" />
+
+<asp:ImageButton runat="server" SkinID="IndexFilterImageButton" CssClass="index_filter_button"
+                 ImageUrl="Images/DocSiteFilter.gif"
+                 onmouseover="this.className='index_filter_button index_filter_button_hot';"
+                 onmouseout="this.className='index_filter_button';" />
+                 
+<asp:ImageButton runat="server" SkinID="SearchImageButton" CssClass="docsite_search_button" BorderWidth="1px"
+                 ImageUrl="Images/DocSiteSearch.gif"
+                 onmouseover="this.className='docsite_search_button docsite_search_button_hot';"
+                 onmouseout="this.className='docsite_search_button';" />
+                 
+<asp:ImageButton runat="server" SkinID="BrowseImageButton" CssClass="docsite_search_button" BorderWidth="1px"
+                 ImageUrl="Images/DocSiteBrowse.gif"
+                 onmouseover="this.className='docsite_search_button docsite_search_button_hot';"
+                 onmouseout="this.className='docsite_search_button';" />
+                 
+<asp:TextBox runat="Server" SkinID="SearchTextBox" CssClass="docsite_search_input" />
+                 
+<asp:LoginName runat="server" SkinID="LoginName" CssClass="special" />
+<asp:LoginStatus runat="server" SkinID="LoginStatus" LogoutText="Logout" />
+
+<asp:Login runat="server" TitleText="" BackColor="#EFF3FB" BorderColor="#B5C7DE" BorderPadding="4" BorderStyle="Solid" 
+           BorderWidth="1px" Font-Names="Verdana" Font-Size="0.8em" ForeColor="#333333" CssClass="docsite_login_control">
+  <TitleTextStyle BackColor="#507CD1" Font-Bold="True" Font-Size="0.9em" ForeColor="White" />
+  <InstructionTextStyle Font-Italic="True" ForeColor="Black" />
+  <TextBoxStyle Font-Size="0.8em" />
+  <LoginButtonStyle BackColor="White" BorderColor="#507CD1" BorderStyle="Solid" BorderWidth="1px"
+                    Font-Names="Verdana" Font-Size="0.8em" ForeColor="#284E98" />
+</asp:Login>
+
+<asp:Image runat="server" SkinID="DocSitePleaseWait" ImageUrl="Images/DocSitePleaseWait.gif" />

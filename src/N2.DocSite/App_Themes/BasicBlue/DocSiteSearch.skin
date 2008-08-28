@@ -1,0 +1,28 @@
+<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+<asp:GridView runat="server" SkinID="SearchResultsGridView" CellPadding="4" CellSpacing="0"
+              Width="100%" PageSize="10" ShowHeader="False" AllowPaging="true">
+  <AlternatingRowStyle BackColor="#F5FCFF" />
+  <HeaderStyle CssClass="table_header_row" />
+</asp:GridView>
+
+<asp:Label runat="server" SkinID="searchResultRank" Visible="False" CssClass="small special" />
+<asp:Label runat="server" SkinID="searchResultPosition" />
+<asp:Hyperlink runat="server" SkinID="searchResultTitle" />
+<asp:Label runat="server" SkinID="searchResultLocale" CssClass="small" />
+<asp:Label runat="server" SkinID="searchResultAbstract" />
+<asp:Label runat="server" SkinID="searchResultName" />
+<asp:Label runat="server" SkinID="searchResultLocation" />
