@@ -16,10 +16,11 @@ using System.Diagnostics;
 using N2.Edit.Trash;
 using N2.Details;
 using N2.Persistence;
+using N2.Installation;
 
 namespace N2.Edit.FileSystem.Items
 {
-    [Definition]
+    [Definition(Installer = InstallerHint.NeverRootOrStartPage)]
     [RestrictParents(typeof(AbstractDirectory))]
     [WithEditableName]
     public class Directory : AbstractDirectory, IActiveContent

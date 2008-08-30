@@ -15,10 +15,11 @@ using N2.Integrity;
 using N2.Details;
 using N2.Edit.Trash;
 using N2.Definitions;
+using N2.Installation;
 
 namespace N2.Edit.FileSystem.Items
 {
-    [Definition("File Folder", SortOrder = 600)]
+    [Definition("File Folder", SortOrder = 600, Installer = InstallerHint.NeverRootOrStartPage)]
     [RestrictParents(typeof(IFileSystemContainer))]
     [ItemAuthorizedRoles("Administrators", "admin")]
     [Editables.EditableFolderPath]
