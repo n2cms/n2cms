@@ -16,16 +16,30 @@ namespace N2.Templates.Items
 	public abstract class AbstractPage : ContentItem
 	{
 		private static readonly int startIndex = "N2.Templates.".Length;
-		
-		public override string TemplateUrl
+
+        /// <summary>Defaults to ~/Templates/UI/Img/{IconName}.png. Override <see cref="IconName"/> to reference icon in same directory.</summary>
+        public override string IconUrl
+        {
+            get { return "~/Templates/UI/Img/" + IconName + ".png"; }
+        }
+
+        /// <summary>The name without extension .png of an icon file located in /Templates/UI/Img/. Defaults to "page".</summary>
+        protected virtual string IconName
+	    {
+            get { return "page"; }
+	    }
+
+        /// <summary>Defaults to ~/Templates/UI/Views/{TemplateName}.aspx</summary>
+	    public override string TemplateUrl
 		{
-			get
-			{
-				string url = GetType().FullName.Substring(startIndex);
-				url = url.Replace("Items.", "UI/").Replace('.', '/');
-				return "~/" + url + ".aspx";
-			}
+			get { return "~/Templates/UI/Views/" + TemplateName + ".aspx"; }
 		}
+
+        /// <summary>The name without extension .aspx of an icon file located in /Templates/UI/Views/. Defaults to ClassName.</summary>
+        protected virtual string TemplateName
+	    {
+            get { return GetType().Name; }
+	    }
 
 		[EditableCheckBox("Show Title", 60, ContainerName = Tabs.Advanced)]
 		public virtual bool ShowTitle

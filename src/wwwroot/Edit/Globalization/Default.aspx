@@ -56,7 +56,7 @@
 				<FooterTemplate></tbody></FooterTemplate>
 			</asp:Repeater>
 		</table>
-		<asp:Button ID="btnAssociate" runat="server" Text="Associate" OnClick="btnEnable_Click" meta:resourceKey="btnAssociate" />
+		<asp:Button ID="btnAssociate" runat="server" Text="Associate" OnClick="btnAssociate_Click" meta:resourceKey="btnAssociate" />
 	</asp:Panel>
-	    <asp:Button ID="btnEnable" runat="server" Text="Enable Globalization" OnClick="btnEnable_Click" meta:resourceKey="btnEnable" />
+	<asp:Button ID="btnEnable" runat="server" Text="Enable Globalization" OnClick="btnEnable_Click" meta:resourceKey="btnEnable" />
 </asp:Content>

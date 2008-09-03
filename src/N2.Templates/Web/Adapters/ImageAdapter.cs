@@ -37,7 +37,7 @@ namespace N2.Templates.Web.Adapters
 		public static string GetResizedImageUrl(string imageUrl, double width, double height)
 		{
 			return string.Format("{0}?w={1}&amp;h={2}&amp;img={3}",
-								VirtualPathUtility.ToAbsolute("~/Image.ashx"),
+								VirtualPathUtility.ToAbsolute("~/Templates/UI/Image.ashx"),
 								width,
 								height,
 								HttpUtility.UrlEncode(imageUrl));

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Configuration;
-using System.Web.UI;
-using System.Web.Configuration;
+﻿using System.Configuration;
 
 namespace N2.Templates.Configuration
 {
@@ -17,8 +12,8 @@ namespace N2.Templates.Configuration
             set { base["mailConfiguration"] = value; }
         }
 
-        /// <summary>The database flavour decides which propertes the nhibernate configuration will receive.</summary>
-        [ConfigurationProperty("masterPageFile", DefaultValue = "~/Layouts/Top+SubMenu.Master")]
+        /// <summary>The master page used for template pages.</summary>
+        [ConfigurationProperty("masterPageFile", DefaultValue = "~/Templates/UI/Layouts/Top+SubMenu.Master")]
         public string MasterPageFile
         {
             get { return (string)base["masterPageFile"]; }

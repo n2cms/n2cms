@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Details;
 using N2.Web.UI.WebControls;
 
