@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="LinkFromParameter.ascx.cs" Inherits="N2.Templates.Wiki.UI.WikiTemplates.LinkFromParameter" %>
+<a class="<%= CurrentPage.GetChild(CurrentPage.ActionParameter) == CurrentPage ? "new" : "" %>" href="<%= CurrentPage.AppendUrl(CurrentPage.ActionParameter) %>"><%= CurrentPage.ActionParameter %></a>

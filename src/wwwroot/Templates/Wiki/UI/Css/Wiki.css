@@ -1,0 +1,8 @@
+﻿a.new { color:red; }
+fieldset { padding:10px; }
+.box .tb { width:95px; *width:110px; }
+.path { float:left; }
+.controls { float:right; }
+.message, h1 { clear:left; }
+.error { clear:both; margin-bottom:10px; }
+#main ul { margin-top:0 }
