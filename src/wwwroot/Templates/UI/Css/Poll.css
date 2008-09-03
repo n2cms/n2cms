@@ -1,0 +1,43 @@
+.poll .question .label,
+.result .question
+{
+	display:block;
+	font-weight:bold;
+	margin:5px 0;
+}
+.poll .alternatives
+{
+	margin:5px 0;
+}
+.poll .alternatives td
+{
+	padding:2px 0;
+}
+.poll .alternatives input
+{
+	vertical-align:middle;
+	margin-right:2px;
+}
+.poll .buttons
+{
+	margin-top:10px;
+}
+.result .bar
+{
+	background-color:#A2A796;
+	overflow:hidden;
+	padding:1px 0;
+	font-size:x-small;
+	text-indent:4px;
+	white-space:nowrap;
+	color:#EAF2DB;
+}
+.result .question .label
+{
+	margin-top:5px;
+}
+.result .total
+{
+	border:solid 1px #C2C7B6;
+	margin-bottom:5px;
+}
