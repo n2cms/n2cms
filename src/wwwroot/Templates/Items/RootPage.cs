@@ -50,7 +50,7 @@ namespace N2.Templates.Items
 
         public override string TemplateUrl
         {
-            get { return "~/Secured/Root.aspx"; }
+            get { return "~/Templates/Secured/Root.aspx"; }
         }
 
         public override string Url
