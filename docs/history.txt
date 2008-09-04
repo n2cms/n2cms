@@ -1,5 +1,6 @@
-- removed strange iis7 workaround (needs more test)
+- error handling on linktracker
 - more explanative exception when throwing is denied
+- removed strange iis7 workaround (needs more test)
 
 1.4.2
 - included jet driver

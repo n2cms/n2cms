@@ -1,16 +1,7 @@
 using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using N2.Details;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Castle.Core;
 using N2.Plugin;
 
@@ -35,7 +26,14 @@ namespace N2.Edit.LinkTracker
 
 		void persister_ItemSaving(object sender, N2.Persistence.CancellableItemEventArgs e)
 		{
-			OnTrackingLinks(e.AffectedItem);
+            try
+            {
+			    OnTrackingLinks(e.AffectedItem);
+            }
+            catch(Exception ex)
+            {
+                errorHandler.Notify(ex);
+            }
 		}
 
 		#region Methods
