@@ -66,16 +66,18 @@
     </id>
 
     <discriminator column="Type" type="String" />
-    <timestamp name="Updated" access="field.camelcase" />
-    <property name="Name"		type="String" length="255" access="field.camelcase" />
-    <property name="ZoneName"	type="String" length="50" access="field.camelcase" />
-    <property name="Title"		type="String" length="255" access="field.camelcase" />
-    <property name="Created"	type="DateTime" not-null="true" access="field.camelcase" />
-    <property name="Published"	type="DateTime" access="field.camelcase" />
-    <property name="Expires"	type="DateTime" access="field.camelcase" />
-    <property name="SortOrder"	type="Int32" not-null="true" access="field.camelcase" />
-    <property name="Visible"	type="Boolean" not-null="true" access="field.camelcase" />
-    <property name="SavedBy"	type="String" length="50" access="field.camelcase" />
+
+    <property name="Created"	  access="field.camelcase" not-null="true" />
+    <property name="Published"	access="field.camelcase" />
+    <property name="Updated"    access="field.camelcase" not-null="true" />
+    <property name="Expires"	  access="field.camelcase" />
+
+    <property name="Name"       access="field.camelcase" length="255" />
+    <property name="ZoneName"	  access="field.camelcase" length="50" />
+    <property name="Title"		  access="field.camelcase" length="255" />
+    <property name="SortOrder"	access="field.camelcase" not-null="true" />
+    <property name="Visible"	  access="field.camelcase" not-null="true" />
+    <property name="SavedBy"	  access="field.camelcase" length="50" />
 
     <many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
     <many-to-one name="Parent"		column="ParentID"		class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />
