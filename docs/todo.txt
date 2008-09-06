@@ -1,3 +1,5 @@
+- comments
+- rating
 - msi installer
 - update sandcastle documentation
 - delete restrictions
