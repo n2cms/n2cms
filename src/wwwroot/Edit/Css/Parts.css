@@ -10,12 +10,12 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 .dragShadow { opacity: .5; background-color:lightslategray;}
 .dragging { cursor:move; }
 
-.dropPoint { height:16px; margin:1px 0; padding:2px; background:url(../img/shading.png); }
+.dropPoint { height:16px; margin:1px 0; padding:1px; background:url(../img/shading.png); }
 .dropPoint .dpLabel { font:11px Arial, Sans-Serif; position:absolute; padding:1px 0 0 4px; color:#888; font-weight:bold; }
-:hover.dropPoint { border-color:#d1d4d3; background:url(../img/shading_blue.png); }
+:hover.dropPoint { border-color:#d1d4d3; background-position:3px 0; }
 
-.droppable-active { background:url(../img/shading_green.png); border:solid 1px #6c6; padding:1px; }
-.droppable-hover { background-color:#8e8; border-color:#8e8; border-width:2px; padding:0; }
+.droppable-active { background:url(../img/shading_green.png); border:dotted 1px #6c6; padding:0; }
+.droppable-hover { background-color:#8e8; border:solid 1px #8e8; }
 
 .sc { background:transparent url(../img/SlidingCurtain_bg.png) no-repeat 100% 100%; padding:0 4px 5px 0; position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; opacity:.6; }
 .opened {opacity:.92}

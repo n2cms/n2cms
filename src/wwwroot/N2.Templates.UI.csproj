@@ -69,6 +69,9 @@
     <Compile Include="Templates\Items\Calendar.cs" />
     <Compile Include="Templates\Items\CalendarTeaser.cs" />
     <Compile Include="Templates\Items\Columns.cs" />
+    <Compile Include="Templates\Items\Comment.cs" />
+    <Compile Include="Templates\Items\CommentInput.cs" />
+    <Compile Include="Templates\Items\CommentList.cs" />
     <Compile Include="Templates\Items\ControlPanel.cs" />
     <Compile Include="Templates\Items\DatabaseSearch.cs" />
     <Compile Include="Templates\Items\Event.cs" />
@@ -77,11 +80,9 @@
     <Compile Include="Templates\Items\Form.cs" />
     <Compile Include="Templates\Items\FormPage.cs" />
     <Compile Include="Templates\Items\GalleryItem.cs" />
-    <Compile Include="Templates\Items\HorizontalMenu.cs" />
     <Compile Include="Templates\Items\ImageGallery.cs" />
     <Compile Include="Templates\Items\ISurvey.cs" />
     <Compile Include="Templates\Items\LoginItem.cs" />
-    <Compile Include="Templates\Items\Menu.cs" />
     <Compile Include="Templates\Items\MultipleSelect.cs" />
     <Compile Include="Templates\Items\News.cs" />
     <Compile Include="Templates\Items\NewsContainer.cs" />
@@ -108,7 +109,6 @@
     <Compile Include="Templates\Items\Top.cs" />
     <Compile Include="Templates\Items\Tracking.cs" />
     <Compile Include="Templates\Items\UserRegistration.cs" />
-    <Compile Include="Templates\Items\VerticalMenu.cs" />
     <Compile Include="Templates\UI\Parts\BoxedText.ascx.cs">
       <DependentUpon>BoxedText.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -123,12 +123,33 @@
     <Compile Include="Templates\UI\Parts\Columns.ascx.designer.cs">
       <DependentUpon>Columns.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\UI\Parts\CommentInput.ascx.cs">
+      <DependentUpon>CommentInput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CommentInput.ascx.designer.cs">
+      <DependentUpon>CommentInput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CommentList.ascx.cs">
+      <DependentUpon>CommentList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CommentList.ascx.designer.cs">
+      <DependentUpon>CommentList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Templates\UI\Parts\ControlPanel.ascx.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\ControlPanel.ascx.designer.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Comment.ascx.cs">
+      <DependentUpon>Comment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Comment.ascx.designer.cs">
+      <DependentUpon>Comment.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Empty.ascx.cs">
       <DependentUpon>Empty.ascx</DependentUpon>
@@ -137,26 +158,12 @@
     <Compile Include="Templates\UI\Parts\Empty.ascx.designer.cs">
       <DependentUpon>Empty.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Templates\UI\Parts\HorizontalMenu.ascx.cs">
-      <DependentUpon>HorizontalMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\HorizontalMenu.ascx.designer.cs">
-      <DependentUpon>HorizontalMenu.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Templates\UI\Parts\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Login.ascx.designer.cs">
       <DependentUpon>Login.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\Menu.ascx.cs">
-      <DependentUpon>Menu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\Menu.ascx.designer.cs">
-      <DependentUpon>Menu.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Layouts\SubMenu.ascx.cs">
       <DependentUpon>SubMenu.ascx</DependentUpon>
@@ -215,13 +222,6 @@
       <DependentUpon>TopMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Layouts\Translation.cs" />
-    <Compile Include="Templates\UI\Parts\VerticalMenu.ascx.cs">
-      <DependentUpon>VerticalMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\VerticalMenu.ascx.designer.cs">
-      <DependentUpon>VerticalMenu.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -801,7 +801,6 @@
     <Content Include="App_Themes\ContentFocus\top.gif" />
     <Content Include="Templates\UI\Css\Calendar.css" />
     <Content Include="Templates\UI\Css\Faq.css" />
-    <Content Include="Templates\UI\Css\Form.css" />
     <Content Include="Templates\UI\Css\Poll.css" />
     <Content Include="Templates\UI\Css\Search.css" />
     <Content Include="Templates\UI\Img\bubble_left.gif" />
@@ -913,12 +912,20 @@
     <Content Include="Templates\Wiki\UI\WikiTemplates\Search.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Themes\Stripes\main_bg.gif" />
+    <Content Include="App_Themes\Stripes\page_bottom.gif" />
+    <Content Include="App_Themes\Stripes\page_top.gif" />
     <Content Include="Templates\UI\Img\application_view_columns.png" />
+    <Content Include="Templates\UI\Img\bullet_star.png" />
+    <Content Include="Templates\UI\Img\bullet_toggle_plus.png" />
     <Content Include="Templates\UI\Img\controller.png" />
     <Content Include="Templates\UI\Img\eye.png" />
     <Content Include="Templates\UI\Img\heart.png" />
+    <Content Include="Templates\UI\Img\key.png" />
+    <Content Include="Templates\UI\Img\page.png" />
     <Content Include="Templates\UI\Img\page_gear.png" />
     <Content Include="Templates\UI\Img\page_go.png" />
+    <Content Include="Templates\UI\Img\page_white.png" />
     <Content Include="Templates\UI\Img\page_white_link.png" />
     <Content Include="Templates\UI\Img\page_white_star.png" />
     <Content Include="Templates\UI\Img\page_world.png" />
@@ -926,14 +933,16 @@
     <Content Include="Templates\UI\Img\tab.png" />
     <Content Include="Templates\UI\Img\text_align_left.png" />
     <Content Include="Templates\UI\Img\text_columns.png" />
-    <Content Include="Templates\UI\Layouts\Defaults.css" />
+    <Content Include="Templates\UI\Img\user_add.png" />
+    <Content Include="Templates\UI\Css\Layout.css" />
     <Content Include="Templates\UI\Parts\BoxedText.ascx" />
     <Content Include="Templates\UI\Parts\Columns.ascx" />
+    <Content Include="Templates\UI\Parts\CommentInput.ascx" />
+    <Content Include="Templates\UI\Parts\CommentList.ascx" />
     <Content Include="Templates\UI\Parts\ControlPanel.ascx" />
+    <Content Include="Templates\UI\Parts\Comment.ascx" />
     <Content Include="Templates\UI\Parts\Empty.ascx" />
-    <Content Include="Templates\UI\Parts\HorizontalMenu.ascx" />
     <Content Include="Templates\UI\Parts\Login.ascx" />
-    <Content Include="Templates\UI\Parts\Menu.ascx" />
     <Content Include="Templates\UI\Layouts\SubMenu.ascx" />
     <Content Include="Templates\UI\Parts\RandomImage.ascx" />
     <Content Include="Templates\UI\Parts\Register.ascx" />
@@ -942,7 +951,6 @@
     <Content Include="Templates\UI\Parts\Text.ascx" />
     <Content Include="Templates\UI\Parts\Top.ascx" />
     <Content Include="Templates\UI\Layouts\TopMenu.ascx" />
-    <Content Include="Templates\UI\Parts\VerticalMenu.ascx" />
     <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.it.resx" />
     <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.resx" />
     <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.sv.resx" />
