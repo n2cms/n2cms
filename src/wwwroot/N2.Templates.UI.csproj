@@ -963,6 +963,9 @@
     <Content Include="Upload\lime.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Templates\UI\Parts\App_LocalResources\CommentInput.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="Properties\" />
   </ItemGroup>
