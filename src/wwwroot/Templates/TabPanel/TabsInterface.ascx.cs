@@ -9,7 +9,7 @@ namespace N2.Templates.TabPanel
         protected override void OnInit(EventArgs e)
         {
             Register.JQuery(Page);
-            Register.StyleSheet(Page, "~/TabPanel/TabPanel.css");
+            Register.StyleSheet(Page, "~/Templates/TabPanel/TabPanel.css");
             base.OnInit(e);
         }
     }

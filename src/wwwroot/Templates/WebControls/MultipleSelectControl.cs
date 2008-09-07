@@ -39,7 +39,7 @@ namespace N2.Templates.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.Write("<div class='question cf'>");
+            writer.Write("<div class='row cf'>");
             base.Render(writer);
             writer.Write("</div>");
         }

@@ -6,7 +6,7 @@ namespace N2.Templates.Wiki.UI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            N2.Resources.Register.StyleSheet(this, "~/Wiki/UI/Css/Wiki.css");
+            N2.Resources.Register.StyleSheet(this, "~/Templates/Wiki/UI/Css/Wiki.css");
         }
     }
 }

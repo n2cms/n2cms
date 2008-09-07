@@ -7,12 +7,12 @@ namespace N2.Templates.TabPanel
     {
         public override string TemplateUrl
         {
-            get { return "~/TabPanel/TabsInterface.ascx"; }
+            get { return "~/Templates/TabPanel/TabsInterface.ascx"; }
         }
 
         public override string IconUrl
         {
-            get { return "~/Img/tab.png"; }
+            get { return "~/Templates/UI/Img/tab.png"; }
         }
     }
 }
