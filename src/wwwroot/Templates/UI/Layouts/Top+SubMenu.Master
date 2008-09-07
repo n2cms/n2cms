@@ -37,6 +37,7 @@
                         <parts:SubMenu ID="sm" runat="server" />
                         <n2:DroppableZone ID="zsl" ZoneName="SiteLeft" runat="server" Path="~/" />
                         <n2:DroppableZone ID="zl" ZoneName="Left" runat="server" />
+                        <n2:DroppableZone ID="rsl" ZoneName="RecursiveLeft" runat="server" />
                     </div>
                 </asp:ContentPlaceHolder>
                 <div id="content" class="">
@@ -44,7 +45,7 @@
                         <div id="main">
                             <asp:ContentPlaceHolder ID="PreContent" runat="server">
                                 <n2:DraggableToolbar ID="dt" runat="server" />
-                                <n2:Zone ID="za" runat="server" ZoneName="RecursiveAbove" />
+                                <n2:DroppableZone ID="zra" runat="server" ZoneName="RecursiveAbove" />
                             </asp:ContentPlaceHolder>
                             <asp:ContentPlaceHolder ID="Content" runat="server">
                                 <n2:Path ID="p" runat="server" VisibilityLevel="2" />
@@ -56,11 +57,12 @@
                             </asp:ContentPlaceHolder>
                             <asp:ContentPlaceHolder ID="PostContent" runat="server">
                                 <n2:DroppableZone ID="zc" ZoneName="Content" runat="server" />
+                                <n2:DroppableZone ID="zrb" runat="server" ZoneName="RecursiveBelow" />
                             </asp:ContentPlaceHolder>
                         </div>
                         <asp:ContentPlaceHolder ID="Sidebar" runat="server">
                             <div id="extras" class="secondary">
-                                <n2:Zone ID="zrr" ZoneName="RecursiveRight" runat="server" />
+                                <n2:DroppableZone ID="zrr" ZoneName="RecursiveRight" runat="server" />
                                 <n2:DroppableZone ID="zr" ZoneName="Right" runat="server" />
                                 <n2:DroppableZone ID="zsr" ZoneName="SiteRight" runat="server" Path="~/" />
                             </div>

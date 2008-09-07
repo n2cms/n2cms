@@ -8,7 +8,7 @@ namespace N2.Templates.UI.Views
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Resources.Register.StyleSheet(this, "~/Search/UI/Css/Search.css", N2.Resources.Media.All);
+            Resources.Register.StyleSheet(this, "~/Templates/UI/Css/Search.css", N2.Resources.Media.All);
         }
 
         private ICollection<ContentItem> hits = new List<ContentItem>();

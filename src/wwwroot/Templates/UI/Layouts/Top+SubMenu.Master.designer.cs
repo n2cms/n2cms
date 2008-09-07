@@ -92,7 +92,7 @@ namespace N2.Templates.UI.Layouts {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected TopMenu tm;
+        protected global::N2.Templates.UI.Layouts.TopMenu tm;
         
         /// <summary>
         /// PageWrapper control.
@@ -128,7 +128,7 @@ namespace N2.Templates.UI.Layouts {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected SubMenu sm;
+        protected global::N2.Templates.UI.Layouts.SubMenu sm;
         
         /// <summary>
         /// zsl control.
@@ -147,6 +147,15 @@ namespace N2.Templates.UI.Layouts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Web.UI.WebControls.DroppableZone zl;
+        
+        /// <summary>
+        /// rsl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.DroppableZone rsl;
         
         /// <summary>
         /// ContentAndSidebar control.
@@ -176,13 +185,13 @@ namespace N2.Templates.UI.Layouts {
         protected global::N2.Web.UI.WebControls.DraggableToolbar dt;
         
         /// <summary>
-        /// za control.
+        /// zra control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Zone za;
+        protected global::N2.Web.UI.WebControls.DroppableZone zra;
         
         /// <summary>
         /// Content control.
@@ -257,6 +266,15 @@ namespace N2.Templates.UI.Layouts {
         protected global::N2.Web.UI.WebControls.DroppableZone zc;
         
         /// <summary>
+        /// zrb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.DroppableZone zrb;
+        
+        /// <summary>
         /// Sidebar control.
         /// </summary>
         /// <remarks>
@@ -272,7 +290,7 @@ namespace N2.Templates.UI.Layouts {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Zone zrr;
+        protected global::N2.Web.UI.WebControls.DroppableZone zrr;
         
         /// <summary>
         /// zr control.
