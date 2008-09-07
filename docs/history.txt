@@ -1,3 +1,9 @@
+- added zones to templates project
+- moved obsolete parts to n2.templates.obsolete
+- add comments functionality
+- fixed problems using administrative interface with chrome 
+- improved parts usability
+- recursive items in droppable zones can only be managed through the containing page
 - removed timestamp from nhibernate mapping
 - error handling on linktracker
 - more explanative exception when throwing is denied
