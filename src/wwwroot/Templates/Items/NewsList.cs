@@ -10,6 +10,21 @@ namespace N2.Templates.Items
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft, Zones.ColumnRight)]
     public class NewsList : SidebarItem
     {
+        public enum HeadingLevel
+        {
+            One = 1,
+            Two = 2,
+            Three = 3,
+            Four = 4
+        }
+        //[EditableTextBox("Title heading level", 90)]
+        [EditableEnum("Title heading level", 90, typeof(HeadingLevel))]
+        public virtual int TitleLevel
+        {
+            get { return (int)(GetDetail("TitleLevel") ?? 3); }
+            set { SetDetail("TitleLevel", value, 3); }
+        }
+
         [EditableLink("News container", 100)]
         public virtual NewsContainer Container
         {

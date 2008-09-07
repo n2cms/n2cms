@@ -4,7 +4,7 @@ using System.Web.UI.WebControls;
 
 namespace N2.Templates.Items
 {
-    [Definition]
+    [Definition("Comment")]
     [RestrictParents(typeof(CommentList))]
     [WithEditableTitle]
     public class Comment : AbstractItem
@@ -33,5 +33,7 @@ namespace N2.Templates.Items
             get { return (string)(GetDetail("Text") ?? string.Empty); }
             set { SetDetail("Text", value, string.Empty); }
         }
+
+        protected override string IconName { get { return "comment"; } }
     }
 }

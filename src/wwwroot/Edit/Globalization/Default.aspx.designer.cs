@@ -68,6 +68,15 @@ namespace N2.Edit.Globalization {
         protected global::System.Web.UI.WebControls.CustomValidator cvLanguageRoots;
         
         /// <summary>
+        /// cvAssociateLanguageRoots control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvAssociateLanguageRoots;
+        
+        /// <summary>
         /// pnlLanguages control.
         /// </summary>
         /// <remarks>
@@ -84,6 +93,15 @@ namespace N2.Edit.Globalization {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAssociate;
+        
+        /// <summary>
+        /// btnUnassociate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUnassociate;
         
         /// <summary>
         /// btnEnable control.

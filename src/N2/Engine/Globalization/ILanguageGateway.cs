@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -46,5 +46,11 @@ namespace N2.Engine.Globalization
         /// <summary>Associate these items from different language branches as the same translated page. If a language branch already contains an associated item that item will be de-associated and be removed as a translation.</summary>
         /// <param name="items">The translations to associate with each other.</param>
         void Associate(IEnumerable<ContentItem> items);
-    }
+
+        /// <summary>
+        /// Unassociates an item from the relation to other translated pages.
+        /// </summary>
+        /// <param name="item">The item to remove as translation.</param>
+	    void Unassociate(ContentItem item);
+	}
 }

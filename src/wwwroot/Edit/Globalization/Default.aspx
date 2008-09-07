@@ -19,6 +19,8 @@
 	<asp:CustomValidator Text="Select at least two items to associate." ID="cvAssociate" meta:resourceKey="cvAssociate" runat="server" CssClass="validator info" Display="Dynamic" />
 	<asp:CustomValidator Text="Couldn't enable globalization. Please configure it manually in the web configuration." ID="cvEnable" meta:resourceKey="cvEnable" runat="server" CssClass="validator info" Display="Dynamic" />
 	<asp:CustomValidator Text="No language roots available. Please add one or more start pages and set the language on the site tab." ID="cvLanguageRoots" meta:resourceKey="cvLanguageRoots" runat="server" CssClass="validator info" Display="Dynamic" />
+	<asp:CustomValidator Text="Cannot associate language roots. They are assumed to be translations of each other." ID="cvAssociateLanguageRoots" meta:resourceKey="cvAssociateLanguageRoots" runat="server" CssClass="validator info" Display="Dynamic" />
+	
 	<asp:Panel ID="pnlLanguages" runat="server" CssClass="languages">
 		<table class="gv">
 		    <thead>
@@ -57,6 +59,7 @@
 			</asp:Repeater>
 		</table>
 		<asp:Button ID="btnAssociate" runat="server" Text="Associate" OnClick="btnAssociate_Click" meta:resourceKey="btnAssociate" />
+		<asp:Button ID="btnUnassociate" runat="server" Text="Unassociate" OnClick="btnUnassociate_Click" meta:resourceKey="btnUnassociate" />
 	</asp:Panel>
 	<asp:Button ID="btnEnable" runat="server" Text="Enable Globalization" OnClick="btnEnable_Click" meta:resourceKey="btnEnable" />
 </asp:Content>

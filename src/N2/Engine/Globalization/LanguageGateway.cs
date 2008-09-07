@@ -199,6 +199,16 @@ namespace N2.Engine.Globalization
             }
         }
 
+        /// <summary>
+        /// Unassociates an item from the relation to other translated pages.
+        /// </summary>
+        /// <param name="item">The item to remove as translation.</param>
+        public void Unassociate(ContentItem item)
+        {
+            item[LanguageKey] = null;
+            persister.Save(item);
+        }
+
         /// <summary>Throws an exception if any of the items is a language root.</summary>
         /// <param name="items"></param>
         protected void EnsureNoLanguageRoots(IEnumerable<ContentItem> items)

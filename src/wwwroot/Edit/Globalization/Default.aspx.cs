@@ -12,6 +12,7 @@ using N2.Edit.Web;
 using N2.Engine.Globalization;
 using N2.Collections;
 using N2.Configuration;
+using N2.Web;
 
 namespace N2.Edit.Globalization
 {
@@ -95,8 +96,25 @@ namespace N2.Edit.Globalization
                 cvAssociate.IsValid = false;
                 return;
             }
-            gateway.Associate(items);
+            try
+            {
+                gateway.Associate(items);
+            }
+            catch (N2Exception ex)
+            {
+                Engine.Resolve<IErrorHandler>().Notify(ex);
+                cvAssociateLanguageRoots.IsValid = false;
+            }
+            DataBind();
+        }
 
+        protected void btnUnassociate_Click(object sender, EventArgs e)
+        {
+            List<ContentItem> items = GetSelectedItems();
+            foreach(ContentItem item in items)
+            {
+                gateway.Unassociate(item);
+            }
             DataBind();
         }
 

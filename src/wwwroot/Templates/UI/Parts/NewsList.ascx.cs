@@ -3,7 +3,7 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Templates.UI.Parts
 {
-    public partial class NewsList : Web.UI.TemplateUserControl<ContentItem, Templates.Items.NewsList>
+    public partial class NewsList : Web.UI.TemplateUserControl<ContentItem, Items.NewsList>
     {
         protected ItemDataSource idsNews;
 

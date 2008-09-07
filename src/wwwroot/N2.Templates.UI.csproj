@@ -963,6 +963,9 @@
     <Content Include="Upload\lime.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Templates\UI\Img\comment.png" />
+    <Content Include="Templates\UI\Img\comments.png" />
+    <Content Include="Templates\UI\Img\comment_add.png" />
     <Content Include="Templates\UI\Parts\App_LocalResources\CommentInput.ascx.resx" />
   </ItemGroup>
   <ItemGroup>

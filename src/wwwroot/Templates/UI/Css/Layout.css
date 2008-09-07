@@ -7,6 +7,7 @@ a img { border:none; vertical-align:middle; }
 
 .inputForm .row { margin-bottom:5px; }
 .inputForm .label { width:120px; float:left; }
+.secondary .label { display:block; }
 .inputForm .alternatives * { vertical-align:middle }
 .inputForm .alternatives label { margin-right:10px; }
 .inputForm textarea { width:340px; height:120px; }

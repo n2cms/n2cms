@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using N2.Integrity;
+﻿using N2.Integrity;
 
 namespace N2.Templates.Items
 {
-    [Definition]
+    [Definition("Comment Input Form")]
     [RestrictParents(typeof(AbstractPage))]
     [AllowedZones(Zones.Content, Zones.RecursiveBelow)]
     public class CommentInput : AbstractItem
     {
+        protected override string IconName { get { return "comment_add"; } }
     }
 }

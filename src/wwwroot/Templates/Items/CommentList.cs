@@ -7,9 +7,10 @@ using N2.Integrity;
 namespace N2.Templates.Items
 {
     [Disable] // This item is added by the CommentInput thus it's disabled
-    [Definition]
+    [Definition("Comment List")]
     [RestrictParents(typeof(AbstractPage))]
     public class CommentList : AbstractItem
     {
+        protected override string IconName { get { return "comments"; } }
     }
 }
