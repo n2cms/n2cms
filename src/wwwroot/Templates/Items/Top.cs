@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Integrity;
-using System.Web.UI.WebControls;
-using N2.Templates.Items;
 using N2.Details;
 using N2.Definitions;
 using N2.Serialization;
-using N2.Templates.UI.Items.LayoutParts;
 
 namespace N2.Templates.Items
 {

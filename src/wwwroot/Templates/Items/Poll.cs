@@ -35,7 +35,7 @@ namespace N2.Templates.Items
         {
             Control c;
             if (DisplayResult(container.Page.Request))
-                c = container.Page.LoadControl("~/Poll/UI/Result.ascx");
+                c = container.Page.LoadControl("~/Templates/UI/Parts/Result.ascx");
             else
                 c = container.Page.LoadControl(TemplateUrl);
             (c as IContentTemplate).CurrentItem = this;
