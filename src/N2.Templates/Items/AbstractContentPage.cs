@@ -11,11 +11,13 @@ namespace N2.Templates.Items
 		WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
 	[TabPanel(Tabs.Advanced, "Advanced", 100)]
 	[AvailableZone("Right", Zones.Right),
-		AvailableZone("Left", Zones.Left),
-		AvailableZone("Content", Zones.Content),
-		AvailableZone("Recursive Right", Zones.RecursiveRight),
-		AvailableZone("Recursive Above", Zones.RecursiveAbove)]
-	[RestrictParents(typeof(IStructuralPage))]
+        AvailableZone("Recursive Right", Zones.RecursiveRight),
+        AvailableZone("Left", Zones.Left),
+        AvailableZone("Recursive Left", Zones.RecursiveLeft),
+        AvailableZone("Content", Zones.Content),
+        AvailableZone("Recursive Above", Zones.RecursiveAbove),
+    	AvailableZone("Recursive Below", Zones.RecursiveBelow)]
+    [RestrictParents(typeof(IStructuralPage))]
 	public abstract class AbstractContentPage : AbstractPage
 	{
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
