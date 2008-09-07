@@ -111,12 +111,6 @@ img.main {margin-bottom:15px;}
 .columns .left { float:left; width:245px; }
 .columns .right { float:right; width:245px; }
 
-
-/* drag&drop */
-.dragDrop .secondary .uc { margin-bottom:0;}
-.dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
-.dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
-
 .faq { background: transparent url(bg.gif) repeat-x; }
 .startPage #menu { display:none; }
 .startPage #extras { width:360px; }

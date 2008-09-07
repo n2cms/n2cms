@@ -1,4 +1,4 @@
-@import url(../../Templates/UI/Layouts/Defaults.css);
+@import url(../../Templates/UI/Css/Layout.css);
 /********* GLOBALS *********/
 
 * {margin:0;padding:0}
@@ -96,11 +96,6 @@ body { margin:0; background-color:#cce5a2; }
 .columns .left { float:left; width:245px; }
 .columns .right { float:right; width:245px; }
 
-/* drag&drop */
-.dragDrop .secondary .uc { margin-bottom:0; }
-.dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
-.dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
-
 /* login */
 .login .tb { width:130px; }
 .login .ff { margin-bottom:5px; }
@@ -115,3 +110,6 @@ body { margin:0; background-color:#cce5a2; }
 
 /* news */
 .intro {font-size:1.1em;font-style:italic;}
+
+/* comments */
+.commentList { border-top:solid 1px #D0CFCB; margin-top:10px;}

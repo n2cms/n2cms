@@ -1,4 +1,4 @@
-@import url(../../Templates/UI/Layouts/Defaults.css);
+@import url(../../Templates/UI/Css/Layout.css);
 /********* globals *********/
 
 * {margin:0;padding:0}
@@ -141,11 +141,6 @@ img.main {margin-bottom:15px;}
 .columns .left { float:left; width:245px; }
 .columns .right { float:right; width:245px; }
 
-/* drag&drop */
-.dragDrop .secondary .uc { margin-bottom:0;}
-.dragDrop .SiteLeft,.dragDrop .SiteRight,.dragDrop .SiteTop { background-color:#fef;}
-.dragDrop .Left,.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
-
 /* login */
 .login .tb { width:130px; }
 .login .ff { margin-bottom:5px; }
@@ -157,3 +152,6 @@ img.main {margin-bottom:15px;}
 #thumbnails {padding-bottom:10px;}
 #thumbnails .text { display:none; }
 .thumbnail {margin-bottom:10px;margin-right:5px;}
+
+/* comments */
+.commentList { border-top:solid 1px #D0CFCB; margin-top:10px;}
