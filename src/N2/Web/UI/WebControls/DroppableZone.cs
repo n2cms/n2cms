@@ -9,8 +9,14 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI.WebControls
 {
+    /// <summary>
+    /// A control that displays items in it's zone and supports rearranging of the items via drag and drop. 
+    /// </summary>
 	public class DroppableZone : Zone
 	{
+        /// <summary>Set to true if parts that have been added to another page (and are displayed elsewhere) may be moved on other pages.</summary>
+        public bool AllowExternalManipulation { get; set; }
+
 		public string DropPointBackImageUrl
 		{
 			get { return (string)(ViewState["DropPointBackImageUrl"] ?? string.Empty); }
@@ -25,13 +31,11 @@ namespace N2.Web.UI.WebControls
 
 		protected override void CreateItems(Control container)
 		{
-			if (ControlPanel.GetState() == ControlPanelState.DragDrop)
+            if (ControlPanel.GetState() == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
 			{
-				if (ZoneName.IndexOfAny(new char[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0)
-					throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
+				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
-
-				Panel zoneContainer = AddPanel(this, ZoneName + " dropZone");
+                Panel zoneContainer = AddPanel(this, ZoneName + " dropZone");
 				base.CreateItems(zoneContainer);
 				AddDropPoint(zoneContainer, CurrentItem, CreationPosition.Below);
 
@@ -46,16 +50,13 @@ namespace N2.Web.UI.WebControls
 
 		protected override void AddChildItem(Control container, ContentItem item)
 		{
-			if (ControlPanel.GetState() == ControlPanelState.DragDrop)
+            if (ControlPanel.GetState() == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
 			{
 				AddDropPoint(container, item, CreationPosition.Before);
 
 				ItemDefinition definition = GetDefinition(item);
 				Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
-				RegisterArray("dragItems",
-                               string.Format("{{dragKey:'{0}',item:{1}}}", 
-											 itemContainer.ClientID,
-                                             item.ID));
+				RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", itemContainer.ClientID, item.ID));
 
 				AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
@@ -66,7 +67,12 @@ namespace N2.Web.UI.WebControls
 			}
 		}
 
-		protected virtual void AddToolbar(Panel itemContainer, ContentItem item, ItemDefinition definition)
+	    private bool IsMovableOnThisPage(ContentItem item)
+	    {
+	        return AllowExternalManipulation || item.Parent == CurrentPage;
+	    }
+
+	    protected virtual void AddToolbar(Panel itemContainer, ContentItem item, ItemDefinition definition)
 		{
 			itemContainer.Controls.Add(new DraggableToolbar(item, definition, GripperImageUrl));
 		}

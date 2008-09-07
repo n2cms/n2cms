@@ -24,10 +24,11 @@ using System.Web.UI;
 
 namespace N2.Details
 {
-	/// <summary>Attribute used to mark properties as editable. This attribute is predefined to use the <see cref="System.Web.UI.WebControls.TextBox"/> web control as editor.</summary>
+	/// <summary>
+	/// Attribute used to mark properties as editable. This attribute is predefined to use 
+	/// the <see cref="System.Web.UI.WebControls.TextBox"/> web control as editor.</summary>
 	/// <example>
 	/// [N2.Details.EditableTextBox("Published", 80)]
-	/// [N2.Web.UI.EditorModifier("Width", "100")]
 	/// public override DateTime Published
 	/// {
     ///     get { return base.Published; } 
@@ -42,8 +43,9 @@ namespace N2.Details
 		private int rows = 0;
 		private TextBoxMode textMode = TextBoxMode.SingleLine;
 		private string defaultValue = string.Empty;
+	    private bool allowHtml = true;
 
-		/// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
+	    /// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public EditableTextBoxAttribute(string title, int sortOrder)
@@ -98,7 +100,14 @@ namespace N2.Details
 			set { defaultValue = value; }
 		}
 
-		#endregion
+        ///// <summary>When set to false the content will be html encoded before beeing saved to database.</summary>
+        //public bool AllowHtml
+        //{
+        //    get { return allowHtml; }
+        //    set { allowHtml = value; }
+        //}
+
+	    #endregion
 
 		#region IDisplayable Members
 
@@ -115,9 +124,7 @@ namespace N2.Details
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			TextBox tb = editor as TextBox;
-			string value = (tb.Text == DefaultValue)
-					? null
-			       	: tb.Text;
+			string value = (tb.Text == DefaultValue) ? null : tb.Text;
 			if(!AreEqual(value, item[Name]))
 			{
 				item[Name] = value;

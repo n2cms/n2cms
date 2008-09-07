@@ -28,6 +28,10 @@ namespace N2.Web.UI
 			}
 		}
 		
+	    protected virtual ContentItem CurrentPage
+	    {
+            get { return (Page is IContentTemplate) ? (Page as IContentTemplate).CurrentItem : N2.Find.CurrentPage; }
+	    }
 
 		public virtual ContentItem CurrentItem
 		{

@@ -2,6 +2,7 @@ using System.Web;
 using System.Web.UI;
 using N2.Definitions;
 using N2.Web.UI.WebControls;
+using System;
 
 namespace N2.Web.UI.WebControls
 {
@@ -19,6 +20,8 @@ namespace N2.Web.UI.WebControls
 
 		public DraggableToolbar(ContentItem item, ItemDefinition definition, string gripperImageUrl)
 		{
+            if (definition == null) throw new ArgumentNullException("definition");
+
 			this.currentItem = item;
 			this.definition = definition;
 			this.gripperImageUrl = gripperImageUrl;
@@ -41,9 +44,8 @@ namespace N2.Web.UI.WebControls
 			{
 				if (string.IsNullOrEmpty(ID))
 					ID = "t" + CurrentItem.ID;
-				Page.ClientScript.RegisterArrayDeclaration(
-					"dragItems",
-					string.Format("{{dragKey:'{0}',item:{1}}}", ClientID, CurrentItem.ID));
+			    string array = string.Format("{{dragKey:'{0}',item:{1}}}", ClientID, CurrentItem.ID);
+			    Page.ClientScript.RegisterArrayDeclaration("dragItems", array);
 			}
 			base.OnPreRender(e);
 		}
@@ -52,22 +54,27 @@ namespace N2.Web.UI.WebControls
 		{
 			if (ControlPanel.GetState() == ControlPanelState.DragDrop)
 			{
-				writer.Write("<div class='titleBar'");
-				if (!string.IsNullOrEmpty(gripperImageUrl))
-				{
-					writer.Write(" style='background-image:url({0});'", gripperImageUrl);
-				}
-				writer.Write(">");
-				writer.Write("<img src='{0}' class='delete' alt='delete'", N2.Web.Url.ToAbsolute("~/Edit/img/ico/png/delete.png"));
+                writer.Write("<div class='titleBar' style='background-image:url(");
+                writer.Write(Url.ToAbsolute(Definition.IconUrl));
+                writer.Write(");'>");
+			    writer.Write("<img src='");
+                writer.Write(Url.ToAbsolute("~/Edit/img/ico/png/delete.png"));
+                writer.Write("' class='delete' alt='delete'");
 				if(bindButtons)
 				{
-					writer.Write(" onclick=\"n2ddcp.del('{0}');\"", ClientID);
+				    writer.Write(" onclick=\"n2ddcp.del('");
+                    writer.Write(ClientID);
+                    writer.Write("');\"");
 				}
 				writer.Write("/>");
-				writer.Write("<img src='{0}' class='edit' alt='edit'", N2.Web.Url.ToAbsolute("~/Edit/img/ico/png/pencil.png"));
+			    writer.Write("<img src='");
+                writer.Write(Url.ToAbsolute("~/Edit/img/ico/png/pencil.png"));
+                writer.Write("' class='edit' alt='edit'");
 				if (bindButtons)
 				{
-					writer.Write(" onclick=\"n2ddcp.edit('{0}');\"", ClientID);
+				    writer.Write(" onclick=\"n2ddcp.edit('");
+                    writer.Write(ClientID);
+                    writer.Write("');\"");
 				}
 				writer.Write("/>");
 				writer.Write(Definition.Title);

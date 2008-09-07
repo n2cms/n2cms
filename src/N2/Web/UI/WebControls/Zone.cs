@@ -1,20 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Web.UI;
 using N2.Collections;
 using N2.Persistence;
+using System.Web.UI.WebControls;
 
 namespace N2.Web.UI.WebControls
 {
-	/// <summary>Adds sub-items with a certain zone name to a page.</summary>
-	public class Zone : ItemAwareControl
+	/// <summary>
+	/// Adds sub-items with a certain zone name to a page.
+	/// </summary>
+    [PersistChildren(false)]
+    [ParseChildren(true)]
+    public class Zone : ItemAwareControl
 	{
-		#region Properties
-
 		private IEnumerable<ItemFilter> filters;
-
 		private bool isDataBound = false;
 		private IList<ContentItem> items = null;
+        private ITemplate separatorTemplate;
+        private ITemplate headerTemplate;
+        private ITemplate footerTemplate;
 
 		/// <summary>Gets or sets the zone from which to featch items.</summary>
 		public string ZoneName
@@ -47,10 +53,31 @@ namespace N2.Web.UI.WebControls
 				isDataBound = false;
 			}
 		}
+	    
+        /// <summary>Inserted between added child items.</summary>
+        [DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+        public virtual ITemplate SeparatorTemplate
+        {
+            get { return this.separatorTemplate; }
+            set { this.separatorTemplate = value; }
+        }
 
-		#endregion
+        /// <summary>Inserted before the zone control if a control was added.</summary>
+        [DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+        public virtual ITemplate HeaderTemplate
+        {
+            get { return this.headerTemplate; }
+            set { this.headerTemplate = value; }
+        }
 
-		#region Methods
+        /// <summary>Added after the zone control if a control was added.</summary>
+        [DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
+        public virtual ITemplate FooterTemplate
+        {
+            get { return this.footerTemplate; }
+            set { this.footerTemplate = value; }
+        }
+
 
 		protected override void OnInit(EventArgs e)
 		{
@@ -113,14 +140,38 @@ namespace N2.Web.UI.WebControls
 			if (DataSource != null)
 			{
 				container.Controls.Clear();
-				foreach (ContentItem item in DataSource)
-					AddChildItem(container, item);
+                bool firstPass = true;
+                foreach (ContentItem item in DataSource)
+                {
+                    if (firstPass)
+                    {
+                        firstPass = false;
+                        AppendTemplate(HeaderTemplate, container);
+                    }
+                    else if (SeparatorTemplate != null)
+                        AppendTemplate(SeparatorTemplate, container);
+
+                    AddChildItem(container, item);
+                }
+                if(!firstPass)
+                    AppendTemplate(FooterTemplate, container);
+
 				isDataBound = true;
 				ChildControlsCreated = true;
 			}
 		}
 
-		protected virtual void AddChildItem(Control container, ContentItem item)
+	    private void AppendTemplate(ITemplate template, Control container)
+	    {
+            if (template != null)
+	        {
+                PlaceHolder ph = new PlaceHolder();
+                container.Controls.Add(ph);
+                template.InstantiateIn(ph);
+	        }
+	    }
+
+	    protected virtual void AddChildItem(Control container, ContentItem item)
 		{
 			if (AddingChild != null)
 				AddingChild.Invoke(this, new ItemEventArgs(item));
@@ -152,8 +203,7 @@ namespace N2.Web.UI.WebControls
 		public event EventHandler<ControlEventArgs> AddedItemTemplate;
 		public event EventHandler<ItemListEventArgs> Selecting;
 		public event EventHandler<ItemListEventArgs> Selected;
-		public event EventHandler<ItemListEventArgs> Filtering;
+        public event EventHandler<ItemListEventArgs> Filtering;
 
-		#endregion
 	}
 }
