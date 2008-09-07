@@ -1,3 +1,4 @@
+1.4.3
 - add comments functionality
 - improved parts usability
 - recursive items in droppable zones can only be managed through the containing page
