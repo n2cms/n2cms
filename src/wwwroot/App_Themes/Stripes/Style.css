@@ -1,4 +1,4 @@
-@import url(../../Templates/UI/Layouts/Defaults.css);
+@import url(../../Templates/UI/Css/Layout.css);
 /********* GLOBALS *********/
 
 * {margin:0;padding:0}
@@ -23,8 +23,8 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 			#header .top {height:90px; background:url(top_bg.gif) 50% 0%;  }
 				#header .top h2 {width:900px; left:50%; margin-left:-450px; position:absolute; }
 				#header .top .siteLogo {width:900px; left:50%; margin-left:-450px; position:absolute; }
-		#page { width:900px; margin:0 auto; padding-bottom:3px; background:#fff url(page_bg.gif) no-repeat 100% 100%; }
-			#content { float:right; width:685px; padding:15px; background:#fff url(page_bg.gif) no-repeat 100% 0%; }
+		#page { width:900px; margin:0 auto; padding-bottom:3px; background:#fff url(page_bottom.gif) no-repeat 100% 100%; }
+			#content { float:right; width:685px; padding:15px; background:#fff url(page_top.gif) no-repeat 100% 0%; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; }
 				#extras { float:right; }
@@ -50,6 +50,8 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 .secondary .box .inner { padding:10px 10px 0 10px; background:transparent url(menu_bg.gif) no-repeat 50% 0%; }
 #content .secondary .box { background:transparent url(secondary_bg.gif) no-repeat 50% 100%; }
 #content .secondary .box .inner { background:transparent url(secondary_bg.gif) no-repeat 50% 0%; }
+#main .box { background:#d0cfcb url(main_bg.gif) no-repeat; padding-top:10px; }
+#main .box .inner { background:transparent url(main_bg.gif) no-repeat 0% 100%; padding:0 10px 10px 10px; }
 
 /*secondary*/
 .secondary .uc { margin-bottom:15px; }
@@ -103,13 +105,6 @@ body #page { background-color:Transparent; }
 .columns .left { float:left; width:245px; }
 .columns .right { float:right; width:245px; }
 
-/* drag&drop */
-.dragDrop .secondary .uc { margin-bottom:0;}
-.dragDrop .SiteLeft,.dragDrop .SiteTop {}
-.dragDrop .SiteRight { background-color:#fef;}
-.dragDrop .Left {}
-.dragDrop .Right,.dragDrop .Content { background-color:#eef;}
-
 .socialBookmarks a { white-space:nowrap; }
 
 /* login */
@@ -123,3 +118,6 @@ body #page { background-color:Transparent; }
 #thumbnails {padding-bottom:10px;}
 #thumbnails .text { display:none; }
 .thumbnail {margin-bottom:10px;margin-right:5px;}
+
+/* comments */
+.commentList { border-top:solid 1px #D0CFCB; margin-top:10px;}
