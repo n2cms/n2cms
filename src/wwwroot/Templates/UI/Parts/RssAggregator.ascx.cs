@@ -3,6 +3,7 @@ using N2;
 using System.Xml.XPath;
 using System.Xml;
 using System.Collections.Generic;
+using N2.Web;
 
 namespace N2.Templates.UI.Parts
 {
@@ -21,9 +22,15 @@ namespace N2.Templates.UI.Parts
             string url = CurrentItem.RssUrl;
             if (!string.IsNullOrEmpty(url))
             {
-                rptRss.DataSource = GetNewsItems(url);
-                rptRss.DataBind();
-                GetNewsItems(url);
+                try
+                {
+                    rptRss.DataSource = GetNewsItems(url);
+                    rptRss.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    Engine.Resolve<IErrorHandler>().Notify(ex);
+                }
             }
             base.OnInit(e);
         }

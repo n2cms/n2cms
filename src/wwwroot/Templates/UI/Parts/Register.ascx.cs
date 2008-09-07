@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Security;
+using N2.Web;
 using N2.Web.Mail;
 using UserRegistration=N2.Templates.Items.UserRegistration;
 
@@ -51,10 +52,24 @@ namespace N2.Templates.UI.Parts
 				string subject = CurrentItem.VerificationSubject;
 				string body = CurrentItem.VerificationText.Replace("{VerificationUrl}", url);
 
-				Engine.Resolve<IMailSender>().Send(CurrentItem.VerificationSender, UserCreator.Email, subject, body);
-			}
+			    try
+			    {
+			        Engine.Resolve<IMailSender>().Send(CurrentItem.VerificationSender, UserCreator.Email, subject, body);
 
-			if (CurrentItem.SuccessPage != null)
+                    if (CurrentItem.SuccessPage != null)
+                    {
+                        Response.Redirect(CurrentItem.SuccessPage.Url);
+                    }
+			    }
+			    catch (InvalidOperationException ex)
+			    {
+			        cvError.Text = ex.Message;
+			        cvError.IsValid = false;
+			        UserCreator.Visible = false;
+                    Engine.Resolve<IErrorHandler>().Notify(ex);
+			    }
+			}
+            else if (CurrentItem.SuccessPage != null)
 			{
 				Response.Redirect(CurrentItem.SuccessPage.Url);
 			} 

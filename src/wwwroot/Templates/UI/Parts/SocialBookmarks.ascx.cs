@@ -28,10 +28,7 @@ namespace N2.Templates.UI.Parts
                                 ? "<img src='{0}' alt='' /> <span>{1}</span>"
                                 : "<img src='{0}' alt='{1}' />";
 
-            return string.Format(format, 
-                                 VirtualPathUtility.ToAbsolute("~/Advertisement/UI/Img/" + icon), 
-                                 text
-                );
+            return string.Format(format, VirtualPathUtility.ToAbsolute("~/Templates/UI/Img/" + icon), text);
         }
     }
 }

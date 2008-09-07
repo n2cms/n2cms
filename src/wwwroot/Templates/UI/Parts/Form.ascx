@@ -3,7 +3,9 @@
     <asp:View ID="View1" runat="server">
 		<n2:Display runat="server" PropertyName="Title" />
 		<n2:Display runat="server" PropertyName="IntroText" />
-        <n2:Zone id="zq" runat="server" ZoneName="Questions" />
+        <div class="inputForm">
+            <n2:Zone id="zq" runat="server" ZoneName="Questions" />
+        </div>
         <asp:Button Text="Send" ID="btnSubmit" runat="server" OnCommand="btnSubmit_Command" meta:resourcekey="btnSubmitResource1" />
     </asp:View>
     <asp:View ID="View2" runat="server" EnableViewState="false">

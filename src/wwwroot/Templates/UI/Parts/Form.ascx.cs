@@ -3,7 +3,6 @@ using System.Net.Mail;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Resources;
 using N2.Templates.Items;
 using N2.Templates.Web.UI;
 using N2.Templates.WebControls;
@@ -12,17 +11,10 @@ using N2.Web.Mail;
 
 namespace N2.Templates.UI.Parts
 {
-    public partial class Form : TemplateUserControl<AbstractContentPage, N2.Templates.Items.Form>
+    public partial class Form : TemplateUserControl<AbstractContentPage, Items.Form>
     {
         protected MultiView mv;
         protected Zone zq;
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            Resources.Register.StyleSheet(Page, "~/Templates/UI/Css/Form.css", Media.All);
-        }
 
         protected void btnSubmit_Command(object sender, CommandEventArgs args)
         {
