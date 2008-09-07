@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using N2.Web;
 using N2.Details;
 using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
-    [TabPanel("siteArea", "Site", 70, AuthorizedUsers = new string[] { "admin" }, AuthorizedRoles = new string[] { "Administrators" })]
+    [TabPanel(AbstractStartPage.SiteArea, "Site", 70, AuthorizedUsers = new[] { "admin" }, AuthorizedRoles = new[] { "Administrators" })]
     [FieldSet(AbstractStartPage.LayoutArea, "Layout", 75, ContainerName = AbstractStartPage.SiteArea)]
     [FieldSet(AbstractStartPage.MiscArea, "Miscellaneous", 80, ContainerName = AbstractStartPage.SiteArea)]
     public abstract class AbstractStartPage : AbstractContentPage, IStructuralPage, ISitesSource

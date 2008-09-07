@@ -148,7 +148,10 @@
   <Target Name="Rebuild-TemplateFiles" DependsOnTargets="Core-Build">
     <ItemGroup>
       <Templates-InterfaceFiles Include="$(WebFolder)\**\*"
-                          Exclude="$(WebFolder)\**\.svn\**\*;
+                          Exclude="$(WebFolder)\**\_*\**\*;
+                                   $(WebFolder)\**\.svn\**\*;
+                                   $(WebFolder)\**\*WebSetup\**\*;
+                                   $(WebFolder)\**\*VsTemplate\**\*;
                                    $(WebFolder)\**\obj\**\*;
                                    $(WebFolder)\**\PrecompiledWeb\**\*.*;
                                    $(WebFolder)\**\bin\**\*;
@@ -267,6 +270,9 @@
 
   <ItemGroup>
     <ExampleSource-Exclude Include="$(Examples-Folder)\**\.svn\**\*;
+                                   $(Examples-Folder)\**\_*\**\*;
+                                   $(Examples-Folder)\**\*WebSetup\**\*;
+                                   $(Examples-Folder)\**\*VsTemplate\**\*;
                                    $(Examples-Folder)\**\obj\**\*;
                                    $(Examples-Folder)\**\PrecompiledWeb\**\*.*;
                                    $(Examples-Folder)\**\Ankh.Load;
@@ -336,16 +342,22 @@
     <ItemGroup>
       <Source-Files Include=".\**\*" 
                     Exclude=".\**\.svn\**\*;
-                              .\**\obj\**\*;
-                              .\**\bin\**\*;
-                              .\**\PrecompiledWeb\**\*;
-                              .\**\Ankh.Load;
-                              .\**\*.sln.cache;
-                              .\**\*.suo;
-                              .\**\Thumbs.db;
-                              $(DeployFolder)\**\*;
-                              $(SrcFolder)\N2.DocSite\**;
-                              $(Examples-Folder)\**\Edit\**\*" />
+                             .\**\_*\**\*;
+                             .\**\*WebSetup\**\*;
+                             .\**\*VsTemplate\**\*;
+                             .\**\obj\**\*;
+                             .\**\bin\**\*;
+                             .\**\PrecompiledWeb\**\*;
+                             .\**\Ankh.Load;
+                             .\**\*.sln.cache;
+                             .\**\*.resharper;
+                             .\**\*.suo;
+                             .\**\*.user;
+                             .\*.xml;
+                             .\**\Thumbs.db;
+                             $(DeployFolder)\**\*;
+                             $(SrcFolder)\N2.DocSite\**;
+                             $(Examples-Folder)\**\Edit\**\*" />
     </ItemGroup>
     
     <Copy SourceFiles="@(Source-Files)" DestinationFolder="$(DeployFolder)\Source\%(RecursiveDir)"  />
