@@ -12,20 +12,18 @@
         <!--[if IE 6]>
 		<link rel="stylesheet" href="Css/IE6.css" type="text/css" />
 		<![endif]-->
-		
-        <script type="text/javascript">
-			$(document).ready(function(){
-				window.n2 = new frameManager();
-				n2.initFrames();
-			});
-        </script>
     </head>
     <body id="default">
-        <!--<%= System.Threading.Thread.CurrentThread.CurrentCulture %>-->
         <form id="form1" runat="server">
 			<uc1:Toolbar runat="server" />
 			
-			<div id="splitter">
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    window.n2 = new frameManager();
+                    n2.initFrames();
+                });
+            </script>
+            <div id="splitter">
 				<div id="leftPane">
 					<iframe id="navigation" src="<%= GetNavigationUrl(SelectedItem) %>" frameborder="0" name="navigation" width="25%" height="500"></iframe>
 				</div>

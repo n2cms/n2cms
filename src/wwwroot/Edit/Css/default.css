@@ -1,4 +1,5 @@
-﻿body { background:#fff; }
+﻿body { background:#d3d6d5; overflow:hidden; }
+body form { position:absolute; width:100%; }
 
 /* Toolbar */
 .toolbar { background:#d1d4d3 url(../img/toolbar_bg.gif) repeat-x 0% 100%; min-width:700px; position: relative; height:50px; }
@@ -66,8 +67,8 @@
 }
 
 #splitter { height: 510px; }
-#leftPane { width: 200px; min-width: 50px; float:left; }
-#rightPane { min-width: 50px; overflow: hidden; width:790px; float:left; }
+#leftPane { width: 200px; min-width: 50px; float:left; background:#fff }
+#rightPane { min-width: 50px; overflow: hidden; width:790px; float:left; background:#fff }
 #splitter .vsplitbar { width: 5px; background: #d3d6d5 url(../img/splitter.gif) no-repeat 50% 50%; }
 #splitter .vsplitbar.active, #splitter .vsplitbar:hover { background-color: #a5acb0; }
 #splitter iframe{ width:100%; }

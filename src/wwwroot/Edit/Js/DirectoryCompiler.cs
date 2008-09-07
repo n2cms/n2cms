@@ -33,7 +33,7 @@ namespace N2.Edit.Js
 				context.Response.Write(Environment.NewLine + "////// " + Path.GetFileName(file) + Environment.NewLine + Environment.NewLine);
 #endif
 
-				context.Response.TransmitFile(file);
+                context.Response.Write(File.ReadAllText(file));
 			}
 		}
 
