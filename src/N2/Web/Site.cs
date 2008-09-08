@@ -15,6 +15,7 @@ namespace N2.Web
 		private string authority;
         private bool wildcards;
 		private Dictionary<string, object> settings = new Dictionary<string, object>();
+	    private string uploadFolderUrl;
 
 		public Site(int rootItemID)
 		{
@@ -74,11 +75,18 @@ namespace N2.Web
             set { authority = value; }
         }
 
+        public string UploadFolderUrl
+        {
+            get { return uploadFolderUrl; }
+            set { uploadFolderUrl = value; }
+        }
+
 		public IDictionary<string, object> Settings
 		{
 			get { return settings; }
 		}
-		#endregion
+
+	    #endregion
 
 		#region ToString
 		public override string ToString()

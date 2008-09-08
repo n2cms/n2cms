@@ -1,4 +1,5 @@
-- comments
+- upload -> site
+- mvc preview 5
 - rating
 - msi installer
 - update sandcastle documentation

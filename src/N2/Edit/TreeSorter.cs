@@ -65,6 +65,10 @@ namespace N2.Edit
 
 		public void MoveTo(ContentItem item, NodePosition position, ContentItem relativeTo)
 		{
+            if (relativeTo == null) throw new ArgumentNullException("item");
+            if (relativeTo == null) throw new ArgumentNullException("relativeTo");
+            if (relativeTo.Parent == null) throw new ArgumentException("The supplied item '" + relativeTo + "' has no parent to add to.", "relativeTo");
+            
 			if (item.Parent != relativeTo.Parent)
 				item.AddTo(relativeTo.Parent);
 
@@ -73,7 +77,14 @@ namespace N2.Edit
 			int itemIndex = siblings.IndexOf(item);
 			int relativeToIndex = siblings.IndexOf(relativeTo);
 			
-			if(itemIndex < relativeToIndex && position == NodePosition.Before)
+            if(itemIndex < 0)
+            {
+                if(position == NodePosition.Before)
+                    siblings.Insert(relativeToIndex, item);
+                else
+                    siblings.Insert(relativeToIndex + 1, item);
+            }
+		    else if(itemIndex < relativeToIndex && position == NodePosition.Before)
 				MoveTo(item, relativeToIndex - 1);
 			else if (itemIndex > relativeToIndex && position == NodePosition.After)
 				MoveTo(item, relativeToIndex + 1);

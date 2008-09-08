@@ -1,10 +1,12 @@
 ﻿using N2.Details;
 using N2.Integrity;
 using System.Web.UI.WebControls;
+using N2.Edit.Trash;
 
 namespace N2.Templates.Items
 {
     [Definition("Comment")]
+    [NotThrowable]
     [RestrictParents(typeof(CommentList))]
     [WithEditableTitle]
     public class Comment : AbstractItem

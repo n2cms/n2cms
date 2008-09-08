@@ -1,4 +1,5 @@
 ﻿using System;
+using N2.Edit;
 
 namespace N2.Templates.UI.Parts
 {
@@ -20,10 +21,10 @@ namespace N2.Templates.UI.Parts
                     list = Engine.Definitions.CreateInstance<Items.CommentList>(CurrentPage);
                     list.Title = "Comments";
                     list.Name = "Comments";
-                    list.ZoneName = "Content";
-                    if(CurrentItem.Parent == CurrentPage)
+                    list.ZoneName = Zones.Content;
+                    if (CurrentItem.Parent == CurrentPage && CurrentItem.ZoneName == Zones.Content)
                     {
-                        Utility.Insert(list, CurrentPage, CurrentPage.Children.IndexOf(CurrentItem));
+                        Engine.Resolve<ITreeSorter>().MoveTo(list, NodePosition.Before, CurrentItem);
                     }
                     Engine.Persister.Save(list);
                 }

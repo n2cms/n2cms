@@ -43,5 +43,13 @@ namespace N2.Configuration
         {
             get { return (KeyValueConfigurationCollection)base["settings"]; }
         }
+
+        /// <summary>An upload folder that takes presedence over the folder defined on the edit section.</summary>
+        [ConfigurationProperty("uploadFolderUrl")]
+        public string UploadFolderUrl
+        {
+            get { return (string)base["uploadFolderUrl"]; }
+            set { base["uploadFolderUrl"] = value; }
+        }
 	}
 }

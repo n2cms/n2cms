@@ -205,5 +205,25 @@ namespace N2.Tests.Edit
 			sorter.MoveTo(page1, NodePosition.After, page3);
 			Assert.That(root.Children[2], Is.EqualTo(page1));
 		}
+
+        [Test]
+        public void CanMove_NewItem_WithSameParent_ToBefore_FirstItem()
+        {
+            var page0 = CreateOneItem<NormalPage>(0, "page0", null);
+            page0.Parent = root;
+            sorter.MoveTo(page0, NodePosition.Before, page1);
+            Assert.That(root.Children[0], Is.EqualTo(page0));
+            Assert.That(root.Children[1], Is.EqualTo(page1));
+        }
+
+        [Test]
+        public void CanMove_NewItem_WithSameParent_ToAfter_LastItem()
+        {
+            var page4 = CreateOneItem<NormalPage>(0, "page0", null);
+            page4.Parent = root;
+            sorter.MoveTo(page4, NodePosition.After, page3);
+            Assert.That(root.Children[2], Is.EqualTo(page3));
+            Assert.That(root.Children[3], Is.EqualTo(page4));
+        }
 	}
 }
