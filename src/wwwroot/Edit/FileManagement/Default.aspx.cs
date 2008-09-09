@@ -3,6 +3,7 @@ using System.IO;
 using System.Web;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
+using N2.Web;
 
 namespace N2.Edit.FileManagement
 {
@@ -26,8 +27,7 @@ namespace N2.Edit.FileManagement
 
 			string postBackUrl = Request.Form[selectedUrl.UniqueID];
 			selectedUrl.Value = string.IsNullOrEmpty(postBackUrl) ? Request.QueryString["selectedUrl"] : postBackUrl;
-
-			btnDelete.Attributes["onclick"] = string.Format(
+            btnDelete.OnClientClick = string.Format(
 				"return confirm('{0}' + document.getElementById('{1}').value);",
 				"Confirm delete: ",
 				selectedUrl.ClientID);
@@ -42,7 +42,7 @@ namespace N2.Edit.FileManagement
 				hlItems.Visible = IsOpened && AllModesAvailable;
 				string itemsUrl = AppendQueryString("../ItemSelection/Default.aspx");
 				hlItems.NavigateUrl = itemsUrl;
-				if (AllModesAvailable && string.IsNullOrEmpty(Request.QueryString["redirect"]) && !string.IsNullOrEmpty(selectedUrl.Value) && !selectedUrl.Value.StartsWith(Engine.EditManager.GetUploadFolderUrl()))
+				if (AllModesAvailable && string.IsNullOrEmpty(Request.QueryString["redirect"]) && !string.IsNullOrEmpty(selectedUrl.Value) && !IsUploadFolder())
 					Response.Redirect(itemsUrl);
 
 				if (!IsOpened)
@@ -52,19 +52,22 @@ namespace N2.Edit.FileManagement
 			base.OnLoad(e);
 		}
 
-		protected void fileView_TreeNodeDataBound(object sender, TreeNodeEventArgs e)
+	    private bool IsUploadFolder()
+	    {
+	        foreach (string folder in Engine.EditManager.UploadFolders)
+	        {
+	            if (selectedUrl.Value.StartsWith(Url.ToAbsolute(folder)))
+	                return true;
+	        }
+	        return false;
+	    }
+
+	    protected void fileView_TreeNodeDataBound(object sender, TreeNodeEventArgs e)
 		{
 			FileSiteMapNode fileNode = (FileSiteMapNode) e.Node.DataItem;
-			if (fileNode.IsDirectory)
-			{
-				e.Node.ImageUrl = "../img/ico/folder.gif";
-				e.Node.Target = "folder";
-			}
-			else
-			{
-				e.Node.ImageUrl = "../img/ico/page_white.gif";
-				e.Node.Target = "file";
-			}
+	        e.Node.ImageUrl = fileNode.IconUrl;
+	        e.Node.Target = fileNode.Target;
+			
 			if (IsSelected(e.Node.NavigateUrl))
 				e.Node.Select();
 		}
@@ -72,7 +75,7 @@ namespace N2.Edit.FileManagement
 		private string lastUrl = null;
 		private bool IsSelected(string navigateUrl)
 		{
-			string url = N2.Web.Url.ToAbsolute(navigateUrl);
+			string url = Url.ToAbsolute(navigateUrl);
 			return (lastUrl != null) ? url == lastUrl : url == OpenerInputUrl;
 		}
 
@@ -149,9 +152,15 @@ namespace N2.Edit.FileManagement
 		{
 			if (deleting)
 			{
-				string uploadFolder = N2.Context.Current.EditManager.GetUploadFolderUrl();
-				args.IsValid = !string.IsNullOrEmpty(SelectedUrl)
-				               && !uploadFolder.Equals(SelectedUrl, StringComparison.InvariantCultureIgnoreCase);
+                foreach(string folder in Engine.EditManager.UploadFolders)
+                {
+                    string uploadFolder = Url.ToAbsolute(folder);
+                    if(string.IsNullOrEmpty(SelectedUrl) || SelectedUrl.Equals(uploadFolder, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        args.IsValid = false;
+                        return;
+                    }
+                }
 			}
 		}
 	}

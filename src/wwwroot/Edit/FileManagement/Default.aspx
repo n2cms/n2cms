@@ -34,8 +34,12 @@
         </div>
     </div>
     <div id="tree" class="tree">
-        <asp:SiteMapDataSource ID="smds" runat="server" />
-        <edit:TreeView ID="fileView" runat="server" DataSourceID="smds" OnTreeNodeDataBound="fileView_TreeNodeDataBound" ExpandDepth="10" />
+        <asp:SiteMapDataSource ID="smds" runat="server" ShowStartingNode="false" />
+        <ul>
+            <li>
+                <edit:TreeView ID="fileView" runat="server" DataSourceID="smds" OnTreeNodeDataBound="fileView_TreeNodeDataBound" ExpandDepth="10" />
+            </li>
+        </ul>
     </div>
     <script type="text/javascript">
         $(document).ready(function(){

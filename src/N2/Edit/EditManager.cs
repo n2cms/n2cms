@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Resources;
 using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
-using System.IO;
-using System.Diagnostics;
 using N2.Definitions;
 using N2.Engine;
 using N2.Persistence;
@@ -35,7 +31,6 @@ namespace N2.Edit
         private string editTreeUrl = "Navigation/Tree.aspx";
 		private string editTreeUrlFormat = "{1}?selected={0}";
 		private string editPreviewUrlFormat = "{0}";
-		private string uploadFolderUrl = "~/Upload";
         private string editItemUrl = "~/edit/edit.aspx";
         private string editInterfaceUrl = "~/edit/";
         private string newItemUrl = "~/edit/new.aspx";
@@ -57,12 +52,16 @@ namespace N2.Edit
         {
             EditTreeUrl = config.EditTreeUrl;
             EditPreviewUrlFormat = config.EditPreviewUrlFormat;
-            UploadFolderUrl = config.UploadFolderUrl;
             EditItemUrl = config.EditItemUrl;
             EditInterfaceUrl = config.EditInterfaceUrl;
             NewItemUrl = config.NewItemUrl;
             DeleteItemUrl = config.DeleteItemUrl;
             EnableVersioning = config.EnableVersioning;
+
+            foreach(FolderElement folder in config.UploadFolders)
+            {
+                uploadFolders.Add(folder.Path);
+            }
         }
 
         #region Properties
@@ -113,13 +112,6 @@ namespace N2.Edit
 			set { editPreviewUrlFormat = value; }
 		}
 
-		/// <summary>Gets or sets file upload folder.</summary>
-		public string UploadFolderUrl
-		{
-			get { return uploadFolderUrl; }
-			set { uploadFolderUrl = value; }
-		}
-
 		/// <summary>Gets or sets wether a version is saved when updating items.</summary>
 		public bool EnableVersioning
 		{
@@ -130,7 +122,13 @@ namespace N2.Edit
 
 		#region Methods
 
-		/// <summary>Gets the url for the navigation frame.</summary>
+	    public IEnumerable<string> UploadFolders
+	    {
+	        get { return uploadFolders; }
+	    }
+
+
+	    /// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
 		public string GetNavigationUrl(INode selectedItem)
@@ -147,13 +145,6 @@ namespace N2.Edit
 				selectedItem.PreviewUrl,
 				HttpUtility.UrlEncode(selectedItem.PreviewUrl)
 				);
-		}
-
-		/// <summary>Gets the url to the upload folder.</summary>
-		/// <returns>An url to the upload root.</returns>
-		public string GetUploadFolderUrl()
-		{
-			return N2.Web.Url.ToAbsolute(UploadFolderUrl);
 		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
@@ -433,8 +424,9 @@ namespace N2.Edit
 		protected System.ComponentModel.EventHandlerList Events = new System.ComponentModel.EventHandlerList();
 		protected static readonly object savingVersionKey = new object();
 		protected static readonly object addedEditorKey = new object();
+	    private IList<string> uploadFolders = new List<string>();
 
-		/// <summary>Occurs when a detail editor (a control that contains an editor) is added.</summary>
+	    /// <summary>Occurs when a detail editor (a control that contains an editor) is added.</summary>
 		public event EventHandler<ControlEventArgs> AddedEditor
 		{
 			add { Events.AddHandler(addedEditorKey, value); }

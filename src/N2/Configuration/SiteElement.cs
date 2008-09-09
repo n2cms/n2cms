@@ -44,12 +44,12 @@ namespace N2.Configuration
             get { return (KeyValueConfigurationCollection)base["settings"]; }
         }
 
-        /// <summary>An upload folder that takes presedence over the folder defined on the edit section.</summary>
-        [ConfigurationProperty("uploadFolderUrl")]
-        public string UploadFolderUrl
+        /// <summary>Upload folders to use in addition to those specified in the edit section. To use site specific folders only you can put a &lt;clear/&gt; in edit/uploadFolders.</summary>
+        [ConfigurationProperty("uploadFolders")]
+        public FileSystemFolderCollection UploadFolders
         {
-            get { return (string)base["uploadFolderUrl"]; }
-            set { base["uploadFolderUrl"] = value; }
+            get { return (FileSystemFolderCollection)base["uploadFolders"]; }
+            set { base["uploadFolders"] = value; }
         }
-	}
+    }
 }

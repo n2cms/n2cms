@@ -1,9 +1,9 @@
 using System;
-using System.Data;
-using System.Configuration;
 using System.Web;
 using System.IO;
 using System.Collections.Specialized;
+using N2.Web;
+using System.Collections.Generic;
 
 namespace N2.Edit.Web
 {
@@ -11,7 +11,13 @@ namespace N2.Edit.Web
     {
         private FileSiteMapNode NewNode(string url)
         {
-            return new FileSiteMapNode(this, url);
+            string path = HttpContext.Current.Server.MapPath(url);
+            if (url == "~/")
+                return new RootNode(this, url);
+            if(File.Exists(path))
+                return new FileNode(this, url); 
+            return new DirectoryNode(this, url);
+            
         }
 
         internal static string GetPathOnDisk(string rawUrl)
@@ -51,15 +57,45 @@ namespace N2.Edit.Web
 
         public override SiteMapNodeCollection GetChildNodes(SiteMapNode node)
         {
-            string path = GetPathOnDisk(node.Url);
-            SiteMapNodeCollection nodes = new SiteMapNodeCollection();
-            if (Directory.Exists(path))
+            List<string> folderPaths = new List<string>();
+
+            if (node.Key == "/" || node is RootNode)
             {
-                foreach (string dir in Directory.GetDirectories(path))
-                    nodes.Add(NewNode(UnMapPath(dir)));
-                foreach (string file in Directory.GetFiles(path))
-                    nodes.Add(NewNode(UnMapPath(file)));
+                foreach (string folderUrl in N2.Context.Current.Resolve<IHost>().CurrentSite.UploadFolders)
+                {
+                    if(!folderPaths.Contains(folderUrl))
+                        folderPaths.Add(folderUrl);
+                }
+                foreach (string folderUrl in N2.Context.Current.EditManager.UploadFolders)
+                {
+                    if (!folderPaths.Contains(folderUrl))
+                        folderPaths.Add(folderUrl);
+                }
             }
+            else
+            {
+                string path = GetPathOnDisk(node.Url);
+                if (Directory.Exists(path))
+                {
+                    foreach (string dir in Directory.GetDirectories(path))
+                    {
+                        if((new FileInfo(dir).Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+                            continue;
+
+                        string folderUrl = UnMapPath(dir);
+                        folderPaths.Add(folderUrl);
+                    }
+                    foreach (string file in Directory.GetFiles(path))
+                    {
+                        string fileUrl = UnMapPath(file);
+                        folderPaths.Add(fileUrl);
+                    }
+                }
+            }
+
+            SiteMapNodeCollection nodes = new SiteMapNodeCollection();
+            foreach(string folderPath in folderPaths)
+                nodes.Add(NewNode(folderPath));
             return nodes;
         }
 
@@ -71,7 +107,7 @@ namespace N2.Edit.Web
 
         protected override SiteMapNode GetRootNodeCore()
         {
-            return NewNode(N2.Context.Current.EditManager.GetUploadFolderUrl());
+            return new RootNode(this, "~/");
         }
     }
 }

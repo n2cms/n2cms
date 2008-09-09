@@ -55,13 +55,6 @@ namespace N2.Configuration
             set { base["editPreviewUrlFormat"] = value; }
         }
 
-        [ConfigurationProperty("uploadFolderUrl", DefaultValue = "~/Upload")]
-        public string UploadFolderUrl
-        {
-            get { return (string)base["uploadFolderUrl"]; }
-            set { base["uploadFolderUrl"] = value; }
-        }
-
         [ConfigurationProperty("editItemUrl", DefaultValue = "~/edit/edit.aspx")]
         public string EditItemUrl
         {

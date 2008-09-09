@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using N2.Configuration;
 
 namespace N2.Web
 {
+    /// <summary>
+    /// Reads the configuration to build and maintains knowledge of 
+    /// <see cref="Site"/>s in the application
+    /// </summary>
 	public class Host : IHost
 	{
 		private readonly IWebContext context;
 		private Site defaultSite;
-		private List<Site> sites = new List<Site>();
+		private readonly List<Site> sites = new List<Site>();
 
 		public Host(IWebContext context, HostSection config)
 		{
@@ -19,6 +21,8 @@ namespace N2.Web
 			{
                 Site s = new Site(configElement.RootID ?? config.RootID, configElement.ID, configElement.Name);
                 s.Wildcards = configElement.Wildcards || config.Wildcards;
+                foreach (FolderElement folder in configElement.UploadFolders)
+                    s.UploadFolders.Add(folder.Path);
                 foreach (string key in configElement.Settings.AllKeys)
                     s.Settings[key] = configElement.Settings[key].Value;
                 Sites.Add(s);

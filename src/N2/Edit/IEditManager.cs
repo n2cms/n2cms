@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.UI;
@@ -15,8 +16,11 @@ namespace N2.Edit
 	{
 		/// <summary>Gets or sets wether a version is saved when updating items.</summary>
 		bool EnableVersioning { get; set; }
+	    
+        /// <summary>Gets folders paths on the server where users are allowed to upload content through the interface.</summary>
+        IEnumerable<string> UploadFolders { get; }
 
-		/// <summary>Gets the url for the navigation frame.</summary>
+	    /// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
 		string GetNavigationUrl(INode selectedItem);
@@ -38,10 +42,6 @@ namespace N2.Edit
 		/// <param name="item">The item to edit.</param>
 		/// <returns>The url to the edit page</returns>
 		string GetEditExistingItemUrl(ContentItem item);
-
-		/// <summary>Gets the url to the upload folder.</summary>
-		/// <returns>An url to the upload root.</returns>
-		string GetUploadFolderUrl();
 
 		/// <summary>Gets edit mode plugins found in the environment sorted and filtered by the given user.</summary>
 		/// <typeparam name="T">The type of plugin to get.</typeparam>

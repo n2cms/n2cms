@@ -1,4 +1,6 @@
 1.4.3
+- better support for multiple upload folders
+- support for site-unique upload folders
 - unassociate translations
 - add comments functionality
 - improved parts usability

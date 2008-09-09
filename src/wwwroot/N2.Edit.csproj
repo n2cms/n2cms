@@ -429,12 +429,15 @@
     <Compile Include="Edit\Versions\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\Web\DirectoryNode.cs" />
+    <Compile Include="Edit\Web\FileNode.cs" />
     <Compile Include="Edit\Web\FileSiteMapNode.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Edit\Web\FileSiteMapProvider.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Edit\Web\RootNode.cs" />
     <Compile Include="Edit\Web\UI\Controls\FieldSet.cs" />
     <Compile Include="Edit\Web\UI\Controls\InfoLabel.cs" />
     <Compile Include="Edit\Web\UI\Controls\OptionsMenu.cs" />
