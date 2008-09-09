@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using N2.Persistence;
 using N2.Web;
 using N2.Collections;
-using Castle.Core;
 using N2.Persistence.Finder;
 using N2.Edit;
 using N2.Definitions;
 using N2.Security;
 using N2.Configuration;
 using N2.Edit.Trash;
-using N2.Plugin;
 
 namespace N2.Engine.Globalization
 {
@@ -153,8 +150,8 @@ namespace N2.Engine.Globalization
 						if (translatedParent == null)
 							continue;
 
-						string url = editManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
-						url += "&" + LanguageKey + "=" + (item[LanguageKey] ?? item.ID);
+						Url url = editManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
+					    url = url.AppendQuery(LanguageKey, item[LanguageKey] ?? item.ID);
 
 						yield return new TranslateSpecification(url, language, translation, definition);
 					}

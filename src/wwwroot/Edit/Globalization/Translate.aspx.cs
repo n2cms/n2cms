@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using N2.Engine.Globalization;
 using N2.Definitions;
+using N2.Web;
 
 namespace N2.Edit.Globalization
 {
@@ -17,7 +9,7 @@ namespace N2.Edit.Globalization
     /// Redirects to editing a translation.
     /// </summary>
     [NavigationTranslationsPlugin("translate", 70)]
-    public partial class Translate : N2.Edit.Web.EditPage
+    public partial class Translate : Web.EditPage
     {
         protected override void OnInit(EventArgs e)
         {
@@ -39,7 +31,8 @@ namespace N2.Edit.Globalization
                     ContentItem parent = SelectedItem.Parent;
                     ContentItem parentTranslation = gateway.GetTranslation(parent, language);
                     ItemDefinition definition = Engine.Definitions.GetDefinition(SelectedItem.GetType());
-                    string url = Engine.EditManager.GetEditNewPageUrl(parent, definition, null, CreationPosition.Below);
+                    Url url = Engine.EditManager.GetEditNewPageUrl(parentTranslation, definition, null, CreationPosition.Below);
+                    url = url.AppendQuery(LanguageGateway.LanguageKey, SelectedItem[LanguageGateway.LanguageKey] ?? SelectedItem.ID);
                     Response.Redirect(url);
                 }
                 else
