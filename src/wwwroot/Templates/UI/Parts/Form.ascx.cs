@@ -5,7 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Templates.Items;
 using N2.Templates.Web.UI;
-using N2.Templates.WebControls;
+using N2.Templates.Web.UI.WebControls;
 using N2.Web.UI.WebControls;
 using N2.Web.Mail;
 

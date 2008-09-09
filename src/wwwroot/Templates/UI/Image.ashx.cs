@@ -1,4 +1,5 @@
 using System.Web;
+using N2.Templates.Services;
 
 namespace N2.Templates.UI
 {
@@ -22,7 +23,7 @@ namespace N2.Templates.UI
             //context.Response.Cache.SetExpires(DateTime.Now.AddHours(1));
             //context.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate | HttpCacheability.Public);
             //context.Response.Cache.SetValidUntilExpires(true);
-            Imaging.ImageResizer ir = new Imaging.ImageResizer();
+            ImageResizer ir = new ImageResizer();
             ir.Resize(path, width, height, context.Response.OutputStream);
         }
 

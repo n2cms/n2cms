@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 using N2.Details;
-using N2.Templates.Syndication;
+using N2.Templates.Services;
 using N2.Templates.Items;
 using System.Web.UI.WebControls;
 using N2.Serialization;

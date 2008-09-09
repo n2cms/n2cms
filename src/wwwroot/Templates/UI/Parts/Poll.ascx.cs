@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI.WebControls;
-using N2.Templates.WebControls;
+using N2.Templates.Web.UI.WebControls;
 
 namespace N2.Templates.UI.Parts
 {

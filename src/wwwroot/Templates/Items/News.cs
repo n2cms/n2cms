@@ -3,7 +3,7 @@ using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Items;
-using N2.Templates.Syndication;
+using N2.Templates.Services;
 
 namespace N2.Templates.Items
 {

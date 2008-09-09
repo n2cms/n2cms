@@ -2,7 +2,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Definitions;
-using N2.Templates.WebControls;
+using N2.Templates.Web.UI.WebControls;
 using OptionSelectQuestion=N2.Templates.Items.OptionSelectQuestion;
 
 namespace N2.Templates.Items

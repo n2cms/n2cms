@@ -1,7 +1,7 @@
-﻿using N2.Templates.Items;
+using N2.Templates.Items;
 using N2.Integrity;
 using System.Collections.Generic;
-using N2.Templates.Syndication;
+using N2.Templates.Services;
 
 namespace N2.Templates.Wiki.Items
 {

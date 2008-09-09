@@ -4,7 +4,7 @@ using System.Text;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using N2.Definitions;
-using N2.Templates.WebControls;
+using N2.Templates.Web.UI.WebControls;
 
 namespace N2.Templates.Items
 {

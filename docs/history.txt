@@ -1,4 +1,5 @@
 1.4.3
+- moved n2.templates into wwwroot and merged with n2.templates.ui
 - better support for multiple upload folders
 - support for site-unique upload folders
 - unassociate translations

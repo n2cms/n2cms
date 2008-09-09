@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -8,9 +8,9 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using N2.Templates.Services;
 using N2.Templates.Wiki.Web;
 using N2.Persistence;
-using N2.Templates.Rss;
 using N2.Templates.Configuration;
 using System.Web.Configuration;
 using N2.Resources;

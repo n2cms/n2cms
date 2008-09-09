@@ -1,4 +1,4 @@
-- upload -> site
+- globalization right click bug
 - mvc preview 5
 - rating
 - msi installer

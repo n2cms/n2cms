@@ -1,6 +1,6 @@
 using System;
 using N2.Templates.Items;
-using N2.Templates.Syndication;
+using N2.Templates.Services;
 using N2.Web.UI;
 
 namespace N2.Templates.UI.Views
