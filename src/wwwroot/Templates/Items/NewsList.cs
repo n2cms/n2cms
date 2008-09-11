@@ -17,7 +17,7 @@ namespace N2.Templates.Items
             Three = 3,
             Four = 4
         }
-        //[EditableTextBox("Title heading level", 90)]
+
         [EditableEnum("Title heading level", 90, typeof(HeadingLevel))]
         public virtual int TitleLevel
         {

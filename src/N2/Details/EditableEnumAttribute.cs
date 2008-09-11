@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web.UI.WebControls;
 
 namespace N2.Details
@@ -33,18 +31,39 @@ namespace N2.Details
 
         protected override string GetValue(ContentItem item)
         {
-            if (item[Name] != null)
-                return ((int)item[Name]).ToString();
-            else
+            object value = item[Name];
+            
+            if(value == null)
                 return null;
+
+            if (value is string)
+                // an enum as string we assume
+                return ((int)Enum.Parse(enumType, (string)value)).ToString();
+            
+            if (value is int)
+                // an enum as int we hope
+                return value.ToString();
+            
+            // hopefully an enum type;
+            return ((int) value).ToString();
         }
 
         protected override object GetValue(DropDownList ddl)
         {
             if (!string.IsNullOrEmpty(ddl.SelectedValue))
-                return Enum.Parse(enumType, ddl.SelectedValue);
+                return GetEnumValue(int.Parse(ddl.SelectedValue));
             else
                 return null;
+        }
+
+        private object GetEnumValue(int value)
+        {
+            foreach (object e in Enum.GetValues(enumType))
+            {
+                if ((int)e == value)
+                    return e;
+            }
+            return null;
         }
     }
 }

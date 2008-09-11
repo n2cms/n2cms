@@ -138,36 +138,42 @@
     <Compile Include="Templates\Services\TemplatesInitializer.cs" />
     <Compile Include="Templates\UI\Parts\BoxedText.ascx.cs">
       <DependentUpon>BoxedText.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\BoxedText.ascx.designer.cs">
       <DependentUpon>BoxedText.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Columns.ascx.cs">
       <DependentUpon>Columns.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Columns.ascx.designer.cs">
       <DependentUpon>Columns.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentInput.ascx.cs">
       <DependentUpon>CommentInput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentInput.ascx.designer.cs">
       <DependentUpon>CommentInput.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentList.ascx.cs">
       <DependentUpon>CommentList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\CommentList.ascx.designer.cs">
       <DependentUpon>CommentList.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\ControlPanel.ascx.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\ControlPanel.ascx.designer.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Comment.ascx.cs">
       <DependentUpon>Comment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Comment.ascx.designer.cs">
       <DependentUpon>Comment.ascx</DependentUpon>
@@ -181,54 +187,63 @@
     </Compile>
     <Compile Include="Templates\UI\Parts\Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Login.ascx.designer.cs">
       <DependentUpon>Login.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Layouts\SubMenu.ascx.cs">
       <DependentUpon>SubMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Layouts\SubMenu.ascx.designer.cs">
       <DependentUpon>SubMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\RandomImage.ascx.cs">
       <DependentUpon>RandomImage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\RandomImage.ascx.designer.cs">
       <DependentUpon>RandomImage.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Register.ascx.cs">
       <DependentUpon>Register.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Register.ascx.designer.cs">
       <DependentUpon>Register.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Statistics.ascx.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Statistics.ascx.designer.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Teaser.ascx.cs">
       <DependentUpon>Teaser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Teaser.ascx.designer.cs">
       <DependentUpon>Teaser.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Text.ascx.cs">
       <DependentUpon>Text.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Text.ascx.designer.cs">
       <DependentUpon>Text.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Top.ascx.cs">
       <DependentUpon>Top.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Top.ascx.designer.cs">
       <DependentUpon>Top.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Layouts\TopMenu.ascx.cs">
       <DependentUpon>TopMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Layouts\TopMenu.ascx.designer.cs">
       <DependentUpon>TopMenu.ascx</DependentUpon>
@@ -236,6 +251,7 @@
     <Compile Include="Templates\UI\Layouts\Translation.cs" />
     <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.designer.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
@@ -275,42 +291,49 @@
     </Compile>
     <Compile Include="Templates\UI\Parts\Bubble.ascx.cs">
       <DependentUpon>Bubble.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Bubble.ascx.designer.cs">
       <DependentUpon>Bubble.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\CalendarItem.aspx.cs">
       <DependentUpon>CalendarItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\CalendarItem.aspx.designer.cs">
       <DependentUpon>CalendarItem.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\CalendarList.aspx.cs">
       <DependentUpon>CalendarList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\CalendarList.aspx.designer.cs">
       <DependentUpon>CalendarList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\CalendarTeaser.ascx.cs">
       <DependentUpon>CalendarTeaser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\CalendarTeaser.ascx.designer.cs">
       <DependentUpon>CalendarTeaser.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Faq.ascx.cs">
       <DependentUpon>Faq.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Faq.ascx.designer.cs">
       <DependentUpon>Faq.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Form.aspx.cs">
       <DependentUpon>Form.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Form.aspx.designer.cs">
       <DependentUpon>Form.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\FaqList.aspx.cs">
       <DependentUpon>FaqList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\FaqList.aspx.designer.cs">
       <DependentUpon>FaqList.aspx</DependentUpon>
@@ -331,30 +354,35 @@
     </Compile>
     <Compile Include="Templates\UI\Views\ImageGallery.aspx.cs">
       <DependentUpon>ImageGallery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\ImageGallery.aspx.designer.cs">
       <DependentUpon>ImageGallery.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\NewsBox.ascx.cs">
       <DependentUpon>NewsBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\NewsBox.ascx.designer.cs">
       <DependentUpon>NewsBox.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\NewsItem.aspx.cs">
       <DependentUpon>NewsItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\NewsItem.aspx.designer.cs">
       <DependentUpon>NewsItem.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\NewsList.ascx.cs">
       <DependentUpon>NewsList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\NewsList.ascx.designer.cs">
       <DependentUpon>NewsList.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\NewsContainer.aspx.cs">
       <DependentUpon>NewsContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\NewsContainer.aspx.designer.cs">
       <DependentUpon>NewsContainer.aspx</DependentUpon>
@@ -368,54 +396,63 @@
     </Compile>
     <Compile Include="Templates\UI\Views\Redirect.aspx.cs">
       <DependentUpon>Redirect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Redirect.aspx.designer.cs">
       <DependentUpon>Redirect.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Result.ascx.cs">
       <DependentUpon>Result.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Result.ascx.designer.cs">
       <DependentUpon>Result.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\RssAggregator.ascx.cs">
       <DependentUpon>RssAggregator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\RssAggregator.ascx.designer.cs">
       <DependentUpon>RssAggregator.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\SiteMap.aspx.cs">
       <DependentUpon>SiteMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\SiteMap.aspx.designer.cs">
       <DependentUpon>SiteMap.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\SocialBookmarks.ascx.cs">
       <DependentUpon>SocialBookmarks.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\SocialBookmarks.ascx.designer.cs">
       <DependentUpon>SocialBookmarks.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Subscribe.ascx.cs">
       <DependentUpon>Subscribe.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\Subscribe.ascx.designer.cs">
       <DependentUpon>Subscribe.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Text.aspx.cs">
       <DependentUpon>Text.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Views\Text.aspx.designer.cs">
       <DependentUpon>Text.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\UrchinTracking.ascx.cs">
       <DependentUpon>UrchinTracking.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\UI\Parts\UrchinTracking.ascx.designer.cs">
       <DependentUpon>UrchinTracking.ascx</DependentUpon>
@@ -497,65 +534,76 @@
     </Compile>
     <Compile Include="Templates\Wiki\UI\Parts\WikiPart.ascx.cs">
       <DependentUpon>WikiPart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Parts\WikiPart.ascx.designer.cs">
       <DependentUpon>WikiPart.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Article.aspx.cs">
       <DependentUpon>Article.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Article.aspx.designer.cs">
       <DependentUpon>Article.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\History.aspx.cs">
       <DependentUpon>History.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\History.aspx.designer.cs">
       <DependentUpon>History.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\NoHits.aspx.cs">
       <DependentUpon>NoHits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\NoHits.aspx.designer.cs">
       <DependentUpon>NoHits.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Submit.aspx.cs">
       <DependentUpon>Submit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Submit.aspx.designer.cs">
       <DependentUpon>Submit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Upload.aspx.cs">
       <DependentUpon>Upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Upload.aspx.designer.cs">
       <DependentUpon>Upload.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Version.aspx.cs">
       <DependentUpon>Version.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Version.aspx.designer.cs">
       <DependentUpon>Version.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Wiki.aspx.cs">
       <DependentUpon>Wiki.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\Wiki.aspx.designer.cs">
       <DependentUpon>Wiki.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\Views\WikiTemplatePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\ActionParameter.ascx.cs">
       <DependentUpon>ActionParameter.ascx</DependentUpon>
@@ -566,12 +614,14 @@
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\AllArticles.ascx.cs">
       <DependentUpon>AllArticles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\AllArticles.ascx.designer.cs">
       <DependentUpon>AllArticles.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\Create.ascx.cs">
       <DependentUpon>Create.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\Create.ascx.designer.cs">
       <DependentUpon>Create.ascx</DependentUpon>
@@ -579,29 +629,34 @@
     <Compile Include="Templates\Wiki\UI\WikiTemplates\DefaultWikiTemplateAttribute.cs" />
     <Compile Include="Templates\Wiki\UI\WikiTemplates\LatestArticles.ascx.cs">
       <DependentUpon>LatestArticles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\LatestArticles.ascx.designer.cs">
       <DependentUpon>LatestArticles.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\LinkFromParameter.ascx.cs">
       <DependentUpon>LinkFromParameter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\LinkFromParameter.ascx.designer.cs">
       <DependentUpon>LinkFromParameter.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\PageName.ascx.cs">
       <DependentUpon>PageName.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\PageName.ascx.designer.cs">
       <DependentUpon>PageName.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\Search.ascx.cs">
       <DependentUpon>Search.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\Search.ascx.designer.cs">
       <DependentUpon>Search.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Wiki\UI\WikiTemplates\WikiTemplate.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="App_GlobalResources\Definitions.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -655,6 +710,7 @@
     </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
