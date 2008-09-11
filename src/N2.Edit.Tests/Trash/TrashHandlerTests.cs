@@ -14,6 +14,17 @@ namespace N2.Trashcan.Tests
 	[TestFixture]
 	public class TrashHandlerTests : TrashTestBase
 	{
+	    private ThreadContext webContext;
+	    private Host host;
+
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
+            webContext = new ThreadContext();
+            host = new Host(webContext, 1, 1);
+        }
+
 		[Test]
 		public void ThrownItem_IsMoved_ToTrashcan()
 		{
@@ -22,10 +33,10 @@ namespace N2.Trashcan.Tests
 			IPersister persister = mocks.StrictMock<IPersister>();
 			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
 			Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
-			
+		    
 			mocks.ReplayAll();
-			
-			TrashHandler th = new TrashHandler(persister, definitions, new Host(null, 1, 1));
+
+            TrashHandler th = new TrashHandler(persister, definitions, host);
 			th.Throw(item);
 
 			Assert.AreEqual(trash, item.Parent);
@@ -136,7 +147,7 @@ namespace N2.Trashcan.Tests
 
             mocks.ReplayAll();
 
-            TrashHandler th = new TrashHandler(persister, definitions, new Host(null, 1, 1));
+            TrashHandler th = new TrashHandler(persister, definitions, new Host(webContext, 1, 1));
 
             bool throwingWasInvoked = false;
             bool throwedWasInvoked = false;
@@ -161,7 +172,7 @@ namespace N2.Trashcan.Tests
 
             mocks.ReplayAll();
 
-            TrashHandler th = new TrashHandler(persister, definitions, new Host(null, 1, 1));
+            TrashHandler th = new TrashHandler(persister, definitions, new Host(webContext, 1, 1));
 
             th.ItemThrowing += delegate(object sender, CancellableItemEventArgs args) { args.Cancel = true; };
             th.Throw(item);
@@ -183,7 +194,7 @@ namespace N2.Trashcan.Tests
 			
 			mocks.ReplayAll();
 
-			return new TrashHandler(persister, definitions, new Host(null, 1, 1));
+			return new TrashHandler(persister, definitions, host);
 		}
 
 		private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)
