@@ -1,5 +1,6 @@
 ﻿using System;
 using N2.Engine.Globalization;
+using N2.Templates.Items;
 
 namespace N2.Templates.UI.Layouts
 {
@@ -13,7 +14,9 @@ namespace N2.Templates.UI.Layouts
 
             ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
 
-            if (p != null) p.Visible = N2.Templates.Find.ClosestStartPage.ShowBreadcrumb;
+            AbstractStartPage start = Find.ClosestStartPage;
+            
+            if (p != null) p.Visible = (start != null) && start.ShowBreadcrumb;
             if (dti != null) dti.Visible = CurrentPage["ShowTitle"] != null && (bool)CurrentPage["ShowTitle"];
             if (dh != null) dh.CurrentItem = language;
 
