@@ -302,6 +302,7 @@
     <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
+    <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
     <Compile Include="Engine\Function.cs">
       <SubType>Code</SubType>

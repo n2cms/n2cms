@@ -1,6 +1,8 @@
 1.4.3
-- applied patch and fixed editableenum to work in more scenarios
-- updated sites functionality to work better in isolation
+- applied patch DateRange control can only be used once per form
+- applied patch EditableEnum
+- fixed editableenum to work in more scenarios
+- better multi instance support, sites may work better in isolation
 - mvc preview 5
 - fixed globalization right click bug
 - moved n2.templates into wwwroot and merged with n2.templates.ui

@@ -50,14 +50,14 @@ namespace N2.Web.UI.WebControls
 			base.CreateChildControls();
 
 			fromDate = new DatePicker();
-			fromDate.ID = "from";
+			fromDate.ID = "from" + this.ID;
 			this.Controls.Add(fromDate);
 
 			between = new Label();
 			this.Controls.Add(between);
 
 			toDate = new DatePicker();
-			toDate.ID = "to";
+			toDate.ID = "to" + this.ID;
 			this.Controls.Add(toDate);
 
 			fromDate.TextChanged += new EventHandler(TextChanged);
