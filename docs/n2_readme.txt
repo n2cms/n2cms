@@ -57,3 +57,5 @@ CONTRIBUTORS
 * Martijn Rasenberg
 * Esteewhy
 * Geert van Horrik
+* Elizabeth (mozts)
+* Pedropaf

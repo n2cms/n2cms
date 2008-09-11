@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Web;
 using System.Reflection;
 using System.Diagnostics;
-
-using Castle.Core;
-
-using N2.Engine;
 using N2.Persistence;
 using N2.Web;
 using N2.Definitions;
@@ -17,7 +12,6 @@ using N2.Edit;
 using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Serialization;
-using N2.MediumTrust.Configuration;
 using N2.Details;
 using N2.Persistence.Finder;
 using N2.Plugin;
@@ -116,6 +110,7 @@ namespace N2.Engine.MediumTrust
             ItemMover im = AddComponentInstance<ItemMover>(new ItemMover(persister, dispatcher));
             ItemCopyer ic = AddComponentInstance<ItemCopyer>(new ItemCopyer(persister, dispatcher));
             AddComponentInstance<ICacheManager>(new CacheManager(webContext, persister, hostConfiguration));
+            AddComponentInstance<ITreeSorter>(new TreeSorter(persister, editManager, webContext));
 
             foreach (KeyValuePair<Type, object> pair in resolves)
             {
