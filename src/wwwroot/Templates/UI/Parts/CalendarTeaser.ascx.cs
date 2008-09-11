@@ -2,6 +2,7 @@ using System;
 using N2.Resources;
 using N2.Templates.Items;
 using N2.Templates.Web.UI;
+using N2.Web;
 
 namespace N2.Templates.UI.Parts
 {
@@ -35,8 +36,9 @@ namespace N2.Templates.UI.Parts
                     if(calendarEvent.EventDate.HasValue && calendarEvent.EventDate.Value.Date == date)
                         Response.Redirect(calendarEvent.Url);
                 }
+                Url url = CurrentItem.Container.Url;
+                Response.Redirect(url.AppendQuery("date", date));
             }
-            Response.Redirect(CurrentItem.Container.Url + "?date=" + date);
         }
     }
 }

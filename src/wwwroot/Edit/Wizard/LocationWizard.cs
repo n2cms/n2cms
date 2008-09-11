@@ -36,7 +36,7 @@ namespace N2.Edit.Wizard
 
 		public virtual Wonderland GetWizardContainer()
 		{
-			ContentItem root = persister.Get(host.DefaultSite.RootItemID);
+			ContentItem root = persister.Get(host.CurrentSite.RootItemID);
 			Wonderland container = root.GetChild(WizardSettings.Name) as Wonderland;
 			if(container == null)
 			{

@@ -1,4 +1,6 @@
-- mvc preview 5
+- cleanup many versions
+- resize control panel icons
+- remove requirement on availablezone
 - rating
 - msi installer
 - update sandcastle documentation

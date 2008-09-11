@@ -14,8 +14,8 @@ namespace N2.Security
 		readonly private IDefinitionManager definitions;
 		readonly private IItemFinder finder;
 		readonly private IPersister persister;
+	    private readonly IHost host;
 		private string userContainerName = "TemplateUsers";
-		private int userContainerParentID = 1;
 		private string[] defaultRoles = new string[] { "Everyone", "Members", "Editors", "Administrators" };
 
 		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, IHost host)
@@ -23,7 +23,7 @@ namespace N2.Security
 			this.definitions = definitions;
 			this.finder = finder;
 			this.persister = persister;
-			this.userContainerParentID = host.DefaultSite.RootItemID;
+		    this.host = host;
 		}
 
 		public IItemFinder Finder
@@ -33,8 +33,7 @@ namespace N2.Security
 		
 		protected int UserContainerParentID
 		{
-			get { return userContainerParentID; }
-			set { userContainerParentID = value; }
+			get { return host.CurrentSite.RootItemID; }
 		}
 
 		public string UserContainerName

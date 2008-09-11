@@ -76,7 +76,7 @@ namespace N2.Engine.MediumTrust
 
 			if (hostConfiguration.MultipleSites)
 			{
-                ISitesProvider sitesProvider = AddComponentInstance<ISitesProvider>(new DynamicSitesProvider(persister, host.DefaultSite.RootItemID));
+                ISitesProvider sitesProvider = AddComponentInstance<ISitesProvider>(new DynamicSitesProvider(persister, host));
 				urlParser = AddComponentInstance<IUrlParser>(new MultipleSitesParser(persister, webContext, notifier, host, sitesProvider, hostConfiguration));
 			}
 			else

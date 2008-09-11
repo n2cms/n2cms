@@ -37,7 +37,7 @@ namespace N2.Edit.Trash
 
 		public TrashContainerItem GetTrashContainer(bool create)
 		{
-			ContentItem rootItem = persister.Get(host.DefaultSite.RootItemID);
+			ContentItem rootItem = persister.Get(host.CurrentSite.RootItemID);
 			TrashContainerItem trashContainer = rootItem.GetChild("Trash") as TrashContainerItem;
 			if (create && trashContainer == null)
 			{

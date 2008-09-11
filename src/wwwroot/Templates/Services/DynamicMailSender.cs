@@ -21,7 +21,7 @@ namespace N2.Templates.Services
 
 		protected override SmtpClient GetSmtpClient()
 		{
-			ContentItem root = persister.Get(host.DefaultSite.RootItemID);
+			ContentItem root = persister.Get(host.CurrentSite.RootItemID);
 
 			string smtpHost = root["SmtpHost"] as string;
 			int port = (int)(root["SmtpPort"] != null ? root["SmtpPort"] : 25);

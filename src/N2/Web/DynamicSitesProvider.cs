@@ -14,24 +14,18 @@ namespace N2.Web
 	{
 		#region Private Fields
 		private Persistence.IPersister persister;
-		private int rootItemID;
-		private int recursionDepth = 1;
+	    private IHost host;
+		private int recursionDepth = 2;
 		#endregion
 
 		#region Constructors
-		public DynamicSitesProvider(Persistence.IPersister persister, int rootItemID)
-		{
-			this.persister = persister;
-			this.rootItemID = rootItemID;
-		}
-
 		public DynamicSitesProvider(Persistence.IPersister persister, IHost host)
 		{
 			if (persister == null) throw new ArgumentNullException("persister");
 			if (host == null) throw new ArgumentNullException("host");
 
 			this.persister = persister;
-			this.rootItemID = host.DefaultSite.RootItemID;
+			this.host = host;
 		} 
 		#endregion
 
@@ -49,27 +43,32 @@ namespace N2.Web
 		{
 			if (RecursionDepth < 0) throw new N2Exception("The DynamicSitesProvider requires the RecursionDepth property to be at least 0");
 
-            ContentItem rootItem = null;
-            try
+            List<Site> foundSites = new List<Site>();
+            
+            foreach (Site site in host.Sites)
             {
-                rootItem = persister.Get(rootItemID);
-                if (rootItem == null)
-                    yield break;
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceWarning("DynamicSitesProvider.GetSites:" + ex);
-                yield break;
-            }
-
-            foreach (ISitesSource source in new RecursiveFinder().Find<ISitesSource>(rootItem, RecursionDepth))
-            {
-                foreach (Site s in source.GetSites())
+                try
                 {
-                    yield return s;
+                    ContentItem rootItem = persister.Get(site.RootItemID);
+                    if (rootItem == null)
+                        continue;
+
+                    foreach (ISitesSource source in new RecursiveFinder().Find<ISitesSource>(rootItem, RecursionDepth))
+                    {
+                        foreach (Site s in source.GetSites())
+                        {
+                            if (!host.Sites.Contains(s))
+                                foundSites.Add(s);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Trace.TraceWarning("DynamicSitesProvider.GetSites:" + ex);
                 }
             }
 
+		    return foundSites;
 		}
 		#endregion
 	}

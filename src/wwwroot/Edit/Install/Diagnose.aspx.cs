@@ -155,11 +155,9 @@ namespace N2.Edit.Install
 
 
 				if (itemID == N2.Context.Current.Resolve<IHost>().DefaultSite.RootItemID)
-					lblInsert.Text =
-						string.Format("Inserted root node with id {0} which matches root node in web.config. Great!", itemID);
+					lblInsert.Text = string.Format("Inserted root node with id {0} which matches root node in web.config. Great!", itemID);
 				else
-					lblInsert.Text =
-						string.Format(
+					lblInsert.Text = string.Format(
 							"Inserted root node with id {0}. You should update web.config &lt;appSettings&gt;&lt;add name=\"N2.SiteRoot\" value=\"<b>{0}</b>\" /&gt;&lt;/appSettings&gt;",
 							itemID);
 			}

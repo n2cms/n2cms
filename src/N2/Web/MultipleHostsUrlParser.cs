@@ -107,24 +107,8 @@ namespace N2.Web
             foreach (Site site in host.Sites)
                 if (item.ID == site.StartPageID)
                     return true;
-            return false;
+            return base.IsStartPage(item);
         }
-
-        //public virtual Site GetSite(string authority)
-        //{
-        //    foreach (Site site in host.Sites)
-        //        if (site.Is(authority))
-        //            return site;
-        //    return null;
-        //}
-
-        //public virtual string GetHost(string url)
-        //{
-        //    Match m = Regex.Match(url, @"^\w+?://([^/]+)", RegexOptions.Compiled);
-        //    if (m != null && m.Groups.Count > 1)
-        //        return m.Groups[1].Value.ToLower();
-        //    return null;
-        //}
 
 		#endregion
 	}
