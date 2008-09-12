@@ -1,47 +1,49 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Web;
 using N2.Edit.Trash;
-using N2.Edit.Tests.Trash;
-using N2.Tests.Persistence;
 
-namespace N2.Trashcan.Tests
+namespace N2.Edit.Tests.Trash
 {
-	public class TrashTestBase
-	{
-		protected MockRepository mocks;
-		protected ThrowableItem root;
-		protected ThrowableItem item;
+    public class TrashTestBase
+    {
+        protected ThreadContext webContext;
+        protected Host host;
+
+        protected MockRepository mocks;
+        protected ThrowableItem root;
+        protected ThrowableItem item;
         protected NonThrowableItem nonThrowable;
-		protected TrashContainerItem trash;
+        protected TrashContainerItem trash;
 
-		[SetUp]
-		public virtual void SetUp()
-		{
-			mocks = new MockRepository();
+        [SetUp]
+        public virtual void SetUp()
+        {
+            mocks = new MockRepository();
 
-			root = CreateItem<ThrowableItem>(1, "root", null);
-			item = CreateItem<ThrowableItem>(2, "item", root);
+            root = CreateItem<ThrowableItem>(1, "root", null);
+            item = CreateItem<ThrowableItem>(2, "item", root);
             trash = CreateItem<TrashContainerItem>(3, "Trash", root);
             nonThrowable = CreateItem<NonThrowableItem>(4, "neverInTrash", root);
-		}
 
-		[TearDown]
-		public void TearDown()
-		{
-			mocks.ReplayAll();
-			mocks.VerifyAll();
-		}
+            webContext = new ThreadContext();
+            host = new Host(webContext, 1, 1);
+        }
 
-		protected T CreateItem<T>(int id, string name, ContentItem parent) where T : ContentItem, new()
-		{
-			T i = new T();
-			i.Name = name;
-			i.ID = id;
-			i.AddTo(parent);
-			return i;
-		}
-	}
+        [TearDown]
+        public void TearDown()
+        {
+            mocks.ReplayAll();
+            mocks.VerifyAll();
+        }
+
+        protected T CreateItem<T>(int id, string name, ContentItem parent) where T : ContentItem, new()
+        {
+            T i = new T();
+            i.Name = name;
+            i.ID = id;
+            i.AddTo(parent);
+            return i;
+        }
+    }
 }

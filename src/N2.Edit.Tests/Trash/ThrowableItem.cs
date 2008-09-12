@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Trashcan.Tests
+namespace N2.Edit.Tests.Trash
 {
-	public class ThrowableItem : ContentItem
-	{
-	}
+    public class ThrowableItem : ContentItem
+    {
+    }
 }
