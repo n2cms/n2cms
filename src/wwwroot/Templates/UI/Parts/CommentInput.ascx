@@ -62,7 +62,9 @@
         if (document.forms[0].action.indexOf("#") < 0) 
             document.forms[0].action += "#commentInput";
         jQuery("#addComment").hide();
-        jQuery("#<%= commentInput.ClientID %>").show(quick ? null : "slow");
+        $c = jQuery("#<%= commentInput.ClientID %>");
+        if (quick) $c.show();
+        else $c.slideDown();
     }
     if (location.hash == "#commentInput")
         showComment(true);
