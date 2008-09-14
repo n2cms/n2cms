@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace N2.Templates.Wiki.Items
 {
-    [Definition(SortOrder = 460)]
+    [Definition("Wiki", "Wiki", "A set of pages that can be updated by external users.", "", 460)]
     [RestrictParents(typeof(IStructuralPage))]
     [N2.Web.UI.TabPanel(Wiki.WikiTab, "Wiki", 110)]
     [AllowedChildren(typeof(Subscribe))]

@@ -1,4 +1,5 @@
 1.4.3
+- introduced language root as a lightweight start page
 - added option to more easily configure components
 - multiple sites are updated as content changes
 - added russian translation (maqdev)

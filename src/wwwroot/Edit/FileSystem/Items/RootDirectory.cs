@@ -1,25 +1,11 @@
-﻿using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using N2.Collections;
-using System.Collections.Generic;
-using N2.Web;
-using System.IO;
+﻿using N2.Web;
 using N2.Integrity;
-using N2.Details;
-using N2.Edit.Trash;
 using N2.Definitions;
 using N2.Installation;
 
 namespace N2.Edit.FileSystem.Items
 {
-    [Definition("File Folder", SortOrder = 600, Installer = InstallerHint.NeverRootOrStartPage)]
+    [Definition("File Folder", "RootDirectory", "A node that maps to files in the file system.", "", 600, Installer = InstallerHint.NeverRootOrStartPage)]
     [RestrictParents(typeof(IFileSystemContainer))]
     [ItemAuthorizedRoles("Administrators", "admin")]
     [Editables.EditableFolderPath]

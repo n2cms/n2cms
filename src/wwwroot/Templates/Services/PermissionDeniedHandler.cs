@@ -22,7 +22,7 @@ namespace N2.Templates.Services
 
         void securityEnforcer_AuthorizationFailed(object sender, CancellableItemEventArgs e)
         {
-            AbstractStartPage startPage = parser.StartPage as AbstractStartPage;
+            StartPage startPage = parser.StartPage as StartPage;
             if (startPage != null && startPage.LoginPage != null)
             {
                 e.Cancel = true;

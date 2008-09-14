@@ -1,6 +1,5 @@
 using N2.Details;
 using N2.Integrity;
-using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
@@ -9,7 +8,6 @@ namespace N2.Templates.Items
 	/// </summary>
 	[WithEditableName("Name", 20, ContainerName = Tabs.Content, Ascii = true),
 		WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
-	[TabPanel(Tabs.Advanced, "Advanced", 100)]
 	[AvailableZone("Right", Zones.Right),
         AvailableZone("Recursive Right", Zones.RecursiveRight),
         AvailableZone("Left", Zones.Left),

@@ -94,9 +94,8 @@
     <Compile Include="Templates\Items\AbstractContentPage.cs" />
     <Compile Include="Templates\Items\AbstractItem.cs" />
     <Compile Include="Templates\Items\AbstractPage.cs" />
-    <Compile Include="Templates\Items\AbstractRootPage.cs" />
     <Compile Include="Templates\Items\AbstractSearch.cs" />
-    <Compile Include="Templates\Items\AbstractStartPage.cs" />
+    <Compile Include="Templates\Items\LanguageRoot.cs" />
     <Compile Include="Templates\Items\BoxedTextItem.cs" />
     <Compile Include="Templates\Items\BubbleItem.cs" />
     <Compile Include="Templates\Items\Calendar.cs" />

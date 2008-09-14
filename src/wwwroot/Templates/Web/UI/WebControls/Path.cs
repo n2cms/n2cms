@@ -17,7 +17,7 @@ namespace N2.Templates.Web.UI.WebControls
 		protected override void CreateChildControls()
 		{
             int added = 0;
-			foreach (ContentItem page in Find.EnumerateParents(Find.CurrentPage, Find.ClosestStartPage, true))
+            foreach (ContentItem page in Find.EnumerateParents(Find.CurrentPage, Find.ClosestLanguageRoot, true))
 			{
                 IBreadcrumbAppearance appearance = page as IBreadcrumbAppearance;
                 bool visible = appearance == null || appearance.VisibleInBreadcrumb;

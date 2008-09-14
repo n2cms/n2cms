@@ -16,6 +16,6 @@ namespace N2.Web
         Site GetSite(Url host);
 
         void AddSites(IEnumerable<Site> iEnumerable);
-        void ReplaceSites(IList<Site> newSites);
+        void ReplaceSites(Site site, IList<Site> newSites);
     }
 }

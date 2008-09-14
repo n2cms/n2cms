@@ -1,5 +1,8 @@
+using System.Linq;
 using NUnit.Framework;
 using N2.Web;
+using N2.Configuration;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web
 {
@@ -8,6 +11,8 @@ namespace N2.Tests.Web
 	{
 		ContentItem rootItem;
 	    private IHost host;
+	    private HostSection config;
+	    private DynamicSitesProvider sitesProvider;
 
 		[SetUp]
 		public override void SetUp()
@@ -17,6 +22,9 @@ namespace N2.Tests.Web
 			rootItem = CreateTheItemTree();
             host = new Host(new Fakes.FakeWebContextWrapper(), rootItem.ID, rootItem.ID);
 			mocks.ReplayAll();
+
+		    config = new HostSection {RootID = rootItem.ID, StartPageID = rootItem.ID};
+            sitesProvider = new DynamicSitesProvider(persister, host, config);
 		}
 
 		protected SiteProvidingItem CreateTheItemTree()
@@ -40,15 +48,13 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFindSite_OnRootItem()
 		{
-			DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, host);
 			sitesProvider.RecursionDepth = 0;
-			EnumerableAssert.Count(1, sitesProvider.GetSites());
+            Assert.That(sitesProvider.GetSites().Count(), Is.EqualTo(1));
 		}
 
 		[Test]
 		public void CanFindSites_One_DepthDown()
 		{
-			DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, host);
 			sitesProvider.RecursionDepth = 1;
 			EnumerableAssert.Count(3, sitesProvider.GetSites());
 		}
@@ -56,7 +62,6 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFindSites_Two_DepthsDown()
 		{
-			DynamicSitesProvider sitesProvider = new DynamicSitesProvider(persister, host);
 			sitesProvider.RecursionDepth = 2;
 			EnumerableAssert.Count(5, sitesProvider.GetSites());
 		}

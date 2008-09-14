@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using N2.Configuration;
 
 namespace N2.Web
@@ -16,9 +17,8 @@ namespace N2.Web
 		public Host(IWebContext context, HostSection config)
 		{
             this.context = context;
-			defaultSite = new Site(config.RootID, config.StartPageID);
 
-			sites = ExtractSites(config);
+		    ReplaceSites(new Site(config.RootID, config.StartPageID), ExtractSites(config));
 		}
 
         public static IList<Site> ExtractSites(HostSection config)
@@ -46,7 +46,7 @@ namespace N2.Web
 		{
 			this.context = context;
 			this.defaultSite = defaultSite;
-			sites.Add(defaultSite);
+			sites = new List<Site>();
 		}
 
 		public Site DefaultSite
@@ -60,6 +60,11 @@ namespace N2.Web
             get { return GetSite(context.HostUrl) ?? DefaultSite; }
         }
 
+        public IList<Site> Sites
+        {
+            get { return sites; }
+        }
+
         public Site GetSite(Url host)
         {
             if (host == null)
@@ -71,18 +76,16 @@ namespace N2.Web
             return null;
         }
 
-		public IList<Site> Sites
-		{
-			get { return sites; }
-		}
-
         public void AddSites(IEnumerable<Site> sitesToAdd)
         {
             sites = Union(Sites, sitesToAdd);
         }
 
-        public void ReplaceSites(IList<Site> newSites)
+        public void ReplaceSites(Site defaultSite, IList<Site> newSites)
         {
+            if(newSites == null) throw new ArgumentNullException("newSites");
+            
+            this.defaultSite = defaultSite;
             sites = newSites;
         }
 

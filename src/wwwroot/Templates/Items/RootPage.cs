@@ -18,7 +18,7 @@ namespace N2.Templates.Items
     [AvailableZone("Above", "Above")]
     [AvailableZone("Below", "Below")]
     [N2.Web.UI.TabPanel("smtp", "Smtp settings", 30)]
-    public class RootPage : AbstractRootPage
+    public class RootPage : AbstractPage
     {
         [EditableTextBox("Smtp Host", 100, ContainerName = "smtp")]
         public virtual string SmtpHost

@@ -8,7 +8,7 @@ namespace N2.Templates.Items
     [Disable]
     [Definition("Top", "Top")]
     [N2.Web.UI.FieldSet("top", "Top", 100)]
-    [RestrictParents(typeof(StartPage))] // The top region is placed on the start page and displayed on all underlying pages
+    [RestrictParents(typeof(LanguageRoot))] // The top region is placed on the start page and displayed on all underlying pages
     [AllowedZones("SiteTop")]
     public class Top : AbstractItem
     {

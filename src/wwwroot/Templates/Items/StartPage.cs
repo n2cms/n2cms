@@ -2,14 +2,11 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
-using N2.Web;
-using N2.Web.UI;
-using N2.Templates.Items;
 using N2.Installation;
-using N2.Engine.Globalization;
-using System.Globalization;
 using N2.Serialization;
 using N2.Edit.FileSystem;
+using N2.Web;
+using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
@@ -17,89 +14,67 @@ namespace N2.Templates.Items
     /// The initial page of the site.
     /// </summary>
     [Definition("Start Page", "StartPage", "A start page template. It displays a horizontal meny but no vertical menu.", "", 440, Installer = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage)]
-    [RestrictParents(typeof(RootPage), typeof(StartPage))]
+    [RestrictParents(typeof(RootPage))]
     [AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
-    public class StartPage : AbstractStartPage, ILanguage, IFileSystemContainer
+    public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource
     {
-        [FileAttachment, EditableImage("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
-        public virtual string TopImage
+        public const string LayoutArea = "layoutArea";
+
+        // site
+
+        [EditableTextBox("Host Name", 72, ContainerName = MiscArea)]
+        public virtual string HostName
         {
-            get { return (string)(GetDetail("TopImage") ?? string.Empty); }
-            set { SetDetail("TopImage", value, string.Empty); }
+            get { return (string)(GetDetail("HostName") ?? string.Empty); }
+            set { SetDetail("HostName", value); }
         }
 
-        [FileAttachment, EditableImage("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
-        public virtual string Image
+        [EditableLink("Not Found Page (404)", 77, ContainerName = MiscArea, HelpText = "Display this page when the requested URL isn't found")]
+        public virtual ContentItem NotFoundPage
         {
-            get { return (string)(GetDetail("Image") ?? string.Empty); }
-            set { SetDetail("Image", value, string.Empty); }
+            get { return (ContentItem)GetDetail("NotFoundPage"); }
+            set { SetDetail("NotFoundPage", value); }
         }
 
-        [EditableTextBox("Footer Text", 80, ContainerName = MiscArea, TextMode = TextBoxMode.MultiLine, Rows = 4)]
-        public virtual string FooterText
+        [EditableLink("Error Page (500)", 78, ContainerName = MiscArea, HelpText = "Display this page when an unhandled exception occurs.")]
+        public virtual ContentItem ErrorPage
         {
-            get { return (string)(GetDetail("FooterText") ?? string.Empty); }
-            set { SetDetail("FooterText", value, string.Empty); }
+            get { return (ContentItem)GetDetail("ErrorPage"); }
+            set { SetDetail("ErrorPage", value); }
         }
 
-        [EditableItem("Header", 100, ContainerName = SiteArea)]
-        public virtual Top Header
+        [EditableLink("Login Page", 79, ContainerName = MiscArea, HelpText = "Page to display when authorization to a page fails.")]
+        public virtual ContentItem LoginPage
         {
-            get { return (Top)GetDetail("Header"); }
-            set { SetDetail("Header", value); }
+            get { return (ContentItem)GetDetail("LoginPage"); }
+            set { SetDetail("LoginPage", value); }
         }
+
+        [EditableCheckBox("Show Breadcrumb", 110, ContainerName = LayoutArea)]
+        public virtual bool ShowBreadcrumb
+        {
+            get { return (bool)(GetDetail("ShowBreadcrumb") ?? true); }
+            set { SetDetail("ShowBreadcrumb", value, true); }
+        }
+
+        public IEnumerable<Site> GetSites()
+        {
+            if (string.IsNullOrEmpty(HostName))
+                return new Site[0];
+
+            Site s = new Site((Parent ?? this).ID, ID, HostName);
+            s.Wildcards = true;
+
+            return new Site[] { s };
+        }
+
+        // content
 
         [Details.ThemeSelector("Theme", 74, ContainerName = LayoutArea)]
-        public override string Theme
+        public string Theme
         {
             get { return (string)(GetDetail("Theme") ?? string.Empty); }
             set { SetDetail("Theme", value); }
         }
-
-        protected override string IconName
-        {
-            get { return "page_world"; }
-        }
-
-        public override string TemplateUrl
-        {
-            get { return "~/Default.aspx"; }
-        }
-
-        #region ILanguage Members
-
-        public string FlagUrl
-        {
-            get 
-            {
-                if (string.IsNullOrEmpty(LanguageCode))
-                    return "";
-                else
-                {
-                    string[] parts = LanguageCode.Split('-');
-                    return string.Format("~/Edit/Globalization/flags/{0}.png", parts[parts.Length - 1]);
-                }
-            }
-        }
-
-        [EditableLanguagesDropDown("Language", 100, ContainerName = MiscArea)]
-        public string LanguageCode
-        {
-            get { return (string)GetDetail("LanguageCode"); }
-            set { SetDetail("LanguageCode", value); }
-        }
-
-        public string LanguageTitle
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(LanguageCode))
-                    return "";
-                else
-                    return new CultureInfo(LanguageCode).DisplayName;
-            }
-        }
-
-        #endregion
     }
 }

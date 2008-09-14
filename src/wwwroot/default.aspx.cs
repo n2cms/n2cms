@@ -1,8 +1,8 @@
-using StartPage=N2.Templates.Items.StartPage;
+using N2.Templates.Items;
 
 namespace N2.Templates.UI
 {
-	public partial class Default : Web.UI.TemplatePage<StartPage>
+	public partial class Default : Web.UI.TemplatePage<LanguageRoot>
 	{
 	}
 }

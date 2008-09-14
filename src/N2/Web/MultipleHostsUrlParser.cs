@@ -26,7 +26,7 @@ namespace N2.Web
                     {
                         IList<Site> sites = Host.ExtractSites(config);
                         sites = Host.Union(sites, sitesProvider.GetSites());
-                        host.ReplaceSites(sites);
+                        host.ReplaceSites(host.DefaultSite, sites);
                     }
                 };
             }

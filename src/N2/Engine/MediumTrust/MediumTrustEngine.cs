@@ -72,7 +72,7 @@ namespace N2.Engine.MediumTrust
 
 			if (hostConfiguration.MultipleSites)
 			{
-                ISitesProvider sitesProvider = AddComponentInstance<ISitesProvider>(new DynamicSitesProvider(persister, host));
+                ISitesProvider sitesProvider = AddComponentInstance<ISitesProvider>(new DynamicSitesProvider(persister, host, hostConfiguration));
 				urlParser = AddComponentInstance<IUrlParser>(new MultipleSitesParser(persister, webContext, notifier, host, sitesProvider, hostConfiguration));
 			}
 			else

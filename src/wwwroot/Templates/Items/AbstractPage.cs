@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Web.UI;
 using N2.Collections;
 using N2.Details;
 using N2.Web.UI;
@@ -13,7 +12,8 @@ namespace N2.Templates.Items
 	/// </summary>
 	[WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content)]
 	[TabPanel(Tabs.Content, "Content", 0)]
-	public abstract class AbstractPage : ContentItem
+    [TabPanel(Tabs.Advanced, "Advanced", 100)]
+    public abstract class AbstractPage : ContentItem
 	{
 	    /// <summary>Defaults to ~/Templates/UI/Img/{IconName}.png. Override <see cref="IconName"/> to reference icon in same directory.</summary>
         public override string IconUrl

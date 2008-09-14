@@ -29,7 +29,7 @@ namespace N2.Templates.Web.UI.WebControls
 
 		public ContentItem StartPage
 		{
-			get { return startPage ?? Find.ClosestStartPage; }
+			get { return startPage ?? Find.ClosestLanguageRoot; }
 			set { startPage = value; }
 		}
 

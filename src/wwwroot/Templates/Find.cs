@@ -6,7 +6,7 @@ using N2.Templates.Items;
 
 namespace N2.Templates
 {
-	public sealed class Find : N2.Persistence.GenericFind<Items.AbstractRootPage,Items.AbstractStartPage>
+	public sealed class Find : N2.Persistence.GenericFind<ContentItem,StartPage>
 	{
 		/// <summary>
 		/// Gets the item at the specified level.
@@ -33,19 +33,34 @@ namespace N2.Templates
 			return null;
 		}
 
-		public static AbstractStartPage ClosestStartPage
+		public static StartPage ClosestStartPage
 		{
 			get
 			{
 				foreach (ContentItem item in Find.EnumerateParents(CurrentPage, null, true))
 				{
-					if (item is AbstractStartPage)
-					{
-						return item as AbstractStartPage;
-					}
+				    StartPage sp = item as StartPage;
+                    if (sp != null)
+                        return sp;
 				}
 				return null;
 			}
 		}
+
+
+
+        public static LanguageRoot ClosestLanguageRoot
+        {
+            get
+            {
+                foreach (ContentItem item in Find.EnumerateParents(CurrentPage, null, true))
+                {
+                    LanguageRoot sp = item as LanguageRoot;
+                    if (sp != null)
+                        return sp;
+                }
+                return null;
+            }
+        }
 	}
 }

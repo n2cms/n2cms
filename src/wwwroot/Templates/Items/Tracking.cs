@@ -5,7 +5,7 @@ using N2.Templates.Items;
 namespace N2.Templates.Items
 {
     [Definition("Tracking script", "Tracking", SortOrder = 2000)]
-    [RestrictParents(typeof(AbstractStartPage))]
+    [RestrictParents(typeof(LanguageRoot))]
     [AllowedZones(Zones.SiteRight)]
     public class Tracking : Templates.Items.AbstractItem
     {

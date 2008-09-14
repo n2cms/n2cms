@@ -14,7 +14,7 @@ namespace N2.Templates.UI.Layouts
 
             ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
 
-            AbstractStartPage start = Find.ClosestStartPage;
+            StartPage start = Find.ClosestStartPage;
             
             if (p != null) p.Visible = (start != null) && start.ShowBreadcrumb;
             if (dti != null) dti.Visible = CurrentPage["ShowTitle"] != null && (bool)CurrentPage["ShowTitle"];
