@@ -8,7 +8,10 @@
                 CssClass="label" Text="Title" meta:resourcekey="lblTitleResource1" />
             <asp:TextBox ID="txtTitle" runat="server" CssClass="tb" MaxLength="250" 
                 meta:resourcekey="txtTitleResource1" />
-        </div>
+            <asp:RequiredFieldValidator ID="rfvTitle" runat="server" 
+                ValidationGroup="CommentInput" ControlToValidate="txtTitle" Text="*" 
+                Display="Dynamic" meta:resourcekey="rfvTitle" />
+       </div>
         <div class="row cf">
             <asp:Label ID="lblName" runat="server" AssociatedControlID="txtName" 
                 CssClass="label" Text="Name *" meta:resourcekey="lblNameResource1" />

@@ -400,12 +400,12 @@
     <Compile Include="Templates\UI\Parts\NewsList.ascx.designer.cs">
       <DependentUpon>NewsList.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Templates\UI\Views\NewsContainer.aspx.cs">
-      <DependentUpon>NewsContainer.aspx</DependentUpon>
+    <Compile Include="Templates\UI\Views\NewsList.aspx.cs">
+      <DependentUpon>NewsList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Templates\UI\Views\NewsContainer.aspx.designer.cs">
-      <DependentUpon>NewsContainer.aspx</DependentUpon>
+    <Compile Include="Templates\UI\Views\NewsList.aspx.designer.cs">
+      <DependentUpon>NewsList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Poll.ascx.cs">
       <DependentUpon>Poll.ascx</DependentUpon>
@@ -988,7 +988,7 @@
     <Content Include="Templates\UI\Parts\NewsBox.ascx" />
     <Content Include="Templates\UI\Views\NewsItem.aspx" />
     <Content Include="Templates\UI\Parts\NewsList.ascx" />
-    <Content Include="Templates\UI\Views\NewsContainer.aspx" />
+    <Content Include="Templates\UI\Views\NewsList.aspx" />
     <Content Include="Templates\UI\Parts\Poll.ascx" />
     <Content Include="Templates\UI\Views\Redirect.aspx" />
     <Content Include="Templates\UI\Parts\Result.ascx" />

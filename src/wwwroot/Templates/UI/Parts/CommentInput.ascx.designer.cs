@@ -41,6 +41,15 @@ namespace N2.Templates.UI.Parts {
         protected global::System.Web.UI.WebControls.TextBox txtTitle;
         
         /// <summary>
+        /// rfvTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTitle;
+        
+        /// <summary>
         /// lblName control.
         /// </summary>
         /// <remarks>

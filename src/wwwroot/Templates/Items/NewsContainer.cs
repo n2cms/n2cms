@@ -14,7 +14,7 @@ namespace N2.Templates.Items
 
         protected override string TemplateName
         {
-            get { return "NewsContainer"; }
+            get { return "NewsList"; }
         }
     }
 }
