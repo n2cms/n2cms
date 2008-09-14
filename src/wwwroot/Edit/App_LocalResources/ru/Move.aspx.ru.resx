@@ -117,94 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="copy.Title" xml:space="preserve">
-    <value />
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Отмена</value>
   </data>
-  <data name="copy.ToolTip" xml:space="preserve">
-    <value>Copy item including sub-items</value>
+  <data name="btnMove.Text" xml:space="preserve">
+    <value>Попробуйте еще раз</value>
   </data>
-  <data name="DefaultResource.Title" xml:space="preserve">
-    <value>N2 Edit Interface</value>
+  <data name="cvMove.ErrorMessage" xml:space="preserve">
+    <value>Ошибка</value>
   </data>
-  <data name="delete.Title" xml:space="preserve">
-    <value />
+  <data name="DestinationOnOrBelowItselfExceptionFormat" xml:space="preserve">
+    <value>Нельзя переместить элемент внутрь себя.</value>
   </data>
-  <data name="delete.ToolTip" xml:space="preserve">
-    <value>Delete item including sub-items</value>
+  <data name="from.TextFormat" xml:space="preserve">
+    <value>{0}&lt;b&gt;{1}&lt;/b&gt;</value>
   </data>
-  <data name="edit.Title" xml:space="preserve">
-    <value />
+  <data name="h3.InnerText" xml:space="preserve">
+    <value>Перемещаемые элементы:</value>
   </data>
-  <data name="edit.ToolTip" xml:space="preserve">
-    <value>Edit selected item</value>
+  <data name="lblFrom.Text" xml:space="preserve">
+    <value>Из</value>
   </data>
-  <data name="move.Title" xml:space="preserve">
-    <value />
+  <data name="lblNewName.Text" xml:space="preserve">
+    <value>Новое название</value>
   </data>
-  <data name="move.ToolTip" xml:space="preserve">
-    <value>Cut</value>
+  <data name="lblTo.Text" xml:space="preserve">
+    <value>В</value>
   </data>
-  <data name="new.Title" xml:space="preserve">
-    <value />
+  <data name="MovePage.TitleFormat" xml:space="preserve">
+    <value>Переместить "{0}" в "{1}"</value>
   </data>
-  <data name="new.ToolTip" xml:space="preserve">
-    <value>Create new item below selected item</value>
+  <data name="NameOccupiedExceptionFormat" xml:space="preserve">
+    <value>Элемент с названием "{0}" уже существует под "{1}"</value>
   </data>
-  <data name="paste.Title" xml:space="preserve">
-    <value />
+  <data name="NotAllowedParentExceptionFormat" xml:space="preserve">
+    <value>Элемент с типом "{0}" не может быть перемещен внутрь типа "{1}"</value>
   </data>
-  <data name="paste.ToolTip" xml:space="preserve">
-    <value>Paste the item in memory</value>
-  </data>
-  <data name="search.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="search.ToolTip" xml:space="preserve">
-    <value>Search items</value>
-  </data>
-  <data name="settings.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="settings.ToolTip" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="table.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="table.ToolTip" xml:space="preserve">
-    <value>Tabular navigation</value>
-  </data>
-  <data name="tree.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tree.ToolTip" xml:space="preserve">
-    <value>Hierarchical navigation</value>
-  </data>
-  <data name="versions.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="versions.ToolTip" xml:space="preserve">
-    <value>Previous versions</value>
-  </data>
-  <data name="filemanager.ToolTip" xml:space="preserve">
-    <value>Upload and organize files</value>
-  </data>
-  <data name="exportimport.ToolTip" xml:space="preserve">
-    <value>Import/Export content items</value>
-  </data>
-  <data name="linktracker.ToolTip" xml:space="preserve">
-    <value>Display inbound/outbound links to/from the current item</value>
-  </data>
-  <data name="security.ToolTip" xml:space="preserve">
-    <value>Change page permissions</value>
-  </data>
-  <data name="users.ToolTip" xml:space="preserve">
-    <value>Manage users</value>
-  </data>
-  <data name="wizard.ToolTip" xml:space="preserve">
-    <value>Recall and define default type/location combinations for quick creation</value>
-  </data>
-  <data name="globalization.ToolTip" xml:space="preserve">
-    <value>Overview translations of the selected page and it's child pages</value>
+  <data name="to.TextFormat" xml:space="preserve">
+    <value>{0}&lt;b&gt;{1}&lt;/b&gt;</value>
   </data>
 </root>

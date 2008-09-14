@@ -61,6 +61,26 @@
     <Content Include="default.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\ru\EditableContainers.ru.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ru\Definitions.ru.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ru\Editables.ru.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ru\Zones.ru.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.ru.resx</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Configuration\MailConfigSource.cs" />
     <Compile Include="Templates\Configuration\TemplatesSection.cs" />
     <Compile Include="Templates\Configuration\WikiElement.cs" />
@@ -663,8 +683,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Definitions.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Definitions.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\Definitions.nl1.designer.cs">
+    <Compile Include="App_GlobalResources\nl\Definitions.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\Definitions.nl1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Definitions.nl.resx</DependentUpon>
@@ -674,8 +694,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EditableContainers.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\EditableContainers.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\EditableContainers.nl1.designer.cs">
+    <Compile Include="App_GlobalResources\nl\EditableContainers.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\EditableContainers.nl1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EditableContainers.nl.resx</DependentUpon>
@@ -685,14 +705,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Editables.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Editables.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\Editables.nl1.designer.cs">
+    <Compile Include="App_GlobalResources\nl\Editables.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\Editables.nl1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Editables.nl.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Toolbar.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\Toolbar.nl1.designer.cs">
+    <Compile Include="App_GlobalResources\nl\Toolbar.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\Toolbar.nl1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Toolbar.nl.resx</DependentUpon>
@@ -702,8 +722,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Zones.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\Zones.nl1.designer.cs">
+    <Compile Include="App_GlobalResources\nl\Zones.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\Zones.nl1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.nl.resx</DependentUpon>
@@ -822,27 +842,27 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\Definitions.nl.resx">
+    <Content Include="App_GlobalResources\nl\Definitions.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Definitions.nl1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_GlobalResources\EditableContainers.nl.resx">
+    <Content Include="App_GlobalResources\nl\EditableContainers.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditableContainers.nl1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_GlobalResources\Editables.nl.resx">
+    <Content Include="App_GlobalResources\nl\Editables.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Editables.nl1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_GlobalResources\Toolbar.nl.resx">
+    <Content Include="App_GlobalResources\nl\Toolbar.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Toolbar.nl1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_GlobalResources\Zones.nl.resx">
+    <Content Include="App_GlobalResources\nl\Zones.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Zones.nl1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -1061,6 +1081,26 @@
     <Content Include="Templates\UI\Img\comments.png" />
     <Content Include="Templates\UI\Img\comment_add.png" />
     <Content Include="Templates\UI\Parts\App_LocalResources\CommentInput.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\ru\Definitions.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.ru.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ru\Editables.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.ru.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\ru\Zones.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.ru.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\ru\EditableContainers.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

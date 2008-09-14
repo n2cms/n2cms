@@ -117,94 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="copy.Title" xml:space="preserve">
-    <value />
+  <data name="btnCreateFolder.Text" xml:space="preserve">
+    <value>Создать папку</value>
   </data>
-  <data name="copy.ToolTip" xml:space="preserve">
-    <value>Copy item including sub-items</value>
+  <data name="btnDelete.Text" xml:space="preserve">
+    <value>&lt;img src="../img/ico/delete.gif" /&gt; Удалить</value>
   </data>
-  <data name="DefaultResource.Title" xml:space="preserve">
-    <value>N2 Edit Interface</value>
+  <data name="cvDeleteProblem.ErrorMessage" xml:space="preserve">
+    <value>Ошибка при удалении файла или папки. Вероятные причины ошибки - файлы с атрибутом только для чтения и отсутствие прав для записи в папку на сервере.</value>
   </data>
-  <data name="delete.Title" xml:space="preserve">
-    <value />
+  <data name="cvDeleteRoot.ErrorMessage" xml:space="preserve">
+    <value>Основной каталог не может быть удален.</value>
   </data>
-  <data name="delete.ToolTip" xml:space="preserve">
-    <value>Delete item including sub-items</value>
+  <data name="fileManagementPage.Title" xml:space="preserve">
+    <value>Менеджер файлов</value>
   </data>
-  <data name="edit.Title" xml:space="preserve">
-    <value />
+  <data name="hlCancel.Text" xml:space="preserve">
+    <value>Отмена</value>
   </data>
-  <data name="edit.ToolTip" xml:space="preserve">
-    <value>Edit selected item</value>
+  <data name="hlItems.Text" xml:space="preserve">
+    <value>&lt;img src="../img/ico/page.gif" /&gt; Элементы</value>
   </data>
-  <data name="move.Title" xml:space="preserve">
-    <value />
+  <data name="hlNewFolder.Text" xml:space="preserve">
+    <value>&lt;img src="../img/ico/folder_add.gif" /&gt; Новая папка</value>
   </data>
-  <data name="move.ToolTip" xml:space="preserve">
-    <value>Cut</value>
+  <data name="hlUpload.Text" xml:space="preserve">
+    <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; Отправить</value>
   </data>
-  <data name="new.Title" xml:space="preserve">
-    <value />
+  <data name="lblFolder.Text" xml:space="preserve">
+    <value>Название папки</value>
   </data>
-  <data name="new.ToolTip" xml:space="preserve">
-    <value>Create new item below selected item</value>
+  <data name="lblUpload.Text" xml:space="preserve">
+    <value>Выбор файла</value>
   </data>
-  <data name="paste.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="paste.ToolTip" xml:space="preserve">
-    <value>Paste the item in memory</value>
-  </data>
-  <data name="search.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="search.ToolTip" xml:space="preserve">
-    <value>Search items</value>
-  </data>
-  <data name="settings.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="settings.ToolTip" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="table.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="table.ToolTip" xml:space="preserve">
-    <value>Tabular navigation</value>
-  </data>
-  <data name="tree.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tree.ToolTip" xml:space="preserve">
-    <value>Hierarchical navigation</value>
-  </data>
-  <data name="versions.Title" xml:space="preserve">
-    <value />
-  </data>
-  <data name="versions.ToolTip" xml:space="preserve">
-    <value>Previous versions</value>
-  </data>
-  <data name="filemanager.ToolTip" xml:space="preserve">
-    <value>Upload and organize files</value>
-  </data>
-  <data name="exportimport.ToolTip" xml:space="preserve">
-    <value>Import/Export content items</value>
-  </data>
-  <data name="linktracker.ToolTip" xml:space="preserve">
-    <value>Display inbound/outbound links to/from the current item</value>
-  </data>
-  <data name="security.ToolTip" xml:space="preserve">
-    <value>Change page permissions</value>
-  </data>
-  <data name="users.ToolTip" xml:space="preserve">
-    <value>Manage users</value>
-  </data>
-  <data name="wizard.ToolTip" xml:space="preserve">
-    <value>Recall and define default type/location combinations for quick creation</value>
-  </data>
-  <data name="globalization.ToolTip" xml:space="preserve">
-    <value>Overview translations of the selected page and it's child pages</value>
+  <data name="revFolder.ErrorMessage" xml:space="preserve">
+    <value>Разрешены только буквы и цифры.</value>
   </data>
 </root>

@@ -1,4 +1,6 @@
 1.4.3
+- added russian translation (maqdev)
+- added dutch translation (MartijnRasenberg)
 - changed default database caching mode to false
 - rearranged persistence code slightly and moved event argument classes
 - improved existing and added more property snippets

@@ -81,31 +81,6 @@
     <Compile Include="Edit\AffectedItems.ascx.designer.cs">
       <DependentUpon>AffectedItems.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Edit\App_GlobalResources\Toolbar.da.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.da.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\App_GlobalResources\Toolbar.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\App_GlobalResources\Toolbar.it.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.it.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\App_GlobalResources\Toolbar.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\App_GlobalResources\Toolbar.nl1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.nl.resx</DependentUpon>
-    </Compile>
     <Compile Include="Edit\AvailableZones.ascx.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -823,21 +798,6 @@
     <Content Include="Edit\App_LocalResources\da\Toolbar.ascx.da.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Edit\App_GlobalResources\Toolbar.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_GlobalResources\Toolbar.it.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.it.designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="Edit\App_GlobalResources\Toolbar.da.resx">
-      <SubType>Designer</SubType>
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.da.designer.cs</LastGenOutput>
-    </Content>
     <Content Include="Edit\Settings\App_LocalResources\Default.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -896,11 +856,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_GlobalResources\Toolbar.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.nl1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Edit\Navigation\App_LocalResources\Search.aspx.nl.resx">
@@ -974,16 +929,16 @@
     <Content Include="Edit\Membership\App_LocalResources\Users.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Edit\Versions\App_LocalResources\Versions.aspx.da.resx">
+    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.da.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Edit\Versions\App_LocalResources\Versions.aspx.it.resx">
+    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.it.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Edit\Versions\App_LocalResources\Versions.aspx.nl.resx">
+    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.nl.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Edit\Versions\App_LocalResources\Versions.aspx.resx">
+    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Edit\ItemSelection\Default.aspx" />
@@ -1644,6 +1599,44 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit\KeepAlive\Ping.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Edit\App_LocalResources\ru\AffectedItems.ascx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\AvailableZones.ascx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Copy.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Default.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Delete.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Edit.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Framed.Master.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\ItemInfo.ascx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Login.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Move.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\New.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Paste.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Toolbar.ascx.ru.resx" />
+    <Content Include="Edit\Export\App_LocalResources\Default.aspx.ru.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\Trash\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\Settings\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\Security\App_LocalResources\Default.aspx.nl.resx" />
+    <Content Include="Edit\Security\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\Navigation\App_LocalResources\Navigation.nl.resx" />
+    <Content Include="Edit\Navigation\App_LocalResources\Search.aspx.ru.resx" />
+    <Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.ru.resx" />
+    <Content Include="Edit\Navigation\App_LocalResources\Table.aspx.ru.resx" />
+    <Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.ru.resx" />
+    <Content Include="Edit\Membership\App_LocalResources\ru\Edit.aspx.ru.resx" />
+    <Content Include="Edit\Membership\App_LocalResources\ru\New.aspx.ru.resx" />
+    <Content Include="Edit\Membership\App_LocalResources\ru\Password.aspx.ru.resx" />
+    <Content Include="Edit\Membership\App_LocalResources\ru\Users.aspx.ru.resx" />
+    <Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\Globalization\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.nl.resx" />
+    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.ru.resx" />
+    <Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.ru.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
