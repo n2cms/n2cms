@@ -64,15 +64,15 @@ namespace N2.Web.UI
 
 		#region Methods
 		#region On...
-		protected virtual void OnItemCreated(Persistence.ItemEventArgs e)
+		protected virtual void OnItemCreated(ItemEventArgs e)
 		{
-			EventHandler<Persistence.ItemEventArgs> handler = base.Events[EventItemCreated] as EventHandler<Persistence.ItemEventArgs>;
+			EventHandler<ItemEventArgs> handler = base.Events[EventItemCreated] as EventHandler<ItemEventArgs>;
 			if (handler != null)
 				handler.Invoke(this, e);
 		}
-		protected virtual void OnItemCreating(Persistence.ItemEventArgs e)
+		protected virtual void OnItemCreating(ItemEventArgs e)
 		{
-			EventHandler<Persistence.ItemEventArgs> handler = base.Events[EventItemCreating] as EventHandler<Persistence.ItemEventArgs>;
+			EventHandler<ItemEventArgs> handler = base.Events[EventItemCreating] as EventHandler<ItemEventArgs>;
 			if (handler != null)
 				handler.Invoke(this, e);
 
@@ -144,7 +144,7 @@ namespace N2.Web.UI
 			if (parentItem == null)
 				throw new ArgumentNullException("parentItem", "Can't insert item since we have no parent item to insert below");
 
-			Persistence.ItemEventArgs args = new N2.Persistence.ItemEventArgs(null);
+			ItemEventArgs args = new ItemEventArgs(null);
 			OnItemCreating(args);
 			OnItemCreated(args);
 
@@ -169,12 +169,12 @@ namespace N2.Web.UI
 		#endregion	
 
 		#region Events
-		public event EventHandler<Persistence.ItemEventArgs> ItemCreated
+		public event EventHandler<ItemEventArgs> ItemCreated
 		{
 			add { base.Events.AddHandler(EventItemCreated, value); }
 			remove { base.Events.RemoveHandler(EventItemCreated, value); }
 		}
-		public event EventHandler<Persistence.ItemEventArgs> ItemCreating
+		public event EventHandler<ItemEventArgs> ItemCreating
 		{
 			add { base.Events.AddHandler(EventItemCreating, value); }
 			remove { base.Events.RemoveHandler(EventItemCreating, value); }

@@ -83,7 +83,7 @@ namespace N2.Web
 		/// <summary>Invoked when an item is created or loaded from persistence medium.</summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		protected virtual void OnItemCreated(object sender, N2.Persistence.ItemEventArgs e)
+		protected virtual void OnItemCreated(object sender, ItemEventArgs e)
 		{
 			((IUrlParserDependency)e.AffectedItem).SetUrlParser(this);
 		}

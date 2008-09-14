@@ -236,7 +236,7 @@ namespace N2.Persistence.NH.Finder
 				from.Append(" order by ").Append(OrderBy);
 
 			string hql = from.ToString();
-			IQuery query = sessionProvider.GetOpenedSession().CreateQuery(hql);
+            IQuery query = sessionProvider.OpenSession.Session.CreateQuery(hql);
 
 			for (int i = 0; i < criterias.Count; i++)
 			{

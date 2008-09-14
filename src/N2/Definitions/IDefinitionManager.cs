@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Copyright (C) 2007 Cristian Libardo
  *
  * This is free software; you can redistribute it and/or modify it
@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using N2.Persistence;
 
 namespace N2.Definitions
 {

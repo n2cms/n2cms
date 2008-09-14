@@ -522,7 +522,7 @@ namespace N2.Web.UI.WebControls
 			#region IItemEditor Members
 
 
-			public event EventHandler<N2.Persistence.ItemEventArgs> Saved;
+			public event EventHandler<ItemEventArgs> Saved;
 
 			#endregion
 		}
@@ -594,7 +594,7 @@ namespace N2.Web.UI.WebControls
 				set { addedEditors = value; }
 			}
 
-			public event EventHandler<N2.Persistence.ItemEventArgs> Saved;
+			public event EventHandler<ItemEventArgs> Saved;
 
 			public ContentItem CurrentItem
 			{

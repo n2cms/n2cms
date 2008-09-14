@@ -409,7 +409,7 @@ namespace N2.Edit
 		/// <summary>
 		/// Triggers the SavingVersion event.
 		/// </summary>
-		protected virtual void OnSavingVersion(Persistence.CancellableItemEventArgs args)
+		protected virtual void OnSavingVersion(CancellableItemEventArgs args)
 		{
 			EventHandler<CancellableItemEventArgs> handler = Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>;
 			if (handler != null)
@@ -434,7 +434,7 @@ namespace N2.Edit
 		}
 
 		/// <summary>Occurs when a version is about to be saved.</summary>
-		public event EventHandler<Persistence.CancellableItemEventArgs> SavingVersion
+		public event EventHandler<CancellableItemEventArgs> SavingVersion
 		{
 			add { Events.AddHandler(savingVersionKey, value); }
 			remove { Events.RemoveHandler(savingVersionKey, value); }

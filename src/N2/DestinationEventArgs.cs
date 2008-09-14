@@ -18,28 +18,28 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Persistence
+namespace N2
 {
-    /// <summary>Event argument containing item data.</summary>
-    public class ItemEventArgs : EventArgs
+    /// <summary>
+    /// Event argument containing item and destination item.
+    /// </summary>
+    public class DestinationEventArgs : ItemEventArgs
     {
-		/// <summary>Creates a new instance of the ItemEventArgs.</summary>
-		/// <param name="item">The item the associated with these event arguments.</param>
-        public ItemEventArgs(ContentItem item)
+        private ContentItem destination;
+
+        /// <summary>Creates a new instance of the DestinationEventArgs.</summary>
+        /// <param name="affectedItem">The item associated with these arguments.</param>
+        /// <param name="destination">The destination for the event with these arguments.</param>
+        public DestinationEventArgs(ContentItem affectedItem, ContentItem destination)
+            : base(affectedItem)
         {
-            this.affectedItem = item;
+            this.destination = destination;
         }
 
-        private ContentItem affectedItem;
-		/// <summary>Gets or sets the item associated with these arguments.</summary>
-        public ContentItem AffectedItem
+        /// <summary>Gets the destination for the event with these arguments.</summary>
+        public ContentItem Destination
         {
-            get { return affectedItem; }
-			set { affectedItem = value; }
-        }
+            get { return destination; }
+        }	
     }
 }

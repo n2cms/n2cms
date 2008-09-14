@@ -60,15 +60,15 @@ namespace N2.Web.UI
 				handler.Invoke(this, e);
 		}
 		
-		protected virtual void OnInserted(Persistence.ItemEventArgs e)
+		protected virtual void OnInserted(ItemEventArgs e)
 		{
-			EventHandler<Persistence.ItemEventArgs> handler = base.Events[EventInserted] as EventHandler<Persistence.ItemEventArgs>;
+			EventHandler<ItemEventArgs> handler = base.Events[EventInserted] as EventHandler<ItemEventArgs>;
 			if (handler != null)
 				handler.Invoke(this, e);
 		}
-		protected virtual void OnInserting(Persistence.ItemEventArgs e)
+		protected virtual void OnInserting(ItemEventArgs e)
 		{
-			EventHandler<Persistence.ItemEventArgs> handler = base.Events[EventInserting] as EventHandler<Persistence.ItemEventArgs>;
+			EventHandler<ItemEventArgs> handler = base.Events[EventInserting] as EventHandler<ItemEventArgs>;
 			if (handler != null)
 				handler.Invoke(this, e);
 		}

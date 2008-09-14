@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
-using N2.Persistence;
 
 namespace N2.Serialization
 {

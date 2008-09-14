@@ -123,7 +123,7 @@ namespace N2.Installation
 			{
 				using (sessionProvider)
 				{
-                    ISession session = sessionProvider.GetOpenedSession();
+                    ISession session = sessionProvider.OpenSession.Session;
 					status.Items = session.CreateCriteria(typeof (ContentItem)).List().Count;
 					status.Details = session.CreateCriteria(typeof(ContentDetail)).List().Count;
 					status.DetailCollections = session.CreateCriteria(typeof(DetailCollection)).List().Count;
@@ -166,7 +166,7 @@ namespace N2.Installation
 		{
             using (sessionProvider)
 			{
-                ISession session = sessionProvider.GetOpenedSession();
+                ISession session = sessionProvider.OpenSession.Session;
 				int itemCount = session.CreateCriteria(typeof (ContentItem)).List().Count;
 				int detailCount = session.CreateCriteria(typeof (ContentDetail)).List().Count;
 				int allowedRoleCount = session.CreateCriteria(typeof (AuthorizedRole)).List().Count;

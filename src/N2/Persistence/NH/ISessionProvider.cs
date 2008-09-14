@@ -9,7 +9,8 @@ namespace N2.Persistence.NH
 	{
         /// <summary>Returns an already opened session or creates and opens a new one and puts it in the current request.</summary>
         /// <returns>A NHibernate session.</returns>
-		NHibernate.ISession GetOpenedSession();
+        SessionContext OpenSession { get; }
+
         /// <summary>Persists changes to disk.</summary>
 		void Flush();
 	}

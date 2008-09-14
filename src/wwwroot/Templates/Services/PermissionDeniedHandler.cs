@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Castle.Core;
 using N2.Plugin;
 using N2.Security;
@@ -20,7 +20,7 @@ namespace N2.Templates.Services
             this.context = context;
         }
 
-        void securityEnforcer_AuthorizationFailed(object sender, N2.Persistence.CancellableItemEventArgs e)
+        void securityEnforcer_AuthorizationFailed(object sender, CancellableItemEventArgs e)
         {
             AbstractStartPage startPage = parser.StartPage as AbstractStartPage;
             if (startPage != null && startPage.LoginPage != null)
@@ -34,12 +34,12 @@ namespace N2.Templates.Services
 
         public void Start()
         {
-            securityEnforcer.AuthorizationFailed += new EventHandler<N2.Persistence.CancellableItemEventArgs>(securityEnforcer_AuthorizationFailed);
+            securityEnforcer.AuthorizationFailed += new EventHandler<CancellableItemEventArgs>(securityEnforcer_AuthorizationFailed);
         }
 
         public void Stop()
         {
-            securityEnforcer.AuthorizationFailed -= new EventHandler<N2.Persistence.CancellableItemEventArgs>(securityEnforcer_AuthorizationFailed);
+            securityEnforcer.AuthorizationFailed -= new EventHandler<CancellableItemEventArgs>(securityEnforcer_AuthorizationFailed);
         }
 
         #endregion

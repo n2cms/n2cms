@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Engine;
-using N2.Persistence;
 using N2.Definitions;
 
 namespace N2.Web.UI.WebControls

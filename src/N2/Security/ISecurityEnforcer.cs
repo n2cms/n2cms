@@ -1,5 +1,5 @@
-﻿using System;
-using N2.Persistence;
+using System;
+
 namespace N2.Security
 {
 	/// <summary>

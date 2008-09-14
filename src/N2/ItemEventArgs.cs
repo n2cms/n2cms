@@ -19,27 +19,28 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace N2.Persistence
+namespace N2
 {
-	/// <summary>Event argument containing item data.</summary>
-	public class CancellableItemEventArgs : ItemEventArgs
-	{
-		/// <summary>Creates a new instance of the CancellableItemEventArgs.</summary>
-		/// <param name="item">The content item to reference with these arguements.</param>
-		public CancellableItemEventArgs(ContentItem item)
-			: base(item)
-		{
-		}
+    /// <summary>
+    /// Event argument containing item data.
+    /// </summary>
+    public class ItemEventArgs : EventArgs
+    {
+        private ContentItem affectedItem;
+        
+        /// <summary>Creates a new instance of the ItemEventArgs.</summary>
+        /// <param name="item">The item the associated with these event arguments.</param>
+        public ItemEventArgs(ContentItem item)
+        {
+            this.affectedItem = item;
+        }
 
-		private bool cancel;
-		/// <summary>Gets or sets wether the event with this argument should be cancelled.</summary>
-		public bool Cancel
-		{
-			get { return cancel; }
-			set { cancel = value; }
-		}
-	}
+        /// <summary>Gets or sets the item associated with these arguments.</summary>
+        public ContentItem AffectedItem
+        {
+            get { return affectedItem; }
+            set { affectedItem = value; }
+        }
+    }
 }

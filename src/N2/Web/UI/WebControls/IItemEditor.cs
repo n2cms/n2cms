@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Web.UI;
-using N2.Persistence;
+
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
 using N2.Collections;
-using N2.Persistence;
 using System.Web.UI.WebControls;
 
 namespace N2.Web.UI.WebControls

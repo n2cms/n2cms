@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NHibernate;
 
 namespace N2.Persistence.NH
@@ -12,7 +10,7 @@ namespace N2.Persistence.NH
 
 		public NHTransaction(ISessionProvider sessionProvider)
 		{
-            ISession session = sessionProvider.GetOpenedSession();
+		    ISession session = sessionProvider.OpenSession.Session;
 			transaction = session.Transaction;
             if (transaction.IsActive)
                 isOriginator = false; // The method that first opened the transaction should also close it

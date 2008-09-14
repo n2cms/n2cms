@@ -69,49 +69,49 @@ namespace N2.Persistence.NH
 
 		public TEntity Get(TKey id)
 		{
-			return sessionProvider.GetOpenedSession().Get<TEntity>(id);
+			return sessionProvider.OpenSession.Session.Get<TEntity>(id);
 		}
 
 		public T Get<T>(TKey id)
 		{
-			return sessionProvider.GetOpenedSession().Get<T>(id);
+			return sessionProvider.OpenSession.Session.Get<T>(id);
 		}
 
 		public TEntity Load(TKey id)
 		{
-			return sessionProvider.GetOpenedSession().Load<TEntity>(id);
+			return sessionProvider.OpenSession.Session.Load<TEntity>(id);
 		}
 
 		public virtual void Delete(TEntity entity)
 		{
-			sessionProvider.GetOpenedSession().Delete(entity);
+			sessionProvider.OpenSession.Session.Delete(entity);
 		}
 
 		public void Save(TEntity entity)
 		{
-			sessionProvider.GetOpenedSession().Save(entity);
+			sessionProvider.OpenSession.Session.Save(entity);
 		}
 
 		public void Update(TEntity entity)
 		{
-			sessionProvider.GetOpenedSession().Update(entity);
+			sessionProvider.OpenSession.Session.Update(entity);
 		}
 
 		public void SaveOrUpdate(TEntity entity)
 		{
-			sessionProvider.GetOpenedSession().SaveOrUpdate(entity);
+			sessionProvider.OpenSession.Session.SaveOrUpdate(entity);
 		}
 
 		public ICollection<TEntity> FindAll(Order order, params ICriterion[] criteria)
 		{
-			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.GetOpenedSession(), criteria);
+			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			crit.AddOrder(order);
 			return crit.List<TEntity>();
 		}
 
 		public ICollection<TEntity> FindAll(Order[] orders, params ICriterion[] criteria)
 		{
-			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.GetOpenedSession(), criteria);
+			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			foreach (Order order in orders)
 			{
 				crit.AddOrder(order);
@@ -121,13 +121,13 @@ namespace N2.Persistence.NH
 
 		public ICollection<TEntity> FindAll(params ICriterion[] criteria)
 		{
-			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.GetOpenedSession(), criteria);
+			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			return crit.List<TEntity>();
 		}
 
 		public ICollection<TEntity> FindAll(int firstResult, int numberOfResults, params ICriterion[] criteria)
 		{
-			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.GetOpenedSession(), criteria);
+			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			crit.SetFirstResult(firstResult)
 				.SetMaxResults(numberOfResults);
 			return crit.List<TEntity>();
@@ -136,7 +136,7 @@ namespace N2.Persistence.NH
 		public ICollection<TEntity> FindAll(
 			int firstResult, int numberOfResults, Order selectionOrder, params ICriterion[] criteria)
 		{
-			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.GetOpenedSession(), criteria);
+			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			crit.SetFirstResult(firstResult)
 				.SetMaxResults(numberOfResults);
 			crit.AddOrder(selectionOrder);
@@ -146,7 +146,7 @@ namespace N2.Persistence.NH
 		public ICollection<TEntity> FindAll(
 			int firstResult, int numberOfResults, Order[] selectionOrder, params ICriterion[] criteria)
 		{
-			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.GetOpenedSession(), criteria);
+			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			crit.SetFirstResult(firstResult)
 				.SetMaxResults(numberOfResults);
 			foreach (Order order in selectionOrder)
@@ -158,14 +158,14 @@ namespace N2.Persistence.NH
 
 		public ICollection<TEntity> FindAll(string namedQuery, params Parameter[] parameters)
 		{
-			IQuery query = RepositoryHelper<TEntity>.CreateQuery(sessionProvider.GetOpenedSession(), namedQuery, parameters);
+			IQuery query = RepositoryHelper<TEntity>.CreateQuery(sessionProvider.OpenSession.Session, namedQuery, parameters);
 			return query.List<TEntity>();
 		}
 
 		public ICollection<TEntity> FindAll(
 			int firstResult, int numberOfResults, string namedQuery, params Parameter[] parameters)
 		{
-			IQuery query = RepositoryHelper<TEntity>.CreateQuery(sessionProvider.GetOpenedSession(), namedQuery, parameters);
+			IQuery query = RepositoryHelper<TEntity>.CreateQuery(sessionProvider.OpenSession.Session, namedQuery, parameters);
 			query.SetFirstResult(firstResult)
 				.SetMaxResults(numberOfResults);
 			return query.List<TEntity>();
@@ -173,27 +173,27 @@ namespace N2.Persistence.NH
 
 		public TEntity FindOne(params ICriterion[] criteria)
 		{
-			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.GetOpenedSession(), criteria);
+			ICriteria crit = RepositoryHelper<TEntity>.CreateCriteriaFromArray(sessionProvider.OpenSession.Session, criteria);
 			return (TEntity) crit.UniqueResult();
 		}
 
 		public TEntity FindOne(string namedQuery, params Parameter[] parameters)
 		{
-			IQuery query = RepositoryHelper<TEntity>.CreateQuery(sessionProvider.GetOpenedSession(), namedQuery, parameters);
+			IQuery query = RepositoryHelper<TEntity>.CreateQuery(sessionProvider.OpenSession.Session, namedQuery, parameters);
 			return (TEntity) query.UniqueResult();
 		}
 
 		public ICollection<TEntity> FindAll(DetachedCriteria criteria, params Order[] orders)
 		{
 			ICriteria executableCriteria =
-				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.GetOpenedSession(), criteria, orders);
+				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.OpenSession.Session, criteria, orders);
 			return executableCriteria.List<TEntity>();
 		}
 
 		public ICollection<TEntity> FindAll(DetachedCriteria criteria, int firstResult, int maxResults, params Order[] orders)
 		{
 			ICriteria executableCriteria =
-				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.GetOpenedSession(), criteria, orders);
+				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.OpenSession.Session, criteria, orders);
 			executableCriteria.SetFirstResult(firstResult);
 			executableCriteria.SetMaxResults(maxResults);
 			return executableCriteria.List<TEntity>();
@@ -202,14 +202,14 @@ namespace N2.Persistence.NH
 		public TEntity FindOne(DetachedCriteria criteria)
 		{
 			ICriteria executableCriteria =
-				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.GetOpenedSession(), criteria, null);
+				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.OpenSession.Session, criteria, null);
 			return (TEntity) executableCriteria.UniqueResult();
 		}
 
 		public TEntity FindFirst(DetachedCriteria criteria, params Order[] orders)
 		{
 			ICriteria executableCriteria =
-				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.GetOpenedSession(), criteria, orders);
+				RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.OpenSession.Session, criteria, orders);
 			executableCriteria.SetFirstResult(0);
 			executableCriteria.SetMaxResults(1);
 			return (TEntity) executableCriteria.UniqueResult();
@@ -250,7 +250,7 @@ namespace N2.Persistence.NH
 		/// <returns></returns>
 		public long Count(DetachedCriteria criteria)
 		{
-			ICriteria crit = RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.GetOpenedSession(), criteria, null);
+			ICriteria crit = RepositoryHelper<TEntity>.GetExecutableCriteria(sessionProvider.OpenSession.Session, criteria, null);
 			crit.SetProjection(Projections.RowCount());
 			object countMayBe_Int32_Or_Int64_DependingOnDatabase = crit.UniqueResult();
 			return Convert.ToInt64(countMayBe_Int32_Or_Int64_DependingOnDatabase);
@@ -272,7 +272,7 @@ namespace N2.Persistence.NH
 
 		public void Flush()
 		{
-			sessionProvider.GetOpenedSession().Flush();
+			sessionProvider.OpenSession.Session.Flush();
 		}
 
 		public ITransaction BeginTransaction()

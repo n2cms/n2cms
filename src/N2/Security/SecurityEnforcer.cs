@@ -4,7 +4,6 @@ using System.Text;
 using Castle.Core;
 using System.Diagnostics;
 using System.Security.Principal;
-using N2.Persistence;
 using N2.Plugin;
 
 namespace N2.Security
@@ -35,25 +34,25 @@ namespace N2.Security
 		}
 
 		#region Event Handlers
-		private void ItemSavingEventHandler(object sender, N2.Persistence.CancellableItemEventArgs e)
+		private void ItemSavingEventHandler(object sender, CancellableItemEventArgs e)
 		{
 			if (security.Enabled && security.ScopeEnabled)
 				OnItemSaving(e.AffectedItem);
 		}
 
-		private void ItemMovingEvenHandler(object sender, N2.Persistence.CancellableDestinationEventArgs e)
+		private void ItemMovingEvenHandler(object sender, CancellableDestinationEventArgs e)
 		{
 			if (security.Enabled && security.ScopeEnabled)
 				OnItemMoving(e.AffectedItem, e.Destination);
 		}
 
-		private void ItemDeletingEvenHandler(object sender, N2.Persistence.CancellableItemEventArgs e)
+		private void ItemDeletingEvenHandler(object sender, CancellableItemEventArgs e)
 		{
 			if (security.Enabled && security.ScopeEnabled)
 				OnItemDeleting(e.AffectedItem);
 		}
 
-		private void ItemCopyingEvenHandler(object sender, N2.Persistence.CancellableDestinationEventArgs e)
+		private void ItemCopyingEvenHandler(object sender, CancellableDestinationEventArgs e)
 		{
 			if (security.Enabled && security.ScopeEnabled)
 				OnItemCopying(e.AffectedItem, e.Destination);
@@ -128,18 +127,18 @@ namespace N2.Security
 
 		public virtual void Start()
 		{
-			persister.ItemSaving += new EventHandler<N2.Persistence.CancellableItemEventArgs>(ItemSavingEventHandler);
-			persister.ItemCopying += new EventHandler<N2.Persistence.CancellableDestinationEventArgs>(ItemCopyingEvenHandler);
-			persister.ItemDeleting += new EventHandler<N2.Persistence.CancellableItemEventArgs>(ItemDeletingEvenHandler);
-			persister.ItemMoving += new EventHandler<N2.Persistence.CancellableDestinationEventArgs>(ItemMovingEvenHandler);
+			persister.ItemSaving += new EventHandler<CancellableItemEventArgs>(ItemSavingEventHandler);
+			persister.ItemCopying += new EventHandler<CancellableDestinationEventArgs>(ItemCopyingEvenHandler);
+			persister.ItemDeleting += new EventHandler<CancellableItemEventArgs>(ItemDeletingEvenHandler);
+			persister.ItemMoving += new EventHandler<CancellableDestinationEventArgs>(ItemMovingEvenHandler);
 		}
 
 		public virtual void Stop()
 		{
-			persister.ItemSaving -= new EventHandler<N2.Persistence.CancellableItemEventArgs>(ItemSavingEventHandler);
-			persister.ItemCopying -= new EventHandler<N2.Persistence.CancellableDestinationEventArgs>(ItemCopyingEvenHandler);
-			persister.ItemDeleting -= new EventHandler<N2.Persistence.CancellableItemEventArgs>(ItemDeletingEvenHandler);
-			persister.ItemMoving -= new EventHandler<N2.Persistence.CancellableDestinationEventArgs>(ItemMovingEvenHandler);
+			persister.ItemSaving -= new EventHandler<CancellableItemEventArgs>(ItemSavingEventHandler);
+			persister.ItemCopying -= new EventHandler<CancellableDestinationEventArgs>(ItemCopyingEvenHandler);
+			persister.ItemDeleting -= new EventHandler<CancellableItemEventArgs>(ItemDeletingEvenHandler);
+			persister.ItemMoving -= new EventHandler<CancellableDestinationEventArgs>(ItemMovingEvenHandler);
 		}
 
 		#endregion

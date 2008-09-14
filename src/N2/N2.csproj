@@ -112,9 +112,9 @@
     <Compile Include="Integrity\IIntegrityManager.cs" />
     <Compile Include="N2Exception.cs" />
     <Compile Include="Collections\ItemComparer.cs" />
-    <Compile Include="Persistence\CancellableDestinationEventArgs.cs" />
-    <Compile Include="Persistence\CancellableItemEventArgs.cs" />
-    <Compile Include="Persistence\DestinationEventArgs.cs" />
+    <Compile Include="CancellableDestinationEventArgs.cs" />
+    <Compile Include="CancellableItemEventArgs.cs" />
+    <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />
     <Compile Include="Security\ISecurityManager.cs" />
@@ -142,7 +142,7 @@
     <Compile Include="Context.cs" />
     <Compile Include="Details\EditableAttribute.cs" />
     <Compile Include="DefinitionAttribute.cs" />
-    <Compile Include="Persistence\ItemEventArgs.cs" />
+    <Compile Include="ItemEventArgs.cs" />
     <Compile Include="Integrity\NameOccupiedException.cs" />
     <Compile Include="Web\Global.cs" />
     <Compile Include="ContentItem.cs" />

@@ -250,7 +250,7 @@ namespace N2.Tests.Security
 			ContentItem root = CreateUserAndItem();
 			mocks.ReplayAll();
 
-			saving.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
+			saving.Raise(persister, new CancellableItemEventArgs(root));
 		}
 
 		[Test]
@@ -261,7 +261,7 @@ namespace N2.Tests.Security
 
 			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
-				saving.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
+				saving.Raise(persister, new CancellableItemEventArgs(root));
 			});
 		}
 
@@ -271,7 +271,7 @@ namespace N2.Tests.Security
 			ContentItem root = CreateUserAndItem();
 			mocks.ReplayAll();
 
-			deleting.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
+			deleting.Raise(persister, new CancellableItemEventArgs(root));
 		}
 
 		[Test]
@@ -282,7 +282,7 @@ namespace N2.Tests.Security
 
 			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
-				deleting.Raise(persister, new N2.Persistence.CancellableItemEventArgs(root));
+				deleting.Raise(persister, new CancellableItemEventArgs(root));
 			});
 		}
 
@@ -293,7 +293,7 @@ namespace N2.Tests.Security
 			ContentItem destination = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			mocks.ReplayAll();
 
-			moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			moving.Raise(persister, new CancellableDestinationEventArgs(source, destination));
 		}
 
 		[Test]
@@ -305,7 +305,7 @@ namespace N2.Tests.Security
 
 			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
-				moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+				moving.Raise(persister, new CancellableDestinationEventArgs(source, destination));
 			});
 		}
 
@@ -318,7 +318,7 @@ namespace N2.Tests.Security
 			mocks.ReplayAll();
 			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
-				moving.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+				moving.Raise(persister, new CancellableDestinationEventArgs(source, destination));
 			});
 		}
 
@@ -329,7 +329,7 @@ namespace N2.Tests.Security
 			ContentItem destination = CreateOneItem<Items.SecurityPage>(2, "accessible page", null);
 			mocks.ReplayAll();
 
-			copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+			copying.Raise(persister, new CancellableDestinationEventArgs(source, destination));
 		}
 
 		[Test]
@@ -341,7 +341,7 @@ namespace N2.Tests.Security
 
 			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
-				copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+				copying.Raise(persister, new CancellableDestinationEventArgs(source, destination));
 			});
 		}
 
@@ -354,7 +354,7 @@ namespace N2.Tests.Security
 
 			ExceptionAssert.Throws<PermissionDeniedException>(delegate
 			{
-				copying.Raise(persister, new N2.Persistence.CancellableDestinationEventArgs(source, destination));
+				copying.Raise(persister, new CancellableDestinationEventArgs(source, destination));
 			});
 		}
 

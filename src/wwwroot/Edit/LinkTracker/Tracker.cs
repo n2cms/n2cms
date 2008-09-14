@@ -24,7 +24,7 @@ namespace N2.Edit.LinkTracker
             this.errorHandler = errorHandler;
 		}
 
-		void persister_ItemSaving(object sender, N2.Persistence.CancellableItemEventArgs e)
+		void persister_ItemSaving(object sender, CancellableItemEventArgs e)
 		{
             try
             {
@@ -120,12 +120,12 @@ namespace N2.Edit.LinkTracker
 
 		public void Start()
 		{
-			persister.ItemSaving += new EventHandler<N2.Persistence.CancellableItemEventArgs>(persister_ItemSaving);
+			persister.ItemSaving += new EventHandler<CancellableItemEventArgs>(persister_ItemSaving);
 		}
 
 		public void Stop()
 		{
-			persister.ItemSaving -= new EventHandler<N2.Persistence.CancellableItemEventArgs>(persister_ItemSaving);
+			persister.ItemSaving -= new EventHandler<CancellableItemEventArgs>(persister_ItemSaving);
 		}
 
 		#endregion

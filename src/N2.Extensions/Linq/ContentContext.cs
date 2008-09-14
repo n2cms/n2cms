@@ -22,13 +22,13 @@ namespace N2.Linq
 		{
 			get 
 			{
-				return sessionProvider.GetOpenedSession().Linq<ContentItem>();
+				return sessionProvider.OpenSession.Session.Linq<ContentItem>();
 			}
 		}
 
 		public IOrderedQueryable<T> Elements<T>()
 		{
-			return sessionProvider.GetOpenedSession().Linq<T>();
+            return sessionProvider.OpenSession.Session.Linq<T>();
 		}
 	}
 }

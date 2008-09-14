@@ -11,7 +11,7 @@ namespace N2.Configuration
 	public class DatabaseSection : ConfigurationSection
 	{
         /// <summary>Whether cacheing should be enabled.</summary>
-		[ConfigurationProperty("caching", DefaultValue = true)]
+		[ConfigurationProperty("caching", DefaultValue = false)]
 		public bool Caching
 		{
 			get { return (bool)base["caching"]; }
@@ -29,8 +29,9 @@ namespace N2.Configuration
         /// <summary>The nhibernate cache provider class to use.</summary>
         /// <remarks>
         /// Other cache providers:
-        /// NHibernate.Cache.NoCacheProvider,NHibernate
-        /// NHibernate.Cache.HashtableCacheProvider,NHibernate
+        /// NHibernate.Cache.NoCacheProvider, NHibernate
+        /// NHibernate.Caches.SysCache2.SysCacheProvider,NHibernate.Caches.SysCache2
+        /// NHibernate.Cache.HashtableCacheProvider, NHibernate
         /// </remarks>
         [ConfigurationProperty("cacheProviderClass", DefaultValue = "NHibernate.Cache.HashtableCacheProvider, NHibernate")]
 		public string CacheProviderClass
