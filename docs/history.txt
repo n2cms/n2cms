@@ -1,4 +1,5 @@
 1.4.3
+- added caching to rss aggregator
 - applied patch to medium trust engine: missing TreeSorter registration
 - applied patch DateRange control can only be used once per form
 - applied patch EditableEnum

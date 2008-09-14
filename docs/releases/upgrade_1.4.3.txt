@@ -2,6 +2,7 @@ Major rearrangements of the templates project has been done running
 these commands from the wwwroot directory should clear things up:
 
 mkdir bak
+move bin/N2.Templates.UI.dll bak
 move advertisement bak
 move calendar bak
 move Faq bak

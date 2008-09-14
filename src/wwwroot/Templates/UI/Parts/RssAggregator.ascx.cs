@@ -1,9 +1,12 @@
 using System;
+using System.Web.Caching;
 using N2;
 using System.Xml.XPath;
 using System.Xml;
 using System.Collections.Generic;
+using N2.Engine;
 using N2.Web;
+using N2.Web.UI;
 
 namespace N2.Templates.UI.Parts
 {
@@ -24,7 +27,7 @@ namespace N2.Templates.UI.Parts
             {
                 try
                 {
-                    rptRss.DataSource = GetNewsItems(url);
+                    rptRss.DataSource = CacheNewsItems(url, GetNewsItems);
                     rptRss.DataBind();
                 }
                 catch (Exception ex)
@@ -33,6 +36,23 @@ namespace N2.Templates.UI.Parts
                 }
             }
             base.OnInit(e);
+        }
+
+        private static string CacheKey = "RssAggregator.NewsItems";
+        private static TimeSpan ExpirationTime = TimeSpan.FromMinutes(1);
+        private IEnumerable<RssItem> CacheNewsItems(string url, Function<string, IEnumerable<RssItem>> reader)
+        {
+            IEnumerable<RssItem> items = Cache[CacheKey] as IEnumerable<RssItem>;
+            if(items == null)
+            {
+                Cache.Add(CacheKey,
+                          items = new List<RssItem>(reader(url)),
+                          new ContentCacheDependency(Engine.Persister),
+                          DateTime.Now.Add(ExpirationTime),
+                          Cache.NoSlidingExpiration,
+                          CacheItemPriority.Normal, null);
+            }
+            return items;
         }
 
         private IEnumerable<RssItem> GetNewsItems(string url)

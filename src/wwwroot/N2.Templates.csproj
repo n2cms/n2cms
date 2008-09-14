@@ -873,6 +873,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\genericmozilla5.browser" />
+    <Content Include="App_Browsers\Templates.browser" />
     <None Include="App_Data\ContentFocus_SampleData.gz" />
     <None Include="App_Data\Corporate_SampleData.gz" />
     <None Include="App_Data\DarkStrips_SampleData.gz" />

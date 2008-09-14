@@ -1,11 +1,3 @@
-
 <browsers>
-  <browser refID="Default">
-    <controlAdapters>
-      <adapter controlType="System.Web.UI.WebControls.Image"
-				   adapterType="N2.Templates.Web.Adapters.ImageAdapter" />
-      <adapter controlType="N2.Templates.Web.UI.TemplateUserControl`2"
-				   adapterType="N2.Templates.Web.Adapters.ImageAdapter" />
-    </controlAdapters>
-  </browser>
+  <!-- moved to tempaltes.browser, to be removed in upcoming releases -->
 </browsers>
