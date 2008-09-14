@@ -2,8 +2,9 @@ N2 is a lightweight CMS framework for ASP.NET. It helps you build great web
 sites that anyone can update.
 
 Major Changes
-Nothing mutch except a few fixes that might be needed: problem organizing parts on subpages,
-google chrome/safari compatibility. Also added is a comments feature.
+This release comes with a comments feature and a major rearrangement of the templates 
+project as well as a number of fixes including fix to the problem organizing parts on 
+subpages and google chrome/safari compatibility.
 
 First time with N2?
 * Try the demo site: http://templates.n2cms.com/
@@ -12,6 +13,6 @@ First time with N2?
 
 Upgrading? Read upgrade_1.4.3.txt, backup and remove a number of folders that have a new location
 * Remove folders: Advertisement, Calendar, Faq, Form, ImageGallery, Img, Js, Layouts, News, Parts, Poll, Rss, Scrum, Search, Secured, TabPanel, UI, Wiki
-* Remove file: Image.ashx
+* Remove files: bin/N2.Templates.UI.dll, Image.ashx
 
 Enjoy!
