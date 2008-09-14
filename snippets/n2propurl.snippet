@@ -2,9 +2,9 @@
 <CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
   <CodeSnippet Format="1.0.0">
     <Header>
-		<Title>propn2tb</Title>
-		<Shortcut>propn2tb</Shortcut>
-      <Description>Create a new N2 Text Property</Description>
+		<Title>n2propurl</Title>
+		<Shortcut>n2propurl</Shortcut>
+      <Description>Create a new N2 Url Property</Description>
       <Author>Cristian Libardo</Author>
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
@@ -13,19 +13,14 @@
     <Snippet>
       <Declarations>
         <Literal>
+          <ID>title</ID>
+          <ToolTip>Detail Property Title</ToolTip>
+          <Default>My Property</Default>
+        </Literal>
+        <Literal>
           <ID>name</ID>
           <ToolTip>Detail Property Name</ToolTip>
           <Default>MyProperty</Default>
-        </Literal>
-        <Object>
-          <ID>type</ID>
-          <ToolTip>Property Type</ToolTip>
-          <Default>string</Default>
-        </Object>
-        <Literal>
-          <ID>defaultValue</ID>
-          <ToolTip>Default Value</ToolTip>
-          <Default>string.Empty</Default>
         </Literal>
         <Literal>
           <ID>sortOrder</ID>
@@ -35,12 +30,12 @@
 	  </Declarations>
       <Code Language="csharp">
         <![CDATA[
-[N2.Details.EditableTextBox("$name$", $sortOrder$)]
-public virtual $type$ $name$
-{
-    get { return ($type$)(GetDetail("$name$") ?? $defaultValue$); }
-    set { SetDetail("$name$", value, $defaultValue$); }
-}
+        [N2.Details.EditableUrl("$title$", $sortOrder$)]
+        public virtual string $name$
+        {
+            get { return GetDetail("$name$", ""); }
+            set { SetDetail("$name$", value, ""); }
+        }
 $end$]]>
       </Code>
     </Snippet>

@@ -25,15 +25,8 @@ namespace N2.Templates.UI.Parts
             string url = CurrentItem.RssUrl;
             if (!string.IsNullOrEmpty(url))
             {
-                try
-                {
-                    rptRss.DataSource = CacheNewsItems(url, GetNewsItems);
-                    rptRss.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    Engine.Resolve<IErrorHandler>().Notify(ex);
-                }
+                rptRss.DataSource = CacheNewsItems(url, GetNewsItems);
+                rptRss.DataBind();
             }
             base.OnInit(e);
         }
@@ -45,8 +38,17 @@ namespace N2.Templates.UI.Parts
             IEnumerable<RssItem> items = Cache[CacheKey] as IEnumerable<RssItem>;
             if(items == null)
             {
+                try
+                {
+                    items = new List<RssItem>(reader(url));   
+                }
+                catch (Exception ex)
+                {
+                    items = new RssItem[0];
+                    Engine.Resolve<IErrorHandler>().Notify(ex);
+                }
                 Cache.Add(CacheKey,
-                          items = new List<RssItem>(reader(url)),
+                          items,
                           new ContentCacheDependency(Engine.Persister),
                           DateTime.Now.Add(ExpirationTime),
                           Cache.NoSlidingExpiration,

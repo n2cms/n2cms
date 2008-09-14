@@ -1,7 +1,7 @@
 These are visual studio templates and snippets that can speed up N2 
 development. 
 
-Snippets goes here (activate by pressing writing "propn2" and then tab twice):
+Snippets goes here (activate by pressing writing "n2prop" and then tab twice):
 "...\My Documents\Visual Studio 2005\Code Snippets\Visual C#\My Code Snippets"
 
 

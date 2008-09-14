@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+		<Title>n2propfta</Title>
+		<Shortcut>n2propfta</Shortcut>
+      <Description>Create a new N2 Free Text Property</Description>
+      <Author>Cristian Libardo</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>title</ID>
+          <ToolTip>Detail Property Title</ToolTip>
+          <Default>My Property</Default>
+        </Literal>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Detail Property Name</ToolTip>
+          <Default>MyProperty</Default>
+        </Literal>
+        <Literal>
+          <ID>sortOrder</ID>
+          <ToolTip>Sort Order</ToolTip>
+          <Default>100</Default>
+        </Literal>
+	  </Declarations>
+      <Code Language="csharp">
+        <![CDATA[
+        [N2.Details.EditableFreeTextArea("$title$", $sortOrder$)]
+        public virtual string $name$
+        {
+            get { return GetDetail("$name$", ""); }
+            set { SetDetail("$name$", value, ""); }
+        }
+$end$]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

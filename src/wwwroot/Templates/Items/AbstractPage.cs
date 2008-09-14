@@ -15,9 +15,7 @@ namespace N2.Templates.Items
 	[TabPanel(Tabs.Content, "Content", 0)]
 	public abstract class AbstractPage : ContentItem
 	{
-		private static readonly int startIndex = "N2.Templates.".Length;
-
-        /// <summary>Defaults to ~/Templates/UI/Img/{IconName}.png. Override <see cref="IconName"/> to reference icon in same directory.</summary>
+	    /// <summary>Defaults to ~/Templates/UI/Img/{IconName}.png. Override <see cref="IconName"/> to reference icon in same directory.</summary>
         public override string IconUrl
         {
             get { return "~/Templates/UI/Img/" + IconName + ".png"; }

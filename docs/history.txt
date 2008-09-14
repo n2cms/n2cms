@@ -1,4 +1,6 @@
 1.4.3
+- improved existing and added more property snippets
+- added GetDetail overload with default value
 - added caching to rss aggregator
 - applied patch to medium trust engine: missing TreeSorter registration
 - applied patch DateRange control can only be used once per form

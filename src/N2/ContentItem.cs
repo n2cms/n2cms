@@ -403,6 +403,17 @@ namespace N2
 				: null;
 		}
 
+        /// <summary>Gets a detail from the details bag.</summary>
+        /// <param name="detailName">The name of the value to get.</param>
+        /// <param name="defaultValue">The default value to return when no detail is found.</param>
+        /// <returns>The value stored in the details bag or null if no item was found.</returns>
+        public virtual T GetDetail<T>(string detailName, T defaultValue)
+        {
+            return Details.ContainsKey(detailName)
+                ? (T)Details[detailName].Value
+                : defaultValue;
+        }
+
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten. If the value equals the default value it will be removed from the details bag.</summary>
 		/// <param name="detailName">The name of the item to set.</param>
 		/// <param name="value">The value to set. If this parameter is null or equal to defaultValue the detail is removed.</param>

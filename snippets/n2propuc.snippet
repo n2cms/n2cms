@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+		<Title>n2propuc</Title>
+		<Shortcut>n2propuc</Shortcut>
+      <Description>Create a new N2 User Control Property</Description>
+      <Author>Cristian Libardo</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>title</ID>
+          <ToolTip>Detail Property Title</ToolTip>
+          <Default>My Property</Default>
+        </Literal>
+        <Literal>
+          <ID>ucProperty</ID>
+          <ToolTip>User Control Property Name</ToolTip>
+          <Default>PropertyOnUserControl</Default>
+        </Literal>
+        <Literal>
+          <ID>ucPath</ID>
+          <ToolTip>User Control Path</ToolTip>
+          <Default>~/Path/To/UserControl.ascx</Default>
+        </Literal>
+        <Literal>
+          <ID>sortOrder</ID>
+          <ToolTip>Sort Order</ToolTip>
+          <Default>100</Default>
+        </Literal>
+        <Literal>
+          <ID>type</ID>
+          <ToolTip>Property Type</ToolTip>
+          <Default>string</Default>
+        </Literal>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Detail Property Name</ToolTip>
+          <Default>MyProperty</Default>
+        </Literal>
+	  </Declarations>
+      <Code Language="csharp">
+        <![CDATA[
+        [N2.Details.EditableUserControl("$title$", "$ucPath$", "$ucProperty$", $sortOrder$)]
+        public virtual $type$ $name$
+        {
+            get { return GetDetail("$name$", default($type$)); }
+            set { SetDetail("$name$", value, default($type$)); }
+        }
+$end$]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
