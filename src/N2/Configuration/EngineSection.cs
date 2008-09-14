@@ -64,11 +64,20 @@ namespace N2.Configuration
             set { base["globalization"] = value; }
         }
 
+        /// <summary>Scheduler related configuration.</summary>
         [ConfigurationProperty("scheduler")]
         public SchedulerElement Scheduler
         {
             get { return (SchedulerElement)base["scheduler"]; }
             set { base["scheduler"] = value; }
+        }
+
+        /// <summary>A collection of services that are registered in the container before the default ones. This is a place through which core services can be replaced.</summary>
+        [ConfigurationProperty("components")]
+        public ComponentCollection Components
+        {
+            get { return (ComponentCollection)base["components"]; }
+            set { base["components"] = value; }
         }
 	}
 }

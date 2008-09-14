@@ -293,6 +293,8 @@
     <Compile Include="Configuration\OutputCacheElement.cs" />
     <Compile Include="Configuration\SectionGroup.cs" />
     <Compile Include="Configuration\EngineSection.cs" />
+    <Compile Include="Configuration\ComponentCollection.cs" />
+    <Compile Include="Configuration\ComponentElement.cs" />
     <Compile Include="Configuration\SiteElement.cs" />
     <Compile Include="Configuration\SiteElementCollection.cs" />
     <Compile Include="Configuration\TinyMCEElement.cs" />

@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Used in multiple sites scenarios to determine which start page to display.
+        ///   Looks up a localized string similar to Used in multiple sites scenarios to determine which start page match a certain domain name (e.g. n2cms.com).
         /// </summary>
         internal static string HostName_HelpTitle {
             get {

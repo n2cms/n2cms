@@ -1,4 +1,6 @@
 1.4.3
+- added option to more easily configure components
+- multiple sites are updated as content changes
 - added russian translation (maqdev)
 - added dutch translation (MartijnRasenberg)
 - changed default database caching mode to false

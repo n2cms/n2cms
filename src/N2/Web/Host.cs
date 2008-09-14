@@ -11,25 +11,33 @@ namespace N2.Web
 	{
 		private readonly IWebContext context;
 		private Site defaultSite;
-		private readonly List<Site> sites = new List<Site>();
+        private IList<Site> sites;
 
 		public Host(IWebContext context, HostSection config)
 		{
             this.context = context;
 			defaultSite = new Site(config.RootID, config.StartPageID);
-			foreach (SiteElement configElement in config.Sites)
-			{
+
+			sites = ExtractSites(config);
+		}
+
+        public static IList<Site> ExtractSites(HostSection config)
+        {
+            List<Site> sites = new List<Site>();
+            foreach (SiteElement configElement in config.Sites)
+            {
                 Site s = new Site(configElement.RootID ?? config.RootID, configElement.ID, configElement.Name);
                 s.Wildcards = configElement.Wildcards || config.Wildcards;
                 foreach (FolderElement folder in configElement.UploadFolders)
                     s.UploadFolders.Add(folder.Path);
                 foreach (string key in configElement.Settings.AllKeys)
                     s.Settings[key] = configElement.Settings[key].Value;
-                Sites.Add(s);
-			}
-		}
+                sites.Add(s);
+            }
+            return sites;
+        }
 
-		public Host(IWebContext context, int rootItemID, int startPageID)
+        public Host(IWebContext context, int rootItemID, int startPageID)
 			: this(context, new Site(rootItemID, startPageID))
 		{
 		}
@@ -56,7 +64,8 @@ namespace N2.Web
         {
             if (host == null)
                 return null;
-            foreach (Site site in Sites)
+            IList<Site> currentSites = Sites;
+            foreach (Site site in currentSites)
                 if (site.Is(host.Authority))
                     return site;
             return null;
@@ -69,11 +78,23 @@ namespace N2.Web
 
         public void AddSites(IEnumerable<Site> sitesToAdd)
         {
+            sites = Union(Sites, sitesToAdd);
+        }
+
+        public void ReplaceSites(IList<Site> newSites)
+        {
+            sites = newSites;
+        }
+
+        public static IList<Site> Union(IList<Site> sites, IEnumerable<Site> sitesToAdd)
+        {
+            List<Site> writableSites = new List<Site>(sites);
             foreach (Site s in sitesToAdd)
             {
-                if (!sites.Contains(s))
-                    sites.Add(s);
+                if (!writableSites.Contains(s))
+                    writableSites.Add(s);
             }
+            return writableSites;
         }
-    }
+	}
 }

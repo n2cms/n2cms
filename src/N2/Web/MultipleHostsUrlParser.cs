@@ -20,6 +20,15 @@ namespace N2.Web
             if (config.DynamicSites)
             {
                 host.AddSites(sitesProvider.GetSites());
+                persister.ItemSaved += delegate(object sender, ItemEventArgs e)
+                {
+                    if(e.AffectedItem is ISitesSource)
+                    {
+                        IList<Site> sites = Host.ExtractSites(config);
+                        sites = Host.Union(sites, sitesProvider.GetSites());
+                        host.ReplaceSites(sites);
+                    }
+                };
             }
 		}
 

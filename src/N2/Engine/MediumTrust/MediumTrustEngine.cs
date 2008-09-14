@@ -48,9 +48,11 @@ namespace N2.Engine.MediumTrust
             if (hostConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/host configuration section. Please check the web configuration.");
             EngineSection engineConfiguration = (EngineSection)AddConfigurationSection("n2/engine");
             if (engineConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/engine configuration section. Please check the web configuration.");
+
+            RegisterConfiguredComponents(engineConfiguration);
             
             Url.DefaultExtension = hostConfiguration.Web.Extension;
-            IWebContext webContext = new AdaptiveContext();
+		    IWebContext webContext = new AdaptiveContext();
     
             host = AddComponentInstance<IHost>(new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
             AddComponentInstance<IWebContext>(webContext);
@@ -124,6 +126,17 @@ namespace N2.Engine.MediumTrust
             if (section != null)
                 AddComponentInstance(section.GetType().FullName, section.GetType(), section);
             return section;
+        }
+
+        private void RegisterConfiguredComponents(EngineSection engineConfig)
+        {
+            foreach (ComponentElement component in engineConfig.Components)
+            {
+                Type implementation = Type.GetType(component.Implementation);
+                Type service = Type.GetType(component.Service) ?? implementation;
+                if (service != null)
+                    AddComponent(service.FullName, service, implementation);
+            }
         }
 
 		#region Properties
@@ -281,6 +294,9 @@ namespace N2.Engine.MediumTrust
         }
 		public void AddComponentInstance(string key, Type serviceType, object instance)
 		{
+            if (Resolves.ContainsKey(serviceType))
+                return;
+
 			Resolves[serviceType] = instance;
 			if (instance is IAutoStart)
 			{

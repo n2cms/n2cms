@@ -12,17 +12,13 @@
 
 using System;
 using System.Web;
-using System.Diagnostics;
 using System.Configuration;
 
 using Castle.MicroKernel;
 using Castle.Core.Resource;
 using Castle.Windsor;
-using Castle.Windsor.Configuration;
 using Castle.Windsor.Configuration.Interpreters;
 using Castle.Windsor.Installer;
-using Castle.Windsor.Configuration.AppDomain;
-
 using N2.Definitions;
 using N2.Edit;
 using N2.Integrity;
@@ -88,6 +84,9 @@ namespace N2.Engine
             if (hostConfig != null && engineConfig != null)
             {
                 Url.DefaultExtension = hostConfig.Web.Extension;
+                
+                RegisterConfiguredComponents(engineConfig);
+
                 if (!hostConfig.Web.IsWeb)
                     container.Kernel.AddComponentInstance("n2.webContext.notWeb", typeof(IWebContext), new ThreadContext());
 
@@ -98,7 +97,18 @@ namespace N2.Engine
             }
         }
 
-		#region Properties
+	    private void RegisterConfiguredComponents(EngineSection engineConfig)
+	    {
+	        foreach(ComponentElement component in engineConfig.Components)
+	        {
+	            Type implementation = Type.GetType(component.Implementation);
+	            Type service = Type.GetType(component.Service) ?? implementation;
+	            if(service != null)
+	                container.AddComponent(service.FullName, service, implementation);
+	        }
+	    }
+
+	    #region Properties
 
 		public IWindsorContainer Container
 		{
@@ -157,7 +167,8 @@ namespace N2.Engine
 		#region Methods
 
 		/// <summary>Either reads the castle configuration from the castle configuration section or uses a default configuration compiled into the n2 assembly.</summary>
-		/// <param name="n2group">The n2 configuration group from the configuration file.</param>
+        /// <param name="engineConfig">The n2 engine section from the configuration file.</param>
+        /// <param name="hasCastleSection">Load the container using default castle configuration.</param>
 		/// <returns>A castle IResource used to build the inversion of control container.</returns>
         protected IResource DetermineResource(EngineSection engineConfig, bool hasCastleSection)
 		{

@@ -124,7 +124,7 @@
     <value>Footer Text</value>
   </data>
   <data name="HostName.HelpTitle" xml:space="preserve">
-    <value>Used in multiple sites scenarios to determine which start page to display</value>
+    <value>Used in multiple sites scenarios to determine which start page match a certain domain name (e.g. n2cms.com)</value>
   </data>
   <data name="HostName.Title" xml:space="preserve">
     <value>Host Name</value>
