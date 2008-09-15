@@ -27,14 +27,16 @@ namespace Demo
 		private static void CopyFiles(N2.Engine.IEngine factory)
 		{
 			HttpServerUtility server = HttpContext.Current.Server;
-			string upload = server.MapPath(factory.EditManager.GetUploadFolderUrl());
-			DeleteFilesAndFolders(upload);
-
-			File.Copy(server.MapPath("~/Demo/Resources/Sunset.jpg"), server.MapPath("~/upload/Sunset.jpg"), true);
-			File.Copy(server.MapPath("~/Demo/Resources/n2.gif"), server.MapPath("~/upload/n2.gif"), true);
-			File.Copy(server.MapPath("~/Demo/Resources/lav.jpg"), server.MapPath("~/upload/lav.jpg"), true);
-			File.Copy(server.MapPath("~/Demo/Resources/skal.jpg"), server.MapPath("~/upload/skal.jpg"), true);
-			File.Copy(server.MapPath("~/Demo/Resources/thorn.jpg"), server.MapPath("~/upload/thorn.jpg"), true);
+			foreach(string folder in factory.EditManager.UploadFolders)
+			{
+                string upload = server.MapPath(folder);
+                DeleteFilesAndFolders(upload);
+			}
+            File.Copy(server.MapPath("~/Demo/Resources/Sunset.jpg"), server.MapPath("~/upload/Sunset.jpg"), true);
+            File.Copy(server.MapPath("~/Demo/Resources/n2.gif"), server.MapPath("~/upload/n2.gif"), true);
+            File.Copy(server.MapPath("~/Demo/Resources/lav.jpg"), server.MapPath("~/upload/lav.jpg"), true);
+            File.Copy(server.MapPath("~/Demo/Resources/skal.jpg"), server.MapPath("~/upload/skal.jpg"), true);
+            File.Copy(server.MapPath("~/Demo/Resources/thorn.jpg"), server.MapPath("~/upload/thorn.jpg"), true);
             File.Copy(server.MapPath("~/Demo/Resources/logo_white.png"), server.MapPath("~/upload/logo_white.png"), true);
         }
 
@@ -68,7 +70,7 @@ namespace Demo
 
 			ContentItem imported = record.RootItem;
 
-			AbstractRootPage rootPage = factory.Persister.Get<AbstractRootPage>(factory.Host.CurrentSite.RootItemID);
+            RootPage rootPage = factory.Persister.Get<RootPage>(factory.Host.CurrentSite.RootItemID);
 
 			factory.SecurityManager.ScopeEnabled = false;
 			((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = false;
@@ -79,7 +81,7 @@ namespace Demo
 			imp.Import(record, rootPage, ImportOption.Children);
 
 			foreach(ContentItem item in rootPage.Children)
-				if (item is AbstractStartPage)
+				if (item is StartPage)
 					factory.Resolve<N2.Web.IHost>().DefaultSite.StartPageID = item.ID;
 
 			factory.Persister.Save(rootPage);
