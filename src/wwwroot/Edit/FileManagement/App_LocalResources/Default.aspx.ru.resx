@@ -142,7 +142,7 @@
     <value>&lt;img src="../img/ico/folder_add.gif" /&gt; Новая папка</value>
   </data>
   <data name="hlUpload.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; Отправить</value>
+    <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; Закачать</value>
   </data>
   <data name="lblFolder.Text" xml:space="preserve">
     <value>Название папки</value>

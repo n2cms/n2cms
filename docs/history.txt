@@ -1,3 +1,4 @@
+- updated russian translation (maqdev)
 - added fix for problem with MVC example in virtual directory problem
 - fixed problem redirecting to install database page
 - fixed problem with no upload folders when medium trust

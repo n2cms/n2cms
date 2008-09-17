@@ -189,7 +189,7 @@
   <data name="filemanager.ToolTip" xml:space="preserve">
     <value>Загрузить или организовать файлы</value>
   </data>
-  <data name="import/export.ToolTip" xml:space="preserve">
+  <data name="exportimport.ToolTip" xml:space="preserve">
     <value>Импорт/экспорт элементов сайта</value>
   </data>
   <data name="linktracker.ToolTip" xml:space="preserve">
@@ -203,5 +203,8 @@
   </data>
   <data name="wizard.ToolTip" xml:space="preserve">
     <value>Помощник для определения места и типа часто создаваемых элементов.</value>
+  </data>
+  <data name="globalization.ToolTip" xml:space="preserve">
+    <value>Просмотр локализации (перевода) выбранной и дочерних страниц</value>
   </data>
 </root>

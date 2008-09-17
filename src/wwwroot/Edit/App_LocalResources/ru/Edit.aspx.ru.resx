@@ -169,7 +169,7 @@
     <value>Изменить</value>
   </data>
   <data name="vsEdit.HeaderText" xml:space="preserve">
-    <value>Элемент не может быть сохранен. Пожалуйста, просмотрите следующее:</value>
+    <value>Элемент не может быть сохранен. Информация об ошибке:</value>
   </data>
   <data name="vsEdit.ToolTip" xml:space="preserve">
     <value />
