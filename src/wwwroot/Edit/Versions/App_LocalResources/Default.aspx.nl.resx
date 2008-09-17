@@ -145,6 +145,6 @@
     <value>Versies</value>
   </data>
   <data name="cvVersionable.Text" xml:space="preserve">
-    <value>Dit item kan geen versies hebben.</value>
+    <value>Dit item heeft geen versiebeheer.</value>
   </data>
 </root>
