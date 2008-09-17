@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Reflection;
@@ -85,7 +85,7 @@ namespace N2.Engine.MediumTrust
             IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(persister, itemRepository));
 			N2.Edit.Settings.NavigationSettings settings = AddComponentInstance<N2.Edit.Settings.NavigationSettings>(new N2.Edit.Settings.NavigationSettings(webContext));
             IPluginFinder pluginFinder = AddComponentInstance<IPluginFinder>(new PluginFinder(typeFinder));
-            editManager = AddComponentInstance<IEditManager>(new EditManager(typeFinder, definitions, persister, versioner, securityManager, pluginFinder, settings));
+            editManager = AddComponentInstance<IEditManager>(new EditManager(definitions, persister, versioner, securityManager, pluginFinder, settings, editConfiguration));
             integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
             IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
             rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext));

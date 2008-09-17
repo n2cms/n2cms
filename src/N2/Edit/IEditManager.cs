@@ -18,7 +18,7 @@ namespace N2.Edit
 		bool EnableVersioning { get; set; }
 	    
         /// <summary>Gets folders paths on the server where users are allowed to upload content through the interface.</summary>
-        IEnumerable<string> UploadFolders { get; }
+        IList<string> UploadFolders { get; }
 
 	    /// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>

@@ -4,7 +4,6 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 using N2.Definitions;
-using N2.Engine;
 using N2.Persistence;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
@@ -37,7 +36,7 @@ namespace N2.Edit
         private string deleteItemUrl = "~/edit/delete.aspx";
         private bool enableVersioning = true;
 
-		public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings)
+		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
@@ -47,8 +46,8 @@ namespace N2.Edit
             this.pluginFinder = pluginFinder;
 		}
 
-        public EditManager(ITypeFinder typeFinder, IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, NavigationSettings settings, IPluginFinder pluginFinder, EditSection config)
-            : this(typeFinder, definitions, persister, versioner, securityManager, pluginFinder, settings)
+        public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings, EditSection config)
+            : this(definitions, persister, versioner, securityManager, pluginFinder, settings)
         {
             EditTreeUrl = config.EditTreeUrl;
             EditPreviewUrlFormat = config.EditPreviewUrlFormat;
@@ -63,8 +62,6 @@ namespace N2.Edit
                 uploadFolders.Add(folder.Path);
             }
         }
-
-        #region Properties
 
         public string EditInterfaceUrl
         {
@@ -118,11 +115,9 @@ namespace N2.Edit
 			get { return enableVersioning; }
 			set { enableVersioning = value; }
 		}
-		#endregion
 
-		#region Methods
-
-	    public IEnumerable<string> UploadFolders
+        /// <summary>Gets folders paths on the server where users are allowed to upload content through the interface.</summary>
+        public IList<string> UploadFolders
 	    {
 	        get { return uploadFolders; }
 	    }
@@ -417,9 +412,7 @@ namespace N2.Edit
 		}
 		#endregion
 
-		#endregion
 
-		#region Events
 
 		protected System.ComponentModel.EventHandlerList Events = new System.ComponentModel.EventHandlerList();
 		protected static readonly object savingVersionKey = new object();
@@ -440,11 +433,10 @@ namespace N2.Edit
 			remove { Events.RemoveHandler(savingVersionKey, value); }
 		}
 
-		#endregion
 
 		/// <summary>Gets the url to edit page creating new items.</summary>
 		/// <param name="selected">The selected item.</param>
-		/// <param name="itemType">The type of item to edit.</param>
+        /// <param name="definition">The type of item to edit.</param>
 		/// <param name="zoneName">The zone to add the item to.</param>
 		/// <param name="position">The position relative to the selected item to add the item.</param>
 		/// <returns>The url to the edit page.</returns>
@@ -483,8 +475,6 @@ namespace N2.Edit
 				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.RewrittenUrl));
 		}
 
-		#region IEditManager Members
-
 
 		public IEnumerable<T> GetPlugins<T>(IPrincipal user)
 			where T: AdministrativePluginAttribute
@@ -501,7 +491,5 @@ namespace N2.Edit
 			}
 			return filter;
 		}
-
-		#endregion
 	}
 }

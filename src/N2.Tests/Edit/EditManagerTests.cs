@@ -48,7 +48,7 @@ namespace N2.Tests.Edit
 			
 			persister = mocks.StrictMock<IPersister>();
 			versioner = mocks.StrictMock<IVersionManager>();
-			editManager = new EditManager(typeFinder, definitions, persister, versioner, null, null, null);
+			editManager = new EditManager(definitions, persister, versioner, null, null, null);
 			editManager.EnableVersioning = true;
 		}
 

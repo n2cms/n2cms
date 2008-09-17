@@ -46,23 +46,23 @@ namespace N2.Web
 
             List<Site> foundSites = new List<Site>();
 
-            AddSites(config.RootID, foundSites);
-            
-            foreach (SiteElement element in config.Sites)
+            try
             {
-                try
+                AddSites(config.RootID, foundSites);
+                
+                foreach (SiteElement element in config.Sites)
                 {
-                    if(element.RootID.HasValue)
-                    {
-                        int rootID = element.RootID.Value;
+                        if(element.RootID.HasValue)
+                        {
+                            int rootID = element.RootID.Value;
 
-                        AddSites(rootID, foundSites);
-                    }
+                            AddSites(rootID, foundSites);
+                        }
                 }
-                catch (Exception ex)
-                {
-                    Trace.TraceWarning("DynamicSitesProvider.GetSites:" + ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceWarning("DynamicSitesProvider.GetSites:" + ex);
             }
 
 		    return foundSites;

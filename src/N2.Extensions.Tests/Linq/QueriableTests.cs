@@ -10,6 +10,7 @@ using N2.Persistence.Finder;
 using N2.Tests;
 
 using N2.Linq;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Extensions.Tests.Linq
 {
@@ -45,5 +46,12 @@ namespace N2.Extensions.Tests.Linq
 
 			EnumerableAssert.Count(1, query);
 		}
+
+        [Test]
+        public void Test()
+        {
+            var q = engine.Database().ContentItems.Where(x => "root" == x["Name"]);
+            Assert.That(q.Count(), Is.EqualTo(1));
+        }
 	}
 }

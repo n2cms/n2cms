@@ -61,23 +61,23 @@
 	<class name="N2.ContentItem,N2" table="n2Item">
 		<cache usage="read-write" />
 
-		<id name="ID" column="ID" type="Int32" unsaved-value="0" access="field.lowercase">
+		<id name="ID" column="ID" type="Int32" unsaved-value="0" access="property">
 			<generator class="native" />
 		</id>
 
 		<discriminator column="Type" type="String" />
 
-    <property name="Created"	  access="field.camelcase" not-null="true" />
-    <property name="Published"	access="field.camelcase" />
-    <property name="Updated"    access="field.camelcase" not-null="true" />
-    <property name="Expires"	  access="field.camelcase" />
+    <property name="Created"	  access="property" not-null="true" />
+    <property name="Published"	access="property" />
+    <property name="Updated"    access="property" not-null="true" />
+    <property name="Expires"	  access="property" />
 
-    <property name="Name"       access="field.camelcase" length="255" />
-		<property name="ZoneName"	  access="field.camelcase" length="50" />
-		<property name="Title"		  access="field.camelcase" length="255" />
-		<property name="SortOrder"	access="field.camelcase" not-null="true" />
-		<property name="Visible"	  access="field.camelcase" not-null="true" />
-		<property name="SavedBy"	  access="field.camelcase" length="50" />
+    <property name="Name"       access="property" length="255" />
+		<property name="ZoneName"	  access="property" length="50" />
+		<property name="Title"		  access="property" length="255" />
+		<property name="SortOrder"	access="property" not-null="true" />
+		<property name="Visible"	  access="property" not-null="true" />
+		<property name="SavedBy"	  access="property" length="50" />
 
 		<many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
 		<many-to-one name="Parent"		column="ParentID"		class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />
