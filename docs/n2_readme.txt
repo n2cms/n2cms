@@ -29,7 +29,7 @@ code or src\Examples\TemplatesImplementation\MyProject-vs200[5|8].sln.
 
 EXAMPLES
 
-There are a bunch of examples in the Examples src/Examples directory of the 
+There are a bunch of examples in the Examples "examples" directory of the 
 source code package. To run them you need to copy the compiled output of the
 core project and the edit interface into the example's web roots. 
 Prepare_Dependencies-vs2008.bat should do this for you. The examples:
@@ -38,8 +38,6 @@ Prepare_Dependencies-vs2008.bat should do this for you. The examples:
   shared hosting providers).
 * MultipleDomains: How to run a single N2 installation with multiple domains
 * Mvc: Integration with the ASP.NET MVC framework
-* Old\Globalization: This example is deprecated. There is a new globalization 
-  approach.
 * Parts: Bare minimum project using "parts", i.e. drag'n'drop components on a 
   page.
 * MinimalVisualBasic: Very simple web site in Visual Basic. This project includes
