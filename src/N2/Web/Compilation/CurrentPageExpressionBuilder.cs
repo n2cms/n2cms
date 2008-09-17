@@ -15,7 +15,11 @@ namespace N2.Web.Compilation
 	{
 		public static object GetCurrentPageValue(string expression)
 		{
-			return N2.Context.CurrentPage[expression];
+		    ContentItem item = N2.Context.CurrentPage;
+            if(item != null)
+			    return item[expression];
+            else
+                return null;
 		}
 
 		protected override string ExpressionFormat

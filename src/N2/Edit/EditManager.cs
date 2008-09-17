@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using N2.Definitions;
 using N2.Persistence;
+using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Collections;
@@ -128,6 +129,9 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public string GetNavigationUrl(INode selectedItem)
 		{
+            if(selectedItem == null)
+                return null;
+
             return string.Format(EditTreeUrlFormat, selectedItem.Path, EditTreeUrl);
 		}
 
@@ -369,9 +373,10 @@ namespace N2.Edit
 
 		private string FormatSelectedUrl(ContentItem selectedItem, string path)
 		{
-			string url = N2.Web.Url.ToAbsolute(path);
-			return url + (url.Contains("?") ? "&" : "?") + 
-				"selected=" + selectedItem.Path;
+			Url url = Url.ToAbsolute(path);
+            if (selectedItem != null)
+                url = url.AppendQuery("selected=" + selectedItem.Path);
+		    return url;
 		}
 
 		#region Helper Methods
@@ -469,10 +474,13 @@ namespace N2.Edit
 		/// <returns>The url to the edit page</returns>
 		public string GetEditExistingItemUrl(ContentItem item)
 		{
-			if(item.VersionOf == null)
+            if(item == null)
+                return null;
+			
+            if(item.VersionOf == null)
                 return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
-			else
-				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.RewrittenUrl));
+		    
+            return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.RewrittenUrl));
 		}
 
 

@@ -257,7 +257,7 @@ namespace N2.Web.UI.WebControls
 				AddEditButtons();
 				CheckAndAppendTemplate(VisibleFooterTemplate, this);
 
-                if (EnableEditInterfaceIntegration && Page.Request.UrlReferrer != null && !OriginatesFromEdit(Page.Request.UrlReferrer.PathAndQuery))
+                if (CurrentItem != null && EnableEditInterfaceIntegration && !OriginatesFromEdit())
                 {
                     string url = N2.Context.Current.EditManager.GetNavigationUrl(CurrentItem);
                     string script = string.Format(scriptFormat, CurrentItem.Path, url);
@@ -291,11 +291,14 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddEditButtons()
 		{
-			AddQuickEditButton();
 			AddEditModeButton();
-			AddCreateNewButton();
-			AddEditButton(EditText);
-			AddDeleteButton();
+            if(CurrentItem != null)
+            {
+                AddQuickEditButton();
+                AddCreateNewButton();
+			    AddEditButton(EditText);
+			    AddDeleteButton();
+            }
 		}
 
 		protected virtual void AddDeleteButton()
@@ -419,10 +422,14 @@ namespace N2.Web.UI.WebControls
 
 		#region Methods
 
-        protected bool OriginatesFromEdit(string referrerUrl)
+        protected bool OriginatesFromEdit()
         {
+            if(Page.Request.UrlReferrer == null)
+                return false;
+            
             string editUrl = N2.Context.Current.EditManager.GetEditInterfaceUrl();
-            return referrerUrl.StartsWith(editUrl, StringComparison.InvariantCultureIgnoreCase);
+            string currentUrl = Page.Request.UrlReferrer.PathAndQuery;
+            return currentUrl.StartsWith(editUrl, StringComparison.InvariantCultureIgnoreCase);
         }
 
 		/// <summary>Gets the url for editing the page directly.</summary>

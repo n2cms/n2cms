@@ -1,0 +1,1 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.Master" AutoEventWireup="true" CodeBehind="MasterPageTest.aspx.cs" Inherits="N2.Templates.UI.Testing.MasterPageTest" %>

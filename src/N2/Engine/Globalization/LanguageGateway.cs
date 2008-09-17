@@ -102,7 +102,9 @@ namespace N2.Engine.Globalization
 
 		public IEnumerable<ContentItem> FindTranslations(ContentItem item)
 		{
-			if (item == null) throw new ArgumentNullException("item");
+            if (item == null) 
+                return new ContentItem[0];
+
 			if (item is ILanguage)
 			{
 				List<ContentItem> languages = new List<ContentItem>();

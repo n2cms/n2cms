@@ -300,6 +300,13 @@
       <DependentUpon>TabsInterface.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\TabPanel\TabsItem.cs" />
+    <Compile Include="Templates\UI\Testing\MasterPageTest.aspx.cs">
+      <DependentUpon>MasterPageTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Testing\MasterPageTest.aspx.designer.cs">
+      <DependentUpon>MasterPageTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Templates\UI\Views\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1100,6 +1107,7 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\UI\Testing\MasterPageTest.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

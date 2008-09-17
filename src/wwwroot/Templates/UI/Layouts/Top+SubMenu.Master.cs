@@ -10,20 +10,23 @@ namespace N2.Templates.UI.Layouts
 
         protected override void OnInit(EventArgs e)
         {
-            languages = N2.Context.Current.Resolve<ILanguageGateway>();
-
-            ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
-
-            StartPage start = Find.ClosestStartPage;
-            
-            if (p != null) p.Visible = (start != null) && start.ShowBreadcrumb;
-            if (dti != null) dti.Visible = CurrentPage["ShowTitle"] != null && (bool)CurrentPage["ShowTitle"];
-            if (dh != null) dh.CurrentItem = language;
-
-            if (zsl != null)
+            if (CurrentPage != null)
             {
-                zsl.CurrentItem = language;
-                dft.CurrentItem = language;
+                languages = N2.Context.Current.Resolve<ILanguageGateway>();
+
+                ContentItem language = languages.GetLanguage(CurrentPage) as ContentItem;
+
+                StartPage start = Find.ClosestStartPage;
+
+                if (p != null) p.Visible = (start != null) && start.ShowBreadcrumb;
+                if (dti != null) dti.Visible = CurrentPage["ShowTitle"] != null && (bool) CurrentPage["ShowTitle"];
+                if (dh != null) dh.CurrentItem = language;
+
+                if (zsl != null)
+                {
+                    zsl.CurrentItem = language;
+                    dft.CurrentItem = language;
+                }
             }
 
             base.OnInit(e);

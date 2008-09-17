@@ -142,7 +142,8 @@ namespace N2.Web.UI.WebControls
 
 		protected override void AddEditButtons()
 		{
-			AddDragButton();
+            if (CurrentItem != null)
+                AddDragButton();
 			base.AddEditButtons();
 		}
 

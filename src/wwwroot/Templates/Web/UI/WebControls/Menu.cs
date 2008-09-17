@@ -87,6 +87,9 @@ namespace N2.Templates.Web.UI.WebControls
 		
 		private void BuildControlHierarchy(ContentItem currentItem, ContentItem startPage)
 		{
+            if(currentItem == null)
+                currentItem = startPage;
+
 			ItemList children = currentItem.GetChildren();
 			if (children.Count > 0)
 				currentItem = children[0];

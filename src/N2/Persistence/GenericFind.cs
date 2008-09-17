@@ -66,7 +66,7 @@ namespace N2.Persistence
 		/// <returns>An enumeration of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
 		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor, bool includeSelf)
 		{
-			if (initialItem == null) throw new ArgumentNullException("initialItem");
+			if (initialItem == null) yield break;
             if (initialItem.VersionOf != null) initialItem = initialItem.VersionOf;
 
 			ContentItem item;
@@ -89,7 +89,7 @@ namespace N2.Persistence
 		/// <summary>Enumerates the trail of items from the last ancestor to the deepest child.</summary>
 		/// <param name="deepestChild">The page whose parents will be enumerated. The page itself will appear in the enumeration if includeSelf is applied.</param>
 		/// <param name="lastAncestor">The first page of the enumeration.</param>
-		/// <param name="includeSelf">Include the deepest child in the enumeration.</param>
+		/// <param name="includeDeepestChild">Include the deepest child in the enumeration.</param>
 		/// <returns>An enumeration of the from the ancestor uptil the deepest child.</returns>
 		public static IEnumerable<ContentItem> EnumerateBetween(ContentItem lastAncestor, ContentItem deepestChild, bool includeDeepestChild)
 		{

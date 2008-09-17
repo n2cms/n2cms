@@ -37,13 +37,13 @@ namespace N2.Templates
 		{
 			get
 			{
-				foreach (ContentItem item in Find.EnumerateParents(CurrentPage, null, true))
+				foreach (ContentItem item in EnumerateParents(CurrentPage, null, true))
 				{
 				    StartPage sp = item as StartPage;
                     if (sp != null)
                         return sp;
 				}
-				return null;
+				return StartPage;
 			}
 		}
 
@@ -53,13 +53,13 @@ namespace N2.Templates
         {
             get
             {
-                foreach (ContentItem item in Find.EnumerateParents(CurrentPage, null, true))
+                foreach (ContentItem item in EnumerateParents(CurrentPage, null, true))
                 {
                     LanguageRoot sp = item as LanguageRoot;
                     if (sp != null)
                         return sp;
                 }
-                return null;
+                return StartPage;
             }
         }
 	}
