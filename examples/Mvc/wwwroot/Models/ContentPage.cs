@@ -26,7 +26,7 @@ namespace MvcTest.Models
 
 		public override string TemplateUrl
 		{
-			get { return "/Views/Content/DefaultView.aspx"; }
+			get { return "~/Views/Content/DefaultView.aspx"; }
 		}
 	}
 }
