@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using N2.Tests.Collections;
@@ -68,10 +69,10 @@ namespace N2.Tests.Persistence
 			EnumerableAssert.Count(2, Find.EnumerateParents(a_a, a, true));
 		}
 
-		[Test, ExpectedException(typeof(ArgumentNullException))]
-		public void EnumerateParents_BoltsOnNullInitialItem()
+		[Test]
+		public void EnumerateParents_YieldsNoParents_WhenGivenANullInitialItems()
 		{
-			EnumerableAssert.Count(0, Find.EnumerateParents(null, a_a));
+		    Assert.That(Find.EnumerateParents(null, a_a).Count(), Is.EqualTo(0));
 		}
 
 		[Test]
