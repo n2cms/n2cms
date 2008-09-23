@@ -14,7 +14,7 @@ namespace N2.Addons.AddonCatalog.Items
     /// </summary>
     [Definition("Add-On")]
     [RestrictParents(typeof(AddonCatalog))]
-    public class Addon : AbstractContentPage, IContainable
+    public class Addon : AbstractContentPage
     {
         public Addon()
         {

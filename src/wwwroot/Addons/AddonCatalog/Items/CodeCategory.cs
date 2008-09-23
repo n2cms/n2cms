@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web;
 
 namespace N2.Addons.AddonCatalog.Items
 {
@@ -10,7 +8,7 @@ namespace N2.Addons.AddonCatalog.Items
         None = 0,
         Library = 1,
         ThemeLayout = 2,
-        Page = 4,
-        Part = 8
+        Pages = 4,
+        Parts = 8
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Web.UI.WebControls;
 using N2.Resources;
 using N2.Templates.Web.UI;
+using N2.Collections;
 
 namespace N2.Addons.AddonCatalog.UI
 {
@@ -13,10 +14,11 @@ namespace N2.Addons.AddonCatalog.UI
 
             Register.StyleSheet(this, "~/Addons/AddonCatalog/UI/AddonStyle.css");
 
-            foreach(ContentItem addon in CurrentPage.GetChildren())
+            ItemList<ContentItem> addons = CurrentPage.GetChildren(new CompositeFilter(new AccessFilter(), new TypeFilter(typeof (Items.Addon))));
+            foreach(Items.Addon addon in addons)
             {
                 AddonSummary uc = LoadControl("AddonSummary.ascx") as AddonSummary;
-                uc.CurrentItem = addon as Items.Addon;
+                uc.CurrentItem = addon;
                 phAddons.Controls.Add(uc);
             }
 

@@ -48,6 +48,7 @@ namespace N2.Addons.AddonCatalog.UI
             Select(cblRequirements.Items, (int)addon.Requirements);
             txtSource.Text = Decode(addon.SourceCodeUrl);
             txtSummary.Text = Decode(addon.Summary);
+            txtDescription.Text = Encode(addon.Text);
         }
 
         private string Decode(string value)
@@ -97,6 +98,7 @@ namespace N2.Addons.AddonCatalog.UI
             addon.Title = Encode(txtTitle.Text);
             addon.Name = new N2.Templates.Wiki.HtmlFilter().CleanUrl(txtTitle.Text);
 
+            addon.Text = Encode(txtDescription.Text);
             addon.AddonVersion = Encode(txtVersion.Text);
             addon.Category = (Items.CodeCategory)AssembleSelected(cblCategory.Items);
             addon.ContactEmail = Encode(txtEmail.Text);

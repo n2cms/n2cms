@@ -58,28 +58,28 @@
                 <asp:ListItem Text="Full Trust" Value="8" />
             </asp:CheckBoxList>
         </div>
-        <asp:Button ID="btnSave" runat="server" OnClick="save_Click" Text="Save" CssClass="b" />
-        <a href="<%= Url.Parse(CurrentPage.Url) %>">&laquo; Back</a>
 
     </fieldset>
+    <asp:Button ID="btnSave" runat="server" OnClick="save_Click" Text="Save" CssClass="b" />
+    <a href="<%= Url.Parse(CurrentPage.Url) %>">&laquo; Back</a>
 
     <script type="text/javascript">
         $("textarea,input[type='text']").addClass("tb").each(function() {
             if (!this.value) {
                 this.value = this.title;
-                $(this).addClass("unedited");
-            }
-        }).focus(function() {
-            if (!this.originalValue) {
-                this.originalValue = this.value;
-                this.value = "";
-                $(this).removeClass("unedited");
-            }
-        }).blur(function() {
-            if (!this.value) {
-                this.value = this.originalValue;
-                this.originalValue = null;
-                $(this).addClass("unedited");
+                $(this).addClass("unedited").focus(function() {
+                    if (!this.originalValue) {
+                        this.originalValue = this.value;
+                        this.value = "";
+                        $(this).removeClass("unedited");
+                    }
+                }).blur(function() {
+                    if (!this.value) {
+                        this.value = this.originalValue;
+                        this.originalValue = null;
+                        $(this).addClass("unedited");
+                    }
+                });
             }
         });
         $("#<%= btnSave.ClientID %>").click(function() {

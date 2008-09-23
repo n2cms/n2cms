@@ -2,10 +2,12 @@
 <%@ Import Namespace="N2.Web"%>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
-    <h1><%= CurrentPage.Title %></h1>
+    <h1><%= CurrentPage.Title %> <%# CurrentItem.AddonVersion %></h1>
     <p><%= CurrentPage.Summary.Replace(Environment.NewLine, "<br/>")%></p>
     <p><%= CurrentPage.Text.Replace(Environment.NewLine, "<br/>")%></p>
-    <p><label>Category</label> <%= CurrentPage.Category %></p>
+    <p><label>Published</label> <%= CurrentPage.Created %></p>
+    <p><label>Author</label> <%= CurrentPage.ContactName %></p>
+    <p><label>Contains</label> <%= CurrentPage.Category %></p>
     <p><label>Downloads</label> <%= CurrentPage.Downloads %></p>
     <p><label>Tested on</label> <%= CurrentPage.LastTestedVersion %></p>
     <p><label>Requirements</label> <%= CurrentPage.Requirements %></p>

@@ -8,10 +8,12 @@
     width:95%;
     margin:5px 0;
 }
+.addon label,
 .addonForm label,
 .addonForm .unedited
 {
     color:#AAA;
+    margin-right:5px;
 }
 .addonForm .cbl label
 {
