@@ -1,0 +1,37 @@
+﻿.addonForm .title
+{
+    margin:0;
+}
+.addonForm textarea,
+.addonForm .tb
+{
+    width:95%;
+    margin:5px 0;
+}
+.addonForm label,
+.addonForm .unedited
+{
+    color:#AAA;
+}
+.addonForm .cbl label
+{
+    color:#333;
+}
+.addonForm fieldset
+{
+    padding:10px;
+    margin:10px 0;
+}
+.addonForm .cbl,
+.addonForm .b
+{
+    margin:5px 0;
+}
+.addonForm .b
+{
+    vertical-align:middle;
+}
+a img
+{
+    vertical-align:middle;
+}

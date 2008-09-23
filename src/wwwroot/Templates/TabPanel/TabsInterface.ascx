@@ -3,7 +3,7 @@
 	<%= CurrentItem.Text %>
 </div>
 
-<script type="text/javascript" src="/TabPanel/TabPanel.js"></script>
+<script type="text/javascript" src="/Templates/TabPanel/TabPanel.js"></script>
 <script type="text/javascript">
 
 jQuery.extend(jQuery.expr[':'], {

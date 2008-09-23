@@ -1,3 +1,8 @@
+1.?
+- added addon sample
+- added addon catalog
+- fixed wiki part
+
 1.4.3.1
 - fixed here and there for templates' master page to work with no current page
 - updated dutch translation (MartijnRasenberg)

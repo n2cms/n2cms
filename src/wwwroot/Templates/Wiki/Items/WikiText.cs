@@ -9,12 +9,12 @@ namespace N2.Templates.Wiki.Items
     {
         public override string TemplateUrl
         {
-            get { return "~/Templates/Wiki/Parts/WikiPart.ascx"; }
+            get { return "~/Templates/Wiki/UI/Parts/WikiPart.ascx"; }
         }
 
         public override string IconUrl
         {
-            get { return "~/Templates/Wiki/Img/part_wiki.gif"; }
+            get { return "~/Templates/Wiki/UI/Img/part_wiki.gif"; }
         }
 
         #region IArticle Members

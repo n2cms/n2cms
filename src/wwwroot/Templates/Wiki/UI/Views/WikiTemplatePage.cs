@@ -18,7 +18,7 @@ namespace N2.Templates.Wiki.UI
 
         protected override void OnPreRender(EventArgs e)
         {
-            N2.Resources.Register.StyleSheet(this, "~/Templates/Wiki/Css/Wiki.css");
+            N2.Resources.Register.StyleSheet(this, "~/Templates/Wiki/UI/Css/Wiki.css");
             base.OnPreRender(e);
         }
     }
