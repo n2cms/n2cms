@@ -4,6 +4,9 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Templates.Services
 {
+    /// <summary>
+    /// Adds SEO title, keywords and description to the page.
+    /// </summary>
     public class TitleAndMetaTagApplyer
     {
         private readonly Page page;
@@ -17,10 +20,11 @@ namespace N2.Templates.Services
         {
             this.page = page;
             this.item = item;
-            page.Init += OnPageInit;
+            if(item != null)
+                page.Init += Page_Init;
         }
 
-        void OnPageInit(object sender, EventArgs e)
+        void Page_Init(object sender, EventArgs e)
         {
             page.Title = item[HeadTitle] as string ?? item.Title;
             AddMeta("keywords", item[MetaKeywords] as string);
