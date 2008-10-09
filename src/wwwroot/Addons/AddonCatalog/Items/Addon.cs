@@ -92,6 +92,26 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("Downloads", value, 0); }
         }
 
+        [EditableTextBox("UploadedFileUrl", 100, ContainerName = "content")]
+        public virtual string UploadedFileUrl
+        {
+            get { return GetDetail("UploadedFileUrl", ""); }
+            set { SetDetail("UploadedFileUrl", value, ""); }
+        }
+
+        [EditableTextBox("ContactEmail", 100, ContainerName = "content")]
+        public virtual string ContactEmail
+        {
+            get { return GetDetail("ContactEmail", ""); }
+            set { SetDetail("ContactEmail", value, ""); }
+        }
+
+        [EditableTextBox("ContactName", 100, ContainerName = "content")]
+        public virtual string ContactName
+        {
+            get { return GetDetail("ContactName", ""); }
+            set { SetDetail("ContactName", value, ""); }
+        }
 
         public string Action { get; set; }
 
@@ -102,12 +122,28 @@ namespace N2.Addons.AddonCatalog.Items
                 Action = "edit";
                 return this;
             }
+            if (childName.Equals("download", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Action = "download";
+                return this;
+            }
             return base.GetChild(childName);
         }
 
         public override string TemplateUrl
         {
-            get { return Get.UI + ((Action == "edit") ? "EditAddon.aspx" : "AddonPage.aspx"); }
+            get
+            {
+                switch (Action)
+                {
+                    case "edit":
+                        return "~/Addons/AddonCatalog/UI/EditAddon.aspx";
+
+                    case "download":
+                        return "~/Addons/AddonCatalog/UI/Download.aspx";
+                }
+                return "~/Addons/AddonCatalog/UI/AddonPage.aspx";
+            }
         }
 
         public override string IconUrl

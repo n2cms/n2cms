@@ -12,7 +12,7 @@ namespace N2.Addons.AddonCatalog.UI
         {
             base.OnInit(e);
 
-            Register.StyleSheet(this, "~/Addons/AddonCatalog/UI/AddonStyle.css");
+            Register.StyleSheet(this, Paths.UI + "AddonStyle.css");
 
             ItemList<ContentItem> addons = CurrentPage.GetChildren(new CompositeFilter(new AccessFilter(), new TypeFilter(typeof (Items.Addon))));
             foreach(Items.Addon addon in addons)

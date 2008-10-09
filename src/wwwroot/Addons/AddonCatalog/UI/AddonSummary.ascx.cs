@@ -9,9 +9,5 @@ namespace N2.Addons.AddonCatalog.UI
 {
     public partial class AddonSummary : ContentUserControl<ContentItem, Items.Addon>
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

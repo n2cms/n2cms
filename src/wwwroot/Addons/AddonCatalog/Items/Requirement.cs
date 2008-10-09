@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web;
 
 namespace N2.Addons.AddonCatalog.Items
 {
