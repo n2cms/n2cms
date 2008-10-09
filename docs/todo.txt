@@ -1,3 +1,4 @@
+- fix IAutoStart
 - cleanup many versions
 - resize control panel icons
 - rating

@@ -75,7 +75,7 @@ namespace N2.Edit.LinkTracker
 						try
 						{
 							ContentItem referencedItem = urlParser.Parse(link);
-							if (referencedItem != null && !items.Contains(referencedItem))
+							if (referencedItem != null && referencedItem.ID != 0 && !items.Contains(referencedItem))
 							{
 								items.Add(referencedItem);
 							}

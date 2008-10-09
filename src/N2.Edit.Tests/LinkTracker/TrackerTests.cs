@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using N2.Edit.FileSystem.Items;
 using N2.Edit.LinkTracker;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -148,5 +149,17 @@ namespace N2.Tests.Edit.LinkTracker
 			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
 			Assert.IsNull(links);
 		}
+
+        [Test]
+        public void DoesNotTrackLinks_ToItems_WithZeroID()
+        {
+            RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
+
+            root["TestDetail"] = @"<a href=""/FileSystem/upload/File.txt"">download pdf</a>";
+            persister.Save(root);
+
+            DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
+            Assert.IsNull(links);
+        }
 	}
 }

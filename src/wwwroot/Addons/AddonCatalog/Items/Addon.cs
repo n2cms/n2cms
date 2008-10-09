@@ -1,10 +1,11 @@
 using System;
-using System.Web.UI.WebControls;
+using System.Web.UI;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates;
 using N2.Templates.Items;
 using N2.Definitions;
+using N2.Web.UI;
 
 namespace N2.Addons.AddonCatalog.Items
 {
@@ -12,9 +13,9 @@ namespace N2.Addons.AddonCatalog.Items
     /// To spice things up there is a scheduled action that finds all MyParts and 
     /// updates their properties on a regular basis. Far-fetched? Yes. 
     /// </summary>
-    [Definition("Add-On")]
+    [Definition("Add-on")]
     [RestrictParents(typeof(AddonCatalog))]
-    public class Addon : AbstractContentPage
+    public class Addon : AbstractContentPage, IContainable
     {
         public Addon()
         {
@@ -49,18 +50,11 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("AddonVersion", value, ""); }
         }
 
-        [EditableTextBox("Summary", 100, TextMode = TextBoxMode.MultiLine, ContainerName = Tabs.Content)]
+        [EditableFreeTextArea("Summary", 100, ContainerName = Tabs.Content)]
         public virtual string Summary
         {
             get { return GetDetail("Summary", ""); }
             set { SetDetail("Summary", value, ""); }
-        }
-
-        [EditableTextBox("Description", 100, TextMode = TextBoxMode.MultiLine, ContainerName = Tabs.Content)]
-        public override string Text
-        {
-            get { return base.Text; }
-            set { base.Text = value; }
         }
 
         [EditableTextBox("HomepageUrl", 100, ContainerName = Tabs.Content)]
@@ -70,30 +64,11 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("HomepageUrl", value, ""); }
         }
 
-        [EditableTextBox("ContactName", 100, ContainerName = Tabs.Content)]
-        public virtual string ContactName
-        {
-            get { return GetDetail("ContactName", ""); }
-            set { SetDetail("ContactName", value, ""); }
-        }
-
-        [EditableTextBox("ContactEmail", 100, ContainerName = Tabs.Content)]
-        public virtual string ContactEmail
-        {
-            get { return GetDetail("ContactEmail", ""); }
-            set { SetDetail("ContactEmail", value, ""); }
-        }
-
-        [EditableTextBox("UploadedFileUrl", 100, ContainerName = Tabs.Content)]
-        public virtual string UploadedFileUrl
-        {
-            get { return GetDetail("UploadedFileUrl", ""); }
-            set { SetDetail("UploadedFileUrl", value, ""); }
-        }
-
+        [EditableTextBox("DownloadUrl", 100, ContainerName = Tabs.Content)]
         public virtual string DownloadUrl
         {
-            get { return Web.Url.Parse(Url).AppendSegment("download"); }
+            get { return GetDetail("DownloadUrl", ""); }
+            set { SetDetail("DownloadUrl", value, ""); }
         }
 
         [EditableTextBox("SourceCodeUrl", 100, ContainerName = Tabs.Content)]
@@ -127,33 +102,17 @@ namespace N2.Addons.AddonCatalog.Items
                 Action = "edit";
                 return this;
             }
-            if(childName.Equals("download", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Action = "download";
-                return this;
-            }
             return base.GetChild(childName);
         }
 
         public override string TemplateUrl
         {
-            get 
-            {
-                switch (Action)
-                {
-                    case "edit":
-                        return Paths.UI + "EditAddon.aspx";
-                    case "download":
-                        return Paths.UI + "Download.aspx";
-                    default:
-                        return Paths.UI + "AddonPage.aspx";
-                }
-            }
+            get { return Get.UI + ((Action == "edit") ? "EditAddon.aspx" : "AddonPage.aspx"); }
         }
 
         public override string IconUrl
         {
-            get { return Paths.UI + "plugin_link.png"; }
+            get { return "~/Addons/AddonCatalog/UI/plugin_link.png"; }
         }
     }
 }
