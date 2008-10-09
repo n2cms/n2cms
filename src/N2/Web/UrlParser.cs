@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using N2.Persistence;
 using System.Diagnostics;
-using N2.Configuration;
 
 namespace N2.Web
 {
@@ -15,7 +11,7 @@ namespace N2.Web
 	/// </summary>
 	public class UrlParser : IUrlParser
 	{
-        protected readonly Persistence.IPersister persister;
+        protected readonly IPersister persister;
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
         protected readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
@@ -39,12 +35,6 @@ namespace N2.Web
 
 		#region Properties
 
-        ///// <summary>Gets the current site.</summary>
-        //public Web.Site DefaultSite
-        //{
-        //    get { return host.DefaultSite; }
-        //}
-
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		public ContentItem CurrentPage
 		{
@@ -54,12 +44,6 @@ namespace N2.Web
 					?? (webContext.CurrentPage = ParsePage(webContext.LocalUrl));
 			}
 		}
-
-        ///// <summary>Gets the current site.</summary>
-        //public virtual Web.Site CurrentSite
-        //{
-        //    get { return DefaultSite; }
-        //}
 
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage

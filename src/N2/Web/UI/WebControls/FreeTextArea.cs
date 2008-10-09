@@ -76,10 +76,13 @@ namespace N2.Web.UI.WebControls
             IDictionary<string, object> overrides = new Dictionary<string, object>();
             overrides["elements"] = ((string)Page.Items[ElementsKey]).TrimStart(',');
             overrides["content_css"] = configCssUrl;
+            overrides["language"] = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+
             foreach (string key in configSettings.AllKeys)
                 overrides[key] = configSettings[key];
+
             return ToJsonString(overrides);
-        }
+        } 
 
         protected static string ToJsonString(IDictionary<string, object> collection)
         {
