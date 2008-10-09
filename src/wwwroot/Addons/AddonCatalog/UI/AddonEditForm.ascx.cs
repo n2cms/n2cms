@@ -74,7 +74,7 @@ namespace N2.Addons.AddonCatalog.UI
 
         private bool IsAuthor()
         {
-            return CurrentItem.SavedBy == Page.User.Identity.Name;
+            return string.Equals(CurrentItem.SavedBy, Page.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase);
         }
 
         protected void save_Click(object sender, EventArgs e)

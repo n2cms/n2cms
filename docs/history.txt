@@ -1,4 +1,5 @@
 1.4.3.2
+- fixed add-on catalog not recognizing add-on creator
 - removed culture=auto from settings page
 - fixed TitleAndMetaTagApplyer causes exception Title is required 
 - fixed problem saving pages with references to files

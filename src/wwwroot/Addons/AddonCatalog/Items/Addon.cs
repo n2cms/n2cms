@@ -64,13 +64,6 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("HomepageUrl", value, ""); }
         }
 
-        [EditableTextBox("DownloadUrl", 100, ContainerName = Tabs.Content)]
-        public virtual string DownloadUrl
-        {
-            get { return GetDetail("DownloadUrl", ""); }
-            set { SetDetail("DownloadUrl", value, ""); }
-        }
-
         [EditableTextBox("SourceCodeUrl", 100, ContainerName = Tabs.Content)]
         public virtual string SourceCodeUrl
         {
@@ -111,6 +104,11 @@ namespace N2.Addons.AddonCatalog.Items
         {
             get { return GetDetail("ContactName", ""); }
             set { SetDetail("ContactName", value, ""); }
+        }
+
+        public virtual string DownloadUrl
+        {
+            get { return Web.Url.Parse(Url).AppendSegment("download"); }
         }
 
         public string Action { get; set; }
