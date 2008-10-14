@@ -63,7 +63,7 @@ namespace N2.Serialization
 
 		protected virtual void ReadDefaultAttributes(Dictionary<string, string> attributes, ContentItem item, ReadingJournal journal)
 		{
-			item.Created = Convert.ToDateTime(attributes["created"]);
+            item.Created = ToNullableDateTime(attributes["created"]).Value;
 			item.Expires = ToNullableDateTime(attributes["expires"]);
 			item.ID = Convert.ToInt32(attributes["id"]);
 			item.Name = attributes["name"];
@@ -71,7 +71,7 @@ namespace N2.Serialization
 			item.SavedBy = attributes["savedBy"];
 			item.SortOrder = Convert.ToInt32(attributes["sortOrder"]);
 			item.Title = attributes["title"];
-			item.Updated = Convert.ToDateTime(attributes["updated"]);
+            item.Updated = ToNullableDateTime(attributes["updated"]).Value;
 			item.Visible = Convert.ToBoolean(attributes["visible"]);
 			if (!string.IsNullOrEmpty(attributes["zoneName"]))
 				item.ZoneName = attributes["zoneName"];

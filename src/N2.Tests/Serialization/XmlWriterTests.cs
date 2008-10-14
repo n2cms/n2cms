@@ -46,15 +46,17 @@ namespace N2.Tests.Serialization
 
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);
 
+		    string theMillenium = new DateTime(2000, 1, 1).ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture);
+
 			Assert.AreEqual(1, xpn.Select("//item[@id='2']").Count);
 			Assert.AreEqual(1, xpn.Select("//item[@parent='1']").Count);
 			Assert.AreEqual(1, xpn.Select("//item[@name='two']").Count);
 			Assert.AreEqual(1, xpn.Select("//item[@title='xml item']").Count);
 			Assert.AreEqual(1, xpn.Select("//item[@zoneName='danger']").Count);
-			Assert.AreEqual(1, xpn.Select("//item[@created='" + new DateTime(2000, 1, 1) + "']").Count);
-			Assert.AreEqual(1, xpn.Select("//item[@updated='" + new DateTime(2000, 1, 1) + "']").Count);
-			Assert.AreEqual(1, xpn.Select("//item[@published='" + new DateTime(2000, 1, 1) + "']").Count);
-			Assert.AreEqual(1, xpn.Select("//item[@expires='" + new DateTime(2000, 1, 1) + "']").Count);
+            Assert.AreEqual(1, xpn.Select("//item[@created='" + theMillenium + "']").Count);
+			Assert.AreEqual(1, xpn.Select("//item[@updated='" + theMillenium + "']").Count);
+			Assert.AreEqual(1, xpn.Select("//item[@published='" + theMillenium + "']").Count);
+			Assert.AreEqual(1, xpn.Select("//item[@expires='" + theMillenium + "']").Count);
 			Assert.AreEqual(1, xpn.Select("//item[@sortOrder='2']").Count);
 			Assert.AreEqual(1, xpn.Select("//item[@visible='False']").Count);
 			Assert.AreEqual(1, xpn.Select("//item[@savedBy='cristian']").Count);

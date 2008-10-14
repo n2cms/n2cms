@@ -33,13 +33,18 @@ namespace N2.Serialization
 
 		public void WriteAttribute(string attributeName, DateTime value)
 		{
-			WriteAttribute(attributeName, value.ToString());
+            WriteAttribute(attributeName, ToUniversalString(value));
 		}
 
-		public void WriteAttribute(string attributeName, DateTime? value)
+	    public void WriteAttribute(string attributeName, DateTime? value)
 		{
-			WriteAttribute(attributeName, value.HasValue ? value.ToString() : string.Empty);
-		}
+            WriteAttribute(attributeName, value.HasValue ? ToUniversalString(value.Value) : string.Empty);
+        }
+
+        private string ToUniversalString(DateTime value)
+        {
+            return value.ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }
 
 		public void WriteAttribute(string attributeName, string value)
 		{

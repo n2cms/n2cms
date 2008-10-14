@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Web;
@@ -6,6 +7,7 @@ using NUnit.Framework;
 using N2.Serialization;
 using N2.Tests.Serialization.Items;
 using NUnit.Framework.SyntaxHelpers;
+using System.Threading;
 
 namespace N2.Tests.Serialization
 {
@@ -92,7 +94,7 @@ namespace N2.Tests.Serialization
         }
 
 		[Test]
-		public void CanExportSimpleItemWithFileAttachment()
+		public void CanExport_SimpleItem_WithFileAttachment()
 		{
 			XmlableItem destination = new XmlableItem();
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
@@ -115,9 +117,67 @@ namespace N2.Tests.Serialization
 
 			Assert.That(File.Exists(path));
 			Assert.AreEqual("Just a little file.", File.ReadAllText(path));
-		}
+        }
 
-		#region Text
+        [Test]
+        public void Export_IsTheSame_RegardlessOfCulture()
+        {
+            CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+            
+            var item = CreateOneItem<XmlableItem>(0, "item", null);
+            var item2 = item.Clone(false);
+
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+                string xmlUS = ExportToString(item, CreateExporter(), ExportOptions.Default);
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("sv-SE");
+                string xmlSE = ExportToString(item2, CreateExporter(), ExportOptions.Default);
+
+                Assert.That(xmlUS, Is.EqualTo(xmlSE));
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentCulture = originalCulture;
+            }
+        }
+
+        [Test]
+        public void CanExport_AndImport_WhenDifferentCultures()
+        {
+            CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+
+            var item = CreateOneItem<XmlableItem>(1, "item", null);
+
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("it-IT");
+                string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("sv-SE");
+                ContentItem readItem = ImportFromString(xml, CreateImporter()).RootItem;
+
+                AssertEquals(item.Published, readItem.Published);
+                AssertEquals(item.Expires, readItem.Expires);
+                AssertEquals(item.Created, readItem.Created);
+                AssertEquals(item.Updated, readItem.Updated);
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentCulture = originalCulture;
+            }
+        }
+
+        private void AssertEquals(DateTime? expected, DateTime? actual)
+        {
+            Assert.That(expected.HasValue, Is.EqualTo(actual.HasValue));
+            if(expected.HasValue)
+            {
+                Assert.That(expected.Value.Date, Is.EqualTo(actual.Value.Date));
+                Assert.That(expected.Value.ToShortTimeString(), Is.EqualTo(actual.Value.ToShortTimeString()));
+            }
+        }
+
+	    #region Text
 
 		private static readonly string lgplLicense = @"This program is licensed under GPL-2. Here follows the full text of the GPL-2:
 

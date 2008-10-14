@@ -36,7 +36,6 @@ Prepare_Dependencies-vs2008.bat should do this for you. The examples:
 
 * MediumTrust: How to run N2 in a medium trust environment (favoured by many 
   shared hosting providers).
-* MultipleDomains: How to run a single N2 installation with multiple domains
 * Mvc: Integration with the ASP.NET MVC framework
 * Parts: Bare minimum project using "parts", i.e. drag'n'drop components on a 
   page.
@@ -57,3 +56,4 @@ CONTRIBUTORS
 * Geert van Horrik
 * Elizabeth (mozts)
 * Pedropaf
+* Matthew

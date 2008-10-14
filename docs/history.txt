@@ -1,7 +1,8 @@
+- applied mzalewski patch (export/import across locales)
+
 1.4.3.2
 - applied maqdev's patch: Tiny MCE interface language must be the same as N2 editor Title is required 
 - upgraded tinymce to 3.2.0.2
-- updated nhibernate to 2.0.1.GA
 - fixed add-on catalog not recognizing add-on creator
 - removed culture=auto from settings page
 - fixed TitleAndMetaTagApplyer causes exception Title is required 

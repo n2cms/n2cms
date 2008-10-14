@@ -49,10 +49,10 @@ namespace N2.Serialization
 
 		public static DateTime? ToNullableDateTime(string value)
 		{
-			if (!string.IsNullOrEmpty(value))
-				return Convert.ToDateTime(value);
-			else
-				return null;
+			if (string.IsNullOrEmpty(value))
+			    return null;
+
+            return DateTime.Parse(value, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
 		}
 
 	}
