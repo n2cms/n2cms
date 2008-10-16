@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using NUnit.Framework;
 using N2.Tests.Edit.Items;
 using System.Web.UI.WebControls;
@@ -10,6 +11,7 @@ using N2.Web.UI.WebControls;
 using Rhino.Mocks;
 using System.Security.Principal;
 using NUnit.Framework.SyntaxHelpers;
+using System.Reflection;
 
 namespace N2.Tests.Edit
 {
@@ -262,6 +264,8 @@ namespace N2.Tests.Edit
             Assert.AreEqual(0, p.Validators.Count);
 
             editManager.AddEditors(typeof(ItemWithRequiredProperty), p, null);
+
+            typeof (Page).GetMethod("InitRecursive", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(p, new[] {p});
 
             Assert.AreEqual(2, p.Validators.Count);
         }

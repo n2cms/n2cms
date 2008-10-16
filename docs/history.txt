@@ -1,3 +1,4 @@
+- applied esteewhy's patch "Unnecessary manual addition of Validator" + fixed test
 - applied mzalewski patch (export/import across locales)
 
 1.4.3.2
