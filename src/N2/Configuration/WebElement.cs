@@ -36,7 +36,7 @@ namespace N2.Configuration
             set { base["observedExtensions"] = value; }
         }
 
-        /// <summary>Read the windsor inversion of control container configuration from this configuration section instead of the location configured by <see cref="CastleConfiguration"/>.</summary>
+        /// <summary>Whether the current application is running in a web context. This affects how database sessions are stored during a request.</summary>
         [ConfigurationProperty("isWeb", DefaultValue = true)]
         public bool IsWeb
         {
@@ -50,6 +50,14 @@ namespace N2.Configuration
         {
             get { return (RewriteMethod)base["rewrite"]; }
             set { base["rewrite"] = value; }
+        }
+
+        /// <summary>Tells the rewriter whether it should rewrite when the url matches an existing file. By default N2 doesn't rewrite when the file exists.</summary>
+        [ConfigurationProperty("ignoreExistingFiles", DefaultValue = false)]
+        public bool IgnoreExistingFiles
+        {
+            get { return (bool)base["ignoreExistingFiles"]; }
+            set { base["ignoreExistingFiles"] = value; }
         }
     }
 }

@@ -18,11 +18,12 @@ namespace N2.Web
 	/// </summary>
 	public class UrlRewriter : IUrlRewriter
 	{
-        private RewriteMethod rewrite = RewriteMethod.RewriteRequest;
-        private bool rewriteEmptyExtension = false;
+        RewriteMethod rewrite = RewriteMethod.RewriteRequest;
+        bool rewriteEmptyExtension = false;
+	    bool ignoreExistingFiles = false;
         string[] observedExtensions = new string[] { ".aspx" };
-		private readonly IUrlParser urlParser;
-		private readonly IWebContext webContext;
+		readonly IUrlParser urlParser;
+		readonly IWebContext webContext;
 
 		/// <summary>Creates a new instance of the UrlRewriter.</summary>
 		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
@@ -49,17 +50,17 @@ namespace N2.Web
                 additionalExtensions.CopyTo(observedExtensions, 1);
             }
             observedExtensions[0] = config.Web.Extension;
+            ignoreExistingFiles = config.Web.IgnoreExistingFiles;
         }
 
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
-		/// <param name="context">The context to perform the rewriting on.</param>
 		public virtual void RewriteRequest()
 		{
             if (rewrite == RewriteMethod.None)
                 return;
             
             ContentItem currentPage = webContext.CurrentPage;
-            if (currentPage != null && !File.Exists(webContext.PhysicalPath) && !Directory.Exists(webContext.PhysicalPath))
+            if (currentPage != null && PathIsRewritable())
 			{
 				Url url = Url.Parse(currentPage.RewrittenUrl).AppendQuery(webContext.LocalUrl.Query);
 
@@ -70,8 +71,13 @@ namespace N2.Web
 			}
 		}
 
+	    bool PathIsRewritable()
+	    {
+	        return ignoreExistingFiles || (!File.Exists(webContext.PhysicalPath) && !Directory.Exists(webContext.PhysicalPath));
+	    }
 
-		public void UpdateCurrentPage()
+
+	    public void UpdateCurrentPage()
 		{
 			try
 			{
