@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using N2.Templates.Web.UI;
+﻿using N2.Templates.Web.UI;
 using N2.Templates.Items;
 using N2.Engine.Globalization;
 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Web.UI;
 using N2.Collections;
 using System.Web.UI.WebControls;
+using N2.Engine;
 
 namespace N2.Web.UI.WebControls
 {
@@ -26,6 +27,11 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return (string) ViewState["ZoneName"] ?? ""; }
 			set { ViewState["ZoneName"] = value; }
+		}
+
+		protected virtual IEngine Engine
+		{
+			get { return N2.Context.Current; }
 		}
 
 		/// <summary>Gets or sets an enumeration of filters applied to the items.</summary>

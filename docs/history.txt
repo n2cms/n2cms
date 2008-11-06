@@ -1,3 +1,5 @@
+- fixed bug with preview-publish of parts
+- removed N2.Templates conflicts with CssFriendly
 - option to rewrite regardless of existing files or not
 - applied esteewhy's patch "Unnecessary manual addition of Validator" + fixed test
 - applied mzalewski patch (export/import across locales)

@@ -489,9 +489,7 @@
     <Compile Include="Templates\Web\UI\WebControls\TextControl.cs" />
     <Compile Include="Templates\Web\Adapters\FormAdapter.cs" />
     <Compile Include="Templates\Web\Adapters\ImageAdapter.cs" />
-    <Compile Include="Templates\Web\Adapters\MenuAdapter.cs" />
     <Compile Include="Templates\Web\Adapters\UserControlWrapperAdapter.cs" />
-    <Compile Include="Templates\Web\Adapters\WebControlAdapterExtender.cs" />
     <Compile Include="Templates\Web\IPageModifier.cs" />
     <Compile Include="Templates\Web\IPageModifierContainer.cs" />
     <Compile Include="Templates\Web\LanguageModifier.cs" />

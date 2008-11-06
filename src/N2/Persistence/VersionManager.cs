@@ -79,7 +79,6 @@ namespace N2.Persistence
 
 					itemRepository.Update(currentItem);
 
-					itemRepository.Flush();
 					transaction.Commit();
 				}
 				OnReplacedVersion(new ItemEventArgs(replacementItem));
@@ -113,6 +112,8 @@ namespace N2.Persistence
 					if (fi.GetCustomAttributes(typeof(DoNotCopyAttribute), true).Length == 0)
 						if (fi.Name != "id" && fi.Name != "expires" && fi.Name != "published")
 							fi.SetValue(currentItem, fi.GetValue(replacementItem));
+					if(fi.Name == "url")
+						fi.SetValue(currentItem, null);
 				}
 			}
 

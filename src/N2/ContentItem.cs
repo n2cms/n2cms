@@ -256,10 +256,14 @@ namespace N2
 		{
 			get 
 			{ 
-				return url ?? (url = 
-					(urlParser != null && VersionOf == null) 
-						? urlParser.BuildUrl(this) 
-						: RewrittenUrl); 
+				if(url == null)
+				{
+					if (urlParser != null)
+						url = urlParser.BuildUrl(this);
+					else
+						url = RewrittenUrl;
+				}
+				return url;
 			}
 		}
 
@@ -282,15 +286,15 @@ namespace N2
             {
                 if (IsPage)
                 {
-                    return Web.Url.Parse(N2.Web.Url.ToAbsolute(TemplateUrl)).AppendQuery("page", ID);
+                    return Web.Url.Parse(Web.Url.ToAbsolute(TemplateUrl)).AppendQuery("page", ID);
                 }
 
                 for (ContentItem ancestorItem = Parent; ancestorItem != null; ancestorItem = ancestorItem.Parent)
                     if (ancestorItem.IsPage)
-                        return Web.Url.Parse(N2.Web.Url.ToAbsolute(ancestorItem.TemplateUrl)).AppendQuery("page", ancestorItem.ID).AppendQuery("item", ID);
+                        return Web.Url.Parse(Web.Url.ToAbsolute(ancestorItem.TemplateUrl)).AppendQuery("page", ancestorItem.ID).AppendQuery("item", ID);
 
 				if (VersionOf != null)
-					return VersionOf.TemplateUrl;
+					return Web.Url.Parse(VersionOf.RewrittenUrl).SetQueryParameter("item", ID.ToString());
 
                 throw new Web.TemplateNotFoundException(this);
             }

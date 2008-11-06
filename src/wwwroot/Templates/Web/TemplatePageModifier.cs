@@ -10,19 +10,19 @@ namespace N2.Templates.Web
     /// </summary>
 	public class TemplatePageModifier : IPageModifierContainer
 	{
-		private readonly IList<IPageModifier> modifiers;
+		private readonly IList<IPageModifier> modifiers = new List<IPageModifier>();
 
 		public TemplatePageModifier()
 		{
-			this.modifiers = new List<IPageModifier>();
-			this.modifiers.Add(new ThemeModifier());
-			this.modifiers.Add(new MasterPageModifier());
+			modifiers.Add(new ThemeModifier());
+			modifiers.Add(new MasterPageModifier());
 		}
 
 		public TemplatePageModifier(ILanguageGateway gateway)
 			: this()
 		{
-			this.modifiers.Add(new LanguageModifier(gateway));
+			if (gateway.Enabled)
+				modifiers.Add(new LanguageModifier(gateway));
 		}
 
 		public void Add(IPageModifier modifier)

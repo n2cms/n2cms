@@ -16,6 +16,7 @@ namespace N2.Web.UI.WebControls
 	{
         /// <summary>Set to true if parts that have been added to another page (and are displayed elsewhere) may be moved on other pages.</summary>
         public bool AllowExternalManipulation { get; set; }
+		ControlPanelState state = ControlPanelState.Visible;
 
 		public string DropPointBackImageUrl
 		{
@@ -31,7 +32,8 @@ namespace N2.Web.UI.WebControls
 
 		protected override void CreateItems(Control container)
 		{
-            if (ControlPanel.GetState() == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
+			state = ControlPanel.GetState();
+            if (state == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
 			{
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
@@ -50,7 +52,7 @@ namespace N2.Web.UI.WebControls
 
 		protected override void AddChildItem(Control container, ContentItem item)
 		{
-            if (ControlPanel.GetState() == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
+            if (state == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
 			{
 				AddDropPoint(container, item, CreationPosition.Before);
 
@@ -61,10 +63,11 @@ namespace N2.Web.UI.WebControls
 				AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
 			}
-			else
+			else if (state == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["previewOf"])
 			{
-				base.AddChildItem(this, item);
+				item = Engine.Persister.Get(int.Parse(Page.Request["preview"]));
 			}
+			base.AddChildItem(this, item);
 		}
 
 	    private bool IsMovableOnThisPage(ContentItem item)

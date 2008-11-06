@@ -10,5 +10,10 @@ namespace N2.Tests.Web
 		{
 			get { return false; }
 		}
+
+		public override string TemplateUrl
+		{
+			get { return "~/Part.ascx"; }
+		}
 	}
 }

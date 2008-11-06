@@ -23,7 +23,7 @@
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
-				<ItemTemplate><a href="<%# GetUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# VirtualPathUtility.ToAbsolute((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
+				<ItemTemplate><a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# VirtualPathUtility.ToAbsolute((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
 			</asp:TemplateField>
 			<asp:BoundField HeaderText="Published" DataField="Published" meta:resourceKey="published" />
 			<asp:BoundField HeaderText="Expired" DataField="Expires" meta:resourceKey="expires" />

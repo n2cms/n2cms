@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections;
 using System.Collections.Generic;
+using N2.Web;
 
 namespace N2.Edit.Versions
 {
@@ -77,12 +78,12 @@ namespace N2.Edit.Versions
 			gvHistory.DataBind();
 		}
 
-		protected string GetUrl(ContentItem item)
+		protected string GetPreviewUrl(ContentItem item)
 		{
-			if (item.IsPage || item.VersionOf == null)
-				return item.RewrittenUrl;
-			else
-				return "#";
+			if (item.VersionOf == null)
+				return item.Url;
+			
+			return Url.Parse(item.RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("previewOf", item.VersionOf.ID);
 		}
 
 		protected bool IsPublished(object dataItem)

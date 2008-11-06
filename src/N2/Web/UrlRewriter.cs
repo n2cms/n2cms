@@ -18,10 +18,10 @@ namespace N2.Web
 	/// </summary>
 	public class UrlRewriter : IUrlRewriter
 	{
-        RewriteMethod rewrite = RewriteMethod.RewriteRequest;
-        bool rewriteEmptyExtension = false;
-	    bool ignoreExistingFiles = false;
-        string[] observedExtensions = new string[] { ".aspx" };
+		readonly RewriteMethod rewrite = RewriteMethod.RewriteRequest;
+		readonly bool rewriteEmptyExtension;
+		readonly bool ignoreExistingFiles;
+		readonly string[] observedExtensions = new[] { ".aspx" };
 		readonly IUrlParser urlParser;
 		readonly IWebContext webContext;
 

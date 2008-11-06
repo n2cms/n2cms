@@ -251,6 +251,7 @@
     <Compile Include="Web\MspxExtensionUrlParserTests.cs" />
     <Compile Include="Web\ParserTestsBase.cs" />
     <Compile Include="Web\MultipleHostUrlParserTests.cs" />
+    <Compile Include="Web\ParsingRoutes.cs" />
     <Compile Include="Web\SlashExtensionUrlParserTests.cs" />
     <Compile Include="Web\TagBuilderTests.cs" />
     <Compile Include="Web\TreeNodeTests.cs" />

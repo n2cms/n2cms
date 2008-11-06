@@ -65,7 +65,7 @@ namespace N2.Edit
 
 		private void DisplayThisHasNewerVersionInfo(ContentItem itemToLink)
 		{
-            string url = N2.Web.Url.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
+            string url = Url.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
 			hlNewerVersion.NavigateUrl = url;
 			hlNewerVersion.Visible = true;
 		}
@@ -212,10 +212,12 @@ namespace N2.Edit
 			Validate();
 			if (IsValid)
 			{
-				INode savedVersion = SaveVersion();
-				string redirectUrl = savedVersion.PreviewUrl;
-				redirectUrl += (redirectUrl.Contains("?") ? "&" : "?") + "preview=true";
-				Response.Redirect(redirectUrl);
+				ContentItem savedVersion = SaveVersion();
+				Url redirectTo = (savedVersion as INode).PreviewUrl;
+				redirectTo = redirectTo.AppendQuery("preview", savedVersion.ID).AppendQuery("previewOf", savedVersion.VersionOf.ID);
+				if (!string.IsNullOrEmpty(Request["returnUrl"]))
+					redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
+				Response.Redirect(redirectTo);
 			}
 		}
 

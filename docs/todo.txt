@@ -1,3 +1,14 @@
+I noticed in the Templates solution, you created a ContentItem for each wiki item, user, etc.
+
+This is great to have a single template for multiple database items.
+
+But what if you have an existing api? What if the datasource is from something other than the N2 website?
+
+It would be great to have a new page class, such as DataBoundContentPage(Of t).
+I have created a technique to do this that requires implementing your own IUrlParser and match urls to regular expressions, and if it matches, return that ContentItem for the url. (Product-Name_1 & Product-Name2-2 all returns ProductPage).
+I hate writing code that is hardcodes the content model into it and as I can see by your absolutley wonderful program, you are very good at creating architectures for this scenario.
+So just a suggestion for next release, maybe you can see what you can do for us? ;)
+
 - make it possible to change edit page
 - fix IAutoStart
 - cleanup many versions

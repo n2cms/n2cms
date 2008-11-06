@@ -68,39 +68,42 @@ namespace N2.Web
 
 			ContentItem current = item;
 
-            // non-pages don't build url's
-			while (current != null && !current.IsPage)
-            {
-                current = current.Parent;
-            }
+			if(item.VersionOf != null)
+			{
+				current = item.VersionOf;
+			}
             
             // build path until start page
             Url url = new Url("/");
             while (current != null && !IsStartPage(current))
             {
-                url = url.PrependSegment(current.Name, null);
+				if(current.IsPage)
+					url = url.PrependSegment(current.Name, current.Extension);
                 current = current.Parent;
             }
             
             if (current == null)
-            {
                 // no start page found
                 return item.RewrittenUrl;
-            }
-            else if (current.ID == host.CurrentSite.StartPageID)
+
+			if (item.IsPage && item.VersionOf != null)
+				url = url.AppendQuery("page", item.ID);
+			else if(!item.IsPage)
+				url = url.AppendQuery("item", item.ID);
+
+			if (current.ID == host.CurrentSite.StartPageID)
             {
                 // the start page belongs to the current site, use relative url
-                return ToAbsolute(url, item);
+                return url;
             }
-            else
-            {
-                // find the start page and use it's host name
-                foreach (Site site in host.Sites)
-                    if (current.ID == site.StartPageID)
-                        return GetHostedUrl(item, url, site);
-                // revert to default site
-                return GetHostedUrl(item, url, host.DefaultSite);
-            }
+
+			// find the start page and use it's host name
+			foreach (Site site in host.Sites)
+				if (current.ID == site.StartPageID)
+					return GetHostedUrl(item, url, site);
+
+			// revert to default site
+			return GetHostedUrl(item, url, host.DefaultSite);
 		}
 
         private string GetHostedUrl(ContentItem item, string url, Site site)
@@ -108,7 +111,7 @@ namespace N2.Web
             if (string.IsNullOrEmpty(site.Authority))
                 return item.RewrittenUrl;
             else
-                return Url.Parse(ToAbsolute(url, item)).SetAuthority(site.Authority);
+                return Url.Parse(url).SetAuthority(site.Authority);
         }
 
         public override bool IsStartPage(ContentItem item)

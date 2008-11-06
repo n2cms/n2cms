@@ -203,18 +203,34 @@ namespace N2.Web
 		public virtual string BuildUrl(ContentItem item)
 		{
 			ContentItem current = item;
-			string url = string.Empty;
+			Url url = "/";
+			
+			if(item.VersionOf != null)
+			{
+				current = item.VersionOf;
+			}
 
 			// Walk the item's parent items to compute it's url
 			do
 			{
 				if (IsStartPage(current))
-					return ToAbsolute(url, item);
+				{
+					if (!item.IsPage)
+					{
+						url = url.AppendQuery("item", item.ID);
+					}
+					else if (item.IsPage && item.VersionOf != null)
+					{
+						url = url.AppendQuery("page", item.ID);
+					}
+					return url;
+				}
 				if (current.IsPage)
-					url = "/" + current.Name + url;
+					url = url.PrependSegment(current.Name, current.Extension);
 				current = current.Parent;
 			} while (current != null);
 
+			// we didn't find the startpage before reaching the root -> use rewrittenUrl
 			return item.RewrittenUrl;
 		}
 
@@ -222,6 +238,7 @@ namespace N2.Web
 		/// <param name="url">The relative url.</param>
 		/// <param name="item">The item whose url is supplied.</param>
 		/// <returns>The absolute url to the item.</returns>
+		[Obsolete]
 		protected virtual string ToAbsolute(string url, ContentItem item)
 		{
 			if (string.IsNullOrEmpty(url) || url == "/")

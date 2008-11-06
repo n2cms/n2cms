@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Persistence;
 using N2.Web;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web
 {
@@ -142,24 +143,44 @@ namespace N2.Tests.Web
 
 		#region Data BuildUrl Tests
 		[Test]
-		public void CanCreateDataItemUrlOnStartPage()
+		public void CanCreate_DataItemUrl_OnStartPage()
 		{
 			string url = parser.BuildUrl(data1);
 			Assert.AreEqual("/?item=6", url);
 		}
 
 		[Test]
-		public void CanCreateDataItemUrlOnPageOneLevelDown()
+		public void CanCreate_DataItemUrl_OnPage_OneLevelDown()
 		{
 			string url = parser.BuildUrl(data2);
 			Assert.AreEqual("/item2.aspx?item=7", url);
 		}
 
 		[Test]
-		public void CanCreateDataItemUrlOnPageTwoLevelsDown()
+		public void CanCreate_DataItemUrl_OnPage_TwoLevelsDown()
 		{
 			string url = parser.BuildUrl(data3);
 			Assert.AreEqual("/item2/item2_1.aspx?item=8", url);
+		}
+
+		[Test]
+		public void DataItemUrl_OfVersionedItem__OnStartPage_IsStartPageUrl_AndVersionID()
+		{
+			DataItem data4 = CreateOneItem<DataItem>(123, "123", null);
+			data4.VersionOf = data1;
+
+			string url = parser.BuildUrl(data4);
+			Assert.That(url, Is.EqualTo("/?item=123"));
+		}
+
+		[Test]
+		public void DataItemUrl_OfVersionedItem_IsPageUrl_AndVersionID()
+		{
+			DataItem data4 = CreateOneItem<DataItem>(123, "123", null);
+			data4.VersionOf = data3;
+
+			string url = parser.BuildUrl(data4);
+			Assert.That(url, Is.EqualTo("/item2/item2_1.aspx?item=123"));
 		}
 
 		#endregion

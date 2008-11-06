@@ -81,14 +81,14 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the the text on the edit page button.</summary>
 		public string EditText
 		{
-			get { return (string)(ViewState["EditText"] ?? "Edit page"); }
+			get { return (string)(ViewState["EditText"] ?? "Edit"); }
 			set { ViewState["EditText"] = value; }
 		}
 
 		/// <summary>Gets or sets the the text on the publish page button.</summary>
 		public string PublishText
 		{
-			get { return (string)(ViewState["PublishText"] ?? "Publish page"); }
+			get { return (string)(ViewState["PublishText"] ?? "Publish"); }
 			set { ViewState["PublishText"] = value; }
 		}
 
@@ -203,7 +203,7 @@ namespace N2.Web.UI.WebControls
             }
 		}
 
-		public virtual IEngine Engine
+		protected virtual IEngine Engine
 		{
 			get { return N2.Context.Current; }
 		}
@@ -368,7 +368,7 @@ namespace N2.Web.UI.WebControls
 
 		private void AddPublishButton()
 		{
-			btnPublish.Text = FormatImageAndText(N2.Web.Url.ToAbsolute("~/edit/img/ico/disk.gif"), PublishText);
+			btnPublish.Text = FormatImageAndText(Url.ToAbsolute("~/edit/img/ico/disk.gif"), PublishText);
 			btnPublish.CssClass = "publish";
 			Controls.Add(btnPublish);
 			btnPublish.Command += delegate { Publish(); };
@@ -385,29 +385,39 @@ namespace N2.Web.UI.WebControls
 
 		private void CancelVersion()
 		{
-			if (CurrentItem.VersionOf == null) throw new N2Exception("Cannot publish item that is not a version of another item");
+			ContentItem previewedItem = GetPreviewedItem();
+			if (previewedItem.VersionOf == null) throw new N2Exception("Cannot publish item that is not a version of another item");
 
-			ContentItem published = CurrentItem.VersionOf;
-			
-			Engine.Persister.Delete(CurrentItem);
+			ContentItem published = previewedItem.VersionOf;
 
+			Engine.Persister.Delete(previewedItem);
+			 
 			RedirectTo(published);
 		}
 
 		private void Publish()
 		{
-			if (CurrentItem.VersionOf == null) throw new N2Exception("Cannot publish item that is not a version of another item");
+			ContentItem previewedItem = GetPreviewedItem();
+			if (previewedItem.VersionOf == null) throw new N2Exception("Cannot publish item that is not a version of another item");
 
-			ContentItem published = CurrentItem.VersionOf;
-			
-			Engine.Resolve<Persistence.IVersionManager>().ReplaceVersion(published, CurrentItem);
+			ContentItem published = previewedItem.VersionOf;
+
+			Engine.Resolve<Persistence.IVersionManager>().ReplaceVersion(published, previewedItem);
 
 			RedirectTo(published);
 		}
 
+		private ContentItem GetPreviewedItem()
+		{
+			return Engine.Persister.Get(int.Parse(Request["preview"]));
+		}
+
 		protected void RedirectTo(ContentItem item)
 		{
-			string url = Engine.EditManager.GetPreviewUrl(item); ;
+			string url = Request["returnUrl"]; 
+			if (string.IsNullOrEmpty(url))
+				url = Engine.EditManager.GetPreviewUrl(item);
+				
 			Page.Response.Redirect(url);
 		}
 
@@ -555,7 +565,7 @@ namespace N2.Web.UI.WebControls
 					return ControlPanelState.Editing;
 				else if (Request["edit"] == "drag")
 					return ControlPanelState.DragDrop;
-				else if (Request["preview"] == "true")
+				else if (!string.IsNullOrEmpty(Request["preview"]))
 					return ControlPanelState.Previewing;
 				else
 					return ControlPanelState.Visible;
