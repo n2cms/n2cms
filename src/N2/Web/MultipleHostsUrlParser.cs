@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using N2.Persistence;
 using N2.Configuration;
-using System.Diagnostics;
 
 namespace N2.Web
 {
@@ -38,28 +36,25 @@ namespace N2.Web
 		{
 			if (url.StartsWith("/") || url.StartsWith("~/"))
 				return base.Parse(url);
-			else
-			{
-                Site site = host.GetSite(url);
-				if (site != null)
-                    return TryLoadingFromQueryString(url, "item", "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
-				else
-                    return TryLoadingFromQueryString(url, "item", "page");
-			}
+			
+			Site site = host.GetSite(url);
+			if (site != null)
+				return TryLoadingFromQueryString(url, "item", "page") 
+					?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
+			
+			return TryLoadingFromQueryString(url, "item", "page");
 		}
 
 		public override ContentItem ParsePage(string url)
 		{
 			if (url.StartsWith("/") || url.StartsWith("~/"))
 				return base.ParsePage(url);
-			else
-			{
-				Site site = host.GetSite(url);
-				if (site != null)
-					return TryLoadingFromQueryString(url, "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
-				else
-					return TryLoadingFromQueryString(url, "page");
-			}
+			
+			Site site = host.GetSite(url);
+			if (site != null)
+				return TryLoadingFromQueryString(url, "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
+			
+			return TryLoadingFromQueryString(url, "page");
 		}
 
 		public override string BuildUrl(ContentItem item)
@@ -73,7 +68,7 @@ namespace N2.Web
 				current = item.VersionOf;
 			}
             
-            // build path until start page
+            // build path until a start page
             Url url = new Url("/");
             while (current != null && !IsStartPage(current))
             {
@@ -94,7 +89,7 @@ namespace N2.Web
 			if (current.ID == host.CurrentSite.StartPageID)
             {
                 // the start page belongs to the current site, use relative url
-                return url;
+            	return Url.ToAbsolute("~" + url.PathAndQuery);
             }
 
 			// find the start page and use it's host name
@@ -108,13 +103,13 @@ namespace N2.Web
 
         private string GetHostedUrl(ContentItem item, string url, Site site)
         {
-            if (string.IsNullOrEmpty(site.Authority))
+        	if (string.IsNullOrEmpty(site.Authority))
                 return item.RewrittenUrl;
-            else
-                return Url.Parse(url).SetAuthority(site.Authority);
+        	
+			return Url.Parse(url).SetAuthority(site.Authority);
         }
 
-        public override bool IsStartPage(ContentItem item)
+		public override bool IsStartPage(ContentItem item)
         {
             foreach (Site site in host.Sites)
                 if (item.ID == site.StartPageID)

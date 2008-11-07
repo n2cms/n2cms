@@ -509,5 +509,5 @@ namespace N2.Web
             get { return serverUrl; }
             set { serverUrl = value; }
         }
-    }
+	}
 }

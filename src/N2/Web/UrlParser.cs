@@ -21,7 +21,7 @@ namespace N2.Web
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
 
-		public UrlParser(Persistence.IPersister persister, IWebContext webContext, Persistence.IItemNotifier notifier, IHost host)
+		public UrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host)
 		{
 			if (host == null) throw new ArgumentNullException("host");
 
@@ -216,17 +216,17 @@ namespace N2.Web
 				if (IsStartPage(current))
 				{
 					if (!item.IsPage)
-					{
 						url = url.AppendQuery("item", item.ID);
-					}
-					else if (item.IsPage && item.VersionOf != null)
-					{
+					else if (item.VersionOf != null)
 						url = url.AppendQuery("page", item.ID);
-					}
-					return url;
+
+					// we've reached the start page so we're done here
+					return Url.ToAbsolute("~" + url.PathAndQuery);
 				}
+
 				if (current.IsPage)
 					url = url.PrependSegment(current.Name, current.Extension);
+
 				current = current.Parent;
 			} while (current != null);
 
