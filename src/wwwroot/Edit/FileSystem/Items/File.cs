@@ -112,7 +112,7 @@ namespace N2.Edit.FileSystem.Items
             try
             {
                 System.IO.File.Copy(from, to);
-                return (File)destination.GetChild(Name);
+				return (File)destination.GetChild(Name);
             }
             catch (Exception ex)
             {

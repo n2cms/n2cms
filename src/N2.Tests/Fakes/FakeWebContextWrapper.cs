@@ -27,13 +27,10 @@ namespace N2.Tests.Fakes
 			return virtualPath;
 		}
 
-        //IDictionary items = new Dictionary<string, object>();
-        //public override IDictionary RequestItems
-        //{
-        //    get
-        //    {
-        //        return items;
-        //    }
-        //}
+		public string rewrittenPath;
+		public override void RewritePath(string path)
+		{
+			rewrittenPath = path;
+		}
 	}
 }

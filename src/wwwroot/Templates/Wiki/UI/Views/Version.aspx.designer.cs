@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace N2.Templates.Wiki.UI {
+namespace N2.Templates.Wiki.UI.Views {
     
     
     public partial class Version {

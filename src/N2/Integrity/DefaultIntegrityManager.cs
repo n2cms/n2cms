@@ -1,5 +1,6 @@
 using System;
 using N2;
+using N2.Web.UI;
 
 namespace N2.Integrity
 {

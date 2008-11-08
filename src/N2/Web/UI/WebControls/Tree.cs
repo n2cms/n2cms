@@ -99,7 +99,7 @@ namespace N2.Web.UI.WebControls
 			}
 			className.Append("i" + iconIndex + " ");
 
-			ILinkBuilder builder = Link.To(item).Target(target).Href(item.RewrittenUrl);
+			ILinkBuilder builder = Link.To(item).Target(target).Href(item.Url);
 			if (className.Length > 0)
 			{
 				--className.Length; // remove trailing whitespace

@@ -425,12 +425,14 @@
     <Compile Include="Web\AdaptiveContext.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
+    <Compile Include="Web\DynamicTemplateAttribute.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlHelper.cs" />
     <Compile Include="Web\IClosable.cs" />
     <Compile Include="Web\IErrorHandler.cs" />
     <Compile Include="Web\IHost.cs" />
+    <Compile Include="Web\ITemplateReference.cs" />
     <Compile Include="Web\Mail\IMailSender.cs" />
     <Compile Include="Web\Mail\SmtpMailSender.cs" />
     <Compile Include="Web\Mail\StaticMailSender.cs" />
@@ -440,7 +442,9 @@
     <Compile Include="Web\Parts\ItemDeleter.cs" />
     <Compile Include="Web\Parts\ItemMover.cs" />
     <Compile Include="Web\Parts\PartsAjaxService.cs" />
+    <Compile Include="Web\TemplateAttribute.cs" />
     <Compile Include="Web\TagBuilder.cs" />
+    <Compile Include="Web\TemplateData.cs" />
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\CacheManager.cs" />
     <Compile Include="Web\UI\ContentCacheDependency.cs" />

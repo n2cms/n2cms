@@ -18,17 +18,13 @@ namespace N2.Web
 	public class ThreadContext : IWebContext
     {
         private static string baseDirectory;
-        
-        [ThreadStatic]
-        private ContentItem currentPage;
-		[ThreadStatic]
-		private static IDictionary items;
-		[ThreadStatic]
-        private Url localUrl = new Url("/");
-        [ThreadStatic]
-        private Url hostUrl = new Url("http://localhost");
 
-        
+    	[ThreadStatic] ContentItem currentPage;
+    	[ThreadStatic] TemplateData currentTemplate;
+    	[ThreadStatic] static IDictionary items;
+    	[ThreadStatic] Url localUrl = new Url("/");
+    	[ThreadStatic] Url hostUrl = new Url("http://localhost");
+
         static ThreadContext()
 		{
 			baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -59,7 +55,14 @@ namespace N2.Web
         {
             get { return currentPage; }
             set { currentPage = value; }
-        }
+		}
+
+		/// <summary>The template used to serve this request.</summary>
+		public TemplateData CurrentTemplate
+		{
+			get { return currentTemplate; }
+			set { currentTemplate = value; }
+		}
 
         public virtual void Dispose()
         {
@@ -112,12 +115,12 @@ namespace N2.Web
 
         public virtual string PhysicalPath
         {
-            get { throw new NotSupportedException("In thread context. No handler when not running in http web context."); }
+			get { return MapPath(LocalUrl.Path); }
         }
 
         public virtual void RewritePath(string path)
         {
-            throw new NotSupportedException("In thread context. No handler when not running in http web context.");
+			throw new NotSupportedException("RewritePath not supported in thread context. No handler when not running in http web context.");
         }
 
         public virtual string ToAbsolute(string virtualPath)

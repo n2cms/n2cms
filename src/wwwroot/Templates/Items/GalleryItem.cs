@@ -54,7 +54,7 @@ namespace N2.Templates.Items
 
         public override string Url
         {
-            get { return Parent.Url + "?item=" + ID+ "#t" + ID; }
+			get { return N2.Web.Url.Parse(Parent.Url).AppendQuery("item", ID).SetFragment("#t" + ID); }
         }
 
         protected override string IconName

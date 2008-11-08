@@ -48,14 +48,14 @@ namespace N2.Persistence
 		/// <returns>Either the entity that matches the id, or a null</returns>
 		TEntity Get(TKey id);
 
-		/// <summary>
-		/// Get the entity from the persistance store, or return null
-		/// if it doesn't exist.
-		/// </summary>
-		/// <param name="id">The entity's id</param>
-		/// <typeparam name="T">The type of entity to get.</typeparam>
-		/// <returns>Either the entity that matches the id, or a null</returns>
-		T Get<T>(TKey id);
+    	/// <summary>
+    	/// Get the entity from the persistance store, or return null
+    	/// if it doesn't exist.
+    	/// </summary>
+    	/// <param name="id">The entity's id</param>
+    	/// <typeparam name="T">The type of entity to get.</typeparam>
+    	/// <returns>Either the entity that matches the id, or a null</returns>
+    	T Get<T>(TKey id);
 		
 		/// <summary>
 		/// Load the entity from the persistance store

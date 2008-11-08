@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using N2.Details;
 using Rhino.Mocks;
 using N2.Persistence;
 using NUnit.Framework;
@@ -11,56 +12,41 @@ using N2.Persistence.NH;
 
 namespace N2.Tests
 {
-	public class ItemPersistenceMockingBase : ItemTestsBase
+	public abstract class ItemPersistenceMockingBase : ItemTestsBase
 	{
         protected string currentHost = "www.n2cms.com";
         protected IPersister persister;
         protected IRepository<int, ContentItem> repository;
         protected IEventRaiser saving;
 
-		delegate void SaveDelegate(ContentItem item);
 		public delegate string ToAppRelativeDelegate(string path);
 		public delegate string ToAbsoluteDelegate(string path);
-        protected List<ContentItem> database = new List<ContentItem>();
+		protected int greatestID = 0;
 
 		[SetUp]
 		public override void  SetUp()
 		{
  			base.SetUp();
 			persister = CreatePersister();
-            database = new List<ContentItem>();
 		}
-
-        protected ContentItem FindById(int id)
-        {
-            return database.Find(
-                delegate(ContentItem item)
-                {
-                    return item.ID == id;
-                });
-        }
 
 		protected virtual IPersister CreatePersister()
 		{
-            repository = mocks.Stub<IRepository<int, ContentItem>>();
-            Expect.Call(repository.Get(0)).IgnoreArguments().Do(new Func<int, ContentItem>(FindById)).Repeat.Any();
-            Expect.Call(repository.Load(0)).IgnoreArguments().Do(new Func<int, ContentItem>(FindById)).Repeat.Any();
-            var transaction = mocks.Stub<ITransaction>();
-            transaction.Replay();
-            Expect.Call(repository.BeginTransaction()).Return(transaction).Repeat.Any();
-            repository.Replay();
+			repository = new Fakes.FakeRepository<ContentItem>();
 
-            var linkRepository = mocks.Stub<N2.Persistence.NH.INHRepository<int, N2.Details.LinkDetail>>();
+			var linkRepository = mocks.Stub<INHRepository<int, LinkDetail>>();
             linkRepository.Replay();
             var finder = mocks.Stub<N2.Persistence.Finder.IItemFinder>();
             finder.Replay();
-            return persister = new ContentPersister(repository, linkRepository, finder);
+
+			return persister = new ContentPersister(repository, linkRepository, finder);
 		}
 
 		protected override T CreateOneItem<T>(int itemID, string name, ContentItem parent)
 		{
+			greatestID = Math.Max(greatestID, itemID);
             T item = base.CreateOneItem<T>(itemID, name, parent);
-            database.Add(item);
+            repository.Save(item);
             return item;
 		}
 
@@ -74,8 +60,6 @@ namespace N2.Tests
                 { 
                     return new Url("http://" + currentHost); 
                 })).Repeat.Any();
-            //Expect.On(wrapper).Call(wrapper.ApplicationUrl).Return("/").Repeat.Any();
-            //Expect.On(wrapper).Call(wrapper.Authority).Do(new Func<string>(delegate { return currentHost; })).Repeat.Any();
 
 			if (replay)
 				mocks.Replay(wrapper);

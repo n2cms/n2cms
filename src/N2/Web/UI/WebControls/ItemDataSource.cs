@@ -151,8 +151,8 @@ namespace N2.Web.UI.WebControls
 		{
 			if (string.IsNullOrEmpty(viewPath))
 				return new ItemHierarchicalDataSourceView(CurrentItem);
-			else
-				return new ItemHierarchicalDataSourceView(N2.Context.UrlParser.Parse(viewPath));
+
+			return new ItemHierarchicalDataSourceView(ItemUtility.WalkPath(CurrentItem, viewPath));
 		}
 
 		#endregion

@@ -171,6 +171,7 @@
     <Compile Include="Edit\WhileSortingTreeOfPages.cs" />
     <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
     <Compile Include="Engine\ContentEngineTests.cs" />
+    <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Globalization\FlatLanguageStructureTests.cs" />
     <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
     <Compile Include="Globalization\Items\LanguageRoot.cs" />
@@ -251,7 +252,7 @@
     <Compile Include="Web\MspxExtensionUrlParserTests.cs" />
     <Compile Include="Web\ParserTestsBase.cs" />
     <Compile Include="Web\MultipleHostUrlParserTests.cs" />
-    <Compile Include="Web\ParsingRoutes.cs" />
+    <Compile Include="Web\ParsingUrlsWithActions.cs" />
     <Compile Include="Web\SlashExtensionUrlParserTests.cs" />
     <Compile Include="Web\TagBuilderTests.cs" />
     <Compile Include="Web\TreeNodeTests.cs" />

@@ -36,7 +36,7 @@ using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {
-	public class NHRepository<TKey, TEntity> : INHRepository<TKey, TEntity>
+	public class NHRepository<TKey, TEntity> : INHRepository<TKey, TEntity> where TEntity:class 
 	{
 		#region Private Fields
 

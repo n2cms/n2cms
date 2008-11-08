@@ -3,6 +3,7 @@ using N2.Integrity;
 using N2.Details;
 using N2.Security.Details;
 using System.Collections.Generic;
+using N2.Web;
 
 namespace N2.Templates.Wiki.Items
 {
@@ -10,14 +11,12 @@ namespace N2.Templates.Wiki.Items
     [RestrictParents(typeof(IStructuralPage))]
     [N2.Web.UI.TabPanel(Wiki.WikiTab, "Wiki", 110)]
     [AllowedChildren(typeof(Subscribe))]
-    public class Wiki : WikiArticle, IWiki
+	[Template("search", "~/Templates/Wiki/UI/Views/Search.aspx")]
+	[Template("nohits", "~/Templates/Wiki/UI/Views/NoHits.aspx")]
+	public class Wiki : WikiArticle, IWiki
     {
         public const string WikiTab = "wiki";
-        static Wiki()
-        {
-            ActionTemplates["search"] = "~/Templates/Wiki/UI/Views/Search.aspx";
-            ActionTemplates["nohits"] = "~/Templates/Wiki/UI/Views/NoHits.aspx";
-        }
+
         public Wiki()
         {
             Visible = true;
@@ -87,16 +86,18 @@ namespace N2.Templates.Wiki.Items
             get { return this; }
         }
 
-        public override ContentItem GetChild(string childName)
-        {
-            ContentItem article = base.GetChild(childName) ?? base.GetChild(childName.Replace(' ', '-'));
-            if (article == null)
-            {
-                Action = "submit";
-                ActionParameter = Utility.CapitalizeFirstLetter(childName);
-                return this;
-            }
-            return article;
-        }
+		public override TemplateData FindTemplate(string remainingUrl)
+		{
+			TemplateData data = base.FindTemplate(remainingUrl);
+			if(data.CurrentItem == null)
+			{
+				data.Action = "submit";
+				data.Arguments = Utility.CapitalizeFirstLetter(remainingUrl);
+				data.CurrentItem = this;
+				data.PagePath = Path;
+				data.TemplateUrl = "~/Templates/Wiki/UI/Views/Submit.aspx";
+			}
+			return data;
+		}
     }
 }

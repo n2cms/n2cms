@@ -8,9 +8,10 @@ namespace N2.Templates.Wiki.UI.WikiTemplates
     {
         protected override void OnInit(EventArgs e)
         {
-            if (CurrentPage.Action == "search" || CurrentPage.Action == "nohits")
+			
+            if (CurrentAction == "search" || CurrentAction == "nohits")
             {
-                txtSearch.Text = CurrentPage.ActionParameter;
+                txtSearch.Text = CurrentArguments;
             }
             base.OnInit(e);
         }

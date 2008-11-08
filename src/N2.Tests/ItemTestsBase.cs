@@ -8,7 +8,7 @@ using N2.Web;
 
 namespace N2.Tests
 {
-	public class ItemTestsBase
+	public abstract class ItemTestsBase
 	{
 		protected MockRepository mocks;
 

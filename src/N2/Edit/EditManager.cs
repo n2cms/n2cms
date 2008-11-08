@@ -465,10 +465,10 @@ namespace N2.Edit
             if(item == null)
                 return null;
 			
-            if(item.VersionOf == null)
-                return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
-		    
-            return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.RewrittenUrl));
+            if(item.VersionOf != null)
+				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl)); 
+			
+			return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
 		}
 
 

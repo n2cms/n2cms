@@ -1,20 +1,12 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rhino.Mocks;
-using N2.Persistence;
 using N2.Web;
 using N2.Configuration;
-using NUnit.Framework.SyntaxHelpers;
-using System.Diagnostics;
 
 namespace N2.Tests.Web
 {
 	public abstract class MultipleHostUrlParserTests : ParserTestsBase
 	{
-        MultipleSitesParser multipleParser;
-
 		protected class StaticSitesProvider : ISitesProvider
 		{
 			IEnumerable<Site> sites;
@@ -28,15 +20,6 @@ namespace N2.Tests.Web
 			{
 				return sites;
 			}
-		}
-
-		
-		[SetUp]
-		public override void SetUp()
-		{
-			base.SetUp();
-
-            multipleParser = (MultipleSitesParser)parser;
 		}
 
 		protected override IWebContext CreateWrapper(bool replay)

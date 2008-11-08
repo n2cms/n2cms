@@ -58,11 +58,11 @@ namespace N2.Web
 		{
             if (rewrite == RewriteMethod.None)
                 return;
-            
-            ContentItem currentPage = webContext.CurrentPage;
-            if (currentPage != null && PathIsRewritable())
+
+			TemplateData data = webContext.CurrentTemplate;
+            if (data != null && data.CurrentItem != null&& PathIsRewritable())
 			{
-				Url url = Url.Parse(currentPage.RewrittenUrl).AppendQuery(webContext.LocalUrl.Query);
+				Url url = data.RewrittenUrl.AppendQuery(webContext.LocalUrl.Query);
 
                 if (rewrite == RewriteMethod.RewriteRequest)
                     webContext.RewritePath(url);
@@ -81,15 +81,18 @@ namespace N2.Web
 		{
 			try
 			{
-				if (IsUpdatable(webContext.LocalUrl))
+				Url url = webContext.LocalUrl;
+				if (IsUpdatable(url))
 				{
-					ContentItem page = urlParser.ParsePage(webContext.LocalUrl);
+					url = new Url(url.Scheme, url.Authority, url.PathWithoutExtension, url.Query, url.Fragment);
+					TemplateData data = urlParser.ResolveTemplate(url);
 
-					Debug.WriteLine("CurrentPage <- " + page);
+					Debug.WriteLine("CurrentPage <- " + data.CurrentItem);
 
-					webContext.CurrentPage = page;
+					webContext.CurrentPage = data.CurrentItem;
+					webContext.CurrentTemplate = data;
 				}
-                else if (webContext.LocalUrl == "/")
+                else if (url == "/")
 					webContext.CurrentPage = urlParser.StartPage;
 			}
 			catch (Exception ex)

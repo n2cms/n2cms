@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Templates.Wiki.UI.EditArticle" Title="Untitled Page" %>
+<%@ Page Language="C#" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="Edit.aspx.cs" Inherits="N2.Templates.Wiki.UI.Views.EditArticle" Title="Untitled Page" %>
+<%@ Import Namespace="N2.Templates.Wiki.UI.Views"%>
 <%@ Register TagPrefix="parts" TagName="EditArticle" Src="../Parts/EditArticle.ascx" %>
 <asp:Content ContentPlaceHolderID="TextContent" runat="server">
     <div class="controls"><a href="<%= CurrentPage.Url %>">View</a>

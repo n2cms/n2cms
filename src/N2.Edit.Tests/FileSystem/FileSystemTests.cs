@@ -82,7 +82,7 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanGetDirectory_ByName()
         {
-            Directory d = (Directory)upload.GetChild("Folder1");
+			Directory d = (Directory)upload.GetChild("Folder1");
             Assert.That(d, Is.Not.Null);
             Assert.That(d.Name, Is.EqualTo("Folder1"));
         }
@@ -90,7 +90,7 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanGetFile_ByName()
         {
-            File f = (File)upload.GetChild("File.txt");
+			File f = (File)upload.GetChild("File.txt");
             Assert.That(f, Is.Not.Null);
             Assert.That(f.Name, Is.EqualTo("File.txt"));
         }
@@ -98,14 +98,14 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanGet_FileLength()
         {
-            File f = (File)upload.GetChild("File.txt");
+			File f = (File)upload.GetChild("File.txt");
             Assert.That(f.Size, Is.EqualTo(13));
         }
 
         [Test]
         public void CanGetDirectory_ByPath()
         {
-            Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
+			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
             Assert.That(d, Is.Not.Null);
             Assert.That(d.Name, Is.EqualTo("Folder 3"));
         }
@@ -113,7 +113,7 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanGetFile_ByPath()
         {
-            File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
+			File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
             Assert.That(f, Is.Not.Null);
             Assert.That(f.Name, Is.EqualTo("File 3.txt"));
         }
@@ -121,10 +121,10 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanMoveFile_ToOtherDirectory()
         {
-            File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
+			File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
             string sourcePath = f.PhysicalPath;
             string destinationPath = N2.Context.Current.Resolve<IWebContext>().MapPath("~/bin/FileSystem/Upload/Folder1/File 3.txt");
-            Directory d = (Directory)upload.GetChild("Folder1");
+			Directory d = (Directory)upload.GetChild("Folder1");
             try
             {
                 f.AddTo(d);
@@ -141,7 +141,7 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanMoveFile_ToRootDirectory()
         {
-            File f = (File)upload.GetChild("Folder 2/File 2.txt");
+			File f = (File)upload.GetChild("Folder 2/File 2.txt");
             string sourcePath = f.PhysicalPath;
             string destinationPath = N2.Context.Current.Resolve<IWebContext>().MapPath("~/bin/FileSystem/Upload/File 2.txt");
             try
@@ -160,12 +160,12 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanMoveDirectory_ToOtherDirectory()
         {
-            Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
+			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
             string sourcePath = d.PhysicalPath;
             string destinationPath = N2.Context.Current.Resolve<IWebContext>().MapPath("~/bin/FileSystem/Upload/Folder1/Folder 3");
             try
             {
-                d.AddTo(upload.GetChild("Folder1"));
+				d.AddTo(upload.GetChild("Folder1"));
                 Assert.That(d.PhysicalPath, Is.EqualTo(destinationPath));
                 Assert.That(System.IO.Directory.Exists(destinationPath));
                 Assert.That(!System.IO.Directory.Exists(sourcePath));
@@ -179,7 +179,7 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanMoveDirectory_ToRootDirectory()
         {
-            Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
+			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
             string sourcePath = d.PhysicalPath;
             string destinationPath = N2.Context.Current.Resolve<IWebContext>().MapPath("~/bin/FileSystem/Upload/Folder 3");
             try
@@ -224,15 +224,15 @@ namespace N2.Edit.Tests.FileSystem
 
         private void Move(Action<File, Directory> moveAction)
         {
-            Directory d1 = (Directory)upload.GetChild("Folder1");
-            Directory d2 = (Directory)upload.GetChild("Folder 2");
-            File f = (File)d1.GetChild("File1.txt");
+			Directory d1 = (Directory)upload.GetChild("Folder1");
+			Directory d2 = (Directory)upload.GetChild("Folder 2");
+			File f = (File)d1.GetChild("File1.txt");
             try
             {
                 moveAction(f, d2);
-                Assert.That(d1.GetChild("File1.txt"), Is.Null);
+				Assert.That(d1.GetChild("File1.txt"), Is.Null);
                 Assert.That(f.Parent, Is.EqualTo(d2));
-                Assert.That(d2.GetChild("File1.txt"), Is.Not.Null);
+				Assert.That(d2.GetChild("File1.txt"), Is.Not.Null);
             }
             finally
             {
@@ -261,16 +261,16 @@ namespace N2.Edit.Tests.FileSystem
 
         private void CopyAndDelete(Func<File, Directory, ContentItem> copyAction)
         {
-            Directory d1 = (Directory)upload.GetChild("Folder1");
-            Directory d2 = (Directory)upload.GetChild("Folder 2");
-            File f = (File)d1.GetChild("File1.txt");
+			Directory d1 = (Directory)upload.GetChild("Folder1");
+			Directory d2 = (Directory)upload.GetChild("Folder 2");
+			File f = (File)d1.GetChild("File1.txt");
             File fCopy = null;
             try
             {
                 fCopy = (File)copyAction(f, d2);
-                Assert.That(d2.GetChild("File1.txt"), Is.Not.Null);
+				Assert.That(d2.GetChild("File1.txt"), Is.Not.Null);
                 Assert.That(fCopy.Parent, Is.EqualTo(d2));
-                Assert.That(d1.GetChild("File1.txt"), Is.Not.Null);
+				Assert.That(d1.GetChild("File1.txt"), Is.Not.Null);
                 Assert.That(f.Parent, Is.EqualTo(d1));
             }
             finally

@@ -27,7 +27,6 @@ namespace N2.Web
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="rewriter">The class that performs url rewriting.</param>
 		/// <param name="security">The class that can authorize a request.</param>
-		/// <param name="sessionProvider">The class that provides NHibernate sessions.</param>
 		/// <param name="webContext">The web context wrapper.</param>
         public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer, EditSection editConfig, HostSection hostConfig)
             : this(rewriter, security, webContext, errorHandler, installer)
@@ -39,7 +38,6 @@ namespace N2.Web
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="rewriter">The class that performs url rewriting.</param>
 		/// <param name="security">The class that can authorize a request.</param>
-		/// <param name="sessionProvider">The class that provides NHibernate sessions.</param>
 		/// <param name="webContext">The web context wrapper.</param>
         public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer)
 		{

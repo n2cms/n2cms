@@ -325,7 +325,21 @@ namespace N2.Tests.Web
             Url u = "http://n2cms.com/path/";
             u = u.AppendSegment("test2", true);
             Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/path/test2.aspx"));
-        }
+		}
+
+		[Test]
+		public void Extension_WillNotCrossSegments()
+		{
+			Url u = "/hello.world/universe";
+			Assert.That(u.Extension, Is.Null);
+		}
+
+		[Test]
+		public void PathWithoutExtension_WillNotCrossSegments()
+		{
+			Url u = "/hello.world/universe";
+			Assert.That(u.PathWithoutExtension, Is.EqualTo("/hello.world/universe"));
+		}
 
         //[Test]
         //public void CanAppendSegment_UsingDefaultExtension_ToPathWithOtherExtension()
@@ -576,6 +590,22 @@ namespace N2.Tests.Web
             Url u = new Url("/hello.aspx?something=someotherthing&query=value&query3=value3");
             u = u.SetQueryParameter("query3", null);
             Assert.That(u.ToString(), Is.EqualTo("/hello.aspx?something=someotherthing&query=value"));
-        }
+		}
+
+		[Test]
+		public void CanChangeExtension()
+		{
+			Url u = new Url("/hello.aspx?something=someotherthing");
+			u = u.SetExtension(".html");
+			Assert.That(u.ToString(), Is.EqualTo("/hello.html?something=someotherthing"));
+		}
+
+		[Test]
+		public void CanClearExtension()
+		{
+			Url u = new Url("/hello.aspx?something=someotherthing");
+			u = u.SetExtension("");
+			Assert.That(u.ToString(), Is.EqualTo("/hello?something=someotherthing"));
+		}
     }
 }

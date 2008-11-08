@@ -35,6 +35,9 @@ namespace N2.Web
 		/// <summary>A page instance stored in the request context.</summary>
 		ContentItem CurrentPage { get; set; }
 
+		/// <summary>The template used to serve this request.</summary>
+		TemplateData CurrentTemplate { get; set; }
+
         /// <summary>The local part of the requested path, e.g. /path/to/a/page.aspx?some=query.</summary>
         Url LocalUrl { get; }
         

@@ -1,4 +1,5 @@
 using N2.Collections;
+using N2.Web;
 
 namespace N2.Tests.Web
 {

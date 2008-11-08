@@ -26,7 +26,7 @@ namespace N2.Templates.Wiki.UI.Parts
         {
             if (IsNew)
             {
-                h1.Text = CurrentPage.ActionParameter;
+                h1.Text = CurrentArguments;
             }
             else
             {
@@ -62,8 +62,8 @@ namespace N2.Templates.Wiki.UI.Parts
             if (IsNew)
             {
                 article = Engine.Definitions.CreateInstance<Items.WikiArticle>(CurrentPage);
-                article.Title = filter.StripHtml(CurrentPage.ActionParameter);
-                article.Name = filter.CleanUrl(CurrentPage.ActionParameter);
+                article.Title = filter.StripHtml(CurrentArguments);
+				article.Name = filter.CleanUrl(CurrentArguments);
             }
             else
             {

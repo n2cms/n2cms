@@ -1,11 +1,8 @@
-using System;
-using System.Web.UI;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates;
 using N2.Templates.Items;
-using N2.Definitions;
-using N2.Web.UI;
+using N2.Web;
 
 namespace N2.Addons.AddonCatalog.Items
 {
@@ -13,9 +10,12 @@ namespace N2.Addons.AddonCatalog.Items
     /// To spice things up there is a scheduled action that finds all MyParts and 
     /// updates their properties on a regular basis. Far-fetched? Yes. 
     /// </summary>
-    [Definition("Add-on")]
+    [Definition("Add-on", SortOrder = 1000)]
     [RestrictParents(typeof(AddonCatalog))]
-    public class Addon : AbstractContentPage, IContainable
+	[Template("~/Addons/AddonCatalog/UI/AddonPage.aspx")]
+	[Template("edit", "~/Addons/AddonCatalog/UI/EditAddon.aspx")]
+	[Template("download", "~/Addons/AddonCatalog/UI/Download.aspx")]
+	public class Addon : AbstractContentPage
     {
         public Addon()
         {
@@ -43,7 +43,7 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("LastTestedVersion", value, ""); }
         }
 
-        [N2.Details.EditableTextBox("Version", 100, ContainerName = Tabs.Content)]
+        [EditableTextBox("Version", 100, ContainerName = Tabs.Content)]
         public virtual string AddonVersion
         {
             get { return GetDetail("AddonVersion", ""); }
@@ -109,39 +109,6 @@ namespace N2.Addons.AddonCatalog.Items
         public virtual string DownloadUrl
         {
             get { return Web.Url.Parse(Url).AppendSegment("download"); }
-        }
-
-        public string Action { get; set; }
-
-        public override ContentItem GetChild(string childName)
-        {
-            if (childName.Equals("edit", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Action = "edit";
-                return this;
-            }
-            if (childName.Equals("download", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Action = "download";
-                return this;
-            }
-            return base.GetChild(childName);
-        }
-
-        public override string TemplateUrl
-        {
-            get
-            {
-                switch (Action)
-                {
-                    case "edit":
-                        return "~/Addons/AddonCatalog/UI/EditAddon.aspx";
-
-                    case "download":
-                        return "~/Addons/AddonCatalog/UI/Download.aspx";
-                }
-                return "~/Addons/AddonCatalog/UI/AddonPage.aspx";
-            }
         }
 
         public override string IconUrl

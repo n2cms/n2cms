@@ -17,6 +17,15 @@ namespace N2.Templates.Wiki.Web
             }
         }
 
+		protected string CurrentAction
+		{
+			get { return Engine.RequestContext.CurrentTemplate.Action; }
+		}
+		protected string CurrentArguments
+		{
+			get { return Engine.RequestContext.CurrentTemplate.Arguments; }
+		}
+
         ViewContext viewed = null;
         public ViewContext Viewed 
         {

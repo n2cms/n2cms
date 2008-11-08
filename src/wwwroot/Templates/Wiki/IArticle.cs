@@ -12,8 +12,8 @@ namespace N2.Templates.Wiki
         string Text { get; }
         string Url { get; }
         string SavedBy { get; }
-        string Action { get; }
-        string ActionParameter { get; }
+		//string Action { get; }
+		//string ActionParameter { get; }
         
         IWiki WikiRoot { get; }
         object this[string detailName] { get; }

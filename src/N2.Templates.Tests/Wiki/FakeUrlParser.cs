@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System;
 using N2.Web;
 
 namespace N2.Templates.Tests.Wiki
@@ -33,7 +30,7 @@ namespace N2.Templates.Tests.Wiki
         public string BuildUrl(ContentItem item)
         {
             Url url = "/" + item.Name + ".aspx";
-            foreach (ContentItem parent in Find.EnumerateParents(item))
+            foreach (ContentItem parent in N2.Templates.Find.EnumerateParents(item))
             {
                 url = url.PrependSegment(parent.Name);
             }
@@ -54,5 +51,15 @@ namespace N2.Templates.Tests.Wiki
         {
             throw new NotImplementedException();
         }
-    }
+
+		#region IUrlParser Members
+
+
+		public TemplateData ResolveTemplate(Url url)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+	}
 }

@@ -40,7 +40,14 @@ namespace N2.Web
         {
             get { return RequestItems["CurrentPage"] as ContentItem; }
             set { RequestItems["CurrentPage"] = value; }
-        }
+		}
+
+		/// <summary>The template used to serve this request.</summary>
+		public TemplateData CurrentTemplate
+		{
+			get { return RequestItems["CurrentTemplate"] as TemplateData; }
+			set { RequestItems["CurrentTemplate"] = value; }
+		}
 
         /// <summary>The handler associated with the current request.</summary>
         public IHttpHandler Handler

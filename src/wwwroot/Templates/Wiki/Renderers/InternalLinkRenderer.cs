@@ -85,8 +85,8 @@ namespace N2.Templates.Wiki.Renderers
         private Control CreateInternalLink(Control container, ViewContext context, string fragment)
         {
             string[] fragments = fragment.Split('|');
-            ContentItem existingArticle = context.Article.WikiRoot.GetChild(fragments[0]);
-            if (existingArticle == null || existingArticle != context.Article.WikiRoot)
+            ContentItem existingArticle = context.Article.WikiRoot.GetChild(fragments[0].Replace(" ", "-"));
+            if (existingArticle != null && existingArticle != context.Article.WikiRoot)
             {
                 return AppendAnchor(container, fragments.Length > 1 ? fragments[1] : fragments[0], existingArticle.Url, true);
             }

@@ -120,7 +120,7 @@ namespace N2.Edit.FileSystem.Items
             try
             {
                 System.IO.Directory.CreateDirectory(to);
-                Directory copy = (Directory)destination.GetChild(Name);
+				Directory copy = (Directory)destination.GetChild(Name);
                 foreach (Directory childDir in GetDirectories())
                     childDir.CopyTo(copy);
                 foreach (File f in GetFiles())

@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="History.aspx.cs" Inherits="N2.Templates.Wiki.UI.History" Title="Untitled Page" %>
+<%@ Page Language="C#" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="History.aspx.cs" Inherits="N2.Templates.Wiki.UI.Views.History" Title="Untitled Page" %>
+<%@ Import Namespace="N2.Templates.Wiki.UI.Views"%>
 <asp:Content ID="Content9" ContentPlaceHolderID="TextContent" runat="server">
     <div class="controls"><a href="<%= CurrentPage.Url %>">View</a>
     | <a href="<%= CurrentPage.AppendUrl("Modify") %>">Modify</a>

@@ -4,6 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.Diagnostics;
 using System.Web.UI;
+using N2.Edit;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 
@@ -32,18 +33,18 @@ namespace N2.Details
 
 		public WithEditableChildAttribute(Type childType, string childName, int sortOrder)
 		{
-			this.ChildType = childType;
-			this.DefaultChildName = childName;
-			this.Name = childName;
-			this.SortOrder = sortOrder;
+			ChildType = childType;
+			DefaultChildName = childName;
+			Name = childName;
+			SortOrder = sortOrder;
 		}
 
 		protected override ContentItem GetChild(ContentItem item)
 		{
-			ContentItem childItem = item.GetChild(this.DefaultChildName);
+			ContentItem childItem = item.GetChild(DefaultChildName);
 			if (childItem == null)
 			{
-				childItem = CreateChild(item, this.ChildType);
+				childItem = CreateChild(item, ChildType);
 			}
 			return childItem;
 		}

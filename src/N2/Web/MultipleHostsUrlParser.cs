@@ -79,7 +79,7 @@ namespace N2.Web
             
             if (current == null)
                 // no start page found
-                return item.RewrittenUrl;
+                return item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
 
 			if (item.IsPage && item.VersionOf != null)
 				url = url.AppendQuery("page", item.ID);
@@ -104,7 +104,7 @@ namespace N2.Web
         private string GetHostedUrl(ContentItem item, string url, Site site)
         {
         	if (string.IsNullOrEmpty(site.Authority))
-                return item.RewrittenUrl;
+				return item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
         	
 			return Url.Parse(url).SetAuthority(site.Authority);
         }

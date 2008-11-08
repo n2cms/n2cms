@@ -113,7 +113,7 @@ namespace N2.Web.UI
 				if (child is T)
 					yield return child as T;
 				foreach(T match in FindInChildren<T>(child))
-					yield return match as T;
+					yield return match;
 			}
 		}
 

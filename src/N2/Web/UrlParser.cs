@@ -20,7 +20,6 @@ namespace N2.Web
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
-
 		public UrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host)
 		{
 			if (host == null) throw new ArgumentNullException("host");
@@ -72,6 +71,17 @@ namespace N2.Web
 			((IUrlParserDependency)e.AffectedItem).SetUrlParser(this);
 		}
 
+		public TemplateData ResolveTemplate(Url url)
+		{
+			ContentItem item = TryLoadingFromQueryString(url, "page");
+			if(item != null)
+			{
+				return new TemplateData(item, item.Path, item.TemplateUrl, url["action"], url["arguments"]);
+			}
+			
+			return StartPage.FindTemplate(url.Path);
+		}
+
 		/// <summary>Finds an item by traversing names from the start page.</summary>
 		/// <param name="url">The url that should be traversed.</param>
 		/// <returns>The content item matching the supplied url.</returns>
@@ -107,8 +117,8 @@ namespace N2.Web
 
 			if (url.Length == 0)
 				return current;
-			else
-				return current.GetChild(url) ?? NotFoundPage(url);
+			
+			return current.GetChild(url) ?? NotFoundPage(url);
 		}
 
         /// <summary>Returns a page when  no page is found. This method will return the start page if the url matches the default content page property.</summary>
@@ -165,36 +175,6 @@ namespace N2.Web
 			}
 			return null;
 		}
-
-		private int? TryParse(string possibleNumber)
-		{
-			int id;
-			if (int.TryParse(possibleNumber, out id))
-				return id;
-			return null;
-		}
-
-		private static char[] segmentSplitChars = new char[] { '~', '/' };
-		private string[] Segment(string rawUrl)
-		{
-            rawUrl = Url.Parse(rawUrl).PathAndQuery; //GetPathAndQuery(rawUrl);
-
-			string relativeUrlWithoutQueryString = this.webContext.ToAppRelative(rawUrl.Split('?', '#')[0]);
-			return relativeUrlWithoutQueryString.Split(segmentSplitChars, StringSplitOptions.RemoveEmptyEntries);
-		}
-
-        //public virtual string GetPathAndQuery(string rawUrl)
-        //{
-        //    if (!rawUrl.StartsWith("/"))
-        //    {
-        //        Match m = pathAndQueryIntoGroup.Match(rawUrl);
-        //        if (m != null && m.Groups.Count > 1)
-        //        {
-        //            rawUrl = m.Groups[1].Value;
-        //        }
-        //    }
-        //    return rawUrl;
-        //}
 		#endregion
 
 		/// <summary>Calculates an item url by walking it's parent path.</summary>
@@ -231,7 +211,7 @@ namespace N2.Web
 			} while (current != null);
 
 			// we didn't find the startpage before reaching the root -> use rewrittenUrl
-			return item.RewrittenUrl;
+			return item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
 		}
 
 		/// <summary>Handles virtual directories and non-page items.</summary>

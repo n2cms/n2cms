@@ -17,9 +17,8 @@ namespace N2.Web
 		private string text;
 		private string title;
 		private string target;
-		private string href;
 		private string className;
-		private string query = string.Empty;
+		private Url url;
 		private IDictionary<string, string> attributes = new Dictionary<string, string>();
 		#endregion
 
@@ -45,7 +44,7 @@ namespace N2.Web
 			this.text = text;
 			this.title = title;
 			this.target = target;
-			this.href = href;
+			this.url = href;
 			this.className = className;
 		}
 
@@ -99,14 +98,15 @@ namespace N2.Web
 		{
 			get 
 			{
-				if (string.IsNullOrEmpty(query))
-					return href;
-				else
-					return href.IndexOf('?') >= 0
-					       	? href + "&" + query
-							: href + "?" + query;
+				return url;
+				//if (string.IsNullOrEmpty(query))
+				//    return href;
+				//else
+				//    return href.IndexOf('?') >= 0
+				//            ? href + "&" + query
+				//            : href + "?" + query;
 			}
-			set { href = value; }
+			set { url = value; }
 		}
 
 		public string ClassName
@@ -190,45 +190,46 @@ namespace N2.Web
 
 		ILinkBuilder ILinkBuilder.Href(string href)
 		{
-			this.href = href;
+			this.url = href;
 			return this;
 		}
 
 		public ILinkBuilder Query(string query)
 		{
-			this.query = query;
+			url = url.SetQuery(query);
 			return this;
 		}
 
 		public ILinkBuilder AddQuery(string key, string value)
 		{
-			if (string.IsNullOrEmpty(query))
-				query = key + "=" + value;
-			else
-			{
-				bool wasReplaced = false;
-				string q = string.Empty;
-				foreach(string part in query.Split('&'))
-				{
-					string[] pair = part.Split('=');
+			url = url.SetQueryParameter(key, value);
+			//if (string.IsNullOrEmpty(query))
+			//    query = key + "=" + value;
+			//else
+			//{
+			//    bool wasReplaced = false;
+			//    string q = string.Empty;
+			//    foreach(string part in query.Split('&'))
+			//    {
+			//        string[] pair = part.Split('=');
 
-					if(pair[0]==key)
-					{
-						if(value != null)
-						{
-							AddToQuery(ref q, pair[0], value);
-						}
-						wasReplaced = true;
-					}
-					else if(pair.Length > 1)
-					{
-						AddToQuery(ref q, pair[0], pair[1]);
-					}
-				}
-				if (!wasReplaced)
-					AddToQuery(ref q, key, value);
-				query = q;
-			}
+			//        if(pair[0]==key)
+			//        {
+			//            if(value != null)
+			//            {
+			//                AddToQuery(ref q, pair[0], value);
+			//            }
+			//            wasReplaced = true;
+			//        }
+			//        else if(pair.Length > 1)
+			//        {
+			//            AddToQuery(ref q, pair[0], pair[1]);
+			//        }
+			//    }
+			//    if (!wasReplaced)
+			//        AddToQuery(ref q, key, value);
+			//    query = q;
+			//}
 			return this;
 		}
 

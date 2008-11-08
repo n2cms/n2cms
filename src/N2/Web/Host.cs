@@ -78,15 +78,21 @@ namespace N2.Web
 
         public void AddSites(IEnumerable<Site> sitesToAdd)
         {
-            sites = Union(Sites, sitesToAdd);
+			lock(this)
+			{
+				sites = Union(Sites, sitesToAdd);
+			}
         }
 
         public void ReplaceSites(Site defaultSite, IList<Site> newSites)
         {
             if(newSites == null) throw new ArgumentNullException("newSites");
-            
-            this.defaultSite = defaultSite;
-            sites = newSites;
+
+			lock (this)
+			{
+				this.defaultSite = defaultSite;
+				sites = newSites;
+			}
         }
 
         public static IList<Site> Union(IList<Site> sites, IEnumerable<Site> sitesToAdd)

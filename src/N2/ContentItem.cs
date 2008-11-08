@@ -27,6 +27,7 @@ using System.Web;
 using System.Web.UI;
 using N2.Definitions;
 using N2.Integrity;
+using N2.Web;
 using N2UI = N2.Web.UI;
 using System.Text;
 using N2.Details;
@@ -59,7 +60,9 @@ namespace N2
     /// you should manually change the discriminator in the database or set the 
     /// name of the definition attribute, e.g. [Definition("Title", "OldClassName")]
     /// </remarks>
-	[Serializable, RestrictParents(typeof(ContentItem)), DebuggerDisplay("{Name}#{ID}")]
+	[Serializable, DebuggerDisplay("{Name}#{ID}")]
+	[DynamicTemplate]
+	[RestrictParents(typeof(ContentItem))]
 	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, IContainable, INode
     {
         #region Private Fields
@@ -261,7 +264,7 @@ namespace N2
 					if (urlParser != null)
 						url = urlParser.BuildUrl(this);
 					else
-						url = RewrittenUrl;
+						url = FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
 				}
 				return url;
 			}
@@ -280,24 +283,10 @@ namespace N2
         }
 
 		/// <summary>Gets the non-friendly url to this item (e.g. "/default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/default.aspx?page=1&amp;item&#61;27").</summary>
+		[Obsolete("Use the new template API: item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl")]
         public virtual string RewrittenUrl
         {
-            get
-            {
-                if (IsPage)
-                {
-                    return Web.Url.Parse(Web.Url.ToAbsolute(TemplateUrl)).AppendQuery("page", ID);
-                }
-
-                for (ContentItem ancestorItem = Parent; ancestorItem != null; ancestorItem = ancestorItem.Parent)
-                    if (ancestorItem.IsPage)
-                        return Web.Url.Parse(Web.Url.ToAbsolute(ancestorItem.TemplateUrl)).AppendQuery("page", ancestorItem.ID).AppendQuery("item", ID);
-
-				if (VersionOf != null)
-					return Web.Url.Parse(VersionOf.RewrittenUrl).SetQueryParameter("item", ID.ToString());
-
-                throw new Web.TemplateNotFoundException(this);
-            }
+            get { return FindTemplate(TemplateData.DefaultAction).RewrittenUrl; }
 		}
 		#endregion
 
@@ -519,12 +508,48 @@ namespace N2
 			}
 		}
 
+		public virtual TemplateData FindTemplate(string remainingUrl)
+		{
+			if (remainingUrl == null)
+				return GetTemplate(string.Empty);
+
+			remainingUrl = remainingUrl.TrimStart('/');
+
+			if (remainingUrl.Length == 0)
+				return GetTemplate(string.Empty);
+
+			int slashIndex = remainingUrl.IndexOf('/');
+			string nameSegment = slashIndex < 0 ? remainingUrl : remainingUrl.Substring(0, slashIndex);
+			foreach (ContentItem child in GetChildren(new NullFilter()))
+			{
+				if (child.Equals(nameSegment))
+				{
+					remainingUrl = slashIndex < 0 ? null : remainingUrl.Substring(slashIndex + 1);
+					return child.FindTemplate(remainingUrl);
+				}
+			}
+
+			return GetTemplate(remainingUrl);
+		}
+
+		private TemplateData GetTemplate(string remainingUrl)
+		{
+			foreach (ITemplateReference reference in GetType().GetCustomAttributes(typeof(ITemplateReference), true))
+			{
+				TemplateData data = reference.GetTemplate(this, remainingUrl);
+				if (data != null)
+					return data;
+			}
+
+			return TemplateData.EmptyTemplate();
+		}
+
 		/// <summary>Tries to get a child item with a given name. This method igonres user permissions and any trailing '.aspx' that might be part of the name.</summary>
 		/// <param name="childName">The name of the child item to get.</param>
 		/// <returns>The child item if it is found otherwise null.</returns>
 		/// <remarks>If the method is passed an empty or null string it will return itself.</remarks>
 		public virtual ContentItem GetChild(string childName)
-        {
+		{
 			if (string.IsNullOrEmpty(childName))
 				return null;
 
@@ -536,87 +561,76 @@ namespace N2
 				else
 					return GetChild(childName.Substring(1));
 			}
-			else if (slashIndex > 0) // contains a slash further down
+			if (slashIndex > 0) // contains a slash further down
 			{
-                string nameSegment = childName.Substring(0, slashIndex);
-                foreach (ContentItem child in GetChildren(new NullFilter()))
-                {
-                    if (child.Equals(nameSegment))
-                    {
-                        return child.GetChild(childName.Substring(slashIndex));
-                    }
-                }
-                return null;
-
-                //ContentItem child = FindChild(childName.Substring(0, slashIndex));
-                //if (child != null)
-                //    return child.GetChild(childName.Substring(slashIndex));
-                //else
-                //    return null;
+				string nameSegment = childName.Substring(0, slashIndex);
+				foreach (ContentItem child in GetChildren(new NullFilter()))
+				{
+					if (child.Equals(nameSegment))
+					{
+						return child.GetChild(childName.Substring(slashIndex));
+					}
+				}
+				return null;
 			}
-			else // no slash, only a name
-			{
-                foreach (ContentItem child in GetChildren(new NullFilter()))
-                {
-                    if (child.Equals(childName))
-                    {
-                        return child;
-                    }
-                }
-                return null;
-            }
-        }
 
+			// no slash, only a name
+			foreach (ContentItem child in GetChildren(new NullFilter()))
+			{
+				if (child.Equals(childName))
+				{
+					return child;
+				}
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Compares the item's name ignoring case and extension.
+		/// </summary>
+		/// <param name="name">The name to compare against.</param>
+		/// <returns>True if the supplied name is considered the same as the item's.</returns>
         protected virtual bool Equals(string name)
         {
-            return Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) || (Name + Extension).Equals(name, StringComparison.InvariantCultureIgnoreCase);
+            return Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) 
+				|| (Name + Extension).Equals(name, StringComparison.InvariantCultureIgnoreCase);
         }
-
-        //private ContentItem FindChild(string childName)
-        //{
-        //    foreach (ContentItem child in GetChildren(new NullFilter()))
-        //    {
-        //        if (string.Equals(childName, child.Name, StringComparison.InvariantCultureIgnoreCase))
-        //            return child;
-        //    }
-        //    return null;
-        //}
 
 		/// <summary>Gets child items the current user is allowed to access.</summary>
 		/// <returns>A list of content items.</returns>
 		/// <remarks>This method is used by N2 for site map providers, and for data source controls. Keep this in mind when overriding this method.</remarks>
-		public virtual Collections.ItemList GetChildren()
+		public virtual ItemList GetChildren()
 		{
-			return GetChildren(new Collections.AccessFilter());
+			return GetChildren(new AccessFilter());
 		}
 
 		/// <summary>Gets children the current user is allowed to access belonging to a certain zone, i.e. get only children with a certain zone name. </summary>
 		/// <param name="childZoneName">The name of the zone.</param>
 		/// <returns>A list of items that have the specified zone name.</returns>
 		/// <remarks>This method is used by N2 when when non-page items are added to a zone on a page and in edit mode when displaying which items are placed in a certain zone. Keep this in mind when overriding this method.</remarks>
-        public virtual Collections.ItemList GetChildren(string childZoneName)
+        public virtual ItemList GetChildren(string childZoneName)
         {
 			return GetChildren(
                 new CompositeFilter(
-                    new Collections.ZoneFilter(childZoneName), 
-                    new Collections.AccessFilter()));
+                    new ZoneFilter(childZoneName), 
+                    new AccessFilter()));
         }
 
 		/// <summary>Gets children applying filters.</summary>
 		/// <param name="filters">The filters to apply on the children.</param>
 		/// <returns>A list of filtered child items.</returns>
-		public virtual Collections.ItemList GetChildren(params Collections.ItemFilter[] filters)
+		public virtual ItemList GetChildren(params ItemFilter[] filters)
 		{
 			return GetChildren(new CompositeFilter(filters));
 		}
 
 		/// <summary>Gets children applying filters.</summary>
-		/// <param name="filters">The filters to apply on the children.</param>
+		/// <param name="filter">The filters to apply on the children.</param>
 		/// <returns>A list of filtered child items.</returns>
-		public virtual Collections.ItemList GetChildren(ItemFilter filter)
+		public virtual ItemList GetChildren(ItemFilter filter)
 		{
 			IEnumerable<ContentItem> items = VersionOf == null ? Children : VersionOf.Children;
-			return new Collections.ItemList(items, filter);
+			return new ItemList(items, filter);
 		}
 
 		#endregion
@@ -746,14 +760,12 @@ namespace N2
 			{
 				return true;
 			}
-			else
+
+			// Iterate allowed roles to find an allowed role
+			foreach (Security.Authorization auth in AuthorizedRoles)
 			{
-				// Iterate allowed roles to find an allowed role
-				foreach (Security.Authorization auth in AuthorizedRoles)
-				{
-					if(auth.IsAuthorized(user))
-						return true;
-				}
+				if(auth.IsAuthorized(user))
+					return true;
 			}
 			return false;
 

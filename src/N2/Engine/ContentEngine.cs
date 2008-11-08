@@ -158,6 +158,11 @@ namespace N2.Engine
 			get { return container.Resolve<IEditManager>(); }
 		}
 
+		public IWebContext RequestContext
+		{
+			get { return container.Resolve<IWebContext>(); }
+		}
+
         public IHost Host
         {
             get { return container.Resolve<IHost>(); }

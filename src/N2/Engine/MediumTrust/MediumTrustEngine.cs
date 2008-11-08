@@ -36,6 +36,7 @@ namespace N2.Engine.MediumTrust
         IHost host;
         IRequestLifeCycleHandler lifeCycleHandler;
         IPersister persister;
+		IWebContext webContext;
 
         IDictionary<Type, object> resolves = new Dictionary<Type, object>();
             
@@ -52,7 +53,7 @@ namespace N2.Engine.MediumTrust
             RegisterConfiguredComponents(engineConfiguration);
             
             Url.DefaultExtension = hostConfiguration.Web.Extension;
-		    IWebContext webContext = new AdaptiveContext();
+		    webContext = new AdaptiveContext();
     
             host = AddComponentInstance<IHost>(new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
             AddComponentInstance<IWebContext>(webContext);
@@ -173,6 +174,11 @@ namespace N2.Engine.MediumTrust
 		public IEditManager EditManager
 		{
 			get { return editManager; }
+		}
+
+		public IWebContext RequestContext
+		{
+			get { return webContext; }
 		}
 
         public IHost Host
