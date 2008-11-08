@@ -101,3 +101,8 @@ a.enabled
 	color:Black;
 	font-weight:bold;
 }
+
+.tree li
+{
+    background-color:#fff;
+}

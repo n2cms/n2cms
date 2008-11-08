@@ -1,3 +1,4 @@
+- worked around weirdness in file manager on IE7
 - fixed bug with preview-publish of parts
 - removed N2.Templates conflicts with CssFriendly
 - option to rewrite regardless of existing files or not
