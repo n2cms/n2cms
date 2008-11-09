@@ -20,12 +20,20 @@ namespace N2.Tests.Web
         }
 
         [Test]
-        public void CanConstruct_StrangeHomePath()
+        public void EmptyUrl()
         {
             Url u = new Url("");
-            Assert.That(u.Path, Is.EqualTo("/"));
-            Assert.That(u.ToString(), Is.EqualTo("/"));
-        }
+            Assert.That(u.Path, Is.EqualTo(""));
+            Assert.That(u.ToString(), Is.EqualTo(""));
+		}
+
+		[Test]
+		public void NullUrl()
+		{
+			Url u = new Url((string)null);
+			Assert.That(u.Path, Is.EqualTo(""));
+			Assert.That(u.ToString(), Is.EqualTo(""));
+		}
 
         [Test]
         public void CanConstruct_AbsoluteLocalPath()

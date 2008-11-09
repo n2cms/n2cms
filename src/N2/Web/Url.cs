@@ -13,12 +13,13 @@ namespace N2.Web
 		public const string Amp = "&";
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
 		static readonly char[] dotsAndSlashes = new[] {'.', '/'};
+		static string defaultExtension = ".aspx";
 
-		readonly string scheme;
-		readonly string authority;
-		readonly string path;
+		string scheme;
+		string authority;
+		string path;
 		string query;
-		readonly string fragment;
+		string fragment;
 
 		public Url(Url other)
 		{
@@ -40,67 +41,86 @@ namespace N2.Web
 
 		public Url(string url)
 		{
-			if (url != null)
+			if (url == null)
+			{
+				ClearUrl();
+			}
+			else
 			{
 				int queryIndex = QueryIndex(url);
 				int hashIndex = url.IndexOf('#', queryIndex > 0 ? queryIndex : 0);
 				int authorityIndex = url.IndexOf("://");
 
-				if (hashIndex >= 0)
-					fragment = url.Substring(hashIndex + 1);
-				else
-					fragment = null;
-
-				if (hashIndex >= 0 && queryIndex >= 0)
-					query = url.Substring(queryIndex + 1, hashIndex - queryIndex - 1);
-				else if (queryIndex >= 0)
-					query = url.Substring(queryIndex + 1);
-				else
-					query = null;
-
+				LoadFragment(url, hashIndex);
+				LoadQuery(url, queryIndex, hashIndex);
 				if (authorityIndex >= 0)
-				{
-					scheme = url.Substring(0, authorityIndex);
-					int slashIndex = url.IndexOf('/', authorityIndex + 3);
-					if (slashIndex > 0)
-					{
-						authority = url.Substring(authorityIndex + 3, slashIndex - authorityIndex - 3);
-						if (queryIndex >= slashIndex)
-							path = url.Substring(slashIndex, queryIndex - slashIndex);
-						else if (hashIndex >= 0)
-							path = url.Substring(slashIndex, hashIndex - slashIndex);
-						else
-							path = url.Substring(slashIndex);
-					}
-					else
-					{
-						// is this case tolerated?
-						authority = url.Substring(authorityIndex + 3);
-						path = "/";
-					}
-				}
+					LoadBasedUrl(url, queryIndex, hashIndex, authorityIndex);
 				else
-				{
-					scheme = null;
-					authority = null;
-					if (queryIndex >= 0)
-						path = url.Substring(0, queryIndex);
-					else if (hashIndex >= 0)
-						path = url.Substring(0, hashIndex);
-					else if (url.Length > 0)
-						path = url;
-					else
-						path = "/";
-				}
+					LoadSiteRelativeUrl(url, queryIndex, hashIndex);
+			}
+		}
+
+		void ClearUrl()
+		{
+			scheme = null;
+			authority = null;
+			path = "";
+			query = null;
+			fragment = null;
+		}
+
+		void LoadSiteRelativeUrl(string url, int queryIndex, int hashIndex)
+		{
+			scheme = null;
+			authority = null;
+			if (queryIndex >= 0)
+				path = url.Substring(0, queryIndex);
+			else if (hashIndex >= 0)
+				path = url.Substring(0, hashIndex);
+			else if (url.Length > 0)
+				path = url;
+			else
+				path = "";
+		}
+
+		void LoadBasedUrl(string url, int queryIndex, int hashIndex, int authorityIndex)
+		{
+			scheme = url.Substring(0, authorityIndex);
+			int slashIndex = url.IndexOf('/', authorityIndex + 3);
+			if (slashIndex > 0)
+			{
+				authority = url.Substring(authorityIndex + 3, slashIndex - authorityIndex - 3);
+				if (queryIndex >= slashIndex)
+					path = url.Substring(slashIndex, queryIndex - slashIndex);
+				else if (hashIndex >= 0)
+					path = url.Substring(slashIndex, hashIndex - slashIndex);
+				else
+					path = url.Substring(slashIndex);
 			}
 			else
 			{
-				scheme = null;
-				authority = null;
+				// is this case tolerated?
+				authority = url.Substring(authorityIndex + 3);
 				path = "/";
-				query = null;
-				fragment = null;
 			}
+		}
+
+		void LoadQuery(string url, int queryIndex, int hashIndex)
+		{
+			if (hashIndex >= 0 && queryIndex >= 0)
+				query = url.Substring(queryIndex + 1, hashIndex - queryIndex - 1);
+			else if (queryIndex >= 0)
+				query = url.Substring(queryIndex + 1);
+			else
+				query = null;
+		}
+
+		void LoadFragment(string url, int hashIndex)
+		{
+			if (hashIndex >= 0)
+				fragment = url.Substring(hashIndex + 1);
+			else
+				fragment = null;
 		}
 
 		/// <summary>E.g. http</summary>
@@ -128,10 +148,9 @@ namespace N2.Web
 				string appPath = ApplicationPath;
 				if (appPath.Equals("/"))
 					return "~" + Path;
-				else if (Path.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase))
+				if (Path.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase))
 					return Path.Substring(appPath.Length);
-				else
-					return Path;
+				return Path;
 			}
 		}
 
@@ -237,7 +256,6 @@ namespace N2.Web
 			return url.IndexOf('?');
 		}
 
-		static string defaultExtension = ".aspx";
 		/// <summary>The extension used for url's to content items.</summary>
 		public static string DefaultExtension
 		{
@@ -274,6 +292,7 @@ namespace N2.Web
 			IDictionary<string, string> queries = GetQueries();
 			if (queries.ContainsKey(key))
 				return queries[key];
+			
 			return null;
 		}
 
@@ -313,8 +332,8 @@ namespace N2.Web
 		{
 			if (value == null)
 				return this;
-			else
-				return AppendQuery(key + "=" + value);
+			
+			return AppendQuery(key + "=" + value);
 		}
 
 		public Url AppendQuery(string keyValue)
@@ -349,20 +368,18 @@ namespace N2.Web
 						clone.query = string.Join(Amp, queries);
 						return clone;
 					}
+					
+					if (queries.Length == 1)
+						clone.query = null;
+					else if (query.Length == 2)
+						clone.query = queries[i == 0 ? 1 : 0];
+					else if (i == 0)
+						clone.query = string.Join(Amp, queries, 1, queries.Length - 1);
+					else if (i == queries.Length - 1)
+						clone.query = string.Join(Amp, queries, 0, queries.Length - 1);
 					else
-					{
-						if (queries.Length == 1)
-							clone.query = null;
-						else if (query.Length == 2)
-							clone.query = queries[i == 0 ? 1 : 0];
-						else if (i == 0)
-							clone.query = string.Join(Amp, queries, 1, queries.Length - 1);
-						else if (i == queries.Length - 1)
-							clone.query = string.Join(Amp, queries, 0, queries.Length - 1);
-						else
-							clone.query = string.Join(Amp, queries, 0, i) + Amp + string.Join(Amp, queries, i + 1, queries.Length - i - 1);
-						return clone;
-					}
+						clone.query = string.Join(Amp, queries, 0, i) + Amp + string.Join(Amp, queries, i + 1, queries.Length - i - 1);
+					return clone;
 				}
 			}
 			return AppendQuery(key, value);
@@ -410,7 +427,7 @@ namespace N2.Web
 
 		public Url SetFragment(string fragment)
 		{
-			return new Url(scheme, authority, path, query, fragment.StartsWith("#") ? fragment : "#" + fragment);
+			return new Url(scheme, authority, path, query, fragment.TrimStart('#'));
 		}
 
 		public Url AppendSegment(string segment, string extension)
@@ -440,8 +457,8 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(Path) || Path == "/")
 				return AppendSegment(segment, DefaultExtension);
-			else
-				return AppendSegment(segment, Extension);
+			
+			return AppendSegment(segment, Extension);
 		}
 
 		public Url AppendSegment(string segment, bool useDefaultExtension)
@@ -470,8 +487,8 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(Path) || Path == "/")
 				return PrependSegment(segment, DefaultExtension);
-			else
-				return PrependSegment(segment, Extension);
+			
+			return PrependSegment(segment, Extension);
 		}
 
 		public Url AppendQuery(NameValueCollection queryString)
@@ -483,7 +500,7 @@ namespace N2.Web
 		}
 
 		/// <summary>Converts a possibly relative to an absolute url.</summary>
-		/// <param name="url">The url to convert.</param>
+		/// <param name="path">The url to convert.</param>
 		/// <returns>The absolute url.</returns>
 		public static string ToAbsolute(string path)
 		{

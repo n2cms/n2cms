@@ -1,3 +1,4 @@
+- changed Url handling of empty input
 - updated add-on catalog to use new template definitions
 - updated wiki to use new template definitions
 - multiple templates per content item (refined by subsequent path segment)

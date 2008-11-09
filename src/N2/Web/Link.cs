@@ -96,16 +96,7 @@ namespace N2.Web
 
 		public string Url
 		{
-			get 
-			{
-				return url;
-				//if (string.IsNullOrEmpty(query))
-				//    return href;
-				//else
-				//    return href.IndexOf('?') >= 0
-				//            ? href + "&" + query
-				//            : href + "?" + query;
-			}
+			get { return url; }
 			set { url = value; }
 		}
 
@@ -203,41 +194,7 @@ namespace N2.Web
 		public ILinkBuilder AddQuery(string key, string value)
 		{
 			url = url.SetQueryParameter(key, value);
-			//if (string.IsNullOrEmpty(query))
-			//    query = key + "=" + value;
-			//else
-			//{
-			//    bool wasReplaced = false;
-			//    string q = string.Empty;
-			//    foreach(string part in query.Split('&'))
-			//    {
-			//        string[] pair = part.Split('=');
-
-			//        if(pair[0]==key)
-			//        {
-			//            if(value != null)
-			//            {
-			//                AddToQuery(ref q, pair[0], value);
-			//            }
-			//            wasReplaced = true;
-			//        }
-			//        else if(pair.Length > 1)
-			//        {
-			//            AddToQuery(ref q, pair[0], pair[1]);
-			//        }
-			//    }
-			//    if (!wasReplaced)
-			//        AddToQuery(ref q, key, value);
-			//    query = q;
-			//}
 			return this;
-		}
-
-		private static void AddToQuery(ref string q, string key, string value)
-		{
-			if (q.Length > 0)
-				q += "&";
-			q += key + "=" + value;
 		}
 
 		public ILinkBuilder Attribute(string key, string value)
