@@ -442,6 +442,7 @@
     <Compile Include="Web\Parts\ItemDeleter.cs" />
     <Compile Include="Web\Parts\ItemMover.cs" />
     <Compile Include="Web\Parts\PartsAjaxService.cs" />
+    <Compile Include="Web\RegexTemplateAttribute.cs" />
     <Compile Include="Web\TemplateAttribute.cs" />
     <Compile Include="Web\TagBuilder.cs" />
     <Compile Include="Web\TemplateData.cs" />

@@ -77,7 +77,7 @@ namespace N2.Web
                 }
             }
 
-			rewriter.UpdateCurrentPage();
+			rewriter.InitializeRequest();
             rewriter.RewriteRequest();
 		}
 

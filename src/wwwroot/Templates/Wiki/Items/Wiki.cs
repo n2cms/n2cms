@@ -1,4 +1,4 @@
-﻿using N2.Templates.Items;
+using N2.Templates.Items;
 using N2.Integrity;
 using N2.Details;
 using N2.Security.Details;
@@ -92,7 +92,7 @@ namespace N2.Templates.Wiki.Items
 			if(data.CurrentItem == null)
 			{
 				data.Action = "submit";
-				data.Arguments = Utility.CapitalizeFirstLetter(remainingUrl);
+				data.Argument = Utility.CapitalizeFirstLetter(remainingUrl);
 				data.CurrentItem = this;
 				data.PagePath = Path;
 				data.TemplateUrl = "~/Templates/Wiki/UI/Views/Submit.aspx";

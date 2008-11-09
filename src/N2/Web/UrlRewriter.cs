@@ -53,31 +53,8 @@ namespace N2.Web
             ignoreExistingFiles = config.Web.IgnoreExistingFiles;
         }
 
-		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
-		public virtual void RewriteRequest()
-		{
-            if (rewrite == RewriteMethod.None)
-                return;
-
-			TemplateData data = webContext.CurrentTemplate;
-            if (data != null && data.CurrentItem != null&& PathIsRewritable())
-			{
-				Url url = data.RewrittenUrl.AppendQuery(webContext.LocalUrl.Query);
-
-                if (rewrite == RewriteMethod.RewriteRequest)
-                    webContext.RewritePath(url);
-                else
-                    webContext.TransferRequest(url);
-			}
-		}
-
-	    bool PathIsRewritable()
-	    {
-	        return ignoreExistingFiles || (!File.Exists(webContext.PhysicalPath) && !Directory.Exists(webContext.PhysicalPath));
-	    }
-
-
-	    public void UpdateCurrentPage()
+	
+		public void InitializeRequest()
 		{
 			try
 			{
@@ -92,7 +69,7 @@ namespace N2.Web
 					webContext.CurrentPage = data.CurrentItem;
 					webContext.CurrentTemplate = data;
 				}
-                else if (url == "/")
+				else if (url == "/")
 					webContext.CurrentPage = urlParser.StartPage;
 			}
 			catch (Exception ex)
@@ -101,19 +78,26 @@ namespace N2.Web
 			}
 		}
 
-        private bool IsUpdatable(Url url)
-        {
-            string extension = url.Extension;
-            if (rewriteEmptyExtension && string.IsNullOrEmpty(extension))
-                return true;
-            foreach (string observed in observedExtensions)
-                if (string.Equals(observed, extension, StringComparison.InvariantCultureIgnoreCase))
-                    return true;
-            if(url.GetQuery("page") != null)
-                return true;
+		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
+		public virtual void RewriteRequest()
+		{
+            if (rewrite == RewriteMethod.None)
+                return;
 
-            return false;
-        }
+			TemplateData data = webContext.CurrentTemplate;
+            if (data != null && data.CurrentItem != null&& PathIsRewritable())
+			{
+				Url requestedUrl = webContext.LocalUrl;
+				Url rewrittenUrl = data.RewrittenUrl;
+
+				Trace.WriteLine(requestedUrl + " -> " + rewrittenUrl);
+
+                if (rewrite == RewriteMethod.RewriteRequest)
+                    webContext.RewritePath(rewrittenUrl);
+                else
+                    webContext.TransferRequest(rewrittenUrl);
+			}
+		}
 
         /// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		public void InjectContentPage()
@@ -123,6 +107,25 @@ namespace N2.Web
 			{
 				template.CurrentItem = webContext.CurrentPage;
 			}
+		}
+
+		private bool IsUpdatable(Url url)
+		{
+			string extension = url.Extension;
+			if (rewriteEmptyExtension && string.IsNullOrEmpty(extension))
+				return true;
+			foreach (string observed in observedExtensions)
+				if (string.Equals(observed, extension, StringComparison.InvariantCultureIgnoreCase))
+					return true;
+			if (url.GetQuery("page") != null)
+				return true;
+
+			return false;
+		}
+
+		bool PathIsRewritable()
+		{
+			return ignoreExistingFiles || (!File.Exists(webContext.PhysicalPath) && !Directory.Exists(webContext.PhysicalPath));
 		}
 	}
 }

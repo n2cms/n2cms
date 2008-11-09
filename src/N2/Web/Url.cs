@@ -491,11 +491,19 @@ namespace N2.Web
 			return PrependSegment(segment, Extension);
 		}
 
-		public Url AppendQuery(NameValueCollection queryString)
+		public Url UpdateQuery(NameValueCollection queryString)
 		{
-			var u = new Url(scheme, authority, path, query, fragment);
+			Url u = new Url(this);
 			foreach (string key in queryString.AllKeys)
 				u = u.SetQueryParameter(key, queryString[key]);
+			return u;
+		}
+
+		public Url UpdateQuery(IDictionary<string,string> queryString)
+		{
+			Url u = new Url(this);
+			foreach (KeyValuePair<string,string> pair in queryString)
+				u = u.SetQueryParameter(pair.Key, pair.Value);
 			return u;
 		}
 

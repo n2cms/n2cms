@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Templates.Web.UI;
 
 namespace N2.Templates.Wiki.UI.Views
@@ -23,7 +23,7 @@ namespace N2.Templates.Wiki.UI.Views
 
 		protected string CurrentArguments
 		{
-			get { return Engine.RequestContext.CurrentTemplate.Arguments; }
+			get { return Engine.RequestContext.CurrentTemplate.Argument; }
 		}
 
 		protected override void OnPreRender(EventArgs e)

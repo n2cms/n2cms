@@ -1,4 +1,4 @@
-﻿using N2.Templates.Items;
+using N2.Templates.Items;
 using N2.Templates.Web.UI;
 
 namespace N2.Templates.Wiki.Web
@@ -23,7 +23,7 @@ namespace N2.Templates.Wiki.Web
 		}
 		protected string CurrentArguments
 		{
-			get { return Engine.RequestContext.CurrentTemplate.Arguments; }
+			get { return Engine.RequestContext.CurrentTemplate.Argument; }
 		}
 
         ViewContext viewed = null;

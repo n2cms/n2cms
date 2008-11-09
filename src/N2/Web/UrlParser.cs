@@ -76,10 +76,10 @@ namespace N2.Web
 			ContentItem item = TryLoadingFromQueryString(url, "page");
 			if(item != null)
 			{
-				return new TemplateData(item, item.Path, item.TemplateUrl, url["action"], url["arguments"]);
+				return new TemplateData(item, item.Path, item.TemplateUrl, url["action"], url["arguments"]).UpdateParameters(url.GetQueries());
 			}
-			
-			return StartPage.FindTemplate(url.Path);
+
+			return StartPage.FindTemplate(url.Path).UpdateParameters(url.GetQueries());
 		}
 
 		/// <summary>Finds an item by traversing names from the start page.</summary>

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace N2.Web
 {
@@ -16,23 +17,26 @@ namespace N2.Web
 			return new TemplateData(null, null, null, null, null);
 		}
 
-		public TemplateData()
-		{
-		}
-
 		public TemplateData(ContentItem item, string path, string templateUrl)
 			: this(item, path, templateUrl, DefaultAction, string.Empty)
 		{
+			
 		}
 
 		public TemplateData(ContentItem item, string path, string templateUrl, string action, string arguments)
+			: this()
 		{
 			CurrentItem = item;
 
 			PagePath = path;
 			TemplateUrl = templateUrl;
 			Action = action;
-			Arguments = arguments;
+			Argument = arguments;
+		}
+
+		public TemplateData()
+		{
+			QueryParameters = new Dictionary<string, string>();
 		}
 
 		public ContentItem CurrentItem { get; set; }
@@ -40,7 +44,8 @@ namespace N2.Web
 		public string TemplateUrl { get; set; }
 		public string PagePath { get; set; }
 		public string Action { get; set; }
-		public string Arguments { get; set; }
+		public string Argument { get; set; }
+		public IDictionary<string, string> QueryParameters { get; set; }
 
 		public virtual Url RewrittenUrl
 		{
@@ -50,17 +55,24 @@ namespace N2.Web
 					return null;
 
 				if (CurrentItem.IsPage)
-					return Url.Parse(TemplateUrl).AppendQuery("page", CurrentItem.ID);
+					return Url.Parse(TemplateUrl).UpdateQuery(QueryParameters).SetQueryParameter("page", CurrentItem.ID);
 				
 				for (ContentItem ancestor = CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
 					if (ancestor.IsPage)
-						return ancestor.FindTemplate(DefaultAction).RewrittenUrl.AppendQuery("item", CurrentItem.ID);
+						return ancestor.FindTemplate(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter("item", CurrentItem.ID);
 
 				if (CurrentItem.VersionOf != null)
-					return CurrentItem.VersionOf.FindTemplate(DefaultAction).RewrittenUrl.SetQueryParameter("item", CurrentItem.ID);
+					return CurrentItem.VersionOf.FindTemplate(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter("item", CurrentItem.ID);
 
 				throw new TemplateNotFoundException(CurrentItem);
 			}
+		}
+
+		public TemplateData UpdateParameters(IDictionary<string, string> queryString)
+		{
+			foreach (KeyValuePair<string, string> pair in queryString)
+				QueryParameters[pair.Key] = pair.Value;
+			return this;
 		}
 	}
 }

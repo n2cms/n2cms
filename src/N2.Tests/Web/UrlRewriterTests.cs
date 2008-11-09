@@ -13,32 +13,31 @@ namespace N2.Tests.Web
 	public class UrlRewriterTests : ItemPersistenceMockingBase
 	{
 		IUrlParser parser;
+		UrlRewriter rewriter;
 		FakeWebContextWrapper context;
-		ContentItem root;
+		ContentItem root, one, two;
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			context = new FakeWebContextWrapper();
 			root = CreateOneItem<PageItem>(1, "root", null);
-			
+			one = CreateOneItem<PageItem>(2, "one", root);
+			two = CreateOneItem<PageItem>(3, "two", one);
+
+			context = new FakeWebContextWrapper();
 			parser = new UrlParser(persister, context, mocks.Stub<IItemNotifier>(), new Host(context, root.ID, root.ID));
-			mocks.ReplayAll();
+			rewriter = new UrlRewriter(parser, context);
 		}
+
 
 		[Test]
 		public void CanRewriteUrl()
 		{
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
-			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
-
 			context.LocalUrl = new Url("/one/two.aspx");
 
-			UrlRewriter rewriter = new UrlRewriter(parser, context);
-			rewriter.UpdateCurrentPage();
-
+			rewriter.InitializeRequest();
 			rewriter.RewriteRequest();
 
 			Assert.That(context.rewrittenPath, Is.EqualTo("/default.aspx?page=3"));
@@ -47,39 +46,20 @@ namespace N2.Tests.Web
 		[Test]
 		public void RewriteUrl_AppendsExistingQueryString()
 		{
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
-			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
-
 			context.LocalUrl = "/one/two.aspx?happy=true&flip=feet";
-			UrlRewriter rewriter = new UrlRewriter(parser, context);
-			rewriter.UpdateCurrentPage();
 
+			rewriter.InitializeRequest();
 			rewriter.RewriteRequest();
 
-			Assert.That(context.rewrittenPath, Is.EqualTo("/default.aspx?page=3&happy=true&flip=feet"));
-		}
-
-		private NameValueCollection ToNameValueCollection(string p)
-		{
-			NameValueCollection qs = new NameValueCollection();
-			foreach (string param in p.Split('&'))
-			{
-				string[] pair = param.Split('=');
-				qs[pair[0]] = pair[1];
-			}
-			return qs;
+			Assert.That(context.rewrittenPath, Is.EqualTo("/default.aspx?happy=true&flip=feet&page=3"));
 		}
 
 		[Test]
 		public void UpdateContentPage()
 		{
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
-			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
 			context.LocalUrl = "/one/two.aspx";
 
-			UrlRewriter rewriter = new UrlRewriter(parser, context);
-
-			rewriter.UpdateCurrentPage();
+			rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentTemplate, Is.Not.Null);
 			Assert.That(context.CurrentPage, Is.EqualTo(two));
@@ -88,13 +68,9 @@ namespace N2.Tests.Web
         [Test]
         public void UpdatesCurrentPage_WhenExtension_IsAspx()
         {
-            ContentItem one = CreateOneItem<PageItem>(2, "one", root);
 			context.LocalUrl = "/one.aspx";
-            mocks.ReplayAll();
 
-            UrlRewriter rewriter = new UrlRewriter(parser, context);
-
-            rewriter.UpdateCurrentPage();
+            rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentPage, Is.EqualTo(one));
         }
@@ -103,12 +79,10 @@ namespace N2.Tests.Web
         public void UpdatesCurrentPage_WhenExtension_IsConfiguredAsObserved()
         {
             HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } };
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+			UrlRewriter rewriter = new UrlRewriter(parser, context, config);
 			context.LocalUrl = "/one.htm";
 			
-			UrlRewriter rewriter = new UrlRewriter(parser, context, config);
-            
-			rewriter.UpdateCurrentPage();
+			rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentPage, Is.EqualTo(one));
         }
@@ -117,12 +91,10 @@ namespace N2.Tests.Web
         public void DoesntUpdateCurrentPage_WhenExtension_IsNotObserved()
         {
             HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection()} };
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
-			context.LocalUrl = "/one.html";
-			
 			UrlRewriter rewriter = new UrlRewriter(parser, context, config);
+			context.LocalUrl = "/one.html";			
 			
-			rewriter.UpdateCurrentPage();
+			rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentPage, Is.Null);
         }
@@ -131,12 +103,10 @@ namespace N2.Tests.Web
         public void DoesntUpdateCurrentPage_WhenExtension_IsEmpty_AndEmpty_IsNotObserved()
         {
 			HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = false } };
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+            UrlRewriter rewriter = new UrlRewriter(parser, context, config);
 			context.LocalUrl = "/one";
 
-            UrlRewriter rewriter = new UrlRewriter(parser, context, config);
-
-            rewriter.UpdateCurrentPage();
+            rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentPage, Is.Null);
         }
@@ -145,11 +115,10 @@ namespace N2.Tests.Web
         public void UpdatesCurrentPage_WhenEmptyExtension_IsConfiguredAsObserved()
         {
 			HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection() } };
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
+            UrlRewriter rewriter = new UrlRewriter(parser, context, config);
 			context.LocalUrl = "/one";
 
-            UrlRewriter rewriter = new UrlRewriter(parser, context, config);
-            rewriter.UpdateCurrentPage();
+            rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentPage, Is.EqualTo(one));
         }
@@ -157,13 +126,9 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdateContentPage_WithRewrittenUrl()
 		{
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
-			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
 			context.LocalUrl = "/default.aspx?page=3";
-
-			UrlRewriter rewriter = new UrlRewriter(parser, context);
 			
-			rewriter.UpdateCurrentPage();
+			rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentPage, Is.EqualTo(two));
 		}
@@ -171,13 +136,9 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdateContentPage_WithItemReference_UpdatesWithPage()
 		{
-			ContentItem one = CreateOneItem<PageItem>(2, "one", root);
-			ContentItem two = CreateOneItem<PageItem>(3, "two", one);
 			context.LocalUrl = "/default.aspx?item=2&page=3";
 
-			UrlRewriter rewriter = new UrlRewriter(parser, context);
-
-			rewriter.UpdateCurrentPage();
+			rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentPage, Is.EqualTo(two));
 		}

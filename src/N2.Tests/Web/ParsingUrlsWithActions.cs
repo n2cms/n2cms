@@ -9,6 +9,7 @@ namespace N2.Tests.Web
 	{
 		MasterDetailsPage master, master1_1, master1_1_1;
 		ListDetailsPage list, list1_1, list1_1_1;
+		RegexPage regex, regex1_1, regex1_1_1;
 
 		[SetUp]
 		public override void SetUp()
@@ -19,6 +20,14 @@ namespace N2.Tests.Web
 
 			AppendMasterPages();
 			AppendListPages();
+			AppendRegexPages();
+		}
+
+		void AppendRegexPages()
+		{
+			regex = CreateOneItem<RegexPage>(++greatestID, "regex", startItem);
+			regex1_1 = CreateOneItem<RegexPage>(++greatestID, "regex1_1", item1);
+			regex1_1_1 = CreateOneItem<RegexPage>(++greatestID, "regex1_1_1", item1_1);
 		}
 
 		void AppendMasterPages()
@@ -82,7 +91,7 @@ namespace N2.Tests.Web
 			TemplateData data = startItem.FindTemplate(url);
 
 			Assert.That(data.Action, Is.EqualTo("details"));
-			Assert.That(data.Arguments, Is.EqualTo("123"));
+			Assert.That(data.Argument, Is.EqualTo("123"));
 			Assert.That(data.TemplateUrl, Is.EqualTo("~/views/details.aspx"));
 		}
 
@@ -93,8 +102,39 @@ namespace N2.Tests.Web
 			TemplateData data = startItem.FindTemplate(url);
 
 			Assert.That(data.Action, Is.EqualTo("details"));
-			Assert.That(data.Arguments, Is.EqualTo("123/and/321"));
+			Assert.That(data.Argument, Is.EqualTo("123/and/321"));
 			Assert.That(data.TemplateUrl, Is.EqualTo("~/views/details.aspx"));
+		}
+
+		[Test]
+		public void SimpleRegex()
+		{
+			Url url = "/regex/abcdefg.aspx";
+			TemplateData data = startItem.FindTemplate(url);
+
+			Assert.That(data.Action, Is.Null);
+			Assert.That(data.Argument, Is.EqualTo("abcdefg"));
+			Assert.That(data.TemplateUrl, Is.EqualTo("~/views/anything.aspx"));
+		}
+
+		[Test]
+		public void SimpleRegex_NoMatch_FallbacksToSomethingElse()
+		{
+			Url url = "/regex/bcdefgh.aspx";
+			TemplateData data = startItem.FindTemplate(url);
+
+			Assert.That(data.TemplateUrl, Is.Not.EqualTo("~/views/anything.aspx"));
+		}
+
+		[Test]
+		public void SimpleRegex_WithAction()
+		{
+			Url url = "/regex/zabcdefg.aspx";
+			TemplateData data = startItem.FindTemplate(url);
+
+			Assert.That(data.Action, Is.EqualTo("zee"));
+			Assert.That(data.Argument, Is.EqualTo("zabcdefg"));
+			Assert.That(data.TemplateUrl, Is.EqualTo("~/views/zeenything.aspx"));
 		}
 	}
 
@@ -111,6 +151,11 @@ namespace N2.Tests.Web
 	[Template("details", "~/views/details.aspx")]
 	public class ListDetailsPage : PageItem
 	{
+	}
 
+	[RegexTemplate("^a.*", "~/views/anything.aspx")]
+	[RegexTemplate("^z.*", "~/views/zeenything.aspx", "zee")]
+	public class RegexPage : PageItem
+	{
 	}
 }

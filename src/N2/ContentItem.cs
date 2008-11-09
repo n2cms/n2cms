@@ -106,7 +106,7 @@ namespace N2
         }
         #endregion
 
-		#region Public Properties (persisted)
+		#region Persisted Properties
 		/// <summary>Gets or sets item ID.</summary>
 		public virtual int ID
 		{
@@ -241,8 +241,8 @@ namespace N2
 		}
 		#endregion
 
-		#region Public Properties (generated)
-        /// <summary>The default file extension for this content item, e.g. ".aspx".</summary>
+		#region Generated Properties
+		/// <summary>The default file extension for this content item, e.g. ".aspx".</summary>
         public virtual string Extension
         {
             get { return Web.Url.DefaultExtension; }

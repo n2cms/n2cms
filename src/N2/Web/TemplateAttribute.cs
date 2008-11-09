@@ -3,8 +3,17 @@ using System;
 namespace N2.Web
 {
 	/// <summary>
-	/// Registers a tempalte to serve a certain content item.
+	/// Registers a tempalte to serve a certain content item. Optionally based 
+	/// on url remaining after the item is found. Multiple attributes can be 
+	/// combined to allow for multiple views.
 	/// </summary>
+	/// <example>
+	/// // Would map /path/to/my/content.aspx to MyContent aspx.
+	/// // Would map /path/to/my/content/details.aspx to MyContentDetails aspx.
+	/// [Template("~/Templates/MyContent.aspx")]
+	/// [Template("details", "~/Templates/MyContentDetails.aspx")]
+	/// public class MyContent : ContentItem { }
+	/// </example>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class TemplateAttribute : Attribute, ITemplateReference
 	{
