@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace N2.Extensions.Tests.Mvc
+namespace N2.Extensions.Tests.Mvc.Models
 {
-	public class NewsItem : PageItem
+	[Definition]
+	public class AboutUsSectionPage : ContentItem
 	{
 	}
 }

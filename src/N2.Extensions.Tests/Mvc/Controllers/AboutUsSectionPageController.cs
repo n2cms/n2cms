@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using N2.Extensions.Tests.Mvc.Models;
 using N2.Web.Mvc;
 
-namespace N2.Extensions.Tests.Mvc
+namespace N2.Extensions.Tests.Mvc.Controllers
 {
-	[Controls(typeof(PageItem))]
-	public class PageController : ContentController<PageItem>
+	[Controls(typeof(AboutUsSectionPage))]
+	public class AboutUsSectionPageController : ContentController<AboutUsSectionPage>
 	{
 		public override System.Web.Mvc.ActionResult Index()
 		{

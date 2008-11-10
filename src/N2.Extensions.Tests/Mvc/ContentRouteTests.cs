@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Definitions;
 using N2.Engine;
+using N2.Extensions.Tests.Mvc.Controllers;
+using N2.Extensions.Tests.Mvc.Models;
 using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Tests.Fakes;
@@ -26,8 +28,8 @@ namespace N2.Extensions.Tests.Mvc
 		RouteCollection routes;
 		IEngine engine;
 		FakeHttpContext httpContext;
-		PageItem root, item1;
-		NewsItem news1;
+		AboutUsSectionPage root, item1;
+		ExecutiveTeamPage news1;
 		ContentRoute route;
 			
 		[SetUp]
@@ -35,30 +37,31 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			base.SetUp();
 
-			root = CreateOneItem<PageItem>(1, "root", null);
-			item1 = CreateOneItem<PageItem>(2, "item1", root);
-			news1 = CreateOneItem<NewsItem>(3, "news1", root);
+			root = CreateOneItem<AboutUsSectionPage>(1, "root", null);
+			item1 = CreateOneItem<AboutUsSectionPage>(2, "item1", root);
+			news1 = CreateOneItem<ExecutiveTeamPage>(3, "news1", root);
 
 			var typeFinder = new FakeTypeFinder();
 			typeFinder.typeMap[typeof (ContentItem)] = new[]
 			{
-				typeof(BaseItem),
-				typeof(PageItem),
-				typeof(NewsItem),
+				typeof(RegularPage),
+				typeof(AboutUsSectionPage),
+				typeof(ExecutiveTeamPage),
 				typeof(ContentItem)
 			};
 			typeFinder.typeMap[typeof (IController)] = new[]
 			{
-				typeof (NewsController),
-				typeof (PageController), 
-				typeof (BaseController), 
+				typeof (ExecutiveTeamController),
+				typeof (AboutUsSectionPageController), 
+				typeof (RegularControllerBase), 
 				typeof (FallbackContentController)
 			};
 
 			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder), null);
 			var webContext = new ThreadContext();
 			var persister = new ContentPersister(repository, null, null);
-			var parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, root.ID, root.ID));
+			var host = new Host(webContext, root.ID, root.ID);
+			var parser = new UrlParser(persister, webContext, new ItemNotifier(), host);
 
 			engine = mocks.DynamicMock<IEngine>();
 			SetupResult.For(engine.Resolve<ITypeFinder>()).Return(typeFinder);
@@ -66,10 +69,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetupResult.For(engine.UrlParser).Return(parser);
 			engine.Replay();
 
-			routes = new RouteCollection();
-
 			route = new ContentRoute(engine, new MvcRouteHandler());
-			routes.Add(route);
 
 			httpContext = new FakeHttpContext();
 			httpContext.request = new FakeHttpRequest();
@@ -85,11 +85,11 @@ namespace N2.Extensions.Tests.Mvc
 		public void CanFindController_ForContentPage()
 		{
 			SetPath("/");
-			
-			var data = routes.GetRouteData(httpContext);
+
+			var data = route.GetRouteData(httpContext);
 
 			Assert.That(data.Values["ContentItem"], Is.EqualTo(root));
-			Assert.That(data.Values["controller"], Is.EqualTo("Page"));
+			Assert.That(data.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
 		}
 
 		[Test]
@@ -100,8 +100,22 @@ namespace N2.Extensions.Tests.Mvc
 			var data = route.GetRouteData(httpContext);
 
 			Assert.That(data.Values["ContentItem"], Is.EqualTo(news1));
-			Assert.That(data.Values["controller"], Is.EqualTo("News"));
+			Assert.That(data.Values["controller"], Is.EqualTo("ExecutiveTeam"));
 		}
+
+		//TODO figure out
+		//[Test]
+		//public void InstantiatesTheCorrectController()
+		//{
+		//    SetPath("/");
+
+		//    var data = route.GetRouteData(httpContext);
+
+			
+		//    var factory = new DefaultControllerFactory();
+		//    var requestContext = new RequestContext(httpContext, data);
+		//    factory.CreateController(requestContext, (string)data.Values["controller"]);
+		//}
 
 		public class FakeHttpContext : HttpContextBase
 		{

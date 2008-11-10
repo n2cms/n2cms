@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using N2.Extensions.Tests.Mvc.Models;
 using N2.Web.Mvc;
 
-namespace N2.Extensions.Tests.Mvc
+namespace N2.Extensions.Tests.Mvc.Controllers
 {
-	[Controls(typeof(NewsItem))]
-	public class NewsController : ContentController<NewsItem>
+	[Controls(typeof(ExecutiveTeamPage))]
+	public class ExecutiveTeamController : ContentController<ExecutiveTeamPage>
 	{
 		public override ActionResult Index()
 		{
