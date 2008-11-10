@@ -125,17 +125,17 @@ namespace N2.Web
 
         public virtual string ToAbsolute(string virtualPath)
         {
-            throw new NotSupportedException("In thread context. No handler when not running in http web context.");
+        	return virtualPath.TrimStart('~');
         }
 
         public virtual string ToAppRelative(string virtualPath)
         {
-            throw new NotSupportedException("In thread context. No handler when not running in http web context.");
+        	return "~" + ToAbsolute(virtualPath);
         }
 
         public void TransferRequest(string path)
         {
-            throw new NotSupportedException("In thread context. No handler when not running in http web context.");
+			throw new NotSupportedException("TransferRequest is not supported in thread context. No handler when not running in http web context.");
         }
     }
 }

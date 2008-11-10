@@ -53,7 +53,7 @@ namespace N2.Web.Mvc
 			}
 		}
 
-		public override VirtualPathData GetVirtualPath(System.Web.Routing.RequestContext requestContext, RouteValueDictionary values)
+		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
 			ContentItem item = requestContext.RouteData.Values["ContentItem"] as ContentItem;
 			string action = "Index";
