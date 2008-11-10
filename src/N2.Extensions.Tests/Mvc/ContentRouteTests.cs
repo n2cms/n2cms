@@ -28,8 +28,9 @@ namespace N2.Extensions.Tests.Mvc
 		RouteCollection routes;
 		IEngine engine;
 		FakeHttpContext httpContext;
-		AboutUsSectionPage root, item1;
-		ExecutiveTeamPage news1;
+		RegularPage root;
+		AboutUsSectionPage about;
+		ExecutiveTeamPage executives;
 		ContentRoute route;
 			
 		[SetUp]
@@ -37,9 +38,9 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			base.SetUp();
 
-			root = CreateOneItem<AboutUsSectionPage>(1, "root", null);
-			item1 = CreateOneItem<AboutUsSectionPage>(2, "item1", root);
-			news1 = CreateOneItem<ExecutiveTeamPage>(3, "news1", root);
+			root = CreateOneItem<RegularPage>(1, "root", null);
+			about = CreateOneItem<AboutUsSectionPage>(2, "about", root);
+			executives = CreateOneItem<ExecutiveTeamPage>(3, "executives", about);
 
 			var typeFinder = new FakeTypeFinder();
 			typeFinder.typeMap[typeof (ContentItem)] = new[]
@@ -84,22 +85,22 @@ namespace N2.Extensions.Tests.Mvc
 		[Test]
 		public void CanFindController_ForContentPage()
 		{
-			SetPath("/");
+			SetPath("/about/");
 
 			var data = route.GetRouteData(httpContext);
 
-			Assert.That(data.Values["ContentItem"], Is.EqualTo(root));
+			Assert.That(data.Values["ContentItem"], Is.EqualTo(about));
 			Assert.That(data.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
 		}
 
 		[Test]
 		public void CanFindController_ForExtendingType()
 		{
-			SetPath("/news1/");
+			SetPath("/about/executives/");
 
 			var data = route.GetRouteData(httpContext);
 
-			Assert.That(data.Values["ContentItem"], Is.EqualTo(news1));
+			Assert.That(data.Values["ContentItem"], Is.EqualTo(executives));
 			Assert.That(data.Values["controller"], Is.EqualTo("ExecutiveTeam"));
 		}
 
