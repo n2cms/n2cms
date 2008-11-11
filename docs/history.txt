@@ -1,3 +1,4 @@
+- applied esteewhy's patch: Enabling multiple tab groups in item editor
 - regex template finder
 - changed Url handling of empty input
 - updated add-on catalog to use new template definitions
