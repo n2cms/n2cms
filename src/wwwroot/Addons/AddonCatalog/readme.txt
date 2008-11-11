@@ -1,0 +1,1 @@
+﻿Unzip into your web root, create an "Add-On Catalog" and go!

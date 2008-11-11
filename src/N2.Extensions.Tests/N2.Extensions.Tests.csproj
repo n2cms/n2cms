@@ -82,13 +82,13 @@
   <ItemGroup>
     <Compile Include="Linq\LinqItem.cs" />
     <Compile Include="Linq\QueriableTests.cs" />
-    <Compile Include="Mvc\BaseController.cs" />
-    <Compile Include="Mvc\BaseItem.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
-    <Compile Include="Mvc\NewsController.cs" />
-    <Compile Include="Mvc\NewsItem.cs" />
-    <Compile Include="Mvc\PageController.cs" />
-    <Compile Include="Mvc\PageItem.cs" />
+    <Compile Include="Mvc\Controllers\RegularControllerBase.cs" />
+    <Compile Include="Mvc\Controllers\ExecutiveTeamController.cs" />
+    <Compile Include="Mvc\Controllers\AboutUsSectionPageController.cs" />
+    <Compile Include="Mvc\Models\RegularPage.cs" />
+    <Compile Include="Mvc\Models\ExecutiveTeamPage.cs" />
+    <Compile Include="Mvc\Models\AboutUsSectionPage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
