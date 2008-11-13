@@ -88,7 +88,7 @@ namespace N2.Edit.FileManagement
 					HttpPostedFile file = Request.Files[key];
 					if (!string.IsNullOrEmpty(file.FileName))
 					{
-						string url = SelectedUrl + "/" + Path.GetFileName(file.FileName);
+						string url = SelectedUrl + "/" + System.IO.Path.GetFileName(file.FileName);
 
 						if (!FileManager.CancelUploading(url))
 						{

@@ -176,6 +176,16 @@ else window.location = '{2}';";
 
 		#region Properties
 
+		protected string Path
+		{
+			get { return Request["root"] ?? "/"; }
+		}
+
+		protected ContentItem RootNode
+		{
+			get { return Engine.Resolve<Navigator>().Navigate(Path); }
+		}
+
 		public virtual Engine.IEngine Engine
 		{
 			get { return N2.Context.Current; }

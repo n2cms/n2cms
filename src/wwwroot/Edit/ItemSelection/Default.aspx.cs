@@ -12,6 +12,7 @@ namespace N2.Edit.ItemSelection
 				hlFiles.Visible = AllModesAvailable;
 				hlFiles.NavigateUrl = AppendQueryString("../FileManagement/Default.aspx");
 			}
+			siteTreeView.RootNode = RootNode;
 			siteTreeView.SelectedItem = SelectedItem;
 			siteTreeView.DataBind();
 
@@ -21,7 +22,6 @@ namespace N2.Edit.ItemSelection
 					item.RewrittenUrl,
 					item.Url.Replace("\"", "\\\"")));
 			}
-			
 		}
 	}
 }

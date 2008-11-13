@@ -61,7 +61,7 @@ namespace N2.Edit.Export
 
 		protected void btnVerify_Click(object sender, EventArgs e)
 		{
-			UploadedFilePath = Path.GetTempFileName() + Path.GetExtension(fuImport.PostedFile.FileName);
+			UploadedFilePath = System.IO.Path.GetTempFileName() + System.IO.Path.GetExtension(fuImport.PostedFile.FileName);
 			fuImport.PostedFile.SaveAs(UploadedFilePath);
 
 			try

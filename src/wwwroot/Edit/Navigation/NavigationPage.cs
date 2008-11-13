@@ -12,16 +12,6 @@ namespace N2.Edit.Navigation
 {
 	public class NavigationPage : Web.EditPage
 	{
-		protected string Path
-		{
-			get { return Request["root"] ?? "/"; }
-		}
-
-		protected ContentItem RootNode
-		{
-			get { return Engine.Resolve<Navigator>().Navigate(Path); }
-		}
-
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
