@@ -70,6 +70,8 @@ namespace N2.Edit.FileManagement
 			
 			if (IsSelected(e.Node.NavigateUrl))
 				e.Node.Select();
+			else if(e.Node.Depth < 1)
+				e.Node.Select();
 		}
 
 		private string lastUrl = null;
