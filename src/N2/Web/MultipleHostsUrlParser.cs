@@ -45,17 +45,17 @@ namespace N2.Web
 			return TryLoadingFromQueryString(url, "item", "page");
 		}
 
-		public override ContentItem ParsePage(string url)
-		{
-			if (url.StartsWith("/") || url.StartsWith("~/"))
-				return base.ParsePage(url);
+		//public override ContentItem ParsePage(string url)
+		//{
+		//    if (url.StartsWith("/") || url.StartsWith("~/"))
+		//        return base.ParsePage(url);
 			
-			Site site = host.GetSite(url);
-			if (site != null)
-				return TryLoadingFromQueryString(url, "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
+		//    Site site = host.GetSite(url);
+		//    if (site != null)
+		//        return TryLoadingFromQueryString(url, "page") ?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
 			
-			return TryLoadingFromQueryString(url, "page");
-		}
+		//    return TryLoadingFromQueryString(url, "page");
+		//}
 
 		public override string BuildUrl(ContentItem item)
 		{

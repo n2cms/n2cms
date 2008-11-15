@@ -16,7 +16,7 @@ namespace N2.Web
         protected readonly IWebContext webContext;
         protected readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
 		
-		private string defaultContentPage = "/default.aspx";
+		private string defaultDocument = "/default";
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
@@ -37,27 +37,20 @@ namespace N2.Web
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		public ContentItem CurrentPage
 		{
-			get 
-			{
-				return webContext.CurrentPage 
-					?? (webContext.CurrentPage = ParsePage(webContext.LocalUrl));
-			}
+			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolveTemplate(webContext.Url.LocalUrl).CurrentItem); }
 		}
 
 		/// <summary>Gets the current start page.</summary>
 		public virtual ContentItem StartPage
 		{
-			get 
-            {
-                return persister.Repository.Load(host.CurrentSite.StartPageID);
-            }
+			get { return persister.Repository.Load(host.CurrentSite.StartPageID); }
 		}
 
         /// <summary>Gets or sets the default content document name. This is usually "/default.aspx".</summary>
-        public string DefaultContentPage
+        public string DefaultDocument
         {
-            get { return defaultContentPage; }
-            set { defaultContentPage = value; }
+            get { return defaultDocument; }
+            set { defaultDocument = value; }
         }
 		#endregion
 
@@ -79,7 +72,22 @@ namespace N2.Web
 				return new TemplateData(item, item.Path, item.TemplateUrl, url["action"], url["arguments"]).UpdateParameters(url.GetQueries());
 			}
 
-			return StartPage.FindTemplate(url.Path).UpdateParameters(url.GetQueries());
+			string path = Url.ToRelative(url.Path).TrimStart('~');
+			TemplateData data = StartPage.FindTemplate(path).UpdateParameters(url.GetQueries());
+			if(data.CurrentItem != null)
+				return data;
+
+			if (path.EndsWith(DefaultDocument))
+			{
+				data = StartPage.FindTemplate(path.Substring(0, path.Length - DefaultDocument.Length));
+				if (data.CurrentItem != null)
+					return data;
+			}
+
+			PageNotFoundEventArgs args = new PageNotFoundEventArgs(url);
+			if (PageNotFound != null)
+				PageNotFound(this, args);
+			return args.AffectedTemplate ?? data;
 		}
 
 		/// <summary>Finds an item by traversing names from the start page.</summary>
@@ -93,12 +101,12 @@ namespace N2.Web
 			return TryLoadingFromQueryString(url, "item", "page") ?? Parse(startingPoint, url);
 		}
 
-		public virtual ContentItem ParsePage(string url)
-		{
-			if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
+		//public virtual ContentItem ParsePage(string url)
+		//{
+		//    if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
 
-			return TryLoadingFromQueryString(url, "page") ?? Parse(StartPage, url);
-		}
+		//    return TryLoadingFromQueryString(url, "page") ?? Parse(StartPage, url);
+		//}
 
 		#region Parse Helper Methods
 		protected virtual ContentItem TryLoadingFromQueryString(string url, params string[] parameters)
@@ -126,7 +134,7 @@ namespace N2.Web
         /// <returns></returns>
         protected virtual ContentItem NotFoundPage(string url)
         {
-            string defaultDocument = CleanUrl(DefaultContentPage);
+            string defaultDocument = CleanUrl(DefaultDocument);
             if (url.Equals(defaultDocument, StringComparison.InvariantCultureIgnoreCase))
             {
                 return StartPage;

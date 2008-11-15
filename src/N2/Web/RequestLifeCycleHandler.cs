@@ -71,7 +71,7 @@ namespace N2.Web
                 if (webContext.IsWeb)
                 {
                     if (Url.ServerUrl == null)
-                        Url.ServerUrl = webContext.HostUrl;
+                        Url.ServerUrl = webContext.Url.HostUrl;
                     if (checkInstallation)
                         CheckInstallation();
                 }
@@ -83,7 +83,7 @@ namespace N2.Web
 
         private void CheckInstallation()
         {
-            bool isEditing = webContext.ToAppRelative(webContext.LocalUrl).StartsWith("~/edit", StringComparison.InvariantCultureIgnoreCase);
+            bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl).StartsWith("~/edit", StringComparison.InvariantCultureIgnoreCase);
             if (!isEditing && !installer.GetStatus().IsInstalled)
             {
                 webContext.Response.Redirect(installerUrl);

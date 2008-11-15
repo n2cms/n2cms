@@ -53,12 +53,11 @@ namespace N2.Web
             ignoreExistingFiles = config.Web.IgnoreExistingFiles;
         }
 
-	
 		public void InitializeRequest()
 		{
 			try
 			{
-				Url url = webContext.LocalUrl;
+				Url url = webContext.Url.LocalUrl;
 				if (IsUpdatable(url))
 				{
 					url = new Url(url.Scheme, url.Authority, url.PathWithoutExtension, url.Query, url.Fragment);
@@ -87,7 +86,7 @@ namespace N2.Web
 			TemplateData data = webContext.CurrentTemplate;
             if (data != null && data.CurrentItem != null&& PathIsRewritable())
 			{
-				Url requestedUrl = webContext.LocalUrl;
+				Url requestedUrl = webContext.Url.LocalUrl;
 				Url rewrittenUrl = data.RewrittenUrl;
 
 				Trace.WriteLine(requestedUrl + " -> " + rewrittenUrl);

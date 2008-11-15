@@ -23,7 +23,7 @@ namespace N2.Web
     	[ThreadStatic] TemplateData currentTemplate;
     	[ThreadStatic] static IDictionary items;
     	[ThreadStatic] Url localUrl = new Url("/");
-    	[ThreadStatic] Url hostUrl = new Url("http://localhost");
+    	[ThreadStatic] Url url = new Url("http://localhost");
 
         static ThreadContext()
 		{
@@ -80,16 +80,11 @@ namespace N2.Web
             items = null;
         }
 
-        public virtual Url LocalUrl
+		/// <summary>The requested url, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
+        public virtual Url Url
         {
-            get { return localUrl; }
-            set { localUrl = value; }
-        }
-        
-        public virtual Url HostUrl
-        {
-            get { return hostUrl; }
-            set { hostUrl = value; }
+            get { return url; }
+            set { url = value; }
         }
 
         public virtual string MapPath(string path)
@@ -115,7 +110,7 @@ namespace N2.Web
 
         public virtual string PhysicalPath
         {
-			get { return MapPath(LocalUrl.Path); }
+			get { return MapPath(Url.Path); }
         }
 
         public virtual void RewritePath(string path)

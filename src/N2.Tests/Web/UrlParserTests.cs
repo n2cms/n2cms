@@ -76,6 +76,20 @@ namespace N2.Tests.Web
 			ContentItem parsedItem = parser.Parse("/item1.aspx#someHash");
 			Assert.AreEqual(item1, parsedItem);
 		}
+
+		[Test]
+		public void CanParse_StartPage()
+		{
+			ContentItem parsedItem = parser.Parse("/default.aspx");
+			Assert.AreEqual(startItem, parsedItem);
+		}
+
+		[Test]
+		public void CanParse_StartPage2()
+		{
+			ContentItem parsedItem = parser.Parse("/default");
+			Assert.AreEqual(startItem, parsedItem);
+		}
 		#endregion
 
 		#region Parse Data Tests

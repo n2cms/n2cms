@@ -1,3 +1,4 @@
+- moved IWebContext LocalUrl & HostUrl into Url.LocalUrl and Url.HostUrl
 - fixed dependency error in SEOPageModifier initialization (medium trust)
 - applied esteewhy's patch: Enabling multiple tab groups in item editor
 - regex template finder

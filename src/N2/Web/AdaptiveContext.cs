@@ -76,16 +76,10 @@ namespace N2.Web
 			get { return CurrentContext.PhysicalPath; }
 		}
 
-		/// <summary>The local part of the requested path, e.g. /path/to/a/page.aspx?some=query.</summary>
-		public Url LocalUrl
+		/// <summary>The host part of the requested url, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
+		public Url Url
 		{
-			get { return CurrentContext.LocalUrl; }
-		}
-
-		/// <summary>The host part of the requested url, e.g. http://n2cms.com/.</summary>
-		public Url HostUrl
-		{
-			get { return CurrentContext.HostUrl; }
+			get { return CurrentContext.Url; }
 		}
 
 		/// <summary>Converts a virtual path to an an absolute path. E.g. ~/hello.aspx -> /MyVirtualDirectory/hello.aspx.</summary>

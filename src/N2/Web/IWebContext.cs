@@ -38,11 +38,8 @@ namespace N2.Web
 		/// <summary>The template used to serve this request.</summary>
 		TemplateData CurrentTemplate { get; set; }
 
-        /// <summary>The local part of the requested path, e.g. /path/to/a/page.aspx?some=query.</summary>
-        Url LocalUrl { get; }
-        
-        /// <summary>The host part of the requested url, e.g. http://n2cms.com/.</summary>
-        Url HostUrl { get; }
+		/// <summary>The local part of the requested path, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
+        Url Url { get; }
 
 		/// <summary>Converts a virtual path to an an absolute path. E.g. ~/hello.aspx -> /MyVirtualDirectory/hello.aspx.</summary>
 		/// <param name="virtualPath">The virtual url to make absolute.</param>

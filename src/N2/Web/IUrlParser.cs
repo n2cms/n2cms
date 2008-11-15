@@ -26,7 +26,7 @@ namespace N2.Web
 		/// <returns>True if the item is a start page or a root page</returns>
 		bool IsRootOrStartPage(ContentItem item);
 
-		/// <summary>Finds the template and content associated with an url.</summary>
+		/// <summary>Finds the content item and the template associated with an url.</summary>
 		/// <param name="uri">The url to the template to locate.</param>
 		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
 		TemplateData ResolveTemplate(Url uri);
@@ -35,10 +35,5 @@ namespace N2.Web
 		/// <param name="url">The url that should be traversed.</param>
 		/// <returns>The content item matching the supplied url.</returns>
 		ContentItem Parse(string url);
-
-		/// <summary>Finds a page by traversing names from the start page.</summary>
-		/// <param name="url">The url that should be traversed.</param>
-		/// <returns>The content page matching the supplied url.</returns>
-		ContentItem ParsePage(string url);
 	}
 }

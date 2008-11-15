@@ -57,7 +57,7 @@ namespace N2.Templates.Services
 
         private string GetLink(string url)
         {
-            return context.HostUrl + url;
+            return context.Url.HostUrl + url;
         }
 
         private void WriteItem(ISyndicatable item, XmlTextWriter xtw)

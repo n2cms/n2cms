@@ -517,6 +517,7 @@ namespace N2
 
 			if (remainingUrl.Length == 0)
 				return GetTemplate(string.Empty);
+			//else if (remainingUrl.Equals("default", StringComparison.InvariantCultureIgnoreCase)) ;
 
 			int slashIndex = remainingUrl.IndexOf('/');
 			string nameSegment = slashIndex < 0 ? remainingUrl : remainingUrl.Substring(0, slashIndex);

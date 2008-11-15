@@ -67,16 +67,16 @@ namespace N2.Web
             get { return Request.PhysicalPath; }
         }
 
-        /// <summary>The local part of the requested path, e.g. /path/to/a/page.aspx?some=query.</summary>
-        public Url LocalUrl
-        {
-            get { return Url.Parse(Request.RawUrl); }
-        }
+		///// <summary>The local part of the requested path, e.g. /path/to/a/page.aspx?some=query.</summary>
+		//public Url LocalUrl
+		//{
+		//    get { return Url.Parse(Request.RawUrl); }
+		//}
 
-        /// <summary>The host part of the requested url, e.g. http://n2cms.com/.</summary>
-        public Url HostUrl
+		/// <summary>The host part of the requested url, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
+        public Url Url
         {
-            get { return new Url(Request.Url.Scheme, Request.Url.Authority, null, null, null); }
+            get { return new Url(Request.Url.Scheme, Request.Url.Authority, Request.RawUrl); }
         }
 
         /// <summary>The current request object.</summary>
@@ -121,13 +121,13 @@ namespace N2.Web
         /// <param name="path">The path to the template that will handle the request.</param>
         public void RewritePath(string path)
         {
-            Debug.WriteLine("Rewriting '" + LocalUrl + "' to '" + path + "'");
+            Debug.WriteLine("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
             CurrentHttpContext.RewritePath(path, false);
         }
 
         public void TransferRequest(string path)
         {
-            string url = Url.Parse(path).AppendQuery("postback", LocalUrl);
+            string url = Url.Parse(path).AppendQuery("postback", Url.LocalUrl);
             CurrentHttpContext.Server.TransferRequest(url, true);
         }
 

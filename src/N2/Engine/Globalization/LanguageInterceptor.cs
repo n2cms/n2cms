@@ -52,7 +52,7 @@ namespace N2.Engine.Globalization
 
         private string GetLanguageKey()
         {
-            return context.LocalUrl.GetQuery(LanguageGateway.LanguageKey);
+            return context.Url.LocalUrl.GetQuery(LanguageGateway.LanguageKey);
         }
 
 		private void UpdateSortOrder(ContentItem item)

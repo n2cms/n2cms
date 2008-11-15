@@ -26,7 +26,7 @@ namespace N2.Templates.Services
             if (startPage != null && startPage.LoginPage != null)
             {
                 e.Cancel = true;
-                context.Response.Redirect(Url.Parse(startPage.LoginPage.Url).AppendQuery("returnUrl", context.LocalUrl));
+                context.Response.Redirect(Url.Parse(startPage.LoginPage.Url).AppendQuery("returnUrl", context.Url.LocalUrl));
             }
         }
 

@@ -510,14 +510,14 @@ namespace N2.Tests.Globalization
             public LanguageKeyScope(IEngine engine, int key)
             {
                 context = (ThreadContext)engine.Resolve<IWebContext>();
-                context.LocalUrl = context.LocalUrl.SetQueryParameter(LanguageGateway.LanguageKey, key.ToString());
+                context.Url = context.Url.SetQueryParameter(LanguageGateway.LanguageKey, key.ToString());
             }
 
             #region IDisposable Members
 
             public void Dispose()
             {
-                context.LocalUrl = context.LocalUrl.SetQueryParameter(LanguageGateway.LanguageKey, null);
+                context.Url = context.Url.SetQueryParameter(LanguageGateway.LanguageKey, null);
             }
 
             #endregion

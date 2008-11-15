@@ -56,7 +56,7 @@ namespace N2.Tests
             IWebContext wrapper = mocks.DynamicMock<IWebContext>();
 			Expect.Call(wrapper.ToAppRelative(null)).IgnoreArguments().Do(new ToAppRelativeDelegate(ToAppRelative)).Repeat.Any();
 			Expect.Call(wrapper.ToAbsolute(null)).IgnoreArguments().Do(new ToAbsoluteDelegate(ToAbsolute)).Repeat.Any();
-            Expect.Call(wrapper.HostUrl).IgnoreArguments().Do(new Func<Url>(delegate 
+            Expect.Call(wrapper.Url).IgnoreArguments().Do(new Func<Url>(delegate 
                 { 
                     return new Url("http://" + currentHost); 
                 })).Repeat.Any();

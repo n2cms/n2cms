@@ -57,7 +57,7 @@ namespace N2.Web
 
 		public Site CurrentSite
 		{
-            get { return GetSite(context.HostUrl) ?? DefaultSite; }
+            get { return GetSite(context.Url.HostUrl) ?? DefaultSite; }
         }
 
         public IList<Site> Sites

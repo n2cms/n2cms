@@ -615,5 +615,38 @@ namespace N2.Tests.Web
 			u = u.SetExtension("");
 			Assert.That(u.ToString(), Is.EqualTo("/hello?something=someotherthing"));
 		}
+
+		[Test]
+		public void CanSplitOut_HostPart()
+		{
+			Url u = "http://n2cms.com/some/path.aspx?existing=query";
+			u = u.HostUrl;
+			Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com"));
+		}
+
+		[Test]
+		public void CanSplitOut_HostPart_AndGetExtension()
+		{
+			Url u = "http://n2cms.com/some/path.aspx?existing=query";
+			string extension = u.HostUrl.Extension;
+			Assert.That(extension, Is.Null);
+		}
+
+		[Test]
+		public void CanSplitOut_LocalPart()
+		{
+			Url u = "http://n2cms.com/some/path.aspx?existing=query";
+			u = u.LocalUrl;
+			Assert.That(u.ToString(), Is.EqualTo("/some/path.aspx?existing=query"));
+		}
+
+		[Test]
+		public void CanConstruct_WithBaseSchemeAndRawUrl()
+		{
+			Url u = new Url("http", "www.n2cms.com", "/default.aspx?");
+			Assert.That(u.Scheme, Is.EqualTo("http"));
+			Assert.That(u.Authority, Is.EqualTo("www.n2cms.com"));
+			Assert.That(u.PathAndQuery, Is.EqualTo("/default.aspx"));
+		}
     }
 }

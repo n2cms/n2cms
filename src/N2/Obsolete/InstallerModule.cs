@@ -59,7 +59,7 @@ namespace N2.Installation
 		private bool IsEditing()
 		{
 			IWebContext web = engine.Resolve<IWebContext>();
-			return web.LocalUrl.ApplicationRelativePath.StartsWith("~/edit", StringComparison.InvariantCultureIgnoreCase);
+			return web.Url.LocalUrl.ApplicationRelativePath.StartsWith("~/edit", StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public void Dispose()

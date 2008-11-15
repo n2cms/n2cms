@@ -39,6 +39,17 @@ namespace N2.Web
 			this.fragment = fragment;
 		}
 
+		public Url(string scheme, string authority, string rawUrl)
+		{
+			int queryIndex = QueryIndex(rawUrl);
+			int hashIndex = rawUrl.IndexOf('#', queryIndex > 0 ? queryIndex : 0);
+			LoadFragment(rawUrl, hashIndex);
+			LoadQuery(rawUrl, queryIndex, hashIndex);
+			LoadSiteRelativeUrl(rawUrl, queryIndex, hashIndex);
+			this.scheme = scheme;
+			this.authority = authority;
+		}
+
 		public Url(string url)
 		{
 			if (url == null)
@@ -108,9 +119,9 @@ namespace N2.Web
 		void LoadQuery(string url, int queryIndex, int hashIndex)
 		{
 			if (hashIndex >= 0 && queryIndex >= 0)
-				query = url.Substring(queryIndex + 1, hashIndex - queryIndex - 1);
+				query = EmptyToNull(url.Substring(queryIndex + 1, hashIndex - queryIndex - 1));
 			else if (queryIndex >= 0)
-				query = url.Substring(queryIndex + 1);
+				query = EmptyToNull(url.Substring(queryIndex + 1));
 			else
 				query = null;
 		}
@@ -118,9 +129,27 @@ namespace N2.Web
 		void LoadFragment(string url, int hashIndex)
 		{
 			if (hashIndex >= 0)
-				fragment = url.Substring(hashIndex + 1);
+				fragment = EmptyToNull(url.Substring(hashIndex + 1));
 			else
 				fragment = null;
+		}
+
+		private string EmptyToNull(string text)
+		{
+			if (string.IsNullOrEmpty(text))
+				return null;
+
+			return text;
+		}
+
+		public Url HostUrl
+		{
+			get { return new Url(scheme, authority, string.Empty, null, null);}
+		}
+
+		public Url LocalUrl
+		{
+			get { return new Url(null, null, path, query, fragment); }
 		}
 
 		/// <summary>E.g. http</summary>

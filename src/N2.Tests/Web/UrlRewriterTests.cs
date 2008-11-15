@@ -35,7 +35,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanRewriteUrl()
 		{
-			context.LocalUrl = new Url("/one/two.aspx");
+			context.Url = new Url("/one/two.aspx");
 
 			rewriter.InitializeRequest();
 			rewriter.RewriteRequest();
@@ -46,7 +46,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void RewriteUrl_AppendsExistingQueryString()
 		{
-			context.LocalUrl = "/one/two.aspx?happy=true&flip=feet";
+			context.Url = "/one/two.aspx?happy=true&flip=feet";
 
 			rewriter.InitializeRequest();
 			rewriter.RewriteRequest();
@@ -57,7 +57,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdateContentPage()
 		{
-			context.LocalUrl = "/one/two.aspx";
+			context.Url = "/one/two.aspx";
 
 			rewriter.InitializeRequest();
 
@@ -68,7 +68,7 @@ namespace N2.Tests.Web
         [Test]
         public void UpdatesCurrentPage_WhenExtension_IsAspx()
         {
-			context.LocalUrl = "/one.aspx";
+			context.Url = "/one.aspx";
 
             rewriter.InitializeRequest();
 
@@ -80,7 +80,7 @@ namespace N2.Tests.Web
         {
             HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } };
 			UrlRewriter rewriter = new UrlRewriter(parser, context, config);
-			context.LocalUrl = "/one.htm";
+			context.Url = "/one.htm";
 			
 			rewriter.InitializeRequest();
 
@@ -92,7 +92,7 @@ namespace N2.Tests.Web
         {
             HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection()} };
 			UrlRewriter rewriter = new UrlRewriter(parser, context, config);
-			context.LocalUrl = "/one.html";			
+			context.Url = "/one.html";			
 			
 			rewriter.InitializeRequest();
 
@@ -104,7 +104,7 @@ namespace N2.Tests.Web
         {
 			HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = false } };
             UrlRewriter rewriter = new UrlRewriter(parser, context, config);
-			context.LocalUrl = "/one";
+			context.Url = "/one";
 
             rewriter.InitializeRequest();
 
@@ -116,7 +116,7 @@ namespace N2.Tests.Web
         {
 			HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection() } };
             UrlRewriter rewriter = new UrlRewriter(parser, context, config);
-			context.LocalUrl = "/one";
+			context.Url = "/one";
 
             rewriter.InitializeRequest();
 
@@ -126,7 +126,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdateContentPage_WithRewrittenUrl()
 		{
-			context.LocalUrl = "/default.aspx?page=3";
+			context.Url = "/default.aspx?page=3";
 			
 			rewriter.InitializeRequest();
 
@@ -136,11 +136,21 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdateContentPage_WithItemReference_UpdatesWithPage()
 		{
-			context.LocalUrl = "/default.aspx?item=2&page=3";
+			context.Url = "/default.aspx?item=2&page=3";
 
 			rewriter.InitializeRequest();
 
 			Assert.That(context.CurrentPage, Is.EqualTo(two));
+		}
+
+		[Test]
+		public void UpdatesCurrentPage_WhenUrl_IsWebDevStartPage()
+		{
+			context.Url = "/default.aspx?";
+
+			rewriter.InitializeRequest();
+
+			Assert.That(context.CurrentPage, Is.EqualTo(root));
 		}
 	}
 }
