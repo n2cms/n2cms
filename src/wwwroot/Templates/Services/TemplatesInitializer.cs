@@ -7,6 +7,9 @@ using System.Configuration;
 
 namespace N2.Templates.Services
 {
+	/// <summary>
+	/// Registers components and services needed by the templates project.
+	/// </summary>
     [AutoInitialize]
     public class TemplatesInitializer : IPluginInitializer
     {
@@ -16,13 +19,19 @@ namespace N2.Templates.Services
             TemplatesSection config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
             if (config == null || config.MailConfiguration == MailConfigSource.ContentRootOrConfiguration)
             {
-                engine.AddComponent("n2.templates.contentMailSender", typeof(IMailSender), typeof(Services.DynamicMailSender));
+                engine.AddComponent("n2.templates.contentMailSender", typeof(IMailSender), typeof(DynamicMailSender));
             }
             else
             {
-                engine.AddComponent("n2.templates.fakeMailSender", typeof(IMailSender), typeof(Services.FakeMailSender));
+                engine.AddComponent("n2.templates.fakeMailSender", typeof(IMailSender), typeof(FakeMailSender));
             }
             engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
+
+			engine.AddComponent("n2.templates.syndication.rssWriter", typeof(RssWriter));
+			engine.AddComponent("n2.templates.rss.definitionAppender", typeof(SyndicatableDefinitionAppender));
+
+			engine.AddComponent("n2.templates.seo.definitions", typeof(SEODefinitionAppender));
+			engine.AddComponent("n2.templates.seo.modifier", typeof(SEOPageModifier));
         }
     }
 }

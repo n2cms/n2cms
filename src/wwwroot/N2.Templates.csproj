@@ -289,9 +289,7 @@
     <Compile Include="Templates\Secured\Root.aspx.designer.cs">
       <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Services\SEOInitializer.cs" />
     <Compile Include="Templates\Services\SyndicatableDefinitionAppender.cs" />
-    <Compile Include="Templates\Services\SyndicationInitializer.cs" />
     <Compile Include="Templates\TabPanel\TabsInterface.ascx.cs">
       <DependentUpon>TabsInterface.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -1,3 +1,4 @@
+- fixed dependency error in SEOPageModifier initialization (medium trust)
 - applied esteewhy's patch: Enabling multiple tab groups in item editor
 - regex template finder
 - changed Url handling of empty input
