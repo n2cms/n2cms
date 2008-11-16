@@ -7,6 +7,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Web.UI.WebControls
 {
+	[ValidationProperty("From")]
 	public class DateRange : Control, IValidator
 	{
 		private DatePicker fromDate;

@@ -11,6 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Web.UI.WebControls
 {
+	[ValidationProperty("SelectedDate")]
 	public class DatePicker : Control, IEditableTextControl
 	{
 		TextBox datePicker;
