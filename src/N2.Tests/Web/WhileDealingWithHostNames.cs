@@ -61,7 +61,7 @@ namespace N2.Tests.Web
         [Test]
         public void CanFind_CurrentSite()
         {
-            currentHost = "www.n2cms.com";
+			wrapper.Url = "http://www.n2cms.com/";
             mocks.ReplayAll();
 
             Assert.AreSame(sites[1], host.CurrentSite);
@@ -70,7 +70,7 @@ namespace N2.Tests.Web
         [Test]
         public void CanFind_CurrentSite_WithDifferentPort()
         {
-            currentHost = "www.n2cms.com:8080";
+			wrapper.Url = "http://www.n2cms.com:8080/";
             mocks.ReplayAll();
 
             Assert.AreSame(sites[3], host.CurrentSite);
@@ -79,7 +79,7 @@ namespace N2.Tests.Web
         [Test]
         public void WillFallback_ToDefaultSite_ForUnknownHosts()
         {
-            currentHost = "www.siteX.com";
+			wrapper.Url = "http://www.siteX.com/";
             mocks.ReplayAll();
 
             Assert.AreSame(host.DefaultSite, host.CurrentSite);

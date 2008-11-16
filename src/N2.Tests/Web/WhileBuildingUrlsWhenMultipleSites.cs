@@ -24,7 +24,7 @@ namespace N2.Tests.Web
         public void CanBuildUrlOnCurrentSite()
         {
             CreateDefaultStructure();
-            currentHost = "www.n2cms.com";
+			wrapper.Url = "http://www.n2cms.com/";
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(item1_1);
@@ -35,7 +35,7 @@ namespace N2.Tests.Web
         public void CanBuildUrlOnOtherSiteStartPage()
         {
             CreateDefaultStructure();
-            currentHost = "www.n2cms.com";
+			wrapper.Url = "http://www.n2cms.com&";
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(item2);
@@ -46,7 +46,7 @@ namespace N2.Tests.Web
         public void CanBuildUrlOnOtherSitePage()
         {
             CreateDefaultStructure();
-            currentHost = "n2.libardo.com";
+			wrapper.Url = "http://n2.libardo.com&";
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(item1_1);
@@ -56,7 +56,7 @@ namespace N2.Tests.Web
         [Test]
         public void ReferencesItems_OutsideAllSites_ByRewrittenUrl()
         {
-            currentHost = "www.n2cms.com";
+			wrapper.Url = "http://www.n2cms.com/";
             ContentItem itemOnTheOutside = CreateOneItem<PageItem>(99, "item4", startItem);
 
             mocks.ReplayAll();

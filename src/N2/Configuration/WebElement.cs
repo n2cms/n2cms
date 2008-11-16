@@ -59,5 +59,13 @@ namespace N2.Configuration
             get { return (bool)base["ignoreExistingFiles"]; }
             set { base["ignoreExistingFiles"] = value; }
         }
+
+		/// <summary>Configuration related to urls and url parsing.</summary>
+		[ConfigurationProperty("urls")]
+		public UrlElement Urls
+		{
+			get { return (UrlElement)base["urls"]; }
+			set { base["urls"] = value; }
+		}
     }
 }

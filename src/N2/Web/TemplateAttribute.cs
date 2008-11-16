@@ -47,7 +47,7 @@ namespace N2.Web
 		public TemplateData GetTemplate(ContentItem item, string remainingUrl)
 		{
 			if (remainingUrl.Equals(action, StringComparison.InvariantCultureIgnoreCase) || remainingUrl.Equals(action + item.Extension))
-				return new TemplateData(item, item.Path, templateUrl, action, string.Empty);
+				return new TemplateData(item, templateUrl, action, string.Empty);
 
 			if (remainingUrl.StartsWith(nameWithSlash))
 			{
@@ -56,7 +56,7 @@ namespace N2.Web
 				if (arguments.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase))
 					arguments = arguments.Substring(0, arguments.Length - extension.Length);
 
-				return new TemplateData(item, item.Path, templateUrl, action, arguments);
+				return new TemplateData(item, templateUrl, action, arguments);
 			}
 			
 			return null;

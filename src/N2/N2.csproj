@@ -305,6 +305,7 @@
     <Compile Include="Configuration\SiteElement.cs" />
     <Compile Include="Configuration\SiteElementCollection.cs" />
     <Compile Include="Configuration\TinyMCEElement.cs" />
+    <Compile Include="Configuration\UrlElement.cs" />
     <Compile Include="Configuration\WebElement.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
     <Compile Include="Definitions\DefinitionBuilder.cs" />
@@ -423,6 +424,7 @@
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />
+    <Compile Include="Web\CachingUrlParserDecorator.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\DynamicTemplateAttribute.cs" />

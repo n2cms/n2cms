@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using N2.Templates.Items;
 using N2.Templates.Web.UI;
 using N2.Engine.Globalization;
+using N2.Web.UI;
 
 namespace N2.Templates.Web
 {
@@ -35,8 +36,7 @@ namespace N2.Templates.Web
 			modifiers.Remove(modifier);
 		}
 
-		public void Modify<T>(TemplatePage<T> page)
-			where T : AbstractPage
+		public void Modify<T>(ContentPage<T> page) where T : ContentItem
 		{
 			foreach (IPageModifier adapter in modifiers)
 			{

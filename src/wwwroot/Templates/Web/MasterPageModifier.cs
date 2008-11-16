@@ -1,6 +1,8 @@
 using System.IO;
 using N2.Templates.Configuration;
 using System.Configuration;
+using N2.Web.UI;
+
 namespace N2.Templates.Web
 {
     /// <summary>
@@ -16,8 +18,7 @@ namespace N2.Templates.Web
             config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
         }
 
-		public void Modify<T>(UI.TemplatePage<T> page) 
-			where T : Items.AbstractPage
+		public void Modify<T>(ContentPage<T> page) where T : ContentItem
 		{
             if (config != null && !string.IsNullOrEmpty(config.MasterPageFile))
             {

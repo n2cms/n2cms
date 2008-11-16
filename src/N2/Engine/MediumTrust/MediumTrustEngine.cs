@@ -77,9 +77,10 @@ namespace N2.Engine.MediumTrust
 				urlParser = AddComponentInstance<IUrlParser>(new MultipleSitesParser(persister, webContext, notifier, host, sitesProvider, hostConfiguration));
 			}
 			else
-			{
 				urlParser = AddComponentInstance<IUrlParser>(new UrlParser(persister, webContext, notifier, host));
-			}
+			
+			if (hostConfiguration.Web.Urls.EnableCaching)
+				urlParser = new CachingUrlParserDecorator(urlParser, persister);
             
             securityManager = AddComponentInstance<ISecurityManager>(new SecurityManager(webContext));
             ISecurityEnforcer securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));

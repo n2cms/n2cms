@@ -69,7 +69,7 @@ namespace N2.Web
 			ContentItem item = TryLoadingFromQueryString(url, "page");
 			if(item != null)
 			{
-				return new TemplateData(item, item.Path, item.TemplateUrl, url["action"], url["arguments"]).UpdateParameters(url.GetQueries());
+				return new TemplateData(item, item.TemplateUrl, url["action"], url["arguments"]).UpdateParameters(url.GetQueries());
 			}
 
 			string path = Url.ToRelative(url.Path).TrimStart('~');
@@ -100,13 +100,6 @@ namespace N2.Web
             ContentItem startingPoint = StartPage;
 			return TryLoadingFromQueryString(url, "item", "page") ?? Parse(startingPoint, url);
 		}
-
-		//public virtual ContentItem ParsePage(string url)
-		//{
-		//    if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
-
-		//    return TryLoadingFromQueryString(url, "page") ?? Parse(StartPage, url);
-		//}
 
 		#region Parse Helper Methods
 		protected virtual ContentItem TryLoadingFromQueryString(string url, params string[] parameters)

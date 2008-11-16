@@ -1,3 +1,4 @@
+using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Persistence;
 using N2.Web;
@@ -6,10 +7,10 @@ namespace N2.Tests.Web
 {
 	public abstract class ParserTestsBase : ItemPersistenceMockingBase
 	{
-        protected IWebContext wrapper;
+        protected FakeWebContextWrapper wrapper;
 		protected IItemNotifier notifier;
 		protected IHost host;
-		protected UrlParser parser;
+		protected IUrlParser parser;
 		protected PageItem startItem, item1, item1_1, item2, item2_1;
 		protected DataItem data1, data2, data3;
 
@@ -18,7 +19,7 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 
-			wrapper = CreateWrapper(true);
+			wrapper = new FakeWebContextWrapper("http://www.n2cms.com/");
 
 			notifier = mocks.Stub<IItemNotifier>();
 			host = new Host(wrapper, 1, 1);

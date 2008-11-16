@@ -39,7 +39,7 @@ namespace N2.Web
 			Match m = expression.Match(remainingUrl);
 			if(m.Success)
 			{
-				return new TemplateData(item, item.Path, templateUrl, action, remainingUrl);
+				return new TemplateData(item, templateUrl, action, remainingUrl);
 			}
 			return null;
 		}

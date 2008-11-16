@@ -3,6 +3,7 @@ using N2.Templates.Items;
 using N2.Templates.Web;
 using N2.Templates.Web.UI;
 using N2.Plugin;
+using N2.Web.UI;
 
 namespace N2.Templates.Services
 {
@@ -15,7 +16,7 @@ namespace N2.Templates.Services
             this.modifierContainer = modifierContainer;
         }
 
-        public void Modify<T>(TemplatePage<T> page) where T : AbstractPage
+		public void Modify<T>(ContentPage<T> page) where T : ContentItem
         {
             new TitleAndMetaTagApplyer(page, page.CurrentPage);
         }

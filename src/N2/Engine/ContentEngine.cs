@@ -28,6 +28,7 @@ using N2.Security;
 using N2.Web;
 using N2.Configuration;
 using Castle.Core;
+using Castle.MicroKernel.Registration;
 
 namespace N2.Engine
 {
@@ -90,14 +91,21 @@ namespace N2.Engine
                 if (!hostConfig.Web.IsWeb)
                     container.Kernel.AddComponentInstance("n2.webContext.notWeb", typeof(IWebContext), new ThreadContext());
 
-                if (hostConfig.MultipleSites)
-                {
-                    ProcessResource(new AssemblyResource(engineConfig.MultipleSitesConfiguration));
-                }
+				if (hostConfig.Web.Urls.EnableCaching)
+					container.Register(Component.For<IUrlParser>().Named("n2.web.cachingUrlParser").ImplementedBy<CachingUrlParserDecorator>());
+            	container.Register(DetermineUrlParser(hostConfig));
             }
         }
 
-	    private void RegisterConfiguredComponents(EngineSection engineConfig)
+		private ComponentRegistration<IUrlParser> DetermineUrlParser(HostSection hostConfig)
+		{
+			if (hostConfig.MultipleSites)
+				return Component.For<IUrlParser>().Named("n2.multipleSitesParser").ImplementedBy<MultipleSitesParser>();
+
+			return Component.For<IUrlParser>().Named("n2.urlParser").ImplementedBy<UrlParser>();
+		}
+
+		private void RegisterConfiguredComponents(EngineSection engineConfig)
 	    {
 	        foreach(ComponentElement component in engineConfig.Components)
 	        {

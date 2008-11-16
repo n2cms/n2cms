@@ -91,11 +91,7 @@ namespace N2.Templates.Wiki.Items
 			TemplateData data = base.FindTemplate(remainingUrl);
 			if(data.CurrentItem == null)
 			{
-				data.Action = "submit";
-				data.Argument = Utility.CapitalizeFirstLetter(remainingUrl);
-				data.CurrentItem = this;
-				data.PagePath = Path;
-				data.TemplateUrl = "~/Templates/Wiki/UI/Views/Submit.aspx";
+				data = new TemplateData(this, "~/Templates/Wiki/UI/Views/Submit.aspx", "submit", Utility.CapitalizeFirstLetter(remainingUrl));
 			}
 			return data;
 		}

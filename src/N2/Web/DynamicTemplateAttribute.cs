@@ -12,7 +12,7 @@ namespace N2.Web
 		public TemplateData GetTemplate(ContentItem item, string remainingUrl)
 		{
 			if(string.IsNullOrEmpty(remainingUrl))
-				return new TemplateData(item, item.Path, item.TemplateUrl);
+				return new TemplateData(item, item.TemplateUrl);
 			return null;
 		}
 	}

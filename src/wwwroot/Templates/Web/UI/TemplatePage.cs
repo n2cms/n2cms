@@ -4,7 +4,7 @@ using N2.Web.UI;
 namespace N2.Templates.Web.UI
 {
 	public class TemplatePage<TPage> : ContentPage<TPage> 
-		where TPage: Items.AbstractPage
+		where TPage: ContentItem
 	{
 		public override string ID
 		{

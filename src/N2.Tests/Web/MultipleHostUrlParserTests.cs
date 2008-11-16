@@ -22,11 +22,6 @@ namespace N2.Tests.Web
 			}
 		}
 
-		protected override IWebContext CreateWrapper(bool replay)
-		{
-			return base.CreateWrapper(false);
-		}
-
 		protected Site[] sites;
 		protected override  UrlParser CreateUrlParser()
 		{

@@ -14,7 +14,6 @@ namespace N2.Tests
 {
 	public abstract class ItemPersistenceMockingBase : ItemTestsBase
 	{
-        protected string currentHost = "www.n2cms.com";
         protected IPersister persister;
         protected IRepository<int, ContentItem> repository;
         protected IEventRaiser saving;
@@ -49,35 +48,6 @@ namespace N2.Tests
             repository.Save(item);
             return item;
 		}
-
-		#region WebContext
-		protected virtual IWebContext CreateWrapper(bool replay)
-		{
-            IWebContext wrapper = mocks.DynamicMock<IWebContext>();
-			Expect.Call(wrapper.ToAppRelative(null)).IgnoreArguments().Do(new ToAppRelativeDelegate(ToAppRelative)).Repeat.Any();
-			Expect.Call(wrapper.ToAbsolute(null)).IgnoreArguments().Do(new ToAbsoluteDelegate(ToAbsolute)).Repeat.Any();
-            Expect.Call(wrapper.Url).IgnoreArguments().Do(new Func<Url>(delegate 
-                { 
-                    return new Url("http://" + currentHost); 
-                })).Repeat.Any();
-
-			if (replay)
-				mocks.Replay(wrapper);
-			return wrapper;
-		}
-
-		public string ToAppRelative(string path)
-		{
-			if (path.StartsWith("mailto:"))
-				throw new HttpException(path + " is not a valid virtual path.");
-			return path;
-		}
-
-		public string ToAbsolute(string path)
-		{
-			return path.Replace("~/", "/");
-		} 
-		#endregion
 
 	}
 }

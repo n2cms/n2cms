@@ -10,12 +10,16 @@ namespace N2.Tests.Fakes
 {
 	public class FakeRepository<TEntity> : INHRepository<int, TEntity> where TEntity : class
 	{
-		int maxID;
-		Dictionary<int, TEntity> database = new Dictionary<int, TEntity>();
+		public string lastOperation;
+		public int maxID;
+		public Dictionary<int, TEntity> database = new Dictionary<int, TEntity>();
+
 		#region IRepository<int,TEntity> Members
 
 		public TEntity Get(int id)
 		{
+			lastOperation = "Get(" + id + ")";
+
 			if (database.ContainsKey(id))
 				return database[id];
 			return null;
@@ -23,21 +27,29 @@ namespace N2.Tests.Fakes
 
 		public T Get<T>(int id)
 		{
+			lastOperation = "Get<" + typeof(T).Name + ">(" + id + ")";
+
 			throw new NotImplementedException();
 		}
 
 		public TEntity Load(int id)
 		{
+			lastOperation = "Load(" + id + ")";
+
 			return database[id];
 		}
 
 		public void Delete(TEntity entity)
 		{
+			lastOperation = "Delete(" + entity + ")";
+
 			database.Remove(GetKey(entity));
 		}
 
 		public void Save(TEntity entity)
 		{
+			lastOperation = "Save(" + entity + ")";
+
 			int key = GetKey(entity);
 			maxID = Math.Max(maxID, key);
 			database[key] = entity;
@@ -58,26 +70,35 @@ namespace N2.Tests.Fakes
 
 		public void Update(TEntity entity)
 		{
+			lastOperation = "Update(" + entity + ")";
+			
 			database[GetKey(entity)] = entity;
 		}
 
 		public void SaveOrUpdate(TEntity entity)
 		{
+			lastOperation = "SaveOrUpdate(" + entity + ")";
+
 			Save(entity);
 		}
 
 		public bool Exists()
 		{
+			lastOperation = "Exists()";
+
 			return true;
 		}
 
 		public long Count()
 		{
+			lastOperation = "Count()";
+
 			return database.Count;
 		}
 
 		public void Flush()
 		{
+			lastOperation = "Flush()";
 		}
 
 		private class FakeTransaction : ITransaction
@@ -106,6 +127,8 @@ namespace N2.Tests.Fakes
 
 		public ITransaction BeginTransaction()
 		{
+			lastOperation = "BeginTransaction()";
+
 			return new FakeTransaction();
 		}
 
@@ -115,6 +138,7 @@ namespace N2.Tests.Fakes
 
 		public void Dispose()
 		{
+			lastOperation = "Dispose()";
 		}
 
 		#endregion

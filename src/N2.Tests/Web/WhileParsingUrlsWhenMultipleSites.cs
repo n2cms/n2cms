@@ -104,7 +104,7 @@ namespace N2.Tests.Web
         private void CreateItemsAndBuildExpectations(string host, string url)
         {
             CreateDefaultStructure();
-            currentHost = host;
+            wrapper.Url = "http://" + host + "/";
             mocks.ReplayAll();
         }
     }

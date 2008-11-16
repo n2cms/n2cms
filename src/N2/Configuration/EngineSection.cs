@@ -19,13 +19,6 @@ namespace N2.Configuration
 			set { base["castleConfiguration"] = value; }
 		}
 
-		[ConfigurationProperty("multipleSitesConfiguration", DefaultValue = "assembly://N2/Web/n2.multiplesites.xml")]
-		public string MultipleSitesConfiguration
-		{
-			get { return (string)base["multipleSitesConfiguration"]; }
-			set { base["multipleSitesConfiguration"] = value; }
-		}
-
 		/// <summary>In addition to configured assemblies examine and load assemblies in the bin directory.</summary>
 		[ConfigurationProperty("dynamicDiscovery", DefaultValue = true)]
 		public bool DynamicDiscovery

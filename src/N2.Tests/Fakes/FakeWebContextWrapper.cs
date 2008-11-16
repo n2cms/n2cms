@@ -12,6 +12,13 @@ namespace N2.Tests.Fakes
     /// </summary>
 	public class FakeWebContextWrapper : N2.Web.ThreadContext
 	{
+		public FakeWebContextWrapper()
+		{
+		}
+		public FakeWebContextWrapper(string currentUrl)
+		{
+			Url = currentUrl;
+		}
 		public IPrincipal currentUser = SecurityUtilities.CreatePrincipal("admin");
 
 		public override IPrincipal User

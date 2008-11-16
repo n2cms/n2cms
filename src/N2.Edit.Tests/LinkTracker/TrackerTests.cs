@@ -30,7 +30,7 @@ namespace N2.Tests.Edit.LinkTracker
 		{
 			base.SetUp();
 
-			var wrapper = CreateWrapper(true);
+			var wrapper = new Fakes.FakeWebContextWrapper();
 			var notifier = CreateNotifier(true);
 			parser = new UrlParser(persister, wrapper, notifier, new Host(wrapper, 1, 1));
 
