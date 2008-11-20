@@ -1,3 +1,4 @@
+ï»¿- make move to trashcan the last operation
 - added url caching
 - fixed problem with required datepicker
 - moved IWebContext LocalUrl & HostUrl into Url.LocalUrl and Url.HostUrl
@@ -1002,100 +1003,100 @@ N2 0.24
 	- simple examples are now available without library project
 
 N2 0.23:
-- förbättra editläge
-	- ibland väljs inte sidorna riktigt när man klickar på dom (mysko)
-		- delay när länkarna görs om med javascript, kolla om man tydliggöra vilka som är klara att klickas
-	- diagnose sidan förbättrad
+- fï¿½rbï¿½ttra editlï¿½ge
+	- ibland vï¿½ljs inte sidorna riktigt nï¿½r man klickar pï¿½ dom (mysko)
+		- delay nï¿½r lï¿½nkarna gï¿½rs om med javascript, kolla om man tydliggï¿½ra vilka som ï¿½r klara att klickas
+	- diagnose sidan fï¿½rbï¿½ttrad
 	- plugin options
 	- leta efter toolbar plugins i alla assemblies
 - bugfix 
-	- kan ej skapa dataitem via högerfliken
+	- kan ej skapa dataitem via hï¿½gerfliken
 - snippets & templates
 	- the detail property snippet included
 
 N2 0.22:
-- snygga upp i träsket
+- snygga upp i trï¿½sket
 	- extenda abstrakt klass
 	- DoubleDetail
-- förbättra editläge
+- fï¿½rbï¿½ttra editlï¿½ge
 	- mozilla filupload
 	- toolbarknappplugins
 	- navigeringsplugin
 		- snygga till
 		- flytta till frame
-		- tabelläge
+		- tabellï¿½ge
 - bugfix
-	- NameOccupiedException visar samma på båda
-	- Bara 1 HasEditableAttribute möjlig
+	- NameOccupiedException visar samma pï¿½ bï¿½da
+	- Bara 1 HasEditableAttribute mï¿½jlig
 
 N2 0.20:
-- snygga upp i träsket
+- snygga upp i trï¿½sket
 	- integrity via events
-	- HasEditable för att regga properties som inte finns på aktuell klass
-	- Ta bort Rewriter.Rewrites.Clear() från Save
+	- HasEditable fï¿½r att regga properties som inte finns pï¿½ aktuell klass
+	- Ta bort Rewriter.Rewrites.Clear() frï¿½n Save
 	- Flytta session
 	- integrity via events
-	- förenkla page/data relationen
-	- flytta isär till två httpmoduler
+	- fï¿½renkla page/data relationen
+	- flytta isï¿½r till tvï¿½ httpmoduler
 - bugfix file selector
-- fixa så att en overridad url funkar
+- fixa sï¿½ att en overridad url funkar
 
 N2 0.18:
-- snygga upp i träsket
+- snygga upp i trï¿½sket
 	- hitta en balans mellan factory, persistence och urlrewriter
 	- fixa multipla hosts
 	- fixa rewritesCache
 	- olika detailtyper int, datetime, string, bool...?
-- förbättra editläge
-	- masterpage för sidor i framen
+- fï¿½rbï¿½ttra editlï¿½ge
+	- masterpage fï¿½r sidor i framen
 	- relayout
 
 N2 0.1 - 0.17:
-- fixa så att template med QS hittas av sitemapprovidern
+- fixa sï¿½ att template med QS hittas av sitemapprovidern
 - ta bort IItem
-- förbättra editläge
-	- klickbara ikoner på sub-data-items
-- rätta bugg med flera dller
-- fixa så att contentitems inte behöver ha hbm.xml
-- httpmodule som alternativ till att ärva global
+- fï¿½rbï¿½ttra editlï¿½ge
+	- klickbara ikoner pï¿½ sub-data-items
+- rï¿½tta bugg med flera dller
+- fixa sï¿½ att contentitems inte behï¿½ver ha hbm.xml
+- httpmodule som alternativ till att ï¿½rva global
 - loginsida
 - ta bort Factory.CurrentData
 - datafactory -> factory
 - integrity
-	- filtrera på zonename när man kommer via sida
+	- filtrera pï¿½ zonename nï¿½r man kommer via sida
 	- integritetshanterare
-- expandera trädet till vald nod
+- expandera trï¿½det till vald nod
 - edit sparaknapp
-- fixa så att man kan sätta properties på editorer
+- fixa sï¿½ att man kan sï¿½tta properties pï¿½ editorer
 	- EditorModifierAttribute
 	- GetConverter
 - dynamiska userkontroller med Item data (a la webparts)
 	- runtimeparametrar till site map provider
-	- kontrollera när dataitems visas i trädet
-	- schysstare editeringsgränssnitt
-	- zoneväljare
+	- kontrollera nï¿½r dataitems visas i trï¿½det
+	- schysstare editeringsgrï¿½nssnitt
+	- zonevï¿½ljare
 	- datalager
 	- zone kontroll
-- förbättra editläge
-	- filväljaren är ful & tråkig
+- fï¿½rbï¿½ttra editlï¿½ge
+	- filvï¿½ljaren ï¿½r ful & trï¿½kig
 - filhanterare
 	- fixa problem med ej valbara filer (zip, m.m.)
 	- ta bort filer
 - flytta ihop urlskapningen och urlparsandet (mer coupling, hmm)
 - events
 - VirtualPathUtility/ResolveUrl
-- få det att funka med virtella kataloger
-- få det att funka med web site projects
+- fï¿½ det att funka med virtella kataloger
+- fï¿½ det att funka med web site projects
 - en vettig template web
-- snygga upp editläget
+- snygga upp editlï¿½get
 - itemtyper editnamn
-- system för vilka sidor som får finnas under vilka
+- system fï¿½r vilka sidor som fï¿½r finnas under vilka
 - ta bort getvalue & setvalue
 - usercontrol som redigerare
 - hantera sidor utan url
-- hantera stackobjekt som är null
+- hantera stackobjekt som ï¿½r null
 - sidor vs. dataitems
-- förbättra editläge
+- fï¿½rbï¿½ttra editlï¿½ge
 	- edit css
 - upload av filer
 - diagnostics page
@@ -1104,7 +1105,7 @@ N2 0.1 - 0.17:
 - texteditor
 	- tiny mce
 		- infoga bild
-	- utvärdera freetextbox, tinymce, fckeditor
+	- utvï¿½rdera freetextbox, tinymce, fckeditor
 - urlrewriting
 - namespace
 - expressions http://msdn2.microsoft.com/en-us/library/d5bd1tad.aspx

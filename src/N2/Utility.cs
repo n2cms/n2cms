@@ -294,5 +294,49 @@ namespace N2
         {
             return N2.Web.Url.ToAbsolute(relativePath);
         }
+
+		/// <summary>Invokes an event and and executes an action unless the event is cancelled.</summary>
+		/// <param name="handler">The event handler to signal.</param>
+		/// <param name="item">The item affected by this operation.</param>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
+		public static void InvokeEvent(EventHandler<CancellableItemEventArgs> handler, ContentItem item, object sender, Action<ContentItem> finalAction)
+		{
+			if (handler != null && item.VersionOf == null)
+			{
+				CancellableItemEventArgs args = new CancellableItemEventArgs(item, finalAction);
+				
+				handler.Invoke(sender, args);
+
+				if (!args.Cancel)
+					args.FinalAction(args.AffectedItem);
+			}
+			else
+				finalAction(item);
+		}
+
+		/// <summary>Invokes an event and and executes an action unless the event is cancelled.</summary>
+		/// <param name="handler">The event handler to signal.</param>
+		/// <param name="source">The item affected by this operation.</param>
+		/// <param name="destination">The destination of this operation.</param>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
+		/// <returns>The result of the action (if any).</returns>
+		public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Function<ContentItem, ContentItem, ContentItem> finalAction)
+		{
+			if (handler != null && source.VersionOf == null)
+			{
+				CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(source, destination, finalAction);
+
+				handler.Invoke(sender, args);
+
+				if (args.Cancel)
+					return null;
+
+				return args.FinalAction(args.AffectedItem, args.Destination);
+			}
+			
+			return finalAction(source, destination);
+		}
 	}
 }

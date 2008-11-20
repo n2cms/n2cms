@@ -63,8 +63,7 @@ namespace N2.Edit.Trash
 		{
 			if (trashHandler.CanThrow(e.AffectedItem))
 			{
-				e.Cancel = true;
-				trashHandler.Throw(e.AffectedItem);
+				e.FinalAction = trashHandler.Throw;
 			}
 		}
 

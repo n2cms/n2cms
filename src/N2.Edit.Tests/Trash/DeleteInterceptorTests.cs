@@ -46,7 +46,7 @@ namespace N2.Edit.Tests.Trash
             CancellableItemEventArgs deleteArgs = new CancellableItemEventArgs(item);
             invokeDelete.Raise(persister, deleteArgs);
 
-            Assert.AreEqual(true, deleteArgs.Cancel);
+        	deleteArgs.FinalAction(deleteArgs.AffectedItem);
 
             mocks.VerifyAll();
         }

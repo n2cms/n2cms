@@ -55,20 +55,6 @@ namespace N2.Installation
 			return sr.ReadToEnd();
 		}
 
-		#region Methods
-
-        /// <summary>Upgrades to the latest version of N2</summary>
-        public void Upgrade(Version fromFileVersion)
-        {
-            throw new N2Exception("Cannot upgrade.");
-            //long oneWayToDoIt = fromFileVersion.Major * 1000000
-            //                    + fromFileVersion.MajorRevision * 1000
-            //                    + fromFileVersion.Minor;
-            //if (oneWayToDoIt < 25000 || oneWayToDoIt > 1100000)
-            //    throw new N2Exception("Can only upgrade from version 0.25 through 1.0.37");
-
-            //ExecuteSqlResource(UpgradeSqlServer2005_1_1);
-        }
 
 		/// <summary>Executes sql create database scripts.</summary>
 		public void Install()
@@ -224,41 +210,6 @@ namespace N2.Installation
 
 		#region Helper Methods
 
-		private void ExecuteCommandWithGoSplitter(string sql)
-		{
-			using (IDbConnection conn = GetConnection())
-			{
-				conn.Open();
-				IDbCommand cmd = conn.CreateCommand();
-				cmd.CommandType = CommandType.Text;
-				int startPos = 0;
-
-				do
-				{
-					int lastPos = sql.IndexOf("GO", startPos);
-					int len = (lastPos > startPos ? lastPos : sql.Length) - startPos;
-					string sqlPart = sql.Substring(startPos, len);
-
-					if (sqlPart.Trim().Length > 0)
-					{
-						cmd.CommandText = sqlPart;
-						cmd.ExecuteNonQuery();
-					}
-
-					if (lastPos == -1)
-						break;
-					else
-						startPos = lastPos + 2;
-				} while (startPos < sql.Length);
-			}
-		}
-
-		private void ExecuteSqlResource(string resourceKey)
-		{
-			string sql = GetResourceString(resourceKey);
-			ExecuteCommandWithGoSplitter(sql);
-		}
-
 		public IDbConnection GetConnection()
 		{
             IDriver driver = GetDriver();
@@ -295,6 +246,5 @@ namespace N2.Installation
 
 			return record.RootItem;
 		}
-		#endregion
 	}
 }

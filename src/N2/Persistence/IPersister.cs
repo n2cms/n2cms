@@ -24,7 +24,7 @@ namespace N2.Persistence
 		
 		/// <summary>Saves an item to persistence medium.</summary>
 		/// <param name="unsavedItem">The item to save.</param>
-		/// <remarks>When using <see cref="NH.DefaultPersister"/> changes on existing items are tracked and automatically persisted.</remarks>
+		/// <remarks>When using <see cref="N2.Persistence.NH.ContentPersister"/> changes on existing items are tracked and automatically persisted.</remarks>
 		void Save(ContentItem unsavedItem);
 
 		/// <summary>Deletes an item including child items, any associations towards it (<see cref="N2.Details.LinkDetail"/>) and previous versions.</summary>

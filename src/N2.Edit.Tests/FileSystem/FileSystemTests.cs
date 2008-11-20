@@ -222,7 +222,7 @@ namespace N2.Edit.Tests.FileSystem
             });
         }
 
-        private void Move(Action<File, Directory> moveAction)
+        private void Move(N2.Engine.Action<File, Directory> moveAction)
         {
 			Directory d1 = (Directory)upload.GetChild("Folder1");
 			Directory d2 = (Directory)upload.GetChild("Folder 2");

@@ -186,7 +186,6 @@ namespace N2.Edit.Install
 
 		protected void btnUpgrade_Click(object sender, EventArgs e)
 		{
-			CurrentInstallationManager.Upgrade(new Version(txtPreviousVersion.Text));
 		}
 
 		private string formatException(Exception ex)

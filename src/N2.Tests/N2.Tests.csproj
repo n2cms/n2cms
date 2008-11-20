@@ -274,11 +274,6 @@
     <Content Include="Engine\MultipleSites.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Content\.svn\all-wcprops" />
-    <None Include="Content\.svn\entries" />
-    <None Include="Content\.svn\format" />
-    <None Include="Content\.svn\text-base\AnItem.cs.svn-base" />
-    <None Include="Content\.svn\text-base\ContentItemTests.cs.svn-base" />
     <None Include="Engine\MultipleSites.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -316,11 +311,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\.svn\prop-base\" />
-    <Folder Include="Content\.svn\props\" />
-    <Folder Include="Content\.svn\tmp\prop-base\" />
-    <Folder Include="Content\.svn\tmp\props\" />
-    <Folder Include="Content\.svn\tmp\text-base\" />
     <Folder Include="Xml\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -28,7 +28,7 @@ namespace N2.Extensions.Tests.Linq
 			engine.Persister.Save(root);
 		}
 
-		[Test]
+		[Test, Ignore]
 		public void CanSelectAllItems()
 		{
 			var query = from ci in engine.Database().ContentItems
@@ -37,7 +37,7 @@ namespace N2.Extensions.Tests.Linq
 			EnumerableAssert.Count(1, query);
 		}
 
-		[Test]
+		[Test, Ignore]
 		public void CanSelectAllItems_WithWhere()
 		{
 			var query = from ci in engine.Database().ContentItems
@@ -47,7 +47,7 @@ namespace N2.Extensions.Tests.Linq
 			EnumerableAssert.Count(1, query);
 		}
 
-        [Test]
+        [Test, Ignore]
         public void Test()
         {
             var q = engine.Database().ContentItems.Where(x => "root" == x["Name"]);

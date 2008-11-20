@@ -67,40 +67,39 @@ namespace N2.Persistence.NH
 		/// <param name="unsavedItem">Item to save</param>
 		public virtual void Save(ContentItem unsavedItem)
 		{
-			CancellableItemEventArgs args = Invoke(ItemSaving, new CancellableItemEventArgs(unsavedItem));
-			if (!args.Cancel)
+			Utility.InvokeEvent(ItemSaving, unsavedItem, this, SaveAction);
+		}
+
+		private void SaveAction(ContentItem item)
+		{
+			if (item is IActiveContent)
 			{
-                unsavedItem = args.AffectedItem;
-
-                if (unsavedItem is IActiveContent)
-                {
-                    (unsavedItem as IActiveContent).Save();
-                }
-                else
-                {
-                    using (ITransaction transaction = itemRepository.BeginTransaction())
-                    {
-                        if (unsavedItem.VersionOf == null)
-                            unsavedItem.Updated = DateTime.Now;
-                        if (string.IsNullOrEmpty(unsavedItem.Name))
-                            unsavedItem.Name = null;
-
-                        itemRepository.SaveOrUpdate(unsavedItem);
-                        if (string.IsNullOrEmpty(unsavedItem.Name))
-                        {
-                            unsavedItem.Name = unsavedItem.ID.ToString();
-                            itemRepository.Save(unsavedItem);
-                        }
-
-                        unsavedItem.AddTo(unsavedItem.Parent);
-
-                        EnsureSortOrder(unsavedItem);
-
-                        transaction.Commit();
-                    }
-                }
-                Invoke(ItemSaved, new ItemEventArgs(unsavedItem));
+				(item as IActiveContent).Save();
 			}
+			else
+			{
+				using (ITransaction transaction = itemRepository.BeginTransaction())
+				{
+					if (item.VersionOf == null)
+						item.Updated = DateTime.Now;
+					if (string.IsNullOrEmpty(item.Name))
+						item.Name = null;
+
+					itemRepository.SaveOrUpdate(item);
+					if (string.IsNullOrEmpty(item.Name))
+					{
+						item.Name = item.ID.ToString();
+						itemRepository.Save(item);
+					}
+
+					item.AddTo(item.Parent);
+
+					EnsureSortOrder(item);
+
+					transaction.Commit();
+				}
+			}
+			Invoke(ItemSaved, new ItemEventArgs(item));
 		}
 
 		private void EnsureSortOrder(ContentItem unsavedItem)
@@ -119,28 +118,27 @@ namespace N2.Persistence.NH
 		/// <param name="itemNoMore">The item to delete</param>
 		public void Delete(ContentItem itemNoMore)
 		{
-            CancellableItemEventArgs args = Invoke(ItemDeleting, new CancellableItemEventArgs(itemNoMore));
-			if (!args.Cancel)
+			Utility.InvokeEvent(ItemDeleting, itemNoMore, this, DeleteAction);
+		}
+
+		void DeleteAction(ContentItem itemNoMore)
+		{
+			Trace.TraceInformation("NHPersistenceManager.Delete " + itemNoMore);
+
+			if (itemNoMore is IActiveContent)
 			{
-                itemNoMore = args.AffectedItem;
-
-				Trace.TraceInformation("NHPersistenceManager.Delete " + itemNoMore);
-
-                if (itemNoMore is IActiveContent)
-                {
-                    (itemNoMore as IActiveContent).Delete();
-                }
-                else
-                {
-                    using (ITransaction transaction = itemRepository.BeginTransaction())
-                    {
-                        DeleteRecursive(itemNoMore);
-
-                        transaction.Commit();
-                    }
-                }
-                Invoke(ItemDeleted, new ItemEventArgs(itemNoMore)); 
+				(itemNoMore as IActiveContent).Delete();
 			}
+			else
+			{
+				using (ITransaction transaction = itemRepository.BeginTransaction())
+				{
+					DeleteRecursive(itemNoMore);
+
+					transaction.Commit();
+				}
+			}
+			Invoke(ItemDeleted, new ItemEventArgs(itemNoMore));
 		}
 
 		#region Delete Helper Methods
@@ -190,28 +188,26 @@ namespace N2.Persistence.NH
 		/// <param name="destination">The destination below which to place the item</param>
 		public virtual void Move(ContentItem source, ContentItem destination)
 		{
-            CancellableDestinationEventArgs args = Invoke(ItemMoving, new CancellableDestinationEventArgs(source, destination)); 
+			Utility.InvokeEvent(ItemMoving, this, source, destination, MoveAction);
+		}
 
-			if (!args.Cancel)
+		private ContentItem MoveAction(ContentItem source, ContentItem destination)
+		{
+			if (source is IActiveContent)
 			{
-                source = args.AffectedItem;
-                destination = args.Destination;
-
-                if (source is IActiveContent)
-                {
-                    (source as IActiveContent).MoveTo(destination);
-                }
-                else
-                {
-                    using (ITransaction transaction = itemRepository.BeginTransaction())
-                    {
-                        source.AddTo(destination);
-                        itemRepository.Save(source);
-                        transaction.Commit();
-                    }
-                }
-				Invoke(ItemMoved, new DestinationEventArgs(source, destination));
+				(source as IActiveContent).MoveTo(destination);
 			}
+			else
+			{
+				using (ITransaction transaction = itemRepository.BeginTransaction())
+				{
+					source.AddTo(destination);
+					itemRepository.Save(source);
+					transaction.Commit();
+				}
+			}
+			Invoke(ItemMoved, new DestinationEventArgs(source, destination));
+			return null;
 		}
 
 		/// <summary>Copies an item and all sub-items to a destination</summary>
@@ -230,30 +226,22 @@ namespace N2.Persistence.NH
 		/// <returns>The copied item</returns>
 		public virtual ContentItem Copy(ContentItem source, ContentItem destination, bool includeChildren)
 		{
-            CancellableDestinationEventArgs args = Invoke(ItemCopying, new CancellableDestinationEventArgs(source, destination));
-
-            if (!args.Cancel)
+			return Utility.InvokeEvent(ItemCopying, this, source, destination, delegate(ContentItem copiedItem, ContentItem destinationItem)
 			{
-                source = args.AffectedItem;
-                destination = args.Destination;
+				if (copiedItem is IActiveContent)
+				{
+					return (copiedItem as IActiveContent).CopyTo(destinationItem);
+				}
 
-                if (source is IActiveContent)
-                {
-                    return (source as IActiveContent).CopyTo(destination);
-                }
-                else
-                {
-                    ContentItem cloned = source.Clone(includeChildren);
+				ContentItem cloned = copiedItem.Clone(includeChildren);
 
-                    cloned.Parent = destination;
-                    Save(cloned);
+				cloned.Parent = destinationItem;
+				Save(cloned);
 
-                    Invoke(ItemCopied, new DestinationEventArgs(cloned, destination));
+				Invoke(ItemCopied, new DestinationEventArgs(cloned, destinationItem));
 
-                    return cloned;
-                }
-			}
-			return null;
+				return cloned;
+			});
 		}
 
 		#endregion

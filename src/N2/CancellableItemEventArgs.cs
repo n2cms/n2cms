@@ -18,6 +18,9 @@
  */
 #endregion
 
+using System;
+using N2.Engine;
+
 namespace N2
 {
     /// <summary>
@@ -26,7 +29,16 @@ namespace N2
     public class CancellableItemEventArgs : ItemEventArgs
     {
         private bool cancel;
-        
+		private Action<ContentItem> finalAction;
+
+		/// <summary>Creates a new instance of the CancellableItemEventArgs.</summary>
+		/// <param name="item">The content item to reference with these arguements.</param>
+		public CancellableItemEventArgs(ContentItem item, Action<ContentItem> finalAction)
+			: base(item)
+		{
+			this.finalAction = finalAction;
+		}
+
         /// <summary>Creates a new instance of the CancellableItemEventArgs.</summary>
         /// <param name="item">The content item to reference with these arguements.</param>
         public CancellableItemEventArgs(ContentItem item)
@@ -40,5 +52,12 @@ namespace N2
             get { return cancel; }
             set { cancel = value; }
         }
+
+		/// <summary>The action to execute unless the event is cancelled. This action can be exchanged by observers to alter the default behaviour.</summary>
+		public Action<ContentItem> FinalAction
+    	{
+    		get { return finalAction; }
+    		set { finalAction = value; }
+    	}
     }
 }

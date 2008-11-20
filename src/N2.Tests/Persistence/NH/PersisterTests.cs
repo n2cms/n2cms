@@ -1,4 +1,6 @@
+using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -134,6 +136,106 @@ namespace N2.Tests.Persistence.NH
 				Assert.AreNotEqual(item2, item1.Children[0]);
 
 				persister.Delete(root);
+			}
+		}
+
+
+
+		[Test]
+		public void CanChange_SaveAction()
+		{
+			ContentItem itemToSave = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+
+			using (persister)
+			{
+				ContentItem invokedItem = null;
+				EventHandler<CancellableItemEventArgs> handler = delegate(object sender, CancellableItemEventArgs e)
+				{
+					e.FinalAction = delegate(ContentItem item) { invokedItem = item; };
+				};
+				persister.ItemSaving += handler;
+				persister.Save(itemToSave);
+				persister.ItemSaving -= handler;
+
+				Assert.That(invokedItem, Is.EqualTo(itemToSave));
+			}
+		}
+
+		[Test]
+		public void CanChange_DeleteAction()
+		{
+			ContentItem itemToDelete = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+
+			using (persister)
+			{
+				ContentItem invokedItem = null;
+				EventHandler<CancellableItemEventArgs> handler = delegate(object sender, CancellableItemEventArgs e)
+				{
+					e.FinalAction = delegate(ContentItem item) { invokedItem = item; };
+				};
+				persister.ItemDeleting += handler;
+				persister.Delete(itemToDelete);
+				persister.ItemDeleting -= handler;
+
+				Assert.That(invokedItem, Is.EqualTo(itemToDelete));
+			}
+		}
+
+		[Test]
+		public void CanChange_MoveAction()
+		{
+			ContentItem source = CreateOneItem<Definitions.PersistableItem1>(0, "source", null);
+			ContentItem destination = CreateOneItem<Definitions.PersistableItem1>(0, "destination", null);
+
+			using (persister)
+			{
+				ContentItem invokedFrom = null;
+				ContentItem invokedTo = null;
+				EventHandler<CancellableDestinationEventArgs> handler = delegate(object sender, CancellableDestinationEventArgs e)
+				{
+					e.FinalAction = delegate(ContentItem from, ContentItem to) 
+					{ 
+						invokedFrom = from;
+					    invokedTo = to;
+						return null;
+					};
+				};
+				persister.ItemMoving += handler;
+				persister.Move(source, destination);
+				persister.ItemMoving -= handler;
+
+				Assert.That(invokedFrom, Is.EqualTo(source));
+				Assert.That(invokedTo, Is.EqualTo(destination));
+			}
+		}
+
+		[Test]
+		public void CanChange_CopyAction()
+		{
+			ContentItem source = CreateOneItem<Definitions.PersistableItem1>(0, "source", null);
+			ContentItem destination = CreateOneItem<Definitions.PersistableItem1>(0, "destination", null);
+
+			using (persister)
+			{
+				ContentItem invokedFrom = null;
+				ContentItem invokedTo = null;
+				ContentItem copyToReturn = CreateOneItem<Definitions.PersistableItem1>(0, "copied", null);
+				EventHandler<CancellableDestinationEventArgs> handler = delegate(object sender, CancellableDestinationEventArgs e)
+				{
+					e.FinalAction = delegate(ContentItem from, ContentItem to)
+					{
+						invokedFrom = from;
+						invokedTo = to;
+						return copyToReturn;
+					};
+				};
+				persister.ItemCopying += handler;
+				ContentItem copy = persister.Copy(source, destination);
+				persister.ItemCopying -= handler;
+
+				Assert.That(copy, Is.SameAs(copyToReturn));
+				Assert.That(invokedFrom, Is.EqualTo(source));
+				Assert.That(invokedTo, Is.EqualTo(destination));
 			}
 		}
 	}
