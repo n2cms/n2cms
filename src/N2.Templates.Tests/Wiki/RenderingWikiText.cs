@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using N2.Addons.Wiki.Renderers;
 using NUnit.Framework;
-using N2.Templates.Wiki;
 using System.Web.UI;
 using System.IO;
 using NUnit.Framework.SyntaxHelpers;
 using N2.Web;
-using N2.Templates.Wiki.Fragmenters;
 using N2.Plugin;
 using N2.Tests;
 using Rhino.Mocks;
-using N2.Templates.Wiki.Renderers;
 
 namespace N2.Templates.Tests.Wiki
 {
+	using N2.Addons.Wiki;
+
     [TestFixture]
     public class RenderingWikiText : ItemTestsBase
     {
-        Templates.Wiki.Items.Wiki wiki;
-        Templates.Wiki.Items.WikiArticle article;
+		N2.Addons.Wiki.Items.Wiki wiki;
+		N2.Addons.Wiki.Items.WikiArticle article;
         WikiParser parser;
         WikiRenderer renderer;
 
@@ -30,10 +28,10 @@ namespace N2.Templates.Tests.Wiki
             base.SetUp();
 
             var urlParser = new FakeUrlParser();
-            wiki = new Templates.Wiki.Items.Wiki();
+			wiki = new N2.Addons.Wiki.Items.Wiki();
             wiki.Name = "wiki";
             ((IUrlParserDependency)wiki).SetUrlParser(urlParser);
-            article = new Templates.Wiki.Items.WikiArticle();
+			article = new N2.Addons.Wiki.Items.WikiArticle();
             article.Name = "existing-article";
             article.SavedBy = "admin";
             ((IUrlParserDependency)article).SetUrlParser(urlParser);

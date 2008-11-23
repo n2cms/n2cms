@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Resources;
 using N2.Templates.Web.UI;
 using N2.Web;
-using N2.Templates.Wiki;
 
 namespace N2.Addons.AddonCatalog.UI
 {
@@ -96,7 +92,7 @@ namespace N2.Addons.AddonCatalog.UI
             }
 
             addon.Title = Encode(txtTitle.Text);
-            addon.Name = new N2.Templates.Wiki.HtmlFilter().CleanUrl(txtTitle.Text);
+			addon.Name = Engine.Resolve<HtmlFilter>().CleanUrl(txtTitle.Text);
 
             addon.Text = Encode(txtDescription.Text);
             addon.AddonVersion = Encode(txtVersion.Text);
@@ -132,7 +128,7 @@ namespace N2.Addons.AddonCatalog.UI
 
         private string Encode(string p)
         {
-            return Server.HtmlEncode(new HtmlFilter().StripHtml(p));
+            return Server.HtmlEncode(Engine.Resolve<HtmlFilter>().StripHtml(p));
         }
 
         private int AssembleSelected(ListItemCollection listItemCollection)

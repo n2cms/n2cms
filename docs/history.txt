@@ -1,4 +1,6 @@
-﻿- applied esteewhy patch: "Update wiki pages to reflect changes in templating"
+﻿- allow deletion of file folder including sub-directories
+- moved wiki into an add-on
+- applied esteewhy patch: "Update wiki pages to reflect changes in templating"
 - fixed exception using actinlink without a current content page
 - make move to trashcan the last operation
 - added url caching

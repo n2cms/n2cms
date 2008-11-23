@@ -79,7 +79,7 @@ namespace N2.Edit.FileSystem.Items
         {
             try
             {
-                System.IO.Directory.Delete(PhysicalPath);
+                System.IO.Directory.Delete(PhysicalPath, true);
             }
             catch (Exception ex)
             {

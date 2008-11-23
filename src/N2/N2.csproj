@@ -430,6 +430,7 @@
     <Compile Include="Web\DynamicTemplateAttribute.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
     <Compile Include="Web\Host.cs" />
+    <Compile Include="Web\HtmlFilter.cs" />
     <Compile Include="Web\HtmlHelper.cs" />
     <Compile Include="Web\IClosable.cs" />
     <Compile Include="Web\IErrorHandler.cs" />

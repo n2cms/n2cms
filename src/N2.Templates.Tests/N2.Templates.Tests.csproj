@@ -82,6 +82,10 @@
       <Project>{D42D096E-399D-4618-AEB4-9B023BA1316D}</Project>
       <Name>N2.Templates</Name>
     </ProjectReference>
+    <ProjectReference Include="..\wwwroot\Wiki.csproj">
+      <Project>{77B21028-EA50-4CED-8334-307E836B0ECB}</Project>
+      <Name>Wiki</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

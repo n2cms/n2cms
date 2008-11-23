@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Templates.Wiki;
+using N2.Web;
 using NUnit.Framework;
 
 namespace N2.Templates.Tests.Wiki

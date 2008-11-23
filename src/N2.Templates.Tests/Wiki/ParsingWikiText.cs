@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using N2.Addons.Wiki;
 using NUnit.Framework;
-using N2.Templates.Wiki;
 using NUnit.Framework.SyntaxHelpers;
-using N2.Templates.Wiki.Fragmenters;
 using NUnit.Framework.Extensions;
 
 namespace N2.Templates.Tests.Wiki

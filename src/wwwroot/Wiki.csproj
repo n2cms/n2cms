@@ -1,0 +1,305 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{77B21028-EA50-4CED-8334-307E836B0ECB}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2</RootNamespace>
+    <AssemblyName>Wiki</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\N2.Security\N2.Security.csproj">
+      <Project>{CB6A29C5-8355-4C4C-B437-619F652B7540}</Project>
+      <Name>N2.Security</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="N2.Templates.csproj">
+      <Project>{D42D096E-399D-4618-AEB4-9B023BA1316D}</Project>
+      <Name>N2.Templates</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Addons\Wiki\Fragment.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\CommentFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\ExternalLinkFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\FormatFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\HeadingFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\InternalLinkFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\LineFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\ListFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\OrderedListFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\RegexFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\TemplateFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\TextFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\UnorderedListFragmenter.cs" />
+    <Compile Include="Addons\Wiki\Fragmenters\UserInfoFragmenter.cs" />
+    <Compile Include="Addons\Wiki\IArticle.cs" />
+    <Compile Include="Addons\Wiki\IFragmenter.cs" />
+    <Compile Include="Addons\Wiki\IRenderer.cs" />
+    <Compile Include="Addons\Wiki\ITemplateRenderer.cs" />
+    <Compile Include="Addons\Wiki\Items\Wiki.cs" />
+    <Compile Include="Addons\Wiki\Items\WikiArticle.cs" />
+    <Compile Include="Addons\Wiki\Items\WikiText.cs" />
+    <Compile Include="Addons\Wiki\IWiki.cs" />
+    <Compile Include="Addons\Wiki\IWikiTemplate.cs" />
+    <Compile Include="Addons\Wiki\Renderers\CommentRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\ExternalLinkRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\FormatRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\HeadingRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\InternalLinkRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\LineRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\ListRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\OrderedListRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\TemplateRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\TextRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\UnorderedListRenderer.cs" />
+    <Compile Include="Addons\Wiki\Renderers\UserInfoRenderer.cs" />
+    <Compile Include="Addons\Wiki\RenderingContext.cs" />
+    <Compile Include="Addons\Wiki\UI\Parts\EditArticle.ascx.cs">
+      <DependentUpon>EditArticle.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Parts\EditArticle.ascx.designer.cs">
+      <DependentUpon>EditArticle.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Parts\WikiPart.ascx.cs">
+      <DependentUpon>WikiPart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Parts\WikiPart.ascx.designer.cs">
+      <DependentUpon>WikiPart.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Article.aspx.cs">
+      <DependentUpon>Article.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Article.aspx.designer.cs">
+      <DependentUpon>Article.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\History.aspx.cs">
+      <DependentUpon>History.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\History.aspx.designer.cs">
+      <DependentUpon>History.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\NoHits.aspx.cs">
+      <DependentUpon>NoHits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\NoHits.aspx.designer.cs">
+      <DependentUpon>NoHits.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Submit.aspx.cs">
+      <DependentUpon>Submit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Submit.aspx.designer.cs">
+      <DependentUpon>Submit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Upload.aspx.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Upload.aspx.designer.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Version.aspx.cs">
+      <DependentUpon>Version.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Version.aspx.designer.cs">
+      <DependentUpon>Version.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Wiki.aspx.cs">
+      <DependentUpon>Wiki.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\Wiki.aspx.designer.cs">
+      <DependentUpon>Wiki.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\Views\WikiTemplatePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\ActionParameter.ascx.cs">
+      <DependentUpon>ActionParameter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\ActionParameter.ascx.designer.cs">
+      <DependentUpon>ActionParameter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\AllArticles.ascx.cs">
+      <DependentUpon>AllArticles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\AllArticles.ascx.designer.cs">
+      <DependentUpon>AllArticles.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\Create.ascx.cs">
+      <DependentUpon>Create.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\Create.ascx.designer.cs">
+      <DependentUpon>Create.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\DefaultWikiTemplateAttribute.cs" />
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\LatestArticles.ascx.cs">
+      <DependentUpon>LatestArticles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\LatestArticles.ascx.designer.cs">
+      <DependentUpon>LatestArticles.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\LinkFromParameter.ascx.cs">
+      <DependentUpon>LinkFromParameter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\LinkFromParameter.ascx.designer.cs">
+      <DependentUpon>LinkFromParameter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\PageName.ascx.cs">
+      <DependentUpon>PageName.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\PageName.ascx.designer.cs">
+      <DependentUpon>PageName.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\Search.ascx.cs">
+      <DependentUpon>Search.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\Search.ascx.designer.cs">
+      <DependentUpon>Search.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Wiki\UI\WikiTemplates\WikiTemplate.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\Utility.cs" />
+    <Compile Include="Addons\Wiki\ViewContext.cs" />
+    <Compile Include="Addons\Wiki\Web\WikiUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Wiki\WikiInitializer.cs" />
+    <Compile Include="Addons\Wiki\WikiParser.cs" />
+    <Compile Include="Addons\Wiki\WikiRenderer.cs" />
+    <Compile Include="Addons\Wiki\WikiTemplateAttribute.cs" />
+    <Compile Include="Addons\Wiki\WikiTextAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Addons\Wiki\UI\Css\Wiki.css" />
+    <Content Include="Addons\Wiki\UI\img\article_wiki.gif" />
+    <Content Include="Addons\Wiki\UI\img\article_wiki.png" />
+    <Content Include="Addons\Wiki\UI\img\page_wiki.gif" />
+    <Content Include="Addons\Wiki\UI\img\page_wiki.png" />
+    <Content Include="Addons\Wiki\UI\img\part_wiki.gif" />
+    <Content Include="Addons\Wiki\UI\img\part_wiki.png" />
+    <Content Include="Addons\Wiki\UI\Parts\EditArticle.ascx" />
+    <Content Include="Addons\Wiki\UI\Parts\WikiPart.ascx" />
+    <Content Include="Addons\Wiki\UI\Views\Article.aspx" />
+    <Content Include="Addons\Wiki\UI\Views\Edit.aspx" />
+    <Content Include="Addons\Wiki\UI\Views\History.aspx" />
+    <Content Include="Addons\Wiki\UI\Views\NoHits.aspx" />
+    <Content Include="Addons\Wiki\UI\Views\Search.aspx" />
+    <Content Include="Addons\Wiki\UI\Views\Submit.aspx" />
+    <Content Include="Addons\Wiki\UI\Views\Upload.aspx" />
+    <Content Include="Addons\Wiki\UI\Views\Version.aspx" />
+    <Content Include="Addons\Wiki\UI\Views\Wiki.aspx" />
+    <Content Include="Addons\Wiki\UI\WikiTemplates\ActionParameter.ascx" />
+    <Content Include="Addons\Wiki\UI\WikiTemplates\AllArticles.ascx" />
+    <Content Include="Addons\Wiki\UI\WikiTemplates\Create.ascx" />
+    <Content Include="Addons\Wiki\UI\WikiTemplates\LatestArticles.ascx" />
+    <Content Include="Addons\Wiki\UI\WikiTemplates\LinkFromParameter.ascx" />
+    <Content Include="Addons\Wiki\UI\WikiTemplates\PageName.ascx" />
+    <Content Include="Addons\Wiki\UI\WikiTemplates\Search.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64805</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
