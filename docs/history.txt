@@ -1,4 +1,5 @@
-﻿- make move to trashcan the last operation
+﻿- fixed exception using actinlink without a current content page
+- make move to trashcan the last operation
 - added url caching
 - fixed problem with required datepicker
 - moved IWebContext LocalUrl & HostUrl into Url.LocalUrl and Url.HostUrl

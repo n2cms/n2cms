@@ -56,6 +56,10 @@ namespace N2.Web.Mvc
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
 			ContentItem item = requestContext.RouteData.Values["ContentItem"] as ContentItem;
+
+			if(item == null)
+				return null;
+
 			string action = "Index";
 			
 			if (values.ContainsKey("ContentItem"))

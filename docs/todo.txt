@@ -1,3 +1,4 @@
+- itemdatasource sorting
 - tests for multiple hosts url rewriting
 - make it possible to change edit page
 - fix IAutoStart
