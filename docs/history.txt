@@ -1,4 +1,5 @@
-﻿- fixed exception using actinlink without a current content page
+﻿- applied esteewhy patch: "Update wiki pages to reflect changes in templating"
+- fixed exception using actinlink without a current content page
 - make move to trashcan the last operation
 - added url caching
 - fixed problem with required datepicker
