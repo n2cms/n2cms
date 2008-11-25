@@ -1,10 +1,11 @@
 Main solution (core + edit + templates):
 - Download the code, obviously
-- Set Templates/N2.Templates.UI as "StartUp Project"
+- Run Prepare_Dependencies-vs2008.bat to copy certain files needed by the web project
+- Open src\N2.Everything-vs2008.sln
+- Set Templates/N2.Templates as "StartUp Project"
 - Compile and run (Ctrl+F5)
 - If you get errors about database connection or see an install screen:
-	- Either, download an sql express database and put in your wwwroot/app_data
-	- Or, create a database manually and reference it from web.config
+	- Create a database manually and reference it from web.config
 
 Examples:
-- Run Prepare_Dependencies-vs2008.bat to copy core and edit to the examples
+- Run examples\Prepare_Dependencies-vs2008.bat to copy core and edit to the examples

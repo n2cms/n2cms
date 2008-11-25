@@ -75,9 +75,7 @@
     <NUnit Assemblies="$(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" ToolPath="$(LibFolder)" />
   </Target>
 
-  <Target Name="PrepareDependencies">
-    <CallTarget Targets="Test-PrepareDependencies"/>
-    <CallTarget Targets="Examples-PrepareDependencies"/>
+  <Target Name="PrepareDependencies" DependsOnTargets="Core-PrepareDependencies;Test-PrepareDependencies;Examples-PrepareDependencies">
   </Target>
 
   <Target Name="Clean-Deploy">
@@ -106,16 +104,8 @@
                                 $(LibFolder)\Iesi.Collections.dll;
                                 $(LibFolder)\log4net.dll;
                                 $(LibFolder)\NHibernate.dll;
+                                $(LibFolder)\NHibernate.Caches.SysCache2.dll;
                                 $(LibFolder)\System.Data.SQLite.dll"/>
-
-    <Core-EditFiles Include="$(EditFolder)\**\*.as?x;
-                             $(EditFolder)\**\*.master;
-                             $(EditFolder)\**\*.resx;
-                             $(EditFolder)\**\*.config;
-                             $(EditFolder)\**\*.css;
-                             $(EditFolder)\**\*.js;
-                             $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
-                             $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"/>
 
     <TextFiles Include="$(DocFolder)\history.txt;
                         $(DocFolder)\install.txt;
@@ -127,9 +117,18 @@
   </ItemGroup>
 
   <Target Name="Rebuild-Core-BinFiles" DependsOnTargets="Core-Build">
-    <CreateItem Include="$(WebFolder)\Bin\*.dll;
-                         $(WebFolder)\Bin\N2.xml;" 
-                Exclude="$(WebFolder)\Bin\N2.Templates*;$(WebFolder)\Bin\Demo*">
+	  <ItemGroup>
+		  <Core-EditFiles Include="$(EditFolder)\**\*.as?x;
+								 $(EditFolder)\**\*.master;
+								 $(EditFolder)\**\*.resx;
+								 $(EditFolder)\**\*.config;
+								 $(EditFolder)\**\*.css;
+								 $(EditFolder)\**\*.js;
+								 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
+								 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"/>
+	  </ItemGroup>
+	  <CreateItem Include="$(WebFolder)\Bin\*.dll; $(WebFolder)\Bin\N2.xml;" 
+				  Exclude="$(WebFolder)\Bin\N2.Templates*;$(WebFolder)\Bin\Demo*">
       <Output TaskParameter="Include" ItemName="Core-BinFiles"/>
     </CreateItem>
   </Target>
@@ -217,7 +216,7 @@
     <Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-VisualBasic)\wwwroot\Bin" />
     <Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-VisualBasic)\wwwroot\Edit\%(RecursiveDir)" />
   </Target>
-  <Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Rebuild-TemplateFiles">
+  <Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles;Rebuild-TemplateFiles">
     <Copy SourceFiles="@(Templates-InterfaceFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\%(RecursiveDir)" />
     <Copy SourceFiles="@(Templates-BinFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\bin" />
   </Target>
