@@ -57,3 +57,4 @@ CONTRIBUTORS
 * Elizabeth (mozts)
 * Pedropaf
 * Matthew
+* Magomed Abdurakhmanov (Maqdev)

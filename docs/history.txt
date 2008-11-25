@@ -1,4 +1,5 @@
-﻿- allow deletion of file folder including sub-directories
+﻿- applied maqdev's patch: File Manager: issue with virtual directories
+- allow deletion of file folder including sub-directories
 - moved wiki into an add-on
 - applied esteewhy patch: "Update wiki pages to reflect changes in templating"
 - fixed exception using actinlink without a current content page
