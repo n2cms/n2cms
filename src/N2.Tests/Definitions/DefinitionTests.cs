@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Security.Principal;
 using NUnit.Framework;
@@ -367,6 +368,19 @@ namespace N2.Tests.Definitions
 			Assert.That(child.AuthorizedRoles.Count, Is.EqualTo(1));
 			Assert.That(child.AuthorizedRoles[0].Role, Is.EqualTo("Administrators"));
 			Assert.That(child.AuthorizedRoles[0].EnclosingItem, Is.EqualTo(child));
+		}
+
+		[Test]
+		public void ItemDefinition_CanOverride_EditableAttribute_OnParent()
+		{
+			var newsDefinition = definitions.GetDefinition(typeof (DefinitionNewsPage));
+			var textEditables = newsDefinition.Editables.Where(e => e.Name == "Text");
+			var editable = textEditables.First();
+
+			Assert.That(textEditables.Count(), Is.EqualTo(1));
+			Assert.That(editable.Title, Is.EqualTo("Plain Text"));
+			Assert.That(editable.SortOrder, Is.EqualTo(200));
+			Assert.That(editable, Is.TypeOf(typeof(EditableTextBoxAttribute)));
 		}
 	}
 }
