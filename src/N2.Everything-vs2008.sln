@@ -128,6 +128,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{03
 		..\examples\Prepare_Dependencies-vs2008.bat = ..\examples\Prepare_Dependencies-vs2008.bat
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.UI.Tests", "wwwroot\N2.Templates.UI.Tests.csproj", "{250D978B-3C2C-4151-9A69-B36F3F53E8B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +184,10 @@ Global
 		{77B21028-EA50-4CED-8334-307E836B0ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77B21028-EA50-4CED-8334-307E836B0ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77B21028-EA50-4CED-8334-307E836B0ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{250D978B-3C2C-4151-9A69-B36F3F53E8B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{250D978B-3C2C-4151-9A69-B36F3F53E8B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{250D978B-3C2C-4151-9A69-B36F3F53E8B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{250D978B-3C2C-4151-9A69-B36F3F53E8B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -202,5 +208,6 @@ Global
 		{03223418-97AD-4087-A568-6BBFD274864D} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
 		{0F286C8B-A322-43E6-B02C-F118BF29D3D5} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
 		{77B21028-EA50-4CED-8334-307E836B0ECB} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
+		{250D978B-3C2C-4151-9A69-B36F3F53E8B8} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
 	EndGlobalSection
 EndGlobal
