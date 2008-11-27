@@ -1,4 +1,5 @@
-﻿- first incarnation of ui tests
+﻿- master page ui tests 
+- first incarnation of ui tests
 - applied maqdev's patch: File Manager: issue with virtual directories
 - allow deletion of file folder including sub-directories
 - moved wiki into an add-on

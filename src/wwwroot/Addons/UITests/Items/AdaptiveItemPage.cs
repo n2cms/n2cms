@@ -1,11 +1,20 @@
 using N2;
 using N2.Web;
+using N2.Details;
 
 namespace N2.Addons.UITests.Items
 {
 	[Definition]
+	[WithEditableTitle, WithEditableName]
 	public class AdaptiveItemPage : ContentItem
 	{
+		[EditableFreeTextArea("Text", 100)]
+		public virtual string Text
+		{
+			get { return GetDetail("Text", ""); }
+			set { SetDetail("Text", value, ""); }
+		}
+
 		public override TemplateData FindTemplate(string remainingUrl)
 		{
 			TemplateData data = base.FindTemplate(remainingUrl);

@@ -75,6 +75,21 @@
     <Content Include="Addons\UITests\UI\GridViewTest.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\RegionSidebar.aspx" />
+    <Content Include="Addons\UITests\UI\RegionPostContent.aspx" />
+    <Content Include="Addons\UITests\UI\RegionTextContent.aspx" />
+    <Content Include="Addons\UITests\UI\RegionContent.aspx" />
+    <Content Include="Addons\UITests\UI\RegionPreContent.aspx" />
+    <Content Include="Addons\UITests\UI\RegionContentAndSidebar.aspx" />
+    <Content Include="Addons\UITests\UI\RegionMenu.aspx" />
+    <Content Include="Addons\UITests\UI\RegionPageTop.aspx" />
+    <Content Include="Addons\UITests\UI\RegionPageWrapper.aspx" />
+    <Content Include="Addons\UITests\UI\RegionTop.aspx" />
+    <Content Include="Addons\UITests\UI\RegionHead.aspx" />
+    <Content Include="Addons\UITests\UI\RegionNone.aspx" />
+    <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
