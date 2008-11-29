@@ -1,4 +1,5 @@
-﻿- applied esteewhy's patches:
+﻿- fixed scheduler registration in medium trust as suggested by Nigel
+- applied esteewhy's patches:
    - Top: fix relative urls
    - UrlParser: fix organize root
    - Url: fix case sensitive urls

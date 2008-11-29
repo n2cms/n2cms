@@ -4,6 +4,7 @@ using System.Web;
 using System.Reflection;
 using System.Diagnostics;
 using N2.Persistence;
+using N2.Plugin.Scheduling;
 using N2.Web;
 using N2.Definitions;
 using N2.Integrity;
@@ -116,10 +117,13 @@ namespace N2.Engine.MediumTrust
             AddComponentInstance<ICacheManager>(new CacheManager(webContext, persister, hostConfiguration));
             AddComponentInstance<ITreeSorter>(new TreeSorter(persister, editManager, webContext));
 
-            foreach (KeyValuePair<Type, object> pair in resolves)
-            {
-                settingsManager.Handle(pair.Key.Name, pair.Value.GetType());
-            }
+			IHeart heart = AddComponentInstance(new Heart(engineConfiguration));
+			AddComponentInstance(new Scheduler(pluginFinder, heart, webContext, errorHandler));
+
+			foreach (KeyValuePair<Type, object> pair in resolves)
+			{
+				settingsManager.Handle(pair.Key.Name, pair.Value.GetType());
+			}
         }
 
         private object AddConfigurationSection(string sectionName)
