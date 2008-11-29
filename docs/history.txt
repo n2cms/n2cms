@@ -1,4 +1,5 @@
-﻿- fixed scheduler registration in medium trust as suggested by Nigel
+﻿- configurable name editor and server side validation
+- fixed scheduler registration in medium trust as suggested by Nigel
 - applied esteewhy's patches:
    - Top: fix relative urls
    - UrlParser: fix organize root

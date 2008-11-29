@@ -3,6 +3,8 @@ using System.Web.UI.WebControls;
 using N2.Web.UI.WebControls;
 using System.Web.UI;
 using N2.Web;
+using N2.Configuration;
+using System.Configuration;
 
 namespace N2.Details
 {
@@ -16,10 +18,10 @@ namespace N2.Details
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 	public class WithEditableNameAttribute : AbstractEditableAttribute
     {
-    	private char whitespaceReplacement = '-';
-		private bool toLower = true;
-		private bool ascii = false;
-		private bool showKeepUpdated = true;
+    	private char? whitespaceReplacement = '-';
+		private bool? toLower = true;
+		private bool? ascii = false;
+		private bool? showKeepUpdated = true;
 		private string keepUpdatedText = "";
 		private string keepUpdatedToolTip = "Keep the name up to date";
 
@@ -40,29 +42,52 @@ namespace N2.Details
 		{
 		}
 
+    	NameEditorElement config;
+    	NameEditorElement Config
+    	{
+    		get
+    		{
+    			if(config == null)
+    			{
+    				EditSection editSection = ConfigurationManager.GetSection("n2/edit") as EditSection;
+					if (editSection != null)
+						config = editSection.NameEditor;
+					else
+					{
+						config = new NameEditorElement();
+						config.WhitespaceReplacement = '-';
+						config.ShowKeepUpdated = true;
+						config.ToLower = true;
+					}
+    			}
+    			return config;
+    		}
+    	}
+
 		/// <summary>Gets or sets the character that replaces whitespace when updating the name (default is '-').</summary>
-    	public char WhitespaceReplacement
+    	public char? WhitespaceReplacement
     	{
     		get { return whitespaceReplacement; }
     		set { whitespaceReplacement = value; }
     	}
 
 		/// <summary>Gets or sets whether names should be made lowercase.</summary>
-    	public bool ToLower
+    	public bool? ToLower
     	{
     		get { return toLower; }
     		set { toLower = value; }
     	}
 
 		/// <summary>Gets or sets wether non-ascii characters will be removed from the name.</summary>
-		public bool Ascii
+		[Obsolete]
+		public bool? Ascii
 		{
 			get { return ascii; }
 			set { ascii = value; }
 		}
 
 		/// <summary>Allow editor to choose wether to update name automatically.</summary>
-		public bool ShowKeepUpdated
+		public bool? ShowKeepUpdated
 		{
 			get { return showKeepUpdated; }
 			set { showKeepUpdated = value; }
@@ -131,7 +156,6 @@ namespace N2.Details
 			ne.CssClass = "nameEditor";
 			ne.WhitespaceReplacement = WhitespaceReplacement;
 			ne.ToLower = ToLower;
-			ne.Ascii = Ascii;
 			ne.ShowKeepUpdated = ShowKeepUpdated;
 			ne.KeepUpdated.Text = KeepUpdatedText;
 			ne.KeepUpdated.ToolTip = KeepUpdatedToolTip;

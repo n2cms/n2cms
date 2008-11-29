@@ -1,32 +1,44 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Configuration;
 using N2.Resources;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>A webcontrol that pulls out the page title and transforms it into a web-compatible name that can be used in url's</summary>
-	public class NameEditor : TextBox, IValidator
+	public class NameEditor : CompositeControl, IValidator, ITextControl
 	{
+		static NameEditorElement config;
+		
 		private CheckBox keepUpdated = new CheckBox();
-		private bool showKeepUpdated = true;
-
-		private char whitespaceReplacement = '-';
-		private bool toLower;
-		private bool ascii;
+		private TextBox editor = new TextBox();
+		private bool? showKeepUpdated;
+		private char? whitespaceReplacement;
+		private bool? toLower;
 		private string prefix = string.Empty;
 		private string suffix = string.Empty;
 		private string uniqueNameErrorFormat = "Another item already has the name '{0}'.";
 		private string nameTooLongErrorFormat = "Name too long, the full url cannot exceed 260 characters: {0}";
-		private string invalidCharactersErrorFormat = "Invalid characters in path, % ? & / : + . not allowed.";
+		private string invalidCharactersErrorFormat = "Invalid characters in path. Only english alphanumerical characters allowed.";
 
 		/// <summary>Constructs the name editor.</summary>
 		public NameEditor()
 		{
-			MaxLength = 60;
+			editor.MaxLength = 60;
 			CssClass = "nameEditor";
+		}
+
+		public static NameEditorElement Config
+		{
+			get { return config ?? (Config = LoadConfiguration()); }
+			set { config = value; }
 		}
 
 		/// <summary>Gets or sets the name of the editor containing the title to input in the name editor.</summary>
@@ -48,22 +60,22 @@ namespace N2.Web.UI.WebControls
 			set { suffix = value; }
 		}
 
-		public char WhitespaceReplacement
+		public char? WhitespaceReplacement
 		{
 			get { return whitespaceReplacement; }
 			set { whitespaceReplacement = value; }
 		}
 
-		public bool ToLower
+		public bool? ToLower
 		{
 			get { return toLower; }
 			set { toLower = value; }
 		}
 
-		public bool Ascii
+		public bool? ShowKeepUpdated
 		{
-			get { return ascii; }
-			set { ascii = value; }
+			get { return showKeepUpdated; }
+			set { showKeepUpdated = value; }
 		}
 
 		public string UniqueNameErrorFormat
@@ -84,23 +96,53 @@ namespace N2.Web.UI.WebControls
 			set { invalidCharactersErrorFormat = value; }
 		}
 
-		public bool ShowKeepUpdated
+		public string Text
 		{
-			get { return showKeepUpdated; }
-			set { showKeepUpdated = value; }
+			get { return editor.Text; }
+			set { editor.Text = value; }
 		}
 
+		[NotifyParentProperty(true)]
 		public CheckBox KeepUpdated
 		{
 			get { return keepUpdated; }
 		}
+		
+		[NotifyParentProperty(true)]
+		public TextBox Editor
+		{
+			get { return editor; }
+		}
+
 		#region Methods
+
+		private static NameEditorElement LoadConfiguration()
+		{
+			EditSection editSection = ConfigurationManager.GetSection("n2/edit") as EditSection;
+			if (editSection != null)
+				return editSection.NameEditor;
+
+			NameEditorElement config = new NameEditorElement();
+			config.WhitespaceReplacement = '-';
+			config.ShowKeepUpdated = true;
+			config.ToLower = true;
+			return config;
+		}
+
+		protected override void OnInit(EventArgs e)
+		{
+			Page.Validators.Add(this);
+			base.OnInit(e);
+		}
 
 		protected override void CreateChildControls()
 		{
+			editor.ID = "e";
+			Controls.Add(editor);
+
 			keepUpdated.ID = "ku";
 			keepUpdated.Checked = true;
-			this.Controls.Add(keepUpdated);
+			Controls.Add(keepUpdated);
 
 			base.CreateChildControls();
 		}
@@ -118,16 +160,16 @@ namespace N2.Web.UI.WebControls
 					if (itemEditor.AddedEditors.ContainsKey(TitleEditorName))
 					{
                         TextBox tbTitle = itemEditor.AddedEditors[TitleEditorName] as TextBox;
-                        keepUpdated.Visible = ShowKeepUpdated;
+                        keepUpdated.Visible = ShowKeepUpdated ?? Config.ShowKeepUpdated;
 
+						string titleID = tbTitle.ClientID;
+						string nameID = editor.ClientID;
+						char whitespaceReplacement = (WhitespaceReplacement ?? Config.WhitespaceReplacement);
+						string toLower = (ToLower ?? Config.ToLower).ToString().ToLower();
+						string replacements = GetReplacements();
+						string keepUpdatedBox = (ShowKeepUpdated ?? Config.ShowKeepUpdated) ? keepUpdated.ClientID : "";
 						string s = updateNameScript + Environment.NewLine +
-						           string.Format(startupScriptFormat, 
-												 tbTitle.ClientID,
-						                         ClientID,
-												 WhitespaceReplacement,
-												 ToLower.ToString().ToLower(),
-												 Ascii.ToString().ToLower(),
-												 ShowKeepUpdated ? keepUpdated.ClientID : "");
+						           string.Format(startupScriptFormat, titleID, nameID, whitespaceReplacement, toLower, replacements, keepUpdatedBox);
 						Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
                         tbTitle.Attributes["onblur"] = "invokeUpdateName();";
                         Attributes["onfocus"] = "invokeUpdateName();";
@@ -140,6 +182,19 @@ namespace N2.Web.UI.WebControls
 			}
 
 			base.OnPreRender(e);
+		}
+
+		string GetReplacements()
+		{
+			StringBuilder sb = new StringBuilder("[");
+			foreach(PatterValueElement element in Config.Replacements)
+			{
+				if (sb.Length > 1)
+					sb.Append(", ");
+				sb.AppendFormat("{{pattern:/{0}/g, value:'{1}'}}", element.Pattern, element.Value);
+			}
+			sb.Append("]");
+			return sb.ToString();
 		}
 
 		#region OnPreRender Helpers
@@ -158,20 +213,22 @@ if('{5}'){{
 ";
 
 		private const string updateNameScript =
-            @"
-function getName(titleid, whitespace, tolower, ascii){
+			@"
+function getName(titleid, whitespace, tolower, replacements){
     var titleBox=document.getElementById(titleid);
-	var name = titleBox.value.replace(/[.]+/g, '-').replace(/[%?&/+:<>]/g, '').replace(/\s+/g, whitespace).replace(/[-]+/g, '-').replace(/[-]+$/g, '');
+	var name = titleBox.value.replace(/[.]+/g, '-')
+		.replace(/[%?&/+:<>]/g, '')
+		.replace(/\s+/g, whitespace)
+		.replace(/[-]+/g, '-')
+		.replace(/[-]+$/g, '');
 	if(tolower) name = name.toLowerCase();
-	if(ascii) name = name
-		.replace(/[åä]/g, 'a').replace(/[ÅÄ]/g, 'A')
-		.replace(/æ/g, 'ae').replace(/Æ/g, 'ae')
-		.replace(/[öø]/g, 'o').replace(/[ÖØ]/g, 'O')
-		.replace(/[^a-zA-Z0-9_-]/g, '');
+	for (r in replacements){
+		name = name.replace(r.pattern, r.value);
+	}
 	return name;
 }
-function updateName(titleid, nameid, whitespace, tolower, ascii, checkboxid){
-	var name = getName(titleid, whitespace, tolower, ascii);
+function updateName(titleid, nameid, whitespace, tolower, replacements, checkboxid){
+	var name = getName(titleid, whitespace, tolower, replacements);
     if(checkboxid && document.getElementById(checkboxid).checked)
 		document.getElementById(nameid).value = name;
 }
@@ -223,6 +280,16 @@ function updateName(titleid, nameid, whitespace, tolower, ascii, checkboxid){
 						return;
 					}
 
+					foreach(PatterValueElement element in Config.Replacements)
+					{
+						if(element.ServerValidate && Regex.IsMatch(Text, element.Pattern, RegexOptions.Compiled))
+						{
+							ErrorMessage = InvalidCharactersErrorFormat;
+							IsValid = false;
+							return;
+						}
+					}
+
 					if(Text.IndexOfAny(new char[]{'?', '&', '/', '+', ':', '%'}) >= 0)
 					{
 						ErrorMessage = InvalidCharactersErrorFormat;
@@ -249,7 +316,6 @@ function updateName(titleid, nameid, whitespace, tolower, ascii, checkboxid){
 			writer.Write(Suffix);
 			if (!IsValid)
 				writer.Write("<span style='color:red'>*</span>");
-			keepUpdated.RenderControl(writer);
 		}
 
 		#endregion

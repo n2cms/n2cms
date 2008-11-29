@@ -43,6 +43,7 @@ namespace N2.Web.UI.WebControls
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
+			Page.Validators.Add(this);
 			EnsureChildControls();
 		}
 
@@ -61,8 +62,8 @@ namespace N2.Web.UI.WebControls
 			toDate.ID = "to" + this.ID;
 			this.Controls.Add(toDate);
 
-			fromDate.TextChanged += new EventHandler(TextChanged);
-			toDate.TextChanged += new EventHandler(TextChanged);
+			fromDate.TextChanged += TextChanged;
+			toDate.TextChanged += TextChanged;
 		}
 
 		void TextChanged(object sender, EventArgs e)

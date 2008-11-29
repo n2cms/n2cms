@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Web.Configuration;
+using System.Text.RegularExpressions;
 
 namespace N2.Configuration
 {
@@ -96,5 +97,12 @@ namespace N2.Configuration
             get { return (TinyMCEElement)base["tinyMCE"]; }
             set { base["tinyMCE"] = value; }
         }
+
+		[ConfigurationProperty("nameEditor")]
+		public NameEditorElement NameEditor
+		{
+			get { return (NameEditorElement)base["nameEditor"]; }
+			set { base["nameEditor"] = value; }
+		}
     }
 }

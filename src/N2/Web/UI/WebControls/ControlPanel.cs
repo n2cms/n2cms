@@ -143,64 +143,43 @@ namespace N2.Web.UI.WebControls
 		[NotifyParentProperty(true)]
 		public HyperLink QuickEditLink
 		{
-			get
-			{
-				return hlQuickEdit;
-			}
+			get { return hlQuickEdit; }
 		}
 
 		[NotifyParentProperty(true)]
 		public HyperLink EditModeLink
 		{
-			get
-			{
-				return hlEditMode;
-			}
+			get { return hlEditMode; }
 		}
 
 		[NotifyParentProperty(true)]
 		public HyperLink NewLink
 		{
-			get
-			{
-				return hlNew;
-			}
+			get { return hlNew; }
 		}
 
 		[NotifyParentProperty(true)]
 		public HyperLink EditLink
 		{
-			get
-			{
-				return hlEdit;
-			}
+			get { return hlEdit; }
 		}
 
 		[NotifyParentProperty(true)]
 		public HyperLink DeleteLink
 		{
-			get
-			{
-				return hlDelete;
-			}
+			get { return hlDelete; }
 		}
 
 		[NotifyParentProperty(true)]
 		public LinkButton SaveButton
 		{
-            get
-            {
-                return btnSave;
-            }
+            get { return btnSave; }
 		}
 
 		[NotifyParentProperty(true)]
 		public HyperLink CancelButton
 		{
-            get
-            {
-                return hlCancel;
-            }
+            get { return hlCancel; }
 		}
 
 		protected virtual IEngine Engine
