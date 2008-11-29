@@ -284,6 +284,7 @@
     <Compile Include="Collections\VisibleFilter.cs" />
     <Compile Include="Configuration\MappingCollection.cs" />
     <Compile Include="Configuration\MappingElement.cs" />
+    <Compile Include="Configuration\NameEditorElement.cs" />
     <Compile Include="Configuration\PatterValueElement.cs" />
     <Compile Include="Configuration\PatternValueCollection.cs" />
     <Compile Include="Configuration\RewriteMethod.cs" />
