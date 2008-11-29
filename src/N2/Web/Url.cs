@@ -536,6 +536,13 @@ namespace N2.Web
 			return u;
 		}
 
+		/// <summary>Returns the url without the file extension (if any).</summary>
+		/// <returns>An url with it's extension removed.</returns>
+		public Url RemoveExtension()
+		{
+			return new Url(scheme, authority, PathWithoutExtension, query, fragment);
+		}
+
 		/// <summary>Converts a possibly relative to an absolute url.</summary>
 		/// <param name="path">The url to convert.</param>
 		/// <returns>The absolute url.</returns>

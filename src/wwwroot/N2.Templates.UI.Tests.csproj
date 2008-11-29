@@ -75,6 +75,7 @@
     <Content Include="Addons\UITests\UI\GridViewTest.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\RegionAll.aspx" />
     <Content Include="Addons\UITests\UI\RegionSidebar.aspx" />
     <Content Include="Addons\UITests\UI\RegionPostContent.aspx" />
     <Content Include="Addons\UITests\UI\RegionTextContent.aspx" />

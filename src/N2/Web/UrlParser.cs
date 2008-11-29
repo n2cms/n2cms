@@ -15,10 +15,11 @@ namespace N2.Web
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
         protected readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
-		
 		private string defaultDocument = "/default";
 
+
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
+
 
 		public UrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host)
 		{
@@ -32,12 +33,10 @@ namespace N2.Web
         }
 
 
-		#region Properties
-
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		public ContentItem CurrentPage
 		{
-			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolveTemplate(webContext.Url.LocalUrl).CurrentItem); }
+			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolveTemplate(webContext.Url).CurrentItem); }
 		}
 
 		/// <summary>Gets the current start page.</summary>
@@ -52,9 +51,7 @@ namespace N2.Web
             get { return defaultDocument; }
             set { defaultDocument = value; }
         }
-		#endregion
 
-		#region Methods
 
 		/// <summary>Invoked when an item is created or loaded from persistence medium.</summary>
 		/// <param name="sender"></param>
@@ -77,9 +74,12 @@ namespace N2.Web
 			if(data.CurrentItem != null)
 				return data;
 
-			if (path.EndsWith(DefaultDocument))
+			if (path.EndsWith(DefaultDocument, StringComparison.OrdinalIgnoreCase))
 			{
-				data = StartPage.FindTemplate(path.Substring(0, path.Length - DefaultDocument.Length));
+				data = StartPage
+					.FindTemplate(path.Substring(0, path.Length - DefaultDocument.Length))
+					.UpdateParameters(url.GetQueries());
+				
 				if (data.CurrentItem != null)
 					return data;
 			}
@@ -248,6 +248,5 @@ namespace N2.Web
 		{
             return item.ID == host.CurrentSite.StartPageID;
 		}
-		#endregion
 	}
 }

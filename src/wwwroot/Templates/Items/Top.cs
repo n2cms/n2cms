@@ -23,8 +23,11 @@ namespace N2.Templates.Items
         [EditableUrl("Top text url", 42, ContainerName = "top")]
         public virtual string TopTextUrl
         {
-            get { return (string)(GetDetail("TopTextUrl") ?? "/"); }
-            set { SetDetail("TopTextUrl", value, "/"); }
+            get {
+        		string _url = (string)GetDetail("TopTextUrl");
+        		return string.IsNullOrEmpty(_url) ? "~/" : _url;
+        	}
+            set { SetDetail("TopTextUrl", value, "~/"); }
         }
 
         [FileAttachment, EditableImage("Logo", 50, ContainerName = "top", Alt = "Logo")]

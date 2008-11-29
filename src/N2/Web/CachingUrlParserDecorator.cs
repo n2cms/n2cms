@@ -45,14 +45,14 @@ namespace N2.Web
 			return inner.IsRootOrStartPage(item);
 		}
 
-		public TemplateData ResolveTemplate(Url uri)
+		public TemplateData ResolveTemplate(Url url)
 		{
-			string key = string.Intern(uri);
+			string key = string.Intern(url.ToString().ToLowerInvariant());
 
 			TemplateData data = HttpRuntime.Cache[key] as TemplateData;
 			if(data == null)
 			{
-				data = inner.ResolveTemplate(uri);
+				data = inner.ResolveTemplate(url);
 				if(data.ID != 0)
 					HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
 			}
