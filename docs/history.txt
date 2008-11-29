@@ -1,6 +1,7 @@
 ﻿- applied esteewhy's patches:
-   - top-fix_relative_urls
-   - UrlParser-fix_organize_root
+   - Top: fix relative urls
+   - UrlParser: fix organize root
+   - Url: fix case sensitive urls
 - master page ui tests 
 - first incarnation of ui tests
 - applied maqdev's patch: File Manager: issue with virtual directories

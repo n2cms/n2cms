@@ -560,7 +560,7 @@ namespace N2.Web
 		/// <returns>A relative path</returns>
 		public static string ToRelative(string path)
 		{
-			if (!string.IsNullOrEmpty(path) && path.StartsWith(ApplicationPath))
+			if (!string.IsNullOrEmpty(path) && path.StartsWith(ApplicationPath, StringComparison.OrdinalIgnoreCase))
 				return "~/" + path.Substring(ApplicationPath.Length);
 			return path;
 		}
