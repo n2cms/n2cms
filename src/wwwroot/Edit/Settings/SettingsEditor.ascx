@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SettingsEditor.ascx.cs" Inherits="N2.Edit.Settings.SettingsEditor" %>
+<asp:CheckBox runat="server" ID="chkShowDataItems" Text="Show non-pages in navigation" />
