@@ -222,8 +222,8 @@ function getName(titleid, whitespace, tolower, replacements){
 		.replace(/[-]+/g, '-')
 		.replace(/[-]+$/g, '');
 	if(tolower) name = name.toLowerCase();
-	for (r in replacements){
-		name = name.replace(r.pattern, r.value);
+	for (var i in replacements){
+		name = name.replace(replacements[i].pattern, replacements[i].value);
 	}
 	return name;
 }
