@@ -56,7 +56,7 @@ namespace N2.Web.UI.WebControls
 		/// ItemDataSource1.Path = "lorem"; // Display children of the item with the name 'lorem' below the current item.
 		/// ItemDataSource1.Path = "/ipsum"; // Display children of the item with the name 'ipsum' directly below the start page.
 		/// ItemDataSource1.Path = "//dolor"; // Display children of the item with the name 'dolor' directly below the root item (this is the same as the start page unless multiple hosts are configured).
-		/// ItemDataSource1.Path = "/"; // Display children of the start page.
+		/// ItemDataSource1.Path = "~/"; // Display children of the start page.
 		/// </example>
 		public virtual string Path
 		{
@@ -92,6 +92,18 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["PageFilter"] = value; }
 		}
 
+		public bool NavigationFilter
+		{
+			get { return (bool)(ViewState["NavigationFilter"] ?? false); }
+			set { ViewState["NavigationFilter"] = value; }
+		}
+
+		public string SortBy
+		{
+			get { return (string)ViewState["SortBy"]; }
+			set { ViewState["SortBy"] = value; }
+		}
+
 		#endregion
 
 		#region QueryView Specific
@@ -123,11 +135,11 @@ namespace N2.Web.UI.WebControls
 			{
 				childrenView = new ChildrenDataSourceView(Engine, this, ChildrenViewName, CurrentItem);
 				List<ItemFilter> filters = new List<ItemFilter>();
-				if (ZoneName != null)
-					filters.Add(new ZoneFilter(ZoneName));
-				if (PageFilter)
-					filters.Add(new PageFilter());
+				if (ZoneName != null) filters.Add(new ZoneFilter(ZoneName));
+				if (PageFilter) filters.Add(new PageFilter());
+				if (NavigationFilter) filters.Add(new NavigationFilter());
 				childrenView.Filter = new CompositeFilter(filters);
+				childrenView.SortBy = SortBy;
 			}
 			return childrenView;
 		}

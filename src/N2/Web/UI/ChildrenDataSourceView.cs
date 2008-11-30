@@ -48,6 +48,8 @@ namespace N2.Web.UI
 			set { filter = new Collections.CompositeFilter(value); }
 		}
 
+		public string SortBy { get; set; }
+
 		public override bool CanInsert
 		{
 			get { return parentItem != null; }
@@ -119,6 +121,10 @@ namespace N2.Web.UI
 			{
 				args.Items.Sort(new Collections.ItemComparer(selectingArgs.Arguments.SortExpression));
 				currentSortExpression = selectingArgs.Arguments.SortExpression;
+			}
+			else if (!string.IsNullOrEmpty(SortBy))
+			{
+				args.Items.Sort(new Collections.ItemComparer(SortBy));
 			}
 
 			OnFiltering(args);

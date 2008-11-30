@@ -86,6 +86,11 @@
     <Content Include="Addons\UITests\UI\GridViewTest.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\ItemDataSource_NavigationFilter.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_Zone.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_Path.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_PageFilter.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_SortBy.aspx" />
     <Content Include="Addons\UITests\UI\FileEvents.aspx" />
     <Content Include="Addons\UITests\UI\RegionAll.aspx" />
     <Content Include="Addons\UITests\UI\RegionSidebar.aspx" />
@@ -100,6 +105,7 @@
     <Content Include="Addons\UITests\UI\RegionTop.aspx" />
     <Content Include="Addons\UITests\UI\RegionHead.aspx" />
     <Content Include="Addons\UITests\UI\RegionNone.aspx" />
+    <Content Include="Addons\UITests\UI\SiteMap.aspx" />
     <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
   </ItemGroup>
   <ItemGroup>
