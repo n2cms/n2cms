@@ -12,6 +12,7 @@ namespace N2.Edit.Settings
 	/// class implements properties, provides comparison and equality but does
 	/// not add any controls. Security is set to always allow.
 	/// </summary>
+	[Obsolete("This is too complex and will be removed, configure user controls instead.")]
 	public abstract class AbstractEditableAttribute : Attribute, IServiceEditable
 	{
 		#region Fields

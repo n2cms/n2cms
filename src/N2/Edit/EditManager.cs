@@ -28,7 +28,7 @@ namespace N2.Edit
 		private readonly NavigationSettings settings;
         private readonly IPluginFinder pluginFinder;
         private readonly ISecurityManager securityManager;
-        private string editTreeUrl = "Navigation/Tree.aspx";
+		private string editTreeUrl = "~/edit/Navigation/Tree.aspx";
 		private string editTreeUrlFormat = "{1}?selected={0}";
 		private string editPreviewUrlFormat = "{0}";
         private string editItemUrl = "~/edit/edit.aspx";
@@ -132,7 +132,7 @@ namespace N2.Edit
             if(selectedItem == null)
                 return null;
 
-            return string.Format(EditTreeUrlFormat, selectedItem.Path, EditTreeUrl);
+			return Url.ToAbsolute(string.Format(EditTreeUrlFormat, selectedItem.Path, EditTreeUrl));
 		}
 
 		/// <summary>Gets the url for the preview frame.</summary>

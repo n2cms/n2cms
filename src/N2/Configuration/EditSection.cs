@@ -42,7 +42,7 @@ namespace N2.Configuration
             set { base["uploadFolders"] = value; }
         }
 
-        [ConfigurationProperty("editTreeUrl", DefaultValue = "Navigation/Tree.aspx")]
+		[ConfigurationProperty("editTreeUrl", DefaultValue = "~/edit/Navigation/Tree.aspx")]
         public string EditTreeUrl
         {
             get { return (string)base["editTreeUrl"]; }
@@ -103,6 +103,13 @@ namespace N2.Configuration
 		{
 			get { return (NameEditorElement)base["nameEditor"]; }
 			set { base["nameEditor"] = value; }
+		}
+
+		[ConfigurationProperty("settingsEditors")]
+		public SettingsEditorCollection SettingsEditors
+		{
+			get { return (SettingsEditorCollection)base["settingsEditors"]; }
+			set { base["settingsEditors"] = value; }
 		}
     }
 }

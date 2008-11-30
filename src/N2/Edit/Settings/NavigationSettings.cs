@@ -13,7 +13,6 @@ namespace N2.Edit.Settings
 			this.context = context;
 		}
 
-		[EditableCheckBox("Display data items", 100)]
 		public bool DisplayDataItems
 		{
 			get { return Boolean.Parse(GetCookie(context.Request.Cookies).Value); }

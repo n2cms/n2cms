@@ -13,6 +13,7 @@ using N2.Definitions;
 
 namespace N2.Edit.Web.UI.Controls
 {
+	[Obsolete]
 	public class ServiceEditor : WebControl
 	{
 		#region Fields
@@ -69,7 +70,6 @@ namespace N2.Edit.Web.UI.Controls
 			editors = new Dictionary<string, Control>();
 			IEditableContainer rootContainer = this.Settings.RootContainer;
 			AddEditorsRecursive(this, rootContainer);
-			//AddValidatorsToPageRecursive(this);
 		}
 
 		protected virtual void InitEditors()
@@ -106,16 +106,6 @@ namespace N2.Edit.Web.UI.Controls
 				foreach (Definitions.IContainable subContained in subContainer.GetContained(this.Page.User))
 					AddEditorsRecursive(added, subContained);
 		}
-
-		///// <summary>Adds validators to the current page's validator collection.</summary>
-		///// <param name="c">The container control whose validators are added.</param>
-		//protected virtual void AddValidatorsToPageRecursive(Control validatorContainer)
-		//{
-		//    if (validatorContainer is IValidator)
-		//        this.Page.Validators.Add((IValidator)validatorContainer);
-		//    foreach (Control childControl in validatorContainer.Controls)
-		//        AddValidatorsToPageRecursive(childControl);
-		//}
 
 		public void Save()
 		{

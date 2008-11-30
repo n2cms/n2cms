@@ -1,4 +1,6 @@
-﻿- Aborting N2.Edit.FileManagement.Filemanager events by throwing ApplicationException is handled in the UI
+﻿- deprecated service editable subsystem (configure user controls instead)
+- itemdatasource sorting
+- Aborting N2.Edit.FileManagement.Filemanager events by throwing ApplicationException is handled in the UI
 - Can delete files with non-alphanumeric characters
 - configurable name editor and server side validation
 - fixed scheduler registration in medium trust as suggested by Nigel

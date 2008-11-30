@@ -379,6 +379,13 @@
     <Compile Include="Edit\Settings\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\Settings\SettingsEditor.ascx.cs">
+      <DependentUpon>SettingsEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\Settings\SettingsEditor.ascx.designer.cs">
+      <DependentUpon>SettingsEditor.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Edit\Toolbar.ascx.cs">
       <DependentUpon>Toolbar.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1617,6 +1624,7 @@
     <Content Include="Edit\Export\App_LocalResources\Default.aspx.ru.resx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Edit\Settings\SettingsEditor.ascx" />
     <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx" />
     <Content Include="Edit\Versions\App_LocalResources\Default.aspx.ru.resx" />
     <Content Include="Edit\Trash\App_LocalResources\Default.aspx.ru.resx" />

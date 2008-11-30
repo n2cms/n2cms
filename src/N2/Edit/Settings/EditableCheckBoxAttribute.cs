@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -5,6 +6,7 @@ using N2.Engine;
 
 namespace N2.Edit.Settings
 {
+	[Obsolete("This is too complex and will be removed, configure user controls instead.")]
 	public class EditableCheckBoxAttribute : AbstractEditableAttribute
 	{
 		public EditableCheckBoxAttribute(string title, int sortOrder)

@@ -1,26 +1,16 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Settings.Default" meta:resourceKey="settingsPage" %>
-<%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
-    <title>Settings</title>
-    <link rel="stylesheet" href="../Css/All.css" type="text/css" />
-    <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
+<%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Settings.Default" meta:resourceKey="settingsPage" %>
+<asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
 	<script src="../Js/plugins.ashx" type="text/javascript" ></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("settings");
-		});
+    	$(document).ready(function() {
+    		toolbarSelect("settings");
+    	});
 	</script>
-</head>
-<body class="navigation settings">
-    <form id="form1" runat="server">
-        <div>
-            <edit:ServiceEditor id="se" runat="server" />
-            <asp:Button ID="btnSave" runat="server" Text="Save" meta:resourcekey="btnSaveResource1" OnClick="btnSave_Click" />
-        </div>
-    </form>
-</body>
-</html>
+</asp:Content>
+<asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
+		<asp:LinkButton ID="btnSave" OnClick="btnSave_Click" runat="server" CssClass="command" meta:resourceKey="btnSave">Save</asp:LinkButton>
+	<asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
+</asp:Content>
+<asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
+    <asp:PlaceHolder ID="phSettings" runat="server" />
+</asp:Content>
