@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -43,7 +44,7 @@ namespace N2.Edit
 
 		private void LoadDefaultsAndInfo()
 		{
-			btnCancel.NavigateUrl = SelectedItem.RewrittenUrl;
+			btnCancel.NavigateUrl = SelectedItem.FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
 			txtNewName.Text = MemorizedItem.Name;
 
 			this.Title = string.Format(GetLocalResourceString("CopyPage.TitleFormat"), 

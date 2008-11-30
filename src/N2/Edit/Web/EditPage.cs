@@ -27,26 +27,26 @@ namespace N2.Edit.Web
 
         protected virtual string CancelUrl()
         {
-            return Request["returnUrl"] ?? (SelectedItem.VersionOf as INode ?? SelectedNode).PreviewUrl;
+            return Request["returnUrl"] ?? (SelectedItem.VersionOf ?? SelectedNode).PreviewUrl;
         }
 
     	#region Refresh Methods
 		private const string RefreshBothFormat = @"
-if(window.top.n2)
-{{
+if(window.top.n2) {{
 	window.top.n2.setupToolbar('{4}'); 
 	window.top.n2.refresh('{1}', '{2}');
 }}
-else window.location = '{2}';";
+else {{
+	window.location = '{2}';
+}}";
+
 		private const string RefreshNavigationFormat = @"
-if(window.top.n2)
-{{
+if(window.top.n2) {{
 	window.top.n2.setupToolbar('{4}'); 
 	window.top.n2.refreshNavigation('{1}', '{2}');
 }}";
 		private const string RefreshPreviewFormat = @"
-if(window.top.n2)
-{{
+if(window.top.n2) {{
 	window.top.n2.setupToolbar('{4}'); 
 	window.top.n2.refreshPreview('{1}', '{2}');
 }}
@@ -81,7 +81,7 @@ else window.location = '{2}';";
 			return Engine.EditManager.GetNavigationUrl(selectedItem);
 		}
 
-		protected string GetPreviewUrl(ContentItem selectedItem)
+		protected virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
 			return Request["returnUrl"] ?? Engine.EditManager.GetPreviewUrl(selectedItem);
 		}
@@ -157,7 +157,7 @@ else window.location = '{2}';";
 			SetErrorMessage(validator, exception.Message);
 		}
 
-		private void SetErrorMessage(BaseValidator validator, string message)
+		protected void SetErrorMessage(BaseValidator validator, string message)
 		{
 			validator.IsValid = false;
 			validator.ErrorMessage = message;

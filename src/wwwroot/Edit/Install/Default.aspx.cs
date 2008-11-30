@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
@@ -104,7 +105,7 @@ namespace N2.Edit.Install
 
 		private void LoadExistingExports()
 		{
-			string dir = Server.MapPath("~/App_Data");
+			string dir = HostingEnvironment.MapPath("~/App_Data");
 			if (Directory.Exists(dir))
 			{
 				foreach (string file in Directory.GetFiles(dir, "*.gz"))
@@ -268,8 +269,8 @@ namespace N2.Edit.Install
 			cvExisting.IsValid = rblExports.SelectedIndex >= 0;
 			if (!cvExisting.IsValid)
 				return;
-			
-			string path = Path.Combine(Server.MapPath("~/App_Data"), rblExports.SelectedValue);
+
+			string path = Path.Combine(HostingEnvironment.MapPath("~/App_Data"), rblExports.SelectedValue);
 			ExecuteWithErrorHandling(delegate { InsertFromFile(path); });
 		}
 

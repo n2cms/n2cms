@@ -78,12 +78,12 @@ namespace N2.Edit.Versions
 			gvHistory.DataBind();
 		}
 
-		protected string GetPreviewUrl(ContentItem item)
+		protected override string GetPreviewUrl(ContentItem item)
 		{
 			if (item.VersionOf == null)
 				return item.Url;
-			
-			return Url.Parse(item.RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("previewOf", item.VersionOf.ID);
+
+			return Url.Parse(item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("previewOf", item.VersionOf.ID);
 		}
 
 		protected bool IsPublished(object dataItem)

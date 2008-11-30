@@ -7,6 +7,7 @@ using N2.Integrity;
 using System.Net.Mail;
 using N2.Templates.Items;
 using N2.Installation;
+using N2.Web;
 
 namespace N2.Templates.Items
 {
@@ -55,7 +56,7 @@ namespace N2.Templates.Items
 
         public override string Url
         {
-            get { return RewrittenUrl; }
+			get { return FindTemplate(TemplateData.DefaultAction).RewrittenUrl; }
         }
 
         protected override string IconName

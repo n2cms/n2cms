@@ -1,5 +1,6 @@
 using System.Web;
 using System.IO;
+using System.Web.Hosting;
 
 namespace N2.Edit.Web
 {
@@ -9,7 +10,7 @@ namespace N2.Edit.Web
             : base(provider, url)
         {
             Url = url;
-            string path = HttpContext.Current.Server.MapPath(url);
+			string path = HostingEnvironment.MapPath(url);
             Title = Path.GetFileName(path);
             //this.IsDirectory = !File.Exists(path);
             //if (!this.IsDirectory)

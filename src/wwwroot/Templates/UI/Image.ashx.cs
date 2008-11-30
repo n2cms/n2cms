@@ -1,4 +1,5 @@
 using System.Web;
+using System.Web.Hosting;
 using N2.Templates.Services;
 
 namespace N2.Templates.UI
@@ -19,7 +20,7 @@ namespace N2.Templates.UI
 
             context.Response.ContentType = "image/jpeg";
 
-            string path = context.Server.MapPath(imageUrl);
+			string path = HostingEnvironment.MapPath(imageUrl);
             //context.Response.Cache.SetExpires(DateTime.Now.AddHours(1));
             //context.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate | HttpCacheability.Public);
             //context.Response.Cache.SetValidUntilExpires(true);

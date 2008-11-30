@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Web;
@@ -92,12 +93,20 @@ namespace N2.Edit.FileManagement
 					{
 						string url = SelectedUrl + "/" + System.IO.Path.GetFileName(file.FileName);
 
-						if (!FileManager.CancelUploading(url))
+						try
 						{
-							lastUrl = url;
-							string path = Server.MapPath(url);
-							file.SaveAs(path);
-							FileManager.InvokeUploaded(url);
+							if (!FileManager.CancelUploading(url))
+							{
+								lastUrl = url;
+								string path = HostingEnvironment.MapPath(url);
+								file.SaveAs(path);
+								FileManager.InvokeUploaded(url);
+							}
+						}
+						catch (Exception ex)
+						{
+							cvDeleteException.ErrorMessage = ex.Message;
+							cvDeleteException.IsValid = false;
 						}
 					}
 				}
@@ -109,7 +118,7 @@ namespace N2.Edit.FileManagement
 		{
 			string url = SelectedUrl + "/" + txtFolder.Text;
 			lastUrl = url;
-			string path = Server.MapPath(url);
+			string path = HostingEnvironment.MapPath(url);
 			Directory.CreateDirectory(path);
 
 			fileView.DataBind();
@@ -124,28 +133,35 @@ namespace N2.Edit.FileManagement
 			Validate();
 			if (IsValid)
 			{
-				string path = Server.MapPath(SelectedUrl);
+				string path = HostingEnvironment.MapPath(HttpUtility.UrlDecode(SelectedUrl));
 
-				if (!FileManager.CancelDeleting(selectedUrl.Value))
-				{
-                    try
-                    {
-                        if (File.Exists(path))
-                            File.Delete(path);
-                        else if (Directory.Exists(path))
-                            Directory.Delete(path, true);
-                        FileManager.InvokeDeleted(selectedUrl.Value);
-                    }
-                    catch (Exception ex)
-                    {
-                        Trace.Write(ex.ToString());
-                        cvDeleteProblem.IsValid = false;
-                    }
+				try
+                {
+					if (!FileManager.CancelDeleting(selectedUrl.Value))
+					{
+							if (File.Exists(path))
+								File.Delete(path);
+							else if (Directory.Exists(path))
+								Directory.Delete(path, true);
 
-					lastUrl = SelectedUrl.Substring(0, SelectedUrl.TrimEnd('/').LastIndexOf('/'));
-					
-					DataBind();
+							FileManager.InvokeDeleted(selectedUrl.Value);
+
+						lastUrl = SelectedUrl.Substring(0, SelectedUrl.TrimEnd('/').LastIndexOf('/'));
+						
+						DataBind();
+					}
 				}
+				catch(ApplicationException ex)
+				{
+					cvDeleteException.ErrorMessage = ex.Message;
+					cvDeleteException.IsValid = false;
+				}
+				catch (Exception ex)
+				{
+					Trace.Write(ex.ToString());
+					cvDeleteProblem.IsValid = false;
+				}
+
 				SelectedUrl = string.Empty;
 			}
 		}

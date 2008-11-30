@@ -2,6 +2,7 @@ using System;
 using System.Web;
 using System.IO;
 using System.Collections.Specialized;
+using System.Web.Hosting;
 using N2.Web;
 using System.Collections.Generic;
 
@@ -11,7 +12,7 @@ namespace N2.Edit.Web
 	{
 		private FileSiteMapNode NewNode(string url)
 		{
-			string path = HttpContext.Current.Server.MapPath(url);
+			string path = HostingEnvironment.MapPath(url);
 			if (url == "~/")
 				return new RootNode(this, url);
 			if (File.Exists(path))
@@ -22,12 +23,12 @@ namespace N2.Edit.Web
 
 		internal static string GetPathOnDisk(string rawUrl)
 		{
-			return HttpContext.Current.Server.MapPath(rawUrl.Split('?')[0]);
+			return HostingEnvironment.MapPath(rawUrl.Split('?')[0]);
 		}
 
 		private static string UnMapPath(string physicalPath, string virtualParentUrl)
 		{
-			string parentPath = HttpContext.Current.Server.MapPath(virtualParentUrl);
+			string parentPath = HostingEnvironment.MapPath(virtualParentUrl);
 			return physicalPath.Replace(parentPath, virtualParentUrl).Replace('\\', '/');
 		}
 

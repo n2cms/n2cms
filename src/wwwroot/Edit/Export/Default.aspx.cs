@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
@@ -164,7 +165,7 @@ namespace N2.Edit.Export
 
 		protected string CheckExists(string url)
 		{
-			if (File.Exists(Server.MapPath(url)))
+			if (HostingEnvironment.VirtualPathProvider.FileExists(url))
 				return "(existing file will be overwritten)";
 			return string.Empty;
 		}

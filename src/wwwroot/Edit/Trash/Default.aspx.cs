@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.UI.WebControls;
+using N2.Web;
 
 namespace N2.Edit.Trash
 {
@@ -68,7 +69,7 @@ namespace N2.Edit.Trash
 				VirtualPathUtility.ToAbsolute("~/Edit/Default.aspx"), // 0
 				GetNavigationUrl(item), // 1
 				item.ID, // 2
-				item.RewrittenUrl // 3
+				item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl // 3
 				);
 
 			ClientScript.RegisterClientScriptBlock(

@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace N2.Addons.UITests.UI
 {
-	public partial class AdaptiveItem : N2.Web.UI.Page<Items.AdaptiveItemPage>
+	public partial class AdaptiveItem : N2.Web.UI.ContentPage<Items.AdaptiveItemPage>
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{

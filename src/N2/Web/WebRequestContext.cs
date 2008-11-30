@@ -5,6 +5,7 @@ using System.Web;
 using System.Collections;
 using System.Security.Principal;
 using System.Diagnostics;
+using System.Web.Hosting;
 
 namespace N2.Web
 {
@@ -114,7 +115,7 @@ namespace N2.Web
         /// <returns>The physical path. E.g. "c:\inetpub\wwwroot\bin"</returns>
         public string MapPath(string path)
         {
-            return CurrentHttpContext.Server.MapPath(path);
+			return HostingEnvironment.MapPath(path);
         }
 
         /// <summary>Assigns a rewrite path.</summary>

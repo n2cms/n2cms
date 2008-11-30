@@ -25,7 +25,6 @@ namespace N2.Extensions.Tests.Mvc
 	[TestFixture]
 	public class ContentRouteTests : N2.Tests.ItemPersistenceMockingBase
 	{
-		RouteCollection routes;
 		IEngine engine;
 		FakeHttpContext httpContext;
 		RegularPage root;

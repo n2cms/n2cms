@@ -18,49 +18,51 @@
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
         <script type="text/javascript">
-            $(document).ready(function(){
-				toolbarSelect("tree");
-            
-                $("#nav").SimpleTree({
-					success: function(el){
-						toDraggable(el);
-						n2nav.refreshLinks(el);
-						setUpContextMenu(el);
-					}
-				});
+        	$(document).ready(function() {
+        		toolbarSelect("tree");
 
-                var dragMemory = null;
-                function toDraggable(container){
-					$("a", container).draggable({
-						delay: 100,
-						cursorAt: {top: 8, left:8},
-						stop : function(e,ui){
-							$.autoscroll.stop();
-						},
-						start : function(e,ui){
-							dragMemory = this.rel;
+        		$("#nav").SimpleTree({
+        			success: function(el) {
+        				toDraggable(el);
+        				n2nav.refreshLinks(el);
+        				setUpContextMenu(el);
+        			}
+        		});
 
-							$("#nav li a").droppable({
-								accept: '#nav li li',
-								hoverClass: 'droppable-hover',
-								tolerance: 'pointer',
-								drop: function(e, ui) {
-									var action = e.ctrlKey ? "copy" : "move";
-									var to = this.rel;
-									var from = dragMemory;
-									parent.preview.location = "../paste.aspx?action=" + action 
+        		var dragMemory = null;
+        		var onDrop = function(e, ui) {
+        			var action = e.ctrlKey ? "copy" : "move";
+        			var to = this.rel;
+        			var from = dragMemory;
+        			parent.preview.location = "../paste.aspx?action=" + action
 										+ "&memory=" + encodeURIComponent(from)
 										+ "&selected=" + encodeURIComponent(to);
-								}
-							});
-							
-							$.autoscroll.start();
-						},
-						helper: 'clone'
-					});
-		        }
-		        toDraggable("#nav li li");
-            });
+        		};
+        		var onStart = function(e, ui) {
+        			dragMemory = this.rel;
+
+        			$("#nav li a").droppable({
+        				accept: '#nav li li',
+        				hoverClass: 'droppable-hover',
+        				tolerance: 'pointer',
+        				drop: onDrop
+        			});
+
+        			$.autoscroll.start();
+        		};
+        		var toDraggable = function(container) {
+        			$("a", container).draggable({
+        				delay: 100,
+        				cursorAt: { top: 8, left: 8 },
+        				stop: function(e, ui) {
+        					$.autoscroll.stop();
+        				},
+        				start: onStart,
+        				helper: 'clone'
+        			});
+        		}
+        		toDraggable("#nav li li");
+        	});
         </script>
         <nav:ContextMenu id="cm" runat="server" />
     </form>

@@ -19,6 +19,7 @@
     <input type="hidden" id="selectedUrl" runat="server" />
     <asp:CustomValidator ID="cvDeleteRoot" runat="server" ErrorMessage="Cannot delete upload folder." OnServerValidate="OnDeleteValidation" meta:resourceKey="cvDeleteRoot" Display="Dynamic" CssClass="validator" />
     <asp:CustomValidator ID="cvDeleteProblem" runat="server" ErrorMessage="Error deleting file/folder." meta:resourceKey="cvDeleteProblem" Display="Dynamic" CssClass="validator" />
+    <asp:CustomValidator ID="cvDeleteException" runat="server" Display="Dynamic" CssClass="validator" />
     
     <div id="actions" class="actions">
         <div id="newFolder" class="actionPanel newFolderPanel">

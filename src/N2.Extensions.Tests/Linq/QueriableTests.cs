@@ -50,7 +50,7 @@ namespace N2.Extensions.Tests.Linq
         [Test, Ignore]
         public void Test()
         {
-            var q = engine.Database().ContentItems.Where(x => "root" == x["Name"]);
+            var q = engine.Database().ContentItems.Where(x => "root" == (string)x["Name"]);
             Assert.That(q.Count(), Is.EqualTo(1));
         }
 	}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web.Hosting;
 using System.Web.UI;
 using System.IO;
 using N2.Web.UI;
@@ -19,7 +20,7 @@ namespace N2.Templates.Web
 			string theme = Find.StartPage.Theme;
 			if (!themeVerified && theme != null)
 			{
-				if (Directory.Exists(page.Server.MapPath("~/App_Themes/" + theme)))
+				if (Directory.Exists(HostingEnvironment.MapPath("~/App_Themes/" + theme)))
 				{
 					themeVerified = true;
 				}

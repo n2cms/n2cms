@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -16,7 +17,7 @@ namespace N2.Templates.Details
 
 		protected override IEnumerable<ListItem> GetListItems(Control container)
 		{
-			string path = container.Page.Server.MapPath("~/App_Themes/");
+			string path = HostingEnvironment.MapPath("~/App_Themes/");
 
 			yield return new ListItem();
 			foreach(string directoryPath in Directory.GetDirectories(path))

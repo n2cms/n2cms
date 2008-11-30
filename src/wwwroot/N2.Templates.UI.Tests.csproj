@@ -47,6 +47,10 @@
       <Name>N2</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="N2.Edit.csproj">
+      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
+      <Name>N2.Edit</Name>
+    </ProjectReference>
     <ProjectReference Include="N2.Templates.csproj">
       <Project>{D42D096E-399D-4618-AEB4-9B023BA1316D}</Project>
       <Name>N2.Templates</Name>
@@ -62,6 +66,13 @@
     <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.designer.cs">
       <DependentUpon>AdaptiveItem.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Addons\UITests\UI\FileEvents.aspx.cs">
+      <DependentUpon>FileEvents.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\FileEvents.aspx.designer.cs">
+      <DependentUpon>FileEvents.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Addons\UITests\UI\GridViewTest.aspx.cs">
       <DependentUpon>GridViewTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -75,6 +86,7 @@
     <Content Include="Addons\UITests\UI\GridViewTest.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\FileEvents.aspx" />
     <Content Include="Addons\UITests\UI\RegionAll.aspx" />
     <Content Include="Addons\UITests\UI\RegionSidebar.aspx" />
     <Content Include="Addons\UITests\UI\RegionPostContent.aspx" />

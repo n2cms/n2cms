@@ -1,5 +1,6 @@
 using System;
 using N2.Edit.Web;
+using N2.Web;
 
 namespace N2.Edit.ItemSelection
 {
@@ -19,7 +20,7 @@ namespace N2.Edit.ItemSelection
 			foreach (ContentItem item in Find.EnumerateTree(Find.RootItem))
 			{
 				ClientScript.RegisterArrayDeclaration("linkArray", string.Format("{{key:\"{0}\", value:\"{1}\"}}",
-					item.RewrittenUrl,
+					item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl,
 					item.Url.Replace("\"", "\\\"")));
 			}
 		}

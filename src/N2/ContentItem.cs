@@ -477,7 +477,8 @@ namespace N2
 		{
 			if (Parent != null && Parent != newParent && Parent.Children.Contains(this))
 				Parent.Children.Remove(this);
-			
+
+			url = null;
 			Parent = newParent;
 			
 			if (newParent != null && !newParent.Children.Contains(this))

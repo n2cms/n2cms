@@ -2,6 +2,7 @@ using System;
 using N2.Definitions;
 using N2.Edit.Web;
 using N2.Integrity;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -34,18 +35,23 @@ namespace N2.Edit
                 {
                     SetErrorMessage(cvMove, ex);
                 }
+				catch(NullReferenceException ex)
+				{
+					SetErrorMessage(cvException, "Nothing to move");
+				}
                 catch (Exception ex)
                 {
                     SetErrorMessage(cvMove, ex);
                 }
 
-				LoadDefaultsAndInfo();
+				if(MemorizedItem != null)
+					LoadDefaultsAndInfo();
 			}
 		}
 
 		private void LoadDefaultsAndInfo()
 		{
-			btnCancel.NavigateUrl = SelectedItem.RewrittenUrl;
+			btnCancel.NavigateUrl = SelectedItem.FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
 			txtNewName.Text = MemorizedItem.Name;
 
 			Title = string.Format(GetLocalResourceString("MovePage.TitleFormat"),

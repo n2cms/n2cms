@@ -4,6 +4,7 @@ using N2.Details;
 using N2.Integrity;
 using N2.Templates.Items;
 using N2.Templates.Services;
+using N2.Web;
 
 namespace N2.Templates.Items
 {
@@ -55,7 +56,7 @@ namespace N2.Templates.Items
 
         public string PreviewUrl
         {
-            get { return base.RewrittenUrl; }
+			get { return base.FindTemplate(TemplateData.DefaultAction).RewrittenUrl; }
         }
 
         public virtual IEnumerable<ISyndicatable> GetItems()

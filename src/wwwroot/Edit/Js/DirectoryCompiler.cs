@@ -2,6 +2,7 @@
 using System.Data;
 using System.Configuration;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -39,7 +40,7 @@ namespace N2.Edit.Js
 
 		protected virtual IEnumerable<string> GetFiles(HttpContext context)
 		{
-			string dir = context.Server.MapPath(FolderUrl);
+			string dir = HostingEnvironment.MapPath(FolderUrl);
 			return Directory.GetFiles(dir);
 		}
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web.Hosting;
 using N2.Details;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -19,7 +20,7 @@ namespace N2.Templates.Details
 
 		protected override IEnumerable<ListItem> GetListItems(Control container)
 		{
-			string path = container.Page.Server.MapPath("~/Layouts/");
+			string path = HostingEnvironment.MapPath("~/Layouts/");
 
 			foreach(string file in Directory.GetFiles(path, "*.Master"))
 			{
