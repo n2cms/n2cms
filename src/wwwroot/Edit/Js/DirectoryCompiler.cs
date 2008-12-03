@@ -41,7 +41,7 @@ namespace N2.Edit.Js
 		protected virtual IEnumerable<string> GetFiles(HttpContext context)
 		{
 			string dir = HostingEnvironment.MapPath(FolderUrl);
-			return Directory.GetFiles(dir);
+			return Directory.GetFiles(dir, "*.js");
 		}
 
 		protected virtual void SetCache(HttpContext context)
