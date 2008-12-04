@@ -7,7 +7,7 @@
 <body>
     <form id="F" runat="server">
     <n2:SlidingCurtain ID="sc" runat="server">
-        <n2:DragDropControlPanel ID="cp" runat="server">
+        <n2:ControlPanel ID="cp" runat="server">
 			<DragDropFooterTemplate><div>DragDropFooterTemplate</div></DragDropFooterTemplate>
 			<DragDropHeaderTemplate><div>DragDropHeaderTemplate</div></DragDropHeaderTemplate>
 			<EditingFooterTemplate><div>EditingFooterTemplate</div></EditingFooterTemplate>
@@ -17,7 +17,7 @@
 			<PreviewingHeaderTemplate><div>PreviewingHeaderTemplate</div></PreviewingHeaderTemplate>
 			<VisibleFooterTemplate><div>VisibleFooterTemplate</div></VisibleFooterTemplate>
 			<VisibleHeaderTemplate><div>VisibleHeaderTemplate</div></VisibleHeaderTemplate>
-        </n2:DragDropControlPanel>
+        </n2:ControlPanel>
     </n2:SlidingCurtain>
     <n2:Zone ZoneName="Right" runat="server" />
 		<br /><br /><br />

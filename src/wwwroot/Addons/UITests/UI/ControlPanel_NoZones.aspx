@@ -7,7 +7,7 @@
 <body>
     <form id="F" runat="server">
     <n2:SlidingCurtain ID="sc" runat="server">
-        <n2:DragDropControlPanel ID="cp" runat="server"/>
+        <n2:ControlPanel ID="cp" runat="server"/>
     </n2:SlidingCurtain>
 		<br /><br /><br />
 		<n2:EditableDisplay ID="EditableDisplay1" runat="server" PropertyName="Title" />

@@ -10,7 +10,7 @@
 <body class="<%= GetBodyClass() %>">
     <form id="F" runat="server">
     <n2:SlidingCurtain ID="sc" runat="server">
-        <n2:DragDropControlPanel ID="cp" runat="server">
+        <n2:ControlPanel ID="cp" runat="server">
             <VisibleFooterTemplate>
                 <script type="text/javascript">
 					if(window.top != window && window.top.n2){
@@ -18,7 +18,7 @@
 					}
                 </script>
             </VisibleFooterTemplate>
-        </n2:DragDropControlPanel>
+        </n2:ControlPanel>
     </n2:SlidingCurtain>
     <div id="wrap">
         <asp:ContentPlaceHolder ID="Top" runat="server">

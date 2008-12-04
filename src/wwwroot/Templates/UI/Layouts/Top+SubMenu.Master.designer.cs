@@ -65,7 +65,7 @@ namespace N2.Templates.UI.Layouts {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.DragDropControlPanel cp;
+        protected global::N2.Web.UI.WebControls.ControlPanel cp;
         
         /// <summary>
         /// Top control.
