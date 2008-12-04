@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
+﻿using System.Web;
 using System.Text.RegularExpressions;
 using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
+	/// <summary>
+	/// Class used to supply plugins with contextual information.
+	/// </summary>
 	public class PluginContext
 	{
 		public PluginContext()
@@ -29,7 +29,7 @@ namespace N2.Edit
 		public ContentItem Selected { get; set; }
 		public ContentItem Memorized { get; set; }
 		
-		Regex expressionExpression = new Regex("{(?<expr>[^})]+)}");
+		static Regex expressionExpression = new Regex("{(?<expr>[^})]+)}");
 
 		public string Format(string format, bool urlEncode)
 		{

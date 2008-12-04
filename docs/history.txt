@@ -1,4 +1,5 @@
-﻿- refactored tab panel scripts
+﻿- removed addons from core output
+- refactored tab panel scripts
 - control panel plugin model
 - resize control panel icons
 - auto-hide drag-drop button when no zones

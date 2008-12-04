@@ -128,7 +128,7 @@
 								 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"/>
 	  </ItemGroup>
 	  <CreateItem Include="$(WebFolder)\Bin\*.dll; $(WebFolder)\Bin\N2.xml;" 
-				  Exclude="$(WebFolder)\Bin\N2.Templates*;$(WebFolder)\Bin\Demo*">
+				  Exclude="$(WebFolder)\Bin\N2.Templates*;$(WebFolder)\Bin\Demo*;$(WebFolder)\Bin\AddonCatalog*;$(WebFolder)\Bin\Wiki*;$(WebFolder)\Bin\MyAddon*">
       <Output TaskParameter="Include" ItemName="Core-BinFiles"/>
     </CreateItem>
   </Target>
@@ -166,10 +166,11 @@
                                    $(WebFolder)\**\*.csproj;
                                    $(WebFolder)\**\bin\**\*;
                                    $(WebFolder)\**\Demo\**\*;
-                                   $(WebFolder)\**\Scrum\**\*" />
+                                   $(WebFolder)\**\Scrum\**\*;
+                                   $(WebFolder)\**\Addons\**\*" />
     </ItemGroup>
     <Delete Files="$(WebFolder)\Bin\Demo.dll" Condition="Exists('$(WebFolder)\Bin\Demo.dll')" />
-    <CreateItem Include="$(WebFolder)\Bin\*.dll">
+    <CreateItem Include="$(WebFolder)\Bin\*.dll" Exclude="$(WebFolder)\Bin\AddonCatalog.*;$(WebFolder)\Bin\N2.Templates.UI.Tests.*;$(WebFolder)\Bin\Wiki.*;$(WebFolder)\Bin\MyAddon.*">
       <Output TaskParameter="Include" ItemName="Templates-BinFiles"/>
     </CreateItem>
   </Target>

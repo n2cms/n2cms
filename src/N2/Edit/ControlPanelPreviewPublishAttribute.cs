@@ -1,11 +1,13 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Web;
 using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
+	/// <summary>
+	/// Used internally to apply the preview publish button.
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class ControlPanelPreviewPublishAttribute : ControlPanelLinkAttribute
 	{

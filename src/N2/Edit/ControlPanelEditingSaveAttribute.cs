@@ -7,6 +7,9 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
+	/// <summary>
+	/// Used internally to add the save changes during on page editing.
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class ControlPanelEditingSaveAttribute : ControlPanelLinkAttribute
 	{

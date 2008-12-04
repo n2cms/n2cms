@@ -5,11 +5,14 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
+	/// <summary>
+	/// Used internally to add the dicard preview button.
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class ControlPanelPreviewDiscardAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelPreviewDiscardAttribute(string toolTip, int sortOrder)
-			: base("cpCancel", "~/edit/img/ico/cancel.gif", null, toolTip, sortOrder, ControlPanelState.Previewing)
+			: base("cpPreviewDiscard", "~/edit/img/ico/cancel.gif", null, toolTip, sortOrder, ControlPanelState.Previewing)
 		{
 		}
 

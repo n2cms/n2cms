@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 namespace N2.Edit
 {
 	/// <summary>
-	/// Registers a plugin in the control panel plugin area.
+	/// Registers a link plugin in the control panel plugin area.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class ControlPanelLinkAttribute : AdministrativePluginAttribute, IControlPanelPlugin
