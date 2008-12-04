@@ -20,17 +20,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Reflection;
 using N2.Definitions;
 using N2.Integrity;
+using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
     [NavigationLinkPlugin("New", "new", "../new.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/add.gif", 10, GlobalResourceClassName = "Navigation")]
 	[ToolbarPlugin("", "new", "new.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/add.gif", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
+	[ControlPanelLink("cpNew", "~/Edit/Img/Ico/add.gif", "~/Edit/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;

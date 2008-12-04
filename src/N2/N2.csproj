@@ -318,6 +318,14 @@
     <Compile Include="Definitions\DisableAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
+    <Compile Include="Edit\ControlPanelEditingSaveAttribute.cs" />
+    <Compile Include="Edit\ControlPanelPreviewDiscardAttribute.cs" />
+    <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
+    <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
+    <Compile Include="Edit\ControlPanelPreviewPublishAttribute.cs" />
+    <Compile Include="Edit\IControlPanelPlugin.cs" />
+    <Compile Include="Edit\PluginContext.cs" />
+    <Compile Include="Edit\ControlPanelLinkAttribute.cs" />
     <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
     <Compile Include="Edit\Settings\ISettingsEditor.cs" />
     <Compile Include="Engine\Action.cs" />
@@ -346,6 +354,7 @@
     <Compile Include="Installation\SqlServerType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Obsolete\DragDropControlPanel.cs" />
     <Compile Include="Obsolete\InstallerModule.cs" />
     <Compile Include="Obsolete\InstallerSection.cs" />
     <Compile Include="Obsolete\Page.generic.cs">
@@ -362,7 +371,7 @@
     <Compile Include="Persistence\NotVersionableAttribute.cs" />
     <Compile Include="Plugin\IPlugin.cs" />
     <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
-    <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
+    <Compile Include="Edit\SeparatorPluginAttribute.cs" />
     <Compile Include="Edit\Targets.cs" />
     <Compile Include="Edit\Trash\NotThrowableAttribute.cs" />
     <Compile Include="Definitions\IDefinitionRefiner.cs" />
@@ -470,7 +479,6 @@
     <Compile Include="Web\UI\WebControls\OptionsMenu.cs" />
     <Compile Include="Web\UI\WebControls\Repeater.cs" />
     <Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
-    <Compile Include="Web\UI\WebControls\DragDropControlPanel.cs" />
     <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
     <Compile Include="Web\UI\WebControls\DropPoint.cs" />
     <Compile Include="Web\UI\WebControls\HasValue.cs" />

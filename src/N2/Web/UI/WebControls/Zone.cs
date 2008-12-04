@@ -15,6 +15,8 @@ namespace N2.Web.UI.WebControls
     [ParseChildren(true)]
     public class Zone : ItemAwareControl
 	{
+		public const string PageKey = "n2.zones";
+			
 		private IEnumerable<ItemFilter> filters;
 		private bool isDataBound = false;
 		private IList<ContentItem> items = null;
@@ -86,9 +88,18 @@ namespace N2.Web.UI.WebControls
 
 		protected override void OnInit(EventArgs e)
 		{
+			RegisterZone();
 			EnsureChildControls();
 
 			base.OnInit(e);
+		}
+
+		protected virtual void RegisterZone()
+		{
+			IList<Zone> zones = Page.Items[PageKey] as IList<Zone>;
+			if (zones == null)
+				Page.Items[PageKey] = zones = new List<Zone>();
+			zones.Add(this);
 		}
 
 		protected override void OnDataBinding(EventArgs e)

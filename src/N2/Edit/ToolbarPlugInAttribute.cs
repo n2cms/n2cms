@@ -9,12 +9,6 @@
 #endregion
 
 using System;
-using System.Web;
-using System.Security.Principal;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using N2.Definitions;
-using System.Web.UI.WebControls;
 
 namespace N2.Edit
 {
@@ -22,12 +16,11 @@ namespace N2.Edit
 	/// An attribute defining a toolbar item in edit mode.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly, AllowMultiple = true)]
-	public class ToolbarPluginAttribute : LinkPluginAttribute, IContainable
+	public class ToolbarPluginAttribute : LinkPluginAttribute
 	{
 		ToolbarArea area;
 		private string containerName;
 
-		#region Constructors
 		/// <summary>Defines a toolbar link.</summary>
 		public ToolbarPluginAttribute()
 		{
@@ -40,10 +33,10 @@ namespace N2.Edit
 		/// <param name="area">The area to put the link.</param>		
 		public ToolbarPluginAttribute(string title, string name, string urlFormat, ToolbarArea area)
 		{
-			this.Title = title;
-			this.Name = name;
-			this.UrlFormat = urlFormat;
-			this.Area = area;
+			Title = title;
+			Name = name;
+			UrlFormat = urlFormat;
+			Area = area;
 		}
 
 		/// <summary>Defines a toolbar link.</summary>
@@ -57,11 +50,11 @@ namespace N2.Edit
 		public ToolbarPluginAttribute(string title, string name, string urlFormat, ToolbarArea area, string target, string iconUrl, int sortOrder)
 			: this(title, name, urlFormat, area)
 		{
-			this.Target = target;
-			this.IconUrl = iconUrl;
-			this.SortOrder = sortOrder;
+			Target = target;
+			IconUrl = iconUrl;
+			SortOrder = sortOrder;
 		} 
-		#endregion
+
 
 		protected override string ArrayVariableName
 		{
@@ -79,14 +72,5 @@ namespace N2.Edit
 			get { return containerName; }
 			set { containerName = value; }
         }
-		
-		#region IComparable<...> Members
-
-		int IComparable<IContainable>.CompareTo(IContainable other)
-		{
-			return this.SortOrder - other.SortOrder;
-		}
-
-		#endregion
 	}
 }

@@ -1,13 +1,11 @@
 using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Collections.Generic;
+using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
-    public partial class Default : Web.EditPage
+    [ControlPanelLink("cpAdminister", "~/edit/img/ico/sitemap_color.gif", "~/edit/?selected={Selected.Path}", "Administer site", -50, ControlPanelState.Visible, Target = Targets.Top)]
+	[ControlPanelSeparator(0, ControlPanelState.Visible)]
+	public partial class Default : Web.EditPage
 	{
 		protected override void OnInit(EventArgs e)
 		{
@@ -25,8 +23,7 @@ namespace N2.Edit
 				string url = GetSelectedPath();
 				if(url == null)
 					throw  new N2Exception("Couldn't get the start page, this usually indicates a configuration or installation problem. The start page must be inserted and it's id must be configured in web.config.", ex);
-				else 
-					Response.Write("Error: Couldn't find '" + url + "'.");
+				Response.Write("Error: Couldn't find '" + url + "'.");
 			}
 		}
 	}

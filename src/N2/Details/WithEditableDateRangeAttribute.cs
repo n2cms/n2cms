@@ -10,14 +10,14 @@ namespace N2.Details
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class WithEditableDateRangeAttribute : AbstractEditableAttribute
     {
-        protected string betweenText = " - ";
+        private string betweenText = " - ";
         private string nameEndRange;
 
         public WithEditableDateRangeAttribute(string title, int sortOrder, string name, string nameEndRange)
             : base(title, sortOrder)
         {
-            this.Name = name;
-            this.NameEndRange = nameEndRange;
+            Name = name;
+            NameEndRange = nameEndRange;
         }
 
         /// <summary>End of range detail (property) on the content item's object</summary>

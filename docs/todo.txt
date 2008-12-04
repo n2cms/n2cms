@@ -2,7 +2,6 @@
 - make it possible to change edit page
 - fix IAutoStart
 - cleanup many versions
-- resize control panel icons
 - rating
 - msi installer
 - update sandcastle documentation

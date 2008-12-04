@@ -114,7 +114,7 @@ namespace N2.Web.UI.WebControls
 					if (HeaderTemplate != null)
 					{
 						Control header = new SimpleTemplateContainer();
-						this.Controls.AddAt(0, header);
+						Controls.AddAt(0, header);
 
 						HeaderTemplate.InstantiateIn(header);
 					}
@@ -122,7 +122,7 @@ namespace N2.Web.UI.WebControls
 					if (FooterTemplate != null)
 					{
 						Control footer = new SimpleTemplateContainer();
-						this.Controls.Add(footer);
+						Controls.Add(footer);
 
 						FooterTemplate.InstantiateIn(footer);
 					}
@@ -196,7 +196,7 @@ namespace N2.Web.UI.WebControls
 			{
 				if (currentItem == null)
 				{
-					currentItem = ItemUtility.FindCurrentItem(Parent);
+					currentItem = ItemUtility.FindCurrentItem(Parent) ?? N2.Context.CurrentPage;
 					if (!string.IsNullOrEmpty(Path))
 					{
 						currentItem = ItemUtility.WalkPath(currentItem, Path);

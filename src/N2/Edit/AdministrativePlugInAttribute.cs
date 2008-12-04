@@ -1,10 +1,6 @@
 using System;
 using System.Security.Principal;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Diagnostics;
-using N2.Edit.Web;
 using N2.Plugin;
 
 namespace N2.Edit
@@ -68,17 +64,14 @@ namespace N2.Edit
 			return false;
 		}
 
-		public abstract Control AddTo(Control container);
-
-		protected string GetSelectedPath(Control container)
+		protected string GetInnerHtml(string iconUrl, string tooltip, string text)
 		{
-			if (container.Page is EditPage)
-			{
-				EditPage ep = container.Page as EditPage;
-				return HttpUtility.UrlEncode(ep.SelectedItem.Path);
-			}
-			return HttpUtility.UrlEncode("/");
-        }
+			if (string.IsNullOrEmpty(iconUrl))
+				return text;
+			return string.Format("<img src='{0}' alt='{1}'/>{2}", N2.Web.Url.ToAbsolute(iconUrl), tooltip, text);
+		}
+
+		public abstract Control AddTo(Control container, PluginContext context);
 
         #region IComparable<IPlugin> Members
 

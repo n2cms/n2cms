@@ -4,13 +4,18 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit.Web;
 using N2.Web.UI.WebControls;
-using N2.Persistence;
 using N2.Web;
 
 namespace N2.Edit
 {
     [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/page_edit.gif", 20, GlobalResourceClassName = "Navigation")]
 	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
+	[ControlPanelLink("cpEdit", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
+	[ControlPanelLink("cpEditPreview", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selected={Selected.Path}", "Back to edit", 10, ControlPanelState.Previewing)]
+	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20)]
+	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30)]
+	[ControlPanelEditingSave("Save changes", 10)]
+	[ControlPanelLink("cpEditingCancel", "~/edit/img/ico/cancel.gif", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, UrlEncode = false)]
 	public partial class Edit : EditPage
 	{
 		protected PlaceHolder phPluginArea;
@@ -72,7 +77,7 @@ namespace N2.Edit
 
 		private void DisplayThisIsVersionInfo(ContentItem itemToLink)
 		{
-            string url = N2.Web.Url.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
+            string url = Url.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
 			hlOlderVersion.NavigateUrl = url;
 			hlOlderVersion.Visible = true;
 		}
@@ -81,7 +86,7 @@ namespace N2.Edit
 		{
 			foreach(EditToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-				plugin.AddTo(phPluginArea);
+				plugin.AddTo(phPluginArea, new PluginContext(SelectedItem, MemorizedItem, ControlPanelState.Visible));
 			}
 		}
 

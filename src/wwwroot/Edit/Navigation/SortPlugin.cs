@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Configuration;
 using System.Web;
@@ -24,16 +24,16 @@ namespace N2.Edit.Navigation
 			get { return "toolbarPlugIns"; }
 		}
 
-		public override Control AddTo(Control container)
+		public override Control AddTo(Control container, PluginContext context)
 		{
 			HtmlGenericControl div = new HtmlGenericControl("div");
 			div.Attributes["class"] = "sort command";
 			container.Controls.Add(div);
 
-			HtmlAnchor up = AddSortAnchor(div, "Navigation/sortUp.ashx?selected=" + GetSelectedPath(container), "~/Edit/img/Ico/bullet_arrow_up.gif", "up");
+			HtmlAnchor up = AddSortAnchor(div, context.Format("Navigation/sortUp.ashx?selected={Selected.Path}", true), "~/Edit/img/Ico/bullet_arrow_up.gif", "up");
 			RegisterToolbarUrl(container, up.ClientID, "Navigation/sortUp.ashx?selected={selected}");
 
-			HtmlAnchor down = AddSortAnchor(div, "Navigation/sortDown.ashx?selected=" + GetSelectedPath(container), "~/Edit/img/Ico/bullet_arrow_down.gif", "down");
+			HtmlAnchor down = AddSortAnchor(div, context.Format("Navigation/sortDown.ashx?selected={Selected.Path}", true), "~/Edit/img/Ico/bullet_arrow_down.gif", "down");
 			RegisterToolbarUrl(container, down.ClientID, "Navigation/sortDown.ashx?selected={selected}");
 
 			return div;

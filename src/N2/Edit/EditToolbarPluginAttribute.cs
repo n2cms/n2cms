@@ -18,7 +18,7 @@ namespace N2.Edit
 			this.userControlUrl = userControlUrl;
 		}
 
-		public override Control AddTo(Control container)
+		public override Control AddTo(Control container, PluginContext context)
 		{
 			Control c = container.Page.LoadControl(userControlUrl);
 			container.Controls.Add(c);

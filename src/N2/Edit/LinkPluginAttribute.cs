@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -13,7 +14,7 @@ namespace N2.Edit
 	{
 		private string globalResourceClassName;
 		private string iconUrl;
-		private string target = "preview";
+		private string target = Targets.Preview;
 		private string title;
 		private string toolTip;
 		private string urlFormat;
@@ -67,11 +68,11 @@ namespace N2.Edit
 		/// <summary>This string is used by the client to find plugins.</summary>
 		protected abstract string ArrayVariableName { get; }
 
-		public override Control AddTo(Control container)
+		public override Control AddTo(Control container, PluginContext context)
 		{
-			HtmlAnchor a = AddAnchor(container);
+			HtmlAnchor a = AddAnchor(container, context);
 
-			RegisterToolbarUrl(container, a.ClientID, N2.Web.Url.ToAbsolute(UrlFormat));
+			RegisterToolbarUrl(container, a.ClientID, Url.ToAbsolute(UrlFormat));
 
 			return a;
 		}
@@ -82,27 +83,20 @@ namespace N2.Edit
             container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
         }
 
-		protected virtual HtmlAnchor AddAnchor(Control container)
+		protected virtual HtmlAnchor AddAnchor(Control container, PluginContext context)
 		{
 			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
 			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
 
 			HtmlAnchor a = new HtmlAnchor();
 			a.ID = "h" + Name;
-			a.HRef = UrlFormat
-				.Replace("~/", N2.Web.Url.ToAbsolute("~/"))
-				.Replace("{selected}", GetSelectedPath(container))
-				.Replace("{memory}", "")
-				.Replace("{action}", "");
+			a.HRef = context.Format(UrlFormat, true);
 
 			a.Target = Target;
 			a.Attributes["class"] = "command";
 			a.Title = tooltip;
 
-			if (string.IsNullOrEmpty(IconUrl))
-				a.InnerHtml = title;
-			else
-				a.InnerHtml = string.Format("<img src='{0}' alt='{1}'/>{2}", N2.Web.Url.ToAbsolute(IconUrl), tooltip, title);
+			a.InnerHtml = GetInnerHtml(IconUrl, tooltip, title);
 
 			container.Controls.Add(a);
 			return a;

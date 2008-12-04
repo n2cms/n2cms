@@ -1,13 +1,15 @@
-﻿using N2.Web;
+﻿using System.Reflection;
+using N2.Web;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using System;
 
 namespace N2.Templates.Tests.Wiki
 {
     [TestFixture]
     public class HtmlFilterTests
     {
-        HtmlFilter filter = new HtmlFilter();
+        public HtmlFilter filter = new HtmlFilter();
 
         [Test]
         public void DoesntFilter_TextWithoutTags()

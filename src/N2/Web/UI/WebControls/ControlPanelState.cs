@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>
@@ -9,11 +5,12 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	public enum ControlPanelState
 	{
-		/// <summary>The control panel is hidden (the user is not an editor).</summary>
-		Hidden,
-		Visible,
-		Editing,
-		DragDrop,
-		Previewing
+		Unknown = 0,
+		/// <summary>The control panel is hidden (e.g. the user is not an editor).</summary>
+		Hidden = 1,
+		Visible = 2,
+		Editing = 4,
+		DragDrop = 8,
+		Previewing = 16
 	}
 }

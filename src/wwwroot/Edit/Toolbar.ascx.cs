@@ -1,19 +1,12 @@
 using System;
-using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using System.Web.Compilation;
-using N2.Definitions;
+using N2.Edit.Web;
+using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
-	public partial class Toolbar : System.Web.UI.UserControl
+	public partial class Toolbar : EditUserControl
 	{
 		protected override void OnLoad(EventArgs e)
 		{
@@ -35,7 +28,7 @@ namespace N2.Edit
 				command.Attributes["class"] = "toolbarItem";
 				container.Controls.Add(command);
 
-				plugin.AddTo(command);
+				plugin.AddTo(command, new PluginContext(SelectedItem, ControlPanelState.Visible));
 			}
 		}
 

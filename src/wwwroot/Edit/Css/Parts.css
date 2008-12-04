@@ -22,7 +22,8 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 .sc .scContent { width:168px; background-color:#fff; padding:10px 0 15px 0; }
 .controlPanel img { margin-right:2px; border:none; vertical-align:middle;}
 .controlPanel a,.controlPanel a:visited { color:#333;}
-.controlPanel a {display:block; text-decoration:none; margin-right:2px; padding:0 8px 1px 10px;}
+.controlPanel .plugins { margin-right:9px; text-align:right; }
+.controlPanel a { text-decoration:none; padding:1px;}
 .sc .open,.sc .close { background-color:transparent; position:absolute; bottom:3px; right:3px; cursor:pointer; cursor:hand; padding:15px 2px 1px 5px; display:block; font-weight:bold;}
 .sc .close {display:none;}
 .opened .open {display:none;}

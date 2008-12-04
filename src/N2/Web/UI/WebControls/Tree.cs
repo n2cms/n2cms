@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Collections;
 using N2.Definitions;
+using N2.Edit;
 
 namespace N2.Web.UI.WebControls
 {
@@ -12,7 +13,7 @@ namespace N2.Web.UI.WebControls
 	{
 		private ContentItem currentItem;
 		private ContentItem rootItem;
-		private string target = "preview";
+		private string target = Targets.Preview;
 		private IList<string> icons = new List<string>();
 
 		public Tree()

@@ -26,7 +26,9 @@ namespace N2.Edit
 
 		public ContentItem Navigate(string path)
 		{
-			if (path == null) throw new ArgumentNullException("path");
+			if (path == null) 
+				return null;
+
 			if (!path.StartsWith("/"))
 			{
 				if (path.StartsWith("~"))

@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Reflection;
 using N2.Web;
+using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
     [NavigationLinkPlugin("Delete", "delete", "../delete.aspx?selected={selected}&alert=true", Targets.Preview, "~/edit/img/ico/delete.gif", 30, GlobalResourceClassName = "Navigation")]
 	[ToolbarPlugin("", "delete", "delete.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/delete.gif", 60, ToolTip = "delete", GlobalResourceClassName = "Toolbar")]
+	[ControlPanelLink("cpDelete", "~/Edit/Img/Ico/delete.gif", "~/Edit/Delete.aspx?selected={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible)]
 	public partial class Delete : Web.EditPage
     {
         protected override void OnInit(EventArgs e)
