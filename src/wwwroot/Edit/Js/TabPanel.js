@@ -5,17 +5,6 @@
 // initializes elements in query selection as tabs
 $.fn.n2tabs = function(tabGroupName, initial, tabContainer){
     if(this.length>0){
-    	var tabs = this;
-    	var containers = tabs.parent();///group tabs by parent
-        if(containers.length > 1) {///re-process each group
-        	return containers.each(function(){
-        		var containerId = $(this).attr('id');
-        		return tabs
-        			.filter(function(){ return $(this).parent().attr('id') == containerId; })///ref-value semantics doesn't apply to js?
-        			.n2tabs(containerId, initial);
-        	});
-        }
-        
         if(!tabGroupName) tabGroupName = "tab";
         if(!tabContainer) tabContainer = this.n2tabs_createContainer(this.get(0));
         
@@ -60,6 +49,7 @@ $.fn.n2tabs_createTab = function(containerQuery, tabContents, index){
 	if(index == 0)
 		li = "<li class='first'>";
     containerQuery.append(li + "<a href='#" + tabContents.id + "'>" + tabContents.title + "</a></li>");
+	tabContents.title = "";
 }
 
 // creates tab elements (ul:s and li:s) above the first tab content element

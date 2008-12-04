@@ -9,6 +9,13 @@
     <n2:SlidingCurtain ID="sc" runat="server">
         <n2:DragDropControlPanel ID="cp" runat="server"/>
     </n2:SlidingCurtain>
+		<br /><br /><br />
+		<n2:EditableDisplay ID="EditableDisplay1" runat="server" PropertyName="Title" />
+		<hr />
+		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("preview", null).SetQueryParameter("edit", null) %>">none</a>
+		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("edit", "drag") %>">drag</a>
+		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("preview", "true") %>">preview</a>
+		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("edit", "true") %>">edit</a>
 	</form>
 </body>
 </html>

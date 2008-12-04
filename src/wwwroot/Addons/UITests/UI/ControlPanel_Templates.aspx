@@ -20,6 +20,15 @@
         </n2:DragDropControlPanel>
     </n2:SlidingCurtain>
     <n2:Zone ZoneName="Right" runat="server" />
+		<br /><br /><br />
+		<n2:EditableDisplay ID="EditableDisplay1" runat="server" PropertyName="Title" />
+		<hr />
+		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("preview", null).SetQueryParameter("edit", null) %>">none</a>
+		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("edit", "drag") %>">drag</a>
+		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("preview", "true") %>">preview</a>
+		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("edit", "true") %>">edit</a>
+		<hr />
+		<n2:Zone ID="Zone1" ZoneName="Right" runat="server" />
 	</form>
 </body>
 </html>

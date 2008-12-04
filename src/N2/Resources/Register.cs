@@ -241,13 +241,13 @@ namespace N2.Resources
 			if (page.Items["N2.Resources.TabPanel"] == null)
 			{
 				JQuery(page);
-				JavaScript(page, typeof(Register), "N2.Resources.TabPanel.js");
+				JavaScript(page, "~/Edit/Js/TabPanel.js");
 				string script = string.Format(tabPanelFormat, selector);
 				JavaScript(page, script, ScriptOptions.DocumentReady);
 				page.Items["N2.Resources.TabPanel"] = new object();
 				if (registerTabCss)
 				{
-					StyleSheet(page, typeof(Register), "N2.Resources.TabPanel.css");
+					StyleSheet(page, "~/Edit/Css/TabPanel.css");
 				}
 			}
 		}

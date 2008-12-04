@@ -1624,6 +1624,8 @@
     <Content Include="Edit\Export\App_LocalResources\Default.aspx.ru.resx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Edit\Css\TabPanel.css" />
+    <Content Include="Edit\Js\TabPanel.js" />
     <Content Include="Edit\Settings\SettingsEditor.ascx" />
     <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx" />
     <Content Include="Edit\Versions\App_LocalResources\Default.aspx.ru.resx" />

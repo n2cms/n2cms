@@ -2,9 +2,6 @@ using System.Web.UI;
 using N2.Definitions;
 using N2.Web.UI.WebControls;
 
-[assembly : WebResource("N2.Resources.TabPanel.css", "text/css")]
-[assembly : WebResource("N2.Resources.TabPanel.js", "text/javascript")]
-
 namespace N2.Web.UI
 {
 	/// <summary>

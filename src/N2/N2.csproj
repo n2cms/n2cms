@@ -610,10 +610,6 @@
     <Compile Include="Web\WebRequestContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\TabPanel.css" />
-    <EmbeddedResource Include="Resources\TabPanel.js" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Engine\n2.configuration.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -637,8 +633,6 @@
     <EmbeddedResource Include="Installation\installation.castle.config" />
     <EmbeddedResource Include="Mappings\MySQL.hbm.xml" />
     <EmbeddedResource Include="Mappings\Default.hbm.xml" />
-    <EmbeddedResource Include="Resources\layout_edit.png" />
-    <EmbeddedResource Include="Resources\page_refresh.png" />
     <EmbeddedResource Include="Configuration\castle.config" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
