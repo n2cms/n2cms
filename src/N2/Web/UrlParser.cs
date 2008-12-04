@@ -66,7 +66,7 @@ namespace N2.Web
 			ContentItem item = TryLoadingFromQueryString(url, "page");
 			if(item != null)
 			{
-				return new TemplateData(item, item.TemplateUrl, url["action"], url["arguments"]).UpdateParameters(url.GetQueries());
+				return item.FindTemplate(url["action"] ?? TemplateData.DefaultAction).SetArguments(url["arguments"]).UpdateParameters(url.GetQueries());
 			}
 
 			string path = Url.ToRelative(url.Path).TrimStart('~');

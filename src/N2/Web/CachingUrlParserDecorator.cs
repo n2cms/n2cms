@@ -18,7 +18,11 @@ namespace N2.Web
 			this.persister = persister;
 		}
 
-		public event EventHandler<PageNotFoundEventArgs> PageNotFound;
+		public event EventHandler<PageNotFoundEventArgs> PageNotFound
+		{
+			add { inner.PageNotFound += value; }
+			remove { inner.PageNotFound -= value; }
+		}
 
 		public ContentItem StartPage
 		{
@@ -59,7 +63,9 @@ namespace N2.Web
 			else
 			{
 				data = data.Attach(persister);
+				data.UpdateParameters(url.GetQueries());
 			}
+			
 			return data;
 		}
 

@@ -102,5 +102,11 @@ namespace N2.Web
 			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
 			return data;
 		}
+
+		public TemplateData SetArguments(string argument)
+		{
+			Argument = argument;
+			return this;
+		}
 	}
 }
