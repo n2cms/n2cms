@@ -6,7 +6,7 @@ using N2.Web;
 
 namespace N2.Edit
 {
-    [SeparatorPlugin("copyPasteSeparator", 40)]
+	[NavigationSeparatorPlugin("copyPasteSeparator", 40)]
     [NavigationLinkPlugin("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "~/edit/img/ico/cut.gif", 42, GlobalResourceClassName = "Navigation")]
     [ToolbarPlugin("", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Navigation, "", "~/Edit/Img/Ico/cut.gif", 30, ToolTip = "move", GlobalResourceClassName = "Toolbar")]
 	public partial class Move : EditPage

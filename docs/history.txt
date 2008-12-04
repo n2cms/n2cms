@@ -1,4 +1,5 @@
-﻿- control panel plugin model
+﻿- refactored tab panel scripts
+- control panel plugin model
 - resize control panel icons
 - auto-hide drag-drop button when no zones
 - edit interface javascript compiler now checks file extension in plugins folder (#20050)

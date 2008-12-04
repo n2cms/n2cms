@@ -17,14 +17,14 @@ namespace N2.Edit
         {
             Name = name;
             SortOrder = sortOrder;
-        }
+		}
 
-        public override Control AddTo(Control container)
-        {
-            HtmlGenericControl hgc = new HtmlGenericControl("div");
-            hgc.Attributes["class"] = "separator";
-            container.Controls.Add(hgc);
-            return hgc;
-        }
+		public override Control AddTo(Control container, PluginContext context)
+		{
+			HtmlGenericControl hgc = new HtmlGenericControl("div");
+			hgc.Attributes["class"] = "separator";
+			container.Controls.Add(hgc);
+			return hgc;
+		}
     }
 }

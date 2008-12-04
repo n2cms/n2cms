@@ -12,7 +12,7 @@ namespace N2.Engine.Globalization
     /// <summary>
     /// Adds language icons to the right-click menu in the navigation pane.
     /// </summary>
-    public class NavigationTranslationsPluginAttribute : SeparatorPluginAttribute
+	public class NavigationTranslationsPluginAttribute : NavigationSeparatorPluginAttribute
     {
         public NavigationTranslationsPluginAttribute(string name, int sortOrder)
             : base(name, sortOrder)

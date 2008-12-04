@@ -324,6 +324,7 @@
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
     <Compile Include="Edit\ControlPanelPreviewPublishAttribute.cs" />
     <Compile Include="Edit\IControlPanelPlugin.cs" />
+    <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
     <Compile Include="Edit\PluginContext.cs" />
     <Compile Include="Edit\ControlPanelLinkAttribute.cs" />
     <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
@@ -371,7 +372,6 @@
     <Compile Include="Persistence\NotVersionableAttribute.cs" />
     <Compile Include="Plugin\IPlugin.cs" />
     <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
-    <Compile Include="Edit\SeparatorPluginAttribute.cs" />
     <Compile Include="Edit\Targets.cs" />
     <Compile Include="Edit\Trash\NotThrowableAttribute.cs" />
     <Compile Include="Definitions\IDefinitionRefiner.cs" />
