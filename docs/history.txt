@@ -1,4 +1,7 @@
-﻿- removed addons from core output
+﻿- applied esteewhy's patches: 
+   - install-fix_root_id
+   - serialization-fix_date
+- removed addons from core output
 - refactored tab panel scripts
 - control panel plugin model
 - resize control panel icons

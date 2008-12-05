@@ -19,7 +19,7 @@ namespace N2.Edit
 		{
 			Control control = base.AddTo(container, context);
 			if(control != null)
-				container.Page.InitComplete += delegate { control.Visible = container.Page.Items[Zone.PageKey] != null;};
+				container.Page.PreRender += delegate { control.Visible = container.Page.Items[Zone.PageKey] != null;};
 			return control;
 		}
 	}

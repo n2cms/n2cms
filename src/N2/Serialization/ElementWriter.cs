@@ -41,7 +41,7 @@ namespace N2.Serialization
             WriteAttribute(attributeName, value.HasValue ? ToUniversalString(value.Value) : string.Empty);
         }
 
-        private string ToUniversalString(DateTime value)
+        internal static string ToUniversalString(DateTime value)
         {
             return value.ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture);
         }

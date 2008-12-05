@@ -388,6 +388,7 @@ namespace N2.Edit.Install
 						phSame.Visible = false;
 						phDiffer.Visible = true;
 						StartId = item.ID;
+						RootId = root.ID;
 					}
 					break;
 				}

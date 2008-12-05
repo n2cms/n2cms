@@ -31,7 +31,7 @@ namespace N2.Serialization
 			{
 				detailElement.WriteAttribute("name", detail.Name);
 				detailElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(detail.ValueType));
-
+			
 				if (detail.ValueType == typeof(object))
 				{
 					string base64representation = SerializationUtility.ToBase64String(detail.Value);
@@ -41,12 +41,18 @@ namespace N2.Serialization
 				{
 					detailElement.Write(((LinkDetail)detail).LinkedItem.ID.ToString());
 				}
-				else if (detail.Value == typeof(string))
+				else if (detail.ValueType == typeof(string))//was detail.Value a typo?
 				{
-					detailElement.WriteCData(((StringDetail)detail).StringValue);
+					string _value = ((StringDetail)detail).StringValue;
+					
+					if(!string.IsNullOrEmpty(_value)) {
+						detailElement.WriteCData(_value);
+					}
 				}
-				else
-				{
+				else if(detail.ValueType == typeof(DateTime)) {
+					detailElement.Write(ElementWriter.ToUniversalString(((DateTimeDetail)detail).DateTimeValue));
+				}
+				else {
 					detailElement.Write(detail.Value.ToString());
 				}
 			}
