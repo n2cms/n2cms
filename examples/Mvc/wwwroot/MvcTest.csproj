@@ -30,13 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="N2, Version=1.0.402.1367, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\N2.dll</HintPath>
+      <HintPath>..\..\..\lib\Microsoft.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="N2.Extensions, Version=1.0.404.35414, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
+    <Reference Include="N2, Version=1.0.404.41662, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="N2.Extensions, Version=1.0.404.43151, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">

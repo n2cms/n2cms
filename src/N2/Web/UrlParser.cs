@@ -14,8 +14,7 @@ namespace N2.Web
         protected readonly IPersister persister;
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
-        protected readonly Regex pathAndQueryIntoGroup = new Regex(@"^\w+?://.*?(/.*)$");
-		private string defaultDocument = "/default";
+		private string defaultDocument = "default";
 
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
@@ -69,7 +68,7 @@ namespace N2.Web
 				return item.FindTemplate(url["action"] ?? TemplateData.DefaultAction).SetArguments(url["arguments"]).UpdateParameters(url.GetQueries());
 			}
 
-			string path = Url.ToRelative(url.Path).TrimStart('~');
+			string path = Url.ToRelative(url.PathWithoutExtension).TrimStart('~');
 			TemplateData data = StartPage.FindTemplate(path).UpdateParameters(url.GetQueries());
 			if(data.CurrentItem != null)
 				return data;
@@ -114,6 +113,7 @@ namespace N2.Web
 		{
 			if (current == null) throw new ArgumentNullException("current");
 
+			Debug.WriteLine("Parsing " + url);
 			url = CleanUrl(url);
 
 			if (url.Length == 0)
@@ -127,8 +127,7 @@ namespace N2.Web
         /// <returns></returns>
         protected virtual ContentItem NotFoundPage(string url)
         {
-            string defaultDocument = CleanUrl(DefaultDocument);
-            if (url.Equals(defaultDocument, StringComparison.InvariantCultureIgnoreCase))
+			if (url.Equals(DefaultDocument, StringComparison.InvariantCultureIgnoreCase))
             {
                 return StartPage;
             }
@@ -144,11 +143,9 @@ namespace N2.Web
 		private string CleanUrl(string url)
 		{
             url = Url.PathPart(url);
-			url = webContext.ToAppRelative(url);
-			url = url.TrimStart('~', '/');
-			if (url.EndsWith(Url.DefaultExtension, StringComparison.InvariantCultureIgnoreCase))
-                url = url.Substring(0, url.Length - Url.DefaultExtension.Length);
-			return url;
+			url = Url.ToRelative(url);
+			url = Url.RemoveExtension(url);
+			return url.TrimStart('~', '/');
 		}
 
 		private int? FindQueryStringReference(string url, params string[] parameters)

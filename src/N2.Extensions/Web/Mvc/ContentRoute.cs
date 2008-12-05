@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.Routing;
 using System.Web.Mvc;
 using System.Web;
@@ -33,41 +32,39 @@ namespace N2.Web.Mvc
 			string path = httpContext.Request.AppRelativeCurrentExecutionFilePath;
 			if (path.StartsWith("~/edit/", StringComparison.InvariantCultureIgnoreCase))
 				return null;
-			else if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
+			if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
 				return null;
 
-			ContentItem item = engine.UrlParser.Parse(httpContext.Request.RawUrl);
-			if (item != null)
+			TemplateData td = engine.UrlParser.ResolveTemplate(httpContext.Request.RawUrl);
+
+			if (td.CurrentItem != null)
 			{
 				RouteData data = new RouteData(this, routeHandler);
 
-				data.Values["ContentItem"] = item;
+				data.Values["ContentItem"] = td.CurrentItem;
 				data.Values["ContentEngine"] = engine;
-				data.Values["controller"] = GetControllerName(item.GetType());
-				data.Values["action"] = httpContext.Request["action"] ?? "index"; //TODO: fix something neat
+				data.Values["controller"] = GetControllerName(td.CurrentItem.GetType());
+				data.Values["action"] = td.Action;
 				return data;
 			}
-			else
-			{
-				return null;
-			}
+			return null;
 		}
 
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
 			ContentItem item = requestContext.RouteData.Values["ContentItem"] as ContentItem;
 
-			if(item == null)
+			if (item == null)
 				return null;
 
 			string action = "Index";
-			
+
 			if (values.ContainsKey("ContentItem"))
-				item = values["ContentItem"] as ContentItem;
+				item = (ContentItem)values["ContentItem"];
 			if (values.ContainsKey("action"))
 				action = (string)values["action"];
 
-			string url = item.Url.TrimStart('/');
+			Url url = item.Url;
 			string defaultController = GetControllerName(item.GetType());
 			string requestedController = defaultController;
 			if (values.ContainsKey("controller"))
@@ -75,12 +72,29 @@ namespace N2.Web.Mvc
 
 			if (string.Equals(defaultController, requestedController, StringComparison.InvariantCultureIgnoreCase))
 			{
-				return new VirtualPathData(this, url + QuerySeparator(url) + "action=" + action);
+				return new VirtualPathData(this, url.AppendSegment(action).ToString().TrimStart('/'));
 			}
-			else
+			if (IsContentController(requestedController))
 			{
-				return new VirtualPathData(this, url + QuerySeparator(url) + "controller=" + requestedController + "&action=" + action);
+				return new VirtualPathData(this, url.AppendSegment(action).ToString().TrimStart('/'));
 			}
+			return null;
+		}
+
+		private bool IsContentController(string controller)
+		{
+			return controllerMap.Any(kv => kv.Key.Name == controller);
+		}
+
+		private string AddActionToUrl(string action, string url)
+		{
+			if (url.Contains("?") == false)
+				return url.TrimEnd('/') + "/" + action;
+
+			var beforeQuery = url.Substring(0, url.LastIndexOf("?") - 1);
+			var afterQuery = url.Substring(url.LastIndexOf("?") + 1);
+
+			return beforeQuery.TrimEnd('/') + "/" + action + "?" + afterQuery;
 		}
 
 		private static string QuerySeparator(string url)

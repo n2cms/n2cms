@@ -60,7 +60,7 @@ namespace N2.Web
 				Url url = webContext.Url.LocalUrl;
 				if (IsUpdatable(url))
 				{
-					TemplateData data = urlParser.ResolveTemplate(url.RemoveExtension());
+					TemplateData data = urlParser.ResolveTemplate(url);
 
 					Debug.WriteLine("CurrentPage <- " + data.CurrentItem);
 

@@ -15,25 +15,26 @@ namespace MvcTest
 {
 	public partial class Default : Page
 	{
-        protected override void OnInit(EventArgs args)
-        {
-            HttpContext httpContext = HttpContext.Current;
-            HttpContextBase contextWrapper = new HttpContextWrapper(httpContext);
-            RouteData data = GetRouteData(contextWrapper);
-            data.RouteHandler.GetHttpHandler(new RequestContext(contextWrapper, data)).ProcessRequest(httpContext);
-        }
+		protected override void OnInit(EventArgs args)
+		{
+			HttpContext httpContext = HttpContext.Current;
+			HttpContextBase contextWrapper = new HttpContextWrapper(httpContext);
+			RouteData data = GetRouteData(contextWrapper);
+			IHttpHandler handler = data.RouteHandler.GetHttpHandler(new RequestContext(contextWrapper, data));
+			handler.ProcessRequest(httpContext);
+		}
 
-        private RouteData GetRouteData(HttpContextBase context)
-        {
-            foreach (RouteBase route in RouteTable.Routes)
-            {
-                RouteData routeData = route.GetRouteData(context);
-                if (routeData != null)
-                {
-                    return routeData;
-                }
-            }
-            return null;
-        }
+		private RouteData GetRouteData(HttpContextBase context)
+		{
+			foreach (RouteBase route in RouteTable.Routes)
+			{
+				RouteData routeData = route.GetRouteData(context);
+				if (routeData != null)
+				{
+					return routeData;
+				}
+			}
+			return null;
+		}
 	}
 }

@@ -17,6 +17,7 @@
             <p id="logo">
                 <a href="">My Sample MVC Application</a></p>
             <ul id="mainMenu">
+				<li><a href="<%= N2.Find.StartPage.Url %>">Home</a></li>
 				<%= N2.Web.Tree.From(N2.Find.StartPage, 2).Filters(new N2.Collections.NavigationFilter()).ExcludeRoot(true)%>
             </ul>
         </div>

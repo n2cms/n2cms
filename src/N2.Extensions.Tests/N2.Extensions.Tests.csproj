@@ -89,6 +89,7 @@
     <Compile Include="Mvc\Models\RegularPage.cs" />
     <Compile Include="Mvc\Models\ExecutiveTeamPage.cs" />
     <Compile Include="Mvc\Models\AboutUsSectionPage.cs" />
+    <Compile Include="Mvc\Controllers\NonN2Controller.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -58,3 +58,4 @@ CONTRIBUTORS
 * Pedropaf
 * Matthew
 * Magomed Abdurakhmanov (Maqdev)
+* Smason

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Definitions;
@@ -9,15 +7,12 @@ using N2.Engine;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
 using N2.Persistence;
-using N2.Persistence.NH;
-using N2.Tests.Fakes;
 using N2.Web.Mvc;
 using NUnit.Framework;
 using System.Web;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using N2.Web;
-using N2.Details;
 using System.Collections.Specialized;
 
 namespace N2.Extensions.Tests.Mvc
@@ -54,12 +49,12 @@ namespace N2.Extensions.Tests.Mvc
 				typeof (ExecutiveTeamController),
 				typeof (AboutUsSectionPageController), 
 				typeof (RegularControllerBase), 
-				typeof (FallbackContentController)
+				typeof (FallbackContentController),
+				typeof(NonN2Controller)
 			};
 
 			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder), null);
 			var webContext = new ThreadContext();
-			var persister = new ContentPersister(repository, null, null);
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, new ItemNotifier(), host);
 
@@ -93,6 +88,28 @@ namespace N2.Extensions.Tests.Mvc
 		}
 
 		[Test]
+		public void CanFindController_DefaultAspx()
+		{
+			SetPath("/default.aspx");
+
+			var data = route.GetRouteData(httpContext);
+
+			Assert.That(data.Values["ContentItem"], Is.EqualTo(root));
+			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
+		}
+
+		[Test]
+		public void CanFindController_Slash()
+		{
+			SetPath("/");
+			
+			var data = route.GetRouteData(httpContext);
+
+			Assert.That(data.Values["ContentItem"], Is.EqualTo(root));
+			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
+		}
+
+		[Test]
 		public void CanFindController_ForExtendingType()
 		{
 			SetPath("/about/executives/");
@@ -103,6 +120,48 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(data.Values["controller"], Is.EqualTo("ExecutiveTeam"));
 		}
 
+		[Test]
+		public void WontGetVirtualPath_ForNonN2Controllers()
+		{
+			SetPath("/about/");
+
+			RouteData routeData = new RouteData();
+			routeData.Values["ContentItem"] = new RegularPage();
+			var data = route.GetVirtualPath(new RequestContext(httpContext, routeData), new RouteValueDictionary
+			                                                                            	{
+			                                                                            		{"controller", "NonN2"}
+			                                                                            	});
+
+			Assert.That(data, Is.Null);
+		}
+
+		[Test]
+		public void CanGetActionNameFromUrl_WithoutUsingTheQueryString()
+		{
+			SetPath("/about/submit");
+
+			var routeData = route.GetRouteData(httpContext);
+
+			Assert.That(routeData, Is.Not.Null);
+			Assert.That(routeData.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
+			Assert.That(routeData.Values["action"], Is.EqualTo("submit"));
+		}
+
+		[Test]
+		public void GeneratesNullVirtualPathData_WhenLinkingToAVanillaMvcPageFromAContentPage()
+		{
+			SetPath("/about/");
+
+			var routeData = new RouteData();
+			routeData.Values["ContentItem"] = new RegularPage();
+
+			var requestContext = new RequestContext(httpContext, routeData);
+			var virtualPath = route.GetVirtualPath(requestContext,
+			                                       new RouteValueDictionary {{"controller", "Mvc"}, {"action", "Index"}});
+
+			Assert.That(virtualPath, Is.Null);
+		}
+
 		//TODO figure out
 		//[Test]
 		//public void InstantiatesTheCorrectController()
@@ -111,7 +170,7 @@ namespace N2.Extensions.Tests.Mvc
 
 		//    var data = route.GetRouteData(httpContext);
 
-			
+
 		//    var factory = new DefaultControllerFactory();
 		//    var requestContext = new RequestContext(httpContext, data);
 		//    factory.CreateController(requestContext, (string)data.Values["controller"]);

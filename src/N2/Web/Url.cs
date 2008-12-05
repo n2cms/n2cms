@@ -206,17 +206,7 @@ namespace N2.Web
 
 		public string PathWithoutExtension
 		{
-			get
-			{
-				int index = path.LastIndexOfAny(dotsAndSlashes);
-
-				if (index < 0)
-					return path;
-				if (path[index] == '/')
-					return path;
-
-				return path.Substring(0, index);
-			}
+			get { return RemoveExtension(path); }
 		}
 
 		/// <summary>The combination of the path and the query string, e.g. /path.aspx?key=value.</summary>
@@ -593,6 +583,21 @@ namespace N2.Web
 		{
 			get { return serverUrl; }
 			set { serverUrl = value; }
+		}
+
+		/// <summary>Removes the file extension from a path.</summary>
+		/// <param name="path">The server relative path.</param>
+		/// <returns>The path without the file extension or the same path if no extension was found.</returns>
+		public static string RemoveExtension(string path)
+		{
+			int index = path.LastIndexOfAny(dotsAndSlashes);
+
+			if (index < 0)
+				return path;
+			if (path[index] == '/')
+				return path;
+
+			return path.Substring(0, index);
 		}
 	}
 }
