@@ -278,6 +278,7 @@
                                    $(Examples-Folder)\**\Ankh.Load;
                                    $(Examples-Folder)\**\*.sln.cache;
                                    $(Examples-Folder)\**\*.suo;
+                                   $(Examples-Folder)\**\*.resharper;
                                    $(Examples-Folder)\**\bin\Debug\*.*;
                                    $(Examples-Folder)\**\bin\Release\*.*;
                                    $(Examples-Folder)\**\*.pdb" />
