@@ -12,7 +12,7 @@
     <form id="form1" runat="server">
     <div>
         <asp:Label CssClass="msg" runat="server" ID="lblResult" />
-        <h1>Invalid item(s) in database</h1>
+        <h1>Invalid item(s) in database (class namechange or missing dll?)</h1>
         <p>An invalid class was found in the database (NHibernate.InvalidClassException). A few possible explanations:</p>
         <ul>
             <li><b>Missing dll.</b> A dll containing class definitions (e.g. n2.edit.dll) is no longer available in the /bin folder</li>

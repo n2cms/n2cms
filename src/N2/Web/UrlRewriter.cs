@@ -24,20 +24,22 @@ namespace N2.Web
 		readonly string[] observedExtensions = new[] { ".aspx" };
 		readonly IUrlParser urlParser;
 		readonly IWebContext webContext;
+		readonly IErrorHandler errorHandler;
 
 		/// <summary>Creates a new instance of the UrlRewriter.</summary>
-		public UrlRewriter(IUrlParser urlParser, IWebContext webContext)
+		public UrlRewriter(IUrlParser urlParser, IWebContext webContext, IErrorHandler errorHandler)
 		{
             if (urlParser == null) throw new ArgumentNullException("urlParser");
             if (webContext == null) throw new ArgumentNullException("webContext");
             
             this.urlParser = urlParser;
 			this.webContext = webContext;
+			this.errorHandler = errorHandler;
 		}
 
         /// <summary>Creates a new instance of the UrlRewriter.</summary>
-        public UrlRewriter(IUrlParser urlParser, IWebContext webContext, Configuration.HostSection config)
-            : this(urlParser, webContext)
+		public UrlRewriter(IUrlParser urlParser, IWebContext webContext, IErrorHandler errorHandler, HostSection config)
+            : this(urlParser, webContext, errorHandler)
         {
             if (config == null) throw new ArgumentNullException("config");
 
@@ -72,7 +74,7 @@ namespace N2.Web
 			}
 			catch (Exception ex)
 			{
-				Trace.TraceWarning(ex.ToString());
+				errorHandler.Notify(ex);
 			}
 		}
 

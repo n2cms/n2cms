@@ -8,16 +8,18 @@ using N2.Web.Mail;
 using NHibernate;
 using N2.Security;
 using N2.Persistence.NH;
+using N2.Installation;
 
 namespace N2.Web
 {
     /// <summary>
     /// Is notified of errors in the web context and tries to do something barely useful about them.
     /// </summary>
-    public class ErrorHandler : N2.Web.IErrorHandler
+    public class ErrorHandler : IErrorHandler
     {
         ISecurityManager security;
-        IWebContext context;
+    	readonly InstallationManager installer;
+    	IWebContext context;
 
         ErrorAction action = ErrorAction.None;
         IMailSender mailSender = null;
@@ -37,14 +39,15 @@ namespace N2.Web
             get { return errorCount; }
         }
 
-        public ErrorHandler(IWebContext context, ISecurityManager security)
+        public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer)
         {
             this.context = context;
             this.security = security;
+        	this.installer = installer;
         }
 
-        public ErrorHandler(IWebContext context, ISecurityManager security, EngineSection config)
-            : this(context, security)
+		public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer, EngineSection config)
+            : this(context, security, installer)
         {
             action = config.Errors.Action;
             mailTo = config.Errors.MailTo;
@@ -54,8 +57,8 @@ namespace N2.Web
             mailSender = new StaticMailSender();
         }
 
-        public ErrorHandler(IWebContext context, ISecurityManager security, IMailSender mailSender, EngineSection config)
-            :this(context, security, config)
+		public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer, IMailSender mailSender, EngineSection config)
+            :this(context, security, installer, config)
         {
             this.mailSender = mailSender;
         }
@@ -119,15 +122,37 @@ namespace N2.Web
 
         private void TryHandleWrongClassException(Exception ex)
         {
-            WrongClassException wex = ex as WrongClassException;
-            if (wex != null && security.IsAdmin(context.User))
+			if (!security.IsAdmin(context.User))
+				return;
+
+            if (ex is WrongClassException)
             {
-                string url = Url.Parse("~/Edit/Install/FixClass.aspx").AppendQuery("id", wex.Identifier);
-                context.Response.Redirect(url);
+            	WrongClassException wex = ex as WrongClassException;
+            	RedirectToFix(wex);
             }
+        	if (ex is LazyInitializationException)
+			{
+				try
+				{
+					installer.CheckDatabase();
+				}
+				catch(WrongClassException wex)
+				{
+					RedirectToFix(wex);
+				}
+				catch
+				{
+				}
+			}
         }
 
-        private static string FormatError(Exception ex)
+    	void RedirectToFix(WrongClassException wex)
+    	{
+    		string url = Url.Parse("~/Edit/Install/FixClass.aspx").AppendQuery("id", wex.Identifier);
+    		context.Response.Redirect(url);
+    	}
+
+    	private static string FormatError(Exception ex)
         {
             HttpContext ctx = HttpContext.Current;
             StringBuilder body = new StringBuilder();

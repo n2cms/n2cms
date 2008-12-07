@@ -8,7 +8,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div id="header" style="background-color:<%= N2.Context.UrlParser.CurrentSite["headerColor"] ?? "gray" %>">Multiple Site: <%= N2.Find.StartPage.Title %></div>
+        <div id="header" style="background-color:<%= N2.Context.UrlParser.StartPage["headerColor"] ?? "gray" %>">Multiple Site: <%= N2.Find.StartPage.Title %></div>
         <div class="menu">
 			<a style="float:right" href="<%= N2.Find.StartPage["NextSite"] %>">Next site</a>
 			<asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" SiteMapProvider="PublicSiteMap" ShowStartingNode="false" />

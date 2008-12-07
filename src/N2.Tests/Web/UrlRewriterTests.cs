@@ -28,7 +28,7 @@ namespace N2.Tests.Web
 
 			context = new FakeWebContextWrapper();
 			parser = new UrlParser(persister, context, mocks.Stub<IItemNotifier>(), new Host(context, root.ID, root.ID));
-			rewriter = new UrlRewriter(parser, context);
+			rewriter = new UrlRewriter(parser, context, null);
 		}
 
 
@@ -79,7 +79,7 @@ namespace N2.Tests.Web
         public void UpdatesCurrentPage_WhenExtension_IsConfiguredAsObserved()
         {
             HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } };
-			UrlRewriter rewriter = new UrlRewriter(parser, context, config);
+			UrlRewriter rewriter = new UrlRewriter(parser, context, null, config);
 			context.Url = "/one.htm";
 			
 			rewriter.InitializeRequest();
@@ -91,7 +91,7 @@ namespace N2.Tests.Web
         public void DoesntUpdateCurrentPage_WhenExtension_IsNotObserved()
         {
             HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection()} };
-			UrlRewriter rewriter = new UrlRewriter(parser, context, config);
+			UrlRewriter rewriter = new UrlRewriter(parser, context, null, config);
 			context.Url = "/one.html";			
 			
 			rewriter.InitializeRequest();
@@ -103,7 +103,7 @@ namespace N2.Tests.Web
         public void DoesntUpdateCurrentPage_WhenExtension_IsEmpty_AndEmpty_IsNotObserved()
         {
 			HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = false } };
-            UrlRewriter rewriter = new UrlRewriter(parser, context, config);
+			UrlRewriter rewriter = new UrlRewriter(parser, context, null, config);
 			context.Url = "/one";
 
             rewriter.InitializeRequest();
@@ -115,7 +115,7 @@ namespace N2.Tests.Web
         public void UpdatesCurrentPage_WhenEmptyExtension_IsConfiguredAsObserved()
         {
 			HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection() } };
-            UrlRewriter rewriter = new UrlRewriter(parser, context, config);
+			UrlRewriter rewriter = new UrlRewriter(parser, context, null, config);
 			context.Url = "/one";
 
             rewriter.InitializeRequest();

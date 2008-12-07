@@ -1,4 +1,5 @@
-﻿- tweaked file system UI
+﻿- better wrongclassexception handling
+- tweaked file system UI
 - better date picker localization
 - applied smason's patch: routing
 - tweaked mvc routing

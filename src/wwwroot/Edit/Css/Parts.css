@@ -26,7 +26,7 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 .controlPanel .plugins { margin-right:9px; text-align:right; }
 .controlPanel a { text-decoration:none; padding:1px;}
 .sc .open,.sc .close { text-indent:-2000px; position:absolute; bottom:6px; right:2px; height:24px; width:16px; cursor:pointer; cursor:hand; display:block; background:transparent url(../img/SlidingCurtain_open.png) no-repeat 50% 50%; }
-.sc .close {display:none; bottom:10px; background-image:url(../img/SlidingCurtain_close.png)}
+.sc .close {display:none; bottom:8px; background-image:url(../img/SlidingCurtain_close.png)}
 .opened .open {display:none; }
 .opened .close {display:inline;}
 

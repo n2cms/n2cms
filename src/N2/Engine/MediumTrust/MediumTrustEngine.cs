@@ -91,13 +91,13 @@ namespace N2.Engine.MediumTrust
             editManager = AddComponentInstance<IEditManager>(new EditManager(definitions, persister, versioner, securityManager, pluginFinder, settings, editConfiguration));
             integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
             IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
-            rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext));
-            IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, engineConfiguration));
             ItemXmlReader xmlReader = AddComponentInstance<ItemXmlReader>(new ItemXmlReader(definitions));
             ItemXmlWriter xmlWriter = AddComponentInstance<ItemXmlWriter>(new ItemXmlWriter(definitions, urlParser));
             Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
             InstallationManager installer = AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
-            lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, webContext, errorHandler, installer, editConfiguration, hostConfiguration));
+            IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
+			rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext, errorHandler, hostConfiguration));
+			lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, webContext, errorHandler, installer, editConfiguration, hostConfiguration));
             AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
