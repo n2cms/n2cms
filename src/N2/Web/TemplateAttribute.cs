@@ -15,7 +15,7 @@ namespace N2.Web
 	/// public class MyContent : ContentItem { }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class TemplateAttribute : Attribute, ITemplateReference
+	public class TemplateAttribute : Attribute, IPathFinder
 	{
 		readonly string action;
 		readonly int nameLength;
@@ -44,7 +44,7 @@ namespace N2.Web
 		/// <param name="item">The item to determine template for.</param>
 		/// <param name="remainingUrl">The remaining url used to match against action url segment.</param>
 		/// <returns>The matching template data if found, otherwise null.</returns>
-		public PathData GetTemplate(ContentItem item, string remainingUrl)
+		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
 			if (remainingUrl.Equals(action, StringComparison.InvariantCultureIgnoreCase) || remainingUrl.Equals(action + item.Extension))
 				return new PathData(item, templateUrl, action, string.Empty);

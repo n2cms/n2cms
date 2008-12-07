@@ -49,21 +49,21 @@ namespace N2.Web
 			return inner.IsRootOrStartPage(item);
 		}
 
-		public PathData ResolveTemplate(Url url)
+		public PathData ResolvePath(string url)
 		{
-			string key = string.Intern(url.ToString().ToLowerInvariant());
+			string key = string.Intern(url.ToLowerInvariant());
 
 			PathData data = HttpRuntime.Cache[key] as PathData;
 			if(data == null)
 			{
-				data = inner.ResolveTemplate(url);
+				data = inner.ResolvePath(url);
 				if(data.ID != 0)
 					HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
 			}
 			else
 			{
 				data = data.Attach(persister);
-				data.UpdateParameters(url.GetQueries());
+				data.UpdateParameters(Url.Parse(url).GetQueries());
 			}
 			
 			return data;

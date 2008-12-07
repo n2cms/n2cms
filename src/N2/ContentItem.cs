@@ -264,7 +264,7 @@ namespace N2
 					if (urlParser != null)
 						url = urlParser.BuildUrl(this);
 					else
-						url = FindTemplate(PathData.DefaultAction).RewrittenUrl;
+						url = FindPath(PathData.DefaultAction).RewrittenUrl;
 				}
 				return url;
 			}
@@ -286,7 +286,7 @@ namespace N2
 		[Obsolete("Use the new template API: item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl")]
         public virtual string RewrittenUrl
         {
-            get { return FindTemplate(PathData.DefaultAction).RewrittenUrl; }
+            get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
 		}
 		#endregion
 
@@ -509,7 +509,7 @@ namespace N2
 			}
 		}
 
-		public virtual PathData FindTemplate(string remainingUrl)
+		public virtual PathData FindPath(string remainingUrl)
 		{
 			if (remainingUrl == null)
 				return GetTemplate(string.Empty);
@@ -527,7 +527,7 @@ namespace N2
 				if (child.Equals(nameSegment))
 				{
 					remainingUrl = slashIndex < 0 ? null : remainingUrl.Substring(slashIndex + 1);
-					return child.FindTemplate(remainingUrl);
+					return child.FindPath(remainingUrl);
 				}
 			}
 
@@ -536,9 +536,9 @@ namespace N2
 
 		private PathData GetTemplate(string remainingUrl)
 		{
-			foreach (ITemplateReference reference in GetType().GetCustomAttributes(typeof(ITemplateReference), true))
+			foreach (IPathFinder reference in GetType().GetCustomAttributes(typeof(IPathFinder), true))
 			{
-				PathData data = reference.GetTemplate(this, remainingUrl);
+				PathData data = reference.GetPath(this, remainingUrl);
 				if (data != null)
 					return data;
 			}

@@ -1,0 +1,7 @@
+Make backup, drop upgrade files and recompile your solution.
+
+Breaking changes:
+- GetChild is no longer used to find items and cannot be used to modify the current item: Use FindPath instead
+- MVC content items now requires [RouteActionResolver] to handle actions: add [RouteActionResolver] to your base class
+- Control panel no longer expose buttons for external modification: remove stuff like <n2:ControlPanel SaveButton-Visible="false"
+- Service editable can no longer be used

@@ -35,7 +35,7 @@ namespace N2.Web.Mvc
 			if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
 				return null;
 
-			PathData td = engine.UrlParser.ResolveTemplate(httpContext.Request.RawUrl);
+			PathData td = engine.UrlParser.ResolvePath(httpContext.Request.RawUrl);
 
 			if (td.CurrentItem != null)
 			{

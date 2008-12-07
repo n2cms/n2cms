@@ -15,9 +15,9 @@ namespace N2.Addons.UITests.Items
 			set { SetDetail("Text", value, ""); }
 		}
 
-		public override PathData FindTemplate(string remainingUrl)
+		public override PathData FindPath(string remainingUrl)
 		{
-			PathData data = base.FindTemplate(remainingUrl);
+			PathData data = base.FindPath(remainingUrl);
 			if(data.CurrentItem != null && data.CurrentItem != this)
 				return data;
 

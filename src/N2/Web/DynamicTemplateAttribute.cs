@@ -7,9 +7,9 @@ namespace N2.Web
 	/// TemplateUrl property as template.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class)]
-	public class DynamicTemplateAttribute : Attribute, ITemplateReference
+	public class DynamicTemplateAttribute : Attribute, IPathFinder
 	{
-		public PathData GetTemplate(ContentItem item, string remainingUrl)
+		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
 			if(string.IsNullOrEmpty(remainingUrl))
 				return new PathData(item, item.TemplateUrl);

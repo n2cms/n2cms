@@ -7,10 +7,11 @@ namespace N2.Edit.FileSystem
 {
     public partial class File1 : EditPage
     {
-        protected Items.File SelectedFile
+        protected File SelectedFile
         {
-            get { return SelectedItem as Items.File; }
+            get { return SelectedItem as File; }
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Title = SelectedItem.Title;
@@ -19,9 +20,8 @@ namespace N2.Edit.FileSystem
     	protected void OnDownloadCommand(object sender, CommandEventArgs e)
     	{
 			Response.ContentType = "application/octet-stream";
-			var file = ((File)SelectedItem);
-    		Response.AppendHeader("Content-disposition", "attachment; filename=" + file.Name);
-    		Response.TransmitFile(file.PhysicalPath);
+			Response.AppendHeader("Content-disposition", "attachment; filename=" + SelectedFile.Name);
+			Response.TransmitFile(SelectedFile.PhysicalPath);
 			Response.End();
     	}
     }

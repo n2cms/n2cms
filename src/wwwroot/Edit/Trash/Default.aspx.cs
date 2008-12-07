@@ -69,7 +69,7 @@ namespace N2.Edit.Trash
 				VirtualPathUtility.ToAbsolute("~/Edit/Default.aspx"), // 0
 				GetNavigationUrl(item), // 1
 				item.ID, // 2
-				item.FindTemplate(PathData.DefaultAction).RewrittenUrl // 3
+				item.FindPath(PathData.DefaultAction).RewrittenUrl // 3
 				);
 
 			ClientScript.RegisterClientScriptBlock(

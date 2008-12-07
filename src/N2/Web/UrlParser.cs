@@ -35,7 +35,7 @@ namespace N2.Web
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		public ContentItem CurrentPage
 		{
-			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolveTemplate(webContext.Url).CurrentItem); }
+			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentItem); }
 		}
 
 		/// <summary>Gets the current start page.</summary>
@@ -60,30 +60,31 @@ namespace N2.Web
 			((IUrlParserDependency)e.AffectedItem).SetUrlParser(this);
 		}
 
-		public PathData ResolveTemplate(Url url)
+		public PathData ResolvePath(string url)
 		{
-			ContentItem item = TryLoadingFromQueryString(url, "page");
+			Url requestedUrl = url;
+			ContentItem item = TryLoadingFromQueryString(requestedUrl, "page");
 			if(item != null)
 			{
-				return item.FindTemplate(url["action"] ?? PathData.DefaultAction).SetArguments(url["arguments"]).UpdateParameters(url.GetQueries());
+				return item.FindPath(requestedUrl["action"] ?? PathData.DefaultAction).SetArguments(requestedUrl["arguments"]).UpdateParameters(requestedUrl.GetQueries());
 			}
 
-			string path = Url.ToRelative(url.PathWithoutExtension).TrimStart('~');
-			PathData data = StartPage.FindTemplate(path).UpdateParameters(url.GetQueries());
+			string path = Url.ToRelative(requestedUrl.PathWithoutExtension).TrimStart('~');
+			PathData data = StartPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
 			if(data.CurrentItem != null)
 				return data;
 
 			if (path.EndsWith(DefaultDocument, StringComparison.OrdinalIgnoreCase))
 			{
 				data = StartPage
-					.FindTemplate(path.Substring(0, path.Length - DefaultDocument.Length))
-					.UpdateParameters(url.GetQueries());
+					.FindPath(path.Substring(0, path.Length - DefaultDocument.Length))
+					.UpdateParameters(requestedUrl.GetQueries());
 				
 				if (data.CurrentItem != null)
 					return data;
 			}
 
-			PageNotFoundEventArgs args = new PageNotFoundEventArgs(url);
+			PageNotFoundEventArgs args = new PageNotFoundEventArgs(requestedUrl);
 			if (PageNotFound != null)
 				PageNotFound(this, args);
 			return args.AffectedPath ?? data;
@@ -209,25 +210,7 @@ namespace N2.Web
 			} while (current != null);
 
 			// we didn't find the startpage before reaching the root -> use rewrittenUrl
-			return item.FindTemplate(PathData.DefaultAction).RewrittenUrl;
-		}
-
-		/// <summary>Handles virtual directories and non-page items.</summary>
-		/// <param name="url">The relative url.</param>
-		/// <param name="item">The item whose url is supplied.</param>
-		/// <returns>The absolute url to the item.</returns>
-		[Obsolete]
-		protected virtual string ToAbsolute(string url, ContentItem item)
-		{
-			if (string.IsNullOrEmpty(url) || url == "/")
-				url = this.webContext.ToAbsolute("~/");
-			else
-				url = this.webContext.ToAbsolute("~" + url + item.Extension);
-
-			if (item.IsPage)
-				return url;
-			else
-				return url + "?item=" + item.ID;
+			return item.FindPath(PathData.DefaultAction).RewrittenUrl;
 		}
 
 		/// <summary>Checks if an item is startpage or root page</summary>

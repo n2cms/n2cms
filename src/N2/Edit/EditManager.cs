@@ -466,7 +466,7 @@ namespace N2.Edit
                 return null;
 			
             if(item.VersionOf != null)
-				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.FindTemplate(PathData.DefaultAction).RewrittenUrl)); 
+				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).RewrittenUrl)); 
 			
 			return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
 		}

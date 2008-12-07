@@ -13,7 +13,7 @@ namespace N2.Web
 	/// public class MyContent : ContentItem { }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class RegexTemplateAttribute : Attribute, ITemplateReference
+	public class RegexTemplateAttribute : Attribute, IPathFinder
 	{
 		readonly string action;
 		readonly Regex expression;
@@ -31,7 +31,7 @@ namespace N2.Web
 			this.templateUrl = templateUrl;
 		}
 
-		public PathData GetTemplate(ContentItem item, string remainingUrl)
+		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
 			if (remainingUrl.EndsWith(item.Extension) && item.Extension.Length > 0)
 				remainingUrl = remainingUrl.Substring(0, remainingUrl.Length - item.Extension.Length);

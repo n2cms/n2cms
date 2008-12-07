@@ -20,7 +20,7 @@ namespace N2.Edit.ItemSelection
 			foreach (ContentItem item in Find.EnumerateTree(Find.RootItem))
 			{
 				ClientScript.RegisterArrayDeclaration("linkArray", string.Format("{{key:\"{0}\", value:\"{1}\"}}",
-					item.FindTemplate(PathData.DefaultAction).RewrittenUrl,
+					item.FindPath(PathData.DefaultAction).RewrittenUrl,
 					item.Url.Replace("\"", "\\\"")));
 			}
 		}

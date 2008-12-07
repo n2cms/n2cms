@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,7 +71,7 @@ namespace N2.Tests.Web.UrlParsing
 		[Test]
 		public void WillForward_ResolveTemplate()
 		{
-			var data = parser.ResolveTemplate("/item1");
+			var data = parser.ResolvePath("/item1");
 
 			Assert.That(data.CurrentItem, Is.EqualTo(item1));
 		}
@@ -88,9 +88,9 @@ namespace N2.Tests.Web.UrlParsing
 		[Test]
 		public void CanCache_ResolvedTemplate()
 		{
-			parser.ResolveTemplate("/item1/item1_1"); // find and cache
+			parser.ResolvePath("/item1/item1_1"); // find and cache
 
-			var data = parser.ResolveTemplate("/item1/item1_1");
+			var data = parser.ResolvePath("/item1/item1_1");
 
 			Assert.That(repository.lastOperation, Is.EqualTo("Load(3)"), "Should have loaded the parsed item directly.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));
@@ -99,10 +99,10 @@ namespace N2.Tests.Web.UrlParsing
 		[Test]
 		public void WillExpire_ResolvedTemplate_OnChanges()
 		{
-			parser.ResolveTemplate("/item1/item1_1"); // find and cache
+			parser.ResolvePath("/item1/item1_1"); // find and cache
 			persister.Save(startItem); // incur changes
 
-			var data = parser.ResolveTemplate("/item1/item1_1");
+			var data = parser.ResolvePath("/item1/item1_1");
 
 			Assert.That(repository.lastOperation, Is.EqualTo("Load(1)"), "Should have re-resolve template from start page.");
 			Assert.That(data.CurrentItem, Is.EqualTo(item1_1));

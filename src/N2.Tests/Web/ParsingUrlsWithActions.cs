@@ -48,7 +48,7 @@ namespace N2.Tests.Web
 		public void MasterDetails_WithNoAction()
 		{
 			Url url = "/master.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo(PathData.DefaultAction));
 			Assert.That(data.TemplateUrl, Is.EqualTo("~/views/master.aspx"));
@@ -58,7 +58,7 @@ namespace N2.Tests.Web
 		public void MasterDetails_WithDetailsAction()
 		{
 			Url url = "/master/details.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo("details"));
 			Assert.That(data.TemplateUrl, Is.EqualTo("~/views/details.aspx"));
@@ -68,7 +68,7 @@ namespace N2.Tests.Web
 		public void ListDetails_WithNoAction()
 		{
 			Url url = "/list.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo(PathData.DefaultAction));
 			Assert.That(data.TemplateUrl, Is.EqualTo("~/views/list.aspx"));
@@ -78,7 +78,7 @@ namespace N2.Tests.Web
 		public void ListDetails_WithListAction()
 		{
 			Url url = "/list/details.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo("details"));
 			Assert.That(data.TemplateUrl, Is.EqualTo("~/views/details.aspx"));
@@ -88,7 +88,7 @@ namespace N2.Tests.Web
 		public void ListDetails_WithListAction_AndArguments()
 		{
 			Url url = "/list/details/123.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo("details"));
 			Assert.That(data.Argument, Is.EqualTo("123"));
@@ -99,7 +99,7 @@ namespace N2.Tests.Web
 		public void ListDetails_WithListAction_AndMultipleArguments()
 		{
 			Url url = "/list/details/123/and/321.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo("details"));
 			Assert.That(data.Argument, Is.EqualTo("123/and/321"));
@@ -110,7 +110,7 @@ namespace N2.Tests.Web
 		public void SimpleRegex()
 		{
 			Url url = "/regex/abcdefg.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.Null);
 			Assert.That(data.Argument, Is.EqualTo("abcdefg"));
@@ -121,7 +121,7 @@ namespace N2.Tests.Web
 		public void SimpleRegex_NoMatch_FallbacksToSomethingElse()
 		{
 			Url url = "/regex/bcdefgh.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.TemplateUrl, Is.Not.EqualTo("~/views/anything.aspx"));
 		}
@@ -130,7 +130,7 @@ namespace N2.Tests.Web
 		public void SimpleRegex_WithAction()
 		{
 			Url url = "/regex/zabcdefg.aspx";
-			PathData data = startItem.FindTemplate(url);
+			PathData data = startItem.FindPath(url);
 
 			Assert.That(data.Action, Is.EqualTo("zee"));
 			Assert.That(data.Argument, Is.EqualTo("zabcdefg"));

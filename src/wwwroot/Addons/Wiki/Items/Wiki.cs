@@ -86,9 +86,9 @@ namespace N2.Addons.Wiki.Items
             get { return this; }
         }
 
-		public override PathData FindTemplate(string remainingUrl)
+		public override PathData FindPath(string remainingUrl)
 		{
-			PathData data = base.FindTemplate(remainingUrl);
+			PathData data = base.FindPath(remainingUrl);
 			if(data.CurrentItem == null)
 			{
 				data = new PathData(this, "~/Addons/Wiki/UI/Views/Submit.aspx", "submit", Utility.CapitalizeFirstLetter(remainingUrl));

@@ -77,7 +77,7 @@ namespace N2.Edit.Versions
 			if (item.VersionOf == null)
 				return item.Url;
 
-			return Url.Parse(item.FindTemplate(PathData.DefaultAction).RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("original", item.VersionOf.ID);
+			return Url.Parse(item.FindPath(PathData.DefaultAction).RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("original", item.VersionOf.ID);
 		}
 
 		protected bool IsPublished(object dataItem)

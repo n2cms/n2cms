@@ -52,14 +52,9 @@ namespace N2.Templates.Tests.Wiki
             throw new NotImplementedException();
         }
 
-		#region IUrlParser Members
-
-
-		public PathData ResolveTemplate(Url url)
+		public PathData ResolvePath(string url)
 		{
 			throw new NotImplementedException();
 		}
-
-		#endregion
 	}
 }
