@@ -258,7 +258,7 @@ namespace N2.Edit
 				bool wasUpdated = UpdateItem(itemToUpdate, itemEditor.AddedEditors, user);
 				if (wasUpdated || IsNew(itemToUpdate))
 				{
-					itemToUpdate.Published = published ?? DateTime.Now;
+					itemToUpdate.Published = published ?? Utility.CurrentTime();
 					persister.Save(itemToUpdate);
 				}
 
@@ -286,7 +286,7 @@ namespace N2.Edit
 				// the item was the only version of an unpublished item - publish it
 				if(initialPublished == null && updatedPublished == null)
 				{
-					item.Published = DateTime.Now;
+					item.Published = Utility.CurrentTime();
 					wasUpdated = true;
 				}
 
@@ -466,7 +466,7 @@ namespace N2.Edit
                 return null;
 			
             if(item.VersionOf != null)
-				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl)); 
+				return string.Format("{0}?selectedUrl={1}", EditItemUrl, HttpUtility.UrlEncode(item.FindTemplate(PathData.DefaultAction).RewrittenUrl)); 
 			
 			return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
 		}

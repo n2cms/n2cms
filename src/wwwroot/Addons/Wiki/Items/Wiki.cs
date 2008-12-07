@@ -86,12 +86,12 @@ namespace N2.Addons.Wiki.Items
             get { return this; }
         }
 
-		public override TemplateData FindTemplate(string remainingUrl)
+		public override PathData FindTemplate(string remainingUrl)
 		{
-			TemplateData data = base.FindTemplate(remainingUrl);
+			PathData data = base.FindTemplate(remainingUrl);
 			if(data.CurrentItem == null)
 			{
-				data = new TemplateData(this, "~/Addons/Wiki/UI/Views/Submit.aspx", "submit", Utility.CapitalizeFirstLetter(remainingUrl));
+				data = new PathData(this, "~/Addons/Wiki/UI/Views/Submit.aspx", "submit", Utility.CapitalizeFirstLetter(remainingUrl));
 			}
 			return data;
 		}

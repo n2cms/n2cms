@@ -24,40 +24,28 @@ namespace N2.Persistence
 		public virtual ContentItem SaveVersion(ContentItem item)
 		{
 			CancellableItemEventArgs args = new CancellableItemEventArgs(item);
-			OnSavingVersion(args);
+			if (ItemSavingVersion != null)
+				ItemSavingVersion.Invoke(this, args);
 			if (!args.Cancel)
 			{
+				item = args.AffectedItem;
+
 				ContentItem oldVersion = item.Clone(false);
-				oldVersion.Expires = DateTime.Now;
-				oldVersion.Updated = DateTime.Now;
+				oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
+				oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
 				oldVersion.Parent = null;
 				oldVersion.VersionOf = item;
 				if (item.Parent != null)
 					oldVersion["ParentID"] = item.Parent.ID;
-				persister.Save(oldVersion);
+				itemRepository.SaveOrUpdate(oldVersion);
 
-				OnSavedVersion(new ItemEventArgs(oldVersion));
+				if (ItemSavedVersion != null)
+					ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
+
 				return oldVersion;
 			}
 			return null;
 		}
-
-		#region SaveVersion Helper Methods
-		/// <summary>Invokes the ItemSavingVersion event.</summary>
-		/// <param name="args">Event arguments that are checked for cancellation.</param>
-		protected virtual void OnSavingVersion(CancellableItemEventArgs args)
-		{
-			if (ItemSavingVersion != null)
-				ItemSavingVersion.Invoke(this, args);
-		}
-
-		/// <summary>Invokes the ItemSavedVersion event.</summary>
-		protected virtual void OnSavedVersion(ItemEventArgs args)
-		{
-			if (ItemSavedVersion != null)
-				ItemSavedVersion.Invoke(this, args);
-		}
-		#endregion
 
 		/// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
 		/// <param name="currentItem">The item that will be stored as a previous version.</param>
@@ -66,42 +54,37 @@ namespace N2.Persistence
 		public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem)
 		{
 			CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(currentItem, replacementItem);
-			OnReplacingVersion(args);
+			if (ItemReplacingVersion != null)
+				ItemReplacingVersion.Invoke(this, args);
 			if (!args.Cancel)
 			{
-				ContentItem versionOfCurrentItem = SaveVersion(currentItem);
+				currentItem = args.AffectedItem;
+				replacementItem = args.Destination;
 
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
+					ContentItem versionOfCurrentItem = SaveVersion(currentItem);
 					ClearAllDetails(currentItem);
 
 					UpdateCurrentItemData(currentItem, replacementItem);
 
+					currentItem.Updated = Utility.CurrentTime();
 					itemRepository.Update(currentItem);
 
+					if (ItemReplacedVersion != null)
+						ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));
+					if (replacementItem.VersionOf == currentItem)
+						itemRepository.Delete(replacementItem);
+
 					transaction.Commit();
+
+					return versionOfCurrentItem;
 				}
-				OnReplacedVersion(new ItemEventArgs(replacementItem));
-				return versionOfCurrentItem;
 			}
 			return currentItem;
 		}
 
 		#region ReplaceVersion Helper Methods
-		/// <summary>Invokes the ItemReplacingVersion event.</summary>
-		/// <param name="args">Arguments that are checked for cancellation.</param>
-		protected virtual void OnReplacingVersion(CancellableDestinationEventArgs args)
-		{
-			if (ItemReplacingVersion != null)
-				ItemReplacingVersion.Invoke(this, args);
-		}
-
-		/// <summary>Invokes the ItemReplacedVersion event.</summary>
-		protected virtual void OnReplacedVersion(ItemEventArgs args)
-		{
-			if (ItemReplacedVersion != null)
-				ItemReplacedVersion.Invoke(this, args);
-		}
 
 		private static void UpdateCurrentItemData(ContentItem currentItem, ContentItem replacementItem)
 		{

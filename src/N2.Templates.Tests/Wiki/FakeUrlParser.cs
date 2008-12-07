@@ -55,7 +55,7 @@ namespace N2.Templates.Tests.Wiki
 		#region IUrlParser Members
 
 
-		public TemplateData ResolveTemplate(Url url)
+		public PathData ResolveTemplate(Url url)
 		{
 			throw new NotImplementedException();
 		}

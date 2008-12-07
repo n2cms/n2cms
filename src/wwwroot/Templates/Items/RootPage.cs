@@ -56,7 +56,7 @@ namespace N2.Templates.Items
 
         public override string Url
         {
-			get { return FindTemplate(TemplateData.DefaultAction).RewrittenUrl; }
+			get { return FindTemplate(PathData.DefaultAction).RewrittenUrl; }
         }
 
         protected override string IconName

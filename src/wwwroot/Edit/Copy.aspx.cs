@@ -44,7 +44,7 @@ namespace N2.Edit
 
 		private void LoadDefaultsAndInfo()
 		{
-			btnCancel.NavigateUrl = SelectedItem.FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
+			btnCancel.NavigateUrl = SelectedItem.FindTemplate(PathData.DefaultAction).RewrittenUrl;
 			txtNewName.Text = MemorizedItem.Name;
 
 			this.Title = string.Format(GetLocalResourceString("CopyPage.TitleFormat"), 

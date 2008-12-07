@@ -3,7 +3,6 @@
 
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/filemanager.css" type="text/css" />    
-    <script src="../Js/plugins.ashx" type="text/javascript" ></script>
     <script src="../Js/UrlSelection.js" type="text/javascript" ></script>
 	<script src="Js/FileSelection.js" type="text/javascript" ></script>
     <script src="Js/jquery.MultiFile.js" type="text/javascript" ></script>

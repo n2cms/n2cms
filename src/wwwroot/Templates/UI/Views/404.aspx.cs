@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web.UI;
 using N2.Web;
 
@@ -15,7 +15,7 @@ namespace N2.Templates.UI.Views
                 {
                     var wc = N2.Context.Current.Resolve<N2.Web.IWebContext>();
                     wc.CurrentPage = page;
-					Server.Execute(Url.Parse(page.FindTemplate(TemplateData.DefaultAction).RewrittenUrl).AppendQuery("postback", page.Url));
+					Server.Execute(Url.Parse(page.FindTemplate(PathData.DefaultAction).RewrittenUrl).AppendQuery("postback", page.Url));
                     Response.Status = "404 Not Found";
                     Response.End();
                     return;

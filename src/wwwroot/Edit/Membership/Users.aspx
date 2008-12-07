@@ -1,8 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="N2.Edit.Membership.Users" Title="Users" meta:resourcekey="PageResource1" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-	<script src="../Js/plugins.ashx" type="text/javascript" ></script>
-    <script src="../Js/plugins.ashx" type="text/javascript" ></script>
-    <script type="text/javascript">
+	<script type="text/javascript">
         $(document).ready(function(){
 			toolbarSelect("users");
 		});

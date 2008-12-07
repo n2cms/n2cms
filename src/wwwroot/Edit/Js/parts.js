@@ -258,7 +258,7 @@
 
     window.SlidingCurtain = function(selector, startsOpen) {
         var $sc = $(selector);
-        var closedPos = { top: (18 - $sc.height()) + "px", left: "-156px" };
+        var closedPos = { top: (28 - $sc.height()) + "px", left: "-180px" };
         var openPos = { top: "0px", left: "0px" };
 
         var curtain = {

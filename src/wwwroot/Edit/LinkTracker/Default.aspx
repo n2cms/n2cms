@@ -2,7 +2,6 @@
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/linktracker.css" type="text/css" />
-    <script src="../Js/plugins.ashx" type="text/javascript" ></script>
     <script type="text/javascript">
         $(document).ready(function(){
 			toolbarSelect("linktracker");

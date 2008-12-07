@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using N2.Resources;
 
 namespace N2.Web.UI.WebControls
 {
@@ -64,6 +65,28 @@ namespace N2.Web.UI.WebControls
 
 			fromDate.TextChanged += TextChanged;
 			toDate.TextChanged += TextChanged;
+		}
+
+		protected override void OnPreRender(EventArgs e)
+		{
+			base.OnPreRender(e);
+			string scriptFormat = @"    		
+jQuery('#{0}').bind('dpClosed', function(e, selectedDates) {{
+	var d = selectedDates[0];
+	if (d) {{
+		d = new Date(d);
+		jQuery('#{1}').dpSetStartDate(d.addDays(1).asString());
+	}}
+}});
+jQuery('#{1}').bind('dpClosed', function(e, selectedDates) {{
+	var d = selectedDates[0];
+	if (d) {{
+		d = new Date(d);
+		jQuery('#{0}').dpSetEndDate(d.addDays(-1).asString());
+	}}
+}});";
+			string script = string.Format(scriptFormat, fromDate.ClientID, toDate.ClientID);
+			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
 		}
 
 		void TextChanged(object sender, EventArgs e)

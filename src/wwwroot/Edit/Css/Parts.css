@@ -19,14 +19,15 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 
 .sc { background:transparent url(../img/SlidingCurtain_bg.png) no-repeat 100% 100%; padding:0 4px 5px 0; position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; opacity:.6; }
 .opened {opacity:.92}
-.sc .scContent { width:168px; background-color:#fff; padding:10px 0 15px 0; }
+.sc .scContent { width:192px; background-color:#fff; padding:5px 0 10px 0; }
+.controlPanel { padding-right:10px; }
 .controlPanel img { margin-right:2px; border:none; vertical-align:middle;}
 .controlPanel a,.controlPanel a:visited { color:#333;}
 .controlPanel .plugins { margin-right:9px; text-align:right; }
 .controlPanel a { text-decoration:none; padding:1px;}
-.sc .open,.sc .close { background-color:transparent; position:absolute; bottom:3px; right:3px; cursor:pointer; cursor:hand; padding:15px 2px 1px 5px; display:block; font-weight:bold;}
-.sc .close {display:none;}
-.opened .open {display:none;}
+.sc .open,.sc .close { text-indent:-2000px; position:absolute; bottom:6px; right:2px; height:24px; width:16px; cursor:pointer; cursor:hand; display:block; background:transparent url(../img/SlidingCurtain_open.png) no-repeat 50% 50%; }
+.sc .close {display:none; bottom:10px; background-image:url(../img/SlidingCurtain_close.png)}
+.opened .open {display:none; }
 .opened .close {display:inline;}
 
 .definitions,.controlPanel .new { border-top:solid 1px #dedad7; padding-top:5px; margin-top:5px; }

@@ -1,7 +1,6 @@
 <%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Wizard.Default" Title="Wizard" meta:resourcekey="PageResource1" %>
 <%@ Import namespace="N2.Edit.Wizard.Items"%>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-	<script src="../Js/plugins.ashx" type="text/javascript" ></script>
     <script type="text/javascript">
         $(document).ready(function(){
 			toolbarSelect("wizard");

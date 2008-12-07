@@ -460,10 +460,10 @@
     <Compile Include="Web\Parts\ItemDeleter.cs" />
     <Compile Include="Web\Parts\ItemMover.cs" />
     <Compile Include="Web\Parts\PartsAjaxService.cs" />
+    <Compile Include="Web\PathData.cs" />
     <Compile Include="Web\RegexTemplateAttribute.cs" />
     <Compile Include="Web\TemplateAttribute.cs" />
     <Compile Include="Web\TagBuilder.cs" />
-    <Compile Include="Web\TemplateData.cs" />
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\CacheManager.cs" />
     <Compile Include="Web\UI\ContentCacheDependency.cs" />
@@ -616,15 +616,6 @@
     <EmbeddedResource Include="Resources\add.gif" />
     <EmbeddedResource Include="Resources\bin.gif" />
     <EmbeddedResource Include="Resources\delete.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\calendar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\DateTimePicker.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\DateTimePicker.css" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

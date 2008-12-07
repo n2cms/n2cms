@@ -20,11 +20,11 @@ namespace N2.Addons.Wiki.Web
 
 		protected string CurrentAction
 		{
-			get { return Engine.RequestContext.CurrentTemplate.Action; }
+			get { return Engine.RequestContext.CurrentPath.Action; }
 		}
 		protected string CurrentArguments
 		{
-			get { return Engine.RequestContext.CurrentTemplate.Argument; }
+			get { return Engine.RequestContext.CurrentPath.Argument; }
 		}
 
         ViewContext viewed = null;

@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Resources;
+using N2.Resources;
 using N2.Web;
 
 namespace N2.Edit.Web
@@ -22,8 +23,9 @@ namespace N2.Edit.Web
 
 		protected virtual void RegisterScripts()
 		{
-			N2.Resources.Register.JQuery(this);
-        }
+			Register.JQuery(this);
+			Register.JavaScript(this, "~/Edit/Js/Plugins.ashx");
+		}
 
         protected virtual string CancelUrl()
         {

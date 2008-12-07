@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-
-[assembly: WebResource("N2.Resources.calendar.png", "img/png")]
-[assembly: WebResource("N2.Resources.DateTimePicker.js", "text/javascript")]
-[assembly: WebResource("N2.Resources.DateTimePicker.css", "text/css")]
+using N2.Resources;
+using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace N2.Web.UI.WebControls
 {
@@ -17,23 +14,19 @@ namespace N2.Web.UI.WebControls
 		TextBox datePicker;
 		TextBox timePicker;
 
-		public DatePicker()
-		{
-		}
-
 		protected override void CreateChildControls()
 		{
 			datePicker = new TextBox();
 			datePicker.ID = ID + "_date";
 			Controls.Add(datePicker);
 			datePicker.CssClass = "datePicker";
-			datePicker.TextChanged += new EventHandler(OnTextChanged);
+			datePicker.TextChanged += OnTextChanged;
 
 			timePicker = new TextBox();
 			datePicker.ID = ID + "_time";
 			Controls.Add(timePicker);
 			timePicker.CssClass = "timePicker";
-			timePicker.TextChanged += new EventHandler(OnTextChanged);
+			timePicker.TextChanged += OnTextChanged;
 
 			base.CreateChildControls();
 		}
@@ -49,10 +42,9 @@ namespace N2.Web.UI.WebControls
 			get
 			{
 				DateTime d;
-				if (DateTime.TryParse(this.Text, out d))
+				if (DateTime.TryParse(Text, out d))
 					return d;
-				else
-					return null;
+				return null;
 			}
 			set
 			{
@@ -66,37 +58,44 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnInit(e);
 			RegiserClientScript();
-			RegisterStyleSheet();
+			//RegisterStyleSheet();
 			EnsureChildControls();
 		}
 
 		private void RegiserClientScript()
 		{
-			this.Page.ClientScript.RegisterClientScriptResource(typeof(DatePicker), "N2.Resources.DateTimePicker.js");
+			Register.JQuery(Page);
+			Register.JavaScript(Page, "~/Edit/Js/plugins.ashx");
+			string script = string.Format(DateScriptFormat, FirstDayOfWeek, DateFormat, FirstDate);
+			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
 		}
 
-		private void RegisterStyleSheet()
+		protected const string DateScriptFormat = @"
+Date.firstDayOfWeek = {0};
+Date.format = '{1}';
+jQuery.dpText.TEXT_CHOOSE_DATE = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+jQuery('.datePicker').datePicker({{ startDate: '{2}' }});";
+
+		protected virtual int FirstDayOfWeek
 		{
-			HtmlLink cssLink = new HtmlLink();
-			cssLink.Href = Page.ClientScript.GetWebResourceUrl(typeof(DatePicker), "N2.Resources.DateTimePicker.css");
-			cssLink.Attributes["type"] = "text/css";
-			cssLink.Attributes["rel"] = "stylesheet";
-			Page.Header.Controls.Add(cssLink);
+			get { return (int)Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek; }
+		}
+		protected virtual string DateFormat
+		{
+			get
+			{
+				CultureInfo culture = Thread.CurrentThread.CurrentCulture;
+				string datePattern = culture.DateTimeFormat.ShortDatePattern;
+				datePattern = Regex.Replace(datePattern, "M+", "mm");
+				datePattern = Regex.Replace(datePattern, "d+", "dd");
+				datePattern = Regex.Replace(datePattern, "y+", delegate(Match m) { return m.Value.Length < 3 ? "yy" : "yyyy"; });
+				return datePattern;
+			}
 		}
 
-		protected override void Render(System.Web.UI.HtmlTextWriter writer)
+		protected virtual string FirstDate
 		{
-			base.Render(writer);
-			RenderCalendarIcon(writer);
-		}
-
-		private void RenderCalendarIcon(HtmlTextWriter writer)
-		{
-			writer.Write("<img class='calendarOpener' src='{0}' onclick=\"displayDatePicker('{1}');\"/>",
-				Page.ClientScript.GetWebResourceUrl(typeof(DatePicker), "N2.Resources.calendar.png"),
-				datePicker.UniqueID,
-				datePicker.ClientID
-				);
+			get { return new DateTime(2000, 1, 1).ToString(DateFormat); }
 		}
 
 		#region IEditableTextControl Members
@@ -111,7 +110,7 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
-				return string.Format("{0} {1}", this.datePicker.Text, this.timePicker.Text);
+				return string.Format("{0} {1}", datePicker.Text, timePicker.Text);
 			}
 			set
 			{
@@ -120,7 +119,7 @@ namespace N2.Web.UI.WebControls
 					string[] dateTime = value.Split(' ');
 					datePicker.Text = dateTime[0];
 					if (dateTime.Length > 1)
-						timePicker.Text = dateTime[1];
+						timePicker.Text = dateTime[1].EndsWith(":00") ? dateTime[1].Substring(0, dateTime[1].Length - 3) : dateTime[1];
 					else
 						timePicker.Text = string.Empty;
 				}

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Security.Principal;
 using System.Web;
 
@@ -64,10 +64,10 @@ namespace N2.Web
 		}
 
 		/// <summary>The template used to serve this request.</summary>
-		public TemplateData CurrentTemplate
+		public PathData CurrentPath
 		{
-			get { return CurrentContext.CurrentTemplate; }
-			set { CurrentContext.CurrentTemplate = value;}
+			get { return CurrentContext.CurrentPath; }
+			set { CurrentContext.CurrentPath = value;}
 		}
 
 		/// <summary>The physical path on disk to the requested page.</summary>

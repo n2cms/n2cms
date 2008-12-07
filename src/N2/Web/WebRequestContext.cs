@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -44,9 +44,9 @@ namespace N2.Web
 		}
 
 		/// <summary>The template used to serve this request.</summary>
-		public TemplateData CurrentTemplate
+		public PathData CurrentPath
 		{
-			get { return RequestItems["CurrentTemplate"] as TemplateData; }
+			get { return RequestItems["CurrentTemplate"] as PathData; }
 			set { RequestItems["CurrentTemplate"] = value; }
 		}
 

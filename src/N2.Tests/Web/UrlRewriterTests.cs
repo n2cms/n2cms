@@ -61,7 +61,7 @@ namespace N2.Tests.Web
 
 			rewriter.InitializeRequest();
 
-			Assert.That(context.CurrentTemplate, Is.Not.Null);
+			Assert.That(context.CurrentPath, Is.Not.Null);
 			Assert.That(context.CurrentPage, Is.EqualTo(two));
         }
 

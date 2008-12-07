@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 
 namespace N2.Web
@@ -9,15 +8,15 @@ namespace N2.Web
 	/// it's template from the content item to the url rewriter.
 	/// </summary>
 	[Serializable]
-	public class TemplateData
+	public class PathData
 	{
 		public const string DefaultAction = "";
-		public static TemplateData EmptyTemplate()
+		public static PathData EmptyTemplate()
 		{
-			return new TemplateData(null, null, null, null);
+			return new PathData(null, null, null, null);
 		}
 
-		public TemplateData(ContentItem item, string templateUrl, string action, string arguments)
+		public PathData(ContentItem item, string templateUrl, string action, string arguments)
 			: this()
 		{
 			if(item != null)
@@ -30,13 +29,13 @@ namespace N2.Web
 			Argument = arguments;
 		}
 
-		public TemplateData(ContentItem item, string templateUrl)
+		public PathData(ContentItem item, string templateUrl)
 			: this(item, templateUrl, DefaultAction, string.Empty)
 		{
 
 		}
 
-		public TemplateData(int id, string path, string templateUrl, string action, string arguments)
+		public PathData(int id, string path, string templateUrl, string action, string arguments)
 			: this()
 		{
 			ID = id;
@@ -46,7 +45,7 @@ namespace N2.Web
 			Argument = arguments;
 		}
 
-		public TemplateData()
+		public PathData()
 		{
 			QueryParameters = new Dictionary<string, string>();
 		}
@@ -81,29 +80,29 @@ namespace N2.Web
 			}
 		}
 
-		public TemplateData UpdateParameters(IDictionary<string, string> queryString)
+		public PathData UpdateParameters(IDictionary<string, string> queryString)
 		{
 			foreach (KeyValuePair<string, string> pair in queryString)
 				QueryParameters[pair.Key] = pair.Value;
 			return this;
 		}
 
-		public TemplateData Detach()
+		public PathData Detach()
 		{
-			TemplateData data = new TemplateData(ID, Path, TemplateUrl, Action, Argument);
+			PathData data = new PathData(ID, Path, TemplateUrl, Action, Argument);
 			data.QueryParameters = new Dictionary<string, string>(data.QueryParameters);
 			return data;
 		}
 
-		public TemplateData Attach(N2.Persistence.IPersister persister)
+		public PathData Attach(N2.Persistence.IPersister persister)
 		{
 			ContentItem item = persister.Repository.Load(ID);
-			TemplateData data = new TemplateData(item, TemplateUrl, Action, Argument);
+			PathData data = new PathData(item, TemplateUrl, Action, Argument);
 			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
 			return data;
 		}
 
-		public TemplateData SetArguments(string argument)
+		public PathData SetArguments(string argument)
 		{
 			Argument = argument;
 			return this;

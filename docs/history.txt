@@ -1,4 +1,6 @@
-﻿- applied smason's patch: routing
+﻿- tweaked file system UI
+- better date picker localization
+- applied smason's patch: routing
 - tweaked mvc routing
 - updated syntax mvc beta
 - changed the way extensions are removed before parsing

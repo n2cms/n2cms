@@ -63,7 +63,7 @@ namespace N2.Web.UI.WebControls
 				AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
 			}
-			else if (state == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["previewOf"])
+			else if (state == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["original"])
 			{
 				item = Engine.Persister.Get(int.Parse(Page.Request["preview"]));
 			}

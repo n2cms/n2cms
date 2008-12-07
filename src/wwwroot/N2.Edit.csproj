@@ -1625,6 +1625,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit\Css\TabPanel.css" />
+    <Content Include="Edit\Js\plugins\date.js" />
+    <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
     <Content Include="Edit\Js\TabPanel.js" />
     <Content Include="Edit\Settings\SettingsEditor.ascx" />
     <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx" />

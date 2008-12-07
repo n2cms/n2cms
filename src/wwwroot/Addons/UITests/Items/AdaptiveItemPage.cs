@@ -4,7 +4,7 @@ using N2.Details;
 
 namespace N2.Addons.UITests.Items
 {
-	[Definition]
+	[Definition("Multiple Tests Page", SortOrder = 10000)]
 	[WithEditableTitle, WithEditableName]
 	public class AdaptiveItemPage : ContentItem
 	{
@@ -15,16 +15,16 @@ namespace N2.Addons.UITests.Items
 			set { SetDetail("Text", value, ""); }
 		}
 
-		public override TemplateData FindTemplate(string remainingUrl)
+		public override PathData FindTemplate(string remainingUrl)
 		{
-			TemplateData data = base.FindTemplate(remainingUrl);
+			PathData data = base.FindTemplate(remainingUrl);
 			if(data.CurrentItem != null && data.CurrentItem != this)
 				return data;
 
 			if(string.IsNullOrEmpty(remainingUrl))
-				return new TemplateData(this, "~/Addons/UITests/UI/AdaptiveItem.aspx");
+				return new PathData(this, "~/Addons/UITests/UI/AdaptiveItem.aspx");
 
-			return new TemplateData(this, "~/Addons/UITests/UI/" + remainingUrl + ".aspx");
+			return new PathData(this, "~/Addons/UITests/UI/" + remainingUrl + ".aspx");
 		}
 	}
 }

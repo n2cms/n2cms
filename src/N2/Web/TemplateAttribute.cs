@@ -25,7 +25,7 @@ namespace N2.Web
 		/// <summary>Registers a template for the defualt action. This is equivalent to overriding the TemplateUrl property on the content item.</summary>
 		/// <param name="defaultActionTemplateUrl">The url to the template to register, e.g. "~/path/to/my/template.aspx".</param>
 		public TemplateAttribute(string defaultActionTemplateUrl)
-			: this(TemplateData.DefaultAction, defaultActionTemplateUrl)
+			: this(PathData.DefaultAction, defaultActionTemplateUrl)
 		{
 		}
 
@@ -44,10 +44,10 @@ namespace N2.Web
 		/// <param name="item">The item to determine template for.</param>
 		/// <param name="remainingUrl">The remaining url used to match against action url segment.</param>
 		/// <returns>The matching template data if found, otherwise null.</returns>
-		public TemplateData GetTemplate(ContentItem item, string remainingUrl)
+		public PathData GetTemplate(ContentItem item, string remainingUrl)
 		{
 			if (remainingUrl.Equals(action, StringComparison.InvariantCultureIgnoreCase) || remainingUrl.Equals(action + item.Extension))
-				return new TemplateData(item, templateUrl, action, string.Empty);
+				return new PathData(item, templateUrl, action, string.Empty);
 
 			if (remainingUrl.StartsWith(nameWithSlash))
 			{
@@ -56,7 +56,7 @@ namespace N2.Web
 				if (arguments.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase))
 					arguments = arguments.Substring(0, arguments.Length - extension.Length);
 
-				return new TemplateData(item, templateUrl, action, arguments);
+				return new PathData(item, templateUrl, action, arguments);
 			}
 			
 			return null;

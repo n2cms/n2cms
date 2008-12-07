@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using N2.Web;
 
 namespace N2.Templates.UI.Views
@@ -15,7 +15,7 @@ namespace N2.Templates.UI.Views
                 {
                     var wc = N2.Context.Current.Resolve<N2.Web.IWebContext>();
                     wc.CurrentPage = page;
-					Server.Execute(Url.Parse(page.FindTemplate(TemplateData.DefaultAction).RewrittenUrl).AppendQuery("postback", page.Url));
+					Server.Execute(Url.Parse(page.FindTemplate(PathData.DefaultAction).RewrittenUrl).AppendQuery("postback", page.Url));
                     Response.End();
                     return;
                 }

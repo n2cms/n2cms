@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 
 namespace N2.Web
@@ -31,7 +31,7 @@ namespace N2.Web
 			this.templateUrl = templateUrl;
 		}
 
-		public TemplateData GetTemplate(ContentItem item, string remainingUrl)
+		public PathData GetTemplate(ContentItem item, string remainingUrl)
 		{
 			if (remainingUrl.EndsWith(item.Extension) && item.Extension.Length > 0)
 				remainingUrl = remainingUrl.Substring(0, remainingUrl.Length - item.Extension.Length);
@@ -39,7 +39,7 @@ namespace N2.Web
 			Match m = expression.Match(remainingUrl);
 			if(m.Success)
 			{
-				return new TemplateData(item, templateUrl, action, remainingUrl);
+				return new PathData(item, templateUrl, action, remainingUrl);
 			}
 			return null;
 		}

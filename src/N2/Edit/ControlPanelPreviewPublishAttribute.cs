@@ -29,10 +29,18 @@ namespace N2.Edit
 			btn.Command += delegate 
 			{
 				ContentItem previewedItem = Context.Current.Persister.Get(int.Parse(container.Page.Request["preview"])); ;
-				if (previewedItem.VersionOf == null) throw new N2Exception("Cannot publish item that is not a version of another item");
-				ContentItem published = previewedItem.VersionOf;
-				Context.Current.Resolve<Persistence.IVersionManager>().ReplaceVersion(published, previewedItem);
-				RedirectTo(container.Page, published);
+				if (previewedItem.VersionOf == null)
+				{
+					previewedItem.Published = Utility.CurrentTime();
+					Context.Current.Persister.Save(previewedItem);
+					RedirectTo(container.Page, previewedItem);
+				}
+				else
+				{
+					ContentItem published = previewedItem.VersionOf;
+					Context.Current.Resolve<Persistence.IVersionManager>().ReplaceVersion(published, previewedItem);
+					RedirectTo(container.Page, published);
+				}
 			};
 			return btn;
 		}

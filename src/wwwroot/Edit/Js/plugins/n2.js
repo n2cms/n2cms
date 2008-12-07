@@ -58,46 +58,19 @@ n2nav.setupToolbar = function(path){
 
 
 
-
-
-
-
-
-
-
 // EDIT
-function edit(){}
-edit.show = function(btn, bar){
-    $(btn).addClass("toggled").blur();
-    $(bar).show();
-    cookie.create(bar, "show");
-}
-edit.hide = function(btn, bar){
-    $(btn).removeClass("toggled").blur();
-    $(bar).hide();
-    cookie.erase(bar);
-}
-
-$(document).ready( function() {
-	$(".right fieldset").hide();
-	
-	$(".showInfo").toggle(function(){
-	    edit.show(this, ".infoBox");
-	}, function(){
-	    edit.hide(this, ".infoBox");
-	});
-	
-	$(".showZones").toggle(function(){
-        edit.show(this, ".zonesBox");
-	}, function(){
-        edit.hide(this, ".zonesBox");
-	});
-	
-	if(cookie.read(".infoBox"))
-	    $(".showInfo").click();
-	if(cookie.read(".zonesBox"))
-	    $(".showZones").click();
-});
+var n2toggle = {
+    show: function(btn, bar) {
+        $(btn).addClass("toggled").blur();
+        $(bar).show();
+        cookie.create(bar, "show");
+    },
+    hide: function(btn, bar) {
+        $(btn).removeClass("toggled").blur();
+        $(bar).hide();
+        cookie.erase(bar)
+    }
+};
 
 
 // DEFAULT

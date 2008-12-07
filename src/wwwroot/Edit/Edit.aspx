@@ -5,12 +5,6 @@
 <%@ Register Src="ItemInfo.ascx" TagName="ItemInfo" TagPrefix="uc1" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/edit.css" type="text/css" />
-	<script src="Js/plugins.ashx" type="text/javascript" ></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect('<%= CreatingNew ? "new" : "edit" %>');
-		});
-	</script>
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
@@ -20,8 +14,8 @@
     </div>
     <n2:OptionsMenu id="om" runat="server">
 		<asp:LinkButton ID="btnSave" OnCommand="OnSaveCommand" runat="server" CssClass="command" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
-		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
-		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command" meta:resourceKey="btnPreview">Preview changes</asp:LinkButton>
+		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
+		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain" meta:resourceKey="btnPreview">Preview changes</asp:LinkButton>
     </n2:OptionsMenu>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
@@ -45,6 +39,26 @@
 				var $hp = $(this);
 				$hp.toggleClass("helpVisible");
 			});
+    		toolbarSelect('<%= CreatingNew ? "new" : "edit" %>');
+
+			$(".right fieldset").hide();
+
+			$(".showInfo").toggle(function() {
+				n2toggle.show(this, ".infoBox");
+			}, function() {
+				n2toggle.hide(this, ".infoBox");
+			});
+
+			$(".showZones").toggle(function() {
+				n2toggle.show(this, ".zonesBox");
+			}, function() {
+				n2toggle.hide(this, ".zonesBox");
+			});
+
+			if (cookie.read(".infoBox"))
+				$(".showInfo").click();
+			if (cookie.read(".zonesBox"))
+				$(".showZones").click();
 		});
     </script>
 </asp:Content>

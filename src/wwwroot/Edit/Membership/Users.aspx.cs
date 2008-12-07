@@ -1,23 +1,12 @@
 using System;
-using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
+using N2.Edit.Web;
 
 namespace N2.Edit.Membership
 {
-	[N2.Edit.ToolbarPlugin("", "users", "~/Edit/Membership/Users.aspx", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/group_key.gif", 110, ToolTip = "administer users", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
-	public partial class Users : System.Web.UI.Page
+	[ToolbarPlugin("", "users", "~/Edit/Membership/Users.aspx", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/group_key.gif", 110, ToolTip = "administer users", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
+	public partial class Users : EditPage
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-		}
-
 		protected void odsUsers_ItemCommand(object sender, DataGridCommandEventArgs args)
 		{
 			if (args.CommandName == "Delete")

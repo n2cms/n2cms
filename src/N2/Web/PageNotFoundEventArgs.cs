@@ -10,7 +10,7 @@ namespace N2.Web
     public class PageNotFoundEventArgs : ItemEventArgs
     {
         private string url;
-    	TemplateData affectedTemplate;
+    	PathData affectedPath;
 
         public PageNotFoundEventArgs(string url)
             : base(null)
@@ -26,10 +26,10 @@ namespace N2.Web
         }
 
 		/// <summary>The template data to associate with the not found url.</summary>
-    	public TemplateData AffectedTemplate
+    	public PathData AffectedPath
     	{
-    		get { return affectedTemplate; }
-    		set { affectedTemplate = value; }
+    		get { return affectedPath; }
+    		set { affectedPath = value; }
     	}
     }
 }

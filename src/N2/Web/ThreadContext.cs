@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -20,7 +20,7 @@ namespace N2.Web
         private static string baseDirectory;
 
     	[ThreadStatic] ContentItem currentPage;
-    	[ThreadStatic] TemplateData currentTemplate;
+    	[ThreadStatic] PathData currentPath;
     	[ThreadStatic] static IDictionary items;
     	[ThreadStatic] Url localUrl = new Url("/");
     	[ThreadStatic] Url url = new Url("http://localhost");
@@ -58,10 +58,10 @@ namespace N2.Web
 		}
 
 		/// <summary>The template used to serve this request.</summary>
-		public TemplateData CurrentTemplate
+		public PathData CurrentPath
 		{
-			get { return currentTemplate; }
-			set { currentTemplate = value; }
+			get { return currentPath; }
+			set { currentPath = value; }
 		}
 
         public virtual void Dispose()

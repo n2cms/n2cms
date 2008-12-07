@@ -49,11 +49,11 @@ namespace N2.Web
 			return inner.IsRootOrStartPage(item);
 		}
 
-		public TemplateData ResolveTemplate(Url url)
+		public PathData ResolveTemplate(Url url)
 		{
 			string key = string.Intern(url.ToString().ToLowerInvariant());
 
-			TemplateData data = HttpRuntime.Cache[key] as TemplateData;
+			PathData data = HttpRuntime.Cache[key] as PathData;
 			if(data == null)
 			{
 				data = inner.ResolveTemplate(url);

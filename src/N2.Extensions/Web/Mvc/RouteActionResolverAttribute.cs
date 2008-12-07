@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace N2.Web.Mvc
 {
@@ -7,11 +7,11 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class RouteActionResolverAttribute : Attribute, ITemplateReference
 	{
-		public TemplateData GetTemplate(ContentItem item, string remainingUrl)
+		public PathData GetTemplate(ContentItem item, string remainingUrl)
 		{
 			if (string.IsNullOrEmpty(remainingUrl) || string.Equals(remainingUrl, "default", StringComparison.InvariantCultureIgnoreCase))
 				remainingUrl = "index";
-			return new TemplateData(item, null, remainingUrl, null);
+			return new PathData(item, null, remainingUrl, null);
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace N2.Edit
     [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/page_edit.gif", 20, GlobalResourceClassName = "Navigation")]
 	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpEdit", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
-	[ControlPanelLink("cpEditPreview", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selected={Selected.Path}", "Back to edit", 10, ControlPanelState.Previewing)]
+	[ControlPanelLink("cpEditPreview", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20)]
 	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30)]
 	[ControlPanelEditingSave("Save changes", 10)]
@@ -219,7 +219,9 @@ namespace N2.Edit
 			{
 				ContentItem savedVersion = SaveVersion();
 				Url redirectTo = (savedVersion as INode).PreviewUrl;
-				redirectTo = redirectTo.AppendQuery("preview", savedVersion.ID).AppendQuery("previewOf", savedVersion.VersionOf.ID);
+				redirectTo = redirectTo.AppendQuery("preview", savedVersion.ID);
+				if(savedVersion.VersionOf != null)
+					redirectTo = redirectTo.AppendQuery("original", savedVersion.VersionOf.ID);
 				if (!string.IsNullOrEmpty(Request["returnUrl"]))
 					redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
 				Response.Redirect(redirectTo);

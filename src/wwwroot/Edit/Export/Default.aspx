@@ -2,7 +2,6 @@
 <%@ Register Src="../AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 <asp:Content ID="CH" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/exportImport.css" type="text/css" />
-    <script src="../Js/plugins.ashx" type="text/javascript" ></script>
     <script type="text/javascript">
         $(document).ready(function(){
 			toolbarSelect("exportimport");

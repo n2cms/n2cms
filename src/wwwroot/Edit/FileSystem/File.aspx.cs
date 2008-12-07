@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using N2.Edit.Web;
+using N2.Edit.FileSystem.Items;
 
 namespace N2.Edit.FileSystem
 {
@@ -22,5 +15,14 @@ namespace N2.Edit.FileSystem
         {
             Title = SelectedItem.Title;
         }
+
+    	protected void OnDownloadCommand(object sender, CommandEventArgs e)
+    	{
+			Response.ContentType = "application/octet-stream";
+			var file = ((File)SelectedItem);
+    		Response.AppendHeader("Content-disposition", "attachment; filename=" + file.Name);
+    		Response.TransmitFile(file.PhysicalPath);
+			Response.End();
+    	}
     }
 }

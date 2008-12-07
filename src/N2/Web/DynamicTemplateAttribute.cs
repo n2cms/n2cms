@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace N2.Web
 {
@@ -9,10 +9,10 @@ namespace N2.Web
 	[AttributeUsage(AttributeTargets.Class)]
 	public class DynamicTemplateAttribute : Attribute, ITemplateReference
 	{
-		public TemplateData GetTemplate(ContentItem item, string remainingUrl)
+		public PathData GetTemplate(ContentItem item, string remainingUrl)
 		{
 			if(string.IsNullOrEmpty(remainingUrl))
-				return new TemplateData(item, item.TemplateUrl);
+				return new PathData(item, item.TemplateUrl);
 			return null;
 		}
 	}

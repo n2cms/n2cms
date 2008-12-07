@@ -60,16 +60,16 @@ namespace N2.Web
 			((IUrlParserDependency)e.AffectedItem).SetUrlParser(this);
 		}
 
-		public TemplateData ResolveTemplate(Url url)
+		public PathData ResolveTemplate(Url url)
 		{
 			ContentItem item = TryLoadingFromQueryString(url, "page");
 			if(item != null)
 			{
-				return item.FindTemplate(url["action"] ?? TemplateData.DefaultAction).SetArguments(url["arguments"]).UpdateParameters(url.GetQueries());
+				return item.FindTemplate(url["action"] ?? PathData.DefaultAction).SetArguments(url["arguments"]).UpdateParameters(url.GetQueries());
 			}
 
 			string path = Url.ToRelative(url.PathWithoutExtension).TrimStart('~');
-			TemplateData data = StartPage.FindTemplate(path).UpdateParameters(url.GetQueries());
+			PathData data = StartPage.FindTemplate(path).UpdateParameters(url.GetQueries());
 			if(data.CurrentItem != null)
 				return data;
 
@@ -86,7 +86,7 @@ namespace N2.Web
 			PageNotFoundEventArgs args = new PageNotFoundEventArgs(url);
 			if (PageNotFound != null)
 				PageNotFound(this, args);
-			return args.AffectedTemplate ?? data;
+			return args.AffectedPath ?? data;
 		}
 
 		/// <summary>Finds an item by traversing names from the start page.</summary>
@@ -209,7 +209,7 @@ namespace N2.Web
 			} while (current != null);
 
 			// we didn't find the startpage before reaching the root -> use rewrittenUrl
-			return item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
+			return item.FindTemplate(PathData.DefaultAction).RewrittenUrl;
 		}
 
 		/// <summary>Handles virtual directories and non-page items.</summary>

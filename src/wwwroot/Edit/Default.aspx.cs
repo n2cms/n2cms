@@ -1,4 +1,5 @@
 using System;
+using N2.Resources;
 using N2.Web.UI.WebControls;
 
 namespace N2.Edit
@@ -10,6 +11,8 @@ namespace N2.Edit
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
+
+			Register.JavaScript(this, "~/Edit/Js/Plugins.ashx");
 
 			try
 			{

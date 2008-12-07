@@ -81,7 +81,7 @@ namespace N2.Persistence.NH
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
 					if (item.VersionOf == null)
-						item.Updated = DateTime.Now;
+						item.Updated = Utility.CurrentTime();
 					if (string.IsNullOrEmpty(item.Name))
 						item.Name = null;
 

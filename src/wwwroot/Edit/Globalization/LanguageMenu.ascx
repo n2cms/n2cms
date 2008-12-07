@@ -7,13 +7,13 @@
 </asp:PlaceHolder>
 <asp:PlaceHolder runat="server" Visible='<%# !CreatingNew %>'>
 	<n2:OptionsMenu id="om" runat="server">
-		<asp:HyperLink runat="server" CssClass="command" NavigateUrl='<%# "~/Edit/Globalization/Default.aspx?selected=" + Server.UrlEncode(SelectedItem.Path) %>' ToolTip="<%# CurrentLanguage.LanguageCode %>">
+		<asp:HyperLink runat="server" CssClass="command plain" NavigateUrl='<%# "~/Edit/Globalization/Default.aspx?selected=" + Server.UrlEncode(SelectedItem.Path) %>' ToolTip="<%# CurrentLanguage.LanguageCode %>">
 			<asp:Image ID="imgCurrent" ImageUrl='<%# CurrentLanguage.FlagUrl %>' AlternateText="flag" runat="server" />
 			<%# CurrentLanguage.LanguageTitle %>
 		</asp:HyperLink>
 		<asp:Repeater runat="server" id="rptLanguages">
 			<ItemTemplate>
-				<asp:HyperLink NavigateUrl='<%# Eval("EditUrl") %>' CssClass="command" runat="server" ToolTip='<%# Eval("Language.LanguageCode") %>'>
+				<asp:HyperLink NavigateUrl='<%# Eval("EditUrl") %>' CssClass="command plain" runat="server" ToolTip='<%# Eval("Language.LanguageCode") %>'>
 					<asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText="flag" runat="server" />
 					<%# Eval("Language.LanguageTitle") %>
 				</asp:HyperLink>

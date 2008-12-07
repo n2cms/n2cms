@@ -40,6 +40,11 @@ namespace N2.Edit.FileSystem.Items
                 MoveTo(newParent);
         }
 
+		public override string Url
+		{
+			get { return Directory.Url + "/" + Name; }
+		}
+
         #region IActiveRecord Members
 
         public void Save()

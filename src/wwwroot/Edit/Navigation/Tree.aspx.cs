@@ -1,8 +1,4 @@
 using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using N2.Web;
 
 namespace N2.Edit.Navigation
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Principal;
 using System.Collections;
 using System.Web;
@@ -36,7 +36,7 @@ namespace N2.Web
 		ContentItem CurrentPage { get; set; }
 
 		/// <summary>The template used to serve this request.</summary>
-		TemplateData CurrentTemplate { get; set; }
+		PathData CurrentPath { get; set; }
 
 		/// <summary>The local part of the requested path, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
         Url Url { get; }

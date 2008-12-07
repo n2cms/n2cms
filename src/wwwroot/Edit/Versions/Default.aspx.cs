@@ -1,11 +1,5 @@
 using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Collections;
 using System.Collections.Generic;
 using N2.Web;
 
@@ -83,7 +77,7 @@ namespace N2.Edit.Versions
 			if (item.VersionOf == null)
 				return item.Url;
 
-			return Url.Parse(item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("previewOf", item.VersionOf.ID);
+			return Url.Parse(item.FindTemplate(PathData.DefaultAction).RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("original", item.VersionOf.ID);
 		}
 
 		protected bool IsPublished(object dataItem)

@@ -60,12 +60,12 @@ namespace N2.Web
 				Url url = webContext.Url.LocalUrl;
 				if (IsUpdatable(url))
 				{
-					TemplateData data = urlParser.ResolveTemplate(url);
+					PathData data = urlParser.ResolveTemplate(url);
 
 					Debug.WriteLine("CurrentPage <- " + data.CurrentItem);
 
 					webContext.CurrentPage = data.CurrentItem;
-					webContext.CurrentTemplate = data;
+					webContext.CurrentPath = data;
 				}
 				else if (url == "/")
 					webContext.CurrentPage = urlParser.StartPage;
@@ -82,7 +82,7 @@ namespace N2.Web
             if (rewrite == RewriteMethod.None)
                 return;
 
-			TemplateData data = webContext.CurrentTemplate;
+			PathData data = webContext.CurrentPath;
             if (data != null && data.CurrentItem != null&& PathIsRewritable())
 			{
 				Url requestedUrl = webContext.Url.LocalUrl;

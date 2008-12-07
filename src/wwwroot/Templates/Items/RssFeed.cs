@@ -56,7 +56,7 @@ namespace N2.Templates.Items
 
         public string PreviewUrl
         {
-			get { return base.FindTemplate(TemplateData.DefaultAction).RewrittenUrl; }
+			get { return base.FindTemplate(PathData.DefaultAction).RewrittenUrl; }
         }
 
         public virtual IEnumerable<ISyndicatable> GetItems()

@@ -264,7 +264,7 @@ namespace N2
 					if (urlParser != null)
 						url = urlParser.BuildUrl(this);
 					else
-						url = FindTemplate(TemplateData.DefaultAction).RewrittenUrl;
+						url = FindTemplate(PathData.DefaultAction).RewrittenUrl;
 				}
 				return url;
 			}
@@ -286,7 +286,7 @@ namespace N2
 		[Obsolete("Use the new template API: item.FindTemplate(TemplateData.DefaultAction).RewrittenUrl")]
         public virtual string RewrittenUrl
         {
-            get { return FindTemplate(TemplateData.DefaultAction).RewrittenUrl; }
+            get { return FindTemplate(PathData.DefaultAction).RewrittenUrl; }
 		}
 		#endregion
 
@@ -509,7 +509,7 @@ namespace N2
 			}
 		}
 
-		public virtual TemplateData FindTemplate(string remainingUrl)
+		public virtual PathData FindTemplate(string remainingUrl)
 		{
 			if (remainingUrl == null)
 				return GetTemplate(string.Empty);
@@ -534,16 +534,16 @@ namespace N2
 			return GetTemplate(remainingUrl);
 		}
 
-		private TemplateData GetTemplate(string remainingUrl)
+		private PathData GetTemplate(string remainingUrl)
 		{
 			foreach (ITemplateReference reference in GetType().GetCustomAttributes(typeof(ITemplateReference), true))
 			{
-				TemplateData data = reference.GetTemplate(this, remainingUrl);
+				PathData data = reference.GetTemplate(this, remainingUrl);
 				if (data != null)
 					return data;
 			}
 
-			return TemplateData.EmptyTemplate();
+			return PathData.EmptyTemplate();
 		}
 
 		/// <summary>Tries to get a child item with a given name. This method igonres user permissions and any trailing '.aspx' that might be part of the name.</summary>

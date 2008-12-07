@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using N2.Edit.Web;
+using N2.Collections;
+using N2.Edit.FileSystem.Items;
 
 namespace N2.Edit.FileSystem
 {
@@ -17,6 +10,10 @@ namespace N2.Edit.FileSystem
         protected void Page_Load(object sender, EventArgs e)
         {
             Title = SelectedItem.Title;
+        	hlNewFile.NavigateUrl = Engine.EditManager.GetEditNewPageUrl(SelectedItem, Engine.Definitions.GetDefinition(typeof (File)), null, CreationPosition.Below);
+
+			lblDirectories.Text = SelectedItem.GetChildren(new TypeFilter(typeof(Directory))).Count.ToString();
+			lblFiles.Text = SelectedItem.GetChildren(new TypeFilter(typeof(File))).Count.ToString();
         }
     }
 }

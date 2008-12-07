@@ -18,6 +18,8 @@
 		<a href="<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("edit", "true") %>">edit</a>
 		<hr />
 		<n2:Zone ZoneName="Right" runat="server" />
+		<asp:Calendar runat="server" />
+		<%= System.Threading.Thread.CurrentThread.CurrentCulture.DateTimeFormat.FirstDayOfWeek %>
 	</form>
 </body>
 </html>
