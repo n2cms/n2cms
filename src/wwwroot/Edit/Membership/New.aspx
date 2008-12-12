@@ -26,7 +26,7 @@
                     <div>
                         <asp:Label ID="lblPassword" runat="server" AssociatedControlID="Password" 
 							meta:resourcekey="lblPasswordResource1">Password</asp:Label>
-                        <asp:TextBox ID="Password" runat="server" 
+                        <asp:TextBox ID="Password" runat="server" TextMode="Password"
 							meta:resourcekey="PasswordResource2" />
                     </div>
                     <div>
