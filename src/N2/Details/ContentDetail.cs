@@ -159,17 +159,18 @@ namespace N2.Details
         public override bool Equals( object obj )
 		{
 			if( this == obj ) return true;
-			if( ( obj == null ) || ( obj.GetType() != this.GetType() ) ) return false;
-			ContentDetail castObj = (ContentDetail)obj; 
-			return ( castObj != null ) &&
-				( this.ID == castObj.ID );
+			ContentDetail other = obj as ContentDetail;
+			return other != null && id != 0 && id == other.id;
 		}
-		
+
+    	int? hashCode;
 		/// <summary>Gets a hash code based on the ID.</summary>
 		/// <returns>A hash code.</returns>
 		public override int GetHashCode()
 		{
-			return id.GetHashCode();
+			if (!hashCode.HasValue)
+				hashCode = (id > 0 ? id.GetHashCode() : base.GetHashCode());
+			return hashCode.Value;
 		}
 
 		/// <summary>Returns this details value's ToString result.</summary>

@@ -356,6 +356,24 @@ namespace N2.Details
 			}
 			return list;
 		}
+
+		#region ToString, Equals & GetHashCode
+		int? hashCode;
+		/// <summary>Gets a hash code based on the ID.</summary>
+		/// <returns>A hash code.</returns>
+		public override int GetHashCode()
+		{
+			if (!hashCode.HasValue)
+				hashCode = (id > 0 ? id.GetHashCode() : base.GetHashCode());
+			return hashCode.Value;
+		}
+		public override bool Equals(object obj)
+		{
+			if (this == obj) return true;
+			DetailCollection other = obj as DetailCollection;
+			return other != null && id != 0 && id == other.id;
+		}
+		#endregion
 	}
 }
 

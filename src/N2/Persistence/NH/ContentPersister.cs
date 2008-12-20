@@ -85,16 +85,15 @@ namespace N2.Persistence.NH
 					if (string.IsNullOrEmpty(item.Name))
 						item.Name = null;
 
+					item.AddTo(item.Parent);
+					EnsureSortOrder(item);
+
 					itemRepository.SaveOrUpdate(item);
 					if (string.IsNullOrEmpty(item.Name))
 					{
 						item.Name = item.ID.ToString();
 						itemRepository.Save(item);
 					}
-
-					item.AddTo(item.Parent);
-
-					EnsureSortOrder(item);
 
 					transaction.Commit();
 				}

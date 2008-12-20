@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
 using NUnit.Framework;
 using N2.Tests.Edit.Items;
 using System.Web.UI.WebControls;
@@ -151,9 +148,6 @@ namespace N2.Tests.Edit
         {
             ComplexContainersItem item = new ComplexContainersItem();
 
-            persister.Save(item);
-            mocks.Replay(persister);
-
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.SaveOnly);
             DoTheSaving(null, editor);
 
@@ -173,13 +167,12 @@ namespace N2.Tests.Edit
 
             Expect.On(versioner).Call(versioner.SaveVersion(null)).Repeat.Never();
             mocks.Replay(versioner);
-            persister.Save(item);
-            LastCall.Repeat.Once();
-            mocks.Replay(persister);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
 
             DoTheSaving(null, editor);
+
+			Assert.That(item.ID, Is.GreaterThan(0));
         }
 
         [Test]
@@ -190,9 +183,6 @@ namespace N2.Tests.Edit
             item.MyProperty1 = "I'm available";
             item.MyProperty5 = true;
             item.MyProperty6 = "I'm secure!";
-
-            persister.Save(item);
-            mocks.Replay(persister);
 
             IPrincipal user = CreateUser("Joe");
 
@@ -341,13 +331,12 @@ namespace N2.Tests.Edit
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
             mocks.Replay(versioner);
-            persister.Save(item);
-            LastCall.Repeat.Never();
-            mocks.Replay(persister);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
 
             DoTheSaving(null, editor);
+
+			Assert.That(persister.Repository.Get(22), Is.Null);
         }
     }
 }

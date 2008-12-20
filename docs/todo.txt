@@ -1,5 +1,6 @@
+- mysql problem
+- eye icon to n2.edit.dll
 - add form rewriting to n2.dll
-- handle load collection exception
 - tests for multiple hosts url rewriting
 - make it possible to change edit page
 - fix IAutoStart

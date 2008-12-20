@@ -1,20 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-using N2;
 using NUnit.Framework;
 
 namespace N2.Tests.Persistence
 {
-	public class DatabasePreparingBase : PersistenceAwareBase
+	public abstract class DatabasePreparingBase : PersistenceAwareBase
 	{
-		[TestFixtureSetUp]
-		public override void TestFixtureSetUp()
-		{
-			base.TestFixtureSetUp();
-		}
-
 		[SetUp]
 		public override void SetUp()
 		{

@@ -55,7 +55,7 @@ namespace N2.Tests.Persistence.NH
 			INHRepository<int, LinkDetail> linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
 
 			persister = new ContentPersister(itemRepository, linkRepository, finder);
-			versioner = new VersionManager(persister, itemRepository);
+			versioner = new VersionManager(itemRepository);
 		}
 
 		[Test]

@@ -91,16 +91,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snipp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE03-488C-B53D-989700FE6018}"
 	ProjectSection(SolutionItems) = preProject
+		..\lib\Castle.DynamicProxy.license.txt = ..\lib\Castle.DynamicProxy.license.txt
+		..\lib\Castle.DynamicProxy2.dll = ..\lib\Castle.DynamicProxy2.dll
 		..\lib\Castle.MicroKernel.dll = ..\lib\Castle.MicroKernel.dll
 		..\lib\Castle.Windsor.dll = ..\lib\Castle.Windsor.dll
 		..\lib\ICSharpCode.SharpZipLib.dll = ..\lib\ICSharpCode.SharpZipLib.dll
+		..\lib\Iesi.Collections.license.txt = ..\lib\Iesi.Collections.license.txt
 		..\lib\ILMerge.exe = ..\lib\ILMerge.exe
 		..\lib\log4net.dll = ..\lib\log4net.dll
+		..\lib\log4net.license.txt = ..\lib\log4net.license.txt
 		..\lib\Microsoft.Web.Mvc.dll = ..\lib\Microsoft.Web.Mvc.dll
 		..\lib\MSBuild.Community.Tasks.dll = ..\lib\MSBuild.Community.Tasks.dll
 		..\lib\MSBuild.Community.Tasks.Targets = ..\lib\MSBuild.Community.Tasks.Targets
 		..\lib\MySql.Data.dll = ..\lib\MySql.Data.dll
 		..\lib\NHibernate.JetDriver.dll = ..\lib\NHibernate.JetDriver.dll
+		..\lib\NHibernate.license.txt = ..\lib\NHibernate.license.txt
 		..\lib\NHibernate.Linq.dll = ..\lib\NHibernate.Linq.dll
 		..\lib\nunit-console-runner.dll = ..\lib\nunit-console-runner.dll
 		..\lib\nunit-console.exe = ..\lib\nunit-console.exe
@@ -114,7 +119,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE0
 		..\lib\Rhino.Mocks.dll = ..\lib\Rhino.Mocks.dll
 		..\lib\Rhino.Mocks.License.txt = ..\lib\Rhino.Mocks.License.txt
 		..\lib\System.Data.SQLite.DLL = ..\lib\System.Data.SQLite.DLL
+		..\lib\System.Web.Abstractions.dll = ..\lib\System.Web.Abstractions.dll
 		..\lib\System.Web.Mvc.dll = ..\lib\System.Web.Mvc.dll
+		..\lib\System.Web.Routing.dll = ..\lib\System.Web.Routing.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Obsolete", "N2.Templates.Obsolete\N2.Templates.Obsolete.csproj", "{3EBF2F63-FE9F-47EE-B233-0A9634CC02FF}"

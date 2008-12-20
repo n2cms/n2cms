@@ -1,5 +1,7 @@
 using System;
 using System.Reflection;
+using System.Diagnostics;
+using N2.Details;
 
 namespace N2.Persistence
 {
@@ -9,11 +11,9 @@ namespace N2.Persistence
 	public class VersionManager : IVersionManager
 	{
 		private IRepository<int, ContentItem> itemRepository;
-		private IPersister persister;
-
-		public VersionManager(IPersister persister, IRepository<int, ContentItem> itemRepository)
+		
+		public VersionManager(IRepository<int, ContentItem> itemRepository)
 		{
-			this.persister = persister;
 			this.itemRepository = itemRepository;
 		}
 
@@ -76,6 +76,7 @@ namespace N2.Persistence
 					if (replacementItem.VersionOf == currentItem)
 						itemRepository.Delete(replacementItem);
 
+					itemRepository.Flush(); 
 					transaction.Commit();
 
 					return versionOfCurrentItem;

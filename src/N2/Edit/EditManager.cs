@@ -264,8 +264,9 @@ namespace N2.Edit
 
 				return item.VersionOf;
 			}
+
 			// when an item is saved without any new version
-			else if (mode == ItemEditorVersioningMode.SaveOnly)
+			if (mode == ItemEditorVersioningMode.SaveOnly)
 			{
 				bool wasUpdated = UpdateItem(item, itemEditor.AddedEditors, user);
 				if (wasUpdated || IsNew(item))
@@ -273,33 +274,40 @@ namespace N2.Edit
 
 				return item;
 			}
+			
 			// when an item is saved but a version is stored before the item is updated
-			else if (mode == ItemEditorVersioningMode.VersionAndSave)
+			if (mode == ItemEditorVersioningMode.VersionAndSave)
 			{
-                if (ShouldStoreVersion(item))
-					SaveVersion(item);
-
-				DateTime? initialPublished = item.Published;
-				bool wasUpdated = UpdateItem(item, itemEditor.AddedEditors, user);
-				DateTime? updatedPublished = item.Published;
-
-				// the item was the only version of an unpublished item - publish it
-				if(initialPublished == null && updatedPublished == null)
+				using (ITransaction tx = persister.Repository.BeginTransaction())
 				{
-					item.Published = Utility.CurrentTime();
-					wasUpdated = true;
-				}
+					if (ShouldStoreVersion(item))
+						SaveVersion(item);
 
-				if (wasUpdated || IsNew(item))
-					persister.Save(item);
-				
-				return item;
+					DateTime? initialPublished = item.Published;
+					bool wasUpdated = UpdateItem(item, itemEditor.AddedEditors, user);
+					DateTime? updatedPublished = item.Published;
+
+					// the item was the only version of an unpublished item - publish it
+					if (initialPublished == null && updatedPublished == null)
+					{
+						item.Published = Utility.CurrentTime();
+						wasUpdated = true;
+					}
+
+					if (wasUpdated || IsNew(item))
+						persister.Save(item);
+
+					tx.Commit();
+
+					return item;
+				}
 			}
+				
 			// when making a version without saving the item
-			else if (mode == ItemEditorVersioningMode.VersionOnly)
+			if (mode == ItemEditorVersioningMode.VersionOnly)
 			{
-                if (ShouldStoreVersion(item))
-                    item = SaveVersion(item);
+				if (ShouldStoreVersion(item))
+					item = SaveVersion(item);
 
 				bool wasUpdated = UpdateItem(item, itemEditor.AddedEditors, user);
 				if (wasUpdated || IsNew(item))
@@ -310,10 +318,8 @@ namespace N2.Edit
 
 				return item;
 			}
-			else
-			{
-				throw new ArgumentException("Unexpected versioning mode.");
-			}
+				
+			throw new ArgumentException("Unexpected versioning mode.");
 		}
 
         private bool ShouldStoreVersion(ContentItem item)
@@ -370,13 +376,12 @@ namespace N2.Edit
 		#region Helper Methods
 		private ContentItem SaveVersion(ContentItem current)
 		{
-			CancellableItemEventArgs args = new CancellableItemEventArgs(current);
-			OnSavingVersion(args);
-			if (!args.Cancel)
-			{
-				return versioner.SaveVersion(current);
-			}
-			return null;
+			ContentItem savedVersion = null;
+			Utility.InvokeEvent(Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>, current, this, delegate(ContentItem item)
+				{
+					savedVersion = versioner.SaveVersion(item);
+				});
+			return savedVersion;
 		}
 
 		private bool IsNew(ContentItem current)
@@ -394,15 +399,6 @@ namespace N2.Edit
 				handler.Invoke(this, args);
 		}
 
-		/// <summary>
-		/// Triggers the SavingVersion event.
-		/// </summary>
-		protected virtual void OnSavingVersion(CancellableItemEventArgs args)
-		{
-			EventHandler<CancellableItemEventArgs> handler = Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>;
-			if (handler != null)
-				handler.Invoke(this, args);
-		}
 		#endregion
 
 

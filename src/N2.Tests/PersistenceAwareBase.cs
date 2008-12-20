@@ -7,7 +7,7 @@ using System.Configuration;
 
 namespace N2.Tests
 {
-	public class PersistenceAwareBase : ItemTestsBase
+	public abstract class PersistenceAwareBase : ItemTestsBase
 	{
 		protected IEngine engine;
 

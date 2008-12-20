@@ -309,20 +309,19 @@ namespace N2
 		/// <returns>True if two items have the same ID.</returns>
 		public override bool Equals( object obj )
 		{
-			if( this == obj ) return true;
-			if( ( obj == null ) || ( obj.GetType() != GetType() ) ) return false;
-			ContentItem item = obj as ContentItem;
-			if (ID != 0 && item.ID != 0)
-				return ID == item.ID;
-			else
-				return ReferenceEquals(this, item);
+			if (this == obj) return true;
+			ContentItem other = obj as ContentItem;
+			return other != null && id != 0 && id == other.id;
 		}
 
-		/// <summary>Gets a hash code based on the item's id.</summary>
+		int? hashCode;
+		/// <summary>Gets a hash code based on the ID.</summary>
 		/// <returns>A hash code.</returns>
 		public override int GetHashCode()
 		{
-			return id.GetHashCode(); 
+			if (!hashCode.HasValue)
+				hashCode = (id > 0 ? id.GetHashCode() : base.GetHashCode());
+			return hashCode.Value;
 		}
 
 		/// <summary>Returns this item's name.</summary>
@@ -665,9 +664,18 @@ namespace N2
 		/// <returns>The cloned item with or without cloned child items.</returns>
 		public virtual ContentItem Clone(bool includeChildren)
         {
-			ContentItem cloned = (ContentItem)MemberwiseClone();
-            cloned.id = 0;
-			cloned.url = null;
+			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetType());
+			cloned.title = title;
+			cloned.name = name;
+			cloned.zoneName = zoneName;
+			cloned.created = created;
+			cloned.updated = updated;
+			cloned.published = published;
+			cloned.expires = expires;
+			cloned.sortOrder = sortOrder;
+			cloned.visible = visible;
+			cloned.savedBy = savedBy;
+			cloned.urlParser = urlParser;
 
 			CloneDetails(cloned);
 			CloneChildren(includeChildren, cloned);
@@ -706,13 +714,13 @@ namespace N2
 
 		private void CloneDetails(ContentItem cloned)
 		{
-			cloned.details = new Dictionary<string, Details.ContentDetail>();
+			cloned.details = new Dictionary<string, ContentDetail>();
 			foreach (Details.ContentDetail detail in Details.Values)
 			{
 				cloned[detail.Name] = detail.Value;
 			}
 
-			cloned.detailCollections = new Dictionary<string, Details.DetailCollection>();
+			cloned.detailCollections = new Dictionary<string, DetailCollection>();
 			foreach (Details.DetailCollection collection in DetailCollections.Values)
 			{
 				Details.DetailCollection clonedCollection = collection.Clone();

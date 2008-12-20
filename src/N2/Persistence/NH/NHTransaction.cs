@@ -38,8 +38,12 @@ namespace N2.Persistence.NH
 
         void IDisposable.Dispose()
 		{
-			Rollback();
-			transaction.Dispose();
+			if(isOriginator)
+			{
+				Rollback();
+				transaction.Dispose();
+			}
+			
 		}
 
 		#endregion

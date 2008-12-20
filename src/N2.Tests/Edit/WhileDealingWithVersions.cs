@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Tests.Edit.Items;
 using N2.Web.UI.WebControls;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Edit
 {
@@ -19,8 +17,6 @@ namespace N2.Tests.Edit
             item.ID = 0;
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Repeat.Never();
-            persister.Save(item);
-            mocks.Replay(persister);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
             DoTheSaving(null, editor);
@@ -36,8 +32,6 @@ namespace N2.Tests.Edit
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
             mocks.Replay(versioner);
-            persister.Save(item);
-            mocks.Replay(persister);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
             DoTheSaving(null, editor);
@@ -53,8 +47,6 @@ namespace N2.Tests.Edit
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
             mocks.Replay(versioner);
-            persister.Save(item);
-            mocks.Replay(persister);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
             DoTheSaving(null, editor);
@@ -71,14 +63,11 @@ namespace N2.Tests.Edit
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(version);
             mocks.Replay(versioner);
-            persister.Save(item);
-            LastCall.Repeat.Never();
-            persister.Save(version);
-            LastCall.Repeat.Once();
-            mocks.Replay(persister);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionOnly);
             DoTheSaving(null, editor);
+
+			Assert.That(persister.Repository.Get(28), Is.Null);
 
             Assert.AreEqual("", item.MyProperty0);
             Assert.AreEqual("", item.MyProperty1);
@@ -99,8 +88,6 @@ namespace N2.Tests.Edit
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Repeat.Never();
             mocks.Replay(versioner);
-            persister.Save(item);
-            mocks.Replay(persister);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
 
@@ -118,12 +105,13 @@ namespace N2.Tests.Edit
             versionToBeMaster.VersionOf = currentMaster;
 
             Expect.Call(versioner.SaveVersion(currentMaster)).Return(null);
-            Expect.Call(delegate { persister.Save(currentMaster); });
 
             mocks.ReplayAll();
 
             IItemEditor editor = SimulateEditor(versionToBeMaster, ItemEditorVersioningMode.SaveAsMaster);
             DoTheSaving(null, editor);
+
+			Assert.That(persister.Repository.Get(1), Is.EqualTo(currentMaster));
         }
 
         [Test]
@@ -132,13 +120,12 @@ namespace N2.Tests.Edit
             ComplexContainersItem newItem = new ComplexContainersItem(0, "an item");
             newItem.Published = DateTime.Now;
 
-            Expect.Call(delegate { persister.Save(newItem); });
             mocks.ReplayAll();
 
-
-            IItemEditor editor = SimulateEditor(newItem, ItemEditorVersioningMode.VersionOnly);
+			IItemEditor editor = SimulateEditor(newItem, ItemEditorVersioningMode.VersionOnly);
             DoTheSaving(null, editor);
 
+			Assert.That(newItem.ID, Is.GreaterThan(0));
             Assert.IsNull(newItem.Published);
         }
 
@@ -149,12 +136,12 @@ namespace N2.Tests.Edit
             newItem.Published = null;
 
             Expect.Call(versioner.SaveVersion(newItem)).Return(new ComplexContainersItem(2, "ignored"));
-            Expect.Call(delegate { persister.Save(newItem); });
             mocks.ReplayAll();
 
             IItemEditor editor = SimulateEditor(newItem, ItemEditorVersioningMode.VersionAndSave);
             DoTheSaving(null, editor);
 
+			Assert.That(persister.Repository.Get(1), Is.EqualTo(newItem));
             Assert.IsNotNull(newItem.Published, "Unpublished item should have been published.");
             Assert.Greater(newItem.Published, DateTime.Now.AddSeconds(-10));
         }
@@ -170,13 +157,13 @@ namespace N2.Tests.Edit
             versionToBeMaster.Published = null;
 
             Expect.Call(versioner.SaveVersion(currentMaster)).Return(null);
-            Expect.Call(delegate { persister.Save(currentMaster); });
 
             mocks.ReplayAll();
 
             IItemEditor editor = SimulateEditor(versionToBeMaster, ItemEditorVersioningMode.SaveAsMaster);
             DoTheSaving(null, editor);
 
+			Assert.That(persister.Repository.Get(1), Is.EqualTo(currentMaster));
             Assert.IsNotNull(currentMaster.Published);
             Assert.Greater(currentMaster.Published, DateTime.Now.AddSeconds(-10));
         }
@@ -190,8 +177,6 @@ namespace N2.Tests.Edit
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
             mocks.Replay(versioner);
-            persister.Save(item);
-            mocks.Replay(persister);
 
             editManager.SavingVersion += new EventHandler<CancellableItemEventArgs>(editManager_SavingVersion);
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
@@ -223,9 +208,6 @@ namespace N2.Tests.Edit
             savingVersionEventInvoked = false;
             ComplexContainersItem item = new ComplexContainersItem();
             item.ID = 0;
-
-            persister.Save(item);
-            mocks.Replay(persister);
 
             editManager.SavingVersion += editManager_SavingVersion;
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);

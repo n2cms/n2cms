@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using N2.Tests.Web.Items;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -15,16 +11,17 @@ namespace N2.Tests.Web
         ContentItem item3_2;
         ContentItem ext2_2;
 
+		[SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
             CreateDefaultStructure();
 
-            ext2_2 = CreateOneItem<CustomExtensionPage>(8, "ext2_2", item2);
-            ext3 = CreateOneItem<CustomExtensionPage>(6, "ext3", startItem);
-            ext3_1 = CreateOneItem<CustomExtensionPage>(7, "ext3_1", ext3);
-            item3_2 = CreateOneItem<PageItem>(8, "item3_2", ext3);
+            ext2_2 = CreateOneItem<CustomExtensionPage>(9, "ext2_2", item2);
+            ext3 = CreateOneItem<CustomExtensionPage>(10, "ext3", startItem);
+            ext3_1 = CreateOneItem<CustomExtensionPage>(11, "ext3_1", ext3);
+            item3_2 = CreateOneItem<PageItem>(12, "item3_2", ext3);
         }
 
         [Test]

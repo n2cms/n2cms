@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using N2.Details;
 using N2.Edit;
-using N2.Engine;
 using N2.Definitions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -14,15 +12,12 @@ using Rhino.Mocks;
 using N2.Persistence;
 using N2.Tests.Edit.Items;
 using System.Security.Principal;
-using System.Web;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Edit
 {
 	public abstract class EditManagerTests : TypeFindingBase
 	{
 		protected EditManager editManager;
-        protected IPersister persister;
         protected IVersionManager versioner;
 
 		protected override Type[] GetTypes()
@@ -46,7 +41,6 @@ namespace N2.Tests.Edit
 			mocks.Replay(notifier);
 			DefinitionManager definitions = new DefinitionManager(builder, notifier);
 			
-			persister = mocks.StrictMock<IPersister>();
 			versioner = mocks.StrictMock<IVersionManager>();
 			editManager = new EditManager(definitions, persister, versioner, null, null, null);
 			editManager.EnableVersioning = true;

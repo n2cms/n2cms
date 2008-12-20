@@ -1,4 +1,8 @@
-﻿- better wrongclassexception handling
+﻿- wrapped versioning and save in a transaction (against NonUniqueObjectException)
+- upgraded NHibernate to 2.0.1
+
+1.4.4
+- better wrongclassexception handling
 - tweaked file system UI
 - better date picker localization
 - applied smason's patch: routing

@@ -85,7 +85,7 @@ namespace N2.Engine.MediumTrust
             
             securityManager = AddComponentInstance<ISecurityManager>(new SecurityManager(webContext));
             ISecurityEnforcer securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
-            IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(persister, itemRepository));
+            IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(itemRepository));
 			N2.Edit.Settings.NavigationSettings settings = AddComponentInstance<N2.Edit.Settings.NavigationSettings>(new N2.Edit.Settings.NavigationSettings(webContext));
             IPluginFinder pluginFinder = AddComponentInstance<IPluginFinder>(new PluginFinder(typeFinder));
             editManager = AddComponentInstance<IEditManager>(new EditManager(definitions, persister, versioner, securityManager, pluginFinder, settings, editConfiguration));

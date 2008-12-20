@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Engine;
 using Rhino.Mocks;
 using System.Reflection;
@@ -8,7 +6,7 @@ using System.Security.Principal;
 
 namespace N2.Tests
 {
-	public abstract class TypeFindingBase : ItemTestsBase
+	public abstract class TypeFindingBase : ItemPersistenceMockingBase
 	{
 		protected ITypeFinder typeFinder;
 
