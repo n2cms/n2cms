@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -120,7 +120,7 @@ namespace N2.Tests.Serialization
 		public void WriteItem_WithStringDetail_ComplexString()
 		{
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "one", null);
-			string alphabet = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ[]{}<|>!\"#¤%&/()=?,.-_:;¨'^*`´\\}][{@£$§½";
+			string alphabet = "abcdefghijklmnopqrstuvwxyzÃ¥Ã¤Ã¶ABCDEFGHIJKLMNOPQRSTUVWXYZÃ…Ã„Ã–[]{}<|>!\"#Â¤%&/()=?,.-_:;Â¨'^*`Â´\\}][{@Â£$Â§Â½";
 			item["Alphabet"] = alphabet;
 
 			XPathNavigator xpn = WriteToStreamAndNavigate(item);

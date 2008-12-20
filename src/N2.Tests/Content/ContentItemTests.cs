@@ -1,4 +1,4 @@
-using NUnit.Framework;
+ï»¿using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Content
@@ -246,9 +246,9 @@ namespace N2.Tests.Content
 		public void GetChild_WhenName_IncludesUnicodeCharacter()
 		{
 			AnItem root = CreateOneItem<AnItem>(1, "root", null);
-			AnItem item1 = CreateOneItem<AnItem>(2, "ännu en ångande ö", root);
+			AnItem item1 = CreateOneItem<AnItem>(2, "Ã¤nnu en Ã¥ngande Ã¶", root);
 
-			Assert.AreEqual(item1, root.GetChild("ännu en ångande ö"));
+			Assert.AreEqual(item1, root.GetChild("Ã¤nnu en Ã¥ngande Ã¶"));
 		}
 
 		[Test]
