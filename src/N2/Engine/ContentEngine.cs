@@ -154,12 +154,6 @@ namespace N2.Engine
 			get { return container.Resolve<IUrlParser>(); }
 		}
 
-		/// <summary>Gets the url rewriter responsible for passing request to the correct page template.</summary>
-		public IUrlRewriter Rewriter
-		{
-			get { return container.Resolve<IUrlRewriter>(); }
-		}
-
 		/// <summary>Gets the edit manager responsible for plugins in edit mode.</summary>
 		public IEditManager EditManager
 		{

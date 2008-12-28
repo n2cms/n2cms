@@ -1,4 +1,6 @@
-﻿- wrapped versioning and save in a transaction (against NonUniqueObjectException)
+﻿- item controller extension point
+- saved some tests as unicode
+- wrapped versioning and save in a transaction (against NonUniqueObjectException)
 - upgraded NHibernate to 2.0.1
 
 1.4.4

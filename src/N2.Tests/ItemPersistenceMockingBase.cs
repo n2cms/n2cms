@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Details;
-using Rhino.Mocks;
 using N2.Persistence;
-using NUnit.Framework;
-using N2.Web;
-using Rhino.Mocks.Interfaces;
-using System.Web;
 using N2.Persistence.NH;
+using NUnit.Framework;
+using Rhino.Mocks;
+using Rhino.Mocks.Interfaces;
 
 namespace N2.Tests
 {

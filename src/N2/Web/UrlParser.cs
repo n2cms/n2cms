@@ -71,7 +71,7 @@ namespace N2.Web
 
 			string path = Url.ToRelative(requestedUrl.PathWithoutExtension).TrimStart('~');
 			PathData data = StartPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
-			if(data.CurrentItem != null)
+			if(!data.IsEmpty())
 				return data;
 
 			if (path.EndsWith(DefaultDocument, StringComparison.OrdinalIgnoreCase))
@@ -80,7 +80,7 @@ namespace N2.Web
 					.FindPath(path.Substring(0, path.Length - DefaultDocument.Length))
 					.UpdateParameters(requestedUrl.GetQueries());
 				
-				if (data.CurrentItem != null)
+				if (!data.IsEmpty())
 					return data;
 			}
 
@@ -227,6 +227,16 @@ namespace N2.Web
 		public virtual bool IsStartPage(ContentItem item)
 		{
             return item.ID == host.CurrentSite.StartPageID;
+		}
+
+		/// <summary>Removes a trailing default.aspx from an URL.</summary>
+		/// <param name="path">A URL path without query strings from which to remove any trailing default.aspx.</param>
+		/// <returns>The same path or one stripped of the remaining default document segment.</returns>
+		public string StripDefaultDocument(string path)
+		{
+			if (path.EndsWith(DefaultDocument, StringComparison.OrdinalIgnoreCase))
+				return path.Substring(0, path.Length - DefaultDocument.Length);
+			return path;
 		}
 	}
 }

@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Collections;
 using System.Security.Principal;
 using System.IO;
-using System.Collections.Specialized;
 using System.Web;
 
 namespace N2.Web
@@ -15,13 +12,14 @@ namespace N2.Web
     /// instance in situations where we don't have a request available such
     /// as code executed by the scheduler.
     /// </summary>
-	public class ThreadContext : IWebContext
+	public class ThreadContext : IWebContext, IDisposable
     {
         private static string baseDirectory;
 
     	[ThreadStatic] ContentItem currentPage;
     	[ThreadStatic] PathData currentPath;
-    	[ThreadStatic] static IDictionary items;
+		[ThreadStatic] BaseController currentController;
+		[ThreadStatic] static IDictionary items;
     	[ThreadStatic] Url localUrl = new Url("/");
     	[ThreadStatic] Url url = new Url("http://localhost");
 
@@ -61,10 +59,29 @@ namespace N2.Web
 		public PathData CurrentPath
 		{
 			get { return currentPath; }
-			set { currentPath = value; }
+			set 
+			{ 
+				currentPath = value;
+				if (value != null)
+					CurrentPage = value.CurrentItem;
+				else
+					currentPath = null;
+			}
 		}
 
-        public virtual void Dispose()
+		public BaseController CurrentController
+		{
+			get { return currentController; }
+			set
+			{
+				currentController = value; 
+				if (value != null) 
+					CurrentPath = value.Path;
+				else
+					CurrentPath = null;
+			}
+		}
+		public virtual void Close()
         {
             string[] keys = new string[RequestItems.Keys.Count];
             RequestItems.Keys.CopyTo(keys, 0);
@@ -132,5 +149,14 @@ namespace N2.Web
         {
 			throw new NotSupportedException("TransferRequest is not supported in thread context. No handler when not running in http web context.");
         }
-    }
+
+		#region IDisposable Members
+
+		void IDisposable.Dispose()
+		{
+			Close();
+		}
+
+		#endregion
+	}
 }

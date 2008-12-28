@@ -62,14 +62,11 @@ namespace N2.Security
 		#region Methods
 
 		/// <summary>Checks that the current user is authorized to access the current item.</summary>
-		/// <param name="context">The context of the request.</param>
 		public virtual void AuthorizeRequest()
 		{
 			ContentItem item = webContext.CurrentPage;
 			if (item != null)
 			{
-				//string filePath = webContext.AbsolutePath;
-				//string pathWithQuery = webContext.RawUrl;
 				if (item != null && !security.IsAuthorized(item, webContext.User))
 				{
 					CancellableItemEventArgs args = new CancellableItemEventArgs(item);
@@ -77,7 +74,7 @@ namespace N2.Security
 						AuthorizationFailed.Invoke(this, args);
 
 					if (!args.Cancel)
-						throw new N2.Security.PermissionDeniedException(item, webContext.User);
+						throw new PermissionDeniedException(item, webContext.User);
 				}
 			}
 		}

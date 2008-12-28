@@ -9,7 +9,7 @@ namespace N2.Web
 	/// <summary>
 	/// A mockable interface for operations that targets the the http context.
 	/// </summary>
-    public interface IWebContext : IClosable
+    public interface IWebContext
 	{
 		/// <summary>Gets wether there is a web context availabe.</summary>
 		bool IsWeb { get; }
@@ -38,8 +38,14 @@ namespace N2.Web
 		/// <summary>The template used to serve this request.</summary>
 		PathData CurrentPath { get; set; }
 
+		/// <summary>Interacts with the request phases to provide an extensibility point.</summary>
+		BaseController CurrentController { get; set; }
+
 		/// <summary>The local part of the requested path, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
         Url Url { get; }
+
+		/// <summary>Closes any endable resources at the end of the request.</summary>
+		void Close();
 
 		/// <summary>Converts a virtual path to an an absolute path. E.g. ~/hello.aspx -> /MyVirtualDirectory/hello.aspx.</summary>
 		/// <param name="virtualPath">The virtual url to make absolute.</param>

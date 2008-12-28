@@ -32,7 +32,6 @@ namespace N2.Engine.MediumTrust
         IDefinitionManager definitions;
         IUrlParser urlParser;
         IEditManager editManager;
-        IUrlRewriter rewriter;
         IIntegrityManager integrityManager;
         IHost host;
         IRequestLifeCycleHandler lifeCycleHandler;
@@ -96,8 +95,8 @@ namespace N2.Engine.MediumTrust
             Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
             InstallationManager installer = AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
-			rewriter = AddComponentInstance<IUrlRewriter>(new UrlRewriter(urlParser, webContext, errorHandler, hostConfiguration));
-			lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(rewriter, securityEnforcer, webContext, errorHandler, installer, editConfiguration, hostConfiguration));
+			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(urlParser, webContext, typeFinder));
+			lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(securityEnforcer, webContext, errorHandler, installer, dispatcher, editConfiguration, hostConfiguration));
             AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
@@ -108,12 +107,12 @@ namespace N2.Engine.MediumTrust
 			N2.Edit.Settings.SettingsManager settingsManager = new N2.Edit.Settings.SettingsManager(serviceExplorer, containerExplorer);
 			EditableHierarchyBuilder<N2.Edit.Settings.IServiceEditable> hierarchyBuilder = new EditableHierarchyBuilder<N2.Edit.Settings.IServiceEditable>();
             AddComponentInstance<N2.Edit.Settings.ISettingsProvider>(new N2.Edit.Settings.SettingsProvider(settingsManager, hierarchyBuilder));
-            AjaxRequestDispatcher dispatcher = AddComponentInstance<AjaxRequestDispatcher>(new AjaxRequestDispatcher(securityManager));
-            CreateUrlProvider cup = AddComponentInstance<CreateUrlProvider>(new CreateUrlProvider(persister, editManager, definitions, dispatcher));
-            ItemDeleter id = AddComponentInstance<ItemDeleter>(new ItemDeleter(persister, dispatcher));
-            EditUrlProvider eud = AddComponentInstance<EditUrlProvider>(new EditUrlProvider(persister, editManager, dispatcher));
-            ItemMover im = AddComponentInstance<ItemMover>(new ItemMover(persister, dispatcher));
-            ItemCopyer ic = AddComponentInstance<ItemCopyer>(new ItemCopyer(persister, dispatcher));
+            AjaxRequestDispatcher ajaxDispatcher = AddComponentInstance<AjaxRequestDispatcher>(new AjaxRequestDispatcher(securityManager));
+            CreateUrlProvider cup = AddComponentInstance<CreateUrlProvider>(new CreateUrlProvider(persister, editManager, definitions, ajaxDispatcher));
+            ItemDeleter id = AddComponentInstance<ItemDeleter>(new ItemDeleter(persister, ajaxDispatcher));
+            EditUrlProvider eud = AddComponentInstance<EditUrlProvider>(new EditUrlProvider(persister, editManager, ajaxDispatcher));
+            ItemMover im = AddComponentInstance<ItemMover>(new ItemMover(persister, ajaxDispatcher));
+            ItemCopyer ic = AddComponentInstance<ItemCopyer>(new ItemCopyer(persister, ajaxDispatcher));
             AddComponentInstance<ICacheManager>(new CacheManager(webContext, persister, hostConfiguration));
             AddComponentInstance<ITreeSorter>(new TreeSorter(persister, editManager, webContext));
 
@@ -154,11 +153,6 @@ namespace N2.Engine.MediumTrust
 		public IUrlParser UrlParser
 		{
 			get { return urlParser; }
-		}
-
-		public IUrlRewriter Rewriter
-		{
-			get { return rewriter; }
 		}
 
 		public IDefinitionManager Definitions

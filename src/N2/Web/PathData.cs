@@ -63,7 +63,7 @@ namespace N2.Web
 		{
 			get
 			{
-				if(CurrentItem == null)
+				if(IsEmpty())
 					return null;
 
 				if (CurrentItem.IsPage)
@@ -106,6 +106,13 @@ namespace N2.Web
 		{
 			Argument = argument;
 			return this;
+		}
+
+		/// <summary>Checks whether the path contains data.</summary>
+		/// <returns>True if the path is empty.</returns>
+		public virtual bool IsEmpty()
+		{
+			return CurrentItem == null;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using N2.Engine;
 
 namespace N2.Web.Mvc
 {
-	public abstract class ContentController<T> : Controller
+	public abstract class ContentController<T> : System.Web.Mvc.Controller
 		where T: ContentItem
 	{
 		protected virtual IEngine Engine

@@ -176,7 +176,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web\UI\WebControls\ZoneSelector.cs" />
-    <Compile Include="Web\UrlRewriter.cs" />
     <Compile Include="Web\UI\ContentPage.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -236,7 +235,6 @@
     <Compile Include="Security\AuthorizedRolesAttribute.cs" />
     <Compile Include="Web\InvalidPathException.cs" />
     <Compile Include="Web\InitializerModule.cs" />
-    <Compile Include="Web\IUrlRewriter.cs" />
     <Compile Include="Web\IWebContext.cs" />
     <Compile Include="Web\MultipleHostsUrlParser.cs" />
     <Compile Include="Web\DynamicSitesProvider.cs" />
@@ -437,12 +435,17 @@
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
+    <Compile Include="Web\BaseController.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />
     <Compile Include="Web\CachingUrlParserDecorator.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
+    <Compile Include="Web\ControlsAttribute.cs" />
+    <Compile Include="Web\IControllerDescriptor.cs" />
+    <Compile Include="Web\IRequestDispatcher.cs" />
     <Compile Include="Web\DynamicTemplateAttribute.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
+    <Compile Include="Web\RequestDispatcher.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlFilter.cs" />
     <Compile Include="Web\HtmlHelper.cs" />

@@ -100,7 +100,7 @@ namespace N2.Plugin.Scheduling
 
                         try
                         {
-                            context.Dispose();
+                            context.Close();
                         }
                         catch (Exception ex)
                         {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Security.Principal;
 using System.Web;
+using System;
 
 namespace N2.Web
 {
@@ -9,7 +10,7 @@ namespace N2.Web
 	/// web application scope and thread context when no request has been made 
 	/// (e.g. when executing code in scheduled action).
 	/// </summary>
-	public class AdaptiveContext : IWebContext
+	public class AdaptiveContext : IWebContext, IDisposable
 	{
 		readonly IWebContext thread = new ThreadContext();
 		readonly IWebContext web = new WebRequestContext();
@@ -70,6 +71,12 @@ namespace N2.Web
 			set { CurrentContext.CurrentPath = value;}
 		}
 
+		public BaseController CurrentController
+		{
+			get { return CurrentContext.CurrentController; }
+			set { CurrentContext.CurrentController = value; }
+		}
+
 		/// <summary>The physical path on disk to the requested page.</summary>
 		public string PhysicalPath
 		{
@@ -119,9 +126,18 @@ namespace N2.Web
 		}
 
 		/// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
-		public void Dispose()
+		public void Close()
 		{
-			CurrentContext.Dispose();
+			CurrentContext.Close();
 		}
+
+		#region IDisposable Members
+
+		void IDisposable.Dispose()
+		{
+			Close();
+		}
+
+		#endregion
 	}
 }

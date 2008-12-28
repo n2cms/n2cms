@@ -39,16 +39,25 @@ namespace N2.Web
 			set { slidingExpiration = value; }
 		}
 
+		/// <summary>Calculates an item url by walking it's parent path.</summary>
+		/// <param name="item">The item whose url to compute.</param>
+		/// <returns>A friendly url to the supplied item.</returns>
 		public string BuildUrl(ContentItem item)
 		{
 			return inner.BuildUrl(item);
 		}
 
+		/// <summary>Checks if an item is start or root page</summary>
+		/// <param name="item">The item to check</param>
+		/// <returns>True if the item is a start page or a root page</returns>
 		public bool IsRootOrStartPage(ContentItem item)
 		{
 			return inner.IsRootOrStartPage(item);
 		}
 
+		/// <summary>Finds the content item and the template associated with an url.</summary>
+		/// <param name="url">The url to the template to locate.</param>
+		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
 		public PathData ResolvePath(string url)
 		{
 			string key = string.Intern(url.ToLowerInvariant());
@@ -69,9 +78,20 @@ namespace N2.Web
 			return data;
 		}
 
+		/// <summary>Finds an item by traversing names from the starting point root.</summary>
+		/// <param name="url">The url that should be traversed.</param>
+		/// <returns>The content item matching the supplied url.</returns>
 		public ContentItem Parse(string url)
 		{
 			return inner.Parse(url);
+		}
+
+		/// <summary>Removes a trailing default.aspx from an URL.</summary>
+		/// <param name="path">A URL path without query strings from which to remove any trailing default.aspx.</param>
+		/// <returns>The same path or one stripped of the remaining default document segment.</returns>
+		public string StripDefaultDocument(string path)
+		{
+			return inner.StripDefaultDocument(path);
 		}
 	}
 }

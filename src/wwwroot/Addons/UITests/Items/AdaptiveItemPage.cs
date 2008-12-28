@@ -1,9 +1,35 @@
+using System.Diagnostics;
 using N2;
 using N2.Web;
 using N2.Details;
 
 namespace N2.Addons.UITests.Items
 {
+	[Controls(typeof(AdaptiveItemPage))]
+	public class AdaptiveController : BaseController
+	{
+		public override void AuthorizeRequest(System.Security.Principal.IPrincipal user, N2.Security.ISecurityEnforcer security)
+		{
+			Debug.WriteLine("AuthorizeRequest");
+			base.AuthorizeRequest(user, security);
+		}
+		public override void HandleError(System.Exception ex)
+		{
+			Debug.WriteLine("HandleError");
+			base.HandleError(ex);
+		}
+		public override void InjectCurrentPage(System.Web.IHttpHandler handler)
+		{
+			Debug.WriteLine("InjectCurrentPage");
+			base.InjectCurrentPage(handler);
+		}
+		public override void RewriteRequest(IWebContext webContext)
+		{
+			Debug.WriteLine("RewriteRequest");
+			base.RewriteRequest(webContext);
+		}
+	}
+
 	[Definition("Multiple Tests Page", SortOrder = 10000)]
 	[WithEditableTitle, WithEditableName]
 	public class AdaptiveItemPage : ContentItem

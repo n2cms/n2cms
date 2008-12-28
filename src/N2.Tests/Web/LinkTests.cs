@@ -1,4 +1,5 @@
 using System.Web.UI.HtmlControls;
+using N2.Tests.Web.Items;
 using NUnit.Framework;
 using N2.Web;
 

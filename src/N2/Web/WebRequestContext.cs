@@ -12,7 +12,7 @@ namespace N2.Web
     /// <summary>
     /// A request context class that interacts with HttpContext.Current.
     /// </summary>
-    public class WebRequestContext : IWebContext
+    public class WebRequestContext : IWebContext, IDisposable
     {
         /// <summary>Provides access to HttpContext.Current.</summary>
         protected virtual HttpContext CurrentHttpContext
@@ -47,7 +47,27 @@ namespace N2.Web
 		public PathData CurrentPath
 		{
 			get { return RequestItems["CurrentTemplate"] as PathData; }
-			set { RequestItems["CurrentTemplate"] = value; }
+			set 
+			{ 
+				RequestItems["CurrentTemplate"] = value;
+				if (value != null)
+					CurrentPage = value.CurrentItem;
+				else
+					CurrentPage = null;
+			}
+		}
+
+		public BaseController CurrentController
+		{
+			get { return RequestItems["CurrentController"] as BaseController; }
+			set
+			{
+				RequestItems["CurrentController"] = value; 
+				if (value != null) 
+					CurrentPath = value.Path;
+				else
+					CurrentPath = null;
+			}
 		}
 
         /// <summary>The handler associated with the current request.</summary>
@@ -67,12 +87,6 @@ namespace N2.Web
         {
             get { return Request.PhysicalPath; }
         }
-
-		///// <summary>The local part of the requested path, e.g. /path/to/a/page.aspx?some=query.</summary>
-		//public Url LocalUrl
-		//{
-		//    get { return Url.Parse(Request.RawUrl); }
-		//}
 
 		/// <summary>The host part of the requested url, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
         public Url Url
@@ -133,7 +147,7 @@ namespace N2.Web
         }
 
         /// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
-        public virtual void Dispose()
+		public virtual void Close()
         {
             object[] keys = new object[RequestItems.Keys.Count];
             RequestItems.Keys.CopyTo(keys, 0);
@@ -147,5 +161,14 @@ namespace N2.Web
                 }
             }
         }
-    }
+
+		#region IDisposable Members
+
+		void IDisposable.Dispose()
+		{
+			Close();
+		}
+
+		#endregion
+	}
 }

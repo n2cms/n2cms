@@ -172,6 +172,7 @@
     <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
     <Compile Include="Engine\ContentEngineTests.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
+    <Compile Include="Fakes\FakeRequestLifeCycleHandler.cs" />
     <Compile Include="Globalization\FlatLanguageStructureTests.cs" />
     <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
     <Compile Include="Globalization\Items\LanguageRoot.cs" />
@@ -244,6 +245,8 @@
     <Compile Include="Security\Items\SecurityPage.cs" />
     <Compile Include="Security\SecurityManagerTests.cs" />
     <Compile Include="Web\DynamicSitesProviderTests.cs" />
+    <Compile Include="Web\RequestDispatcherTests.cs" />
+    <Compile Include="Web\Items\CustomItem.cs" />
     <Compile Include="Web\Items\CustomExtensionPage.cs" />
     <Compile Include="Web\Items\DataItem.cs" />
     <Compile Include="Web\Items\PageItem.cs" />

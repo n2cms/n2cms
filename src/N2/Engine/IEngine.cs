@@ -23,9 +23,6 @@ namespace N2.Engine
 		/// <summary>Gets the url parser responsible of mapping urls to items and back again.</summary>
 		IUrlParser UrlParser { get; }
 
-		/// <summary>Gets the url rewriter responsible for passing request to the correct page template.</summary>
-		IUrlRewriter Rewriter { get; }
-
 		/// <summary>Gets the definition manager responsible of maintaining available item definitions.</summary>
 		IDefinitionManager Definitions { get; }
 

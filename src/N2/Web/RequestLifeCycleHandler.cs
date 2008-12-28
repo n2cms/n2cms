@@ -5,6 +5,7 @@ using N2.Security;
 using System.Diagnostics;
 using N2.Configuration;
 using N2.Installation;
+using N2.Web.UI;
 
 namespace N2.Web
 {
@@ -14,38 +15,36 @@ namespace N2.Web
 	/// </summary>
 	public class RequestLifeCycleHandler : IRequestLifeCycleHandler
 	{
-		private readonly IUrlRewriter rewriter;
-		private readonly ISecurityEnforcer security;
-		private readonly IWebContext webContext;
-        private readonly IErrorHandler errorHandler;
-        private readonly InstallationManager installer;
+		readonly ISecurityEnforcer security;
+		readonly IWebContext webContext;
+        readonly IErrorHandler errorHandler;
+        readonly InstallationManager installer;
+		readonly IRequestDispatcher dispatcher;
 
-        private bool initialized = false;
-        private bool checkInstallation = false;
-        private string installerUrl = "~/Edit/Install/Begin/Default.aspx";
+		protected bool initialized = false;
+		protected bool checkInstallation = false;
+		protected string installerUrl = "~/Edit/Install/Begin/Default.aspx";
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
-		/// <param name="rewriter">The class that performs url rewriting.</param>
 		/// <param name="security">The class that can authorize a request.</param>
 		/// <param name="webContext">The web context wrapper.</param>
-        public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer, EditSection editConfig, HostSection hostConfig)
-            : this(rewriter, security, webContext, errorHandler, installer)
+		public RequestLifeCycleHandler(ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer, IRequestDispatcher dispatcher, EditSection editConfig, HostSection hostConfig)
+            : this(security, webContext, errorHandler, installer, dispatcher)
         {
             checkInstallation = editConfig.Installer.CheckInstallationStatus;
             installerUrl = editConfig.Installer.InstallUrl;
         }
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
-		/// <param name="rewriter">The class that performs url rewriting.</param>
 		/// <param name="security">The class that can authorize a request.</param>
 		/// <param name="webContext">The web context wrapper.</param>
-        public RequestLifeCycleHandler(IUrlRewriter rewriter, ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer)
+        public RequestLifeCycleHandler(ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer, IRequestDispatcher dispatcher)
 		{
-			this.rewriter = rewriter;
 			this.security = security;
 			this.webContext = webContext;
             this.errorHandler = errorHandler;
             this.installer = installer;
+			this.dispatcher = dispatcher;
 		}
 
 		/// <summary>Subscribes to applications events.</summary>
@@ -77,8 +76,12 @@ namespace N2.Web
                 }
             }
 
-			rewriter.InitializeRequest();
-            rewriter.RewriteRequest();
+			BaseController controller = dispatcher.ResolveController();
+			if(controller != null)
+			{
+				webContext.CurrentController = controller;
+				controller.RewriteRequest(webContext);
+			}
 		}
 
         private void CheckInstallation()
@@ -90,26 +93,42 @@ namespace N2.Web
             }
         }
 
+		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
 		{
-			rewriter.InjectContentPage();
+			webContext.CurrentController.InjectCurrentPage(webContext.Handler);
 		}
 
 		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
-			security.AuthorizeRequest();
+			BaseController controller = webContext.CurrentController;
+			if (controller != null)
+			{
+				controller.AuthorizeRequest(webContext.User, security);
+			}
 		}
-
-        protected virtual void Application_EndRequest(object sender, EventArgs e)
-        {
-            webContext.Dispose();
-        }
 
         protected virtual void Application_Error(object sender, EventArgs e)
         {
             HttpApplication application = sender as HttpApplication;
             if(application != null)
-                errorHandler.Notify(application.Server.GetLastError());
-        }
+            {
+            	Exception ex = application.Server.GetLastError();
+				if(ex != null)
+				{
+					errorHandler.Notify(ex);
+					BaseController controller = webContext.CurrentController;
+					if(controller != null)
+					{
+						controller.HandleError(ex);
+					}
+				}
+            }
+		}
+
+		protected virtual void Application_EndRequest(object sender, EventArgs e)
+		{
+			webContext.Close();
+		}
 	}
 }

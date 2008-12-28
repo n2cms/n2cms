@@ -89,6 +89,7 @@
     <Content Include="Addons\UITests\UI\ControlPanel.aspx" />
     <Content Include="Addons\UITests\UI\ControlPanel_NoZones.aspx" />
     <Content Include="Addons\UITests\UI\ControlPanel_Templates.aspx" />
+    <Content Include="Addons\UITests\UI\Error_Exception.aspx" />
     <Content Include="Addons\UITests\UI\ItemDataSource_NavigationFilter.aspx" />
     <Content Include="Addons\UITests\UI\ItemDataSource_Zone.aspx" />
     <Content Include="Addons\UITests\UI\ItemDataSource_Path.aspx" />

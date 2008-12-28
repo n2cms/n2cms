@@ -71,7 +71,6 @@
     <Compile Include="Linq\EngineExtensions.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
-    <Compile Include="Web\Mvc\ControlsAttribute.cs" />
     <Compile Include="Web\Mvc\RouteActionResolverAttribute.cs" />
     <Compile Include="Web\Mvc\FallbackContentController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -56,5 +56,10 @@ namespace N2.Templates.Tests.Wiki
 		{
 			throw new NotImplementedException();
 		}
+
+		public string StripDefaultDocument(string path)
+		{
+			return path;
+		}
 	}
 }
