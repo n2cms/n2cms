@@ -91,7 +91,9 @@ namespace N2.Web.UI
 				if (stack == null)
 				{
 					HttpContextItems["ItemStack"] = stack = new Stack<ContentItem>();
-					stack.Push(Find.CurrentPage);
+					ContentItem currentPage = HttpContextItems["CurrentPage"] as ContentItem;
+					if(currentPage != null)
+						stack.Push(currentPage);
 				}
 				return stack;
 			}

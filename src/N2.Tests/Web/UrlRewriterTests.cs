@@ -1,3 +1,5 @@
+using System.Configuration;
+using N2.Configuration;
 using N2.Engine;
 using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
@@ -16,7 +18,9 @@ namespace N2.Tests.Web
 		RequestDispatcher rewriter;
 		FakeWebContextWrapper context;
 		ContentItem root, one, two;
-
+		ErrorHandler errorHandler;
+		AppDomainTypeFinder finder;
+			
 		[SetUp]
 		public override void SetUp()
 		{
@@ -28,8 +32,10 @@ namespace N2.Tests.Web
 			CreateOneItem<DataItem>(4, "four", root);
 
 			context = new FakeWebContextWrapper();
-			parser = new UrlParser(persister, context, mocks.Stub<IItemNotifier>(), new Host(context, root.ID, root.ID));
-			rewriter = new RequestDispatcher(parser, context, new AppDomainTypeFinder());
+			parser = new UrlParser(persister, context, mocks.Stub<IItemNotifier>(), new Host(context, root.ID, root.ID), new HostSection());
+			errorHandler = new ErrorHandler(context, null, null);
+			finder = new AppDomainTypeFinder();
+			rewriter = new RequestDispatcher(parser, context, finder, errorHandler, new HostSection());
 			handler = new FakeRequestLifeCycleHandler(null, context, null, null, rewriter);
 		}
 
@@ -78,44 +84,46 @@ namespace N2.Tests.Web
         [Test]
         public void UpdatesCurrentPage_WhenExtension_IsConfiguredAsObserved()
         {
-			//HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } };
-			//UrlRewriter rewriter = new UrlRewriter(parser, context, null, config);
-			context.Url = "/one.htm";
+			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } });
+        	context.Url = "/one.htm";
 
 			handler.BeginRequest();
 
 			Assert.That(context.CurrentPage, Is.EqualTo(one));
         }
 
-		//[Test]
-		//public void DoesntUpdateCurrentPage_WhenExtension_IsNotObserved()
-		//{
-		//    //HostSection config = new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection()} };
-		//    //UrlRewriter rewriter = new UrlRewriter(parser, context, null, config);
-		//    context.Url = "/one.html";
+		void ReCreateDispatcherWithConfig(HostSection config)
+		{
+			rewriter = new RequestDispatcher(parser, context, finder, errorHandler, config);
+			handler = new FakeRequestLifeCycleHandler(null, context, null, null, rewriter);
+		}
 
-		//    handler.BeginRequest();
+		[Test]
+		public void DoesntUpdateCurrentPage_WhenExtension_IsNotObserved()
+		{
+			ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObservedExtensions = new CommaDelimitedStringCollection()}});
+			context.Url = "/one.html";
 
-		//    Assert.That(context.CurrentPage, Is.Null);
-		//}
+			handler.BeginRequest();
 
-		//[Test]
-		//public void DoesntUpdateCurrentPage_WhenExtension_IsEmpty_AndEmpty_IsNotObserved()
-		//{
-		//    //HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = false } };
-		//    //UrlRewriter rewriter = new UrlRewriter(parser, context, null, config);
-		//    context.Url = "/one";
+			Assert.That(context.CurrentPage, Is.Null);
+		}
 
-		//    handler.BeginRequest();
+		[Test]
+		public void DoesntUpdateCurrentPage_WhenExtension_IsEmpty_AndEmpty_IsNotObserved()
+		{
+			ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObserveEmptyExtension = false}});
+			context.Url = "/one";
 
-		//    Assert.That(context.CurrentPage, Is.Null);
-		//}
+			handler.BeginRequest();
+
+			Assert.That(context.CurrentPage, Is.Null);
+		}
 
         [Test]
         public void UpdatesCurrentPage_WhenEmptyExtension_IsConfiguredAsObserved()
         {
-			//HostSection config = new HostSection { Web = new WebElement { ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection() } };
-			//UrlRewriter rewriter = new UrlRewriter(parser, context, null, config);
+        	ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection()}});
 			context.Url = "/one";
 
 			handler.BeginRequest();

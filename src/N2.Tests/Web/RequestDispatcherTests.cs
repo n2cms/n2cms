@@ -1,4 +1,5 @@
-﻿using N2.Persistence;
+﻿using N2.Configuration;
+using N2.Persistence;
 using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Web;
@@ -22,10 +23,9 @@ namespace N2.Tests.Web.FrontDispatcherTests
 			base.SetUp();
 
 			CreateDefaultStructure();
-
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
-			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, startItem.ID, startItem.ID));
-			dispatcher = new RequestDispatcher(parser, webContext, new AppDomainTypeFinder());
+			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, startItem.ID, startItem.ID), new HostSection());
+			dispatcher = new RequestDispatcher(parser, webContext, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), new HostSection());
 			dispatcher.Start();
 		}
 

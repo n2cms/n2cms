@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using N2.Configuration;
 using N2.Tests.Web.Items;
 using NUnit.Framework;
 using N2.Persistence;
@@ -68,7 +69,7 @@ namespace N2.Tests.Web
         {
             notifier = mocks.Stub<IItemNotifier>();
             host = new Host(wrapper, 10, 1);
-            parser = new UrlParser(persister, wrapper, notifier, host);
+            parser = new UrlParser(persister, wrapper, notifier, host, new HostSection());
 
             CreateDefaultStructure();
             ContentItem root = CreateOneItem<PageItem>(10, "root", null);

@@ -5,10 +5,10 @@ namespace N2.Serialization
 {
 	public class ReadingJournal : IImportRecord
 	{
-		private readonly IList<ContentItem> readItems = new List<ContentItem>();
-        private readonly IList<Attachment> attachments = new List<Attachment>();
-        private readonly IList<Attachment> failedAttachments = new List<Attachment>();
-
+		readonly IList<ContentItem> readItems = new List<ContentItem>();
+        readonly IList<Attachment> attachments = new List<Attachment>();
+        readonly IList<Attachment> failedAttachments = new List<Attachment>();
+		readonly IList<Exception> errors = new List<Exception>();
 		public event EventHandler<ItemEventArgs> ItemAdded;
 
 		public IList<ContentItem> ReadItems
@@ -41,6 +41,16 @@ namespace N2.Serialization
 			get { return attachments; }
 		}
 
+		public IList<Attachment> FailedAttachments
+		{
+			get { return failedAttachments; }
+		}
+		public IList<Exception> Errors
+		{
+			get { return errors; }
+		}
+
+
 		public void Report(ContentItem item)
 		{
 			readItems.Add(item);
@@ -65,13 +75,9 @@ namespace N2.Serialization
 			return null;
 		}
 
-        #region IImportRecord Members
-
-        public IList<Attachment> FailedAttachments
-        {
-            get { return failedAttachments; }
-        }
-
-        #endregion
-    }
+		public void Error(Exception ex)
+		{
+			Errors.Add(ex);
+		}
+	}
 }

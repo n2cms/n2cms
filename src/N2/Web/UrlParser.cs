@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using N2.Persistence;
 using System.Diagnostics;
+using N2.Configuration;
 
 namespace N2.Web
 {
@@ -15,18 +17,21 @@ namespace N2.Web
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
 		private string defaultDocument = "default";
+		readonly bool ignoreExistingFiles;
 
 
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
 
-		public UrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host)
+		public UrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, HostSection config)
 		{
 			if (host == null) throw new ArgumentNullException("host");
 
 			this.persister = persister;
 			this.webContext = webContext;
 			this.host = host;
+
+			ignoreExistingFiles = config.Web.IgnoreExistingFiles;
 
 			notifier.ItemCreated += OnItemCreated;
         }
@@ -71,23 +76,37 @@ namespace N2.Web
 
 			string path = Url.ToRelative(requestedUrl.PathWithoutExtension).TrimStart('~');
 			PathData data = StartPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
-			if(!data.IsEmpty())
-				return data;
 
-			if (path.EndsWith(DefaultDocument, StringComparison.OrdinalIgnoreCase))
+			if (data.IsEmpty())
 			{
-				data = StartPage
-					.FindPath(path.Substring(0, path.Length - DefaultDocument.Length))
-					.UpdateParameters(requestedUrl.GetQueries());
-				
-				if (!data.IsEmpty())
-					return data;
+				if (path.EndsWith(DefaultDocument, StringComparison.OrdinalIgnoreCase))
+				{
+					// Try to find path without default document.
+					data = StartPage
+						.FindPath(path.Substring(0, path.Length - DefaultDocument.Length))
+						.UpdateParameters(requestedUrl.GetQueries());
+				}
+
+				if(data.IsEmpty())
+				{
+					// Allow user code to set path through event
+					if (PageNotFound != null)
+					{
+						PageNotFoundEventArgs args = new PageNotFoundEventArgs(requestedUrl);
+						args.AffectedPath = data;
+						PageNotFound(this, args);
+						data = args.AffectedPath;
+					}
+				}
 			}
 
-			PageNotFoundEventArgs args = new PageNotFoundEventArgs(requestedUrl);
-			if (PageNotFound != null)
-				PageNotFound(this, args);
-			return args.AffectedPath ?? data;
+			data.IsRewritable = IsRewritable(webContext.PhysicalPath);
+			return data;
+		}
+
+		bool IsRewritable(string path)
+		{
+			return ignoreExistingFiles || (!File.Exists(path) && !Directory.Exists(path));
 		}
 
 		/// <summary>Finds an item by traversing names from the start page.</summary>

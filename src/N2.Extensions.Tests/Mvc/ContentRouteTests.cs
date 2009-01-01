@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Routing;
+using N2.Configuration;
 using N2.Definitions;
 using N2.Engine;
 using N2.Extensions.Tests.Mvc.Controllers;
@@ -56,7 +57,7 @@ namespace N2.Extensions.Tests.Mvc
 			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder), null);
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
-			var parser = new UrlParser(persister, webContext, new ItemNotifier(), host);
+			var parser = new UrlParser(persister, webContext, new ItemNotifier(), host, new HostSection());
 
 			engine = mocks.DynamicMock<IEngine>();
 			SetupResult.For(engine.Resolve<ITypeFinder>()).Return(typeFinder);

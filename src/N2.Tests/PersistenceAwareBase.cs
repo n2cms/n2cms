@@ -14,7 +14,7 @@ namespace N2.Tests
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetUp()
 		{
-			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
+			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2");
             engine.Initialize();
 			engine.Resolve<ISecurityEnforcer>().Start();
 		}

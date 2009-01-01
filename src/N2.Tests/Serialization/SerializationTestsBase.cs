@@ -1,4 +1,5 @@
 using System;
+using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Definitions;
 using N2.Persistence;
@@ -11,27 +12,23 @@ using System.Reflection;
 
 namespace N2.Tests.Serialization
 {
-	public class SerializationTestsBase : ItemTestsBase
+	public abstract class SerializationTestsBase : ItemTestsBase
 	{
 		private delegate string BuildUrl(ContentItem item);
-		private delegate ContentItem CreateInstance(Type t, ContentItem parent);
 		protected IDefinitionManager definitions;
         protected IUrlParser parser;
         protected IPersister persister;
-		
-        
-
+		protected FakeTypeFinder finder;
+		protected IItemNotifier notifier;
+			
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-            var finder = mocks.StrictMock<ITypeFinder>();
-            Expect.Call(finder.GetAssemblies()).Return(new Assembly[] { typeof(XmlableItem).Assembly }); 
-            Expect.Call(finder.Find(typeof(ContentItem))).Return(new Type[] { typeof(XmlableItem) });
-            mocks.Replay(finder);
-            var notifier = mocks.Stub<IItemNotifier>();
-            mocks.Replay(notifier);
+			finder = new FakeTypeFinder(typeof(XmlableItem).Assembly, typeof(XmlableItem), typeof(XmlableItem2));
+			notifier = mocks.Stub<IItemNotifier>();
+			mocks.Replay(notifier);
 
             definitions = new DefinitionManager(new DefinitionBuilder(finder), notifier);
 			

@@ -1,22 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using N2.Persistence;
 using N2.Persistence.NH;
 
 namespace N2.Tests.Fakes
 {
-	public class FakeRepository<TEntity> : INHRepository<int, TEntity> where TEntity : class
+	public class FakeRepository<TEntity> : FakeRepository<int, TEntity> where TEntity : class
+	{
+		public override void Save(TEntity entity)
+		{
+			base.Save(entity);
+			maxID = Math.Max(GetKey(entity), maxID);
+		}
+		protected override int GetKey(TEntity entity)
+		{
+			int id = base.GetKey(entity);
+			if(id == 0)
+			{
+				var p = entity.GetType().GetProperty("ID");
+				p.SetValue(entity, ++id, new object[0]);
+			}
+			return id;
+		}
+	}
+
+	public class FakeRepository<TKey, TEntity> : INHRepository<TKey, TEntity> where TEntity : class
 	{
 		public string lastOperation;
-		public int maxID;
-		public Dictionary<int, TEntity> database = new Dictionary<int, TEntity>();
+		public TKey maxID;
+		public Dictionary<TKey, TEntity> database = new Dictionary<TKey, TEntity>();
 
-		#region IRepository<int,TEntity> Members
+		#region IRepository<TKey,TEntity> Members
 
-		public TEntity Get(int id)
+		public TEntity Get(TKey id)
 		{
 			lastOperation = "Get(" + id + ")";
 
@@ -25,14 +42,14 @@ namespace N2.Tests.Fakes
 			return null;
 		}
 
-		public T Get<T>(int id)
+		public T Get<T>(TKey id)
 		{
 			lastOperation = "Get<" + typeof(T).Name + ">(" + id + ")";
 
 			throw new NotImplementedException();
 		}
 
-		public TEntity Load(int id)
+		public TEntity Load(TKey id)
 		{
 			lastOperation = "Load(" + id + ")";
 
@@ -46,24 +63,21 @@ namespace N2.Tests.Fakes
 			database.Remove(GetKey(entity));
 		}
 
-		public void Save(TEntity entity)
+		public virtual void Save(TEntity entity)
 		{
 			lastOperation = "Save(" + entity + ")";
 
-			int key = GetKey(entity);
-			maxID = Math.Max(maxID, key);
+			TKey key = GetKey(entity);
 			database[key] = entity;
 		}
 
-		int GetKey(TEntity entity)
+		protected virtual TKey GetKey(TEntity entity)
 		{
 			var q = database.Keys.Where(k => database[k] == entity);
-			if (q.Count() > 0) 
+			if (q.Count() > 0)
 				return q.Single();
 			var p = entity.GetType().GetProperty("ID");
-			int key = (int)p.GetValue(entity, new object[0]);
-			if (key == 0)
-				key = ++maxID;
+			TKey key = (TKey)p.GetValue(entity, new object[0]);
 			p.SetValue(entity, key, new object[0]);
 			return key;
 		}
@@ -71,7 +85,7 @@ namespace N2.Tests.Fakes
 		public void Update(TEntity entity)
 		{
 			lastOperation = "Update(" + entity + ")";
-			
+
 			database[GetKey(entity)] = entity;
 		}
 
@@ -231,5 +245,6 @@ namespace N2.Tests.Fakes
 		}
 
 		#endregion
+		
 	}
 }

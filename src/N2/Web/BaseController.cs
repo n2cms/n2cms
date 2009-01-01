@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 using System.Web;
+using N2.Engine;
 using N2.Security;
 using N2.Web.UI;
 

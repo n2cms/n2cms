@@ -20,7 +20,7 @@ namespace N2.Tests.Engine
 		[SetUp]
 		public void SetUp()
 		{
-			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
+			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2");
 		}
 
 		[Test]

@@ -1,4 +1,3 @@
-- doubled parts
 - lock toolbar when editing
 - "controller" http://www.codeplex.com/n2/Thread/View.aspx?ThreadId=42498
 - mysql problem

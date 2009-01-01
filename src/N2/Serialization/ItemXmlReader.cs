@@ -9,6 +9,7 @@ namespace N2.Serialization
 	{
 		private readonly IDefinitionManager definitions;
 		private readonly IDictionary<string, IXmlReader> readers;
+		bool ignoreMissingTypes = true;
 
 		public ItemXmlReader(IDefinitionManager definitions)
 			: this(definitions, DefaultReaders())
@@ -19,6 +20,12 @@ namespace N2.Serialization
 		{
 			this.definitions = definitions;
 			this.readers = readers;
+		}
+
+		public bool IgnoreMissingTypes
+		{
+			get { return ignoreMissingTypes; }
+			set { ignoreMissingTypes = value; }
 		}
 
 		private static IDictionary<string, IXmlReader> DefaultReaders()
@@ -38,8 +45,17 @@ namespace N2.Serialization
 			ReadingJournal journal = new ReadingJournal();
 			foreach (XPathNavigator itemElement in EnumerateChildren(navigator))
 			{
-				ContentItem item = ReadSingleItem(itemElement, journal);
-				journal.Report(item);
+				try
+				{
+					ContentItem item = ReadSingleItem(itemElement, journal);
+					journal.Report(item);
+				}
+				catch (DefinitionNotFoundException ex)
+				{
+					journal.Error(ex);
+					if (!ignoreMissingTypes)
+						throw;
+				}
 			}
 			return journal;
 		}
@@ -100,7 +116,10 @@ namespace N2.Serialization
 			foreach (ItemDefinition d in definitions.GetDefinitions())
 				if (d.Discriminator == discriminator)
 					return d;
-			throw new DefinitionNotFoundException("No definition found for discriminator: " + discriminator);
+
+			string title = attributes["title"];
+			string name = attributes["name"];
+			throw new DefinitionNotFoundException(string.Format("No definition found for '{0}' with name '{1}' and discriminator '{2}'", title, name, discriminator), attributes);
 		}
 	}
 }

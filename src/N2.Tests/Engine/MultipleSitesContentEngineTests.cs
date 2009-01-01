@@ -22,7 +22,7 @@ namespace N2.Tests.Engine
 		{
 			string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Engine\\MultipleSites.exe");
 			var cfg = ConfigurationManager.OpenExeConfiguration(path);
-			engine = new ContentEngine(cfg);
+			engine = new ContentEngine(cfg, "n2");
             host = engine.Resolve<IHost>();
 		}
 

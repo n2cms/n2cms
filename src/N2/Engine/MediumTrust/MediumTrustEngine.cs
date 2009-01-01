@@ -77,7 +77,7 @@ namespace N2.Engine.MediumTrust
 				urlParser = AddComponentInstance<IUrlParser>(new MultipleSitesParser(persister, webContext, notifier, host, sitesProvider, hostConfiguration));
 			}
 			else
-				urlParser = AddComponentInstance<IUrlParser>(new UrlParser(persister, webContext, notifier, host));
+				urlParser = AddComponentInstance<IUrlParser>(new UrlParser(persister, webContext, notifier, host, hostConfiguration));
 			
 			if (hostConfiguration.Web.Urls.EnableCaching)
 				urlParser = new CachingUrlParserDecorator(urlParser, persister);
@@ -95,7 +95,7 @@ namespace N2.Engine.MediumTrust
             Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
             InstallationManager installer = AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
-			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(urlParser, webContext, typeFinder));
+			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(urlParser, webContext, typeFinder, errorHandler, hostConfiguration));
 			lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(securityEnforcer, webContext, errorHandler, installer, dispatcher, editConfiguration, hostConfiguration));
             AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
@@ -196,6 +196,8 @@ namespace N2.Engine.MediumTrust
 		{
 			Debug.WriteLine("MediumTrustEngine: initializing plugins");
 
+			AddComponentInstance<IEngine>(this);
+			
 			IPluginBootstrapper invoker = Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
 		}

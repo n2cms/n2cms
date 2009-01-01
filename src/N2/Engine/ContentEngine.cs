@@ -67,14 +67,18 @@ namespace N2.Engine
 
 		/// <summary>Tries to determine runtime parameters from the given configuration.</summary>
 		/// <param name="config">The configuration to use.</param>
-		public ContentEngine(System.Configuration.Configuration config)
+		public ContentEngine(System.Configuration.Configuration config, string sectionGroup)
 		{
+			if(string.IsNullOrEmpty(sectionGroup)) throw new ArgumentException("Must be non-empty and match a section group in the configuration file.", "sectionGroup");
+
 			container = new WindsorContainer();
 			
-			RegisterConfigurationSections(config);
-			HostSection hostConfig = (HostSection)config.GetSection("n2/host");
-			EngineSection engineConfig = (EngineSection)config.GetSection("n2/engine");
-            InitializeEnvironment(hostConfig, engineConfig);
+			RegisterConfigurationSections(config, sectionGroup);
+			HostSection hostConfig = AddComponentInstance<HostSection>(config.GetSection(sectionGroup + "/host") as HostSection);
+			EngineSection engineConfig = AddComponentInstance<EngineSection>(config.GetSection(sectionGroup + "/engine") as EngineSection);
+			DatabaseSection dbConfig = AddComponentInstance<DatabaseSection>(config.GetSection(sectionGroup + "/database") as DatabaseSection);
+			EditSection editConfig = AddComponentInstance<EditSection>(config.GetSection(sectionGroup + "/edit") as EditSection);
+			InitializeEnvironment(hostConfig, engineConfig);
 			IResource resource = DetermineResource(engineConfig, config.GetSection("castle") != null);
 			ProcessResource(resource);
             InstallComponents();
@@ -198,13 +202,13 @@ namespace N2.Engine
 
 
 		/// <summary>Registers configuration sections into the container. These may be used as input for various components.</summary>
-		/// <param name="n2group">The n2 congiuration group.</param>
-		protected void RegisterConfigurationSections(System.Configuration.Configuration config)
+		/// <param name="config">The congiuration file.</param>
+		protected void RegisterConfigurationSections(System.Configuration.Configuration config, string sectionGroup)
 		{
 			object nhConfiguration = config.GetSection("hibernate-configuration");
 			if (nhConfiguration != null)
 				container.Kernel.AddComponentInstance("hibernate-configuration", nhConfiguration);
-			SectionGroup n2group = config.GetSectionGroup("n2") as SectionGroup;
+			SectionGroup n2group = config.GetSectionGroup(sectionGroup) as SectionGroup;
 			if (n2group != null)
 			{
 				foreach (ConfigurationSection section in n2group.Sections)
@@ -237,6 +241,8 @@ namespace N2.Engine
 
 		public void Initialize()
 		{
+			AddComponentInstance<IEngine>(this);
+			
 			IPluginBootstrapper invoker = Container.Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
 

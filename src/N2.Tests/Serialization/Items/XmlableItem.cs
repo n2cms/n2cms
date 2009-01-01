@@ -20,4 +20,8 @@ namespace N2.Tests.Serialization.Items
 			set { SetDetail("TextFile", value); }
 		}
 	}
+
+	public class XmlableItem2 : XmlableItem
+	{
+	}
 }

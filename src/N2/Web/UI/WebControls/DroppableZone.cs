@@ -16,7 +16,7 @@ namespace N2.Web.UI.WebControls
 	{
         /// <summary>Set to true if parts that have been added to another page (and are displayed elsewhere) may be moved on other pages.</summary>
         public bool AllowExternalManipulation { get; set; }
-		ControlPanelState state = ControlPanelState.Visible;
+		ControlPanelState state = ControlPanelState.Hidden;
 
 		public string DropPointBackImageUrl
 		{
@@ -67,7 +67,10 @@ namespace N2.Web.UI.WebControls
 			{
 				item = Engine.Persister.Get(int.Parse(Page.Request["preview"]));
 			}
-			base.AddChildItem(this, item);
+			else
+			{
+				base.AddChildItem(this, item);
+			}
 		}
 
 	    private bool IsMovableOnThisPage(ContentItem item)

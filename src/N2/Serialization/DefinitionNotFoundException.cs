@@ -1,14 +1,20 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace N2.Serialization
 {
 	public class DefinitionNotFoundException : DeserializationException
 	{
-		public  DefinitionNotFoundException(string message)
+		readonly Dictionary<string, string> attributes;
+
+		public DefinitionNotFoundException(string message, Dictionary<string, string> attributes)
 			:base (message)
 		{
+			this.attributes = attributes;
+		}
+
+		public Dictionary<string, string> Attributes
+		{
+			get { return attributes; }
 		}
 	}
 }

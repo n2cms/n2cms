@@ -14,7 +14,7 @@ namespace N2.Tests.NewVersion
         [SetUp]
         public virtual void SetUp()
         {
-			engine = new N2.Engine.ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
+			engine = new N2.Engine.ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2");
         }
 
         [Test]

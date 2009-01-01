@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using N2.Configuration;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Persistence;
@@ -16,7 +17,7 @@ namespace N2.Tests.Web
         public override void SetUp()
         {
             base.SetUp();
-            parser = new UrlParser(persister, wrapper, notifier, host);
+            parser = new UrlParser(persister, wrapper, notifier, host, new HostSection());
             CreateDefaultStructure();
         }
 

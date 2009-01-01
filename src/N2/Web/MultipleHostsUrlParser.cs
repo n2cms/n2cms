@@ -11,7 +11,7 @@ namespace N2.Web
 	public class MultipleSitesParser : UrlParser
 	{
 		public MultipleSitesParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, ISitesProvider sitesProvider, HostSection config)
-			: base(persister, webContext, notifier, host)
+			: base(persister, webContext, notifier, host, config)
 		{
 			if (config == null) throw new ArgumentNullException("config");
 

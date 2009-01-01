@@ -58,6 +58,7 @@ namespace N2.Web
 		public string Action { get; set; }
 		public string Argument { get; set; }
 		public IDictionary<string, string> QueryParameters { get; set; }
+		public bool IsRewritable { get; set; }
 
 		public virtual Url RewrittenUrl
 		{
@@ -113,6 +114,11 @@ namespace N2.Web
 		public virtual bool IsEmpty()
 		{
 			return CurrentItem == null;
+		}
+
+		public static PathData Empty
+		{
+			get { return new PathData(); }
 		}
 	}
 }

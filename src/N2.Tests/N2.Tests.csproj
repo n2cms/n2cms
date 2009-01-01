@@ -102,6 +102,9 @@
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AccessFilterTests.cs" />
@@ -173,6 +176,7 @@
     <Compile Include="Engine\ContentEngineTests.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Fakes\FakeRequestLifeCycleHandler.cs" />
+    <Compile Include="Fakes\FakeTypeFinder.cs" />
     <Compile Include="Globalization\FlatLanguageStructureTests.cs" />
     <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
     <Compile Include="Globalization\Items\LanguageRoot.cs" />
@@ -269,6 +273,10 @@
     <Compile Include="Serialization\XmlWriterTests.cs" />
     <Compile Include="Web\UrlTests.cs" />
     <Compile Include="Web\AbstractExtensionUrlParserTests.cs" />
+    <Compile Include="Web\WebControls\ControlPanelTests_EditingState.cs" />
+    <Compile Include="Web\WebControls\ControlPanelTests_DragDropState.cs" />
+    <Compile Include="Web\WebControls\WebControlTestsBase.cs" />
+    <Compile Include="Web\WebControls\ControlPanelTests_HiddenState.cs" />
     <Compile Include="Web\WhileBuildingUrlsWhenMultipleSites.cs" />
     <Compile Include="Web\WhileDealingWithHostNames.cs" />
     <Compile Include="Web\WhileParsingUrlsWhenMultipleSites.cs" />

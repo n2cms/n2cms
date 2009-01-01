@@ -164,6 +164,7 @@
                                    $(WebFolder)\**\*.db;
                                    $(WebFolder)\**\*.cs;
                                    $(WebFolder)\**\*.csproj;
+								   $(WebFolder)\**\*.Publish.xml;
                                    $(WebFolder)\**\bin\**\*;
                                    $(WebFolder)\**\Demo\**\*;
                                    $(WebFolder)\**\Scrum\**\*;

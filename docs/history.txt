@@ -1,4 +1,6 @@
-﻿- item controller extension point
+﻿- fixed doubled parts
+- import ignores missing definitions
+- item controller extension point
 - saved some tests as unicode
 - wrapped versioning and save in a transaction (against NonUniqueObjectException)
 - upgraded NHibernate to 2.0.1

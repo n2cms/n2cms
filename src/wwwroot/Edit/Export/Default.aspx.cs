@@ -7,6 +7,7 @@ using N2.Edit.Web;
 using N2.Serialization;
 using N2.Xml;
 using N2.Web.UI;
+using System.Text;
 
 namespace N2.Edit.Export
 {
@@ -70,6 +71,7 @@ namespace N2.Edit.Export
 				IImportRecord record = Engine.Resolve<Importer>().Read(UploadedFilePath);
 				importedItems.CurrentItem = record.RootItem;
 				rptAttachments.DataSource = record.Attachments;
+				ShowErrors(record);
 			}
 			catch(WrongVersionException)
 			{
@@ -97,6 +99,7 @@ namespace N2.Edit.Export
 				N2XmlReader xr = new N2XmlReader(N2.Context.Current);
 				ContentItem item = xr.Read(fuImport.FileContent);
 				record = CreateRecord(item);
+				ShowErrors(record);
 			}
 
 			Import(importer, record);
@@ -110,6 +113,7 @@ namespace N2.Edit.Export
 			try
 			{
 				record = importer.Read(UploadedFilePath);
+				ShowErrors(record);
 			}
 			catch (WrongVersionException)
 			{
@@ -142,6 +146,8 @@ namespace N2.Edit.Export
 					importer.Import(record, SelectedItem, ImportOption.All);
 					Refresh(record.RootItem, ToolbarArea.Both);
 				}
+
+				ShowErrors(record);
 			}
 			catch(N2Exception ex)
 			{
@@ -153,6 +159,22 @@ namespace N2.Edit.Export
 			{
 				if (File.Exists(UploadedFilePath))
 					File.Delete(UploadedFilePath);
+			}
+		}
+
+		void ShowErrors(IImportRecord record)
+		{
+			if(record.Errors.Count > 0)
+			{
+				StringBuilder errorText = new StringBuilder("<ul>");
+				foreach(Exception ex in record.Errors)
+				{
+					errorText.Append("<li>").Append(ex.Message).Append("</li>");
+				}
+				errorText.Append("</ul>");
+					
+				cvImport.IsValid = false;
+				cvImport.ErrorMessage = errorText.ToString();
 			}
 		}
 

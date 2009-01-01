@@ -79,7 +79,7 @@ namespace N2
                 if (config == null)
                     return new Engine.ContentEngine();
                 else
-                    return new Engine.ContentEngine(config);
+                    return new Engine.ContentEngine(config, "n2");
             }
             catch (SecurityException ex)
             {
