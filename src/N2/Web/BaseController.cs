@@ -13,7 +13,7 @@ namespace N2.Web
 	/// for customizing the behaviour (decorate the inherited class with the 
 	/// [Controls] attribute).
 	/// </summary>
-	public class BaseController
+	public class BaseController : IRequestController
 	{
 		/// <summary>The path associated with this controller instance.</summary>
 		public PathData Path { get; set; }

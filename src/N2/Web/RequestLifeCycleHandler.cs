@@ -76,10 +76,11 @@ namespace N2.Web
                 }
             }
 
-			BaseController controller = dispatcher.ResolveController();
+			IRequestController controller = dispatcher.ResolveController<IRequestController>();
 			if(controller != null)
 			{
-				webContext.CurrentController = controller;
+				webContext.CurrentPath = controller.Path;
+				RequestItem<IRequestController>.Instance = controller;
 				controller.RewriteRequest(webContext);
 			}
 		}
@@ -96,12 +97,12 @@ namespace N2.Web
 		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
 		{
-			webContext.CurrentController.InjectCurrentPage(webContext.Handler);
+			RequestItem<IRequestController>.Instance.InjectCurrentPage(webContext.Handler);
 		}
 
 		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
-			BaseController controller = webContext.CurrentController;
+			IRequestController controller = RequestItem<IRequestController>.Instance;
 			if (controller != null)
 			{
 				controller.AuthorizeRequest(webContext.User, security);
@@ -117,7 +118,7 @@ namespace N2.Web
 				if(ex != null)
 				{
 					errorHandler.Notify(ex);
-					BaseController controller = webContext.CurrentController;
+					IRequestController controller = RequestItem<IRequestController>.Instance;
 					if(controller != null)
 					{
 						controller.HandleError(ex);

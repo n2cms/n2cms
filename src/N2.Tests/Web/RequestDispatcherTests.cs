@@ -34,7 +34,7 @@ namespace N2.Tests.Web.FrontDispatcherTests
 		{
 			webContext.Url = "/";
 
-			BaseController controller = dispatcher.ResolveController();
+			IRequestController controller = dispatcher.ResolveController<IRequestController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(BaseController)));
 		}
@@ -44,7 +44,7 @@ namespace N2.Tests.Web.FrontDispatcherTests
 		{
 			webContext.Url = "/custom3.aspx";
 
-			BaseController controller = dispatcher.ResolveController();
+			IRequestController controller = dispatcher.ResolveController<IRequestController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(CustomController)));
 		}
@@ -54,7 +54,7 @@ namespace N2.Tests.Web.FrontDispatcherTests
 		{
 			webContext.Url = "/particular4.aspx";
 
-			BaseController controller = dispatcher.ResolveController();
+			IRequestController controller = dispatcher.ResolveController<IRequestController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(CustomController)));
 		}
@@ -64,7 +64,7 @@ namespace N2.Tests.Web.FrontDispatcherTests
 		{
 			webContext.Url = "/special5.aspx";
 
-			BaseController controller = dispatcher.ResolveController();
+			IRequestController controller = dispatcher.ResolveController<IRequestController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(SpecialCustomController)));
 		}
@@ -74,7 +74,7 @@ namespace N2.Tests.Web.FrontDispatcherTests
 		{
 			webContext.Url = "/other6.aspx";
 
-			BaseController controller = dispatcher.ResolveController();
+			IRequestController controller = dispatcher.ResolveController<IRequestController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(OtherCustomController)));
 		}

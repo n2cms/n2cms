@@ -29,9 +29,9 @@ namespace N2.Web
 			set { controllerType = value; }
 		}
 
-		public bool IsControllerFor(PathData path)
+		public bool IsControllerFor(PathData path, Type requiredType)
 		{
-			return ItemType.IsAssignableFrom(path.CurrentItem.GetType());
+			return ItemType.IsAssignableFrom(path.CurrentItem.GetType()) && requiredType.IsAssignableFrom(requiredType);
 		}
 
 		#region IComparable<IControllerReference> Members

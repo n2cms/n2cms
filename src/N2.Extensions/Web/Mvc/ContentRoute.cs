@@ -24,6 +24,12 @@ namespace N2.Web.Mvc
 			foreach (ItemDefinition id in engine.Definitions.GetDefinitions())
 			{
 				controllerMap[id.ItemType] = GetControllerFor(id.ItemType, controllerDefinitions);
+				IList<IPathFinder> finders = ContentItem.GetPathFinders(id.ItemType);
+				if(finders.Where(f => f is RouteActionResolverAttribute).Count() == 0)
+				{
+					finders.Insert(0, new RouteActionResolverAttribute());
+					SingletonDictionary<Type, IList<IPathFinder>>.Instance[id.ItemType] = finders;
+				}
 			}
 		}
 
@@ -127,7 +133,7 @@ namespace N2.Web.Mvc
 		private IList<ControlsAttribute> FindControllers(IEngine engine)
 		{
 			List<ControlsAttribute> controllerDefinitions = new List<ControlsAttribute>();
-			foreach (Type controllerType in engine.Resolve<ITypeFinder>().Find(typeof(IController)))
+			foreach (Type controllerType in engine.Resolve<ITypeFinder>().Find(typeof(IContentController)))
 			{
 				foreach (ControlsAttribute attr in controllerType.GetCustomAttributes(typeof(ControlsAttribute), false))
 				{

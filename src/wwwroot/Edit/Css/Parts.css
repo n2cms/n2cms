@@ -17,16 +17,16 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 .droppable-active { background:url(../img/shading_green.png); border:dotted 1px #6c6; padding:0; }
 .droppable-hover { background-color:#8e8; border:solid 1px #8e8; }
 
-.sc { background:transparent url(../img/SlidingCurtain_bg.png) no-repeat 100% 100%; padding:0 4px 5px 0; position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; opacity:.6; }
-.opened {opacity:.92}
-.sc .scContent { width:192px; background-color:#fff; padding:5px 0 10px 0; }
+.sc { background:transparent url(../img/SlidingCurtain_bg.png) no-repeat 100% 100%; padding:0 4px 5px 0; position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; }
+.sc .scContent { background-color:#fff; padding:5px 0 10px 0; }
 .controlPanel { padding-right:10px; }
 .controlPanel img { margin-right:2px; border:none; vertical-align:middle;}
 .controlPanel a,.controlPanel a:visited { color:#333;}
-.controlPanel .plugins { margin-right:9px; text-align:right; }
-.controlPanel a { text-decoration:none; padding:1px;}
-.sc .open,.sc .close { text-indent:-2000px; position:absolute; bottom:6px; right:2px; height:24px; width:16px; cursor:pointer; cursor:hand; display:block; background:transparent url(../img/SlidingCurtain_open.png) no-repeat 50% 50%; }
-.sc .close {display:none; bottom:8px; background-image:url(../img/SlidingCurtain_close.png)}
+.controlPanel .plugins { margin:1px 10px; }
+.controlPanel a { text-decoration:none; border:solid 1px white; padding:1px; opacity:.7 }
+.controlPanel a:hover { opacity:1 }
+.sc .open,.sc .close { text-indent:-2000px; position:absolute; bottom:6px; right:2px; height:24px; width:18px; cursor:pointer; cursor:hand; display:block; background:transparent url(../img/SlidingCurtain_open.png) no-repeat 50% 50%; }
+.sc .close {display:none; bottom:10px; background-image:url(../img/SlidingCurtain_close.png)}
 .opened .open {display:none; }
 .opened .close {display:inline;}
 

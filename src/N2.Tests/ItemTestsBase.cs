@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Web;
+using N2.Tests.Fakes;
 
 namespace N2.Tests
 {
@@ -15,6 +16,7 @@ namespace N2.Tests
 		[SetUp]
 		public virtual void SetUp()
 		{
+			RequestItem.Accessor = new StaticContextAccessor();
 			mocks = new MockRepository();
 		}
 

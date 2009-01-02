@@ -2,7 +2,7 @@
 
 namespace N2.Extensions.Tests.Mvc.Models
 {
-	[Definition, RouteActionResolver]
+	[Definition]
 	public class ExecutiveTeamPage : AboutUsSectionPage
 	{
 		public override string Url

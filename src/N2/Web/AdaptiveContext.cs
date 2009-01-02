@@ -71,11 +71,11 @@ namespace N2.Web
 			set { CurrentContext.CurrentPath = value;}
 		}
 
-		public BaseController CurrentController
-		{
-			get { return CurrentContext.CurrentController; }
-			set { CurrentContext.CurrentController = value; }
-		}
+		//public BaseController CurrentController
+		//{
+		//    get { return CurrentContext.CurrentController; }
+		//    set { CurrentContext.CurrentController = value; }
+		//}
 
 		/// <summary>The physical path on disk to the requested page.</summary>
 		public string PhysicalPath

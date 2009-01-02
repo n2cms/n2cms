@@ -340,6 +340,7 @@
     <Compile Include="Engine\Globalization\TranslateSpecification.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
+    <Compile Include="Engine\Singleton.cs" />
     <Compile Include="Installation\DatabaseStatus.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -441,7 +442,11 @@
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\ControlsAttribute.cs" />
+    <Compile Include="Web\HttpRequestContextAccessor.cs" />
+    <Compile Include="Web\IContentController.cs" />
     <Compile Include="Web\IControllerDescriptor.cs" />
+    <Compile Include="Web\IRequestContextAccessor.cs" />
+    <Compile Include="Web\IRequestController.cs" />
     <Compile Include="Web\IRequestDispatcher.cs" />
     <Compile Include="Web\DynamicTemplateAttribute.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
@@ -464,6 +469,7 @@
     <Compile Include="Web\Parts\PartsAjaxService.cs" />
     <Compile Include="Web\PathData.cs" />
     <Compile Include="Web\RegexTemplateAttribute.cs" />
+    <Compile Include="Web\RequestItem.cs" />
     <Compile Include="Web\TemplateAttribute.cs" />
     <Compile Include="Web\TagBuilder.cs" />
     <Compile Include="Web\ThreadContext.cs" />

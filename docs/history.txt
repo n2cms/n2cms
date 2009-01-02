@@ -1,4 +1,7 @@
-﻿- fixed doubled parts
+﻿- tweaked control panel
+- introduced static singleton
+- introduced static request item accessor
+- fixed doubled parts
 - import ignores missing definitions
 - item controller extension point
 - saved some tests as unicode

@@ -26,24 +26,20 @@ namespace N2
 	/// </summary>
     public class Context
     {
-		#region Private Fields
-		private static Engine.IEngine instance = null;
-		#endregion
-
 		#region Initialization Methods
     	/// <summary>Initializes a static instance of the N2 factory.</summary>
 		/// <param name="forceRecreate">Creates a new factory instance even though the factory has been previously initialized.</param>
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static IEngine Initialize(bool forceRecreate)
 		{
-			if (instance == null || forceRecreate)
+			if (Singleton<IEngine>.Instance == null || forceRecreate)
 			{
                 Debug.WriteLine("Constructing " + DateTime.Now);
-				instance = CreateEngineInstance();
+				Singleton<IEngine>.Instance = CreateEngineInstance();
                 Debug.WriteLine("Initializing " + DateTime.Now);
-                instance.Initialize();
+				Singleton<IEngine>.Instance.Initialize();
 			}
-			return instance;
+			return Singleton<IEngine>.Instance;
 		}
 
 		/// <summary>Sets the static factory instance to the supplied factory. Use this method to supply your own factory implementation.</summary>
@@ -51,7 +47,7 @@ namespace N2
 		/// <remarks>Only use this method if you know what you're doing.</remarks>
 		public static void Initialize(Engine.IEngine engine)
 		{
-			instance = engine;
+			Singleton<IEngine>.Instance = engine;
 		}
 
         private static System.Configuration.Configuration GetConfiguration()
@@ -97,15 +93,15 @@ namespace N2
 		{
 			get
 			{
-				if (instance == null)
+				if (Singleton<IEngine>.Instance == null)
 				{
 					Initialize(false);
 					if (HttpContext.Current != null)
 					{
-						instance.Attach(HttpContext.Current.ApplicationInstance);
+						Singleton<IEngine>.Instance.Attach(HttpContext.Current.ApplicationInstance);
 					}
 				}
-				return instance;
+				return Singleton<IEngine>.Instance;
 			}
 		}
 

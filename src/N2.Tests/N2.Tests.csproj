@@ -174,9 +174,11 @@
     <Compile Include="Edit\WhileSortingTreeOfPages.cs" />
     <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
     <Compile Include="Engine\ContentEngineTests.cs" />
+    <Compile Include="Engine\SingletonTests.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Fakes\FakeRequestLifeCycleHandler.cs" />
     <Compile Include="Fakes\FakeTypeFinder.cs" />
+    <Compile Include="Fakes\StaticContextAccessor.cs" />
     <Compile Include="Globalization\FlatLanguageStructureTests.cs" />
     <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
     <Compile Include="Globalization\Items\LanguageRoot.cs" />

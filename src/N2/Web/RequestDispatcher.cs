@@ -24,7 +24,7 @@ namespace N2.Web
 		readonly bool rewriteEmptyExtension;
 		readonly string[] observedExtensions = new[] { ".aspx" };
                 
-		IControllerDescriptor[] controllerDescriptor = new IControllerDescriptor[0];
+		IControllerDescriptor[] controllerDescriptors = new IControllerDescriptor[0];
 
 		public RequestDispatcher(IUrlParser parser, IWebContext webContext, ITypeFinder finder, IErrorHandler errorHandler, HostSection config)
 		{
@@ -44,7 +44,7 @@ namespace N2.Web
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual BaseController ResolveController()
+		public virtual T ResolveController<T>() where T : class, IContentController
 		{
 			Url url = webContext.Url;
 			PathData path;
@@ -58,7 +58,7 @@ namespace N2.Web
 				errorHandler.Notify(ex);
 				path = PathData.Empty;
 			}
-			BaseController controller = CreateControllerInstance(path);
+			T controller = CreateControllerInstance<T>(path);
 			controller.Path = path;
 			return controller;
 		}
@@ -69,10 +69,10 @@ namespace N2.Web
 		{
 			lock(this)
 			{
-				List<IControllerDescriptor> references = new List<IControllerDescriptor>(controllerDescriptor);
+				List<IControllerDescriptor> references = new List<IControllerDescriptor>(controllerDescriptors);
 				references.AddRange(descriptorToAdd);
 				references.Sort();
-				controllerDescriptor = references.ToArray();
+				controllerDescriptors = references.ToArray();
 			}
 		}
 
@@ -95,20 +95,20 @@ namespace N2.Web
 			return false;
 		}
 
-		protected virtual BaseController CreateControllerInstance(PathData path)
+		protected virtual T CreateControllerInstance<T>(PathData path) where T: class, IContentController
 		{
 			if (!path.IsEmpty())
 			{
-				foreach (IControllerDescriptor reference in controllerDescriptor)
+				foreach (IControllerDescriptor reference in controllerDescriptors)
 				{
-					if (reference.IsControllerFor(path))
+					if (reference.IsControllerFor(path, typeof(T)))
 					{
-						return Activator.CreateInstance(reference.ControllerType) as BaseController;
+						return Activator.CreateInstance(reference.ControllerType) as T;
 					}
 				}
 			}
 
-			return new BaseController();
+			return new BaseController() as T;
 		}
 
 		#region IStartable Members

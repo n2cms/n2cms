@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -32,6 +33,7 @@ using N2UI = N2.Web.UI;
 using System.Text;
 using N2.Details;
 using N2.Collections;
+using N2.Engine;
 
 namespace N2
 {
@@ -535,9 +537,16 @@ namespace N2
 
 		private PathData GetTemplate(string remainingUrl)
 		{
-			foreach (IPathFinder reference in GetType().GetCustomAttributes(typeof(IPathFinder), true))
+			var finderDictionary = SingletonDictionary<Type, IList<IPathFinder>>.Instance;
+			var itemType = GetType();
+			if(!finderDictionary.ContainsKey(itemType))
 			{
-				PathData data = reference.GetPath(this, remainingUrl);
+				finderDictionary[itemType] = GetPathFinders(itemType);
+			}
+
+			foreach (IPathFinder finder in finderDictionary[itemType])
+			{
+				PathData data = finder.GetPath(this, remainingUrl);
 				if (data != null)
 					return data;
 			}
@@ -545,7 +554,21 @@ namespace N2
 			return PathData.EmptyTemplate();
 		}
 
-		/// <summary>Tries to get a child item with a given name. This method igonres user permissions and any trailing '.aspx' that might be part of the name.</summary>
+		/// <summary>Looks up path finders for a certain type using reflection.</summary>
+		/// <param name="itemType">The type of item whose path finders to get.</param>
+		/// <returns>A list of path finders that decorates the item class and it's base types.</returns>
+    	public static List<IPathFinder> GetPathFinders(Type itemType)
+    	{
+    		object[] attributes = itemType.GetCustomAttributes(typeof(IPathFinder), true);
+    		List<IPathFinder> pathFinders = new List<IPathFinder>(attributes.Length);
+    		foreach(IPathFinder finder in attributes)
+    		{
+    			pathFinders.Add(finder);
+    		}
+    		return pathFinders;
+    	}
+
+    	/// <summary>Tries to get a child item with a given name. This method igonres user permissions and any trailing '.aspx' that might be part of the name.</summary>
 		/// <param name="childName">The name of the child item to get.</param>
 		/// <returns>The child item if it is found otherwise null.</returns>
 		/// <remarks>If the method is passed an empty or null string it will return itself.</remarks>
