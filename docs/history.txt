@@ -1,4 +1,5 @@
-﻿- upgraded tinyMCE to version 3.2.1.1
+﻿- updated visual studio item templates
+- upgraded tinyMCE to version 3.2.1.1
 - removed requirement to use [RouteActionResolver] on asp.net mvc content items
 - tweaked control panel
 - introduced static singleton
