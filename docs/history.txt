@@ -1,4 +1,5 @@
-﻿- tweaked control panel
+﻿- removed requirement to use [RouteActionResolver] on asp.net mvc content items
+- tweaked control panel
 - introduced static singleton
 - introduced static request item accessor
 - fixed doubled parts
