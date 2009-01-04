@@ -133,7 +133,7 @@ namespace N2.Web.Mvc
 		private IList<ControlsAttribute> FindControllers(IEngine engine)
 		{
 			List<ControlsAttribute> controllerDefinitions = new List<ControlsAttribute>();
-			foreach (Type controllerType in engine.Resolve<ITypeFinder>().Find(typeof(IContentController)))
+			foreach (Type controllerType in engine.Resolve<ITypeFinder>().Find(typeof(IController)))
 			{
 				foreach (ControlsAttribute attr in controllerType.GetCustomAttributes(typeof(ControlsAttribute), false))
 				{

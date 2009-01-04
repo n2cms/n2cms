@@ -13,12 +13,17 @@ namespace N2.Integrity
 	[AttributeUsage(AttributeTargets.Class)]
 	public class AllowedZonesAttribute : Attribute, IInheritableDefinitionRefiner
 	{
+		readonly AllowedZones allowedIn = AllowedZones.SpecifiedZones;
+		private string[] zoneNames;
+
+
 		/// <summary>Initializes a new instance of the AllowedZonesAttribute which is used to restrict which zones item may have.</summary>
-		public AllowedZonesAttribute(AllowedZones allowedZones)
+		public AllowedZonesAttribute(AllowedZones allowedIn)
 		{
-			if(allowedZones == AllowedZones.All)
+			this.allowedIn = allowedIn;
+			if (allowedIn == AllowedZones.All)
 				zoneNames = null;
-			else 
+			else
 				zoneNames = new string[0];
 		}
 
@@ -29,7 +34,6 @@ namespace N2.Integrity
 			this.zoneNames = zoneNames;
 		}
 
-		private string[] zoneNames;
 
 		/// <summary>Gets or sets zones the item can be added to.</summary>
 		public string[] ZoneNames
@@ -38,8 +42,10 @@ namespace N2.Integrity
 			set { zoneNames = value; }
 		}
 
+
 		public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
+			currentDefinition.AllowedIn = allowedIn;
 			currentDefinition.AllowedZoneNames = ZoneNames;
 		}
 	}

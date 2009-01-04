@@ -34,14 +34,6 @@ namespace N2.Definitions
 			this.containableExplorer = containableExplorer;
 		}
 
-		/// <summary>Gets or sets wether the definitions use full name space as discriminator for backward compatibility.</summary>
-		[Obsolete("UseBackwardsCompatibleDiscriminator is now deprecated, please update your code.")]
-		public bool UseBackwardsCompatibleDiscriminator
-		{
-			get { return false; }
-			set { throw new N2Exception("UseBackwardsCompatibleDiscriminator is now deprecated, please update your code.") ; }
-		}
-
 		/// <summary>Builds item definitions in the current environment.</summary>
 		/// <returns>A dictionary of item definitions in the current environment.</returns>
 		public virtual IDictionary<Type, ItemDefinition> GetDefinitions()

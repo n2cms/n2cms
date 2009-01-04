@@ -51,10 +51,10 @@ namespace N2.Definitions
 
 		/// <summary>Gets a list of children allowed below a certain type of item and zone by a user.</summary>
 		/// <param name="definition">The type of parent item.</param>
-		/// <param name="zone">The zone name.</param>
+		/// <param name="zoneName">The zone name.</param>
 		/// <param name="user">The user to use for filtering by access rights.</param>
 		/// <returns>A list of definitions allowed by the given criterias.</returns>
-		IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zone, IPrincipal user);
+		IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zoneName, IPrincipal user);
 
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
 		event EventHandler<ItemEventArgs> ItemCreated;

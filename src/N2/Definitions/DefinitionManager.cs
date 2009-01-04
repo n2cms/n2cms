@@ -91,27 +91,25 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets items allowed below this item in a certain zone.</summary>
-		/// <param name="zone">The zone whose allowed child item types to get.</param>
+		/// <param name="definition">The parent definition whose allowed children to get.</param>
+		/// <param name="zoneName">The zone whose allowed child item types to get.</param>
 		/// <param name="user">The user whose access to query.</param>
 		/// <returns>A list of items allowed in the zone the user is authorized to create.</returns>
-		public IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zone, IPrincipal user)
+		public IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zoneName, IPrincipal user)
 		{
-			if (!definition.HasZone(zone))
-				throw new N2Exception("The definition '{0}' does not allow a zone named '{1}'.", definition.Title, zone);
-
 			List<ItemDefinition> allowedChildItems = new List<ItemDefinition>();
-			foreach (ItemDefinition childItem in definition.AllowedChildren)
+			foreach (ItemDefinition childDefinition in definition.AllowedChildren)
 			{
-				if (!childItem.IsDefined)
+				if (!childDefinition.IsDefined)
 					continue;
-				if (!childItem.Enabled)
+				if (!childDefinition.Enabled)
 					continue;
-				if (!definition.IsAllowedInZone(zone, childItem.AllowedZoneNames))
+				if(!childDefinition.IsAllowedInZone(zoneName))
 					continue;
-				if (!childItem.IsAuthorized(user))
+				if (!childDefinition.IsAuthorized(user))
 					continue;
 
-				allowedChildItems.Add(childItem);
+				allowedChildItems.Add(childDefinition);
 			}
 			allowedChildItems.Sort();
 			return allowedChildItems;

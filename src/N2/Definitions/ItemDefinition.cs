@@ -36,26 +36,21 @@ namespace N2.Definitions
 	/// </summary>
 	public class ItemDefinition : IComparable<ItemDefinition>
 	{
-		#region Private Fields
-
-		private readonly Type itemType;
-		private DefinitionAttribute definitionAttribute;
-		private string iconUrl = null;
-		private IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
-		private IList<string> allowedZoneNames = new List<string>();
-		private IList<ItemDefinition> allowedChildren = new List<ItemDefinition>();
-		private IList<IEditable> editables;
-		private IList<IEditableContainer> containers;
-		private IList<EditorModifierAttribute> modifiers;
-		private IList<IDisplayable> displayables;
-		private IList<string> authorizedRoles;
-		private IEditableContainer rootContainer = null;
-		private bool enabled = true;
-		private bool isDefined = false;
-
-		#endregion
-
-		#region Constructor & Initialize
+		readonly Type itemType;
+		DefinitionAttribute definitionAttribute;
+		string iconUrl = null;
+		IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
+		IList<string> allowedZoneNames = new List<string>();
+		IList<ItemDefinition> allowedChildren = new List<ItemDefinition>();
+		IList<IEditable> editables;
+		IList<IEditableContainer> containers;
+		IList<EditorModifierAttribute> modifiers;
+		IList<IDisplayable> displayables;
+		IList<string> authorizedRoles;
+		IEditableContainer rootContainer = null;
+		bool enabled = true;
+		bool isDefined = false;
+		AllowedZones allowedIn = AllowedZones.SpecifiedZones;
 
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
@@ -66,8 +61,6 @@ namespace N2.Definitions
 			this.itemType = itemType;
 			definitionAttribute = new DefinitionAttribute(itemType.Name, itemType.Name, string.Empty, itemType.FullName, 1000);
 		}
-
-		#endregion
 
 		#region Properties
 
@@ -209,29 +202,34 @@ namespace N2.Definitions
 			get { return displayables; }
 			set { displayables = value; }
 		}
+		public AllowedZones AllowedIn
+		{
+			get { return allowedIn; }
+			set { allowedIn = value; }
+		}
 
 		#endregion
 
 		#region Methods
-
 		/// <summary>Find out if this item is allowed in a zone.</summary>
-		/// <param name="zone"></param>
-		/// <returns></returns>
-		[Obsolete("Name changed to IsAllowedInZone.")]
-		public bool IsZoneAllowed(string zone)
-		{
-			return IsAllowedInZone(zone);
-		}
-
-		/// <summary>Find out if this item is allowed in a zone.</summary>
-		/// <param name="zone">The zone name to check.</param>
+		/// <param name="zoneName">The zone name to check.</param>
 		/// <returns>True if the item is allowed in the zone.</returns>
-		public bool IsAllowedInZone(string zone)
+		public bool IsAllowedInZone(string zoneName)
 		{
-			if(allowedZoneNames == null)
+			if (AllowedIn == AllowedZones.All)
 				return true;
-			else
-				return allowedZoneNames.Contains(zone);
+			if (AllowedIn == AllowedZones.AllNamed && !string.IsNullOrEmpty(zoneName))
+				return true;
+			if (AllowedIn == AllowedZones.None)
+				return false;
+
+			if (AllowedZoneNames == null)
+				return true;
+
+			if (string.IsNullOrEmpty(zoneName) && AllowedZoneNames.Count == 0 && AllowedIn != AllowedZones.AllNamed)
+				return true;
+
+			return AllowedZoneNames.Contains(zoneName);
 		}
 
 		/// <summary>Gets editable attributes available to user.</summary>
@@ -274,28 +272,10 @@ namespace N2.Definitions
 		{
 			if (string.IsNullOrEmpty(zone))
 				return true;
-			else if (AvailableZones != null)
+			if (AvailableZones != null)
 				foreach (AvailableZoneAttribute a in AvailableZones)
 					if (a.ZoneName == zone)
 						return true;
-			return false;
-		}
-
-		/// <summary>Used to determine wether a child definition is allowed in a zone.</summary>
-		public bool IsAllowedInZone(string zone, ICollection<string> allowed)
-		{
-			if (string.IsNullOrEmpty(zone))
-			{
-				if (allowed == null)
-					return true;
-				else if (allowed.Count == 0)
-					return true;
-				else if (allowed.Contains(string.Empty))
-					return true;
-			}
-			foreach (AvailableZoneAttribute available in AvailableZones)
-				if (allowed == null || allowed.Contains(available.ZoneName) && available.ZoneName == zone)
-					return true;
 			return false;
 		}
 
