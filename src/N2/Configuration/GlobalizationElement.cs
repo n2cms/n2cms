@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace N2.Configuration
 {
@@ -13,5 +10,12 @@ namespace N2.Configuration
             get { return (bool)base["enabled"]; }
             set { base["enabled"] = value; }
         }
+
+		[ConfigurationProperty("autoDeleteTranslations", DefaultValue = false)]
+		public bool AutoDeleteTranslations
+		{
+			get { return (bool)base["autoDeleteTranslations"]; }
+			set { base["autoDeleteTranslations"] = value; }
+		}
     }
 }

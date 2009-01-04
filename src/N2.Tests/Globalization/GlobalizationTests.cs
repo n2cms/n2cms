@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using N2.Engine.Globalization;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using N2.Persistence;
-using Rhino.Mocks;
 using N2.Web;
-using N2.Persistence.NH;
 using N2.Tests.Persistence;
-using System.Diagnostics;
-using System.Globalization;
 using N2.Tests.Globalization.Items;
 using N2.Engine;
 using System.Linq;
@@ -311,7 +305,7 @@ namespace N2.Tests.Globalization
 		}
 
 		[Test]
-		public void TranslationsOfPage_AreDeleted_AlongWithOriginalTranslation()
+		public void TranslationsOfPage_IsNotDeleted_AlongWithOriginalTranslation()
 		{
 			int initialCount = swedish.Children.Count;
 
@@ -325,8 +319,8 @@ namespace N2.Tests.Globalization
             }
 			engine.Persister.Delete(english1);
 
-			Assert.That(swedish.Children.Count, Is.EqualTo(0 + initialCount));
-			Assert.That(engine.Persister.Get(swedish1.ID), Is.Null);
+			Assert.That(swedish.Children.Count, Is.EqualTo(1 + initialCount));
+			Assert.That(engine.Persister.Get(swedish1.ID), Is.EqualTo(swedish1));
 		}
 
 		[Test]

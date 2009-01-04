@@ -18,16 +18,18 @@ namespace N2.Engine.Globalization
 	{
 		private const string DeletingKey = "LanguageInterceptor_Deleting";
 
-		private readonly IPersister persister;
-		private readonly IDefinitionManager definitions;
-		private readonly IWebContext context;
-		private readonly ILanguageGateway gateway;
-        private bool enabled = true;
+		readonly IPersister persister;
+		readonly IDefinitionManager definitions;
+		readonly IWebContext context;
+		readonly ILanguageGateway gateway;
+        bool enabled = true;
+		bool autoDeleteTranslations;
 
         public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway, EngineSection config)
             : this(persister, definitions, context, gateway)
         {
             enabled = config.Globalization.Enabled;
+        	autoDeleteTranslations = config.Globalization.AutoDeleteTranslations;
         }
 
 		public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway)
@@ -68,9 +70,10 @@ namespace N2.Engine.Globalization
 
 		void persister_ItemDeleting(object sender, CancellableItemEventArgs e)
 		{
+			if (!autoDeleteTranslations) return;
+
 			// prevent infinite recursion
-			if (context.RequestItems[DeletingKey] != null)
-				return;
+			if (context.RequestItems[DeletingKey] != null) return;
 
 			ContentItem item = e.AffectedItem;
 			using (new DictionaryScope(context.RequestItems, DeletingKey, item))

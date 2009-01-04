@@ -19,20 +19,20 @@ namespace N2.Engine.Globalization
 	{
 		public const string LanguageKey = "LanguageKey";
 
-		private readonly IPersister persister;
-		private readonly IItemFinder finder;
-		private readonly IEditManager editManager;
-		private readonly IDefinitionManager definitions;
-		private readonly IHost host;
-		private int recursionDepth = 3;
-        private ISecurityManager security;
-        private IWebContext context;
-        private bool enabled = true;
+		readonly IPersister persister;
+		readonly IItemFinder finder;
+		readonly IEditManager editManager;
+		readonly IDefinitionManager definitions;
+		readonly IHost host;
+		int recursionDepth = 3;
+        ISecurityManager security;
+        IWebContext context;
+        bool enabled = true;
 
         public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context, EngineSection config)
             : this(persister, finder, editManager, definitions, host, security, context)
         {
-            this.Enabled = config.Globalization.Enabled;
+            Enabled = config.Globalization.Enabled;
         }
 
 		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context)
