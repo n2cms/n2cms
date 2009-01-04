@@ -23,12 +23,12 @@ namespace N2.Templates.UI.Views {
         protected global::N2.Templates.Web.UI.WebControls.Path p;
         
         /// <summary>
-        /// idsImages control.
+        /// rptImages control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.ItemDataSource idsImages;
+        protected global::System.Web.UI.WebControls.Repeater rptImages;
     }
 }

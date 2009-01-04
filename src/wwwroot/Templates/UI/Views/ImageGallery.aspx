@@ -5,8 +5,7 @@
 	<n2:EditableDisplay PropertyName="Text" runat="server" />
 	
 	<div id="thumbnails">	
-		<n2:ItemDataSource id="idsImages" runat="server" />
-		<asp:Repeater runat="server" DataSourceID="idsImages">
+		<asp:Repeater ID="rptImages" runat="server">
 			<ItemTemplate>
 				<a id="t<%# Eval("ID") %>" href='<%# Eval("ResizedImageUrl") %>' class="thumbnail">
 					<img alt='<%# Eval("Title") %>' src='<%# Eval("ThumbnailImageUrl") %>' />
