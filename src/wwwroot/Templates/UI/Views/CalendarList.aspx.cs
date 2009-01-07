@@ -15,7 +15,10 @@ namespace N2.Templates.UI.Views
 
             Register.StyleSheet(Page, "/Templates/UI/Css/Calendar.css", Media.All);
 
-            rc.DataSource = CurrentPage.GetEvents();
+			if(Request["filter"] != null)
+				rc.DataSource = CurrentPage.GetEvents(Convert.ToDateTime(Server.UrlDecode(Request["date"])));
+			else
+				rc.DataSource = CurrentPage.GetEvents();
             rc.DataBind();
         }
     }

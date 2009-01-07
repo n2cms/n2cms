@@ -266,6 +266,7 @@
     <EmbeddedResource Include="Serialization\serialization.castle.config" />
     <Compile Include="Collections\BranchHierarchyBuilder.cs" />
     <Compile Include="Collections\CompositeFilter.cs" />
+    <Compile Include="Collections\DelegateFilter.cs" />
     <Compile Include="Collections\HierarchyNode.cs" />
     <Compile Include="Collections\IHierarchyNavigator.cs" />
     <Compile Include="Collections\InverseFilter.cs" />

@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AccessFilterTests.cs" />
+    <Compile Include="Collections\ItemListTests.cs" />
     <Compile Include="Collections\PublishedFilterTests.cs" />
     <Compile Include="Collections\NavigationFilterTests.cs" />
     <Compile Include="Collections\VisibleFilterTests.cs" />

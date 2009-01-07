@@ -4,7 +4,7 @@
         <HeaderTemplate><div class="list"></HeaderTemplate>
         <ItemTemplate>
             <div class="item i<%# Container.ItemIndex %> a<%# Container.ItemIndex % 2 %>">
-                <span class="date"><%# Eval("EventDate")%></span>
+                <span class="date"><%# Eval("EventDateString") %></span>
                 <a href='<%# Eval("Url") %>'><%# Eval("Title") %></a>
                 <p><%# Eval("Introduction") %></p>
             </div>

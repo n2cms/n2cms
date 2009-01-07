@@ -53,14 +53,6 @@ namespace N2.Collections
 			AddRange(items, filters);
 		}
 
-        ///// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
-        ///// <param name="items">The full enumeration of items to initialize with.</param>
-        ///// <param name="filters">The filters that should be applied to the full collection.</param>
-        //public ItemList(IEnumerable<T> items, IEnumerable<ItemFilter> filters)
-        //{
-        //    AddRange(items, filters);
-        //}
-
 		#endregion
 
 		#region Methods
@@ -106,6 +98,11 @@ namespace N2.Collections
                     return true;
             return false;
         }
+
+		public ItemList<T> Cast<T>() where T: ContentItem
+		{
+			return new ItemList<T>(this, TypeFilter.Of<T>());
+		}
 		#endregion
 
 		#region IHierarchicalEnumerable Members

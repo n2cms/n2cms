@@ -23,6 +23,17 @@ namespace N2.Templates.Items
             set { SetDetail("EventDate", value); }
         }
 
+    	public virtual string EventDateString
+    	{
+    		get
+    		{
+    			if (!EventDate.HasValue) return null;
+    			if (EventDate.Value.TimeOfDay.TotalSeconds == 0) return EventDate.Value.ToShortDateString();
+    			
+				return EventDate.Value.ToString();
+    		}
+    	}
+
         [EditableTextBox("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4, Columns = 80)]
         public virtual string Introduction
         {

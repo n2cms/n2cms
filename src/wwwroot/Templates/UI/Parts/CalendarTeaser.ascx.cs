@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using N2.Collections;
 using N2.Resources;
 using N2.Templates.Items;
 using N2.Templates.Web.UI;
@@ -26,18 +28,19 @@ namespace N2.Templates.UI.Parts
             }
         }
 
-        void cEvents_SelectionChanged(object sender, System.EventArgs e)
+        void cEvents_SelectionChanged(object sender, EventArgs e)
         {
             DateTime date = cEvents.SelectedDate.Date;
             if(CurrentItem.Container != null)
             {
-                foreach (Event calendarEvent in CurrentItem.Container.GetEvents())
-                {
-                    if(calendarEvent.EventDate.HasValue && calendarEvent.EventDate.Value.Date == date)
-                        Response.Redirect(calendarEvent.Url);
-                }
+            	IList<Event> events = CurrentItem.Container.GetEvents(date);
+				if(events.Count == 1) Response.Redirect(events[0].Url);
+
                 Url url = CurrentItem.Container.Url;
-                Response.Redirect(url.AppendQuery("date", date));
+            	url = url.AppendQuery("date", date);
+				if (events.Count > 1)
+					url = url.AppendQuery("filter", "true");
+                Response.Redirect(url);
             }
         }
     }

@@ -67,16 +67,17 @@ namespace N2.Collections
 		} 
 		#endregion
 
-		#region Static Methods
 		public static void Filter(IList<ContentItem> items, params Type[] allowedTypes)
 		{
-			ItemFilter.Filter(items, new TypeFilter(allowedTypes));
+			Filter(items, new TypeFilter(allowedTypes));
 		}
-		[Obsolete]
-		public static void Filter(bool inverse, IList<ContentItem> items, params Type[] allowedTypes)
+
+		/// <summary>A shorthand for type filter creation.</summary>
+		/// <typeparam name="T">The type to filter.</typeparam>
+		/// <returns>A new type filter.</returns>
+		public static TypeFilter Of<T>()
 		{
-			ItemFilter.Filter(items, new TypeFilter(inverse, allowedTypes));
-		} 
-		#endregion
+			return new TypeFilter(typeof (T));
+		}
 	}
 }

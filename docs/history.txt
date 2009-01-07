@@ -1,4 +1,6 @@
-﻿- removed requirement on AvailableZone and introduced AllowedZones.AllNamed
+﻿- fixed #20490: Show list when multiple events one day
+- added linq-inspired cast<T> to itemlist
+- removed requirement on AvailableZone and introduced AllowedZones.AllNamed
 - fixed #20250: Don't delete translated pages by default
 - fixed #20440: Error when you add a webpart to gallary page
 - updated visual studio item templates

@@ -7,8 +7,6 @@ namespace N2.Collections
 	/// </summary>
 	public class ItemList : ItemList<ContentItem>
 	{
-		#region Constructors
-
 		/// <summary>Initializes an empty instance of the ItemList class.</summary>
 		public ItemList()
 		{
@@ -22,20 +20,10 @@ namespace N2.Collections
 
         /// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
 		/// <param name="items">The gross enumeration of items to initialize with.</param>
-		/// <param name="filters">The filters that should be applied to the gross collection.</param>
+		/// <param name="filter">The filters that should be applied to the gross collection.</param>
 		public ItemList(IEnumerable<ContentItem> items, ItemFilter filter)
             : base(filter.Pipe(items))
         {
 		}
-
-        ///// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
-        ///// <param name="items">The gross enumeration of items to initialize with.</param>
-        ///// <param name="filters">The filters that should be applied to the gross collection.</param>
-        //public ItemList(IEnumerable<ContentItem> items, IEnumerable<ItemFilter> filters) 
-        //    : base(new CompositeFilter(filters).Pipe(items))
-        //{
-        //}
-
-		#endregion
-    }
+	}
 }
