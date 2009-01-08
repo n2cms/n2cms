@@ -648,5 +648,19 @@ namespace N2.Tests.Web
 			Assert.That(u.Authority, Is.EqualTo("www.n2cms.com"));
 			Assert.That(u.PathAndQuery, Is.EqualTo("/default.aspx"));
 		}
+
+		[Test]
+		public void CanRecognize_AbsoluteUrl()
+		{
+			Url u = "http://www.n2cms.com";
+			Assert.That(u.IsAbsolute, Is.True);
+		}
+
+		[Test]
+		public void CanRecognize_LocalUrl()
+		{
+			Url u = "/";
+			Assert.That(u.IsAbsolute, Is.False);
+		}
     }
 }

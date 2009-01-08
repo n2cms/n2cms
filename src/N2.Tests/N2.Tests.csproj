@@ -266,12 +266,14 @@
     <Compile Include="Web\ParsingUrlsWithActions.cs" />
     <Compile Include="Web\PluginContextTests.cs" />
     <Compile Include="Web\SlashExtensionUrlParserTests.cs" />
+    <Compile Include="Fakes\StaticSitesProvider.cs" />
     <Compile Include="Web\TagBuilderTests.cs" />
     <Compile Include="Web\TreeNodeTests.cs" />
     <Compile Include="Web\TreeTests.cs" />
     <Compile Include="Web\UrlParserPathAndQueryTests.cs" />
     <Compile Include="Web\UrlParserTests.cs" />
     <Compile Include="Web\UrlParsing\CachingUrlParserTests.cs" />
+    <Compile Include="Web\UrlParsing\CachingUrlParserTests_WithMultipleHostsUrlParser.cs" />
     <Compile Include="Web\UrlRewriterTests.cs" />
     <Compile Include="Serialization\Items\XmlableItem.cs" />
     <Compile Include="Serialization\XmlWriterTests.cs" />

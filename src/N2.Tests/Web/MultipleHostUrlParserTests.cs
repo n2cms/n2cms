@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Web;
 using N2.Configuration;
@@ -7,21 +7,6 @@ namespace N2.Tests.Web
 {
 	public abstract class MultipleHostUrlParserTests : ParserTestsBase
 	{
-		protected class StaticSitesProvider : ISitesProvider
-		{
-			IEnumerable<Site> sites;
-
-			public StaticSitesProvider(IEnumerable<Site> sites)
-			{
-				this.sites = sites;
-			}
-
-			public IEnumerable<Site> GetSites()
-			{
-				return sites;
-			}
-		}
-
 		protected Site[] sites;
 		protected override  UrlParser CreateUrlParser()
 		{

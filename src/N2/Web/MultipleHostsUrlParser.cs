@@ -30,8 +30,6 @@ namespace N2.Web
             }
 		}
 
-		#region Methods
-
 		public override ContentItem Parse(string url)
 		{
 			if (url.StartsWith("/") || url.StartsWith("~/"))
@@ -43,6 +41,14 @@ namespace N2.Web
 					?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
 			
 			return TryLoadingFromQueryString(url, "item", "page");
+		}
+
+		protected override ContentItem GetStartPage(Url url)
+		{
+			if (!url.IsAbsolute)
+				return StartPage;
+			Site site = host.GetSite(url) ?? host.CurrentSite;
+			return persister.Get(site.StartPageID);
 		}
 
 		public override string BuildUrl(ContentItem item)
@@ -104,7 +110,5 @@ namespace N2.Web
                     return true;
             return base.IsStartPage(item);
         }
-
-		#endregion
 	}
 }

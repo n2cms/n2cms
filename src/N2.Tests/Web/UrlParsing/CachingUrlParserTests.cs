@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Configuration;
+using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -14,15 +15,16 @@ namespace N2.Tests.Web.UrlParsing
 	[TestFixture]
 	public class CachingUrlParserTests : ParserTestsBase
 	{
-		Fakes.FakeRepository<ContentItem> repository;
+		protected FakeRepository<ContentItem> repository;
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
-			parser = new CachingUrlParserDecorator(new UrlParser(persister, wrapper, notifier, host, new HostSection()), persister);
+			UrlParser inner = new UrlParser(persister, wrapper, notifier, host, new HostSection());
+			parser = new CachingUrlParserDecorator(inner, persister);
 			CreateDefaultStructure();
-			repository = (Fakes.FakeRepository<ContentItem>) persister.Repository;
+			repository = (FakeRepository<ContentItem>) persister.Repository;
 		}
 
 		[TearDown]

@@ -1,4 +1,5 @@
-﻿- fixed #20490: Show list when multiple events one day
+﻿- fixed #20508: Problem with urlcache and multiple sites
+- fixed #20490: Show list when multiple events one day
 - added linq-inspired cast<T> to itemlist
 - removed requirement on AvailableZone and introduced AllowedZones.AllNamed
 - fixed #20250: Don't delete translated pages by default

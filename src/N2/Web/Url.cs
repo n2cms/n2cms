@@ -221,6 +221,12 @@ namespace N2.Web
 			get { return fragment; }
 		}
 
+		/// <summary>Tells whether the url contains authority information.</summary>
+		public bool IsAbsolute
+		{
+			get { return authority != null; }
+		}
+
 		public override string ToString()
 		{
 			string url;

@@ -75,7 +75,7 @@ namespace N2.Web
 			}
 
 			string path = Url.ToRelative(requestedUrl.PathWithoutExtension).TrimStart('~');
-			PathData data = StartPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
+			PathData data = GetStartPage(requestedUrl).FindPath(path).UpdateParameters(requestedUrl.GetQueries());
 
 			if (data.IsEmpty())
 			{
@@ -104,6 +104,14 @@ namespace N2.Web
 			return data;
 		}
 
+		/// <summary>May be overridden to provide custom start page depending on authority.</summary>
+		/// <param name="url">The host name and path information.</param>
+		/// <returns>The configured start page.</returns>
+		protected virtual ContentItem GetStartPage(Url url)
+		{
+			return StartPage;
+		}
+
 		bool IsRewritable(string path)
 		{
 			return ignoreExistingFiles || (!File.Exists(path) && !Directory.Exists(path));
@@ -116,7 +124,7 @@ namespace N2.Web
 		{
 			if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
 
-            ContentItem startingPoint = StartPage;
+            ContentItem startingPoint = GetStartPage(url);
 			return TryLoadingFromQueryString(url, "item", "page") ?? Parse(startingPoint, url);
 		}
 
