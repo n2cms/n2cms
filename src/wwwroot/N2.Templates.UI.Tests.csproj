@@ -36,6 +36,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -87,6 +88,13 @@
     <Compile Include="Addons\UITests\UI\ItemEditorList.aspx.designer.cs">
       <DependentUpon>ItemEditorList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Addons\UITests\UI\PageMethods.aspx.cs">
+      <DependentUpon>PageMethods.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\PageMethods.aspx.designer.cs">
+      <DependentUpon>PageMethods.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\UITests\UI\AdaptiveItem.aspx" />
@@ -104,6 +112,7 @@
     <Content Include="Addons\UITests\UI\ItemDataSource_SortBy.aspx" />
     <Content Include="Addons\UITests\UI\FileEvents.aspx" />
     <Content Include="Addons\UITests\UI\ItemEditorList.aspx" />
+    <Content Include="Addons\UITests\UI\PageMethods.aspx" />
     <Content Include="Addons\UITests\UI\RegionAll.aspx" />
     <Content Include="Addons\UITests\UI\RegionSidebar.aspx" />
     <Content Include="Addons\UITests\UI\RegionPostContent.aspx" />
@@ -118,6 +127,7 @@
     <Content Include="Addons\UITests\UI\RegionHead.aspx" />
     <Content Include="Addons\UITests\UI\RegionNone.aspx" />
     <Content Include="Addons\UITests\UI\SiteMap.aspx" />
+    <Content Include="Addons\UITests\UI\UpdatePanel.aspx" />
     <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
   </ItemGroup>
   <ItemGroup>
