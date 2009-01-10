@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>A webcontrol that pulls out the page title and transforms it into a web-compatible name that can be used in url's</summary>
+	[ValidationProperty("Text")]
 	public class NameEditor : CompositeControl, IValidator, ITextControl
 	{
 		static NameEditorElement config;
