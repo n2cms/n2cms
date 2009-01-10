@@ -60,7 +60,7 @@ namespace N2.Installation
 		public void Install()
 		{
 			SchemaExport exporter = new SchemaExport(Cfg);
-			exporter.Create(true, true);
+			exporter.Create(false, true);
 		}
 
 		public void ExportSchema(TextWriter output)
