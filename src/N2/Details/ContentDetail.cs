@@ -177,7 +177,9 @@ namespace N2.Details
 		/// <returns>The value to string.</returns>
         public override string ToString()
         {
-            return this.Value.ToString();
+            return null == this.Value
+				? base.ToString()
+				: this.Value.ToString();
         }
         #endregion
 
