@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -10,7 +8,6 @@ using NHibernate;
 using NHibernate.Mapping;
 using N2.Configuration;
 using System.Configuration;
-using NHibernate.Cfg;
 using System.Text;
 
 namespace N2.Persistence.NH
@@ -215,6 +212,9 @@ namespace N2.Persistence.NH
             StringBuilder mappings = new StringBuilder();
             foreach (Type t in EnumerateDefinedTypes())
             {
+				if(IsSuiteableForMapping(t))
+					continue;
+            	
                 if (!TryLocatingHbmResources)
                 {
                     AddGeneratedClassMapping(mappings, t);
@@ -298,11 +298,30 @@ namespace N2.Persistence.NH
 		}
 
 		/// <summary>Generates the configuration xml for a subclass without any properties and adds it to the NHibernate configuration.</summary>
-		/// <param name="cfg">The current nhhibernate configuration.</param>
+		/// <param name="mappings">The current nhhibernate configuration xml.</param>
 		/// <param name="itemType">The type to to generate a subclassed NHibernate hbm xml for.</param>
 		protected virtual void AddGeneratedClassMapping(StringBuilder mappings, Type itemType)
 		{
-            mappings.AppendFormat(classFormat, GetName(itemType), GetName(itemType.BaseType), GetDiscriminator(itemType));
+			string typeName = GetName(itemType);
+			string discriminator = GetDiscriminator(itemType);
+			string parentName = GetName(GetFirstSuitableBaseType(itemType.BaseType));
+
+			mappings.AppendFormat(classFormat, typeName, parentName, discriminator);
+		}
+
+		private Type GetFirstSuitableBaseType(Type itemType)
+		{
+			if(itemType == typeof(ContentItem))
+				return itemType;
+			if (IsSuiteableForMapping(itemType))
+				return GetFirstSuitableBaseType(itemType.BaseType);
+			
+			return itemType;
+		}
+
+		bool IsSuiteableForMapping(Type t)
+		{
+			return t.IsAbstract || t.IsGenericType || string.IsNullOrEmpty(t.FullName);
 		}
 
 		private string GetDiscriminator(Type itemType)
