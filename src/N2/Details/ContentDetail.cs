@@ -84,12 +84,7 @@ namespace N2.Details
 		public virtual N2.ContentItem EnclosingItem
 		{
 			get { return enclosingItem; }
-			set
-			{
-				if (value == null)
-					throw new ArgumentNullException("value");
-				enclosingItem = value;
-			}
+			set { enclosingItem = value; }
 		}
 
 		/// <summary>Gets or sets the <see cref="N2.Details.DetailCollection"/> associated with this detail. This value can be null which means it's a named detail directly on the item.</summary>
@@ -108,26 +103,24 @@ namespace N2.Details
 		/// <returns>A new content detail whose type depends on the type of value.</returns>
 		public static ContentDetail New(ContentItem item, string name, object value)
 		{
-			if (item == null)
-				throw new ArgumentNullException("item");
 			if (value == null)
 				throw new ArgumentNullException("value");
 
 			Type t = value.GetType();
 			if (t == typeof(bool))
 				return new BooleanDetail(item, name, (bool)value);
-			else if (t == typeof(int))
+			if (t == typeof(int))
 				return new IntegerDetail(item, name, (int)value);
-			else if (t == typeof(double))
+			if (t == typeof(double))
 				return new DoubleDetail(item, name, (double)value);
-			else if (t == typeof(DateTime))
+			if (t == typeof(DateTime))
 				return new DateTimeDetail(item, name, (DateTime)value);
-			else if (t == typeof(string))
+			if (t == typeof(string))
 				return new StringDetail(item, name, (string)value);
-			else if (t.IsSubclassOf(typeof(ContentItem)))
+			if (t.IsSubclassOf(typeof(ContentItem)))
 				return new LinkDetail(item, name, (ContentItem)value);
-			else
-				return new ObjectDetail(item, name, value);
+			
+			return new ObjectDetail(item, name, value);
 		}
 
 		/// <summary>Gets the name of the property on the detail class that can encapsulate the given value.</summary>

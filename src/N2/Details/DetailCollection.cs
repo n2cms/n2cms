@@ -96,8 +96,6 @@ namespace N2.Details
 			get { return enclosingItem; }
 			set
 			{
-				if (value == null)
-					throw new ArgumentNullException("value");
 				enclosingItem = value;
 				foreach (ContentDetail detail in this.Details)
 					detail.EnclosingItem = value;
@@ -147,7 +145,7 @@ namespace N2.Details
 		public int IndexOf(object value)
 		{
 			for (int i = 0; i < Details.Count; i++)
-				if (Details[i] == value || Details[i].Value == value)
+				if (Details[i].Equals(value) || (Details[i].Value != null && Details[i].Value.Equals(value)))
 					return i;
 			return -1;
 		}
@@ -158,7 +156,7 @@ namespace N2.Details
 		public void Insert(int index, object value)
 		{
 			ContentDetail detail = GetDetail(value);
-			Insert(index, detail);
+			Details.Insert(index, detail);
 		}
 
 		/// <summary>Removes a value at the given index.</summary>
@@ -226,7 +224,7 @@ namespace N2.Details
 		public void CopyTo(Array array, int index)
 		{
 			for (int i = index; i < array.Length; i++)
-				array.SetValue(Details[i], i);
+				array.SetValue(Details[i].Value, i);
 		}
 
 		/// <summary>Gets the number of values in the collection.</summary>

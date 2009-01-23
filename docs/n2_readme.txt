@@ -52,10 +52,11 @@ CONTRIBUTORS
 * Sten Johanneson
 * Michele Scaramal
 * Martijn Rasenberg
-* Esteewhy
+* Taras Strypko (esteewhy)
 * Geert van Horrik
 * Elizabeth (mozts)
 * Pedropaf
 * Matthew
-* Magomed Abdurakhmanov (Maqdev)
+* Magomed Abdurakhmanov (maqdev)
 * Smason
+* Jemerick

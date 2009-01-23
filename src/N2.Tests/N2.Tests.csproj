@@ -129,6 +129,7 @@
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\Items\DefinitionFreeItem.cs" />
+    <Compile Include="Details\DetailCollectionTests.cs" />
     <Compile Include="Details\EnumableItem.cs" />
     <Compile Include="Details\EditableEnumTests.cs" />
     <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />
