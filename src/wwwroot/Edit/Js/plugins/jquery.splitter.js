@@ -80,12 +80,6 @@
 			paneA.css(opts.adjust, np-paneA._padAdjust+"px");
 			paneB.css(opts.set, np+splitbar._adjust+"px")
 				.css(opts.adjust, group._adjust-splitbar._adjust-paneB._padAdjust-np+"px");
-
-			// IE fires resize for us; all others pay cash
-			if ( !jQuery.browser.msie ) {
-				paneA.trigger("resize");
-				paneB.trigger("resize");
-			}
 		}
 		function cssCache(jq, n, pf, m1, m2) {
 			// IE backCompat mode thinks width/height includes border and padding

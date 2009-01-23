@@ -1,4 +1,5 @@
-﻿- applied esteewy's patch: #5 ContentDetail.ToString() may throw NullReferenceException if not initialised
+﻿- updated jquery to 1.3.1
+- applied esteewy's patch: #5 ContentDetail.ToString() may throw NullReferenceException if not initialised
 - applied esteewy's patch: #4 [WithEditableName(Required = true)] causes an exception on render
 - fixed #20508: Problem with urlcache and multiple sites
 - fixed #20490: Show list when multiple events one day

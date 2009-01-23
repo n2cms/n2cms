@@ -12,21 +12,14 @@
         <script src="../Js/jquery.ui.ashx" type="text/javascript" ></script>
     </head>
 <body class="navigation tree">
+
     <form id="form1" runat="server">
         <div id="nav" class="tree nav">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
         <script type="text/javascript">
         	$(document).ready(function() {
-        		toolbarSelect("tree");
-
-        		$("#nav").SimpleTree({
-        			success: function(el) {
-        				toDraggable(el);
-        				n2nav.refreshLinks(el);
-        				setUpContextMenu(el);
-        			}
-        		});
+	        	toolbarSelect("tree");
 
         		var dragMemory = null;
         		var onDrop = function(e, ui) {
@@ -34,21 +27,14 @@
         			var to = this.rel;
         			var from = dragMemory;
         			parent.preview.location = "../paste.aspx?action=" + action
-										+ "&memory=" + encodeURIComponent(from)
-										+ "&selected=" + encodeURIComponent(to);
+											+ "&memory=" + encodeURIComponent(from)
+											+ "&selected=" + encodeURIComponent(to);
         		};
         		var onStart = function(e, ui) {
         			dragMemory = this.rel;
-
-        			$("#nav li a").droppable({
-        				accept: '#nav li li',
-        				hoverClass: 'droppable-hover',
-        				tolerance: 'pointer',
-        				drop: onDrop
-        			});
-
         			$.autoscroll.start();
         		};
+
         		var toDraggable = function(container) {
         			$("a", container).draggable({
         				delay: 100,
@@ -58,9 +44,23 @@
         				},
         				start: onStart,
         				helper: 'clone'
+        			}).droppable({
+        				accept: '#nav li li a',
+        				hoverClass: 'droppable-hover',
+        				tolerance: 'pointer',
+        				drop: onDrop
         			});
         		}
-        		toDraggable("#nav li li");
+
+        		$("#nav").SimpleTree({
+        			success: function(el) {
+        				toDraggable(el);
+        				n2nav.refreshLinks(el);
+        				setUpContextMenu(el);
+        			}
+        		});
+        		
+        		toDraggable($("#nav li li"));
         	});
         </script>
         <nav:ContextMenu id="cm" runat="server" />

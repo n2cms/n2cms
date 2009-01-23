@@ -40,7 +40,7 @@ if(jQuery) (function($){
 	// extend jQuery - $.MultiFile hook
 	$.extend($, {
 		MultiFile: function( o /* Object */ ){
-			return $("INPUT[@type='file'].multi").MultiFile(o);
+			return $("INPUT[type='file'].multi").MultiFile(o);
 		}
 	});
 	

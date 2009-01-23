@@ -78,76 +78,76 @@ var frameManager = function(){
 	this.currentUrl = "/";
 }
 frameManager.prototype = {
-	memorize: function(selected,action){
-		document.getElementById("memory").value = selected;
-		document.getElementById("action").value = action;
-	},
-	initFrames: function() {
-		$("#splitter").splitter({
-			type: 'v',
-			initA: true	// use width of A (#leftPane) from styles
-			
-		});
-		var t = this;
-		$(document).ready(function(){
-			$(window).bind("resize", function(){
-				t.repaint();
-			}).trigger("resize");
-		});
-	},
-	repaint: function() {
-		$("#splitter").trigger("resize"); 
-		$("#splitter").height(this.contentHeight());
-		$("#splitter *").height(this.contentHeight());
-	},
-	contentHeight: function() {
-		return document.documentElement.clientHeight - (jQuery.browser.msie ? 50 : 51);
-	},
-	getSelected: function(){
-		return this.currentUrl;
-	},
-	getMemory: function(){
-		var m = document.getElementById("memory");
-		return encodeURIComponent(m.value);
-	},
-	getAction: function(){
-		var a = document.getElementById("action");
-		return encodeURIComponent(a.value);
-	},
-	setupToolbar: function(url) {
-		url = encodeURIComponent(url);
-		var memory = this.getMemory();
-		var action = this.getAction;
-		this.currentUrl = url;
-		for(var i=0; i<toolbarPlugIns.length; i++)
-		{
-			var a = document.getElementById(toolbarPlugIns[i].linkId);
-			a.href = toolbarPlugIns[i].urlFormat
+    memorize: function(selected, action) {
+        document.getElementById("memory").value = selected;
+        document.getElementById("action").value = action;
+    },
+    initFrames: function() {
+        $("#splitter").splitter({
+            type: 'v',
+            initA: true	// use width of A (#leftPane) from styles
+
+        });
+        var t = this;
+        $(document).ready(function() {
+            $(window).bind("resize", function() {
+                t.repaint();
+            });
+            t.repaint();
+        });
+    },
+    repaint: function() {
+        $("#splitter").trigger("resize");
+        $("#splitter").height(this.contentHeight());
+        $("#splitter *").height(this.contentHeight());
+    },
+    contentHeight: function() {
+        return document.documentElement.clientHeight - (jQuery.browser.msie ? 50 : 51);
+    },
+    getSelected: function() {
+        return this.currentUrl;
+    },
+    getMemory: function() {
+        var m = document.getElementById("memory");
+        return encodeURIComponent(m.value);
+    },
+    getAction: function() {
+        var a = document.getElementById("action");
+        return encodeURIComponent(a.value);
+    },
+    setupToolbar: function(url) {
+        url = encodeURIComponent(url);
+        var memory = this.getMemory();
+        var action = this.getAction;
+        this.currentUrl = url;
+        for (var i = 0; i < toolbarPlugIns.length; i++) {
+            var a = document.getElementById(toolbarPlugIns[i].linkId);
+            a.href = toolbarPlugIns[i].urlFormat
 				.replace("{selected}", url)
 				.replace("{memory}", memory)
 				.replace("{action}", action);
-		}
-	},
-	refreshNavigation: function(navigationUrl){
-		var nav = document.getElementById('navigation');
-		nav.src = navigationUrl;
-	},
-	refreshPreview: function(previewUrl){
-		var prev = document.getElementById('preview');
-		prev.src = previewUrl;
-	},
-	refresh: function(navigationUrl, previewUrl){
-		this.refreshNavigation(navigationUrl);
-		this.refreshPreview(previewUrl);
-	},
-	select: function(name){
-		$("#" + name)
+        }
+    },
+    refreshNavigation: function(navigationUrl) {
+        var nav = document.getElementById('navigation');
+        nav.src = navigationUrl;
+    },
+    refreshPreview: function(previewUrl) {
+        var prev = document.getElementById('preview');
+        prev.src = previewUrl;
+    },
+    refresh: function(navigationUrl, previewUrl) {
+        this.refreshNavigation(navigationUrl);
+        this.refreshPreview(previewUrl);
+    },
+    select: function(name) {
+        $("#" + name)
 			.siblings().removeClass("selected").end()
 			.addClass("selected").focus();
-	},
-	unselect: function(name){
-		$("#" + name).removeClass("selected");
-	}
+    },
+    unselect: function(name) {
+        $("#" + name).removeClass("selected");
+    }
 }
 
 function toolbarSelect(name){

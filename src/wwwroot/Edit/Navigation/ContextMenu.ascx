@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
 	function setUpContextMenu(container){
-        $("a[@target=preview]", container).click(function(){
+        $("a[target=preview]", container).click(function(){
             n2nav.setupToolbar(this.rel);
         }).bind("contextmenu", function(){
             n2nav.setupToolbar(this.rel);

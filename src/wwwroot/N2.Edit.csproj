@@ -1269,12 +1269,8 @@
     <Content Include="Edit\img\tabs_base.gif" />
     <Content Include="Edit\img\tabs_begin.gif" />
     <Content Include="Edit\img\tab_end.gif" />
-    <Content Include="Edit\Js\jquery.ui\0_jquery.dimensions.js" />
     <Content Include="Edit\Js\jquery.ui\jquery.autoscroll.js" />
     <Content Include="Edit\Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
-    <Content Include="Edit\Js\jquery.ui\ui.base.js" />
-    <Content Include="Edit\Js\jquery.ui\ui.draggable.js" />
-    <Content Include="Edit\Js\jquery.ui\ui.droppable.js" />
     <Content Include="Edit\Js\parts.js" />
     <Content Include="Edit\Membership\Css\Membership.css" />
     <Content Include="Edit\Membership\Edit.aspx" />
@@ -1299,7 +1295,6 @@
     <Content Include="Edit\Globalization\Languages.ascx" />
     <Content Include="Edit\Globalization\Styles.css" />
     <Content Include="Edit\Install\Begin\Web.config" />
-    <Content Include="Edit\Js\jquery-1.2.6.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.resx">
@@ -1625,6 +1620,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit\Css\TabPanel.css" />
+    <Content Include="Edit\Js\jquery-1.3.1.js" />
+    <Content Include="Edit\Js\jquery.ui\jquery-ui-personalized-1.6rc5.min.js" />
     <Content Include="Edit\Js\plugins\date.js" />
     <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
     <Content Include="Edit\Js\TabPanel.js" />

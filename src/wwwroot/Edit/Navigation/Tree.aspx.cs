@@ -11,7 +11,9 @@ namespace N2.Edit.Navigation
 			siteTreeView.RootNode = RootNode;
 			siteTreeView.SelectedItem = SelectedItem;
 			siteTreeView.DataBind();
-	
+
+			Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
+
 			base.OnInit(e);
 		}
 	}
