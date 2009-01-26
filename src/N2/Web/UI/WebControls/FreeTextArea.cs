@@ -62,7 +62,7 @@ namespace N2.Web.UI.WebControls
             {
                 Register.JQuery(Page);
                 Register.JavaScript(Page, "~/edit/js/tiny_mce/tiny_mce.js");
-                Register.JavaScript(Page, "~/edit/js/FreeTextArea.js");
+                Register.JavaScript(Page, "~/edit/js/plugins.ashx");
 
                 string script = string.Format("freeTextArea_init('{0}', {1});", 
                     N2.Web.Url.ToAbsolute("~/Edit/FileManagement/default.aspx"), 

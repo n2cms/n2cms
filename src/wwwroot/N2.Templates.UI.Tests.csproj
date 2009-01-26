@@ -81,6 +81,13 @@
     <Compile Include="Addons\UITests\UI\GridViewTest.aspx.designer.cs">
       <DependentUpon>GridViewTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Addons\UITests\UI\ItemEditor.aspx.cs">
+      <DependentUpon>ItemEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\ItemEditor.aspx.designer.cs">
+      <DependentUpon>ItemEditor.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Addons\UITests\UI\ItemEditorList.aspx.cs">
       <DependentUpon>ItemEditorList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -111,6 +118,7 @@
     <Content Include="Addons\UITests\UI\ItemDataSource_PageFilter.aspx" />
     <Content Include="Addons\UITests\UI\ItemDataSource_SortBy.aspx" />
     <Content Include="Addons\UITests\UI\FileEvents.aspx" />
+    <Content Include="Addons\UITests\UI\ItemEditor.aspx" />
     <Content Include="Addons\UITests\UI\ItemEditorList.aspx" />
     <Content Include="Addons\UITests\UI\PageMethods.aspx" />
     <Content Include="Addons\UITests\UI\RegionAll.aspx" />
