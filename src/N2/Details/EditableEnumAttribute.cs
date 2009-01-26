@@ -48,7 +48,7 @@ namespace N2.Details
             return ((int) value).ToString();
         }
 
-        protected override object GetValue(DropDownList ddl)
+        protected override object GetValue(ListControl ddl)
         {
             if (!string.IsNullOrEmpty(ddl.SelectedValue))
                 return GetEnumValue(int.Parse(ddl.SelectedValue));
