@@ -30,7 +30,7 @@ namespace N2.Web.Mvc
 			
 			foreach(string method in methods)
 				if(method.Equals(action, StringComparison.InvariantCultureIgnoreCase))
-					return new PathData(item, null, action, arguments);
+					return new PathData(item, string.Empty, action, arguments);
 
 			return null;
 		}

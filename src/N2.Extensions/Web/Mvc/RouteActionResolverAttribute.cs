@@ -12,7 +12,7 @@ namespace N2.Web.Mvc
 		{
 			if (string.IsNullOrEmpty(remainingUrl) || string.Equals(remainingUrl, "default", StringComparison.InvariantCultureIgnoreCase))
 				remainingUrl = "index";
-			return new PathData(item, null, remainingUrl, null);
+			return new PathData(item, string.Empty, remainingUrl, null);
 		}
 	}
 }

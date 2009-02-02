@@ -1,4 +1,5 @@
-﻿- fixed #20941: cannot add custom routes
+﻿- applied jemerick's patch: #20468 RouteActionResolverAttribute giving issues with versioning in MVC
+- fixed #20941: cannot add custom routes
 - Deprecated the [RouteActionResolver] attribute
 - removed views code behinds
 - updated to MVC RC
