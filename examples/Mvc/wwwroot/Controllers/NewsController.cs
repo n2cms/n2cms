@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MvcTest.Models;
 using N2.Web;
 using N2.Web.Mvc;
-using N2.Collections;
 using MvcTest.Views.News;
 
 namespace MvcTest.Controllers

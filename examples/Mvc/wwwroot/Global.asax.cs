@@ -11,8 +11,12 @@ namespace MvcTest
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.Add(new ContentRoute(engine, new MvcRouteHandler()));
-            routes.MapRoute(
+            
+			// This route detects content item paths and executes their controller
+			routes.Add(new ContentRoute(engine, new MvcRouteHandler()));
+            
+			// This controller fallbacks to a controller unrelated to N2
+			routes.MapRoute(
                "Default",                                              // Route name
                "{controller}/{action}/{id}",                           // URL with parameters
                new { controller = "Home", action = "Index", id = "" }  // Parameter defaults

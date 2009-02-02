@@ -15,6 +15,10 @@ using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using N2.Web;
 using System.Collections.Specialized;
+using Microsoft.Web.Mvc;
+using System.Web.Mvc;
+using System.Web.Mvc.Html;
+using HtmlHelper = System.Web.Mvc.HtmlHelper;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -26,6 +30,7 @@ namespace N2.Extensions.Tests.Mvc
 		RegularPage root;
 		AboutUsSectionPage about;
 		ExecutiveTeamPage executives;
+		SearchPage search;
 		ContentRoute route;
 			
 		[SetUp]
@@ -36,6 +41,7 @@ namespace N2.Extensions.Tests.Mvc
 			root = CreateOneItem<RegularPage>(1, "root", null);
 			about = CreateOneItem<AboutUsSectionPage>(2, "about", root);
 			executives = CreateOneItem<ExecutiveTeamPage>(3, "executives", about);
+			search = CreateOneItem<SearchPage>(4, "search", root);
 
 			var typeFinder = new FakeTypeFinder();
 			typeFinder.typeMap[typeof (ContentItem)] = new[]
@@ -43,7 +49,8 @@ namespace N2.Extensions.Tests.Mvc
 				typeof(RegularPage),
 				typeof(AboutUsSectionPage),
 				typeof(ExecutiveTeamPage),
-				typeof(ContentItem)
+				typeof(ContentItem),
+				typeof(SearchPage)
 			};
 			typeFinder.typeMap[typeof (IController)] = new[]
 			{
@@ -51,7 +58,8 @@ namespace N2.Extensions.Tests.Mvc
 				typeof (AboutUsSectionPageController), 
 				typeof (RegularControllerBase), 
 				typeof (FallbackContentController),
-				typeof(NonN2Controller)
+				typeof (NonN2Controller),
+				typeof (SearchController)
 			};
 
 			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder), null);
@@ -128,10 +136,9 @@ namespace N2.Extensions.Tests.Mvc
 
 			RouteData routeData = new RouteData();
 			routeData.Values["ContentItem"] = new RegularPage();
-			var data = route.GetVirtualPath(new RequestContext(httpContext, routeData), new RouteValueDictionary
-			                                                                            	{
-			                                                                            		{"controller", "NonN2"}
-			                                                                            	});
+			var data = route.GetVirtualPath(
+				new RequestContext(httpContext, routeData), 
+				new RouteValueDictionary { {"controller", "NonN2"} });
 
 			Assert.That(data, Is.Null);
 		}
@@ -161,6 +168,38 @@ namespace N2.Extensions.Tests.Mvc
 			                                       new RouteValueDictionary {{"controller", "Mvc"}, {"action", "Index"}});
 
 			Assert.That(virtualPath, Is.Null);
+		}
+
+		[Test]
+		public void X()
+		{
+			SetPath("/search/");
+			HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
+
+			string url = helper.RouteLink("Hello", new {controller = "Search", q = "hello"});
+			Assert.Fail(url);
+		}
+
+		[Test]
+		public void CanCreate_ActionLink()
+		{
+			SetPath("/search/");
+			HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
+
+			string url1 = helper.ActionLink("Hello", "Search", new {q = "query"});
+
+			Assert.That(url1, Is.EqualTo(""));
+		}
+
+		[Test]
+		public void CanCreate_UrlFromExpression()
+		{
+			SetPath("/search/");
+			HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
+
+			string url2 = helper.BuildUrlFromExpression<SearchController>(s => s.Search("hello"));
+
+			Assert.That(url2, Is.EqualTo(""));
 		}
 
 		//TODO figure out

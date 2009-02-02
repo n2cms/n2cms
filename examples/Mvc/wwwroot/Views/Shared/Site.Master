@@ -19,6 +19,7 @@
             <ul id="mainMenu">
 				<li><a href="<%= N2.Find.StartPage.Url %>">Home</a></li>
 				<%= N2.Web.Tree.From(N2.Find.StartPage, 2).Filters(new N2.Collections.NavigationFilter()).ExcludeRoot(true)%>
+				<li><%= Html.ActionLink<MvcTest.Controllers.StaticController>(c => c.Items("from the menu"), "Static controller") %></li>
             </ul>
         </div>
 
@@ -38,7 +39,7 @@
 					<% foreach(N2.ContentItem item in N2.Find.EnumerateBetween(N2.Find.StartPage, N2.Find.CurrentPage, false)) { %>
 						<%= N2.Web.Link.To(item) %> /
 					<% } %>
-					<%= N2.Find.CurrentPage.Title %>
+					<%= N2.Utility.Evaluate(N2.Find.CurrentPage, "Title") %>
 					</p>
                     <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server">
                     </asp:ContentPlaceHolder>

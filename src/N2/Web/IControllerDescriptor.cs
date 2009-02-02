@@ -19,5 +19,8 @@ namespace N2.Web
 		/// <param name="requiredType">The type of controller required by the caller. This is typically a type of interface deriving from <see cref="IContentController"/>.</param>
 		/// <returns>True if the controller is the right one.</returns>
 		bool IsControllerFor(PathData path, Type requiredType);
+
+		/// <summary>The name of the specified controller type.</summary>
+		string ControllerName { get; }
 	}
 }

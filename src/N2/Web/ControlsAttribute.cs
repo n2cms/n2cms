@@ -29,6 +29,20 @@ namespace N2.Web
 			set { controllerType = value; }
 		}
 
+		public string ControllerName
+		{
+			get
+			{
+				string name = ControllerType.Name;
+				int i = name.IndexOf("Controller");
+				if (i > 0)
+				{
+					return name.Substring(0, i);
+				}
+				return name;
+			}
+		}
+
 		public bool IsControllerFor(PathData path, Type requiredType)
 		{
 			return ItemType.IsAssignableFrom(path.CurrentItem.GetType()) && requiredType.IsAssignableFrom(requiredType);

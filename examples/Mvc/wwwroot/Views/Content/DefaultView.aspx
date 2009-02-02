@@ -1,5 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="DefaultView.aspx.cs" Inherits="MvcTest.Views.Content.DefaultView" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" Inherits="ViewPage<ContentPage>" %>
+<%@ Import Namespace="MvcTest.Models"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-<h1><%= ViewData.Model.Title %></h1>
-<%= ViewData.Model.Text %>
+<h1><%= Model.Title %></h1>
+<%= Model.Text %>
 </asp:Content>

@@ -1,15 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Items.aspx.cs" Inherits="MvcTest.Views.Static.Items" %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <div>
-		<h2><%= ViewData["message"] %></h2>
-		<%= Html.ActionLink("Back", "index") %>
-    </div>
-</body>
-</html>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<object>" %>
+<%@ Import Namespace="System.Web.Mvc" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
+	<h2><%= ViewData["message"] %></h2>
+	<%= Html.ActionLink("Back", "index") %>
+</asp:Content>

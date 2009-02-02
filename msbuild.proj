@@ -282,7 +282,8 @@
                                    $(Examples-Folder)\**\*.resharper;
                                    $(Examples-Folder)\**\bin\Debug\*.*;
                                    $(Examples-Folder)\**\bin\Release\*.*;
-                                   $(Examples-Folder)\**\*.pdb" />
+                                   $(Examples-Folder)\**\*.pdb;
+								   $(Examples-Folder)\**\*WithProjectReferences.*" />
 
     <ExampleSource-MediumTrustFiles Include="$(Examples-MediumTrustFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
     <ExampleSource-PartsFiles Include="$(Examples-PartsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />

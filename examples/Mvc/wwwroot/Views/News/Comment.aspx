@@ -1,8 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="Comment.aspx.cs" Inherits="MvcTest.Views.News.Comment" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="ViewPage<NewsPage>" %>
+<%@ Import Namespace="MvcTest.Models"%>
 <%@ Import Namespace="MvcTest.Controllers"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
 	<% Html.BeginForm<NewsController>(c => c.Submit(null, null)); %>
-		<h1><%= string.Format("Add comment to '{0}'", ViewData.Model.Title) %></h1>
+		<h1><%= string.Format("Add comment to '{0}'", Model.Title) %></h1>
 		<p>
 			<label>Subject</label>
 			<%= Html.TextBox("title") %>

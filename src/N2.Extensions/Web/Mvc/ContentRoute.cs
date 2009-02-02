@@ -9,8 +9,16 @@ using N2.Definitions;
 
 namespace N2.Web.Mvc
 {
+	/// <summary>
+	/// An ASP.NET MVC route that gets route data for content item paths.
+	/// </summary>
 	public class ContentRoute : RouteBase
 	{
+		public const string ContentItemKey = "ContentItem";
+		public const string ContentEngineKey = "ContentEngine";
+		const string ControllerKey = "controller";
+		const string ActionKey = "action";
+				
 		IEngine engine;
 		IRouteHandler routeHandler;
 		IDictionary<Type, string> controllerMap = new Dictionary<Type, string>();
@@ -23,12 +31,15 @@ namespace N2.Web.Mvc
 			IList<ControlsAttribute> controllerDefinitions = FindControllers(engine);
 			foreach (ItemDefinition id in engine.Definitions.GetDefinitions())
 			{
-				controllerMap[id.ItemType] = GetControllerFor(id.ItemType, controllerDefinitions);
+				IControllerDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
+				controllerMap[id.ItemType] = controllerDefinition.ControllerName;
 				IList<IPathFinder> finders = ContentItem.GetPathFinders(id.ItemType);
-				if(finders.Where(f => f is RouteActionResolverAttribute).Count() == 0)
+				if (0 == finders.Where(f => f is RouteActionResolverAttribute || f is ActionResolver).Count())
 				{
-					finders.Insert(0, new RouteActionResolverAttribute());
-					SingletonDictionary<Type, IList<IPathFinder>>.Instance[id.ItemType] = finders;
+					var methods = controllerDefinition.ControllerType.GetMethods().Select(m => m.Name).ToArray();
+					var actionResolver = new ActionResolver(methods);
+					finders.Insert(0, actionResolver);
+					FinderDictionary[id.ItemType] = finders;
 				}
 			}
 		}
@@ -47,10 +58,10 @@ namespace N2.Web.Mvc
 			{
 				RouteData data = new RouteData(this, routeHandler);
 
-				data.Values["ContentItem"] = td.CurrentItem;
-				data.Values["ContentEngine"] = engine;
-				data.Values["controller"] = GetControllerName(td.CurrentItem.GetType());
-				data.Values["action"] = td.Action;
+				data.Values[ContentItemKey] = td.CurrentItem;
+				data.Values[ContentEngineKey] = engine;
+				data.Values[ControllerKey] = GetControllerName(td.CurrentItem.GetType());
+				data.Values[ActionKey] = td.Action;
 				return data;
 			}
 			return null;
@@ -92,20 +103,9 @@ namespace N2.Web.Mvc
 			return controllerMap.Any(kv => kv.Key.Name == controller);
 		}
 
-		private string AddActionToUrl(string action, string url)
+		IDictionary<Type, IList<IPathFinder>> FinderDictionary
 		{
-			if (url.Contains("?") == false)
-				return url.TrimEnd('/') + "/" + action;
-
-			var beforeQuery = url.Substring(0, url.LastIndexOf("?") - 1);
-			var afterQuery = url.Substring(url.LastIndexOf("?") + 1);
-
-			return beforeQuery.TrimEnd('/') + "/" + action + "?" + afterQuery;
-		}
-
-		private static string QuerySeparator(string url)
-		{
-			return url.Contains('?') ? "&" : "?";
+			get { return SingletonDictionary<Type, IList<IPathFinder>>.Instance; }
 		}
 
 		private string GetControllerName(Type type)
@@ -113,18 +113,13 @@ namespace N2.Web.Mvc
 			return controllerMap[type];
 		}
 
-		private string GetControllerFor(Type itemType, IList<ControlsAttribute> controllerDefinitions)
+		private IControllerDescriptor GetControllerFor(Type itemType, IList<ControlsAttribute> controllerDefinitions)
 		{
 			foreach (ControlsAttribute controllerDefinition in controllerDefinitions)
 			{
 				if (controllerDefinition.ItemType.IsAssignableFrom(itemType))
 				{
-					string name = controllerDefinition.ControllerType.Name;
-					int i = name.IndexOf("Controller");
-					if (i > 0)
-					{
-						return name.Substring(0, i);
-					}
+					return controllerDefinition;
 				}
 			}
 			throw new N2Exception("Found no controller for type '" + itemType + "' among " + controllerDefinitions.Count + " found controllers.");
