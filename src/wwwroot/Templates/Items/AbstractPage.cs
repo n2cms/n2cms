@@ -11,8 +11,8 @@ namespace N2.Templates.Items
 	/// added to recursive zones of a parent.
 	/// </summary>
 	[WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content)]
-	[TabPanel(Tabs.Content, "Content", 0)]
-    [TabPanel(Tabs.Advanced, "Advanced", 100)]
+	[TabContainer(Tabs.Content, "Content", 0)]
+    [TabContainer(Tabs.Advanced, "Advanced", 100)]
     public abstract class AbstractPage : ContentItem
 	{
 	    /// <summary>Defaults to ~/Templates/UI/Img/{IconName}.png. Override <see cref="IconName"/> to reference icon in same directory.</summary>

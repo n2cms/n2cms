@@ -5,7 +5,7 @@ using N2.Web.UI;
 namespace N2.Templates.Items
 {
     [Definition("Form page", "FormPage", "A page with a form that can be sumitted and sent to an email address.", "", 240)]
-    [TabPanel("formPanel", "Form", 30)]
+    [TabContainer("formPanel", "Form", 30)]
     public class FormPage : AbstractContentPage
     {
         [EditableItem("Form", 60, ContainerName = "formPanel")]

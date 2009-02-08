@@ -14,7 +14,7 @@ namespace N2.Templates.Items
     [WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content),
      WithEditableName("Name", 20, ContainerName = Tabs.Content),
      WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
-    [TabPanel(Tabs.Advanced, "Advanced", 100)]
+    [TabContainer(Tabs.Advanced, "Advanced", 100)]
     [RestrictParents(typeof(IStructuralPage))]
     public class Redirect : AbstractPage, IStructuralPage, IBreadcrumbAppearance
     {

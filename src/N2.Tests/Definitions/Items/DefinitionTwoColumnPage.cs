@@ -8,7 +8,7 @@ namespace N2.Tests.Definitions.Items
 	[AvailableZone("Right", "Right")]
 	[WithEditableTitle("Title", 0, ContainerName = "general")]
 	[WithEditableName("Name", 1)]
-	[FieldSet("general", "General", 10)]
+	[FieldSetContainer("general", "General", 10)]
 	public abstract class DefinitionTwoColumnPage : ContentItem
 	{
 	}

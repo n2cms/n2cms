@@ -9,10 +9,10 @@ using N2.Integrity;
 namespace N2.Templates.Items
 {
     [Definition("Language root", "LanguageRoot", "A starting point for translations of the start page.", "", 450)]
-    [TabPanel(LanguageRoot.SiteArea, "Site", 70, AuthorizedUsers = new[] { "admin" }, AuthorizedRoles = new[] { "Administrators" })]
+    [TabContainer(LanguageRoot.SiteArea, "Site", 70, AuthorizedUsers = new[] { "admin" }, AuthorizedRoles = new[] { "Administrators" })]
     [RestrictParents(typeof(StartPage))]
-    [FieldSet(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
-    [FieldSet(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
+    [FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
+    [FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
     public class LanguageRoot : AbstractContentPage, IStructuralPage, ILanguage
 	{
         public LanguageRoot()

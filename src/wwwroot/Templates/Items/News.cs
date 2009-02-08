@@ -1,14 +1,13 @@
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
 using N2.Templates.Services;
 
 namespace N2.Templates.Items
 {
     [Definition("News", "News", "A news page.", "", 155)]
     [RestrictParents(typeof (NewsContainer))]
+	[DefaultTemplate("NewsItem")]
     public class News : AbstractContentPage, ISyndicatable
     {
         public News()
@@ -37,11 +36,6 @@ namespace N2.Templates.Items
         protected override string IconName
         {
             get { return "newspaper"; }
-        }
-
-        protected override string TemplateName
-        {
-            get { return "NewsItem"; }
         }
     }
 }

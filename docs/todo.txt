@@ -1,7 +1,8 @@
-- eager load item's child collections
 - edit controller
 - zones controller
 - templates controller
+- XML Store instead of DB
+- eager load item's child collections
 - make definition refiners sortable
 - move IsPage and TemplateUrl into a [Template] attribute
 - lock toolbar when editing

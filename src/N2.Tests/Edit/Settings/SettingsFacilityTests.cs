@@ -44,7 +44,7 @@ namespace N2.Tests.Edit.Settings
 			IList<N2.Definitions.IContainable> contained = rootContainer.GetContained(null);
 			Assert.AreEqual(2, contained.Count, "Should have found an editable and a container");
 			Assert.AreEqual(typeof(EditableCheckBoxAttribute), contained[0].GetType(), "The first item should have been the checkbox");
-			N2.Web.UI.FieldSetAttribute fieldSet = contained[1] as N2.Web.UI.FieldSetAttribute;
+			N2.Web.UI.FieldSetContainerAttribute fieldSet = contained[1] as N2.Web.UI.FieldSetContainerAttribute;
 			Assert.IsNotNull(fieldSet, "The second wasn't a fieldset");
 			Assert.AreEqual(typeof(EditableCheckBoxAttribute), fieldSet.ContainedEditors[0].GetType(), "The fieldset didn't contain a checkbox");
 		}

@@ -10,7 +10,6 @@ namespace N2.Tests.Web.UrlParsing
 	public class CachingUrlParserTests_WithMultipleHostsUrlParser : ParserTestsBase
 	{
 		protected Site[] sites;
-		protected FakeRepository<ContentItem> repository;
 
 		[SetUp]
 		public override void SetUp()
@@ -19,7 +18,6 @@ namespace N2.Tests.Web.UrlParsing
 			UrlParser inner = GetInnerUrlParser();
 			parser = new CachingUrlParserDecorator(inner, persister);
 			CreateDefaultStructure();
-			repository = (FakeRepository<ContentItem>)persister.Repository;
 		}
 
 		protected virtual UrlParser GetInnerUrlParser()

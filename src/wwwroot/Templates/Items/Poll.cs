@@ -14,7 +14,7 @@ namespace N2.Templates.Items
     [AllowedZones(Zones.Left, Zones.Right, Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteLeft, Zones.SiteRight)]
     [RestrictParents(typeof (AbstractContentPage))]
     [AllowedChildren(typeof(SingleSelect))]
-    [FieldSet("questionContainer", "Question", 100)]
+    [FieldSetContainer("questionContainer", "Question", 100)]
     public class Poll : SidebarItem, IContainable
     {
         [Details.PollCreatorDetail(QuestionText = "Question", CreateNewText = "Create as new question", Title = "Alternatives", SortOrder = 100, ContainerName = "questionContainer")]

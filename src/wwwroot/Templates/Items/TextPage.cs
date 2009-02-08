@@ -1,8 +1,6 @@
 using System.Text.RegularExpressions;
 using N2.Details;
 using N2.Templates.Services;
-using N2.Templates.Items;
-using System.Web.UI.WebControls;
 using N2.Serialization;
 
 namespace N2.Templates.Items
@@ -11,6 +9,7 @@ namespace N2.Templates.Items
     /// A page containing textual information.
     /// </summary>
     [Definition("Text Page", "TextPage", "A simple text page. It displays a vertical menu, the content and provides a sidebar column", "", 20)]
+	[DefaultTemplate("Text")]
     public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
     {
         [FileAttachment, EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
@@ -43,11 +42,6 @@ namespace N2.Templates.Items
                 }
             }
             return text.Substring(0, separatorIndex + 1);
-        }
-
-        protected override string TemplateName
-        {
-            get { return "Text"; }
         }
     }
 }

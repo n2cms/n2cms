@@ -43,9 +43,8 @@ namespace N2.Details
 		private int rows = 0;
 		private TextBoxMode textMode = TextBoxMode.SingleLine;
 		private string defaultValue = string.Empty;
-	    private bool allowHtml = true;
 
-	    /// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
+		/// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public EditableTextBoxAttribute(string title, int sortOrder)

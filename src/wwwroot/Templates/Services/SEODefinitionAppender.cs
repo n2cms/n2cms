@@ -51,7 +51,7 @@ namespace N2.Templates.Services
             {
                 if(IsPage(definition))
                 {
-                    TabPanelAttribute seoTab = new TabPanelAttribute("seo", SeoTabTitle, 30);
+                    TabContainerAttribute seoTab = new TabContainerAttribute("seo", SeoTabTitle, 30);
                     definition.Add(seoTab);
 
                     AddEditableText(definition, TitleTitle, TitleAndMetaTagApplyer.HeadTitle, 151, 50);

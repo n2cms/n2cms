@@ -9,8 +9,8 @@ namespace N2.Templates.Items
 {
     [Definition("Register", "UserRegistration")]
     [AllowedZones(Zones.Content)]
-    [N2.Web.UI.FieldSet("registration", "Registration", 30)]
-    [N2.Web.UI.FieldSet("verification", "Verification", 40)]
+    [N2.Web.UI.FieldSetContainer("registration", "Registration", 30)]
+    [N2.Web.UI.FieldSetContainer("verification", "Verification", 40)]
     public class UserRegistration : AbstractItem
     {
         private const string VerificationBody = @"Please verify your e-mail. Click here:

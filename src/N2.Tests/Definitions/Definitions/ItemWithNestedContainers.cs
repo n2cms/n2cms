@@ -4,11 +4,11 @@ using System.Text;
 
 namespace N2.Tests.Definitions.Definitions
 {
-	[N2.Web.UI.FieldSet("first", "Fieldset with two fieldsets", 10)]
-    [N2.Web.UI.FieldSet("inside1", "Fieldset with one fieldset inside", 20, ContainerName = "first")]
-    [N2.Web.UI.FieldSet("inside2", "A fieldset", 30, ContainerName = "first")]
-    [N2.Web.UI.FieldSet("inside3", "A fieldset", -10, ContainerName = "first")]
-    [N2.Web.UI.FieldSet("inside1_1", "A fieldset within two fieldsets", 40, ContainerName = "inside1")]
+	[N2.Web.UI.FieldSetContainer("first", "Fieldset with two fieldsets", 10)]
+    [N2.Web.UI.FieldSetContainer("inside1", "Fieldset with one fieldset inside", 20, ContainerName = "first")]
+    [N2.Web.UI.FieldSetContainer("inside2", "A fieldset", 30, ContainerName = "first")]
+    [N2.Web.UI.FieldSetContainer("inside3", "A fieldset", -10, ContainerName = "first")]
+    [N2.Web.UI.FieldSetContainer("inside1_1", "A fieldset within two fieldsets", 40, ContainerName = "inside1")]
     public class ItemWithNestedContainers : N2.ContentItem
 	{
         [N2.Details.EditableTextBox("My Property 0", 0)]

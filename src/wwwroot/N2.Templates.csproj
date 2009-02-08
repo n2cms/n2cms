@@ -90,6 +90,7 @@
     <Compile Include="Templates\Details\PollCreatorDetailAttribute.cs" />
     <Compile Include="Templates\Details\ThemeSelectorAttribute.cs" />
     <Compile Include="Templates\Find.cs" />
+    <Compile Include="Templates\Items\DefaultTemplateAttribute.cs" />
     <Compile Include="Templates\Services\ImageResizer.cs" />
     <Compile Include="Templates\Items\AbstractContentPage.cs" />
     <Compile Include="Templates\Items\AbstractItem.cs" />

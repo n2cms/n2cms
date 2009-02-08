@@ -242,8 +242,8 @@
     <Compile Include="Web\Site.cs" />
     <Compile Include="Web\TemplateNotFoundException.cs" />
     <Compile Include="Definitions\EditorContainerAttribute.cs" />
-    <Compile Include="Web\UI\FieldSetAttribute.cs" />
-    <Compile Include="Web\UI\TabPanelAttribute.cs" />
+    <Compile Include="Web\UI\FieldSetContainerAttribute.cs" />
+    <Compile Include="Web\UI\TabContainerAttribute.cs" />
     <Compile Include="Web\UI\TemplateUrlEventArgs.cs" />
     <Compile Include="Web\UI\ContentUserControl.generic2.cs">
       <SubType>ASPXCodeBehind</SubType>

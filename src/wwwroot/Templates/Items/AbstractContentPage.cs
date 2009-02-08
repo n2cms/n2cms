@@ -15,7 +15,7 @@ namespace N2.Templates.Items
         AvailableZone("Content", Zones.Content),
         AvailableZone("Recursive Above", Zones.RecursiveAbove),
     	AvailableZone("Recursive Below", Zones.RecursiveBelow)]
-    [RestrictParents(typeof(IStructuralPage))]
+	[RestrictParents(typeof(IStructuralPage))]
 	public abstract class AbstractContentPage : AbstractPage
 	{
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]

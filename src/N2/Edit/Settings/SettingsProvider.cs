@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using N2.Definitions;
 
 namespace N2.Edit.Settings
 {
+	[Obsolete]
 	public class SettingsProvider : ISettingsProvider
 	{
 		private IList<IServiceEditable> settings;

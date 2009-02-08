@@ -1,0 +1,327 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{E74B5507-F3B1-439D-BA8E-F5E923B327CA}"
+	ProjectSection(SolutionItems) = preProject
+		docs\ContentModel.png = docs\ContentModel.png
+		docs\defaults.web.config = docs\defaults.web.config
+		docs\example.web.config = docs\example.web.config
+		docs\favicon.ico = docs\favicon.ico
+		docs\history.txt = docs\history.txt
+		docs\howto_build.txt = docs\howto_build.txt
+		docs\install.txt = docs\install.txt
+		docs\License.txt = docs\License.txt
+		docs\n2_readme.txt = docs\n2_readme.txt
+		docs\nodo.txt = docs\nodo.txt
+		docs\runtime_readme.txt = docs\runtime_readme.txt
+		docs\solution_overview.txt = docs\solution_overview.txt
+		docs\templates_readme.txt = docs\templates_readme.txt
+		docs\todo.txt = docs\todo.txt
+		docs\upgrade.txt = docs\upgrade.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releases", "releases", "{0AFCEA00-8510-48F6-B949-22796F899C77}"
+	ProjectSection(SolutionItems) = preProject
+		docs\releases\release_1.3.3.txt = docs\releases\release_1.3.3.txt
+		docs\releases\release_1.3.4.txt = docs\releases\release_1.3.4.txt
+		docs\releases\release_1.3.5.txt = docs\releases\release_1.3.5.txt
+		docs\releases\release_1.4.1.txt = docs\releases\release_1.4.1.txt
+		docs\releases\release_1.4.2.txt = docs\releases\release_1.4.2.txt
+		docs\releases\release_1.4.3.txt = docs\releases\release_1.4.3.txt
+		docs\releases\release_1.4.4.txt = docs\releases\release_1.4.4.txt
+		docs\releases\release_1.4.txt = docs\releases\release_1.4.txt
+		docs\releases\upgrade_1.3.3.txt = docs\releases\upgrade_1.3.3.txt
+		docs\releases\upgrade_1.3.4.txt = docs\releases\upgrade_1.3.4.txt
+		docs\releases\upgrade_1.3.5.txt = docs\releases\upgrade_1.3.5.txt
+		docs\releases\upgrade_1.4.1.txt = docs\releases\upgrade_1.4.1.txt
+		docs\releases\upgrade_1.4.2.txt = docs\releases\upgrade_1.4.2.txt
+		docs\releases\upgrade_1.4.3.txt = docs\releases\upgrade_1.4.3.txt
+		docs\releases\upgrade_1.4.4.txt = docs\releases\upgrade_1.4.4.txt
+		docs\releases\upgrade_1.4.txt = docs\releases\upgrade_1.4.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2", "src\N2\N2.csproj", "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Extensions", "src\N2.Extensions\N2.Extensions.csproj", "{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Extensions.Tests", "src\N2.Extensions.Tests\N2.Extensions.Tests.csproj", "{84876FD2-9055-4A02-A163-1495E5659BC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Tests", "src\N2.Tests\N2.Tests.csproj", "{4B026365-D03B-40B4-862B-11608BA756B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{59E8CCC9-1A61-489B-8605-61D5654D4DF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Security", "src\N2.Security\N2.Security.csproj", "{CB6A29C5-8355-4C4C-B437-619F652B7540}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates", "src\wwwroot\N2.Templates.csproj", "{D42D096E-399D-4618-AEB4-9B023BA1316D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Edit", "Edit", "{EFB6FA37-518E-40A1-AEAB-A45BBD4935D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit.Tests", "src\N2.Edit.Tests\N2.Edit.Tests.csproj", "{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}"
+	ProjectSection(SolutionItems) = preProject
+		build.bat = build.bat
+		Build_Everything-vs2008.bat = Build_Everything-vs2008.bat
+		Deploy_Everything-vs2008.bat = Deploy_Everything-vs2008.bat
+		msbuild.proj = msbuild.proj
+		Prepare_Dependencies-vs2008.bat = Prepare_Dependencies-vs2008.bat
+		readme.txt = readme.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit", "src\wwwroot\N2.Edit.csproj", "{10F7C179-B92D-4FCA-B78C-011E428D0CA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Tests", "src\N2.Templates.Tests\N2.Templates.Tests.csproj", "{CEE6525F-F502-4890-AA36-7B8755A5E47D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snippets", "{3C49EAD0-C3FF-406F-8290-23229BD4BADF}"
+	ProjectSection(SolutionItems) = preProject
+		snippets\N2 Item Template.zip = snippets\N2 Item Template.zip
+		snippets\N2 Page Template.zip = snippets\N2 Page Template.zip
+		snippets\n2prop.snippet = snippets\n2prop.snippet
+		snippets\n2propcb.snippet = snippets\n2propcb.snippet
+		snippets\n2propenum.snippet = snippets\n2propenum.snippet
+		snippets\n2propfta.snippet = snippets\n2propfta.snippet
+		snippets\n2propimage.snippet = snippets\n2propimage.snippet
+		snippets\n2proptb.snippet = snippets\n2proptb.snippet
+		snippets\n2propuc.snippet = snippets\n2propuc.snippet
+		snippets\n2propurl.snippet = snippets\n2propurl.snippet
+		snippets\readme.txt = snippets\readme.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{04E4D1B1-EE03-488C-B53D-989700FE6018}"
+	ProjectSection(SolutionItems) = preProject
+		lib\Castle.DynamicProxy.license.txt = lib\Castle.DynamicProxy.license.txt
+		lib\Castle.DynamicProxy2.dll = lib\Castle.DynamicProxy2.dll
+		lib\Castle.MicroKernel.dll = lib\Castle.MicroKernel.dll
+		lib\Castle.Windsor.dll = lib\Castle.Windsor.dll
+		lib\ICSharpCode.SharpZipLib.dll = lib\ICSharpCode.SharpZipLib.dll
+		lib\Iesi.Collections.license.txt = lib\Iesi.Collections.license.txt
+		lib\ILMerge.exe = lib\ILMerge.exe
+		lib\log4net.dll = lib\log4net.dll
+		lib\log4net.license.txt = lib\log4net.license.txt
+		lib\Microsoft.Web.Mvc.dll = lib\Microsoft.Web.Mvc.dll
+		lib\MSBuild.Community.Tasks.dll = lib\MSBuild.Community.Tasks.dll
+		lib\MSBuild.Community.Tasks.Targets = lib\MSBuild.Community.Tasks.Targets
+		lib\MySql.Data.dll = lib\MySql.Data.dll
+		lib\NHibernate.JetDriver.dll = lib\NHibernate.JetDriver.dll
+		lib\NHibernate.license.txt = lib\NHibernate.license.txt
+		lib\NHibernate.Linq.dll = lib\NHibernate.Linq.dll
+		lib\nunit-console-runner.dll = lib\nunit-console-runner.dll
+		lib\nunit-console.exe = lib\nunit-console.exe
+		lib\nunit-console.exe.config = lib\nunit-console.exe.config
+		lib\nunit.core.dll = lib\nunit.core.dll
+		lib\nunit.core.interfaces.dll = lib\nunit.core.interfaces.dll
+		lib\nunit.framework.dll = lib\nunit.framework.dll
+		lib\nunit.framework.extensions.dll = lib\nunit.framework.extensions.dll
+		lib\nunit.util.dll = lib\nunit.util.dll
+		lib\readme.txt = lib\readme.txt
+		lib\Rhino.Mocks.dll = lib\Rhino.Mocks.dll
+		lib\Rhino.Mocks.License.txt = lib\Rhino.Mocks.License.txt
+		lib\System.Data.SQLite.DLL = lib\System.Data.SQLite.DLL
+		lib\System.Web.Abstractions.dll = lib\System.Web.Abstractions.dll
+		lib\System.Web.Mvc.dll = lib\System.Web.Mvc.dll
+		lib\System.Web.Routing.dll = lib\System.Web.Routing.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Obsolete", "src\N2.Templates.Obsolete\N2.Templates.Obsolete.csproj", "{3EBF2F63-FE9F-47EE-B233-0A9634CC02FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddonCatalog", "src\wwwroot\AddonCatalog.csproj", "{0F286C8B-A322-43E6-B02C-F118BF29D3D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Add-ons", "Add-ons", "{AA0C3414-F509-44A2-A677-409DE6B49B1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiki", "src\wwwroot\Wiki.csproj", "{77B21028-EA50-4CED-8334-307E836B0ECB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{03223418-97AD-4087-A568-6BBFD274864D}"
+	ProjectSection(SolutionItems) = preProject
+		examples\Prepare_Dependencies-vs2008.bat = examples\Prepare_Dependencies-vs2008.bat
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.UI.Tests", "src\wwwroot\N2.Templates.UI.Tests.csproj", "{250D978B-3C2C-4151-9A69-B36F3F53E8B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediumTrustTest", "examples\MediumTrust\wwwroot\MediumTrustTest.csproj", "{23188961-CC8E-4D05-BC09-C6BE83D17640}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTest", "examples\Mvc\wwwroot\MvcTest.csproj", "{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject", "examples\TemplatesSite\wwwroot\MyProject.csproj", "{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "examples\MinimalCSharp\wwwroot\", "{2FE869CB-9D8D-41BF-990F-267538A6B051}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = ""
+		SccAuxPath = ""
+		SccLocalPath = ""
+		SccProvider = ""
+		TargetFramework = "2.0"
+		Debug.AspNetCompiler.VirtualPath = "/wwwroot"
+		Debug.AspNetCompiler.PhysicalPath = "examples\MinimalCSharp\wwwroot\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/wwwroot"
+		Release.AspNetCompiler.PhysicalPath = "examples\MinimalCSharp\wwwroot\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "4500"
+		VWDVirtualPath = "/"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MediumTrust", "MediumTrust", "{A82468F2-E36D-4988-A783-9C8FC4D63C2A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{CD0CB04E-C4F8-4343-B8EB-39741236B222}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{456E758B-CA59-4E39-A926-1D3742E88C6D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VB", "VB", "{1B61704E-8EEE-4D42-97E6-66F6B58F1F8A}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "examples\MinimalVisualBasic\wwwroot\", "{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = ""
+		SccAuxPath = ""
+		SccLocalPath = ""
+		SccProvider = ""
+		TargetFramework = "2.0"
+		Debug.AspNetCompiler.VirtualPath = "/wwwroot(1)"
+		Debug.AspNetCompiler.PhysicalPath = "examples\MinimalVisualBasic\wwwroot\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(1)\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/wwwroot(1)"
+		Release.AspNetCompiler.PhysicalPath = "examples\MinimalVisualBasic\wwwroot\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(1)\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "1561"
+		VWDVirtualPath = "/"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{1049B0C4-91C6-4A4D-B14D-CB37EC84916C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B56F738-E780-4F6E-9B7F-7D161F7E3521}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84876FD2-9055-4A02-A163-1495E5659BC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B026365-D03B-40B4-862B-11608BA756B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B026365-D03B-40B4-862B-11608BA756B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B026365-D03B-40B4-862B-11608BA756B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B026365-D03B-40B4-862B-11608BA756B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB6A29C5-8355-4C4C-B437-619F652B7540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D42D096E-399D-4618-AEB4-9B023BA1316D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D42D096E-399D-4618-AEB4-9B023BA1316D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D42D096E-399D-4618-AEB4-9B023BA1316D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D42D096E-399D-4618-AEB4-9B023BA1316D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10F7C179-B92D-4FCA-B78C-011E428D0CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F7C179-B92D-4FCA-B78C-011E428D0CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F7C179-B92D-4FCA-B78C-011E428D0CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F7C179-B92D-4FCA-B78C-011E428D0CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE6525F-F502-4890-AA36-7B8755A5E47D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE6525F-F502-4890-AA36-7B8755A5E47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE6525F-F502-4890-AA36-7B8755A5E47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE6525F-F502-4890-AA36-7B8755A5E47D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EBF2F63-FE9F-47EE-B233-0A9634CC02FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EBF2F63-FE9F-47EE-B233-0A9634CC02FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EBF2F63-FE9F-47EE-B233-0A9634CC02FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EBF2F63-FE9F-47EE-B233-0A9634CC02FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F286C8B-A322-43E6-B02C-F118BF29D3D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F286C8B-A322-43E6-B02C-F118BF29D3D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B21028-EA50-4CED-8334-307E836B0ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B21028-EA50-4CED-8334-307E836B0ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B21028-EA50-4CED-8334-307E836B0ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B21028-EA50-4CED-8334-307E836B0ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{250D978B-3C2C-4151-9A69-B36F3F53E8B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{250D978B-3C2C-4151-9A69-B36F3F53E8B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FE869CB-9D8D-41BF-990F-267538A6B051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FE869CB-9D8D-41BF-990F-267538A6B051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FE869CB-9D8D-41BF-990F-267538A6B051}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FE869CB-9D8D-41BF-990F-267538A6B051}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0AFCEA00-8510-48F6-B949-22796F899C77} = {E74B5507-F3B1-439D-BA8E-F5E923B327CA}
+		{F3C813FE-C51B-4C10-85E2-FD2560E73E72} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
+		{E1A4B329-2EA0-445E-B22F-08DBAD0DF497} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
+		{84876FD2-9055-4A02-A163-1495E5659BC7} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
+		{4B026365-D03B-40B4-862B-11608BA756B0} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
+		{CB6A29C5-8355-4C4C-B437-619F652B7540} = {D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}
+		{D42D096E-399D-4618-AEB4-9B023BA1316D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
+		{CEE6525F-F502-4890-AA36-7B8755A5E47D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
+		{3EBF2F63-FE9F-47EE-B233-0A9634CC02FF} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
+		{AA0C3414-F509-44A2-A677-409DE6B49B1C} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
+		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D} = {EFB6FA37-518E-40A1-AEAB-A45BBD4935D1}
+		{10F7C179-B92D-4FCA-B78C-011E428D0CA3} = {EFB6FA37-518E-40A1-AEAB-A45BBD4935D1}
+		{03223418-97AD-4087-A568-6BBFD274864D} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
+		{0F286C8B-A322-43E6-B02C-F118BF29D3D5} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
+		{77B21028-EA50-4CED-8334-307E836B0ECB} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
+		{250D978B-3C2C-4151-9A69-B36F3F53E8B8} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
+		{A82468F2-E36D-4988-A783-9C8FC4D63C2A} = {7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}
+		{CD0CB04E-C4F8-4343-B8EB-39741236B222} = {7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}
+		{456E758B-CA59-4E39-A926-1D3742E88C6D} = {7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}
+		{B1A96D3E-318C-4105-9A3E-2A4A88B59F0D} = {7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}
+		{1B61704E-8EEE-4D42-97E6-66F6B58F1F8A} = {7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}
+		{23188961-CC8E-4D05-BC09-C6BE83D17640} = {A82468F2-E36D-4988-A783-9C8FC4D63C2A}
+		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D} = {CD0CB04E-C4F8-4343-B8EB-39741236B222}
+		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3} = {456E758B-CA59-4E39-A926-1D3742E88C6D}
+		{2FE869CB-9D8D-41BF-990F-267538A6B051} = {B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}
+		{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D} = {1B61704E-8EEE-4D42-97E6-66F6B58F1F8A}
+		{59E8CCC9-1A61-489B-8605-61D5654D4DF4} = {1049B0C4-91C6-4A4D-B14D-CB37EC84916C}
+		{D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2} = {1049B0C4-91C6-4A4D-B14D-CB37EC84916C}
+		{EFB6FA37-518E-40A1-AEAB-A45BBD4935D1} = {1049B0C4-91C6-4A4D-B14D-CB37EC84916C}
+		{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE} = {8B56F738-E780-4F6E-9B7F-7D161F7E3521}
+		{04E4D1B1-EE03-488C-B53D-989700FE6018} = {8B56F738-E780-4F6E-9B7F-7D161F7E3521}
+		{E74B5507-F3B1-439D-BA8E-F5E923B327CA} = {8B56F738-E780-4F6E-9B7F-7D161F7E3521}
+		{3C49EAD0-C3FF-406F-8290-23229BD4BADF} = {8B56F738-E780-4F6E-9B7F-7D161F7E3521}
+	EndGlobalSection
+EndGlobal

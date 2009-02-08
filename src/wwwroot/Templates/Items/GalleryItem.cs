@@ -7,7 +7,7 @@ namespace N2.Templates.Items
 {
     [Definition("Gallery Item", "GalleryItem")]
     [RestrictParents(typeof(ImageGallery))]
-    [TabPanel("advanced", "Advanced", 100)]
+    [TabContainer("advanced", "Advanced", 100)]
     public class GalleryItem : AbstractPage
     {
         public GalleryItem()

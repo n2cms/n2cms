@@ -81,21 +81,21 @@ namespace N2.Web
 			}
 		}
 
-		public PathData UpdateParameters(IDictionary<string, string> queryString)
+		public virtual PathData UpdateParameters(IDictionary<string, string> queryString)
 		{
 			foreach (KeyValuePair<string, string> pair in queryString)
 				QueryParameters[pair.Key] = pair.Value;
 			return this;
 		}
 
-		public PathData Detach()
+		public virtual PathData Detach()
 		{
 			PathData data = new PathData(ID, Path, TemplateUrl, Action, Argument);
 			data.QueryParameters = new Dictionary<string, string>(data.QueryParameters);
 			return data;
 		}
 
-		public PathData Attach(N2.Persistence.IPersister persister)
+		public virtual PathData Attach(N2.Persistence.IPersister persister)
 		{
 			ContentItem item = persister.Repository.Load(ID);
 			PathData data = new PathData(item, TemplateUrl, Action, Argument);
@@ -103,7 +103,7 @@ namespace N2.Web
 			return data;
 		}
 
-		public PathData SetArguments(string argument)
+		public virtual PathData SetArguments(string argument)
 		{
 			Argument = argument;
 			return this;

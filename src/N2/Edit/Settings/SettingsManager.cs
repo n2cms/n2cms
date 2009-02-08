@@ -5,6 +5,7 @@ using N2.Definitions;
 
 namespace N2.Edit.Settings
 {
+	[Obsolete]
 	public class SettingsManager
 	{
 		private readonly List<IServiceEditable> editableComponents = new List<IServiceEditable>();

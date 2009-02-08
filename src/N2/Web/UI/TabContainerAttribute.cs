@@ -1,9 +1,19 @@
+using System;
 using System.Web.UI;
 using N2.Definitions;
 using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI
 {
+	[Obsolete("The [TabPanel] is now renamed to [TabContainer] attribute to avoid confusion with a web control with a similar name.")]
+	public class TabPanelAttribute : TabContainerAttribute
+	{
+		public TabPanelAttribute(string name, string tabText, int sortOrder)
+			: base(name, tabText, sortOrder)
+		{
+		}
+	}
+
 	/// <summary>
 	/// Defines a tab panel that can be used to contain editor controls.
 	/// </summary>
@@ -19,12 +29,12 @@ namespace N2.Web.UI
 	///         }
 	///     }
 	/// </example>
-	public class TabPanelAttribute : EditorContainerAttribute
+	public class TabContainerAttribute : EditorContainerAttribute
 	{
 		private string tabText;
 		private bool registerTabCss = false;
 
-		public TabPanelAttribute(string name, string tabText, int sortOrder)
+		public TabContainerAttribute(string name, string tabText, int sortOrder)
 			: base(name, sortOrder)
 		{
 			TabText = tabText;

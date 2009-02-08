@@ -8,6 +8,7 @@ using N2.Definitions;
 
 namespace N2.Edit.Settings
 {
+	[Obsolete]
 	public class SettingsFinder : IFacility
 	{
 		IKernel kernel;

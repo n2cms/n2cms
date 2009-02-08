@@ -58,10 +58,5 @@ namespace N2.Edit
 		}
 
 		#endregion
-
-		protected ContentItem SelectedItem
-		{
-			get { return ((N2.Edit.Web.EditPage)this.Page).SelectedItem; }
-		}
 	}
 }

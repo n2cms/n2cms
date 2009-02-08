@@ -1,15 +1,25 @@
+using System;
 using System.Web.UI;
 using N2.Definitions;
 using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI
 {
+	[Obsolete("The [FieldSet] attribute is renamed to [FieldSetContainer] attribute to conform with a redefined nomenclature.")]
+	public class FieldSetAttribute : FieldSetContainerAttribute
+	{
+		public FieldSetAttribute(string name, string legend, int sortOrder)
+			: base(name, legend, sortOrder)
+		{
+		}
+	}
+
 	/// <summary>Defines a fieldset that can contain editors when editing an item.</summary>
-	public class FieldSetAttribute : EditorContainerAttribute
+	public class FieldSetContainerAttribute : EditorContainerAttribute
 	{
 		private string legend;
 
-		public FieldSetAttribute(string name, string legend, int sortOrder)
+		public FieldSetContainerAttribute(string name, string legend, int sortOrder)
 			: base(name, sortOrder)
 		{
 			Legend = legend;

@@ -3,7 +3,7 @@ using N2.Details;
 namespace N2.Tests.Definitions.Items
 {
 	[Definition("A text page")]
-	[N2.Web.UI.FieldSet("specific", "Specific", 20, ContainerName = "general")]
+	[N2.Web.UI.FieldSetContainer("specific", "Specific", 20, ContainerName = "general")]
 	public class DefinitionTextPage : DefinitionTwoColumnPage, ILeftColumnlPage
 	{
 		[EditableFreeTextArea("Text", 100, ContainerName = "specific")]	

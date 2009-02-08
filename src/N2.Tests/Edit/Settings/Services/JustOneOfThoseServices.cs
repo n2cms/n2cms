@@ -5,7 +5,7 @@ using N2.Edit.Settings;
 
 namespace N2.Tests.Edit.Settings.Services
 {
-	[N2.Web.UI.FieldSet("default", "Default", 100)]
+	[N2.Web.UI.FieldSetContainer("default", "Default", 100)]
 	public class JustOneOfThoseServices
 	{
 		private bool aBooleanProperty;

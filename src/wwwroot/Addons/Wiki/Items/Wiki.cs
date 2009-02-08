@@ -9,7 +9,7 @@ namespace N2.Addons.Wiki.Items
 {
     [Definition("Wiki", "Wiki", "A set of pages that can be updated by external users.", "", 460)]
     [RestrictParents(typeof(IStructuralPage))]
-    [N2.Web.UI.TabPanel(Wiki.WikiTab, "Wiki", 110)]
+    [N2.Web.UI.TabContainer(Wiki.WikiTab, "Wiki", 110)]
     [AllowedChildren(typeof(Subscribe))]
 	[Template("search", "~/Addons/Wiki/UI/Views/Search.aspx")]
 	[Template("nohits", "~/Addons/Wiki/UI/Views/NoHits.aspx")]

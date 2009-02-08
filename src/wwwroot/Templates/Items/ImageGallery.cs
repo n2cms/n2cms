@@ -7,7 +7,7 @@ namespace N2.Templates.Items
 {
     [Definition("Image Gallery", "ImageGallery", "Displays an image with next/previous thumbnails", "", 220)]
     [RestrictParents(typeof(IStructuralPage))]
-    [FieldSet(ImageGallery.GallerySettings, "Gallery Settings", 500, ContainerName = Tabs.Content)]
+    [FieldSetContainer(ImageGallery.GallerySettings, "Gallery Settings", 500, ContainerName = Tabs.Content)]
     public class ImageGallery : AbstractContentPage
     {
         #region GallerySettings

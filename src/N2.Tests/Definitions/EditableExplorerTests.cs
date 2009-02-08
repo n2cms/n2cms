@@ -74,14 +74,14 @@ namespace N2.Tests.Definitions
 			
 			IEditableContainer fieldSet = contained[1] as IEditableContainer;
 			Assert.IsNotNull(fieldSet);
-			Assert.AreEqual(typeof(N2.Web.UI.FieldSetAttribute), fieldSet.GetType());
+			Assert.AreEqual(typeof(N2.Web.UI.FieldSetContainerAttribute), fieldSet.GetType());
 
 			List<IContainable> containedByFieldSet = fieldSet.GetContained(null);
 			Assert.AreEqual(typeof(N2.Details.WithEditableTitleAttribute), containedByFieldSet[0].GetType());
 
 			IEditableContainer innerFieldSet = containedByFieldSet[1] as IEditableContainer;
 			Assert.IsNotNull(innerFieldSet);
-			Assert.AreEqual(typeof(N2.Web.UI.FieldSetAttribute), innerFieldSet.GetType());
+			Assert.AreEqual(typeof(N2.Web.UI.FieldSetContainerAttribute), innerFieldSet.GetType());
 
 			List<IContainable> containedByInnerFieldSet = innerFieldSet.GetContained(null);
 			Assert.AreEqual(typeof(N2.Details.EditableFreeTextAreaAttribute), containedByInnerFieldSet[0].GetType());

@@ -1,7 +1,4 @@
-using System;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using N2.Engine;
 
 namespace N2.Edit.Web
@@ -16,7 +13,7 @@ namespace N2.Edit.Web
             get { return N2.Context.Current; }
         }
 
-        protected N2.ContentItem SelectedItem
+        protected virtual N2.ContentItem SelectedItem
         {
             get
             {

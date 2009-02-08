@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using N2.Details;
 using N2.Integrity;
-using System.Net.Mail;
-using N2.Templates.Items;
 using N2.Installation;
 using N2.Web;
 
@@ -18,7 +12,7 @@ namespace N2.Templates.Items
     [AvailableZone("Right", Zones.Right)]
     [AvailableZone("Above", "Above")]
     [AvailableZone("Below", "Below")]
-    [N2.Web.UI.TabPanel("smtp", "Smtp settings", 30)]
+    [N2.Web.UI.TabContainer("smtp", "Smtp settings", 30)]
     public class RootPage : AbstractPage
     {
         [EditableTextBox("Smtp Host", 100, ContainerName = "smtp")]

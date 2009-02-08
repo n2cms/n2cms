@@ -7,7 +7,7 @@ using N2.Web.UI;
 
 namespace N2.Tests.Globalization.Items
 {
-	[FieldSet("globalization", "Globalization", 200)]
+	[FieldSetContainer("globalization", "Globalization", 200)]
 	public class LanguageRoot : ContentItem, ILanguage
 	{
 		[EditableTextBox("FlagUrl", 100, ContainerName = "globalization")]
