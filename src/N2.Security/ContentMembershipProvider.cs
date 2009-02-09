@@ -10,9 +10,17 @@ namespace N2.Security
 	/// </summary>
 	public class ContentMembershipProvider : MembershipProvider
 	{
-		protected ItemBridge Bridge
+		ItemBridge bridge;
+
+		public ContentMembershipProvider() {}
+		public ContentMembershipProvider(ItemBridge bridge)
 		{
-			get { return Context.Current.Resolve<ItemBridge>(); }
+			this.bridge = bridge;
+		}
+
+		protected virtual ItemBridge Bridge
+		{
+			get { return bridge ?? (bridge ?? Context.Current.Resolve<ItemBridge>()); }
 		}
 
 		private string applicationName = "N2.Security";

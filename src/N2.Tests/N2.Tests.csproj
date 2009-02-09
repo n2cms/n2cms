@@ -207,6 +207,7 @@
     <Compile Include="Plugin\ThrowingPlugin1.cs" />
     <Compile Include="Plugin\ThrowingPlugin2.cs" />
     <Compile Include="Resources\RegisterTests.cs" />
+    <Compile Include="Security\ContentMembershipProviderTests.cs" />
     <Compile Include="Serialization\ExportImportTests.cs" />
     <Compile Include="Serialization\Items\FakeAttachment.cs" />
     <Compile Include="Serialization\SerializationTestsBase.cs" />
@@ -299,6 +300,10 @@
     <EmbeddedResource Include="test.castle.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\N2.Security\N2.Security.csproj">
+      <Project>{CB6A29C5-8355-4C4C-B437-619F652B7540}</Project>
+      <Name>N2.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
