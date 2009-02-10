@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 using N2.Web.Mvc;
@@ -23,12 +24,10 @@ namespace MvcTest
             );
         }
 
-        public override void Init()
-        {
-            IEngine engine = N2.Context.Initialize(false);
-            RegisterRoutes(RouteTable.Routes, engine);
-
-            base.Init();
-        }
+		protected void Application_Start(object sender, EventArgs e)
+		{
+			IEngine engine = N2.Context.Initialize(false);
+			RegisterRoutes(RouteTable.Routes, engine);
+		}
 	}
 }
