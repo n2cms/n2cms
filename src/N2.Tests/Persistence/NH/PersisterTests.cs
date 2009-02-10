@@ -1,4 +1,5 @@
 using System;
+using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -236,6 +237,78 @@ namespace N2.Tests.Persistence.NH
 				Assert.That(copy, Is.SameAs(copyToReturn));
 				Assert.That(invokedFrom, Is.EqualTo(source));
 				Assert.That(invokedTo, Is.EqualTo(destination));
+			}
+		}
+
+		[Test]
+		public void CanSave_Guid()
+		{
+			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem1 fromDB = null;
+			try
+			{
+				item.GuidProperty = Guid.NewGuid();
+				using (persister)
+				{
+					persister.Save(item);
+				}
+
+				fromDB = persister.Get<PersistableItem1>(item.ID);
+
+				Assert.That(fromDB.GuidProperty, Is.EqualTo(item.GuidProperty));
+			}
+			finally
+			{
+				persister.Delete(fromDB ?? item);
+			}
+		}
+
+		[Test]
+		public void CanSave_ReadOnlyGuid()
+		{
+			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem1 fromDB = null;
+			try
+			{
+				string guid = item.ReadOnlyGuid;
+
+				using (persister)
+				{
+					persister.Save(item);
+				}
+
+				fromDB = persister.Get<PersistableItem1>(item.ID);
+
+				Assert.That(fromDB.ReadOnlyGuid, Is.EqualTo(guid));
+			}
+			finally
+			{
+				persister.Delete(fromDB ?? item);
+			}
+		}
+
+		[Test]
+		public void CanSave_WritableGuid()
+		{
+			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
+			PersistableItem1 fromDB = null;
+			try
+			{
+				string guid = item.WritableGuid;
+				item.WritableGuid = guid;
+				using (persister)
+				{
+					persister.Save(item);
+				}
+
+				fromDB = persister.Get<PersistableItem1>(item.ID);
+
+				Assert.That(fromDB.WritableGuid, Is.EqualTo(guid));
+			}
+			finally
+			{
+				persister.Delete(fromDB ?? item);
+
 			}
 		}
 	}

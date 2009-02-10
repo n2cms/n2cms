@@ -45,5 +45,37 @@ namespace N2.Tests.Persistence.Definitions
 			set { SetDetail<object>("ObjectProperty", value); }
 		}
 
+		public virtual Guid GuidProperty
+		{
+			get
+			{
+				string value = GetDetail<string>("GuidProperty", null);
+				return string.IsNullOrEmpty(value) ? Guid.Empty : new Guid(value);
+			}
+			set
+			{
+				SetDetail("GuidProperty", value.ToString());
+			}
+		}
+
+		public virtual string WritableGuid
+		{
+			get { return (string)(GetDetail("WritableRSSString") ?? Guid.NewGuid().ToString()); }
+			set { SetDetail("WritableRSSString", value, Guid.NewGuid().ToString()); }
+		}
+
+		public virtual string ReadOnlyGuid
+		{
+			get
+			{
+				string result = (string)GetDetail("ReadOnlyRSSString");
+				if (string.IsNullOrEmpty(result))
+				{
+					result = Guid.NewGuid().ToString();
+					SetDetail("ReadOnlyRSSString", result);
+				}
+				return result;
+			}
+		}
 	}
 }
