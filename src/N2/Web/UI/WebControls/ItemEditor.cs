@@ -58,6 +58,7 @@ namespace N2.Web.UI.WebControls
 		public IDictionary<string, Control> AddedEditors
 		{
 			get { return editors; }
+            protected set { editors = value; }
 		}
 
 		protected override HtmlTextWriterTag TagKey
