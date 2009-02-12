@@ -65,7 +65,7 @@ namespace N2.Engine.Globalization
 				if (ancestor is ILanguage)
 				{
 					ILanguage language = ancestor as ILanguage;
-                    if (string.IsNullOrEmpty(language.LanguageCode))
+					if (string.IsNullOrEmpty(language.LanguageCode) || !ancestor.Visible)
                         continue;
                     return language;
 				}
@@ -93,7 +93,7 @@ namespace N2.Engine.Globalization
 		{
 			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(host.CurrentSite.RootItemID), RecursionDepth, typeof(ITrashCan)))
 			{
-				if (!string.IsNullOrEmpty(language.LanguageCode))
+				if (!string.IsNullOrEmpty(language.LanguageCode) && (language as ContentItem).Visible)
 				{
 					yield return language;
 				}
