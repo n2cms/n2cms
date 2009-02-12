@@ -1,4 +1,5 @@
-﻿- renamed [TabPanel] to [TabContainer] and [FieldSet] to [FieldSetContainer]
+﻿- fixed #21121: items copy/paste error (Validation of viewstate MAC failed)
+- renamed [TabPanel] to [TabContainer] and [FieldSet] to [FieldSetContainer]
 - applied jemerick's patch: #20468 RouteActionResolverAttribute giving issues with versioning in MVC
 - fixed #20941: cannot add custom routes
 - Deprecated the [RouteActionResolver] attribute

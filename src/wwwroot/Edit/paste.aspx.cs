@@ -13,12 +13,12 @@ namespace N2.Edit
 			string action = Request.QueryString["action"];
 			if (string.IsNullOrEmpty(memory) || string.IsNullOrEmpty(action))
 			{
-				this.Title = "You must select what to paste and click on the appropriate action first.";
+				Title = "You must select what to paste and click on the appropriate action first.";
 			}
 			else
 			{
 				string url = string.Format("~/edit/{0}.aspx?selected={1}&memory={2}", action, Server.UrlEncode(selected), Server.UrlEncode(memory));
-				Server.Transfer(url, false);
+				Response.Redirect(url);
 			}
 		}
 	}
