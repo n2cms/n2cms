@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using N2.Engine.Globalization;
 using N2.Templates.Layouts;
+using N2.Collections;
 
 namespace N2.Templates.UI.Layouts
 {
@@ -34,10 +35,17 @@ namespace N2.Templates.UI.Layouts
 
         private IEnumerable<Translation> GetTranslations()
         {
-            foreach (ContentItem translation in languages.FindTranslations(CurrentPage))
-            {
-                yield return new Translation(translation, languages.GetLanguage(translation));
-            }
+        	ItemFilter languageFilter = new CompositeFilter(new AccessFilter(), new PublishedFilter());
+        	IEnumerable<ContentItem> translations = languages.FindTranslations(CurrentPage);
+			foreach (ContentItem translation in languageFilter.Pipe(translations))
+			{
+				ILanguage language = languages.GetLanguage(translation);
+				
+				// Hide translations when filtered access to their language
+				ContentItem languageItem = language as ContentItem;
+				if(languageItem == null || languageFilter.Match(languageItem))
+					yield return new Translation(translation, language);
+			}
         }
     }
 }

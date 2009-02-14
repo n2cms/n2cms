@@ -65,7 +65,7 @@ namespace N2.Engine.Globalization
 				if (ancestor is ILanguage)
 				{
 					ILanguage language = ancestor as ILanguage;
-					if (string.IsNullOrEmpty(language.LanguageCode) || !ancestor.Visible)
+					if (string.IsNullOrEmpty(language.LanguageCode))
                         continue;
                     return language;
 				}
@@ -91,16 +91,18 @@ namespace N2.Engine.Globalization
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
-			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(host.CurrentSite.RootItemID), RecursionDepth, typeof(ITrashCan)))
+			ContentItem root = persister.Get(host.CurrentSite.RootItemID);
+			IEnumerable<ILanguage> languages = new RecursiveFinder().Find<ILanguage>(root, RecursionDepth, typeof(ITrashCan));
+			foreach (ILanguage language in languages)
 			{
-				if (!string.IsNullOrEmpty(language.LanguageCode) && (language as ContentItem).Visible)
+				if (!string.IsNullOrEmpty(language.LanguageCode))
 				{
 					yield return language;
 				}
 			}
 		}
 
-		public IEnumerable<ContentItem> FindTranslations(ContentItem item)
+    	public IEnumerable<ContentItem> FindTranslations(ContentItem item)
 		{
             if (item == null) 
                 return new ContentItem[0];
