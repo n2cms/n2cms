@@ -25,6 +25,11 @@ namespace N2.Extensions.Tests.Mvc
 	[TestFixture]
 	public class ContentRouteTests : N2.Tests.ItemPersistenceMockingBase
 	{
+		static ContentRouteTests()
+		{
+			//RouteTable.Routes.Add(new ContentRoute(null, null));
+		}
+
 		IEngine engine;
 		FakeHttpContext httpContext;
 		RegularPage root;
@@ -170,17 +175,29 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(virtualPath, Is.Null);
 		}
 
-		[Test]
-		public void X()
+		[Test, Ignore]
+		public void CanCreate_RouteLink()
 		{
 			SetPath("/search/");
 			HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
 
-			string url = helper.RouteLink("Hello", new {controller = "Search", q = "hello"});
-			Assert.Fail(url);
+			string html = helper.RouteLink("Search", new {controller = "Search", q = "hello"});
+
+			Assert.That(html, Is.EqualTo("<a href=\"/search?q=hello\">Search</a>"));
 		}
 
-		[Test]
+		[Test, Ignore]
+		public void Can_GenerateRouteLink()
+		{
+			SetPath("/search/");
+
+			var rc = new RequestContext(new FakeHttpContext(), new RouteData());
+			string html = HtmlHelper.GenerateRouteLink(rc, new RouteCollection(), "Search", null, new RouteValueDictionary(new {controller = "Search", q = "hello"}), new Dictionary<string, object>());
+
+			Assert.That(html, Is.EqualTo("<a href=\"/search?q=hello\">Search</a>"));
+		}
+
+		[Test, Ignore]
 		public void CanCreate_ActionLink()
 		{
 			SetPath("/search/");
@@ -188,10 +205,10 @@ namespace N2.Extensions.Tests.Mvc
 
 			string url1 = helper.ActionLink("Hello", "Search", new {q = "query"});
 
-			Assert.That(url1, Is.EqualTo(""));
+			Assert.That(url1, Is.EqualTo("/search?q=hello"));
 		}
 
-		[Test]
+		[Test, Ignore]
 		public void CanCreate_UrlFromExpression()
 		{
 			SetPath("/search/");
@@ -199,7 +216,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			string url2 = helper.BuildUrlFromExpression<SearchController>(s => s.Search("hello"));
 
-			Assert.That(url2, Is.EqualTo(""));
+			Assert.That(url2, Is.EqualTo("/search?q=hello"));
 		}
 
 		//TODO figure out
