@@ -5,7 +5,7 @@ using System.Text;
 namespace N2.Configuration
 {
     /// <summary>
-    /// Reprensents a way to map a friendly url to a template.
+    /// Represents a way to map a friendly url to a template.
     /// </summary>
     public enum RewriteMethod
     {

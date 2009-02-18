@@ -10,8 +10,9 @@ namespace N2.Edit.Trash
     /// </summary>
 	public interface ITrashCan
 	{
-        /// <summary>Wether the trash functionality is enabled.</summary>
+        /// <summary>Whether the trash functionality is enabled.</summary>
 		bool Enabled { get; }
+
         /// <summary>Currently thrown items.</summary>
 		IList<ContentItem> Children { get; }
 	}

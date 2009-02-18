@@ -11,6 +11,12 @@ namespace N2.Collections
 		private readonly ContentItem lastAncestor;
 		bool appendAdditionalLevel = false;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BranchHierarchyBuilder"/> class.
+		/// </summary>
+		/// <param name="initialItem">The initial item.</param>
+		/// <param name="lastAncestor">The last ancestor.</param>
+		/// <param name="appendAdditionalLevel">if set to <c>true</c> [append additional level].</param>
 		public BranchHierarchyBuilder(ContentItem initialItem, ContentItem lastAncestor, bool appendAdditionalLevel)
 		{
 			this.initialItem = initialItem;
@@ -18,12 +24,21 @@ namespace N2.Collections
 			this.appendAdditionalLevel = appendAdditionalLevel;
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BranchHierarchyBuilder"/> class.
+		/// </summary>
+		/// <param name="initialItem">The initial item.</param>
+		/// <param name="lastAncestor">The last ancestor.</param>
 		public BranchHierarchyBuilder(ContentItem initialItem, ContentItem lastAncestor)
 		{
 			this.initialItem = initialItem;
 			this.lastAncestor = lastAncestor;
 		}
 
+		/// <summary>
+		/// Builds this instance.
+		/// </summary>
+		/// <returns></returns>
 		public override HierarchyNode<ContentItem> Build()
 		{
 			if (initialItem == lastAncestor && !appendAdditionalLevel)
