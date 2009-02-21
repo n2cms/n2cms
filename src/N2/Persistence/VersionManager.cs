@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
 using N2.Details;
+using N2.Persistence.Finder;
 
 namespace N2.Persistence
 {
@@ -11,10 +13,12 @@ namespace N2.Persistence
 	public class VersionManager : IVersionManager
 	{
 		private IRepository<int, ContentItem> itemRepository;
-		
-		public VersionManager(IRepository<int, ContentItem> itemRepository)
+		readonly IItemFinder finder;
+
+		public VersionManager(IRepository<int, ContentItem> itemRepository, IItemFinder finder)
 		{
 			this.itemRepository = itemRepository;
+			this.finder = finder;
 		}
 
 		#region Versioning Methods
@@ -124,6 +128,33 @@ namespace N2.Persistence
 			item.DetailCollections.Clear();
 		}
 		#endregion
+
+		/// <summary>Retrieves all versions of an item including the master version.</summary>
+		/// <param name="publishedItem">The item whose versions to get.</param>
+		/// <returns>A list of versions of the item.</returns>
+		public IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
+		{
+			return GetVersionsQuery(publishedItem)
+				.Select();
+		}
+
+		/// <summary>Retrieves all versions of an item including the master version.</summary>
+		/// <param name="publishedItem">The item whose versions to get.</param>
+		/// <param name="count">The number of versions to get.</param>
+		/// <returns>A list of versions of the item.</returns>
+		public IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count)
+		{
+			return GetVersionsQuery(publishedItem)
+				.MaxResults(count)
+				.Select();
+		}
+
+		private IQueryEnding GetVersionsQuery(ContentItem publishedItem)
+		{
+			return finder.Where.VersionOf.Eq(publishedItem)
+				.Or.ID.Eq(publishedItem.ID)
+				.OrderBy.Updated.Desc;
+		}
 		#endregion
 
 
@@ -135,6 +166,5 @@ namespace N2.Persistence
 		public event EventHandler<CancellableDestinationEventArgs> ItemReplacingVersion;
 		/// <summary>Occurs before an item is saved</summary>
 		public event EventHandler<ItemEventArgs> ItemReplacedVersion;
-        
 	}
 }

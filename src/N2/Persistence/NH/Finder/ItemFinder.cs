@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Definitions;
 using N2.Persistence.Finder;
 
@@ -9,7 +6,7 @@ namespace N2.Persistence.NH.Finder
 	/// <summary>
 	/// Provides the query builder.
 	/// </summary>
-	public class ItemFinder : N2.Persistence.Finder.IItemFinder
+	public class ItemFinder : IItemFinder
 	{
 		ISessionProvider sessionProvider;
 		private readonly IDefinitionManager definitions;

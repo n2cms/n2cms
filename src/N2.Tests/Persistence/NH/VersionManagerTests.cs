@@ -1,5 +1,7 @@
 using System;
 using System.Reflection;
+using N2.Tests.Fakes;
+using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
 using N2.Definitions;
 using N2.Details;
@@ -9,6 +11,7 @@ using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Web.UI;
+using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using System.Configuration;
 using N2.Configuration;
@@ -22,7 +25,7 @@ namespace N2.Tests.Persistence.NH
 		SessionProvider sessionProvider;
 		IItemFinder finder;
 		VersionManager versioner;
-
+		
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{
@@ -55,7 +58,7 @@ namespace N2.Tests.Persistence.NH
 			INHRepository<int, LinkDetail> linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
 
 			persister = new ContentPersister(itemRepository, linkRepository, finder);
-			versioner = new VersionManager(itemRepository);
+			versioner = new VersionManager(itemRepository, new ItemFinder(sessionProvider, null));
 		}
 
 		[Test]
@@ -89,7 +92,7 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void RestoreVersionSetExpireDate()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
 			item["VersionIndex"] = 1;
 			persister.Save(item);
 			ContentItem version = versioner.SaveVersion(item);
@@ -103,5 +106,52 @@ namespace N2.Tests.Persistence.NH
 
 			persister.Delete(item);
 		}
+
+		[Test]
+		public void GetVersions_DisplaysVersions_InChangedOrder()
+		{
+			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", null);
+			using (new TimeCapsule(DateTime.Now.AddSeconds(-10)))
+			{
+				persister.Save(item);
+			}
+
+			ContentItem version = versioner.SaveVersion(item);
+
+			var versions = versioner.GetVersionsOf(item);
+
+			Assert.That(versions.Count, Is.EqualTo(2));
+			Assert.That(versions[0], Is.EqualTo(version));
+			Assert.That(versions[1], Is.EqualTo(item));
+		}
+
+		[Test]
+		public void GetVersions_IncludesPublishedVersion_WhenItsTheOnlyVersion()
+		{
+			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", null);
+			persister.Save(item);
+
+			var versions = versioner.GetVersionsOf(item);
+
+			Assert.That(versions.Count, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void CanGetLatestVersionOnly()
+		{
+			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", null);
+			using (new TimeCapsule(DateTime.Now.AddSeconds(-10)))
+			{
+				persister.Save(item);
+			}
+
+			ContentItem version = versioner.SaveVersion(item);
+
+			var versions = versioner.GetVersionsOf(item, 1);
+
+			Assert.That(versions.Count, Is.EqualTo(1));
+			Assert.That(versions[0], Is.EqualTo(version));
+		}
+
 	}
 }

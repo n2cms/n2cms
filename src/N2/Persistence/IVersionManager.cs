@@ -20,5 +20,16 @@ namespace N2.Persistence
 		/// <param name="item">The item to create a old version of.</param>
 		/// <returns>The old version.</returns>
 		ContentItem SaveVersion(ContentItem item);
+
+		/// <summary>Retrieves all versions of an item including the master version.</summary>
+		/// <param name="publishedItem">The item whose versions to get.</param>
+		/// <returns>A list of versions of the item.</returns>
+		IList<ContentItem> GetVersionsOf(ContentItem publishedItem);
+
+		/// <summary>Retrieves all versions of an item including the master version.</summary>
+		/// <param name="publishedItem">The item whose versions to get.</param>
+		/// <param name="count">The number of versions to get.</param>
+		/// <returns>A list of versions of the item.</returns>
+		IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count);
 	}
 }

@@ -6,6 +6,7 @@ using N2.Web;
 namespace N2.Edit.Versions
 {
 	[ToolbarPlugin("", "versions", "~/Edit/Versions/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview,  "~/Edit/Versions/Img/book_previous.gif", 90, ToolTip = "versions", GlobalResourceClassName = "Toolbar")]
+	[ControlPanelPendingVersion("There is a newer unpublished version of this item.", 200)]
 	public partial class Default : Web.EditPage
 	{
 		ContentItem publishedItem;
@@ -63,10 +64,7 @@ namespace N2.Edit.Versions
 		{
 			base.OnPreRender(e);
 
-			IList<ContentItem> versions = Find.Items
-				.Where.VersionOf.Eq(publishedItem)
-				.Or.ID.Eq(publishedItem.ID)
-				.OrderBy.Updated.Desc.Select();
+			IList<ContentItem> versions = versioner.GetVersionsOf(publishedItem);
 
 			gvHistory.DataSource = versions;
 			gvHistory.DataBind();

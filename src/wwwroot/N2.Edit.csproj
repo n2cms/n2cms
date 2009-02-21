@@ -88,6 +88,9 @@
     <Compile Include="Edit\AvailableZones.ascx.designer.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\ControlPanelEditingSaveAttribute.cs" />
+    <Compile Include="Edit\ControlPanelPreviewDiscardAttribute.cs" />
+    <Compile Include="Edit\ControlPanelPreviewPublishAttribute.cs" />
     <Compile Include="Edit\Copy.aspx.cs">
       <DependentUpon>Copy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -404,6 +407,7 @@
     <Compile Include="Edit\Trash\TrashcanInitializer.cs" />
     <Compile Include="Edit\Trash\TrashContainerItem.cs" />
     <Compile Include="Edit\Trash\TrashHandler.cs" />
+    <Compile Include="Edit\Versions\ControlPanelPendingVersionAttribute.cs" />
     <Compile Include="Edit\Versions\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -182,6 +182,7 @@
     <Compile Include="Fakes\FakeRequestLifeCycleHandler.cs" />
     <Compile Include="Fakes\FakeTypeFinder.cs" />
     <Compile Include="Fakes\StaticContextAccessor.cs" />
+    <Compile Include="Fakes\TimeCapsule.cs" />
     <Compile Include="Globalization\FlatLanguageStructureTests.cs" />
     <Compile Include="Globalization\IntermixedLanguageStructureTests.cs" />
     <Compile Include="Globalization\Items\LanguageRoot.cs" />

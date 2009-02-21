@@ -317,11 +317,8 @@
     <Compile Include="Details\EditableEnumAttribute.cs" />
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
-    <Compile Include="Edit\ControlPanelEditingSaveAttribute.cs" />
-    <Compile Include="Edit\ControlPanelPreviewDiscardAttribute.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
-    <Compile Include="Edit\ControlPanelPreviewPublishAttribute.cs" />
     <Compile Include="Edit\IControlPanelPlugin.cs" />
     <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
     <Compile Include="Edit\PluginContext.cs" />

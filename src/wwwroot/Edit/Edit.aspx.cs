@@ -218,12 +218,15 @@ namespace N2.Edit
 			if (IsValid)
 			{
 				ContentItem savedVersion = SaveVersion();
-				Url redirectTo = (savedVersion as INode).PreviewUrl;
+
+				Url redirectTo = Engine.EditManager.GetPreviewUrl(savedVersion);
+
 				redirectTo = redirectTo.AppendQuery("preview", savedVersion.ID);
 				if(savedVersion.VersionOf != null)
 					redirectTo = redirectTo.AppendQuery("original", savedVersion.VersionOf.ID);
 				if (!string.IsNullOrEmpty(Request["returnUrl"]))
 					redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
+
 				Response.Redirect(redirectTo);
 			}
 		}

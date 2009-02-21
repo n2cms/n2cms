@@ -197,6 +197,78 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(html, Is.EqualTo("<a href=\"/search?q=hello\">Search</a>"));
 		}
 
+		public static RouteValueDictionary GetRouteValues(RouteValueDictionary routeValues)
+		{
+			if (routeValues == null)
+			{
+				return new RouteValueDictionary();
+			}
+			return new RouteValueDictionary(routeValues);
+		}
+
+		public static RouteValueDictionary MergeRouteValues(string actionName, string controllerName, RouteValueDictionary implicitRouteValues, RouteValueDictionary routeValues, bool includeImplicitMvcValues)
+		{
+			RouteValueDictionary dictionary = new RouteValueDictionary();
+			if (includeImplicitMvcValues)
+			{
+				object obj2;
+				if ((implicitRouteValues != null) && implicitRouteValues.TryGetValue("action", out obj2))
+				{
+					dictionary["action"] = obj2;
+				}
+				if ((implicitRouteValues != null) && implicitRouteValues.TryGetValue("controller", out obj2))
+				{
+					dictionary["controller"] = obj2;
+				}
+			}
+			if (routeValues != null)
+			{
+				foreach (KeyValuePair<string, object> pair in GetRouteValues(routeValues))
+				{
+					dictionary[pair.Key] = pair.Value;
+				}
+			}
+			if (actionName != null)
+			{
+				dictionary["action"] = actionName;
+			}
+			if (controllerName != null)
+			{
+				dictionary["controller"] = controllerName;
+			}
+			return dictionary;
+		}
+
+		internal static string GenerateUrl(string routeName, string actionName, string controllerName, RouteValueDictionary routeValues, RouteCollection routeCollection, RequestContext requestContext, bool includeImplicitMvcValues)
+		{
+			VirtualPathData virtualPath;
+			RouteValueDictionary values = MergeRouteValues(actionName, controllerName, requestContext.RouteData.Values, routeValues, includeImplicitMvcValues);
+			if (routeName != null)
+			{
+				virtualPath = routeCollection.GetVirtualPath(requestContext, routeName, values);
+			}
+			else
+			{
+				virtualPath = routeCollection.GetVirtualPath(requestContext, values);
+			}
+			if (virtualPath != null)
+			{
+				return virtualPath.VirtualPath;
+			}
+			return null;
+		}
+
+		[Test]
+		public void Can_GenerateRouteUrl()
+		{
+			SetPath("/search/");
+
+			var rc = new RequestContext(new FakeHttpContext(), new RouteData());
+			string url = new UrlHelper(rc).RouteUrl(new {controller = "Controller"});
+
+			Assert.That(url, Is.EqualTo("/search?q=hello"));
+		}
+
 		[Test, Ignore]
 		public void CanCreate_ActionLink()
 		{
