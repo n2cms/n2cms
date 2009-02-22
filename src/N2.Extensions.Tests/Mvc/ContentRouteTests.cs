@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Routing;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Engine;
+using N2.Extensions.Tests.Fakes;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
 using N2.Persistence;
 using N2.Web.Mvc;
 using NUnit.Framework;
-using System.Web;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using N2.Web;
-using System.Collections.Specialized;
 using Microsoft.Web.Mvc;
-using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
 
@@ -25,11 +22,6 @@ namespace N2.Extensions.Tests.Mvc
 	[TestFixture]
 	public class ContentRouteTests : N2.Tests.ItemPersistenceMockingBase
 	{
-		static ContentRouteTests()
-		{
-			//RouteTable.Routes.Add(new ContentRoute(null, null));
-		}
-
 		IEngine engine;
 		FakeHttpContext httpContext;
 		RegularPage root;
@@ -37,6 +29,7 @@ namespace N2.Extensions.Tests.Mvc
 		ExecutiveTeamPage executives;
 		SearchPage search;
 		ContentRoute route;
+		RouteCollection routes;
 			
 		[SetUp]
 		public override void SetUp()
@@ -71,6 +64,7 @@ namespace N2.Extensions.Tests.Mvc
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, new ItemNotifier(), host, new HostSection());
+			Url.DefaultExtension = "";
 
 			engine = mocks.DynamicMock<IEngine>();
 			SetupResult.For(engine.Resolve<ITypeFinder>()).Return(typeFinder);
@@ -81,13 +75,23 @@ namespace N2.Extensions.Tests.Mvc
 			route = new ContentRoute(engine, new MvcRouteHandler());
 
 			httpContext = new FakeHttpContext();
-			httpContext.request = new FakeHttpRequest();
+			routes = new RouteCollection { route };
 		}
 
 		void SetPath(string url)
 		{
 			httpContext.request.appRelativeCurrentExecutionFilePath = url;
 			httpContext.request.rawUrl = url;
+		}
+
+		private RequestContext CreateRouteContext(SearchPage item)
+		{
+			SetPath(item.Url);
+
+			var ctx = new RequestContext(httpContext, new RouteData());
+			ctx.RouteData.Values[ContentRoute.ContentItemKey] = item;
+			ctx.RouteData.Values[ContentRoute.ControllerKey] = route.ControllerMap[item.GetType()];
+			return ctx;
 		}
 
 		[Test]
@@ -97,7 +101,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			var data = route.GetRouteData(httpContext);
 
-			Assert.That(data.Values["ContentItem"], Is.EqualTo(about));
+			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(about));
 			Assert.That(data.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
 		}
 
@@ -108,7 +112,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			var data = route.GetRouteData(httpContext);
 
-			Assert.That(data.Values["ContentItem"], Is.EqualTo(root));
+			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(root));
 			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
 		}
 
@@ -119,7 +123,7 @@ namespace N2.Extensions.Tests.Mvc
 			
 			var data = route.GetRouteData(httpContext);
 
-			Assert.That(data.Values["ContentItem"], Is.EqualTo(root));
+			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(root));
 			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
 		}
 
@@ -130,7 +134,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			var data = route.GetRouteData(httpContext);
 
-			Assert.That(data.Values["ContentItem"], Is.EqualTo(executives));
+			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(executives));
 			Assert.That(data.Values["controller"], Is.EqualTo("ExecutiveTeam"));
 		}
 
@@ -140,7 +144,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetPath("/about/");
 
 			RouteData routeData = new RouteData();
-			routeData.Values["ContentItem"] = new RegularPage();
+			routeData.Values[ContentRoute.ContentItemKey] = new RegularPage();
 			var data = route.GetVirtualPath(
 				new RequestContext(httpContext, routeData), 
 				new RouteValueDictionary { {"controller", "NonN2"} });
@@ -166,7 +170,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetPath("/about/");
 
 			var routeData = new RouteData();
-			routeData.Values["ContentItem"] = new RegularPage();
+			routeData.Values[ContentRoute.ContentItemKey] = new RegularPage();
 
 			var requestContext = new RequestContext(httpContext, routeData);
 			var virtualPath = route.GetVirtualPath(requestContext,
@@ -197,149 +201,52 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(html, Is.EqualTo("<a href=\"/search?q=hello\">Search</a>"));
 		}
 
-		public static RouteValueDictionary GetRouteValues(RouteValueDictionary routeValues)
+		[Test]
+		public void CanGenerate_DefaultRouteUrl()
 		{
-			if (routeValues == null)
-			{
-				return new RouteValueDictionary();
-			}
-			return new RouteValueDictionary(routeValues);
-		}
+			var rc = CreateRouteContext(search);
+			var helper = new UrlHelper(rc, routes);
 
-		public static RouteValueDictionary MergeRouteValues(string actionName, string controllerName, RouteValueDictionary implicitRouteValues, RouteValueDictionary routeValues, bool includeImplicitMvcValues)
-		{
-			RouteValueDictionary dictionary = new RouteValueDictionary();
-			if (includeImplicitMvcValues)
-			{
-				object obj2;
-				if ((implicitRouteValues != null) && implicitRouteValues.TryGetValue("action", out obj2))
-				{
-					dictionary["action"] = obj2;
-				}
-				if ((implicitRouteValues != null) && implicitRouteValues.TryGetValue("controller", out obj2))
-				{
-					dictionary["controller"] = obj2;
-				}
-			}
-			if (routeValues != null)
-			{
-				foreach (KeyValuePair<string, object> pair in GetRouteValues(routeValues))
-				{
-					dictionary[pair.Key] = pair.Value;
-				}
-			}
-			if (actionName != null)
-			{
-				dictionary["action"] = actionName;
-			}
-			if (controllerName != null)
-			{
-				dictionary["controller"] = controllerName;
-			}
-			return dictionary;
-		}
+			string url = helper.RouteUrl(null, new { controller = "Search" }, null);
 
-		internal static string GenerateUrl(string routeName, string actionName, string controllerName, RouteValueDictionary routeValues, RouteCollection routeCollection, RequestContext requestContext, bool includeImplicitMvcValues)
-		{
-			VirtualPathData virtualPath;
-			RouteValueDictionary values = MergeRouteValues(actionName, controllerName, requestContext.RouteData.Values, routeValues, includeImplicitMvcValues);
-			if (routeName != null)
-			{
-				virtualPath = routeCollection.GetVirtualPath(requestContext, routeName, values);
-			}
-			else
-			{
-				virtualPath = routeCollection.GetVirtualPath(requestContext, values);
-			}
-			if (virtualPath != null)
-			{
-				return virtualPath.VirtualPath;
-			}
-			return null;
+			Assert.That(url, Is.EqualTo("/search"));
 		}
 
 		[Test]
-		public void Can_GenerateRouteUrl()
+		public void CanGenerateLink()
 		{
-			SetPath("/search/");
+			var rc = CreateRouteContext(search);
 
-			var rc = new RequestContext(new FakeHttpContext(), new RouteData());
-			string url = new UrlHelper(rc).RouteUrl(new {controller = "Controller"});
+			string html = HtmlHelper.GenerateLink(rc, routes, "Hello", null, "find", "Search", new RouteValueDictionary(new { q = "hello" }), null);
 
-			Assert.That(url, Is.EqualTo("/search?q=hello"));
+			Assert.That(html, Is.EqualTo("<a href=\"/search/find?q=hello\">Hello</a>"));
 		}
 
-		[Test, Ignore]
+		[Test]
 		public void CanCreate_ActionLink()
 		{
-			SetPath("/search/");
-			HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
+			var rc = CreateRouteContext(search);
+			var helper = new HtmlHelper(CreateViewContext(rc), new ViewPage(), routes);
 
-			string url1 = helper.ActionLink("Hello", "Search", new {q = "query"});
+			string html = helper.ActionLink("Hello", "find", new { q = "something", controller = "Search" });
 
-			Assert.That(url1, Is.EqualTo("/search?q=hello"));
+			Assert.That(html, Is.EqualTo("<a href=\"/search/find?q=something\">Hello</a>"));
 		}
 
-		[Test, Ignore]
+		[Test]
 		public void CanCreate_UrlFromExpression()
 		{
-			SetPath("/search/");
-			HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
+			var rc = CreateRouteContext(search);
+			var helper = new HtmlHelper(CreateViewContext(rc), new ViewPage(), routes);
 
-			string url2 = helper.BuildUrlFromExpression<SearchController>(s => s.Search("hello"));
+			string html = helper.BuildUrlFromExpression<SearchController>(s => s.Find("hello"));
 
-			Assert.That(url2, Is.EqualTo("/search?q=hello"));
+			Assert.That(html, Is.EqualTo("/search/Find?q=hello"));
 		}
 
-		//TODO figure out
-		//[Test]
-		//public void InstantiatesTheCorrectController()
-		//{
-		//    SetPath("/");
-
-		//    var data = route.GetRouteData(httpContext);
-
-
-		//    var factory = new DefaultControllerFactory();
-		//    var requestContext = new RequestContext(httpContext, data);
-		//    factory.CreateController(requestContext, (string)data.Values["controller"]);
-		//}
-
-		public class FakeHttpContext : HttpContextBase
+		ViewContext CreateViewContext(RequestContext rc)
 		{
-			public FakeHttpRequest request;
-			public override HttpRequestBase Request
-			{
-				get { return request; }
-			}
-		}
-		public class FakeHttpRequest : HttpRequestBase
-		{
-			public string appRelativeCurrentExecutionFilePath;
-			public override string AppRelativeCurrentExecutionFilePath
-			{
-				get { return appRelativeCurrentExecutionFilePath; }
-			}
-			public string rawUrl;
-			public override string RawUrl
-			{
-				get { return rawUrl; }
-			}
-			public StringDictionary query = new StringDictionary();
-			public override string this[string key]
-			{
-				get { return query[key]; }
-			}
-		}
-		public class FakeTypeFinder : AppDomainTypeFinder
-		{
-			public Dictionary<Type, IList<Type>> typeMap = new Dictionary<Type, IList<Type>>();
-			public override IList<Type> Find(Type requestedType)
-			{
-				if (typeMap.ContainsKey(requestedType))
-					return typeMap[requestedType];
-				return base.Find(requestedType);
-			}
+			return new ViewContext { RequestContext = rc, HttpContext = httpContext, RouteData = rc.RouteData };
 		}
 	}
 }

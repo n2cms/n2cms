@@ -92,6 +92,11 @@
     <Compile Include="Mvc\Controllers\RegularControllerBase.cs" />
     <Compile Include="Mvc\Controllers\ExecutiveTeamController.cs" />
     <Compile Include="Mvc\Controllers\AboutUsSectionPageController.cs" />
+    <Compile Include="Fakes\FakeHttpContext.cs" />
+    <Compile Include="Fakes\FakeHttpRequest.cs" />
+    <Compile Include="Fakes\FakeHttpResponse.cs" />
+    <Compile Include="Fakes\FakeTypeFinder.cs" />
+    <Compile Include="Mvc\Controllers\SearchController.cs" />
     <Compile Include="Mvc\Models\RegularPage.cs" />
     <Compile Include="Mvc\Models\ExecutiveTeamPage.cs" />
     <Compile Include="Mvc\Models\AboutUsSectionPage.cs" />

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Web;

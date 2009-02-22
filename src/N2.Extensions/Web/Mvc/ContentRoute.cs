@@ -17,8 +17,8 @@ namespace N2.Web.Mvc
 		public const string ContentItemKey = "item";
 		public const string ContentEngineKey = "engine";
 		public const string ContentUrlKey = "url";
-		const string ControllerKey = "controller";
-		const string ActionKey = "action";
+		public const string ControllerKey = "controller";
+		public const string ActionKey = "action";
 
 		readonly IEngine engine;
 		readonly IRouteHandler routeHandler;
@@ -39,7 +39,7 @@ namespace N2.Web.Mvc
 			foreach (ItemDefinition id in engine.Definitions.GetDefinitions())
 			{
 				IControllerDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
-				controllerMap[id.ItemType] = controllerDefinition.ControllerName;
+				ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
 				IList<IPathFinder> finders = ContentItem.GetPathFinders(id.ItemType);
 				if (0 == finders.Where(f => f is RouteActionResolverAttribute || f is ActionResolver).Count())
 				{
@@ -96,7 +96,7 @@ namespace N2.Web.Mvc
 			var pathData = base.GetVirtualPath(requestContext, values);
 			Url itemUrl = item.Url;
 			Url pathUrl = pathData.VirtualPath;
-			pathData.VirtualPath = pathUrl.RemoveSegment(0).PrependSegment(itemUrl.PathWithoutExtension).PathAndQuery.TrimStart('/');
+			pathData.VirtualPath = pathUrl.RemoveSegment(0).PrependSegment(itemUrl.PathWithoutExtension.TrimStart('/')).PathAndQuery.TrimStart('/');
 			
 			return pathData;
 		}
@@ -105,10 +105,14 @@ namespace N2.Web.Mvc
 		{
 			get { return SingletonDictionary<Type, IList<IPathFinder>>.Instance; }
 		}
+		public IDictionary<Type, string> ControllerMap
+		{
+			get { return controllerMap; }
+		}
 
 		private string GetControllerName(Type type)
 		{
-			return controllerMap[type];
+			return ControllerMap[type];
 		}
 
 		private IControllerDescriptor GetControllerFor(Type itemType, IList<ControlsAttribute> controllerDefinitions)
