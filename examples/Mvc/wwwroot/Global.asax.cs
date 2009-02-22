@@ -14,7 +14,7 @@ namespace MvcTest
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             
 			// This route detects content item paths and executes their controller
-			routes.Add(new ContentRoute(engine, new MvcRouteHandler()));
+			routes.Add(new ContentRoute(engine));
             
 			// This controller fallbacks to a controller unrelated to N2
 			routes.MapRoute(
@@ -26,8 +26,13 @@ namespace MvcTest
 
 		protected void Application_Start(object sender, EventArgs e)
 		{
+			// normally the engine is initialized by the initializer module but it can also be initialized this programmatically
 			IEngine engine = N2.Context.Initialize(false);
+
 			RegisterRoutes(RouteTable.Routes, engine);
+			
+			// since we attach programmatically we need to associate the engine with a http application
+			engine.Attach(this);
 		}
 	}
 }

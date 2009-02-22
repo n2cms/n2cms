@@ -12,18 +12,25 @@ namespace N2.Web.Mvc
 	/// <summary>
 	/// An ASP.NET MVC route that gets route data for content item paths.
 	/// </summary>
-	public class ContentRoute : RouteBase
+	public class ContentRoute : Route
 	{
-		public const string ContentItemKey = "ContentItem";
-		public const string ContentEngineKey = "ContentEngine";
+		public const string ContentItemKey = "item";
+		public const string ContentEngineKey = "engine";
+		public const string ContentUrlKey = "url";
 		const string ControllerKey = "controller";
 		const string ActionKey = "action";
-				
-		IEngine engine;
-		IRouteHandler routeHandler;
-		IDictionary<Type, string> controllerMap = new Dictionary<Type, string>();
+
+		readonly IEngine engine;
+		readonly IRouteHandler routeHandler;
+		readonly IDictionary<Type, string> controllerMap = new Dictionary<Type, string>();
+
+		public ContentRoute(IEngine engine)
+			: this(engine, new MvcRouteHandler())
+		{
+		}
 
 		public ContentRoute(IEngine engine, IRouteHandler routeHandler)
+			: base("{controller}/{action}/{*remainingUrl}", new RouteValueDictionary(new { Action = "Index" }), routeHandler)
 		{
 			this.engine = engine;
 			this.routeHandler = routeHandler;
@@ -69,38 +76,29 @@ namespace N2.Web.Mvc
 
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
-			ContentItem item = requestContext.RouteData.Values["ContentItem"] as ContentItem;
+			ContentItem item;
+			if(values.ContainsKey(ContentItemKey))
+			{
+				item = values[ContentItemKey] as ContentItem;
+				values.Remove(ContentItemKey);
+			}
+			else
+				item = requestContext.RouteData.Values[ContentItemKey] as ContentItem;
 
 			if (item == null)
 				return null;
 
-			string action = "Index";
+			string requestedController = values[ControllerKey] as string;
+			string itemController = GetControllerName(item.GetType());
+			if (!string.Equals(requestedController, itemController, StringComparison.InvariantCultureIgnoreCase))
+				return null;
 
-			if (values.ContainsKey("ContentItem"))
-				item = (ContentItem)values["ContentItem"];
-			if (values.ContainsKey("action"))
-				action = (string)values["action"];
-
-			Url url = item.Url;
-			string defaultController = GetControllerName(item.GetType());
-			string requestedController = defaultController;
-			if (values.ContainsKey("controller"))
-				requestedController = (string)values["controller"];
-
-			if (string.Equals(defaultController, requestedController, StringComparison.InvariantCultureIgnoreCase))
-			{
-				return new VirtualPathData(this, url.AppendSegment(action).ToString().TrimStart('/'));
-			}
-			if (IsContentController(requestedController))
-			{
-				return new VirtualPathData(this, url.AppendSegment(action).ToString().TrimStart('/'));
-			}
-			return null;
-		}
-
-		private bool IsContentController(string controller)
-		{
-			return controllerMap.Any(kv => kv.Key.Name == controller);
+			var pathData = base.GetVirtualPath(requestContext, values);
+			Url itemUrl = item.Url;
+			Url pathUrl = pathData.VirtualPath;
+			pathData.VirtualPath = pathUrl.RemoveSegment(0).PrependSegment(itemUrl.PathWithoutExtension).PathAndQuery.TrimStart('/');
+			
+			return pathData;
 		}
 
 		IDictionary<Type, IList<IPathFinder>> FinderDictionary

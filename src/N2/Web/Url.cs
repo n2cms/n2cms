@@ -12,7 +12,8 @@ namespace N2.Web
 	{
 		public const string Amp = "&";
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
-		static readonly char[] dotsAndSlashes = new[] {'.', '/'};
+		static readonly char[] slashes = new char[] { '/' };
+		static readonly char[] dotsAndSlashes = new char[] { '.', '/' };
 		static string defaultExtension = ".aspx";
 
 		string scheme;
@@ -604,6 +605,52 @@ namespace N2.Web
 				return path;
 
 			return path.Substring(0, index);
+		}
+
+		/// <summary>Removes the last part from the url segments.</summary>
+		/// <returns></returns>
+		public Url RemoveTrailingSegment()
+		{
+			if(string.IsNullOrEmpty(path) || path == "/")
+				return this;
+
+			string newPath = "/";
+
+			int lastSlashIndex = path.LastIndexOf('/');
+			if (lastSlashIndex == path.Length - 1)
+				lastSlashIndex = path.TrimEnd(slashes).LastIndexOf('/');
+			if (lastSlashIndex > 0)
+				newPath = path.Substring(0, lastSlashIndex) + Extension;
+
+			return new Url(scheme, authority, newPath, query, fragment);
+		}
+
+		
+		/// <summary>Removes the segment at the specified location.</summary>
+		/// <param name="index">The segment index to remove</param>
+		/// <returns>An url without the specified segment.</returns>
+		public Url RemoveSegment(int index)
+		{
+			if (string.IsNullOrEmpty(path) || path == "/" || index < 0)
+				return this;
+
+			if(index == 0)
+			{
+				int slashIndex = path.IndexOf('/', 1);
+				if(slashIndex < 0)
+					return new Url(scheme, authority, "/", query, fragment);
+				return new Url(scheme, authority, path.Substring(slashIndex), query, fragment);
+			}
+
+			string[] segments = PathWithoutExtension.Split(slashes, StringSplitOptions.RemoveEmptyEntries);
+			if(index >= segments.Length)
+				return this;
+
+			if (index == segments.Length - 1)
+				return RemoveTrailingSegment();
+
+			string newPath = "/" + string.Join("/", segments, 0, index) + "/" + string.Join("/", segments, index + 1, segments.Length - index - 1) + Extension;
+			return new Url(scheme, authority, newPath, query, fragment);
 		}
 	}
 }

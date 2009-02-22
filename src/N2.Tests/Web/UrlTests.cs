@@ -435,7 +435,177 @@ namespace N2.Tests.Web
             Url u = "http://n2cms.com/hello";
             u = u.AppendSegment("test2", false);
             Assert.That(u.ToString(), Is.EqualTo("http://n2cms.com/hello/test2"));
-        }
+		}
+
+		[Test]
+		public void CanRemove_TrailingSegment()
+		{
+			Url u = "/hello/world";
+
+			u = u.RemoveTrailingSegment();
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello"));
+		}
+
+		[Test]
+		public void CanRemove_TrailingSegment_WhenTrailingSlash()
+		{
+			Url u = "/hello/world/";
+
+			u = u.RemoveTrailingSegment();
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello")); // tiny inconsitency
+		}
+
+		[Test]
+		public void CanRemove_TrailingSegment_WhenFileExtension()
+		{
+			Url u = "/hello/world.aspx";
+
+			u = u.RemoveTrailingSegment();
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
+		}
+
+		[Test]
+		public void CanRemove_TrailingSegment_WhenSingleSegment()
+		{
+			Url u = "/hello";
+
+			u = u.RemoveTrailingSegment();
+
+			Assert.That(u.ToString(), Is.EqualTo("/"));
+		}
+
+		[Test]
+		public void CanRemove_TrailingSegment_WhenSingleSegment_AndTrailingSlash()
+		{
+			Url u = "/hello/";
+
+			u = u.RemoveTrailingSegment();
+
+			Assert.That(u.ToString(), Is.EqualTo("/"));
+		}
+
+		[Test]
+		public void CanRemove_TrailingSegment_WhenSingleSegment_AndExtension()
+		{
+			Url u = "/hello.aspx";
+
+			u = u.RemoveTrailingSegment();
+
+			Assert.That(u.ToString(), Is.EqualTo("/"));
+		}
+
+		[Test]
+		public void CanRemove_SegmentIndex0()
+		{
+			Url u = "/hello/whole/world";
+			
+			u = u.RemoveSegment(0);
+
+			Assert.That(u.ToString(), Is.EqualTo("/whole/world"));
+		}
+
+		[Test]
+		public void CanRemove_SegmentIndex0_WhenTrailingSlash()
+		{
+			Url u = "/hello/whole/world/";
+
+			u = u.RemoveSegment(0);
+
+			Assert.That(u.ToString(), Is.EqualTo("/whole/world/"));
+		}
+
+		[Test]
+		public void CanRemove_SegmentIndex0_WhenFileExtension()
+		{
+			Url u = "/hello/whole/world.aspx";
+
+			u = u.RemoveSegment(0);
+
+			Assert.That(u.ToString(), Is.EqualTo("/whole/world.aspx"));
+		}
+
+		[Test]
+		public void CanRemove_SegmentIndex1()
+		{
+			Url u = "/hello/whole/world";
+
+			u = u.RemoveSegment(1);
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello/world"));
+		}
+
+		[Test]
+		public void CanRemove_SegmentIndex1_WhenTrailingSlash()
+		{
+			Url u = "/hello/whole/world/";
+
+			u = u.RemoveSegment(1);
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello/world")); // tiny inconsitency
+		}
+
+		[Test]
+		public void CanRemove_SegmentIndex1_WhenFileExtension()
+		{
+			Url u = "/hello/whole/world.aspx";
+
+			u = u.RemoveSegment(1);
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello/world.aspx")); // tiny inconsitency
+		}
+
+		[Test]
+		public void CanRemove_LastSegmentIndex()
+		{
+			Url u = "/hello/whole/world";
+
+			u = u.RemoveSegment(2);
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello/whole"));
+		}
+
+		[Test]
+		public void CanRemove_LastSegmentIndex_WhenTrailingSlash()
+		{
+			Url u = "/hello/whole/world/";
+
+			u = u.RemoveSegment(2);
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello/whole"));
+		}
+
+		[Test]
+		public void CanRemove_LastSegmentIndex_WhenFileExtension()
+		{
+			Url u = "/hello/whole/world.aspx";
+
+			u = u.RemoveSegment(2);
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello/whole.aspx"));
+		}
+
+		[Test]
+		public void RemoveSegment_GracefullyExcepts_ArgumentsBeyondBounds()
+		{
+			Url u = "/hello.aspx";
+
+			u = u.RemoveSegment(2);
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
+		}
+
+		[Test]
+		public void RemoveSegment_GracefullyExcepts_BeforeBounds()
+		{
+			Url u = "/hello.aspx";
+
+			u = u.RemoveSegment(-1);
+
+			Assert.That(u.ToString(), Is.EqualTo("/hello.aspx"));
+		}
 
         [Test]
         public void CanAppendSegment_WithoutUsingDefaultExtension_ToEmptyPath()
