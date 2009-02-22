@@ -1,4 +1,5 @@
-﻿- display unpublished version quicklink icon on control panel
+﻿- applied esteewhy's patch #21170:Delete command causes delay on large sub-items tree
+- display unpublished version quicklink icon on control panel
 - hide translations when no access to their language
 - applied esteewhy's patch #20900: Control localization availability without deleting a corresponding StartPage
 - fixed #21121: items copy/paste error (Validation of viewstate MAC failed)

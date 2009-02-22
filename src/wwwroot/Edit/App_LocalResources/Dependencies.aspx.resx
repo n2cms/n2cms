@@ -117,28 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="affectedItems.Legend" xml:space="preserve">
-    <value>All deleted items</value>
-  </data>
-  <data name="btnDelete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="confirm.message" xml:space="preserve">
-    <value>Delete {0} ({1})?</value>
-  </data>
-  <data name="cvDelete.ErrorMessage" xml:space="preserve">
-    <value>Cannot delete startpage</value>
-  </data>
-  <data name="DeletePage.TitleFormat" xml:space="preserve">
-    <value>Delete "{0}"</value>
-  </data>
-  <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="referencingItems.Legend" xml:space="preserve">
-    <value>Referring items</value>
-  </data>
-  <data name="hlReferencingItems.Text" xml:space="preserve">
-    <value>List Referencing Items</value>
+  <data name="hlBack.Text" xml:space="preserve">
+    <value>Back</value>
   </data>
 </root>

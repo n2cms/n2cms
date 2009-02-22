@@ -15,8 +15,7 @@ namespace N2.Edit
 
             itemsToDelete.CurrentItem = SelectedItem;
             itemsToDelete.DataBind();
-            referencingItems.Item = SelectedItem;
-            referencingItems.DataBind();
+            this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?selected=" + SelectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
 
             base.OnInit(e);
         }

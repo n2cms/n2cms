@@ -23,6 +23,15 @@ namespace N2.Edit {
         protected global::System.Web.UI.WebControls.LinkButton btnDelete;
         
         /// <summary>
+        /// hlReferencingItems control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlReferencingItems;
+        
+        /// <summary>
         /// hlCancel control.
         /// </summary>
         /// <remarks>
@@ -57,14 +66,5 @@ namespace N2.Edit {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Edit.AffectedItems itemsToDelete;
-        
-        /// <summary>
-        /// referencingItems control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Edit.ReferencingItems referencingItems;
     }
 }

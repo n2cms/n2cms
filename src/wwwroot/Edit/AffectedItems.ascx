@@ -1,1 +1,15 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AffectedItems.ascx.cs" Inherits="N2.Edit.AffectedItems" meta:resourceKey="AffectedItemsResource" %>
+<%@ Control
+	Language="C#"
+	CodeBehind="AffectedItems.ascx.cs"
+	Inherits="N2.Edit.AffectedItems"
+	meta:resourceKey="AffectedItemsResource" %>
+<%@ Register
+	TagPrefix="edit"
+	Namespace="N2.Edit.Web.UI.Controls"
+	Assembly="N2.Edit" %>
+<div id="nav" class="tree nav">
+	<edit:Tree
+		ID="tv"
+		runat="server"
+		Target="_blank" />
+</div>

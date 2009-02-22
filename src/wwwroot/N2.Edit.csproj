@@ -72,6 +72,7 @@
     <Content Include="Edit\Move.aspx" />
     <Content Include="Edit\New.aspx" />
     <Content Include="Edit\Web.config" />
+    <None Include="Edit\Dependencies.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Edit\AffectedItems.ascx.cs">
@@ -1627,6 +1628,9 @@
     <Content Include="Edit\Js\jquery-1.3.1.js" />
     <Content Include="Edit\Js\jquery.ui\jquery-ui-personalized.min.js" />
     <Content Include="Edit\Js\plugins\date.js" />
+    <Content Include="Edit\App_LocalResources\Dependencies.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="Edit\Js\plugins\FreeTextArea.js" />
     <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
     <Content Include="Edit\Js\TabPanel.js" />
