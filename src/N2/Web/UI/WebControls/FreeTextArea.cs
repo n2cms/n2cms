@@ -41,12 +41,19 @@ namespace N2.Web.UI.WebControls
 			CssClass = "freeTextArea";
 		}
 
+		protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+		{
+			bool wasUpdated = base.LoadPostData(postDataKey, postCollection);
+			if (wasUpdated) Text = HttpUtility.HtmlDecode(Text);
+			return wasUpdated;
+		}
+
         public virtual bool EnableFreeTextArea
         {
             get { return (bool)(ViewState["EnableFreeTextArea"] ?? configEnabled); }
             set { ViewState["EnableFreeTextArea"] = value; }
         }
-
+		
         private static string ElementsKey = "TinyMCE.Elements";
         protected override void OnInit(EventArgs e)
         {

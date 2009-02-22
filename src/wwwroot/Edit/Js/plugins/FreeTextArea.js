@@ -20,7 +20,9 @@ var freeTextArea_settings = {
 	theme_advanced_resizing : true,
     theme_advanced_disable : 'help,fontselect,fontsizeselect,forecolor,backcolor,styleselect',
 	relative_urls : false,
-	noneditable_noneditable_class : 'cs,csharp,vb,js'
+	noneditable_noneditable_class : 'cs,csharp,vb,js',
+	encoding: 'xml',
+	/*decode:*/cleanup_callback: function(type, value) { return 'insert_to_editor' == type ? tinymce.DOM.decode(value) : value; }
 };
 var fileBrowserUrl;
 var srcField;
