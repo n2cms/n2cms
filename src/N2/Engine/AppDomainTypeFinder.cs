@@ -181,7 +181,11 @@ namespace N2.Engine
 			{
 				loadedAssemblyNames.Add(a.FullName);
 			}
-
+			
+			if(!Directory.Exists(directoryPath)) {
+				return;
+			}
+			
 			foreach (string dllPath in Directory.GetFiles(directoryPath, "*.dll"))
 			{
 				try

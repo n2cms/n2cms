@@ -1,4 +1,5 @@
 ﻿- applied esteewhy's patches:
+	#21312 Check if ~/bin folder exist before trying to load assemblies in AppDomainTypeFinder
 	#21170 Delete command causes delay on large sub-items tree
 	#20817 Replace cookies.js with jquery.cookie.js
 - display unpublished version quicklink icon on control panel
