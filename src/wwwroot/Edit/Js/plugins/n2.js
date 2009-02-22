@@ -63,12 +63,12 @@ var n2toggle = {
     show: function(btn, bar) {
         $(btn).addClass("toggled").blur();
         $(bar).show();
-        cookie.create(bar, "show");
+        $.cookie(bar, "show");
     },
     hide: function(btn, bar) {
         $(btn).removeClass("toggled").blur();
         $(bar).hide();
-        cookie.erase(bar)
+        $.cookie(bar, null)
     }
 };
 

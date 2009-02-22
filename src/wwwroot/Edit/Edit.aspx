@@ -55,9 +55,9 @@
 				n2toggle.hide(this, ".zonesBox");
 			});
 
-			if (cookie.read(".infoBox"))
+			if ($.cookie(".infoBox"))
 				$(".showInfo").click();
-			if (cookie.read(".zonesBox"))
+			if ($.cookie(".zonesBox"))
 				$(".showZones").click();
 		});
     </script>

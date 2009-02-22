@@ -220,42 +220,6 @@
         }
     };
 
-
-
-
-
-    //http://www.quirksmode.org/js/cookies.html
-
-    var cookie = {
-        create: function(name, value, days) {
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                var expires = "; expires=" + date.toGMTString();
-            }
-            else var expires = "";
-            document.cookie = name + "=" + value + expires + "; path=/";
-        },
-
-        read: function(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
-        },
-
-        erase: function(name) {
-            cookie.create(name, "", -1);
-        }
-    };
-
-
-
-
     window.SlidingCurtain = function(selector, startsOpen) {
         var $sc = $(selector);
         var closedPos = { top: (28 - $sc.height()) + "px", left: (15 - $sc.width()) + "px" };
@@ -263,7 +227,7 @@
 
         var curtain = {
             isOpen: function() {
-                return cookie.read("sc_open") == "true";
+                return $.cookie("sc_open") == "true";
             },
             open: function(e) {
                 if (e) {
@@ -272,7 +236,7 @@
                     $sc.css(openPos);
                 }
                 $sc.addClass("opened");
-                cookie.create("sc_open", "true", 1);
+                $.cookie("sc_open", "true", {expires:1});
             },
             close: function(e) {
                 if (e) {
@@ -281,7 +245,7 @@
                     $sc.css(closedPos);
                 }
                 $sc.removeClass("opened");
-                cookie.erase("sc_open");
+                $.cookie("sc_open", null);
             }
         };
 

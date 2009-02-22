@@ -88,7 +88,9 @@ namespace N2.Edit.Web.UI.Controls
 		public static void AppendExpanderNode(TreeNode tn, string target)
 		{
 			Li li = new Li();
-			li.Text = "{url:../Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path) + "}";
+			
+//TODO respect EditInterfaceUrl setting
+			li.Text = "{url:" + Url.ToAbsolute("~/Edit/Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path)) + "}";
 
 			tn.UlClass = "ajax";
 			tn.Controls.Add(li);

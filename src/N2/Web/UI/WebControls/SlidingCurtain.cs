@@ -41,6 +41,7 @@ namespace N2.Web.UI.WebControls
 				ID = "SC";
 
 			Register.JQuery(Page);
+			Register.JavaScript(Page, "~/Edit/Js/plugins.ashx");
 			Register.JavaScript(Page, ScriptUrl);
 			Register.StyleSheet(Page, StyleSheetUrl);
 

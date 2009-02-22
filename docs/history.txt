@@ -1,4 +1,6 @@
-﻿- applied esteewhy's patch #21170:Delete command causes delay on large sub-items tree
+﻿- applied esteewhy's patches:
+	#21170 Delete command causes delay on large sub-items tree
+	#20817 Replace cookies.js with jquery.cookie.js
 - display unpublished version quicklink icon on control panel
 - hide translations when no access to their language
 - applied esteewhy's patch #20900: Control localization availability without deleting a corresponding StartPage
