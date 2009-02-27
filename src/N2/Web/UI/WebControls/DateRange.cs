@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -11,20 +12,20 @@ namespace N2.Web.UI.WebControls
 	[ValidationProperty("From")]
 	public class DateRange : Control, IValidator
 	{
-		private DatePicker fromDate;
-		private DatePicker toDate;
-		private Label between;
+		DatePicker fromDate = new DatePicker();
+		DatePicker toDate = new DatePicker();
+		Label between = new Label();
 
 		public DateTime? From
 		{
-			get { return ParseDate(fromDate.Text); }
-			set { fromDate.Text = ToString(value); }
+			get { return ParseDate(FromDatePicker.Text); }
+			set { FromDatePicker.Text = ToString(value); }
 		}
 
 		public DateTime? To
 		{
-			get { return ParseDate(toDate.Text); }
-			set { toDate.Text = ToString(value); }
+			get { return ParseDate(ToDatePicker.Text); }
+			set { ToDatePicker.Text = ToString(value); }
 		}
 
 		public string BetweenText
@@ -32,12 +33,12 @@ namespace N2.Web.UI.WebControls
 			get
 			{
 				this.EnsureChildControls();
-				return between.Text;
+				return BetweenLabel.Text;
 			}
 			set 
 			{
 				this.EnsureChildControls();
-				between.Text = value; 
+				BetweenLabel.Text = value; 
 			}
 		}
 
@@ -52,19 +53,16 @@ namespace N2.Web.UI.WebControls
 		{
 			base.CreateChildControls();
 
-			fromDate = new DatePicker();
-			fromDate.ID = "from" + this.ID;
-			this.Controls.Add(fromDate);
+			FromDatePicker.ID = "from" + this.ID;
+			this.Controls.Add(FromDatePicker);
 
-			between = new Label();
-			this.Controls.Add(between);
+			this.Controls.Add(BetweenLabel);
 
-			toDate = new DatePicker();
-			toDate.ID = "to" + this.ID;
-			this.Controls.Add(toDate);
+			ToDatePicker.ID = "to" + this.ID;
+			this.Controls.Add(ToDatePicker);
 
-			fromDate.TextChanged += TextChanged;
-			toDate.TextChanged += TextChanged;
+			FromDatePicker.TextChanged += TextChanged;
+			ToDatePicker.TextChanged += TextChanged;
 		}
 
 		protected override void OnPreRender(EventArgs e)
@@ -85,7 +83,7 @@ jQuery('#{1}').bind('dpClosed', function(e, selectedDates) {{
 		jQuery('#{0}').dpSetEndDate(d.addDays(-1).asString());
 	}}
 }});";
-			string script = string.Format(scriptFormat, fromDate.ClientID, toDate.ClientID);
+			string script = string.Format(scriptFormat, FromDatePicker.ClientID, ToDatePicker.ClientID);
 			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
 		}
 
@@ -127,6 +125,24 @@ jQuery('#{1}').bind('dpClosed', function(e, selectedDates) {{
 		{
 			get { return (bool)(ViewState["IsValid"] ?? true); }
 			set { ViewState["IsValid"] = value; }
+		}
+
+		[NotifyParentProperty(true)]
+		public DatePicker FromDatePicker
+		{
+			get { return fromDate; }
+		}
+
+		[NotifyParentProperty(true)]
+		public DatePicker ToDatePicker
+		{
+			get { return toDate; }
+		}
+
+		[NotifyParentProperty(true)]
+		public Label BetweenLabel
+		{
+			get { return between; }
 		}
 
 		public void Validate()

@@ -284,6 +284,7 @@
     <Compile Include="Web\AbstractExtensionUrlParserTests.cs" />
     <Compile Include="Web\WebControls\ControlPanelTests_EditingState.cs" />
     <Compile Include="Web\WebControls\ControlPanelTests_DragDropState.cs" />
+    <Compile Include="Web\WebControls\DateRangeTests.cs" />
     <Compile Include="Web\WebControls\WebControlTestsBase.cs" />
     <Compile Include="Web\WebControls\ControlPanelTests_HiddenState.cs" />
     <Compile Include="Web\WhileBuildingUrlsWhenMultipleSites.cs" />

@@ -1,4 +1,5 @@
-﻿- applied esteewhy's patches:
+﻿- fixed #21443 Time picker localization (en-US)
+- applied esteewhy's patches:
 	#20810 Enable Request Validation with TinyMCE (with modifications)
 	#21312 Check if ~/bin folder exist before trying to load assemblies in AppDomainTypeFinder
 	#21170 Delete command causes delay on large sub-items tree

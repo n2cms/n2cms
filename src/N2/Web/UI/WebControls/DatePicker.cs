@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using System.Web.UI;
@@ -11,22 +12,20 @@ namespace N2.Web.UI.WebControls
 	[ValidationProperty("SelectedDate")]
 	public class DatePicker : Control, IEditableTextControl
 	{
-		TextBox datePicker;
-		TextBox timePicker;
+		TextBox datePicker = new TextBox();
+		TextBox timePicker = new TextBox();
 
 		protected override void CreateChildControls()
 		{
-			datePicker = new TextBox();
-			datePicker.ID = ID + "_date";
-			Controls.Add(datePicker);
-			datePicker.CssClass = "datePicker";
-			datePicker.TextChanged += OnTextChanged;
+			DatePickerBox.ID = ID + "_date";
+			Controls.Add(DatePickerBox);
+			DatePickerBox.CssClass = "datePicker";
+			DatePickerBox.TextChanged += OnTextChanged;
 
-			timePicker = new TextBox();
-			datePicker.ID = ID + "_time";
-			Controls.Add(timePicker);
-			timePicker.CssClass = "timePicker";
-			timePicker.TextChanged += OnTextChanged;
+			DatePickerBox.ID = ID + "_time";
+			Controls.Add(TimePickerBox);
+			TimePickerBox.CssClass = "timePicker";
+			TimePickerBox.TextChanged += OnTextChanged;
 
 			base.CreateChildControls();
 		}
@@ -58,7 +57,6 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnInit(e);
 			RegiserClientScript();
-			//RegisterStyleSheet();
 			EnsureChildControls();
 		}
 
@@ -110,25 +108,40 @@ jQuery('.datePicker').datePicker({{ startDate: '{2}' }});";
 		{
 			get
 			{
-				return string.Format("{0} {1}", datePicker.Text, timePicker.Text);
+				return string.Format("{0} {1}", DatePickerBox.Text, TimePickerBox.Text);
 			}
 			set
 			{
 				if(value != null)
 				{
 					string[] dateTime = value.Split(' ');
-					datePicker.Text = dateTime[0];
+					DatePickerBox.Text = dateTime[0];
 					if (dateTime.Length > 1)
-						timePicker.Text = dateTime[1].EndsWith(":00") ? dateTime[1].Substring(0, dateTime[1].Length - 3) : dateTime[1];
+						TimePickerBox.Text = dateTime[1].EndsWith(":00") ? dateTime[1].Substring(0, dateTime[1].Length - 3) : dateTime[1];
 					else
-						timePicker.Text = string.Empty;
+						TimePickerBox.Text = string.Empty;
+
+					if (dateTime.Length > 2)
+						TimePickerBox.Text += " " + dateTime[2]; // This could be AM/PM
 				}
 				else
 				{
-					datePicker.Text = string.Empty;
-					timePicker.Text = string.Empty;
+					DatePickerBox.Text = string.Empty;
+					TimePickerBox.Text = string.Empty;
 				}
 			}
+		}
+
+		[NotifyParentProperty(true)]
+		public TextBox DatePickerBox
+		{
+			get { return datePicker; }
+		}
+
+		[NotifyParentProperty(true)]
+		public TextBox TimePickerBox
+		{
+			get { return timePicker; }
 		}
 
 		#endregion
