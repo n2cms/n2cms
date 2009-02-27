@@ -14,11 +14,12 @@ namespace N2.Web
 		void RewriteRequest(IWebContext webContext);
 
 		/// <summary>Inject the current page into the page handler.</summary>
-		/// <param name="handler"></param>
+		/// <param name="handler">The ASP.NET http handler.</param>
 		void InjectCurrentPage(IHttpHandler handler);
 
 		/// <summary>Authorize the user against the current content item. Throw an exception if not authorized.</summary>
-		/// <param name="security"></param>
+		/// <param name="user">The user to authorize.</param>
+		/// <param name="security">The security enforcer requesting authorization.</param>
 		void AuthorizeRequest(IPrincipal user, ISecurityEnforcer security);
 
 		/// <summary>Is notified when an unhandled error occurs.</summary>

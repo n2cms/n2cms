@@ -62,17 +62,13 @@
 
   <Target Name="Test" DependsOnTargets="Test-PrepareDependencies">
     <Message Text="ToolPath: $(LibFolder)"/>
-    <Message Text="Testing: $(SrcFolder)\N2.Tests\bin\N2.Tests.exe"/>
-    <NUnit Assemblies="$(SrcFolder)\N2.Tests\bin\N2.Tests.exe" ToolPath="$(LibFolder)" OutputXmlFile="$(DeployFolder}TestReport.xml" />
-
-    <Message Text="Testing: $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe"/>
-    <NUnit Assemblies="$(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe" ToolPath="$(LibFolder)" />
-
-    <!--<Message Text="Testing: $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe"/>
-    <NUnit Assemblies="$(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe" ToolPath="$(LibFolder)" />-->
-
-    <Message Text="Testing: $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe"/>
-    <NUnit Assemblies="$(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" ToolPath="$(LibFolder)" />
+	  <ItemGroup>
+		  <AssembliesToTest Include="$(SrcFolder)\N2.Tests\bin\N2.Tests.exe;
+							$(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe;
+							$(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe;
+							$(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe"/>
+	  </ItemGroup>
+	<NUnit Assemblies="@(AssembliesToTest)" ToolPath="$(LibFolder)" OutputXmlFile="$(DeployFolder)\TestReport.N2.xml" />
   </Target>
 
   <Target Name="PrepareDependencies" DependsOnTargets="Core-PrepareDependencies;Test-PrepareDependencies;Examples-PrepareDependencies">
