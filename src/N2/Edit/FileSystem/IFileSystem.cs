@@ -8,18 +8,18 @@ namespace N2.Edit.FileSystem
 	/// </summary>
 	public interface IFileSystem
 	{
-		IEnumerable<string> GetFiles(string parentPath); // gets files in directory
-		IEnumerable<string> GetDirectories(string parentPath); // gets directories in directory
+		IEnumerable<string> GetFiles(string parentVirtualPath); // gets files in directory
+		IEnumerable<string> GetDirectories(string parentVirtualPath); // gets directories in directory
 
-		bool Exists(string path); // check if a file or directory exists
-		void Delete(string path); // deletes a file or directory
-		void Move(string fromPath, string toNewPath); // moves a file or directory to a new path
-		void Copy(string fromPath, string toNewPath); // copies a file or directory to a new path
-		void CreateDirectory(string path); // creates a directory
+		bool Exists(string virtualPath); // check if a file or directory exists
+		void Delete(string virtualPath); // deletes a file or directory
+		void Move(string fromVirtualPath, string toNewVirtualPath); // moves a file or directory to a new path
+		void Copy(string fromVirtualPath, string toNewVirtualPath); // copies a file or directory to a new path
+		void CreateDirectory(string virtualPath); // creates a directory
 
-		Stream OpenFile(string path); // option 1: work against a file stream
+		Stream OpenFile(string virtualPath); // option 1: work against a file stream
 
-		void CreateOrUpdateFile(string path, Stream inputStream); // option 2: creates or updates a file at the given path
-		void WriteFileContents(string path, Stream outputStream); // option 2: writes file content to the output stream
+		void CreateOrUpdateFile(string virtualPath, Stream inputStream); // option 2: creates or updates a file at the given path (perhaps simpler than 1)
+		void WriteFileContents(string virtualPath, Stream outputStream); // option 2: writes file content to the output stream
 	}
 }
