@@ -1,4 +1,3 @@
-using System.Threading;
 using N2.Templates.Items;
 
 namespace N2.Templates.UI
