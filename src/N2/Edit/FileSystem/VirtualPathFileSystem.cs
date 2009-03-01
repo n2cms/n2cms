@@ -86,7 +86,7 @@ namespace N2.Edit.FileSystem
 		public void DeleteDirectory(string virtualPath)
 		{
 			string path = HostingEnvironment.MapPath(virtualPath);
-			Directory.Delete(path);
+			Directory.Delete(path, true);
 		}
 
 		public void MoveFile(string fromVirtualPath, string destinationVirtualPath)

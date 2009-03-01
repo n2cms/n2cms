@@ -10,27 +10,17 @@ namespace N2.Edit.Web
             : base(provider, url)
         {
             Url = url;
-			string path = HostingEnvironment.MapPath(url);
-            Title = Path.GetFileName(path);
-            //this.IsDirectory = !File.Exists(path);
-            //if (!this.IsDirectory)
-            FileExtension = Path.GetExtension(path).TrimStart('.');
+			Title = VirtualPathUtility.GetFileName(url);
+            FileExtension = VirtualPathUtility.GetExtension(url).TrimStart('.');
         }
 
         private string fileExtension;
-        //private bool isDirectory;
 
         public string FileExtension
         {
             get { return fileExtension; }
             set { fileExtension = value; }
         }
-        
-        //public bool IsDirectory
-        //{
-        //    get { return isDirectory; }
-        //    set { isDirectory = value; }
-        //}
 
         public abstract string IconUrl { get; }
 

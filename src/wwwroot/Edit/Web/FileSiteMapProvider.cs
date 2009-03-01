@@ -1,7 +1,6 @@
 using System;
 using System.Web;
 using System.Collections.Specialized;
-using System.Web.Hosting;
 using N2.Edit.FileSystem;
 using N2.Web;
 using System.Collections.Generic;
@@ -23,11 +22,6 @@ namespace N2.Edit.Web
 				return new FileNode(this, url);
 			return new DirectoryNode(this, url);
 
-		}
-
-		internal static string GetPathOnDisk(string rawUrl)
-		{
-			return HostingEnvironment.MapPath(rawUrl.Split('?')[0]);
 		}
 
 		public override SiteMapNode FindSiteMapNode(string rawUrl)
@@ -74,9 +68,9 @@ namespace N2.Edit.Web
 			else
 			{
 				foreach(FileData file in FileSystem.GetFiles(node.Url))
-					folderPaths.Add(file.VirtualPath);
+					folderPaths.Add(VirtualPathUtility.ToAppRelative(file.VirtualPath));
 				foreach(DirectoryData dir in FileSystem.GetDirectories(node.Url))
-					folderPaths.Add(dir.VirtualPath);
+					folderPaths.Add(VirtualPathUtility.ToAppRelative(dir.VirtualPath));
 			}
 
 			SiteMapNodeCollection nodes = new SiteMapNodeCollection();
