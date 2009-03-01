@@ -17,24 +17,24 @@ namespace N2.Edit.FileSystem.Items
             SortOrder = 10000;
         }
 
-        private string physicalPath = null;
-        public override string PhysicalPath
-        {
-            get 
-            {
-                if (physicalPath == null)
-                {
-                    Url u = N2.Web.Url.Parse("~/");
-                    physicalPath = GetWebContext().MapPath(u.AppendSegment(Name, "")); ;
-                }
-                return physicalPath;
-            }
-            set { physicalPath = value;}
-        }
+		//private string physicalPath = null;
+		//public override string PhysicalPath
+		//{
+		//    get 
+		//    {
+		//        if (physicalPath == null)
+		//        {
+		//            Url u = N2.Web.Url.Parse("~/");
+		//            physicalPath = GetWebContext().MapPath(u.AppendSegment(Name, "")); ;
+		//        }
+		//        return physicalPath;
+		//    }
+		//    set { physicalPath = value;}
+		//}
 
-        private IWebContext GetWebContext()
-        {
-            return N2.Context.Current.Resolve<IWebContext>();
-        }
+		//private IWebContext GetWebContext()
+		//{
+		//    return N2.Context.Current.Resolve<IWebContext>();
+		//}
     }
 }

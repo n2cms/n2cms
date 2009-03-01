@@ -428,7 +428,6 @@
     <Compile Include="Edit\Web\UI\Controls\FieldSet.cs" />
     <Compile Include="Edit\Web\UI\Controls\InfoLabel.cs" />
     <Compile Include="Edit\Web\UI\Controls\OptionsMenu.cs" />
-    <Compile Include="Edit\Web\UI\Controls\ServiceEditor.cs" />
     <Compile Include="Edit\Web\UI\Controls\Tree.cs" />
     <Compile Include="Edit\Web\UI\Controls\TreeView.cs" />
     <Compile Include="Edit\Web\UrlSelectionPage.cs">

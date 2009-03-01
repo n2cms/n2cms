@@ -42,8 +42,10 @@ namespace N2.Edit.FileSystem.Editables
             if (ce.Upload.PostedFile != null && ce.Upload.PostedFile.ContentLength > 0)
             {
                 f.Name = System.IO.Path.GetFileName(ce.Upload.PostedFile.FileName);
-                f.PhysicalPath = System.IO.Path.Combine(f.Directory.PhysicalPath, f.Name);
-                ce.Upload.PostedFile.SaveAs(f.PhysicalPath);
+            	f.WriteToDisk(ce.Upload.PostedFile.InputStream);
+
+				//f.PhysicalPath = System.IO.Path.Combine(f.Directory.PhysicalPath, f.Name);
+				//ce.Upload.PostedFile.SaveAs(f.PhysicalPath);
                 return true;
             }
             else if (ce.ChangeName.Text.Length > 0)
@@ -57,7 +59,8 @@ namespace N2.Edit.FileSystem.Editables
         {
             CompositeEditor ce = editor as CompositeEditor;
             File f = item as File;
-            if (!string.IsNullOrEmpty(f.PhysicalPath) && System.IO.File.Exists(f.PhysicalPath))
+
+            if (f.Exists)
             {
                 ce.Upload.Visible = false;
                 ce.ChangeName.Text = f.Name;

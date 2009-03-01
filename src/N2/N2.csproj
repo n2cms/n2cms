@@ -319,7 +319,10 @@
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
+    <Compile Include="Edit\FileSystem\DirectoryData.cs" />
+    <Compile Include="Edit\FileSystem\FileData.cs" />
     <Compile Include="Edit\FileSystem\IFileSystem.cs" />
+    <Compile Include="Edit\FileSystem\VirtualPathFileSystem.cs" />
     <Compile Include="Edit\IControlPanelPlugin.cs" />
     <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
     <Compile Include="Edit\PluginContext.cs" />
@@ -392,7 +395,6 @@
     <Compile Include="Edit\LinkPluginAttribute.cs" />
     <Compile Include="Edit\Navigator.cs" />
     <Compile Include="Edit\NodePosition.cs" />
-    <Compile Include="Edit\Settings\SettingsManager.cs" />
     <Compile Include="Edit\ToolbarAreaAttribute.cs" />
     <Compile Include="Edit\Trash\ITrashCan.cs" />
     <Compile Include="Edit\Trash\ITrashHandler.cs" />
@@ -508,7 +510,6 @@
     <Compile Include="Security\Authorization.cs" />
     <Compile Include="Security\ISecurable.cs" />
     <Compile Include="Definitions\RootContainer.cs" />
-    <Compile Include="Edit\Settings\AbstractEditableAttribute.cs" />
     <Compile Include="Definitions\EditableHierarchyBuilder.cs" />
     <Compile Include="Details\AbstractEditableAttribute.cs" />
     <Compile Include="Details\WithEditableChildAttribute.cs" />
@@ -516,13 +517,7 @@
     <Compile Include="Details\EditableChildrenAttribute.cs" />
     <Compile Include="Edit\AdministrativePlugInAttribute.cs" />
     <Compile Include="Edit\NavigationPlugInAttribute.cs" />
-    <Compile Include="Edit\Settings\EditableCheckBoxAttribute.cs" />
-    <Compile Include="Edit\Settings\ISettingsProvider.cs" />
     <Compile Include="Edit\Settings\NavigationSettings.cs" />
-    <Compile Include="Edit\Settings\SettingsProvider.cs" />
-    <Compile Include="Edit\Settings\IEditable.cs" />
-    <Compile Include="Edit\Settings\SettingsFinder.cs" />
-    <Compile Include="Edit\Settings\SettingsInitializer.cs" />
     <Compile Include="Find.cs" />
     <Compile Include="Integrity\AllowedTypes.cs" />
     <Compile Include="Persistence\Finder\IQueryEnding.cs" />

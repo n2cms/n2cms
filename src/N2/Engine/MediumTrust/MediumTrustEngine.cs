@@ -102,11 +102,6 @@ namespace N2.Engine.MediumTrust
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
             AddComponentInstance<Navigator>(new Navigator(persister, host));
 
-			AttributeExplorer<N2.Edit.Settings.IServiceEditable> serviceExplorer = new AttributeExplorer<N2.Edit.Settings.IServiceEditable>();
-			AttributeExplorer<IEditableContainer> containerExplorer = new AttributeExplorer<IEditableContainer>();
-			N2.Edit.Settings.SettingsManager settingsManager = new N2.Edit.Settings.SettingsManager(serviceExplorer, containerExplorer);
-			EditableHierarchyBuilder<N2.Edit.Settings.IServiceEditable> hierarchyBuilder = new EditableHierarchyBuilder<N2.Edit.Settings.IServiceEditable>();
-            AddComponentInstance<N2.Edit.Settings.ISettingsProvider>(new N2.Edit.Settings.SettingsProvider(settingsManager, hierarchyBuilder));
             AjaxRequestDispatcher ajaxDispatcher = AddComponentInstance<AjaxRequestDispatcher>(new AjaxRequestDispatcher(securityManager));
             CreateUrlProvider cup = AddComponentInstance<CreateUrlProvider>(new CreateUrlProvider(persister, editManager, definitions, ajaxDispatcher));
             ItemDeleter id = AddComponentInstance<ItemDeleter>(new ItemDeleter(persister, ajaxDispatcher));
@@ -118,11 +113,6 @@ namespace N2.Engine.MediumTrust
 
 			IHeart heart = AddComponentInstance(new Heart(engineConfiguration));
 			AddComponentInstance(new Scheduler(pluginFinder, heart, webContext, errorHandler));
-
-			foreach (KeyValuePair<Type, object> pair in resolves)
-			{
-				settingsManager.Handle(pair.Key.Name, pair.Value.GetType());
-			}
         }
 
         private object AddConfigurationSection(string sectionName)

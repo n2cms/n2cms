@@ -99,9 +99,12 @@ namespace N2.Collections
             return false;
         }
 
-		public ItemList<T> Cast<T>() where T: ContentItem
+		/// <summary>Converts a list to a strongly typed list filtering all items of another type.</summary>
+		/// <typeparam name="OtherT">The type the items in resulting list should have.</typeparam>
+		/// <returns>A list of items of the correct type.</returns>
+		public ItemList<OtherT> Cast<OtherT>() where OtherT : ContentItem
 		{
-			return new ItemList<T>(this, TypeFilter.Of<T>());
+			return new ItemList<OtherT>(this, TypeFilter.Of<OtherT>());
 		}
 		#endregion
 

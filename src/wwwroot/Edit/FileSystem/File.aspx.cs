@@ -21,7 +21,7 @@ namespace N2.Edit.FileSystem
     	{
 			Response.ContentType = "application/octet-stream";
 			Response.AppendHeader("Content-disposition", "attachment; filename=" + SelectedFile.Name);
-			Response.TransmitFile(SelectedFile.PhysicalPath);
+    		SelectedFile.TransmitTo(Response.OutputStream);
 			Response.End();
     	}
     }

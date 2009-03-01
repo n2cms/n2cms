@@ -4,6 +4,9 @@ using N2.Web;
 
 namespace N2.Edit.Settings
 {
+	/// <summary>
+	/// Abstracts the storage of user display data items settings.
+	/// </summary>
 	public class NavigationSettings
 	{
 		private IWebContext context;
@@ -13,6 +16,9 @@ namespace N2.Edit.Settings
 			this.context = context;
 		}
 
+		/// <summary>
+		/// Whether the user has chosen to display data items.
+		/// </summary>
 		public bool DisplayDataItems
 		{
 			get { return Boolean.Parse(GetCookie(context.Request.Cookies).Value); }

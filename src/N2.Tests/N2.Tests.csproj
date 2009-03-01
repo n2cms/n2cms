@@ -219,10 +219,6 @@
     <Compile Include="Utility\UtilityTests.cs" />
     <Compile Include="WebControlAssert.cs" />
     <Compile Include="Edit\EditManagerTests.cs" />
-    <Compile Include="Edit\Settings\Services\IUsefulService.cs" />
-    <Compile Include="Edit\Settings\Services\JustOneOfThoseServices.cs" />
-    <Compile Include="Edit\Settings\Services\VeryUsefulService.cs" />
-    <Compile Include="Edit\Settings\SettingsFacilityTests.cs" />
     <Compile Include="Integrity\Definitions\Page.cs" />
     <Compile Include="Integrity\Definitions\AlternativePage.cs" />
     <Compile Include="Integrity\Definitions\Root.cs" />
