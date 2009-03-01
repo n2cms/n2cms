@@ -609,7 +609,7 @@ namespace N2.Web
 
 		/// <summary>Removes the last part from the url segments.</summary>
 		/// <returns></returns>
-		public Url RemoveTrailingSegment()
+		public Url RemoveTrailingSegment(bool maintainExtension)
 		{
 			if(string.IsNullOrEmpty(path) || path == "/")
 				return this;
@@ -620,12 +620,17 @@ namespace N2.Web
 			if (lastSlashIndex == path.Length - 1)
 				lastSlashIndex = path.TrimEnd(slashes).LastIndexOf('/');
 			if (lastSlashIndex > 0)
-				newPath = path.Substring(0, lastSlashIndex) + Extension;
+				newPath = path.Substring(0, lastSlashIndex) + (maintainExtension ? Extension : "");
 
 			return new Url(scheme, authority, newPath, query, fragment);
 		}
 
-		
+		/// <summary>Removes the last part from the url segments.</summary>
+		public Url RemoveTrailingSegment()
+		{
+			return RemoveTrailingSegment(true);
+		}
+
 		/// <summary>Removes the segment at the specified location.</summary>
 		/// <param name="index">The segment index to remove</param>
 		/// <returns>An url without the specified segment.</returns>

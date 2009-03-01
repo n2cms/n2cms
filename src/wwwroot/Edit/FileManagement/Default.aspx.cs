@@ -1,8 +1,7 @@
 using System;
-using System.IO;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.UI.WebControls;
+using N2.Edit.FileSystem;
 using N2.Edit.Web;
 using N2.Web;
 
@@ -18,6 +17,10 @@ namespace N2.Edit.FileManagement
 		{
 			get { return selectedUrl.Value; }
 			set { selectedUrl.Value = value; }
+		}
+		protected IFileSystem FileSystem
+		{
+			get { return Engine.Resolve<IFileSystem>(); }
 		}
 
 		#endregion
@@ -88,18 +91,17 @@ namespace N2.Edit.FileManagement
 			{
 				foreach (string key in Request.Files)
 				{
-					HttpPostedFile file = Request.Files[key];
-					if (!string.IsNullOrEmpty(file.FileName))
+					HttpPostedFile postedFile = Request.Files[key];
+					if (!string.IsNullOrEmpty(postedFile.FileName))
 					{
-						string url = SelectedUrl + "/" + System.IO.Path.GetFileName(file.FileName);
+						string url = SelectedUrl + "/" + System.IO.Path.GetFileName(postedFile.FileName);
 
 						try
 						{
 							if (!FileManager.CancelUploading(url))
 							{
 								lastUrl = url;
-								string path = HostingEnvironment.MapPath(url);
-								file.SaveAs(path);
+								FileSystem.WriteFile(url, postedFile.InputStream);
 								FileManager.InvokeUploaded(url);
 							}
 						}
@@ -118,8 +120,9 @@ namespace N2.Edit.FileManagement
 		{
 			string url = SelectedUrl + "/" + txtFolder.Text;
 			lastUrl = url;
-			string path = HostingEnvironment.MapPath(url);
-			Directory.CreateDirectory(path);
+			//string path = HostingEnvironment.MapPath(url);
+			//Directory.CreateDirectory(path);
+			FileSystem.CreateDirectory(url);
 
 			fileView.DataBind();
 			SelectedUrl = string.Empty;
@@ -133,16 +136,16 @@ namespace N2.Edit.FileManagement
 			Validate();
 			if (IsValid)
 			{
-				string path = HostingEnvironment.MapPath(HttpUtility.UrlDecode(SelectedUrl));
+				string url = HttpUtility.UrlDecode(SelectedUrl);
 
 				try
                 {
 					if (!FileManager.CancelDeleting(selectedUrl.Value))
 					{
-							if (File.Exists(path))
-								File.Delete(path);
-							else if (Directory.Exists(path))
-								Directory.Delete(path, true);
+						if(FileSystem.FileExists(url))
+							FileSystem.DeleteFile(url);
+						else if(FileSystem.DirectoryExists(url))
+							FileSystem.DeleteDirectory(url);
 
 							FileManager.InvokeDeleted(selectedUrl.Value);
 

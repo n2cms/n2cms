@@ -1,21 +1,25 @@
 using System;
 using System.Web;
-using System.IO;
 using System.Collections.Specialized;
 using System.Web.Hosting;
+using N2.Edit.FileSystem;
 using N2.Web;
 using System.Collections.Generic;
 
 namespace N2.Edit.Web
 {
-	public class FileSiteMapProvider : System.Web.SiteMapProvider
+	public class FileSiteMapProvider : SiteMapProvider
 	{
+		protected IFileSystem FileSystem
+		{
+			get { return Context.Current.Resolve<IFileSystem>(); }
+		}
+
 		private FileSiteMapNode NewNode(string url)
 		{
-			string path = HostingEnvironment.MapPath(url);
 			if (url == "~/")
 				return new RootNode(this, url);
-			if (File.Exists(path))
+			if (FileSystem.FileExists(url))
 				return new FileNode(this, url);
 			return new DirectoryNode(this, url);
 
@@ -24,12 +28,6 @@ namespace N2.Edit.Web
 		internal static string GetPathOnDisk(string rawUrl)
 		{
 			return HostingEnvironment.MapPath(rawUrl.Split('?')[0]);
-		}
-
-		private static string UnMapPath(string physicalPath, string virtualParentUrl)
-		{
-			string parentPath = HostingEnvironment.MapPath(virtualParentUrl);
-			return physicalPath.Replace(parentPath, virtualParentUrl).Replace('\\', '/');
 		}
 
 		public override SiteMapNode FindSiteMapNode(string rawUrl)
@@ -75,23 +73,10 @@ namespace N2.Edit.Web
 			}
 			else
 			{
-				string path = GetPathOnDisk(node.Url);
-				if (Directory.Exists(path))
-				{
-					foreach (string dir in Directory.GetDirectories(path))
-					{
-						if ((new FileInfo(dir).Attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
-							continue;
-
-						string folderUrl = UnMapPath(dir, node.Url);
-						folderPaths.Add(folderUrl);
-					}
-					foreach (string file in Directory.GetFiles(path))
-					{
-						string fileUrl = UnMapPath(file, node.Url);
-						folderPaths.Add(fileUrl);
-					}
-				}
+				foreach(FileData file in FileSystem.GetFiles(node.Url))
+					folderPaths.Add(file.VirtualPath);
+				foreach(DirectoryData dir in FileSystem.GetDirectories(node.Url))
+					folderPaths.Add(dir.VirtualPath);
 			}
 
 			SiteMapNodeCollection nodes = new SiteMapNodeCollection();
@@ -102,8 +87,7 @@ namespace N2.Edit.Web
 
 		public override SiteMapNode GetParentNode(SiteMapNode node)
 		{
-			string path = GetPathOnDisk(node.Url);
-			return NewNode(UnMapPath(Directory.GetParent(path).FullName, node.Url));
+			return NewNode(Url.Parse(node.Url).RemoveTrailingSegment(false).Path);
 		}
 
 		protected override SiteMapNode GetRootNodeCore()
