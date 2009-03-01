@@ -1,4 +1,6 @@
-﻿- fixed #21443 Time picker localization (en-US)
+﻿- fixed #21454 Error with .In<>(params T[] values) operator...
+- added a more programmer friendly api for file operations
+- fixed #21443 Time picker localization (en-US)
 - applied esteewhy's patches:
 	#20810 Enable Request Validation with TinyMCE (with modifications)
 	#21312 Check if ~/bin folder exist before trying to load assemblies in AppDomainTypeFinder

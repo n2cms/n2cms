@@ -46,12 +46,17 @@ namespace N2.Persistence.NH.Finder
 			return "p" + index + "i" + i;
 		}
 
-		public void SetParameters(NHibernate.IQuery query, int index)
+		public virtual void SetParameters(NHibernate.IQuery query, int index)
 		{
 			for (int i = 0; i < Values.Length; i++)
 			{
 				query.SetParameter(GetParameterName(index, i), Values[i]);
 			}
+		}
+
+		public string GetNameParameterName(int index)
+		{
+			return "n" + index;
 		}
 
 		protected virtual string GetOperator()

@@ -8,6 +8,7 @@ using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Tests.Persistence.Definitions;
 using N2.Web;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -785,6 +786,7 @@ namespace N2.Tests.Persistence.NH
 		public void CanSelectByPropertyNameIn()
 		{
 			IList<ContentItem> items = finder.Where.Name.In(rootItem.Name, startPage.Name).Select();
+
 			Assert.AreEqual(2, items.Count);
 			EnumerableAssert.Contains(items, rootItem);
 			EnumerableAssert.Contains(items, startPage);
@@ -794,6 +796,7 @@ namespace N2.Tests.Persistence.NH
 		public void CanSelectByDetailIn()
 		{
 			IList<ContentItem> items = finder.Where.Detail().In(43, 45).Select();
+			
 			Assert.AreEqual(2, items.Count);
 			EnumerableAssert.Contains(items, rootItem);
 			EnumerableAssert.Contains(items, startPage);
@@ -803,7 +806,24 @@ namespace N2.Tests.Persistence.NH
 		public void CanSelectByClassIn()
 		{
 			IList<ContentItem> items = finder.Where.Type.In(typeof(PersistableItem2), typeof(PersistableItem1)).Select();
+			
 			Assert.AreEqual(5, items.Count);
+		}
+
+		[Test]
+		public void CanSelect_WithIn_AndNamedDetail_21454()
+		{
+			IList<ContentItem> items = finder.Where.Detail("IntDetail").In(43, 45, 47).Select();
+
+			Assert.That(items.Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void CanSelect_WithIn_AndNamedDetailCollection_21454()
+		{
+			IList<ContentItem> items = finder.Where.Detail("DetailCollection").In(555, 1555, 2555, 3555).Select();
+
+			Assert.That(items.Count, Is.EqualTo(3));
 		}
 	}
 }

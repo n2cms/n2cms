@@ -22,7 +22,15 @@ namespace N2.Persistence.NH.Finder
 				GetOperator(),
 				GetDetailValueName(),
 				parameters,
-				Name);
+				GetNameParameterName(index));
+		}
+
+		public override void SetParameters(NHibernate.IQuery query, int index)
+		{
+			if (this.Name != null)
+				query.SetParameter(GetNameParameterName(index), Name);
+
+			base.SetParameters(query, index);
 		}
 
 		protected virtual string GetDetailValueName()

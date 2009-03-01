@@ -9,6 +9,9 @@ namespace N2.Edit.FileSystem
 	/// </summary>
 	public class VirtualPathFileSystem : IFileSystem
 	{
+		/// <summary>Gets files in directory.</summary>
+		/// <param name="parentVirtualPath">The path to the directory.</param>
+		/// <returns>An enumerations of files in the directory.</returns>
 		public IEnumerable<FileData> GetFiles(string parentVirtualPath)
 		{
 			if (!HostingEnvironment.VirtualPathProvider.DirectoryExists(parentVirtualPath))
@@ -18,6 +21,9 @@ namespace N2.Edit.FileSystem
 				yield return GetFile(file.VirtualPath);
 		}
 
+		/// <summary>Gets file data.</summary>
+		/// <param name="virtualPath">The path to the file.</param>
+		/// <returns>A file data object.</returns>
 		public FileData GetFile(string virtualPath)
 		{
 			VirtualFile file = HostingEnvironment.VirtualPathProvider.GetFile(virtualPath);
@@ -38,6 +44,9 @@ namespace N2.Edit.FileSystem
 			return f;
 		}
 
+		/// <summary>Gets directories of a directory.</summary>
+		/// <param name="parentVirtualPath">The path to the directory whose child directories to get.</param>
+		/// <returns>An enumeration of directories.</returns>
 		public IEnumerable<DirectoryData> GetDirectories(string parentVirtualPath)
 		{
 			if (!HostingEnvironment.VirtualPathProvider.DirectoryExists(parentVirtualPath))
@@ -47,6 +56,9 @@ namespace N2.Edit.FileSystem
 				yield return GetDirectory(dir.VirtualPath);
 		}
 
+		/// <summary>Gets a directory data.</summary>
+		/// <param name="virtualPath">The path of the directory to get.</param>
+		/// <returns>A directory data object.</returns>
 		public DirectoryData GetDirectory(string virtualPath)
 		{
 			VirtualDirectory dir = HostingEnvironment.VirtualPathProvider.GetDirectory(virtualPath);
@@ -66,16 +78,24 @@ namespace N2.Edit.FileSystem
 			return d;
 		}
 
+		/// <summary>Checks if a file exists.</summary>
+		/// <param name="virtualPath">The path of the file to check.</param>
+		/// <returns>True if the file exists in the file system.</returns>
 		public bool FileExists(string virtualPath)
 		{
 			return HostingEnvironment.VirtualPathProvider.FileExists(virtualPath);
 		}
 
+		/// <summary>Checks the existence of a directory.</summary>
+		/// <param name="virtualPath">The directory to check.</param>
+		/// <returns>True if the directory exists.</returns>
 		public bool DirectoryExists(string virtualPath)
 		{
 			return HostingEnvironment.VirtualPathProvider.DirectoryExists(virtualPath);
 		}
 
+		/// <summary>Delets a file from the file system.</summary>
+		/// <param name="virtualPath">The path of the file to delete.</param>
 		public void DeleteFile(string virtualPath)
 		{
 			string path = HostingEnvironment.MapPath(virtualPath);
@@ -83,12 +103,17 @@ namespace N2.Edit.FileSystem
 			File.Delete(path);
 		}
 
+		/// <summary>Deletes a directory including all files and sub-directories.</summary>
+		/// <param name="virtualPath">The path of the directory to remove.</param>
 		public void DeleteDirectory(string virtualPath)
 		{
 			string path = HostingEnvironment.MapPath(virtualPath);
 			Directory.Delete(path, true);
 		}
 
+		/// <summary>Moves a file to a new location.</summary>
+		/// <param name="fromVirtualPath">The file path where the file is located.</param>
+		/// <param name="destinationVirtualPath">The path the file should assume after beeing moved.</param>
 		public void MoveFile(string fromVirtualPath, string destinationVirtualPath)
 		{
 			string fromPath = HostingEnvironment.MapPath(fromVirtualPath);
@@ -97,6 +122,9 @@ namespace N2.Edit.FileSystem
 			File.Move(fromPath, toPath);
 		}
 
+		/// <summary>Moves a directory.</summary>
+		/// <param name="fromVirtualPath">The original directory path.</param>
+		/// <param name="destinationVirtualPath">The path the directory should assume after beeing moved.</param>
 		public void MoveDirectory(string fromVirtualPath, string destinationVirtualPath)
 		{
 			string fromPath = HostingEnvironment.MapPath(fromVirtualPath);
@@ -105,6 +133,9 @@ namespace N2.Edit.FileSystem
 			Directory.Move(fromPath, toPath);
 		}
 
+		/// <summary>Copies a file.</summary>
+		/// <param name="fromVirtualPath">The path where the file is located.</param>
+		/// <param name="destinationVirtualPath">The path the copy should assume when.</param>
 		public void CopyFile(string fromVirtualPath, string destinationVirtualPath)
 		{
 			string fromPath = HostingEnvironment.MapPath(fromVirtualPath);
@@ -113,6 +144,8 @@ namespace N2.Edit.FileSystem
 			File.Copy(fromPath, toPath);
 		}
 
+		/// <summary>Creates a directory.</summary>
+		/// <param name="virtualPath">The directory path to create.</param>
 		public void CreateDirectory(string virtualPath)
 		{
 			string path = HostingEnvironment.MapPath(virtualPath);
@@ -130,6 +163,9 @@ namespace N2.Edit.FileSystem
 			return File.Open(HostingEnvironment.MapPath(virtualPath), FileMode.OpenOrCreate);
 		}
 
+		/// <summary>Creates or overwrites a file at the given path.</summary>
+		/// <param name="virtualPath">The path of the file to create.</param>
+		/// <param name="inputStream">An input stream of the file contents.</param>
 		public void WriteFile(string virtualPath, Stream inputStream)
 		{
 			using (Stream destinationFile = OpenFile(virtualPath))
@@ -146,6 +182,9 @@ namespace N2.Edit.FileSystem
 			}
 		}
 
+		/// <summary>Read file contents to a stream.</summary>
+		/// <param name="virtualPath">The path of the file to read.</param>
+		/// <param name="outputStream">The stream to which the file contents should be written.</param>
 		public void ReadFileContents(string virtualPath, Stream outputStream)
 		{
 			using (Stream sourceFile = OpenFile(virtualPath))
