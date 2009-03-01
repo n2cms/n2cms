@@ -1,5 +1,4 @@
-﻿using System.Web;
-using N2.Integrity;
+﻿using N2.Integrity;
 using N2.Details;
 using N2.Persistence;
 using N2.Installation;
@@ -17,7 +16,7 @@ namespace N2.Edit.FileSystem.Items
             {
 				AbstractDirectory dir = EnsureDirectory(newParent);
 
-				string to = VirtualPathUtility.Combine(dir.Url, Name);
+				string to = Combine(dir.Url, Name);
 				if (FileSystem.FileExists(to))
 					throw new NameOccupiedException(this, dir);
 
@@ -27,18 +26,6 @@ namespace N2.Edit.FileSystem.Items
 					FileSystem.CreateDirectory(to);
             	
 				Parent = newParent;
-
-				//string from = PhysicalPath;
-				//string to = System.IO.Path.Combine(dir.PhysicalPath, Name);
-				//if (System.IO.Directory.Exists(to))
-				//    throw new NameOccupiedException(this, newParent);
-
-				//if (from != null)
-				//    System.IO.Directory.Move(from, to);
-				//else
-				//    System.IO.Directory.CreateDirectory(to);
-				//PhysicalPath = to;
-				//Parent = newParent;
             }
             else if(newParent != null)
             {
@@ -52,75 +39,29 @@ namespace N2.Edit.FileSystem.Items
         {
 			if(!FileSystem.DirectoryExists(Url))
 				FileSystem.CreateDirectory(Url);
-			//string expectedPath = System.IO.Path.Combine(Directory.PhysicalPath, Name);
-			//if (expectedPath != PhysicalPath)
-			//{
-			//    try
-			//    {
-			//        if (PhysicalPath != null)
-			//        {
-			//            System.IO.Directory.Move(PhysicalPath, expectedPath);
-			//        }
-			//        else
-			//        {
-			//            System.IO.Directory.CreateDirectory(expectedPath);
-			//        }
-			//        PhysicalPath = expectedPath;
-			//    }
-			//    catch (Exception ex)
-			//    {
-			//        Trace.TraceError(ex.ToString());
-			//    }
-			//}
         }
 
         public void Delete()
         {
 			FileSystem.DeleteDirectory(Url);
-			//try
-			//{
-			//    System.IO.Directory.Delete(PhysicalPath, true);
-			//}
-			//catch (Exception ex)
-			//{
-			//    Trace.TraceError(ex.ToString());
-			//}
         }
 
         public void MoveTo(ContentItem destination)
         {
 			AbstractDirectory d = EnsureDirectory(destination);
 
-			string to = VirtualPathUtility.Combine(d.Url, Name);
+			string to = Combine(d.Url, Name);
 			if (FileSystem.FileExists(to))
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.MoveDirectory(Url, to);
-
-			//AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
-
-			//string from = PhysicalPath;
-			//string to = System.IO.Path.Combine(d.PhysicalPath, Name);
-			//if (System.IO.File.Exists(to))
-			//    throw new NameOccupiedException(this, destination);
-
-			//try
-			//{
-			//    System.IO.Directory.Move(from, to);
-			//    PhysicalPath = to;
-			//    Parent = destination;
-			//}
-			//catch (Exception ex)
-			//{
-			//    Trace.TraceError(ex.ToString());
-			//}
         }
 
         public ContentItem CopyTo(ContentItem destination)
         {
             AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
-			string to = VirtualPathUtility.Combine(d.Url, Name);
+			string to = Combine(d.Url, Name);
 			if (FileSystem.FileExists(to))
 				throw new NameOccupiedException(this, d);
 
@@ -134,28 +75,6 @@ namespace N2.Edit.FileSystem.Items
 				childDir.CopyTo(copy);
 
         	return copy;
-
-			//string from = PhysicalPath;
-			//string to = System.IO.Path.Combine(d.PhysicalPath, Name);
-			//if (System.IO.File.Exists(to))
-			//    throw new NameOccupiedException(this, destination);
-
-			//try
-			//{
-			//    System.IO.Directory.CreateDirectory(to);
-			//    Directory copy = (Directory)destination.GetChild(Name);
-			//    foreach (Directory childDir in GetDirectories())
-			//        childDir.CopyTo(copy);
-			//    foreach (File f in GetFiles())
-			//        f.CopyTo(copy);
-
-			//    return copy;
-			//}
-			//catch (Exception ex)
-			//{
-			//    Trace.TraceError(ex.ToString());
-			//    return this;
-			//}
         }
 
         #endregion

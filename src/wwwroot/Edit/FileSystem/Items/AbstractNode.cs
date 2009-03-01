@@ -23,11 +23,6 @@ namespace N2.Edit.FileSystem.Items
             get { return Parent as AbstractDirectory; }
         }
 
-    	public string PhysicalPath
-    	{
-			get { return HostingEnvironment.MapPath(Url); }
-    	}
-
         public override string IconUrl
         {
             get { return "~/Edit/img/ico/folder.gif"; }
@@ -86,6 +81,11 @@ namespace N2.Edit.FileSystem.Items
 			d.Parent = this;
 			((N2.Web.IUrlParserDependency)d).SetUrlParser(N2.Context.UrlParser);
 			return d;
+		}
+
+		protected string Combine(string first, string second)
+		{
+			return first.TrimEnd('/') + "/" + second.TrimStart('/');
 		}
     }
 }

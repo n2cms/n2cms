@@ -55,96 +55,36 @@ namespace N2.Edit.FileSystem.Items
 
         public void Save()
         {
-			//string expectedPath = System.IO.Path.Combine(Directory.PhysicalPath, Name);
-			//if (expectedPath != PhysicalPath)
-			//{
-			//    try
-			//    {
-			//        if (PhysicalPath != null)
-			//        {
-			//            System.IO.Directory.Move(PhysicalPath, expectedPath);
-			//        }
-			//        else
-			//        {
-			//            System.IO.Directory.CreateDirectory(expectedPath);
-			//        }
-			//        PhysicalPath = expectedPath;
-			//    }
-			//    catch (Exception ex)
-			//    {
-			//        Trace.TraceError(ex.ToString());
-			//    }
-			//}
         }
 
         public void Delete()
         {
 			FileSystem.DeleteFile(Url);
-			//try
-			//{
-			//    System.IO.File.Delete(PhysicalPath);
-			//}
-			//catch (Exception ex)
-			//{
-			//    Trace.TraceError(ex.ToString());
-			//}
         }
 
         public void MoveTo(ContentItem destination)
         {
             AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
-			string to = VirtualPathUtility.Combine(d.Url, Name);
+			string to = Combine(d.Url, Name);
 			if (FileSystem.FileExists(to))
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.MoveFile(Url, to);
-
-			//string from = PhysicalPath;
-			//string to = System.IO.Path.Combine(d.PhysicalPath, Name);
-			//if (System.IO.File.Exists(to))
-			//    throw new NameOccupiedException(this, destination);
-
-			//try
-			//{
-			//    System.IO.File.Move(from, to);
-			//    PhysicalPath = to;
-			//    Parent = destination;
-			//}
-			//catch (Exception ex)
-			//{
-			//    Trace.TraceError(ex.ToString());
-			//}
+        	Parent = d;
         }
 
-        public ContentItem CopyTo(ContentItem destination)
+		public ContentItem CopyTo(ContentItem destination)
         {
             AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
-			string to = VirtualPathUtility.Combine(d.Url, Name);
+			string to = Combine(d.Url, Name);
 			if (FileSystem.FileExists(to))
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.CopyFile(Url, to);
 
-			return CreateFile(FileSystem.GetFile(to));
-
-			//string from = PhysicalPath;
-			//string to = System.IO.Path.Combine(d.PhysicalPath, Name);
-			//if (System.IO.File.Exists(to))
-			//    throw new NameOccupiedException(this, destination);
-
-
-			//try
-			//{
-			//    System.IO.File.Copy(from, to);
-			//    return (File)destination.GetChild(Name);
-			//}
-			//catch (Exception ex)
-			//{
-			//    Trace.TraceError(ex.ToString());
-			//    return this;
-			//}
+			return d.GetChild(Name);
         }
 
         #endregion

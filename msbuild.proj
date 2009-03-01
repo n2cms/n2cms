@@ -68,7 +68,7 @@
 							$(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe;
 							$(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe"/>
 	  </ItemGroup>
-	<NUnit Assemblies="@(AssembliesToTest)" ToolPath="$(LibFolder)" OutputXmlFile="$(DeployFolder)\TestReport.N2.xml" />
+	<NUnit Assemblies="@(AssembliesToTest)" ToolPath="$(LibFolder)" />
   </Target>
 
   <Target Name="PrepareDependencies" DependsOnTargets="Core-PrepareDependencies;Test-PrepareDependencies;Examples-PrepareDependencies">

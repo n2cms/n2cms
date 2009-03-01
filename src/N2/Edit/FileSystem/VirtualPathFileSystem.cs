@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Hosting;
 using System.IO;
+using N2.Engine;
 
 namespace N2.Edit.FileSystem
 {
@@ -9,15 +10,22 @@ namespace N2.Edit.FileSystem
 	/// </summary>
 	public class VirtualPathFileSystem : IFileSystem
 	{
+		VirtualPathProvider pathProvider = HostingEnvironment.VirtualPathProvider;
+		public VirtualPathProvider PathProvider
+		{
+			get { return pathProvider; }
+			set { pathProvider = value; }
+		}
+
 		/// <summary>Gets files in directory.</summary>
 		/// <param name="parentVirtualPath">The path to the directory.</param>
 		/// <returns>An enumerations of files in the directory.</returns>
 		public IEnumerable<FileData> GetFiles(string parentVirtualPath)
 		{
-			if (!HostingEnvironment.VirtualPathProvider.DirectoryExists(parentVirtualPath))
+			if (!PathProvider.DirectoryExists(parentVirtualPath))
 				yield break;
 			
-			foreach (VirtualFile file in HostingEnvironment.VirtualPathProvider.GetDirectory(parentVirtualPath).Files)
+			foreach (VirtualFile file in PathProvider.GetDirectory(parentVirtualPath).Files)
 				yield return GetFile(file.VirtualPath);
 		}
 
@@ -26,16 +34,15 @@ namespace N2.Edit.FileSystem
 		/// <returns>A file data object.</returns>
 		public FileData GetFile(string virtualPath)
 		{
-			VirtualFile file = HostingEnvironment.VirtualPathProvider.GetFile(virtualPath);
+			VirtualFile file = PathProvider.GetFile(virtualPath);
 
 			FileData f = new FileData();
 			f.Name = file.Name;
 			f.VirtualPath = file.VirtualPath;
 
-			string physicalPath = HostingEnvironment.MapPath(file.VirtualPath);
-			if(File.Exists(physicalPath))
+			FileInfo fi = GetFileInfo(file.VirtualPath);
+			if(fi != null)
 			{
-				FileInfo fi = new FileInfo(physicalPath);
 				f.Created = fi.CreationTime;
 				f.Updated = fi.LastWriteTime;
 				f.Length = fi.Length;
@@ -49,10 +56,10 @@ namespace N2.Edit.FileSystem
 		/// <returns>An enumeration of directories.</returns>
 		public IEnumerable<DirectoryData> GetDirectories(string parentVirtualPath)
 		{
-			if (!HostingEnvironment.VirtualPathProvider.DirectoryExists(parentVirtualPath))
+			if (!PathProvider.DirectoryExists(parentVirtualPath))
 				yield break;
 
-			foreach (VirtualDirectory dir in HostingEnvironment.VirtualPathProvider.GetDirectory(parentVirtualPath).Directories)
+			foreach (VirtualDirectory dir in PathProvider.GetDirectory(parentVirtualPath).Directories)
 				yield return GetDirectory(dir.VirtualPath);
 		}
 
@@ -61,16 +68,15 @@ namespace N2.Edit.FileSystem
 		/// <returns>A directory data object.</returns>
 		public DirectoryData GetDirectory(string virtualPath)
 		{
-			VirtualDirectory dir = HostingEnvironment.VirtualPathProvider.GetDirectory(virtualPath);
+			VirtualDirectory dir = PathProvider.GetDirectory(virtualPath);
 
 			DirectoryData d = new DirectoryData();
 			d.Name = dir.Name;
 			d.VirtualPath = dir.VirtualPath;
 
-			string physicalPath = HostingEnvironment.MapPath(dir.VirtualPath);
-			if (Directory.Exists(physicalPath))
+			DirectoryInfo di = GetDirectoryInfo(virtualPath);
+			if (di != null)
 			{
-				DirectoryInfo di = new DirectoryInfo(physicalPath);
 				d.Created = di.CreationTime;
 				d.Updated = di.LastWriteTime;
 			}
@@ -83,7 +89,7 @@ namespace N2.Edit.FileSystem
 		/// <returns>True if the file exists in the file system.</returns>
 		public bool FileExists(string virtualPath)
 		{
-			return HostingEnvironment.VirtualPathProvider.FileExists(virtualPath);
+			return PathProvider.FileExists(virtualPath);
 		}
 
 		/// <summary>Checks the existence of a directory.</summary>
@@ -91,14 +97,14 @@ namespace N2.Edit.FileSystem
 		/// <returns>True if the directory exists.</returns>
 		public bool DirectoryExists(string virtualPath)
 		{
-			return HostingEnvironment.VirtualPathProvider.DirectoryExists(virtualPath);
+			return PathProvider.DirectoryExists(virtualPath);
 		}
 
 		/// <summary>Delets a file from the file system.</summary>
 		/// <param name="virtualPath">The path of the file to delete.</param>
 		public void DeleteFile(string virtualPath)
 		{
-			string path = HostingEnvironment.MapPath(virtualPath);
+			string path = MapPath(virtualPath);
 
 			File.Delete(path);
 		}
@@ -107,7 +113,7 @@ namespace N2.Edit.FileSystem
 		/// <param name="virtualPath">The path of the directory to remove.</param>
 		public void DeleteDirectory(string virtualPath)
 		{
-			string path = HostingEnvironment.MapPath(virtualPath);
+			string path = MapPath(virtualPath);
 			Directory.Delete(path, true);
 		}
 
@@ -116,8 +122,8 @@ namespace N2.Edit.FileSystem
 		/// <param name="destinationVirtualPath">The path the file should assume after beeing moved.</param>
 		public void MoveFile(string fromVirtualPath, string destinationVirtualPath)
 		{
-			string fromPath = HostingEnvironment.MapPath(fromVirtualPath);
-			string toPath = HostingEnvironment.MapPath(destinationVirtualPath);
+			string fromPath = MapPath(fromVirtualPath);
+			string toPath = MapPath(destinationVirtualPath);
 
 			File.Move(fromPath, toPath);
 		}
@@ -127,8 +133,8 @@ namespace N2.Edit.FileSystem
 		/// <param name="destinationVirtualPath">The path the directory should assume after beeing moved.</param>
 		public void MoveDirectory(string fromVirtualPath, string destinationVirtualPath)
 		{
-			string fromPath = HostingEnvironment.MapPath(fromVirtualPath);
-			string toPath = HostingEnvironment.MapPath(destinationVirtualPath);
+			string fromPath = MapPath(fromVirtualPath);
+			string toPath = MapPath(destinationVirtualPath);
 
 			Directory.Move(fromPath, toPath);
 		}
@@ -138,8 +144,8 @@ namespace N2.Edit.FileSystem
 		/// <param name="destinationVirtualPath">The path the copy should assume when.</param>
 		public void CopyFile(string fromVirtualPath, string destinationVirtualPath)
 		{
-			string fromPath = HostingEnvironment.MapPath(fromVirtualPath);
-			string toPath = HostingEnvironment.MapPath(destinationVirtualPath);
+			string fromPath = MapPath(fromVirtualPath);
+			string toPath = MapPath(destinationVirtualPath);
 
 			File.Copy(fromPath, toPath);
 		}
@@ -148,7 +154,7 @@ namespace N2.Edit.FileSystem
 		/// <param name="virtualPath">The directory path to create.</param>
 		public void CreateDirectory(string virtualPath)
 		{
-			string path = HostingEnvironment.MapPath(virtualPath);
+			string path = MapPath(virtualPath);
 
 			Directory.CreateDirectory(path);
 		}
@@ -157,10 +163,10 @@ namespace N2.Edit.FileSystem
 		{
 			if(FileExists(virtualPath))
 			{
-				VirtualFile file = HostingEnvironment.VirtualPathProvider.GetFile(virtualPath);
+				VirtualFile file = PathProvider.GetFile(virtualPath);
 				return file.Open();
 			}
-			return File.Open(HostingEnvironment.MapPath(virtualPath), FileMode.OpenOrCreate);
+			return File.Open(MapPath(virtualPath), FileMode.OpenOrCreate);
 		}
 
 		/// <summary>Creates or overwrites a file at the given path.</summary>
@@ -199,6 +205,28 @@ namespace N2.Edit.FileSystem
 					outputStream.Write(buffer, 0, bytesRead);
 				}
 			}
+		}
+
+
+		protected virtual FileInfo GetFileInfo(string virtualPath)
+		{
+			string physicalPath = MapPath(virtualPath);
+			if (!File.Exists(physicalPath)) return null;
+			
+			return new FileInfo(physicalPath);
+		}
+
+		protected virtual DirectoryInfo GetDirectoryInfo(string virtualDir)
+		{
+			string physicalPath = MapPath(virtualDir);
+			if (!Directory.Exists(physicalPath)) return null;
+
+			return new DirectoryInfo(physicalPath);
+		}
+
+		protected virtual string MapPath(string virtualPath)
+		{
+			return HostingEnvironment.MapPath(virtualPath);
 		}
 	}
 }
