@@ -1,6 +1,7 @@
-- edit controller
-- zones controller
-- templates controller
+- remove postbacks from control panel (mvc support)
+- edit aspect controller
+- zones aspect controller
+- templates aspect controller
 - XML Store instead of DB
 - eager load item's child collections
 - make definition refiners sortable

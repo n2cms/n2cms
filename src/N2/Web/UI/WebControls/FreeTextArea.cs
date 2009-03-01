@@ -41,12 +41,12 @@ namespace N2.Web.UI.WebControls
 			CssClass = "freeTextArea";
 		}
 
-		protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-		{
-			bool wasUpdated = base.LoadPostData(postDataKey, postCollection);
-			if (wasUpdated) Text = HttpUtility.HtmlDecode(Text);
-			return wasUpdated;
-		}
+		//protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+		//{
+		//    bool wasUpdated = base.LoadPostData(postDataKey, postCollection);
+		//    if (wasUpdated) Text = HttpUtility.HtmlDecode(Text);
+		//    return wasUpdated;
+		//}
 
         public virtual bool EnableFreeTextArea
         {
