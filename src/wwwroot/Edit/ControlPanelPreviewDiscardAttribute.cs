@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.UI.WebControls;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -18,24 +19,17 @@ namespace N2.Edit
 
 		public override Control AddTo(Control container, PluginContext context)
 		{
-			if(!ActiveFor(container, context.State))
-				return null;
+			if(!ActiveFor(container, context.State)) return null;
+			if (context.Selected.VersionOf == null) return null;
 
-			LinkButton btn = new LinkButton();
-			btn.Text = GetInnerHtml(IconUrl, ToolTip, Title);
-			btn.CssClass = "cancel";
-			btn.OnClientClick = "return confirm('Are you certain?');";
-			container.Controls.Add(btn);
-			
-			btn.Command += delegate
-				{
-					ContentItem previewedItem = Context.Current.Persister.Get(int.Parse(container.Page.Request["preview"])); ;
-					if (previewedItem.VersionOf == null) throw new N2Exception("Cannot publish item that is not a version of another item");
-					ContentItem published = previewedItem.VersionOf;
-					Context.Current.Persister.Delete(previewedItem);
-					RedirectTo(container.Page, published);
-				};
-			return btn;
+			HyperLink hl = new HyperLink();
+			hl.Text = GetInnerHtml(IconUrl, ToolTip, Title);
+			hl.NavigateUrl = Url.Parse("~/Edit/DiscardPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
+			hl.CssClass = "cancel";
+			hl.Attributes["onclick"] = "return confirm('Are you certain?');";
+			container.Controls.Add(hl);
+
+			return hl;
 		}
 
 		protected void RedirectTo(Page page, ContentItem item)

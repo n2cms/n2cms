@@ -113,6 +113,13 @@
     <Compile Include="Edit\Delete.aspx.designer.cs">
       <DependentUpon>Delete.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\DiscardPreview.aspx.cs">
+      <DependentUpon>DiscardPreview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\DiscardPreview.aspx.designer.cs">
+      <DependentUpon>DiscardPreview.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Edit\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -361,6 +368,13 @@
     </Compile>
     <Compile Include="Edit\ItemSelection\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Edit\PublishPreview.aspx.cs">
+      <DependentUpon>PublishPreview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\PublishPreview.aspx.designer.cs">
+      <DependentUpon>PublishPreview.aspx</DependentUpon>
     </Compile>
     <Compile Include="Edit\ReferencingItems.ascx.cs">
       <DependentUpon>ReferencingItems.ascx</DependentUpon>
@@ -1624,6 +1638,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit\Css\TabPanel.css" />
+    <Content Include="Edit\DiscardPreview.aspx" />
     <Content Include="Edit\Js\jquery-1.3.1.js" />
     <Content Include="Edit\Js\jquery.ui\jquery-ui-personalized.min.js" />
     <Content Include="Edit\Js\plugins\date.js" />
@@ -1633,6 +1648,7 @@
     <EmbeddedResource Include="Edit\Js\plugins\FreeTextArea.js" />
     <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
     <Content Include="Edit\Js\TabPanel.js" />
+    <Content Include="Edit\PublishPreview.aspx" />
     <Content Include="Edit\Settings\SettingsEditor.ascx" />
     <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx" />
     <Content Include="Edit\Versions\App_LocalResources\Default.aspx.ru.resx" />

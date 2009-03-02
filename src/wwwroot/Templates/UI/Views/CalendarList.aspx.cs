@@ -13,7 +13,7 @@ namespace N2.Templates.UI.Views
         {
             base.OnInit(e);
 
-            Register.StyleSheet(Page, "/Templates/UI/Css/Calendar.css", Media.All);
+            Register.StyleSheet(Page, "~/Templates/UI/Css/Calendar.css", Media.All);
 
 			if(Request["filter"] != null)
 				rc.DataSource = CurrentPage.GetEvents(Convert.ToDateTime(Server.UrlDecode(Request["date"])));

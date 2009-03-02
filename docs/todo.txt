@@ -1,4 +1,3 @@
-- remove postbacks from control panel (mvc support)
 - edit aspect controller
 - zones aspect controller
 - templates aspect controller

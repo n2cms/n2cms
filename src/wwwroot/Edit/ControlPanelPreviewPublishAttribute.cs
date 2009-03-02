@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Web;
 using N2.Web.UI.WebControls;
 
 namespace N2.Edit
@@ -21,28 +22,13 @@ namespace N2.Edit
 			if (!ActiveFor(container, context.State))
 				return null;
 
-			LinkButton btn = new LinkButton();
-			btn.Text =  GetInnerHtml(IconUrl, ToolTip, Title);
-			btn.CssClass = "publish";
-			container.Controls.Add(btn);
+			HyperLink hl = new HyperLink();
+			hl.Text = GetInnerHtml(IconUrl, ToolTip, Title);
+			hl.NavigateUrl = Url.Parse("~/Edit/PublishPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
+			hl.CssClass = "publish";
+			container.Controls.Add(hl);
 
-			btn.Command += delegate 
-			{
-				ContentItem previewedItem = Context.Current.Persister.Get(int.Parse(container.Page.Request["preview"])); ;
-				if (previewedItem.VersionOf == null)
-				{
-					previewedItem.Published = Utility.CurrentTime();
-					Context.Current.Persister.Save(previewedItem);
-					RedirectTo(container.Page, previewedItem);
-				}
-				else
-				{
-					ContentItem published = previewedItem.VersionOf;
-					Context.Current.Resolve<Persistence.IVersionManager>().ReplaceVersion(published, previewedItem);
-					RedirectTo(container.Page, published);
-				}
-			};
-			return btn;
+			return hl;
 		}
 
 		protected void RedirectTo(Page page, ContentItem item)
