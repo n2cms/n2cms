@@ -24,27 +24,28 @@ namespace N2.Tests.Web
 
 			CreateDefaultStructure();
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
-			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, startItem.ID, startItem.ID), new HostSection());
-			dispatcher = new RequestDispatcher(null, parser, webContext, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), new HostSection());
+			HostSection hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};
+			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, startItem.ID, startItem.ID), hostSection);
+			dispatcher = new RequestDispatcher(null, parser, webContext, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), hostSection);
 			dispatcher.Start();
 		}
 
 		[Test]
 		public void CanResolve_DefaultController()
 		{
-			webContext.Url = "/";
+			SetUrl("/");
 
-			IRequestController controller = dispatcher.ResolveController<IRequestController>();
+			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
 
-			Assert.That(controller, Is.TypeOf(typeof(BaseController)));
+			Assert.That(controller, Is.TypeOf(typeof(RequestController)));
 		}
 
 		[Test]
 		public void CanResolve_CustomController()
 		{
-			webContext.Url = "/custom3.aspx";
+			SetUrl("/custom3.aspx");
 
-			IRequestController controller = dispatcher.ResolveController<IRequestController>();
+			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
 
 			Assert.That(controller, Is.TypeOf(typeof(CustomController)));
 		}
@@ -52,9 +53,9 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanResolve_CustomController_OnInheritedItem()
 		{
-			webContext.Url = "/particular4.aspx";
+			SetUrl("/particular4.aspx");
 
-			IRequestController controller = dispatcher.ResolveController<IRequestController>();
+			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
 
 			Assert.That(controller, Is.TypeOf(typeof(CustomController)));
 		}
@@ -62,9 +63,9 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanResolve_CustomController_WithRedefinedController()
 		{
-			webContext.Url = "/special5.aspx";
+			SetUrl("/special5.aspx");
 
-			IRequestController controller = dispatcher.ResolveController<IRequestController>();
+			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
 
 			Assert.That(controller, Is.TypeOf(typeof(SpecialCustomController)));
 		}
@@ -72,9 +73,9 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanResolve_CustomController_WithOtherController()
 		{
-			webContext.Url = "/other6.aspx";
+			SetUrl("/other6.aspx");
 
-			IRequestController controller = dispatcher.ResolveController<IRequestController>();
+			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
 
 			Assert.That(controller, Is.TypeOf(typeof(OtherCustomController)));
 		}
@@ -90,6 +91,12 @@ namespace N2.Tests.Web
 			particular4 = CreateOneItem<ParticularCustomItem>(7, "particular4", startItem);
 			special5 = CreateOneItem<SpecialCustomItem>(8, "special5", startItem);
 			other6 = CreateOneItem<OtherCustomItem>(9, "other6", startItem);
+		}
+
+		void SetUrl(string url)
+		{
+			webContext.Url = url;
+			webContext.CurrentPath = parser.ResolvePath(url);
 		}
 	}
 }

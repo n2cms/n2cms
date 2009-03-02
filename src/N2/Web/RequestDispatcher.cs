@@ -23,9 +23,9 @@ namespace N2.Web
 		readonly IWebContext webContext;
 		readonly ITypeFinder finder;
 		readonly IErrorHandler errorHandler;
-		readonly bool rewriteEmptyExtension;
+		readonly bool rewriteEmptyExtension = true;
 		readonly string[] observedExtensions = new[] { ".aspx" };
-                
+
 		IControllerDescriptor[] controllerDescriptors = new IControllerDescriptor[0];
 
 		public RequestDispatcher(IEngine engine, IUrlParser parser, IWebContext webContext, ITypeFinder finder, IErrorHandler errorHandler, HostSection config)
@@ -47,20 +47,8 @@ namespace N2.Web
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual T ResolveController<T>() where T : class, IAspectController
+		public virtual T ResolveAspectController<T>(PathData path) where T : class, IAspectController
 		{
-			Url url = webContext.Url;
-			PathData path;
-			try
-			{
-				if (IsObservable(url)) path = ResolvePath(url);
-				else path = PathData.Empty;
-			}
-			catch (Exception ex)
-			{
-				errorHandler.Notify(ex);
-				path = PathData.Empty;
-			}
 			T controller = CreateControllerInstance<T>(path);
 			controller.Path = path;
 			controller.Engine = engine; 
@@ -80,9 +68,17 @@ namespace N2.Web
 			}
 		}
 
-		protected virtual PathData ResolvePath(string url)
+		public PathData ResolveUrl(string url)
 		{
-			return parser.ResolvePath(url);
+			try
+			{
+				if (IsObservable(url)) return parser.ResolvePath(url);
+			}
+			catch (Exception ex)
+			{
+				errorHandler.Notify(ex);
+			}
+			return PathData.Empty;
 		}
 
 		private bool IsObservable(Url url)
@@ -112,7 +108,7 @@ namespace N2.Web
 				}
 			}
 
-			return new BaseController() as T;
+			throw new N2Exception("Couldn't find an aspect controller '{0}' for the item '{1}' on the path '{2}'.", typeof(T).FullName, path.CurrentItem, path.Path);
 		}
 
 		#region IStartable Members
@@ -120,7 +116,7 @@ namespace N2.Web
 		public void Start()
 		{
 			List<IControllerDescriptor> references = new List<IControllerDescriptor>();
-			foreach (Type controllerType in finder.Find(typeof(BaseController)))
+			foreach (Type controllerType in finder.Find(typeof(IAspectController)))
 			{
 				foreach (IControllerDescriptor reference in controllerType.GetCustomAttributes(typeof(IControllerDescriptor), false))
 				{

@@ -15,7 +15,7 @@ namespace N2.Tests.Web
 	{
 		FakeRequestLifeCycleHandler handler;
 		IUrlParser parser;
-		RequestDispatcher rewriter;
+		RequestDispatcher dispatcher;
 		FakeWebContextWrapper context;
 		ContentItem root, one, two;
 		ErrorHandler errorHandler;
@@ -35,15 +35,16 @@ namespace N2.Tests.Web
 			parser = new UrlParser(persister, context, mocks.Stub<IItemNotifier>(), new Host(context, root.ID, root.ID), new HostSection());
 			errorHandler = new ErrorHandler(context, null, null);
 			finder = new AppDomainTypeFinder();
-			rewriter = new RequestDispatcher(null, parser, context, finder, errorHandler, new HostSection());
-			handler = new FakeRequestLifeCycleHandler(null, context, null, null, rewriter);
+			dispatcher = new RequestDispatcher(null, parser, context, finder, errorHandler, new HostSection());
+			dispatcher.Start();
+			handler = new FakeRequestLifeCycleHandler(null, context, null, null, dispatcher);
 		}
 
 
 		[Test]
 		public void CanRewriteUrl()
 		{
-			context.Url = new Url("/one/two.aspx");
+			context.Url = "/one/two.aspx";
 
 			handler.BeginRequest();
 
@@ -94,8 +95,9 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			rewriter = new RequestDispatcher(null, parser, context, finder, errorHandler, config);
-			handler = new FakeRequestLifeCycleHandler(null, context, null, null, rewriter);
+			dispatcher = new RequestDispatcher(null, parser, context, finder, errorHandler, config);
+			dispatcher.Start();
+			handler = new FakeRequestLifeCycleHandler(null, context, null, null, dispatcher);
 		}
 
 		[Test]

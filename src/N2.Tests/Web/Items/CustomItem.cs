@@ -15,17 +15,17 @@ namespace N2.Tests.Web.Items
 	}
 
 	[Controls(typeof(CustomItem))]
-	public class CustomController : BaseController
+	public class CustomController : RequestController
 	{
 	}
 
 	[Controls(typeof(SpecialCustomItem))]
-	public class SpecialCustomController : BaseController
+	public class SpecialCustomController : RequestController
 	{
 	}
 
 	[Controls(typeof(OtherCustomItem))]
-	public class OtherCustomController : BaseController
+	public class OtherCustomController : RequestController
 	{
 	}
 }

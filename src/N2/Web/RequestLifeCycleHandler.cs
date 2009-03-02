@@ -76,12 +76,16 @@ namespace N2.Web
                 }
             }
 
-			IRequestController controller = dispatcher.ResolveController<IRequestController>();
-			if(controller != null)
+			PathData path = dispatcher.ResolveUrl(webContext.Url);
+			if(!path.IsEmpty())
 			{
-				webContext.CurrentPath = controller.Path;
-				RequestItem<IRequestController>.Instance = controller;
-				controller.RewriteRequest(webContext);
+				IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(path);
+				if(controller != null)
+				{
+					webContext.CurrentPath = controller.Path;
+					RequestItem<IRequestController>.Instance = controller;
+					controller.RewriteRequest(webContext);
+				}
 			}
 		}
 

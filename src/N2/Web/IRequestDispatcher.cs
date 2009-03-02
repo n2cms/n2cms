@@ -10,10 +10,15 @@ namespace N2.Web
 	{
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		T ResolveController<T>() where T : class, IAspectController;
+		T ResolveAspectController<T>(PathData path) where T : class, IAspectController;
 
 		/// <summary>Adds controller descriptors to the list of descriptors. This is typically auto-wired using the [Controls] attribute.</summary>
 		/// <param name="descriptorToAdd">The controller descriptors to add.</param>
 		void RegisterControllerDescriptor(params IControllerDescriptor[] descriptorToAdd);
+
+		/// <summary>Resolves the path data for the supplied url.</summary>
+		/// <param name="url">The url to resolve.</param>
+		/// <returns></returns>
+		PathData ResolveUrl(string url);
 	}
 }
