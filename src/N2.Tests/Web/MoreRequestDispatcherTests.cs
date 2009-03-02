@@ -11,7 +11,7 @@ using NUnit.Framework.SyntaxHelpers;
 namespace N2.Tests.Web
 {
 	[TestFixture]
-	public class UrlRewriterTests : ItemPersistenceMockingBase
+	public class MoreRequestDispatcherTests : ItemPersistenceMockingBase
 	{
 		FakeRequestLifeCycleHandler handler;
 		IUrlParser parser;
@@ -35,7 +35,7 @@ namespace N2.Tests.Web
 			parser = new UrlParser(persister, context, mocks.Stub<IItemNotifier>(), new Host(context, root.ID, root.ID), new HostSection());
 			errorHandler = new ErrorHandler(context, null, null);
 			finder = new AppDomainTypeFinder();
-			rewriter = new RequestDispatcher(parser, context, finder, errorHandler, new HostSection());
+			rewriter = new RequestDispatcher(null, parser, context, finder, errorHandler, new HostSection());
 			handler = new FakeRequestLifeCycleHandler(null, context, null, null, rewriter);
 		}
 
@@ -94,7 +94,7 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			rewriter = new RequestDispatcher(parser, context, finder, errorHandler, config);
+			rewriter = new RequestDispatcher(null, parser, context, finder, errorHandler, config);
 			handler = new FakeRequestLifeCycleHandler(null, context, null, null, rewriter);
 		}
 

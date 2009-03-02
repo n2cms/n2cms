@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using N2.Engine;
 using Castle.Core;
+using N2.Engine.Aspects;
 using N2.Plugin;
 using N2.Configuration;
 using System.Web.Hosting;
@@ -17,6 +18,7 @@ namespace N2.Web
 	/// </summary>
 	public class RequestDispatcher : IRequestDispatcher, IStartable, IAutoStart
 	{
+		readonly IEngine engine;
 		readonly IUrlParser parser;
 		readonly IWebContext webContext;
 		readonly ITypeFinder finder;
@@ -26,8 +28,9 @@ namespace N2.Web
                 
 		IControllerDescriptor[] controllerDescriptors = new IControllerDescriptor[0];
 
-		public RequestDispatcher(IUrlParser parser, IWebContext webContext, ITypeFinder finder, IErrorHandler errorHandler, HostSection config)
+		public RequestDispatcher(IEngine engine, IUrlParser parser, IWebContext webContext, ITypeFinder finder, IErrorHandler errorHandler, HostSection config)
 		{
+			this.engine = engine;
 			this.parser = parser;
 			this.webContext = webContext;
 			this.finder = finder;
@@ -44,7 +47,7 @@ namespace N2.Web
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual T ResolveController<T>() where T : class, IContentController
+		public virtual T ResolveController<T>() where T : class, IAspectController
 		{
 			Url url = webContext.Url;
 			PathData path;
@@ -60,6 +63,7 @@ namespace N2.Web
 			}
 			T controller = CreateControllerInstance<T>(path);
 			controller.Path = path;
+			controller.Engine = engine; 
 			return controller;
 		}
 
@@ -95,7 +99,7 @@ namespace N2.Web
 			return false;
 		}
 
-		protected virtual T CreateControllerInstance<T>(PathData path) where T: class, IContentController
+		protected virtual T CreateControllerInstance<T>(PathData path) where T: class, IAspectController
 		{
 			if (!path.IsEmpty())
 			{

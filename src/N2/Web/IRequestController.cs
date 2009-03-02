@@ -1,14 +1,15 @@
 using System;
 using System.Security.Principal;
 using System.Web;
+using N2.Engine.Aspects;
 using N2.Security;
 
 namespace N2.Web
 {
 	/// <summary>
-	/// The interface for controllers dealing with a web request.
+	/// The interface for aspect controllers dealing with a web request.
 	/// </summary>
-	public interface IRequestController : IContentController
+	public interface IRequestController : IAspectController
 	{
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		void RewriteRequest(IWebContext webContext);

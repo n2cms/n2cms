@@ -273,7 +273,7 @@
     <Compile Include="Web\UrlParserTests.cs" />
     <Compile Include="Web\UrlParsing\CachingUrlParserTests.cs" />
     <Compile Include="Web\UrlParsing\CachingUrlParserTests_WithMultipleHostsUrlParser.cs" />
-    <Compile Include="Web\UrlRewriterTests.cs" />
+    <Compile Include="Web\MoreRequestDispatcherTests.cs" />
     <Compile Include="Serialization\Items\XmlableItem.cs" />
     <Compile Include="Serialization\XmlWriterTests.cs" />
     <Compile Include="Web\UrlTests.cs" />

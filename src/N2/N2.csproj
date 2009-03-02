@@ -445,7 +445,7 @@
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\ControlsAttribute.cs" />
     <Compile Include="Web\HttpRequestContextAccessor.cs" />
-    <Compile Include="Web\IContentController.cs" />
+    <Compile Include="Engine\Aspects\IAspectController.cs" />
     <Compile Include="Web\IControllerDescriptor.cs" />
     <Compile Include="Web\IRequestContextAccessor.cs" />
     <Compile Include="Web\IRequestController.cs" />

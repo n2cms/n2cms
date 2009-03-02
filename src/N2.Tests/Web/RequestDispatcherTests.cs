@@ -7,7 +7,7 @@ using NUnit.Framework.SyntaxHelpers;
 using N2.Tests.Web.Items;
 using N2.Engine;
 
-namespace N2.Tests.Web.FrontDispatcherTests
+namespace N2.Tests.Web
 {
 	[TestFixture]
 	public class RequestDispatcherTests : ItemPersistenceMockingBase
@@ -17,7 +17,7 @@ namespace N2.Tests.Web.FrontDispatcherTests
 		UrlParser parser;
 		FakeWebContextWrapper webContext;
 		RequestDispatcher dispatcher;
-			
+
 		public override void SetUp()
 		{
 			base.SetUp();
@@ -25,7 +25,7 @@ namespace N2.Tests.Web.FrontDispatcherTests
 			CreateDefaultStructure();
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, startItem.ID, startItem.ID), new HostSection());
-			dispatcher = new RequestDispatcher(parser, webContext, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), new HostSection());
+			dispatcher = new RequestDispatcher(null, parser, webContext, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), new HostSection());
 			dispatcher.Start();
 		}
 

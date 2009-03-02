@@ -18,6 +18,9 @@ namespace N2.Web
 		/// <summary>The path associated with this controller instance.</summary>
 		public PathData Path { get; set; }
 
+		/// <summary>The content engine requesting control.</summary>
+		public IEngine Engine { get; set; }
+
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		public virtual void RewriteRequest(IWebContext webContext)
 		{

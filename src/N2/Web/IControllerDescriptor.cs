@@ -1,4 +1,5 @@
 using System;
+using N2.Engine.Aspects;
 
 namespace N2.Web
 {
@@ -16,7 +17,7 @@ namespace N2.Web
 
 		/// <summary>Checks a whether the controller is the right one for a certain path.</summary>
 		/// <param name="path">The path containing information about the current content item.</param>
-		/// <param name="requiredType">The type of controller required by the caller. This is typically a type of interface deriving from <see cref="IContentController"/>.</param>
+		/// <param name="requiredType">The type of controller required by the caller. This is typically a type of interface deriving from <see cref="IAspectController"/>.</param>
 		/// <returns>True if the controller is the right one.</returns>
 		bool IsControllerFor(PathData path, Type requiredType);
 

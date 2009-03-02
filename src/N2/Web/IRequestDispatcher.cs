@@ -1,3 +1,5 @@
+using N2.Engine.Aspects;
+
 namespace N2.Web
 {
 	/// <summary>
@@ -8,7 +10,7 @@ namespace N2.Web
 	{
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		T ResolveController<T>() where T : class, IContentController;
+		T ResolveController<T>() where T : class, IAspectController;
 
 		/// <summary>Adds controller descriptors to the list of descriptors. This is typically auto-wired using the [Controls] attribute.</summary>
 		/// <param name="descriptorToAdd">The controller descriptors to add.</param>
