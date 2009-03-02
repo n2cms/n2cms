@@ -15,7 +15,7 @@ namespace N2.Templates.UI.Parts
         {
             base.OnInit(e);
 
-            Resources.Register.StyleSheet(Page, "/Templates/UI/Css/Calendar.css", Media.All);
+            Resources.Register.StyleSheet(Page, "~/Templates/UI/Css/Calendar.css", Media.All);
 
             cEvents.SelectionChanged += new System.EventHandler(cEvents_SelectionChanged);
             if(CurrentItem.Container != null)
