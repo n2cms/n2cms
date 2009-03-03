@@ -1,12 +1,4 @@
-using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using N2.Integrity;
 using N2.Details;
 using N2;
@@ -17,9 +9,9 @@ namespace Demo.Items
 	[Definition("Demo Registration", "DemoRegister")]
     [AllowedZones("Right")]
 	[RestrictParents(typeof(N2.Templates.Items.IStructuralPage))]
-	[TabPanel("web", "Web", 10)]
-	[TabPanel("mail", "E-Mail", 20)]
-	[TabPanel("auto", "Auto Login", 30)]
+	[TabContainer("web", "Web", 10)]
+	[TabContainer("mail", "E-Mail", 20)]
+	[TabContainer("auto", "Auto Login", 30)]
 	[WithEditableTitle("Title", 20, ContainerName = "web")]
 	public class RegisterItem : ContentItem
 	{

@@ -1,18 +1,17 @@
 using N2.Web;
-using System.Linq;
-using System.Collections.Generic;
+using N2.Collections;
 
 namespace N2.Tests.Web.Items
 {
 	[Controls(typeof(PageItem))]
 	public class PageZoneController : ZoneAspectController
 	{
-		public override IEnumerable<ContentItem> GetItemsInZone(ContentItem parentItem, string zoneName)
+		public override ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
 		{
 			if(zoneName.EndsWith("None"))
-				return Enumerable.Empty<ContentItem>();
+				return new ItemList();
 			if (zoneName.EndsWith("All"))
-				return parentItem.GetChildren().Where(ci => ci.ZoneName != null);
+				return parentItem.GetChildren(new DelegateFilter(ci => ci.ZoneName != null));
 
 			return parentItem.GetChildren(zoneName);
 		}

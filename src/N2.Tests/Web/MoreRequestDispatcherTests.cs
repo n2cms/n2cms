@@ -164,7 +164,7 @@ namespace N2.Tests.Web
 		{
 			dispatcher = new RequestDispatcher(engine, webContext, parser, finder, errorHandler, config);
 			dispatcher.Start();
-			handler = new FakeRequestLifeCycleHandler(null, webContext, null, null, dispatcher);
+			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, errorHandler);
 		}
 	}
 }

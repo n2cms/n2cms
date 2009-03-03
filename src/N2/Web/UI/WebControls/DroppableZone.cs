@@ -120,12 +120,9 @@ namespace N2.Web.UI.WebControls
 		private string GetAllowed(string zone)
 		{
 			List<string> allowedDefinitions = new List<string>();
-			foreach (ItemDefinition potentialChild in N2.Context.Definitions.GetDefinitions())
+			foreach (ItemDefinition potentialChild in ZoneController.GetDefinitions(CurrentItem, zone))
 			{
-				if (potentialChild.IsAllowedInZone(zone))
-				{
-					allowedDefinitions.Add("." + potentialChild.Discriminator);
-				}
+				allowedDefinitions.Add("." + potentialChild.Discriminator);
 			}
 			return string.Join(",", allowedDefinitions.ToArray());
 		}

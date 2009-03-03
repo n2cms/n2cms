@@ -24,16 +24,21 @@ namespace N2.Web.UI.WebControls
         private ITemplate headerTemplate;
         private ITemplate footerTemplate;
 
-		/// <summary>Gets or sets the zone from which to featch items.</summary>
-		public string ZoneName
-		{
-			get { return (string) ViewState["ZoneName"] ?? ""; }
-			set { ViewState["ZoneName"] = value; }
-		}
-
 		protected virtual IEngine Engine
 		{
 			get { return N2.Context.Current; }
+		}
+
+		protected ZoneAspectController ZoneController
+		{
+			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<ZoneAspectController>(); }
+		}
+
+		/// <summary>Gets or sets the zone from which to featch items.</summary>
+		public string ZoneName
+		{
+			get { return (string)ViewState["ZoneName"] ?? ""; }
+			set { ViewState["ZoneName"] = value; }
 		}
 
 		/// <summary>Gets or sets an enumeration of filters applied to the items.</summary>
@@ -46,14 +51,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets a list of items to display.</summary>
 		public virtual IList<ContentItem> DataSource
 		{
-			get
-			{
-				if (items == null)
-				{
-					items = GetItems();
-				}
-				return items;
-			}
+			get { return items ?? (items = GetItems()); }
 			set
 			{
 				items = value;
@@ -116,7 +114,7 @@ namespace N2.Web.UI.WebControls
 			OnSelecting(args);
 
 			if (CurrentItem != null && args.Items == null)
-				args.Items = CurrentItem.GetChildren(ZoneName);
+				args.Items = ZoneController.GetItemsInZone(CurrentItem, ZoneName);
 
 			OnSelected(args);
 			OnFiltering(args);

@@ -47,12 +47,5 @@ namespace N2.Web
 		{
 			Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest();
 		}
-
-		/// <summary>Is notified when an unhandled error occurs.</summary>
-		/// <param name="ex">The thrown exception.</param>
-		public virtual void HandleError(Exception ex)
-		{
-			Engine.Resolve<IErrorHandler>().Notify(ex);
-		}
 	}
 }

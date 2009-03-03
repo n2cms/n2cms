@@ -15,6 +15,7 @@ namespace N2.Web
 	/// </summary>
 	public class RequestLifeCycleHandler : IRequestLifeCycleHandler
 	{
+		readonly IErrorHandler errors;
 		readonly IWebContext webContext;
         readonly InstallationManager installer;
 		readonly IRequestDispatcher dispatcher;
@@ -25,19 +26,20 @@ namespace N2.Web
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
-		public RequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher, EditSection editConfig)
-            : this(webContext, installer, dispatcher)
+		public RequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors, EditSection editConfig)
+            : this(webContext, installer, dispatcher, errors)
         {
-            checkInstallation = editConfig.Installer.CheckInstallationStatus;
+			checkInstallation = editConfig.Installer.CheckInstallationStatus;
             installerUrl = editConfig.Installer.InstallUrl;
         }
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
-        public RequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher)
+		public RequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors)
 		{
 			this.webContext = webContext;
-            this.installer = installer;
+			this.errors = errors;
+			this.installer = installer;
 			this.dispatcher = dispatcher;
 		}
 
@@ -90,12 +92,18 @@ namespace N2.Web
 		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
 		{
-			dispatcher.ResolveAspectController<RequestAspectController>().InjectCurrentPage(webContext.Handler);
+			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
+
+			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
+			controller.InjectCurrentPage(webContext.Handler);
 		}
 
 		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
-			dispatcher.ResolveAspectController<RequestAspectController>().AuthorizeRequest(webContext.User);
+			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
+
+			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
+			controller.AuthorizeRequest(webContext.User);
 		}
 
         protected virtual void Application_Error(object sender, EventArgs e)
@@ -106,7 +114,7 @@ namespace N2.Web
             	Exception ex = application.Server.GetLastError();
 				if(ex != null)
 				{
-					dispatcher.ResolveAspectController<RequestAspectController>().HandleError(ex);
+					errors.Notify(ex);
 				}
             }
 		}

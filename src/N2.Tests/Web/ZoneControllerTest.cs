@@ -10,6 +10,7 @@ using N2.Tests.Web.Items;
 using N2.Web;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using N2.Definitions;
 
 namespace N2.Tests.Web
 {
@@ -46,7 +47,7 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void ZoneAspectController_Retrieves_ItemsInZone()
+		public void Retrieves_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/item4");
 			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
@@ -57,7 +58,7 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void ZoneAspectController_CanFilter_ItemsInZone()
+		public void CanFilter_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
 			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
@@ -68,12 +69,23 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void ZoneAspectController_CanAddTo_ItemsInZone()
+		public void CanAddTo_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
 			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneAll");
+
+			Assert.That(items.Count(), Is.EqualTo(2));
+		}
+
+		[Test]
+		public void CanResolve_PosibleChildren()
+		{
+			webContext.CurrentPath = dispatcher.ResolveUrl("/");
+			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
+
+			IEnumerable<ItemDefinition> items = controller.GetDefinitions(webContext.CurrentPage, "Zone1");
 
 			Assert.That(items.Count(), Is.EqualTo(2));
 		}
