@@ -15,9 +15,7 @@ namespace N2.Web
 	/// </summary>
 	public class RequestLifeCycleHandler : IRequestLifeCycleHandler
 	{
-		readonly ISecurityEnforcer security;
 		readonly IWebContext webContext;
-        readonly IErrorHandler errorHandler;
         readonly InstallationManager installer;
 		readonly IRequestDispatcher dispatcher;
 
@@ -26,23 +24,19 @@ namespace N2.Web
 		protected string installerUrl = "~/Edit/Install/Begin/Default.aspx";
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
-		/// <param name="security">The class that can authorize a request.</param>
 		/// <param name="webContext">The web context wrapper.</param>
-		public RequestLifeCycleHandler(ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer, IRequestDispatcher dispatcher, EditSection editConfig, HostSection hostConfig)
-            : this(security, webContext, errorHandler, installer, dispatcher)
+		public RequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher, EditSection editConfig)
+            : this(webContext, installer, dispatcher)
         {
             checkInstallation = editConfig.Installer.CheckInstallationStatus;
             installerUrl = editConfig.Installer.InstallUrl;
         }
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
-		/// <param name="security">The class that can authorize a request.</param>
 		/// <param name="webContext">The web context wrapper.</param>
-        public RequestLifeCycleHandler(ISecurityEnforcer security, IWebContext webContext, IErrorHandler errorHandler, InstallationManager installer, IRequestDispatcher dispatcher)
+        public RequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher)
 		{
-			this.security = security;
 			this.webContext = webContext;
-            this.errorHandler = errorHandler;
             this.installer = installer;
 			this.dispatcher = dispatcher;
 		}
@@ -76,16 +70,11 @@ namespace N2.Web
                 }
             }
 
-			PathData path = dispatcher.ResolveUrl(webContext.Url);
-			if(!path.IsEmpty())
+			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
+			if(controller != null)
 			{
-				IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(path);
-				if(controller != null)
-				{
-					webContext.CurrentPath = controller.Path;
-					RequestItem<IRequestController>.Instance = controller;
-					controller.RewriteRequest(webContext);
-				}
+				webContext.CurrentPath = controller.Path;
+				controller.RewriteRequest();
 			}
 		}
 
@@ -101,16 +90,12 @@ namespace N2.Web
 		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
 		{
-			RequestItem<IRequestController>.Instance.InjectCurrentPage(webContext.Handler);
+			dispatcher.ResolveAspectController<RequestAspectController>().InjectCurrentPage(webContext.Handler);
 		}
 
 		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
-			IRequestController controller = RequestItem<IRequestController>.Instance;
-			if (controller != null)
-			{
-				controller.AuthorizeRequest(webContext.User, security);
-			}
+			dispatcher.ResolveAspectController<RequestAspectController>().AuthorizeRequest(webContext.User);
 		}
 
         protected virtual void Application_Error(object sender, EventArgs e)
@@ -121,12 +106,7 @@ namespace N2.Web
             	Exception ex = application.Server.GetLastError();
 				if(ex != null)
 				{
-					errorHandler.Notify(ex);
-					IRequestController controller = RequestItem<IRequestController>.Instance;
-					if(controller != null)
-					{
-						controller.HandleError(ex);
-					}
+					dispatcher.ResolveAspectController<RequestAspectController>().HandleError(ex);
 				}
             }
 		}

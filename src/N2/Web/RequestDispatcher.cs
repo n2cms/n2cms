@@ -19,8 +19,8 @@ namespace N2.Web
 	public class RequestDispatcher : IRequestDispatcher, IStartable, IAutoStart
 	{
 		readonly IEngine engine;
-		readonly IUrlParser parser;
 		readonly IWebContext webContext;
+		readonly IUrlParser parser;
 		readonly ITypeFinder finder;
 		readonly IErrorHandler errorHandler;
 		readonly bool rewriteEmptyExtension = true;
@@ -28,11 +28,11 @@ namespace N2.Web
 
 		IControllerDescriptor[] controllerDescriptors = new IControllerDescriptor[0];
 
-		public RequestDispatcher(IEngine engine, IUrlParser parser, IWebContext webContext, ITypeFinder finder, IErrorHandler errorHandler, HostSection config)
+		public RequestDispatcher(IEngine engine, IWebContext webContext, IUrlParser parser, ITypeFinder finder, IErrorHandler errorHandler, HostSection config)
 		{
 			this.engine = engine;
-			this.parser = parser;
 			this.webContext = webContext;
+			this.parser = parser;
 			this.finder = finder;
 			this.errorHandler = errorHandler;
 			rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
@@ -47,17 +47,29 @@ namespace N2.Web
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual T ResolveAspectController<T>(PathData path) where T : class, IAspectController
+		public virtual T ResolveAspectController<T>() where T : class, IAspectController
 		{
-			T controller = CreateControllerInstance<T>(path);
+			T controller = RequestItem<T>.Instance;
+			if (controller != null) return controller;
+
+			PathData path = ResolveUrl(webContext.Url);
+
+			if (path.IsEmpty()) return null;
+
+			controller = CreateControllerInstance<T>(path);
+			if (controller == null) return null;
+			
 			controller.Path = path;
-			controller.Engine = engine; 
+			controller.Engine = engine;
+			
+			RequestItem<T>.Instance = controller;
+
 			return controller;
 		}
 
 		/// <summary>Adds controller descriptors to the list of descriptors. This is typically auto-wired using the [Controls] attribute.</summary>
 		/// <param name="descriptorToAdd">The controller descriptors to add.</param>
-		public void RegisterControllerDescriptor(params IControllerDescriptor[] descriptorToAdd)
+		public void RegisterAspectController(params IControllerDescriptor[] descriptorToAdd)
 		{
 			lock(this)
 			{
@@ -97,14 +109,13 @@ namespace N2.Web
 
 		protected virtual T CreateControllerInstance<T>(PathData path) where T: class, IAspectController
 		{
-			if (!path.IsEmpty())
+			Type requestedType = typeof (T);
+
+			foreach (IControllerDescriptor reference in controllerDescriptors)
 			{
-				foreach (IControllerDescriptor reference in controllerDescriptors)
+				if (requestedType.IsAssignableFrom(reference.ControllerType) && reference.IsControllerFor(path, requestedType))
 				{
-					if (reference.IsControllerFor(path, typeof(T)))
-					{
-						return Activator.CreateInstance(reference.ControllerType) as T;
-					}
+					return Activator.CreateInstance(reference.ControllerType) as T;
 				}
 			}
 
@@ -124,7 +135,7 @@ namespace N2.Web
 					references.Add(reference);
 				}
 			}
-			RegisterControllerDescriptor(references.ToArray());
+			RegisterAspectController(references.ToArray());
 		}
 
 		public void Stop()

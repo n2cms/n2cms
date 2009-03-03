@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using N2.Web;
 
-namespace N2.Tests.Web
+namespace N2.Tests.Web.Items
 {
 	public class SiteProvidingItem : ContentItem, ISitesSource
 	{

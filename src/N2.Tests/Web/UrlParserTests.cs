@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using N2.Configuration;
+using N2.Tests.Web.Items;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Persistence;

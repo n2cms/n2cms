@@ -45,6 +45,9 @@ namespace N2.Web
 
 		public bool IsControllerFor(PathData path, Type requiredType)
 		{
+			if (path.IsEmpty())
+				return false;
+
 			return ItemType.IsAssignableFrom(path.CurrentItem.GetType()) && requiredType.IsAssignableFrom(requiredType);
 		}
 

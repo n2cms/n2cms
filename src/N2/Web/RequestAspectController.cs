@@ -4,6 +4,7 @@ using System.Web;
 using N2.Engine;
 using N2.Security;
 using N2.Web.UI;
+using N2.Engine.Aspects;
 
 namespace N2.Web
 {
@@ -14,19 +15,19 @@ namespace N2.Web
 	/// [Controls] attribute).
 	/// </summary>
 	[Controls(typeof(ContentItem))]
-	public class RequestController : IRequestController
+	public class RequestAspectController : IAspectController
 	{
 		/// <summary>The path associated with this controller instance.</summary>
 		public PathData Path { get; set; }
 
-		/// <summary>The content engine requesting control.</summary>
+		/// <summary>The content engine requesting control. TODO: support dependency injection.</summary>
 		public IEngine Engine { get; set; }
 
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
-		public virtual void RewriteRequest(IWebContext webContext)
+		public virtual void RewriteRequest()
 		{
-			if(!Path.IsEmpty())
-				webContext.RewritePath(Path.RewrittenUrl);
+			if(Path != null && !Path.IsEmpty())
+				Engine.Resolve<IWebContext>().RewritePath(Path.RewrittenUrl);
 		}
 
 		/// <summary>Inject the current page into the page handler.</summary>
@@ -34,24 +35,24 @@ namespace N2.Web
 		public virtual void InjectCurrentPage(IHttpHandler handler)
 		{
 			IContentTemplate template = handler as IContentTemplate;
-			if (template != null)
+			if (template != null && Path != null)
 			{
 				template.CurrentItem = Path.CurrentItem;
 			}
 		}
 
 		/// <summary>Authorize the user against the current content item. Throw an exception if not authorized.</summary>
-		/// <param name="security"></param>
-		public virtual void AuthorizeRequest(IPrincipal user, ISecurityEnforcer security)
+		/// <param name="user">The user for which to authorize the request.</param>
+		public virtual void AuthorizeRequest(IPrincipal user)
 		{
-			security.AuthorizeRequest();
+			Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest();
 		}
 
 		/// <summary>Is notified when an unhandled error occurs.</summary>
 		/// <param name="ex">The thrown exception.</param>
 		public virtual void HandleError(Exception ex)
 		{
-			// do nothing special here
+			Engine.Resolve<IErrorHandler>().Notify(ex);
 		}
 	}
 }

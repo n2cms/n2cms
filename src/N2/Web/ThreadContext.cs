@@ -18,7 +18,7 @@ namespace N2.Web
 
     	[ThreadStatic] ContentItem currentPage;
     	[ThreadStatic] PathData currentPath;
-		[ThreadStatic] RequestController currentController;
+		[ThreadStatic] RequestAspectController currentController;
 		[ThreadStatic] static IDictionary items;
     	[ThreadStatic] Url localUrl = new Url("/");
     	[ThreadStatic] Url url = new Url("http://localhost");
@@ -69,7 +69,7 @@ namespace N2.Web
 			}
 		}
 
-		public RequestController CurrentController
+		public RequestAspectController CurrentController
 		{
 			get { return currentController; }
 			set

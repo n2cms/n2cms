@@ -178,6 +178,7 @@
     <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
     <Compile Include="Engine\ContentEngineTests.cs" />
     <Compile Include="Engine\SingletonTests.cs" />
+    <Compile Include="Fakes\FakeEngine.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Fakes\FakeRequestLifeCycleHandler.cs" />
     <Compile Include="Fakes\FakeTypeFinder.cs" />
@@ -251,7 +252,15 @@
     <Compile Include="SecurityUtilities.cs" />
     <Compile Include="Security\Items\SecurityPage.cs" />
     <Compile Include="Security\SecurityManagerTests.cs" />
+    <Compile Include="Web\Items\CustomRequestController.cs" />
+    <Compile Include="Web\Items\CustomZoneController.cs" />
     <Compile Include="Web\DynamicSitesProviderTests.cs" />
+    <Compile Include="Web\Items\OtherCustomController.cs" />
+    <Compile Include="Web\Items\OtherCustomItem.cs" />
+    <Compile Include="Web\Items\PageZoneController.cs" />
+    <Compile Include="Web\Items\ParticularCustomItem.cs" />
+    <Compile Include="Web\Items\SpecialCustomController.cs" />
+    <Compile Include="Web\Items\SpecialCustomItem.cs" />
     <Compile Include="Web\RequestDispatcherTests.cs" />
     <Compile Include="Web\Items\CustomItem.cs" />
     <Compile Include="Web\Items\CustomExtensionPage.cs" />

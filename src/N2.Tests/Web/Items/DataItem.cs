@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 
-namespace N2.Tests.Web
+namespace N2.Tests.Web.Items
 {
 	public class DataItem : N2.ContentItem, IContainable
 	{

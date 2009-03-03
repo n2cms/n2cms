@@ -26,18 +26,18 @@ namespace N2.Tests.Web
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 			HostSection hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};
 			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, startItem.ID, startItem.ID), hostSection);
-			dispatcher = new RequestDispatcher(null, parser, webContext, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), hostSection);
+			dispatcher = new RequestDispatcher(null, webContext, parser, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), hostSection);
 			dispatcher.Start();
 		}
 
 		[Test]
-		public void CanResolve_DefaultController()
+		public void CanResolve_DefaultRequestController()
 		{
 			SetUrl("/");
 
-			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
+			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
 
-			Assert.That(controller, Is.TypeOf(typeof(RequestController)));
+			Assert.That(controller, Is.TypeOf(typeof(RequestAspectController)));
 		}
 
 		[Test]
@@ -45,9 +45,9 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/custom3.aspx");
 
-			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
+			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
 
-			Assert.That(controller, Is.TypeOf(typeof(CustomController)));
+			Assert.That(controller, Is.TypeOf(typeof(CustomRequestController)));
 		}
 
 		[Test]
@@ -55,9 +55,9 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/particular4.aspx");
 
-			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
+			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
 
-			Assert.That(controller, Is.TypeOf(typeof(CustomController)));
+			Assert.That(controller, Is.TypeOf(typeof(CustomRequestController)));
 		}
 
 		[Test]
@@ -65,7 +65,7 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/special5.aspx");
 
-			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
+			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(SpecialCustomController)));
 		}
@@ -75,7 +75,7 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/other6.aspx");
 
-			IRequestController controller = dispatcher.ResolveAspectController<IRequestController>(webContext.CurrentPath);
+			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(OtherCustomController)));
 		}

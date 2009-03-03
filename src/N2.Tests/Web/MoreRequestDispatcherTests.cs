@@ -16,10 +16,11 @@ namespace N2.Tests.Web
 		FakeRequestLifeCycleHandler handler;
 		IUrlParser parser;
 		RequestDispatcher dispatcher;
-		FakeWebContextWrapper context;
+		FakeWebContextWrapper webContext;
 		ContentItem root, one, two;
 		ErrorHandler errorHandler;
 		AppDomainTypeFinder finder;
+		IEngine engine;
 			
 		[SetUp]
 		public override void SetUp()
@@ -31,136 +32,139 @@ namespace N2.Tests.Web
 			two = CreateOneItem<PageItem>(3, "two", one);
 			CreateOneItem<DataItem>(4, "four", root);
 
-			context = new FakeWebContextWrapper();
-			parser = new UrlParser(persister, context, mocks.Stub<IItemNotifier>(), new Host(context, root.ID, root.ID), new HostSection());
-			errorHandler = new ErrorHandler(context, null, null);
+			webContext = new FakeWebContextWrapper();
+			HostSection hostSection = new HostSection();
+			parser = new UrlParser(persister, webContext, mocks.Stub<IItemNotifier>(), new Host(webContext, root.ID, root.ID), hostSection);
+			errorHandler = new ErrorHandler(webContext, null, null);
 			finder = new AppDomainTypeFinder();
-			dispatcher = new RequestDispatcher(null, parser, context, finder, errorHandler, new HostSection());
-			dispatcher.Start();
-			handler = new FakeRequestLifeCycleHandler(null, context, null, null, dispatcher);
+			engine = new FakeEngine();
+			engine.AddComponentInstance(null, typeof(IWebContext), webContext);
+
+			ReCreateDispatcherWithConfig(hostSection);
 		}
+
 
 
 		[Test]
 		public void CanRewriteUrl()
 		{
-			context.Url = "/one/two.aspx";
+			webContext.Url = "/one/two.aspx";
 
 			handler.BeginRequest();
 
-			Assert.That(context.rewrittenPath, Is.EqualTo("/default.aspx?page=3"));
+			Assert.That(webContext.rewrittenPath, Is.EqualTo("/default.aspx?page=3"));
 		}
 
 		[Test]
 		public void RewriteUrl_AppendsExistingQueryString()
 		{
-			context.Url = "/one/two.aspx?happy=true&flip=feet";
+			webContext.Url = "/one/two.aspx?happy=true&flip=feet";
 
 			handler.BeginRequest();
 
-			Assert.That(context.rewrittenPath, Is.EqualTo("/default.aspx?happy=true&flip=feet&page=3"));
+			Assert.That(webContext.rewrittenPath, Is.EqualTo("/default.aspx?happy=true&flip=feet&page=3"));
 		}
 
 		[Test]
 		public void UpdateContentPage()
 		{
-			context.Url = "/one/two.aspx";
+			webContext.Url = "/one/two.aspx";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPath, Is.Not.Null);
-			Assert.That(context.CurrentPage, Is.EqualTo(two));
+			Assert.That(webContext.CurrentPath, Is.Not.Null);
+			Assert.That(webContext.CurrentPage, Is.EqualTo(two));
         }
 
         [Test]
         public void UpdatesCurrentPage_WhenExtension_IsAspx()
         {
-			context.Url = "/one.aspx";
+			webContext.Url = "/one.aspx";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPage, Is.EqualTo(one));
+			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
         }
 
         [Test]
         public void UpdatesCurrentPage_WhenExtension_IsConfiguredAsObserved()
         {
 			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } });
-        	context.Url = "/one.htm";
+        	webContext.Url = "/one.htm";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPage, Is.EqualTo(one));
+			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
         }
-
-		void ReCreateDispatcherWithConfig(HostSection config)
-		{
-			dispatcher = new RequestDispatcher(null, parser, context, finder, errorHandler, config);
-			dispatcher.Start();
-			handler = new FakeRequestLifeCycleHandler(null, context, null, null, dispatcher);
-		}
 
 		[Test]
 		public void DoesntUpdateCurrentPage_WhenExtension_IsNotObserved()
 		{
 			ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObservedExtensions = new CommaDelimitedStringCollection()}});
-			context.Url = "/one.html";
+			webContext.Url = "/one.html";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPage, Is.Null);
+			Assert.That(webContext.CurrentPage, Is.Null);
 		}
 
 		[Test]
 		public void DoesntUpdateCurrentPage_WhenExtension_IsEmpty_AndEmpty_IsNotObserved()
 		{
 			ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObserveEmptyExtension = false}});
-			context.Url = "/one";
+			webContext.Url = "/one";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPage, Is.Null);
+			Assert.That(webContext.CurrentPage, Is.Null);
 		}
 
         [Test]
         public void UpdatesCurrentPage_WhenEmptyExtension_IsConfiguredAsObserved()
         {
         	ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection()}});
-			context.Url = "/one";
+			webContext.Url = "/one";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPage, Is.EqualTo(one));
+			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
         }
 
 		[Test]
 		public void UpdateContentPage_WithRewrittenUrl()
 		{
-			context.Url = "/default.aspx?page=3";
+			webContext.Url = "/default.aspx?page=3";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPage, Is.EqualTo(two));
+			Assert.That(webContext.CurrentPage, Is.EqualTo(two));
 		}
 
 		[Test]
 		public void UpdateContentPage_WithItemReference_UpdatesWithPage()
 		{
-			context.Url = "/default.aspx?item=4&page=3";
+			webContext.Url = "/default.aspx?item=4&page=3";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPage, Is.EqualTo(two));
+			Assert.That(webContext.CurrentPage, Is.EqualTo(two));
 		}
 
 		[Test]
 		public void UpdatesCurrentPage_WhenUrl_IsWebDevStartPage()
 		{
-			context.Url = "/default.aspx?";
+			webContext.Url = "/default.aspx?";
 
 			handler.BeginRequest();
 
-			Assert.That(context.CurrentPage, Is.EqualTo(root));
+			Assert.That(webContext.CurrentPage, Is.EqualTo(root));
+		}
+
+		void ReCreateDispatcherWithConfig(HostSection config)
+		{
+			dispatcher = new RequestDispatcher(engine, webContext, parser, finder, errorHandler, config);
+			dispatcher.Start();
+			handler = new FakeRequestLifeCycleHandler(null, webContext, null, null, dispatcher);
 		}
 	}
 }

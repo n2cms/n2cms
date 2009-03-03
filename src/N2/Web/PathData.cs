@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace N2.Web
 {
@@ -7,7 +8,7 @@ namespace N2.Web
 	/// A data carrier used to pass data about a found content item and 
 	/// it's template from the content item to the url rewriter.
 	/// </summary>
-	[Serializable]
+	[Serializable, DebuggerDisplay("PathData ({CurrentItem})")]
 	public class PathData
 	{
 		public const string DefaultAction = "";

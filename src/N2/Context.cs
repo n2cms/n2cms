@@ -105,14 +105,6 @@ namespace N2
 			}
 		}
 
-		/// <summary>Access to the singleton N2 engine. This property has been deprecated in favor for 'Current'.</summary>
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		[Obsolete("Name changed to Current", true)]
-		public static Engine.IEngine Instance
-		{
-			get { return Current; }
-		}
-
 		/// <summary>Gets N2 persistence manager used for database persistence of content.</summary>
 		public static Persistence.IPersister Persister
 		{

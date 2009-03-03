@@ -57,9 +57,9 @@ namespace N2.Web
 			}
 		}
 
-		public RequestController CurrentController
+		public RequestAspectController CurrentController
 		{
-			get { return RequestItems["CurrentController"] as RequestController; }
+			get { return RequestItems["CurrentController"] as RequestAspectController; }
 			set
 			{
 				RequestItems["CurrentController"] = value; 

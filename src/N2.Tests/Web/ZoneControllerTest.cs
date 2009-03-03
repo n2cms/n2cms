@@ -13,22 +13,10 @@ using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web
 {
-	[Controls(typeof(PageItem))]
-	public class PageZoneController : ZoneController
-	{
-
-	}
-	[Controls(typeof(CustomItem))]
-	public class CustomZoneController : ZoneController
-	{
-
-	}
-
 	[TestFixture]
 	public class ZoneControllerTest : ItemPersistenceMockingBase
 	{
-		PageItem startItem, item1;
-		ContentItem custom2;
+		ContentItem pageItem, customItem;
 		UrlParser parser;
 		FakeWebContextWrapper webContext;
 		RequestDispatcher dispatcher;
@@ -41,29 +29,64 @@ namespace N2.Tests.Web
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 			HostSection hostSection = new HostSection();
 			hostSection.Web.Extension = "/";
-			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, startItem.ID, startItem.ID), hostSection);
-			dispatcher = new RequestDispatcher(null, parser, webContext, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), hostSection);
+			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, pageItem.ID, pageItem.ID), hostSection);
+			dispatcher = new RequestDispatcher(null, webContext, parser, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), hostSection);
 			dispatcher.Start();
 		}
 
 
 
 		[Test]
-		public void CanFilterItems_ThroughZoneController()
+		public void CanResolve_ZoneAspectController()
 		{
-			var path = dispatcher.ResolveUrl("/");
-			IZoneController controller = dispatcher.ResolveAspectController<IZoneController>(path);
+			webContext.CurrentPath = dispatcher.ResolveUrl("/");
+			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(PageZoneController)));
 		}
 
+		[Test]
+		public void ZoneAspectController_Retrieves_ItemsInZone()
+		{
+			webContext.CurrentPath = dispatcher.ResolveUrl("/item4");
+			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
 
+			IEnumerable<ContentItem> items = controller.GetItemsInZone(customItem, "Zone1");
+
+			Assert.That(items.Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void ZoneAspectController_CanFilter_ItemsInZone()
+		{
+			webContext.CurrentPath = dispatcher.ResolveUrl("/");
+			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
+
+			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneNone");
+
+			Assert.That(items.Count(), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void ZoneAspectController_CanAddTo_ItemsInZone()
+		{
+			webContext.CurrentPath = dispatcher.ResolveUrl("/");
+			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
+
+			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneAll");
+
+			Assert.That(items.Count(), Is.EqualTo(2));
+		}
 
 		protected void CreateDefaultStructure()
 		{
-			startItem = CreateOneItem<PageItem>(1, "root", null);
-			item1 = CreateOneItem<PageItem>(2, "item1", startItem);
-			custom2 = CreateOneItem<CustomItem>(3, "custom2", startItem);
+			pageItem = CreateOneItem<PageItem>(1, "root", null);
+			CreateOneItem<DataItem>(2, "data2", pageItem).ZoneName = "Zone1";
+			CreateOneItem<DataItem>(3, "data3", pageItem).ZoneName = "Zone2";
+
+			customItem = CreateOneItem<CustomItem>(4, "item4", pageItem);
+			CreateOneItem<DataItem>(5, "data5", customItem).ZoneName = "Zone1";
+			CreateOneItem<DataItem>(6, "data6", customItem).ZoneName = "Zone2";
 		}
 	}
 }

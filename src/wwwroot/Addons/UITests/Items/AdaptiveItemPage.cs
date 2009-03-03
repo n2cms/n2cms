@@ -6,7 +6,7 @@ using N2.Details;
 namespace N2.Addons.UITests.Items
 {
 	[Controls(typeof(AdaptiveItemPage))]
-	public class AdaptiveController : RequestController
+	public class AdaptiveController : RequestAspectController
 	{
 		public override void AuthorizeRequest(System.Security.Principal.IPrincipal user, N2.Security.ISecurityEnforcer security)
 		{

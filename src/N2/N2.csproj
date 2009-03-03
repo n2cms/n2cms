@@ -438,7 +438,7 @@
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
-    <Compile Include="Web\RequestController.cs" />
+    <Compile Include="Web\RequestAspectController.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />
     <Compile Include="Web\CachingUrlParserDecorator.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
@@ -448,11 +448,9 @@
     <Compile Include="Engine\IAspectController.cs" />
     <Compile Include="Web\IControllerDescriptor.cs" />
     <Compile Include="Web\IRequestContextAccessor.cs" />
-    <Compile Include="Web\IRequestController.cs" />
     <Compile Include="Web\IRequestDispatcher.cs" />
     <Compile Include="Web\DynamicTemplateAttribute.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
-    <Compile Include="Web\IZoneController.cs" />
     <Compile Include="Web\RequestDispatcher.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlFilter.cs" />
@@ -612,7 +610,7 @@
     <Compile Include="Web\UI\WebControls\Ul.cs" />
     <Compile Include="Web\Url.cs" />
     <Compile Include="Web\WebRequestContext.cs" />
-    <Compile Include="Web\ZoneController.cs" />
+    <Compile Include="Web\ZoneAspectController.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Engine\n2.configuration.xml" />
