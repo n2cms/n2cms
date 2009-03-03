@@ -21,6 +21,7 @@ namespace N2.Tests.Web
 		UrlParser parser;
 		FakeWebContextWrapper webContext;
 		RequestDispatcher dispatcher;
+		IEngine engine;
 
 		public override void SetUp()
 		{
@@ -31,7 +32,10 @@ namespace N2.Tests.Web
 			HostSection hostSection = new HostSection();
 			hostSection.Web.Extension = "/";
 			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, pageItem.ID, pageItem.ID), hostSection);
-			dispatcher = new RequestDispatcher(null, webContext, parser, new AppDomainTypeFinder(), new ErrorHandler(webContext, null, null), hostSection);
+			engine = new FakeEngine();
+			AppDomainTypeFinder finder = new AppDomainTypeFinder();
+			engine.AddComponentInstance(null, typeof (IDefinitionManager), new DefinitionManager(new DefinitionBuilder(finder), null));
+			dispatcher = new RequestDispatcher(engine, webContext, parser, finder, new ErrorHandler(webContext, null, null), hostSection);
 			dispatcher.Start();
 		}
 
@@ -80,14 +84,14 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanResolve_PosibleChildren()
+		public void CanResolve_PossibleChildren()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
 			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
 
-			IEnumerable<ItemDefinition> items = controller.GetDefinitions(webContext.CurrentPage, "Zone1");
+			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(webContext.CurrentPage, "Zone1", null);
 
-			Assert.That(items.Count(), Is.EqualTo(2));
+			Assert.That(items.Count(), Is.GreaterThan(0));
 		}
 
 		protected void CreateDefaultStructure()

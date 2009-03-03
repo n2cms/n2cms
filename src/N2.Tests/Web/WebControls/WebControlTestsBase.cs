@@ -45,6 +45,9 @@ namespace N2.Tests.Web.WebControls
 
 			var engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2nodb");
 			N2.Context.Initialize(engine);
+			engine.Initialize();
+			engine.Host.CurrentSite.RootItemID = 1;
+			engine.Host.CurrentSite.StartPageID = 1;
 		}
 	}
 }

@@ -39,7 +39,7 @@ namespace N2.Web.UI
 			{
 				if (currentItem == null)
 				{
-					currentItem = ItemUtility.FindCurrentItem(Parent);
+					currentItem = ItemUtility.FindCurrentItem(Parent) ?? Find.CurrentPage;
 					if (Path.Length > 0)
 					{
 						currentItem = ItemUtility.WalkPath(currentItem, Path);

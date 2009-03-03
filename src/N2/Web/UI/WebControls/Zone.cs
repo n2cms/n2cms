@@ -29,7 +29,7 @@ namespace N2.Web.UI.WebControls
 			get { return N2.Context.Current; }
 		}
 
-		protected ZoneAspectController ZoneController
+		protected virtual ZoneAspectController ZoneController
 		{
 			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<ZoneAspectController>(); }
 		}

@@ -95,6 +95,9 @@ namespace N2.Web
 
 		private bool IsObservable(Url url)
 		{
+			if(url.LocalUrl == Url.ApplicationPath)
+				return true;
+
 			string extension = url.Extension;
 			if (rewriteEmptyExtension && string.IsNullOrEmpty(extension))
 				return true;

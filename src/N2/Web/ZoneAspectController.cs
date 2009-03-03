@@ -2,6 +2,8 @@
 using N2.Collections;
 using N2.Engine.Aspects;
 using N2.Definitions;
+using N2.Integrity;
+using System.Security.Principal;
 
 namespace N2.Web
 {
@@ -19,18 +21,24 @@ namespace N2.Web
 
 		#endregion
 
+		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
+		/// <param name="parentItem">The item whose items to get.</param>
+		/// <param name="zoneName">The zone in which the items should be contained.</param>
+		/// <returns>A list of items in the zone.</returns>
 		public virtual ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
 		{
 			return parentItem.GetChildren(zoneName);
 		}
 
-		public IEnumerable<ItemDefinition> GetDefinitions(ContentItem contentItem, string zone)
+		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem item, string zoneName, IPrincipal user)
 		{
-			foreach(ItemDefinition definition in N2.Context.Definitions.GetDefinitions())
+			ItemDefinition containerDefinition = Engine.Definitions.GetDefinition(item.GetType());
+
+			foreach (ItemDefinition childDefinition in containerDefinition.AllowedChildren)
 			{
-				if (definition.IsAllowedInZone(zone))
+				if (childDefinition.IsAllowedInZone(zoneName) && childDefinition.Enabled && childDefinition.IsAuthorized(user))
 				{
-					yield return definition;
+					yield return childDefinition;
 				}
 			}
 		}

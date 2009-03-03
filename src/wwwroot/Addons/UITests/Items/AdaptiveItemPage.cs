@@ -1,37 +1,47 @@
-using System.Diagnostics;
 using N2;
+using N2.Integrity;
 using N2.Web;
 using N2.Details;
+using N2.Edit.Trash;
+using N2.Templates.Items;
 
 namespace N2.Addons.UITests.Items
 {
-	[Controls(typeof(AdaptiveItemPage))]
-	public class AdaptiveController : RequestAspectController
+
+	[RestrictParents(typeof(AdaptiveItemPage))]
+	public class AbstractItem : ContentItem
 	{
-		public override void AuthorizeRequest(System.Security.Principal.IPrincipal user)
+		public override string TemplateUrl
 		{
-			Debug.WriteLine("AuthorizeRequest");
-			base.AuthorizeRequest(user);
+			get { return "~/Addons/UITests/UI/Item.ascx"; }
 		}
-		public override void HandleError(System.Exception ex)
+		public string TypeName
 		{
-			Debug.WriteLine("HandleError");
-			base.HandleError(ex);
+			get { return GetType().Name; }
 		}
-		public override void InjectCurrentPage(System.Web.IHttpHandler handler)
-		{
-			Debug.WriteLine("InjectCurrentPage");
-			base.InjectCurrentPage(handler);
-		}
-		public override void RewriteRequest()
-		{
-			Debug.WriteLine("RewriteRequest");
-			base.RewriteRequest();
-		}
+	}
+	[AllowedZones(AllowedZones.All)]
+	public class ItemAll : AbstractItem
+	{
+	}
+	[AllowedZones(AllowedZones.AllNamed)]
+	public class ItemAllNamed : AbstractItem
+	{
+	}
+	[AllowedZones(AllowedZones.None)]
+	public class ItemNone : AbstractItem
+	{
+	}
+	[RestrictParents(typeof(AdaptiveItemPage), typeof(ItemAllNamed))]
+	[AllowedZones("Left", "TestZone", "ItemAllNamed")]
+	public class ItemSpecifiedZones : AbstractItem
+	{
 	}
 
 	[Definition("Multiple Tests Page", SortOrder = 10000)]
 	[WithEditableTitle, WithEditableName]
+	[NotThrowable]
+	[RestrictParents(typeof(AbstractContentPage))]
 	public class AdaptiveItemPage : ContentItem
 	{
 		[EditableFreeTextArea("Text", 100)]

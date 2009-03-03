@@ -30,7 +30,7 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["GripperImageUrl"] = value; }
 		}
 
-		protected override void CreateItems(Control container)
+    	protected override void CreateItems(Control container)
 		{
 			state = ControlPanel.GetState();
             if (state == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
@@ -41,7 +41,7 @@ namespace N2.Web.UI.WebControls
 				base.CreateItems(zoneContainer);
 				AddDropPoint(zoneContainer, CurrentItem, CreationPosition.Below);
 
-				string allowed = GetAllowed(ZoneName);
+				string allowed = GetAllowedNames(ZoneName);
 				RegisterArray("dropZones", "{{selector: '.{0}.dropPoint', accept: '{1}'}}", ZoneName, allowed);
 			}
 			else
@@ -117,10 +117,10 @@ namespace N2.Web.UI.WebControls
 			return p;
 		}
 
-		private string GetAllowed(string zone)
+		private string GetAllowedNames(string zoneName)
 		{
 			List<string> allowedDefinitions = new List<string>();
-			foreach (ItemDefinition potentialChild in ZoneController.GetDefinitions(CurrentItem, zone))
+			foreach (ItemDefinition potentialChild in ZoneController.GetAllowedDefinitions(CurrentItem, zoneName, Page.User))
 			{
 				allowedDefinitions.Add("." + potentialChild.Discriminator);
 			}

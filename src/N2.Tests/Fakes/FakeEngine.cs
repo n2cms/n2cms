@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using N2.Definitions;
 using N2.Engine;
 
 namespace N2.Tests.Fakes
@@ -19,9 +20,9 @@ namespace N2.Tests.Fakes
 			get { throw new NotImplementedException(); }
 		}
 
-		public N2.Definitions.IDefinitionManager Definitions
+		public IDefinitionManager Definitions
 		{
-			get { throw new NotImplementedException(); }
+			get { return Resolve<IDefinitionManager>(); }
 		}
 
 		public N2.Integrity.IIntegrityManager IntegrityManager

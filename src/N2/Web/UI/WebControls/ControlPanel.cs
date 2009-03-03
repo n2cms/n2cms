@@ -27,25 +27,6 @@ namespace N2.Web.UI.WebControls
 	{
 		#region Properties
 
-		protected virtual IEnumerable<ItemDefinition> AvailableDefinitions
-		{
-			get
-			{
-				foreach (ItemDefinition definition in PageDefinition.AllowedChildren)
-				{
-					if (IsAllowedInAZone(definition) && definition.Enabled && definition.IsAuthorized(Page.User))
-					{
-						yield return definition;
-					}
-				}
-			}
-		}
-
-		protected virtual ItemDefinition PageDefinition
-		{
-			get { return N2.Context.Definitions.GetDefinition(CurrentItem.GetType()); }
-		}
-
         public bool EnableEditInterfaceIntegration
         {
             get { return (bool)(ViewState["EnableEditInterfaceIntegration"] ?? true); }
@@ -76,6 +57,11 @@ namespace N2.Web.UI.WebControls
 			get { return N2.Context.Current; }
 		}
 
+		protected virtual ZoneAspectController ZoneController
+		{
+			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<ZoneAspectController>(); }
+		}
+
 		public virtual ContentItem CurrentItem
 		{
 			get { return Find.CurrentPage; }
@@ -88,6 +74,11 @@ namespace N2.Web.UI.WebControls
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
+			this.Page.InitComplete += Page_InitComplete;
+		}
+
+		void Page_InitComplete(object sender, EventArgs e)
+		{
             EnsureChildControls();
 		}
 
@@ -143,17 +134,34 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddDefinitions(Control container)
 		{
+			IList<Zone> pageZones = Page.Items[Zone.PageKey] as IList<Zone>;
+			if(pageZones == null) return;
+
 			HtmlGenericControl definitions = new HtmlGenericControl("div");
 			definitions.Attributes["class"] = "definitions";
 			container.Controls.Add(definitions);
 
-			foreach (ItemDefinition definition in AvailableDefinitions)
+			List<ItemDefinition> availableDefinitions = new List<ItemDefinition>();
+			foreach(Zone z in pageZones)
+			{
+				ContentItem item = z.CurrentItem;
+				string zoneName = z.ZoneName;
+				if(item == null || string.IsNullOrEmpty(zoneName)) continue;
+
+				foreach(ItemDefinition definition in ZoneController.GetAllowedDefinitions(item, zoneName, Page.User))
+				{
+					if(!availableDefinitions.Contains(definition))
+						availableDefinitions.Add(definition);
+				}
+			}
+
+			foreach (ItemDefinition definition in availableDefinitions)
 			{
 				HtmlGenericControl div = new HtmlGenericControl("div");
 				div.Attributes["title"] = definition.ToolTip;
 				div.Attributes["id"] = definition.Discriminator;
 				div.Attributes["class"] = "definition " + definition.Discriminator;
-				div.InnerHtml = FormatImageAndText(N2.Web.Url.ToAbsolute(definition.IconUrl), definition.Title);
+				div.InnerHtml = FormatImageAndText(Url.ToAbsolute(definition.IconUrl), definition.Title);
 				definitions.Controls.Add(div);
 			}
 		}
@@ -169,10 +177,12 @@ namespace N2.Web.UI.WebControls
 			Register.JavaScript(Page, "~/edit/js/jquery.ui.ashx");
 			Register.JavaScript(Page, DragDropScriptUrl);
 
-			Register.JavaScript(Page, @"if(typeof dragItems != 'undefined')
-	window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
-else
-	window.n2ddcp = new DragDrop(dropZones, dropPoints, []);", ScriptOptions.DocumentReady);
+			Register.JavaScript(Page, @"
+if(typeof dragItems == 'undefined') dragItems = [];
+if(typeof dropZones == 'undefined') dropZones = [];
+if(typeof dropPoints == 'undefined') dropPoints = [];
+window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
+", ScriptOptions.DocumentReady);
 		}
 
 		protected virtual void AddPlugins(ControlPanelState state)
@@ -261,16 +271,6 @@ else
 		protected string FormatImageAndText(string iconUrl, string text)
 		{
 			return string.Format("<img src='{0}' alt=''/>{1}", iconUrl, text);
-		}
-
-		private bool IsAllowedInAZone(ItemDefinition definition)
-		{
-			foreach (AvailableZoneAttribute zone in PageDefinition.AvailableZones)
-			{
-				if (definition.IsAllowedInZone(zone.ZoneName))
-					return true;
-			}
-			return false;
 		}
 
 		#endregion

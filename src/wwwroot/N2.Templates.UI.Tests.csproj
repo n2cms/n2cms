@@ -59,6 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Addons\UITests\Items\AdaptiveRequestController.cs" />
     <Compile Include="Addons\UITests\Items\AdaptiveItemPage.cs" />
     <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.cs">
       <DependentUpon>AdaptiveItem.aspx</DependentUpon>
@@ -74,19 +75,19 @@
     <Compile Include="Addons\UITests\UI\ControlDesigners.aspx.designer.cs">
       <DependentUpon>ControlDesigners.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Addons\UITests\UI\FileEvents.aspx.cs">
-      <DependentUpon>FileEvents.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Addons\UITests\UI\FileEvents.aspx.designer.cs">
-      <DependentUpon>FileEvents.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Addons\UITests\UI\GridViewTest.aspx.cs">
       <DependentUpon>GridViewTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\UITests\UI\GridViewTest.aspx.designer.cs">
       <DependentUpon>GridViewTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\Item.ascx.cs">
+      <DependentUpon>Item.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\Item.ascx.designer.cs">
+      <DependentUpon>Item.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\UITests\UI\ItemEditor.aspx.cs">
       <DependentUpon>ItemEditor.aspx</DependentUpon>
@@ -125,7 +126,6 @@
     <Content Include="Addons\UITests\UI\ItemDataSource_Path.aspx" />
     <Content Include="Addons\UITests\UI\ItemDataSource_PageFilter.aspx" />
     <Content Include="Addons\UITests\UI\ItemDataSource_SortBy.aspx" />
-    <Content Include="Addons\UITests\UI\FileEvents.aspx" />
     <Content Include="Addons\UITests\UI\ItemEditor.aspx" />
     <Content Include="Addons\UITests\UI\ItemEditorList.aspx" />
     <Content Include="Addons\UITests\UI\PageMethods.aspx" />
@@ -147,6 +147,8 @@
     <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\ControlPanel_WithZones.aspx" />
+    <Content Include="Addons\UITests\UI\Item.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
