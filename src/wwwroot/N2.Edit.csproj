@@ -145,8 +145,6 @@
     <Compile Include="Edit\FileManagement\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Edit\FileManagement\FileEventArgs.cs" />
-    <Compile Include="Edit\FileManagement\FileManager.cs" />
     <Compile Include="Edit\FileSystem\Directory.aspx.cs">
       <DependentUpon>Directory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

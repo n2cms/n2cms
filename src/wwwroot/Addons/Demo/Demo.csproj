@@ -40,10 +40,6 @@
       <HintPath>..\bin\N2.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="N2.Edit, Version=1.0.303.297, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\N2.Edit.dll</HintPath>
-    </Reference>
     <Reference Include="N2.Templates, Version=1.0.400.24224, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Bin\N2.Templates.dll</HintPath>
@@ -60,6 +56,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DemoFileSystem.cs" />
     <Compile Include="DemoInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Register.ascx.cs">
@@ -72,6 +69,7 @@
     <Compile Include="Items\RegisterItem.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config.txt" />
     <Content Include="Register.ascx" />
     <EmbeddedResource Include="Resources\logo_white.png" />
   </ItemGroup>

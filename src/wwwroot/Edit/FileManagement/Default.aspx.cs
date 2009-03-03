@@ -98,12 +98,8 @@ namespace N2.Edit.FileManagement
 
 						try
 						{
-							if (!FileManager.CancelUploading(url))
-							{
-								lastUrl = url;
-								FileSystem.WriteFile(url, postedFile.InputStream);
-								FileManager.InvokeUploaded(url);
-							}
+							lastUrl = url;
+							FileSystem.WriteFile(url, postedFile.InputStream);
 						}
 						catch (Exception ex)
 						{
@@ -140,19 +136,14 @@ namespace N2.Edit.FileManagement
 
 				try
                 {
-					if (!FileManager.CancelDeleting(selectedUrl.Value))
-					{
-						if(FileSystem.FileExists(url))
-							FileSystem.DeleteFile(url);
-						else if(FileSystem.DirectoryExists(url))
-							FileSystem.DeleteDirectory(url);
+					if(FileSystem.FileExists(url))
+						FileSystem.DeleteFile(url);
+					else if(FileSystem.DirectoryExists(url))
+						FileSystem.DeleteDirectory(url);
 
-							FileManager.InvokeDeleted(selectedUrl.Value);
-
-						lastUrl = SelectedUrl.Substring(0, SelectedUrl.TrimEnd('/').LastIndexOf('/'));
-						
-						DataBind();
-					}
+					lastUrl = SelectedUrl.Substring(0, SelectedUrl.TrimEnd('/').LastIndexOf('/'));
+					
+					DataBind();
 				}
 				catch(ApplicationException ex)
 				{
