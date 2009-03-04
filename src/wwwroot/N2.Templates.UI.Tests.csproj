@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\UITests\UI\ControlPanel_WithZones.aspx" />
+    <Content Include="Addons\UITests\UI\ItemDataSource_Query.aspx" />
     <Content Include="Addons\UITests\UI\Item.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
