@@ -16,8 +16,6 @@
 - fix IAutoStart
 - cleanup many versions
 - rating
-- msi installer
-- update sandcastle documentation
 - delete restrictions
 - wiki
 	- discuss
@@ -89,6 +87,8 @@
 - change url rewriting strategy
 - import: handle unmapped types
 - webdav
+- msi installer
+- update sandcastle documentation
 
 TODO:
 - documentation & programmability

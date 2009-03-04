@@ -30,9 +30,14 @@ namespace N2.Web
 			return parentItem.GetChildren(zoneName);
 		}
 
-		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem item, string zoneName, IPrincipal user)
+		/// <summary>Retrieves allowed item definitions.</summary>
+		/// <param name="parentItem">The parent item.</param>
+		/// <param name="zoneName">The zone where children would be placed.</param>
+		/// <param name="user">The user to restrict access for.</param>
+		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
+		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, string zoneName, IPrincipal user)
 		{
-			ItemDefinition containerDefinition = Engine.Definitions.GetDefinition(item.GetType());
+			ItemDefinition containerDefinition = Engine.Definitions.GetDefinition(parentItem.GetType());
 
 			foreach (ItemDefinition childDefinition in containerDefinition.AllowedChildren)
 			{

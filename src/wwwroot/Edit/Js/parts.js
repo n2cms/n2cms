@@ -97,6 +97,7 @@
         },
 
         droppableZones: function(t, dz) {
+            var htmlBackup, heightBackup;
             for (var i = 0; i < dz.length; ++i) {
                 $(dz[i].selector).droppable({
                     accept: dz[i].accept,
@@ -104,16 +105,24 @@
                     hoverClass: 'droppable-hover',
                     tolerance: 'pointer',
                     drop: function(ev, ui) {
+                        $(ui.draggable).html("");
+                        $(this).append("<div class='dropping'/>");
                         if (n2dragging) {
                             n2dragging = false;
                             t.dropHandler(this.id, ev.ctrlKey);
                         }
                     },
                     over: function(e, ui) {
-                        $(ui.element).height($(ui.draggable).height());
+                        var $t = $(this);
+                        htmlBackup = $t.html();
+                        heightBackup = $t.height();
+                        $t.html(ui.draggable.html()).css("height", "auto");
+                        ui.draggable.fadeTo("fast", .2);
+                        ui.helper.height($t.height()).width($t.width());
                     },
                     out: function(e, ui) {
-                        $(ui.element).height(16);
+                        $(this).html(htmlBackup).height(heightBackup);
+                        ui.draggable.fadeTo("fast", 1);
                     }
                 });
             }
@@ -236,7 +245,7 @@
                     $sc.css(openPos);
                 }
                 $sc.addClass("opened");
-                $.cookie("sc_open", "true", {expires:1});
+                $.cookie("sc_open", "true", { expires: 1 });
             },
             close: function(e) {
                 if (e) {
