@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Web.UI.WebControls;
+using N2.Edit.FileSystem;
 using N2.Resources;
 using N2.Templates.Web.UI;
 using N2.Web;
@@ -106,20 +107,20 @@ namespace N2.Addons.AddonCatalog.UI
             addon.Summary = Encode(txtSummary.Text);
             if(fuAddon.PostedFile.ContentLength > 0)
             {
+				IFileSystem fs = Engine.Resolve<IFileSystem>();
+				
                 if(!string.IsNullOrEmpty(addon.UploadedFileUrl))
                 {
-                    string existingFile = Server.MapPath(addon.UploadedFileUrl);
-                    if(File.Exists(existingFile))
-                        File.Delete(existingFile);
+                    if(File.Exists(addon.UploadedFileUrl))
+                        File.Delete(addon.UploadedFileUrl);
                 }
                 string fileName = Path.GetFileName(fuAddon.PostedFile.FileName);
                 Url folder = Url.Parse(Engine.EditManager.UploadFolders[0]).AppendSegment("Addons");
-                string folderPath = Server.MapPath(folder);
-                if (!Directory.Exists(folderPath))
-                    Directory.CreateDirectory(folderPath);
+            	if(!fs.DirectoryExists(folder))
+					fs.CreateDirectory(folder);
                 
                 addon.UploadedFileUrl = folder.AppendSegment(Path.GetFileNameWithoutExtension(fileName), Path.GetExtension(fileName));
-                fuAddon.PostedFile.SaveAs(Server.MapPath(addon.UploadedFileUrl));
+				fs.WriteFile(addon.UploadedFileUrl, fuAddon.PostedFile.InputStream);
             }
 
             Engine.Persister.Save(addon);
