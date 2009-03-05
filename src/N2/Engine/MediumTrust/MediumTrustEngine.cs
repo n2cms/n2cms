@@ -95,7 +95,8 @@ namespace N2.Engine.MediumTrust
             Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
             InstallationManager installer = AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
-			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(this, webContext, urlParser, typeFinder, errorHandler, hostConfiguration));
+			IAspectControllerProvider aspectController = AddComponentInstance<IAspectControllerProvider>(new AspectControllerProvider(this, typeFinder));
+			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(aspectController, webContext, urlParser, errorHandler, hostConfiguration));
 			lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(webContext, installer, dispatcher, errorHandler, editConfiguration));
             AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));

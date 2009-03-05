@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using N2.Configuration;
 using N2.Engine;
 using N2.Persistence;
@@ -36,8 +34,9 @@ namespace N2.Tests.Web
 			engine = new FakeEngine();
 			AppDomainTypeFinder finder = new AppDomainTypeFinder();
 			engine.AddComponentInstance(null, typeof (IDefinitionManager), new DefinitionManager(new DefinitionBuilder(finder), null));
-			dispatcher = new RequestDispatcher(engine, webContext, parser, finder, new ErrorHandler(webContext, null, null), hostSection);
-			dispatcher.Start();
+			AspectControllerProvider provider = new AspectControllerProvider(engine, new AppDomainTypeFinder());
+			provider.Start();
+			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
 		}
 
 

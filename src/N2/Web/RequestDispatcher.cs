@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using N2.Engine;
-using Castle.Core;
-using N2.Plugin;
 using N2.Configuration;
 
 namespace N2.Web
@@ -13,24 +10,21 @@ namespace N2.Web
 	/// controller or additional imprativly using the ConnectControllers method 
 	/// or declarativly using the [Controls] attribute registered.
 	/// </summary>
-	public class RequestDispatcher : IRequestDispatcher, IStartable, IAutoStart
+	public class RequestDispatcher : IRequestDispatcher
 	{
-		readonly IEngine engine;
+		readonly IAspectControllerProvider aspectProvider;
 		readonly IWebContext webContext;
 		readonly IUrlParser parser;
-		readonly ITypeFinder finder;
 		readonly IErrorHandler errorHandler;
 		readonly bool rewriteEmptyExtension = true;
 		readonly string[] observedExtensions = new[] { ".aspx" };
 
-		IControllerDescriptor[] controllerDescriptors = new IControllerDescriptor[0];
 
-		public RequestDispatcher(IEngine engine, IWebContext webContext, IUrlParser parser, ITypeFinder finder, IErrorHandler errorHandler, HostSection config)
+		public RequestDispatcher(IAspectControllerProvider aspectProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
 		{
-			this.engine = engine;
+			this.aspectProvider = aspectProvider;
 			this.webContext = webContext;
 			this.parser = parser;
-			this.finder = finder;
 			this.errorHandler = errorHandler;
 			rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
 			StringCollection additionalExtensions = config.Web.ObservedExtensions;
@@ -44,44 +38,16 @@ namespace N2.Web
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual T ResolveAspectController<T>(PathData path) where T : class, IAspectController
-		{
-			if(path == null || path.IsEmpty()) return null;
-
-			T controller = CreateControllerInstance<T>(path);
-			if (controller == null) return null;
-
-			controller.Path = path;
-			controller.Engine = engine;
-			return controller;
-		}
-
-		/// <summary>Resolves the controller for the current Url.</summary>
-		/// <returns>A suitable controller for the given Url.</returns>
 		public virtual T ResolveAspectController<T>() where T : class, IAspectController
 		{
 			T controller = RequestItem<T>.Instance;
 			if (controller != null) return controller;
 
 			PathData path = ResolveUrl(webContext.Url);
-			controller = ResolveAspectController<T>(path);
+			controller = aspectProvider.ResolveAspectController<T>(path);
 			
 			RequestItem<T>.Instance = controller;
 			return controller;
-		}
-
-
-		/// <summary>Adds controller descriptors to the list of descriptors. This is typically auto-wired using the [Controls] attribute.</summary>
-		/// <param name="descriptorToAdd">The controller descriptors to add.</param>
-		public void RegisterAspectController(params IControllerDescriptor[] descriptorToAdd)
-		{
-			lock(this)
-			{
-				List<IControllerDescriptor> references = new List<IControllerDescriptor>(controllerDescriptors);
-				references.AddRange(descriptorToAdd);
-				references.Sort();
-				controllerDescriptors = references.ToArray();
-			}
 		}
 
 		public PathData ResolveUrl(string url)
@@ -113,42 +79,5 @@ namespace N2.Web
 
 			return false;
 		}
-
-		protected virtual T CreateControllerInstance<T>(PathData path) where T: class, IAspectController
-		{
-			Type requestedType = typeof (T);
-
-			foreach (IControllerDescriptor reference in controllerDescriptors)
-			{
-				if (requestedType.IsAssignableFrom(reference.ControllerType) && reference.IsControllerFor(path, requestedType))
-				{
-					return Activator.CreateInstance(reference.ControllerType) as T;
-				}
-			}
-
-			throw new N2Exception("Couldn't find an aspect controller '{0}' for the item '{1}' on the path '{2}'.", typeof(T).FullName, path.CurrentItem, path.Path);
-		}
-
-		#region IStartable Members
-
-		public void Start()
-		{
-			List<IControllerDescriptor> references = new List<IControllerDescriptor>();
-			foreach (Type controllerType in finder.Find(typeof(IAspectController)))
-			{
-				foreach (IControllerDescriptor reference in controllerType.GetCustomAttributes(typeof(IControllerDescriptor), false))
-				{
-					reference.ControllerType = controllerType;
-					references.Add(reference);
-				}
-			}
-			RegisterAspectController(references.ToArray());
-		}
-
-		public void Stop()
-		{
-		}
-
-		#endregion
 	}
 }

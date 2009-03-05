@@ -51,7 +51,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>The aspect controller related to the current page item.</summary>
 		protected virtual EditAspectController EditController
 		{
-			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<EditAspectController>(CurrentItem.FindPath(PathData.DefaultAction)); }
+			get { return Engine.Resolve<IAspectControllerProvider>().ResolveAspectController<EditAspectController>(CurrentItem.FindPath(PathData.DefaultAction)); }
 		}
 
 		/// <summary>Gets a dictionary of editor controls added this control.</summary>

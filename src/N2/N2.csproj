@@ -332,6 +332,7 @@
     <Compile Include="Edit\Settings\ISettingsEditor.cs" />
     <Compile Include="Engine\AbstractAspectController.cs" />
     <Compile Include="Engine\Action.cs" />
+    <Compile Include="Engine\AspectControllerProvider.cs" />
     <Compile Include="Engine\Function.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -343,6 +344,7 @@
     <Compile Include="Engine\Globalization\NavigationTranslationsPluginAttribute.cs" />
     <Compile Include="Engine\Globalization\Scope.cs" />
     <Compile Include="Engine\Globalization\TranslateSpecification.cs" />
+    <Compile Include="Engine\IAspectControllerProvider.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
     <Compile Include="Engine\Singleton.cs" />

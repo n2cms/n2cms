@@ -19,9 +19,9 @@ namespace N2.Tests.Web
 		FakeWebContextWrapper webContext;
 		ContentItem root, one, two;
 		ErrorHandler errorHandler;
-		AppDomainTypeFinder finder;
 		IEngine engine;
-			
+		AspectControllerProvider controllerProvider;
+
 		[SetUp]
 		public override void SetUp()
 		{
@@ -36,9 +36,10 @@ namespace N2.Tests.Web
 			HostSection hostSection = new HostSection();
 			parser = new UrlParser(persister, webContext, mocks.Stub<IItemNotifier>(), new Host(webContext, root.ID, root.ID), hostSection);
 			errorHandler = new ErrorHandler(webContext, null, null);
-			finder = new AppDomainTypeFinder();
 			engine = new FakeEngine();
 			engine.AddComponentInstance(null, typeof(IWebContext), webContext);
+			controllerProvider = new AspectControllerProvider(engine, new AppDomainTypeFinder());
+			controllerProvider.Start();
 
 			ReCreateDispatcherWithConfig(hostSection);
 		}
@@ -162,8 +163,7 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			dispatcher = new RequestDispatcher(engine, webContext, parser, finder, errorHandler, config);
-			dispatcher.Start();
+			dispatcher = new RequestDispatcher(controllerProvider, webContext, parser, errorHandler, config);
 			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, errorHandler);
 		}
 	}
