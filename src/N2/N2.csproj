@@ -319,6 +319,7 @@
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
+    <Compile Include="Edit\EditAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />
     <Compile Include="Edit\FileSystem\FileData.cs" />
     <Compile Include="Edit\FileSystem\IFileSystem.cs" />
@@ -329,6 +330,7 @@
     <Compile Include="Edit\ControlPanelLinkAttribute.cs" />
     <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
     <Compile Include="Edit\Settings\ISettingsEditor.cs" />
+    <Compile Include="Engine\AbstractAspectController.cs" />
     <Compile Include="Engine\Action.cs" />
     <Compile Include="Engine\Function.cs">
       <SubType>Code</SubType>

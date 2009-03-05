@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Edit;
 using N2.Engine;
 using N2.Definitions;
 
@@ -39,19 +40,18 @@ namespace N2.Web.UI.WebControls
 		#endregion
 
 		#region Private Fields
-
 		private ContentItem currentItem;
 		private IDictionary<string, Control> editors;
-		private IEngine engine;
-
 		#endregion
 
 		#region Properties
 
-		public virtual IEngine Engine
+		public virtual IEngine Engine { get; set;}
+
+		/// <summary>The aspect controller related to the current page item.</summary>
+		protected virtual EditAspectController EditController
 		{
-            get { return engine ?? N2.Context.Current; }
-			set { engine = value; }
+			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<EditAspectController>(); }
 		}
 
 		/// <summary>Gets a dictionary of editor controls added this control.</summary>
@@ -66,18 +66,29 @@ namespace N2.Web.UI.WebControls
 			get { return HtmlTextWriterTag.Div; }
 		}
 
-        ///// <summary>The type of item to edit. ItemEditor will look at <see cref="N2.EditableAttribute"/> attributes on this type to render input controls.</summary>
-        //public string ItemTypeName
-        //{
-        //    get { return (string) ViewState["ContentItemType"] ?? ""; }
-        //    set { ViewState["ContentItemType"] = value; }
-        //}
-
-        /// <summary>The type of item to edit. ItemEditor will look at <see cref="N2.EditableAttribute"/> attributes on this type to render input controls.</summary>
+        /// <summary>The type of item to edit. ItemEditor will look at <see cref="N2.Details.AbstractEditableAttribute"/> attributes on this type to render input controls.</summary>
         public string Discriminator
         {
             get { return (string)ViewState["Discriminator"] ?? string.Empty; }
             set { ViewState["Discriminator"] = value; }
+        }
+
+        /// <summary>Gets the type of the edited item.</summary>
+        /// <returns>The item's type.</returns>
+        public Type CurrentItemType
+        {
+            get 
+            {
+                if (!string.IsNullOrEmpty(Discriminator))
+                {
+                    ItemDefinition def = Engine.Definitions.GetDefinition(Discriminator);
+                    if (def != null)
+                    {
+                        return def.ItemType;
+                    }
+                }
+                return null;
+            }
         }
 
         /// <summary>Gets the parent item id that the edited item will be set to.</summary>
@@ -87,14 +98,6 @@ namespace N2.Web.UI.WebControls
             set { ViewState["ParentPath"] = value; }
         }
 
-        //[Obsolete]
-        ///// <summary>Gets the parent item id that the edited item will be set to.</summary>
-        //public int ParentItemID
-        //{
-        //    get { return (int) (ViewState["ParentItemID"] ?? 0); }
-        //    set { ViewState["ParentItemID"] = value; }
-        //}
-
 		/// <summary>Gets or sets the item to edit with this form.</summary>
 		public ContentItem CurrentItem
 		{
@@ -102,7 +105,7 @@ namespace N2.Web.UI.WebControls
 			{
 				if (currentItem == null && !string.IsNullOrEmpty(Discriminator))
 				{
-                    ContentItem parentItem = Engine.Resolve<N2.Edit.Navigator>().Navigate(ParentPath);//.Persister.Get(ParentItemID);
+                    ContentItem parentItem = Engine.Resolve<N2.Edit.Navigator>().Navigate(ParentPath);
 					currentItem = Engine.Definitions.CreateInstance(CurrentItemType, parentItem);
 					currentItem.ZoneName = ZoneName;
 				}
@@ -113,7 +116,6 @@ namespace N2.Web.UI.WebControls
 				currentItem = value;
 				if (value != null)
 				{
-					//ItemTypeName = value.GetType().AssemblyQualifiedName;
                     Discriminator = Engine.Definitions.GetDefinition(value.GetType()).Discriminator;
 					if (value.VersionOf != null && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;
@@ -122,7 +124,7 @@ namespace N2.Web.UI.WebControls
 				}
 				else
 				{
-                    Discriminator = null;//ItemTypeName = null;
+                    Discriminator = null;
 				}
 			}
 		}
@@ -141,42 +143,19 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["SaveVersion"] = value; }
 		}
 
-        /// <summary>Gets the type defined by <see cref="ItemTypeName"/>.</summary>
-        /// <returns>The item's type.</returns>
-        public Type CurrentItemType
-        {
-            get 
-            {
-                if (!string.IsNullOrEmpty(Discriminator))
-                {
-                    ItemDefinition def = Engine.Definitions.GetDefinition(Discriminator);
-                    if (def != null)
-                    {
-                        return def.ItemType;
-                    }
-                }
-                return null;
-            }
-        }
-
 		#endregion
 
 		#region Methods
 
-        //public bool HasType()
-        //{
-        //    return CurrentItemType != null;
-        //}
-
 		protected override void CreateChildControls()
 		{
-            Type t = CurrentItemType;
-			if (t != null)
+            Type itemType = CurrentItemType;
+			if (itemType != null)
 			{
-				editors = Engine.EditManager.AddEditors(t, this, Page.User);
+				AddedEditors = EditController.AddEditors(itemType, this, Page.User);
 				if (!Page.IsPostBack)
 				{
-					Engine.EditManager.UpdateEditors(CurrentItem, AddedEditors, Page.User);
+					EditController.UpdateEditors(CurrentItem, AddedEditors, Page.User);
 				}
 			}
 
@@ -187,7 +166,7 @@ namespace N2.Web.UI.WebControls
 		public ContentItem Save()
 		{
 			EnsureChildControls();
-			CurrentItem = Engine.EditManager.Save(this, Page.User);
+			CurrentItem = EditController.SaveItem(CurrentItem, AddedEditors, VersioningMode, Page.User);
 			if (Saved != null)
 				Saved.Invoke(this, new ItemEventArgs(CurrentItem));
 			return CurrentItem;
@@ -196,7 +175,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Updates the <see cref="CurrentItem"/> with the values entered in the form without saving it.</summary>
 		public void Update()
 		{
-			Engine.EditManager.UpdateItem(CurrentItem, AddedEditors, Page.User);
+			EditController.UpdateItem(CurrentItem, AddedEditors, Page.User);
 		}
 
 		#endregion

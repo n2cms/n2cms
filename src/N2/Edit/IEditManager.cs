@@ -70,9 +70,11 @@ namespace N2.Edit
 		bool UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user);
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>
-		/// <param name="itemEditor">The item editor containing the values to update with.</param>
+		/// <param name="item">The item to update.</param>
+		/// <param name="addedEditors">The editors to update the item with.</param>
+		/// <param name="versioningMode">How to treat the item beeing saved in respect to versioning.</param>
 		/// <param name="user">The user that is performing the saving.</param>
-		ContentItem Save(IItemEditor itemEditor, IPrincipal user);
+		ContentItem Save(ContentItem item, IDictionary<string, Control> addedEditors, ItemEditorVersioningMode versioningMode, IPrincipal user);
 
 		/// <summary>Gets the url to the edit interface with a certain item selected.</summary>
 		/// <param name="selectedItem">The item to select in edit mode.</param>

@@ -70,7 +70,7 @@ namespace N2.Tests.Edit
 		{
 			using (mocks.Playback())
 			{
-				editManager.Save(editor, user);
+				editManager.Save(editor.CurrentItem, editor.AddedEditors, editor.VersioningMode, user);
 			}
 		}
 

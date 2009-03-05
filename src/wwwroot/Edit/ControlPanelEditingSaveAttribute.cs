@@ -35,7 +35,7 @@ namespace N2.Edit
 
 					foreach (IItemEditor itemEditor in itemEditors)
 					{
-						Context.Current.EditManager.Save(itemEditor, container.Page.User);
+						Context.Current.EditManager.Save(itemEditor.CurrentItem, itemEditor.AddedEditors, itemEditor.VersioningMode, container.Page.User);
 					}
 
 					RedirectTo(container.Page, context.Selected);

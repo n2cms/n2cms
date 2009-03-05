@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Security.Principal;
 using System.Web;
 using N2.Engine;
 using N2.Security;
 using N2.Web.UI;
-using N2.Engine.Aspects;
 
 namespace N2.Web
 {
@@ -15,23 +14,27 @@ namespace N2.Web
 	/// [Controls] attribute).
 	/// </summary>
 	[Controls(typeof(ContentItem))]
-	public class RequestAspectController : IAspectController
+	public class RequestAspectController : AbstractAspectController
 	{
-		/// <summary>The path associated with this controller instance.</summary>
-		public PathData Path { get; set; }
-
-		/// <summary>The content engine requesting control. TODO: support dependency injection.</summary>
-		public IEngine Engine { get; set; }
-
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		public virtual void RewriteRequest()
 		{
 			if(Path != null && !Path.IsEmpty())
-				Engine.Resolve<IWebContext>().RewritePath(Path.RewrittenUrl);
+			{
+				string templateUrl = GetHandlerPath();
+				Engine.Resolve<IWebContext>().RewritePath(templateUrl);
+			}
+		}
+
+        /// <summary>Gets the path to the handler (aspx template) to rewrite to.</summary>
+        /// <returns></returns>
+		protected virtual string GetHandlerPath()
+		{
+			return Path.RewrittenUrl;
 		}
 
 		/// <summary>Inject the current page into the page handler.</summary>
-		/// <param name="handler"></param>
+		/// <param name="handler">The handler executing the request.</param>
 		public virtual void InjectCurrentPage(IHttpHandler handler)
 		{
 			IContentTemplate template = handler as IContentTemplate;

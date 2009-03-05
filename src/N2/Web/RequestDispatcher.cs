@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.IO;
 using N2.Engine;
 using Castle.Core;
-using N2.Engine.Aspects;
 using N2.Plugin;
 using N2.Configuration;
 using System.Web.Hosting;

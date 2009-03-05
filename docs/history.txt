@@ -1,7 +1,11 @@
-﻿- Made the drag'n'drop nicer
-- Upgraded jQuery to 1.3.2 and jQuery.UI to 1.6rc6
-- Removed FileManager and it's events (implement custom IFileManager)
-- Removed postbacks from control panel (mvc support)
+﻿- added edit aspect controller
+- added parts aspect controller
+- added request aspect controller
+- added aspect controller concept (external manipulation of certain aspects)
+- made the drag'n'drop nicer
+- upgraded jQuery to 1.3.2 and jQuery.UI to 1.6rc6
+- removed FileManager and it's events (implement custom IFileManager)
+- removed postbacks from control panel (mvc support)
 - fixed #21454 Error with .In<>(params T[] values) operator...
 - added a more programmer friendly api for file operations
 - fixed #21443 Time picker localization (en-US)

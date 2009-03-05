@@ -238,24 +238,23 @@ namespace N2.Edit
 		}
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>
-		/// <param name="itemEditor">The item editor containing the values to update with.</param>
+		/// <param name="item">The item to update.</param>
+		/// <param name="addedEditors">The editors to update the item with.</param>
+		/// <param name="versioningMode">How to treat the item beeing saved in respect to versioning.</param>
 		/// <param name="user">The user that is performing the saving.</param>
-		public virtual ContentItem Save(IItemEditor itemEditor, IPrincipal user)
+		public virtual ContentItem Save(ContentItem item, IDictionary<string, Control> addedEditors, ItemEditorVersioningMode versioningMode, IPrincipal user)
 		{
-			ContentItem item = itemEditor.CurrentItem;
-			ItemEditorVersioningMode mode = itemEditor.VersioningMode;
-
 			// when an unpublished version is saved and published
-			if(mode == ItemEditorVersioningMode.SaveAsMaster)
+			if(versioningMode == ItemEditorVersioningMode.SaveAsMaster)
 			{
 				ContentItem itemToUpdate = item.VersionOf;
-				if (itemToUpdate == null) throw new ArgumentException("Expected the current item to be a version of another item.", "itemEditor");
+				if (itemToUpdate == null) throw new ArgumentException("Expected the current item to be a version of another item.", "item");
 
                 if (ShouldStoreVersion(item))
                     SaveVersion(itemToUpdate);
 
 				DateTime? published = itemToUpdate.Published;
-				bool wasUpdated = UpdateItem(itemToUpdate, itemEditor.AddedEditors, user);
+				bool wasUpdated = UpdateItem(itemToUpdate, addedEditors, user);
 				if (wasUpdated || IsNew(itemToUpdate))
 				{
 					itemToUpdate.Published = published ?? Utility.CurrentTime();
@@ -266,9 +265,9 @@ namespace N2.Edit
 			}
 
 			// when an item is saved without any new version
-			if (mode == ItemEditorVersioningMode.SaveOnly)
+			if (versioningMode == ItemEditorVersioningMode.SaveOnly)
 			{
-				bool wasUpdated = UpdateItem(item, itemEditor.AddedEditors, user);
+				bool wasUpdated = UpdateItem(item, addedEditors, user);
 				if (wasUpdated || IsNew(item))
 					persister.Save(item);
 
@@ -276,7 +275,7 @@ namespace N2.Edit
 			}
 			
 			// when an item is saved but a version is stored before the item is updated
-			if (mode == ItemEditorVersioningMode.VersionAndSave)
+			if (versioningMode == ItemEditorVersioningMode.VersionAndSave)
 			{
 				using (ITransaction tx = persister.Repository.BeginTransaction())
 				{
@@ -284,7 +283,7 @@ namespace N2.Edit
 						SaveVersion(item);
 
 					DateTime? initialPublished = item.Published;
-					bool wasUpdated = UpdateItem(item, itemEditor.AddedEditors, user);
+					bool wasUpdated = UpdateItem(item, addedEditors, user);
 					DateTime? updatedPublished = item.Published;
 
 					// the item was the only version of an unpublished item - publish it
@@ -304,12 +303,12 @@ namespace N2.Edit
 			}
 				
 			// when making a version without saving the item
-			if (mode == ItemEditorVersioningMode.VersionOnly)
+			if (versioningMode == ItemEditorVersioningMode.VersionOnly)
 			{
 				if (ShouldStoreVersion(item))
 					item = SaveVersion(item);
 
-				bool wasUpdated = UpdateItem(item, itemEditor.AddedEditors, user);
+				bool wasUpdated = UpdateItem(item, addedEditors, user);
 				if (wasUpdated || IsNew(item))
 				{
 					item.Published = null;

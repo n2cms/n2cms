@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using N2.Collections;
-using N2.Engine.Aspects;
+using N2.Engine;
 using N2.Definitions;
 using System.Security.Principal;
 using N2.Web.UI;
@@ -12,16 +12,8 @@ namespace N2.Web.Parts
 	/// Controls aspects related to zones, zone definitions, and items to display in a zone.
 	/// </summary>
 	[Controls(typeof(ContentItem))]
-	public class PartsAspectController : IAspectController
+	public class PartsAspectController : AbstractAspectController
 	{
-		#region IAspectController Members
-
-		public PathData Path { get; set; }
-
-		public N2.Engine.IEngine Engine { get; set; }
-
-		#endregion
-
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="parentItem">The item whose items to get.</param>
 		/// <param name="zoneName">The zone in which the items should be contained.</param>
