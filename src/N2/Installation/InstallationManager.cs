@@ -55,24 +55,26 @@ namespace N2.Installation
 			return sr.ReadToEnd();
 		}
 
-
+		const bool ConsoleOutput = false;
+    	const bool DatabaseExport = true;
+			
 		/// <summary>Executes sql create database scripts.</summary>
 		public void Install()
 		{
 			SchemaExport exporter = new SchemaExport(Cfg);
-			exporter.Create(false, true);
+			exporter.Create(ConsoleOutput, DatabaseExport);
 		}
 
 		public void ExportSchema(TextWriter output)
 		{
 			SchemaExport exporter = new SchemaExport(Cfg);
-			exporter.Execute(true, false, false, true, null, output);
+			exporter.Execute(ConsoleOutput, DatabaseExport, false, true, null, output);
 		}
 
 		public void DropDatabaseTables()
 		{
 			SchemaExport exporter = new SchemaExport(Cfg);
-			exporter.Drop(true, true);
+			exporter.Drop(ConsoleOutput, DatabaseExport);
 		}
 
 		public DatabaseStatus GetStatus()

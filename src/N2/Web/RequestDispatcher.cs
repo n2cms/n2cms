@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using N2.Engine;
 using Castle.Core;
 using N2.Plugin;
 using N2.Configuration;
-using System.Web.Hosting;
 
 namespace N2.Web
 {
@@ -46,25 +44,32 @@ namespace N2.Web
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
+		public virtual T ResolveAspectController<T>(PathData path) where T : class, IAspectController
+		{
+			if(path == null || path.IsEmpty()) return null;
+
+			T controller = CreateControllerInstance<T>(path);
+			if (controller == null) return null;
+
+			controller.Path = path;
+			controller.Engine = engine;
+			return controller;
+		}
+
+		/// <summary>Resolves the controller for the current Url.</summary>
+		/// <returns>A suitable controller for the given Url.</returns>
 		public virtual T ResolveAspectController<T>() where T : class, IAspectController
 		{
 			T controller = RequestItem<T>.Instance;
 			if (controller != null) return controller;
 
 			PathData path = ResolveUrl(webContext.Url);
-
-			if (path.IsEmpty()) return null;
-
-			controller = CreateControllerInstance<T>(path);
-			if (controller == null) return null;
-			
-			controller.Path = path;
-			controller.Engine = engine;
+			controller = ResolveAspectController<T>(path);
 			
 			RequestItem<T>.Instance = controller;
-
 			return controller;
 		}
+
 
 		/// <summary>Adds controller descriptors to the list of descriptors. This is typically auto-wired using the [Controls] attribute.</summary>
 		/// <param name="descriptorToAdd">The controller descriptors to add.</param>

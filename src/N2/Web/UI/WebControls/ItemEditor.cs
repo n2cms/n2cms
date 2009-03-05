@@ -51,7 +51,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>The aspect controller related to the current page item.</summary>
 		protected virtual EditAspectController EditController
 		{
-			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<EditAspectController>(); }
+			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<EditAspectController>(CurrentItem.FindPath(PathData.DefaultAction)); }
 		}
 
 		/// <summary>Gets a dictionary of editor controls added this control.</summary>
@@ -105,7 +105,7 @@ namespace N2.Web.UI.WebControls
 			{
 				if (currentItem == null && !string.IsNullOrEmpty(Discriminator))
 				{
-                    ContentItem parentItem = Engine.Resolve<N2.Edit.Navigator>().Navigate(ParentPath);
+                    ContentItem parentItem = Engine.Resolve<Navigator>().Navigate(ParentPath);
 					currentItem = Engine.Definitions.CreateInstance(CurrentItemType, parentItem);
 					currentItem.ZoneName = ZoneName;
 				}
