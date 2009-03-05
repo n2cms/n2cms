@@ -12,6 +12,7 @@ using N2.Resources;
 using N2.Engine;
 using N2.Edit;
 using N2.Plugin;
+using N2.Web.Parts;
 
 namespace N2.Web.UI.WebControls
 {
@@ -57,9 +58,9 @@ namespace N2.Web.UI.WebControls
 			get { return N2.Context.Current; }
 		}
 
-		protected virtual ZoneAspectController ZoneController
+		protected virtual PartsAspectController ZoneController
 		{
-			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<ZoneAspectController>(); }
+			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<PartsAspectController>(); }
 		}
 
 		public virtual ContentItem CurrentItem

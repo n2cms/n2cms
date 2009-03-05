@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit;
 using N2.Integrity;
-using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI.WebControls
 {
@@ -120,7 +118,7 @@ namespace N2.Web.UI.WebControls
 		private string GetAllowedNames(string zoneName)
 		{
 			List<string> allowedDefinitions = new List<string>();
-			foreach (ItemDefinition potentialChild in ZoneController.GetAllowedDefinitions(CurrentItem, zoneName, Page.User))
+			foreach (ItemDefinition potentialChild in PartsController.GetAllowedDefinitions(CurrentItem, zoneName, Page.User))
 			{
 				allowedDefinitions.Add("." + potentialChild.Discriminator);
 			}

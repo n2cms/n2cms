@@ -1,4 +1,5 @@
 using System.Web.UI;
+using N2.Engine;
 
 namespace N2.Web.UI
 {
@@ -9,6 +10,11 @@ namespace N2.Web.UI
 	public abstract class ItemAwareControl : Control, IItemContainer
 	{
 		private ContentItem currentItem = null;
+
+		protected virtual IEngine Engine
+		{
+			get { return N2.Context.Current; }
+		}
 
 		/// <summary>Gets or sets a relative path to the item whose children should be listed by this datasource.</summary>
 		/// <example>

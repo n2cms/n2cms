@@ -1,10 +1,11 @@
 using N2.Web;
 using N2.Collections;
+using N2.Web.Parts;
 
 namespace N2.Tests.Web.Items
 {
 	[Controls(typeof(PageItem))]
-	public class PageZoneController : ZoneAspectController
+	public class PageZoneController : PartsAspectController
 	{
 		public override ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
 		{

@@ -610,7 +610,7 @@
     <Compile Include="Web\UI\WebControls\Ul.cs" />
     <Compile Include="Web\Url.cs" />
     <Compile Include="Web\WebRequestContext.cs" />
-    <Compile Include="Web\ZoneAspectController.cs" />
+    <Compile Include="Web\Parts\PartsAspectController.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Engine\n2.configuration.xml" />

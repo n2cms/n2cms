@@ -2,16 +2,17 @@
 using N2.Collections;
 using N2.Engine.Aspects;
 using N2.Definitions;
-using N2.Integrity;
 using System.Security.Principal;
+using N2.Web.UI;
+using System.Web.UI;
 
-namespace N2.Web
+namespace N2.Web.Parts
 {
 	/// <summary>
 	/// Controls aspects related to zones, zone definitions, and items to display in a zone.
 	/// </summary>
 	[Controls(typeof(ContentItem))]
-	public class ZoneAspectController : IAspectController
+	public class PartsAspectController : IAspectController
 	{
 		#region IAspectController Members
 
@@ -46,6 +47,14 @@ namespace N2.Web
 					yield return childDefinition;
 				}
 			}
+		}
+
+		/// <summary>Adds a content item part to a containing control hierarchy (typically a zone control).</summary>
+		/// <param name="item">The item to add a part.</param>
+		/// <param name="container">The container control to host the part user interface.</param>
+		public virtual Control AddPart(ContentItem item, System.Web.UI.Control container)
+		{
+			return ItemUtility.AddUserControl(container, item);
 		}
 	}
 }

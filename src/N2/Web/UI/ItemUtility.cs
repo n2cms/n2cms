@@ -58,7 +58,7 @@ namespace N2.Web.UI
 			return item;
 		}
 
-		public static Control AddUserControl(Control container, ContentItem item, string templateUrl)
+		public static Control AddUserControl(Control container, ContentItem item)
 		{
 			using (new ItemStacker(item))
 			{

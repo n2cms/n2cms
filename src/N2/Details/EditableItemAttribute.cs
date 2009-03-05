@@ -174,8 +174,8 @@ namespace N2.Details
 			{
 				if (linkedItem.IsPage)
 					return DisplayableAnchorAttribute.AddAnchor(container, linkedItem);
-				else
-					return ItemUtility.AddUserControl(container, linkedItem, linkedItem.TemplateUrl);
+				
+				return ItemUtility.AddUserControl(container, linkedItem);
 			}
 			return null;
 		}

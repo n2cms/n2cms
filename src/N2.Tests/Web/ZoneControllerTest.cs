@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,7 @@ using N2.Persistence;
 using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
 using N2.Web;
+using N2.Web.Parts;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using N2.Definitions;
@@ -45,7 +46,7 @@ namespace N2.Tests.Web
 		public void CanResolve_ZoneAspectController()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
+			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
 
 			Assert.That(controller, Is.TypeOf(typeof(PageZoneController)));
 		}
@@ -54,7 +55,7 @@ namespace N2.Tests.Web
 		public void Retrieves_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/item4");
-			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
+			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(customItem, "Zone1");
 
@@ -65,7 +66,7 @@ namespace N2.Tests.Web
 		public void CanFilter_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
+			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneNone");
 
@@ -76,7 +77,7 @@ namespace N2.Tests.Web
 		public void CanAddTo_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
+			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneAll");
 
@@ -87,7 +88,7 @@ namespace N2.Tests.Web
 		public void CanResolve_PossibleChildren()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			ZoneAspectController controller = dispatcher.ResolveAspectController<ZoneAspectController>();
+			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
 
 			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(webContext.CurrentPage, "Zone1", null);
 

@@ -63,7 +63,7 @@ namespace N2.Details
 				if (itemToAdd.IsPage)
 					return DisplayableAnchorAttribute.AddAnchor(container, itemToAdd);
 				else
-					return Web.UI.ItemUtility.AddUserControl(container, itemToAdd, itemToAdd.TemplateUrl);
+					return Web.UI.ItemUtility.AddUserControl(container, itemToAdd);
 			}
 			return null;
 		}

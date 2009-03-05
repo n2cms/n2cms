@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Web.UI;
 using N2.Collections;
 using System.Web.UI.WebControls;
-using N2.Engine;
+using N2.Web.Parts;
 
 namespace N2.Web.UI.WebControls
 {
@@ -17,21 +17,18 @@ namespace N2.Web.UI.WebControls
 	{
 		public const string PageKey = "n2.zones";
 			
-		private IEnumerable<ItemFilter> filters;
-		private bool isDataBound = false;
-		private IList<ContentItem> items = null;
-        private ITemplate separatorTemplate;
-        private ITemplate headerTemplate;
-        private ITemplate footerTemplate;
+		IEnumerable<ItemFilter> filters;
+		bool isDataBound = false;
+		IList<ContentItem> items = null;
+        ITemplate separatorTemplate;
+        ITemplate headerTemplate;
+        ITemplate footerTemplate;
+		PartsAspectController partsController;
 
-		protected virtual IEngine Engine
+		/// <summary>The aspect controller related to the current page item.</summary>
+		protected virtual PartsAspectController PartsController
 		{
-			get { return N2.Context.Current; }
-		}
-
-		protected virtual ZoneAspectController ZoneController
-		{
-			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<ZoneAspectController>(); }
+			get { return partsController ?? (partsController = Engine.Resolve<IRequestDispatcher>().ResolveAspectController<PartsAspectController>()); }
 		}
 
 		/// <summary>Gets or sets the zone from which to featch items.</summary>
@@ -114,7 +111,7 @@ namespace N2.Web.UI.WebControls
 			OnSelecting(args);
 
 			if (CurrentItem != null && args.Items == null)
-				args.Items = ZoneController.GetItemsInZone(CurrentItem, ZoneName);
+				args.Items = PartsController.GetItemsInZone(CurrentItem, ZoneName);
 
 			OnSelected(args);
 			OnFiltering(args);
@@ -190,31 +187,15 @@ namespace N2.Web.UI.WebControls
 			if (AddingChild != null)
 				AddingChild.Invoke(this, new ItemEventArgs(item));
 
-			string templateUrl = GetTemplateUrl(item);
-
-			Control templateItem = ItemUtility.AddUserControl(container, item, templateUrl);
-
-			if (AddedItemTemplate != null)
-				AddedItemTemplate.Invoke(this, new ControlEventArgs(templateItem));
+	    	PartsController.AddPart(item, container);
 		}
 
-		/// <summary>This event is invoked before when retrieving the user control template used to display a certain item. This is a place where the template can be changed.</summary>
+		[Obsolete("The event is no longer invoked", true)]
 		public event EventHandler<TemplateUrlEventArgs> GettingItemTemplate;
-
-		/// <summary>Gets the user control path which will display a certain item. This method can return an alternative templates if the <see cref="GettingItemTemplate"/> is bound.</summary>
-		/// <param name="item">The item which template we want to get.</param>
-		/// <returns>An url to the template that should display the item.</returns>
-		public virtual string GetTemplateUrl(ContentItem item)
-		{
-			TemplateUrlEventArgs args = new TemplateUrlEventArgs(item);
-			if (GettingItemTemplate != null)
-				GettingItemTemplate.Invoke(this, args);
-
-			return args.TemplateUrl;
-		}
+		[Obsolete("The event is no longer invoked", true)]
+		public event EventHandler<ControlEventArgs> AddedItemTemplate;
 
 		public event EventHandler<ItemEventArgs> AddingChild;
-		public event EventHandler<ControlEventArgs> AddedItemTemplate;
 		public event EventHandler<ItemListEventArgs> Selecting;
 		public event EventHandler<ItemListEventArgs> Selected;
         public event EventHandler<ItemListEventArgs> Filtering;
