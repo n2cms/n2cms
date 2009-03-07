@@ -1,19 +1,12 @@
 using System;
-using System.Data;
 using System.Configuration;
-using System.Collections;
-using System.Web;
 using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using System.Net.Mail;
 using Demo.Items;
 
 namespace Demo
 {
-	public partial class Register : N2.Web.UI.UserControl<N2.ContentItem, RegisterItem>
+	public partial class Register : N2.Web.UI.ContentUserControl<N2.ContentItem, RegisterItem>
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -46,6 +39,8 @@ namespace Demo
 
 		private void SendEmail(string to, string cc, string subject, string body)
 		{
+			if (string.IsNullOrEmpty(CurrentItem.From)) return;
+
 			string smtpServer = ConfigurationManager.AppSettings["SMTP.Server"];
 			string smtpUN = ConfigurationManager.AppSettings["SMTP.UN"];
 			string smtpPW = ConfigurationManager.AppSettings["SMTP.PW"];

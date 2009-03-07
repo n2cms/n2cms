@@ -1,4 +1,6 @@
-﻿- added edit aspect controller
+﻿- fixed #49484: removed telerik assemblies from type finder
+- introduced an event broker to lessen dependency on httpapplication
+- added edit aspect controller
 - added parts aspect controller
 - added request aspect controller
 - added aspect controller concept (external manipulation of certain aspects)

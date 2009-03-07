@@ -55,7 +55,7 @@ namespace N2.Tests.Fakes
 			throw new NotImplementedException();
 		}
 
-		public void Attach(System.Web.HttpApplication application)
+		public void Attach(EventBroker application)
 		{
 			throw new NotImplementedException();
 		}

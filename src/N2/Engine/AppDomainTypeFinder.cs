@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -20,12 +19,11 @@ namespace N2.Engine
 
 		private bool loadAppDomainAssemblies = true;
 
-		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu";
+		private string assemblySkipLoadingPattern = "^System|^mscorlib|^Microsoft|^CppCodeProvider|^VJSharpCodeProvider|^WebDev|^Castle|^Iesi|^log4net|^NHibernate|^nunit|^TestDriven|^MbUnit|^Rhino|^QuickGraph|^TestFu|^Telerik|^ComponentArt";
 
 		private string assemblyRestrictToLoadingPattern = ".*";
 		private IList<string> assemblyNames = new List<string>();
-		private IDictionary<string, IList<Type>> typeCache = new Dictionary<string, IList<Type>>();
-		
+
 		#endregion
 
 		#region Constructors

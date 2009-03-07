@@ -5,6 +5,7 @@ using System.Web.UI;
 using N2.Collections;
 using System.Web.UI.WebControls;
 using N2.Web.Parts;
+using N2.Engine;
 
 namespace N2.Web.UI.WebControls
 {
@@ -28,7 +29,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>The aspect controller related to the current page item.</summary>
 		protected virtual PartsAspectController PartsController
 		{
-			get { return partsController ?? (partsController = Engine.Resolve<IRequestDispatcher>().ResolveAspectController<PartsAspectController>()); }
+			get { return partsController ?? (partsController = Engine.Resolve<IAspectControllerProvider>().ResolveAspectController<PartsAspectController>(CurrentItem.FindPath(PathData.DefaultAction))); }
 		}
 
 		/// <summary>Gets or sets the zone from which to featch items.</summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using System.Configuration;
+using N2.Engine;
 
 namespace N2.Tests.NewVersion
 {
@@ -14,7 +15,7 @@ namespace N2.Tests.NewVersion
         [SetUp]
         public virtual void SetUp()
         {
-			engine = new N2.Engine.ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2");
+			engine = new N2.Engine.ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2", EventBroker.Instance);
         }
 
         [Test]

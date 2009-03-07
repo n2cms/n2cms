@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web;
-using System.Diagnostics;
 using N2.Engine;
 
 namespace N2.Web
@@ -15,8 +11,13 @@ namespace N2.Web
 	{
 		public void Init(HttpApplication context)
 		{
-			IEngine engine = Context.Initialize(false);
-			engine.Attach(context);
+			EventBroker broker = EventBroker.Instance;
+
+			lock(broker)
+			{
+				broker.Attach(context);
+			}
+			N2.Context.Initialize(false);
 		}
 
 		public void Dispose()

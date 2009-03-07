@@ -58,6 +58,12 @@ namespace N2.Engine
             InstallComponents();
         }
 
+		public ContentEngine(EventBroker broker)
+			: this()
+		{
+			AddComponentInstance(broker);
+		}
+
 		/// <summary>Sets the windsdor container to the given container.</summary>
 		/// <param name="container">An previously prepared windsor container.</param>
 		public ContentEngine(IWindsorContainer container)
@@ -67,7 +73,7 @@ namespace N2.Engine
 
 		/// <summary>Tries to determine runtime parameters from the given configuration.</summary>
 		/// <param name="config">The configuration to use.</param>
-		public ContentEngine(System.Configuration.Configuration config, string sectionGroup)
+		public ContentEngine(System.Configuration.Configuration config, string sectionGroup, EventBroker broker)
 		{
 			if(string.IsNullOrEmpty(sectionGroup)) throw new ArgumentException("Must be non-empty and match a section group in the configuration file.", "sectionGroup");
 
@@ -82,6 +88,7 @@ namespace N2.Engine
 			IResource resource = DetermineResource(engineConfig, config.GetSection("castle") != null);
 			ProcessResource(resource);
             InstallComponents();
+			AddComponentInstance(broker);
 		}
 
         private void InitializeEnvironment(HostSection hostConfig, EngineSection engineConfig)
@@ -231,12 +238,6 @@ namespace N2.Engine
 		{
 			DefaultComponentInstaller installer = new DefaultComponentInstaller();
 			installer.SetUp(container, container.Kernel.ConfigurationStore);
-		}
-
-
-		public void Attach(HttpApplication application)
-		{
-			Resolve<IRequestLifeCycleHandler>().Init(application);
 		}
 
 		public void Initialize()

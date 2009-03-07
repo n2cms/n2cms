@@ -23,6 +23,7 @@ using System.Web;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -32,21 +33,20 @@ namespace N2.Web
 	/// </summary>
     public class Global : System.Web.HttpApplication
     {
+    	EventBroker broker;
+
 		/// <summary>Initializes the N2 factory.</summary>
         public override void Init()
         {
 			base.Init();
 
-			Debug.WriteLine("Global: Init");
+			broker = EventBroker.Instance;
+			lock(broker)
+			{
+				broker.Attach(this);
+			}
+
 			N2.Context.Initialize(false);
-			N2.Context.Current.Attach(this);
         }
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			Debug.WriteLine("Global: Dispose");
-		}
     }
 }

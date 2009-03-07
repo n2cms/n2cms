@@ -245,13 +245,45 @@ namespace N2
 			{
 				if (classKey != null && resourceKey != null && HttpContext.Current != null)
 				{
+					ResourceKey key = new ResourceKey(classKey, resourceKey);
+					if (SingletonDictionary<ResourceKey, string>.Instance.ContainsKey(key))
+						return SingletonDictionary<ResourceKey, string>.Instance[key];
+					
 					return HttpContext.GetGlobalResourceObject(classKey, resourceKey) as string;
 				}
 			}
 			catch (MissingManifestResourceException)
 			{
+				ResourceKey key = new ResourceKey(classKey, resourceKey);
+				SingletonDictionary<ResourceKey, string>.Instance[key] = null;
 			}
 			return null; // it's okay to use default text
+		}
+
+		/// <summary>
+		/// Somewhat convoluted code to avoid a few exceptions.
+		/// </summary>
+		private class ResourceKey
+		{
+			readonly string classKey;
+			readonly string resourceKey;
+
+			public ResourceKey(string classKey, string resourceKey)
+			{
+				this.classKey = classKey;
+				this.resourceKey = resourceKey;
+			}
+
+			public override bool Equals(object obj)
+			{
+				ResourceKey other = obj as ResourceKey;
+				return other != null && other.classKey == classKey && other.resourceKey == resourceKey;
+			}
+
+			public override int GetHashCode()
+			{
+				return (classKey + "|" + resourceKey).GetHashCode();
+			}
 		}
 
 		/// <summary>Gets a local resource string.</summary>

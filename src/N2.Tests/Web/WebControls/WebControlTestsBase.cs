@@ -43,7 +43,7 @@ namespace N2.Tests.Web.WebControls
 				User = SecurityUtilities.CreatePrincipal("admin")
 			};
 
-			var engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2nodb");
+			var engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2nodb", EventBroker.Instance);
 			N2.Context.Initialize(engine);
 			engine.Initialize();
 			engine.Host.CurrentSite.RootItemID = 1;

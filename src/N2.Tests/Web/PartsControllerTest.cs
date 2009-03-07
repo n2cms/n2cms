@@ -10,13 +10,14 @@ using N2.Web.Parts;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using N2.Definitions;
+using N2.Web.UI.WebControls;
 
 namespace N2.Tests.Web
 {
 	[TestFixture]
-	public class ZoneControllerTest : ItemPersistenceMockingBase
+	public class PartsControllerTest : ItemPersistenceMockingBase
 	{
-		ContentItem pageItem, customItem;
+		ContentItem pageItem, customItem, dataItem;
 		UrlParser parser;
 		FakeWebContextWrapper webContext;
 		RequestDispatcher dispatcher;
@@ -37,6 +38,7 @@ namespace N2.Tests.Web
 			AspectControllerProvider provider = new AspectControllerProvider(engine, new AppDomainTypeFinder());
 			provider.Start();
 			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
+			engine.AddComponentInstance("", typeof(IAspectControllerProvider), provider);
 		}
 
 
@@ -102,7 +104,10 @@ namespace N2.Tests.Web
 
 			customItem = CreateOneItem<CustomItem>(4, "item4", pageItem);
 			CreateOneItem<DataItem>(5, "data5", customItem).ZoneName = "Zone1";
-			CreateOneItem<DataItem>(6, "data6", customItem).ZoneName = "Zone2";
+			dataItem = CreateOneItem<DataItem>(6, "data6", customItem);
+			dataItem.ZoneName = "Zone2";
+			CreateOneItem<DataItem>(7, "nested7", dataItem).ZoneName = "Zone2";
+			CreateOneItem<DataItem>(8, "nested8", dataItem).ZoneName = "Zone2";
 		}
 	}
 }

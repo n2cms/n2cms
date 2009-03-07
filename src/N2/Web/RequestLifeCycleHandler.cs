@@ -1,11 +1,12 @@
 using System;
 using System.Web;
-using N2.Persistence.NH;
-using N2.Security;
+using N2.Engine;
 using System.Diagnostics;
 using N2.Configuration;
 using N2.Installation;
 using N2.Web.UI;
+using Castle.Core;
+using N2.Plugin;
 
 namespace N2.Web
 {
@@ -13,11 +14,12 @@ namespace N2.Web
 	/// Handles the request life cycle for N2 by invoking url rewriting, 
 	/// authorizing and closing NHibernate session.
 	/// </summary>
-	public class RequestLifeCycleHandler : IRequestLifeCycleHandler
+	public class RequestLifeCycleHandler : IRequestLifeCycleHandler, IStartable, IAutoStart
 	{
 		readonly IErrorHandler errors;
 		readonly IWebContext webContext;
-        readonly InstallationManager installer;
+		readonly EventBroker broker;
+		readonly InstallationManager installer;
 		readonly IRequestDispatcher dispatcher;
 
 		protected bool initialized = false;
@@ -26,8 +28,8 @@ namespace N2.Web
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
-		public RequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors, EditSection editConfig)
-            : this(webContext, installer, dispatcher, errors)
+		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors, EditSection editConfig)
+            : this(webContext, broker, installer, dispatcher, errors)
         {
 			checkInstallation = editConfig.Installer.CheckInstallationStatus;
             installerUrl = editConfig.Installer.InstallUrl;
@@ -35,25 +37,26 @@ namespace N2.Web
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
-		public RequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors)
+		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors)
 		{
 			this.webContext = webContext;
+			this.broker = broker;
 			this.errors = errors;
 			this.installer = installer;
 			this.dispatcher = dispatcher;
 		}
 
 		/// <summary>Subscribes to applications events.</summary>
-		/// <param name="application">The application.</param>
-		public void Init(HttpApplication application)
+		/// <param name="broker">The application.</param>
+		public void Init(EventBroker broker)
 		{
             Debug.WriteLine("RequestLifeCycleHandler.Init");
 
-			application.BeginRequest += Application_BeginRequest;
-			application.AuthorizeRequest += Application_AuthorizeRequest;
-			application.AcquireRequestState += Application_AcquireRequestState;
-            application.Error += Application_Error;
-			application.EndRequest += Application_EndRequest;
+			broker.BeginRequest += Application_BeginRequest;
+			broker.AuthorizeRequest += Application_AuthorizeRequest;
+			broker.AcquireRequestState += Application_AcquireRequestState;
+            broker.Error += Application_Error;
+			broker.EndRequest += Application_EndRequest;
 		}
 
 		protected virtual void Application_BeginRequest(object sender, EventArgs e)
@@ -123,5 +126,27 @@ namespace N2.Web
 		{
 			webContext.Close();
 		}
+
+		#region IStartable Members
+
+		public void Start()
+		{
+			broker.BeginRequest += Application_BeginRequest;
+			broker.AuthorizeRequest += Application_AuthorizeRequest;
+			broker.AcquireRequestState += Application_AcquireRequestState;
+			broker.Error += Application_Error;
+			broker.EndRequest += Application_EndRequest;
+		}
+
+		public void Stop()
+		{
+			broker.BeginRequest -= Application_BeginRequest;
+			broker.AuthorizeRequest -= Application_AuthorizeRequest;
+			broker.AcquireRequestState -= Application_AcquireRequestState;
+			broker.Error -= Application_Error;
+			broker.EndRequest -= Application_EndRequest;
+		}
+
+		#endregion
 	}
 }

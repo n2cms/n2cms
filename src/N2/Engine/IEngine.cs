@@ -46,10 +46,6 @@ namespace N2.Engine
         /// </summary>
 		void Initialize();
 
-		/// <summary>Attaches to the appropriate events for usage with ASP.NET.</summary>
-		/// <param name="application">A recently initialized http application.</param>
-		void Attach(HttpApplication application);
-
 		/// <summary>Resolves a service configured for the factory.</summary>
 		/// <typeparam name="T">The type of service to resolve.</typeparam>
 		/// <returns>An instance of the resolved service.</returns>

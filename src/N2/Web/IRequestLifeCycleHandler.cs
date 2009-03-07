@@ -1,4 +1,5 @@
 using System.Web;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -8,8 +9,5 @@ namespace N2.Web
 	/// </summary>
 	public interface IRequestLifeCycleHandler
 	{
-		/// <summary>Subscribes to applications events.</summary>
-		/// <param name="application">The application.</param>
-		void Init(HttpApplication application);
 	}
 }

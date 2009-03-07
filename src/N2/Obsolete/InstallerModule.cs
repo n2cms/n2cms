@@ -34,10 +34,11 @@ namespace N2.Installation
             config = (EditSection)WebConfigurationManager.GetSection("n2/edit");
             if (config != null && config.Installer.CheckInstallationStatus)
             {
-                this.context = application;
+                context = application;
                 application.BeginRequest += context_BeginRequest;
 
-                engine = N2.Context.Initialize(false);
+                Context.Initialize(false);
+            	engine = Context.Current;
             }
 		}
 

@@ -40,7 +40,7 @@ namespace N2.Engine.MediumTrust
 
         IDictionary<Type, object> resolves = new Dictionary<Type, object>();
             
-		public MediumTrustEngine()
+		public MediumTrustEngine(EventBroker broker)
 		{
             EditSection editConfiguration = (EditSection)AddConfigurationSection("n2/edit");
             DatabaseSection databaseConfiguration = (DatabaseSection)AddConfigurationSection("n2/database");
@@ -54,9 +54,10 @@ namespace N2.Engine.MediumTrust
             
             Url.DefaultExtension = hostConfiguration.Web.Extension;
 		    webContext = new AdaptiveContext();
-    
+
+			AddComponentInstance(broker);
             host = AddComponentInstance<IHost>(new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
-            AddComponentInstance<IWebContext>(webContext);
+            AddComponentInstance(webContext);
 
             IItemNotifier notifier = AddComponentInstance<IItemNotifier>(new ItemNotifier());
             ITypeFinder typeFinder = AddComponentInstance<ITypeFinder>(new MediumTrustTypeFinder(webContext, engineConfiguration));
@@ -97,7 +98,7 @@ namespace N2.Engine.MediumTrust
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
 			IAspectControllerProvider aspectController = AddComponentInstance<IAspectControllerProvider>(new AspectControllerProvider(this, typeFinder));
 			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(aspectController, webContext, urlParser, errorHandler, hostConfiguration));
-			lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(webContext, installer, dispatcher, errorHandler, editConfiguration));
+			lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(webContext, broker, installer, dispatcher, errorHandler, editConfiguration));
             AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
@@ -115,6 +116,10 @@ namespace N2.Engine.MediumTrust
 			IHeart heart = AddComponentInstance(new Heart(engineConfiguration));
 			AddComponentInstance(new Scheduler(pluginFinder, heart, webContext, errorHandler));
         }
+
+		public MediumTrustEngine() : this(EventBroker.Instance)
+		{
+		}
 
         private object AddConfigurationSection(string sectionName)
         {
@@ -191,11 +196,6 @@ namespace N2.Engine.MediumTrust
 			
 			IPluginBootstrapper invoker = Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
-		}
-
-		public void Attach(HttpApplication application)
-		{
-			lifeCycleHandler.Init(application);
 		}
 
 		public T Resolve<T>() where T : class

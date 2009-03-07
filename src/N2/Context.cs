@@ -10,9 +10,7 @@
 
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Web;
 using System;
-using System.ComponentModel;
 using System.Configuration;
 using System.Web.Configuration;
 using System.Security;
@@ -34,18 +32,18 @@ namespace N2
 		{
 			if (Singleton<IEngine>.Instance == null || forceRecreate)
 			{
-                Debug.WriteLine("Constructing " + DateTime.Now);
+                Debug.WriteLine("Constructing engine " + DateTime.Now);
 				Singleton<IEngine>.Instance = CreateEngineInstance();
-                Debug.WriteLine("Initializing " + DateTime.Now);
+				Debug.WriteLine("Initializing engine " + DateTime.Now);
 				Singleton<IEngine>.Instance.Initialize();
 			}
 			return Singleton<IEngine>.Instance;
 		}
 
-		/// <summary>Sets the static factory instance to the supplied factory. Use this method to supply your own factory implementation.</summary>
+		/// <summary>Sets the static factory instance to the supplied factory. Use this method to supply your own engine implementation.</summary>
 		/// <param name="engine">The factory to use.</param>
 		/// <remarks>Only use this method if you know what you're doing.</remarks>
-		public static void Initialize(Engine.IEngine engine)
+		public static void Initialize(IEngine engine)
 		{
 			Singleton<IEngine>.Instance = engine;
 		}
@@ -67,20 +65,20 @@ namespace N2
 
 		/// <summary>Creates a factory instance and adds a http application injecting facility.</summary>
 		/// <returns>A new factory.</returns>
-		public static Engine.IEngine CreateEngineInstance()
+		public static IEngine CreateEngineInstance()
 		{
             try
             {
                 System.Configuration.Configuration config = GetConfiguration();
                 if (config == null)
-                    return new Engine.ContentEngine();
-                else
-                    return new Engine.ContentEngine(config, "n2");
+                    return new ContentEngine(EventBroker.Instance);
+
+				return new ContentEngine(config, "n2", EventBroker.Instance);
             }
             catch (SecurityException ex)
             {
                 Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
-                return new MediumTrustEngine();
+                return new MediumTrustEngine(EventBroker.Instance);
             }
 		}
 
@@ -89,17 +87,13 @@ namespace N2
 		#region Properties: Persister, Definitions, Integrity, UrlParser, CurrentPage
 
 		/// <summary>Gets the singleton N2 engine used to access N2 services.</summary>
-		public static Engine.IEngine Current
+		public static IEngine Current
 		{
 			get
 			{
 				if (Singleton<IEngine>.Instance == null)
 				{
 					Initialize(false);
-					if (HttpContext.Current != null)
-					{
-						Singleton<IEngine>.Instance.Attach(HttpContext.Current.ApplicationInstance);
-					}
 				}
 				return Singleton<IEngine>.Instance;
 			}

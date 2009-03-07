@@ -295,7 +295,7 @@
     <Compile Include="Web\WhileBuildingUrlsWhenMultipleSites.cs" />
     <Compile Include="Web\WhileDealingWithHostNames.cs" />
     <Compile Include="Web\WhileParsingUrlsWhenMultipleSites.cs" />
-    <Compile Include="Web\ZoneControllerTest.cs" />
+    <Compile Include="Web\PartsControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

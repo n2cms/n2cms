@@ -13,18 +13,24 @@ namespace N2.Edit.Web
             get { return N2.Context.Current; }
         }
 
+    	N2.ContentItem selectedItem;
         protected virtual N2.ContentItem SelectedItem
         {
             get
             {
                 string itemId = Request.QueryString["item"];
                 string selected = Request.QueryString["selected"];
-                if (!string.IsNullOrEmpty(selected))
-                    return Engine.UrlParser.Parse(selected);
+				if (selectedItem != null)
+					return selectedItem;
+
+				if (!string.IsNullOrEmpty(selected))
+                    selectedItem = Engine.UrlParser.Parse(selected);
                 if (!string.IsNullOrEmpty(itemId))
-                    return Engine.Persister.Get(int.Parse(itemId));
+                    selectedItem= Engine.Persister.Get(int.Parse(itemId));
                 else
-                    return Engine.UrlParser.StartPage;
+                    selectedItem = Engine.UrlParser.StartPage;
+
+            	return selectedItem;
             }
         }
     }
