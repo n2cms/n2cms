@@ -1,6 +1,5 @@
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {

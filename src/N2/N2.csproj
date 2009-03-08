@@ -443,6 +443,7 @@
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
     <Compile Include="Engine\EventBroker.cs" />
+    <Compile Include="Web\Parts\IAddablePart.cs" />
     <Compile Include="Web\RequestAspectController.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />
     <Compile Include="Web\CachingUrlParserDecorator.cs" />

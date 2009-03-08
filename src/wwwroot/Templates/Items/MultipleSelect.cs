@@ -1,14 +1,13 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Details;
-using N2.Definitions;
 using N2.Templates.Web.UI.WebControls;
-using OptionSelectQuestion=N2.Templates.Items.OptionSelectQuestion;
+using N2.Web.Parts;
 
 namespace N2.Templates.Items
 {
     [Definition("Multiple Select (check boxes)")]
-    public class MultipleSelect : OptionSelectQuestion, IContainable
+	public class MultipleSelect : OptionSelectQuestion, IAddablePart
     {
         [EditableCheckBox("Display vertically", 19)]
         public virtual bool Vertical
@@ -17,7 +16,7 @@ namespace N2.Templates.Items
             set { SetDetail("Vertical", value); }
         }
 
-        public Control AddTo(Control container)
+        public virtual Control AddTo(Control container)
         {
             MultipleSelectControl ssc = new MultipleSelectControl(this, Vertical ? RepeatDirection.Vertical : RepeatDirection.Horizontal);
             container.Controls.Add(ssc);

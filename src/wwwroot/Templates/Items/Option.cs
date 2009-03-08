@@ -1,13 +1,12 @@
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
     [WithEditableTitle("Text", 10)]
     [RestrictParents(typeof(OptionSelectQuestion))]
     [Definition("Option", "Option")]
-    public class Option : Templates.Items.AbstractItem
+    public class Option : AbstractItem
     {
         [N2.Details.EditableTextBox("Answers", 100)]
         public virtual int Answers

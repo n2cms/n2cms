@@ -19,17 +19,12 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Security.Principal;
-using System.Web;
-using System.Web.UI;
-using N2.Definitions;
 using N2.Integrity;
 using N2.Web;
-using N2UI = N2.Web.UI;
 using System.Text;
 using N2.Details;
 using N2.Collections;
@@ -48,12 +43,9 @@ namespace N2
     /// // Since the class is inheriting <see cref="ContentItem"/> it's 
     /// // recognized by the CMS and made available for editing.
     /// [Definition]
+	/// [Template("~/Path/To/My/Template.aspx")]
     /// public class MyPage : N2.ContentItem
     /// {
-    ///		public override string TemplateUrl
-    ///		{
-    ///			get { return "~/Path/To/My/Template.aspx"; }
-    ///		}
     /// }
     /// </example>
     /// <remarks>
@@ -65,8 +57,8 @@ namespace N2
 	[Serializable, DebuggerDisplay("{Name}#{ID}")]
 	[DynamicTemplate]
 	[RestrictParents(typeof(ContentItem))]
-	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, IContainable, INode
-    {
+	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, INode
+	{
         #region Private Fields
         [Persistence.DoNotCopy]
 		private int id;
@@ -306,34 +298,6 @@ namespace N2
 		}
 		#endregion
 
-		#region Equals, HashCode and ToString Overrides
-		/// <summary>Checks the item with another for equality.</summary>
-		/// <returns>True if two items have the same ID.</returns>
-		public override bool Equals( object obj )
-		{
-			if (this == obj) return true;
-			ContentItem other = obj as ContentItem;
-			return other != null && id != 0 && id == other.id;
-		}
-
-		int? hashCode;
-		/// <summary>Gets a hash code based on the ID.</summary>
-		/// <returns>A hash code.</returns>
-		public override int GetHashCode()
-		{
-			if (!hashCode.HasValue)
-				hashCode = (id > 0 ? id.GetHashCode() : base.GetHashCode());
-			return hashCode.Value;
-		}
-
-		/// <summary>Returns this item's name.</summary>
-		/// <returns>The item's name.</returns>
-        public override string ToString()
-        {
-            return Name + "#" + ID;
-        }
-		#endregion
-
         #region this[]
 
 		/// <summary>Gets or sets the detail or property with the supplied name. If a property with the supplied name exists this is always returned in favour of any detail that might have the same name.</summary>
@@ -510,6 +474,9 @@ namespace N2
 			}
 		}
 
+		/// <summary>Finds children based on the given url segments. The method supports convering the last segments into action and parameter.</summary>
+		/// <param name="remainingUrl">The remaining url segments.</param>
+		/// <returns>A path data object which can be empty (check using data.IsEmpty()).</returns>
 		public virtual PathData FindPath(string remainingUrl)
 		{
 			if (remainingUrl == null)
@@ -519,7 +486,6 @@ namespace N2
 
 			if (remainingUrl.Length == 0)
 				return GetTemplate(string.Empty);
-			//else if (remainingUrl.Equals("default", StringComparison.InvariantCultureIgnoreCase)) ;
 
 			int slashIndex = remainingUrl.IndexOf('/');
 			string nameSegment = slashIndex < 0 ? remainingUrl : remainingUrl.Substring(0, slashIndex);
@@ -765,56 +731,6 @@ namespace N2
 
 		#endregion
 
-		#region IContainable Members
-
-		string IContainable.ContainerName
-		{
-			get { return ZoneName; }
-			set { ZoneName = value; }
-		}
-
-		Control IContainable.AddTo(Control container)
-		{
-			if (!TemplateUrl.EndsWith(".ascx", StringComparison.InvariantCultureIgnoreCase))
-				throw new N2Exception("Cannot add {0} defined by {1}'s TemplateUrl property to a page. Either refrain from adding this item to a page or override TemplateUrl and have it return the url to a user control.", TemplateUrl, GetType());
-			Control templateItem = container.Page.LoadControl(TemplateUrl);
-			if (templateItem is N2UI.IContentTemplate)
-				(templateItem as N2UI.IContentTemplate).CurrentItem = this;
-			container.Controls.Add(templateItem);
-			return templateItem;
-		}
-
-		/// <summary>Gets wether a certain user is authorized to view this item.</summary>
-		/// <param name="user">The user to check.</param>
-		/// <returns>True if the item is open for all or the user has the required permissions.</returns>
-		public virtual bool IsAuthorized(IPrincipal user)
-		{
-			if (AuthorizedRoles == null || AuthorizedRoles.Count == 0)
-			{
-				return true;
-			}
-
-			// Iterate allowed roles to find an allowed role
-			foreach (Security.Authorization auth in AuthorizedRoles)
-			{
-				if(auth.IsAuthorized(user))
-					return true;
-			}
-			return false;
-
-		}
-
-		#endregion
-
-		#region IComparable<IContainable> Members
-
-		int IComparable<IContainable>.CompareTo(IContainable other)
-		{
-			return this.SortOrder - other.SortOrder;
-		}
-
-		#endregion
-
 		#region INode Members
 
 		/// <summary>The logical path to the node from the root node.</summary>
@@ -864,6 +780,26 @@ namespace N2
 			}
 		}
 
+		/// <summary>Gets wether a certain user is authorized to view this item.</summary>
+		/// <param name="user">The user to check.</param>
+		/// <returns>True if the item is open for all or the user has the required permissions.</returns>
+		public virtual bool IsAuthorized(IPrincipal user)
+		{
+			if (AuthorizedRoles == null || AuthorizedRoles.Count == 0)
+			{
+				return true;
+			}
+
+			// Iterate allowed roles to find an allowed role
+			foreach (Security.Authorization auth in AuthorizedRoles)
+			{
+				if (auth.IsAuthorized(user))
+					return true;
+			}
+			return false;
+
+		}
+
 		#region ILink Members
 
 		string Web.ILink.Contents
@@ -882,6 +818,34 @@ namespace N2
 		}
 
 		#endregion
+		#endregion
+
+		#region Equals, HashCode and ToString Overrides
+		/// <summary>Checks the item with another for equality.</summary>
+		/// <returns>True if two items have the same ID.</returns>
+		public override bool Equals(object obj)
+		{
+			if (this == obj) return true;
+			ContentItem other = obj as ContentItem;
+			return other != null && id != 0 && id == other.id;
+		}
+
+		int? hashCode;
+		/// <summary>Gets a hash code based on the ID.</summary>
+		/// <returns>A hash code.</returns>
+		public override int GetHashCode()
+		{
+			if (!hashCode.HasValue)
+				hashCode = (id > 0 ? id.GetHashCode() : base.GetHashCode());
+			return hashCode.Value;
+		}
+
+		/// <summary>Returns this item's name.</summary>
+		/// <returns>The item's name.</returns>
+		public override string ToString()
+		{
+			return Name + "#" + ID;
+		}
 		#endregion
     }
 }

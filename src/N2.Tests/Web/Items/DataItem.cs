@@ -1,11 +1,11 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Collections;
-using N2.Definitions;
+using N2.Web.Parts;
 
 namespace N2.Tests.Web.Items
 {
-	public class DataItem : N2.ContentItem, IContainable
+	public class DataItem : N2.ContentItem, IAddablePart
 	{
 		public override ItemList GetChildren(string childZoneName)
 		{

@@ -62,8 +62,22 @@ namespace N2.Web.UI
 		{
 			using (new ItemStacker(item))
 			{
-				return ((IContainable)item).AddTo(container);
+				return AddTo(item, container);
 			}
+		}
+
+		private static Control AddTo(ContentItem item, Control container)
+		{
+			PathData path = item.FindPath(PathData.DefaultAction);
+			if(!path.IsEmpty())
+			{
+				Control templateItem = container.Page.LoadControl(path.TemplateUrl);
+				if (templateItem is IContentTemplate)
+					(templateItem as IContentTemplate).CurrentItem = item;
+				container.Controls.Add(templateItem);
+				return templateItem;
+			}
+			return null;
 		}
 
 		private class ItemStacker : IDisposable

@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
 using System.Web.UI;
-using N2.Definitions;
 using N2.Templates.Web.UI.WebControls;
+using N2.Web.Parts;
 
 namespace N2.Templates.Items
 {
     [Definition("Text question (textbox)", "TextQuestion")]
-    public class TextQuestion : Question, IContainable
+	public class TextQuestion : Question, IAddablePart
     {
 
         [N2.Details.EditableTextBox("Rows", 110)]
@@ -26,7 +22,7 @@ namespace N2.Templates.Items
             set { SetDetail("Columns", value); }
         }
 
-        public Control AddTo(Control container)
+		public virtual Control AddTo(Control container)
         {
             TextControl t = new TextControl(this);
             container.Controls.Add(t);

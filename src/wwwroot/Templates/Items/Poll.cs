@@ -6,6 +6,7 @@ using N2.Definitions;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Templates.Items;
+using N2.Web.Parts;
 using N2.Web.UI;
 
 namespace N2.Templates.Items
@@ -15,7 +16,7 @@ namespace N2.Templates.Items
     [RestrictParents(typeof (AbstractContentPage))]
     [AllowedChildren(typeof(SingleSelect))]
     [FieldSetContainer("questionContainer", "Question", 100)]
-    public class Poll : SidebarItem, IContainable
+    public class Poll : SidebarItem, IAddablePart
     {
         [Details.PollCreatorDetail(QuestionText = "Question", CreateNewText = "Create as new question", Title = "Alternatives", SortOrder = 100, ContainerName = "questionContainer")]
         public virtual SingleSelect Question

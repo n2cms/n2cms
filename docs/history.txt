@@ -1,4 +1,6 @@
-﻿- updated jquery ui to 1.7
+﻿- removed content item's ability add itself to the container (now done by the aspect controller)
+- introduced IAddablePart to enable content item to zones
+- updated jquery ui to 1.7
 - updated tinymce to to 3.2.2
 - moved templates' recursion into a parts aspect controller
 - fixed #49484: removed telerik assemblies from type finder
@@ -42,7 +44,6 @@
 - fixed #20250: Don't delete translated pages by default
 - fixed #20440: Error when you add a webpart to gallary page
 - updated visual studio item templates
-- upgraded tinyMCE to version 3.2.1.1
 - removed requirement to use [RouteActionResolver] on asp.net mvc content items
 - tweaked control panel
 - introduced static singleton

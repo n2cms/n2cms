@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Addons\UITests\Items\AdaptiveRequestController.cs" />
     <Compile Include="Addons\UITests\Items\AdaptiveItemPage.cs" />
+    <Compile Include="Addons\UITests\Items\UITestItemItem.cs" />
     <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.cs">
       <DependentUpon>AdaptiveItem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -110,6 +111,13 @@
     <Compile Include="Addons\UITests\UI\PageMethods.aspx.designer.cs">
       <DependentUpon>PageMethods.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Addons\UITests\UI\UITestItem.ascx.cs">
+      <DependentUpon>UITestItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\UITestItem.ascx.designer.cs">
+      <DependentUpon>UITestItem.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\UITests\UI\AdaptiveItem.aspx" />
@@ -150,6 +158,7 @@
     <Content Include="Addons\UITests\UI\ControlPanel_WithZones.aspx" />
     <Content Include="Addons\UITests\UI\ItemDataSource_Query.aspx" />
     <Content Include="Addons\UITests\UI\Item.ascx" />
+    <Content Include="Addons\UITests\UI\UITestItem.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
