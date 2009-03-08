@@ -15,7 +15,7 @@ namespace N2.Configuration
 			BaseAdd(new PatterValueElement("[Ц]", "AE", true));
 			BaseAdd(new PatterValueElement("[іјєѕ]", "o", true));
 			BaseAdd(new PatterValueElement("[жиде]", "O", true));
-			BaseAdd(new PatterValueElement("[^a-zA-Z0-9_-]", "", true));
+			BaseAdd(new PatterValueElement("[^ a-zA-Z0-9_-]", "", true));
 		}
 		protected override ConfigurationElement CreateNewElement()
 		{

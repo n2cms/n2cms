@@ -188,7 +188,7 @@ namespace N2.Web.UI.WebControls
 			if (AddingChild != null)
 				AddingChild.Invoke(this, new ItemEventArgs(item));
 
-	    	PartsController.AddPart(item, container);
+	    	PartsController.AddPartToZone(item, container);
 		}
 
 		[Obsolete("The event is no longer invoked", true)]

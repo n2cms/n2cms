@@ -319,7 +319,7 @@
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
-    <Compile Include="Edit\EditAspectController.cs" />
+    <Compile Include="Edit\EditableAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />
     <Compile Include="Edit\FileSystem\FileData.cs" />
     <Compile Include="Edit\FileSystem\IFileSystem.cs" />

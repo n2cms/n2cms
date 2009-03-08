@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web.UI.HtmlControls;
-using System.Text.RegularExpressions;
 using System.Web.UI;
 using N2.Web;
 using System.IO;
@@ -85,7 +82,7 @@ namespace N2.Addons.Wiki.Renderers
         private Control CreateInternalLink(Control container, ViewContext context, string fragment)
         {
             string[] fragments = fragment.Split('|');
-            ContentItem existingArticle = context.Article.WikiRoot.GetChild(fragments[0].Replace(" ", "-"));
+            ContentItem existingArticle = context.Article.WikiRoot.GetChild(fragments[0]);
             if (existingArticle != null && existingArticle != context.Article.WikiRoot)
             {
                 return AppendAnchor(container, fragments.Length > 1 ? fragments[1] : fragments[0], existingArticle.Url, true);

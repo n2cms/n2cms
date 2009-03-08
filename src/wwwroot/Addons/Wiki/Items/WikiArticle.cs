@@ -35,6 +35,11 @@ namespace N2.Addons.Wiki.Items
             set { base.Text = value; }
         }
 
+		public override ContentItem GetChild(string childName)
+		{
+			return base.GetChild(childName) ?? base.GetChild(childName.Replace(' ', '-'));
+		}
+
         public string AppendUrl(string action)
         {
             return N2.Web.Url.Parse(Url).AppendSegment(action);

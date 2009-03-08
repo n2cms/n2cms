@@ -44,7 +44,7 @@ namespace N2.Web.Parts
 		/// <summary>Adds a content item part to a containing control hierarchy (typically a zone control).</summary>
 		/// <param name="item">The item to add a part.</param>
 		/// <param name="container">The container control to host the part user interface.</param>
-		public virtual Control AddPart(ContentItem item, System.Web.UI.Control container)
+		public virtual Control AddPartToZone(ContentItem item, Control container)
 		{
 			return ItemUtility.AddUserControl(container, item);
 		}

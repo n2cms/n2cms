@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace N2
 {
-	[Obsolete("Changed name to DefinitionAttribute.")]
+	[Obsolete("Changed name to DefinitionAttribute.", true)]
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public class ItemAttribute : DefinitionAttribute
 	{
