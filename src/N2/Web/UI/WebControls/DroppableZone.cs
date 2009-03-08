@@ -56,14 +56,16 @@ namespace N2.Web.UI.WebControls
 
 				ItemDefinition definition = GetDefinition(item);
 				Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
-				RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", itemContainer.ClientID, item.ID));
-
-				AddToolbar(itemContainer, item, definition);
+				Control toolbar = AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
+
+				RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", itemContainer.ClientID, item.ID));
+				RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", toolbar.ClientID, item.ID));
 			}
 			else if (state == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["original"])
 			{
 				item = Engine.Persister.Get(int.Parse(Page.Request["preview"]));
+				base.AddChildItem(this, item);
 			}
 			else
 			{
@@ -76,12 +78,14 @@ namespace N2.Web.UI.WebControls
 	        return AllowExternalManipulation || item.Parent == CurrentPage;
 	    }
 
-	    protected virtual void AddToolbar(Panel itemContainer, ContentItem item, ItemDefinition definition)
-		{
-			itemContainer.Controls.Add(new DraggableToolbar(item, definition, GripperImageUrl));
-		}
+	    protected virtual Control AddToolbar(Panel itemContainer, ContentItem item, ItemDefinition definition)
+	    {
+	    	DraggableToolbar toolbar = new DraggableToolbar(item, definition);
+	    	itemContainer.Controls.Add(toolbar);
+	    	return toolbar;
+	    }
 
-		private ItemDefinition GetDefinition(ContentItem item)
+    	private ItemDefinition GetDefinition(ContentItem item)
 		{
 			return N2.Context.Definitions.GetDefinition(item.GetType());
 		}

@@ -33,7 +33,6 @@
         dragStop: function(ev) {
             $(document.body).removeClass("dragging");
             setTimeout(function() { n2dragging = false; }, 100);
-            $.autoscroll.stop();
         },
 
         init: function(t, dz) {
@@ -49,10 +48,9 @@
             $(".definition").draggable({
                 helper: t.dragHelper,
                 distance: 5,
+                scroll: true,
                 stop: t.dragStop,
                 start: function() {
-                    $.autoscroll.start();
-
                     var s = this;
                     t.dropHandler = function(d, ctrl) {
                         t.createIn(s.id, d);
@@ -66,10 +64,9 @@
                 dragPrevention: 'a,input,textarea,select',
                 helper: t.dragHelper,
                 cursorAt: { top: 8, left: 8 },
+                scroll: true,
                 stop: t.dragStop,
                 start: function() {
-                    $.autoscroll.start();
-
                     var s = this;
                     t.dropHandler = function(d, ctrl) {
                         if (ctrl)

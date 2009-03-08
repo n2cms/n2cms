@@ -10,21 +10,20 @@ namespace N2.Web.UI.WebControls
 	{
 		private ContentItem currentItem;
 		private ItemDefinition definition;
-		private readonly string gripperImageUrl;
 		private bool bindButtons = false;
 
 		public DraggableToolbar()
 		{
+			ID = "toolbar";
 			bindButtons = true;
 		}
 
-		public DraggableToolbar(ContentItem item, ItemDefinition definition, string gripperImageUrl)
+		public DraggableToolbar(ContentItem item, ItemDefinition definition)
 		{
             if (definition == null) throw new ArgumentNullException("definition");
 
 			this.currentItem = item;
 			this.definition = definition;
-			this.gripperImageUrl = gripperImageUrl;
 		}
 
 		public ContentItem CurrentItem
@@ -38,7 +37,7 @@ namespace N2.Web.UI.WebControls
 			get { return definition ?? (definition = N2.Context.Definitions.GetDefinition(CurrentItem.GetType())); }
 		}
 
-		protected override void OnPreRender(System.EventArgs e)
+		protected override void OnPreRender(EventArgs e)
 		{
 			if (bindButtons && ControlPanel.GetState() == ControlPanelState.DragDrop)
 			{
@@ -54,7 +53,11 @@ namespace N2.Web.UI.WebControls
 		{
 			if (ControlPanel.GetState() == ControlPanelState.DragDrop)
 			{
-                writer.Write("<div class='titleBar' style='background-image:url(");
+				writer.Write("<div id='");
+				writer.Write(ClientID);
+				writer.Write("' class='titleBar ");
+				writer.Write(Definition.Discriminator);
+				writer.Write("' style='background-image:url(");
                 writer.Write(Url.ToAbsolute(Definition.IconUrl));
                 writer.Write(");'>");
 			    writer.Write("<img src='");

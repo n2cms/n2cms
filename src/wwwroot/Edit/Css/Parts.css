@@ -7,7 +7,7 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
 
 .titleBar img { cursor:pointer; position:absolute; top:2px; right:2px; }
 .titleBar .edit { right:20px; }
-.dragShadow { opacity: .5; background-color:lightslategray;}
+.dragShadow { opacity: .4; background-color:lightslategray; filter: alpha(opacity=60);}
 .dragging { cursor:move; }
 
 .dropPoint { height:16px; margin:1px 0; padding:1px; background:url(../img/shading.png); position:relative; }

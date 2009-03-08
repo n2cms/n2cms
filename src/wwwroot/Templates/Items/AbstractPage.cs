@@ -46,16 +46,6 @@ namespace N2.Templates.Items
 			set { SetDetail("ShowTitle", value, true); }
 		}
 
-		public override ItemList GetChildren(string childZoneName)
-		{
-			ItemList items = base.GetChildren(childZoneName);
-			if (childZoneName.StartsWith("Recursive") && Parent is AbstractContentPage)
-			{
-				items.AddRange(Parent.GetChildren(childZoneName));
-			}
-			return items;
-		}
-
 		public virtual IList<T> GetChildren<T>() where T : ContentItem
 		{
 			return new ItemList<T>(Children,

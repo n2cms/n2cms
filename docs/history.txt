@@ -1,4 +1,7 @@
-﻿- fixed #49484: removed telerik assemblies from type finder
+﻿- updated jquery ui to 1.7
+- updated tinymce to to 3.2.2
+- moved templates' recursion into a parts aspect controller
+- fixed #49484: removed telerik assemblies from type finder
 - introduced an event broker to lessen dependency on httpapplication
 - added edit aspect controller
 - added parts aspect controller

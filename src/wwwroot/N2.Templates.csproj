@@ -146,6 +146,7 @@
     <Compile Include="Templates\Items\UserRegistration.cs" />
     <Compile Include="Templates\Services\SEODefinitionAppender.cs" />
     <Compile Include="Templates\Services\SEOPageModifier.cs" />
+    <Compile Include="Templates\Services\TemplatesPartsAspectController.cs" />
     <Compile Include="Templates\Services\TitleAndMetaTagApplyer.cs" />
     <Compile Include="Templates\Services\DynamicMailSender.cs" />
     <Compile Include="Templates\Services\FakeMailSender.cs" />
