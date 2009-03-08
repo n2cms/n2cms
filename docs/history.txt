@@ -1,4 +1,5 @@
-﻿- removed content item's ability add itself to the container (now done by the aspect controller)
+﻿- Added Engine property on master page
+- removed content item's ability add itself to the container (now done by the aspect controller)
 - introduced IAddablePart to enable content item to zones
 - updated jquery ui to 1.7
 - updated tinymce to to 3.2.2

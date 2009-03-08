@@ -1,14 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using N2.Engine;
 
 namespace N2.Web.UI
 {
     /// <summary>MasterPage base class providing easy access to current page item.</summary>
-    /// <typeparam name="T">The type of content item for this masterpage</typeparam>
+	/// <typeparam name="TPage">The type of content item for this masterpage</typeparam>
     public abstract class MasterPage<TPage> : System.Web.UI.MasterPage, IItemContainer 
-		where TPage : N2.ContentItem
-    {
+		where TPage : ContentItem
+	{
+		private IEngine engine = null;
+
+		/// <summary>Gets the current CMS Engine.</summary>
+		public IEngine Engine
+		{
+			get { return engine ?? (engine = N2.Context.Current); }
+			set { engine = value; }
+		}
+
 		public virtual TPage CurrentPage
 		{
 			get { return (TPage)N2.Context.CurrentPage; }
