@@ -7,7 +7,7 @@ namespace N2.Web
 	/// Used to bind a controller to a certain content type.
 	/// </summary>
 	[DebuggerDisplay("ControlsAttribute: {ItemType}->{ControllerType}")]
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly)]
 	public class ControlsAttribute : Attribute, IComparable<ControlsAttribute>, IControllerDescriptor
 	{
 		private readonly Type itemType;

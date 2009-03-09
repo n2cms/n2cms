@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Castle.Core;
 using N2.Plugin;
 using N2.Web;
+using System.Reflection;
 
 namespace N2.Engine
 {
@@ -83,6 +84,16 @@ namespace N2.Engine
 					references.Add(reference);
 				}
 			}
+			
+			//collect [assembly: Controls(..)] attributes
+			foreach(ICustomAttributeProvider assembly in finder.GetAssemblies()) {
+				foreach(IControllerDescriptor reference in assembly.GetCustomAttributes(typeof(IControllerDescriptor), false)) {
+					if(null != reference.ControllerType) {
+						references.Add(reference);
+					}
+				}
+			}
+			
 			RegisterAspectController(references.ToArray());
 		}
 
