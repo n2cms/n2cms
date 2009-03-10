@@ -40,11 +40,7 @@ namespace N2.Web
         {
 			base.Init();
 
-			broker = EventBroker.Instance;
-			lock(broker)
-			{
-				broker.Attach(this);
-			}
+			EventBroker.Instance.Attach(this);
 
 			N2.Context.Initialize(false);
         }

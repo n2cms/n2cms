@@ -29,9 +29,8 @@ namespace N2.Engine
 		/// <summary>Attaches to events from the application instance.</summary>
 		public virtual void Attach(HttpApplication application)
 		{
-			Debug.WriteLine("Attaching " + application);
-			
-			observedApplications++;
+			Interlocked.Increment(ref observedApplications);
+			Trace.WriteLine("EventBroker: Attaching to " + application + " - " + observedApplications);
 
 			application.BeginRequest += Application_BeginRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
@@ -45,7 +44,9 @@ namespace N2.Engine
 		/// <summary>Detaches events from the application instance.</summary>
 		void Application_Disposed(object sender, EventArgs e)
 		{
-			Debug.WriteLine("Disposing " + sender);
+			Interlocked.Decrement(ref observedApplications);
+			Trace.WriteLine("EventBroker: Disposing " + sender + " - " + observedApplications);
+
 			HttpApplication application = sender as HttpApplication;
 
 			application.BeginRequest -= Application_BeginRequest;
@@ -53,8 +54,6 @@ namespace N2.Engine
 			application.AcquireRequestState -= Application_AcquireRequestState;
 			application.Error -= Application_Error;
 			application.EndRequest -= Application_EndRequest;
-		
-			observedApplications--;
 		}
 
 		public EventHandler<EventArgs> BeginRequest;

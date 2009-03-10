@@ -11,12 +11,8 @@ namespace N2.Web
 	{
 		public void Init(HttpApplication context)
 		{
-			EventBroker broker = EventBroker.Instance;
+			EventBroker.Instance.Attach(context);
 
-			lock(broker)
-			{
-				broker.Attach(context);
-			}
 			N2.Context.Initialize(false);
 		}
 
