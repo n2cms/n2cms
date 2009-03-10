@@ -10,7 +10,6 @@ using N2.Extensions.Tests.Mvc.Models;
 using N2.Persistence;
 using N2.Web.Mvc;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using N2.Web;
 using Microsoft.Web.Mvc;

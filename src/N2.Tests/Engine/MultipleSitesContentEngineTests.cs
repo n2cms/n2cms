@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using N2.Engine;
 using N2.Web;
 using System.Configuration;
-using NUnit.Framework.SyntaxHelpers;
 using System.IO;
 
 namespace N2.Tests.Engine

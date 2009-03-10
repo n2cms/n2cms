@@ -4,7 +4,6 @@ using N2.Addons.Wiki.Renderers;
 using NUnit.Framework;
 using System.Web.UI;
 using System.IO;
-using NUnit.Framework.SyntaxHelpers;
 using N2.Web;
 using N2.Plugin;
 using N2.Tests;

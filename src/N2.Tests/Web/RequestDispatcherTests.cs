@@ -3,7 +3,6 @@ using N2.Persistence;
 using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Web;
-using NUnit.Framework.SyntaxHelpers;
 using N2.Tests.Web.Items;
 using N2.Engine;
 

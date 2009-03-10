@@ -6,7 +6,6 @@ using System.Web;
 using NUnit.Framework;
 using N2.Serialization;
 using N2.Tests.Serialization.Items;
-using NUnit.Framework.SyntaxHelpers;
 using System.Threading;
 
 namespace N2.Tests.Serialization

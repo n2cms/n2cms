@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using N2.Collections;
-using NUnit.Framework.Extensions;
 
 namespace N2.Tests.Collections
 {
@@ -45,12 +42,11 @@ namespace N2.Tests.Collections
 		}
 		#endregion
 
-		[RowTest]
-		[Row(1, 12)]
-		[Row(2, 3)]
-		[Row(3, 3)]
-		[Row(4, 3)]
-		[Row(5, 0)]
+		[TestCase(1, 12)]
+		[TestCase(2, 3)]
+		[TestCase(3, 3)]
+		[TestCase(4, 3)]
+		[TestCase(5, 0)]
 		public void CanFilterByParentID(int parentID, int expectedCount)
 		{
 			ParentFilter filter = new ParentFilter(parentID);

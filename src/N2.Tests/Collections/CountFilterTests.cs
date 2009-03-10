@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using N2.Collections;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Collections
 {

@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using N2;
 using NUnit.Framework;
 using N2.Definitions;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Integrity
 {

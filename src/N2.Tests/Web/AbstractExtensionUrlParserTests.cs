@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using N2.Tests.Web.Items;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web
 {

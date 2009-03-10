@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using N2.Addons.Wiki;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using NUnit.Framework.Extensions;
 
 namespace N2.Templates.Tests.Wiki
 {
@@ -251,13 +249,12 @@ namespace N2.Templates.Tests.Wiki
             Assert.That(fragments[0].InnerContents, Is.EqualTo("Heading 2"));
         }
 
-        [RowTest]
-        [Row("* List item contents", "UnorderedList", "*")]
-        [Row("** List item contents", "UnorderedList", "**")]
-        [Row("*** List item contents", "UnorderedList", "***")]
-        [Row("# List item contents", "OrderedList", "#")]
-        [Row("## List item contents", "OrderedList", "##")]
-        [Row("### List item contents", "OrderedList", "###")]
+        [TestCase("* List item contents", "UnorderedList", "*")]
+        [TestCase("** List item contents", "UnorderedList", "**")]
+        [TestCase("*** List item contents", "UnorderedList", "***")]
+        [TestCase("# List item contents", "OrderedList", "#")]
+        [TestCase("## List item contents", "OrderedList", "##")]
+        [TestCase("### List item contents", "OrderedList", "###")]
         public void Lists_CanContainChildFragments_WithText(string input, string expectedName, string expectedValue)
         {
             var fragments = parser.Parse(input).ToList();

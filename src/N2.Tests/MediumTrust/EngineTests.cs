@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using N2.Engine.MediumTrust;
 using N2.Persistence;
-using NUnit.Framework.SyntaxHelpers;
-using System.Configuration;
-using System.Net.Mail;
 
 namespace N2.Tests.MediumTrust
 {

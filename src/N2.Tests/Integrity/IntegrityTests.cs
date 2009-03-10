@@ -11,9 +11,6 @@ using N2.Web;
 using N2.Web.UI;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
-using System.Diagnostics;
-using NUnit.Framework.SyntaxHelpers;
-using NUnit.Framework.Constraints;
 
 namespace N2.Tests.Integrity
 {

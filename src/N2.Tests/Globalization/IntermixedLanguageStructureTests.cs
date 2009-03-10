@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using N2.Web;
 using N2.Tests.Globalization.Items;
 using N2.Engine.Globalization;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Globalization
 {

@@ -1,3 +1,4 @@
+- filter plugins
 - edit tree aspect controller
 - templates aspect controller
 - update data model

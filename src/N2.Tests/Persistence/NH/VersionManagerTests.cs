@@ -11,7 +11,6 @@ using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Web.UI;
-using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using System.Configuration;
 using N2.Configuration;

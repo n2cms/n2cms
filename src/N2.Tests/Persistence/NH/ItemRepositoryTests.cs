@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using N2.Definitions;
 using N2.Persistence.NH;
@@ -11,7 +10,6 @@ using System.Reflection;
 using N2.Persistence;
 using N2.Details;
 using N2.Tests.Persistence.Definitions;
-using NUnit.Framework.SyntaxHelpers;
 using System.Diagnostics;
 using N2.Configuration;
 using System.Configuration;

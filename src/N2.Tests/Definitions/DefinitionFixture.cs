@@ -6,7 +6,6 @@ using N2.Details;
 using N2.Integrity;
 using N2.Tests.Definitions.Definitions;
 using N2.Tests.Definitions.Definitions.Details;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Definitions
 {

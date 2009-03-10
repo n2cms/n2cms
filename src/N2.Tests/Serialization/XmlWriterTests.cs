@@ -10,8 +10,6 @@ using N2.Details;
 using N2.Security;
 using N2.Serialization;
 using N2.Tests.Serialization.Items;
-using NUnit.Framework.Extensions;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Serialization
 {
@@ -188,11 +186,10 @@ namespace N2.Tests.Serialization
 			Assert.AreEqual("Administrator", nodes.Current.Value);
 		}
 
-		[RowTest]
-		[Row(new bool[] {true, false, true}, typeof(bool))]
-		[Row(new int[] {1, 2, 3, 5, 8, 13}, typeof(int))]
-		[Row(new double[] { 1.2, 2.3, 3.4, 5.5, 8.6, 13.7 }, typeof(double))]
-		[Row(new string[] { "one", "two", "three", "four" }, typeof(string))]
+		[TestCase(new bool[] { true, false, true }, typeof(bool))]
+		[TestCase(new int[] { 1, 2, 3, 5, 8, 13 }, typeof(int))]
+		[TestCase(new double[] { 1.2, 2.3, 3.4, 5.5, 8.6, 13.7 }, typeof(double))]
+		[TestCase(new string[] { "one", "two", "three", "four" }, typeof(string))]
 		public void WriteItem_WithDetailCollection(Array array, Type type)
 		{
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "one", null);

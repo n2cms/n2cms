@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Content
 {

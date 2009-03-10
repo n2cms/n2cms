@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Linq;
 using NUnit.Framework;
-
-using N2.Engine;
-using N2.Persistence.Finder;
 using N2.Tests;
 
 using N2.Linq;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Extensions.Tests.Linq
 {

@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using N2.Configuration;
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using System.Web;
 using System.Collections;
 

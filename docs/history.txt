@@ -1,4 +1,5 @@
-﻿- applied mikekidder's patch #21559: MVC sample - global.asax.cs update
+﻿- upgraded nunit to 2.5 (alpha3)
+- applied mikekidder's patch #21559: MVC sample - global.asax.cs update
 - html editor usability tweaks
 - applied estewhy's patch #21390: Enable AttributeTargets.Assembly for ControlsAttribute
 - Added Engine property on master page

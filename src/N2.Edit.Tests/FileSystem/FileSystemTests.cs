@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-
 using N2.Edit.FileSystem.Items;
 using N2.Tests;
 using N2.Edit.FileSystem;

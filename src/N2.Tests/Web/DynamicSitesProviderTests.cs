@@ -3,7 +3,6 @@ using N2.Tests.Web.Items;
 using NUnit.Framework;
 using N2.Web;
 using N2.Configuration;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web
 {

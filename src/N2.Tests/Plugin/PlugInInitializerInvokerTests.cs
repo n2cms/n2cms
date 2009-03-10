@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using N2.Plugin;
 using N2.Engine;
 using Rhino.Mocks;
 using System.Reflection;
-using NUnit.Framework.SyntaxHelpers;
 using N2.Tests.Plugin;
 
 namespace N2.Tests.PlugIn

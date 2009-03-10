@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 using System.Reflection;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests
 {

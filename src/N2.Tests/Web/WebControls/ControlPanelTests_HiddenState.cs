@@ -4,10 +4,6 @@ using N2.Web.UI.WebControls;
 using System.Web.UI;
 using System.Text;
 using System.IO;
-using NUnit.Framework.SyntaxHelpers;
-using System.Threading;
-using System.Globalization;
-using System;
 
 namespace N2.Tests.Web.WebControls
 {

@@ -8,9 +8,7 @@ using N2.Tests.Web.Items;
 using N2.Web;
 using N2.Web.Parts;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using N2.Definitions;
-using N2.Web.UI.WebControls;
 
 namespace N2.Tests.Web
 {

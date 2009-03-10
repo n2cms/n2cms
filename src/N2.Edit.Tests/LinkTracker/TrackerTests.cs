@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Configuration;
 using N2.Edit.FileSystem.Items;
 using N2.Edit.LinkTracker;
+using N2.Tests;
 using NUnit.Framework;
 using Rhino.Mocks;
-using N2.Engine;
 using N2.Persistence;
-using Rhino.Mocks.Interfaces;
 using N2.Web;
 using N2.Details;
-using NUnit.Framework.SyntaxHelpers;
 
-namespace N2.Tests.Edit.LinkTracker
+namespace N2.Edit.Tests.LinkTracker
 {
 	[TestFixture]
 	public class TrackerTests : ItemPersistenceMockingBase
@@ -31,13 +26,13 @@ namespace N2.Tests.Edit.LinkTracker
 		{
 			base.SetUp();
 
-			var wrapper = new Fakes.FakeWebContextWrapper();
+			var wrapper = new N2.Tests.Fakes.FakeWebContextWrapper();
 			var notifier = CreateNotifier(true);
 			parser = new UrlParser(persister, wrapper, notifier, new Host(wrapper, 1, 1), new HostSection());
 
-			root = CreateOneItem<Items.TrackableItem>(1, "root", null);
-			item1 = CreateOneItem<Items.TrackableItem>(2, "item1", root);
-			item2 = CreateOneItem<Items.TrackableItem>(3, "item2", root);
+			root = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(1, "root", null);
+			item1 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(2, "item1", root);
+			item2 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(3, "item2", root);
 
 			linkFactory = new Tracker(persister, null, parser, null);
 			linkFactory.Start();
@@ -71,21 +66,21 @@ namespace N2.Tests.Edit.LinkTracker
 		{
 			mocks.ReplayAll();
 
-            using (persister)
-            {
-                root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
-                persister.Save(root);
+			using (persister)
+			{
+				root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
+				persister.Save(root);
 
-                Assert.AreEqual(1, root.GetDetailCollection("TrackedLinks", false).Count);
-            }
-            using (persister)
-            {
-                root["TestDetail"] = null;
-                persister.Save(root);
+				Assert.AreEqual(1, root.GetDetailCollection("TrackedLinks", false).Count);
+			}
+			using (persister)
+			{
+				root["TestDetail"] = null;
+				persister.Save(root);
 
-                DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
-                Assert.AreEqual(0, links.Count);
-            }
+				DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
+				Assert.AreEqual(0, links.Count);
+			}
 		}
 
 		[Test]
@@ -93,25 +88,25 @@ namespace N2.Tests.Edit.LinkTracker
 		{
 			mocks.ReplayAll();
 
-            using (persister)
-            {
-                root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
-                persister.Save(root);
+			using (persister)
+			{
+				root["TestDetail"] = "<a href='/item1.aspx'>first item</a>";
+				persister.Save(root);
 
-                var links = root.GetDetailCollection("TrackedLinks", false);
-                Assert.That(links, Is.Not.Null);
-                Assert.That(links[0], Is.EqualTo(item1));
-            }
+				var links = root.GetDetailCollection("TrackedLinks", false);
+				Assert.That(links, Is.Not.Null);
+				Assert.That(links[0], Is.EqualTo(item1));
+			}
 
-            using (persister)
-            {
-                root["TestDetail"] = "<a href='/item2.aspx'>first item</a>";
-                persister.Save(root);
+			using (persister)
+			{
+				root["TestDetail"] = "<a href='/item2.aspx'>first item</a>";
+				persister.Save(root);
 
-                var links = root.GetDetailCollection("TrackedLinks", false);
-                Assert.That(links, Is.Not.Null);
-                Assert.That(links[0], Is.EqualTo(item2));
-            }
+				var links = root.GetDetailCollection("TrackedLinks", false);
+				Assert.That(links, Is.Not.Null);
+				Assert.That(links[0], Is.EqualTo(item2));
+			}
 		}
 
 		[Test]
@@ -151,16 +146,16 @@ namespace N2.Tests.Edit.LinkTracker
 			Assert.IsNull(links);
 		}
 
-        [Test]
-        public void DoesNotTrackLinks_ToItems_WithZeroID()
-        {
-            RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
+		[Test]
+		public void DoesNotTrackLinks_ToItems_WithZeroID()
+		{
+			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
 
-            root["TestDetail"] = @"<a href=""/FileSystem/upload/File.txt"">download pdf</a>";
-            persister.Save(root);
+			root["TestDetail"] = @"<a href=""/FileSystem/upload/File.txt"">download pdf</a>";
+			persister.Save(root);
 
-            DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
-            Assert.IsNull(links);
-        }
+			DetailCollection links = root.GetDetailCollection("TrackedLinks", false);
+			Assert.IsNull(links);
+		}
 	}
 }

@@ -3,7 +3,6 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Tests.Edit.Items;
 using N2.Web.UI.WebControls;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Edit
 {

@@ -8,8 +8,6 @@ using N2.Details;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Tests.Definitions.Items;
-using N2.Web.UI;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Definitions
 {

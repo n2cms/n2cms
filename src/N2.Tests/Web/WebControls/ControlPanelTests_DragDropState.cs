@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.UI;
 using System.Xml.Linq;
 using N2.Web.UI.WebControls;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web.WebControls
 {

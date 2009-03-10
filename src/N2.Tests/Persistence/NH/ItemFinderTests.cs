@@ -8,7 +8,6 @@ using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using N2.Tests.Persistence.Definitions;
 using N2.Web;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Persistence.NH
 {

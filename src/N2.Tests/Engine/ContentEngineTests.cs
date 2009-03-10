@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using N2.Engine;
-using NUnit.Framework.SyntaxHelpers;
 using N2.Web;
 using N2.Persistence.NH;
 using System.Configuration;

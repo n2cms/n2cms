@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Threading;
 using N2.Web.UI.WebControls;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web.WebControls
 {

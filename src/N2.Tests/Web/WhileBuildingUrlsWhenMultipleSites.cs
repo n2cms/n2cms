@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using N2.Tests.Web.Items;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web
 {

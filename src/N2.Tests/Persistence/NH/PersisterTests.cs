@@ -1,7 +1,6 @@
 using System;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Persistence.NH
 {

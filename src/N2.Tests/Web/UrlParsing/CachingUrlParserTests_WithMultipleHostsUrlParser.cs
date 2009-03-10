@@ -2,7 +2,6 @@ using N2.Configuration;
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace N2.Tests.Web.UrlParsing
 {

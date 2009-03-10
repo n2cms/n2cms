@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using N2.Edit.LinkTracker;
-using NUnit.Framework.SyntaxHelpers;
 
-namespace N2.Tests.Edit.LinkTracker
+namespace N2.Edit.Tests.LinkTracker
 {
 	[TestFixture]
 	public class FindLinksFixture

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using N2.Collections;
 using N2.Integrity;
-using NUnit.Framework.Extensions;
 
 namespace N2.Tests.Utility
 {
@@ -81,16 +80,15 @@ namespace N2.Tests.Utility
 			Assert.Less(item4.SortOrder, item5.SortOrder);
 		}
 
-		[RowTest]
-		[Row(0, 1)]
-		[Row(0, 0)]
-		[Row(0, 4)]
-		[Row(2, 0)]
-		[Row(2, 2)]
-		[Row(2, 4)]
-		[Row(4, 0)]
-		[Row(4, 2)]
-		[Row(4, 4)]
+		[TestCase(0, 1)]
+		[TestCase(0, 0)]
+		[TestCase(0, 4)]
+		[TestCase(2, 0)]
+		[TestCase(2, 2)]
+		[TestCase(2, 4)]
+		[TestCase(4, 0)]
+		[TestCase(4, 2)]
+		[TestCase(4, 4)]
 		public void MoteToIndex_Move(int initialIndex, int moveToIndex)
 		{
 			ItemList itemList = new ItemList(items);
@@ -182,13 +180,12 @@ namespace N2.Tests.Utility
 			Assert.IsNull(value);
 		}
 
-		[RowTest]
-		[Row("123", 123, typeof (int))]
-		[Row("True", true, typeof (bool))]
-		[Row("false", false, typeof (bool))]
-		[Row(123, "123", typeof (string))]
-		[Row(true, "True", typeof (string))]
-		[Row(false, "False", typeof (string))]
+		[TestCase("123", 123, typeof (int))]
+		[TestCase("True", true, typeof (bool))]
+		[TestCase("false", false, typeof (bool))]
+		[TestCase(123, "123", typeof (string))]
+		[TestCase(true, "True", typeof (string))]
+		[TestCase(false, "False", typeof (string))]
 		public void CanConvert(object from, object expectedResult, Type destinationType)
 		{
 			object result = N2.Utility.Convert(from, destinationType);

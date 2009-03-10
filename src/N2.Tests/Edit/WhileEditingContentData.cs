@@ -7,7 +7,6 @@ using System.Web.UI;
 using N2.Web.UI.WebControls;
 using Rhino.Mocks;
 using System.Security.Principal;
-using NUnit.Framework.SyntaxHelpers;
 using System.Reflection;
 
 namespace N2.Tests.Edit

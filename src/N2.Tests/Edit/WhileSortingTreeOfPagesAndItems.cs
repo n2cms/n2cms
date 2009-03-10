@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using N2.Tests.Edit.Items;
 using N2.Edit;
 using N2.Persistence;
 using Rhino.Mocks;
-using NUnit.Framework.SyntaxHelpers;
 using N2.Collections;
 using N2.Web;
 

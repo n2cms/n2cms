@@ -1,8 +1,5 @@
-﻿using System.Reflection;
-using N2.Web;
+﻿using N2.Web;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
-using System;
 
 namespace N2.Templates.Tests.Wiki
 {
