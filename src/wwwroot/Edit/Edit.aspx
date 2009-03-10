@@ -34,31 +34,39 @@
     <n2:ItemEditor ID="ie" runat="server" />
         
     <script type="text/javascript">
-		$(document).ready(function(){
-			$(".helpPanel").click(function(){
-				var $hp = $(this);
-				$hp.toggleClass("helpVisible");
-			});
+    	$(document).ready(function() {
+    		$(".helpPanel").click(function() {
+    			var $hp = $(this);
+    			$hp.toggleClass("helpVisible");
+    		});
     		toolbarSelect('<%= CreatingNew ? "new" : "edit" %>');
 
-			$(".right fieldset").hide();
+    		$(".right fieldset").hide();
 
-			$(".showInfo").toggle(function() {
-				n2toggle.show(this, ".infoBox");
-			}, function() {
-				n2toggle.hide(this, ".infoBox");
-			});
+    		$(".showInfo").toggle(function() {
+    			n2toggle.show(this, ".infoBox");
+    		}, function() {
+    			n2toggle.hide(this, ".infoBox");
+    		});
 
-			$(".showZones").toggle(function() {
-				n2toggle.show(this, ".zonesBox");
-			}, function() {
-				n2toggle.hide(this, ".zonesBox");
-			});
+    		$(".showZones").toggle(function() {
+    			n2toggle.show(this, ".zonesBox");
+    		}, function() {
+    			n2toggle.hide(this, ".zonesBox");
+    		});
 
-			if ($.cookie(".infoBox"))
-				$(".showInfo").click();
-			if ($.cookie(".zonesBox"))
-				$(".showZones").click();
-		});
+    		if ($.cookie(".infoBox"))
+    			$(".showInfo").click();
+    		if ($.cookie(".zonesBox"))
+    			$(".showZones").click();
+
+    		// hide mce toolbar to prevent it getting skewed
+    		$(".tabs a").click(function() {
+    			$(".mceExternalToolbar").hide();
+    		});
+    		$("input").focus(function() {
+    			$(".mceExternalToolbar").hide();
+	    	});
+    	});
     </script>
 </asp:Content>

@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web.UI.WebControls;
+using System.Web.UI.HtmlControls;
 
 namespace N2.Details
 {
@@ -20,6 +21,37 @@ namespace N2.Details
 		public EditableFreeTextAreaAttribute(string title, int sortOrder) 
 			: base(title, sortOrder)
 		{
+		}
+
+		public override Control AddTo(Control container)
+		{
+			HtmlTableCell labelCell = new HtmlTableCell();
+			Label label = AddLabel(labelCell);
+
+			HtmlTableCell editorCell = new HtmlTableCell();
+			Control editor = AddEditor(editorCell);
+			if (label != null && editor != null && !string.IsNullOrEmpty(editor.ID))
+				label.AssociatedControlID = editor.ID;
+
+			HtmlTableCell extraCell = new HtmlTableCell();
+			if (Required)
+				AddRequiredFieldValidator(extraCell, editor);
+			if (Validate)
+				AddRegularExpressionValidator(extraCell, editor);
+
+			AddHelp(extraCell);
+
+			HtmlTableRow row = new HtmlTableRow();
+			row.Cells.Add(labelCell);
+			row.Cells.Add(editorCell);
+			row.Cells.Add(extraCell);
+			
+			HtmlTable editorTable = new HtmlTable();
+			editorTable.Attributes["class"] = "editDetail";
+			editorTable.Controls.Add(row);
+			container.Controls.Add(editorTable);
+			
+			return editor;
 		}
 
 		protected override void ModifyEditor(TextBox tb)

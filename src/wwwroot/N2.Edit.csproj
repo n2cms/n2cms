@@ -989,7 +989,6 @@
     <Content Include="Edit\img\ico\png\star.png" />
     <Content Include="Edit\img\shading.png" />
     <Content Include="Edit\img\SlidingCurtain_bg.png" />
-    <Content Include="Edit\Js\plugins\cookies.js" />
     <Content Include="Edit\Js\plugins\jquery.n2optionmenu.js" />
     <Content Include="Edit\Js\plugins\jquery.splitter.js" />
     <Content Include="Edit\Js\plugins\n2.js" />
@@ -1645,6 +1644,7 @@
       <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="Edit\Js\plugins\FreeTextArea.js" />
+    <Content Include="Edit\Js\plugins\jquery.cookie.js" />
     <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
     <Content Include="Edit\Js\TabPanel.js" />
     <Content Include="Edit\PublishPreview.aspx" />

@@ -173,3 +173,16 @@ input.disabled,
 	padding-bottom:10px;
 }
 
+.editDetail .mceEditor .mceExternalToolbar
+{
+    border-bottom:solid 1px #fff;
+    right:0;
+}
+.editDetail .mceEditor table
+{
+    background-color:#fff;
+}
+.editDetail .mceEditor .mceButton
+{
+    border:solid 1px #fff;
+}
