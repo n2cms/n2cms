@@ -1,4 +1,5 @@
-﻿- html editor usability tweaks
+﻿- applied mikekidder's patch #21559: MVC sample - global.asax.cs update
+- html editor usability tweaks
 - applied estewhy's patch #21390: Enable AttributeTargets.Assembly for ControlsAttribute
 - Added Engine property on master page
 - removed content item's ability add itself to the container (now done by the aspect controller)

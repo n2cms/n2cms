@@ -27,12 +27,11 @@ namespace MvcTest
 		protected void Application_Start(object sender, EventArgs e)
 		{
 			// normally the engine is initialized by the initializer module but it can also be initialized this programmatically
+			// since we attach programmatically we need to associate the event broker with a http application
+			EventBroker.Instance.Attach(this);
 			IEngine engine = N2.Context.Initialize(false);
 
 			RegisterRoutes(RouteTable.Routes, engine);
-			
-			// since we attach programmatically we need to associate the engine with a http application
-			engine.Attach(this);
 		}
 	}
 }
