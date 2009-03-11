@@ -1,4 +1,5 @@
-﻿- upgraded nunit to 2.5 (alpha3)
+﻿- fixed #21530: EditableChildren With FreeTextArea Display Issue
+- upgraded nunit to 2.5 (alpha3)
 - applied mikekidder's patch #21559: MVC sample - global.asax.cs update
 - html editor usability tweaks
 - applied estewhy's patch #21390: Enable AttributeTargets.Assembly for ControlsAttribute

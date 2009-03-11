@@ -41,24 +41,10 @@ namespace N2.Web.UI.WebControls
 			CssClass = "freeTextArea";
 		}
 
-		//protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-		//{
-		//    bool wasUpdated = base.LoadPostData(postDataKey, postCollection);
-		//    if (wasUpdated) Text = HttpUtility.HtmlDecode(Text);
-		//    return wasUpdated;
-		//}
-
         public virtual bool EnableFreeTextArea
         {
             get { return (bool)(ViewState["EnableFreeTextArea"] ?? configEnabled); }
             set { ViewState["EnableFreeTextArea"] = value; }
-        }
-		
-        private static string ElementsKey = "TinyMCE.Elements";
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            Page.Items[ElementsKey] += "," + ClientID;
         }
 
 		protected override void OnPreRender(EventArgs e)
@@ -72,16 +58,16 @@ namespace N2.Web.UI.WebControls
                 Register.JavaScript(Page, "~/edit/js/plugins.ashx");
 
                 string script = string.Format("freeTextArea_init('{0}', {1});", 
-                    N2.Web.Url.ToAbsolute("~/Edit/FileManagement/default.aspx"), 
+                    Url.ToAbsolute("~/Edit/FileManagement/default.aspx"), 
                     GetOverridesJson());
-                Page.ClientScript.RegisterStartupScript(GetType(), "startup", script, true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
             }
 		}
 
         protected virtual string GetOverridesJson()
         {
             IDictionary<string, object> overrides = new Dictionary<string, object>();
-            overrides["elements"] = ((string)Page.Items[ElementsKey]).TrimStart(',');
+            overrides["elements"] = ClientID;
             overrides["content_css"] = configCssUrl;
             overrides["language"] = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
 
@@ -110,7 +96,8 @@ namespace N2.Web.UI.WebControls
                     sb.Append(value);
                 sb.Append(",");
             }
-            sb.Length--; // remove trailing comma
+			if(sb.Length > 1)
+				sb.Length--; // remove trailing comma
             return sb.Append("}").ToString();
         }
 
