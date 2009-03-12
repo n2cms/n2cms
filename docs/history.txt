@@ -38,7 +38,7 @@
 - Deprecated the [RouteActionResolver] attribute
 - removed views code behinds
 - updated to MVC RC
-- applied esteewhy's patch: #20735 Generalise [EditableDropDownAttribute] to support all System.Web.UI.WebControls.ListControls descendants  Title is required  
+- applied esteewhy's patch: #20735 Generalise [EditableDropDownAttribute] to support all System.Web.UI.WebControls.ListControls descendants
 - created unit tests for detail collection and fixed an infinite recursion bug
 - applied jemerick's patch: #20465: DetailCollection IndexOf does not return the correct value
 - updated jquery to 1.3.1

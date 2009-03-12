@@ -18,11 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Web;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
 using N2.Engine;
 
 namespace N2.Web
@@ -33,9 +28,7 @@ namespace N2.Web
 	/// </summary>
     public class Global : System.Web.HttpApplication
     {
-    	EventBroker broker;
-
-		/// <summary>Initializes the N2 factory.</summary>
+    	/// <summary>Initializes the N2 factory.</summary>
         public override void Init()
         {
 			base.Init();

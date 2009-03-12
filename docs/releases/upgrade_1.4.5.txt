@@ -1,0 +1,4 @@
+Make backup, drop upgrade files and recompile your solution.
+
+Breaking changes:
+- ContentItem.AddTo(Control) is removed, implement N2.Web.Parts.
