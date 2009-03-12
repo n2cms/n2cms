@@ -1,4 +1,5 @@
-﻿- fixed #21530: EditableChildren With FreeTextArea Display Issue
+﻿- applied eteewhy's patch #21592: ImageAdapter cannot process Image.ImageUrl with a reference to Templates' Image handler
+- fixed #21530: EditableChildren With FreeTextArea Display Issue
 - upgraded nunit to 2.5 (alpha3)
 - applied mikekidder's patch #21559: MVC sample - global.asax.cs update
 - html editor usability tweaks

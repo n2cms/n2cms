@@ -12,6 +12,8 @@ using System.Drawing.Drawing2D;
 
 namespace N2.Templates.Web.Adapters
 {
+	using N2.Web;
+	
 	public class ImageAdapter : WebControlAdapter
 	{
 		protected System.Web.UI.WebControls.Image ImageControl
@@ -33,14 +35,34 @@ namespace N2.Templates.Web.Adapters
 			else if (ImageControl.ImageUrl.Length > 0)
 				base.Render(writer);
 		}
-
+		
+		///TODO make handler URL configurable (.axd?)
+		const string ImageHandlerFileName = "Image.ashx";
+		const string ImageHandlerUrl = "~/Tamplates/UI/" + ImageHandlerFileName;
+		
 		public static string GetResizedImageUrl(string imageUrl, double width, double height)
 		{
-			return string.Format("{0}?w={1}&amp;h={2}&amp;img={3}",
-								VirtualPathUtility.ToAbsolute("~/Templates/UI/Image.ashx"),
-								width,
-								height,
-								HttpUtility.UrlEncode(imageUrl));
+			bool _refersToImageHandler = string.Equals(
+				VirtualPathUtility.GetFileName(Url.PathPart(imageUrl)),
+				ImageHandlerFileName,
+				StringComparison.OrdinalIgnoreCase);
+			
+			Url _url =
+				!_refersToImageHandler
+						&& (width > 0 || height > 0)
+					? Url.Parse(ImageHandlerUrl).SetQueryParameter("img", Url.ToAbsolute(imageUrl))
+					: Url.Parse(imageUrl);
+			
+			if(width > 0) {
+				_url = _url.SetQueryParameter("w", (int)width);
+			}
+
+			if(height > 0) {
+				_url = _url.SetQueryParameter("h", (int)height);
+			}
+			
+			//UrlEncode is not neccessary any longer, as it is performed by SetQueryParameter
+			return Url.ToAbsolute(_url.ToString());
 		}
 	}
 }

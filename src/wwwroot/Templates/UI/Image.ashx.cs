@@ -8,7 +8,8 @@ namespace N2.Templates.UI
     {
         public void ProcessRequest(HttpContext context)
         {
-            string imageUrl = context.Request["img"];
+        	//UrlDecode is neccessary to compensate encoding in ImageAdapter
+        	string imageUrl = HttpUtility.UrlDecode(context.Request["img"]);
             string w = context.Request["w"];
             string h = context.Request["h"];
 
