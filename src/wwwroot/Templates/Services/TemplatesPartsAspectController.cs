@@ -17,7 +17,10 @@ namespace N2.Templates.Services
 			ContentItem grandParentItem = parentItem;
 			if (zoneName.StartsWith("Recursive") && grandParentItem is AbstractContentPage && !(grandParentItem is LanguageRoot))
 			{
-				items.AddRange(GetItemsInZone(parentItem.Parent, zoneName));
+				if(parentItem.VersionOf == null)
+					items.AddRange(GetItemsInZone(parentItem.Parent, zoneName));
+				else
+					items.AddRange(GetItemsInZone(parentItem.VersionOf.Parent, zoneName));
 			}
 			return items;
 		}

@@ -20,6 +20,9 @@ namespace N2.Web.Parts
 		/// <returns>A list of items in the zone.</returns>
 		public virtual ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
 		{
+			if(parentItem == null)
+				return new ItemList();
+
 			return parentItem.GetChildren(zoneName);
 		}
 

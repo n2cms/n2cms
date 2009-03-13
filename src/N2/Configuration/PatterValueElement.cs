@@ -11,11 +11,21 @@ namespace N2.Configuration
 		{
 		}
 
-		public PatterValueElement(string pattern, string value, bool serverValidate)
+		public PatterValueElement(string name, string pattern, string value, bool serverValidate)
 		{
+			Name = name;
 			Pattern = pattern;
 			Value = value;
 			ServerValidate = serverValidate;
+		}
+
+
+		/// <summary>The name used to reference this element.</summary>
+		[ConfigurationProperty("name", IsRequired = true, IsKey = true)]
+		public string Name
+		{
+			get { return (string)base["name"]; }
+			set { base["name"] = value; }
 		}
 
 		/// <summary>A regular expression pattern used match replacements. This pattern should work both server and client side.</summary>

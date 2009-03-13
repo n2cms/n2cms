@@ -1,4 +1,5 @@
-﻿- fixed #21048: Languages and Recursive zones
+﻿- fixed #21620: Url Extensions removed (allow . in name)
+- fixed #21048: Languages and Recursive zones
 - applied eteewhy's patch #21592: ImageAdapter cannot process Image.ImageUrl with a reference to Templates' Image handler
 - fixed #21530: EditableChildren With FreeTextArea Display Issue
 - upgraded nunit to 2.5 (alpha3)
