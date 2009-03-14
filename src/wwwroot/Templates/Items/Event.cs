@@ -8,6 +8,7 @@ namespace N2.Templates.Items
 {
     [Definition("Event", "Event", "An event item", "", 110)]
     [RestrictParents(typeof(Calendar))]
+	[DefaultTemplate("CalendarItem")]
     public class Event : AbstractContentPage, ISyndicatable
     {
         public Event()
@@ -53,11 +54,6 @@ namespace N2.Templates.Items
         protected override string IconName
         {
             get { return "calendar_view_day"; }
-        }
-
-        protected override string TemplateName
-        {
-            get { return "CalendarItem"; }
         }
     }
 }

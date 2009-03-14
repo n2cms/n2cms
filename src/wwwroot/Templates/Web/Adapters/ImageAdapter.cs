@@ -1,21 +1,29 @@
 using System;
-using System.IO;
 using System.Configuration;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls.Adapters;
-using System.Web.UI.WebControls;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-
+using N2.Web;
+using N2.Templates.Configuration;
+	
 namespace N2.Templates.Web.Adapters
 {
-	using N2.Web;
-	
+	/// <summary>
+	/// Adapts asp:image controls by changing their source to an image resizing handler that resizes the images on the server side.
+	/// </summary>
 	public class ImageAdapter : WebControlAdapter
 	{
+		static Url ImageHandlerUrl = "~/Templates/UI/Image.ashx";
+
+		static ImageAdapter()
+		{
+			TemplatesSection config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
+			if(config != null && !string.IsNullOrEmpty(config.ImageHandlerPath))
+			{
+				ImageHandlerUrl = config.ImageHandlerPath;
+			}
+		}
+
 		protected System.Web.UI.WebControls.Image ImageControl
 		{
 			get { return base.Control as System.Web.UI.WebControls.Image; }
@@ -36,33 +44,23 @@ namespace N2.Templates.Web.Adapters
 				base.Render(writer);
 		}
 		
-		///TODO make handler URL configurable (.axd?)
-		const string ImageHandlerFileName = "Image.ashx";
-		const string ImageHandlerUrl = "~/Tamplates/UI/" + ImageHandlerFileName;
-		
+		/// <summary>Returns the path to an image handler that resizes the given image to the appropriate size.</summary>
+		/// <param name="imageUrl">The image to resize.</param>
+		/// <param name="width">The maximum width.</param>
+		/// <param name="height">The maximum height.</param>
+		/// <returns>The path to a handler that performs resizing of the image.</returns>
 		public static string GetResizedImageUrl(string imageUrl, double width, double height)
 		{
-			bool _refersToImageHandler = string.Equals(
-				VirtualPathUtility.GetFileName(Url.PathPart(imageUrl)),
-				ImageHandlerFileName,
-				StringComparison.OrdinalIgnoreCase);
+			string fileExtension = VirtualPathUtility.GetExtension(imageUrl);
+			bool isAlreadyImageHandler = string.Equals(fileExtension, ".ashx", StringComparison.OrdinalIgnoreCase);
 			
-			Url _url =
-				!_refersToImageHandler
-						&& (width > 0 || height > 0)
-					? Url.Parse(ImageHandlerUrl).SetQueryParameter("img", Url.ToAbsolute(imageUrl))
-					: Url.Parse(imageUrl);
-			
-			if(width > 0) {
-				_url = _url.SetQueryParameter("w", (int)width);
-			}
+			if (isAlreadyImageHandler) return Url.ToAbsolute(imageUrl);
 
-			if(height > 0) {
-				_url = _url.SetQueryParameter("h", (int)height);
-			}
+			Url url = ImageHandlerUrl.SetQueryParameter("img", Url.ToAbsolute(imageUrl));
+			if(width > 0) url = url.SetQueryParameter("w", (int)width);
+			if(height > 0) url = url.SetQueryParameter("h", (int)height);
 			
-			//UrlEncode is not neccessary any longer, as it is performed by SetQueryParameter
-			return Url.ToAbsolute(_url.ToString());
+			return url;
 		}
 	}
 }

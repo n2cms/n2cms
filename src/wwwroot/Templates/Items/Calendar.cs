@@ -7,6 +7,7 @@ namespace N2.Templates.Items
 {
     [Definition("Calendar", "Calendar", "A list of recent events.", "", 120)]
     [RestrictParents(typeof(IStructuralPage))]
+	[DefaultTemplate("CalendarList")]
     public class Calendar : AbstractContentPage
     {
         public virtual IEnumerable<Event> GetEvents()
@@ -23,11 +24,6 @@ namespace N2.Templates.Items
         protected override string IconName
         {
             get { return "calendar"; }
-        }
-
-        protected override string TemplateName
-        {
-            get { return "CalendarList"; }
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Web;
 using System.Web.Hosting;
+using N2.Edit.FileSystem;
 using N2.Templates.Services;
 
 namespace N2.Templates.UI
@@ -19,22 +20,24 @@ namespace N2.Templates.UI
             double height = 0;
             double.TryParse(h, out height);
 
-            context.Response.ContentType = "image/jpeg";
+			IFileSystem fs = N2.Context.Current.Resolve<IFileSystem>();
+        	if(fs.FileExists(imageUrl))
+        	{
+				context.Response.ContentType = "image/jpeg";
 
-			string path = HostingEnvironment.MapPath(imageUrl);
-            //context.Response.Cache.SetExpires(DateTime.Now.AddHours(1));
-            //context.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate | HttpCacheability.Public);
-            //context.Response.Cache.SetValidUntilExpires(true);
-            ImageResizer ir = new ImageResizer();
-            ir.Resize(path, width, height, context.Response.OutputStream);
+				string extension = VirtualPathUtility.GetExtension(imageUrl);
+				ImageResizer ir = new ImageResizer();
+				ir.Resize(fs.OpenFile(imageUrl), extension, width, height, context.Response.OutputStream);
+        	}
+        	else
+        	{
+        		throw new HttpException(404, "Not found");
+        	}
         }
 
         public bool IsReusable
         {
-            get
-            {
-                return false;
-            }
+            get { return true; }
         }
     }
 }

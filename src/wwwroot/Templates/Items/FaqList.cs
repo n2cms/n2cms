@@ -16,6 +16,7 @@ namespace N2.Templates.Items
     [Definition("Frequently Asked Questions", "FaqList", "A list of frequently asked questions with answers.", "", 200)]
     [AvailableZone("Questions", "Questions")]
     [RestrictParents(typeof(IStructuralPage))]
+	[DefaultTemplate("FaqList")]
     public class FaqList : AbstractContentPage, IStructuralPage
     {
         [N2.Details.EditableChildren("Questions", "Questions", 110, ContainerName=Tabs.Content)]
@@ -27,11 +28,6 @@ namespace N2.Templates.Items
         protected override string IconName
         {
             get { return "help"; }
-        }
-
-        protected override string TemplateName
-        {
-            get { return "FaqList"; }
         }
     }
 }

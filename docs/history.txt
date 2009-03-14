@@ -1,4 +1,8 @@
-﻿- fixed #21620: Url Extensions removed (allow . in name)
+﻿- made image resize handler configurable
+- changed image resize handler so it doesn't upsize images
+- made N2.Web.UI.ContentPage non-abstract
+- moved start page template to ui/views folder
+- fixed #21620: Url Extensions removed (allow . in name)
 - fixed #21048: Languages and Recursive zones
 - applied eteewhy's patch #21592: ImageAdapter cannot process Image.ImageUrl with a reference to Templates' Image handler
 - fixed #21530: EditableChildren With FreeTextArea Display Issue

@@ -8,7 +8,7 @@ namespace N2.Web.UI
     /// Page base class that provides easy access to the current page item.
     /// </summary>
     /// <typeparam name="TPage">The type of content item served by the page inheriting this class.</typeparam>
-    public abstract class ContentPage<TPage> : System.Web.UI.Page, IItemContainer, IContentTemplate
+    public class ContentPage<TPage> : System.Web.UI.Page, IItemContainer, IContentTemplate
         where TPage : N2.ContentItem
     {
 		private TPage currentPage = null;

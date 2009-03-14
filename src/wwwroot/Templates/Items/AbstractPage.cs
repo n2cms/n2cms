@@ -27,18 +27,6 @@ namespace N2.Templates.Items
             get { return "page"; }
 	    }
 
-        /// <summary>Defaults to ~/Templates/UI/Views/{TemplateName}.aspx</summary>
-	    public override string TemplateUrl
-		{
-			get { return "~/Templates/UI/Views/" + TemplateName + ".aspx"; }
-		}
-
-        /// <summary>The name without extension .aspx of an icon file located in /Templates/UI/Views/. Defaults to ClassName.</summary>
-        protected virtual string TemplateName
-	    {
-            get { return GetType().Name; }
-	    }
-
 		[EditableCheckBox("Show Title", 60, ContainerName = Tabs.Advanced)]
 		public virtual bool ShowTitle
 		{

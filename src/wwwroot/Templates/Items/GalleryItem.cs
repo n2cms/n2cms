@@ -8,6 +8,7 @@ namespace N2.Templates.Items
     [Definition("Gallery Item", "GalleryItem")]
     [RestrictParents(typeof(ImageGallery))]
     [TabContainer("advanced", "Advanced", 100)]
+	[DefaultTemplate("GalleryItem")]
 	public class GalleryItem : AbstractContentPage
     {
         public GalleryItem()
@@ -46,11 +47,6 @@ namespace N2.Templates.Items
         protected override string IconName
         {
             get { return "photo"; }
-        }
-
-        protected override string TemplateName
-        {
-            get { return "GalleryItem"; }
         }
     }
 }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using N2.Collections;
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
 using N2.Templates.Services;
 using N2.Web;
 
@@ -12,6 +11,7 @@ namespace N2.Templates.Items
     [RestrictParents(typeof (IStructuralPage))]
     [WithEditableTitle("Title", 10),
      WithEditableName("Name", 20)]
+	[DefaultTemplate("Feed")]
     public class RssFeed : AbstractContentPage, IFeed, INode
     {
         [EditableLink("Feed root", 90)]
@@ -85,11 +85,6 @@ namespace N2.Templates.Items
         protected override string IconName
         {
             get { return "feed"; }
-        }
-
-        protected override string TemplateName
-        {
-            get { return "Feed"; }
         }
     }
 }

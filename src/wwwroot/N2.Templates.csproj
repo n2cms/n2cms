@@ -300,13 +300,6 @@
       <DependentUpon>TabsInterface.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\TabPanel\TabsItem.cs" />
-    <Compile Include="Templates\UI\Testing\MasterPageTest.aspx.cs">
-      <DependentUpon>MasterPageTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Testing\MasterPageTest.aspx.designer.cs">
-      <DependentUpon>MasterPageTest.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Templates\UI\Views\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -469,6 +462,13 @@
     <Compile Include="Templates\UI\Parts\Subscribe.ascx.designer.cs">
       <DependentUpon>Subscribe.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\UI\Views\Start.aspx.cs">
+      <DependentUpon>Start.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Start.aspx.designer.cs">
+      <DependentUpon>Start.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Templates\UI\Views\Text.aspx.cs">
       <DependentUpon>Text.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -561,13 +561,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="default.aspx.cs">
-      <DependentUpon>default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="default.aspx.designer.cs">
-      <DependentUpon>default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Image.ashx.cs">
       <DependentUpon>Image.ashx</DependentUpon>
@@ -900,7 +893,7 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\UI\Testing\MasterPageTest.aspx" />
+    <Content Include="Templates\UI\Views\Start.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />

@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using N2.Collections;
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
     [RestrictParents(typeof (IStructuralPage))]
+	[DefaultTemplate("Search")]
     public abstract class AbstractSearch : AbstractContentPage
     {
         public abstract ICollection<ContentItem> Search(string query);
@@ -30,11 +30,6 @@ namespace N2.Templates.Items
         protected override string IconName
         {
             get { return "zoom"; }
-        }
-
-        protected override string TemplateName
-        {
-            get { return "Search"; }
         }
     }
 }
