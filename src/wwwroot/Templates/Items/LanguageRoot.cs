@@ -13,7 +13,8 @@ namespace N2.Templates.Items
     [RestrictParents(typeof(StartPage))]
     [FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
     [FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
-    public class LanguageRoot : AbstractContentPage, IStructuralPage, ILanguage
+	[DefaultTemplate("Start")]
+	public class LanguageRoot : AbstractContentPage, IStructuralPage, ILanguage
 	{
         public LanguageRoot()
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Templates
+﻿namespace N2.Templates
 {
 	/// <summary>
 	/// Provides access to some zone-related constants. Use these constants 

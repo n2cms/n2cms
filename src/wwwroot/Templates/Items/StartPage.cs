@@ -13,7 +13,6 @@ namespace N2.Templates.Items
     [Definition("Start Page", "StartPage", "A start page template. It displays a horizontal meny but no vertical menu.", "", 440, Installer = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage)]
     [RestrictParents(typeof(RootPage))]
     [AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
-	[DefaultTemplate("Start")]
 	public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource
     {
         public const string LayoutArea = "layoutArea";
