@@ -20,6 +20,6 @@
   
     <hr />
     <div>
-        <a href="<%= Url.Parse(CurrentPage.Parent.Url) %>">&laquo; Back</a>
+        <a href="<%= Url.Parse((CurrentPage.Parent ?? CurrentPage.VersionOf.Parent).Url) %>">&laquo; Back</a>
     </div>
 </asp:Content>

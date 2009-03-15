@@ -70,12 +70,14 @@ namespace N2.Web
 			Url requestedUrl = url;
 			ContentItem item = TryLoadingFromQueryString(requestedUrl, "page");
 			if(item != null)
-			{
 				return item.FindPath(requestedUrl["action"] ?? PathData.DefaultAction).SetArguments(requestedUrl["arguments"]).UpdateParameters(requestedUrl.GetQueries());
-			}
 
+			ContentItem startPage = GetStartPage(requestedUrl);
+			if (startPage == null)
+				return PathData.Empty;
+			
 			string path = Url.ToRelative(requestedUrl.PathWithoutExtension).TrimStart('~');
-			PathData data = GetStartPage(requestedUrl).FindPath(path).UpdateParameters(requestedUrl.GetQueries());
+			PathData data = startPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
 
 			if (data.IsEmpty())
 			{

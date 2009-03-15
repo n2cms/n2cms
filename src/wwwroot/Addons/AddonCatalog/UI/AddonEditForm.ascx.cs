@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Principal;
 using System.Web.UI.WebControls;
 using N2.Edit.FileSystem;
 using N2.Resources;
@@ -14,13 +15,11 @@ namespace N2.Addons.AddonCatalog.UI
         {
             base.OnInit(e);
 
-            if(IsAuthorized())
+			Items.Addon addon = CurrentPage as Items.Addon;
+			if (addon != null && IsAuthorized() && IsAuthor(Page.User, addon))
             {
-                if(CurrentItem is Items.Addon && IsAuthor())
-                {
-                    rfvAddon.Enabled = false;
-                    LoadAddon(CurrentItem as Items.Addon);
-                }
+                rfvAddon.Enabled = false;
+                LoadAddon(addon);
 
                 Register.JQuery(Page);   
             }
@@ -65,13 +64,19 @@ namespace N2.Addons.AddonCatalog.UI
         private bool IsAuthorized()
         {
             bool isEditor = Engine.SecurityManager.IsEditor(Page.User);
-            bool isMember = Page.User.IsInRole("Members");
-            return isEditor || isMember;
+        	Items.AddonCatalog catalog = CurrentPage as Items.AddonCatalog ?? CurrentPage.Parent as Items.AddonCatalog;
+        	bool isAllowedRole = false;
+			foreach (string role in catalog.ModifyRoles)
+			{
+				isAllowedRole |= Page.User.IsInRole(role);
+			}
+            return isEditor || isAllowedRole;
         }
 
-        private bool IsAuthor()
+		private bool IsAuthor(IPrincipal user, Items.Addon addon)
         {
-            return string.Equals(CurrentItem.SavedBy, Page.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase);
+			return string.Equals(addon.AuthorUserName ?? addon.SavedBy, user.Identity.Name, StringComparison.InvariantCultureIgnoreCase)
+			       || Engine.SecurityManager.IsEditor(Page.User);
         }
 
         protected void save_Click(object sender, EventArgs e)
@@ -85,8 +90,9 @@ namespace N2.Addons.AddonCatalog.UI
             if(addon == null)
             {
                 addon = Engine.Definitions.CreateInstance<Items.Addon>(CurrentPage);
-            }
-            else if(!IsAuthor())
+				addon.AuthorUserName = Page.User.Identity.Name;
+			}
+            else if(!IsAuthor(Page.User, addon))
             {
                 cvAuthenticated.IsValid = false;
                 return;
@@ -105,7 +111,7 @@ namespace N2.Addons.AddonCatalog.UI
             addon.Requirements = (Items.Requirement) AssembleSelected(cblRequirements.Items);
             addon.SourceCodeUrl = Encode(txtSource.Text);
             addon.Summary = Encode(txtSummary.Text);
-            if(fuAddon.PostedFile.ContentLength > 0)
+        	if(fuAddon.PostedFile.ContentLength > 0)
             {
 				IFileSystem fs = Engine.Resolve<IFileSystem>();
 				

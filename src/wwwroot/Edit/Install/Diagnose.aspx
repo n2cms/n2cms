@@ -5,13 +5,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title>Diagnose N2</title>
-    <link rel="stylesheet" href="Css/All.css" type="text/css" />
+    <link rel="stylesheet" href="../Css/All.css" type="text/css" />
     <style>
         label{font-weight:bold;margin:5px 10px 0 0;}
         input{vertical-align:middle;margin-bottom:5px;}
         ul,li{margin-top:0;margin-bottom:0;}
         textarea{height:55px;width:70%;background-color:salmon;border:none;font-size:11px}
-        .defs td{font-size:.7em;vertical-align:top;text-alignment:left;border:solid 1px silver;}
+        .defs td{font-size:.75em;vertical-align:top;text-alignment:left;border:solid 1px silver;}
+        .EnabledFalse { color:#999; }
+        .IsDefinedFalse { color:Red; }
     </style>
 </head>
 <body>
@@ -101,7 +103,7 @@
 						<tbody>
 				</HeaderTemplate>
                 <ItemTemplate>
-                    <tr><td>
+                    <tr class="<%# Eval("Enabled", "Enabled{0}") %> <%# Eval("IsDefined", "IsDefined{0}") %>"><td>
                         <b><%# Eval("Title") %></b> - <%# Eval("ItemType") %> (<%# Eval("Discriminator") %>)
                     </td><td>
                         <!-- Child definitions -->
@@ -114,6 +116,7 @@
                             <ItemTemplate> * <%# Eval("ZoneName") %> (<%# Eval("Title") %>)<br></ItemTemplate>
                         </asp:Repeater>
                     </td><td>
+						<b><%# Eval("AllowedIn")%>: </b><br />
                         <!-- Allowed in zone -->
                         <asp:Repeater ID="Repeater3" runat="server" DataSource='<%# Eval("AllowedZoneNames") %>'>
                             <ItemTemplate> * <%# Container.DataItem %><br></ItemTemplate>

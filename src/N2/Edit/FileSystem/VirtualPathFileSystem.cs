@@ -174,17 +174,33 @@ namespace N2.Edit.FileSystem
 		/// <param name="inputStream">An input stream of the file contents.</param>
 		public virtual void WriteFile(string virtualPath, Stream inputStream)
 		{
-			using (Stream destinationFile = OpenFile(virtualPath))
+			string path = MapPath(virtualPath); 
+			if (FileExists(virtualPath))
 			{
-				byte[] buffer = new byte[32768];
-				while (true)
+				using(Stream fileStream = File.OpenWrite(path))
 				{
-					int bytesRead = inputStream.Read(buffer, 0, buffer.Length);
-					if (bytesRead <= 0)
-						break;
-
-					destinationFile.Write(buffer, 0, bytesRead);
+					TransferBetweenStreams(inputStream, fileStream);
 				}
+			}
+			else
+			{
+				using (Stream fileStream = File.Create(path))
+				{
+					TransferBetweenStreams(inputStream, fileStream);
+				}
+			}
+		}
+
+		void TransferBetweenStreams(Stream inputStream, Stream outputStream)
+		{
+			byte[] buffer = new byte[32768];
+			while (true)
+			{
+				int bytesRead = inputStream.Read(buffer, 0, buffer.Length);
+				if (bytesRead <= 0)
+					break;
+
+				outputStream.Write(buffer, 0, bytesRead);
 			}
 		}
 

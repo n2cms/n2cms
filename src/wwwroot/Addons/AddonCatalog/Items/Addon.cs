@@ -3,6 +3,7 @@ using N2.Integrity;
 using N2.Templates;
 using N2.Templates.Items;
 using N2.Web;
+using System.Web.UI.WebControls;
 
 namespace N2.Addons.AddonCatalog.Items
 {
@@ -21,6 +22,13 @@ namespace N2.Addons.AddonCatalog.Items
         {
             Visible = false;
         }
+
+		[EditableTextBox("Text", 100, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine)]
+		public override string Text
+		{
+			get { return base.Text; }
+			set { base.Text = value; }
+		}
 
         [EditableEnum("Category", 100, typeof(CodeCategory), ContainerName = Tabs.Content)]
         public virtual CodeCategory Category
@@ -50,7 +58,7 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("AddonVersion", value, ""); }
         }
 
-        [EditableFreeTextArea("Summary", 100, ContainerName = Tabs.Content)]
+		[EditableTextBox("Summary", 100, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine)]
         public virtual string Summary
         {
             get { return GetDetail("Summary", ""); }
@@ -85,26 +93,33 @@ namespace N2.Addons.AddonCatalog.Items
             set { SetDetail("Downloads", value, 0); }
         }
 
-        [EditableTextBox("UploadedFileUrl", 100, ContainerName = "content")]
+		[EditableTextBox("UploadedFileUrl", 100, ContainerName = Tabs.Content)]
         public virtual string UploadedFileUrl
         {
             get { return GetDetail("UploadedFileUrl", ""); }
             set { SetDetail("UploadedFileUrl", value, ""); }
         }
 
-        [EditableTextBox("ContactEmail", 100, ContainerName = "content")]
+		[EditableTextBox("ContactEmail", 100, ContainerName = Tabs.Content)]
         public virtual string ContactEmail
         {
             get { return GetDetail("ContactEmail", ""); }
             set { SetDetail("ContactEmail", value, ""); }
-        }
+		}
 
-        [EditableTextBox("ContactName", 100, ContainerName = "content")]
-        public virtual string ContactName
-        {
-            get { return GetDetail("ContactName", ""); }
-            set { SetDetail("ContactName", value, ""); }
-        }
+		[EditableTextBox("ContactName", 100, ContainerName = Tabs.Content)]
+		public virtual string ContactName
+		{
+			get { return GetDetail("ContactName", ""); }
+			set { SetDetail("ContactName", value, ""); }
+		}
+
+		[EditableTextBox("AuthorUserName", 100, ContainerName = Tabs.Content)]
+		public virtual string AuthorUserName
+		{
+			get { return GetDetail<string>("AuthorUserName", null); }
+			set { SetDetail("AuthorUserName", value, ""); }
+		}
 
         public virtual string DownloadUrl
         {
