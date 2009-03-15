@@ -173,6 +173,7 @@
 		<Copy SourceFiles="@(Templates-InterfaceFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\%(RecursiveDir)" />
 		<Copy SourceFiles="@(Templates-BinFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\Bin" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Templates" />
+		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(DeployFolder)\Templates\wwwroot\App_Data\n2.sqlite.db" />
 	</Target>
 
 
@@ -353,7 +354,8 @@
                              .\**\Thumbs.db;
                              $(DeployFolder)\**\*;
                              $(SrcFolder)\N2.DocSite\**;
-                             $(Examples-Folder)\**\Edit\**\*" />
+                             $(Examples-Folder)\**\Edit\**\*;
+							 $(LibFolder)\*.pdb" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(DeployFolder)\Source\%(RecursiveDir)"  />
