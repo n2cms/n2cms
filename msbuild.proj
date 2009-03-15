@@ -7,17 +7,18 @@
 	</Target>
 
 	<PropertyGroup>
-		<LibFolder>.\lib</LibFolder>
-		<DocFolder>.\docs</DocFolder>
-		<SnippetsFolder>.\snippets</SnippetsFolder>
+		<LibFolder>$(MSBuildProjectDirectory)\lib</LibFolder>
+		<DocFolder>$(MSBuildProjectDirectory)\docs</DocFolder>
+		<SnippetsFolder>$(MSBuildProjectDirectory)\snippets</SnippetsFolder>
 
-		<SrcFolder>.\src</SrcFolder>
-		<WebFolder>.\src\wwwroot</WebFolder>
-		<EditFolder>.\src\wwwroot\Edit</EditFolder>
+		<SrcFolder>$(MSBuildProjectDirectory)\src</SrcFolder>
+		<WebFolder>$(MSBuildProjectDirectory)\src\wwwroot</WebFolder>
+		<EditFolder>$(MSBuildProjectDirectory)\src\wwwroot\Edit</EditFolder>
 
-		<Examples-Folder>.\examples</Examples-Folder>
+		<Examples-Folder>$(MSBuildProjectDirectory)\examples</Examples-Folder>
 
-		<DeployFolder>.\output</DeployFolder>
+		<DeployFolder>$(MSBuildProjectDirectory)\output</DeployFolder>
+		<TempFolder>$(MSBuildProjectDirectory)\output\temp\</TempFolder>
 	</PropertyGroup>
 
 	<Import Project="$(LibFolder)\MSBuild.Community.Tasks.Targets"/>
@@ -176,6 +177,28 @@
 		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(DeployFolder)\Templates\wwwroot\App_Data\n2.sqlite.db" />
 	</Target>
 
+
+
+	<Target Name="AddonCatalog-Build">
+		<MSBuild Projects="$(WebFolder)\AddonCatalog.csproj" Properties="Configuration=Release;OutDir=$(TempFolder)" />
+	</Target>
+	<Target Name="AddonCatalog-Deploy" DependsOnTargets="AddonCatalog-Build">
+		<ItemGroup>
+			<AddonCatalogFiles Include="$(TempFolder)_PublishedWebsites\AddonCatalog\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(AddonCatalogFiles)" DestinationFolder="$(DeployFolder)\AddonCatalog\%(RecursiveDir)"/>
+	</Target>
+
+	<Target Name="Wiki-Build">
+		<MSBuild Projects="$(WebFolder)\Wiki.csproj" Properties="Configuration=Release;OutDir=$(TempFolder)" />
+	</Target>
+	
+	<Target Name="Wiki-Deploy" DependsOnTargets="Wiki-Build">
+		<ItemGroup>
+			<WikiFiles Include="$(TempFolder)_PublishedWebsites\Wiki\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(WikiFiles)" DestinationFolder="$(DeployFolder)\Wiki\%(RecursiveDir)"/>
+	</Target>
 
 
 	<!-- EXAMPLES -->
