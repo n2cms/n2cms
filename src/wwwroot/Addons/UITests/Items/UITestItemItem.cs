@@ -14,4 +14,15 @@ namespace N2.Addons.UITests.Items
 			get { return false; }
 		}
 	}
+
+	[Definition]
+	[Template("~/Addons/UITests/UI/ContentCreator.ascx")]
+	[AllowedZones(AllowedZones.AllNamed)]
+	public class UITestContentCreator : ContentItem
+	{
+		public override bool IsPage
+		{
+			get { return false; }
+		}
+	}
 }

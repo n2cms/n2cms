@@ -1,3 +1,4 @@
+- restrict children
 - filter plugins
 - edit tree aspect controller
 - templates aspect controller

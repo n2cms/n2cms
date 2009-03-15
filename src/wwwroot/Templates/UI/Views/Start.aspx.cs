@@ -3,7 +3,7 @@ using N2.Templates.Web.UI;
 
 namespace N2.Templates.UI.Views
 {
-	public partial class Start : TemplatePage<StartPage>
+	public partial class Start : TemplatePage<LanguageRoot>
 	{
 	}
 }

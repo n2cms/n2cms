@@ -69,6 +69,13 @@
     <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.designer.cs">
       <DependentUpon>AdaptiveItem.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Addons\UITests\UI\ContentCreator.ascx.cs">
+      <DependentUpon>ContentCreator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\ContentCreator.ascx.designer.cs">
+      <DependentUpon>ContentCreator.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Addons\UITests\UI\ControlDesigners.aspx.cs">
       <DependentUpon>ControlDesigners.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -155,6 +162,7 @@
     <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\ContentCreator.ascx" />
     <Content Include="Addons\UITests\UI\ControlPanel_WithZones.aspx" />
     <Content Include="Addons\UITests\UI\ItemDataSource_Query.aspx" />
     <Content Include="Addons\UITests\UI\Item.ascx" />
