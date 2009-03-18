@@ -1,4 +1,5 @@
-﻿- fixed #21689: Image Gallery problem on shared hosting  Title is required
+﻿- applied #20614: getting error when running Deploy_Everything-vs2008.bat
+- fixed #21689: Image Gallery problem on shared hosting  Title is required
 
 1.4.5
 - made image resize handler configurable
