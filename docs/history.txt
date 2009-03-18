@@ -1,4 +1,7 @@
-﻿- made image resize handler configurable
+﻿- fixed #21689: Image Gallery problem on shared hosting  Title is required
+
+1.4.5
+- made image resize handler configurable
 - changed image resize handler so it doesn't upsize images
 - made N2.Web.UI.ContentPage non-abstract
 - moved start page template to ui/views folder

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Reflection;
 using System.Diagnostics;
+using N2.Edit.FileSystem;
 using N2.Persistence;
 using N2.Plugin.Scheduling;
 using N2.Web;
@@ -103,6 +104,7 @@ namespace N2.Engine.MediumTrust
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
             AddComponentInstance<Navigator>(new Navigator(persister, host));
+			AddComponentInstance<IFileSystem>(new VirtualPathFileSystem());
 
             AjaxRequestDispatcher ajaxDispatcher = AddComponentInstance<AjaxRequestDispatcher>(new AjaxRequestDispatcher(securityManager));
             CreateUrlProvider cup = AddComponentInstance<CreateUrlProvider>(new CreateUrlProvider(persister, editManager, definitions, ajaxDispatcher));
