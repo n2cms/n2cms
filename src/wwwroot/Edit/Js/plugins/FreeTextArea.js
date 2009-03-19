@@ -22,7 +22,6 @@ var freeTextArea_settings = {
     relative_urls: false,
     noneditable_noneditable_class: 'cs,csharp,vb,js',
     tab_focus: ':prev,:next',
-    theme_advanced_toolbar_location: "external",
     theme_advanced_resize_horizontal: true
 };
 var fileBrowserUrl;

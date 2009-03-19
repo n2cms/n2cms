@@ -173,16 +173,21 @@ input.disabled,
 	padding-bottom:10px;
 }
 
-.editDetail .mceEditor .mceExternalToolbar
+.editDetail .defaultSkin table.mceLayout,
+.editDetail .defaultSkin table.mceLayout tr.mceFirst td
 {
-    border-bottom:solid 1px #fff;
-    right:0;
+    border:none;
+}
+.editDetail .defaultSkin table.mceLayout tr.mceFirst
+{
+    background:#FFFFFF url(../img/framed_toolbar.gif) repeat-x scroll 0 100%;
+}
+.editDetail .mceStatusbar,
+.editDetail .mceIframeContainer
+{
+    border:solid 1px #ccc;
 }
 .editDetail .mceEditor table
 {
     background-color:#fff;
-}
-.editDetail .mceEditor .mceButton
-{
-    border:solid 1px #fff;
 }

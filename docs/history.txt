@@ -1,4 +1,6 @@
-﻿- applied #20614: getting error when running Deploy_Everything-vs2008.bat
+﻿- fixed #21648:  Tiny mce problems (removed fancy toolbar)
+- updated MySQL.Data.dll (sent by Максим)
+- applied #20614: getting error when running Deploy_Everything-vs2008.bat
 - fixed #21689: Image Gallery problem on shared hosting  Title is required
 
 1.4.5
