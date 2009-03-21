@@ -1,4 +1,5 @@
-﻿- made page query string key changeable
+﻿1.4.5.1
+- made page query string key changeable
 - added the observeAllExtensions option
 - renamed the aspect controller concept to content adapters
 - fixed #21648:  Tiny mce problems (removed fancy toolbar)

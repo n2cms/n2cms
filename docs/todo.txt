@@ -4,6 +4,7 @@
 - templates aspect controller
 - update data model
 	- reference to start page
+	- version number
 - drag nested items in ie
 - XML Store instead of DB
 - eager load item's child collections

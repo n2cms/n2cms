@@ -59,7 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Addons\UITests\Items\AdaptiveRequestController.cs" />
+    <Compile Include="Addons\UITests\Items\AdaptiveRequestAdapter.cs" />
     <Compile Include="Addons\UITests\Items\AdaptiveItemPage.cs" />
     <Compile Include="Addons\UITests\Items\UITestItemItem.cs" />
     <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.cs">
