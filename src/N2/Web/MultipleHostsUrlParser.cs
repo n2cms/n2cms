@@ -37,10 +37,10 @@ namespace N2.Web
 			
 			Site site = host.GetSite(url);
 			if (site != null)
-				return TryLoadingFromQueryString(url, "item", "page") 
+				return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) 
 					?? Parse(persister.Get(site.StartPageID), Url.Parse(url).PathAndQuery);
-			
-			return TryLoadingFromQueryString(url, "item", "page");
+
+			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey);
 		}
 
 		protected override ContentItem GetStartPage(Url url)
@@ -76,9 +76,9 @@ namespace N2.Web
                 return item.FindPath(PathData.DefaultAction).RewrittenUrl;
 
 			if (item.IsPage && item.VersionOf != null)
-				url = url.AppendQuery("page", item.ID);
+				url = url.AppendQuery(PathData.PageQueryKey, item.ID);
 			else if(!item.IsPage)
-				url = url.AppendQuery("item", item.ID);
+				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
 
 			if (current.ID == host.CurrentSite.StartPageID)
             {

@@ -68,7 +68,7 @@ namespace N2.Web
 		public PathData ResolvePath(string url)
 		{
 			Url requestedUrl = url;
-			ContentItem item = TryLoadingFromQueryString(requestedUrl, "page");
+			ContentItem item = TryLoadingFromQueryString(requestedUrl, PathData.PageQueryKey);
 			if(item != null)
 				return item.FindPath(requestedUrl["action"] ?? PathData.DefaultAction).SetArguments(requestedUrl["arguments"]).UpdateParameters(requestedUrl.GetQueries());
 
@@ -127,7 +127,7 @@ namespace N2.Web
 			if (string.IsNullOrEmpty(url)) throw new ArgumentNullException("url");
 
             ContentItem startingPoint = GetStartPage(url);
-			return TryLoadingFromQueryString(url, "item", "page") ?? Parse(startingPoint, url);
+			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey) ?? Parse(startingPoint, url);
 		}
 
 		#region Parse Helper Methods
@@ -223,9 +223,9 @@ namespace N2.Web
 				if (IsStartPage(current))
 				{
 					if (!item.IsPage)
-						url = url.AppendQuery("item", item.ID);
+						url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
 					else if (item.VersionOf != null)
-						url = url.AppendQuery("page", item.ID);
+						url = url.AppendQuery(PathData.PageQueryKey, item.ID);
 
 					// we've reached the start page so we're done here
 					return Url.ToAbsolute("~" + url.PathAndQuery);

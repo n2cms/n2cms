@@ -12,10 +12,25 @@ namespace N2.Web
 	public class PathData
 	{
 		public const string DefaultAction = "";
-		public static PathData EmptyTemplate()
+		public static PathData Empty
 		{
-			return new PathData(null, null, null, null);
+			get { return new PathData(); }
 		}
+
+		static string itemQueryKey = "item";
+		static string pageQueryKey = "page";
+		public static string ItemQueryKey
+		{
+			get { return itemQueryKey; }
+			set { itemQueryKey = value; }
+		}
+		public static string PageQueryKey
+		{
+			get { return pageQueryKey; }
+			set { pageQueryKey = value; }
+		}
+
+
 
 		public PathData(ContentItem item, string templateUrl, string action, string arguments)
 			: this()
@@ -69,14 +84,14 @@ namespace N2.Web
 					return null;
 
 				if (CurrentItem.IsPage)
-					return Url.Parse(TemplateUrl).UpdateQuery(QueryParameters).SetQueryParameter("page", CurrentItem.ID);
+					return Url.Parse(TemplateUrl).UpdateQuery(QueryParameters).SetQueryParameter(PathData.PageQueryKey, CurrentItem.ID);
 				
 				for (ContentItem ancestor = CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
 					if (ancestor.IsPage)
-						return ancestor.FindPath(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter("item", CurrentItem.ID);
+						return ancestor.FindPath(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
 
 				if (CurrentItem.VersionOf != null)
-					return CurrentItem.VersionOf.FindPath(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter("item", CurrentItem.ID);
+					return CurrentItem.VersionOf.FindPath(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
 
 				throw new TemplateNotFoundException(CurrentItem);
 			}
@@ -120,11 +135,6 @@ namespace N2.Web
 		public virtual bool IsEmpty()
 		{
 			return CurrentItem == null;
-		}
-
-		public static PathData Empty
-		{
-			get { return new PathData(); }
 		}
 	}
 }

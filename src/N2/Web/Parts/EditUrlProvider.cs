@@ -35,7 +35,7 @@ namespace N2.Web.Parts
 
 		private string GetRedirectUrl(NameValueCollection request)
 		{
-			ContentItem item = persister.Get(int.Parse(request["item"]));
+			ContentItem item = persister.Get(int.Parse(request[PathData.ItemQueryKey]));
 			string url = editManager.GetEditExistingItemUrl(item);
 			url = N2.Web.Url.ToAbsolute(url);
 			if (!string.IsNullOrEmpty(request["returnUrl"]))

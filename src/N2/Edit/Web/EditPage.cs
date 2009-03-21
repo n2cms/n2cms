@@ -260,7 +260,7 @@ else window.location = '{2}';";
 			if (!string.IsNullOrEmpty(selectedUrl))
 				return Engine.UrlParser.Parse(selectedUrl);
 
-			string itemId = Request["item"];
+			string itemId = Request[PathData.ItemQueryKey];
 			if (!string.IsNullOrEmpty(itemId))
 				return Engine.Persister.Get(int.Parse(itemId));
 

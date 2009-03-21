@@ -1,4 +1,5 @@
-﻿- added the observeAllExtensions option
+﻿- made page query string key changeable
+- added the observeAllExtensions option
 - renamed the aspect controller concept to content adapters
 - fixed #21648:  Tiny mce problems (removed fancy toolbar)
 - updated MySQL.Data.dll (sent by Максим)

@@ -30,7 +30,7 @@ namespace N2.Web.Parts
 
 		private void CopyItem(NameValueCollection request)
 		{
-			ContentItem item = persister.Get(int.Parse(request["item"]));
+			ContentItem item = persister.Get(int.Parse(request[PathData.ItemQueryKey]));
 			ContentItem parent;
 
 			item = item.Clone(true);

@@ -517,7 +517,7 @@ namespace N2
 					return data;
 			}
 
-			return PathData.EmptyTemplate();
+			return PathData.Empty;
 		}
 
 		/// <summary>Looks up path finders for a certain type using reflection.</summary>

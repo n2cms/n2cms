@@ -1,5 +1,6 @@
 using N2.Integrity;
 using N2.Details;
+using N2.Web;
 using N2.Web.UI;
 using N2.Serialization;
 
@@ -41,7 +42,7 @@ namespace N2.Templates.Items
 
         public override string Url
         {
-			get { return N2.Web.Url.Parse(Parent.Url).AppendQuery("item", ID).SetFragment("#t" + ID); }
+			get { return N2.Web.Url.Parse(Parent.Url).AppendQuery(PathData.ItemQueryKey, ID).SetFragment("#t" + ID); }
         }
 
         protected override string IconName

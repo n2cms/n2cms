@@ -1,5 +1,6 @@
 using System.Web.UI;
 using N2.Engine;
+using N2.Web;
 
 namespace N2.Edit.Web
 {
@@ -18,7 +19,7 @@ namespace N2.Edit.Web
         {
             get
             {
-                string itemId = Request.QueryString["item"];
+				string itemId = Request.QueryString[PathData.ItemQueryKey];
                 string selected = Request.QueryString["selected"];
 				if (selectedItem != null)
 					return selectedItem;

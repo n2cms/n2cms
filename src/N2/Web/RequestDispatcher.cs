@@ -79,7 +79,7 @@ namespace N2.Web
 			foreach (string observed in observedExtensions)
 				if (string.Equals(observed, extension, StringComparison.InvariantCultureIgnoreCase))
 					return true;
-			if (url.GetQuery("page") != null)
+			if (url.GetQuery(PathData.PageQueryKey) != null)
 				return true;
 
 			return false;

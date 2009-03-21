@@ -22,9 +22,9 @@ namespace N2.Web.Parts
 
 		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
-			ContentItem item = persister.Get(int.Parse(request["item"]));
+			ContentItem item = persister.Get(int.Parse(request[PathData.ItemQueryKey]));
 			if (item == null)
-				throw new N2Exception("Couln't find any item with the id: " + request["item"]);
+				throw new N2Exception("Couln't find any item with the id: " + request[PathData.ItemQueryKey]);
 			persister.Delete(item);
 			return new NameValueCollection();
 		}

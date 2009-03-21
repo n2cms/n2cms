@@ -25,8 +25,8 @@ namespace N2.Web.UI
 		{
 			get
 			{
-				if (!string.IsNullOrEmpty(Request.QueryString["item"]))
-					return this.CurrentItem.ID == int.Parse(Request.QueryString["item"]);
+				if (!string.IsNullOrEmpty(Request.QueryString[PathData.ItemQueryKey]))
+					return this.CurrentItem.ID == int.Parse(Request.QueryString[PathData.ItemQueryKey]);
 				return false;
 			}
 		}
