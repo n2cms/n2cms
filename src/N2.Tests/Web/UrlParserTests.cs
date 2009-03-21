@@ -83,7 +83,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParse_StartPage2()
 		{
-			ContentItem parsedItem = parser.Parse("/default");
+			ContentItem parsedItem = parser.Parse("/default.aspx?");
 			Assert.AreEqual(startItem, parsedItem);
 		}
 		#endregion

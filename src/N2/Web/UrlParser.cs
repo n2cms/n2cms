@@ -174,7 +174,6 @@ namespace N2.Web
 		{
             url = Url.PathPart(url);
 			url = Url.ToRelative(url);
-			url = Url.RemoveExtension(url);
 			return url.TrimStart('~', '/');
 		}
 

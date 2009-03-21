@@ -16,7 +16,8 @@ namespace N2.Tests.Web
 		IUrlParser parser;
 		RequestDispatcher dispatcher;
 		FakeWebContextWrapper webContext;
-		ContentItem root, one, two;
+		ContentItem root, two, three;
+		CustomExtensionItem one;
 		ErrorHandler errorHandler;
 		IEngine engine;
 		ContentAdapterProvider adapterProvider;
@@ -27,9 +28,10 @@ namespace N2.Tests.Web
 			base.SetUp();
 
 			root = CreateOneItem<PageItem>(1, "root", null);
-			one = CreateOneItem<PageItem>(2, "one", root);
+			one = CreateOneItem<CustomExtensionItem>(2, "one", root);
 			two = CreateOneItem<PageItem>(3, "two", one);
 			CreateOneItem<DataItem>(4, "four", root);
+			three = CreateOneItem<PageItem>(5, "three.3", root);
 
 			webContext = new FakeWebContextWrapper();
 			HostSection hostSection = new HostSection();
@@ -89,6 +91,7 @@ namespace N2.Tests.Web
         [Test]
         public void UpdatesCurrentPage_WhenExtension_IsConfiguredAsObserved()
         {
+        	one.extension = ".htm";
 			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } });
         	webContext.Url = "/one.htm";
 
@@ -106,6 +109,17 @@ namespace N2.Tests.Web
 			handler.BeginRequest();
 
 			Assert.That(webContext.CurrentPage, Is.Null);
+		}
+
+		[Test]
+		public void UpdatesCurrentPage_WhenAllExtensions_AreObserved_AndOddExtension_IsPassed()
+		{
+			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObserveAllExtensions = true} });
+			webContext.Url = "/three.3";
+
+			handler.BeginRequest();
+
+			Assert.That(webContext.CurrentPage, Is.EqualTo(three));
 		}
 
 		[Test]

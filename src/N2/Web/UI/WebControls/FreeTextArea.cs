@@ -12,7 +12,7 @@ using System.Text;
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>
-	/// A wrapper for the tinyMCE free text editor. <see cref="http://tinymce.moxiecode.com"/>
+	/// A wrapper for the tinyMCE free text editor (http://tinymce.moxiecode.com).
 	/// </summary>
 	public class FreeTextArea : TextBox
 	{

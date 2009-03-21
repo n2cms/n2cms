@@ -14,12 +14,17 @@ namespace N2.Engine
 	{
 		readonly IEngine engine;
 		readonly ITypeFinder finder;
-		IAdapterDescriptor[] controllerDescriptors = new IAdapterDescriptor[0];
+		IAdapterDescriptor[] adapterDescriptors = new IAdapterDescriptor[0];
 
 		public ContentAdapterProvider(IEngine engine, ITypeFinder finder)
 		{
 			this.engine = engine;
 			this.finder = finder;
+		}
+
+		public IEnumerable<IAdapterDescriptor> AdapterDescriptors
+		{
+			get { return adapterDescriptors; }
 		}
 
 		#region IContentAdapterProvider Members
@@ -47,10 +52,10 @@ namespace N2.Engine
 		{
 			lock (this)
 			{
-				List<IAdapterDescriptor> references = new List<IAdapterDescriptor>(controllerDescriptors);
-				references.InsertRange(0,descriptorsToAdd);
+				List<IAdapterDescriptor> references = new List<IAdapterDescriptor>(adapterDescriptors);
+				references.AddRange(descriptorsToAdd);
 				references.Sort();
-				controllerDescriptors = references.ToArray();
+				adapterDescriptors = references.ToArray();
 			}
 		}
 
@@ -60,7 +65,7 @@ namespace N2.Engine
 		{
 			Type requestedType = typeof(T);
 
-			foreach (IAdapterDescriptor reference in controllerDescriptors)
+			foreach (IAdapterDescriptor reference in adapterDescriptors)
 			{
 				if (requestedType.IsAssignableFrom(reference.AdapterType) && reference.IsAdapterFor(path, requestedType))
 				{

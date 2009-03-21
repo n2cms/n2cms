@@ -133,6 +133,14 @@
     <Compile Include="Edit\WhileDealingWithVersions.cs" />
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
+    <Compile Include="Engine\ContentAdapterProviderTest.cs" />
+    <Compile Include="Engine\Items\AdapterA.cs" />
+    <Compile Include="Engine\Items\AdapterAA.cs" />
+    <Compile Include="Engine\Items\AdapterAAA.cs" />
+    <Compile Include="Engine\Items\ItemAA.cs" />
+    <Compile Include="Engine\Items\ItemAAA.cs" />
+    <Compile Include="Engine\Items\ItemAAB.cs" />
+    <Compile Include="Engine\Items\ItemAB.cs" />
     <Compile Include="Engine\MultipleSitesContentEngineTests.cs" />
     <Compile Include="Definitions\AttributeReference.cs" />
     <Compile Include="Definitions\DefinitionFixture.cs" />
@@ -248,9 +256,11 @@
     <Compile Include="SecurityUtilities.cs" />
     <Compile Include="Security\Items\SecurityPage.cs" />
     <Compile Include="Security\SecurityManagerTests.cs" />
+    <Compile Include="Web\Items\CustomExtensionItem.cs" />
     <Compile Include="Web\Items\CustomRequestAdapter.cs" />
     <Compile Include="Web\Items\CustomZoneController.cs" />
     <Compile Include="Web\DynamicSitesProviderTests.cs" />
+    <Compile Include="Engine\Items\ItemA.cs" />
     <Compile Include="Web\Items\OtherCustomController.cs" />
     <Compile Include="Web\Items\OtherCustomItem.cs" />
     <Compile Include="Web\Items\PageZoneAdapter.cs" />
