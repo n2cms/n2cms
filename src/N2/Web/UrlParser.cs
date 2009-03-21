@@ -16,7 +16,7 @@ namespace N2.Web
         protected readonly IPersister persister;
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
-		private string defaultDocument = "default";
+		private string defaultDocument = "default.aspx";
 		readonly bool ignoreExistingFiles;
 
 
@@ -76,7 +76,7 @@ namespace N2.Web
 			if (startPage == null)
 				return PathData.Empty;
 			
-			string path = Url.ToRelative(requestedUrl.PathWithoutExtension).TrimStart('~');
+			string path = Url.ToRelative(requestedUrl.Path).TrimStart('~');
 			PathData data = startPage.FindPath(path).UpdateParameters(requestedUrl.GetQueries());
 
 			if (data.IsEmpty())

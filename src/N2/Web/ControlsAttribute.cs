@@ -8,10 +8,10 @@ namespace N2.Web
 	/// </summary>
 	[DebuggerDisplay("ControlsAttribute: {ItemType}->{ControllerType}")]
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Assembly)]
-	public class ControlsAttribute : Attribute, IComparable<ControlsAttribute>, IControllerDescriptor
+	public class ControlsAttribute : Attribute, IComparable<ControlsAttribute>, IAdapterDescriptor
 	{
 		private readonly Type itemType;
-		private Type controllerType;
+		private Type adapterType;
 
 		public ControlsAttribute(Type itemType)
 		{
@@ -23,17 +23,17 @@ namespace N2.Web
 			get { return itemType; }
 		}
 
-		public Type ControllerType
+		public Type AdapterType
 		{
-			get { return controllerType; }
-			set { controllerType = value; }
+			get { return adapterType; }
+			set { adapterType = value; }
 		}
 
 		public string ControllerName
 		{
 			get
 			{
-				string name = ControllerType.Name;
+				string name = AdapterType.Name;
 				int i = name.IndexOf("Controller");
 				if (i > 0)
 				{
@@ -43,7 +43,7 @@ namespace N2.Web
 			}
 		}
 
-		public bool IsControllerFor(PathData path, Type requiredType)
+		public bool IsAdapterFor(PathData path, Type requiredType)
 		{
 			if (path.IsEmpty())
 				return false;
@@ -53,7 +53,7 @@ namespace N2.Web
 
 		#region IComparable<IControllerReference> Members
 
-		public int CompareTo(IControllerDescriptor other)
+		public int CompareTo(IAdapterDescriptor other)
 		{
 			if (other.ItemType.IsSubclassOf(ItemType))
 				return DistanceBetween(ItemType, other.ItemType);

@@ -12,7 +12,7 @@ namespace N2.Edit
 	/// Controls aspects related to the editor interface and editing content items.
 	/// </summary>
 	[Controls(typeof(ContentItem))]
-	public class EditableAspectController : AbstractAspectController
+	public class EditableAdapter : AbstractContentAdapter
 	{
 		/// <summary>Adds the editors defined for the item to the control hierarchy.</summary>
 		/// <param name="itemType">The type to add editors for.</param>

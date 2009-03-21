@@ -3,10 +3,10 @@
 namespace N2.Engine
 {
 	/// <summary>
-	/// Convenience base class for aspect controllers. One instance 
+	/// Convenience base class for content adapters. One instance 
 	/// of the inheriting class is created per request upon usage.
 	/// </summary>
-	public abstract class AbstractAspectController : IAspectController
+	public abstract class AbstractContentAdapter : IContentAdapter
 	{		
 		#region IAspectController Members
 

@@ -1,4 +1,3 @@
-using System;
 using System.Security.Principal;
 using System.Web;
 using N2.Engine;
@@ -14,7 +13,7 @@ namespace N2.Web
 	/// [Controls] attribute).
 	/// </summary>
 	[Controls(typeof(ContentItem))]
-	public class RequestAspectController : AbstractAspectController
+	public class RequestAdapter : AbstractContentAdapter
 	{
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		public virtual void RewriteRequest()

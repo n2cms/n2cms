@@ -2,7 +2,7 @@ N2 is a lightweight CMS framework for ASP.NET. It helps you build great web
 sites that anyone can update.
 
 Major Changes
-The aspect controller concept (a layer of indirection that allows control over 
+The content adapter concept (a layer of indirection that allows control over 
 aspects external to the solution). Small tweaks of the editing and drag/drop 
 experience. A file operations API. Some improvements in the ASP.NET MVC area.
 

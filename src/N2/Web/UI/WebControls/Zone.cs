@@ -24,12 +24,12 @@ namespace N2.Web.UI.WebControls
         ITemplate separatorTemplate;
         ITemplate headerTemplate;
         ITemplate footerTemplate;
-		PartsAspectController partsController;
+		PartsAdapter partsController;
 
-		/// <summary>The aspect controller related to the current page item.</summary>
-		protected virtual PartsAspectController PartsController
+		/// <summary>The content adapter related to the current page item.</summary>
+		protected virtual PartsAdapter PartsController
 		{
-			get { return partsController ?? (partsController = Engine.Resolve<IAspectControllerProvider>().ResolveAspectController<PartsAspectController>(CurrentItem.FindPath(PathData.DefaultAction))); }
+			get { return partsController ?? (partsController = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem.FindPath(PathData.DefaultAction))); }
 		}
 
 		/// <summary>Gets or sets the zone from which to featch items.</summary>

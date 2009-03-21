@@ -13,7 +13,7 @@ using N2.Definitions;
 namespace N2.Tests.Web
 {
 	[TestFixture]
-	public class PartsControllerTest : ItemPersistenceMockingBase
+	public class PartsAdapterTest : ItemPersistenceMockingBase
 	{
 		ContentItem pageItem, customItem, dataItem;
 		UrlParser parser;
@@ -33,10 +33,10 @@ namespace N2.Tests.Web
 			engine = new FakeEngine();
 			AppDomainTypeFinder finder = new AppDomainTypeFinder();
 			engine.AddComponentInstance(null, typeof (IDefinitionManager), new DefinitionManager(new DefinitionBuilder(finder), null));
-			AspectControllerProvider provider = new AspectControllerProvider(engine, new AppDomainTypeFinder());
+			ContentAdapterProvider provider = new ContentAdapterProvider(engine, new AppDomainTypeFinder());
 			provider.Start();
 			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
-			engine.AddComponentInstance("", typeof(IAspectControllerProvider), provider);
+			engine.AddComponentInstance("", typeof(IContentAdapterProvider), provider);
 		}
 
 
@@ -45,16 +45,16 @@ namespace N2.Tests.Web
 		public void CanResolve_ZoneAspectController()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
+			PartsAdapter controller = dispatcher.ResolveAspectController<PartsAdapter>();
 
-			Assert.That(controller, Is.TypeOf(typeof(PageZoneController)));
+			Assert.That(controller, Is.TypeOf(typeof(PageZoneAdapter)));
 		}
 
 		[Test]
 		public void Retrieves_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/item4");
-			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
+			PartsAdapter controller = dispatcher.ResolveAspectController<PartsAdapter>();
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(customItem, "Zone1");
 
@@ -65,7 +65,7 @@ namespace N2.Tests.Web
 		public void CanFilter_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
+			PartsAdapter controller = dispatcher.ResolveAspectController<PartsAdapter>();
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneNone");
 
@@ -76,7 +76,7 @@ namespace N2.Tests.Web
 		public void CanAddTo_ItemsInZone()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
+			PartsAdapter controller = dispatcher.ResolveAspectController<PartsAdapter>();
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneAll");
 
@@ -87,7 +87,7 @@ namespace N2.Tests.Web
 		public void CanResolve_PossibleChildren()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			PartsAspectController controller = dispatcher.ResolveAspectController<PartsAspectController>();
+			PartsAdapter controller = dispatcher.ResolveAspectController<PartsAdapter>();
 
 			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(webContext.CurrentPage, "Zone1", null);
 

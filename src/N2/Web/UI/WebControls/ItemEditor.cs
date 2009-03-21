@@ -48,10 +48,10 @@ namespace N2.Web.UI.WebControls
 
 		public virtual IEngine Engine { get; set;}
 
-		/// <summary>The aspect controller related to the current page item.</summary>
-		protected virtual EditableAspectController EditController
+		/// <summary>The content adapter related to the current page item.</summary>
+		protected virtual EditableAdapter EditController
 		{
-			get { return Engine.Resolve<IAspectControllerProvider>().ResolveAspectController<EditableAspectController>(CurrentItem.FindPath(PathData.DefaultAction)); }
+			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<EditableAdapter>(CurrentItem.FindPath(PathData.DefaultAction)); }
 		}
 
 		/// <summary>Gets a dictionary of editor controls added this control.</summary>

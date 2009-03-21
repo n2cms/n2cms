@@ -5,7 +5,7 @@ using N2.Web.Parts;
 namespace N2.Tests.Web.Items
 {
 	[Controls(typeof(PageItem))]
-	public class PageZoneController : PartsAspectController
+	public class PageZoneAdapter : PartsAdapter
 	{
 		public override ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
 		{

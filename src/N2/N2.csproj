@@ -319,7 +319,8 @@
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
-    <Compile Include="Edit\EditableAspectController.cs" />
+    <Compile Include="Edit\EditableAdapter.cs" />
+    <Compile Include="Obsolete\EditableAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />
     <Compile Include="Edit\FileSystem\FileData.cs" />
     <Compile Include="Edit\FileSystem\IFileSystem.cs" />
@@ -330,9 +331,9 @@
     <Compile Include="Edit\ControlPanelLinkAttribute.cs" />
     <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
     <Compile Include="Edit\Settings\ISettingsEditor.cs" />
-    <Compile Include="Engine\AbstractAspectController.cs" />
+    <Compile Include="Engine\AbstractContentAdapter.cs" />
     <Compile Include="Engine\Action.cs" />
-    <Compile Include="Engine\AspectControllerProvider.cs" />
+    <Compile Include="Engine\ContentAdapterProvider.cs" />
     <Compile Include="Engine\Function.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -344,7 +345,7 @@
     <Compile Include="Engine\Globalization\NavigationTranslationsPluginAttribute.cs" />
     <Compile Include="Engine\Globalization\Scope.cs" />
     <Compile Include="Engine\Globalization\TranslateSpecification.cs" />
-    <Compile Include="Engine\IAspectControllerProvider.cs" />
+    <Compile Include="Engine\IContentAdapterProvider.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
     <Compile Include="Engine\Singleton.cs" />
@@ -444,19 +445,21 @@
     <Compile Include="Serialization\ExportOptions.cs" />
     <Compile Include="Engine\EventBroker.cs" />
     <Compile Include="Web\Parts\IAddablePart.cs" />
-    <Compile Include="Web\RequestAspectController.cs" />
+    <Compile Include="Obsolete\PartsAspectController.cs" />
+    <Compile Include="Web\RequestAdapter.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />
     <Compile Include="Web\CachingUrlParserDecorator.cs" />
     <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
     <Compile Include="Web\ControlsAttribute.cs" />
     <Compile Include="Web\HttpRequestContextAccessor.cs" />
-    <Compile Include="Engine\IAspectController.cs" />
-    <Compile Include="Web\IControllerDescriptor.cs" />
+    <Compile Include="Engine\IContentAdapter.cs" />
+    <Compile Include="Web\IAdapterDescriptor.cs" />
     <Compile Include="Web\IRequestContextAccessor.cs" />
     <Compile Include="Web\IRequestDispatcher.cs" />
     <Compile Include="Web\DynamicTemplateAttribute.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
+    <Compile Include="Obsolete\RequestAspectController.cs" />
     <Compile Include="Web\RequestDispatcher.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlFilter.cs" />
@@ -616,7 +619,7 @@
     <Compile Include="Web\UI\WebControls\Ul.cs" />
     <Compile Include="Web\Url.cs" />
     <Compile Include="Web\WebRequestContext.cs" />
-    <Compile Include="Web\Parts\PartsAspectController.cs" />
+    <Compile Include="Web\Parts\PartsAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Engine\n2.configuration.xml" />

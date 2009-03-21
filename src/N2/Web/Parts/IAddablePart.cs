@@ -4,7 +4,7 @@ namespace N2.Web.Parts
 {
 	/// <summary>
 	/// Content items implementing this interface are detected by the part 
-	/// aspect controller and added with this method instead of the default.
+	/// content adapter and added with this method instead of the default.
 	/// </summary>
 	public interface IAddablePart
 	{

@@ -19,7 +19,7 @@ namespace N2.Tests.Web
 		ContentItem root, one, two;
 		ErrorHandler errorHandler;
 		IEngine engine;
-		AspectControllerProvider controllerProvider;
+		ContentAdapterProvider adapterProvider;
 
 		[SetUp]
 		public override void SetUp()
@@ -37,8 +37,8 @@ namespace N2.Tests.Web
 			errorHandler = new ErrorHandler(webContext, null, null);
 			engine = new FakeEngine();
 			engine.AddComponentInstance(null, typeof(IWebContext), webContext);
-			controllerProvider = new AspectControllerProvider(engine, new AppDomainTypeFinder());
-			controllerProvider.Start();
+			adapterProvider = new ContentAdapterProvider(engine, new AppDomainTypeFinder());
+			adapterProvider.Start();
 
 			ReCreateDispatcherWithConfig(hostSection);
 		}
@@ -162,7 +162,7 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			dispatcher = new RequestDispatcher(controllerProvider, webContext, parser, errorHandler, config);
+			dispatcher = new RequestDispatcher(adapterProvider, webContext, parser, errorHandler, config);
 			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, errorHandler);
 		}
 	}

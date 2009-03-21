@@ -9,7 +9,7 @@ namespace N2.Templates.Services
 	/// Implements "Recusive" zones functionality.
 	/// </summary>
 	[Controls(typeof(AbstractPage))]
-	public class TemplatesPartsAspectController : PartsAspectController
+	public class TemplatesPartsAdapter : PartsAdapter
 	{
 		public override ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
 		{

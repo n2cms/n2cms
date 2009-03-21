@@ -4,7 +4,7 @@ using N2.Web;
 namespace N2.Addons.UITests.Items
 {
 	[Controls(typeof(AdaptiveItemPage))]
-	public class AdaptiveRequestController : RequestAspectController
+	public class AdaptiveRequestController : RequestAdapter
 	{
 		public override void AuthorizeRequest(System.Security.Principal.IPrincipal user)
 		{

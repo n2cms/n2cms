@@ -38,12 +38,12 @@ namespace N2.Web.Mvc
 			IList<ControlsAttribute> controllerDefinitions = FindControllers(engine);
 			foreach (ItemDefinition id in engine.Definitions.GetDefinitions())
 			{
-				IControllerDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
+				IAdapterDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
 				ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
 				IList<IPathFinder> finders = ContentItem.GetPathFinders(id.ItemType);
 				if (0 == finders.Where(f => f is RouteActionResolverAttribute || f is ActionResolver).Count())
 				{
-					var methods = controllerDefinition.ControllerType.GetMethods().Select(m => m.Name).ToArray();
+					var methods = controllerDefinition.AdapterType.GetMethods().Select(m => m.Name).ToArray();
 					var actionResolver = new ActionResolver(methods);
 					finders.Insert(0, actionResolver);
 					FinderDictionary[id.ItemType] = finders;
@@ -115,7 +115,7 @@ namespace N2.Web.Mvc
 			return ControllerMap[type];
 		}
 
-		private IControllerDescriptor GetControllerFor(Type itemType, IList<ControlsAttribute> controllerDefinitions)
+		private IAdapterDescriptor GetControllerFor(Type itemType, IList<ControlsAttribute> controllerDefinitions)
 		{
 			foreach (ControlsAttribute controllerDefinition in controllerDefinitions)
 			{
@@ -134,7 +134,7 @@ namespace N2.Web.Mvc
 			{
 				foreach (ControlsAttribute attr in controllerType.GetCustomAttributes(typeof(ControlsAttribute), false))
 				{
-					attr.ControllerType = controllerType;
+					attr.AdapterType = controllerType;
 					controllerDefinitions.Add(attr);
 				}
 			}

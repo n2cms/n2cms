@@ -12,20 +12,22 @@ namespace N2.Web
 	/// </summary>
 	public class RequestDispatcher : IRequestDispatcher
 	{
-		readonly IAspectControllerProvider aspectProvider;
+		readonly IContentAdapterProvider aspectProvider;
 		readonly IWebContext webContext;
 		readonly IUrlParser parser;
 		readonly IErrorHandler errorHandler;
 		readonly bool rewriteEmptyExtension = true;
+		readonly bool observeAllExtensions = true;
 		readonly string[] observedExtensions = new[] { ".aspx" };
 
 
-		public RequestDispatcher(IAspectControllerProvider aspectProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
+		public RequestDispatcher(IContentAdapterProvider aspectProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
 		{
 			this.aspectProvider = aspectProvider;
 			this.webContext = webContext;
 			this.parser = parser;
 			this.errorHandler = errorHandler;
+			observeAllExtensions = config.Web.ObserveAllExtensions;
 			rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
 			StringCollection additionalExtensions = config.Web.ObservedExtensions;
             if (additionalExtensions != null && additionalExtensions.Count > 0)
@@ -38,13 +40,13 @@ namespace N2.Web
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual T ResolveAspectController<T>() where T : class, IAspectController
+		public virtual T ResolveAspectController<T>() where T : class, IContentAdapter
 		{
 			T controller = RequestItem<T>.Instance;
 			if (controller != null) return controller;
 
 			PathData path = ResolveUrl(webContext.Url);
-			controller = aspectProvider.ResolveAspectController<T>(path);
+			controller = aspectProvider.ResolveAdapter<T>(path);
 			
 			RequestItem<T>.Instance = controller;
 			return controller;
@@ -65,6 +67,9 @@ namespace N2.Web
 
 		private bool IsObservable(Url url)
 		{
+			if (observeAllExtensions)
+				return true;
+
 			if(url.LocalUrl == Url.ApplicationPath)
 				return true;
 

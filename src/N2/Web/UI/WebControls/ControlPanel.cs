@@ -58,9 +58,9 @@ namespace N2.Web.UI.WebControls
 			get { return N2.Context.Current; }
 		}
 
-		protected virtual PartsAspectController ZoneController
+		protected virtual PartsAdapter ZoneController
 		{
-			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<PartsAspectController>(); }
+			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<PartsAdapter>(); }
 		}
 
 		public virtual ContentItem CurrentItem

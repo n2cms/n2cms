@@ -12,7 +12,7 @@ namespace N2.Web.Parts
 	/// Controls aspects related to zones, zone definitions, and items to display in a zone.
 	/// </summary>
 	[Controls(typeof(ContentItem))]
-	public class PartsAspectController : AbstractAspectController
+	public class PartsAdapter : AbstractContentAdapter
 	{
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="parentItem">The item whose items to get.</param>

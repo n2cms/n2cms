@@ -89,6 +89,8 @@ namespace N2.Web
 			return this;
 		}
 
+		/// <summary>Returns a copy of the path data stripped of the request specific instance of the content item.</summary>
+		/// <returns>A copy of the path data.</returns>
 		public virtual PathData Detach()
 		{
 			PathData data = new PathData(ID, Path, TemplateUrl, Action, Argument);
@@ -96,6 +98,9 @@ namespace N2.Web
 			return data;
 		}
 
+		/// <summary>Creates a copy of the PathData with a content item retrieved from the supplied persister. The reason for this is that PathData can be cached and we don't want to share instances between requests.</summary>
+		/// <param name="persister">The perister providing the item.</param>
+		/// <returns>A copy of the path data.</returns>
 		public virtual PathData Attach(N2.Persistence.IPersister persister)
 		{
 			ContentItem item = persister.Repository.Load(ID);

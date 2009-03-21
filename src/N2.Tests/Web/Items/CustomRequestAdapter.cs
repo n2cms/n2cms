@@ -3,7 +3,7 @@ using N2.Web;
 namespace N2.Tests.Web.Items
 {
 	[Controls(typeof(CustomItem))]
-	public class CustomRequestController : RequestAspectController
+	public class CustomRequestAdapter : RequestAdapter
 	{
 	}
 }

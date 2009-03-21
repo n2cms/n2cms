@@ -26,7 +26,15 @@ namespace N2.Configuration
         {
             get { return (bool)base["observeEmptyExtension"] || string.IsNullOrEmpty(Extension) || Extension == "/"; }
             set { base["observeEmptyExtension"] = value; }
-        }
+		}
+
+		/// <summary>Look for a content page when the requested resource has an unknown extension.</summary>
+		[ConfigurationProperty("observeAllExtensions")]
+		public bool ObserveAllExtensions
+		{
+			get { return (bool)base["observeAllExtensions"] || string.IsNullOrEmpty(Extension) || Extension == "/"; }
+			set { base["observeAllExtensions"] = value; }
+		}
 
         /// <summary>Additional extensions observed by the rewriter.</summary>
         [ConfigurationProperty("observedExtensions"), TypeConverter(typeof(CommaDelimitedStringCollectionConverter))]

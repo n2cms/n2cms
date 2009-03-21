@@ -75,7 +75,7 @@ namespace N2.Web
                 }
             }
 
-			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
+			RequestAdapter controller = dispatcher.ResolveAspectController<RequestAdapter>();
 			if(controller != null)
 			{
 				webContext.CurrentPath = controller.Path;
@@ -97,7 +97,7 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
+			RequestAdapter controller = dispatcher.ResolveAspectController<RequestAdapter>();
 			controller.InjectCurrentPage(webContext.Handler);
 		}
 
@@ -105,7 +105,7 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			RequestAspectController controller = dispatcher.ResolveAspectController<RequestAspectController>();
+			RequestAdapter controller = dispatcher.ResolveAspectController<RequestAdapter>();
 			controller.AuthorizeRequest(webContext.User);
 		}
 

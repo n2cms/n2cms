@@ -4,7 +4,7 @@ using N2.Web.Parts;
 namespace N2.Tests.Web.Items
 {
 	[Controls(typeof(CustomItem))]
-	public class CustomZoneController : PartsAspectController
+	public class CustomZoneController : PartsAdapter
 	{
 
 	}
