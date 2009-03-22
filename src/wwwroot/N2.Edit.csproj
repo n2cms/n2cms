@@ -1637,6 +1637,7 @@
     <Content Include="Edit\Css\TabPanel.css" />
     <Content Include="Edit\DiscardPreview.aspx" />
     <Content Include="Edit\img\ajax-loader.gif" />
+    <Content Include="Edit\img\login_logo.png" />
     <Content Include="Edit\Js\jquery-1.3.2.js" />
     <Content Include="Edit\Js\jquery.ui\jquery-ui-personalized.min.js" />
     <Content Include="Edit\Js\plugins\date.js" />

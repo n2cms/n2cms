@@ -90,6 +90,7 @@
     <Compile Include="Templates\Details\PollCreatorDetailAttribute.cs" />
     <Compile Include="Templates\Details\ThemeSelectorAttribute.cs" />
     <Compile Include="Templates\Find.cs" />
+    <Compile Include="Templates\Items\JQuerySocialBookmarks.cs" />
     <Compile Include="Templates\Items\DefaultTemplateAttribute.cs" />
     <Compile Include="Templates\Services\ImageResizer.cs" />
     <Compile Include="Templates\Items\AbstractContentPage.cs" />
@@ -198,6 +199,13 @@
     </Compile>
     <Compile Include="Templates\UI\Parts\Comment.ascx.designer.cs">
       <DependentUpon>Comment.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\JQuerySocialBookmarks.ascx.cs">
+      <DependentUpon>JQuerySocialBookmarks.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\JQuerySocialBookmarks.ascx.designer.cs">
+      <DependentUpon>JQuerySocialBookmarks.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Parts\Empty.ascx.cs">
       <DependentUpon>Empty.ascx</DependentUpon>
@@ -893,6 +901,30 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\UI\Img\SocialBookmarks\Blinklist_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\BlogMarks_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\delicious_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Digg_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Diigo_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\FaceBook_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Favorite_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\FeedBurner_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Feed_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Flickr_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Furl_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Google_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Magnolia_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Misterwong_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\MySpace_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Netvibes_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Newsvine_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Reddit_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Simpy_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Stumbleupon_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Technorati_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Twitter_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Youtube_16x16.png" />
+    <Content Include="Templates\UI\Parts\JQuerySocialBookmarks.ascx" />
     <Content Include="Templates\UI\Views\Start.aspx" />
   </ItemGroup>
   <ItemGroup>
