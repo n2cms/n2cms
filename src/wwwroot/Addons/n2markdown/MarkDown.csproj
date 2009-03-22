@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{52F2CC8E-E381-4C42-9DAD-90F03DD02A52}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2.MarkDown</RootNamespace>
+    <AssemblyName>N2.MarkDown</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="WmdEditorAttribute.cs" />
+    <Compile Include="MarkItUpEditorAttribute.cs" />
+    <Compile Include="MarkdownParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="install.txt" />
+    <Content Include="MarkItUp\jquery.markitup.js" />
+    <Content Include="MarkItUp\jquery.markitup.pack.js" />
+    <Content Include="MarkItUp\sets\default\images\bold.png" />
+    <Content Include="MarkItUp\sets\default\images\clean.png" />
+    <Content Include="MarkItUp\sets\default\images\image.png" />
+    <Content Include="MarkItUp\sets\default\images\italic.png" />
+    <Content Include="MarkItUp\sets\default\images\link.png" />
+    <Content Include="MarkItUp\sets\default\images\picture.png" />
+    <Content Include="MarkItUp\sets\default\images\preview.png" />
+    <Content Include="MarkItUp\sets\default\images\stroke.png" />
+    <Content Include="MarkItUp\sets\default\set.js" />
+    <Content Include="MarkItUp\sets\default\style.css" />
+    <Content Include="MarkItUp\sets\markdown\images\bold.png" />
+    <Content Include="MarkItUp\sets\markdown\images\code.png" />
+    <Content Include="MarkItUp\sets\markdown\images\h1.png" />
+    <Content Include="MarkItUp\sets\markdown\images\h2.png" />
+    <Content Include="MarkItUp\sets\markdown\images\h3.png" />
+    <Content Include="MarkItUp\sets\markdown\images\h4.png" />
+    <Content Include="MarkItUp\sets\markdown\images\h5.png" />
+    <Content Include="MarkItUp\sets\markdown\images\h6.png" />
+    <Content Include="MarkItUp\sets\markdown\images\italic.png" />
+    <Content Include="MarkItUp\sets\markdown\images\link.png" />
+    <Content Include="MarkItUp\sets\markdown\images\list-bullet.png" />
+    <Content Include="MarkItUp\sets\markdown\images\list-numeric.png" />
+    <Content Include="MarkItUp\sets\markdown\images\picture.png" />
+    <Content Include="MarkItUp\sets\markdown\images\preview.png" />
+    <Content Include="MarkItUp\sets\markdown\images\quotes.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\bold.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\code.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\h1.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\h2.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\h3.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\h4.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\h5.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\h6.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\italic.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\link.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\list-bullet.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\list-numeric.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\picture.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\preview.png" />
+    <Content Include="MarkItUp\sets\markdown\markitup\quotes.png" />
+    <Content Include="MarkItUp\sets\markdown\readme.txt" />
+    <Content Include="MarkItUp\sets\markdown\set.js" />
+    <Content Include="MarkItUp\sets\markdown\style.css" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-container.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor-bbcode.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor-dotclear.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor-html.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor-json.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor-markdown.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor-textile.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor-wiki.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor-xml.png" />
+    <Content Include="MarkItUp\skins\markitup\images\bg-editor.png" />
+    <Content Include="MarkItUp\skins\markitup\images\handle.png" />
+    <Content Include="MarkItUp\skins\markitup\images\menu.png" />
+    <Content Include="MarkItUp\skins\markitup\images\submenu.png" />
+    <Content Include="MarkItUp\skins\markitup\skin.css" />
+    <Content Include="MarkItUp\skins\markitup\style.css" />
+    <Content Include="MarkItUp\skins\simple\images\handle.png" />
+    <Content Include="MarkItUp\skins\simple\images\menu.png" />
+    <Content Include="MarkItUp\skins\simple\images\submenu.png" />
+    <Content Include="MarkItUp\skins\simple\style.css" />
+    <Content Include="MarkItUp\templates\preview.css" />
+    <Content Include="MarkItUp\templates\preview.html" />
+    <Content Include="Wmd\images\bg-fill.png" />
+    <Content Include="Wmd\images\bg.png" />
+    <Content Include="Wmd\images\blockquote.png" />
+    <Content Include="Wmd\images\bold.png" />
+    <Content Include="Wmd\images\code.png" />
+    <Content Include="Wmd\images\h1.png" />
+    <Content Include="Wmd\images\hr.png" />
+    <Content Include="Wmd\images\img.png" />
+    <Content Include="Wmd\images\italic.png" />
+    <Content Include="Wmd\images\link.png" />
+    <Content Include="Wmd\images\ol.png" />
+    <Content Include="Wmd\images\redo.png" />
+    <Content Include="Wmd\images\separator.png" />
+    <Content Include="Wmd\images\ul.png" />
+    <Content Include="Wmd\images\undo.png" />
+    <Content Include="Wmd\images\wmd-buttons.png" />
+    <Content Include="Wmd\images\wmd-on.png" />
+    <Content Include="Wmd\images\wmd.png" />
+    <Content Include="Wmd\showdown.js" />
+    <Content Include="Wmd\wmd.css" />
+    <Content Include="Wmd\wmd.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Wmd\images\wmd-buttons.psd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
