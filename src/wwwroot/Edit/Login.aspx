@@ -15,10 +15,10 @@
 			-moz-border-radius-bottomleft : 5px;
 			-moz-border-radius-bottomright : 5px;
 
-			-webkit-border-top-left-radius : 3px;
-			-webkit-border-top-right-radius : 3px;
-			-webkit-border-bottom-left-radius : 3px;
-			-webkit-border-bottom-right-radius : 3px;
+			-webkit-border-top-left-radius : 5px;
+			-webkit-border-top-right-radius : 5px;
+			-webkit-border-bottom-left-radius : 5px;
+			-webkit-border-bottom-right-radius : 5px;
 
 			background-color: #FFFFFF;
 			border: solid 1px #6F7373;
