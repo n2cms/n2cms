@@ -587,9 +587,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Browsers\CSSFriendlyAdapters.browser" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Templates\UI\Image.ashx" />
   </ItemGroup>
   <ItemGroup>
@@ -609,7 +606,6 @@
     <Content Include="Upload\thorn.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Browsers\MaintainPostbackUrl.browser" />
     <Content Include="App_Themes\KhakiTabs\MenuDimmed.gif" />
     <Content Include="App_Themes\KhakiTabs\MenuSelected.gif" />
     <Content Include="App_Themes\KhakiTabs\SidebarLeftBg.gif" />

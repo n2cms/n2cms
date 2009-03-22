@@ -496,6 +496,7 @@
     </Compile>
     <Compile Include="Web\UI\WebControls\A.cs" />
     <Compile Include="Web\UI\WebControls\OptionsMenu.cs" />
+    <Compile Include="Web\UI\WebControls\RawUrlForm.cs" />
     <Compile Include="Web\UI\WebControls\Repeater.cs" />
     <Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
     <Compile Include="Web\UI\WebControls\DroppableZone.cs" />

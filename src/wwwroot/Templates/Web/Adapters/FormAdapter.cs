@@ -10,6 +10,7 @@ namespace N2.Templates.Web.Adapters
 	/// <summary>
 	/// Maintains friendly url between postbacks.
 	/// </summary>
+	[Obsolete("Use tagMappings and RawUrlForm instead.")]
 	public class FormAdapter : ControlAdapter
 	{
 		protected override void Render(HtmlTextWriter writer)
