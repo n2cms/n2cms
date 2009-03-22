@@ -11,6 +11,6 @@
 namespace N2.Templates.UI.Parts {
     
     
-    public partial class SocialBookmarks {
+    public partial class JQuerySocialBookmarks {
     }
 }

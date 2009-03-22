@@ -33,7 +33,7 @@
 	}
 
 	protected Bookmark[] bookmarks = new Bookmark[]{
-		new Bookmark("http://del.icio.us/post?url={0}&amp;title={1}", "delicious.png", "del.icio.us"),
+		new Bookmark("http://delicious.com/save?jump=yes&v=4&noui&url={0}&title={1}", "delicious.png", "del.icio.us"),
 		new Bookmark("http://digg.com/submit?phase=2&amp;url={0}&amp;title={1}", "digg.png", "Digg it"),
 		new Bookmark("http://www.dotnetkicks.com/kick/?url={0}", "dotnetkicks.png", "Dotnetkicks"),
 		new Bookmark("http://www.dzone.com/links/add.html?url={0}&amp;title={1}", "dzone.png", "DZone"),
