@@ -1,4 +1,6 @@
 ﻿1.4.5.1
+- fixed #21735: Preserving URLs of an existing site?
+- fixed unable to drag and drop in the lefthand tree
 - made page query string key changeable
 - added the observeAllExtensions option
 - renamed the aspect controller concept to content adapters

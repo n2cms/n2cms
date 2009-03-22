@@ -58,26 +58,18 @@ namespace N2.Web
 			return ItemType.IsAssignableFrom(path.CurrentItem.GetType()) && requiredType.IsAssignableFrom(adapterType);
 		}
 
-		#region IComparable<IControllerReference> Members
+		#region IComparable<IAdapterDescriptor> Members
 
 		public int CompareTo(IAdapterDescriptor other)
 		{
-			if (other.ItemType.IsSubclassOf(ItemType))
-				return DistanceBetween(ItemType, other.ItemType);
-			if (ItemType.IsSubclassOf(other.ItemType))
-				return -1 * DistanceBetween(other.ItemType, ItemType);
-
-			return 0;
+			return InheritanceDepth(other.ItemType) - InheritanceDepth(ItemType);
 		}
 
-		int DistanceBetween(Type super, Type sub)
+		int InheritanceDepth(Type type)
 		{
-			int distance = 1;
-			for (Type t = sub; t != super; t = t.BaseType)
-			{
-				++distance;
-			}
-			return distance;
+			if (type == null || type == typeof(object))
+				return 0;
+			return 1 + InheritanceDepth(type.BaseType);
 		}
 
 		#endregion

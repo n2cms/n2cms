@@ -32,16 +32,12 @@
         		};
         		var onStart = function(e, ui) {
         			dragMemory = this.rel;
-        			$.autoscroll.start();
         		};
 
         		var toDraggable = function(container) {
         			$("a", container).draggable({
         				delay: 100,
         				cursorAt: { top: 8, left: 8 },
-        				stop: function(e, ui) {
-        					$.autoscroll.stop();
-        				},
         				start: onStart,
         				helper: 'clone'
         			}).droppable({

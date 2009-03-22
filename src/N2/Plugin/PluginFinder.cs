@@ -43,10 +43,10 @@ namespace N2.Plugin
                 {
                     if (plugin.Name == null)
                         throw new N2Exception("A plugin in the assembly '{0}' has no name. The plugin is likely defined on the assembly ([assembly:...]). Try assigning the plugin a unique name and recompiling.", assembly.FullName);
-                    else if (foundPlugins.Contains(plugin))
-                        throw new N2Exception("A plugin of the type '{0}' named '{1}' is already defined, assembly: {2}", plugin.GetType().FullName, plugin.Name, assembly.FullName);
+                	if (foundPlugins.Contains(plugin))
+                		throw new N2Exception("A plugin of the type '{0}' named '{1}' is already defined, assembly: {2}", plugin.GetType().FullName, plugin.Name, assembly.FullName);
 
-                    foundPlugins.Add(plugin);
+                	foundPlugins.Add(plugin);
                 }
             }
             foundPlugins.Sort();

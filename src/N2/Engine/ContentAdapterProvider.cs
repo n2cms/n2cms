@@ -93,9 +93,10 @@ namespace N2.Engine
 			//collect [assembly: Controls(..)] attributes
 			foreach(ICustomAttributeProvider assembly in finder.GetAssemblies()) {
 				foreach(IAdapterDescriptor reference in assembly.GetCustomAttributes(typeof(IAdapterDescriptor), false)) {
-					if(null != reference.AdapterType) {
-						references.Add(reference);
-					}
+					if (null == reference.ItemType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(null)] attribute with no ItemType specified. Please specify this property: [assembly: Controls(typeof(MyItem), AdapterType = typeof(MyAdapter)]", assembly);
+					if (null == reference.AdapterType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(typeof({1})] attribute with no AdapterType specified. Please specify this property: [assembly: Controls(typeof({1}), AdapterType = typeof(MyAdapter)]", assembly, reference.ItemType.Name);
+
+					references.Add(reference);
 				}
 			}
 			

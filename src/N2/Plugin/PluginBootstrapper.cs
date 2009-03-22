@@ -22,7 +22,7 @@ namespace N2.Plugin
 		/// <returns>An enumeration of available plugins.</returns>
 		public IEnumerable<IPluginDefinition> GetPluginDefinitions()
 		{
-			foreach (Assembly assembly in typeFinder.GetAssemblies())
+			foreach (ICustomAttributeProvider assembly in typeFinder.GetAssemblies())
 			{
 				foreach (PluginAttribute plugin in assembly.GetCustomAttributes(typeof(PluginAttribute), false))
 				{

@@ -61,23 +61,43 @@ namespace N2.Web
 			{
 				current = item.VersionOf;
 			}
-            
-            // build path until a start page
-            Url url = new Url("/");
-            while (current != null && !IsStartPage(current))
-            {
-				if(current.IsPage)
-					url = url.PrependSegment(current.Name, current.Extension);
-                current = current.Parent;
-            }
-            
-            if (current == null)
-                // no start page found
-                return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+
+			// move up until first real page
+			while(current != null && !current.IsPage)
+			{
+				current = current.Parent;
+			}
+
+			// no start page found, use rewritten url
+			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+
+			Url url;
+			if (IsStartPage(current))
+			{
+				// we move right up to the start page
+				url = "/";
+			}
+			else
+			{
+				// at least one node before the start page
+				url = new Url("/" + current.Name + current.Extension);
+				current = current.Parent;
+				// build path until a start page
+				while (current != null && !IsStartPage(current))
+				{
+					url = url.PrependSegment(current.Name);
+					current = current.Parent;
+				}
+			}
+
+			// no start page found, use rewritten url
+			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
 
 			if (item.IsPage && item.VersionOf != null)
+				// the item was a version, add this information as a query string
 				url = url.AppendQuery(PathData.PageQueryKey, item.ID);
 			else if(!item.IsPage)
+				// the item was not a page, add this information as a query string
 				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
 
 			if (current.ID == host.CurrentSite.StartPageID)
