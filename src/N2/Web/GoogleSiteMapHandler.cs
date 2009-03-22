@@ -27,7 +27,7 @@ namespace N2.Web
 		{
 			get
 			{
-				return true;
+				return false;
 			}
 		}
 
@@ -41,35 +41,35 @@ namespace N2.Web
 
 			context.Response.ContentType = "text/xml";
 
-			// The XML document is in UTF-16 but we're forcing utf-8 for google, which might be a problem
-			context.Response.Write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			context.Response.Write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 			context.Response.Write(GetSiteMap(context));
 		}
 
 		public string GetSiteMap(HttpContext context)
 		{
 			// As this is a heavy operation, use the cache
-			if (context.Cache["GoogleSitemap"] != null)
-				return context.Cache["GoogleSitemap"].ToString();
+			if (context.Cache["Googlesitemap"] != null)
+				return context.Cache["Googlesitemap"].ToString();
 
-			// TODO: Make sure this is correct
 			string domain = "http://" + context.Request.Url.Authority;
-
 			IList<ContentItem> list = new List<ContentItem>();
 			ContentItem rootItem = N2.Find.RootItem;
 			RecurseTree(list, rootItem);
 
 			StringBuilder builder = new StringBuilder();
 			StringWriter stringWriter = new StringWriter(builder);
-			using (XmlTextWriter writer = new XmlTextWriter(stringWriter))
+
+			XmlWriterSettings settings = new XmlWriterSettings();
+			settings.OmitXmlDeclaration = true;
+			settings.Indent = true;
+			settings.Encoding = Encoding.UTF8;
+
+			using (XmlWriter writer = XmlWriter.Create(stringWriter, settings))
 			{
-				writer.Settings.OmitXmlDeclaration = true;
-				writer.Formatting = Formatting.Indented;
 				writer.WriteStartDocument();
 
-				// <urlset>
-				writer.WriteStartElement("urlset");
-				writer.WriteAttributeString("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9"); // easier than using NS with the writer
+				// <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+				writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
 				foreach (var item in list)
 				{
@@ -92,7 +92,7 @@ namespace N2.Web
 			stringWriter.Flush();
 
 			// Add to the cache for 3 days.
-			context.Cache.Add("GoogleSitemap", builder.ToString(), null, DateTime.Today.AddDays(3), Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+			context.Cache.Add("Googlesitemap", builder.ToString(), null, DateTime.Today.AddDays(3), Cache.NoSlidingExpiration, CacheItemPriority.Normal, null);
 
 			return builder.ToString();
 		}
@@ -104,9 +104,10 @@ namespace N2.Web
 		/// <param name="parent">This should be called using the root item</param>
 		private void RecurseTree(IList<ContentItem> list, ContentItem parent)
 		{
+			// TODO: add caching?
 			foreach (var item in parent.GetChildren())
 			{
-				if (item.Visible && item.IsPage) // TODO make these a setting
+				if (item.Visible && item.IsPage) // TODO make this a setting
 				{
 					list.Add(item);
 					RecurseTree(list, item);
