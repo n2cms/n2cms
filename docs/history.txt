@@ -1,4 +1,6 @@
 ﻿1.4.5.1
+- applied esteewhy's #20090315-n2-templates-image_handler-fix_query_with_slashes.patch
+- applied esteewhy's #20090317-n2-edit-DirectoryCompiler-generalise_for_css.patch
 - fixed #21736: MaintainPostbackUrl.browser breaks event validation
 - fixed #21735: Preserving URLs of an existing site?
 - fixed unable to drag and drop in the lefthand tree

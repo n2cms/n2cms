@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Data;
-using System.Configuration;
 using System.Web;
 using System.Web.Hosting;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.IO;
 using System.Collections.Generic;
 
 namespace N2.Edit.Js
 {
+	/// <summary>
+	/// Base handler that compiles multiple files in a directory into a single file.
+	/// </summary>
 	public abstract class DirectoryCompiler : IHttpHandler
 	{
 		public abstract string FolderUrl { get; }
@@ -24,26 +20,35 @@ namespace N2.Edit.Js
 
 		public void ProcessRequest(HttpContext context)
 		{
-			context.Response.ContentType = "text/javascript";
+			this.Context = context;
+			
+			context.Response.ContentType = this.ContentType;
 			context.Response.Buffer = false;
 			SetCache(context);
 
 			foreach (string file in GetFiles(context))
 			{
 #if DEBUG
-				context.Response.Write(Environment.NewLine + "////// " + Path.GetFileName(file) + Environment.NewLine + Environment.NewLine);
+//TODO ensure that it correct for JS and CSS, at least '//' doesn't work for CSS
+				context.Response.Write(Environment.NewLine + "/*" + Path.GetFileName(file) + "*/" + Environment.NewLine);
 #endif
 
-                context.Response.Write(File.ReadAllText(file));
+				context.Response.Write(this.OnReadFileContent(file));
 			}
 		}
 
 		protected virtual IEnumerable<string> GetFiles(HttpContext context)
 		{
 			string dir = HostingEnvironment.MapPath(FolderUrl);
-			return Directory.GetFiles(dir, "*.js");
+			List<string> _files = new List<string>();
+			
+			foreach(string _mask in this.FileMasks) {
+				_files.AddRange(Directory.GetFiles(dir, _mask));
+			}
+			
+			return _files.AsReadOnly();
 		}
-
+		
 		protected virtual void SetCache(HttpContext context)
 		{
 			context.Response.Cache.SetExpires(DateTime.Now.Add(CacheExpiration));
@@ -52,10 +57,26 @@ namespace N2.Edit.Js
 			context.Response.Cache.VaryByHeaders["Accept-Encoding"] = true;
 			context.Response.Cache.VaryByParams["*"] = true;
 		}
+		
+		/// <summary>
+		/// Reads a file and allows to process a file content before it will be served to the client or cached
+		/// </summary>
+		/// <param name="fileName">physical file name</param>
+		/// <returns>processed file content, by default the original content is served</returns>
+		protected virtual string OnReadFileContent(string fileName)
+		{
+			return File.ReadAllText(fileName);
+		}
 
 		public bool IsReusable
 		{
 			get { return true; }
 		}
+		
+		protected virtual string[] FileMasks { get { return new[] { "*.js" }; } }
+		
+		protected virtual string ContentType { get { return "text/javascript"; } }
+		
+		protected HttpContext Context { get; private set; }
 	}
 }

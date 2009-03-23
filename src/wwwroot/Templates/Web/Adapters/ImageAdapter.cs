@@ -51,7 +51,7 @@ namespace N2.Templates.Web.Adapters
 		/// <returns>The path to a handler that performs resizing of the image.</returns>
 		public static string GetResizedImageUrl(string imageUrl, double width, double height)
 		{
-			string fileExtension = VirtualPathUtility.GetExtension(imageUrl);
+			string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
 			bool isAlreadyImageHandler = string.Equals(fileExtension, ".ashx", StringComparison.OrdinalIgnoreCase);
 			
 			if (isAlreadyImageHandler) return Url.ToAbsolute(imageUrl);
