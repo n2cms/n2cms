@@ -33,7 +33,7 @@ namespace N2.Templates.Items
 
         protected override string TemplateName
         {
-            get { return "SocialBookmarks"; }
+			get { return "JQuerySocialBookmarks"; }
         }
     }
 }

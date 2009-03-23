@@ -200,13 +200,6 @@
     <Compile Include="Templates\UI\Parts\Comment.ascx.designer.cs">
       <DependentUpon>Comment.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Templates\UI\Parts\JQuerySocialBookmarks.ascx.cs">
-      <DependentUpon>JQuerySocialBookmarks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\JQuerySocialBookmarks.ascx.designer.cs">
-      <DependentUpon>JQuerySocialBookmarks.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Templates\UI\Parts\Empty.ascx.cs">
       <DependentUpon>Empty.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -920,7 +913,6 @@
     <Content Include="Templates\UI\Img\SocialBookmarks\Technorati_16x16.png" />
     <Content Include="Templates\UI\Img\SocialBookmarks\Twitter_16x16.png" />
     <Content Include="Templates\UI\Img\SocialBookmarks\Youtube_16x16.png" />
-    <Content Include="Templates\UI\Parts\JQuerySocialBookmarks.ascx" />
     <Content Include="Templates\UI\Views\Start.aspx" />
   </ItemGroup>
   <ItemGroup>
