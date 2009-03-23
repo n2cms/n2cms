@@ -33,7 +33,7 @@ namespace N2.Edit.Js
 				context.Response.Write(Environment.NewLine + "/*" + Path.GetFileName(file) + "*/" + Environment.NewLine);
 #endif
 
-				context.Response.Write(this.OnReadFileContent(file));
+				context.Response.Write(this.ReadFileContent(file));
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace N2.Edit.Js
 		/// </summary>
 		/// <param name="fileName">physical file name</param>
 		/// <returns>processed file content, by default the original content is served</returns>
-		protected virtual string OnReadFileContent(string fileName)
+		protected virtual string ReadFileContent(string fileName)
 		{
 			return File.ReadAllText(fileName);
 		}
