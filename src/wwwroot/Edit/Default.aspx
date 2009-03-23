@@ -13,7 +13,7 @@
 		<![endif]-->
     </head>
     <body id="default">
-        <form id="form1" runat="server">
+        <form id="form1" runat="server" class="frameForm">
 			<uc1:Toolbar runat="server" />
 			
             <script type="text/javascript">
@@ -23,11 +23,11 @@
                 });
             </script>
             <div id="splitter">
-				<div id="leftPane">
-					<iframe id="navigation" src="<%= GetNavigationUrl(SelectedItem) %>" frameborder="0" name="navigation" width="25%" height="500"></iframe>
+				<div id="leftPane" class="pane">
+					<iframe id="navigation" src="<%= GetNavigationUrl(SelectedItem) %>" frameborder="0" name="navigation" class="frame"></iframe>
 				</div>
-				<div id="rightPane">
-					<iframe id="preview" src="<%= GetPreviewUrl(SelectedItem) %>" frameborder="0" name="preview" width="75%" height="500"></iframe>
+				<div id="rightPane" class="pane">
+					<iframe id="preview" src="<%= GetPreviewUrl(SelectedItem) %>" frameborder="0" name="preview" class="frame"></iframe>
 				</div>
             </div>
         </form>

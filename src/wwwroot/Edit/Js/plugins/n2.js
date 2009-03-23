@@ -83,23 +83,33 @@ frameManager.prototype = {
         document.getElementById("action").value = action;
     },
     initFrames: function() {
+        var t = this;
+        t.repaint();
         $("#splitter").splitter({
             type: 'v',
-            initA: true	// use width of A (#leftPane) from styles
-
-        });
-        var t = this;
-        $(document).ready(function() {
-            $(window).bind("resize", function() {
+            cookie: 'n2spl',
+            anchorToWindow: true,
+            onStart: function() {
+                this.parent().addClass("activeSplitter");
+            },
+            onStop: function() {
+                this.parent().removeClass("activeSplitter");
                 t.repaint();
-            });
+            },
+            sizeLeft: true
+        });
+        $(window).bind("resize", function() {
             t.repaint();
         });
+        setTimeout(function() { t.repaint.call(t); }, 100); // chrome hack
     },
     repaint: function() {
-        $("#splitter").trigger("resize");
-        $("#splitter").height(this.contentHeight());
-        $("#splitter *").height(this.contentHeight());
+        var h = this.contentHeight();
+        $("#splitter").trigger("resize")
+            .height(h)
+            .find("div,iframe").height(h);
+
+        //$("#splitter *").height(this.contentHeight());
     },
     contentHeight: function() {
         return document.documentElement.clientHeight - (jQuery.browser.msie ? 50 : 51);

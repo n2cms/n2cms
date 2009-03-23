@@ -1,5 +1,5 @@
-﻿body { background:#d3d6d5; overflow:hidden; }
-body form { position:absolute; width:100%; }
+﻿body { background:#d3d6d5; }
+body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 
 /* Toolbar */
 .toolbar { background:#d1d4d3 url(../img/toolbar_bg.gif) repeat-x 0% 100%; min-width:700px; position: relative; height:50px; }
@@ -10,65 +10,28 @@ body form { position:absolute; width:100%; }
 		.toolbar .last .right { background-image:url(../img/toolarea_end.gif); }
 
 /* Navigation */
-.toolbar a
-{
-	-moz-outline-style:none;
-}
-.toolbar .toolbarItem
-{
-	height:50px;
-	float:left;
-	padding-right:2px;
-	background:transparent url(../img/toolitem_separator.gif) no-repeat 100% 100%;
-	cursor:hand;
-	cursor:pointer;
-}
-	.toolbar .command
-	{
-		float:left;
-		display:block;
-		height:25px;
-		padding:20px 8px 5px 5px;
-	}
+.toolbar a { -moz-outline-style:none; }
+.toolbar .toolbarItem {height:50px;float:left;padding-right:2px;background:transparent url(../img/toolitem_separator.gif) no-repeat 100% 100%;cursor:hand;cursor:pointer;}
+	.toolbar .command{float:left;display:block;height:25px;padding:20px 8px 5px 5px;}
 
 .toolbar .hover,
-.toolbar .selected
-{
-	background-image:url(../img/toolitem_hover.gif);
-}
+.toolbar .selected {background-image:url(../img/toolitem_hover.gif);}
 	.toolbar .hover .command,
-	.toolbar .selected .command
-	{
-		background:transparent url(../img/toolitem_hover.gif) no-repeat 0% 100%;
-		position:relative;
-		left:-5px;
-		padding:19px 3px 6px 10px;
-	}
+	.toolbar .selected .command {background:transparent url(../img/toolitem_hover.gif) no-repeat 0% 100%;position:relative;left:-5px;padding:19px 3px 6px 10px;}
 
-.toolbar .logout
-{
-	display:block;
-	position:absolute;
-	right:60px;
-	bottom:15px;
-	padding:1px;
-}
+.toolbar .logout{display:block;position:absolute;right:60px;bottom:15px;padding:1px;}
 .toolbar .sort { padding:16px 5px 4px 5px; height:30px; }
 .toolbar .hover .sort { padding:16px 0px 4px 10px; }
 .toolbar .sort a { height:12px; width:15px; display:block; overflow:hidden; }
 .toolbar .sort a:hover {}
 
 
-#logo
-{
-	position:absolute;
-	right:15px;
-	bottom:15px;
-}
+#logo{position:absolute;right:15px;bottom:15px;}
 
 #splitter { height: 510px; }
+    .activeSplitter iframe { visibility:hidden;}
 #leftPane { width: 200px; min-width: 50px; float:left; background:#fff }
 #rightPane { min-width: 50px; overflow: hidden; width:790px; float:left; background:#fff }
 #splitter .vsplitbar { width: 5px; background: #d3d6d5 url(../img/splitter.gif) no-repeat 50% 50%; }
 #splitter .vsplitbar.active, #splitter .vsplitbar:hover { background-color: #a5acb0; }
-#splitter iframe{ width:100%; }
+#splitter iframe{ width:100%; height:100%; }
