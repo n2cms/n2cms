@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using N2.Collections;
 using N2.Web.UI;
 using System.Web.UI.WebControls;
+using System.Text.RegularExpressions;
 
 namespace N2.Templates.Web.UI.WebControls
 {
@@ -32,6 +34,21 @@ namespace N2.Templates.Web.UI.WebControls
 			get { return startPage ?? Find.ClosestLanguageRoot; }
 			set { startPage = value; }
 		}
+
+		[Themeable(true)]
+		public bool UseMenuIdentifiers
+		{
+			get { return (bool)(ViewState["UseMenuIdentifiers"] ?? true); }
+			set { ViewState["UseMenuIdentifiers"] = value; }
+		}
+
+		[Themeable(true)]
+		public string MenuIdentifierPrefix
+		{
+			get { return (string)(ViewState["MenuIdentifierPrefix"] ?? "menu_"); }
+			set { ViewState["MenuIdentifierPrefix"] = value; }
+		}
+
 
 		[Themeable(true)]
 		public int StartLevel
@@ -113,23 +130,39 @@ namespace N2.Templates.Web.UI.WebControls
 			}
 		}
 
+		Dictionary<string, Control> addedControls = new Dictionary<string, Control>();
+
 		private void AddControlsRecursive(Control container, IHierarchyNavigator<ContentItem> ih, ContentItem selectedPage, IEnumerable<ContentItem> ancestors)
 		{
 			foreach (ItemHierarchyNavigator childHierarchy in ih.Children)
 			{
 				if (!childHierarchy.Current.IsPage)
 					continue;
-
-				HtmlGenericControl li = CreateAndAdd(container, "li", null);
-
+				
 				ContentItem current = childHierarchy.Current;
+				
+				string _cssClass =
+					current == selectedPage
+					|| string.Equals(current.Url, selectedPage.Url, StringComparison.OrdinalIgnoreCase)
+						? "current"
+						: Contains(ancestors, current)
+							? "trail"
+							: string.Empty;
+				
+				HtmlGenericControl li = CreateAndAdd(container, "li", _cssClass);
+
+				if (UseMenuIdentifiers)
+				{
+					string name = Regex.Replace(current.Name, "[^_0-1a-z]", "", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+					if(!addedControls.ContainsKey(name))
+					{
+						addedControls[current.Name] = li;
+						li.Attributes["id"] = MenuIdentifierPrefix + name;
+					}
+				}
+
 				li.Controls.Add(N2.Web.Link.To(current).ToControl());
-
-				if (current == selectedPage || current.Url == selectedPage.Url)
-					li.Attributes["class"] = "current";
-				else if (Contains(ancestors, current))
-					li.Attributes["class"] = "trail";
-
+				
 				HtmlGenericControl ul = new HtmlGenericControl("ul");
 				AddControlsRecursive(ul, childHierarchy, selectedPage, ancestors);
 				if (ul.Controls.Count > 0)

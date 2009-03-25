@@ -1,4 +1,5 @@
 ﻿1.4.5.1
+- applied esteewhy's #21759:Enable unique CSS styles for items of N2.Templates.Web.UI.WebControls.Menu control
 - updated splitter code for chrome compatibility
 - applied esteewhy's #20090315-n2-templates-image_handler-fix_query_with_slashes.patch
 - applied esteewhy's #20090317-n2-edit-DirectoryCompiler-generalise_for_css.patch
