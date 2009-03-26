@@ -636,7 +636,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Installation\installation.castle.config" />
-    <EmbeddedResource Include="Mappings\MySQL.hbm.xml" />
     <EmbeddedResource Include="Mappings\Default.hbm.xml" />
     <EmbeddedResource Include="Configuration\castle.config" />
     <Content Include="ProjectComments.xml">

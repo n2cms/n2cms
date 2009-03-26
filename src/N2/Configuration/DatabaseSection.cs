@@ -48,6 +48,14 @@ namespace N2.Configuration
 			set { base["connectionStringName"] = value; }
 		}
 
+		/// <summary>The prefix used for tables in this site. This can be used to install multiple installations in the same database.</summary>
+		[ConfigurationProperty("tablePrefix", DefaultValue = "n2")]
+		public string TablePrefix
+		{
+			get { return (string)base["tablePrefix"]; }
+			set { base["tablePrefix"] = value; }
+		}
+
         /// <summary>The database flavour decides which propertes the nhibernate configuration will receive.</summary>
 		[ConfigurationProperty("flavour", DefaultValue = DatabaseFlavour.SqlServer2005)]
 		public DatabaseFlavour Flavour

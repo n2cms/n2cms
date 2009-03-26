@@ -203,8 +203,8 @@ namespace N2.Edit.Install
 				if (!cvRootAndStart.IsValid)
 					return;
 
-				ContentItem root = im.InsertRootNode(Type.GetType(ddlRoot.SelectedValue), "root", "Root node");
-				ContentItem startPage = im.InsertStartPage(Type.GetType(ddlStartPage.SelectedValue), root, "start", "Start page");
+				ContentItem root = im.InsertRootNode(Type.GetType(ddlRoot.SelectedValue), "root", "Root Node");
+				ContentItem startPage = im.InsertStartPage(Type.GetType(ddlStartPage.SelectedValue), root, "start", "Start Page");
 
 				if (startPage.ID == Status.StartPageID && root.ID == Status.RootItemID)
 				{
@@ -237,9 +237,9 @@ namespace N2.Edit.Install
 				if (!cvRoot.IsValid)
 					return;
 
-				ContentItem root = im.InsertRootNode(Type.GetType(ddlRootAndStart.SelectedValue), "root", "Root node");
+				ContentItem root = im.InsertRootNode(Type.GetType(ddlRootAndStart.SelectedValue), "start", "Start Page");
 				
-				if (root.ID == Status.RootItemID)
+				if (root.ID == Status.RootItemID && root.ID == Status.StartPageID)
 				{
 					ltRootNode.Text = "<span class='ok'>Root node inserted.</span>";
 					phSame.Visible = false;

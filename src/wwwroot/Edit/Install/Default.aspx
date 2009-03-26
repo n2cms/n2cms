@@ -78,7 +78,7 @@
 				<p class="warning"><b>Advice: </b>Go back and check database connection and tables.</p>
             </asp:Literal>
             <p>
-                N2 needs a root node and a start page in order to function correctly. These two "nodes" may be the same page for simple sites, e.g. if you don't forsee using multiple domains.
+                N2 needs a <a href="http://n2cms.com/wiki/Root-node.aspx">root node</a> and a <a href="http://n2cms.com/wiki/Start-Page.aspx">start page</a> in order to function correctly. These two "nodes" may be the same page for simple sites, e.g. if you don't forsee using multiple domains.
             </p>
             <ul>
                 <li>
@@ -99,7 +99,7 @@
 				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
 				</li>
 				<li>
-				    Or, select one of these existing export file to insert:<br />
+				    Or, select one of these existing <b>export file</b> to insert:<br />
 						<asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Flow" />
 					to 
 					<asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="insert" ToolTip="Insert existing export" CausesValidation="false" />
@@ -110,7 +110,7 @@
 					<asp:FileUpload ID="fileUpload" runat="server" />
 					(*.n2.xml) to
 					<asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="upload and insert" ToolTip="Upload root node." CausesValidation="false" />
-					<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" />
+					<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" EnableClientScript="false" />
 				</li>
             </ul>
 			<p>

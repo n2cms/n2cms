@@ -18,13 +18,15 @@ namespace N2.Persistence.NH
 	/// </summary>
 	public class ConfigurationBuilder : IConfigurationBuilder
 	{
-        private bool tryLocatingHbmResources = false;
-		private readonly IDefinitionManager definitions;
-		private IDictionary<string, string> properties = new Dictionary<string, string>();
-		private IList<Assembly> assemblies = new List<Assembly>();
-        private IList<string> mappingNames = new List<string>();
-		private string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
-        private string mappingFormat = @"<?xml version=""1.0"" encoding=""utf-16""?>
+        bool tryLocatingHbmResources = false;
+		readonly IDefinitionManager definitions;
+		IDictionary<string, string> properties = new Dictionary<string, string>();
+		IList<Assembly> assemblies = new List<Assembly>();
+        IList<string> mappingNames = new List<string>();
+		string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
+		string tablePrefix = "n2";
+		int stringLength = 1073741823;
+        string mappingFormat = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">
 {0}
 </hibernate-mapping>
@@ -44,15 +46,16 @@ namespace N2.Persistence.NH
 
 			if (config == null) config = new DatabaseSection();
 
-            if (!string.IsNullOrEmpty(config.HibernateMapping))
-                DefaultMapping = config.HibernateMapping;
-            else if (config.Flavour == DatabaseFlavour.MySql)
-                DefaultMapping = "N2.Mappings.MySQL.hbm.xml, N2";
+			if (!string.IsNullOrEmpty(config.HibernateMapping))
+				DefaultMapping = config.HibernateMapping;
+			if (config.Flavour == DatabaseFlavour.MySql)
+				stringLength = 16777215;
 
 			SetupProperties(config);
             SetupMappings(config);
 
             TryLocatingHbmResources = config.TryLocatingHbmResources;
+			tablePrefix = config.TablePrefix;
 		}
 
         private void SetupMappings(DatabaseSection config)
@@ -77,6 +80,7 @@ namespace N2.Persistence.NH
 					Properties["dialect"] = "NHibernate.Dialect.MsSql2000Dialect";
 					break;
 				case DatabaseFlavour.SqlServer2005:
+				case DatabaseFlavour.SqlServer2008:
 					Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
 					Properties["dialect"] = "NHibernate.Dialect.MsSql2005Dialect";
 					break;
@@ -157,12 +161,30 @@ namespace N2.Persistence.NH
 		{
 			NHibernate.Cfg.Configuration cfg = new NHibernate.Cfg.Configuration();
 			AddProperties(cfg);
-			AddMapping(cfg, DefaultMapping);
+
+			AddDefaultMapping(cfg);
             AddMappings(cfg);
 			AddAssemblies(cfg);
 			GenerateMappings(cfg);
 
 			return cfg;
+		}
+
+		protected virtual void AddDefaultMapping(NHibernate.Cfg.Configuration cfg)
+		{
+			using (Stream stream = GetStreamFromName(DefaultMapping))
+			using (StreamReader reader = new StreamReader(stream))
+			{
+				string mappingXml = reader.ReadToEnd();
+				mappingXml = FormatMapping(mappingXml);
+				cfg.AddXml(mappingXml);
+			}
+		}
+
+		private string FormatMapping(string mappingXml)
+		{
+			return mappingXml.Replace("{TablePrefix}", tablePrefix)
+				.Replace("{StringLength}", stringLength.ToString());
 		}
 
         protected virtual void AddMappings(NHibernate.Cfg.Configuration cfg)
@@ -178,16 +200,24 @@ namespace N2.Persistence.NH
 		protected virtual void AddMapping(NHibernate.Cfg.Configuration cfg, string name)
 		{
             if (!string.IsNullOrEmpty(name))
-			{
-                string[] pathAssemblyPair = name.Split(',');
-				if (pathAssemblyPair.Length != 2) throw new ArgumentException( "Expected the property DefaultMapping to be in the format [manifest resource path],[assembly name] but was: " + DefaultMapping);
-
-				Assembly a = Assembly.Load(pathAssemblyPair[1]);
-				cfg.AddInputStream(a.GetManifestResourceStream(pathAssemblyPair[0]));
-			}
+            {
+				using (Stream stream = GetStreamFromName(name))
+				{
+					cfg.AddInputStream(stream);
+				}
+            }
 		}
 
-        private IEnumerable<Type> EnumerateDefinedTypes()
+		protected Stream GetStreamFromName(string name)
+		{
+			string[] pathAssemblyPair = name.Split(',');
+			if (pathAssemblyPair.Length != 2) throw new ArgumentException( "Expected the property DefaultMapping to be in the format [manifest resource path],[assembly name] but was: " + DefaultMapping);
+
+			Assembly a = Assembly.Load(pathAssemblyPair[1]);
+			return a.GetManifestResourceStream(pathAssemblyPair[0]);
+		}
+
+		private IEnumerable<Type> EnumerateDefinedTypes()
         {
             List<Type> types = new List<Type>();
             foreach (ItemDefinition definition in definitions.GetDefinitions())
