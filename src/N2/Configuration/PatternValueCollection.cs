@@ -9,23 +9,23 @@ namespace N2.Configuration
 	{
 		public PatternValueCollection()
 		{
-			BaseAdd(new PatterValueElement("smallA", "[åäáàâã@]", "a", true));
-			BaseAdd(new PatterValueElement("capitalA", "[ÅÄÁÀÂÃ]", "a", true));
-			BaseAdd(new PatterValueElement("smallAE", "[æ]", "ae", true));
-			BaseAdd(new PatterValueElement("capitalAE", "[Æ]", "AE", true));
-			BaseAdd(new PatterValueElement("smallO", "[öøôõ]", "o", true));
-			BaseAdd(new PatterValueElement("capitalO", "[ÖØÔÕ]", "O", true));
-			BaseAdd(new PatterValueElement("theRest", "[^. a-zA-Z0-9_-]", "", true));
+			BaseAdd(new PatternValueElement("smallA", "[åäáàâã@]", "a", true));
+			BaseAdd(new PatternValueElement("capitalA", "[ÅÄÁÀÂÃ]", "a", true));
+			BaseAdd(new PatternValueElement("smallAE", "[æ]", "ae", true));
+			BaseAdd(new PatternValueElement("capitalAE", "[Æ]", "AE", true));
+			BaseAdd(new PatternValueElement("smallO", "[öøôõ]", "o", true));
+			BaseAdd(new PatternValueElement("capitalO", "[ÖØÔÕ]", "O", true));
+			BaseAdd(new PatternValueElement("theRest", "[^. a-zA-Z0-9_-]", "", true));
 		}
 
 		protected override ConfigurationElement CreateNewElement()
 		{
-			return new PatterValueElement();
+			return new PatternValueElement();
 		}
 
 		protected override object GetElementKey(ConfigurationElement element)
 		{
-			return ((PatterValueElement) element).Name;
+			return ((PatternValueElement) element).Name;
 		}
 	}
 }

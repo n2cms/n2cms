@@ -35,8 +35,7 @@ namespace N2.Engine.MediumTrust
         IEditManager editManager;
         IIntegrityManager integrityManager;
         IHost host;
-        IRequestLifeCycleHandler lifeCycleHandler;
-        IPersister persister;
+		IPersister persister;
 		IWebContext webContext;
 
         IDictionary<Type, object> resolves = new Dictionary<Type, object>();
@@ -88,7 +87,7 @@ namespace N2.Engine.MediumTrust
             ISecurityEnforcer securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
             IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(itemRepository, finder));
 			N2.Edit.Settings.NavigationSettings settings = AddComponentInstance<N2.Edit.Settings.NavigationSettings>(new N2.Edit.Settings.NavigationSettings(webContext));
-            IPluginFinder pluginFinder = AddComponentInstance<IPluginFinder>(new PluginFinder(typeFinder));
+            IPluginFinder pluginFinder = AddComponentInstance<IPluginFinder>(new PluginFinder(typeFinder, engineConfiguration));
             editManager = AddComponentInstance<IEditManager>(new EditManager(definitions, persister, versioner, securityManager, pluginFinder, settings, editConfiguration));
             integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
             IIntegrityEnforcer integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
@@ -99,10 +98,10 @@ namespace N2.Engine.MediumTrust
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
 			IContentAdapterProvider aspectController = AddComponentInstance<IContentAdapterProvider>(new ContentAdapterProvider(this, typeFinder));
 			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(aspectController, webContext, urlParser, errorHandler, hostConfiguration));
-			lifeCycleHandler = AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(webContext, broker, installer, dispatcher, errorHandler, editConfiguration));
+			AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(webContext, broker, installer, dispatcher, errorHandler, editConfiguration));
             AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
-            AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder));
+            AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder, engineConfiguration));
             AddComponentInstance<Navigator>(new Navigator(persister, host));
 			AddComponentInstance<IFileSystem>(new VirtualPathFileSystem());
 

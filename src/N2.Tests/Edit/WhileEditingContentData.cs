@@ -183,7 +183,7 @@ namespace N2.Tests.Edit
             item.MyProperty5 = true;
             item.MyProperty6 = "I'm secure!";
 
-            IPrincipal user = CreateUser("Joe");
+			IPrincipal user = CreatePrincipal("Joe");
 
             Control editorContainer = new Control();
             IDictionary<string, Control> added = editManager.AddEditors(typeof(ComplexContainersItem), editorContainer, null);
@@ -210,7 +210,7 @@ namespace N2.Tests.Edit
             ItemWithSecuredContainer item = new ItemWithSecuredContainer();
             item.HiddenText = "No way";
 
-            IPrincipal user = CreateUser("Joe", "Editor");
+			IPrincipal user = CreatePrincipal("Joe", "Editor");
 
             Control editorContainer = new Control();
             IDictionary<string, Control> added = editManager.AddEditors(typeof(ItemWithSecuredContainer), editorContainer, user);
@@ -225,7 +225,7 @@ namespace N2.Tests.Edit
             ItemWithSecuredContainer item = new ItemWithSecuredContainer();
             item.HiddenText = "Yes way";
 
-            IPrincipal user = CreateUser("Joe", "Administrators");
+			IPrincipal user = CreatePrincipal("Joe", "Administrators");
 
             Control editorContainer = new Control();
             IDictionary<string, Control> added = editManager.AddEditors(typeof(ItemWithSecuredContainer), editorContainer, user);
@@ -239,7 +239,7 @@ namespace N2.Tests.Edit
         {
             ComplexContainersItem item = new ComplexContainersItem();
 
-            IPrincipal user = CreateUser("Joe", "ÜberEditor");
+			IPrincipal user = CreatePrincipal("Joe", "ÜberEditor");
 
             Control editorContainer = new Control();
             IDictionary<string, Control> added = editManager.AddEditors(typeof(ComplexContainersItem), editorContainer, user);

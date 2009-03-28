@@ -15,34 +15,7 @@ namespace N2.Tests
 		{
 			base.SetUp();
 
-			typeFinder = mocks.StrictMock<ITypeFinder>();
-			Expect.On(typeFinder).Call(typeFinder.Find(typeof(ContentItem))).Return(GetTypes()).Repeat.Any();
-			Expect.On(typeFinder).Call(typeFinder.GetAssemblies()).Return(new Assembly[] { typeof(TypeFindingBase).Assembly }).Repeat.Any();
-			mocks.Replay(typeFinder);
+			typeFinder = new Fakes.FakeTypeFinder(typeof (TypeFindingBase).Assembly, GetTypes());
 		}
-
-        protected IPrincipal CreateUser(string name, params string[] roles)
-        {
-            return base.CreatePrincipal(name, roles);
-            //IPrincipal user = mocks.StrictMock<IPrincipal>();
-            //IIdentity identity = mocks.StrictMock<IIdentity>();
-
-            //Expect.On(user).Call(user.Identity).Return(identity).Repeat.AtLeastOnce();
-            //Expect.On(user)
-            //    .Call(user.IsInRole(null))
-            //    .IgnoreArguments()
-            //    .Repeat.Any()
-            //    .Do(new IsInRole(delegate(string role)
-            //    {
-            //        return Array.IndexOf<string>(roles, role) >= 0;
-            //    }));
-            //mocks.Replay(user);
-
-            //Expect.On(identity).Call(identity.Name).Return(name).Repeat.AtLeastOnce();
-            //mocks.Replay(identity);
-            //return user;
-        }
-
-        private delegate bool IsInRole(string role);
 	}
 }

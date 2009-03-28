@@ -5,13 +5,13 @@ namespace N2.Configuration
 	/// <summary>
 	/// Defines a replacment pattern for the name editor.
 	/// </summary>
-	public class PatterValueElement : ConfigurationElement
+	public class PatternValueElement : ConfigurationElement
 	{
-		public PatterValueElement()
+		public PatternValueElement()
 		{
 		}
 
-		public PatterValueElement(string name, string pattern, string value, bool serverValidate)
+		public PatternValueElement(string name, string pattern, string value, bool serverValidate)
 		{
 			Name = name;
 			Pattern = pattern;

@@ -1,24 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using N2.Configuration;
 using N2.Engine;
 using System.Reflection;
 using System.Security.Principal;
 
 namespace N2.Plugin
 {
+	/// <summary>
+	/// Investigates the execution environment to find plugins.
+	/// </summary>
     public class PluginFinder : IPluginFinder
     {
         private IList<IPlugin> plugins = null;
         private readonly ITypeFinder typeFinder;
+		public IEnumerable<InterfacePluginElement> addedPlugins = new InterfacePluginElement[0];
+		public IEnumerable<InterfacePluginElement> removedPlugins = new InterfacePluginElement[0];
 
-        public PluginFinder(ITypeFinder typeFinder)
+        public PluginFinder(ITypeFinder typeFinder, EngineSection config)
         {
-            this.typeFinder = typeFinder;
-            this.plugins = FindPlugins();
-        }
+        	addedPlugins = config.InterfacePlugins.AddedElements;
+        	removedPlugins = config.InterfacePlugins.RemovedElements;
+			this.typeFinder = typeFinder;
+			this.plugins = FindPlugins();
+		}
 
-        public IEnumerable<T> GetPlugins<T>(IPrincipal user) where T : class, IPlugin
+		public PluginFinder(ITypeFinder typeFinder)
+		{
+			this.typeFinder = typeFinder;
+			this.plugins = FindPlugins();
+		}
+
+    	/// <summary>Gets plugins found in the environment sorted and filtered by the given user.</summary>
+    	/// <typeparam name="T">The type of plugin to get.</typeparam>
+    	/// <param name="user">The user that should be authorized for the plugin.</param>
+    	/// <returns>An enumeration of plugins.</returns>
+    	public IEnumerable<T> GetPlugins<T>(IPrincipal user) where T : class, IPlugin
         {
             foreach (T plugin in GetPlugins<T>())
                 if (plugin.IsAuthorized(user))
@@ -46,12 +64,23 @@ namespace N2.Plugin
                 	if (foundPlugins.Contains(plugin))
                 		throw new N2Exception("A plugin of the type '{0}' named '{1}' is already defined, assembly: {2}", plugin.GetType().FullName, plugin.Name, assembly.FullName);
 
-                	foundPlugins.Add(plugin);
+					if(!IsRemoved(plugin))
+                		foundPlugins.Add(plugin);
                 }
             }
             foundPlugins.Sort();
             return foundPlugins;
         }
+
+		private bool IsRemoved(IPlugin plugin)
+		{
+			foreach (InterfacePluginElement configElement in removedPlugins)
+			{
+				if (plugin.Name == configElement.Name)
+					return true;
+			}
+			return false;
+		}
 
         private IEnumerable<IPlugin> FindPluginsIn(Assembly a)
         {

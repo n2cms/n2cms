@@ -188,7 +188,7 @@ namespace N2.Web.UI.WebControls
 		string GetReplacements()
 		{
 			StringBuilder sb = new StringBuilder("[");
-			foreach(PatterValueElement element in Config.Replacements)
+			foreach(PatternValueElement element in Config.Replacements)
 			{
 				if (sb.Length > 1)
 					sb.Append(", ");
@@ -281,7 +281,7 @@ function updateName(titleid, nameid, whitespace, tolower, replacements, checkbox
 						return;
 					}
 
-					foreach(PatterValueElement element in Config.Replacements)
+					foreach(PatternValueElement element in Config.Replacements)
 					{
 						if(element.ServerValidate && Regex.IsMatch(Text, element.Pattern, RegexOptions.Compiled))
 						{

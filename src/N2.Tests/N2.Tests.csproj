@@ -206,6 +206,7 @@
     <Compile Include="Persistence\NH\PersisterIntegrityTests.cs" />
     <Compile Include="Persistence\NH\PersisterTestsBase.cs" />
     <Compile Include="Persistence\NH\VersionManagerTests.cs" />
+    <Compile Include="Plugin\PlugIn3.cs" />
     <Compile Include="Plugin\PlugIn2.cs" />
     <Compile Include="Plugin\PluginFinderTests.cs" />
     <Compile Include="Plugin\Scheduling\OnceAction.cs" />

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using N2.Configuration;
+using N2.Web.UI.WebControls;
 using NUnit.Framework;
 using N2.Tests.Edit.Items;
 using N2.Edit;
@@ -56,7 +59,7 @@ namespace N2.Tests.Plugin
         [Test]
         public void Doesnt_GetNavigationPlugins_ThatRequires_SpecialAuthorization()
         {
-            IPrincipal user = CreateUser("Joe", "Carpenter");
+			IPrincipal user = CreatePrincipal("Joe", "Carpenter");
             IEnumerable<NavigationPluginAttribute> plugIns = finder.GetPlugins<NavigationPluginAttribute>(user);
             EnumerableAssert.Count(1, plugIns);
         }
@@ -64,11 +67,10 @@ namespace N2.Tests.Plugin
         [Test]
         public void CanGet_Restricted_NavigationPlugins_IfAuthorized()
         {
-            IPrincipal user = CreateUser("Bill", "ÜberEditor");
+			IPrincipal user = CreatePrincipal("Bill", "ÜberEditor");
             IEnumerable<NavigationPluginAttribute> plugIns = finder.GetPlugins<NavigationPluginAttribute>(user);
             EnumerableAssert.Count(2, plugIns);
         }
-
 
         [Test]
         public void CanGet_ToolbarPlugIns()
@@ -95,7 +97,7 @@ namespace N2.Tests.Plugin
         [Test]
         public void Doesnt_GetToolbarPlugins_ThatRequires_SpecialAuthorization()
         {
-            IPrincipal user = CreateUser("Joe", "Carpenter");
+			IPrincipal user = CreatePrincipal("Joe", "Carpenter");
             IEnumerable<ToolbarPluginAttribute> plugIns = finder.GetPlugins<ToolbarPluginAttribute>(user);
             EnumerableAssert.Count(1, plugIns);
         }
@@ -103,9 +105,31 @@ namespace N2.Tests.Plugin
         [Test]
         public void CanGet_AllRestrictedToolbarPlugins_IfAuthorized()
         {
-            IPrincipal user = CreateUser("Bill", "ÜberEditor");
+			IPrincipal user = CreatePrincipal("Bill", "ÜberEditor");
             IEnumerable<ToolbarPluginAttribute> plugIns = finder.GetPlugins<ToolbarPluginAttribute>(user);
             EnumerableAssert.Count(2, plugIns);
         }
+
+		[Test]
+		public void CanRemovePlugins_ThroughConfiguration()
+		{
+			int initialCount = finder.GetPlugins<NavigationPluginAttribute>().Count();
+			finder = new PluginFinder(typeFinder, CreateEngineSection(new[] { new InterfacePluginElement { Name = "chill" } }));
+			
+			IEnumerable<NavigationPluginAttribute> plugins = finder.GetPlugins<NavigationPluginAttribute>();
+			
+			Assert.That(plugins.Count(), Is.EqualTo(initialCount - 1), "Found unexpected items, e.g.:" + plugins.FirstOrDefault());
+		}
+
+    	EngineSection CreateEngineSection(InterfacePluginElement[] removedElements)
+    	{
+    		return new EngineSection
+    		{
+				InterfacePlugins = new InterfacePluginCollection
+				{
+					RemovedElements = removedElements
+				}
+    		};
+    	}
     }
 }

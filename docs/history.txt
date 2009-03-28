@@ -1,4 +1,5 @@
 ﻿1.4.5.1
+- added configurable removal of plugins
 - fixed problem saving version when using MySQL
 - added RestrictChildren attribute
 - refactored refiner API and introduced ordering between them

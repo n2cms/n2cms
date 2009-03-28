@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Web.Configuration;
@@ -71,6 +70,22 @@ namespace N2.Configuration
         {
             get { return (ComponentCollection)base["components"]; }
             set { base["components"] = value; }
-        }
+		}
+
+		/// <summary>Add or remove plugin initializers. This is most commonly used to remove autimatic plugin initializers in an external assembly.</summary>
+		[ConfigurationProperty("pluginInitializers")]
+		public PluginInitializerCollection PluginInitializers
+		{
+			get { return (PluginInitializerCollection)base["pluginInitializers"]; }
+			set { base["pluginInitializers"] = value; }
+		}
+
+		/// <summary>Add or remove UI plugins. This is most commonly used to remove unwanted toolbar buttons.</summary>
+		[ConfigurationProperty("interfacePlugins")]
+		public InterfacePluginCollection InterfacePlugins
+		{
+			get { return (InterfacePluginCollection)base["interfacePlugins"]; }
+			set { base["interfacePlugins"] = value; }
+		}
 	}
 }
