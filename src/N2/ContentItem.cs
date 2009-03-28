@@ -505,9 +505,12 @@ namespace N2
 		{
 			var finderDictionary = SingletonDictionary<Type, IList<IPathFinder>>.Instance;
 			var itemType = GetType();
-			if(!finderDictionary.ContainsKey(itemType))
+			lock(finderDictionary)
 			{
-				finderDictionary[itemType] = GetPathFinders(itemType);
+				if(!finderDictionary.ContainsKey(itemType))
+				{
+					finderDictionary[itemType] = GetPathFinders(itemType);
+				}
 			}
 
 			foreach (IPathFinder finder in finderDictionary[itemType])

@@ -247,21 +247,26 @@ namespace N2.Edit
 			// when an unpublished version is saved and published
 			if(versioningMode == ItemEditorVersioningMode.SaveAsMaster)
 			{
-				ContentItem itemToUpdate = item.VersionOf;
-				if (itemToUpdate == null) throw new ArgumentException("Expected the current item to be a version of another item.", "item");
-
-                if (ShouldStoreVersion(item))
-                    SaveVersion(itemToUpdate);
-
-				DateTime? published = itemToUpdate.Published;
-				bool wasUpdated = UpdateItem(itemToUpdate, addedEditors, user);
-				if (wasUpdated || IsNew(itemToUpdate))
+				using (ITransaction tx = persister.Repository.BeginTransaction())
 				{
-					itemToUpdate.Published = published ?? Utility.CurrentTime();
-					persister.Save(itemToUpdate);
+					ContentItem itemToUpdate = item.VersionOf;
+					if (itemToUpdate == null) throw new ArgumentException("Expected the current item to be a version of another item.", "item");
+
+					if (ShouldStoreVersion(item))
+						SaveVersion(itemToUpdate);
+
+					DateTime? published = itemToUpdate.Published;
+					bool wasUpdated = UpdateItem(itemToUpdate, addedEditors, user);
+					if (wasUpdated || IsNew(itemToUpdate))
+					{
+						itemToUpdate.Published = published ?? Utility.CurrentTime();
+						persister.Save(itemToUpdate);
+					}
+
+					tx.Commit();
+					return item.VersionOf;
 				}
 
-				return item.VersionOf;
 			}
 
 			// when an item is saved without any new version
@@ -305,20 +310,24 @@ namespace N2.Edit
 			// when making a version without saving the item
 			if (versioningMode == ItemEditorVersioningMode.VersionOnly)
 			{
-				if (ShouldStoreVersion(item))
-					item = SaveVersion(item);
-
-				bool wasUpdated = UpdateItem(item, addedEditors, user);
-				if (wasUpdated || IsNew(item))
+				using (ITransaction tx = persister.Repository.BeginTransaction())
 				{
-					item.Published = null;
-					persister.Save(item);
-				}
+					if (ShouldStoreVersion(item))
+						item = SaveVersion(item);
 
-				return item;
+					bool wasUpdated = UpdateItem(item, addedEditors, user);
+					if (wasUpdated || IsNew(item))
+					{
+						item.Published = null;
+						persister.Save(item);
+					}
+
+					tx.Commit();
+					return item;
+				}
 			}
 				
-			throw new ArgumentException("Unexpected versioning mode.");
+			throw new ArgumentException("Unexpected versioning mode.", "versioningMode");
 		}
 
         private bool ShouldStoreVersion(ContentItem item)

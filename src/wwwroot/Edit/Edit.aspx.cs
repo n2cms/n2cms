@@ -179,11 +179,8 @@ namespace N2.Edit
 
         private void SaveChanges()
         {
-            ie.VersioningMode = (ie.CurrentItem.VersionOf == null)
-                ? ItemEditorVersioningMode.VersionAndSave
-                : ItemEditorVersioningMode.SaveAsMaster;
-            ie.Save();
-            ContentItem currentItem = ie.CurrentItem;
+        	ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionAndSave : ItemEditorVersioningMode.SaveAsMaster;
+        	ContentItem currentItem = ie.Save(ie.CurrentItem, mode);
 
             if (Request["before"] != null)
             {
@@ -233,11 +230,8 @@ namespace N2.Edit
 
 		private ContentItem SaveVersion()
 		{
-			ie.VersioningMode = (ie.CurrentItem.VersionOf == null)
-				? ItemEditorVersioningMode.VersionOnly
-				: ItemEditorVersioningMode.SaveOnly;
-			ContentItem savedVersion = ie.Save();
-			return savedVersion;
+			ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionOnly : ItemEditorVersioningMode.SaveOnly;
+			return ie.Save(ie.CurrentItem, mode);
 		}
 	}
 }

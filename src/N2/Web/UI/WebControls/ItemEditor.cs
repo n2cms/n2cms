@@ -163,12 +163,20 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>Saves <see cref="CurrentItem"/> with the values entered in the form.</summary>
-		public ContentItem Save()
+		public ContentItem Save(ContentItem item, ItemEditorVersioningMode mode)
 		{
 			EnsureChildControls();
-			CurrentItem = EditController.SaveItem(CurrentItem, AddedEditors, VersioningMode, Page.User);
+			item = EditController.SaveItem(item, AddedEditors, mode, Page.User);
 			if (Saved != null)
-				Saved.Invoke(this, new ItemEventArgs(CurrentItem));
+				Saved.Invoke(this, new ItemEventArgs(item));
+			return item;
+		}
+
+		/// <summary>Saves <see cref="CurrentItem"/> with the values entered in the form.</summary>
+		/// <returns>The saved item.</returns>
+		public ContentItem Save()
+		{
+			CurrentItem = Save(CurrentItem, VersioningMode);
 			return CurrentItem;
 		}
 
