@@ -347,6 +347,12 @@ namespace N2.Definitions
 				AllowedChildren.Remove(definition);
 		}
 
+		/// <summary>Clears the list of allowed children.</summary>
+		public void ClearAllowedChildren()
+		{
+			AllowedChildren.Clear();
+		}
+
 		/// <summary>Adds an allowed zone to the definition's list of allwed zones.</summary>
 		/// <param name="zone">The zone name to add.</param>
 		public void AddAllowedZone(string zone)

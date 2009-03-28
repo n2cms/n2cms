@@ -31,8 +31,10 @@ namespace N2.Definitions
 	/// allowed roles can create new items decorated with this attribute.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class)]
-	public class ItemAuthorizedRolesAttribute : AuthorizedRolesAttribute, IInheritableDefinitionRefiner
+	public class ItemAuthorizedRolesAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner
 	{
+		public string[] Roles { get; set; }
+
 		/// <summary>Initializes a new ItemAuthorizedRolesAttribute used to restrict permission to create items in edit mode.</summary>
 		public ItemAuthorizedRolesAttribute()
 		{
@@ -41,11 +43,11 @@ namespace N2.Definitions
 		/// <summary>Initializes a new ItemAuthorizedRolesAttribute used to restrict permission to create items in edit mode.</summary>
 		/// <param name="roles">The roles allowed to edit the decorated item.</param>
 		public ItemAuthorizedRolesAttribute(params string[] roles)
-			: base(roles)
 		{
+			Roles = roles;
 		}
 
-		public void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
 		{
 			definition.AuthorizedRoles = Roles;
 		}

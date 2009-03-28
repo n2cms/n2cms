@@ -72,30 +72,39 @@ namespace N2.Definitions
 
 		protected void ExecuteRefiners(IList<ItemDefinition> definitions)
 		{
+			// these are executed one time per definition
+			List<ISortableRefiner> globalRefiners = new List<ISortableRefiner>();
+			foreach (Assembly a in typeFinder.GetAssemblies())
+				foreach (IDefinitionRefiner refiner in a.GetCustomAttributes(typeof(IDefinitionRefiner), false))
+					globalRefiners.Add(refiner);
+
+			// build the whole list of refiners
+			List<RefinerPair> refiners = new List<RefinerPair>();
 			foreach (ItemDefinition definition in definitions)
 			{
+				foreach (IDefinitionRefiner refiner in globalRefiners)
+					refiners.Add(new RefinerPair(definition, refiner));
 				foreach (IDefinitionRefiner refiner in definition.ItemType.GetCustomAttributes(typeof(IDefinitionRefiner), false))
-				{
-					refiner.Refine(definition, definitions);
-				}
-			}
-			foreach (ItemDefinition definition in definitions)
-			{
+					refiners.Add(new RefinerPair(definition, refiner));
 				foreach (IInheritableDefinitionRefiner refiner in definition.ItemType.GetCustomAttributes(typeof(IInheritableDefinitionRefiner), true))
-				{
-					refiner.Refine(definition, definitions);
-				}
+					refiners.Add(new RefinerPair(definition, refiner));
 			}
-			foreach (ItemDefinition definition in definitions)
+
+			// sort them and execute
+			refiners.Sort((first, second) => first.Refiner.CompareTo(second.Refiner));
+			foreach (RefinerPair pair in refiners)
+				pair.Refiner.Refine(pair.Definition, definitions);
+		}
+
+		protected class RefinerPair
+		{
+			public RefinerPair(ItemDefinition definition, ISortableRefiner refiner)
 			{
-				foreach (Assembly a in typeFinder.GetAssemblies())
-				{
-					foreach (IDefinitionRefiner refiner in a.GetCustomAttributes(typeof (IDefinitionRefiner), false))
-					{
-						refiner.Refine(definition, definitions);
-					}
-				}
+				Definition = definition;
+				Refiner = refiner;
 			}
+			public ItemDefinition Definition { get; set; }
+			public ISortableRefiner Refiner { get; set; }
 		}
 
         /// <summary>Enumerates concrete item types provided by the type finder.</summary>

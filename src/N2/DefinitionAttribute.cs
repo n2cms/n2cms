@@ -10,7 +10,7 @@ namespace N2
     /// mode and for data integrity.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-	public class DefinitionAttribute : Attribute, IDefinitionRefiner
+	public class DefinitionAttribute : AbstractDefinitionRefiner, IDefinitionRefiner
     {
 		private string title;
 		private string name;
@@ -21,11 +21,13 @@ namespace N2
 		
 		public DefinitionAttribute()
 		{
+			RefinementOrder = RefineOrder.First;
 		}
 
 		/// <summary>Initializes a new instance of ItemAttribute class.</summary>
 		/// <param name="title">The title used when presenting this item type to editors.</param>
 		public DefinitionAttribute(string title)
+			:this()
 		{
 			this.title = title;
 		}
@@ -34,8 +36,8 @@ namespace N2
 		/// <param name="title">The title used when presenting this item type to editors.</param>
 		/// <param name="name">The name/discriminator needed to map the appropriate type with content data when retrieving from persistence. When this is null the type's full name is used.</param>
 		public DefinitionAttribute(string title, string name)
+			:this(title)
 		{
-			this.title = title;
 			this.name = name;
 		}
 
@@ -46,9 +48,8 @@ namespace N2
 		/// <param name="toolTip">The tool tip displayed when hovering over this item type.</param>
 		/// <param name="sortOrder">The order of this type compared to other items types.</param>
 		public DefinitionAttribute(string title, string name, string description, string toolTip, int sortOrder)
+			:this(title, name)
 		{
-			this.title = title;
-			this.name = name;
 			this.description = description;
 			this.toolTip = toolTip;
 			this.sortOrder = sortOrder;
@@ -99,7 +100,7 @@ namespace N2
 		}
 
 		/// <summary>Updates the item definition with the attribute.</summary>
-		public void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
     	{
 			if (string.IsNullOrEmpty(Title))
 				Title = definition.ItemType.Name;

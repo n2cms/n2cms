@@ -4,9 +4,14 @@ using System.Text;
 
 namespace N2.Definitions
 {
-	public class ReplacesParentDefinitionAttribute : Attribute, IDefinitionRefiner
+	/// <summary>
+	/// Replaces the parent item definition with the one decorated by this 
+	/// attribute. This can be used to disable and replace items in external
+	/// class libraries.
+	/// </summary>
+	public class ReplacesParentDefinitionAttribute : AbstractDefinitionRefiner, IDefinitionRefiner
 	{
-		public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
 			Type t = currentDefinition.ItemType;
 			foreach (ItemDefinition definition in allDefinitions)

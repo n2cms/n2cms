@@ -10,7 +10,7 @@ namespace N2.Definitions
 	/// attribute doesn't modify any existing data. It only removes types from 
 	/// the items that can be created.
 	/// </summary>
-	public class ReplaceDefinitionsAttribute : Attribute, IDefinitionRefiner
+	public class ReplaceDefinitionsAttribute : AbstractDefinitionRefiner, IDefinitionRefiner
 	{
 		Type[] replacedDefinitions;
 
@@ -24,7 +24,7 @@ namespace N2.Definitions
 			this.replacedDefinitions = new Type[] { replacedDefinition };
 		}
 
-		public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
 			foreach (ItemDefinition definition in allDefinitions)
 			{

@@ -7,9 +7,9 @@ namespace N2.Definitions
     /// Disables a definition removing it from lists when choosing new items. 
     /// Existing items will not be affaceted.
     /// </summary>
-    public class DisableAttribute : Attribute, IDefinitionRefiner
+	public class DisableAttribute : AbstractDefinitionRefiner, IDefinitionRefiner
     {
-        public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+        public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
         {
             currentDefinition.Enabled = false;
         }

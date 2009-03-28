@@ -38,16 +38,18 @@ namespace N2.Integrity
 		/// <summary>Initializes a new instance of the AllowedChildrenAttribute which is used to restrict which types of items may be added below which.</summary>
 		public AllowedChildrenAttribute()
 		{
+			RefinementOrder = RefineOrder.After;
 		}
 
 		/// <summary>Initializes a new instance of the AllowedChildrenAttribute which is used to restrict which types of items may be added below which.</summary>
 		/// <param name="allowedChildTypes">A list of allowed types. Null is interpreted as all types are allowed.</param>
 		public AllowedChildrenAttribute(params Type[] allowedChildTypes)
+			: this()
 		{
 			Types = allowedChildTypes;
 		}
 
-		public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
 			foreach (ItemDefinition definition in allDefinitions)
 			{

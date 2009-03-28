@@ -28,7 +28,7 @@ namespace N2.Integrity
 			Types = allowedChildTypes;
 		}
 
-		public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
 			if (parentType.IsAssignableFrom(currentDefinition.ItemType))
 			{

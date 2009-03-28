@@ -124,7 +124,9 @@
     <Compile Include="Collections\ZoneFilterTests.cs" />
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
+    <Compile Include="Definitions\Items\DefinitionControllingParent.cs" />
     <Compile Include="Definitions\Items\DefinitionFreeItem.cs" />
+    <Compile Include="Definitions\Items\DefinitionOppressedChild.cs" />
     <Compile Include="Details\DetailCollectionTests.cs" />
     <Compile Include="Details\EnumableItem.cs" />
     <Compile Include="Details\EditableEnumTests.cs" />

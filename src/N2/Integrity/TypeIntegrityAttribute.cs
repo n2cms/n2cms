@@ -1,11 +1,12 @@
 using System;
+using N2.Definitions;
 
 namespace N2.Integrity
 {
 	/// <summary>
 	/// Base class for attributes used to restrict which types can be created below which.
 	/// </summary>
-	public abstract class TypeIntegrityAttribute : Attribute
+	public abstract class TypeIntegrityAttribute : AbstractDefinitionRefiner
 	{
 		private Type[] types = new Type[0];
 

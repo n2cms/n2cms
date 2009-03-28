@@ -39,7 +39,9 @@ namespace N2.Tests.Definitions
 					typeof (DefinitionTwo),
 					typeof (DefinitionReplacesNumbers),
 					typeof (DefinitionUndefined),
-					typeof (DefinitionFreeItem)
+					typeof (DefinitionFreeItem),
+					typeof (DefinitionControllingParent),
+					typeof (DefinitionOppressedChild)
 				};
 		}
 
@@ -405,6 +407,16 @@ namespace N2.Tests.Definitions
 			Assert.That(editable.Title, Is.EqualTo("Plain Text"));
 			Assert.That(editable.SortOrder, Is.EqualTo(200));
 			Assert.That(editable, Is.TypeOf(typeof(EditableTextBoxAttribute)));
+		}
+
+		[Test]
+		public void CanRestrictChildren()
+		{
+			var parentDefinition = definitions.GetDefinition(typeof(DefinitionControllingParent));
+			var childDefinition = definitions.GetDefinition(typeof(DefinitionOppressedChild));
+
+			Assert.That(parentDefinition.AllowedChildren.Contains(childDefinition));
+			Assert.That(parentDefinition.AllowedChildren.Count, Is.EqualTo(1));
 		}
 	}
 }

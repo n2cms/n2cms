@@ -7,13 +7,14 @@ namespace N2.Security
 	/// <summary>
 	/// This class is a base class for attributes used to restrict permissions.
 	/// </summary>
-	public abstract class AuthorizedRolesAttribute : Attribute
+	[Obsolete("No longer in use.", true)]
+	public abstract class AuthorizedRolesAttribute2 : Attribute
 	{
-		public AuthorizedRolesAttribute()
+		public AuthorizedRolesAttribute2()
 		{
 		}
 
-		public AuthorizedRolesAttribute(params string[] authorizedRoles)
+		public AuthorizedRolesAttribute2(params string[] authorizedRoles)
 		{
 			this.roles = authorizedRoles;
 		}

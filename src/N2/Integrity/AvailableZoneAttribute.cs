@@ -9,7 +9,7 @@ namespace N2.Integrity
 	/// which data items can be bound (ZoneName).
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class AvailableZoneAttribute : Attribute, IInheritableDefinitionRefiner
+	public class AvailableZoneAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner
 	{
 		public AvailableZoneAttribute(string title, string zoneName)
 		{
@@ -57,7 +57,7 @@ namespace N2.Integrity
 
 		#endregion
 
-		public void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
 		{
 			definition.AvailableZones.Add(this);
 		}

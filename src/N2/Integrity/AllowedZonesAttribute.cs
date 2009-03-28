@@ -11,7 +11,7 @@ namespace N2.Integrity
     /// string.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class)]
-	public class AllowedZonesAttribute : Attribute, IInheritableDefinitionRefiner
+	public class AllowedZonesAttribute : AbstractDefinitionRefiner, IInheritableDefinitionRefiner
 	{
 		readonly AllowedZones allowedIn = AllowedZones.SpecifiedZones;
 		private string[] zoneNames;
@@ -43,7 +43,7 @@ namespace N2.Integrity
 		}
 
 
-		public void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
 			currentDefinition.AllowedIn = allowedIn;
 			currentDefinition.AllowedZoneNames = ZoneNames;

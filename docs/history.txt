@@ -1,4 +1,6 @@
 ﻿1.4.5.1
+- added RestrictChildren attribute
+- refactored refiner API and introduced ordering between them
 - fixed installation glitch when same root and start page
 - made table prefix configurable (multiple sites, same database)
 - applied esteewhy's #21759:Enable unique CSS styles for items of N2.Templates.Web.UI.WebControls.Menu control
