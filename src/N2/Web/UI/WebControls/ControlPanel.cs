@@ -60,7 +60,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual PartsAdapter ZoneController
 		{
-			get { return Engine.Resolve<IRequestDispatcher>().ResolveAspectController<PartsAdapter>(); }
+			get { return Engine.Resolve<IRequestDispatcher>().ResolveAdapter<PartsAdapter>(); }
 		}
 
 		public virtual ContentItem CurrentItem

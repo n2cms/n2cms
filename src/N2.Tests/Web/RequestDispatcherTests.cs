@@ -1,4 +1,4 @@
-﻿using N2.Configuration;
+using N2.Configuration;
 using N2.Persistence;
 using N2.Tests.Fakes;
 using NUnit.Framework;
@@ -35,7 +35,7 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/");
 
-			RequestAdapter adapter = dispatcher.ResolveAspectController<RequestAdapter>();
+			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>();
 
 			Assert.That(adapter, Is.TypeOf(typeof(RequestAdapter)));
 		}
@@ -45,7 +45,7 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/custom3.aspx");
 
-			RequestAdapter adapter = dispatcher.ResolveAspectController<RequestAdapter>();
+			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>();
 
 			Assert.That(adapter, Is.TypeOf(typeof(CustomRequestAdapter)));
 		}
@@ -55,7 +55,7 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/particular4.aspx");
 
-			RequestAdapter adapter = dispatcher.ResolveAspectController<RequestAdapter>();
+			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>();
 
 			Assert.That(adapter, Is.TypeOf(typeof(CustomRequestAdapter)));
 		}
@@ -65,7 +65,7 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/special5.aspx");
 
-			RequestAdapter adapter = dispatcher.ResolveAspectController<RequestAdapter>();
+			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>();
 
 			Assert.That(adapter, Is.TypeOf(typeof(SpecialCustomAdapter)));
 		}
@@ -75,7 +75,7 @@ namespace N2.Tests.Web
 		{
 			SetUrl("/other6.aspx");
 
-			RequestAdapter adapter = dispatcher.ResolveAspectController<RequestAdapter>();
+			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>();
 
 			Assert.That(adapter, Is.TypeOf(typeof(OtherCustomController)));
 		}
