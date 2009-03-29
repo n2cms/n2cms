@@ -3,6 +3,8 @@ using System.Web.Security;
 using N2.Web;
 using N2.Web.Mail;
 using UserRegistration=N2.Templates.Items.UserRegistration;
+using N2.Configuration;
+using System.Security.Principal;
 
 namespace N2.Templates.UI.Parts
 {
@@ -15,6 +17,7 @@ namespace N2.Templates.UI.Parts
 				VerifyUser(Request["verify"]);
 			}
 
+			UserCreator.CreatingUser += new System.Web.UI.WebControls.LoginCancelEventHandler(UserCreator_CreatingUser);
 			UserCreator.CreatedUser += new EventHandler(UserCreator_CreatedUser);
 
 			base.OnInit(e);
@@ -29,6 +32,16 @@ namespace N2.Templates.UI.Parts
 
 			if(CurrentItem.VerifiedPage != null)
 				Response.Redirect(CurrentItem.VerifiedPage.Url);
+		}
+
+		void UserCreator_CreatingUser(object sender, System.Web.UI.WebControls.LoginCancelEventArgs e)
+		{
+			if (IsEditorOrAdmin(UserCreator.UserName))
+			{
+				cvError.IsValid = false;
+				cvError.ErrorMessage = "Invalid user name.";
+				e.Cancel = true;
+			}
 		}
 
 		void UserCreator_CreatedUser(object sender, EventArgs e)
@@ -73,6 +86,12 @@ namespace N2.Templates.UI.Parts
 			{
 				Response.Redirect(CurrentItem.SuccessPage.Url);
 			} 
+		}
+
+		private bool IsEditorOrAdmin(string username)
+		{
+			GenericPrincipal user = new GenericPrincipal(new GenericIdentity(username), new string[0]);
+			return Engine.SecurityManager.IsEditor(user) || Engine.SecurityManager.IsAdmin(user);
 		}
 	}
 }

@@ -1,8 +1,11 @@
+using System;
 using N2.Definitions;
 using N2.Persistence.Finder;
 using N2.Persistence;
 using N2.Web;
 using N2.Web.UI;
+using N2.Configuration;
+using System.Collections.Specialized;
 
 namespace N2.Security
 {
@@ -18,6 +21,15 @@ namespace N2.Security
 	    private readonly IHost host;
 		private string userContainerName = "TemplateUsers";
 		private string[] defaultRoles = new string[] { "Everyone", "Members", "Editors", "Administrators" };
+		string[] editorUsernames = new string[] {"admin"};
+		string[] administratorUsernames = new string[] { "admin" };
+
+		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, IHost host, EditSection config)
+			: this(definitions, finder, persister, host)
+		{
+			editorUsernames = ToArray(config.Editors.Users);
+			administratorUsernames = ToArray(config.Administrators.Users);
+		}
 
 		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, IHost host)
 		{
@@ -51,6 +63,9 @@ namespace N2.Security
 
 		public virtual Items.User CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey)
 		{
+			if(IsEditorOrAdmin(username))
+				throw new ArgumentException("Invalid username.", "username");
+
 			Items.User u = definitions.CreateInstance<Items.User>(GetUserContainer(true));
 			u.Title = username;
 			u.Name = username;
@@ -107,6 +122,27 @@ namespace N2.Security
 		public virtual void Save(ContentItem item)
 		{
 			persister.Save(item);
+		}
+
+		string[] ToArray(StringCollection users)
+		{
+			if(users == null) return new string[0];
+			
+			string[] userArray = new string[users.Count];
+			for (int i = 0; i < users.Count; i++)
+			{
+				userArray[i] = users[0];
+			}
+			return userArray;
+		}
+
+		private bool IsEditorOrAdmin(string username)
+		{
+			if (Array.Exists(editorUsernames, un => un.Equals(username, StringComparison.InvariantCultureIgnoreCase)))
+				return true;
+			if (Array.Exists(administratorUsernames, un => un.Equals(username, StringComparison.InvariantCultureIgnoreCase)))
+				return true;
+			return false;
 		}
 	}
 }
