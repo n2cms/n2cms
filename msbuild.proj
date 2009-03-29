@@ -360,25 +360,26 @@
 
 	<Target Name="Source-Deploy">
 		<ItemGroup>
-			<Source-Files Include=".\**\*"
-						  Exclude=".\**\.svn\**\*;
-                             .\**\_*\**\*;
-                             .\**\*WebSetup\**\*;
-                             .\**\*VsTemplate\**\*;
-                             .\**\obj\**\*;
-                             .\**\bin\**\*;
-                             .\**\PrecompiledWeb\**\*;
-                             .\**\Ankh.Load;
-                             .\**\*.sln.cache;
-                             .\**\*.resharper;
-                             .\**\*.suo;
-                             .\**\*.user;
-                             .\*.xml;
-                             .\**\Thumbs.db;
-                             $(DeployFolder)\**\*;
-                             $(SrcFolder)\N2.DocSite\**;
-                             $(Examples-Folder)\**\Edit\**\*;
-							 $(LibFolder)\*.pdb" />
+			<Source-Files Include="$(MSBuildProjectDirectory)\**\*"
+						  Exclude="$(MSBuildProjectDirectory)\**\.svn\**\*;
+									$(MSBuildProjectDirectory)\**\_*\**\*;
+									$(MSBuildProjectDirectory)\**\*WebSetup\**\*;
+									$(MSBuildProjectDirectory)\**\*VsTemplate\**\*;
+									$(MSBuildProjectDirectory)\**\obj\**\*;
+									$(MSBuildProjectDirectory)\**\bin\**\*;
+									$(MSBuildProjectDirectory)\**\PrecompiledWeb\**\*;
+									$(MSBuildProjectDirectory)\**\Ankh.Load;
+									$(MSBuildProjectDirectory)\**\*.sln.cache;
+									$(MSBuildProjectDirectory)\**\*.resharper;
+									$(MSBuildProjectDirectory)\**\*.suo;
+									$(MSBuildProjectDirectory)\**\*.user;
+									$(MSBuildProjectDirectory)\*.xml;
+									$(MSBuildProjectDirectory)\**\*.Publish.xml;
+									$(MSBuildProjectDirectory)\**\Thumbs.db;
+									$(DeployFolder)\**\*;
+									$(SrcFolder)\N2.DocSite\**;
+									$(Examples-Folder)\**\Edit\**\*;
+									$(LibFolder)\*.pdb" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(DeployFolder)\Source\%(RecursiveDir)"  />
