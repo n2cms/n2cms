@@ -46,16 +46,18 @@ namespace N2.Web
 		/// <returns>The matching template data if found, otherwise null.</returns>
 		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
+			string extension = item.Extension;
+			if(!string.IsNullOrEmpty(extension) && remainingUrl.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase))
+			{
+				remainingUrl = remainingUrl.Substring(0, remainingUrl.Length - extension.Length);
+			}
+
 			if (remainingUrl.Equals(action, StringComparison.InvariantCultureIgnoreCase) || remainingUrl.Equals(action + item.Extension))
 				return new PathData(item, templateUrl, action, string.Empty);
 
 			if (remainingUrl.StartsWith(nameWithSlash))
 			{
-				string extension = item.Extension;
 				string arguments = remainingUrl.Substring(nameLength + 1);
-				if (arguments.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase))
-					arguments = arguments.Substring(0, arguments.Length - extension.Length);
-
 				return new PathData(item, templateUrl, action, arguments);
 			}
 			

@@ -40,7 +40,7 @@ namespace N2.Web
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual T ResolveAspectController<T>() where T : class, IContentAdapter
+		public virtual T ResolveAdapter<T>() where T : class, IContentAdapter
 		{
 			T controller = RequestItem<T>.Instance;
 			if (controller != null) return controller;

@@ -10,6 +10,6 @@ namespace N2.Web
 	{
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		T ResolveAspectController<T>() where T : class, IContentAdapter;
+		T ResolveAdapter<T>() where T : class, IContentAdapter;
 	}
 }
