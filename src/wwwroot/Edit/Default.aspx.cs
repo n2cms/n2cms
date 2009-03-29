@@ -21,12 +21,10 @@ namespace N2.Edit
 				Page.ClientScript.RegisterHiddenField("memory", "");
 				Page.ClientScript.RegisterHiddenField("action", "");
 			}
-			catch(NullReferenceException ex)
+			catch(Exception ex)
 			{
-				string url = GetSelectedPath();
-				if(url == null)
-					throw  new N2Exception("Couldn't get the start page, this usually indicates a configuration or installation problem. The start page must be inserted and it's id must be configured in web.config.", ex);
-				Response.Write("Error: Couldn't find '" + url + "'.");
+				Trace.Write(ex.ToString());
+				Response.Redirect("install/begin/default.aspx");
 			}
 		}
 	}

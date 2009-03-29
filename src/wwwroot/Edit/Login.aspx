@@ -10,18 +10,11 @@
         
         #login-container
         {
-			-moz-border-radius-topleft : 5px;
-			-moz-border-radius-topright : 5px;
-			-moz-border-radius-bottomleft : 5px;
-			-moz-border-radius-bottomright : 5px;
-
-			-webkit-border-top-left-radius : 5px;
-			-webkit-border-top-right-radius : 5px;
-			-webkit-border-bottom-left-radius : 5px;
-			-webkit-border-bottom-right-radius : 5px;
+			-moz-border-radius: 5px;
+			-webkit-border-radius : 5px;
 
 			background-color: #FFFFFF;
-			border: solid 1px #6F7373;
+			border: solid 1px #BBB8B3;
 			margin: 200px auto;
 			width:  300px;
 			height: 250px;
