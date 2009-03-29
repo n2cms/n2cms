@@ -1,4 +1,6 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Diagnose.aspx.cs" Inherits="N2.Edit.Install.Diagnose" %>
+<%@ Import Namespace="System.Collections.Generic"%>
+<%@ Import Namespace="N2.Web"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -90,6 +92,7 @@
 								<td colspan="2">Definition</td>
 								<td colspan="2">Zones</td>
 								<td colspan="2">Details</td>
+								<td rowspan="2">Templates</td>
 							</tr>
 							<tr>
 								<td>Type</td>
@@ -130,6 +133,10 @@
                         <!-- Displayable attributes -->
                         <asp:Repeater ID="Repeater5" runat="server" DataSource='<%# Eval("Displayables") %>'>
                             <ItemTemplate> * <%# ((N2.Details.IDisplayable)Container.DataItem).Name %><br></ItemTemplate>
+                        </asp:Repeater>
+                    </td><td>
+                        <asp:Repeater ID="Repeater6" runat="server" DataSource='<%# PathDictionary.GetFinders((Type)Eval("ItemType")) %>'>
+                            <ItemTemplate> * <%# Container.DataItem is TemplateAttribute ? ("/" + Eval("Action") + "&nbsp;->&nbsp;" + Eval("TemplateUrl")) : ("(" + Container.DataItem.GetType().Name + ")")%><br></ItemTemplate>
                         </asp:Repeater>
                     </td></tr>
                 </ItemTemplate>

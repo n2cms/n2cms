@@ -503,17 +503,9 @@ namespace N2
 
 		private PathData GetTemplate(string remainingUrl)
 		{
-			var finderDictionary = SingletonDictionary<Type, IList<IPathFinder>>.Instance;
-			var itemType = GetType();
-			lock(finderDictionary)
-			{
-				if(!finderDictionary.ContainsKey(itemType))
-				{
-					finderDictionary[itemType] = GetPathFinders(itemType);
-				}
-			}
+			IPathFinder[] finders = PathDictionary.GetFinders(GetType());
 
-			foreach (IPathFinder finder in finderDictionary[itemType])
+			foreach (IPathFinder finder in finders)
 			{
 				PathData data = finder.GetPath(this, remainingUrl);
 				if (data != null)
@@ -522,20 +514,6 @@ namespace N2
 
 			return PathData.Empty;
 		}
-
-		/// <summary>Looks up path finders for a certain type using reflection.</summary>
-		/// <param name="itemType">The type of item whose path finders to get.</param>
-		/// <returns>A list of path finders that decorates the item class and it's base types.</returns>
-    	public static List<IPathFinder> GetPathFinders(Type itemType)
-    	{
-    		object[] attributes = itemType.GetCustomAttributes(typeof(IPathFinder), true);
-    		List<IPathFinder> pathFinders = new List<IPathFinder>(attributes.Length);
-    		foreach(IPathFinder finder in attributes)
-    		{
-    			pathFinders.Add(finder);
-    		}
-    		return pathFinders;
-    	}
 
     	/// <summary>Tries to get a child item with a given name. This method igonres user permissions and any trailing '.aspx' that might be part of the name.</summary>
 		/// <param name="childName">The name of the child item to get.</param>

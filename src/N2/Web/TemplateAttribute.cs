@@ -40,6 +40,15 @@ namespace N2.Web
 			templateUrl = actionTemplateUrl;
 		}
 
+		public string Action
+		{
+			get { return action; }
+		}
+		public string TemplateUrl
+		{
+			get { return templateUrl; }
+		}
+
 		/// <summary>Examines the remaining url to find the appropriate template.</summary>
 		/// <param name="item">The item to determine template for.</param>
 		/// <param name="remainingUrl">The remaining url used to match against action url segment.</param>
@@ -52,13 +61,13 @@ namespace N2.Web
 				remainingUrl = remainingUrl.Substring(0, remainingUrl.Length - extension.Length);
 			}
 
-			if (remainingUrl.Equals(action, StringComparison.InvariantCultureIgnoreCase) || remainingUrl.Equals(action + item.Extension))
-				return new PathData(item, templateUrl, action, string.Empty);
+			if (remainingUrl.Equals(Action, StringComparison.InvariantCultureIgnoreCase) || remainingUrl.Equals(Action + item.Extension))
+				return new PathData(item, TemplateUrl, Action, string.Empty);
 
 			if (remainingUrl.StartsWith(nameWithSlash))
 			{
 				string arguments = remainingUrl.Substring(nameLength + 1);
-				return new PathData(item, templateUrl, action, arguments);
+				return new PathData(item, TemplateUrl, Action, arguments);
 			}
 			
 			return null;

@@ -40,13 +40,12 @@ namespace N2.Web.Mvc
 			{
 				IAdapterDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
 				ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
-				IList<IPathFinder> finders = ContentItem.GetPathFinders(id.ItemType);
-				if (0 == finders.Where(f => f is RouteActionResolverAttribute || f is ActionResolver).Count())
+				IList<IPathFinder> finders = PathDictionary.GetFinders(id.ItemType);
+				if (0 == finders.Where(f => f is ActionResolver).Count())
 				{
 					var methods = controllerDefinition.AdapterType.GetMethods().Select(m => m.Name).ToArray();
 					var actionResolver = new ActionResolver(methods);
-					finders.Insert(0, actionResolver);
-					FinderDictionary[id.ItemType] = finders;
+					PathDictionary.PrependFinder(id.ItemType, actionResolver);
 				}
 			}
 		}
@@ -101,10 +100,6 @@ namespace N2.Web.Mvc
 			return pathData;
 		}
 
-		IDictionary<Type, IList<IPathFinder>> FinderDictionary
-		{
-			get { return SingletonDictionary<Type, IList<IPathFinder>>.Instance; }
-		}
 		public IDictionary<Type, string> ControllerMap
 		{
 			get { return controllerMap; }
