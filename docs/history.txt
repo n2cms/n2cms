@@ -1,4 +1,6 @@
-﻿1.4.5.1
+﻿- fixed MVC session close
+
+1.4.5.1
 - fixed issue with action templates
 - fixed issue in register control
 - added configurable removal of plugins

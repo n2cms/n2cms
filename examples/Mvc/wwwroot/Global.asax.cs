@@ -28,10 +28,15 @@ namespace MvcTest
 		{
 			// normally the engine is initialized by the initializer module but it can also be initialized this programmatically
 			// since we attach programmatically we need to associate the event broker with a http application
-			EventBroker.Instance.Attach(this);
 			IEngine engine = N2.Context.Initialize(false);
 
 			RegisterRoutes(RouteTable.Routes, engine);
+		}
+
+		public override void Init()
+		{
+			EventBroker.Instance.Attach(this);
+			base.Init();
 		}
 	}
 }

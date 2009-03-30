@@ -98,7 +98,7 @@ namespace N2.Engine.MediumTrust
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
 			IContentAdapterProvider aspectController = AddComponentInstance<IContentAdapterProvider>(new ContentAdapterProvider(this, typeFinder));
 			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(aspectController, webContext, urlParser, errorHandler, hostConfiguration));
-			AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(webContext, broker, installer, dispatcher, errorHandler, editConfiguration));
+			AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(webContext, broker, installer, dispatcher, errorHandler, editConfiguration, hostConfiguration));
             AddComponentInstance<Exporter>(new GZipExporter(xmlWriter));
             AddComponentInstance<ILanguageGateway>(new LanguageGateway(persister, finder, editManager, definitions, host, securityManager, webContext));
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder, engineConfiguration));

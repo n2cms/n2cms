@@ -1,8 +1,10 @@
+using System;
 using System.Security.Principal;
 using System.Web;
 using N2.Engine;
 using N2.Security;
 using N2.Web.UI;
+using N2.Configuration;
 
 namespace N2.Web
 {
@@ -16,13 +18,22 @@ namespace N2.Web
 	public class RequestAdapter : AbstractContentAdapter
 	{
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
+		public virtual void RewriteRequest(RewriteMethod rewriteMethod)
+		{
+			if(Path == null || Path.IsEmpty())
+				return;
+			
+			string templateUrl = GetHandlerPath();
+			if(rewriteMethod == RewriteMethod.RewriteRequest)
+				Engine.Resolve<IWebContext>().RewritePath(templateUrl);
+			else if(rewriteMethod == RewriteMethod.TransferRequest)
+				Engine.Resolve<IWebContext>().TransferRequest(templateUrl);
+		}
+
+		[Obsolete("Please use RewriteRequest(RewriteMethod rewriteMethod)")]
 		public virtual void RewriteRequest()
 		{
-			if(Path != null && !Path.IsEmpty())
-			{
-				string templateUrl = GetHandlerPath();
-				Engine.Resolve<IWebContext>().RewritePath(templateUrl);
-			}
+			RewriteRequest(RewriteMethod.RewriteRequest);
 		}
 
         /// <summary>Gets the path to the handler (aspx template) to rewrite to.</summary>

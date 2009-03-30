@@ -24,15 +24,17 @@ namespace N2.Web
 
 		protected bool initialized = false;
 		protected bool checkInstallation = false;
+		protected RewriteMethod rewriteMethod = RewriteMethod.RewriteRequest;
 		protected string installerUrl = "~/Edit/Install/Begin/Default.aspx";
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
-		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors, EditSection editConfig)
+		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors, EditSection editConfig, HostSection hostConfig)
             : this(webContext, broker, installer, dispatcher, errors)
         {
 			checkInstallation = editConfig.Installer.CheckInstallationStatus;
             installerUrl = editConfig.Installer.InstallUrl;
+			rewriteMethod = hostConfig.Web.Rewrite;
         }
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
@@ -79,7 +81,7 @@ namespace N2.Web
 			if(controller != null)
 			{
 				webContext.CurrentPath = controller.Path;
-				controller.RewriteRequest();
+				controller.RewriteRequest(rewriteMethod);
 			}
 		}
 
