@@ -214,7 +214,7 @@ namespace N2.Templates.Tests.Wiki
         }
 
         [Test]
-        public void Renders_ImagTag_WhenImageExists()
+        public void Renders_ImageTagWithAnchor_WhenImageExists()
         {
             var temp = InternalLinkRenderer.FileExists;
             InternalLinkRenderer.FileExists = delegate { return true; };
@@ -223,7 +223,7 @@ namespace N2.Templates.Tests.Wiki
             {
                 string html = ParseAndRenderWikiText("[[Image:n2.png]]");
 
-                Assert.That(html, Is.EqualTo("<img src=\"/Upload/Wiki/n2.png\" alt=\"n2.png\" />"));
+				Assert.That(html, Is.EqualTo("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"n2.png\" style=\"width:500px;border-width:0px;\" /></a>"));
             }
             finally
             {
@@ -232,7 +232,7 @@ namespace N2.Templates.Tests.Wiki
         }
 
         [Test]
-        public void Renders_ImagTag_WithAltParameter()
+        public void Renders_ImageTag_WithAnchor_AndAltParameter()
         {
             var temp = InternalLinkRenderer.FileExists;
             InternalLinkRenderer.FileExists = delegate { return true; };
@@ -241,7 +241,7 @@ namespace N2.Templates.Tests.Wiki
             {
                 string html = ParseAndRenderWikiText("[[Image:n2.png|N2 CMS Logo]]");
 
-                Assert.That(html, Is.EqualTo("<img src=\"/Upload/Wiki/n2.png\" alt=\"N2 CMS Logo\" />"));
+				Assert.That(html, Is.EqualTo("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"N2 CMS Logo\" style=\"width:500px;border-width:0px;\" /></a>"));
             }
             finally
             {
