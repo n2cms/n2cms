@@ -12,8 +12,6 @@ namespace N2.Addons.Wiki
         string Text { get; }
         string Url { get; }
         string SavedBy { get; }
-		//string Action { get; }
-		//string ActionParameter { get; }
         
         IWiki WikiRoot { get; }
         object this[string detailName] { get; }

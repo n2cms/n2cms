@@ -35,7 +35,10 @@ namespace N2.Templates.Services
 		{
 			double ratioY = height / original.Height;
 			double ratioX = width / original.Width;
+			
 			double ratio = Math.Min(ratioX, ratioY);
+			if(ratio == 0)
+				ratio = Math.Max(ratioX, ratioY);
 			if (ratio <= 0 || ratio > 1) ratio = 1;
 			return ratio;
 		}

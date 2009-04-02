@@ -1,4 +1,6 @@
-﻿- fixed MVC session close
+﻿- added image resize and link to full size on wiki
+- fixed reversed height width for image adapter
+- fixed MVC database session close
 
 1.4.5.1
 - fixed issue with action templates

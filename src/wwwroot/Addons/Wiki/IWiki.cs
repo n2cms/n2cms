@@ -7,5 +7,6 @@ namespace N2.Addons.Wiki
         ContentItem GetChild(string name);
         IEnumerable<string> ModifyRoles { get; }
         string UploadFolder { get; }
-    }
+		int ImageWidth { get; }
+	}
 }

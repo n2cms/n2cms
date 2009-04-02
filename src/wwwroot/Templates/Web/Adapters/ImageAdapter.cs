@@ -33,7 +33,7 @@ namespace N2.Templates.Web.Adapters
 		{
 			if (!ImageControl.Height.IsEmpty || !ImageControl.Width.IsEmpty)
 			{
-				string thumbnailUrl = GetResizedImageUrl(ImageControl.ImageUrl, ImageControl.Height.Value, ImageControl.Width.Value);
+				string thumbnailUrl = GetResizedImageUrl(ImageControl.ImageUrl, ImageControl.Width.Value, ImageControl.Height.Value);
 
 				writer.WriteBeginTag("img");
 				writer.WriteAttribute("alt", ImageControl.AlternateText);

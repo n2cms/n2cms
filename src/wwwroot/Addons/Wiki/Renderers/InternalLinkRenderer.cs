@@ -4,6 +4,7 @@ using System.Web.UI;
 using N2.Web;
 using System.IO;
 using N2.Engine;
+using System.Web.UI.WebControls;
 
 namespace N2.Addons.Wiki.Renderers
 {
@@ -52,22 +53,26 @@ namespace N2.Addons.Wiki.Renderers
             string name = fragments[0].Trim();
             if (FileExists(filePath))
             {
-                return AppendImage(container, Url.Parse(uploadUrl).AppendSegment(name), fragments.Length > 1 ? fragments[1] : fragments[0]);
+                return AppendImage(container, Url.Parse(uploadUrl).AppendSegment(name), fragments.Length > 1 ? fragments[1] : fragments[0], context.Article.WikiRoot.ImageWidth);
             }
-            else
-            {
-                string url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment("Upload").AppendQuery("parameter", fragments[0].Trim()).AppendQuery("returnUrl", context.Article.Url);
-                return AppendAnchor(container, name, url, false);
-            }
+        	
+			string url = Url.Parse(context.Article.WikiRoot.Url).AppendSegment("Upload").AppendQuery("parameter", fragments[0].Trim()).AppendQuery("returnUrl", context.Article.Url);
+        	return AppendAnchor(container, name, url, false);
         }
 
-        private static Control AppendImage(Control container, string src, string alt)
+        private static Control AppendImage(Control container, string src, string alt, int width)
         {
-            HtmlImage img = new HtmlImage();
-            img.Alt = alt;
-            img.Src = src;
-            container.Controls.Add(img);
-            return img;
+			HyperLink a = new HyperLink();
+        	a.NavigateUrl = src;
+			container.Controls.Add(a);
+
+			Image img = new Image();
+            img.AlternateText = alt;
+            img.ImageUrl = src;
+			if (width > 0) img.Width = width;
+			a.Controls.Add(img);
+
+			return a;
         }
 
         protected Control AppendWarning(Control container, string p)

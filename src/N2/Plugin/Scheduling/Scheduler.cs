@@ -74,6 +74,7 @@ namespace N2.Plugin.Scheduling
                     {
                         try
                         {
+							Debug.WriteLine("Executing " + action.GetType().Name);
                             action.Execute();
                             action.ErrorCount = 0;
                         }

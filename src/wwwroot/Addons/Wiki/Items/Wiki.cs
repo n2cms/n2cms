@@ -70,6 +70,13 @@ namespace N2.Addons.Wiki.Items
             set { SetDetail("NoHitsText", value, DefaultNoHitsText); }
         }
 
+		[EditableTextBox("Image Width (0 = disable)", 100, ContainerName = Wiki.WikiTab)]
+		public virtual int ImageWidth
+		{
+			get { return (int)(GetDetail("ImageWidth") ?? 500); }
+			set { SetDetail("ImageWidth", value, 500); }
+		}
+
         [EditableRoles(Title = "Role required for write access", ContainerName = Wiki.WikiTab)]
         public virtual IEnumerable<string> ModifyRoles
         {
