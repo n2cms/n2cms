@@ -34,7 +34,7 @@ namespace N2.Addons.Wiki.UI.Views
 				if (string.IsNullOrEmpty(Request["returnUrl"]))
 					Response.Redirect(CurrentPage.WikiRoot.Url);
 				else
-					Response.Redirect(Request["returnUrl"]);
+					Response.Redirect(Server.UrlDecode(Request["returnUrl"]));
 			}
 		}
 

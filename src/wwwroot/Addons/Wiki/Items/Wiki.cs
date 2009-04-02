@@ -98,6 +98,8 @@ namespace N2.Addons.Wiki.Items
 			PathData data = base.FindPath(remainingUrl);
 			if(data.CurrentItem == null)
 			{
+				if (remainingUrl.EndsWith(Extension))
+					remainingUrl = remainingUrl.Substring(0, remainingUrl.Length - Extension.Length);
 				data = new PathData(this, "~/Addons/Wiki/UI/Views/Submit.aspx", "submit", Utility.CapitalizeFirstLetter(remainingUrl));
 			}
 			return data;
