@@ -1,4 +1,5 @@
-﻿- fixed extension always added to new wiki articles
+﻿- fixed #21916: ContentItem.Url returns path from site root, not from the application root
+- fixed extension always added to new wiki articles
 - added image resize and link to full size on wiki
 - fixed reversed height width for image adapter
 - fixed MVC database session close

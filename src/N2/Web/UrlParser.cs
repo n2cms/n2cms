@@ -224,8 +224,8 @@ namespace N2.Web
 				current = current.Parent;
 			}
 
-			// no start page found, use rewritten url
-			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
+			// no page found, use rewritten url
+			if (current == null) throw new N2Exception("Cannot build url to data item '{0}' with no containing page item.", item);
 
 			Url url;
 			if (IsStartPage(current))
@@ -256,7 +256,7 @@ namespace N2.Web
 				// the item was not a page, add this information as a query string
 				url = url.AppendQuery(PathData.ItemQueryKey, item.ID);
 
-			return url;
+			return Url.ToAbsolute("~" + url);
 		}
 
 		/// <summary>Checks if an item is startpage or root page</summary>

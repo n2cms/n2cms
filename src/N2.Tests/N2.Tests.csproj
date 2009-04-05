@@ -288,7 +288,10 @@
     <Compile Include="Web\TreeNodeTests.cs" />
     <Compile Include="Web\TreeTests.cs" />
     <Compile Include="Web\UrlParserPathAndQueryTests.cs" />
-    <Compile Include="Web\UrlParserTests.cs" />
+    <Compile Include="Web\UrlParser_ParsePageTests.cs" />
+    <Compile Include="Web\UrlParser_BuildDataUrlTests.cs" />
+    <Compile Include="Web\UrlParser_BuildPageUrlTests.cs" />
+    <Compile Include="Web\UrlParser_ParseDataTests.cs" />
     <Compile Include="Web\UrlParsing\CachingUrlParserTests.cs" />
     <Compile Include="Web\UrlParsing\CachingUrlParserTests_WithMultipleHostsUrlParser.cs" />
     <Compile Include="Web\MoreRequestDispatcherTests.cs" />
