@@ -140,10 +140,11 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public string GetPreviewUrl(INode selectedItem)
 		{
-			return string.Format(EditPreviewUrlFormat,
+			string url = string.Format(EditPreviewUrlFormat,
 				selectedItem.PreviewUrl,
 				HttpUtility.UrlEncode(selectedItem.PreviewUrl)
 				);
+			return Url.ToAbsolute(url);
 		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
