@@ -1644,6 +1644,8 @@
     <Content Include="Edit\App_LocalResources\Dependencies.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Edit\App_LocalResources\ru\Dependencies.ru.aspx.resx" />
+    <Content Include="Edit\App_LocalResources\nl\ItemInfo.ascx.nl.resx" />
     <EmbeddedResource Include="Edit\Js\plugins\FreeTextArea.js" />
     <Content Include="Edit\Js\plugins\jquery.cookie.js" />
     <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />

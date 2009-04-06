@@ -138,4 +138,7 @@
   <data name="referencingItems.Legend" xml:space="preserve">
     <value>Ссылающиеся элементы</value>
   </data>
+  <data name="hlReferencingItems.Text" xml:space="preserve">
+    <value>Список ссылающихся элементов</value>
+  </data>
 </root>
