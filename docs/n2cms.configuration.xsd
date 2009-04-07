@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://n2cms.com/schemas/configuration/v4" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://n2cms.com/schemas/configuration/v4" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="n2">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="host">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="sites" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="add" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element name="settings" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="add" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:attribute name="key" type="xs:string" use="required" />
+																		<xs:attribute name="value" type="xs:string" use="required" />
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="uploadFolders" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="add" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:attribute name="path" type="xs:string" use="required" />
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+												<xs:attribute name="id" type="xs:integer" use="required" />
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="wildcards" type="xs:boolean" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="web">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="urls" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="enableCaching" type="xs:boolean" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+									<xs:attribute name="extension" type="xs:string" use="optional" />
+									<xs:attribute name="isWeb" type="xs:boolean" use="optional" />
+									<xs:attribute name="rewrite" type="xs:string" use="optional" />
+									<xs:attribute name="observedExtensions" type="xs:string" use="optional" />
+									<xs:attribute name="observeEmptyExtension" type="xs:boolean" use="optional" />
+									<xs:attribute name="ignoreExistingFiles" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="outputCache" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="duration" type="xs:integer" use="optional" />
+									<xs:attribute name="varyByParam" type="xs:string" use="optional" />
+									<xs:attribute name="cacheProfile" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+						<xs:attribute name="rootID" type="xs:integer" use="required" />
+						<xs:attribute name="startPageID" type="xs:integer" use="required" />
+						<xs:attribute name="multipleSites" type="xs:boolean" use="optional" />
+						<xs:attribute name="wildcards" type="xs:boolean" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="engine">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="assemblies" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="add" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="assembly" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="globalization" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="autoDeleteTranslations" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="errors" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="action" type="xs:string" use="optional" />
+									<xs:attribute name="mailTo" type="xs:string" use="optional" />
+									<xs:attribute name="mailFrom" type="xs:string" use="optional" />
+									<xs:attribute name="maxErrorReportsPerHour" type="xs:integer" use="optional" />
+									<xs:attribute name="handleWrongClassException" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="scheduler" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="interval" type="xs:integer" use="optional" />
+									<xs:attribute name="keepAlive" type="xs:boolean" use="optional" />
+									<xs:attribute name="keepAlivePath" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="components" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="add" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="service" type="xs:string" use="required" />
+												<xs:attribute name="implementation" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="pluginInitializers" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" name="remove">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="optional" />
+												<xs:attribute name="type" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="interfacePlugins" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="remove">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+						<xs:attribute name="castleConfiguration" type="xs:string" use="optional" />
+						<xs:attribute name="multipleSitesConfiguration" type="xs:string" use="optional" />
+						<xs:attribute name="dynamicDiscovery" type="xs:boolean" use="optional" />
+						<xs:attribute name="castleSection" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="database">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="hibernateProperties" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="add" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="key" type="xs:string" use="required" />
+												<xs:attribute name="value" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+						<xs:attribute name="caching" type="xs:boolean" use="optional" />
+						<xs:attribute name="tryLocatingHbmResources" type="xs:boolean" use="optional" />
+						<xs:attribute name="cacheProviderClass" type="xs:string" use="optional" />
+						<xs:attribute name="connectionStringName" type="xs:string" use="optional" />
+						<xs:attribute name="flavour" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="SqlServer2008"/>
+									<xs:enumeration value="SqlServer2005"/>
+									<xs:enumeration value="SqlServer2000"/>
+									<xs:enumeration value="SqlCe"/>
+									<xs:enumeration value="MySql"/>
+									<xs:enumeration value="SqLite"/>
+									<xs:enumeration value="Firebird"/>
+									<xs:enumeration value="Generic"/>
+									<xs:enumeration value="Jet"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="hibernateMapping" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="edit">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="installer" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="checkInstallationStatus" type="xs:boolean" use="optional" />
+									<xs:attribute name="installUrl" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="editors" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="users" type="xs:string" use="optional" />
+									<xs:attribute name="roles" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="administrators" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="users" type="xs:string" use="optional" />
+									<xs:attribute name="roles" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="uploadFolders" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+										<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="path" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="path" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="tinyMCE" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="settings">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+													<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="key" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="key" type="xs:string" use="required" />
+															<xs:attribute name="value" type="xs:string" use="required" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+									<xs:attribute name="enabled" type="xs:boolean" use="optional" />
+									<xs:attribute name="cssUrl" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="nameEditor" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="replacements">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+													<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required" />
+															<xs:attribute name="pattern" type="xs:string" use="required" />
+															<xs:attribute name="value" type="xs:string" use="required" />
+															<xs:attribute name="serverValidate" type="xs:boolean" use="optional" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+									<xs:attribute name="whitespaceReplacement" type="xs:string" use="optional" />
+									<xs:attribute name="toLower" type="xs:boolean" use="optional" />
+									<xs:attribute name="showKeepUpdated" type="xs:boolean" use="optional" />
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+						<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />
+						<xs:attribute name="editPreviewUrlFormat" type="xs:string" use="optional" />
+						<xs:attribute name="uploadFolderUrl" type="xs:string" use="optional" />
+						<xs:attribute name="editItemUrl" type="xs:string" use="optional" />
+						<xs:attribute name="editInterfaceUrl" type="xs:string" use="optional" />
+						<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
+						<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
+						<xs:attribute name="enableVersioning" type="xs:boolean" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="templates">
+					<xs:complexType>
+						<xs:attribute name="mailConfiguration" type="xs:string" use="optional" />
+						<xs:attribute name="masterPageFile" type="xs:string" use="optional" />
+						<xs:attribute name="imageHandlerPath" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
