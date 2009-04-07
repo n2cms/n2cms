@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://n2cms.com/schemas/configuration/v4" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://n2cms.com/schemas/configuration/v4" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:tns="http://n2cms.com/schemas/configuration/v3" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://n2cms.com/schemas/configuration/v3" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="n2">
 		<xs:complexType>
 			<xs:all>
