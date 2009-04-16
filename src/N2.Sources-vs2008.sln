@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F3B1-439D-BA8E-F5E923B327CA}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\ContentModel.png = ..\docs\ContentModel.png
-		..\docs\defaults.web.config = ..\docs\defaults.web.config
 		..\docs\example.web.config = ..\docs\example.web.config
 		..\docs\favicon.ico = ..\docs\favicon.ico
 		..\docs\history.txt = ..\docs\history.txt
@@ -12,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F
 		..\docs\install.txt = ..\docs\install.txt
 		..\docs\License.txt = ..\docs\License.txt
 		..\docs\n2_readme.txt = ..\docs\n2_readme.txt
+		..\docs\n2cms.configuration.xsd = ..\docs\n2cms.configuration.xsd
 		..\docs\nodo.txt = ..\docs\nodo.txt
 		..\docs\runtime_readme.txt = ..\docs\runtime_readme.txt
 		..\docs\solution_overview.txt = ..\docs\solution_overview.txt

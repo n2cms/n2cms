@@ -171,6 +171,11 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjax.js" />
+    <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjaxTimer.js" />
+    <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjaxWebForms.js" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

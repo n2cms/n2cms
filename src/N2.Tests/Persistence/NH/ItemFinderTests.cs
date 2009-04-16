@@ -824,5 +824,22 @@ namespace N2.Tests.Persistence.NH
 
 			Assert.That(items.Count, Is.EqualTo(3));
 		}
+
+		[Test]
+		public void CanSelect_WhenNoItems_InResultSet()
+		{
+			IList<ContentItem> items = finder.Where.Detail("DetailCollection").Eq(12345).Select();
+
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Throws_RelevantException_WhenPassed_UnknownType()
+		{
+			ExceptionAssert.Throws<ArgumentException>(delegate
+				{
+					finder.Where.Type.Eq(typeof (int)).Select();
+				});
+		}
 	}
 }

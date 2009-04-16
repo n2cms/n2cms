@@ -66,6 +66,36 @@
 			document.write(joshuasBlog.getType() + "->" + joshuasBlog.getType.call({ type: "hehehe" }));
 		</script>
 		
+		<h4>Prototype</h4>
+		
+		<script type="text/javascript">
+			var y = function(value) {
+				this.superValue = value;
+				this.getSuperValue = function() { return this.superValue; }
+			}
+			var x = function(value) {
+				this.value = value;
+				this.getValue = function() { return this.value; }
+			}
+			x.prototype = new y(123);
+			var a = new x(1);
+			var b = new x(2);
+			document.write("a.value: " + a.getValue());
+			document.write(", b.value: " + b.value);
+			document.write(", a.superValue: " + a.getSuperValue());
+			document.write(", b.superValue: " + b.superValue);
+		
+		</script>
+		
+		<h4>Windows</h4>
+		
+		<script type="text/javascript">
+
+			document.write("parent title: " + window.parent.document.title);
+			document.write("<br/>window.parent==window: " + (window.parent == window));
+			document.write("<br/>parent name: " + window.parent.name);
+		
+		</script>
     </div>
     </form>
 </body>

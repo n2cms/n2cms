@@ -238,7 +238,7 @@ namespace N2.Persistence.NH
 		/// <param name="cfg">The nhibernate configuration to build.</param>
 		protected virtual void GenerateMappings(NHibernate.Cfg.Configuration cfg)
 		{
-            Debug.Write("Adding ");
+            Debug.Write("Adding");
             StringBuilder mappings = new StringBuilder();
             foreach (Type t in EnumerateDefinedTypes())
             {
@@ -265,8 +265,9 @@ namespace N2.Persistence.NH
                     }
                 }
 
-                Debug.Write(t.Name + " ");
+                Debug.Write(" " + t.Name);
             }
+			Debug.WriteLine("");
             cfg.AddXml(string.Format(mappingFormat, mappings));
 		}
 

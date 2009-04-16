@@ -105,34 +105,3 @@ namespace N2.Details
 		#endregion
 	}
 }
-
-
-		//protected override void OnInit(EventArgs e)
-		//{
-		//    if (Displayable != null)
-		//    {
-		//        displayer = (Control)Activator.CreateInstance(Displayable.ControlType);
-		//        string controlPropertyName = Displayable.ControlPropertyName;
-		//        PropertyInfo controlPi = displayer.GetType().GetProperty(controlPropertyName);
-		//        Debug.Assert(controlPi != null, "Property not found on control: " + controlPropertyName);
-		//        if (controlPi != null)
-		//        {
-		//            controlPi.SetValue(displayer, CurrentItem[PropertyName], new object[0]);
-		//            this.Controls.Add(displayer);
-		//        }
-		//    }
-
-		//    base.OnInit(e);
-		//}
-
-		//protected override void OnLoad(EventArgs e)
-		//{
-		//    if (Displayer != null)
-		//    {
-		//        if (Displayable.DataBind)
-		//            Displayer.DataBind();
-		//        if (Displayable.Focus)
-		//            Displayer.Focus();
-		//    }
-		//    base.OnLoad(e);
-		//} 

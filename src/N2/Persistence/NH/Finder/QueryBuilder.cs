@@ -210,7 +210,10 @@ namespace N2.Persistence.NH.Finder
 
 		public string GetDiscriminator(Type value)
 		{
-			return definitions.GetDefinition(value).Discriminator;
+			ItemDefinition definition = definitions.GetDefinition(value);
+			if(definition == null)
+				throw new ArgumentException("Could not find the definition associated with the type '" + value.FullName + "'. Please ensure this is a non-abstract class deriving from N2.ContentItem and that it is decorated by the [Definition] attribute.");
+			return definition.Discriminator;
 		}
 
 		protected virtual IQuery CreateQuery()
