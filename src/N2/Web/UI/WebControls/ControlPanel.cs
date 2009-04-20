@@ -209,9 +209,9 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 			}
 		}
 
-        string scriptFormat = @"if(window.top != window && window.top.n2){{
-    window.top.n2.setupToolbar('{0}');
-    window.top.n2.refreshNavigation('{1}');
+		string scriptFormat = @"if(window.n2ctx){{
+    window.n2ctx.setupToolbar('{0}');
+    window.n2ctx.refreshNavigation('{1}');
 }}";
 
 		protected override void Render(HtmlTextWriter writer)

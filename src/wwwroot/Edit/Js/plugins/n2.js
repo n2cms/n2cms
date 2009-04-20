@@ -51,8 +51,8 @@ n2nav.targetHandlers["preview"] = function(a,i) {
     $(a).addClass("enabled").bind("click", null, n2nav.previewClickHandler);
 }
 n2nav.setupToolbar = function(path){
-	if(window.top.n2)
-		window.top.n2.setupToolbar(path);
+    if (window.n2ctx)
+        window.n2ctx.setupToolbar(path);
 }
 
 
@@ -72,101 +72,133 @@ var n2toggle = {
     }
 };
 
+var initn2context = function(w) {
+    if (w.n2ctx)
+        return w.n2ctx;
 
-// DEFAULT
-var frameManager = function(){
-	this.currentUrl = "/";
-}
-frameManager.prototype = {
-    memorize: function(selected, action) {
-        document.getElementById("memory").value = selected;
-        document.getElementById("action").value = action;
-    },
-    initFrames: function() {
+    try {
+        if (w.name != "top" && w != w.parent) {
+            w.n2ctx = initn2context(w.parent);
+            return w.n2ctx;
+        }
+    } catch (e) { }
+
+    w.n2ctx = {
+        selectedPath: "/",
+        memorizedPath: null,
+        actionType: null,
+
+        // whether there is a top frame
+        hasTop: function() {
+            return false;
+        },
+
+        // selects a toolbar item by name
+        toolbarSelect: function(name) {
+            jQuery(document).ready(function() {
+                w.n2.select(name);
+                $(window).unload(function() {
+                    w.n2.unselect(name);
+                });
+            });
+        },
+
+        // copy/paste
+        memorize: function(selected, action) {
+            this.memorizedPath = selected;
+            this.actionType = action;
+        },
+        getSelected: function() {
+            return this.selectedPath;
+        },
+        getMemory: function() {
+            return encodeURIComponent(this.memorizedPath);
+        },
+        getAction: function() {
+            return encodeURIComponent(this.actionType);
+        },
+
+        // selection memory
+        setupToolbar: function(url) {
+            if (!this.hasTop()) return;
+            url = encodeURIComponent(url);
+            var memory = this.getMemory();
+            var action = this.getAction();
+            this.selectedPath = url;
+            for (var i = 0; i < toolbarPlugIns.length; i++) {
+                var a = w.document.getElementById(toolbarPlugIns[i].linkId);
+                a.href = toolbarPlugIns[i].urlFormat
+		            .replace("{selected}", url)
+		            .replace("{memory}", memory)
+		            .replace("{action}", action);
+            }
+        },
+
+        // update frames
+        refreshNavigation: function(navigationUrl) {
+            if (!this.hasTop()) return;
+            var nav = w.document.getElementById('navigation');
+            nav.src = navigationUrl;
+        },
+        refreshPreview: function(previewUrl) {
+            if (this.hasTop()) {
+                var previewFrame = w.document.getElementById('preview');
+                previewFrame.src = previewUrl;
+            } else {
+                window.location = previewUrl;
+            }
+        },
+        refresh: function(navigationUrl, previewUrl) {
+            this.refreshNavigation(navigationUrl);
+            this.refreshPreview(previewUrl);
+        },
+
+        // toolbar selection
+        select: function(name) {
+            jQuery("#" + name)
+	            .siblings().removeClass("selected").end()
+	            .addClass("selected").focus();
+        },
+        unselect: function(name) {
+            jQuery("#" + name).removeClass("selected");
+        }
+    };
+
+    return w.n2ctx;
+};
+window.n2 = initn2context(window);
+
+window.n2.frameManager = {
+    init: function() {
         var t = this;
-        t.repaint();
-        $("#splitter").splitter({
-            type: 'v',
-            cookie: 'n2spl',
-            anchorToWindow: true,
-            onStart: function() {
-                this.parent().addClass("activeSplitter");
-            },
-            onStop: function() {
-                this.parent().removeClass("activeSplitter");
-                t.repaint();
-            },
-            sizeLeft: true
-        });
-        $(window).bind("resize", function() {
+        $(document).ready(function() {
             t.repaint();
+            $("#splitter").splitter({
+                type: 'v',
+                cookie: 'n2spl',
+                anchorToWindow: true,
+                onStart: function() {
+                    this.parent().addClass("activeSplitter");
+                },
+                onStop: function() {
+                    this.parent().removeClass("activeSplitter");
+                    t.repaint();
+                },
+                sizeLeft: true
+            });
+            $(window).bind("resize", function() {
+                t.repaint();
+            });
+            setTimeout(function() { t.repaint.call(t); }, 100); // chrome hack
         });
-        setTimeout(function() { t.repaint.call(t); }, 100); // chrome hack
     },
     repaint: function() {
         var h = this.contentHeight();
-        $("#splitter").trigger("resize")
+        jQuery("#splitter").trigger("resize")
             .height(h)
             .find("div,iframe").height(h);
-
-        //$("#splitter *").height(this.contentHeight());
     },
     contentHeight: function() {
-        return document.documentElement.clientHeight - (jQuery.browser.msie ? 50 : 51);
-    },
-    getSelected: function() {
-        return this.currentUrl;
-    },
-    getMemory: function() {
-        var m = document.getElementById("memory");
-        return encodeURIComponent(m.value);
-    },
-    getAction: function() {
-        var a = document.getElementById("action");
-        return encodeURIComponent(a.value);
-    },
-    setupToolbar: function(url) {
-        url = encodeURIComponent(url);
-        var memory = this.getMemory();
-        var action = this.getAction;
-        this.currentUrl = url;
-        for (var i = 0; i < toolbarPlugIns.length; i++) {
-            var a = document.getElementById(toolbarPlugIns[i].linkId);
-            a.href = toolbarPlugIns[i].urlFormat
-				.replace("{selected}", url)
-				.replace("{memory}", memory)
-				.replace("{action}", action);
-        }
-    },
-    refreshNavigation: function(navigationUrl) {
-        var nav = document.getElementById('navigation');
-        nav.src = navigationUrl;
-    },
-    refreshPreview: function(previewUrl) {
-        var prev = document.getElementById('preview');
-        prev.src = previewUrl;
-    },
-    refresh: function(navigationUrl, previewUrl) {
-        this.refreshNavigation(navigationUrl);
-        this.refreshPreview(previewUrl);
-    },
-    select: function(name) {
-        $("#" + name)
-			.siblings().removeClass("selected").end()
-			.addClass("selected").focus();
-    },
-    unselect: function(name) {
-        $("#" + name).removeClass("selected");
+        return window.document.documentElement.clientHeight - (jQuery.browser.msie ? 50 : 51);
     }
-}
-
-function toolbarSelect(name){
-	if(window.top.n2)
-	{
-		window.top.n2.select(name);
-		$(window).unload(function(){
-			window.top.n2.unselect(name);
-		});
-	}
-}
-
+};

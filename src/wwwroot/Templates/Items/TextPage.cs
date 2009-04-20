@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using N2.Details;
 using N2.Templates.Services;
 using N2.Serialization;
+using N2.Web;
 
 namespace N2.Templates.Items
 {
@@ -9,7 +10,7 @@ namespace N2.Templates.Items
     /// A page containing textual information.
     /// </summary>
     [Definition("Text Page", "TextPage", "A simple text page. It displays a vertical menu, the content and provides a sidebar column", "", 20)]
-	[DefaultTemplate("Text")]
+	[ConventionTemplate("Text")]
     public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
     {
         [FileAttachment, EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]

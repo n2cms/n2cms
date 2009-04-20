@@ -1,5 +1,6 @@
 using N2.Integrity;
 using N2.Details;
+using N2.Web;
 using N2.Web.UI;
 
 namespace N2.Templates.Items
@@ -7,7 +8,7 @@ namespace N2.Templates.Items
     [Definition("Image Gallery", "ImageGallery", "Displays an image with next/previous thumbnails", "", 220)]
     [RestrictParents(typeof(IStructuralPage))]
     [FieldSetContainer(ImageGallery.GallerySettings, "Gallery Settings", 500, ContainerName = Tabs.Content)]
-	[DefaultTemplate("ImageGallery")]
+	[ConventionTemplate]
     public class ImageGallery : AbstractContentPage
     {
         #region GallerySettings

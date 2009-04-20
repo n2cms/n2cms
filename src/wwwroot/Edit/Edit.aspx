@@ -39,7 +39,6 @@
     			var $hp = $(this);
     			$hp.toggleClass("helpVisible");
     		});
-    		toolbarSelect('<%= CreatingNew ? "new" : "edit" %>');
 
     		$(".right fieldset").hide();
 

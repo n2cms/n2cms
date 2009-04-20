@@ -11,7 +11,7 @@ namespace N2.Templates.Items
     [RestrictParents(typeof (IStructuralPage))]
     [WithEditableTitle("Title", 10),
      WithEditableName("Name", 20)]
-	[DefaultTemplate("Feed")]
+	[ConventionTemplate("Feed")]
     public class RssFeed : AbstractContentPage, IFeed, INode
     {
         [EditableLink("Feed root", 90)]

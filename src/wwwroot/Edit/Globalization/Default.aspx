@@ -3,11 +3,6 @@
 <%@ Import Namespace="N2.Web" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Styles.css" type="text/css" />
-    <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("globalization");
-		});
-	</script>
 </asp:Content>
 <asp:Content ID="CT" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>

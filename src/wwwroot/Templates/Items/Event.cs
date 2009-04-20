@@ -3,12 +3,13 @@ using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Services;
+using N2.Web;
 
 namespace N2.Templates.Items
 {
     [Definition("Event", "Event", "An event item", "", 110)]
     [RestrictParents(typeof(Calendar))]
-	[DefaultTemplate("CalendarItem")]
+	[ConventionTemplate("CalendarItem")]
     public class Event : AbstractContentPage, ISyndicatable
     {
         public Event()

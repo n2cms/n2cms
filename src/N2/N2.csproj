@@ -454,6 +454,8 @@
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />
     <Compile Include="Engine\EventBroker.cs" />
+    <Compile Include="Web\ConventionTemplateAttribute.cs" />
+    <Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
     <Compile Include="Web\PathDictionary.cs" />
     <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Parts\IAddablePart.cs" />

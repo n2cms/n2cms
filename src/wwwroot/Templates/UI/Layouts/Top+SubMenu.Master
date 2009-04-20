@@ -13,8 +13,8 @@
         <n2:ControlPanel ID="cp" runat="server">
             <VisibleFooterTemplate>
                 <script type="text/javascript">
-					if(window.top != window && window.top.n2){
-						window.top.n2.select("Go");
+                	if (window.n2ctx) {
+                		window.n2ctx.select("Go");
 					}
                 </script>
             </VisibleFooterTemplate>

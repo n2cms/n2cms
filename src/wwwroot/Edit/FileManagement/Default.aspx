@@ -43,9 +43,7 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
-			toolbarSelect("filemanager");
-			
-		    n2nav.selectionInputId = '#<%= selectedUrl.ClientID %>';
+			n2nav.selectionInputId = '#<%= selectedUrl.ClientID %>';
 		    n2nav.parentInputId = '<%= OpenerInputId %>';
 		    n2nav.setupLinks('#tree');
 			$("#tree").SimpleTree();

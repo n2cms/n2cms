@@ -2,12 +2,13 @@ using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Services;
+using N2.Web;
 
 namespace N2.Templates.Items
 {
     [Definition("News", "News", "A news page.", "", 155)]
     [RestrictParents(typeof (NewsContainer))]
-	[DefaultTemplate("NewsItem")]
+	[ConventionTemplate("NewsItem")]
     public class News : AbstractContentPage, ISyndicatable
     {
         public News()

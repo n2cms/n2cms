@@ -38,6 +38,14 @@ namespace N2.Edit
 			base.OnInit(e);
 		}
 
+		protected override string GetToolbarSelectScript(ToolbarPluginAttribute toolbarPlugin)
+		{
+			if(CreatingNew)
+				return "n2ctx.toolbarSelect('new');";
+
+			return base.GetToolbarSelectScript(toolbarPlugin);
+		}
+
 		protected override void OnPreRender(EventArgs e)
 		{
 			CheckRelatedVersions(ie.CurrentItem);

@@ -52,11 +52,11 @@ namespace N2.Edit
 				SelectedItem.Title);
 
 			this.from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
-				GetBreadcrumbPath(MemorizedItem.Parent), 
-				MemorizedItem.Name);
+										   MemorizedItem.Parent != null ? MemorizedItem.Parent.Path : "",
+										   MemorizedItem.Path);
 
 			this.to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
-				GetBreadcrumbPath(SelectedItem), 
+				SelectedItem.Path, 
 				MemorizedItem.Name);
 
 			itemsToCopy.CurrentItem = MemorizedItem;

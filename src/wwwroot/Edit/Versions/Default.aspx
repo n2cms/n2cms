@@ -1,11 +1,6 @@
 <%@ Page MasterPageFile="..\Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Versions.Default" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-   <link rel="stylesheet" href="Css/Versions.css" type="text/css" />
-    <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("versions");
-		});
-	</script>
+	<link rel="stylesheet" href="Css/Versions.css" type="text/css" />
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">cancel</asp:HyperLink>

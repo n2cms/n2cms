@@ -9,7 +9,7 @@ namespace N2.Templates.Items
     [Definition("Gallery Item", "GalleryItem")]
     [RestrictParents(typeof(ImageGallery))]
     [TabContainer("advanced", "Advanced", 100)]
-	[DefaultTemplate("GalleryItem")]
+	[ConventionTemplate]
 	public class GalleryItem : AbstractContentPage
     {
         public GalleryItem()

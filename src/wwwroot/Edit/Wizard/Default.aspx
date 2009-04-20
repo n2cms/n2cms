@@ -1,11 +1,6 @@
 <%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Wizard.Default" Title="Wizard" meta:resourcekey="PageResource1" %>
 <%@ Import namespace="N2.Edit.Wizard.Items"%>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-    <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("wizard");
-		});
-	</script>
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
 	<asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>

@@ -3,6 +3,7 @@ using System.Web.UI.WebControls;
 using N2.Engine.Globalization;
 using N2.Details;
 using N2.Serialization;
+using N2.Web;
 using N2.Web.UI;
 using N2.Integrity;
 
@@ -13,7 +14,7 @@ namespace N2.Templates.Items
     [RestrictParents(typeof(StartPage))]
     [FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
     [FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
-	[DefaultTemplate("Start")]
+	[ConventionTemplate("Start")]
 	public class LanguageRoot : AbstractContentPage, IStructuralPage, ILanguage
 	{
         public LanguageRoot()

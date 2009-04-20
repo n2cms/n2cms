@@ -96,6 +96,44 @@
 			document.write("<br/>parent name: " + window.parent.name);
 		
 		</script>
+		
+		<h4>Recursive frame prototype</h4>
+		
+		<script type="text/javascript">
+		<%
+			int depth = int.Parse(Request["depth"] ?? "2");
+			if(depth > 0) { %>
+			document.write("<iframe width='75%' id='recusiveFrame' src='<%= N2.Web.Url.Parse(Request.RawUrl).SetQueryParameter("depth", depth - 1) %>'></iframe>");
+		<% } %>
+			
+			var init = function(w) {
+				if (w.manager)
+					return w.manager;
+
+				try {
+					if (w.name != "top" && w != w.parent) {
+						var m = function() {
+							this.ask2 = function() { alert(window.name) }
+						};
+						m.prototype = init(w.parent);
+						w.manager = new m();
+					} else {
+						w.manager = {
+							ask: function() { alert(w.name); } ,
+							ask2: function() { alert(window.name);}
+						};
+					}
+					return w.manager;
+				} catch (e) {
+					document.write(e.toString());
+				}
+			};
+			init(window);
+			document.write("<input onclick='window.manager.ask();' value='ask' type='button' /><input onclick='window.manager.ask2();' value='ask2' type='button' />");
+			window.name = "Window " + <%= depth %>;
+			document.write("(" + window.name + ")");
+		</script>
+			
     </div>
     </form>
 </body>

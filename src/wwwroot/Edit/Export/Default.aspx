@@ -2,11 +2,6 @@
 <%@ Register Src="../AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 <asp:Content ID="CH" ContentPlaceHolderID="Head" runat="server">
     <link rel="stylesheet" href="Css/exportImport.css" type="text/css" />
-    <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("exportimport");
-		});
-	</script>
 </asp:Content>
 <asp:Content ID="CT" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>

@@ -1,10 +1,5 @@
 <%@ Page MasterPageFile="../Framed.master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Settings.Default" meta:resourceKey="settingsPage" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-    <script type="text/javascript">
-    	$(document).ready(function() {
-    		toolbarSelect("settings");
-    	});
-	</script>
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
 		<asp:LinkButton ID="btnSave" OnClick="btnSave_Click" runat="server" CssClass="command" meta:resourceKey="btnSave">Save</asp:LinkButton>

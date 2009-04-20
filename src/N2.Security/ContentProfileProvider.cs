@@ -42,7 +42,7 @@ namespace N2.Security
             int i = 0;
             foreach(ProfileInfo profile in profiles)
             {
-                usernames[i] = profile.UserName;
+                usernames[i++] = profile.UserName;
             }
             return DeleteProfiles(usernames);
         }

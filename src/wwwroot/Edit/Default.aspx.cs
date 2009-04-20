@@ -1,5 +1,4 @@
 using System;
-using N2.Resources;
 using N2.Web.UI.WebControls;
 
 namespace N2.Edit
@@ -8,24 +7,21 @@ namespace N2.Edit
 	[ControlPanelSeparator(0, ControlPanelState.Visible)]
 	public partial class Default : Web.EditPage
 	{
+    	protected string SelectedPath = "/";
+
 		protected override void OnInit(EventArgs e)
 		{
-			base.OnInit(e);
-
-			Register.JavaScript(this, "~/Edit/Js/Plugins.ashx");
-
 			try
 			{
-				// These fields are used client side to store selected items
-				Page.ClientScript.RegisterHiddenField("selected", SelectedItem.Path);
-				Page.ClientScript.RegisterHiddenField("memory", "");
-				Page.ClientScript.RegisterHiddenField("action", "");
+				SelectedPath = SelectedItem.Path;
 			}
 			catch(Exception ex)
 			{
 				Trace.Write(ex.ToString());
 				Response.Redirect("install/begin/default.aspx");
 			}
+
+			base.OnInit(e);
 		}
 	}
 }

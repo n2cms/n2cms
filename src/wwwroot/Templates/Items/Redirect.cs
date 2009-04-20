@@ -1,5 +1,6 @@
 using N2.Details;
 using N2.Integrity;
+using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Web.UI;
 using N2.Templates.Web.UI.WebControls;
@@ -15,7 +16,7 @@ namespace N2.Templates.Items
      WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
     [TabContainer(Tabs.Advanced, "Advanced", 100)]
     [RestrictParents(typeof(IStructuralPage))]
-	[DefaultTemplate("Redirect")]
+	[ConventionTemplate]
     public class Redirect : AbstractPage, IStructuralPage, IBreadcrumbAppearance
     {
         public override string Url

@@ -56,7 +56,7 @@ namespace N2.Edit.Trash
 		}
 
 		#region RegisterRefreshNavigationScript
-		private const string refreshScriptFormat = @"window.top.n2.setupToolbar('{3}');window.top.n2.refreshNavigation('{1}');";
+		private const string refreshScriptFormat = @"window.n2ctx.setupToolbar('{3}');window.n2ctx.refreshNavigation('{1}');";
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
 		{

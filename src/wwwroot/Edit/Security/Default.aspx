@@ -1,11 +1,6 @@
 <%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" meta:resourcekey="PageResource1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
-    <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("security");
-		});
-	</script>
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <n2:OptionsMenu id="om" runat="server">

@@ -3,11 +3,6 @@
 
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-    <script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("delete");
-		});
-	</script>
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnDelete" runat="server" OnClick="OnDeleteClick" CssClass="command" meta:resourceKey="btnDelete">delete</asp:LinkButton>

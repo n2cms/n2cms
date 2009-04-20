@@ -1,11 +1,12 @@
 using N2.Details;
+using N2.Web;
 using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
     [Definition("Form page", "FormPage", "A page with a form that can be sumitted and sent to an email address.", "", 240)]
     [TabContainer("formPanel", "Form", 30)]
-	[DefaultTemplate("Form")]
+	[ConventionTemplate("Form")]
     public class FormPage : AbstractContentPage
     {
         [EditableItem("Form", 60, ContainerName = "formPanel")]

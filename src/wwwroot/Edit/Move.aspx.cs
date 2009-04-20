@@ -59,11 +59,11 @@ namespace N2.Edit
 			                      SelectedItem.Title);
 
 			from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
-			                          GetBreadcrumbPath(MemorizedItem.Parent),
-			                          MemorizedItem.Name);
+									  MemorizedItem.Parent != null ? MemorizedItem.Parent.Path : "",
+									  MemorizedItem.Path);
 
 			to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
-			                        GetBreadcrumbPath(SelectedItem),
+			                        SelectedItem.Path,
 			                        MemorizedItem.Name);
 
 			itemsToMove.CurrentItem = MemorizedItem;

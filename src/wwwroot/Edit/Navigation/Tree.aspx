@@ -19,8 +19,6 @@
         </div>
         <script type="text/javascript">
         	$(document).ready(function() {
-	        	toolbarSelect("tree");
-
         		var dragMemory = null;
         		var onDrop = function(e, ui) {
         			var action = e.ctrlKey ? "copy" : "move";

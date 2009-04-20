@@ -1,10 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="N2.Edit.Membership.Users" Title="Users" meta:resourcekey="PageResource1" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="Head" runat="server">
-	<script type="text/javascript">
-        $(document).ready(function(){
-			toolbarSelect("users");
-		});
-	</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:HyperLink runat="server" NavigateUrl="New.aspx" CssClass="command" meta:resourcekey="HyperLinkResource1">new</asp:HyperLink>

@@ -24,35 +24,43 @@ namespace N2.Edit.Web
 		protected virtual void RegisterScripts()
 		{
 			Register.JQuery(this);
-			Register.JavaScript(this, "~/Edit/Js/Plugins.ashx");
+			Register.JavaScript(this, "~/Edit/Js/Plugins.ashx?v=2");
+
+			// select toolbar
+			foreach(ToolbarPluginAttribute toolbarPlugin in GetType().GetCustomAttributes(typeof(ToolbarPluginAttribute), true))
+			{
+				if (toolbarPlugin.GetType() != typeof(ToolbarPluginAttribute))
+					continue;
+
+				string script = GetToolbarSelectScript(toolbarPlugin);
+				Register.JavaScript(this, script, ScriptPosition.Bottom, ScriptOptions.ScriptTags);
+			}
 		}
 
-        protected virtual string CancelUrl()
+		protected virtual string GetToolbarSelectScript(ToolbarPluginAttribute toolbarPlugin)
+		{
+			return string.Format("n2ctx.toolbarSelect('{0}');", toolbarPlugin.Name);
+		}
+
+		protected virtual string CancelUrl()
         {
             return Request["returnUrl"] ?? (SelectedItem.VersionOf ?? SelectedNode).PreviewUrl;
         }
 
     	#region Refresh Methods
 		private const string RefreshBothFormat = @"
-if(window.top.n2) {{
-	window.top.n2.setupToolbar('{4}'); 
-	window.top.n2.refresh('{1}', '{2}');
-}}
-else {{
-	window.location = '{2}';
-}}";
+n2ctx.setupToolbar('{4}'); 
+n2ctx.refresh('{1}', '{2}');
+";
 
 		private const string RefreshNavigationFormat = @"
-if(window.top.n2) {{
-	window.top.n2.setupToolbar('{4}'); 
-	window.top.n2.refreshNavigation('{1}', '{2}');
-}}";
+n2ctx.setupToolbar('{4}'); 
+n2ctx.refreshNavigation('{1}', '{2}');
+";
 		private const string RefreshPreviewFormat = @"
-if(window.top.n2) {{
-	window.top.n2.setupToolbar('{4}'); 
-	window.top.n2.refreshPreview('{1}', '{2}');
-}}
-else window.location = '{2}';";
+n2ctx.setupToolbar('{4}'); 
+n2ctx.refreshPreview('{1}', '{2}');
+";
 
 		protected virtual void Refresh(ContentItem item, N2.Edit.ToolbarArea area)
 		{
@@ -92,7 +100,7 @@ else window.location = '{2}';";
 		#region Setup Toolbar Methods
 		protected virtual string SetupToolbarScriptFormat
 		{
-			get { return "if(window.top!=window && window.top.n2)window.top.n2.setupToolbar('{0}');"; }
+			get { return "window.n2ctx.setupToolbar('{0}');"; }
 		}
 
 		protected virtual void RegisterSetupToolbarScript(ContentItem item)
@@ -163,15 +171,6 @@ else window.location = '{2}';";
 		{
 			validator.IsValid = false;
 			validator.ErrorMessage = message;
-		}
-
-		protected string GetBreadcrumbPath(ContentItem item)
-		{
-			return item.Path;
-			//string breadcrumb = "";
-			//for (; item != null; item = item.Parent)
-			//    breadcrumb = item.Name + "/" + breadcrumb;
-			//return breadcrumb;
 		}
 
 		#endregion

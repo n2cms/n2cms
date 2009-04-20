@@ -16,12 +16,6 @@
         <form id="form1" runat="server" class="frameForm">
 			<uc1:Toolbar runat="server" />
 			
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    window.n2 = new frameManager();
-                    n2.initFrames();
-                });
-            </script>
             <div id="splitter">
 				<div id="leftPane" class="pane">
 					<iframe id="navigation" src="<%= GetNavigationUrl(SelectedItem) %>" frameborder="0" name="navigation" class="frame"></iframe>
@@ -31,5 +25,13 @@
 				</div>
             </div>
         </form>
+
+        <script type="text/javascript">
+        	window.name = "top";
+        	window.n2ctx.hasTop = function() { return true; }
+        	window.n2ctx.setupToolbar('<%= SelectedPath %>');
+
+        	window.n2.frameManager.init();
+       </script>
     </body>
 </html>
