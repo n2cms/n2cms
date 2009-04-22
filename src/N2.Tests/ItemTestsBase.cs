@@ -31,7 +31,7 @@ namespace N2.Tests
 
 		protected virtual T CreateOneItem<T>(int id, string name, ContentItem parent) where T : ContentItem
 		{
-			T item = Activator.CreateInstance<T>();
+			T item = (T) Activator.CreateInstance(typeof (T), true);
 			item.ID = id;
 			item.Name = name;
 			item.Title = name;

@@ -634,7 +634,7 @@ namespace N2
 		/// <returns>The cloned item with or without cloned child items.</returns>
 		public virtual ContentItem Clone(bool includeChildren)
         {
-			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetType());
+			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetType(), true);
 			cloned.title = title;
 			cloned.name = name;
 			cloned.zoneName = zoneName;

@@ -347,7 +347,18 @@ namespace N2.Tests.Content
 		{
 			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
 			ContentItem clonedRoot = root.Clone(false);
-			
+
+			Assert.AreEqual(0, clonedRoot.ID);
+			Assert.AreEqual(root.Name, clonedRoot.Name);
+			Assert.AreEqual(root.Title, clonedRoot.Title);
+		}
+
+		[Test]
+		public void CanCloneItem_WithProtectedDefaultConstructor()
+		{
+			ContentItem root = CreateOneItem<AnItemWithProtectedDefaultConstructor>(1, "root", null);
+			ContentItem clonedRoot = root.Clone(false);
+
 			Assert.AreEqual(0, clonedRoot.ID);
 			Assert.AreEqual(root.Name, clonedRoot.Name);
 			Assert.AreEqual(root.Title, clonedRoot.Title);
