@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
+using N2.Edit;
 
-[assembly : WebResource("N2.Resources.add.gif", "image/gif")]
-[assembly : WebResource("N2.Resources.bin.gif", "image/gif")]
-[assembly : WebResource("N2.Resources.delete.gif", "image/gif")]
+[assembly: WebResource("N2.Resources.add.gif", "image/gif")]
+[assembly: WebResource("N2.Resources.bin.gif", "image/gif")]
+[assembly: WebResource("N2.Resources.delete.gif", "image/gif")]
+[assembly: WebResource("N2.Resources.bullet_arrow_up.png", "image/png")]
+[assembly: WebResource("N2.Resources.bullet_arrow_down.png", "image/png")]
 
 namespace N2.Web.UI.WebControls
 {
@@ -137,8 +140,7 @@ namespace N2.Web.UI.WebControls
 				}
 				return items;
 			}
-			else
-				return new ContentItem[0];
+			return new ContentItem[0];
 		}
 
 		private ContentItem CreateItem(Type itemType)
@@ -172,27 +174,58 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual ItemEditor CreateItemEditor(ContentItem item)
 		{
-			AddDeleteButton();
+			var container = new Panel {CssClass = "delete"};
+
+			container.Controls.Add(CreateMoveUpButton());
+			container.Controls.Add(CreateMoveDownButton());
+			container.Controls.Add(CreateDeleteButton());
+
+			itemEditorsContainer.Controls.Add(container);
+
 			ItemEditor itemEditor = AddItemEditor(item);
 			++itemEditorIndex;
 			return itemEditor;
 		}
 
-		private void AddDeleteButton()
+		private ImageButton CreateDeleteButton()
 		{
-			ImageButton b = new ImageButton();
-			itemEditorsContainer.Controls.Add(b);
+			var b = new ImageButton();
 			b.ID = ID + "_d_" + itemEditorIndex;
-			b.CssClass = " delete";
-			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof (ItemEditorList), "N2.Resources.delete.gif");
+			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.delete.gif");
 			b.ToolTip = "Delete item";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.Click += DeleteItemClick;
+
+			return b;
+		}
+
+		private ImageButton CreateMoveUpButton()
+		{
+			var b = new ImageButton();
+			b.ID = ID + "_up_" + itemEditorIndex;
+			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.bullet_arrow_up.png");
+			b.ToolTip = "Move item up";
+			b.CommandArgument = itemEditorIndex.ToString();
+			b.Click += MoveItemUpClick;
+
+			return b;
+		}
+
+		private ImageButton CreateMoveDownButton()
+		{
+			var b = new ImageButton();
+			b.ID = ID + "_down_" + itemEditorIndex;
+			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.bullet_arrow_down.png");
+			b.ToolTip = "Move item down";
+			b.CommandArgument = itemEditorIndex.ToString();
+			b.Click += MoveItemDownClick;
+
+			return b;
 		}
 
 		private void DeleteItemClick(object sender, ImageClickEventArgs e)
 		{
-			ImageButton b = (ImageButton)sender;
+			var b = (ImageButton)sender;
 			b.Enabled = false;
 			b.CssClass += " disabled";
 
@@ -202,9 +235,43 @@ namespace N2.Web.UI.WebControls
 			ItemEditors[index].CssClass += " disabled";
 		}
 
+		private void MoveItemUpClick(object sender, ImageClickEventArgs e)
+		{
+			var b = (ImageButton)sender;
+
+			int index = int.Parse(b.CommandArgument);
+			var item = ItemEditors[index].CurrentItem;
+
+			var itemIndex = item.Parent.Children.IndexOf(item) - 1;
+
+			if(itemIndex < 0)
+				return;
+
+			N2.Context.Current.Resolve<ITreeSorter>().MoveTo(item, NodePosition.Before, item.Parent.Children[itemIndex]);
+
+			Context.Response.Redirect(Context.Request.Url.PathAndQuery);
+		}
+
+		private void MoveItemDownClick(object sender, ImageClickEventArgs e)
+		{
+			var b = (ImageButton)sender;
+
+			int index = int.Parse(b.CommandArgument);
+			var item = ItemEditors[index].CurrentItem;
+
+			var itemIndex = item.Parent.Children.IndexOf(item) + 1;
+
+			if (itemIndex == item.Parent.Children.Count)
+				return;
+
+			N2.Context.Current.Resolve<ITreeSorter>().MoveTo(item, NodePosition.After, item.Parent.Children[itemIndex]);
+
+			Context.Response.Redirect(Context.Request.Url.PathAndQuery);
+		}
+
 		private ItemEditor AddItemEditor(ContentItem item)
 		{
-			ItemEditor itemEditor = new ItemEditor();
+			var itemEditor = new ItemEditor();
 			itemEditor.ID = ID + "_ie_" + itemEditorIndex;
 			AddToContainer(itemEditorsContainer, itemEditor, item);
 			itemEditor.ZoneName = ZoneName;

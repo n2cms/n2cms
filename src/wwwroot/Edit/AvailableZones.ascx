@@ -13,6 +13,14 @@
 				<ItemTemplate>
 					<div class="edit">
 						<asp:HyperLink runat="server" Text="<%# GetEditDataItemText(Container.DataItem) %>" NavigateUrl="<%# GetEditDataItemUrl(Container.DataItem) %>" />
+						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>" 
+							Enabled="<%#CanMoveItemDown(Container.DataItem) %>"
+							CssClass="<%#MoveItemDownClass(Container.DataItem)%>"
+							ImageUrl="~/Edit/img/Ico/bullet_arrow_down.gif" OnClick="MoveItemDown"	/>
+						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>"
+							Enabled="<%#CanMoveItemUp(Container.DataItem) %>"
+							CssClass="<%#MoveItemUpClass(Container.DataItem)%>"
+							ImageUrl="~/Edit/img/Ico/bullet_arrow_up.gif" OnClick="MoveItemUp"/>
 					</div>
 				</ItemTemplate>
 				<FooterTemplate></dd></FooterTemplate>

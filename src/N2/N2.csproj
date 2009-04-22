@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -654,6 +654,8 @@
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Resources\bullet_arrow_down.png" />
+    <EmbeddedResource Include="Resources\bullet_arrow_up.png" />
     <EmbeddedResource Include="Resources\jquery-1.3.2.min.js" />
     <EmbeddedResource Include="Web\n2.multiplesites.xml" />
     <EmbeddedResource Include="Web\n2.notweb.xml" />

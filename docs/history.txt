@@ -1,4 +1,5 @@
-﻿- fixed #22143: SEO module keywords and title allowed string length are very short... 
+﻿- applied #22141: Sortable ItemEditorList and Sortable AvailableZoneList
+- fixed #22143: SEO module keywords and title allowed string length are very short... 
 - applied #22071: Minor bug in ContentProfileProvider
 - refactored n2 javascript context (to remove window.top dependency)
 - introduced ConventionTemplate for convention template location

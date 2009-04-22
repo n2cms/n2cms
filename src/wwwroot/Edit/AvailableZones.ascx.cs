@@ -37,13 +37,20 @@ namespace N2.Edit
             N2.Integrity.AvailableZoneAttribute a = (N2.Integrity.AvailableZoneAttribute)dataItem;
 
 			return N2.Context.Current.EditManager.GetSelectNewItemUrl(CurrentItem, a.ZoneName);
-        }
+		}
 
-        protected string GetEditDataItemText(object dataItem)
-        {
-            ContentItem item = (ContentItem)dataItem;
-            return string.Format("<img src='{0}'>{1}", N2.Web.Url.ToAbsolute(item.IconUrl), string.IsNullOrEmpty(item.Title) ? "(untitled)" : item.Title);
-        }
+		protected int GetEditDataItemID(object dataItem)
+		{
+			ContentItem item = (ContentItem)dataItem;
+			return item.ID;
+		}
+
+		protected string GetEditDataItemText(object dataItem)
+		{
+			ContentItem item = (ContentItem)dataItem;
+			return string.Format("<img src='{0}'>{1}", N2.Web.Url.ToAbsolute(item.IconUrl), string.IsNullOrEmpty(item.Title) ? "(untitled)" : item.Title);
+		}
+
         protected string GetEditDataItemUrl(object dataItem)
         {
             return N2.Context.Current.EditManager.GetEditExistingItemUrl((ContentItem)dataItem);
@@ -58,6 +65,70 @@ namespace N2.Edit
 		protected string GetZoneString(string key)
 		{
 			return Utility.GetGlobalResourceString("Zones", key);
+		}
+
+		protected bool CanMoveItemUp(object dataItem)
+		{
+			var item = (ContentItem)dataItem;
+
+			return CurrentItem.GetChildren(item.ZoneName).IndexOf(item) > 0;
+		}
+
+		protected string MoveItemUpClass(object dataItem)
+		{
+			return CanMoveItemUp(dataItem) ? "" : "disabled";
+		}
+
+		protected bool CanMoveItemDown(object dataItem)
+		{
+			var item = (ContentItem)dataItem;
+
+			var siblings = CurrentItem.GetChildren(item.ZoneName);
+
+			return siblings.IndexOf(item) < siblings.Count - 1;
+		}
+
+		protected string MoveItemDownClass(object dataItem)
+		{
+			return CanMoveItemDown(dataItem) ? "" : "disabled";
+		}
+
+		protected void MoveItemUp(object sender, EventArgs e)
+		{
+			var image = (ImageButton)sender;
+
+			var id = Int32.Parse(image.CommandArgument);
+
+			var item = N2.Context.Current.Persister.Get(id);
+			var siblings = CurrentItem.GetChildren(item.ZoneName);
+			var itemIndex = siblings.IndexOf(item);
+
+			if(itemIndex == 0)
+				return;
+
+			ContentItem previousItem = siblings[itemIndex - 1];
+
+			N2.Context.Current.Resolve<ITreeSorter>().MoveTo(item, NodePosition.Before, previousItem);
+			Response.Redirect(Request.Url.PathAndQuery);
+		}
+
+		protected void MoveItemDown(object sender, EventArgs e)
+		{
+			var image = (ImageButton)sender;
+
+			var id = Int32.Parse(image.CommandArgument);
+
+			var item = N2.Context.Current.Persister.Get(id);
+			var siblings = CurrentItem.GetChildren(item.ZoneName);
+			var itemIndex = siblings.IndexOf(item);
+
+			if (itemIndex >= siblings.Count - 1)
+				return;
+
+			ContentItem nextItem = siblings[itemIndex + 1];
+
+			N2.Context.Current.Resolve<ITreeSorter>().MoveTo(item, NodePosition.After, nextItem);
+			Response.Redirect(Request.Url.PathAndQuery);
 		}
     }
 }

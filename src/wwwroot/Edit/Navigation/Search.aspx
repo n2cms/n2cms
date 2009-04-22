@@ -23,7 +23,7 @@
                         <asp:TemplateColumn HeaderText="Title" meta:resourceKey="colTitle" >
                             <ItemTemplate>
                                 <asp:HyperLink ID="hlShow" runat="server" Target="preview" rel='<%# Eval("Path") %>' NavigateUrl='<%# ((N2.INode)Container.DataItem).PreviewUrl %>'>
-                                    <img src="<%# Eval("IconUrl") %>" />
+                                    <asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
                                     <%# Eval("Title")%>
                                 </asp:HyperLink>
                             </ItemTemplate>
