@@ -54,9 +54,9 @@ namespace N2.Templates.Services
                     TabContainerAttribute seoTab = new TabContainerAttribute("seo", SeoTabTitle, 30);
                     definition.Add(seoTab);
 
-                    AddEditableText(definition, TitleTitle, TitleAndMetaTagApplyer.HeadTitle, 151, 50);
-                    AddEditableText(definition, MetaKeywordsTitle, TitleAndMetaTagApplyer.MetaKeywords, 152, 50);
-                    AddEditableText(definition, MetaDescriptionTitle, TitleAndMetaTagApplyer.MetaDescription, 153, 250);
+                    AddEditableText(definition, TitleTitle, TitleAndMetaTagApplyer.HeadTitle, 151, 200);
+                    AddEditableText(definition, MetaKeywordsTitle, TitleAndMetaTagApplyer.MetaKeywords, 152, 400);
+                    AddEditableText(definition, MetaDescriptionTitle, TitleAndMetaTagApplyer.MetaDescription, 153, 1000);
                 }
             }
         }
