@@ -36,7 +36,11 @@ namespace N2.Web.UI.WebControls
 		public string ZoneName
 		{
 			get { return (string)ViewState["ZoneName"] ?? ""; }
-			set { ViewState["ZoneName"] = value; }
+			set 
+			{ 
+				ViewState["ZoneName"] = value;
+				OnZoneNameChanged();
+			}
 		}
 
 		/// <summary>Gets or sets an enumeration of filters applied to the items.</summary>
@@ -88,6 +92,16 @@ namespace N2.Web.UI.WebControls
 			EnsureChildControls();
 
 			base.OnInit(e);
+		}
+
+		protected virtual void OnZoneNameChanged()
+		{
+			if(ChildControlsCreated)
+			{
+				ChildControlsCreated = false;
+				DataSource = null;
+				EnsureChildControls();
+			}
 		}
 
 		protected virtual void RegisterZone()

@@ -22,4 +22,31 @@ namespace N2.Addons.UITests.Items
 			base.RewriteRequest();
 		}
 	}
+
+	[Controls(typeof(AdaptiveItemPage))]
+	public class AdaptiveZoneAdapter : N2.Web.Parts.PartsAdapter
+	{
+		public override N2.Collections.ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
+		{
+			var items = base.GetItemsInZone(parentItem, zoneName);
+
+			if (zoneName == "AutoZone1")
+			{
+				items.Add(new UITestItemItem());
+			}
+			if (zoneName == "AutoZone2")
+			{
+				items.Add(new UITestItemItem());
+				items.Add(new UITestItemItem());
+			}
+			if (zoneName == "AutoZone3")
+			{
+				items.Add(new UITestItemItem());
+				items.Add(new UITestItemItem());
+				items.Add(new UITestItemItem());
+			}
+
+			return items;
+		}
+	}
 }

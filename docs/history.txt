@@ -1,4 +1,5 @@
-﻿- fixed #21941: Calendar issue...
+﻿- fixed #22070:Set DropableZone.Path property at runtime
+- fixed #21941: Calendar issue...
 - introduced the editable date attribute
 - applied dgelbaum's #22068: DatePicker Bug
 - removed deprecated js files from edit (#22089)
