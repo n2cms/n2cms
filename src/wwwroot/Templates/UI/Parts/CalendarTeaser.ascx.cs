@@ -38,8 +38,7 @@ namespace N2.Templates.UI.Parts
 
                 Url url = CurrentItem.Container.Url;
             	url = url.AppendQuery("date", date);
-				if (events.Count > 1)
-					url = url.AppendQuery("filter", "true");
+				url = url.AppendQuery("filter", "true");
                 Response.Redirect(url);
             }
         }

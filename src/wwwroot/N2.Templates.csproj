@@ -916,6 +916,10 @@
     <Content Include="Templates\UI\Views\Start.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Templates\UI\Views\App_LocalResources\CalendarList.aspx.resx">
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="Properties\" />
   </ItemGroup>
