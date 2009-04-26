@@ -103,7 +103,6 @@ namespace N2.Details
 
 		/// <summary>Initializes a new instance of the AbstractEditableAttribute.</summary>
 		/// <param name="title">The label displayed to editors</param>
-		/// <param name="name">The name used for equality comparison and reference.</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public AbstractEditableAttribute(string title, int sortOrder)
 		{
@@ -139,6 +138,9 @@ namespace N2.Details
 		/// <returns>True if the item was changed (and needs to be saved).</returns>
 		public abstract bool UpdateItem(ContentItem item, Control editor);
 
+		/// <summary>Updates the editor with data from the item.</summary>
+		/// <param name="item">The content item containing the values to bind to the editor.</param>
+		/// <param name="editor">The editor to be bound with data from the item.</param>
 		public abstract void UpdateEditor(ContentItem item, Control editor);
 
 		/// <summary>Gets or sets the name of the detail (property) on the content item's object.</summary>
@@ -411,3 +413,4 @@ namespace N2.Details
 		protected abstract Control AddEditor(Control container);
 	}
 }
+

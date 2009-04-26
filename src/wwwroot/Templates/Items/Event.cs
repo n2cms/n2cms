@@ -17,7 +17,7 @@ namespace N2.Templates.Items
             Visible = false;
         }
 
-        [Editable("Event date", typeof(N2.Web.UI.WebControls.DatePicker), "SelectedDate", 22, ContainerName = Tabs.Content)]
+        [EditableDate("Event date", 22, ContainerName = Tabs.Content)]
         public virtual DateTime? EventDate
         {
             get { return (DateTime?)GetDetail("EventDate"); }

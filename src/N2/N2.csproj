@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -323,6 +323,7 @@
     <Compile Include="Definitions\DisableAttribute.cs" />
     <Compile Include="Definitions\ISortableRefiner.cs" />
     <Compile Include="Definitions\RefineOrder.cs" />
+    <Compile Include="Details\EditableDateAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />

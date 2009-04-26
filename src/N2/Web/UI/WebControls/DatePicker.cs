@@ -10,19 +10,19 @@ using System.Text.RegularExpressions;
 namespace N2.Web.UI.WebControls
 {
 	[ValidationProperty("SelectedDate")]
-	public class DatePicker : Control, IEditableTextControl
+	public class DatePicker : Control, IEditableTextControl, INamingContainer
 	{
 		TextBox datePicker = new TextBox();
 		TextBox timePicker = new TextBox();
 
 		protected override void CreateChildControls()
 		{
-			DatePickerBox.ID = ID + "_date";
+			DatePickerBox.ID = "date";
 			Controls.Add(DatePickerBox);
 			DatePickerBox.CssClass = "datePicker";
 			DatePickerBox.TextChanged += OnTextChanged;
 
-			DatePickerBox.ID = ID + "_time";
+			TimePickerBox.ID = "time";
 			Controls.Add(TimePickerBox);
 			TimePickerBox.CssClass = "timePicker";
 			TimePickerBox.TextChanged += OnTextChanged;

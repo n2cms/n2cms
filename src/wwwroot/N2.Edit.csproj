@@ -1284,7 +1284,6 @@
     <Content Include="Edit\img\tabs_base.gif" />
     <Content Include="Edit\img\tabs_begin.gif" />
     <Content Include="Edit\img\tab_end.gif" />
-    <Content Include="Edit\Js\jquery.ui\jquery.autoscroll.js" />
     <Content Include="Edit\Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
     <Content Include="Edit\Js\parts.js" />
     <Content Include="Edit\Membership\Css\Membership.css" />

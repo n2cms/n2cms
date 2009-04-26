@@ -1,4 +1,6 @@
-﻿- removed deprecated js files from edit (#22089)
+﻿- introduced the editable date attribute
+- applied dgelbaum's #22068: DatePicker Bug
+- removed deprecated js files from edit (#22089)
 - applied smason's #21482: Issue creating ContentItems with non default public constructor
 - applied zokizlatanov's #22135: macedonian translation
 - applied #22141: Sortable ItemEditorList and Sortable AvailableZoneList
