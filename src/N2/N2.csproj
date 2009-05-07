@@ -330,6 +330,7 @@
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
     <Compile Include="Edit\EditableAdapter.cs" />
+    <Compile Include="Edit\IDocumentBaseSource.cs" />
     <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
     <Compile Include="Obsolete\EditableAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />

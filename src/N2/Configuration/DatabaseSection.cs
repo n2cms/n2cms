@@ -77,13 +77,15 @@ namespace N2.Configuration
         public NameValueConfigurationCollection HibernateProperties
         {
             get { return (NameValueConfigurationCollection)base["hibernateProperties"]; }
-        }
+			set { base["hibernateProperties"] = value; }
+		}
 
         /// <summary>NHibernate mappings added in addition to the hibernateMapping.</summary>
         [ConfigurationProperty("mappings")]
         public MappingCollection Mappings
         {
             get { return (MappingCollection)this["mappings"]; }
-        }
+			set { base["mappings"] = value; }
+		}
 	}
 }

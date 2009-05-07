@@ -1,8 +1,10 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Edit;
 using N2.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using N2.Web;
 
 namespace N2.Details
 {
@@ -70,5 +72,15 @@ namespace N2.Details
 			rfv.EnableClientScript = false;
 			return rfv;
 		}
+
+        public override void UpdateEditor(ContentItem item, Control editor)
+        {
+            base.UpdateEditor(item, editor);
+
+            FreeTextArea fta = (FreeTextArea)editor;
+
+			if (item is IDocumentBaseSource)
+				fta.DocumentBaseUrl = (item as IDocumentBaseSource).BaseUrl;
+        }
 	}
 }
