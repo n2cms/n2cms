@@ -44,6 +44,7 @@ namespace N2.Security
         string[] adminRoles = new string[] { "Administrators" };
 		
 		/// <summary>Creates a new instance of the security manager.</summary>
+		[Obsolete("Don't use", true)]
 		public SecurityManager(Web.IWebContext webContext)
 		{
 			this.webContext = webContext;

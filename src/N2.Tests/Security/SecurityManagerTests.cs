@@ -4,6 +4,7 @@ using System.Text;
 using System.Security.Principal;
 
 using N2;
+using N2.Configuration;
 using NUnit.Framework;
 using N2.Security;
 using Rhino.Mocks;
@@ -36,7 +37,7 @@ namespace N2.Tests.Security
 			parser = mocks.StrictMock<N2.Web.IUrlParser>();
 			context = CreateWebContext(false);
 
-			security = new SecurityManager(context);
+			security = new SecurityManager(context, new EditSection());
 			SecurityEnforcer enforcer = new SecurityEnforcer(persister, security, parser, context);
 			enforcer.Start();
 		}

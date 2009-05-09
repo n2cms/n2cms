@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web;
+using N2.Engine;
 using N2.Security;
 
 namespace N2.Collections
@@ -10,6 +11,17 @@ namespace N2.Collections
 	/// </summary>
 	public class AccessFilter : ItemFilter
     {
+		/// <summary>Used to decouple from HttpContext during testing.</summary>
+		public static Function<IPrincipal> CurrentUser = delegate
+		{
+			return HttpContext.Current != null ? HttpContext.Current.User : null;
+		};
+		/// <summary>Used to decouple from N2.Context.Current during testing.</summary>
+		public static Function<ISecurityManager> CurrentSecurityManager = delegate
+		{
+			return Context.Current.SecurityManager;
+		};
+
         private IPrincipal user;
         private ISecurityManager securityManager;
 
@@ -17,7 +29,7 @@ namespace N2.Collections
 		/// Initializes a new instance of the <see cref="AccessFilter"/> class.
 		/// </summary>
 		public AccessFilter()
-			: this(HttpContext.Current != null ? HttpContext.Current.User : null, Context.SecurityManager)
+			: this(CurrentUser(), CurrentSecurityManager())
 		{
 		}
 

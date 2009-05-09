@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using N2.Configuration;
 using NUnit.Framework;
 using N2.Collections;
 using System.Security.Principal;
@@ -21,7 +22,7 @@ namespace N2.Tests.Collections
 			base.SetUp();
 
 			persister = mocks.DynamicMock<N2.Persistence.IPersister>();
-			security = new SecurityManager(base.CreateWebContext(true));
+			security = new SecurityManager(base.CreateWebContext(true), new EditSection());
 		}
 
 		[Test]

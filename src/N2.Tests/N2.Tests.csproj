@@ -195,6 +195,7 @@
     <Compile Include="Fakes\FakeEngine.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Fakes\FakeRequestLifeCycleHandler.cs" />
+    <Compile Include="Fakes\FakeSecurityManager.cs" />
     <Compile Include="Fakes\FakeSessionProvider.cs" />
     <Compile Include="Fakes\FakeTypeFinder.cs" />
     <Compile Include="Fakes\StaticContextAccessor.cs" />

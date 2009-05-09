@@ -84,7 +84,7 @@ namespace N2.Engine.MediumTrust
 			if (hostConfiguration.Web.Urls.EnableCaching)
 				urlParser = new CachingUrlParserDecorator(urlParser, persister);
             
-            securityManager = AddComponentInstance<ISecurityManager>(new SecurityManager(webContext));
+            securityManager = AddComponentInstance<ISecurityManager>(new SecurityManager(webContext, editConfiguration));
             ISecurityEnforcer securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
             IVersionManager versioner = AddComponentInstance<IVersionManager>(new VersionManager(itemRepository, finder));
 			N2.Edit.Settings.NavigationSettings settings = AddComponentInstance<N2.Edit.Settings.NavigationSettings>(new N2.Edit.Settings.NavigationSettings(webContext));

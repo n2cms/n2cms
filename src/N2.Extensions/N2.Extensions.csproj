@@ -72,6 +72,7 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Extensions\FilterExtensions.cs" />
     <Compile Include="Extensions\TrashExtensions.cs" />
     <Compile Include="Linq\ContentContext.cs" />
     <Compile Include="Linq\EngineExtensions.cs" />
