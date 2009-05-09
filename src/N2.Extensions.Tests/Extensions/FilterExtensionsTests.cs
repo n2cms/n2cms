@@ -37,6 +37,16 @@ namespace N2.Extensions.Tests.Extensions
 		}
 
 		[Test]
+		public void IgnoresNull()
+		{
+			MyItem item = null;
+
+			var filteredItem = item.FilterByAccess();
+
+			Assert.That(filteredItem, Is.Null);
+		}
+
+		[Test]
 		public void Filters_UnaccessibleItem()
 		{
 			var item = CreateOneItem<MyItem>(3, "item", root);
