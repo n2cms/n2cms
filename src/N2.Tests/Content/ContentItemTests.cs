@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace N2.Tests.Content
 {
@@ -365,13 +366,40 @@ namespace N2.Tests.Content
 		}
 
 		[Test]
-		public void CanCloneItemWithDetail()
+		[TestCase("TheValue")]
+		[TestCase(456)]
+		[TestCase(456.567)]
+		[TestCase(true)]
+		[TestCase(false)]
+		public void CanClone_Item_WithDetail(object value)
 		{
 			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
-			root["TheDetail"] = "TheValue";
+			root["TheDetail"] = value;
 			ContentItem clonedRoot = root.Clone(false);
 
-			Assert.AreEqual("TheValue", clonedRoot["TheDetail"]);
+			Assert.AreEqual(value, clonedRoot["TheDetail"], "The value " + value + " was not intact on the cloned item.");
+		}
+
+		[Test]
+		public void CanClone_Item_WithDateTimeDetail()
+		{
+			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
+			root["TheDetail"] = new DateTime(2009, 05, 09);
+			ContentItem clonedRoot = root.Clone(false);
+
+			Assert.AreEqual(new DateTime(2009, 05, 09), clonedRoot["TheDetail"]);
+		}
+
+		[Test]
+		public void CanClone_Item_WithObjectDetail()
+		{
+			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
+			X originalValue = new X { Number = 123};
+			root["TheDetail"] = originalValue;
+			ContentItem clonedRoot = root.Clone(false);
+
+			X clonedValue = (X) clonedRoot["TheDetail"];
+			Assert.AreEqual(clonedValue.Number, originalValue.Number);
 		}
 
 		[Test]
@@ -448,6 +476,12 @@ namespace N2.Tests.Content
 
 			ContentItem child4 = CreateOneItem<AnItem>(0, "child4", root);
 			Assert.That(root.Children[3], Is.EqualTo(child4), "Should be last since treshold is not met");
+		}
+
+		[Serializable]
+		private class X
+		{
+			public int Number { get; set; }
 		}
 	}
 }

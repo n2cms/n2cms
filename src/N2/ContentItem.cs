@@ -29,6 +29,7 @@ using System.Text;
 using N2.Details;
 using N2.Collections;
 using N2.Engine;
+using System.Web;
 
 namespace N2
 {
@@ -46,7 +47,7 @@ namespace N2
 	/// [Template("~/Path/To/My/Template.aspx")]
     /// public class MyPage : N2.ContentItem
     /// {
-    /// }
+    ///		}
     /// </example>
     /// <remarks>
     /// Note that the class name (e.g. MyPage) is used as discriminator when
@@ -58,7 +59,7 @@ namespace N2
 	[DynamicTemplate]
 	[RestrictParents(typeof(ContentItem))]
 	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, INode
-	{
+    {
         #region Private Fields
         [Persistence.DoNotCopy]
 		private int id;
@@ -269,7 +270,7 @@ namespace N2
         {
             get { return "~/default.aspx"; }
         }
-
+		
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
 		public virtual string IconUrl
         {
@@ -488,7 +489,7 @@ namespace N2
 				return GetTemplate(string.Empty);
 
 			int slashIndex = remainingUrl.IndexOf('/');
-			string nameSegment = slashIndex < 0 ? remainingUrl : remainingUrl.Substring(0, slashIndex);
+			string nameSegment = HttpUtility.UrlDecode(slashIndex < 0 ? remainingUrl : remainingUrl.Substring(0, slashIndex));
 			foreach (ContentItem child in GetChildren(new NullFilter()))
 			{
 				if (child.Equals(nameSegment))
@@ -534,7 +535,7 @@ namespace N2
 			}
 			if (slashIndex > 0) // contains a slash further down
 			{
-				string nameSegment = childName.Substring(0, slashIndex);
+				string nameSegment = HttpUtility.UrlDecode(childName.Substring(0, slashIndex));
 				foreach (ContentItem child in GetChildren(new NullFilter()))
 				{
 					if (child.Equals(nameSegment))
@@ -687,7 +688,13 @@ namespace N2
 			cloned.details = new Dictionary<string, ContentDetail>();
 			foreach (Details.ContentDetail detail in Details.Values)
 			{
-				cloned[detail.Name] = detail.Value;
+				if(cloned.details.ContainsKey(detail.Name)) {
+					cloned.details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
+				} else {
+					ContentDetail clonedDetail = detail.Clone();
+					clonedDetail.EnclosingItem = cloned;
+					cloned.details[detail.Name] = clonedDetail;
+				}
 			}
 
 			cloned.detailCollections = new Dictionary<string, DetailCollection>();
@@ -722,7 +729,7 @@ namespace N2
 				string path = "/";
 				for (ContentItem item = this; item.Parent != null; item = item.Parent)
 				{
-					path = "/" + item.Name + path;
+					path = "/" + HttpUtility.UrlEncode(item.Name) + path;
 				}
 				return path;
 			}
@@ -809,7 +816,7 @@ namespace N2
 			if (this == obj) return true;
 			ContentItem other = obj as ContentItem;
 			return other != null && id != 0 && id == other.id;
-		}
+    }
 
 		int? hashCode;
 		/// <summary>Gets a hash code based on the ID.</summary>
@@ -819,7 +826,7 @@ namespace N2
 			if (!hashCode.HasValue)
 				hashCode = (id > 0 ? id.GetHashCode() : base.GetHashCode());
 			return hashCode.Value;
-		}
+}
 
 		/// <summary>Returns this item's name.</summary>
 		/// <returns>The item's name.</returns>
