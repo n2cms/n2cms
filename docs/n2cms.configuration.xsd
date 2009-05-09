@@ -187,6 +187,7 @@
 									<xs:enumeration value="Firebird"/>
 									<xs:enumeration value="Generic"/>
 									<xs:enumeration value="Jet"/>
+									<xs:enumeration value="DB2"/>
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>

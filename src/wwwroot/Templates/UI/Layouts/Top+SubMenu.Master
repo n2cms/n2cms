@@ -52,7 +52,10 @@
                                 <n2:EditableDisplay ID="dim" PropertyName="Image" SwallowExceptions="true" runat="server" />
                                 <asp:ContentPlaceHolder ID="TextContent" runat="server">
                                     <n2:EditableDisplay ID="dti" PropertyName="Title" SwallowExceptions="true" runat="server" />
-                                    <n2:EditableDisplay ID="dte" PropertyName="Text" SwallowExceptions="true" runat="server" />
+                                    <n2:EditableDisplay ID="dte" PropertyName="Text" SwallowExceptions="true" runat="server">
+										<HeaderTemplate><div id="textContent"></HeaderTemplate>
+										<FooterTemplate></div></FooterTemplate>
+                                    </n2:EditableDisplay>
                                 </asp:ContentPlaceHolder>
                             </asp:ContentPlaceHolder>
                             <asp:ContentPlaceHolder ID="PostContent" runat="server">

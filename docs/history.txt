@@ -1,4 +1,5 @@
-﻿- components added to medium trust engine are created lazily
+﻿- added relative-positioned div around text in templates
+- components added to medium trust engine are created lazily
 - test speedup and cleanup
 - added DB2 database flavor
 - introduced IDocumentBaseSource

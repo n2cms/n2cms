@@ -1,3 +1,4 @@
+- autodecect flavor
 - restrict children
 - filter plugins
 - edit tree aspect controller

@@ -14,3 +14,5 @@ a img { border:none; vertical-align:middle; }
 .inputForm .tb { width:240px; }
 
 .commentInput .box { display:none; }
+
+#textContent { position:relative; }
