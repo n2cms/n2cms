@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -5,6 +6,7 @@ using N2.Details;
 
 namespace N2.Templates.Details
 {
+	[Obsolete("Use N2.Details.EditableDropDownAttribute instead.")]
 	public abstract class DropDownAttribute : AbstractEditableAttribute
 	{
 		public DropDownAttribute(string title, string name, int sortOrder)

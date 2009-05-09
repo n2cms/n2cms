@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
+using System.Web.UI.WebControls;
 
 namespace N2.Details
 {
 	/// <summary>
 	/// Defines an editable date/time picker control for a content item.
 	/// </summary>
-	public class EditableDateAttribute : AbstractEditableAttribute
+	public class EditableDateAttribute : AbstractEditableAttribute, IDisplayable
 	{
 		bool showDate = true;
 		bool showTime = true;
@@ -57,5 +58,22 @@ namespace N2.Details
 			container.Controls.Add(picker);
 			return picker;
 		}
+
+		#region IDisplayable Members
+
+		Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
+		{
+			DateTime? date = item[Name] as DateTime?;
+			if(date.HasValue)
+			{
+				Literal l = new Literal();
+				l.Text = date.Value.ToString();
+				container.Controls.Add(l);
+				return l;
+			}
+			return null;
+		}
+
+		#endregion
 	}
 }

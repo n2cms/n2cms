@@ -11,7 +11,7 @@ namespace N2.Details
 	/// Override and implement GetListItems to use.
 	/// Implement a CreateEditor() method to instantiate a desired editor control.
 	/// </summary>
-	public abstract class EditableListControlAttribute : AbstractEditableAttribute
+	public abstract class EditableListControlAttribute : AbstractEditableAttribute, IDisplayable
 	{
 		public EditableListControlAttribute(): base() { }
 
@@ -71,5 +71,28 @@ namespace N2.Details
 		}
 
 		protected abstract ListItem[] GetListItems();
+		#region IDisplayable Members
+
+		Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
+		{
+			string value = item[Name] as string;
+			if (!string.IsNullOrEmpty(value))
+			{
+				foreach (ListItem li in GetListItems())
+				{
+					if (li.Value == value)
+					{
+						Literal l = new Literal();
+						l.Text = li.Text;
+						container.Controls.Add(l);
+						return l;
+					}
+				}
+			}
+			return null;
+		}
+
+		#endregion
+
 	}
 }

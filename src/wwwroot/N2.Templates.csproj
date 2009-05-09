@@ -597,9 +597,6 @@
     <Content Include="App_Themes\Stripes\sidebar_bg.gif" />
     <Content Include="App_Themes\Stripes\Style.css" />
     <Content Include="App_Themes\Stripes\top_bg.png" />
-    <Content Include="Upload\lav.jpg" />
-    <Content Include="Upload\skal.jpg" />
-    <Content Include="Upload\thorn.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\KhakiTabs\MenuDimmed.gif" />
@@ -706,7 +703,6 @@
     <Content Include="App_Themes\n2cms\Style.css" />
     <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
     <Content Include="favicon.ico" />
-    <Content Include="Upload\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\genericmozilla5.browser" />
@@ -866,7 +862,6 @@
     <Content Include="Templates\Secured\Go.aspx" />
     <Content Include="Templates\Secured\Root.aspx" />
     <Content Include="Templates\UI\Views\Form.aspx" />
-    <Content Include="Upload\lime.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\UI\Img\comment.png" />
@@ -925,6 +920,7 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="Properties\" />
+    <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

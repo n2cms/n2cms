@@ -2,30 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Hosting;
-using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Details;
 
 namespace N2.Templates.Details
 {
 	[AttributeUsage(AttributeTargets.Property)]
-	public class ThemeSelectorAttribute : DropDownAttribute
+	public class ThemeSelectorAttribute : EditableDropDownAttribute
 	{
 		public ThemeSelectorAttribute(string title, int sortOrder)
-			:base(title, null, sortOrder)
+			:base(title, sortOrder)
 		{
 		}
 
-		protected override IEnumerable<ListItem> GetListItems(Control container)
+		protected override ListItem[] GetListItems()
 		{
+			List<ListItem> items = new List<ListItem>();
+			items.Add(new ListItem());
+
 			string path = HostingEnvironment.MapPath("~/App_Themes/");
 
-			yield return new ListItem();
 			foreach(string directoryPath in Directory.GetDirectories(path))
 			{
 				string directoryName = Path.GetFileName(directoryPath);
-				if(!directoryName.StartsWith("."))
-					yield return new ListItem(directoryName);
+				if (!directoryName.StartsWith(".") && !directoryName.StartsWith("_"))
+					items.Add(new ListItem(directoryName));
 			}
+
+			return items.ToArray();
 		}
 	}
 }
