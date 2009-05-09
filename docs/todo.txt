@@ -1,3 +1,4 @@
+- introduce IStartPage and move some logic to the content items
 - autodecect flavor
 - restrict children
 - filter plugins

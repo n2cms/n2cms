@@ -1,4 +1,5 @@
-﻿- applied esteewhy's #22318: ContentItem.CloneDetails tries to access CLR properties by ContentDetail.Name
+﻿- copied esteewhy's IsRecycled extension method
+- applied esteewhy's #22318: ContentItem.CloneDetails tries to access CLR properties by ContentDetail.Name
 - added displayable to editable drop downs and dates (obsoleted n2.templates.details.dropdownattribute)
 - updated tiny mce to 3.2.3.1
 - no text in editable (free) text no longer adds literal to the control tree
