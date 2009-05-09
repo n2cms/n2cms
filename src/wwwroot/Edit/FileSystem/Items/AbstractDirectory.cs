@@ -35,15 +35,6 @@ namespace N2.Edit.FileSystem.Items
 					directories.Add(CreateDirectory(dir));
 				}
             	return directories;
-				//DirectoryInfo currentDirectory = new DirectoryInfo(PhysicalPath);
-				//DirectoryInfo[] subDirectories = currentDirectory.GetDirectories();
-				//List<Directory> directories = new List<Directory>(subDirectories.Length);
-				//foreach (DirectoryInfo subDirectory in subDirectories)
-				//{
-				//    if ((subDirectory.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
-				//        directories.Add(CreateDirectory(subDirectory));
-				//}
-				//return directories;
             }
             catch (DirectoryNotFoundException ex)
             {

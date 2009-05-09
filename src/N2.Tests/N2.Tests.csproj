@@ -327,7 +327,6 @@
     <None Include="Engine\MultipleSites.exe.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="test.castle.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2.Security\N2.Security.csproj">

@@ -9,26 +9,22 @@ using N2.Engine;
 using Directory=N2.Edit.FileSystem.Items.Directory;
 using File=N2.Edit.FileSystem.Items.File;
 using System.IO;
+using System.Diagnostics;
+using N2.Tests.Persistence;
 
 namespace N2.Edit.Tests.FileSystem
 {
     [TestFixture]
-    public class FileSystemTests : ItemPersistenceMockingBase
+    public class FileSystemTests : DatabasePreparingBase
     {
         RootNode root;
         RootDirectory upload;
-        Engine.IEngine engine;
-
+        
         [TestFixtureSetUp]
-        public void TestFixtureSetUp()
+        public override void TestFixtureSetUp()
         {
-            N2.Context.Initialize(engine = new ContentEngine());
-			engine.Initialize();
-
-            root = engine.Definitions.CreateInstance<RootNode>(null);
-            engine.Persister.Save(root);
-            engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;
-            engine.Resolve<IHost>().DefaultSite.StartPageID = root.ID;
+			base.TestFixtureSetUp();
+        	N2.Context.Initialize(engine);
 
             Url.DefaultExtension = "/";
         	Url.ApplicationPath = "/";
@@ -47,9 +43,16 @@ namespace N2.Edit.Tests.FileSystem
         public override void SetUp()
         {
             base.SetUp();
-        	upload = engine.Definitions.CreateInstance<RootDirectory>(root);
+
+			root = engine.Definitions.CreateInstance<RootNode>(null);
+			engine.Persister.Save(root);
+			engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;
+			engine.Resolve<IHost>().DefaultSite.StartPageID = root.ID;
+
+			upload = engine.Definitions.CreateInstance<RootDirectory>(root);
             upload.Title = "Upload";
             upload.Name = "Upload";
+			engine.Persister.Save(upload);
         }
 
         [Test]
@@ -212,37 +215,41 @@ namespace N2.Edit.Tests.FileSystem
         [Test]
         public void CanMoveFile()
         {
-            Move(delegate(File from, Directory to)
-            {
-                from.MoveTo(to);
-            });
+            AssertMovement((from, to) => from.MoveTo(to));
         }
 
         [Test]
         public void CanMoveFile_UsingPersister()
         {
-            Move(delegate(File from, Directory to)
-            {
-                engine.Persister.Move(from, to);
-            });
+            AssertMovement((from, to) => engine.Persister.Move(from, to));
         }
 
-        private void Move(N2.Engine.Action<File, Directory> moveAction)
+        private void AssertMovement(N2.Engine.Action<File, Directory> moveAction)
         {
-			Directory d1 = (Directory)upload.GetChild("Folder1");
-			Directory d2 = (Directory)upload.GetChild("Folder 2");
-			File f = (File)d1.GetChild("File1.txt");
+			Directory sourceDirectory = (Directory)upload.GetChild("Folder1");
+			Directory destinationDirectory = (Directory)upload.GetChild("Folder 2");
+			File f = (File)sourceDirectory.GetChild("File1.txt");
             try
             {
-                moveAction(f, d2);
-				Assert.That(d1.GetChild("File1.txt"), Is.Null);
-                Assert.That(f.Parent, Is.EqualTo(d2));
-				Assert.That(d2.GetChild("File1.txt"), Is.Not.Null);
+                moveAction(f, destinationDirectory);
+				Assert.That(sourceDirectory.GetChild("File1.txt"), Is.Null);
+                Assert.That(f.Parent, Is.EqualTo(destinationDirectory));
+				Assert.That(destinationDirectory.GetChild("File1.txt"), Is.Not.Null);
             }
+			catch(Exception ex)
+			{
+				Trace.WriteLine(ex.ToString());
+			}
             finally
             {
-                try { f.MoveTo(d1); }
-                catch { }
+            	try
+            	{
+					f.MoveTo(sourceDirectory);
+				}
+            	catch (Exception ex)
+            	{
+					Trace.WriteLine(ex.ToString());
+            	}
             }
         }
 
@@ -260,7 +267,7 @@ namespace N2.Edit.Tests.FileSystem
         {
             CopyAndDelete(delegate(File from, Directory to)
             {
-                return persister.Copy(from, to);
+                return engine.Persister.Copy(from, to);
             });
         }
 

@@ -231,18 +231,30 @@ namespace N2.Engine.MediumTrust
 
 		public void AddComponent(string key, Type serviceType, Type classType)
 		{
+			foreach(Type t in classType.GetInterfaces())
+			{
+				if(t == typeof(IAutoStart))
+					container[serviceType] = CreateInstance(serviceType, classType, key);
+			}
+
 			Resolvers[serviceType] = delegate(Type type)
 				{
 					if (container.ContainsKey(serviceType))
 						return container[serviceType];
 
-					ConstructorInfo constructor = FindBestConstructor(classType);
-					object[] parameters = CreateConstructorParameters(constructor.GetParameters());
-					object componentInstance = constructor.Invoke(parameters);
-					AddComponentInstance(key, serviceType, componentInstance);
-					
+					object componentInstance = CreateInstance(serviceType, classType, key);
+					container[serviceType] = componentInstance;
 					return componentInstance;
 				};
+		}
+
+		object CreateInstance(Type serviceType, Type classType, string key)
+		{
+			ConstructorInfo constructor = FindBestConstructor(classType);
+			object[] parameters = CreateConstructorParameters(constructor.GetParameters());
+			object componentInstance = constructor.Invoke(parameters);
+			AddComponentInstance(key, serviceType, componentInstance);
+			return componentInstance;
 		}
 
 		public void AddFacility(string key, object facility)

@@ -1,4 +1,5 @@
 using System;
+using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using N2.Definitions;
 using N2.Persistence;
@@ -6,6 +7,7 @@ using N2.Web;
 using Rhino.Mocks;
 using N2.Engine.MediumTrust;
 using N2.Edit.Trash;
+using N2.Persistence.NH;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -97,12 +99,10 @@ namespace N2.Edit.Tests.Trash
         public void Throwing_IsIntercepted_InMediumTrust()
         {
             MediumTrustEngine engine = new MediumTrustEngine();
+			var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
+			schemaCreator.Execute(false, true, false, false, engine.Resolve<ISessionProvider>().OpenSession.Session.Connection, null);
 
             engine.Initialize();
-            using (engine.Persister)
-            {
-                engine.Resolve<N2.Installation.InstallationManager>().Install();
-            }
             engine.SecurityManager.Enabled = false;
 
             ContentItem root = new ThrowableItem();
