@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ExtensionTests.cs" />
     <Compile Include="Linq\LinqItem.cs" />
     <Compile Include="Linq\QueriableTests.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
