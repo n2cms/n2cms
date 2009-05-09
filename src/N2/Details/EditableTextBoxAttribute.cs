@@ -99,21 +99,19 @@ namespace N2.Details
 			set { defaultValue = value; }
 		}
 
-        ///// <summary>When set to false the content will be html encoded before beeing saved to database.</summary>
-        //public bool AllowHtml
-        //{
-        //    get { return allowHtml; }
-        //    set { allowHtml = value; }
-        //}
-
 	    #endregion
 
 		#region IDisplayable Members
 
 		Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
 		{
+			string text = item[detailName] as string;
+		
+			if(string.IsNullOrEmpty(text))
+				return null;
+
 			Literal l = new Literal();
-			l.Text = item[detailName] as string;
+			l.Text = text;
 			container.Controls.Add(l);
 			return l;
 		}

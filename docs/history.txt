@@ -1,4 +1,5 @@
-﻿- added relative-positioned div around text in templates
+﻿- no text in editable (free) text no longer adds literal to the control tree
+- added relative-positioned div around text in templates
 - components added to medium trust engine are created lazily
 - test speedup and cleanup
 - added DB2 database flavor
