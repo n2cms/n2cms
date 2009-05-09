@@ -65,10 +65,6 @@
 		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Targets="Clean" />
 	</Target>
 
-	<Target Name="Test" DependsOnTargets="Clean;Test-PrepareDependencies">
-		<Exec Command="$(LibFolder)\nunit-console-x86.exe $(SrcFolder)\N2.Tests\bin\N2.Tests.exe $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" />
-	</Target>
-
 	<Target Name="PrepareDependencies" DependsOnTargets="Core-PrepareDependencies;Test-PrepareDependencies;Examples-PrepareDependencies">
 	</Target>
 
@@ -76,6 +72,10 @@
 		<Message Text="Removing Deploy"/>
 
 		<RemoveDir Directories="$(DeployFolder)"/>
+	</Target>
+
+	<Target Name="Test" DependsOnTargets="Clean;Test-PrepareDependencies">
+		<Exec Command="$(LibFolder)\nunit-console-x86.exe $(SrcFolder)\N2.Tests\bin\N2.Tests.exe $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" />
 	</Target>
 
 	<Target Name="Test-PrepareDependencies" DependsOnTargets="Core-Build">
