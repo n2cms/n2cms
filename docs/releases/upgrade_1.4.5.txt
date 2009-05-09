@@ -10,3 +10,4 @@ Instructions:
 
 Breaking changes:
 - ContentItem.AddTo(Control) is removed, implement N2.Web.Parts.
+- Zone.AddedItemTemplate and Zone.GettingItemTemplate are obsoleted (but they may be back)
