@@ -202,14 +202,16 @@ namespace N2.Web.UI.WebControls
 			if (AddingChild != null)
 				AddingChild.Invoke(this, new ItemEventArgs(item));
 
-	    	PartsController.AddChildPart(item, container);
+	    	Control addedControl = PartsController.AddChildPart(item, container);
+
+			if (AddedItemTemplate != null)
+				AddedItemTemplate.Invoke(this, new ControlEventArgs(addedControl));
 		}
 
 		[Obsolete("The event is no longer invoked", true)]
 		public event EventHandler<TemplateUrlEventArgs> GettingItemTemplate;
-		[Obsolete("The event is no longer invoked", true)]
-		public event EventHandler<ControlEventArgs> AddedItemTemplate;
 
+		public event EventHandler<ControlEventArgs> AddedItemTemplate;
 		public event EventHandler<ItemEventArgs> AddingChild;
 		public event EventHandler<ItemListEventArgs> Selecting;
 		public event EventHandler<ItemListEventArgs> Selected;

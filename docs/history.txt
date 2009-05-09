@@ -1,4 +1,5 @@
-﻿- introduced filter extension methods for single item: item.FilterByAccess, item.FilterByNavigation
+﻿- de-obsoleted Zone.AddedItemTemplate event (but not Zone.GettingItemTemplate)
+- introduced filter extension methods for single item: item.FilterByAccess, item.FilterByNavigation
 - copied esteewhy's IsRecycled extension method
 - applied esteewhy's #22318: ContentItem.CloneDetails tries to access CLR properties by ContentDetail.Name
 - added displayable to editable drop downs and dates (obsoleted n2.templates.details.dropdownattribute)
