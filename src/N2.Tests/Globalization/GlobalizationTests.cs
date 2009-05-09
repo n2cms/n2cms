@@ -38,9 +38,9 @@ namespace N2.Tests.Globalization
 		[TearDown]
 		public override void TearDown()
 		{
-			base.TearDown();
-
 			engine.Persister.Delete(root);
+
+			base.TearDown();
 		}
 
 		[Test]

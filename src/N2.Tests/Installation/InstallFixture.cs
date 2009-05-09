@@ -29,11 +29,5 @@ namespace N2.Tests.Installation
 						engine.Persister.Save(testItem);
 					});
 		}
-
-		[TestFixtureTearDown]
-		public virtual void TestFixtureTearDown()
-		{
-			CreateDatabaseSchema();
-		}
 	}
 }

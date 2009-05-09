@@ -12,22 +12,16 @@ namespace N2.Tests.Integrity
 		{
 			Definitions.StartPage root = CreateRoot();
 			ContentItem item = CreateItemBelow(root, typeof(Definitions.Page));
+
 			Assert.IsNotNull(item);
-			engine.Persister.Delete(root);
 		}
 
 		[Test, ExpectedException(typeof(N2.Definitions.NotAllowedParentException))]
 		public void UnAllowedItemBelowRoot()
 		{
 			Definitions.StartPage root = CreateRoot();
-			try
-			{
-				CreateItemBelow(root, typeof(Definitions.SubPage));
-			}
-			finally
-			{
-				engine.Persister.Delete(root);
-			}
+
+			CreateItemBelow(root, typeof(Definitions.SubPage));
 		}
 
 		[Test]
@@ -35,8 +29,8 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem root = CreateItemBelow(null, typeof(Definitions.AlternativeStartPage));
 			ContentItem item = CreateItemBelow(root, typeof(Definitions.Page));
+
 			Assert.IsNotNull(item);
-			engine.Persister.Delete(root);
 		}
 
 		[Test]
@@ -44,22 +38,15 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem root = CreateItemBelow(null, typeof(Definitions.AlternativeStartPage));
 			ContentItem item = CreateItemBelow(root, typeof(Definitions.AlternativePage));
+
 			Assert.IsNotNull(item);
-			engine.Persister.Delete(root);
 		}
 
 		[Test, ExpectedException(typeof(N2.Definitions.NotAllowedParentException))]
 		public void AllowedItemBelowSubClassOfRootNotAllowedBelowRootItem()
 		{
 			ContentItem root = CreateRoot();
-			try
-			{
-				CreateItemBelow(root, typeof(Definitions.AlternativePage));
-			}
-			finally
-			{
-				engine.Persister.Delete(root);
-			}
+			CreateItemBelow(root, typeof(Definitions.AlternativePage));
 		}
 
 		[Test]
@@ -89,8 +76,8 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem realRoot = CreateItemBelow(null, typeof(Definitions.Root));
 			ContentItem item = CreateItemBelow(realRoot, typeof(Definitions.StartPage));
+			
 			Assert.IsNotNull(item);
-			engine.Persister.Delete(realRoot);
 		}
 
 		[Test]
@@ -102,14 +89,15 @@ namespace N2.Tests.Integrity
 			{
 				CreateItemBelow(root, typeof(Definitions.StartPage));
 			});
-		
-			engine.Persister.Delete(root);
 		}
+
+
 
 		private Definitions.StartPage CreateRoot()
 		{
 			return (Definitions.StartPage)CreateItemBelow(null, typeof(Definitions.StartPage));
 		}
+
 		private ContentItem CreateItemBelow(ContentItem parent, Type itemType)
 		{
 			ContentItem item = engine.Definitions.CreateInstance(itemType, parent);

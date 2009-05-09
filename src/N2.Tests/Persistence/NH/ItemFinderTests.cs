@@ -23,11 +23,10 @@ namespace N2.Tests.Persistence.NH
 		ContentItem item2;
 		ContentItem item3;
 
-		[TestFixtureSetUp]
-		public override void TestFixtureSetUp()
+		[SetUp]
+		public override void SetUp()
 		{
-			base.TestFixtureSetUp();
-			base.CreateDatabaseSchema();
+			base.SetUp();
 
 			CreateRootItem();
 			SaveVersionAndUpdateRootItem();
@@ -41,88 +40,6 @@ namespace N2.Tests.Persistence.NH
 
 			ISessionProvider sessionProvider = engine.Resolve<ISessionProvider>();
 			finder = new ItemFinder(sessionProvider, engine.Definitions);
-		}
-
-		private ContentItem CreatePageBelowStartPage(int index)
-		{
-			ContentItem item;
-			item = CreateOneItem<PersistableItem2>(0, "item" + index, startPage);
-
-			N2.Details.DetailCollection details = item.GetDetailCollection("DetailCollection", true);
-			details.Add(true);
-			details.Add(index * 1000 + 555);
-			details.Add(index * 1000.0 + 555.55);
-			details.Add("string in a collection " + index);
-			details.Add(startPage);
-			details.Add(new DateTime(2009 + index, 1, 1));
-
-			engine.Persister.Save(item);
-			return item;
-		}
-
-		[SetUp]
-		public override void SetUp()
-		{
-			engine.Persister.Dispose();
-		}
-
-		private void CreateStartPage()
-		{
-			startPage = CreateOneItem<PersistableItem1>(0, "start page", rootItem);
-			startPage.ZoneName = "AZone";
-			startPage.SortOrder = 34;
-			startPage.Visible = true;
-			startPage["IntDetail"] = 45;
-			startPage["DoubleDetail"] = 56.66;
-			startPage["BoolDetail"] = true;
-			startPage["DateDetail"] = new DateTime(2000, 01, 01);
-			startPage["StringDetail"] = "actually another string";
-			startPage["StringDetail2"] = "just a string";
-			startPage["ObjectDetail"] = new string[] { "two", "three", "four" };
-			startPage["ItemDetail"] = rootItem;
-
-			engine.Persister.Save(startPage);
-		}
-
-		private void SaveVersionAndUpdateRootItem()
-		{
-			engine.Resolve<IVersionManager>().SaveVersion(rootItem);
-
-			rootItem.Created = DateTime.Today;
-			rootItem.Published = new DateTime(2007, 06, 03);
-			rootItem.Expires = new DateTime(2017, 06, 03);
-			rootItem.ZoneName = "TheZone";
-			rootItem.SortOrder = 23;
-			rootItem.Visible = false;
-			rootItem["IntDetail"] = 43;
-			rootItem["DoubleDetail"] = 43.33;
-			rootItem["BoolDetail"] = false;
-			rootItem["DateDetail"] = new DateTime(1999, 12, 31);
-			rootItem["StringDetail"] = "just a string";
-			rootItem["StringDetail2"] = "just another string";
-			rootItem["ObjectDetail"] = new string[] { "one", "two", "three" };
-
-			engine.Persister.Save(rootItem);
-		}
-
-		private void CreateRootItem()
-		{
-			rootItem = CreateOneItem<PersistableItem1>(0, "root", null);
-			rootItem.Created = new DateTime(2007, 06, 01);
-			rootItem.Published = new DateTime(2007, 06, 02);
-			rootItem.Expires = new DateTime(2017, 06, 02);
-			rootItem.ZoneName = "ZaZone";
-			rootItem.SortOrder = 12;
-			rootItem.Visible = true;
-			rootItem["IntDetail"] = 32;
-			rootItem["DoubleDetail"] = 32.22;
-			rootItem["BoolDetail"] = true;
-			rootItem["DateDetail"] = new DateTime(1998, 12, 31);
-			rootItem["StringDetail"] = "a string in a version";
-			rootItem["StringDetail2"] = "just a string";
-			rootItem["ObjectDetail"] = new string[] { "zero", "one", "two" };
-
-			engine.Persister.Save(rootItem);
 		}
 		
 		#endregion
@@ -840,6 +757,84 @@ namespace N2.Tests.Persistence.NH
 				{
 					finder.Where.Type.Eq(typeof (int)).Select();
 				});
+		}
+
+
+
+		private ContentItem CreatePageBelowStartPage(int index)
+		{
+			ContentItem item;
+			item = CreateOneItem<PersistableItem2>(0, "item" + index, startPage);
+
+			N2.Details.DetailCollection details = item.GetDetailCollection("DetailCollection", true);
+			details.Add(true);
+			details.Add(index * 1000 + 555);
+			details.Add(index * 1000.0 + 555.55);
+			details.Add("string in a collection " + index);
+			details.Add(startPage);
+			details.Add(new DateTime(2009 + index, 1, 1));
+
+			engine.Persister.Save(item);
+			return item;
+		}
+
+		private void CreateStartPage()
+		{
+			startPage = CreateOneItem<PersistableItem1>(0, "start page", rootItem);
+			startPage.ZoneName = "AZone";
+			startPage.SortOrder = 34;
+			startPage.Visible = true;
+			startPage["IntDetail"] = 45;
+			startPage["DoubleDetail"] = 56.66;
+			startPage["BoolDetail"] = true;
+			startPage["DateDetail"] = new DateTime(2000, 01, 01);
+			startPage["StringDetail"] = "actually another string";
+			startPage["StringDetail2"] = "just a string";
+			startPage["ObjectDetail"] = new string[] { "two", "three", "four" };
+			startPage["ItemDetail"] = rootItem;
+
+			engine.Persister.Save(startPage);
+		}
+
+		private void SaveVersionAndUpdateRootItem()
+		{
+			engine.Resolve<IVersionManager>().SaveVersion(rootItem);
+
+			rootItem.Created = DateTime.Today;
+			rootItem.Published = new DateTime(2007, 06, 03);
+			rootItem.Expires = new DateTime(2017, 06, 03);
+			rootItem.ZoneName = "TheZone";
+			rootItem.SortOrder = 23;
+			rootItem.Visible = false;
+			rootItem["IntDetail"] = 43;
+			rootItem["DoubleDetail"] = 43.33;
+			rootItem["BoolDetail"] = false;
+			rootItem["DateDetail"] = new DateTime(1999, 12, 31);
+			rootItem["StringDetail"] = "just a string";
+			rootItem["StringDetail2"] = "just another string";
+			rootItem["ObjectDetail"] = new string[] { "one", "two", "three" };
+
+			engine.Persister.Save(rootItem);
+		}
+
+		private void CreateRootItem()
+		{
+			rootItem = CreateOneItem<PersistableItem1>(0, "root", null);
+			rootItem.Created = new DateTime(2007, 06, 01);
+			rootItem.Published = new DateTime(2007, 06, 02);
+			rootItem.Expires = new DateTime(2017, 06, 02);
+			rootItem.ZoneName = "ZaZone";
+			rootItem.SortOrder = 12;
+			rootItem.Visible = true;
+			rootItem["IntDetail"] = 32;
+			rootItem["DoubleDetail"] = 32.22;
+			rootItem["BoolDetail"] = true;
+			rootItem["DateDetail"] = new DateTime(1998, 12, 31);
+			rootItem["StringDetail"] = "a string in a version";
+			rootItem["StringDetail2"] = "just a string";
+			rootItem["ObjectDetail"] = new string[] { "zero", "one", "two" };
+
+			engine.Persister.Save(rootItem);
 		}
 	}
 }

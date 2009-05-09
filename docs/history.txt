@@ -1,4 +1,9 @@
-﻿- fixed #22070:Set DropableZone.Path property at runtime
+﻿- components added to medium trust engine are created lazily
+- test speedup and cleanup
+- added DB2 database flavor
+- introduced IDocumentBaseSource
+- applied maqdev's #21922: Can't set non string TinyMCE configuration value
+- fixed #22070: Set DropableZone.Path property at runtime
 - fixed #21941: Calendar issue...
 - introduced the editable date attribute
 - applied dgelbaum's #22068: DatePicker Bug

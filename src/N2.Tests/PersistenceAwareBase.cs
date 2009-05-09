@@ -1,3 +1,6 @@
+using System.Data;
+using N2.Tests.Fakes;
+using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using N2.Engine;
 using N2.Installation;
@@ -10,20 +13,28 @@ namespace N2.Tests
 	public abstract class PersistenceAwareBase : ItemTestsBase
 	{
 		protected IEngine engine;
+		protected SchemaExport schemaCreator;
+		protected FakeSessionProvider sessionProvider;
 
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetUp()
 		{
-			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2", EventBroker.Instance);
+			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+			
+			engine = new ContentEngine(config, "n2", EventBroker.Instance);
             engine.Initialize();
 			engine.Resolve<ISecurityEnforcer>().Start();
+
+			var configurationBuilder = engine.Resolve<IConfigurationBuilder>();
+			sessionProvider = (FakeSessionProvider)engine.Resolve<ISessionProvider>();
+			schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
 		}
 
 		[TearDown]
 		public override void TearDown()
 		{
+			sessionProvider.CloseConnections();
 			base.TearDown();
-			engine.Persister.Dispose();
 		}
 
 		protected virtual ContentPersister GetNHibernatePersistenceManager()
@@ -33,14 +44,12 @@ namespace N2.Tests
 
 		protected virtual void CreateDatabaseSchema()
 		{
-            InstallationManager im = engine.Resolve<InstallationManager>();
-			im.Install();
+			schemaCreator.Execute(false, true, false, false, sessionProvider.OpenSession.Session.Connection, null);
 		}
 
 		protected virtual void DropDatabaseSchema()
 		{
-            InstallationManager im = engine.Resolve<InstallationManager>();
-            im.DropDatabaseTables();
+			schemaCreator.Execute(false, true, true, false, sessionProvider.OpenSession.Session.Connection, null);
 		}
 	}
 }

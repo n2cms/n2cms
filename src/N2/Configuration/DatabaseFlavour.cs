@@ -14,6 +14,7 @@ namespace N2.Configuration
 		SqLite,
         Firebird,
         Generic,
-        Jet
+        Jet,
+		DB2
 	}
 }

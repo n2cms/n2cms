@@ -33,7 +33,7 @@ namespace N2.Persistence.NH
 ";
         private string classFormat = @"<subclass name=""{0}"" extends=""{1}"" discriminator-value=""{2}"" lazy=""false""/>";
 
-		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
+		[Obsolete("Nay", true)]
 		public ConfigurationBuilder(IDefinitionManager definitions)
 		{
 			this.definitions = definitions;
@@ -76,39 +76,43 @@ namespace N2.Persistence.NH
 			switch (config.Flavour)
 			{
 				case DatabaseFlavour.SqlServer2000:
-					Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
-					Properties["dialect"] = "NHibernate.Dialect.MsSql2000Dialect";
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlClientDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSql2000Dialect).AssemblyQualifiedName;
 					break;
 				case DatabaseFlavour.SqlServer2005:
 				case DatabaseFlavour.SqlServer2008:
-					Properties["connection.driver_class"] = "NHibernate.Driver.SqlClientDriver";
-					Properties["dialect"] = "NHibernate.Dialect.MsSql2005Dialect";
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlClientDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSql2005Dialect).AssemblyQualifiedName;
 					break;
                 case DatabaseFlavour.SqlCe:
-                    Properties["connection.driver_class"] = "NHibernate.Driver.SqlServerCeDriver";
-					Properties["dialect"] = "NHibernate.Dialect.MsSqlCeDialect";
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof (NHibernate.Driver.SqlServerCeDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSqlCeDialect).AssemblyQualifiedName;
 					break;
                 case DatabaseFlavour.MySql:
-                    Properties["connection.driver_class"] = "NHibernate.Driver.MySqlDataDriver";
-                    Properties["dialect"] = "NHibernate.Dialect.MySQL5Dialect";
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.MySqlDataDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MySQLDialect).AssemblyQualifiedName;
                     break;
                 case DatabaseFlavour.SqLite:
-                    Properties["connection.driver_class"] = "NHibernate.Driver.SQLite20Driver";
-                    Properties["dialect"] = "NHibernate.Dialect.SQLiteDialect";
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SQLite20Driver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.SQLiteDialect).AssemblyQualifiedName;
                     break;
                 case DatabaseFlavour.Firebird:
-                    Properties["connection.driver_class"] = "NHibernate.Driver.FirebirdDriver";
-                    Properties["dialect"] = "NHibernate.Dialect.FirebirdDialect";
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.FirebirdDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.FirebirdDialect).AssemblyQualifiedName;
                     break;
                 case DatabaseFlavour.Generic:
-                    Properties["connection.driver_class"] = "NHibernate.Driver.OleDbDriver";
-                    Properties["dialect"] = "NHibernate.Dialect.GenericDialect";
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OleDbDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.GenericDialect).AssemblyQualifiedName;
                     break;
                 case DatabaseFlavour.Jet:
-                    Properties["connection.driver_class"] = "NHibernate.JetDriver.JetDriver, NHibernate.JetDriver";
-                    Properties["dialect"] = "NHibernate.JetDriver.JetDialect, NHibernate.JetDriver";
+                    Properties[NHibernate.Cfg.Environment.ConnectionDriver] = "NHibernate.JetDriver.JetDriver, NHibernate.JetDriver";
+					Properties[NHibernate.Cfg.Environment.Dialect] = "NHibernate.JetDriver.JetDialect, NHibernate.JetDriver";
                     break;
-                default:
+				case DatabaseFlavour.DB2:
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OdbcDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.DB2Dialect).AssemblyQualifiedName;
+					break;
+				default:
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
 

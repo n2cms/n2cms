@@ -36,24 +36,46 @@ using NHibernate.Criterion;
 
 namespace N2.Persistence.NH
 {
+	public class ContentItemRepository : NHRepository<int, ContentItem>
+	{
+		public ContentItemRepository(ISessionProvider sessionProvider)
+			: base(sessionProvider)
+		{
+		}
+
+		public override ContentItem Get(int id)
+		{
+			ICriteria c = GetContentItemCriteria();
+			return c.Add(NHibernate.Criterion.Expression.Eq("ID", id))
+				.UniqueResult<ContentItem>();
+		}
+
+		public override T Get<T>(int id)
+		{
+			ICriteria c = GetContentItemCriteria();
+			return c.Add(NHibernate.Criterion.Expression.Eq("ID", id))
+				.UniqueResult<T>();
+		}
+
+		ICriteria GetContentItemCriteria()
+		{
+			return SessionProvider.OpenSession.Session.CreateCriteria(typeof (ContentItem), "ci")
+				.SetFetchMode("ci.Children", FetchMode.Eager)
+				.SetFetchMode("ci.Details", FetchMode.Eager)
+				.SetFetchMode("ci.DetailCollections", FetchMode.Eager);
+		}
+	}
+
 	public class NHRepository<TKey, TEntity> : INHRepository<TKey, TEntity> where TEntity:class 
 	{
-		#region Private Fields
-
 		private ISessionProvider sessionProvider;
 
-		#endregion
-
-		#region Constructor
 
 		/// <summary>Creates a new instance of the NHRepository.</summary>
 		public NHRepository(ISessionProvider sessionProvider)
 		{
 			this.sessionProvider = sessionProvider;
-			Debug.WriteLine("NHRepository: ctor");
 		}
-
-		#endregion
 
 		#region Properties 
 
@@ -67,12 +89,12 @@ namespace N2.Persistence.NH
 
 		#region Methods
 
-		public TEntity Get(TKey id)
+		public virtual TEntity Get(TKey id)
 		{
 			return sessionProvider.OpenSession.Session.Get<TEntity>(id);
 		}
 
-		public T Get<T>(TKey id)
+		public virtual T Get<T>(TKey id)
 		{
 			return sessionProvider.OpenSession.Session.Get<T>(id);
 		}

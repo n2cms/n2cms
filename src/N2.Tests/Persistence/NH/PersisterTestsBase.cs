@@ -1,5 +1,5 @@
-using System;
-using System.Reflection;
+using N2.Tests.Fakes;
+using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using N2.Definitions;
 using N2.Details;
@@ -8,42 +8,37 @@ using N2.Persistence;
 using N2.Persistence.Finder;
 using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
-using N2.Web.UI;
-using Rhino.Mocks;
 using System.Configuration;
 using N2.Configuration;
+using System.Data;
 
 namespace N2.Tests.Persistence.NH
 {
-	public class PersisterTestsBase : ItemTestsBase
+	public abstract class PersisterTestsBase : ItemTestsBase
 	{
 		protected IDefinitionManager definitions;
 		protected ContentPersister persister;
-		protected SessionProvider sessionProvider;
+		protected FakeSessionProvider sessionProvider;
 		protected IItemFinder finder;
+		protected SchemaExport schemaCreator;
 
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
 		{
-			mocks = new MockRepository();
+			ITypeFinder typeFinder = new Fakes.FakeTypeFinder(typeof (Definitions.PersistableItem1).Assembly, typeof (Definitions.PersistableItem1));
 
-			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
-			Expect.On(typeFinder)
-				.Call(typeFinder.GetAssemblies())
-				.Return(new Assembly[] { typeof(Definitions.PersistableItem1).Assembly })
-				.Repeat.Any();
-			Expect.On(typeFinder)
-				.Call(typeFinder.Find(typeof(ContentItem)))
-				.Return(new Type[] { typeof(Definitions.PersistableItem1) })
-				.Repeat.AtLeastOnce();
-			mocks.Replay(typeFinder);
+			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder);
+			definitions = new DefinitionManager(definitionBuilder, null);
+			DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, config);
 
-			definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, (DatabaseSection)ConfigurationManager.GetSection("n2/database"));
-
-            sessionProvider = new SessionProvider(configurationBuilder, new NotifyingInterceptor(new ItemNotifier()), new Fakes.FakeWebContextWrapper());
+			NotifyingInterceptor interceptor = new NotifyingInterceptor(new ItemNotifier());
+			FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
+			sessionProvider = new FakeSessionProvider(configurationBuilder, interceptor, context);
 
 			finder = new ItemFinder(sessionProvider, definitions);
+
+			schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
 		}
 
 		[SetUp]
@@ -51,17 +46,21 @@ namespace N2.Tests.Persistence.NH
 		{
 			base.SetUp();
 
-			IRepository<int, ContentItem> itemRepository = new NHRepository<int, ContentItem>(sessionProvider);
+			IRepository<int, ContentItem> itemRepository = new ContentItemRepository(sessionProvider);
 			INHRepository<int, LinkDetail> linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
 
 			persister = new ContentPersister(itemRepository, linkRepository, finder);
+
+			schemaCreator.Execute(false, true, false, false, sessionProvider.OpenSession.Session.Connection, null);
 		}
 
 		[TearDown]
 		public override void TearDown()
 		{
-			base.TearDown();
 			persister.Dispose();
+			sessionProvider.CloseConnections();
+
+			base.TearDown();
 		}
 
 	}

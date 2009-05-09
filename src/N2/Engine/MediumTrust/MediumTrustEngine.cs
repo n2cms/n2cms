@@ -38,8 +38,9 @@ namespace N2.Engine.MediumTrust
 		IPersister persister;
 		IWebContext webContext;
 
-        IDictionary<Type, object> resolves = new Dictionary<Type, object>();
-            
+		IDictionary<Type, object> container = new Dictionary<Type, object>();
+		IDictionary<Type, Function<Type, object>> resolvers = new Dictionary<Type, Function<Type, object>>();
+
 		public MediumTrustEngine(EventBroker broker)
 		{
             EditSection editConfiguration = (EditSection)AddConfigurationSection("n2/edit");
@@ -180,11 +181,16 @@ namespace N2.Engine.MediumTrust
         public IHost Host
         {
             get { return host; }
-        }
+		}
 
-		public IDictionary<Type, object> Resolves
+		public IDictionary<Type, object> Container
 		{
-			get { return resolves; }
+			get { return container; }
+		}
+
+		public IDictionary<Type, Function<Type, object>> Resolvers
+		{
+			get { return resolvers; }
 		}
 		#endregion
 
@@ -206,8 +212,8 @@ namespace N2.Engine.MediumTrust
 
 		public object Resolve(Type serviceType)
 		{
-			if (Resolves.ContainsKey(serviceType))
-				return Resolves[serviceType];
+			if (Resolvers.ContainsKey(serviceType))
+				return Resolvers[serviceType](serviceType);
 			else
 				throw new N2Exception("Couldn't find any service of the type " + serviceType);
 		}
@@ -215,12 +221,7 @@ namespace N2.Engine.MediumTrust
 
 		public object Resolve(string key)
 		{
-			foreach (KeyValuePair<Type, object> pair in resolves)
-			{
-				if (pair.Key.Name == key)
-					return pair.Value;
-			}
-			return null;
+			return Resolve(Type.GetType(key));
 		}
 
 		public void AddComponent(string key, Type classType)
@@ -230,11 +231,55 @@ namespace N2.Engine.MediumTrust
 
 		public void AddComponent(string key, Type serviceType, Type classType)
 		{
-			ConstructorInfo constructor = FindBestCosntructor(classType);
-			object[] parameters = CreateConstructorParameters(constructor.GetParameters());
-			object componentInstance = constructor.Invoke(parameters);
-			
-			AddComponentInstance(key, serviceType, componentInstance);
+			Resolvers[serviceType] = delegate(Type type)
+				{
+					if (container.ContainsKey(serviceType))
+						return container[serviceType];
+
+					ConstructorInfo constructor = FindBestConstructor(classType);
+					object[] parameters = CreateConstructorParameters(constructor.GetParameters());
+					object componentInstance = constructor.Invoke(parameters);
+					AddComponentInstance(key, serviceType, componentInstance);
+					
+					return componentInstance;
+				};
+		}
+
+		public void AddFacility(string key, object facility)
+		{
+            Trace.TraceError("MediumTrustEngine.AddFacility not implemented: " + key);
+		}
+
+		public void Release(object instance)
+		{
+			foreach (KeyValuePair<Type, object> pair in container)
+            {
+                if (pair.Value == instance)
+                {
+                    container.Remove(pair.Key);
+                    break;
+                }
+            }
+		}
+
+        private T AddComponentInstance<T>(T instance)
+        {
+            AddComponentInstance(typeof(T).Name, typeof(T), instance);
+            return instance;
+        }
+
+		public void AddComponentInstance(string key, Type serviceType, object instance)
+		{
+            if (Resolvers.ContainsKey(serviceType))
+                return;
+
+			container[serviceType] = instance;
+			Resolvers[serviceType] = ReturnContainerInstance;
+
+			if (instance is IAutoStart)
+			{
+				(instance as IAutoStart).Start();
+			}
 		}
 
 		protected virtual object[] CreateConstructorParameters(ParameterInfo[] parameterInfos)
@@ -247,7 +292,7 @@ namespace N2.Engine.MediumTrust
 			return parameters;
 		}
 
-		protected virtual ConstructorInfo FindBestCosntructor(Type classType)
+		protected virtual ConstructorInfo FindBestConstructor(Type classType)
 		{
 			int maxParameters = -1;
 			ConstructorInfo bestContructor = null;
@@ -264,43 +309,12 @@ namespace N2.Engine.MediumTrust
 			return bestContructor;
 		}
 
-		public void AddFacility(string key, object facility)
+		private object ReturnContainerInstance(Type serviceType)
 		{
-            Trace.TraceError("MediumTrustEngine.AddFacility not implemented: " + key);
-		}
-
-		public void Release(object instance)
-		{
-            foreach (KeyValuePair<Type, object> pair in resolves)
-            {
-                if (pair.Value == instance)
-                {
-                    resolves.Remove(pair.Key);
-                    break;
-                }
-            }
-		}
-
-		[Obsolete("Use AddComponentInstance")]
-		public void AddComponent(Type serviceType, object instance)
-		{
-			AddComponentInstance(serviceType.FullName, serviceType, instance);
-		}
-        private T AddComponentInstance<T>(T instance)
-        {
-            AddComponentInstance(typeof(T).Name, typeof(T), instance);
-            return instance;
-        }
-		public void AddComponentInstance(string key, Type serviceType, object instance)
-		{
-            if (Resolves.ContainsKey(serviceType))
-                return;
-
-			Resolves[serviceType] = instance;
-			if (instance is IAutoStart)
-			{
-				(instance as IAutoStart).Start();
-			}
+			if (!container.ContainsKey(serviceType))
+				throw new N2Exception("Couldn't find any service of the type " + serviceType);
+			
+			return container[serviceType];
 		}
 
 		#endregion

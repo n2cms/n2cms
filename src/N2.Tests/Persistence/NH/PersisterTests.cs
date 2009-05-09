@@ -10,9 +10,27 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanSave()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "saveableRoot", null);
 			persister.Save(item);
 			Assert.AreNotEqual(0, item.ID);
+			persister.Delete(item);
+		}
+
+		[Test, Ignore]
+		public void Get_Children_AreEagerlyFetched()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child = CreateOneItem<Definitions.PersistableItem1>(0, "gettableChild", item);
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			ContentItem storedItem = persister.Get(item.ID);
+			persister.Dispose();
+
+			Assert.That(storedItem.Children.Count, Is.EqualTo(1));
+
 			persister.Delete(item);
 		}
 
@@ -28,8 +46,8 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void CanUpdate()
 		{
-			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "updatableRoot", null);
+			
 			using (persister)
 			{
 				item["someproperty"] = "hello";

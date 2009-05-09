@@ -56,7 +56,8 @@ namespace N2.Installation
 		}
 
 		const bool ConsoleOutput = false;
-    	const bool DatabaseExport = true;
+		const bool DatabaseExport = true;
+		const bool NoDatabaseExport = false;
 			
 		/// <summary>Executes sql create database scripts.</summary>
 		public void Install()
@@ -68,7 +69,7 @@ namespace N2.Installation
 		public void ExportSchema(TextWriter output)
 		{
 			SchemaExport exporter = new SchemaExport(Cfg);
-			exporter.Execute(ConsoleOutput, DatabaseExport, false, true, null, output);
+			exporter.Execute(ConsoleOutput, NoDatabaseExport, false, true, null, output);
 		}
 
 		public void DropDatabaseTables()

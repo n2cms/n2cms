@@ -18,8 +18,6 @@ namespace N2.Tests.Persistence
 			Assert.IsNotNull(engine.Persister);
 
 			Definitions.PersistableItem1 item = CreateRoot("root", "root item");
-
-			engine.Persister.Delete(item);
 		}
 
 		[Test]
@@ -34,7 +32,6 @@ namespace N2.Tests.Persistence
 			{
 				ContentItem loadedItem = engine.Persister.Get(item.ID);
 				Assert.AreEqual(item, loadedItem);
-				engine.Persister.Delete(loadedItem);
 			}
 		}
 
@@ -74,8 +71,6 @@ namespace N2.Tests.Persistence
 				Assert.AreEqual(root.StringProperty, "dida");
 				Assert.AreEqual(root.Name, "root");
 				Assert.AreEqual(root.Title, "root item");
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -118,7 +113,6 @@ namespace N2.Tests.Persistence
 				Assert.AreEqual(root.Title, "changed title");
 				Assert.AreEqual(root["DateDetail"].ToString(), referenceDate.AddMinutes(1).ToString());
 				Assert.AreEqual(root["StringDetail"], "time 2 test");
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -147,8 +141,6 @@ namespace N2.Tests.Persistence
 				Assert.AreEqual(root.GetChildren(new N2.Collections.AccessFilter(null, engine.SecurityManager)).Count, 2);
 				Assert.IsNotNull(root.GetChild("item1"));
 				Assert.IsNotNull(root.GetChild("item2"));
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -170,8 +162,6 @@ namespace N2.Tests.Persistence
 
 				Assert.AreEqual(item2, root.GetChild("item2"));
 				Assert.AreEqual(item1, item2.GetChild("item1"));
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -203,8 +193,6 @@ namespace N2.Tests.Persistence
 				ContentItem item1copy = item2.GetChild("item1");
 				Assert.IsNotNull(item1copy);
 				Assert.AreNotEqual(item1copy, item1);
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -236,8 +224,6 @@ namespace N2.Tests.Persistence
 				ContentItem item1copyofcopy = item2copy.GetChild("item1");
 				Assert.IsNotNull(item1copyofcopy);
 				Assert.AreNotEqual(item1copyofcopy, item1copy);
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -257,7 +243,6 @@ namespace N2.Tests.Persistence
 
 				item1 = engine.Persister.Get(item1ID);
 				Assert.IsNull(item1);
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -279,8 +264,6 @@ namespace N2.Tests.Persistence
 				Assert.IsNull(item1);
 				item2 = engine.Persister.Get(item2ID);
 				Assert.IsNull(item2);
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -293,8 +276,6 @@ namespace N2.Tests.Persistence
 				ContentItem previousVersion = engine.Resolve<IVersionManager>().SaveVersion(root);
 				Assert.AreNotEqual(root, previousVersion);
 				Assert.AreEqual(root, previousVersion.VersionOf);
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -311,8 +292,6 @@ namespace N2.Tests.Persistence
 				Assert.AreEqual(item1, previousVersion.VersionOf);
 
 				Assert.AreEqual(root.Children.Count, 1);
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -354,8 +333,6 @@ namespace N2.Tests.Persistence
 				Assert.AreEqual(item1.Title, previousVersion.Title);
 				Assert.AreEqual(item1["DateDetail"], previousVersion["DateDetail"]);
 				Assert.AreEqual(item1["StringDetail"], previousVersion["StringDetail"]);
-
-				engine.Persister.Delete(root);
 			}
 		}
 
@@ -382,21 +359,8 @@ namespace N2.Tests.Persistence
 			{
 				root = engine.Persister.Get(root.ID);
 				Assert.IsNull(root.Expires, "Published wasn't null.");
-				engine.Persister.Delete(root);
 			}
 		}
-
-		//[Test]
-		//public void GetChildrenRecursive()
-		//{
-		//    ContentItem root = CreateRoot("root", "root item");
-		//    ContentItem item1 = CreateAndSaveItem("item1", "item one", root);
-		//    ContentItem item2 = CreateAndSaveItem("item2", "item two", item1);
-		//    ContentItem item3 = CreateAndSaveItem("item3", "item three", item2);
-
-		//    Assert.AreEqual(factory.Persister.GetChildrenRecursive(root).Count, 3);
-		//    factory.Persister.Delete(root);
-		//}
 
 		[Test]
 		public void CloneItem()
@@ -432,9 +396,6 @@ namespace N2.Tests.Persistence
 				Assert.IsNotNull(clonedRoot[detail.Name]);
 				Assert.AreNotSame(detail, clonedRoot[detail.Name]);
 			}
-
-			engine.Persister.Delete(root);
-			engine.Persister.Delete(clonedRoot);
 		}
 
 		[Test]

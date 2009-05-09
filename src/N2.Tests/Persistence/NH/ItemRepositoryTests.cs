@@ -1,18 +1,10 @@
-using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using N2.Definitions;
 using N2.Persistence.NH;
-using N2.Web.UI;
-using Rhino.Mocks;
-using N2.Engine;
-using System.Reflection;
 using N2.Persistence;
 using N2.Details;
 using N2.Tests.Persistence.Definitions;
 using System.Diagnostics;
-using N2.Configuration;
-using System.Configuration;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -28,7 +20,7 @@ namespace N2.Tests.Persistence.NH
 			base.SetUp();
 			CreateDatabaseSchema();
 
-			sessionProvider = CreateSessionProvider();
+			sessionProvider = engine.Resolve<ISessionProvider>();
 			repository = new NHRepository<int, ContentItem>(sessionProvider);
 		}
 
@@ -379,22 +371,6 @@ namespace N2.Tests.Persistence.NH
 				repository.Flush();
 				return item.ID;
 			}
-		}
-
-		private ISessionProvider CreateSessionProvider()
-		{
-			MockRepository mocks = new MockRepository();
-			ITypeFinder typeFinder = mocks.StrictMock<ITypeFinder>();
-			Expect.On(typeFinder).Call(typeFinder.GetAssemblies())
-				.Return(new Assembly[] { typeof(N2.Context).Assembly }).Repeat.Any();
-			Expect.On(typeFinder).Call(typeFinder.Find(typeof(ContentItem)))
-				.Return(new Type[] { typeof(Definitions.PersistableItem1), typeof(Definitions.NonVirtualItem) });
-			mocks.ReplayAll();
-
-			IDefinitionManager definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>()), null);
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, (DatabaseSection)ConfigurationManager.GetSection("n2/database"));
-
-            return new SessionProvider(configurationBuilder, new NotifyingInterceptor(new ItemNotifier()), new Fakes.FakeWebContextWrapper());
 		}
 	}
 }
