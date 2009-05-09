@@ -75,6 +75,9 @@
     <None Include="Edit\Dependencies.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Edit\AffectedItems.ascx.cs">
       <DependentUpon>AffectedItems.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

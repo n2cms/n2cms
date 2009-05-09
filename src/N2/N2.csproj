@@ -264,6 +264,9 @@
     <EmbeddedResource Include="Web\web.castle.config" />
     <EmbeddedResource Include="Persistence\NH\persistence.castle.config" />
     <EmbeddedResource Include="Serialization\serialization.castle.config" />
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Collections\BranchHierarchyBuilder.cs" />
     <Compile Include="Collections\CompositeFilter.cs" />
     <Compile Include="Collections\DelegateFilter.cs" />

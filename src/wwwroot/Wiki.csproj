@@ -64,6 +64,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Addons\Wiki\Fragment.cs" />
     <Compile Include="Addons\Wiki\Fragmenters\CommentFragmenter.cs" />
     <Compile Include="Addons\Wiki\Fragmenters\ExternalLinkFragmenter.cs" />

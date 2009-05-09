@@ -49,16 +49,16 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-		<HintPath>..\..\lib\System.Web.Abstractions.dll</HintPath>
-	</Reference>
+      <HintPath>..\..\lib\System.Web.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-		<HintPath>..\..\lib\System.Web.Routing.dll</HintPath>
-	</Reference>
+      <HintPath>..\..\lib\System.Web.Routing.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -69,6 +69,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Linq\ContentContext.cs" />
     <Compile Include="Linq\EngineExtensions.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />

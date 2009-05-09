@@ -42,6 +42,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Addons\AddonCatalog\Items\AddonCatalog.cs" />
     <Compile Include="Addons\AddonCatalog\Items\Addon.cs" />
     <Compile Include="Addons\AddonCatalog\Items\CodeCategory.cs" />
