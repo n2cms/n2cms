@@ -1,4 +1,4 @@
-using System.Configuration;
+Ôªøusing System.Configuration;
 
 namespace N2.Configuration
 {
@@ -9,12 +9,12 @@ namespace N2.Configuration
 	{
 		public PatternValueCollection()
 		{
-			BaseAdd(new PatternValueElement("smallA", "[Â‰·‡‚„@]", "a", true));
-			BaseAdd(new PatternValueElement("capitalA", "[≈ƒ¡¿¬√]", "a", true));
-			BaseAdd(new PatternValueElement("smallAE", "[Ê]", "ae", true));
-			BaseAdd(new PatternValueElement("capitalAE", "[∆]", "AE", true));
-			BaseAdd(new PatternValueElement("smallO", "[ˆ¯Ùı]", "o", true));
-			BaseAdd(new PatternValueElement("capitalO", "[÷ÿ‘’]", "O", true));
+			BaseAdd(new PatternValueElement("smallA", "[√•√§√°√†√¢√£@]", "a", true));
+			BaseAdd(new PatternValueElement("capitalA", "[√Ö√Ñ√Å√Ä√Ç√É]", "a", true));
+			BaseAdd(new PatternValueElement("smallAE", "[√¶]", "ae", true));
+			BaseAdd(new PatternValueElement("capitalAE", "[√Ü]", "AE", true));
+			BaseAdd(new PatternValueElement("smallO", "[√∂√∏√¥√µ]", "o", true));
+			BaseAdd(new PatternValueElement("capitalO", "[√ñ√ò√î√ï]", "O", true));
 			BaseAdd(new PatternValueElement("theRest", "[^. a-zA-Z0-9_-]", "", true));
 		}
 
