@@ -9,6 +9,8 @@ namespace N2.Addons.Tagging.Items
 	[RestrictParents(typeof(TagCategory))]
 	public class Tag : AbstractContentPage, ITag
 	{
+		#region ITag Members
+
 		public int ReferenceCount
 		{
 			get
@@ -16,5 +18,12 @@ namespace N2.Addons.Tagging.Items
 				return Find.Items.Where.Detail().Eq(this).Count();
 			}
 		}
+
+		public ITagCategory Category
+		{
+			get { return Parent as ITagCategory; }
+		}
+
+		#endregion
 	}
 }

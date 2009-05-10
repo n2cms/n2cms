@@ -21,7 +21,6 @@ namespace N2.Addons.Tagging
 				{
 					var tagEditable = new EditableTagsAttribute();
 					tagEditable.Name = "Tags";
-					tagEditable.Title = "Tags";
 					tagEditable.ContainerName = Tabs.Content;
 					tagEditable.SortOrder = 200;
 					definition.Add(tagEditable);
