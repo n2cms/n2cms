@@ -35,9 +35,6 @@
     <Reference Include="N2, Version=1.0.403.42222, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="N2.Templates, Version=1.0.403.39629, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -58,6 +55,13 @@
     <Compile Include="Addons\Tagging\Items\TagBox.cs" />
     <Compile Include="Addons\Tagging\Items\TagGroup.cs" />
     <Compile Include="Addons\Tagging\TaggingInitializer.cs" />
+    <Compile Include="Addons\Tagging\UI\Layout.Master.cs">
+      <DependentUpon>Layout.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Tagging\UI\Layout.Master.designer.cs">
+      <DependentUpon>Layout.Master</DependentUpon>
+    </Compile>
     <Compile Include="Addons\Tagging\UI\Tag.aspx.cs">
       <DependentUpon>Tag.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -89,6 +93,9 @@
     <Content Include="Addons\Tagging\UI\tag_green.png" />
     <Content Include="Addons\Tagging\UI\tag_red.png" />
     <Content Include="Addons\Tagging\UI\tag_yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Addons\Tagging\UI\Layout.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

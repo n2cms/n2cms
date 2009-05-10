@@ -1,9 +1,8 @@
+using System;
 using N2.Addons.Tagging.Details;
 using N2.Definitions;
 using N2.Engine;
 using N2.Plugin;
-using N2.Templates.Items;
-using N2.Templates;
 
 namespace N2.Addons.Tagging
 {
@@ -13,16 +12,28 @@ namespace N2.Addons.Tagging
 	[AutoInitialize]
 	public class TaggingInitializer : IPluginInitializer
 	{
+		bool usingTemplates = false;
+		Type baseType = typeof (ContentItem);
+
 		public void Initialize(IEngine engine)
 		{
+			Type contentPageType = Type.GetType("N2.Templates.Items.AbstractContentPage, N2.Templates");
+			if (contentPageType != null)
+			{
+				usingTemplates = true;
+				baseType = contentPageType;
+			}
+
 			foreach (ItemDefinition definition in engine.Definitions.GetDefinitions())
 			{
 				if (IsContentPage(definition))
 				{
 					var tagEditable = new EditableTagsAttribute();
 					tagEditable.Name = "Tags";
-					tagEditable.ContainerName = Tabs.Content;
-					tagEditable.SortOrder = 200;
+					tagEditable.SortOrder = 500;
+					if (usingTemplates)
+						tagEditable.ContainerName = "content";
+
 					definition.Add(tagEditable);
 				}
 			}
@@ -30,7 +41,7 @@ namespace N2.Addons.Tagging
 
 		private bool IsContentPage(ItemDefinition definition)
 		{
-			return typeof(AbstractContentPage).IsAssignableFrom(definition.ItemType);
+			return baseType.IsAssignableFrom(definition.ItemType);
 		}
 	}
 }

@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using N2.Collections;
-using N2.Integrity;
-using N2.Templates.Items;
+using N2.Details;
 using N2.Web;
 
 namespace N2.Addons.Tagging.Items
 {
-	[Definition]
+	[Definition("Tag Group", Description = "Define a tag group that pages can be associated to.", SortOrder = 550)]
 	[Template("~/Addons/Tagging/UI/TagContainer.aspx")]
-	[RestrictParents(typeof(IStructuralPage))]
-	public class TagGroup : AbstractContentPage, IGroup
+	[WithEditableName, WithEditableTitle]
+	public class TagGroup : ContentItem, IGroup
 	{
 		public TagGroup()
 		{

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using N2.Templates.Web.UI;
+using N2.Web.UI;
 
 namespace N2.Addons.Tagging.UI
 {
-	public partial class Tag : TemplatePage<Items.Tag>
+	public partial class Tag : ContentPage<Items.Tag>
 	{
 		protected IList<ContentItem> TaggedItems { get; set; }
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using N2.Addons.Tagging.Details;
 using N2.Details;
-using N2.Templates.Web.UI;
+using N2.Web.UI;
 
 namespace N2.Addons.Tagging.UI
 {
-	public partial class TagBox : TemplateUserControl<ContentItem, Items.TagBox>
+	public partial class TagBox : ContentUserControl<ContentItem, Items.TagBox>
 	{
 		protected List<AppliedTags> Categories { get; set; }
 

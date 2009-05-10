@@ -1,5 +1,5 @@
-﻿using N2.Integrity;
-using N2.Templates.Items;
+﻿using N2.Details;
+using N2.Integrity;
 using N2.Web;
 
 namespace N2.Addons.Tagging.Items
@@ -7,7 +7,8 @@ namespace N2.Addons.Tagging.Items
 	[Definition]
 	[Template("~/Addons/Tagging/UI/Tag.aspx")]
 	[RestrictParents(typeof(TagGroup))]
-	public class Tag : AbstractContentPage, ITag
+	[WithEditableName, WithEditableTitle]
+	public class Tag : ContentItem, ITag
 	{
 		public Tag()
 		{
