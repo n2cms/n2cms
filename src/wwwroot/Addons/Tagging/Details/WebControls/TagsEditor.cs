@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Addons.Tagging.Items;
-using N2.Details;
 using N2.Resources;
 
 namespace N2.Addons.Tagging.Details.WebControls
 {
-	internal class TagsTable : Control, INamingContainer
+	internal class TagsEditor : Control, INamingContainer
 	{
 		HiddenField countField = new HiddenField();
 		Table containersTable = new Table();
@@ -27,7 +26,7 @@ namespace N2.Addons.Tagging.Details.WebControls
 		
 
 
-		public TagsTable()
+		public TagsEditor()
 		{
 			countField.ID = "tagsCount";
 		}

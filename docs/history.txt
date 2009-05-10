@@ -1,4 +1,6 @@
 ﻿- introduced tagging to templates
+	- drag tags between categories
+	- allows multiple tag categories
 - de-obsoleted Zone.AddedItemTemplate event (but not Zone.GettingItemTemplate)
 - introduced filter extension methods for single item: item.FilterByAccess, item.FilterByNavigation
 - copied esteewhy's IsRecycled extension method

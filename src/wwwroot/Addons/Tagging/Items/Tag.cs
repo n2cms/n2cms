@@ -13,7 +13,7 @@ namespace N2.Addons.Tagging.Items
 		{
 			get
 			{
-				return Find.Items.Where.Detail(Parent.Name).Eq(this).Count();
+				return Find.Items.Where.Detail().Eq(this).Count();
 			}
 		}
 	}

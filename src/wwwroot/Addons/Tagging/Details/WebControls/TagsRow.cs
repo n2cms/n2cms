@@ -6,7 +6,7 @@ namespace N2.Addons.Tagging.Details.WebControls
 {
 	internal class TagsRow : TableRow
 	{
-		readonly TagsTable table;
+		readonly TagsEditor table;
 		ListBox AvailableList { get; set; }
 		TextBox AdditionalBox { get; set; }
 		ListBox AddedList { get; set; }
@@ -16,7 +16,7 @@ namespace N2.Addons.Tagging.Details.WebControls
 		Label Label { get; set; }
 
 
-		public TagsRow(TagsTable table)
+		public TagsRow(TagsEditor table)
 		{
 			this.table = table;
 

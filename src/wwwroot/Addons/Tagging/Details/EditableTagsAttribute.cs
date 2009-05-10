@@ -18,10 +18,10 @@ namespace N2.Addons.Tagging.Details
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
-			TagsTable tagEditor = editor as TagsTable;
+			TagsEditor tagEditor = editor as TagsEditor;
 			if(tagEditor.HasChanges)
 			{
-				IList<Items.TagCategory> containers = GetTagContainer(item);
+				IList<Items.TagCategory> containers = GetAvailableCategories(item);
 				IEnumerable<AppliedTags> changes = tagEditor.GetAddedTags(containers);
 				foreach(AppliedTags change in changes)
 				{
@@ -34,17 +34,17 @@ namespace N2.Addons.Tagging.Details
 
 		private void ApplyChanges(AppliedTags change, ContentItem item)
 		{
-			DetailCollection links = item.GetDetailCollection(change.Category.Name, false);
+			DetailCollection links = item.GetDetailCollection(Name, false);
 			if (links == null)
 			{
 				if (change.Tags.Count == 0)
 					return;
-				links = item.GetDetailCollection(change.Category.Name, true);
+				links = item.GetDetailCollection(Name, true);
 			}
 
-			ContentItem[] currentTags = links.ToArray<ContentItem>();
+			List<ITag> currentTags = GetCurrentTags(change.Category, links);
+
 			IEnumerable<string> addedTags = GetAddedTags(currentTags, change.Tags);
-			
 			foreach(string tagName in addedTags)
 			{
 				ITag tag = change.Category.GetOrCreateTag(tagName);
@@ -58,12 +58,23 @@ namespace N2.Addons.Tagging.Details
 			}
 		}
 
-		private IEnumerable<string> GetAddedTags(ContentItem[] currentTags, IList<string> addedTags)
+		List<ITag> GetCurrentTags(ITagCategory category, DetailCollection links)
+		{
+			List<ITag> tags = new List<ITag>();
+			foreach (ContentItem link in links)
+			{
+				if(link.Parent == category)
+					tags.Add(link as ITag);
+			}
+			return tags;
+		}
+
+		private IEnumerable<string> GetAddedTags(List<ITag> currentTags, IList<string> addedTags)
 		{
 			List<string> tagsToAdd = new List<string>();
 			foreach(string tagName in addedTags)
 			{
-				bool alreadyAdded = Array.Exists(currentTags, x => x.Title == tagName);
+				bool alreadyAdded = currentTags.Exists(t => t.Title == tagName);
 				if (!alreadyAdded)
 					tagsToAdd.Add(tagName);
 			}
@@ -72,9 +83,9 @@ namespace N2.Addons.Tagging.Details
 
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
-			TagsTable tagEditor = editor as TagsTable;
+			TagsEditor tagEditor = editor as TagsEditor;
 
-			IList<Items.TagCategory> containers = GetTagContainer(item);
+			IList<Items.TagCategory> containers = GetAvailableCategories(item);
 
 			if(containers != null)
 			{
@@ -88,7 +99,7 @@ namespace N2.Addons.Tagging.Details
 			List<AppliedTags> selections = new List<AppliedTags>();
 			foreach(Items.TagCategory container in containers)
 			{
-				IEnumerable<string> tags = GetSelectedTags(item, container.Name);
+				IEnumerable<string> tags = GetSelectedTags(item, container);
 				selections.Add(new AppliedTags
 				{
 					Category = container,
@@ -98,23 +109,24 @@ namespace N2.Addons.Tagging.Details
 			return selections;
 		}
 
-		IEnumerable<string> GetSelectedTags(ContentItem item, string name)
+		IEnumerable<string> GetSelectedTags(ContentItem item, ITagCategory category)
 		{
-			DetailCollection links = item.GetDetailCollection(name, false);
+			DetailCollection links = item.GetDetailCollection(Name, false);
 			if (links != null)
 			{
 				foreach (ContentItem link in links)
-					yield return link.Title;
+					if(link.Parent == category)
+						yield return link.Title;
 			}
 		}
 
-		private IList<Items.TagCategory> GetTagContainer(ContentItem item)
+		private IList<TagCategory> GetAvailableCategories(ContentItem item)
 		{
 			foreach (var ancestor in Find.EnumerateParents(item, null, true))
 			{
 				ItemList tagContainers = ancestor.GetChildren(new TypeFilter(typeof(Items.TagCategory)));
 				if (tagContainers.Count > 0)
-					return tagContainers.Cast<Items.TagCategory>();
+					return tagContainers.Cast<TagCategory>();
 			}
 			return null;
 		}
@@ -126,7 +138,7 @@ namespace N2.Addons.Tagging.Details
 
 		protected override Control AddEditor(Control container)
 		{
-			TagsTable t = new TagsTable();
+			TagsEditor t = new TagsEditor();
 			container.Controls.Add(t);
 			return t;
 		}
