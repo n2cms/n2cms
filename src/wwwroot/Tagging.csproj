@@ -86,6 +86,9 @@
     <Content Include="Addons\Tagging\UI\Tag.aspx" />
     <Content Include="Addons\Tagging\UI\TagBox.ascx" />
     <Content Include="Addons\Tagging\UI\TagContainer.aspx" />
+    <Content Include="Addons\Tagging\UI\tag_green.png" />
+    <Content Include="Addons\Tagging\UI\tag_red.png" />
+    <Content Include="Addons\Tagging\UI\tag_yellow.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

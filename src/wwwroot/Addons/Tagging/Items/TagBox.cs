@@ -9,5 +9,9 @@ namespace N2.Addons.Tagging.Items
 	[AllowedZones(AllowedZones.AllNamed)]
 	public class TagBox : AbstractItem
 	{
+		public override string IconUrl
+		{
+			get { return "~/Addons/Tagging/UI/tag_yellow.png"; }
+		}
 	}
 }

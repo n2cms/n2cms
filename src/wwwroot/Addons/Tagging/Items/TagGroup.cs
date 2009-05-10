@@ -11,6 +11,11 @@ namespace N2.Addons.Tagging.Items
 	[RestrictParents(typeof(IStructuralPage))]
 	public class TagGroup : AbstractContentPage, IGroup
 	{
+		public TagGroup()
+		{
+			Visible = false;
+		}
+
 		#region ITagContainer Members
 		
 		public IEnumerable<ITag> GetTags()
@@ -35,5 +40,10 @@ namespace N2.Addons.Tagging.Items
 		}
 
 		#endregion
+
+		public override string IconUrl
+		{
+			get { return "~/Addons/Tagging/UI/tag_red.png"; }
+		}
 	}
 }

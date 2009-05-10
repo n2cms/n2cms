@@ -9,6 +9,11 @@ namespace N2.Addons.Tagging.Items
 	[RestrictParents(typeof(TagGroup))]
 	public class Tag : AbstractContentPage, ITag
 	{
+		public Tag()
+		{
+			Visible = false;
+		}
+
 		#region ITag Members
 
 		public int ReferenceCount
@@ -25,5 +30,10 @@ namespace N2.Addons.Tagging.Items
 		}
 
 		#endregion
+
+		public override string IconUrl
+		{
+			get { return "~/Addons/Tagging/UI/tag_green.png"; }
+		}
 	}
 }
