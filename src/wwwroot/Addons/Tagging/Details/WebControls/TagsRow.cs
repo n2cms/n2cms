@@ -27,30 +27,6 @@ namespace N2.Addons.Tagging.Details.WebControls
 			AdditionalBox = new TextBox();
 			AvailableList = new ListBox();
 			Label = new Label();
-
-			Label.CssClass = "editorLabel";
-			AddedList.SelectionMode = ListSelectionMode.Multiple;
-			TagButton.Text = "<";
-			UntagButton.Text = ">";
-			AddButton.Text = "+";
-			AvailableList.SelectionMode = ListSelectionMode.Multiple;
-
-			TagButton.Click += delegate
-				{
-					table.HasChanges = true;
-					MoveBetween(AvailableList, AddedList);
-				};
-			UntagButton.Click += delegate
-				{
-					table.HasChanges = true;
-					MoveBetween(AddedList, AvailableList);
-				};
-			AddButton.Click += delegate
-				{
-					table.HasChanges = true;
-					AddNewTag(AdditionalBox.Text);
-					AdditionalBox.Text = "";
-				};
 		}
 
 		private void AddNewTag(string tagName)
@@ -115,8 +91,42 @@ namespace N2.Addons.Tagging.Details.WebControls
 		
 		protected override void OnInit(System.EventArgs e)
 		{
-			base.OnInit(e);
 			CssClass = "tag";
+
+			Label.CssClass = "editorLabel";
+			AddedList.ID = "lbAdded";
+			AddedList.SelectionMode = ListSelectionMode.Multiple;
+			TagButton.Text = "<";
+			TagButton.CausesValidation = false;
+			TagButton.ID = "btnTag";
+			UntagButton.Text = ">";
+			UntagButton.CausesValidation = false;
+			UntagButton.ID = "btnUntag";
+			AdditionalBox.ID = "txtAdditional";
+			AddButton.Text = "+";
+			AvailableList.ID = "lbAvailable"; 
+			AvailableList.SelectionMode = ListSelectionMode.Multiple;
+
+			EnsureChildControls();
+
+			TagButton.Click += delegate
+			{
+				table.HasChanges = true;
+				MoveBetween(AvailableList, AddedList);
+			};
+			UntagButton.Click += delegate
+			{
+				table.HasChanges = true;
+				MoveBetween(AddedList, AvailableList);
+			};
+			AddButton.Click += delegate
+			{
+				table.HasChanges = true;
+				AddNewTag(AdditionalBox.Text);
+				AdditionalBox.Text = "";
+			};
+
+			base.OnInit(e);
 		}
 
 		protected override void CreateChildControls()
@@ -133,6 +143,10 @@ namespace N2.Addons.Tagging.Details.WebControls
 			TableCell rightCell = new TableCell();
 			rightCell.CssClass = "tagsRight";
 
+			RequiredFieldValidator rfv = new RequiredFieldValidator();
+			rfv.ControlToValidate = AdditionalBox.ID;
+			rfv.Text = "*";
+			
 			Controls.Add(labelCell);
 			Controls.Add(leftCell);
 			Controls.Add(middleCell);
@@ -143,6 +157,8 @@ namespace N2.Addons.Tagging.Details.WebControls
 			leftCell.Controls.Add(addPanel);
 			addPanel.Controls.Add(AdditionalBox);
 			addPanel.Controls.Add(AddButton);
+			addPanel.Controls.Add(rfv);
+
 			middleCell.Controls.Add(TagButton);
 			middleCell.Controls.Add(UntagButton);
 			rightCell.Controls.Add(AvailableList);

@@ -139,6 +139,7 @@ namespace N2.Addons.Tagging.Details
 		protected override Control AddEditor(Control container)
 		{
 			TagsEditor t = new TagsEditor();
+			t.ID = Name;
 			container.Controls.Add(t);
 			return t;
 		}

@@ -87,7 +87,9 @@ namespace N2.Addons.Tagging.Details.WebControls
 
 			for (int i = 0; i < Count; i++)
 			{
-				containersTable.Controls.Add(new TagsRow(this));
+				TagsRow row = new TagsRow(this);
+				row.ID = "row" + i;
+				containersTable.Controls.Add(row);
 			}
 		}
 
