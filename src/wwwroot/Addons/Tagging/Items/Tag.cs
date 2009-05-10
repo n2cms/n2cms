@@ -6,7 +6,7 @@ namespace N2.Addons.Tagging.Items
 {
 	[Definition]
 	[Template("~/Addons/Tagging/UI/Tag.aspx")]
-	[RestrictParents(typeof(TagCategory))]
+	[RestrictParents(typeof(TagGroup))]
 	public class Tag : AbstractContentPage, ITag
 	{
 		#region ITag Members
@@ -19,9 +19,9 @@ namespace N2.Addons.Tagging.Items
 			}
 		}
 
-		public ITagCategory Category
+		public IGroup Category
 		{
-			get { return Parent as ITagCategory; }
+			get { return Parent as IGroup; }
 		}
 
 		#endregion

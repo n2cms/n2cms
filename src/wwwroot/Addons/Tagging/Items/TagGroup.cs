@@ -9,7 +9,7 @@ namespace N2.Addons.Tagging.Items
 	[Definition]
 	[Template("~/Addons/Tagging/UI/TagContainer.aspx")]
 	[RestrictParents(typeof(IStructuralPage))]
-	public class TagCategory : AbstractContentPage, ITagCategory
+	public class TagGroup : AbstractContentPage, IGroup
 	{
 		#region ITagContainer Members
 		

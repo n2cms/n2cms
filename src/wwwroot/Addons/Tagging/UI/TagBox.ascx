@@ -7,7 +7,7 @@
 <ul>
 <% foreach(AppliedTags tags in Categories) {%>
 	<li>
-		<strong><%= tags.Category.Title %>: </strong>
+		<strong><%= tags.Group.Title %>: </strong>
 		<% foreach(string tag in tags.Tags) {%>
 			<span class="tag"><%= tag %></span>
 		<%} %>

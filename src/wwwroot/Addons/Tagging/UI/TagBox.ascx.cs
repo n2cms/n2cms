@@ -21,10 +21,10 @@ namespace N2.Addons.Tagging.UI
 			
 			foreach(ITag tag in tags)
 			{
-				AppliedTags applied = Categories.Find(at => at.Category == tag.Category);
+				AppliedTags applied = Categories.Find(at => at.Group == tag.Category);
 				if(applied == null)
 				{
-					applied = new AppliedTags {Category = tag.Category, Tags = new List<string>()};
+					applied = new AppliedTags {Group = tag.Category, Tags = new List<string>()};
 					Categories.Add(applied);
 				}
 				applied.Tags.Add(tag.Title);

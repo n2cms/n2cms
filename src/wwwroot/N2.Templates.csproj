@@ -69,10 +69,10 @@
     <Compile Include="Addons\Tagging\Details\WebControls\TagsEditor.cs" />
     <Compile Include="Addons\Tagging\Details\WebControls\TagsRow.cs" />
     <Compile Include="Addons\Tagging\ITag.cs" />
-    <Compile Include="Addons\Tagging\ITagCategory.cs" />
+    <Compile Include="Addons\Tagging\IGroup.cs" />
     <Compile Include="Addons\Tagging\Items\Tag.cs" />
     <Compile Include="Addons\Tagging\Items\TagBox.cs" />
-    <Compile Include="Addons\Tagging\Items\TagCategory.cs" />
+    <Compile Include="Addons\Tagging\Items\TagGroup.cs" />
     <Compile Include="Addons\Tagging\TaggingInitializer.cs" />
     <Compile Include="Addons\Tagging\UI\Tag.aspx.cs">
       <DependentUpon>Tag.aspx</DependentUpon>

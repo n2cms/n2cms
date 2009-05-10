@@ -21,7 +21,7 @@ namespace N2.Addons.Tagging.Details
 			TagsEditor tagEditor = editor as TagsEditor;
 			if(tagEditor.HasChanges)
 			{
-				IList<Items.TagCategory> containers = GetAvailableCategories(item);
+				IList<Items.TagGroup> containers = GetAvailableCategories(item);
 				IEnumerable<AppliedTags> changes = tagEditor.GetAddedTags(containers);
 				foreach(AppliedTags change in changes)
 				{
@@ -42,12 +42,12 @@ namespace N2.Addons.Tagging.Details
 				links = item.GetDetailCollection(Name, true);
 			}
 
-			List<ITag> currentTags = GetCurrentTags(change.Category, links);
+			List<ITag> currentTags = GetCurrentTags(change.Group, links);
 
 			IEnumerable<string> addedTags = GetAddedTags(currentTags, change.Tags);
 			foreach(string tagName in addedTags)
 			{
-				ITag tag = change.Category.GetOrCreateTag(tagName);
+				ITag tag = change.Group.GetOrCreateTag(tagName);
 				links.Add(tag);
 			}
 			
@@ -58,12 +58,12 @@ namespace N2.Addons.Tagging.Details
 			}
 		}
 
-		List<ITag> GetCurrentTags(ITagCategory category, DetailCollection links)
+		List<ITag> GetCurrentTags(IGroup group, DetailCollection links)
 		{
 			List<ITag> tags = new List<ITag>();
 			foreach (ContentItem link in links)
 			{
-				if(link.Parent == category)
+				if(link.Parent == group)
 					tags.Add(link as ITag);
 			}
 			return tags;
@@ -85,7 +85,7 @@ namespace N2.Addons.Tagging.Details
 		{
 			TagsEditor tagEditor = editor as TagsEditor;
 
-			IList<Items.TagCategory> containers = GetAvailableCategories(item);
+			IList<Items.TagGroup> containers = GetAvailableCategories(item);
 
 			if(containers != null)
 			{
@@ -94,39 +94,39 @@ namespace N2.Addons.Tagging.Details
 			}
 		}
 
-		List<AppliedTags> GetChanges(ContentItem item, IEnumerable<TagCategory> containers)
+		List<AppliedTags> GetChanges(ContentItem item, IEnumerable<TagGroup> containers)
 		{
 			List<AppliedTags> selections = new List<AppliedTags>();
-			foreach(Items.TagCategory container in containers)
+			foreach(Items.TagGroup group in containers)
 			{
-				IEnumerable<string> tags = GetSelectedTags(item, container);
+				IEnumerable<string> tags = GetSelectedTags(item, group);
 				selections.Add(new AppliedTags
 				{
-					Category = container,
+					Group = group,
 					Tags = new List<string>(tags)
 				});
 			}
 			return selections;
 		}
 
-		IEnumerable<string> GetSelectedTags(ContentItem item, ITagCategory category)
+		IEnumerable<string> GetSelectedTags(ContentItem item, IGroup group)
 		{
 			DetailCollection links = item.GetDetailCollection(Name, false);
 			if (links != null)
 			{
 				foreach (ContentItem link in links)
-					if(link.Parent == category)
+					if(link.Parent == group)
 						yield return link.Title;
 			}
 		}
 
-		private IList<TagCategory> GetAvailableCategories(ContentItem item)
+		private IList<TagGroup> GetAvailableCategories(ContentItem item)
 		{
 			foreach (var ancestor in Find.EnumerateParents(item, null, true))
 			{
-				ItemList tagContainers = ancestor.GetChildren(new TypeFilter(typeof(Items.TagCategory)));
+				ItemList tagContainers = ancestor.GetChildren(new TypeFilter(typeof(Items.TagGroup)));
 				if (tagContainers.Count > 0)
-					return tagContainers.Cast<TagCategory>();
+					return tagContainers.Cast<TagGroup>();
 			}
 			return null;
 		}

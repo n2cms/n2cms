@@ -2,7 +2,7 @@
 
 namespace N2.Addons.Tagging
 {
-	public interface ITagCategory
+	public interface IGroup
 	{
 		string Title { get; }
 		string Name { get; }

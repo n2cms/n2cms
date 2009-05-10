@@ -82,7 +82,7 @@ namespace N2.Addons.Tagging.Details.WebControls
 			}
 		}
 
-		public void BindTo(ITagCategory container)
+		public void BindTo(IGroup container)
 		{
 			EnsureChildControls();
 

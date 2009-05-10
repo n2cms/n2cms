@@ -4,6 +4,6 @@
 	{
 		string Title { get; }
 		int ReferenceCount { get; }
-		ITagCategory Category { get; }
+		IGroup Category { get; }
 	}
 }

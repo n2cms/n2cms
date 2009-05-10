@@ -42,19 +42,19 @@ namespace N2.Addons.Tagging.Details.WebControls
 			foreach(AppliedTags change in selectedTags)
 			{
 				TagsRow row = containersTable.Controls[index++] as TagsRow;
-				row.BindTo(change.Category);
+				row.BindTo(change.Group);
 				row.Select(change.Tags);
 			}
 		}
 
-		public IEnumerable<AppliedTags> GetAddedTags(IList<TagCategory> containers)
+		public IEnumerable<AppliedTags> GetAddedTags(IList<TagGroup> containers)
 		{
 			for (int i = 0; i < Count; i++)
 			{
 				IEnumerable<string> tags = ((TagsRow) containersTable.Controls[i]).GetAddedTags();
 				yield return new AppliedTags
 				{
-					Category = containers[i],
+					Group = containers[i],
 					Tags = new List<string>(tags)
 				};
 			}
