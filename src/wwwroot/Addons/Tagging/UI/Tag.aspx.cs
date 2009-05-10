@@ -11,7 +11,7 @@ namespace N2.Addons.Tagging.UI
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			TaggedItems = Find.Items
-				.Where.Detail(CurrentPage.Parent.Name).Eq(CurrentPage)
+				.Where.Detail().Eq(CurrentPage)
 				.Select();
 		}
 	}
