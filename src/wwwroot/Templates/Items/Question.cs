@@ -4,7 +4,7 @@ using System.Web.UI;
 
 namespace N2.Templates.Items
 {
-    [WithEditableTitle("Question", 10)]
+    [WithEditableTitle("Question", 10, Focus = false)]
     [RestrictParents(typeof(ISurvey))]
     [AllowedZones("Questions", "")]
     public abstract class Question : AbstractItem

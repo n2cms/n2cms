@@ -1,0 +1,18 @@
+﻿.tags 
+{
+    width: 500px;
+}
+
+.tags select
+{
+    width:200px;
+    height:100px;
+}
+.tags .tagsMiddle
+{
+    text-align:center;
+}
+.tags .tagsMiddle input
+{
+    display:block;
+}

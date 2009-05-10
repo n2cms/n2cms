@@ -17,7 +17,7 @@ namespace N2.Templates.Items
     [Definition("FAQ Item", "Faq", "A question with answer.", "", 0)]
     [RestrictParents(typeof(FaqList))]
     [AllowedZones("Questions")]
-    [WithEditableTitle("Question", 90)]
+	[WithEditableTitle("Question", 90, Focus = false)]
     public class Faq : Templates.Items.AbstractItem
     {
         [Displayable(typeof(H3), "Text")]

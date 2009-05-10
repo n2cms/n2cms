@@ -64,6 +64,29 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Addons\Tagging\Details\AppliedTags.cs" />
+    <Compile Include="Addons\Tagging\Details\EditableTagsAttribute.cs" />
+    <Compile Include="Addons\Tagging\Details\WebControls\TagsTable.cs" />
+    <Compile Include="Addons\Tagging\Details\WebControls\TagsRow.cs" />
+    <Compile Include="Addons\Tagging\ITag.cs" />
+    <Compile Include="Addons\Tagging\ITagCategory.cs" />
+    <Compile Include="Addons\Tagging\Items\Tag.cs" />
+    <Compile Include="Addons\Tagging\Items\TagCategory.cs" />
+    <Compile Include="Addons\Tagging\TaggingInitializer.cs" />
+    <Compile Include="Addons\Tagging\UI\Tag.aspx.cs">
+      <DependentUpon>Tag.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Tagging\UI\Tag.aspx.designer.cs">
+      <DependentUpon>Tag.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Addons\Tagging\UI\TagContainer.aspx.cs">
+      <DependentUpon>TagContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\Tagging\UI\TagContainer.aspx.designer.cs">
+      <DependentUpon>TagContainer.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ru\EditableContainers.ru.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -914,6 +937,10 @@
     <Content Include="Templates\UI\Views\Start.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\Tagging\UI\EditableTags.css" />
+    <Content Include="Addons\Tagging\UI\EditableTags.js" />
+    <Content Include="Addons\Tagging\UI\Tag.aspx" />
+    <Content Include="Addons\Tagging\UI\TagContainer.aspx" />
     <Content Include="Templates\UI\Views\App_LocalResources\CalendarList.aspx.resx">
     </Content>
   </ItemGroup>
