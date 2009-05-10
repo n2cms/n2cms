@@ -68,6 +68,12 @@ namespace N2.Engine.Globalization
 			}
 		}
 
+		void persister_ItemCopied(object sender, DestinationEventArgs e)
+		{
+			e.AffectedItem[LanguageGateway.LanguageKey] = null;
+			persister.Save(e.AffectedItem);
+		}
+
 		void persister_ItemDeleting(object sender, CancellableItemEventArgs e)
 		{
 			if (!autoDeleteTranslations) return;
@@ -174,6 +180,7 @@ namespace N2.Engine.Globalization
                 persister.ItemMoved += persister_ItemMoved;
                 persister.ItemDeleting += persister_ItemDeleting;
                 definitions.ItemCreated += definitions_ItemCreated;
+				persister.ItemCopied += persister_ItemCopied;
             }
 		}
 
@@ -185,6 +192,7 @@ namespace N2.Engine.Globalization
                 persister.ItemMoved -= persister_ItemMoved;
                 persister.ItemDeleting -= persister_ItemDeleting;
                 definitions.ItemCreated -= definitions_ItemCreated;
+				persister.ItemCopied -= persister_ItemCopied;
             }
 		}
 

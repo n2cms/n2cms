@@ -497,6 +497,25 @@ namespace N2.Tests.Globalization
             Assert.That(gateway.GetAvailableLanguages().Count(), Is.EqualTo(4));
         }
 
+		[Test]
+		public void Translations_AreNotCarried_WhenCopying()
+		{
+			ContentItem english1 = CreateOneItem<TranslatedPage>(0, "english1", english);
+			engine.Persister.Save(english1);
+
+			ContentItem swedish1 = CreateOneItem<TranslatedPage>(0, "swedish1", swedish);
+			engine.Persister.Save(swedish1);
+
+			ILanguageGateway gateway = engine.Resolve<ILanguageGateway>();
+			gateway.Associate(new[] { english1, swedish1 });
+
+			ContentItem english1copy = engine.Persister.Copy(english1, english1);
+
+			Assert.That(!gateway.FindTranslations(swedish1).Contains(english1copy));
+			Assert.That(english1copy[LanguageGateway.LanguageKey], Is.Null, "Expected language association to be cleared from copy.");
+			Assert.That(gateway.FindTranslations(swedish1).Count(), Is.EqualTo(2));
+		}
+
         private class LanguageKeyScope : IDisposable
         {
             ThreadContext context;

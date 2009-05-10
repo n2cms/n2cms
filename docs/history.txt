@@ -1,4 +1,5 @@
-﻿- introduced tagging to templates
+﻿- fixed problem with language association remaining on copied items
+- introduced tagging to templates
 	- deployable as addon
 	- drag tags between categories
 	- allows multiple tag categories
