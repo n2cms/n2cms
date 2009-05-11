@@ -10,7 +10,6 @@ using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using System.Configuration;
 using N2.Configuration;
-using System.Data;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -30,7 +29,8 @@ namespace N2.Tests.Persistence.NH
 			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder);
 			definitions = new DefinitionManager(definitionBuilder, null);
 			DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, config);
+			ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
+			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, config, connectionStrings);
 
 			NotifyingInterceptor interceptor = new NotifyingInterceptor(new ItemNotifier());
 			FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();

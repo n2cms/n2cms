@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace N2.Configuration
+﻿namespace N2.Configuration
 {
 	public enum DatabaseFlavour
 	{
@@ -15,6 +11,7 @@ namespace N2.Configuration
         Firebird,
         Generic,
         Jet,
-		DB2
+		DB2,
+		AutoDetect
 	}
 }

@@ -40,7 +40,7 @@ namespace N2.Persistence.NH
 		}
 
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
-		public ConfigurationBuilder(IDefinitionManager definitions, DatabaseSection config)
+		public ConfigurationBuilder(IDefinitionManager definitions, DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			this.definitions = definitions;
 
@@ -51,7 +51,7 @@ namespace N2.Persistence.NH
 			if (config.Flavour == DatabaseFlavour.MySql)
 				stringLength = 16777215;
 
-			SetupProperties(config);
+			SetupProperties(config, connectionStrings);
             SetupMappings(config);
 
             TryLocatingHbmResources = config.TryLocatingHbmResources;
@@ -68,12 +68,21 @@ namespace N2.Persistence.NH
 
 		/// <summary>Sets properties configuration dictionary based on configuration in the database section.</summary>
 		/// <param name="config">The database section configuration.</param>
-		protected void SetupProperties(DatabaseSection config)
+		protected void SetupProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			Properties["connection.connection_string_name"] = config.ConnectionStringName;
 			Properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
 
-			switch (config.Flavour)
+			DatabaseFlavour flavour = config.Flavour;
+			if (flavour == DatabaseFlavour.AutoDetect)
+			{
+				ConnectionStringSettings css = connectionStrings.ConnectionStrings[config.ConnectionStringName];
+				if(css == null)
+					throw new ConfigurationErrorsException("Could not find the connection string named '" + config.ConnectionStringName + "' that was defined in the n2/database configuration section.");
+				flavour = DetectFlavor(css);
+			}
+
+			switch (flavour)
 			{
 				case DatabaseFlavour.SqlServer2000:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlClientDriver).AssemblyQualifiedName;
@@ -124,6 +133,20 @@ namespace N2.Persistence.NH
             {
                 Properties[key] = config.HibernateProperties[key].Value;
             }
+		}
+
+		private DatabaseFlavour DetectFlavor(ConnectionStringSettings css)
+		{
+			string provider = css.ProviderName;
+
+			if(provider == "" || provider.StartsWith("System.Data.SqlClient"))
+				return DatabaseFlavour.SqlServer2005;
+			if(provider.StartsWith("System.Data.SQLite"))
+				return DatabaseFlavour.SqLite;
+			if (provider.StartsWith("MySql.Data.MySqlClient"))
+				return DatabaseFlavour.MySql;
+
+			throw new ConfigurationErrorsException("Could not auto-detect the database flavor. Please configure this explicitly in the n2/database section.");
 		}
 
         #region Properties

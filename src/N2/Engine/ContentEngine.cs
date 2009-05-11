@@ -47,10 +47,11 @@ namespace N2.Engine
         {
             container = new WindsorContainer();
 
-            HostSection hostConfig = AddComponentInstance<HostSection>(ConfigurationManager.GetSection("n2/host") as HostSection);
-            EngineSection engineConfig = AddComponentInstance<EngineSection>(ConfigurationManager.GetSection("n2/engine") as EngineSection);
-            DatabaseSection dbConfig = AddComponentInstance<DatabaseSection>(ConfigurationManager.GetSection("n2/database") as DatabaseSection);
-            EditSection editConfig = AddComponentInstance<EditSection>(ConfigurationManager.GetSection("n2/edit") as EditSection);
+            HostSection hostConfig = AddComponentInstance(ConfigurationManager.GetSection("n2/host") as HostSection);
+            EngineSection engineConfig = AddComponentInstance(ConfigurationManager.GetSection("n2/engine") as EngineSection);
+            AddComponentInstance(ConfigurationManager.GetSection("n2/database") as DatabaseSection);
+            AddComponentInstance(ConfigurationManager.GetSection("n2/edit") as EditSection);
+        	AddComponentInstance(ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection);
 
             InitializeEnvironment(hostConfig, engineConfig);
             IResource resource = DetermineResource(engineConfig, ConfigurationManager.GetSection("castle") != null);
@@ -80,10 +81,11 @@ namespace N2.Engine
 			container = new WindsorContainer();
 			
 			RegisterConfigurationSections(config, sectionGroup);
-			HostSection hostConfig = AddComponentInstance<HostSection>(config.GetSection(sectionGroup + "/host") as HostSection);
-			EngineSection engineConfig = AddComponentInstance<EngineSection>(config.GetSection(sectionGroup + "/engine") as EngineSection);
-			DatabaseSection dbConfig = AddComponentInstance<DatabaseSection>(config.GetSection(sectionGroup + "/database") as DatabaseSection);
-			EditSection editConfig = AddComponentInstance<EditSection>(config.GetSection(sectionGroup + "/edit") as EditSection);
+			HostSection hostConfig = AddComponentInstance(config.GetSection(sectionGroup + "/host") as HostSection);
+			EngineSection engineConfig = AddComponentInstance(config.GetSection(sectionGroup + "/engine") as EngineSection);
+			AddComponentInstance(config.GetSection(sectionGroup + "/database") as DatabaseSection);
+			AddComponentInstance(config.GetSection(sectionGroup + "/edit") as EditSection);
+			AddComponentInstance(config.GetSection("connectionStrings") as ConnectionStringsSection);
 			InitializeEnvironment(hostConfig, engineConfig);
 			IResource resource = DetermineResource(engineConfig, config.GetSection("castle") != null);
 			ProcessResource(resource);

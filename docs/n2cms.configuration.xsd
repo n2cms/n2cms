@@ -188,6 +188,7 @@
 									<xs:enumeration value="Generic"/>
 									<xs:enumeration value="Jet"/>
 									<xs:enumeration value="DB2"/>
+									<xs:enumeration value="AutoDetect"/>
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>

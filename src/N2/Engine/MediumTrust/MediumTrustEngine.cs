@@ -50,6 +50,8 @@ namespace N2.Engine.MediumTrust
             if (hostConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/host configuration section. Please check the web configuration.");
             EngineSection engineConfiguration = (EngineSection)AddConfigurationSection("n2/engine");
             if (engineConfiguration == null) throw new ConfigurationErrorsException("Couldn't find the n2/engine configuration section. Please check the web configuration.");
+			ConnectionStringsSection connectionStrings = (ConnectionStringsSection) AddConfigurationSection("connectionStrings");
+			if (connectionStrings == null) throw new ConfigurationErrorsException("Couldn't find the connectionStrings configuration section. Please check the web configuration.");
 
             RegisterConfiguredComponents(engineConfiguration);
             
@@ -65,7 +67,7 @@ namespace N2.Engine.MediumTrust
             DefinitionBuilder definitionBuilder = AddComponentInstance<DefinitionBuilder>(new DefinitionBuilder(typeFinder));
 			definitions = AddComponentInstance<IDefinitionManager>(new DefinitionManager(definitionBuilder, notifier));
 			NHibernate.Cfg.Environment.UseReflectionOptimizer = false;
-            IConfigurationBuilder nhBuilder = AddComponentInstance<IConfigurationBuilder>(new ConfigurationBuilder(definitions, databaseConfiguration));
+            IConfigurationBuilder nhBuilder = AddComponentInstance<IConfigurationBuilder>(new ConfigurationBuilder(definitions, databaseConfiguration, connectionStrings));
             NHibernate.IInterceptor interceptor = AddComponentInstance<NHibernate.IInterceptor>(new NotifyingInterceptor(notifier));
             ISessionProvider sessionProvider = AddComponentInstance<ISessionProvider>(new SessionProvider(nhBuilder, interceptor, webContext));
             IItemFinder finder = AddComponentInstance<IItemFinder>(new ItemFinder(sessionProvider, definitions));
