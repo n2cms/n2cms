@@ -122,7 +122,7 @@ namespace N2.Web.UI.WebControls
 		private string GetAllowedNames(string zoneName)
 		{
 			List<string> allowedDefinitions = new List<string>();
-			foreach (ItemDefinition potentialChild in PartsController.GetAllowedDefinitions(CurrentItem, zoneName, Page.User))
+			foreach (ItemDefinition potentialChild in PartsAdapter.GetAllowedDefinitions(CurrentItem, zoneName, Page.User))
 			{
 				allowedDefinitions.Add("." + potentialChild.Discriminator);
 			}

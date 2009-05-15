@@ -1,4 +1,5 @@
-﻿- autodecect database flavor
+﻿- restored GettingItemTemplate event on zone for backward compatibility
+- autodecect database flavor
 - fixed problem with language association remaining on copied items
 - introduced tagging to templates
 	- deployable as addon

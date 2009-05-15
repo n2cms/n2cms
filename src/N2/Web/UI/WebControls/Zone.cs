@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
-using N2.Collections;
 using System.Web.UI.WebControls;
-using N2.Web.Parts;
+using N2.Collections;
 using N2.Engine;
+using N2.Web.Parts;
 
 namespace N2.Web.UI.WebControls
 {
@@ -24,12 +24,12 @@ namespace N2.Web.UI.WebControls
         ITemplate separatorTemplate;
         ITemplate headerTemplate;
         ITemplate footerTemplate;
-		PartsAdapter partsController;
+		PartsAdapter partsAdapter;
 
 		/// <summary>The content adapter related to the current page item.</summary>
-		protected virtual PartsAdapter PartsController
+		protected virtual PartsAdapter PartsAdapter
 		{
-			get { return partsController ?? (partsController = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem.FindPath(PathData.DefaultAction))); }
+			get { return partsAdapter ?? (partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem.FindPath(PathData.DefaultAction))); }
 		}
 
 		/// <summary>Gets or sets the zone from which to featch items.</summary>
@@ -126,7 +126,7 @@ namespace N2.Web.UI.WebControls
 			OnSelecting(args);
 
 			if (CurrentItem != null && args.Items == null)
-				args.Items = PartsController.GetItemsInZone(CurrentItem, ZoneName);
+				args.Items = PartsAdapter.GetItemsInZone(CurrentItem, ZoneName);
 
 			OnSelected(args);
 			OnFiltering(args);
@@ -202,15 +202,25 @@ namespace N2.Web.UI.WebControls
 			if (AddingChild != null)
 				AddingChild.Invoke(this, new ItemEventArgs(item));
 
-	    	Control addedControl = PartsController.AddChildPart(item, container);
+			Control addedControl;
+			if (GettingItemTemplate != null)
+			{
+				TemplateUrlEventArgs args = new TemplateUrlEventArgs(item);
+				GettingItemTemplate(this, args);
+				if (string.IsNullOrEmpty(args.TemplateUrl))
+					addedControl = PartsAdapter.AddChildPart(item, container);
+				else
+					addedControl = ItemUtility.AddUserControl(args.TemplateUrl, container, args.Item);
+			}
+			else
+				addedControl = PartsAdapter.AddChildPart(item, container);
 
-			if (AddedItemTemplate != null)
+	    	if (AddedItemTemplate != null)
 				AddedItemTemplate.Invoke(this, new ControlEventArgs(addedControl));
 		}
 
-		[Obsolete("The event is no longer invoked", true)]
+		[Obsolete("The event is obsolete and may be removed in the future. Please note that using this event prevents the new default behaviour which is relying on the PartsAdapter.")]
 		public event EventHandler<TemplateUrlEventArgs> GettingItemTemplate;
-
 		public event EventHandler<ControlEventArgs> AddedItemTemplate;
 		public event EventHandler<ItemEventArgs> AddingChild;
 		public event EventHandler<ItemListEventArgs> Selecting;

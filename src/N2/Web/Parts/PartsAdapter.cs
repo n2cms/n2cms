@@ -54,7 +54,20 @@ namespace N2.Web.Parts
 			{
 				return addablePart.AddTo(container);
 			}
-			return ItemUtility.AddUserControl(container, item);
+
+			string templateUrl = GetTemplateUrl(item);
+			if(string.IsNullOrEmpty(templateUrl))
+				return null;
+
+			return ItemUtility.AddUserControl(templateUrl, container, item);
+		}
+
+		/// <summary>Gets the path to the given item's template. This is a way to override the default template provided by the content item.</summary>
+		/// <param name="item">The item whose path is requested.</param>
+		/// <returns>The virtual path of the template or null if the item is not supposed to be added.</returns>
+		protected virtual string GetTemplateUrl(ContentItem item)
+		{
+			return item.FindPath(PathData.DefaultAction).TemplateUrl;
 		}
 	}
 }

@@ -58,26 +58,27 @@ namespace N2.Web.UI
 			return item;
 		}
 
+		[Obsolete]
 		public static Control AddUserControl(Control container, ContentItem item)
+		{
+			PathData path = item.FindPath(PathData.DefaultAction);
+			if (!path.IsEmpty())
+			{
+				return AddUserControl(path.TemplateUrl, container, item);
+			}
+			return null;
+		}
+
+		public static Control AddUserControl(string templateUrl, Control container, ContentItem item)
 		{
 			using (new ItemStacker(item))
 			{
-				return AddTo(item, container);
-			}
-		}
-
-		private static Control AddTo(ContentItem item, Control container)
-		{
-			PathData path = item.FindPath(PathData.DefaultAction);
-			if(!path.IsEmpty())
-			{
-				Control templateItem = container.Page.LoadControl(path.TemplateUrl);
+				Control templateItem = container.Page.LoadControl(templateUrl);
 				if (templateItem is IContentTemplate)
 					(templateItem as IContentTemplate).CurrentItem = item;
 				container.Controls.Add(templateItem);
 				return templateItem;
 			}
-			return null;
 		}
 
 		private class ItemStacker : IDisposable
