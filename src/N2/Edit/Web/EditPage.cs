@@ -49,16 +49,16 @@ namespace N2.Edit.Web
 
     	#region Refresh Methods
 		private const string RefreshBothFormat = @"
-n2ctx.setupToolbar('{4}','{1}'); 
+n2ctx.setupToolbar('{4}','{2}'); 
 n2ctx.refresh('{1}', '{2}');
 ";
 
 		private const string RefreshNavigationFormat = @"
-n2ctx.setupToolbar('{4}','{1}'); 
+n2ctx.setupToolbar('{4}','{2}'); 
 n2ctx.refreshNavigation('{1}', '{2}');
 ";
 		private const string RefreshPreviewFormat = @"
-n2ctx.setupToolbar('{4}','{1}'); 
+n2ctx.setupToolbar('{4}','{2}'); 
 n2ctx.refreshPreview('{1}', '{2}');
 ";
 

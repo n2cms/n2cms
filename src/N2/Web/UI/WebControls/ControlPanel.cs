@@ -235,7 +235,7 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 			}
 			if(EnableEditInterfaceIntegration)
 			{
-				writer.WriteLineNoTabs("if(window.n2ctx){window.n2ctx.select('preview');}");
+				writer.WriteLineNoTabs("if(window.n2ctx){window.n2ctx.select('tpPreview');}");
 			}
 			writer.Write(@"//--></script>");
 
