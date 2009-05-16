@@ -7,7 +7,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Definitions;
-using N2.Integrity;
 using N2.Resources;
 using N2.Engine;
 using N2.Edit;
@@ -26,6 +25,8 @@ namespace N2.Web.UI.WebControls
 	[ControlPanelLink("cpUnorganize", "~/edit/img/ico/png/page_refresh.png", "{Selected.Url}", "Done organizing", -10, ControlPanelState.DragDrop, UrlEncode = false, Title = "Done organizing")]
 	public class ControlPanel : Control, IItemContainer
 	{
+		const string ArrayKey = "ControlPanel.arrays";
+
 		#region Properties
 
         public bool EnableEditInterfaceIntegration
@@ -216,6 +217,23 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 
 		protected override void Render(HtmlTextWriter writer)
 		{
+			var arrays = GetArrays(Page);
+			if(arrays.Count > 0)
+			{
+				writer.WriteLineNoTabs(@"<script type='text/javascript'>//<!--");
+				foreach (var pair in arrays)
+				{
+					IList<string> array = pair.Value;
+					writer.Write("var " + pair.Key + " = [" + array[0]);
+					for (int i = 1; i < array.Count; i++)
+					{
+						writer.Write("," + array[i]);
+					}
+					writer.WriteLineNoTabs("];");
+				}
+				writer.Write(@"//--></script>");
+			}
+
 			writer.Write("<div class='controlPanel'>");
 			base.Render(writer);
 			writer.Write("</div>");
@@ -272,6 +290,32 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 		protected string FormatImageAndText(string iconUrl, string text)
 		{
 			return string.Format("<img src='{0}' alt=''/>{1}", iconUrl, text);
+		}
+
+		public static void RegisterArrayValue(Page page, string key, string value)
+		{
+			IList<string> array = GetArray(key, page);
+			array.Add(value);
+		}
+
+		static IList<string> GetArray(string key, Page page)
+		{
+			IDictionary<string, IList<string>> arrays = GetArrays(page);
+			
+			IList<string> array;
+			if (arrays.ContainsKey(key))
+				array = arrays[key];
+			else
+				arrays[key] = array = new List<string>();
+			return array;
+		}
+
+		static IDictionary<string, IList<string>> GetArrays(Page page)
+		{
+			IDictionary<string, IList<string>> arrays = page.Items[ArrayKey] as IDictionary<string, IList<string>>;
+			if(arrays == null)
+				page.Items[ArrayKey] = arrays = new Dictionary<string, IList<string>>();
+			return arrays;
 		}
 
 		#endregion

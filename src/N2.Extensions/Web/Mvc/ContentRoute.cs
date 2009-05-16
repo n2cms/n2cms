@@ -39,6 +39,9 @@ namespace N2.Web.Mvc
 			foreach (ItemDefinition id in engine.Definitions.GetDefinitions())
 			{
 				IAdapterDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
+				if(controllerDefinition == null)
+					continue;
+
 				ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
 				IList<IPathFinder> finders = PathDictionary.GetFinders(id.ItemType);
 				if (0 == finders.Where(f => f is ActionResolver).Count())
@@ -60,17 +63,19 @@ namespace N2.Web.Mvc
 
 			PathData td = engine.UrlParser.ResolvePath(httpContext.Request.RawUrl);
 
-			if (td.CurrentItem != null)
-			{
-				RouteData data = new RouteData(this, routeHandler);
+			if (td.CurrentItem == null)
+				return null;
+			
+			string controllerName = GetControllerName(td.CurrentItem.GetType());
+			if(string.IsNullOrEmpty(controllerName))
+				return null;
 
-				data.Values[ContentItemKey] = td.CurrentItem;
-				data.Values[ContentEngineKey] = engine;
-				data.Values[ControllerKey] = GetControllerName(td.CurrentItem.GetType());
-				data.Values[ActionKey] = td.Action;
-				return data;
-			}
-			return null;
+			RouteData data = new RouteData(this, routeHandler);
+			data.Values[ContentItemKey] = td.CurrentItem;
+			data.Values[ContentEngineKey] = engine;
+			data.Values[ControllerKey] = controllerName;
+			data.Values[ActionKey] = td.Action;
+			return data;
 		}
 
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
@@ -107,7 +112,9 @@ namespace N2.Web.Mvc
 
 		private string GetControllerName(Type type)
 		{
-			return ControllerMap[type];
+			if(ControllerMap.ContainsKey(type))
+				return ControllerMap[type];
+			return null;
 		}
 
 		private IAdapterDescriptor GetControllerFor(Type itemType, IList<ControlsAttribute> controllerDefinitions)
@@ -119,7 +126,7 @@ namespace N2.Web.Mvc
 					return controllerDefinition;
 				}
 			}
-			throw new N2Exception("Found no controller for type '" + itemType + "' among " + controllerDefinitions.Count + " found controllers.");
+			return null;
 		}
 
 		private IList<ControlsAttribute> FindControllers(IEngine engine)

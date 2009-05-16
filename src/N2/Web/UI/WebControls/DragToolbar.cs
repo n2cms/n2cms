@@ -44,7 +44,7 @@ namespace N2.Web.UI.WebControls
 				if (string.IsNullOrEmpty(ID))
 					ID = "t" + CurrentItem.ID;
 			    string array = string.Format("{{dragKey:'{0}',item:{1}}}", ClientID, CurrentItem.ID);
-			    Page.ClientScript.RegisterArrayDeclaration("dragItems", array);
+				ControlPanel.RegisterArrayValue(Page, "dragItems", array);
 			}
 			base.OnPreRender(e);
 		}

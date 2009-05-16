@@ -1,4 +1,7 @@
-﻿- restored GettingItemTemplate event on zone for backward compatibility
+﻿- allow drag'n'drop parts in ASP.NET MVC views
+- disabled fallback controller from N2 Extensions (breaking change)
+- changed content item name in mvc example
+- restored GettingItemTemplate event on zone for backward compatibility
 - autodecect database flavor
 - fixed problem with language association remaining on copied items
 - introduced tagging to templates

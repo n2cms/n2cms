@@ -3,7 +3,7 @@ using N2.Details;
 
 namespace MvcTest.Models
 {
-	[Definition("Content Page", "Test", Installer = N2.Installation.InstallerHint.PreferredStartPage)]
+	[Definition("Content Page", Installer = N2.Installation.InstallerHint.PreferredStartPage)]
 	public class ContentPage : AbstractPage
 	{
 		[EditableFreeTextArea("Text", 100)]

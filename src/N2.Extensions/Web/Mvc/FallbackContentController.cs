@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace N2.Web.Mvc
 {
-	[Controls(typeof(ContentItem))]
+	[Obsolete("The fallback is removed to avoid interfering with non-mvc content items.")]
 	public class FallbackContentController : ContentController<ContentItem>
 	{
 		public override ActionResult Index()

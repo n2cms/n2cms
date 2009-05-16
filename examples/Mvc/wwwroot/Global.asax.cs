@@ -11,7 +11,8 @@ namespace MvcTest
 	{
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+			routes.IgnoreRoute("{resource}.ashx/{*pathInfo}");
             
 			// This route detects content item paths and executes their controller
 			routes.Add(new ContentRoute(engine));

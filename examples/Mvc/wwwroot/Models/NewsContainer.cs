@@ -9,7 +9,7 @@ namespace MvcTest.Models
 	{
 		public virtual IEnumerable<NewsPage> GetNews()
 		{
-			return N2.Find.OfType<NewsPage>(GetChildren(new AccessFilter(), new TypeFilter(typeof(NewsPage))));
+			return GetChildren(new AccessFilter(), new TypeFilter(typeof (NewsPage))).Cast<NewsPage>();
 		}
 	}
 }

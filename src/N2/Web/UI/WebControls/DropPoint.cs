@@ -36,17 +36,13 @@ namespace N2.Web.UI.WebControls
 
 			if(position == CreationPosition.Before)
 			{
-				Page.ClientScript.RegisterArrayDeclaration(
-					"dropPoints",
-					string.Format("{{dropKey:'{0}',zone:'{1}',before:{2}}}",
-					              ClientID, zoneName, item.ID));
+				ControlPanel.RegisterArrayValue(Page, "dropPoints",
+					string.Format("{{dropKey:'{0}',zone:'{1}',before:{2}}}", ClientID, zoneName, item.ID));
 			}
 			else
 			{
-				Page.ClientScript.RegisterArrayDeclaration(
-					"dropPoints",
-					string.Format("{{dropKey:'{0}',zone:'{1}',below:{2}}}",
-					              ClientID, zoneName, item.ID));
+				ControlPanel.RegisterArrayValue(Page, "dropPoints",
+					string.Format("{{dropKey:'{0}',zone:'{1}',below:{2}}}", ClientID, zoneName, item.ID));
 			}
 		}
 

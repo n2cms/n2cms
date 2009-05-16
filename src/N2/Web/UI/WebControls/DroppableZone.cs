@@ -129,15 +129,14 @@ namespace N2.Web.UI.WebControls
 			return string.Join(",", allowedDefinitions.ToArray());
 		}
 
-
 		private void RegisterArray(string arrayName, string arrayValue)
 		{
-			Page.ClientScript.RegisterArrayDeclaration(arrayName, arrayValue);
+			ControlPanel.RegisterArrayValue(Page, arrayName, arrayValue);
 		}
 
 		private void RegisterArray(string arrayName, string arrayValueFormat, params object[] values)
 		{
-			Page.ClientScript.RegisterArrayDeclaration(arrayName, string.Format(arrayValueFormat, values));
+			RegisterArray(arrayName, string.Format(arrayValueFormat, values));
 		}
 	}
 }

@@ -75,6 +75,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\NewsContainerController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\StaticController.cs" />
