@@ -1,1 +1,0 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Go.aspx.cs" Inherits="N2.Templates.Secured.Go" %>

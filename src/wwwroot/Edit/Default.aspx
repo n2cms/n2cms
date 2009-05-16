@@ -29,7 +29,7 @@
         <script type="text/javascript">
         	window.name = "top";
         	window.n2ctx.hasTop = function() { return true; }
-        	window.n2ctx.setupToolbar('<%= SelectedPath %>');
+        	window.n2ctx.setupToolbar('<%= SelectedPath %>', '<%= ResolveClientUrl(SelectedUrl) %>');
 
         	window.n2.frameManager.init();
        </script>

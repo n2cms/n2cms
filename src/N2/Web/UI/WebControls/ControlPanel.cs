@@ -111,8 +111,8 @@ namespace N2.Web.UI.WebControls
 				AddPlugins(state);
 				AddDefinitions(this);
 				AppendDefinedTemplate(DragDropFooterTemplate, this);
-				RegisterStyles();
-				RegisterScripts();
+				RegisterDragDropStyles();
+				RegisterDragDropScripts();
 			}
 			else if (state == ControlPanelState.Editing)
 			{
@@ -168,12 +168,12 @@ namespace N2.Web.UI.WebControls
 			}
 		}
 
-		private void RegisterStyles()
+		private void RegisterDragDropStyles()
 		{
 			Register.StyleSheet(Page, DragDropStyleSheetUrl, Media.All);
 		}
 
-		private void RegisterScripts()
+		private void RegisterDragDropScripts()
 		{
 			Register.JQuery(Page);
 			Register.JavaScript(Page, "~/edit/js/jquery.ui.ashx");
@@ -211,16 +211,16 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 		}
 
 		string scriptFormat = @"if(window.n2ctx){{
-    window.n2ctx.setupToolbar('{0}');
+    window.n2ctx.setupToolbar('{0}','{1}');
     window.n2ctx.refreshNavigation('{1}');
 }}";
 
 		protected override void Render(HtmlTextWriter writer)
 		{
 			var arrays = GetArrays(Page);
-			if(arrays.Count > 0)
+			writer.WriteLineNoTabs(@"<script type='text/javascript'>//<!--");
+			if (arrays.Count > 0)
 			{
-				writer.WriteLineNoTabs(@"<script type='text/javascript'>//<!--");
 				foreach (var pair in arrays)
 				{
 					IList<string> array = pair.Value;
@@ -231,8 +231,13 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 					}
 					writer.WriteLineNoTabs("];");
 				}
-				writer.Write(@"//--></script>");
+				
 			}
+			if(EnableEditInterfaceIntegration)
+			{
+				writer.WriteLineNoTabs("if(window.n2ctx){window.n2ctx.select('preview');}");
+			}
+			writer.Write(@"//--></script>");
 
 			writer.Write("<div class='controlPanel'>");
 			base.Render(writer);

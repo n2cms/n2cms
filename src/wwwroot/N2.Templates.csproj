@@ -281,13 +281,6 @@
     <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.designer.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
     </Compile>
-    <Compile Include="Templates\Secured\Go.aspx.cs">
-      <DependentUpon>Go.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\Secured\Go.aspx.designer.cs">
-      <DependentUpon>Go.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Templates\Secured\Root.aspx.cs">
       <DependentUpon>Root.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -859,7 +852,6 @@
     <Content Include="Templates\UI\Parts\App_LocalResources\Poll.ascx.resx" />
     <Content Include="Templates\UI\Parts\App_LocalResources\Poll.ascx.sv.resx" />
     <Content Include="Templates\Secured\Edit.css" />
-    <Content Include="Templates\Secured\Go.aspx" />
     <Content Include="Templates\Secured\Root.aspx" />
     <Content Include="Templates\UI\Views\Form.aspx" />
   </ItemGroup>

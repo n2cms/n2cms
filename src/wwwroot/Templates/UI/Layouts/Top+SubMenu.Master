@@ -10,15 +10,7 @@
 <body class="<%= GetBodyClass() %>">
     <form id="F" runat="server">
     <n2:SlidingCurtain ID="sc" runat="server">
-        <n2:ControlPanel ID="cp" runat="server">
-            <VisibleFooterTemplate>
-                <script type="text/javascript">
-                	if (window.n2ctx) {
-                		window.n2ctx.select("Go");
-					}
-                </script>
-            </VisibleFooterTemplate>
-        </n2:ControlPanel>
+        <n2:ControlPanel ID="cp" runat="server" />
     </n2:SlidingCurtain>
     <div id="wrap">
         <asp:ContentPlaceHolder ID="Top" runat="server">

@@ -49,16 +49,16 @@ namespace N2.Edit.Web
 
     	#region Refresh Methods
 		private const string RefreshBothFormat = @"
-n2ctx.setupToolbar('{4}'); 
+n2ctx.setupToolbar('{4}','{1}'); 
 n2ctx.refresh('{1}', '{2}');
 ";
 
 		private const string RefreshNavigationFormat = @"
-n2ctx.setupToolbar('{4}'); 
+n2ctx.setupToolbar('{4}','{1}'); 
 n2ctx.refreshNavigation('{1}', '{2}');
 ";
 		private const string RefreshPreviewFormat = @"
-n2ctx.setupToolbar('{4}'); 
+n2ctx.setupToolbar('{4}','{1}'); 
 n2ctx.refreshPreview('{1}', '{2}');
 ";
 
@@ -100,12 +100,12 @@ n2ctx.refreshPreview('{1}', '{2}');
 		#region Setup Toolbar Methods
 		protected virtual string SetupToolbarScriptFormat
 		{
-			get { return "window.n2ctx.setupToolbar('{0}');"; }
+			get { return "window.n2ctx.setupToolbar('{0}','{2}');"; }
 		}
 
 		protected virtual void RegisterSetupToolbarScript(ContentItem item)
 		{
-			string script = string.Format(SetupToolbarScriptFormat, item.Path, item.ID);
+			string script = string.Format(SetupToolbarScriptFormat, item.Path, item.ID, GetPreviewUrl(item));
 			ClientScript.RegisterClientScriptBlock(typeof(EditPage), "AddSetupToolbarScript", script, true);
 		}
 

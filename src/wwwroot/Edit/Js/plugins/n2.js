@@ -45,14 +45,14 @@ n2nav.setupLinks = function(containerId){
 n2nav.previewClickHandler = function(event){
 	var a = n2nav.findLink(event.target);
     n2nav.onTargetClick(a)
-    n2nav.setupToolbar(n2nav.getUrl(a));
+    n2nav.setupToolbar(n2nav.getUrl(a), a.href);
 }
 n2nav.targetHandlers["preview"] = function(a,i) {
     $(a).addClass("enabled").bind("click", null, n2nav.previewClickHandler);
 }
-n2nav.setupToolbar = function(path){
+n2nav.setupToolbar = function(path,url){
     if (window.n2ctx)
-        window.n2ctx.setupToolbar(path);
+        window.n2ctx.setupToolbar(path,url);
 }
 
 
@@ -85,6 +85,7 @@ var initn2context = function(w) {
 
     w.n2ctx = {
         selectedPath: "/",
+        selectedUrl: null,
         memorizedPath: null,
         actionType: null,
 
@@ -111,6 +112,9 @@ var initn2context = function(w) {
         getSelected: function() {
             return this.selectedPath;
         },
+        getSelectedUrl: function() {
+            return this.selectedUrl;
+        },
         getMemory: function() {
             return encodeURIComponent(this.memorizedPath);
         },
@@ -119,16 +123,18 @@ var initn2context = function(w) {
         },
 
         // selection memory
-        setupToolbar: function(url) {
+        setupToolbar: function(path,url) {
             if (!this.hasTop()) return;
-            url = encodeURIComponent(url);
+            path = encodeURIComponent(path);
             var memory = this.getMemory();
             var action = this.getAction();
-            this.selectedPath = url;
+            this.selectedPath = path;
+            this.selectedUrl = url;
             for (var i = 0; i < toolbarPlugIns.length; i++) {
                 var a = w.document.getElementById(toolbarPlugIns[i].linkId);
                 a.href = toolbarPlugIns[i].urlFormat
-		            .replace("{selected}", url)
+		            .replace("{url}", url)
+		            .replace("{selected}", path)
 		            .replace("{memory}", memory)
 		            .replace("{action}", action);
             }

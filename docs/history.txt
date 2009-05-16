@@ -1,4 +1,7 @@
-﻿- allow drag'n'drop parts in ASP.NET MVC views
+﻿- changed administer icon in control panel
+- added eye to edit (shows preview)
+- removed the eye from templates
+- allow drag'n'drop parts in ASP.NET MVC views
 - disabled fallback controller from N2 Extensions (breaking change)
 - changed content item name in mvc example
 - restored GettingItemTemplate event on zone for backward compatibility

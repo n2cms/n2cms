@@ -1641,6 +1641,8 @@
     <Content Include="Edit\img\ajax-loader.gif" />
     <Content Include="Edit\img\bullet_arrow_down.gif" />
     <Content Include="Edit\img\ico\png\add.gif" />
+    <Content Include="Edit\img\ico\png\application.png" />
+    <Content Include="Edit\img\ico\png\application_side_tree.png" />
     <Content Include="Edit\img\ico\png\bin.gif" />
     <Content Include="Edit\img\ico\png\calendar.png" />
     <Content Include="Edit\img\ico\png\delete.gif" />
