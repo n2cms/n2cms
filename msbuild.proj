@@ -122,7 +122,12 @@
 								 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"/>
 		</ItemGroup>
 		<CreateItem Include="$(WebFolder)\Bin\*.dll; $(WebFolder)\Bin\N2.xml;"
-					Exclude="$(WebFolder)\Bin\N2.Templates*;$(WebFolder)\Bin\Demo*;$(WebFolder)\Bin\AddonCatalog*;$(WebFolder)\Bin\Wiki*;$(WebFolder)\Bin\MyAddon*">
+					Exclude="$(WebFolder)\Bin\N2.Templates*;
+							 $(WebFolder)\Bin\Demo*;
+							 $(WebFolder)\Bin\AddonCatalog*;
+							 $(WebFolder)\Bin\Wiki*;
+							 $(WebFolder)\Bin\Tagging*;
+							 $(WebFolder)\Bin\MyAddon*">
 			<Output TaskParameter="Include" ItemName="Core-BinFiles"/>
 		</CreateItem>
 	</Target>
@@ -165,7 +170,13 @@
                                    $(WebFolder)\**\Addons\**\*" />
 		</ItemGroup>
 		<Delete Files="$(WebFolder)\Bin\Demo.dll" Condition="Exists('$(WebFolder)\Bin\Demo.dll')" />
-		<CreateItem Include="$(WebFolder)\Bin\*.dll" Exclude="$(WebFolder)\Bin\AddonCatalog.*;$(WebFolder)\Bin\N2.Templates.UI.Tests.*;$(WebFolder)\Bin\Wiki.*;$(WebFolder)\Bin\MyAddon.*">
+		<CreateItem Include="$(WebFolder)\Bin\*.dll" 
+					Exclude="$(WebFolder)\Bin\AddonCatalog.*;
+							 $(WebFolder)\Bin\N2.Templates.UI.Tests.*;
+							 $(WebFolder)\Bin\Demo.*;
+							 $(WebFolder)\Bin\Wiki.*;
+							 $(WebFolder)\Bin\Tagging.*;
+							 $(WebFolder)\Bin\MyAddon.*">
 			<Output TaskParameter="Include" ItemName="Templates-BinFiles"/>
 		</CreateItem>
 	</Target>
@@ -178,6 +189,16 @@
 	</Target>
 
 
+	<Target Name="Addons-Deploy" DependsOnTargets="AddonCatalog-Deploy;Wiki-Deploy;Tagging-Deploy">
+		<ItemGroup>
+			<AddonCatalogDeployFiles Include="$(DeployFolder)\AddonCatalog\**\*" />
+			<WikiDeployFiles Include="$(DeployFolder)\Wiki\**\*" />
+			<TaggingDeployFiles Include="$(DeployFolder)\Tagging\**\*" />
+		</ItemGroup>
+		<Zip Files="@(AddonCatalogDeployFiles)" WorkingDirectory="$(DeployFolder)" ZipFileName="$(DeployFolder)\AddonCatalog.zip" />
+		<Zip Files="@(WikiDeployFiles)" WorkingDirectory="$(DeployFolder)" ZipFileName="$(DeployFolder)\Wiki.zip" />
+		<Zip Files="@(TaggingDeployFiles)" WorkingDirectory="$(DeployFolder)" ZipFileName="$(DeployFolder)\Tagging.zip" />
+	</Target>
 
 	<Target Name="AddonCatalog-Build">
 		<MSBuild Projects="$(WebFolder)\AddonCatalog.csproj" Properties="Configuration=Release;OutDir=$(TempFolder)" />
@@ -198,6 +219,17 @@
 			<WikiFiles Include="$(TempFolder)_PublishedWebsites\Wiki\**\*"/>
 		</ItemGroup>
 		<Copy SourceFiles="@(WikiFiles)" DestinationFolder="$(DeployFolder)\Wiki\%(RecursiveDir)"/>
+	</Target>
+
+	<Target Name="Tagging-Build">
+		<MSBuild Projects="$(WebFolder)\Tagging.csproj" Properties="Configuration=Release;OutDir=$(TempFolder)" />
+	</Target>
+
+	<Target Name="Tagging-Deploy" DependsOnTargets="Tagging-Build">
+		<ItemGroup>
+			<TaggingFiles Include="$(TempFolder)_PublishedWebsites\Tagging\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(TaggingFiles)" DestinationFolder="$(DeployFolder)\Tagging\%(RecursiveDir)"/>
 	</Target>
 
 

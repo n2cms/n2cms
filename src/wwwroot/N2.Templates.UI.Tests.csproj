@@ -51,6 +51,7 @@
     <ProjectReference Include="N2.Edit.csproj">
       <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
       <Name>N2.Edit</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="N2.Templates.csproj">
       <Project>{D42D096E-399D-4618-AEB4-9B023BA1316D}</Project>

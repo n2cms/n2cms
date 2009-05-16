@@ -125,6 +125,7 @@
     <ProjectReference Include="..\N2.Security\N2.Security.csproj">
       <Project>{CB6A29C5-8355-4C4C-B437-619F652B7540}</Project>
       <Name>N2.Security</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
