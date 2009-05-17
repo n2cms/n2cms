@@ -20,7 +20,7 @@
 	</Target>
 
 
-	<Target Name="Addons-Deploy" DependsOnTargets="AddonCatalog-Deploy;Wiki-Deploy;Tagging-Deploy">
+	<Target Name="Addons-Deploy" DependsOnTargets="AddonCatalog-Deploy;Wiki-Deploy;Tagging-Deploy;TabPanel-Deploy">
 	</Target>
 
 	<Target Name="AddonCatalog-Build">
@@ -56,5 +56,17 @@
 		</ItemGroup>
 		<Copy SourceFiles="@(_TaggingTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\Tagging\%(RecursiveDir)"/>
 		<Delete Files="@(_TaggingTempFiles)" ContinueOnError="true" />
+	</Target>
+
+	<Target Name="TabPanel-Build">
+		<MSBuild Projects="$(WebFolder)\TabPanel.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+	</Target>
+
+	<Target Name="TabPanel-Deploy" DependsOnTargets="TabPanel-Build">
+		<ItemGroup>
+			<_TabPanelTempFiles Include="$(TempFolder)_PublishedWebsites\TabPanel\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(_TabPanelTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\TabPanel\%(RecursiveDir)"/>
+		<Delete Files="@(_TabPanelTempFiles)" ContinueOnError="true" />
 	</Target>
 </Project>

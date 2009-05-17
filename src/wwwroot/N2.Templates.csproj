@@ -289,14 +289,6 @@
       <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Services\SyndicatableDefinitionAppender.cs" />
-    <Compile Include="Templates\TabPanel\TabsInterface.ascx.cs">
-      <DependentUpon>TabsInterface.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\TabPanel\TabsInterface.ascx.designer.cs">
-      <DependentUpon>TabsInterface.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\TabPanel\TabsItem.cs" />
     <Compile Include="Templates\UI\Views\404.aspx.cs">
       <DependentUpon>404.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -775,11 +767,6 @@
     <Content Include="Templates\UI\Img\technorati.png" />
     <Content Include="Templates\UI\Img\yahoomyweb.png" />
     <Content Include="Templates\UI\Img\zoom.png" />
-    <Content Include="Templates\TabPanel\TabPanel.css" />
-    <Content Include="Templates\TabPanel\TabPanel.js" />
-    <Content Include="Templates\TabPanel\TabsInterface.ascx" />
-    <Content Include="Templates\TabPanel\tabs_bg.gif" />
-    <Content Include="Templates\TabPanel\tab_selected.gif" />
     <Content Include="Templates\UI\Views\404.aspx" />
     <Content Include="Templates\UI\Views\500.aspx" />
     <Content Include="Templates\UI\Parts\Bubble.ascx" />
