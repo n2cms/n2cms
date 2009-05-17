@@ -50,7 +50,7 @@ namespace N2.Templates.Scrum.Items
 
 		public override string TemplateUrl
 		{
-			get { return "~/Scrum/UI/Task.ascx"; }
+			get { return "~/Addons/Scrum/Views/Task.ascx"; }
 		}
 	}
 }

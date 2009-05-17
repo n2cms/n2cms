@@ -39,7 +39,7 @@ namespace N2.Edit.Web
 
 		protected virtual string GetToolbarSelectScript(ToolbarPluginAttribute toolbarPlugin)
 		{
-			return string.Format("n2ctx.toolbarSelect('{0}');", toolbarPlugin.Name);
+			return string.Format("if(window.n2ctx)window.n2ctx.toolbarSelect('{0}');", toolbarPlugin.Name);
 		}
 
 		protected virtual string CancelUrl()
@@ -49,18 +49,21 @@ namespace N2.Edit.Web
 
     	#region Refresh Methods
 		private const string RefreshBothFormat = @"
-n2ctx.setupToolbar('{4}','{2}'); 
-n2ctx.refresh('{1}', '{2}');
-";
+if(window.n2ctx){{
+	window.n2ctx.setupToolbar('{4}','{2}'); 
+	window.n2ctx.refresh('{1}', '{2}');
+}}";
 
 		private const string RefreshNavigationFormat = @"
-n2ctx.setupToolbar('{4}','{2}'); 
-n2ctx.refreshNavigation('{1}', '{2}');
-";
+if(window.n2ctx){{
+	window.n2ctx.setupToolbar('{4}','{2}'); 
+	window.n2ctx.refreshNavigation('{1}', '{2}');
+}}";
 		private const string RefreshPreviewFormat = @"
-n2ctx.setupToolbar('{4}','{2}'); 
-n2ctx.refreshPreview('{1}', '{2}');
-";
+if(window.n2ctx){{
+	window.n2ctx.setupToolbar('{4}','{2}'); 
+	window.n2ctx.refreshPreview('{1}', '{2}');
+}}";
 
 		protected virtual void Refresh(ContentItem item, N2.Edit.ToolbarArea area)
 		{
@@ -100,7 +103,7 @@ n2ctx.refreshPreview('{1}', '{2}');
 		#region Setup Toolbar Methods
 		protected virtual string SetupToolbarScriptFormat
 		{
-			get { return "window.n2ctx.setupToolbar('{0}','{2}');"; }
+			get { return "if(window.n2ctx)window.n2ctx.setupToolbar('{0}','{2}');"; }
 		}
 
 		protected virtual void RegisterSetupToolbarScript(ContentItem item)

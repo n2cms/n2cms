@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="Layouts/Empty.Master" AutoEventWireup="true" CodeBehind="Project.aspx.cs" Inherits="N2.Templates.Scrum.UI.Project" Title="Untitled Page" %>
+<%@ Page Language="C#" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.Master" AutoEventWireup="true" CodeBehind="Project.aspx.cs" Inherits="N2.Templates.Scrum.UI.Project" Title="Untitled Page" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentAndSidebar" runat="server">
 
 		    <div id="plannedTaskContextMenu" class="contextMenu">

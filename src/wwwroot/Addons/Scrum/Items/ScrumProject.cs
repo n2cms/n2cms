@@ -11,7 +11,6 @@ namespace N2.Templates.Scrum.Items
 	[WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
 	[AvailableZone("Deferred", "Deferred")]
 	[AvailableZone("Planned", "Planned")]
-	[TabPanel(Tabs.Advanced, "Advanced", 100)]
 	[RestrictParents(typeof(IStructuralPage))]
 	public class ScrumProject : TaskContainer
 	{
@@ -39,6 +38,15 @@ namespace N2.Templates.Scrum.Items
 					sprint.AddTo(this);
 				}
 				Utility.UpdateSortOrder(sprints);
+				
+				if(CurrentSprint == null)
+				{
+					foreach (ScrumSprint sprint in Sprints)
+					{
+						CurrentSprint = sprint;
+						break;
+					}
+				}
 			}
 		}
 
@@ -61,14 +69,14 @@ namespace N2.Templates.Scrum.Items
 		//    set { SetDetail("ProductBacklog", value); }
 		//}
 
-		[EditableLink("Current sprint", 110)]
+		[EditableLink("Current sprint", 110, ContainerName =  Tabs.Advanced)]
 		public virtual ScrumSprint CurrentSprint
 		{
 			get { return (ScrumSprint)GetDetail("CurrentSprint"); }
 			set { SetDetail("CurrentSprint", value); }
 		}
 
-		[EditableTextBox("# of sprints", 120)]
+		[EditableTextBox("# of sprints", 120, ContainerName = Tabs.Content)]
 		public virtual int SprintCount
 		{
 			get { return (int)(GetDetail("SprintCount") ?? 1); }
@@ -86,7 +94,7 @@ namespace N2.Templates.Scrum.Items
 
 		public override string TemplateUrl
 		{
-			get { return "~/Scrum/UI/Project.aspx"; }
+			get { return "~/Addons/Scrum/Views/Project.aspx"; }
 		}
 	}
 }

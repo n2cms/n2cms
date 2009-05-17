@@ -1,4 +1,6 @@
-﻿- changed administer icon in control panel
+﻿- moved old wiki code to add-on
+- moved tab panel to separate add-on
+- changed administer icon in control panel
 - added eye to edit (shows preview)
 - removed the eye from templates
 - allow drag'n'drop parts in ASP.NET MVC views

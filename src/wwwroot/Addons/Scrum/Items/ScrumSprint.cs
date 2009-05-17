@@ -70,7 +70,7 @@ namespace N2.Templates.Scrum.Items
 
 		public override string TemplateUrl
 		{
-			get { return "~/Scrum/UI/Sprint.aspx"; }
+			get { return "~/Addons/Scrum/Views/Sprint.aspx"; }
 		}
 
 		public virtual ScrumProject Project
