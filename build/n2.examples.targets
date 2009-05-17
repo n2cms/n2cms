@@ -1,0 +1,160 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+	<!-- EXAMPLES -->
+
+	<PropertyGroup>
+		<Examples-MediumTrustFolder>$(Examples-Folder)\MediumTrust</Examples-MediumTrustFolder>
+		<Examples-PartsFolder>$(Examples-Folder)\Parts</Examples-PartsFolder>
+		<Examples-VisualBasic>$(Examples-Folder)\MinimalVisualBasic</Examples-VisualBasic>
+		<Examples-CSharp>$(Examples-Folder)\MinimalCSharp</Examples-CSharp>
+		<Examples-TemplatesSiteFolder>$(Examples-Folder)\TemplatesSite</Examples-TemplatesSiteFolder>
+		<Examples-MultipleDomainsFolder>$(Examples-Folder)\MultipleDomains</Examples-MultipleDomainsFolder>
+		<Examples-MvcFolder>$(Examples-Folder)\Mvc</Examples-MvcFolder>
+		<Deploy-ExamplesFolder>$(DeployFolder)\Examples</Deploy-ExamplesFolder>
+	</PropertyGroup>
+
+	<Target Name="Examples-MediumTrust-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<ItemGroup>
+			<UnsafeDlls Include="$(Examples-MediumTrustFolder)\**\MySql*;
+                           $(Examples-MediumTrustFolder)\**\System.Data.SQLite*" />
+		</ItemGroup>
+		<Delete Files="@(UnsafeDlls)"/>
+	</Target>
+	<Target Name="Examples-Parts-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-PartsFolder)\wwwroot\bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-PartsFolder)\wwwroot\Edit\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-CSharp)\wwwroot\bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-CSharp)\wwwroot\Edit\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-VisualBasic-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-VisualBasic)\wwwroot\bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-VisualBasic)\wwwroot\Edit\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles;Templates-Deploy">
+		<ItemGroup>
+			<_TemplatesFiles Include="$(DeployFolder)\Templates\wwwroot\**\*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\bin" />
+		<Copy SourceFiles="@(_TemplatesFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-MultipleDomains-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\wwwroot\bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\wwwroot\Edit\%(RecursiveDir)" />
+	</Target>
+	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
+                       $(LibFolder)\Microsoft.Web.Mvc.dll; 
+                       $(LibFolder)\System.Web.Mvc.dll;"
+					DestinationFolder="$(Examples-MvcFolder)\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
+
+	<Target Name="Examples-PrepareDependencies">
+		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
+		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
+		<CallTarget Targets="Examples-MultipleDomains-PrepareDependencies"/>
+
+		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
+		<CallTarget Targets="Examples-VisualBasic-PrepareDependencies"/>
+		<CallTarget Targets="Examples-TemplatesSite-PrepareDependencies"/>
+		<CallTarget Targets="Examples-Mvc-PrepareDependencies"/>
+	</Target>
+
+	<Target Name="Example-MediumTrust-Build" DependsOnTargets="Examples-MediumTrust-PrepareDependencies">
+		<MSBuild Projects="$(Examples-MediumTrustFolder)\N2.Examples.MediumTrust-vs2008.sln"/>
+	</Target>
+	<Target Name="Example-Parts-Build" DependsOnTargets="Examples-Parts-PrepareDependencies">
+		<MSBuild Projects="$(Examples-PartsFolder)\Parts_Example.sln"/>
+	</Target>
+	<Target Name="Example-SimpleCSharp-Build" DependsOnTargets="Examples-CSharp-PrepareDependencies">
+		<MSBuild Projects="$(Examples-CSharp)\CSharp_Example-vs2008.sln"/>
+	</Target>
+	<Target Name="Example-SimpleVisualBasic-Build" DependsOnTargets="Examples-VisualBasic-PrepareDependencies">
+		<MSBuild Projects="$(Examples-VisualBasic)\VisualBasic_Example-vs2008.sln"/>
+	</Target>
+	<Target Name="Examples-TemplatesSite-Build" DependsOnTargets="Examples-TemplatesSite-PrepareDependencies">
+		<MSBuild Projects="$(Examples-TemplatesSiteFolder)\MyProject-vs2008.sln" />
+	</Target>
+	<Target Name="Examples-Mvc-Build" DependsOnTargets="Examples-Mvc-PrepareDependencies">
+		<MSBuild Projects="$(Examples-MvcFolder)\Mvc_Example.sln" />
+	</Target>
+
+	<Target Name="Examples-Build">
+		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Example-Parts-Build; Example-MediumTrust-Build; Examples-Mvc-Build"/>
+	</Target>
+
+	<Target Name="Examples-CreateItemGroups">
+		<ItemGroup>
+			<ExampleSource-Exclude Include="$(Examples-Folder)\**\.svn\**\*;
+									    $(Examples-Folder)\**\_*\**\*;
+									    $(Examples-Folder)\**\*WebSetup\**\*;
+									    $(Examples-Folder)\**\*VsTemplate\**\*;
+									    $(Examples-Folder)\**\obj\**\*;
+									    $(Examples-Folder)\**\PrecompiledWeb\**\*.*;
+									    $(Examples-Folder)\**\Ankh.Load;
+									    $(Examples-Folder)\**\*.sln.cache;
+									    $(Examples-Folder)\**\*.suo;
+									    $(Examples-Folder)\**\*.resharper;
+									    $(Examples-Folder)\**\*.user;
+									    $(Examples-Folder)\**\bin\Debug\*.*;
+									    $(Examples-Folder)\**\bin\Release\*.*;
+									    $(Examples-Folder)\**\*.pdb;
+									    $(Examples-Folder)\**\*WithProjectReferences.*" />
+
+			<ExampleSource-MediumTrustFiles Include="$(Examples-MediumTrustFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+			<ExampleSource-PartsFiles Include="$(Examples-PartsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+			<ExampleSource-CSFiles Include="$(Examples-CSharp)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+			<ExampleSource-VBFiles Include="$(Examples-VisualBasic)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+			<ExampleSource-TemplatesSiteFiles Include="$(Examples-TemplatesSiteFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+			<ExampleSource-MultipleDomainsFiles Include="$(Examples-MultipleDomainsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+			<ExampleSource-MvcFiles Include="$(Examples-MvcFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="Examples-Deploy" DependsOnTargets="Examples-TemplatesSite-PrepareDependencies;Examples-CreateItemGroups">
+		<Message Text="Deploying Examples"/>
+
+		<CreateItem Include="$(DeployFolder)\Core\**\*" Exclude="$(DeployFolder)\Core\*.txt">
+			<Output TaskParameter="Include" ItemName="CoreDeploy-ForExampleDeploy"/>
+		</CreateItem>
+
+		<Copy SourceFiles="@(ExampleSource-VBFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\VB\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Core-BinFiles)"         DestinationFolder="$(Deploy-ExamplesFolder)\VB\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\VB\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Deploy-ExamplesFolder)\VB" />
+		<Copy SourceFiles="@(Snippets)"              DestinationFolder="$(Deploy-ExamplesFolder)\VB\Snippets" />
+
+		<Copy SourceFiles="@(ExampleSource-CSFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\CS\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Core-BinFiles)"         DestinationFolder="$(Deploy-ExamplesFolder)\CS\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\CS\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Deploy-ExamplesFolder)\CS" />
+		<Copy SourceFiles="@(Snippets)"              DestinationFolder="$(Deploy-ExamplesFolder)\CS\Snippets" />
+
+		<Copy SourceFiles="@(ExampleSource-TemplatesSiteFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"                        DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite" />
+		<Copy SourceFiles="@(Snippets)"                         DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\Snippets" />
+		<Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)"      DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\%(RecursiveDir)" />
+
+		<Copy SourceFiles="@(ExampleSource-MvcFiles)"       DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Core-BinFiles)"                DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)"               DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
+		<Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Snippets" />
+		<Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)"  DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\wwwroot\%(RecursiveDir)" />
+	</Target>
+
+	<Target Name="Examples-Deploy-LessInteresting" DependsOnTargets="Examples-CreateItemGroups">
+		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
+		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
+		<CallTarget Targets="Examples-MultipleDomains-PrepareDependencies"/>
+
+		<Copy SourceFiles="@(ExampleSource-MediumTrustFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MediumTrust\%(RecursiveDir)" />
+		<Copy SourceFiles="@(ExampleSource-PartsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Parts\%(RecursiveDir)" />
+		<Copy SourceFiles="@(ExampleSource-MultipleDomainsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MultipleDomains\%(RecursiveDir)" />
+	</Target>
+</Project>

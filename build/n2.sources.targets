@@ -1,0 +1,33 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+	<!-- SOURCE -->
+
+
+	<Target Name="Source-Deploy">
+		<ItemGroup>
+			<Source-Files Include="$(MSBuildProjectDirectory)\..\**\*"
+						  Exclude="$(MSBuildProjectDirectory)\..\**\.svn\**\*;
+								   $(MSBuildProjectDirectory)\..\output\**\*;
+								   $(MSBuildProjectDirectory)\..\**\_*\**\*;
+								   $(MSBuildProjectDirectory)\..\**\*WebSetup\**\*;
+								   $(MSBuildProjectDirectory)\..\**\*VsTemplate\**\*;
+								   $(MSBuildProjectDirectory)\..\**\obj\**\*;
+								   $(MSBuildProjectDirectory)\..\**\bin\**\*;
+								   $(MSBuildProjectDirectory)\..\**\PrecompiledWeb\**\*;
+								   $(MSBuildProjectDirectory)\..\**\Ankh.Load;
+								   $(MSBuildProjectDirectory)\..\**\*.sln.cache;
+								   $(MSBuildProjectDirectory)\..\**\*.resharper;
+								   $(MSBuildProjectDirectory)\..\**\*.suo;
+								   $(MSBuildProjectDirectory)\..\**\*.user;
+								   $(MSBuildProjectDirectory)\..\*.xml;
+								   $(MSBuildProjectDirectory)\..\**\*.Publish.xml;
+								   $(MSBuildProjectDirectory)\..\**\Thumbs.db;
+								   $(DeployFolder)\**\*;
+								   $(SrcFolder)\N2.DocSite\**;
+								   $(Examples-Folder)\**\Edit\**\*;
+								   $(LibFolder)\*.pdb" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(DeployFolder)\Source\%(RecursiveDir)"  />
+	</Target>
+</Project>

@@ -1,0 +1,59 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+	<!-- CORE -->
+
+	<Target Name="Core-PrepareDependencies">
+		<Copy SourceFiles="@(Core-Dependencies)" DestinationFolder="$(WebFolder)\Bin\" />
+	</Target>
+
+	<Target Name="Core-Build" DependsOnTargets="Core-PrepareDependencies">
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Properties="Configuration=$(Configuration)" />
+	</Target>
+
+	<ItemGroup>
+		<Core-Dependencies Include="$(LibFolder)\Castle*;
+									$(LibFolder)\Iesi.Collections.dll;
+									$(LibFolder)\log4net.dll;
+									$(LibFolder)\NHibernate.dll;
+									$(LibFolder)\NHibernate.Caches.SysCache2.dll;
+									$(LibFolder)\System.Data.SQLite.dll"/>
+
+		<TextFiles Include="$(DocFolder)\history.txt;
+							$(DocFolder)\install.txt;
+							$(DocFolder)\license.txt;
+							$(DocFolder)\n2_readme.txt;
+							$(DocFolder)\example.web.config" />
+
+		<Snippets Include="$(SnippetsFolder)\*" />
+	</ItemGroup>
+
+	<Target Name="Rebuild-Core-BinFiles" DependsOnTargets="Core-Build">
+		<ItemGroup>
+			<Core-EditFiles Include="$(EditFolder)\**\*.as?x;
+									 $(EditFolder)\**\*.master;
+									 $(EditFolder)\**\*.resx;
+									 $(EditFolder)\**\*.config;
+									 $(EditFolder)\**\*.css;
+									 $(EditFolder)\**\*.js;
+									 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
+									 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"/>
+		</ItemGroup>
+		<CreateItem Include="$(WebFolder)\Bin\*.dll;
+							 $(WebFolder)\Bin\N2.xml;"
+					Exclude="$(WebFolder)\Bin\N2.Templates*;
+							 $(WebFolder)\Bin\Demo*;
+							 $(WebFolder)\Bin\AddonCatalog*;
+							 $(WebFolder)\Bin\Wiki*;
+							 $(WebFolder)\Bin\Tagging*;
+							 $(WebFolder)\Bin\MyAddon*">
+			<Output TaskParameter="Include" ItemName="Core-BinFiles"/>
+		</CreateItem>
+	</Target>
+
+	<Target Name="Core-Deploy" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(DeployFolder)\Core\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(DeployFolder)\Core\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Core" />
+	</Target>
+
+</Project>

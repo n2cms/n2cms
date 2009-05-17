@@ -1,2 +1,4 @@
 @echo off
-cmd /c "build.bat /target:Deploy /p:Configuration=Release /p:Platform=^"Any CPU^"" & pause & exit
+cd build
+cmd /c "build.bat /target:Deploy"
+start ..\output & pause & exit

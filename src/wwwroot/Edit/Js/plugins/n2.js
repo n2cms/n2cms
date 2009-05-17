@@ -123,9 +123,10 @@ var initn2context = function(w) {
         },
 
         // selection memory
-        setupToolbar: function(path,url) {
+        setupToolbar: function(path, url) {
             if (!this.hasTop()) return;
             path = encodeURIComponent(path);
+            url = url || this.selectedUrl;
             var memory = this.getMemory();
             var action = this.getAction();
             this.selectedPath = path;

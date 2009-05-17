@@ -1,0 +1,60 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+	<!-- TEMPLATES -->
+
+	<Target Name="Templates-Build">
+		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+	</Target>
+
+	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Rebuild-Core-BinFiles">
+		<ItemGroup>
+			<_TemplatesTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates\**\*"/>
+		</ItemGroup>
+
+		<Copy SourceFiles="@(_TemplatesTempFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\%(RecursiveDir)" />
+		<Delete Files="@(_TemplatesTempFiles)" ContinueOnError="true"/>
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\bin\" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Templates" />
+		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(DeployFolder)\Templates\wwwroot\App_Data\n2.sqlite.db" />
+	</Target>
+
+
+	<Target Name="Addons-Deploy" DependsOnTargets="AddonCatalog-Deploy;Wiki-Deploy;Tagging-Deploy">
+	</Target>
+
+	<Target Name="AddonCatalog-Build">
+		<MSBuild Projects="$(WebFolder)\AddonCatalog.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+	</Target>
+	<Target Name="AddonCatalog-Deploy" DependsOnTargets="AddonCatalog-Build">
+		<ItemGroup>
+			<_AddonCatalogTempFiles Include="$(TempFolder)_PublishedWebsites\AddonCatalog\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(_AddonCatalogTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\AddonCatalog\%(RecursiveDir)"/>
+		<Delete Files="@(_AddonCatalogTempFiles)" ContinueOnError="true" />
+	</Target>
+
+	<Target Name="Wiki-Build">
+		<MSBuild Projects="$(WebFolder)\Wiki.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+	</Target>
+	
+	<Target Name="Wiki-Deploy" DependsOnTargets="Wiki-Build">
+		<ItemGroup>
+			<_WikiTempFiles Include="$(TempFolder)_PublishedWebsites\Wiki\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(_WikiTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\Wiki\%(RecursiveDir)"/>
+		<Delete Files="@(_WikiTempFiles)" ContinueOnError="true" />
+	</Target>
+
+	<Target Name="Tagging-Build">
+		<MSBuild Projects="$(WebFolder)\Tagging.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+	</Target>
+
+	<Target Name="Tagging-Deploy" DependsOnTargets="Tagging-Build">
+		<ItemGroup>
+			<_TaggingTempFiles Include="$(TempFolder)_PublishedWebsites\Tagging\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(_TaggingTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\Tagging\%(RecursiveDir)"/>
+		<Delete Files="@(_TaggingTempFiles)" ContinueOnError="true" />
+	</Target>
+</Project>

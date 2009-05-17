@@ -1,0 +1,87 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+	<!-- GENERAL -->
+
+	<Target Name="Echo">
+		<Message Text="Hello from $(MSBuildProjectDirectory)" />
+	</Target>
+
+	<PropertyGroup>
+		<LibFolder>$(MSBuildProjectDirectory)\..\lib</LibFolder>
+		<DocFolder>$(MSBuildProjectDirectory)\..\docs</DocFolder>
+		<SnippetsFolder>$(MSBuildProjectDirectory)\..\snippets</SnippetsFolder>
+
+		<SrcFolder>$(MSBuildProjectDirectory)\..\src</SrcFolder>
+		<WebFolder>$(MSBuildProjectDirectory)\..\src\wwwroot</WebFolder>
+		<EditFolder>$(MSBuildProjectDirectory)\..\src\wwwroot\Edit</EditFolder>
+
+		<Examples-Folder>$(MSBuildProjectDirectory)\..\examples</Examples-Folder>
+
+		<DeployFolder>$(MSBuildProjectDirectory)\..\output</DeployFolder>
+		<TempFolder>$(MSBuildProjectDirectory)\..\output\temp\</TempFolder>
+		
+		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+	</PropertyGroup>
+
+	<Import Project="$(LibFolder)\MSBuild.Community.Tasks.Targets"/>
+	<Import Project="n2.framework.targets"/>
+	<Import Project="n2.templates.targets"/>
+	<Import Project="n2.examples.targets"/>
+	<Import Project="n2.sources.targets"/>
+
+	<Target Name="Build">
+		<Message Text="Building Everything"/>
+
+		<CallTarget Targets="Core-Build"/>
+		<CallTarget Targets="Examples-Build"/>
+	</Target>
+
+	<Target Name="Deploy" DependsOnTargets="Clean-Deploy">
+		<Message Text="Deploying Everything"/>
+
+		<CallTarget Targets="Core-Deploy"/>
+		<CallTarget Targets="Templates-Deploy"/>
+		<CallTarget Targets="Examples-Deploy"/>
+		<CallTarget Targets="Source-Deploy"/>
+	</Target>
+
+	<Target Name="Zip">
+		<ItemGroup>
+			<ZipDeploy-Core Include="$(DeployFolder)\Core\**" />
+			<ZipDeploy-Templates Include="$(DeployFolder)\Templates\**" />
+			<ZipDeploy-Source Include="$(DeployFolder)\Source\**" />
+			<ZipDeploy-CSExample Include="$(DeployFolder)\Examples\CS\**" />
+			<ZipDeploy-VBExample Include="$(DeployFolder)\Examples\VB\**" />
+			<ZipDeploy-TemplateExample Include="$(DeployFolder)\Examples\TemplatesSite\**" />
+			<ZipDeploy-MvcExample Include="$(DeployFolder)\Examples\Mvc\**" />
+		</ItemGroup>
+
+		<Error Condition="'@(ZipDeploy-Core)' == ''" Text="Nothing in '$(DeployFolder)'. Do deploy first." />
+
+		<Zip Files="@(ZipDeploy-Core)"            WorkingDirectory="$(DeployFolder)\Core"                   ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
+		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(DeployFolder)\Templates"              ZipFileName="$(DeployFolder)\CompiledTemplates.zip" />
+		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(DeployFolder)\Source"                 ZipFileName="$(DeployFolder)\Source.zip" />
+		<Zip Files="@(ZipDeploy-CSExample)"       WorkingDirectory="$(DeployFolder)\Examples\CS"            ZipFileName="$(DeployFolder)\CS_Example.zip" />
+		<Zip Files="@(ZipDeploy-VBExample)"       WorkingDirectory="$(DeployFolder)\Examples\VB"            ZipFileName="$(DeployFolder)\VB_Example.zip" />
+		<Zip Files="@(ZipDeploy-TemplateExample)" WorkingDirectory="$(DeployFolder)\Examples\TemplatesSite" ZipFileName="$(DeployFolder)\Template_Example.zip" />
+		<Zip Files="@(ZipDeploy-MvcExample)"      WorkingDirectory="$(DeployFolder)\Examples\Mvc"           ZipFileName="$(DeployFolder)\Mvc_Example.zip" />
+	</Target>
+
+	<Target Name="Clean">
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Targets="Clean" />
+	</Target>
+
+	<Target Name="PrepareDependencies" DependsOnTargets="Core-PrepareDependencies;Test-PrepareDependencies;Examples-PrepareDependencies">
+	</Target>
+
+	<Target Name="Clean-Deploy">
+		<Message Text="Removing Deploy"/>
+
+		<RemoveDir Directories="$(DeployFolder)"/>
+	</Target>
+
+	<Target Name="Test" DependsOnTargets="Clean;Core-Build">
+		<Exec Command="$(LibFolder)\nunit-console-x86.exe $(SrcFolder)\N2.Tests\bin\N2.Tests.exe $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" />
+	</Target>
+
+</Project>
