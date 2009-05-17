@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Principal;
 using System.Web.UI.WebControls;
+using N2.Addons.AddonCatalog.Items;
 using N2.Edit.FileSystem;
 using N2.Resources;
 using N2.Templates.Web.UI;
@@ -16,7 +17,13 @@ namespace N2.Addons.AddonCatalog.UI
             base.OnInit(e);
 
 			Items.Addon addon = CurrentPage as Items.Addon;
-			if (addon != null && IsAuthorized() && IsAuthor(Page.User, addon))
+
+        	bool isAuthorizedToModify = IsAuthorized(Page.User);
+        	if(addon == null && isAuthorizedToModify)
+			{
+				Register.JQuery(Page);
+			}
+			else if (addon != null && isAuthorizedToModify && IsAuthor(Page.User, addon))
             {
                 rfvAddon.Enabled = false;
                 LoadAddon(addon);
@@ -61,14 +68,14 @@ namespace N2.Addons.AddonCatalog.UI
             }
         }
 
-        private bool IsAuthorized()
+        private bool IsAuthorized(IPrincipal user)
         {
-            bool isEditor = Engine.SecurityManager.IsEditor(Page.User);
+            bool isEditor = Engine.SecurityManager.IsEditor(user);
         	Items.AddonCatalog catalog = CurrentPage as Items.AddonCatalog ?? CurrentPage.Parent as Items.AddonCatalog;
         	bool isAllowedRole = false;
 			foreach (string role in catalog.ModifyRoles)
 			{
-				isAllowedRole |= Page.User.IsInRole(role);
+				isAllowedRole |= user.IsInRole(role);
 			}
             return isEditor || isAllowedRole;
         }
@@ -82,7 +89,7 @@ namespace N2.Addons.AddonCatalog.UI
         protected void save_Click(object sender, EventArgs e)
         {
             Page.Validate();
-            cvAuthenticated.IsValid = IsAuthorized();
+            cvAuthenticated.IsValid = IsAuthorized(Page.User);
             if (!Page.IsValid)
                 return;
 
