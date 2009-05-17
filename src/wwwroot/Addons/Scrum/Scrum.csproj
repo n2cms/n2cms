@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>N2.Addons.Scrum</RootNamespace>
-    <AssemblyName>N2.Addons.Scrum</AssemblyName>
+    <AssemblyName>Scrum</AssemblyName>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>

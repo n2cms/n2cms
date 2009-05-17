@@ -1,4 +1,5 @@
-﻿- moved old wiki code to add-on
+﻿1.4.5.2
+- moved old wiki code to add-on
 - moved tab panel to separate add-on
 - changed administer icon in control panel
 - added eye to edit (shows preview)

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Scrum", "N2.Templates.Scrum.csproj", "{5ACE012F-5031-45F2-ABB9-AC3C23C692C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrum", "Scrum.csproj", "{5ACE012F-5031-45F2-ABB9-AC3C23C692C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates", "..\..\N2.Templates.csproj", "{D42D096E-399D-4618-AEB4-9B023BA1316D}"
 EndProject

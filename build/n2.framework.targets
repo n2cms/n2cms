@@ -41,11 +41,14 @@
 		<CreateItem Include="$(WebFolder)\Bin\*.dll;
 							 $(WebFolder)\Bin\N2.xml;"
 					Exclude="$(WebFolder)\Bin\N2.Templates*;
-							 $(WebFolder)\Bin\Demo*;
 							 $(WebFolder)\Bin\AddonCatalog*;
-							 $(WebFolder)\Bin\Wiki*;
+							 $(WebFolder)\Bin\Demo*;
+							 $(WebFolder)\Bin\MyAddon*;
+							 $(WebFolder)\Bin\n2markdown*;
+							 $(WebFolder)\Bin\Scrum*;
+							 $(WebFolder)\Bin\TabPanel*;
 							 $(WebFolder)\Bin\Tagging*;
-							 $(WebFolder)\Bin\MyAddon*">
+							 $(WebFolder)\Bin\Wiki*;">
 			<Output TaskParameter="Include" ItemName="Core-BinFiles"/>
 		</CreateItem>
 	</Target>
