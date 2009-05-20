@@ -58,7 +58,6 @@ namespace N2.Web.UI
 			return item;
 		}
 
-		[Obsolete]
 		public static Control AddUserControl(Control container, ContentItem item)
 		{
 			PathData path = item.FindPath(PathData.DefaultAction);

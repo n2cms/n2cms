@@ -20,5 +20,9 @@ namespace N2.Definitions
         /// <summary>Adds an editor or sub-container definition to tihs container.</summary>
         /// <param name="subElement">The editor or sub-container to add.</param>
         void AddContained(IContainable subElement);
-    }
+
+		/// <summary>Removes an editor or sub-container from the container.</summary>
+		/// <param name="containable">The editor or sub-container to remove.</param>
+		void RemoveContained(IContainable containable);
+	}
 }

@@ -48,7 +48,7 @@ namespace N2.Web.UI
 
 		#region Methods
 		/// <summary>Applies the modifications specified by this attribute. Updates the property specified by <see cref="EditorPropertyName"/> with the value specified by <see cref="Value"/>.</summary>
-		/// <param name="editorContainer">The editor control to modify.</param>
+		/// <param name="editor">The editor control to modify.</param>
 		public virtual void Modify(Control editor)
 		{
 			PropertyInfo pi = editor.GetType().GetProperty(EditorPropertyName);

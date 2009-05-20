@@ -193,7 +193,6 @@
     <Compile Include="Details\WithEditableNameAttribute.cs" />
     <Compile Include="Details\WithEditableTitleAttribute.cs" />
     <Compile Include="Details\DetailAuthorizedRolesAttribute.cs" />
-    <Compile Include="Details\EditableCheckBox.cs" />
     <Compile Include="Details\EditableUserControlAttribute.cs" />
     <Compile Include="Details\DetailCollection.cs" />
     <Compile Include="Details\IDisplayable.cs" />
@@ -283,6 +282,8 @@
     <Compile Include="Collections\RecursiveFinder.cs" />
     <Compile Include="Collections\TreeHierarchyBuilder.cs" />
     <Compile Include="Collections\VisibleFilter.cs" />
+    <Compile Include="Configuration\ContainableCollection.cs" />
+    <Compile Include="Configuration\ContainableElement.cs" />
     <Compile Include="Configuration\DefinitionCollection.cs" />
     <Compile Include="Configuration\DefinitionElement.cs" />
     <Compile Include="Configuration\InterfacePluginElement.cs" />
@@ -328,6 +329,7 @@
     <Compile Include="Definitions\DisableAttribute.cs" />
     <Compile Include="Definitions\ISortableRefiner.cs" />
     <Compile Include="Definitions\RefineOrder.cs" />
+    <Compile Include="Details\EditableCheckBoxAttribute.cs" />
     <Compile Include="Details\EditableDateAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
     <Compile Include="Details\EditableListControlAttribute.cs" />

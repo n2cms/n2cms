@@ -100,6 +100,8 @@ namespace N2
 			PropertyInfo pi = instanceType.GetProperty(propertyName);
 			if (pi == null)
 				throw new N2Exception("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType);
+			if(!pi.CanWrite)
+				throw new N2Exception("The property '{0}' on the instance of type '{1}' does not have a setter.", propertyName, instanceType);
 			if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
 				value = Convert(value, pi.PropertyType);
 			pi.SetValue(instance, value, new object[0]);

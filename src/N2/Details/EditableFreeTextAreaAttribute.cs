@@ -20,6 +20,11 @@ namespace N2.Details
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableFreeTextAreaAttribute : EditableTextBoxAttribute
 	{
+		public EditableFreeTextAreaAttribute()
+			: base("Text", 100)
+		{
+		}
+
 		public EditableFreeTextAreaAttribute(string title, int sortOrder) 
 			: base(title, sortOrder)
 		{

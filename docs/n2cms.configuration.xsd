@@ -1,5 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://n2cms.com/schemas/configuration/v3" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://n2cms.com/schemas/configuration/v3" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:complexType name="namedElement">
+		<xs:attribute name="name" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="containableElement">
+		<xs:attribute name="name" type="xs:string" use="required" />
+		<xs:attribute name="type" type="xs:string" use="required" />
+		<xs:attribute name="containerName" type="xs:string" />
+		<xs:attribute name="sortOrder" type="xs:int" />
+		<xs:anyAttribute />
+	</xs:complexType>
+
+	<xs:complexType name="userRoleElement">
+		<xs:attribute name="users" type="xs:string" use="optional" />
+		<xs:attribute name="roles" type="xs:string" use="optional" />
+	</xs:complexType>
+
 	<xs:element name="n2">
 		<xs:complexType>
 			<xs:all>
@@ -151,15 +168,29 @@
 							<xs:element name="definitions" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="remove" minOccurs="0">
-											<xs:complexType>
-												<xs:attribute name="name" type="xs:string" use="required" />
-											</xs:complexType>
-										</xs:element>
+										<xs:element name="remove" minOccurs="0" type="tns:namedElement" />
 										<xs:element name="add" minOccurs="0">
 											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="editables" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="remove" minOccurs="0" type="tns:namedElement" />
+																<xs:element name="add" minOccurs="0" type="tns:containableElement" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="containers" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="remove" minOccurs="0" type="tns:namedElement" />
+																<xs:element name="add" minOccurs="0" type="tns:containableElement" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
 												<xs:attribute name="name" type="xs:string" use="required" />
-												<xs:attribute name="type" type="xs:string" use="required" />
+												<xs:attribute name="type" type="xs:string" />
 												<xs:attribute name="title" type="xs:string" />
 												<xs:attribute name="sortOrder" type="xs:int" />
 												<xs:attribute name="toolTip" type="xs:string" />
@@ -225,18 +256,8 @@
 									<xs:attribute name="installUrl" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="editors" minOccurs="0">
-								<xs:complexType>
-									<xs:attribute name="users" type="xs:string" use="optional" />
-									<xs:attribute name="roles" type="xs:string" use="optional" />
-								</xs:complexType>
-							</xs:element>
-							<xs:element name="administrators" minOccurs="0">
-								<xs:complexType>
-									<xs:attribute name="users" type="xs:string" use="optional" />
-									<xs:attribute name="roles" type="xs:string" use="optional" />
-								</xs:complexType>
-							</xs:element>
+							<xs:element name="editors" minOccurs="0" type="tns:userRoleElement" />
+							<xs:element name="administrators" minOccurs="0" type="tns:userRoleElement" />
 							<xs:element name="uploadFolders" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
@@ -287,11 +308,7 @@
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
-													<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="name" type="xs:string" use="required"/>
-														</xs:complexType>
-													</xs:element>
+													<xs:element name="remove" minOccurs="0" maxOccurs="unbounded" type="tns:namedElement"/>
 													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
 														<xs:complexType>
 															<xs:attribute name="name" type="xs:string" use="required" />

@@ -117,6 +117,11 @@ namespace N2.Definitions
 			this.ContainedEditors.Sort();
 		}
 
+		public void RemoveContained(IContainable containable)
+		{
+			this.ContainedEditors.Remove(containable);
+		}
+
 		/// <summary>Gets editors and sub-containers in this container.</summary>
 		/// <param name="user">The user to check.</param>
 		/// <returns>A list of editors or containers the user is authorized to access.</returns>

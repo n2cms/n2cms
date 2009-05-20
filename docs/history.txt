@@ -1,4 +1,6 @@
 ﻿- added support for configurable definitions
+	- add/remove definition
+	- add/remove editable/container
 
 1.4.5.2
 - moved old wiki code to add-on

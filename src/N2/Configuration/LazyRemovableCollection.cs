@@ -13,6 +13,7 @@ namespace N2.Configuration
 		where T : NamedElement, new()
 	{
 		List<T> removedElements = new List<T>();
+		bool clear;
 
 		/// <summary>Elements that were "removed".</summary>
 		public IEnumerable<T> RemovedElements
@@ -37,6 +38,12 @@ namespace N2.Configuration
 				foreach (T element in value)
 					BaseAdd(element);
 			}
+		}
+
+		public bool Clear
+		{
+			get { return clear; }
+			set { clear = value; }
 		}
 
 
@@ -66,21 +73,28 @@ namespace N2.Configuration
 			return ((T)element).Name;
 		}
 
-		protected override bool OnDeserializeUnrecognizedElement(string elementName, System.Xml.XmlReader reader)
+		protected override bool OnDeserializeUnrecognizedElement(string elementName, XmlReader reader)
 		{
 			if (elementName == "remove")
 			{
 				T element = new T();
 				element.Name = reader.GetAttribute("name");
 
-				OnDeserializeElement(element, reader);
+				OnDeserializeRemoveElement(element, reader);
 				
 				removedElements.Add(element);
+				return true;
+			}
+			if(elementName == "clear")
+			{
+				clear = true;
 				return true;
 			}
 			return base.OnDeserializeUnrecognizedElement(elementName, reader);
 		}
 
-		protected abstract void OnDeserializeElement(T element, XmlReader reader);
+		protected virtual void OnDeserializeRemoveElement(T element, XmlReader reader)
+		{
+		}
 	}
 }

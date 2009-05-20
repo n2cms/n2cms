@@ -8,7 +8,7 @@ namespace N2.Configuration
 	public class DefinitionElement : NamedElement
 	{
 		/// <summary>The type of item.</summary>
-		[ConfigurationProperty("type", IsRequired = true)]
+		[ConfigurationProperty("type")]
 		public string Type
 		{
 			get { return (string)base["type"]; }
@@ -24,10 +24,10 @@ namespace N2.Configuration
 		}
 
 		/// <summary>The sort of order of the item.</summary>
-		[ConfigurationProperty("sortOrder", DefaultValue = 1000)]
-		public int SortOrder
+		[ConfigurationProperty("sortOrder")]
+		public int? SortOrder
 		{
-			get { return (int)base["sortOrder"]; }
+			get { return (int?)base["sortOrder"]; }
 			set { base["sortOrder"] = value; }
 		}
 
@@ -45,6 +45,22 @@ namespace N2.Configuration
 		{
 			get { return (string)base["description"]; }
 			set { base["description"] = value; }
+		}
+
+		/// <summary>Additoinal editables on the content item.</summary>
+		[ConfigurationProperty("editables")]
+		public ContainableCollection Editables
+		{
+			get { return (ContainableCollection)base["editables"]; }
+			set { base["editables"] = value; }
+		}
+
+		/// <summary>Additional containers on the content item.</summary>
+		[ConfigurationProperty("containers")]
+		public ContainableCollection Containers
+		{
+			get { return (ContainableCollection)base["containers"]; }
+			set { base["containers"] = value; }
 		}
 	}
 }

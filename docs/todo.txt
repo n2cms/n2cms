@@ -1,7 +1,7 @@
-- assembly level append editable attribute
+- assembly level add/remove editable attribute
 - NH 2.1 alpha
 - PageDefinition, PartDefinition
-- page templates
+- item templates
 - "OnCreated"
 - "default folder"
 	- upload file

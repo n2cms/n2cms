@@ -44,15 +44,6 @@ namespace N2.Definitions
 		{
 			List<ItemDefinition> definitions = FindDefinitions();
 			ExecuteRefiners(definitions);
-
-			foreach (DefinitionElement element in config.Definitions.RemovedElements)
-			{
-				ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
-				if (definition == null)
-					throw new ConfigurationErrorsException("The configuration element /n2/engine/definitions/remove references a definition '" + element.Name + "' that couldn't be found in the application. Either remove the <remove/> configuration or ensure that the corresponding content class exists.");
-
-				definition.IsDefined = false;
-			} 
 			
 			return ToDictionary(definitions);
 		}
@@ -67,31 +58,89 @@ namespace N2.Definitions
 				definitions.Add(definition);
 			}
 
+			foreach (DefinitionElement element in config.Definitions.RemovedElements)
+			{
+				ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
+				if (definition == null)
+					throw new ConfigurationErrorsException("The configuration element /n2/engine/definitions/remove references a definition '" + element.Name + "' that couldn't be found in the application. Either remove the <remove/> configuration or ensure that the corresponding content class exists.");
+
+				definitions.Remove(definition);
+			}
+
 			foreach(DefinitionElement element in config.Definitions.AddedElements)
 			{
-				Type itemType = Type.GetType(element.Type);
-				if (itemType == null)
-					throw new ConfigurationErrorsException("The configuration element /n2/engine/definitions/add references a type '" + element.Type + "' that could not be loaded. Check the spelling and ensure that the type is available to the application.");
-				if (!typeof(ContentItem).IsAssignableFrom(itemType))
-					throw new ConfigurationErrorsException("The configuration element /n2/engine/definitions/add references a type '" + element.Type + "' that doesn't derive from N2.ContentItem. Ensure that the base class is N2.ContentItem.");
-
 				ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
 				if(definition == null)
 				{
+					Type itemType = EnsureType<ContentItem>(element.Type);
+
 					definition = new ItemDefinition(itemType);
+					definition.Discriminator = element.Name;
 					ExploreAndLoad(definition);
 				}
 
-				definition.Discriminator = element.Name;
-				definition.SortOrder = element.SortOrder;
-				definition.Title = element.Title;
-				definition.ToolTip = element.ToolTip;
+				definition.SortOrder = element.SortOrder ?? definition.SortOrder;
+				definition.Title = element.Title ?? definition.Title;
+				definition.ToolTip = element.ToolTip ?? definition.ToolTip;
 				definition.IsDefined = true;
+
+				foreach (ContainableElement editable in element.Editables.AddedElements)
+				{
+					AddContainable(definition, editable);
+				}
+				foreach(ContainableElement editable in element.Editables.RemovedElements)
+				{
+					RemoveContainable(definition, editable);
+				}
+				foreach (ContainableElement container in element.Containers.AddedElements)
+				{
+					AddContainable(definition, container);
+				}
+				foreach (ContainableElement container in element.Containers.RemovedElements)
+				{
+					RemoveContainable(definition, container);
+				}
+
 				definitions.Add(definition);
 			}
 
 			definitions.Sort();
 			return definitions;
+		}
+
+		void AddContainable(ItemDefinition definition, ContainableElement editable)
+		{
+			Type editableType = EnsureType<IEditable>(editable.Type);
+			try
+			{
+				IContainable containable = Activator.CreateInstance(editableType) as IContainable;
+				Utility.SetProperty(containable, "Name", editable.Name);
+				Utility.SetProperty(containable, "ContainerName", editable.ContainerName);
+				Utility.SetProperty(containable, "SortOrder", editable.SortOrder);
+				foreach (string key in editable.EditableProperties.Keys)
+				{
+					Utility.SetProperty(containable, key, editable.EditableProperties[key]);
+				}
+				definition.Add(containable);
+			}
+			catch (MissingMethodException ex)
+			{
+				throw new ConfigurationErrorsException("The type '" + editable.Type + "' defined in the configuration does not have a parameterless public constructor. This is required for the type to be configurable.", ex);
+			}
+		}
+
+
+		void RemoveContainable(ItemDefinition definition, ContainableElement editable)
+		{
+			definition.Remove(definition.Get(editable.Name));
+		}
+
+		Type EnsureType<T>(string typeName)
+		{
+			Type type = Type.GetType(typeName);
+			if (type == null) throw new ConfigurationErrorsException("The configuration references a type '" + typeName + "' which could not be loaded. Check the spelling and ensure that the type is available to the application.");
+			if (!typeof(T).IsAssignableFrom(type)) throw new ConfigurationErrorsException("The type '" + typeName + "' referenced by the configuration does not derive from the correct base class or interface '" + typeof(T).FullName + "'. Check the type's inheritance");
+			return type;
 		}
 
 		void ExploreAndLoad(ItemDefinition definition)

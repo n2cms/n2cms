@@ -44,19 +44,21 @@ namespace N2.Definitions
 		string toolTip;
 		readonly Type itemType;
 		string iconUrl = null;
-		IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
-		IList<string> allowedZoneNames = new List<string>();
-		IList<ItemDefinition> allowedChildren = new List<ItemDefinition>();
-		IList<IEditable> editables;
-		IList<IEditableContainer> containers;
-		IList<EditorModifierAttribute> modifiers;
-		IList<IDisplayable> displayables;
-		IList<string> authorizedRoles;
-		IEditableContainer rootContainer = null;
 		bool enabled = true;
 		bool isDefined = false;
 		AllowedZones allowedIn = AllowedZones.SpecifiedZones;
 
+		IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
+		IList<string> allowedZoneNames = new List<string>();
+		IList<ItemDefinition> allowedChildren = new List<ItemDefinition>();
+		IList<string> authorizedRoles;
+		
+		IList<IEditable> editables;
+		IList<IEditableContainer> containers;
+		IList<EditorModifierAttribute> modifiers;
+		IList<IDisplayable> displayables;
+		IEditableContainer rootContainer = null;
+		
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
 		public ItemDefinition(Type itemType)
@@ -407,6 +409,37 @@ namespace N2.Definitions
 					"The editor '{0}' references a container '{1}' which doesn't seem to be defined on '{2}'. Either add a container with this name or remove the reference to that container.",
 					containable.Name, containable.ContainerName, ItemType);
 			}
+		}
+
+		public IContainable Get(string containableName)
+		{
+			foreach (IEditable editable in Editables)
+			{
+				if (editable.Name == containableName)
+					return editable;
+			}
+			foreach (IEditableContainer container in Containers)
+			{
+				if (container.Name == containableName)
+					return container;
+			}
+			throw new ArgumentException("Could not find the containable '" + containableName + "' amont the definition's Editables and Containers.");
+		}
+
+		public void Remove(IContainable containable)
+		{
+			if(!string.IsNullOrEmpty(containable.ContainerName))
+			{
+				IEditableContainer container = (IEditableContainer)Get(containable.ContainerName);
+				container.RemoveContained(containable);	
+			}
+			
+			if (containable is IEditable)
+				Editables.Remove((IEditable)containable);
+			else if (containable is IEditableContainer)
+				Containers.Remove((IEditableContainer)containable);
+			else
+				throw new ArgumentException("Invalid argument " + containable);
 		}
 
 		private void AddToCollection(IContainable containable)

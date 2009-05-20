@@ -11,12 +11,12 @@ namespace N2.Details
 	/// selected through a popup window displaying the item tree.
 	/// </summary>
 	/// <example>
-	/// [EditableLink("Feed root", 90)]
-	/// public virtual ContentItem FeedRoot
-	/// {
-	/// 	get { return (ContentItem)GetDetail("FeedRoot"); }
-	/// 	set { SetDetail("FeedRoot", value); }
-	/// }
+	///		[EditableLink("Feed root", 90)]
+	///		public virtual ContentItem FeedRoot
+	///		{
+	/// 		get { return (ContentItem)GetDetail("FeedRoot"); }
+	/// 		set { SetDetail("FeedRoot", value); }
+	///		}
 	/// </example>
 	public class EditableLinkAttribute : AbstractEditableAttribute, IDisplayable
 	{

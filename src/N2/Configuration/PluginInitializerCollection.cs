@@ -2,9 +2,12 @@ using System.Xml;
 
 namespace N2.Configuration
 {
+	/// <summary>
+	/// A configurable collection of plugin initializers.
+	/// </summary>
 	public class PluginInitializerCollection : LazyRemovableCollection<PluginInitializerElement>
 	{
-		protected override void OnDeserializeElement(PluginInitializerElement element, XmlReader reader)
+		protected override void OnDeserializeRemoveElement(PluginInitializerElement element, XmlReader reader)
 		{
 			element.Type = reader.GetAttribute("type");
 		}

@@ -7,6 +7,20 @@ using System.Web.UI.WebControls;
 
 namespace N2.Details
 {
+	/// <summary>
+	/// Defines an editable image this allows to select an image with the file picker.
+	/// </summary>
+	/// <example>
+	///		public class MyItem : N2.ContentItem
+	///		{
+	/// 		[N2.Details.EditableImage("Image", 100)]
+	/// 		public virtual string ImageUrl
+	/// 		{
+	/// 			get { return (string)(GetDetail("ImageUrl")); }
+	/// 			set { SetDetail("ImageUrl", value); }
+	/// 		}
+	///		}
+	/// </example>
 	public class EditableImageAttribute : AbstractEditableAttribute, IDisplayable
 	{
 		private string alt = string.Empty;

@@ -4,14 +4,19 @@ using System.Web.UI.WebControls;
 namespace N2.Details
 {
 	/// <summary>An editable checkbox attribute. Besides creating a checkbox it also uses the checkbox's text property to display text.</summary>
-	public class EditableCheckBox : EditableAttribute
+	public class EditableCheckBoxAttribute : EditableAttribute
 	{
 		private string checkBoxText;
+
+		public EditableCheckBoxAttribute()
+			: base("", typeof(CheckBox), "Checked", 0)
+		{
+		}
 
 		/// <summary>Creates a new instance of the checkbox editable attribute.</summary>
 		/// <param name="checkBoxText">The text on the checkbox.</param>
 		/// <param name="sortOrder">The order of this editable checkbox.</param>
-		public EditableCheckBox(string checkBoxText, int sortOrder)
+		public EditableCheckBoxAttribute(string checkBoxText, int sortOrder)
 			: base(string.Empty, typeof (CheckBox), "Checked", sortOrder)
 		{
 			CheckBoxText = checkBoxText;

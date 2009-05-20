@@ -47,7 +47,7 @@ namespace N2.Templates.Services
             {
                 if (typeof (ISyndicatable).IsAssignableFrom(definition.ItemType))
                 {
-                    EditableCheckBox ecb = new EditableCheckBox(CheckBoxText, 10);
+					EditableCheckBoxAttribute ecb = new EditableCheckBoxAttribute(CheckBoxText, 10);
                     ecb.Name = SyndicatableDetailName;
                     ecb.ContainerName = ContainerName;
                     ecb.SortOrder = SortOrder;

@@ -28,6 +28,13 @@ namespace N2.Details
 	/// Attribute used to mark properties as editable. This attribute is predefined to use 
 	/// the <see cref="System.Web.UI.WebControls.TextBox"/> web control as editor.</summary>
 	/// <example>
+	/// [N2.Details.EditableTextBox("Heading", 80)]
+	/// public virtual string Heading
+	/// {
+	/// 	get { return GetDetail("Heading", "")); }
+	/// 	set { SetDetail("Heading", value, ""); }
+	/// }
+	/// 
 	/// [N2.Details.EditableTextBox("Published", 80)]
 	/// public override DateTime Published
 	/// {
@@ -43,6 +50,11 @@ namespace N2.Details
 		private int rows = 0;
 		private TextBoxMode textMode = TextBoxMode.SingleLine;
 		private string defaultValue = string.Empty;
+
+		public EditableTextBoxAttribute()
+			: base("Text", 50)
+		{
+		}
 
 		/// <summary>Initializes a new instance of the EditableTextBoxAttribute class.</summary>
 		/// <param name="title">The label displayed to editors</param>
