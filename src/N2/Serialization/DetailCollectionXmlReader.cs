@@ -34,7 +34,10 @@ namespace N2.Serialization
 
 			if (type != typeof(ContentItem))
 			{
-				collection.Add(Parse(navigator.Value, type));
+				collection.Add(ContentDetail.New(
+					collection.EnclosingItem,
+					attributes["name"],
+					Parse(navigator.Value, type)));
 			}
 			else
 			{
@@ -42,7 +45,10 @@ namespace N2.Serialization
 				ContentItem referencedItem = journal.Find(referencedItemID);
 				if (referencedItem != null)
 				{
-					collection.Add(referencedItem);
+					collection.Add(ContentDetail.New(
+						collection.EnclosingItem,
+						attributes["name"],
+						referencedItem));
 				}
 				else
 				{
@@ -50,7 +56,10 @@ namespace N2.Serialization
 									{
 										if (e.AffectedItem.ID == referencedItemID)
 										{
-											collection.Add(e.AffectedItem);
+											collection.Add(ContentDetail.New(
+												collection.EnclosingItem,
+												attributes["name"],
+												e.AffectedItem));
 										}
 									};
 				}

@@ -113,7 +113,7 @@ namespace N2.Definitions
 		{
 			foreach(Type t in typeFinder.Find(typeof (ContentItem)))
 			{
-				if(t != null && !t.IsAbstract)
+				if(t != null && !t.IsAbstract && !t.ContainsGenericParameters)
 				{
                     yield return t;
 				}

@@ -74,7 +74,6 @@ namespace N2.Security
 			u.PasswordQuestion = passwordQuestion;
 			u.PasswordAnswer = passwordAnswer;
 			u.IsApproved = isApproved;
-			u.ProviderUserKey = providerUserKey;
 			
 			persister.Save(u);
 			

@@ -51,10 +51,15 @@ namespace N2.Serialization
 
 		public static DateTime? ToNullableDateTime(string value)
 		{
-			if (string.IsNullOrEmpty(value))
-			    return null;
+			DateTime _result;
 
-            return DateTime.Parse(value, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime();
+			return DateTime.TryParse(
+					value,
+					System.Globalization.CultureInfo.InvariantCulture,
+					System.Globalization.DateTimeStyles.None,
+					out _result)
+				? _result.ToLocalTime()
+				: default(DateTime?);
 		}
 
 	}

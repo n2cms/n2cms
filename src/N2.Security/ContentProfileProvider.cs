@@ -113,7 +113,28 @@ namespace N2.Security
             string username = (string)context["UserName"];
             if (!string.IsNullOrEmpty(username))
             {
-                return Bridge.GetUser(username);
+            	User _user = Bridge.GetUser(username);
+            	
+            	//user wasn't created by ASP.Net Membership
+            	if(null == _user) {
+            		bool _isAuthenticated = (bool?)context["IsAuthenticated"] ?? false;
+            		
+            		//..but ASP.Net Profile infrastructure believes that
+            		// a user with such name should have properties,
+            		// so have to create a fake DB user to hold profile properties
+            		if(_isAuthenticated) {
+            			_user = Bridge.CreateUser(
+            					username,
+            					string.Empty,
+            					string.Empty,
+            					string.Empty,
+            					string.Empty,
+            					false,
+            					null);
+            		}
+            	}
+            	
+            	return _user;
             }
             return null;
         }
@@ -129,9 +150,21 @@ namespace N2.Security
                     foreach (SettingsProperty requestedProperty in requestedProperties)
                     {
                         SettingsPropertyValue property = new SettingsPropertyValue(requestedProperty);
-                        property.PropertyValue = u[requestedProperty.Name];
+                        object _propertyValue = u[requestedProperty.Name];
+                        //SettingsPropertyValue should automatically resort to .DefaultValue
+                        // unless .PropertyValue was set
+                        if(null != _propertyValue) {
+                        	property.PropertyValue = _propertyValue;
+                        }
                         properties.Add(property);
                     }
+                } else {
+                	//fill in properties, allowed for anonymous users..
+                	foreach(SettingsProperty requestedProperty in requestedProperties) {
+                		if((bool?)requestedProperty.Attributes["AllowAnonymous"] ?? false) {
+                			properties.Add(new SettingsPropertyValue(requestedProperty));
+                		}
+                	}
                 }
             }
             return properties;

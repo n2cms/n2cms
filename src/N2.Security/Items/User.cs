@@ -85,12 +85,6 @@ namespace N2.Security.Items
 			set { SetDetail("IsLockedOut", value, false); }
 		}
 
-		public virtual object ProviderUserKey
-		{
-			get { return GetDetail("ProviderUserKey"); }
-			set { SetDetail("ProviderUserKey", value); }
-		}
-
 		[EditableTextBox("Comment", 150)]
 		public virtual string Comment
 		{
@@ -139,7 +133,7 @@ namespace N2.Security.Items
 		public virtual MembershipUser GetMembershipUser(string providerName)
 		{
 			return
-				new MembershipUser(providerName, Name, ProviderUserKey, Email, PasswordQuestion, Comment, IsApproved, IsLockedOut,
+				new MembershipUser(providerName, Name, new Guid(ID, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), Email, PasswordQuestion, Comment, IsApproved, IsLockedOut,
 				                   Created, LastLoginDate, LastActivityDate, LastPasswordChangedDate,
 				                   (LastLockoutDate ?? DateTime.MinValue));
 		}
@@ -157,7 +151,6 @@ namespace N2.Security.Items
 			LastLoginDate = mu.LastLoginDate;
 			LastPasswordChangedDate = mu.LastPasswordChangedDate;
 			PasswordQuestion = mu.PasswordQuestion;
-			ProviderUserKey = mu.ProviderUserKey;
 			Name = mu.UserName;
 		}
 

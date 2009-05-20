@@ -186,11 +186,25 @@ namespace N2.Security
 			Items.UserList userContainer = Bridge.GetUserContainer(false);
 			if (userContainer == null)
 				return null;
+			
+			int _userId = 0;
+			
+			if(providerUserKey is int) {
+				_userId = (int)providerUserKey;
+			} else if(providerUserKey is Guid) {
+				/// http://forums.asp.net/t/1266765.aspx
+				Guid guid = (Guid)providerUserKey;
+				//extract an integer from the beginning of the Guid
+				byte[] _bytes = guid.ToByteArray();
+				_userId = ((int)_bytes[0]) | ((int)_bytes[1] << 8) | ((int)_bytes[2] << 16) | ((int)_bytes[3] << 24);
+			}
+			
 			IList<ContentItem> users = Bridge.Finder
-				.Where.Detail("ProviderUserKey").Like(providerUserKey.ToString())
+				.Where.ID.Eq(_userId)
 				.And.Type.Eq(typeof(Items.User))
 				.And.Parent.Eq(userContainer)
 				.Select();
+			
 			foreach (Items.User u in users)
 			{
 				if(userIsOnline)
