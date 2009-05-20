@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using N2.Configuration;
 using NUnit.Framework;
 using N2.Details;
 using N2.Edit;
@@ -35,8 +36,7 @@ namespace N2.Tests.Edit
 		public override void SetUp()
 		{
 			base.SetUp();
-			EditableHierarchyBuilder<IEditable> hierarchyBuilder = new EditableHierarchyBuilder<IEditable>();
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, hierarchyBuilder, new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			DefinitionManager definitions = new DefinitionManager(builder, notifier);

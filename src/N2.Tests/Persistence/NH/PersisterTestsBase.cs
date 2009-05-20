@@ -26,7 +26,7 @@ namespace N2.Tests.Persistence.NH
 		{
 			ITypeFinder typeFinder = new Fakes.FakeTypeFinder(typeof (Definitions.PersistableItem1).Assembly, typeof (Definitions.PersistableItem1));
 
-			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder);
+			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
 			definitions = new DefinitionManager(definitionBuilder, null);
 			DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
 			ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");

@@ -1,3 +1,11 @@
+- assembly level append editable attribute
+- NH 2.1 alpha
+- PageDefinition, PartDefinition
+- page templates
+- "OnCreated"
+- "default folder"
+	- upload file
+	- select file
 - introduce IStartPage and move some logic to the content items
 - restrict children
 - filter plugins

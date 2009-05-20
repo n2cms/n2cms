@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Security.Principal;
+using N2.Configuration;
 using NUnit.Framework;
 using N2.Definitions;
 using N2.Details;
@@ -52,7 +53,7 @@ namespace N2.Tests.Definitions
 
 			user = CreatePrincipal("SomeSchmuck");
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder);
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			definitions = new DefinitionManager(builder, notifier);

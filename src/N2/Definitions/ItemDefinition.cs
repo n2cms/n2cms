@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Principal;
 using N2.Details;
+using N2.Installation;
 using N2.Integrity;
 using N2.Web.UI;
 
@@ -36,8 +37,12 @@ namespace N2.Definitions
 	/// </summary>
 	public class ItemDefinition : IComparable<ItemDefinition>
 	{
+		string title;
+		string discriminator;
+		string description;
+		int sortOrder;
+		string toolTip;
 		readonly Type itemType;
-		DefinitionAttribute definitionAttribute;
 		string iconUrl = null;
 		IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
 		IList<string> allowedZoneNames = new List<string>();
@@ -59,16 +64,28 @@ namespace N2.Definitions
 			if (!itemType.IsSubclassOf(typeof(ContentItem))) throw new N2Exception("Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName);
 
 			this.itemType = itemType;
-			definitionAttribute = new DefinitionAttribute(itemType.Name, itemType.Name, string.Empty, itemType.FullName, 1000);
+			title = itemType.Name;
+			discriminator = itemType.Name;
+			description = "";
+			toolTip = itemType.FullName;
+			sortOrder = 1000;
 		}
+
+		
+		/// <summary>
+		/// Gets or sets how to treat this definition during installation.
+		/// </summary>
+		public InstallerHint Installer { get; set; }
 
 		#region Properties
 
-		/// <summary>Gets or sets the item attribute defined for the item class.</summary>
+		/// <summary>
+		/// An auto-generated attribute for left for to support some whicked user.
+		/// </summary>
+		[Obsolete("This is likely to be removed in the future. Please use the properties on the item definition.")]
 		public DefinitionAttribute DefinitionAttribute
 		{
-			get { return definitionAttribute; }
-			internal set { definitionAttribute = value; }
+			get { return new DefinitionAttribute(Title, Discriminator, Description, ToolTip, SortOrder); }
 		}
 
 		/// <summary>Gets roles or users allowed to edit items defined by this definition.</summary>
@@ -81,13 +98,15 @@ namespace N2.Definitions
 		/// <summary>Gets the name used when presenting this item class to editors.</summary>
 		public string Title
 		{
-			get { return definitionAttribute.Title; }
+			get { return title; }
+			set { title = value; }
 		}
 
 		/// <summary>Gets discriminator value used to to map class when retrieving from persistence. When this is null the type's full name is used.</summary>
 		public string Discriminator
 		{
-			get { return definitionAttribute.Name ?? ItemType.Name; }
+			get { return discriminator; }
+			set { discriminator = value; }
 		}
 
 		/// <summary>Definitions which are not enabled are not available when creating new items.</summary>
@@ -107,19 +126,22 @@ namespace N2.Definitions
 		/// <summary>Gets the order of this item type when selecting new item in edit mode.</summary>
 		public int SortOrder
 		{
-			get { return definitionAttribute.SortOrder; }
+			get { return sortOrder; }
+			set { sortOrder = value; }
 		}
 
 		/// <summary>Gets the tooltip used when presenting this item class to editors.</summary>
 		public string ToolTip
 		{
-			get { return definitionAttribute.ToolTip; }
+			get { return toolTip; }
+			set { toolTip = value; }
 		}
 
 		/// <summary>Gets the description used when presenting this item class to editors.</summary>
 		public string Description
 		{
-			get { return definitionAttribute.Description; }
+			get { return description; }
+			set { description = value; }
 		}
 
 		/// <summary>Gets or sets the type of this item.</summary>

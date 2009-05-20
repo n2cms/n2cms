@@ -1,4 +1,5 @@
 using System;
+using N2.Configuration;
 using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Definitions;
@@ -30,7 +31,7 @@ namespace N2.Tests.Serialization
 			notifier = mocks.Stub<IItemNotifier>();
 			mocks.Replay(notifier);
 
-            definitions = new DefinitionManager(new DefinitionBuilder(finder), notifier);
+			definitions = new DefinitionManager(new DefinitionBuilder(finder, new EngineSection()), notifier);
 			
 			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser)

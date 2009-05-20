@@ -64,7 +64,7 @@ namespace N2.Engine.MediumTrust
 
             IItemNotifier notifier = AddComponentInstance<IItemNotifier>(new ItemNotifier());
             ITypeFinder typeFinder = AddComponentInstance<ITypeFinder>(new MediumTrustTypeFinder(webContext, engineConfiguration));
-            DefinitionBuilder definitionBuilder = AddComponentInstance<DefinitionBuilder>(new DefinitionBuilder(typeFinder));
+            DefinitionBuilder definitionBuilder = AddComponentInstance<DefinitionBuilder>(new DefinitionBuilder(typeFinder, engineConfiguration));
 			definitions = AddComponentInstance<IDefinitionManager>(new DefinitionManager(definitionBuilder, notifier));
 			NHibernate.Cfg.Environment.UseReflectionOptimizer = false;
             IConfigurationBuilder nhBuilder = AddComponentInstance<IConfigurationBuilder>(new ConfigurationBuilder(definitions, databaseConfiguration, connectionStrings));

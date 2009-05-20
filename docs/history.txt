@@ -1,4 +1,6 @@
-﻿1.4.5.2
+﻿- added support for configurable definitions
+
+1.4.5.2
 - moved old wiki code to add-on
 - moved tab panel to separate add-on
 - changed administer icon in control panel

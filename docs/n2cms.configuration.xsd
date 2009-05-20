@@ -148,6 +148,27 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="definitions" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="remove" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="add" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="type" type="xs:string" use="required" />
+												<xs:attribute name="title" type="xs:string" />
+												<xs:attribute name="sortOrder" type="xs:int" />
+												<xs:attribute name="toolTip" type="xs:string" />
+												<xs:attribute name="description" type="xs:string" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="castleConfiguration" type="xs:string" use="optional" />
 						<xs:attribute name="multipleSitesConfiguration" type="xs:string" use="optional" />

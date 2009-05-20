@@ -59,7 +59,7 @@ namespace N2.Extensions.Tests.Mvc
 				typeof (SearchController)
 			};
 
-			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder), null);
+			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), null);
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, new ItemNotifier(), host, new HostSection());

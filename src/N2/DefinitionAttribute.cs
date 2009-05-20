@@ -105,7 +105,15 @@ namespace N2
 			if (string.IsNullOrEmpty(Title))
 				Title = definition.ItemType.Name;
 
-			definition.DefinitionAttribute = this;
+			definition.Title = Title;
+			definition.ToolTip = ToolTip;
+			definition.SortOrder = SortOrder;
+			definition.Description = Description;
+			definition.Installer = Installer;
+
+			if (!string.IsNullOrEmpty(Name))
+				definition.Discriminator = Name;
+
 			definition.IsDefined = true;
     	}
     }

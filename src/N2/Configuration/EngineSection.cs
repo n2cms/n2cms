@@ -87,5 +87,13 @@ namespace N2.Configuration
 			get { return (InterfacePluginCollection)base["interfacePlugins"]; }
 			set { base["interfacePlugins"] = value; }
 		}
+
+		/// <summary>Add or remove UI plugins. This is most commonly used to remove unwanted toolbar buttons.</summary>
+		[ConfigurationProperty("definitions")]
+		public DefinitionCollection Definitions
+		{
+			get { return (DefinitionCollection)base["definitions"]; }
+			set { base["definitions"] = value; }
+		}
 	}
 }

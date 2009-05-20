@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using N2.Configuration;
 using NUnit.Framework;
 using N2.Definitions;
 using N2.Details;
@@ -39,11 +40,7 @@ namespace N2.Tests.Integrity
 			parser = mocks.StrictMock<IUrlParser>();
 
 			ITypeFinder typeFinder = CreateTypeFinder();
-			EditableHierarchyBuilder<IEditable> hierarchyBuilder = new EditableHierarchyBuilder<IEditable>();
-			DefinitionBuilder builder =
-				new DefinitionBuilder(typeFinder, hierarchyBuilder, new AttributeExplorer<EditorModifierAttribute>(),
-				                      new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(),
-				                      new AttributeExplorer<IEditableContainer>());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			definitions = new DefinitionManager(builder, notifier);

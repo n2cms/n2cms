@@ -132,6 +132,7 @@
     <Compile Include="Collections\ZoneFilterTests.cs" />
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
+    <Compile Include="Definitions\DefinitionConfigurationTests.cs" />
     <Compile Include="Definitions\Items\DefinitionControllingParent.cs" />
     <Compile Include="Definitions\Items\DefinitionFreeItem.cs" />
     <Compile Include="Definitions\Items\DefinitionOppressedChild.cs" />

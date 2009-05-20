@@ -32,7 +32,7 @@ namespace N2.Tests.Web
 			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, pageItem.ID, pageItem.ID), hostSection);
 			engine = new FakeEngine();
 			AppDomainTypeFinder finder = new AppDomainTypeFinder();
-			engine.AddComponentInstance(null, typeof (IDefinitionManager), new DefinitionManager(new DefinitionBuilder(finder), null));
+			engine.AddComponentInstance(null, typeof(IDefinitionManager), new DefinitionManager(new DefinitionBuilder(finder, new EngineSection()), null));
 			ContentAdapterProvider provider = new ContentAdapterProvider(engine, new AppDomainTypeFinder());
 			provider.Start();
 			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);

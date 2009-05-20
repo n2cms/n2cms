@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Reflection;
 using N2.Details;
 using N2.Engine;
 using N2.Web.UI;
+using N2.Configuration;
 
 namespace N2.Definitions
 {
@@ -13,20 +15,22 @@ namespace N2.Definitions
 	public class DefinitionBuilder
 	{
 		private readonly ITypeFinder typeFinder;
+		readonly EngineSection config;
 		private readonly EditableHierarchyBuilder<IEditable> hierarchyBuilder;
 		private readonly AttributeExplorer<EditorModifierAttribute> modifierExplorer;
 		private readonly AttributeExplorer<IDisplayable> displayableExplorer;
 		private readonly AttributeExplorer<IEditable> editableExplorer;
 		private readonly AttributeExplorer<IEditableContainer> containableExplorer;
 		
-		public DefinitionBuilder(ITypeFinder typeFinder)
-			: this(typeFinder, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>())
+		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
+			: this(typeFinder, config, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>())
 		{
 		}
 
-		public DefinitionBuilder(ITypeFinder typeFinder, EditableHierarchyBuilder<IEditable> hierarchyBuilder, AttributeExplorer<EditorModifierAttribute> modifierExplorer, AttributeExplorer<IDisplayable> displayableExplorer, AttributeExplorer<IEditable> editableExplorer, AttributeExplorer<IEditableContainer> containableExplorer)
+		protected DefinitionBuilder(ITypeFinder typeFinder, EngineSection config, EditableHierarchyBuilder<IEditable> hierarchyBuilder, AttributeExplorer<EditorModifierAttribute> modifierExplorer, AttributeExplorer<IDisplayable> displayableExplorer, AttributeExplorer<IEditable> editableExplorer, AttributeExplorer<IEditableContainer> containableExplorer)
 		{
 			this.typeFinder = typeFinder;
+			this.config = config;
 			this.hierarchyBuilder = hierarchyBuilder;
 			this.modifierExplorer = modifierExplorer;
 			this.displayableExplorer = displayableExplorer;
@@ -38,8 +42,18 @@ namespace N2.Definitions
 		/// <returns>A dictionary of item definitions in the current environment.</returns>
 		public virtual IDictionary<Type, ItemDefinition> GetDefinitions()
 		{
-			IList<ItemDefinition> definitions = FindDefinitions();
+			List<ItemDefinition> definitions = FindDefinitions();
 			ExecuteRefiners(definitions);
+
+			foreach (DefinitionElement element in config.Definitions.RemovedElements)
+			{
+				ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
+				if (definition == null)
+					throw new ConfigurationErrorsException("The configuration element /n2/engine/definitions/remove references a definition '" + element.Name + "' that couldn't be found in the application. Either remove the <remove/> configuration or ensure that the corresponding content class exists.");
+
+				definition.IsDefined = false;
+			} 
+			
 			return ToDictionary(definitions);
 		}
 
@@ -49,15 +63,44 @@ namespace N2.Definitions
             foreach (Type itemType in FindConcreteTypes())
 			{
 				ItemDefinition definition = new ItemDefinition(itemType);
-				definition.Editables = editableExplorer.Find(definition.ItemType);
-				definition.Containers = containableExplorer.Find(definition.ItemType);
-				definition.Modifiers = modifierExplorer.Find(definition.ItemType);
-				definition.Displayables = displayableExplorer.Find(definition.ItemType);
-				definition.RootContainer = hierarchyBuilder.Build(definition.Containers, definition.Editables);
+				ExploreAndLoad(definition);
 				definitions.Add(definition);
 			}
+
+			foreach(DefinitionElement element in config.Definitions.AddedElements)
+			{
+				Type itemType = Type.GetType(element.Type);
+				if (itemType == null)
+					throw new ConfigurationErrorsException("The configuration element /n2/engine/definitions/add references a type '" + element.Type + "' that could not be loaded. Check the spelling and ensure that the type is available to the application.");
+				if (!typeof(ContentItem).IsAssignableFrom(itemType))
+					throw new ConfigurationErrorsException("The configuration element /n2/engine/definitions/add references a type '" + element.Type + "' that doesn't derive from N2.ContentItem. Ensure that the base class is N2.ContentItem.");
+
+				ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
+				if(definition == null)
+				{
+					definition = new ItemDefinition(itemType);
+					ExploreAndLoad(definition);
+				}
+
+				definition.Discriminator = element.Name;
+				definition.SortOrder = element.SortOrder;
+				definition.Title = element.Title;
+				definition.ToolTip = element.ToolTip;
+				definition.IsDefined = true;
+				definitions.Add(definition);
+			}
+
 			definitions.Sort();
 			return definitions;
+		}
+
+		void ExploreAndLoad(ItemDefinition definition)
+		{
+			definition.Editables = editableExplorer.Find(definition.ItemType);
+			definition.Containers = containableExplorer.Find(definition.ItemType);
+			definition.Modifiers = modifierExplorer.Find(definition.ItemType);
+			definition.Displayables = displayableExplorer.Find(definition.ItemType);
+			definition.RootContainer = hierarchyBuilder.Build(definition.Containers, definition.Editables);
 		}
 
 		protected static IDictionary<Type, ItemDefinition> ToDictionary(IList<ItemDefinition> definitions)
