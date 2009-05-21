@@ -27,6 +27,7 @@ namespace N2.Details
 		private string cssClass = string.Empty;
 
 
+
 		public EditableImageAttribute()
 		{
 		}
@@ -36,6 +37,8 @@ namespace N2.Details
 		{
 		}
 
+
+
 		/// <summary>Image alt text.</summary>
 		public string Alt
 		{
@@ -43,6 +46,7 @@ namespace N2.Details
 			set { alt = value; }
 		}
 
+		/// <summary>CSS class on the image element.</summary>
 		public string CssClass
 		{
 			get { return cssClass; }
