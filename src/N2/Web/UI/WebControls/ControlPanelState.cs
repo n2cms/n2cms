@@ -1,8 +1,11 @@
+using System;
+
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>
 	/// Display state for the control panel.
 	/// </summary>
+	[Flags]
 	public enum ControlPanelState
 	{
 		/// <summary>Who knows.</summary>
