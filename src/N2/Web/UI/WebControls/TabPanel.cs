@@ -25,7 +25,7 @@ namespace N2.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			Register.TabPanel(Page, ".tabPanel", RegisterTabCss);
+			Register.TabPanel(Page, "." + CssClass.Replace(' ', '.'), RegisterTabCss);
 		}
 	}
 }

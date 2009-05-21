@@ -12,53 +12,58 @@ namespace N2.Templates.Items
     [RestrictParents(typeof (AbstractContentPage))]
     [AllowedChildren(typeof (Question))]
     [AvailableZone("Questions", "Questions")]
-    [WithEditableTitle(Required = false)]
-    [Divider("divider1", 105)]
-    [Divider("divider2", 115)]
-    public class Form : AbstractItem
+    [WithEditableTitle(Required = false, ContainerName = Form.ContentTab)]
+	[TabContainer(Form.FieldsTab, "Fields", 0, CssClass = "tabPanel formTab")]
+	[TabContainer(Form.ContentTab, "Content", 10, CssClass = "tabPanel formTab")]
+	[TabContainer(Form.EmailTab, "Email", 20, CssClass = "tabPanel formTab")]
+	public class Form : AbstractItem
     {
-        [EditableFreeTextArea("Intro text", 100)]
+		public const string FieldsTab = "formFieldsTab";
+		public const string ContentTab = "formContentTab";
+		public const string EmailTab = "formEmailTab";
+
+        [EditableFreeTextArea("Intro text", 100, ContainerName = ContentTab)]
         public virtual string IntroText
         {
             get { return (string)(GetDetail("IntroText") ?? string.Empty); }
             set { SetDetail("IntroText", value, string.Empty); }
         }
 
-        [EditableFreeTextArea("SubmitText", 140)]
+		[EditableFreeTextArea("SubmitText", 140, ContainerName = ContentTab)]
         public virtual string SubmitText
         {
             get { return (string)(GetDetail("SubmitText") ?? string.Empty); }
             set { SetDetail("SubmitText", value, string.Empty); }
         }
 
-        [EditableChildren("Form fields", "Questions", "FormFields", 110)]
+		[EditableChildren("Form fields", "Questions", "FormFields", 110, ContainerName = FieldsTab)]
         public virtual IList<ContentItem> FormFields
         {
             get { return GetChildren(); }
         }
 
-        [EditableTextBox("Mail from", 120)]
+		[EditableTextBox("Mail from", 120, ContainerName = EmailTab)]
         public virtual string MailFrom
         {
             get { return (string) (GetDetail("MailFrom") ?? string.Empty); }
             set { SetDetail("MailFrom", value, string.Empty); }
         }
 
-        [EditableTextBox("Mail to", 122)]
+		[EditableTextBox("Mail to", 122, ContainerName = EmailTab)]
         public virtual string MailTo
         {
             get { return (string) (GetDetail("MailTo") ?? string.Empty); }
             set { SetDetail("MailTo", value, string.Empty); }
         }
 
-        [EditableTextBox("Mail subject", 124)]
+		[EditableTextBox("Mail subject", 124, ContainerName = EmailTab)]
         public virtual string MailSubject
         {
             get { return (string) (GetDetail("MailSubject") ?? string.Empty); }
             set { SetDetail("MailSubject", value, string.Empty); }
         }
 
-        [EditableTextBox("Mail intro", 126)]
+		[EditableTextBox("Mail intro", 126, ContainerName = EmailTab)]
         [EditorModifier("TextMode", TextBoxMode.MultiLine)]
         public virtual string MailBody
         {

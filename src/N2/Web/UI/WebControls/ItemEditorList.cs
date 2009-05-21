@@ -194,6 +194,7 @@ namespace N2.Web.UI.WebControls
 			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.delete.gif");
 			b.ToolTip = "Delete item";
 			b.CommandArgument = itemEditorIndex.ToString();
+			b.CausesValidation = false;
 			b.Click += DeleteItemClick;
 
 			return b;
@@ -206,6 +207,7 @@ namespace N2.Web.UI.WebControls
 			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.bullet_arrow_up.png");
 			b.ToolTip = "Move item up";
 			b.CommandArgument = itemEditorIndex.ToString();
+			b.CausesValidation = false;
 			b.Click += MoveItemUpClick;
 
 			return b;
@@ -218,6 +220,7 @@ namespace N2.Web.UI.WebControls
 			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.bullet_arrow_down.png");
 			b.ToolTip = "Move item down";
 			b.CommandArgument = itemEditorIndex.ToString();
+			b.CausesValidation = false;
 			b.Click += MoveItemDownClick;
 
 			return b;

@@ -172,6 +172,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\Tabs.aspx" />
     <Content Include="Addons\UITests\UI\ZoneLoading.aspx" />
     <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjax.js" />
     <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjaxTimer.js" />

@@ -16,5 +16,8 @@ namespace N2.Templates
 
 		/// <summary>Advanced tab while editing.</summary>
 		public const string Advanced = "advanced";
+
+		public const int ContentIndex = 0;
+		public const int AdvancedIndex = 100;
 	}
 }

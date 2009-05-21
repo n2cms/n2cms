@@ -31,8 +31,9 @@ namespace N2.Web.UI
 	/// </example>
 	public class TabContainerAttribute : EditorContainerAttribute
 	{
-		private string tabText;
-		private bool registerTabCss = false;
+		string tabText;
+		bool registerTabCss;
+		string cssClass = "tabPanel primaryTabs";
 
 		public TabContainerAttribute(string name, string tabText, int sortOrder)
 			: base(name, sortOrder)
@@ -48,10 +49,20 @@ namespace N2.Web.UI
 		}
 
 		/// <summary>Gets or sets wether default styles should be registered.</summary>
+		[Obsolete]
 		public bool RegisterTabCss
 		{
 			get { return registerTabCss; }
 			set { registerTabCss = value; }
+		}
+
+		/// <summary>
+		/// This needs to contain the css class tabPanel to receive default styles.
+		/// </summary>
+		public string CssClass
+		{
+			get { return cssClass; }
+			set { cssClass = value; }
 		}
 
 		/// <summary>Adds the tab panel to a parent container and returns it.</summary>
@@ -63,6 +74,7 @@ namespace N2.Web.UI
 			p.ID = Name;
 			p.ToolTip = GetLocalizedText("TabText") ?? TabText;
 			p.RegisterTabCss = RegisterTabCss;
+			p.CssClass = CssClass ?? p.CssClass;
 			container.Controls.Add(p);
 			return p;
 		}

@@ -3,30 +3,32 @@
  */
 
 // initializes elements in query selection as tabs
-$.fn.n2tabs = function(tabGroupName, initial, tabContainer){
-    if(this.length>0){
-        if(!tabGroupName) tabGroupName = "tab";
-        if(!tabContainer) tabContainer = this.n2tabs_createContainer(this.get(0));
-        
+$.fn.n2tabs = function(tabGroupName, initial, tabContainer) {
+    if (this.length > 0) {
+        if (!tabGroupName) tabGroupName = "tab";
+        if (!tabContainer) tabContainer = this.n2tabs_createContainer(this.get(0));
+
         // ensure each tab content has an id
-        this.each(function(i){
-            if(!this.id) this.id = tabGroupName + i;
-            this.n2tab = {  index: i,
-                            group: tabGroupName};
+        this.each(function(i) {
+            if (!this.id) this.id = tabGroupName + i;
+            this.n2tab = { index: i,
+                group: tabGroupName
+            };
         });
-        
+
         // ensure there's an initial tab
-        if(!initial || initial == "") initial = this.get(0);
+        var $current = this.filter(initial);
+        if ($current.length == 0) $current = this.eq(0);
 
         // store information about this tab group
         var tabSettings = {
             query: this,
             container: $(tabContainer),
-            current: $(initial),
+            current: $current,
             tabs: new Array()
         };
         this.n2tabs_groups[tabGroupName] = tabSettings;
-        
+
         this.n2tabs_buildTabs(tabSettings);
 
         this.addClass("tabContentHidden");

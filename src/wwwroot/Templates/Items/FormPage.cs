@@ -5,11 +5,13 @@ using N2.Web.UI;
 namespace N2.Templates.Items
 {
     [Definition("Form page", "FormPage", "A page with a form that can be sumitted and sent to an email address.", "", 240)]
-    [TabContainer("formPanel", "Form", 30)]
+    [TabContainer(FormPage.FormTab, "Form", Tabs.ContentIndex + 2)]
 	[ConventionTemplate("Form")]
     public class FormPage : AbstractContentPage
     {
-        [EditableItem("Form", 60, ContainerName = "formPanel")]
+    	public const string FormTab = "formPanel";
+
+        [EditableItem("Form", 60, ContainerName = FormTab)]
         public virtual Form Form
         {
             get { return (Form) GetChild("Form"); }

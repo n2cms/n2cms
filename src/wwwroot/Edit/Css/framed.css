@@ -258,6 +258,7 @@ a.title { white-space:nowrap; }
 	padding:10px 8px 0 8px;
 	height:25px;
 	-moz-outline-style:none;
+	color:#444;
 }
 
 
@@ -275,6 +276,7 @@ a.title { white-space:nowrap; }
 	position:relative;
 	left:-8px;
 	padding:10px 2px 0 14px;
+	color:#000;
 }
 
 
@@ -294,6 +296,25 @@ a.title { white-space:nowrap; }
 	top:-10000px;
 	left:-10000px;
 }
+    .tabPanel .tabPanel
+    {
+        margin-left:10px;
+	    background-position: 0 -3px;
+    }
+    .tabPanel .tabs li
+    {
+    	height:32px;
+    	background-position:100% 0;
+    }
+    .tabPanel .tabs li a
+    {
+    	padding:8px 5px 0 7px;
+        background-position:0 0;
+    }
+    .tabPanel .tabs .selected a
+    {
+    	padding:8px 0 0 12px;
+    }
 
 
 

@@ -234,17 +234,18 @@ namespace N2.Resources
 		}
 
 		#region TabPanel
-		private static readonly string tabPanelFormat = @"jQuery('{0}').n2tabs(null,location.hash);";
+		private static readonly string tabPanelFormat = @"jQuery('{0}').n2tabs('{1}',location.hash);";
 
 		public static void TabPanel(Page page, string selector, bool registerTabCss)
 		{
-			if (page.Items["N2.Resources.TabPanel"] == null)
+			var key = "N2.Resources.TabPanel" + selector;
+			if (page.Items[key] == null)
 			{
 				JQuery(page);
 				JavaScript(page, "~/Edit/Js/TabPanel.js");
-				string script = string.Format(tabPanelFormat, selector);
+				string script = string.Format(tabPanelFormat, selector, selector);
 				JavaScript(page, script, ScriptOptions.DocumentReady);
-				page.Items["N2.Resources.TabPanel"] = new object();
+				page.Items[key] = new object();
 				if (registerTabCss)
 				{
 					StyleSheet(page, "~/Edit/Css/TabPanel.css");
