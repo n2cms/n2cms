@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.UI;
+using N2.Web;
 using N2.Web.UI.WebControls;
 using System.Web.UI.WebControls;
 
@@ -22,12 +23,21 @@ namespace N2.Edit
 		}
 
 		public bool RequireCurrentItem { get; set;}
+		/// <summary>Url encode the NavigateUrl and NavigateQuery (for usage in query string).</summary>
 		public bool UrlEncode { get; set;}
+		/// <summary>The anchor text.</summary>
 		public string Title { get; set; }
+		/// <summary>The anchor target frame.</summary>
 		public string Target { get; set; }
+		/// <summary>The anchor tool tip.</summary>
 		public string ToolTip { get; set;}
-		public string NavigateUrl { get; set;}
-		public string IconUrl { get; set;}
+		/// <summary>The anchor's url.</summary>
+		public string NavigateUrl { get; set; }
+		/// <summary>The anchor's url query.</summary>
+		public string NavigateQuery { get; set; }
+		/// <summary>Url to the anchor's image icon.</summary>
+		public string IconUrl { get; set; }
+		/// <summary>The control panel state that displays this link.</summary>
 		public ControlPanelState ShowDuring { get; set;}
 
 		public override Control AddTo(Control container, PluginContext context)
@@ -39,7 +49,10 @@ namespace N2.Edit
 
 			HyperLink link = new HyperLink();
 			link.Text = GetInnerHtml(IconUrl, ToolTip, Title);
-			link.NavigateUrl = context.Format(NavigateUrl, UrlEncode);
+			Url url = context.Format(NavigateUrl, UrlEncode);
+			if (!string.IsNullOrEmpty(NavigateQuery))
+				url = url.AppendQuery(context.Format(NavigateQuery, UrlEncode));
+			link.NavigateUrl = url;
 			link.ToolTip = context.Format(ToolTip, false);
 			link.Target = Target;
 			container.Controls.Add(link);
