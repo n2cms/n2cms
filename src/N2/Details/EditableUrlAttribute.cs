@@ -19,6 +19,19 @@ namespace N2.Details
 		private UrlSelectorMode openingMode = UrlSelectorMode.Items;
 		private UrlSelectorMode availableModes = UrlSelectorMode.All;
 
+		public EditableUrlAttribute()
+			: base(null, 30)
+		{
+		}
+
+		/// <summary>Initializes a new instance of the EditableUrlAttribute class.</summary>
+		/// <param name="title">The label displayed to editors</param>
+		/// <param name="sortOrder">The order of this editor</param>
+		public EditableUrlAttribute(string title, int sortOrder)
+			: base(title, sortOrder)
+		{
+		}
+
 		public UrlSelectorMode AvailableModes
 		{
 			get { return availableModes; }
@@ -29,14 +42,6 @@ namespace N2.Details
 		{
 			get { return openingMode; }
 			set { openingMode = value; }
-		}
-
-		/// <summary>Initializes a new instance of the EditableUrlAttribute class.</summary>
-		/// <param name="title">The label displayed to editors</param>
-		/// <param name="sortOrder">The order of this editor</param>
-		public EditableUrlAttribute(string title, int sortOrder)
-			: base(title, sortOrder)
-		{
 		}
 
 		public override bool UpdateItem(ContentItem item, System.Web.UI.Control editor)

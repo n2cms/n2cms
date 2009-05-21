@@ -329,6 +329,9 @@
     <Compile Include="Definitions\DisableAttribute.cs" />
     <Compile Include="Definitions\ISortableRefiner.cs" />
     <Compile Include="Definitions\RefineOrder.cs" />
+    <Compile Include="Definitions\RemoveEditableAttribute.cs" />
+    <Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />
+    <Compile Include="Definitions\DefinitionReplacementMode.cs" />
     <Compile Include="Details\EditableCheckBoxAttribute.cs" />
     <Compile Include="Details\EditableDateAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
@@ -402,7 +405,7 @@
     <Compile Include="Definitions\IDefinitionRefiner.cs" />
     <Compile Include="Definitions\IInheritableDefinitionRefiner.cs" />
     <Compile Include="Definitions\IUniquelyNamed.cs" />
-    <Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />
+    <Compile Include="Definitions\RemoveDefinitionsAttribute.cs" />
     <Compile Include="Definitions\ReplaceParentDefinitionAttribute.cs" />
     <Compile Include="Details\AbstractDisplayableAttribute.cs" />
     <Compile Include="Details\DisplayableImageAttribute.cs" />

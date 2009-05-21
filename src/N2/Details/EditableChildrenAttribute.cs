@@ -12,6 +12,11 @@ namespace N2.Details
 	{
 		private string zoneName;
 
+		public EditableChildrenAttribute()
+			: base(null, 200)
+		{
+		}
+
 		public EditableChildrenAttribute(string title, string zoneName, int sortOrder)
 			: this(title, zoneName, zoneName, sortOrder)
 		{

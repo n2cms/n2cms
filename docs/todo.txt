@@ -1,4 +1,3 @@
-- assembly level add/remove editable attribute
 - NH 2.1 alpha
 - PageDefinition, PartDefinition
 - item templates

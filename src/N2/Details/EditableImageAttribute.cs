@@ -29,6 +29,7 @@ namespace N2.Details
 
 
 		public EditableImageAttribute()
+			: base(null, 40)
 		{
 		}
 

@@ -21,7 +21,7 @@ namespace N2.Details
 	public class EditableFreeTextAreaAttribute : EditableTextBoxAttribute
 	{
 		public EditableFreeTextAreaAttribute()
-			: base("Text", 100)
+			: base(null, 100)
 		{
 		}
 

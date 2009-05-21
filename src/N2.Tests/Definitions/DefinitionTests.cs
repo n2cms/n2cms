@@ -38,7 +38,8 @@ namespace N2.Tests.Definitions
 					typeof (DefinitionReplacement),
 					typeof (DefinitionOne),
 					typeof (DefinitionTwo),
-					typeof (DefinitionReplacesNumbers),
+					typeof (DefinitionReplacesNumber1),
+					typeof (DefinitionRemovesNumber2),
 					typeof (DefinitionUndefined),
 					typeof (DefinitionFreeItem),
 					typeof (DefinitionControllingParent),
@@ -343,17 +344,28 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
-		public void ReplaceDefinitionsAttribute_Disables_TheSuppliedDefinitions()
+		public void ReplaceDefinitionsAttribute_CanDisable_TheSuppliedDefinitions()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionTextPage));
 			ItemDefinition definitionOne = definitions.GetDefinition(typeof(DefinitionOne));
-			ItemDefinition definitionTwo = definitions.GetDefinition(typeof(DefinitionTwo));
-			ItemDefinition definitionReplacement = definitions.GetDefinition(typeof(DefinitionReplacesNumbers));
+			ItemDefinition definitionReplacement = definitions.GetDefinition(typeof(DefinitionReplacesNumber1));
 
 			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(definition, null, null);
 			
 			EnumerableAssert.DoesntContain(allowedChildren, definitionOne, "Definition one shouldn't be in the list since it isn't enabled");
-			EnumerableAssert.DoesntContain(allowedChildren, definitionTwo, "Definition two shouldn't be in the list since it isn't enabled");
+			EnumerableAssert.Contains(allowedChildren, definitionReplacement);
+		}
+
+		[Test]
+		public void ReplaceDefinitionsAttribute_CanRemove_TheSuppliedDefinitions()
+		{
+			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionTextPage));
+			ItemDefinition definitionTwo = definitions.GetDefinition(typeof(DefinitionTwo));
+			ItemDefinition definitionReplacement = definitions.GetDefinition(typeof(DefinitionRemovesNumber2));
+
+			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(definition, null, null);
+
+			Assert.That(definitionTwo, Is.Null);
 			EnumerableAssert.Contains(allowedChildren, definitionReplacement);
 		}
 

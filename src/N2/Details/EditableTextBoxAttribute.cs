@@ -52,7 +52,7 @@ namespace N2.Details
 		private string defaultValue = string.Empty;
 
 		public EditableTextBoxAttribute()
-			: base("Text", 50)
+			: base(null, 50)
 		{
 		}
 

@@ -128,7 +128,7 @@ namespace N2.Details
 		/// <summary>Gets or sets the label used for presentation.</summary>
 		public string Title
 		{
-			get { return title; }
+			get { return title ?? Name; }
 			set { title = value; }
 		}
 
@@ -275,14 +275,14 @@ namespace N2.Details
 		{
 			if (SortOrder != other.SortOrder)
 				return SortOrder - other.SortOrder;
-			else if (Title != null && other.Title != null)
+			if (Title != null && other.Title != null)
 				return Title.CompareTo(other.Title);
-			else if (Title != null)
+			if (Title != null)
 				return -1;
-			else if (other.Title != null)
+			if (other.Title != null)
 				return 1;
-			else
-				return 0;
+			
+			return 0;
 		}
 
 		#endregion

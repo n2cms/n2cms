@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace N2.Definitions
 {
@@ -9,15 +8,26 @@ namespace N2.Definitions
 	/// attribute. This can be used to disable and replace items in external
 	/// class libraries.
 	/// </summary>
+	[AttributeUsage(AttributeTargets.Class)]
 	public class ReplacesParentDefinitionAttribute : AbstractDefinitionRefiner, IDefinitionRefiner
 	{
+		DefinitionReplacementMode replacementMode = DefinitionReplacementMode.Remove;
+
+		public DefinitionReplacementMode ReplacementMode
+		{
+			get { return replacementMode; }
+			set { replacementMode = value; }
+		}
+
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
 			Type t = currentDefinition.ItemType;
-			foreach (ItemDefinition definition in allDefinitions)
+			foreach (ItemDefinition definition in new List<ItemDefinition>(allDefinitions))
 			{
 				if (definition.ItemType == t.BaseType)
 				{
+					if(ReplacementMode == DefinitionReplacementMode.Remove)
+
 					definition.Enabled = false;
 					return;
 				}

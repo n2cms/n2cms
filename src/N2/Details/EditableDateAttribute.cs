@@ -13,6 +13,11 @@ namespace N2.Details
 		bool showDate = true;
 		bool showTime = true;
 
+		public EditableDateAttribute()
+			: base(null, 20)
+		{
+		}
+
 		public EditableDateAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
