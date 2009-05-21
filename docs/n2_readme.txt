@@ -60,3 +60,4 @@ CONTRIBUTORS
 * Magomed Abdurakhmanov (maqdev)
 * Smason
 * Jemerick
+* Tjassim

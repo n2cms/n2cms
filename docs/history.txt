@@ -1,4 +1,4 @@
-﻿- fixed #22531: Organize Parts issue with multiple start pages
+﻿- applied tjassim's #22531: Organize Parts issue with multiple start pages
 - improved nested tab support
 - applied MartijnRasenberg's dutch translation
 - added support for configurable definitions
