@@ -9,24 +9,15 @@ namespace N2.Tests.Definitions
 	[TestFixture]
 	public class EditableExplorerTests : ItemTestsBase
 	{
-		EditableHierarchyBuilder<IEditable> hierarchyBuilder;
-		AttributeExplorer<IEditable> editableExplorer;
-		AttributeExplorer<IEditableContainer> containerExplorer;
+		EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder();
+		AttributeExplorer explorer = new AttributeExplorer();
 
-		[SetUp]
-		public override void SetUp()
-		{
-			base.SetUp();
 
-			hierarchyBuilder = new EditableHierarchyBuilder<IEditable>();
-			editableExplorer = new AttributeExplorer<IEditable>();
-			containerExplorer = new AttributeExplorer<IEditableContainer>();
-		}
 
 		[Test]
 		public void FindsDetailDefinedOnClass()
 		{
-			IList<IEditable> editables = editableExplorer.Find(typeof(Items.DefinitionTwoColumnPage));
+			IList<IEditable> editables = explorer.Find<IEditable>(typeof(Items.DefinitionTwoColumnPage));
 			Assert.AreEqual(2, editables.Count);
 			TypeAssert.AreEqual(typeof(N2.Details.WithEditableTitleAttribute), editables[0]);
 			TypeAssert.AreEqual(typeof(N2.Details.WithEditableNameAttribute), editables[1]);
@@ -35,21 +26,21 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void FindsDetailsDefinedOnClassAndOnProperty()
 		{
-			IList<IEditable> editables = editableExplorer.Find(typeof(Items.DefinitionTextPage));
+			IList<IEditable> editables = explorer.Find<IEditable>(typeof(Items.DefinitionTextPage));
 			Assert.AreEqual(3, editables.Count);
 		}
 
 		[Test]
 		public void FindsContainers()
 		{
-			IList<IEditableContainer> containers = containerExplorer.Find(typeof(Items.DefinitionTextPage));
+			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(typeof(Items.DefinitionTextPage));
 			Assert.AreEqual(2, containers.Count);
 		}
 
 		[Test]
 		public void RedefinedContainerIsntDuplicated()
 		{
-			IList<IEditableContainer> containers = containerExplorer.Find(typeof(Items.DefinitionNewsPage));
+			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(typeof(Items.DefinitionNewsPage));
 			Assert.AreEqual(2, containers.Count);
 		}
 
@@ -63,8 +54,8 @@ namespace N2.Tests.Definitions
 		public void CanBuildContainerAndEditableStructure()
 		{
 			Type itemType = typeof(Items.DefinitionTextPage);
-			IList<IEditable> editables = editableExplorer.Find(itemType);
-			IList<IEditableContainer> containers = containerExplorer.Find(itemType);
+			IList<IEditable> editables = explorer.Find<IEditable>(itemType);
+			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables);
 
 			List<IContainable> contained = rootContainer.GetContained(null);
@@ -98,8 +89,8 @@ namespace N2.Tests.Definitions
 		public void CanBuildHierarchy()
 		{
 			Type itemType = typeof(N2.Tests.Definitions.Definitions.ItemWithNestedContainers);
-			IList<IEditableContainer> containers = containerExplorer.Find(itemType);
-			IList<IEditable> editables = editableExplorer.Find(itemType);
+			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
+			IList<IEditable> editables = explorer.Find<IEditable>(itemType);
 			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables);
 
 			IContainable property0 = rootContainer.GetContained(null)[0];
@@ -124,9 +115,9 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void ContainersAreNestedAndSorted()
 		{
-			Type itemType = typeof(N2.Tests.Definitions.Definitions.ItemWithNestedContainers);
+			Type itemType = typeof(Definitions.ItemWithNestedContainers);
 			IList<IEditable> editables = new List<IEditable>();
-			IList<IEditableContainer> containers = containerExplorer.Find(itemType);
+			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables);
 
 			IEditableContainer first = rootContainer.GetContained(null)[0] as IEditableContainer;
@@ -155,7 +146,7 @@ namespace N2.Tests.Definitions
 		{
 			Type itemType = typeof(N2.Tests.Definitions.Definitions.ItemWithNestedContainers);
 			IList<IEditable> editables = new List<IEditable>();
-			IList<IEditableContainer> containers = containerExplorer.Find(itemType);
+			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			containers.RemoveAt(2); // inside1
 			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables);
 		}

@@ -34,7 +34,7 @@ namespace N2.Serialization
 			readers["details"] = new DetailXmlReader();
 			readers["detailCollections"] = new DetailCollectionXmlReader();
 			readers["authorizations"] = new AuthorizationXmlReader();
-			readers["attachments"] = new AttachmentXmlReader(new AttributeExplorer<IAttachmentHandler>());
+			readers["attachments"] = new AttachmentXmlReader();
 			return readers;
 		}
 

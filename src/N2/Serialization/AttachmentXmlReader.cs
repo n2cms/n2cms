@@ -8,16 +8,11 @@ namespace N2.Serialization
 {
 	public class AttachmentXmlReader : XmlReader, IXmlReader
 	{
-		private readonly AttributeExplorer<IAttachmentHandler> explorer;
-
-		public AttachmentXmlReader(AttributeExplorer<IAttachmentHandler> explorer)
-		{
-			this.explorer = explorer;
-		}
+		private readonly AttributeExplorer explorer = new AttributeExplorer();
 
 		public void Read(XPathNavigator navigator, ContentItem item, ReadingJournal journal)
 		{
-			IDictionary<string, IAttachmentHandler> attachments = explorer.Map(item.GetType());
+			IDictionary<string, IAttachmentHandler> attachments = explorer.Map<IAttachmentHandler>(item.GetType());
 			
 			foreach(XPathNavigator attachmentElement in EnumerateChildren(navigator))
 			{

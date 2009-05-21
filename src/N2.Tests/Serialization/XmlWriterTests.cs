@@ -355,7 +355,7 @@ namespace N2.Tests.Serialization
 		{
 			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
 			item.ImageUrl = "da image";
-			AttachmentXmlWriter axw = new AttachmentXmlWriter(new AttributeExplorer<IAttachmentHandler>());
+			AttachmentXmlWriter axw = new AttachmentXmlWriter();
 
 			StringBuilder sb = new StringBuilder();
 			StringWriter sw = new StringWriter(sb);

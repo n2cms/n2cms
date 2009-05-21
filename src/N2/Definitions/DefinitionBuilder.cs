@@ -16,26 +16,13 @@ namespace N2.Definitions
 	{
 		private readonly ITypeFinder typeFinder;
 		readonly EngineSection config;
-		private readonly EditableHierarchyBuilder<IEditable> hierarchyBuilder;
-		private readonly AttributeExplorer<EditorModifierAttribute> modifierExplorer;
-		private readonly AttributeExplorer<IDisplayable> displayableExplorer;
-		private readonly AttributeExplorer<IEditable> editableExplorer;
-		private readonly AttributeExplorer<IEditableContainer> containableExplorer;
+		private readonly EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder();
+		private readonly AttributeExplorer explorer = new AttributeExplorer();
 		
 		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
-			: this(typeFinder, config, new EditableHierarchyBuilder<IEditable>(), new AttributeExplorer<EditorModifierAttribute>(), new AttributeExplorer<IDisplayable>(), new AttributeExplorer<IEditable>(), new AttributeExplorer<IEditableContainer>())
-		{
-		}
-
-		protected DefinitionBuilder(ITypeFinder typeFinder, EngineSection config, EditableHierarchyBuilder<IEditable> hierarchyBuilder, AttributeExplorer<EditorModifierAttribute> modifierExplorer, AttributeExplorer<IDisplayable> displayableExplorer, AttributeExplorer<IEditable> editableExplorer, AttributeExplorer<IEditableContainer> containableExplorer)
 		{
 			this.typeFinder = typeFinder;
 			this.config = config;
-			this.hierarchyBuilder = hierarchyBuilder;
-			this.modifierExplorer = modifierExplorer;
-			this.displayableExplorer = displayableExplorer;
-			this.editableExplorer = editableExplorer;
-			this.containableExplorer = containableExplorer;
 		}
 
 		/// <summary>Builds item definitions in the current environment.</summary>
@@ -145,10 +132,10 @@ namespace N2.Definitions
 
 		void ExploreAndLoad(ItemDefinition definition)
 		{
-			definition.Editables = editableExplorer.Find(definition.ItemType);
-			definition.Containers = containableExplorer.Find(definition.ItemType);
-			definition.Modifiers = modifierExplorer.Find(definition.ItemType);
-			definition.Displayables = displayableExplorer.Find(definition.ItemType);
+			definition.Editables = explorer.Find<IEditable>(definition.ItemType);
+			definition.Containers = explorer.Find<IEditableContainer>(definition.ItemType);
+			definition.Modifiers = explorer.Find<EditorModifierAttribute>(definition.ItemType);
+			definition.Displayables = explorer.Find<IDisplayable>(definition.ItemType);
 			definition.RootContainer = hierarchyBuilder.Build(definition.Containers, definition.Editables);
 		}
 

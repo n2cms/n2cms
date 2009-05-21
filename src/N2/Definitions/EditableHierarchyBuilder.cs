@@ -7,13 +7,13 @@ namespace N2.Definitions
 	/// Adds editables and containers to containers.
 	/// </summary>
 	/// <typeparam name="T">The type of editable attribute to look for.</typeparam>
-	public class EditableHierarchyBuilder<T> where T : IContainable
+	public class EditableHierarchyBuilder
 	{
 		/// <summary>Build the container hierarchy adding containers and editors to a root container.</summary>
 		/// <param name="containers">The containers to add to themselves or the root container.</param>
 		/// <param name="editables">The editables to add to the containers or a root container.</param>
 		/// <returns>A new root container.</returns>
-		public virtual IEditableContainer Build(IList<IEditableContainer> containers, IList<T> editables)
+		public virtual IEditableContainer Build<T>(IList<IEditableContainer> containers, IList<T> editables) where T : IContainable
 		{
 			IEditableContainer rootContainer = new RootContainer();
 			AddContainersToRootContainer(rootContainer, containers);
@@ -58,7 +58,7 @@ namespace N2.Definitions
 			return null;
 		}
 
-		private static void AddEditorsToContainers(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers, IEnumerable<T> editables)
+		private static void AddEditorsToContainers<T>(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers, IEnumerable<T> editables) where T : IContainable
 		{
 			foreach (T editable in editables)
 			{

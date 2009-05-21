@@ -8,15 +8,11 @@ namespace N2.Serialization
 {
 	public class AttachmentXmlWriter : IXmlWriter
 	{
-		private readonly AttributeExplorer<IAttachmentHandler> explorer;
+		private readonly AttributeExplorer explorer = new AttributeExplorer();
 
-		public AttachmentXmlWriter(AttributeExplorer<IAttachmentHandler> explorer)
-		{
-			this.explorer = explorer;
-		}
 		public void Write(ContentItem item, XmlTextWriter writer)
 		{
-			IList<IAttachmentHandler> attachments = explorer.Find(item.GetType());
+			IList<IAttachmentHandler> attachments = explorer.Find<IAttachmentHandler>(item.GetType());
 			if(attachments.Count > 0)
 			{
 				using(new ElementWriter("attachments", writer))

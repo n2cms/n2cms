@@ -52,7 +52,7 @@ namespace N2.Serialization
 			yield return new ChildXmlWriter();
 			yield return new AuthorizationXmlWriter();
             if ((options & ExportOptions.ExcludeAttachments) == ExportOptions.Default)
-			    yield return new AttachmentXmlWriter(new AttributeExplorer<IAttachmentHandler>());
+			    yield return new AttachmentXmlWriter();
         }
 
 		protected virtual void WriteDefaultAttributes(ElementWriter itemElement, ContentItem item)

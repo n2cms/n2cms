@@ -12,10 +12,15 @@ namespace N2.Definitions
 	/// class must have their name attribute set, and attributes defined on a
 	/// property their name set to the property's name.
 	/// </summary>
-	/// <typeparam name="T">The type of attribute to find.</typeparam>
-	public class AttributeExplorer<T> where T : IUniquelyNamed
+	public class AttributeExplorer
 	{
-		public IList<T> Find(Type typeToExplore)
+		/// <summary>
+		/// Finds attributes on a type.
+		/// </summary>
+		/// <typeparam name="T">The type of attribute to find.</typeparam>
+		/// <param name="typeToExplore">The type to explore</param>
+		/// <returns>A list of attributes defined on the class or it's properties.</returns>
+		public IList<T> Find<T>(Type typeToExplore) where T : IUniquelyNamed
 		{
 			List<T> attributes = new List<T>();
 
@@ -28,9 +33,15 @@ namespace N2.Definitions
 			return attributes;
 		}
 
-		public IDictionary<string, T> Map(Type typeToExplore)
+        /// <summary>
+        /// Maps properties on the class and it's properties to a dictionary.
+        /// </summary>
+		/// <typeparam name="T">The type of attribute to find.</typeparam>
+		/// <param name="typeToExplore">The type to explore.</param>
+        /// <returns>A dictionary of atributes.</returns>
+		public IDictionary<string, T> Map<T>(Type typeToExplore) where T : IUniquelyNamed
 		{
-			IList<T> attributes = Find(typeToExplore);
+			IList<T> attributes = Find<T>(typeToExplore);
 			Dictionary<string, T> map = new Dictionary<string, T>();
 			foreach(T a in attributes)
 			{
@@ -40,7 +51,7 @@ namespace N2.Definitions
 		}
 
 		#region Helpers
-		private static void AddEditablesDefinedOnProperties(Type exploredType, ICollection<T> attributes)
+		private static void AddEditablesDefinedOnProperties<T>(Type exploredType, ICollection<T> attributes) where T : IUniquelyNamed
 		{
 			foreach (PropertyInfo propertyOnItem in exploredType.GetProperties())
 			{
@@ -63,7 +74,7 @@ namespace N2.Definitions
 			}
 		}
 
-		private static void AddEditablesDefinedOnClass(Type exploredType, ICollection<T> attributes)
+		private static void AddEditablesDefinedOnClass<T>(Type exploredType, ICollection<T> attributes) where T : IUniquelyNamed
 		{
 			foreach (Type t in EnumerateTypeAncestralHierarchy(exploredType))
 			{

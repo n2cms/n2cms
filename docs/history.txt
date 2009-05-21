@@ -1,4 +1,5 @@
-﻿- assembly level remove editable attribute
+﻿- refactored EditableHierarchyBuilder and AttributeExplorer
+- assembly level remove editable attribute
 - assembly level remove definitions attribute
 - applied tjassim's #22531: Organize Parts issue with multiple start pages
 - improved nested tab support
