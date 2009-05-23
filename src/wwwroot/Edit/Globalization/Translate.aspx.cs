@@ -23,17 +23,28 @@ namespace N2.Edit.Globalization
                 ContentItem translation = gateway.GetTranslation(SelectedItem, language);
                 if (translation != null)
                 {
+					// item has a translation
                     string url = Engine.EditManager.GetEditExistingItemUrl(translation);
                     Response.Redirect(url);
                 }
                 else if (SelectedItem.Parent != null)
                 {
+					// item not translated, try to create translation
                     ContentItem parent = SelectedItem.Parent;
                     ContentItem parentTranslation = gateway.GetTranslation(parent, language);
-                    ItemDefinition definition = Engine.Definitions.GetDefinition(SelectedItem.GetType());
-                    Url url = Engine.EditManager.GetEditNewPageUrl(parentTranslation, definition, null, CreationPosition.Below);
-                    url = url.AppendQuery(LanguageGateway.LanguageKey, SelectedItem[LanguageGateway.LanguageKey] ?? SelectedItem.ID);
-                    Response.Redirect(url);
+					if(parentTranslation != null)
+					{
+						// create new translation below translated parent
+						ItemDefinition definition = Engine.Definitions.GetDefinition(SelectedItem.GetType());
+						Url url = Engine.EditManager.GetEditNewPageUrl(parentTranslation, definition, null, CreationPosition.Below);
+						url = url.AppendQuery(LanguageGateway.LanguageKey, SelectedItem[LanguageGateway.LanguageKey] ?? SelectedItem.ID);
+						Response.Redirect(url);
+					}
+					else
+					{
+						// parent is not translated, cannot continue
+						cvCannotTranslate.IsValid = false;
+					}
                 }
                 else
                 {

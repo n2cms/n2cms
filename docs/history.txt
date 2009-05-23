@@ -1,4 +1,5 @@
-﻿- introduced EditableFileUpload attribute
+﻿- fixed unhandled exception when translating page without translated parent hierarchy
+- introduced EditableFileUpload attribute
 - introduced default directory concept
 - fixed broken icon in link tracker
 - refactored EditableHierarchyBuilder and AttributeExplorer
