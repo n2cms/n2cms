@@ -7,13 +7,11 @@
         var selector = this.selector;
         options = $.extend(options, { dimmerClass: "dimmed", valuesSelector: "input[type='text'], input[type='file']" });
         var toggleDimmer = function() {
-            console.log("toggle ", this);
             var $t = $(this).closest(selector);
             $t.siblings().addClass(options.dimmerClass);
             $t.removeClass(options.dimmerClass);
         };
         var checkDimming = function() {
-            console.log("check ", this);
             var $t = $(this).closest(selector);
             var $inputs = $t.siblings().andSelf().contents().filter(options.valuesSelector);
             $inputs.each(function() {
