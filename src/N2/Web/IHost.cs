@@ -10,12 +10,32 @@ namespace N2.Web
     /// </summary>
 	public interface IHost
 	{
+		/// <summary>The current site based on the request's host header information. Fallbacks to defualt site.</summary>
 		Site CurrentSite { get; }
-		Site DefaultSite { get; set; }
-		IList<Site> Sites { get; }
-        Site GetSite(Url host);
 
-        void AddSites(IEnumerable<Site> iEnumerable);
-        void ReplaceSites(Site site, IList<Site> newSites);
-    }
+		/// <summary>The default site if the current cannot be determined.</summary>
+		Site DefaultSite { get; set; }
+
+		/// <summary>All sites in the system.</summary>
+		IList<Site> Sites { get; }
+
+		/// <summary>Gets the site associated with an url.</summary>
+		/// <param name="hostUrl">The url of the site.</param>
+		/// <returns>The associated site or null if no matching site is found.</returns>
+        Site GetSite(Url hostUrl);
+
+		/// <summary>Adds sites to the available sites.</summary>
+		/// <param name="additionalSites">Sites to add.</param>
+        void AddSites(IEnumerable<Site> additionalSites);
+
+		/// <summary>Replaces the site list with new sites.</summary>
+		/// <param name="defaultSite">The default site to use.</param>
+		/// <param name="newSites">The new site list.</param>
+		void ReplaceSites(Site defaultSite, IEnumerable<Site> newSites);
+
+		/// <summary>Determines whether an item is a start page.</summary>
+		/// <param name="item">The item to check.</param>
+		/// <returns>True if the item is a configured start page.</returns>
+		bool IsStartPage(ContentItem item);
+	}
 }

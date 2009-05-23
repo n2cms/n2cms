@@ -1,21 +1,11 @@
 #region License
 
-/* Copyright (C) 2007 Cristian Libardo
+/* Copyright (C) 2007-2009 Cristian Libardo
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1 of
  * the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this software; if not, write to the Free
- * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
 #endregion
@@ -31,19 +21,12 @@ namespace N2.Web.UI.WebControls
 	/// <summary>An input box that can be updated with the url from the file selector popup in edit mode.</summary>
 	public class UrlSelector : TextBox
 	{
-		private string script =
-			@"
-function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableModes){{
-    var tb = document.getElementById(tbId);
-    window.open(popupUrl
-				+ '?tbid=' + tbId 
-				+ '&defaultMode=' + defaultMode 
-				+ '&availableModes=' + availableModes
-				+ '&selectedUrl=' + encodeURIComponent(tb.value),
-		null, 
-		popupOptions);
-}}
-";
+		public UrlSelector()
+		{
+			CssClass = "urlSelector";
+		}
+
+
 
 		/// <summary>Text on the button used to open the popup.</summary>
 		public string ButtonText
@@ -91,13 +74,27 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 			set { ViewState["AvailableModes"] = value; }
 		}
 
-		#region Methods
+
+
+		#region Script
+		private string script =
+			@"
+function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableModes){{
+    var tb = document.getElementById(tbId);
+    window.open(popupUrl
+				+ '?tbid=' + tbId 
+				+ '&defaultMode=' + defaultMode 
+				+ '&availableModes=' + availableModes
+				+ '&selectedUrl=' + encodeURIComponent(tb.value),
+		null, 
+		popupOptions);
+}}
+";
+		#endregion
 
 		/// <summary>Initializes the UrlSelector control.</summary>
 		protected override void OnInit(EventArgs e)
 		{
-			CssClass = "urlSelector";
-
 			base.OnInit(e);
 
 			EnsureChildControls();
@@ -122,6 +119,7 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 			HtmlInputButton hib = new HtmlInputButton();
 			hib.ID = ID + "-button";
 			hib.Value = ButtonText;
+			hib.Attributes["class"] = "popupButton selectorButton";
 			Controls.Add(hib);
 			hib.Attributes["onclick"] = string.Format(OpenPopupFormat,
                                                       N2.Web.Url.ToAbsolute(BrowserUrl),
@@ -131,7 +129,5 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 			                                          AvailableModes);
 			hib.RenderControl(writer);
 		}
-
-		#endregion
 	}
 }

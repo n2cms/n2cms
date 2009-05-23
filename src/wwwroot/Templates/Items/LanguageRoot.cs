@@ -63,14 +63,14 @@ namespace N2.Templates.Items
         #endregion
 
 
-        [FileAttachment, EditableImage("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
+		[FileAttachment, EditableFileUploadAttribute("Top Image", 88, ContainerName = Tabs.Content, CssClass = "main")]
         public virtual string TopImage
         {
             get { return (string)(GetDetail("TopImage") ?? string.Empty); }
             set { SetDetail("TopImage", value, string.Empty); }
         }
 
-        [FileAttachment, EditableImage("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+		[FileAttachment, EditableFileUploadAttribute("Content Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
         public virtual string Image
         {
             get { return (string)(GetDetail("Image") ?? string.Empty); }

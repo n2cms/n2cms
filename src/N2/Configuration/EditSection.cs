@@ -33,7 +33,7 @@ namespace N2.Configuration
         {
             get { return (EditAccess)base["administrators"]; }
             set { base["administrators"] = value; }
-        }
+		}
 
         [ConfigurationProperty("uploadFolders")]
         public FileSystemFolderCollection UploadFolders
@@ -110,6 +110,14 @@ namespace N2.Configuration
 		{
 			get { return (SettingsEditorCollection)base["settingsEditors"]; }
 			set { base["settingsEditors"] = value; }
+		}
+
+		/// <summary>Information about default directories, usd to find default directory for a page.</summary>
+		[ConfigurationProperty("defaultDirectory")]
+		public DefaultDirectoryElement DefaultDirectory
+		{
+			get { return (DefaultDirectoryElement)base["defaultDirectory"]; }
+			set { base["defaultDirectory"] = value; }
 		}
     }
 }

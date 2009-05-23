@@ -8,7 +8,7 @@
 	<edit:FieldSet class="referencingItems" runat="server" Legend="Other items referencing this item" meta:resourceKey="referencingItems">
 		<asp:Repeater runat="server" ID="rptReferencingItems">
 			<ItemTemplate>
-				<div><a href='<%# Eval("Url") %>'><img src='<%# Eval("IconUrl") %>' /><%# Eval("Title") %></a></div>
+				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" /><%# Eval("Title") %></a></div>
 			</ItemTemplate>
 		</asp:Repeater>
 	</edit:FieldSet>

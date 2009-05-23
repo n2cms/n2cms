@@ -82,24 +82,14 @@ namespace N2.Details
 		#region IDisplayable Members
 		public Control AddTo(ContentItem item, string detailName, Control container)
 		{
-			return AddImage(container, item, detailName, CssClass, Alt);
+			return DisplayableImageAttribute.AddImage(container, item, detailName, CssClass, Alt);
 		}
 
+		[Obsolete("Use DisplayableImageAttribute.AddImage")]
 		public static Control AddImage(Control container, ContentItem item, string detailName, string cssClass, string altText)
 		{
-			string imageUrl = item[detailName] as string;
-			if (!string.IsNullOrEmpty(imageUrl))
-			{
-				Image image = new Image();
-				image.ImageUrl = imageUrl;
-				image.Attributes["alt"] = altText;
-				image.CssClass = cssClass;
-				container.Controls.Add(image);
-				return image;
-			}
-			return null;
+			return DisplayableImageAttribute.AddImage(container, item, detailName, cssClass, altText);
 		}
-
 		#endregion
 	}
 }

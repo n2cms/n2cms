@@ -5,6 +5,10 @@ namespace N2.Templates.Tests.Wiki
 {
     public class FakeUrlParser : IUrlParser
     {
+		public FakeUrlParser()
+		{
+			PageNotFound += delegate { };
+		}
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
         public string Extension

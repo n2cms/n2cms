@@ -24,12 +24,16 @@ namespace N2.Web
                     {
                         IList<Site> sites = Host.ExtractSites(config);
                         sites = Host.Union(sites, sitesProvider.GetSites());
+
                         host.ReplaceSites(host.DefaultSite, sites);
                     }
                 };
             }
 		}
 
+		/// <summary>Finds an item by traversing names from the start page.</summary>
+		/// <param name="url">The url that should be traversed.</param>
+		/// <returns>The content item matching the supplied url.</returns>
 		public override ContentItem Parse(string url)
 		{
 			if (url.StartsWith("/") || url.StartsWith("~/"))
@@ -43,6 +47,9 @@ namespace N2.Web
 			return TryLoadingFromQueryString(url, PathData.ItemQueryKey, PathData.PageQueryKey);
 		}
 
+		/// <summary>May be overridden to provide custom start page depending on authority.</summary>
+		/// <param name="url">The host name and path information.</param>
+		/// <returns>The configured start page.</returns>
 		protected override ContentItem GetStartPage(Url url)
 		{
 			if (!url.IsAbsolute)
@@ -51,6 +58,9 @@ namespace N2.Web
 			return persister.Get(site.StartPageID);
 		}
 
+		/// <summary>Calculates an item url by walking it's parent path.</summary>
+		/// <param name="item">The item whose url to compute.</param>
+		/// <returns>A friendly url to the supplied item.</returns>
 		public override string BuildUrl(ContentItem item)
 		{
 			if (item == null) throw new ArgumentNullException("item");
@@ -72,7 +82,7 @@ namespace N2.Web
 			if (current == null) return item.FindPath(PathData.DefaultAction).RewrittenUrl;
 
 			Url url;
-			if (IsStartPage(current))
+			if (host.IsStartPage(current))
 			{
 				// we move right up to the start page
 				url = "/";
@@ -83,7 +93,7 @@ namespace N2.Web
 				url = new Url("/" + current.Name + current.Extension);
 				current = current.Parent;
 				// build path until a start page
-				while (current != null && !IsStartPage(current))
+				while (current != null && !host.IsStartPage(current))
 				{
 					url = url.PrependSegment(current.Name);
 					current = current.Parent;
@@ -121,14 +131,6 @@ namespace N2.Web
 				return item.FindPath(PathData.DefaultAction).RewrittenUrl;
         	
 			return Url.Parse(url).SetAuthority(site.Authority);
-        }
-
-		public override bool IsStartPage(ContentItem item)
-        {
-            foreach (Site site in host.Sites)
-                if (item.ID == site.StartPageID)
-                    return true;
-            return base.IsStartPage(item);
         }
 	}
 }

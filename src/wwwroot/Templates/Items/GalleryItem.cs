@@ -17,8 +17,7 @@ namespace N2.Templates.Items
             Visible = false;
         }
 
-        [EditableImage("Image", 30, ContainerName = Tabs.Content)]
-        [FileAttachment]
+		[FileAttachment, EditableFileUploadAttribute("Image", 30, ContainerName = Tabs.Content)]
         public virtual string ImageUrl
         {
             get { return (string)base.GetDetail("ImageUrl"); }

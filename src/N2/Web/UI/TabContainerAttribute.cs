@@ -73,7 +73,7 @@ namespace N2.Web.UI
 			TabPanel p = new TabPanel();
 			p.ID = Name;
 			p.ToolTip = GetLocalizedText("TabText") ?? TabText;
-			p.RegisterTabCss = RegisterTabCss;
+			p.RegisterTabCss = registerTabCss;
 			p.CssClass = CssClass ?? p.CssClass;
 			container.Controls.Add(p);
 			return p;

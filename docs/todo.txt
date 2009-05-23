@@ -1,3 +1,5 @@
+- remove exception when translating page without parent hierarchy
+- track external links and "trackbacks"
 - NH 2.1 alpha
 - PageDefinition, PartDefinition
 - item templates

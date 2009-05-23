@@ -81,8 +81,15 @@ namespace N2.Edit.FileManagement
 		private string lastUrl = null;
 		private bool IsSelected(string navigateUrl)
 		{
+			string openerUrl = OpenerInputUrl;
+			if(string.IsNullOrEmpty(openerUrl))
+				return false;
+
 			string url = Url.ToAbsolute(navigateUrl);
-			return (lastUrl != null) ? url == lastUrl : url == OpenerInputUrl;
+			if (lastUrl != null) 
+				return url == lastUrl;
+
+			return url == Url.ToAbsolute(openerUrl);
 		}
 
 		protected void OnUploadClick(object sender, EventArgs e)

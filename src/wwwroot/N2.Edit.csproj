@@ -1663,6 +1663,7 @@
     <Content Include="Edit\Js\plugins\FreeTextArea.js" />
     <Content Include="Edit\Js\plugins\jquery.cookie.js" />
     <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
+    <Content Include="Edit\Js\plugins\jquery.n2dimmable.js" />
     <Content Include="Edit\Js\TabPanel.js" />
     <Content Include="Edit\PublishPreview.aspx" />
     <Content Include="Edit\Settings\SettingsEditor.ascx" />

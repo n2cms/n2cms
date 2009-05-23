@@ -12,7 +12,7 @@ namespace N2.Web
 	{
 		private readonly IWebContext context;
 		private Site defaultSite;
-        private IList<Site> sites;
+		private Site[] sites = new Site[0];
 
 		public Host(IWebContext context, HostSection config)
 		{
@@ -20,22 +20,6 @@ namespace N2.Web
 
 		    ReplaceSites(new Site(config.RootID, config.StartPageID), ExtractSites(config));
 		}
-
-        public static IList<Site> ExtractSites(HostSection config)
-        {
-            List<Site> sites = new List<Site>();
-            foreach (SiteElement configElement in config.Sites)
-            {
-                Site s = new Site(configElement.RootID ?? config.RootID, configElement.ID, configElement.Name);
-                s.Wildcards = configElement.Wildcards || config.Wildcards;
-                foreach (FolderElement folder in configElement.UploadFolders)
-                    s.UploadFolders.Add(folder.Path);
-                foreach (string key in configElement.Settings.AllKeys)
-                    s.Settings[key] = configElement.Settings[key].Value;
-                sites.Add(s);
-            }
-            return sites;
-        }
 
         public Host(IWebContext context, int rootItemID, int startPageID)
 			: this(context, new Site(rootItemID, startPageID))
@@ -46,56 +30,82 @@ namespace N2.Web
 		{
 			this.context = context;
 			this.defaultSite = defaultSite;
-			sites = new List<Site>();
 		}
 
-		public Site DefaultSite
+    	/// <summary>The default site if the current cannot be determined.</summary>
+    	public Site DefaultSite
 		{
 			get { return defaultSite; }
 			set { defaultSite = value; }
 		}
 
-		public Site CurrentSite
+    	/// <summary>The current site based on the request's host header information. Fallbacks to defualt site.</summary>
+    	public Site CurrentSite
 		{
             get { return GetSite(context.Url.HostUrl) ?? DefaultSite; }
         }
 
-        public IList<Site> Sites
+    	/// <summary>All sites in the system.</summary>
+    	public IList<Site> Sites
         {
             get { return sites; }
         }
 
-        public Site GetSite(Url host)
+    	/// <summary>Gets the site associated with an url.</summary>
+    	/// <param name="hostUrl">The url of the site.</param>
+    	/// <returns>The associated site or null if no matching site is found.</returns>
+    	public Site GetSite(Url hostUrl)
         {
-            if (host == null)
+            if (hostUrl == null)
                 return null;
-            IList<Site> currentSites = Sites;
-            foreach (Site site in currentSites)
-                if (site.Is(host.Authority))
+            foreach (Site site in sites)
+                if (site.Is(hostUrl.Authority))
                     return site;
             return null;
         }
 
-        public void AddSites(IEnumerable<Site> sitesToAdd)
+    	/// <summary>Adds sites to the available sites.</summary>
+    	/// <param name="additionalSites">Sites to add.</param>
+		public void AddSites(IEnumerable<Site> additionalSites)
         {
 			lock(this)
 			{
-				sites = Union(Sites, sitesToAdd);
+				sites = Union(Sites, additionalSites);
 			}
         }
 
-        public void ReplaceSites(Site defaultSite, IList<Site> newSites)
+    	/// <summary>Replaces the site list with new sites.</summary>
+    	/// <param name="defaultSite">The default site to use.</param>
+    	/// <param name="newSites">The new site list.</param>
+    	public void ReplaceSites(Site defaultSite, IEnumerable<Site> newSites)
         {
             if(newSites == null) throw new ArgumentNullException("newSites");
 
 			lock (this)
 			{
 				this.defaultSite = defaultSite;
-				sites = newSites;
+				sites = new List<Site>(newSites).ToArray();
 			}
-        }
+		}
 
-        public static IList<Site> Union(IList<Site> sites, IEnumerable<Site> sitesToAdd)
+		/// <summary>Checks if an item is the startpage</summary>
+		/// <param name="item">The item to compare</param>
+		/// <returns>True if the item is a startpage</returns>
+		public bool IsStartPage(ContentItem item)
+		{
+			if (item == null) throw new ArgumentNullException("item");
+
+			if (item.ID == DefaultSite.StartPageID)
+				return true;
+
+			foreach (Site site in Sites)
+				if (item.ID == site.StartPageID)
+					return true;
+
+			return false;
+		}
+
+		public static Site[] Union(IEnumerable<Site> sites, IEnumerable<Site> sitesToAdd)
         {
             List<Site> writableSites = new List<Site>(sites);
             foreach (Site s in sitesToAdd)
@@ -103,7 +113,23 @@ namespace N2.Web
                 if (!writableSites.Contains(s))
                     writableSites.Add(s);
             }
-            return writableSites;
-        }
+            return writableSites.ToArray();
+		}
+
+		public static IList<Site> ExtractSites(HostSection config)
+		{
+			List<Site> sites = new List<Site>();
+			foreach (SiteElement configElement in config.Sites)
+			{
+				Site s = new Site(configElement.RootID ?? config.RootID, configElement.ID, configElement.Name);
+				s.Wildcards = configElement.Wildcards || config.Wildcards;
+				foreach (FolderElement folder in configElement.UploadFolders)
+					s.UploadFolders.Add(folder.Path);
+				foreach (string key in configElement.Settings.AllKeys)
+					s.Settings[key] = configElement.Settings[key].Value;
+				sites.Add(s);
+			}
+			return sites;
+		}
 	}
 }

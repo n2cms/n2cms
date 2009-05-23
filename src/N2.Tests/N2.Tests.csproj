@@ -143,6 +143,7 @@
     <Compile Include="Details\DetailCollectionTests.cs" />
     <Compile Include="Details\EnumableItem.cs" />
     <Compile Include="Details\EditableEnumTests.cs" />
+    <Compile Include="Edit\FileSystem\DefaultFolderFinderTest.cs" />
     <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />
     <Compile Include="Edit\Items\NotVersionableItem.cs" />
     <Compile Include="Edit\WhileDealingWithVersions.cs" />

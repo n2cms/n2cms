@@ -228,7 +228,7 @@ namespace N2.Web
 			if (current == null) throw new N2Exception("Cannot build url to data item '{0}' with no containing page item.", item);
 
 			Url url;
-			if (IsStartPage(current))
+			if (host.IsStartPage(current))
 			{
 				// we move right up to the start page
 				url = "/";
@@ -239,7 +239,7 @@ namespace N2.Web
 				url = new Url("/" + current.Name + current.Extension);
 				current = current.Parent;
 				// build path until a start page
-				while (current != null && !IsStartPage(current))
+				while (current != null && !host.IsStartPage(current))
 				{
 					url = url.PrependSegment(current.Name);
 					current = current.Parent;
@@ -264,15 +264,7 @@ namespace N2.Web
 		/// <returns>True if the item is a startpage or a rootpage</returns>
 		public virtual bool IsRootOrStartPage(ContentItem item)
 		{
-            return item.ID == host.CurrentSite.RootItemID || IsStartPage(item);
-		}
-
-		/// <summary>Checks if an item is the startpage</summary>
-		/// <param name="item">The item to compare</param>
-		/// <returns>True if the item is a startpage</returns>
-		public virtual bool IsStartPage(ContentItem item)
-		{
-            return item.ID == host.CurrentSite.StartPageID;
+			return item.ID == host.CurrentSite.RootItemID || host.IsStartPage(item);
 		}
 
 		/// <summary>Removes a trailing default.aspx from an URL.</summary>

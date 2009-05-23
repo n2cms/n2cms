@@ -326,6 +326,22 @@
 									<xs:attribute name="showKeepUpdated" type="xs:boolean" use="optional" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="defaultDirectory" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="mode" use="optional" default="RecursiveFolderShadow">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="UploadFolder"/>
+												<xs:enumeration value="RecursiveNames"/>
+												<xs:enumeration value="RecursiveNamesFromParent"/>
+												<xs:enumeration value="NodeName"/>
+												<xs:enumeration value="TopNodeName"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="rootPath" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />
 						<xs:attribute name="editPreviewUrlFormat" type="xs:string" use="optional" />

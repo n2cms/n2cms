@@ -30,7 +30,7 @@ namespace N2.Templates.Items
             set { SetDetail("TopTextUrl", value, "~/"); }
         }
 
-        [FileAttachment, EditableImage("Logo", 50, ContainerName = "top", Alt = "Logo")]
+		[FileAttachment, EditableFileUploadAttribute("Logo", 50, ContainerName = "top", Alt = "Logo")]
         public virtual string LogoUrl
         {
             get { return (string)(GetDetail("LogoUrl") ?? string.Empty); }

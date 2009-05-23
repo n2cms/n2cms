@@ -54,140 +54,51 @@
 }
 
 /* Edit details */
-.content fieldset
-{
-	clear:left;
-	padding:10px;
-}
+.content fieldset { clear:left; padding:10px; }
 
-textarea.textEditor
-{
-	width:580px;
-}
-textarea.freeTextArea
-{
-	height:380px;
-}
-.itemEditor .editDetail
-{
-	margin:0 0 5px 0;
-	clear:left;
-}
-.itemEditor .editorLabel
-{
-	width:110px;
-	float:left;
-	clear:left;
-	padding:5px 5px 0 0;
-	margin:0 0 5px 0;
-}
-.itemEditor fieldset .editLabel
-{
-	width:100px;
-}
-.itemEditor .editControl
-{
-	float:left;
-	padding:0;
-	margin:0 0 5px 0;
-}
-.itemEditor .editControl label
-{
-	font-weight:normal;
-	display:inline;
-	float:none;
-}
-.itemEditor .editControl input
-{
-	vertical-align:middle;
-}
-.nameEditor
-{
-	width:142px;
-}
+textarea.textEditor { width:580px; }
+textarea.freeTextArea { height:380px; }
+.itemEditor .editDetail { margin:0 0 5px 0; clear:left; }
+.itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 0; }
+.itemEditor fieldset .editLabel { width:100px; }
+.itemEditor .editControl { float:left; padding:0; margin:0 0 5px 0; }
+.itemEditor .editControl label { font-weight:normal; display:inline; float:none; }
+.itemEditor .editControl input { vertical-align:middle; }
+.nameEditor { width:142px; }
 .titleEditor, .urlSelector, .textEditor
-{
-	width:284px;
-}
-.titleEditor
-{
-	font-size:1.5em;
-}
+    { width:284px; }
+.titleEditor { font-size:1.5em; }
+.popupButton { marign-right:10px;}
+input.disabled, .disabled *, input.dimmed, .dimmed *
+    { opacity:.50; filter: alpha(opacity=50); }
+.selector, .uploader
+    { margin-right:10px;}
+.uploadableContainer .fileSelector
+    { width: 184px; }
+.selector img, .uploader img
+    { vertical-align:middle; margin-right:1px; }
 
-input.disabled,
-.disabled *
-{
-	opacity:.50;
-	filter: alpha(opacity=50);
-}
-.delete
-{
-	float:right;
-}
 
-.versionInfo
-{
-	background-image:url(../img/ico/information.gif);
-}
+.delete { float:right; }
+.versionInfo { background-image:url(../img/ico/information.gif); }
 
 /* tab overrides */
-.tabPanel
-{
-	margin-bottom:10px;
-}
-/*
-.tabs
-{
-	left:-10px;
-}
-*/
-.tabPanel fieldset
-{
-	left:0;
-}
+.tabPanel { margin-bottom:10px; }
+.tabPanel fieldset { left:0; }
 
-.help
-{
-	vertical-align:middle;
-}
+.help { vertical-align:middle; }
 
-.helpPanel
-{
-	cursor:pointer;
-}
+.helpPanel { cursor:pointer; }
 
-.helpText
-{
-	display:none;
-	float:left;
-}
-.helpText b
-{
-	display:block;
-}
-.helpVisible .helpText
-{
-	display:block;
-	border-bottom:solid 1px #DEDAD7;
-	margin-bottom:10px;
-	padding-bottom:10px;
-}
+.helpText { display:none; float:left; }
+.helpText b { display:block; }
+.helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD7; margin-bottom:10px; padding-bottom:10px; }
 
 .editDetail .defaultSkin table.mceLayout,
 .editDetail .defaultSkin table.mceLayout tr.mceFirst td
-{
-    border:none;
-}
-.editDetail .defaultSkin table.mceLayout tr.mceFirst
-{
-    background:#FFFFFF url(../img/framed_toolbar.gif) repeat-x scroll 0 100%;
-}
+    { border:none; }
+.editDetail .defaultSkin table.mceLayout tr.mceFirst { background:#FFFFFF url(../img/framed_toolbar.gif) repeat-x scroll 0 100%; }
 .editDetail .mceStatusbar,
 .editDetail .mceIframeContainer
-{
-    border:solid 1px #ccc;
-}
-.editDetail .mceEditor table
-{
-    background-color:#fff;
-}
+    { border:solid 1px #ccc; }
+.editDetail .mceEditor table { background-color:#fff; }

@@ -107,6 +107,7 @@ namespace N2.Engine.MediumTrust
             AddComponentInstance<IPluginBootstrapper>(new PluginBootstrapper(typeFinder, engineConfiguration));
             AddComponentInstance<Navigator>(new Navigator(persister, host));
 			AddComponentInstance<IFileSystem>(new VirtualPathFileSystem());
+			AddComponentInstance<IDefaultDirectory>(new DefaultDirectorySelector(host, editConfiguration));
 
             AjaxRequestDispatcher ajaxDispatcher = AddComponentInstance<AjaxRequestDispatcher>(new AjaxRequestDispatcher(securityManager));
             CreateUrlProvider cup = AddComponentInstance<CreateUrlProvider>(new CreateUrlProvider(persister, editManager, definitions, ajaxDispatcher));

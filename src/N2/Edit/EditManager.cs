@@ -22,6 +22,11 @@ namespace N2.Edit
 	/// </summary>
 	public class EditManager : IEditManager
 	{
+		protected System.ComponentModel.EventHandlerList Events = new System.ComponentModel.EventHandlerList();
+		protected static readonly object savingVersionKey = new object();
+		protected static readonly object addedEditorKey = new object();
+		private IList<string> uploadFolders = new List<string>();
+
 		private readonly IDefinitionManager definitions;
 		private readonly IPersister persister;
 		private readonly IVersionManager versioner;
@@ -57,11 +62,7 @@ namespace N2.Edit
             NewItemUrl = config.NewItemUrl;
             DeleteItemUrl = config.DeleteItemUrl;
             EnableVersioning = config.EnableVersioning;
-
-            foreach(FolderElement folder in config.UploadFolders)
-            {
-                uploadFolders.Add(folder.Path);
-            }
+			uploadFolders = new List<string>(config.UploadFolders.Folders);
         }
 
         public string EditInterfaceUrl
@@ -411,11 +412,6 @@ namespace N2.Edit
 		#endregion
 
 
-
-		protected System.ComponentModel.EventHandlerList Events = new System.ComponentModel.EventHandlerList();
-		protected static readonly object savingVersionKey = new object();
-		protected static readonly object addedEditorKey = new object();
-	    private IList<string> uploadFolders = new List<string>();
 
 	    /// <summary>Occurs when a detail editor (a control that contains an editor) is added.</summary>
 		public event EventHandler<ControlEventArgs> AddedEditor

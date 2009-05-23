@@ -13,7 +13,7 @@ namespace N2.Templates.Items
 	[ConventionTemplate("Text")]
     public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
     {
-        [FileAttachment, EditableImage("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
+		[FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
         public virtual string Image
         {
             get { return (string)(GetDetail("Image") ?? string.Empty); }

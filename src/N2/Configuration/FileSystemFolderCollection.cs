@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Configuration;
 
 namespace N2.Configuration
 {
-    public class FileSystemFolderCollection : ConfigurationElementCollection
+	public class FileSystemFolderCollection : ConfigurationElementCollection
     {
         public FileSystemFolderCollection()
         {
@@ -28,5 +26,19 @@ namespace N2.Configuration
         {
             get { return (FolderElement)base.BaseGet(index); }
         }
+
+    	public IEnumerable<string> Folders
+    	{
+    		get
+    		{
+    			foreach(FolderElement element in this)
+    			{
+					if (element.Path.EndsWith("/"))
+						yield return element.Path;
+					else
+						yield return element.Path + "/";
+    			}
+    		}
+    	}
     }
 }

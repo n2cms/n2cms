@@ -65,7 +65,9 @@
     		});
     		$("input").focus(function() {
     			$(".mceExternalToolbar").hide();
-	    	});
+    		});
+
+    		$(".dimmable").n2dimmable();
     	});
     </script>
 </asp:Content>

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using N2.Edit.FileSystem;
 using N2.Engine;
 using N2.Web;
 using System.Web.UI;
@@ -51,6 +52,14 @@ namespace N2.Edit
 		public virtual ContentItem SaveItem(ContentItem item, IDictionary<string, Control> addedEditors, ItemEditorVersioningMode versioningMode, IPrincipal user)
 		{
 			return Engine.EditManager.Save(item, addedEditors, versioningMode, user);
+		}
+
+		/// <summary>Gets the default folder for an item.</summary>
+		/// <param name="item">The item whose default folder is requested.</param>
+		/// <returns>The default folder.</returns>
+		public virtual string GetDefaultFolder(ContentItem item)
+		{
+			return Engine.Resolve<IDefaultDirectory>().GetDefaultDirectory(item);
 		}
 	}
 }

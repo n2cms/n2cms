@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -284,6 +285,8 @@
     <Compile Include="Collections\VisibleFilter.cs" />
     <Compile Include="Configuration\ContainableCollection.cs" />
     <Compile Include="Configuration\ContainableElement.cs" />
+    <Compile Include="Configuration\DefaultDirectoryElement.cs" />
+    <Compile Include="Configuration\DefaultDirectoryMode.cs" />
     <Compile Include="Configuration\DefinitionCollection.cs" />
     <Compile Include="Configuration\DefinitionElement.cs" />
     <Compile Include="Configuration\InterfacePluginElement.cs" />
@@ -336,10 +339,13 @@
     <Compile Include="Details\EditableDateAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
     <Compile Include="Details\EditableListControlAttribute.cs" />
+    <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
     <Compile Include="Edit\EditableAdapter.cs" />
+    <Compile Include="Edit\FileSystem\DefaultDirectorySelector.cs" />
+    <Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
     <Compile Include="Edit\IDocumentBaseSource.cs" />
     <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
     <Compile Include="Obsolete\EditableAspectController.cs" />
