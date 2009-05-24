@@ -1,4 +1,5 @@
 ﻿using System;
+using N2.Security;
 using NUnit.Framework;
 
 namespace N2.Tests.Content
@@ -7,7 +8,7 @@ namespace N2.Tests.Content
 	public class ContentItemTests : ItemTestsBase
 	{
 		[Test]
-		public void SettingValueTypeAddsDetail()
+		public void SettingValueType_AddsDetail()
 		{
 			AnItem item = new AnItem();
 			item.IntProperty = 3;
@@ -366,6 +367,24 @@ namespace N2.Tests.Content
 		}
 
 		[Test]
+		public void CanSetDetail_ByIndexer()
+		{
+			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
+			root["TheDetail"] = 1;
+
+			Assert.That(root["TheDetail"], Is.EqualTo(1));
+		}
+
+		[Test]
+		public void CanChange_DetailType()
+		{
+			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
+			root["TheDetail"] = 1;
+			root["TheDetail"] = "string";
+
+			Assert.That(root["TheDetail"], Is.EqualTo("string"));
+		}
+
 		[TestCase("TheValue")]
 		[TestCase(456)]
 		[TestCase(456.567)]
@@ -403,7 +422,7 @@ namespace N2.Tests.Content
 		}
 
 		[Test]
-		public void CanCloneItemWithDetailCollection()
+		public void CanClone_Item_WithDetailCollection()
 		{
 			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
 			root.GetDetailCollection("TheDetailCollection", true).Add("TheValue");
@@ -477,6 +496,108 @@ namespace N2.Tests.Content
 			ContentItem child4 = CreateOneItem<AnItem>(0, "child4", root);
 			Assert.That(root.Children[3], Is.EqualTo(child4), "Should be last since treshold is not met");
 		}
+
+		[Test]
+		public void Updates_VersionedFields()
+		{
+			ContentItem source = CreateOneItem<AnItem>(1, "source", null);
+			source.Created = new DateTime(2000, 1, 1);
+			source.SavedBy = "someone";
+			source.Title = "title";
+			source.Updated = new DateTime(2010, 01, 01);
+			source.Visible = false;
+			
+			ContentItem destination = CreateOneItem<AnItem>(2, "destination", null);
+			((N2.Persistence.IUpdatable<ContentItem>)destination).UpdateFrom(source);
+
+			Assert.That(destination.Created, Is.EqualTo(new DateTime(2000, 1, 1)));
+			Assert.That(destination.SavedBy, Is.EqualTo("someone"));
+			Assert.That(destination.Title, Is.EqualTo("title"));
+			Assert.That(destination.Updated, Is.EqualTo(new DateTime(2010, 01, 01)));
+			Assert.That(destination.Visible, Is.False);
+		}
+
+		[Test]
+		public void DoesntUpdate_UnversionedFields()
+		{
+			ContentItem source = CreateOneItem<AnItem>(1, "source", null);
+			source.Expires = new DateTime(3000, 1, 1);
+			source.Parent = new AnItem { Name = "parent" };
+			source.Published = new DateTime(2005, 1, 1);
+			source.SortOrder = 123;
+			source.VersionOf = new AnItem { Name = "version" };
+			source.ZoneName = "zone";
+
+			ContentItem destination = CreateOneItem<AnItem>(2, "destination", null);
+			((N2.Persistence.IUpdatable<ContentItem>)destination).UpdateFrom(source);
+
+			Assert.That(destination.Expires, Is.Not.EqualTo(new DateTime(3000, 1, 1)), "Expires should not be modified");
+			Assert.That(destination.Parent, Is.Null, "Parent should not be modified");
+			Assert.That(destination.Published, Is.Not.EqualTo(new DateTime(2005, 1, 1)), "Published should not be modified");
+			Assert.That(destination.SortOrder, Is.EqualTo(0), "Sort order should not be modified");
+			Assert.That(destination.VersionOf, Is.Null, "VersionOf should not be modified");
+			Assert.That(destination.ZoneName, Is.Null, "ZoneName should not be modified");
+		}
+
+		[Test]
+		public void DoesntUpdate_AuthorizedRoles()
+		{
+			ContentItem source = CreateOneItem<AnItem>(1, "source", null);
+			source.AuthorizedRoles.Add(new AuthorizedRole(source, "Users"));
+
+			ContentItem destination = CreateOneItem<AnItem>(2, "destination", null);
+			((N2.Persistence.IUpdatable<ContentItem>)destination).UpdateFrom(source);
+
+			Assert.That(destination.AuthorizedRoles.Count, Is.EqualTo(0), "Roles should not be modified");
+		}
+
+		[Test]
+		public void DoesntUpdate_Children()
+		{
+			ContentItem source = CreateOneItem<AnItem>(1, "source", null);
+			source.Children.Add(new AnItem { Name = "child" });
+
+			ContentItem destination = CreateOneItem<AnItem>(2, "destination", null);
+			((N2.Persistence.IUpdatable<ContentItem>)destination).UpdateFrom(source);
+
+			Assert.That(destination.Children.Count, Is.EqualTo(0), "Children should not be modified");
+		}
+
+		[Test]
+		public void Updates_ItemDetails()
+		{
+			ContentItem source = CreateOneItem<AnItem>(1, "source", null);
+			source["Hello"] = "World";
+			source.GetDetailCollection("World", true).Add("Hello");
+
+			ContentItem destination = CreateOneItem<AnItem>(2, "destination", null);
+			((N2.Persistence.IUpdatable<ContentItem>)destination).UpdateFrom(source);
+
+			Assert.That(destination["Hello"], Is.EqualTo("World"));
+			Assert.That(destination.GetDetailCollection("World", false), Is.Not.Null);
+			Assert.That(destination.GetDetailCollection("World", false).Count, Is.EqualTo(1));
+			Assert.That(destination.GetDetailCollection("World", false)[0], Is.EqualTo("Hello"));
+		}
+
+		[Test]
+		public void Clears_ItemDetails_NotInSourceVersion()
+		{
+			ContentItem source = CreateOneItem<AnItem>(1, "source", null);
+			source.GetDetailCollection("Partial", true).Add(1);
+
+			ContentItem destination = CreateOneItem<AnItem>(2, "destination", null);
+			destination["Hello"] = "World";
+			destination.GetDetailCollection("World", true).Add("Hello");
+			destination.GetDetailCollection("Partial", true).Add(2);
+			((N2.Persistence.IUpdatable<ContentItem>)destination).UpdateFrom(source);
+
+			Assert.That(destination["Hello"], Is.Null);
+			Assert.That(destination.GetDetailCollection("World", false), Is.Null);
+			Assert.That(destination.GetDetailCollection("Partial", false), Is.Not.Null);
+			Assert.That(destination.GetDetailCollection("Partial", false).Count, Is.EqualTo(1));
+			Assert.That(destination.GetDetailCollection("Partial", false)[0], Is.EqualTo(1));
+		}
+
 
 		[Serializable]
 		private class X

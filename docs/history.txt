@@ -1,4 +1,5 @@
-﻿- fixed unhandled exception when translating page without translated parent hierarchy
+﻿- refactored versioning code
+- fixed unhandled exception when translating page without translated parent hierarchy
 - introduced EditableFileUpload attribute
 - introduced default directory concept
 - fixed broken icon in link tracker

@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Security.Principal;
-using System.Text;
 using System.Web;
-using Castle.MicroKernel;
 using N2.Security;
 
 namespace N2.Web
@@ -53,8 +50,7 @@ namespace N2.Web
 					string responseText = service.Handle(context.Request.QueryString);
 					return responseText;
 				}
-				else
-					throw new N2Exception("Couln't find any handler for the action: " + action);
+				throw new N2Exception("Couln't find any handler for the action: " + action);
 			}
 			catch(Exception ex)
 			{

@@ -23,13 +23,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Security.Principal;
-using N2.Integrity;
-using N2.Web;
 using System.Text;
-using N2.Details;
-using N2.Collections;
-using N2.Engine;
 using System.Web;
+using N2.Collections;
+using N2.Details;
+using N2.Integrity;
+using N2.Persistence;
+using N2.Web;
 
 namespace N2
 {
@@ -58,34 +58,26 @@ namespace N2
 	[Serializable, DebuggerDisplay("{Name}#{ID}")]
 	[DynamicTemplate]
 	[RestrictParents(typeof(ContentItem))]
-	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, INode
+	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, INode, IUpdatable<ContentItem>
     {
         #region Private Fields
-        [Persistence.DoNotCopy]
-		private int id;
+        private int id;
         private string title;
         private string name;
         private string zoneName;
-		[Persistence.DoNotCopy]
 		private ContentItem parent = null;
         private DateTime created;
         private DateTime updated;
         private DateTime? published = DateTime.Now;
         private DateTime? expires = null;
         private int sortOrder;
-		[Persistence.DoNotCopy]
 		private string url = null;
         private bool visible = true;
-		[Persistence.DoNotCopy]
 		private ContentItem versionOf = null;
 		private string savedBy;
-		[Persistence.DoNotCopy]
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
-		[Persistence.DoNotCopy]
 		private IList<ContentItem> children = new List<ContentItem>();
-		[Persistence.DoNotCopy]
 		private IDictionary<string, Details.ContentDetail> details = new Dictionary<string, Details.ContentDetail>();
-		[Persistence.DoNotCopy]
 		private IDictionary<string, Details.DetailCollection> detailCollections = new Dictionary<string, Details.DetailCollection>();
 		private Web.IUrlParser urlParser;
 
@@ -394,22 +386,23 @@ namespace N2
 		/// <param name="value">The value to set. If this parameter is null the detail is removed.</param>
 		protected virtual void SetDetail<T>(string detailName, T value)
 		{
-			Details.ContentDetail detail = Details.ContainsKey(detailName) ? Details[detailName] : null;
+			ContentDetail detail = null;
+			if(Details.TryGetValue(detailName, out detail))
+			{
+				if (value != null && detail.ValueType.IsAssignableFrom(typeof(T)))
+				{
+					// update an existing detail of same type
+					detail.Value = value;
+					return;
+				}
+			}
 
-			if (detail != null && value != null && typeof(T).IsAssignableFrom(detail.ValueType))
-			{
-				// update an existing detail
-				detail.Value = value;
-			}
-			else
-			{
-				if (detail != null)
-					// delete detail or remove detail of wrong type
-					Details.Remove(detailName);
-				if (value != null)
-					// add new detail
-					Details.Add(detailName, N2.Details.ContentDetail.New(this, detailName, value));
-			}
+			if (detail != null)
+				// delete detail or remove detail of wrong type
+				Details.Remove(detailName);
+			if (value != null)
+				// add new detail
+				Details.Add(detailName, N2.Details.ContentDetail.New(this, detailName, value));
 		} 
 		#endregion
 
@@ -636,73 +629,82 @@ namespace N2
 		public virtual ContentItem Clone(bool includeChildren)
         {
 			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetType(), true);
-			cloned.title = title;
-			cloned.name = name;
-			cloned.zoneName = zoneName;
-			cloned.created = created;
-			cloned.updated = updated;
-			cloned.published = published;
-			cloned.expires = expires;
-			cloned.sortOrder = sortOrder;
-			cloned.visible = visible;
-			cloned.savedBy = savedBy;
-			cloned.urlParser = urlParser;
-
-			CloneDetails(cloned);
-			CloneChildren(includeChildren, cloned);
-			CloneAuthorizedRoles(cloned);
+			
+			CloneFields(this, cloned, true);
+			CloneDetails(this, cloned);
+			CloneChildren(this, cloned, includeChildren);
+			CloneAuthorizedRoles(this, cloned);
 
             return cloned;
         }
 
 		#region Clone Helper Methods
-		private void CloneAuthorizedRoles(ContentItem cloned)
+		static void CloneFields(ContentItem source, ContentItem destination, bool partialUpdate)
 		{
-			if (AuthorizedRoles != null)
+			destination.title = source.title;
+			destination.name = source.name;
+			destination.created = source.created;
+			destination.updated = source.updated;
+			if (partialUpdate)
 			{
-				cloned.authorizedRoles = new List<Security.AuthorizedRole>();
-				foreach (Security.AuthorizedRole role in AuthorizedRoles)
+				destination.zoneName = source.zoneName;
+				destination.published = source.published;
+				destination.expires = source.expires;
+				destination.sortOrder = source.sortOrder;
+			}
+			destination.visible = source.visible;
+			destination.savedBy = source.savedBy;
+			destination.urlParser = source.urlParser;
+			destination.url = null;
+		}
+
+		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)
+		{
+			if (source.AuthorizedRoles != null)
+			{
+				destination.authorizedRoles = new List<Security.AuthorizedRole>();
+				foreach (Security.AuthorizedRole role in source.AuthorizedRoles)
 				{
 					Security.AuthorizedRole clonedRole = role.Clone();
-					clonedRole.EnclosingItem = cloned;
-					cloned.authorizedRoles.Add(clonedRole);
+					clonedRole.EnclosingItem = destination;
+					destination.authorizedRoles.Add(clonedRole);
 				}
 			}
 		}
 
-		private void CloneChildren(bool includeChildren, ContentItem cloned)
+		static void CloneChildren(ContentItem source, ContentItem destination, bool includeChildren)
 		{
-			cloned.children = new List<ContentItem>();
 			if (includeChildren)
 			{
-				foreach (ContentItem child in Children)
+				foreach (ContentItem child in source.Children)
 				{
 					ContentItem clonedChild = child.Clone(true);
-					clonedChild.AddTo(cloned);
+					clonedChild.AddTo(destination);
 				}
 			}
 		}
 
-		private void CloneDetails(ContentItem cloned)
+		static void CloneDetails(ContentItem source, ContentItem destination)
 		{
-			cloned.details = new Dictionary<string, ContentDetail>();
-			foreach (Details.ContentDetail detail in Details.Values)
+			foreach (Details.ContentDetail detail in source.Details.Values)
 			{
-				if(cloned.details.ContainsKey(detail.Name)) {
-					cloned.details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
-				} else {
+				if(destination.details.ContainsKey(detail.Name)) 
+				{
+					destination.details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
+				} 
+				else 
+				{
 					ContentDetail clonedDetail = detail.Clone();
-					clonedDetail.EnclosingItem = cloned;
-					cloned.details[detail.Name] = clonedDetail;
+					clonedDetail.EnclosingItem = destination;
+					destination.details[detail.Name] = clonedDetail;
 				}
 			}
 
-			cloned.detailCollections = new Dictionary<string, DetailCollection>();
-			foreach (Details.DetailCollection collection in DetailCollections.Values)
+			foreach (Details.DetailCollection collection in source.DetailCollections.Values)
 			{
 				Details.DetailCollection clonedCollection = collection.Clone();
-				clonedCollection.EnclosingItem = cloned;
-				cloned.DetailCollections[collection.Name] = clonedCollection;
+				clonedCollection.EnclosingItem = destination;
+				destination.DetailCollections[collection.Name] = clonedCollection;
 			}
 		} 
 		#endregion
@@ -835,5 +837,47 @@ namespace N2
 			return Name + "#" + ID;
 		}
 		#endregion
-    }
+
+		#region IUpdatable<ContentItem> Members
+
+		void IUpdatable<ContentItem>.UpdateFrom(ContentItem source)
+		{
+			CloneFields(source, this, false);
+			CloneDetails(source, this);
+			ClearMissingDetails(source, this);
+		}
+
+		private void ClearMissingDetails(ContentItem source, ContentItem destination)
+		{
+			// remove details not present in source
+			List<string> detailKeys = new List<string>(destination.Details.Keys);
+			foreach(string key in detailKeys)
+			{
+				if (!source.Details.ContainsKey(key))
+					destination.Details.Remove(key);
+			}
+
+			List<string> collectionKeys = new List<string>(destination.DetailCollections.Keys);
+			foreach (string key in collectionKeys)
+			{
+				if (source.DetailCollections.ContainsKey(key))
+				{
+					// remove detail collection values not present in source
+					DetailCollection destinationCollection = destination.DetailCollections[key];
+					DetailCollection sourceCollection = source.DetailCollections[key];
+					List<object> values = new List<object>(destinationCollection.Enumerate<object>());
+					foreach(object value in values)
+					{
+						if(!sourceCollection.Contains(value))
+							destinationCollection.Remove(value);
+					}
+				}
+				else
+					// remove detail collections not present in source
+					destination.DetailCollections.Remove(key);
+			}
+		}
+
+		#endregion
+	}
 }

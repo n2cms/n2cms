@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Diagnostics;
-using N2.Details;
 using N2.Persistence.Finder;
 
 namespace N2.Persistence
@@ -70,7 +68,7 @@ namespace N2.Persistence
 					ContentItem versionOfCurrentItem = SaveVersion(currentItem);
 					ClearAllDetails(currentItem);
 
-					UpdateCurrentItemData(currentItem, replacementItem);
+					((IUpdatable<ContentItem>)currentItem).UpdateFrom(replacementItem);
 
 					currentItem.Updated = Utility.CurrentTime();
 					itemRepository.Update(currentItem);
@@ -90,32 +88,6 @@ namespace N2.Persistence
 		}
 
 		#region ReplaceVersion Helper Methods
-
-		private static void UpdateCurrentItemData(ContentItem currentItem, ContentItem replacementItem)
-		{
-			for (Type t = currentItem.GetType(); t.BaseType != null; t = t.BaseType)
-			{
-				foreach (FieldInfo fi in t.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
-				{
-					if (fi.GetCustomAttributes(typeof(DoNotCopyAttribute), true).Length == 0)
-						if (fi.Name != "id" && fi.Name != "expires" && fi.Name != "published")
-							fi.SetValue(currentItem, fi.GetValue(replacementItem));
-					if(fi.Name == "url")
-						fi.SetValue(currentItem, null);
-				}
-			}
-
-			foreach (Details.ContentDetail detail in replacementItem.Details.Values)
-			{
-				currentItem[detail.Name] = detail.Value;
-			}
-			foreach (Details.DetailCollection collection in replacementItem.DetailCollections.Values)
-			{
-				Details.DetailCollection newCollection = currentItem.GetDetailCollection(collection.Name, true);
-				foreach (Details.ContentDetail detail in collection.Details)
-					newCollection.Add(detail.Value);
-			}
-		}
 
 		private void ClearAllDetails(ContentItem item)
 		{
