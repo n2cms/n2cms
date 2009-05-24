@@ -1,4 +1,5 @@
-﻿- refactored versioning code
+﻿- removed deprecated examples: medium trust, multiple domains
+- refactored versioning code
 - fixed unhandled exception when translating page without translated parent hierarchy
 - introduced EditableFileUpload attribute
 - introduced default directory concept

@@ -11,18 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parts", "Parts", "{11653C5A
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Medium Trust", "Medium Trust", "{85019B1D-187F-42E4-97DC-8E0BF58F23B7}"
-	ProjectSection(FolderStartupServices) = postProject
-		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mvc", "Mvc", "{FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates Site", "Templates Site", "{91671D3F-E6C3-412B-89FF-BC14C0A0DE39}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Multiple Domains", "Multiple Domains", "{B19718DD-E889-4797-BDE4-86CDD3646624}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediumTrustTest", "MediumTrust\wwwroot\MediumTrustTest.csproj", "{23188961-CC8E-4D05-BC09-C6BE83D17640}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "Parts\wwwroot\", "{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -101,27 +92,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject", "TemplatesSite\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTest", "Mvc\wwwroot\MvcTest.csproj", "{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "MultipleDomains\wwwroot\", "{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFramework = "2.0"
-		Debug.AspNetCompiler.VirtualPath = "/wwwroot(3)"
-		Debug.AspNetCompiler.PhysicalPath = "MultipleDomains\wwwroot\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(3)\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/wwwroot(3)"
-		Release.AspNetCompiler.PhysicalPath = "MultipleDomains\wwwroot\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(3)\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "53160"
-		VWDVirtualPath = "/"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -132,16 +102,6 @@ Global
 		Release|Mixed Platforms = Release|Mixed Platforms
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|.NET.ActiveCfg = Release|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{23188961-CC8E-4D05-BC09-C6BE83D17640}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Debug|.NET.ActiveCfg = Debug|.NET
 		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Debug|.NET.Build.0 = Debug|.NET
 		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Debug|Any CPU.ActiveCfg = Debug|.NET
@@ -192,16 +152,6 @@ Global
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Debug|.NET.ActiveCfg = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Debug|.NET.Build.0 = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Debug|Any CPU.ActiveCfg = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Debug|Mixed Platforms.Build.0 = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Release|.NET.ActiveCfg = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Release|.NET.Build.0 = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1}.Release|Mixed Platforms.Build.0 = Debug|.NET
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -209,49 +159,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8626A229-195E-42D6-ACB6-4009C3818797} = {D037EABD-718B-468A-A23D-4439AF936DCD}
 		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861} = {11653C5A-A506-484F-B7FC-6CC9E0413633}
-		{23188961-CC8E-4D05-BC09-C6BE83D17640} = {85019B1D-187F-42E4-97DC-8E0BF58F23B7}
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D} = {FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3} = {91671D3F-E6C3-412B-89FF-BC14C0A0DE39}
-		{0AB2CF4A-7810-4205-8B46-4A225BB41CA1} = {B19718DD-E889-4797-BDE4-86CDD3646624}
 		{E52D3BFF-188A-4A71-B853-B05553811298} = {F709399E-0564-49F8-BDF4-FD57C60D50F3}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs01.codeplex.com/
-		SccLocalPath0 = .
-		SccWebProject1 = true
-		SccProjectUniqueName1 = SimpleWebSite\\CS
-		SccProjectTopLevelParentUniqueName1 = N2.Examples.sln
-		SccProjectName1 = SimpleWebSite/CS
-		SccLocalPath1 = SimpleWebSite\\CS
-		SccProjectEnlistmentChoice1 = 2
-		SccWebProject2 = true
-		SccProjectUniqueName2 = SimpleWebSite\\VB
-		SccProjectTopLevelParentUniqueName2 = N2.Examples.sln
-		SccProjectName2 = SimpleWebSite/VB
-		SccLocalPath2 = SimpleWebSite\\VB
-		SccProjectEnlistmentChoice2 = 2
-		SccProjectUniqueName3 = Globalization\\LanguageSwitcher\\LanguageSwitcher.csproj
-		SccProjectTopLevelParentUniqueName3 = N2.Examples.sln
-		SccProjectName3 = Globalization/LanguageSwitcher
-		SccLocalPath3 = Globalization\\LanguageSwitcher
-		SccWebProject4 = true
-		SccProjectUniqueName4 = Globalization\\WebSite
-		SccProjectTopLevelParentUniqueName4 = N2.Examples.sln
-		SccProjectName4 = Globalization/WebSite
-		SccLocalPath4 = Globalization\\WebSite
-		SccProjectEnlistmentChoice4 = 2
-		SccWebProject5 = true
-		SccProjectUniqueName5 = Parts\\WebSite
-		SccProjectTopLevelParentUniqueName5 = N2.Examples.sln
-		SccProjectName5 = Parts/WebSite
-		SccLocalPath5 = Parts\\WebSite
-		SccProjectEnlistmentChoice5 = 2
-		SccProjectUniqueName6 = MediumTrust\\WebProject\\MediumTrustTest.csproj
-		SccProjectTopLevelParentUniqueName6 = N2.Examples.sln
-		SccProjectName6 = MediumTrust/WebProject
-		SccLocalPath6 = MediumTrust\\WebProject
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

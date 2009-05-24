@@ -3,25 +3,14 @@
 	<!-- EXAMPLES -->
 
 	<PropertyGroup>
-		<Examples-MediumTrustFolder>$(Examples-Folder)\MediumTrust</Examples-MediumTrustFolder>
 		<Examples-PartsFolder>$(Examples-Folder)\Parts</Examples-PartsFolder>
 		<Examples-VisualBasic>$(Examples-Folder)\MinimalVisualBasic</Examples-VisualBasic>
 		<Examples-CSharp>$(Examples-Folder)\MinimalCSharp</Examples-CSharp>
 		<Examples-TemplatesSiteFolder>$(Examples-Folder)\TemplatesSite</Examples-TemplatesSiteFolder>
-		<Examples-MultipleDomainsFolder>$(Examples-Folder)\MultipleDomains</Examples-MultipleDomainsFolder>
 		<Examples-MvcFolder>$(Examples-Folder)\Mvc</Examples-MvcFolder>
 		<Deploy-ExamplesFolder>$(DeployFolder)\Examples</Deploy-ExamplesFolder>
 	</PropertyGroup>
 
-	<Target Name="Examples-MediumTrust-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
-		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\wwwroot\Bin" />
-		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MediumTrustFolder)\wwwroot\Edit\%(RecursiveDir)" />
-		<ItemGroup>
-			<UnsafeDlls Include="$(Examples-MediumTrustFolder)\**\MySql*;
-                           $(Examples-MediumTrustFolder)\**\System.Data.SQLite*" />
-		</ItemGroup>
-		<Delete Files="@(UnsafeDlls)"/>
-	</Target>
 	<Target Name="Examples-Parts-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
 		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-PartsFolder)\wwwroot\bin" />
 		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-PartsFolder)\wwwroot\Edit\%(RecursiveDir)" />
@@ -41,10 +30,6 @@
 		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\bin" />
 		<Copy SourceFiles="@(_TemplatesFiles)" DestinationFolder="$(Examples-TemplatesSiteFolder)\wwwroot\%(RecursiveDir)" />
 	</Target>
-	<Target Name="Examples-MultipleDomains-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
-		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\wwwroot\bin" />
-		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MultipleDomainsFolder)\wwwroot\Edit\%(RecursiveDir)" />
-	</Target>
 	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
 		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
                        $(LibFolder)\Microsoft.Web.Mvc.dll; 
@@ -55,9 +40,7 @@
 	</Target>
 
 	<Target Name="Examples-PrepareDependencies">
-		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
 		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
-		<CallTarget Targets="Examples-MultipleDomains-PrepareDependencies"/>
 
 		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
 		<CallTarget Targets="Examples-VisualBasic-PrepareDependencies"/>
@@ -65,9 +48,6 @@
 		<CallTarget Targets="Examples-Mvc-PrepareDependencies"/>
 	</Target>
 
-	<Target Name="Example-MediumTrust-Build" DependsOnTargets="Examples-MediumTrust-PrepareDependencies">
-		<MSBuild Projects="$(Examples-MediumTrustFolder)\N2.Examples.MediumTrust-vs2008.sln"/>
-	</Target>
 	<Target Name="Example-Parts-Build" DependsOnTargets="Examples-Parts-PrepareDependencies">
 		<MSBuild Projects="$(Examples-PartsFolder)\Parts_Example.sln"/>
 	</Target>
@@ -85,7 +65,7 @@
 	</Target>
 
 	<Target Name="Examples-Build">
-		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Example-Parts-Build; Example-MediumTrust-Build; Examples-Mvc-Build"/>
+		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Example-Parts-Build; Examples-Mvc-Build"/>
 	</Target>
 
 	<Target Name="Examples-CreateItemGroups">
@@ -149,12 +129,8 @@
 	</Target>
 
 	<Target Name="Examples-Deploy-LessInteresting" DependsOnTargets="Examples-CreateItemGroups">
-		<CallTarget Targets="Examples-MediumTrust-PrepareDependencies"/>
 		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
-		<CallTarget Targets="Examples-MultipleDomains-PrepareDependencies"/>
 
-		<Copy SourceFiles="@(ExampleSource-MediumTrustFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MediumTrust\%(RecursiveDir)" />
 		<Copy SourceFiles="@(ExampleSource-PartsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Parts\%(RecursiveDir)" />
-		<Copy SourceFiles="@(ExampleSource-MultipleDomainsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\MultipleDomains\%(RecursiveDir)" />
 	</Target>
 </Project>

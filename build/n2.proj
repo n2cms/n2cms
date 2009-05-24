@@ -7,18 +7,19 @@
 	</Target>
 
 	<PropertyGroup>
-		<LibFolder>$(MSBuildProjectDirectory)\..\lib</LibFolder>
-		<DocFolder>$(MSBuildProjectDirectory)\..\docs</DocFolder>
-		<SnippetsFolder>$(MSBuildProjectDirectory)\..\snippets</SnippetsFolder>
+		<TrunkFolder>$(MSBuildProjectDirectory)\..</TrunkFolder>
+		<LibFolder>$(TrunkFolder)\lib</LibFolder>
+		<DocFolder>$(TrunkFolder)\docs</DocFolder>
+		<SnippetsFolder>$(TrunkFolder)\snippets</SnippetsFolder>
 
-		<SrcFolder>$(MSBuildProjectDirectory)\..\src</SrcFolder>
-		<WebFolder>$(MSBuildProjectDirectory)\..\src\wwwroot</WebFolder>
-		<EditFolder>$(MSBuildProjectDirectory)\..\src\wwwroot\Edit</EditFolder>
+		<SrcFolder>$(TrunkFolder)\src</SrcFolder>
+		<WebFolder>$(TrunkFolder)\src\wwwroot</WebFolder>
+		<EditFolder>$(TrunkFolder)\src\wwwroot\Edit</EditFolder>
 
-		<Examples-Folder>$(MSBuildProjectDirectory)\..\examples</Examples-Folder>
+		<Examples-Folder>$(TrunkFolder)\examples</Examples-Folder>
 
-		<DeployFolder>$(MSBuildProjectDirectory)\..\output</DeployFolder>
-		<TempFolder>$(MSBuildProjectDirectory)\..\output\temp\</TempFolder>
+		<DeployFolder>$(TrunkFolder)\output</DeployFolder>
+		<TempFolder>$(TrunkFolder)\output\temp\</TempFolder>
 		
 		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
 	</PropertyGroup>
@@ -35,6 +36,15 @@
 		<CallTarget Targets="Core-Build"/>
 		<CallTarget Targets="Examples-Build"/>
 	</Target>
+
+	<Target Name="SanityCheck">
+		<ItemGroup>
+			<_SolutionFiles Include="$(TrunkFolder)\**\*.sln" />
+		</ItemGroup>
+
+		<MSBuild Projects="@(_SolutionFiles)" />
+	</Target>
+
 
 	<Target Name="Deploy" DependsOnTargets="Clean-Deploy">
 		<Message Text="Deploying Everything"/>

@@ -117,25 +117,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Multiple Domains", "Multipl
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "C:\...\wwwroot\", "MultipleDomains\wwwroot", "{CB0DA7C5-8209-4608-937C-0527FC0FC69C}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.VirtualPath = "/wwwroot(3)"
-		Debug.AspNetCompiler.PhysicalPath = "MultipleDomains\wwwroot\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(3)\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/wwwroot(3)"
-		Release.AspNetCompiler.PhysicalPath = "MultipleDomains\wwwroot\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(3)\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "3160"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
@@ -189,16 +170,6 @@ Global
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Debug|.NET.ActiveCfg = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Debug|.NET.Build.0 = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Debug|Any CPU.ActiveCfg = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Debug|Mixed Platforms.Build.0 = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Release|.NET.ActiveCfg = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Release|.NET.Build.0 = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C}.Release|Mixed Platforms.Build.0 = Debug|.NET
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,6 +179,5 @@ Global
 		{15B15CD8-3454-4040-AC5C-57D58AD7F246} = {11653C5A-A506-484F-B7FC-6CC9E0413633}
 		{2A410807-90C2-46B3-8CA8-1CAE41520D2A} = {D9335B7F-7A70-42C3-9BE7-895E25183924}
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3} = {BE1B2DA9-C699-4148-ACDC-9CB8BCCB79B0}
-		{CB0DA7C5-8209-4608-937C-0527FC0FC69C} = {E542762F-4CCA-43B5-BE6C-BFC0E35B40CB}
 	EndGlobalSection
 EndGlobal
