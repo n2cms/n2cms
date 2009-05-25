@@ -43,7 +43,8 @@ namespace N2.Tests.Definitions
 					typeof (DefinitionUndefined),
 					typeof (DefinitionFreeItem),
 					typeof (DefinitionControllingParent),
-					typeof (DefinitionOppressedChild)
+					typeof (DefinitionOppressedChild),
+					typeof (DefinitionPartDefinedItem)
 				};
 		}
 
@@ -430,6 +431,14 @@ namespace N2.Tests.Definitions
 
 			Assert.That(parentDefinition.AllowedChildren.Contains(childDefinition));
 			Assert.That(parentDefinition.AllowedChildren.Count, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void PartDefinition_Defaults_AllowedZones_To_AllNamed()
+		{
+			var definition = definitions.GetDefinition(typeof(DefinitionPartDefinedItem));
+
+			Assert.That(definition.AllowedIn, Is.EqualTo(AllowedZones.AllNamed));
 		}
 	}
 }

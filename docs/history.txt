@@ -1,4 +1,6 @@
-﻿- removed deprecated examples: medium trust, multiple domains
+﻿- added part to C# example
+- introduced PageDefinition and PartDefinition attributes, more revealing replacements for Definition attribute
+- removed deprecated examples: medium trust, multiple domains
 - refactored versioning code
 - fixed unhandled exception when translating page without translated parent hierarchy
 - introduced EditableFileUpload attribute

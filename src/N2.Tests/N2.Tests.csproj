@@ -137,9 +137,14 @@
     <Compile Include="Definitions\Items\DefinitionControllingParent.cs" />
     <Compile Include="Definitions\Items\DefinitionFreeItem.cs" />
     <Compile Include="Definitions\Items\DefinitionOppressedChild.cs" />
+    <Compile Include="Definitions\Items\DefinitionPartDefinedItem.cs" />
     <Compile Include="Definitions\Items\DefinitionRemovable.cs" />
     <Compile Include="Definitions\Items\DefinitionRemoves.cs" />
     <Compile Include="Definitions\Items\DefinitionReplacesNumber1.cs" />
+    <Compile Include="Definitions\Static\DescribablePage.cs" />
+    <Compile Include="Definitions\Static\DescribablePart.cs" />
+    <Compile Include="Definitions\Static\PageDescriptionTests.cs" />
+    <Compile Include="Definitions\Static\PartDescriptionTests.cs" />
     <Compile Include="Details\DetailCollectionTests.cs" />
     <Compile Include="Details\EnumableItem.cs" />
     <Compile Include="Details\EditableEnumTests.cs" />

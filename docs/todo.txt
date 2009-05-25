@@ -1,7 +1,8 @@
 - track "EditableLinks"
 - track external links and "trackbacks"
+- max versions
+- automatic recycle bin cleanup
 - NH 2.1 alpha
-- PageDefinition, PartDefinition
 - item templates
 - "OnCreated"
 - "default folder"

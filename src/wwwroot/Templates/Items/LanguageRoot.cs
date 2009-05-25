@@ -9,7 +9,10 @@ using N2.Integrity;
 
 namespace N2.Templates.Items
 {
-    [Definition("Language root", "LanguageRoot", "A starting point for translations of the start page.", "", 450)]
+    //[Definition("Language root", "LanguageRoot", "A starting point for translations of the start page.", "", 450)]
+	[PageDefinition("Language root",
+		Description = "A starting point for translations of the start page.",
+		SortOrder = 450)]
     [TabContainer(LanguageRoot.SiteArea, "Site", 70, AuthorizedUsers = new[] { "admin" }, AuthorizedRoles = new[] { "Administrators" })]
     [RestrictParents(typeof(StartPage))]
     [FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]

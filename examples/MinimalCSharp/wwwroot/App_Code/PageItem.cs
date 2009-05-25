@@ -1,12 +1,6 @@
-using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
+using N2;
+using N2.Details;
+
 
 /// <summary>
 /// This is my custom content data container class. Since this class derives 
@@ -17,10 +11,15 @@ using System.Web.UI.HtmlControls;
 /// in this class it's Title and Name are also editable. This is because of the 
 /// abstract base class <see cref="MyItemBase"/> it derives from.
 /// </summary>
-[N2.Definition("Default page")]
+[PageDefinition("Default page")]
+[WithEditableName]
 public class PageItem : MyItemBase
 {
-	[N2.Details.EditableFreeTextArea("Text", 100)]
+	/// <summary>
+	/// There are code snippets to help generate these properties.
+	/// Look in the snippets directory of the package.
+	/// </summary>
+	[EditableFreeTextArea("Text", 100)]
     public virtual string Text
     {
         get { return (string)GetDetail("Text"); }

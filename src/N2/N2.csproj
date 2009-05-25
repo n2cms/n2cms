@@ -267,6 +267,7 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Definitions\AbstractDefinition.cs" />
     <Compile Include="Collections\BranchHierarchyBuilder.cs" />
     <Compile Include="Collections\CompositeFilter.cs" />
     <Compile Include="Collections\DelegateFilter.cs" />
@@ -335,6 +336,9 @@
     <Compile Include="Definitions\RemoveEditableAttribute.cs" />
     <Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />
     <Compile Include="Definitions\DefinitionReplacementMode.cs" />
+    <Compile Include="Definitions\Static\Description.cs" />
+    <Compile Include="Definitions\Static\DescriptionDictionary.cs" />
+    <Compile Include="Definitions\Static\IDescriptionRefiner.cs" />
     <Compile Include="Details\EditableCheckBoxAttribute.cs" />
     <Compile Include="Details\EditableDateAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
@@ -401,6 +405,8 @@
     <Compile Include="Obsolete\UserControl.generic2.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="PageDefinitionAttribute.cs" />
+    <Compile Include="PartDefinitionAttribute.cs" />
     <Compile Include="Persistence\IActiveContent.cs" />
     <Compile Include="Persistence\IUpdatable.cs" />
     <Compile Include="Persistence\NH\SessionContext.cs" />

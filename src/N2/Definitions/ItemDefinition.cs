@@ -174,7 +174,8 @@ namespace N2.Definitions
 				{
 					try
 					{
-						iconUrl = ((ContentItem)Activator.CreateInstance(ItemType)).IconUrl;
+						iconUrl = Static.DescriptionDictionary.GetDescription(ItemType).IconUrl
+							?? ((ContentItem)Activator.CreateInstance(ItemType)).IconUrl;
 					}
 					catch (Exception ex)
 					{
