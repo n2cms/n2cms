@@ -224,12 +224,15 @@ namespace N2.Persistence.NH
 
 		/// <summary>Adds mappings to the configuration.</summary>
 		/// <param name="cfg">The configuration to add the mappings to.</param>
+		/// <param name="name">The resource name of the embedded resource.</param>
 		protected virtual void AddMapping(NHibernate.Cfg.Configuration cfg, string name)
 		{
             if (!string.IsNullOrEmpty(name))
             {
 				using (Stream stream = GetStreamFromName(name))
 				{
+					if (stream == null) throw new ArgumentException("Could not read stream from embedded resource '" + name + "'", "name");
+
 					cfg.AddInputStream(stream);
 				}
             }
@@ -269,7 +272,7 @@ namespace N2.Persistence.NH
             StringBuilder mappings = new StringBuilder();
             foreach (Type t in EnumerateDefinedTypes())
             {
-				if(IsSuiteableForMapping(t))
+				if(IsUnsuiteableForMapping(t))
 					continue;
             	
                 if (!TryLocatingHbmResources)
@@ -371,13 +374,13 @@ namespace N2.Persistence.NH
 		{
 			if(itemType == typeof(ContentItem))
 				return itemType;
-			if (IsSuiteableForMapping(itemType))
+			if (IsUnsuiteableForMapping(itemType))
 				return GetFirstSuitableBaseType(itemType.BaseType);
 			
 			return itemType;
 		}
 
-		bool IsSuiteableForMapping(Type t)
+		bool IsUnsuiteableForMapping(Type t)
 		{
 			return t.IsAbstract || t.IsGenericType || string.IsNullOrEmpty(t.FullName);
 		}

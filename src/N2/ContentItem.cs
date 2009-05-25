@@ -724,7 +724,7 @@ namespace N2
 		#region INode Members
 
 		/// <summary>The logical path to the node from the root node.</summary>
-		public string Path
+		public virtual string Path
 		{
 			get
 			{

@@ -243,7 +243,7 @@ namespace N2.Resources
 			{
 				JQuery(page);
 				JavaScript(page, "~/Edit/Js/TabPanel.js");
-				string script = string.Format(tabPanelFormat, selector, selector);
+				string script = string.Format(tabPanelFormat, selector, selector.Replace('.', '_'));
 				JavaScript(page, script, ScriptOptions.DocumentReady);
 				page.Items[key] = new object();
 				if (registerTabCss)

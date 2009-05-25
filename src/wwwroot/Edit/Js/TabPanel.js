@@ -86,7 +86,8 @@ $.fn.n2tabs_handlePostBack = function(tabId){
 
 // gets the settings for the first tab content in query selection
 $.fn.n2tab_settings = function(){
-    return this.n2tabs_groups[this.get(0).n2tab.group];
+    var first = this.get(0).n2tab.group;
+    return this.n2tabs_groups[first];
 }
 
 // gets the tab for the first tab content in query selection
