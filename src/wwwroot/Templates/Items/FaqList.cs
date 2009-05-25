@@ -4,7 +4,10 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-    [Definition("Frequently Asked Questions", "FaqList", "A list of frequently asked questions with answers.", "", 200)]
+    [PageDefinition("Frequently Asked Questions", 
+		Description = "A list of frequently asked questions with answers.",
+		SortOrder = 200,
+		IconUrl = "~/Templates/UI/Img/help.png")]
     [AvailableZone("Questions", "Questions")]
     [RestrictParents(typeof(IStructuralPage))]
 	[ConventionTemplate]
@@ -14,11 +17,6 @@ namespace N2.Templates.Items
         public virtual IList<Faq> Questions
         {
             get { return GetChildren<Faq>("Questions"); }
-        }
-
-        protected override string IconName
-        {
-            get { return "help"; }
         }
     }
 }

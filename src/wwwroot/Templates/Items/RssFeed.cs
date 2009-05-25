@@ -7,7 +7,10 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-    [Definition("Feed", "RssFeed", "An RSS feed that outputs an xml with the latest feeds.", "", 260)]
+    [Definition("Feed", 
+		Description = "An RSS feed that outputs an xml with the latest feeds.",
+		SortOrder = 260,
+		IconUrl = "~/Templates/UI/Img/feed.png")]
     [RestrictParents(typeof (IStructuralPage))]
     [WithEditableTitle("Title", 10),
      WithEditableName("Name", 20)]
@@ -80,11 +83,6 @@ namespace N2.Templates.Items
             else
                 filters = new ItemFilter[] { new TypeFilter(typeof(ISyndicatable)), new AccessFilter() };
             return filters;
-        }
-
-        protected override string IconName
-        {
-            get { return "feed"; }
         }
     }
 }

@@ -14,11 +14,14 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Templates.Items
 {
-    [Definition("FAQ Item", "Faq", "A question with answer.", "", 0)]
+    [PartDefinition("FAQ Item", 
+		Description = "A question with answer.",
+		SortOrder = 0,
+		IconUrl = "~/Templates/UI/Img/information.png")]
     [RestrictParents(typeof(FaqList))]
     [AllowedZones("Questions")]
 	[WithEditableTitle("Question", 90, Focus = false)]
-    public class Faq : Templates.Items.AbstractItem
+    public class Faq : AbstractItem
     {
         [Displayable(typeof(H3), "Text")]
         public override string Title
@@ -32,11 +35,6 @@ namespace N2.Templates.Items
         {
             get { return (string)(GetDetail("Answer") ?? string.Empty); }
             set { SetDetail("Answer", value, string.Empty); }
-        }
-
-        protected override string IconName
-        {
-            get { return "information"; }
         }
 
         protected override string TemplateName

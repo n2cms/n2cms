@@ -3,7 +3,8 @@ using N2.Integrity;
 
 namespace N2.Templates.Items
 {
-    [Definition("Text", "Text")]
+	[PartDefinition("Text", Name = "Text",
+		IconUrl = "~/Templates/UI/Img/text_align_left.png")]
     [AllowedZones(AllowedZones.AllNamed)]
     public class TextItem : AbstractItem
     {
@@ -12,11 +13,6 @@ namespace N2.Templates.Items
         {
             get { return (string)(GetDetail("Text") ?? string.Empty); }
             set { SetDetail("Text", value, string.Empty); }
-        }
-
-        protected override string IconName
-        {
-            get { return "text_align_left"; }
         }
 
         protected override string TemplateName

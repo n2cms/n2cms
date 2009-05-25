@@ -2,7 +2,10 @@ using System.Collections.Generic;
 
 namespace N2.Templates.Items
 {
-    [Definition("Database Search", "DatabaseSearch", "Searches for items searching for texts in the database.", "", 200)]
+    [Definition("Database Search", 
+		Description = "Searches for items searching for texts in the database.",
+		SortOrder = 200,
+		IconUrl = "~/Templates/UI/Img/zoom.png")]
     public class DatabaseSearch : AbstractSearch
     {
         public virtual Persistence.Finder.IQueryEnding CreateQuery(string query)

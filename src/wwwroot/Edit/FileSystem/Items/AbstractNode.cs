@@ -23,16 +23,6 @@ namespace N2.Edit.FileSystem.Items
             get { return Parent as AbstractDirectory; }
         }
 
-        public override string IconUrl
-        {
-            get { return "~/Edit/img/ico/folder.gif"; }
-        }
-
-        public override string TemplateUrl
-        {
-            get { return "~/Edit/FileSystem/Directory.aspx"; }
-        }
-
         public override string Extension
         {
             get { return string.Empty; }

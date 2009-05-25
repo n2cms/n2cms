@@ -1,11 +1,11 @@
 using N2.Details;
 using N2.Integrity;
 using N2.Web.UI.WebControls;
-using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-    [Definition("Login", "Login")]
+	[PartDefinition("Login", Name = "Login",
+		IconUrl = "~/Templates/UI/Img/key.png")]
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteLeft, Zones.SiteRight, Zones.Left, Zones.Right)]
     [WithEditableTitle("Title", 10)]
     public class LoginItem : AbstractItem
@@ -57,11 +57,6 @@ namespace N2.Templates.Items
         {
             get { return (ContentItem)GetDetail("LoginPage"); }
             set { SetDetail("LoginPage", value); }
-        }
-
-        protected override string IconName
-        {
-            get { return "key"; }
         }
 
         protected override string TemplateName

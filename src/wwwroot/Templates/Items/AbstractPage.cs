@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using N2.Collections;
 using N2.Details;
 using N2.Web.UI;
+using System;
 
 namespace N2.Templates.Items
 {
@@ -15,17 +16,12 @@ namespace N2.Templates.Items
     [TabContainer(Tabs.Advanced, "Advanced", Tabs.AdvancedIndex)]
     public abstract class AbstractPage : ContentItem
 	{
-	    /// <summary>Defaults to ~/Templates/UI/Img/{IconName}.png. Override <see cref="IconName"/> to reference icon in same directory.</summary>
-        public override string IconUrl
-        {
-            get { return "~/Templates/UI/Img/" + IconName + ".png"; }
-        }
-
-        /// <summary>The name without extension .png of an icon file located in /Templates/UI/Img/. Defaults to "page".</summary>
-        protected virtual string IconName
-	    {
-            get { return "page"; }
-	    }
+		/// <summary>The name without extension .png of an icon file located in /Templates/UI/Img/. Defaults to "page".</summary>
+		[Obsolete("No longer useful, sorry.")]
+		protected virtual string IconName
+		{
+			get { return "page"; }
+		}
 
 		[EditableCheckBox("Show Title", 60, ContainerName = Tabs.Advanced)]
 		public virtual bool ShowTitle

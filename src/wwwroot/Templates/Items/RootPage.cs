@@ -5,7 +5,11 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-    [Definition("Root Page", "RootPage", "A root page used to organize start pages.", "", 0, Installer = InstallerHint.PreferredRootPage)]
+    [PageDefinition("Root Page", 
+		Description = "A root page used to organize start pages.", 
+		SortOrder = 0,
+		InstallerVisibility = InstallerHint.PreferredRootPage,
+		IconUrl = "~/Templates/UI/Img/page_gear.png")]
     [RestrictParents(AllowedTypes.None)]
     [AvailableZone("Left", Zones.Left)]
     [AvailableZone("Center", "Center")]
@@ -51,11 +55,6 @@ namespace N2.Templates.Items
         public override string Url
         {
 			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
-        }
-
-        protected override string IconName
-        {
-            get { return "page_gear"; }
         }
     }
 }

@@ -11,7 +11,8 @@ using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
-    [Definition("Poll", "Poll")]
+	[PartDefinition("Poll",
+		IconUrl = "~/Templates/UI/Img/chart_pie.png")]
     [AllowedZones(Zones.Left, Zones.Right, Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteLeft, Zones.SiteRight)]
     [RestrictParents(typeof (AbstractContentPage))]
     [AllowedChildren(typeof(SingleSelect))]
@@ -61,11 +62,6 @@ namespace N2.Templates.Items
         private bool DisplayResult(HttpRequest request)
         {
             return Question != null && request["p" + Question.ID] != null;
-        }
-
-        protected override string IconName
-        {
-            get { return "chart_pie"; }
         }
 
         protected override string TemplateName

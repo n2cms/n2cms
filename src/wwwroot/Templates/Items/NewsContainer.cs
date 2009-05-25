@@ -3,14 +3,13 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-    [Definition("News Container", "NewsContainer", "A list of news. News items can be added to this page.", "", 150)]
+    [PageDefinition("News Container", 
+		Description = "A list of news. News items can be added to this page.",
+		SortOrder = 150,
+		IconUrl = "~/Templates/UI/Img/newspaper_link.png")]
     [RestrictParents(typeof (IStructuralPage))]
 	[ConventionTemplate("NewsList")]
     public class NewsContainer : AbstractContentPage
     {
-        protected override string IconName
-        {
-            get { return "newspaper_link"; }
-        }
     }
 }

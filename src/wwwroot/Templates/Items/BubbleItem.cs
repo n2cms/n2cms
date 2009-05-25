@@ -12,20 +12,16 @@ using N2.Details;
 
 namespace N2.Templates.Items
 {
-    [Definition("Bubble")]
+	[PartDefinition("Bubble",
+		IconUrl = "~/Templates/UI/Img/help.png")]
     [AllowedZones(Zones.Left, Zones.Right, Zones.ColumnLeft, Zones.ColumnRight)]
-    public class BubbleItem : Templates.Items.AbstractItem
+    public class BubbleItem : AbstractItem
     {
         [EditableFreeTextArea("Text", 100)]
         public virtual string Text
         {
             get { return (string)(GetDetail("Text") ?? string.Empty); }
             set { SetDetail("Text", value, string.Empty); }
-        }
-
-        protected override string IconName
-        {
-            get { return "help"; }
         }
 
         protected override string TemplateName

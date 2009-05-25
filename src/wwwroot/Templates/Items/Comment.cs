@@ -5,7 +5,8 @@ using N2.Edit.Trash;
 
 namespace N2.Templates.Items
 {
-    [Definition("Comment")]
+	[PartDefinition("Comment",
+		IconUrl = "~/Templates/UI/Img/comment.png")]
     [NotThrowable]
     [RestrictParents(typeof(CommentList))]
     [WithEditableTitle]
@@ -35,7 +36,5 @@ namespace N2.Templates.Items
             get { return (string)(GetDetail("Text") ?? string.Empty); }
             set { SetDetail("Text", value, string.Empty); }
         }
-
-        protected override string IconName { get { return "comment"; } }
     }
 }

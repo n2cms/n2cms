@@ -5,7 +5,8 @@ using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
-    [Definition("Image Gallery", "ImageGallery", "Displays an image with next/previous thumbnails", "", 220)]
+	[Definition("Image Gallery", Description = "Displays an image with next/previous thumbnails", SortOrder = 220,
+		IconUrl = "~/Templates/UI/Img/photos.png")]
     [RestrictParents(typeof(IStructuralPage))]
     [FieldSetContainer(ImageGallery.GallerySettings, "Gallery Settings", 500, ContainerName = Tabs.Content)]
 	[ConventionTemplate]
@@ -42,10 +43,5 @@ namespace N2.Templates.Items
             set { SetDetail("MaxThumbnailHeight", value); }
         } 
         #endregion
-
-        protected override string IconName
-        {
-            get { return "photos"; }
-        }
     }
 }

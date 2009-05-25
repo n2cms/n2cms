@@ -1,0 +1,7 @@
+Make a complete backup, delete /edit, any /Templates folders drop upgrade files and recompile your solution.
+
+Instructions:
+- PageDefinition & PartDefinition
+
+Breaking changes:
+- overriding ContentItem.IconUrl now only works in the tree. Use [PageDefinition("the title", IconUrl = "/path/to/the/icon.gif")] or [PartDefinition...] to change the new item screen.

@@ -7,7 +7,8 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-    [Definition("Event", "Event", "An event item", "", 110)]
+	[Definition("Event", Description = "An event item", SortOrder = 110,
+		IconUrl = "~/Templates/UI/Img/calendar_view_day.png")]
     [RestrictParents(typeof(Calendar))]
 	[ConventionTemplate("CalendarItem")]
     public class Event : AbstractContentPage, ISyndicatable
@@ -50,11 +51,6 @@ namespace N2.Templates.Items
         string ISyndicatable.Summary
         {
             get { return Introduction; }
-        }
-
-        protected override string IconName
-        {
-            get { return "calendar_view_day"; }
         }
     }
 }

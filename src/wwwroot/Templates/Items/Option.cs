@@ -5,7 +5,7 @@ namespace N2.Templates.Items
 {
     [WithEditableTitle("Text", 10)]
     [RestrictParents(typeof(OptionSelectQuestion))]
-    [Definition("Option", "Option")]
+    [PartDefinition("Option")]
     public class Option : AbstractItem
     {
         [N2.Details.EditableTextBox("Answers", 100)]

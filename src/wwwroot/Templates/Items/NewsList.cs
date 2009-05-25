@@ -5,7 +5,10 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-    [Definition("News List", "NewsList", "A news list box that can be displayed in a column.", "", 160)]
+    [PartDefinition("News List", 
+		Description = "A news list box that can be displayed in a column.", 
+		SortOrder = 160,
+		IconUrl = "~/Templates/UI/Img/newspaper_go.png")]
     [WithEditableTitle("Title", 10, Required = false)]
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft, Zones.ColumnRight)]
     public class NewsList : SidebarItem
@@ -43,11 +46,6 @@ namespace N2.Templates.Items
         {
             TypeFilter.Filter(items, typeof (News));
             CountFilter.Filter(items, 0, MaxNews);
-        }
-
-        protected override string IconName
-        {
-            get { return "newspaper_go"; }
         }
 
         protected override string TemplateName

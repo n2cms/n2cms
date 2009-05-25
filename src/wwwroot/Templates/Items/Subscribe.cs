@@ -5,7 +5,10 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-    [Definition("Subscribe", "Subscribe", "An RSS feed subscription box. An RSS link is also added to the page enabling subscription through the browser's address field.", "", 370)]
+    [Definition("Subscribe", 
+		Description = "An RSS feed subscription box. An RSS link is also added to the page enabling subscription through the browser's address field.",
+		SortOrder = 370,
+		IconUrl = "~/Templates/UI/Img/feed_link.png")]
     [RestrictParents(typeof (IStructuralPage))]
     [AllowedZones(Zones.Right, Zones.Left, Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteRight, Zones.SiteLeft)]
     public class Subscribe : SidebarItem
@@ -15,11 +18,6 @@ namespace N2.Templates.Items
         {
             get { return GetDetail("SelectedFeed") as RssFeed; }
             set { SetDetail("SelectedFeed", value); }
-        }
-
-        protected override string IconName
-        {
-            get { return "feed_link"; }
         }
 
         protected override string TemplateName

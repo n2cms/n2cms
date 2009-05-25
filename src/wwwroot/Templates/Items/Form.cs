@@ -7,7 +7,10 @@ using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
-    [Definition("Form", "Form", "A form that can be sumitted and sent to an email address.", "", 250)]
+    [PartDefinition("Form", 
+		Description = "A form that can be sumitted and sent to an email address.",
+		SortOrder = 250,
+		IconUrl = "~/Templates/UI/Img/report.png")]
     [AllowedZones("Content", "ColumnLeft", "ColumnRight")]
     [RestrictParents(typeof (AbstractContentPage))]
     [AllowedChildren(typeof (Question))]
@@ -69,11 +72,6 @@ namespace N2.Templates.Items
         {
             get { return (string) (GetDetail("MailBody") ?? string.Empty); }
             set { SetDetail("MailBody", value, string.Empty); }
-        }
-
-        protected override string IconName
-        {
-            get { return "report"; }
         }
 
         protected override string TemplateName

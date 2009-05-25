@@ -10,7 +10,10 @@ namespace N2.Templates.Items
     /// <summary>
     /// Redirects to somewhere else. Used as a placeholder in the menu.
     /// </summary>
-    [Definition("Redirect", "Redirect", "Redirects to another page or an external address.", "", 40)]
+    [Definition("Redirect", 
+		Description = "Redirects to another page or an external address.",
+		SortOrder = 40,
+		IconUrl = "~/Templates/UI/Img/page_go.png")]
     [WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content),
      WithEditableName("Name", 20, ContainerName = Tabs.Content),
      WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
@@ -43,11 +46,6 @@ namespace N2.Templates.Items
         {
             get { return base.Visible; }
             set { base.Visible = value; }
-        }
-
-        protected override string IconName
-        {
-            get { return "page_go"; }
         }
 
         #region IBreadcrumbAppearance Members

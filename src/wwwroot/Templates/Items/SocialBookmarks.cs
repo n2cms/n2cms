@@ -6,8 +6,9 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Templates.Items
 {
-    [Definition("Social bookmarks")]
-    [RestrictParents(typeof(Templates.Items.AbstractContentPage))]
+	[PartDefinition("Social bookmarks",
+		IconUrl = "~/Templates/UI/Img/digg.png")]
+    [RestrictParents(typeof(AbstractContentPage))]
     [AllowedZones(Zones.SiteRight, Zones.Right, Zones.RecursiveRight, Zones.SiteLeft)]
     [WithEditableTitle("Title", 90)]
     public class SocialBookmarks : AbstractItem
@@ -24,11 +25,6 @@ namespace N2.Templates.Items
         {
             get { return (bool)(GetDetail("ShowText") ?? true); }
             set { SetDetail("ShowText", value, true); }
-        }
-
-        protected override string IconName
-        {
-            get { return "digg"; }
         }
 
         protected override string TemplateName

@@ -4,7 +4,9 @@ using N2.Edit.Trash;
 
 namespace N2.Edit.Wizard.Items
 {
-	[Definition("Wizard Container", "Wonderland", Installer = InstallerHint.NeverRootOrStartPage)]
+	[PageDefinition("Wizard Container", 
+		IconUrl = "~/Edit/Wizard/Img/wand.png",
+		InstallerVisibility = InstallerHint.NeverRootOrStartPage)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
     [NotThrowable]
     public class Wonderland : ContentItem
@@ -12,11 +14,6 @@ namespace N2.Edit.Wizard.Items
 		public override bool IsPage
 		{
 			get { return false; }
-		}
-
-		public override string IconUrl
-		{
-			get { return "~/Edit/Wizard/Img/wand.png"; }
 		}
 	}
 }

@@ -12,8 +12,9 @@ namespace N2.Templates.Items
     /// </summary>
     [PageDefinition("Start Page", 
 		Description = "A start page template. It displays a horizontal meny but no vertical menu.",
-		SortOrder = 440, 
-		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage)]
+		SortOrder = 440,
+		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage,
+		IconUrl = "~/Templates/UI/Img/page_world.png")]
     [RestrictParents(typeof(RootPage))]
     [AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
 	public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource

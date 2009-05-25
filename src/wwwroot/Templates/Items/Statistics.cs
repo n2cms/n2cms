@@ -7,7 +7,7 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-    [Definition("Statistics", "Statistics")]
+    [PartDefinition("Statistics")]
     [WithEditableTitle("Title", 10)]
     [RestrictParents(typeof(RootPage))]
     [AllowedZones(Zones.Left, "Center", Zones.Right)]

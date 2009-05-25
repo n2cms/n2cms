@@ -4,7 +4,9 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-    [Definition("Tracking script", "Tracking", SortOrder = 2000)]
+	[PartDefinition("Tracking script",
+		IconUrl = "~/Templates/UI/Img/google.png", 
+		SortOrder = 2000)]
     [RestrictParents(typeof(LanguageRoot))]
     [AllowedZones(Zones.SiteRight)]
     public class Tracking : Templates.Items.AbstractItem
@@ -28,11 +30,6 @@ namespace N2.Templates.Items
         {
             get { return (string)(GetDetail("UACCT") ?? string.Empty); }
             set { SetDetail("UACCT", value, string.Empty); }
-        }
-
-        protected override string IconName
-        {
-            get { return "google"; }
         }
 
         protected override string TemplateName

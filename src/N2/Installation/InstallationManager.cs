@@ -1,11 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Reflection;
 using N2.Definitions;
 using N2.Details;
-using N2.Engine;
 using N2.Persistence.NH;
 using N2.Security;
 using N2.Serialization;
@@ -16,7 +16,6 @@ using NHibernate.Tool.hbm2ddl;
 using Environment=NHibernate.Cfg.Environment;
 using N2.Persistence;
 using NHibernate.SqlTypes;
-using System.Data.SqlTypes;
 
 namespace N2.Installation
 {
@@ -248,6 +247,84 @@ namespace N2.Installation
             importer.Import(record, null, ImportOption.All);
 
 			return record.RootItem;
+		}
+
+		/// <summary>Gets definitions suitable as start pages.</summary>
+		/// <returns>An enumeration of item definitions.</returns>
+		public IEnumerable<ItemDefinition> GetStartDefinitions()
+		{
+			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
+			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
+
+			foreach (ItemDefinition d in definitions.GetDefinitions())
+			{
+				InstallerHint hint = d.Installer;
+
+				if (Is(hint, InstallerHint.PreferredStartPage))
+					preferred.Add(d);
+				if (!Is(hint, InstallerHint.NeverStartPage))
+					fallback.Add(d);
+			}
+
+			if (preferred.Count == 0)
+				preferred = fallback;
+
+			return preferred;
+		}
+
+		/// <summary>Gets definitions suitable as root nodes.</summary>
+		/// <returns>An enumeration of item definitions.</returns>
+		public IEnumerable<ItemDefinition> GetRootDefinitions()
+		{
+			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
+			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
+
+			foreach (ItemDefinition d in definitions.GetDefinitions())
+			{
+				InstallerHint hint = d.Installer;
+
+				if (Is(hint, InstallerHint.PreferredRootPage))
+					preferred.Add(d);
+				if (!Is(hint, InstallerHint.NeverRootPage))
+					fallback.Add(d);
+			}
+
+			if (preferred.Count == 0)
+				preferred = fallback;
+
+			return preferred;
+		}
+
+		/// <summary>Gets definitions suitable as start pages and root node.</summary>
+		/// <returns>An enumeration of item definitions.</returns>
+		public IEnumerable<ItemDefinition> GetRootAndStartDefinitions()
+		{
+			ICollection<ItemDefinition> preferred = new List<ItemDefinition>();
+			ICollection<ItemDefinition> fallback = new List<ItemDefinition>();
+			
+			foreach (ItemDefinition d in definitions.GetDefinitions())
+			{
+				InstallerHint hint = d.Installer;
+
+				if (Is(hint, InstallerHint.PreferredRootPage) || Is(hint, InstallerHint.PreferredStartPage))
+					preferred.Add(d);
+				if (!Is(hint, InstallerHint.NeverRootPage) && !Is(hint, InstallerHint.NeverStartPage))
+					fallback.Add(d);
+			}
+
+			if (preferred.Count == 0)
+				preferred = fallback;
+
+			return preferred;
+		}
+
+		/// <summary>Checks installer hint bit flags.</summary>
+		/// <param name="flags">The defined flags.</param>
+		/// <param name="expected">The expected flags.</param>
+		/// <returns>True if the defined contains the expected.</returns>
+		public static bool Is(InstallerHint flags, InstallerHint expected)
+		{
+			return (flags & expected) == expected;
 		}
 	}
 }

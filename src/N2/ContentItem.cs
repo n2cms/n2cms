@@ -264,6 +264,7 @@ namespace N2
         }
 		
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
+		[Obsolete]
 		public virtual string IconUrl
         {
 			get { return N2.Web.Url.ToAbsolute(Definitions.Static.DescriptionDictionary.GetDescription(GetType()).IconUrl); }

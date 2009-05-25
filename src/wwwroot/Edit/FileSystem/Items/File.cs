@@ -1,29 +1,19 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using N2.Integrity;
 using N2.Persistence;
-using System.Diagnostics;
 using N2.Installation;
-using System.Web;
 
 namespace N2.Edit.FileSystem.Items
 {
-    [Definition(Installer = InstallerHint.NeverRootOrStartPage)]
+    [PageDefinition("File",
+		IconUrl = "~/Edit/img/ico/page_white.gif",
+		TemplateUrl = "~/Edit/FileSystem/File.aspx",
+		InstallerVisibility = InstallerHint.NeverRootOrStartPage)]
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]
     public class File : AbstractNode, IActiveContent
     {
         public long Size { get; set; }
-
-        public override string IconUrl
-        {
-            get { return "~/Edit/img/ico/page_white.gif"; }
-        }
-
-        public override string TemplateUrl
-        {
-            get { return "~/Edit/FileSystem/File.aspx"; }
-        }
 
         public override void AddTo(ContentItem newParent)
         {

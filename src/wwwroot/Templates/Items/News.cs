@@ -6,7 +6,8 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-    [Definition("News", "News", "A news page.", "", 155)]
+    [PageDefinition("News", Description = "A news page.", SortOrder = 155,
+		IconUrl = "~/Templates/UI/Img/newspaper.png")]
     [RestrictParents(typeof (NewsContainer))]
 	[ConventionTemplate("NewsItem")]
     public class News : AbstractContentPage, ISyndicatable
@@ -32,11 +33,6 @@ namespace N2.Templates.Items
         string ISyndicatable.Summary
         {
             get { return Introduction; }
-        }
-
-        protected override string IconName
-        {
-            get { return "newspaper"; }
         }
     }
 }

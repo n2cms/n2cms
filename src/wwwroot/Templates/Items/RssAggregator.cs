@@ -5,7 +5,11 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-    [Definition("Rss List", "RssAggregatorItem", "A list of news items retrieved from an rss source.", "", 165)]
+    [Definition("Rss List", 
+		Name = "RssAggregatorItem", 
+		Description = "A list of news items retrieved from an rss source.",
+		SortOrder = 165,
+		IconUrl = "~/Templates/UI/Img/rss.png")]
     [WithEditableTitle("Title", 10, Required = false)]
     [AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft, Zones.ColumnRight)]
     public class RssAggregator : SidebarItem
@@ -29,11 +33,6 @@ namespace N2.Templates.Items
         {
             get { return (int)(GetDetail("MaxCount") ?? 5); }
             set { SetDetail("MaxCount", value, 5); }
-        }
-
-        protected override string IconName
-        {
-            get { return "rss"; }
         }
 
         protected override string TemplateName

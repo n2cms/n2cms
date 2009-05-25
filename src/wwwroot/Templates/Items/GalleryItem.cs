@@ -6,7 +6,8 @@ using N2.Serialization;
 
 namespace N2.Templates.Items
 {
-    [Definition("Gallery Item", "GalleryItem")]
+	[PageDefinition("Gallery Item",
+		IconUrl = "~/Templates/UI/Img/photo.png")]
     [RestrictParents(typeof(ImageGallery))]
     [TabContainer("advanced", "Advanced", 100)]
 	[ConventionTemplate]
@@ -42,11 +43,6 @@ namespace N2.Templates.Items
         public override string Url
         {
 			get { return N2.Web.Url.Parse(Parent.Url).AppendQuery(PathData.ItemQueryKey, ID).SetFragment("#t" + ID); }
-        }
-
-        protected override string IconName
-        {
-            get { return "photo"; }
         }
     }
 }

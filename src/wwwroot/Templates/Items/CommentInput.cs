@@ -2,11 +2,11 @@
 
 namespace N2.Templates.Items
 {
-    [Definition("Comment Input Form")]
+	[PartDefinition("Comment Input Form",
+		IconUrl = "~/Templates/UI/Img/comment_add.png")]
     [RestrictParents(typeof(AbstractPage))]
     [AllowedZones(Zones.Content, Zones.RecursiveBelow)]
     public class CommentInput : AbstractItem
     {
-        protected override string IconName { get { return "comment_add"; } }
     }
 }

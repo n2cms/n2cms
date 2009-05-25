@@ -1,13 +1,12 @@
 using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
-using N2.Web.UI.WebControls;
-using N2.Templates.Items;
 using N2.Security.Details;
 
 namespace N2.Templates.Items
 {
-    [Definition("Register", "UserRegistration")]
+	[PartDefinition("Register",
+		IconUrl = "~/Templates/UI/Img/user_add.png")]
     [AllowedZones(Zones.Content)]
     [N2.Web.UI.FieldSetContainer("registration", "Registration", 30)]
     [N2.Web.UI.FieldSetContainer("verification", "Verification", 40)]
@@ -62,11 +61,6 @@ namespace N2.Templates.Items
         public virtual DetailCollection Roles
         {
             get { return GetDetailCollection("Roles", true); }
-        }
-
-        protected override string IconName
-        {
-            get { return "user_add"; }
         }
 
         protected override string TemplateName

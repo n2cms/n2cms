@@ -4,7 +4,10 @@ using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
-    [Definition("Form page", "FormPage", "A page with a form that can be sumitted and sent to an email address.", "", 240)]
+    [Definition("Form page", 
+		Description = "A page with a form that can be sumitted and sent to an email address.",
+		SortOrder = 240,
+		IconUrl = "~/Templates/UI/Img/report.png")]
     [TabContainer(FormPage.FormTab, "Form", Tabs.ContentIndex + 2)]
 	[ConventionTemplate("Form")]
     public class FormPage : AbstractContentPage
@@ -23,11 +26,6 @@ namespace N2.Templates.Items
                     value.AddTo(this);
                 }
             }
-        }
-
-        protected override string IconName
-        {
-            get { return "report"; }
         }
     }
 }

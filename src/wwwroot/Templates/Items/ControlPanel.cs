@@ -1,21 +1,19 @@
 using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
+using System;
 
 namespace N2.Templates.Items
 {
-    [Definition("Control Panel", "ControlPanel")]
+	[Obsolete]
+	[Disable]
+	[PartDefinition("Control Panel",
+		IconUrl = "~/Templates/UI/Img/controller.png")]
     [AllowedZones(Zones.RecursiveRight, Zones.SiteLeft, Zones.SiteRight)]
     [WithEditableTitle("Title", 10)]
     [ItemAuthorizedRoles("Administrators")]
     public class ControlPanel : SidebarItem
     {
-        protected override string IconName
-        {
-            get { return "controller"; }
-        }
-
         protected override string TemplateName
         {
             get { return "ControlPanel"; }

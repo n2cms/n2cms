@@ -27,10 +27,5 @@ namespace N2.Templates.Items
                 filters.Add(new ParentFilter(SearchRoot));
             return filters;
         }
-
-        protected override string IconName
-        {
-            get { return "zoom"; }
-        }
     }
 }

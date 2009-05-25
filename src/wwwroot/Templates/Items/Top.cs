@@ -6,7 +6,8 @@ using N2.Serialization;
 namespace N2.Templates.Items
 {
     [Disable]
-    [Definition("Top", "Top")]
+	[Definition("Top",
+		IconUrl = "~/Templates/UI/Img/page_white_star.png")]
     [N2.Web.UI.FieldSetContainer("top", "Top", 100)]
     [RestrictParents(typeof(LanguageRoot))] // The top region is placed on the start page and displayed on all underlying pages
     [AllowedZones("SiteTop")]
@@ -42,11 +43,6 @@ namespace N2.Templates.Items
         {
             get { return (string)(GetDetail("LogoLinkUrl") ?? "/"); }
             set { SetDetail("LogoLinkUrl", value, "/"); }
-        }
-
-        protected override string IconName
-        {
-            get { return "page_white_star"; }
         }
 
         protected override string TemplateName

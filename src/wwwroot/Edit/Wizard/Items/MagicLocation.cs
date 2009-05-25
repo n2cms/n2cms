@@ -1,4 +1,3 @@
-using System.Web.UI;
 using N2.Definitions;
 using N2.Details;
 using N2.Edit.Wizard.Details;
@@ -8,7 +7,8 @@ using N2.Edit.Trash;
 
 namespace N2.Edit.Wizard.Items
 {
-	[Definition("Magic Location", "MagicLocation", Installer = InstallerHint.NeverRootOrStartPage)]
+	[PartDefinition("Magic Location", 
+		IconUrl = "~/Edit/Wizard/Img/wand.png")]
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
     [NotThrowable]

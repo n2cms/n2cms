@@ -7,7 +7,8 @@ using N2.Persistence;
 
 namespace N2.Templates.Items
 {
-    [Definition("Random image", "RandomImage")]
+	[PartDefinition("Random image",
+		IconUrl = "~/Templates/UI/Img/photos.png")]
     [AllowedZones(Zones.Content, Zones.RecursiveAbove, Zones.Left, Zones.Right)]
     [NotVersionable]
     public class RandomImage : AbstractItem
@@ -30,11 +31,6 @@ namespace N2.Templates.Items
         {
             get { return (string)(GetDetail("Images") ?? string.Empty); }
             set { SetDetail("Images", value, string.Empty); }
-        }
-
-        protected override string IconName
-        {
-            get { return "photos"; }
         }
 
         protected override string TemplateName

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using N2.Definitions;
 using N2.Integrity;
+using N2.Installation;
 
 namespace N2
 {
@@ -38,6 +39,7 @@ namespace N2
 			if (AllowedZoneNames != null)
 				foreach (string zoneName in AllowedZoneNames)
 					currentDefinition.AddAllowedZone(zoneName);
+			currentDefinition.Installer = InstallerHint.NeverRootOrStartPage;
 		}
 	}
 }

@@ -5,7 +5,10 @@ using N2.Installation;
 
 namespace N2.Edit.FileSystem.Items
 {
-    [Definition(Installer = InstallerHint.NeverRootOrStartPage)]
+	[PageDefinition("Directory",
+		InstallerVisibility = InstallerHint.NeverRootOrStartPage, 
+		IconUrl = "~/Edit/img/ico/folder.gif",
+		TemplateUrl = "~/Edit/FileSystem/Directory.aspx")]
     [RestrictParents(typeof(AbstractDirectory))]
     [WithEditableName]
     public class Directory : AbstractDirectory, IActiveContent
