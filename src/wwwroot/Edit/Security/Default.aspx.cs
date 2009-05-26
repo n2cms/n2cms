@@ -30,6 +30,7 @@ namespace N2.Edit.Security
                 SecurityManager sm = Engine.SecurityManager as SecurityManager;
                 roles.AddRange(sm.EditorRoles);
                 roles.AddRange(sm.AdminRoles);
+				roles.AddRange(sm.WriterRoles);
             }
             else
             {

@@ -61,3 +61,4 @@ CONTRIBUTORS
 * Smason
 * Jemerick
 * Tjassim
+* Tonez

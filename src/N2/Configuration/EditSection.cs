@@ -35,7 +35,15 @@ namespace N2.Configuration
             set { base["administrators"] = value; }
 		}
 
-        [ConfigurationProperty("uploadFolders")]
+		/// <summary>Users and roles considered writers.</summary>
+		[ConfigurationProperty("writers")]
+		public EditAccess Writers
+		{
+			get { return (EditAccess)base["writers"]; }
+			set { base["writers"] = value; }
+		}
+		
+		[ConfigurationProperty("uploadFolders")]
         public FileSystemFolderCollection UploadFolders
         {
             get { return (FileSystemFolderCollection)base["uploadFolders"]; }

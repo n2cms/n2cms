@@ -2,6 +2,7 @@ using System;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using N2.Web;
+using System.Web.Security;
 
 namespace N2.Edit.Versions
 {
@@ -44,7 +45,7 @@ namespace N2.Edit.Versions
 				versioner.ReplaceVersion(currentVersion, previousVersion);
 				if (deletePrevious)
 					persister.Delete(previousVersion);
-
+				
 				Refresh(currentVersion, ToolbarArea.Navigation);
 				this.DataBind();
 			}
@@ -76,6 +77,16 @@ namespace N2.Edit.Versions
 				return item.Url;
 
 			return Url.Parse(item.FindPath(PathData.DefaultAction).RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("original", item.VersionOf.ID);
+		}
+
+
+		protected bool IsVisible(object dataItem)
+		{
+			if (!Roles.IsUserInRole("Administrators") && !Roles.IsUserInRole("Editors"))
+				return false;
+
+			return !IsPublished(dataItem);
+			
 		}
 
 		protected bool IsPublished(object dataItem)

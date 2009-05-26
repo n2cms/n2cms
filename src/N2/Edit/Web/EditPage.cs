@@ -65,7 +65,7 @@ if(window.n2ctx){{
 	window.n2ctx.refreshPreview('{1}', '{2}');
 }}";
 
-		protected virtual void Refresh(ContentItem item, N2.Edit.ToolbarArea area)
+		protected virtual void Refresh(ContentItem item, ToolbarArea area)
 		{
 			string format;
 			if (area == ToolbarArea.Both)
@@ -76,7 +76,7 @@ if(window.n2ctx){{
 				format = RefreshNavigationFormat;
 
 			string script = string.Format(format,
-				N2.Web.Url.ToAbsolute("~/Edit/Default.aspx"), // 0
+				Url.ToAbsolute("~/Edit/Default.aspx"), // 0
 				GetNavigationUrl(item), // 1
 				GetPreviewUrl(item), // 2
 				item.ID, // 3

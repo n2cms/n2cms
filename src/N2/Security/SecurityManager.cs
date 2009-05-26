@@ -40,8 +40,10 @@ namespace N2.Security
 
         string[] editorNames = new string[0];
         string[] editorRoles = new string[] { "Editors" };
-        string[] adminNames = new string[] { "admin" };
+		string[] adminNames = new string[] { "admin" };
         string[] adminRoles = new string[] { "Administrators" };
+		string[] writerNames = new string[] { "writer" };
+		string[] writerRoles = new string[] { "Writers" };
 		
 		/// <summary>Creates a new instance of the security manager.</summary>
 		[Obsolete("Don't use", true)]
@@ -59,7 +61,11 @@ namespace N2.Security
                 editorNames = ToArray(config.Editors.Users);
             if (config.Editors.Roles != null)
                 editorRoles = ToArray(config.Editors.Roles);
-            if (config.Administrators.Users != null)
+			if (config.Writers.Users != null)
+				writerNames = ToArray(config.Writers.Users);
+			if (config.Writers.Roles != null)
+				writerRoles = ToArray(config.Writers.Roles);
+			if (config.Administrators.Users != null)
                 adminNames = ToArray(config.Administrators.Users);
             if (config.Administrators.Roles != null)
                 adminRoles = ToArray(config.Administrators.Roles);
@@ -89,6 +95,15 @@ namespace N2.Security
 		{
 			get { return editorRoles; }
 			set { editorRoles = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets roles considered as writers.
+		/// </summary>
+		public string[] WriterRoles
+		{
+			get { return writerRoles; }
+			set { writerRoles = value; }
 		}
 
 		/// <summary>
@@ -151,7 +166,7 @@ namespace N2.Security
 			if (user == null)
 				return false;
 			else
-				return IsAdmin(user) || HasName(user, this.EditorNames) || IsInRole(user, this.EditorRoles);
+				return IsAdmin(user) || HasName(user, this.EditorNames) || IsInRole(user, this.EditorRoles) || IsInRole(user, this.WriterRoles);
 		}
 
 		/// <summary>Find out if a princpial has admin access.</summary>

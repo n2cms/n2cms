@@ -29,7 +29,7 @@
 			</asp:TemplateField>
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:LinkButton runat="server" ID="btnPublish" meta:resourceKey="btnPublish" Text="Publish" CommandName="Publish" CommandArgument='<%# Eval("ID") %>' Visible="<%# !IsPublished(Container.DataItem) %>" />
+					<asp:LinkButton runat="server" ID="btnPublish" meta:resourceKey="btnPublish" Text="Publish" CommandName="Publish" CommandArgument='<%# Eval("ID") %>' Visible="<%# IsVisible(Container.DataItem) %>" />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField>

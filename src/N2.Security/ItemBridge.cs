@@ -20,7 +20,7 @@ namespace N2.Security
 		readonly private IPersister persister;
 	    private readonly IHost host;
 		private string userContainerName = "TemplateUsers";
-		private string[] defaultRoles = new string[] { "Everyone", "Members", "Editors", "Administrators" };
+		private string[] defaultRoles = new string[] { "Everyone", "Members", "Editors", "Administrators", "Writers" };
 		string[] editorUsernames = new string[] {"admin"};
 		string[] administratorUsernames = new string[] { "admin" };
 

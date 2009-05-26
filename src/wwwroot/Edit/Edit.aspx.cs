@@ -5,6 +5,7 @@ using N2.Definitions;
 using N2.Edit.Web;
 using N2.Web.UI.WebControls;
 using N2.Web;
+using System.Web.Security;
 
 namespace N2.Edit
 {
@@ -12,7 +13,7 @@ namespace N2.Edit
 	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpEdit", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
 	[ControlPanelLink("cpEditPreview", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
-	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20)]
+	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, AuthorizedRoles = new string[] { "Administrators", "Editors" })]
 	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30)]
 	[ControlPanelEditingSave("Save changes", 10)]
 	[ControlPanelLink("cpEditingCancel", "~/edit/img/ico/cancel.gif", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, UrlEncode = false)]
@@ -32,18 +33,24 @@ namespace N2.Edit
             else
                 hlCancel.NavigateUrl = CancelUrl();
 
+			if(Request["refresh"] == "true")
+				Refresh(SelectedItem, ToolbarArea.Navigation);
+
 			InitPlugins();
 			InitItemEditor();
 			InitTitle();
 			base.OnInit(e);
 		}
 
-		protected override string GetToolbarSelectScript(ToolbarPluginAttribute toolbarPlugin)
+		protected override void OnLoad(EventArgs e)
 		{
-			if(CreatingNew)
-				return "n2ctx.toolbarSelect('new');";
+			LoadZones();
+			LoadInfo();
 
-			return base.GetToolbarSelectScript(toolbarPlugin);
+			if (!IsPostBack)
+				RegisterSetupToolbarScript(SelectedItem);
+
+			base.OnLoad(e);
 		}
 
 		protected override void OnPreRender(EventArgs e)
@@ -51,6 +58,69 @@ namespace N2.Edit
 			CheckRelatedVersions(ie.CurrentItem);
 			
 			base.OnPreRender(e);
+		}
+
+
+
+		protected void OnSaveCommand(object sender, CommandEventArgs e)
+		{
+			Validate();
+			if (IsValid)
+			{
+				try
+				{
+					if (Roles.IsUserInRole("Administrators") || Roles.IsUserInRole("Editors"))
+						SaveChanges();
+					else
+						throw new Exception("Access denied!");
+				}
+				catch (Exception ex)
+				{
+					Engine.Resolve<IErrorHandler>().Notify(ex);
+					cvException.IsValid = false;
+					cvException.ErrorMessage = ex.Message;
+				}
+			}
+		}
+
+		protected void OnPreviewCommand(object sender, CommandEventArgs e)
+		{
+			Validate();
+			if (IsValid)
+			{
+				ContentItem savedVersion = SaveVersion();
+
+				Url redirectTo = Engine.EditManager.GetPreviewUrl(savedVersion);
+
+				redirectTo = redirectTo.AppendQuery("preview", savedVersion.ID);
+				if (savedVersion.VersionOf != null)
+					redirectTo = redirectTo.AppendQuery("original", savedVersion.VersionOf.ID);
+				if (!string.IsNullOrEmpty(Request["returnUrl"]))
+					redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
+
+				Response.Redirect(redirectTo);
+			}
+		}
+
+		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
+		{
+			Validate();
+			if (IsValid)
+			{
+				ContentItem savedVersion = SaveVersion();
+				Url redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
+				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
+			}
+		}
+		
+		
+		
+		protected override string GetToolbarSelectScript(ToolbarPluginAttribute toolbarPlugin)
+		{
+			if (CreatingNew)
+				return "n2ctx.toolbarSelect('new');";
+
+			return base.GetToolbarSelectScript(toolbarPlugin);
 		}
 
 		private void CheckRelatedVersions(ContentItem item)
@@ -141,17 +211,6 @@ namespace N2.Edit
 			ie.ZoneName = base.Page.Request["zoneName"];
 		}
 
-		protected override void OnLoad(EventArgs e)
-		{
-			LoadZones();
-			LoadInfo();
-
-			if (!IsPostBack)
-				RegisterSetupToolbarScript(SelectedItem);
-
-			base.OnLoad(e);
-		}
-
 		private void LoadZones()
 		{
 			Type itemType = ie.CurrentItemType;
@@ -167,27 +226,9 @@ namespace N2.Edit
 			ucInfo.DataBind();
 		}
 
-		protected void OnSaveCommand(object sender, CommandEventArgs e)
-		{
-			Validate();
-			if (IsValid)
-			{
-                try
-                {
-                    SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    Engine.Resolve<IErrorHandler>().Notify(ex);
-                    cvException.IsValid = false;
-                    cvException.ErrorMessage = ex.Message;
-                }
-			}
-		}
-
         private void SaveChanges()
         {
-        	ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionAndSave : ItemEditorVersioningMode.SaveAsMaster;
+			ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionAndSave : ItemEditorVersioningMode.SaveAsMaster;
         	ContentItem currentItem = ie.Save(ie.CurrentItem, mode);
 
             if (Request["before"] != null)
@@ -205,36 +246,6 @@ namespace N2.Edit
             Title = string.Format(GetLocalResourceString("SavedFormat"), currentItem.Title);
             ie.Visible = false;
         }
-
-		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
-		{
-			Validate();
-			if (IsValid)
-			{
-				ContentItem savedVersion = SaveVersion();
-				string redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
-				Response.Redirect(redirectUrl);
-			}
-		}
-
-		protected void OnPreviewCommand(object sender, CommandEventArgs e)
-		{
-			Validate();
-			if (IsValid)
-			{
-				ContentItem savedVersion = SaveVersion();
-
-				Url redirectTo = Engine.EditManager.GetPreviewUrl(savedVersion);
-
-				redirectTo = redirectTo.AppendQuery("preview", savedVersion.ID);
-				if(savedVersion.VersionOf != null)
-					redirectTo = redirectTo.AppendQuery("original", savedVersion.VersionOf.ID);
-				if (!string.IsNullOrEmpty(Request["returnUrl"]))
-					redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
-
-				Response.Redirect(redirectTo);
-			}
-		}
 
 		private ContentItem SaveVersion()
 		{

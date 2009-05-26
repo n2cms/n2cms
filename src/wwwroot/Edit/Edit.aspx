@@ -14,8 +14,8 @@
     </div>
     <n2:OptionsMenu id="om" runat="server">
 		<asp:LinkButton ID="btnSave" OnCommand="OnSaveCommand" runat="server" CssClass="command" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
-		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
+		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
     </n2:OptionsMenu>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>
