@@ -7,7 +7,10 @@ using N2.Web;
 
 namespace N2.Addons.Wiki.Items
 {
-    [Definition("Wiki", "Wiki", "A set of pages that can be updated by external users.", "", 460)]
+    [PageDefinition("Wiki", 
+		Description = "A set of pages that can be updated by external users.", 
+		IconUrl = "~/Addons/Wiki/UI/Img/page_wiki.gif",
+		SortOrder = 460)]
     [RestrictParents(typeof(IStructuralPage))]
     [N2.Web.UI.TabContainer(Wiki.WikiTab, "Wiki", 110)]
     [AllowedChildren(typeof(Subscribe))]
@@ -81,11 +84,6 @@ namespace N2.Addons.Wiki.Items
         public virtual IEnumerable<string> ModifyRoles
         {
             get { return GetDetailCollection("ModifyRoles", true).Enumerate<string>(); }
-        }
-
-        public override string IconUrl
-        {
-            get { return "~/Addons/Wiki/UI/Img/page_wiki.gif"; }
         }
 
         public override IWiki WikiRoot

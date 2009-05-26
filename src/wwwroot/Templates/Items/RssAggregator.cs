@@ -1,11 +1,9 @@
-using N2;
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-    [Definition("Rss List", 
+    [PartDefinition("Rss List", 
 		Name = "RssAggregatorItem", 
 		Description = "A list of news items retrieved from an rss source.",
 		SortOrder = 165,

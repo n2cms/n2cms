@@ -11,7 +11,7 @@ namespace N2.Addons.AddonCatalog.Items
     /// To spice things up there is a scheduled action that finds all MyParts and 
     /// updates their properties on a regular basis. Far-fetched? Yes. 
     /// </summary>
-    [Definition("Add-on", SortOrder = 1000)]
+	[PageDefinition("Add-on", IconUrl = "~/Addons/AddonCatalog/UI/plugin_link.png", SortOrder = 1000)]
     [RestrictParents(typeof(AddonCatalog))]
 	[Template("~/Addons/AddonCatalog/UI/AddonPage.aspx")]
 	[Template("edit", "~/Addons/AddonCatalog/UI/EditAddon.aspx")]
@@ -124,11 +124,6 @@ namespace N2.Addons.AddonCatalog.Items
         public virtual string DownloadUrl
         {
             get { return Web.Url.Parse(Url).AppendSegment("download"); }
-        }
-
-        public override string IconUrl
-        {
-            get { return "~/Addons/AddonCatalog/UI/plugin_link.png"; }
         }
     }
 }

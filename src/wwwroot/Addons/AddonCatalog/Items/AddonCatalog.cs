@@ -11,17 +11,12 @@ namespace N2.Addons.AddonCatalog.Items
     /// <summary>
     /// Since we're overriding "AbstractPage" from N2.Templates we get an editable title and a few zones for free.
     /// </summary>
-    [Definition("Add-On Catalog", SortOrder = 1000)]
+	[PageDefinition("Add-On Catalog", IconUrl = Paths.UI + "plugin.png", SortOrder = 1000)]
     [RestrictParents(typeof(IStructuralPage))]
 	[Template(Paths.UI + "AddonCatalogPage.aspx")]
 	[Template("add", Paths.UI + "SubmitAddon.aspx")]
     public class AddonCatalog : AbstractContentPage
     {
-        public override string IconUrl
-        {
-            get { return Paths.UI + "plugin.png"; }
-		}
-
 		[EditableRoles(Title = "Role required for write access", ContainerName = Tabs.Content)]
 		public virtual IEnumerable<string> ModifyRoles
 		{

@@ -6,7 +6,7 @@ using N2.Web;
 
 namespace N2.Addons.Wiki.Items
 {
-    [Definition]
+	[PageDefinition("Wiki Article", IconUrl = "~/Addons/Wiki/UI/Img/article_wiki.gif")]
     [RestrictParents(typeof(Wiki))]
 	[Template("~/Addons/Wiki/UI/Views/Article.aspx")]
     [Template("index", "~/Addons/Wiki/UI/Views/Article.aspx")]
@@ -21,11 +21,6 @@ namespace N2.Addons.Wiki.Items
         public WikiArticle()
         {
             Visible = false;
-        }
-
-        public override string IconUrl
-        {
-            get { return "~/Addons/Wiki/UI/Img/article_wiki.gif"; }
         }
 
         [WikiText("Wiki Text", 100, ContainerName = Tabs.Content)]

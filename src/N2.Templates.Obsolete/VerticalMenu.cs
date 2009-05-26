@@ -1,10 +1,12 @@
+using System;
 using N2.Integrity;
 using N2.Templates.Items;
 using N2.Definitions;
 
 namespace N2.Templates.Items
 {
-    [Disable]
+	[Obsolete]
+	[Disable]
     [Definition("Vertical menu", "VerticalMenu")]
     [RestrictParents(typeof(StartPage))] // The menu is placed on the start page and displayed on all underlying pages
     [AllowedZones(Zones.SiteLeft)]

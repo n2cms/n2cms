@@ -118,7 +118,7 @@ namespace N2.Definitions
 			set { enabled = value; }
 		}
 
-		/// <summary>Gets or sets wheter this definition has been defined. Weirdly enough a definition may exist without beeing defined. To define a definition the class must implement the <see cref="N2.DefinitionAttribute"/> attribute.</summary>
+		/// <summary>Gets or sets wheter this definition has been defined. Weirdly enough a definition may exist without beeing defined. To define a definition the class must implement the <see cref="N2.PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/>.</summary>
 		public bool IsDefined
 		{
 			get { return isDefined; }

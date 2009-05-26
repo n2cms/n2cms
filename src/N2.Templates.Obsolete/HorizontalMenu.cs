@@ -2,9 +2,11 @@ using N2.Details;
 using N2.Integrity;
 using N2.Templates.Items;
 using N2.Definitions;
+using System;
 
 namespace N2.Templates.Items
 {
+	[Obsolete]
     [Disable]
     [Definition("Horizontal Menu", "HorizontalMenu")]
     [RestrictParents(typeof(StartPage))] // The menu is placed on the start page and displayed on all underlying pages

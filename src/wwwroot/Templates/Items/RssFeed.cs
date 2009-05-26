@@ -7,7 +7,7 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-    [Definition("Feed", 
+    [PageDefinition("Feed", 
 		Description = "An RSS feed that outputs an xml with the latest feeds.",
 		SortOrder = 260,
 		IconUrl = "~/Templates/UI/Img/feed.png")]

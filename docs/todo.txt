@@ -1,3 +1,4 @@
+- "hidden" non-parts pages
 - track "EditableLinks"
 - track external links and "trackbacks"
 - max versions

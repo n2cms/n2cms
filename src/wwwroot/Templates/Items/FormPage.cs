@@ -4,7 +4,7 @@ using N2.Web.UI;
 
 namespace N2.Templates.Items
 {
-    [Definition("Form page", 
+    [PageDefinition("Form page", 
 		Description = "A page with a form that can be sumitted and sent to an email address.",
 		SortOrder = 240,
 		IconUrl = "~/Templates/UI/Img/report.png")]

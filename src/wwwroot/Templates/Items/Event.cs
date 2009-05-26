@@ -7,7 +7,9 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-	[Definition("Event", Description = "An event item", SortOrder = 110,
+	[PageDefinition("Event", 
+		Description = "An event in the event calendar.", 
+		SortOrder = 110,
 		IconUrl = "~/Templates/UI/Img/calendar_view_day.png")]
     [RestrictParents(typeof(Calendar))]
 	[ConventionTemplate("CalendarItem")]

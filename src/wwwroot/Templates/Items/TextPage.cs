@@ -9,7 +9,9 @@ namespace N2.Templates.Items
     /// <summary>
     /// A page containing textual information.
     /// </summary>
-    [Definition("Text Page", "TextPage", "A simple text page. It displays a vertical menu, the content and provides a sidebar column", "", 20)]
+    [PageDefinition("Text Page", 
+		Description = "A simple text page. It displays a vertical menu, the content and provides a sidebar column", 
+		SortOrder = 20)]
 	[ConventionTemplate("Text")]
     public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
     {

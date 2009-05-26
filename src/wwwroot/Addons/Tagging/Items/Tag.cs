@@ -1,11 +1,9 @@
 ﻿using N2.Details;
 using N2.Integrity;
-using N2.Web;
 
 namespace N2.Addons.Tagging.Items
 {
-	[Definition]
-	[Template("~/Addons/Tagging/UI/Tag.aspx")]
+	[PageDefinition(IconUrl = "~/Addons/Tagging/UI/tag_green.png", TemplateUrl = "~/Addons/Tagging/UI/Tag.aspx")]
 	[RestrictParents(typeof(TagGroup))]
 	[WithEditableName, WithEditableTitle]
 	public class Tag : ContentItem, ITag
@@ -32,9 +30,6 @@ namespace N2.Addons.Tagging.Items
 
 		#endregion
 
-		public override string IconUrl
-		{
-			get { return "~/Addons/Tagging/UI/tag_green.png"; }
-		}
+		
 	}
 }

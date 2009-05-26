@@ -4,10 +4,9 @@ using N2.Web.Parts;
 
 namespace N2.Templates.Items
 {
-    [Definition("Text question (textbox)", "TextQuestion")]
+    [PartDefinition("Text question (textbox)")]
 	public class TextQuestion : Question, IAddablePart
     {
-
         [N2.Details.EditableTextBox("Rows", 110)]
         public virtual int Rows
         {

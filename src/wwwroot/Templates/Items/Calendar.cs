@@ -6,7 +6,7 @@ using N2.Web;
 
 namespace N2.Templates.Items
 {
-    [Definition("Calendar", 
+    [PageDefinition("Calendar", 
 		Description = "A list of recent events.",
 		SortOrder = 120,
 		IconUrl = "~/Templates/UI/Img/calendar.png")]

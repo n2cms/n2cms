@@ -6,7 +6,7 @@ using N2.Web.Parts;
 
 namespace N2.Templates.Items
 {
-    [Definition("Multiple Select (check boxes)")]
+    [PartDefinition("Multiple Select (check boxes)")]
 	public class MultipleSelect : OptionSelectQuestion, IAddablePart
     {
         [EditableCheckBox("Display vertically", 19)]

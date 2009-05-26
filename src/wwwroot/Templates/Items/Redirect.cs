@@ -10,7 +10,7 @@ namespace N2.Templates.Items
     /// <summary>
     /// Redirects to somewhere else. Used as a placeholder in the menu.
     /// </summary>
-    [Definition("Redirect", 
+    [PageDefinition("Redirect", 
 		Description = "Redirects to another page or an external address.",
 		SortOrder = 40,
 		IconUrl = "~/Templates/UI/Img/page_go.png")]

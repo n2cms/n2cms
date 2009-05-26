@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using N2.Collections;
 using N2.Details;
-using N2.Web;
 
 namespace N2.Addons.Tagging.Items
 {
-	[Definition("Tag Group", Description = "Define a tag group that pages can be associated to.", SortOrder = 550)]
-	[Template("~/Addons/Tagging/UI/TagContainer.aspx")]
+	[PageDefinition("Tag Group",
+		Description = "Define a tag group that pages can be associated to.",
+		TemplateUrl = "~/Addons/Tagging/UI/TagContainer.aspx",
+		IconUrl = "~/Addons/Tagging/UI/tag_red.png", 
+		SortOrder = 550)]
 	[WithEditableName, WithEditableTitle]
 	public class TagGroup : ContentItem, IGroup
 	{
@@ -39,10 +41,5 @@ namespace N2.Addons.Tagging.Items
 		}
 
 		#endregion
-
-		public override string IconUrl
-		{
-			get { return "~/Addons/Tagging/UI/tag_red.png"; }
-		}
 	}
 }

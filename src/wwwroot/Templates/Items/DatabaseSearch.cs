@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace N2.Templates.Items
 {
-    [Definition("Database Search", 
+    [PageDefinition("Database Search", 
 		Description = "Searches for items searching for texts in the database.",
 		SortOrder = 200,
 		IconUrl = "~/Templates/UI/Img/zoom.png")]

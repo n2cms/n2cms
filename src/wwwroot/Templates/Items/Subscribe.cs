@@ -1,11 +1,9 @@
-using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
-using N2.Templates.Items;
 
 namespace N2.Templates.Items
 {
-    [Definition("Subscribe", 
+    [PartDefinition("Subscribe", 
 		Description = "An RSS feed subscription box. An RSS link is also added to the page enabling subscription through the browser's address field.",
 		SortOrder = 370,
 		IconUrl = "~/Templates/UI/Img/feed_link.png")]

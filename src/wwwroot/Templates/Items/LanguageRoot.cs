@@ -94,10 +94,5 @@ namespace N2.Templates.Items
             get { return (Top)GetDetail("Header"); }
             set { SetDetail("Header", value); }
         }
-
-        public override string TemplateUrl
-        {
-            get { return "~/Default.aspx"; }
-        }
 	}
 }

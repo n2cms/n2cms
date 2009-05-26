@@ -2,21 +2,10 @@
 
 namespace N2.Addons.Wiki.Items
 {
-    [Definition]
-    [AllowedZones(AllowedZones.All)]
+	[PartDefinition("Wiki Part", TemplateUrl = "~/Addons/Wiki/UI/Parts/WikiPart.ascx", IconUrl = "~/Addons/Wiki/UI/Img/part_wiki.gif")]
     [RestrictParents(typeof(WikiArticle))]
     public class WikiText : Templates.Items.AbstractItem, IArticle
     {
-        public override string TemplateUrl
-        {
-            get { return "~/Addons/Wiki/UI/Parts/WikiPart.ascx"; }
-        }
-
-        public override string IconUrl
-        {
-            get { return "~/Addons/Wiki/UI/Img/part_wiki.gif"; }
-        }
-
         #region IArticle Members
 
         [WikiText("Wiki Text", 100)]

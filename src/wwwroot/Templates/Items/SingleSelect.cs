@@ -6,7 +6,7 @@ using SingleSelectControl=N2.Templates.Web.UI.WebControls.SingleSelectControl;
 
 namespace N2.Templates.Items
 {
-    [Definition("Single Select (radiobuttons)", "SingleSelect")]
+    [PartDefinition("Single Select (radio buttons)")]
 	public class SingleSelect : OptionSelectQuestion, IAddablePart
     {
         [EditableCheckBox("Display vertically", 19)]
