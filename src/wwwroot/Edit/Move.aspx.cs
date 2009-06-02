@@ -3,6 +3,7 @@ using N2.Definitions;
 using N2.Edit.Web;
 using N2.Integrity;
 using N2.Web;
+using N2.Security;
 
 namespace N2.Edit
 {
@@ -17,9 +18,13 @@ namespace N2.Edit
 			{
                 try
                 {
-                    pnlNewName.Visible = false;
+					pnlNewName.Visible = false;
                     ContentItem toMove = MemorizedItem;
-                    Engine.Persister.Move(toMove, SelectedItem);
+
+                	EnsureAuthorization(Permission.Write);
+					EnsureAuthorization(toMove, Permission.Write);
+
+					Engine.Persister.Move(toMove, SelectedItem);
                     Refresh(toMove, ToolbarArea.Both);
                 }
                 catch (NameOccupiedException ex)
@@ -28,6 +33,10 @@ namespace N2.Edit
                     pnlNewName.Visible = true;
                 }
                 catch (DestinationOnOrBelowItselfException ex)
+                {
+                    SetErrorMessage(cvMove, ex);
+                }
+                catch (PermissionDeniedException ex)
                 {
                     SetErrorMessage(cvMove, ex);
                 }

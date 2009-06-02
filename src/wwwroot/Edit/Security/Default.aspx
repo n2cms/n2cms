@@ -1,4 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="../Framed.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="N2.Edit.Security.Default" Title="Untitled Page" meta:resourcekey="PageResource1" %>
+<%@ Import Namespace="N2.Security"%>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
 </asp:Content>
@@ -10,11 +11,63 @@
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourcekey="hlCancelResource1">Cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
-    <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="validator" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
-    
-    <asp:CheckBox ID="cbEveryone" runat="server" CssClass="cb" AutoPostBack="true" oncheckedchanged="cbEveryone_CheckedChanged" />
-    
-    <hr />
-
-    <asp:CheckBoxList ID="cblAllowedRoles" runat="server" CssClass="cbl" OnSelectedIndexChanged="cblAllowedRoles_SelectedIndexChanged" OnDataBound="cblAllowedRoles_DataBound" meta:resourcekey="cblAllowedRolesResource1" />
+    <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="validator" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
+    <style>
+		.everyone td { border-bottom:solid 1px #ccc;}
+		.permissionsHeader { width:130px; }
+		td { width:65px;}
+    </style>
+    <script type="text/javascript">
+    	$(document).ready(function() {
+    		var checkChecked = function() {
+    			var groupName = this.parentElement.className.split(' ')[1];
+    			var $grouped = $("." + groupName + " input").not(this);
+    			if (this.checked) {
+    				$grouped.parent().andSelf().attr("disabled", "disabled");
+    			} else {
+    				$grouped.parent().andSelf().removeAttr("disabled");
+    			}
+    			$(".AuthorizedFalse").attr("disabled", "disabled");
+    			return $grouped;
+    		};
+    		$(".everyone .cb input").click(function() {
+    			checkChecked.call(this).attr("checked", "checked");
+    		}).each(checkChecked);
+    	});
+    </script>
+    <table>
+		<thead>
+			<tr>
+				<td class="permissionsHeader"></td>
+				<asp:Repeater ID="rptHeaders" runat="server" DataSource="<%# Permissions %>"><ItemTemplate>
+					<td><%# Container.DataItem %></td>
+				</ItemTemplate></asp:Repeater>
+			</tr>
+		</thead>
+		
+		<tbody class="everyone">
+			<tr>
+				<td><%= AuthorizedRole.Everyone%></td>
+			<asp:Repeater ID="rptEveryone" runat="server" DataSource="<%# Permissions %>"><ItemTemplate>
+				<td>
+					<asp:CheckBox ID="cbEveryone" Checked="<%# Is(AuthorizedRole.Everyone, (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex %>' />
+					<asp:CustomValidator ID="cvMarker" ErrorMessage="<%# Container.DataItem.ToString() %>" Text="*" runat="server" />
+				</td>
+			</ItemTemplate></asp:Repeater>
+			</tr>
+		</tbody>
+		
+		<tbody>
+		<asp:Repeater ID="rptPermittedRoles" runat="server" DataSource="<%# GetAvailableRoles() %>"><ItemTemplate>
+			<tr>
+				<td><%# Container.DataItem %></td>
+				<asp:Repeater ID="rptPermissions" runat="server" DataSource="<%# Permissions %>" 
+							  OnItemDataBound="rptPermissions_ItemDataBound"
+							  OnItemCreated="rptPermissions_ItemCreated"><ItemTemplate>
+					<td><asp:CheckBox ID="cbRole" Checked="<%# Is(GetRole(Container), (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex + " Authorized" + IsAuthorized(GetRole(Container), (Permission)Container.DataItem) %>' /></td>
+				</ItemTemplate></asp:Repeater>	
+			</tr>	
+		</ItemTemplate></asp:Repeater>		
+		</tbody>
+    </table>
 </asp:Content>

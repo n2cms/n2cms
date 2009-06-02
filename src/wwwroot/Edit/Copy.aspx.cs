@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using N2.Security;
 using N2.Web;
 
 namespace N2.Edit
@@ -22,6 +23,9 @@ namespace N2.Edit
 			{
 				try
 				{
+					EnsureAuthorization(Permission.Write);
+					EnsureAuthorization(MemorizedItem, Permission.Read);
+
 					N2.ContentItem newItem = Engine.Persister.Copy(MemorizedItem, SelectedItem);
 					Refresh(newItem, ToolbarArea.Both);
 				}
@@ -29,6 +33,10 @@ namespace N2.Edit
 				{
 					this.pnlNewName.Visible = true;
 					SetErrorMessage(this.cvCopy, ex);
+				}
+				catch (PermissionDeniedException ex)
+				{
+					SetErrorMessage(cvCopy, ex);
 				}
 				catch (N2.Definitions.NotAllowedParentException ex)
 				{

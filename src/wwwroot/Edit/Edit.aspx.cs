@@ -6,6 +6,7 @@ using N2.Edit.Web;
 using N2.Web.UI.WebControls;
 using N2.Web;
 using System.Web.Security;
+using N2.Security;
 
 namespace N2.Edit
 {
@@ -39,7 +40,15 @@ namespace N2.Edit
 			InitPlugins();
 			InitItemEditor();
 			InitTitle();
+			InitButtons();
 			base.OnInit(e);
+		}
+
+		private void InitButtons()
+		{
+			btnSavePublish.Enabled = Engine.SecurityManager.IsAuthorized(User, SelectedItem, Permission.Publish);
+			btnPreview.Enabled = Engine.SecurityManager.IsAuthorized(User, SelectedItem, Permission.Write);
+			btnSaveUnpublished.Enabled = Engine.SecurityManager.IsAuthorized(User, SelectedItem, Permission.Write);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -67,23 +76,30 @@ namespace N2.Edit
 			Validate();
 			if (IsValid)
 			{
+				if (!Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, N2.Security.Permission.Publish))
+				{
+					FailValidation("Not authorized to publish.");
+				}
+
 				try
 				{
-					if (Roles.IsUserInRole("Administrators") || Roles.IsUserInRole("Editors"))
-						SaveChanges();
-					else
-						throw new Exception("Access denied!");
+					SaveChanges();
 				}
 				catch (Exception ex)
 				{
 					Engine.Resolve<IErrorHandler>().Notify(ex);
-					cvException.IsValid = false;
-					cvException.ErrorMessage = ex.Message;
+					FailValidation(ex.Message);
 				}
 			}
 		}
 
-		protected void OnPreviewCommand(object sender, CommandEventArgs e)
+    	void FailValidation(string message)
+    	{
+    		cvException.IsValid = false;
+    		cvException.ErrorMessage = message;
+    	}
+
+    	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
 			Validate();
 			if (IsValid)

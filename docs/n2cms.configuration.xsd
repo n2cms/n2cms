@@ -12,7 +12,8 @@
 		<xs:anyAttribute />
 	</xs:complexType>
 
-	<xs:complexType name="userRoleElement">
+	<xs:complexType name="permissionElement">
+		<xs:attribute name="dynamic" type="xs:boolean" use="optional" />
 		<xs:attribute name="users" type="xs:string" use="optional" />
 		<xs:attribute name="roles" type="xs:string" use="optional" />
 	</xs:complexType>
@@ -256,8 +257,9 @@
 									<xs:attribute name="installUrl" type="xs:string" use="optional" />
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="editors" minOccurs="0" type="tns:userRoleElement" />
-							<xs:element name="administrators" minOccurs="0" type="tns:userRoleElement" />
+							<xs:element name="writers" minOccurs="0" type="tns:permissionElement" />
+							<xs:element name="editors" minOccurs="0" type="tns:permissionElement" />
+							<xs:element name="administrators" minOccurs="0" type="tns:permissionElement" />
 							<xs:element name="uploadFolders" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
@@ -328,7 +330,7 @@
 							</xs:element>
 							<xs:element name="defaultDirectory" minOccurs="0">
 								<xs:complexType>
-									<xs:attribute name="mode" use="optional" default="RecursiveFolderShadow">
+									<xs:attribute name="mode" use="optional" default="RecursiveNames">
 										<xs:simpleType>
 											<xs:restriction base="xs:string">
 												<xs:enumeration value="UploadFolder"/>

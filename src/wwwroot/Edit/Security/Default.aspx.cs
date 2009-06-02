@@ -1,36 +1,144 @@
 using System;
-using System.Web.Security;
 using System.Web.UI.WebControls;
+using N2.Configuration;
 using N2.Security;
 using System.Collections.Generic;
+using System.Web.UI;
 
 namespace N2.Edit.Security
 {
-	[N2.Edit.ToolbarPlugin("", "security", "~/Edit/Security/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/lock.gif", 100, ToolTip = "allowed roles for selected item", GlobalResourceClassName = "Toolbar")]
+	[N2.Edit.ToolbarPlugin("", "security", 
+		"~/Edit/Security/Default.aspx?selected={selected}", 
+		ToolbarArea.Preview, 
+		Targets.Preview, 
+		"~/Edit/Img/Ico/lock.gif", 
+		100, 
+		AuthorizedRoles = new[]{ "Editors", "Administrators" },
+		ToolTip = "allowed roles for selected item", 
+		GlobalResourceClassName = "Toolbar")]
 	public partial class Default : Web.EditPage
 	{
+		protected Permission[] Permissions;
+		protected string[] Roles;
+		Control[,] map;
+
 		protected override void OnInit(EventArgs e)
 		{
-            string[] roles;
-            if (Roles.Enabled)
-                roles = Roles.GetAllRoles();
-            else
-                roles = GetRoles();
-            cblAllowedRoles.DataSource = roles;
-			cblAllowedRoles.DataBind();
+			InitValues();
+
+			hlCancel.NavigateUrl = CancelUrl();
 			base.OnInit(e);
 		}
 
-        private string[] GetRoles()
+		protected override void OnLoad(EventArgs e)
+		{
+			if(!IsPostBack)
+			{
+				DataBind();
+			}
+
+			base.OnLoad(e);
+		}
+
+
+
+		protected void rptPermissions_ItemDataBound(object sender, RepeaterItemEventArgs args)
+		{
+			CheckBox cb = (CheckBox)args.Item.FindControl("cbRole");
+		}
+
+		protected void rptPermissions_ItemCreated(object sender, RepeaterItemEventArgs args)
+		{
+			if(args.Item.ItemType == ListItemType.Item || args.Item.ItemType == ListItemType.AlternatingItem)
+			{
+				int roleIndex = ((RepeaterItem) ((Control) sender).Parent).ItemIndex;
+				map[args.Item.ItemIndex, roleIndex] = args.Item;
+			}
+		}
+
+
+
+		protected void btnSave_Command(object sender, CommandEventArgs e)
+		{
+			Validate();
+			if(!IsValid)
+				return;
+
+			ApplyRoles(SelectedItem);
+			InitValues();
+			DataBind();
+
+			base.Refresh(SelectedItem, ToolbarArea.Navigation);
+		}
+
+		protected void btnSaveRecursive_Command(object sender, CommandEventArgs e)
+		{
+			Validate();
+			if (!IsValid)
+				return;
+
+			ApplyRolesRecursive(SelectedItem);
+			DataBind();
+
+			base.Refresh(SelectedItem, ToolbarArea.Navigation);
+		}
+
+
+
+		void InitValues()
+		{
+			Permissions = GetAvailablePermissions();
+			Roles = GetAvailableRoles();
+			map = new Control[Permissions.Length, Roles.Length];
+		}
+		
+		Permission[] GetAvailablePermissions()
+		{
+			List<Permission> permissions = new List<Permission>();
+			permissions.Add(Permission.Read);
+			EditSection config = Engine.Resolve<EditSection>();
+			if (config.Editors.Dynamic)
+				permissions.Add(Permission.Write);
+			if (config.Writers.Dynamic)
+				permissions.Add(Permission.Publish);
+			if(config.Administrators.Dynamic)
+				permissions.Add(Permission.Administer);
+			return permissions.ToArray();
+		}
+
+		protected bool IsEveryone(Permission permission)
+		{
+			return DynamicPermissionMap.IsAllRoles(SelectedItem, permission);
+		}
+
+		protected bool Is(string role, Permission permission)
+		{
+			return DynamicPermissionMap.IsPermitted(role, SelectedItem, permission);
+		}
+
+		protected bool IsAuthorized(string role, Permission permission)
+		{
+			return User.IsInRole(role) && Engine.SecurityManager.IsAuthorized(User, SelectedItem, permission);
+		}
+
+		protected string GetRole(RepeaterItem repeaterItem)
+		{
+			return (string)((RepeaterItem)repeaterItem.Parent.Parent).DataItem;
+		}
+
+        protected string[] GetAvailableRoles()
         {
+			if (System.Web.Security.Roles.Enabled)
+				return System.Web.Security.Roles.GetAllRoles();
+
             List<string> roles = new List<string>();
             roles.Add(AuthorizedRole.Everyone);
-            if (Engine.SecurityManager is N2.Security.SecurityManager)
+            if (Engine.SecurityManager is SecurityManager)
             {
                 SecurityManager sm = Engine.SecurityManager as SecurityManager;
-                roles.AddRange(sm.EditorRoles);
-                roles.AddRange(sm.AdminRoles);
-				roles.AddRange(sm.WriterRoles);
+                roles.AddRange(sm.Writers.Roles);
+                roles.AddRange(sm.Editors.Roles);
+				roles.AddRange(sm.Administrators.Roles);
             }
             else
             {
@@ -39,39 +147,6 @@ namespace N2.Edit.Security
 
             return roles.ToArray();
         }
-
-        private object SecurityManager(SecurityManager securityManager)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-
-		protected void Page_Load(object sender, EventArgs e)
-		{
-            // Set text for everyone
-            cbEveryone.Text = AuthorizedRole.Everyone;
-
-            hlCancel.NavigateUrl = CancelUrl();
-		}
-
-		protected void cblAllowedRoles_SelectedIndexChanged(object sender, EventArgs e)
-		{
-		}
-
-		protected void btnSave_Command(object sender, CommandEventArgs e)
-		{
-            ApplyRoles(SelectedItem);
-
-			base.Refresh(SelectedItem, ToolbarArea.Navigation);
-		}
-
-        protected void btnSaveRecursive_Command(object sender, CommandEventArgs e)
-		{
-            ApplyRolesRecursive(SelectedItem);
-
-			base.Refresh(SelectedItem, ToolbarArea.Navigation);
-		}
 
         private void ApplyRolesRecursive(ContentItem item)
         {
@@ -84,79 +159,73 @@ namespace N2.Edit.Security
 
         private void ApplyRoles(ContentItem item)
         {
-            // Check if everyone is checked
-            if (cbEveryone.Checked)
-            {
-                // Clear the current roles
-                item.AuthorizedRoles.Clear();
-            }
-            else
-            {
-                foreach (ListItem li in cblAllowedRoles.Items)
-                {
-                    AuthorizedRole temp = new AuthorizedRole(item, li.Value);
-                    int roleIndex = item.AuthorizedRoles.IndexOf(temp);
-                    if (!li.Selected && roleIndex >= 0)
-                        item.AuthorizedRoles.RemoveAt(roleIndex);
-                    else if (li.Selected && roleIndex < 0)
-                        item.AuthorizedRoles.Add(temp);
-                }
-            }
-            Engine.Persister.Save(item);
-        }
+        	foreach(CheckBox c in N2.Web.UI.ItemUtility.FindInChildren<CheckBox>(rptPermittedRoles))
+        	{
+        		Console.WriteLine(c.Checked);
+        	}
 
-		private bool AllSelected(CheckBoxList cbl)
-		{
-			foreach (ListItem item in cbl.Items)
-				if (!item.Selected)
-					return false;
-			return true;
-		}
-
-		private bool NoneSelected(CheckBoxList cbl)
-		{
-            if (cbEveryone.Checked)
-                return false;
-			foreach (ListItem item in cbl.Items)
-				if (item.Selected)
-					return false;
-			return true;
-		}
-
-		protected void cblAllowedRoles_DataBound(object sender, EventArgs e)
-		{
-			if (SelectedItem.AuthorizedRoles.Count == 0)
-			{
-                // Everyone is allowed
-                cbEveryone.Checked = true;
-                cblAllowedRoles.Enabled = false;
-
-				/*foreach (ListItem item in cblAllowedRoles.Items)
-					item.Selected = true;*/
-			}
-			else
-			{
-                // Uncheck everyone
-                cbEveryone.Checked = false;
-                cblAllowedRoles.Enabled = true;
-                
-                // Check all allowed roles
-				foreach (N2.Security.AuthorizedRole allowedRole in SelectedItem.AuthorizedRoles)
+        	for (int i = 0; i < Permissions.Length; i++)
+        	{
+        		Permission permission = Permissions[i];
+				bool allChecked = IsAllChecked(i);
+				List<string> checkedRoles = new List<string>();
+				if(!allChecked)
 				{
-					cblAllowedRoles.Items.FindByValue(allowedRole.Role).Selected = true;
-				}
-			}
-		}
+					allChecked = true;
+					for (int j = 0; j < Roles.Length; j++)
+					{
+						string role = Roles[j];
+						CheckBox cb = (CheckBox)map[i, j].FindControl("cbRole");
 
-        protected void cbEveryone_CheckedChanged(object sender, EventArgs e)
-        {
-            // Check if the user checked everyone
-            cblAllowedRoles.Enabled = !cbEveryone.Checked;
+						// try to avoid security breaches
+						if (!IsAuthorized(role, permission))
+							cb.Checked = Is(role, permission);
+						
+						allChecked &= cb.Checked;
+						if (cb.Checked)
+						{
+							checkedRoles.Add(role);
+						}
+					}
+				}
+
+				if(allChecked)
+					DynamicPermissionMap.SetAllRoles(item, permission);
+				else
+					DynamicPermissionMap.SetRoles(item, permission, checkedRoles.ToArray());
+			}
+
+			Engine.Persister.Save(item);
         }
 
 		protected void cvSomethingSelected_ServerValidate(object source, ServerValidateEventArgs args)
 		{
-			args.IsValid = !NoneSelected(this.cblAllowedRoles);
+			for (int i = 0; i < Permissions.Length; i++)
+			{
+				if (IsAllChecked(i))
+					continue;
+
+				bool anyoneChecked = false;
+				for (int j = 0; j < Roles.Length; j++)
+				{
+					string role = Roles[j];
+					CheckBox cb = (CheckBox) map[i, j].FindControl("cbRole");
+					anyoneChecked |= cb.Checked;
+				}
+
+				if(!anyoneChecked)
+				{
+					CustomValidator validator = ((CustomValidator)rptEveryone.Items[i].FindControl("cvMarker"));
+					validator.IsValid = false;
+
+					args.IsValid = false;
+				}
+			}
+		}
+
+		bool IsAllChecked(int permissionIndex)
+		{
+			return ((CheckBox)rptEveryone.Items[permissionIndex].FindControl("cbEveryone")).Checked;
 		}
 
 		protected override void OnError(EventArgs e)

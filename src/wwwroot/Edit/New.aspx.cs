@@ -24,6 +24,7 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Integrity;
 using N2.Web.UI.WebControls;
+using N2.Security;
 
 namespace N2.Edit
 {
@@ -91,13 +92,19 @@ namespace N2.Edit
 			int allowedChildrenCount = ParentItemDefinition.AllowedChildren.Count;
 			IList<ItemDefinition> allowedChildren = Engine.Definitions.GetAllowedChildren(ParentItemDefinition, ZoneName, this.User);
 
+			if(!IsAuthorized(Permission.Write))
+			{
+				cvPermission.IsValid = false;
+				return;
+			}
+
 			if (allowedChildrenCount == 0)
 			{
 				Title = string.Format(GetLocalResourceString("NewPage.Title.NoneAllowed"), ParentItemDefinition.Title);
 			}
 			else if (allowedChildrenCount == 1 && allowedChildren.Count == 1)
 			{
-				Response.Redirect(GetEditUrl(allowedChildren[0]));
+                Response.Redirect(GetEditUrl(allowedChildren[0]));
 			}
 			else
 			{

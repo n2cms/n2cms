@@ -20,10 +20,7 @@
 
 using System;
 using System.Security.Principal;
-using System.Diagnostics;
-using System.Collections;
 using System.Collections.Generic;
-using Castle.Core;
 using System.Collections.Specialized;
 
 namespace N2.Security
@@ -34,22 +31,29 @@ namespace N2.Security
 	/// </summary>
 	public class SecurityManager : ISecurityManager
 	{
+		static string[] defaultAdministratorRoles = new[] { "Administrators" };
+		static string[] defaultAdministratorUsers = new[] { "admin" };
+		static string[] defaultEditorRoles = new[] { "Editors" };
+		static string[] defaultWriterRoles = new[] { "Writers" };
+		static string[] none = new string[0];
+
 		private Web.IWebContext webContext;
 		
 		private bool enabled = true;
 
-        string[] editorNames = new string[0];
-        string[] editorRoles = new string[] { "Editors" };
-		string[] adminNames = new string[] { "admin" };
-        string[] adminRoles = new string[] { "Administrators" };
-		string[] writerNames = new string[] { "writer" };
-		string[] writerRoles = new string[] { "Writers" };
+		public PermissionMap Administrators { get; set; }
+		public PermissionMap Editors { get; set; }
+		public PermissionMap Writers { get; set; }
 		
 		/// <summary>Creates a new instance of the security manager.</summary>
 		[Obsolete("Don't use", true)]
 		public SecurityManager(Web.IWebContext webContext)
 		{
 			this.webContext = webContext;
+
+			Administrators = new PermissionMap(Permission.Full, defaultAdministratorRoles, defaultAdministratorUsers);
+			Editors = new PermissionMap(Permission.ReadWritePublish, defaultEditorRoles, none);
+			Writers = new PermissionMap(Permission.ReadWrite, defaultWriterRoles, none);
         }
 
         /// <summary>Creates a new instance of the security manager.</summary>
@@ -57,71 +61,55 @@ namespace N2.Security
         {
             this.webContext = webContext;
 
-            if (config.Editors.Users != null)
-                editorNames = ToArray(config.Editors.Users);
-            if (config.Editors.Roles != null)
-                editorRoles = ToArray(config.Editors.Roles);
-			if (config.Writers.Users != null)
-				writerNames = ToArray(config.Writers.Users);
-			if (config.Writers.Roles != null)
-				writerRoles = ToArray(config.Writers.Roles);
-			if (config.Administrators.Users != null)
-                adminNames = ToArray(config.Administrators.Users);
-            if (config.Administrators.Roles != null)
-                adminRoles = ToArray(config.Administrators.Roles);
-        }
-
-        private static string[] ToArray(StringCollection list)
-        {
-            string[] array = new string[list.Count];
-            list.CopyTo(array, 0);
-            return array;
+			Administrators = config.Editors.ToPermissionMap(Permission.Full, defaultAdministratorRoles, defaultAdministratorUsers);
+			Editors = config.Editors.ToPermissionMap(Permission.ReadWritePublish, defaultEditorRoles, none);
+			Writers = config.Editors.ToPermissionMap(Permission.ReadWrite, defaultWriterRoles, none);
         }
 
 		#region Properties
 		/// <summary>
-		/// Gets or sets user names considered as editors.
+		/// Gets user names considered as editors.
 		/// </summary>
+		[Obsolete("About to be gone")]
 		public string[] EditorNames
 		{
-			get { return editorNames; }
-			set { editorNames = value; }
+			get { return Editors.Users; }
 		}
 
 		/// <summary>
-		/// Gets or sets roles considered as editors.
+		/// Gets roles considered as editors.
 		/// </summary>
-        public string[] EditorRoles
+		[Obsolete("About to be gone")]
+		public string[] EditorRoles
 		{
-			get { return editorRoles; }
-			set { editorRoles = value; }
+			get { return Editors.Roles; }
 		}
 
 		/// <summary>
-		/// Gets or sets roles considered as writers.
+		/// Gets roles considered as writers.
 		/// </summary>
+		[Obsolete("About to be gone")]
 		public string[] WriterRoles
 		{
-			get { return writerRoles; }
-			set { writerRoles = value; }
+			get { return Writers.Roles; }
 		}
 
 		/// <summary>
-		/// Gets or sets user names considered as administrators.
+		/// Gets user names considered as administrators.
 		/// </summary>
-        public string[] AdminNames
+		[Obsolete("About to be gone")]
+		public string[] AdminNames
 		{
-			get { return adminNames; }
-			set { adminNames = value; }
+			get { return Administrators.Users; }
 		}
 
 		/// <summary>
 		/// Gets or sets roles considered as administrators.
 		/// </summary>
-        public string[] AdminRoles
+		[Obsolete("About to be gone")]
+		public string[] AdminRoles
 		{
-			get { return adminRoles; }
-			set { adminRoles = value; }
+			get { return Administrators.Roles; }
 		}
 
 		/// <summary>Check whether an item is published, i.e. it's published and isn't expired.</summary>
@@ -155,6 +143,7 @@ namespace N2.Security
 					webContext.RequestItems["ItemSecurityManager.ScopeEnabled"] = false;
 			}
 		}
+
 		#endregion
 
 		#region Methods
@@ -163,10 +152,7 @@ namespace N2.Security
 		/// <returns>A boolean indicating whether the principal has edit access.</returns>
 		public virtual bool IsEditor(IPrincipal user)
 		{
-			if (user == null)
-				return false;
-			else
-				return IsAdmin(user) || HasName(user, this.EditorNames) || IsInRole(user, this.EditorRoles) || IsInRole(user, this.WriterRoles);
+			return IsAdmin(user) || Editors.Contains(user) || Writers.Contains(user);
 		}
 
 		/// <summary>Find out if a princpial has admin access.</summary>
@@ -174,45 +160,43 @@ namespace N2.Security
 		/// <returns>A boolean indicating whether the principal has admin access.</returns>
 		public virtual bool IsAdmin(IPrincipal user)
 		{
-			if (user == null)
-				return false;
-			else
-				return HasName(user, this.AdminNames) || IsInRole(user, this.AdminRoles);
+			return Administrators.Contains(user);
 		}
 
 		/// <summary>Find out if a principal is allowed to access an item.</summary>
 		/// <param name="item">The item to check against.</param>
-		/// <param name="principal">The principal to check for allowance.</param>
+		/// <param name="user">The principal to check for allowance.</param>
 		/// <returns>True if the item has public access or the principal is allowed to access it.</returns>
-		public virtual bool IsAuthorized(ContentItem item, IPrincipal principal)
+		public virtual bool IsAuthorized(ContentItem item, IPrincipal user)
 		{
-			if (!Enabled || !ScopeEnabled || IsAdmin(principal))
+			if (!Enabled || !ScopeEnabled || IsAdmin(user))
 			{
 				// Disabled security manager or Editor means full access
 				return true;
 			}
-			else if (!IsEditor(principal) && !IsPublished(item))
+			else if (!IsEditor(user) && !IsPublished(item))
 			{
 				// Non-editors cannot load unpublished items
 				return false;
 			}
-			return item.IsAuthorized(principal);
+			return item.IsAuthorized(user);
 		}
 
-		private bool HasName(IPrincipal user, string[] names)
+		/// <summary>Find out if a principal has a certain permission for an item.</summary>
+		/// <param name="item">The item to check against.</param>
+		/// <param name="user">The principal to check for allowance.</param>
+		/// <param name="permission">The type of permission to map against.</param>
+		/// <returns>True if the item has public access or the principal is allowed to access it.</returns>
+		public bool IsAuthorized(IPrincipal user, ContentItem item, Permission permission)
 		{
-			foreach(string name in names)
-				if(user.Identity.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-					return true;
-			return false;
-		}
+			if(permission == Permission.None)
+				return true;
+			if (permission == Permission.Read)
+				return IsAuthorized(item, user);
 
-        private bool IsInRole(IPrincipal user, string[] roles)
-		{
-			foreach(string role in roles)
-				if(user.IsInRole(role))
-					return true;
-			return false;
+			return Administrators.Authorizes(user, item, permission)
+				   || Editors.Authorizes(user, item, permission)
+				   || Writers.Authorizes(user, item, permission);
 		}
 
         public bool IsAuthorized(IPrincipal user, IEnumerable<string> roles)
@@ -224,6 +208,5 @@ namespace N2.Security
         }
 
 		#endregion
-
-    }
+	}
 }

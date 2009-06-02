@@ -44,6 +44,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\N2.XML</DocumentationFile>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=1.0.3.4831, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -267,6 +268,7 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Configuration\PermissionElement.cs" />
     <Compile Include="Definitions\AbstractDefinition.cs" />
     <Compile Include="Collections\BranchHierarchyBuilder.cs" />
     <Compile Include="Collections\CompositeFilter.cs" />
@@ -305,7 +307,6 @@
     <Compile Include="Configuration\SchedulerElement.cs" />
     <Compile Include="Configuration\DatabaseFlavour.cs" />
     <Compile Include="Configuration\DatabaseSection.cs" />
-    <Compile Include="Configuration\EditAccess.cs" />
     <Compile Include="Configuration\EditSection.cs" />
     <Compile Include="Configuration\ErrorAction.cs" />
     <Compile Include="Configuration\ErrorsElement.cs" />
@@ -475,6 +476,9 @@
     <Compile Include="Plugin\Scheduling\ScheduleExecutionAttribute.cs" />
     <Compile Include="Plugin\Scheduling\Scheduler.cs" />
     <Compile Include="Plugin\Scheduling\TimeUnit.cs" />
+    <Compile Include="Security\DynamicPermissionMap.cs" />
+    <Compile Include="Security\Permission.cs" />
+    <Compile Include="Security\PermissionMap.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
     <Compile Include="Serialization\ExportOptions.cs" />

@@ -237,6 +237,8 @@
     <Compile Include="Plugin\ThrowingPlugin1.cs" />
     <Compile Include="Plugin\ThrowingPlugin2.cs" />
     <Compile Include="Security\ContentMembershipProviderTests.cs" />
+    <Compile Include="Security\DynamicPermissionMapTests.cs" />
+    <Compile Include="Security\PermissionMapTests.cs" />
     <Compile Include="Serialization\ExportImportTests.cs" />
     <Compile Include="Serialization\Items\FakeAttachment.cs" />
     <Compile Include="Serialization\SerializationTestsBase.cs" />

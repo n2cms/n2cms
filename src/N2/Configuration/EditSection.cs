@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Configuration;
-using System.Web.Configuration;
-using System.Text.RegularExpressions;
+﻿using System.Configuration;
 
 namespace N2.Configuration
 {
@@ -21,25 +16,25 @@ namespace N2.Configuration
 
         /// <summary>Users and roles considered editors.</summary>
         [ConfigurationProperty("editors")]
-        public EditAccess Editors
+        public PermissionElement Editors
         {
-            get { return (EditAccess)base["editors"]; }
+            get { return (PermissionElement)base["editors"]; }
             set { base["editors"] = value; }
         }
 
         /// <summary>Users and roles considered administrators.</summary>
         [ConfigurationProperty("administrators")]
-        public EditAccess Administrators
+        public PermissionElement Administrators
         {
-            get { return (EditAccess)base["administrators"]; }
+            get { return (PermissionElement)base["administrators"]; }
             set { base["administrators"] = value; }
 		}
 
 		/// <summary>Users and roles considered writers.</summary>
 		[ConfigurationProperty("writers")]
-		public EditAccess Writers
+		public PermissionElement Writers
 		{
-			get { return (EditAccess)base["writers"]; }
+			get { return (PermissionElement)base["writers"]; }
 			set { base["writers"] = value; }
 		}
 		

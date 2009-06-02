@@ -125,11 +125,11 @@ namespace N2.Persistence.NH
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
 
-            Properties["cache.use_second_level_cache"] = config.Caching.ToString();
-            Properties["cache.use_query_cache"] = config.Caching.ToString();
-			Properties["cache.provider_class"] = config.CacheProviderClass;
+            Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = config.Caching.ToString();
+			Properties[NHibernate.Cfg.Environment.UseQueryCache] = config.Caching.ToString();
+			Properties[NHibernate.Cfg.Environment.CacheProvider] = config.CacheProviderClass;
 
-            foreach (string key in config.HibernateProperties.AllKeys)
+			foreach (string key in config.HibernateProperties.AllKeys)
             {
                 Properties[key] = config.HibernateProperties[key].Value;
             }

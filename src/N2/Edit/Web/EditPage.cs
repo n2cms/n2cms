@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Resources;
 using N2.Resources;
+using N2.Security;
 using N2.Web;
 
 namespace N2.Edit.Web
@@ -46,6 +47,37 @@ namespace N2.Edit.Web
         {
             return Request["returnUrl"] ?? (SelectedItem.VersionOf ?? SelectedNode).PreviewUrl;
         }
+
+		/// <summary>Checks that the user has the required permission on the given item. Throws exceptions if authorization is missing.</summary>
+		/// <param name="item">The item to check permissions on.</param>
+		/// <param name="permission">The permission to check.</param>
+		protected void EnsureAuthorization(ContentItem item, Permission permission)
+		{
+			if (!IsAuthorized(item, permission))
+				throw new PermissionDeniedException(item, User);
+		}
+
+		/// <summary>Checks that the user has the required permission on the selected item. Throws exceptions if authorization is missing.</summary>
+		/// <param name="permission">The permission to check.</param>
+		protected void EnsureAuthorization(Permission permission)
+		{
+			EnsureAuthorization(SelectedItem, permission);
+		}
+
+		/// <summary>Checks that the user has the required permission on the given item.</summary>
+		/// <param name="item">The item to check permissions on.</param>
+		/// <param name="permission">The permission to check.</param>
+		protected bool IsAuthorized(ContentItem item, Permission permission)
+		{
+			return Engine.SecurityManager.IsAuthorized(User, item, permission);
+		}
+
+		/// <summary>Checks that the user has the required permission on the selected item.</summary>
+		/// <param name="permission">The permission to check.</param>
+		protected bool IsAuthorized(Permission permission)
+		{
+			return IsAuthorized(SelectedItem, permission);
+		}
 
     	#region Refresh Methods
 		private const string RefreshBothFormat = @"

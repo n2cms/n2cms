@@ -22,9 +22,9 @@ namespace N2.Security
 
 		/// <summary>Checks wether a user is authorized to access a certain item.</summary>
 		/// <param name="item">The item to check for access.</param>
-		/// <param name="principal">The user whose permissions to check.</param>
+		/// <param name="user">The user whose permissions to check.</param>
 		/// <returns>True if the user is authorized.</returns>
-		bool IsAuthorized(ContentItem item, IPrincipal principal);
+		bool IsAuthorized(ContentItem item, IPrincipal user);
 
 		/// <summary>Check whether an item is published, i.e. it's published and isn't expired.</summary>
 		/// <param name="item">The item to check.</param>
@@ -39,5 +39,8 @@ namespace N2.Security
 
         /// <summary>Finds out wether a user has one of the given accesses.</summary>
         bool IsAuthorized(IPrincipal user, IEnumerable<string> roles);
-    }
+
+		/// <summary>Finds out wether a user is permitted to perform for a certain operation.</summary>
+		bool IsAuthorized(IPrincipal user, ContentItem item, Permission permission);
+	}
 }

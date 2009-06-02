@@ -13,7 +13,7 @@
 		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>
     </div>
     <n2:OptionsMenu id="om" runat="server">
-		<asp:LinkButton ID="btnSave" OnCommand="OnSaveCommand" runat="server" CssClass="command" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
+		<asp:LinkButton ID="btnSavePublish" OnCommand="OnSaveCommand" runat="server" CssClass="command" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
 		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
 		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
     </n2:OptionsMenu>

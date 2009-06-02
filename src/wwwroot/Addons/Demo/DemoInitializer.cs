@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using N2;
+using N2.Details;
 using N2.Plugin;
 using N2.Serialization;
 using N2.Templates.Items;
@@ -20,8 +21,22 @@ namespace Demo
 
 				CopyFiles(factory);
 
-				//N2.Edit.FileManagement.FileManager.FileUploading += FileManager_FileUploading;
-				//N2.Context.Current.Persister.ItemSaving += Persister_ItemSaving;
+				factory.Persister.ItemSaving += Persister_ItemSaving;
+			}
+		}
+
+		void Persister_ItemSaving(object sender, CancellableItemEventArgs e)
+		{
+			foreach (var cd in e.AffectedItem.Details.Values)
+			{
+				var sd = cd as StringDetail;
+				if(sd != null)
+				{
+					if(sd.StringValue.Contains("script"))
+					{
+						throw new Exception("The demo site does not allow scripts to be entered.");
+					}
+				}
 			}
 		}
 

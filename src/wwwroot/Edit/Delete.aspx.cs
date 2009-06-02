@@ -1,6 +1,7 @@
 using System;
 using N2.Web;
 using N2.Web.UI.WebControls;
+using N2.Security;
 
 namespace N2.Edit
 {
@@ -29,7 +30,19 @@ namespace N2.Edit
             }
             else
             {
-                if (!IsPostBack && Request["alert"] != null && Boolean.Parse(Request["alert"]))
+				try
+				{
+					EnsureAuthorization(Permission.Publish);
+				}
+				catch (Exception ex)
+				{
+					cvDelete.IsValid = false;
+					cvDelete.ErrorMessage = ex.Message;
+					this.btnDelete.Enabled = false;
+					return;
+				}
+				
+				if (!IsPostBack && Request["alert"] != null && Boolean.Parse(Request["alert"]))
                 {
                     RegisterConfirmAlert();
                 }

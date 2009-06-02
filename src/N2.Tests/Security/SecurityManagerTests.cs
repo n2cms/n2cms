@@ -37,7 +37,9 @@ namespace N2.Tests.Security
 			parser = mocks.StrictMock<N2.Web.IUrlParser>();
 			context = CreateWebContext(false);
 
-			security = new SecurityManager(context, new EditSection());
+			//EditSection editSection = (EditSection)System.Configuration.ConfigurationManager.GetSection("n2/edit");
+			EditSection editSection = new EditSection();
+			security = new SecurityManager(context, editSection);
 			SecurityEnforcer enforcer = new SecurityEnforcer(persister, security, parser, context);
 			enforcer.Start();
 		}
@@ -67,7 +69,6 @@ namespace N2.Tests.Security
 		public void AdminIsAdmin()
 		{
 			IPrincipal admin = CreatePrincipal("admin");
-			mocks.ReplayAll();
 
 			Assert.IsTrue(security.IsAdmin(admin));
 		}
@@ -360,60 +361,84 @@ namespace N2.Tests.Security
 		}
 
 		[Test]
-		public void CanChangeAdminUser()
+		public void CanChange_AdminUser()
 		{
 			IPrincipal user = CreatePrincipal("AverageJoe");
 			mocks.ReplayAll();
 
-			security.AdminNames = new string[] { "AverageJoe" };
+			security.Administrators.Users = new[] { "AverageJoe" };
 
 			Assert.IsTrue(security.IsAdmin(user), "User wasn't admin.");
 		}
 
 		[Test]
-		public void CanHaveMoreThanOneAdmin()
+		public void CanHave_MoreThanOne_Admin()
 		{
 			IPrincipal maria = CreatePrincipal("SpecialMaria");
 			IPrincipal bill = CreatePrincipal("SmallBill");
 			mocks.ReplayAll();
 
-			security.AdminNames = new string[] { "AverageJoe", "SpecialMaria", "SmallBill" };
+			security.Administrators.Users = new[] { "AverageJoe", "SpecialMaria", "SmallBill" };
 
 			Assert.IsTrue(security.IsAdmin(maria), "User wasn't admin.");
 			Assert.IsTrue(security.IsAdmin(bill), "User wasn't admin.");
 		}
 
 		[Test]
-		public void CanChangeAdminRoles()
+		public void CanChange_AdminRoles()
 		{
 			IPrincipal user = CreatePrincipal("AverageJoe", "AverageUser", "FriendlyUser");
 			mocks.ReplayAll();
 
-			security.AdminRoles = new string[] { "FriendlyUser" };
+			security.Administrators.Roles = new[] { "FriendlyUser" };
 
 			Assert.IsTrue(security.IsAdmin(user), "User wasn't admin.");
 		}
 
 		[Test]
-		public void CanChangeEditorUser()
+		public void CanChange_EditorUser()
 		{
 			IPrincipal user = CreatePrincipal("AverageJoe");
 			mocks.ReplayAll();
 
-			security.EditorNames = new string[] { "AverageJoe" };
+			security.Editors.Users = new[] { "AverageJoe" };
 
 			Assert.IsTrue(security.IsEditor(user), "User wasn't editor.");
 		}
 
 		[Test]
-		public void CanChangeEditorRoles()
+		public void CanChange_EditorRoles()
 		{
 			IPrincipal user = CreatePrincipal("AverageJoe", "GhostWhisperer", "SiteSeeker");
 			mocks.ReplayAll();
 
-			security.EditorRoles = new string[] { "GhostWhisperer" };
+			security.Editors.Roles = new[] { "GhostWhisperer" };
 
 			Assert.IsTrue(security.IsEditor(user), "User wasn't editor.");
+		}
+
+		[Test]
+		public void CanConfigure_Permissions()
+		{
+			PermissionElement element = new PermissionElement { Dynamic = true };
+
+			var map = element.ToPermissionMap(Permission.Administer, new[] {"role"}, new[] {"user"});
+
+			Assert.That(map.Permissions, Is.EqualTo(Permission.Administer));
+			Assert.That(map.Roles.Length, Is.EqualTo(1));
+			Assert.That(map.Roles[0], Is.EqualTo("role"));
+			Assert.That(map.Users.Length, Is.EqualTo(1));
+			Assert.That(map.Users[0], Is.EqualTo("user"));
+		}
+
+		[Test]
+		public void CanConfigure_DynamiPermissions()
+		{
+			PermissionElement element = new PermissionElement {Dynamic = true};
+
+			var map = element.ToPermissionMap(Permission.Administer, null, null);
+
+			Assert.That(map, Is.TypeOf(typeof(DynamicPermissionMap)));
 		}
 
 		private ContentItem CreateUserAndItem()
