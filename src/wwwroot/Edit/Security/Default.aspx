@@ -20,7 +20,7 @@
     <script type="text/javascript">
     	$(document).ready(function() {
     		var checkChecked = function() {
-    			var groupName = this.parentElement.className.split(' ')[1];
+    			var groupName = this.parentNode.className.split(' ')[1];
     			var $grouped = $("." + groupName + " input").not(this);
     			if (this.checked) {
     				$grouped.parent().andSelf().attr("disabled", "disabled");
