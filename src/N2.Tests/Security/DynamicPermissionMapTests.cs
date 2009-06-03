@@ -133,10 +133,10 @@ namespace N2.Tests.Security
 		public void Allows_DefinedItemRoles(Permission allowedPermission)
 		{
 			var map = new DynamicPermissionMap { Permissions = Permission.ReadWrite };
-
 			DynamicPermissionMap.SetRoles(item, Permission.ReadWrite, "rolename");
 			
 			bool isAuthorized = map.Authorizes(user, item, allowedPermission);
+
 			Assert.That(isAuthorized, Is.True);
 		}
 
@@ -149,10 +149,10 @@ namespace N2.Tests.Security
 		public void Denies_NonDefinedItemRoles(Permission deniedPermission)
 		{
 			var map = new DynamicPermissionMap { Permissions = Permission.ReadWrite };
-
 			DynamicPermissionMap.SetRoles(item, Permission.ReadWrite, "somerolename");
 
 			bool isAuthorized = map.Authorizes(user, item, deniedPermission);
+
 			Assert.That(isAuthorized, Is.False, deniedPermission + " is allowed which it shouldn't have been.");
 		}
 
@@ -160,7 +160,7 @@ namespace N2.Tests.Security
 		[TestCase(Permission.Full)]
 		public void DoesntMap_BeyondMapped_ReadWritePublishPermissios(Permission expectedPermission)
 		{
-			var map = new PermissionMap { Permissions = Permission.ReadWritePublish };
+			var map = new DynamicPermissionMap { Permissions = Permission.ReadWritePublish };
 
 			Assert.That(map.MapsTo(expectedPermission), Is.False);
 			Assert.That(map.Authorizes(null, null, expectedPermission), Is.False);
@@ -172,7 +172,7 @@ namespace N2.Tests.Security
 		[TestCase(Permission.Full)]
 		public void DoesntMap_BeyondMapped_ReadWritePermissios(Permission expectedPermission)
 		{
-			var map = new PermissionMap { Permissions = Permission.ReadWrite };
+			var map = new DynamicPermissionMap { Permissions = Permission.ReadWrite };
 
 			Assert.That(map.MapsTo(expectedPermission), Is.False);
 			Assert.That(map.Authorizes(null, null, expectedPermission), Is.False);
@@ -186,7 +186,7 @@ namespace N2.Tests.Security
 		[TestCase(Permission.Full)]
 		public void DoesntMap_BeyondMapped_ReadPermissios(Permission expectedPermission)
 		{
-			var map = new PermissionMap { Permissions = Permission.Read };
+			var map = new DynamicPermissionMap { Permissions = Permission.Read };
 
 			Assert.That(map.MapsTo(expectedPermission), Is.False);
 			Assert.That(map.Authorizes(null, null, expectedPermission), Is.False);
@@ -223,6 +223,17 @@ namespace N2.Tests.Security
 			bool isAllRoles = DynamicPermissionMap.IsAllRoles(item, Permission.Read);
 
 			Assert.That(isAllRoles, Is.True);
+		}
+
+		[Test]
+		public void IsAllRoles_RevertsTo_UserPermissions()
+		{
+			var map = new DynamicPermissionMap {Permissions = Permission.ReadWrite, Roles = new[] {"Writers"}};
+			user = CreatePrincipal("joe writer", "Writers");
+
+			bool isAuthorizedForPublish = map.Authorizes(user, item, Permission.Publish);
+
+			Assert.That(isAuthorizedForPublish, Is.False);
 		}
 
 		[Test]

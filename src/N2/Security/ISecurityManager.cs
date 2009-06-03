@@ -38,7 +38,8 @@ namespace N2.Security
 		bool ScopeEnabled { get; set; }
 
         /// <summary>Finds out wether a user has one of the given accesses.</summary>
-        bool IsAuthorized(IPrincipal user, IEnumerable<string> roles);
+		[Obsolete("Use PermissionMap.IsInRoles")]
+		bool IsAuthorized(IPrincipal user, IEnumerable<string> roles);
 
 		/// <summary>Finds out wether a user is permitted to perform for a certain operation.</summary>
 		bool IsAuthorized(IPrincipal user, ContentItem item, Permission permission);

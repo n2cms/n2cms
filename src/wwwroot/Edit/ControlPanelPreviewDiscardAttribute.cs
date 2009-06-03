@@ -19,6 +19,9 @@ namespace N2.Edit
 
 		public override Control AddTo(Control container, PluginContext context)
 		{
+			if (!IsAuthorized(container.Page.User))
+				return null;
+
 			if(!ActiveFor(container, context.State)) return null;
 			if (context.Selected.VersionOf == null) return null;
 
@@ -27,6 +30,7 @@ namespace N2.Edit
 			hl.NavigateUrl = Url.Parse("~/Edit/DiscardPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
 			hl.CssClass = "cancel";
 			hl.Attributes["onclick"] = "return confirm('Are you certain?');";
+			hl.ToolTip = context.Format(ToolTip, false);
 			container.Controls.Add(hl);
 
 			return hl;

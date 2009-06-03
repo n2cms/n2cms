@@ -10,14 +10,19 @@ using N2.Security;
 
 namespace N2.Edit
 {
-    [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/page_edit.gif", 20, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
+    [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/page_edit.gif", 20, 
+		GlobalResourceClassName = "Navigation")]
+	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", 
+		GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpEdit", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
 	[ControlPanelLink("cpEditPreview", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
-	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, AuthorizedRoles = new string[] { "Administrators", "Editors" })]
-	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30)]
+	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, 
+		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
+	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30, 
+		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
 	[ControlPanelEditingSave("Save changes", 10)]
-	[ControlPanelLink("cpEditingCancel", "~/edit/img/ico/cancel.gif", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, UrlEncode = false)]
+	[ControlPanelLink("cpEditingCancel", "~/edit/img/ico/cancel.gif", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
+		UrlEncode = false)]
 	public partial class Edit : EditPage
 	{
 		protected PlaceHolder phPluginArea;

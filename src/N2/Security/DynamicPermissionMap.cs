@@ -21,30 +21,34 @@ namespace N2.Security
 			if (!MapsTo(permission))
 				return false;
 
+			bool isContentAuthorized = false;
+
 			foreach(Permission permissionLevel in SplitPermission(permission))
 			{
 				if(!MapsTo(permissionLevel))
 					continue;
 
+				if(permissionLevel == Permission.Read)
+				{
+					if(!item.IsAuthorized(user))
+						return false;
+					
+					isContentAuthorized = true;
+					continue;
+				}
+
 				DetailCollection details = item.GetDetailCollection(AuthorizedRolesPrefix + permissionLevel, false);
-				if(details == null)
-					continue;
-				
-				string[] authorizedRoles = details.ToArray<string>();
-				if(IsInRoles(user, authorizedRoles))
-					continue;
-				return false;
+				if(details != null)
+				{
+					string[] rolesAuthorizedByItem = details.ToArray<string>();
+					if (!IsInRoles(user, rolesAuthorizedByItem))
+						return false;
+
+					isContentAuthorized = true;
+				}
 			}
 
-			return true;
-		}
-
-		private static bool IsInRoles(IPrincipal user, IEnumerable<string> authorizedRoles)
-		{
-			foreach(string role in authorizedRoles)
-				if(user.IsInRole(role))
-					return true;
-			return false;
+			return isContentAuthorized || base.Authorizes(user, item, permission);
 		}
 
 		public static void SetRoles(ContentItem item, Permission permission, params string[] roles)

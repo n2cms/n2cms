@@ -3,7 +3,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Web;
 using N2.Web.UI.WebControls;
-using System.Web.Security;
 
 namespace N2.Edit
 {
@@ -20,7 +19,7 @@ namespace N2.Edit
 
 		public override Control AddTo(Control container, PluginContext context)
 		{
-			if (!IsAuthorized())
+			if (!IsAuthorized(container.Page.User))
 				return null;
 
 			if (!ActiveFor(container, context.State))
@@ -30,6 +29,7 @@ namespace N2.Edit
 			hl.Text = GetInnerHtml(IconUrl, ToolTip, Title);
 			hl.NavigateUrl = Url.Parse("~/Edit/PublishPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
 			hl.CssClass = "publish";
+			hl.ToolTip = context.Format(ToolTip, false);
 			container.Controls.Add(hl);
 
 			return hl;
@@ -43,17 +43,5 @@ namespace N2.Edit
 
 			page.Response.Redirect(url);
 		}
-
-		private bool IsAuthorized()
-		{
-			foreach (string userRole in Roles.GetRolesForUser())
-				foreach (string neededRole in AuthorizedRoles)
-					if (string.Equals(userRole, neededRole, StringComparison.OrdinalIgnoreCase))
-						return true;
-
-			return false;
-		}
-
-
 	}
 }

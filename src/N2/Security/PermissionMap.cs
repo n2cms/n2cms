@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 
 namespace N2.Security
@@ -31,7 +32,7 @@ namespace N2.Security
 			if (user == null)
 				return false;
 			
-			return IsInUsers(user.Identity.Name) || IsInRoles(user);
+			return IsInUsers(user.Identity.Name) || IsInRoles(user, Roles);
 		}
 
 		public virtual bool MapsTo(Permission permission)
@@ -44,7 +45,7 @@ namespace N2.Security
 			return MapsTo(permission) && Contains(user) && item.IsAuthorized(user);
 		}
 
-		private bool IsInUsers(string userName)
+		protected bool IsInUsers(string userName)
 		{
 			foreach (string name in Users)
 				if (userName.Equals(name, StringComparison.InvariantCultureIgnoreCase))
@@ -52,9 +53,13 @@ namespace N2.Security
 			return false;
 		}
 
-		private bool IsInRoles(IPrincipal user)
+		/// <summary>Asks the user if it is in any of the roles.</summary>
+		/// <param name="user">The user to check.</param>
+		/// <param name="roles">The roles to look for.</param>
+		/// <returns>True if the user is in any of the given roles.</returns>
+		public static bool IsInRoles(IPrincipal user, IEnumerable<string> roles)
 		{
-			foreach (string role in Roles)
+			foreach (string role in roles)
 				if (user.IsInRole(role))
 					return true;
 			return false;

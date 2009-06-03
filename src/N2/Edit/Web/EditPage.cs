@@ -25,7 +25,7 @@ namespace N2.Edit.Web
 		protected virtual void RegisterScripts()
 		{
 			Register.JQuery(this);
-			Register.JavaScript(this, "~/Edit/Js/Plugins.ashx?v=2");
+			Register.JQueryPlugins(this);
 
 			// select toolbar
 			foreach(ToolbarPluginAttribute toolbarPlugin in GetType().GetCustomAttributes(typeof(ToolbarPluginAttribute), true))

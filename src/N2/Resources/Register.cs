@@ -263,5 +263,16 @@ namespace N2.Resources
 			return (options & expectedOption) == expectedOption;
 		}
 		#endregion
+
+		static string pluginsUrl = "~/Edit/Js/plugins.ashx?v=" + typeof (Register).Assembly.GetName().Version;
+		public static void JQueryPlugins(Page page)
+		{
+			JavaScript(page, pluginsUrl);
+		}
+
+		public static void TinyMCE(Page page)
+		{
+			JavaScript(page, "~/edit/js/tiny_mce/tiny_mce.js");
+		}
 	}
 }

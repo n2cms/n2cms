@@ -19,6 +19,7 @@
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate><a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# VirtualPathUtility.ToAbsolute((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
 			</asp:TemplateField>
+			<asp:BoundField HeaderText="ID" DataField="ID" meta:resourceKey="id" />
 			<asp:BoundField HeaderText="Published" DataField="Published" meta:resourceKey="published" />
 			<asp:BoundField HeaderText="Expired" DataField="Expires" meta:resourceKey="expires" />
 			<asp:BoundField HeaderText="Saved by" DataField="SavedBy" meta:resourceKey="savedBy" />
@@ -34,7 +35,7 @@
 			</asp:TemplateField>
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:LinkButton runat="server" ID="btnDelete" meta:resourceKey="btnDelete" Text="Delete" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Visible="<%# !IsPublished(Container.DataItem) %>" />
+					<asp:LinkButton runat="server" ID="btnDelete" meta:resourceKey="btnDelete" Text="Delete" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Visible="<%# IsVisible(Container.DataItem) %>" />
 				</ItemTemplate>
 			</asp:TemplateField>
 		</Columns>

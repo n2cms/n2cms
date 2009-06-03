@@ -1,6 +1,6 @@
 using N2.Templates.Items;
 using N2.Templates.Web.UI;
-using N2.Web;
+using N2.Security;
 
 namespace N2.Addons.Wiki.Web
 {
@@ -14,7 +14,7 @@ namespace N2.Addons.Wiki.Web
                 if (Engine.SecurityManager.IsEditor(Page.User))
                     return true;
 
-                return Engine.SecurityManager.IsAuthorized(Page.User, CurrentPage.WikiRoot.ModifyRoles);
+                return PermissionMap.IsInRoles(Page.User, CurrentPage.WikiRoot.ModifyRoles);
             }
         }
 

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using N2.Edit.Web;
 using N2.Resources;
 using System.Threading;
 using System.Text.RegularExpressions;
@@ -63,7 +64,7 @@ namespace N2.Web.UI.WebControls
 		private void RegiserClientScript()
 		{
 			Register.JQuery(Page);
-			Register.JavaScript(Page, "~/Edit/Js/plugins.ashx");
+			Register.JQueryPlugins(Page);
 			string script = string.Format(DateScriptFormat, FirstDayOfWeek, DateFormat, FirstDate);
 			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
 		}

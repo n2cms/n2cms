@@ -199,6 +199,7 @@ namespace N2.Security
 				   || Writers.Authorizes(user, item, permission);
 		}
 
+		[Obsolete("Use PermissionMap.IsInRoles")]
         public bool IsAuthorized(IPrincipal user, IEnumerable<string> roles)
         {
             foreach (string role in roles)

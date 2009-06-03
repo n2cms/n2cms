@@ -61,8 +61,8 @@ namespace N2.Web.UI.WebControls
             if (EnableFreeTextArea)
             {
                 Register.JQuery(Page);
-                Register.JavaScript(Page, "~/edit/js/tiny_mce/tiny_mce.js");
-                Register.JavaScript(Page, "~/edit/js/plugins.ashx");
+            	Register.TinyMCE(Page);
+                Register.JQueryPlugins(Page);
 
                 string script = string.Format("freeTextArea_init('{0}', {1});", 
                     Url.ToAbsolute("~/Edit/FileManagement/default.aspx"), 
