@@ -1,4 +1,6 @@
-﻿- introduced vastly more fine-grained permission & authorization scheme
+﻿- applied patch #2957: Problem with DB2
+- simplified "captcha" on comments
+- introduced vastly more fine-grained permission & authorization scheme
 - applied tonez's: added another role "Writers"
 - added part to C# example
 - introduced PageDefinition and PartDefinition attributes, more revealing replacements for Definition attribute

@@ -83,7 +83,7 @@ namespace N2.Security
 		public override string[] GetUsersInRole(string roleName)
 		{
 			IList<ContentItem> users = Bridge.Finder
-				.Where.Detail("Roles").Eq(roleName)
+				.Where.Detail("Roles").Like(roleName)
 				.Select();
 			return ToArray(users);
 		}

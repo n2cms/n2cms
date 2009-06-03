@@ -53,6 +53,23 @@
                 ValidationGroup="CommentInput" ControlToValidate="txtText" Text="*" 
                 Display="Dynamic" meta:resourcekey="rfvTextResource1" />
         </div>
+        <div class="row cf avoid">
+            <asp:Label ID="lblAvoid" runat="server" AssociatedControlID="txtName" CssClass="label" Text="Avoid *" />
+            <asp:TextBox ID="txtAvoid" Text="avoid" runat="server" CssClass="tb" MaxLength="250" />
+            <asp:RegularExpressionValidator ID="revAvoid" runat="server" 
+                ValidationGroup="CommentInput" ControlToValidate="txtAvoid" Text="*" 
+                Display="Dynamic" ValidationExpression="[^a-z0-1]" EnableClientScript="false" />
+        </div>
+        <div class="row cf do">
+            <asp:Label ID="lblDo" runat="server" AssociatedControlID="txtName" CssClass="label" Text="Do *" />
+            <asp:TextBox ID="txtDo" runat="server" CssClass="tb" MaxLength="250" />
+            <asp:RegularExpressionValidator ID="revDo" runat="server" 
+                ValidationGroup="CommentInput" ControlToValidate="txtDo" Text="*" 
+                Display="Dynamic" ValidationExpression="done" EnableClientScript="false" />
+            <asp:RequiredFieldValidator ID="rfvDo" runat="server" 
+                ValidationGroup="CommentInput" ControlToValidate="txtDo" Text="*" 
+                Display="Dynamic" EnableClientScript="false" />
+       </div>
         <div class="row cf">
             <label class="label">&nbsp;</label>
             <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" 
@@ -61,12 +78,14 @@
     </div>
 </n2:Box>
 <script type="text/javascript">
-    function showComment(quick) {
-        if (document.forms[0].action.indexOf("#") < 0) 
-            document.forms[0].action += "#commentInput";
+	function showComment(quick) {
+        if (document.forms[0].action.indexOf("#") < 0)
+        	document.forms[0].action += "#commentInput";
         jQuery("#addComment").hide();
         $c = jQuery("#<%= commentInput.ClientID %>");
-        if (quick) $c.show();
+       	$(".row.avoid").hide().find("input").attr("value", "");
+		$(".row.do").hide().find("input").attr("value", "done");
+		if (quick) $c.show();
         else $c.slideDown();
     }
     if (location.hash == "#commentInput")
