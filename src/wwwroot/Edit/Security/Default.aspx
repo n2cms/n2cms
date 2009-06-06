@@ -13,13 +13,13 @@
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
     <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="validator" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />
     <style>
-		.everyone td { border-bottom:solid 1px #ccc;}
+		.defaults td { border-bottom:solid 1px #ccc;}
 		.permissionsHeader { width:130px; }
 		td { width:65px;}
     </style>
     <script type="text/javascript">
     	$(document).ready(function() {
-    		var checkChecked = function() {
+    		var updateColumn = function() {
     			var groupName = this.parentNode.className.split(' ')[1];
     			var $grouped = $("." + groupName + " input").not(this);
     			if (this.checked) {
@@ -27,12 +27,15 @@
     			} else {
     				$grouped.parent().andSelf().removeAttr("disabled");
     			}
-    			$(".AuthorizedFalse").attr("disabled", "disabled");
+    			$grouped.filter(".AuthorizedFalse").parent().andSelf().attr("disabled", "disabled");
     			return $grouped;
     		};
-    		$(".everyone .cb input").click(function() {
-    			checkChecked.call(this).attr("checked", "checked");
-    		}).each(checkChecked);
+    		$(".overrides .cb input").filter(":checked").addClass("defaultChecked");
+    		$(".defaults .cb input").click(function() {
+    			var $grouped = updateColumn.call(this);
+    			$grouped.filter(".defaultChecked").attr("checked", true);
+    			$grouped.filter(":not(.defaultChecked)").removeAttr("checked");
+    		}).each(updateColumn);
     	});
     </script>
     <table>
@@ -45,27 +48,29 @@
 			</tr>
 		</thead>
 		
-		<tbody class="everyone">
+		<tbody class="defaults">
 			<tr>
-				<td><%= AuthorizedRole.Everyone%></td>
+				<td><%= GetLocalResourceString("DefaultText")%></td>
 			<asp:Repeater ID="rptEveryone" runat="server" DataSource="<%# Permissions %>"><ItemTemplate>
 				<td>
-					<asp:CheckBox ID="cbEveryone" Checked="<%# Is(AuthorizedRole.Everyone, (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex %>' />
+					<asp:CheckBox ID="cbEveryone" Checked="<%# IsEveryone((Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex %>' />
 					<asp:CustomValidator ID="cvMarker" ErrorMessage="<%# Container.DataItem.ToString() %>" Text="*" runat="server" />
 				</td>
 			</ItemTemplate></asp:Repeater>
 			</tr>
 		</tbody>
 		
-		<tbody>
+		<tbody class="overrides">
 		<asp:Repeater ID="rptPermittedRoles" runat="server" DataSource="<%# GetAvailableRoles() %>"><ItemTemplate>
 			<tr>
 				<td><%# Container.DataItem %></td>
 				<asp:Repeater ID="rptPermissions" runat="server" DataSource="<%# Permissions %>" 
 							  OnItemDataBound="rptPermissions_ItemDataBound"
 							  OnItemCreated="rptPermissions_ItemCreated"><ItemTemplate>
-					<td><asp:CheckBox ID="cbRole" Checked="<%# Is(GetRole(Container), (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex + " Authorized" + IsAuthorized(GetRole(Container), (Permission)Container.DataItem) %>' /></td>
-				</ItemTemplate></asp:Repeater>	
+					<td>
+						<asp:CheckBox ID="cbRole" Checked="<%# Is(GetRole(Container), (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex + " Authorized" + IsAuthorized(GetRole(Container), (Permission)Container.DataItem) %>' />
+					</td>
+				</ItemTemplate></asp:Repeater>
 			</tr>	
 		</ItemTemplate></asp:Repeater>		
 		</tbody>

@@ -150,4 +150,7 @@
   <data name="PageResource1.Title" xml:space="preserve">
     <value>Item Security Settings</value>
   </data>
+  <data name="DefaultText" xml:space="preserve">
+    <value>Default</value>
+  </data>
 </root>

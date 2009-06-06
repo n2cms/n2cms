@@ -4,6 +4,7 @@ using N2.Configuration;
 using N2.Security;
 using System.Collections.Generic;
 using System.Web.UI;
+using System.Security.Principal;
 
 namespace N2.Edit.Security
 {
@@ -108,12 +109,16 @@ namespace N2.Edit.Security
 
 		protected bool Is(string role, Permission permission)
 		{
-			return DynamicPermissionMap.IsPermitted(role, SelectedItem, permission);
+			GenericPrincipal tempUser = new GenericPrincipal(new GenericIdentity("TempUser"), new[] {role});
+			bool isAuthorized = Engine.SecurityManager.IsAuthorized(tempUser, SelectedItem, permission);
+			return isAuthorized;
 		}
 
 		protected bool IsAuthorized(string role, Permission permission)
 		{
-			return User.IsInRole(role) && Engine.SecurityManager.IsAuthorized(User, SelectedItem, permission);
+			bool isInRole = User.IsInRole(role);
+			bool isAuthorized = Engine.SecurityManager.IsAuthorized(User, SelectedItem, permission);
+			return isInRole && isAuthorized;
 		}
 
 		protected string GetRole(RepeaterItem repeaterItem)
