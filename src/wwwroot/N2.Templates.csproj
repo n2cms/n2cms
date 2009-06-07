@@ -160,6 +160,7 @@
     <Compile Include="Templates\Services\RssWriter.cs" />
     <Compile Include="Templates\Tabs.cs" />
     <Compile Include="Templates\Services\TemplatesInitializer.cs" />
+    <Compile Include="Templates\UI\Layouts\Translation.cs" />
     <Compile Include="Templates\UI\Parts\BoxedText.ascx.cs">
       <DependentUpon>BoxedText.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -237,6 +238,13 @@
     <Compile Include="Templates\UI\Parts\Register.ascx.designer.cs">
       <DependentUpon>Register.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Templates\UI\Parts\RssAggregator.ascx.cs">
+      <DependentUpon>RssAggregator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\RssAggregator.ascx.designer.cs">
+      <DependentUpon>RssAggregator.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Templates\UI\Parts\Statistics.ascx.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -272,7 +280,6 @@
     <Compile Include="Templates\UI\Layouts\TopMenu.ascx.designer.cs">
       <DependentUpon>TopMenu.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Templates\UI\Layouts\Translation.cs" />
     <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -414,13 +421,6 @@
     </Compile>
     <Compile Include="Templates\UI\Parts\Result.ascx.designer.cs">
       <DependentUpon>Result.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\RssAggregator.ascx.cs">
-      <DependentUpon>RssAggregator.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\RssAggregator.ascx.designer.cs">
-      <DependentUpon>RssAggregator.ascx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Views\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
@@ -784,7 +784,6 @@
     <Content Include="Templates\UI\Parts\Poll.ascx" />
     <Content Include="Templates\UI\Views\Redirect.aspx" />
     <Content Include="Templates\UI\Parts\Result.ascx" />
-    <Content Include="Templates\UI\Parts\RssAggregator.ascx" />
     <Content Include="Templates\UI\Views\Search.aspx" />
     <Content Include="Templates\UI\Views\SiteMap.aspx" />
     <Content Include="Templates\UI\Parts\SocialBookmarks.ascx" />
@@ -889,6 +888,7 @@
     <Content Include="Templates\UI\Img\SocialBookmarks\Technorati_16x16.png" />
     <Content Include="Templates\UI\Img\SocialBookmarks\Twitter_16x16.png" />
     <Content Include="Templates\UI\Img\SocialBookmarks\Youtube_16x16.png" />
+    <Content Include="Templates\UI\Parts\RssAggregator.ascx" />
     <Content Include="Templates\UI\Views\Start.aspx" />
   </ItemGroup>
   <ItemGroup>

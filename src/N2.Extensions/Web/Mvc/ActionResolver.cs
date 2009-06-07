@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace N2.Web.Mvc
 {
@@ -27,12 +28,27 @@ namespace N2.Web.Mvc
 				action = remainingUrl.Substring(0, slashIndex);
 				arguments = remainingUrl.Substring(slashIndex + 1);
 			}
-			
+
+			string templateUrl = GetTemplateUrl(item);
+
 			foreach(string method in methods)
 				if(method.Equals(action, StringComparison.InvariantCultureIgnoreCase))
-					return new PathData(item, string.Empty, action, arguments);
+					return new PathData(item, templateUrl, action, arguments);
 
 			return null;
+		}
+
+		private string GetTemplateUrl(ContentItem item)
+		{
+			var templateUrl = String.Empty;
+			var pathData = PathDictionary.GetFinders(item.GetType())
+				.Where(finder => !(finder is ActionResolver))
+				.Select(finder => finder.GetPath(item, null))
+				.FirstOrDefault(path => path != null && !path.IsEmpty());
+
+			if(pathData != null)
+				templateUrl = pathData.TemplateUrl;
+			return templateUrl;
 		}
 	}
 }

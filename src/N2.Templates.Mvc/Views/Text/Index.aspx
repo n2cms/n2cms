@@ -1,0 +1,1 @@
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.master" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewPage<TextPage>" Title="" %>

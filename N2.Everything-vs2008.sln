@@ -62,10 +62,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Edit.Tests", "src\N2.Edi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}"
 	ProjectSection(SolutionItems) = preProject
-		build.bat = build.bat
+		build\build.bat = build\build.bat
 		Build_Everything-vs2008.bat = Build_Everything-vs2008.bat
 		Deploy_Everything-vs2008.bat = Deploy_Everything-vs2008.bat
-		msbuild.proj = msbuild.proj
+		build\n2.examples.targets = build\n2.examples.targets
+		build\n2.framework.targets = build\n2.framework.targets
+		build\n2.proj = build\n2.proj
+		build\n2.sources.targets = build\n2.sources.targets
+		build\n2.templates.targets = build\n2.templates.targets
 		Prepare_Dependencies-vs2008.bat = Prepare_Dependencies-vs2008.bat
 		readme.txt = readme.txt
 	EndProjectSection
@@ -113,7 +117,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 		lib\nunit.core.dll = lib\nunit.core.dll
 		lib\nunit.core.interfaces.dll = lib\nunit.core.interfaces.dll
 		lib\nunit.framework.dll = lib\nunit.framework.dll
-		lib\nunit.framework.extensions.dll = lib\nunit.framework.extensions.dll
 		lib\nunit.util.dll = lib\nunit.util.dll
 		lib\readme.txt = lib\readme.txt
 		lib\Rhino.Mocks.dll = lib\Rhino.Mocks.dll
@@ -152,6 +155,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "examples\Minimal
 		SccLocalPath = "Svn"
 		SccProvider = "SubversionScc"
 		TargetFramework = "2.0"
+		ProjectReferences = "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}|N2.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/wwwroot"
 		Debug.AspNetCompiler.PhysicalPath = "examples\MinimalCSharp\wwwroot\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
@@ -185,6 +189,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "examples\Minimal
 		SccLocalPath = "Svn"
 		SccProvider = "SubversionScc"
 		TargetFramework = "2.0"
+		ProjectReferences = "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}|N2.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/wwwroot(1)"
 		Debug.AspNetCompiler.PhysicalPath = "examples\MinimalVisualBasic\wwwroot\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(1)\"
@@ -206,6 +211,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{1049B0C4-91C6-4A4D-B14D-CB37EC84916C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B56F738-E780-4F6E-9B7F-7D161F7E3521}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc", "src\N2.Templates.Mvc\N2.Templates.Mvc.csproj", "{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc.Tests", "src\N2.Templates.Mvc.Tests\N2.Templates.Mvc.Tests.csproj", "{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -281,6 +290,14 @@ Global
 		{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F6E646B-C735-458D-8AD5-0C2FBF7F9E9D}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -303,6 +320,8 @@ Global
 		{CEE6525F-F502-4890-AA36-7B8755A5E47D} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{3EBF2F63-FE9F-47EE-B233-0A9634CC02FF} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{AA0C3414-F509-44A2-A677-409DE6B49B1C} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
+		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
+		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D} = {EFB6FA37-518E-40A1-AEAB-A45BBD4935D1}
 		{10F7C179-B92D-4FCA-B78C-011E428D0CA3} = {EFB6FA37-518E-40A1-AEAB-A45BBD4935D1}
 		{03223418-97AD-4087-A568-6BBFD274864D} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}

@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MvcContrib.Castle</name>
+    </assembly>
+    <members>
+        <member name="T:MvcContrib.Castle.CastleBindAttribute">
+            <summary>
+            Parameter binder that uses the Castle DataBinder to bind action parameters.
+            Example:
+            <![CDATA[
+            public ActionResult Save([CastleBind] Customer customer) {
+             //...
+            }
+            ]]>
+            </summary>
+        </member>
+        <member name="M:MvcContrib.Castle.CastleBindAttribute.#ctor(System.String)">
+            <summary>
+            Creates a new CastleBind attribute with the specified parameter prefix.
+            The model will be bound from Request.Form.
+            </summary>
+            <param name="prefix">Prefix to use when extracting from the request store.</param>
+        </member>
+        <member name="M:MvcContrib.Castle.CastleBindAttribute.#ctor">
+            <summary>
+            Creates a new CastleBind attribute. The name of the parameter will be used as the request prefix.
+            The model will be bound from Request.Form
+            </summary>
+        </member>
+        <member name="M:MvcContrib.Castle.CastleBindAttribute.#ctor(System.String,MvcContrib.Attributes.RequestStore)">
+            <summary>
+            
+            </summary>
+            <param name="requestStore">The requst store that should be used to bind the model</param>
+            <param name="prefix">Prefix to use when extract </param>
+        </member>
+        <member name="M:MvcContrib.Castle.CastleBindAttribute.#ctor(MvcContrib.Attributes.RequestStore)">
+            <summary>
+            Creates a new instance of the CastleBind attribute. The name of the parameter will be used as the request prefix.
+            </summary>
+            <param name="requestStore">The requst store that should be used to bind the model</param>
+        </member>
+        <member name="M:MvcContrib.Castle.CastleBindAttribute.BindModel(System.Web.Mvc.ControllerContext,System.Web.Mvc.ModelBindingContext)">
+            <summary>
+            Binds the model object using a castle IDataBinder
+            </summary>
+            <param name="controllerContext"></param>
+            <param name="bindingContext">The current binding context</param>
+            <returns>A ModelBinderResult containing the bound object</returns>
+        </member>
+        <member name="M:MvcContrib.Castle.CastleBindAttribute.LocateBinder(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Finds the binder to use. If the controller implements ICastleBindingContainer then its binder is used. Otherwise, a new DataBinder is created.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.Castle.CastleBindAttribute.CreateBinder">
+            <summary>
+            Creates the binder to use.
+            </summary>
+            <returns>IDataBinder</returns>
+        </member>
+        <member name="P:MvcContrib.Castle.CastleBindAttribute.Exclude">
+            <summary>
+            Properties to exclude from binding
+            </summary>
+        </member>
+        <member name="T:MvcContrib.Castle.ICastleBindingContainer">
+            <summary>
+            Controllers that implement this interface will have access to the IDataBinder instance used by the CastleBinderAttribute.
+            </summary>
+        </member>
+        <member name="P:MvcContrib.Castle.ICastleBindingContainer.Binder">
+            <summary>
+            The Binder that is used by the CastleBindAttribute to perform parameter binding.
+            </summary>
+        </member>
+        <member name="T:MvcContrib.Castle.MvcTransactionAttribute">
+             <summary>
+             Indicates the transaction support for a method.
+             This attribute is modeled after Castle's ATM:
+             http://www.castleproject.org/container/facilities/v1rc3/atm/index.html
+             
+             Castle ATM used DynamicProxy to wrap the Transaction methods. This causes problems with Parameter Binders because DynamicProxy does
+             not copy parameter attributes, a known bug (DYNPROXY-ISSUE-14) currently market as Won't Fix. (10/19/08)
+             
+             There is no Controller attribute for using the MvcTransactionAttribute, 
+             simply mark the methods that you want transactioned with MvcTransaction
+             
+             [MvcTransaction]
+             public void ActionResult AddItem
+             {
+               //do work
+             }
+            
+             Thrown Exceptions will cause a rollback. At minimum you'll need to configure an ITransactionManager with the DependencyResolver.
+             For example with NHibernate and Rhino Tools this would go in your global.aspx.cs:
+             
+             Container.AddFacility("rhino_transaction", new RhinoTransactionFacility());
+             DependencyResolver.InitializeWith(new WindsorDependencyResolver(Container));
+             
+             </summary>
+        </member>
+        <member name="M:MvcContrib.Castle.MvcTransactionAttribute.#ctor">
+            <summary>
+            Declares unspecified values for transaction and isolation, which
+            means that the transaction manager will use the default values
+            for them
+            </summary>
+        </member>
+        <member name="M:MvcContrib.Castle.MvcTransactionAttribute.#ctor(Castle.Services.Transaction.TransactionMode)">
+            <summary>
+            Declares the transaction mode, but omits the isolation, 
+            which means that the transaction manager should use the
+            default value for it.
+            </summary>
+            <param name="transactionMode"></param>
+        </member>
+        <member name="M:MvcContrib.Castle.MvcTransactionAttribute.#ctor(Castle.Services.Transaction.TransactionMode,Castle.Services.Transaction.IsolationMode)">
+            <summary>
+            Declares both the transaction mode and isolation 
+            desired for this method. The transaction manager should
+            obey the declaration.
+            </summary>
+            <param name="transactionMode"></param>
+            <param name="isolationMode"></param>
+        </member>
+        <member name="P:MvcContrib.Castle.MvcTransactionAttribute.IsolationMode">
+            <summary>
+            Returns the <see cref="P:MvcContrib.Castle.MvcTransactionAttribute.IsolationMode"/>
+            </summary>
+        </member>
+        <member name="P:MvcContrib.Castle.MvcTransactionAttribute.TransactionMode">
+            <summary>
+            Returns the <see cref="P:MvcContrib.Castle.MvcTransactionAttribute.TransactionMode"/>
+            </summary>
+        </member>
+        <member name="P:MvcContrib.Castle.MvcTransactionAttribute.Distributed">
+            <summary>
+            Gets or sets a value indicating whether the transaction should be distributed.
+            </summary>
+            <value>
+            <c>true</c> if a distributed transaction should be created; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:MvcContrib.Castle.WindsorControllerFactory">
+            <summary>
+            Controller Factory class for instantiating controllers using the Windsor IoC container.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.Castle.WindsorControllerFactory.#ctor(Castle.Windsor.IWindsorContainer)">
+            <summary>
+            Creates a new instance of the <see cref="T:MvcContrib.Castle.WindsorControllerFactory"/> class.
+            </summary>
+            <param name="container">The Windsor container instance to use when creating controllers.</param>
+        </member>
+        <member name="T:MvcContrib.Castle.WindsorModelBinder">
+             <summary>
+             An IModelBinder implementation that supports resolving binders via Windsor
+             
+            Configuration is much the same as the WindsorControllerFactory:
+             
+             container.Register(AllTypes.Of&lt;IModelBinder&gt;()
+            		.FromAssembly(typeof(MyModelBinder).Assembly)
+            		.Configure(c => c.LifeStyle.Singleton.Named(c.Implementation.Name.ToLower()))); 
+             </summary>
+        </member>
+        <member name="M:MvcContrib.Castle.WindsorModelBinder.#ctor(Castle.Windsor.IWindsorContainer)">
+            <summary>
+            Creates a new instance of the WindsorModelBinder using the specified IWindsorContainer instance.
+            </summary>
+            <param name="container">The Windsor Container to use</param>
+        </member>
+        <member name="M:MvcContrib.Castle.WindsorModelBinder.#ctor(Castle.Windsor.IWindsorContainer,System.Web.Mvc.IModelBinder)">
+            <summary>
+            Creates a new instance of the WindsorModelBinder using the specified IWindsorContainer instance and the specified default binder
+            </summary>
+            <param name="container">The Windsor container to use</param>
+            <param name="defaultModelBinder">The default model binder to delegate to (if the binder cannot be found in Windsor)</param>
+        </member>
+    </members>
+</doc>

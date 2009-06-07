@@ -204,6 +204,7 @@
     <Compile Include="Engine\ContentEngineTests.cs" />
     <Compile Include="Engine\SingletonTests.cs" />
     <Compile Include="Fakes\FakeEngine.cs" />
+    <Compile Include="Fakes\FakeErrorHandler.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
     <Compile Include="Fakes\FakeRequestLifeCycleHandler.cs" />
     <Compile Include="Fakes\FakeSecurityManager.cs" />

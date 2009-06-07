@@ -1,7 +1,10 @@
 using N2.Configuration;
+using N2.Edit.FileSystem;
 using N2.Edit.FileSystem.Items;
 using N2.Edit.LinkTracker;
+using N2.Edit.Tests.FileSystem;
 using N2.Tests;
+using N2.Tests.Fakes;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Persistence;
@@ -34,7 +37,8 @@ namespace N2.Edit.Tests.LinkTracker
 			item1 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(2, "item1", root);
 			item2 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(3, "item2", root);
 
-			linkFactory = new Tracker(persister, null, parser, null);
+			var errorHandler = new FakeErrorHandler();
+			linkFactory = new Tracker(persister, null, parser, errorHandler);
 			linkFactory.Start();
 		}
 
@@ -149,6 +153,9 @@ namespace N2.Edit.Tests.LinkTracker
 		[Test]
 		public void DoesNotTrackLinks_ToItems_WithZeroID()
 		{
+			((FakeFileSystem) Context.Current.Resolve<IFileSystem>()).PathProvider =
+				new FakePathProvider(((FakeFileSystem) Context.Current.Resolve<IFileSystem>()).BasePath);
+
 			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
 
 			root["TestDetail"] = @"<a href=""/FileSystem/upload/File.txt"">download pdf</a>";

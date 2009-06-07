@@ -29,6 +29,7 @@ namespace N2.Extensions.Tests.Mvc
 		SearchPage search;
 		ContentRoute route;
 		RouteCollection routes;
+		IControllerMapper controllerMapper;
 			
 		[SetUp]
 		public override void SetUp()
@@ -47,7 +48,8 @@ namespace N2.Extensions.Tests.Mvc
 				typeof(AboutUsSectionPage),
 				typeof(ExecutiveTeamPage),
 				typeof(ContentItem),
-				typeof(SearchPage)
+				typeof(SearchPage),
+				typeof(TestItem),
 			};
 			typeFinder.typeMap[typeof (IController)] = new[]
 			{
@@ -56,13 +58,15 @@ namespace N2.Extensions.Tests.Mvc
 				typeof (RegularControllerBase), 
 				typeof (FallbackContentController),
 				typeof (NonN2Controller),
-				typeof (SearchController)
+				typeof (SearchController),
+				typeof (TestItemController),
 			};
 
 			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), null);
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, new ItemNotifier(), host, new HostSection());
+			controllerMapper = new ControllerMapper(typeFinder, definitions);
 			Url.DefaultExtension = "";
 
 			engine = mocks.DynamicMock<IEngine>();
@@ -71,7 +75,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetupResult.For(engine.UrlParser).Return(parser);
 			engine.Replay();
 
-			route = new ContentRoute(engine, new MvcRouteHandler());
+			route = new ContentRoute(engine, new MvcRouteHandler(), controllerMapper);
 
 			httpContext = new FakeHttpContext();
 			routes = new RouteCollection { route };
@@ -83,13 +87,13 @@ namespace N2.Extensions.Tests.Mvc
 			httpContext.request.rawUrl = url;
 		}
 
-		private RequestContext CreateRouteContext(SearchPage item)
+		private RequestContext CreateRouteContext(ContentItem item)
 		{
 			SetPath(item.Url);
 
 			var ctx = new RequestContext(httpContext, new RouteData());
 			ctx.RouteData.Values[ContentRoute.ContentItemKey] = item;
-			ctx.RouteData.Values[ContentRoute.ControllerKey] = route.ControllerMap[item.GetType()];
+			ctx.RouteData.Values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetType());
 			return ctx;
 		}
 
@@ -241,6 +245,17 @@ namespace N2.Extensions.Tests.Mvc
 			string html = helper.BuildUrlFromExpression<SearchController>(s => s.Find("hello"));
 
 			Assert.That(html, Is.EqualTo("/search/Find?q=hello"));
+		}
+
+		[Test]
+		public void CanCreate_ActionLinkFromItem()
+		{
+			var rc = CreateRouteContext(new TestItem {ID = 10});
+			var helper = new HtmlHelper(CreateViewContext(rc), new ViewPage(), routes);
+
+			string html = helper.ActionLink("Hello", "Submit", new { q = "something", controller = "TestItem" });
+
+			Assert.That(html, Is.EqualTo("<a href=\"/TestItem/Submit/10?q=something\">Hello</a>"));
 		}
 
 		ViewContext CreateViewContext(RequestContext rc)

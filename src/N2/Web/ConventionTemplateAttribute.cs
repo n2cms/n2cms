@@ -10,7 +10,7 @@ namespace N2.Web
 	/// </summary>
 	public class ConventionTemplateAttribute : Attribute, IPathFinder
 	{
-		readonly string otherTemlpateName;
+		readonly string otherTemplateName;
 
 		public ConventionTemplateAttribute()
 		{
@@ -23,7 +23,7 @@ namespace N2.Web
 		/// <param name="otherTemlpateName">The name used to find the template.</param>
 		public ConventionTemplateAttribute(string otherTemlpateName)
 		{
-			this.otherTemlpateName = otherTemlpateName;
+			this.otherTemplateName = otherTemlpateName;
 		}
 
 		#region IPathFinder Members
@@ -35,7 +35,7 @@ namespace N2.Web
 				Type itemType = item.GetType();
 				string virtualDirectory = ConventionTemplateDirectoryAttribute.GetDirectory(itemType);
 
-				string templateName = otherTemlpateName ?? itemType.Name;
+				string templateName = otherTemplateName ?? itemType.Name;
 				return new PathData(item, virtualDirectory + templateName + ".aspx");
 			}
 			return null;

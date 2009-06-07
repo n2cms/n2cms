@@ -4,6 +4,7 @@
 
 	<Target Name="Templates-Build">
 		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<CallTarget Targets="Templates-Mvc-Build"/>
 	</Target>
 
 	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Rebuild-Core-BinFiles">
@@ -19,7 +20,39 @@
 		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(DeployFolder)\Templates\wwwroot\App_Data\n2.sqlite.db" />
 	</Target>
 
+	<!-- MVC TEMPLATES -->
+	<PropertyGroup>
+		<Templates-Mvc-Folder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-Folder>
+		<Templates-Mvc-Deploy-Folder>$(DeployFolder)\N2.Templates.Mvc</Templates-Mvc-Deploy-Folder>
+	</PropertyGroup>
 
+	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
+                       $(LibFolder)\Microsoft.Web.Mvc.dll; 
+                       $(LibFolder)\System.Web.Mvc.dll;"
+					DestinationFolder="$(Templates-Mvc-Folder)\Bin" />
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Templates-Mvc-Folder)\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Templates-Mvc-Folder)\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
+	
+	<Target Name="Templates-Mvc-Build" DependsOnTargets="Templates-Mvc-PrepareDependencies">
+		<MSBuild Projects="$(Templates-Mvc-Folder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+	</Target>
+
+	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Templates-Mvc-Build;Rebuild-Core-BinFiles">
+		<ItemGroup>
+			<_TemplatesTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates.Mvc\**\*"/>
+		</ItemGroup>
+
+		<Copy SourceFiles="@(_TemplatesTempFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\%(RecursiveDir)" />
+		<Delete Files="@(_TemplatesTempFiles)" ContinueOnError="true"/>
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\bin\" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\" />
+		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-Deploy-Folder)\App_Data\n2.sqlite.db" />
+	</Target>
+	
+	<!-- Other templates -->
 	<Target Name="Addons-Deploy" DependsOnTargets="AddonCatalog-Deploy;Wiki-Deploy;Tagging-Deploy;TabPanel-Deploy">
 	</Target>
 

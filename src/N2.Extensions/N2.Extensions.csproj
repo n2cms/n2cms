@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NHibernate.dll</HintPath>
@@ -79,9 +83,38 @@
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
+    <Compile Include="Web\Mvc\ControllerMapper.cs" />
+    <Compile Include="Web\Mvc\Html\DetailExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\DisplayExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\DroppableZoneExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\DroppableZoneHelper.cs" />
+    <Compile Include="Web\Mvc\Html\EditableDisplayableExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ItemHelper.cs" />
+    <Compile Include="Web\Mvc\Html\TemplateRenderer.cs" />
+    <Compile Include="Web\Mvc\Html\ZoneExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ZoneHelper.cs" />
+    <Compile Include="Web\Mvc\IControllerMapper.cs" />
+    <Compile Include="Web\Mvc\IItemContainer.cs" />
+    <Compile Include="Web\Mvc\MvcConventionTemplateAttribute.cs" />
+    <Compile Include="Web\Mvc\N2ModelViewPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\N2ModelViewUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\N2ViewMasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\N2ViewPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\N2ViewUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\Mvc\RouteActionResolverAttribute.cs" />
     <Compile Include="Web\Mvc\FallbackContentController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Mvc\ViewPageResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

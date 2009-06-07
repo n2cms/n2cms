@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using N2.Collections;
+using N2.Engine.Globalization;
+using N2.Templates.Mvc.Models;
+
+namespace N2.Templates.Mvc.Controllers
+{
+	public class NavigationController : N2Controller<ContentItem>
+	{
+		private readonly ILanguageGateway _languageGateway;
+
+		public NavigationController(ILanguageGateway languageGateway)
+		{
+			_languageGateway = languageGateway;
+		}
+
+		public ViewResult TopMenu()
+		{
+			ContentItem branchRoot = Find.AncestorAtLevel(2, Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList(),
+														  N2.Find.CurrentPage);
+
+			var model = new TopMenuModel(GetTranslations(), branchRoot, Find.Items.Where.Parent.Eq(Find.StartPage)
+				.Filters(new VisibleFilter(), new PageFilter()).Select());
+
+			return View(model);
+		}
+
+		private IEnumerable<Translation> GetTranslations()
+		{
+			ItemFilter languageFilter = new CompositeFilter(new AccessFilter(), new PublishedFilter());
+			IEnumerable<ContentItem> translations = _languageGateway.FindTranslations(Find.ClosestStartPage);
+			foreach (ContentItem translation in languageFilter.Pipe(translations))
+			{
+				ILanguage language = _languageGateway.GetLanguage(translation);
+
+				// Hide translations when filtered access to their language
+				ContentItem languageItem = language as ContentItem;
+				if (languageItem == null || languageFilter.Match(languageItem))
+					yield return new Translation(translation, language);
+			}
+		}
+
+		public ViewResult SubMenu()
+		{
+			ContentItem branchRoot = Find.AncestorAtLevel(2, Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList(),
+			                                              N2.Find.CurrentPage);
+			var model = new SubMenuModel();
+
+			if (branchRoot != null && branchRoot.GetChildren(new NavigationFilter()).Count > 0)
+			{
+				model.CurrentItem = N2.Find.CurrentPage;
+				model.BranchRoot = branchRoot;
+				model.Items = branchRoot.GetChildren(new NavigationFilter());
+			}
+			else
+			{
+				model.Visible = false;
+			}
+
+			return View(model);
+		}
+
+		public ViewResult Breadcrumb()
+		{
+			var items = Find.EnumerateParents(Find.CurrentPage, Find.ClosestStartPage, true).Reverse().ToArray();
+
+			if(items.Length == 1)
+				return null;
+
+			return View(items);
+		}
+	}
+}

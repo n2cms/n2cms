@@ -16,6 +16,7 @@ namespace N2.Extensions.Tests.Fakes
 			get { return rawUrl; }
 		}
 		public StringDictionary query = new StringDictionary();
+
 		public override string this[string key]
 		{
 			get { return query[key]; }
@@ -23,6 +24,15 @@ namespace N2.Extensions.Tests.Fakes
 		public override string ApplicationPath
 		{
 			get { return "/"; }
+		}
+
+		public NameValueCollection serverVariables = new NameValueCollection();
+		public override NameValueCollection ServerVariables
+		{
+			get
+			{
+				return serverVariables;
+			}
 		}
 	}
 }

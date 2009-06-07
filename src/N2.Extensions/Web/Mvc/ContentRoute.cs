@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Routing;
 using System.Web.Mvc;
 using System.Web;
 using N2.Engine;
-using N2.Definitions;
+using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -15,6 +13,7 @@ namespace N2.Web.Mvc
 	public class ContentRoute : Route
 	{
 		public const string ContentItemKey = "item";
+		public const string ContentItemIdKey = "id";
 		public const string ContentEngineKey = "engine";
 		public const string ContentUrlKey = "url";
 		public const string ControllerKey = "controller";
@@ -22,7 +21,7 @@ namespace N2.Web.Mvc
 
 		readonly IEngine engine;
 		readonly IRouteHandler routeHandler;
-		readonly IDictionary<Type, string> controllerMap = new Dictionary<Type, string>();
+		readonly IControllerMapper controllerMapper;
 
 		public ContentRoute(IEngine engine)
 			: this(engine, new MvcRouteHandler())
@@ -30,27 +29,24 @@ namespace N2.Web.Mvc
 		}
 
 		public ContentRoute(IEngine engine, IRouteHandler routeHandler)
+			: this(engine, routeHandler, null)
+		{
+		}
+
+		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper)
 			: base("{controller}/{action}/{*remainingUrl}", new RouteValueDictionary(new { Action = "Index" }), routeHandler)
 		{
+			RegisterAdditionalComponents(engine);
+
 			this.engine = engine;
 			this.routeHandler = routeHandler;
+			this.controllerMapper = controllerMapper ?? engine.Resolve<IControllerMapper>();
+		}
 
-			IList<ControlsAttribute> controllerDefinitions = FindControllers(engine);
-			foreach (ItemDefinition id in engine.Definitions.GetDefinitions())
-			{
-				IAdapterDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
-				if(controllerDefinition == null)
-					continue;
-
-				ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
-				IList<IPathFinder> finders = PathDictionary.GetFinders(id.ItemType);
-				if (0 == finders.Where(f => f is ActionResolver).Count())
-				{
-					var methods = controllerDefinition.AdapterType.GetMethods().Select(m => m.Name).ToArray();
-					var actionResolver = new ActionResolver(methods);
-					PathDictionary.PrependFinder(id.ItemType, actionResolver);
-				}
-			}
+		private void RegisterAdditionalComponents(IEngine engine)
+		{
+			engine.AddComponent("n2.controllerMapper", typeof(IControllerMapper), typeof(ControllerMapper));
+			engine.AddComponent("n2.templateRenderer", typeof(ITemplateRenderer), typeof(TemplateRenderer));
 		}
 
 		public override RouteData GetRouteData(HttpContextBase httpContext)
@@ -61,21 +57,24 @@ namespace N2.Web.Mvc
 			if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
 				return null;
 
-			PathData td = engine.UrlParser.ResolvePath(httpContext.Request.RawUrl);
+			return GetRouteDataForPath(httpContext.Request.RawUrl);
+		}
 
-			if (td.CurrentItem == null)
-				return null;
-			
-			string controllerName = GetControllerName(td.CurrentItem.GetType());
-			if(string.IsNullOrEmpty(controllerName))
-				return null;
+		public RouteData GetRouteDataForPath(string rawUrl)
+		{
+			PathData td = engine.UrlParser.ResolvePath(rawUrl);
 
-			RouteData data = new RouteData(this, routeHandler);
-			data.Values[ContentItemKey] = td.CurrentItem;
-			data.Values[ContentEngineKey] = engine;
-			data.Values[ControllerKey] = controllerName;
-			data.Values[ActionKey] = td.Action;
-			return data;
+			if (td.CurrentItem != null)
+			{
+				RouteData data = new RouteData(this, routeHandler);
+
+				data.Values[ContentItemKey] = td.CurrentItem;
+				data.Values[ContentEngineKey] = engine;
+				data.Values[ControllerKey] = controllerMapper.GetControllerName(td.CurrentItem.GetType());
+				data.Values[ActionKey] = td.Action;
+				return data;
+			}
+			return null;
 		}
 
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
@@ -93,55 +92,29 @@ namespace N2.Web.Mvc
 				return null;
 
 			string requestedController = values[ControllerKey] as string;
-			string itemController = GetControllerName(item.GetType());
+			string itemController = controllerMapper.GetControllerName(item.GetType());
 			if (!string.Equals(requestedController, itemController, StringComparison.InvariantCultureIgnoreCase))
 				return null;
 
 			var pathData = base.GetVirtualPath(requestContext, values);
 			Url itemUrl = item.Url;
 			Url pathUrl = pathData.VirtualPath;
-			pathData.VirtualPath = pathUrl.RemoveSegment(0).PrependSegment(itemUrl.PathWithoutExtension.TrimStart('/')).PathAndQuery.TrimStart('/');
-			
+
+			if (item.IsPage)
+			{
+				pathUrl = pathUrl.RemoveSegment(0).PrependSegment(itemUrl.PathWithoutExtension.TrimStart('/'))
+					.PathAndQuery.TrimStart('/');
+			}
+			else
+			{
+				//pathUrl = pathUrl.PrependSegment(itemUrl.PathWithoutExtension.TrimStart('/'))
+				//    .PathAndQuery.TrimStart('/');
+
+				pathUrl = pathUrl.AppendSegment(item.ID.ToString());
+			}
+			pathData.VirtualPath = pathUrl;
+
 			return pathData;
-		}
-
-		public IDictionary<Type, string> ControllerMap
-		{
-			get { return controllerMap; }
-		}
-
-		private string GetControllerName(Type type)
-		{
-			if(ControllerMap.ContainsKey(type))
-				return ControllerMap[type];
-			return null;
-		}
-
-		private IAdapterDescriptor GetControllerFor(Type itemType, IList<ControlsAttribute> controllerDefinitions)
-		{
-			foreach (ControlsAttribute controllerDefinition in controllerDefinitions)
-			{
-				if (controllerDefinition.ItemType.IsAssignableFrom(itemType))
-				{
-					return controllerDefinition;
-				}
-			}
-			return null;
-		}
-
-		private IList<ControlsAttribute> FindControllers(IEngine engine)
-		{
-			List<ControlsAttribute> controllerDefinitions = new List<ControlsAttribute>();
-			foreach (Type controllerType in engine.Resolve<ITypeFinder>().Find(typeof(IController)))
-			{
-				foreach (ControlsAttribute attr in controllerType.GetCustomAttributes(typeof(ControlsAttribute), false))
-				{
-					attr.AdapterType = controllerType;
-					controllerDefinitions.Add(attr);
-				}
-			}
-			controllerDefinitions.Sort();
-			return controllerDefinitions;
 		}
 	}
 }

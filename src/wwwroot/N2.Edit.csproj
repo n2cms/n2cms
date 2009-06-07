@@ -73,6 +73,7 @@
     <Content Include="Edit\New.aspx" />
     <Content Include="Edit\Web.config" />
     <None Include="Edit\Dependencies.aspx" />
+    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyVersion.cs">

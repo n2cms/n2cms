@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Tracking.ascx.cs" Inherits="N2.Templates.UI.Parts.UrchinTracking" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="UrchinTracking.ascx.cs" Inherits="N2.Templates.UI.Parts.UrchinTracking" %>
 <asp:PlaceHolder Visible="<%# Track %>" runat="server">
 	<script type="text/javascript">
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

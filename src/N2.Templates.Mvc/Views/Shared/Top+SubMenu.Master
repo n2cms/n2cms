@@ -1,0 +1,87 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Top+SubMenu.master.cs" Inherits="N2.Templates.Mvc.Views.Shared.Top_SubMenu" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+	<title><%=Model.CurrentItem.Title%></title>
+	<link href="/App_Themes/ContentFocus/Style.css" type="text/css" rel="stylesheet" />
+	<asp:ContentPlaceHolder ID="Head" runat="server" />
+</head>
+<body class="<%= GetBodyClass() %>">
+	<n2:SlidingCurtain ID="sc" runat="server">
+		<n2:ControlPanel ID="cp" runat="server">
+			<VisibleFooterTemplate>
+				<script type="text/javascript">
+					if (window.n2ctx) {
+						window.n2ctx.select("Go");
+					}
+				</script>
+			</VisibleFooterTemplate>
+		</n2:ControlPanel>
+	</n2:SlidingCurtain>
+	<div id="wrap">
+		<asp:ContentPlaceHolder ID="Top" runat="server">
+			<div id="header">
+				<%Html.RenderPartial(Find.ClosestStartPage.Header.TemplateUrl, Find.ClosestStartPage.Header);%>
+				<%Html.RenderAction<NavigationController>(c => c.TopMenu()); %>
+			</div>
+		</asp:ContentPlaceHolder>
+		<asp:ContentPlaceHolder ID="PageWrapper" runat="server">
+			<div id="page" class="cf">
+				<asp:ContentPlaceHolder ID="PageTop" runat="server">
+					<%=this.Display("TopImage").SwallowExceptions()%>
+				</asp:ContentPlaceHolder>
+				<asp:ContentPlaceHolder ID="Menu" runat="server">
+					<div id="menu" class="secondary">
+						<% Html.RenderAction<NavigationController>(c => c.SubMenu()); %>
+
+						<%=this.DroppableZone(Zones.SiteLeft, Find.ClosestStartPage)
+							.WrapIn("div", new {@class="uc"})%>
+						<%=this.DroppableZone(Zones.Left)
+							.WrapIn("div", new { @class = "uc" })%>
+						<%=this.DroppableZone(Zones.RecursiveLeft)
+							.WrapIn("div", new { @class = "uc" })%>
+					</div>
+				</asp:ContentPlaceHolder>
+				<div id="content" class="">
+					<asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
+						<div id="main">
+							<asp:ContentPlaceHolder ID="PreContent" runat="server">
+								<%--TODO: <n2:DraggableToolbar ID="dt" runat="server" />--%>
+								<%=this.DroppableZone(Zones.RecursiveAbove)%>
+							</asp:ContentPlaceHolder>
+							<asp:ContentPlaceHolder ID="Content" runat="server">
+								<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
+								<%--<n2:Path ID="p" runat="server" VisibilityLevel="2" />--%>
+								<%=this.EditableDisplay("Image").SwallowExceptions()%>
+								<asp:ContentPlaceHolder ID="TextContent" runat="server">
+									<%=this.EditableDisplay("Title").SwallowExceptions()%>
+									<%=this.EditableDisplay("Text").SwallowExceptions()%>
+								</asp:ContentPlaceHolder>
+							</asp:ContentPlaceHolder>
+							<asp:ContentPlaceHolder ID="PostContent" runat="server">
+								<%=this.DroppableZone(Zones.Content)%>
+								<%=this.DroppableZone(Zones.RecursiveBelow)%>
+							</asp:ContentPlaceHolder>
+						</div>
+						<asp:ContentPlaceHolder ID="Sidebar" runat="server">
+							<div id="extras" class="secondary">
+								<%=this.DroppableZone(Zones.RecursiveRight)
+									.WrapIn("div", new { @class = "uc" })%>
+								<%=this.DroppableZone(Zones.Right)
+									.WrapIn("div", new { @class = "uc" })%>
+								<%=this.DroppableZone(Zones.SiteRight, Find.ClosestStartPage)
+									.WrapIn("div", new { @class = "uc" })%>
+							</div>
+						</asp:ContentPlaceHolder>
+					</asp:ContentPlaceHolder>
+				</div>
+			</div>
+			<div id="footer">
+				<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
+				<%=this.EditableDisplay("FooterText", Find.ClosestStartPage)%>
+			</div>
+		</asp:ContentPlaceHolder>
+	</div>
+</body>
+</html>

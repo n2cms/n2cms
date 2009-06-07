@@ -32,11 +32,11 @@
   <ItemGroup>
     <Reference Include="N2, Version=1.0.303.37315, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\N2.dll</HintPath>
+      <HintPath>..\..\..\src\N2\bin\N2.dll</HintPath>
     </Reference>
     <Reference Include="N2.Templates, Version=1.0.303.38335, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\N2.Templates.dll</HintPath>
+      <HintPath>..\..\..\src\wwwroot\bin\N2.Templates.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

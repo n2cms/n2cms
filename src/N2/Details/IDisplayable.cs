@@ -32,6 +32,7 @@ namespace N2.Details
 	{
 		/// <summary>Creates, initializes adds and returns the displayer.</summary>
 		/// <param name="item">The item from which to get it's value.</param>
+		/// <param name="detailName"></param>
 		/// <param name="container">The container onto which to add the displayer.</param>
 		/// <returns>The displayer control that was added.</returns>
 		Control AddTo(ContentItem item, string detailName, Control container);
