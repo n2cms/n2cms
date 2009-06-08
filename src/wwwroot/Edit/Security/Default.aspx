@@ -16,7 +16,7 @@
 		.defaults td { border-bottom:solid 1px #ccc;}
 		.permissionsHeader { width:130px; }
 		td { width:65px;}
-		.AuthorizedFalse { opacity:.3;}
+		.AuthorizedFalse { opacity:.33; }
     </style>
     <script type="text/javascript">
     	$(document).ready(function() {

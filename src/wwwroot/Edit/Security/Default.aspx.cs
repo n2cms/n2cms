@@ -121,7 +121,7 @@ namespace N2.Edit.Security
 
 		protected bool IsAuthorized(string role, Permission permission)
 		{
-			bool isInRole = User.IsInRole(role);
+			bool isInRole = User.IsInRole(role) || Engine.SecurityManager.IsAdmin(User);
 			bool isAuthorized = Engine.SecurityManager.IsAuthorized(User, SelectedItem, permission);
 			return isInRole && isAuthorized;
 		}
