@@ -250,12 +250,12 @@ namespace N2.Edit
 		/// <summary>
 		/// Event that is triggered when page is saved/published
 		/// </summary>
-		public event EventHandler<ItemEventArgs> NotificationEvent;
+		public event EventHandler<ItemEventArgs> ItemSaved;
 
-		protected virtual void OnNotificationEvent(ItemEventArgs e)
+		protected virtual void OnItemSaved(ItemEventArgs e)
 		{
-			if (NotificationEvent != null)
-				NotificationEvent(this, e);
+			if (ItemSaved != null)
+				ItemSaved(this, e);
 		}
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>
@@ -312,7 +312,7 @@ namespace N2.Edit
 
 				tx.Commit();
 
-				OnNotificationEvent(new ItemEventArgs(itemToUpdate));
+				OnItemSaved(new ItemEventArgs(itemToUpdate));
 				return item.VersionOf;
 			}
 		}
@@ -323,7 +323,7 @@ namespace N2.Edit
 			if (wasUpdated || IsNew(item))
 				persister.Save(item);
 
-			OnNotificationEvent(new ItemEventArgs(item));
+			OnItemSaved(new ItemEventArgs(item));
 			return item;
 		}
 
@@ -350,7 +350,7 @@ namespace N2.Edit
 
 				tx.Commit();
 
-				OnNotificationEvent(new ItemEventArgs(item));
+				OnItemSaved(new ItemEventArgs(item));
 				return item;
 			}
 		}
@@ -371,7 +371,7 @@ namespace N2.Edit
 
 				tx.Commit();
 
-				OnNotificationEvent(new ItemEventArgs(item));
+				OnItemSaved(new ItemEventArgs(item));
 				return item;
 			}
 		}
