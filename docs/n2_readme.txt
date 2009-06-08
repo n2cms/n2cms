@@ -58,7 +58,7 @@ CONTRIBUTORS
 * Pedropaf
 * Matthew
 * Magomed Abdurakhmanov (maqdev)
-* Smason
+* Steve Mason, Cubeworks (smason)
 * Jemerick
 * Tjassim
 * Tonez

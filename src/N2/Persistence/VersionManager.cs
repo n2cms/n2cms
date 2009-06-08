@@ -75,8 +75,6 @@ namespace N2.Persistence
 
 					if (ItemReplacedVersion != null)
 						ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));
-					if (replacementItem.VersionOf == currentItem)
-						itemRepository.Delete(replacementItem);
 
 					itemRepository.Flush(); 
 					transaction.Commit();

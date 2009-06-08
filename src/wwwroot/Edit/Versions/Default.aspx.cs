@@ -3,6 +3,7 @@ using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using N2.Web;
 using System.Web.Security;
+using N2.Security;
 
 namespace N2.Edit.Versions
 {
@@ -41,13 +42,13 @@ namespace N2.Edit.Versions
 			else if (e.CommandName == "Publish")
 			{
 				N2.ContentItem previousVersion = Engine.Persister.Get(id);
-				bool deletePrevious = previousVersion.Updated > currentVersion.Updated;
 				versioner.ReplaceVersion(currentVersion, previousVersion);
-				if (deletePrevious)
-					persister.Delete(previousVersion);
-				
-				Refresh(currentVersion, ToolbarArea.Navigation);
-				this.DataBind();
+
+				currentVersion.SavedBy = User.Identity.Name;
+				persister.Save(currentVersion);
+
+				Refresh(currentVersion, ToolbarArea.Both);
+				DataBind();
 			}
 			else if (e.CommandName == "Delete")
 			{
@@ -76,17 +77,16 @@ namespace N2.Edit.Versions
 			if (item.VersionOf == null)
 				return item.Url;
 
-			return Url.Parse(item.FindPath(PathData.DefaultAction).RewrittenUrl).AppendQuery("preview", item.ID).AppendQuery("original", item.VersionOf.ID);
+			return Url.Parse(item.FindPath(PathData.DefaultAction).RewrittenUrl)
+				.AppendQuery("preview", item.ID)
+				.AppendQuery("original", item.VersionOf.ID);
 		}
-
 
 		protected bool IsVisible(object dataItem)
 		{
-			if (!Roles.IsUserInRole("Administrators") && !Roles.IsUserInRole("Editors"))
-				return false;
+			Engine.SecurityManager.IsAuthorized(User, dataItem as ContentItem, Permission.Publish);
 
 			return !IsPublished(dataItem);
-			
 		}
 
 		protected bool IsPublished(object dataItem)

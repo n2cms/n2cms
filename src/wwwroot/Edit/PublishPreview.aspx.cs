@@ -17,6 +17,7 @@ namespace N2.Edit
 			if (previewedItem.VersionOf == null)
 			{
 				previewedItem.Published = Utility.CurrentTime();
+				if (User != null) previewedItem.SavedBy = User.Identity.Name;
 				Engine.Persister.Save(previewedItem);
 
 				Response.Redirect(previewedItem.Url);
@@ -25,12 +26,12 @@ namespace N2.Edit
 			{
 				ContentItem published = previewedItem.VersionOf;
 				Engine.Resolve<Persistence.IVersionManager>().ReplaceVersion(published, previewedItem);
-				if(!published.Published.HasValue)
+				if (!published.Published.HasValue)
 				{
 					published.Published = Utility.CurrentTime();
+					if (User != null) published.SavedBy = User.Identity.Name;
 					Engine.Persister.Save(published);
 				}
-
 				Response.Redirect(published.Url);
 			}
 		}

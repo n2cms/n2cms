@@ -1,10 +1,12 @@
+- deprecate and replace mail stuff
 - auto-parts
 - "hidden" non-parts pages
 - track "EditableLinks"
 - track external links and "trackbacks"
 - max versions
 - automatic recycle bin cleanup
-- NH 2.1 alpha
+- automatic version cleanup
+- NH 2.1 beta
 - item templates
 - "OnCreated"
 - "default folder"

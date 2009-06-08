@@ -236,7 +236,26 @@ namespace N2.Edit
 					updated = e.UpdateItem(item, addedEditors[e.Name]) || updated;
 				}
 			}
+
+			if (updated)
+			{
+				item.Updated = Utility.CurrentTime();
+				if (user != null)
+					item.SavedBy = user.Identity.Name;
+			}
+
 			return updated;
+		}
+		
+		/// <summary>
+		/// Event that is triggered when page is saved/published
+		/// </summary>
+		public event EventHandler<ItemEventArgs> NotificationEvent;
+
+		protected virtual void OnNotificationEvent(ItemEventArgs e)
+		{
+			if (NotificationEvent != null)
+				NotificationEvent(this, e);
 		}
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>
@@ -249,90 +268,115 @@ namespace N2.Edit
 			// when an unpublished version is saved and published
 			if(versioningMode == ItemEditorVersioningMode.SaveAsMaster)
 			{
-				using (ITransaction tx = persister.Repository.BeginTransaction())
-				{
-					ContentItem itemToUpdate = item.VersionOf;
-					if (itemToUpdate == null) throw new ArgumentException("Expected the current item to be a version of another item.", "item");
-
-					if (ShouldStoreVersion(item))
-						SaveVersion(itemToUpdate);
-
-					DateTime? published = itemToUpdate.Published;
-					bool wasUpdated = UpdateItem(itemToUpdate, addedEditors, user);
-					if (wasUpdated || IsNew(itemToUpdate))
-					{
-						itemToUpdate.Published = published ?? Utility.CurrentTime();
-						persister.Save(itemToUpdate);
-					}
-
-					tx.Commit();
-					return item.VersionOf;
-				}
-
+				return SaveAsMaster(item, addedEditors, user);
 			}
 
 			// when an item is saved without any new version
 			if (versioningMode == ItemEditorVersioningMode.SaveOnly)
 			{
-				bool wasUpdated = UpdateItem(item, addedEditors, user);
-				if (wasUpdated || IsNew(item))
-					persister.Save(item);
-
-				return item;
+				return SaveOnly(item, addedEditors, user);
 			}
 			
 			// when an item is saved but a version is stored before the item is updated
 			if (versioningMode == ItemEditorVersioningMode.VersionAndSave)
 			{
-				using (ITransaction tx = persister.Repository.BeginTransaction())
-				{
-					if (ShouldStoreVersion(item))
-						SaveVersion(item);
-
-					DateTime? initialPublished = item.Published;
-					bool wasUpdated = UpdateItem(item, addedEditors, user);
-					DateTime? updatedPublished = item.Published;
-
-					// the item was the only version of an unpublished item - publish it
-					if (initialPublished == null && updatedPublished == null)
-					{
-						item.Published = Utility.CurrentTime();
-						wasUpdated = true;
-					}
-
-					if (wasUpdated || IsNew(item))
-						persister.Save(item);
-
-					tx.Commit();
-
-					return item;
-				}
+				return VersionAndSave(item, addedEditors, user);
 			}
 				
-			// when making a version without saving the item
+			// when making a version without publishing the item
 			if (versioningMode == ItemEditorVersioningMode.VersionOnly)
 			{
-				using (ITransaction tx = persister.Repository.BeginTransaction())
-				{
-					if (ShouldStoreVersion(item))
-						item = SaveVersion(item);
-
-					bool wasUpdated = UpdateItem(item, addedEditors, user);
-					if (wasUpdated || IsNew(item))
-					{
-						item.Published = null;
-						persister.Save(item);
-					}
-
-					tx.Commit();
-					return item;
-				}
+				return VersionOnly(item, addedEditors, user);
 			}
 				
 			throw new ArgumentException("Unexpected versioning mode.", "versioningMode");
 		}
 
-        private bool ShouldStoreVersion(ContentItem item)
+		ContentItem SaveAsMaster(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		{
+			using (ITransaction tx = persister.Repository.BeginTransaction())
+			{
+				ContentItem itemToUpdate = item.VersionOf;
+				if (itemToUpdate == null) throw new ArgumentException("Expected the current item to be a version of another item.", "item");
+
+				if (ShouldStoreVersion(item))
+					SaveVersion(itemToUpdate);
+
+				DateTime? published = itemToUpdate.Published;
+				bool wasUpdated = UpdateItem(itemToUpdate, addedEditors, user);
+				if (wasUpdated || IsNew(itemToUpdate))
+				{
+					itemToUpdate.Published = published ?? Utility.CurrentTime();
+					persister.Save(itemToUpdate);
+				}
+
+				tx.Commit();
+
+				OnNotificationEvent(new ItemEventArgs(itemToUpdate));
+				return item.VersionOf;
+			}
+		}
+
+		ContentItem SaveOnly(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		{
+			bool wasUpdated = UpdateItem(item, addedEditors, user);
+			if (wasUpdated || IsNew(item))
+				persister.Save(item);
+
+			OnNotificationEvent(new ItemEventArgs(item));
+			return item;
+		}
+
+		ContentItem VersionAndSave(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		{
+			using (ITransaction tx = persister.Repository.BeginTransaction())
+			{
+				if (ShouldStoreVersion(item))
+					SaveVersion(item);
+
+				DateTime? initialPublished = item.Published;
+				bool wasUpdated = UpdateItem(item, addedEditors, user);
+				DateTime? updatedPublished = item.Published;
+
+				// the item was the only version of an unpublished item - publish it
+				if (initialPublished == null && updatedPublished == null)
+				{
+					item.Published = Utility.CurrentTime();
+					wasUpdated = true;
+				}
+
+				if (wasUpdated || IsNew(item))
+					persister.Save(item);
+
+				tx.Commit();
+
+				OnNotificationEvent(new ItemEventArgs(item));
+				return item;
+			}
+		}
+
+		ContentItem VersionOnly(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		{
+			using (ITransaction tx = persister.Repository.BeginTransaction())
+			{
+				if (ShouldStoreVersion(item))
+					item = SaveVersion(item);
+
+				bool wasUpdated = UpdateItem(item, addedEditors, user);
+				if (wasUpdated || IsNew(item))
+				{
+					item.Published = null;
+					persister.Save(item);
+				}
+
+				tx.Commit();
+
+				OnNotificationEvent(new ItemEventArgs(item));
+				return item;
+			}
+		}
+
+		private bool ShouldStoreVersion(ContentItem item)
         {
             return EnableVersioning && !IsNew(item) && item.GetType().GetCustomAttributes(typeof(Persistence.NotVersionableAttribute), true).Length == 0;
         }

@@ -1,4 +1,5 @@
-﻿- merged smason's work in the mvc branch onto main
+﻿- applied tonez's patch #3010 event when publishing, update saved by
+- merged smason's work in the mvc branch onto main
 - applied tonez's patch #2959: Update for patch 2925. Prevent writers from deleting nodes.
 - applied tonez's patch #2957: Problem with DB2
 - simplified "captcha" on comments
