@@ -109,8 +109,13 @@ namespace N2.Edit.Security
 
 		protected bool Is(string role, Permission permission)
 		{
-			GenericPrincipal tempUser = new GenericPrincipal(new GenericIdentity("TempUser"), new[] {role});
-			bool isAuthorized = Engine.SecurityManager.IsAuthorized(tempUser, SelectedItem, permission);
+			return Is(SelectedItem, role, permission);
+		}
+
+		protected bool Is(ContentItem item, string role, Permission permission)
+		{
+			GenericPrincipal tempUser = TempUserWithRole(role);
+			bool isAuthorized = Engine.SecurityManager.IsAuthorized(tempUser, item, permission);
 			return isAuthorized;
 		}
 
@@ -159,19 +164,20 @@ namespace N2.Edit.Security
 
         private void ApplyRoles(ContentItem item)
         {
-        	foreach(CheckBox c in N2.Web.UI.ItemUtility.FindInChildren<CheckBox>(rptPermittedRoles))
-        	{
-        		Console.WriteLine(c.Checked);
-        	}
-
         	for (int i = 0; i < Permissions.Length; i++)
         	{
         		Permission permission = Permissions[i];
-				bool allChecked = IsAllChecked(i);
-				List<string> checkedRoles = new List<string>();
-				if(!allChecked)
+
+				if(!IsAuthorized(SelectedItem, permission))
+					continue;
+
+				if(IsDefaultChecked(i))
 				{
-					allChecked = true;
+					DynamicPermissionMap.SetAllRoles(item, permission);
+				}
+				else
+				{
+					List<string> checkedRoles = new List<string>();
 					for (int j = 0; j < Roles.Length; j++)
 					{
 						string role = Roles[j];
@@ -181,18 +187,13 @@ namespace N2.Edit.Security
 						if (!IsAuthorized(role, permission))
 							cb.Checked = Is(role, permission);
 						
-						allChecked &= cb.Checked;
 						if (cb.Checked)
 						{
 							checkedRoles.Add(role);
 						}
 					}
-				}
-
-				if(allChecked)
-					DynamicPermissionMap.SetAllRoles(item, permission);
-				else
 					DynamicPermissionMap.SetRoles(item, permission, checkedRoles.ToArray());
+				}
 			}
 
 			Engine.Persister.Save(item);
@@ -202,7 +203,7 @@ namespace N2.Edit.Security
 		{
 			for (int i = 0; i < Permissions.Length; i++)
 			{
-				if (IsAllChecked(i))
+				if (IsDefaultChecked(i))
 					continue;
 
 				bool anyoneChecked = false;
@@ -223,9 +224,14 @@ namespace N2.Edit.Security
 			}
 		}
 
-		bool IsAllChecked(int permissionIndex)
+		bool IsDefaultChecked(int permissionIndex)
 		{
 			return ((CheckBox)rptEveryone.Items[permissionIndex].FindControl("cbEveryone")).Checked;
+		}
+
+		GenericPrincipal TempUserWithRole(string role)
+		{
+			return new GenericPrincipal(new GenericIdentity("TempUser"), new[] { role });
 		}
 
 		protected override void OnError(EventArgs e)

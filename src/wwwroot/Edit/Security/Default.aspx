@@ -16,18 +16,26 @@
 		.defaults td { border-bottom:solid 1px #ccc;}
 		.permissionsHeader { width:130px; }
 		td { width:65px;}
+		.AuthorizedFalse { opacity:.3;}
     </style>
     <script type="text/javascript">
     	$(document).ready(function() {
+    		$.fn.disable = function() {
+    			return this.attr("disabled", "disabled");
+    		};
+    		$.fn.enable = function() {
+    			return this.removeAttr("disabled");
+    		};
     		var updateColumn = function() {
     			var groupName = this.parentNode.className.split(' ')[1];
     			var $grouped = $("." + groupName + " input").not(this);
     			if (this.checked) {
-    				$grouped.parent().andSelf().attr("disabled", "disabled");
+    				$grouped.parent().andSelf().disable();
     			} else {
-    				$grouped.parent().andSelf().removeAttr("disabled");
+    				$grouped.parent().andSelf().enable();
     			}
-    			$grouped.filter(".AuthorizedFalse").parent().andSelf().attr("disabled", "disabled");
+    			var $unauthorized = $grouped.parent().filter(".AuthorizedFalse").children("input").andSelf();
+    			$unauthorized.disable();
     			return $grouped;
     		};
     		$(".overrides .cb input").filter(":checked").addClass("defaultChecked");
@@ -53,7 +61,7 @@
 				<td><%= GetLocalResourceString("DefaultText")%></td>
 			<asp:Repeater ID="rptEveryone" runat="server" DataSource="<%# Permissions %>"><ItemTemplate>
 				<td>
-					<asp:CheckBox ID="cbEveryone" Checked="<%# IsEveryone((Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex %>' />
+					<asp:CheckBox ID="cbEveryone" Checked="<%# IsEveryone((Permission)Container.DataItem) %>" Enabled="<%# IsAuthorized(SelectedItem, (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex %>' />
 					<asp:CustomValidator ID="cvMarker" ErrorMessage="<%# Container.DataItem.ToString() %>" Text="*" runat="server" />
 				</td>
 			</ItemTemplate></asp:Repeater>
@@ -68,7 +76,9 @@
 							  OnItemDataBound="rptPermissions_ItemDataBound"
 							  OnItemCreated="rptPermissions_ItemCreated"><ItemTemplate>
 					<td>
-						<asp:CheckBox ID="cbRole" Checked="<%# Is(GetRole(Container), (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex + " Authorized" + IsAuthorized(GetRole(Container), (Permission)Container.DataItem) %>' />
+						<asp:CheckBox ID="cbRole" runat="server" 
+									  Checked="<%# Is(GetRole(Container), (Permission)Container.DataItem) %>" 
+									  CssClass='<%# "cb permission" + Container.ItemIndex + " Authorized" + IsAuthorized(GetRole(Container), (Permission)Container.DataItem) %>' />
 					</td>
 				</ItemTemplate></asp:Repeater>
 			</tr>	
