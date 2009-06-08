@@ -1,7 +1,7 @@
-Main solution (core + edit + templates):
+Main solution (framework + templates):
 - Download the code, obviously
 - Run Prepare_Dependencies-vs2008.bat to copy certain files needed by the web project
-- Open src\N2.Everything-vs2008.sln
+- Open src\N2.Sources-vs2008.sln
 - Set Templates/N2.Templates as "StartUp Project"
 - Compile and run (Ctrl+F5)
 - If you get errors about database connection or see an install screen:
