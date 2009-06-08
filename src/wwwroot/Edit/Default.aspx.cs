@@ -8,15 +8,24 @@ namespace N2.Edit
 	[ControlPanelSeparator(0, ControlPanelState.Visible)]
 	public partial class Default : Web.EditPage
 	{
-		protected string SelectedPath = "/";
-		protected string SelectedUrl = "~/";
+		string selectedPath;
+		string selectedUrl;
+
+		public string SelectedPath
+		{
+			get { return selectedPath ?? "/"; }
+		}
+		public string SelectedUrl
+		{
+			get { return selectedUrl ?? "~/"; }
+		}
 
 		protected override void OnInit(EventArgs e)
 		{
 			try
 			{
-				SelectedPath = SelectedItem.Path;
-				SelectedPath = Engine.EditManager.GetPreviewUrl(SelectedItem);
+				selectedPath = SelectedItem.Path;
+				selectedUrl = Engine.EditManager.GetPreviewUrl(SelectedItem);
 			}
 			catch(Exception ex)
 			{
