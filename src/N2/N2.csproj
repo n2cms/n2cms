@@ -411,6 +411,7 @@
     <Compile Include="Persistence\IActiveContent.cs" />
     <Compile Include="Persistence\IUpdatable.cs" />
     <Compile Include="Persistence\NH\SessionContext.cs" />
+    <Compile Include="Persistence\NH\ConfigurationSource.cs" />
     <Compile Include="Persistence\NotVersionableAttribute.cs" />
     <Compile Include="Plugin\IPlugin.cs" />
     <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />

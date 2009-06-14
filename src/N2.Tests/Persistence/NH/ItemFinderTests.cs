@@ -135,7 +135,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyNameAndTitle()
+		public void ByProperties_NameAndTitle()
 		{
 			IList<ContentItem> items = finder.Where.Name.Eq("root").And.Title.Eq("root").Select();
 			Assert.AreEqual(1, items.Count);
@@ -143,7 +143,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void TwoItemsByNameOrTitle()
+		public void TwoItems_ByNameOrTitle()
 		{
 			IList<ContentItem> items = finder.Where.Name.Eq("root").Or.Title.Eq("start page").Select();
 			Assert.AreEqual(2, items.Count);
@@ -152,7 +152,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyVersionOf()
+		public void ByProperty_VersionOf()
 		{
 			IList<ContentItem> items = finder.Where.VersionOf.Eq(rootItem).Select();
 			Assert.AreEqual(1, items.Count);

@@ -20,11 +20,14 @@
 - update data model
 	- reference to start page
 	- version number
+	- valid until
+	- changed permissions flags
+	- split pages and parts
+	- remove authorized roles
+	- IdPath
 - drag nested items in ie
 - XML Store instead of DB
 - eager load item's child collections
-- make definition refiners sortable
-- move IsPage and TemplateUrl into a [Template] attribute
 - lock toolbar when editing
 - "controller" http://www.codeplex.com/n2/Thread/View.aspx?ThreadId=42498
 - mysql problem

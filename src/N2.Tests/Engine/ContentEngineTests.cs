@@ -28,7 +28,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void CanAssignDefaultNHibernateProperties()
 		{
-			var cb = (ConfigurationBuilder)engine.Resolve<IConfigurationBuilder>();
+			var cb = engine.Resolve<ConfigurationBuilder>();
 			Assert.That(cb.Properties.Count, Is.GreaterThan(0));
 		}
 

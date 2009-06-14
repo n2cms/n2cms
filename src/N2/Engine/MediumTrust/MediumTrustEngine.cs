@@ -67,13 +67,19 @@ namespace N2.Engine.MediumTrust
             DefinitionBuilder definitionBuilder = AddComponentInstance<DefinitionBuilder>(new DefinitionBuilder(typeFinder, engineConfiguration));
 			definitions = AddComponentInstance<IDefinitionManager>(new DefinitionManager(definitionBuilder, notifier));
 			NHibernate.Cfg.Environment.UseReflectionOptimizer = false;
-            IConfigurationBuilder nhBuilder = AddComponentInstance<IConfigurationBuilder>(new ConfigurationBuilder(definitions, databaseConfiguration, connectionStrings));
+			ConfigurationBuilder nhBuilder = AddComponentInstance<ConfigurationBuilder>(new ConfigurationBuilder(definitions, databaseConfiguration, connectionStrings));
+			IConfigurationBuilder sessionFactorySource = AddComponentInstance<IConfigurationBuilder>(new ConfigurationSource(nhBuilder));
             NHibernate.IInterceptor interceptor = AddComponentInstance<NHibernate.IInterceptor>(new NotifyingInterceptor(notifier));
-            ISessionProvider sessionProvider = AddComponentInstance<ISessionProvider>(new SessionProvider(nhBuilder, interceptor, webContext));
+			ISessionProvider sessionProvider = AddComponentInstance<ISessionProvider>(new SessionProvider(sessionFactorySource, interceptor, webContext));
             IItemFinder finder = AddComponentInstance<IItemFinder>(new ItemFinder(sessionProvider, definitions));
-			INHRepository<int, ContentItem> itemRepository = AddComponentInstance<INHRepository<int, ContentItem>>(new NHRepository<int, ContentItem>(sessionProvider));
-            INHRepository<int, LinkDetail> linkRepository = AddComponentInstance<INHRepository<int, LinkDetail>>(new NHRepository<int, LinkDetail>(sessionProvider));
-            persister = AddComponentInstance<IPersister>(new ContentPersister(itemRepository, linkRepository, finder));
+
+			INHRepository<int, ContentItem> itemRepository = RegisterRepository<ContentItem>(sessionProvider);
+			INHRepository<int, ContentDetail> detailRepository = RegisterRepository<ContentDetail>(sessionProvider);
+			INHRepository<int, LinkDetail> linkRepository = RegisterRepository<LinkDetail>(sessionProvider);
+			INHRepository<int, DetailCollection> collectionRepository = RegisterRepository<DetailCollection>(sessionProvider);
+			INHRepository<int, AuthorizedRole> roleRepository = RegisterRepository<AuthorizedRole>(sessionProvider);
+
+			persister = AddComponentInstance<IPersister>(new ContentPersister(itemRepository, linkRepository, finder));
 
 			if (hostConfiguration.MultipleSites)
 			{
@@ -97,7 +103,7 @@ namespace N2.Engine.MediumTrust
             ItemXmlReader xmlReader = AddComponentInstance<ItemXmlReader>(new ItemXmlReader(definitions));
             ItemXmlWriter xmlWriter = AddComponentInstance<ItemXmlWriter>(new ItemXmlWriter(definitions, urlParser));
             Importer importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
-            InstallationManager installer = AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, nhBuilder));
+            InstallationManager installer = AddComponentInstance<InstallationManager>(new InstallationManager(host, definitions, importer, persister, sessionProvider, sessionFactorySource));
             IErrorHandler errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
 			IContentAdapterProvider aspectController = AddComponentInstance<IContentAdapterProvider>(new ContentAdapterProvider(this, typeFinder));
 			IRequestDispatcher dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(aspectController, webContext, urlParser, errorHandler, hostConfiguration));
@@ -121,6 +127,14 @@ namespace N2.Engine.MediumTrust
 			IHeart heart = AddComponentInstance(new Heart(engineConfiguration));
 			AddComponentInstance(new Scheduler(pluginFinder, heart, webContext, errorHandler));
         }
+
+		INHRepository<int, T> RegisterRepository<T>(ISessionProvider sessionProvider) where T : class 
+		{
+			INHRepository<int, T> itemRepository = new NHRepository<int, T>(sessionProvider);
+			AddComponentInstance<INHRepository<int, T>>(itemRepository);
+			AddComponentInstance<IRepository<int, T>>(itemRepository);
+			return itemRepository;
+		}
 
 		public MediumTrustEngine() : this(EventBroker.Instance)
 		{

@@ -34,7 +34,7 @@ namespace N2.Tests.Persistence.NH
 
 			NotifyingInterceptor interceptor = new NotifyingInterceptor(new ItemNotifier());
 			FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
-			sessionProvider = new FakeSessionProvider(configurationBuilder, interceptor, context);
+			sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), interceptor, context);
 
 			finder = new ItemFinder(sessionProvider, definitions);
 

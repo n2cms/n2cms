@@ -155,6 +155,7 @@
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
     <Compile Include="Engine\ContentAdapterProviderTest.cs" />
+    <Compile Include="Engine\EngineSanityTests.cs" />
     <Compile Include="Engine\Items\AdapterA.cs" />
     <Compile Include="Engine\Items\AdapterAA.cs" />
     <Compile Include="Engine\Items\AdapterAAA.cs" />
