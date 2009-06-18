@@ -23,13 +23,13 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction Eq(Type value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, "class", Comparison.Equal, query.GetDiscriminator(value)));
+			query.Criterias.Add(new PropertyHqlProvider<string>(op, "class", Comparison.Equal, query.GetDiscriminator(value)));
 			return query;
 		}
 
 		public IQueryAction NotEq(Type value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, "class", Comparison.NotEqual, query.GetDiscriminator(value)));
+			query.Criterias.Add(new PropertyHqlProvider<string>(op, "class", Comparison.NotEqual, query.GetDiscriminator(value)));
 			return query;
 		}
 

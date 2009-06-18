@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Castle.Core;
 using N2.Persistence;
 using N2.Plugin;
 
@@ -10,7 +6,7 @@ namespace N2.Edit.Trash
 	/// <summary>
 	/// Intercepts delete operations.
 	/// </summary>
-	public class DeleteInterceptor : IStartable, IAutoStart
+	public class DeleteInterceptor : IAutoStart
 	{
 		private readonly IPersister persister;
 		private readonly ITrashHandler trashHandler;

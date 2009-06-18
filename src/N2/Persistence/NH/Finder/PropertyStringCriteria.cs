@@ -20,13 +20,13 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction Like(string value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.Like, value));
+			query.Criterias.Add(new PropertyHqlProvider<string>(op, name, Comparison.Like, value));
 			return query;
 		}
 
 		public IQueryAction NotLike(string value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.NotLike, value));
+			query.Criterias.Add(new PropertyHqlProvider<string>(op, name, Comparison.NotLike, value));
 			return query;
 		}
 
@@ -36,13 +36,13 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction Eq(string value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.Equal, value));
+			query.Criterias.Add(new PropertyHqlProvider<string>(op, name, Comparison.Equal, value));
 			return query;
 		}
 
 		public IQueryAction NotEq(string value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.NotEqual, value));
+			query.Criterias.Add(new PropertyHqlProvider<string>(op, name, Comparison.NotEqual, value));
 			return query;
 		}
 

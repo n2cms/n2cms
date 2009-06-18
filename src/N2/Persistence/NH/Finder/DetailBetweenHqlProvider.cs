@@ -65,7 +65,7 @@ namespace N2.Persistence.NH.Finder
 		public void SetParameters(NHibernate.IQuery query, int index)
 		{
 			if(name != null)
-				query.SetParameter(GetNameParameterName(index), this.name);
+				query.SetParameter(GetNameParameterName(index), name);
 			query.SetParameter("lb" + index, lowerBound);
 			query.SetParameter("ub" + index, upperBound);
 		}

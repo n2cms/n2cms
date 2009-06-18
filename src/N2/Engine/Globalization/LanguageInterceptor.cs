@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Castle.Core;
-using N2.Persistence;
+﻿using N2.Persistence;
 using N2.Web;
 using N2.Definitions;
 using N2.Configuration;
@@ -14,7 +10,7 @@ namespace N2.Engine.Globalization
     /// Intercepts and acts upon operations on the node tree. The purpose is to 
     /// keep the language branches synchronized.
     /// </summary>
-	public class LanguageInterceptor : IStartable, IAutoStart
+	public class LanguageInterceptor : IAutoStart
 	{
 		private const string DeletingKey = "LanguageInterceptor_Deleting";
 

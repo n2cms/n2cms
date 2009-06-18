@@ -2,13 +2,12 @@ using System;
 using N2.Details;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using Castle.Core;
 using N2.Plugin;
 
 namespace N2.Edit.LinkTracker
 {
 	/// <summary>This class examines saved items and keeps tracks of links in html.</summary>
-	public class Tracker : IStartable, IAutoStart
+	public class Tracker : IAutoStart
 	{
 		public const string LinkDetailName = "TrackedLinks";
 		Persistence.IPersister persister;

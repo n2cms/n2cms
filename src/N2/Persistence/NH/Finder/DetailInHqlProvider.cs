@@ -28,7 +28,9 @@ namespace N2.Persistence.NH.Finder
 		public override void SetParameters(NHibernate.IQuery query, int index)
 		{
 			if (this.Name != null)
+			{
 				query.SetParameter(GetNameParameterName(index), Name);
+			}
 
 			base.SetParameters(query, index);
 		}

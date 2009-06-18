@@ -5,9 +5,9 @@ using NHibernate;
 
 namespace N2.Persistence.NH.Finder
 {
-	public class PropertyHqlProvider : AbstractHqlProvider<object>
+	public class PropertyHqlProvider<T> : AbstractHqlProvider<T>
 	{
-		public PropertyHqlProvider(Operator op, string name, Comparison comparison, object value)
+		public PropertyHqlProvider(Operator op, string name, Comparison comparison, T value)
 			: base(op, name, comparison, value)
 		{
 		}

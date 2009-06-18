@@ -1,9 +1,7 @@
 using System;
-using Castle.Core;
 using N2.Definitions;
 using N2.Persistence;
 using N2.Web;
-using N2.Edit.Trash;
 using N2.Security;
 
 namespace N2.Edit.Trash

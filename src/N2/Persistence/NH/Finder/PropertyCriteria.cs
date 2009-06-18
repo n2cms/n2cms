@@ -24,13 +24,13 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction Eq(T value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.Equal, value));
+			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.Equal, value));
 			return query;
 		}
 
 		public IQueryAction NotEq(T value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.NotEqual, value));
+			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.NotEqual, value));
 			return query;
 		}
 
@@ -45,25 +45,25 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction Gt(T value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.GreaterThan, value));
+			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.GreaterThan, value));
 			return query;
 		}
 
 		public IQueryAction Ge(T value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.GreaterOrEqual, value));
+			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.GreaterOrEqual, value));
 			return query;
 		}
 
 		public IQueryAction Lt(T value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.LessThan, value));
+			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.LessThan, value));
 			return query;
 		}
 
 		public IQueryAction Le(T value)
 		{
-			query.Criterias.Add(new PropertyHqlProvider(op, name, Comparison.LessOrEqual, value));
+			query.Criterias.Add(new PropertyHqlProvider<T>(op, name, Comparison.LessOrEqual, value));
 			return query;
 		}
 

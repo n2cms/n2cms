@@ -128,7 +128,9 @@ namespace N2.Persistence.NH
             Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = config.Caching.ToString();
 			Properties[NHibernate.Cfg.Environment.UseQueryCache] = config.Caching.ToString();
 			Properties[NHibernate.Cfg.Environment.CacheProvider] = config.CacheProviderClass;
-
+#if NH2_1
+			Properties[NHibernate.Cfg.Environment.ProxyFactoryFactoryClass] = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
+#endif
 			foreach (string key in config.HibernateProperties.AllKeys)
             {
                 Properties[key] = config.HibernateProperties[key].Value;
