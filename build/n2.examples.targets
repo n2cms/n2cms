@@ -11,10 +11,6 @@
 		<Deploy-ExamplesFolder>$(DeployFolder)\Examples</Deploy-ExamplesFolder>
 	</PropertyGroup>
 
-	<Target Name="Examples-Parts-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
-		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-PartsFolder)\wwwroot\bin" />
-		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-PartsFolder)\wwwroot\Edit\%(RecursiveDir)" />
-	</Target>
 	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
 		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-CSharp)\wwwroot\bin" />
 		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-CSharp)\wwwroot\Edit\%(RecursiveDir)" />
@@ -40,17 +36,12 @@
 	</Target>
 
 	<Target Name="Examples-PrepareDependencies">
-		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
-
 		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
 		<CallTarget Targets="Examples-VisualBasic-PrepareDependencies"/>
 		<CallTarget Targets="Examples-TemplatesSite-PrepareDependencies"/>
 		<CallTarget Targets="Examples-Mvc-PrepareDependencies"/>
 	</Target>
 
-	<Target Name="Example-Parts-Build" DependsOnTargets="Examples-Parts-PrepareDependencies">
-		<MSBuild Projects="$(Examples-PartsFolder)\Parts_Example.sln"/>
-	</Target>
 	<Target Name="Example-SimpleCSharp-Build" DependsOnTargets="Examples-CSharp-PrepareDependencies">
 		<MSBuild Projects="$(Examples-CSharp)\CSharp_Example-vs2008.sln"/>
 	</Target>
@@ -65,7 +56,7 @@
 	</Target>
 
 	<Target Name="Examples-Build">
-		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Example-Parts-Build; Examples-Mvc-Build"/>
+		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Examples-Mvc-Build"/>
 	</Target>
 
 	<Target Name="Examples-CreateItemGroups">
@@ -126,11 +117,5 @@
 		<Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
 		<Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Snippets" />
 		<Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)"  DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\wwwroot\%(RecursiveDir)" />
-	</Target>
-
-	<Target Name="Examples-Deploy-LessInteresting" DependsOnTargets="Examples-CreateItemGroups">
-		<CallTarget Targets="Examples-Parts-PrepareDependencies"/>
-
-		<Copy SourceFiles="@(ExampleSource-PartsFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\Parts\%(RecursiveDir)" />
 	</Target>
 </Project>

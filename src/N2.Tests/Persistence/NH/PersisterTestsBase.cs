@@ -51,7 +51,11 @@ namespace N2.Tests.Persistence.NH
 
 			persister = new ContentPersister(itemRepository, linkRepository, finder);
 
+#if NH2_1
+			schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
+#else
 			schemaCreator.Execute(false, true, false, false, sessionProvider.OpenSession.Session.Connection, null);
+#endif
 		}
 
 		[TearDown]

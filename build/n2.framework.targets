@@ -7,7 +7,7 @@
 	</Target>
 
 	<Target Name="Core-Build" DependsOnTargets="Core-PrepareDependencies">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Properties="Configuration=$(Configuration)" />
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Properties="Configuration=$(Configuration);NHVersion=$(NHVersion)" />
 	</Target>
 
 	<ItemGroup>
