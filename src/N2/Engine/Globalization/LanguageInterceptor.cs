@@ -10,7 +10,7 @@ namespace N2.Engine.Globalization
     /// Intercepts and acts upon operations on the node tree. The purpose is to 
     /// keep the language branches synchronized.
     /// </summary>
-	public class LanguageInterceptor : IAutoStart
+	public class LanguageInterceptor : IAutoStart, Castle.Core.IStartable
 	{
 		private const string DeletingKey = "LanguageInterceptor_Deleting";
 

@@ -7,7 +7,7 @@ using N2.Plugin;
 namespace N2.Edit.LinkTracker
 {
 	/// <summary>This class examines saved items and keeps tracks of links in html.</summary>
-	public class Tracker : IAutoStart
+	public class Tracker : IAutoStart, Castle.Core.IStartable
 	{
 		public const string LinkDetailName = "TrackedLinks";
 		Persistence.IPersister persister;
