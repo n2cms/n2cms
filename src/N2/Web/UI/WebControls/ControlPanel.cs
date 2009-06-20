@@ -100,8 +100,9 @@ namespace N2.Web.UI.WebControls
 
 				if (CurrentItem != null && EnableEditInterfaceIntegration && !OriginatesFromEdit())
 				{
-					string url = N2.Context.Current.EditManager.GetNavigationUrl(CurrentItem);
-					string script = string.Format(scriptFormat, CurrentItem.Path, url);
+					string navigationUrl = N2.Context.Current.EditManager.GetNavigationUrl(CurrentItem);
+					string previewUrl = N2.Context.Current.EditManager.GetPreviewUrl(CurrentItem);
+					string script = string.Format(scriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
 					Page.ClientScript.RegisterStartupScript(typeof(ControlPanel), "updateNavigation", script, true);
 				}
 			}
@@ -212,7 +213,7 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 
 		string scriptFormat = @"if(window.n2ctx){{
     window.n2ctx.setupToolbar('{0}','{1}');
-    window.n2ctx.refreshNavigation('{1}');
+    window.n2ctx.refreshNavigation('{2}');
 }}";
 
 		protected override void Render(HtmlTextWriter writer)
