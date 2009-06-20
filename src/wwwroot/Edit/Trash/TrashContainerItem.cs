@@ -3,13 +3,15 @@ using N2.Integrity;
 using N2.Definitions;
 using N2.Details;
 using N2.Installation;
+using N2.Web;
 
 namespace N2.Edit.Trash
 {
 	[PageDefinition("Trash", 
 		Name = "TrashContainerItem", 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-		IconUrl = "~/Edit/Trash/Img/bin.gif")]
+		IconUrl = "~/Edit/Trash/Img/bin.gif", 
+		TemplateUrl = "~/Edit/Trash/Default.aspx")]
 	[AllowedChildren(typeof(ContentItem))]
 	[ItemAuthorizedRoles(Roles = new string[0])]
     [NotThrowable]
@@ -29,13 +31,9 @@ namespace N2.Edit.Trash
 			set { SetDetail("Enabled", value); }
 		}
 
-
-		public override string TemplateUrl
+		public override string Url
 		{
-			get
-			{
-				return "~/Edit/Trash/Default.aspx";
-			}
+			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
 		}
 
 		public override string IconUrl

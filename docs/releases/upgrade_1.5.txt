@@ -4,4 +4,5 @@ Instructions:
 - PageDefinition & PartDefinition
 
 Breaking changes:
-- overriding ContentItem.IconUrl now only works in the tree. Use [PageDefinition("the title", IconUrl = "/path/to/the/icon.gif")] or [PartDefinition...] to change the new item screen.
+- Overriding ContentItem.IconUrl now only works in the tree. Use [PageDefinition("the title", IconUrl = "/path/to/the/icon.gif")] or [PartDefinition...] to change the new item screen.
+- The user "admin" may have less permissions than before in some cases. Please create a membership user with roles instead.

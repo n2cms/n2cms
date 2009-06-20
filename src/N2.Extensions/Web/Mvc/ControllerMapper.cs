@@ -17,20 +17,25 @@ namespace N2.Web.Mvc
 			foreach (ItemDefinition id in definitionManager.GetDefinitions())
 			{
 				IAdapterDescriptor controllerDefinition = GetControllerFor(id.ItemType, controllerDefinitions);
-				ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
-				IList<IPathFinder> finders = PathDictionary.GetFinders(id.ItemType);
-				if (0 == finders.Where(f => f is ActionResolver).Count())
+				if(controllerDefinition != null)
 				{
-					var methods = controllerDefinition.AdapterType.GetMethods().Select(m => m.Name).ToArray();
-					var actionResolver = new ActionResolver(methods);
-					PathDictionary.PrependFinder(id.ItemType, actionResolver);
+					ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
+					IList<IPathFinder> finders = PathDictionary.GetFinders(id.ItemType);
+					if (0 == finders.Where(f => f is ActionResolver).Count())
+					{
+						var methods = controllerDefinition.AdapterType.GetMethods().Select(m => m.Name).ToArray();
+						var actionResolver = new ActionResolver(methods);
+						PathDictionary.PrependFinder(id.ItemType, actionResolver);
+					}
 				}
 			}
 		}
 
 		public string GetControllerName(Type type)
 		{
-			return ControllerMap[type];
+			string name;
+			ControllerMap.TryGetValue(type, out name);
+			return name;
 		}
 
 		private IDictionary<Type, string> ControllerMap
@@ -47,7 +52,7 @@ namespace N2.Web.Mvc
 					return controllerDefinition;
 				}
 			}
-			throw new N2Exception("Found no controller for type '" + itemType + "' among " + controllerDefinitions.Count + " found controllers.");
+			return null;
 		}
 
 		private static IList<ControlsAttribute> FindControllers(ITypeFinder typeFinder)

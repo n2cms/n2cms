@@ -1,4 +1,5 @@
-﻿- login part now redirects to same page when no login page is set
+﻿- fixed #23180: MVC example ... Found no controller for type 'N2.Edit.Wizard.Items.MagicLocation'
+- login part now redirects to same page when no login page is set
 - fixed control panel screwing up "eye" url
 - applied tonez's patch #3010 event when publishing, update saved by
 - merged smason's work in the mvc branch onto main

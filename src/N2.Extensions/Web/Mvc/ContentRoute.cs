@@ -66,11 +66,15 @@ namespace N2.Web.Mvc
 
 			if (td.CurrentItem != null)
 			{
-				RouteData data = new RouteData(this, routeHandler);
+				var controllerName = controllerMapper.GetControllerName(td.CurrentItem.GetType());
+				
+				if(controllerName == null)
+					return null;
 
+				RouteData data = new RouteData(this, routeHandler);
 				data.Values[ContentItemKey] = td.CurrentItem;
 				data.Values[ContentEngineKey] = engine;
-				data.Values[ControllerKey] = controllerMapper.GetControllerName(td.CurrentItem.GetType());
+				data.Values[ControllerKey] = controllerName;
 				data.Values[ActionKey] = td.Action;
 				return data;
 			}
