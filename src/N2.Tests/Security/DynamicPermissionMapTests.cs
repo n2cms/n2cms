@@ -1,5 +1,6 @@
 using System.Security.Principal;
 using N2.Security;
+using N2.Tests.Security.Items;
 using NUnit.Framework;
 
 namespace N2.Tests.Security
@@ -273,6 +274,18 @@ namespace N2.Tests.Security
 			var isAuthorized = map.Authorizes(user, item, Permission.Publish);
 
 			Assert.That(isAuthorized, Is.False);
+		}
+
+		[Test]
+		public void Admin_IsAuthorized_ForWrite_WhileNot_InItem_AuthorizedRoles()
+		{
+			var map = new DynamicPermissionMap(Permission.Full, new[] { "Administrators" }, new[] { "admin" });
+
+			var item = new SecurityPage();
+			DynamicPermissionMap.SetRoles(item, Permission.Read, new[] {"Administrators"});
+			bool isAuthorized = map.Authorizes(CreatePrincipal("admin"), item, Permission.Write);
+
+			Assert.That(isAuthorized, Is.True);
 		}
 	}
 }

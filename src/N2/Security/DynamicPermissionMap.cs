@@ -14,6 +14,19 @@ namespace N2.Security
 		const int MaxPermission = (int)Permission.Administer;
 		public const string AuthorizedRolesPrefix = "AuthorizedRoles_";
 
+
+		
+		public DynamicPermissionMap()
+		{
+		}
+
+		public DynamicPermissionMap(Permission permissionType, string[] roles, string[] users)
+			:base(permissionType, roles, users)
+		{
+		}
+
+
+
 		public override bool Authorizes(IPrincipal user, ContentItem item, Permission permission)
 		{
 			if(permission == Permission.None)
@@ -48,8 +61,10 @@ namespace N2.Security
 				}
 			}
 
-			return isContentAuthorized || base.Authorizes(user, item, permission);
+			return isContentAuthorized || (MapsTo(permission) && Contains(user));
 		}
+
+
 
 		public static void SetRoles(ContentItem item, Permission permission, params string[] roles)
 		{
@@ -133,7 +148,7 @@ namespace N2.Security
 			return roles;
 		}
 
-		static List<string> AddTo(ref List<string> roles, string role)
+		private static List<string> AddTo(ref List<string> roles, string role)
 		{
 			if (roles == null)
 				roles = new List<string>();
