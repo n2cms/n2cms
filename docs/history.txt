@@ -1,4 +1,5 @@
-﻿- added create, update, delete actions to templates base item
+﻿- made control panel attributes translatable
+- added create, update, delete actions to templates base item
 - updated edit page to support action
 - sort of "fixed" #22974: Bug ReturnUrl (url rewriter?) 1.4.5+
 - fixed #23180: MVC example ... Found no controller for type 'N2.Edit.Wizard.Items.MagicLocation'

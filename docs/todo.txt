@@ -1,4 +1,3 @@
-- crud actions
 - deprecate and replace mail stuff
 - auto-parts
 - "hidden" non-parts pages
