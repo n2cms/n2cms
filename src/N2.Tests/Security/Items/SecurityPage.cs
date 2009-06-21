@@ -4,7 +4,7 @@ using System.Text;
 
 namespace N2.Tests.Security.Items
 {
-	[N2.Definition("Page", "SecurityPage")]
+	[N2.PageDefinition("Page")]
     public class SecurityPage : N2.ContentItem
     {
     }

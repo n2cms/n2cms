@@ -7,7 +7,7 @@ using N2.Templates.Mvc.Items.Pages;
 namespace N2.Templates.Mvc.Items.Items
 {
 	[Disable]
-	[Definition("Top",
+	[PartDefinition("Top",
 		IconUrl = "~/Content/Img/page_white_star.png")]
 	[N2.Web.UI.FieldSetContainer("top", "Top", 100)]
 	[RestrictParents(typeof (LanguageRoot))]

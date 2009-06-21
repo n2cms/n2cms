@@ -6,7 +6,9 @@ using N2.Web.Mvc;
 
 namespace N2.Templates.Mvc.Items.Pages
 {
-	[Definition("Calendar", "Calendar", "A list of recent events.", "", 120)]
+	[PageDefinition("Calendar", 
+		Description = "A list of recent events.", 
+		SortOrder = 120)]
 	[RestrictParents(typeof (IStructuralPage))]
 	[MvcConventionTemplate("CalendarList")]
 	public class Calendar : AbstractContentPage

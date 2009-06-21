@@ -5,7 +5,7 @@ using N2.Details;
 
 namespace N2.Tests.Definitions.Items
 {
-	[Definition]
+	[PageDefinition]
 	public class DefinitionRemovable : ContentItem
 	{
 		[EditableTextBox]

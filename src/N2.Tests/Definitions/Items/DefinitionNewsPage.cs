@@ -5,7 +5,7 @@ using N2.Details;
 
 namespace N2.Tests.Definitions.Items
 {
-	[Definition]
+	[PageDefinition]
 	[N2.Web.UI.FieldSetContainer("specific", "News specific", 100)]
 	public class DefinitionNewsPage : DefinitionTextPage
 	{

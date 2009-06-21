@@ -1,6 +1,6 @@
 namespace N2.Tests.Definitions.Items
 {
-	[Definition]
+	[PartDefinition]
 	public class DefinitionRightColumnTeaser : DefinitionRightColumnPart
 	{
 	}

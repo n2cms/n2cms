@@ -61,7 +61,7 @@ namespace N2.Security
 				}
 			}
 
-			return isContentAuthorized || (MapsTo(permission) && Contains(user));
+			return isContentAuthorized || base.Authorizes(user, item, permission);
 		}
 
 

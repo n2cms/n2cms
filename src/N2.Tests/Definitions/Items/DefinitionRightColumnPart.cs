@@ -5,7 +5,7 @@ using N2.Integrity;
 
 namespace N2.Tests.Definitions.Items
 {
-	[Definition]
+	[PartDefinition]
 	[AllowedZones("Right")]
 	public abstract class DefinitionRightColumnPart : N2.ContentItem
 	{

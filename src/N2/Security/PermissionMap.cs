@@ -42,7 +42,10 @@ namespace N2.Security
 
 		public virtual bool Authorizes(IPrincipal user, ContentItem item, Permission permission)
 		{
-			return MapsTo(permission) && Contains(user) && item.IsAuthorized(user);
+			if(permission == Permission.Read && !item.IsAuthorized(user))
+				return false;
+
+			return MapsTo(permission) && Contains(user);
 		}
 
 		protected bool IsInUsers(string userName)

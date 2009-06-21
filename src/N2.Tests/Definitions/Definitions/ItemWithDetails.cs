@@ -4,7 +4,7 @@ using System.Text;
 
 namespace N2.Tests.Definitions.Definitions
 {
-	[N2.Definition("Item With Details", "ItemWithDetails", ToolTip="Detailed item tooltip", SortOrder=123)]
+	[N2.Definition("Item With Details", ToolTip = "Detailed item tooltip", SortOrder = 123)]
 	[N2.Integrity.AllowedChildren(typeof(ItemInZone1Or2))]
 	[N2.Integrity.RestrictParents(typeof(ItemInZone1Or2))]
 	[N2.Integrity.AvailableZone("Zone1", "Zone1")]

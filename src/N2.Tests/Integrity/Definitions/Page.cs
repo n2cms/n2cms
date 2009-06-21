@@ -6,7 +6,7 @@ using N2;
 
 namespace N2.Tests.Integrity.Definitions
 {
-	[N2.Definition("Page", "DefinitionsPage")]
+	[N2.PageDefinition("Page", Name = "DefinitionsPage")]
 	[N2.Integrity.RestrictParents(typeof(StartPage))]
 	public class Page : N2.ContentItem
 	{

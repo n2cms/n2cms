@@ -7,7 +7,7 @@ using N2.Integrity;
 
 namespace N2.Tests.Integrity.Definitions
 {
-	[Definition]
+	[PageDefinition]
 	[RestrictParents(AllowedTypes.None)] // no parents allowed
 	public class StartPage : N2.ContentItem
 	{

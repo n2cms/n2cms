@@ -5,7 +5,7 @@ using N2.Integrity;
 
 namespace N2.Tests.Integrity.Definitions
 {
-	[Definition]
+	[PageDefinition]
 	[AllowedChildren(typeof(StartPage))]
 	public class Root : N2.ContentItem
 	{

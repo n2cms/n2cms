@@ -4,7 +4,7 @@ using System.Text;
 
 namespace N2.Tests.Persistence.Definitions
 {
-	[Definition("Default persistable Item", "PersistableItem")]
+	[PageDefinition("Default persistable Item", Name = "PersistableItem")]
 	public class PersistableItem1 : N2.ContentItem
 	{
 		public virtual bool BoolProperty

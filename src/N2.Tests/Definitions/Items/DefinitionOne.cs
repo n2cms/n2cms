@@ -4,7 +4,7 @@ using System.Text;
 
 namespace N2.Tests.Definitions.Items
 {
-	[Definition]
+	[PageDefinition]
 	public class DefinitionOne : N2.ContentItem
 	{
 	}

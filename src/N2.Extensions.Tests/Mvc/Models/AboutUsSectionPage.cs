@@ -2,7 +2,7 @@
 
 namespace N2.Extensions.Tests.Mvc.Models
 {
-	[Definition]
+	[PageDefinition]
 	public class AboutUsSectionPage : ContentItem
 	{
 		public override string Url

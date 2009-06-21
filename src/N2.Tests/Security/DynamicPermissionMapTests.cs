@@ -277,13 +277,15 @@ namespace N2.Tests.Security
 		}
 
 		[Test]
-		public void Admin_IsAuthorized_ForWrite_WhileNot_InItem_AuthorizedRoles()
+		public void Admin_IsAuthorized_ForWrite_WhileItemDisallowsRead()
 		{
 			var map = new DynamicPermissionMap(Permission.Full, new[] { "Administrators" }, new[] { "admin" });
-
+			
 			var item = new SecurityPage();
 			DynamicPermissionMap.SetRoles(item, Permission.Read, new[] {"Administrators"});
-			bool isAuthorized = map.Authorizes(CreatePrincipal("admin"), item, Permission.Write);
+			IPrincipal adminUser = CreatePrincipal("admin");
+			
+			bool isAuthorized = map.Authorizes(adminUser, item, Permission.Write);
 
 			Assert.That(isAuthorized, Is.True);
 		}

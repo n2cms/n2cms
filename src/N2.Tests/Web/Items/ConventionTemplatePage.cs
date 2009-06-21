@@ -4,12 +4,12 @@
 
 namespace N2.Tests.Web.Items
 {
-	[Definition, ConventionTemplate]
+	[PageDefinition, ConventionTemplate]
 	public class ConventionTemplatePage : ContentItem
 	{
 	}
 
-	[Definition, ConventionTemplate("SomeOtherTemplate")]
+	[PageDefinition, ConventionTemplate("SomeOtherTemplate")]
 	public class ConventionTemplatePage2 : ContentItem
 	{
 	}

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace N2.Tests.MediumTrust
 {
-	[Definition]
+	[PageDefinition]
 	public class MediumTrustPage : ContentItem
 	{
 	}

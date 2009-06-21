@@ -4,7 +4,7 @@ using System.Text;
 
 namespace N2.Tests.Persistence.Definitions
 {
-	[Definition]
+	[PageDefinition]
 	public class NonVirtualItem : ContentItem
 	{
 		public bool BoolProperty

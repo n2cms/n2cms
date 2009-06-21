@@ -5,7 +5,7 @@ using System.Text;
 
 namespace N2.Extensions.Tests.Linq
 {
-	[Definition]
+	[PageDefinition]
 	public class LinqItem : ContentItem
 	{
 		[N2.Details.EditableTextBox("StringProperty", 100)]
