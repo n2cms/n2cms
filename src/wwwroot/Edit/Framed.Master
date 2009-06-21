@@ -3,12 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
     <head id="Head1" runat="server">
         <title id="title" runat="server"></title>
-        <link rel="stylesheet" href="Css/All.css" type="text/css" />
-        <link rel="stylesheet" href="Css/Framed.css" type="text/css" />
-        <%--<link rel="stylesheet" href="Css/Framed.css" type="text/css" />
-        <link rel="stylesheet" href="Css/gridView.css" type="text/css" />--%>
+        <link rel="stylesheet" href="~/Edit/Css/All.css" type="text/css" runat="server" />
+        <link rel="stylesheet" href="~/Edit/Css/Framed.css" type="text/css" runat="server" />
         <!--[if lte IE 6]>
-            <link href="Css/IE6.css" rel="stylesheet" type="text/css" />
+            <link href="~/Edit/Css/IE6.css" rel="stylesheet" type="text/css" runat="server" />
         <![endif]-->
         <asp:ContentPlaceHolder ID="Head" runat="server" />
     </head>

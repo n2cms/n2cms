@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 using N2.Persistence;
 using System.Diagnostics;
 using N2.Configuration;

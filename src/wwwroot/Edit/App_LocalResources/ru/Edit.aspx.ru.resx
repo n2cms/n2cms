@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnSave.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/disk.gif' /&gt; Сохранить и публиковать</value>
+    <value>Сохранить и публиковать</value>
   </data>
   <data name="btnSave.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="btnSaveUnpublished.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/png/book_next.png' /&gt; Сохранить без публикации</value>
+    <value>Сохранить без публикации</value>
   </data>
   <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
     <value>Сохранить изменения без публикации. Вы можете позже опубликовать или удалить эти изменения.</value>
@@ -184,7 +184,7 @@
     <value>'{0}' сохранен, производится перенаправление...</value>
   </data>
   <data name="btnPreview.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/png/zoom.png' /&gt;Предварительный просмотр</value>
+    <value>Предварительный просмотр</value>
   </data>
   <data name="btnPreview.ToolTip" xml:space="preserve">
     <value>Сохранить новую версию изменений и просмотреть их перед публикацией.</value>

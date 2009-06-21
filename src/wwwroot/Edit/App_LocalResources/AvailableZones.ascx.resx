@@ -121,7 +121,7 @@
     <value>Zones</value>
   </data>
   <data name="hlNew.TextFormat" xml:space="preserve">
-    <value>&lt;img src='img/ico/add.gif'&gt; New</value>
+    <value>New</value>
   </data>
   <data name="hlNew.ToolTip" xml:space="preserve">
     <value>Create new item</value>

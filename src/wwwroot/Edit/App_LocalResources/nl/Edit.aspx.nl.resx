@@ -124,7 +124,7 @@
     <value>Bekijk een niet gepubliceerd voorbeeld van de wijzigingen</value>
   </data>
   <data name="btnSave.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/disk.gif' /&gt; Opslaan en publiceren</value>
+    <value>Opslaan en publiceren</value>
   </data>
   <data name="btnSave.ToolTip" xml:space="preserve">
     <value />

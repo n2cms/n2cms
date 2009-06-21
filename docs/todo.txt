@@ -1,4 +1,3 @@
-- fix admin unable to write when no public read permission
 - crud actions
 - deprecate and replace mail stuff
 - auto-parts

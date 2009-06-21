@@ -15,6 +15,9 @@ namespace N2.Edit.Web
 	/// </summary>
     public class EditPage : Page
     {
+		private ContentItem selectedItem;
+		private ContentItem memorizedItem = null;
+		
 		protected override void OnInit(EventArgs e)
 		{
 			RegisterScripts();
@@ -69,6 +72,8 @@ namespace N2.Edit.Web
 		/// <param name="permission">The permission to check.</param>
 		protected bool IsAuthorized(ContentItem item, Permission permission)
 		{
+			if(Engine.SecurityManager.IsAdmin(User))
+				return true;
 			return Engine.SecurityManager.IsAuthorized(User, item, permission);
 		}
 
@@ -247,27 +252,29 @@ if(window.n2ctx){{
 		{
 			get { return SelectedItem as INode; }
 		}
-		
+
 		/// <summary>Gets the currently selected item by the tree menu in edit mode.</summary>
+
 		public virtual ContentItem SelectedItem
 		{
 			get
 			{
-				ContentItem selectedItem = GetFromViewState()
-					?? GetFromUrl()
-					?? Engine.UrlParser.StartPage;
+				if(selectedItem == null)
+				{
+					selectedItem = GetFromViewState()
+						?? GetFromUrl()
+						?? Engine.UrlParser.CurrentPage
+						?? Engine.UrlParser.StartPage;					
+				}
 				return selectedItem;
 			}
 			set
 			{
-				if (value != null)
-					SelectedItemID = value.ID;
-				else
-					SelectedItemID = 0;
+				selectedItem = value;
+				SelectedItemID = value != null ? value.ID : 0;
 			}
 		}
 
-		private ContentItem memorizedItem = null;
 		protected ContentItem MemorizedItem
 		{
 			get { return memorizedItem ?? (memorizedItem = Engine.Resolve<Navigator>().Navigate(Request.QueryString["memory"])); }

@@ -67,6 +67,21 @@
 									<xs:all>
 										<xs:element name="urls" minOccurs="0">
 											<xs:complexType>
+												<xs:all>
+													<xs:element name="nonRewritable" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="remove" minOccurs="0" type="tns:namedElement" />
+																<xs:element name="add" minOccurs="0">
+																	<xs:complexType>
+																		<xs:attribute name="name" type="xs:string" use="required"/>
+																		<xs:attribute name="virtualPath" type="xs:string" use="required"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
 												<xs:attribute name="enableCaching" type="xs:boolean" use="optional" />
 											</xs:complexType>
 										</xs:element>

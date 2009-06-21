@@ -280,6 +280,8 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Configuration\PermissionElement.cs" />
+    <Compile Include="Configuration\VirtualPathCollection.cs" />
+    <Compile Include="Configuration\VirtualPathElement.cs" />
     <Compile Include="Definitions\AbstractDefinition.cs" />
     <Compile Include="Collections\BranchHierarchyBuilder.cs" />
     <Compile Include="Collections\CompositeFilter.cs" />

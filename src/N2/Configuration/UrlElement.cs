@@ -17,5 +17,12 @@ namespace N2.Configuration
 			get { return (bool)base["enableCaching"]; }
 			set { base["enableCaching"] = value; }
 		}
+
+		[ConfigurationProperty("nonRewritable")]
+		public VirtualPathCollection NonRewritable
+		{
+			get { return (VirtualPathCollection)base["nonRewritable"]; }
+			set { base["nonRewritable"] = value; }
+		}
 	}
 }

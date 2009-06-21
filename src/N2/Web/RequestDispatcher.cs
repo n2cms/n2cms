@@ -19,7 +19,7 @@ namespace N2.Web
 		readonly bool rewriteEmptyExtension = true;
 		readonly bool observeAllExtensions = true;
 		readonly string[] observedExtensions = new[] { ".aspx" };
-
+		readonly string[] nonRewritablePaths = new[] {"~/edit/"};
 
 		public RequestDispatcher(IContentAdapterProvider aspectProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
 		{
@@ -36,6 +36,7 @@ namespace N2.Web
                 additionalExtensions.CopyTo(observedExtensions, 1);
             }
 			observedExtensions[0] = config.Web.Extension;
+			nonRewritablePaths = config.Web.Urls.NonRewritable.GetPaths(webContext);
 		}
 
 		/// <summary>Resolves the controller for the current Url.</summary>
@@ -45,8 +46,16 @@ namespace N2.Web
 			T controller = RequestItem<T>.Instance;
 			if (controller != null) return controller;
 
-			PathData path = ResolveUrl(webContext.Url);
-			controller = aspectProvider.ResolveAdapter<T>(path);
+			Url url = webContext.Url;
+			string path = url.Path;
+			foreach (string nonRewritablePath in nonRewritablePaths)
+			{
+				if(path.StartsWith(nonRewritablePath))
+					return null;
+			}
+
+			PathData data = ResolveUrl(url);
+			controller = aspectProvider.ResolveAdapter<T>(data);
 			
 			RequestItem<T>.Instance = controller;
 			return controller;

@@ -77,8 +77,8 @@
 							  OnItemCreated="rptPermissions_ItemCreated"><ItemTemplate>
 					<td>
 						<asp:CheckBox ID="cbRole" runat="server" 
-									  Checked="<%# Is(GetRole(Container), (Permission)Container.DataItem) %>" 
-									  CssClass='<%# "cb permission" + Container.ItemIndex + " Authorized" + IsAuthorized(GetRole(Container), (Permission)Container.DataItem) %>' />
+									  Checked="<%# IsRolePermitted(GetRole(Container), (Permission)Container.DataItem) %>" 
+									  CssClass='<%# "cb permission" + Container.ItemIndex + " Authorized" + IsUserPermitted(GetRole(Container), (Permission)Container.DataItem) %>' />
 					</td>
 				</ItemTemplate></asp:Repeater>
 			</tr>	

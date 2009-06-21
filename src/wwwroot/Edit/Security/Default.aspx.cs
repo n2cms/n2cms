@@ -107,21 +107,24 @@ namespace N2.Edit.Security
 			return DynamicPermissionMap.IsAllRoles(SelectedItem, permission);
 		}
 
-		protected bool Is(string role, Permission permission)
+		protected bool IsRolePermitted(string role, Permission permission)
 		{
-			return Is(SelectedItem, role, permission);
+			return IsRolePermitted(SelectedItem, role, permission);
 		}
 
-		protected bool Is(ContentItem item, string role, Permission permission)
+		protected bool IsRolePermitted(ContentItem item, string role, Permission permission)
 		{
 			GenericPrincipal tempUser = TempUserWithRole(role);
 			bool isAuthorized = Engine.SecurityManager.IsAuthorized(tempUser, item, permission);
 			return isAuthorized;
 		}
 
-		protected bool IsAuthorized(string role, Permission permission)
+		protected bool IsUserPermitted(string role, Permission permission)
 		{
-			bool isInRole = User.IsInRole(role) || Engine.SecurityManager.IsAdmin(User);
+			if(Engine.SecurityManager.IsAdmin(User))
+				return true;
+
+			bool isInRole = User.IsInRole(role);
 			bool isAuthorized = Engine.SecurityManager.IsAuthorized(User, SelectedItem, permission);
 			return isInRole && isAuthorized;
 		}
@@ -184,8 +187,8 @@ namespace N2.Edit.Security
 						CheckBox cb = (CheckBox)map[i, j].FindControl("cbRole");
 
 						// try to avoid security breaches
-						if (!IsAuthorized(role, permission))
-							cb.Checked = Is(role, permission);
+						if (!IsUserPermitted(role, permission))
+							cb.Checked = IsRolePermitted(role, permission);
 						
 						if (cb.Checked)
 						{

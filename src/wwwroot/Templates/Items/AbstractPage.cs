@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using N2.Collections;
 using N2.Details;
+using N2.Web;
 using N2.Web.UI;
 using System;
 
@@ -14,7 +15,10 @@ namespace N2.Templates.Items
 	[WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content)]
 	[TabContainer(Tabs.Content, "Content", Tabs.ContentIndex)]
     [TabContainer(Tabs.Advanced, "Advanced", Tabs.AdvancedIndex)]
-    public abstract class AbstractPage : ContentItem
+	[Template("create", "~/edit/new.aspx")]
+	[Template("update", "~/edit/edit.aspx")]
+	[Template("delete", "~/edit/delete.aspx")]
+	public abstract class AbstractPage : ContentItem
 	{
 		/// <summary>The name without extension .png of an icon file located in /Templates/UI/Img/. Defaults to "page".</summary>
 		[Obsolete("No longer useful, sorry.")]

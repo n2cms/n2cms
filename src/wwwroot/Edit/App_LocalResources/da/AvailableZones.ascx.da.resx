@@ -121,7 +121,7 @@
     <value>Zoner</value>
   </data>
   <data name="hlNew.TextFormat" xml:space="preserve">
-    <value>&lt;img src='img/ico/add.gif' alt='Opret' /&gt; Ny</value>
+    <value>Ny</value>
   </data>
   <data name="hlNew.ToolTip" xml:space="preserve">
     <value>Opret ny artikel i zonen</value>

@@ -4,7 +4,7 @@
 <%@ Register Src="AvailableZones.ascx" TagName="AvailableZones" TagPrefix="uc1" %>
 <%@ Register Src="ItemInfo.ascx" TagName="ItemInfo" TagPrefix="uc1" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
-    <link rel="stylesheet" href="Css/edit.css" type="text/css" />
+    <link rel="stylesheet" href="<%= ResolveUrl("~/Edit/Css/edit.css") %>" type="text/css" />
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">
@@ -13,9 +13,9 @@
 		<asp:HyperLink ID="hlInfo" runat="server" CssClass="showInfo command" meta:resourceKey="hlInfo" NavigateUrl="javascript:void(0);">Info</asp:HyperLink>
     </div>
     <n2:OptionsMenu id="om" runat="server">
-		<asp:LinkButton ID="btnSavePublish" OnCommand="OnSaveCommand" runat="server" CssClass="command" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
-		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
-		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
+		<asp:LinkButton ID="btnSavePublish" OnCommand="OnSaveCommand" runat="server" CssClass="command iconed publish" meta:resourceKey="btnSave">Save and publish</asp:LinkButton>
+		<asp:LinkButton ID="btnPreview" OnCommand="OnPreviewCommand" runat="server" CssClass="command plain iconed preview" meta:resourceKey="btnPreview">Save and preview</asp:LinkButton>
+		<asp:LinkButton ID="btnSaveUnpublished" OnCommand="OnSaveUnpublishedCommand" runat="server" CssClass="command plain iconed save" meta:resourceKey="btnSaveUnpublished">Save an unpublished version</asp:LinkButton>
     </n2:OptionsMenu>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">Cancel</asp:HyperLink>
 </asp:Content>

@@ -1,4 +1,7 @@
-﻿- fixed #23180: MVC example ... Found no controller for type 'N2.Edit.Wizard.Items.MagicLocation'
+﻿- added create, update, delete actions to templates base item
+- updated edit page to support action
+- sort of "fixed" #22974: Bug ReturnUrl (url rewriter?) 1.4.5+
+- fixed #23180: MVC example ... Found no controller for type 'N2.Edit.Wizard.Items.MagicLocation'
 - login part now redirects to same page when no login page is set
 - fixed control panel screwing up "eye" url
 - applied tonez's patch #3010 event when publishing, update saved by

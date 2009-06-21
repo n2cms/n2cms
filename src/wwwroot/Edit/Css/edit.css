@@ -102,3 +102,10 @@ input.disabled, .disabled *, input.dimmed, .dimmed *
 .editDetail .mceIframeContainer
     { border:solid 1px #ccc; }
 .editDetail .mceEditor table { background-color:#fff; }
+
+.framed .iconed { background:transparent none no-repeat 2px 50%; padding-left:19px; }
+.framed .iconed:hover { padding-left:18px; background-position:1px 50%; }
+.framed .publish.iconed { background-image:url(../img/ico/disk.gif); }
+.framed .save.iconed { background-image:url(../img/ico/png/book_next.png); }
+.framed .preview.iconed { background-image:url(../img/ico/png/zoom.png); }
+.framed .new.iconed { background-image:url(../img/ico/add.gif); }
