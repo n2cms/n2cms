@@ -117,76 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnSave.Text" xml:space="preserve">
-    <value>Зачувај и објави</value>
+  <data name="btnAddResource1.Text" xml:space="preserve">
+    <value>Dodaj</value>
   </data>
-  <data name="btnSave.ToolTip" xml:space="preserve">
+  <data name="btnAddResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="btnSaveUnpublished.Text" xml:space="preserve">
-    <value>Зачувај без објавување</value>
-  </data>
-  <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
-    <value>Зачувај ги направените измени без да ги објавиш. Можеш да ја продолжиш својата работа подоцна или да ги отфрлиш промените.</value>
+  <data name="ddlTypesResource1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Откажи</value>
+    <value>Prekliči</value>
   </data>
   <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="hlEditParent.Text" xml:space="preserve">
-    <value>Измени го родителот</value>
-  </data>
-  <data name="hlEditParent.ToolTip" xml:space="preserve">
+  <data name="imgIcoResource1.AlternateText" xml:space="preserve">
     <value />
   </data>
-  <data name="hlInfo.Text" xml:space="preserve">
-    <value>Информации</value>
-  </data>
-  <data name="hlInfo.ToolTip" xml:space="preserve">
+  <data name="imgIcoResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="hlNewerVersionResource1.Text" xml:space="preserve">
-    <value>Постои понова верзија од овој податок која што не е објавена. Измени ја поновата верзија &amp;raquo;</value>
+  <data name="LabelResource1.Text" xml:space="preserve">
+    <value>Naslov</value>
   </data>
-  <data name="hlNewerVersionResource1.ToolTip" xml:space="preserve">
-    <value>Измени ја поновата верзија</value>
-  </data>
-  <data name="hlOlderVersionResource1.Text" xml:space="preserve">
-    <value>Ова е верзија од друг податок кој што е моментално објавен. Измени ја моментално објавената верзија &amp;raquo;</value>
-  </data>
-  <data name="hlOlderVersionResource1.ToolTip" xml:space="preserve">
-    <value>Измени ја моментално објавената верзија</value>
-  </data>
-  <data name="HyperLinkResource1.Text" xml:space="preserve">
+  <data name="LabelResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="HyperLinkResource1.ToolTip" xml:space="preserve">
+  <data name="LabelResource2.Text" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="LabelResource2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LabelResource3.Text" xml:space="preserve">
+    <value>Dodano</value>
+  </data>
+  <data name="LabelResource3.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
-    <value>Измени</value>
+    <value>Čarovnik</value>
   </data>
-  <data name="vsEdit.HeaderText" xml:space="preserve">
-    <value>Податокот не можеше да се зачува. Ве молам погледнете ја следнава порака:</value>
+  <data name="tpAddResource1.GroupingText" xml:space="preserve">
+    <value />
   </data>
-  <data name="vsEdit.ToolTip" xml:space="preserve">
-    <value>Податокот не можеше да се зачува</value>
+  <data name="tpAddResource1.ToolTip" xml:space="preserve">
+    <value>Dodaj lokacijo</value>
   </data>
-  <data name="EditPage.TitleFormat.New" xml:space="preserve">
-    <value>Нов/а "{0}"</value>
+  <data name="tpTypeResource1.GroupingText" xml:space="preserve">
+    <value />
   </data>
-  <data name="EditPage.TitleFormat.Update" xml:space="preserve">
-    <value>Измени "{0}"</value>
+  <data name="tpTypeResource1.ToolTip" xml:space="preserve">
+    <value>Izberi tip</value>
   </data>
-  <data name="SavedFormat" xml:space="preserve">
-    <value>'{0}' зачуван, редиректирам...</value>
+  <data name="txtTitleResource1.Text" xml:space="preserve">
+    <value />
   </data>
-  <data name="btnPreview.Text" xml:space="preserve">
-    <value>Прегледај ги промените</value>
+  <data name="txtTitleResource1.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="btnPreview.ToolTip" xml:space="preserve">
-    <value>Зачувај верзија на овие промени и прегледај ги пред да ја објавиш страната.</value>
+  <data name="lblNoItems.Text" xml:space="preserve">
+    <value>Dodani ni nobena lokacija. Prosim, v navigacijskem drevesu izberite lokacijo, kjer bi radi naredili bljižnjico in kliknite "Dodaj lokacijo".</value>
   </data>
 </root>

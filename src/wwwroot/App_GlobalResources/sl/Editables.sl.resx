@@ -117,76 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnSave.Text" xml:space="preserve">
-    <value>Зачувај и објави</value>
+  <data name="advanced.TabText" xml:space="preserve">
+    <value>Napredno</value>
   </data>
-  <data name="btnSave.ToolTip" xml:space="preserve">
-    <value />
+  <data name="FooterText.Title" xml:space="preserve">
+    <value>Besedilo v nogi</value>
   </data>
-  <data name="btnSaveUnpublished.Text" xml:space="preserve">
-    <value>Зачувај без објавување</value>
+  <data name="HostName.HelpTitle" xml:space="preserve">
+    <value>Uporabljeno v različnih scenarijih za določitev katera začetna stran ustreza določeni domeni (npr. n2cms.com)</value>
   </data>
-  <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
-    <value>Зачувај ги направените измени без да ги објавиш. Можеш да ја продолжиш својата работа подоцна или да ги отфрлиш промените.</value>
+  <data name="HostName.Title" xml:space="preserve">
+    <value>Ime gostitelja</value>
   </data>
-  <data name="hlCancel.Text" xml:space="preserve">
-    <value>Откажи</value>
+  <data name="Image.HelpTitle" xml:space="preserve">
+    <value>Prikazano nad glavnim besedilom</value>
   </data>
-  <data name="hlCancel.ToolTip" xml:space="preserve">
-    <value />
+  <data name="Image.Title" xml:space="preserve">
+    <value>Glavna slika</value>
   </data>
-  <data name="hlEditParent.Text" xml:space="preserve">
-    <value>Измени го родителот</value>
+  <data name="Images.Title" xml:space="preserve">
+    <value>Slike (en URL slike v vsako vrstico)</value>
   </data>
-  <data name="hlEditParent.ToolTip" xml:space="preserve">
-    <value />
+  <data name="LatestChangesMaxCount.Title" xml:space="preserve">
+    <value>Zadnje spremembe </value>
   </data>
-  <data name="hlInfo.Text" xml:space="preserve">
-    <value>Информации</value>
+  <data name="Layout.Title" xml:space="preserve">
+    <value>Postavitev na strani</value>
   </data>
-  <data name="hlInfo.ToolTip" xml:space="preserve">
-    <value />
+  <data name="LinkText.Title" xml:space="preserve">
+    <value>Povezano besedilo</value>
   </data>
-  <data name="hlNewerVersionResource1.Text" xml:space="preserve">
-    <value>Постои понова верзија од овој податок која што не е објавена. Измени ја поновата верзија &amp;raquo;</value>
+  <data name="LinkUrl.Title" xml:space="preserve">
+    <value>URL povazave</value>
   </data>
-  <data name="hlNewerVersionResource1.ToolTip" xml:space="preserve">
-    <value>Измени ја поновата верзија</value>
+  <data name="Name.HelpTitle" xml:space="preserve">
+    <value>Prikazano v vrstici z naslovom</value>
   </data>
-  <data name="hlOlderVersionResource1.Text" xml:space="preserve">
-    <value>Ова е верзија од друг податок кој што е моментално објавен. Измени ја моментално објавената верзија &amp;raquo;</value>
+  <data name="Name.Title" xml:space="preserve">
+    <value>URL segment</value>
   </data>
-  <data name="hlOlderVersionResource1.ToolTip" xml:space="preserve">
-    <value>Измени ја моментално објавената верзија</value>
+  <data name="Published.BetweenText" xml:space="preserve">
+    <value>in</value>
   </data>
-  <data name="HyperLinkResource1.Text" xml:space="preserve">
-    <value />
+  <data name="Published.CheckBoxText" xml:space="preserve">
+    <value>Objavljeno med</value>
   </data>
-  <data name="HyperLinkResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="Published.HelpTitle" xml:space="preserve">
+    <value>Stran je na voljo obiskovalcem med tema datumoma. Prazen začetni datum pomeni, da element še ni objavljen. Prazen končni datum pomeni, da element nikoli ne poteče.</value>
   </data>
-  <data name="PageResource1.Title" xml:space="preserve">
-    <value>Измени</value>
+  <data name="RedirectUrl.Title" xml:space="preserve">
+    <value>Preusmeri na</value>
   </data>
-  <data name="vsEdit.HeaderText" xml:space="preserve">
-    <value>Податокот не можеше да се зачува. Ве молам погледнете ја следнава порака:</value>
+  <data name="ShowTitle.HelpTitle" xml:space="preserve">
+    <value>Odkljukanje te možnosti skrije naslov strani</value>
   </data>
-  <data name="vsEdit.ToolTip" xml:space="preserve">
-    <value>Податокот не можеше да се зачува</value>
+  <data name="ShowTitle.Title" xml:space="preserve">
+    <value>Prikaži naslov strani</value>
   </data>
-  <data name="EditPage.TitleFormat.New" xml:space="preserve">
-    <value>Нов/а "{0}"</value>
+  <data name="SmtpHost.Title" xml:space="preserve">
+    <value>Gostitelj</value>
   </data>
-  <data name="EditPage.TitleFormat.Update" xml:space="preserve">
-    <value>Измени "{0}"</value>
+  <data name="SmtpPassword" xml:space="preserve">
+    <value>Geslo</value>
   </data>
-  <data name="SavedFormat" xml:space="preserve">
-    <value>'{0}' зачуван, редиректирам...</value>
+  <data name="SmtpPort.Title" xml:space="preserve">
+    <value>Vrata</value>
   </data>
-  <data name="btnPreview.Text" xml:space="preserve">
-    <value>Прегледај ги промените</value>
+  <data name="SmtpUser.Title" xml:space="preserve">
+    <value>Uporabnik</value>
   </data>
-  <data name="btnPreview.ToolTip" xml:space="preserve">
-    <value>Зачувај верзија на овие промени и прегледај ги пред да ја објавиш страната.</value>
+  <data name="Text.HelpTitle" xml:space="preserve">
+    <value>Privzeto besedilo na tej strani, prikazano v sredinskem stolpcu.</value>
+  </data>
+  <data name="Text.Title" xml:space="preserve">
+    <value>Glavno besedilo</value>
+  </data>
+  <data name="Theme.Title" xml:space="preserve">
+    <value>Tema spletišča</value>
+  </data>
+  <data name="Title.HelpTitle" xml:space="preserve">
+    <value>Prikazano kot glava strani in v menijih</value>
+  </data>
+  <data name="Title.Title" xml:space="preserve">
+    <value>Naslov</value>
+  </data>
+  <data name="Visible.HelpTitle" xml:space="preserve">
+    <value>Odkljukanje te možnosti skrije stran v menijih, a je še vedno dostopna, če poznaš naslov.</value>
+  </data>
+  <data name="Visible.Title" xml:space="preserve">
+    <value>Vidna v meniju</value>
   </data>
 </root>

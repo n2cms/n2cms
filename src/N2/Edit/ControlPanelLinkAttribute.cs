@@ -61,10 +61,9 @@ namespace N2.Edit
 			if(!ActiveFor(container, context.State))
 				return null;
 
+			HyperLink link = new HyperLink();
 			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
 			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
-
-			HyperLink link = new HyperLink();
 			link.Text = GetInnerHtml(IconUrl, tooltip, title);
 			Url url = context.Format(NavigateUrl, UrlEncode);
 			if (!string.IsNullOrEmpty(NavigateQuery))

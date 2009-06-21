@@ -1,4 +1,6 @@
-﻿- applied tonez's patch #3113: Hide "Manage users" button if membership provider is not defined.
+﻿- applied tonez's patch #3098(a): Localization patch for Slovenian language.
+- applied tonez's patch #3098(b): Some hardcoded strings were added to App_GlobalResources\ControlPanel.resx
+- applied tonez's patch #3113: Hide "Manage users" button if membership provider is not defined.
 - made control panel attributes translatable
 - added create, update, delete actions to templates base item
 - updated edit page to support action

@@ -117,76 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnSave.Text" xml:space="preserve">
-    <value>Зачувај и објави</value>
+  <data name="btnCreateFolder.Text" xml:space="preserve">
+    <value>V redu</value>
   </data>
-  <data name="btnSave.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnDelete.Text" xml:space="preserve">
+    <value>&lt;img src="../img/ico/delete.gif" /&gt; Izbriši</value>
   </data>
-  <data name="btnSaveUnpublished.Text" xml:space="preserve">
-    <value>Зачувај без објавување</value>
+  <data name="cvDeleteProblem.ErrorMessage" xml:space="preserve">
+    <value>Napaka pri brisanju datoteke/mape. Vzrok je lahko vključitev datotek samo za branje ali nezadostno dovoljenje za prenos na server. </value>
   </data>
-  <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
-    <value>Зачувај ги направените измени без да ги објавиш. Можеш да ја продолжиш својата работа подоцна или да ги отфрлиш промените.</value>
+  <data name="cvDeleteRoot.ErrorMessage" xml:space="preserve">
+    <value>Glavne mape se ne da izbrisati</value>
+  </data>
+  <data name="fileManagementPage.Title" xml:space="preserve">
+    <value>Upravitelj datotek</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Откажи</value>
+    <value>Prekliči</value>
   </data>
-  <data name="hlCancel.ToolTip" xml:space="preserve">
-    <value />
+  <data name="hlItems.Text" xml:space="preserve">
+    <value>&lt;img src="../img/ico/page.gif" /&gt; Elementi</value>
   </data>
-  <data name="hlEditParent.Text" xml:space="preserve">
-    <value>Измени го родителот</value>
+  <data name="hlNewFolder.Text" xml:space="preserve">
+    <value>&lt;img src="../img/ico/folder_add.gif" /&gt; Nova mapa</value>
   </data>
-  <data name="hlEditParent.ToolTip" xml:space="preserve">
-    <value />
+  <data name="hlUpload.Text" xml:space="preserve">
+    <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; Naloži</value>
   </data>
-  <data name="hlInfo.Text" xml:space="preserve">
-    <value>Информации</value>
+  <data name="lblFolder.Text" xml:space="preserve">
+    <value>Ime mape</value>
   </data>
-  <data name="hlInfo.ToolTip" xml:space="preserve">
-    <value />
+  <data name="lblUpload.Text" xml:space="preserve">
+    <value>Izberi datoteko</value>
   </data>
-  <data name="hlNewerVersionResource1.Text" xml:space="preserve">
-    <value>Постои понова верзија од овој податок која што не е објавена. Измени ја поновата верзија &amp;raquo;</value>
-  </data>
-  <data name="hlNewerVersionResource1.ToolTip" xml:space="preserve">
-    <value>Измени ја поновата верзија</value>
-  </data>
-  <data name="hlOlderVersionResource1.Text" xml:space="preserve">
-    <value>Ова е верзија од друг податок кој што е моментално објавен. Измени ја моментално објавената верзија &amp;raquo;</value>
-  </data>
-  <data name="hlOlderVersionResource1.ToolTip" xml:space="preserve">
-    <value>Измени ја моментално објавената верзија</value>
-  </data>
-  <data name="HyperLinkResource1.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="HyperLinkResource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PageResource1.Title" xml:space="preserve">
-    <value>Измени</value>
-  </data>
-  <data name="vsEdit.HeaderText" xml:space="preserve">
-    <value>Податокот не можеше да се зачува. Ве молам погледнете ја следнава порака:</value>
-  </data>
-  <data name="vsEdit.ToolTip" xml:space="preserve">
-    <value>Податокот не можеше да се зачува</value>
-  </data>
-  <data name="EditPage.TitleFormat.New" xml:space="preserve">
-    <value>Нов/а "{0}"</value>
-  </data>
-  <data name="EditPage.TitleFormat.Update" xml:space="preserve">
-    <value>Измени "{0}"</value>
-  </data>
-  <data name="SavedFormat" xml:space="preserve">
-    <value>'{0}' зачуван, редиректирам...</value>
-  </data>
-  <data name="btnPreview.Text" xml:space="preserve">
-    <value>Прегледај ги промените</value>
-  </data>
-  <data name="btnPreview.ToolTip" xml:space="preserve">
-    <value>Зачувај верзија на овие промени и прегледај ги пред да ја објавиш страната.</value>
+  <data name="revFolder.ErrorMessage" xml:space="preserve">
+    <value>Podprti so samo alfanumerični znaki.</value>
   </data>
 </root>

@@ -25,9 +25,9 @@ namespace N2.Edit
 
 			LinkButton btn = new LinkButton();
 			btn.Text = GetInnerHtml(IconUrl, ToolTip, Title);
+			btn.ToolTip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? context.Format(ToolTip, false);
 			btn.CssClass = "save";
 			container.Controls.Add(btn);
-
 			btn.Command += delegate
 				{
 

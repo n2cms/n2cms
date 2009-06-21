@@ -8,6 +8,7 @@ using System.Web;
 using N2.Integrity;
 using System.Diagnostics;
 using N2.Engine;
+using System.Threading;
 
 namespace N2
 {
@@ -243,21 +244,21 @@ namespace N2
 		/// <returns>The string if possible, otherwise null.</returns>
 		public static string GetGlobalResourceString(string classKey, string resourceKey)
 		{
-			try
+			if (classKey != null && resourceKey != null && HttpContext.Current != null)
 			{
-				if (classKey != null && resourceKey != null && HttpContext.Current != null)
+				string cultureName = Thread.CurrentThread.CurrentUICulture.Name;
+				ResourceKey key = new ResourceKey(classKey, resourceKey, cultureName);
+				try
 				{
-					ResourceKey key = new ResourceKey(classKey, resourceKey);
 					if (SingletonDictionary<ResourceKey, string>.Instance.ContainsKey(key))
 						return SingletonDictionary<ResourceKey, string>.Instance[key];
-					
+
 					return HttpContext.GetGlobalResourceObject(classKey, resourceKey) as string;
 				}
-			}
-			catch (MissingManifestResourceException)
-			{
-				ResourceKey key = new ResourceKey(classKey, resourceKey);
-				SingletonDictionary<ResourceKey, string>.Instance[key] = null;
+				catch (MissingManifestResourceException)
+				{
+					SingletonDictionary<ResourceKey, string>.Instance[key] = null;
+				}
 			}
 			return null; // it's okay to use default text
 		}
@@ -269,22 +270,32 @@ namespace N2
 		{
 			readonly string classKey;
 			readonly string resourceKey;
+			readonly string cultureName;
 
-			public ResourceKey(string classKey, string resourceKey)
+			public ResourceKey(string classKey, string resourceKey, string cultureName)
 			{
-				this.classKey = classKey;
-				this.resourceKey = resourceKey;
+				this.classKey = classKey ?? "";
+				this.resourceKey = resourceKey ?? "";
+				this.cultureName = cultureName ?? "";
 			}
 
 			public override bool Equals(object obj)
 			{
 				ResourceKey other = obj as ResourceKey;
-				return other != null && other.classKey == classKey && other.resourceKey == resourceKey;
+				return other != null
+				       && other.classKey == classKey
+				       && other.resourceKey == resourceKey
+				       && other.cultureName == cultureName;
 			}
 
 			public override int GetHashCode()
 			{
-				return (classKey + "|" + resourceKey).GetHashCode();
+				unchecked
+				{
+					return classKey.GetHashCode()
+					       + resourceKey.GetHashCode()
+					       + cultureName.GetHashCode();
+				}
 			}
 		}
 

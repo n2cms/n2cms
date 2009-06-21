@@ -39,6 +39,7 @@ namespace N2.Edit.Versions
 			hl.NavigateUrl = versionPreviewUrl;
 			hl.Text = GetInnerHtml(IconUrl, ToolTip, Title);
 			hl.CssClass = "preview";
+			hl.ToolTip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? context.Format(ToolTip, false);
 			container.Controls.Add(hl);
 
 			return hl;

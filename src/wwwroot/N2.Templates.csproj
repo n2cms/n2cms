@@ -64,6 +64,11 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="App_GlobalResources\ControlPanel.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ControlPanel.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\ru\EditableContainers.ru.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -83,6 +88,31 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\ControlPanel.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ControlPanel.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\Definitions.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\EditableContainers.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\Editables.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\Zones.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.sl.resx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Configuration\MailConfigSource.cs" />
     <Compile Include="Templates\Configuration\TemplatesSection.cs" />
@@ -893,6 +923,32 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Templates\UI\Views\App_LocalResources\CalendarList.aspx.resx">
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\ControlPanel.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ControlPanel.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\sl\ControlPanel.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ControlPanel.sl.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\sl\Definitions.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.sl.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\sl\EditableContainers.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.sl.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\sl\Editables.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.sl.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\sl\Zones.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.sl.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

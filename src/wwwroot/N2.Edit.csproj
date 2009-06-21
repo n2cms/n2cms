@@ -1695,6 +1695,35 @@
     <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.ru.resx" />
     <Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.ru.resx" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Edit\App_LocalResources\mk-MK\AffectedItems.ascx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\AvailableZones.ascx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Copy.aspx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Default.aspx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Delete.aspx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Edit.aspx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Framed.Master.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\ItemInfo.ascx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Login.aspx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Move.aspx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\New.aspx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Paste.aspx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\Toolbar.ascx.mk.resx" />
+    <Content Include="Edit\App_LocalResources\sl\AffectedItems.ascx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\AvailableZones.ascx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Copy.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Default.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Delete.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Dependencies.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Edit.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Framed.Master.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\ItemInfo.ascx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Login.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Move.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\New.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Paste.aspx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\sl\Toolbar.ascx.sl.resx" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

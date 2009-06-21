@@ -28,8 +28,8 @@ namespace N2.Edit
 			HyperLink hl = new HyperLink();
 			hl.Text = GetInnerHtml(IconUrl, ToolTip, Title);
 			hl.NavigateUrl = Url.Parse("~/Edit/PublishPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
+			hl.ToolTip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? context.Format(ToolTip, false);
 			hl.CssClass = "publish";
-			hl.ToolTip = context.Format(ToolTip, false);
 			container.Controls.Add(hl);
 
 			return hl;
