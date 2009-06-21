@@ -1,39 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{D037EABD-718B-468A-A23D-4439AF936DCD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Minimal Example", "Minimal Example", "{D037EABD-718B-468A-A23D-4439AF936DCD}"
 	ProjectSection(FolderStartupServices) = postProject
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parts", "Parts", "{11653C5A-A506-484F-B7FC-6CC9E0413633}"
-	ProjectSection(FolderStartupServices) = postProject
-		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ASP.NET MVC", "ASP.NET MVC", "{FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}"
+	ProjectSection(SolutionItems) = preProject
+		Mvc\mvc_readme.txt = Mvc\mvc_readme.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mvc", "Mvc", "{FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates Site", "Templates Site", "{91671D3F-E6C3-412B-89FF-BC14C0A0DE39}"
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "Parts\wwwroot\", "{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFramework = "2.0"
-		Debug.AspNetCompiler.VirtualPath = "/wwwroot"
-		Debug.AspNetCompiler.PhysicalPath = "Parts\wwwroot\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/wwwroot"
-		Release.AspNetCompiler.PhysicalPath = "Parts\wwwroot\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "3751"
-		VWDVirtualPath = "/"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates Integration", "Templates Integration", "{91671D3F-E6C3-412B-89FF-BC14C0A0DE39}"
+	ProjectSection(SolutionItems) = preProject
+		TemplatesSite\implementation_readme.txt = TemplatesSite\implementation_readme.txt
 	EndProjectSection
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "MinimalCSharp\wwwroot\", "{8626A229-195E-42D6-ACB6-4009C3818797}"
@@ -61,33 +41,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "MinimalCSharp\ww
 		VWDVirtualPath = "/"
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Visual Basic", "Visual Basic", "{F709399E-0564-49F8-BDF4-FD57C60D50F3}"
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "MinimalVisualBasic\wwwroot\", "{E52D3BFF-188A-4A71-B853-B05553811298}"
-	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""
-		SccAuxPath = ""
-		SccLocalPath = ""
-		SccProvider = ""
-		TargetFramework = "2.0"
-		Debug.AspNetCompiler.VirtualPath = "/wwwroot(2)"
-		Debug.AspNetCompiler.PhysicalPath = "MinimalVisualBasic\wwwroot\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(2)\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/wwwroot(2)"
-		Release.AspNetCompiler.PhysicalPath = "MinimalVisualBasic\wwwroot\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot(2)\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "54033"
-		VWDVirtualPath = "/"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject", "TemplatesSite\wwwroot\MyProject.csproj", "{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTest", "Mvc\wwwroot\MvcTest.csproj", "{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}"
@@ -102,16 +55,6 @@ Global
 		Release|Mixed Platforms = Release|Mixed Platforms
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Debug|.NET.ActiveCfg = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Debug|.NET.Build.0 = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Debug|Any CPU.ActiveCfg = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Debug|Mixed Platforms.Build.0 = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Release|.NET.ActiveCfg = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Release|.NET.Build.0 = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861}.Release|Mixed Platforms.Build.0 = Debug|.NET
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Debug|.NET.ActiveCfg = Debug|.NET
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Debug|.NET.Build.0 = Debug|.NET
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Debug|Any CPU.ActiveCfg = Debug|.NET
@@ -122,16 +65,6 @@ Global
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Release|Any CPU.ActiveCfg = Debug|.NET
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Release|Mixed Platforms.Build.0 = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Debug|.NET.ActiveCfg = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Debug|.NET.Build.0 = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Debug|Any CPU.ActiveCfg = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Debug|Mixed Platforms.Build.0 = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Release|.NET.ActiveCfg = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Release|.NET.Build.0 = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{E52D3BFF-188A-4A71-B853-B05553811298}.Release|Mixed Platforms.Build.0 = Debug|.NET
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -158,10 +91,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8626A229-195E-42D6-ACB6-4009C3818797} = {D037EABD-718B-468A-A23D-4439AF936DCD}
-		{4B516897-B8DE-4F6F-B977-6EB9EBC0C861} = {11653C5A-A506-484F-B7FC-6CC9E0413633}
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D} = {FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}
 		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3} = {91671D3F-E6C3-412B-89FF-BC14C0A0DE39}
-		{E52D3BFF-188A-4A71-B853-B05553811298} = {F709399E-0564-49F8-BDF4-FD57C60D50F3}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

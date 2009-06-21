@@ -8,6 +8,7 @@
 		<Examples-CSharp>$(Examples-Folder)\MinimalCSharp</Examples-CSharp>
 		<Examples-TemplatesSiteFolder>$(Examples-Folder)\TemplatesSite</Examples-TemplatesSiteFolder>
 		<Examples-MvcFolder>$(Examples-Folder)\Mvc</Examples-MvcFolder>
+		<Examples-MvcVisualBasicFolder>$(Examples-Folder)\MvcVisualBasic</Examples-MvcVisualBasicFolder>
 		<Deploy-ExamplesFolder>$(DeployFolder)\Examples</Deploy-ExamplesFolder>
 	</PropertyGroup>
 
@@ -34,6 +35,14 @@
 		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Bin" />
 		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
+	<Target Name="Examples-MvcVisualBasic-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
+                       $(LibFolder)\Microsoft.Web.Mvc.dll; 
+                       $(LibFolder)\System.Web.Mvc.dll;"
+					DestinationFolder="$(Examples-MvcFolder)\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Examples-MvcVisualBasicFolder)\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Examples-MvcVisualBasicFolder)\wwwroot\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
 
 	<Target Name="Examples-PrepareDependencies">
 		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
@@ -52,6 +61,9 @@
 		<MSBuild Projects="$(Examples-TemplatesSiteFolder)\MyProject-vs2008.sln" />
 	</Target>
 	<Target Name="Examples-Mvc-Build" DependsOnTargets="Examples-Mvc-PrepareDependencies">
+		<MSBuild Projects="$(Examples-MvcFolder)\Mvc_Example.sln" />
+	</Target>
+	<Target Name="Examples-MvcVisualBasic-Build" DependsOnTargets="Examples-MvcVisualBasic-PrepareDependencies">
 		<MSBuild Projects="$(Examples-MvcFolder)\Mvc_Example.sln" />
 	</Target>
 
@@ -84,6 +96,7 @@
 			<ExampleSource-TemplatesSiteFiles Include="$(Examples-TemplatesSiteFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 			<ExampleSource-MultipleDomainsFiles Include="$(Examples-MultipleDomainsFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 			<ExampleSource-MvcFiles Include="$(Examples-MvcFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+			<ExampleSource-MvcVisualBasicFiles Include="$(Examples-MvcVisualBasicFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 		</ItemGroup>
 	</Target>
 
@@ -116,6 +129,11 @@
 		<Copy SourceFiles="@(Core-EditFiles)"               DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Edit\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
 		<Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Snippets" />
-		<Copy SourceFiles="@(CoreDeploy-ForExampleDeploy)"  DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\wwwroot\%(RecursiveDir)" />
+		
+		<!--<Copy SourceFiles="@(ExampleSource-MvcVisualBasicFiles)"	DestinationFolder="$(Deploy-ExamplesFolder)\MvcVisualBasic\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Core-BinFiles)"						DestinationFolder="$(Deploy-ExamplesFolder)\MvcVisualBasic\wwwroot\Bin" />
+		<Copy SourceFiles="@(Core-EditFiles)"						DestinationFolder="$(Deploy-ExamplesFolder)\MvcVisualBasic\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"							DestinationFolder="$(Deploy-ExamplesFolder)\MvcVisualBasic" />
+		<Copy SourceFiles="@(Snippets)"								DestinationFolder="$(Deploy-ExamplesFolder)\MvcVisualBasic\Snippets" />-->
 	</Target>
 </Project>
