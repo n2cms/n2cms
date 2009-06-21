@@ -1,4 +1,5 @@
-﻿- made control panel attributes translatable
+﻿- applied tonez's patch #3113: Hide "Manage users" button if membership provider is not defined.
+- made control panel attributes translatable
 - added create, update, delete actions to templates base item
 - updated edit page to support action
 - sort of "fixed" #22974: Bug ReturnUrl (url rewriter?) 1.4.5+
