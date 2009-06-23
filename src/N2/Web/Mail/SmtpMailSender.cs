@@ -6,6 +6,7 @@ using System.Net;
 
 namespace N2.Web.Mail
 {
+	[Obsolete]
 	public abstract class SmtpMailSender : IMailSender
 	{
 		public void Send(MailMessage mail)
