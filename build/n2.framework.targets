@@ -1,17 +1,17 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
 
-	<!-- CORE -->
+	<!-- Framework -->
 
-	<Target Name="Core-PrepareDependencies">
-		<Copy SourceFiles="@(Core-Dependencies)" DestinationFolder="$(WebFolder)\Bin\" />
+	<Target Name="Framework-PrepareDependencies">
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(WebFolder)\Bin\" />
 	</Target>
 
-	<Target Name="Core-Build" DependsOnTargets="Core-PrepareDependencies">
+	<Target Name="Framework-Build" DependsOnTargets="Framework-PrepareDependencies">
 		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Properties="Configuration=$(Configuration);NHVersion=$(NHVersion)" />
 	</Target>
 
 	<ItemGroup>
-		<Core-Dependencies Include="$(LibFolder)\Castle*;
+		<Framework-Dependencies Include="$(LibFolder)\Castle*;
 									$(LibFolder)\Iesi.Collections.dll;
 									$(LibFolder)\log4net.dll;
 									$(LibFolder)\NHibernate.dll;
@@ -27,9 +27,9 @@
 		<Snippets Include="$(SnippetsFolder)\*" />
 	</ItemGroup>
 
-	<Target Name="Rebuild-Core-BinFiles" DependsOnTargets="Core-Build">
+	<Target Name="Rebuild-Framework-BinFiles" DependsOnTargets="Framework-Build">
 		<ItemGroup>
-			<Core-EditFiles Include="$(EditFolder)\**\*.as?x;
+			<Framework-EditFiles Include="$(EditFolder)\**\*.as?x;
 									 $(EditFolder)\**\*.master;
 									 $(EditFolder)\**\*.resx;
 									 $(EditFolder)\**\*.config;
@@ -49,14 +49,14 @@
 							 $(WebFolder)\Bin\TabPanel*;
 							 $(WebFolder)\Bin\Tagging*;
 							 $(WebFolder)\Bin\Wiki*;">
-			<Output TaskParameter="Include" ItemName="Core-BinFiles"/>
+			<Output TaskParameter="Include" ItemName="Framework-BinFiles"/>
 		</CreateItem>
 	</Target>
 
-	<Target Name="Core-Deploy" DependsOnTargets="Rebuild-Core-BinFiles">
-		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(DeployFolder)\Core\Bin" />
-		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(DeployFolder)\Core\Edit\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Core" />
+	<Target Name="Framework-Deploy" DependsOnTargets="Rebuild-Framework-BinFiles">
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(DeployFolder)\Framework\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(DeployFolder)\Framework\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Framework" />
 	</Target>
 
 </Project>

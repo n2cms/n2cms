@@ -1,3 +1,5 @@
+- NH beta2
+- tiny 1.4.3
 - deprecate and replace mail stuff
 - auto-parts
 - "hidden" non-parts pages

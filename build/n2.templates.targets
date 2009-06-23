@@ -7,15 +7,15 @@
 		<CallTarget Targets="Templates-Mvc-Build"/>
 	</Target>
 
-	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Rebuild-Core-BinFiles">
+	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Rebuild-Framework-BinFiles">
 		<ItemGroup>
 			<_TemplatesTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates\**\*"/>
 		</ItemGroup>
 
 		<Copy SourceFiles="@(_TemplatesTempFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\%(RecursiveDir)" />
-		<Delete Files="@(_TemplatesTempFiles)" ContinueOnError="true"/>
-		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\bin\" />
-		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\Edit\%(RecursiveDir)" />
+		<RemoveDir Directories="$(TempFolder)_PublishedWebsites\N2.Templates\"/>
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\Edit\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Templates" />
 		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(DeployFolder)\Templates\wwwroot\App_Data\n2.sqlite.db" />
 	</Target>
@@ -26,28 +26,28 @@
 		<Templates-Mvc-Deploy-Folder>$(DeployFolder)\N2.Templates.Mvc</Templates-Mvc-Deploy-Folder>
 	</PropertyGroup>
 
-	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Rebuild-Core-BinFiles">
+	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Rebuild-Framework-BinFiles">
 		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
                        $(LibFolder)\Microsoft.Web.Mvc.dll; 
                        $(LibFolder)\System.Web.Mvc.dll;"
 					DestinationFolder="$(Templates-Mvc-Folder)\Bin" />
-		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Templates-Mvc-Folder)\Bin" />
-		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Templates-Mvc-Folder)\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-Folder)\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-Folder)\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 	
 	<Target Name="Templates-Mvc-Build" DependsOnTargets="Templates-Mvc-PrepareDependencies">
 		<MSBuild Projects="$(Templates-Mvc-Folder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
 	</Target>
 
-	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Templates-Mvc-Build;Rebuild-Core-BinFiles">
+	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Templates-Mvc-Build;Rebuild-Framework-BinFiles">
 		<ItemGroup>
-			<_TemplatesTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates.Mvc\**\*"/>
+			<_TemplatesMvcTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates.Mvc\**\*"/>
 		</ItemGroup>
 
-		<Copy SourceFiles="@(_TemplatesTempFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\%(RecursiveDir)" />
-		<Delete Files="@(_TemplatesTempFiles)" ContinueOnError="true"/>
-		<Copy SourceFiles="@(Core-BinFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\bin\" />
-		<Copy SourceFiles="@(Core-EditFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(_TemplatesMvcTempFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\%(RecursiveDir)" />
+		<Delete Files="@(_TemplatesMvcTempFiles)" ContinueOnError="true"/>
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\Edit\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\" />
 		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-Deploy-Folder)\App_Data\n2.sqlite.db" />
 	</Target>

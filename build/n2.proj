@@ -34,7 +34,7 @@
 	<Target Name="Build">
 		<Message Text="Building Everything"/>
 
-		<CallTarget Targets="Core-Build"/>
+		<CallTarget Targets="Framework-Build"/>
 		<CallTarget Targets="Examples-Build"/>
 	</Target>
 	
@@ -42,7 +42,7 @@
 		<Error Text="TODO" />
 		<Message Text="Building Everything"/>
 
-		<CallTarget Targets="Core-Build"/>
+		<CallTarget Targets="Framework-Build"/>
 	</Target>
 
 	<Target Name="SanityCheck">
@@ -57,7 +57,7 @@
 	<Target Name="Deploy" DependsOnTargets="Clean-Output">
 		<Message Text="Deploying Everything"/>
 
-		<CallTarget Targets="Core-Deploy"/>
+		<CallTarget Targets="Framework-Deploy"/>
 		<CallTarget Targets="Templates-Deploy"/>
 		<CallTarget Targets="Examples-Deploy"/>
 		<CallTarget Targets="Source-Deploy"/>
@@ -68,7 +68,7 @@
 		<Error Text="TODO" />
 		<Message Text="Deploying Everything using NHibernate $(NHVersion)"/>
 
-		<CallTarget Targets="Core-Deploy"/>
+		<CallTarget Targets="Framework-Deploy"/>
 		<CallTarget Targets="Templates-Deploy"/>
 		<CallTarget Targets="Examples-Deploy"/>
 	</Target>
@@ -82,7 +82,7 @@
 
 	<Target Name="Zip">
 		<ItemGroup>
-			<ZipDeploy-Core Include="$(DeployFolder)\Core\**" />
+			<ZipDeploy-Framework Include="$(DeployFolder)\Framework\**" />
 			<ZipDeploy-Templates Include="$(DeployFolder)\Templates\**" />
 			<ZipDeploy-Source Include="$(DeployFolder)\Source\**" />
 			<ZipDeploy-CSExample Include="$(DeployFolder)\Examples\CS\**" />
@@ -91,9 +91,9 @@
 			<ZipDeploy-MvcExample Include="$(DeployFolder)\Examples\Mvc\**" />
 		</ItemGroup>
 
-		<Error Condition="'@(ZipDeploy-Core)' == ''" Text="Nothing in '$(DeployFolder)'. Do deploy first." />
+		<Error Condition="'@(ZipDeploy-Framework)' == ''" Text="Nothing in '$(DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-Core)"            WorkingDirectory="$(DeployFolder)\Core"                   ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
+		<Zip Files="@(ZipDeploy-Framework)"            WorkingDirectory="$(DeployFolder)\Framework"                   ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
 		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(DeployFolder)\Templates"              ZipFileName="$(DeployFolder)\CompiledTemplates.zip" />
 		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(DeployFolder)\Source"                 ZipFileName="$(DeployFolder)\Source.zip" />
 		<Zip Files="@(ZipDeploy-CSExample)"       WorkingDirectory="$(DeployFolder)\Examples\CS"            ZipFileName="$(DeployFolder)\CS_Example.zip" />
@@ -106,7 +106,7 @@
 		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Targets="Clean" />
 	</Target>
 
-	<Target Name="PrepareDependencies" DependsOnTargets="Core-PrepareDependencies;Examples-PrepareDependencies">
+	<Target Name="PrepareDependencies" DependsOnTargets="Framework-PrepareDependencies;Examples-PrepareDependencies">
 	</Target>
 
 	<Target Name="Clean-Output">
@@ -115,7 +115,7 @@
 		<RemoveDir Directories="$(DeployFolder)"/>
 	</Target>
 
-	<Target Name="Test" DependsOnTargets="Clean;Core-Build">
+	<Target Name="Test" DependsOnTargets="Clean;Framework-Build">
 		<Exec Command="$(LibFolder)\nunit-console-x86.exe $(SrcFolder)\N2.Tests\bin\N2.Tests.exe $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" />
 	</Target>
 
