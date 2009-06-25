@@ -317,6 +317,9 @@ namespace N2
 			catch (MissingManifestResourceException)
 			{
 			}
+			catch (NullReferenceException)
+			{
+			}
 			return null; // it's okay to use default text
 		}
 
