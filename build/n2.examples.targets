@@ -11,6 +11,15 @@
 		<Deploy-ExamplesFolder>$(DeployFolder)\Examples</Deploy-ExamplesFolder>
 	</PropertyGroup>
 
+	<!-- Prepare dependencies -->
+	
+	<Target Name="Examples-PrepareDependencies">
+		<CallTarget Targets="Examples-CSharp-PrepareDependencies;
+							 Examples-VisualBasic-PrepareDependencies;
+							 Examples-TemplatesSite-PrepareDependencies;
+							 Examples-Mvc-PrepareDependencies"/>
+	</Target>
+
 	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Rebuild-Framework-BinFiles">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-CSharp)\wwwroot\bin" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-CSharp)\wwwroot\Edit\%(RecursiveDir)" />
@@ -35,11 +44,12 @@
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-MvcFolder)\wwwroot\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 
-	<Target Name="Examples-PrepareDependencies">
-		<CallTarget Targets="Examples-CSharp-PrepareDependencies"/>
-		<CallTarget Targets="Examples-VisualBasic-PrepareDependencies"/>
-		<CallTarget Targets="Examples-TemplatesSite-PrepareDependencies"/>
-		<CallTarget Targets="Examples-Mvc-PrepareDependencies"/>
+	<!-- Build -->
+
+	<Target Name="Examples-Build">
+		<CallTarget Targets="Example-SimpleCSharp-Build; 
+							 Example-SimpleVisualBasic-Build; 
+							 Examples-Mvc-Build"/>
 	</Target>
 
 	<Target Name="Example-SimpleCSharp-Build" DependsOnTargets="Examples-CSharp-PrepareDependencies">
@@ -54,11 +64,9 @@
 	<Target Name="Examples-Mvc-Build" DependsOnTargets="Examples-Mvc-PrepareDependencies">
 		<MSBuild Projects="$(Examples-MvcFolder)\Mvc_Example.sln" />
 	</Target>
-
-	<Target Name="Examples-Build">
-		<CallTarget Targets="Example-SimpleCSharp-Build; Example-SimpleVisualBasic-Build; Examples-Mvc-Build"/>
-	</Target>
-
+	
+	<!-- Clean -->
+	
 	<Target Name="Examples-Clean">
 		<MSBuild Projects="$(Examples-Folder)\N2.Examples-vs2008.sln" Targets="Clean" />
 		<MSBuild Projects="$(Examples-Folder)\N2.Examples-VisualBasic.sln" Targets="Clean" />
@@ -76,6 +84,59 @@
 		</ItemGroup>
 		<RemoveDir Directories="@(DependencyFolders)" />
 		<Delete Files="@(BinFiles)" />
+	</Target>
+
+	<!-- Deploy -->
+	
+	<Target Name="Examples-Deploy">
+		<CallTarget Targets="Examples-VB-Deploy;
+							 Examples-CS-Deploy;
+							 Examples-TemplatesSite-Deploy;
+							 Examples-Mvc-Deploy" />
+	</Target>
+
+	<Target Name="Examples-VB-Deploy" DependsOnTargets="Examples-CreateItemGroups">
+		<ItemGroup>
+			<ExampleSource-VBFiles Include="$(Examples-VisualBasic)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+		</ItemGroup>
+		<Copy SourceFiles="@(ExampleSource-VBFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\VB\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)"         DestinationFolder="$(Deploy-ExamplesFolder)\VB\wwwroot\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\VB\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Deploy-ExamplesFolder)\VB" />
+	</Target>
+	
+	<Target Name="Examples-CS-Deploy" DependsOnTargets="Examples-CreateItemGroups">
+		<ItemGroup>
+			<ExampleSource-CSFiles Include="$(Examples-CSharp)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+		</ItemGroup>
+		<Copy SourceFiles="@(ExampleSource-CSFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\CS\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)"         DestinationFolder="$(Deploy-ExamplesFolder)\CS\wwwroot\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\CS\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Deploy-ExamplesFolder)\CS" />
+		<Copy SourceFiles="@(Snippets)"              DestinationFolder="$(Deploy-ExamplesFolder)\CS\Snippets" />
+	</Target>
+	
+	<Target Name="Examples-TemplatesSite-Deploy" DependsOnTargets="Examples-CreateItemGroups">
+		<ItemGroup>
+			<ExampleSource-TemplatesSiteFiles Include="$(Examples-TemplatesSiteFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+			<FrameworkDeploy-ForExampleDeploy Include="$(DeployFolder)\Framework\**\*" Exclude="$(DeployFolder)\Framework\*.txt"/>
+		</ItemGroup>
+
+		<Copy SourceFiles="@(ExampleSource-TemplatesSiteFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"                        DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite" />
+		<Copy SourceFiles="@(Snippets)"                         DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\Snippets" />
+		<Copy SourceFiles="@(FrameworkDeploy-ForExampleDeploy)"      DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\%(RecursiveDir)" />
+	</Target>
+	
+	<Target Name="Examples-Mvc-Deploy" DependsOnTargets="Examples-CreateItemGroups">
+		<ItemGroup>
+			<ExampleSource-MvcFiles Include="$(Examples-MvcFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
+		</ItemGroup>
+		<Copy SourceFiles="@(ExampleSource-MvcFiles)"       DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)"                DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)"               DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
+		<Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Snippets" />
 	</Target>
 
 	<Target Name="Examples-CreateItemGroups">
@@ -96,41 +157,7 @@
 											$(Examples-Folder)\**\bin\Release\*.*;
 											$(Examples-Folder)\**\*.pdb;
 											$(Examples-Folder)\**\*WithProjectReferences.*" />
-
-			<ExampleSource-CSFiles Include="$(Examples-CSharp)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
-			<ExampleSource-VBFiles Include="$(Examples-VisualBasic)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
-			<ExampleSource-TemplatesSiteFiles Include="$(Examples-TemplatesSiteFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
-			<ExampleSource-MvcFiles Include="$(Examples-MvcFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 		</ItemGroup>
 	</Target>
 
-	<Target Name="Examples-Deploy" DependsOnTargets="Examples-CreateItemGroups">
-		<Message Text="Deploying Examples"/>
-
-		<CreateItem Include="$(DeployFolder)\Framework\**\*" Exclude="$(DeployFolder)\Framework\*.txt">
-			<Output TaskParameter="Include" ItemName="FrameworkDeploy-ForExampleDeploy"/>
-		</CreateItem>
-
-		<Copy SourceFiles="@(ExampleSource-VBFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\VB\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"         DestinationFolder="$(Deploy-ExamplesFolder)\VB\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\VB\wwwroot\Edit\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Deploy-ExamplesFolder)\VB" />
-
-		<Copy SourceFiles="@(ExampleSource-CSFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\CS\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"         DestinationFolder="$(Deploy-ExamplesFolder)\CS\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"        DestinationFolder="$(Deploy-ExamplesFolder)\CS\wwwroot\Edit\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Deploy-ExamplesFolder)\CS" />
-		<Copy SourceFiles="@(Snippets)"              DestinationFolder="$(Deploy-ExamplesFolder)\CS\Snippets" />
-
-		<Copy SourceFiles="@(ExampleSource-TemplatesSiteFiles)" DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)"                        DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite" />
-		<Copy SourceFiles="@(Snippets)"                         DestinationFolder="$(Deploy-ExamplesFolder)\TemplatesSite\Snippets" />
-		<Copy SourceFiles="@(FrameworkDeploy-ForExampleDeploy)"      DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\%(RecursiveDir)" />
-
-		<Copy SourceFiles="@(ExampleSource-MvcFiles)"       DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"                DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"               DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\wwwroot\Edit\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Deploy-ExamplesFolder)\Mvc" />
-		<Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Deploy-ExamplesFolder)\Mvc\Snippets" />
-	</Target>
 </Project>

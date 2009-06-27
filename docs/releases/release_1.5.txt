@@ -2,7 +2,9 @@ N2 is a lightweight CMS framework for ASP.NET. It helps you build great web
 sites that anyone can update.
 
 Major Changes
-...
+* MVC alpha
+* Fine-grained permissions
+* The usual fixes
 
 First time with N2?
 * Try the demo site: http://templates.n2cms.com/

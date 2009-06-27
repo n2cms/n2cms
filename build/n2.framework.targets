@@ -37,21 +37,20 @@
 									 $(EditFolder)\**\*.css;
 									 $(EditFolder)\**\*.js;
 									 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
-									 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"/>
+									 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"
+								 Exclude="$(EditFolder)\**\*_src.js;" />
+			<Framework-BinFiles Include="$(WebFolder)\Bin\*.dll;
+										 $(WebFolder)\Bin\N2.xml;"
+								Exclude="$(WebFolder)\Bin\N2.Templates*;
+										 $(WebFolder)\Bin\AddonCatalog*;
+										 $(WebFolder)\Bin\Demo*;
+										 $(WebFolder)\Bin\MyAddon*;
+										 $(WebFolder)\Bin\n2markdown*;
+										 $(WebFolder)\Bin\Scrum*;
+										 $(WebFolder)\Bin\TabPanel*;
+										 $(WebFolder)\Bin\Tagging*;
+										 $(WebFolder)\Bin\Wiki*;"/>
 		</ItemGroup>
-		<CreateItem Include="$(WebFolder)\Bin\*.dll;
-							 $(WebFolder)\Bin\N2.xml;"
-					Exclude="$(WebFolder)\Bin\N2.Templates*;
-							 $(WebFolder)\Bin\AddonCatalog*;
-							 $(WebFolder)\Bin\Demo*;
-							 $(WebFolder)\Bin\MyAddon*;
-							 $(WebFolder)\Bin\n2markdown*;
-							 $(WebFolder)\Bin\Scrum*;
-							 $(WebFolder)\Bin\TabPanel*;
-							 $(WebFolder)\Bin\Tagging*;
-							 $(WebFolder)\Bin\Wiki*;">
-			<Output TaskParameter="Include" ItemName="Framework-BinFiles"/>
-		</CreateItem>
 	</Target>
 
 	<Target Name="Framework-Deploy" DependsOnTargets="Rebuild-Framework-BinFiles">

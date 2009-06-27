@@ -2,7 +2,6 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
 
 	<!-- GENERAL -->
-	<Import Project="../lib/MSBuild.Community.Tasks.Targets"/>
 
 	<Target Name="Echo">
 		<Message Text="Hello from $(MSBuildProjectDirectory)" />
@@ -55,6 +54,19 @@
 		<MSBuild Projects="@(_SolutionFiles)" />
 	</Target>
 
+	<!-- Clean -->
+
+	<Target Name="Clean">
+		<MSBuild Projects="$(RootFolder)\N2.Everything-vs2008.sln" Targets="Clean" />
+
+		<CallTarget Targets="Examples-Clean" />
+		<ItemGroup>
+			<binFiles Include="$(SrcFolder)\**\bin\*" />
+		</ItemGroup>
+		<Delete Files="@(binFiles)" />
+	</Target>
+
+	<!-- Deploy -->
 
 	<Target Name="Deploy" DependsOnTargets="Clean-Output">
 		<Message Text="Deploying Everything"/>
@@ -67,8 +79,8 @@
 	</Target>
 
 
-	<Target Name="Deploy-NH2_1" DependsOnTargets="Clean-Output;DefineProperties-NH2_1">
-		<Error Text="TODO" />
+	<Target Name="Deploy-NH2_1" DependsOnTargets="Clean;Clean-Output;DefineProperties-NH2_1">
+		<Error Text="TODO" ContinueOnError="true"/>
 		<Message Text="Deploying Everything using NHibernate $(NHVersion)"/>
 
 		<CallTarget Targets="Framework-Deploy"/>
@@ -96,9 +108,9 @@
 
 		<Error Condition="'@(ZipDeploy-Framework)' == ''" Text="Nothing in '$(DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-Framework)"            WorkingDirectory="$(DeployFolder)\Framework"                   ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
+		<Zip Files="@(ZipDeploy-Framework)"       WorkingDirectory="$(DeployFolder)\Framework"              ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
 		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(DeployFolder)\Templates"              ZipFileName="$(DeployFolder)\CompiledTemplates.zip" />
-		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(DeployFolder)\Source"                 ZipFileName="$(DeployFolder)\Source.zip" />
+		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(DeployFolder)\Source"                 ZipFileName="$(DeployFolder)\Sources.zip" />
 		<Zip Files="@(ZipDeploy-CSExample)"       WorkingDirectory="$(DeployFolder)\Examples\CS"            ZipFileName="$(DeployFolder)\CS_Example.zip" />
 		<Zip Files="@(ZipDeploy-VBExample)"       WorkingDirectory="$(DeployFolder)\Examples\VB"            ZipFileName="$(DeployFolder)\VB_Example.zip" />
 		<Zip Files="@(ZipDeploy-TemplateExample)" WorkingDirectory="$(DeployFolder)\Examples\TemplatesSite" ZipFileName="$(DeployFolder)\Template_Example.zip" />

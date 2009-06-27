@@ -164,6 +164,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Configuration\MailConfigSource.cs" />
+    <Compile Include="Classes\Configuration\TemplatesSection.cs" />
+    <Compile Include="Classes\Configuration\WikiElement.cs" />
+    <Compile Include="Classes\Find.cs" />
+    <Compile Include="Classes\Tabs.cs" />
+    <Compile Include="Classes\Web\IPageModifier.cs" />
+    <Compile Include="Classes\Web\IPageModifierContainer.cs" />
+    <Compile Include="Classes\Web\LanguageModifier.cs" />
+    <Compile Include="Classes\Web\MasterPageModifier.cs" />
+    <Compile Include="Classes\Web\TemplatePageModifier.cs" />
+    <Compile Include="Classes\Web\ThemeModifier.cs" />
+    <Compile Include="Classes\Zones.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CalendarTeaserController.cs" />
     <Compile Include="Controllers\CommentInputController.cs" />
@@ -294,19 +306,7 @@
     <Compile Include="Views\Shared\Top+SubMenu.Master.designer.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
     </Compile>
-    <Compile Include="_Class\Configuration\MailConfigSource.cs" />
-    <Compile Include="_Class\Configuration\TemplatesSection.cs" />
-    <Compile Include="_Class\Configuration\WikiElement.cs" />
-    <Compile Include="_Class\Find.cs" />
-    <Compile Include="_Class\Tabs.cs" />
     <Compile Include="Models\Translation.cs" />
-    <Compile Include="_Class\Web\IPageModifier.cs" />
-    <Compile Include="_Class\Web\IPageModifierContainer.cs" />
-    <Compile Include="_Class\Web\LanguageModifier.cs" />
-    <Compile Include="_Class\Web\MasterPageModifier.cs" />
-    <Compile Include="_Class\Web\TemplatePageModifier.cs" />
-    <Compile Include="_Class\Web\ThemeModifier.cs" />
-    <Compile Include="_Class\Zones.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Img\application_view_columns.png" />
