@@ -27,6 +27,7 @@
 	- split pages and parts
 	- remove authorized roles
 	- IdPath
+	- sort order on details
 - drag nested items in ie
 - XML Store instead of DB
 - eager load item's child collections

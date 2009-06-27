@@ -15,7 +15,15 @@ namespace N2.Templates.Mvc
 
 	public class MvcApplication : HttpApplication
 	{
-		private readonly IWindsorContainer _container = new WindsorContainer();
+		private readonly IWindsorContainer container = new WindsorContainer();
+
+		protected void Application_Start()
+		{
+			var engine = (ContentEngine)N2.Context.Current;
+
+			RegisterRoutes(RouteTable.Routes, engine);
+			RegisterComponents(container, engine);
+		}
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
@@ -29,14 +37,6 @@ namespace N2.Templates.Mvc
 				"{controller}/{action}/{id}",                           // URL with parameters
 				new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
 			);
-		}
-
-		protected void Application_Start()
-		{
-			var engine = (ContentEngine) N2.Context.Initialize(true);
-
-			RegisterRoutes(RouteTable.Routes, engine);
-			RegisterComponents(_container, engine);
 		}
 
 		private static void RegisterComponents(IWindsorContainer container, ContentEngine engine)

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
 
 	<!-- TEMPLATES -->
@@ -39,17 +40,56 @@
 		<MSBuild Projects="$(Templates-Mvc-Folder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
 	</Target>
 
-	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Templates-Mvc-Build;Rebuild-Framework-BinFiles">
+	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Rebuild-Framework-BinFiles">
+		<!--DependsOnTargets="Templates-Mvc-Build;Rebuild-Framework-BinFiles">-->
 		<ItemGroup>
-			<_TemplatesMvcTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates.Mvc\**\*"/>
+			<_TemplatesMvcFiles Include="$(Templates-Mvc-Folder)\**\*"
+								Exclude="$(Templates-Mvc-Folder)\**\.svn\**\*;
+										   $(Templates-Mvc-Folder)\**\obj\**\*;
+										   $(Templates-Mvc-Folder)\**\bin\*.pdb;
+										   $(Templates-Mvc-Folder)\**\Ankh.Load;
+										   $(Templates-Mvc-Folder)\**\*.sln.cache;
+										   $(Templates-Mvc-Folder)\**\*.resharper;
+										   $(Templates-Mvc-Folder)\**\*.suo;
+										   $(Templates-Mvc-Folder)\**\*.user;
+										   $(Templates-Mvc-Folder)\**\*.Publish.xml;
+										   $(Templates-Mvc-Folder)\**\Thumbs.db;
+										   $(Templates-Mvc-Folder)\Edit\**\*;" />
+
+			<!--<_TemplatesMvcTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates.Mvc\**\*"/>-->
 		</ItemGroup>
 
-		<Copy SourceFiles="@(_TemplatesMvcTempFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\%(RecursiveDir)" />
-		<Delete Files="@(_TemplatesMvcTempFiles)" ContinueOnError="true"/>
+		<Copy SourceFiles="@(_TemplatesMvcFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\bin\" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\Edit\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\" />
 		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-Deploy-Folder)\App_Data\n2.sqlite.db" />
+
+		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />
+	</Target>
+
+	<Target Name="Templates-Mvc-RemoveProjectReferences">
+		<PropertyGroup>
+			<SourceFile>$(Templates-Mvc-Folder)\N2.Templates.Mvc.csproj</SourceFile>
+			<DestinationFile>$(Templates-Mvc-Deploy-Folder)\N2.Templates.Mvc.csproj</DestinationFile>
+			<RegexPattern></RegexPattern>
+		</PropertyGroup>
+		<PropertyGroup>
+			<Code>
+				<![CDATA[
+public static string ScriptMain() {
+	string lines = File.ReadAllText(@"$(SourceFile)");
+	string pattern = "<ProjectReference.*?<Name>(?<Name>[^<]*).*?</ProjectReference>";
+	string replacement = @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
+	return Regex.Replace(lines, pattern, replacement, RegexOptions.Singleline);
+}
+			]]>
+			</Code>
+		</PropertyGroup>
+		<Script Code="$(Code)" Language="C#">
+			<Output TaskParameter="ReturnValue" PropertyName="FileContents" />
+		</Script>
+		<WriteLinesToFile File="$(DestinationFile)" Lines="$(FileContents)" Overwrite="true" />
 	</Target>
 	
 	<!-- Other templates -->

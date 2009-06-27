@@ -88,7 +88,15 @@
 									</xs:all>
 									<xs:attribute name="extension" type="xs:string" use="optional" />
 									<xs:attribute name="isWeb" type="xs:boolean" use="optional" />
-									<xs:attribute name="rewrite" type="xs:string" use="optional" />
+									<xs:attribute name="rewrite" use="optional">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="RewriteRequest"/>
+												<xs:enumeration value="TransferRequest"/>
+												<xs:enumeration value="None"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
 									<xs:attribute name="observedExtensions" type="xs:string" use="optional" />
 									<xs:attribute name="observeEmptyExtension" type="xs:boolean" use="optional" />
 									<xs:attribute name="ignoreExistingFiles" type="xs:boolean" use="optional" />
