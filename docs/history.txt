@@ -1,4 +1,5 @@
-﻿- added templates integration for visual basic
+﻿- updated tinymce to 3.2.4.1
+- added templates integration for visual basic
 - applied tonez's patch #3098(a): Localization patch for Slovenian language.
 - applied tonez's patch #3098(b): Some hardcoded strings were added to App_GlobalResources\ControlPanel.resx
 - applied tonez's patch #3113: Hide "Manage users" button if membership provider is not defined.
