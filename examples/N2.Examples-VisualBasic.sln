@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates Integration", "Templates Integration", "{91671D3F-E6C3-412B-89FF-BC14C0A0DE39}"
+	ProjectSection(SolutionItems) = preProject
+		TemplatesSite\implementation_readme.txt = TemplatesSite\implementation_readme.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Visual Basic", "Visual Basic", "{F709399E-0564-49F8-BDF4-FD57C60D50F3}"
 EndProject
@@ -30,7 +33,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "MinimalVisualBas
 		VWDVirtualPath = "/"
 	EndProjectSection
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MyVisualBasicProject", "TemplatesSite\wwwroot\MyVisualBasicProject.vbproj", "{4050F3A8-10CC-45A6-A3A6-D2D93B097D00}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MyProject-VisualBasic", "TemplatesSite\wwwroot\MyProject-VisualBasic.vbproj", "{4050F3A8-10CC-45A6-A3A6-D2D93B097D00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

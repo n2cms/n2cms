@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace MyProject.UI
 {
-	public partial class MyPage : N2.Templates.Web.UI.TemplatePage<Items.MyPagePage>
+	public partial class MyPage : N2.Templates.Web.UI.TemplatePage<Items.MyPage>
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{

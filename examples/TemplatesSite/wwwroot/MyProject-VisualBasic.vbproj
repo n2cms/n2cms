@@ -8,8 +8,8 @@
     <ProjectGuid>{4050F3A8-10CC-45A6-A3A6-D2D93B097D00}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>MyVisualBasicProject</RootNamespace>
-    <AssemblyName>MyVisualBasicProject</AssemblyName>
+    <RootNamespace>MyProject</RootNamespace>
+    <AssemblyName>MyProject</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <OptionExplicit>On</OptionExplicit>
@@ -23,7 +23,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>MyVisualBasicProject.xml</DocumentationFile>
+    <DocumentationFile>MyProject.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,12 +32,18 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>MyVisualBasicProject.xml</DocumentationFile>
+    <DocumentationFile>MyProject.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="N2, Version=1.0.500.40941, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="N2.Templates, Version=1.0.500.40944, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="N2, Version=1.0.500.40941, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="N2.Templates, Version=1.0.500.40944, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -84,11 +90,11 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UI\Views\MyVisualBasicPage.aspx" />
+    <Content Include="UI\MyPage-VisualBasic.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\MyVisualBasicPage.vb" />
+    <Compile Include="Items\MyPage-VisualBasic.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -108,11 +114,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="UI\Views\MyVisualBasicPage.aspx.designer.vb">
-      <DependentUpon>MyVisualBasicPage.aspx</DependentUpon>
+    <Compile Include="UI\MyPage-VisualBasic.aspx.designer.vb">
+      <DependentUpon>MyPage-VisualBasic.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UI\Views\MyVisualBasicPage.aspx.vb">
-      <DependentUpon>MyVisualBasicPage.aspx</DependentUpon>
+    <Compile Include="UI\MyPage-VisualBasic.aspx.vb">
+      <DependentUpon>MyPage-VisualBasic.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>

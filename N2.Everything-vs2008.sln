@@ -12,32 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		docs\install.txt = docs\install.txt
 		docs\License.txt = docs\License.txt
 		docs\n2_readme.txt = docs\n2_readme.txt
+		docs\n2cms.configuration.xsd = docs\n2cms.configuration.xsd
 		docs\nodo.txt = docs\nodo.txt
 		docs\runtime_readme.txt = docs\runtime_readme.txt
 		docs\solution_overview.txt = docs\solution_overview.txt
 		docs\templates_readme.txt = docs\templates_readme.txt
 		docs\todo.txt = docs\todo.txt
 		docs\upgrade.txt = docs\upgrade.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releases", "releases", "{0AFCEA00-8510-48F6-B949-22796F899C77}"
-	ProjectSection(SolutionItems) = preProject
-		docs\releases\release_1.3.3.txt = docs\releases\release_1.3.3.txt
-		docs\releases\release_1.3.4.txt = docs\releases\release_1.3.4.txt
-		docs\releases\release_1.3.5.txt = docs\releases\release_1.3.5.txt
-		docs\releases\release_1.4.1.txt = docs\releases\release_1.4.1.txt
-		docs\releases\release_1.4.2.txt = docs\releases\release_1.4.2.txt
-		docs\releases\release_1.4.3.txt = docs\releases\release_1.4.3.txt
-		docs\releases\release_1.4.4.txt = docs\releases\release_1.4.4.txt
-		docs\releases\release_1.4.txt = docs\releases\release_1.4.txt
-		docs\releases\upgrade_1.3.3.txt = docs\releases\upgrade_1.3.3.txt
-		docs\releases\upgrade_1.3.4.txt = docs\releases\upgrade_1.3.4.txt
-		docs\releases\upgrade_1.3.5.txt = docs\releases\upgrade_1.3.5.txt
-		docs\releases\upgrade_1.4.1.txt = docs\releases\upgrade_1.4.1.txt
-		docs\releases\upgrade_1.4.2.txt = docs\releases\upgrade_1.4.2.txt
-		docs\releases\upgrade_1.4.3.txt = docs\releases\upgrade_1.4.3.txt
-		docs\releases\upgrade_1.4.4.txt = docs\releases\upgrade_1.4.4.txt
-		docs\releases\upgrade_1.4.txt = docs\releases\upgrade_1.4.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}"
@@ -139,6 +120,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.UI.Tests", "src\wwwroot\N2.Templates.UI.Tests.csproj", "{250D978B-3C2C-4151-9A69-B36F3F53E8B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}"
+	ProjectSection(SolutionItems) = preProject
+		readme.txt = readme.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTest", "examples\Mvc\wwwroot\MvcTest.csproj", "{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}"
 EndProject
@@ -170,11 +154,17 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "examples\Minimal
 		VWDVirtualPath = "/"
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mnimal", "Mnimal", "{B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{CD0CB04E-C4F8-4343-B8EB-39741236B222}"
+	ProjectSection(SolutionItems) = preProject
+		examples\Mvc\mvc_readme.txt = examples\Mvc\mvc_readme.txt
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{456E758B-CA59-4E39-A926-1D3742E88C6D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates Integration", "Templates Integration", "{456E758B-CA59-4E39-A926-1D3742E88C6D}"
+	ProjectSection(SolutionItems) = preProject
+		examples\TemplatesSite\implementation_readme.txt = examples\TemplatesSite\implementation_readme.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{1049B0C4-91C6-4A4D-B14D-CB37EC84916C}"
 EndProject
@@ -296,7 +286,6 @@ Global
 		{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE} = {8B56F738-E780-4F6E-9B7F-7D161F7E3521}
 		{3C49EAD0-C3FF-406F-8290-23229BD4BADF} = {8B56F738-E780-4F6E-9B7F-7D161F7E3521}
 		{04E4D1B1-EE03-488C-B53D-989700FE6018} = {8B56F738-E780-4F6E-9B7F-7D161F7E3521}
-		{0AFCEA00-8510-48F6-B949-22796F899C77} = {E74B5507-F3B1-439D-BA8E-F5E923B327CA}
 		{D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2} = {1049B0C4-91C6-4A4D-B14D-CB37EC84916C}
 		{2F1767D9-B52F-497D-8AE1-9B80B9EC5441} = {1049B0C4-91C6-4A4D-B14D-CB37EC84916C}
 		{AF8671B0-7A7E-43EF-BE48-4A2006C53CED} = {1049B0C4-91C6-4A4D-B14D-CB37EC84916C}

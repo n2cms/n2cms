@@ -6,6 +6,5 @@ namespace N2.Tests.Definitions.Items
 	[RemoveEditable("Description")]
 	public class DefinitionRemoves : DefinitionRemovable
 	{
-		
 	}
 }

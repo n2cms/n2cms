@@ -23,29 +23,31 @@ namespace N2.Tests.Definitions
 		protected override Type[] GetTypes()
 		{
 			return new Type[]
-				{
-					typeof (DefinitionNewsList),
-					typeof (DefinitionNewsPage),
-					typeof (DefinitionRightColumnPart),
-					typeof (DefinitionRightColumnTeaser),
-					typeof (DefinitionStartPage),
-					typeof (DefinitionTextItem),
-					typeof (DefinitionTextPage),
-					typeof (DefinitionTwoColumnPage),
-					typeof (DefinitionMenuItem),
-					typeof (DefinitionAutoCreatedItem),
-					typeof (DefinitionReplaced),
-					typeof (DefinitionReplacement),
-					typeof (DefinitionOne),
-					typeof (DefinitionTwo),
-					typeof (DefinitionReplacesNumber1),
-					typeof (DefinitionRemovesNumber2),
-					typeof (DefinitionUndefined),
-					typeof (DefinitionFreeItem),
-					typeof (DefinitionControllingParent),
-					typeof (DefinitionOppressedChild),
-					typeof (DefinitionPartDefinedItem)
-				};
+			{
+				typeof (DefinitionNewsList),
+				typeof (DefinitionNewsPage),
+				typeof (DefinitionRightColumnPart),
+				typeof (DefinitionRightColumnTeaser),
+				typeof (DefinitionStartPage),
+				typeof (DefinitionTextItem),
+				typeof (DefinitionTextPage),
+				typeof (DefinitionTwoColumnPage),
+				typeof (DefinitionMenuItem),
+				typeof (DefinitionAutoCreatedItem),
+				typeof (DefinitionReplaced),
+				typeof (DefinitionReplacement),
+				typeof (DefinitionOne),
+				typeof (DefinitionTwo),
+				typeof (DefinitionReplacesNumber1),
+				typeof (DefinitionRemovesNumber2),
+				typeof (DefinitionUndefined),
+				typeof (DefinitionFreeItem),
+				typeof (DefinitionControllingParent),
+				typeof (DefinitionOppressedChild),
+				typeof (DefinitionPartDefinedItem),
+				typeof (DefinitionRemovesParent),
+				typeof (DefinitionRemovedByParent)
+			};
 		}
 
 		[SetUp]
@@ -439,6 +441,24 @@ namespace N2.Tests.Definitions
 			var definition = definitions.GetDefinition(typeof(DefinitionPartDefinedItem));
 
 			Assert.That(definition.AllowedIn, Is.EqualTo(AllowedZones.AllNamed));
+		}
+
+		[Test]
+		public void ReplacesParentDefinition_Removes_ParentsDefinition()
+		{
+			int count = definitions.GetDefinitions()
+				.Where(d => d.ItemType == typeof(DefinitionRemovedByParent))
+				.Count();
+
+			Assert.That(count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void ReplacesParentDefinition_Assumes_ParentsDefinition_Discriminator()
+		{
+			var definition = definitions.GetDefinition(typeof(DefinitionRemovesParent));
+
+			Assert.That(definition.Discriminator, Is.EqualTo("DefinitionRemovedByParent"));
 		}
 	}
 }

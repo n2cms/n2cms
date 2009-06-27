@@ -61,7 +61,7 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\MyPagePage.cs" />
+    <Compile Include="Items\MyPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\MyPage.aspx.cs">
       <DependentUpon>MyPage.aspx</DependentUpon>

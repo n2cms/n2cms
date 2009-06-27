@@ -1,8 +1,10 @@
 Make a complete backup, delete /edit, any /Templates folders drop upgrade files and recompile your solution.
 
-Instructions:
-- PageDefinition & PartDefinition
+Upgrade hints:
+- PageDefinition & PartDefinition are now reccomended for defining pages and parts
+- [Page/PartDefinition("The Title", TemplateUrl = "/path/to/the/template.as?x")] is preferred for referincing the template
 
-Breaking changes:
+Possibly breaking changes:
 - Overriding ContentItem.IconUrl now only works in the tree. Use [PageDefinition("the title", IconUrl = "/path/to/the/icon.gif")] or [PartDefinition...] to change the new item screen.
 - The user "admin" may have less permissions than before in some cases. Please create a membership user with roles instead.
+- [ReplacesParentDefinition] now defaults to remove the parent definition and assume it's discriminator (use parameters to maintain old behaviour where the parent was just disabled)

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using N2.Definitions;
+﻿using N2.Definitions;
 
 namespace N2.Tests.Definitions.Items
 {
 	[PageDefinition]
-	[ReplacesParentDefinition]
+	[ReplacesParentDefinition(ReplacementMode = DefinitionReplacementMode.Disable)]
 	public class DefinitionReplacement : DefinitionReplaced
 	{
 	}
