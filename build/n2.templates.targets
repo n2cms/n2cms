@@ -23,47 +23,44 @@
 
 	<!-- MVC TEMPLATES -->
 	<PropertyGroup>
-		<Templates-Mvc-Folder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-Folder>
-		<Templates-Mvc-Deploy-Folder>$(DeployFolder)\N2.Templates.Mvc</Templates-Mvc-Deploy-Folder>
+		<Templates-Mvc-SourceFolder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-SourceFolder>
+		<Templates-Mvc-DeployFolder>$(DeployFolder)\N2.Templates.Mvc</Templates-Mvc-DeployFolder>
 	</PropertyGroup>
 
 	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
                        $(LibFolder)\Microsoft.Web.Mvc.dll; 
                        $(LibFolder)\System.Web.Mvc.dll;"
-					DestinationFolder="$(Templates-Mvc-Folder)\Bin" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-Folder)\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-Folder)\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
+					DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 	
 	<Target Name="Templates-Mvc-Build" DependsOnTargets="Templates-Mvc-PrepareDependencies">
-		<MSBuild Projects="$(Templates-Mvc-Folder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
 	</Target>
 
 	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Framework-CreateItemGroups">
-		<!--DependsOnTargets="Templates-Mvc-Build;Framework-CreateItemGroups">-->
 		<ItemGroup>
-			<_TemplatesMvcFiles Include="$(Templates-Mvc-Folder)\**\*"
-								Exclude="$(Templates-Mvc-Folder)\**\.svn\**\*;
-										   $(Templates-Mvc-Folder)\**\obj\**\*;
-										   $(Templates-Mvc-Folder)\**\bin\*.pdb;
-										   $(Templates-Mvc-Folder)\**\Ankh.Load;
-										   $(Templates-Mvc-Folder)\**\*.sln.cache;
-										   $(Templates-Mvc-Folder)\**\*.resharper;
-										   $(Templates-Mvc-Folder)\**\*.suo;
-										   $(Templates-Mvc-Folder)\**\*.user;
-										   $(Templates-Mvc-Folder)\**\*.Publish.xml;
-										   $(Templates-Mvc-Folder)\**\Thumbs.db;
-										   $(Templates-Mvc-Folder)\Edit\**\*;" />
-
-			<!--<_TemplatesMvcTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates.Mvc\**\*"/>-->
+			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*"
+								Exclude="$(Templates-Mvc-SourceFolder)\**\.svn\**\*;
+										   $(Templates-Mvc-SourceFolder)\**\obj\**\*;
+										   $(Templates-Mvc-SourceFolder)\**\bin\*.pdb;
+										   $(Templates-Mvc-SourceFolder)\**\Ankh.Load;
+										   $(Templates-Mvc-SourceFolder)\**\*.sln.cache;
+										   $(Templates-Mvc-SourceFolder)\**\*.resharper;
+										   $(Templates-Mvc-SourceFolder)\**\*.suo;
+										   $(Templates-Mvc-SourceFolder)\**\*.user;
+										   $(Templates-Mvc-SourceFolder)\**\*.Publish.xml;
+										   $(Templates-Mvc-SourceFolder)\**\Thumbs.db;
+										   $(Templates-Mvc-SourceFolder)\Edit\**\*;" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(_TemplatesMvcFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\Edit\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-Deploy-Folder)\" />
-		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-Deploy-Folder)\App_Data\n2.sqlite.db" />
+		<Copy SourceFiles="@(templatesMvcFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
+		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-DeployFolder)\App_Data\n2.sqlite.db" />
 
 		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />
 	</Target>
@@ -83,9 +80,8 @@
 
 	<Target Name="Templates-Mvc-RemoveProjectReferences">
 		<PropertyGroup>
-			<SourceFile>$(Templates-Mvc-Folder)\N2.Templates.Mvc.csproj</SourceFile>
-			<DestinationFile>$(Templates-Mvc-Deploy-Folder)\N2.Templates.Mvc.csproj</DestinationFile>
-			<RegexPattern></RegexPattern>
+			<SourceFile>$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj</SourceFile>
+			<DestinationFile>$(Templates-Mvc-DeployFolder)\N2.Templates.Mvc.csproj</DestinationFile>
 		</PropertyGroup>
 		<PropertyGroup>
 			<Code>

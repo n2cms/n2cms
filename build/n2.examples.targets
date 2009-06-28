@@ -144,8 +144,8 @@
 			<ExampleSource-TemplatesSiteFiles Include="$(Examples-Templates-SourceFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 		</ItemGroup>
 		<Copy SourceFiles="@(ExampleSource-TemplatesSiteFiles)" DestinationFolder="$(Example-Templates-DeployFolder)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"				DestinationFolder="$(Example-Templates-DeployFolder)\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"				DestinationFolder="$(Example-Templates-DeployFolder)\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)"				DestinationFolder="$(Example-Templates-DeployFolder)\wwwroot\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)"				DestinationFolder="$(Example-Templates-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"                        DestinationFolder="$(Example-Templates-DeployFolder)" />
 		<Copy SourceFiles="@(Snippets)"                         DestinationFolder="$(Example-Templates-DeployFolder)\Snippets" />
 	</Target>
