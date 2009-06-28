@@ -3,6 +3,14 @@
 
 	<!-- TEMPLATES -->
 
+	<PropertyGroup>
+		<Templates-SourceFolder>$(SrcFolder)\wwwroot</Templates-SourceFolder>
+		<Templates-DeployFolder>$(DeployFolder)\Templates_WebForms</Templates-DeployFolder>
+		<Templates-Mvc-SourceFolder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-SourceFolder>
+		<Templates-Mvc-DeployFolder>$(DeployFolder)\Templates_Mvc</Templates-Mvc-DeployFolder>
+	</PropertyGroup>
+
+
 	<Target Name="Templates-Build">
 		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
 		<CallTarget Targets="Templates-Mvc-Build"/>
@@ -13,19 +21,15 @@
 			<_TemplatesTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates\**\*"/>
 		</ItemGroup>
 
-		<Copy SourceFiles="@(_TemplatesTempFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\%(RecursiveDir)" />
+		<Copy SourceFiles="@(_TemplatesTempFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\%(RecursiveDir)" />
 		<RemoveDir Directories="$(TempFolder)_PublishedWebsites\N2.Templates\"/>
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(DeployFolder)\Templates\wwwroot\Edit\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Templates" />
-		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(DeployFolder)\Templates\wwwroot\App_Data\n2.sqlite.db" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-DeployFolder)" />
+		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
 	</Target>
 
 	<!-- MVC TEMPLATES -->
-	<PropertyGroup>
-		<Templates-Mvc-SourceFolder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-SourceFolder>
-		<Templates-Mvc-DeployFolder>$(DeployFolder)\N2.Templates.Mvc</Templates-Mvc-DeployFolder>
-	</PropertyGroup>
 
 	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
@@ -43,45 +47,45 @@
 	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<ItemGroup>
 			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*"
-								Exclude="$(Templates-Mvc-SourceFolder)\**\.svn\**\*;
-										   $(Templates-Mvc-SourceFolder)\**\obj\**\*;
-										   $(Templates-Mvc-SourceFolder)\**\bin\*.pdb;
-										   $(Templates-Mvc-SourceFolder)\**\Ankh.Load;
-										   $(Templates-Mvc-SourceFolder)\**\*.sln.cache;
-										   $(Templates-Mvc-SourceFolder)\**\*.resharper;
-										   $(Templates-Mvc-SourceFolder)\**\*.suo;
-										   $(Templates-Mvc-SourceFolder)\**\*.user;
-										   $(Templates-Mvc-SourceFolder)\**\*.Publish.xml;
-										   $(Templates-Mvc-SourceFolder)\**\Thumbs.db;
-										   $(Templates-Mvc-SourceFolder)\Edit\**\*;" />
+							   Exclude="$(Templates-Mvc-SourceFolder)\**\.svn\**\*;
+										$(Templates-Mvc-SourceFolder)\**\obj\**\*;
+										$(Templates-Mvc-SourceFolder)\**\bin\*.pdb;
+										$(Templates-Mvc-SourceFolder)\**\Ankh.Load;
+										$(Templates-Mvc-SourceFolder)\**\*.sln.cache;
+										$(Templates-Mvc-SourceFolder)\**\*.resharper;
+										$(Templates-Mvc-SourceFolder)\**\*.suo;
+										$(Templates-Mvc-SourceFolder)\**\*.user;
+										$(Templates-Mvc-SourceFolder)\**\*.Publish.xml;
+										$(Templates-Mvc-SourceFolder)\**\Thumbs.db;
+										$(Templates-Mvc-SourceFolder)\Edit\**\*;" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(templatesMvcFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(templatesMvcFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
-		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-DeployFolder)\App_Data\n2.sqlite.db" />
 
 		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />
 	</Target>
 
 	<Target Name="Templates-Zip" DependsOnTargets="Templates-Deploy;Templates-Mvc-Deploy">
 		<ItemGroup>
-			<ZipDeploy-Templates Include="$(DeployFolder)\Templates\**" />
-			<ZipDeploy-MvcTemplates Include="$(DeployFolder)\N2.Templates.Mvc\**" />
+			<ZipDeploy-Templates Include="$(Templates-DeployFolder)\**" />
+			<ZipDeploy-MvcTemplates Include="$(Templates-Mvc-DeployFolder)\**" />
 		</ItemGroup>
 
-		<Error Condition="'@(ZipDeploy-Templates)' == ''" Text="Nothing in '$(DeployFolder)\Templates'. Do deploy first." />
-		<Error Condition="'@(ZipDeploy-MvcTemplates)' == ''" Text="Nothing in '$(DeployFolder)\N2.Templates.Mvc'. Do deploy first." />
+		<Error Condition="'@(ZipDeploy-Templates)' == ''" Text="Nothing in '$(Templates-DeployFolder)'. Do deploy first." />
+		<Error Condition="'@(ZipDeploy-MvcTemplates)' == ''" Text="Nothing in '$(Templates-Mvc-DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(DeployFolder)\Templates"              ZipFileName="$(DeployFolder)\Templates_WebForms.zip" />
-		<Zip Files="@(ZipDeploy-MvcTemplates)"    WorkingDirectory="$(DeployFolder)\N2.Templates.Mvc"       ZipFileName="$(DeployFolder)\Templates_Mvc.zip" />
+		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(Templates-DeployFolder)"		ZipFileName="$(DeployFolder)\Templates_WebForms.zip" />
+		<Zip Files="@(ZipDeploy-MvcTemplates)"    WorkingDirectory="$(Templates-Mvc-DeployFolder)"	ZipFileName="$(DeployFolder)\Templates_Mvc.zip" />
 	</Target>
 
 	<Target Name="Templates-Mvc-RemoveProjectReferences">
 		<PropertyGroup>
 			<SourceFile>$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj</SourceFile>
-			<DestinationFile>$(Templates-Mvc-DeployFolder)\N2.Templates.Mvc.csproj</DestinationFile>
+			<DestinationFile>$(Templates-Mvc-DeployFolder)\wwwroot\N2.Templates.Mvc.csproj</DestinationFile>
 		</PropertyGroup>
 		<PropertyGroup>
 			<Code>
@@ -115,7 +119,7 @@ public static string ScriptMain() {
 		<ItemGroup>
 			<_AddonCatalogTempFiles Include="$(TempFolder)_PublishedWebsites\AddonCatalog\**\*"/>
 		</ItemGroup>
-		<Copy SourceFiles="@(_AddonCatalogTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\AddonCatalog\%(RecursiveDir)"/>
+		<Copy SourceFiles="@(_AddonCatalogTempFiles)" DestinationFolder="$(Templates-DeployFolder)\Addons\AddonCatalog\%(RecursiveDir)"/>
 		<Delete Files="@(_AddonCatalogTempFiles)" ContinueOnError="true" />
 	</Target>
 
@@ -127,7 +131,7 @@ public static string ScriptMain() {
 		<ItemGroup>
 			<_WikiTempFiles Include="$(TempFolder)_PublishedWebsites\Wiki\**\*"/>
 		</ItemGroup>
-		<Copy SourceFiles="@(_WikiTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\Wiki\%(RecursiveDir)"/>
+		<Copy SourceFiles="@(_WikiTempFiles)" DestinationFolder="$(Templates-DeployFolder)\Addons\Wiki\%(RecursiveDir)"/>
 		<Delete Files="@(_WikiTempFiles)" ContinueOnError="true" />
 	</Target>
 
@@ -139,7 +143,7 @@ public static string ScriptMain() {
 		<ItemGroup>
 			<_TaggingTempFiles Include="$(TempFolder)_PublishedWebsites\Tagging\**\*"/>
 		</ItemGroup>
-		<Copy SourceFiles="@(_TaggingTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\Tagging\%(RecursiveDir)"/>
+		<Copy SourceFiles="@(_TaggingTempFiles)" DestinationFolder="$(Templates-DeployFolder)\Addons\Tagging\%(RecursiveDir)"/>
 		<Delete Files="@(_TaggingTempFiles)" ContinueOnError="true" />
 	</Target>
 
@@ -151,7 +155,7 @@ public static string ScriptMain() {
 		<ItemGroup>
 			<_TabPanelTempFiles Include="$(TempFolder)_PublishedWebsites\TabPanel\**\*"/>
 		</ItemGroup>
-		<Copy SourceFiles="@(_TabPanelTempFiles)" DestinationFolder="$(DeployFolder)\Templates\Addons\TabPanel\%(RecursiveDir)"/>
+		<Copy SourceFiles="@(_TabPanelTempFiles)" DestinationFolder="$(Templates-DeployFolder)\Addons\TabPanel\%(RecursiveDir)"/>
 		<Delete Files="@(_TabPanelTempFiles)" ContinueOnError="true" />
 	</Target>
 </Project>
