@@ -8,7 +8,7 @@
 		<CallTarget Targets="Templates-Mvc-Build"/>
 	</Target>
 
-	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Rebuild-Framework-BinFiles">
+	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Framework-CreateItemGroups">
 		<ItemGroup>
 			<_TemplatesTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates\**\*"/>
 		</ItemGroup>
@@ -27,7 +27,7 @@
 		<Templates-Mvc-Deploy-Folder>$(DeployFolder)\N2.Templates.Mvc</Templates-Mvc-Deploy-Folder>
 	</PropertyGroup>
 
-	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Rebuild-Framework-BinFiles">
+	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
                        $(LibFolder)\Microsoft.Web.Mvc.dll; 
                        $(LibFolder)\System.Web.Mvc.dll;"
@@ -40,8 +40,8 @@
 		<MSBuild Projects="$(Templates-Mvc-Folder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
 	</Target>
 
-	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Rebuild-Framework-BinFiles">
-		<!--DependsOnTargets="Templates-Mvc-Build;Rebuild-Framework-BinFiles">-->
+	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Framework-CreateItemGroups">
+		<!--DependsOnTargets="Templates-Mvc-Build;Framework-CreateItemGroups">-->
 		<ItemGroup>
 			<_TemplatesMvcFiles Include="$(Templates-Mvc-Folder)\**\*"
 								Exclude="$(Templates-Mvc-Folder)\**\.svn\**\*;
@@ -68,6 +68,19 @@
 		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />
 	</Target>
 
+	<Target Name="Templates-Zip" DependsOnTargets="Templates-Deploy;Templates-Mvc-Deploy">
+		<ItemGroup>
+			<ZipDeploy-Templates Include="$(DeployFolder)\Templates\**" />
+			<ZipDeploy-MvcTemplates Include="$(DeployFolder)\N2.Templates.Mvc\**" />
+		</ItemGroup>
+
+		<Error Condition="'@(ZipDeploy-Templates)' == ''" Text="Nothing in '$(DeployFolder)\Templates'. Do deploy first." />
+		<Error Condition="'@(ZipDeploy-MvcTemplates)' == ''" Text="Nothing in '$(DeployFolder)\N2.Templates.Mvc'. Do deploy first." />
+
+		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(DeployFolder)\Templates"              ZipFileName="$(DeployFolder)\Templates_WebForms.zip" />
+		<Zip Files="@(ZipDeploy-MvcTemplates)"    WorkingDirectory="$(DeployFolder)\N2.Templates.Mvc"       ZipFileName="$(DeployFolder)\Templates_Mvc.zip" />
+	</Target>
+
 	<Target Name="Templates-Mvc-RemoveProjectReferences">
 		<PropertyGroup>
 			<SourceFile>$(Templates-Mvc-Folder)\N2.Templates.Mvc.csproj</SourceFile>
@@ -81,7 +94,10 @@ public static string ScriptMain() {
 	string lines = File.ReadAllText(@"$(SourceFile)");
 	string pattern = "<ProjectReference.*?<Name>(?<Name>[^<]*).*?</ProjectReference>";
 	string replacement = @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
-	return Regex.Replace(lines, pattern, replacement, RegexOptions.Singleline);
+	
+	lines = Regex.Replace(lines, pattern, replacement, RegexOptions.Singleline);
+	
+	return Regex.Replace(lines, @"([($]+LibPath[)])|([\.\\]+lib)", "bin");
 }
 			]]>
 			</Code>

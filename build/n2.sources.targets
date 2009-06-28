@@ -30,4 +30,15 @@
 
 		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(DeployFolder)\Source\%(RecursiveDir)"  />
 	</Target>
+
+	<Target Name="Source-Zip" DependsOnTargets="Source-Deploy">
+		<ItemGroup>
+			<ZipDeploy-Source Include="$(DeployFolder)\Source\**" />
+		</ItemGroup>
+
+		<Error Condition="'@(ZipDeploy-Source)' == ''" Text="Nothing in '$(DeployFolder)\Source'. Do deploy first." />
+
+		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(DeployFolder)\Source"                 ZipFileName="$(DeployFolder)\Sources.zip" />
+	</Target>
+	
 </Project>
