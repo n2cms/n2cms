@@ -1,4 +1,4 @@
-Make a complete backup, delete /edit, any /Templates folders drop upgrade files and recompile your solution.
+Make a complete backup (including database), delete /edit, any /Templates folders, drop upgrade files and recompile your solution.
 
 Upgrade hints:
 - PageDefinition & PartDefinition are now reccomended for defining pages and parts
