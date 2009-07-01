@@ -26,6 +26,9 @@ namespace N2.Templates.Mvc.Services
 
 		void Page_Init(object sender, EventArgs e)
 		{
+			if(page.Header == null)
+				return;
+
 			page.Title = item[HeadTitle] as string ?? item.Title;
 			AddMeta("keywords", item[MetaKeywords] as string);
 			AddMeta("description", item[MetaDescription] as string);

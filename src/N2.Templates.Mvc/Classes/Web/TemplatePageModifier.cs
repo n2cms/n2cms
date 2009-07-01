@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using N2.Engine.Globalization;
-using N2.Web.UI;
+using N2.Web;
 
 namespace N2.Templates.Mvc.Web
 {
@@ -17,11 +17,11 @@ namespace N2.Templates.Mvc.Web
 			modifiers.Add(new MasterPageModifier());
 		}
 
-		public TemplatePageModifier(ILanguageGateway gateway)
+		public TemplatePageModifier(ILanguageGateway gateway, IUrlParser urlParser)
 			: this()
 		{
 			if (gateway.Enabled)
-				modifiers.Add(new LanguageModifier(gateway));
+				modifiers.Add(new LanguageModifier(gateway, urlParser));
 		}
 
 		public void Add(IPageModifier modifier)
@@ -34,7 +34,7 @@ namespace N2.Templates.Mvc.Web
 			modifiers.Remove(modifier);
 		}
 
-		public void Modify<T>(ContentPage<T> page) where T : ContentItem
+		public void Modify(Page page)
 		{
 			foreach (IPageModifier adapter in modifiers)
 			{

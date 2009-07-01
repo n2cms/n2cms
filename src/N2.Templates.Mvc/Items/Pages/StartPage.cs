@@ -16,7 +16,8 @@ namespace N2.Templates.Mvc.Items.Pages
 		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage,
 		IconUrl = "~/Content/Img/page_world.png")]
 	[RestrictParents(typeof (RootPage))]
-	[AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft),
+	[AvailableZone("Site Wide Top", Zones.SiteTop), 
+     AvailableZone("Site Wide Left", Zones.SiteLeft),
 	 AvailableZone("Site Wide Right", Zones.SiteRight)]
 	public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource
 	{

@@ -1,6 +1,4 @@
-using System.Web.Hosting;
-using System.IO;
-using N2.Web.UI;
+using System.Web.UI;
 
 namespace N2.Templates.Mvc.Web
 {
@@ -11,7 +9,7 @@ namespace N2.Templates.Mvc.Web
 	{
 		bool themeVerified = false;
 
-		public void Modify<T>(ContentPage<T> page) where T : ContentItem
+		public void Modify(Page page)
 		{
 			return;
 

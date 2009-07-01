@@ -1,8 +1,7 @@
 using N2.Engine;
 using N2.Plugin;
-using N2.Templates.Mvc._Class.Configuration;
+using N2.Templates.Mvc.Configuration;
 using N2.Templates.Mvc.Web;
-using N2.Templates.Configuration;
 using N2.Web.Mail;
 using System.Configuration;
 

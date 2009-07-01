@@ -1,22 +1,25 @@
+using System.Web.UI;
 using Castle.Core;
 using N2.Templates.Mvc.Web;
 using N2.Plugin;
-using N2.Web.UI;
+using N2.Web;
 
 namespace N2.Templates.Mvc.Services
 {
 	public class SEOPageModifier : IPageModifier, IStartable, IAutoStart
 	{
 		private readonly IPageModifierContainer modifierContainer;
+		private readonly IUrlParser urlParser;
 
-		public SEOPageModifier(IPageModifierContainer modifierContainer)
+		public SEOPageModifier(IPageModifierContainer modifierContainer, IUrlParser urlParser)
 		{
 			this.modifierContainer = modifierContainer;
+			this.urlParser = urlParser;
 		}
 
-		public void Modify<T>(ContentPage<T> page) where T : ContentItem
+		public void Modify(Page page)
 		{
-			new TitleAndMetaTagApplyer(page, page.CurrentPage);
+			new TitleAndMetaTagApplyer(page, urlParser.CurrentPage);
 		}
 
 		public void Start()

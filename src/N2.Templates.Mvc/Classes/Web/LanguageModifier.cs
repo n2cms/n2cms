@@ -1,25 +1,28 @@
-﻿using N2.Engine.Globalization;
-using N2.Web.UI;
+﻿using System.Web.UI;
+using N2.Engine.Globalization;
+using N2.Web;
 
 namespace N2.Templates.Mvc.Web
 {
 	public class LanguageModifier : IPageModifier
 	{
-		ILanguageGateway gateway;
+		readonly ILanguageGateway gateway;
+		private readonly IUrlParser urlParser;
 
-		public LanguageModifier(ILanguageGateway gateway)
+		public LanguageModifier(ILanguageGateway gateway, IUrlParser urlParser)
 		{
 			this.gateway = gateway;
+			this.urlParser = urlParser;
 		}
 
-		public void Modify<T>(ContentPage<T> page) where T : ContentItem
+		public void Modify(Page page)
 		{
-			ILanguage language = gateway.GetLanguage(page.CurrentPage);
-			if (language != null && !string.IsNullOrEmpty(language.LanguageCode))
-			{
-				page.Culture = language.LanguageCode;
-				page.UICulture = language.LanguageCode;
-			}
+			ILanguage language = gateway.GetLanguage(urlParser.CurrentPage);
+			if (language == null || string.IsNullOrEmpty(language.LanguageCode)) 
+				return;
+
+			page.Culture = language.LanguageCode;
+			page.UICulture = language.LanguageCode;
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using N2.Templates.Mvc.Web;
 using N2.Web.Mvc;
 using N2.Web.UI;
 
@@ -14,6 +15,13 @@ namespace N2.Templates.Mvc.Views.Shared
 				return className.Substring(0, 1).ToLower() + className.Substring(1);
 			}
 			return null;
+		}
+
+		protected override void OnInit(EventArgs e)
+		{
+			N2.Context.Current.Resolve<IPageModifierContainer>().Modify(Page);
+
+			base.OnInit(e);
 		}
 
 		/// <summary>Gets the item associated with the item container.</summary>

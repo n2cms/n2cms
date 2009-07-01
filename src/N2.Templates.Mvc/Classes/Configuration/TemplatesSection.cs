@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
-using N2.Templates.Mvc._Class.Configuration;
+using N2.Templates.Configuration;
 
-namespace N2.Templates.Configuration
+namespace N2.Templates.Mvc.Configuration
 {
 	/// <summary>
 	/// Configuration options for the N2 functional templates project.

@@ -46,6 +46,18 @@ namespace N2.Web.Mvc
 			set { _currentItem = value; }
 		}
 
+		protected ContentItem CurrentPage
+		{
+			get
+			{
+				ContentItem page = CurrentItem;
+				while (page != null && !page.IsPage)
+					page = page.Parent;
+
+				return page;
+			}
+		}
+
 		private T GetCurrentItemById()
 		{
 			int itemId;
@@ -107,7 +119,7 @@ namespace N2.Web.Mvc
 
 		protected virtual ActionResult RedirectToParentPage()
 		{
-			return Redirect(FindParentPage().Url);
+			return Redirect(CurrentPage.Url);
 		}
 
 		/// <summary>
@@ -122,17 +134,8 @@ namespace N2.Web.Mvc
 					"The current page is already being rendered. ViewPage should only be used from content items to render their parent page.");
 			}
 
-			return new ViewPageResult(FindParentPage(), Engine.Resolve<IControllerMapper>(), Engine.Resolve<IWebContext>(),
+			return new ViewPageResult(CurrentPage, Engine.Resolve<IControllerMapper>(), Engine.Resolve<IWebContext>(),
 			                          ActionInvoker);
-		}
-
-		protected virtual ContentItem FindParentPage()
-		{
-			ContentItem page = CurrentItem;
-			while (page != null && !page.IsPage)
-				page = page.Parent;
-
-			return page;
 		}
 
 		#region Nested type: SessionAndPerRequestTempDataProvider
