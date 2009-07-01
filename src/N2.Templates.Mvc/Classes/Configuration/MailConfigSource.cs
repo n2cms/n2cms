@@ -1,4 +1,4 @@
-﻿namespace N2.Templates.Mvc._Class.Configuration
+﻿namespace N2.Templates.Mvc.Configuration
 {
 	public enum MailConfigSource
 	{

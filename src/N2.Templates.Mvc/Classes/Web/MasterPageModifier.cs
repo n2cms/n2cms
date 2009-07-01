@@ -1,7 +1,7 @@
-using System.IO;
-using N2.Templates.Configuration;
+using System;
 using System.Configuration;
-using N2.Web.UI;
+using System.Web.UI;
+using N2.Templates.Mvc.Configuration;
 
 namespace N2.Templates.Mvc.Web
 {
@@ -11,19 +11,26 @@ namespace N2.Templates.Mvc.Web
 	/// </summary>
 	public class MasterPageModifier : IPageModifier
 	{
-		TemplatesSection config;
+		private readonly TemplatesSection config;
 
 		public MasterPageModifier()
 		{
 			config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
 		}
 
-		public void Modify<T>(ContentPage<T> page) where T : ContentItem
+		#region IPageModifier Members
+
+		public void Modify(Page page)
 		{
+			return;
+
+			// Not implemented as still not found a way to hook into the MVC pipeline
 			if (config != null && !string.IsNullOrEmpty(config.MasterPageFile))
 			{
 				page.MasterPageFile = config.MasterPageFile;
 			}
 		}
+
+		#endregion
 	}
 }

@@ -583,6 +583,10 @@
     <Content Include="Views\Shared\Statistics.ascx" />
     <Content Include="Views\Shared\UrchinTracking.ascx" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CalendarList\App_LocalResources\Index.aspx.resx">
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
