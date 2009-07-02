@@ -60,7 +60,7 @@ namespace N2.Edit
 
 		private void LoadDefaultsAndInfo()
 		{
-			btnCancel.NavigateUrl = SelectedItem.FindPath(PathData.DefaultAction).RewrittenUrl;
+			btnCancel.NavigateUrl = MemorizedItem.Url;
 			txtNewName.Text = MemorizedItem.Name;
 
 			Title = string.Format(GetLocalResourceString("MovePage.TitleFormat"),

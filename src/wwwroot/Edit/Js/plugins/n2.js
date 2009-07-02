@@ -206,6 +206,6 @@ window.n2.frameManager = {
             .find("div,iframe").height(h);
     },
     contentHeight: function() {
-        return window.document.documentElement.clientHeight - (jQuery.browser.msie ? 50 : 51);
+        return $(document).height() - $('#top').height();
     }
 };
