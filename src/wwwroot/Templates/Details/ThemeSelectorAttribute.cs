@@ -21,12 +21,14 @@ namespace N2.Templates.Details
 			items.Add(new ListItem());
 
 			string path = HostingEnvironment.MapPath("~/App_Themes/");
-
-			foreach(string directoryPath in Directory.GetDirectories(path))
-			{
-				string directoryName = Path.GetFileName(directoryPath);
-				if (!directoryName.StartsWith(".") && !directoryName.StartsWith("_"))
-					items.Add(new ListItem(directoryName));
+			
+			if(Directory.Exists(path)) {
+				foreach(string directoryPath in Directory.GetDirectories(path))
+				{
+					string directoryName = Path.GetFileName(directoryPath);
+					if (!directoryName.StartsWith(".") && !directoryName.StartsWith("_"))
+						items.Add(new ListItem(directoryName));
+				}
 			}
 
 			return items.ToArray();
