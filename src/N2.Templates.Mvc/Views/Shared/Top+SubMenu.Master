@@ -4,7 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
-	<link href="/App_Themes/ContentFocus/Style.css" type="text/css" rel="stylesheet" />
+	<asp:PlaceHolder runat="server">
+	<link href="<%=ResolveUrl("~/App_Themes/ContentFocus/Style.css")%>" type="text/css" rel="stylesheet" />
+	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
 <body class="<%= GetBodyClass() %>">

@@ -31,7 +31,7 @@ namespace N2.Details
 			if (!string.IsNullOrEmpty(imageUrl))
 			{
 				Image image = new Image();
-				image.ImageUrl = imageUrl;
+				image.ImageUrl = container.ResolveUrl(imageUrl);
 				image.Attributes["alt"] = altText;
 				image.CssClass = cssClass;
 				container.Controls.Add(image);
