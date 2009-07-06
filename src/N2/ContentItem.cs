@@ -183,7 +183,7 @@ namespace N2
 			set { sortOrder = value; }
 		}
 
-		/// <summary>Gets or sets whether this item is visible. This is normally used to control it's visibility in the site map provider.</summary>
+		/// <summary>Gets or sets whether this item is visible. This is normally used to control its visibility in the site map provider.</summary>
         [DisplayableLiteral]
         public virtual bool Visible
 		{
@@ -429,9 +429,9 @@ namespace N2
 
 		#region AddTo & GetChild & GetChildren
 
-		private const int SortOrderTreshold = 9999;
+		private const int SortOrderThreshold = 9999;
 
-		/// <summary>Adds an item to the children of this item updating it's parent refernce.</summary>
+		/// <summary>Adds an item to the children of this item updating its parent refernce.</summary>
 		/// <param name="newParent">The new parent of the item. If this parameter is null the item is detached from the hierarchical structure.</param>
 		public virtual void AddTo(ContentItem newParent)
 		{
@@ -450,7 +450,7 @@ namespace N2
 
 					for (int i = siblings.Count - 2; i >= 0; i--)
 					{
-						if (siblings[i].SortOrder < lastOrder - SortOrderTreshold)
+						if (siblings[i].SortOrder < lastOrder - SortOrderThreshold)
 						{
 							siblings.Insert(i + 1, this);
 							return;
@@ -458,7 +458,7 @@ namespace N2
 						lastOrder = siblings[i].SortOrder;
 					}
 
-					if (lastOrder > SortOrderTreshold)
+					if (lastOrder > SortOrderThreshold)
 					{
 						siblings.Insert(0, this);
 						return;
@@ -624,7 +624,7 @@ namespace N2
 			return Clone(true);
 		}
 		
-		/// <summary>Creats a copy of this item including details and authorized roles resetting ID.</summary>
+		/// <summary>Creates a copy of this item including details and authorized roles resetting ID.</summary>
 		/// <param name="includeChildren">Wether this item's child items also should be cloned.</param>
 		/// <returns>The cloned item with or without cloned child items.</returns>
 		public virtual ContentItem Clone(bool includeChildren)
@@ -771,7 +771,7 @@ namespace N2
 			}
 		}
 
-		/// <summary>Gets wether a certain user is authorized to view this item.</summary>
+		/// <summary>Gets whether a certain user is authorized to view this item.</summary>
 		/// <param name="user">The user to check.</param>
 		/// <returns>True if the item is open for all or the user has the required permissions.</returns>
 		public virtual bool IsAuthorized(IPrincipal user)

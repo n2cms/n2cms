@@ -24,7 +24,7 @@
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
 			<div id="header">
-				<%Html.RenderPartial(Find.ClosestStartPage.Header.TemplateUrl, Find.ClosestStartPage.Header);%>
+				<%=this.EditableDisplay(Find.ClosestStartPage, p => p.Header)%>
 				<%Html.RenderAction<NavigationController>(c => c.TopMenu()); %>
 			</div>
 		</asp:ContentPlaceHolder>
@@ -81,7 +81,7 @@
 			</div>
 			<div id="footer">
 				<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
-				<%=this.EditableDisplay("FooterText", Find.ClosestStartPage)%>
+				<%=this.EditableDisplay(Find.ClosestStartPage, p => p.FooterText)%>
 			</div>
 		</asp:ContentPlaceHolder>
 	</div>

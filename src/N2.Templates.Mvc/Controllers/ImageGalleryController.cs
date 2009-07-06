@@ -7,7 +7,7 @@ using N2.Web.Mvc;
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof(ImageGallery))]
-	public class GalleryItemController : ContentController<ImageGallery>
+	public class ImageGalleryController : ContentController<ImageGallery>
 	{
 		public override System.Web.Mvc.ActionResult Index()
 		{

@@ -11,7 +11,7 @@ namespace N2.Templates.Mvc.Items
 	/// wiring to the default location of the aspx template and access to parts
 	/// added to recursive zones of a parent.
 	/// </summary>
-	[WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content)]
+	[WithEditableTitle("Title", 5, Focus = true, ContainerName = Tabs.Content)]
 	[TabContainer(Tabs.Content, "Content", 0)]
 	[TabContainer(Tabs.Advanced, "Advanced", 100)]
 	public abstract class AbstractPage : ContentItem, IItemContainer

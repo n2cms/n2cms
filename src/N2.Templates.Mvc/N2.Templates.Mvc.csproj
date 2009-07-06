@@ -185,7 +185,7 @@
     <Compile Include="Controllers\CommentInputController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\FormController.cs" />
-    <Compile Include="Controllers\GalleryItemController.cs" />
+    <Compile Include="Controllers\ImageGalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\N2Controller.cs" />

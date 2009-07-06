@@ -4,7 +4,7 @@ using N2.Web.UI;
 
 namespace N2.Web.Mvc.Html
 {
-	public static class EditableEditableDisplayableExtensions
+	public static class EditableDisplayableExtensions
 	{
 		public static EditableDisplayable EditableDisplay<TItem>(this IItemContainer<TItem> container, string detailName)
 			where TItem : ContentItem
@@ -20,19 +20,18 @@ namespace N2.Web.Mvc.Html
 			return container.EditableDisplay(member.Member.Name);
 		}
 
-		public static EditableDisplayable EditableDisplay<TItem>(this IItemContainer<TItem> container, string detailName, TItem item)
+		public static EditableDisplayable EditableDisplay<TItem>(this IItemContainer container, TItem item, string detailName)
 			where TItem : ContentItem
 		{
 			return new EditableDisplayable(Context.Current.Resolve<ITemplateRenderer>(), container, detailName, item);
 		}
 
-		public static EditableDisplayable EditableDisplay<TItem>(this IItemContainer<TItem> container,
-														Expression<Func<TItem, object>> expression, TItem item)
+		public static EditableDisplayable EditableDisplay<TItem>(this IItemContainer container, TItem item, Expression<Func<TItem, object>> expression)
 			where TItem : ContentItem
 		{
 			var member = (MemberExpression)expression.Body;
 
-			return container.EditableDisplay(member.Member.Name, item);
+			return container.EditableDisplay(item, member.Member.Name);
 		}
 
 	}

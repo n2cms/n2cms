@@ -3,7 +3,7 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
-	[ToolbarPlugin("", "tpPreview", "{url}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/Png/eye.png", 0, ToolTip = "edit", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("", "tpPreview", "{url}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/Png/eye.png", 0, ToolTip = "Preview", GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpAdminister", "~/edit/img/ico/png/application_side_tree.png", "~/edit/?selected={Selected.Path}", "Administer site", -50, ControlPanelState.Visible, Target = Targets.Top)]
 	[ControlPanelSeparator(0, ControlPanelState.Visible)]
 	public partial class Default : Web.EditPage
