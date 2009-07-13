@@ -4,9 +4,9 @@ using N2.Engine;
 namespace N2.Web.Mvc
 {
 	/// <summary>
-	/// Used in combination with the [MvcConventionTemplate] attribute to
+	/// Use in combination with the [MvcConventionTemplate] attribute to
 	/// point out the location of content item templates. All content
-	/// item types with a ConventionTemplate attribute in the same 
+	/// item types with an MvcConventionTemplate attribute in the same 
 	/// assembly as this attribute are affected by this optin.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Assembly)]

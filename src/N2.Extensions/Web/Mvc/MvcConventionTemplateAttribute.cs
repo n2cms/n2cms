@@ -2,6 +2,12 @@ using System;
 
 namespace N2.Web.Mvc
 {
+	/// <summary>
+	/// Tells the system to look for the template associated with the
+	/// attribute content item in the default location. This is typically
+	/// "~/Views/" or the location defined by any [MvcConventionTemplateDirectory]
+	/// attribute in the same assembly.
+	/// </summary>
 	public class MvcConventionTemplateAttribute : Attribute, IPathFinder
 	{
 		private readonly string _otherTemplateName;

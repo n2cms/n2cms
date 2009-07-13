@@ -3,7 +3,7 @@
 namespace N2.Web
 {
 	/// <summary>
-	/// Tells the system to look for the ASPX template associted with the
+	/// Tells the system to look for the ASPX template associated with the
 	/// attribute content item in the default location. This is typically
 	/// "~/UI/Views/" or the location defined by any [ConventionTemplateDirectory]
 	/// attribute in the same assembly.
