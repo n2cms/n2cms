@@ -36,17 +36,9 @@ namespace N2.Web.Mvc
 		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper)
 			: base("{controller}/{action}/{*remainingUrl}", new RouteValueDictionary(new { Action = "Index" }), routeHandler)
 		{
-			RegisterAdditionalComponents(engine);
-
 			this.engine = engine;
 			this.routeHandler = routeHandler;
 			this.controllerMapper = controllerMapper ?? engine.Resolve<IControllerMapper>();
-		}
-
-		private void RegisterAdditionalComponents(IEngine engine)
-		{
-			engine.AddComponent("n2.controllerMapper", typeof(IControllerMapper), typeof(ControllerMapper));
-			engine.AddComponent("n2.templateRenderer", typeof(ITemplateRenderer), typeof(TemplateRenderer));
 		}
 
 		public override RouteData GetRouteData(HttpContextBase httpContext)

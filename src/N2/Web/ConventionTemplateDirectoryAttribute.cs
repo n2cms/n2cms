@@ -6,7 +6,7 @@ namespace N2.Web
 	/// <summary>
 	/// Used in combination with the [ConventionTemplate] attribute to
 	/// point out the location of content item templates. All content
-	/// item types with a ConvetntionTemplate attribute in the same 
+	/// item types with a ConventionTemplate attribute in the same 
 	/// assembly as this attribute are affected by this optin.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Assembly)]

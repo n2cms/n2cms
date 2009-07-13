@@ -316,7 +316,7 @@ namespace N2.Engine
 		/// <summary>Registers a component in the IoC container.</summary>
 		/// <param name="key">A unique key.</param>
 		/// <param name="classType">The type of component to register.</param>
-		public void AddComponent(string key, Type classType)
+		public virtual void AddComponent(string key, Type classType)
 		{
 			Container.AddComponent(key, classType);
 		}
@@ -325,7 +325,7 @@ namespace N2.Engine
 		/// <param name="key">A unique key.</param>
 		/// <param name="serviceType">The type of service to provide.</param>
 		/// <param name="classType">The type of component to register.</param>
-		public void AddComponent(string key, Type serviceType, Type classType)
+		public virtual void AddComponent(string key, Type serviceType, Type classType)
 		{
 			Container.AddComponent(key, serviceType, classType);
 		}

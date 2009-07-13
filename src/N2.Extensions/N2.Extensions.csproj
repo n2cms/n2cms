@@ -31,6 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\examples\MinimalCSharp\wwwroot\Bin\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MicroKernel, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle.MicroKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\examples\MinimalCSharp\wwwroot\Bin\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Microsoft.Web.Mvc.dll</HintPath>
@@ -91,13 +103,17 @@
     <Compile Include="Web\Mvc\Html\ZoneHelper.cs" />
     <Compile Include="Web\Mvc\IControllerMapper.cs" />
     <Compile Include="Web\Mvc\IItemContainer.cs" />
+    <Compile Include="Web\Mvc\MvcEngine.cs" />
     <Compile Include="Web\Mvc\MvcConventionTemplateAttribute.cs" />
+    <Compile Include="Web\Mvc\MvcConventionTemplateDirectoryAttribute.cs" />
+    <Compile Include="Web\Mvc\N2ControllerFactory.cs" />
     <Compile Include="Web\Mvc\N2ModelViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\Mvc\N2ModelViewUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\Mvc\N2ViewEngine.cs" />
     <Compile Include="Web\Mvc\N2ViewMasterPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -18,7 +18,7 @@ namespace N2.Templates.Mvc.Controllers
 		[OutputCache(Duration = ExpirationTime, VaryByParam = "*")]
 		public override ActionResult Index()
 		{
-			return View(GetTemplateUrl(), new RssAggregatorModel(CurrentItem, GetNewsItems(CurrentItem.RssUrl)));
+			return View(new RssAggregatorModel(CurrentItem, GetNewsItems(CurrentItem.RssUrl)));
 		}
 
 		private IEnumerable<RssAggregatorModel.RssItem> GetNewsItems(string url)

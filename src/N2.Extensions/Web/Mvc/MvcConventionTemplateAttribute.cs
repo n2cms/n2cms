@@ -4,10 +4,13 @@ namespace N2.Web.Mvc
 {
 	public class MvcConventionTemplateAttribute : Attribute, IPathFinder
 	{
-		readonly string _otherTemplateName;
+		private readonly string _otherTemplateName;
+
+		public string DefaultAction { get; set; }
 
 		public MvcConventionTemplateAttribute()
 		{
+			DefaultAction = "index";
 		}
 
 		/// <summary>
@@ -15,23 +18,31 @@ namespace N2.Web.Mvc
 		/// find the template's location.
 		/// </summary>
 		/// <param name="otherTemplateName">The name used to find the template.</param>
-		public MvcConventionTemplateAttribute(string otherTemplateName)
+		public MvcConventionTemplateAttribute(string otherTemplateName) : this()
 		{
 			_otherTemplateName = otherTemplateName;
 		}
 
+		#region IPathFinder Members
+
 		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
-			if (String.IsNullOrEmpty(remainingUrl))
-			{
-				Type itemType = item.GetType();
-				string virtualDirectory = ConventionTemplateDirectoryAttribute.GetDirectory(itemType);
+			if (remainingUrl != null && (remainingUrl.ToLowerInvariant() == "default.aspx" || remainingUrl.Contains("/")))
+				return null;
 
-				string templateName = _otherTemplateName ?? itemType.Name;
+			if (item == null)
+				throw new ArgumentNullException("item");
 
-				return new PathData(item, String.Format(virtualDirectory.TrimEnd('/'), templateName));
-			}
-			return null;
+			Type itemType = item.GetType();
+			string locationFormat = MvcConventionTemplateDirectoryAttribute.GetDirectory(itemType);
+
+			string templateName = _otherTemplateName ?? itemType.Name;
+
+			string action = remainingUrl ?? DefaultAction;
+
+			return new PathData(item, String.Format(locationFormat, templateName, action), action, String.Empty);
 		}
+
+		#endregion
 	}
 }

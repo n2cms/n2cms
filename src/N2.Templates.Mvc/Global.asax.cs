@@ -2,8 +2,6 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Castle.Windsor;
-using MvcContrib.Castle;
 using N2.Engine;
 using N2.Templates.Mvc.Controllers;
 using N2.Web.Mvc;
@@ -15,14 +13,13 @@ namespace N2.Templates.Mvc
 
 	public class MvcApplication : HttpApplication
 	{
-		private readonly IWindsorContainer container = new WindsorContainer();
-
 		protected void Application_Start()
 		{
-			var engine = (ContentEngine)N2.Context.Current;
+			var engine = MvcEngine.Create();
+
+			engine.RegisterControllers(typeof (HomeController).Assembly);
 
 			RegisterRoutes(RouteTable.Routes, engine);
-			RegisterComponents(container, engine);
 		}
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
@@ -33,19 +30,10 @@ namespace N2.Templates.Mvc
 			routes.Add(new ContentRoute(engine));
 
 			routes.MapRoute(
-				"Default",                                              // Route name
-				"{controller}/{action}/{id}",                           // URL with parameters
-				new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
-			);
-		}
-
-		private static void RegisterComponents(IWindsorContainer container, ContentEngine engine)
-		{
-			container.Parent = engine.Container;
-
-			container.RegisterControllers(typeof(HomeController).Assembly);
-
-			ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(container));
+				"Default", // Route name
+				"{controller}/{action}/{id}", // URL with parameters
+				new {controller = "Home", action = "Index", id = ""} // Parameter defaults
+				);
 		}
 	}
 }

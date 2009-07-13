@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using N2.Engine;
@@ -9,7 +8,7 @@ using N2.Security;
 namespace N2.Web.Mvc
 {
 	/// <summary>
-	/// Base class for contet controllers that provides easy access to the content item in scope.
+	/// Base class for content controllers that provides easy access to the content item in scope.
 	/// </summary>
 	/// <typeparam name="T">The type of content item the controller handles.</typeparam>
 	public abstract class ContentController<T> : Controller
@@ -69,14 +68,14 @@ namespace N2.Web.Mvc
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
-			if(CurrentItem != null)
+			if (CurrentItem != null)
 			{
 				var securityManager = Engine.Resolve<ISecurityManager>();
 
-				if(!securityManager.IsAuthorized(CurrentItem, User))
+				if (!securityManager.IsAuthorized(CurrentItem, User))
 					filterContext.Result = new HttpUnauthorizedResult();
 			}
-			
+
 			base.OnActionExecuting(filterContext);
 		}
 
@@ -84,37 +83,7 @@ namespace N2.Web.Mvc
 		/// <returns>A reference to the item's template.</returns>
 		public virtual ActionResult Index()
 		{
-			string templateUrl = GetTemplateUrl();
-
-			return View(templateUrl, CurrentItem);
-		}
-
-		protected string GetTemplateUrl()
-		{
-			return GetTemplateUrl(CurrentItem);
-		}
-
-		protected virtual string GetTemplateUrl(ContentItem item)
-		{
-			var pathData = PathDictionary
-				.GetFinders(item.GetType())
-				.Select(finder => finder.GetPath(item, null))
-				.FirstOrDefault(path => path != null && !path.IsEmpty());
-
-			var templateUrl = item.TemplateUrl;
-
-			if (pathData != null)
-				templateUrl = pathData.TemplateUrl;
-
-			return templateUrl;
-		}
-
-		protected override ViewResult View(string viewName, string masterName, object model)
-		{
-			if (viewName == null && CurrentItem != null)
-				viewName = GetTemplateUrl();
-
-			return base.View(viewName, masterName, model);
+			return View(CurrentItem);
 		}
 
 		protected virtual ActionResult RedirectToParentPage()

@@ -111,6 +111,7 @@
     <Compile Include="Mvc\Controllers\NonN2Controller.cs" />
     <Compile Include="Mvc\Models\SearchPage.cs" />
     <Compile Include="Mvc\Models\TestItem.cs" />
+    <Compile Include="Mvc\N2ViewEngineTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

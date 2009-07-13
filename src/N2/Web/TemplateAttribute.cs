@@ -22,7 +22,7 @@ namespace N2.Web
 		readonly string nameWithSlash;
 		readonly string templateUrl;
 
-		/// <summary>Registers a template for the defualt action. This is equivalent to overriding the TemplateUrl property on the content item.</summary>
+		/// <summary>Registers a template for the default action. This is equivalent to overriding the TemplateUrl property on the content item.</summary>
 		/// <param name="defaultActionTemplateUrl">The url to the template to register, e.g. "~/path/to/my/template.aspx".</param>
 		public TemplateAttribute(string defaultActionTemplateUrl)
 			: this(PathData.DefaultAction, defaultActionTemplateUrl)

@@ -26,7 +26,6 @@ namespace N2.Templates.Mvc.Tests.Controllers
 			var item = result.WithViewData<FakeContentItem>();
 
 			Assert.That(item, Is.EqualTo(controller.CurrentItem));
-			Assert.That(result.ViewName, Is.EqualTo(controller.CurrentItem.TemplateUrl));
 		}
 	}
 }
