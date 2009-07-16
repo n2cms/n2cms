@@ -3,7 +3,6 @@ using System.Web.Routing;
 using System.Web.Mvc;
 using System.Web;
 using N2.Engine;
-using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -49,25 +48,34 @@ namespace N2.Web.Mvc
 			if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
 				return null;
 
-			return GetRouteDataForPath(httpContext.Request.RawUrl);
+			return GetRouteDataForPath(httpContext.Request);
 		}
 
-		public RouteData GetRouteDataForPath(string rawUrl)
+		public RouteData GetRouteDataForPath(HttpRequestBase request)
 		{
-			PathData td = engine.UrlParser.ResolvePath(rawUrl);
+			PathData td = engine.UrlParser.ResolvePath(request.RawUrl);
 
 			if (td.CurrentItem != null)
 			{
-				var controllerName = controllerMapper.GetControllerName(td.CurrentItem.GetType());
+				var item = td.CurrentItem;
+				var action = td.Action;
+
+				if(td.QueryParameters.ContainsKey("preview"))
+				{
+					int itemId;
+					if (Int32.TryParse(td.QueryParameters["preview"], out itemId))
+						item = engine.Persister.Get(itemId);
+				}
+				var controllerName = controllerMapper.GetControllerName(item.GetType());
 				
 				if(controllerName == null)
 					return null;
 
-				RouteData data = new RouteData(this, routeHandler);
-				data.Values[ContentItemKey] = td.CurrentItem;
+				var data = new RouteData(this, routeHandler);
+				data.Values[ContentItemKey] = item;
 				data.Values[ContentEngineKey] = engine;
 				data.Values[ControllerKey] = controllerName;
-				data.Values[ActionKey] = td.Action;
+				data.Values[ActionKey] = action;
 				return data;
 			}
 			return null;
