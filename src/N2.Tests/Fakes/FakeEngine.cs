@@ -75,9 +75,9 @@ namespace N2.Tests.Fakes
 			throw new NotImplementedException();
 		}
 
-		public void AddComponent(string key, Type classType)
+		public void AddComponent(string key, Type serviceType)
 		{
-			AddComponent(key, classType, classType);
+			AddComponent(key, serviceType, serviceType);
 		}
 
 		public void AddComponent(string key, Type serviceType, Type classType)
@@ -88,6 +88,11 @@ namespace N2.Tests.Fakes
 		public void AddComponentInstance(string key, Type serviceType, object instance)
 		{
 			services[serviceType] = instance;
+		}
+
+		public void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
+		{
+			AddComponent(key, serviceType);
 		}
 
 		public void AddFacility(string key, object facility)

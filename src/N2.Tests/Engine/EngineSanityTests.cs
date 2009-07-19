@@ -14,6 +14,7 @@ using NUnit.Framework;
 
 namespace N2.Tests.Engine
 {
+	[TestFixture]
 	public class WindsorCastleEngineTests : EngineSanityTests
 	{
 		protected override IEngine CreateEngine()
@@ -22,6 +23,7 @@ namespace N2.Tests.Engine
 		}
 	}
 
+	[TestFixture]
 	public class MediumTrustEngineTests : EngineSanityTests
 	{
 		protected override IEngine CreateEngine()
@@ -30,6 +32,7 @@ namespace N2.Tests.Engine
 		}
 	}
 
+	[TestFixture]
 	public abstract class EngineSanityTests
 	{
 		IEngine engine;
@@ -71,6 +74,28 @@ namespace N2.Tests.Engine
 			Assert.That(engine.Resolve<IPluginBootstrapper>(), Is.Not.Null);
 
 			Assert.That(engine.Resolve<InstallationManager>(), Is.Not.Null);
+		}
+
+		[Test]
+		public void AddComponentLifeStyle_DoesNotReturnSameServiceTwiceWhenSingleton()
+		{
+			engine.AddComponentLifeStyle("testing", typeof(object), ComponentLifeStyle.Singleton);
+
+			var class1 = engine.Resolve<object>();
+			var class2 = engine.Resolve<object>();
+
+			Assert.That(class1, Is.SameAs(class2));
+		}
+
+		[Test]
+		public void AddComponentLifeStyle_DoesNotReturnSameServiceTwiceWhenTransient()
+		{
+			engine.AddComponentLifeStyle("testing", typeof(object), ComponentLifeStyle.Transient);
+
+			var class1 = engine.Resolve<object>();
+			var class2 = engine.Resolve<object>();
+
+			Assert.That(class1, Is.Not.SameAs(class2));
 		}
 	}
 }

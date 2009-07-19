@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Security;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -37,14 +38,17 @@ namespace N2.Web.Mvc.Html
 
 			var writer = new StringWriter();
 
-			using (new HttpContextScope(writer))
+			using (var scope = new HttpContextScope(writer))
 			{
+				var viewDataContainer = container as IViewDataContainer ?? new DummyViewDataContainer(container);
+
 				// execute the action
 				var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
 				                                           	{
-				                                           		HttpContext = new HttpContextWrapper(HttpContext.Current),
+				                                           		HttpContext = new HttpContextWrapper(scope.CurrentContext),
+																ViewData = viewDataContainer.ViewData,
 				                                           	},
-				                                           container as IViewDataContainer ?? new DummyViewDataContainer(container));
+				                                           viewDataContainer);
 
 				helper.RenderRoute(routeData.Values);
 			}
@@ -56,22 +60,30 @@ namespace N2.Web.Mvc.Html
 		/// <seealso cref="http://mikehadlow.blogspot.com/2008/06/mvc-framework-capturing-output-of-view_05.html"/>
 		private class HttpContextScope : IDisposable
 		{
-			private readonly HttpContext _existingContext;
+			private readonly HttpContext _oldContext;
 
 			public HttpContextScope(TextWriter writer)
 			{
 				// replace the current context with a new context that writes to a string writer
-				_existingContext = HttpContext.Current;
+				_oldContext = HttpContext.Current;
 
 				var response = new HttpResponse(writer);
-				var context = new HttpContext(_existingContext.Request, response) { User = _existingContext.User };
-				foreach (DictionaryEntry contextItem in _existingContext.Items)
+				CurrentContext = new HttpContext(_oldContext.Request, response) { User = _oldContext.User };
+				foreach (DictionaryEntry contextItem in _oldContext.Items)
 				{
-					context.Items[contextItem.Key] = contextItem.Value;
+					CurrentContext.Items[contextItem.Key] = contextItem.Value;
 				}
 
-				HttpContext.Current = context;
+				try
+				{
+					HttpContext.Current = CurrentContext;
+				}
+				catch(SecurityException)
+				{
+				}
 			}
+
+			public HttpContext CurrentContext { get; private set; }
 
 			/// <summary>
 			/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -84,7 +96,13 @@ namespace N2.Web.Mvc.Html
 
 			private void ReplaceExistingContext()
 			{
-				HttpContext.Current = _existingContext;
+				try
+				{
+					HttpContext.Current = _oldContext;
+				}
+				catch (SecurityException)
+				{
+				}
 			}
 		}
 

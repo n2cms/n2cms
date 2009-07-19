@@ -1,19 +1,35 @@
 using System;
 using System.Reflection;
+using System.Security;
 using System.Web.Mvc;
-using Castle.Core;
 using N2.Engine;
+using N2.Engine.MediumTrust;
 using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
-	public class MvcEngine : ContentEngine
+	/// <summary>
+	/// Used for the initialisation of the runtime for Mvc-specific N2 applications
+	/// </summary>
+	public static class MvcEngine
 	{
-		public static MvcEngine Create()
+		/// <summary>
+		/// Creates an instance of the correct engine for the current environment (regular or medium trust) & registers additional components for the MVC functionality
+		/// </summary>
+		/// <returns></returns>
+		public static IEngine Create()
 		{
-			var engine = new MvcEngine();
+			IEngine engine;
+			try
+			{
+				engine = new ContentEngine();
+			}
+			catch(SecurityException)
+			{
+				engine = new MediumTrustEngine();
+			}
 
-			N2.Context.Initialize(engine);
+			Context.Initialize(engine);
 
 			engine.Initialize();
 
@@ -32,42 +48,26 @@ namespace N2.Web.Mvc
 			engine.AddComponent("n2.mvc.controllerMapper", typeof (IControllerMapper), typeof (ControllerMapper));
 			engine.AddComponent("n2.mvc.templateRenderer", typeof (ITemplateRenderer), typeof (TemplateRenderer));
 		}
+	}
 
-		/// <summary>Registers a component in the IoC container.</summary>
-		/// <param name="key">A unique key.</param>
-		/// <param name="classType">The type of component to register.</param>
-		public override void AddComponent(string key, Type classType)
-		{
-			LifestyleType lifeStyle = LifestyleType.Singleton;
-
-			if (IsController(classType))
-				lifeStyle = LifestyleType.Transient;
-
-			Container.AddComponentLifeStyle(key, classType, lifeStyle);
-		}
-
-		/// <summary>Registers a component in the IoC container.</summary>
-		/// <param name="key">A unique key.</param>
-		/// <param name="serviceType">The type of service to provide.</param>
-		/// <param name="classType">The type of component to register.</param>
-		public override void AddComponent(string key, Type serviceType, Type classType)
-		{
-			LifestyleType lifeStyle = LifestyleType.Singleton;
-
-			if (IsController(classType))
-				lifeStyle = LifestyleType.Transient;
-
-			Container.AddComponentLifeStyle(key, serviceType, classType, lifeStyle);
-		}
-
-		public void RegisterControllers(Assembly assembly)
+	/// <summary>
+	/// Extension methods for the Mvc functionality
+	/// </summary>
+	public static class MvcEngineExtensions
+	{
+		/// <summary>
+		/// Registers all controllers in the given assembly with the Engine, so that they may be resolved correctly.
+		/// </summary>
+		/// <param name="engine"></param>
+		/// <param name="assembly"></param>
+		public static void RegisterControllers(this IEngine engine, Assembly assembly)
 		{
 			foreach (Type type in assembly.GetExportedTypes())
 				if (IsController(type))
-					AddComponent(type.FullName.ToLower(), type);
+					engine.AddComponentLifeStyle(type.FullName.ToLower(), type, ComponentLifeStyle.Transient);
 		}
 
-		private bool IsController(Type type)
+		private static bool IsController(Type type)
 		{
 			return type != null
 			       && !type.IsAbstract
