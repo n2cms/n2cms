@@ -19,9 +19,9 @@ namespace N2.Details
 	public class WithEditableNameAttribute : AbstractEditableAttribute
     {
     	private char? whitespaceReplacement = '-';
-		private bool? toLower = true;
+		private bool? toLower;
 		private bool? ascii = false;
-		private bool? showKeepUpdated = true;
+		private bool? showKeepUpdated;
 		private string keepUpdatedText = "";
 		private string keepUpdatedToolTip = "Keep the name up to date";
 
@@ -41,28 +41,6 @@ namespace N2.Details
 			: base(title, "Name", sortOrder)
 		{
 		}
-
-    	NameEditorElement config;
-    	NameEditorElement Config
-    	{
-    		get
-    		{
-    			if(config == null)
-    			{
-    				EditSection editSection = ConfigurationManager.GetSection("n2/edit") as EditSection;
-					if (editSection != null)
-						config = editSection.NameEditor;
-					else
-					{
-						config = new NameEditorElement();
-						config.WhitespaceReplacement = '-';
-						config.ShowKeepUpdated = true;
-						config.ToLower = true;
-					}
-    			}
-    			return config;
-    		}
-    	}
 
 		/// <summary>Gets or sets the character that replaces whitespace when updating the name (default is '-').</summary>
     	public char? WhitespaceReplacement
