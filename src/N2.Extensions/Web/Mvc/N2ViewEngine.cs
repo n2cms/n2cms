@@ -35,8 +35,6 @@ namespace N2.Web.Mvc
 
 		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
 		{
-			partialViewName = TransformViewName(controllerContext, partialViewName);
-
 			return _innerViewEngine.FindPartialView(controllerContext, partialViewName, useCache);
 		}
 

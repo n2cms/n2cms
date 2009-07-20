@@ -17,7 +17,7 @@ namespace N2.Extensions.Tests.Mvc
 		private IViewEngine mockViewEngine;
 
 		[SetUp]
-		public void SetUp()
+		public override void SetUp()
 		{
 			PathDictionary.Instance[typeof(RegularPage)] = new[] { new MvcConventionTemplateAttribute("Regular") };
 
@@ -25,7 +25,7 @@ namespace N2.Extensions.Tests.Mvc
 		}
 
 		[TearDown]
-		public void TearDown()
+		public override void TearDown()
 		{
 			PathDictionary.Instance.Remove(typeof(RegularPage));
 		}
