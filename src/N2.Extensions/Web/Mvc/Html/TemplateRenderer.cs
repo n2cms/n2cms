@@ -38,10 +38,10 @@ namespace N2.Web.Mvc.Html
 
 			var writer = new StringWriter();
 
+			var viewDataContainer = container as IViewDataContainer ?? new DummyViewDataContainer(container);
+
 			using (var scope = new HttpContextScope(writer))
 			{
-				var viewDataContainer = container as IViewDataContainer ?? new DummyViewDataContainer(container);
-
 				// execute the action
 				var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
 				                                           	{
@@ -112,7 +112,10 @@ namespace N2.Web.Mvc.Html
 		{
 			public DummyViewDataContainer(IItemContainer container)
 			{
-				ViewData = new ViewDataDictionary(container.CurrentItem);
+				if(container is ViewMasterPage)
+					ViewData = ((ViewMasterPage) container).ViewData;
+				else
+					ViewData = new ViewDataDictionary(container.CurrentItem);
 			}
 
 			#region IViewDataContainer Members

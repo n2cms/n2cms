@@ -68,6 +68,31 @@ namespace N2.Web.Mvc
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
+			CheckItemSecurity(filterContext);
+
+			MergeModelStateFromEarlierStep(filterContext.HttpContext);
+
+			base.OnActionExecuting(filterContext);
+		}
+
+		private void MergeModelStateFromEarlierStep(HttpContextBase context)
+		{
+			const string modelStateForMergingKey = "N2_ModelStateForMerging";
+
+			ModelStateDictionary modelState = ModelState;
+			if(context.Items.Contains(modelStateForMergingKey))
+			{
+				modelState = context.Items[modelStateForMergingKey] as ModelStateDictionary;
+
+				if(modelState != null)
+					ModelState.Merge(modelState);
+			}
+
+			context.Items[modelStateForMergingKey] = modelState;
+		}
+
+		private void CheckItemSecurity(ActionExecutingContext filterContext)
+		{
 			if (CurrentItem != null)
 			{
 				var securityManager = Engine.Resolve<ISecurityManager>();
@@ -75,8 +100,6 @@ namespace N2.Web.Mvc
 				if (!securityManager.IsAuthorized(CurrentItem, User))
 					filterContext.Result = new HttpUnauthorizedResult();
 			}
-
-			base.OnActionExecuting(filterContext);
 		}
 
 		/// <summary>Defaults to the current item's TemplateUrl and pass the item itself as view data.</summary>

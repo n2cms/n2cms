@@ -1,5 +1,4 @@
 using System;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -46,13 +45,15 @@ namespace N2.Web.Mvc
 			var routeData = context.RouteData;
 			routeData.Values[ContentRoute.ContentItemKey] = _thePage;
 			routeData.Values[ContentRoute.ContentItemIdKey] = _thePage.ID;
+			routeData.Values["action"] = "Index";
 
-			var requestContext = new RequestContext(new HttpContextWrapper(HttpContext.Current), routeData);
+			var requestContext = new RequestContext(context.HttpContext, routeData);
 
 			var controller = (ControllerBase)ControllerBuilder.Current.GetControllerFactory()
 			                                 	.CreateController(requestContext, _controllerMapper.GetControllerName(_thePage.GetType()));
 
 			controller.ControllerContext = new ControllerContext(requestContext, controller);
+			controller.ViewData.ModelState.Merge(context.Controller.ViewData.ModelState);
 
 			return controller;
 		}

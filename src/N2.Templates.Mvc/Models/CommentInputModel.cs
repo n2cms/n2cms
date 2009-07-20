@@ -63,6 +63,14 @@ namespace N2.Templates.Mvc.Models
 		{
 			switch (propertyName.ToLower())
 			{
+				case "title":
+					if (String.IsNullOrEmpty(Title))
+						return "Title cannot be empty";
+					break;
+				case "name":
+					if (String.IsNullOrEmpty(Name))
+						return "Name cannot be empty";
+					break;
 				case "text":
 					if (String.IsNullOrEmpty(Text))
 						return "Text cannot be empty";

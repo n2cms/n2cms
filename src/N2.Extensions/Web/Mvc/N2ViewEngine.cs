@@ -35,17 +35,25 @@ namespace N2.Web.Mvc
 
 		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
 		{
-			throw new NotImplementedException();
+			partialViewName = TransformViewName(controllerContext, partialViewName);
+
+			return _innerViewEngine.FindPartialView(controllerContext, partialViewName, useCache);
 		}
 
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+		{
+			viewName = TransformViewName(controllerContext, viewName);
+
+			return _innerViewEngine.FindView(controllerContext, viewName, masterName, useCache);
+		}
+
+		private string TransformViewName(ControllerContext controllerContext, string viewName)
 		{
 			var item = (ContentItem)controllerContext.RouteData.Values[ContentRoute.ContentItemKey];
 
 			if (item != null)
 				viewName = GetTemplateUrl(item, viewName);
-
-			return _innerViewEngine.FindView(controllerContext, viewName, masterName, useCache);
+			return viewName;
 		}
 
 		public void ReleaseView(ControllerContext controllerContext, IView view)

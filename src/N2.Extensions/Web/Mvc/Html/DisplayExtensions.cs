@@ -142,11 +142,12 @@ namespace N2.Web.Mvc.Html
 			if (item != null)
 				return CreateContentItemContainer(item, display);
 
+			var viewData = new ViewDataDictionary(display.CurrentItem);
+
 			var container = new ViewUserControl
 			                	{
 			                		Page = (Container is Control) ? ((Control) Container).Page : null,
-			                		ViewData = new ViewDataDictionary((CurrentItem[_detailName] as ContentItem)
-			                		                                  ?? display.CurrentItem),
+			                		ViewData = viewData,
 			                	};
 			display.Displayable.AddTo(display.CurrentItem, _detailName, container);
 
