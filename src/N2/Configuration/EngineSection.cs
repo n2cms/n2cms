@@ -72,7 +72,7 @@ namespace N2.Configuration
             set { base["components"] = value; }
 		}
 
-		/// <summary>Add or remove plugin initializers. This is most commonly used to remove autimatic plugin initializers in an external assembly.</summary>
+		/// <summary>Add or remove plugin initializers. This is most commonly used to remove automatic plugin initializers in an external assembly.</summary>
 		[ConfigurationProperty("pluginInitializers")]
 		public PluginInitializerCollection PluginInitializers
 		{
@@ -88,7 +88,7 @@ namespace N2.Configuration
 			set { base["interfacePlugins"] = value; }
 		}
 
-		/// <summary>Add or remove UI plugins. This is most commonly used to remove unwanted toolbar buttons.</summary>
+		/// <summary>Add or remove item definitions. This is most commonly used to prevent unwanted item definitions appearing.</summary>
 		[ConfigurationProperty("definitions")]
 		public DefinitionCollection Definitions
 		{

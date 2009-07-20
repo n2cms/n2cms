@@ -235,7 +235,12 @@ namespace N2.Persistence.NH
 				{
 					if (stream == null) throw new ArgumentException("Could not read stream from embedded resource '" + name + "'", "name");
 
-					cfg.AddInputStream(stream);
+					using (StreamReader reader = new StreamReader(stream))
+					{
+						string mappingXml = reader.ReadToEnd();
+						mappingXml = FormatMapping(mappingXml);
+						cfg.AddXml(mappingXml);
+					}
 				}
             }
 		}
