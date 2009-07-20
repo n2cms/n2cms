@@ -33,7 +33,7 @@ namespace N2.Templates.Mvc.Items.Items
 
 		public override string GetAnswerText(string value)
 		{
-			var values = value.Split(',');
+			var values = (value ?? String.Empty).Split(',');
 
 			var selectedOptions = Options.Where(opt => values.Contains(opt.ID.ToString())).Select(opt => opt.Title).ToArray();
 
