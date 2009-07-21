@@ -225,6 +225,11 @@ namespace N2.Persistence.NH.Finder
 
 		protected virtual IQuery CreateQuery(string selectFrom)
 		{
+			if (MaxResults > 0 && Filters.Count > 0)
+				throw new N2Exception("Cannot use filters when using MaxResults, sorry.");
+			if (FirstResult > 0 && Filters.Count > 0)
+				throw new N2Exception("Cannot use filters when using FirstResult, sorry.");
+
 			StringBuilder from = new StringBuilder(selectFrom, 256);
 			StringBuilder where = new StringBuilder(128);
 
