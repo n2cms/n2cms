@@ -11,7 +11,7 @@ namespace N2.Definitions
 	/// </summary>
 	public class DefinitionManager : IDefinitionManager
 	{
-		private readonly IDictionary<Type, ItemDefinition> definitions;
+		protected readonly IDictionary<Type, ItemDefinition> definitions;
 		private readonly IItemNotifier notifier;
 
 		public DefinitionManager(DefinitionBuilder builder, IItemNotifier notifier)
@@ -24,23 +24,21 @@ namespace N2.Definitions
 		/// <returns>A new instance of an item.</returns>
 		public T CreateInstance<T>(ContentItem parentItem) where T : ContentItem
 		{
-			T item = Activator.CreateInstance<T>();
-			OnItemCreating(item, parentItem);
-			return item;
+			return (T) CreateInstance(typeof(T), parentItem);
 		}
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
-		public ContentItem CreateInstance(Type itemType, ContentItem parentItem)
+		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem)
 		{
-			ContentItem item = Activator.CreateInstance(itemType) as ContentItem;
+			ContentItem item = Activator.CreateInstance(itemType, true) as ContentItem;
 			OnItemCreating(item, parentItem);
 			return item;
 		}
 
 		protected virtual void OnItemCreating(ContentItem item, ContentItem parentItem)
 		{
-            if (parentItem != null)
+			if (parentItem != null)
 			{
 				ItemDefinition parentDefinition = GetDefinition(parentItem.GetType());
 				ItemDefinition itemDefinition = GetDefinition(item.GetType());
@@ -66,14 +64,13 @@ namespace N2.Definitions
 
 			if(definitions.ContainsKey(itemType))
 				return definitions[itemType];
-			else
-				return null;
+			return null;
 		}
 
 		/// <summary>Gets item definition for a certain discriminator.</summary>
 		/// <param name="discriminator">The discriminator/name that uniquely identifies a certain type.</param>
 		/// <returns>The definition matching the string.</returns>
-		public ItemDefinition GetDefinition(string discriminator)
+		public virtual ItemDefinition GetDefinition(string discriminator)
 		{
 			if (discriminator == null) throw new ArgumentNullException("discriminator");
 
@@ -95,7 +92,7 @@ namespace N2.Definitions
 		/// <param name="zoneName">The zone whose allowed child item types to get.</param>
 		/// <param name="user">The user whose access to query.</param>
 		/// <returns>A list of items allowed in the zone the user is authorized to create.</returns>
-		public IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zoneName, IPrincipal user)
+		public virtual IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zoneName, IPrincipal user)
 		{
 			List<ItemDefinition> allowedChildItems = new List<ItemDefinition>();
 			foreach (ItemDefinition childDefinition in definition.AllowedChildren)
