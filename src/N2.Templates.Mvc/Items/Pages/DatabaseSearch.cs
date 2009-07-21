@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace N2.Templates.Mvc.Items.Pages
 {
@@ -12,6 +13,7 @@ namespace N2.Templates.Mvc.Items.Pages
 		{
 			List<Collections.ItemFilter> filters = GetFilters();
 			string like = '%' + query + '%';
+
 			return Mvc.Find.Items
 				.Where.Title.Like(like)
 				.Or.Name.Like(like)
@@ -19,9 +21,19 @@ namespace N2.Templates.Mvc.Items.Pages
 				.Filters(filters);
 		}
 
-		public override ICollection<ContentItem> Search(string query)
+		public override ICollection<ContentItem> Search(string query, int pageNumber, int pageSize, out int totalRecords)
 		{
-			return CreateQuery(query).Select();
+			var n2Query = CreateQuery(query);
+
+			var records = n2Query.Select();
+
+			totalRecords = records.Count;
+
+			return n2Query
+				.Select()
+				.Skip(pageSize*pageNumber)
+				.Take(pageSize)
+				.ToList();
 		}
 	}
 }

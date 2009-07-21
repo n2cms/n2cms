@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Items.Pages
 	[MvcConventionTemplate("Search")]
 	public abstract class AbstractSearch : AbstractContentPage
 	{
-		public abstract ICollection<ContentItem> Search(string query);
+		public abstract ICollection<ContentItem> Search(string query, int pageSize, int pageNumber, out int totalRecords);
 
 		[EditableLink("Search Root", 100, ContainerName = Tabs.Content)]
 		public virtual ContentItem SearchRoot
