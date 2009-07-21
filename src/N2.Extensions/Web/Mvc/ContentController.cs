@@ -130,6 +130,16 @@ namespace N2.Web.Mvc
 			                          ActionInvoker);
 		}
 
+		protected override ViewResult View(IView view, object model)
+		{
+			return base.View(view, model ?? CurrentItem);
+		}
+
+		protected override ViewResult View(string viewName, string masterName, object model)
+		{
+			return base.View(viewName, masterName, model ?? CurrentItem);
+		}
+
 		#region Nested type: SessionAndPerRequestTempDataProvider
 
 		/// <summary>

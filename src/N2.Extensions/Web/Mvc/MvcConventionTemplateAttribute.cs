@@ -4,9 +4,8 @@ namespace N2.Web.Mvc
 {
 	/// <summary>
 	/// Tells the system to look for the template associated with the
-	/// attribute content item in the default location. This is typically
-	/// "~/Views/" or the location defined by any [MvcConventionTemplateDirectory]
-	/// attribute in the same assembly.
+	/// attribute content item in the default location as specified
+	/// by the N2ViewEngine's internal ViewEngine (by default a WebFormsViewEngine)
 	/// </summary>
 	public class MvcConventionTemplateAttribute : Attribute, IPathFinder
 	{
@@ -40,13 +39,12 @@ namespace N2.Web.Mvc
 				throw new ArgumentNullException("item");
 
 			Type itemType = item.GetType();
-			string locationFormat = MvcConventionTemplateDirectoryAttribute.GetDirectory(itemType);
 
 			string templateName = _otherTemplateName ?? itemType.Name;
 
 			string action = remainingUrl ?? DefaultAction;
 
-			return new PathData(item, String.Format(locationFormat, templateName, action), action, String.Empty);
+			return new PathData(item, templateName, action, String.Empty);
 		}
 
 		#endregion

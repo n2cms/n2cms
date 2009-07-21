@@ -40,18 +40,33 @@ namespace N2.Web.Mvc
 
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
 		{
-			viewName = TransformViewName(controllerContext, viewName);
+			var item = (ContentItem) controllerContext.RouteData.Values[ContentRoute.ContentItemKey];
 
-			return _innerViewEngine.FindView(controllerContext, viewName, masterName, useCache);
+			if (item == null || IsFullPathToView(viewName))
+				return _innerViewEngine.FindView(controllerContext, viewName, masterName, useCache);
+
+			var oldControllerName = controllerContext.RouteData.Values["controller"];
+
+			var templateUrl = GetTemplateUrl(item, viewName);
+
+			if (IsFullPathToView(templateUrl))
+				return _innerViewEngine.FindView(controllerContext, templateUrl, masterName, useCache);
+
+			try
+			{
+				controllerContext.RouteData.Values["controller"] = templateUrl;
+
+				return _innerViewEngine.FindView(controllerContext, viewName, masterName, useCache);
+			}
+			finally
+			{
+				controllerContext.RouteData.Values["controller"] = oldControllerName;
+			}
 		}
 
-		private string TransformViewName(ControllerContext controllerContext, string viewName)
+		private bool IsFullPathToView(string viewName)
 		{
-			var item = (ContentItem)controllerContext.RouteData.Values[ContentRoute.ContentItemKey];
-
-			if (item != null)
-				viewName = GetTemplateUrl(item, viewName);
-			return viewName;
+			return viewName[0] == '~' || viewName[0] == '/';
 		}
 
 		public void ReleaseView(ControllerContext controllerContext, IView view)

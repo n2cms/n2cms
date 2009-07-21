@@ -36,12 +36,13 @@ namespace N2.Extensions.Tests.Mvc
 			var testViewEngine = new N2ViewEngine(mockViewEngine);
 			var httpContextBase = MockRepository.GenerateStub<HttpContextBase>();
 			var routeData = new RouteData();
+			routeData.Values.Add("controller", "Default");
 			routeData.Values.Add(ContentRoute.ContentItemKey, new RegularPage());
 			var controller = new RegularControllerBase();
 
 			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
 
-			mockViewEngine.Expect(engine => engine.FindView(controllerContext, "~/Views/Regular/Index.aspx", null, false))
+			mockViewEngine.Expect(engine => engine.FindView(controllerContext, "Index", null, false))
 				.Return(null).Repeat.Once();
 
 			// Act
@@ -49,6 +50,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			// Assert
 			mockViewEngine.VerifyAllExpectations();
+			Assert.That(controllerContext.RouteData.Values["controller"], Is.EqualTo("Default"));
 		}
 
 		[Test]
@@ -57,12 +59,13 @@ namespace N2.Extensions.Tests.Mvc
 			var testViewEngine = new N2ViewEngine(mockViewEngine);
 			var httpContextBase = MockRepository.GenerateStub<HttpContextBase>();
 			var routeData = new RouteData();
+			routeData.Values.Add("controller", "Default");
 			routeData.Values.Add(ContentRoute.ContentItemKey, new RegularPage());
 			var controller = new RegularControllerBase();
 
 			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
 
-			mockViewEngine.Expect(engine => engine.FindView(controllerContext, "~/Views/Regular/OtherView.aspx", null, false))
+			mockViewEngine.Expect(engine => engine.FindView(controllerContext, "OtherView", null, false))
 				.Return(null).Repeat.Once();
 
 			// Act
@@ -70,6 +73,65 @@ namespace N2.Extensions.Tests.Mvc
 
 			// Assert
 			mockViewEngine.VerifyAllExpectations();
+			Assert.That(controllerContext.RouteData.Values["controller"], Is.EqualTo("Default"));
+		}
+
+		[Test]
+		public void CanGetTemplateUrl_FullPathToViewAsViewName()
+		{
+			var testViewEngine = new N2ViewEngine(mockViewEngine);
+			var httpContextBase = MockRepository.GenerateStub<HttpContextBase>();
+			var routeData = new RouteData();
+			routeData.Values.Add("controller", "Default");
+			routeData.Values.Add(ContentRoute.ContentItemKey, new RegularPage());
+			var controller = new RegularControllerBase();
+
+			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
+
+			mockViewEngine.Expect(engine => engine.FindView(controllerContext, "~/Views/Shared/OtherView.aspx", null, false))
+				.Return(null).Repeat.Once();
+
+			// Act
+			testViewEngine.FindView(controllerContext, "~/Views/Shared/OtherView.aspx", null, false);
+
+			// Assert
+			mockViewEngine.VerifyAllExpectations();
+			Assert.That(controllerContext.RouteData.Values["controller"], Is.EqualTo("Default"));
+		}
+
+		[Test]
+		public void CanGetTemplateUrl_FullPathToViewAsTemplateName()
+		{
+			var testViewEngine = new N2ViewEngine(mockViewEngine);
+			var httpContextBase = MockRepository.GenerateStub<HttpContextBase>();
+			var routeData = new RouteData();
+			routeData.Values.Add("controller", "Default");
+			routeData.Values.Add(ContentRoute.ContentItemKey, new TemplatedItem());
+			var controller = new RegularControllerBase();
+
+			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
+
+			mockViewEngine.Expect(engine => engine.FindView(controllerContext, "~/Views/Shared/Templated.ascx", null, false))
+				.Return(null).Repeat.Once();
+
+			// Act
+			testViewEngine.FindView(controllerContext, "index", null, false);
+
+			// Assert
+			mockViewEngine.VerifyAllExpectations();
+			Assert.That(controllerContext.RouteData.Values["controller"], Is.EqualTo("Default"));
+		}
+
+		[Definition]
+		public class TemplatedItem : ContentItem
+		{
+			public override string TemplateUrl
+			{
+				get
+				{
+					return "~/Views/Shared/Templated.ascx";
+				}
+			}
 		}
 	}
 }
