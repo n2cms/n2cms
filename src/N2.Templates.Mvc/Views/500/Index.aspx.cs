@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Views
 			Response.Status = "500 Internal Server Error";
 			try
 			{
-				N2.ContentItem page = Mvc.Find.StartPage.ErrorPage;
+				N2.ContentItem page = Find.StartPage.ErrorPage;
 				if (page != null)
 				{
 					var wc = N2.Context.Current.Resolve<N2.Web.IWebContext>();

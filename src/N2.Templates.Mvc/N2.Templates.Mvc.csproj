@@ -57,10 +57,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\MvcContrib.dll</HintPath>
     </Reference>
-    <Reference Include="MvcContrib.Castle, Version=1.0.0.916, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\MvcContrib.Castle.dll</HintPath>
-    </Reference>
     <Reference Include="MvcContrib.FluentHtml, Version=1.0.0.10000, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\MvcContrib.FluentHtml.dll</HintPath>

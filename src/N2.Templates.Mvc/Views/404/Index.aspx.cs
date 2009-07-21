@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Views
 		{
 			try
 			{
-				N2.ContentItem page = Mvc.Find.StartPage.NotFoundPage;
+				N2.ContentItem page = Find.StartPage.NotFoundPage;
 				if (page != null)
 				{
 					var wc = N2.Context.Current.Resolve<N2.Web.IWebContext>();
