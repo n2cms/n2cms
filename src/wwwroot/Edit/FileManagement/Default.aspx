@@ -37,7 +37,7 @@
         <asp:SiteMapDataSource ID="smds" runat="server" ShowStartingNode="false" />
         <ul>
             <li>
-                <edit:TreeView ID="fileView" runat="server" DataSourceID="smds" OnTreeNodeDataBound="fileView_TreeNodeDataBound" ExpandDepth="10" />
+                <edit:TreeView ID="fileView" runat="server" DataSourceID="smds" OnTreeNodeDataBound="fileView_TreeNodeDataBound" EnableViewState="false" ExpandDepth="10" />
             </li>
         </ul>
     </div>
