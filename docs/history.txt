@@ -1,4 +1,6 @@
-﻿1.5
+﻿- made url-rewriter honor ignoreExistingFiles
+
+1.5
 - updated tinymce to 3.2.4.1
 - added templates integration for visual basic
 - applied tonez's patch #3098(a): Localization patch for Slovenian language.

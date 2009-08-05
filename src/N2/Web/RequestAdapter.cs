@@ -20,7 +20,7 @@ namespace N2.Web
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		public virtual void RewriteRequest(RewriteMethod rewriteMethod)
 		{
-			if(Path == null || Path.IsEmpty())
+			if(Path == null || Path.IsEmpty() || !Path.IsRewritable)
 				return;
 			
 			string templateUrl = GetHandlerPath();
@@ -28,12 +28,6 @@ namespace N2.Web
 				Engine.Resolve<IWebContext>().RewritePath(templateUrl);
 			else if(rewriteMethod == RewriteMethod.TransferRequest)
 				Engine.Resolve<IWebContext>().TransferRequest(templateUrl);
-		}
-
-		[Obsolete("Please use RewriteRequest(RewriteMethod rewriteMethod)")]
-		public virtual void RewriteRequest()
-		{
-			RewriteRequest(RewriteMethod.RewriteRequest);
 		}
 
         /// <summary>Gets the path to the handler (aspx template) to rewrite to.</summary>

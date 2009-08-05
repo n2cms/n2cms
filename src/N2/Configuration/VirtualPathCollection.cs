@@ -2,6 +2,10 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
+	/// <summary>
+	/// The configured collection of paths instructs N2's url rewriter to 
+	/// ignore certain virtual paths when considering a path for rewrite.
+	/// </summary>
 	public class VirtualPathCollection : ConfigurationElementCollection
 	{
 		public VirtualPathCollection()

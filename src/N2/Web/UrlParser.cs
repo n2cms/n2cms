@@ -84,7 +84,7 @@ namespace N2.Web
 				{
 					// Try to find path without default document.
 					data = StartPage
-						.FindPath(path.Substring(0, path.Length - DefaultDocument.Length))
+						.FindPath(StripDefaultDocument(path))
 						.UpdateParameters(requestedUrl.GetQueries());
 				}
 
@@ -113,9 +113,20 @@ namespace N2.Web
 			return StartPage;
 		}
 
-		bool IsRewritable(string path)
+		bool IsRewritable(string physicalPath)
 		{
-			return ignoreExistingFiles || (!File.Exists(path) && !Directory.Exists(path));
+			// N2 has a history of requiring the start page's template to be located at /default.aspx.
+			// Since a previous version this is no longer required with the consequence of /default.aspx
+			// beeing required only for igniting an asp.net web request when accessing /. With the new
+			// behaviour access to the default document (/ or /default.aspx) will be rewritten to which-
+			// ever template the current start page specifies. The previous behaviour can be restored
+			// by configuring n2 to ignore existing files.
+			return ignoreExistingFiles || (!File.Exists(physicalPath) && !Directory.Exists(physicalPath));
+		}
+
+		bool IsDefaultDocument(string path)
+		{
+			return path.Equals(DefaultDocument, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		/// <summary>Finds an item by traversing names from the start page.</summary>
@@ -156,7 +167,7 @@ namespace N2.Web
         /// <returns></returns>
         protected virtual ContentItem NotFoundPage(string url)
         {
-			if (url.Equals(DefaultDocument, StringComparison.InvariantCultureIgnoreCase))
+			if (IsDefaultDocument(url))
             {
                 return StartPage;
             }
