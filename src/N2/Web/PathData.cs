@@ -64,6 +64,7 @@ namespace N2.Web
 		public PathData()
 		{
 			QueryParameters = new Dictionary<string, string>();
+			IsRewritable = true;
 		}
 
 		public ContentItem CurrentItem { get; set; }

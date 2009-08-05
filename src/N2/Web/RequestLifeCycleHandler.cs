@@ -77,11 +77,11 @@ namespace N2.Web
                 }
             }
 
-			RequestAdapter controller = dispatcher.ResolveAdapter<RequestAdapter>();
-			if(controller != null)
+			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>();
+			if(adapter != null)
 			{
-				webContext.CurrentPath = controller.Path;
-				controller.RewriteRequest(rewriteMethod);
+				webContext.CurrentPath = adapter.Path;
+				adapter.RewriteRequest(rewriteMethod);
 			}
 		}
 
@@ -99,16 +99,16 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			RequestAdapter controller = dispatcher.ResolveAdapter<RequestAdapter>();
-			controller.InjectCurrentPage(webContext.Handler);
+			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>();
+			adapter.InjectCurrentPage(webContext.Handler);
 		}
 
 		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			RequestAdapter controller = dispatcher.ResolveAdapter<RequestAdapter>();
-			controller.AuthorizeRequest(webContext.User);
+			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>();
+			adapter.AuthorizeRequest(webContext.User);
 		}
 
         protected virtual void Application_Error(object sender, EventArgs e)

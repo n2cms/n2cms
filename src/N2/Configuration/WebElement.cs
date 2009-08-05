@@ -61,7 +61,7 @@ namespace N2.Configuration
         }
 
         /// <summary>Tells the rewriter whether it should rewrite when the url matches an existing file. By default N2 doesn't rewrite when the file exists.</summary>
-        [ConfigurationProperty("ignoreExistingFiles", DefaultValue = false)]
+        [ConfigurationProperty("ignoreExistingFiles", DefaultValue = true)]
         public bool IgnoreExistingFiles
         {
             get { return (bool)base["ignoreExistingFiles"]; }
