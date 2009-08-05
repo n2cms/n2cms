@@ -84,9 +84,8 @@ namespace N2.Edit.Versions
 
 		protected bool IsVisible(object dataItem)
 		{
-			Engine.SecurityManager.IsAuthorized(User, dataItem as ContentItem, Permission.Publish);
-
-			return !IsPublished(dataItem);
+			return Engine.SecurityManager.IsAuthorized(User, dataItem as ContentItem, Permission.Publish)
+				&& !IsPublished(dataItem);
 		}
 
 		protected bool IsPublished(object dataItem)

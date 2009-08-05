@@ -1,4 +1,5 @@
-﻿- made url-rewriter honor ignoreExistingFiles
+﻿- fixed #24210: Writers can publish using the version list
+- made url-rewriter honor ignoreExistingFiles
 
 1.5
 - updated tinymce to 3.2.4.1
