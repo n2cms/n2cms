@@ -151,7 +151,7 @@ namespace N2.Engine.MediumTrust
 			AddComponentInstance<ITreeSorter>(new TreeSorter(persister, editManager, webContext));
 
 			IHeart heart = AddComponentInstance(new Heart(engineConfiguration));
-			AddComponentInstance(new Scheduler(pluginFinder, heart, webContext, errorHandler));
+			AddComponentInstance(new Scheduler(this, pluginFinder, heart, webContext, errorHandler));
 		}
 
 		public MediumTrustEngine() : this(EventBroker.Instance)

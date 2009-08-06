@@ -43,6 +43,9 @@ namespace N2.Definitions
 				ItemDefinition parentDefinition = GetDefinition(parentItem.GetType());
 				ItemDefinition itemDefinition = GetDefinition(item.GetType());
 
+				if (parentDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the parent item '" + parentItem + "' of type '" + parentItem.GetType() + "'");
+				if (itemDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the item '" + item + "' of type '" + item.GetType() + "'");
+
 				if(!parentDefinition.IsChildAllowed(itemDefinition))
 					throw new NotAllowedParentException(itemDefinition, parentItem.GetType());
 

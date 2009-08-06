@@ -428,6 +428,7 @@
     </Compile>
     <Compile Include="Edit\Trash\DeleteInterceptor.cs" />
     <Compile Include="Edit\Trash\TrashcanInitializer.cs" />
+    <Compile Include="Edit\Trash\TrashCleanupAgent.cs" />
     <Compile Include="Edit\Trash\TrashContainerItem.cs" />
     <Compile Include="Edit\Trash\TrashHandler.cs" />
     <Compile Include="Edit\Versions\ControlPanelPendingVersionAttribute.cs" />

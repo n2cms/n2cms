@@ -3,6 +3,8 @@ using N2.Definitions;
 using N2.Persistence;
 using N2.Web;
 using N2.Security;
+using System.Collections.Generic;
+using N2.Persistence.Finder;
 
 namespace N2.Edit.Trash
 {
@@ -17,20 +19,24 @@ namespace N2.Edit.Trash
 		public const string FormerExpires = "FormerExpires";
 		public const string DeletedDate = "DeletedDate";
 		private readonly IPersister persister;
+		private readonly IItemFinder finder;
 		private readonly IDefinitionManager definitions;
+		private readonly ISecurityManager security;
 		private readonly IHost host;
 
-		public TrashHandler(IPersister persister, IDefinitionManager definitions, IHost host)
+		public TrashHandler(IPersister persister, IItemFinder finder, IDefinitionManager definitions, ISecurityManager security, IHost host)
 		{
+			this.finder = finder;
 			this.persister = persister;
 			this.definitions = definitions;
+			this.security = security;
 			this.host = host;
 		}
 
         /// <summary>The container of thrown items.</summary>
 		ITrashCan ITrashHandler.TrashContainer
 		{
-			get { return GetTrashContainer(true) as ITrashCan; }
+			get { return GetTrashContainer(false) as ITrashCan; }
 		}
 
 		public TrashContainerItem GetTrashContainer(bool create)
@@ -147,11 +153,36 @@ namespace N2.Edit.Trash
             return args;
         }
 
+		/// <summary>Delete items lying in trash for longer than the specified interval.</summary>
+		public void PurgeOldItems()
+		{
+			TrashContainerItem trash = GetTrashContainer(false);
+			if (trash == null) return;
+			if (trash.PurgeInterval == TrashPurgeInterval.Never) return;
+
+			DateTime tresholdDate = Utility.CurrentTime().AddDays(-(int)trash.PurgeInterval);
+			var expiredItems = finder.Where.Parent.Eq(trash)
+				.And.Detail(TrashHandler.DeletedDate).Le(tresholdDate)
+				.Select();
+			
+			try
+			{
+				security.ScopeEnabled = false;
+				foreach (var item in expiredItems)
+				{
+					persister.Delete(item);
+				}	
+			}
+			finally
+			{
+				security.ScopeEnabled = true;
+			}
+		}
+
         /// <summary>Occurs before an item is thrown.</summary>
         public event EventHandler<CancellableItemEventArgs> ItemThrowing;
         /// <summary>Occurs after an item has been thrown.</summary>
         public event EventHandler<ItemEventArgs> ItemThrowed;
 
-        
     }
 }

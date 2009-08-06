@@ -41,7 +41,7 @@ namespace N2.Tests.Plugin.Scheduling
 
             IPluginFinder plugins = new PluginFinder(types);
 
-            scheduler = new Scheduler(plugins, heart, ctx, errorHandler);
+            scheduler = new Scheduler(null, plugins, heart, ctx, errorHandler);
             scheduler.QueueUserWorkItem = delegate(WaitCallback function)
             {
                 function(null);

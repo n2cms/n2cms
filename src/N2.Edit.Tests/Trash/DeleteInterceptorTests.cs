@@ -33,7 +33,7 @@ namespace N2.Edit.Tests.Trash
             persister.ItemMoving += null;
             LastCall.IgnoreArguments();
 
-            TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Host(webContext, 1, 1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
             Expect.Call(delegate { th.Throw(item); });
 
             mocks.ReplayAll();
@@ -61,7 +61,7 @@ namespace N2.Edit.Tests.Trash
 
             mocks.ReplayAll();
 
-            TrashHandler th = new TrashHandler(persister, definitions, new Host(webContext, 1, 1));
+			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1));
             DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
@@ -86,7 +86,7 @@ namespace N2.Edit.Tests.Trash
             persister.ItemMoving += null;
             IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
-            TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, new Host(webContext, 1, 1));
+			TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
             th.RestoreValues(item);
 
             mocks.ReplayAll();
@@ -112,7 +112,7 @@ namespace N2.Edit.Tests.Trash
             persister.ItemMoving += null;
             LastCall.IgnoreArguments();
 
-            TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Host(webContext, 1, 1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
             th.RestoreValues(item);
 
             mocks.ReplayAll();
@@ -142,7 +142,7 @@ namespace N2.Edit.Tests.Trash
             persister.ItemMoving += null;
             IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
-            TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, new Host(webContext, 1, 1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
             th.ExpireTrashedItem(item);
 
             mocks.ReplayAll();

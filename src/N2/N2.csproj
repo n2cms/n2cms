@@ -365,6 +365,7 @@
     <Compile Include="Edit\FileSystem\DefaultDirectorySelector.cs" />
     <Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
     <Compile Include="Edit\IDocumentBaseSource.cs" />
+    <Compile Include="Edit\Trash\TrashPurgeInterval.cs" />
     <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
     <Compile Include="Obsolete\EditableAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />

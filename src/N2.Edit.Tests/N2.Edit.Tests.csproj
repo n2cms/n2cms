@@ -81,6 +81,7 @@
     <Compile Include="Trash\DeleteInterceptorTests.cs" />
     <Compile Include="Trash\NonThrowableItem.cs" />
     <Compile Include="Trash\ThrowableItem.cs" />
+    <Compile Include="Trash\TrashCleanupAgentTests.cs" />
     <Compile Include="Trash\TrashHandlerTests.cs" />
     <Compile Include="Trash\TrashTestBase.cs" />
     <Compile Include="Xml\N2XmlWriterFixture.cs" />

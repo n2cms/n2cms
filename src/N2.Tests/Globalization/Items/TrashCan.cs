@@ -14,6 +14,11 @@ namespace N2.Tests.Globalization.Items
             get { throw new NotImplementedException(); }
         }
 
-        #endregion
-    }
+		public N2.Edit.Trash.TrashPurgeInterval PurgeInterval
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		#endregion
+	}
 }

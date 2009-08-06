@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using N2.Definitions;
@@ -8,6 +9,11 @@ using Rhino.Mocks;
 using N2.Engine.MediumTrust;
 using N2.Edit.Trash;
 using N2.Persistence.NH;
+using N2.Tests.Fakes;
+using N2.Details;
+using System.Collections.Generic;
+using N2.Configuration;
+using N2.Engine;
 
 namespace N2.Edit.Tests.Trash
 {
@@ -25,7 +31,7 @@ namespace N2.Edit.Tests.Trash
 		    
             mocks.ReplayAll();
 
-            TrashHandler th = new TrashHandler(persister, definitions, host);
+			TrashHandler th = new TrashHandler(persister, null, definitions, null, host);
             th.Throw(item);
 
             Assert.AreEqual(trash, item.Parent);
@@ -138,7 +144,7 @@ namespace N2.Edit.Tests.Trash
 
             mocks.ReplayAll();
 
-            TrashHandler th = new TrashHandler(persister, definitions, new Host(webContext, 1, 1));
+			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1));
 
             bool throwingWasInvoked = false;
             bool throwedWasInvoked = false;
@@ -163,7 +169,7 @@ namespace N2.Edit.Tests.Trash
 
             mocks.ReplayAll();
 
-            TrashHandler th = new TrashHandler(persister, definitions, new Host(webContext, 1, 1));
+			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1));
 
             th.ItemThrowing += delegate(object sender, CancellableItemEventArgs args) { args.Cancel = true; };
             th.Throw(item);
@@ -178,14 +184,14 @@ namespace N2.Edit.Tests.Trash
             IDefinitionManager definitions = MockDefinitions();
             IPersister persister = MockPersister(root, trash, item);
             Expect.Call(delegate { persister.Move(null, null); }).IgnoreArguments()
-                .Do(new Action<ContentItem, ContentItem>(delegate(ContentItem source, ContentItem destination)
+                .Do(new System.Action<ContentItem, ContentItem>(delegate(ContentItem source, ContentItem destination)
                                                              {
                                                                  source.AddTo(destination);
                                                              })).Repeat.Any();
 			
             mocks.ReplayAll();
 
-            return new TrashHandler(persister, definitions, host);
+			return new TrashHandler(persister, null, definitions, null, host);
         }
 
         private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)

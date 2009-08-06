@@ -6,6 +6,7 @@ using System.Threading;
 using Castle.Core;
 using System.Runtime.CompilerServices;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Plugin.Scheduling
 {
@@ -19,9 +20,11 @@ namespace N2.Plugin.Scheduling
         IHeart heart;
         Web.IWebContext context;
         IErrorHandler errorHandler;
+		IEngine engine;
 
-        public Scheduler(IPluginFinder plugins, IHeart heart, Web.IWebContext context, IErrorHandler errorHandler)
+        public Scheduler(IEngine engine, IPluginFinder plugins, IHeart heart, Web.IWebContext context, IErrorHandler errorHandler)
         {
+			this.engine = engine;
             actions = new List<ScheduledAction>(InstantiateActions(plugins));
             this.heart = heart;
             this.context = context;
@@ -75,6 +78,7 @@ namespace N2.Plugin.Scheduling
                         try
                         {
 							Debug.WriteLine("Executing " + action.GetType().Name);
+							action.Engine = engine;
                             action.Execute();
                             action.ErrorCount = 0;
                         }

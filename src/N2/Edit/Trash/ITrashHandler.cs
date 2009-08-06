@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace N2.Edit.Trash
 {
@@ -40,5 +41,8 @@ namespace N2.Edit.Trash
         event EventHandler<CancellableItemEventArgs> ItemThrowing;
         /// <summary>Occurs after an item has been thrown.</summary>
         event EventHandler<ItemEventArgs> ItemThrowed;
+
+		/// <summary>Delete items lying in trash for longer than the specified interval.</summary>
+		void PurgeOldItems();
 	}
 }

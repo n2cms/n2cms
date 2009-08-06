@@ -1,3 +1,4 @@
+- make all objects editable
 - NH beta2
 - tiny 1.4.3
 - deprecate and replace mail stuff

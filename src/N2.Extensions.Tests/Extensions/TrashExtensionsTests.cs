@@ -53,6 +53,11 @@ namespace N2.Extensions.Tests.Extensions
 				get { return true; }
 			}
 
+			public TrashPurgeInterval PurgeInterval
+			{
+				get { throw new NotImplementedException(); }
+			}
+
 			#endregion
 		}
 	}

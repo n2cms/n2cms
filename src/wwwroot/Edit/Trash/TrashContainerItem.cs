@@ -31,6 +31,13 @@ namespace N2.Edit.Trash
 			set { SetDetail("Enabled", value); }
 		}
 
+		[EditableEnum("Purge Interval", 90, typeof(TrashPurgeInterval))]
+		public virtual TrashPurgeInterval PurgeInterval
+		{
+			get { return GetDetail("PurgeInterval", TrashPurgeInterval.Monthly); }
+			set { SetDetail("PurgeInterval", value, TrashPurgeInterval.Monthly); }
+		}
+
 		public override string Url
 		{
 			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
