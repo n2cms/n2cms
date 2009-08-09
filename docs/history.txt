@@ -1,4 +1,5 @@
-﻿- fixed #24210: Writers can publish using the version list
+﻿- max number of versions (configuration change: <edit enableVersioning="false"> -> <edit><versions enabled="false">)
+- fixed #24210: Writers can publish using the version list
 - made url-rewriter honor ignoreExistingFiles
 - implemented scheduled trash purge
 

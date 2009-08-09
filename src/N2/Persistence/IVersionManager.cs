@@ -31,5 +31,10 @@ namespace N2.Persistence
 		/// <param name="count">The number of versions to get.</param>
 		/// <returns>A list of versions of the item.</returns>
 		IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count);
+
+		/// <summary>Removes exessive versions.</summary>
+		/// <param name="publishedItem">The item whose versions to trim.</param>
+		/// <param name="maximumNumberOfVersions">The maximum number of versions to keep.</param>
+		void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions);
 	}
 }

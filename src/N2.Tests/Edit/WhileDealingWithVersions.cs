@@ -29,7 +29,8 @@ namespace N2.Tests.Edit
             ComplexContainersItem item = new ComplexContainersItem();
             item.ID = 28;
 
-            Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
+			Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
+			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
             mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
@@ -45,6 +46,7 @@ namespace N2.Tests.Edit
             item.ID = 28;
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
+			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
             mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
@@ -60,7 +62,8 @@ namespace N2.Tests.Edit
             item.ID = 28;
             ComplexContainersItem version = item.Clone(false) as ComplexContainersItem;
 
-            Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(version);
+			Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(version);
+			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
             mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionOnly);
@@ -103,7 +106,8 @@ namespace N2.Tests.Edit
             ComplexContainersItem versionToBeMaster = new ComplexContainersItem(29, "version of current");
             versionToBeMaster.VersionOf = currentMaster;
 
-            Expect.Call(versioner.SaveVersion(currentMaster)).Return(null);
+			Expect.Call(versioner.SaveVersion(currentMaster)).Return(null);
+			versioner.Expect(v => v.TrimVersionCountTo(null, 100)).IgnoreArguments().Repeat.Any();
 
             mocks.ReplayAll();
 
@@ -134,7 +138,8 @@ namespace N2.Tests.Edit
             ComplexContainersItem newItem = new ComplexContainersItem(1, "an item");
             newItem.Published = null;
 
-            Expect.Call(versioner.SaveVersion(newItem)).Return(new ComplexContainersItem(2, "ignored"));
+			Expect.Call(versioner.SaveVersion(newItem)).Return(new ComplexContainersItem(2, "ignored"));
+			versioner.Expect(v => v.TrimVersionCountTo(null, 100)).IgnoreArguments().Repeat.Any();
             mocks.ReplayAll();
 
             IItemEditor editor = SimulateEditor(newItem, ItemEditorVersioningMode.VersionAndSave);
@@ -155,7 +160,8 @@ namespace N2.Tests.Edit
             versionToBeMaster.VersionOf = currentMaster;
             versionToBeMaster.Published = null;
 
-            Expect.Call(versioner.SaveVersion(currentMaster)).Return(null);
+			Expect.Call(versioner.SaveVersion(currentMaster)).Return(null);
+			versioner.Expect(v => v.TrimVersionCountTo(currentMaster, 100)).IgnoreArguments().Repeat.Any();
 
             mocks.ReplayAll();
 
@@ -174,7 +180,8 @@ namespace N2.Tests.Edit
             ComplexContainersItem item = new ComplexContainersItem();
             item.ID = 29;
 
-            Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
+			Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
+			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
             mocks.Replay(versioner);
 
             editManager.SavingVersion += new EventHandler<CancellableItemEventArgs>(editManager_SavingVersion);

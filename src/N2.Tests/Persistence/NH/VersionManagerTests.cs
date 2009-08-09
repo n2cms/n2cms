@@ -110,5 +110,51 @@ namespace N2.Tests.Persistence.NH
 			Assert.That(versions[0], Is.EqualTo(version));
 		}
 
+		[Test]
+		public void CanTrim_NumberOfVersions()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+			versioner.SaveVersion(item);
+			versioner.SaveVersion(item);
+
+			versioner.TrimVersionCountTo(item, 2);
+
+			var versions = versioner.GetVersionsOf(item);
+			Assert.That(versions.Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void CanTrim_NumberOfVersions_FromLargeNumberOfVersions()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+			for (int i = 0; i < 25; i++)
+			{
+				versioner.SaveVersion(item);
+			}
+
+			versioner.TrimVersionCountTo(item, 2);
+
+			var versions = versioner.GetVersionsOf(item);
+			Assert.That(versions.Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void CannotRemove_PublishedVersion()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			persister.Save(item);
+			ContentItem version = versioner.SaveVersion(item);
+			version.Updated = DateTime.Now.AddSeconds(10);
+			engine.Persister.Repository.Save(version);
+			engine.Persister.Repository.Flush();
+
+			versioner.TrimVersionCountTo(item, 1);
+
+			var versions = versioner.GetVersionsOf(item);
+			Assert.That(versions.Count, Is.EqualTo(1));
+			Assert.That(versions[0], Is.EqualTo(item));
+		}
 	}
 }

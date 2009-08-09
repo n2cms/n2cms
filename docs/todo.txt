@@ -1,15 +1,11 @@
 - make all objects editable
-- NH beta2
+- NH 2.1
 - tiny 1.4.3
 - deprecate and replace mail stuff
 - auto-parts
 - "hidden" non-parts pages
 - track "EditableLinks"
 - track external links and "trackbacks"
-- max versions
-- automatic recycle bin cleanup
-- automatic version cleanup
-- NH 2.1 beta
 - item templates
 - "OnCreated"
 - "default folder"
@@ -18,8 +14,8 @@
 - introduce IStartPage and move some logic to the content items
 - restrict children
 - filter plugins
-- edit tree aspect controller
-- templates aspect controller
+- edit tree adapter
+- templates adapter
 - update data model
 	- reference to start page
 	- version number

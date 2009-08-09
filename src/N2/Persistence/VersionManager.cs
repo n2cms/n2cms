@@ -125,6 +125,29 @@ namespace N2.Persistence
 				.Or.ID.Eq(publishedItem.ID)
 				.OrderBy.Updated.Desc;
 		}
+
+		public void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions)
+		{
+			if (maximumNumberOfVersions < 0) throw new ArgumentOutOfRangeException("maximumNumberOfVersions");
+			if (maximumNumberOfVersions == 0) return;
+
+			IList<ContentItem> versions = GetVersionsOf(publishedItem);
+			versions.Remove(publishedItem);
+			int max = maximumNumberOfVersions - 1;
+
+			if (versions.Count <= max) return;
+
+			using (ITransaction transaction = itemRepository.BeginTransaction())
+			{
+				for (int i = max; i < versions.Count; i++)
+				{
+					this.itemRepository.Delete(versions[i]);
+				}
+				itemRepository.Flush();
+				transaction.Commit();
+			}
+		}
+
 		#endregion
 
 

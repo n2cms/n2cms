@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System;
 
 namespace N2.Configuration
 {
@@ -87,13 +88,6 @@ namespace N2.Configuration
             set { base["deleteItemUrl"] = value; }
         }
 
-        [ConfigurationProperty("enableVersioning", DefaultValue = true)]
-        public bool EnableVersioning
-        {
-            get { return (bool)base["enableVersioning"]; }
-            set { base["enableVersioning"] = value; }
-        }
-
         [ConfigurationProperty("tinyMCE")]
         public TinyMCEElement TinyMCE
         {
@@ -121,6 +115,23 @@ namespace N2.Configuration
 		{
 			get { return (DefaultDirectoryElement)base["defaultDirectory"]; }
 			set { base["defaultDirectory"] = value; }
+		}
+
+		/// <summary>Information about versioning.</summary>
+		[ConfigurationProperty("versions")]
+		public VersionsElement Versions
+		{
+			get { return (VersionsElement)base["versions"]; }
+			set { base["versions"] = value; }
+		}
+
+		// deprecated
+
+		[Obsolete("Use Versions.Enabled instead"), ConfigurationProperty("enableVersioning", DefaultValue = true)]
+		public bool EnableVersioning
+		{
+			get { return Versions.Enabled; }
+			set { Versions.Enabled = true; }
 		}
     }
 }

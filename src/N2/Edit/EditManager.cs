@@ -41,7 +41,7 @@ namespace N2.Edit
         private string newItemUrl = "~/edit/new.aspx";
         private string deleteItemUrl = "~/edit/delete.aspx";
         private bool enableVersioning = true;
-
+		
 		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner, ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings)
 		{
 			this.definitions = definitions;
@@ -61,7 +61,8 @@ namespace N2.Edit
             EditInterfaceUrl = config.EditInterfaceUrl;
             NewItemUrl = config.NewItemUrl;
             DeleteItemUrl = config.DeleteItemUrl;
-            EnableVersioning = config.EnableVersioning;
+            EnableVersioning = config.Versions.Enabled;
+			MaximumNumberOfVersions = config.Versions.MaximumPerItem;
 			uploadFolders = new List<string>(config.UploadFolders.Folders);
         }
 
@@ -123,6 +124,10 @@ namespace N2.Edit
 	    {
 	        get { return uploadFolders; }
 	    }
+
+		/// <summary>Number of item versions to keep.</summary>
+		public int MaximumNumberOfVersions { get; set; }
+
 
 
 	    /// <summary>Gets the url for the navigation frame.</summary>
@@ -431,9 +436,11 @@ namespace N2.Edit
 		private ContentItem SaveVersion(ContentItem current)
 		{
 			ContentItem savedVersion = null;
-			Utility.InvokeEvent(Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>, current, this, delegate(ContentItem item)
+			var handler = Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>;
+			Utility.InvokeEvent(handler, current, this, delegate(ContentItem item)
 				{
 					savedVersion = versioner.SaveVersion(item);
+					versioner.TrimVersionCountTo(item, MaximumNumberOfVersions);
 				});
 			return savedVersion;
 		}

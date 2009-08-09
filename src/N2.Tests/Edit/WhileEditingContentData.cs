@@ -328,7 +328,8 @@ namespace N2.Tests.Edit
             item.MyProperty3 = "rock";
             item.MyProperty4 = true;
 
-            Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
+			Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
+			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
             mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
