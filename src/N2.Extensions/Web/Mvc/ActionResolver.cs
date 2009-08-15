@@ -9,13 +9,18 @@ namespace N2.Web.Mvc
 	public class ActionResolver : IPathFinder
 	{
 		private readonly IControllerMapper _controllerMapper;
-		readonly string[] _methods;
+		private readonly string[] _methods;
 		private const string DefaultAction = "index";
 
 		public ActionResolver(IControllerMapper controllerMapper, string[] methods)
 		{
 			_controllerMapper = controllerMapper;
-			this._methods = methods;
+			_methods = methods;
+		}
+
+		public string[] Methods
+		{
+			get{ return _methods; }
 		}
 
 		public PathData GetPath(ContentItem item, string remainingUrl)

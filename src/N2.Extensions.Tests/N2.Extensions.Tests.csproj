@@ -94,6 +94,7 @@
     <Compile Include="Linq\LinqItem.cs" />
     <Compile Include="Linq\QueriableTests.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
+    <Compile Include="Mvc\ControllerMapperTests.cs" />
     <Compile Include="Mvc\Controllers\RegularControllerBase.cs" />
     <Compile Include="Mvc\Controllers\ExecutiveTeamController.cs" />
     <Compile Include="Mvc\Controllers\AboutUsSectionPageController.cs" />

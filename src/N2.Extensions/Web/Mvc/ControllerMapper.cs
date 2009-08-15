@@ -24,7 +24,9 @@ namespace N2.Web.Mvc
 					if (0 == finders.Where(f => f is ActionResolver).Count())
 					{
 						// TODO: Get the list of methods from a list of actions retrieved from somewhere within MVC
-						var methods = controllerDefinition.AdapterType.GetMethods().Select(m => m.Name).ToArray();
+						var methods = new ReflectedControllerDescriptor(controllerDefinition.AdapterType)
+							.GetCanonicalActions()
+							.Select(m => m.ActionName).ToArray();
 						var actionResolver = new ActionResolver(this, methods);
 						PathDictionary.PrependFinder(id.ItemType, actionResolver);
 					}
