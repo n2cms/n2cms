@@ -47,14 +47,9 @@ namespace N2.Templates.Mvc.Items.Pages
 			set { SetDetail("SmtpPassword", value, string.Empty); }
 		}
 
-		public override string TemplateUrl
-		{
-			get { return "~/Root.aspx"; }
-		}
-
 		public override string Url
 		{
-			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
+			get { return "~/RootPage/Index/" + ID; }
 		}
 	}
 }
