@@ -4,7 +4,7 @@ namespace N2.Web.Mvc
 {
 	/// <summary>
 	/// Tells the system to look for the template associated with the
-	/// attribute content item in the default location as specified
+	/// attributed content item in the default location as specified
 	/// by the N2ViewEngine's internal ViewEngine (by default a WebFormsViewEngine)
 	/// </summary>
 	public class MvcConventionTemplateAttribute : Attribute, IPathFinder
