@@ -27,7 +27,7 @@ namespace N2.Edit
 			img.Attributes["class"] = "separator";
 			img.Height = 16;
 			img.Width = 1;
-			img.Alt = "";
+			img.Alt = "|";
 			container.Controls.Add(img);
 			return img;
 		}

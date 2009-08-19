@@ -52,8 +52,6 @@ namespace N2.Edit
 		/// <summary>Used for translating the plugin's texts from a global resource.</summary>
 		public string GlobalResourceClassName { get; set; }
 
-
-
 		public override Control AddTo(Control container, PluginContext context)
 		{
 			if(RequireCurrentItem && context.Selected == null)
@@ -70,10 +68,29 @@ namespace N2.Edit
 				url = url.AppendQuery(context.Format(NavigateQuery, UrlEncode));
 			link.NavigateUrl = url;
 			link.ToolTip = context.Format(tooltip, false);
-			link.Target = Target;
+
+			AddTargetAttribute(link);
+
 			container.Controls.Add(link);
 
 			return link;
+		}
+
+		private void AddTargetAttribute(HyperLink link)
+		{
+			if (String.IsNullOrEmpty(Target))
+				return;
+
+			switch (Target.ToLowerInvariant())
+			{
+				case "_blank":
+					link.Attributes.Add("onclick", "window.open(this.href);return false;");
+					break;
+
+				case "_top":
+					link.Attributes.Add("onclick", "top.location.href=this.href;return false;");
+					break;
+			}
 		}
 
 		protected virtual bool ActiveFor(Control container, ControlPanelState state)
