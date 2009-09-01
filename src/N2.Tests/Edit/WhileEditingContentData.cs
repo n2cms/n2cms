@@ -259,32 +259,36 @@ namespace N2.Tests.Edit
             Assert.AreEqual(2, p.Validators.Count);
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void UpdateEditors_PukesOnNullItem()
         {
             Dictionary<string, Control> editors = CreateEditorsForComplexContainersItem();
-            editManager.UpdateEditors(null, editors, null);
+
+        	Assert.Throws<ArgumentNullException>(() => editManager.UpdateEditors(null, editors, null));
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void UpdateEditors_PukesOnNullAddedEditors()
         {
             ContentItem item = new ComplexContainersItem();
-            editManager.UpdateEditors(item, null, null);
+
+			Assert.Throws<ArgumentNullException>(() => editManager.UpdateEditors(item, null, null));
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void UpdateItem_PukesOnNullItem()
         {
             Dictionary<string, Control> editors = CreateEditorsForComplexContainersItem();
-            editManager.UpdateItem(null, editors, null);
+
+			Assert.Throws<ArgumentNullException>(() => editManager.UpdateItem(null, editors, null));
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void UpdateItem_PukesOnNullAddedEditors()
         {
             ContentItem item = new ComplexContainersItem();
-            editManager.UpdateItem(item, null, null);
+
+			Assert.Throws<ArgumentNullException>(() => editManager.UpdateItem(item, null, null));
         }
 
         [Test]

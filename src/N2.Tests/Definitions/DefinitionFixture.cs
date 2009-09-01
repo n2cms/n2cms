@@ -154,11 +154,12 @@ namespace N2.Tests.Definitions
 			Assert.AreEqual(typeof (ItemInZone1Or2), item2.GetType());
 		}
 
-		[Test, ExpectedException(typeof (NotAllowedParentException))]
+		[Test]
 		public void CreateInstanceWithUnAllowedParentGivesException()
 		{
 			ContentItem item = engine.Definitions.CreateInstance(typeof (ItemWithDetails), null);
-			ContentItem itemThatWillNotBe = engine.Definitions.CreateInstance(typeof (SideshowItem), item);
+			
+			Assert.Throws<NotAllowedParentException>(() => engine.Definitions.CreateInstance(typeof (SideshowItem), item));
 		}
 
 		[Test]

@@ -141,14 +141,15 @@ namespace N2.Tests.Definitions
 			Assert.AreEqual(0, inside2.GetContained(null).Count);
 		}
 
-		[Test, ExpectedException(typeof(N2Exception))]
+		[Test]
 		public void InvalidContainerReferenceIsExceptional()
 		{
 			Type itemType = typeof(N2.Tests.Definitions.Definitions.ItemWithNestedContainers);
 			IList<IEditable> editables = new List<IEditable>();
 			IList<IEditableContainer> containers = explorer.Find<IEditableContainer>(itemType);
 			containers.RemoveAt(2); // inside1
-			IEditableContainer rootContainer = hierarchyBuilder.Build(containers, editables);
+			
+			Assert.Throws<N2Exception>(() => hierarchyBuilder.Build(containers, editables));
 		}
 	}
 }

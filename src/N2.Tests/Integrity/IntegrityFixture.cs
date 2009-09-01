@@ -16,12 +16,12 @@ namespace N2.Tests.Integrity
 			Assert.IsNotNull(item);
 		}
 
-		[Test, ExpectedException(typeof(N2.Definitions.NotAllowedParentException))]
+		[Test]
 		public void UnAllowedItemBelowRoot()
 		{
 			Definitions.StartPage root = CreateRoot();
 
-			CreateItemBelow(root, typeof(Definitions.SubPage));
+			Assert.Throws<NotAllowedParentException>(() => CreateItemBelow(root, typeof(Definitions.SubPage)));
 		}
 
 		[Test]
@@ -42,11 +42,12 @@ namespace N2.Tests.Integrity
 			Assert.IsNotNull(item);
 		}
 
-		[Test, ExpectedException(typeof(N2.Definitions.NotAllowedParentException))]
+		[Test]
 		public void AllowedItemBelowSubClassOfRootNotAllowedBelowRootItem()
 		{
 			ContentItem root = CreateRoot();
-			CreateItemBelow(root, typeof(Definitions.AlternativePage));
+
+			Assert.Throws<NotAllowedParentException>(() => CreateItemBelow(root, typeof(Definitions.AlternativePage)));
 		}
 
 		[Test]
@@ -90,8 +91,6 @@ namespace N2.Tests.Integrity
 				CreateItemBelow(root, typeof(Definitions.StartPage));
 			});
 		}
-
-
 
 		private Definitions.StartPage CreateRoot()
 		{

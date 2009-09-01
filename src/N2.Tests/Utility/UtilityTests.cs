@@ -300,17 +300,18 @@ namespace N2.Tests.Utility
 			Assert.IsNull(item1.Parent);
 		}
 
-		[Test, ExpectedException(typeof (DestinationOnOrBelowItselfException))]
+		[Test]
 		public void Insert_CannotAddItemToItself()
 		{
-			N2.Utility.Insert(item1, item1, "Published");
+			Assert.Throws<DestinationOnOrBelowItselfException>(() => N2.Utility.Insert(item1, item1, "Published"));
 		}
 
-		[Test, ExpectedException(typeof (DestinationOnOrBelowItselfException))]
+		[Test]
 		public void Insert_CannotAddItemBelowItself()
 		{
 			N2.Utility.Insert(item1, item2, "Published");
-			N2.Utility.Insert(item2, item1, "Published");
+
+			Assert.Throws<DestinationOnOrBelowItselfException>(() => N2.Utility.Insert(item2, item1, "Published"));
 		}
 
 		[Test]

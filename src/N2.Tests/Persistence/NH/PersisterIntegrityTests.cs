@@ -64,7 +64,7 @@ namespace N2.Tests.Persistence.NH
 			}
 		}
 
-		[Test, ExpectedException(typeof(NameOccupiedException))]
+		[Test]
 		public void CannotCopy_ItemWithName()
 		{
 			ContentItem root = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
@@ -75,7 +75,7 @@ namespace N2.Tests.Persistence.NH
 				persister.Save(root);
 				persister.Save(item1);
 
-				persister.Copy(item1, root);
+				Assert.Throws<NameOccupiedException>(() => persister.Copy(item1, root));
 			}
 		}
 	}
