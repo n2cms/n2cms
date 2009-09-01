@@ -17,7 +17,7 @@ namespace N2.Templates.Mvc.Controllers
 			_languageGateway = languageGateway;
 		}
 
-		public ViewResult TopMenu()
+		public PartialViewResult TopMenu()
 		{
 			ContentItem branchRoot = Find.AncestorAtLevel(2, Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList(),
 														  N2.Find.CurrentPage);
@@ -25,7 +25,7 @@ namespace N2.Templates.Mvc.Controllers
 			var model = new TopMenuModel(GetTranslations(), branchRoot, Find.Items.Where.Parent.Eq(Find.StartPage)
 				.Filters(new VisibleFilter(), new PageFilter()).Select());
 
-			return View(model);
+			return PartialView(model);
 		}
 
 		private IEnumerable<Translation> GetTranslations()
@@ -43,7 +43,7 @@ namespace N2.Templates.Mvc.Controllers
 			}
 		}
 
-		public ViewResult SubMenu()
+		public PartialViewResult SubMenu()
 		{
 			ContentItem branchRoot = Find.AncestorAtLevel(2, Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList(),
 			                                              N2.Find.CurrentPage);
@@ -60,17 +60,17 @@ namespace N2.Templates.Mvc.Controllers
 				model.Visible = false;
 			}
 
-			return View(model);
+			return PartialView(model);
 		}
 
-		public ViewResult Breadcrumb()
+		public PartialViewResult Breadcrumb()
 		{
 			var items = Find.EnumerateParents(Find.CurrentPage, Find.ClosestStartPage, true).Reverse().ToArray();
 
 			if(items.Length == 1)
 				return null;
 
-			return View(items);
+			return PartialView(items);
 		}
 	}
 }
