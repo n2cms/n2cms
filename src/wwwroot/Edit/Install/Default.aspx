@@ -56,7 +56,7 @@
             </asp:Literal>
             <p>
 				Assuming the database connection is okay (step 2) you can 
-				<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="create tables" OnClientClick="return confirm('Creating database tables will destory any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false" />
+				<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false" />
 				or 
 				<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="generate sql script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
 				for the connection type <%= Status.ConnectionType %>.
