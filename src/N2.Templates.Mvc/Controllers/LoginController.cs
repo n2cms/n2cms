@@ -17,7 +17,7 @@ namespace N2.Templates.Mvc.Controllers
 
 			model.LoggedIn = User.Identity.IsAuthenticated;
 
-			return View(model);
+			return PartialView(model);
 		}
 
 		[ModelStateToTempData]

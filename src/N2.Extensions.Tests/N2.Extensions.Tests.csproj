@@ -93,6 +93,7 @@
     <Compile Include="Extensions\TrashExtensionsTests.cs" />
     <Compile Include="Linq\LinqItem.cs" />
     <Compile Include="Linq\QueriableTests.cs" />
+    <Compile Include="Mvc\ContentControllerTests.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
     <Compile Include="Mvc\ControllerMapperTests.cs" />
     <Compile Include="Mvc\Controllers\RegularControllerBase.cs" />

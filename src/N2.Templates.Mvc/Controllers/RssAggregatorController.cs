@@ -12,7 +12,6 @@ namespace N2.Templates.Mvc.Controllers
 	[Controls(typeof (RssAggregator))]
 	public class RssAggregatorController : N2Controller<RssAggregator>
 	{
-		private const string CacheKey = "RssAggregator.NewsItems";
 		private const int ExpirationTime = 1;
 
 		[OutputCache(Duration = ExpirationTime, VaryByParam = "*")]

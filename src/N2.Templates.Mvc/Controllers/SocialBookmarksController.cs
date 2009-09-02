@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override ActionResult Index()
 		{
-			return View(new SocialBookmarksModel(CurrentItem));
+			return PartialView(new SocialBookmarksModel(CurrentItem));
 		}
 	}
 }

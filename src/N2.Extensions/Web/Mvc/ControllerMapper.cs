@@ -23,7 +23,7 @@ namespace N2.Web.Mvc
 					IList<IPathFinder> finders = PathDictionary.GetFinders(id.ItemType);
 					if (0 == finders.Where(f => f is ActionResolver).Count())
 					{
-						// TODO: Get the list of methods from a list of actions retrieved from somewhere within MVC
+						// Use MVC's ReflectedControllerDescriptor to find all actions on the Controller
 						var methods = new ReflectedControllerDescriptor(controllerDefinition.AdapterType)
 							.GetCanonicalActions()
 							.Select(m => m.ActionName).ToArray();

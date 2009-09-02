@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using N2.Engine;
 using N2.Security;
+using N2.Web.UI;
 
 namespace N2.Web.Mvc
 {
@@ -45,7 +46,7 @@ namespace N2.Web.Mvc
 			set { _currentItem = value; }
 		}
 
-		protected ContentItem CurrentPage
+		public ContentItem CurrentPage
 		{
 			get
 			{
@@ -130,14 +131,73 @@ namespace N2.Web.Mvc
 			                          ActionInvoker);
 		}
 
+		/// <summary>
+		/// Overrides/hides the most common method of rendering a View and calls View or PartialView depending on the type of the model
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		protected new ViewResultBase View(object model)
+		{
+			ContentItem item = ExtractItem(model);
+
+			if (!item.IsPage)
+				return PartialView(model);
+
+			return base.View(model);
+		}
+
+		/// <summary>
+		/// Overrides/hides the most common method of rendering a View and calls View or PartialView depending on the type of the model
+		/// </summary>
+		/// <param name="viewName"></param>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		protected new ViewResultBase View(string viewName, object model)
+		{
+			ContentItem item = ExtractItem(model);
+
+			if (!item.IsPage)
+				return PartialView(viewName, model);
+
+			return base.View(viewName, model);
+		}
+
 		protected override ViewResult View(IView view, object model)
 		{
+			CheckForPageRender(model);
+
 			return base.View(view, model ?? CurrentItem);
 		}
 
 		protected override ViewResult View(string viewName, string masterName, object model)
 		{
+			CheckForPageRender(model);
+
 			return base.View(viewName, masterName, model ?? CurrentItem);
+		}
+
+		private void CheckForPageRender(object model)
+		{
+			ContentItem item = ExtractItem(model);
+
+			if (!item.IsPage)
+				throw new InvalidOperationException(@"Rendering of Parts using View(..) is no longer supported. Use PartialView(..) to render this item.
+			
+- Item of type " + item.GetType() + @"
+- Controller is " + GetType() + @"
+- Action is " + ViewData[ContentRoute.ActionKey]);
+		}
+
+		private ContentItem ExtractItem(object model)
+		{
+			var item = model as ContentItem;
+			
+			if(item != null)
+				return item;
+
+			var itemContainer = model as IItemContainer;
+
+			return itemContainer != null ? itemContainer.CurrentItem : CurrentItem;
 		}
 
 		#region Nested type: SessionAndPerRequestTempDataProvider

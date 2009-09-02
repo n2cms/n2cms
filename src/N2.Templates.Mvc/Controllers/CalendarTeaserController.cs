@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc.Controllers
 		{
 			var hits = CurrentItem.Container.GetEvents().Where(e => e.EventDate > DateTime.Today);
 
-			return View(new CalendarTeaserModel(CurrentItem, hits.Take(5).ToList()));
+			return PartialView(new CalendarTeaserModel(CurrentItem, hits.Take(5).ToList()));
 		}
 	}
 }

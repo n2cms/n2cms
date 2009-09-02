@@ -22,7 +22,7 @@ namespace N2.Templates.Mvc.Items.Items
 		/// <summary>Defaults to ~/Views/Shared/Views/{TemplateName}.ascx</summary>
 		public override string TemplateUrl
 		{
-			get { return "~/Views/Shared/" + TemplateName + ".ascx"; }
+			get { return TemplateName; }
 		}
 
 		/// <summary>The name without extension .aspx of an icon file located in /Content/Views/. Defaults to ClassName.</summary>

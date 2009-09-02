@@ -31,7 +31,14 @@ namespace N2.Web.Mvc
 
 		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
 		{
-			return FindPartialViewInternal(controllerContext, partialViewName, useCache);
+			var item = (ContentItem)controllerContext.RouteData.Values[ContentRoute.ContentItemKey];
+
+			if (item == null || IsFullPathToView(partialViewName))
+				return FindPartialViewInternal(controllerContext, partialViewName, useCache);
+
+			var templateUrl = GetTemplateUrl(item, partialViewName);
+
+			return FindPartialViewInternal(controllerContext, templateUrl, useCache);
 		}
 
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)

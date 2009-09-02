@@ -11,7 +11,7 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override ActionResult Index()
 		{
-			return View(CurrentItem.TemplateUrl, CurrentItem);
+			return PartialView(CurrentItem.TemplateUrl, CurrentItem);
 		}
 
 		public ActionResult Submit(int? selectedItem)

@@ -35,7 +35,7 @@ namespace N2.Templates.Mvc.Controllers
 			}
 			model.CurrentItem = CurrentItem;
 
-			return View(model);
+			return PartialView(model);
 		}
 
 		private ActionResult VerifyUser(string encryptedTicket)

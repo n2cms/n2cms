@@ -1,3 +1,4 @@
+using System.Web.Mvc;
 using N2.Templates.Mvc.Controllers;
 using N2.Templates.Mvc.Items.Items;
 using N2.Templates.Mvc.Models;
@@ -19,7 +20,7 @@ namespace N2.Templates.Mvc.Tests.Controllers
 			                 	};
 
 			var result = controller.Index()
-				.AssertViewRendered();
+				.AssertResultIs<PartialViewResult>();
 
 			Assert.That(result.ViewData.Model, Is.TypeOf(typeof(UserRegistrationModel)));
 		}
