@@ -134,13 +134,23 @@ namespace N2.Web.Mvc
 		/// <summary>
 		/// Overrides/hides the most common method of rendering a View and calls View or PartialView depending on the type of the model
 		/// </summary>
+		/// <param name="viewName"></param>
+		/// <returns></returns>
+		protected new ViewResultBase View(string viewName)
+		{
+			return View(viewName, CurrentItem);
+		}
+
+		/// <summary>
+		/// Overrides/hides the most common method of rendering a View and calls View or PartialView depending on the type of the model
+		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
 		protected new ViewResultBase View(object model)
 		{
 			ContentItem item = ExtractItem(model);
 
-			if (!item.IsPage)
+			if (item != null && !item.IsPage)
 				return PartialView(model);
 
 			return base.View(model);
