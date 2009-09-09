@@ -166,7 +166,7 @@ namespace N2.Web.Mvc
 		{
 			ContentItem item = ExtractItem(model);
 
-			if (!item.IsPage)
+			if (item != null && !item.IsPage)
 				return PartialView(viewName, model);
 
 			return base.View(viewName, model);
