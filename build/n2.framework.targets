@@ -9,7 +9,7 @@
 									$(LibFolder)\log4net.dll;
 									$(LibFolder)\NHibernate.dll;
 									$(LibFolder)\NHibernate.Caches.SysCache2.dll;
-									$(LibFolder)\System.Data.SQLite.dll"/>
+									$(RootFolder)\lib\System.Data.SQLite.dll"/>
 
 		<TextFiles Include="$(DocFolder)\history.txt;
 							$(DocFolder)\install.txt;

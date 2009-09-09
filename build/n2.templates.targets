@@ -26,7 +26,7 @@
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\bin\" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-DeployFolder)" />
-		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
+		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db" DestinationFiles="$(Templates-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
 	</Target>
 
 	<!-- MVC TEMPLATES -->
@@ -63,7 +63,7 @@
 		<Copy SourceFiles="@(templatesMvcFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\%(RecursiveDir)" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\bin\" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
-		<Copy SourceFiles="$(LibFolder)\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
+		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
 
 		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />

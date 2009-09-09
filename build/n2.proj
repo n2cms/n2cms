@@ -9,7 +9,8 @@
 
 	<PropertyGroup>
 		<RootFolder>$(MSBuildProjectDirectory)\..</RootFolder>
-		<LibFolder>$(RootFolder)\lib</LibFolder>
+		<LibFolder>$(RootFolder)\lib\net3.5</LibFolder>
+		<LibFolder Condition="'$(Configuration)' == 'NET2.0'">$(RootFolder)\lib\net2.0</LibFolder>
 		<DocFolder>$(RootFolder)\docs</DocFolder>
 		<SnippetsFolder>$(RootFolder)\snippets</SnippetsFolder>
 
@@ -26,7 +27,7 @@
 		<NHVersion Condition="'$(NHVersion)' == ''">2.0</NHVersion>
 	</PropertyGroup>
 
-	<Import Project="$(LibFolder)\MSBuild.Community.Tasks.Targets"/>
+	<Import Project="$(RootFolder)\lib\MSBuild.Community.Tasks.Targets"/>
 	<Import Project="n2.framework.targets"/>
 	<Import Project="n2.templates.targets"/>
 	<Import Project="n2.examples.targets"/>
@@ -122,7 +123,7 @@
 	</Target>
 
 	<Target Name="Test" DependsOnTargets="Clean;Framework-Build">
-		<Exec Command="$(LibFolder)\nunit-console-x86.exe $(SrcFolder)\N2.Tests\bin\N2.Tests.exe $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" />
+		<Exec Command="$(RootFolder)\lib\nunit-console-x86.exe $(SrcFolder)\N2.Tests\bin\N2.Tests.exe $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" />
 	</Target>
 
 </Project>
