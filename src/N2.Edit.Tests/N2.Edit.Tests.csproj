@@ -1,136 +1,144 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>N2.Edit.Tests</RootNamespace>
-    <AssemblyName>N2.Edit.Tests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SpecialTargetConstants Condition="'$(NHVersion)' == '2.1'">NET3_5;NH2_1;</SpecialTargetConstants>
-    <TargetFrameworkVersion Condition="'$(NHVersion)' == '2.1'">v3.5</TargetFrameworkVersion>
-    <LibPath>..\..\lib</LibPath>
-    <LibPath Condition="'$(NHVersion)' == '2.1'">..\..\lib\net3.5</LibPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;$(SpecialTargetConstants)</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;$(SpecialTargetConstants)</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.5.0.8258, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.5.0.1, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Rhino.Mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.52.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\System.Data.SQLite.DLL</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="FileSystem\FakeFileSystem.cs" />
-    <Compile Include="FileSystem\FakePathProvider.cs" />
-    <Compile Include="FileSystem\FileSystemTests.cs" />
-    <Compile Include="FileSystem\RootNode.cs" />
-    <Compile Include="LinkTracker\FindLinksFixture.cs" />
-    <Compile Include="LinkTracker\Items\TrackableItem.cs" />
-    <Compile Include="LinkTracker\TrackerTests.cs" />
-    <Compile Include="Trash\DeleteInterceptorTests.cs" />
-    <Compile Include="Trash\NonThrowableItem.cs" />
-    <Compile Include="Trash\ThrowableItem.cs" />
-    <Compile Include="Trash\TrashCleanupAgentTests.cs" />
-    <Compile Include="Trash\TrashHandlerTests.cs" />
-    <Compile Include="Trash\TrashTestBase.cs" />
-    <Compile Include="Xml\N2XmlWriterFixture.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\N2.Tests\N2.Tests.csproj">
-      <Project>{4B026365-D03B-40B4-862B-11608BA756B0}</Project>
-      <Name>N2.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\N2\N2.csproj">
-      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
-      <Name>N2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\wwwroot\N2.Edit.csproj">
-      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
-      <Name>N2.Edit</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="FileSystem\Upload\File.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FileSystem\Upload\Folder 2\File 2.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FileSystem\Upload\Folder 2\Folder 3\File 3.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FileSystem\Upload\Folder1\File1.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FileSystem\Upload\Image.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<ProductVersion>9.0.30729</ProductVersion>
+		<SchemaVersion>2.0</SchemaVersion>
+		<ProjectGuid>{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}</ProjectGuid>
+		<OutputType>Exe</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>N2.Edit.Tests</RootNamespace>
+		<AssemblyName>N2.Edit.Tests</AssemblyName>
+		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+		<FileAlignment>512</FileAlignment>
+		<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworkVersion Condition="'$(NHVersion)' == '2.1'">v3.5</TargetFrameworkVersion>
+		<LibPath>..\..\lib\net3.5</LibPath>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Debug\</OutputPath>
+		<DefineConstants>DEBUG;TRACE;NET3_5;NH2_1;</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<PlatformTarget>x86</PlatformTarget>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\Release\</OutputPath>
+		<DefineConstants>TRACE;NET3_5;NH2_1;</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<PlatformTarget>x86</PlatformTarget>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NET2.0|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\NET2.0\</OutputPath>
+		<DefineConstants>TRACE;</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<PlatformTarget>x86</PlatformTarget>
+		<LibPath>..\..\lib\net2.0</LibPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>$(LibPath)\Castle.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>$(LibPath)\NHibernate.dll</HintPath>
+		</Reference>
+		<Reference Include="nunit.framework, Version=2.5.0.8258, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\..\lib\nunit.framework.dll</HintPath>
+		</Reference>
+		<Reference Include="Rhino.Mocks, Version=3.5.0.1, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\..\lib\Rhino.Mocks.dll</HintPath>
+		</Reference>
+		<Reference Include="System" />
+		<Reference Include="System.configuration" />
+		<Reference Include="System.Core">
+			<RequiredTargetFramework>3.5</RequiredTargetFramework>
+		</Reference>
+		<Reference Include="System.Data" />
+		<Reference Include="System.Data.SQLite, Version=1.0.52.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\..\lib\System.Data.SQLite.DLL</HintPath>
+			<Private>True</Private>
+		</Reference>
+		<Reference Include="System.Web" />
+		<Reference Include="System.Xml" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="FileSystem\FakeFileSystem.cs" />
+		<Compile Include="FileSystem\FakePathProvider.cs" />
+		<Compile Include="FileSystem\FileSystemTests.cs" />
+		<Compile Include="FileSystem\RootNode.cs" />
+		<Compile Include="LinkTracker\FindLinksFixture.cs" />
+		<Compile Include="LinkTracker\Items\TrackableItem.cs" />
+		<Compile Include="LinkTracker\TrackerTests.cs" />
+		<Compile Include="Trash\DeleteInterceptorTests.cs" />
+		<Compile Include="Trash\NonThrowableItem.cs" />
+		<Compile Include="Trash\ThrowableItem.cs" />
+		<Compile Include="Trash\TrashCleanupAgentTests.cs" />
+		<Compile Include="Trash\TrashHandlerTests.cs" />
+		<Compile Include="Trash\TrashTestBase.cs" />
+		<Compile Include="Xml\N2XmlWriterFixture.cs" />
+		<Compile Include="Program.cs" />
+		<Compile Include="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\N2.Tests\N2.Tests.csproj">
+			<Project>{4B026365-D03B-40B4-862B-11608BA756B0}</Project>
+			<Name>N2.Tests</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\N2\N2.csproj">
+			<Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+			<Name>N2</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\wwwroot\N2.Edit.csproj">
+			<Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
+			<Name>N2.Edit</Name>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="App.config" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="FileSystem\Upload\File.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="FileSystem\Upload\Folder 2\File 2.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="FileSystem\Upload\Folder 2\Folder 3\File 3.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="FileSystem\Upload\Folder1\File1.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="FileSystem\Upload\Image.gif">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <PreBuildEvent>rmdir /S /Q $(TargetDir)FileSystem\Upload\</PreBuildEvent>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PreBuildEvent>rmdir /S /Q $(TargetDir)FileSystem\Upload\</PreBuildEvent>
+	</PropertyGroup>
 </Project>

@@ -1,1746 +1,1754 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>N2</RootNamespace>
-    <AssemblyName>N2.Edit</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SpecialTargetConstants Condition="'$(NHVersion)' == '2.1'">NET3_5;NH2_1;</SpecialTargetConstants>
-    <TargetFrameworkVersion Condition="'$(NHVersion)' == '2.1'">v3.5</TargetFrameworkVersion>
-    <LibPath>..\..\lib</LibPath>
-    <LibPath Condition="'$(NHVersion)' == '2.1'">..\..\lib\net3.5</LibPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;$(SpecialTargetConstants)</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;$(SpecialTargetConstants)</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\AffectedItems.ascx" />
-    <Content Include="Edit\Copy.aspx" />
-    <Content Include="Edit\Css\edit.css" />
-    <Content Include="Edit\Css\editor.css" />
-    <Content Include="Edit\Css\default.css" />
-    <Content Include="Edit\Css\all.css" />
-    <Content Include="Edit\FileManagement\Css\filemanager.css" />
-    <Content Include="Edit\Default.aspx" />
-    <Content Include="Edit\Delete.aspx" />
-    <Content Include="Edit\Edit.aspx" />
-    <Content Include="Edit\FileManagement\Default.aspx" />
-    <Content Include="Edit\Login.aspx" />
-    <Content Include="Edit\Move.aspx" />
-    <Content Include="Edit\New.aspx" />
-    <Content Include="Edit\Web.config" />
-    <None Include="Edit\Dependencies.aspx" />
-    <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\AssemblyVersion.cs">
-      <Link>AssemblyVersion.cs</Link>
-    </Compile>
-    <Compile Include="Edit\AffectedItems.ascx.cs">
-      <DependentUpon>AffectedItems.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\AffectedItems.ascx.designer.cs">
-      <DependentUpon>AffectedItems.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\AvailableZones.ascx.cs">
-      <DependentUpon>AvailableZones.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\AvailableZones.ascx.designer.cs">
-      <DependentUpon>AvailableZones.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\ControlPanelEditingSaveAttribute.cs" />
-    <Compile Include="Edit\ControlPanelPreviewDiscardAttribute.cs" />
-    <Compile Include="Edit\ControlPanelPreviewPublishAttribute.cs" />
-    <Compile Include="Edit\Copy.aspx.cs">
-      <DependentUpon>Copy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Copy.aspx.designer.cs">
-      <DependentUpon>Copy.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Delete.aspx.cs">
-      <DependentUpon>Delete.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Delete.aspx.designer.cs">
-      <DependentUpon>Delete.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\DiscardPreview.aspx.cs">
-      <DependentUpon>DiscardPreview.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\DiscardPreview.aspx.designer.cs">
-      <DependentUpon>DiscardPreview.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Edit.aspx.cs">
-      <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Edit.aspx.designer.cs">
-      <DependentUpon>Edit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Export\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Export\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Export\DefinitionNotFoundException.cs" />
-    <Compile Include="Edit\Export\InvalidXmlException.cs" />
-    <Compile Include="Edit\Export\N2XmlReader.cs" />
-    <Compile Include="Edit\Export\N2XmlWriter.cs" />
-    <Compile Include="Edit\FileManagement\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\FileManagement\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\FileSystem\Directory.aspx.cs">
-      <DependentUpon>Directory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\FileSystem\Directory.aspx.designer.cs">
-      <DependentUpon>Directory.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\FileSystem\Editables\EditableFolderPathAttribute.cs" />
-    <Compile Include="Edit\FileSystem\Editables\EditableUploadAttribute.cs" />
-    <Compile Include="Edit\FileSystem\File.aspx.cs">
-      <DependentUpon>File.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\FileSystem\File.aspx.designer.cs">
-      <DependentUpon>File.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\FileSystem\Items\Directory.cs" />
-    <Compile Include="Edit\FileSystem\Items\File.cs" />
-    <Compile Include="Edit\FileSystem\Items\AbstractDirectory.cs" />
-    <Compile Include="Edit\FileSystem\Items\AbstractNode.cs" />
-    <Compile Include="Edit\FileSystem\Items\RootDirectory.cs" />
-    <Compile Include="Edit\Framed.Master.cs">
-      <DependentUpon>Framed.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Framed.Master.designer.cs">
-      <DependentUpon>Framed.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Globalization\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Globalization\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Globalization\LanguageInitializer.cs" />
-    <Compile Include="Edit\Globalization\LanguageMenu.ascx.cs">
-      <DependentUpon>LanguageMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Globalization\LanguageMenu.ascx.designer.cs">
-      <DependentUpon>LanguageMenu.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Globalization\Languages.ascx.cs">
-      <DependentUpon>Languages.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Globalization\Languages.ascx.designer.cs">
-      <DependentUpon>Languages.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Globalization\Translate.aspx.cs">
-      <DependentUpon>Translate.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Globalization\Translate.aspx.designer.cs">
-      <DependentUpon>Translate.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Install\Begin\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Install\Begin\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Install\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Install\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Install\Diagnose.aspx.cs">
-      <DependentUpon>Diagnose.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Install\Diagnose.aspx.designer.cs">
-      <DependentUpon>Diagnose.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Install\Fix.aspx.cs">
-      <DependentUpon>Fix.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Install\Fix.aspx.designer.cs">
-      <DependentUpon>Fix.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Install\FixClass.aspx.cs">
-      <DependentUpon>FixClass.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Install\FixClass.aspx.designer.cs">
-      <DependentUpon>FixClass.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\ItemInfo.ascx.cs">
-      <DependentUpon>ItemInfo.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\ItemInfo.ascx.designer.cs">
-      <DependentUpon>ItemInfo.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Js\DirectoryCompiler.cs" />
-    <Compile Include="Edit\Js\jquery.ui.ashx.cs">
-      <DependentUpon>jquery.ui.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Js\plugins.ashx.cs">
-      <DependentUpon>plugins.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Js\tinymce.ashx.cs">
-      <DependentUpon>tinymce.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\KeepAlive\Ping.ashx.cs">
-      <DependentUpon>Ping.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\KeepAlive\Pinger.cs" />
-    <Compile Include="Edit\LinkTracker\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\LinkTracker\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\LinkTracker\LinkTrackerInitializer.cs" />
-    <Compile Include="Edit\LinkTracker\Tracker.cs" />
-    <Compile Include="Edit\Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Membership\Edit.aspx.cs">
-      <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Membership\Edit.aspx.designer.cs">
-      <DependentUpon>Edit.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Membership\MembershipToolbarPluginAttribute.cs" />
-    <Compile Include="Edit\Membership\New.aspx.cs">
-      <DependentUpon>New.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Membership\New.aspx.designer.cs">
-      <DependentUpon>New.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Membership\Password.aspx.cs">
-      <DependentUpon>Password.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Membership\Password.aspx.designer.cs">
-      <DependentUpon>Password.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Membership\Users.aspx.cs">
-      <DependentUpon>Users.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Membership\Users.aspx.designer.cs">
-      <DependentUpon>Users.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Move.aspx.cs">
-      <DependentUpon>Move.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Move.aspx.designer.cs">
-      <DependentUpon>Move.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Navigation\ContextMenu.ascx.cs">
-      <DependentUpon>ContextMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Navigation\ContextMenu.ascx.designer.cs">
-      <DependentUpon>ContextMenu.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Navigation\HelpfulHandler.cs" />
-    <Compile Include="Edit\Navigation\LoadTree.ashx.cs">
-      <DependentUpon>LoadTree.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Navigation\Search.aspx.cs">
-      <DependentUpon>Search.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Navigation\Search.aspx.designer.cs">
-      <DependentUpon>Search.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Navigation\NavigationPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Navigation\SortDown.ashx.cs">
-      <DependentUpon>SortDown.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Navigation\SortPlugin.cs" />
-    <Compile Include="Edit\Navigation\SortUp.ashx.cs">
-      <DependentUpon>SortUp.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Navigation\Tree.aspx.cs">
-      <DependentUpon>Tree.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Navigation\Tree.aspx.designer.cs">
-      <DependentUpon>Tree.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\paste.aspx.cs">
-      <DependentUpon>Paste.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\paste.aspx.designer.cs">
-      <DependentUpon>Paste.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\New.aspx.cs">
-      <DependentUpon>New.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\New.aspx.designer.cs">
-      <DependentUpon>New.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\PersonalSettings.cs" />
-    <Compile Include="Edit\Properties\AssemblyInfo.cs" />
-    <Compile Include="Edit\ItemSelection\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\ItemSelection\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\PublishPreview.aspx.cs">
-      <DependentUpon>PublishPreview.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\PublishPreview.aspx.designer.cs">
-      <DependentUpon>PublishPreview.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\ReferencingItems.ascx.cs">
-      <DependentUpon>ReferencingItems.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\ReferencingItems.ascx.designer.cs">
-      <DependentUpon>ReferencingItems.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Security\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Security\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Settings\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Settings\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Settings\SettingsEditor.ascx.cs">
-      <DependentUpon>SettingsEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Settings\SettingsEditor.ascx.designer.cs">
-      <DependentUpon>SettingsEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Toolbar.ascx.cs">
-      <DependentUpon>Toolbar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Toolbar.ascx.designer.cs">
-      <DependentUpon>Toolbar.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Trash\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Trash\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Trash\DeleteInterceptor.cs" />
-    <Compile Include="Edit\Trash\TrashcanInitializer.cs" />
-    <Compile Include="Edit\Trash\TrashCleanupAgent.cs" />
-    <Compile Include="Edit\Trash\TrashContainerItem.cs" />
-    <Compile Include="Edit\Trash\TrashHandler.cs" />
-    <Compile Include="Edit\Versions\ControlPanelPendingVersionAttribute.cs" />
-    <Compile Include="Edit\Versions\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Versions\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Web\DirectoryNode.cs" />
-    <Compile Include="Edit\Web\FileNode.cs" />
-    <Compile Include="Edit\Web\FileSiteMapNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Edit\Web\FileSiteMapProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Edit\Web\RootNode.cs" />
-    <Compile Include="Edit\Web\UI\Controls\FieldSet.cs" />
-    <Compile Include="Edit\Web\UI\Controls\InfoLabel.cs" />
-    <Compile Include="Edit\Web\UI\Controls\OptionsMenu.cs" />
-    <Compile Include="Edit\Web\UI\Controls\Tree.cs" />
-    <Compile Include="Edit\Web\UI\Controls\TreeView.cs" />
-    <Compile Include="Edit\Web\UrlSelectionPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Wizard\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Wizard\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Edit\Wizard\Details\EditableDefinitionAttribute.cs" />
-    <Compile Include="Edit\Wizard\Items\MagicLocation.cs" />
-    <Compile Include="Edit\Wizard\Items\Wonderland.cs" />
-    <Compile Include="Edit\Wizard\LocationWizard.cs" />
-    <Compile Include="Edit\Wizard\Settings.cs" />
-    <Compile Include="Edit\Wizard\WizardInitialzer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\App_LocalResources\it\AffectedItems.ascx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\AvailableZones.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Copy.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Delete.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Framed.Master.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Login.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Move.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\New.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Paste.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\AvailableZones.ascx" />
-    <Content Include="Edit\Css\framed.css" />
-    <Content Include="Edit\Css\IE6.css" />
-    <Content Include="Edit\img\bg.gif" />
-    <Content Include="Edit\img\framed_bg.gif" />
-    <Content Include="Edit\img\framed_toolbar.gif" />
-    <Content Include="Edit\img\framed_top.gif" />
-    <Content Include="Edit\img\grid_alt.gif" />
-    <Content Include="Edit\img\ico\accept.gif" />
-    <Content Include="Edit\img\ico\add.gif" />
-    <Content Include="Edit\img\ico\bin.gif" />
-    <Content Include="Edit\img\ico\bin_closed.gif" />
-    <Content Include="Edit\img\ico\bin_empty.gif" />
-    <Content Include="Edit\img\ico\bullet_add.gif" />
-    <Content Include="Edit\img\ico\bullet_arrow_bottom.gif" />
-    <Content Include="Edit\img\ico\bullet_arrow_down.gif" />
-    <Content Include="Edit\img\ico\bullet_arrow_top.gif" />
-    <Content Include="Edit\img\ico\bullet_arrow_up.gif" />
-    <Content Include="Edit\img\ico\bullet_delete.gif" />
-    <Content Include="Edit\img\ico\bullet_disk.gif" />
-    <Content Include="Edit\img\ico\bullet_error.gif" />
-    <Content Include="Edit\img\ico\bullet_key.gif" />
-    <Content Include="Edit\img\ico\bullet_star.gif" />
-    <Content Include="Edit\img\ico\bullet_toggle_plus.gif" />
-    <Content Include="Edit\img\ico\bullet_wrench.gif" />
-    <Content Include="Edit\img\ico\cancel.gif" />
-    <Content Include="Edit\img\ico\comment.gif" />
-    <Content Include="Edit\img\ico\control_rewind.gif" />
-    <Content Include="Edit\img\ico\control_start.gif" />
-    <Content Include="Edit\img\ico\cross.gif" />
-    <Content Include="Edit\img\ico\cut.gif" />
-    <Content Include="Edit\img\ico\delete.gif" />
-    <Content Include="Edit\img\ico\disk.gif" />
-    <Content Include="Edit\img\ico\email.gif" />
-    <Content Include="Edit\img\ico\exclamation.gif" />
-    <Content Include="Edit\img\ico\feed.gif" />
-    <Content Include="Edit\img\ico\find.gif" />
-    <Content Include="Edit\img\ico\flag_blue.gif" />
-    <Content Include="Edit\img\ico\folder.gif" />
-    <Content Include="Edit\img\ico\folder_add.gif" />
-    <Content Include="Edit\img\ico\folder_delete.gif" />
-    <Content Include="Edit\img\ico\group.gif" />
-    <Content Include="Edit\img\ico\group_key.gif" />
-    <Content Include="Edit\img\ico\information.gif" />
-    <Content Include="Edit\img\ico\key.gif" />
-    <Content Include="Edit\img\ico\lightning.gif" />
-    <Content Include="Edit\img\ico\lock.gif" />
-    <Content Include="Edit\img\ico\new.gif" />
-    <Content Include="Edit\img\ico\newspaper.gif" />
-    <Content Include="Edit\img\ico\newspaper_add.gif" />
-    <Content Include="Edit\img\ico\package.gif" />
-    <Content Include="Edit\img\ico\package_come_and_go.gif" />
-    <Content Include="Edit\img\ico\page.gif" />
-    <Content Include="Edit\img\ico\page_add.gif" />
-    <Content Include="Edit\img\ico\page_attach.gif" />
-    <Content Include="Edit\img\ico\page_code.gif" />
-    <Content Include="Edit\img\ico\page_copy.gif" />
-    <Content Include="Edit\img\ico\page_delete.gif" />
-    <Content Include="Edit\img\ico\page_edit.gif" />
-    <Content Include="Edit\img\ico\page_error.gif" />
-    <Content Include="Edit\img\ico\page_find.gif" />
-    <Content Include="Edit\img\ico\page_gear.gif" />
-    <Content Include="Edit\img\ico\page_go.gif" />
-    <Content Include="Edit\img\ico\page_green.gif" />
-    <Content Include="Edit\img\ico\page_key.gif" />
-    <Content Include="Edit\img\ico\page_lightning.gif" />
-    <Content Include="Edit\img\ico\page_link.gif" />
-    <Content Include="Edit\img\ico\page_paintbrush.gif" />
-    <Content Include="Edit\img\ico\page_paste.gif" />
-    <Content Include="Edit\img\ico\page_red.gif" />
-    <Content Include="Edit\img\ico\page_refresh.gif" />
-    <Content Include="Edit\img\ico\page_rewind.gif" />
-    <Content Include="Edit\img\ico\page_save.gif" />
-    <Content Include="Edit\img\ico\page_white.gif" />
-    <Content Include="Edit\img\ico\page_white_add.gif" />
-    <Content Include="Edit\img\ico\page_white_copy.gif" />
-    <Content Include="Edit\img\ico\page_white_delete.gif" />
-    <Content Include="Edit\img\ico\page_white_edit.gif" />
-    <Content Include="Edit\img\ico\page_white_error.gif" />
-    <Content Include="Edit\img\ico\page_white_find.gif" />
-    <Content Include="Edit\img\ico\page_white_get.gif" />
-    <Content Include="Edit\img\ico\page_white_key.gif" />
-    <Content Include="Edit\img\ico\page_white_lightning.gif" />
-    <Content Include="Edit\img\ico\page_white_link.gif" />
-    <Content Include="Edit\img\ico\page_white_magnify.gif" />
-    <Content Include="Edit\img\ico\page_white_paste.gif" />
-    <Content Include="Edit\img\ico\page_white_put.gif" />
-    <Content Include="Edit\img\ico\page_white_stack.gif" />
-    <Content Include="Edit\img\ico\page_white_text.gif" />
-    <Content Include="Edit\img\ico\page_white_wrench.gif" />
-    <Content Include="Edit\img\ico\page_world.gif" />
-    <Content Include="Edit\img\ico\plugin.gif" />
-    <Content Include="Edit\img\ico\png\accept.png" />
-    <Content Include="Edit\img\ico\png\add.png" />
-    <Content Include="Edit\img\ico\png\anchor.png" />
-    <Content Include="Edit\img\ico\png\bin.png" />
-    <Content Include="Edit\img\ico\png\bin_closed.png" />
-    <Content Include="Edit\img\ico\png\bin_empty.png" />
-    <Content Include="Edit\img\ico\png\bullet_add.png" />
-    <Content Include="Edit\img\ico\png\bullet_arrow_bottom.png" />
-    <Content Include="Edit\img\ico\png\bullet_arrow_down.png" />
-    <Content Include="Edit\img\ico\png\bullet_arrow_top.png" />
-    <Content Include="Edit\img\ico\png\bullet_arrow_up.png" />
-    <Content Include="Edit\img\ico\png\bullet_delete.png" />
-    <Content Include="Edit\img\ico\png\bullet_disk.png" />
-    <Content Include="Edit\img\ico\png\bullet_error.png" />
-    <Content Include="Edit\img\ico\png\bullet_go.png" />
-    <Content Include="Edit\img\ico\png\bullet_key.png" />
-    <Content Include="Edit\img\ico\png\bullet_star.png" />
-    <Content Include="Edit\img\ico\png\bullet_toggle_plus.png" />
-    <Content Include="Edit\img\ico\png\bullet_wrench.png" />
-    <Content Include="Edit\img\ico\png\cancel.png" />
-    <Content Include="Edit\img\ico\png\comment.png" />
-    <Content Include="Edit\img\ico\png\control_rewind.png" />
-    <Content Include="Edit\img\ico\png\control_start.png" />
-    <Content Include="Edit\img\ico\png\cross.png" />
-    <Content Include="Edit\img\ico\png\cut.png" />
-    <Content Include="Edit\img\ico\png\delete.png" />
-    <Content Include="Edit\img\ico\png\disk.png" />
-    <Content Include="Edit\img\ico\png\email.png" />
-    <Content Include="Edit\img\ico\png\feed.png" />
-    <Content Include="Edit\img\ico\png\find.png" />
-    <Content Include="Edit\img\ico\png\flag_blue.png" />
-    <Content Include="Edit\img\ico\png\folder.png" />
-    <Content Include="Edit\img\ico\png\folder_add.png" />
-    <Content Include="Edit\img\ico\png\folder_delete.png" />
-    <Content Include="Edit\img\ico\png\group.png" />
-    <Content Include="Edit\img\ico\png\group_key.png" />
-    <Content Include="Edit\img\ico\png\information.png" />
-    <Content Include="Edit\img\ico\png\key.png" />
-    <Content Include="Edit\img\ico\png\lightning.png" />
-    <Content Include="Edit\img\ico\png\lock.png" />
-    <Content Include="Edit\img\ico\png\new.png" />
-    <Content Include="Edit\img\ico\png\newspaper.png" />
-    <Content Include="Edit\img\ico\png\newspaper_add.png" />
-    <Content Include="Edit\img\ico\png\package.png" />
-    <Content Include="Edit\img\ico\png\package_come_and_go.png" />
-    <Content Include="Edit\img\ico\png\page.png" />
-    <Content Include="Edit\img\ico\png\page_add.png" />
-    <Content Include="Edit\img\ico\png\page_attach.png" />
-    <Content Include="Edit\img\ico\png\page_code.png" />
-    <Content Include="Edit\img\ico\png\page_copy.png" />
-    <Content Include="Edit\img\ico\png\page_delete.png" />
-    <Content Include="Edit\img\ico\png\page_edit.png" />
-    <Content Include="Edit\img\ico\png\page_error.png" />
-    <Content Include="Edit\img\ico\png\page_find.png" />
-    <Content Include="Edit\img\ico\png\page_gear.png" />
-    <Content Include="Edit\img\ico\png\page_go.png" />
-    <Content Include="Edit\img\ico\png\page_green.png" />
-    <Content Include="Edit\img\ico\png\page_key.png" />
-    <Content Include="Edit\img\ico\png\page_lightning.png" />
-    <Content Include="Edit\img\ico\png\page_link.png" />
-    <Content Include="Edit\img\ico\png\page_paintbrush.png" />
-    <Content Include="Edit\img\ico\png\page_paste.png" />
-    <Content Include="Edit\img\ico\png\page_red.png" />
-    <Content Include="Edit\img\ico\png\page_refresh.png" />
-    <Content Include="Edit\img\ico\png\page_rewind.png" />
-    <Content Include="Edit\img\ico\png\page_save.png" />
-    <Content Include="Edit\img\ico\png\page_white.png" />
-    <Content Include="Edit\img\ico\png\page_white_add.png" />
-    <Content Include="Edit\img\ico\png\page_white_copy.png" />
-    <Content Include="Edit\img\ico\png\page_white_delete.png" />
-    <Content Include="Edit\img\ico\png\page_white_edit.png" />
-    <Content Include="Edit\img\ico\png\page_white_error.png" />
-    <Content Include="Edit\img\ico\png\page_white_find.png" />
-    <Content Include="Edit\img\ico\png\page_white_get.png" />
-    <Content Include="Edit\img\ico\png\page_white_key.png" />
-    <Content Include="Edit\img\ico\png\page_white_lightning.png" />
-    <Content Include="Edit\img\ico\png\page_white_link.png" />
-    <Content Include="Edit\img\ico\png\page_white_magnify.png" />
-    <Content Include="Edit\img\ico\png\page_white_paste.png" />
-    <Content Include="Edit\img\ico\png\page_white_put.png" />
-    <Content Include="Edit\img\ico\png\page_white_stack.png" />
-    <Content Include="Edit\img\ico\png\page_white_text.png" />
-    <Content Include="Edit\img\ico\png\page_white_wrench.png" />
-    <Content Include="Edit\img\ico\png\page_world.png" />
-    <Content Include="Edit\img\ico\png\plugin.png" />
-    <Content Include="Edit\img\ico\png\printer.png" />
-    <Content Include="Edit\img\ico\png\script.png" />
-    <Content Include="Edit\img\ico\png\server_edit.png" />
-    <Content Include="Edit\img\ico\png\sitemap.png" />
-    <Content Include="Edit\img\ico\png\sitemap_color.png" />
-    <Content Include="Edit\img\ico\png\table.png" />
-    <Content Include="Edit\img\ico\png\tag_blue.png" />
-    <Content Include="Edit\img\ico\png\user.png" />
-    <Content Include="Edit\img\ico\png\user_add.png" />
-    <Content Include="Edit\img\ico\png\user_delete.png" />
-    <Content Include="Edit\img\ico\png\user_edit.png" />
-    <Content Include="Edit\img\ico\png\world.png" />
-    <Content Include="Edit\img\ico\png\wrench.png" />
-    <Content Include="Edit\img\ico\printer.gif" />
-    <Content Include="Edit\img\ico\script.gif" />
-    <Content Include="Edit\img\ico\server_edit.gif" />
-    <Content Include="Edit\img\ico\sitemap.gif" />
-    <Content Include="Edit\img\ico\sitemap_color.gif" />
-    <Content Include="Edit\img\ico\table.gif" />
-    <Content Include="Edit\img\ico\tag_blue.gif" />
-    <Content Include="Edit\img\ico\user.gif" />
-    <Content Include="Edit\img\ico\user_add.gif" />
-    <Content Include="Edit\img\ico\user_delete.gif" />
-    <Content Include="Edit\img\ico\user_edit.gif" />
-    <Content Include="Edit\img\ico\world.gif" />
-    <Content Include="Edit\img\ico\wrench.gif" />
-    <Content Include="Edit\img\login_bg.gif" />
-    <Content Include="Edit\img\login_panel.gif" />
-    <Content Include="Edit\img\tab_selected.gif" />
-    <Content Include="Edit\img\toolbar_bg.gif" />
-    <Content Include="Edit\img\tv\tv-collapsable-last.gif" />
-    <Content Include="Edit\img\tv\tv-collapsable.gif" />
-    <Content Include="Edit\img\tv\tv-expandable-last.gif" />
-    <Content Include="Edit\img\tv\tv-expandable.gif" />
-    <Content Include="Edit\img\tv\tv-item-last.gif" />
-    <Content Include="Edit\img\tv\tv-item.gif" />
-    <Content Include="Edit\ItemInfo.ascx" />
-    <Content Include="Edit\Js\ContextMenu.js" />
-    <Content Include="Edit\FileManagement\Js\FileSelection.js" />
-    <Content Include="Edit\ItemSelection\Js\ItemSelection.js" />
-    <Content Include="Edit\Css\Web.config" />
-    <Content Include="Edit\img\Web.config" />
-    <Content Include="Edit\App_LocalResources\AffectedItems.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\AvailableZones.ascx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Copy.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Default.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Delete.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Edit.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Framed.Master.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Login.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Move.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\New.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Paste.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Js\UrlSelection.js" />
-    <Content Include="Edit\Navigation\App_LocalResources\Search.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Table.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Table.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Search.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Toolbar.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\Toolbar.ascx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\AffectedItems.ascx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\AvailableZones.ascx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Copy.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Default.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Delete.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Edit.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Framed.Master.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Login.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Move.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\New.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Paste.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\da\Toolbar.ascx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Settings\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\Edit.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Navigation.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Navigation.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\ItemInfo.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\it\ItemInfo.ascx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\AffectedItems.ascx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\AvailableZones.ascx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Copy.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Delete.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Edit.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Framed.Master.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Login.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Move.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\New.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Paste.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\nl\Toolbar.ascx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Search.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Table.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Settings\App_LocalResources\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Framed.Master" />
-    <Content Include="Edit\Navigation\ContextMenu.ascx" />
-    <Content Include="Edit\Navigation\Search.aspx" />
-    <Content Include="Edit\Navigation\Tree.aspx" />
-    <Content Include="Edit\Paste.aspx" />
-    <Content Include="Edit\Security\App_LocalResources\Default.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Security\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Export\App_LocalResources\Default.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Export\App_LocalResources\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Export\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\Edit.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\it\Edit.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\it\New.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\it\Password.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\it\Users.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\New.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\nl\Edit.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\nl\New.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\nl\Password.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\nl\Users.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\Password.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Membership\App_LocalResources\Users.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.da.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\ItemSelection\Default.aspx" />
-    <Content Include="Edit\ReferencingItems.ascx" />
-    <Content Include="Edit\Settings\Default.aspx" />
-    <Content Include="Edit\Toolbar.ascx" />
-    <Content Include="Edit\Versions.aspx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Edit\..\..\N2\N2.csproj">
-      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
-      <Name>N2</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="Edit\{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\FileManagement\Js\jquery.MultiFile.js" />
-    <Content Include="Edit\img\gripper.gif" />
-    <Content Include="Edit\img\ico\png\help.png" />
-    <Content Include="Edit\img\ico\png\script_edit.png" />
-    <Content Include="Edit\img\ico\png\shape_move_front.png" />
-    <Content Include="Edit\img\ico\png\star.png" />
-    <Content Include="Edit\img\shading.png" />
-    <Content Include="Edit\img\SlidingCurtain_bg.png" />
-    <Content Include="Edit\Js\plugins\jquery.n2optionmenu.js" />
-    <Content Include="Edit\Js\plugins\jquery.splitter.js" />
-    <Content Include="Edit\Js\plugins\n2.js" />
-    <Content Include="Edit\Js\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Js\plugins.ashx" />
-    <Content Include="Edit\Js\jquery.ui.ashx" />
-    <Content Include="Edit\Js\tiny_mce\langs\en.js" />
-    <Content Include="Edit\Js\tiny_mce\license.txt" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advhr\css\advhr.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advhr\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advhr\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advhr\js\rule.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advhr\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advhr\rule.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advimage\css\advimage.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advimage\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advimage\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advimage\image.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advimage\img\sample.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advimage\js\image.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advimage\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advlink\css\advlink.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advlink\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advlink\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advlink\js\advlink.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advlink\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\advlink\link.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\autosave\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\autosave\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\bbcode\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\bbcode\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\compat2x\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\compat2x\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\contextmenu\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\contextmenu\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\directionality\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\directionality\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\emotions.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-cool.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-cry.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-embarassed.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-foot-in-mouth.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-frown.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-innocent.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-kiss.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-laughing.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-money-mouth.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-sealed.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-smile.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-surprised.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-tongue-out.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-undecided.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-wink.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-yell.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\js\emotions.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\emotions\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\example\dialog.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\example\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\example\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\example\img\example.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\example\js\dialog.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\example\langs\en.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\example\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullpage\css\fullpage.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullpage\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullpage\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullpage\fullpage.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullpage\js\fullpage.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullpage\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullscreen\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullscreen\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\fullscreen\fullscreen.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\iespell\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\iespell\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\alert.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\button.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\buttons.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\confirm.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\corners.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\horizontal.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\vertical.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\window.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\template.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\insertdatetime\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\insertdatetime\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\layer\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\layer\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\css\content.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\css\media.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\img\flash.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\img\flv_player.swf" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\img\quicktime.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\img\realmedia.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\img\shockwave.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\img\trans.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\img\windowsmedia.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\js\embed.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\js\media.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\media\media.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\nonbreaking\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\nonbreaking\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\noneditable\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\noneditable\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\pagebreak\css\content.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\pagebreak\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\pagebreak\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\pagebreak\img\pagebreak.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\pagebreak\img\trans.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\blank.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\css\blank.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\css\pasteword.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\js\pastetext.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\js\pasteword.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\pastetext.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\paste\pasteword.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\preview\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\preview\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\preview\example.html" />
-    <Content Include="Edit\Js\tiny_mce\plugins\preview\jscripts\embed.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\print\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\print\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\safari\blank.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\safari\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\safari\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\save\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\save\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\searchreplace\css\searchreplace.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\searchreplace\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\searchreplace\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\searchreplace\js\searchreplace.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\searchreplace\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\searchreplace\searchreplace.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\spellchecker\css\content.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\spellchecker\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\spellchecker\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\spellchecker\img\wline.gif" />
-    <Content Include="Edit\Js\tiny_mce\plugins\style\css\props.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\style\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\style\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\style\js\props.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\style\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\style\props.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\cell.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\css\cell.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\css\row.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\css\table.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\js\cell.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\js\merge_cells.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\js\row.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\js\table.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\merge_cells.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\row.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\table\table.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\template\blank.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\template\css\template.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\template\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\template\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\template\js\template.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\template\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\template\template.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\visualchars\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\visualchars\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\abbr.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\acronym.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\attributes.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\cite.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\css\attributes.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\css\popup.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\css\xhtmlxtras.css" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\del.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\editor_plugin.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\editor_plugin_src.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\ins.htm" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\abbr.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\acronym.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\attributes.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\cite.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\del.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\element_common.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\ins.js" />
-    <Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\about.htm" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\anchor.htm" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\charmap.htm" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\color_picker.htm" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\editor_template.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\editor_template_src.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\image.htm" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\img\colorpicker.jpg" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\img\icons.gif" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\js\about.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\js\anchor.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\js\charmap.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\js\color_picker.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\js\image.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\js\link.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\js\source_editor.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\langs\en.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\langs\en_dlg.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\link.htm" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\content.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\dialog.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\buttons.png" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\items.gif" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\menu_arrow.gif" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\menu_check.gif" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\progress.gif" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\tabs.gif" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\ui.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\o2k7\content.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\o2k7\dialog.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\o2k7\img\button_bg.png" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\skins\o2k7\ui.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\advanced\source_editor.htm" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\editor_template.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\editor_template_src.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\img\icons.gif" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\langs\en.js" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\skins\default\content.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\skins\default\ui.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\skins\o2k7\content.css" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\skins\o2k7\img\button_bg.png" />
-    <Content Include="Edit\Js\tiny_mce\themes\simple\skins\o2k7\ui.css" />
-    <Content Include="Edit\Js\tiny_mce\tiny_mce.js" />
-    <Content Include="Edit\Js\tiny_mce\tiny_mce_popup.js" />
-    <Content Include="Edit\Js\tiny_mce\tiny_mce_src.js" />
-    <Content Include="Edit\Js\tiny_mce\utils\editable_selects.js" />
-    <Content Include="Edit\Js\tiny_mce\utils\form_utils.js" />
-    <Content Include="Edit\Js\tiny_mce\utils\mclayer.js" />
-    <Content Include="Edit\Js\tiny_mce\utils\mctabs.js" />
-    <Content Include="Edit\Js\tiny_mce\utils\validate.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\img\ico\png\book_next.png" />
-    <Content Include="Edit\img\ico\png\book_previous.png" />
-    <Content Include="Edit\img\ico\png\zoom.png" />
-    <Content Include="Edit\img\treeview\collapsable-last.gif" />
-    <Content Include="Edit\img\treeview\collapsable.gif" />
-    <Content Include="Edit\img\treeview\expandable-last.gif" />
-    <Content Include="Edit\img\treeview\expandable.gif" />
-    <Content Include="Edit\img\treeview\leaf-last.gif" />
-    <Content Include="Edit\img\treeview\leaf.gif" />
-    <Content Include="Edit\img\treeview\root.gif" />
-    <Content Include="Edit\img\treeview\spacer.gif" />
-    <Content Include="Edit\img\treeview\spinner.gif" />
-    <Content Include="Edit\Js\plugins\jquery.SimpleTree.js" />
-    <Content Include="Edit\Js\tinymce.ashx" />
-    <Content Include="Edit\Security\Default.aspx" />
-    <Content Include="Edit\Versions\Css\Versions.css" />
-    <Content Include="Edit\Versions\Default.aspx" />
-    <Content Include="Edit\Versions\img\book_previous.gif" />
-    <Content Include="Edit\Versions\img\bullet_star.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\img\n2.gif" />
-    <Content Include="Edit\img\toolarea_bg.gif" />
-    <Content Include="Edit\img\toolarea_end.gif" />
-    <Content Include="Edit\img\toolarea_separator.gif" />
-    <Content Include="Edit\img\toolitem_hover.gif" />
-    <Content Include="Edit\img\toolitem_separator.gif" />
-    <Content Include="Edit\Navigation\LoadTree.ashx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Navigation\SortUp.ashx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Css\Parts.css" />
-    <Content Include="Edit\Export\Css\exportImport.css" />
-    <Content Include="Edit\Export\Default.aspx" />
-    <Content Include="Edit\img\framed_opener.gif" />
-    <Content Include="Edit\img\ico\png\pencil.png" />
-    <Content Include="Edit\img\part_bg.png" />
-    <Content Include="Edit\img\pencil.png" />
-    <Content Include="Edit\img\shading_blue.png" />
-    <Content Include="Edit\img\shading_green.png" />
-    <Content Include="Edit\img\shading_purple.png" />
-    <Content Include="Edit\img\splitter.gif" />
-    <Content Include="Edit\img\tabs_base.gif" />
-    <Content Include="Edit\img\tabs_begin.gif" />
-    <Content Include="Edit\img\tab_end.gif" />
-    <Content Include="Edit\Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
-    <Content Include="Edit\Js\parts.js" />
-    <Content Include="Edit\Membership\Css\Membership.css" />
-    <Content Include="Edit\Membership\Edit.aspx" />
-    <Content Include="Edit\Membership\New.aspx" />
-    <Content Include="Edit\Membership\Password.aspx" />
-    <Content Include="Edit\Membership\Users.aspx" />
-    <Content Include="Edit\Navigation\SortDown.ashx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Install\Default.aspx" />
-    <Content Include="Edit\Install\Diagnose.aspx" />
-    <Content Include="Edit\Install\Fix.aspx" />
-    <Content Include="Edit\Membership\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Install\Begin\Default.aspx" />
-    <Content Include="Edit\Install\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Globalization\Default.aspx" />
-    <Content Include="Edit\Globalization\LanguageMenu.ascx" />
-    <Content Include="Edit\Globalization\Languages.ascx" />
-    <Content Include="Edit\Globalization\Styles.css" />
-    <Content Include="Edit\Install\Begin\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Globalization\flags\ad.png" />
-    <Content Include="Edit\Globalization\flags\ae.png" />
-    <Content Include="Edit\Globalization\flags\af.png" />
-    <Content Include="Edit\Globalization\flags\ag.png" />
-    <Content Include="Edit\Globalization\flags\ai.png" />
-    <Content Include="Edit\Globalization\flags\al.png" />
-    <Content Include="Edit\Globalization\flags\am.png" />
-    <Content Include="Edit\Globalization\flags\an.png" />
-    <Content Include="Edit\Globalization\flags\ao.png" />
-    <Content Include="Edit\Globalization\flags\ar.png" />
-    <Content Include="Edit\Globalization\flags\as.png" />
-    <Content Include="Edit\Globalization\flags\at.png" />
-    <Content Include="Edit\Globalization\flags\au.png" />
-    <Content Include="Edit\Globalization\flags\aw.png" />
-    <Content Include="Edit\Globalization\flags\ax.png" />
-    <Content Include="Edit\Globalization\flags\az.png" />
-    <Content Include="Edit\Globalization\flags\ba.png" />
-    <Content Include="Edit\Globalization\flags\bb.png" />
-    <Content Include="Edit\Globalization\flags\bd.png" />
-    <Content Include="Edit\Globalization\flags\be.png" />
-    <Content Include="Edit\Globalization\flags\bf.png" />
-    <Content Include="Edit\Globalization\flags\bg.png" />
-    <Content Include="Edit\Globalization\flags\bh.png" />
-    <Content Include="Edit\Globalization\flags\bi.png" />
-    <Content Include="Edit\Globalization\flags\bj.png" />
-    <Content Include="Edit\Globalization\flags\bm.png" />
-    <Content Include="Edit\Globalization\flags\bn.png" />
-    <Content Include="Edit\Globalization\flags\bo.png" />
-    <Content Include="Edit\Globalization\flags\br.png" />
-    <Content Include="Edit\Globalization\flags\bs.png" />
-    <Content Include="Edit\Globalization\flags\bt.png" />
-    <Content Include="Edit\Globalization\flags\bv.png" />
-    <Content Include="Edit\Globalization\flags\bw.png" />
-    <Content Include="Edit\Globalization\flags\by.png" />
-    <Content Include="Edit\Globalization\flags\bz.png" />
-    <Content Include="Edit\Globalization\flags\ca.png" />
-    <Content Include="Edit\Globalization\flags\catalonia.png" />
-    <Content Include="Edit\Globalization\flags\cc.png" />
-    <Content Include="Edit\Globalization\flags\cd.png" />
-    <Content Include="Edit\Globalization\flags\cf.png" />
-    <Content Include="Edit\Globalization\flags\cg.png" />
-    <Content Include="Edit\Globalization\flags\ch.png" />
-    <Content Include="Edit\Globalization\flags\ci.png" />
-    <Content Include="Edit\Globalization\flags\ck.png" />
-    <Content Include="Edit\Globalization\flags\cl.png" />
-    <Content Include="Edit\Globalization\flags\cm.png" />
-    <Content Include="Edit\Globalization\flags\cn.png" />
-    <Content Include="Edit\Globalization\flags\co.png" />
-    <Content Include="Edit\Globalization\flags\cr.png" />
-    <Content Include="Edit\Globalization\flags\cs.png" />
-    <Content Include="Edit\Globalization\flags\cu.png" />
-    <Content Include="Edit\Globalization\flags\cv.png" />
-    <Content Include="Edit\Globalization\flags\cx.png" />
-    <Content Include="Edit\Globalization\flags\cy.png" />
-    <Content Include="Edit\Globalization\flags\cz.png" />
-    <Content Include="Edit\Globalization\flags\de.png" />
-    <Content Include="Edit\Globalization\flags\dj.png" />
-    <Content Include="Edit\Globalization\flags\dk.png" />
-    <Content Include="Edit\Globalization\flags\dm.png" />
-    <Content Include="Edit\Globalization\flags\do.png" />
-    <Content Include="Edit\Globalization\flags\dz.png" />
-    <Content Include="Edit\Globalization\flags\ec.png" />
-    <Content Include="Edit\Globalization\flags\ee.png" />
-    <Content Include="Edit\Globalization\flags\eg.png" />
-    <Content Include="Edit\Globalization\flags\eh.png" />
-    <Content Include="Edit\Globalization\flags\en.png" />
-    <Content Include="Edit\Globalization\flags\er.png" />
-    <Content Include="Edit\Globalization\flags\es.png" />
-    <Content Include="Edit\Globalization\flags\et.png" />
-    <Content Include="Edit\Globalization\flags\eu.png" />
-    <Content Include="Edit\Globalization\flags\fam.png" />
-    <Content Include="Edit\Globalization\flags\fi.png" />
-    <Content Include="Edit\Globalization\flags\fj.png" />
-    <Content Include="Edit\Globalization\flags\fk.png" />
-    <Content Include="Edit\Globalization\flags\fm.png" />
-    <Content Include="Edit\Globalization\flags\fo.png" />
-    <Content Include="Edit\Globalization\flags\fr.png" />
-    <Content Include="Edit\Globalization\flags\ga.png" />
-    <Content Include="Edit\Globalization\flags\gb.png" />
-    <Content Include="Edit\Globalization\flags\gd.png" />
-    <Content Include="Edit\Globalization\flags\ge.png" />
-    <Content Include="Edit\Globalization\flags\gf.png" />
-    <Content Include="Edit\Globalization\flags\gh.png" />
-    <Content Include="Edit\Globalization\flags\gi.png" />
-    <Content Include="Edit\Globalization\flags\gl.png" />
-    <Content Include="Edit\Globalization\flags\gm.png" />
-    <Content Include="Edit\Globalization\flags\gn.png" />
-    <Content Include="Edit\Globalization\flags\gp.png" />
-    <Content Include="Edit\Globalization\flags\gq.png" />
-    <Content Include="Edit\Globalization\flags\gr.png" />
-    <Content Include="Edit\Globalization\flags\gs.png" />
-    <Content Include="Edit\Globalization\flags\gt.png" />
-    <Content Include="Edit\Globalization\flags\gu.png" />
-    <Content Include="Edit\Globalization\flags\gw.png" />
-    <Content Include="Edit\Globalization\flags\gy.png" />
-    <Content Include="Edit\Globalization\flags\hk.png" />
-    <Content Include="Edit\Globalization\flags\hm.png" />
-    <Content Include="Edit\Globalization\flags\hn.png" />
-    <Content Include="Edit\Globalization\flags\hr.png" />
-    <Content Include="Edit\Globalization\flags\ht.png" />
-    <Content Include="Edit\Globalization\flags\hu.png" />
-    <Content Include="Edit\Globalization\flags\id.png" />
-    <Content Include="Edit\Globalization\flags\ie.png" />
-    <Content Include="Edit\Globalization\flags\il.png" />
-    <Content Include="Edit\Globalization\flags\in.png" />
-    <Content Include="Edit\Globalization\flags\io.png" />
-    <Content Include="Edit\Globalization\flags\iq.png" />
-    <Content Include="Edit\Globalization\flags\ir.png" />
-    <Content Include="Edit\Globalization\flags\is.png" />
-    <Content Include="Edit\Globalization\flags\it.png" />
-    <Content Include="Edit\Globalization\flags\jm.png" />
-    <Content Include="Edit\Globalization\flags\jo.png" />
-    <Content Include="Edit\Globalization\flags\jp.png" />
-    <Content Include="Edit\Globalization\flags\ke.png" />
-    <Content Include="Edit\Globalization\flags\kg.png" />
-    <Content Include="Edit\Globalization\flags\kh.png" />
-    <Content Include="Edit\Globalization\flags\ki.png" />
-    <Content Include="Edit\Globalization\flags\km.png" />
-    <Content Include="Edit\Globalization\flags\kn.png" />
-    <Content Include="Edit\Globalization\flags\kp.png" />
-    <Content Include="Edit\Globalization\flags\kr.png" />
-    <Content Include="Edit\Globalization\flags\kw.png" />
-    <Content Include="Edit\Globalization\flags\ky.png" />
-    <Content Include="Edit\Globalization\flags\kz.png" />
-    <Content Include="Edit\Globalization\flags\la.png" />
-    <Content Include="Edit\Globalization\flags\lb.png" />
-    <Content Include="Edit\Globalization\flags\lc.png" />
-    <Content Include="Edit\Globalization\flags\li.png" />
-    <Content Include="Edit\Globalization\flags\lk.png" />
-    <Content Include="Edit\Globalization\flags\lr.png" />
-    <Content Include="Edit\Globalization\flags\ls.png" />
-    <Content Include="Edit\Globalization\flags\lt.png" />
-    <Content Include="Edit\Globalization\flags\lu.png" />
-    <Content Include="Edit\Globalization\flags\lv.png" />
-    <Content Include="Edit\Globalization\flags\ly.png" />
-    <Content Include="Edit\Globalization\flags\ma.png" />
-    <Content Include="Edit\Globalization\flags\mc.png" />
-    <Content Include="Edit\Globalization\flags\md.png" />
-    <Content Include="Edit\Globalization\flags\me.png" />
-    <Content Include="Edit\Globalization\flags\mg.png" />
-    <Content Include="Edit\Globalization\flags\mh.png" />
-    <Content Include="Edit\Globalization\flags\mk.png" />
-    <Content Include="Edit\Globalization\flags\ml.png" />
-    <Content Include="Edit\Globalization\flags\mm.png" />
-    <Content Include="Edit\Globalization\flags\mn.png" />
-    <Content Include="Edit\Globalization\flags\mo.png" />
-    <Content Include="Edit\Globalization\flags\mp.png" />
-    <Content Include="Edit\Globalization\flags\mq.png" />
-    <Content Include="Edit\Globalization\flags\mr.png" />
-    <Content Include="Edit\Globalization\flags\ms.png" />
-    <Content Include="Edit\Globalization\flags\mt.png" />
-    <Content Include="Edit\Globalization\flags\mu.png" />
-    <Content Include="Edit\Globalization\flags\mv.png" />
-    <Content Include="Edit\Globalization\flags\mw.png" />
-    <Content Include="Edit\Globalization\flags\mx.png" />
-    <Content Include="Edit\Globalization\flags\my.png" />
-    <Content Include="Edit\Globalization\flags\mz.png" />
-    <Content Include="Edit\Globalization\flags\na.png" />
-    <Content Include="Edit\Globalization\flags\nc.png" />
-    <Content Include="Edit\Globalization\flags\ne.png" />
-    <Content Include="Edit\Globalization\flags\nf.png" />
-    <Content Include="Edit\Globalization\flags\ng.png" />
-    <Content Include="Edit\Globalization\flags\ni.png" />
-    <Content Include="Edit\Globalization\flags\nl.png" />
-    <Content Include="Edit\Globalization\flags\no.png" />
-    <Content Include="Edit\Globalization\flags\np.png" />
-    <Content Include="Edit\Globalization\flags\nr.png" />
-    <Content Include="Edit\Globalization\flags\nu.png" />
-    <Content Include="Edit\Globalization\flags\nz.png" />
-    <Content Include="Edit\Globalization\flags\om.png" />
-    <Content Include="Edit\Globalization\flags\pa.png" />
-    <Content Include="Edit\Globalization\flags\pe.png" />
-    <Content Include="Edit\Globalization\flags\pf.png" />
-    <Content Include="Edit\Globalization\flags\pg.png" />
-    <Content Include="Edit\Globalization\flags\ph.png" />
-    <Content Include="Edit\Globalization\flags\pk.png" />
-    <Content Include="Edit\Globalization\flags\pl.png" />
-    <Content Include="Edit\Globalization\flags\pm.png" />
-    <Content Include="Edit\Globalization\flags\pn.png" />
-    <Content Include="Edit\Globalization\flags\pr.png" />
-    <Content Include="Edit\Globalization\flags\ps.png" />
-    <Content Include="Edit\Globalization\flags\pt.png" />
-    <Content Include="Edit\Globalization\flags\pw.png" />
-    <Content Include="Edit\Globalization\flags\py.png" />
-    <Content Include="Edit\Globalization\flags\qa.png" />
-    <Content Include="Edit\Globalization\flags\re.png" />
-    <Content Include="Edit\Globalization\flags\ro.png" />
-    <Content Include="Edit\Globalization\flags\rs.png" />
-    <Content Include="Edit\Globalization\flags\ru.png" />
-    <Content Include="Edit\Globalization\flags\rw.png" />
-    <Content Include="Edit\Globalization\flags\sa.png" />
-    <Content Include="Edit\Globalization\flags\sb.png" />
-    <Content Include="Edit\Globalization\flags\sc.png" />
-    <Content Include="Edit\Globalization\flags\scotland.png" />
-    <Content Include="Edit\Globalization\flags\sd.png" />
-    <Content Include="Edit\Globalization\flags\se.png" />
-    <Content Include="Edit\Globalization\flags\sg.png" />
-    <Content Include="Edit\Globalization\flags\sh.png" />
-    <Content Include="Edit\Globalization\flags\si.png" />
-    <Content Include="Edit\Globalization\flags\sj.png" />
-    <Content Include="Edit\Globalization\flags\sk.png" />
-    <Content Include="Edit\Globalization\flags\sl.png" />
-    <Content Include="Edit\Globalization\flags\sm.png" />
-    <Content Include="Edit\Globalization\flags\sn.png" />
-    <Content Include="Edit\Globalization\flags\so.png" />
-    <Content Include="Edit\Globalization\flags\sr.png" />
-    <Content Include="Edit\Globalization\flags\st.png" />
-    <Content Include="Edit\Globalization\flags\sv.png" />
-    <Content Include="Edit\Globalization\flags\sy.png" />
-    <Content Include="Edit\Globalization\flags\sz.png" />
-    <Content Include="Edit\Globalization\flags\tc.png" />
-    <Content Include="Edit\Globalization\flags\td.png" />
-    <Content Include="Edit\Globalization\flags\tf.png" />
-    <Content Include="Edit\Globalization\flags\tg.png" />
-    <Content Include="Edit\Globalization\flags\th.png" />
-    <Content Include="Edit\Globalization\flags\tj.png" />
-    <Content Include="Edit\Globalization\flags\tk.png" />
-    <Content Include="Edit\Globalization\flags\tl.png" />
-    <Content Include="Edit\Globalization\flags\tm.png" />
-    <Content Include="Edit\Globalization\flags\tn.png" />
-    <Content Include="Edit\Globalization\flags\to.png" />
-    <Content Include="Edit\Globalization\flags\tr.png" />
-    <Content Include="Edit\Globalization\flags\tt.png" />
-    <Content Include="Edit\Globalization\flags\tv.png" />
-    <Content Include="Edit\Globalization\flags\tw.png" />
-    <Content Include="Edit\Globalization\flags\tz.png" />
-    <Content Include="Edit\Globalization\flags\ua.png" />
-    <Content Include="Edit\Globalization\flags\ug.png" />
-    <Content Include="Edit\Globalization\flags\um.png" />
-    <Content Include="Edit\Globalization\flags\us.png" />
-    <Content Include="Edit\Globalization\flags\uy.png" />
-    <Content Include="Edit\Globalization\flags\uz.png" />
-    <Content Include="Edit\Globalization\flags\va.png" />
-    <Content Include="Edit\Globalization\flags\vc.png" />
-    <Content Include="Edit\Globalization\flags\ve.png" />
-    <Content Include="Edit\Globalization\flags\vg.png" />
-    <Content Include="Edit\Globalization\flags\vi.png" />
-    <Content Include="Edit\Globalization\flags\vn.png" />
-    <Content Include="Edit\Globalization\flags\vu.png" />
-    <Content Include="Edit\Globalization\flags\wales.png" />
-    <Content Include="Edit\Globalization\flags\wf.png" />
-    <Content Include="Edit\Globalization\flags\ws.png" />
-    <Content Include="Edit\Globalization\flags\ye.png" />
-    <Content Include="Edit\Globalization\flags\yt.png" />
-    <Content Include="Edit\Globalization\flags\za.png" />
-    <Content Include="Edit\Globalization\flags\zm.png" />
-    <Content Include="Edit\Globalization\flags\zw.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Globalization\flags\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Globalization\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\LinkTracker\Css\linktracker.css" />
-    <Content Include="Edit\LinkTracker\Default.aspx" />
-    <Content Include="Edit\LinkTracker\Img\link_break.gif" />
-    <Content Include="Edit\Trash\Default.aspx" />
-    <Content Include="Edit\Trash\img\bin.gif" />
-    <Content Include="Edit\Trash\img\bin_closed.gif" />
-    <Content Include="Edit\Trash\img\bin_empty.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Trash\App_LocalResources\Default.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Trash\App_LocalResources\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Trash\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Wizard\Default.aspx" />
-    <Content Include="Edit\Wizard\Img\brick.png" />
-    <Content Include="Edit\Wizard\Img\bricks.png" />
-    <Content Include="Edit\Wizard\Img\brick_add.png" />
-    <Content Include="Edit\Wizard\Img\wand.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\FileSystem\Directory.aspx" />
-    <Content Include="Edit\FileSystem\File.aspx" />
-    <Content Include="Edit\Globalization\Translate.aspx" />
-    <Content Include="Edit\img\ico\png\bullet_toggle_minus.png" />
-    <Content Include="Edit\KeepAlive\ping.aspx" />
-    <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.nl.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Install\FixClass.aspx" />
-    <Content Include="Edit\KeepAlive\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\KeepAlive\Ping.ashx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\App_LocalResources\ru\AffectedItems.ascx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\AvailableZones.ascx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Copy.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Default.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Delete.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Edit.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Framed.Master.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\ItemInfo.ascx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Login.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Move.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\New.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Paste.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Toolbar.ascx.ru.resx" />
-    <Content Include="Edit\Export\App_LocalResources\Default.aspx.ru.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\Css\TabPanel.css" />
-    <Content Include="Edit\DiscardPreview.aspx" />
-    <Content Include="Edit\img\ajax-loader.gif" />
-    <Content Include="Edit\img\bullet_arrow_down.gif" />
-    <Content Include="Edit\img\ico\png\add.gif" />
-    <Content Include="Edit\img\ico\png\application.png" />
-    <Content Include="Edit\img\ico\png\application_side_tree.png" />
-    <Content Include="Edit\img\ico\png\bin.gif" />
-    <Content Include="Edit\img\ico\png\calendar.png" />
-    <Content Include="Edit\img\ico\png\delete.gif" />
-    <Content Include="Edit\img\ico\png\layout_edit.png" />
-    <Content Include="Edit\img\login_logo.png" />
-    <Content Include="Edit\img\separator.png" />
-    <Content Include="Edit\img\SlidingCurtain_close.png" />
-    <Content Include="Edit\img\SlidingCurtain_logo.png" />
-    <Content Include="Edit\img\SlidingCurtain_open.png" />
-    <Content Include="Edit\Js\jquery-1.3.2.js" />
-    <Content Include="Edit\Js\jquery.ui\jquery-ui-personalized.min.js" />
-    <Content Include="Edit\Js\plugins\date.js" />
-    <Content Include="Edit\App_LocalResources\Dependencies.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Edit\App_LocalResources\ru\Dependencies.ru.aspx.resx" />
-    <Content Include="Edit\App_LocalResources\nl\ItemInfo.ascx.nl.resx" />
-    <Content Include="Edit\Js\plugins\FreeTextArea.js" />
-    <Content Include="Edit\Js\plugins\jquery.cookie.js" />
-    <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
-    <Content Include="Edit\Js\plugins\jquery.n2dimmable.js" />
-    <Content Include="Edit\Js\TabPanel.js" />
-    <Content Include="Edit\PublishPreview.aspx" />
-    <Content Include="Edit\Settings\SettingsEditor.ascx" />
-    <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Trash\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Settings\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Security\App_LocalResources\Default.aspx.nl.resx" />
-    <Content Include="Edit\Security\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Navigation.nl.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Search.aspx.ru.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.ru.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Table.aspx.ru.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.ru.resx" />
-    <Content Include="Edit\Membership\App_LocalResources\ru\Edit.aspx.ru.resx" />
-    <Content Include="Edit\Membership\App_LocalResources\ru\New.aspx.ru.resx" />
-    <Content Include="Edit\Membership\App_LocalResources\ru\Password.aspx.ru.resx" />
-    <Content Include="Edit\Membership\App_LocalResources\ru\Users.aspx.ru.resx" />
-    <Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Globalization\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.nl.resx" />
-    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.ru.resx" />
-    <Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.ru.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Edit\App_LocalResources\mk-MK\AffectedItems.ascx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\AvailableZones.ascx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Copy.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Default.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Delete.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Edit.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Framed.Master.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\ItemInfo.ascx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Login.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Move.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\New.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Paste.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Toolbar.ascx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\sl\AffectedItems.ascx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\AvailableZones.ascx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Copy.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Default.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Delete.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Dependencies.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Edit.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Framed.Master.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\ItemInfo.ascx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Login.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Move.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\New.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Paste.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Toolbar.ascx.sl.resx" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<ProductVersion>9.0.30729</ProductVersion>
+		<SchemaVersion>2.0</SchemaVersion>
+		<ProjectGuid>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</ProjectGuid>
+		<ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+		<OutputType>Library</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>N2</RootNamespace>
+		<AssemblyName>N2.Edit</AssemblyName>
+		<SccProjectName>
+		</SccProjectName>
+		<SccLocalPath>
+		</SccLocalPath>
+		<SccAuxPath>
+		</SccAuxPath>
+		<SccProvider>
+		</SccProvider>
+		<FileUpgradeFlags>
+		</FileUpgradeFlags>
+		<OldToolsVersion>2.0</OldToolsVersion>
+		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+		<UpgradeBackupLocation>
+		</UpgradeBackupLocation>
+	</PropertyGroup>
+	<PropertyGroup>
+		<LibPath>..\..\lib\net3.5</LibPath>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\</OutputPath>
+		<DefineConstants>DEBUG;TRACE;</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\</OutputPath>
+		<DefineConstants>TRACE;</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NET2.0|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\</OutputPath>
+		<DefineConstants>TRACE;</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+		<LibPath>..\..\lib\net2.0</LibPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>$(LibPath)\Castle.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="System" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Drawing" />
+		<Reference Include="System.Security" />
+		<Reference Include="System.Web" />
+		<Reference Include="System.Web.Services" />
+		<Reference Include="System.Xml" />
+		<Reference Include="System.Configuration" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\AffectedItems.ascx" />
+		<Content Include="Edit\Copy.aspx" />
+		<Content Include="Edit\Css\edit.css" />
+		<Content Include="Edit\Css\editor.css" />
+		<Content Include="Edit\Css\default.css" />
+		<Content Include="Edit\Css\all.css" />
+		<Content Include="Edit\FileManagement\Css\filemanager.css" />
+		<Content Include="Edit\Default.aspx" />
+		<Content Include="Edit\Delete.aspx" />
+		<Content Include="Edit\Edit.aspx" />
+		<Content Include="Edit\FileManagement\Default.aspx" />
+		<Content Include="Edit\Login.aspx" />
+		<Content Include="Edit\Move.aspx" />
+		<Content Include="Edit\New.aspx" />
+		<Content Include="Edit\Web.config" />
+		<None Include="Edit\Dependencies.aspx" />
+		<Content Include="Web.config" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\AssemblyVersion.cs">
+			<Link>AssemblyVersion.cs</Link>
+		</Compile>
+		<Compile Include="Edit\AffectedItems.ascx.cs">
+			<DependentUpon>AffectedItems.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\AffectedItems.ascx.designer.cs">
+			<DependentUpon>AffectedItems.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\AvailableZones.ascx.cs">
+			<DependentUpon>AvailableZones.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\AvailableZones.ascx.designer.cs">
+			<DependentUpon>AvailableZones.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\ControlPanelEditingSaveAttribute.cs" />
+		<Compile Include="Edit\ControlPanelPreviewDiscardAttribute.cs" />
+		<Compile Include="Edit\ControlPanelPreviewPublishAttribute.cs" />
+		<Compile Include="Edit\Copy.aspx.cs">
+			<DependentUpon>Copy.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Copy.aspx.designer.cs">
+			<DependentUpon>Copy.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Delete.aspx.cs">
+			<DependentUpon>Delete.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Delete.aspx.designer.cs">
+			<DependentUpon>Delete.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\DiscardPreview.aspx.cs">
+			<DependentUpon>DiscardPreview.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\DiscardPreview.aspx.designer.cs">
+			<DependentUpon>DiscardPreview.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Edit.aspx.cs">
+			<DependentUpon>Edit.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Edit.aspx.designer.cs">
+			<DependentUpon>Edit.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Export\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Export\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Export\DefinitionNotFoundException.cs" />
+		<Compile Include="Edit\Export\InvalidXmlException.cs" />
+		<Compile Include="Edit\Export\N2XmlReader.cs" />
+		<Compile Include="Edit\Export\N2XmlWriter.cs" />
+		<Compile Include="Edit\FileManagement\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\FileManagement\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\FileSystem\Directory.aspx.cs">
+			<DependentUpon>Directory.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\FileSystem\Directory.aspx.designer.cs">
+			<DependentUpon>Directory.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\FileSystem\Editables\EditableFolderPathAttribute.cs" />
+		<Compile Include="Edit\FileSystem\Editables\EditableUploadAttribute.cs" />
+		<Compile Include="Edit\FileSystem\File.aspx.cs">
+			<DependentUpon>File.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\FileSystem\File.aspx.designer.cs">
+			<DependentUpon>File.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\FileSystem\Items\Directory.cs" />
+		<Compile Include="Edit\FileSystem\Items\File.cs" />
+		<Compile Include="Edit\FileSystem\Items\AbstractDirectory.cs" />
+		<Compile Include="Edit\FileSystem\Items\AbstractNode.cs" />
+		<Compile Include="Edit\FileSystem\Items\RootDirectory.cs" />
+		<Compile Include="Edit\Framed.Master.cs">
+			<DependentUpon>Framed.Master</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Framed.Master.designer.cs">
+			<DependentUpon>Framed.Master</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Globalization\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Globalization\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Globalization\LanguageInitializer.cs" />
+		<Compile Include="Edit\Globalization\LanguageMenu.ascx.cs">
+			<DependentUpon>LanguageMenu.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Globalization\LanguageMenu.ascx.designer.cs">
+			<DependentUpon>LanguageMenu.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Globalization\Languages.ascx.cs">
+			<DependentUpon>Languages.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Globalization\Languages.ascx.designer.cs">
+			<DependentUpon>Languages.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Globalization\Translate.aspx.cs">
+			<DependentUpon>Translate.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Globalization\Translate.aspx.designer.cs">
+			<DependentUpon>Translate.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Install\Begin\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Install\Begin\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Install\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Install\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Install\Diagnose.aspx.cs">
+			<DependentUpon>Diagnose.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Install\Diagnose.aspx.designer.cs">
+			<DependentUpon>Diagnose.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Install\Fix.aspx.cs">
+			<DependentUpon>Fix.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Install\Fix.aspx.designer.cs">
+			<DependentUpon>Fix.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Install\FixClass.aspx.cs">
+			<DependentUpon>FixClass.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Install\FixClass.aspx.designer.cs">
+			<DependentUpon>FixClass.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\ItemInfo.ascx.cs">
+			<DependentUpon>ItemInfo.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\ItemInfo.ascx.designer.cs">
+			<DependentUpon>ItemInfo.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Js\DirectoryCompiler.cs" />
+		<Compile Include="Edit\Js\jquery.ui.ashx.cs">
+			<DependentUpon>jquery.ui.ashx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Js\plugins.ashx.cs">
+			<DependentUpon>plugins.ashx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Js\tinymce.ashx.cs">
+			<DependentUpon>tinymce.ashx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\KeepAlive\Ping.ashx.cs">
+			<DependentUpon>Ping.ashx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\KeepAlive\Pinger.cs" />
+		<Compile Include="Edit\LinkTracker\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\LinkTracker\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\LinkTracker\LinkTrackerInitializer.cs" />
+		<Compile Include="Edit\LinkTracker\Tracker.cs" />
+		<Compile Include="Edit\Login.aspx.cs">
+			<DependentUpon>Login.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Login.aspx.designer.cs">
+			<DependentUpon>Login.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Membership\Edit.aspx.cs">
+			<DependentUpon>Edit.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Membership\Edit.aspx.designer.cs">
+			<DependentUpon>Edit.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Membership\MembershipToolbarPluginAttribute.cs" />
+		<Compile Include="Edit\Membership\New.aspx.cs">
+			<DependentUpon>New.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Membership\New.aspx.designer.cs">
+			<DependentUpon>New.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Membership\Password.aspx.cs">
+			<DependentUpon>Password.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Membership\Password.aspx.designer.cs">
+			<DependentUpon>Password.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Membership\Users.aspx.cs">
+			<DependentUpon>Users.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Membership\Users.aspx.designer.cs">
+			<DependentUpon>Users.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Move.aspx.cs">
+			<DependentUpon>Move.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Move.aspx.designer.cs">
+			<DependentUpon>Move.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Navigation\ContextMenu.ascx.cs">
+			<DependentUpon>ContextMenu.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Navigation\ContextMenu.ascx.designer.cs">
+			<DependentUpon>ContextMenu.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Navigation\HelpfulHandler.cs" />
+		<Compile Include="Edit\Navigation\LoadTree.ashx.cs">
+			<DependentUpon>LoadTree.ashx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Navigation\Search.aspx.cs">
+			<DependentUpon>Search.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Navigation\Search.aspx.designer.cs">
+			<DependentUpon>Search.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Navigation\NavigationPage.cs">
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Navigation\SortDown.ashx.cs">
+			<DependentUpon>SortDown.ashx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Navigation\SortPlugin.cs" />
+		<Compile Include="Edit\Navigation\SortUp.ashx.cs">
+			<DependentUpon>SortUp.ashx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Navigation\Tree.aspx.cs">
+			<DependentUpon>Tree.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Navigation\Tree.aspx.designer.cs">
+			<DependentUpon>Tree.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\paste.aspx.cs">
+			<DependentUpon>Paste.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\paste.aspx.designer.cs">
+			<DependentUpon>Paste.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\New.aspx.cs">
+			<DependentUpon>New.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\New.aspx.designer.cs">
+			<DependentUpon>New.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\PersonalSettings.cs" />
+		<Compile Include="Edit\Properties\AssemblyInfo.cs" />
+		<Compile Include="Edit\ItemSelection\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\ItemSelection\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\PublishPreview.aspx.cs">
+			<DependentUpon>PublishPreview.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\PublishPreview.aspx.designer.cs">
+			<DependentUpon>PublishPreview.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\ReferencingItems.ascx.cs">
+			<DependentUpon>ReferencingItems.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\ReferencingItems.ascx.designer.cs">
+			<DependentUpon>ReferencingItems.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Security\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Security\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Settings\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Settings\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Settings\SettingsEditor.ascx.cs">
+			<DependentUpon>SettingsEditor.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Settings\SettingsEditor.ascx.designer.cs">
+			<DependentUpon>SettingsEditor.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Toolbar.ascx.cs">
+			<DependentUpon>Toolbar.ascx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Toolbar.ascx.designer.cs">
+			<DependentUpon>Toolbar.ascx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Trash\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Trash\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Trash\DeleteInterceptor.cs" />
+		<Compile Include="Edit\Trash\TrashcanInitializer.cs" />
+		<Compile Include="Edit\Trash\TrashCleanupAgent.cs" />
+		<Compile Include="Edit\Trash\TrashContainerItem.cs" />
+		<Compile Include="Edit\Trash\TrashHandler.cs" />
+		<Compile Include="Edit\Versions\ControlPanelPendingVersionAttribute.cs" />
+		<Compile Include="Edit\Versions\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Versions\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Web\DirectoryNode.cs" />
+		<Compile Include="Edit\Web\FileNode.cs" />
+		<Compile Include="Edit\Web\FileSiteMapNode.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Include="Edit\Web\FileSiteMapProvider.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Include="Edit\Web\RootNode.cs" />
+		<Compile Include="Edit\Web\UI\Controls\FieldSet.cs" />
+		<Compile Include="Edit\Web\UI\Controls\InfoLabel.cs" />
+		<Compile Include="Edit\Web\UI\Controls\OptionsMenu.cs" />
+		<Compile Include="Edit\Web\UI\Controls\Tree.cs" />
+		<Compile Include="Edit\Web\UI\Controls\TreeView.cs" />
+		<Compile Include="Edit\Web\UrlSelectionPage.cs">
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Wizard\Default.aspx.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+			<SubType>ASPXCodeBehind</SubType>
+		</Compile>
+		<Compile Include="Edit\Wizard\Default.aspx.designer.cs">
+			<DependentUpon>Default.aspx</DependentUpon>
+		</Compile>
+		<Compile Include="Edit\Wizard\Details\EditableDefinitionAttribute.cs" />
+		<Compile Include="Edit\Wizard\Items\MagicLocation.cs" />
+		<Compile Include="Edit\Wizard\Items\Wonderland.cs" />
+		<Compile Include="Edit\Wizard\LocationWizard.cs" />
+		<Compile Include="Edit\Wizard\Settings.cs" />
+		<Compile Include="Edit\Wizard\WizardInitialzer.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\App_LocalResources\it\AffectedItems.ascx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\AvailableZones.ascx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Copy.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Delete.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Framed.Master.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Login.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Move.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\New.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Paste.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\AvailableZones.ascx" />
+		<Content Include="Edit\Css\framed.css" />
+		<Content Include="Edit\Css\IE6.css" />
+		<Content Include="Edit\img\bg.gif" />
+		<Content Include="Edit\img\framed_bg.gif" />
+		<Content Include="Edit\img\framed_toolbar.gif" />
+		<Content Include="Edit\img\framed_top.gif" />
+		<Content Include="Edit\img\grid_alt.gif" />
+		<Content Include="Edit\img\ico\accept.gif" />
+		<Content Include="Edit\img\ico\add.gif" />
+		<Content Include="Edit\img\ico\bin.gif" />
+		<Content Include="Edit\img\ico\bin_closed.gif" />
+		<Content Include="Edit\img\ico\bin_empty.gif" />
+		<Content Include="Edit\img\ico\bullet_add.gif" />
+		<Content Include="Edit\img\ico\bullet_arrow_bottom.gif" />
+		<Content Include="Edit\img\ico\bullet_arrow_down.gif" />
+		<Content Include="Edit\img\ico\bullet_arrow_top.gif" />
+		<Content Include="Edit\img\ico\bullet_arrow_up.gif" />
+		<Content Include="Edit\img\ico\bullet_delete.gif" />
+		<Content Include="Edit\img\ico\bullet_disk.gif" />
+		<Content Include="Edit\img\ico\bullet_error.gif" />
+		<Content Include="Edit\img\ico\bullet_key.gif" />
+		<Content Include="Edit\img\ico\bullet_star.gif" />
+		<Content Include="Edit\img\ico\bullet_toggle_plus.gif" />
+		<Content Include="Edit\img\ico\bullet_wrench.gif" />
+		<Content Include="Edit\img\ico\cancel.gif" />
+		<Content Include="Edit\img\ico\comment.gif" />
+		<Content Include="Edit\img\ico\control_rewind.gif" />
+		<Content Include="Edit\img\ico\control_start.gif" />
+		<Content Include="Edit\img\ico\cross.gif" />
+		<Content Include="Edit\img\ico\cut.gif" />
+		<Content Include="Edit\img\ico\delete.gif" />
+		<Content Include="Edit\img\ico\disk.gif" />
+		<Content Include="Edit\img\ico\email.gif" />
+		<Content Include="Edit\img\ico\exclamation.gif" />
+		<Content Include="Edit\img\ico\feed.gif" />
+		<Content Include="Edit\img\ico\find.gif" />
+		<Content Include="Edit\img\ico\flag_blue.gif" />
+		<Content Include="Edit\img\ico\folder.gif" />
+		<Content Include="Edit\img\ico\folder_add.gif" />
+		<Content Include="Edit\img\ico\folder_delete.gif" />
+		<Content Include="Edit\img\ico\group.gif" />
+		<Content Include="Edit\img\ico\group_key.gif" />
+		<Content Include="Edit\img\ico\information.gif" />
+		<Content Include="Edit\img\ico\key.gif" />
+		<Content Include="Edit\img\ico\lightning.gif" />
+		<Content Include="Edit\img\ico\lock.gif" />
+		<Content Include="Edit\img\ico\new.gif" />
+		<Content Include="Edit\img\ico\newspaper.gif" />
+		<Content Include="Edit\img\ico\newspaper_add.gif" />
+		<Content Include="Edit\img\ico\package.gif" />
+		<Content Include="Edit\img\ico\package_come_and_go.gif" />
+		<Content Include="Edit\img\ico\page.gif" />
+		<Content Include="Edit\img\ico\page_add.gif" />
+		<Content Include="Edit\img\ico\page_attach.gif" />
+		<Content Include="Edit\img\ico\page_code.gif" />
+		<Content Include="Edit\img\ico\page_copy.gif" />
+		<Content Include="Edit\img\ico\page_delete.gif" />
+		<Content Include="Edit\img\ico\page_edit.gif" />
+		<Content Include="Edit\img\ico\page_error.gif" />
+		<Content Include="Edit\img\ico\page_find.gif" />
+		<Content Include="Edit\img\ico\page_gear.gif" />
+		<Content Include="Edit\img\ico\page_go.gif" />
+		<Content Include="Edit\img\ico\page_green.gif" />
+		<Content Include="Edit\img\ico\page_key.gif" />
+		<Content Include="Edit\img\ico\page_lightning.gif" />
+		<Content Include="Edit\img\ico\page_link.gif" />
+		<Content Include="Edit\img\ico\page_paintbrush.gif" />
+		<Content Include="Edit\img\ico\page_paste.gif" />
+		<Content Include="Edit\img\ico\page_red.gif" />
+		<Content Include="Edit\img\ico\page_refresh.gif" />
+		<Content Include="Edit\img\ico\page_rewind.gif" />
+		<Content Include="Edit\img\ico\page_save.gif" />
+		<Content Include="Edit\img\ico\page_white.gif" />
+		<Content Include="Edit\img\ico\page_white_add.gif" />
+		<Content Include="Edit\img\ico\page_white_copy.gif" />
+		<Content Include="Edit\img\ico\page_white_delete.gif" />
+		<Content Include="Edit\img\ico\page_white_edit.gif" />
+		<Content Include="Edit\img\ico\page_white_error.gif" />
+		<Content Include="Edit\img\ico\page_white_find.gif" />
+		<Content Include="Edit\img\ico\page_white_get.gif" />
+		<Content Include="Edit\img\ico\page_white_key.gif" />
+		<Content Include="Edit\img\ico\page_white_lightning.gif" />
+		<Content Include="Edit\img\ico\page_white_link.gif" />
+		<Content Include="Edit\img\ico\page_white_magnify.gif" />
+		<Content Include="Edit\img\ico\page_white_paste.gif" />
+		<Content Include="Edit\img\ico\page_white_put.gif" />
+		<Content Include="Edit\img\ico\page_white_stack.gif" />
+		<Content Include="Edit\img\ico\page_white_text.gif" />
+		<Content Include="Edit\img\ico\page_white_wrench.gif" />
+		<Content Include="Edit\img\ico\page_world.gif" />
+		<Content Include="Edit\img\ico\plugin.gif" />
+		<Content Include="Edit\img\ico\png\accept.png" />
+		<Content Include="Edit\img\ico\png\add.png" />
+		<Content Include="Edit\img\ico\png\anchor.png" />
+		<Content Include="Edit\img\ico\png\bin.png" />
+		<Content Include="Edit\img\ico\png\bin_closed.png" />
+		<Content Include="Edit\img\ico\png\bin_empty.png" />
+		<Content Include="Edit\img\ico\png\bullet_add.png" />
+		<Content Include="Edit\img\ico\png\bullet_arrow_bottom.png" />
+		<Content Include="Edit\img\ico\png\bullet_arrow_down.png" />
+		<Content Include="Edit\img\ico\png\bullet_arrow_top.png" />
+		<Content Include="Edit\img\ico\png\bullet_arrow_up.png" />
+		<Content Include="Edit\img\ico\png\bullet_delete.png" />
+		<Content Include="Edit\img\ico\png\bullet_disk.png" />
+		<Content Include="Edit\img\ico\png\bullet_error.png" />
+		<Content Include="Edit\img\ico\png\bullet_go.png" />
+		<Content Include="Edit\img\ico\png\bullet_key.png" />
+		<Content Include="Edit\img\ico\png\bullet_star.png" />
+		<Content Include="Edit\img\ico\png\bullet_toggle_plus.png" />
+		<Content Include="Edit\img\ico\png\bullet_wrench.png" />
+		<Content Include="Edit\img\ico\png\cancel.png" />
+		<Content Include="Edit\img\ico\png\comment.png" />
+		<Content Include="Edit\img\ico\png\control_rewind.png" />
+		<Content Include="Edit\img\ico\png\control_start.png" />
+		<Content Include="Edit\img\ico\png\cross.png" />
+		<Content Include="Edit\img\ico\png\cut.png" />
+		<Content Include="Edit\img\ico\png\delete.png" />
+		<Content Include="Edit\img\ico\png\disk.png" />
+		<Content Include="Edit\img\ico\png\email.png" />
+		<Content Include="Edit\img\ico\png\feed.png" />
+		<Content Include="Edit\img\ico\png\find.png" />
+		<Content Include="Edit\img\ico\png\flag_blue.png" />
+		<Content Include="Edit\img\ico\png\folder.png" />
+		<Content Include="Edit\img\ico\png\folder_add.png" />
+		<Content Include="Edit\img\ico\png\folder_delete.png" />
+		<Content Include="Edit\img\ico\png\group.png" />
+		<Content Include="Edit\img\ico\png\group_key.png" />
+		<Content Include="Edit\img\ico\png\information.png" />
+		<Content Include="Edit\img\ico\png\key.png" />
+		<Content Include="Edit\img\ico\png\lightning.png" />
+		<Content Include="Edit\img\ico\png\lock.png" />
+		<Content Include="Edit\img\ico\png\new.png" />
+		<Content Include="Edit\img\ico\png\newspaper.png" />
+		<Content Include="Edit\img\ico\png\newspaper_add.png" />
+		<Content Include="Edit\img\ico\png\package.png" />
+		<Content Include="Edit\img\ico\png\package_come_and_go.png" />
+		<Content Include="Edit\img\ico\png\page.png" />
+		<Content Include="Edit\img\ico\png\page_add.png" />
+		<Content Include="Edit\img\ico\png\page_attach.png" />
+		<Content Include="Edit\img\ico\png\page_code.png" />
+		<Content Include="Edit\img\ico\png\page_copy.png" />
+		<Content Include="Edit\img\ico\png\page_delete.png" />
+		<Content Include="Edit\img\ico\png\page_edit.png" />
+		<Content Include="Edit\img\ico\png\page_error.png" />
+		<Content Include="Edit\img\ico\png\page_find.png" />
+		<Content Include="Edit\img\ico\png\page_gear.png" />
+		<Content Include="Edit\img\ico\png\page_go.png" />
+		<Content Include="Edit\img\ico\png\page_green.png" />
+		<Content Include="Edit\img\ico\png\page_key.png" />
+		<Content Include="Edit\img\ico\png\page_lightning.png" />
+		<Content Include="Edit\img\ico\png\page_link.png" />
+		<Content Include="Edit\img\ico\png\page_paintbrush.png" />
+		<Content Include="Edit\img\ico\png\page_paste.png" />
+		<Content Include="Edit\img\ico\png\page_red.png" />
+		<Content Include="Edit\img\ico\png\page_refresh.png" />
+		<Content Include="Edit\img\ico\png\page_rewind.png" />
+		<Content Include="Edit\img\ico\png\page_save.png" />
+		<Content Include="Edit\img\ico\png\page_white.png" />
+		<Content Include="Edit\img\ico\png\page_white_add.png" />
+		<Content Include="Edit\img\ico\png\page_white_copy.png" />
+		<Content Include="Edit\img\ico\png\page_white_delete.png" />
+		<Content Include="Edit\img\ico\png\page_white_edit.png" />
+		<Content Include="Edit\img\ico\png\page_white_error.png" />
+		<Content Include="Edit\img\ico\png\page_white_find.png" />
+		<Content Include="Edit\img\ico\png\page_white_get.png" />
+		<Content Include="Edit\img\ico\png\page_white_key.png" />
+		<Content Include="Edit\img\ico\png\page_white_lightning.png" />
+		<Content Include="Edit\img\ico\png\page_white_link.png" />
+		<Content Include="Edit\img\ico\png\page_white_magnify.png" />
+		<Content Include="Edit\img\ico\png\page_white_paste.png" />
+		<Content Include="Edit\img\ico\png\page_white_put.png" />
+		<Content Include="Edit\img\ico\png\page_white_stack.png" />
+		<Content Include="Edit\img\ico\png\page_white_text.png" />
+		<Content Include="Edit\img\ico\png\page_white_wrench.png" />
+		<Content Include="Edit\img\ico\png\page_world.png" />
+		<Content Include="Edit\img\ico\png\plugin.png" />
+		<Content Include="Edit\img\ico\png\printer.png" />
+		<Content Include="Edit\img\ico\png\script.png" />
+		<Content Include="Edit\img\ico\png\server_edit.png" />
+		<Content Include="Edit\img\ico\png\sitemap.png" />
+		<Content Include="Edit\img\ico\png\sitemap_color.png" />
+		<Content Include="Edit\img\ico\png\table.png" />
+		<Content Include="Edit\img\ico\png\tag_blue.png" />
+		<Content Include="Edit\img\ico\png\user.png" />
+		<Content Include="Edit\img\ico\png\user_add.png" />
+		<Content Include="Edit\img\ico\png\user_delete.png" />
+		<Content Include="Edit\img\ico\png\user_edit.png" />
+		<Content Include="Edit\img\ico\png\world.png" />
+		<Content Include="Edit\img\ico\png\wrench.png" />
+		<Content Include="Edit\img\ico\printer.gif" />
+		<Content Include="Edit\img\ico\script.gif" />
+		<Content Include="Edit\img\ico\server_edit.gif" />
+		<Content Include="Edit\img\ico\sitemap.gif" />
+		<Content Include="Edit\img\ico\sitemap_color.gif" />
+		<Content Include="Edit\img\ico\table.gif" />
+		<Content Include="Edit\img\ico\tag_blue.gif" />
+		<Content Include="Edit\img\ico\user.gif" />
+		<Content Include="Edit\img\ico\user_add.gif" />
+		<Content Include="Edit\img\ico\user_delete.gif" />
+		<Content Include="Edit\img\ico\user_edit.gif" />
+		<Content Include="Edit\img\ico\world.gif" />
+		<Content Include="Edit\img\ico\wrench.gif" />
+		<Content Include="Edit\img\login_bg.gif" />
+		<Content Include="Edit\img\login_panel.gif" />
+		<Content Include="Edit\img\tab_selected.gif" />
+		<Content Include="Edit\img\toolbar_bg.gif" />
+		<Content Include="Edit\img\tv\tv-collapsable-last.gif" />
+		<Content Include="Edit\img\tv\tv-collapsable.gif" />
+		<Content Include="Edit\img\tv\tv-expandable-last.gif" />
+		<Content Include="Edit\img\tv\tv-expandable.gif" />
+		<Content Include="Edit\img\tv\tv-item-last.gif" />
+		<Content Include="Edit\img\tv\tv-item.gif" />
+		<Content Include="Edit\ItemInfo.ascx" />
+		<Content Include="Edit\Js\ContextMenu.js" />
+		<Content Include="Edit\FileManagement\Js\FileSelection.js" />
+		<Content Include="Edit\ItemSelection\Js\ItemSelection.js" />
+		<Content Include="Edit\Css\Web.config" />
+		<Content Include="Edit\img\Web.config" />
+		<Content Include="Edit\App_LocalResources\AffectedItems.ascx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\AvailableZones.ascx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Copy.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Default.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Delete.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Edit.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Framed.Master.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Login.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Move.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\New.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Paste.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Js\UrlSelection.js" />
+		<Content Include="Edit\Navigation\App_LocalResources\Search.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Table.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Table.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Search.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Toolbar.ascx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\Toolbar.ascx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\AffectedItems.ascx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\AvailableZones.ascx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Copy.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Default.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Delete.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Edit.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Framed.Master.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Login.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Move.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\New.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Paste.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\da\Toolbar.ascx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Settings\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\Edit.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Navigation.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Navigation.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\ItemInfo.ascx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\it\ItemInfo.ascx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\AffectedItems.ascx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\AvailableZones.ascx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Copy.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Default.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Delete.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Edit.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Framed.Master.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Login.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Move.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\New.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Paste.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\nl\Toolbar.ascx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Search.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Table.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Settings\App_LocalResources\Default.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Framed.Master" />
+		<Content Include="Edit\Navigation\ContextMenu.ascx" />
+		<Content Include="Edit\Navigation\Search.aspx" />
+		<Content Include="Edit\Navigation\Tree.aspx" />
+		<Content Include="Edit\Paste.aspx" />
+		<Content Include="Edit\Security\App_LocalResources\Default.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Security\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Export\App_LocalResources\Default.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Export\App_LocalResources\Default.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Export\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\Edit.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\it\Edit.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\it\New.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\it\Password.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\it\Users.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\New.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\nl\Edit.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\nl\New.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\nl\Password.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\nl\Users.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\Password.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Membership\App_LocalResources\Users.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Versions\App_LocalResources\Default.aspx.da.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Versions\App_LocalResources\Default.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Versions\App_LocalResources\Default.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Versions\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\ItemSelection\Default.aspx" />
+		<Content Include="Edit\ReferencingItems.ascx" />
+		<Content Include="Edit\Settings\Default.aspx" />
+		<Content Include="Edit\Toolbar.ascx" />
+		<Content Include="Edit\Versions.aspx" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="Edit\..\..\N2\N2.csproj">
+			<Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+			<Name>N2</Name>
+			<Private>False</Private>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<Service Include="Edit\{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\FileManagement\Js\jquery.MultiFile.js" />
+		<Content Include="Edit\img\gripper.gif" />
+		<Content Include="Edit\img\ico\png\help.png" />
+		<Content Include="Edit\img\ico\png\script_edit.png" />
+		<Content Include="Edit\img\ico\png\shape_move_front.png" />
+		<Content Include="Edit\img\ico\png\star.png" />
+		<Content Include="Edit\img\shading.png" />
+		<Content Include="Edit\img\SlidingCurtain_bg.png" />
+		<Content Include="Edit\Js\plugins\jquery.n2optionmenu.js" />
+		<Content Include="Edit\Js\plugins\jquery.splitter.js" />
+		<Content Include="Edit\Js\plugins\n2.js" />
+		<Content Include="Edit\Js\Web.config" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Js\plugins.ashx" />
+		<Content Include="Edit\Js\jquery.ui.ashx" />
+		<Content Include="Edit\Js\tiny_mce\langs\en.js" />
+		<Content Include="Edit\Js\tiny_mce\license.txt" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advhr\css\advhr.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advhr\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advhr\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advhr\js\rule.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advhr\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advhr\rule.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advimage\css\advimage.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advimage\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advimage\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advimage\image.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advimage\img\sample.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advimage\js\image.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advimage\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advlink\css\advlink.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advlink\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advlink\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advlink\js\advlink.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advlink\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\advlink\link.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\autosave\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\autosave\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\bbcode\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\bbcode\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\compat2x\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\compat2x\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\contextmenu\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\contextmenu\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\directionality\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\directionality\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\emotions.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-cool.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-cry.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-embarassed.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-foot-in-mouth.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-frown.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-innocent.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-kiss.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-laughing.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-money-mouth.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-sealed.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-smile.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-surprised.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-tongue-out.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-undecided.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-wink.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\img\smiley-yell.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\js\emotions.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\emotions\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\example\dialog.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\example\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\example\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\example\img\example.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\example\js\dialog.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\example\langs\en.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\example\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullpage\css\fullpage.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullpage\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullpage\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullpage\fullpage.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullpage\js\fullpage.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullpage\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullscreen\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullscreen\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\fullscreen\fullscreen.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\iespell\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\iespell\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\alert.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\button.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\buttons.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\confirm.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\corners.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\horizontal.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\vertical.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\skins\clearlooks2\window.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\inlinepopups\template.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\insertdatetime\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\insertdatetime\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\layer\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\layer\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\css\content.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\css\media.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\img\flash.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\img\flv_player.swf" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\img\quicktime.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\img\realmedia.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\img\shockwave.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\img\trans.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\img\windowsmedia.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\js\embed.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\js\media.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\media\media.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\nonbreaking\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\nonbreaking\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\noneditable\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\noneditable\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\pagebreak\css\content.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\pagebreak\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\pagebreak\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\pagebreak\img\pagebreak.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\pagebreak\img\trans.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\blank.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\css\blank.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\css\pasteword.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\js\pastetext.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\js\pasteword.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\pastetext.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\paste\pasteword.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\preview\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\preview\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\preview\example.html" />
+		<Content Include="Edit\Js\tiny_mce\plugins\preview\jscripts\embed.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\print\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\print\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\safari\blank.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\safari\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\safari\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\save\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\save\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\searchreplace\css\searchreplace.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\searchreplace\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\searchreplace\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\searchreplace\js\searchreplace.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\searchreplace\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\searchreplace\searchreplace.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\spellchecker\css\content.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\spellchecker\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\spellchecker\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\spellchecker\img\wline.gif" />
+		<Content Include="Edit\Js\tiny_mce\plugins\style\css\props.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\style\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\style\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\style\js\props.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\style\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\style\props.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\cell.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\css\cell.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\css\row.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\css\table.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\js\cell.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\js\merge_cells.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\js\row.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\js\table.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\merge_cells.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\row.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\table\table.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\template\blank.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\template\css\template.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\template\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\template\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\template\js\template.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\template\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\template\template.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\visualchars\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\visualchars\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\abbr.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\acronym.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\attributes.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\cite.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\css\attributes.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\css\popup.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\css\xhtmlxtras.css" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\del.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\editor_plugin.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\editor_plugin_src.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\ins.htm" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\abbr.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\acronym.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\attributes.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\cite.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\del.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\element_common.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\js\ins.js" />
+		<Content Include="Edit\Js\tiny_mce\plugins\xhtmlxtras\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\about.htm" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\anchor.htm" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\charmap.htm" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\color_picker.htm" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\editor_template.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\editor_template_src.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\image.htm" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\img\colorpicker.jpg" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\img\icons.gif" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\js\about.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\js\anchor.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\js\charmap.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\js\color_picker.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\js\image.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\js\link.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\js\source_editor.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\langs\en.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\langs\en_dlg.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\link.htm" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\content.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\dialog.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\buttons.png" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\items.gif" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\menu_arrow.gif" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\menu_check.gif" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\progress.gif" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\img\tabs.gif" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\default\ui.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\o2k7\content.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\o2k7\dialog.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\o2k7\img\button_bg.png" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\skins\o2k7\ui.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\advanced\source_editor.htm" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\editor_template.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\editor_template_src.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\img\icons.gif" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\langs\en.js" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\skins\default\content.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\skins\default\ui.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\skins\o2k7\content.css" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\skins\o2k7\img\button_bg.png" />
+		<Content Include="Edit\Js\tiny_mce\themes\simple\skins\o2k7\ui.css" />
+		<Content Include="Edit\Js\tiny_mce\tiny_mce.js" />
+		<Content Include="Edit\Js\tiny_mce\tiny_mce_popup.js" />
+		<Content Include="Edit\Js\tiny_mce\tiny_mce_src.js" />
+		<Content Include="Edit\Js\tiny_mce\utils\editable_selects.js" />
+		<Content Include="Edit\Js\tiny_mce\utils\form_utils.js" />
+		<Content Include="Edit\Js\tiny_mce\utils\mclayer.js" />
+		<Content Include="Edit\Js\tiny_mce\utils\mctabs.js" />
+		<Content Include="Edit\Js\tiny_mce\utils\validate.js" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\img\ico\png\book_next.png" />
+		<Content Include="Edit\img\ico\png\book_previous.png" />
+		<Content Include="Edit\img\ico\png\zoom.png" />
+		<Content Include="Edit\img\treeview\collapsable-last.gif" />
+		<Content Include="Edit\img\treeview\collapsable.gif" />
+		<Content Include="Edit\img\treeview\expandable-last.gif" />
+		<Content Include="Edit\img\treeview\expandable.gif" />
+		<Content Include="Edit\img\treeview\leaf-last.gif" />
+		<Content Include="Edit\img\treeview\leaf.gif" />
+		<Content Include="Edit\img\treeview\root.gif" />
+		<Content Include="Edit\img\treeview\spacer.gif" />
+		<Content Include="Edit\img\treeview\spinner.gif" />
+		<Content Include="Edit\Js\plugins\jquery.SimpleTree.js" />
+		<Content Include="Edit\Js\tinymce.ashx" />
+		<Content Include="Edit\Security\Default.aspx" />
+		<Content Include="Edit\Versions\Css\Versions.css" />
+		<Content Include="Edit\Versions\Default.aspx" />
+		<Content Include="Edit\Versions\img\book_previous.gif" />
+		<Content Include="Edit\Versions\img\bullet_star.gif" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\img\n2.gif" />
+		<Content Include="Edit\img\toolarea_bg.gif" />
+		<Content Include="Edit\img\toolarea_end.gif" />
+		<Content Include="Edit\img\toolarea_separator.gif" />
+		<Content Include="Edit\img\toolitem_hover.gif" />
+		<Content Include="Edit\img\toolitem_separator.gif" />
+		<Content Include="Edit\Navigation\LoadTree.ashx" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Navigation\SortUp.ashx" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Css\Parts.css" />
+		<Content Include="Edit\Export\Css\exportImport.css" />
+		<Content Include="Edit\Export\Default.aspx" />
+		<Content Include="Edit\img\framed_opener.gif" />
+		<Content Include="Edit\img\ico\png\pencil.png" />
+		<Content Include="Edit\img\part_bg.png" />
+		<Content Include="Edit\img\pencil.png" />
+		<Content Include="Edit\img\shading_blue.png" />
+		<Content Include="Edit\img\shading_green.png" />
+		<Content Include="Edit\img\shading_purple.png" />
+		<Content Include="Edit\img\splitter.gif" />
+		<Content Include="Edit\img\tabs_base.gif" />
+		<Content Include="Edit\img\tabs_begin.gif" />
+		<Content Include="Edit\img\tab_end.gif" />
+		<Content Include="Edit\Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
+		<Content Include="Edit\Js\parts.js" />
+		<Content Include="Edit\Membership\Css\Membership.css" />
+		<Content Include="Edit\Membership\Edit.aspx" />
+		<Content Include="Edit\Membership\New.aspx" />
+		<Content Include="Edit\Membership\Password.aspx" />
+		<Content Include="Edit\Membership\Users.aspx" />
+		<Content Include="Edit\Navigation\SortDown.ashx" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Install\Default.aspx" />
+		<Content Include="Edit\Install\Diagnose.aspx" />
+		<Content Include="Edit\Install\Fix.aspx" />
+		<Content Include="Edit\Membership\Web.config" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Install\Begin\Default.aspx" />
+		<Content Include="Edit\Install\Web.config" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Globalization\Default.aspx" />
+		<Content Include="Edit\Globalization\LanguageMenu.ascx" />
+		<Content Include="Edit\Globalization\Languages.ascx" />
+		<Content Include="Edit\Globalization\Styles.css" />
+		<Content Include="Edit\Install\Begin\Web.config" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Globalization\flags\ad.png" />
+		<Content Include="Edit\Globalization\flags\ae.png" />
+		<Content Include="Edit\Globalization\flags\af.png" />
+		<Content Include="Edit\Globalization\flags\ag.png" />
+		<Content Include="Edit\Globalization\flags\ai.png" />
+		<Content Include="Edit\Globalization\flags\al.png" />
+		<Content Include="Edit\Globalization\flags\am.png" />
+		<Content Include="Edit\Globalization\flags\an.png" />
+		<Content Include="Edit\Globalization\flags\ao.png" />
+		<Content Include="Edit\Globalization\flags\ar.png" />
+		<Content Include="Edit\Globalization\flags\as.png" />
+		<Content Include="Edit\Globalization\flags\at.png" />
+		<Content Include="Edit\Globalization\flags\au.png" />
+		<Content Include="Edit\Globalization\flags\aw.png" />
+		<Content Include="Edit\Globalization\flags\ax.png" />
+		<Content Include="Edit\Globalization\flags\az.png" />
+		<Content Include="Edit\Globalization\flags\ba.png" />
+		<Content Include="Edit\Globalization\flags\bb.png" />
+		<Content Include="Edit\Globalization\flags\bd.png" />
+		<Content Include="Edit\Globalization\flags\be.png" />
+		<Content Include="Edit\Globalization\flags\bf.png" />
+		<Content Include="Edit\Globalization\flags\bg.png" />
+		<Content Include="Edit\Globalization\flags\bh.png" />
+		<Content Include="Edit\Globalization\flags\bi.png" />
+		<Content Include="Edit\Globalization\flags\bj.png" />
+		<Content Include="Edit\Globalization\flags\bm.png" />
+		<Content Include="Edit\Globalization\flags\bn.png" />
+		<Content Include="Edit\Globalization\flags\bo.png" />
+		<Content Include="Edit\Globalization\flags\br.png" />
+		<Content Include="Edit\Globalization\flags\bs.png" />
+		<Content Include="Edit\Globalization\flags\bt.png" />
+		<Content Include="Edit\Globalization\flags\bv.png" />
+		<Content Include="Edit\Globalization\flags\bw.png" />
+		<Content Include="Edit\Globalization\flags\by.png" />
+		<Content Include="Edit\Globalization\flags\bz.png" />
+		<Content Include="Edit\Globalization\flags\ca.png" />
+		<Content Include="Edit\Globalization\flags\catalonia.png" />
+		<Content Include="Edit\Globalization\flags\cc.png" />
+		<Content Include="Edit\Globalization\flags\cd.png" />
+		<Content Include="Edit\Globalization\flags\cf.png" />
+		<Content Include="Edit\Globalization\flags\cg.png" />
+		<Content Include="Edit\Globalization\flags\ch.png" />
+		<Content Include="Edit\Globalization\flags\ci.png" />
+		<Content Include="Edit\Globalization\flags\ck.png" />
+		<Content Include="Edit\Globalization\flags\cl.png" />
+		<Content Include="Edit\Globalization\flags\cm.png" />
+		<Content Include="Edit\Globalization\flags\cn.png" />
+		<Content Include="Edit\Globalization\flags\co.png" />
+		<Content Include="Edit\Globalization\flags\cr.png" />
+		<Content Include="Edit\Globalization\flags\cs.png" />
+		<Content Include="Edit\Globalization\flags\cu.png" />
+		<Content Include="Edit\Globalization\flags\cv.png" />
+		<Content Include="Edit\Globalization\flags\cx.png" />
+		<Content Include="Edit\Globalization\flags\cy.png" />
+		<Content Include="Edit\Globalization\flags\cz.png" />
+		<Content Include="Edit\Globalization\flags\de.png" />
+		<Content Include="Edit\Globalization\flags\dj.png" />
+		<Content Include="Edit\Globalization\flags\dk.png" />
+		<Content Include="Edit\Globalization\flags\dm.png" />
+		<Content Include="Edit\Globalization\flags\do.png" />
+		<Content Include="Edit\Globalization\flags\dz.png" />
+		<Content Include="Edit\Globalization\flags\ec.png" />
+		<Content Include="Edit\Globalization\flags\ee.png" />
+		<Content Include="Edit\Globalization\flags\eg.png" />
+		<Content Include="Edit\Globalization\flags\eh.png" />
+		<Content Include="Edit\Globalization\flags\en.png" />
+		<Content Include="Edit\Globalization\flags\er.png" />
+		<Content Include="Edit\Globalization\flags\es.png" />
+		<Content Include="Edit\Globalization\flags\et.png" />
+		<Content Include="Edit\Globalization\flags\eu.png" />
+		<Content Include="Edit\Globalization\flags\fam.png" />
+		<Content Include="Edit\Globalization\flags\fi.png" />
+		<Content Include="Edit\Globalization\flags\fj.png" />
+		<Content Include="Edit\Globalization\flags\fk.png" />
+		<Content Include="Edit\Globalization\flags\fm.png" />
+		<Content Include="Edit\Globalization\flags\fo.png" />
+		<Content Include="Edit\Globalization\flags\fr.png" />
+		<Content Include="Edit\Globalization\flags\ga.png" />
+		<Content Include="Edit\Globalization\flags\gb.png" />
+		<Content Include="Edit\Globalization\flags\gd.png" />
+		<Content Include="Edit\Globalization\flags\ge.png" />
+		<Content Include="Edit\Globalization\flags\gf.png" />
+		<Content Include="Edit\Globalization\flags\gh.png" />
+		<Content Include="Edit\Globalization\flags\gi.png" />
+		<Content Include="Edit\Globalization\flags\gl.png" />
+		<Content Include="Edit\Globalization\flags\gm.png" />
+		<Content Include="Edit\Globalization\flags\gn.png" />
+		<Content Include="Edit\Globalization\flags\gp.png" />
+		<Content Include="Edit\Globalization\flags\gq.png" />
+		<Content Include="Edit\Globalization\flags\gr.png" />
+		<Content Include="Edit\Globalization\flags\gs.png" />
+		<Content Include="Edit\Globalization\flags\gt.png" />
+		<Content Include="Edit\Globalization\flags\gu.png" />
+		<Content Include="Edit\Globalization\flags\gw.png" />
+		<Content Include="Edit\Globalization\flags\gy.png" />
+		<Content Include="Edit\Globalization\flags\hk.png" />
+		<Content Include="Edit\Globalization\flags\hm.png" />
+		<Content Include="Edit\Globalization\flags\hn.png" />
+		<Content Include="Edit\Globalization\flags\hr.png" />
+		<Content Include="Edit\Globalization\flags\ht.png" />
+		<Content Include="Edit\Globalization\flags\hu.png" />
+		<Content Include="Edit\Globalization\flags\id.png" />
+		<Content Include="Edit\Globalization\flags\ie.png" />
+		<Content Include="Edit\Globalization\flags\il.png" />
+		<Content Include="Edit\Globalization\flags\in.png" />
+		<Content Include="Edit\Globalization\flags\io.png" />
+		<Content Include="Edit\Globalization\flags\iq.png" />
+		<Content Include="Edit\Globalization\flags\ir.png" />
+		<Content Include="Edit\Globalization\flags\is.png" />
+		<Content Include="Edit\Globalization\flags\it.png" />
+		<Content Include="Edit\Globalization\flags\jm.png" />
+		<Content Include="Edit\Globalization\flags\jo.png" />
+		<Content Include="Edit\Globalization\flags\jp.png" />
+		<Content Include="Edit\Globalization\flags\ke.png" />
+		<Content Include="Edit\Globalization\flags\kg.png" />
+		<Content Include="Edit\Globalization\flags\kh.png" />
+		<Content Include="Edit\Globalization\flags\ki.png" />
+		<Content Include="Edit\Globalization\flags\km.png" />
+		<Content Include="Edit\Globalization\flags\kn.png" />
+		<Content Include="Edit\Globalization\flags\kp.png" />
+		<Content Include="Edit\Globalization\flags\kr.png" />
+		<Content Include="Edit\Globalization\flags\kw.png" />
+		<Content Include="Edit\Globalization\flags\ky.png" />
+		<Content Include="Edit\Globalization\flags\kz.png" />
+		<Content Include="Edit\Globalization\flags\la.png" />
+		<Content Include="Edit\Globalization\flags\lb.png" />
+		<Content Include="Edit\Globalization\flags\lc.png" />
+		<Content Include="Edit\Globalization\flags\li.png" />
+		<Content Include="Edit\Globalization\flags\lk.png" />
+		<Content Include="Edit\Globalization\flags\lr.png" />
+		<Content Include="Edit\Globalization\flags\ls.png" />
+		<Content Include="Edit\Globalization\flags\lt.png" />
+		<Content Include="Edit\Globalization\flags\lu.png" />
+		<Content Include="Edit\Globalization\flags\lv.png" />
+		<Content Include="Edit\Globalization\flags\ly.png" />
+		<Content Include="Edit\Globalization\flags\ma.png" />
+		<Content Include="Edit\Globalization\flags\mc.png" />
+		<Content Include="Edit\Globalization\flags\md.png" />
+		<Content Include="Edit\Globalization\flags\me.png" />
+		<Content Include="Edit\Globalization\flags\mg.png" />
+		<Content Include="Edit\Globalization\flags\mh.png" />
+		<Content Include="Edit\Globalization\flags\mk.png" />
+		<Content Include="Edit\Globalization\flags\ml.png" />
+		<Content Include="Edit\Globalization\flags\mm.png" />
+		<Content Include="Edit\Globalization\flags\mn.png" />
+		<Content Include="Edit\Globalization\flags\mo.png" />
+		<Content Include="Edit\Globalization\flags\mp.png" />
+		<Content Include="Edit\Globalization\flags\mq.png" />
+		<Content Include="Edit\Globalization\flags\mr.png" />
+		<Content Include="Edit\Globalization\flags\ms.png" />
+		<Content Include="Edit\Globalization\flags\mt.png" />
+		<Content Include="Edit\Globalization\flags\mu.png" />
+		<Content Include="Edit\Globalization\flags\mv.png" />
+		<Content Include="Edit\Globalization\flags\mw.png" />
+		<Content Include="Edit\Globalization\flags\mx.png" />
+		<Content Include="Edit\Globalization\flags\my.png" />
+		<Content Include="Edit\Globalization\flags\mz.png" />
+		<Content Include="Edit\Globalization\flags\na.png" />
+		<Content Include="Edit\Globalization\flags\nc.png" />
+		<Content Include="Edit\Globalization\flags\ne.png" />
+		<Content Include="Edit\Globalization\flags\nf.png" />
+		<Content Include="Edit\Globalization\flags\ng.png" />
+		<Content Include="Edit\Globalization\flags\ni.png" />
+		<Content Include="Edit\Globalization\flags\nl.png" />
+		<Content Include="Edit\Globalization\flags\no.png" />
+		<Content Include="Edit\Globalization\flags\np.png" />
+		<Content Include="Edit\Globalization\flags\nr.png" />
+		<Content Include="Edit\Globalization\flags\nu.png" />
+		<Content Include="Edit\Globalization\flags\nz.png" />
+		<Content Include="Edit\Globalization\flags\om.png" />
+		<Content Include="Edit\Globalization\flags\pa.png" />
+		<Content Include="Edit\Globalization\flags\pe.png" />
+		<Content Include="Edit\Globalization\flags\pf.png" />
+		<Content Include="Edit\Globalization\flags\pg.png" />
+		<Content Include="Edit\Globalization\flags\ph.png" />
+		<Content Include="Edit\Globalization\flags\pk.png" />
+		<Content Include="Edit\Globalization\flags\pl.png" />
+		<Content Include="Edit\Globalization\flags\pm.png" />
+		<Content Include="Edit\Globalization\flags\pn.png" />
+		<Content Include="Edit\Globalization\flags\pr.png" />
+		<Content Include="Edit\Globalization\flags\ps.png" />
+		<Content Include="Edit\Globalization\flags\pt.png" />
+		<Content Include="Edit\Globalization\flags\pw.png" />
+		<Content Include="Edit\Globalization\flags\py.png" />
+		<Content Include="Edit\Globalization\flags\qa.png" />
+		<Content Include="Edit\Globalization\flags\re.png" />
+		<Content Include="Edit\Globalization\flags\ro.png" />
+		<Content Include="Edit\Globalization\flags\rs.png" />
+		<Content Include="Edit\Globalization\flags\ru.png" />
+		<Content Include="Edit\Globalization\flags\rw.png" />
+		<Content Include="Edit\Globalization\flags\sa.png" />
+		<Content Include="Edit\Globalization\flags\sb.png" />
+		<Content Include="Edit\Globalization\flags\sc.png" />
+		<Content Include="Edit\Globalization\flags\scotland.png" />
+		<Content Include="Edit\Globalization\flags\sd.png" />
+		<Content Include="Edit\Globalization\flags\se.png" />
+		<Content Include="Edit\Globalization\flags\sg.png" />
+		<Content Include="Edit\Globalization\flags\sh.png" />
+		<Content Include="Edit\Globalization\flags\si.png" />
+		<Content Include="Edit\Globalization\flags\sj.png" />
+		<Content Include="Edit\Globalization\flags\sk.png" />
+		<Content Include="Edit\Globalization\flags\sl.png" />
+		<Content Include="Edit\Globalization\flags\sm.png" />
+		<Content Include="Edit\Globalization\flags\sn.png" />
+		<Content Include="Edit\Globalization\flags\so.png" />
+		<Content Include="Edit\Globalization\flags\sr.png" />
+		<Content Include="Edit\Globalization\flags\st.png" />
+		<Content Include="Edit\Globalization\flags\sv.png" />
+		<Content Include="Edit\Globalization\flags\sy.png" />
+		<Content Include="Edit\Globalization\flags\sz.png" />
+		<Content Include="Edit\Globalization\flags\tc.png" />
+		<Content Include="Edit\Globalization\flags\td.png" />
+		<Content Include="Edit\Globalization\flags\tf.png" />
+		<Content Include="Edit\Globalization\flags\tg.png" />
+		<Content Include="Edit\Globalization\flags\th.png" />
+		<Content Include="Edit\Globalization\flags\tj.png" />
+		<Content Include="Edit\Globalization\flags\tk.png" />
+		<Content Include="Edit\Globalization\flags\tl.png" />
+		<Content Include="Edit\Globalization\flags\tm.png" />
+		<Content Include="Edit\Globalization\flags\tn.png" />
+		<Content Include="Edit\Globalization\flags\to.png" />
+		<Content Include="Edit\Globalization\flags\tr.png" />
+		<Content Include="Edit\Globalization\flags\tt.png" />
+		<Content Include="Edit\Globalization\flags\tv.png" />
+		<Content Include="Edit\Globalization\flags\tw.png" />
+		<Content Include="Edit\Globalization\flags\tz.png" />
+		<Content Include="Edit\Globalization\flags\ua.png" />
+		<Content Include="Edit\Globalization\flags\ug.png" />
+		<Content Include="Edit\Globalization\flags\um.png" />
+		<Content Include="Edit\Globalization\flags\us.png" />
+		<Content Include="Edit\Globalization\flags\uy.png" />
+		<Content Include="Edit\Globalization\flags\uz.png" />
+		<Content Include="Edit\Globalization\flags\va.png" />
+		<Content Include="Edit\Globalization\flags\vc.png" />
+		<Content Include="Edit\Globalization\flags\ve.png" />
+		<Content Include="Edit\Globalization\flags\vg.png" />
+		<Content Include="Edit\Globalization\flags\vi.png" />
+		<Content Include="Edit\Globalization\flags\vn.png" />
+		<Content Include="Edit\Globalization\flags\vu.png" />
+		<Content Include="Edit\Globalization\flags\wales.png" />
+		<Content Include="Edit\Globalization\flags\wf.png" />
+		<Content Include="Edit\Globalization\flags\ws.png" />
+		<Content Include="Edit\Globalization\flags\ye.png" />
+		<Content Include="Edit\Globalization\flags\yt.png" />
+		<Content Include="Edit\Globalization\flags\za.png" />
+		<Content Include="Edit\Globalization\flags\zm.png" />
+		<Content Include="Edit\Globalization\flags\zw.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Globalization\flags\Web.config" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Globalization\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\LinkTracker\Css\linktracker.css" />
+		<Content Include="Edit\LinkTracker\Default.aspx" />
+		<Content Include="Edit\LinkTracker\Img\link_break.gif" />
+		<Content Include="Edit\Trash\Default.aspx" />
+		<Content Include="Edit\Trash\img\bin.gif" />
+		<Content Include="Edit\Trash\img\bin_closed.gif" />
+		<Content Include="Edit\Trash\img\bin_empty.gif" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Trash\App_LocalResources\Default.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Trash\App_LocalResources\Default.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Trash\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Wizard\Default.aspx" />
+		<Content Include="Edit\Wizard\Img\brick.png" />
+		<Content Include="Edit\Wizard\Img\bricks.png" />
+		<Content Include="Edit\Wizard\Img\brick_add.png" />
+		<Content Include="Edit\Wizard\Img\wand.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\FileSystem\Directory.aspx" />
+		<Content Include="Edit\FileSystem\File.aspx" />
+		<Content Include="Edit\Globalization\Translate.aspx" />
+		<Content Include="Edit\img\ico\png\bullet_toggle_minus.png" />
+		<Content Include="Edit\KeepAlive\ping.aspx" />
+		<Content Include="Edit\Wizard\App_LocalResources\Default.aspx.it.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Wizard\App_LocalResources\Default.aspx.nl.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\Wizard\App_LocalResources\Default.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Install\FixClass.aspx" />
+		<Content Include="Edit\KeepAlive\Web.config" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\KeepAlive\Ping.ashx" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\App_LocalResources\ru\AffectedItems.ascx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\AvailableZones.ascx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Copy.aspx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Default.aspx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Delete.aspx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Edit.aspx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Framed.Master.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\ItemInfo.ascx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Login.aspx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Move.aspx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\New.aspx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Paste.aspx.ru.resx" />
+		<Content Include="Edit\App_LocalResources\ru\Toolbar.ascx.ru.resx" />
+		<Content Include="Edit\Export\App_LocalResources\Default.aspx.ru.resx" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\Css\TabPanel.css" />
+		<Content Include="Edit\DiscardPreview.aspx" />
+		<Content Include="Edit\img\ajax-loader.gif" />
+		<Content Include="Edit\img\bullet_arrow_down.gif" />
+		<Content Include="Edit\img\ico\png\add.gif" />
+		<Content Include="Edit\img\ico\png\application.png" />
+		<Content Include="Edit\img\ico\png\application_side_tree.png" />
+		<Content Include="Edit\img\ico\png\bin.gif" />
+		<Content Include="Edit\img\ico\png\calendar.png" />
+		<Content Include="Edit\img\ico\png\delete.gif" />
+		<Content Include="Edit\img\ico\png\layout_edit.png" />
+		<Content Include="Edit\img\login_logo.png" />
+		<Content Include="Edit\img\separator.png" />
+		<Content Include="Edit\img\SlidingCurtain_close.png" />
+		<Content Include="Edit\img\SlidingCurtain_logo.png" />
+		<Content Include="Edit\img\SlidingCurtain_open.png" />
+		<Content Include="Edit\Js\jquery-1.3.2.js" />
+		<Content Include="Edit\Js\jquery.ui\jquery-ui-personalized.min.js" />
+		<Content Include="Edit\Js\plugins\date.js" />
+		<Content Include="Edit\App_LocalResources\Dependencies.aspx.resx">
+			<SubType>Designer</SubType>
+		</Content>
+		<Content Include="Edit\App_LocalResources\ru\Dependencies.ru.aspx.resx" />
+		<Content Include="Edit\App_LocalResources\nl\ItemInfo.ascx.nl.resx" />
+		<Content Include="Edit\Js\plugins\FreeTextArea.js" />
+		<Content Include="Edit\Js\plugins\jquery.cookie.js" />
+		<Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
+		<Content Include="Edit\Js\plugins\jquery.n2dimmable.js" />
+		<Content Include="Edit\Js\TabPanel.js" />
+		<Content Include="Edit\PublishPreview.aspx" />
+		<Content Include="Edit\Settings\SettingsEditor.ascx" />
+		<Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx" />
+		<Content Include="Edit\Versions\App_LocalResources\Default.aspx.ru.resx" />
+		<Content Include="Edit\Trash\App_LocalResources\Default.aspx.ru.resx" />
+		<Content Include="Edit\Settings\App_LocalResources\Default.aspx.ru.resx" />
+		<Content Include="Edit\Security\App_LocalResources\Default.aspx.nl.resx" />
+		<Content Include="Edit\Security\App_LocalResources\Default.aspx.ru.resx" />
+		<Content Include="Edit\Navigation\App_LocalResources\Navigation.nl.resx" />
+		<Content Include="Edit\Navigation\App_LocalResources\Search.aspx.ru.resx" />
+		<Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.ru.resx" />
+		<Content Include="Edit\Navigation\App_LocalResources\Table.aspx.ru.resx" />
+		<Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.ru.resx" />
+		<Content Include="Edit\Membership\App_LocalResources\ru\Edit.aspx.ru.resx" />
+		<Content Include="Edit\Membership\App_LocalResources\ru\New.aspx.ru.resx" />
+		<Content Include="Edit\Membership\App_LocalResources\ru\Password.aspx.ru.resx" />
+		<Content Include="Edit\Membership\App_LocalResources\ru\Users.aspx.ru.resx" />
+		<Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.ru.resx" />
+		<Content Include="Edit\Globalization\App_LocalResources\Default.aspx.ru.resx" />
+		<Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.nl.resx" />
+		<Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.ru.resx" />
+		<Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.ru.resx" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Edit\App_LocalResources\mk-MK\AffectedItems.ascx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\AvailableZones.ascx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Copy.aspx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Default.aspx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Delete.aspx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Edit.aspx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Framed.Master.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\ItemInfo.ascx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Login.aspx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Move.aspx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\New.aspx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Paste.aspx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\mk-MK\Toolbar.ascx.mk.resx" />
+		<Content Include="Edit\App_LocalResources\sl\AffectedItems.ascx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\AvailableZones.ascx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Copy.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Default.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Delete.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Dependencies.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Edit.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Framed.Master.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\ItemInfo.ascx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Login.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Move.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\New.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Paste.aspx.sl.resx" />
+		<Content Include="Edit\App_LocalResources\sl\Toolbar.ascx.sl.resx" />
+	</ItemGroup>
+	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+	<Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
+	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
+	<ProjectExtensions>
+		<VisualStudio>
+			<FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+				<WebProjectProperties>
+					<SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+				</WebProjectProperties>
+			</FlavorProperties>
+		</VisualStudio>
+	</ProjectExtensions>
 </Project>
