@@ -123,7 +123,14 @@
 	</Target>
 
 	<Target Name="Test" DependsOnTargets="Clean;Framework-Build">
-		<Exec Command="$(RootFolder)\lib\nunit-console-x86.exe $(SrcFolder)\N2.Tests\bin\N2.Tests.exe $(SrcFolder)\N2.Templates.Tests\bin\N2.Templates.Tests.exe $(SrcFolder)\N2.Extensions.Tests\bin\N2.Extensions.Tests.exe $(SrcFolder)\N2.Edit.Tests\bin\N2.Edit.Tests.exe" />
+		<ItemGroup>
+			<AssembliesToTest Include="$(SrcFolder)\*Tests\bin\$(Configuration)\*.Tests.exe;"/>
+		</ItemGroup>
+		<PropertyGroup>
+			<Exe>$(RootFolder)\lib\nunit-console-x86.exe %(AssembliesToTest.FullPath)</Exe>
+		</PropertyGroup>
+		<Message Text="$(Exe)" />
+		<Exec Command="$(Exe)" />
 	</Target>
 
 </Project>

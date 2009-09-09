@@ -31,9 +31,8 @@ namespace N2.Configuration
         /// Other cache providers:
         /// NHibernate.Cache.NoCacheProvider, NHibernate
         /// NHibernate.Caches.SysCache2.SysCacheProvider,NHibernate.Caches.SysCache2
-        /// NHibernate.Cache.HashtableCacheProvider, NHibernate
         /// </remarks>
-        [ConfigurationProperty("cacheProviderClass", DefaultValue = "NHibernate.Cache.HashtableCacheProvider, NHibernate")]
+		[ConfigurationProperty("cacheProviderClass", DefaultValue = "NHibernate.Cache.NoCacheProvider, NHibernate")]
 		public string CacheProviderClass
 		{
 			get { return (string)base["cacheProviderClass"]; }
@@ -57,7 +56,7 @@ namespace N2.Configuration
 		}
 
         /// <summary>The database flavour decides which propertes the nhibernate configuration will receive.</summary>
-		[ConfigurationProperty("flavour", DefaultValue = DatabaseFlavour.SqlServer2005)]
+		[ConfigurationProperty("flavour", DefaultValue = DatabaseFlavour.AutoDetect)]
 		public DatabaseFlavour Flavour
 		{
 			get { return (DatabaseFlavour)base["flavour"]; }

@@ -62,9 +62,9 @@ namespace N2.Tests
 		}
 
 		[Test]
-		public void CanOperate_OnProect()
+		public void CanOperate_OnProject()
 		{
-			string input = File.ReadAllText(@"..\N2.Tests.csproj");
+			string input = File.ReadAllText(@"..\..\N2.Tests.csproj");
 
 			string result = Regex.Replace(input, pattern, replacement, RegexOptions.Singleline);
 
