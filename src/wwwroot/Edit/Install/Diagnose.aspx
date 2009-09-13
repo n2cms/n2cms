@@ -34,6 +34,7 @@
 			<!-- assemblyl versions -->	
             <label>N2 version</label> <asp:Label ID="lblN2Version" runat="server" /><br />
             <label>N2.Edit version</label> <asp:Label ID="lblEditVersion" runat="server" /><br />
+            <label>Engine type</label><%= N2.Context.Current.GetType() %><br />
             <br />
 			<!--  -->	
             <label>Last error</label><asp:Label ID="lblError" runat="server" /><br />

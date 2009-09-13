@@ -1,7 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Web.Configuration;
+using N2.Engine;
 
 namespace N2.Configuration
 {
@@ -11,6 +10,14 @@ namespace N2.Configuration
     /// </summary>
 	public class EngineSection : ConfigurationSection
 	{
+		/// <summary>A custom <see cref="IEngine"/> to manage the application instead of the default.</summary>
+		[ConfigurationProperty("engineType")]
+		public string EngineType
+		{
+			get { return (string)base["engineType"]; }
+			set { base["engineType"] = value; }
+		}
+
 		[ConfigurationProperty("castleConfiguration", DefaultValue = "assembly://N2/Configuration/castle.config")]
 		public string CastleConfiguration
 		{

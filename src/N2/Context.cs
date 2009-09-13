@@ -14,6 +14,7 @@ using System;
 using System.Configuration;
 using System.Web.Configuration;
 using System.Security;
+using N2.Configuration;
 using N2.Engine;
 using N2.Engine.MediumTrust;
 
@@ -69,11 +70,18 @@ namespace N2
 		{
             try
             {
-                System.Configuration.Configuration config = GetConfiguration();
-                if (config == null)
-                    return new ContentEngine(EventBroker.Instance);
+				var config = ConfigurationManager.GetSection("n2/engine") as EngineSection;
+				if (config != null && !string.IsNullOrEmpty(config.EngineType))
+				{
+					Type engineType = Type.GetType(config.EngineType);
+					if(engineType == null)
+						throw new ConfigurationErrorsException("The type '" + engineType + "' could not be found. Please check the configuration at /configuration/n2/engine[@engineType] or check for missing assemblies.");
+					if(!typeof(IEngine).IsAssignableFrom(engineType))
+						throw new ConfigurationErrorsException("The type '" + engineType + "' doesn't implement 'N2.Engines.IEngine' and cannot be configured in /configuration/n2/engine[@engineType] for that purpose.");
+					return Activator.CreateInstance(engineType) as IEngine;
+				}
 
-				return new ContentEngine(config, "n2", EventBroker.Instance);
+				return new ContentEngine(EventBroker.Instance);
             }
             catch (SecurityException ex)
             {

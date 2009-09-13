@@ -46,10 +46,10 @@ namespace N2.Persistence.NH
 
 			if (config == null) config = new DatabaseSection();
 
+			NHibernate.Cfg.Environment.UseReflectionOptimizer = Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium;
+
 			if (!string.IsNullOrEmpty(config.HibernateMapping))
 				DefaultMapping = config.HibernateMapping;
-			if (config.Flavour == DatabaseFlavour.MySql)
-				stringLength = 16777215;
 
 			SetupProperties(config, connectionStrings);
             SetupMappings(config);
@@ -81,6 +81,10 @@ namespace N2.Persistence.NH
 					throw new ConfigurationErrorsException("Could not find the connection string named '" + config.ConnectionStringName + "' that was defined in the n2/database configuration section.");
 				flavour = DetectFlavor(css);
 			}
+
+			// HACK: used to support seamless text/nvarchar(max) support across databases
+			if (flavour == DatabaseFlavour.MySql)
+				stringLength = 16777215;
 
 			switch (flavour)
 			{

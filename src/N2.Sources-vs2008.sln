@@ -153,9 +153,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net3.5", "net3.5", "{583404
 		..\lib\net3.5\Iesi.Collections.license.txt = ..\lib\net3.5\Iesi.Collections.license.txt
 		..\lib\net3.5\log4net.dll = ..\lib\net3.5\log4net.dll
 		..\lib\net3.5\log4net.license.txt = ..\lib\net3.5\log4net.license.txt
-		..\lib\net3.5\NHibernate.ByteCode.Castle.dll = ..\lib\net3.5\NHibernate.ByteCode.Castle.dll
 		..\lib\net3.5\NHibernate.Caches.SysCache2.dll = ..\lib\net3.5\NHibernate.Caches.SysCache2.dll
-		..\lib\net3.5\NHibernate.dll = ..\lib\net3.5\NHibernate.dll
 		..\lib\net3.5\NHibernate.Linq.dll = ..\lib\net3.5\NHibernate.Linq.dll
 	EndProjectSection
 EndProject

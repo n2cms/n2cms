@@ -6,6 +6,7 @@ using N2.Engine;
 using System.Net;
 using N2.Web;
 using N2.Configuration;
+using System.Security;
 
 namespace N2.Edit.KeepAlive
 {
@@ -39,10 +40,11 @@ namespace N2.Edit.KeepAlive
                     Debug.WriteLine("Ping " + url + ": " + response);
                 }
             }
-            catch (Exception ex)
-            {
-                Trace.TraceWarning(ex.ToString());
-            }
+			catch(SecurityException ex)
+			{
+				Trace.TraceWarning("Stopping keep-alive after exception (probably medium trust environemtn): " + ex);
+				Repeat = Repeat.Once;
+			}
         }
     }
 }
