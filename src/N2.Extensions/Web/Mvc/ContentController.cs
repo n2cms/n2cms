@@ -16,19 +16,25 @@ namespace N2.Web.Mvc
 		where T : ContentItem
 	{
 		private T _currentItem;
+		private IEngine _engine;
 
 		protected ContentController()
 		{
 			TempDataProvider = new SessionAndPerRequestTempDataProvider();
 		}
 
-		protected virtual IEngine Engine
+		public virtual IEngine Engine
 		{
 			get
 			{
-				return ControllerContext.RouteData.Values[ContentRoute.ContentEngineKey] as IEngine
-				       ?? Context.Current;
+				if (_engine == null)
+				{
+					_engine = ControllerContext.RouteData.Values[ContentRoute.ContentEngineKey] as IEngine
+					          ?? Context.Current;
+				}
+				return _engine;
 			}
+			set { _engine = value; }
 		}
 
 		/// <summary>The content item associated with the requested path.</summary>
@@ -119,7 +125,7 @@ namespace N2.Web.Mvc
 		/// Returns a <see cref="ViewPageResult"/> which calls the default action for the controller that handles the current page.
 		/// </summary>
 		/// <returns></returns>
-		protected virtual ViewPageResult ViewParentPage()
+		protected internal virtual ViewPageResult ViewParentPage()
 		{
 			if (CurrentItem.IsPage)
 			{
@@ -127,8 +133,23 @@ namespace N2.Web.Mvc
 					"The current page is already being rendered. ViewPage should only be used from content items to render their parent page.");
 			}
 
-			return new ViewPageResult(CurrentPage, Engine.Resolve<IControllerMapper>(), Engine.Resolve<IWebContext>(),
-			                          ActionInvoker);
+			return ViewPage(CurrentPage);
+		}
+
+		/// <summary>
+		/// Returns a <see cref="ViewPageResult"/> which calls the default action for the controller that handles the current page.
+		/// </summary>
+		/// <returns></returns>
+		protected internal virtual ViewPageResult ViewPage(ContentItem thePage)
+		{
+			if (!thePage.IsPage)
+				throw new InvalidOperationException("Item " + thePage.GetType().Name + " is not a page type and cannot be rendered on its own.");
+
+			if(thePage == CurrentItem)
+				throw new InvalidOperationException("The page passed into ViewPage was the current page. This would cause an infinite loop.");
+
+			return new ViewPageResult(thePage, Engine.Resolve<IControllerMapper>(), Engine.Resolve<IWebContext>(),
+									  ActionInvoker);
 		}
 
 		/// <summary>

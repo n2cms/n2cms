@@ -1,9 +1,11 @@
 using System;
 using System.Web.Mvc;
 using MvcContrib.TestHelper;
+using N2.Engine;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -51,7 +53,7 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			var page = new RegularPage();
 			var controller = new TestItemController();
-			controller.CurrentItem = new TestItem()
+			controller.CurrentItem = new TestItem
 			{
 				Parent = page,
 			};
@@ -64,12 +66,50 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			var page = new RegularPage();
 			var controller = new TestItemController();
-			controller.CurrentItem = new TestItem()
+			controller.CurrentItem = new TestItem
 			{
 				Parent = new TestItem{Parent = page},
 			};
 
 			Assert.That(controller.CurrentPage, Is.EqualTo(page));
+		}
+
+		[Test]
+		public void ViewParentPage_WithPage()
+		{
+			var page = new RegularPage();
+			var controller = new RegularControllerBase();
+			controller.CurrentItem = page;
+
+			controller.Engine = MockRepository.GenerateStub<IEngine>();
+			
+			Assert.Throws<InvalidOperationException>(() => controller.ViewParentPage());
+		}
+
+		[Test]
+		public void ViewParentPage_WithItem()
+		{
+			var page = new RegularPage();
+			var controller = new TestItemController();
+			controller.CurrentItem = new TestItem
+			{
+				Parent = new TestItem { Parent = page },
+			};
+			controller.Engine = MockRepository.GenerateStub<IEngine>();
+			var result = controller.ViewParentPage();
+
+			Assert.That(result.Page, Is.EqualTo(page));
+		}
+
+		[Test]
+		public void ViewPage_WithSamePage()
+		{
+			var page = new RegularPage();
+			var controller = new RegularControllerBase();
+			controller.CurrentItem = page;
+			controller.Engine = MockRepository.GenerateStub<IEngine>();
+
+			Assert.Throws<InvalidOperationException>(() => controller.ViewPage(page));
 		}
 	}
 }

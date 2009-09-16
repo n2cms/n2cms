@@ -22,6 +22,11 @@ namespace N2.Web.Mvc
 			_actionInvoker = actionInvoker;
 		}
 
+		public ContentItem Page
+		{
+			get { return _thePage; }
+		}
+
 		/// <summary>
 		/// Enables processing of the result of an action method by a custom type that inherits from <see cref="T:System.Web.Mvc.ActionResult"/>.
 		/// </summary>

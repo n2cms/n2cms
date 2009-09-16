@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -282,14 +282,6 @@
     <Compile Include="Services\TemplatesInitializer.cs" />
     <Compile Include="Services\TemplatesPartsAdapter.cs" />
     <Compile Include="Services\TitleAndMetaTagApplyer.cs" />
-    <Compile Include="Views\404\Index.aspx.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\500\Index.aspx.cs">
-      <DependentUpon>Index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Views\Shared\Top+SubMenu.Master.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -453,8 +445,6 @@
     <Content Include="Upload\logo_white.png" />
     <Content Include="Upload\skal.jpg" />
     <Content Include="Upload\thorn.jpg" />
-    <Content Include="Views\404\Index.aspx" />
-    <Content Include="Views\500\Index.aspx" />
     <Content Include="Views\Navigation\TopMenu.ascx" />
     <Content Include="Views\Feed\Index.aspx" />
     <Content Include="Views\Shared\BoxedText.ascx" />
@@ -479,78 +469,103 @@
     <Content Include="Views\Text\Index.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\CommentInput.ascx.resx" />
+    <Content Include="Views\Shared\App_LocalResources\CommentInput.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\Poll.ascx.sv.resx" />
+    <Content Include="Views\Shared\App_LocalResources\Poll.ascx.sv.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\Form.ascx.it.resx" />
+    <Content Include="Views\Shared\App_LocalResources\Form.ascx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\Form.ascx.resx" />
+    <Content Include="Views\Shared\App_LocalResources\Form.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\Form.ascx.sv.resx" />
+    <Content Include="Views\Shared\App_LocalResources\Form.ascx.sv.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Navigation\Breadcrumb.ascx" />
     <Content Include="Views\NewsItem\Index.aspx" />
     <Content Include="Views\NewsList\Index.aspx" />
-    <Content Include="Views\Shared\App_LocalResources\Poll.ascx.resx" />
+    <Content Include="Views\Shared\App_LocalResources\Poll.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Definitions.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Definitions.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\EditableContainers.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditableContainers.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\Editables.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Editables.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\nl\Definitions.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Definitions.nl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\nl\EditableContainers.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditableContainers.nl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\nl\Editables.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Editables.nl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\nl\Toolbar.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Toolbar.nl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\nl\Zones.nl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Zones.nl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\ru\Definitions.ru.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Definitions.ru.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\ru\EditableContainers.ru.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\ru\Editables.ru.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Editables.ru.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\ru\Zones.ru.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Zones.ru.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\Zones.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Zones.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\CalendarItem\Index.aspx" />
     <Content Include="Views\CalendarList\Index.aspx" />
@@ -565,13 +580,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\RootPage\Index.aspx" />
-    <Content Include="Views\Shared\App_LocalResources\CalendarTeaser.ascx.resx" />
+    <Content Include="Views\Shared\App_LocalResources\CalendarTeaser.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Shared\Bubble.ascx" />
     <Content Include="Views\Shared\Statistics.ascx" />
     <Content Include="Views\Shared\UrchinTracking.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CalendarList\App_LocalResources\Index.aspx.resx">
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -589,14 +607,11 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>55540</DevelopmentServerPort>
+          <DevelopmentServerPort>63900</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
