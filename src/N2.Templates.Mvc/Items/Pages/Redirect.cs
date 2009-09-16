@@ -33,6 +33,13 @@ namespace N2.Templates.Mvc.Items.Pages
 			set { base.SetDetail("RedirectUrl", value); }
 		}
 
+		[EditableCheckBox("301 (permanent) redirect", 100, ContainerName = Tabs.Advanced)]
+		public virtual bool Redirect301
+		{
+			get { return (bool)(GetDetail("Redirect301") ?? false); }
+			set { SetDetail("Redirect301", value, false); }
+		}
+
 		[EditableCheckBox("Visible", 40, ContainerName = Tabs.Advanced)]
 		public override bool Visible
 		{

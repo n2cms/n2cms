@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\net3.5\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Microsoft.Web.Mvc.dll</HintPath>
@@ -179,6 +183,7 @@
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\NewsListController.cs" />
     <Compile Include="Controllers\PollController.cs" />
+    <Compile Include="Controllers\RedirectController.cs" />
     <Compile Include="Controllers\RootPageController.cs" />
     <Compile Include="Controllers\RssAggregatorController.cs" />
     <Compile Include="Controllers\RssFeedController.cs" />
