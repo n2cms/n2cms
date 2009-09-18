@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Web.Routing;
 using System.Web.Mvc;
 using System.Web;
@@ -69,6 +70,9 @@ namespace N2.Web.Mvc
 				var controllerName = controllerMapper.GetControllerName(item.GetType());
 				
 				if(controllerName == null)
+					return null;
+
+				if(!controllerMapper.ControllerHasAction(controllerName, action))
 					return null;
 
 				var data = new RouteData(this, routeHandler);

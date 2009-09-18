@@ -10,6 +10,7 @@ namespace N2.Web.Mvc
 	public class ControllerMapper : IControllerMapper
 	{
 		private readonly IDictionary<Type, string> _controllerMap = new Dictionary<Type, string>();
+		private readonly IDictionary<string, string[]> _controllerActionMap = new Dictionary<string, string[]>();
 
 		public ControllerMapper(ITypeFinder typeFinder, IDefinitionManager definitionManager)
 		{
@@ -28,6 +29,9 @@ namespace N2.Web.Mvc
 							.GetCanonicalActions()
 							.Select(m => m.ActionName).ToArray();
 						var actionResolver = new ActionResolver(this, methods);
+
+						_controllerActionMap[controllerDefinition.ControllerName] = methods;
+
 						PathDictionary.PrependFinder(id.ItemType, actionResolver);
 					}
 				}
@@ -39,6 +43,19 @@ namespace N2.Web.Mvc
 			string name;
 			ControllerMap.TryGetValue(type, out name);
 			return name;
+		}
+
+		public bool ControllerHasAction(string controllerName, string actionName)
+		{
+			if(!_controllerActionMap.ContainsKey(controllerName))
+				return false;
+
+			foreach(var action in _controllerActionMap[controllerName])
+			{
+				if(String.Equals(action, actionName, StringComparison.InvariantCultureIgnoreCase))
+					return true;
+			}
+			return false;
 		}
 
 		private IDictionary<Type, string> ControllerMap
