@@ -211,7 +211,7 @@ namespace N2.Web.Mvc
 		{
 			ContentItem item = ExtractItem(model);
 
-			if (!item.IsPage)
+			if (item != null && !item.IsPage)
 				throw new InvalidOperationException(@"Rendering of Parts using View(..) is no longer supported. Use PartialView(..) to render this item.
 			
 - Item of type " + item.GetType() + @"
