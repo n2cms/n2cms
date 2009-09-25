@@ -16,10 +16,10 @@ namespace N2.Addons.UITests.Items
 			Debug.WriteLine("InjectCurrentPage");
 			base.InjectCurrentPage(handler);
 		}
-		public override void RewriteRequest()
+		public override void RewriteRequest(N2.Configuration.RewriteMethod rewriteMethod)
 		{
 			Debug.WriteLine("RewriteRequest");
-			base.RewriteRequest();
+			base.RewriteRequest(rewriteMethod);
 		}
 	}
 
