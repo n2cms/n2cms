@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-	<PropertyGroup>
-		<LibPath>..\..\lib\net3.5</LibPath>
-	</PropertyGroup>
+  <PropertyGroup>
+    <LibPath>..\..\lib\net3.5</LibPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -46,6 +46,10 @@
     <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(LibPath)\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.Castle, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\net3.5\NHibernate.ByteCode.Castle.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.Linq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -94,8 +98,9 @@
     </Compile>
     <Compile Include="Extensions\FilterExtensionsTests.cs" />
     <Compile Include="Extensions\TrashExtensionsTests.cs" />
+    <Compile Include="Linq\QueryingOverMultipleItemsAndDetailsTests.cs" />
     <Compile Include="Linq\LinqItem.cs" />
-    <Compile Include="Linq\QueriableTests.cs" />
+    <Compile Include="Linq\QueryingOverSingleItemTests.cs" />
     <Compile Include="Mvc\ContentControllerTests.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
     <Compile Include="Mvc\ControllerMapperTests.cs" />

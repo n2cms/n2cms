@@ -19,11 +19,13 @@
 #endregion
 
 using System;
-using System.Collections;
 
 namespace N2.Details
 {
-    /// <summary>A content detail. A number of content details can be associated with one content item.</summary>
+    /// <summary>
+    /// A content detail. A number of content details can be associated with one content item.
+    /// </summary>
+    /// <remarks>Usually content details are created below the hood when working with primitive .NET types against a contnet item.</remarks>
 	[Serializable]
 	public abstract class ContentDetail: ICloneable
 	{
@@ -81,6 +83,7 @@ namespace N2.Details
 		}
 
 		/// <summary>Gets or sets the content item that this detail belong to.</summary>
+		/// <remarks>Usually this is assigned by a content item which encapsulates the usage of details</remarks>
 		public virtual N2.ContentItem EnclosingItem
 		{
 			get { return enclosingItem; }

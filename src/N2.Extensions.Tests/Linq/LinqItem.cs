@@ -11,8 +11,14 @@ namespace N2.Extensions.Tests.Linq
 		[N2.Details.EditableTextBox("StringProperty", 100)]
 		public virtual string StringProperty
 		{
-			get { return (string)(GetDetail("StringProperty") ?? string.Empty); }
+			get { return GetDetail("StringProperty", string.Empty); }
 			set { SetDetail("StringProperty", value, string.Empty); }
+		}
+		[N2.Details.EditableTextBox("StringProperty2", 100)]
+		public virtual string StringProperty2
+		{
+			get { return GetDetail("StringProperty2", string.Empty); }
+			set { SetDetail("StringProperty2", value, string.Empty); }
 		}
 	}
 }
