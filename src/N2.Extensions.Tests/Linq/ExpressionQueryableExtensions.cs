@@ -9,7 +9,7 @@ namespace N2.Extensions.Tests.Linq
 	public class ExpressionQueryableExtensions : LinqTestsBase
 	{
 		//Expr: value(NHibernate.Linq.Query`1[N2.Extensions.Tests.Linq.LinqItem]).Where(ci => ci.Details.Values.OfType().Any(value(N2.Linq.QueryableExtensions+<>c__DisplayClassc`1[N2.Extensions.Tests.Linq.LinqItem]).
-		[Test, Ignore]
+		[Test]
 		public void CanSelectItems_WhereDetail_WithStronglyTypedStringProperty_EqualsValue()
 		{
 			var query = engine.QueryItems<LinqItem>()

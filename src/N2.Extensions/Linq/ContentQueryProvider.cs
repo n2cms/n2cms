@@ -43,11 +43,6 @@ namespace N2.Linq
 					var ofTypeCall = Expression.Call(valuesProperty, ofTypeMethod, valuesProperty);
 					var anyMethod = typeof(Enumerable).GetMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).GetGenericMethodDefinition().MakeGenericMethod(typeof(StringDetail));
 
-					//var cdParameter = Expression.Parameter(typeof(StringDetail), "cd");
-					//var stringValueProperty = Expression.Property(cdParameter, "StringValue");
-					//var constant = Expression.Constant("hello");
-					//var equalsExpression = Expression.Equal(stringValueProperty, constant);
-
 					var detailExpression = GetDetailExpression<StringDetail>(expressionBody.Left as MemberExpression, expressionBody.Right);
 					var anyCall = Expression.Call(ofTypeCall, anyMethod, ofTypeCall, detailExpression);
 					
@@ -55,8 +50,6 @@ namespace N2.Linq
 					var quote = Expression.Quote(itemExpression);
 
 					var replacement = Expression.Call(mcExpression.Object, mcExpression.Method, mcExpression.Arguments[0], quote);
-					Debug.WriteLine("expr: " + expression);
-					Debug.WriteLine("repl: " + replacement);
 					expression = replacement;
 				}
 			}
@@ -65,10 +58,10 @@ namespace N2.Linq
 
 		static Expression<Func<T, bool>> GetDetailExpression<T>(MemberExpression nameExpression, Expression valueExpression) where T : ContentDetail
 		{
-			ParameterExpression detailParameter = Expression.Parameter(typeof(StringDetail), "ci");
+			ParameterExpression detailParameter = Expression.Parameter(typeof(StringDetail), "cd");
 			var nameEqual = GetPropertyComparison<T>(detailParameter, "Name", Expression.Constant(nameExpression.Member.Name));
 			var valueEqual = GetPropertyComparison<T>(detailParameter, "StringValue", valueExpression);
-			Expression nameAndValue = Expression<Func<T, bool>>.And(nameEqual, valueEqual);
+			Expression nameAndValue = Expression<Func<T, bool>>.AndAlso(nameEqual, valueEqual);
 			var nameAndValueExpression = Expression.Lambda<Func<T, bool>>(nameAndValue, detailParameter);
 			return nameAndValueExpression;
 		}
@@ -79,15 +72,6 @@ namespace N2.Linq
 			BinaryExpression binaryExpression = Expression.Equal(propertyAccess, right);
 			return binaryExpression;
 		}
-
-
-
-
-
-
-
-
-
 
 		public IQueryable CreateQuery(Expression expression)
 		{
