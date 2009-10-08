@@ -1,11 +1,25 @@
+using N2.Resources;
 using System;
 using N2.Edit.Web;
 using N2.Web;
 
 namespace N2.Edit.ItemSelection
 {
+	using Resources;
+	
 	public partial class Default : UrlSelectionPage
 	{
+		protected override void OnInit(EventArgs e)
+		{
+			//css to hilight selection..
+			Register.StyleSheet(this.Page, @"~\Edit\FileManagement\Css\filemanager.css");
+			
+			//focus on selection
+			Register.JavaScript(this.Page, "$('.selected').focus();", ScriptOptions.DocumentReady);
+			
+			base.OnInit(e);
+		}
+		
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			if (!IsPostBack)
