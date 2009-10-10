@@ -24,7 +24,7 @@ namespace N2.Tests.SchemaExporting
 			}, true, true);
 		}
 
-		[Test]
+		[Test, Ignore("Requires sql server")]
 		public void CanUpdate_IntProperty_WithoutClearingData()
 		{
 			var cfg1 = CreateConfiguration(xml1);
@@ -63,7 +63,7 @@ namespace N2.Tests.SchemaExporting
 			}, true, true);
 		}
 
-		[Test]
+		[Test, Ignore("Requires sql server")]
 		public void CanUpdate_FromScratch()
 		{
 			SchemaUpdate schemaUpdater = new SchemaUpdate(CreateConfiguration(xml2));
