@@ -21,19 +21,23 @@ namespace N2.Web.Mvc
 				if(controllerDefinition != null)
 				{
 					ControllerMap[id.ItemType] = controllerDefinition.ControllerName;
-					IList<IPathFinder> finders = PathDictionary.GetFinders(id.ItemType);
-					if (0 == finders.Where(f => f is ActionResolver).Count())
-					{
-						// Use MVC's ReflectedControllerDescriptor to find all actions on the Controller
-						var methods = new ReflectedControllerDescriptor(controllerDefinition.AdapterType)
-							.GetCanonicalActions()
-							.Select(m => m.ActionName).ToArray();
-						var actionResolver = new ActionResolver(this, methods);
 
-						_controllerActionMap[controllerDefinition.ControllerName] = methods;
+					// interacting with static context is tricky, here I made the assumtion that the last
+					// finder is the most relevat and takes the place of previous ones, this makes a few 
+					// tests pass and doesn't seem to be called in production
+					foreach (var finder in PathDictionary.GetFinders(id.ItemType).Where(f => f is ActionResolver))
+						PathDictionary.RemoveFinder(id.ItemType, finder);
 
-						PathDictionary.PrependFinder(id.ItemType, actionResolver);
-					}
+					// Use MVC's ReflectedControllerDescriptor to find all actions on the Controller
+					var methods = new ReflectedControllerDescriptor(controllerDefinition.AdapterType)
+						.GetCanonicalActions()
+						.Select(m => m.ActionName).ToArray();
+					var actionResolver = new ActionResolver(this, methods);
+
+					_controllerActionMap[controllerDefinition.ControllerName] = methods;
+
+					PathDictionary.PrependFinder(id.ItemType, actionResolver);
+				
 				}
 			}
 		}

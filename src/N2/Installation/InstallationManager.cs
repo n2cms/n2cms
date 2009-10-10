@@ -116,10 +116,10 @@ namespace N2.Installation
 				using (sessionProvider)
 				{
                     ISession session = sessionProvider.OpenSession.Session;
-					status.Items = session.CreateCriteria(typeof (ContentItem)).List().Count;
-					status.Details = session.CreateCriteria(typeof(ContentDetail)).List().Count;
-					status.DetailCollections = session.CreateCriteria(typeof(DetailCollection)).List().Count;
-					status.AuthorizedRoles = session.CreateCriteria(typeof(AuthorizedRole)).List().Count;
+					status.Items = Convert.ToInt32(session.CreateQuery("select count(*) from ContentItem").UniqueResult());
+					status.Details = Convert.ToInt32(session.CreateQuery("select count(*) from ContentDetail").UniqueResult());
+					status.DetailCollections = Convert.ToInt32(session.CreateQuery("select count(*) from AuthorizedRole").UniqueResult());
+					status.AuthorizedRoles = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
 				}
 				status.HasSchema = true;
 			}
@@ -159,10 +159,10 @@ namespace N2.Installation
             using (sessionProvider)
 			{
                 ISession session = sessionProvider.OpenSession.Session;
-				int itemCount = session.CreateCriteria(typeof (ContentItem)).List().Count;
-				int detailCount = session.CreateCriteria(typeof (ContentDetail)).List().Count;
-				int allowedRoleCount = session.CreateCriteria(typeof (AuthorizedRole)).List().Count;
-				int detailCollectionCount = session.CreateCriteria(typeof (DetailCollection)).List().Count;
+				int itemCount = Convert.ToInt32(session.CreateQuery("select count(*) from ContentItem").UniqueResult());
+				int detailCount = Convert.ToInt32(session.CreateQuery("select count(*) from ContentDetail").UniqueResult());
+				int allowedRoleCount = Convert.ToInt32(session.CreateQuery("select count(*) from AuthorizedRole").UniqueResult());
+				int detailCollectionCount = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
 				return string.Format("Database OK, items: {0}, details: {1}, allowed roles: {2}, detail collections: {3}",
 				                     itemCount, detailCount, allowedRoleCount, detailCollectionCount);
 			}

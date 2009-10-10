@@ -80,5 +80,22 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(items.Contains(root));
 			Assert.That(!items.Contains(item));
 		}
+
+		[Test]
+		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_OnTwoDetails()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.Where(ci => ci.Details.Values.OfType<StringDetail>()
+					.Any(cd => cd.Name == "StringProperty" && cd.StringValue == "a string"))
+				.Where(ci => ci.Details.Values.OfType<StringDetail>()
+					.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string"));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(items.Contains(root));
+			Assert.That(!items.Contains(item));
+		}
 	}
 }

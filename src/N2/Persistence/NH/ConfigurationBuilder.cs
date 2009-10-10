@@ -70,8 +70,8 @@ namespace N2.Persistence.NH
 		/// <param name="config">The database section configuration.</param>
 		protected void SetupProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
-			Properties["connection.connection_string_name"] = config.ConnectionStringName;
-			Properties["connection.provider"] = "NHibernate.Connection.DriverConnectionProvider";
+			Properties[NHibernate.Cfg.Environment.ConnectionStringName] = config.ConnectionStringName;
+			Properties[NHibernate.Cfg.Environment.ConnectionProvider] = "NHibernate.Connection.DriverConnectionProvider";
 
 			DatabaseFlavour flavour = config.Flavour;
 			if (flavour == DatabaseFlavour.AutoDetect)

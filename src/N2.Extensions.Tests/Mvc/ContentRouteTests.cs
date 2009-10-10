@@ -15,6 +15,7 @@ using N2.Web;
 using Microsoft.Web.Mvc;
 using System.Web.Mvc.Html;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
+using System.Diagnostics;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -83,6 +84,7 @@ namespace N2.Extensions.Tests.Mvc
 
 		void SetPath(string url)
 		{
+			Debug.WriteLine("Setting path to " + url);
 			httpContext.request.appRelativeCurrentExecutionFilePath = url;
 			httpContext.request.rawUrl = url;
 		}

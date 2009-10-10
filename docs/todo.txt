@@ -1,6 +1,4 @@
 - make all objects editable
-- NH 2.1
-- tiny 1.4.3
 - deprecate and replace mail stuff
 - auto-parts
 - "hidden" non-parts pages
@@ -31,8 +29,6 @@
 - lock toolbar when editing
 - "controller" http://www.codeplex.com/n2/Thread/View.aspx?ThreadId=42498
 - mysql problem
-- eye icon to n2.edit.dll
-- add form rewriting to n2.dll
 - tests for multiple hosts url rewriting
 - make it possible to change edit page
 - fix IAutoStart

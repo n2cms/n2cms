@@ -1,4 +1,6 @@
-﻿- picked up Martijn Bolands work to enable castle ioc in medium trust (http://blogs.taiga.nl/martijn/2009/06/24/new-adventures-under-medium-trust/)
+﻿- rudimentary NHibernate.Linq support
+- NH 2.1
+- picked up Martijn Bolands work to enable castle ioc in medium trust (http://blogs.taiga.nl/martijn/2009/06/24/new-adventures-under-medium-trust/)
 - max number of versions (configuration change: <edit enableVersioning="false"> -> <edit><versions enabled="false">)
 - fixed #24210: Writers can publish using the version list
 - made url-rewriter honor ignoreExistingFiles

@@ -7,6 +7,13 @@ namespace N2.Linq
 {
 	public static class QueryableExtensions
 	{
+		public static IQueryable<T> WhereDetail<T>(this IQueryable<T> query, Expression<Func<T, bool>> expr) where T : ContentItem
+		{
+			if (query.Provider is ContentQueryProvider)
+				((ContentQueryProvider)query.Provider).WhereDetailExpressions[expr] = true;
+			return query.Where(expr);
+		}
+
 		public static IQueryable<T> WhereDetailEquals<T, TValue>(this IQueryable<T> query, TValue value) where T : ContentItem
 		{
 			var queryByName = query.Where(
@@ -92,68 +99,6 @@ namespace N2.Linq
 		private static Expression<Func<T, bool>> UnknownValueType<T>(string name, object value) where T : ContentItem
 		{
 			throw new NotSupportedException(value + " is not supported.");
-		}
-
-
-
-
-
-		public static IQueryable<T> WhereDetail<T>(this IQueryable<T> query, Expression<Func<T, bool>> expr) where T : ContentItem
-		{
-			((ContentQueryProvider) query.Provider).ReplacedExpressions[expr] = GetComparisonExpression(expr);
-			return query.Where(expr);
-			//if (expr.Body.NodeType == ExpressionType.Equal)
-			//    return query.TranslateToDetailEqualsExpression(expr);
-
-			throw new NotImplementedException(expr.ToString());
-		}
-
-		static bool TranslatePosition(ContentDetail arg)
-		{
-			throw new NotImplementedException();
-		}
-
-		private static bool TranslateToDetailExpression<T>(Expression<Func<T, bool>> expr)
-		{
-			throw new NotImplementedException();
-		}
-
-		private static IQueryable<T> TranslateToDetailEqualsExpression<T>(this IQueryable<T> query, Expression<Func<T, bool>> expr) where T : ContentItem
-		{
-			Expression<Func<StringDetail, bool>> comparisonExpression = GetComparisonExpression(expr);
-			var comparisonDelegate = comparisonExpression.Compile();
-
-			return query.Where(ci => ci.Details.Values.OfType<StringDetail>().Any(comparisonExpression.Compile()));
-		}
-
-		static Expression<Func<StringDetail, bool>> GetComparisonExpression<T>(Expression<Func<T, bool>> expr)
-		{
-			var body = expr.Body as BinaryExpression;
-			var left = body.Left as MemberExpression;
-
-			if (left == null)
-				throw new NotImplementedException("TODO: " + expr);
-			if (!typeof(ContentItem).IsAssignableFrom(left.Expression.Type))
-				throw new NotImplementedException("TODO: " + expr);
-
-			return GetNameAndValueComparison<StringDetail>(left, body.Right);
-		}
-
-		static Expression<Func<T, bool>> GetNameAndValueComparison<T>(MemberExpression nameExpression, Expression valueExpression) where T : ContentDetail
-		{
-			ParameterExpression parameterExpression = Expression.Parameter(typeof(StringDetail), "ci");
-			var nameComparer = GetPropertyComparison<T>(parameterExpression, "Name", Expression.Constant(nameExpression.Member.Name));
-			var valueComparer = GetPropertyComparison<T>(parameterExpression, "StringValue", valueExpression);
-			Expression combination = Expression<Func<T, bool>>.And(nameComparer, valueComparer);
-			var lambdaExpression = Expression.Lambda<Func<T, bool>>(combination, parameterExpression);
-			return lambdaExpression;
-		}
-
-		static Expression GetPropertyComparison<T>(ParameterExpression parameterExpression, string propertyName, Expression right)
-		{
-			MemberExpression propertyAccess = Expression.Property(parameterExpression, propertyName);
-			BinaryExpression binaryExpression = Expression.Equal(propertyAccess, right);
-			return binaryExpression;
 		}
 	}
 }
