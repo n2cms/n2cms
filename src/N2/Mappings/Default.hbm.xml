@@ -67,20 +67,24 @@
 
 		<discriminator column="Type" type="String" />
 
-		<property name="Created"	  access="property" not-null="true" />
+		<property name="Created"	access="property" not-null="true" />
 		<property name="Published"	access="property" />
 		<property name="Updated"    access="property" not-null="true" />
-		<property name="Expires"	  access="property" />
+		<property name="Expires"	access="property" />
 
 		<property name="Name"       access="property" length="255" />
-		<property name="ZoneName"	  access="property" length="50" />
-		<property name="Title"		  access="property" length="255" />
+		<property name="ZoneName"	access="property" length="50" />
+		<property name="Title"		access="property" length="255" />
 		<property name="SortOrder"	access="property" not-null="true" />
-		<property name="Visible"	  access="property" not-null="true" />
-		<property name="SavedBy"	  access="property" length="50" />
+		<property name="Visible"	access="property" not-null="true" />
+		<property name="SavedBy"	access="property" length="50" />
+		
+		<!--<property name="Trail"		access="property" length="100" />-->
 
 		<many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
 		<many-to-one name="Parent"		column="ParentID"		class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />
+		
+		
 
 		<bag name="Children" cascade="all" generic="true" inverse="true" order-by="SortOrder" lazy="true">
 			<cache usage="read-write" />

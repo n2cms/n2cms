@@ -254,6 +254,13 @@
     <Compile Include="Edit\Install\FixClass.aspx.designer.cs">
       <DependentUpon>FixClass.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\Install\Upgrade.aspx.cs">
+      <DependentUpon>Upgrade.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\Install\Upgrade.aspx.designer.cs">
+      <DependentUpon>Upgrade.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Edit\ItemInfo.ascx.cs">
       <DependentUpon>ItemInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1732,6 +1739,7 @@
     <Content Include="Edit\App_LocalResources\sl\New.aspx.sl.resx" />
     <Content Include="Edit\App_LocalResources\sl\Paste.aspx.sl.resx" />
     <Content Include="Edit\App_LocalResources\sl\Toolbar.ascx.sl.resx" />
+    <Content Include="Edit\Install\Upgrade.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

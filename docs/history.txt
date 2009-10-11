@@ -1,5 +1,7 @@
-﻿- rudimentary NHibernate.Linq support
+﻿- upgrade database support
+- rudimentary NHibernate.Linq support
 	- items.WhereDetail(i => i.DetailProperty == "value")
+	- items.WhereDetail(i => i.IntegerDetail > 0)
 - NH 2.1
 - picked up Martijn Bolands work to enable castle ioc in medium trust (http://blogs.taiga.nl/martijn/2009/06/24/new-adventures-under-medium-trust/)
 - max number of versions (configuration change: <edit enableVersioning="false"> -> <edit><versions enabled="false">)

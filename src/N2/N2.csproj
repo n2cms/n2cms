@@ -1,726 +1,726 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProductVersion>9.0.30729</ProductVersion>
-		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectGuid>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</ProjectGuid>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>N2</RootNamespace>
-		<AssemblyName>N2</AssemblyName>
-		<SccProjectName>
-		</SccProjectName>
-		<SccLocalPath>
-		</SccLocalPath>
-		<SccAuxPath>
-		</SccAuxPath>
-		<SccProvider>
-		</SccProvider>
-		<SignAssembly>false</SignAssembly>
-		<FileUpgradeFlags>
-		</FileUpgradeFlags>
-		<OldToolsVersion>2.0</OldToolsVersion>
-		<UpgradeBackupLocation>
-		</UpgradeBackupLocation>
-		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-		<TargetFrameworkSubset>
-		</TargetFrameworkSubset>
-	</PropertyGroup>
-	<PropertyGroup>
-		<SpecialTargetConstants Condition="'$(NHVersion)' == '2.1'">NET3_5;NH2_1;</SpecialTargetConstants>
-		<LibPath>..\..\lib\net3.5</LibPath>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<OutputPath>bin\Debug\</OutputPath>
-		<DefineConstants>DEBUG;TRACE;NET3_5;NH2_1;</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<DocumentationFile>
-		</DocumentationFile>
-		<NoWarn>1591</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\Release\</OutputPath>
-		<DefineConstants>TRACE;NET3_5;NH2_1;</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<DocumentationFile>bin\N2.XML</DocumentationFile>
-		<NoWarn>1591</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NET2.0|AnyCPU' ">
-		<LibPath>..\..\lib\net2.0</LibPath>
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\NET2.0\</OutputPath>
-		<DefineConstants>TRACE;</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<DocumentationFile>bin\N2.XML</DocumentationFile>
-		<TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-		<NoWarn>1591</NoWarn>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="Castle.Core, Version=1.0.3.4831, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\Castle.Core.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
-		<Reference Include="Castle.DynamicProxy2, Version=2.0.3.4831, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\Castle.DynamicProxy2.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
-		<Reference Include="Castle.MicroKernel, Version=1.0.3.4994, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\Castle.MicroKernel.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
-		<Reference Include="Castle.Windsor, Version=1.0.3.4994, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\Castle.Windsor.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
-		<Reference Include="Iesi.Collections, Version=2.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\Iesi.Collections.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
-		<Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\log4net.dll</HintPath>
-			<Private>True</Private>
-		</Reference>
-		<Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\NHibernate.dll</HintPath>
-		</Reference>
-		<Reference Condition="'$(Configuration)' != 'NET2.0' " Include="NHibernate.ByteCode.Castle, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\NHibernate.ByteCode.Castle.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-	<ItemGroup>
-		<Reference Include="System" />
-		<Reference Include="System.configuration" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Web" />
-		<Reference Include="System.Xml" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="Collections\AccessFilter.cs" />
-		<Compile Include="Collections\CountFilter.cs" />
-		<Compile Include="Collections\ItemComparer.generic.cs" />
-		<Compile Include="Collections\ItemFilter.cs" />
-		<Compile Include="Collections\ItemCollectionEventArgs.cs" />
-		<Compile Include="Collections\ItemList.cs" />
-		<Compile Include="Collections\ItemList.generic.cs" />
-		<Compile Include="Collections\TypeFilter.cs" />
-		<Compile Include="Collections\ZoneFilter.cs" />
-		<Compile Include="Obsolete\Configuration\N2ConfigurationSectionHandler.cs" />
-		<Compile Include="Definitions\IDefinitionManager.cs" />
-		<Compile Include="Details\BooleanDetail.cs" />
-		<Compile Include="Details\ControlAssociationAttribute.cs" />
-		<Compile Include="Details\DisplayableLiteralAttribute.cs" />
-		<Compile Include="Details\EditableUrlAttribute.cs" />
-		<Compile Include="Details\WithEditableAttribute.cs" />
-		<Compile Include="Details\DisplayableAttribute.cs" />
-		<Compile Include="Details\DoubleDetail.cs" />
-		<Compile Include="Details\IntegerDetail.cs" />
-		<Compile Include="Details\EditableFreeTextAreaAttribute.cs" />
-		<Compile Include="Details\EditableTextBoxAttribute.cs" />
-		<Compile Include="Details\StringDetail.cs" />
-		<Compile Include="Details\DateTimeDetail.cs" />
-		<Compile Include="Details\ObjectDetail.cs" />
-		<Compile Include="Edit\ToolbarArea.cs" />
-		<Compile Include="Edit\ToolbarPlugInAttribute.cs" />
-		<Compile Include="Obsolete\AllowedParentsAttribute.cs" />
-		<Compile Include="Integrity\AllowedZonesAttribute.cs" />
-		<Compile Include="Definitions\ItemDefinition.cs" />
-		<Compile Include="Integrity\IIntegrityManager.cs" />
-		<Compile Include="N2Exception.cs" />
-		<Compile Include="Collections\ItemComparer.cs" />
-		<Compile Include="CancellableDestinationEventArgs.cs" />
-		<Compile Include="CancellableItemEventArgs.cs" />
-		<Compile Include="DestinationEventArgs.cs" />
-		<Compile Include="Persistence\IPersister.cs" />
-		<Compile Include="Security\AuthorizedRole.cs" />
-		<Compile Include="Security\ISecurityManager.cs" />
-		<Compile Include="Security\PermissionDeniedException.cs" />
-		<Compile Include="Utility.cs" />
-		<Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
-		<Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
-		<Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
-		<Compile Include="Web\UI\ItemDataSourceSelectingEventArgs.cs" />
-		<Compile Include="Web\UI\ItemDataSourceView.cs" />
-		<Compile Include="Web\UI\QueryDataSourceView.cs" />
-		<Compile Include="Web\UI\ChildrenDataSourceView.cs" />
-		<Compile Include="Web\UI\ControlEventArgs.cs" />
-		<Compile Include="Web\UI\ItemHierarchicalDataSourceView.cs" />
-		<Compile Include="Web\UI\WebControls\CurrentItemParameter.cs" />
-		<Compile Include="Web\UI\WebControls\FileSelector.cs" />
-		<Compile Include="Web\UI\WebControls\Display.cs" />
-		<Compile Include="Web\UI\WebControls\ItemDataSource.cs" />
-		<Compile Include="Web\UI\WebControls\ItemSelector.cs" />
-		<Compile Include="Web\UI\WebControls\UrlSelectorMode.cs" />
-		<Compile Include="Web\PublicSiteMapNode.cs" />
-		<Compile Include="Web\UI\EditorModifierAttribute.cs" />
-		<Compile Include="Integrity\IntegrityManager.cs" />
-		<Compile Include="Details\ContentDetail.cs" />
-		<Compile Include="Context.cs" />
-		<Compile Include="Details\EditableAttribute.cs" />
-		<Compile Include="DefinitionAttribute.cs" />
-		<Compile Include="ItemEventArgs.cs" />
-		<Compile Include="Integrity\NameOccupiedException.cs" />
-		<Compile Include="Web\Global.cs" />
-		<Compile Include="ContentItem.cs" />
-		<Compile Include="Web\Compilation\CurrentItemExpressionBuilder.cs" />
-		<Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="Web\PublicSiteMapProvider.cs" />
-		<Compile Include="Web\UI\IItemContainer.cs" />
-		<Compile Include="Obsolete\IPageItemContainer.cs" />
-		<Compile Include="Web\UI\MasterPage.generic.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Web\UI\ContentUserControl.generic.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Web\UI\WebControls\Zone.cs" />
-		<Compile Include="Web\UI\WebControls\ItemEditor.cs" />
-		<Compile Include="Web\UI\WebControls\UrlSelector.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="Web\UI\ItemUtility.cs" />
-		<Compile Include="Web\UI\WebControls\NameEditor.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="Web\UI\WebControls\FreeTextArea.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="Web\UI\WebControls\ZoneSelector.cs" />
-		<Compile Include="Web\UI\ContentPage.generic.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Integrity\AvailableZoneAttribute.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="Collections\DuplicateFilter.cs" />
-		<Compile Include="Engine\WebAppTypeFinder.cs" />
-		<Compile Include="Definitions\IContainable.cs" />
-		<Compile Include="Definitions\IEditableContainer.cs" />
-		<Compile Include="Definitions\IDefinitionManagerDependency.cs" />
-		<Compile Include="Definitions\IEditable.cs" />
-		<Compile Include="Definitions\ItemAuthorizedRolesAttribute.cs" />
-		<Compile Include="Definitions\NoItemAllowedException.cs" />
-		<Compile Include="Details\WithEditableNameAttribute.cs" />
-		<Compile Include="Details\WithEditableTitleAttribute.cs" />
-		<Compile Include="Details\DetailAuthorizedRolesAttribute.cs" />
-		<Compile Include="Details\EditableUserControlAttribute.cs" />
-		<Compile Include="Details\DetailCollection.cs" />
-		<Compile Include="Details\IDisplayable.cs" />
-		<Compile Include="Details\LinkDetail.cs" />
-		<Compile Include="Definitions\NotAllowedParentException.cs" />
-		<Compile Include="Edit\IEditManager.cs" />
-		<Compile Include="Edit\Web\EditPage.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Engine\AppDomainTypeFinder.cs" />
-		<Compile Include="Engine\IEngine.cs" />
-		<Compile Include="Persistence\IItemNotifier.cs" />
-		<Compile Include="Persistence\Finder\IQueryBuilder.cs" />
-		<Compile Include="Persistence\IRepository.cs" />
-		<Compile Include="Persistence\ITransaction.cs" />
-		<Compile Include="Persistence\NH\NotifyingInterceptor.cs" />
-		<Compile Include="Persistence\NH\Finder\ItemFinder.cs" />
-		<Compile Include="Persistence\NH\NHRepository.cs" />
-		<Compile Include="Persistence\NH\NHTransaction.cs" />
-		<Compile Include="Persistence\NH\RepositoryHelper.cs" />
-		<Compile Include="Persistence\Parameter.cs" />
-		<Compile Include="Plugin\IPluginBootstrapper.cs" />
-		<Compile Include="Plugin\PluginBootstrapper.cs" />
-		<Compile Include="Web\IRequestLifeCycleHandler.cs" />
-		<Compile Include="Web\ISitesSource.cs" />
-		<Compile Include="Web\ISitesProvider.cs" />
-		<Compile Include="Web\IUrlParser.cs" />
-		<Compile Include="Web\IUrlParserDependency.cs" />
-		<Compile Include="Engine\ITypeFinder.cs" />
-		<Compile Include="Integrity\AllowedChildrenAttribute.cs" />
-		<Compile Include="Integrity\CannotDeleteRootException.cs" />
-		<Compile Include="Integrity\DestinationOnOrBelowItselfException.cs" />
-		<Compile Include="Persistence\Comparison.cs" />
-		<Compile Include="Persistence\DoNotCopyAttribute.cs" />
-		<Compile Include="Persistence\NH\IConfigurationBuilder.cs" />
-		<Compile Include="Persistence\NH\ISessionProvider.cs" />
-		<Compile Include="Plugin\IPluginInitializer.cs" />
-		<Compile Include="Plugin\PluginAttribute.cs" />
-		<Compile Include="Obsolete\AuthorizedRolesAttribute.cs" />
-		<Compile Include="Web\InvalidPathException.cs" />
-		<Compile Include="Web\InitializerModule.cs" />
-		<Compile Include="Web\IWebContext.cs" />
-		<Compile Include="Web\MultipleHostsUrlParser.cs" />
-		<Compile Include="Web\DynamicSitesProvider.cs" />
-		<Compile Include="Web\RequestLifeCycleHandler.cs" />
-		<Compile Include="Web\Site.cs" />
-		<Compile Include="Web\TemplateNotFoundException.cs" />
-		<Compile Include="Definitions\EditorContainerAttribute.cs" />
-		<Compile Include="Web\UI\FieldSetContainerAttribute.cs" />
-		<Compile Include="Web\UI\TabContainerAttribute.cs" />
-		<Compile Include="Web\UI\TemplateUrlEventArgs.cs" />
-		<Compile Include="Web\UI\ContentUserControl.generic2.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Web\UI\WebControls\FieldSet.cs" />
-		<Compile Include="Web\UrlParser.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Edit\edit.castle.config" />
-		<EmbeddedResource Include="Engine\engine.castle.config" />
-		<EmbeddedResource Include="Definitions\definitions.castle.config" />
-		<None Include="ContentModel.cd" />
-		<EmbeddedResource Include="Web\Parts\parts.castle.config" />
-		<EmbeddedResource Include="Engine\Globalization\globalization.castle.config" />
-		<EmbeddedResource Include="Plugin\plugin.castle.config" />
-		<EmbeddedResource Include="Integrity\integrity.castle.config" />
-		<EmbeddedResource Include="Security\security.castle.config" />
-		<EmbeddedResource Include="Web\web.castle.config" />
-		<EmbeddedResource Include="Persistence\NH\persistence.castle.config" />
-		<EmbeddedResource Include="Serialization\serialization.castle.config" />
-		<Compile Include="..\AssemblyVersion.cs">
-			<Link>AssemblyVersion.cs</Link>
-		</Compile>
-		<Compile Include="Configuration\PermissionElement.cs" />
-		<Compile Include="Configuration\VersionsElement.cs" />
-		<Compile Include="Configuration\VirtualPathCollection.cs" />
-		<Compile Include="Configuration\VirtualPathElement.cs" />
-		<Compile Include="Definitions\AbstractDefinition.cs" />
-		<Compile Include="Collections\BranchHierarchyBuilder.cs" />
-		<Compile Include="Collections\CompositeFilter.cs" />
-		<Compile Include="Collections\DelegateFilter.cs" />
-		<Compile Include="Collections\HierarchyNode.cs" />
-		<Compile Include="Collections\IHierarchyNavigator.cs" />
-		<Compile Include="Collections\InverseFilter.cs" />
-		<Compile Include="Collections\HierarchyBuilder.cs" />
-		<Compile Include="Collections\ItemHierarchyNavigator.cs" />
-		<Compile Include="Collections\NavigationFilter.cs" />
-		<Compile Include="Collections\NullFilter.cs" />
-		<Compile Include="Collections\PageFilter.cs" />
-		<Compile Include="Collections\ParentFilter.cs" />
-		<Compile Include="Collections\PublishedFilter.cs" />
-		<Compile Include="Collections\RecursiveFinder.cs" />
-		<Compile Include="Collections\TreeHierarchyBuilder.cs" />
-		<Compile Include="Collections\VisibleFilter.cs" />
-		<Compile Include="Configuration\ContainableCollection.cs" />
-		<Compile Include="Configuration\ContainableElement.cs" />
-		<Compile Include="Configuration\DefaultDirectoryElement.cs" />
-		<Compile Include="Configuration\DefaultDirectoryMode.cs" />
-		<Compile Include="Configuration\DefinitionCollection.cs" />
-		<Compile Include="Configuration\DefinitionElement.cs" />
-		<Compile Include="Configuration\InterfacePluginElement.cs" />
-		<Compile Include="Configuration\InterfacePluginCollection.cs" />
-		<Compile Include="Configuration\LazyRemovableCollection.cs" />
-		<Compile Include="Configuration\MappingCollection.cs" />
-		<Compile Include="Configuration\MappingElement.cs" />
-		<Compile Include="Configuration\NamedElement.cs" />
-		<Compile Include="Configuration\NameEditorElement.cs" />
-		<Compile Include="Configuration\PatternValueElement.cs" />
-		<Compile Include="Configuration\PatternValueCollection.cs" />
-		<Compile Include="Configuration\PluginInitializerCollection.cs" />
-		<Compile Include="Configuration\PluginInitializerElement.cs" />
-		<Compile Include="Configuration\RewriteMethod.cs" />
-		<Compile Include="Configuration\SchedulerElement.cs" />
-		<Compile Include="Configuration\DatabaseFlavour.cs" />
-		<Compile Include="Configuration\DatabaseSection.cs" />
-		<Compile Include="Configuration\EditSection.cs" />
-		<Compile Include="Configuration\ErrorAction.cs" />
-		<Compile Include="Configuration\ErrorsElement.cs" />
-		<Compile Include="Configuration\FileSystemFolderCollection.cs" />
-		<Compile Include="Configuration\FolderElement.cs" />
-		<Compile Include="Configuration\GlobalizationElement.cs" />
-		<Compile Include="Configuration\HostSection.cs" />
-		<Compile Include="Configuration\InstallerElement.cs" />
-		<Compile Include="Configuration\OutputCacheElement.cs" />
-		<Compile Include="Configuration\SectionGroup.cs" />
-		<Compile Include="Configuration\EngineSection.cs" />
-		<Compile Include="Configuration\ComponentCollection.cs" />
-		<Compile Include="Configuration\ComponentElement.cs" />
-		<Compile Include="Configuration\SettingsEditorElement.cs" />
-		<Compile Include="Configuration\SettingsEditorCollection.cs" />
-		<Compile Include="Configuration\SiteElement.cs" />
-		<Compile Include="Configuration\SiteElementCollection.cs" />
-		<Compile Include="Configuration\TinyMCEElement.cs" />
-		<Compile Include="Configuration\UrlElement.cs" />
-		<Compile Include="Configuration\WebElement.cs" />
-		<Compile Include="Definitions\AbstractDefinitionRefiner.cs" />
-		<Compile Include="Definitions\AttributeExplorer.cs" />
-		<Compile Include="Definitions\DefinitionBuilder.cs" />
-		<Compile Include="Definitions\DefinitionManager.cs" />
-		<Compile Include="Definitions\DisableAttribute.cs" />
-		<Compile Include="Definitions\ISortableRefiner.cs" />
-		<Compile Include="Definitions\RefineOrder.cs" />
-		<Compile Include="Definitions\RemoveEditableAttribute.cs" />
-		<Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />
-		<Compile Include="Definitions\DefinitionReplacementMode.cs" />
-		<Compile Include="Definitions\Static\Description.cs" />
-		<Compile Include="Definitions\Static\DescriptionDictionary.cs" />
-		<Compile Include="Definitions\Static\IDescriptionRefiner.cs" />
-		<Compile Include="Details\EditableCheckBoxAttribute.cs" />
-		<Compile Include="Details\EditableDateAttribute.cs" />
-		<Compile Include="Details\EditableEnumAttribute.cs" />
-		<Compile Include="Details\EditableListControlAttribute.cs" />
-		<Compile Include="Details\EditableFileUploadAttribute.cs" />
-		<Compile Include="Details\WithEditableDateRangeAttribute.cs" />
-		<Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
-		<Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
-		<Compile Include="Edit\EditableAdapter.cs" />
-		<Compile Include="Edit\FileSystem\DefaultDirectorySelector.cs" />
-		<Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
-		<Compile Include="Edit\IDocumentBaseSource.cs" />
-		<Compile Include="Edit\Trash\TrashPurgeInterval.cs" />
-		<Compile Include="Integrity\RestrictChildrenAttribute.cs" />
-		<Compile Include="Obsolete\EditableAspectController.cs" />
-		<Compile Include="Edit\FileSystem\DirectoryData.cs" />
-		<Compile Include="Edit\FileSystem\FileData.cs" />
-		<Compile Include="Edit\FileSystem\IFileSystem.cs" />
-		<Compile Include="Edit\FileSystem\VirtualPathFileSystem.cs" />
-		<Compile Include="Edit\IControlPanelPlugin.cs" />
-		<Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
-		<Compile Include="Edit\PluginContext.cs" />
-		<Compile Include="Edit\ControlPanelLinkAttribute.cs" />
-		<Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
-		<Compile Include="Edit\Settings\ISettingsEditor.cs" />
-		<Compile Include="Engine\AbstractContentAdapter.cs" />
-		<Compile Include="Engine\Action.cs" />
-		<Compile Include="Engine\ContentAdapterProvider.cs" />
-		<Compile Include="Engine\Function.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="Engine\Globalization\DictionaryScope.cs" />
-		<Compile Include="Engine\Globalization\ILanguage.cs" />
-		<Compile Include="Engine\Globalization\ILanguageGateway.cs" />
-		<Compile Include="Engine\Globalization\LanguageGateway.cs" />
-		<Compile Include="Engine\Globalization\LanguageInterceptor.cs" />
-		<Compile Include="Engine\Globalization\NavigationTranslationsPluginAttribute.cs" />
-		<Compile Include="Engine\Globalization\Scope.cs" />
-		<Compile Include="Engine\Globalization\TranslateSpecification.cs" />
-		<Compile Include="Engine\IContentAdapterProvider.cs" />
-		<Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
-		<Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
-		<Compile Include="Engine\Singleton.cs" />
-		<Compile Include="Installation\DatabaseStatus.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="Installation\InstallationManager.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="Installation\InstallerHint.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="Installation\SqlServerType.cs">
-			<SubType>Code</SubType>
-		</Compile>
-		<Compile Include="Obsolete\DragDropControlPanel.cs" />
-		<Compile Include="Obsolete\InstallerModule.cs" />
-		<Compile Include="Obsolete\InstallerSection.cs" />
-		<Compile Include="Obsolete\Page.generic.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Obsolete\UserControl.generic.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Obsolete\UserControl.generic2.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="PageDefinitionAttribute.cs" />
-		<Compile Include="PartDefinitionAttribute.cs" />
-		<Compile Include="Persistence\IActiveContent.cs" />
-		<Compile Include="Persistence\IUpdatable.cs" />
-		<Compile Include="Persistence\NH\SessionContext.cs" />
-		<Compile Include="Persistence\NH\ConfigurationSource.cs" />
-		<Compile Include="Persistence\NotVersionableAttribute.cs" />
-		<Compile Include="Plugin\IPlugin.cs" />
-		<Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
-		<Compile Include="Edit\Targets.cs" />
-		<Compile Include="Edit\Trash\NotThrowableAttribute.cs" />
-		<Compile Include="Definitions\IDefinitionRefiner.cs" />
-		<Compile Include="Definitions\IInheritableDefinitionRefiner.cs" />
-		<Compile Include="Definitions\IUniquelyNamed.cs" />
-		<Compile Include="Definitions\RemoveDefinitionsAttribute.cs" />
-		<Compile Include="Definitions\ReplaceParentDefinitionAttribute.cs" />
-		<Compile Include="Details\AbstractDisplayableAttribute.cs" />
-		<Compile Include="Details\DisplayableImageAttribute.cs" />
-		<Compile Include="Details\EditableDropDownAttribute.cs" />
-		<Compile Include="Details\EditableImageAttribute.cs" />
-		<Compile Include="Details\DisplayableAnchorAttribute.cs" />
-		<Compile Include="Details\EditableLanguagesDropDownAttribute.cs" />
-		<Compile Include="Details\EditableLinkAttribute.cs" />
-		<Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
-		<Compile Include="Edit\CreationPosition.cs" />
-		<Compile Include="Edit\EditManager.cs" />
-		<Compile Include="Edit\EditToolbarPluginAttribute.cs" />
-		<Compile Include="Edit\ITreeSorter.cs" />
-		<Compile Include="Edit\LinkPluginAttribute.cs" />
-		<Compile Include="Edit\Navigator.cs" />
-		<Compile Include="Edit\NodePosition.cs" />
-		<Compile Include="Edit\ToolbarAreaAttribute.cs" />
-		<Compile Include="Edit\Trash\ITrashCan.cs" />
-		<Compile Include="Edit\Trash\ITrashHandler.cs" />
-		<Compile Include="Edit\TreeSorter.cs" />
-		<Compile Include="Edit\Web\EditPageUserControl.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Edit\Web\EditUserControl.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Engine\ContentEngine.cs" />
-		<Compile Include="INode.cs" />
-		<Compile Include="Obsolete\Configuration\MediumTrustSectionHandler.cs" />
-		<Compile Include="Configuration\TypeElementCollection.cs" />
-		<Compile Include="Configuration\TypeElement.cs" />
-		<Compile Include="Obsolete\Factory.cs" />
-		<Compile Include="Integrity\IntegrityMappingAttribute.cs" />
-		<Compile Include="Integrity\AllowedZones.cs" />
-		<Compile Include="Integrity\IIntegrityEnforcer.cs" />
-		<Compile Include="Integrity\IntegrityMappingOption.cs" />
-		<Compile Include="Integrity\TypeIntegrityAttribute.cs" />
-		<Compile Include="Integrity\IntegrityEnforcer.cs" />
-		<Compile Include="Integrity\RestrictParentsAttribute.cs" />
-		<Compile Include="Obsolete\InitializerModule.cs" />
-		<Compile Include="Obsolete\ItemAttribute.cs" />
-		<Compile Include="Persistence\ItemNotifier.cs" />
-		<Compile Include="Persistence\NH\ConfigurationBuilder.cs" />
-		<Compile Include="Persistence\NH\ContentPersister.cs" />
-		<Compile Include="Persistence\NH\SessionProvider.cs" />
-		<Compile Include="Plugin\IAutoStart.cs" />
-		<Compile Include="Plugin\IPluginFinder.cs" />
-		<Compile Include="Plugin\PluginFinder.cs" />
-		<Compile Include="Plugin\PluginInitializationException.cs" />
-		<Compile Include="Plugin\Scheduling\Heart.cs" />
-		<Compile Include="Plugin\Scheduling\ScheduledAction.cs" />
-		<Compile Include="Plugin\Scheduling\IHeart.cs" />
-		<Compile Include="Plugin\Scheduling\Repeat.cs" />
-		<Compile Include="Plugin\Scheduling\ScheduleExecutionAttribute.cs" />
-		<Compile Include="Plugin\Scheduling\Scheduler.cs" />
-		<Compile Include="Plugin\Scheduling\TimeUnit.cs" />
-		<Compile Include="Security\DynamicPermissionMap.cs" />
-		<Compile Include="Security\Permission.cs" />
-		<Compile Include="Security\PermissionMap.cs" />
-		<Compile Include="Security\SecurityManager.cs" />
-		<Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
-		<Compile Include="Serialization\ExportOptions.cs" />
-		<Compile Include="Engine\EventBroker.cs" />
-		<Compile Include="Web\ConventionTemplateAttribute.cs" />
-		<Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
-		<Compile Include="Web\PathDictionary.cs" />
-		<Compile Include="Web\GoogleSiteMapHandler.cs" />
-		<Compile Include="Web\Parts\IAddablePart.cs" />
-		<Compile Include="Obsolete\PartsAspectController.cs" />
-		<Compile Include="Web\RequestAdapter.cs" />
-		<Compile Include="Web\AdaptiveContext.cs" />
-		<Compile Include="Web\CachingUrlParserDecorator.cs" />
-		<Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
-		<Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
-		<Compile Include="Web\ControlsAttribute.cs" />
-		<Compile Include="Web\HttpRequestContextAccessor.cs" />
-		<Compile Include="Engine\IContentAdapter.cs" />
-		<Compile Include="Web\IAdapterDescriptor.cs" />
-		<Compile Include="Web\IRequestContextAccessor.cs" />
-		<Compile Include="Web\IRequestDispatcher.cs" />
-		<Compile Include="Web\DynamicTemplateAttribute.cs" />
-		<Compile Include="Web\ErrorHandler.cs" />
-		<Compile Include="Obsolete\RequestAspectController.cs" />
-		<Compile Include="Web\RequestDispatcher.cs" />
-		<Compile Include="Web\Host.cs" />
-		<Compile Include="Web\HtmlFilter.cs" />
-		<Compile Include="Web\HtmlHelper.cs" />
-		<Compile Include="Web\IClosable.cs" />
-		<Compile Include="Web\IErrorHandler.cs" />
-		<Compile Include="Web\IHost.cs" />
-		<Compile Include="Web\IPathFinder.cs" />
-		<Compile Include="Web\Mail\IMailSender.cs" />
-		<Compile Include="Web\Mail\SmtpMailSender.cs" />
-		<Compile Include="Web\Mail\StaticMailSender.cs" />
-		<Compile Include="Web\Parts\CreateUrlProvider.cs" />
-		<Compile Include="Web\Parts\EditUrlProvider.cs" />
-		<Compile Include="Web\Parts\ItemCopyer.cs" />
-		<Compile Include="Web\Parts\ItemDeleter.cs" />
-		<Compile Include="Web\Parts\ItemMover.cs" />
-		<Compile Include="Web\Parts\PartsAjaxService.cs" />
-		<Compile Include="Web\PathData.cs" />
-		<Compile Include="Web\RegexTemplateAttribute.cs" />
-		<Compile Include="Web\RequestItem.cs" />
-		<Compile Include="Web\TemplateAttribute.cs" />
-		<Compile Include="Web\TagBuilder.cs" />
-		<Compile Include="Web\ThreadContext.cs" />
-		<Compile Include="Web\UI\CacheManager.cs" />
-		<Compile Include="Web\UI\ContentCacheDependency.cs" />
-		<Compile Include="Web\UI\ICacheManager.cs" />
-		<Compile Include="Web\UI\IContentTemplate.cs" />
-		<Compile Include="Web\UI\ContentPage.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Web\UI\ContentUserControl.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Web\UI\WebControls\A.cs" />
-		<Compile Include="Web\UI\WebControls\OptionsMenu.cs" />
-		<Compile Include="Web\UI\WebControls\RawUrlForm.cs" />
-		<Compile Include="Web\UI\WebControls\Repeater.cs" />
-		<Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
-		<Compile Include="Web\UI\WebControls\DroppableZone.cs" />
-		<Compile Include="Web\UI\WebControls\DropPoint.cs" />
-		<Compile Include="Web\UI\WebControls\HasValue.cs" />
-		<Compile Include="Web\UI\WebControls\Li.cs" />
-		<Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
-		<Compile Include="Web\UI\WebControls\DragToolbar.cs" />
-		<Compile Include="Persistence\GenericFind.cs" />
-		<Compile Include="Persistence\IVersionManager.cs" />
-		<Compile Include="Persistence\NH\Finder\AbstractInHqlProvider.cs" />
-		<Compile Include="Persistence\NH\Finder\DetailInHqlProvider.cs" />
-		<Compile Include="Persistence\NH\Finder\PropertyInHqlProvider.cs" />
-		<Compile Include="Persistence\VersionManager.cs" />
-		<Compile Include="Plugin\AutoInitializeAttribute.cs" />
-		<Compile Include="Plugin\InitializerCreatingAttribute.cs" />
-		<Compile Include="Plugin\IPluginDefinition.cs" />
-		<Compile Include="Resources\Media.cs" />
-		<Compile Include="Resources\ScriptOptions.cs" />
-		<Compile Include="Resources\ScriptPosition.cs" />
-		<Compile Include="Security\Authorization.cs" />
-		<Compile Include="Security\ISecurable.cs" />
-		<Compile Include="Definitions\RootContainer.cs" />
-		<Compile Include="Definitions\EditableHierarchyBuilder.cs" />
-		<Compile Include="Details\AbstractEditableAttribute.cs" />
-		<Compile Include="Details\WithEditableChildAttribute.cs" />
-		<Compile Include="Details\EditableItemAttribute.cs" />
-		<Compile Include="Details\EditableChildrenAttribute.cs" />
-		<Compile Include="Edit\AdministrativePlugInAttribute.cs" />
-		<Compile Include="Edit\NavigationPlugInAttribute.cs" />
-		<Compile Include="Edit\Settings\NavigationSettings.cs" />
-		<Compile Include="Find.cs" />
-		<Compile Include="Integrity\AllowedTypes.cs" />
-		<Compile Include="Persistence\Finder\IQueryEnding.cs" />
-		<Compile Include="Persistence\Finder\IQueryAction.cs" />
-		<Compile Include="Persistence\Finder\IDetailCriteria.cs" />
-		<Compile Include="Persistence\Finder\IQueryEnd.cs" />
-		<Compile Include="Persistence\Finder\ICriteria.cs" />
-		<Compile Include="Persistence\Finder\ICompareCriteria.cs" />
-		<Compile Include="Persistence\Finder\IOrderBy.cs" />
-		<Compile Include="Persistence\Finder\ISortDirection.cs" />
-		<Compile Include="Persistence\Finder\IStringCriteria.cs" />
-		<Compile Include="Persistence\NH\Finder\PropertyClassCriteria.cs" />
-		<Compile Include="Persistence\NH\Finder\DetailSortDirection.cs" />
-		<Compile Include="Persistence\NH\Finder\OrderBy.cs" />
-		<Compile Include="Persistence\Finder\VersionOption.cs" />
-		<Compile Include="Persistence\NH\Finder\AbstractHqlProvider.cs" />
-		<Compile Include="Persistence\NH\Finder\DetailBetweenHqlProvider.cs" />
-		<Compile Include="Persistence\NH\Finder\DetailCriteria.cs" />
-		<Compile Include="Persistence\NH\Finder\DetailHqlProvider.cs" />
-		<Compile Include="Persistence\Finder\IItemFinder.cs" />
-		<Compile Include="Persistence\NH\Finder\PropertyStringCriteria.cs" />
-		<Compile Include="Persistence\NH\Finder\IHqlProvider.cs" />
-		<Compile Include="Persistence\NH\Finder\PropertyBetweenHqlProvider.cs" />
-		<Compile Include="Persistence\NH\Finder\PropertyCriteria.cs" />
-		<Compile Include="Persistence\NH\Finder\PropertyVersionOfCriteria.cs" />
-		<Compile Include="Persistence\NH\Finder\QueryBuilder.cs" />
-		<Compile Include="Persistence\NH\Finder\Operator.cs" />
-		<Compile Include="Persistence\NH\Finder\PropertyHqlProvider.cs" />
-		<Compile Include="Persistence\NH\Finder\PropertySortDirection.cs" />
-		<Compile Include="Persistence\NH\Finder\StringWrapper.cs" />
-		<Compile Include="Persistence\NH\Finder\TextOnlyHqlProvider.cs" />
-		<Compile Include="Persistence\NH\Finder\VersionOfHqlProvider.cs" />
-		<Compile Include="Persistence\NH\INHRepository.cs" />
-		<Compile Include="Resources\Register.cs" />
-		<Compile Include="Security\ISecurityEnforcer.cs" />
-		<Compile Include="Security\SecurityEnforcer.cs" />
-		<Compile Include="Serialization\Attachment.cs" />
-		<Compile Include="Serialization\AttachmentXmlReader.cs" />
-		<Compile Include="Serialization\AttachmentXmlWriter.cs" />
-		<Compile Include="Serialization\AuthorizationXmlReader.cs" />
-		<Compile Include="Serialization\AuthorizationXmlWriter.cs" />
-		<Compile Include="Serialization\ChildXmlWriter.cs" />
-		<Compile Include="Serialization\GZipExporter.cs" />
-		<Compile Include="Serialization\GZipImporter.cs" />
-		<Compile Include="Serialization\DefinitionNotFoundException.cs" />
-		<Compile Include="Serialization\DetailCollectionXmlReader.cs" />
-		<Compile Include="Serialization\DetailCollectionXmlWriter.cs" />
-		<Compile Include="Serialization\DetailXmlReader.cs" />
-		<Compile Include="Serialization\DetailXmlWriter.cs" />
-		<Compile Include="Serialization\Exporter.cs" />
-		<Compile Include="Serialization\FileAttachmentAttribute.cs" />
-		<Compile Include="Serialization\IAttachmentHandler.cs" />
-		<Compile Include="Serialization\DeserializationException.cs" />
-		<Compile Include="Serialization\Importer.cs" />
-		<Compile Include="Serialization\ImportOption.cs" />
-		<Compile Include="Serialization\IImportRecord.cs" />
-		<Compile Include="Serialization\ItemXmlReader.cs" />
-		<Compile Include="Serialization\IXmlReader.cs" />
-		<Compile Include="Serialization\ReadingJournal.cs" />
-		<Compile Include="Serialization\SerializationUtility.cs" />
-		<Compile Include="Serialization\WrongVersionException.cs" />
-		<Compile Include="Serialization\IXmlWriter.cs" />
-		<Compile Include="Serialization\XmlReader.cs" />
-		<Compile Include="Web\AjaxRequestDispatcher.cs" />
-		<Compile Include="Web\AjaxRequestHandler.cs" />
-		<Compile Include="Web\IAjaxService.cs" />
-		<Compile Include="Web\ILink.cs" />
-		<Compile Include="Web\ILinkBuilder.cs" />
-		<Compile Include="Web\Link.cs" />
-		<Compile Include="Web\PageNotFoundEventArgs.cs" />
-		<Compile Include="Web\Tree.cs" />
-		<Compile Include="Web\UI\DividerAttribute.cs" />
-		<Compile Include="Web\UI\ItemAwareControl.cs" />
-		<Compile Include="Web\UI\WebControls\ControlPanel.cs" />
-		<Compile Include="Web\UI\WebControls\ControlPanelState.cs" />
-		<Compile Include="Web\UI\WebControls\EditableDisplay.cs" />
-		<Compile Include="Web\UI\WebControls\HN.cs" />
-		<Compile Include="Web\UI\WebControls\DatePicker.cs" />
-		<Compile Include="Web\UI\WebControls\DateRange.cs" />
-		<Compile Include="Web\UI\WebControls\Hr.cs" />
-		<Compile Include="Web\UI\WebControls\IEditableEditor.cs" />
-		<Compile Include="Web\UI\WebControls\IItemEditor.cs" />
-		<Compile Include="Web\UI\WebControls\ItemEditorList.cs" />
-		<Compile Include="Web\UI\WebControls\ItemEditorSavingMode.cs" />
-		<Compile Include="Web\UI\WebControls\StyleSheet.cs" />
-		<Compile Include="Web\UI\WebControls\TabPanel.cs" />
-		<Compile Include="Serialization\ElementWriter.cs" />
-		<Compile Include="Serialization\ItemXmlWriter.cs" />
-		<Compile Include="Web\UI\WebControls\Tree.cs" />
-		<Compile Include="Web\UI\WebControls\TreeNode.cs" />
-		<Compile Include="Web\UI\WebControls\Ul.cs" />
-		<Compile Include="Web\Url.cs" />
-		<Compile Include="Web\WebRequestContext.cs" />
-		<Compile Include="Web\Parts\PartsAdapter.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Engine\n2.configuration.xml" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Resources\add.gif" />
-		<EmbeddedResource Include="Resources\bin.gif" />
-		<EmbeddedResource Include="Resources\delete.gif" />
-	</ItemGroup>
-	<ItemGroup>
-		<Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Installation\installation.castle.config" />
-		<EmbeddedResource Include="Mappings\Default.hbm.xml" />
-		<EmbeddedResource Include="Configuration\castle.config" />
-		<Content Include="ProjectComments.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<EmbeddedResource Include="Resources\bullet_arrow_down.png" />
-		<EmbeddedResource Include="Resources\bullet_arrow_up.png" />
-		<EmbeddedResource Include="Resources\jquery-1.3.2.min.js" />
-		<EmbeddedResource Include="Web\n2.multiplesites.xml" />
-		<EmbeddedResource Include="Web\n2.notweb.xml" />
-	</ItemGroup>
-	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2</RootNamespace>
+    <AssemblyName>N2</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SpecialTargetConstants Condition="'$(NHVersion)' == '2.1'">NET3_5;NH2_1;</SpecialTargetConstants>
+    <LibPath>..\..\lib\net3.5</LibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET3_5;NH2_1;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET3_5;NH2_1;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\N2.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NET2.0|AnyCPU' ">
+    <LibPath>..\..\lib\net2.0</LibPath>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\NET2.0\</OutputPath>
+    <DefineConstants>TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\N2.XML</DocumentationFile>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.4831, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.0.3.4831, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\Castle.DynamicProxy2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.MicroKernel, Version=1.0.3.4994, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\Castle.MicroKernel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=1.0.3.4994, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\Castle.Windsor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=2.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Condition="'$(Configuration)' != 'NET2.0' " Include="NHibernate.ByteCode.Castle, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\NHibernate.ByteCode.Castle.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\AccessFilter.cs" />
+    <Compile Include="Collections\CountFilter.cs" />
+    <Compile Include="Collections\ItemComparer.generic.cs" />
+    <Compile Include="Collections\ItemFilter.cs" />
+    <Compile Include="Collections\ItemCollectionEventArgs.cs" />
+    <Compile Include="Collections\ItemList.cs" />
+    <Compile Include="Collections\ItemList.generic.cs" />
+    <Compile Include="Collections\TypeFilter.cs" />
+    <Compile Include="Collections\ZoneFilter.cs" />
+    <Compile Include="Obsolete\Configuration\N2ConfigurationSectionHandler.cs" />
+    <Compile Include="Definitions\IDefinitionManager.cs" />
+    <Compile Include="Details\BooleanDetail.cs" />
+    <Compile Include="Details\ControlAssociationAttribute.cs" />
+    <Compile Include="Details\DisplayableLiteralAttribute.cs" />
+    <Compile Include="Details\EditableUrlAttribute.cs" />
+    <Compile Include="Details\WithEditableAttribute.cs" />
+    <Compile Include="Details\DisplayableAttribute.cs" />
+    <Compile Include="Details\DoubleDetail.cs" />
+    <Compile Include="Details\IntegerDetail.cs" />
+    <Compile Include="Details\EditableFreeTextAreaAttribute.cs" />
+    <Compile Include="Details\EditableTextBoxAttribute.cs" />
+    <Compile Include="Details\StringDetail.cs" />
+    <Compile Include="Details\DateTimeDetail.cs" />
+    <Compile Include="Details\ObjectDetail.cs" />
+    <Compile Include="Edit\ToolbarArea.cs" />
+    <Compile Include="Edit\ToolbarPlugInAttribute.cs" />
+    <Compile Include="Obsolete\AllowedParentsAttribute.cs" />
+    <Compile Include="Integrity\AllowedZonesAttribute.cs" />
+    <Compile Include="Definitions\ItemDefinition.cs" />
+    <Compile Include="Integrity\IIntegrityManager.cs" />
+    <Compile Include="N2Exception.cs" />
+    <Compile Include="Collections\ItemComparer.cs" />
+    <Compile Include="CancellableDestinationEventArgs.cs" />
+    <Compile Include="CancellableItemEventArgs.cs" />
+    <Compile Include="DestinationEventArgs.cs" />
+    <Compile Include="Persistence\IPersister.cs" />
+    <Compile Include="Security\AuthorizedRole.cs" />
+    <Compile Include="Security\ISecurityManager.cs" />
+    <Compile Include="Security\PermissionDeniedException.cs" />
+    <Compile Include="Utility.cs" />
+    <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
+    <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
+    <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
+    <Compile Include="Web\UI\ItemDataSourceSelectingEventArgs.cs" />
+    <Compile Include="Web\UI\ItemDataSourceView.cs" />
+    <Compile Include="Web\UI\QueryDataSourceView.cs" />
+    <Compile Include="Web\UI\ChildrenDataSourceView.cs" />
+    <Compile Include="Web\UI\ControlEventArgs.cs" />
+    <Compile Include="Web\UI\ItemHierarchicalDataSourceView.cs" />
+    <Compile Include="Web\UI\WebControls\CurrentItemParameter.cs" />
+    <Compile Include="Web\UI\WebControls\FileSelector.cs" />
+    <Compile Include="Web\UI\WebControls\Display.cs" />
+    <Compile Include="Web\UI\WebControls\ItemDataSource.cs" />
+    <Compile Include="Web\UI\WebControls\ItemSelector.cs" />
+    <Compile Include="Web\UI\WebControls\UrlSelectorMode.cs" />
+    <Compile Include="Web\PublicSiteMapNode.cs" />
+    <Compile Include="Web\UI\EditorModifierAttribute.cs" />
+    <Compile Include="Integrity\IntegrityManager.cs" />
+    <Compile Include="Details\ContentDetail.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="Details\EditableAttribute.cs" />
+    <Compile Include="DefinitionAttribute.cs" />
+    <Compile Include="ItemEventArgs.cs" />
+    <Compile Include="Integrity\NameOccupiedException.cs" />
+    <Compile Include="Web\Global.cs" />
+    <Compile Include="ContentItem.cs" />
+    <Compile Include="Web\Compilation\CurrentItemExpressionBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\PublicSiteMapProvider.cs" />
+    <Compile Include="Web\UI\IItemContainer.cs" />
+    <Compile Include="Obsolete\IPageItemContainer.cs" />
+    <Compile Include="Web\UI\MasterPage.generic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\ContentUserControl.generic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\WebControls\Zone.cs" />
+    <Compile Include="Web\UI\WebControls\ItemEditor.cs" />
+    <Compile Include="Web\UI\WebControls\UrlSelector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\UI\ItemUtility.cs" />
+    <Compile Include="Web\UI\WebControls\NameEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\UI\WebControls\FreeTextArea.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\UI\WebControls\ZoneSelector.cs" />
+    <Compile Include="Web\UI\ContentPage.generic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Integrity\AvailableZoneAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\DuplicateFilter.cs" />
+    <Compile Include="Engine\WebAppTypeFinder.cs" />
+    <Compile Include="Definitions\IContainable.cs" />
+    <Compile Include="Definitions\IEditableContainer.cs" />
+    <Compile Include="Definitions\IDefinitionManagerDependency.cs" />
+    <Compile Include="Definitions\IEditable.cs" />
+    <Compile Include="Definitions\ItemAuthorizedRolesAttribute.cs" />
+    <Compile Include="Definitions\NoItemAllowedException.cs" />
+    <Compile Include="Details\WithEditableNameAttribute.cs" />
+    <Compile Include="Details\WithEditableTitleAttribute.cs" />
+    <Compile Include="Details\DetailAuthorizedRolesAttribute.cs" />
+    <Compile Include="Details\EditableUserControlAttribute.cs" />
+    <Compile Include="Details\DetailCollection.cs" />
+    <Compile Include="Details\IDisplayable.cs" />
+    <Compile Include="Details\LinkDetail.cs" />
+    <Compile Include="Definitions\NotAllowedParentException.cs" />
+    <Compile Include="Edit\IEditManager.cs" />
+    <Compile Include="Edit\Web\EditPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Engine\AppDomainTypeFinder.cs" />
+    <Compile Include="Engine\IEngine.cs" />
+    <Compile Include="Persistence\IItemNotifier.cs" />
+    <Compile Include="Persistence\Finder\IQueryBuilder.cs" />
+    <Compile Include="Persistence\IRepository.cs" />
+    <Compile Include="Persistence\ITransaction.cs" />
+    <Compile Include="Persistence\NH\NotifyingInterceptor.cs" />
+    <Compile Include="Persistence\NH\Finder\ItemFinder.cs" />
+    <Compile Include="Persistence\NH\NHRepository.cs" />
+    <Compile Include="Persistence\NH\NHTransaction.cs" />
+    <Compile Include="Persistence\NH\RepositoryHelper.cs" />
+    <Compile Include="Persistence\Parameter.cs" />
+    <Compile Include="Plugin\IPluginBootstrapper.cs" />
+    <Compile Include="Plugin\PluginBootstrapper.cs" />
+    <Compile Include="Web\IRequestLifeCycleHandler.cs" />
+    <Compile Include="Web\ISitesSource.cs" />
+    <Compile Include="Web\ISitesProvider.cs" />
+    <Compile Include="Web\IUrlParser.cs" />
+    <Compile Include="Web\IUrlParserDependency.cs" />
+    <Compile Include="Engine\ITypeFinder.cs" />
+    <Compile Include="Integrity\AllowedChildrenAttribute.cs" />
+    <Compile Include="Integrity\CannotDeleteRootException.cs" />
+    <Compile Include="Integrity\DestinationOnOrBelowItselfException.cs" />
+    <Compile Include="Persistence\Comparison.cs" />
+    <Compile Include="Persistence\DoNotCopyAttribute.cs" />
+    <Compile Include="Persistence\NH\IConfigurationBuilder.cs" />
+    <Compile Include="Persistence\NH\ISessionProvider.cs" />
+    <Compile Include="Plugin\IPluginInitializer.cs" />
+    <Compile Include="Plugin\PluginAttribute.cs" />
+    <Compile Include="Obsolete\AuthorizedRolesAttribute.cs" />
+    <Compile Include="Web\InvalidPathException.cs" />
+    <Compile Include="Web\InitializerModule.cs" />
+    <Compile Include="Web\IWebContext.cs" />
+    <Compile Include="Web\MultipleHostsUrlParser.cs" />
+    <Compile Include="Web\DynamicSitesProvider.cs" />
+    <Compile Include="Web\RequestLifeCycleHandler.cs" />
+    <Compile Include="Web\Site.cs" />
+    <Compile Include="Web\TemplateNotFoundException.cs" />
+    <Compile Include="Definitions\EditorContainerAttribute.cs" />
+    <Compile Include="Web\UI\FieldSetContainerAttribute.cs" />
+    <Compile Include="Web\UI\TabContainerAttribute.cs" />
+    <Compile Include="Web\UI\TemplateUrlEventArgs.cs" />
+    <Compile Include="Web\UI\ContentUserControl.generic2.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\WebControls\FieldSet.cs" />
+    <Compile Include="Web\UrlParser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Edit\edit.castle.config" />
+    <EmbeddedResource Include="Engine\engine.castle.config" />
+    <EmbeddedResource Include="Definitions\definitions.castle.config" />
+    <None Include="ContentModel.cd" />
+    <EmbeddedResource Include="Web\Parts\parts.castle.config" />
+    <EmbeddedResource Include="Engine\Globalization\globalization.castle.config" />
+    <EmbeddedResource Include="Plugin\plugin.castle.config" />
+    <EmbeddedResource Include="Integrity\integrity.castle.config" />
+    <EmbeddedResource Include="Security\security.castle.config" />
+    <EmbeddedResource Include="Web\web.castle.config" />
+    <EmbeddedResource Include="Persistence\NH\persistence.castle.config" />
+    <EmbeddedResource Include="Serialization\serialization.castle.config" />
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="Configuration\PermissionElement.cs" />
+    <Compile Include="Configuration\VersionsElement.cs" />
+    <Compile Include="Configuration\VirtualPathCollection.cs" />
+    <Compile Include="Configuration\VirtualPathElement.cs" />
+    <Compile Include="Definitions\AbstractDefinition.cs" />
+    <Compile Include="Collections\BranchHierarchyBuilder.cs" />
+    <Compile Include="Collections\CompositeFilter.cs" />
+    <Compile Include="Collections\DelegateFilter.cs" />
+    <Compile Include="Collections\HierarchyNode.cs" />
+    <Compile Include="Collections\IHierarchyNavigator.cs" />
+    <Compile Include="Collections\InverseFilter.cs" />
+    <Compile Include="Collections\HierarchyBuilder.cs" />
+    <Compile Include="Collections\ItemHierarchyNavigator.cs" />
+    <Compile Include="Collections\NavigationFilter.cs" />
+    <Compile Include="Collections\NullFilter.cs" />
+    <Compile Include="Collections\PageFilter.cs" />
+    <Compile Include="Collections\ParentFilter.cs" />
+    <Compile Include="Collections\PublishedFilter.cs" />
+    <Compile Include="Collections\RecursiveFinder.cs" />
+    <Compile Include="Collections\TreeHierarchyBuilder.cs" />
+    <Compile Include="Collections\VisibleFilter.cs" />
+    <Compile Include="Configuration\ContainableCollection.cs" />
+    <Compile Include="Configuration\ContainableElement.cs" />
+    <Compile Include="Configuration\DefaultDirectoryElement.cs" />
+    <Compile Include="Configuration\DefaultDirectoryMode.cs" />
+    <Compile Include="Configuration\DefinitionCollection.cs" />
+    <Compile Include="Configuration\DefinitionElement.cs" />
+    <Compile Include="Configuration\InterfacePluginElement.cs" />
+    <Compile Include="Configuration\InterfacePluginCollection.cs" />
+    <Compile Include="Configuration\LazyRemovableCollection.cs" />
+    <Compile Include="Configuration\MappingCollection.cs" />
+    <Compile Include="Configuration\MappingElement.cs" />
+    <Compile Include="Configuration\NamedElement.cs" />
+    <Compile Include="Configuration\NameEditorElement.cs" />
+    <Compile Include="Configuration\PatternValueElement.cs" />
+    <Compile Include="Configuration\PatternValueCollection.cs" />
+    <Compile Include="Configuration\PluginInitializerCollection.cs" />
+    <Compile Include="Configuration\PluginInitializerElement.cs" />
+    <Compile Include="Configuration\RewriteMethod.cs" />
+    <Compile Include="Configuration\SchedulerElement.cs" />
+    <Compile Include="Configuration\DatabaseFlavour.cs" />
+    <Compile Include="Configuration\DatabaseSection.cs" />
+    <Compile Include="Configuration\EditSection.cs" />
+    <Compile Include="Configuration\ErrorAction.cs" />
+    <Compile Include="Configuration\ErrorsElement.cs" />
+    <Compile Include="Configuration\FileSystemFolderCollection.cs" />
+    <Compile Include="Configuration\FolderElement.cs" />
+    <Compile Include="Configuration\GlobalizationElement.cs" />
+    <Compile Include="Configuration\HostSection.cs" />
+    <Compile Include="Configuration\InstallerElement.cs" />
+    <Compile Include="Configuration\OutputCacheElement.cs" />
+    <Compile Include="Configuration\SectionGroup.cs" />
+    <Compile Include="Configuration\EngineSection.cs" />
+    <Compile Include="Configuration\ComponentCollection.cs" />
+    <Compile Include="Configuration\ComponentElement.cs" />
+    <Compile Include="Configuration\SettingsEditorElement.cs" />
+    <Compile Include="Configuration\SettingsEditorCollection.cs" />
+    <Compile Include="Configuration\SiteElement.cs" />
+    <Compile Include="Configuration\SiteElementCollection.cs" />
+    <Compile Include="Configuration\TinyMCEElement.cs" />
+    <Compile Include="Configuration\UrlElement.cs" />
+    <Compile Include="Configuration\WebElement.cs" />
+    <Compile Include="Definitions\AbstractDefinitionRefiner.cs" />
+    <Compile Include="Definitions\AttributeExplorer.cs" />
+    <Compile Include="Definitions\DefinitionBuilder.cs" />
+    <Compile Include="Definitions\DefinitionManager.cs" />
+    <Compile Include="Definitions\DisableAttribute.cs" />
+    <Compile Include="Definitions\ISortableRefiner.cs" />
+    <Compile Include="Definitions\RefineOrder.cs" />
+    <Compile Include="Definitions\RemoveEditableAttribute.cs" />
+    <Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />
+    <Compile Include="Definitions\DefinitionReplacementMode.cs" />
+    <Compile Include="Definitions\Static\Description.cs" />
+    <Compile Include="Definitions\Static\DescriptionDictionary.cs" />
+    <Compile Include="Definitions\Static\IDescriptionRefiner.cs" />
+    <Compile Include="Details\EditableCheckBoxAttribute.cs" />
+    <Compile Include="Details\EditableDateAttribute.cs" />
+    <Compile Include="Details\EditableEnumAttribute.cs" />
+    <Compile Include="Details\EditableListControlAttribute.cs" />
+    <Compile Include="Details\EditableFileUploadAttribute.cs" />
+    <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
+    <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
+    <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
+    <Compile Include="Edit\EditableAdapter.cs" />
+    <Compile Include="Edit\FileSystem\DefaultDirectorySelector.cs" />
+    <Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
+    <Compile Include="Edit\IDocumentBaseSource.cs" />
+    <Compile Include="Edit\Trash\TrashPurgeInterval.cs" />
+    <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
+    <Compile Include="Obsolete\EditableAspectController.cs" />
+    <Compile Include="Edit\FileSystem\DirectoryData.cs" />
+    <Compile Include="Edit\FileSystem\FileData.cs" />
+    <Compile Include="Edit\FileSystem\IFileSystem.cs" />
+    <Compile Include="Edit\FileSystem\VirtualPathFileSystem.cs" />
+    <Compile Include="Edit\IControlPanelPlugin.cs" />
+    <Compile Include="Edit\NavigationSeparatorPluginAttribute.cs" />
+    <Compile Include="Edit\PluginContext.cs" />
+    <Compile Include="Edit\ControlPanelLinkAttribute.cs" />
+    <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
+    <Compile Include="Edit\Settings\ISettingsEditor.cs" />
+    <Compile Include="Engine\AbstractContentAdapter.cs" />
+    <Compile Include="Engine\Action.cs" />
+    <Compile Include="Engine\ContentAdapterProvider.cs" />
+    <Compile Include="Engine\Function.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Engine\Globalization\DictionaryScope.cs" />
+    <Compile Include="Engine\Globalization\ILanguage.cs" />
+    <Compile Include="Engine\Globalization\ILanguageGateway.cs" />
+    <Compile Include="Engine\Globalization\LanguageGateway.cs" />
+    <Compile Include="Engine\Globalization\LanguageInterceptor.cs" />
+    <Compile Include="Engine\Globalization\NavigationTranslationsPluginAttribute.cs" />
+    <Compile Include="Engine\Globalization\Scope.cs" />
+    <Compile Include="Engine\Globalization\TranslateSpecification.cs" />
+    <Compile Include="Engine\IContentAdapterProvider.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
+    <Compile Include="Engine\MediumTrust\MediumTrustTypeFinder.cs" />
+    <Compile Include="Engine\Singleton.cs" />
+    <Compile Include="Installation\DatabaseStatus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Installation\InstallationManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Installation\InstallerHint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Installation\SqlServerType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Obsolete\DragDropControlPanel.cs" />
+    <Compile Include="Obsolete\InstallerModule.cs" />
+    <Compile Include="Obsolete\InstallerSection.cs" />
+    <Compile Include="Obsolete\Page.generic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Obsolete\UserControl.generic.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Obsolete\UserControl.generic2.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageDefinitionAttribute.cs" />
+    <Compile Include="PartDefinitionAttribute.cs" />
+    <Compile Include="Persistence\IActiveContent.cs" />
+    <Compile Include="Persistence\IUpdatable.cs" />
+    <Compile Include="Persistence\NH\SessionContext.cs" />
+    <Compile Include="Persistence\NH\ConfigurationSource.cs" />
+    <Compile Include="Persistence\NotVersionableAttribute.cs" />
+    <Compile Include="Plugin\IPlugin.cs" />
+    <Compile Include="Edit\NavigationLinkPluginAttribute.cs" />
+    <Compile Include="Edit\Targets.cs" />
+    <Compile Include="Edit\Trash\NotThrowableAttribute.cs" />
+    <Compile Include="Definitions\IDefinitionRefiner.cs" />
+    <Compile Include="Definitions\IInheritableDefinitionRefiner.cs" />
+    <Compile Include="Definitions\IUniquelyNamed.cs" />
+    <Compile Include="Definitions\RemoveDefinitionsAttribute.cs" />
+    <Compile Include="Definitions\ReplaceParentDefinitionAttribute.cs" />
+    <Compile Include="Details\AbstractDisplayableAttribute.cs" />
+    <Compile Include="Details\DisplayableImageAttribute.cs" />
+    <Compile Include="Details\EditableDropDownAttribute.cs" />
+    <Compile Include="Details\EditableImageAttribute.cs" />
+    <Compile Include="Details\DisplayableAnchorAttribute.cs" />
+    <Compile Include="Details\EditableLanguagesDropDownAttribute.cs" />
+    <Compile Include="Details\EditableLinkAttribute.cs" />
+    <Compile Include="Details\WithEditablePublishedRangeAttribute.cs" />
+    <Compile Include="Edit\CreationPosition.cs" />
+    <Compile Include="Edit\EditManager.cs" />
+    <Compile Include="Edit\EditToolbarPluginAttribute.cs" />
+    <Compile Include="Edit\ITreeSorter.cs" />
+    <Compile Include="Edit\LinkPluginAttribute.cs" />
+    <Compile Include="Edit\Navigator.cs" />
+    <Compile Include="Edit\NodePosition.cs" />
+    <Compile Include="Edit\ToolbarAreaAttribute.cs" />
+    <Compile Include="Edit\Trash\ITrashCan.cs" />
+    <Compile Include="Edit\Trash\ITrashHandler.cs" />
+    <Compile Include="Edit\TreeSorter.cs" />
+    <Compile Include="Edit\Web\EditPageUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Edit\Web\EditUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Engine\ContentEngine.cs" />
+    <Compile Include="INode.cs" />
+    <Compile Include="Obsolete\Configuration\MediumTrustSectionHandler.cs" />
+    <Compile Include="Configuration\TypeElementCollection.cs" />
+    <Compile Include="Configuration\TypeElement.cs" />
+    <Compile Include="Obsolete\Factory.cs" />
+    <Compile Include="Integrity\IntegrityMappingAttribute.cs" />
+    <Compile Include="Integrity\AllowedZones.cs" />
+    <Compile Include="Integrity\IIntegrityEnforcer.cs" />
+    <Compile Include="Integrity\IntegrityMappingOption.cs" />
+    <Compile Include="Integrity\TypeIntegrityAttribute.cs" />
+    <Compile Include="Integrity\IntegrityEnforcer.cs" />
+    <Compile Include="Integrity\RestrictParentsAttribute.cs" />
+    <Compile Include="Obsolete\InitializerModule.cs" />
+    <Compile Include="Obsolete\ItemAttribute.cs" />
+    <Compile Include="Persistence\ItemNotifier.cs" />
+    <Compile Include="Persistence\NH\ConfigurationBuilder.cs" />
+    <Compile Include="Persistence\NH\ContentPersister.cs" />
+    <Compile Include="Persistence\NH\SessionProvider.cs" />
+    <Compile Include="Plugin\IAutoStart.cs" />
+    <Compile Include="Plugin\IPluginFinder.cs" />
+    <Compile Include="Plugin\PluginFinder.cs" />
+    <Compile Include="Plugin\PluginInitializationException.cs" />
+    <Compile Include="Plugin\Scheduling\Heart.cs" />
+    <Compile Include="Plugin\Scheduling\ScheduledAction.cs" />
+    <Compile Include="Plugin\Scheduling\IHeart.cs" />
+    <Compile Include="Plugin\Scheduling\Repeat.cs" />
+    <Compile Include="Plugin\Scheduling\ScheduleExecutionAttribute.cs" />
+    <Compile Include="Plugin\Scheduling\Scheduler.cs" />
+    <Compile Include="Plugin\Scheduling\TimeUnit.cs" />
+    <Compile Include="Security\DynamicPermissionMap.cs" />
+    <Compile Include="Security\Permission.cs" />
+    <Compile Include="Security\PermissionMap.cs" />
+    <Compile Include="Security\SecurityManager.cs" />
+    <Compile Include="Serialization\DefinedDetailXmlWriter.cs" />
+    <Compile Include="Serialization\ExportOptions.cs" />
+    <Compile Include="Engine\EventBroker.cs" />
+    <Compile Include="Web\ConventionTemplateAttribute.cs" />
+    <Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
+    <Compile Include="Web\PathDictionary.cs" />
+    <Compile Include="Web\GoogleSiteMapHandler.cs" />
+    <Compile Include="Web\Parts\IAddablePart.cs" />
+    <Compile Include="Obsolete\PartsAspectController.cs" />
+    <Compile Include="Web\RequestAdapter.cs" />
+    <Compile Include="Web\AdaptiveContext.cs" />
+    <Compile Include="Web\CachingUrlParserDecorator.cs" />
+    <Compile Include="Web\Compilation\HasValueExpressionBuilder.cs" />
+    <Compile Include="Web\Compilation\StartPageExpressionBuilder.cs" />
+    <Compile Include="Web\ControlsAttribute.cs" />
+    <Compile Include="Web\HttpRequestContextAccessor.cs" />
+    <Compile Include="Engine\IContentAdapter.cs" />
+    <Compile Include="Web\IAdapterDescriptor.cs" />
+    <Compile Include="Web\IRequestContextAccessor.cs" />
+    <Compile Include="Web\IRequestDispatcher.cs" />
+    <Compile Include="Web\DynamicTemplateAttribute.cs" />
+    <Compile Include="Web\ErrorHandler.cs" />
+    <Compile Include="Obsolete\RequestAspectController.cs" />
+    <Compile Include="Web\RequestDispatcher.cs" />
+    <Compile Include="Web\Host.cs" />
+    <Compile Include="Web\HtmlFilter.cs" />
+    <Compile Include="Web\HtmlHelper.cs" />
+    <Compile Include="Web\IClosable.cs" />
+    <Compile Include="Web\IErrorHandler.cs" />
+    <Compile Include="Web\IHost.cs" />
+    <Compile Include="Web\IPathFinder.cs" />
+    <Compile Include="Web\Mail\IMailSender.cs" />
+    <Compile Include="Web\Mail\SmtpMailSender.cs" />
+    <Compile Include="Web\Mail\StaticMailSender.cs" />
+    <Compile Include="Web\Parts\CreateUrlProvider.cs" />
+    <Compile Include="Web\Parts\EditUrlProvider.cs" />
+    <Compile Include="Web\Parts\ItemCopyer.cs" />
+    <Compile Include="Web\Parts\ItemDeleter.cs" />
+    <Compile Include="Web\Parts\ItemMover.cs" />
+    <Compile Include="Web\Parts\PartsAjaxService.cs" />
+    <Compile Include="Web\PathData.cs" />
+    <Compile Include="Web\RegexTemplateAttribute.cs" />
+    <Compile Include="Web\RequestItem.cs" />
+    <Compile Include="Web\TemplateAttribute.cs" />
+    <Compile Include="Web\TagBuilder.cs" />
+    <Compile Include="Web\ThreadContext.cs" />
+    <Compile Include="Web\UI\CacheManager.cs" />
+    <Compile Include="Web\UI\ContentCacheDependency.cs" />
+    <Compile Include="Web\UI\ICacheManager.cs" />
+    <Compile Include="Web\UI\IContentTemplate.cs" />
+    <Compile Include="Web\UI\ContentPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\ContentUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UI\WebControls\A.cs" />
+    <Compile Include="Web\UI\WebControls\OptionsMenu.cs" />
+    <Compile Include="Web\UI\WebControls\RawUrlForm.cs" />
+    <Compile Include="Web\UI\WebControls\Repeater.cs" />
+    <Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
+    <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
+    <Compile Include="Web\UI\WebControls\DropPoint.cs" />
+    <Compile Include="Web\UI\WebControls\HasValue.cs" />
+    <Compile Include="Web\UI\WebControls\Li.cs" />
+    <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
+    <Compile Include="Web\UI\WebControls\DragToolbar.cs" />
+    <Compile Include="Persistence\GenericFind.cs" />
+    <Compile Include="Persistence\IVersionManager.cs" />
+    <Compile Include="Persistence\NH\Finder\AbstractInHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\DetailInHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyInHqlProvider.cs" />
+    <Compile Include="Persistence\VersionManager.cs" />
+    <Compile Include="Plugin\AutoInitializeAttribute.cs" />
+    <Compile Include="Plugin\InitializerCreatingAttribute.cs" />
+    <Compile Include="Plugin\IPluginDefinition.cs" />
+    <Compile Include="Resources\Media.cs" />
+    <Compile Include="Resources\ScriptOptions.cs" />
+    <Compile Include="Resources\ScriptPosition.cs" />
+    <Compile Include="Security\Authorization.cs" />
+    <Compile Include="Security\ISecurable.cs" />
+    <Compile Include="Definitions\RootContainer.cs" />
+    <Compile Include="Definitions\EditableHierarchyBuilder.cs" />
+    <Compile Include="Details\AbstractEditableAttribute.cs" />
+    <Compile Include="Details\WithEditableChildAttribute.cs" />
+    <Compile Include="Details\EditableItemAttribute.cs" />
+    <Compile Include="Details\EditableChildrenAttribute.cs" />
+    <Compile Include="Edit\AdministrativePlugInAttribute.cs" />
+    <Compile Include="Edit\NavigationPlugInAttribute.cs" />
+    <Compile Include="Edit\Settings\NavigationSettings.cs" />
+    <Compile Include="Find.cs" />
+    <Compile Include="Integrity\AllowedTypes.cs" />
+    <Compile Include="Persistence\Finder\IQueryEnding.cs" />
+    <Compile Include="Persistence\Finder\IQueryAction.cs" />
+    <Compile Include="Persistence\Finder\IDetailCriteria.cs" />
+    <Compile Include="Persistence\Finder\IQueryEnd.cs" />
+    <Compile Include="Persistence\Finder\ICriteria.cs" />
+    <Compile Include="Persistence\Finder\ICompareCriteria.cs" />
+    <Compile Include="Persistence\Finder\IOrderBy.cs" />
+    <Compile Include="Persistence\Finder\ISortDirection.cs" />
+    <Compile Include="Persistence\Finder\IStringCriteria.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyClassCriteria.cs" />
+    <Compile Include="Persistence\NH\Finder\DetailSortDirection.cs" />
+    <Compile Include="Persistence\NH\Finder\OrderBy.cs" />
+    <Compile Include="Persistence\Finder\VersionOption.cs" />
+    <Compile Include="Persistence\NH\Finder\AbstractHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\DetailBetweenHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\DetailCriteria.cs" />
+    <Compile Include="Persistence\NH\Finder\DetailHqlProvider.cs" />
+    <Compile Include="Persistence\Finder\IItemFinder.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyStringCriteria.cs" />
+    <Compile Include="Persistence\NH\Finder\IHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyBetweenHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyCriteria.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyVersionOfCriteria.cs" />
+    <Compile Include="Persistence\NH\Finder\QueryBuilder.cs" />
+    <Compile Include="Persistence\NH\Finder\Operator.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertySortDirection.cs" />
+    <Compile Include="Persistence\NH\Finder\StringWrapper.cs" />
+    <Compile Include="Persistence\NH\Finder\TextOnlyHqlProvider.cs" />
+    <Compile Include="Persistence\NH\Finder\VersionOfHqlProvider.cs" />
+    <Compile Include="Persistence\NH\INHRepository.cs" />
+    <Compile Include="Resources\Register.cs" />
+    <Compile Include="Security\ISecurityEnforcer.cs" />
+    <Compile Include="Security\SecurityEnforcer.cs" />
+    <Compile Include="Serialization\Attachment.cs" />
+    <Compile Include="Serialization\AttachmentXmlReader.cs" />
+    <Compile Include="Serialization\AttachmentXmlWriter.cs" />
+    <Compile Include="Serialization\AuthorizationXmlReader.cs" />
+    <Compile Include="Serialization\AuthorizationXmlWriter.cs" />
+    <Compile Include="Serialization\ChildXmlWriter.cs" />
+    <Compile Include="Serialization\GZipExporter.cs" />
+    <Compile Include="Serialization\GZipImporter.cs" />
+    <Compile Include="Serialization\DefinitionNotFoundException.cs" />
+    <Compile Include="Serialization\DetailCollectionXmlReader.cs" />
+    <Compile Include="Serialization\DetailCollectionXmlWriter.cs" />
+    <Compile Include="Serialization\DetailXmlReader.cs" />
+    <Compile Include="Serialization\DetailXmlWriter.cs" />
+    <Compile Include="Serialization\Exporter.cs" />
+    <Compile Include="Serialization\FileAttachmentAttribute.cs" />
+    <Compile Include="Serialization\IAttachmentHandler.cs" />
+    <Compile Include="Serialization\DeserializationException.cs" />
+    <Compile Include="Serialization\Importer.cs" />
+    <Compile Include="Serialization\ImportOption.cs" />
+    <Compile Include="Serialization\IImportRecord.cs" />
+    <Compile Include="Serialization\ItemXmlReader.cs" />
+    <Compile Include="Serialization\IXmlReader.cs" />
+    <Compile Include="Serialization\ReadingJournal.cs" />
+    <Compile Include="Serialization\SerializationUtility.cs" />
+    <Compile Include="Serialization\WrongVersionException.cs" />
+    <Compile Include="Serialization\IXmlWriter.cs" />
+    <Compile Include="Serialization\XmlReader.cs" />
+    <Compile Include="Web\AjaxRequestDispatcher.cs" />
+    <Compile Include="Web\AjaxRequestHandler.cs" />
+    <Compile Include="Web\IAjaxService.cs" />
+    <Compile Include="Web\ILink.cs" />
+    <Compile Include="Web\ILinkBuilder.cs" />
+    <Compile Include="Web\Link.cs" />
+    <Compile Include="Web\PageNotFoundEventArgs.cs" />
+    <Compile Include="Web\Tree.cs" />
+    <Compile Include="Web\UI\DividerAttribute.cs" />
+    <Compile Include="Web\UI\ItemAwareControl.cs" />
+    <Compile Include="Web\UI\WebControls\ControlPanel.cs" />
+    <Compile Include="Web\UI\WebControls\ControlPanelState.cs" />
+    <Compile Include="Web\UI\WebControls\EditableDisplay.cs" />
+    <Compile Include="Web\UI\WebControls\HN.cs" />
+    <Compile Include="Web\UI\WebControls\DatePicker.cs" />
+    <Compile Include="Web\UI\WebControls\DateRange.cs" />
+    <Compile Include="Web\UI\WebControls\Hr.cs" />
+    <Compile Include="Web\UI\WebControls\IEditableEditor.cs" />
+    <Compile Include="Web\UI\WebControls\IItemEditor.cs" />
+    <Compile Include="Web\UI\WebControls\ItemEditorList.cs" />
+    <Compile Include="Web\UI\WebControls\ItemEditorSavingMode.cs" />
+    <Compile Include="Web\UI\WebControls\StyleSheet.cs" />
+    <Compile Include="Web\UI\WebControls\TabPanel.cs" />
+    <Compile Include="Serialization\ElementWriter.cs" />
+    <Compile Include="Serialization\ItemXmlWriter.cs" />
+    <Compile Include="Web\UI\WebControls\Tree.cs" />
+    <Compile Include="Web\UI\WebControls\TreeNode.cs" />
+    <Compile Include="Web\UI\WebControls\Ul.cs" />
+    <Compile Include="Web\Url.cs" />
+    <Compile Include="Web\WebRequestContext.cs" />
+    <Compile Include="Web\Parts\PartsAdapter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Engine\n2.configuration.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\add.gif" />
+    <EmbeddedResource Include="Resources\bin.gif" />
+    <EmbeddedResource Include="Resources\delete.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Installation\installation.castle.config" />
+    <EmbeddedResource Include="Mappings\Default.hbm.xml" />
+    <EmbeddedResource Include="Configuration\castle.config" />
+    <Content Include="ProjectComments.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Resources\bullet_arrow_down.png" />
+    <EmbeddedResource Include="Resources\bullet_arrow_up.png" />
+    <EmbeddedResource Include="Resources\jquery-1.3.2.min.js" />
+    <EmbeddedResource Include="Web\n2.multiplesites.xml" />
+    <EmbeddedResource Include="Web\n2.notweb.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

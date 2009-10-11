@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using N2.Definitions;
 using N2.Details;
 using N2.Persistence.NH;
@@ -16,6 +17,7 @@ using NHibernate.Tool.hbm2ddl;
 using Environment=NHibernate.Cfg.Environment;
 using N2.Persistence;
 using NHibernate.SqlTypes;
+using System.Diagnostics;
 
 namespace N2.Installation
 {
@@ -75,6 +77,39 @@ namespace N2.Installation
 #endif
 		}
 
+		public string ExportSchema()
+		{
+			StringBuilder sql = new StringBuilder();
+			using(StringWriter sw = new StringWriter(sql))
+			{
+				ExportSchema(sw);
+			}
+			return sql.ToString();
+		}
+
+
+
+		public void Upgrade()
+		{
+			SchemaUpdate schemaUpdater = new SchemaUpdate(Cfg);
+			schemaUpdater.Execute(true, true);
+		}
+
+		public string ExportUpgradeSchema()
+		{
+			SchemaUpdate schemaUpdater = new SchemaUpdate(Cfg);
+
+			StringBuilder sql = new StringBuilder();
+			using (StringWriter sw = new StringWriter(sql))
+			{
+				schemaUpdater.Execute((s) =>
+				{
+					sql.Append(s);
+				}, false);
+			}
+			return sql.ToString();
+		}
+
 		public void DropDatabaseTables()
 		{
 			SchemaExport exporter = new SchemaExport(Cfg);
@@ -83,10 +118,14 @@ namespace N2.Installation
 
 		public DatabaseStatus GetStatus()
 		{
+			Trace.WriteLine("InstallationManager: checking database status");
+
 			DatabaseStatus status = new DatabaseStatus();
 
 			UpdateConnection(status);
+			UpdateVersion(status);
 			UpdateSchema(status);
+			UpdateCount(status);
 			UpdateItems(status);
 
 			return status;
@@ -109,7 +148,63 @@ namespace N2.Installation
 			}
 		}
 
+		private void UpdateVersion(DatabaseStatus status)
+		{
+			try
+			{
+				using (sessionProvider)
+				{
+					sessionProvider.OpenSession.Session.CreateQuery("select ci.ID from ContentItem ci").SetMaxResults(1).List();
+				}
+				status.DatabaseVersion = 1;
+			}
+			catch (Exception ex)
+			{
+				Trace.WriteLine(ex);
+				status.DatabaseVersion = 0;
+			}
+
+			try
+			{
+				using (sessionProvider)
+				{
+					// checking for properties added between version 1 and 2
+					sessionProvider.OpenSession.Session.CreateQuery("select ci.Trail from ContentItem ci").SetMaxResults(1).List();
+				}
+				status.DatabaseVersion = 2;
+			}
+			catch (Exception ex)
+			{
+				Trace.WriteLine(ex);
+			}
+		}
+
 		private void UpdateSchema(DatabaseStatus status)
+		{
+			try
+			{
+				using (sessionProvider)
+				{
+					ISession session = sessionProvider.OpenSession.Session;
+
+					session.CreateQuery("from ContentItem").SetMaxResults(1).List();
+					session.CreateQuery("from ContentDetail").SetMaxResults(1).List();
+					session.CreateQuery("from AuthorizedRole").SetMaxResults(1).List();
+					session.CreateQuery("from DetailCollection").SetMaxResults(1).List();
+				}
+				status.HasSchema = true;
+			}
+			catch (Exception ex)
+			{
+				Trace.WriteLine(ex);
+				status.HasSchema = false;
+				status.SchemaError = ex.Message;
+				status.SchemaException = ex;
+			}
+		}
+
+
+		private void UpdateCount(DatabaseStatus status)
 		{
 			try
 			{
@@ -121,13 +216,10 @@ namespace N2.Installation
 					status.DetailCollections = Convert.ToInt32(session.CreateQuery("select count(*) from AuthorizedRole").UniqueResult());
 					status.AuthorizedRoles = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
 				}
-				status.HasSchema = true;
 			}
 			catch(Exception ex)
 			{
-				status.HasSchema = false;
-				status.SchemaError = ex.Message;
-				status.SchemaException = ex;
+				Trace.WriteLine(ex);
 			}
 		}
 
@@ -159,10 +251,15 @@ namespace N2.Installation
             using (sessionProvider)
 			{
                 ISession session = sessionProvider.OpenSession.Session;
+
+				// this is supposed to catch mis-matches between database and code e.g. due to refactorings during development
+				session.CreateQuery("from ContentItem").SetMaxResults(1000).List();
+
 				int itemCount = Convert.ToInt32(session.CreateQuery("select count(*) from ContentItem").UniqueResult());
 				int detailCount = Convert.ToInt32(session.CreateQuery("select count(*) from ContentDetail").UniqueResult());
 				int allowedRoleCount = Convert.ToInt32(session.CreateQuery("select count(*) from AuthorizedRole").UniqueResult());
 				int detailCollectionCount = Convert.ToInt32(session.CreateQuery("select count(*) from DetailCollection").UniqueResult());
+
 				return string.Format("Database OK, items: {0}, details: {1}, allowed roles: {2}, detail collections: {3}",
 				                     itemCount, detailCount, allowedRoleCount, detailCollectionCount);
 			}

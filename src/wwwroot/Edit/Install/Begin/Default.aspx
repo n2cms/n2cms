@@ -26,9 +26,12 @@
 		</ul>
 		<div class="tabPanel">
 			<h1>Welcome to N2 CMS</h1>
-			<p>Congratulations! This is the first step towards installing the database and getting started with <a href="http://n2cms.com/">N2 CMS</a>.</p>
-			<p>To continue to the installation you will have to provide a username and password. Unless you changed this in web.config (as you should) the username is "<strong>admin</strong>" and the password is "<strong>changeme</strong>".</p>
-			<p>Okay, <a href="../default.aspx">please <strong>start the installation</strong> process &raquo;</a></p>
+			<% Version version = typeof(N2.ContentItem).Assembly.GetName().Version; %>
+			<p>Congratulations! You're on your way to installing or upgrading <a href="http://n2cms.com/">N2 CMS</a>.</p>
+			<p>Next you need to log in with username and password. Until you change them in web.config (please do this now) they are:<br /> Username: <strong>admin</strong> <br /> Password: <strong>changeme</strong>.</p>
+			<p>Okay, <a href="../default.aspx">please help me <strong>install</strong> the N2 CMS database &raquo;</a></p>
+			<p>Wait a minute, <a href="../upgrade.aspx">I'd rather <strong>upgrade</strong> from a previous version &raquo;</a></p>
+			<h2>Other options...</h2>
 			<p><strong>Downloaded the trunk (svn)?</strong> You may want to <a href="http://n2cms.com/upload/app_data.zip">get an SQL Server Express database</a> and unzip into [wwwroot]\App_Data</p>
 			<p><strong>Already installed the database?</strong> Then there might be a problem with the database connection. To ensure that this screen doesn't appear to unsuspecting visitors you should remove &lt;add name="n2.installer" type="N2.Installation.InstallerModule, N2" /&gt; from the &lt;httpModules&gt; section in web.config.</p>
 		</div>

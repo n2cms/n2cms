@@ -14,7 +14,7 @@
     	form{padding:20px}
     	.warning{color:#f00;}
     	.ok{color:#0d0;}
-    	textarea{width:80%;height:120px}
+    	textarea{width:95%;height:120px}
     </style>
 </head>
 <body>
@@ -55,15 +55,24 @@
 				<p class="warning"><b>Advice: </b>Go back and check database connection.</p>
             </asp:Literal>
             <p>
-				Assuming the database connection is okay (step 2) you can 
-				<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false" />
-				or 
-				<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="generate sql script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
-				for the connection type <%= Status.ConnectionType %>.
+				Please review the following SQL script carefully before creating tables using the buttons below.
+            </p>
+            <textarea><%= Installer.ExportSchema() %></textarea>
+            <p>
+				The script looks fine please 
+				<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false"/>
+				in my database.
+			</p>
+			<p>
+				Optionally I can 
+				<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
+				for the connection type <strong><%= Status.ConnectionType %></strong> and create the tables myself.
+            </p>
+            <p>
 				You can also download sql scripts from 
                 <a href="http://n2cms.com/Documentation/The database.aspx">the n2 cms home page</a> 
                 (if you're using MySQL this is the preferred option).
-            </p>
+			</p>
             <p>
                 <asp:Label CssClass="ok" runat="server" ID="lblInstall" />
             </p>

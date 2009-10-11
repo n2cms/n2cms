@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 2006-2008 Cristian Libardo
+/* Copyright (C) 2006-2009 Cristian Libardo
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -43,11 +43,10 @@ namespace N2
     /// <example>
     /// // Since the class is inheriting <see cref="ContentItem"/> it's 
     /// // recognized by the CMS and made available for editing.
-    /// [Definition]
-	/// [Template("~/Path/To/My/Template.aspx")]
+    /// [PageDefinition(TemplateUrl = "~/Path/To/My/Template.aspx")]
     /// public class MyPage : N2.ContentItem
     /// {
-    ///		}
+    ///	}
     /// </example>
     /// <remarks>
     /// Note that the class name (e.g. MyPage) is used as discriminator when
@@ -879,5 +878,8 @@ namespace N2
 		}
 
 		#endregion
+
+		//soon
+		//public virtual string Trail { get; set; }
 	}
 }

@@ -10,7 +10,6 @@ using System.Web;
 using System.IO;
 using System.Web.Configuration;
 using N2.Configuration;
-using System.Configuration;
 
 namespace N2.Edit.Install
 {
@@ -35,17 +34,17 @@ namespace N2.Edit.Install
 
 		protected RadioButtonList rblExports;
 
-		public InstallationManager CurrentInstallationManager
+		protected InstallationManager Installer
 		{
 			get { return N2.Context.Current.Resolve<InstallationManager>(); }
 		}
 
-		public DatabaseStatus Status
+		protected DatabaseStatus Status
 		{
 			get
 			{
 				if (status == null) 
-					status = CurrentInstallationManager.GetStatus();
+					status = Installer.GetStatus();
 				return status;
 			}
 		}
@@ -57,13 +56,13 @@ namespace N2.Edit.Install
 			{
 				try
 				{
-					IEnumerable<ItemDefinition> rootDefinitions = CurrentInstallationManager.GetRootDefinitions();
+					IEnumerable<ItemDefinition> rootDefinitions = Installer.GetRootDefinitions();
 					LoadRootTypes(ddlRoot, rootDefinitions, "[root node]");
 					
-					IEnumerable<ItemDefinition> startDefinitions = CurrentInstallationManager.GetStartDefinitions();
+					IEnumerable<ItemDefinition> startDefinitions = Installer.GetStartDefinitions();
 					LoadStartTypes(ddlStartPage, startDefinitions, "[start node]");
 					
-					IEnumerable<ItemDefinition> startAndStartDefinitions = CurrentInstallationManager.GetRootAndStartDefinitions();
+					IEnumerable<ItemDefinition> startAndStartDefinitions = Installer.GetRootAndStartDefinitions();
 					LoadRootTypes(ddlRootAndStart, startAndStartDefinitions, "[root and start node]");
 
 					LoadExistingExports();
@@ -119,7 +118,7 @@ namespace N2.Edit.Install
 		{
 			try
 			{
-				InstallationManager im = CurrentInstallationManager;
+				InstallationManager im = Installer;
 
 				using (IDbConnection conn = im.GetConnection())
 				{
@@ -139,7 +138,7 @@ namespace N2.Edit.Install
 
 		protected void btnInstall_Click(object sender, EventArgs e)
 		{
-			InstallationManager im = CurrentInstallationManager;
+			InstallationManager im = Installer;
 			if (Request.QueryString["export"] == "true")
 			{
 				im.ExportSchema(Response.Output);
@@ -158,16 +157,16 @@ namespace N2.Edit.Install
 		protected void btnExportSchema_Click(object sender, EventArgs e)
 		{
 			Response.ContentType = "application/octet-stream";
-			Response.AddHeader("Content-Disposition", "attachment;filename=n2.sql");
+			Response.AddHeader("Content-Disposition", "attachment;filename=n2_create.sql");
 
-			InstallationManager im = CurrentInstallationManager;
+			InstallationManager im = Installer;
 			im.ExportSchema(Response.Output);
 
 			Response.End();
 		}
 		protected void btnInsert_Click(object sender, EventArgs e)
 		{
-			InstallationManager im = CurrentInstallationManager;
+			InstallationManager im = Installer;
 
 			try
 			{
@@ -201,7 +200,7 @@ namespace N2.Edit.Install
 		}
 		protected void btnInsertRootOnly_Click(object sender, EventArgs e)
 		{
-			InstallationManager im = CurrentInstallationManager;
+			InstallationManager im = Installer;
 
 			try
 			{
@@ -249,7 +248,7 @@ namespace N2.Edit.Install
 
 		private void InsertFromFile(string path)
 		{
-			InstallationManager im = CurrentInstallationManager;
+			InstallationManager im = Installer;
 			using (Stream read = File.OpenRead(path))
 			{
 				ContentItem root = im.InsertExportFile(read, path);
@@ -298,27 +297,21 @@ namespace N2.Edit.Install
 
 		protected string GetStatusText()
 		{
-            if (Status.IsInstalled)
-			{
-             	return "You're all set (just check step 5).";
-            }
-			else if (Status.HasSchema)
-			{
-            	return "Jump to step 4.";
-            }
-			else if (Status.IsConnected) 
-			{
-            	return "Skip to step 3.";
-            }
-			else
-			{
-            	return "Continue to step 2.";
-            }
+			if (Status.IsInstalled)
+             	return "Everything looks fine (just check step 5).";
+			if (status.NeedsUpgrade)
+				return "Switch to the <a href='upgrade.aspx'>upgrade wizard</a> to upgrade from a previous version of the database";
+			if (Status.HasSchema)
+				return "Create root node on step 4.";
+			if (Status.IsConnected) 
+				return "Create database table on step 3.";
+
+			return "Check connection on step 2.";
 		}
 
 		private void InstallFromUpload()
 		{
-			InstallationManager im = CurrentInstallationManager;
+			InstallationManager im = Installer;
 			ContentItem root = im.InsertExportFile(fileUpload.FileContent, fileUpload.FileName);
 
 			InsertRoot(root);
