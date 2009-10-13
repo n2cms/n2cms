@@ -262,22 +262,16 @@ namespace N2.Tests.Persistence.NH
 		{
 			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
 			PersistableItem1 fromDB = null;
-			try
-			{
-				item.GuidProperty = Guid.NewGuid();
-				using (persister)
-				{
-					persister.Save(item);
-				}
 
-				fromDB = persister.Get<PersistableItem1>(item.ID);
-
-				Assert.That(fromDB.GuidProperty, Is.EqualTo(item.GuidProperty));
-			}
-			finally
+			item.GuidProperty = Guid.NewGuid();
+			using (persister)
 			{
-				persister.Delete(fromDB ?? item);
+				persister.Save(item);
 			}
+
+			fromDB = persister.Get<PersistableItem1>(item.ID);
+
+			Assert.That(fromDB.GuidProperty, Is.EqualTo(item.GuidProperty));
 		}
 
 		[Test]
@@ -285,23 +279,16 @@ namespace N2.Tests.Persistence.NH
 		{
 			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
 			PersistableItem1 fromDB = null;
-			try
+			string guid = item.ReadOnlyGuid;
+
+			using (persister)
 			{
-				string guid = item.ReadOnlyGuid;
-
-				using (persister)
-				{
-					persister.Save(item);
-				}
-
-				fromDB = persister.Get<PersistableItem1>(item.ID);
-
-				Assert.That(fromDB.ReadOnlyGuid, Is.EqualTo(guid));
+				persister.Save(item);
 			}
-			finally
-			{
-				persister.Delete(fromDB ?? item);
-			}
+
+			fromDB = persister.Get<PersistableItem1>(item.ID);
+
+			Assert.That(fromDB.ReadOnlyGuid, Is.EqualTo(guid));
 		}
 
 		[Test]

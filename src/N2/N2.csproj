@@ -381,6 +381,8 @@
     <Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
     <Compile Include="Edit\IDocumentBaseSource.cs" />
     <Compile Include="Edit\Trash\TrashPurgeInterval.cs" />
+    <Compile Include="Engine\AsyncWorker.cs" />
+    <Compile Include="Engine\IWorker.cs" />
     <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
     <Compile Include="Obsolete\EditableAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />
@@ -439,6 +441,8 @@
     <Compile Include="PartDefinitionAttribute.cs" />
     <Compile Include="Persistence\IActiveContent.cs" />
     <Compile Include="Persistence\IUpdatable.cs" />
+    <Compile Include="Persistence\NotifiableItemEventArgs.cs" />
+    <Compile Include="Persistence\NH\TrailTracker.cs" />
     <Compile Include="Persistence\NH\SessionContext.cs" />
     <Compile Include="Persistence\NH\ConfigurationSource.cs" />
     <Compile Include="Persistence\NotVersionableAttribute.cs" />
@@ -491,7 +495,6 @@
     <Compile Include="Integrity\RestrictParentsAttribute.cs" />
     <Compile Include="Obsolete\InitializerModule.cs" />
     <Compile Include="Obsolete\ItemAttribute.cs" />
-    <Compile Include="Persistence\ItemNotifier.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilder.cs" />
     <Compile Include="Persistence\NH\ContentPersister.cs" />
     <Compile Include="Persistence\NH\SessionProvider.cs" />

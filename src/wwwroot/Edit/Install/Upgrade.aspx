@@ -13,14 +13,14 @@
     	li{margin-bottom:10px}
     	form{padding:20px}
     	.warning{color:#f00;}
-    	.ok{color:#0d0;}
-    	textarea{width:95%;height:120px}
+    	.ok{color:#0c0;}
+    	textarea{width:95%;height:120px;border:none;background-color:#FFB}
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
     <div>
-		<p style="background-color:salmon;font-weight:bold;padding:5px">This is an early alpha of the upgrade wizard. It's advisable to back-up before continuing.</p>
+		<p style="background-color:salmon;font-weight:bold;padding:5px">This is an early alpha of the upgrade wizard. Please help out testing this feature.</p>
         <n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
 			<h1>Upgrade database from <%= Status.DatabaseVersion %> to <%= N2.Installation.DatabaseStatus.RequiredDatabaseVersion %></h1>
 			
@@ -31,7 +31,7 @@
 			<%} %>
 			
 			<p>Please review the following upgrade script carefully before continuing to update the database below.</p>
-			<textarea><%= Installer.ExportUpgradeSchema() %></textarea>
+			<textarea readonly="readonly"><%= Installer.ExportUpgradeSchema() %></textarea>
             <p>
 				The script looks fine please 
 				<asp:Button ID="btnUpgrade" runat="server" OnClick="btnInstall_Click" Text="update tables" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Click this button to update the database" CausesValidation="false"/>

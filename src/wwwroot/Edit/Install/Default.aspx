@@ -13,8 +13,8 @@
     	li{margin-bottom:10px}
     	form{padding:20px}
     	.warning{color:#f00;}
-    	.ok{color:#0d0;}
-    	textarea{width:95%;height:120px}
+    	.ok{color:#0c0;}
+    	textarea{width:95%;height:120px; border:none; background-color:#FFB}
     </style>
 </head>
 <body>
@@ -57,7 +57,7 @@
             <p>
 				Please review the following SQL script carefully before creating tables using the buttons below.
             </p>
-            <textarea><%= Installer.ExportSchema() %></textarea>
+            <textarea readonly="readonly"><%= Installer.ExportSchema() %></textarea>
             <p>
 				The script looks fine please 
 				<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false"/>
@@ -68,11 +68,11 @@
 				<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
 				for the connection type <strong><%= Status.ConnectionType %></strong> and create the tables myself.
             </p>
-            <p>
+            <%--<p>
 				You can also download sql scripts from 
                 <a href="http://n2cms.com/Documentation/The database.aspx">the n2 cms home page</a> 
                 (if you're using MySQL this is the preferred option).
-			</p>
+			</p>--%>
             <p>
                 <asp:Label CssClass="ok" runat="server" ID="lblInstall" />
             </p>
@@ -108,11 +108,11 @@
 				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
 				</li>
 				<li>
-				    Or, select one of these existing <b>export file</b> to insert:<br />
+				    Or, select one of these existing <b>export files</b> with example content:<br />
 						<asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Flow" />
-					to 
+					<br />to 
 					<asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="insert" ToolTip="Insert existing export" CausesValidation="false" />
-					<asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" />
+					<asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" /> into your database.
 				</li>
                 <li>
 					Or, select an export file 
@@ -135,7 +135,7 @@
 		...
 	</n2>
 ...</textarea>
-				<asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="Update web.config" CausesValidation="false" />
+				Please help me <asp:Button runat="server" OnClick="btnUpdateWebConfig_Click" Text="update web.config" CausesValidation="false" /> by writing these values to web.config (will cause app restart).
             </p>
 </asp:PlaceHolder>
 <asp:PlaceHolder ID="phDiffer" runat="server" Visible="false">

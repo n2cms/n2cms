@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Web;
 using NHibernate;
@@ -9,10 +10,12 @@ namespace N2.Tests.Fakes
 	public class FakeSessionProvider : SessionProvider, IDisposable
 	{
 		ISession session;
-		
-		public FakeSessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext)
+		IItemNotifier interceptor;
+
+		public FakeSessionProvider(IConfigurationBuilder builder, IItemNotifier interceptor, IWebContext webContext)
 			: base(builder, interceptor, webContext)
 		{
+			this.interceptor = interceptor;
 		}
 
 		public override SessionContext OpenSession
@@ -20,7 +23,7 @@ namespace N2.Tests.Fakes
 			get
 			{
 				if(session == null)
-					session = NHSessionFactory.OpenSession();
+					session = NHSessionFactory.OpenSession(interceptor);
 				return CurrentSession ?? (CurrentSession = new SessionContext(this, session));
 			}
 		}

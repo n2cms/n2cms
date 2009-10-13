@@ -79,7 +79,7 @@ namespace N2
 		private IDictionary<string, Details.ContentDetail> details = new Dictionary<string, Details.ContentDetail>();
 		private IDictionary<string, Details.DetailCollection> detailCollections = new Dictionary<string, Details.DetailCollection>();
 		private Web.IUrlParser urlParser;
-
+    	private string ancestralTrail;
         #endregion
 
         #region Constructor
@@ -224,6 +224,13 @@ namespace N2
 		{
 			get { return children; }
 			set { children = value; }
+		}
+
+		/// <summary>Represents the trail of id's uptil the current item e.g. "/1/10/14/"</summary>
+		public string AncestralTrail
+		{
+			get { return ancestralTrail; }
+			set { ancestralTrail = value; }
 		}
 		#endregion
 
@@ -806,7 +813,7 @@ namespace N2
 			get { return string.Empty; }
 		}
 
-		#endregion
+    	#endregion
 		#endregion
 
 		#region Equals, HashCode and ToString Overrides
@@ -878,8 +885,5 @@ namespace N2
 		}
 
 		#endregion
-
-		//soon
-		//public virtual string Trail { get; set; }
 	}
 }

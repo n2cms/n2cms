@@ -18,16 +18,18 @@ namespace N2.Plugin.Scheduling
     {
         IList<ScheduledAction> actions;
         IHeart heart;
-        Web.IWebContext context;
+    	readonly IWorker worker;
+    	Web.IWebContext context;
         IErrorHandler errorHandler;
 		IEngine engine;
 
-        public Scheduler(IEngine engine, IPluginFinder plugins, IHeart heart, Web.IWebContext context, IErrorHandler errorHandler)
+        public Scheduler(IEngine engine, IPluginFinder plugins, IHeart heart, IWorker worker, IWebContext context, IErrorHandler errorHandler)
         {
 			this.engine = engine;
             actions = new List<ScheduledAction>(InstantiateActions(plugins));
             this.heart = heart;
-            this.context = context;
+        	this.worker = worker;
+        	this.context = context;
             this.errorHandler = errorHandler;
         }
 
@@ -51,8 +53,6 @@ namespace N2.Plugin.Scheduling
             }
         }
 
-        public Engine.Function<WaitCallback, bool> QueueUserWorkItem = ThreadPool.QueueUserWorkItem;
-
         private IEnumerable<ScheduledAction> InstantiateActions(IPluginFinder plugins)
         {
             foreach (ScheduleExecutionAttribute attr in plugins.GetPlugins<ScheduleExecutionAttribute>())
@@ -73,7 +73,7 @@ namespace N2.Plugin.Scheduling
                 if (action.ShouldExecute())
                 {
                     action.IsExecuting = true;
-                    QueueUserWorkItem(delegate  
+					worker.DoWork(delegate  
                     {
                         try
                         {

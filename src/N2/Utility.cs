@@ -387,6 +387,18 @@ namespace N2
 			return finalAction(source, destination);
 		}
 
+		/// <summary>Gets the trail to a certain item. A trail is a slash-separated sequence of IDs, e.g. "/1/6/12/".</summary>
+		/// <param name="item">The item whose trail to get.</param>
+		/// <returns>The trail leading to the item.</returns>
+		public static string GetTrail(ContentItem item)
+		{
+			if (item == null)
+				return "/";
+
+			string ancestralTrail = item.AncestralTrail ?? GetTrail(item.Parent);
+			return ancestralTrail + item.ID + "/";
+		}
+
 		/// <summary>
 		/// Finds the trust level of the running application (http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx)
 		/// </summary>

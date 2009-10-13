@@ -201,7 +201,8 @@ namespace N2.Persistence.NH
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
 					source.AddTo(destination);
-					itemRepository.Save(source);
+					//source.AncestralTrail = null;
+					Save(source);
 					transaction.Commit();
 				}
 			}
@@ -233,8 +234,10 @@ namespace N2.Persistence.NH
 				}
 
 				ContentItem cloned = copiedItem.Clone(includeChildren);
-
+				if(cloned.Name == source.ID.ToString())
+					cloned.Name = null;
 				cloned.Parent = destinationItem;
+
 				Save(cloned);
 
 				Invoke(ItemCopied, new DestinationEventArgs(cloned, destinationItem));

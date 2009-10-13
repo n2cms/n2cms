@@ -1,4 +1,5 @@
 ﻿using System;
+using NHibernate;
 
 namespace N2.Persistence
 {
@@ -9,14 +10,17 @@ namespace N2.Persistence
 	/// also be invoked when new items are created and when items are lazily
 	/// loaded e.g. through the children collection.
 	/// </summary>
-	public interface IItemNotifier
+	public interface IItemNotifier : IInterceptor
 	{
 		/// <summary>Notify subscribers that an item was loaded or created.</summary>
 		/// <param name="newlyCreatedItem">The item that was loaded or created.</param>
 		/// <returns>True if the item was modified.</returns>
-		bool Notifiy(ContentItem newlyCreatedItem);
+		bool NotifiyCreated(ContentItem newlyCreatedItem);
 
 		/// <summary>Is triggered when an item was created or loaded from the database.</summary>
-		event EventHandler<ItemEventArgs> ItemCreated;
+		event EventHandler<NotifiableItemEventArgs> ItemCreated;
+
+		/// <summary>Is triggered when an item is to be saved the database.</summary>
+		event EventHandler<NotifiableItemEventArgs> ItemSaving;
 	}
 }

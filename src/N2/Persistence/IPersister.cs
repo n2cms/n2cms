@@ -55,11 +55,11 @@ namespace N2.Persistence
 		/// <summary>Occurs before an item is saved</summary>
 		event EventHandler<CancellableItemEventArgs> ItemSaving;
 		/// <summary>Occurs when an item has been saved</summary>
-		event EventHandler<ItemEventArgs> ItemSaved;
+		event EventHandler<N2.ItemEventArgs> ItemSaved;
 		/// <summary>Occurs before an item is deleted</summary>
 		event EventHandler<CancellableItemEventArgs> ItemDeleting;
 		/// <summary>Occurs when an item has been deleted</summary>
-		event EventHandler<ItemEventArgs> ItemDeleted;
+		event EventHandler<N2.ItemEventArgs> ItemDeleted;
 		/// <summary>Occurs before an item is moved</summary>
 		event EventHandler<CancellableDestinationEventArgs> ItemMoving;
 		/// <summary>Occurs when an item has been moved</summary>
@@ -69,6 +69,6 @@ namespace N2.Persistence
 		/// <summary>Occurs when an item has been copied</summary>
 		event EventHandler<DestinationEventArgs> ItemCopied;
 		/// <summary>Occurs when an item is loaded</summary>
-		event EventHandler<ItemEventArgs> ItemLoaded;
+		event EventHandler<N2.ItemEventArgs> ItemLoaded;
 	}
 }

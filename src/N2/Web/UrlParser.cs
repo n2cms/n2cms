@@ -59,9 +59,10 @@ namespace N2.Web
 		/// <summary>Invoked when an item is created or loaded from persistence medium.</summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		protected virtual void OnItemCreated(object sender, ItemEventArgs e)
+		protected virtual void OnItemCreated(object sender, NotifiableItemEventArgs e)
 		{
 			((IUrlParserDependency)e.AffectedItem).SetUrlParser(this);
+			e.WasModified = true;
 		}
 
 		public PathData ResolvePath(string url)

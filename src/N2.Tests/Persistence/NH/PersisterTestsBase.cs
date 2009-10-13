@@ -20,7 +20,8 @@ namespace N2.Tests.Persistence.NH
 		protected FakeSessionProvider sessionProvider;
 		protected IItemFinder finder;
 		protected SchemaExport schemaCreator;
-
+		protected NotifyingInterceptor interceptor;
+			
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
 		{
@@ -32,7 +33,7 @@ namespace N2.Tests.Persistence.NH
 			ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
 			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, config, connectionStrings);
 
-			NotifyingInterceptor interceptor = new NotifyingInterceptor(new ItemNotifier());
+			interceptor = new NotifyingInterceptor();
 			FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
 			sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), interceptor, context);
 

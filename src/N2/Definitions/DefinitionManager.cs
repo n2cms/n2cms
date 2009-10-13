@@ -53,7 +53,7 @@ namespace N2.Definitions
 				foreach (AuthorizedRole role in parentItem.AuthorizedRoles)
 					item.AuthorizedRoles.Add(new AuthorizedRole(item, role.Role));
 			}
-			notifier.Notifiy(item);
+			notifier.NotifiyCreated(item);
 			if (ItemCreated != null)
 				ItemCreated.Invoke(this, new ItemEventArgs(item));
 		}

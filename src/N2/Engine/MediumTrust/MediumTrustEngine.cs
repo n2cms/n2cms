@@ -24,7 +24,6 @@ using N2.Serialization;
 using N2.Web;
 using N2.Web.Parts;
 using N2.Web.UI;
-using NHibernate;
 using Environment=NHibernate.Cfg.Environment;
 
 namespace N2.Engine.MediumTrust
@@ -47,20 +46,16 @@ namespace N2.Engine.MediumTrust
 			var editConfiguration = (EditSection) AddConfigurationSection("n2/edit");
 			var databaseConfiguration = (DatabaseSection) AddConfigurationSection("n2/database");
 			if (databaseConfiguration == null)
-				throw new ConfigurationErrorsException(
-					"Couldn't find the n2/database configuration section. Please check the web configuration.");
+				throw new ConfigurationErrorsException("Couldn't find the n2/database configuration section. Please check the web configuration.");
 			var hostConfiguration = (HostSection) AddConfigurationSection("n2/host");
 			if (hostConfiguration == null)
-				throw new ConfigurationErrorsException(
-					"Couldn't find the n2/host configuration section. Please check the web configuration.");
+				throw new ConfigurationErrorsException("Couldn't find the n2/host configuration section. Please check the web configuration.");
 			var engineConfiguration = (EngineSection) AddConfigurationSection("n2/engine");
 			if (engineConfiguration == null)
-				throw new ConfigurationErrorsException(
-					"Couldn't find the n2/engine configuration section. Please check the web configuration.");
+				throw new ConfigurationErrorsException("Couldn't find the n2/engine configuration section. Please check the web configuration.");
 			var connectionStrings = (ConnectionStringsSection) AddConfigurationSection("connectionStrings");
 			if (connectionStrings == null)
-				throw new ConfigurationErrorsException(
-					"Couldn't find the connectionStrings configuration section. Please check the web configuration.");
+				throw new ConfigurationErrorsException("Couldn't find the connectionStrings configuration section. Please check the web configuration.");
 
 			RegisterConfiguredComponents(engineConfiguration);
 
@@ -71,17 +66,14 @@ namespace N2.Engine.MediumTrust
 			host = AddComponentInstance<IHost>(new Host(webContext, hostConfiguration.RootID, hostConfiguration.StartPageID));
 			AddComponentInstance(webContext);
 
-			var notifier = AddComponentInstance<IItemNotifier>(new ItemNotifier());
+			var interceptor = AddComponentInstance<IItemNotifier>(new NotifyingInterceptor());
 			var typeFinder = AddComponentInstance<ITypeFinder>(new MediumTrustTypeFinder(webContext, engineConfiguration));
 			DefinitionBuilder definitionBuilder = AddComponentInstance(new DefinitionBuilder(typeFinder, engineConfiguration));
-			definitions = AddComponentInstance<IDefinitionManager>(new DefinitionManager(definitionBuilder, notifier));
+			definitions = AddComponentInstance<IDefinitionManager>(new DefinitionManager(definitionBuilder, interceptor));
 			Environment.UseReflectionOptimizer = false;
-			ConfigurationBuilder nhBuilder =
-				AddComponentInstance(new ConfigurationBuilder(definitions, databaseConfiguration, connectionStrings));
+			ConfigurationBuilder nhBuilder = AddComponentInstance(new ConfigurationBuilder(definitions, databaseConfiguration, connectionStrings));
 			var sessionFactorySource = AddComponentInstance<IConfigurationBuilder>(new ConfigurationSource(nhBuilder));
-			var interceptor = AddComponentInstance<IInterceptor>(new NotifyingInterceptor(notifier));
-			var sessionProvider =
-				AddComponentInstance<ISessionProvider>(new SessionProvider(sessionFactorySource, interceptor, webContext));
+			var sessionProvider = AddComponentInstance<ISessionProvider>(new SessionProvider(sessionFactorySource, interceptor, webContext));
 			var finder = AddComponentInstance<IItemFinder>(new ItemFinder(sessionProvider, definitions));
 
 			INHRepository<int, ContentItem> itemRepository = RegisterRepository<ContentItem>(sessionProvider);
@@ -94,41 +86,32 @@ namespace N2.Engine.MediumTrust
 
 			if (hostConfiguration.MultipleSites)
 			{
-				var sitesProvider =
-					AddComponentInstance<ISitesProvider>(new DynamicSitesProvider(persister, host, hostConfiguration));
-				urlParser =
-					AddComponentInstance<IUrlParser>(new MultipleSitesParser(persister, webContext, notifier, host, sitesProvider,
-					                                                         hostConfiguration));
+				var sitesProvider = AddComponentInstance<ISitesProvider>(new DynamicSitesProvider(persister, host, hostConfiguration));
+				urlParser = AddComponentInstance<IUrlParser>(new MultipleSitesParser(persister, webContext, interceptor, host, sitesProvider, hostConfiguration));
 			}
 			else
-				urlParser = AddComponentInstance<IUrlParser>(new UrlParser(persister, webContext, notifier, host, hostConfiguration));
+				urlParser = AddComponentInstance<IUrlParser>(new UrlParser(persister, webContext, interceptor, host, hostConfiguration));
 
 			if (hostConfiguration.Web.Urls.EnableCaching)
 				urlParser = new CachingUrlParserDecorator(urlParser, persister);
 
 			securityManager = AddComponentInstance<ISecurityManager>(new SecurityManager(webContext, editConfiguration));
-			var securityEnforcer =
-				AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
+			var securityEnforcer = AddComponentInstance<ISecurityEnforcer>(new SecurityEnforcer(persister, securityManager, urlParser, webContext));
 			var versioner = AddComponentInstance<IVersionManager>(new VersionManager(itemRepository, finder));
 			NavigationSettings settings = AddComponentInstance(new NavigationSettings(webContext));
 			var pluginFinder = AddComponentInstance<IPluginFinder>(new PluginFinder(typeFinder, engineConfiguration));
-			editManager =
-				AddComponentInstance<IEditManager>(new EditManager(definitions, persister, versioner, securityManager, pluginFinder,
+			editManager = AddComponentInstance<IEditManager>(new EditManager(definitions, persister, versioner, securityManager, pluginFinder,
 				                                                   settings, editConfiguration));
 			integrityManager = AddComponentInstance<IIntegrityManager>(new IntegrityManager(definitions, urlParser));
 			var integrityEnforcer = AddComponentInstance<IIntegrityEnforcer>(new IntegrityEnforcer(persister, integrityManager));
 			ItemXmlReader xmlReader = AddComponentInstance(new ItemXmlReader(definitions));
 			ItemXmlWriter xmlWriter = AddComponentInstance(new ItemXmlWriter(definitions, urlParser));
 			var importer = AddComponentInstance<Importer>(new GZipImporter(persister, xmlReader));
-			InstallationManager installer =
-				AddComponentInstance(new InstallationManager(host, definitions, importer, persister, sessionProvider,
+			InstallationManager installer = AddComponentInstance(new InstallationManager(host, definitions, importer, persister, sessionProvider,
 				                                             sessionFactorySource));
-			var errorHandler =
-				AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
+			var errorHandler = AddComponentInstance<IErrorHandler>(new ErrorHandler(webContext, securityManager, installer, engineConfiguration));
 			var aspectController = AddComponentInstance<IContentAdapterProvider>(new ContentAdapterProvider(this, typeFinder));
-			var dispatcher =
-				AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(aspectController, webContext, urlParser, errorHandler,
-				                                                               hostConfiguration));
+			var dispatcher = AddComponentInstance<IRequestDispatcher>(new RequestDispatcher(aspectController, webContext, urlParser, errorHandler, hostConfiguration));
 			AddComponentInstance<IRequestLifeCycleHandler>(new RequestLifeCycleHandler(webContext, broker, installer, dispatcher,
 			                                                                           errorHandler, editConfiguration,
 			                                                                           hostConfiguration));
@@ -141,8 +124,7 @@ namespace N2.Engine.MediumTrust
 			AddComponentInstance<IDefaultDirectory>(new DefaultDirectorySelector(host, editConfiguration));
 
 			AjaxRequestDispatcher ajaxDispatcher = AddComponentInstance(new AjaxRequestDispatcher(securityManager));
-			CreateUrlProvider cup =
-				AddComponentInstance(new CreateUrlProvider(persister, editManager, definitions, ajaxDispatcher));
+			CreateUrlProvider cup = AddComponentInstance(new CreateUrlProvider(persister, editManager, definitions, ajaxDispatcher));
 			ItemDeleter id = AddComponentInstance(new ItemDeleter(persister, ajaxDispatcher));
 			EditUrlProvider eud = AddComponentInstance(new EditUrlProvider(persister, editManager, ajaxDispatcher));
 			ItemMover im = AddComponentInstance(new ItemMover(persister, ajaxDispatcher));
@@ -151,7 +133,10 @@ namespace N2.Engine.MediumTrust
 			AddComponentInstance<ITreeSorter>(new TreeSorter(persister, editManager, webContext));
 
 			IHeart heart = AddComponentInstance(new Heart(engineConfiguration));
-			AddComponentInstance(new Scheduler(this, pluginFinder, heart, webContext, errorHandler));
+			IWorker worker = AddComponentInstance<IWorker>(new AsyncWorker());
+			AddComponentInstance(new Scheduler(this, pluginFinder, heart, worker, webContext, errorHandler));
+
+			AddComponentInstance(new TrailTracker(persister));
 		}
 
 		public MediumTrustEngine() : this(EventBroker.Instance)

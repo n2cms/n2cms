@@ -1,4 +1,7 @@
-﻿- upgrade database support
+﻿- introduced AncestralTrail which stores the path leading to an item
+- introduced an IWorker that starts async work
+- removed ItemNotifier and IInterceptor service (possibly breaking)
+- upgrade database support
 - rudimentary NHibernate.Linq support
 	- items.WhereDetail(i => i.DetailProperty == "value")
 	- items.WhereDetail(i => i.IntegerDetail > 0)

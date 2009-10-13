@@ -1,5 +1,6 @@
 using N2.Configuration;
 using N2.Persistence;
+using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Web;
@@ -24,7 +25,7 @@ namespace N2.Tests.Web
 			CreateDefaultStructure();
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 			HostSection hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};
-			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, startItem.ID, startItem.ID), hostSection);
+			parser = new UrlParser(persister, webContext, new NotifyingInterceptor(), new Host(webContext, startItem.ID, startItem.ID), hostSection);
 			ContentAdapterProvider provider = new ContentAdapterProvider(null, new AppDomainTypeFinder());
 			provider.Start(); 
 			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);

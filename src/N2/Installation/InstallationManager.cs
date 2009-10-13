@@ -169,7 +169,7 @@ namespace N2.Installation
 				using (sessionProvider)
 				{
 					// checking for properties added between version 1 and 2
-					sessionProvider.OpenSession.Session.CreateQuery("select ci.Trail from ContentItem ci").SetMaxResults(1).List();
+					sessionProvider.OpenSession.Session.CreateQuery("select ci.AncestralTrail from ContentItem ci").SetMaxResults(1).List();
 				}
 				status.DatabaseVersion = 2;
 			}

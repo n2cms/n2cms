@@ -3,6 +3,7 @@ using System.Linq;
 using N2.Configuration;
 using N2.Engine;
 using N2.Persistence;
+using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
 using N2.Web;
@@ -29,7 +30,7 @@ namespace N2.Tests.Web
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
 			HostSection hostSection = new HostSection();
 			hostSection.Web.Extension = "/";
-			parser = new UrlParser(persister, webContext, new ItemNotifier(), new Host(webContext, pageItem.ID, pageItem.ID), hostSection);
+			parser = new UrlParser(persister, webContext, new NotifyingInterceptor(), new Host(webContext, pageItem.ID, pageItem.ID), hostSection);
 			engine = new FakeEngine();
 			AppDomainTypeFinder finder = new AppDomainTypeFinder();
 			engine.AddComponentInstance(null, typeof(IDefinitionManager), new DefinitionManager(new DefinitionBuilder(finder, new EngineSection()), null));

@@ -24,6 +24,7 @@ namespace N2.Edit.Install
 		protected void btnInstall_Click(object sender, EventArgs e)
 		{
 			ExecuteWithErrorHandling(Installer.Upgrade);
+			status = null;
 		}
 
 		protected void btnExportSchema_Click(object sender, EventArgs e)

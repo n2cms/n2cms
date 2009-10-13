@@ -79,7 +79,7 @@
 		<property name="Visible"	access="property" not-null="true" />
 		<property name="SavedBy"	access="property" length="50" />
 		
-		<!--<property name="Trail"		access="property" length="100" />-->
+		<property name="AncestralTrail"		access="property" length="100" />
 
 		<many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
 		<many-to-one name="Parent"		column="ParentID"		class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />

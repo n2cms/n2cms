@@ -8,6 +8,7 @@ using N2.Extensions.Tests.Fakes;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
 using N2.Persistence;
+using N2.Persistence.NH;
 using N2.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -66,7 +67,7 @@ namespace N2.Extensions.Tests.Mvc
 			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), null);
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
-			var parser = new UrlParser(persister, webContext, new ItemNotifier(), host, new HostSection());
+			var parser = new UrlParser(persister, webContext, new NotifyingInterceptor(), host, new HostSection());
 			controllerMapper = new ControllerMapper(typeFinder, definitions);
 			Url.DefaultExtension = "";
 
