@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using N2.Collections;
 using N2.Details;
 using N2.Integrity;
@@ -58,19 +59,13 @@ namespace N2.Templates.Mvc.Items.Pages
 			get { return base.Url + "?hungry=yes"; }
 		}
 
-		public string PreviewUrl
-		{
-			get { return base.FindPath(PathData.DefaultAction).RewrittenUrl; }
-		}
-
 		public virtual IEnumerable<ISyndicatable> GetItems()
 		{
 			foreach (ISyndicatable item in N2.Find.Items
 				.Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true)
 				.Filters(GetFilters())
-				.MaxResults(NumberOfItems)
 				.OrderBy.Published.Desc
-				.Select())
+				.Select().Take(NumberOfItems))
 			{
 				yield return item;
 			}
