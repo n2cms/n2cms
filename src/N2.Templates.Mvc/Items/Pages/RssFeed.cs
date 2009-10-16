@@ -19,35 +19,35 @@ namespace N2.Templates.Mvc.Items.Pages
 	[MvcConventionTemplate("Feed")]
 	public class RssFeed : AbstractContentPage, IFeed, INode
 	{
-		[EditableLink("Feed root", 90)]
+		[EditableLink("Feed root", 90, ContainerName = Tabs.Content)]
 		public virtual ContentItem FeedRoot
 		{
 			get { return (ContentItem) GetDetail("FeedRoot"); }
 			set { SetDetail("FeedRoot", value); }
 		}
 
-		[EditableTextBox("Number of items", 100)]
+		[EditableTextBox("Number of items", 100, ContainerName = Tabs.Content)]
 		public virtual int NumberOfItems
 		{
 			get { return (int) (GetDetail("NumberOfItems") ?? 10); }
 			set { SetDetail("NumberOfItems", value, 10); }
 		}
 
-		[EditableTextBox("Tagline", 110)]
+		[EditableTextBox("Tagline", 110, ContainerName = Tabs.Content)]
 		public virtual string Tagline
 		{
 			get { return (string) (GetDetail("Tagline") ?? string.Empty); }
 			set { SetDetail("Tagline", value, string.Empty); }
 		}
 
-		[EditableTextBox("Author", 120)]
+		[EditableTextBox("Author", 120, ContainerName = Tabs.Content)]
 		public virtual string Author
 		{
 			get { return (string) (GetDetail("Author") ?? string.Empty); }
 			set { SetDetail("Author", value, string.Empty); }
 		}
 
-		[EditableCheckBox("Visible", 30)]
+		[EditableCheckBox("Visible", 30, ContainerName = Tabs.Advanced)]
 		public override bool Visible
 		{
 			get { return base.Visible; }
