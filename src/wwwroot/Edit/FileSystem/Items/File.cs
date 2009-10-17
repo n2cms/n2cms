@@ -7,10 +7,10 @@ namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("File",
 		IconUrl = "~/Edit/img/ico/page_white.gif",
-		TemplateUrl = "~/Edit/FileSystem/File.aspx",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage)]
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]
+	[N2.Web.Template("info", "~/Edit/FileSystem/File.aspx")]
     public class File : AbstractNode, IActiveContent
     {
         public long Size { get; set; }
@@ -41,10 +41,17 @@ namespace N2.Edit.FileSystem.Items
 			get { return FileSystem.FileExists(Url); }
 		}
 
-        #region IActiveRecord Members
+    	public string NewName { get; set; }
+
+    	#region IActiveRecord Members
 
         public void Save()
         {
+			if (!string.IsNullOrEmpty(NewName))
+			{
+				FileSystem.MoveFile(Url, Combine(Directory.Url, NewName));
+				Name = NewName;
+			}
         }
 
         public void Delete()

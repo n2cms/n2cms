@@ -12,9 +12,19 @@ namespace N2.Web
 	public class PathData
 	{
 		public const string DefaultAction = "";
+
+		/// <summary>An empty path. This probably indicates that the path didn't correspond to an item in the hierarchy.</summary>
 		public static PathData Empty
 		{
 			get { return new PathData(); }
+		}
+
+		/// <summary>Creates a path that isn't rewritten to it's template.</summary>
+		/// <param name="item">The item associated with path.</param>
+		/// <returns>A path data that is not rewritten.</returns>
+		public static PathData NonRewritable(ContentItem item)
+		{
+			return new PathData(item, null) {IsRewritable = false};
 		}
 
 		static string itemQueryKey = "item";
@@ -67,21 +77,38 @@ namespace N2.Web
 			IsRewritable = true;
 		}
 
+		/// <summary>The item behind this path.</summary>
 		public ContentItem CurrentItem { get; set; }
 
+		/// <summary>The template handling this path.</summary>
 		public string TemplateUrl { get; set; }
+		
+		/// <summary>The identifier of the content item behind this path.</summary>
 		public int ID { get; set; }
+
+		/// <summary>?</summary>
 		public string Path { get; set; }
+
+		/// <summary>An optional action to separate templates handling an item.</summary>
 		public string Action { get; set; }
+
+		/// <summary>An additional argument to the action.</summary>
 		public string Argument { get; set; }
+
+		/// <summary>Query parameters passed on to the template.</summary>
 		public IDictionary<string, string> QueryParameters { get; set; }
+		
+		/// <summary>Indicates that an existing file handle this path and it shouldn't be rewritten.</summary>
+		public bool HonorExistingFile { get; set; }
+		
+		/// <summary>Indicates that this path shouldn't be rewritten.</summary>
 		public bool IsRewritable { get; set; }
 
 		public virtual Url RewrittenUrl
 		{
 			get
 			{
-				if(IsEmpty())
+				if(IsEmpty() || string.IsNullOrEmpty(TemplateUrl))
 					return null;
 
 				if (CurrentItem.IsPage)

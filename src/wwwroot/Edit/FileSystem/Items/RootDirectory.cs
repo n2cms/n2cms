@@ -1,6 +1,7 @@
 ﻿using N2.Integrity;
 using N2.Definitions;
 using N2.Installation;
+using N2.Web;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -13,6 +14,7 @@ namespace N2.Edit.FileSystem.Items
     [RestrictParents(typeof(IFileSystemContainer))]
     [ItemAuthorizedRoles("Administrators", "admin")]
     [Editables.EditableFolderPath]
+	[Template("info", "~/Edit/FileSystem/Directory.aspx")]
     public class RootDirectory : AbstractDirectory
     {
         public RootDirectory()

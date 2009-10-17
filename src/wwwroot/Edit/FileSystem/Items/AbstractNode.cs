@@ -1,6 +1,6 @@
-﻿using System.Web.Hosting;
-using N2.Edit.Trash;
+﻿using N2.Edit.Trash;
 using N2.Persistence;
+using N2.Web;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -30,8 +30,16 @@ namespace N2.Edit.FileSystem.Items
 
         string INode.PreviewUrl
         {
-            get { return N2.Web.Url.Parse(TemplateUrl).AppendQuery("selected", Path); }
+			get { return N2.Web.Url.Parse(FindPath("info").TemplateUrl).AppendQuery("selected", Path); }
         }
+
+		public override PathData FindPath(string remainingUrl)
+		{
+			if (string.IsNullOrEmpty(remainingUrl))
+				return PathData.NonRewritable(this);
+
+			return base.FindPath(remainingUrl);
+		}
 
         public override bool Equals(object obj)
         {
@@ -51,6 +59,7 @@ namespace N2.Edit.FileSystem.Items
 		protected File CreateFile(FileData file)
 		{
 			File f = new File();
+			f.NewName = file.Name;
 			f.Name = file.Name;
 			f.Title = file.Name;
 			f.Size = file.Length;

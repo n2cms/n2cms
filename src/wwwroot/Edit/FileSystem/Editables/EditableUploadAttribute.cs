@@ -44,15 +44,14 @@ namespace N2.Edit.FileSystem.Editables
                 f.Name = System.IO.Path.GetFileName(ce.Upload.PostedFile.FileName);
             	f.WriteToDisk(ce.Upload.PostedFile.InputStream);
 
-				//f.PhysicalPath = System.IO.Path.Combine(f.Directory.PhysicalPath, f.Name);
-				//ce.Upload.PostedFile.SaveAs(f.PhysicalPath);
                 return true;
             }
-            else if (ce.ChangeName.Text.Length > 0)
-            {
-                f.Name = ce.ChangeName.Text;
-            }
-            return false;
+        	if (ce.ChangeName.Text.Length > 0)
+        	{
+        		f.NewName = ce.ChangeName.Text;
+				return true;
+			}
+        	return false;
         }
 
         public override void UpdateEditor(ContentItem item, Control editor)

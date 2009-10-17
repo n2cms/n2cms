@@ -102,7 +102,7 @@ namespace N2.Web
 				}
 			}
 
-			data.IsRewritable = IsRewritable(webContext.PhysicalPath);
+			data.HonorExistingFile = !IgnoreExisting(webContext.PhysicalPath);
 			return data;
 		}
 
@@ -114,7 +114,7 @@ namespace N2.Web
 			return StartPage;
 		}
 
-		bool IsRewritable(string physicalPath)
+		bool IgnoreExisting(string physicalPath)
 		{
 			// N2 has a history of requiring the start page's template to be located at /default.aspx.
 			// Since a previous version this is no longer required with the consequence of /default.aspx

@@ -7,10 +7,10 @@ namespace N2.Edit.FileSystem.Items
 {
 	[PageDefinition("Directory",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage, 
-		IconUrl = "~/Edit/img/ico/folder.gif",
-		TemplateUrl = "~/Edit/FileSystem/Directory.aspx")]
+		IconUrl = "~/Edit/img/ico/folder.gif")]
     [RestrictParents(typeof(AbstractDirectory))]
     [WithEditableName]
+	[N2.Web.Template("info", "~/Edit/FileSystem/Directory.aspx")]
     public class Directory : AbstractDirectory, IActiveContent
     {
         public override void AddTo(ContentItem newParent)
