@@ -38,11 +38,16 @@ namespace N2.Linq
 				if (ue != null && ue.Operand.NodeType == ExpressionType.Lambda)
 				{
 					var expressionToReplace = ue.Operand as Expression<Func<TElement, bool>>; // ci => (ci.StringProperty2 = "another string")
-
-					if (expressionToReplace != null && WhereDetailExpressions.ContainsKey(expressionToReplace) && expressionToReplace.Body is BinaryExpression)
+					
+					if (expressionToReplace != null 
+						&& WhereDetailExpressions.ContainsKey(expressionToReplace) 
+						&& expressionToReplace.Body is BinaryExpression
+						&& expressionToReplace.Parameters.Count > 0)
 					{
-						var expressionBody = expressionToReplace.Body as BinaryExpression; // (ci.StringProperty2 = "another string")
-						var translatedExpression = TranslateExpression<TElement>(expressionBody);
+						ParameterExpression itemParameter = expressionToReplace.Parameters[0];
+						BinaryExpression expressionBody = expressionToReplace.Body as BinaryExpression; // (ci.StringProperty2 = "another string")
+
+						LambdaExpression translatedExpression = Expression.Lambda(Translate<TElement>(itemParameter, expressionBody), itemParameter);
 						Expression quote = Expression.Quote(translatedExpression);
 						expression = Expression.Call(mcExpression.Object, mcExpression.Method, mcExpression.Arguments[0], quote); // value(NHibernate.Linq.Query`1[N2.Extensions.Tests.Linq.LinqItem]).Where(ci => ci.Details.Values.OfType().Any(cd => ((cd.Name = "StringProperty2") && (cd.StringValue = "another string"))))
 					}
@@ -52,7 +57,7 @@ namespace N2.Linq
 			return new ContentQueryable<TElement>(this, queryProvider.CreateQuery<TElement>(expression));
 		}
 
-		Expression TranslateExpression<TElement>(BinaryExpression expressionBody)
+		Expression Translate<TElement>(ParameterExpression itemParameter, BinaryExpression expressionBody)
 		{
 			switch (expressionBody.NodeType)
 			{
@@ -62,39 +67,44 @@ namespace N2.Linq
 				case ExpressionType.LessThan:
 				case ExpressionType.LessThanOrEqual:
 				case ExpressionType.NotEqual:
-					return TranslatePropertyComparisonExpression<TElement>(expressionBody);
-				//case ExpressionType.AndAlso:
-				//    return TranslateAndAlsoExpression<TElement>(expressionBody);
+					return TranslatePropertyComparisonIntoDetailSubselect(itemParameter, expressionBody);
+				case ExpressionType.AndAlso:
+					return TranslateAndAlso<TElement>(itemParameter, expressionBody);
+				case ExpressionType.OrElse:
+					return TranslateOrElse<TElement>(itemParameter, expressionBody);
 				default:
 					throw new NotSupportedException("Not supported expression type " + expressionBody.NodeType + " in expression " + expressionBody);
 			}
 		}
 
-		Expression TranslateAndAlsoExpression<TElement>(BinaryExpression expressionBody)
+		Expression TranslateOrElse<TElement>(ParameterExpression itemParameter, BinaryExpression expressionBody)
 		{
-			var left = TranslateExpression<TElement>(expressionBody.Left as BinaryExpression);
-			var right = TranslateExpression<TElement>(expressionBody.Right as BinaryExpression);
+			var left = Translate<TElement>(itemParameter, expressionBody.Left as BinaryExpression);
+			var right = Translate<TElement>(itemParameter, expressionBody.Right as BinaryExpression);
+			return Expression.OrElse(left, right);
+		}
+
+		Expression TranslateAndAlso<TElement>(ParameterExpression itemParameter, BinaryExpression expressionBody)
+		{
+			var left = Translate<TElement>(itemParameter, expressionBody.Left as BinaryExpression);
+			var right = Translate<TElement>(itemParameter, expressionBody.Right as BinaryExpression);
 			return Expression.AndAlso(left, right);
 		}
 
-		Expression TranslatePropertyComparisonExpression<TElement>(BinaryExpression expressionBody)
+		MethodCallExpression TranslatePropertyComparisonIntoDetailSubselect(ParameterExpression itemParameter, BinaryExpression expressionBody)
 		{
 			ComparisonInfo comparison = ComparisonInfo.Get(expressionBody);
 
 			Type propertyType = GetExpressionType(comparison.NameExpression);
 			var detail = GetDetailFromPropertyType(propertyType);
 
-			var itemParameter = Expression.Parameter(typeof(ContentItem), "ci"); // ci
 			var valuesProperty = Expression.Property(Expression.Property(itemParameter, "Details"), "Values"); // ci.Details.Values
 			var ofTypeMethod = ofTypeMethodInfo.MakeGenericMethod(detail.DetailType); // System.Collections.Generic.IEnumerable`1[N2.Details.StringDetail] OfType[StringDetail](System.Collections.IEnumerable)
 			var ofTypeCall = Expression.Call(valuesProperty, ofTypeMethod, valuesProperty); // ci.Details.Values.OfType()
 			var anyMethod = anyMethodInfo.MakeGenericMethod(detail.DetailType); // Boolean Any[StringDetail](System.Collections.Generic.IEnumerable`1[N2.Details.StringDetail], System.Func`2[N2.Details.StringDetail,System.Boolean])
 
 			var detailExpression = GetDetailExpression(comparison, detail); // cd => ((cd.Name = "StringProperty2") && (cd.StringValue = "another string"))
-			var anyCall = Expression.Call(ofTypeCall, anyMethod, ofTypeCall, detailExpression); // ci.Details.Values.OfType().Any(cd => ((cd.Name = "StringProperty2") && (cd.StringValue = "another string")))
-
-			var itemExpression = Expression.Lambda<Func<TElement, bool>>(anyCall, itemParameter); // ci => ci.Details.Values.OfType().Any(cd => ((cd.Name = "StringProperty2") && (cd.StringValue = "another string")))
-			return itemExpression;
+			return Expression.Call(ofTypeCall, anyMethod, ofTypeCall, detailExpression);
 		}
 
 		private Type GetExpressionType(MemberExpression nameExpression)

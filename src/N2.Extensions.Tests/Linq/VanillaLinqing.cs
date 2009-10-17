@@ -65,6 +65,22 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(!items.Contains(item));
 		}
 
+		//Expr: value(NHibernate.Linq.Query`1[N2.ContentItem]).Where(ci => ci.Details.Values.OfType().Any(sd => ((sd.Name = "StringProperty2") && sd.StringValue.StartsWith("another"))))
+		[Test]
+		public void CanSelect_SingleItem_BySubselectingDetail_ByName_And_StartsWithValue()
+		{
+			var query = engine.QueryItems()
+				.Where(ci => ci.Details.Values.OfType<StringDetail>()
+					.Any(sd => sd.Name == "StringProperty2" && sd.StringValue.StartsWith("another")));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(items.Contains(root));
+			Assert.That(!items.Contains(item));
+		}
+
 		//Expr: value(NHibernate.Linq.Query`1[N2.Extensions.Tests.Linq.LinqItem]).Where(ci => ci.Details.Values.OfType().Any(cd => ((cd.Name = "StringProperty2") && (cd.StringValue = "another string"))))
 		[Test]
 		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_StronglyTypedQuery()
@@ -96,6 +112,36 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(items.Count, Is.EqualTo(1));
 			Assert.That(items.Contains(root));
 			Assert.That(!items.Contains(item));
+		}
+
+		[Test]
+		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_And_NameAndValue()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.Where(ci => ci.Details.Values.OfType<StringDetail>().Any(cd => cd.Name == "StringProperty" && cd.StringValue == "a string")
+					&& ci.Details.Values.OfType<StringDetail>().Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string"));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(items.Contains(root));
+			Assert.That(!items.Contains(item));
+		}
+
+		[Test]
+		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_Or_NameAndValue()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.Where(ci => ci.Details.Values.OfType<StringDetail>().Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string")
+					|| ci.Details.Values.OfType<StringDetail>().Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "yet another string"));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(2));
+			Assert.That(items.Contains(root));
+			Assert.That(items.Contains(item));
 		}
 	}
 }
