@@ -1,4 +1,5 @@
 ﻿- introduced AncestralTrail which stores the path leading to an item
+	- finder support for ancestral trail
 - introduced an IWorker that starts async work
 - removed ItemNotifier and IInterceptor service (possibly breaking)
 - upgrade database support

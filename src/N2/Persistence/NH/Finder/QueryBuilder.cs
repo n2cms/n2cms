@@ -182,6 +182,11 @@ namespace N2.Persistence.NH.Finder
 			get { return new PropertyStringCriteria(this, "SavedBy"); }
 		}
 
+		public IStringCriteria AncestralTrail
+		{
+			get { return new PropertyStringCriteria(this, "AncestralTrail"); }
+		}
+
 		public IDetailCriteria Detail(string name)
 		{
 			return new DetailCriteria(this, name);

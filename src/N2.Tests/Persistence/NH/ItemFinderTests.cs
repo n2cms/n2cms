@@ -30,10 +30,10 @@ namespace N2.Tests.Persistence.NH
 
 			CreateRootItem();
 			SaveVersionAndUpdateRootItem();
-			CreateStartPage();
-			item1 = CreatePageBelowStartPage(1);
-			item2 = CreatePageBelowStartPage(2);
-			item3 = CreatePageBelowStartPage(3);
+			CreateStartPageBelow(rootItem);
+			item1 = CreatePageBelow(startPage, 1);
+			item2 = CreatePageBelow(startPage, 2);
+			item3 = CreatePageBelow(startPage, 3);
 
 			engine.Resolve<IHost>().DefaultSite.RootItemID = rootItem.ID;
 			engine.Resolve<IHost>().DefaultSite.StartPageID = startPage.ID;
@@ -751,6 +751,40 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void CanSelect_All_WithMaxRestriction()
+		{
+			IList<ContentItem> items = finder.All.MaxResults(1).Select();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void CanSelect_AllItems_ByAncestralTrail()
+		{
+			IList<ContentItem> items = finder.Where.AncestralTrail.Like(rootItem.AncestralTrail + "%").Select();
+			int allCount = finder.All.Count();
+
+			Assert.That(items.Count, Is.EqualTo(allCount));
+		}
+
+		[Test]
+		public void CanSelect_Descendantds_ByAncestralTrail()
+		{
+			IList<ContentItem> items = finder.Where.AncestralTrail.Like(startPage.AncestralTrail + "%").Select();
+			int allCount = finder.All.Count();
+
+			Assert.That(items.Count, Is.EqualTo(allCount - 1));
+		}
+
+		[Test]
+		public void CanSelect_Siblings_ByAncestralTrail()
+		{
+			IList<ContentItem> items = finder.Where.AncestralTrail.Like(item1.AncestralTrail).Select();
+
+			Assert.That(items.Count, Is.EqualTo(startPage.Children.Count));
+		}
+
+		[Test]
 		public void Throws_RelevantException_WhenPassed_UnknownType()
 		{
 			ExceptionAssert.Throws<ArgumentException>(delegate
@@ -759,28 +793,27 @@ namespace N2.Tests.Persistence.NH
 				});
 		}
 
-
-
-		private ContentItem CreatePageBelowStartPage(int index)
+		#region Helpers
+		
+		private ContentItem CreatePageBelow(ContentItem parentPage, int index)
 		{
-			ContentItem item;
-			item = CreateOneItem<PersistableItem2>(0, "item" + index, startPage);
+			ContentItem item = CreateOneItem<PersistableItem2>(0, "item" + index, parentPage);
 
 			N2.Details.DetailCollection details = item.GetDetailCollection("DetailCollection", true);
 			details.Add(true);
 			details.Add(index * 1000 + 555);
 			details.Add(index * 1000.0 + 555.55);
 			details.Add("string in a collection " + index);
-			details.Add(startPage);
+			details.Add(parentPage);
 			details.Add(new DateTime(2009 + index, 1, 1));
 
 			engine.Persister.Save(item);
 			return item;
 		}
 
-		private void CreateStartPage()
+		private void CreateStartPageBelow(ContentItem root)
 		{
-			startPage = CreateOneItem<PersistableItem1>(0, "start page", rootItem);
+			startPage = CreateOneItem<PersistableItem1>(0, "start page", root);
 			startPage.ZoneName = "AZone";
 			startPage.SortOrder = 34;
 			startPage.Visible = true;
@@ -791,7 +824,7 @@ namespace N2.Tests.Persistence.NH
 			startPage["StringDetail"] = "actually another string";
 			startPage["StringDetail2"] = "just a string";
 			startPage["ObjectDetail"] = new string[] { "two", "three", "four" };
-			startPage["ItemDetail"] = rootItem;
+			startPage["ItemDetail"] = root;
 
 			engine.Persister.Save(startPage);
 		}
@@ -836,5 +869,7 @@ namespace N2.Tests.Persistence.NH
 
 			engine.Persister.Save(rootItem);
 		}
+
+		#endregion
 	}
 }

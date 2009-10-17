@@ -49,6 +49,9 @@ namespace N2.Persistence.Finder
 		/// <summary>Find items by who saved them.</summary>
 		IStringCriteria SavedBy { get; }
 
+		/// <summary>Find items by location in hierarchy.</summary>
+		IStringCriteria AncestralTrail { get; }
+
 		/// <summary>Find items having details matching the criteria and a certain name .</summary>
 		IDetailCriteria Detail(string name);
 
