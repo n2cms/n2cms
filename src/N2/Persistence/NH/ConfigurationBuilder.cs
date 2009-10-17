@@ -68,6 +68,7 @@ namespace N2.Persistence.NH
 
 		/// <summary>Sets properties configuration dictionary based on configuration in the database section.</summary>
 		/// <param name="config">The database section configuration.</param>
+		/// <param name="connectionStrings">Connection strings from configuration</param>
 		protected void SetupProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			Properties[NHibernate.Cfg.Environment.ConnectionStringName] = config.ConnectionStringName;

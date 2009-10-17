@@ -150,7 +150,7 @@ namespace N2
 		/// <param name="siblings">A list of items where the item to move is listed.</param>
 		/// <param name="itemToMove">The item that should be moved (must be in the list)</param>
 		/// <param name="newIndex">The new index onto which to place the item.</param>
-		/// <remarks>To persist the new ordering one should call <see cref="Utility.UpdateSortOrder"/> and save the returned items. If the items returned from the <see cref="ContentItem.GetChildren"/> are moved with this method the changes will not be persisted since this is a new list instance.</remarks>
+		/// <remarks>To persist the new ordering one should call <see cref="Utility.UpdateSortOrder"/> and save the returned items. If the items returned from the <see cref="ContentItem.GetChildren()"/> are moved with this method the changes will not be persisted since this is a new list instance.</remarks>
 		public static void MoveToIndex(IList<ContentItem> siblings, ContentItem itemToMove, int newIndex)
 		{
 			siblings.Remove(itemToMove);

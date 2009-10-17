@@ -73,6 +73,8 @@ namespace N2.Engine
 
 		/// <summary>Tries to determine runtime parameters from the given configuration.</summary>
 		/// <param name="config">The configuration to use.</param>
+		/// <param name="sectionGroup">The configuration section to retrieve configuration from</param>
+		/// <param name="broker">Web ap event provider</param>
 		public ContentEngine(System.Configuration.Configuration config, string sectionGroup, EventBroker broker)
 		{
 			if (string.IsNullOrEmpty(sectionGroup))
@@ -226,6 +228,7 @@ namespace N2.Engine
 
 		/// <summary>Registers configuration sections into the container. These may be used as input for various components.</summary>
 		/// <param name="config">The congiuration file.</param>
+		/// <param name="sectionGroup">The config section that contains the configuration.</param>
 		protected void RegisterConfigurationSections(System.Configuration.Configuration config, string sectionGroup)
 		{
 			object nhConfiguration = config.GetSection("hibernate-configuration");

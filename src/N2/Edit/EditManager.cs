@@ -278,6 +278,7 @@ namespace N2.Edit
 
 		/// <summary>Gets the url to the select type of item to create.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
+		/// <param name="zoneName">The zone in which to create the item (typically parts)</param>
 		/// <returns>The url to the select new item to create page.</returns>
 		public string GetSelectNewItemUrl(ContentItem selectedItem, string zoneName)
 		{

@@ -165,7 +165,7 @@ namespace N2.Details
 		}
 
 		/// <summary>Adds a label and an editor to a panel.</summary>
-		/// <param name="container"The container onto which the panel is added.></param>
+		/// <param name="container">The container onto which the panel is added.</param>
 		/// <returns>A reference to the addeed editor.</returns>
 		/// <remarks>Please note that this method was abstract before version 1.3.1. It's now recommended to add the editor through the <see cref="AddEditor"/> method.</remarks>
 		public virtual Control AddTo(Control container)

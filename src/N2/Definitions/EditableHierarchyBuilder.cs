@@ -6,7 +6,6 @@ namespace N2.Definitions
 	/// <summary>
 	/// Adds editables and containers to containers.
 	/// </summary>
-	/// <typeparam name="T">The type of editable attribute to look for.</typeparam>
 	public class EditableHierarchyBuilder
 	{
 		/// <summary>Build the container hierarchy adding containers and editors to a root container.</summary>

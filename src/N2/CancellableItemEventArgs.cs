@@ -33,6 +33,7 @@ namespace N2
 
 		/// <summary>Creates a new instance of the CancellableItemEventArgs.</summary>
 		/// <param name="item">The content item to reference with these arguements.</param>
+		/// <param name="finalAction">The action to perform unless the Cancel is set to true.</param>
 		public CancellableItemEventArgs(ContentItem item, Action<ContentItem> finalAction)
 			: base(item)
 		{

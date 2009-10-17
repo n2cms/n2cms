@@ -12,6 +12,7 @@ namespace N2.Persistence.NH
 		/// by order
 		/// </summary>
 		/// <param name="criteria">the criteria to look for</param>
+		/// <param name="order"></param>
 		/// <returns>All the entities that match the criteria</returns>
 		ICollection<TEntity> FindAll(Order order, params ICriterion[] criteria);
 
@@ -42,6 +43,7 @@ namespace N2.Persistence.NH
 		/// Loads all the entities that match the criteria
 		/// by order
 		/// </summary>
+		/// <param name="orders"></param>
 		/// <param name="criteria">the criteria to look for</param>
 		/// <returns>All the entities that match the criteria</returns>
 		ICollection<TEntity> FindAll(Order[] orders, params ICriterion[] criteria);
@@ -65,6 +67,7 @@ namespace N2.Persistence.NH
 		/// <summary>
 		/// Loads all the entities that match the criteria, with paging 
 		/// and orderring by a single field.
+		/// </summary>
 		/// <param name="firstResult">The first result to load</param>
 		/// <param name="numberOfResults">Total number of results to load</param>
 		/// <param name="criteria">the cirteria to look for</param>

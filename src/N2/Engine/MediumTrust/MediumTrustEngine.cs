@@ -30,7 +30,7 @@ namespace N2.Engine.MediumTrust
 {
 	public class MediumTrustEngine : IEngine
 	{
-		protected IDictionary<Type, object> container = new Dictionary<Type, object>();
+		private IDictionary<Type, object> container = new Dictionary<Type, object>();
 		private IDefinitionManager definitions;
 		private IEditManager editManager;
 		private IHost host;
@@ -175,6 +175,7 @@ namespace N2.Engine.MediumTrust
 		public IDictionary<Type, object> Container
 		{
 			get { return container; }
+			protected set { container = value; }
 		}
 
 		public IDictionary<Type, Function<Type, object>> Resolvers

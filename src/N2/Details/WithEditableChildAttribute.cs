@@ -12,7 +12,7 @@ namespace N2.Details
 {
 	/// <summary>
 	/// Defines an editable sub-item. The edited item is found by looking for 
-	/// children with the <see cref="DefaultChildName"/> name.
+	/// children with the <see cref="EditableItemAttribute.DefaultChildName"/> name.
 	/// </summary>
 	/// <example>
 	/// 	[N2.Details.WithEditableChild(typeof(ChildItem), "News", 10)]

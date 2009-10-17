@@ -62,7 +62,7 @@ namespace N2.Persistence
 		/// <summary>Enumerates parents of the initial item.</summary>
 		/// <param name="initialItem">The page whose parents will be enumerated. The page itself will appear in the enumeration if includeSelf is applied.</param>
 		/// <param name="lastAncestor">The last page of the enumeration. The enumeration will contain this page.</param>
-		/// <param name="includeSelf">Include the lanitialItem in the enumeration.</param>
+		/// <param name="includeSelf">Include the initial item in the enumeration.</param>
 		/// <returns>An enumeration of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
 		public static IEnumerable<ContentItem> EnumerateParents(ContentItem initialItem, ContentItem lastAncestor, bool includeSelf)
 		{
@@ -103,6 +103,7 @@ namespace N2.Persistence
 		/// <summary>Creates a list of the parents of the initial item.</summary>
 		/// <param name="initialItem">The page whose parents will be enumerated. The page itself will not appear in the enumeration.</param>
 		/// <param name="lastAncestor">The last page of the enumeration. The enumeration will contain this page.</param>
+		/// <param name="includeInitialItem">Include the initial item in the list.</param>
 		/// <returns>A list of the parents of the initial page. If the last page isn't a parent of the inital page all pages until there are no more parents are returned.</returns>
 		public static IList<ContentItem> ListParents(ContentItem initialItem, ContentItem lastAncestor, bool includeInitialItem)
 		{

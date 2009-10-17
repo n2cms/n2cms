@@ -29,6 +29,12 @@ namespace N2.Web
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
+		/// <param name="broker"></param>
+		/// <param name="installer"></param>
+		/// <param name="dispatcher"></param>
+		/// <param name="errors"></param>
+		/// <param name="editConfig"></param>
+		/// <param name="hostConfig"></param>
 		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors, EditSection editConfig, HostSection hostConfig)
             : this(webContext, broker, installer, dispatcher, errors)
         {
@@ -39,6 +45,10 @@ namespace N2.Web
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
+		/// <param name="broker"></param>
+		/// <param name="installer"></param>
+		/// <param name="dispatcher"></param>
+		/// <param name="errors"></param>
 		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors)
 		{
 			this.webContext = webContext;

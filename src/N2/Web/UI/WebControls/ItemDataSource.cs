@@ -11,6 +11,7 @@ namespace N2.Web.UI.WebControls
 	/// <summary>Provides content items to data bound control. It also serves as a hierarchical data source.</summary>
 	/// <remarks>This data source has two distinct views. The children view that lists children of a page and the query view that allows database-like queries.</remarks>
 	/// <example>
+	/// <![CDATA[
 	/// List child items of the current item:
 	/// <n2:ItemDataSource id="itemSource1" runat="server" />
 	/// <asp:Repeater DataSourceID="itemSource1" runat="server">
@@ -34,6 +35,7 @@ namespace N2.Web.UI.WebControls
 	/// <asp:Repeater DataSourceID="itemSource4" DataMember="Query" runat="server">
 	///		<ItemTemplate><p><%# Eval("Title") %></p></ItemTemplate>
 	/// </asp:Repeater>
+	/// ]]>
 	/// </example>
 	public class ItemDataSource : DataSourceControl, IItemContainer, IHierarchicalDataSource
 	{

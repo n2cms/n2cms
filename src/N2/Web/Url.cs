@@ -266,7 +266,7 @@ namespace N2.Web
 			return url;
 		}
 
-		/// <summary>Retrieves the query part of an url, e.g. page=12&value=something.</summary>
+		/// <summary><![CDATA[Retrieves the query part of an url, e.g. page=12&value=something.]]></summary>
 		public static string QueryPart(string url)
 		{
 			url = RemoveHash(url);

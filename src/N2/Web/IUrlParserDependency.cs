@@ -11,7 +11,7 @@ namespace N2.Web
 	public interface IUrlParserDependency
 	{
 		/// <summary>Sets the objects urlParser dependency.</summary>
-		/// <param name="rewriter">The url parser to inject.</param>
+		/// <param name="parser">The url parser to inject.</param>
 		void SetUrlParser(IUrlParser parser);
 	}
 }
