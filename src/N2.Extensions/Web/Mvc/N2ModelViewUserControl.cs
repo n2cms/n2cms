@@ -10,6 +10,7 @@ namespace N2.Web.Mvc
 	/// This class only restricts the model by enforcing that it implements the lightweight <see cref="IItemContainer{TItem}" /> interface.
 	/// This way a Model needn't be an N2 ContentItem
 	/// </summary>
+	/// <typeparam name="TContainer"></typeparam>
 	/// <typeparam name="TItem"></typeparam>
 	public class N2ModelViewUserControl<TContainer, TItem> : ViewUserControl<TContainer>, IItemContainer<TItem>
 		where TContainer : class, IItemContainer<TItem>
@@ -23,6 +24,21 @@ namespace N2.Web.Mvc
 		ContentItem IItemContainer.CurrentItem
 		{
 			get { return CurrentItem; }
+		}
+
+		public ContentItem CurrentPage
+		{
+			get
+			{
+				ContentItem page = CurrentItem;
+
+				while (page != null && !page.IsPage)
+				{
+					page = page.Parent;
+				}
+
+				return page;
+			}
 		}
 	}
 }

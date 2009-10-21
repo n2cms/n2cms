@@ -13,6 +13,7 @@ namespace N2.Extensions.Tests.Mvc.Controllers
 		{
 			throw new NotImplementedException();
 		}
+
 		public ActionResult Find(string q)
 		{
 			return View(new string[q.Length]);

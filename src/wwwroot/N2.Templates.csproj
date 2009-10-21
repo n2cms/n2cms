@@ -1,989 +1,1012 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProductVersion>9.0.30729</ProductVersion>
-		<SchemaVersion>2.0</SchemaVersion>
-		<ProjectGuid>{D42D096E-399D-4618-AEB4-9B023BA1316D}</ProjectGuid>
-		<ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>N2</RootNamespace>
-		<AssemblyName>N2.Templates</AssemblyName>
-		<SccProjectName>
-		</SccProjectName>
-		<SccLocalPath>
-		</SccLocalPath>
-		<SccAuxPath>
-		</SccAuxPath>
-		<SccProvider>
-		</SccProvider>
-		<FileUpgradeFlags>
-		</FileUpgradeFlags>
-		<OldToolsVersion>2.0</OldToolsVersion>
-		<UpgradeBackupLocation>
-		</UpgradeBackupLocation>
-		<LibPath>..\..\lib\net3.5</LibPath>
-		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<OutputPath>bin\</OutputPath>
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<PlatformTarget>AnyCPU</PlatformTarget>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\</OutputPath>
-		<DefineConstants>TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NET2.0|AnyCPU' ">
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>bin\</OutputPath>
-		<DefineConstants>TRACE</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-		<LibPath>..\..\lib\net2.0</LibPath>
-		<TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>$(LibPath)\Castle.Core.dll</HintPath>
-		</Reference>
-		<Reference Include="System" />
-		<Reference Include="System.Data" />
-		<Reference Include="System.Drawing" />
-		<Reference Include="System.Web" />
-		<Reference Include="System.Xml" />
-		<Reference Include="System.Configuration" />
-		<Reference Include="System.Web.Services" />
-		<Reference Include="System.EnterpriseServices" />
-		<Reference Include="System.Web.Mobile" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="default.aspx" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="..\AssemblyVersion.cs">
-			<Link>AssemblyVersion.cs</Link>
-		</Compile>
-		<Compile Include="App_GlobalResources\ControlPanel.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>ControlPanel.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\ru\EditableContainers.ru.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>EditableContainers.ru.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\ru\Definitions.ru.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Definitions.ru.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\ru\Editables.ru.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Editables.ru.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\ru\Zones.ru.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Zones.ru.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\sl\ControlPanel.sl.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>ControlPanel.sl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\sl\Definitions.sl.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Definitions.sl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\sl\EditableContainers.sl.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>EditableContainers.sl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\sl\Editables.sl.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Editables.sl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\sl\Zones.sl.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Zones.sl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\Configuration\MailConfigSource.cs" />
-		<Compile Include="Templates\Configuration\TemplatesSection.cs" />
-		<Compile Include="Templates\Configuration\WikiElement.cs" />
-		<Compile Include="Templates\Details\DropDownAttribute.cs" />
-		<Compile Include="Templates\Details\EditableOptionsAttribute.cs" />
-		<Compile Include="Templates\Details\LayoutSelectorAttribute.cs" />
-		<Compile Include="Templates\Details\PollCreatorDetailAttribute.cs" />
-		<Compile Include="Templates\Details\ThemeSelectorAttribute.cs" />
-		<Compile Include="Templates\Find.cs" />
-		<Compile Include="Templates\Items\DefaultTemplateAttribute.cs" />
-		<Compile Include="Templates\Services\ImageResizer.cs" />
-		<Compile Include="Templates\Items\AbstractContentPage.cs" />
-		<Compile Include="Templates\Items\AbstractItem.cs" />
-		<Compile Include="Templates\Items\AbstractPage.cs" />
-		<Compile Include="Templates\Items\AbstractSearch.cs" />
-		<Compile Include="Templates\Items\LanguageRoot.cs" />
-		<Compile Include="Templates\Items\BoxedTextItem.cs" />
-		<Compile Include="Templates\Items\BubbleItem.cs" />
-		<Compile Include="Templates\Items\Calendar.cs" />
-		<Compile Include="Templates\Items\CalendarTeaser.cs" />
-		<Compile Include="Templates\Items\Columns.cs" />
-		<Compile Include="Templates\Items\Comment.cs" />
-		<Compile Include="Templates\Items\CommentInput.cs" />
-		<Compile Include="Templates\Items\CommentList.cs" />
-		<Compile Include="Templates\Items\ControlPanel.cs" />
-		<Compile Include="Templates\Items\DatabaseSearch.cs" />
-		<Compile Include="Templates\Items\Event.cs" />
-		<Compile Include="Templates\Items\Faq.cs" />
-		<Compile Include="Templates\Items\FaqList.cs" />
-		<Compile Include="Templates\Items\Form.cs" />
-		<Compile Include="Templates\Items\FormPage.cs" />
-		<Compile Include="Templates\Items\GalleryItem.cs" />
-		<Compile Include="Templates\Items\ImageGallery.cs" />
-		<Compile Include="Templates\Items\IStructuralPage.cs" />
-		<Compile Include="Templates\Items\ISurvey.cs" />
-		<Compile Include="Templates\Items\LoginItem.cs" />
-		<Compile Include="Templates\Items\MultipleSelect.cs" />
-		<Compile Include="Templates\Items\News.cs" />
-		<Compile Include="Templates\Items\NewsContainer.cs" />
-		<Compile Include="Templates\Items\NewsList.cs" />
-		<Compile Include="Templates\Items\Option.cs" />
-		<Compile Include="Templates\Items\OptionSelectQuestion.cs" />
-		<Compile Include="Templates\Items\Poll.cs" />
-		<Compile Include="Templates\Items\Question.cs" />
-		<Compile Include="Templates\Items\RandomImage.cs" />
-		<Compile Include="Templates\Items\Redirect.cs" />
-		<Compile Include="Templates\Items\RootPage.cs" />
-		<Compile Include="Templates\Items\RssAggregator.cs" />
-		<Compile Include="Templates\Items\RssFeed.cs" />
-		<Compile Include="Templates\Items\SidebarItem.cs" />
-		<Compile Include="Templates\Items\SingleSelect.cs" />
-		<Compile Include="Templates\Items\SiteMap.cs" />
-		<Compile Include="Templates\Items\SocialBookmarks.cs" />
-		<Compile Include="Templates\Items\StartPage.cs" />
-		<Compile Include="Templates\Items\Statistics.cs" />
-		<Compile Include="Templates\Items\Subscribe.cs" />
-		<Compile Include="Templates\Items\Teaser.cs" />
-		<Compile Include="Templates\Items\TextItem.cs" />
-		<Compile Include="Templates\Items\TextPage.cs" />
-		<Compile Include="Templates\Items\TextQuestion.cs" />
-		<Compile Include="Templates\Items\Top.cs" />
-		<Compile Include="Templates\Items\Tracking.cs" />
-		<Compile Include="Templates\Items\UserRegistration.cs" />
-		<Compile Include="Templates\Services\SEODefinitionAppender.cs" />
-		<Compile Include="Templates\Services\SEOPageModifier.cs" />
-		<Compile Include="Templates\Services\TemplatesPartsAdapter.cs" />
-		<Compile Include="Templates\Services\TitleAndMetaTagApplyer.cs" />
-		<Compile Include="Templates\Services\DynamicMailSender.cs" />
-		<Compile Include="Templates\Services\FakeMailSender.cs" />
-		<Compile Include="Templates\Services\NotFoundHandler.cs" />
-		<Compile Include="Templates\Services\PermissionDeniedHandler.cs" />
-		<Compile Include="Templates\Services\IFeed.cs" />
-		<Compile Include="Templates\Services\ISyndicatable.cs" />
-		<Compile Include="Templates\Services\RssWriter.cs" />
-		<Compile Include="Templates\Tabs.cs" />
-		<Compile Include="Templates\Services\TemplatesInitializer.cs" />
-		<Compile Include="Templates\UI\Layouts\Translation.cs" />
-		<Compile Include="Templates\UI\Parts\BoxedText.ascx.cs">
-			<DependentUpon>BoxedText.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\BoxedText.ascx.designer.cs">
-			<DependentUpon>BoxedText.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Columns.ascx.cs">
-			<DependentUpon>Columns.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Columns.ascx.designer.cs">
-			<DependentUpon>Columns.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\CommentInput.ascx.cs">
-			<DependentUpon>CommentInput.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\CommentInput.ascx.designer.cs">
-			<DependentUpon>CommentInput.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\CommentList.ascx.cs">
-			<DependentUpon>CommentList.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\CommentList.ascx.designer.cs">
-			<DependentUpon>CommentList.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\ControlPanel.ascx.cs">
-			<DependentUpon>ControlPanel.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\ControlPanel.ascx.designer.cs">
-			<DependentUpon>ControlPanel.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Comment.ascx.cs">
-			<DependentUpon>Comment.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Comment.ascx.designer.cs">
-			<DependentUpon>Comment.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Empty.ascx.cs">
-			<DependentUpon>Empty.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Empty.ascx.designer.cs">
-			<DependentUpon>Empty.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Login.ascx.cs">
-			<DependentUpon>Login.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Login.ascx.designer.cs">
-			<DependentUpon>Login.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Layouts\SubMenu.ascx.cs">
-			<DependentUpon>SubMenu.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Layouts\SubMenu.ascx.designer.cs">
-			<DependentUpon>SubMenu.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\RandomImage.ascx.cs">
-			<DependentUpon>RandomImage.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\RandomImage.ascx.designer.cs">
-			<DependentUpon>RandomImage.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Register.ascx.cs">
-			<DependentUpon>Register.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Register.ascx.designer.cs">
-			<DependentUpon>Register.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\RssAggregator.ascx.cs">
-			<DependentUpon>RssAggregator.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\RssAggregator.ascx.designer.cs">
-			<DependentUpon>RssAggregator.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Statistics.ascx.cs">
-			<DependentUpon>Statistics.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Statistics.ascx.designer.cs">
-			<DependentUpon>Statistics.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Teaser.ascx.cs">
-			<DependentUpon>Teaser.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Teaser.ascx.designer.cs">
-			<DependentUpon>Teaser.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Text.ascx.cs">
-			<DependentUpon>Text.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Text.ascx.designer.cs">
-			<DependentUpon>Text.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Top.ascx.cs">
-			<DependentUpon>Top.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Top.ascx.designer.cs">
-			<DependentUpon>Top.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Layouts\TopMenu.ascx.cs">
-			<DependentUpon>TopMenu.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Layouts\TopMenu.ascx.designer.cs">
-			<DependentUpon>TopMenu.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.cs">
-			<DependentUpon>Top+SubMenu.Master</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.designer.cs">
-			<DependentUpon>Top+SubMenu.Master</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\Secured\Root.aspx.cs">
-			<DependentUpon>Root.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\Secured\Root.aspx.designer.cs">
-			<DependentUpon>Root.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\Services\SyndicatableDefinitionAppender.cs" />
-		<Compile Include="Templates\UI\Views\404.aspx.cs">
-			<DependentUpon>404.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\500.aspx.cs">
-			<DependentUpon>500.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Bubble.ascx.cs">
-			<DependentUpon>Bubble.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Bubble.ascx.designer.cs">
-			<DependentUpon>Bubble.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\CalendarItem.aspx.cs">
-			<DependentUpon>CalendarItem.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\CalendarItem.aspx.designer.cs">
-			<DependentUpon>CalendarItem.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\CalendarList.aspx.cs">
-			<DependentUpon>CalendarList.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\CalendarList.aspx.designer.cs">
-			<DependentUpon>CalendarList.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\CalendarTeaser.ascx.cs">
-			<DependentUpon>CalendarTeaser.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\CalendarTeaser.ascx.designer.cs">
-			<DependentUpon>CalendarTeaser.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Faq.ascx.cs">
-			<DependentUpon>Faq.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Faq.ascx.designer.cs">
-			<DependentUpon>Faq.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Form.aspx.cs">
-			<DependentUpon>Form.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Form.aspx.designer.cs">
-			<DependentUpon>Form.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\FaqList.aspx.cs">
-			<DependentUpon>FaqList.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\FaqList.aspx.designer.cs">
-			<DependentUpon>FaqList.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Feed.aspx.cs">
-			<DependentUpon>Feed.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Feed.aspx.designer.cs">
-			<DependentUpon>Feed.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Form.ascx.cs">
-			<DependentUpon>Form.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Form.ascx.designer.cs">
-			<DependentUpon>Form.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\ImageGallery.aspx.cs">
-			<DependentUpon>ImageGallery.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\ImageGallery.aspx.designer.cs">
-			<DependentUpon>ImageGallery.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\NewsBox.ascx.cs">
-			<DependentUpon>NewsBox.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\NewsBox.ascx.designer.cs">
-			<DependentUpon>NewsBox.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\NewsItem.aspx.cs">
-			<DependentUpon>NewsItem.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\NewsItem.aspx.designer.cs">
-			<DependentUpon>NewsItem.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\NewsList.ascx.cs">
-			<DependentUpon>NewsList.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\NewsList.ascx.designer.cs">
-			<DependentUpon>NewsList.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\NewsList.aspx.cs">
-			<DependentUpon>NewsList.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\NewsList.aspx.designer.cs">
-			<DependentUpon>NewsList.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Poll.ascx.cs">
-			<DependentUpon>Poll.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Poll.ascx.designer.cs">
-			<DependentUpon>Poll.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Redirect.aspx.cs">
-			<DependentUpon>Redirect.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Redirect.aspx.designer.cs">
-			<DependentUpon>Redirect.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Result.ascx.cs">
-			<DependentUpon>Result.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Result.ascx.designer.cs">
-			<DependentUpon>Result.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Search.aspx.cs">
-			<DependentUpon>Search.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Search.aspx.designer.cs">
-			<DependentUpon>Search.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\SiteMap.aspx.cs">
-			<DependentUpon>SiteMap.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\SiteMap.aspx.designer.cs">
-			<DependentUpon>SiteMap.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\SocialBookmarks.ascx.cs">
-			<DependentUpon>SocialBookmarks.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\SocialBookmarks.ascx.designer.cs">
-			<DependentUpon>SocialBookmarks.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Subscribe.ascx.cs">
-			<DependentUpon>Subscribe.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\Subscribe.ascx.designer.cs">
-			<DependentUpon>Subscribe.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Start.aspx.cs">
-			<DependentUpon>Start.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Start.aspx.designer.cs">
-			<DependentUpon>Start.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Text.aspx.cs">
-			<DependentUpon>Text.aspx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Views\Text.aspx.designer.cs">
-			<DependentUpon>Text.aspx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\UrchinTracking.ascx.cs">
-			<DependentUpon>UrchinTracking.ascx</DependentUpon>
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\UI\Parts\UrchinTracking.ascx.designer.cs">
-			<DependentUpon>UrchinTracking.ascx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\Web\UI\WebControls\IQuestionControl.cs" />
-		<Compile Include="Templates\Web\UI\WebControls\MultipleSelectControl.cs" />
-		<Compile Include="Templates\Web\UI\WebControls\SingleSelectControl.cs" />
-		<Compile Include="Templates\Web\UI\WebControls\TextControl.cs" />
-		<Compile Include="Templates\Web\Adapters\FormAdapter.cs" />
-		<Compile Include="Templates\Web\Adapters\ImageAdapter.cs" />
-		<Compile Include="Templates\Web\Adapters\UserControlWrapperAdapter.cs" />
-		<Compile Include="Templates\Web\IPageModifier.cs" />
-		<Compile Include="Templates\Web\IPageModifierContainer.cs" />
-		<Compile Include="Templates\Web\LanguageModifier.cs" />
-		<Compile Include="Templates\Web\MasterPageModifier.cs" />
-		<Compile Include="Templates\Web\TemplatePageModifier.cs" />
-		<Compile Include="Templates\Web\ThemeModifier.cs" />
-		<Compile Include="Templates\Web\UI\TemplateMasterPage.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\Web\UI\TemplatePage.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\Web\UI\TemplateUserControl.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\Web\UI\TemplateUserControl2.cs">
-			<SubType>ASPXCodeBehind</SubType>
-		</Compile>
-		<Compile Include="Templates\Web\UI\WebControls\Box.cs" />
-		<Compile Include="Templates\Web\UI\WebControls\IBreadcrumbAppearance.cs" />
-		<Compile Include="Templates\Web\UI\WebControls\Menu.cs" />
-		<Compile Include="Templates\Web\UI\WebControls\Path.cs" />
-		<Compile Include="App_GlobalResources\Definitions.Designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Definitions.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\nl\Definitions.nl.designer.cs" />
-		<Compile Include="App_GlobalResources\nl\Definitions.nl1.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Definitions.nl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\EditableContainers.Designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>EditableContainers.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\nl\EditableContainers.nl.designer.cs" />
-		<Compile Include="App_GlobalResources\nl\EditableContainers.nl1.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>EditableContainers.nl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\Editables.Designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Editables.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\nl\Editables.nl.designer.cs" />
-		<Compile Include="App_GlobalResources\nl\Editables.nl1.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Editables.nl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\nl\Toolbar.nl.designer.cs" />
-		<Compile Include="App_GlobalResources\nl\Toolbar.nl1.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Toolbar.nl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\Zones.Designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Zones.resx</DependentUpon>
-		</Compile>
-		<Compile Include="App_GlobalResources\nl\Zones.nl.designer.cs" />
-		<Compile Include="App_GlobalResources\nl\Zones.nl1.designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Zones.nl.resx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\UI\Image.ashx.cs">
-			<DependentUpon>Image.ashx</DependentUpon>
-		</Compile>
-		<Compile Include="Templates\Properties\AssemblyInfo.cs" />
-		<Compile Include="Templates\Zones.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\N2.Security\N2.Security.csproj">
-			<Project>{CB6A29C5-8355-4C4C-B437-619F652B7540}</Project>
-			<Name>N2.Security</Name>
-		</ProjectReference>
-		<ProjectReference Include="..\N2\N2.csproj">
-			<Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
-			<Name>N2</Name>
-		</ProjectReference>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Templates\UI\Image.ashx" />
-	</ItemGroup>
-	<ItemGroup>
-		<Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_Themes\Plain\Style.css" />
-		<Content Include="App_Themes\Stripes\bg.gif" />
-		<Content Include="App_Themes\Stripes\top_bg.gif" />
-		<Content Include="App_Themes\Stripes\menu_bg.gif" />
-		<Content Include="App_Themes\Stripes\secondary_bg.gif" />
-		<Content Include="App_Themes\Stripes\sidebar_bg.gif" />
-		<Content Include="App_Themes\Stripes\Style.css" />
-		<Content Include="App_Themes\Stripes\top_bg.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_Themes\KhakiTabs\MenuDimmed.gif" />
-		<Content Include="App_Themes\KhakiTabs\MenuSelected.gif" />
-		<Content Include="App_Themes\KhakiTabs\SidebarLeftBg.gif" />
-		<Content Include="App_Themes\KhakiTabs\SidebarRightBg.gif" />
-		<Content Include="App_Themes\KhakiTabs\Style.css" />
-		<Content Include="App_Themes\KhakiTabs\TopBg.gif" />
-		<Content Include="App_Themes\PinkTabs\MenuDimmed.gif" />
-		<Content Include="App_Themes\PinkTabs\MenuSelected.gif" />
-		<Content Include="App_Themes\PinkTabs\SidebarLeftBg.gif" />
-		<Content Include="App_Themes\PinkTabs\SidebarRightBg.gif" />
-		<Content Include="App_Themes\PinkTabs\Style.css" />
-		<Content Include="App_Themes\PinkTabs\TopBg.gif" />
-		<Content Include="App_Themes\SkyTabs\MenuDimmed.gif" />
-		<Content Include="App_Themes\SkyTabs\MenuSelected.gif" />
-		<Content Include="App_Themes\SkyTabs\SidebarLeftBg.gif" />
-		<Content Include="App_Themes\SkyTabs\SidebarRightBg.gif" />
-		<Content Include="App_Themes\SkyTabs\Style.css" />
-		<Content Include="App_Themes\SkyTabs\TopBg.gif" />
-		<Content Include="App_Themes\TomatoTabs\MenuDimmed.gif" />
-		<Content Include="App_Themes\TomatoTabs\MenuSelected.gif" />
-		<Content Include="App_Themes\TomatoTabs\SidebarLeftBg.gif" />
-		<Content Include="App_Themes\TomatoTabs\SidebarRightBg.gif" />
-		<Content Include="App_Themes\TomatoTabs\Style.css" />
-		<Content Include="App_Themes\TomatoTabs\TopBg.gif" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_GlobalResources\Editables.resx">
-			<SubType>Designer</SubType>
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Editables.Designer.cs</LastGenOutput>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_GlobalResources\EditableContainers.resx">
-			<SubType>Designer</SubType>
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>EditableContainers.Designer.cs</LastGenOutput>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_GlobalResources\Definitions.resx">
-			<SubType>Designer</SubType>
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Definitions.Designer.cs</LastGenOutput>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_GlobalResources\Zones.resx">
-			<SubType>Designer</SubType>
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Zones.Designer.cs</LastGenOutput>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Web.config" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_GlobalResources\nl\Definitions.nl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Definitions.nl1.designer.cs</LastGenOutput>
-			<SubType>Designer</SubType>
-		</Content>
-		<Content Include="App_GlobalResources\nl\EditableContainers.nl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>EditableContainers.nl1.designer.cs</LastGenOutput>
-			<SubType>Designer</SubType>
-		</Content>
-		<Content Include="App_GlobalResources\nl\Editables.nl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Editables.nl1.designer.cs</LastGenOutput>
-			<SubType>Designer</SubType>
-		</Content>
-		<Content Include="App_GlobalResources\nl\Toolbar.nl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Toolbar.nl1.designer.cs</LastGenOutput>
-			<SubType>Designer</SubType>
-		</Content>
-		<Content Include="App_GlobalResources\nl\Zones.nl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Zones.nl1.designer.cs</LastGenOutput>
-			<SubType>Designer</SubType>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_Themes\Corporate\amazed.gif" />
-		<Content Include="App_Themes\Corporate\body_bg.gif" />
-		<Content Include="App_Themes\Corporate\happy.gif" />
-		<Content Include="App_Themes\Corporate\logo.gif" />
-		<Content Include="App_Themes\Corporate\manic.gif" />
-		<Content Include="App_Themes\Corporate\menuselection_bg.gif" />
-		<Content Include="App_Themes\Corporate\menu_bg.gif" />
-		<Content Include="App_Themes\Corporate\page_bg.gif" />
-		<Content Include="App_Themes\Corporate\Style.css" />
-		<Content Include="App_Themes\Corporate\tab_bg.gif" />
-		<Content Include="App_Themes\Corporate\tab_item.gif" />
-		<Content Include="App_Themes\Corporate\tab_item2.gif" />
-		<Content Include="App_Themes\n2cms\bg.gif" />
-		<Content Include="App_Themes\n2cms\body_bg.gif" />
-		<Content Include="App_Themes\n2cms\line_bg.gif" />
-		<Content Include="App_Themes\n2cms\logo.gif" />
-		<Content Include="App_Themes\n2cms\menu_selected.gif" />
-		<Content Include="App_Themes\n2cms\Style.css" />
-		<Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
-		<Content Include="favicon.ico" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_Browsers\genericmozilla5.browser" />
-		<Content Include="App_Browsers\Templates.browser" />
-		<None Include="App_Data\ContentFocus_SampleData.gz" />
-		<None Include="App_Data\Corporate_SampleData.gz" />
-		<None Include="App_Data\DarkStrips_SampleData.gz" />
-		<None Include="App_Data\KhakiTabs_SampleData.gz" />
-		<None Include="App_Data\Plain_SampleData.gz" />
-		<Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
-		<Content Include="Templates\Secured\Web.config" />
-		<Content Include="App_Themes\n2cms\Menu.skin" />
-		<Content Include="App_Themes\Corporate\Menu.skin" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_Themes\ContentFocus\content_bottom.gif" />
-		<Content Include="App_Themes\ContentFocus\content_top.gif" />
-		<Content Include="App_Themes\ContentFocus\list_dark.gif" />
-		<Content Include="App_Themes\ContentFocus\list_light.gif" />
-		<Content Include="App_Themes\ContentFocus\secondary_borders.gif" />
-		<Content Include="App_Themes\ContentFocus\secondary_header.gif" />
-		<Content Include="App_Themes\ContentFocus\Style.css" />
-		<Content Include="App_Themes\ContentFocus\top.gif" />
-		<Content Include="Templates\UI\Css\Calendar.css" />
-		<Content Include="Templates\UI\Css\Faq.css" />
-		<Content Include="Templates\UI\Css\Poll.css" />
-		<Content Include="Templates\UI\Css\Search.css" />
-		<Content Include="Templates\UI\Img\bubble_left.gif" />
-		<Content Include="Templates\UI\Img\bubble_left.png" />
-		<Content Include="Templates\UI\Img\bubble_right.gif" />
-		<Content Include="Templates\UI\Img\bubble_right.png" />
-		<Content Include="Templates\UI\Img\bullet_feed.png" />
-		<Content Include="Templates\UI\Img\calendar.png" />
-		<Content Include="Templates\UI\Img\calendar_view_day.png" />
-		<Content Include="Templates\UI\Img\calendar_view_month.png" />
-		<Content Include="Templates\UI\Img\chart_curve.png" />
-		<Content Include="Templates\UI\Img\chart_curve_add.png" />
-		<Content Include="Templates\UI\Img\chart_curve_delete.png" />
-		<Content Include="Templates\UI\Img\chart_curve_edit.png" />
-		<Content Include="Templates\UI\Img\chart_curve_error.png" />
-		<Content Include="Templates\UI\Img\chart_curve_go.png" />
-		<Content Include="Templates\UI\Img\chart_curve_link.png" />
-		<Content Include="Templates\UI\Img\chart_line.png" />
-		<Content Include="Templates\UI\Img\chart_line_add.png" />
-		<Content Include="Templates\UI\Img\chart_line_delete.png" />
-		<Content Include="Templates\UI\Img\chart_line_edit.png" />
-		<Content Include="Templates\UI\Img\chart_line_error.png" />
-		<Content Include="Templates\UI\Img\chart_line_link.png" />
-		<Content Include="Templates\UI\Img\chart_organisation.png" />
-		<Content Include="Templates\UI\Img\chart_organisation_add.png" />
-		<Content Include="Templates\UI\Img\chart_organisation_delete.png" />
-		<Content Include="Templates\UI\Img\chart_pie.png" />
-		<Content Include="Templates\UI\Img\chart_pie_add.png" />
-		<Content Include="Templates\UI\Img\chart_pie_delete.png" />
-		<Content Include="Templates\UI\Img\chart_pie_edit.png" />
-		<Content Include="Templates\UI\Img\chart_pie_error.png" />
-		<Content Include="Templates\UI\Img\delicious.png" />
-		<Content Include="Templates\UI\Img\digg.png" />
-		<Content Include="Templates\UI\Img\dotnetkicks.png" />
-		<Content Include="Templates\UI\Img\dzone.png" />
-		<Content Include="Templates\UI\Img\feed.png" />
-		<Content Include="Templates\UI\Img\feed_link.png" />
-		<Content Include="Templates\UI\Img\google.png" />
-		<Content Include="Templates\UI\Img\help.png" />
-		<Content Include="Templates\UI\Img\information.png" />
-		<Content Include="Templates\UI\Img\live.png" />
-		<Content Include="Templates\UI\Img\netscape.gif" />
-		<Content Include="Templates\UI\Img\newspaper.png" />
-		<Content Include="Templates\UI\Img\newspaper_go.png" />
-		<Content Include="Templates\UI\Img\newspaper_link.png" />
-		<Content Include="Templates\UI\Img\photo.png" />
-		<Content Include="Templates\UI\Img\photos.png" />
-		<Content Include="Templates\UI\Img\reddit.png" />
-		<Content Include="Templates\UI\Img\report.png" />
-		<Content Include="Templates\UI\Img\rss.png" />
-		<Content Include="Templates\UI\Img\slashdot.png" />
-		<Content Include="Templates\UI\Img\technorati.png" />
-		<Content Include="Templates\UI\Img\yahoomyweb.png" />
-		<Content Include="Templates\UI\Img\zoom.png" />
-		<Content Include="Templates\UI\Views\404.aspx" />
-		<Content Include="Templates\UI\Views\500.aspx" />
-		<Content Include="Templates\UI\Parts\Bubble.ascx" />
-		<Content Include="Templates\UI\Views\CalendarItem.aspx" />
-		<Content Include="Templates\UI\Views\CalendarList.aspx" />
-		<Content Include="Templates\UI\Parts\CalendarTeaser.ascx" />
-		<Content Include="Templates\UI\Parts\Faq.ascx" />
-		<Content Include="Templates\UI\Views\FaqList.aspx" />
-		<Content Include="Templates\UI\Views\Feed.aspx" />
-		<Content Include="Templates\UI\Parts\Form.ascx" />
-		<Content Include="Templates\UI\Views\ImageGallery.aspx" />
-		<Content Include="Templates\UI\Parts\NewsBox.ascx" />
-		<Content Include="Templates\UI\Views\NewsItem.aspx" />
-		<Content Include="Templates\UI\Parts\NewsList.ascx" />
-		<Content Include="Templates\UI\Views\NewsList.aspx" />
-		<Content Include="Templates\UI\Parts\Poll.ascx" />
-		<Content Include="Templates\UI\Views\Redirect.aspx" />
-		<Content Include="Templates\UI\Parts\Result.ascx" />
-		<Content Include="Templates\UI\Views\Search.aspx" />
-		<Content Include="Templates\UI\Views\SiteMap.aspx" />
-		<Content Include="Templates\UI\Parts\SocialBookmarks.ascx" />
-		<Content Include="Templates\UI\Parts\Subscribe.ascx" />
-		<Content Include="Templates\UI\Views\Text.aspx" />
-		<Content Include="Templates\UI\Parts\UrchinTracking.ascx" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_Themes\Stripes\main_bg.gif" />
-		<Content Include="App_Themes\Stripes\page_bottom.gif" />
-		<Content Include="App_Themes\Stripes\page_top.gif" />
-		<Content Include="Templates\UI\Img\application_view_columns.png" />
-		<Content Include="Templates\UI\Img\bullet_star.png" />
-		<Content Include="Templates\UI\Img\bullet_toggle_plus.png" />
-		<Content Include="Templates\UI\Img\controller.png" />
-		<Content Include="Templates\UI\Img\eye.png" />
-		<Content Include="Templates\UI\Img\heart.png" />
-		<Content Include="Templates\UI\Img\key.png" />
-		<Content Include="Templates\UI\Img\page.png" />
-		<Content Include="Templates\UI\Img\page_gear.png" />
-		<Content Include="Templates\UI\Img\page_go.png" />
-		<Content Include="Templates\UI\Img\page_white.png" />
-		<Content Include="Templates\UI\Img\page_white_link.png" />
-		<Content Include="Templates\UI\Img\page_white_star.png" />
-		<Content Include="Templates\UI\Img\page_world.png" />
-		<Content Include="Templates\UI\Img\sitemap.png" />
-		<Content Include="Templates\UI\Img\tab.png" />
-		<Content Include="Templates\UI\Img\text_align_left.png" />
-		<Content Include="Templates\UI\Img\text_columns.png" />
-		<Content Include="Templates\UI\Img\user_add.png" />
-		<Content Include="Templates\UI\Css\Layout.css" />
-		<Content Include="Templates\UI\Parts\BoxedText.ascx" />
-		<Content Include="Templates\UI\Parts\Columns.ascx" />
-		<Content Include="Templates\UI\Parts\CommentInput.ascx" />
-		<Content Include="Templates\UI\Parts\CommentList.ascx" />
-		<Content Include="Templates\UI\Parts\ControlPanel.ascx" />
-		<Content Include="Templates\UI\Parts\Comment.ascx" />
-		<Content Include="Templates\UI\Parts\Empty.ascx" />
-		<Content Include="Templates\UI\Parts\Login.ascx" />
-		<Content Include="Templates\UI\Layouts\SubMenu.ascx" />
-		<Content Include="Templates\UI\Parts\RandomImage.ascx" />
-		<Content Include="Templates\UI\Parts\Register.ascx" />
-		<Content Include="Templates\UI\Parts\Statistics.ascx" />
-		<Content Include="Templates\UI\Parts\Teaser.ascx" />
-		<Content Include="Templates\UI\Parts\Text.ascx" />
-		<Content Include="Templates\UI\Parts\Top.ascx" />
-		<Content Include="Templates\UI\Layouts\TopMenu.ascx" />
-		<Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.it.resx" />
-		<Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.resx" />
-		<Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.sv.resx" />
-		<Content Include="Templates\UI\Parts\App_LocalResources\Poll.ascx.resx" />
-		<Content Include="Templates\UI\Parts\App_LocalResources\Poll.ascx.sv.resx" />
-		<Content Include="Templates\Secured\Edit.css" />
-		<Content Include="Templates\Secured\Root.aspx" />
-		<Content Include="Templates\UI\Views\Form.aspx" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Templates\UI\Img\comment.png" />
-		<Content Include="Templates\UI\Img\comments.png" />
-		<Content Include="Templates\UI\Img\comment_add.png" />
-		<Content Include="Templates\UI\Parts\App_LocalResources\CommentInput.ascx.resx" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_GlobalResources\ru\Definitions.ru.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Definitions.ru.designer.cs</LastGenOutput>
-		</Content>
-		<Content Include="App_GlobalResources\ru\Editables.ru.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Editables.ru.designer.cs</LastGenOutput>
-		</Content>
-		<Content Include="App_GlobalResources\ru\Zones.ru.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Zones.ru.designer.cs</LastGenOutput>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_GlobalResources\ru\EditableContainers.ru.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
-		</Content>
-		<Content Include="Templates\UI\Img\SocialBookmarks\Blinklist_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\BlogMarks_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\delicious_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Digg_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Diigo_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\FaceBook_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Favorite_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\FeedBurner_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Feed_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Flickr_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Furl_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Google_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Magnolia_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Misterwong_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\MySpace_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Netvibes_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Newsvine_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Reddit_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Simpy_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Stumbleupon_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Technorati_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Twitter_16x16.png" />
-		<Content Include="Templates\UI\Img\SocialBookmarks\Youtube_16x16.png" />
-		<Content Include="Templates\UI\Parts\RssAggregator.ascx" />
-		<Content Include="Templates\UI\Views\Start.aspx" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Templates\UI\Views\App_LocalResources\CalendarList.aspx.resx">
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="App_GlobalResources\ControlPanel.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>ControlPanel.designer.cs</LastGenOutput>
-		</Content>
-		<Content Include="App_GlobalResources\sl\ControlPanel.sl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>ControlPanel.sl.designer.cs</LastGenOutput>
-		</Content>
-		<Content Include="App_GlobalResources\sl\Definitions.sl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Definitions.sl.designer.cs</LastGenOutput>
-		</Content>
-		<Content Include="App_GlobalResources\sl\EditableContainers.sl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>EditableContainers.sl.designer.cs</LastGenOutput>
-		</Content>
-		<Content Include="App_GlobalResources\sl\Editables.sl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Editables.sl.designer.cs</LastGenOutput>
-		</Content>
-		<Content Include="App_GlobalResources\sl\Zones.sl.resx">
-			<Generator>GlobalResourceProxyGenerator</Generator>
-			<LastGenOutput>Zones.sl.designer.cs</LastGenOutput>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="App_Code\" />
-		<Folder Include="Properties\" />
-		<Folder Include="Upload\" />
-	</ItemGroup>
-	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-	<Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
-	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D42D096E-399D-4618-AEB4-9B023BA1316D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>N2</RootNamespace>
+    <AssemblyName>N2.Templates</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <LibPath>..\..\lib\net3.5</LibPath>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NET2.0|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LibPath>..\..\lib\net2.0</LibPath>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(LibPath)\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="default.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="App_GlobalResources\ControlPanel.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ControlPanel.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ru\EditableContainers.ru.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ru\Definitions.ru.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ru\Editables.ru.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ru\Zones.ru.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\ControlPanel.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ControlPanel.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\Definitions.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\EditableContainers.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\Editables.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\sl\Zones.sl.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Configuration\MailConfigSource.cs" />
+    <Compile Include="Templates\Configuration\TemplatesSection.cs" />
+    <Compile Include="Templates\Configuration\WikiElement.cs" />
+    <Compile Include="Templates\Details\DropDownAttribute.cs" />
+    <Compile Include="Templates\Details\EditableOptionsAttribute.cs" />
+    <Compile Include="Templates\Details\LayoutSelectorAttribute.cs" />
+    <Compile Include="Templates\Details\PollCreatorDetailAttribute.cs" />
+    <Compile Include="Templates\Details\ThemeSelectorAttribute.cs" />
+    <Compile Include="Templates\Find.cs" />
+    <Compile Include="Templates\Items\DefaultTemplateAttribute.cs" />
+    <Compile Include="Templates\Services\ImageResizer.cs" />
+    <Compile Include="Templates\Items\AbstractContentPage.cs" />
+    <Compile Include="Templates\Items\AbstractItem.cs" />
+    <Compile Include="Templates\Items\AbstractPage.cs" />
+    <Compile Include="Templates\Items\AbstractSearch.cs" />
+    <Compile Include="Templates\Items\LanguageRoot.cs" />
+    <Compile Include="Templates\Items\BoxedTextItem.cs" />
+    <Compile Include="Templates\Items\BubbleItem.cs" />
+    <Compile Include="Templates\Items\Calendar.cs" />
+    <Compile Include="Templates\Items\CalendarTeaser.cs" />
+    <Compile Include="Templates\Items\Columns.cs" />
+    <Compile Include="Templates\Items\Comment.cs" />
+    <Compile Include="Templates\Items\CommentInput.cs" />
+    <Compile Include="Templates\Items\CommentList.cs" />
+    <Compile Include="Templates\Items\ControlPanel.cs" />
+    <Compile Include="Templates\Items\DatabaseSearch.cs" />
+    <Compile Include="Templates\Items\Event.cs" />
+    <Compile Include="Templates\Items\Faq.cs" />
+    <Compile Include="Templates\Items\FaqList.cs" />
+    <Compile Include="Templates\Items\Form.cs" />
+    <Compile Include="Templates\Items\FormPage.cs" />
+    <Compile Include="Templates\Items\GalleryItem.cs" />
+    <Compile Include="Templates\Items\ImageGallery.cs" />
+    <Compile Include="Templates\Items\IStructuralPage.cs" />
+    <Compile Include="Templates\Items\ISurvey.cs" />
+    <Compile Include="Templates\Items\LoginItem.cs" />
+    <Compile Include="Templates\Items\MultipleSelect.cs" />
+    <Compile Include="Templates\Items\News.cs" />
+    <Compile Include="Templates\Items\NewsContainer.cs" />
+    <Compile Include="Templates\Items\NewsList.cs" />
+    <Compile Include="Templates\Items\Option.cs" />
+    <Compile Include="Templates\Items\OptionSelectQuestion.cs" />
+    <Compile Include="Templates\Items\Poll.cs" />
+    <Compile Include="Templates\Items\Question.cs" />
+    <Compile Include="Templates\Items\RandomImage.cs" />
+    <Compile Include="Templates\Items\Redirect.cs" />
+    <Compile Include="Templates\Items\RootPage.cs" />
+    <Compile Include="Templates\Items\RssAggregator.cs" />
+    <Compile Include="Templates\Items\RssFeed.cs" />
+    <Compile Include="Templates\Items\SidebarItem.cs" />
+    <Compile Include="Templates\Items\SingleSelect.cs" />
+    <Compile Include="Templates\Items\SiteMap.cs" />
+    <Compile Include="Templates\Items\SocialBookmarks.cs" />
+    <Compile Include="Templates\Items\StartPage.cs" />
+    <Compile Include="Templates\Items\Statistics.cs" />
+    <Compile Include="Templates\Items\Subscribe.cs" />
+    <Compile Include="Templates\Items\Teaser.cs" />
+    <Compile Include="Templates\Items\TextItem.cs" />
+    <Compile Include="Templates\Items\TextPage.cs" />
+    <Compile Include="Templates\Items\TextQuestion.cs" />
+    <Compile Include="Templates\Items\Top.cs" />
+    <Compile Include="Templates\Items\Tracking.cs" />
+    <Compile Include="Templates\Items\UserRegistration.cs" />
+    <Compile Include="Templates\Services\SEODefinitionAppender.cs" />
+    <Compile Include="Templates\Services\SEOPageModifier.cs" />
+    <Compile Include="Templates\Services\TemplatesPartsAdapter.cs" />
+    <Compile Include="Templates\Services\TitleAndMetaTagApplyer.cs" />
+    <Compile Include="Templates\Services\DynamicMailSender.cs" />
+    <Compile Include="Templates\Services\FakeMailSender.cs" />
+    <Compile Include="Templates\Services\NotFoundHandler.cs" />
+    <Compile Include="Templates\Services\PermissionDeniedHandler.cs" />
+    <Compile Include="Templates\Services\IFeed.cs" />
+    <Compile Include="Templates\Services\ISyndicatable.cs" />
+    <Compile Include="Templates\Services\RssWriter.cs" />
+    <Compile Include="Templates\Tabs.cs" />
+    <Compile Include="Templates\Services\TemplatesInitializer.cs" />
+    <Compile Include="Templates\UI\Layouts\Translation.cs" />
+    <Compile Include="Templates\UI\Parts\BoxedText.ascx.cs">
+      <DependentUpon>BoxedText.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\BoxedText.ascx.designer.cs">
+      <DependentUpon>BoxedText.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Columns.ascx.cs">
+      <DependentUpon>Columns.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Columns.ascx.designer.cs">
+      <DependentUpon>Columns.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CommentInput.ascx.cs">
+      <DependentUpon>CommentInput.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CommentInput.ascx.designer.cs">
+      <DependentUpon>CommentInput.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CommentList.ascx.cs">
+      <DependentUpon>CommentList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CommentList.ascx.designer.cs">
+      <DependentUpon>CommentList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\ControlPanel.ascx.cs">
+      <DependentUpon>ControlPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\ControlPanel.ascx.designer.cs">
+      <DependentUpon>ControlPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Comment.ascx.cs">
+      <DependentUpon>Comment.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Comment.ascx.designer.cs">
+      <DependentUpon>Comment.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Empty.ascx.cs">
+      <DependentUpon>Empty.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Empty.ascx.designer.cs">
+      <DependentUpon>Empty.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Login.ascx.cs">
+      <DependentUpon>Login.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Login.ascx.designer.cs">
+      <DependentUpon>Login.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Layouts\SubMenu.ascx.cs">
+      <DependentUpon>SubMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Layouts\SubMenu.ascx.designer.cs">
+      <DependentUpon>SubMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\RandomImage.ascx.cs">
+      <DependentUpon>RandomImage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\RandomImage.ascx.designer.cs">
+      <DependentUpon>RandomImage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Register.ascx.cs">
+      <DependentUpon>Register.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Register.ascx.designer.cs">
+      <DependentUpon>Register.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\RssAggregator.ascx.cs">
+      <DependentUpon>RssAggregator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\RssAggregator.ascx.designer.cs">
+      <DependentUpon>RssAggregator.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Statistics.ascx.cs">
+      <DependentUpon>Statistics.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Statistics.ascx.designer.cs">
+      <DependentUpon>Statistics.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Teaser.ascx.cs">
+      <DependentUpon>Teaser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Teaser.ascx.designer.cs">
+      <DependentUpon>Teaser.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Text.ascx.cs">
+      <DependentUpon>Text.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Text.ascx.designer.cs">
+      <DependentUpon>Text.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Top.ascx.cs">
+      <DependentUpon>Top.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Top.ascx.designer.cs">
+      <DependentUpon>Top.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Layouts\TopMenu.ascx.cs">
+      <DependentUpon>TopMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Layouts\TopMenu.ascx.designer.cs">
+      <DependentUpon>TopMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.cs">
+      <DependentUpon>Top+SubMenu.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.designer.cs">
+      <DependentUpon>Top+SubMenu.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Secured\Root.aspx.cs">
+      <DependentUpon>Root.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Secured\Root.aspx.designer.cs">
+      <DependentUpon>Root.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Services\SyndicatableDefinitionAppender.cs" />
+    <Compile Include="Templates\UI\Views\404.aspx.cs">
+      <DependentUpon>404.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\500.aspx.cs">
+      <DependentUpon>500.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Bubble.ascx.cs">
+      <DependentUpon>Bubble.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Bubble.ascx.designer.cs">
+      <DependentUpon>Bubble.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\CalendarItem.aspx.cs">
+      <DependentUpon>CalendarItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\CalendarItem.aspx.designer.cs">
+      <DependentUpon>CalendarItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\CalendarList.aspx.cs">
+      <DependentUpon>CalendarList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\CalendarList.aspx.designer.cs">
+      <DependentUpon>CalendarList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CalendarTeaser.ascx.cs">
+      <DependentUpon>CalendarTeaser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\CalendarTeaser.ascx.designer.cs">
+      <DependentUpon>CalendarTeaser.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Faq.ascx.cs">
+      <DependentUpon>Faq.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Faq.ascx.designer.cs">
+      <DependentUpon>Faq.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Form.aspx.cs">
+      <DependentUpon>Form.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Form.aspx.designer.cs">
+      <DependentUpon>Form.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\FaqList.aspx.cs">
+      <DependentUpon>FaqList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\FaqList.aspx.designer.cs">
+      <DependentUpon>FaqList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Feed.aspx.cs">
+      <DependentUpon>Feed.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Feed.aspx.designer.cs">
+      <DependentUpon>Feed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Form.ascx.cs">
+      <DependentUpon>Form.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Form.ascx.designer.cs">
+      <DependentUpon>Form.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\ImageGallery.aspx.cs">
+      <DependentUpon>ImageGallery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\ImageGallery.aspx.designer.cs">
+      <DependentUpon>ImageGallery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\NewsBox.ascx.cs">
+      <DependentUpon>NewsBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\NewsBox.ascx.designer.cs">
+      <DependentUpon>NewsBox.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\NewsItem.aspx.cs">
+      <DependentUpon>NewsItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\NewsItem.aspx.designer.cs">
+      <DependentUpon>NewsItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\NewsList.ascx.cs">
+      <DependentUpon>NewsList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\NewsList.ascx.designer.cs">
+      <DependentUpon>NewsList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\NewsList.aspx.cs">
+      <DependentUpon>NewsList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\NewsList.aspx.designer.cs">
+      <DependentUpon>NewsList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Poll.ascx.cs">
+      <DependentUpon>Poll.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Poll.ascx.designer.cs">
+      <DependentUpon>Poll.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Redirect.aspx.cs">
+      <DependentUpon>Redirect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Redirect.aspx.designer.cs">
+      <DependentUpon>Redirect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Result.ascx.cs">
+      <DependentUpon>Result.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Result.ascx.designer.cs">
+      <DependentUpon>Result.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\SiteMap.aspx.cs">
+      <DependentUpon>SiteMap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\SiteMap.aspx.designer.cs">
+      <DependentUpon>SiteMap.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\SocialBookmarks.ascx.cs">
+      <DependentUpon>SocialBookmarks.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\SocialBookmarks.ascx.designer.cs">
+      <DependentUpon>SocialBookmarks.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Subscribe.ascx.cs">
+      <DependentUpon>Subscribe.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\Subscribe.ascx.designer.cs">
+      <DependentUpon>Subscribe.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Start.aspx.cs">
+      <DependentUpon>Start.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Start.aspx.designer.cs">
+      <DependentUpon>Start.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Text.aspx.cs">
+      <DependentUpon>Text.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Views\Text.aspx.designer.cs">
+      <DependentUpon>Text.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\UrchinTracking.ascx.cs">
+      <DependentUpon>UrchinTracking.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\UI\Parts\UrchinTracking.ascx.designer.cs">
+      <DependentUpon>UrchinTracking.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Web\UI\WebControls\IQuestionControl.cs" />
+    <Compile Include="Templates\Web\UI\WebControls\MultipleSelectControl.cs" />
+    <Compile Include="Templates\Web\UI\WebControls\SingleSelectControl.cs" />
+    <Compile Include="Templates\Web\UI\WebControls\TextControl.cs" />
+    <Compile Include="Templates\Web\Adapters\FormAdapter.cs" />
+    <Compile Include="Templates\Web\Adapters\ImageAdapter.cs" />
+    <Compile Include="Templates\Web\Adapters\UserControlWrapperAdapter.cs" />
+    <Compile Include="Templates\Web\IPageModifier.cs" />
+    <Compile Include="Templates\Web\IPageModifierContainer.cs" />
+    <Compile Include="Templates\Web\LanguageModifier.cs" />
+    <Compile Include="Templates\Web\MasterPageModifier.cs" />
+    <Compile Include="Templates\Web\TemplatePageModifier.cs" />
+    <Compile Include="Templates\Web\ThemeModifier.cs" />
+    <Compile Include="Templates\Web\UI\TemplateMasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Web\UI\TemplatePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Web\UI\TemplateUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Web\UI\TemplateUserControl2.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Templates\Web\UI\WebControls\Box.cs" />
+    <Compile Include="Templates\Web\UI\WebControls\IBreadcrumbAppearance.cs" />
+    <Compile Include="Templates\Web\UI\WebControls\Menu.cs" />
+    <Compile Include="Templates\Web\UI\WebControls\Path.cs" />
+    <Compile Include="App_GlobalResources\Definitions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\nl\Definitions.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\Definitions.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Definitions.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\EditableContainers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\nl\EditableContainers.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\EditableContainers.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditableContainers.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Editables.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\nl\Editables.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\Editables.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Editables.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\nl\Toolbar.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\Toolbar.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Zones.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\nl\Zones.nl.designer.cs" />
+    <Compile Include="App_GlobalResources\nl\Zones.nl1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zones.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\UI\Image.ashx.cs">
+      <DependentUpon>Image.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\Zones.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\N2.Security\N2.Security.csproj">
+      <Project>{CB6A29C5-8355-4C4C-B437-619F652B7540}</Project>
+      <Name>N2.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\UI\Image.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Plain\Style.css" />
+    <Content Include="App_Themes\Stripes\bg.gif" />
+    <Content Include="App_Themes\Stripes\top_bg.gif" />
+    <Content Include="App_Themes\Stripes\menu_bg.gif" />
+    <Content Include="App_Themes\Stripes\secondary_bg.gif" />
+    <Content Include="App_Themes\Stripes\sidebar_bg.gif" />
+    <Content Include="App_Themes\Stripes\Style.css" />
+    <Content Include="App_Themes\Stripes\top_bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\KhakiTabs\MenuDimmed.gif" />
+    <Content Include="App_Themes\KhakiTabs\MenuSelected.gif" />
+    <Content Include="App_Themes\KhakiTabs\SidebarLeftBg.gif" />
+    <Content Include="App_Themes\KhakiTabs\SidebarRightBg.gif" />
+    <Content Include="App_Themes\KhakiTabs\Style.css" />
+    <Content Include="App_Themes\KhakiTabs\TopBg.gif" />
+    <Content Include="App_Themes\PinkTabs\MenuDimmed.gif" />
+    <Content Include="App_Themes\PinkTabs\MenuSelected.gif" />
+    <Content Include="App_Themes\PinkTabs\SidebarLeftBg.gif" />
+    <Content Include="App_Themes\PinkTabs\SidebarRightBg.gif" />
+    <Content Include="App_Themes\PinkTabs\Style.css" />
+    <Content Include="App_Themes\PinkTabs\TopBg.gif" />
+    <Content Include="App_Themes\SkyTabs\MenuDimmed.gif" />
+    <Content Include="App_Themes\SkyTabs\MenuSelected.gif" />
+    <Content Include="App_Themes\SkyTabs\SidebarLeftBg.gif" />
+    <Content Include="App_Themes\SkyTabs\SidebarRightBg.gif" />
+    <Content Include="App_Themes\SkyTabs\Style.css" />
+    <Content Include="App_Themes\SkyTabs\TopBg.gif" />
+    <Content Include="App_Themes\TomatoTabs\MenuDimmed.gif" />
+    <Content Include="App_Themes\TomatoTabs\MenuSelected.gif" />
+    <Content Include="App_Themes\TomatoTabs\SidebarLeftBg.gif" />
+    <Content Include="App_Themes\TomatoTabs\SidebarRightBg.gif" />
+    <Content Include="App_Themes\TomatoTabs\Style.css" />
+    <Content Include="App_Themes\TomatoTabs\TopBg.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Editables.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\EditableContainers.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Definitions.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Zones.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\nl\Definitions.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\nl\EditableContainers.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\nl\Editables.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\nl\Toolbar.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\nl\Zones.nl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.nl1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Corporate\amazed.gif" />
+    <Content Include="App_Themes\Corporate\body_bg.gif" />
+    <Content Include="App_Themes\Corporate\happy.gif" />
+    <Content Include="App_Themes\Corporate\logo.gif" />
+    <Content Include="App_Themes\Corporate\manic.gif" />
+    <Content Include="App_Themes\Corporate\menuselection_bg.gif" />
+    <Content Include="App_Themes\Corporate\menu_bg.gif" />
+    <Content Include="App_Themes\Corporate\page_bg.gif" />
+    <Content Include="App_Themes\Corporate\Style.css" />
+    <Content Include="App_Themes\Corporate\tab_bg.gif" />
+    <Content Include="App_Themes\Corporate\tab_item.gif" />
+    <Content Include="App_Themes\Corporate\tab_item2.gif" />
+    <Content Include="App_Themes\n2cms\bg.gif" />
+    <Content Include="App_Themes\n2cms\body_bg.gif" />
+    <Content Include="App_Themes\n2cms\line_bg.gif" />
+    <Content Include="App_Themes\n2cms\logo.gif" />
+    <Content Include="App_Themes\n2cms\menu_selected.gif" />
+    <Content Include="App_Themes\n2cms\Style.css" />
+    <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
+    <Content Include="favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Browsers\genericmozilla5.browser" />
+    <Content Include="App_Browsers\Templates.browser" />
+    <None Include="App_Data\ContentFocus_SampleData.gz" />
+    <None Include="App_Data\Corporate_SampleData.gz" />
+    <None Include="App_Data\DarkStrips_SampleData.gz" />
+    <None Include="App_Data\KhakiTabs_SampleData.gz" />
+    <None Include="App_Data\Plain_SampleData.gz" />
+    <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
+    <Content Include="Templates\Secured\Web.config" />
+    <Content Include="App_Themes\n2cms\Menu.skin" />
+    <Content Include="App_Themes\Corporate\Menu.skin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
+    <Content Include="App_Themes\ContentFocus\content_top.gif" />
+    <Content Include="App_Themes\ContentFocus\list_dark.gif" />
+    <Content Include="App_Themes\ContentFocus\list_light.gif" />
+    <Content Include="App_Themes\ContentFocus\secondary_borders.gif" />
+    <Content Include="App_Themes\ContentFocus\secondary_header.gif" />
+    <Content Include="App_Themes\ContentFocus\Style.css" />
+    <Content Include="App_Themes\ContentFocus\top.gif" />
+    <Content Include="Templates\UI\Css\Calendar.css" />
+    <Content Include="Templates\UI\Css\Faq.css" />
+    <Content Include="Templates\UI\Css\Poll.css" />
+    <Content Include="Templates\UI\Css\Search.css" />
+    <Content Include="Templates\UI\Img\bubble_left.gif" />
+    <Content Include="Templates\UI\Img\bubble_left.png" />
+    <Content Include="Templates\UI\Img\bubble_right.gif" />
+    <Content Include="Templates\UI\Img\bubble_right.png" />
+    <Content Include="Templates\UI\Img\bullet_feed.png" />
+    <Content Include="Templates\UI\Img\calendar.png" />
+    <Content Include="Templates\UI\Img\calendar_view_day.png" />
+    <Content Include="Templates\UI\Img\calendar_view_month.png" />
+    <Content Include="Templates\UI\Img\chart_curve.png" />
+    <Content Include="Templates\UI\Img\chart_curve_add.png" />
+    <Content Include="Templates\UI\Img\chart_curve_delete.png" />
+    <Content Include="Templates\UI\Img\chart_curve_edit.png" />
+    <Content Include="Templates\UI\Img\chart_curve_error.png" />
+    <Content Include="Templates\UI\Img\chart_curve_go.png" />
+    <Content Include="Templates\UI\Img\chart_curve_link.png" />
+    <Content Include="Templates\UI\Img\chart_line.png" />
+    <Content Include="Templates\UI\Img\chart_line_add.png" />
+    <Content Include="Templates\UI\Img\chart_line_delete.png" />
+    <Content Include="Templates\UI\Img\chart_line_edit.png" />
+    <Content Include="Templates\UI\Img\chart_line_error.png" />
+    <Content Include="Templates\UI\Img\chart_line_link.png" />
+    <Content Include="Templates\UI\Img\chart_organisation.png" />
+    <Content Include="Templates\UI\Img\chart_organisation_add.png" />
+    <Content Include="Templates\UI\Img\chart_organisation_delete.png" />
+    <Content Include="Templates\UI\Img\chart_pie.png" />
+    <Content Include="Templates\UI\Img\chart_pie_add.png" />
+    <Content Include="Templates\UI\Img\chart_pie_delete.png" />
+    <Content Include="Templates\UI\Img\chart_pie_edit.png" />
+    <Content Include="Templates\UI\Img\chart_pie_error.png" />
+    <Content Include="Templates\UI\Img\delicious.png" />
+    <Content Include="Templates\UI\Img\digg.png" />
+    <Content Include="Templates\UI\Img\dotnetkicks.png" />
+    <Content Include="Templates\UI\Img\dzone.png" />
+    <Content Include="Templates\UI\Img\feed.png" />
+    <Content Include="Templates\UI\Img\feed_link.png" />
+    <Content Include="Templates\UI\Img\google.png" />
+    <Content Include="Templates\UI\Img\help.png" />
+    <Content Include="Templates\UI\Img\information.png" />
+    <Content Include="Templates\UI\Img\live.png" />
+    <Content Include="Templates\UI\Img\netscape.gif" />
+    <Content Include="Templates\UI\Img\newspaper.png" />
+    <Content Include="Templates\UI\Img\newspaper_go.png" />
+    <Content Include="Templates\UI\Img\newspaper_link.png" />
+    <Content Include="Templates\UI\Img\photo.png" />
+    <Content Include="Templates\UI\Img\photos.png" />
+    <Content Include="Templates\UI\Img\reddit.png" />
+    <Content Include="Templates\UI\Img\report.png" />
+    <Content Include="Templates\UI\Img\rss.png" />
+    <Content Include="Templates\UI\Img\slashdot.png" />
+    <Content Include="Templates\UI\Img\technorati.png" />
+    <Content Include="Templates\UI\Img\yahoomyweb.png" />
+    <Content Include="Templates\UI\Img\zoom.png" />
+    <Content Include="Templates\UI\Views\404.aspx" />
+    <Content Include="Templates\UI\Views\500.aspx" />
+    <Content Include="Templates\UI\Parts\Bubble.ascx" />
+    <Content Include="Templates\UI\Views\CalendarItem.aspx" />
+    <Content Include="Templates\UI\Views\CalendarList.aspx" />
+    <Content Include="Templates\UI\Parts\CalendarTeaser.ascx" />
+    <Content Include="Templates\UI\Parts\Faq.ascx" />
+    <Content Include="Templates\UI\Views\FaqList.aspx" />
+    <Content Include="Templates\UI\Views\Feed.aspx" />
+    <Content Include="Templates\UI\Parts\Form.ascx" />
+    <Content Include="Templates\UI\Views\ImageGallery.aspx" />
+    <Content Include="Templates\UI\Parts\NewsBox.ascx" />
+    <Content Include="Templates\UI\Views\NewsItem.aspx" />
+    <Content Include="Templates\UI\Parts\NewsList.ascx" />
+    <Content Include="Templates\UI\Views\NewsList.aspx" />
+    <Content Include="Templates\UI\Parts\Poll.ascx" />
+    <Content Include="Templates\UI\Views\Redirect.aspx" />
+    <Content Include="Templates\UI\Parts\Result.ascx" />
+    <Content Include="Templates\UI\Views\Search.aspx" />
+    <Content Include="Templates\UI\Views\SiteMap.aspx" />
+    <Content Include="Templates\UI\Parts\SocialBookmarks.ascx" />
+    <Content Include="Templates\UI\Parts\Subscribe.ascx" />
+    <Content Include="Templates\UI\Views\Text.aspx" />
+    <Content Include="Templates\UI\Parts\UrchinTracking.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\Stripes\main_bg.gif" />
+    <Content Include="App_Themes\Stripes\page_bottom.gif" />
+    <Content Include="App_Themes\Stripes\page_top.gif" />
+    <Content Include="Templates\UI\Img\application_view_columns.png" />
+    <Content Include="Templates\UI\Img\bullet_star.png" />
+    <Content Include="Templates\UI\Img\bullet_toggle_plus.png" />
+    <Content Include="Templates\UI\Img\controller.png" />
+    <Content Include="Templates\UI\Img\eye.png" />
+    <Content Include="Templates\UI\Img\heart.png" />
+    <Content Include="Templates\UI\Img\key.png" />
+    <Content Include="Templates\UI\Img\page.png" />
+    <Content Include="Templates\UI\Img\page_gear.png" />
+    <Content Include="Templates\UI\Img\page_go.png" />
+    <Content Include="Templates\UI\Img\page_white.png" />
+    <Content Include="Templates\UI\Img\page_white_link.png" />
+    <Content Include="Templates\UI\Img\page_white_star.png" />
+    <Content Include="Templates\UI\Img\page_world.png" />
+    <Content Include="Templates\UI\Img\sitemap.png" />
+    <Content Include="Templates\UI\Img\tab.png" />
+    <Content Include="Templates\UI\Img\text_align_left.png" />
+    <Content Include="Templates\UI\Img\text_columns.png" />
+    <Content Include="Templates\UI\Img\user_add.png" />
+    <Content Include="Templates\UI\Css\Layout.css" />
+    <Content Include="Templates\UI\Parts\BoxedText.ascx" />
+    <Content Include="Templates\UI\Parts\Columns.ascx" />
+    <Content Include="Templates\UI\Parts\CommentInput.ascx" />
+    <Content Include="Templates\UI\Parts\CommentList.ascx" />
+    <Content Include="Templates\UI\Parts\ControlPanel.ascx" />
+    <Content Include="Templates\UI\Parts\Comment.ascx" />
+    <Content Include="Templates\UI\Parts\Empty.ascx" />
+    <Content Include="Templates\UI\Parts\Login.ascx" />
+    <Content Include="Templates\UI\Layouts\SubMenu.ascx" />
+    <Content Include="Templates\UI\Parts\RandomImage.ascx" />
+    <Content Include="Templates\UI\Parts\Register.ascx" />
+    <Content Include="Templates\UI\Parts\Statistics.ascx" />
+    <Content Include="Templates\UI\Parts\Teaser.ascx" />
+    <Content Include="Templates\UI\Parts\Text.ascx" />
+    <Content Include="Templates\UI\Parts\Top.ascx" />
+    <Content Include="Templates\UI\Layouts\TopMenu.ascx" />
+    <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.it.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Templates\UI\Parts\App_LocalResources\Form.ascx.sv.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Templates\UI\Parts\App_LocalResources\Poll.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Templates\UI\Parts\App_LocalResources\Poll.ascx.sv.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Templates\Secured\Edit.css" />
+    <Content Include="Templates\Secured\Root.aspx" />
+    <Content Include="Templates\UI\Views\Form.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\UI\Img\comment.png" />
+    <Content Include="Templates\UI\Img\comments.png" />
+    <Content Include="Templates\UI\Img\comment_add.png" />
+    <Content Include="Templates\UI\Parts\App_LocalResources\CommentInput.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\ru\Definitions.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.ru.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\ru\Editables.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.ru.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\ru\Zones.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.ru.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\ru\EditableContainers.ru.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Templates\UI\Img\SocialBookmarks\Blinklist_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\BlogMarks_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\delicious_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Digg_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Diigo_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\FaceBook_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Favorite_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\FeedBurner_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Feed_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Flickr_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Furl_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Google_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Magnolia_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Misterwong_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\MySpace_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Netvibes_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Newsvine_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Reddit_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Simpy_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Stumbleupon_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Technorati_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Twitter_16x16.png" />
+    <Content Include="Templates\UI\Img\SocialBookmarks\Youtube_16x16.png" />
+    <Content Include="Templates\UI\Parts\RssAggregator.ascx" />
+    <Content Include="Templates\UI\Views\Start.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\UI\Views\App_LocalResources\CalendarList.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\ControlPanel.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ControlPanel.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\sl\ControlPanel.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ControlPanel.sl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\sl\Definitions.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Definitions.sl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\sl\EditableContainers.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>EditableContainers.sl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\sl\Editables.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Editables.sl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_GlobalResources\sl\Zones.sl.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Zones.sl.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Code\" />
+    <Folder Include="Properties\" />
+    <Folder Include="Upload\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
-	<ProjectExtensions>
-		<VisualStudio>
-			<FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-				<WebProjectProperties>
-					<SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
-				</WebProjectProperties>
-			</FlavorProperties>
-		</VisualStudio>
-	</ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

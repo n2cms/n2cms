@@ -1,19 +1,12 @@
 using System.Web.Mvc;
-using MvcContrib.Filters;
 using N2.Templates.Mvc.Items.Items;
 using N2.Web;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[ModelStateToTempData]
 	[Controls(typeof(Poll))]
 	public class PollController : N2Controller<Poll>
 	{
-		public override ActionResult Index()
-		{
-			return PartialView(CurrentItem.TemplateUrl, CurrentItem);
-		}
-
 		public ActionResult Submit(int? selectedItem)
 		{
 			if (selectedItem == null)
@@ -31,7 +24,7 @@ namespace N2.Templates.Mvc.Controllers
 				CurrentItem.AddAnswer(Engine.Persister, selectedItem.Value);
 				Response.Cookies.Add(CurrentItem.GetAnsweredCookie(selectedItem.Value));
 			}
-			return Redirect(CurrentItem.Parent.Url);
+			return ViewParentPage();
 		}
 	}
 }

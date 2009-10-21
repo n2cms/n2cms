@@ -7,6 +7,7 @@ namespace N2.Web.Mvc
 {
 	public class N2ViewEngine : IViewEngine
 	{
+		private const string DefaultViewName = "index";
 		private readonly IEnumerable<IViewEngine> _innerViewEngines;
 
 		public N2ViewEngine(IEnumerable<IViewEngine> innerViewEngines)
@@ -31,19 +32,36 @@ namespace N2.Web.Mvc
 
 		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
 		{
-			var item = (ContentItem)controllerContext.RouteData.Values[ContentRoute.ContentItemKey];
+			var item = ExtractItemFromContext(controllerContext);
 
 			if (item == null || IsFullPathToView(partialViewName))
 				return FindPartialViewInternal(controllerContext, partialViewName, useCache);
 
-			var templateUrl = GetTemplateUrl(item, partialViewName);
+			var templateUrl = partialViewName;
+
+			if (String.Equals(templateUrl, DefaultViewName, StringComparison.InvariantCultureIgnoreCase))
+				templateUrl = GetTemplateUrl(item, partialViewName);
 
 			return FindPartialViewInternal(controllerContext, templateUrl, useCache);
 		}
 
+		private static ContentItem ExtractItemFromContext(ControllerContext controllerContext)
+		{
+			var item = (ContentItem)controllerContext.RouteData.Values[ContentRoute.ContentItemKey];
+
+			var viewContext = controllerContext as ViewContext;
+			if(viewContext != null)
+			{
+				item = ItemExtractor.ExtractFromModel(viewContext.ViewData.Model) ?? item;
+
+				controllerContext.RouteData.Values[ContentRoute.ContentItemKey] = item;
+			}
+			return item;
+		}
+
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
 		{
-			var item = (ContentItem) controllerContext.RouteData.Values[ContentRoute.ContentItemKey];
+			var item = ExtractItemFromContext(controllerContext);
 
 			if (item == null || IsFullPathToView(viewName))
 				return FindViewInternal(controllerContext, viewName, masterName, useCache);

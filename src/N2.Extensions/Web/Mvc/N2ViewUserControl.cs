@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Web;
 using System.Web.Mvc;
 using N2.Web.UI;
 
@@ -26,5 +24,20 @@ namespace N2.Web.Mvc
 		}
 
 		#endregion
+
+		public ContentItem CurrentPage
+		{
+			get
+			{
+				ContentItem page = CurrentItem;
+
+				while(page != null && !page.IsPage)
+				{
+					page = page.Parent;
+				}
+
+				return page;
+			}
+		}
 	}
 }

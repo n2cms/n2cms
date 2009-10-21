@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -1643,20 +1643,48 @@
     <Content Include="Edit\KeepAlive\Ping.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Edit\App_LocalResources\ru\AffectedItems.ascx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\AvailableZones.ascx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Copy.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Default.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Delete.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Edit.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Framed.Master.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\ItemInfo.ascx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Login.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Move.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\New.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Paste.aspx.ru.resx" />
-    <Content Include="Edit\App_LocalResources\ru\Toolbar.ascx.ru.resx" />
-    <Content Include="Edit\Export\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\App_LocalResources\ru\AffectedItems.ascx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\AvailableZones.ascx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Copy.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Delete.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Edit.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Framed.Master.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\ItemInfo.ascx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Login.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Move.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\New.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Paste.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\ru\Toolbar.ascx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Export\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit\Css\TabPanel.css" />
@@ -1681,8 +1709,12 @@
     <Content Include="Edit\App_LocalResources\Dependencies.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Edit\App_LocalResources\ru\Dependencies.ru.aspx.resx" />
-    <Content Include="Edit\App_LocalResources\nl\ItemInfo.ascx.nl.resx" />
+    <Content Include="Edit\App_LocalResources\ru\Dependencies.ru.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\nl\ItemInfo.ascx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Edit\Js\plugins\FreeTextArea.js" />
     <Content Include="Edit\Js\plugins\jquery.cookie.js" />
     <Content Include="Edit\Js\plugins\jquery.datePicker.min-2.1.1.js" />
@@ -1690,55 +1722,149 @@
     <Content Include="Edit\Js\TabPanel.js" />
     <Content Include="Edit\PublishPreview.aspx" />
     <Content Include="Edit\Settings\SettingsEditor.ascx" />
-    <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Trash\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Settings\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Security\App_LocalResources\Default.aspx.nl.resx" />
-    <Content Include="Edit\Security\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Navigation.nl.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Search.aspx.ru.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.ru.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Table.aspx.ru.resx" />
-    <Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.ru.resx" />
-    <Content Include="Edit\Membership\App_LocalResources\ru\Edit.aspx.ru.resx" />
-    <Content Include="Edit\Membership\App_LocalResources\ru\New.aspx.ru.resx" />
-    <Content Include="Edit\Membership\App_LocalResources\ru\Password.aspx.ru.resx" />
-    <Content Include="Edit\Membership\App_LocalResources\ru\Users.aspx.ru.resx" />
-    <Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Globalization\App_LocalResources\Default.aspx.ru.resx" />
-    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.nl.resx" />
-    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.ru.resx" />
-    <Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.ru.resx" />
+    <Content Include="Edit\Wizard\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Versions\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Trash\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Settings\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Security\App_LocalResources\Default.aspx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Security\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Navigation\App_LocalResources\Navigation.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Navigation\App_LocalResources\Search.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Navigation\App_LocalResources\Settings.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Navigation\App_LocalResources\Table.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Navigation\App_LocalResources\Tree.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Membership\App_LocalResources\ru\Edit.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Membership\App_LocalResources\ru\New.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Membership\App_LocalResources\ru\Password.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Membership\App_LocalResources\ru\Users.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\ItemSelection\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Globalization\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.nl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\Globalization\App_LocalResources\Languages.ascx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\FileManagement\App_LocalResources\Default.aspx.ru.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Edit\App_LocalResources\mk-MK\AffectedItems.ascx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\AvailableZones.ascx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Copy.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Default.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Delete.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Edit.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Framed.Master.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\ItemInfo.ascx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Login.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Move.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\New.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Paste.aspx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\mk-MK\Toolbar.ascx.mk.resx" />
-    <Content Include="Edit\App_LocalResources\sl\AffectedItems.ascx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\AvailableZones.ascx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Copy.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Default.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Delete.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Dependencies.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Edit.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Framed.Master.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\ItemInfo.ascx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Login.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Move.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\New.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Paste.aspx.sl.resx" />
-    <Content Include="Edit\App_LocalResources\sl\Toolbar.ascx.sl.resx" />
+    <Content Include="Edit\App_LocalResources\mk-MK\AffectedItems.ascx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\AvailableZones.ascx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Copy.aspx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Default.aspx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Delete.aspx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Edit.aspx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Framed.Master.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\ItemInfo.ascx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Login.aspx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Move.aspx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\New.aspx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Paste.aspx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\mk-MK\Toolbar.ascx.mk.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\AffectedItems.ascx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\AvailableZones.ascx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Copy.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Default.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Delete.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Dependencies.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Edit.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Framed.Master.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\ItemInfo.ascx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Login.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Move.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\New.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Paste.aspx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Edit\App_LocalResources\sl\Toolbar.ascx.sl.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Edit\Install\Upgrade.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

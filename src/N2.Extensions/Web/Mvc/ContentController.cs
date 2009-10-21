@@ -67,7 +67,8 @@ namespace N2.Web.Mvc
 		private T GetCurrentItemById()
 		{
 			int itemId;
-			if (Int32.TryParse(ControllerContext.RouteData.Values[ContentRoute.ContentItemIdKey] as string, out itemId))
+			if (Int32.TryParse(ControllerContext.RouteData.Values[ContentRoute.ContentItemIdKey] as string, out itemId)
+				|| Int32.TryParse(Request[ContentRoute.ContentItemIdKey], out itemId))
 				return Engine.Persister.Get(itemId) as T;
 
 			return null;
@@ -127,10 +128,10 @@ namespace N2.Web.Mvc
 		/// <returns></returns>
 		protected internal virtual ViewPageResult ViewParentPage()
 		{
-			if (CurrentItem.IsPage)
+			if (CurrentItem != null && CurrentItem.IsPage)
 			{
 				throw new InvalidOperationException(
-					"The current page is already being rendered. ViewPage should only be used from content items to render their parent page.");
+					"The current page is already being rendered. ViewParentPage should only be used from content items to render their parent page.");
 			}
 
 			return ViewPage(CurrentPage);
@@ -142,6 +143,9 @@ namespace N2.Web.Mvc
 		/// <returns></returns>
 		protected internal virtual ViewPageResult ViewPage(ContentItem thePage)
 		{
+			if (thePage == null)
+				throw new ArgumentNullException("thePage");
+
 			if (!thePage.IsPage)
 				throw new InvalidOperationException("Item " + thePage.GetType().Name + " is not a page type and cannot be rendered on its own.");
 
@@ -169,7 +173,7 @@ namespace N2.Web.Mvc
 		/// <returns></returns>
 		protected new ViewResultBase View(object model)
 		{
-			ContentItem item = ExtractItem(model);
+			ContentItem item = ItemExtractor.ExtractFromModel(model) ?? CurrentItem;
 
 			if (item != null && !item.IsPage)
 				return PartialView(model);
@@ -185,7 +189,7 @@ namespace N2.Web.Mvc
 		/// <returns></returns>
 		protected new ViewResultBase View(string viewName, object model)
 		{
-			ContentItem item = ExtractItem(model);
+			ContentItem item = ItemExtractor.ExtractFromModel(model) ?? CurrentItem;
 
 			if (item != null && !item.IsPage)
 				return PartialView(viewName, model);
@@ -209,7 +213,7 @@ namespace N2.Web.Mvc
 
 		private void CheckForPageRender(object model)
 		{
-			ContentItem item = ExtractItem(model);
+			ContentItem item = ItemExtractor.ExtractFromModel(model) ?? CurrentItem;
 
 			if (item != null && !item.IsPage)
 				throw new InvalidOperationException(@"Rendering of Parts using View(..) is no longer supported. Use PartialView(..) to render this item.
@@ -217,18 +221,6 @@ namespace N2.Web.Mvc
 - Item of type " + item.GetType() + @"
 - Controller is " + GetType() + @"
 - Action is " + ViewData[ContentRoute.ActionKey]);
-		}
-
-		private ContentItem ExtractItem(object model)
-		{
-			var item = model as ContentItem;
-			
-			if(item != null)
-				return item;
-
-			var itemContainer = model as IItemContainer;
-
-			return itemContainer != null ? itemContainer.CurrentItem : CurrentItem;
 		}
 
 		#region Nested type: SessionAndPerRequestTempDataProvider

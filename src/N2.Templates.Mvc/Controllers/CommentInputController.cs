@@ -1,6 +1,5 @@
 using System;
 using System.Web.Mvc;
-using MvcContrib.Filters;
 using N2.Edit;
 using N2.Templates.Mvc.Items.Items;
 using N2.Templates.Mvc.Models;
@@ -8,7 +7,6 @@ using N2.Web;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[ModelStateToTempData]
 	[Controls(typeof(CommentInput))]
 	public class CommentInputController : N2Controller<CommentInput>
 	{
@@ -21,7 +19,7 @@ namespace N2.Templates.Mvc.Controllers
 		{
 			if(!ModelState.IsValid)
 			{
-				return base.ViewParentPage();
+				return ViewParentPage();
 			}
 
 			var list = CurrentPage.GetChild("Comments") as CommentList;

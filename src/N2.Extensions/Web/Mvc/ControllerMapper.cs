@@ -37,7 +37,6 @@ namespace N2.Web.Mvc
 					_controllerActionMap[controllerDefinition.ControllerName] = methods;
 
 					PathDictionary.PrependFinder(id.ItemType, actionResolver);
-				
 				}
 			}
 		}
