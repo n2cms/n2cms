@@ -5,6 +5,7 @@ using System.Web.UI;
 
 namespace N2.Web.UI.WebControls
 {
+	[Obsolete]
 	public class Ul : Control
 	{
 		private string cssClass;

@@ -32,30 +32,35 @@ namespace N2.Details
 		{
 		}
 
+		/// <summary>Defines whether files or content items are available to be picked</summary>
 		public UrlSelectorMode AvailableModes
 		{
 			get { return availableModes; }
 			set { availableModes = value; }
 		}
 
+		/// <summary>Defines whether files or content items are first shown when picking an url.</summary>
 		public UrlSelectorMode OpeningMode
 		{
 			get { return openingMode; }
 			set { openingMode = value; }
 		}
 
-		public override bool UpdateItem(ContentItem item, System.Web.UI.Control editor)
+		/// <summary>Defines whether the urls should be stored as app- or server relative.</summary>
+		public UrlRelativityMode RelativeTo { get; set; }
+
+		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			UrlSelector selector = (UrlSelector)editor;
 			if(selector.Url != (string)item[Name])
 			{
-				item[Name] = selector.Url;
+				item[Name] = RelativeTo == UrlRelativityMode.Absolute ? selector.Url : N2.Web.Url.ToRelative(selector.Url);
 				return true;
 			}
 			return false;
 		}
 
-		public override void UpdateEditor(ContentItem item, System.Web.UI.Control editor)
+		public override void UpdateEditor(ContentItem item, Control editor)
 		{
 			UrlSelector selector = (UrlSelector)editor;
 			selector.Url = (string)item[Name];

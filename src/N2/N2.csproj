@@ -694,6 +694,7 @@
     <Compile Include="Web\UI\WebControls\Tree.cs" />
     <Compile Include="Web\UI\WebControls\TreeNode.cs" />
     <Compile Include="Web\UI\WebControls\Ul.cs" />
+    <Compile Include="Web\UI\WebControls\UrlRelativityMode.cs" />
     <Compile Include="Web\Url.cs" />
     <Compile Include="Web\WebRequestContext.cs" />
     <Compile Include="Web\Parts\PartsAdapter.cs" />
