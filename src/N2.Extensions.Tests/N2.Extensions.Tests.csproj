@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{84876FD2-9055-4A02-A163-1495E5659BC7}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -107,7 +107,8 @@
     <Compile Include="Mvc\ContentControllerTests.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
     <Compile Include="Mvc\ControllerMapperTests.cs" />
-    <Compile Include="Mvc\Controllers\RegularControllerBase.cs" />
+    <Compile Include="Mvc\Controllers\AnotherRegularController.cs" />
+    <Compile Include="Mvc\Controllers\RegularController.cs" />
     <Compile Include="Mvc\Controllers\ExecutiveTeamController.cs" />
     <Compile Include="Mvc\Controllers\AboutUsSectionPageController.cs" />
     <Compile Include="Fakes\FakeHttpContext.cs" />

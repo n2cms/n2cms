@@ -57,7 +57,7 @@ namespace N2.Extensions.Tests.Mvc
 			{
 				typeof (ExecutiveTeamController),
 				typeof (AboutUsSectionPageController), 
-				typeof (RegularControllerBase), 
+				typeof (RegularController), 
 				typeof (FallbackContentController),
 				typeof (NonN2Controller),
 				typeof (SearchController),
@@ -253,12 +253,12 @@ namespace N2.Extensions.Tests.Mvc
 		[Test]
 		public void CanCreate_ActionLinkFromItem()
 		{
-			var rc = CreateRouteContext(new TestItem {ID = 10});
+			var rc = CreateRouteContext(new TestItem { ID = 10 });
 			var helper = new HtmlHelper(CreateViewContext(rc), new ViewPage(), routes);
 
 			string html = helper.ActionLink("Hello", "Submit", new { q = "something", controller = "TestItem" });
 
-			Assert.That(html, Is.EqualTo("<a href=\"/TestItem/Submit/10?q=something\">Hello</a>"));
+			Assert.That(html, Is.EqualTo("<a href=\"/TestItem/Submit?q=something&amp;n2_itemid=10\">Hello</a>"));
 		}
 
 		ViewContext CreateViewContext(RequestContext rc)

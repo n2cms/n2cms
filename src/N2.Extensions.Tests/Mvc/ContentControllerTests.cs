@@ -24,7 +24,7 @@ namespace N2.Extensions.Tests.Mvc
 		[Test]
 		public void ReturnsViewWhenIndexCalledOnPageController()
 		{
-			var controller = new RegularControllerBase();
+			var controller = new RegularController();
 			controller.CurrentItem = new RegularPage();
 
 			controller.Index().AssertResultIs<ViewResult>();
@@ -78,7 +78,7 @@ namespace N2.Extensions.Tests.Mvc
 		public void ViewParentPage_WithPage()
 		{
 			var page = new RegularPage();
-			var controller = new RegularControllerBase();
+			var controller = new RegularController();
 			controller.CurrentItem = page;
 
 			controller.Engine = MockRepository.GenerateStub<IEngine>();
@@ -105,7 +105,7 @@ namespace N2.Extensions.Tests.Mvc
 		public void ViewPage_WithSamePage()
 		{
 			var page = new RegularPage();
-			var controller = new RegularControllerBase();
+			var controller = new RegularController();
 			controller.CurrentItem = page;
 			controller.Engine = MockRepository.GenerateStub<IEngine>();
 

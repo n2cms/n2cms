@@ -80,16 +80,25 @@ namespace N2.Web.Mvc
 
 		private static IList<ControlsAttribute> FindControllers(ITypeFinder typeFinder)
 		{
-			var controllerDefinitions = new List<ControlsAttribute>();
+			var controllerLookup = new Dictionary<Type, ControlsAttribute>();
 			foreach (Type controllerType in typeFinder.Find(typeof(IController)))
 			{
 				foreach (ControlsAttribute attr in controllerType.GetCustomAttributes(typeof(ControlsAttribute), false))
 				{
+					if (controllerLookup.ContainsKey(attr.ItemType))
+						throw new N2Exception("Duplicate controller " + controllerType.Name + " declared for item type " +
+						                      attr.ItemType.Name +
+											  " The controller " + controllerLookup[attr.ItemType].AdapterType.Name +
+											  " already handles this type and two controllers cannot handle the same item type.");
+
 					attr.AdapterType = controllerType;
-					controllerDefinitions.Add(attr);
+					controllerLookup.Add(attr.ItemType, attr);
 				}
 			}
+
+			var controllerDefinitions = new List<ControlsAttribute>(controllerLookup.Values);
 			controllerDefinitions.Sort();
+
 			return controllerDefinitions;
 		}
 	}

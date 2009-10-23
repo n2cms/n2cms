@@ -40,7 +40,7 @@ namespace N2.Extensions.Tests.Mvc
 			var routeData = new RouteData();
 			routeData.Values.Add("controller", "Default");
 			routeData.Values.Add(ContentRoute.ContentItemKey, new RegularPage());
-			var controller = new RegularControllerBase();
+			var controller = new RegularController();
 
 			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
 
@@ -63,7 +63,7 @@ namespace N2.Extensions.Tests.Mvc
 			var routeData = new RouteData();
 			routeData.Values.Add("controller", "Default");
 			routeData.Values.Add(ContentRoute.ContentItemKey, new RegularPage());
-			var controller = new RegularControllerBase();
+			var controller = new RegularController();
 
 			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
 
@@ -86,7 +86,7 @@ namespace N2.Extensions.Tests.Mvc
 			var routeData = new RouteData();
 			routeData.Values.Add("controller", "Default");
 			routeData.Values.Add(ContentRoute.ContentItemKey, new RegularPage());
-			var controller = new RegularControllerBase();
+			var controller = new RegularController();
 
 			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
 
@@ -109,7 +109,7 @@ namespace N2.Extensions.Tests.Mvc
 			var routeData = new RouteData();
 			routeData.Values.Add("controller", "Default");
 			routeData.Values.Add(ContentRoute.ContentItemKey, new TemplatedItem());
-			var controller = new RegularControllerBase();
+			var controller = new RegularController();
 
 			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
 
@@ -132,7 +132,7 @@ namespace N2.Extensions.Tests.Mvc
 			var routeData = new RouteData();
 			routeData.Values.Add("controller", "Default");
 			routeData.Values.Add(ContentRoute.ContentItemKey, new RegularPage());
-			var controller = new RegularControllerBase();
+			var controller = new RegularController();
 
 			var controllerContext = new ControllerContext(httpContextBase, routeData, controller);
 

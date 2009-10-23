@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -19,26 +20,27 @@ namespace N2.Extensions.Tests.Mvc
 	[TestFixture]
 	public class ControllerMapperTests
 	{
-		IControllerMapper controllerMapper;
+		private FakeTypeFinder typeFinder;
+		private IDefinitionManager definitions;
 
 		[SetUp]
 		public void SetUp()
 		{
 			PathDictionary.AllSingletons.Clear();
 
-			var typeFinder = new FakeTypeFinder();
+			typeFinder = new FakeTypeFinder();
 			typeFinder.typeMap[typeof(IController)] = new[]
 			{
 				typeof (ExecutiveTeamController),
 				typeof (AboutUsSectionPageController), 
-				typeof (RegularControllerBase), 
+				typeof (RegularController), 
 				typeof (FallbackContentController),
 				typeof (NonN2Controller),
 				typeof (SearchController),
 				typeof (TestItemController),
 			};
 
-			var definitions = MockRepository.GenerateMock<IDefinitionManager>();
+			definitions = MockRepository.GenerateMock<IDefinitionManager>();
 
 			definitions.Expect(d => d.GetDefinitions()).Return(
 				new List<ItemDefinition>
@@ -46,17 +48,30 @@ namespace N2.Extensions.Tests.Mvc
 						new ItemDefinition(typeof (RegularPage)),
 					}
 				);
-
-			controllerMapper = new ControllerMapper(typeFinder, definitions);
 		}
 
 		[Test]
 		public void MapperDoesNotMapProperties()
 		{
-			var actionResolver = PathDictionary.GetFinders(typeof (RegularPage)).FirstOrDefault() as ActionResolver;
+			new ControllerMapper(typeFinder, definitions);
+
+			var actionResolver = PathDictionary.GetFinders(typeof(RegularPage)).FirstOrDefault() as ActionResolver;
 
 			Assert.That(actionResolver, Is.Not.Null);
 			Assert.That(actionResolver.Methods.Length, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void MapperWillNotMap()
+		{
+			typeFinder.typeMap[typeof (IController)] = new List<Type>(typeFinder.typeMap[typeof (IController)])
+			                                           	{
+			                                           		typeof (AnotherRegularController),
+			                                           	};
+
+			Assert.Throws<N2Exception>(() => new ControllerMapper(typeFinder, definitions), 
+				"Duplicate controller AnotherRegularController declared for item type RegularPage." + 
+				" The controller RegularController already handles this type and two controllers cannot handle the same item type.");
 		}
 	}
 }
