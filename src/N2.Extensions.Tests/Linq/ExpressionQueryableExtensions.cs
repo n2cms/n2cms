@@ -24,7 +24,18 @@ namespace N2.Extensions.Tests.Linq
 		}
 
 		[Test]
-		[Ignore("TODO")]
+		public void CanSelectItems_Where_DetailBackingProperty_Equals_StringConstant_DoesntSelect_FromOtherwiseNamedDetails()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDetail(ci => ci.StringProperty2 == "a string");
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+
+		[Test]
 		public void CanSelectItems_Where_DetailBackingProperty_StartsWith_StringConstant()
 		{
 			var query = engine.QueryItems<LinqItem>()
@@ -36,6 +47,30 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(items.Count, Is.EqualTo(1));
 			Assert.That(items.Contains(root));
 			Assert.That(!items.Contains(item));
+		}
+
+		[Test]
+		public void CanSelectItems_Where_DetailBackingProperty_EndsWith_StringConstant()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDetail(ci => ci.StringProperty2.EndsWith("string"));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void CanSelectItems_Where_DetailBackingProperty_Contains_StringConstant()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDetail(ci => ci.StringProperty2.Contains("another"));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(2));
 		}
 
 		[Test]
@@ -251,7 +286,7 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(!items.Contains(item));
 		}
 
-		[Test, Ignore("TODO")]
+		[Test]
 		public void CanSelectItems_Where_DetailBackingProperty_Equals_ContentItemField()
 		{
 			var query = engine.QueryItems<LinqItem>()
@@ -265,5 +300,46 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(items.Contains(item));
 		}
 
+		[Test]
+		public void CanSelectItems_Where_MultipleTimes()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDetail(ci => ci.StringProperty == "a string")
+				.WhereDetail(ci => ci.StringProperty2 == "another string");
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(items.Contains(root));
+			Assert.That(!items.Contains(item));
+		}
+
+		[Test]
+		public void CanSelectItems_Where_OneString_Equals_And_AnotherString_Contains()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDetail(ci => ci.StringProperty == "a string" && ci.StringProperty2.Contains("yet"));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(!items.Contains(root));
+			Assert.That(items.Contains(item));
+		}
+
+		[Test]
+		public void CanSelectItems_Where_MultipleTimes_ExpectingNegativeResult()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.WhereDetail(ci => ci.StringProperty2 == "another string") // only on root
+				.WhereDetail(ci => ci.IntProperty == 234); // only on itme
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
 	}
 }

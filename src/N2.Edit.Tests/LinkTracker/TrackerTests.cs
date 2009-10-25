@@ -157,6 +157,7 @@ namespace N2.Edit.Tests.LinkTracker
 				new FakePathProvider(((FakeFileSystem) Context.Current.Resolve<IFileSystem>()).BasePath);
 
 			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
+			((N2.Web.IUrlParserDependency)rootDir).SetUrlParser(new UrlParser(persister, null, new N2.Persistence.NH.NotifyingInterceptor(), new Host(null, 1, 1), new HostSection()));
 
 			root["TestDetail"] = @"<a href=""/FileSystem/upload/File.txt"">download pdf</a>";
 			persister.Save(root);

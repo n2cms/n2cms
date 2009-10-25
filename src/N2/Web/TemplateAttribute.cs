@@ -55,6 +55,9 @@ namespace N2.Web
 		/// <returns>The matching template data if found, otherwise null.</returns>
 		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
+			if(remainingUrl == null)
+				return null;
+
 			string extension = item.Extension;
 			if(!string.IsNullOrEmpty(extension) && remainingUrl.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase))
 			{

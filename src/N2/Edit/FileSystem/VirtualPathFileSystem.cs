@@ -41,7 +41,7 @@ namespace N2.Edit.FileSystem
 			f.VirtualPath = file.VirtualPath;
 
 			FileInfo fi = GetFileInfo(file.VirtualPath);
-			if(fi != null)
+			if(fi != null && fi.Exists)
 			{
 				f.Created = fi.CreationTime;
 				f.Updated = fi.LastWriteTime;

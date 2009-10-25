@@ -97,6 +97,23 @@ namespace N2.Extensions.Tests.Linq
 			Assert.That(!items.Contains(item));
 		}
 
+		//Expr: value(NHibernate.Linq.Query`1[N2.Extensions.Tests.Linq.LinqItem]).Where(ci => ci.Details.Values.OfType().Any(cd => ((cd.Name = "StringProperty2") && cd.StringValue.StartsWith("another"))))
+		[Test]
+		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_StartsWith()
+		{
+			var query = engine.QueryItems<LinqItem>()
+				.Where(ci => ci.Details.Values.OfType<StringDetail>()
+					.Any(cd => cd.Name == "StringProperty2" && cd.StringValue.StartsWith("another")));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(items.Contains(root));
+			Assert.That(!items.Contains(item));
+		}
+
+
 		[Test]
 		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_OnTwoDetails()
 		{
