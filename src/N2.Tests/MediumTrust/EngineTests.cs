@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using N2.Engine;
+using NUnit.Framework;
 using N2.Engine.MediumTrust;
 using N2.Persistence;
 
@@ -7,12 +8,12 @@ namespace N2.Tests.MediumTrust
 	[TestFixture]
 	public class EngineTests
 	{
-		MediumTrustEngine engine;
+		IEngine engine;
 
 		[SetUp]
 		public void SetUp()
 		{
-			engine = new MediumTrustEngine();
+			engine = new ContentEngine(new MediumTrustServiceContainer());
 		}
 
 		[Test]

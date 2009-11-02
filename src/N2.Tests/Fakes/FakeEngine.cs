@@ -50,6 +50,11 @@ namespace N2.Tests.Fakes
 			get { throw new NotImplementedException(); }
 		}
 
+		public IServiceContainer Container
+		{
+			get { throw new NotImplementedException(); }
+		}
+
 		public void Initialize()
 		{
 			throw new NotImplementedException();

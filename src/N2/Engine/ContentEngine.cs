@@ -12,14 +12,7 @@
 
 using System;
 using System.Configuration;
-using Castle.Core;
-using Castle.Core.Resource;
-using Castle.Facilities.Startable;
-using Castle.MicroKernel;
-using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using Castle.Windsor.Configuration.Interpreters;
-using Castle.Windsor.Installer;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Edit;
@@ -32,30 +25,19 @@ using N2.Web;
 namespace N2.Engine
 {
 	/// <summary>
-	/// This principal gateway to N2 serivecs. The class is responsible for 
+	/// This principal gateway to N2 services. The class is responsible for 
 	/// initializing and providing access to the services that compose N2.
 	/// </summary>
 	public class ContentEngine : IEngine
 	{
-		private IWindsorContainer container;
+		private readonly IServiceContainer container;
 
 		/// <summary>
 		/// Creates an instance of the content engine using known configuration sections.
 		/// </summary>
 		public ContentEngine()
+			: this(new WindsorServiceContainer())
 		{
-			container = new WindsorContainer();
-
-			HostSection hostConfig = AddComponentInstance(ConfigurationManager.GetSection("n2/host") as HostSection);
-			EngineSection engineConfig = AddComponentInstance(ConfigurationManager.GetSection("n2/engine") as EngineSection);
-			AddComponentInstance(ConfigurationManager.GetSection("n2/database") as DatabaseSection);
-			AddComponentInstance(ConfigurationManager.GetSection("n2/edit") as EditSection);
-			AddComponentInstance(ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection);
-
-			InitializeEnvironment(hostConfig, engineConfig);
-			IResource resource = DetermineResource(engineConfig, ConfigurationManager.GetSection("castle") != null);
-			ProcessResource(resource);
-			InstallComponents();
 		}
 
 		public ContentEngine(EventBroker broker)
@@ -64,11 +46,30 @@ namespace N2.Engine
 			AddComponentInstance(broker);
 		}
 
-		/// <summary>Sets the windsdor container to the given container.</summary>
+		/// <summary>Sets the windsor container to the given container.</summary>
 		/// <param name="container">An previously prepared windsor container.</param>
 		public ContentEngine(IWindsorContainer container)
+			: this(new WindsorServiceContainer(container))
+		{
+		}
+
+		/// <summary>Sets the current container to the given container.</summary>
+		/// <param name="container">An previously prepared service container.</param>
+		public ContentEngine(IServiceContainer container)
+			:this(container, EventBroker.Instance)
+		{
+		}
+
+		/// <summary>Sets the current container to the given container.</summary>
+		/// <param name="container">An previously prepared service container.</param>
+		/// <param name="broker"></param>
+		public ContentEngine(IServiceContainer container, EventBroker broker)
 		{
 			this.container = container;
+
+			AddComponentInstance(broker);
+
+			Configure();
 		}
 
 		/// <summary>Tries to determine runtime parameters from the given configuration.</summary>
@@ -80,7 +81,7 @@ namespace N2.Engine
 			if (string.IsNullOrEmpty(sectionGroup))
 				throw new ArgumentException("Must be non-empty and match a section group in the configuration file.", "sectionGroup");
 
-			container = new WindsorContainer();
+			container = new WindsorServiceContainer();
 
 			RegisterConfigurationSections(config, sectionGroup);
 			HostSection hostConfig = AddComponentInstance(config.GetSection(sectionGroup + "/host") as HostSection);
@@ -89,13 +90,24 @@ namespace N2.Engine
 			AddComponentInstance(config.GetSection(sectionGroup + "/edit") as EditSection);
 			AddComponentInstance(config.GetSection("connectionStrings") as ConnectionStringsSection);
 			InitializeEnvironment(hostConfig, engineConfig);
-			IResource resource = DetermineResource(engineConfig, config.GetSection("castle") != null);
-			ProcessResource(resource);
-			InstallComponents();
+
+			container.Configure(this, engineConfig);
 			AddComponentInstance(broker);
 		}
 
-		private void InitializeEnvironment(HostSection hostConfig, EngineSection engineConfig)
+		protected void Configure()
+		{
+			HostSection hostConfig = AddComponentInstance(ConfigurationManager.GetSection("n2/host") as HostSection);
+			EngineSection engineConfig = AddComponentInstance(ConfigurationManager.GetSection("n2/engine") as EngineSection);
+			AddComponentInstance(ConfigurationManager.GetSection("n2/database") as DatabaseSection);
+			AddComponentInstance(ConfigurationManager.GetSection("n2/edit") as EditSection);
+			AddComponentInstance(ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection);
+
+			InitializeEnvironment(hostConfig, engineConfig);
+			container.Configure(this, engineConfig);
+		}
+
+		protected void InitializeEnvironment(HostSection hostConfig, EngineSection engineConfig)
 		{
 			if (hostConfig != null && engineConfig != null)
 			{
@@ -104,21 +116,20 @@ namespace N2.Engine
 				RegisterConfiguredComponents(engineConfig);
 
 				if (!hostConfig.Web.IsWeb)
-					container.Kernel.AddComponentInstance("n2.webContext.notWeb", typeof (IWebContext), new ThreadContext());
+					container.AddComponentInstance("n2.webContext.notWeb", typeof (IWebContext), new ThreadContext());
 
 				if (hostConfig.Web.Urls.EnableCaching)
-					container.Register(
-						Component.For<IUrlParser>().Named("n2.web.cachingUrlParser").ImplementedBy<CachingUrlParserDecorator>());
-				container.Register(DetermineUrlParser(hostConfig));
+					container.AddComponent("n2.web.cachingUrlParser", typeof (IUrlParser), typeof (CachingUrlParserDecorator));
+				DetermineUrlParser(hostConfig);
 			}
 		}
 
-		private ComponentRegistration<IUrlParser> DetermineUrlParser(HostSection hostConfig)
+		private void DetermineUrlParser(HostSection hostConfig)
 		{
 			if (hostConfig.MultipleSites)
-				return Component.For<IUrlParser>().Named("n2.multipleSitesParser").ImplementedBy<MultipleSitesParser>();
-
-			return Component.For<IUrlParser>().Named("n2.urlParser").ImplementedBy<UrlParser>();
+				container.AddComponent("n2.multipleSitesParser", typeof(IUrlParser), typeof(MultipleSitesParser));
+			else
+				container.AddComponent("n2.urlParser", typeof(IUrlParser), typeof(UrlParser));
 		}
 
 		private void RegisterConfiguredComponents(EngineSection engineConfig)
@@ -134,56 +145,55 @@ namespace N2.Engine
 
 		#region Properties
 
-		public IWindsorContainer Container
+		public IServiceContainer Container
 		{
 			get { return container; }
-			set { container = value; }
 		}
 
 		/// <summary>Gets N2 persistence manager used for database persistence of content.</summary>
 		public IPersister Persister
 		{
-			get { return container.Resolve<IPersister>(); }
+			get { return Resolve<IPersister>(); }
 		}
 
 		/// <summary>Gets N2 definition manager</summary>
 		public IDefinitionManager Definitions
 		{
-			get { return container.Resolve<IDefinitionManager>(); }
+			get { return Resolve<IDefinitionManager>(); }
 		}
 
 		/// <summary>Gets N2 integrity manager </summary>
 		public IIntegrityManager IntegrityManager
 		{
-			get { return container.Resolve<IIntegrityManager>(); }
+			get { return Resolve<IIntegrityManager>(); }
 		}
 
 		/// <summary>Gets N2 security manager responsible of item access checks.</summary>
 		public ISecurityManager SecurityManager
 		{
-			get { return container.Resolve<ISecurityManager>(); }
+			get { return Resolve<ISecurityManager>(); }
 		}
 
 		/// <summary>Gets the url parser responsible of mapping urls to items and back again.</summary>
 		public IUrlParser UrlParser
 		{
-			get { return container.Resolve<IUrlParser>(); }
+			get { return Resolve<IUrlParser>(); }
 		}
 
 		/// <summary>Gets the edit manager responsible for plugins in edit mode.</summary>
 		public IEditManager EditManager
 		{
-			get { return container.Resolve<IEditManager>(); }
+			get { return Resolve<IEditManager>(); }
 		}
 
 		public IWebContext RequestContext
 		{
-			get { return container.Resolve<IWebContext>(); }
+			get { return Resolve<IWebContext>(); }
 		}
 
 		public IHost Host
 		{
-			get { return container.Resolve<IHost>(); }
+			get { return Resolve<IHost>(); }
 		}
 
 		#endregion
@@ -194,37 +204,11 @@ namespace N2.Engine
 		{
 			AddComponentInstance<IEngine>(this);
 
-			var invoker = Container.Resolve<IPluginBootstrapper>();
+			var invoker = Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
 
-			StartComponents(container.Kernel);
-			container.Kernel.ComponentCreated += Kernel_ComponentCreated;
+			container.StartComponents();
 		}
-
-		/// <summary>Either reads the castle configuration from the castle configuration section or uses a default configuration compiled into the n2 assembly.</summary>
-		/// <param name="engineConfig">The n2 engine section from the configuration file.</param>
-		/// <param name="hasCastleSection">Load the container using default castle configuration.</param>
-		/// <returns>A castle IResource used to build the inversion of control container.</returns>
-		protected IResource DetermineResource(EngineSection engineConfig, bool hasCastleSection)
-		{
-			if (engineConfig != null)
-			{
-				if (!string.IsNullOrEmpty(engineConfig.CastleSection))
-					return new ConfigResource(engineConfig.CastleSection);
-				else
-					return new AssemblyResource(engineConfig.CastleConfiguration);
-			}
-			else if (hasCastleSection)
-			{
-				return new ConfigResource();
-			}
-			else
-			{
-				throw new ConfigurationErrorsException(
-					"Couldn't find a suitable configuration section for N2 CMS. Either add an n2/engine or a castle configuartion section to web.config. Note that this section may have changed from previous versions. Please verify that the configuartion is properly updated.");
-			}
-		}
-
 
 		/// <summary>Registers configuration sections into the container. These may be used as input for various components.</summary>
 		/// <param name="config">The congiuration file.</param>
@@ -233,68 +217,15 @@ namespace N2.Engine
 		{
 			object nhConfiguration = config.GetSection("hibernate-configuration");
 			if (nhConfiguration != null)
-				container.Kernel.AddComponentInstance("hibernate-configuration", nhConfiguration);
-			var n2group = config.GetSectionGroup(sectionGroup) as SectionGroup;
-			if (n2group != null)
+				container.AddComponentInstance("hibernate-configuration", nhConfiguration.GetType(), nhConfiguration);
+			var n2Group = config.GetSectionGroup(sectionGroup) as SectionGroup;
+			if (n2Group != null)
 			{
-				foreach (ConfigurationSection section in n2group.Sections)
+				foreach (ConfigurationSection section in n2Group.Sections)
 				{
-					container.Kernel.AddComponentInstance(section.SectionInformation.Name, section);
+					container.AddComponentInstance(section.SectionInformation.Name, section.GetType(), section);
 				}
 			}
-		}
-
-		/// <summary>Processes the castle resource and build the castle configuration store.</summary>
-		/// <param name="resource">The resource to use. This may be derived from the castle section in web.config or a default xml compiled into the assembly.</param>
-		protected void ProcessResource(IResource resource)
-		{
-			var interpreter = new XmlInterpreter(resource);
-			interpreter.ProcessResource(resource, container.Kernel.ConfigurationStore);
-		}
-
-		/// <summary>Sets up components in the inversion of control container.</summary>
-		protected void InstallComponents()
-		{
-			var installer = new DefaultComponentInstaller();
-			installer.SetUp(container, container.Kernel.ConfigurationStore);
-		}
-
-		private void Kernel_ComponentCreated(ComponentModel model, object instance)
-		{
-			if (instance is IStartable)
-				return;
-
-			var startable = instance as IAutoStart;
-			if (startable != null)
-			{
-				startable.Start();
-			}
-		}
-
-		private static void StartComponents(IKernel kernel)
-		{
-			var naming = kernel.GetSubSystem(SubSystemConstants.NamingKey) as INamingSubSystem;
-			foreach (GraphNode node in kernel.GraphNodes)
-			{
-				var model = node as ComponentModel;
-				if (model != null)
-				{
-					if (typeof (IStartable).IsAssignableFrom(model.Implementation) ||
-					    typeof (IAutoStart).IsAssignableFrom(model.Implementation))
-					{
-						IHandler h = naming.GetHandler(model.Name);
-						if (h.CurrentState == HandlerState.Valid)
-						{
-							object component = kernel[model.Name];
-							if (component is IStartable)
-								(component as IStartable).Start();
-							else if (component is IAutoStart)
-								(component as IAutoStart).Start();
-						}
-					}
-				}
-			}
-			kernel.AddFacility<StartableFacility>();
 		}
 
 		#endregion
@@ -304,7 +235,7 @@ namespace N2.Engine
 		/// <summary>Resolves a service configured in the factory.</summary>
 		public T Resolve<T>() where T : class
 		{
-			return Container.Resolve<T>();
+			return (T) Container.Resolve(typeof (T));
 		}
 
 		public object Resolve(Type serviceType)
@@ -325,7 +256,7 @@ namespace N2.Engine
 		/// <param name="serviceType">The type of component to register.</param>
 		public virtual void AddComponent(string key, Type serviceType)
 		{
-			Container.AddComponent(key, serviceType);
+			AddComponent(key, serviceType, serviceType);
 		}
 
 		/// <summary>Registers a component in the IoC container.</summary>
@@ -343,24 +274,17 @@ namespace N2.Engine
 		/// <param name="instance">The service instance to add.</param>
 		public void AddComponentInstance(string key, Type serviceType, object instance)
 		{
-			Container.Kernel.AddComponentInstance(key, serviceType, instance);
+			Container.AddComponentInstance(key, serviceType, instance);
 		}
 
 		public void AddComponentLifeStyle(string key, Type classType, ComponentLifeStyle lifeStyle)
 		{
-			LifestyleType lifeStyleType = lifeStyle == ComponentLifeStyle.Singleton
-			                              	? LifestyleType.Singleton
-			                              	: LifestyleType.Transient;
-
-			Container.AddComponentLifeStyle(key, classType, lifeStyleType);
+			Container.AddComponentLifeStyle(key, classType, lifeStyle);
 		}
 
 		public void AddFacility(string key, object facility)
 		{
-			if (facility is IFacility)
-				Container.AddFacility(key, facility as IFacility);
-			else
-				throw new ArgumentException("Only classes implementing Castle.MicroKernel.IFacilty are supported.");
+			Container.AddFacility(key, facility);
 		}
 
 		public void Release(object instance)
@@ -374,7 +298,7 @@ namespace N2.Engine
 			{
 				AddComponentInstance(typeof (T).Name, typeof (T), instance);
 			}
-			return instance as T;
+			return instance;
 		}
 
 		#endregion

@@ -1,5 +1,4 @@
 using System;
-using System.Web;
 using N2.Definitions;
 using N2.Edit;
 using N2.Integrity;
@@ -41,7 +40,9 @@ namespace N2.Engine
         /// <summary>The base of the web site.</summary>
         IHost Host { get; }
 
-        /// <summary>
+		IServiceContainer Container { get; }
+
+		/// <summary>
         /// Initialize components and plugins in the N2 CMS environment.
         /// </summary>
 		void Initialize();

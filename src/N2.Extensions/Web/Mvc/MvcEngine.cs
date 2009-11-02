@@ -24,11 +24,27 @@ namespace N2.Web.Mvc
 			{
 				engine = new ContentEngine();
 			}
-			catch(SecurityException)
+			catch (SecurityException)
 			{
 				engine = new MediumTrustEngine();
 			}
 
+			return Initialize(engine);
+		}
+
+		/// <summary>
+		/// Creates an instance of the correct engine for the current environment (regular or medium trust) & registers additional components for the MVC functionality
+		/// </summary>
+		/// <returns></returns>
+		public static IEngine Create(IServiceContainer container)
+		{
+			IEngine engine = new ContentEngine(container);
+
+			return Initialize(engine);
+		}
+
+		private static IEngine Initialize(IEngine engine)
+		{
 			Context.Initialize(engine);
 
 			engine.Initialize();
