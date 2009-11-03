@@ -1,4 +1,5 @@
-﻿- added editableurl relative to option
+﻿- fixed #25076: n2 doesn't compile under vs2010 beta 2
+- added editableurl relative to option
 - introduced AncestralTrail which stores the path leading to an item
 	- finder support for ancestral trail
 - introduced an IWorker that starts async work
@@ -9,7 +10,7 @@
 	- items.WhereDetail(i => i.IntegerDetail > 0)
 	- items.WhereDetail(i => i.StringProperty == "a string" && i.IntProperty > 200);
 	- items.WhereDetail(i => i.StringProperty == "no string" || i.IntProperty == 123);
-
+	- items.WhereDetail(i => i.StringProperty.StartsWith("something"))
 - NH 2.1
 - picked up Martijn Bolands work to enable castle ioc in medium trust (http://blogs.taiga.nl/martijn/2009/06/24/new-adventures-under-medium-trust/)
 - max number of versions (configuration change: <edit enableVersioning="false"> -> <edit><versions enabled="false">)
