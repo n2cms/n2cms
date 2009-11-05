@@ -18,6 +18,12 @@ namespace N2.Tests.Engine
 		}
 
 		[Test]
+		public void CanCreateWithEventBroker()
+		{
+			engine = new ContentEngine(EventBroker.Instance);
+		}
+
+		[Test]
 		public void CanAssignRootAndStartPageID()
 		{
 			var host = engine.Resolve<IHost>();

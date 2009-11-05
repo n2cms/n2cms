@@ -41,9 +41,8 @@ namespace N2.Engine
 		}
 
 		public ContentEngine(EventBroker broker)
-			: this()
+			: this(new WindsorServiceContainer(), broker)
 		{
-			AddComponentInstance(broker);
 		}
 
 		/// <summary>Sets the windsor container to the given container.</summary>
