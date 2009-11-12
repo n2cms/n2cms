@@ -1,4 +1,5 @@
-﻿- filtering of editable children by property generic type
+﻿- updated NHibernate to 2.1.1 GA, NH Linq 2.1.1
+- filtering of editable children by property generic type
 - fixed #25076: n2 doesn't compile under vs2010 beta 2
 - added editableurl relative to option
 - introduced AncestralTrail which stores the path leading to an item
