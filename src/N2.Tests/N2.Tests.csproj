@@ -223,6 +223,7 @@
     <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
     <Compile Include="Engine\ContentEngineTests.cs" />
     <Compile Include="Engine\SingletonTests.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Fakes\FakeEngine.cs" />
     <Compile Include="Fakes\FakeErrorHandler.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
@@ -246,6 +247,7 @@
     <Compile Include="Persistence\Definitions\NonVirtualItem.cs" />
     <Compile Include="Persistence\FindTests.cs" />
     <Compile Include="ExceptionAssert.cs" />
+    <Compile Include="Persistence\NH\MappingGeneratorTests.cs" />
     <Compile Include="Persistence\NH\PersisterIntegrityTests.cs" />
     <Compile Include="Persistence\NH\PersisterTestsBase.cs" />
     <Compile Include="Persistence\NH\TrailTrackerTests.cs" />

@@ -18,6 +18,8 @@ namespace N2.Persistence.NH
 	/// </summary>
 	public class ConfigurationBuilder : IConfigurationBuilder
 	{
+        private ClassMappingGenerator generator;
+
         bool tryLocatingHbmResources = false;
 		readonly IDefinitionManager definitions;
 		IDictionary<string, string> properties = new Dictionary<string, string>();
@@ -26,23 +28,16 @@ namespace N2.Persistence.NH
 		string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
 		string tablePrefix = "n2";
 		int stringLength = 1073741823;
-        string mappingFormat = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">
-{0}
-</hibernate-mapping>
-";
-        private string classFormat = @"<subclass name=""{0}"" extends=""{1}"" discriminator-value=""{2}"" lazy=""false""/>";
+        string mappingStartTag = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">";
+        string mappingEndTag = "</hibernate-mapping>";
 
-		[Obsolete("Nay", true)]
-		public ConfigurationBuilder(IDefinitionManager definitions)
-		{
-			this.definitions = definitions;
-		}
 
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
 		public ConfigurationBuilder(IDefinitionManager definitions, DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			this.definitions = definitions;
+            generator = new ClassMappingGenerator(definitions);
 
 			if (config == null) config = new DatabaseSection();
 
@@ -281,10 +276,10 @@ namespace N2.Persistence.NH
 		protected virtual void GenerateMappings(NHibernate.Cfg.Configuration cfg)
 		{
             Debug.Write("Adding");
-            StringBuilder mappings = new StringBuilder();
+            StringBuilder mappings = new StringBuilder(mappingStartTag);
             foreach (Type t in EnumerateDefinedTypes())
             {
-				if(IsUnsuiteableForMapping(t))
+                if (GeneratorHelper.IsUnsuiteableForMapping(t))
 					continue;
             	
                 if (!TryLocatingHbmResources)
@@ -309,14 +304,9 @@ namespace N2.Persistence.NH
 
                 Debug.Write(" " + t.Name);
             }
-			Debug.WriteLine("");
-            cfg.AddXml(string.Format(mappingFormat, mappings));
+            mappings.Append(mappingEndTag);
+            cfg.AddXml(FormatMapping(mappings.ToString()));
 		}
-
-        private static string GetName(Type t)
-        {
-            return t.FullName + ", " + t.Assembly.FullName.Split(',')[0];
-        }
 
 		/// <summary>Enumerates base type chain of the supplied type.</summary>
 		/// <param name="t">The type whose base types will be enumerated.</param>
@@ -375,36 +365,8 @@ namespace N2.Persistence.NH
 		/// <param name="itemType">The type to to generate a subclassed NHibernate hbm xml for.</param>
 		protected virtual void AddGeneratedClassMapping(StringBuilder mappings, Type itemType)
 		{
-			string typeName = GetName(itemType);
-			string discriminator = GetDiscriminator(itemType);
-			string parentName = GetName(GetFirstSuitableBaseType(itemType.BaseType));
-
-			mappings.AppendFormat(classFormat, typeName, parentName, discriminator);
-		}
-
-		private Type GetFirstSuitableBaseType(Type itemType)
-		{
-			if(itemType == typeof(ContentItem))
-				return itemType;
-			if (IsUnsuiteableForMapping(itemType))
-				return GetFirstSuitableBaseType(itemType.BaseType);
-			
-			return itemType;
-		}
-
-		bool IsUnsuiteableForMapping(Type t)
-		{
-			return t.IsAbstract || t.IsGenericType || string.IsNullOrEmpty(t.FullName);
-		}
-
-		private string GetDiscriminator(Type itemType)
-		{
-			ItemDefinition definition = definitions.GetDefinition(itemType);
-			if (definition != null)
-				return definition.Discriminator;
-			else
-				return itemType.Name;
-		}
+            mappings.Append(generator.GetMapping(itemType));
+        }
 
 		#endregion
 	}

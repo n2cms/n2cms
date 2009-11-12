@@ -10,6 +10,7 @@ using N2.Persistence.NH;
 using N2.Persistence.NH.Finder;
 using System.Configuration;
 using N2.Configuration;
+using System;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -25,22 +26,27 @@ namespace N2.Tests.Persistence.NH
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
 		{
-			ITypeFinder typeFinder = new Fakes.FakeTypeFinder(typeof (Definitions.PersistableItem1).Assembly, typeof (Definitions.PersistableItem1));
-
-			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
-			definitions = new DefinitionManager(definitionBuilder, null);
-			DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
-			ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
-			ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, config, connectionStrings);
-
-			interceptor = new NotifyingInterceptor();
-			FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
-			sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), interceptor, context);
-
-			finder = new ItemFinder(sessionProvider, definitions);
-
-			schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
+            SetUpEngineWithTypes(typeof(Definitions.PersistableItem1));
 		}
+
+        protected void SetUpEngineWithTypes(params Type[] itemTypes)
+        {
+            ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
+
+            DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
+            definitions = new DefinitionManager(definitionBuilder, null);
+            DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
+            ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, config, connectionStrings);
+
+            interceptor = new NotifyingInterceptor();
+            FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
+            sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), interceptor, context);
+
+            finder = new ItemFinder(sessionProvider, definitions);
+
+            schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
+        }
 
 		[SetUp]
 		public override void SetUp()
