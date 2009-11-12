@@ -121,20 +121,13 @@ namespace N2.Security
 
 		public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords)
 		{
-			MembershipUserCollection muc = new MembershipUserCollection();
-			Items.User u = Bridge.GetUser(usernameToMatch);
-			if (u == null)
-			{
-				totalRecords = 0;
-			}
-			else
-			{
-				totalRecords = 1;
-				if (pageIndex == 0 && pageSize > 0)
-				{
-					muc.Add(u.GetMembershipUser(Name));
-				}
-			}
+			IList<Items.User> users = Bridge.GetUsers(usernameToMatch, pageIndex*pageSize, pageSize);
+            totalRecords = users.Count;
+
+            MembershipUserCollection muc = new MembershipUserCollection();
+            foreach (var user in users)
+                muc.Add(user.GetMembershipUser(Name));
+
 			return muc;
 		}
 

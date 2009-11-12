@@ -1,6 +1,8 @@
 using System.Web.UI;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using System.Reflection;
+using System;
 
 namespace N2.Details
 {
@@ -58,6 +60,20 @@ namespace N2.Details
 			ItemEditorList listEditor = (ItemEditorList)editor;
 			listEditor.ParentItem = item;
 			listEditor.ZoneName = ZoneName;
+
+            // filtering of children by property generic type
+            PropertyInfo info = item.GetType().GetProperty(Name);
+            if (info != null)
+            {
+                foreach (Type argument in info.PropertyType.GetGenericArguments())
+                {
+                    if (typeof(ContentItem).IsAssignableFrom(argument))
+                    {
+                        listEditor.MinimumType = argument;
+                        break;
+                    }
+                }
+            }
 		}
 
 		public override Control AddTo(Control container)

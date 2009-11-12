@@ -6,6 +6,7 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Configuration;
 using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace N2.Security
 {
@@ -82,11 +83,25 @@ namespace N2.Security
 
 		public virtual Items.User GetUser(string username)
 		{
-			Items.UserList users = GetUserContainer(false);
-			if(users == null)
+            IList<Items.User> users = GetUsers(username, 0, 1);
+			if(users.Count == 0)
 				return null;
-			return users.GetChild(username) as Items.User;
-		}
+            return users[0];
+        }
+
+        public virtual IList<Items.User> GetUsers(string username, int firstResult, int maxResults)
+        {
+            Items.UserList users = GetUserContainer(false);
+            if (users == null)
+                return new List<Items.User>();
+
+            return finder.Where.Parent.Eq(users)
+                .And.Type.Eq(typeof(Items.User))
+                .And.Name.Like(username)
+                .FirstResult(firstResult)
+                .MaxResults(maxResults)
+                .Select<Items.User>();
+        }
 
 		public virtual Items.UserList GetUserContainer(bool create)
 		{

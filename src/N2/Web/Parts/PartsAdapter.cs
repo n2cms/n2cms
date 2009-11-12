@@ -5,6 +5,7 @@ using N2.Definitions;
 using System.Security.Principal;
 using N2.Web.UI;
 using System.Web.UI;
+using System;
 
 namespace N2.Web.Parts
 {
@@ -42,7 +43,7 @@ namespace N2.Web.Parts
 					yield return childDefinition;
 				}
 			}
-		}
+        }
 
 		/// <summary>Adds a content item part to a containing control hierarchy (typically a zone control).</summary>
 		/// <param name="item">The item to add a part.</param>

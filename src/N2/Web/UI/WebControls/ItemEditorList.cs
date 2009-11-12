@@ -4,6 +4,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit;
+using N2.Web.Parts;
+using N2.Engine;
+using System.ComponentModel;
 
 [assembly: WebResource("N2.Resources.add.gif", "image/gif")]
 [assembly: WebResource("N2.Resources.bin.gif", "image/gif")]
@@ -17,14 +20,16 @@ namespace N2.Web.UI.WebControls
 	{
 		#region Fields
 
-		private DropDownList types;
-		private PlaceHolder itemEditorsContainer;
-		private ContentItem parentItem;
-		private List<string> addedTypes = new List<string>();
-		private List<ItemEditor> itemEditors = new List<ItemEditor>();
-		private List<int> deletedIndexes = new List<int>();
-		private int itemEditorIndex = 0;
-
+        DropDownList types = new DropDownList();
+		PlaceHolder itemEditorsContainer;
+		ContentItem parentItem;
+		List<string> addedTypes = new List<string>();
+		List<ItemEditor> itemEditors = new List<ItemEditor>();
+		List<int> deletedIndexes = new List<int>();
+		int itemEditorIndex = 0;
+        IDefinitionManager definitions;
+        PartsAdapter partsAdapter;
+        Type minimumType = typeof(ContentItem);
 		#endregion
 
 		#region Constructor
@@ -62,7 +67,14 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return (string) (ViewState["ZoneName"] ?? ""); }
 			set { ViewState["ZoneName"] = value; }
-		}
+        }
+
+        /// <summary>The minimum type to filter children by.</summary>
+        public Type MinimumType
+        {
+            get { return minimumType; }
+            set { minimumType = value; }
+        }
 
 		public IList<string> AddedTypes
 		{
@@ -74,15 +86,32 @@ namespace N2.Web.UI.WebControls
 			get { return deletedIndexes; }
 		}
 
+        protected virtual IEngine Engine
+        {
+            get { return N2.Context.Current; }
+        }
+        
 		public IDefinitionManager Definitions
 		{
-			get { return N2.Context.Definitions; }
+            get { return definitions ?? (definitions = Engine.Definitions); }
 		}
+
+        public PartsAdapter Parts
+        {
+            get { return partsAdapter ?? (partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem.FindPath(PathData.DefaultAction))); }
+            set { partsAdapter = value; }
+        }
 
 		public ItemDefinition CurrentItemDefinition
 		{
 			get { return Definitions.GetDefinition(Type.GetType(ParentItemType)); }
-		}
+        }
+
+        [NotifyParentProperty(true)]
+        public DropDownList Types
+        {
+            get { return types; }
+        }
 
 		#endregion
 
@@ -114,8 +143,13 @@ namespace N2.Web.UI.WebControls
 				CreateItemEditor(item);
 			}
 
-			foreach (ItemDefinition definition in Definitions.GetAllowedChildren(CurrentItemDefinition, ZoneName, Page.User))
+			foreach (ItemDefinition definition in Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User))
 			{
+                if (!minimumType.IsAssignableFrom(definition.ItemType))
+                {
+                    continue;
+                }
+
 				ListItem li = new ListItem(definition.Title, string.Format("{0},{1}", definition.ItemType.FullName, definition.ItemType.Assembly.FullName));
 				types.Items.Add(li);
 			}
@@ -145,14 +179,13 @@ namespace N2.Web.UI.WebControls
 
 		private ContentItem CreateItem(Type itemType)
 		{
-			ContentItem item = N2.Context.Definitions.CreateInstance(itemType, ParentItem);
+			ContentItem item = Engine.Definitions.CreateInstance(itemType, ParentItem);
 			item.ZoneName = ZoneName;
 			return item;
 		}
 
 		private void InitNewItemDropDown()
 		{
-			types = new DropDownList();
 			Controls.Add(types);
 
 			ImageButton b = new ImageButton();
@@ -250,7 +283,7 @@ namespace N2.Web.UI.WebControls
 			if(itemIndex < 0)
 				return;
 
-			N2.Context.Current.Resolve<ITreeSorter>().MoveTo(item, NodePosition.Before, item.Parent.Children[itemIndex]);
+            Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.Before, item.Parent.Children[itemIndex]);
 
 			Context.Response.Redirect(Context.Request.Url.PathAndQuery);
 		}
@@ -267,7 +300,7 @@ namespace N2.Web.UI.WebControls
 			if (itemIndex == item.Parent.Children.Count)
 				return;
 
-			N2.Context.Current.Resolve<ITreeSorter>().MoveTo(item, NodePosition.After, item.Parent.Children[itemIndex]);
+            Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.After, item.Parent.Children[itemIndex]);
 
 			Context.Response.Redirect(Context.Request.Url.PathAndQuery);
 		}
@@ -286,7 +319,7 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddToContainer(Control container, ItemEditor itemEditor, ContentItem item)
 		{
 			FieldSet fs = new FieldSet();
-			fs.Legend = N2.Context.Definitions.GetDefinition(item.GetType()).Title;
+            fs.Legend = Engine.Definitions.GetDefinition(item.GetType()).Title;
 			container.Controls.Add(fs);
 			fs.Controls.Add(itemEditor);
 		}
@@ -297,8 +330,8 @@ namespace N2.Web.UI.WebControls
 		{
 			get
 			{
-				return parentItem 
-					?? (parentItem = N2.Context.Persister.Get(ParentItemID));
+				return parentItem
+                    ?? (parentItem = Engine.Persister.Get(ParentItemID));
 			}
 			set
 			{

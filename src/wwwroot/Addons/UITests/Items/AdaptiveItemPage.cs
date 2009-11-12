@@ -4,6 +4,7 @@ using N2.Details;
 using N2.Edit.Trash;
 using N2.Templates.Items;
 using N2.Collections;
+using System.Collections.Generic;
 
 namespace N2.Addons.UITests.Items
 {
@@ -37,7 +38,12 @@ namespace N2.Addons.UITests.Items
 		public virtual ItemList NoneItems
 		{
 			get { return GetChildren("NoneItems"); }
-		}
+        }
 
+        [EditableChildren("None items", "Any", 1000)]
+        public virtual IList<UITestContentCreator> UITestItemItems
+        {
+            get { return new ItemList<UITestContentCreator>(GetChildren("Any")); }
+        }
 	}
 }
