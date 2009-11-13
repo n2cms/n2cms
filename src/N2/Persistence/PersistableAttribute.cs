@@ -40,10 +40,9 @@ namespace N2.Persistence
             string typeName = isNullable
                 ? info.PropertyType.GetGenericArguments()[0].Name
                 : info.PropertyType.Name;
-            bool notNull = Required || (info.PropertyType.IsValueType && !isNullable);
             string length = Length > 0 ? Length.ToString() : "{StringLength}";
 
-            return string.Format(format, info.Name, info.Name, typeName, notNull.ToString().ToLower(), length);
+            return string.Format(format, info.Name, info.Name, typeName, Required.ToString().ToLower(), length);
         }
     }
 }
