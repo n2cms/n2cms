@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using N2.Persistence.Finder;
 
 namespace N2.Collections
 {
@@ -9,7 +9,8 @@ namespace N2.Collections
 	/// </summary>
 	public class ParentFilter : ItemFilter
 	{
-		int parentID;
+		ContentItem parent;
+		private int? parentID;
 
 		public ParentFilter(int parentID)
 		{
@@ -21,11 +22,18 @@ namespace N2.Collections
 			if (parent == null)
 				throw new ArgumentNullException("parent");
 
+			this.parent = parent;
 			this.parentID = parent.ID;
 		}
 
 		public override bool Match(ContentItem item)
 		{
+			if (parent != null)
+			{
+				return item != parent
+						&& Utility.GetTrail(item).StartsWith(Utility.GetTrail(parent));
+			}
+
 			while ((item = item.Parent) != null)
 			{
 				if (item.ID == parentID)

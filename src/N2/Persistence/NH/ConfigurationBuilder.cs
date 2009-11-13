@@ -27,6 +27,7 @@ namespace N2.Persistence.NH
         IList<string> mappingNames = new List<string>();
 		string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
 		string tablePrefix = "n2";
+		int batchSize = 25;
 		int stringLength = 1073741823;
         string mappingStartTag = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">";
@@ -51,6 +52,7 @@ namespace N2.Persistence.NH
 
             TryLocatingHbmResources = config.TryLocatingHbmResources;
 			tablePrefix = config.TablePrefix;
+			batchSize = config.BatchSize;
 		}
 
         private void SetupMappings(DatabaseSection config)
@@ -213,7 +215,8 @@ namespace N2.Persistence.NH
 		private string FormatMapping(string mappingXml)
 		{
 			return mappingXml.Replace("{TablePrefix}", tablePrefix)
-				.Replace("{StringLength}", stringLength.ToString());
+				.Replace("{StringLength}", stringLength.ToString())
+				.Replace("{BatchSize}", batchSize.ToString());
 		}
 
         protected virtual void AddMappings(NHibernate.Cfg.Configuration cfg)

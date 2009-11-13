@@ -86,13 +86,13 @@
 		
 		
 
-		<bag name="Children" cascade="all" generic="true" inverse="true" order-by="SortOrder" lazy="true">
+		<bag name="Children" cascade="all" generic="true" inverse="true" order-by="SortOrder" lazy="true" batch-size="{BatchSize}">
 			<cache usage="read-write" />
 			<key column="ParentID" />
 			<one-to-many class="N2.ContentItem,N2"/>
 		</bag>
 
-		<map name="Details" inverse="true" cascade="all-delete-orphan" generic="true" where="DetailCollectionID IS NULL" lazy="true">
+		<map name="Details" inverse="true" cascade="all-delete-orphan" generic="true" where="DetailCollectionID IS NULL" lazy="true" batch-size="{BatchSize}">
 			<cache usage="read-write" />
 			<key column="ItemID" />
 			<index column="Name" type="String" />
@@ -106,7 +106,7 @@
 			<one-to-many class="N2.Details.DetailCollection, N2"/>
 		</map>
 
-		<bag name="AuthorizedRoles" inverse="true" cascade="all-delete-orphan" generic="true" fetch="join" lazy="true">
+		<bag name="AuthorizedRoles" inverse="true" cascade="all-delete-orphan" generic="true" fetch="join" lazy="true" batch-size="{BatchSize}">
 			<cache usage="read-write" />
 			<key column="ItemID"/>
 			<one-to-many class="N2.Security.AuthorizedRole, N2"/>

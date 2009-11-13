@@ -247,6 +247,7 @@
     <Compile Include="Persistence\Definitions\NonVirtualItem.cs" />
     <Compile Include="Persistence\FindTests.cs" />
     <Compile Include="ExceptionAssert.cs" />
+    <Compile Include="Persistence\NH\PerformanceTests.cs" />
     <Compile Include="Persistence\NH\MappingGeneratorTests.cs" />
     <Compile Include="Persistence\NH\PersisterIntegrityTests.cs" />
     <Compile Include="Persistence\NH\PersisterTestsBase.cs" />

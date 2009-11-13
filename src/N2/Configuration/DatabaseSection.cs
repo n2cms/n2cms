@@ -55,6 +55,14 @@ namespace N2.Configuration
 			set { base["tablePrefix"] = value; }
 		}
 
+		/// <summary>The prefix used for tables in this site. This can be used to install multiple installations in the same database.</summary>
+		[ConfigurationProperty("batchSize", DefaultValue = "25")]
+		public int BatchSize
+		{
+			get { return (int)base["batchSize"]; }
+			set { base["batchSize"] = value; }
+		}
+
         /// <summary>The database flavour decides which propertes the nhibernate configuration will receive.</summary>
 		[ConfigurationProperty("flavour", DefaultValue = DatabaseFlavour.AutoDetect)]
 		public DatabaseFlavour Flavour
