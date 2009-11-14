@@ -190,6 +190,7 @@
     <Content Include="Addons\UITests\UI\Html_Link.To.aspx" />
     <Content Include="Addons\UITests\UI\Displayable_DataBind.aspx" />
     <Content Include="Addons\UITests\UI\Displayable.aspx" />
+    <Content Include="Addons\UITests\UI\Html_Tree.From.aspx" />
     <Content Include="Addons\UITests\UI\Tabs.aspx" />
     <Content Include="Addons\UITests\UI\ZoneLoading.aspx" />
     <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjax.js" />
