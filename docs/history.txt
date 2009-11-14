@@ -1,4 +1,7 @@
-﻿- added persistable attributes which saves properties in a new column in n2item table
+﻿- added example of Link.To fluent interface
+- added example of Tree.Between fluent interface
+- added example of Tree.From fluent interface
+- added persistable attributes which saves properties in a new column in n2item table
 - updated NHibernate to 2.1.1 GA, NH Linq 2.1.1
 - filtering of editable children by property generic type
 - fixed #25076: n2 doesn't compile under vs2010 beta 2
