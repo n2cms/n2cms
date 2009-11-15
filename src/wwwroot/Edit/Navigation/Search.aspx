@@ -28,8 +28,8 @@
                                     rel='<%# Eval("Path") %>'>
                                     <asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
                                     <%# Eval("Title")%>
+                                    <%# string.IsNullOrEmpty((string)Eval("ZoneName")) ? "" : Eval("ZoneName", " ({0})") %>
                                 </asp:HyperLink>
-                                <%# Eval("ZoneName", " ({0})") %>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                     </Columns>

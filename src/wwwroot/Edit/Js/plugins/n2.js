@@ -144,12 +144,12 @@ var initn2context = function(w) {
         // update frames
         refreshNavigation: function(navigationUrl) {
             if (!this.hasTop()) return;
-            var nav = w.document.getElementById('navigation');
+            var nav = w.document.getElementById("navigationFrame");
             nav.src = navigationUrl;
         },
         refreshPreview: function(previewUrl) {
             if (this.hasTop()) {
-                var previewFrame = w.document.getElementById('preview');
+                var previewFrame = w.document.getElementById("previewFrame");
                 previewFrame.src = previewUrl;
             } else {
                 window.location = previewUrl;
