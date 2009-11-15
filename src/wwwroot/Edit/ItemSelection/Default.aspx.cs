@@ -28,7 +28,7 @@ namespace N2.Edit.ItemSelection
 				hlFiles.NavigateUrl = AppendQueryString("../FileManagement/Default.aspx");
 			}
 			siteTreeView.RootNode = RootNode;
-			siteTreeView.SelectedItem = SelectedItem;
+            siteTreeView.SelectedItem = Selection.SelectedItem;
 			siteTreeView.DataBind();
 
 			foreach (ContentItem item in Find.EnumerateTree(Find.RootItem))

@@ -8,7 +8,7 @@ using System.Security.Principal;
 
 namespace N2.Edit.Security
 {
-	[ToolbarPlugin("", "security", "~/Edit/Security/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/lock.gif", 100, 
+	[ToolbarPlugin("PERM", "security", "~/Edit/Security/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/lock.gif", 100, 
 		AuthorizedRoles = new[]{ "Editors", "Administrators", "Admin" },
 		ToolTip = "allowed roles for selected item", 
 		GlobalResourceClassName = "Toolbar")]
@@ -60,11 +60,11 @@ namespace N2.Edit.Security
 			if(!IsValid)
 				return;
 
-			ApplyRoles(SelectedItem);
+            ApplyRoles(Selection.SelectedItem);
 			InitValues();
 			DataBind();
 
-			base.Refresh(SelectedItem, ToolbarArea.Navigation);
+            base.Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
 		}
 
 		protected void btnSaveRecursive_Command(object sender, CommandEventArgs e)
@@ -73,10 +73,10 @@ namespace N2.Edit.Security
 			if (!IsValid)
 				return;
 
-			ApplyRolesRecursive(SelectedItem);
+            ApplyRolesRecursive(Selection.SelectedItem);
 			DataBind();
 
-			base.Refresh(SelectedItem, ToolbarArea.Navigation);
+            base.Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
 		}
 
 
@@ -104,12 +104,12 @@ namespace N2.Edit.Security
 
 		protected bool IsEveryone(Permission permission)
 		{
-			return DynamicPermissionMap.IsAllRoles(SelectedItem, permission);
+            return DynamicPermissionMap.IsAllRoles(Selection.SelectedItem, permission);
 		}
 
 		protected bool IsRolePermitted(string role, Permission permission)
 		{
-			return IsRolePermitted(SelectedItem, role, permission);
+            return IsRolePermitted(Selection.SelectedItem, role, permission);
 		}
 
 		protected bool IsRolePermitted(ContentItem item, string role, Permission permission)
@@ -125,7 +125,7 @@ namespace N2.Edit.Security
 				return true;
 
 			bool isInRole = User.IsInRole(role);
-			bool isAuthorized = Engine.SecurityManager.IsAuthorized(User, SelectedItem, permission);
+            bool isAuthorized = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, permission);
 			return isInRole && isAuthorized;
 		}
 
@@ -171,7 +171,7 @@ namespace N2.Edit.Security
         	{
         		Permission permission = Permissions[i];
 
-				if(!IsAuthorized(SelectedItem, permission))
+                if (!IsAuthorized(Selection.SelectedItem, permission))
 					continue;
 
 				if(IsDefaultChecked(i))

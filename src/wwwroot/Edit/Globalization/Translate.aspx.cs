@@ -20,24 +20,24 @@ namespace N2.Edit.Globalization
 
             if (language != null)
             {
-                ContentItem translation = gateway.GetTranslation(SelectedItem, language);
+                ContentItem translation = gateway.GetTranslation(Selection.SelectedItem, language);
                 if (translation != null)
                 {
 					// item has a translation
                     string url = Engine.EditManager.GetEditExistingItemUrl(translation);
                     Response.Redirect(url);
                 }
-                else if (SelectedItem.Parent != null)
+                else if (Selection.SelectedItem.Parent != null)
                 {
 					// item not translated, try to create translation
-                    ContentItem parent = SelectedItem.Parent;
+                    ContentItem parent = Selection.SelectedItem.Parent;
                     ContentItem parentTranslation = gateway.GetTranslation(parent, language);
 					if(parentTranslation != null)
 					{
 						// create new translation below translated parent
-						ItemDefinition definition = Engine.Definitions.GetDefinition(SelectedItem.GetType());
+                        ItemDefinition definition = Engine.Definitions.GetDefinition(Selection.SelectedItem.GetType());
 						Url url = Engine.EditManager.GetEditNewPageUrl(parentTranslation, definition, null, CreationPosition.Below);
-						url = url.AppendQuery(LanguageGateway.LanguageKey, SelectedItem[LanguageGateway.LanguageKey] ?? SelectedItem.ID);
+                        url = url.AppendQuery(LanguageGateway.LanguageKey, Selection.SelectedItem[LanguageGateway.LanguageKey] ?? Selection.SelectedItem.ID);
 						Response.Redirect(url);
 					}
 					else

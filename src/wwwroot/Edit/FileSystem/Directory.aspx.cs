@@ -9,11 +9,11 @@ namespace N2.Edit.FileSystem
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Title = SelectedItem.Title;
-        	hlNewFile.NavigateUrl = Engine.EditManager.GetEditNewPageUrl(SelectedItem, Engine.Definitions.GetDefinition(typeof (File)), null, CreationPosition.Below);
+            Title = Selection.SelectedItem.Title;
+            hlNewFile.NavigateUrl = Engine.EditManager.GetEditNewPageUrl(Selection.SelectedItem, Engine.Definitions.GetDefinition(typeof(File)), null, CreationPosition.Below);
 
-			lblDirectories.Text = SelectedItem.GetChildren(new TypeFilter(typeof(Directory))).Count.ToString();
-			lblFiles.Text = SelectedItem.GetChildren(new TypeFilter(typeof(File))).Count.ToString();
+            lblDirectories.Text = Selection.SelectedItem.GetChildren(new TypeFilter(typeof(Directory))).Count.ToString();
+            lblFiles.Text = Selection.SelectedItem.GetChildren(new TypeFilter(typeof(File))).Count.ToString();
         }
     }
 }

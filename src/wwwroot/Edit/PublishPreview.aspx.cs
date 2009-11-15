@@ -12,7 +12,7 @@ namespace N2.Edit
 		{
 			base.OnInit(e);
 
-			ContentItem previewedItem = SelectedItem;
+            ContentItem previewedItem = Selection.SelectedItem;
 
 			if (previewedItem.VersionOf == null)
 			{

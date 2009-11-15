@@ -1,115 +1,83 @@
 /* clearfix */
-.cf:after,
-.editDetail:after,
-.tree li:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
+body.edit .cf:after,
+body.edit .editDetail:after,
+body.edit .tree li:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
 
-.cf,
-.editDetail,
-.tree li { *display: inline-block; }
+body.edit .cf,
+body.edit .editDetail,
+body.edit .tree li { *display: inline-block; }
 
 /* Hides from IE-mac \*/
-* html .cf,
-* html .editDetail,
-* html .tree li { height: 1%; }
+body.edit * html .cf,
+body.edit * html .editDetail,
+body.edit * html .tree li { height: 1%; }
 
-.cf,
-.editDetail,
-.tree li { display: block; }
+body.edit .cf,
+body.edit .editDetail,
+body.edit .tree li { display: block; }
 /* End hide from IE-mac */
 
-html body, td
-{
-	font-family:Arial, Sans-Serif;
-	font-size:12px;
-    color:#333333;
-    overflow:auto;
-    margin:0;
-	padding:0;
-}
-a
-{
-	color:#333333;
-	text-decoration:none;
-}
-a:hover
-{
-	text-decoration:underline;
-}
-img
-{
-	border:none;
-}
-a img
-{
-	vertical-align:middle;
-	text-decoration:none;
-}
-h1
-{
-	margin:4px 0;
-	font-size:1.5em;
-}
-h2
-{
-	border-top:solid 1px silver;
-	margin:5px 0;
-	padding-top:5px;
-	font-size:1.2em;
-	width:95%;
-}
-td
-{
-	vertical-align:top;
-}
+body { padding:0; margin:0; }
+body, td { font-family:Arial, Sans-Serif; font-size:12px; color:#333333; }
+td,th { overflow:auto; vertical-align:top; text-align:left; }
+a { color:#333333; text-decoration:none; }
+a:hover{ text-decoration:underline; }
+    a img{ vertical-align:middle; text-decoration:none; }
+img{ border:none; }
+h1{ margin:4px 0; font-size:1.5em; }
+h2{ border-top:solid 1px silver; margin:5px 0; padding-top:5px; font-size:1.2em; width:95%; }
 
 /* toolbar */
-.toolbar
-{
-    min-width:640px;
-}
-
-
-fieldset
-{
+body.edit fieldset{
 	margin-bottom:10px;
 }
-.toolbar .command img
-{
+.command img{
 	position:relative;
 	top:-2px;
 }
-.toolbar .command[disabled=disabled]
-{
-	color:Gray;
+body.edit .toolbar .command[disabled=disabled]{
+	color:silver;
 	opacity:.5;
 }
 
-.commandOptions 
-{
+body.edit .commandOptions{
 	float:left;
 }
-.toolbar .rightAligned
-{
+body.edit .toolbar .rightAligned{
 	float:right;
 }
 
-/* button/option drop down */
-.commandOptions
+/* DEFUALT THEME */
+.header
 {
-	position:relative;
+    background:#79C; 
+    border-bottom-color:#ddd;
 }
-.commandOptions .optionGroup
+.tools,
+#splitter .vsplitbar
 {
-	padding:0 1px;
-	position:absolute;
-	background-color:#fff;
-	border:solid 1px #DEDAD7;
-	top:-1px;
-	left:-2px;
-	z-index:99;
+    background-color:#ccb; 
+    border-color:#aa9;
 }
-.closed .optionGroup
+.toolbar, 
+.optionGroup,
+.commandOptions .opener,
+.gv th,
+.gv thead td
 {
-	top:-9999px;
-	left:-9999px;
+    background:#ddc;
+	border-color:#ccc;
+}
+.gv .alt td { background-color:#F0F0E0; }
+
+.toolbar .toggled,
+.toolbar .command:hover{
+	border-color:#bbb;
+}
+.toolbar a
+{
+	color:#333;
+}
+.tabs
+{
 }

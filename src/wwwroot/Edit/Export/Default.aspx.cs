@@ -11,7 +11,7 @@ using System.Text;
 
 namespace N2.Edit.Export
 {
-	[ToolbarPlugin("", "exportimport", "~/Edit/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/package_come_and_go.gif", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("EXPORT", "exportimport", "~/Edit/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/package_come_and_go.gif", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage
 	{
 		protected Control tpExport;
@@ -42,7 +42,7 @@ namespace N2.Edit.Export
 		{
 			base.OnPreRender(e);
 
-			exportedItems.CurrentItem = SelectedItem;
+            exportedItems.CurrentItem = Selection.SelectedItem;
 			tpExport.DataBind();
 		}
 
@@ -58,7 +58,7 @@ namespace N2.Edit.Export
             if (chkAttachments.Checked)
                 options |= ExportOptions.ExcludeAttachments;
 
-			Engine.Resolve<Exporter>().Export(SelectedItem, options, Response);
+            Engine.Resolve<Exporter>().Export(Selection.SelectedItem, options, Response);
 		}
 
 		protected void btnVerify_Click(object sender, EventArgs e)
@@ -138,12 +138,12 @@ namespace N2.Edit.Export
 			{
 				if (chkSkipRoot.Checked)
 				{
-					importer.Import(record, SelectedItem, ImportOption.Children);
-					Refresh(SelectedItem, ToolbarArea.Both);
+                    importer.Import(record, Selection.SelectedItem, ImportOption.Children);
+                    Refresh(Selection.SelectedItem, ToolbarArea.Both);
 				}
 				else
 				{
-					importer.Import(record, SelectedItem, ImportOption.All);
+                    importer.Import(record, Selection.SelectedItem, ImportOption.All);
 					Refresh(record.RootItem, ToolbarArea.Both);
 				}
 

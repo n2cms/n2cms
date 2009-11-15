@@ -70,7 +70,7 @@ namespace N2.Web.UI.WebControls
 			writer.Write("<div class='scContent'>");
 
 			base.Render(writer);
-			writer.Write("<span class='close'>&laquo;</span><span class='open'>&raquo;</span>");
+			writer.Write("<a href='javascript:void(0);' class='close' title='Close'>&laquo;</a><a href='javascript:void(0);' class='open' title='Open'>&raquo;</a>");
 			writer.Write("</div></div>");
 		}
 

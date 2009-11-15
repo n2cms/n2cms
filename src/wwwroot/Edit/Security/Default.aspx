@@ -46,6 +46,7 @@
     		}).each(updateColumn);
     	});
     </script>
+<div class="tabPanel">
     <table>
 		<thead>
 			<tr>
@@ -85,4 +86,5 @@
 		</ItemTemplate></asp:Repeater>		
 		</tbody>
     </table>
+</div>
 </asp:Content>

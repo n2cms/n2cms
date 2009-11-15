@@ -8,7 +8,7 @@ using N2.Web;
 
 namespace N2.Edit.Globalization
 {
-	[ToolbarPlugin("", "globalization", "~/Edit/Globalization/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/world.gif", 150, ToolTip = "view translations", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("LANGS", "globalization", "~/Edit/Globalization/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/world.gif", 150, ToolTip = "view translations", GlobalResourceClassName = "Toolbar")]
 	public partial class _Default : EditPage
 	{
 		protected ILanguageGateway gateway;
@@ -27,7 +27,7 @@ namespace N2.Edit.Globalization
             gateway = Engine.Resolve<ILanguageGateway>();
 
             cvGlobalizationDisabled.IsValid = gateway.Enabled;
-            bool isGlobalized = gateway.GetLanguage(SelectedItem) != null;
+            bool isGlobalized = gateway.GetLanguage(Selection.SelectedItem) != null;
             cvOutsideGlobalization.IsValid = isGlobalized;
             btnEnable.Visible = !gateway.Enabled;
 
@@ -45,7 +45,7 @@ namespace N2.Edit.Globalization
 		protected IEnumerable<ContentItem> GetChildren(bool getPages)
 		{
             ItemList items = new ItemList();
-            foreach (ContentItem parent in gateway.FindTranslations(SelectedItem))
+            foreach (ContentItem parent in gateway.FindTranslations(Selection.SelectedItem))
             {
                 foreach (ContentItem child in parent.GetChildren(Engine.EditManager.GetEditorFilter(User)))
                 {

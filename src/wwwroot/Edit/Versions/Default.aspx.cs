@@ -19,6 +19,7 @@ namespace N2.Edit.Versions
 		protected override void OnInit(EventArgs e)
 		{
             hlCancel.NavigateUrl = CancelUrl();
+            Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title"), Selection.SelectedItem.Title);
 
             bool isVersionable = SelectedItem.GetType().GetCustomAttributes(typeof(Persistence.NotVersionableAttribute), true).Length == 0;
             cvVersionable.IsValid = isVersionable;
@@ -26,14 +27,14 @@ namespace N2.Edit.Versions
 			persister = N2.Context.Persister;
 			versioner = N2.Context.Current.Resolve<Persistence.IVersionManager>();
 
-			publishedItem = SelectedItem.VersionOf ?? SelectedItem;
+            publishedItem = Selection.SelectedItem.VersionOf ?? SelectedItem;
 
 			base.OnInit(e);
 		}
 
 		protected void gvHistory_RowCommand(object sender, GridViewCommandEventArgs e)
 		{
-			ContentItem currentVersion = SelectedItem;
+            ContentItem currentVersion = Selection.SelectedItem;
 			int id = Convert.ToInt32(e.CommandArgument);
 			if (currentVersion.ID == id)
 			{

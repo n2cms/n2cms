@@ -5,12 +5,12 @@ using System.Web.UI;
 
 namespace N2.Edit.Settings
 {
-	[ToolbarPlugin("", "settings", "settings/default.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/wrench.gif", -10, ToolTip = "settings", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("CMS Settings", "settings", "settings/default.aspx?selected={selected}", ToolbarArea.Search, "navigation", "~/Edit/Img/Ico/wrench.gif", -10, ToolTip = "settings", GlobalResourceClassName = "Toolbar")]
 	public partial class Default : Web.EditPage
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			hlCancel.NavigateUrl = GetNavigationUrl(SelectedItem);
+            hlCancel.NavigateUrl = GetNavigationUrl(Selection.SelectedItem);
 
 			EditSection config = Engine.Resolve<EditSection>();
 			if (config == null) throw new ConfigurationErrorsException("Cannot find configuration n2/edit");
@@ -31,7 +31,7 @@ namespace N2.Edit.Settings
 				if(editor is ISettingsEditor)
 					(editor as ISettingsEditor).Save();
 			}
-			Response.Redirect(GetNavigationUrl(SelectedItem));
+            Response.Redirect(GetNavigationUrl(Selection.SelectedItem));
 		}
 	}
 }

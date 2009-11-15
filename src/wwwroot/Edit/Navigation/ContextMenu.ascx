@@ -6,14 +6,14 @@
 
 <script type="text/javascript">
 	function setUpContextMenu(container){
-        $("a[target=preview]", container).click(function(){
+        jQuery("a[target=preview]", container).click(function(){
             n2nav.setupToolbar(this.rel);
         }).bind("contextmenu", function(){
             n2nav.setupToolbar(this.rel);
         })
         .n2contextmenu("#contextMenu");
 	};
-    $(document).ready(function(){
+    jQuery(document).ready(function(){
 		setUpContextMenu("#nav");
     });
 </script>

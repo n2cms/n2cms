@@ -6,7 +6,7 @@ using N2.Security;
 namespace N2.Edit
 {
     [NavigationLinkPlugin("Delete", "delete", "../delete.aspx?selected={selected}&alert=true", Targets.Preview, "~/edit/img/ico/delete.gif", 30, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("", "delete", "delete.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/delete.gif", 60, ToolTip = "delete", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("DEL", "delete", "delete.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/Edit/Img/Ico/delete.gif", 60, ToolTip = "delete", GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpDelete", "~/Edit/Img/Ico/delete.gif", "~/Edit/Delete.aspx?selected={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible)]
 	public partial class Delete : Web.EditPage
     {
@@ -14,16 +14,16 @@ namespace N2.Edit
         {
             hlCancel.NavigateUrl = CancelUrl();
 
-            itemsToDelete.CurrentItem = SelectedItem;
+            itemsToDelete.CurrentItem = Selection.SelectedItem;
             itemsToDelete.DataBind();
-            this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?selected=" + SelectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
+            this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?selected=" + Selection.SelectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
 
             base.OnInit(e);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            if (N2.Context.UrlParser.IsRootOrStartPage(SelectedItem))
+            if (N2.Context.UrlParser.IsRootOrStartPage(Selection.SelectedItem))
             {
                 cvDelete.IsValid = false;
                 this.btnDelete.Enabled = false;
@@ -48,14 +48,14 @@ namespace N2.Edit
                 }
             }
             this.Title = string.Format(GetLocalResourceString("DeletePage.TitleFormat"),
-                SelectedItem.Title);
+                Selection.SelectedItem.Title);
 
             base.OnLoad(e);
         }
 
 		private void RegisterConfirmAlert()
 		{
-			string message = string.Format(GetLocalResourceString("confirm.message"), this.SelectedItem.Title, this.SelectedItem.Url);
+            string message = string.Format(GetLocalResourceString("confirm.message"), Selection.SelectedItem.Title, Selection.SelectedItem.Url);
 			ClientScript.RegisterClientScriptBlock(typeof(Delete), "confirm",
                 string.Format(@"jQuery(document).ready( function() {{
 	if(confirm('{0}')){{
@@ -63,15 +63,15 @@ namespace N2.Edit
 	}}else{{
 		window.location='{2}';
 	}}
-}});", message, ClientScript.GetPostBackClientHyperlink(btnDelete, string.Empty), SelectedItem.Url), true);
+}});", message, ClientScript.GetPostBackClientHyperlink(btnDelete, string.Empty), Selection.SelectedItem.Url), true);
 		}
 
         protected void OnDeleteClick(object sender, EventArgs e)
         {
-            ContentItem parent = this.SelectedItem.Parent;
+            ContentItem parent = Selection.SelectedItem.Parent;
             try
             {
-                N2.Context.Persister.Delete(this.SelectedItem);
+                N2.Context.Persister.Delete(Selection.SelectedItem);
 
                 if (parent != null)
                     Refresh(parent, ToolbarArea.Both);

@@ -19,7 +19,6 @@
 #endregion
 
 using System;
-using System.Web;
 
 namespace N2.Edit
 {
@@ -27,11 +26,21 @@ namespace N2.Edit
 	public enum ToolbarArea
 	{
 		None = 0,
-		/// <summary>The left area above the navigation area.</summary>
+		/// <summary>The far left area above the navigation area.</summary>
 		Navigation = 1,
-		/// <summary>The right area above the preview area.</summary>
+		/// <summary>The far right area above the preview area.</summary>
 		Preview = 2,
-		/// <summary>Both panes.</summary>
-		Both = 3
+		/// <summary>Both panes. OBSOLETE.</summary>
+		[Obsolete("This option will be removed in a subsequent release.")]
+		Both = 3,
+		/// <summary>
+		/// The central area above the preview area
+		/// </summary>
+		Operations = 4,
+		/// <summary>
+		/// Before the search box, above the tool bar.
+		/// </summary>
+		Search = 5,
+        Options = 6
 	}
 }

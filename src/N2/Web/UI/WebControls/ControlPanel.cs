@@ -22,7 +22,7 @@ namespace N2.Web.UI.WebControls
 	[PersistChildren(false)]
 	[ParseChildren(true)]
 	[ControlPanelDragPluginAttribute("cpOrganize", "~/edit/img/ico/png/layout_edit.png", "{Selected.Url}", "Organize parts", -10, ControlPanelState.Visible, UrlEncode = false, NavigateQuery = "edit=drag")]
-	[ControlPanelLink("cpUnorganize", "~/edit/img/ico/png/page_refresh.png", "{Selected.Url}", "Done organizing", -10, ControlPanelState.DragDrop, UrlEncode = false, Title = "Done organizing")]
+	[ControlPanelLink("cpUnorganize", "~/edit/img/ico/png/page_refresh.png", "{Selected.Url}", "Done", -10, ControlPanelState.DragDrop, UrlEncode = false, Title = "Done")]
 	public class ControlPanel : Control, IItemContainer
 	{
 		const string ArrayKey = "ControlPanel.arrays";
@@ -236,7 +236,7 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 			}
 			if(EnableEditInterfaceIntegration)
 			{
-				writer.WriteLineNoTabs("if(window.n2ctx){window.n2ctx.select('tpPreview');}");
+				writer.WriteLineNoTabs("if(window.n2ctx){window.n2ctx.select('preview');}");
 			}
 			writer.Write(@"//--></script>");
 

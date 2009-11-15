@@ -4,7 +4,7 @@
 <%@ Register Src="AvailableZones.ascx" TagName="AvailableZones" TagPrefix="uc1" %>
 <%@ Register Src="ItemInfo.ascx" TagName="ItemInfo" TagPrefix="uc1" %>
 <asp:Content ID="ch" ContentPlaceHolderID="Head" runat="server">
-    <link rel="stylesheet" href="<%= ResolveUrl("~/Edit/Css/edit.css") %>" type="text/css" />
+    <link rel="stylesheet" href="<%= MapCssUrl("edit.css") %>" type="text/css" />
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
     <div class="rightAligned">

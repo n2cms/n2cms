@@ -12,7 +12,8 @@ namespace N2.Edit.Web
     /// </summary>
 	public class EditPageUserControl : UserControl
 	{
-		public EditPage EditPage
+        [Obsolete]
+        public EditPage EditPage
 		{
 			get { return base.Page as EditPage; }
 		}
@@ -20,13 +21,22 @@ namespace N2.Edit.Web
 		public IEngine Engine
 		{
 			get { return this.EditPage.Engine; }
-		}
+        }
 
+        SelectionUtility selection;
+        protected SelectionUtility Selection
+        {
+            get { return selection ?? (selection = new SelectionUtility(this, Engine)); }
+            set { selection = value; }
+        }
+
+        [Obsolete]
 		public ContentItem SelectedItem
 		{
-			get { return this.EditPage.SelectedItem; }
+            get { return Selection.SelectedItem; }
 		}
 
+        [Obsolete]
         public HtmlHelper Html
         {
             get { return new HtmlHelper(this.Page, SelectedItem); }

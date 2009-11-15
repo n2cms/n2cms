@@ -123,4 +123,7 @@
   <data name="logout.ToolTipFormat" xml:space="preserve">
     <value>Logout {0}</value>
   </data>
+  <data name="search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

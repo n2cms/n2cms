@@ -1,20 +1,11 @@
 using System;
-using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using N2.Security;
 using N2.Web;
 
 namespace N2.Edit
 {
     [NavigationLinkPlugin("Copy", "copy", "javascript:n2nav.memorize('{selected}','copy');", "", "~/edit/img/ico/page_copy.gif", 50, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("", "copy", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Navigation, "", "~/edit/img/ico/page_copy.gif", 40, ToolTip = "copy", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("COPY", "copy", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Operations, "", "~/edit/img/ico/page_copy.gif", 40, ToolTip = "copy", GlobalResourceClassName = "Toolbar")]
     public partial class Copy : Web.EditPage
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -26,7 +17,7 @@ namespace N2.Edit
 					EnsureAuthorization(Permission.Write);
 					EnsureAuthorization(MemorizedItem, Permission.Read);
 
-					N2.ContentItem newItem = Engine.Persister.Copy(MemorizedItem, SelectedItem);
+                    N2.ContentItem newItem = Engine.Persister.Copy(Selection.MemorizedItem, Selection.SelectedItem);
 					Refresh(newItem, ToolbarArea.Both);
 				}
 				catch (N2.Integrity.NameOccupiedException ex)
@@ -52,20 +43,20 @@ namespace N2.Edit
 
 		private void LoadDefaultsAndInfo()
 		{
-			btnCancel.NavigateUrl = SelectedItem.FindPath(PathData.DefaultAction).RewrittenUrl;
+            btnCancel.NavigateUrl = Selection.SelectedItem.FindPath(PathData.DefaultAction).RewrittenUrl;
 			txtNewName.Text = MemorizedItem.Name;
 
-			this.Title = string.Format(GetLocalResourceString("CopyPage.TitleFormat"), 
-				MemorizedItem.Title, 
-				SelectedItem.Title);
+			this.Title = string.Format(GetLocalResourceString("CopyPage.TitleFormat"),
+                Selection.MemorizedItem.Title,
+                Selection.SelectedItem.Title);
 
 			this.from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
 										   MemorizedItem.Parent != null ? MemorizedItem.Parent.Path : "",
 										   MemorizedItem.Path);
 
 			this.to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
-				SelectedItem.Path, 
-				MemorizedItem.Name);
+                Selection.SelectedItem.Path,
+                Selection.MemorizedItem.Name);
 
 			itemsToCopy.CurrentItem = MemorizedItem;
 			itemsToCopy.DataBind();
@@ -78,7 +69,7 @@ namespace N2.Edit
 				pnlNewName.Visible = false;
 				N2.ContentItem newItem = MemorizedItem.Clone(true);
 				newItem.Name = txtNewName.Text;
-				newItem = Engine.Persister.Copy(newItem, SelectedItem);
+                newItem = Engine.Persister.Copy(newItem, Selection.SelectedItem);
 				Refresh(newItem, ToolbarArea.Both);
 			}
 			catch (N2.Integrity.NameOccupiedException ex)

@@ -19,7 +19,7 @@ namespace N2.Edit.Membership
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			LoadSelectedUser();
-
+            hlPassword.NavigateUrl = "Password.aspx?user=" + Request["user"];
 			if (!IsPostBack)
 			{
 				cblRoles.DataBind();

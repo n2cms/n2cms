@@ -7,18 +7,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
     <head runat="server">
         <title>Navigation</title>
-        <link rel="stylesheet" href="../Css/All.css" type="text/css" />
-        <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
+        <asp:PlaceHolder runat="server">
+		<link rel="stylesheet" href="<%=MapCssUrl("all.css")%>" type="text/css" />
+		<link rel="stylesheet" href="<%=MapCssUrl("framed.css")%>" type="text/css" />
+		<link rel="stylesheet" href="<%=MapCssUrl("navigation.css")%>" type="text/css" />
+		</asp:PlaceHolder>
         <script src="../Js/jquery.ui.ashx" type="text/javascript" ></script>
     </head>
-<body class="navigation tree">
-
+<body class="edit navigation tree">
     <form id="form1" runat="server">
+
         <div id="nav" class="tree nav">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
         <script type="text/javascript">
-        	$(document).ready(function() {
+        	jQuery(document).ready(function() {
         		var dragMemory = null;
         		var onDrop = function(e, ui) {
         			var action = e.ctrlKey ? "copy" : "move";
@@ -33,7 +36,7 @@
         		};
 
         		var toDraggable = function(container) {
-        			$("a", container).draggable({
+        			jQuery("a", container).draggable({
         				delay: 100,
         				cursorAt: { top: 8, left: 8 },
         				start: onStart,
@@ -46,7 +49,7 @@
         			});
         		}
 
-        		$("#nav").SimpleTree({
+        		jQuery("#nav").SimpleTree({
         			success: function(el) {
         				toDraggable(el);
         				n2nav.refreshLinks(el);
@@ -54,7 +57,7 @@
         			}
         		});
         		
-        		toDraggable($("#nav li li"));
+        		toDraggable(jQuery("#nav li li"));
         	});
         </script>
         <nav:ContextMenu id="cm" runat="server" />

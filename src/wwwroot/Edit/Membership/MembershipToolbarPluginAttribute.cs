@@ -3,7 +3,7 @@ namespace N2.Edit.Membership
 	public class MembershipToolbarPluginAttribute : ToolbarPluginAttribute
 	{
 		public MembershipToolbarPluginAttribute(string title, string name, string urlFormat, string iconUrl, int sortOrder)
-			: base(title, name, urlFormat, ToolbarArea.Preview, Targets.Preview, iconUrl, sortOrder)
+			: base(title, name, urlFormat, ToolbarArea.Navigation, Targets.Preview, iconUrl, sortOrder)
 		{
 		}
 

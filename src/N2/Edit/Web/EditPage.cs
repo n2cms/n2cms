@@ -17,12 +17,34 @@ namespace N2.Edit.Web
     {
 		private ContentItem selectedItem;
 		private ContentItem memorizedItem = null;
+
+		public EditPage()
+		{
+			PreInit += EditPage_PreInit;
+		}
+
+		void EditPage_PreInit(object sender, EventArgs e)
+		{
+			SetupTheming();
+		}
 		
 		protected override void OnInit(EventArgs e)
 		{
 			RegisterScripts();
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
 			base.OnInit(e);
+		}
+
+		private void SetupTheming()
+		{
+			if(EnableTheming)
+				Theme = Engine.EditManager.EditTheme;
+		}
+
+		public override bool EnableTheming
+		{
+			get { return !String.IsNullOrEmpty(Engine.EditManager.EditTheme); }
+			set { base.EnableTheming = value; }
 		}
 
 		protected virtual void RegisterScripts()
@@ -33,9 +55,6 @@ namespace N2.Edit.Web
 			// select toolbar
 			foreach(ToolbarPluginAttribute toolbarPlugin in GetType().GetCustomAttributes(typeof(ToolbarPluginAttribute), true))
 			{
-				if (toolbarPlugin.GetType() != typeof(ToolbarPluginAttribute))
-					continue;
-
 				string script = GetToolbarSelectScript(toolbarPlugin);
 				Register.JavaScript(this, script, ScriptPosition.Bottom, ScriptOptions.ScriptTags);
 			}
@@ -48,7 +67,7 @@ namespace N2.Edit.Web
 
 		protected virtual string CancelUrl()
         {
-            return Request["returnUrl"] ?? (SelectedItem.VersionOf ?? SelectedNode).PreviewUrl;
+            return Request["returnUrl"] ?? (Selection.SelectedItem.VersionOf ?? SelectedNode).PreviewUrl;
         }
 
 		/// <summary>Checks that the user has the required permission on the given item. Throws exceptions if authorization is missing.</summary>
@@ -64,7 +83,7 @@ namespace N2.Edit.Web
 		/// <param name="permission">The permission to check.</param>
 		protected void EnsureAuthorization(Permission permission)
 		{
-			EnsureAuthorization(SelectedItem, permission);
+            EnsureAuthorization(Selection.SelectedItem, permission);
 		}
 
 		/// <summary>Checks that the user has the required permission on the given item.</summary>
@@ -81,7 +100,12 @@ namespace N2.Edit.Web
 		/// <param name="permission">The permission to check.</param>
 		protected bool IsAuthorized(Permission permission)
 		{
-			return IsAuthorized(SelectedItem, permission);
+            return IsAuthorized(Selection.SelectedItem, permission);
+		}
+
+		protected string MapCssUrl(string cssFileName)
+		{
+			return Url.ToAbsolute(N2.Context.Current.EditManager.GetEditInterfaceUrl() + "Css/" + cssFileName);
 		}
 
     	#region Refresh Methods
@@ -215,102 +239,60 @@ if(window.n2ctx){{
 
 		#endregion
 
-		#region Properties
-
+        #region Obsolete
+        [Obsolete]
 		protected string Path
 		{
 			get { return Request["root"] ?? "/"; }
 		}
 
+        [Obsolete]
 		protected ContentItem RootNode
 		{
 			get { return Engine.Resolve<Navigator>().Navigate(Path); }
 		}
 
-		public virtual Engine.IEngine Engine
-		{
-			get { return N2.Context.Current; }
-		}
-
+        [Obsolete]
         public N2.Web.HtmlHelper Html
         {
-            get { return new N2.Web.HtmlHelper(this, SelectedItem); }
+            get { return new N2.Web.HtmlHelper(this, Selection.SelectedItem); }
         }
 
-		public override string ID
-		{
-			get { return base.ID ?? "P"; }
-		}
+        [Obsolete]
+        protected virtual INode SelectedNode
+        {
+            get { return Selection.SelectedItem as INode; }
+        }
+        #endregion
 
-		private int SelectedItemID
-		{
-			get { return (int)(ViewState["SelectedItemID"] ?? 0); }
-			set { ViewState["SelectedItemID"] = value; }
-		}
+        #region Properties
 
-		protected virtual INode SelectedNode
-		{
-			get { return SelectedItem as INode; }
-		}
+        Engine.IEngine engine;
+        public Engine.IEngine Engine
+        {
+            get { return engine ?? (engine = N2.Context.Current); }
+            set { engine = value; }
+        }
+
+        SelectionUtility selection;
+        protected SelectionUtility Selection
+        {
+            get { return selection ?? (selection = new SelectionUtility(this, Engine)); }
+            set { selection = value; }
+        }
 
 		/// <summary>Gets the currently selected item by the tree menu in edit mode.</summary>
-
+        [Obsolete("Use Selection.SelectedItem")]
 		public virtual ContentItem SelectedItem
 		{
-			get
-			{
-				if(selectedItem == null)
-				{
-					selectedItem = GetFromViewState()
-						?? GetFromUrl()
-						?? Engine.UrlParser.CurrentPage
-						?? Engine.UrlParser.StartPage;					
-				}
-				return selectedItem;
-			}
-			set
-			{
-				selectedItem = value;
-				SelectedItemID = value != null ? value.ID : 0;
-			}
+			get { return Selection.SelectedItem; }
+			set { Selection.SelectedItem = value; }
 		}
 
-		protected ContentItem MemorizedItem
+        [Obsolete("Use Selection.MemorizedItem")]
+        protected ContentItem MemorizedItem
 		{
 			get { return memorizedItem ?? (memorizedItem = Engine.Resolve<Navigator>().Navigate(Request.QueryString["memory"])); }
-		}
-
-		#endregion
-
-		#region Helper Methods
-
-		private ContentItem GetFromViewState()
-		{
-			if (SelectedItemID != 0)
-				return Engine.Persister.Get(SelectedItemID);
-			return null;
-		}
-
-		private ContentItem GetFromUrl()
-		{
-			string selected = GetSelectedPath();
-			if (!string.IsNullOrEmpty(selected))
-				return Engine.Resolve<Navigator>().Navigate(selected);
-
-			string selectedUrl = Request["selectedUrl"];
-			if (!string.IsNullOrEmpty(selectedUrl))
-				return Engine.UrlParser.Parse(selectedUrl);
-
-			string itemId = Request[PathData.ItemQueryKey];
-			if (!string.IsNullOrEmpty(itemId))
-				return Engine.Persister.Get(int.Parse(itemId));
-
-			return null;
-		}
-
-		protected string GetSelectedPath()
-		{
-			return Request["selected"];
 		}
 
 		#endregion

@@ -29,7 +29,7 @@ using N2.Security;
 namespace N2.Edit
 {
     [NavigationLinkPlugin("New", "new", "../new.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/add.gif", 10, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("", "new", "new.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/add.gif", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("NEW", "new", "new.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/Edit/Img/Ico/add.gif", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpNew", "~/Edit/Img/Ico/add.gif", "~/Edit/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
 	public partial class New : Web.EditPage
     {
@@ -41,16 +41,16 @@ namespace N2.Edit
 			get
 			{
 				if(rblPosition.SelectedIndex == 1)
-					return base.SelectedItem;
+                    return Selection.SelectedItem;
 				else
-					return base.SelectedItem.Parent;
+                    return Selection.SelectedItem.Parent;
 			}
 		}
 
         protected void Page_Init(object sender, EventArgs e)
         {
             hlCancel.NavigateUrl = CancelUrl();
-			if (SelectedItem.Parent == null)
+            if (Selection.SelectedItem.Parent == null)
 			{
 				rblPosition.Enabled = false;
 			}
@@ -146,7 +146,7 @@ namespace N2.Edit
 
         protected string GetEditUrl(ItemDefinition definition)
         {
-        	return Engine.EditManager.GetEditNewPageUrl(SelectedItem, definition, ZoneName, GetCreationPosition());
+            return Engine.EditManager.GetEditNewPageUrl(Selection.SelectedItem, definition, ZoneName, GetCreationPosition());
         }
 
 		protected string GetDefinitionString(ItemDefinition definition, string key)

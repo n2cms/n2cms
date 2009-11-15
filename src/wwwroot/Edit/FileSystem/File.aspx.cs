@@ -9,12 +9,12 @@ namespace N2.Edit.FileSystem
     {
         protected File SelectedFile
         {
-            get { return SelectedItem as File; }
+            get { return Selection.SelectedItem as File; }
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Title = SelectedItem.Title;
+            Title = Selection.SelectedItem.Title;
         }
 
     	protected void OnDownloadCommand(object sender, CommandEventArgs e)

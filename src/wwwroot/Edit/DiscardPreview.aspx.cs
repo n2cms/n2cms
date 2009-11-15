@@ -12,9 +12,9 @@ namespace N2.Edit
 		{
 			base.OnInit(e);
 
-			ContentItem published = SelectedItem.VersionOf;
+            ContentItem published = Selection.SelectedItem.VersionOf;
 			if (published == null) throw new N2Exception("Cannot discard item that is not a version of another item");
-			Engine.Persister.Delete(SelectedItem);
+            Engine.Persister.Delete(Selection.SelectedItem);
 
             Response.Redirect(published.Url);
 		}

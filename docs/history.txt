@@ -1,4 +1,5 @@
-﻿- added example of Link.To fluent interface
+﻿- merged steve mason's redesign
+- added example of Link.To fluent interface
 - added example of Tree.Between fluent interface
 - added example of Tree.From fluent interface
 - added persistable attributes which saves properties in a new column in n2item table

@@ -126,6 +126,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.sl.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Toolbar.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbar.resx</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Configuration\MailConfigSource.cs" />
     <Compile Include="Templates\Configuration\TemplatesSection.cs" />
     <Compile Include="Templates\Configuration\WikiElement.cs" />
@@ -984,6 +989,12 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Zones.sl.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Toolbar.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Toolbar.Designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

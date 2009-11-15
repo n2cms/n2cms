@@ -1,5 +1,5 @@
-﻿using System.Configuration;
-using System;
+﻿using System;
+using System.Configuration;
 
 namespace N2.Configuration
 {
@@ -44,9 +44,9 @@ namespace N2.Configuration
         {
             get { return (FileSystemFolderCollection)base["uploadFolders"]; }
             set { base["uploadFolders"] = value; }
-        }
+		}
 
-		[ConfigurationProperty("editTreeUrl", DefaultValue = "~/edit/Navigation/Tree.aspx")]
+    	[ConfigurationProperty("editTreeUrl", DefaultValue = "~/edit/Navigation/Tree.aspx")]
         public string EditTreeUrl
         {
             get { return (string)base["editTreeUrl"]; }
@@ -109,13 +109,23 @@ namespace N2.Configuration
 			set { base["settingsEditors"] = value; }
 		}
 
-		/// <summary>Information about default directories, usd to find default directory for a page.</summary>
+		/// <summary>Information about default directories, used to find default directory for a page.</summary>
 		[ConfigurationProperty("defaultDirectory")]
 		public DefaultDirectoryElement DefaultDirectory
 		{
 			get { return (DefaultDirectoryElement)base["defaultDirectory"]; }
 			set { base["defaultDirectory"] = value; }
 		}
+
+		/// <summary>
+		/// The ASP.NET Theme to use for the Edit directory
+		/// </summary>
+		[ConfigurationProperty("theme")]
+    	public string EditTheme
+		{
+			get { return (string)base["theme"]; }
+			set { base["theme"] = value; }
+    	}
 
 		/// <summary>Information about versioning.</summary>
 		[ConfigurationProperty("versions")]

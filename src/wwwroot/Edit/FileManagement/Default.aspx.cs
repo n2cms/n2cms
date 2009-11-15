@@ -7,7 +7,7 @@ using N2.Web;
 
 namespace N2.Edit.FileManagement
 {
-	[ToolbarPlugin("", "filemanager", "FileManagement/Default.aspx", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/folder.gif", 120, ToolTip = "file manager", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("FILES", "filemanager", "FileManagement/Default.aspx", ToolbarArea.Navigation, Targets.Preview, "~/Edit/Img/Ico/folder.gif", 120, ToolTip = "file manager", GlobalResourceClassName = "Toolbar")]
 	public partial class Default : UrlSelectionPage
 	{
 		#region Properties

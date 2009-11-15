@@ -1,6 +1,7 @@
 using System.Web.UI;
 using N2.Engine;
 using N2.Web;
+using System;
 
 namespace N2.Edit.Web
 {
@@ -9,30 +10,26 @@ namespace N2.Edit.Web
     /// </summary>
     public abstract class EditUserControl : UserControl
     {
-        protected IEngine Engine
+        IEngine engine;
+        /// <summary>The default engine driving this application.</summary>
+        public IEngine Engine
         {
-            get { return N2.Context.Current; }
+            get { return engine ?? (engine = N2.Context.Current); }
+            set { engine = value; }
         }
 
-    	N2.ContentItem selectedItem;
+        SelectionUtility selection;
+        /// <summary>Helps to select items from query string.</summary>
+        protected SelectionUtility Selection
+        {
+            get { return selection ?? (selection = new SelectionUtility(this, Engine)); }
+            set { selection = value; }
+        }
+
+    	[Obsolete("Use Selection.SelectedItem")]
         protected virtual N2.ContentItem SelectedItem
         {
-            get
-            {
-				string itemId = Request.QueryString[PathData.ItemQueryKey];
-                string selected = Request.QueryString["selected"];
-				if (selectedItem != null)
-					return selectedItem;
-
-				if (!string.IsNullOrEmpty(selected))
-                    selectedItem = Engine.UrlParser.Parse(selected);
-                if (!string.IsNullOrEmpty(itemId))
-                    selectedItem= Engine.Persister.Get(int.Parse(itemId));
-                else
-                    selectedItem = Engine.UrlParser.StartPage;
-
-            	return selectedItem;
-            }
+            get { return Selection.SelectedItem; }
         }
     }
 }

@@ -18,7 +18,7 @@ using N2.Web.UI.WebControls;
 namespace N2.Edit
 {
 	/// <summary>
-	/// Class responsible for plugins in edit mode, knowling links to edit 
+	/// Class responsible for plugins in edit mode, knowling links to edit
 	/// pages and saving interaction.
 	/// </summary>
 	public class EditManager : IEditManager
@@ -39,12 +39,13 @@ namespace N2.Edit
 		private string editTreeUrl = "~/edit/Navigation/Tree.aspx";
 		private string editTreeUrlFormat = "{1}?selected={0}";
 		private bool enableVersioning = true;
+		private string editTheme = "";
 		protected EventHandlerList Events = new EventHandlerList();
 		private string newItemUrl = "~/edit/new.aspx";
-		private IList<string> uploadFolders = new List<string>();
+		private readonly IList<string> uploadFolders = new List<string>();
 
 		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
-		                   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings)
+						   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
@@ -55,10 +56,11 @@ namespace N2.Edit
 		}
 
 		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
-		                   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
-		                   EditSection config)
+						   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
+						   EditSection config)
 			: this(definitions, persister, versioner, securityManager, pluginFinder, settings)
 		{
+			EditTheme = config.EditTheme;
 			EditTreeUrl = config.EditTreeUrl;
 			EditPreviewUrlFormat = config.EditPreviewUrlFormat;
 			EditItemUrl = config.EditItemUrl;
@@ -68,6 +70,12 @@ namespace N2.Edit
 			EnableVersioning = config.Versions.Enabled;
 			MaximumNumberOfVersions = config.Versions.MaximumPerItem;
 			uploadFolders = new List<string>(config.UploadFolders.Folders);
+		}
+
+		public string EditTheme
+		{
+			get { return editTheme; }
+			set { editTheme = value; }
 		}
 
 		public string EditInterfaceUrl
@@ -151,9 +159,9 @@ namespace N2.Edit
 		public virtual string GetPreviewUrl(INode selectedItem)
 		{
 			string url = string.Format(EditPreviewUrlFormat,
-			                           selectedItem.PreviewUrl,
-			                           HttpUtility.UrlEncode(selectedItem.PreviewUrl)
-				);
+									   selectedItem.PreviewUrl,
+									   HttpUtility.UrlEncode(selectedItem.PreviewUrl)
+					);
 			return Url.ToAbsolute(url);
 		}
 
@@ -208,6 +216,7 @@ namespace N2.Edit
 				}
 			}
 
+
 			if (updated)
 			{
 				item.Updated = Utility.CurrentTime();
@@ -224,7 +233,7 @@ namespace N2.Edit
 		/// <param name="versioningMode">How to treat the item beeing saved in respect to versioning.</param>
 		/// <param name="user">The user that is performing the saving.</param>
 		public virtual ContentItem Save(ContentItem item, IDictionary<string, Control> addedEditors,
-		                                ItemEditorVersioningMode versioningMode, IPrincipal user)
+										ItemEditorVersioningMode versioningMode, IPrincipal user)
 		{
 			// when an unpublished version is saved and published
 			if (versioningMode == ItemEditorVersioningMode.SaveAsMaster)
@@ -300,14 +309,14 @@ namespace N2.Edit
 		/// <param name="position">The position relative to the selected item to add the item.</param>
 		/// <returns>The url to the edit page.</returns>
 		public virtual string GetEditNewPageUrl(ContentItem selected, ItemDefinition definition, string zoneName,
-		                                CreationPosition position)
+										CreationPosition position)
 		{
 			if (selected == null) throw new ArgumentNullException("selected");
 			if (definition == null) throw new ArgumentNullException("definition");
 
 			ContentItem parent = (position != CreationPosition.Below)
-			                     	? selected.Parent
-			                     	: selected;
+									? selected.Parent
+									: selected;
 
 			if (selected == null)
 				throw new N2Exception("Cannot insert item before or after the root page.");
@@ -334,13 +343,13 @@ namespace N2.Edit
 
 			if (item.VersionOf != null)
 				return string.Format("{0}?selectedUrl={1}", EditItemUrl,
-				                     HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).RewrittenUrl));
+									 HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).RewrittenUrl));
 
 			return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
 		}
 
 		public virtual IEnumerable<T> GetPlugins<T>(IPrincipal user)
-			where T : AdministrativePluginAttribute
+				where T : AdministrativePluginAttribute
 		{
 			return pluginFinder.GetPlugins<T>(user);
 		}
@@ -382,7 +391,7 @@ namespace N2.Edit
 		/// <param name="user"></param>
 		/// <param name="addedEditors"></param>
 		public virtual void AddEditorsRecursive(IContainable contained, Control containerControl, IPrincipal user,
-		                                        IDictionary<string, Control> addedEditors)
+												IDictionary<string, Control> addedEditors)
 		{
 			Control added = contained.AddTo(containerControl);
 
@@ -393,7 +402,7 @@ namespace N2.Edit
 			}
 			if (contained is IEditableContainer)
 			{
-				foreach (IContainable subContained in ((IEditableContainer) contained).GetContained(user))
+				foreach (IContainable subContained in ((IEditableContainer)contained).GetContained(user))
 				{
 					AddEditorsRecursive(subContained, added, user, addedEditors);
 				}
@@ -412,6 +421,7 @@ namespace N2.Edit
 			if (ItemSaved != null)
 				ItemSaved(this, e);
 		}
+
 
 		private ContentItem SaveAsMaster(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
@@ -501,7 +511,7 @@ namespace N2.Edit
 		private bool ShouldStoreVersion(ContentItem item)
 		{
 			return EnableVersioning && !IsNew(item) &&
-			       item.GetType().GetCustomAttributes(typeof (NotVersionableAttribute), true).Length == 0;
+				   item.GetType().GetCustomAttributes(typeof(NotVersionableAttribute), true).Length == 0;
 		}
 
 		private string FormatSelectedUrl(ContentItem selectedItem, string path)
@@ -533,10 +543,10 @@ namespace N2.Edit
 			ContentItem savedVersion = null;
 			var handler = Events[savingVersionKey] as EventHandler<CancellableItemEventArgs>;
 			Utility.InvokeEvent(handler, current, this, delegate(ContentItem item)
-			                                            	{
-			                                            		savedVersion = versioner.SaveVersion(item);
-			                                            		versioner.TrimVersionCountTo(item, MaximumNumberOfVersions);
-			                                            	});
+			{
+				savedVersion = versioner.SaveVersion(item);
+				versioner.TrimVersionCountTo(item, MaximumNumberOfVersions);
+			});
 			return savedVersion;
 		}
 

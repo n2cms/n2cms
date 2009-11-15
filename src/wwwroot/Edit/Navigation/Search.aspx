@@ -5,43 +5,42 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
     <head id="Head1" runat="server">
-        <title>Navigation</title>
-        <link rel="stylesheet" href="../Css/All.css" type="text/css" />
-        <link rel="stylesheet" href="../Css/Framed.css" type="text/css" />
+        <title>Search</title>
+        <asp:PlaceHolder runat="server">
+		<link rel="stylesheet" href="<%=MapCssUrl("all.css")%>" type="text/css" />
+		<link rel="stylesheet" href="<%=MapCssUrl("framed.css")%>" type="text/css" />
+		<link rel="stylesheet" href="<%=MapCssUrl("navigation.css")%>" type="text/css" />
+		</asp:PlaceHolder>
         <script src="../Js/jquery.ui.ashx" type="text/javascript" ></script>
     </head>
-<body class="navigation search">
+<body class="edit navigation search">
     <form id="form1" runat="server">
-        <asp:Panel runat="server" DefaultButton="btnSerach" CssClass="list">
-            <asp:TextBox ID="txtQuery" runat="server" CssClass="tb" />
-            <asp:ImageButton ID="btnSerach" runat="server" ImageUrl="../Img/Ico/find.gif" OnClick="btnSerach_Click" CssClass="btn" meta:resourceKey="btnSearch" />
-            <asp:RequiredFieldValidator ID="rfvQuery" ControlToValidate="txtQuery" runat="server" ErrorMessage="*" meta:resourceKey="rfvQuery" Display="Dynamic" />
+        <asp:Panel runat="server" CssClass="list">
             <n2:ItemDataSource ID="idsItems" runat="server" />
             <div id="nav" class="nav">
-                <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" DataMember="Query" runat="server" DataKeyField="ID" AutoGenerateColumns="false" CssClass="gv" AlternatingItemStyle-CssClass="alt" UseAccessibleHeader="true">
+                <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" DataMember="Query" runat="server" DataKeyField="ID" AutoGenerateColumns="false" CssClass="gv" AlternatingItemStyle-CssClass="alt" UseAccessibleHeader="true" ShowHeader="false">
                     <Columns>
                         <asp:TemplateColumn HeaderText="Title" meta:resourceKey="colTitle" >
                             <ItemTemplate>
-                                <asp:HyperLink ID="hlShow" runat="server" Target="preview" rel='<%# Eval("Path") %>' NavigateUrl='<%# ((N2.INode)Container.DataItem).PreviewUrl %>'>
-                                    <asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
+                                <asp:HyperLink ID="hlShow" runat="server" Target="preview" runat="server" 
+                                    NavigateUrl='<%# ((N2.INode)Container.DataItem).PreviewUrl %>'
+                                    Title='<%# Eval("Published", "{0:yyy-MM-dd}") + " - " + Eval("Expires", "{0:yyy-MM-dd}") %>'
+                                    rel='<%# Eval("Path") %>'>
+                                    <asp:Image ImageUrl='<%# Eval("IconUrl") %>' />
                                     <%# Eval("Title")%>
                                 </asp:HyperLink>
-                            </ItemTemplate>
-                        </asp:TemplateColumn>
-                        <asp:TemplateColumn HeaderText="Publ." meta:resourceKey="colPublished" ItemStyle-CssClass="date">
-                            <ItemTemplate>
-                                <%# Eval("Published", "{0:yyy-MM-dd}") %>-<%# Eval("Expires", "{0:yyy-MM-dd}") %>
-                            </ItemTemplate>
-                        </asp:TemplateColumn>
-                        <asp:TemplateColumn HeaderText="Zone" meta:resourceKey="colZone" >
-                            <ItemTemplate>
-                                <%# Eval("ZoneName") %>
+                                <%# Eval("ZoneName", " ({0})") %>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                     </Columns>
                 </asp:DataGrid>
             </div>
             <nav:ContextMenu id="cm" runat="server" />
+            <script type="text/javascript">
+            	jQuery(document).ready(function() {
+            		if (window.n2ctx) window.n2ctx.toolbarSelect('search');
+            	});
+            </script>
         </asp:Panel>
     </form>
 </body>

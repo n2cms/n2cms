@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using System.Web.UI;
 using N2.Resources;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -24,6 +26,11 @@ namespace N2.Edit
 			h1.InnerHtml = Page.Title;
 
 			base.OnPreRender(e);
+		}
+
+		protected string MapCssUrl(string cssFileName)
+		{
+			return Url.ToAbsolute(N2.Context.Current.EditManager.GetEditInterfaceUrl() + "Css/" + cssFileName);
 		}
 	}
 }

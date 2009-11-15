@@ -5,6 +5,7 @@ using System.Web.UI;
 
 namespace N2.Web
 {
+    [Obsolete]
     public class HtmlHelper
     {
         ContentItem currentItem;

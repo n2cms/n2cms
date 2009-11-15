@@ -1,6 +1,5 @@
 /* right */
-.right
-{
+body.edit .right{
 	position:absolute;
 	top:40px;
 	right:10px;
@@ -8,104 +7,95 @@
 	background-color:White;
 	z-index:10;
 }
-.right fieldset
-{
-	margin-right:0;
+body.edit .right fieldset{
+	margin-right:10px;
+	padding:10px;
 }
 
 /* Info */
-.infoBox label
-{
+body.edit .infoBox label{
 	margin-right:5px;
 }
-.infoBox span
-{
+body.edit .infoBox span{
 	font-weight:bold;
 	vertical-align:middle;
 }
 
 /* Zones */
-.zonesBox a
-{
+body.edit .zonesBox a{
 	color:#333;
 	font-weight:normal;
 	text-decoration:none;
 }
-.zonesBox dl
-{
+body.edit .zonesBox dl{
 	margin:0;
 }
-.zonesBox dt
-{
+body.edit .zonesBox dt{
 	padding:5px 0;
 	font-size:1.1em;
 	font-weight:bold;
 	display:block;
 }
-.zonesBox dt a
-{
+body.edit .zonesBox dt a{
 	float:right;
 	padding:2px;
 }
-.zonesBox dd
-{
+body.edit .zonesBox dd{
 	margin:0;
 	padding:3px 0 5px 5px;
 }
 
 /* Edit details */
-.content fieldset { clear:left; padding:10px; }
+body.edit .content fieldset { clear:left; padding:10px; }
 
-textarea.textEditor { width:580px; }
-textarea.freeTextArea { height:380px; }
-.itemEditor .editDetail { margin:0 0 5px 0; clear:left; }
-.itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 0; }
-.itemEditor fieldset .editLabel { width:100px; }
-.itemEditor .editControl { float:left; padding:0; margin:0 0 5px 0; }
-.itemEditor .editControl label { font-weight:normal; display:inline; float:none; }
-.itemEditor .editControl input { vertical-align:middle; }
-.nameEditor { width:142px; }
-.titleEditor, .urlSelector, .textEditor
+body.edit textarea.textEditor { width:580px; }
+body.edit textarea.freeTextArea { height:380px; }
+body.edit .itemEditor .editDetail { margin:0 0 5px 0; clear:left; }
+body.edit .itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 0; }
+body.edit .itemEditor fieldset .editLabel { width:100px; }
+body.edit .itemEditor .editControl { float:left; padding:0; margin:0 0 5px 0; }
+body.edit .itemEditor .editControl label { font-weight:normal; display:inline; float:none; }
+body.edit .itemEditor .editControl input { vertical-align:middle; }
+body.edit .nameEditor { width:142px; }
+body.edit .titleEditor, body.edit .urlSelector, body.edit .textEditor
     { width:284px; }
-.titleEditor { font-size:1.5em; }
-.popupButton { marign-right:10px;}
-input.disabled, .disabled *, input.dimmed, .dimmed *
+body.edit .titleEditor { font-size:1.5em; }
+body.edit .popupButton { margin-right:10px;}
+body.edit input.disabled, body.edit .disabled *, body.edit input.dimmed, body.edit .dimmed *
     { opacity:.50; filter: alpha(opacity=50); }
-.selector, .uploader
+body.edit .selector, body.edit .uploader
     { margin-right:10px;}
-.uploadableContainer .fileSelector
+body.edit .uploadableContainer .fileSelector
     { width: 184px; }
-.selector img, .uploader img
+body.edit .selector img, body.edit .uploader img
     { vertical-align:middle; margin-right:1px; }
 
 
-.delete { float:right; }
-.versionInfo { background-image:url(../img/ico/information.gif); }
+body.edit .delete { float:right; }
+body.edit .versionInfo { background-image:url(../img/ico/information.gif); }
 
 /* tab overrides */
-.tabPanel { margin-bottom:10px; }
-.tabPanel fieldset { left:0; }
+body.edit .tabPanel { margin-bottom:10px; }
+body.edit .tabPanel fieldset { left:0; }
 
-.help { vertical-align:middle; }
+body.edit .help { vertical-align:middle; }
 
-.helpPanel { cursor:pointer; }
+body.edit .helpPanel { cursor:pointer; }
 
-.helpText { display:none; float:left; }
-.helpText b { display:block; }
-.helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD7; margin-bottom:10px; padding-bottom:10px; }
+body.edit .helpText { display:none; float:left; }
+body.edit .helpText b { display:block; }
+body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD7; margin-bottom:10px; padding-bottom:10px; }
 
-.editDetail .defaultSkin table.mceLayout,
-.editDetail .defaultSkin table.mceLayout tr.mceFirst td
-    { border:none; }
-.editDetail .defaultSkin table.mceLayout tr.mceFirst { background:#FFFFFF url(../img/framed_toolbar.gif) repeat-x scroll 0 100%; }
-.editDetail .mceStatusbar,
-.editDetail .mceIframeContainer
-    { border:solid 1px #ccc; }
-.editDetail .mceEditor table { background-color:#fff; }
+body.edit .editDetail .defaultSkin table.mceLayout,
+body.edit .editDetail .defaultSkin table.mceLayout tr.mceFirst td { border:none; }
+body.edit .editDetail .defaultSkin table.mceLayout tr.mceFirst { background:#FFFFFF none repeat-x scroll 0 100%; }
+body.edit .editDetail .mceStatusbar,
+body.edit .editDetail .mceIframeContainer { border:solid 1px #ccc; }
+body.edit .editDetail .mceEditor table { background-color:#fff; }
 
-.framed .iconed { background:transparent none no-repeat 2px 50%; padding-left:19px; }
-.framed .iconed:hover { padding-left:18px; background-position:1px 50%; }
-.framed .publish.iconed { background-image:url(../img/ico/disk.gif); }
-.framed .save.iconed { background-image:url(../img/ico/png/book_next.png); }
-.framed .preview.iconed { background-image:url(../img/ico/png/zoom.png); }
-.framed .new.iconed { background-image:url(../img/ico/add.gif); }
+body.framed .zonesBox dt .iconed { background:transparent none no-repeat 2px 50%; padding-left:19px; }
+body.framed .zonesBox dt .iconed:hover { padding-left:18px; background-position:1px 50%; }
+body.framed .zonesBox dt .publish.iconed { background-image:url(../img/ico/disk.gif); }
+body.framed .zonesBox dt .save.iconed { background-image:url(../img/ico/png/book_next.png); }
+body.framed .zonesBox dt .preview.iconed { background-image:url(../img/ico/png/zoom.png); }
+body.framed .zonesBox dt .new.iconed { background-image:url(../img/ico/add.gif); }

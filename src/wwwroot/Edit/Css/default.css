@@ -2,36 +2,62 @@
 body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 
 /* Toolbar */
-.toolbar { background:#d1d4d3 url(../img/toolbar_bg.gif) repeat-x 0% 100%; min-width:700px; position: relative; height:50px; }
+#top{ position:relative; }
+#top .logo{ position:absolute; right:6px; top:3px; height:30px; }
 
-	.toolbar .area { float:left; background:#ffffff url(../img/toolarea_bg.gif) repeat-x 100% 100%; padding-left:10px; height:50px; overflow:hidden; }
+#search{ background:transparent; padding:0; }
+	#search form { background-color:transparent; padding:0; margin:0; }
+    	#search input { height:28px; padding:0 4px; float:left; margin:0; border:none; }
+    	#search input.tb { height:18px; padding:5px 4px; }
 
-		.toolbar .right { padding-right:20px; background:transparent url(../img/toolarea_separator.gif) no-repeat 100% 100%; float:left; height:50px; _overflow:hidden; }
-		.toolbar .last .right { background-image:url(../img/toolarea_end.gif); }
+.toolbox { font-size: 10px; overflow:hidden; font-family: 'Lucida Console', Monaco, monospace; }
+    .toolbox .item { overflow:hidden; float:left; text-align:center; border-left:solid 1px #fff; border-right:solid 1px #d8d8d8; background:#fff; }
+        .toolbox .item .command { display:block; height:18px; color:#6F6F6F; height:18px; padding:5px; text-decoration:none; }
+        .toolbox .item a:hover { color:#000; background-image:url(../img/toolbar_button_bg_hover.png); }
+        .toolbox .item.selected a.command { background-color:#fff; background-image:none; color:#000; cursor:auto; }
+           .toolbox .item .command img { margin:2px 3px 0 0; }
 
-/* Navigation */
-.toolbar a { -moz-outline-style:none; }
-.toolbar .toolbarItem {height:50px;float:left;padding-right:2px;background:transparent url(../img/toolitem_separator.gif) no-repeat 100% 100%;cursor:hand;cursor:pointer;}
-	.toolbar .command{float:left;display:block;height:25px;padding:20px 8px 5px 5px;}
+.header { border-bottom-style: solid; border-bottom-width:5px; padding-left:20px;}
+    .header .toolbox { float:left; border-bottom:none; margin-left:10px; }
+        .header .toolbox .item { background:#fff url(../img/toolbar_button_bg.png) no-repeat 50% 3px; }
+            .header .toolbox .item .command  { padding:8px 6px; position:relative; background:transparent url(../img/toolbar_button_bg.png) no-repeat 50% 100px; }
+            .header .toolbox .item a:hover { background-image:url(../img/toolbar_button_bg_hover.png); }
 
-.toolbar .hover,
-.toolbar .selected {background-image:url(../img/toolitem_hover.gif);}
-	.toolbar .hover .command,
-	.toolbar .selected .command {background:transparent url(../img/toolitem_hover.gif) no-repeat 0% 100%;position:relative;left:-5px;padding:19px 3px 6px 10px;}
+.tools { border-bottom-style:solid; border-bottom-width:1px; }
+    .tools .operations { float:left; }
+    .tools .options { float:right; }
 
-.toolbar .logout{display:block;position:absolute;right:60px;bottom:15px;padding:1px;}
-.toolbar .sort { padding:16px 5px 4px 5px; height:30px; }
-.toolbar .hover .sort { padding:16px 0px 4px 10px; }
-.toolbar .sort a { height:12px; width:15px; display:block; overflow:hidden; }
-.toolbar .sort a:hover {}
+#sort { height:28px; width:28px; padding:0; }
+    #sort .command { padding:0; }
+        #sort .command a {
+            display:block;
+            height:10px; 
+            padding:1px;
+            border-top:solid 1px #fff;
+        }
+        #sort #upsort 
+        {
+	        border-bottom:solid 1px #d8d8d8;
+        }
 
-
-#logo{position:absolute;right:15px;bottom:15px;}
-
-#splitter { height: 510px; }
-    .activeSplitter iframe { visibility:hidden;}
-#leftPane { width: 200px; min-width: 50px; float:left; background:#fff }
-#rightPane { min-width: 50px; overflow: hidden; width:790px; float:left; background:#fff }
-#splitter .vsplitbar { width: 5px; background: #d3d6d5 url(../img/splitter.gif) no-repeat 50% 50%; }
-#splitter .vsplitbar.active, #splitter .vsplitbar:hover { background-color: #a5acb0; }
+#splitter { height: 510px; background:#fff }
+	.activeSplitter iframe { visibility:hidden;}
+#leftPane { width: 200px; min-width: 50px; float:left;}
+#rightPane { min-width: 50px; overflow: hidden; width:790px; float:left;}
+.vsplitbar { width: 5px; background: #d3d6d5 url(../img/splitter.gif) no-repeat 50% 50%; border-style:solid; border-width:1px; border-top-style:none; }
 #splitter iframe{ width:100%; height:100%; }
+
+.editSelected .operations *, 
+.wizardSelected .operations *, 
+.versionsSelected .operations *, 
+.securitySelected .operations *, 
+.exportimportSelected .operations *, 
+.globalizationSelected .operations *, 
+.linktrackerSelected .operations *,
+.usersSelected .operations *,
+.filemanagerSelected .operations *
+{
+    opacity:.5; filter:alpha(opacity=50);
+    alpha:.5;
+    color: #ccc;
+}

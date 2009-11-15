@@ -5,7 +5,9 @@ using N2.Edit.Wizard.Items;
 
 namespace N2.Edit.Wizard
 {
-	[ToolbarPlugin("", "wizard", "~/Edit/Wizard/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Wizard/Img/wand.png", 5, ToolTip = "create items in default locations", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("WIZARD", "wizard", "~/Edit/Wizard/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Wizard/Img/wand.png", 55, 
+        ToolTip = "create items in default locations", 
+        GlobalResourceClassName = "Toolbar")]
 	public partial class Default : Web.EditPage
 	{
 		protected TextBox txtTitle;
@@ -17,8 +19,8 @@ namespace N2.Edit.Wizard
 
             hlCancel.NavigateUrl = CancelUrl();
 
-			txtTitle.Text = SelectedItem.Title;
-			ItemDefinition d = Engine.Definitions.GetDefinition(SelectedItem.GetType());
+            txtTitle.Text = Selection.SelectedItem.Title;
+            ItemDefinition d = Engine.Definitions.GetDefinition(Selection.SelectedItem.GetType());
 			ddlTypes.DataSource = d.AllowedChildren;
 			ddlTypes.DataBind();
 		}
@@ -48,7 +50,7 @@ namespace N2.Edit.Wizard
 
 		protected virtual void btnAdd_Command(object  sender, CommandEventArgs args)
 		{
-			Wizard.AddLocation(SelectedItem, ddlTypes.SelectedValue, txtTitle.Text, string.Empty);
+            Wizard.AddLocation(Selection.SelectedItem, ddlTypes.SelectedValue, txtTitle.Text, string.Empty);
 			LoadLocations();
 		}
 	}

@@ -6,6 +6,7 @@ using N2.Web;
 using System.Web.UI;
 using System.Security.Principal;
 using N2.Web.UI.WebControls;
+using N2.Plugin;
 
 namespace N2.Edit
 {

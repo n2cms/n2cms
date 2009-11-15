@@ -20,7 +20,9 @@ namespace N2.Edit
         /// <summary>Gets folders paths on the server where users are allowed to upload content through the interface.</summary>
         IList<string> UploadFolders { get; }
 
-	    /// <summary>Gets the url for the navigation frame.</summary>
+		string EditTheme { get; }
+
+		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
 		/// <returns>An url.</returns>
 		string GetNavigationUrl(INode selectedItem);

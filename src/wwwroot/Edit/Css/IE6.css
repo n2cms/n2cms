@@ -1,26 +1,18 @@
-﻿.toolbar
-{
+﻿.toolbar{
     height:32px;
 }
-.itemEditor .editDetail
-{
+.itemEditor .editDetail{
 	height:1px;
 }
-
-fieldset
-{
+fieldset{
 	padding:0 10px 10px 10px;
-}
-fieldset legend
+}fieldset legend
 {
 	margin-bottom:5px;
 }
-
-fieldset.right
-{
+fieldset.right{
 	margin:0 10px;
 }
-fieldset.right legend
-{
+fieldset.right legend{
 	margin-bottom:0;
 }

@@ -162,12 +162,19 @@ var initn2context = function(w) {
 
         // toolbar selection
         select: function(name) {
-            jQuery("#" + name)
-	            .siblings().removeClass("selected").end()
-	            .addClass("selected").focus();
+            $s = jQuery("#" + name);
+            var selectedTarget = $s.find("a").attr("target");
+            $(".selected a").filter(function() { return this.target === selectedTarget || !this.target; })
+                .closest(".selected")
+                .each(function() {
+                    n2.unselect(this.id);
+                });
+            $s.addClass("selected");
+            jQuery(document.body).addClass(name + "Selected");
         },
         unselect: function(name) {
             jQuery("#" + name).removeClass("selected");
+            jQuery(document.body).removeClass(name + "Selected");
         }
     };
 
@@ -201,9 +208,11 @@ window.n2.frameManager = {
     },
     repaint: function() {
         var h = this.contentHeight();
-        jQuery("#splitter").trigger("resize")
-            .height(h)
-            .find("div,iframe").height(h);
+        jQuery("#splitter").trigger("resize").height(h);
+
+        var fh = h - $(".tools").height();
+        jQuery("#navigationFrame").height(fh);
+        jQuery("#previewFrame").height(fh);
     },
     contentHeight: function() {
         return $(document).height() - $('#top').height();

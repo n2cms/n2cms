@@ -6,7 +6,7 @@ namespace N2.Edit.Navigation
 	public class SortPluginAttribute : ToolbarPluginAttribute
 	{
 		public SortPluginAttribute()
-			: base("", "sortUp", "#", ToolbarArea.Navigation, "navigation", "", -40)
+			: base("", "sort", "#", ToolbarArea.Operations, "navigation", "", -40)
 		{
 			ToolTip = "move up";
 			GlobalResourceClassName = "Toolbar";

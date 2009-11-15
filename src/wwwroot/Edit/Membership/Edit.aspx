@@ -5,6 +5,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="Toolbar" runat="server">
    <asp:LinkButton ID="btnSave" runat="server" OnClick="btnSave_Click" 
 		CssClass="command" meta:resourcekey="btnSaveResource1">save</asp:LinkButton>
+   <asp:HyperLink ID="hlPassword" runat="server" NavigateUrl="Password.aspx" 
+		CssClass="command" meta:resourcekey="hlPasswordResource1">password</asp:HyperLink>
    <asp:HyperLink ID="hlBack" runat="server" NavigateUrl="Users.aspx" 
 		CssClass="command" meta:resourcekey="hlBackResource1">cancel</asp:HyperLink>
 </asp:Content>

@@ -1,2 +1,6 @@
-label	{float:left;width:100px;clear:left;}
-td		{text-align:left;}
+label
+{
+    width:100px;
+    float:left;
+    clear:left;
+}

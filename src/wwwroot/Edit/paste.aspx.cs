@@ -3,7 +3,7 @@ using System;
 namespace N2.Edit
 {
     [NavigationLinkPlugin("Paste", "paste", "../paste.aspx?selected={selected}&memory={memory}&action={action}", Targets.Preview, "~/edit/img/ico/page_paste.gif", 60, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("", "paste", "paste.aspx?selected={selected}&memory={memory}&action={action}", ToolbarArea.Navigation, Targets.Preview, "~/Edit/Img/Ico/page_paste.gif", 50, ToolTip = "paste", GlobalResourceClassName = "Toolbar")] 
+	[ToolbarPlugin("PASTE", "paste", "paste.aspx?selected={selected}&memory={memory}&action={action}", ToolbarArea.Operations, Targets.Preview, "~/Edit/Img/Ico/page_paste.gif", 50, ToolTip = "paste", GlobalResourceClassName = "Toolbar")] 
 	public partial class paste : Web.EditPage
 	{
 		protected void Page_Load(object sender, EventArgs e)

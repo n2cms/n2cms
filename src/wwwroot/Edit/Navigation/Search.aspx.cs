@@ -1,36 +1,37 @@
 using System;
 using System.Web.UI;
-using System.Text.RegularExpressions;
 using N2.Persistence.Finder;
+using N2.Resources;
 
 namespace N2.Edit.Navigation
 {
-	[ToolbarPlugin("", "search", "navigation/search.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/page_find.gif", -15, ToolTip = "search", GlobalResourceClassName = "Toolbar")]
+    [SearchControl]
 	public partial class Search : NavigationPage
 	{
-		protected override void OnLoad(EventArgs e)
+		protected override void OnInit(EventArgs e)
 		{
-			base.OnLoad(e);
-			this.txtQuery.Focus();
+			base.OnInit(e);
+
+			string query = Request.QueryString["query"];
+			if (!String.IsNullOrEmpty(query))
+			{
+				idsItems.Query = CreateQuery(query);
+				dgrItems.DataBind();
+			}
 		}
 
-		protected void btnSerach_Click(object sender, ImageClickEventArgs e)
+		private IQueryEnding CreateQuery(string searchQuery)
 		{
-			this.idsItems.Query = CreateQuery();
-			this.dgrItems.DataBind();
-		}
-
-		private IQueryEnding CreateQuery()
-		{
-			string likeQuery = "%" + this.txtQuery.Text + "%";
-			N2.Persistence.Finder.IQueryAction query = N2.Find.Items
+			string likeQuery = "%" + searchQuery + "%";
+			IQueryAction query = Find.Items
 				.Where.Name.Like(likeQuery)
 				.Or.SavedBy.Like(likeQuery)
 				.Or.Title.Like(likeQuery)
 				.Or.Detail().Like(likeQuery);
 
-			if (Regex.IsMatch(this.txtQuery.Text, @"^\d+$", RegexOptions.Compiled))
-				query = query.Or.ID.Eq(int.Parse(this.txtQuery.Text));
+			int id;
+			if (Int32.TryParse(searchQuery, out id))
+				query = query.Or.ID.Eq(id);
 
 			return query.Filters(Engine.EditManager.GetEditorFilter(Page.User));
 		}

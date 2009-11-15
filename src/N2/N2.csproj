@@ -380,6 +380,7 @@
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
     <Compile Include="Edit\EditableAdapter.cs" />
+    <Compile Include="Edit\SelectionUtility.cs" />
     <Compile Include="Edit\FileSystem\DefaultDirectorySelector.cs" />
     <Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
     <Compile Include="Edit\IDocumentBaseSource.cs" />

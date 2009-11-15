@@ -2,10 +2,11 @@ using System;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Edit.Web;
 
 namespace N2.Edit.Membership
 {
-	public partial class New : System.Web.UI.Page
+	public partial class New : EditPage
 	{
 		protected void createUserWizard_CreatedUser(object sender, EventArgs e)
 		{

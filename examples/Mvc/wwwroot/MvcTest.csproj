@@ -34,9 +34,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Microsoft.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="N2, Version=1.0.404.41662, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="N2, Version=1.0.500.39882, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\src\N2\bin\N2.dll</HintPath>
+      <HintPath>..\..\..\output\Framework\Bin\N2.dll</HintPath>
     </Reference>
     <Reference Include="N2.Extensions, Version=1.0.404.43151, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

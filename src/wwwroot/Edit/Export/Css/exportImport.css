@@ -1,15 +1,12 @@
-.upload input
-{
+body.edit .upload input{
 	vertical-align:top;
 }
-ul { margin:0; }
-li { list-style-type:none; margin:0; }
-li li { margin-left:20px; }
-.file img
-{
+body.edit ul { margin:0; }
+body.edit li { list-style-type:none; margin:0; }
+body.edit li li { margin-left:20px; }
+body.edit .file img{
 	vertical-align:middle;
 }
-.warning
-{
+body.edit .warning{
 	color:Red;
 }

@@ -9,7 +9,7 @@ namespace N2.Edit
 {
 	[NavigationSeparatorPlugin("copyPasteSeparator", 40)]
     [NavigationLinkPlugin("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "~/edit/img/ico/cut.gif", 42, GlobalResourceClassName = "Navigation")]
-    [ToolbarPlugin("", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Navigation, "", "~/Edit/Img/Ico/cut.gif", 30, ToolTip = "move", GlobalResourceClassName = "Toolbar")]
+    [ToolbarPlugin("CUT", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Operations, "", "~/Edit/Img/Ico/cut.gif", 30, ToolTip = "move", GlobalResourceClassName = "Toolbar")]
 	public partial class Move : EditPage
 	{
 		protected void Page_Load(object sender, EventArgs e)
@@ -24,7 +24,7 @@ namespace N2.Edit
                 	EnsureAuthorization(Permission.Write);
 					EnsureAuthorization(toMove, Permission.Write);
 
-					Engine.Persister.Move(toMove, SelectedItem);
+                    Engine.Persister.Move(toMove, Selection.SelectedItem);
                     Refresh(toMove, ToolbarArea.Both);
                 }
                 catch (NameOccupiedException ex)
@@ -60,22 +60,22 @@ namespace N2.Edit
 
 		private void LoadDefaultsAndInfo()
 		{
-			btnCancel.NavigateUrl = MemorizedItem.Url;
-			txtNewName.Text = MemorizedItem.Name;
+            btnCancel.NavigateUrl = Selection.MemorizedItem.Url;
+            txtNewName.Text = Selection.MemorizedItem.Name;
 
 			Title = string.Format(GetLocalResourceString("MovePage.TitleFormat"),
-			                      MemorizedItem.Title,
-			                      SelectedItem.Title);
+                                  Selection.MemorizedItem.Title,
+                                  Selection.SelectedItem.Title);
 
 			from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
-									  MemorizedItem.Parent != null ? MemorizedItem.Parent.Path : "",
-									  MemorizedItem.Path);
+                                      Selection.MemorizedItem.Parent != null ? Selection.MemorizedItem.Parent.Path : "",
+                                      Selection.MemorizedItem.Path);
 
 			to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
-			                        SelectedItem.Path,
-			                        MemorizedItem.Name);
+                                    Selection.SelectedItem.Path,
+                                    Selection.MemorizedItem.Name);
 
-			itemsToMove.CurrentItem = MemorizedItem;
+            itemsToMove.CurrentItem = Selection.MemorizedItem;
 			itemsToMove.DataBind();
 		}
 
@@ -84,8 +84,8 @@ namespace N2.Edit
 			try
 			{
 				MemorizedItem.Name = txtNewName.Text;
-				Engine.Persister.Move(MemorizedItem, SelectedItem);
-				Refresh(MemorizedItem, ToolbarArea.Both);
+                Engine.Persister.Move(Selection.MemorizedItem, Selection.SelectedItem);
+                Refresh(Selection.MemorizedItem, ToolbarArea.Both);
 			}
 			catch (NameOccupiedException ex)
 			{

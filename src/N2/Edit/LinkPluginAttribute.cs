@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using N2.Web;
 
 namespace N2.Edit
@@ -70,7 +71,7 @@ namespace N2.Edit
 
 		public override Control AddTo(Control container, PluginContext context)
 		{
-			HtmlAnchor a = AddAnchor(container, context);
+			HyperLink a = AddAnchor(container, context);
 
 			RegisterToolbarUrl(container, a.ClientID, Url.ToAbsolute(UrlFormat));
 
@@ -83,20 +84,24 @@ namespace N2.Edit
             container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
         }
 
-		protected virtual HtmlAnchor AddAnchor(Control container, PluginContext context)
+		protected virtual HyperLink AddAnchor(Control container, PluginContext context)
 		{
 			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
-			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
+			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title");
 
-			HtmlAnchor a = new HtmlAnchor();
+			if (String.IsNullOrEmpty(title))
+				title = Title;
+
+			HyperLink a = new HyperLink();
 			a.ID = "h" + Name;
-			a.HRef = context.Format(UrlFormat, true);
+			a.NavigateUrl = context.Format(UrlFormat, true);
+			a.SkinID = "ToolBarLink_" + Name;
 
 			a.Target = Target;
 			a.Attributes["class"] = "command";
-			a.Title = tooltip;
+			a.Text = tooltip;
 
-			a.InnerHtml = GetInnerHtml(IconUrl, tooltip, title);
+			a.Controls.Add(new LiteralControl(GetInnerHtml(IconUrl, tooltip, title)));
 
 			container.Controls.Add(a);
 			return a;

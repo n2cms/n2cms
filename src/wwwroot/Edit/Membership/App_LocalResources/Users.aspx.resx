@@ -180,4 +180,7 @@
   <data name="bcUserName.HeaderText" xml:space="preserve">
     <value>User name</value>
   </data>
+  <data name="tcUserName.HeaderText" xml:space="preserve">
+    <value>User Name</value>
+  </data>
 </root>

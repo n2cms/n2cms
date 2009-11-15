@@ -5,14 +5,13 @@ using N2.Definitions;
 using N2.Edit.Web;
 using N2.Web.UI.WebControls;
 using N2.Web;
-using System.Web.Security;
 using N2.Security;
 
 namespace N2.Edit
 {
     [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/page_edit.gif", 20, 
 		GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", 
+	[ToolbarPlugin("EDIT", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", 
 		GlobalResourceClassName = "Toolbar")]
 	[ControlPanelLink("cpEdit", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
 	[ControlPanelLink("cpEditPreview", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
@@ -40,7 +39,7 @@ namespace N2.Edit
                 hlCancel.NavigateUrl = CancelUrl();
 
 			if(Request["refresh"] == "true")
-				Refresh(SelectedItem, ToolbarArea.Navigation);
+                Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
 
 			InitPlugins();
 			InitItemEditor();
@@ -51,9 +50,9 @@ namespace N2.Edit
 
 		private void InitButtons()
 		{
-			btnSavePublish.Enabled = Engine.SecurityManager.IsAuthorized(User, SelectedItem, Permission.Publish);
-			btnPreview.Enabled = Engine.SecurityManager.IsAuthorized(User, SelectedItem, Permission.Write);
-			btnSaveUnpublished.Enabled = Engine.SecurityManager.IsAuthorized(User, SelectedItem, Permission.Write);
+            btnSavePublish.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Publish);
+            btnPreview.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
+            btnSaveUnpublished.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -62,7 +61,7 @@ namespace N2.Edit
 			LoadInfo();
 
 			if (!IsPostBack)
-				RegisterSetupToolbarScript(SelectedItem);
+                RegisterSetupToolbarScript(Selection.SelectedItem);
 
 			base.OnLoad(e);
 		}
@@ -185,7 +184,7 @@ namespace N2.Edit
 		{
 			foreach(EditToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-				plugin.AddTo(phPluginArea, new PluginContext(SelectedItem, MemorizedItem, ControlPanelState.Visible));
+                plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, MemorizedItem, ControlPanelState.Visible));
 			}
 		}
 
@@ -212,7 +211,7 @@ namespace N2.Edit
 			if(!string.IsNullOrEmpty(discriminator))
 			{
                 ie.Discriminator = Engine.Definitions.GetDefinition(discriminator).Discriminator;
-                ie.ParentPath = SelectedItem.Path;
+                ie.ParentPath = Selection.SelectedItem.Path;
 			}
 			else if (!string.IsNullOrEmpty(dataType))
 			{
@@ -223,11 +222,11 @@ namespace N2.Edit
                 if(d == null)
                     throw new N2Exception("Couldn't find any definition for type '" + t + "'");
                 ie.Discriminator = d.Discriminator;
-				ie.ParentPath = SelectedItem.Path;
+                ie.ParentPath = Selection.SelectedItem.Path;
 			}
 			else
 			{
-				ie.CurrentItem = SelectedItem;
+                ie.CurrentItem = Selection.SelectedItem;
 			}
 			ie.ZoneName = base.Page.Request["zoneName"];
 		}
