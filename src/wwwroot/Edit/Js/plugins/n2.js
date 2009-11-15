@@ -184,37 +184,31 @@ window.n2 = initn2context(window);
 
 window.n2.frameManager = {
     init: function() {
-        var t = this;
-        $(document).ready(function() {
-            t.repaint();
-            $("#splitter").splitter({
-                type: 'v',
-                cookie: 'n2spl',
-                anchorToWindow: true,
-                onStart: function() {
-                    this.parent().addClass("activeSplitter");
-                },
-                onStop: function() {
-                    this.parent().removeClass("activeSplitter");
-                    t.repaint();
-                },
-                sizeLeft: true
-            });
-            $(window).bind("resize", function() {
-                t.repaint();
-            });
-            setTimeout(function() { t.repaint.call(t); }, 100); // chrome hack
+        var self = this;
+        self.repaint();
+        $("#splitter").splitter({
+            type: 'v',
+            cookie: 'n2spl',
+            anchorToWindow: true,
+            onStart: function() {
+                this.parent().addClass("activeSplitter");
+            },
+            onStop: function() {
+                this.parent().removeClass("activeSplitter");
+                self.repaint();
+            },
+            sizeLeft: true
         });
+        $(window).bind("resize", function() {
+            self.repaint();
+        });
+        setTimeout(function() { self.repaint.call(self); }, 100); // chrome hack
     },
     repaint: function() {
-        var h = this.contentHeight();
-        jQuery("#splitter").trigger("resize").height(h);
-
-        var fh = h - $(".tools").height();
-        jQuery("#navigationFrame").height(fh);
-        jQuery("#previewFrame").height(fh);
+        var h = $(document).height() - $('#top').height();
+        jQuery("#splitter,.pane").height(h);
     },
     contentHeight: function() {
-        return $(document).height() - $('#top').height();
+        return ;
     }
 };

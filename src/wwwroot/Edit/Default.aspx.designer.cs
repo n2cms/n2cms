@@ -32,6 +32,15 @@ namespace N2.Edit {
         protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay previewPlugins;
         
         /// <summary>
+        /// hlLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlLogo;
+        
+        /// <summary>
         /// ToolbarPluginDisplay3 control.
         /// </summary>
         /// <remarks>

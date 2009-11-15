@@ -26,7 +26,7 @@
                                     NavigateUrl='<%# ((N2.INode)Container.DataItem).PreviewUrl %>'
                                     Title='<%# Eval("Published", "{0:yyy-MM-dd}") + " - " + Eval("Expires", "{0:yyy-MM-dd}") %>'
                                     rel='<%# Eval("Path") %>'>
-                                    <asp:Image ImageUrl='<%# Eval("IconUrl") %>' />
+                                    <asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
                                     <%# Eval("Title")%>
                                 </asp:HyperLink>
                                 <%# Eval("ZoneName", " ({0})") %>

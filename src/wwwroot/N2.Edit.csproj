@@ -428,13 +428,6 @@
     <Compile Include="Edit\Settings\SettingsEditor.ascx.designer.cs">
       <DependentUpon>SettingsEditor.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Edit\Toolbar.ascx.cs">
-      <DependentUpon>Toolbar.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Edit\Toolbar.ascx.designer.cs">
-      <DependentUpon>Toolbar.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Edit\Trash\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -995,7 +988,6 @@
     <Content Include="Edit\ItemSelection\Default.aspx" />
     <Content Include="Edit\ReferencingItems.ascx" />
     <Content Include="Edit\Settings\Default.aspx" />
-    <Content Include="Edit\Toolbar.ascx" />
     <Content Include="Edit\Versions.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -1288,9 +1280,6 @@
   <ItemGroup>
     <Content Include="Edit\img\n2.gif" />
     <Content Include="Edit\img\toolarea_bg.gif" />
-    <Content Include="Edit\img\toolarea_end.gif" />
-    <Content Include="Edit\img\toolarea_separator.gif" />
-    <Content Include="Edit\img\toolitem_hover.gif" />
     <Content Include="Edit\img\toolitem_separator.gif" />
     <Content Include="Edit\Navigation\LoadTree.ashx" />
   </ItemGroup>
@@ -1877,6 +1866,11 @@
     </Content>
     <Content Include="Edit\Css\edit.css" />
     <Content Include="Edit\Css\navigation.css" />
+    <Content Include="Edit\img\fieldset_bg.png" />
+    <Content Include="Edit\img\n2.png" />
+    <Content Include="Edit\img\tab_button_bg.png" />
+    <Content Include="Edit\img\toolbar_button_bg.png" />
+    <Content Include="Edit\img\toolbar_button_bg_hover.png" />
     <Content Include="Edit\Js\plugins\jquery.n2glow.js" />
     <Content Include="Edit\App_LocalResources\mk-MK\AffectedItems.ascx.mk.resx">
       <SubType>Designer</SubType>
