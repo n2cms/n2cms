@@ -1,4 +1,6 @@
-﻿- merged steve mason's redesign
+﻿- upgraded rhino mocks to 3.6
+- removed .net2.0 configuration
+- merged steve mason's redesign branch
 - added example of Link.To fluent interface
 - added example of Tree.Between fluent interface
 - added example of Tree.From fluent interface

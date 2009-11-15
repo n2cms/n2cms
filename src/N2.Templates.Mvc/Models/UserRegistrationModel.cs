@@ -100,5 +100,14 @@ namespace N2.Templates.Mvc.Models
 			}
 			return String.Empty;
 		}
-	}
+
+        #region IViewModelContainer<UserRegistrationModel> Members
+
+        public HtmlHelper Html
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+    }
 }

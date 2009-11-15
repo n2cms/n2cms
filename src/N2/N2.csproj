@@ -27,10 +27,6 @@
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
   </PropertyGroup>
-  <PropertyGroup>
-    <SpecialTargetConstants Condition="'$(NHVersion)' == '2.1'">NET3_5;NH2_1;</SpecialTargetConstants>
-    <LibPath>..\..\lib\net3.5</LibPath>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -53,56 +49,44 @@
     <DocumentationFile>bin\N2.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NET2.0|AnyCPU' ">
-    <LibPath>..\..\lib\net2.0</LibPath>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\NET2.0\</OutputPath>
-    <DefineConstants>TRACE;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\N2.XML</DocumentationFile>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.0.3.4831, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core, Version=1.1.0.5853, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\Castle.Core.dll</HintPath>
+      <HintPath>..\..\lib\net3.5\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Castle.DynamicProxy2, Version=2.0.3.4831, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\Castle.DynamicProxy2.dll</HintPath>
+      <HintPath>..\..\lib\net3.5\Castle.DynamicProxy2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Castle.MicroKernel, Version=1.0.3.4994, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\Castle.MicroKernel.dll</HintPath>
+      <HintPath>..\..\lib\net3.5\Castle.MicroKernel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Castle.Windsor, Version=1.0.3.4994, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\Castle.Windsor.dll</HintPath>
+      <HintPath>..\..\lib\net3.5\Castle.Windsor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Iesi.Collections, Version=2.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\Iesi.Collections.dll</HintPath>
+      <HintPath>..\..\lib\net3.5\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\log4net.dll</HintPath>
+      <HintPath>..\..\lib\net3.5\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\NHibernate.dll</HintPath>
+      <HintPath>..\..\lib\net3.5\NHibernate.dll</HintPath>
     </Reference>
     <Reference Condition="'$(Configuration)' != 'NET2.0' " Include="NHibernate.ByteCode.Castle, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(LibPath)\NHibernate.ByteCode.Castle.dll</HintPath>
+      <HintPath>..\..\lib\net3.5\NHibernate.ByteCode.Castle.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
