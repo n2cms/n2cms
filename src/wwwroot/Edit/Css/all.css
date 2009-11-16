@@ -53,7 +53,7 @@ body.edit .toolbar .rightAligned{
     background:#79C; 
     border-bottom-color:#ddd;
 }
-.tools,
+.subbar,
 #splitter .vsplitbar
 {
     background-color:#ccb; 
@@ -68,7 +68,8 @@ body.edit .toolbar .rightAligned{
     background:#ddc;
 	border-color:#ccc;
 }
-.gv .alt td { background-color:#F0F0E0; }
+body,
+.gv .alt td { background-color:#F8F8E8; }
 
 .toolbar .toggled,
 .toolbar .command:hover{

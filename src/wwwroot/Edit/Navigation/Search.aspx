@@ -9,7 +9,6 @@
         <asp:PlaceHolder runat="server">
 		<link rel="stylesheet" href="<%=MapCssUrl("all.css")%>" type="text/css" />
 		<link rel="stylesheet" href="<%=MapCssUrl("framed.css")%>" type="text/css" />
-		<link rel="stylesheet" href="<%=MapCssUrl("navigation.css")%>" type="text/css" />
 		</asp:PlaceHolder>
         <script src="../Js/jquery.ui.ashx" type="text/javascript" ></script>
     </head>
@@ -18,7 +17,7 @@
         <asp:Panel runat="server" CssClass="list">
             <n2:ItemDataSource ID="idsItems" runat="server" />
             <div id="nav" class="nav">
-                <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" DataMember="Query" runat="server" DataKeyField="ID" AutoGenerateColumns="false" CssClass="gv" AlternatingItemStyle-CssClass="alt" UseAccessibleHeader="true" ShowHeader="false">
+                <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" DataMember="Query" runat="server" DataKeyField="ID" AutoGenerateColumns="false" CssClass="gv striped" AlternatingItemStyle-CssClass="alt" UseAccessibleHeader="true" ShowHeader="false">
                     <Columns>
                         <asp:TemplateColumn HeaderText="Title" meta:resourceKey="colTitle" >
                             <ItemTemplate>

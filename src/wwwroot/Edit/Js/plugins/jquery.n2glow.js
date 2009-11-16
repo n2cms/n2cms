@@ -5,6 +5,7 @@
 (function($) {
     var left = 0;
     var width = 80;
+    var bgWidth = 80;
 
     var over = function() {
         var $t = $(this);
@@ -14,12 +15,13 @@
     };
 
     var out = function(e) {
-        $(this).css({ backgroundPosition: "50% 100px" });
+        var pixels = .5 * width - bgWidth / 2;
+        $(this).animate({ backgroundPosition: pixels + "px 50px" });
     }
 
     var move = function(e) {
-        var percent = (width - e.clientX + left) / width * 100;
-        $(this).css({ backgroundPosition: percent + "% 0px" });
+        var pixels = (e.clientX - left) - bgWidth / 2;
+        $(this).css({ backgroundPosition: pixels + "px 10px" });
     };
 
     $.fn.n2glow = function() {

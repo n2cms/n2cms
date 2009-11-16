@@ -186,6 +186,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Addons\UITests\UI\Css.aspx" />
     <Content Include="Addons\UITests\UI\Html_Tree.Between.aspx" />
     <Content Include="Addons\UITests\UI\Html_Link.To.aspx" />
     <Content Include="Addons\UITests\UI\Displayable_DataBind.aspx" />

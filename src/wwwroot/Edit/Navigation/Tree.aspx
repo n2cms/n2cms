@@ -10,7 +10,6 @@
         <asp:PlaceHolder runat="server">
 		<link rel="stylesheet" href="<%=MapCssUrl("all.css")%>" type="text/css" />
 		<link rel="stylesheet" href="<%=MapCssUrl("framed.css")%>" type="text/css" />
-		<link rel="stylesheet" href="<%=MapCssUrl("navigation.css")%>" type="text/css" />
 		</asp:PlaceHolder>
         <script src="../Js/jquery.ui.ashx" type="text/javascript" ></script>
     </head>

@@ -13,11 +13,15 @@ namespace N2.Edit.Navigation
 			base.OnInit(e);
 
 			string query = Request.QueryString["query"];
-			if (!String.IsNullOrEmpty(query))
-			{
-				idsItems.Query = CreateQuery(query);
-				dgrItems.DataBind();
-			}
+            if (string.IsNullOrEmpty(query))
+            {
+                Response.Redirect("Tree.aspx");
+            }
+            else
+            {
+                idsItems.Query = CreateQuery(query);
+                dgrItems.DataBind();
+            }
 		}
 
 		private IQueryEnding CreateQuery(string searchQuery)
@@ -33,7 +37,9 @@ namespace N2.Edit.Navigation
 			if (Int32.TryParse(searchQuery, out id))
 				query = query.Or.ID.Eq(id);
 
-			return query.Filters(Engine.EditManager.GetEditorFilter(Page.User));
+			return query.MaxResults(1000)
+                .OrderBy.Updated.Desc
+                .Filters(Engine.EditManager.GetEditorFilter(Page.User));
 		}
 	}
 }
