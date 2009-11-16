@@ -20,13 +20,13 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
         .toolbox .item.selected a.command { background-color:#fff; background-image:none; color:#000; cursor:auto; }
            .toolbox .item .command img { margin:2px 3px 0 0; }
 
-.header { border-bottom: solid 1px #999; padding:10px; background-image:url(../img/darken10.png); background-repeat:repeat-x; background-position:0px 20px;}
+.header { padding:10px; border-bottom: solid 1px #999; background:transparent url(../img/darken10.png) repeat-x 0px bottom;}
     .header .toolbox { float:left; border-bottom:none; margin-right:10px; }
         .header .toolbox .item { background:#fff url(../img/toolbar_button_bg.png) no-repeat 50% 3px; }
             .header .toolbox .item .command  { padding:6px; position:relative; background:transparent url(../img/toolbar_button_bg.png) no-repeat 50% 50px; }
             .header .toolbox .item a:hover { background-image:url(../img/toolbar_button_bg_hover.png); }
 
-.subbar { border-bottom:solid 1px #999; background-image:url(../img/lighten10.png); background-repeat:repeat-x; background-position:0px bottom;}
+.subbar { border-bottom:solid 1px #999; background:transparent url(../img/lighten10.png) repeat-x 0px bottom;}
     .subbar .operations { float:left; }
     .subbar .options { float:right; }
 

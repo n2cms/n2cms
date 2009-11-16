@@ -3,8 +3,8 @@
 
 body .header
 {
-    background:#79C; 
-    border-bottom-color:#ddd;
+    background-color:#79C; 
+    border-color:#ddd;
 }
 body .subbar,
 body #splitter .vsplitbar
