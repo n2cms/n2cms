@@ -25,18 +25,32 @@ namespace N2.Edit.Web
 
 		void EditPage_PreInit(object sender, EventArgs e)
 		{
-			SetupTheming();
+			SetupAspNetTheming();
 		}
 		
 		protected override void OnInit(EventArgs e)
 		{
 			RegisterScripts();
+            RegisterThemeCss();
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
-			base.OnInit(e);
+			
+            base.OnInit(e);
 		}
 
-		private void SetupTheming()
-		{
+        private void RegisterThemeCss()
+        {
+            string theme = "default.css";
+            var themeCookie = Request.Cookies["TH"];
+            if (themeCookie != null && !string.IsNullOrEmpty(themeCookie.Value))
+                theme = themeCookie.Value;
+
+            Register.StyleSheet(this, "~/edit/css/themes/" + theme);
+        }
+
+		private void SetupAspNetTheming()
+		{            
+            // asp.net themes are a bit cumbersome to work and deploy 
+            // so I think this is going to be deprecated some time in the future
 			if(EnableTheming)
 				Theme = Engine.EditManager.EditTheme;
 		}

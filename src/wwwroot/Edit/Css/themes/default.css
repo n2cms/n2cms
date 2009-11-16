@@ -1,0 +1,35 @@
+﻿
+/* DEFUALT THEME */
+
+body .header
+{
+    background:#79C; 
+    border-bottom-color:#ddd;
+}
+body .subbar,
+body #splitter .vsplitbar
+{
+    background-color:#ccb; 
+    border-color:#aa9;
+}
+body .toolbar, 
+body .optionGroup,
+body .commandOptions .opener,
+body .gv th,
+body .gv thead td
+{
+    background:#ddc;
+	border-color:#ccc;
+}
+body,
+body .gv .alt td { background-color:#F8F8E8; }
+
+body .toolbar .toggled,
+body .toolbar .command:hover
+{
+	border-color:#bbb;
+}
+body .toolbar a
+{
+	color:#333;
+}

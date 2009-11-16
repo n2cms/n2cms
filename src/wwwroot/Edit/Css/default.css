@@ -7,9 +7,11 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 
 #search{ background:transparent; padding:0; }
 	#search form { background-color:transparent; padding:0; margin:0; }
-    	#search input { height:28px; padding:0 4px; float:left; margin:0; border:none; background-image:url(../img/darken10.png); background-repeat:repeat-x; }
+    	#search input, #search button { border:solid 1px #fff; height:28px; padding:4px; float:left; margin:0; }
+    	#search input { height:18px; width:80px; color:#999; background-image:url(../img/darken10.png); background-repeat:repeat-x; }
     	#search input:focus { background-image:none; }
-    	#search input.tb { height:18px; padding:5px 4px; }
+    	#search button { text-indent:-100px; width:30px; background:#fff url(../img/ico/find.gif) no-repeat 50% 50%}
+    	#search button:hover { border:solid 1px #ccf; }
 
 .toolbox { font-size: 10px; overflow:hidden; font-family: 'Lucida Console', Monaco, monospace; }
     .toolbox .item { overflow:hidden; float:left; text-align:center; border-left:solid 1px #fff; border-right:solid 1px #d8d8d8; background-color:#fff; }
@@ -18,13 +20,13 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
         .toolbox .item.selected a.command { background-color:#fff; background-image:none; color:#000; cursor:auto; }
            .toolbox .item .command img { margin:2px 3px 0 0; }
 
-.header { border-bottom-style: solid; border-bottom-width:1px; padding:10px; background-image:url(../img/darken10.png); background-repeat:repeat-x; background-position:0px 20px;}
+.header { border-bottom: solid 1px #999; padding:10px; background-image:url(../img/darken10.png); background-repeat:repeat-x; background-position:0px 20px;}
     .header .toolbox { float:left; border-bottom:none; margin-right:10px; }
         .header .toolbox .item { background:#fff url(../img/toolbar_button_bg.png) no-repeat 50% 3px; }
             .header .toolbox .item .command  { padding:6px; position:relative; background:transparent url(../img/toolbar_button_bg.png) no-repeat 50% 50px; }
             .header .toolbox .item a:hover { background-image:url(../img/toolbar_button_bg_hover.png); }
 
-.subbar { border-bottom-style:solid; border-bottom-width:1px; background-image:url(../img/lighten10.png); background-repeat:repeat-x; background-position:0px bottom;}
+.subbar { border-bottom:solid 1px #999; background-image:url(../img/lighten10.png); background-repeat:repeat-x; background-position:0px bottom;}
     .subbar .operations { float:left; }
     .subbar .options { float:right; }
 
@@ -45,7 +47,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 	.activeSplitter iframe { visibility:hidden;}
 #leftPane { width: 200px; min-width: 50px; float:left;}
 #rightPane { min-width: 50px; overflow: hidden; width:790px; float:left;}
-.vsplitbar { width: 5px; background: #d3d6d5 url(../img/splitter.gif) no-repeat 50% 50%; border-style:solid; border-width:1px; border-top-style:none; }
+.vsplitbar { width: 3px; background: #d3d6d5 url(../img/splitter.gif) no-repeat 50% 50%; border:solid 1px #999; border-top-style:none; }
 #splitter iframe{ width:100%; height:100%; }
 
 .editSelected .operations *, 

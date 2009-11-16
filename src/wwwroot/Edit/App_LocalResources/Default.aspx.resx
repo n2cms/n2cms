@@ -163,7 +163,7 @@
     <value>Search items</value>
   </data>
   <data name="settings.Title" xml:space="preserve">
-    <value>CMS Settings</value>
+    <value>SETTINGS</value>
   </data>
   <data name="settings.ToolTip" xml:space="preserve">
     <value>Settings</value>

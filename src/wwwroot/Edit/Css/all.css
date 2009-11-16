@@ -46,39 +46,3 @@ body.edit .commandOptions{
 body.edit .toolbar .rightAligned{
 	float:right;
 }
-
-/* DEFUALT THEME */
-.header
-{
-    background:#79C; 
-    border-bottom-color:#ddd;
-}
-.subbar,
-#splitter .vsplitbar
-{
-    background-color:#ccb; 
-    border-color:#aa9;
-}
-.toolbar, 
-.optionGroup,
-.commandOptions .opener,
-.gv th,
-.gv thead td
-{
-    background:#ddc;
-	border-color:#ccc;
-}
-body,
-.gv .alt td { background-color:#F8F8E8; }
-
-.toolbar .toggled,
-.toolbar .command:hover{
-	border-color:#bbb;
-}
-.toolbar a
-{
-	color:#333;
-}
-.tabs
-{
-}

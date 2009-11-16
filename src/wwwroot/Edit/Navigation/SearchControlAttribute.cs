@@ -18,8 +18,8 @@ namespace N2.Edit.Navigation
             Literal l = new Literal();
             l.Text = string.Format(@"
 <form target='navigation' method='get' action='Navigation/Search.aspx'>
-    <input type='text' name='query' class='tb'/>
-    <input type='submit' value='{0}' name='submit' class='s'/>
+    <input type='text' name='query' class='tb' value='{0}' onfocus='if(this.value==""{0}""){{this.value=""""}}' onblur='if(this.value==""""){{this.value=""{0}"";}}'/>
+    <button type='submit' name='submit' class='s'>{0}</button>
 </form>", Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title);
             container.Controls.Add(l);
 

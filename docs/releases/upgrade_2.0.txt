@@ -1,0 +1,6 @@
+THIS IS PRE-RELEASE INFORMATION AND MAY CHANGE BEFORE RELEASE
+
+Make a complete backup (including database), delete /edit, any /Templates folders, drop upgrade files and recompile your solution.
+
+Breaking changes:
+- .NET 3.5 (or greater) is now required

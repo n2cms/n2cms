@@ -1852,6 +1852,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Edit\Css\edit.css" />
+    <Content Include="Edit\Css\themes\default.css" />
+    <Content Include="Edit\Css\themes\ink.css" />
     <Content Include="Edit\img\fieldset_bg.png" />
     <Content Include="Edit\img\n2.png" />
     <Content Include="Edit\img\tab_button_bg.png" />
