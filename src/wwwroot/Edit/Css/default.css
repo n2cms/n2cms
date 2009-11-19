@@ -3,7 +3,6 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 
 /* Toolbar */
 #top{ position:relative; }
-#top .logo{ position:absolute; right:10px; top:10px; height:30px; }
 
 #search{ background:transparent; padding:0; }
 	#search form { background-color:transparent; padding:0; margin:0; }
@@ -25,6 +24,9 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
         .header .toolbox .item { background:#fff url(../img/toolbar_button_bg.png) no-repeat 50% 3px; }
             .header .toolbox .item .command  { padding:6px; position:relative; background:transparent url(../img/toolbar_button_bg.png) no-repeat 50% 50px; }
             .header .toolbox .item a:hover { background-image:url(../img/toolbar_button_bg_hover.png); }
+
+#top .logo{ position:absolute; right:10px; top:10px; height:30px; }
+#top .logout { position: absolute; right:60px; top:18px; color:#fff; }
 
 .subbar { border-bottom:solid 1px #999; background:transparent url(../img/lighten10.png) repeat-x 0px bottom;}
     .subbar .operations { float:left; }

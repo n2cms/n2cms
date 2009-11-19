@@ -214,6 +214,6 @@
     <value>&lt;img src='img/ico/key.gif' alt='logout'/&gt;</value>
   </data>
   <data name="logout.ToolTipFormat" xml:space="preserve">
-    <value>Logout {0}</value>
+    <value>Log out {0}</value>
   </data>
 </root>

@@ -23,6 +23,7 @@
                     <edit:ToolbarPluginDisplay ID="previewPlugins" Area="Preview" runat="server" />
                 </div>
 
+                <asp:HyperLink ID="logout" runat="server" CssClass="logout" NavigateUrl="Login.aspx?logout=true" Text="Log out" />
                 <asp:HyperLink ID="hlLogo" runat="server" SkinID="Logo" CssClass="logo" NavigateUrl="http://n2cms.com" Text="To the home of N2 CMS" ImageUrl="~/Edit/img/n2.png" />
                 
                 <div class="subbar cf">
@@ -47,9 +48,9 @@
 			window.n2ctx.hasTop = function() { return true; }
 			window.n2ctx.setupToolbar('<%= SelectedPath %>', '<%= ResolveClientUrl(SelectedUrl) %>');
 
+			window.n2.frameManager.init();
 			jQuery(document).ready(function() {
-			    window.n2.frameManager.init();
-    			jQuery(".command").n2glow();
+			    jQuery(".command").n2glow();
 			    jQuery(".operations a").click(function(e) {
 			        if (jQuery(document.body).is(".editSelected, .wizardSelected, .versionsSelected, .securitySelected, .exportimportSelected, .globalizationSelected, .linktrackerSelected, .usersSelected, .filemanagerSelected")) {
 			            e.preventDefault();

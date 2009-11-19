@@ -23,6 +23,7 @@ using System;
 namespace N2.Edit
 {
 	/// <summary>An area in which to place edit mode plugins.</summary>
+    [Flags]
 	public enum ToolbarArea
 	{
 		None = 0,
@@ -40,7 +41,6 @@ namespace N2.Edit
 		/// <summary>
 		/// Before the search box, above the tool bar.
 		/// </summary>
-		Search = 5,
-        Options = 6
+		Options = 8
 	}
 }

@@ -31,7 +31,7 @@ namespace N2.Edit.Settings
 				if(editor is ISettingsEditor)
 					(editor as ISettingsEditor).Save();
 			}
-            Response.Redirect(GetNavigationUrl(Selection.SelectedItem));
+            Refresh(Selection.SelectedItem);
 		}
 	}
 }

@@ -140,6 +140,19 @@ if(window.n2ctx){{
 	window.n2ctx.refreshPreview('{1}', '{2}');
 }}";
 
+        protected virtual void Refresh(ContentItem item)
+        {
+            string script = string.Format("window.top.location = '{0}';", Engine.EditManager.GetEditInterfaceUrl(Selection.SelectedItem));
+
+            ClientScript.RegisterClientScriptBlock(
+                typeof(EditPage),
+                "RefreshScript",
+                script, true);
+        }
+
+        /// <summary>Referesh the selected frames after loading the page.</summary>
+        /// <param name="item"></param>
+        /// <param name="area"></param>
 		protected virtual void Refresh(ContentItem item, ToolbarArea area)
 		{
 			string format;
@@ -160,7 +173,7 @@ if(window.n2ctx){{
 
 			ClientScript.RegisterClientScriptBlock(
 				typeof(EditPage),
-				"AddRefreshEditScript",
+				"RefreshFramesScript",
 				script, true);
 		}
 

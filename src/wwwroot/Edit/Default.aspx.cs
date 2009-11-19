@@ -1,5 +1,6 @@
 using System;
 using N2.Web.UI.WebControls;
+using System.Web.Security;
 
 namespace N2.Edit
 {
@@ -21,6 +22,7 @@ namespace N2.Edit
 
 		protected override void OnInit(EventArgs e)
 		{
+            logout.ToolTip = string.Format(GetLocalResourceString("logout.ToolTipFormat"), User.Identity.Name);
 			try
 			{
                 selectedPath = Selection.SelectedItem.Path;

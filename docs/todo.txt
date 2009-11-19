@@ -1,4 +1,17 @@
-- improve theming experience
+- mvc templates
+	- 960 grid
+	- globalization
+	- drag'n'drop
+- improve editor theming experience
+- update data model
+	- reference to start page
+	- version number
+	- valid until
+	- changed permissions flags
+	- split pages and parts
+	- remove authorized roles
+	- IdPath
+	- sort order on details
 - allow custom user type
 - make all objects editable
 - deprecate and replace mail stuff
@@ -16,15 +29,6 @@
 - filter plugins
 - edit tree adapter
 - templates adapter
-- update data model
-	- reference to start page
-	- version number
-	- valid until
-	- changed permissions flags
-	- split pages and parts
-	- remove authorized roles
-	- IdPath
-	- sort order on details
 - drag nested items in ie
 - XML Store instead of DB
 - eager load item's child collections
