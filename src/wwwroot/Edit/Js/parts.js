@@ -1,6 +1,5 @@
 ﻿(function($) {
-
-    n2dragging = false;
+    var isDragging = false;
 
     window.DragDrop = function(dz, dp, di, urls, messages) {
         this.dropPoints = dp;
@@ -20,7 +19,7 @@
 
     window.DragDrop.prototype = {
         dragHelper: function(ev) {
-            n2dragging = true;
+            isDragging = true;
             var $t = $(this);
             $(document.body).addClass("dragging");
             var shadow = document.createElement('div');
@@ -31,8 +30,10 @@
         },
 
         dragStop: function(ev) {
+            $(this).removeClass("dragged").siblings(".adjacent").removeClass("adjacent");
+            $(ev.originalTarget).effect("transfer", { to: this, className: 'ui-effects-transfer' });
             $(document.body).removeClass("dragging");
-            setTimeout(function() { n2dragging = false; }, 100);
+            setTimeout(function() { isDragging = false; }, 100);
         },
 
         init: function(t, dz) {
@@ -67,6 +68,7 @@
                 scroll: true,
                 stop: t.dragStop,
                 start: function() {
+                    $(this).addClass("dragged").next(".dropPoint").addClass("adjacent").end().prev(".dropPoint").addClass("adjacent");
                     var s = this;
                     t.dropHandler = function(d, ctrl) {
                         if (ctrl)
@@ -94,7 +96,7 @@
         },
 
         droppableZones: function(t, dz) {
-            var htmlBackup, heightBackup;
+            var currentlyOver = null;
             for (var i = 0; i < dz.length; ++i) {
                 $(dz[i].selector).droppable({
                     accept: dz[i].accept,
@@ -104,22 +106,26 @@
                     drop: function(ev, ui) {
                         $(ui.draggable).html("");
                         $(this).append("<div class='dropping'/>");
-                        if (n2dragging) {
-                            n2dragging = false;
+                        if (isDragging) {
+                            isDragging = false;
                             t.dropHandler(this.id, ev.ctrlKey);
                         }
                     },
                     over: function(e, ui) {
+                        currentlyOver = this;
                         var $t = $(this);
-                        htmlBackup = $t.html();
-                        heightBackup = $t.height();
+                        $t.data("html", $t.html()).data("height", $t.height());
                         $t.html(ui.draggable.html()).css("height", "auto");
-                        ui.draggable.fadeTo("fast", .2);
+                        //ui.draggable.css("visibility", "hidden");
                         ui.helper.height($t.height()).width($t.width());
                     },
                     out: function(e, ui) {
-                        $(this).html(htmlBackup).height(heightBackup);
-                        ui.draggable.fadeTo("fast", 1);
+                        if (currentlyOver === this) {
+                            currentlyOver = null;
+                            //ui.draggable.css("visibility", "visible");
+                        }
+                        var $t = $(this);
+                        $t.html($t.data("html")).height($t.data("height"));
                     }
                 });
             }

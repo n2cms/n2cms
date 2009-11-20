@@ -5,37 +5,42 @@
     <title>Log in</title>
     <link rel="stylesheet" href="Css/All.css" type="text/css" />
     <style type="text/css">
-        body.login { background:#c3c0bd url(img/login_bg.gif) repeat-x; }
-        body.login td { text-align:left; }
+        body { background:#AAAA99; }
         
-        body.login #login-container{
-			-moz-border-radius: 5px;
-			-webkit-border-radius : 5px;
+        #login-container{
+			-moz-border-radius: 1px;
+			-webkit-border-radius : 1px;
 
-			background-color: #FFFFFF;
-			border: solid 1px #BBB8B3;
-			margin: 200px auto;
-			width:  300px;
-			height: 250px;
+			border: solid 1px #F8F8E8;
+			margin: 150px auto 0 auto;
+			width:  350px;
+			background: #F8F8E8 url(img/darken10.png) repeat-x 100% 100%;
         }
-        body.login .login{
-        	padding-left:20px; 
-        	padding-right:20px;
+        #login-container .inner	
+        {
+			margin:0 auto;
+			padding:30px;
+            background:transparent url(img/lighten10.png) repeat-x;
         }
-        body.login .login-button { width:75px;font-size:1.2em;float:right;}
+        table.login { margin:0 auto; }
+        h1 { margin-bottom:20px; }
+        .login-label { display:block; text-align:right }
+        .login-button { margin-top:5px; width:100px;font-size:1.2em;float:right;}
     </style>
 </head>
 <body class="edit login">
     <form id="form1" runat="server">
-		<div id="login-container">
-			<img src="img/login_logo.png" alt="N2 logo" title="N2 logo" style="margin-top:5px" />
-			<div class="login">
-				<asp:Login ID="Login1" TitleText="<h1>Log in</h1>" runat="server" meta:resourceKey="Login1"
-					MembershipProvider="AspNetSqlMembershipProvider" OnAuthenticate="Login1_Authenticate">
-					<LoginButtonStyle CssClass="login-button" />
-				</asp:Login>
-			</div>
+		<div >
         </div>
+		<div id="login-container">
+		    <div class="inner">
+			<asp:Login ID="Login1" TitleText="<h1>Log in</h1>" runat="server" meta:resourceKey="Login1" CssClass="login"
+				MembershipProvider="AspNetSqlMembershipProvider" OnAuthenticate="Login1_Authenticate">
+				<LoginButtonStyle CssClass="login-button" />
+				<LabelStyle CssClass="login-label" />
+				<TextBoxStyle CssClass="login-input" />
+			</asp:Login></div>
+		</div>
     </form>
 </body>
 </html>
