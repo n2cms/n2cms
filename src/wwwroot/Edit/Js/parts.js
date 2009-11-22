@@ -31,7 +31,6 @@
 
         dragStop: function(ev) {
             $(this).removeClass("dragged").siblings(".adjacent").removeClass("adjacent");
-            $(ev.originalTarget).effect("transfer", { to: this, className: 'ui-effects-transfer' });
             $(document.body).removeClass("dragging");
             setTimeout(function() { isDragging = false; }, 100);
         },
