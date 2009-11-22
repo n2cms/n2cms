@@ -984,6 +984,7 @@
     <Content Include="App_GlobalResources\Toolbar.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Toolbar.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

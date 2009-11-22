@@ -1,0 +1,563 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MvcContrib.TestHelper</name>
+    </assembly>
+    <members>
+        <member name="T:MvcContrib.TestHelper.ActionResultAssertionException">
+            <summary>
+            Exception that is thrown when a ActionResult assertion fails.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultAssertionException.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:MvcContrib.TestHelper.ActionResultAssertionException"/> class.
+            </summary>
+            <param name="message">Message thrown in the exception.</param>
+        </member>
+        <member name="T:MvcContrib.TestHelper.ActionResultHelper">
+            <summary>
+            Contains extension methods for testing action results.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.AssertResultIs``1(System.Web.Mvc.ActionResult)">
+            <summary>
+            Asserts that the ActionResult is of the specified type.
+            </summary>
+            <typeparam name="T">Type of action result to convert to.</typeparam>
+            <param name="result">Action Result to convert.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.AssertViewRendered(System.Web.Mvc.ActionResult)">
+            <summary>
+            Asserts that the action result is a RenderViewResult.
+            </summary>
+            <param name="result">The result to convert.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.AssertPartialViewRendered(System.Web.Mvc.ActionResult)">
+            <summary>
+            Asserts that the action result is a RenderPartialViewResult
+            </summary>
+            <param name="result">The result to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.AssertHttpRedirect(System.Web.Mvc.ActionResult)">
+            <summary>
+            Asserts that the action result is a HttpRedirectResult.
+            </summary>
+            <param name="result">The result to convert.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.AssertActionRedirect(System.Web.Mvc.ActionResult)">
+            <summary>
+            Asserts that the action result is an ActionRedirectResult.
+            </summary>
+            <param name="result">The result to convert.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.ToController(System.Web.Mvc.RedirectToRouteResult,System.String)">
+            <summary>
+            Asserts that an ActionRedirectResult is for the specified controller.
+            </summary>
+            <param name="result">The result to check.</param>
+            <param name="controller">The name of the controller.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.ToAction(System.Web.Mvc.RedirectToRouteResult,System.String)">
+            <summary>
+            Asserts that an ActionRedirectReslt is for the specified action.
+            </summary>
+            <param name="result">The result to check.</param>
+            <param name="action">The name of the action.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.ToAction``1(System.Web.Mvc.RedirectToRouteResult,System.Linq.Expressions.Expression{System.Action{``0}})">
+            <summary>
+            Asserts that an ActionRedirectResult is for the specified action on the specified controller
+            </summary>
+            <typeparam name="TController">The type of the controller.</typeparam>
+            <param name="result">The result to check.</param>
+            <param name="action">The action to call on the controller.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.WithParameter(System.Web.Mvc.RedirectToRouteResult,System.String,System.Object)">
+            <summary>
+            Asserts that an ActionRedirectResult contains a specified value in its RouteValueCollection.
+            </summary>
+            <param name="result">The result to check.</param>
+            <param name="paramName">The name of the parameter to check for.</param>
+            <param name="value">The expected value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.GetStronglyTypedParameter(System.Web.Mvc.RedirectToRouteResult,System.Web.Mvc.Controller,System.String)">
+            <summary>
+            Gets a parameter from a RedirectToRouteResult.
+            </summary>
+            <param name="result">The result to check.</param>
+            <param name="controller">The controller that you redirected FROM.</param>
+            <param name="paramName">The name of the parameter to check for.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.ForView(System.Web.Mvc.ViewResult,System.String)">
+            <summary>
+            Asserts that a RenderViewResult is rendering the specified view.
+            </summary>
+            <param name="result">The result to check.</param>
+            <param name="viewName">The name of the view.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.ForView(System.Web.Mvc.PartialViewResult,System.String)">
+            <summary>
+            Asserts that a RenderPartialViewResult is rendering the specified partial view
+            </summary>
+            <param name="result">The result to check</param>
+            <param name="partialViewName">The name of the partial view</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.ToUrl(System.Web.Mvc.RedirectResult,System.String)">
+            <summary>
+            Asserts that a HttpRedirectResult is redirecting to the specified URL.
+            </summary>
+            <param name="result">The result to check</param>
+            <param name="url">The URL that the result should be redirecting to.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.WithViewData``1(System.Web.Mvc.PartialViewResult)">
+            <summary>
+            Asserts that a RenderViewResult's value has been set using a strongly typed value, returning that value if successful.
+            If the type is a reference type, a view data set to null will be returned as null.
+            If the type is a value type, a view data set to null will throw an exception.
+            </summary>
+            <typeparam name="TViewData">The custom type for the view data.</typeparam>
+            <param name="actionResult">The result to check.</param>
+            <returns>The ViewData in it's strongly-typed form.</returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.ActionResultHelper.WithViewData``1(System.Web.Mvc.ViewResult)">
+            <summary>
+            Asserts that a RenderViewResult's value has been set using a strongly typed value, returning that value if successful.
+            If the type is a reference type, a view data set to null will be returned as null.
+            If the type is a value type, a view data set to null will throw an exception.
+            </summary>
+            <typeparam name="TViewData">The custom type for the view data.</typeparam>
+            <param name="actionResult">The result to check.</param>
+            <returns>The ViewData in it's strongly-typed form.</returns>
+        </member>
+        <member name="T:MvcContrib.TestHelper.AssertionException">
+            <summary>
+             This exception is thrown by the TestHelper extension methods.  This allows this project to be unit test framework agnostic.
+            </summary>
+        </member>
+        <member name="T:MvcContrib.TestHelper.GeneralTestExtensions">
+            <summary>
+            Contains basic extension methods to simplify testing.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.GeneralTestExtensions.ShouldBe``1(System.Object,System.String)">
+            <summary>
+            Asserts that the object is of type T.  Also returns T to enable method chaining.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="actual"></param>
+            <param name="message">Message to display when assertion fails</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.GeneralTestExtensions.ShouldBe(System.Object,System.Object)">
+            <summary>
+            Asserts that the object is the expected value.
+            </summary>
+            <param name="actual"></param>
+            <param name="expected"></param>
+        </member>
+        <member name="M:MvcContrib.TestHelper.GeneralTestExtensions.AssertSameStringAs(System.String,System.String)">
+            <summary>
+            Compares the two strings (case-insensitive).
+            </summary>
+            <param name="actual"></param>
+            <param name="expected"></param>
+        </member>
+        <member name="M:MvcContrib.TestHelper.GeneralTestExtensions.ShouldNotBeNull(System.Object,System.String)">
+            <summary>
+             Asserts that the object should not be null.
+            </summary>
+            <param name="Actual"></param>
+            <param name="message"></param>
+            <exception cref="T:MvcContrib.TestHelper.AssertionException"></exception>
+        </member>
+        <member name="M:MvcContrib.TestHelper.GeneralTestExtensions.ShouldEqual(System.Object,System.Object,System.String)">
+            <summary>
+             Asserts that two objects are equal.
+            </summary>
+            <param name="actual"></param>
+            <param name="expected"></param>
+            <param name="message"></param>
+            <exception cref="T:MvcContrib.TestHelper.AssertionException"></exception>
+        </member>
+        <member name="M:MvcContrib.TestHelper.MockSession.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MvcContrib.TestHelper.MockSession"/> class.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.MockSession.Add(System.String,System.Object)">
+            <summary>
+            Adds the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:MvcContrib.TestHelper.MockSession.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.MockSession.Remove(System.String)">
+            <summary>
+            Removes the specified name.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:MvcContrib.TestHelper.MockSession.RemoveAll">
+            <summary>
+            Removes all.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.MockSession.RemoveAt(System.Int32)">
+            <summary>
+            Removes an object at the index.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="M:MvcContrib.TestHelper.MockSession.CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copies the elements of the <see cref="T:System.Collections.ICollection"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
+            </summary>
+            <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.ICollection"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param>
+            <param name="index">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="array"/> is null. </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            	<paramref name="index"/> is less than zero. </exception>
+            <exception cref="T:System.ArgumentException">
+            	<paramref name="array"/> is multidimensional.-or- <paramref name="index"/> is equal to or greater than the length of <paramref name="array"/>.-or- The number of elements in the source <see cref="T:System.Collections.ICollection"/> is greater than the available space from <paramref name="index"/> to the end of the destination <paramref name="array"/>. </exception>
+            <exception cref="T:System.ArgumentException">The type of the source <see cref="T:System.Collections.ICollection"/> cannot be cast automatically to the type of the destination <paramref name="array"/>. </exception>
+        </member>
+        <member name="M:MvcContrib.TestHelper.MockSession.Abandon">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.Contents">
+            <summary>
+            Gets the contents.
+            </summary>
+            <value>The contents.</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.Item(System.String)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> with the specified name.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.Item(System.Int32)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> at the specified index.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.Count">
+            <summary>
+            Gets the number of elements contained in the <see cref="T:System.Collections.ICollection"/>.
+            </summary>
+            <value></value>
+            <returns>The number of elements contained in the <see cref="T:System.Collections.ICollection"/>.</returns>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.IsSynchronized">
+            <summary>
+            Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe).
+            </summary>
+            <value></value>
+            <returns>true if access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe); otherwise, false.</returns>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.SyncRoot">
+            <summary>
+            Gets an object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.
+            </summary>
+            <value></value>
+            <returns>An object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.</returns>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.SessionID">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.StaticObjects">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.Timeout">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.CookieMode">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.IsCookieless">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.IsNewSession">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.IsReadOnly">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.Keys">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.LCID">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.Mode">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.MockSession.CodePage">
+            <summary>
+            Not Implemented
+            </summary>
+        </member>
+        <member name="T:MvcContrib.TestHelper.RouteTestingExtensions">
+            <summary>
+            Used to simplify testing routes.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.RouteTestingExtensions.WithMethod(System.String,System.String)">
+            <summary>
+            A way to start the fluent interface and and which method to use
+            since you have a method constraint in the route.
+            </summary>
+            <param name="url"></param>
+            <param name="httpMethod"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.RouteTestingExtensions.Route(System.String,System.String)">
+            <summary>
+            Find the route for a URL and an Http Method
+            because you have a method contraint on the route 
+            </summary>
+            <param name="url"></param>
+            <param name="httpMethod"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.RouteTestingExtensions.Route(System.String)">
+            <summary>
+            Returns the corresponding route for the URL.  Returns null if no route was found.
+            </summary>
+            <param name="url">The app relative url to test.</param>
+            <returns>A matching <see cref="T:System.Web.Routing.RouteData"/>, or null.</returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.RouteTestingExtensions.ShouldMapTo``1(System.Web.Routing.RouteData,System.Linq.Expressions.Expression{System.Func{``0,System.Web.Mvc.ActionResult}})">
+            <summary>
+            Asserts that the route matches the expression specified.  Checks controller, action, and any method arguments
+            into the action as route values.
+            </summary>
+            <typeparam name="TController">The controller.</typeparam>
+            <param name="routeData">The routeData to check</param>
+            <param name="action">The action to call on TController.</param>
+        </member>
+        <member name="M:MvcContrib.TestHelper.RouteTestingExtensions.ShouldMapTo``1(System.String,System.Linq.Expressions.Expression{System.Func{``0,System.Web.Mvc.ActionResult}})">
+            <summary>
+            Converts the URL to matching RouteData and verifies that it will match a route with the values specified by the expression.
+            </summary>
+            <typeparam name="TController">The type of controller</typeparam>
+            <param name="relativeUrl">The ~/ based url</param>
+            <param name="action">The expression that defines what action gets called (and with which parameters)</param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.RouteTestingExtensions.ShouldMapTo``1(System.Web.Routing.RouteData)">
+            <summary>
+            Verifies the <see cref="T:System.Web.Routing.RouteData">routeData</see> maps to the controller type specified.
+            </summary>
+            <typeparam name="TController"></typeparam>
+            <param name="routeData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.RouteTestingExtensions.ShouldBeIgnored(System.String)">
+            <summary>
+            Verifies the <see cref="T:System.Web.Routing.RouteData">routeData</see> will instruct the routing engine to ignore the route.
+            </summary>
+            <param name="relativeUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.RouteTestingExtensions.GetValue(System.Web.Routing.RouteValueDictionary,System.String)">
+            <summary>
+            Gets a value from the <see cref="T:System.Web.Routing.RouteValueDictionary"/> by key.  Does a
+            case-insensitive search on the keys.
+            </summary>
+            <param name="routeValues"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MvcContrib.TestHelper.TestControllerBuilder">
+            <summary>
+            This is primary class used to create controllers.
+            After initializing, call InitializeController to create a controller with proper environment elements.
+            Exposed properties such as Form, QueryString, and HttpContext allow access to text environment.
+            RenderViewData and RedirectToActionData record those methods
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.TestControllerBuilder.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MvcContrib.TestHelper.TestControllerBuilder"/> class.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.TestControllerBuilder.InitializeController(System.Web.Mvc.Controller)">
+            <summary>
+            Creates the controller with proper environment variables setup. 
+            </summary>
+            <param name="controller">The controller to initialize</param>
+        </member>
+        <member name="M:MvcContrib.TestHelper.TestControllerBuilder.CreateController``1(System.Object[])">
+            <summary>
+            Creates the controller with proper environment variables setup. 
+            </summary>
+            <typeparam name="T">The type of controller to create</typeparam>
+            <param name="constructorArgs">Arguments to pass to the constructor for the controller</param>
+            <returns>A new controller of the specified type</returns>
+        </member>
+        <member name="M:MvcContrib.TestHelper.TestControllerBuilder.CreateIoCController``1">
+            <summary>
+            Creates the controller with proper environment variables setup, using IoC for arguments
+            </summary>
+            <typeparam name="T">The type of controller to create</typeparam>
+            <returns>A new controller of the specified type</returns>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.HttpContext">
+            <summary>
+            Gets the HttpContext that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The HTTPContext</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.Files">
+            <summary>
+            Gets the HttpPostedFiles that controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The HttpFileCollection Files</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.Form">
+            <summary>
+            Gets the Form data that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The NameValueCollection Form</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.QueryString">
+            <summary>
+            Gets the QueryString that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The NameValueCollection QueryString</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.AcceptTypes">
+            <summary>
+            Gets or sets the AcceptTypes property of Request that built controllers will have set internally when created with InitializeController
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.Session">
+            <summary>
+            Gets the Session that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The IHttpSessionState Session</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.TempDataDictionary">
+            <summary>
+            Gets the TempDataDictionary that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The TempDataDictionary</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.RouteData">
+            <summary>
+            Gets or sets the RouteData that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The RouteData</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.AppRelativeCurrentExecutionFilePath">
+            <summary>
+            Gets or sets the AppRelativeCurrentExecutionFilePath that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The RouteData</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.ApplicationPath">
+            <summary>
+            Gets or sets the AppRelativeCurrentExecutionFilePath string that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The ApplicationPath string</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.PathInfo">
+            <summary>
+            Gets or sets the PathInfo string that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The PathInfo string</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.TestControllerBuilder.RawUrl">
+            <summary>
+            Gets or sets the RawUrl string that built controllers will have set internally when created with InitializeController
+            </summary>
+            <value>The RawUrl string</value>
+        </member>
+        <member name="T:MvcContrib.TestHelper.IWriteableHttpFileCollection">
+            <summary>
+            Defines an extended <see cref="T:System.Web.HttpFileCollectionBase"/> which allows modifications to assist with testing.
+            </summary>
+            <remarks>
+            Using this interface allows us to work around that fact that the indexers on <see cref="T:System.Web.HttpPostedFileBase"/>
+            are read only and cannot be changed by overrides.
+            </remarks>
+        </member>
+        <member name="P:MvcContrib.TestHelper.IWriteableHttpFileCollection.Item(System.String)">
+            <summary>
+            Gets or sets the <see cref="T:System.Web.HttpPostedFileBase"/> with the specified name.
+            </summary>
+        </member>
+        <member name="T:MvcContrib.TestHelper.WriteableHttpFileCollection">
+            <summary>
+            An implementation of HttpFileCollectionBase to assit with testing.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.TestHelper.WriteableHttpFileCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MvcContrib.TestHelper.WriteableHttpFileCollection"/> class.
+            </summary>
+        </member>
+        <member name="P:MvcContrib.TestHelper.WriteableHttpFileCollection.AllKeys">
+            <summary>
+            Gets a string array containing the keys (names) of all members in the file collection.
+            </summary>
+            <value>An array of file names.</value>
+        </member>
+        <member name="P:MvcContrib.TestHelper.WriteableHttpFileCollection.Item(System.String)">
+            <summary>
+            Gets the object with the specified name from the file collection.
+            </summary>
+            <param name="name">Name of item to be returned.</param>
+            <returns>The System.Web.HttpPostedFile specified by name.</returns>
+        </member>
+        <member name="P:MvcContrib.TestHelper.WriteableHttpFileCollection.MvcContrib#TestHelper#IWriteableHttpFileCollection#Item(System.String)">
+            <summary>
+            Gets or sets the <see cref="T:System.Web.HttpPostedFileBase"/> with the specified name.
+            </summary>
+        </member>
+    </members>
+</doc>
