@@ -52,7 +52,7 @@ namespace N2.Details
 			SelectorUploadComposite composite = (SelectorUploadComposite)editor;
 
 			HttpPostedFile postedFile = composite.UploadControl.PostedFile;
-			if (!string.IsNullOrEmpty(postedFile.FileName))
+			if (postedFile != null && !string.IsNullOrEmpty(postedFile.FileName))
 			{
 				IFileSystem fs = Engine.Resolve<IFileSystem>();
 				string directoryPath = Engine.Resolve<IDefaultDirectory>().GetDefaultDirectory(item);

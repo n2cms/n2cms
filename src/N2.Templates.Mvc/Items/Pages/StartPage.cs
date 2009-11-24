@@ -3,6 +3,7 @@ using N2.Details;
 using N2.Integrity;
 using N2.Installation;
 using N2.Edit.FileSystem;
+using N2.Templates.Details;
 using N2.Web;
 
 namespace N2.Templates.Mvc.Items.Pages
@@ -75,13 +76,11 @@ namespace N2.Templates.Mvc.Items.Pages
 		}
 
 		// content
-
-		// Not implemented in MVC
-		//[Templates.Details.ThemeSelector("Theme", 74, ContainerName = LayoutArea)]
-		//public string Theme
-		//{
-		//    get { return (string) (GetDetail("Theme") ?? string.Empty); }
-		//    set { SetDetail("Theme", value); }
-		//}
+		[ThemeSelector("Theme", 74, ContainerName = LayoutArea)]
+		public string Theme
+		{
+			get { return (string)(GetDetail("Theme") ?? string.Empty); }
+			set { SetDetail("Theme", value); }
+		}
 	}
 }

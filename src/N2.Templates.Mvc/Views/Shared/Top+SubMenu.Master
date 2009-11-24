@@ -5,7 +5,7 @@
 <head runat="server">
 	<title></title>
 	<asp:PlaceHolder runat="server">
-	<link href="<%=ResolveUrl("~/App_Themes/ContentFocus/Style.css")%>" type="text/css" rel="stylesheet" />
+	<link href="<%=ResolveUrl("~/App_Themes/" + Find.ClosestStartPage.Theme + "/Style.css")%>" type="text/css" rel="stylesheet" />
 	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
