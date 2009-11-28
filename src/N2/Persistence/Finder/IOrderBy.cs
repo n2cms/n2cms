@@ -16,8 +16,9 @@ namespace N2.Persistence.Finder
 		ISortDirection Updated { get; }
 		ISortDirection Published { get; }
 		ISortDirection Expires { get; }
-		ISortDirection SortOrder { get; }
-		ISortDirection Visible { get; }
+        ISortDirection SortOrder { get; }
+        ISortDirection VersionIndex { get; }
+        ISortDirection Visible { get; }
 		ISortDirection SavedBy { get; }
 
 		ISortDirection Detail(string name);

@@ -139,7 +139,7 @@
     <value>Title</value>
   </data>
   <data name="v.HeaderText" xml:space="preserve">
-    <value>V</value>
+    <value>Version</value>
   </data>
   <data name="VersionsPage.Title" xml:space="preserve">
     <value>Versions</value>

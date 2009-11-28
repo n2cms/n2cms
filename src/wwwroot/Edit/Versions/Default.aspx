@@ -9,10 +9,10 @@
 	<asp:CustomValidator ID="cvVersionable" runat="server" Text="This item is not versionable." CssClass="validator info" meta:resourceKey="cvVersionable" Display="Dynamic" />
 	<asp:GridView ID="gvHistory" runat="server" AutoGenerateColumns="false" DataKeyNames="ID" CssClass="gv" AlternatingRowStyle-CssClass="alt" UseAccessibleHeader="true" BorderWidth="0" OnRowCommand="gvHistory_RowCommand" OnRowDeleting="gvHistory_RowDeleting">
 		<Columns>
-			<asp:TemplateField HeaderText="V" meta:resourceKey="v" ItemStyle-CssClass="Version">
+			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
-					<%# IsPublished(Container.DataItem) ? "<img src='img/png/bullet_star.png' alt='published' />" : string.Empty%>
-					<%# Container.DataItemIndex + 1 %>
+					<%# IsPublished(Container.DataItem) ? "<img src='../img/ico/png/bullet_star.png' alt='published' />" : string.Empty%>
+					<%# ((N2.ContentItem)Container.DataItem).VersionIndex + 1 %>
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >

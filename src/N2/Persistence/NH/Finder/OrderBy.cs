@@ -61,12 +61,17 @@ namespace N2.Persistence.NH.Finder
 		public N2.Persistence.Finder.ISortDirection Expires
 		{
 			get { return new PropertySortDirection("Expires", query); }
-		}
+        }
 
-		public N2.Persistence.Finder.ISortDirection SortOrder
-		{
-			get { return new PropertySortDirection("SortOrder", query); }
-		}
+        public N2.Persistence.Finder.ISortDirection SortOrder
+        {
+            get { return new PropertySortDirection("SortOrder", query); }
+        }
+
+        public N2.Persistence.Finder.ISortDirection VersionIndex
+        {
+            get { return new PropertySortDirection("VersionIndex", query); }
+        }
 
 		public N2.Persistence.Finder.ISortDirection Visible
 		{

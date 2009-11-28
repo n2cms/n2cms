@@ -31,7 +31,7 @@ namespace N2.Persistence
 			if (!args.Cancel)
 			{
 				item = args.AffectedItem;
-
+                
 				ContentItem oldVersion = item.Clone(false);
 				oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
 				oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
@@ -43,6 +43,8 @@ namespace N2.Persistence
 
 				if (ItemSavedVersion != null)
 					ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
+
+                item.VersionIndex++;
 
 				return oldVersion;
 			}

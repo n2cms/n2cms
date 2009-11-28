@@ -35,27 +35,31 @@ namespace N2.Tests.Persistence.NH
 		[Test]
 		public void RestoreVersion()
 		{
+            string key = "TheKey";
+
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
-			item["VersionIndex"] = 1;
+			item[key] = 1;
 			persister.Save(item);
 			ContentItem version = versioner.SaveVersion(item);
-			item["VersionIndex"] = 2;
+			item[key] = 2;
 			persister.Save(item);
 
 			versioner.ReplaceVersion(item, version);
 
 			ContentItem restoredItem = persister.Get(item.ID);
-			Assert.AreEqual(1, restoredItem["VersionIndex"]);
+			Assert.AreEqual(1, restoredItem[key]);
 		}
 
 		[Test]
 		public void RestoreVersionSetExpireDate()
 		{
+            string key = "TheKey";
+
 			ContentItem item = CreateOneItem<PersistableItem1>(0, "root", null);
-			item["VersionIndex"] = 1;
+			item[key] = 1;
 			persister.Save(item);
 			ContentItem version = versioner.SaveVersion(item);
-			item["VersionIndex"] = 2;
+			item[key] = 2;
 			persister.Save(item);
 
 			versioner.ReplaceVersion(item, version);
@@ -155,6 +159,41 @@ namespace N2.Tests.Persistence.NH
 			var versions = versioner.GetVersionsOf(item);
 			Assert.That(versions.Count, Is.EqualTo(1));
 			Assert.That(versions[0], Is.EqualTo(item));
-		}
+        }
+
+        [Test]
+        public void Index_IsZero_OnSavedItem()
+        {
+            ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+            persister.Save(item);
+
+            Assert.That(item.VersionIndex, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void SaveVersion_IncreasesIndex_OfCurrentVersion()
+        {
+            ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+            persister.Save(item);
+
+            var version = versioner.SaveVersion(item);
+
+            Assert.That(version.VersionIndex, Is.EqualTo(0));
+            Assert.That(item.VersionIndex, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void RestoreVersion_Increases_VersionIndex_OfReplacedVersion()
+        {
+            ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+            persister.Save(item);
+
+            var version = versioner.SaveVersion(item);
+
+            versioner.ReplaceVersion(item, CreateOneItem<Definitions.PersistableItem1>(0, "root2", null));
+
+            Assert.That(item.VersionIndex, Is.EqualTo(2));
+        }
+
 	}
 }

@@ -35,10 +35,13 @@ namespace N2.Persistence.Finder
 		IComparisonCriteria<DateTime> Published { get; }
 
 		/// <summary>Find items with a certain expiration date.</summary>
-		IComparisonCriteria<DateTime> Expires { get; }
+        IComparisonCriteria<DateTime> Expires { get; }
 
-		/// <summary>Find items with a certain sort order.</summary>
-		IComparisonCriteria<int> SortOrder { get; }
+        /// <summary>Find items with a certain sort order.</summary>
+        IComparisonCriteria<int> SortOrder { get; }
+
+        /// <summary>Find items with a certain version index.</summary>
+        IComparisonCriteria<int> VersionIndex { get; }
 		
 		/// <summary>Find items with a certain visibility.</summary>
 		ICriteria<bool> Visible { get; }

@@ -165,7 +165,12 @@ namespace N2.Persistence.NH.Finder
 		public IComparisonCriteria<int> SortOrder
 		{
 			get { return new PropertyCriteria<int>(this, "SortOrder"); }
-		}
+        }
+
+        public IComparisonCriteria<int> VersionIndex
+        {
+            get { return new PropertyCriteria<int>(this, "VersionIndex"); }
+        }
 
 		public ICriteria<bool> Visible
 		{

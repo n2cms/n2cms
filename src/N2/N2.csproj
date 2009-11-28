@@ -284,6 +284,7 @@
     <Compile Include="Configuration\VersionsElement.cs" />
     <Compile Include="Configuration\VirtualPathCollection.cs" />
     <Compile Include="Configuration\VirtualPathElement.cs" />
+    <Compile Include="ContentState.cs" />
     <Compile Include="Definitions\AbstractDefinition.cs" />
     <Compile Include="Collections\BranchHierarchyBuilder.cs" />
     <Compile Include="Collections\CompositeFilter.cs" />

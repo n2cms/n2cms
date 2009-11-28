@@ -119,12 +119,55 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertySortOrder()
+		public void ByProperty_SortOrder()
 		{
 			IList<ContentItem> items = finder.Where.SortOrder.Eq(rootItem.SortOrder).Select();
 			Assert.AreEqual(1, items.Count);
 			Assert.AreEqual(rootItem, items[0]);
-		}
+        }
+
+        [Test]
+        public void ByProperty_VersionIndex_GreaterThan()
+        {
+            IList<ContentItem> items = finder.Where.VersionIndex.Gt(0).Select();
+            Assert.AreEqual(1, items.Count);
+            Assert.AreEqual(rootItem, items[0]);
+        }
+
+        [Test]
+        public void ByProperty_VersionIndex_Equals_PreviousVersion()
+        {
+            IList<ContentItem> items = finder.Where.VersionIndex.Eq(0).And.VersionOf.Eq(rootItem).PreviousVersions(VersionOption.Include).Select();
+            Assert.AreEqual(1, items.Count);
+            Assert.AreEqual(rootItem, items[0].VersionOf);
+        }
+
+        [Test]
+        public void OrderBy_VersionIndex_Desc()
+        {
+            IList<ContentItem> items = finder
+                .Where.ID.Eq(rootItem.ID)
+                .Or.VersionOf.Eq(rootItem)
+                .OrderBy.VersionIndex.Desc
+                .PreviousVersions(VersionOption.Include).Select();
+            Assert.AreEqual(2, items.Count);
+            Assert.AreEqual(rootItem, items[0]);
+            Assert.AreEqual(rootItem, items[1].VersionOf);
+        }
+
+        [Test]
+        public void OrderBy_VersionIndex_Asc()
+        {
+            IList<ContentItem> items = finder
+                .Where.ID.Eq(rootItem.ID)
+                .Or.VersionOf.Eq(rootItem)
+                .PreviousVersions(VersionOption.Include)
+                .OrderBy.VersionIndex.Asc
+                .Select();
+            Assert.AreEqual(2, items.Count);
+            Assert.AreEqual(rootItem, items[0].VersionOf);
+            Assert.AreEqual(rootItem, items[1]);
+        }
 
 		[Test]
 		public void ByPropertyVisible()

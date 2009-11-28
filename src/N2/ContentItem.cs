@@ -80,6 +80,8 @@ namespace N2
 		private IDictionary<string, Details.DetailCollection> detailCollections = new Dictionary<string, Details.DetailCollection>();
 		private Web.IUrlParser urlParser;
     	private string ancestralTrail;
+        private int versionIndex;
+        private ContentState state = ContentState.New;
         #endregion
 
         #region Constructor
@@ -227,11 +229,26 @@ namespace N2
 		}
 
 		/// <summary>Represents the trail of id's uptil the current item e.g. "/1/10/14/"</summary>
-		public string AncestralTrail
+		public virtual string AncestralTrail
 		{
 			get { return ancestralTrail; }
 			set { ancestralTrail = value; }
-		}
+        }
+
+        /// <summary>The version number of this item</summary>
+        [DisplayableLiteral]
+        public virtual int VersionIndex
+        {
+            get { return versionIndex; }
+            set { versionIndex = value; }
+        }
+
+        [DisplayableLiteral]
+        public virtual ContentState State
+        {
+            get { return state; }
+            set { state = value; }
+        }
 		#endregion
 
 		#region Generated Properties
@@ -656,12 +673,14 @@ namespace N2
 				destination.zoneName = source.zoneName;
 				destination.published = source.published;
 				destination.expires = source.expires;
-				destination.sortOrder = source.sortOrder;
+                destination.sortOrder = source.sortOrder;
+                destination.versionIndex = source.versionIndex;
 			}
 			destination.visible = source.visible;
 			destination.savedBy = source.savedBy;
 			destination.urlParser = source.urlParser;
 			destination.url = null;
+            destination.state = source.state;
 		}
 
 		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)
