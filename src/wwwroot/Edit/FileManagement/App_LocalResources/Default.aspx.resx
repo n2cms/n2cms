@@ -121,7 +121,7 @@
     <value>OK</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/delete.gif" /&gt; Delete</value>
+    <value>&lt;img src="../img/ico/png/delete.png" /&gt; Delete</value>
   </data>
   <data name="cvDeleteProblem.ErrorMessage" xml:space="preserve">
     <value>Error deleting file/folder. Possible causes include read-only files and insufficient permissions to the upload directory on the server.</value>
@@ -136,10 +136,10 @@
     <value>Cancel</value>
   </data>
   <data name="hlItems.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page.gif" /&gt; Items</value>
+    <value>&lt;img src="../img/ico/png/page.png" /&gt; Items</value>
   </data>
   <data name="hlNewFolder.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/folder_add.gif" /&gt; New folder</value>
+    <value>&lt;img src="../img/ico/png/folder_add.png" /&gt; New folder</value>
   </data>
   <data name="hlUpload.Text" xml:space="preserve">
     <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; Upload</value>

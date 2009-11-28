@@ -121,7 +121,7 @@
     <value>OK</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/delete.gif" /&gt; Verwijder</value>
+    <value>&lt;img src="../img/ico/png/delete.png" /&gt; Verwijder</value>
   </data>
   <data name="cvDeleteProblem.ErrorMessage" xml:space="preserve">
     <value>Fout bij het verwijderen van het bestand of de map. Het is mogelijk dat het bestand alleen-lezen is of dat onvoldoende rechten beschikbaar zijn.</value>
@@ -136,13 +136,13 @@
     <value>Annuleer</value>
   </data>
   <data name="hlItems.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page.gif" /&gt; Items</value>
+    <value>&lt;img src="../img/ico/png/page.png" /&gt; Items</value>
   </data>
   <data name="hlNewFolder.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/folder_add.gif" /&gt; Nieuwe map</value>
+    <value>&lt;img src="../img/ico/png/folder_add.png" /&gt; Nieuwe map</value>
   </data>
   <data name="hlUpload.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; Uploaden</value>
+    <value>&lt;img src="../img/ico/png/page_white_add.png" /&gt; Uploaden</value>
   </data>
   <data name="lblFolder.Text" xml:space="preserve">
     <value>Directorynaam</value>

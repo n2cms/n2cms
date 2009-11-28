@@ -15,8 +15,7 @@
     };
 
     var out = function(e) {
-        var pixels = .5 * width - bgWidth / 2;
-        $(this).animate({ backgroundPosition: pixels + "px 50px" });
+        $(this).animate({ backgroundPosition: "0 0" });
     }
 
     var move = function(e) {

@@ -45,7 +45,7 @@
 			    <n2:h4 runat="server" Text="Attachments" meta:resourceKey="attachments" />
 			    <asp:Repeater ID="rptAttachments" runat="server">
 			        <ItemTemplate>
-			            <div class="file"><asp:Image runat="server" ImageUrl="~/edit/img/ico/page_white.gif" alt="file" /><%# Eval("Url") %> <span class="warning"><%# CheckExists((string)Eval("Url")) %></span></div>
+			            <div class="file"><asp:Image runat="server" ImageUrl="~/edit/img/ico/png/page_white.png" alt="file" /><%# Eval("Url") %> <span class="warning"><%# CheckExists((string)Eval("Url")) %></span></div>
 			        </ItemTemplate>
 			    </asp:Repeater>
 		    </asp:View>

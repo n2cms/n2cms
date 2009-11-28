@@ -129,14 +129,21 @@ namespace N2.Web.UI.WebControls
 			return string.Join(",", allowedDefinitions.ToArray());
 		}
 
-		private void RegisterArray(string arrayName, string arrayValue)
-		{
-			ControlPanel.RegisterArrayValue(Page, arrayName, arrayValue);
-		}
+        private void RegisterArray(string arrayName, string arrayValue)
+        {
+            ControlPanel.RegisterArrayValue(Page, arrayName, arrayValue);
+        }
 
-		private void RegisterArray(string arrayName, string arrayValueFormat, params object[] values)
-		{
-			RegisterArray(arrayName, string.Format(arrayValueFormat, values));
-		}
+        private void RegisterArray(string arrayName, string arrayValueFormat, params object[] values)
+        {
+            RegisterArray(arrayName, string.Format(arrayValueFormat, values));
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            base.Render(writer);
+
+
+        }
 	}
 }

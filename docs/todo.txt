@@ -1,5 +1,6 @@
+- fix publish in the future
 - mvc templates
-	- 960 grid
+	- 960 grid?
 	- globalization
 	- drag'n'drop
 - improve editor theming experience

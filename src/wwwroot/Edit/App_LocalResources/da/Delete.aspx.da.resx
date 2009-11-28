@@ -121,7 +121,7 @@
     <value>Berørte artikler</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/delete.gif' alt='slet' /&gt; Slet</value>
+    <value>&lt;img src='img/ico/png/delete.png' alt='slet' /&gt; Slet</value>
   </data>
   <data name="confirm.message" xml:space="preserve">
     <value>Slet {0} ({1})</value>

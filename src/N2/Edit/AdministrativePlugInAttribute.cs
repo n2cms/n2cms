@@ -64,11 +64,11 @@ namespace N2.Edit
 			return false;
 		}
 
-		protected string GetInnerHtml(string iconUrl, string tooltip, string text)
+		protected string GetInnerHtml(string iconUrl, string alt, string text)
 		{
 			if (string.IsNullOrEmpty(iconUrl))
 				return text;
-			return string.Format("<img src='{0}' alt='{1}'/>{2}", N2.Web.Url.ToAbsolute(iconUrl), tooltip, text);
+			return string.Format("<img src='{0}' alt='{1}'/>{2}", N2.Web.Url.ToAbsolute(iconUrl), alt, text);
 		}
 
 		public abstract Control AddTo(Control container, PluginContext context);

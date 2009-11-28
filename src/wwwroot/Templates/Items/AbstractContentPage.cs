@@ -1,5 +1,6 @@
 using N2.Details;
 using N2.Integrity;
+using System;
 
 namespace N2.Templates.Items
 {
@@ -31,5 +32,12 @@ namespace N2.Templates.Items
 			get { return base.Visible; }
 			set { base.Visible = value; }
 		}
+
+        [WithEditablePublishInTheFutureDateAttribute("Future Publish Date", 31, ContainerName = Tabs.Advanced)]
+        public virtual DateTime? FuturePublishDate
+        {
+            get { return (DateTime?)GetDetail("FuturePublishDate"); }
+            set { SetDetail("FuturePublishDate", value); }
+        }
 	}
 }

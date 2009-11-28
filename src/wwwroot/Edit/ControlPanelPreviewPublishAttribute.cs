@@ -13,7 +13,7 @@ namespace N2.Edit
 	public class ControlPanelPreviewPublishAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelPreviewPublishAttribute(string toolTip, int sortOrder)
-			: base("cpPreviewPublish", "~/edit/img/ico/disk.gif", null, toolTip, sortOrder, ControlPanelState.Previewing)
+            : base("cpPreviewPublish", "~/edit/img/ico/png/disk.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
 		{
 		}
 

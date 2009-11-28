@@ -2,7 +2,7 @@ using System;
 
 namespace N2.Edit.Navigation
 {
-	[ToolbarPlugin("", "tree", "navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/sitemap_color.gif", -30, 
+    [ToolbarPlugin("", "tree", "navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/Edit/Img/Ico/png/sitemap_color.png", -30, 
         ToolTip = "hierarchical navigation", 
         GlobalResourceClassName = "Toolbar", 
         SortOrder = -1)]

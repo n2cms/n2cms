@@ -14,7 +14,7 @@ namespace N2.Edit
 	public class ControlPanelEditingSaveAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelEditingSaveAttribute(string toolTip, int sortOrder)
-			: base("cpEditingSave", "~/edit/img/ico/disk.gif", null, toolTip, sortOrder, ControlPanelState.Editing)
+            : base("cpEditingSave", "~/edit/img/ico/png/disk.png", null, toolTip, sortOrder, ControlPanelState.Editing)
 		{
 		}
 

@@ -121,7 +121,7 @@
     <value>Elementi influenzati</value>
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/delete.gif' /&gt; cancella l'elemento</value>
+    <value>&lt;img src='img/ico/png/delete.png' /&gt; cancella l'elemento</value>
   </data>
   <data name="confirm.message" xml:space="preserve">
     <value>cancella {0} ({1})?</value>

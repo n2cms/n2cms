@@ -68,6 +68,15 @@ namespace N2.Edit {
         protected global::System.Web.UI.WebControls.LinkButton btnSaveUnpublished;
         
         /// <summary>
+        /// btnSavePublishInFuture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnSavePublishInFuture;
+        
+        /// <summary>
         /// hlCancel control.
         /// </summary>
         /// <remarks>

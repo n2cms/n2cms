@@ -59,6 +59,9 @@ namespace N2.Edit
 			set { toolTip = value; }
 		}
 
+        /// <summary>Alternative text for the icon.</summary>
+        public string AlternativeText { get; set; }
+
 		/// <summary>Used for translating the plugin's texts from a global resource.</summary>
 		public string GlobalResourceClassName
 		{
@@ -87,10 +90,8 @@ namespace N2.Edit
 		protected virtual HyperLink AddAnchor(Control container, PluginContext context)
 		{
 			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
-			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title");
-
-			if (String.IsNullOrEmpty(title))
-				title = Title;
+            string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
+            string alternative = Utility.GetResourceString(GlobalResourceClassName, Name + ".AlternativeText") ?? AlternativeText;
 
 			HyperLink a = new HyperLink();
 			a.ID = "h" + Name;
@@ -100,8 +101,9 @@ namespace N2.Edit
 			a.Target = Target;
 			a.Attributes["class"] = "command";
 			a.Text = tooltip;
+            a.ToolTip = tooltip;
 
-			a.Controls.Add(new LiteralControl(GetInnerHtml(IconUrl, tooltip, title)));
+            a.Controls.Add(new LiteralControl(GetInnerHtml(IconUrl, alternative, title)));
 
 			container.Controls.Add(a);
 			return a;

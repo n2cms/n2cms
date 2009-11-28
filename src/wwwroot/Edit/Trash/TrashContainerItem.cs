@@ -10,7 +10,7 @@ namespace N2.Edit.Trash
 	[PageDefinition("Trash", 
 		Name = "TrashContainerItem", 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-		IconUrl = "~/Edit/Trash/Img/bin.gif", 
+        IconUrl = "~/Edit/Trash/Img/png/bin.png", 
 		TemplateUrl = "~/Edit/Trash/Default.aspx")]
 	[AllowedChildren(typeof(ContentItem))]
 	[ItemAuthorizedRoles(Roles = new string[0])]
@@ -49,8 +49,8 @@ namespace N2.Edit.Trash
 			{
 				return VirtualPathUtility.ToAbsolute(
 					this.Children.Count > 0 ?
-						"~/Edit/Trash/Img/bin.gif" :
-						"~/Edit/Trash/Img/bin_closed.gif"
+                        "~/Edit/Trash/Img/png/bin.png" :
+                        "~/Edit/Trash/Img/png/bin_closed.png"
 					);
 			}
 		}

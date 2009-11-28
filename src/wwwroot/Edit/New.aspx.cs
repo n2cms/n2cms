@@ -28,9 +28,9 @@ using N2.Security;
 
 namespace N2.Edit
 {
-    [NavigationLinkPlugin("New", "new", "../new.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/add.gif", 10, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("NEW", "new", "new.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/Edit/Img/Ico/add.gif", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
-	[ControlPanelLink("cpNew", "~/Edit/Img/Ico/add.gif", "~/Edit/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
+    [NavigationLinkPlugin("New", "new", "../new.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/png/add.png", 10, GlobalResourceClassName = "Navigation")]
+    [ToolbarPlugin("NEW", "new", "new.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/Edit/Img/Ico/png/add.png", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
+    [ControlPanelLink("cpNew", "~/Edit/Img/Ico/png/add.png", "~/Edit/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;

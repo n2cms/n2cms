@@ -139,7 +139,7 @@
     <value>Rediger valgle artikel</value>
   </data>
   <data name="logout.LogoutText" xml:space="preserve">
-    <value>&lt;img src='img/ico/bullet_key.gif' alt=''/&gt;log ud</value>
+    <value>&lt;img src='img/ico/png/bullet_key.png' alt=''/&gt;log ud</value>
   </data>
   <data name="logout.ToolTipFormat" xml:space="preserve">
     <value>Log ud {0}</value>

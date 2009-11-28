@@ -127,7 +127,7 @@
     <value>Udløbet</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/cancel.gif' alt='tilbage' /&gt; Tilbage</value>
+    <value>&lt;img src='img/ico/png/cancel.png' alt='tilbage' /&gt; Tilbage</value>
   </data>
   <data name="published.HeaderText" xml:space="preserve">
     <value>Publiseret</value>

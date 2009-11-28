@@ -361,6 +361,7 @@
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
+    <Compile Include="Details\WithEditablePublishInTheFutureDateAttribute.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
     <Compile Include="Edit\EditableAdapter.cs" />

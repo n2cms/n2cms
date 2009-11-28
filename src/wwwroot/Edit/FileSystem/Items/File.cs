@@ -6,7 +6,7 @@ using N2.Installation;
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("File",
-		IconUrl = "~/Edit/img/ico/page_white.gif",
+        IconUrl = "~/Edit/img/ico/png/page_white.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage)]
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]

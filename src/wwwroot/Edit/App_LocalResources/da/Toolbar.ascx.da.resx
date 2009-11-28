@@ -136,7 +136,7 @@
     <value>Rediger valgle artikel</value>
   </data>
   <data name="logout.LogoutText" xml:space="preserve">
-    <value>&lt;img src='img/ico/key.gif' alt='key'/&gt;</value>
+    <value>&lt;img src='img/ico/png/key.png' alt='key'/&gt;</value>
   </data>
   <data name="logout.ToolTipFormat" xml:space="preserve">
     <value>log ud {0}</value>

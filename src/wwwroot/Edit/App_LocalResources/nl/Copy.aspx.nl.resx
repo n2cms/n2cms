@@ -121,7 +121,7 @@
     <value>Annuleer</value>
   </data>
   <data name="btnCopy.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/page_copy.gif' /&gt; Probeer opnieuw</value>
+    <value>&lt;img src='img/ico/png/page_copy.png' /&gt; Probeer opnieuw</value>
   </data>
   <data name="CopyPage.TitleFormat" xml:space="preserve">
     <value>Kopieer "{0}" naar "{1}"</value>

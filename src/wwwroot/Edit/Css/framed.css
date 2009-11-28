@@ -228,9 +228,9 @@ body.edit #nav .unpublished,
 body.edit #nav .expired,
 body.edit #nav .locked { color:#C66; }
 
-body.edit #nav .locked { padding-right:16px; background:transparent url(../Img/Ico/bullet_key.gif) no-repeat 100% 50%; }
-body.edit #nav .unpublished { padding-right:16px; background:transparent url(../Img/Ico/bullet_arrow_down.gif) no-repeat 100% 50%; }
-body.edit #nav .expired { padding-right:16px; background:transparent url(../Img/Ico/bullet_arrow_top.gif) no-repeat 100% 50%; }
+body.edit #nav .locked { padding-right:16px; background:transparent url(../img/ico/png/bullet_key.png) no-repeat 100% 50%; }
+body.edit #nav .unpublished { padding-right:16px; background:transparent url(../img/ico/png/bullet_arrow_down.png) no-repeat 100% 50%; }
+body.edit #nav .expired { padding-right:16px; background:transparent url(../img/ico/png/bullet_arrow_top.png) no-repeat 100% 50%; }
 
 
 /* TABS */

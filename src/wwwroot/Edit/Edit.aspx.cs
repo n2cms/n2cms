@@ -9,18 +9,18 @@ using N2.Security;
 
 namespace N2.Edit
 {
-    [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/page_edit.gif", 20, 
+    [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/edit/img/ico/png/page_edit.png", 20, 
 		GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("EDIT", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/page_edit.gif", 50, ToolTip = "edit", 
+    [ToolbarPlugin("EDIT", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/png/page_edit.png", 50, ToolTip = "edit", 
 		GlobalResourceClassName = "Toolbar")]
-	[ControlPanelLink("cpEdit", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
-	[ControlPanelLink("cpEditPreview", "~/edit/img/ico/page_edit.gif", "~/edit/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
+    [ControlPanelLink("cpEdit", "~/edit/img/ico/png/page_edit.png", "~/edit/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
+    [ControlPanelLink("cpEditPreview", "~/edit/img/ico/png/page_edit.png", "~/edit/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, 
 		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
 	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30, 
 		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
 	[ControlPanelEditingSave("Save changes", 10)]
-	[ControlPanelLink("cpEditingCancel", "~/edit/img/ico/cancel.gif", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
+    [ControlPanelLink("cpEditingCancel", "~/edit/img/ico/png/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
 		UrlEncode = false)]
 	public partial class Edit : EditPage
 	{
@@ -53,6 +53,8 @@ namespace N2.Edit
             btnSavePublish.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Publish);
             btnPreview.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
             btnSaveUnpublished.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
+            btnSavePublishInFuture.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write)
+                && ie.CurrentItem.ID != 0;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -128,7 +130,18 @@ namespace N2.Edit
 			if (IsValid)
 			{
 				ContentItem savedVersion = SaveVersion();
-				Url redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
+                Url redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
+                Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
+            }
+        }
+
+        protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
+        {
+            Validate();
+            if (IsValid)
+            {
+                ContentItem savedVersion = SaveVersionForFuturePublishing();
+                Url redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
 				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
 			}
 		}
@@ -272,5 +285,20 @@ namespace N2.Edit
 			ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionOnly : ItemEditorVersioningMode.SaveOnly;
 			return ie.Save(ie.CurrentItem, mode);
 		}
-	}
+
+        private ContentItem SaveVersionForFuturePublishing()
+        {
+            // Explicitly setting the current versions FuturePublishDate.
+            // The database will end up with two new rows in the detail table.
+            // On row pointing to the master and one to the latest/new version.
+            System.Web.UI.Control item = null;
+            if(ie.AddedEditors.TryGetValue("FuturePublishDate", out item))
+            {
+                DatePicker futurePublishDate = item as DatePicker;
+                if(futurePublishDate != null)
+                    ie.CurrentItem["FuturePublishDate"] = futurePublishDate.Text;
+            }
+            return SaveVersion();
+        }
+    }
 }

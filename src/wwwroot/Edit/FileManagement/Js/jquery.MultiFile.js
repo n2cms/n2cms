@@ -125,7 +125,7 @@ if(jQuery) (function($){
 							// Visible text strings...
 							// $file = file name (with path), $ext = file extension
 							d.STRING = $.extend({
-								remove:'<img src="../img/ico/bullet_delete.gif"/>',
+							    remove: '<img src="../img/ico/png/bullet_delete.png"/>',
 								denied:'You cannot select a $ext file.\nTry again...',
 								selected:'File selected: $file'
 							}, d.STRING);

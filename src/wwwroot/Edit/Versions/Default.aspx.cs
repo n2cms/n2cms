@@ -7,7 +7,9 @@ using N2.Security;
 
 namespace N2.Edit.Versions
 {
-	[ToolbarPlugin("", "versions", "~/Edit/Versions/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview,  "~/Edit/Versions/Img/book_previous.gif", 90, ToolTip = "versions", GlobalResourceClassName = "Toolbar")]
+    [ToolbarPlugin("", "versions", "~/Edit/Versions/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/ico/png/book_previous.png", 90, 
+        ToolTip = "versions", 
+        GlobalResourceClassName = "Toolbar")]
 	[ControlPanelPendingVersion("There is a newer unpublished version of this item.", 200)]
 	public partial class Default : Web.EditPage
 	{

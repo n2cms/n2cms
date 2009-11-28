@@ -6,15 +6,16 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 
 .toolbox { font-size: 10px; overflow:hidden; font-family: 'Lucida Console', Monaco, monospace; }
     .toolbox .item { overflow:hidden; float:left; text-align:center; border-left:solid 1px #fff; border-right:solid 1px #d8d8d8; background-color:#fff; }
-        .toolbox .item .command { display:block; height:18px; color:#6F6F6F; height:18px; padding:5px; text-decoration:none; background-repeat:no-repeat; background-position:50% bottom; }
+        .toolbox .item .command { display:block; height:18px; line-height:18px; color:#6F6F6F; padding:5px; text-decoration:none; background-repeat:no-repeat; background-position:50% bottom; }
         .toolbox .item a:hover { color:#000; background-image:url(../img/toolbar_button_bg_hover.png); }
         .toolbox .item.selected a.command { background-color:#fff; background-image:none; color:#000; cursor:auto; }
+        .toolbox .item.selected a.command:hover { background-image:none; }
            .toolbox .item .command img { margin:2px 3px 0 0; }
 
 .header { padding:10px; border-bottom: solid 1px #999; background:transparent url(../img/darken10.png) repeat-x 0px bottom;}
     .header .toolbox { float:left; border-bottom:none; margin-right:10px; }
-        .header .toolbox .item { background:#fff url(../img/toolbar_button_bg.png) no-repeat 50% 3px; }
-            .header .toolbox .item .command  { padding:6px; position:relative; background:transparent url(../img/toolbar_button_bg.png) no-repeat 50% 50px; }
+        .header .toolbox .item { background:#fff url(../img/darken10.png) repeat-x 0 -10px; }
+            .header .toolbox .item .command  { padding:6px; position:relative; background:transparent none no-repeat 0 0; }
             .header .toolbox .item a:hover { background-image:url(../img/toolbar_button_bg_hover.png); }
 
 #top .logo{ position:absolute; right:10px; top:10px; height:30px; }
@@ -26,23 +27,15 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 
 #sort { height:28px; width:28px; padding:0; }
     #sort .command { padding:0; }
-        #sort .command a {
-            display:block;
-            height:10px; 
-            padding:1px;
-            border-top:solid 1px #fff;
-        }
-        #sort #upsort 
-        {
-	        border-bottom:solid 1px #d8d8d8;
-        }
+        .sort a { display:block; height:10px; padding:1px; border-top:solid 1px #fff; }
+        .sort .up { border-bottom:solid 1px #d8d8d8; }
 
 #search{ background:transparent; padding:0; }
 	#search form { background-color:transparent; padding:0; margin:0; }
     	#search input, #search button { border:solid 1px #fff; height:28px; padding:4px; float:left; margin:0; }
     	#search input { height:18px; width:80px; color:#999; background-color:#fff; background-repeat:repeat-x; border-color:#D8D8D8; border-left:0;}
     	#search input:focus { background-image:none; }
-    	#search button { text-indent:-100px; width:30px; background:#fff url(../img/ico/find.gif) no-repeat 50% 50%}
+    	#search button { text-indent:-100px; width:30px; background:#fff url(../img/ico/png/find.png) no-repeat 50% 50%}
     	#search button:hover { border:solid 1px #ccf; }
 
 #splitter { height: 510px; background:#fff }

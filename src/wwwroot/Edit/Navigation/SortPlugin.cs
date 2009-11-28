@@ -23,10 +23,10 @@ namespace N2.Edit.Navigation
 			div.Attributes["class"] = "sort command";
 			container.Controls.Add(div);
 
-			HtmlAnchor up = AddSortAnchor(div, context.Format("Navigation/sortUp.ashx?selected={Selected.Path}", true), "~/Edit/img/Ico/bullet_arrow_up.gif", "up");
+            HtmlAnchor up = AddSortAnchor(div, context.Format("Navigation/sortUp.ashx?selected={Selected.Path}", true), "~/Edit/img/Ico/png/bullet_arrow_up.png", "up");
 			RegisterToolbarUrl(container, up.ClientID, "Navigation/sortUp.ashx?selected={selected}");
 
-			HtmlAnchor down = AddSortAnchor(div, context.Format("Navigation/sortDown.ashx?selected={Selected.Path}", true), "~/Edit/img/Ico/bullet_arrow_down.gif", "down");
+            HtmlAnchor down = AddSortAnchor(div, context.Format("Navigation/sortDown.ashx?selected={Selected.Path}", true), "~/Edit/img/Ico/png/bullet_arrow_down.png", "down");
 			RegisterToolbarUrl(container, down.ClientID, "Navigation/sortDown.ashx?selected={selected}");
 
 			return div;

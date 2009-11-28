@@ -8,7 +8,7 @@ using N2.Web;
 
 namespace N2.Edit.Globalization
 {
-	[ToolbarPlugin("LANGS", "globalization", "~/Edit/Globalization/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/world.gif", 150, ToolTip = "view translations", GlobalResourceClassName = "Toolbar")]
+    [ToolbarPlugin("LANGS", "globalization", "~/Edit/Globalization/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/png/world.png", 150, ToolTip = "view translations", GlobalResourceClassName = "Toolbar")]
 	public partial class _Default : EditPage
 	{
 		protected ILanguageGateway gateway;

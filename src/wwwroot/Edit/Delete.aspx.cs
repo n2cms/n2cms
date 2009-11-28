@@ -5,9 +5,9 @@ using N2.Security;
 
 namespace N2.Edit
 {
-    [NavigationLinkPlugin("Delete", "delete", "../delete.aspx?selected={selected}&alert=true", Targets.Preview, "~/edit/img/ico/delete.gif", 30, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("DEL", "delete", "delete.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/Edit/Img/Ico/delete.gif", 60, ToolTip = "delete", GlobalResourceClassName = "Toolbar")]
-	[ControlPanelLink("cpDelete", "~/Edit/Img/Ico/delete.gif", "~/Edit/Delete.aspx?selected={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible)]
+    [NavigationLinkPlugin("Delete", "delete", "../delete.aspx?selected={selected}&alert=true", Targets.Preview, "~/edit/img/ico/png/delete.png", 30, GlobalResourceClassName = "Navigation")]
+    [ToolbarPlugin("DEL", "delete", "delete.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/Edit/Img/Ico/png/delete.png", 60, ToolTip = "delete", GlobalResourceClassName = "Toolbar")]
+    [ControlPanelLink("cpDelete", "~/Edit/Img/Ico/png/delete.png", "~/Edit/Delete.aspx?selected={Selected.Path}", "Delete this page", 60, ControlPanelState.Visible)]
 	public partial class Delete : Web.EditPage
     {
         protected override void OnInit(EventArgs e)

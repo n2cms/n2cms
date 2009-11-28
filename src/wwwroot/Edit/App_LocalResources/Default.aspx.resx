@@ -211,7 +211,7 @@
     <value>Search</value>
   </data>
   <data name="logout.LogoutText" xml:space="preserve">
-    <value>&lt;img src='img/ico/key.gif' alt='logout'/&gt;</value>
+    <value>&lt;img src='img/ico/png/key.png' alt='logout'/&gt;</value>
   </data>
   <data name="logout.ToolTipFormat" xml:space="preserve">
     <value>Log out {0}</value>

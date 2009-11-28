@@ -4,7 +4,7 @@ using N2.Edit.Web;
 
 namespace N2.Edit.Membership
 {
-	[MembershipToolbarPlugin("USERS", "users", "~/Edit/Membership/Users.aspx", "~/Edit/Img/Ico/group_key.gif", 110, 
+    [MembershipToolbarPlugin("USERS", "users", "~/Edit/Membership/Users.aspx", "~/Edit/Img/Ico/png/group_key.png", 110, 
 		ToolTip = "administer users",
 		AuthorizedRoles = new string[] { "Administrators", "Admin" }, 
 		GlobalResourceClassName = "Toolbar")]

@@ -1,4 +1,5 @@
-﻿- upgraded rhino mocks to 3.6
+﻿- applied patch #3609: The ability to publish new versions in the future
+- upgraded rhino mocks to 3.6
 - removed .net2.0 configuration
 - merged steve mason's redesign branch
 - added example of Link.To fluent interface

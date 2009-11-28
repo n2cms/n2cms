@@ -11,7 +11,7 @@
 		<Columns>
 			<asp:TemplateField HeaderText="V" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
-					<%# IsPublished(Container.DataItem) ? "<img src='img/bullet_star.gif' alt='published' />" : string.Empty %>
+					<%# IsPublished(Container.DataItem) ? "<img src='img/png/bullet_star.png' alt='published' />" : string.Empty%>
 					<%# Container.DataItemIndex + 1 %>
 				</ItemTemplate>
 			</asp:TemplateField>

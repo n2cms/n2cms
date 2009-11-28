@@ -2,8 +2,8 @@
 <%@ Register Src="AffectedItems.ascx" TagName="AffectedItems" TagPrefix="uc1" %>
 
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:LinkButton ID="btnCopy" meta:resourceKey="btnCopy" runat="server" OnClick="OnCopyClick" CssClass="command"><img src='img/ico/page_copy.gif' /> try again</asp:LinkButton>
-    <asp:HyperLink ID="btnCancel" meta:resourceKey="btnCancel" runat="server" CssClass="command cancel"><img src='img/ico/cancel.gif' /> cancel</asp:HyperLink>
+    <asp:LinkButton ID="btnCopy" meta:resourceKey="btnCopy" runat="server" OnClick="OnCopyClick" CssClass="command"><img src='img/ico/png/page_copy.png' /> try again</asp:LinkButton>
+    <asp:HyperLink ID="btnCancel" meta:resourceKey="btnCancel" runat="server" CssClass="command cancel"><img src='img/ico/png/cancel.png' /> cancel</asp:HyperLink>
 </asp:Content>
 
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">

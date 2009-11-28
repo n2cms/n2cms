@@ -3,6 +3,7 @@ using System.Text;
 using System.Web.Routing;
 using N2.Collections;
 using N2.Web.UI;
+using System.Web.Mvc;
 
 namespace N2.Web.Mvc.Html
 {
@@ -48,8 +49,9 @@ namespace N2.Web.Mvc.Html
 					partialResult.AppendLine(partial);
 					continue;
 				}
-				TagBuilder.InnerHtml = partial;
-				partialResult.AppendLine(TagBuilder.ToString());
+                partialResult.Append(TagBuilder.ToString(TagRenderMode.StartTag));
+                partialResult.Append(partial);
+                partialResult.AppendLine(TagBuilder.ToString(TagRenderMode.EndTag));
 			}
 
 			return partialResult.ToString();

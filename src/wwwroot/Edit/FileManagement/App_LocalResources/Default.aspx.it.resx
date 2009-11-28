@@ -133,13 +133,13 @@
     <value>Indietro</value>
   </data>
   <data name="hlItems.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page.gif" /&gt; Pagine</value>
+    <value>&lt;img src="../img/ico/png/page.png" /&gt; Pagine</value>
   </data>
   <data name="hlNewFolder.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/folder_add.gif" /&gt; Cartella</value>
+    <value>&lt;img src="../img/ico/png/folder_add.png" /&gt; Cartella</value>
   </data>
   <data name="hlUpload.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page_white_add.gif" /&gt; Upload file</value>
+    <value>&lt;img src="../img/ico/png/page_white_add.png" /&gt; Upload file</value>
   </data>
   <data name="lblFolder.Text" xml:space="preserve">
     <value>Nome di cartella</value>

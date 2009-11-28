@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/cancel.gif" /&gt; cancella</value>
+    <value>&lt;img src="../img/ico/png/cancel.png" /&gt; cancella</value>
   </data>
   <data name="hlFiles.Text" xml:space="preserve">
-    <value>&lt;img src="../img/ico/page_white_text.gif" /&gt; documenti</value>
+    <value>&lt;img src="../img/ico/png/page_white_text.png" /&gt; documenti</value>
   </data>
   <data name="itemSelectionPage.Title" xml:space="preserve">
     <value>Selezionamento Elementi</value>

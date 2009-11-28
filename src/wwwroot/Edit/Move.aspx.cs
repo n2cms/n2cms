@@ -8,8 +8,8 @@ using N2.Security;
 namespace N2.Edit
 {
 	[NavigationSeparatorPlugin("copyPasteSeparator", 40)]
-    [NavigationLinkPlugin("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "~/edit/img/ico/cut.gif", 42, GlobalResourceClassName = "Navigation")]
-    [ToolbarPlugin("CUT", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Operations, "", "~/Edit/Img/Ico/cut.gif", 30, ToolTip = "move", GlobalResourceClassName = "Toolbar")]
+    [NavigationLinkPlugin("Cut", "move", "javascript:n2nav.memorize('{selected}','move');", "", "~/edit/img/ico/png/cut.png", 42, GlobalResourceClassName = "Navigation")]
+    [ToolbarPlugin("CUT", "move", "javascript:n2.memorize('{selected}','move');", ToolbarArea.Operations, "", "~/Edit/Img/Ico/png/cut.png", 30, ToolTip = "move", GlobalResourceClassName = "Toolbar")]
 	public partial class Move : EditPage
 	{
 		protected void Page_Load(object sender, EventArgs e)

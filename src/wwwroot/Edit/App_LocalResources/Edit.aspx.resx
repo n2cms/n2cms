@@ -127,7 +127,13 @@
     <value>Save without publishing</value>
   </data>
   <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
-    <value>Save these changes without publishing them. You can resume your work at a later point or discard the changes.</value>
+    <value>Test Save these changes without publishing them. You can resume your work at a later point or discard the changes.</value>
+  </data>
+  <data name="btnSavePublishInFuture.Text" xml:space="preserve">
+    <value>Save and publish in the future</value>
+  </data>
+  <data name="btnSavePublishInFuture.ToolTip" xml:space="preserve">
+    <value>Save these changes without publishing them. You can publish in future.</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Cancel</value>

@@ -16,11 +16,11 @@
 						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>" 
 							Enabled="<%#CanMoveItemDown(Container.DataItem) %>"
 							CssClass="<%#MoveItemDownClass(Container.DataItem)%>"
-							ImageUrl="~/Edit/img/Ico/bullet_arrow_down.gif" OnClick="MoveItemDown"	/>
+							ImageUrl="~/Edit/img/Ico/png/bullet_arrow_down.png" OnClick="MoveItemDown"	/>
 						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>"
 							Enabled="<%#CanMoveItemUp(Container.DataItem) %>"
 							CssClass="<%#MoveItemUpClass(Container.DataItem)%>"
-							ImageUrl="~/Edit/img/Ico/bullet_arrow_up.gif" OnClick="MoveItemUp"/>
+							ImageUrl="~/Edit/img/Ico/png/bullet_arrow_up.png" OnClick="MoveItemUp"/>
 					</div>
 				</ItemTemplate>
 				<FooterTemplate></dd></FooterTemplate>

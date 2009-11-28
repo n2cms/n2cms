@@ -68,6 +68,7 @@ namespace N2.Edit
 				url = url.AppendQuery(context.Format(NavigateQuery, UrlEncode));
 			link.NavigateUrl = url;
 			link.ToolTip = context.Format(tooltip, false);
+            link.CssClass = Name;
 
 			AddTargetAttribute(link);
 

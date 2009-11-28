@@ -2,7 +2,9 @@ using System;
 
 namespace N2.Edit.LinkTracker
 {
-	[ToolbarPlugin("LINKS", "linktracker", "~/Edit/LinkTracker/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/LinkTracker/Img/link_break.gif", 160, ToolTip = "tracks inbound/outbound links", GlobalResourceClassName = "Toolbar")]
+    [ToolbarPlugin("LINKS", "linktracker", "~/Edit/LinkTracker/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/ico/png/link_break.png", 160, 
+        ToolTip = "tracks inbound/outbound links", 
+        GlobalResourceClassName = "Toolbar")]
 	public partial class _Default : N2.Edit.Web.EditPage
 	{
 		protected override void OnLoad(EventArgs e)

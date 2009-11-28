@@ -72,7 +72,7 @@ body.edit .selector img, body.edit .uploader img
 
 
 body.edit .delete { float:right; }
-body.edit .versionInfo { background-image:url(../img/ico/information.gif); }
+body.edit .versionInfo { background-image:url(../img/ico/png/information.png); }
 
 /* tab overrides */
 body.edit .tabPanel { margin-bottom:10px; }
@@ -95,7 +95,12 @@ body.edit .editDetail .mceEditor table { background-color:#fff; }
 
 body.framed .zonesBox dt .iconed { background:transparent none no-repeat 2px 50%; padding-left:19px; }
 body.framed .zonesBox dt .iconed:hover { padding-left:18px; background-position:1px 50%; }
-body.framed .zonesBox dt .publish.iconed { background-image:url(../img/ico/disk.gif); }
-body.framed .zonesBox dt .save.iconed { background-image:url(../img/ico/png/book_next.png); }
-body.framed .zonesBox dt .preview.iconed { background-image:url(../img/ico/png/zoom.png); }
-body.framed .zonesBox dt .new.iconed { background-image:url(../img/ico/add.gif); }
+
+
+.framed .iconed { background:transparent none no-repeat 2px 5px; padding-left:20px; }
+.framed .iconed:hover  { background-position:1px 4px; padding-left:19px; }
+.framed .publish.iconed { background-image:url(../img/ico/png/disk.png); }
+.framed .save.iconed { background-image:url(../img/ico/png/book_next.png); }
+.framed .preview.iconed { background-image:url(../img/ico/png/zoom.png); }
+.framed .new.iconed { background-image:url(../img/ico/png/add.png); }
+.framed .future.iconed { background-image:url(../img/ico/png/clock.png); }

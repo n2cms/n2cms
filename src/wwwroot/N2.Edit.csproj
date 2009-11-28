@@ -86,6 +86,7 @@
     <Compile Include="Edit\AffectedItems.ascx.designer.cs">
       <DependentUpon>AffectedItems.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Edit\AutoPublish\PublishScheduledAction.cs" />
     <Compile Include="Edit\AvailableZones.ascx.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1854,7 +1855,16 @@
     <Content Include="Edit\Css\edit.css" />
     <Content Include="Edit\Css\themes\default.css" />
     <Content Include="Edit\Css\themes\ink.css" />
+    <Content Include="Edit\img\darken10.png" />
+    <Content Include="Edit\img\darken25.png" />
     <Content Include="Edit\img\fieldset_bg.png" />
+    <Content Include="Edit\img\ico\clock.gif" />
+    <Content Include="Edit\img\ico\png\clock.png" />
+    <Content Include="Edit\img\ico\png\eye.png" />
+    <Content Include="Edit\img\ico\png\link_break.png" />
+    <Content Include="Edit\img\lighten10.png" />
+    <Content Include="Edit\img\lighten25.png" />
+    <Content Include="Edit\img\lighten5.png" />
     <Content Include="Edit\img\n2.png" />
     <Content Include="Edit\img\tab_button_bg.png" />
     <Content Include="Edit\img\toolbar_button_bg.png" />
