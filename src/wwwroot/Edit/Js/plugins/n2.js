@@ -162,6 +162,8 @@ var initn2context = function(w) {
 
         // toolbar selection
         select: function(name) {
+            if (!name) return;
+            
             $s = jQuery("#" + name);
             var selectedTarget = $s.find("a").attr("target");
             $(".selected a").filter(function() { return this.target === selectedTarget || !this.target; })
@@ -173,6 +175,8 @@ var initn2context = function(w) {
             jQuery(document.body).addClass(name + "Selected");
         },
         unselect: function(name) {
+            if (!name) return;
+
             jQuery("#" + name).removeClass("selected");
             jQuery(document.body).removeClass(name + "Selected");
         }
