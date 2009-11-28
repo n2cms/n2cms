@@ -23,7 +23,8 @@ namespace N2.Details
             for (int i = 0; i < values.Length; i++)
 			{
                 int value = (int)values.GetValue(i);
-			    string name = Enum.GetName(enumType, value);
+                string name = Utility.GetGlobalResourceString(enumType.Name, Enum.GetName(enumType, value)) 
+                    ?? Enum.GetName(enumType, value);
                 items[i] = new ListItem(name, value.ToString());
             }
             return items;

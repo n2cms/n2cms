@@ -205,7 +205,7 @@ body.edit .folder-open-last { background-image: url(../img/treeview/collapsable-
 
 body.edit .toggler { left:0; position:absolute; height:16px; width:16px; background-image:url(../img/treeview/spacer.gif); cursor:pointer; }
 
-body.edit ul.ajax { background: url(../img/treeview/spinner.gif) no-repeat 0 0 #ffffff; height: 16px; display:none; }
+body.edit ul.ajax { background: transparent url(../img/treeview/spinner.gif) no-repeat 0 0; height: 16px; display:none; }
 	body.edit ul.ajax li { display:none; }
 
 body.edit .droppable-hover { background-color:#eee; }

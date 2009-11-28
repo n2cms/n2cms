@@ -1578,9 +1578,6 @@
     <Content Include="Edit\LinkTracker\Default.aspx" />
     <Content Include="Edit\LinkTracker\Img\link_break.gif" />
     <Content Include="Edit\Trash\Default.aspx" />
-    <Content Include="Edit\Trash\img\bin.gif" />
-    <Content Include="Edit\Trash\img\bin_closed.gif" />
-    <Content Include="Edit\Trash\img\bin_empty.gif" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit\Trash\App_LocalResources\Default.aspx.it.resx">
