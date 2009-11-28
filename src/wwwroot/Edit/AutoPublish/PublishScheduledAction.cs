@@ -14,19 +14,15 @@ namespace N2.Edit.AutoPublish
     [ScheduleExecution(30, TimeUnit.Seconds)]
     public class PublishScheduledAction : ScheduledAction
     {
-        private IVersionManager versioner;
-
-        public PublishScheduledAction()
-        {
-            versioner = N2.Context.Current.Resolve<N2.Persistence.IVersionManager>();
-        }
+        IVersionManager Versioner { get { return Engine.Resolve<IVersionManager>(); } }
+        IPersister Persister { get { return Engine.Resolve<IPersister>(); } }
 
         public override void Execute()
         {
             var allAutoPublishPages = N2.Find.Items.Where.Detail("FuturePublishDate").Lt(DateTime.Now).Select();
             foreach (var page in allAutoPublishPages)
             {
-                var allVersions = versioner.GetVersionsOf(page);
+                var allVersions = Versioner.GetVersionsOf(page);
 
                 // Getting the item wich was created last
                 int newVersion = page.ID;
@@ -41,21 +37,21 @@ namespace N2.Edit.AutoPublish
                 }
 
                 // Get the relevant versions
-                N2.ContentItem latestVersion = N2.Engine.Singleton<IEngine>.Instance.Persister.Get(newVersion);
-                N2.ContentItem masterVersion = N2.Engine.Singleton<IEngine>.Instance.Persister.Get(page.ID);
+                N2.ContentItem latestVersion = Persister.Get(newVersion);
+                N2.ContentItem masterVersion = Persister.Get(page.ID);
 
                 // Removing the DelayPublishingUntil Date so that it won't get picked up again
                 latestVersion["FuturePublishDate"] = null;
                 masterVersion["FuturePublishDate"] = null;
-                versioner.ReplaceVersion(masterVersion, latestVersion);
+                Versioner.ReplaceVersion(masterVersion, latestVersion);
 
                 // Get rid of all the "FuturePublishDate" dates so that it won't get called again
                 // There might be a few hanging around because new version get saved
                 foreach (ContentItem item in allVersions)
                 {
-                    N2.ContentItem version = N2.Engine.Singleton<IEngine>.Instance.Persister.Get(item.ID);
+                    N2.ContentItem version = Persister.Get(item.ID);
                     version["FuturePublishDate"] = null;
-                    N2.Context.Persister.Save(latestVersion);
+                    Persister.Save(latestVersion);
                 }
             }
         }
