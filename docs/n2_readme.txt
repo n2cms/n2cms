@@ -62,3 +62,5 @@ CONTRIBUTORS
 * Jemerick
 * Tjassim
 * Tonez
+* Stanley Ipkiss
+* Kennet

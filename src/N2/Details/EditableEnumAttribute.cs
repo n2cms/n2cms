@@ -3,6 +3,12 @@ using System.Web.UI.WebControls;
 
 namespace N2.Details
 {
+    /// <summary>
+    /// Adds a drop down for editing values in an enum attribute.
+    /// </summary>
+    /// <remarks>
+    /// Depending on the property type the values will be stored as enum, integer or string.
+    /// </remarks>
     public class EditableEnumAttribute : EditableDropDownAttribute
     {
         Type enumType;
