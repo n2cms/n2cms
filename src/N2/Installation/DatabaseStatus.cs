@@ -47,7 +47,7 @@ namespace N2.Installation
 			if (NeedsUpgrade)
 				return string.Format("The database version is {0} but N2 CMS {2} application requires database version {1}", DatabaseVersion, RequiredDatabaseVersion, GetType().Assembly.GetName().Version);
 			if (HasSchema)
-				return string.Format("The database is installed but there is no root item with the id: {0}", RootItemID);
+				return string.Format("The database is installed but there is no content root with the id: {0}", RootItemID);
 			if(IsConnected)
 				return string.Format(
 					"The connection to the database seems fine but the database tables might not be created (error message: {0})",

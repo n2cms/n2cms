@@ -85,10 +85,13 @@ namespace N2.Edit.Install
 			string dir = HostingEnvironment.MapPath("~/App_Data");
 			if (Directory.Exists(dir))
 			{
-				foreach (string file in Directory.GetFiles(dir, "*.gz"))
+                var files = Directory.GetFiles(dir, "*.gz");
+				foreach (string file in files)
 				{
 					rblExports.Items.Add(new ListItem(Path.GetFileName(file)));
 				}
+                if (files.Length > 0)
+                    rblExports.SelectedIndex = 0;
 			}
 
             btnInsertExport.Enabled = rblExports.Items.Count > 0;
@@ -243,7 +246,10 @@ namespace N2.Edit.Install
 				return;
 
 			string path = Path.Combine(HostingEnvironment.MapPath("~/App_Data"), rblExports.SelectedValue);
-			ExecuteWithErrorHandling(delegate { InsertFromFile(path); });
+            if (ExecuteWithErrorHandling(delegate { InsertFromFile(path); }) == null)
+            {
+                plhAddContent.Visible = false;
+            }
 		}
 
 		private void InsertFromFile(string path)

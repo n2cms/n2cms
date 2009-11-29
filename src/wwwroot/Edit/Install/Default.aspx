@@ -60,13 +60,13 @@
             </p>
             <textarea readonly="readonly"><%= Installer.ExportSchema() %></textarea>
             <p>
-				The script looks fine please 
-				<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false"/>
-				in my database.
+				The script looks fine, please create tables in the database.
 			</p>
+			<p><asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="Create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false"/></p>
+			<hr />
 			<p>
 				Optionally I can 
-				<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
+				<asp:LinkButton ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate create database schema script" CausesValidation="false" />
 				for the connection type <strong><%= Status.ConnectionType %></strong> and create the tables myself.
             </p>
             <%--<p>
@@ -79,50 +79,63 @@
             </p>
         </n2:TabPanel>
         
-        <n2:TabPanel ToolTip="4. Root node" runat="server">
-			<h1>Insert root node (required)</h1>
+        <n2:TabPanel ToolTip="4. Content Package" runat="server">
+			<h1>Install content package</h1>
             <asp:Literal runat="server" Visible='<%# Status.IsInstalled %>'>
-				<p class="ok"><b>Advice: </b>There root and start nodes are configured and present in the database. If you create more they will become detached nodes cluttering your database unless you point them out in web.config (which makes the existing nodes detached instead).</p>
+				<p class="ok">
+				    <b>Advice: </b>There is content present in the database. 
+				    If you add more the old content remain but only one root can be used per site.
+				</p>
             </asp:Literal>
             <asp:Literal runat="server" Visible='<%# !Status.HasSchema %>'>
 				<p class="warning"><b>Advice: </b>Go back and check database connection and tables.</p>
             </asp:Literal>
-            <p>
-                N2 needs a <a href="http://n2cms.com/wiki/Root-node.aspx">root node</a> and a <a href="http://n2cms.com/wiki/Start-Page.aspx">start page</a> in order to function correctly. These two "nodes" may be the same page for simple sites, e.g. if you don't forsee using multiple domains.
-            </p>
-            <ul>
-                <li>
-					Either, Select one 
-					<asp:DropDownList ID="ddlRoot" runat="server" />
-					and one 
-					<asp:DropDownList ID="ddlStartPage" runat="server" />
-					to 
-					<asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="insert" ToolTip="Insert different root and start nodes" CausesValidation="false" />
-					as <b>two different</b> nodes.
-				    <asp:CustomValidator ID="cvRootAndStart" runat="server" ErrorMessage="Root and start type required" Display="Dynamic" />
-				</li>
-                <li>
-					Or, use the <b>one node</b> for both
-					<asp:DropDownList ID="ddlRootAndStart" runat="server" />
-					to
-					<asp:Button ID="btnInsertRootOnly" runat="server" OnClick="btnInsertRootOnly_Click" Text="insert" ToolTip="Insert one node as root and start" CausesValidation="false" />.
-				    <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
-				</li>
-				<li>
-				    Or, select one of these existing <b>export files</b> with example content:<br />
-						<asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Flow" />
-					<br />to 
-					<asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="insert" ToolTip="Insert existing export" CausesValidation="false" />
-					<asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" /> into your database.
-				</li>
-                <li>
-					Or, select an export file 
-					<asp:FileUpload ID="fileUpload" runat="server" />
-					(*.n2.xml) to
-					<asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="upload and insert" ToolTip="Upload root node." CausesValidation="false" />
-					<asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" EnableClientScript="false" />
-				</li>
-            </ul>
+            <asp:PlaceHolder ID="plhAddContent" runat="server">
+                <p>
+                    N2 CMS needs content in the database to function correctly.
+                    The minum required is a <a href="http://n2cms.com/wiki/Root-node.aspx">root node</a> and a <a href="http://n2cms.com/wiki/Start-Page.aspx">start page</a>.
+                </p>
+                <div  style="display:<%= rblExports.Items.Count == 0 ? "none" : "block" %>">
+                <p>
+                    Pick the <b>content package</b> that tickle your fancy and import it into your site.
+                </p>
+			    <asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Flow" />
+			    <p>
+			        <asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="Please import this" ToolTip="Insert existing package" CausesValidation="false" />
+			        <asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" />
+			    </p>
+			    <script type="text/javascript">
+			        function showadvancedcontentoptions() {
+			            document.getElementById("advancedcontentoptions").style.display = "block";
+			            this.style.display = "none";
+			            return false;
+			        }
+			    </script>
+			    <p><a href="#advancedcontentoptions" onclick="return showadvancedcontentoptions.call(this);">Advanced options (includes upload and manual insert).</a></p>
+			    </div>
+			    <div id="advancedcontentoptions" style="display:<%= rblExports.Items.Count > 0 ? "none" : "block" %>">
+			        <h2>Upload and import package</h2>
+			        <p>Select an export file you may have exported from another site and saved to disk to import on this installation.</p>
+			        <p>Package: <asp:FileUpload ID="fileUpload" runat="server" />(*.n2.xml)</p>
+			        <p>
+			            <asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="upload and insert" ToolTip="Upload root node." CausesValidation="false" />
+			            <asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fileUpload" runat="server" Text="Select import file" Display="Dynamic" EnableClientScript="false" />
+			        </p>
+			        <h2>Manually insert nodes</h2>
+			        <p>
+			            Separate <asp:DropDownList ID="ddlRoot" runat="server" /> 
+			            and <asp:DropDownList ID="ddlStartPage" runat="server" /> 
+			            to <asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="insert" ToolTip="Insert different root and start nodes" CausesValidation="false" /> 
+			            as <b>two different</b> nodes (preferred)
+			            <asp:CustomValidator ID="cvRootAndStart" runat="server" ErrorMessage="Root and start type required" Display="Dynamic" />
+			        </p>
+			        <p>
+			            <b>Same node</b> for both <asp:DropDownList ID="ddlRootAndStart" runat="server" />
+				        to <asp:Button ID="btnInsertRootOnly" runat="server" OnClick="btnInsertRootOnly_Click" Text="insert" ToolTip="Insert one node as root and start" CausesValidation="false" /> (simple site).
+				        <asp:CustomValidator ID="cvRoot" runat="server" ErrorMessage="Root type required" Display="Dynamic" />
+                    </p>
+                </div>
+            </asp:PlaceHolder>
 			<p>
                 <asp:Literal ID="ltRootNode" runat="server" />  
             </p>

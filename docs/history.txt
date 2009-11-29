@@ -1,4 +1,5 @@
-﻿- introduced version index which is incremented for each version
+﻿- introduced state for content items
+- introduced version index which is incremented for each version
 - applied patch #3656 (Kennet): Localization of dropdownlist enum text in N2
 - applied patch #3609 (Stanley Ipkiss): The ability to publish new versions in the future
 - upgraded rhino mocks to 3.6

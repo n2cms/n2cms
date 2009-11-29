@@ -1,4 +1,13 @@
-- fix publish in the future
+- refactor state to use new concepts
+	- TreePosition
+		- MoveToLocation
+	- ItemBinder
+		- UpdateObject
+		- UpdateEditors
+	- Command
+		- Publish
+		- CreateDraft
+	- fix publish in the future
 - mvc templates
 	- 960 grid?
 	- globalization
