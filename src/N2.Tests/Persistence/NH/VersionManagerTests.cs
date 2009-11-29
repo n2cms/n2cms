@@ -22,6 +22,8 @@ namespace N2.Tests.Persistence.NH
 			versioner = (VersionManager) engine.Resolve<IVersionManager>();
 		}
 
+        // versioning
+
 		[Test]
 		public void SaveVersion()
 		{
@@ -161,6 +163,8 @@ namespace N2.Tests.Persistence.NH
 			Assert.That(versions[0], Is.EqualTo(item));
         }
 
+        // version index
+
         [Test]
         public void Index_IsZero_OnSavedItem()
         {
@@ -195,5 +199,12 @@ namespace N2.Tests.Persistence.NH
             Assert.That(item.VersionIndex, Is.EqualTo(2));
         }
 
+        // state
+
+        [Test]
+        public void NewItem_HasState_New()
+        {
+            
+        }
 	}
 }

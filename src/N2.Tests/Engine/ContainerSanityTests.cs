@@ -39,7 +39,6 @@ namespace N2.Tests.Engine
 	/// <summary>
 	/// Class that allows you to unit test any IEngine implementations
 	/// </summary>
-	[TestFixture]
 	public abstract class ContainerSanityTests
 	{
 		IServiceContainer container;

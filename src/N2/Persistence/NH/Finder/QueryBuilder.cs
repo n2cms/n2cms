@@ -172,6 +172,11 @@ namespace N2.Persistence.NH.Finder
             get { return new PropertyCriteria<int>(this, "VersionIndex"); }
         }
 
+        public IComparisonCriteria<ContentState> State
+        {
+            get { return new PropertyCriteria<ContentState>(this, "State"); }
+        }
+
 		public ICriteria<bool> Visible
 		{
 			get { return new PropertyCriteria<bool>(this, "Visible"); }

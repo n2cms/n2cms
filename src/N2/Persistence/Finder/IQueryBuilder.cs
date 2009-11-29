@@ -42,6 +42,9 @@ namespace N2.Persistence.Finder
 
         /// <summary>Find items with a certain version index.</summary>
         IComparisonCriteria<int> VersionIndex { get; }
+
+        /// <summary>Find items with a certain version index.</summary>
+        IComparisonCriteria<ContentState> State { get; }
 		
 		/// <summary>Find items with a certain visibility.</summary>
 		ICriteria<bool> Visible { get; }

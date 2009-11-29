@@ -81,7 +81,7 @@ namespace N2
 		private Web.IUrlParser urlParser;
     	private string ancestralTrail;
         private int versionIndex;
-        private ContentState state = ContentState.New;
+        private ContentState state = ContentState.None;
         #endregion
 
         #region Constructor
@@ -675,12 +675,12 @@ namespace N2
 				destination.expires = source.expires;
                 destination.sortOrder = source.sortOrder;
                 destination.versionIndex = source.versionIndex;
+                destination.state = source.state;
 			}
 			destination.visible = source.visible;
 			destination.savedBy = source.savedBy;
 			destination.urlParser = source.urlParser;
 			destination.url = null;
-            destination.state = source.state;
 		}
 
 		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)

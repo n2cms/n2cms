@@ -39,7 +39,7 @@ namespace N2.Tests
 			return item;
 		}
 
-		protected IPrincipal CreatePrincipal(string name, params string[] roles)
+        protected static IPrincipal CreatePrincipal(string name, params string[] roles)
 		{
 			return SecurityUtilities.CreatePrincipal(name, roles);
 		}

@@ -42,7 +42,7 @@ namespace N2.Tests.Persistence.NH
         [NUnit.Framework.TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
-            SetUpEngineWithTypes(typeof(PropertyItemType));
+            TestSupport.Setup(out definitions, out interceptor, out sessionProvider, out finder, out schemaCreator, typeof(PropertyItemType));
         }
 
         // string

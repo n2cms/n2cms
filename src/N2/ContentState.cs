@@ -16,10 +16,10 @@ namespace N2
         New = 1,
         /// <summary>The item is a draft that has not been published.</summary>
         Draft = 2,
-        /// <summary>The item is published.</summary>
-        Published = 8,
         /// <summary>The item is waiting for the opportune moment to be published.</summary>
-        Waiting = 16,
+        Waiting = 4,
+        /// <summary>The item is published.</summary>
+        Published = 16,
         /// <summary>The item is previously published.</summary>
         Unpublished = 32,
         /// <summary>The item is deleted and resides in the trash can.</summary>

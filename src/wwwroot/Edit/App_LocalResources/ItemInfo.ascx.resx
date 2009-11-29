@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Deleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
   <data name="fsInfo.Legend" xml:space="preserve">
     <value>Info</value>
   </data>
@@ -126,7 +132,28 @@
   <data name="ilPublished.Label" xml:space="preserve">
     <value>Published</value>
   </data>
+  <data name="ilState.Label" xml:space="preserve">
+    <value>State</value>
+  </data>
   <data name="ilType.Label" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="ilVersion.Label" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="Unpublished" xml:space="preserve">
+    <value>Previously published</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Waiting to be published</value>
   </data>
 </root>

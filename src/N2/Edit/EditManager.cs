@@ -14,6 +14,7 @@ using N2.Security;
 using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Engine.Workflow;
 
 namespace N2.Edit
 {
@@ -26,39 +27,41 @@ namespace N2.Edit
 		protected static readonly object addedEditorKey = new object();
 		protected static readonly object savingVersionKey = new object();
 
-		private readonly IDefinitionManager definitions;
-		private readonly IPersister persister;
-		private readonly IPluginFinder pluginFinder;
-		private readonly ISecurityManager securityManager;
-		private readonly NavigationSettings settings;
-		private readonly IVersionManager versioner;
-		private string deleteItemUrl = "~/edit/delete.aspx";
-		private string editInterfaceUrl = "~/edit/";
-		private string editItemUrl = "~/edit/edit.aspx";
-		private string editPreviewUrlFormat = "{0}";
-		private string editTreeUrl = "~/edit/Navigation/Tree.aspx";
-		private string editTreeUrlFormat = "{1}?selected={0}";
-		private bool enableVersioning = true;
-		private string editTheme = "";
+		readonly IDefinitionManager definitions;
+		readonly IPersister persister;
+        readonly IVersionManager versioner;
+        readonly ISecurityManager securityManager;
+        readonly IPluginFinder pluginFinder;
+        readonly StateChanger stateChanger;
+        readonly NavigationSettings settings;
+		string deleteItemUrl = "~/edit/delete.aspx";
+		string editInterfaceUrl = "~/edit/";
+		string editItemUrl = "~/edit/edit.aspx";
+		string editPreviewUrlFormat = "{0}";
+		string editTreeUrl = "~/edit/Navigation/Tree.aspx";
+		string editTreeUrlFormat = "{1}?selected={0}";
+		bool enableVersioning = true;
+		string editTheme = "";
 		protected EventHandlerList Events = new EventHandlerList();
-		private string newItemUrl = "~/edit/new.aspx";
-		private readonly IList<string> uploadFolders = new List<string>();
+		string newItemUrl = "~/edit/new.aspx";
+		readonly IList<string> uploadFolders = new List<string>();
 
-		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
-						   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings)
+		private EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner, 
+						   ISecurityManager securityManager, IPluginFinder pluginFinder, StateChanger changer, NavigationSettings settings)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
 			this.versioner = versioner;
-			this.settings = settings;
 			this.securityManager = securityManager;
 			this.pluginFinder = pluginFinder;
-		}
+            this.stateChanger = changer;
+            this.settings = settings;
+        }
 
 		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
 						   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
-						   EditSection config)
-			: this(definitions, persister, versioner, securityManager, pluginFinder, settings)
+                           StateChanger changer, EditSection config)
+			: this(definitions, persister, versioner, securityManager, pluginFinder, changer, settings)
 		{
 			EditTheme = config.EditTheme;
 			EditTreeUrl = config.EditTreeUrl;
@@ -439,6 +442,7 @@ namespace N2.Edit
 				if (wasUpdated || IsNew(itemToUpdate))
 				{
 					itemToUpdate.Published = published ?? Utility.CurrentTime();
+                    stateChanger.ChangeTo(itemToUpdate, ContentState.Published);
 					persister.Save(itemToUpdate);
 				}
 
@@ -452,8 +456,18 @@ namespace N2.Edit
 		private ContentItem SaveOnly(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
 			bool wasUpdated = UpdateItem(item, addedEditors, user);
-			if (wasUpdated || IsNew(item))
-				persister.Save(item);
+            if (wasUpdated || IsNew(item))
+            {
+                if (item.VersionOf == null)
+                    stateChanger.ChangeTo(item, ContentState.Published);
+                else if (item.State == ContentState.Unpublished)
+                    // TODO: handle changes to previously published
+                    stateChanger.ChangeTo(item, ContentState.Draft);
+                else
+                    stateChanger.ChangeTo(item, ContentState.Draft); 
+                
+                persister.Save(item);
+            }
 
 			OnItemSaved(new ItemEventArgs(item));
 			return item;
@@ -474,11 +488,16 @@ namespace N2.Edit
 				if (initialPublished == null && updatedPublished == null)
 				{
 					item.Published = Utility.CurrentTime();
+                    stateChanger.ChangeTo(item, ContentState.Published);
 					wasUpdated = true;
 				}
 
-				if (wasUpdated || IsNew(item))
-					persister.Save(item);
+                if (wasUpdated || IsNew(item))
+                {
+                    if (item.VersionOf == null)
+                        stateChanger.ChangeTo(item, ContentState.Published);
+                    persister.Save(item);
+                }
 
 				tx.Commit();
 
@@ -498,6 +517,7 @@ namespace N2.Edit
 				if (wasUpdated || IsNew(item))
 				{
 					item.Published = null;
+                    stateChanger.ChangeTo(item, ContentState.Draft);
 					persister.Save(item);
 				}
 

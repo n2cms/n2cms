@@ -35,10 +35,10 @@ namespace N2.Persistence.NH
 
 
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
-		public ConfigurationBuilder(IDefinitionManager definitions, DatabaseSection config, ConnectionStringsSection connectionStrings)
+        public ConfigurationBuilder(IDefinitionManager definitions, ClassMappingGenerator generator, DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			this.definitions = definitions;
-            generator = new ClassMappingGenerator(definitions);
+            this.generator = generator;
 
 			if (config == null) config = new DatabaseSection();
 

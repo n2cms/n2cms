@@ -20,6 +20,7 @@ using N2.Serialization;
 using N2.Web;
 using N2.Web.UI;
 using NHibernate;
+using N2.Engine.Workflow;
 
 namespace N2.Engine.MediumTrust
 {
@@ -112,12 +113,14 @@ namespace N2.Engine.MediumTrust
 
 			AddComponentInstance("n2.engine", typeof(IEngine), engine);
 			AddComponentInstance("n2.engineConfig", typeof(EngineSection), engineConfig);
-			AddComponent("n2.webContext", typeof(IWebContext), typeof(AdaptiveContext));
+            AddComponent("n2.stateChanger", typeof(StateChanger), typeof(StateChanger));
+            AddComponent("n2.webContext", typeof(IWebContext), typeof(AdaptiveContext));
 			AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(MediumTrustTypeFinder));
 			AddComponent("n2.aspectControllerProvider", typeof(IContentAdapterProvider), typeof(ContentAdapterProvider));
 			AddComponent("n2.pluginBootstrapper", typeof(IPluginBootstrapper), typeof(PluginBootstrapper));
-			AddComponent("n2.configurationBuilder", typeof(ConfigurationBuilder), typeof(ConfigurationBuilder));
-			AddComponent("n2.sessionFactorySource", typeof(IConfigurationBuilder), typeof(ConfigurationSource));
+            AddComponent("n2.classMappingGenerator", typeof(ClassMappingGenerator), typeof(ClassMappingGenerator));
+            AddComponent("n2.configurationBuilder", typeof(ConfigurationBuilder), typeof(ConfigurationBuilder));
+            AddComponent("n2.sessionFactorySource", typeof(IConfigurationBuilder), typeof(ConfigurationSource));
 			AddComponent("n2.itemNotifier", typeof(IItemNotifier), typeof(NotifyingInterceptor));
 			AddComponent("n2.interceptor", typeof(IInterceptor), typeof(NotifyingInterceptor));
 			AddComponent("n2.sessionProvider", typeof(ISessionProvider), typeof(SessionProvider));

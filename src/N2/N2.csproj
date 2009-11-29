@@ -378,6 +378,8 @@
     <Compile Include="Engine\MediumTrust\MediumTrustServiceContainer.cs" />
     <Compile Include="Engine\ServiceContainerBase.cs" />
     <Compile Include="Engine\WindsorServiceContainer.cs" />
+    <Compile Include="Engine\Workflow\StateChangedEventArgs.cs" />
+    <Compile Include="Engine\Workflow\StateChanger.cs" />
     <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
     <Compile Include="Obsolete\EditableAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />

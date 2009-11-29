@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using N2.Persistence;
 using System.Security.Principal;
 using N2.Security;
+using N2.Engine.Workflow;
 
 namespace N2.Definitions
 {
@@ -11,12 +12,14 @@ namespace N2.Definitions
 	/// </summary>
 	public class DefinitionManager : IDefinitionManager
 	{
-		protected readonly IDictionary<Type, ItemDefinition> definitions;
-		private readonly IItemNotifier notifier;
+		readonly IDictionary<Type, ItemDefinition> definitions;
+		readonly IItemNotifier notifier;
+        readonly StateChanger stateChanger;
 
-		public DefinitionManager(DefinitionBuilder builder, IItemNotifier notifier)
+		public DefinitionManager(DefinitionBuilder builder, StateChanger changer, IItemNotifier notifier)
 		{
 			definitions = builder.GetDefinitions();
+            this.stateChanger = changer;
 			this.notifier = notifier;
 		}
 
@@ -32,6 +35,7 @@ namespace N2.Definitions
 		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem)
 		{
 			ContentItem item = Activator.CreateInstance(itemType, true) as ContentItem;
+            stateChanger.ChangeTo(item, ContentState.New);
 			OnItemCreating(item, parentItem);
 			return item;
 		}

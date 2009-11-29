@@ -45,7 +45,7 @@ namespace N2.Tests.Persistence.NH
 		#endregion
 
 		[Test]
-		public void ByPropertyID()
+		public void ByProperty_ID()
 		{
 			IList<ContentItem> items = finder.Where.ID.Eq(rootItem.ID).Select();
 			Assert.AreEqual(1, items.Count);
@@ -53,7 +53,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyParent()
+		public void ByProperty_Parent()
 		{
 			IList<ContentItem> items = finder.Where.Parent.Eq(rootItem).Select();
 			Assert.AreEqual(1, items.Count);
@@ -61,7 +61,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyTitle()
+		public void ByProperty_Title()
 		{
 			IList<ContentItem> items = finder.Where.Title.Eq(rootItem.Title).Select();
 			Assert.AreEqual(1, items.Count);
@@ -69,7 +69,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyName()
+		public void ByProperty_Name()
 		{
 			IList<ContentItem> items = finder.Where.Name.Eq(rootItem.Name).Select();
 			Assert.AreEqual(1, items.Count);
@@ -77,7 +77,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyZoneName()
+		public void ByProperty_ZoneName()
 		{
 			IList<ContentItem> items = finder.Where.ZoneName.Eq(rootItem.ZoneName).Select();
 			Assert.AreEqual(1, items.Count);
@@ -85,7 +85,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyCreated()
+		public void ByProperty_Created()
 		{
 			IList<ContentItem> items = finder.Where.Created.Eq(rootItem.Created).Select();
 			Assert.AreEqual(1, items.Count);
@@ -93,7 +93,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyCreatedBetween()
+		public void ByProperty_CreatedBetween()
 		{
 			IList<ContentItem> items = finder
 				.Where.Created.Between(rootItem.Created.AddMinutes(-1), rootItem.Created.AddMinutes(1))
@@ -103,7 +103,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyPublished()
+		public void ByProperty_Published()
 		{
 			IList<ContentItem> items = finder.Where.Published.Eq(rootItem.Published.Value).Select();
 			Assert.AreEqual(1, items.Count);
@@ -111,7 +111,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void ByPropertyExpires()
+		public void ByProperty_Expires()
 		{
 			IList<ContentItem> items = finder.Where.Expires.Eq(rootItem.Expires.Value).Select();
 			Assert.AreEqual(1, items.Count);
@@ -167,6 +167,31 @@ namespace N2.Tests.Persistence.NH
             Assert.AreEqual(2, items.Count);
             Assert.AreEqual(rootItem, items[0].VersionOf);
             Assert.AreEqual(rootItem, items[1]);
+        }
+
+        [Test]
+        public void ByProperty_State_EqualsPublished()
+        {
+            IList<ContentItem> items = finder.Where.State.Eq(ContentState.Published).Select();
+            Assert.AreEqual(5, items.Count);
+        }
+
+        [Test]
+        public void ByProperty_State_EqualsUnpublished()
+        {
+            IList<ContentItem> items = finder
+                .Where.State.Eq(ContentState.Unpublished)
+                .PreviousVersions(VersionOption.Include).Select();
+            Assert.AreEqual(1, items.Count);
+            Assert.AreEqual(rootItem, items[0].VersionOf);
+        }
+
+        [Test]
+        public void OrderBy_State()
+        {
+            IList<ContentItem> items = finder.All.PreviousVersions(VersionOption.Include)
+                .OrderBy.State.Desc.Select();
+            Assert.That(items[0].State, Is.GreaterThan(items[items.Count - 1].State));
         }
 
 		[Test]
@@ -841,7 +866,8 @@ namespace N2.Tests.Persistence.NH
 		private ContentItem CreatePageBelow(ContentItem parentPage, int index)
 		{
 			ContentItem item = CreateOneItem<PersistableItem2>(0, "item" + index, parentPage);
-
+            item.State = ContentState.Published;
+            
 			N2.Details.DetailCollection details = item.GetDetailCollection("DetailCollection", true);
 			details.Add(true);
 			details.Add(index * 1000 + 555);
@@ -860,7 +886,8 @@ namespace N2.Tests.Persistence.NH
 			startPage.ZoneName = "AZone";
 			startPage.SortOrder = 34;
 			startPage.Visible = true;
-			startPage["IntDetail"] = 45;
+            startPage.State = ContentState.Published;
+            startPage["IntDetail"] = 45;
 			startPage["DoubleDetail"] = 56.66;
 			startPage["BoolDetail"] = true;
 			startPage["DateDetail"] = new DateTime(2000, 01, 01);
@@ -882,7 +909,7 @@ namespace N2.Tests.Persistence.NH
 			rootItem.ZoneName = "TheZone";
 			rootItem.SortOrder = 23;
 			rootItem.Visible = false;
-			rootItem["IntDetail"] = 43;
+            rootItem["IntDetail"] = 43;
 			rootItem["DoubleDetail"] = 43.33;
 			rootItem["BoolDetail"] = false;
 			rootItem["DateDetail"] = new DateTime(1999, 12, 31);
@@ -902,6 +929,7 @@ namespace N2.Tests.Persistence.NH
 			rootItem.ZoneName = "ZaZone";
 			rootItem.SortOrder = 12;
 			rootItem.Visible = true;
+            rootItem.State = ContentState.Published;
 			rootItem["IntDetail"] = 32;
 			rootItem["DoubleDetail"] = 32.22;
 			rootItem["BoolDetail"] = true;

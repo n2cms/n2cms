@@ -73,6 +73,11 @@ namespace N2.Persistence.NH.Finder
             get { return new PropertySortDirection("VersionIndex", query); }
         }
 
+        public N2.Persistence.Finder.ISortDirection State
+        {
+            get { return new PropertySortDirection("State", query); }
+        }
+
 		public N2.Persistence.Finder.ISortDirection Visible
 		{
 			get { return new PropertySortDirection("Visible", query); }

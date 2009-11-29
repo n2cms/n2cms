@@ -12,7 +12,7 @@
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
 					<%# IsPublished(Container.DataItem) ? "<img src='../img/ico/png/bullet_star.png' alt='published' />" : string.Empty%>
-					<%# ((N2.ContentItem)Container.DataItem).VersionIndex + 1 %>
+					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Container.DataItem).VersionIndex + 1 %></span>
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >

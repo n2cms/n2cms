@@ -21,6 +21,9 @@ namespace N2.Persistence.NH
             this.definitions = definitions;
         }
 
+        /// <summary>Gets the mapping xml for a type</summary>
+        /// <param name="type">The type to generate mapping for</param>
+        /// <returns>An xml string</returns>
         public virtual string GetMapping(Type type)
         {
             string typeName = GetName(type);

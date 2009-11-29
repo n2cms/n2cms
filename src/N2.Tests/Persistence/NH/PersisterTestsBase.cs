@@ -19,50 +19,22 @@ namespace N2.Tests.Persistence.NH
 		protected IDefinitionManager definitions;
 		protected ContentPersister persister;
 		protected FakeSessionProvider sessionProvider;
-		protected IItemFinder finder;
+		protected ItemFinder finder;
 		protected SchemaExport schemaCreator;
-		protected NotifyingInterceptor interceptor;
+		protected IItemNotifier interceptor;
 			
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
 		{
-            SetUpEngineWithTypes(typeof(Definitions.PersistableItem1));
+            TestSupport.Setup(out definitions, out interceptor, out sessionProvider, out finder, out schemaCreator, typeof(Definitions.PersistableItem1));
 		}
-
-        protected void SetUpEngineWithTypes(params Type[] itemTypes)
-        {
-            ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
-
-            DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
-            definitions = new DefinitionManager(definitionBuilder, null);
-            DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
-            ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, config, connectionStrings);
-
-            interceptor = new NotifyingInterceptor();
-            FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
-            sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), interceptor, context);
-
-            finder = new ItemFinder(sessionProvider, definitions);
-
-            schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
-        }
 
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			IRepository<int, ContentItem> itemRepository = new ContentItemRepository(sessionProvider);
-			INHRepository<int, LinkDetail> linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
-
-			persister = new ContentPersister(itemRepository, linkRepository, finder);
-
-#if NH2_1
-			schemaCreator.Execute(false, true, false, sessionProvider.OpenSession.Session.Connection, null);
-#else
-			schemaCreator.Execute(false, true, false, false, sessionProvider.OpenSession.Session.Connection, null);
-#endif
+            TestSupport.Setup(out persister, sessionProvider, finder, schemaCreator);
 		}
 
 		[TearDown]

@@ -210,6 +210,7 @@
     <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
     <Compile Include="Engine\ContentEngineTests.cs" />
     <Compile Include="Engine\SingletonTests.cs" />
+    <Compile Include="Engine\WorkflowTests.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fakes\FakeEngine.cs" />
     <Compile Include="Fakes\FakeErrorHandler.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="Serialization\Items\FakeAttachment.cs" />
     <Compile Include="Serialization\SerializationTestsBase.cs" />
     <Compile Include="Serialization\XmlReaderTests.cs" />
+    <Compile Include="TestSupport.cs" />
     <Compile Include="TypeAssert.cs" />
     <Compile Include="TypeFindingBase.cs" />
     <Compile Include="Utility\UtilityItem.cs" />

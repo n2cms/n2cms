@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using N2.Persistence.Finder;
+using N2.Engine.Workflow;
 
 namespace N2.Persistence
 {
@@ -10,13 +11,15 @@ namespace N2.Persistence
 	/// </summary>
 	public class VersionManager : IVersionManager
 	{
-		private IRepository<int, ContentItem> itemRepository;
+        readonly IRepository<int, ContentItem> itemRepository;
 		readonly IItemFinder finder;
+        readonly StateChanger stateChanger;
 
-		public VersionManager(IRepository<int, ContentItem> itemRepository, IItemFinder finder)
+		public VersionManager(IRepository<int, ContentItem> itemRepository, IItemFinder finder, StateChanger stateChanger)
 		{
 			this.itemRepository = itemRepository;
 			this.finder = finder;
+            this.stateChanger = stateChanger;
 		}
 
 		#region Versioning Methods
@@ -33,6 +36,10 @@ namespace N2.Persistence
 				item = args.AffectedItem;
                 
 				ContentItem oldVersion = item.Clone(false);
+                if(item.State == ContentState.Published)
+                    stateChanger.ChangeTo(oldVersion, ContentState.Unpublished);
+                else
+                    stateChanger.ChangeTo(oldVersion, ContentState.Draft);
 				oldVersion.Expires = Utility.CurrentTime().AddSeconds(-1);
 				oldVersion.Updated = Utility.CurrentTime().AddSeconds(-1);
 				oldVersion.Parent = null;

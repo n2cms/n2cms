@@ -1,5 +1,6 @@
 ﻿using System;
 using N2.Edit.Web;
+using N2.Engine.Workflow;
 
 namespace N2.Edit
 {
@@ -18,6 +19,7 @@ namespace N2.Edit
 			{
 				previewedItem.Published = Utility.CurrentTime();
 				if (User != null) previewedItem.SavedBy = User.Identity.Name;
+                Engine.Resolve<StateChanger>().ChangeTo(previewedItem, ContentState.Published);
 				Engine.Persister.Save(previewedItem);
 
 				Response.Redirect(previewedItem.Url);
@@ -30,7 +32,8 @@ namespace N2.Edit
 				{
 					published.Published = Utility.CurrentTime();
 					if (User != null) published.SavedBy = User.Identity.Name;
-					Engine.Persister.Save(published);
+                    Engine.Resolve<StateChanger>().ChangeTo(previewedItem, ContentState.Published);
+                    Engine.Persister.Save(published);
 				}
 				Response.Redirect(published.Url);
 			}

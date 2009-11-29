@@ -39,10 +39,11 @@ namespace N2.Tests.Edit
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			DefinitionManager definitions = new DefinitionManager(builder, notifier);
+            var changer = new N2.Engine.Workflow.StateChanger();
+            DefinitionManager definitions = new DefinitionManager(builder, changer, notifier);
 			
 			versioner = mocks.StrictMock<IVersionManager>();
-			editManager = new EditManager(definitions, persister, versioner, null, null, null);
+			editManager = new EditManager(definitions, persister, versioner, null, null, null, changer, new EditSection());
 			editManager.EnableVersioning = true;
 		}
 
