@@ -5,6 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>Untitled Page</title>
+    <link rel="stylesheet" type="text/css" href="../css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../css/framed.css" />
+    <link rel="stylesheet" type="text/css" href="../css/themes/default.css" />
     <style>
     	body {font-size:.7em;font-family:Verdana;}
 		td {white-space:nowrap;}
@@ -12,7 +15,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
+    <div id="content">
 		<asp:Repeater ID="rptCns" runat="server">
 			<ItemTemplate>
 				<a href="fix.aspx?cn=<%# Eval("Name") %>"><%# Eval("Name") %></a>

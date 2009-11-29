@@ -7,6 +7,7 @@
     <title>Upgrade N2</title>
     <link rel="stylesheet" type="text/css" href="../css/all.css" />
     <link rel="stylesheet" type="text/css" href="../css/framed.css" />
+    <link rel="stylesheet" type="text/css" href="../css/themes/default.css" />
     <style>
     	form{font-size:1.1em;width:800px;margin:10px auto;}
     	a{color:#00e;}

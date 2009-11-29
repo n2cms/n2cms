@@ -6,11 +6,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../css/framed.css" />
+    <link rel="stylesheet" type="text/css" href="../css/themes/default.css" />
     <style>b { color:red;}pre{margin:10px 0;border-left:solid 10px #eee;padding-left:10px;}input{vertical-align:middle} .msg{font-weight:bold; font-size:1.4em;color:green;background-color:Yellow;padding:10px 0;}</style>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
+    <div id="content">
         <asp:Label CssClass="msg" runat="server" ID="lblResult" />
         <h1>Invalid item(s) in database (class namechange or missing dll?)</h1>
         <p>An invalid class was found in the database (NHibernate.InvalidClassException). A few possible explanations:</p>
