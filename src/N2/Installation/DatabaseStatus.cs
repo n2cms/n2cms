@@ -35,7 +35,7 @@ namespace N2.Installation
 		/// </summary>
 		public int DatabaseVersion { get; set; }
 
-		public bool NeedsUpgrade { get { return RequiredDatabaseVersion > DatabaseVersion; } }
+        public bool NeedsUpgrade { get { return RequiredDatabaseVersion > DatabaseVersion && DatabaseVersion > 0; } }
 
 		public string ToStatusString()
 		{
@@ -50,7 +50,7 @@ namespace N2.Installation
 				return string.Format("The database is installed but there is no content root with the id: {0}", RootItemID);
 			if(IsConnected)
 				return string.Format(
-					"The connection to the database seems fine but the database tables might not be created (error message: {0})",
+					"The connection to the database seems fine but the database tables might not be created.<br/>Error message: <pre>{0}</pre>",
 					SchemaError);
 			
 			return string.Format(

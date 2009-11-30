@@ -16,6 +16,7 @@
     	.warning{color:#f00;}
     	.ok{color:#0c0;}
     	textarea{width:95%;height:120px; border:none; background-color:#FFB}
+    	pre { overflow:auto; font-size:10px; color:Gray; }
     </style>
 </head>
 <body>
@@ -179,7 +180,7 @@
             <p>Good luck and happy <a href="..">editing</a>.</p>
             <p>/Cristian</p>
         </n2:TabPanel>
-        <asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" />
+        <pre><asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" /></pre>
     </form>
 </body>
 </html>
