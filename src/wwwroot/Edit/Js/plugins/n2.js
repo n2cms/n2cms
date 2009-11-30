@@ -122,9 +122,17 @@ var initn2context = function(w) {
             return encodeURIComponent(this.actionType);
         },
 
+        initToolbar: function() {
+            $("a.command").click(function(e) {
+                if (this.hash == "#stop")
+                    e.preventDefault();
+            });
+        },
+
         // selection memory
         setupToolbar: function(path, url) {
             if (!this.hasTop()) return;
+
             path = encodeURIComponent(path);
             url = url || this.selectedUrl;
             var memory = this.getMemory();
@@ -133,11 +141,21 @@ var initn2context = function(w) {
             this.selectedUrl = url;
             for (var i = 0; i < toolbarPlugIns.length; i++) {
                 var a = w.document.getElementById(toolbarPlugIns[i].linkId);
-                a.href = toolbarPlugIns[i].urlFormat
-		            .replace("{url}", url)
-		            .replace("{selected}", path)
-		            .replace("{memory}", memory)
-		            .replace("{action}", action);
+                var href = toolbarPlugIns[i].urlFormat;
+                var formats = { url: url, selected: path, memory: memory, action: action };
+                for (var key in formats) {
+                    var format = "{" + key + "}";
+                    if (href.indexOf(format) >= 0 && formats[key] == "null") {
+                        href = "#stop";
+                        $(a).addClass("disabled");
+                        break;
+                    }
+                    else $(a).removeClass("disabled");
+
+                    href = href.replace(format, formats[key]);
+                }
+                a.href = href;
+
             }
         },
 
@@ -163,7 +181,7 @@ var initn2context = function(w) {
         // toolbar selection
         select: function(name) {
             if (!name) return;
-            
+
             $s = jQuery("#" + name);
             var selectedTarget = $s.find("a").attr("target");
             $(".selected a").filter(function() { return this.target === selectedTarget || !this.target; })

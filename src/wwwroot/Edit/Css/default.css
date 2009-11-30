@@ -73,3 +73,16 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 {
     display:block;
 }
+
+/* disable paste */
+
+.disabled
+{
+    opacity:.5; 
+    filter:alpha(opacity=50);
+    alpha:.5;
+}
+#top .disabled:hover
+{
+    background-image:none;
+}
