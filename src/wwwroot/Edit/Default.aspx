@@ -19,16 +19,17 @@
 		<div class="frameForm">
             <div id="top">
                 <div id="toolbar" class="header cf">
-        		    <edit:ToolbarPluginDisplay ID="ToolbarPluginDisplay1" Area="Navigation" runat="server" />
-                    <edit:ToolbarPluginDisplay ID="previewPlugins" Area="Preview" runat="server" />
+        		    <edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
+                    <edit:ToolbarPluginDisplay ID="PreviewPlugins" Area="Preview" runat="server" />
                 </div>
 
                 <asp:HyperLink ID="logout" runat="server" CssClass="logout" NavigateUrl="Login.aspx?logout=true" Text="Log out" />
                 <asp:HyperLink ID="hlLogo" runat="server" SkinID="Logo" CssClass="logo" NavigateUrl="http://n2cms.com" Text="To the home of N2 CMS" ImageUrl="~/Edit/img/n2.png" />
                 
                 <div class="subbar cf">
-			        <edit:ToolbarPluginDisplay ID="ToolbarPluginDisplay3" Area="Operations" runat="server" />
-			        <edit:ToolbarPluginDisplay ID="ToolbarPluginDisplay2" Area="Options" runat="server" />
+			        <edit:ToolbarPluginDisplay ID="OperationsPlugins" Area="Operations" runat="server" />
+			        <edit:ToolbarPluginDisplay ID="OptionsPlugins" Area="Options" runat="server" />
+			        <div class="blinds"></div>
                 </div>
 			</div>
             

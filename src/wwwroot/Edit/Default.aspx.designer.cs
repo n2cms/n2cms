@@ -14,22 +14,22 @@ namespace N2.Edit {
     public partial class Default {
         
         /// <summary>
-        /// ToolbarPluginDisplay1 control.
+        /// NavigationPlugins control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay ToolbarPluginDisplay1;
+        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay NavigationPlugins;
         
         /// <summary>
-        /// previewPlugins control.
+        /// PreviewPlugins control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay previewPlugins;
+        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay PreviewPlugins;
         
         /// <summary>
         /// logout control.
@@ -50,22 +50,22 @@ namespace N2.Edit {
         protected global::System.Web.UI.WebControls.HyperLink hlLogo;
         
         /// <summary>
-        /// ToolbarPluginDisplay3 control.
+        /// OperationsPlugins control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay ToolbarPluginDisplay3;
+        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay OperationsPlugins;
         
         /// <summary>
-        /// ToolbarPluginDisplay2 control.
+        /// OptionsPlugins control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay ToolbarPluginDisplay2;
+        protected global::N2.Edit.Web.UI.Controls.ToolbarPluginDisplay OptionsPlugins;
         
         /// <summary>
         /// form1 control.
