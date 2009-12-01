@@ -20,7 +20,7 @@ using N2.Serialization;
 using N2.Web;
 using N2.Web.UI;
 using NHibernate;
-using N2.Engine.Workflow;
+using N2.Workflow;
 
 namespace N2.Engine.MediumTrust
 {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using N2.Persistence.Finder;
-using N2.Engine.Workflow;
+using N2.Workflow;
 
 namespace N2.Persistence
 {

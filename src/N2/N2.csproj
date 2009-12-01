@@ -284,7 +284,6 @@
     <Compile Include="Configuration\VersionsElement.cs" />
     <Compile Include="Configuration\VirtualPathCollection.cs" />
     <Compile Include="Configuration\VirtualPathElement.cs" />
-    <Compile Include="ContentState.cs" />
     <Compile Include="Definitions\AbstractDefinition.cs" />
     <Compile Include="Collections\BranchHierarchyBuilder.cs" />
     <Compile Include="Collections\CompositeFilter.cs" />
@@ -378,8 +377,6 @@
     <Compile Include="Engine\MediumTrust\MediumTrustServiceContainer.cs" />
     <Compile Include="Engine\ServiceContainerBase.cs" />
     <Compile Include="Engine\WindsorServiceContainer.cs" />
-    <Compile Include="Engine\Workflow\StateChangedEventArgs.cs" />
-    <Compile Include="Engine\Workflow\StateChanger.cs" />
     <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
     <Compile Include="Obsolete\EditableAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />
@@ -697,6 +694,9 @@
     <Compile Include="Web\Url.cs" />
     <Compile Include="Web\WebRequestContext.cs" />
     <Compile Include="Web\Parts\PartsAdapter.cs" />
+    <Compile Include="Workflow\ContentState.cs" />
+    <Compile Include="Workflow\StateChangedEventArgs.cs" />
+    <Compile Include="Workflow\StateChanger.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Engine\n2.configuration.xml" />

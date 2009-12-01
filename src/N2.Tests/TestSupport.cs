@@ -40,12 +40,12 @@ namespace N2.Tests
 
             DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
             notifier = new NotifyingInterceptor();
-            definitions = new DefinitionManager(definitionBuilder, new N2.Engine.Workflow.StateChanger(), notifier);
+            definitions = new DefinitionManager(definitionBuilder, new N2.Workflow.StateChanger(), notifier);
         }
 
         public static void Setup(out N2.Edit.IEditManager editor, out IVersionManager versions, IDefinitionManager definitions, IPersister persister, IItemFinder finder)
         {
-            var changer = new N2.Engine.Workflow.StateChanger();
+            var changer = new N2.Workflow.StateChanger();
             versions = new VersionManager(persister.Repository, finder, changer);
             editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, changer, null);
         }

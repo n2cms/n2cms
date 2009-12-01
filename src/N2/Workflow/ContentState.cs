@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace N2
+namespace N2.Workflow
 {
     /// <summary>
     /// The current state of a content item

@@ -147,7 +147,7 @@ namespace N2.Tests.Persistence.NH
 			PersistableItem1 one = CreateOneItem<PersistableItem1>(0, "one", root);
 			persister.Save(root);
 
-			N2.Persistence.VersionManager vm = new VersionManager(persister.Repository, finder, new N2.Engine.Workflow.StateChanger());
+			N2.Persistence.VersionManager vm = new VersionManager(persister.Repository, finder, new N2.Workflow.StateChanger());
 			var version = vm.SaveVersion(one);
 			
 			one.Name += "2";

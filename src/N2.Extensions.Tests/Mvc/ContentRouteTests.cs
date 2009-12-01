@@ -64,7 +64,7 @@ namespace N2.Extensions.Tests.Mvc
 				typeof (TestItemController),
 			};
 
-            var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Engine.Workflow.StateChanger(), null);
+            var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Workflow.StateChanger(), null);
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, new NotifyingInterceptor(), host, new HostSection());

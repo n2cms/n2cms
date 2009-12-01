@@ -60,7 +60,7 @@ namespace N2.Tests.Definitions
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-            definitions = new DefinitionManager(builder, new N2.Engine.Workflow.StateChanger(), notifier);
+            definitions = new DefinitionManager(builder, new N2.Workflow.StateChanger(), notifier);
 		}
 
 		#endregion

@@ -14,7 +14,7 @@ using N2.Security;
 using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
-using N2.Engine.Workflow;
+using N2.Workflow;
 
 namespace N2.Edit
 {

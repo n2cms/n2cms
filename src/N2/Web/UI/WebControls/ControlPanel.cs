@@ -98,14 +98,16 @@ namespace N2.Web.UI.WebControls
 				AddPlugins(state);
 				AppendDefinedTemplate(VisibleFooterTemplate, this);
 
-				if (CurrentItem != null && EnableEditInterfaceIntegration && !OriginatesFromEdit())
-				{
-					string navigationUrl = N2.Context.Current.EditManager.GetNavigationUrl(CurrentItem);
-					string previewUrl = N2.Context.Current.EditManager.GetPreviewUrl(CurrentItem);
-					string script = string.Format(scriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
-					Page.ClientScript.RegisterStartupScript(typeof(ControlPanel), "updateNavigation", script, true);
-				}
-			}
+                if (CurrentItem != null && EnableEditInterfaceIntegration && !OriginatesFromEdit())
+                {
+                    string navigationUrl = N2.Context.Current.EditManager.GetNavigationUrl(CurrentItem);
+                    string previewUrl = N2.Context.Current.EditManager.GetPreviewUrl(CurrentItem);
+                    string script = string.Format(scriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
+                    Page.ClientScript.RegisterStartupScript(typeof(ControlPanel), "updateNavigation", script, true);
+                }
+                else
+                    Page.ClientScript.RegisterStartupScript(typeof(ControlPanel), "updateNavigation", @"if(window.n2ctx && window.n2ctx.hasTop()) jQuery('.cpAdminister').hide();", true);
+            }
 			else if (state == ControlPanelState.DragDrop)
 			{
 				AppendDefinedTemplate(DragDropHeaderTemplate, this);
@@ -210,10 +212,14 @@ window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
 				template.InstantiateIn(templateContainer);
 			}
 		}
-
+        
 		string scriptFormat = @"if(window.n2ctx){{
     window.n2ctx.setupToolbar('{0}','{1}');
     window.n2ctx.refreshNavigation('{2}');
+    if(window.n2ctx.hasTop())
+        jQuery('.cpAdminister').hide();
+    else
+        jQuery('.cpView').hide();
 }}";
 
 		protected override void Render(HtmlTextWriter writer)

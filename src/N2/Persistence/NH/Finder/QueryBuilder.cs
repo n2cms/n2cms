@@ -5,6 +5,7 @@ using N2.Collections;
 using N2.Definitions;
 using N2.Persistence.Finder;
 using NHibernate;
+using N2.Workflow;
 
 namespace N2.Persistence.NH.Finder
 {

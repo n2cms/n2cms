@@ -39,7 +39,7 @@ namespace N2.Tests.Edit
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-            var changer = new N2.Engine.Workflow.StateChanger();
+            var changer = new N2.Workflow.StateChanger();
             DefinitionManager definitions = new DefinitionManager(builder, changer, notifier);
 			
 			versioner = mocks.StrictMock<IVersionManager>();

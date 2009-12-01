@@ -11,6 +11,7 @@ using N2.Web.UI.WebControls;
 using System.Web.UI;
 using System.Security.Principal;
 using N2.Details;
+using N2.Workflow;
 
 namespace N2.Tests.Engine
 {

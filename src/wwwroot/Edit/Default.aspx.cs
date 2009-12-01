@@ -5,8 +5,9 @@ using System.Web.Security;
 namespace N2.Edit
 {
 	[ToolbarPlugin("VIEW", "preview", "{url}", ToolbarArea.Preview, Targets.Preview, "~/Edit/Img/Ico/Png/eye.png", 0, ToolTip = "Preview", GlobalResourceClassName = "Toolbar")]
-	[ControlPanelLink("cpAdminister", "~/edit/img/ico/png/application_side_tree.png", "~/edit/?selected={Selected.Path}", "Administer site", -50, ControlPanelState.Visible, Target = Targets.Top)]
-	public partial class Default : Web.EditPage
+    [ControlPanelLink("cpAdminister", "~/edit/img/ico/png/application_side_tree.png", "~/edit/?selected={Selected.Path}", "Administer site", -50, ControlPanelState.Visible, Target = Targets.Top)]
+    [ControlPanelLink("cpView", "~/edit/img/ico/png/eye.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, Target = Targets.Top)]
+    public partial class Default : Web.EditPage
 	{
 		string selectedPath;
 		string selectedUrl;

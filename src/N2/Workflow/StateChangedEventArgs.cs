@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace N2.Engine.Workflow
+namespace N2.Workflow
 {
     /// <summary>
     /// Converys information about state changes

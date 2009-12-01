@@ -1,2 +1,0 @@
-<asp:HyperLink runat="server" SkinID="Logo" ImageUrl="n2_logo.gif" />
-<asp:HyperLink runat="server" SkinID="Logout" ImageUrl="~/Edit/img/ico/key.gif" />
