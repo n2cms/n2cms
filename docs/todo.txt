@@ -8,6 +8,7 @@
 		- Publish
 		- CreateDraft
 	- fix publish in the future
+	- move to trash -> deleted state
 - mvc templates
 	- 960 grid?
 	- globalization

@@ -172,6 +172,7 @@ namespace N2.Web.UI.WebControls
 						string s = updateNameScript + Environment.NewLine +
 						           string.Format(startupScriptFormat, titleID, nameID, whitespaceReplacement, toLower, replacements, keepUpdatedBox);
 						Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
+                        tbTitle.Attributes["onkeyup"] = "invokeUpdateName();";
                         tbTitle.Attributes["onblur"] = "invokeUpdateName();";
                         Attributes["onfocus"] = "invokeUpdateName();";
 					}
