@@ -45,7 +45,7 @@ div:hover.zoneItem				{ background-image:url(../img/part_bg.png) }
             font-family: 'Lucida Console', Monaco, monospace;
             font-size: 10px;
             text-transform:uppercase;
-            background:#fff url(../img/toolbar_button_bg.png) no-repeat 50% 0%;
+            background:#FFFFFF url(../img/lighten10.png) repeat-x scroll 0 50%;
             overflow:hidden;
             border-left:solid 1px #fff;
             border-right:solid 1px #d8d8d8;

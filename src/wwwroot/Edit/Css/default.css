@@ -14,7 +14,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 
 .header { padding:6px 10px; border-bottom: solid 1px #999; background:transparent url(../img/darken10.png) repeat-x 0px bottom;}
     .header .toolbox { float:left; border-bottom:none; margin-right:10px; }
-        .header .toolbox .item { background:#fff url(../img/darken10.png) repeat-x 0 -10px; }
+        .header .toolbox .item { background:#fff url(../img/lighten10.png) repeat-x 0 50%; }
             .header .toolbox .item .command  { padding:6px; position:relative; background:transparent none no-repeat 0 0; }
             .header .toolbox .item a:hover { background-image:url(../img/toolbar_button_bg_hover.png); }
 
