@@ -4,7 +4,6 @@
 body .header
 {
     background-color:#444; 
-    border-color:#666;
     background-image:url(../img/darken25.png);
 }
 body .subbar,
@@ -12,6 +11,10 @@ body #splitter .vsplitbar
 {
     background-color:#555; 
     border-color:#222;
+}
+body .subbar
+{
+    border-top-color:#666;
 }
 #top .item
 {

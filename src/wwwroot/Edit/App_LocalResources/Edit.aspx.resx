@@ -154,13 +154,13 @@
     <value />
   </data>
   <data name="hlNewerVersionResource1.Text" xml:space="preserve">
-    <value>There is a newer version of this item that hasn't been published. Edit the newer version &amp;raquo;</value>
+    <value>There is a draft that hasn't been published. Click to edit the newer version &amp;raquo;</value>
   </data>
   <data name="hlNewerVersionResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="hlOlderVersionResource1.Text" xml:space="preserve">
-    <value>This is a version of another item that is the master version. Edit the master version &amp;raquo;</value>
+    <value>&amp;laquo; Click to edit the currently published version. This is a draft pending to be published.</value>
   </data>
   <data name="hlOlderVersionResource1.ToolTip" xml:space="preserve">
     <value />

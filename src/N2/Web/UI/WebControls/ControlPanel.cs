@@ -21,8 +21,12 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	[PersistChildren(false)]
 	[ParseChildren(true)]
-    [ControlPanelLink("cpOrganize", "~/edit/img/ico/png/layout_edit.png", "{Selected.Url}", "Organize parts", -10, ControlPanelState.Visible, UrlEncode = false, NavigateQuery = "edit=drag")]
-	[ControlPanelLink("cpUnorganize", "~/edit/img/ico/png/page_refresh.png", "{Selected.Url}", "Done", -10, ControlPanelState.DragDrop, UrlEncode = false, Title = "Done")]
+    [ControlPanelLink("cpOrganize", "~/edit/img/ico/png/layout_edit.png", "{Selected.Url}", "Organize parts", -10, ControlPanelState.Visible, 
+        UrlEncode = false, 
+        NavigateQuery = "edit=drag")]
+	[ControlPanelLink("cpUnorganize", "~/edit/img/ico/png/page_refresh.png", "{Selected.Url}", "Done", -10, ControlPanelState.DragDrop, 
+        UrlEncode = false, 
+        Title = "Done")]
 	public class ControlPanel : Control, IItemContainer
 	{
 		const string ArrayKey = "ControlPanel.arrays";

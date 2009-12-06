@@ -5,13 +5,14 @@ using N2.Persistence.NH;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
+using N2.Tests.Fakes;
 
 namespace N2.Tests
 {
 	public abstract class ItemPersistenceMockingBase : ItemTestsBase
 	{
         protected IPersister persister;
-        protected IRepository<int, ContentItem> repository;
+        protected FakeRepository<ContentItem> repository;
         protected IEventRaiser saving;
 
 		public delegate string ToAppRelativeDelegate(string path);

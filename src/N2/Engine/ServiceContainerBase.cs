@@ -3,6 +3,9 @@ using N2.Configuration;
 
 namespace N2.Engine
 {
+    /// <summary>
+    /// Wraps an inversion of control container. The default container used by N2 is Windsor.
+    /// </summary>
 	public abstract class ServiceContainerBase : IServiceContainer
 	{
 		#region IServiceContainer Members

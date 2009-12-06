@@ -202,6 +202,7 @@ namespace N2.Engine
 		public void Initialize()
 		{
 			AddComponentInstance<IEngine>(this);
+            AddComponentInstance<IServiceContainer>(this.Container);
 
 			var invoker = Resolve<IPluginBootstrapper>();
 			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());

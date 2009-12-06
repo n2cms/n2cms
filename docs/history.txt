@@ -1,4 +1,6 @@
-﻿- adaptive expand view link from control panel
+﻿- refactored code into command factory/dispatcher for testable workflow of content items
+- introduced [Service] attribute used to auto-inject services
+- adaptive expand view link from control panel
 - introduced state for content items
 - introduced version index which is incremented for each version
 - applied patch #3656 (Kennet): Localization of dropdownlist enum text in N2

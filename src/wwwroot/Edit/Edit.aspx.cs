@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit.Web;
-using N2.Web.UI.WebControls;
-using N2.Web;
 using N2.Security;
+using N2.Web;
+using N2.Web.UI.WebControls;
+using N2.Workflow;
 
 namespace N2.Edit
 {
@@ -77,62 +78,72 @@ namespace N2.Edit
 
 
 
-		protected void OnSaveCommand(object sender, CommandEventArgs e)
+        protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
-			Validate();
-			if (IsValid)
-			{
-				if (!Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, N2.Security.Permission.Publish))
-				{
-					FailValidation("Not authorized to publish.");
-				}
+            var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
+            Engine.Resolve<CommandDispatcher>().Publish(ctx);
 
-				try
-				{
-					SaveChanges();
-				}
-				catch (Exception ex)
-				{
-					Engine.Resolve<IErrorHandler>().Notify(ex);
-					FailValidation(ex.Message);
-				}
-			}
+            HandleResult(ctx);
+
+            //Validate();
+            //if (IsValid)
+            //{
+            //    if (!Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, N2.Security.Permission.Publish))
+            //    {
+            //        FailValidation("Not authorized to publish.");
+            //    }
+
+            //    try
+            //    {
+            //        SaveChanges();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Engine.Resolve<IErrorHandler>().Notify(ex);
+            //        FailValidation(ex.Message);
+            //    }
+            //}
 		}
-
-    	void FailValidation(string message)
-    	{
-    		cvException.IsValid = false;
-    		cvException.ErrorMessage = message;
-    	}
 
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
-			Validate();
-			if (IsValid)
-			{
-				ContentItem savedVersion = SaveVersion();
+            var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
+            Engine.Resolve<CommandDispatcher>().Publish(ctx);
 
-				Url redirectTo = Engine.EditManager.GetPreviewUrl(savedVersion);
+            HandleResult(ctx);
 
-				redirectTo = redirectTo.AppendQuery("preview", savedVersion.ID);
-				if (savedVersion.VersionOf != null)
-					redirectTo = redirectTo.AppendQuery("original", savedVersion.VersionOf.ID);
-				if (!string.IsNullOrEmpty(Request["returnUrl"]))
-					redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
 
-				Response.Redirect(redirectTo);
-			}
+            //Validate();
+            //if (IsValid)
+            //{
+            //    ContentItem savedVersion = SaveVersion();
+
+            //    Url redirectTo = Engine.EditManager.GetPreviewUrl(savedVersion);
+
+            //    redirectTo = redirectTo.AppendQuery("preview", savedVersion.ID);
+            //    if (savedVersion.VersionOf != null)
+            //        redirectTo = redirectTo.AppendQuery("original", savedVersion.VersionOf.ID);
+            //    if (!string.IsNullOrEmpty(Request["returnUrl"]))
+            //        redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
+
+            //    Response.Redirect(redirectTo);
+            //}
 		}
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
-			Validate();
-			if (IsValid)
-			{
-				ContentItem savedVersion = SaveVersion();
-                Url redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
-                Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
-            }
+            var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
+            Engine.Resolve<CommandDispatcher>().Publish(ctx);
+
+            HandleResult(ctx);
+
+            //Validate();
+            //if (IsValid)
+            //{
+            //    ContentItem savedVersion = SaveVersion();
+            //    Url redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
+            //    Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
+            //}
         }
 
         protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
@@ -144,7 +155,31 @@ namespace N2.Edit
                 Url redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
 				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
 			}
-		}
+        }
+
+        private void HandleResult(CommandContext ctx)
+        {
+            if (ctx.Errors.Count > 0)
+            {
+                string message = string.Empty;
+                foreach (var ex in ctx.Errors)
+                {
+                    Engine.Resolve<IErrorHandler>().Notify(ex);
+                    message += ex.Message + "<br/>";
+                }
+                FailValidation(message);
+            }
+            else if (!string.IsNullOrEmpty(ctx.RedirectTo))
+            {
+                Response.Redirect(ctx.RedirectTo);
+            }
+        }
+
+        void FailValidation(string message)
+        {
+            cvException.IsValid = false;
+            cvException.ErrorMessage = message;
+        }
 		
 		
 		
@@ -261,6 +296,8 @@ namespace N2.Edit
 
         private void SaveChanges()
         {
+            //Engine.Resolve<Workflow.CommandProvider>().PublishCommand()
+
 			ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionAndSave : ItemEditorVersioningMode.SaveAsMaster;
         	ContentItem currentItem = ie.Save(ie.CurrentItem, mode);
 

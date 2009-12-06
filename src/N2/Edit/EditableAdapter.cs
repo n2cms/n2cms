@@ -39,9 +39,9 @@ namespace N2.Edit
 		/// <param name="item">The item to update.</param>
 		/// <param name="addedEditors">Editors containing interesting values.</param>
 		/// <param name="user">The user to filter access by.</param>
-		public virtual void UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		public virtual bool UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			Engine.EditManager.UpdateItem(item, addedEditors, user);
+			return Engine.EditManager.UpdateItem(item, addedEditors, user);
 		}
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>

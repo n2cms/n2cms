@@ -675,10 +675,10 @@ namespace N2
 				destination.published = source.published;
 				destination.expires = source.expires;
                 destination.sortOrder = source.sortOrder;
-                destination.versionIndex = source.versionIndex;
                 destination.state = source.state;
 			}
-			destination.visible = source.visible;
+            destination.versionIndex = source.versionIndex;
+            destination.visible = source.visible;
 			destination.savedBy = source.savedBy;
 			destination.urlParser = source.urlParser;
 			destination.url = null;

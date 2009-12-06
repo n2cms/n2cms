@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using N2.Plugin.Scheduling;
 using N2.Collections;
+using System.Diagnostics;
 
 namespace N2.Edit.Trash
 {
@@ -14,6 +15,9 @@ namespace N2.Edit.Trash
 	{
 		public override void Execute()
 		{
+            if (Debugger.IsAttached)
+                return;
+
 			ITrashHandler handler = Engine.Resolve<ITrashHandler>();
 			handler.PurgeOldItems();
 		}

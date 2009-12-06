@@ -19,7 +19,7 @@ namespace N2.Tests.Fakes
 			if(id == 0)
 			{
 				var p = entity.GetType().GetProperty("ID");
-				p.SetValue(entity, ++id, new object[0]);
+				p.SetValue(entity, id = ++maxID, new object[0]);
 			}
 			return id;
 		}

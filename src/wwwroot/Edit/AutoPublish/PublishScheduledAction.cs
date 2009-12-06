@@ -8,6 +8,7 @@ using N2.Web;
 using N2.Configuration;
 using N2.Persistence;
 using System.Collections.Generic;
+using N2.Persistence.Finder;
 
 namespace N2.Edit.AutoPublish
 {
@@ -16,10 +17,14 @@ namespace N2.Edit.AutoPublish
     {
         IVersionManager Versioner { get { return Engine.Resolve<IVersionManager>(); } }
         IPersister Persister { get { return Engine.Resolve<IPersister>(); } }
+        IItemFinder Finder { get { return Engine.Resolve<IItemFinder>(); } }
 
         public override void Execute()
         {
-            var allAutoPublishPages = N2.Find.Items.Where.Detail("FuturePublishDate").Lt(DateTime.Now).Select();
+            if (Debugger.IsAttached)
+                return;
+
+            var allAutoPublishPages = Finder.Where.Detail("FuturePublishDate").Lt(DateTime.Now).Select();
             foreach (var page in allAutoPublishPages)
             {
                 var allVersions = Versioner.GetVersionsOf(page);

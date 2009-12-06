@@ -23,7 +23,7 @@ namespace N2.Persistence
 		}
 
 		#region Versioning Methods
-		/// <summary>Creates an old version of an item. This must be called before the item item is modified.</summary>
+		/// <summary>Creates a version of the item. This must be called before the item item is modified to save a version before modifications.</summary>
 		/// <param name="item">The item to create a old version of.</param>
 		/// <returns>The old version.</returns>
 		public virtual ContentItem SaveVersion(ContentItem item)
@@ -46,23 +46,31 @@ namespace N2.Persistence
 				oldVersion.VersionOf = item;
 				if (item.Parent != null)
 					oldVersion["ParentID"] = item.Parent.ID;
-				itemRepository.SaveOrUpdate(oldVersion);
+                itemRepository.SaveOrUpdate(oldVersion);
 
 				if (ItemSavedVersion != null)
 					ItemSavedVersion.Invoke(this, new ItemEventArgs(oldVersion));
-
-                item.VersionIndex++;
 
 				return oldVersion;
 			}
 			return null;
 		}
 
+        /// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
+        /// <param name="currentItem">The item that will be stored as a previous version.</param>
+        /// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
+        /// <returns>A version of the previously published item.</returns>
+        public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem)
+        {
+            return ReplaceVersion(currentItem, replacementItem, true);
+        }
+
 		/// <summary>Update a page version with another, i.e. save a version of the current item and replace it with the replacement item. Returns a version of the previously published item.</summary>
 		/// <param name="currentItem">The item that will be stored as a previous version.</param>
 		/// <param name="replacementItem">The item that will take the place of the current item using it's ID. Any saved version of this item will not be modified.</param>
-		/// <returns>A version of the previously published item.</returns>
-		public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem)
+        /// <param name="storeCurrentVersion">Create a copy of the currently published version before overwriting it.</param>
+        /// <returns>A version of the previously published item or the current item when storeCurrentVersion is false.</returns>
+		public virtual ContentItem ReplaceVersion(ContentItem currentItem, ContentItem replacementItem, bool storeCurrentVersion)
 		{
 			CancellableDestinationEventArgs args = new CancellableDestinationEventArgs(currentItem, replacementItem);
 			if (ItemReplacingVersion != null)
@@ -74,25 +82,41 @@ namespace N2.Persistence
 
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
-					ContentItem versionOfCurrentItem = SaveVersion(currentItem);
-					ClearAllDetails(currentItem);
+                    if (storeCurrentVersion)
+                    {
+                        ContentItem versionOfCurrentItem = SaveVersion(currentItem); //TODO: remove?
 
-					((IUpdatable<ContentItem>)currentItem).UpdateFrom(replacementItem);
+                        Replace(currentItem, replacementItem);
 
-					currentItem.Updated = Utility.CurrentTime();
-					itemRepository.Update(currentItem);
+                        transaction.Commit();
+                        return versionOfCurrentItem;
+                    }
+                    else
+                    {
+                        Replace(currentItem, replacementItem);
 
-					if (ItemReplacedVersion != null)
-						ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));
-
-					itemRepository.Flush(); 
-					transaction.Commit();
-
-					return versionOfCurrentItem;
+                        transaction.Commit();
+                        return currentItem;
+                    }
 				}
 			}
 			return currentItem;
 		}
+
+        private void Replace(ContentItem currentItem, ContentItem replacementItem)
+        {
+            ClearAllDetails(currentItem);
+
+            ((IUpdatable<ContentItem>)currentItem).UpdateFrom(replacementItem);
+
+            currentItem.Updated = Utility.CurrentTime();
+            itemRepository.Update(currentItem);
+
+            if (ItemReplacedVersion != null)
+                ItemReplacedVersion.Invoke(this, new ItemEventArgs(replacementItem));
+
+            itemRepository.Flush();
+        }
 
 		#region ReplaceVersion Helper Methods
 
@@ -132,7 +156,7 @@ namespace N2.Persistence
 		{
 			return finder.Where.VersionOf.Eq(publishedItem)
 				.Or.ID.Eq(publishedItem.ID)
-				.OrderBy.Updated.Desc;
+				.OrderBy.VersionIndex.Desc;
 		}
 
 		public void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions)

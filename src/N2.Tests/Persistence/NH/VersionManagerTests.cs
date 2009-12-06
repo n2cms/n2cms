@@ -71,7 +71,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void GetVersions_DisplaysVersions_InChangedOrder()
+		public void GetVersions_DisplaysVersions_InInverseVersionIndexOrder()
 		{
 			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", null);
 			using (new TimeCapsule(DateTime.Now.AddSeconds(-10)))
@@ -80,12 +80,14 @@ namespace N2.Tests.Persistence.NH
 			}
 
 			ContentItem version = versioner.SaveVersion(item);
+            item.VersionIndex++;
+            persister.Save(item);
 
 			var versions = versioner.GetVersionsOf(item);
 
 			Assert.That(versions.Count, Is.EqualTo(2));
-			Assert.That(versions[0], Is.EqualTo(version));
-			Assert.That(versions[1], Is.EqualTo(item));
+            Assert.That(versions[0], Is.EqualTo(item));
+            Assert.That(versions[1], Is.EqualTo(version));
 		}
 
 		[Test]
@@ -100,7 +102,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void CanGetLatestVersionOnly()
+		public void CanGet_LatestVersion_Only()
 		{
 			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", null);
 			using (new TimeCapsule(DateTime.Now.AddSeconds(-10)))
@@ -109,12 +111,14 @@ namespace N2.Tests.Persistence.NH
 			}
 
 			ContentItem version = versioner.SaveVersion(item);
+            item.VersionIndex++;
+            persister.Save(item);
 
 			var versions = versioner.GetVersionsOf(item, 1);
 
 			Assert.That(versions.Count, Is.EqualTo(1));
-			Assert.That(versions[0], Is.EqualTo(version));
-		}
+            Assert.That(versions[0], Is.EqualTo(item));
+        }
 
 		[Test]
 		public void CanTrim_NumberOfVersions()
@@ -175,7 +179,7 @@ namespace N2.Tests.Persistence.NH
         }
 
         [Test]
-        public void SaveVersion_IncreasesIndex_OfCurrentVersion()
+        public void SaveVersion_DoesntAffect_CurrentVersionIndex()
         {
             ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
             persister.Save(item);
@@ -183,28 +187,22 @@ namespace N2.Tests.Persistence.NH
             var version = versioner.SaveVersion(item);
 
             Assert.That(version.VersionIndex, Is.EqualTo(0));
-            Assert.That(item.VersionIndex, Is.EqualTo(1));
+            Assert.That(item.VersionIndex, Is.EqualTo(0));
         }
 
         [Test]
-        public void RestoreVersion_Increases_VersionIndex_OfReplacedVersion()
+        public void VersionIndex_IsCarriedOn_WhenReplacingVersion()
         {
             ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
             persister.Save(item);
 
             var version = versioner.SaveVersion(item);
+            item.VersionIndex++;
+            persister.Save(item);
 
             versioner.ReplaceVersion(item, CreateOneItem<Definitions.PersistableItem1>(0, "root2", null));
 
-            Assert.That(item.VersionIndex, Is.EqualTo(2));
-        }
-
-        // state
-
-        [Test]
-        public void NewItem_HasState_New()
-        {
-            
+            Assert.That(item.VersionIndex, Is.EqualTo(0));
         }
 	}
 }

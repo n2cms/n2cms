@@ -21,7 +21,7 @@ using N2.Definitions;
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>A form that generates an edit interface for content items.</summary>
-	public class ItemEditor : WebControl, INamingContainer, IItemEditor
+	public class ItemEditor : WebControl, INamingContainer, IItemEditor, IBinder<ContentItem>
 	{
 		#region Constructor
 
@@ -41,7 +41,6 @@ namespace N2.Web.UI.WebControls
 
 		#region Private Fields
 		private ContentItem currentItem;
-		private IDictionary<string, Control> editors;
 		#endregion
 
 		#region Properties
@@ -55,11 +54,7 @@ namespace N2.Web.UI.WebControls
 		}
 
 		/// <summary>Gets a dictionary of editor controls added this control.</summary>
-		public IDictionary<string, Control> AddedEditors
-		{
-			get { return editors; }
-            protected set { editors = value; }
-		}
+        public IDictionary<string, Control> AddedEditors { get; protected set; }
 
 		protected override HtmlTextWriterTag TagKey
 		{
@@ -174,7 +169,7 @@ namespace N2.Web.UI.WebControls
 
 		/// <summary>Saves <see cref="CurrentItem"/> with the values entered in the form.</summary>
 		/// <returns>The saved item.</returns>
-		public ContentItem Save()
+        public ContentItem Save()
 		{
 			CurrentItem = Save(CurrentItem, VersioningMode);
 			return CurrentItem;
@@ -183,7 +178,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Updates the <see cref="CurrentItem"/> with the values entered in the form without saving it.</summary>
 		public void Update()
 		{
-			EditController.UpdateItem(CurrentItem, AddedEditors, Page.User);
+            UpdateObject(CurrentItem);
 		}
 
 		#endregion
@@ -202,5 +197,19 @@ namespace N2.Web.UI.WebControls
 		public event EventHandler<ItemEventArgs> Saved;
 
 		#endregion
-	}
+
+        #region IBinder<ContentItem> Members
+
+        public bool UpdateObject(ContentItem value)
+        {
+            return EditController.UpdateItem(value, AddedEditors, Page.User);
+        }
+
+        public void UpdateInterface(ContentItem value)
+        {
+            Engine.EditManager.UpdateEditors(value, AddedEditors, Page.User);
+        }
+
+        #endregion
+    }
 }

@@ -25,6 +25,9 @@ namespace N2.Edit.KeepAlive
                 Repeat = Repeat.Once;
                 return;
             }
+
+            if (Debugger.IsAttached)
+                return;
             
             try
             {

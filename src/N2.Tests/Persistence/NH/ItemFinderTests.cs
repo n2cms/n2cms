@@ -138,7 +138,9 @@ namespace N2.Tests.Persistence.NH
         [Test]
         public void ByProperty_VersionIndex_Equals_PreviousVersion()
         {
-            IList<ContentItem> items = finder.Where.VersionIndex.Eq(0).And.VersionOf.Eq(rootItem).PreviousVersions(VersionOption.Include).Select();
+            IList<ContentItem> items = finder.Where.VersionIndex.Eq(0)
+                .And.VersionOf.Eq(rootItem)
+                .PreviousVersions(VersionOption.Include).Select();
             Assert.AreEqual(1, items.Count);
             Assert.AreEqual(rootItem, items[0].VersionOf);
         }
@@ -917,6 +919,7 @@ namespace N2.Tests.Persistence.NH
 			rootItem["StringDetail"] = "just a string";
 			rootItem["StringDetail2"] = "just another string";
 			rootItem["ObjectDetail"] = new string[] { "one", "two", "three" };
+            rootItem.VersionIndex = 1;
 
 			engine.Persister.Save(rootItem);
 		}

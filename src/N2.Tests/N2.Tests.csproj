@@ -160,8 +160,13 @@
     <Compile Include="Edit\WhileDealingWithVersions.cs" />
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
+    <Compile Include="Fakes\FakeVersionManager.cs" />
+    <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
+    <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
+    <Compile Include="Workflow\CommandFactory_SavingTests.cs" />
     <Compile Include="Engine\ContentAdapterProviderTest.cs" />
     <Compile Include="Engine\ContainerSanityTests.cs" />
+    <Compile Include="Workflow\CommandFactory_PreviewingTests.cs" />
     <Compile Include="Engine\Items\AdapterA.cs" />
     <Compile Include="Engine\Items\AdapterAA.cs" />
     <Compile Include="Engine\Items\AdapterAAA.cs" />
@@ -209,8 +214,9 @@
     <Compile Include="Edit\WhileSortingTreeOfPages.cs" />
     <Compile Include="Edit\WhileSortingTreeOfPagesAndItems.cs" />
     <Compile Include="Engine\ContentEngineTests.cs" />
+    <Compile Include="Engine\ServiceDiscovererTests.cs" />
     <Compile Include="Engine\SingletonTests.cs" />
-    <Compile Include="Engine\WorkflowTests.cs" />
+    <Compile Include="Workflow\ContentStateTests.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Fakes\FakeEngine.cs" />
     <Compile Include="Fakes\FakeErrorHandler.cs" />
@@ -349,6 +355,7 @@
     <Compile Include="Web\WhileDealingWithHostNames.cs" />
     <Compile Include="Web\WhileParsingUrlsWhenMultipleSites.cs" />
     <Compile Include="Web\PartsAdapterTest.cs" />
+    <Compile Include="Workflow\Items\StatefulItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

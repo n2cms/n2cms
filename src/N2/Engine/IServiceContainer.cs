@@ -4,7 +4,10 @@ using N2.Plugin;
 
 namespace N2.Engine
 {
-	public interface IServiceContainer
+    /// <summary>
+    /// Wraps an inversion of control container. The default container used by N2 is Windsor.
+    /// </summary>
+    public interface IServiceContainer
 	{
 		/// <summary>
 		/// Adds the speficied Facility to the container

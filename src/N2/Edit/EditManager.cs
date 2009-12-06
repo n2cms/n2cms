@@ -46,6 +46,7 @@ namespace N2.Edit
 		string newItemUrl = "~/edit/new.aspx";
 		readonly IList<string> uploadFolders = new List<string>();
 
+        [Obsolete]
 		private EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner, 
 						   ISecurityManager securityManager, IPluginFinder pluginFinder, StateChanger changer, NavigationSettings settings)
 		{
@@ -496,6 +497,7 @@ namespace N2.Edit
                 {
                     if (item.VersionOf == null)
                         stateChanger.ChangeTo(item, ContentState.Published);
+                    item.VersionIndex++;
                     persister.Save(item);
                 }
 
@@ -518,6 +520,7 @@ namespace N2.Edit
 				{
 					item.Published = null;
                     stateChanger.ChangeTo(item, ContentState.Draft);
+                    item.VersionIndex++;
 					persister.Save(item);
 				}
 

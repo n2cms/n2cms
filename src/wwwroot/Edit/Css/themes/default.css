@@ -4,13 +4,16 @@
 body .header
 {
     background-color:#79C; 
-    border-color:#ddd;
 }
 body .subbar,
 body #splitter .vsplitbar
 {
     background-color:#ccb; 
     border-color:#aa9;
+}
+body .subbar
+{
+    border-top-color:#ccc;
 }
 body .toolbar, 
 body .optionGroup,

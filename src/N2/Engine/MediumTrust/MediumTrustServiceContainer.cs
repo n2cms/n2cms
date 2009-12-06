@@ -165,7 +165,9 @@ namespace N2.Engine.MediumTrust
 			AddComponent("n2.pluginFinder", typeof(IPluginFinder), typeof(PluginFinder));
 			AddComponent("n2.scheduler", typeof(Scheduler), typeof(Scheduler));
 
-			//<include uri="assembly://N2/Serialization/serialization.castle.config" />
+            AddComponentInstance("n2.serviceContainer", typeof(IServiceContainer), this);
+            AddComponent("n2.serviceRegistrator", typeof(ServiceRegistrator), typeof(ServiceRegistrator));
+            //<include uri="assembly://N2/Serialization/serialization.castle.config" />
 		}
 
 		public override void StartComponents()

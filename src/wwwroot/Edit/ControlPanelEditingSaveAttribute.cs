@@ -30,7 +30,6 @@ namespace N2.Edit
 			container.Controls.Add(btn);
 			btn.Command += delegate
 				{
-
 					IList<IItemEditor> itemEditors = GetEditedItems(container.Page);
 
 					foreach (IItemEditor itemEditor in itemEditors)
