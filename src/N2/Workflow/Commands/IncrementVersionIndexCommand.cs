@@ -18,8 +18,14 @@ namespace N2.Workflow.Commands
         public override void Process(CommandContext state)
         {
             var masterVersion = state.Data.VersionOf ?? state.Data;
-            var greatestIndex = versionProvider.GetVersionsOf(masterVersion).Max(v => v.VersionIndex);
-            state.Data.VersionIndex = greatestIndex + 1;
+            var versions = versionProvider.GetVersionsOf(masterVersion);
+            if (versions.Count > 0)
+            {
+                int greatestIndex = versions.Max(v => v.VersionIndex);
+                state.Data.VersionIndex = greatestIndex + 1;
+            }
+            else
+                state.Data.VersionIndex = 0;
         }
     }
 }
