@@ -34,6 +34,7 @@ namespace N2.Workflow
         IncrementVersionIndexCommand setVersionIndex;
         UpdateContentStateCommand makeDraft;
         UpdateContentStateCommand makePublished;
+        ActiveContentSaveCommand activeContentSave;
 
         public CommandFactory(IPersister persister, ISecurityManager security, IVersionManager versionMaker, IEditManager editManager, StateChanger changer)
         {
@@ -54,6 +55,7 @@ namespace N2.Workflow
             setVersionIndex = new IncrementVersionIndexCommand(versionMaker);
             makeDraft = new UpdateContentStateCommand(changer, ContentState.Draft);
             makePublished = new UpdateContentStateCommand(changer, ContentState.Published);
+            activeContentSave = new ActiveContentSaveCommand();
         }
 
         //public virtual IEnumerable<Command<CommandState>> AvailableCommands(CommandState context)
@@ -95,6 +97,8 @@ namespace N2.Workflow
         {
             if (context.Interface == Interfaces.Editing)
             {
+                if (context.Data is IActiveContent)
+                    return Compose("Publish", Intent(Permission.Publish), authorize, validate, activeContentSave, showPreview);
                 // Editing
                 if(context.Data.VersionOf == null)
                     return Compose("Publish", Intent(Permission.Publish), authorize, validate, makeVersion, updateObject, setVersionIndex, makePublished, save, showPreview);
@@ -130,6 +134,8 @@ namespace N2.Workflow
             if (context.Interface != Interfaces.Editing)
                 throw new NotSupportedException("Preview is not supported while " + context.Interface);
 
+            if (context.Data is IActiveContent)
+                return Compose("Save and Preview", Intent(Permission.Write), authorize, validate, activeContentSave, showPreview);
             if (context.Data.VersionOf == null)
                 // is master version
                 return Compose("Save and preview", Intent(Permission.Write), authorize, validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, showPreview);
@@ -149,6 +155,8 @@ namespace N2.Workflow
             if (context.Interface != Interfaces.Editing)
                 throw new NotSupportedException("Save is not supported while " + context.Interface);
 
+            if (context.Data is IActiveContent)
+                return Compose("Save", Intent(Permission.Write), authorize, validate, activeContentSave, showPreview);
             if (context.Data.VersionOf == null)
                 // is master version
                 return Compose("Save changes", Intent(Permission.Write), authorize, validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, showEdit);

@@ -367,8 +367,9 @@
     <Compile Include="Edit\EditableAdapter.cs" />
     <Compile Include="Edit\IBinderOfT.cs" />
     <Compile Include="Edit\IValidatorOfT.cs" />
+    <Compile Include="Edit\NullBinderOfT.cs" />
     <Compile Include="Edit\NullValidatorOfT.cs" />
-    <Compile Include="Edit\PageValidator.cs" />
+    <Compile Include="Edit\Web\PageValidator.cs" />
     <Compile Include="Edit\SelectionUtility.cs" />
     <Compile Include="Edit\FileSystem\DefaultDirectorySelector.cs" />
     <Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
@@ -702,6 +703,7 @@
     <Compile Include="Web\WebRequestContext.cs" />
     <Compile Include="Web\Parts\PartsAdapter.cs" />
     <Compile Include="Workflow\CommandDispatcher.cs" />
+    <Compile Include="Workflow\Commands\ActiveContentSaveCommand.cs" />
     <Compile Include="Workflow\Commands\AuthorizeCommand.cs" />
     <Compile Include="Workflow\Commands\CloneCommand.cs" />
     <Compile Include="Workflow\Commands\DeleteCommand.cs" />
@@ -727,7 +729,6 @@
     <Compile Include="Workflow\ContentState.cs" />
     <Compile Include="Workflow\CommandFactory.cs" />
     <Compile Include="Workflow\Interfaces.cs" />
-    <Compile Include="Edit\NullBinderOfT.cs" />
     <Compile Include="Workflow\StateChangedEventArgs.cs" />
     <Compile Include="Workflow\StateChanger.cs" />
   </ItemGroup>

@@ -171,7 +171,7 @@ namespace N2.Edit
             }
             else if (!string.IsNullOrEmpty(ctx.RedirectTo))
             {
-                Response.Redirect(ctx.RedirectTo);
+                Refresh(ctx.Data);
             }
         }
 

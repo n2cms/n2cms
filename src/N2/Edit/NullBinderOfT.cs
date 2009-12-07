@@ -1,6 +1,10 @@
 ﻿
 namespace N2.Edit
 {
+    /// <summary>
+    /// Doesn't bind anything but reports the object was updated.
+    /// </summary>
+    /// <typeparam name="T">The type of model object (ignored)</typeparam>
     public class NullBinder<T> : IBinder<T>
     {
         #region IBinder<ContentItem> Members
