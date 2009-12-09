@@ -54,6 +54,13 @@ namespace N2.Edit
 			{
 				rblPosition.Enabled = false;
 			}
+            rptTypes.ItemDataBound += new RepeaterItemEventHandler(rptTypes_ItemDataBound);
+        }
+
+        void rptTypes_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemIndex == 0)
+                e.Item.FindControl("hlNew").Focus();
         }
 
 		protected override void OnLoad(EventArgs e)

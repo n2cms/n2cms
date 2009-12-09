@@ -44,6 +44,7 @@ body.edit .zonesBox dd{
 	margin:0;
 	padding:3px 0 5px 5px;
 }
+body.edit .zonesBox .delete { float:right; }
 
 /* Edit details */
 body.edit .content fieldset { clear:left; padding:10px; }

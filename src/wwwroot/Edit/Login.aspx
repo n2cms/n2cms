@@ -5,14 +5,17 @@
     <title>Log in</title>
     <link rel="stylesheet" href="Css/All.css" type="text/css" />
     <style type="text/css">
-        body { background:#AAAA99; }
+        body { background:#AAAA99 url(img/n2.png) no-repeat 98% 10px; }
         
         #login-container{
 			-moz-border-radius: 1px;
 			-webkit-border-radius : 1px;
 
 			border: solid 1px #F8F8E8;
-			margin: 150px auto 0 auto;
+			margin: 0 0 -100px -150px;
+			position:absolute;
+			bottom:50%;
+			left:50%;
 			width:  350px;
 			background: #F8F8E8 url(img/darken10.png) repeat-x 100% 100%;
         }
@@ -27,7 +30,7 @@
         .login-label { display:block; text-align:right }
         .login-button { margin-top:5px; width:100px;font-size:1.2em;float:right;}
         .login-input { width:160px }
-        td { padding:2px 1px; }
+        td { padding:2px; }
     </style>
 </head>
 <body class="edit login">

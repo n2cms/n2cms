@@ -21,6 +21,8 @@
 							Enabled="<%#CanMoveItemUp(Container.DataItem) %>"
 							CssClass="<%#MoveItemUpClass(Container.DataItem)%>"
 							ImageUrl="~/Edit/img/Ico/png/bullet_arrow_up.png" OnClick="MoveItemUp"/>
+					    <asp:HyperLink NavigateUrl="<%# GetDeleteDataItemUrl(Container.DataItem) %>" 
+					        ImageUrl="~/Edit/img/Ico/png/cross.png" CssClass="delete" runat="server"/>
 					</div>
 				</ItemTemplate>
 				<FooterTemplate></dd></FooterTemplate>
