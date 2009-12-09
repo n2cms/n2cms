@@ -120,6 +120,12 @@
   <data name="fsZones.Legend" xml:space="preserve">
     <value>Zones</value>
   </data>
+  <data name="hlDelete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="hlDelete.ToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="hlNew.TextFormat" xml:space="preserve">
     <value>New</value>
   </data>

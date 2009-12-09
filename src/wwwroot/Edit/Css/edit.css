@@ -22,29 +22,11 @@ body.edit .infoBox span{
 }
 
 /* Zones */
-body.edit .zonesBox a{
-	color:#333;
-	font-weight:normal;
-	text-decoration:none;
-}
-body.edit .zonesBox dl{
-	margin:0;
-}
-body.edit .zonesBox dt{
-	padding:5px 0;
-	font-size:1.1em;
-	font-weight:bold;
-	display:block;
-}
-body.edit .zonesBox dt a{
-	float:right;
-	padding:2px;
-}
-body.edit .zonesBox dd{
-	margin:0;
-	padding:3px 0 5px 5px;
-}
-body.edit .zonesBox .delete { float:right; }
+.zonesBox a { color:#333; font-weight:normal; text-decoration:none; }
+.zonesBox dl { margin:0; }
+.zonesBox dt { padding:5px 0; font-weight:bold; display:block; }
+.zonesBox dd { margin:0; padding:2px 0 6px 4px; }
+.zonesBox .iconed { background:transparent none no-repeat 2px 50%; padding:2px 2px 2px 19px; float:right; }
 
 /* Edit details */
 body.edit .content fieldset { clear:left; padding:10px; }
@@ -97,15 +79,12 @@ body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD
 #content .mceToolbar table { background-color:transparent; }
 #content .mceStatusbar { background:#F8F8E8 url(../img/lighten10.png) repeat-x scroll 0 -35px; border:none !important;}
 
-body.framed .zonesBox dt .iconed { background:transparent none no-repeat 2px 50%; padding-left:19px; }
-body.framed .zonesBox dt .iconed:hover { padding-left:18px; background-position:1px 50%; }
+.framed .toolbar .iconed { background:transparent none no-repeat 2px 5px; padding-left:20px; }
+.framed .toolbar .iconed:hover  { background-position:1px 4px; padding-left:19px; }
 
-
-.framed .iconed { background:transparent none no-repeat 2px 5px; padding-left:20px; }
-.framed .iconed:hover  { background-position:1px 4px; padding-left:19px; }
 .framed .publish.iconed { background-image:url(../img/ico/png/disk.png); }
 .framed .save.iconed { background-image:url(../img/ico/png/book_next.png); }
 .framed .preview.iconed { background-image:url(../img/ico/png/zoom.png); }
-.framed .new.iconed { background-image:url(../img/ico/png/add.png); }
 .framed .future.iconed { background-image:url(../img/ico/png/clock.png); }
+
 

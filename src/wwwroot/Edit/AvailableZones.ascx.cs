@@ -38,7 +38,8 @@ namespace N2.Edit
         {
             N2.Integrity.AvailableZoneAttribute a = (N2.Integrity.AvailableZoneAttribute)dataItem;
 
-			return Engine.EditManager.GetSelectNewItemUrl(CurrentItem, a.ZoneName);
+            Url newUrl = Engine.EditManager.GetSelectNewItemUrl(CurrentItem, a.ZoneName);
+            return newUrl.AppendQuery("returnUrl", Request.RawUrl);
 		}
 
 		protected int GetEditDataItemID(object dataItem)

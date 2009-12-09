@@ -25,6 +25,7 @@ using N2.Definitions;
 using N2.Integrity;
 using N2.Web.UI.WebControls;
 using N2.Security;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -153,7 +154,8 @@ namespace N2.Edit
 
         protected string GetEditUrl(ItemDefinition definition)
         {
-            return Engine.EditManager.GetEditNewPageUrl(Selection.SelectedItem, definition, ZoneName, GetCreationPosition());
+            Url newUrl = Engine.EditManager.GetEditNewPageUrl(Selection.SelectedItem, definition, ZoneName, GetCreationPosition());
+            return newUrl.AppendQuery("returnUrl", Request["returnUrl"]);
         }
 
 		protected string GetDefinitionString(ItemDefinition definition, string key)
