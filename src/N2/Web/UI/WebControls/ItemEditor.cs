@@ -202,11 +202,13 @@ namespace N2.Web.UI.WebControls
 
         public bool UpdateObject(ContentItem value)
         {
+            EnsureChildControls();
             return EditController.UpdateItem(value, AddedEditors, Page.User);
         }
 
         public void UpdateInterface(ContentItem value)
         {
+            EnsureChildControls();
             Engine.EditManager.UpdateEditors(value, AddedEditors, Page.User);
         }
 

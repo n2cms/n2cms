@@ -9,6 +9,11 @@ namespace N2.Workflow.Commands
     {
         public string Url { get; set; }
 
+        public RedirectCommand(string url)
+        {
+            Url = url;
+        }
+
         public override void Process(CommandContext ctx)
         {
             ctx.RedirectTo = Url;

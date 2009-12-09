@@ -142,11 +142,28 @@ if(window.n2ctx){{
 
         protected virtual void Refresh(ContentItem item)
         {
-            string script = string.Format("window.top.location = '{0}';", Engine.EditManager.GetEditInterfaceUrl(Selection.SelectedItem));
+            string previewUrl = Engine.EditManager.GetEditInterfaceUrl(Selection.SelectedItem);
+            string script = string.Format("window.top.location = '{0}';", previewUrl);
 
             ClientScript.RegisterClientScriptBlock(
                 typeof(EditPage),
                 "RefreshScript",
+                script, true);
+        }
+
+        protected virtual void Refresh(ContentItem item, string previewUrl)
+        {
+            string script = string.Format(RefreshBothFormat,
+                Url.ToAbsolute("~/Edit/Default.aspx"), // 0
+                GetNavigationUrl(item), // 1
+                previewUrl, // 2
+                item.ID, // 3
+                item.Path // 4
+            );
+
+            ClientScript.RegisterClientScriptBlock(
+                typeof(EditPage),
+                "RefreshFramesScript",
                 script, true);
         }
 

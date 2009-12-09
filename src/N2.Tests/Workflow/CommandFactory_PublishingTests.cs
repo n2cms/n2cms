@@ -101,5 +101,17 @@ namespace N2.Tests.Workflow
 
             Assert.That(versions.GetVersionsOf(item).Count, Is.EqualTo(3));
         }
+
+        [Test]
+        public void RedirectsTo_OriginalRedirect_WhenPresent()
+        {
+            var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+            context.RedirectTo = "/take/me/back";
+
+            var command = CreateCommand(context);
+            dispatcher.Execute(command, context);
+
+            Assert.That(context.RedirectTo, Is.EqualTo("/take/me/back"));
+        }
     }
 }

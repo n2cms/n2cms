@@ -7,6 +7,7 @@ using N2.Security;
 using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Workflow;
+using N2.Persistence;
 
 namespace N2.Edit
 {
@@ -51,11 +52,15 @@ namespace N2.Edit
 
 		private void InitButtons()
 		{
-            btnSavePublish.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Publish);
-            btnPreview.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
-            btnSaveUnpublished.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
-            btnSavePublishInFuture.Enabled = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write)
-                && ie.CurrentItem.ID != 0;
+            bool isPublicableByUser = Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
+            bool isVersionable = ie.CurrentItem.GetType().GetCustomAttributes(typeof(NotVersionableAttribute), true).Length == 0;
+            bool isWritableByUser = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
+            bool isExisting = ie.CurrentItem.ID != 0;
+
+            btnSavePublish.Enabled = isPublicableByUser;
+            btnPreview.Enabled = isVersionable && isWritableByUser;
+            btnSaveUnpublished.Enabled = isVersionable && isWritableByUser;
+            btnSavePublishInFuture.Enabled = isWritableByUser && isExisting;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -81,6 +86,7 @@ namespace N2.Edit
         protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
             var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
+            ctx.RedirectTo = Request["returnUrl"];
             Engine.Resolve<CommandDispatcher>().Publish(ctx);
 
             HandleResult(ctx);
@@ -108,6 +114,7 @@ namespace N2.Edit
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
             var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
+            ctx.RedirectTo = Request["returnUrl"];
             Engine.Resolve<CommandDispatcher>().Publish(ctx);
 
             HandleResult(ctx);
@@ -133,6 +140,7 @@ namespace N2.Edit
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
             var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
+            ctx.RedirectTo = Request["returnUrl"];
             Engine.Resolve<CommandDispatcher>().Publish(ctx);
 
             HandleResult(ctx);
@@ -171,7 +179,7 @@ namespace N2.Edit
             }
             else if (!string.IsNullOrEmpty(ctx.RedirectTo))
             {
-                Refresh(ctx.Data);
+                Refresh(ctx.Data, ctx.RedirectTo);
             }
         }
 

@@ -29,12 +29,12 @@ namespace N2.Workflow
         UseMasterCommand useMaster;
         CloneCommand clone;
         ValidateCommand validate;
-        AuthorizeCommand authorize;
         SaveCommand save;
         IncrementVersionIndexCommand setVersionIndex;
         UpdateContentStateCommand makeDraft;
         UpdateContentStateCommand makePublished;
-        ActiveContentSaveCommand activeContentSave;
+        ActiveContentSaveCommand saveActiveContent;
+        ISecurityManager security;
 
         public CommandFactory(IPersister persister, ISecurityManager security, IVersionManager versionMaker, IEditManager editManager, StateChanger changer)
         {
@@ -50,45 +50,13 @@ namespace N2.Workflow
             useMaster = new UseMasterCommand();
             clone = new CloneCommand();
             validate = new ValidateCommand();
-            authorize = new AuthorizeCommand(security);
+            this.security = security;
             save = new SaveCommand(persister);
             setVersionIndex = new IncrementVersionIndexCommand(versionMaker);
             makeDraft = new UpdateContentStateCommand(changer, ContentState.Draft);
             makePublished = new UpdateContentStateCommand(changer, ContentState.Published);
-            activeContentSave = new ActiveContentSaveCommand();
+            saveActiveContent = new ActiveContentSaveCommand();
         }
-
-        //public virtual IEnumerable<Command<CommandState>> AvailableCommands(CommandState context)
-        //{
-        //    if (context.Interface == Interfaces.Editing)
-        //        return EditCommands(context);
-        //    else if (context.Interface == Interfaces.Viewing)
-        //        return ViewCommands(context);
-
-        //    throw new InvalidOperationException("No commands for interface: " + context.Interface);
-        //}
-
-        //private IEnumerable<Command<CommandState>> EditCommands(CommandState context)
-        //{
-        //    yield return PublishCommand(context);
-        //    yield return PreviewCommand(context);
-        //    yield return SaveCommand(context);
-        //    yield return Redirect("Cancel", context.Data);
-        //}
-
-        //private IEnumerable<Command<CommandState>> ViewCommands(CommandState context)
-        //{
-        //    if (context.Data.VersionOf == null)
-        //    {
-        //        // master version
-        //    }
-        //    else
-        //    {
-        //        yield return PublishCommand(context);
-        //        yield return Composite("Delete", authorize, delete, useMaster, showPreview);
-        //        yield return new RedirectCommand<CommandState> { Title = "Edit", Url = "#edit" + context.Data.Url }; // TODO: fix
-        //    }
-        //}
 
         /// <summary>Gets the command used to publish an item.</summary>
         /// <param name="context">The command context used to determine which command to return.</param>
@@ -98,32 +66,36 @@ namespace N2.Workflow
             if (context.Interface == Interfaces.Editing)
             {
                 if (context.Data is IActiveContent)
-                    return Compose("Publish", Intent(Permission.Publish), authorize, validate, activeContentSave, showPreview);
+                    return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
+                
                 // Editing
                 if(context.Data.VersionOf == null)
-                    return Compose("Publish", Intent(Permission.Publish), authorize, validate, makeVersion, updateObject, setVersionIndex, makePublished, save, showPreview);
+                    return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
                 else if (context.Data.State == ContentState.Unpublished)
                     // has been published before
-                    return Compose("Publish", Intent(Permission.Publish), authorize, validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, showPreview);
+                    return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
                 else
                     // has never been published before (remove old version)
-                    return Compose("Publish", Intent(Permission.Publish), authorize, validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, showPreview);
+                    return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
             }
             else if (context.Interface == Interfaces.Viewing && context.Data.VersionOf != null)
             {
                 // Viewing
                 if (context.Data.State == ContentState.Unpublished)
-                    return Compose("Re-Publish", Intent(Permission.Publish), authorize,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, showPreview);
+                    return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
                 else
-                    return Compose("Publish", Intent(Permission.Publish), authorize,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, showPreview);
+                    return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
             }
 
             throw new NotSupportedException();
         }
 
-        private CommandBase<CommandContext> Intent(Permission permission)
+        private CommandBase<CommandContext> ReturnTo(string url)
         {
- 	        return new IntentCommand(permission);
+            if (string.IsNullOrEmpty(url))
+                return null;
+
+            return new RedirectCommand(url);
         }
 
         /// <summary>Gets the command to save and preview changes.</summary>
@@ -135,16 +107,16 @@ namespace N2.Workflow
                 throw new NotSupportedException("Preview is not supported while " + context.Interface);
 
             if (context.Data is IActiveContent)
-                return Compose("Save and Preview", Intent(Permission.Write), authorize, validate, activeContentSave, showPreview);
+                return Compose("Save and Preview", Authorize(Permission.Write), validate, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
             if (context.Data.VersionOf == null)
                 // is master version
-                return Compose("Save and preview", Intent(Permission.Write), authorize, validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, showPreview);
+                return Compose("Save and preview", Authorize(Permission.Write), validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
             else if (context.Data.State == ContentState.Unpublished)
                 // has been published before
-                return Compose("Save and preview", Intent(Permission.Write), authorize, validate, clone,         updateObject, setVersionIndex, makeDraft, save, showPreview);
+                return Compose("Save and preview", Authorize(Permission.Write), validate, clone,         updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
             else
                 // has never been published before
-                return Compose("Save and preview", Intent(Permission.Write), authorize, validate,                updateObject, setVersionIndex, makeDraft, save, showPreview);
+                return Compose("Save and preview", Authorize(Permission.Write), validate,                updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
         }
 
         /// <summary>Gets the command to save changes to an item without leaving the editing interface.</summary>
@@ -156,16 +128,21 @@ namespace N2.Workflow
                 throw new NotSupportedException("Save is not supported while " + context.Interface);
 
             if (context.Data is IActiveContent)
-                return Compose("Save", Intent(Permission.Write), authorize, validate, activeContentSave, showPreview);
+                return Compose("Save", Authorize(Permission.Write), validate, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
             if (context.Data.VersionOf == null)
                 // is master version
-                return Compose("Save changes", Intent(Permission.Write), authorize, validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, showEdit);
+                return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, showEdit);
             else if (context.Data.State == ContentState.Unpublished)
                 // previously published
-                return Compose("Save changes", Intent(Permission.Write), authorize, validate, clone,         updateObject, setVersionIndex, makeDraft, save, showEdit);
+                return Compose("Save changes", Authorize(Permission.Write), validate, clone,         updateObject, setVersionIndex, makeDraft, save, showEdit);
             else
                 // has never been published before
-                return Compose("Save changes", Intent(Permission.Write), authorize, validate,                updateObject,                  makeDraft, save, showEdit);
+                return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, makeDraft, save, showEdit);
+        }
+
+        private CommandBase<CommandContext> Authorize(Permission permission)
+        {
+            return new AuthorizeCommand(security, permission);
         }
 
         protected virtual CommandBase<CommandContext> Compose(string title, params CommandBase<CommandContext>[] commands)

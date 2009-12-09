@@ -29,7 +29,6 @@ namespace N2.Workflow
         public string Interface { get; set; }
         public string RedirectTo { get; set; }
         public IPrincipal User { get; set; }
-        public Permission Intent { get; set; }
 
         public IValidator<ContentItem> Validator { get; set; }
         public IBinder<ContentItem> Binder { get; set; }
@@ -39,7 +38,7 @@ namespace N2.Workflow
 
         public override string ToString()
         {
-            return "CommandContext {Data=" + Data + ", Interface=" + Interface + ", Intent=" + Intent + "}";
+            return "CommandContext {Data=" + Data + ", Interface=" + Interface + ", RedirectTo=" + RedirectTo + "}";
         }
 
         public bool ApplyRedirection(HttpResponse response)

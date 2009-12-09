@@ -708,7 +708,6 @@
     <Compile Include="Workflow\Commands\CloneCommand.cs" />
     <Compile Include="Workflow\Commands\DeleteCommand.cs" />
     <Compile Include="Workflow\Commands\IncrementVersionIndexCommand.cs" />
-    <Compile Include="Workflow\Commands\IntentCommand.cs" />
     <Compile Include="Workflow\Commands\MakeVersionCommand.cs" />
     <Compile Include="Workflow\Commands\OnMasterCommand.cs" />
     <Compile Include="Workflow\Commands\RedirectToEditCommand.cs" />
