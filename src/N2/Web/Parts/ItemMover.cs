@@ -4,17 +4,20 @@ using System.Collections.Specialized;
 using System.Text;
 using N2.Persistence;
 using N2.Web;
+using N2.Edit;
 
 namespace N2.Web.Parts
 {
     public class ItemMover : PartsAjaxService
     {
+        private readonly Navigator navigator;
         private readonly IPersister persister;
 
-        public ItemMover(IPersister persister, AjaxRequestDispatcher dispatcher)
+        public ItemMover(IPersister persister, Navigator navigator, AjaxRequestDispatcher dispatcher)
             : base(dispatcher)
         {
             this.persister = persister;
+            this.navigator = navigator;
         }
 
         public override string Name
@@ -30,25 +33,26 @@ namespace N2.Web.Parts
 
         private void MoveItem(NameValueCollection request)
         {
-			ContentItem item = persister.Get(int.Parse(request[PathData.ItemQueryKey]));
+            ContentItem item = navigator.Navigate(request["item"]);
             ContentItem parent;
 
             item.ZoneName = request["zone"];
-
             string before = request["before"];
             string below = request["below"];
-            if (!string.IsNullOrEmpty(below))
+
+            if (!string.IsNullOrEmpty(before))
             {
-                parent = persister.Get(int.Parse(below));
-                Utility.Insert(item, parent, parent.Children.Count);
-            }
-            else
-            {
-                ContentItem beforeItem = persister.Get(int.Parse(before));
+                ContentItem beforeItem = navigator.Navigate(before);
                 parent = beforeItem.Parent;
                 int newIndex = parent.Children.IndexOf(beforeItem);
                 Utility.Insert(item, parent, newIndex);
             }
+            else
+            {
+                parent = navigator.Navigate(below);
+                Utility.Insert(item, parent, parent.Children.Count);
+            }
+
             IEnumerable<ContentItem> changedItems = Utility.UpdateSortOrder(parent.Children);
             foreach (ContentItem changedItem in changedItems)
                 persister.Save(changedItem);

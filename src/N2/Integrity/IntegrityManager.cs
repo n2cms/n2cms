@@ -149,6 +149,9 @@ namespace N2.Integrity
 		/// <returns>True if the name is unique.</returns>
         public virtual bool IsLocallyUnique(string name, ContentItem item)
         {
+            if (name == null)
+                return true;
+
             ContentItem parentItem = item.Parent;
             if (parentItem != null)
             {

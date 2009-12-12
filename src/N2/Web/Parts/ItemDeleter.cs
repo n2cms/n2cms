@@ -2,17 +2,20 @@ using System;
 using System.Collections.Specialized;
 using N2.Persistence;
 using N2.Web;
+using N2.Edit;
 
 namespace N2.Web.Parts
 {
 	public class ItemDeleter : PartsAjaxService
 	{
-		private readonly IPersister persister;
+		readonly IPersister persister;
+        readonly Navigator navigator;
 
-		public ItemDeleter(IPersister persister, AjaxRequestDispatcher dispatcher)
+		public ItemDeleter(IPersister persister, Navigator navigator, AjaxRequestDispatcher dispatcher)
 			: base(dispatcher)
 		{
 			this.persister = persister;
+            this.navigator = navigator;
 		}
 
 		public override string Name
@@ -22,7 +25,7 @@ namespace N2.Web.Parts
 
 		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
-			ContentItem item = persister.Get(int.Parse(request[PathData.ItemQueryKey]));
+            ContentItem item = navigator.Navigate(request["item"]);
 			if (item == null)
 				throw new N2Exception("Couln't find any item with the id: " + request[PathData.ItemQueryKey]);
 			persister.Delete(item);

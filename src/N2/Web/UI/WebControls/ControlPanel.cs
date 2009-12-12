@@ -120,6 +120,8 @@ namespace N2.Web.UI.WebControls
 				AppendDefinedTemplate(DragDropFooterTemplate, this);
 				RegisterDragDropStyles();
 				RegisterDragDropScripts();
+                
+                //Page.Response.CacheControl = "no-cache";
 			}
 			else if (state == ControlPanelState.Editing)
 			{
@@ -168,8 +170,9 @@ namespace N2.Web.UI.WebControls
 			{
 				HtmlGenericControl div = new HtmlGenericControl("div");
 				div.Attributes["title"] = definition.ToolTip;
-				div.Attributes["id"] = definition.Discriminator;
-				div.Attributes["class"] = "definition " + definition.Discriminator;
+                div.Attributes["id"] = definition.Discriminator;
+                div.Attributes["type"] = definition.Discriminator;
+                div.Attributes["class"] = "definition " + definition.Discriminator;
 				div.InnerHtml = FormatImageAndText(Url.ToAbsolute(definition.IconUrl), definition.Title);
 				definitions.Controls.Add(div);
 			}
@@ -187,10 +190,7 @@ namespace N2.Web.UI.WebControls
 			Register.JavaScript(Page, DragDropScriptUrl);
 
 			Register.JavaScript(Page, @"
-if(typeof dragItems == 'undefined') dragItems = [];
-if(typeof dropZones == 'undefined') dropZones = [];
-if(typeof dropPoints == 'undefined') dropPoints = [];
-window.n2ddcp = new DragDrop(dropZones, dropPoints, dragItems);
+window.n2ddcp = new n2DragDrop();
 ", ScriptOptions.DocumentReady);
 		}
 

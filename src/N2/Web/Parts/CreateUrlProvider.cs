@@ -10,16 +10,18 @@ namespace N2.Web.Parts
 {
 	public class CreateUrlProvider : PartsAjaxService
 	{
-		private readonly IPersister persister;
-		private readonly IEditManager editManager;
-		private readonly IDefinitionManager definitions;
+        readonly IPersister persister;
+		readonly IEditManager editManager;
+		readonly IDefinitionManager definitions;
+        readonly Navigator navigator;
 
-		public CreateUrlProvider(IPersister persister, IEditManager editManager, IDefinitionManager definitions, AjaxRequestDispatcher dispatcher)
+		public CreateUrlProvider(IPersister persister, IEditManager editManager, IDefinitionManager definitions, AjaxRequestDispatcher dispatcher, Navigator navigator)
 			: base(dispatcher)
 		{
-			this.persister = persister;
+            this.persister = persister;
 			this.editManager = editManager;
 			this.definitions = definitions;
+            this.navigator = navigator;
 		}
 
 		public override string Name
@@ -30,34 +32,61 @@ namespace N2.Web.Parts
 		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
 			NameValueCollection response = new NameValueCollection();
-			response["url"] = GetRedirectUrl(request); ;
+
+            ItemDefinition definition = GetDefinition(request["discriminator"]);
+            if (definition.Editables.Count > 0)
+                response["redirect"] = GetRedirectUrl(definition, request);
+            else
+            {
+                response["redirect"] = request["returnUrl"];
+                CreateItem(definition, request);
+            }
+
 			return response;
 		}
 
-		private string GetRedirectUrl(NameValueCollection request)
+        private void CreateItem(ItemDefinition definition, NameValueCollection request)
+        {
+            ContentItem parent = navigator.Navigate(request["below"]);
+
+            ContentItem item = definitions.CreateInstance(definition.ItemType, parent);
+            item.ZoneName = request["zone"];
+            
+            string before = request["before"];
+            if (!string.IsNullOrEmpty(before))
+			{
+				ContentItem beforeItem = navigator.Navigate(before);
+                int newIndex = parent.Children.IndexOf(beforeItem);
+                Utility.Insert(item, parent, newIndex);
+
+                foreach (var sibling in Utility.UpdateSortOrder(parent.Children))
+                    persister.Repository.Save(sibling);
+			}
+
+            persister.Save(item);
+        }
+
+		private string GetRedirectUrl(ItemDefinition definition, NameValueCollection request)
 		{
 			string zone = request["zone"];
 
 			string before = request["before"];
 			string below = request["below"];
-			string discriminator = request["discriminator"];
-			ItemDefinition definition = GetDefinition(discriminator);
 
-			string url;
-			if (!string.IsNullOrEmpty(below))
+			Url url;
+			if (!string.IsNullOrEmpty(before))
 			{
-				ContentItem parent = persister.Get(int.Parse(below));
-				url = editManager.GetEditNewPageUrl(parent, definition, zone, CreationPosition.Below);
+                ContentItem beforeItem = navigator.Navigate(before);
+                url = editManager.GetEditNewPageUrl(beforeItem, definition, zone, CreationPosition.Before);
 			}
 			else
 			{
-				ContentItem beforeItem = Context.Persister.Get(int.Parse(before));
-				url = editManager.GetEditNewPageUrl(beforeItem, definition, zone, CreationPosition.Before);
+                ContentItem parent = navigator.Navigate(below);
+                url = editManager.GetEditNewPageUrl(parent, definition, zone, CreationPosition.Below);
 			}
 
-			url = N2.Web.Url.ToAbsolute(url);
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
-				url += "&returnUrl=" + HttpUtility.UrlEncode(request["returnUrl"]);
+				url = url.AppendQuery("returnUrl", request["returnUrl"]);
 			return url;
 		}
 

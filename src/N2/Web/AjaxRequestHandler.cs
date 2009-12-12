@@ -23,6 +23,7 @@ namespace N2.Web
 			AjaxRequestDispatcher dispatcher = Context.Current.Resolve<AjaxRequestDispatcher>();
 			string response = dispatcher.Handle(context);
 			context.Response.ContentType = "text/plain";
+            //context.Response.CacheControl = "no-cache";
 			context.Response.Write(response);
 		}
 

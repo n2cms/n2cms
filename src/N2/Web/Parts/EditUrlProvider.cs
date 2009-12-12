@@ -11,13 +11,13 @@ namespace N2.Web.Parts
 {
 	public class EditUrlProvider : PartsAjaxService
 	{
-		private readonly IPersister persister;
-		private readonly IEditManager editManager;
+		readonly IEditManager editManager;
+        readonly Navigator navigator;
 
-		public EditUrlProvider(IPersister persister, IEditManager editManager, AjaxRequestDispatcher dispatcher)
+		public EditUrlProvider(Navigator navigator, IEditManager editManager, AjaxRequestDispatcher dispatcher)
 			: base(dispatcher)
 		{
-			this.persister = persister;
+            this.navigator = navigator;
 			this.editManager = editManager;
 		}
 
@@ -29,17 +29,16 @@ namespace N2.Web.Parts
 		public override NameValueCollection HandleRequest(NameValueCollection request)
 		{
 			NameValueCollection response = new NameValueCollection();
-			response["url"] = GetRedirectUrl(request); ;
+			response["redirect"] = GetRedirectUrl(request); ;
 			return response;
 		}
 
 		private string GetRedirectUrl(NameValueCollection request)
 		{
-			ContentItem item = persister.Get(int.Parse(request[PathData.ItemQueryKey]));
-			string url = editManager.GetEditExistingItemUrl(item);
-			url = N2.Web.Url.ToAbsolute(url);
+            ContentItem item = navigator.Navigate(request["item"]);
+			Url url = editManager.GetEditExistingItemUrl(item);
 			if (!string.IsNullOrEmpty(request["returnUrl"]))
-				url += "&returnUrl=" + HttpUtility.UrlEncode(request["returnUrl"]);
+				url = url.AppendQuery("returnUrl", request["returnUrl"]);
 			return url;
 		}
 	}

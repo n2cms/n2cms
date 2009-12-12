@@ -3,6 +3,7 @@ using System.Web.UI;
 using N2.Definitions;
 using N2.Web.UI.WebControls;
 using System;
+using N2.Engine;
 
 namespace N2.Web.UI.WebControls
 {
@@ -51,38 +52,38 @@ namespace N2.Web.UI.WebControls
 
 		protected override void Render(HtmlTextWriter writer)
 		{
+            IEngine e = N2.Context.Current;
+
 			if (ControlPanel.GetState() == ControlPanelState.DragDrop)
 			{
 				writer.Write("<div id='");
 				writer.Write(ClientID);
 				writer.Write("' class='titleBar ");
 				writer.Write(Definition.Discriminator);
-				writer.Write("' style='background-image:url(");
-                writer.Write(Url.ToAbsolute(Definition.IconUrl));
-                writer.Write(");'>");
-			    writer.Write("<img src='");
-                writer.Write(Url.ToAbsolute("~/Edit/img/ico/png/delete.png"));
-                writer.Write("' class='delete' alt='delete'");
-				if(bindButtons)
-				{
-				    writer.Write(" onclick=\"n2ddcp.del('");
-                    writer.Write(ClientID);
-                    writer.Write("');\"");
-				}
-				writer.Write("/>");
-			    writer.Write("<img src='");
-                writer.Write(Url.ToAbsolute("~/Edit/img/ico/png/pencil.png"));
-                writer.Write("' class='edit' alt='edit'");
-				if (bindButtons)
-				{
-				    writer.Write(" onclick=\"n2ddcp.edit('");
-                    writer.Write(ClientID);
-                    writer.Write("');\"");
-				}
-				writer.Write("/>");
-				writer.Write(Definition.Title);
-				writer.Write("</div>");
+                writer.Write("'>");
+
+                WriteCommand(writer, "Edit part", "command edit", Url.Parse(e.EditManager.GetEditExistingItemUrl(CurrentItem)).AppendQuery("returnUrl", Page.Request.RawUrl));
+                WriteCommand(writer, "Delete part", "command delete", Url.Parse(e.EditManager.GetDeleteUrl(CurrentItem)).AppendQuery("returnUrl", Page.Request.RawUrl));
+                WriteTitle(writer);
+				
+                writer.Write("</div>");
 			}
 		}
+
+        private void WriteCommand(HtmlTextWriter writer, string title, string @class, string url)
+        {
+            writer.Write("<a title='" + title + "' class='" + @class + "' href='");
+            writer.Write(url);
+            writer.Write("'></a>");
+        }
+
+        private void WriteTitle(HtmlTextWriter writer)
+        {
+            writer.Write("<span class='title' style='background-image:url(");
+            writer.Write(Url.ToAbsolute(Definition.IconUrl));
+            writer.Write(");'>");
+            writer.Write(Definition.Title);
+            writer.Write("</span>");
+        }
 	}
 }

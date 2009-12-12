@@ -36,11 +36,15 @@ namespace N2.Web.UI.WebControls
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
                 Panel zoneContainer = AddPanel(this, ZoneName + " dropZone");
-				base.CreateItems(zoneContainer);
-				AddDropPoint(zoneContainer, CurrentItem, CreationPosition.Below);
+                zoneContainer.Attributes["item"] = CurrentItem.Path;
+                zoneContainer.Attributes["zone"] = ZoneName;
+                zoneContainer.Attributes["allowed"] = GetAllowedNames(ZoneName);
+                zoneContainer.ToolTip = GetToolTip() ?? ZoneName;
+                base.CreateItems(zoneContainer);
+				//AddDropPoint(zoneContainer, CurrentItem, CreationPosition.Below);
 
-				string allowed = GetAllowedNames(ZoneName);
-				RegisterArray("dropZones", "{{selector: '.{0}.dropPoint', accept: '{1}'}}", ZoneName, allowed);
+                //string allowed = GetAllowedNames(ZoneName);
+                //RegisterArray("dropZones", "{{selector: '.{0}.dropPoint', accept: '{1}'}}", ZoneName, allowed);
 			}
 			else
 			{
@@ -52,15 +56,17 @@ namespace N2.Web.UI.WebControls
 		{
             if (state == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
 			{
-				AddDropPoint(container, item, CreationPosition.Before);
+				//AddDropPoint(container, item, CreationPosition.Before);
 
 				ItemDefinition definition = GetDefinition(item);
 				Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
+                itemContainer.Attributes["item"] = item.Path;
+                itemContainer.Attributes["type"] = definition.Discriminator;
 				Control toolbar = AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
 
-				RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", itemContainer.ClientID, item.ID));
-				RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", toolbar.ClientID, item.ID));
+                //RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", itemContainer.ClientID, item.ID));
+                //RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", toolbar.ClientID, item.ID));
 			}
 			else if (state == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["original"])
 			{
@@ -90,25 +96,25 @@ namespace N2.Web.UI.WebControls
 			return N2.Context.Definitions.GetDefinition(item.GetType());
 		}
 
-		private DropPoint AddDropPoint(Control container, ContentItem item, CreationPosition position)
-		{
-			DropPoint dp = new DropPoint(ZoneName, item, position, DropPointBackImageUrl);
-			SetToolTip(dp, position == CreationPosition.Below ? item : item.Parent);
-			container.Controls.Add(dp);
-			return dp;
-		}
+        //private DropPoint AddDropPoint(Control container, ContentItem item, CreationPosition position)
+        //{
+        //    DropPoint dp = new DropPoint(ZoneName, item, position, DropPointBackImageUrl);
+        //    SetToolTip(dp, position == CreationPosition.Below ? item : item.Parent);
+        //    container.Controls.Add(dp);
+        //    return dp;
+        //}
 
-		private void SetToolTip(DropPoint dp, ContentItem item)
+		private string GetToolTip()
 		{
-			ItemDefinition definition = GetDefinition(item);
+			ItemDefinition definition = GetDefinition(CurrentItem);
 			foreach (AvailableZoneAttribute za in definition.AvailableZones)
 			{
 				if(za.ZoneName == ZoneName)
 				{
-                    dp.ToolTip = ZoneName;
-                    dp.Text = za.Title;
+                    return za.Title;
 				}
 			}
+            return null;
 		}
 
 		private Panel AddPanel(Control container, string className)
@@ -124,7 +130,7 @@ namespace N2.Web.UI.WebControls
 			List<string> allowedDefinitions = new List<string>();
 			foreach (ItemDefinition potentialChild in PartsAdapter.GetAllowedDefinitions(CurrentItem, zoneName, Page.User))
 			{
-				allowedDefinitions.Add("." + potentialChild.Discriminator);
+				allowedDefinitions.Add(potentialChild.Discriminator);
 			}
 			return string.Join(",", allowedDefinitions.ToArray());
 		}

@@ -4,17 +4,20 @@ using System.Collections.Specialized;
 using System.Text;
 using N2.Persistence;
 using N2.Web;
+using N2.Edit;
 
 namespace N2.Web.Parts
 {
 	public class ItemCopyer : PartsAjaxService
 	{
-		private readonly IPersister persister;
+		readonly Navigator navigator;
+        readonly IPersister persister;
 
-		public ItemCopyer(IPersister persister, AjaxRequestDispatcher dispatcher)
+        public ItemCopyer(IPersister persister, Navigator navigator, AjaxRequestDispatcher dispatcher)
 			: base(dispatcher)
 		{
-			this.persister = persister;
+            this.persister = persister;
+			this.navigator = navigator;
 		}
 
 		public override string Name
@@ -30,32 +33,33 @@ namespace N2.Web.Parts
 
 		private void CopyItem(NameValueCollection request)
 		{
-			ContentItem item = persister.Get(int.Parse(request[PathData.ItemQueryKey]));
+            ContentItem item = navigator.Navigate(request["item"]);
 			ContentItem parent;
 
 			item = item.Clone(true);
+            item.Name = null;
 			item.ZoneName = request["zone"];
 
 			string before = request["before"];
 			string below = request["below"];
 
-
-			if (!string.IsNullOrEmpty(below))
+            if (!string.IsNullOrEmpty(before))
 			{
-				parent = persister.Get(int.Parse(below));
-				Utility.Insert(item, parent, parent.Children.Count);
-			}
-			else
-			{
-				ContentItem beforeItem = persister.Get(int.Parse(before));
+                ContentItem beforeItem = navigator.Navigate(before);
 				parent = beforeItem.Parent;
 				int newIndex = parent.Children.IndexOf(beforeItem);
 				Utility.Insert(item, parent, newIndex);
 			}
+            else
+            {
+                parent = navigator.Navigate(below);
+                Utility.Insert(item, parent, parent.Children.Count);
+            }
+
 			IEnumerable<ContentItem> changedItems = Utility.UpdateSortOrder(parent.Children);
 			foreach (ContentItem changedItem in changedItems)
 				persister.Save(changedItem);
-			persister.Save(item);
+            persister.Save(item);
 		}
 	}
 }
