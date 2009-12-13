@@ -37,9 +37,9 @@ namespace N2.Edit.Web
 		}
 
         [Obsolete]
-        public HtmlHelper Html
+        public FormsHelper Html
         {
-            get { return new HtmlHelper(this.Page, SelectedItem); }
+            get { return new FormsHelper(this.Page, SelectedItem); }
         }
 	}
 }

@@ -12,6 +12,8 @@ using N2.Engine;
 using N2.Edit;
 using N2.Plugin;
 using N2.Web.Parts;
+using System.Collections;
+using System.Collections.Specialized;
 
 namespace N2.Web.UI.WebControls
 {
@@ -90,7 +92,7 @@ namespace N2.Web.UI.WebControls
 
         protected override void CreateChildControls()
         {
-			ControlPanelState state = GetState();
+			ControlPanelState state = GetState(Page.User, Page.Request.QueryString);
 
 			if(state == ControlPanelState.Hidden)
 			{
@@ -288,16 +290,17 @@ window.n2ddcp = new n2DragDrop();
 			get { return HttpContext.Current.User; }
 		}
 
-		public static ControlPanelState GetState()
+		public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
 		{
 			if (N2.Context.SecurityManager.IsEditor(User))
 			{
-				if (Request["edit"] == "true")
+                if (queryString["edit"] == "true")
 					return ControlPanelState.Editing;
-				if (Request["edit"] == "drag")
+                if (queryString["edit"] == "drag")
 					return ControlPanelState.DragDrop;
-				if (!string.IsNullOrEmpty(Request["preview"]))
+                if (!string.IsNullOrEmpty(queryString["preview"]))
 					return ControlPanelState.Previewing;
+
 				return ControlPanelState.Visible;
 			}
 			return ControlPanelState.Hidden;

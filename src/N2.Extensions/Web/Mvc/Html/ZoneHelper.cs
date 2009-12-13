@@ -4,6 +4,8 @@ using System.Web.Routing;
 using N2.Collections;
 using N2.Web.UI;
 using System.Web.Mvc;
+using N2.Web.UI.WebControls;
+using System.IO;
 
 namespace N2.Web.Mvc.Html
 {
@@ -11,17 +13,16 @@ namespace N2.Web.Mvc.Html
 	{
 		private readonly ITemplateRenderer _templateRenderer = Context.Current.Resolve<ITemplateRenderer>();
 
-		public ZoneHelper(IItemContainer container, string zoneName)
-			: base(container)
-		{
-			ZoneName = zoneName;
-		}
-
-		public ZoneHelper(IItemContainer container, string zoneName, ContentItem item)
-			: base(container, item)
-		{
-			ZoneName = zoneName;
-		}
+        public ZoneHelper(ViewContext viewContext, string zoneName)
+            : base(viewContext)
+        {
+            ZoneName = zoneName;
+        }
+        public ZoneHelper(ViewContext viewContext, string zoneName, ContentItem currentItem)
+            : base(viewContext, currentItem)
+        {
+            ZoneName = zoneName;
+        }
 
 		protected System.Web.Mvc.TagBuilder TagBuilder { get; set; }
 
@@ -38,24 +39,32 @@ namespace N2.Web.Mvc.Html
 		public override string ToString()
 		{
 			var partialResult = new StringBuilder();
-
-			foreach (var child in GetItems())
-			{
-				ContentItem model = child;
-				string partial = _templateRenderer.RenderTemplate(model, Container);
-
-				if (TagBuilder == null)
-				{
-					partialResult.AppendLine(partial);
-					continue;
-				}
-                partialResult.Append(TagBuilder.ToString(TagRenderMode.StartTag));
-                partialResult.Append(partial);
-                partialResult.AppendLine(TagBuilder.ToString(TagRenderMode.EndTag));
-			}
-
+            using (var writer = new StringWriter(partialResult))
+            {
+                Render(writer);
+            }
 			return partialResult.ToString();
 		}
+
+        public virtual void Render(TextWriter writer)
+        {
+            foreach (var child in GetItems())
+            {
+                RenderTemplate(writer, child);
+            }
+        }
+
+        protected virtual void RenderTemplate(TextWriter writer, ContentItem model)
+        {
+            if (TagBuilder != null)
+                writer.Write(TagBuilder.ToString(TagRenderMode.StartTag));
+
+            string partial = _templateRenderer.RenderTemplate(model, ViewContext);
+            writer.Write(partial);
+
+            if (TagBuilder != null)
+                writer.WriteLine(TagBuilder.ToString(TagRenderMode.EndTag));
+        }
 
 		private ItemList GetItems()
 		{

@@ -30,7 +30,7 @@ namespace N2.Web.UI.WebControls
 
     	protected override void CreateItems(Control container)
 		{
-			state = ControlPanel.GetState();
+            state = ControlPanel.GetState(Page.User, Page.Request.QueryString);
             if (state == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
 			{
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
@@ -38,13 +38,9 @@ namespace N2.Web.UI.WebControls
                 Panel zoneContainer = AddPanel(this, ZoneName + " dropZone");
                 zoneContainer.Attributes["item"] = CurrentItem.Path;
                 zoneContainer.Attributes["zone"] = ZoneName;
-                zoneContainer.Attributes["allowed"] = GetAllowedNames(ZoneName);
-                zoneContainer.ToolTip = GetToolTip() ?? ZoneName;
+                zoneContainer.Attributes["allowed"] = GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Page.User));
+                zoneContainer.ToolTip = GetToolTip(GetDefinition(CurrentItem), ZoneName);
                 base.CreateItems(zoneContainer);
-				//AddDropPoint(zoneContainer, CurrentItem, CreationPosition.Below);
-
-                //string allowed = GetAllowedNames(ZoneName);
-                //RegisterArray("dropZones", "{{selector: '.{0}.dropPoint', accept: '{1}'}}", ZoneName, allowed);
 			}
 			else
 			{
@@ -56,17 +52,12 @@ namespace N2.Web.UI.WebControls
 		{
             if (state == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
 			{
-				//AddDropPoint(container, item, CreationPosition.Before);
-
 				ItemDefinition definition = GetDefinition(item);
 				Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
                 itemContainer.Attributes["item"] = item.Path;
                 itemContainer.Attributes["type"] = definition.Discriminator;
 				Control toolbar = AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
-
-                //RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", itemContainer.ClientID, item.ID));
-                //RegisterArray("dragItems", string.Format("{{dragKey:'{0}',item:{1}}}", toolbar.ClientID, item.ID));
 			}
 			else if (state == ControlPanelState.Previewing && item.ID.ToString() == Page.Request["original"])
 			{
@@ -96,25 +87,16 @@ namespace N2.Web.UI.WebControls
 			return N2.Context.Definitions.GetDefinition(item.GetType());
 		}
 
-        //private DropPoint AddDropPoint(Control container, ContentItem item, CreationPosition position)
-        //{
-        //    DropPoint dp = new DropPoint(ZoneName, item, position, DropPointBackImageUrl);
-        //    SetToolTip(dp, position == CreationPosition.Below ? item : item.Parent);
-        //    container.Controls.Add(dp);
-        //    return dp;
-        //}
-
-		private string GetToolTip()
+        public static string GetToolTip(ItemDefinition definition, string zoneName)
 		{
-			ItemDefinition definition = GetDefinition(CurrentItem);
 			foreach (AvailableZoneAttribute za in definition.AvailableZones)
 			{
-				if(za.ZoneName == ZoneName)
+				if(za.ZoneName == zoneName)
 				{
                     return za.Title;
 				}
 			}
-            return null;
+            return zoneName;
 		}
 
 		private Panel AddPanel(Control container, string className)
@@ -125,10 +107,10 @@ namespace N2.Web.UI.WebControls
 			return p;
 		}
 
-		private string GetAllowedNames(string zoneName)
+		public static string GetAllowedNames(string zoneName, IEnumerable<ItemDefinition> definitions)
 		{
 			List<string> allowedDefinitions = new List<string>();
-			foreach (ItemDefinition potentialChild in PartsAdapter.GetAllowedDefinitions(CurrentItem, zoneName, Page.User))
+			foreach (ItemDefinition potentialChild in definitions)
 			{
 				allowedDefinitions.Add(potentialChild.Discriminator);
 			}

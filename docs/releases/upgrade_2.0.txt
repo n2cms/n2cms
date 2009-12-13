@@ -4,3 +4,4 @@ Make a complete backup (including database), delete /edit, any /Templates folder
 
 Breaking changes:
 - .NET 3.5 (or greater) is now required
+- N2.Web.HtmlHelper is now deprecated and renamed to FormsHelper (to avoid conflicts with MVC)

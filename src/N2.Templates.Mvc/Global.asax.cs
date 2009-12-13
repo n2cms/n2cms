@@ -24,9 +24,6 @@ namespace N2.Templates.Mvc
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
-			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-			routes.IgnoreRoute("Edit/{*pathInfo}");
-
 			routes.Add(new ContentRoute(engine));
 
 			routes.MapRoute(

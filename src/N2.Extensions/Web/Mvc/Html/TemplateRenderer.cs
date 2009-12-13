@@ -13,7 +13,7 @@ namespace N2.Web.Mvc.Html
 {
 	public interface ITemplateRenderer
 	{
-		string RenderTemplate(ContentItem item, IItemContainer container);
+        string RenderTemplate(ContentItem item, ViewContext context);
 	}
 
 	public class TemplateRenderer : ITemplateRenderer
@@ -27,7 +27,7 @@ namespace N2.Web.Mvc.Html
 			_engine = engine;
 		}
 
-		public string RenderTemplate(ContentItem item, IItemContainer container)
+        public string RenderTemplate(ContentItem item, ViewContext viewContext)
 		{
 			var routeData = new RouteData();
 
@@ -38,23 +38,29 @@ namespace N2.Web.Mvc.Html
 
 			var writer = new StringWriter();
 
-			var viewDataContainer = container as IViewDataContainer ?? new DummyViewDataContainer(container);
-
 			using (var scope = new HttpContextScope(writer))
 			{
 				// execute the action
-				var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
-				                                           	{
-				                                           		HttpContext = new HttpContextWrapper(scope.CurrentContext),
-																ViewData = viewDataContainer.ViewData,
-				                                           	},
-				                                           viewDataContainer);
+                var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
+                                                            {
+                                                                HttpContext = new HttpContextWrapper(scope.CurrentContext),
+                                                                ViewData = viewContext.ViewData,
+                                                            },
+                                                           new SimpleViewDataContainer { ViewData = viewContext.ViewData });
 
 				helper.RenderRoute(routeData.Values);
 			}
 
 			return writer.ToString();
 		}
+
+        class SimpleViewDataContainer : IViewDataContainer
+        {
+            #region IViewDataContainer Members
+
+            public ViewDataDictionary ViewData { get; set; }
+            #endregion
+        }
 
 		/// <summary>Replaces the current HttpContext with one that writes to the specified writer</summary>
 		/// <seealso cref="http://mikehadlow.blogspot.com/2008/06/mvc-framework-capturing-output-of-view_05.html"/>

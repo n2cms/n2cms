@@ -34,7 +34,7 @@ namespace N2.Web.UI.WebControls
 
 		protected override void OnInit(EventArgs e)
 		{
-			State = ControlPanel.GetState();
+            State = ControlPanel.GetState(Page.User, Page.Request.QueryString);
 			if (State == ControlPanelState.Editing)
 			{
 				AddEditable();

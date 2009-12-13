@@ -1,4 +1,5 @@
-﻿- rewrite of drag'n'drop parts feature
+﻿- drag an drop support for MVC templates
+- rewrite of drag'n'drop parts feature
 - refactored code into command factory/dispatcher for testable workflow of content items
 - introduced [Service] attribute used to auto-inject services
 - adaptive expand view link from control panel

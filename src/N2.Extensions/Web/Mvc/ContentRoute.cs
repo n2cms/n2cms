@@ -44,9 +44,11 @@ namespace N2.Web.Mvc
 		{
 			string path = httpContext.Request.AppRelativeCurrentExecutionFilePath;
 			if (path.StartsWith("~/edit/", StringComparison.InvariantCultureIgnoreCase))
-				return null;
-			if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
-				return null;
+                return new RouteData(this, new StopRoutingHandler());
+            if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
+                return new RouteData(this, new StopRoutingHandler());
+            if (path.EndsWith(".n2.ashx", StringComparison.InvariantCultureIgnoreCase))
+                return new RouteData(this, new StopRoutingHandler());
 
 			var routeData = GetRouteDataForPath(httpContext.Request);
 

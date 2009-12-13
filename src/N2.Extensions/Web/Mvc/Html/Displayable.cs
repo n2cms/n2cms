@@ -15,25 +15,23 @@ namespace N2.Web.Mvc.Html
 		private string _path;
 		private bool _swallowExceptions;
 
-		public Displayable(ITemplateRenderer templateRenderer, IItemContainer container, string detailName)
-			: base(container)
+        public Displayable(ViewContext viewContext, ITemplateRenderer templateRenderer, string detailName)
+			: base(viewContext)
 		{
-			if (templateRenderer == null)
-				throw new ArgumentNullException("templateRenderer");
+			if (templateRenderer == null) throw new ArgumentNullException("templateRenderer");
 
 			_templateRenderer = templateRenderer;
 			_detailName = detailName;
 		}
 
-		public Displayable(ITemplateRenderer templateRenderer, IItemContainer container, string detailName, ContentItem item)
-			: base(container, item)
-		{
-			if (templateRenderer == null)
-				throw new ArgumentNullException("templateRenderer");
+        public Displayable(ViewContext viewContext, ITemplateRenderer templateRenderer, string detailName, ContentItem currentItem)
+            : base(viewContext, currentItem)
+        {
+            if (templateRenderer == null) throw new ArgumentNullException("templateRenderer");
 
-			_templateRenderer = templateRenderer;
-			_detailName = detailName;
-		}
+            _templateRenderer = templateRenderer;
+            _detailName = detailName;
+        }
 
 		public string Value
 		{
@@ -113,7 +111,7 @@ namespace N2.Web.Mvc.Html
 
 			var container = new ViewUserControl
 			                	{
-			                		Page = (Container is Control) ? ((Control) Container).Page : null,
+			                		Page = (ViewContext.View is Control) ? ((Control) ViewContext.View).Page : null,
 			                		ViewData = viewData,
 			                	};
 			display.Displayable.AddTo(display.CurrentItem, _detailName, container);
@@ -125,7 +123,7 @@ namespace N2.Web.Mvc.Html
 		{
 			var userControl = new ViewUserControl();
 
-			userControl.Controls.Add(new LiteralControl(_templateRenderer.RenderTemplate(item, Container)));
+			userControl.Controls.Add(new LiteralControl(_templateRenderer.RenderTemplate(item, ViewContext)));
 
 			return userControl;
 		}

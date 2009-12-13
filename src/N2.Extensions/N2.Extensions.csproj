@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -98,6 +98,7 @@
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
     <Compile Include="Web\Mvc\ControllerMapper.cs" />
+    <Compile Include="Web\Mvc\Html\ContentItemExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DetailExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Displayable.cs" />
     <Compile Include="Web\Mvc\Html\DisplayExtensions.cs" />

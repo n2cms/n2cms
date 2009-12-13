@@ -522,6 +522,7 @@
     <Compile Include="Engine\EventBroker.cs" />
     <Compile Include="Web\ConventionTemplateAttribute.cs" />
     <Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
+    <Compile Include="Web\FormsHelper.cs" />
     <Compile Include="Web\PathDictionary.cs" />
     <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Parts\IAddablePart.cs" />
@@ -543,7 +544,6 @@
     <Compile Include="Web\RequestDispatcher.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlFilter.cs" />
-    <Compile Include="Web\HtmlHelper.cs" />
     <Compile Include="Web\IClosable.cs" />
     <Compile Include="Web\IErrorHandler.cs" />
     <Compile Include="Web\IHost.cs" />

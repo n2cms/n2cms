@@ -6,12 +6,12 @@ using System.Web.UI;
 namespace N2.Web
 {
     [Obsolete]
-    public class HtmlHelper
+    public class FormsHelper
     {
         ContentItem currentItem;
         Page page;
 
-        public HtmlHelper(Page page, ContentItem currentItem)
+        public FormsHelper(Page page, ContentItem currentItem)
         {
             this.page = page;
             this.currentItem = currentItem;

@@ -297,9 +297,9 @@ if(window.n2ctx){{
 		}
 
         [Obsolete]
-        public N2.Web.HtmlHelper Html
+        public FormsHelper Html
         {
-            get { return new N2.Web.HtmlHelper(this, Selection.SelectedItem); }
+            get { return new FormsHelper(this, Selection.SelectedItem); }
         }
 
         [Obsolete]

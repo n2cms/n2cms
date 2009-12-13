@@ -657,5 +657,10 @@ namespace N2.Web
 			string newPath = "/" + string.Join("/", segments, 0, index) + "/" + string.Join("/", segments, index + 1, segments.Length - index - 1) + Extension;
 			return new Url(scheme, authority, newPath, query, fragment);
 		}
-	}
+
+        public string Encode()
+        {
+            return ToString().Replace(Amp, "&amp;");
+        }
+    }
 }

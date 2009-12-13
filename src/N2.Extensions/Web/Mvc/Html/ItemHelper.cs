@@ -2,37 +2,37 @@ using System;
 using N2.Engine;
 using N2.Web.Parts;
 using N2.Web.UI;
+using System.Web.Mvc;
 
 namespace N2.Web.Mvc.Html
 {
 	public abstract class ItemHelper
 	{
-		private readonly IItemContainer _itemContainer;
-		private PartsAdapter _partsAdapter;
+		PartsAdapter _partsAdapter;
+        ContentItem currentItem;
 
-		protected ItemHelper(IItemContainer itemContainer)
+        protected ItemHelper(ViewContext viewContext)
 		{
-			_itemContainer = itemContainer;
-			CurrentItem = itemContainer.CurrentItem;
+            ViewContext = viewContext;
+		}
+        protected ItemHelper(ViewContext viewContext, ContentItem currentItem)
+            : this(viewContext)
+		{
+            CurrentItem = currentItem;
 		}
 
-		protected ItemHelper(IItemContainer itemContainer, ContentItem item)
-		{
-			_itemContainer = itemContainer;
-			CurrentItem = item;
-		}
+		protected ViewContext ViewContext { get; set; }
 
-		protected virtual IEngine Engine
+        protected virtual IEngine Engine
 		{
 			get { return Context.Current; }
 		}
 
-		protected IItemContainer Container
-		{
-			get { return _itemContainer; }
-		}
-
-		protected ContentItem CurrentItem { get; private set; }
+        protected ContentItem CurrentItem
+        {
+            get { return currentItem ?? (currentItem = ViewContext.CurrentItem()); }
+            set { this.currentItem = value; }
+        }
 
 		/// <summary>The content adapter related to the current page item.</summary>
 		protected virtual PartsAdapter PartsAdapter
