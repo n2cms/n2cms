@@ -14,6 +14,10 @@ namespace N2.Web.UI.WebControls
 		private ContentItem currentItem;
 		private ItemDefinition definition;
 
+        public DraggableToolbar()
+        {
+        }
+
 		public DraggableToolbar(ContentItem item, ItemDefinition definition)
 		{
             if (definition == null) throw new ArgumentNullException("definition");
@@ -32,18 +36,6 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return definition ?? (definition = N2.Context.Definitions.GetDefinition(CurrentItem.GetType())); }
 		}
-
-        //protected override void OnPreRender(EventArgs e)
-        //{
-        //    if (bindButtons && ControlPanel.GetState(Page.User, Page.Request.QueryString) == ControlPanelState.DragDrop)
-        //    {
-        //        if (string.IsNullOrEmpty(ID))
-        //            ID = "t" + CurrentItem.ID;
-        //        string array = string.Format("{{dragKey:'{0}',item:{1}}}", ClientID, CurrentItem.ID);
-        //        ControlPanel.RegisterArrayValue(Page, "dragItems", array);
-        //    }
-        //    base.OnPreRender(e);
-        //}
 
 		protected override void Render(HtmlTextWriter writer)
 		{

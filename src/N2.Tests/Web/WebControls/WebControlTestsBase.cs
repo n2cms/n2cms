@@ -40,7 +40,7 @@ namespace N2.Tests.Web.WebControls
             request.Browser = new HttpBrowserCapabilities();
             request.Browser.Capabilities = new Hashtable();
             request.Browser.Capabilities["ecmascriptversion"] = "1.7";
-            request.Browser.Capabilities["w3cdomversion"] = "1.7";
+            request.Browser.Capabilities["w3cdomversion"] = "2.0";
             var response = new HttpResponse(new StringWriter(new StringBuilder()));
 			HttpContext.Current = new HttpContext(request, response)
 			{
