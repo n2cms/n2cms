@@ -37,13 +37,13 @@ namespace N2.Web.Mvc.Html
         {			
             if (state == ControlPanelState.DragDrop)
             {
-                ItemDefinition definition = Context.Current.Definitions.GetDefinition(CurrentItem.GetType());
+                ItemDefinition definition = Context.Current.Definitions.GetDefinition(model.GetType());
 
                 writer.Write("<div class='" + definition.Discriminator + " zoneItem'");
                 writer.Write(" item='" + model.Path + "'");
-                writer.Write(" type'" + definition.Discriminator + "'>");
+                writer.Write(" type='" + definition.Discriminator + "'>");
 
-                DraggableToolbar.WriteTitleBar(writer, Context.Current.EditManager, Context.Current.Definitions.GetDefinition(model.GetType()), model);
+                DraggableToolbar.WriteTitleBar(writer, Context.Current.EditManager, definition, model);
                 
                 base.RenderTemplate(writer, model);
 

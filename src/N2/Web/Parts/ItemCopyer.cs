@@ -56,10 +56,11 @@ namespace N2.Web.Parts
                 Utility.Insert(item, parent, parent.Children.Count);
             }
 
+            persister.Save(item);
+
 			IEnumerable<ContentItem> changedItems = Utility.UpdateSortOrder(parent.Children);
 			foreach (ContentItem changedItem in changedItems)
 				persister.Save(changedItem);
-            persister.Save(item);
 		}
 	}
 }

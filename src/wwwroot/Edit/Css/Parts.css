@@ -21,11 +21,13 @@ div:hover.zoneItem .titleBar .command   { display:inline;}
 
 /* hide/show droppables */
 .dropPoint { position:relative; background-color:#efe; border:dotted 1px #ded; }
-.dropPoint .description { font-size:10px; padding:2px 3px;  }
+.dropPoint .description { font-size:10px; padding:1px 3px;  }
 .dragging .dragShadow { cursor:move; }
 .dragged * { visibility:hidden; }
 .dragged { border:dotted 1px silver; margin-bottom:-2px; }
 .dragged .titleBar { display:none }
+
+.dragging .dropPoint { margin-bottom:-2px; top:-1px; }
 
 .dropPoint .dpLabel { font:10px Arial, Sans-Serif; padding:0 0 0 4px; color:#888; font-weight:bold; }
 .dropPoint .titleBar { display:none; }
@@ -35,7 +37,7 @@ div:hover.zoneItem .titleBar .command   { display:inline;}
 .droppable-active { background:url(../img/shading_green.png); padding:0; }
 .droppable-hover { background-color:#8e8; border:solid 2px #8e8; margin-top:-1px; margin-left:-1px; }
 
-.sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; 
+.sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; border:none 1px #ccb; border-style:none solid solid none;
     background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px; -moz-box-shadow: #666 4px 4px 10px -2px;
 }
     .sc .scContent { }
@@ -43,7 +45,7 @@ div:hover.zoneItem .titleBar .command   { display:inline;}
         .controlPanel img { border:none; vertical-align:middle; margin-right:3px; }
         .controlPanel a,.controlPanel a:visited { }
     .controlPanel a { text-decoration:none; padding:1px; }
-    .controlPanel .plugins { padding:1px 20px 1px 1px; height:30px; border-right:solid 1px #aa9; border-bottom:solid 1px #aa9; background:#eed; }
+    .controlPanel .plugins { padding:1px 20px 1px 1px; height:30px; background:#eed; }
         .controlPanel .plugins a {
             display:block;
             float:left;
