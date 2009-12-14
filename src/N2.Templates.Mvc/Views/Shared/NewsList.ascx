@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewUserControl<NewsList>" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<NewsList>" %>
 
 <h<%=Model.TitleLevel%>><%=Model.Title%></h<%=Model.TitleLevel%>>
 

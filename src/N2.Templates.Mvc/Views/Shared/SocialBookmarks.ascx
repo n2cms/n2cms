@@ -11,7 +11,7 @@
 	}
 </script>
 
-<%=this.EditableDisplay(m => m.Title)%>
+<%= ContentHtml.Display(m => m.Title)%>
 
 <div class="box">
 	<div class="inner">

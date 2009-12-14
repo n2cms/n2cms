@@ -97,14 +97,21 @@
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
+    <Compile Include="Web\Mvc\ContentViewPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\ContentViewUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\ControllerExtensions.cs" />
     <Compile Include="Web\Mvc\ControllerMapper.cs" />
     <Compile Include="Web\Mvc\Html\ContentItemExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ContextExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DetailExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Displayable.cs" />
     <Compile Include="Web\Mvc\Html\DisplayExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DroppableZoneExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DroppableZoneHelper.cs" />
-    <Compile Include="Web\Mvc\Html\EditableDisplayableExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ItemHelper.cs" />
     <Compile Include="Web\Mvc\Html\TemplateRenderer.cs" />
     <Compile Include="Web\Mvc\Html\ZoneExtensions.cs" />
@@ -115,25 +122,26 @@
     <Compile Include="Web\Mvc\MvcEngine.cs" />
     <Compile Include="Web\Mvc\MvcConventionTemplateAttribute.cs" />
     <Compile Include="Web\Mvc\N2ControllerFactory.cs" />
-    <Compile Include="Web\Mvc\N2ModelViewPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Web\Mvc\N2ModelViewUserControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Web\Mvc\N2ViewEngine.cs" />
-    <Compile Include="Web\Mvc\N2ViewMasterPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Web\Mvc\N2ViewPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Web\Mvc\N2ViewUserControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Web\Mvc\RouteActionResolverAttribute.cs" />
     <Compile Include="Web\Mvc\FallbackContentController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Mvc\Obsolete\EditableDisplayableExtensions.cs" />
+    <Compile Include="Web\Mvc\Obsolete\ObsoleteExtensions.cs" />
+    <Compile Include="Web\Mvc\Obsolete\N2ModelViewPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\Obsolete\N2ModelViewUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\Obsolete\N2ViewMasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\Obsolete\N2ViewPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Mvc\Obsolete\N2ViewUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\Mvc\ViewPageResult.cs" />
   </ItemGroup>
   <ItemGroup>

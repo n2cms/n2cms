@@ -1,9 +1,9 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewUserControl<BubbleItem>" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<BubbleItem>" %>
 
 <div class="uc bubble">
 	<div class="inner">
 		<div class="text">
-			<%= CurrentItem.Text %>
+			<%= Html.Display(m => m.Text) %>
 		</div>
 		<div class="bottom"></div>
 	</div>

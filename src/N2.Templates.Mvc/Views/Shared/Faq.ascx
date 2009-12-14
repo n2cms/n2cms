@@ -1,6 +1,6 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewUserControl<Faq>" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<Faq>" %>
 
 <div class="a1">
-	<%=this.Display(m => m.Title)%>
-	<%=this.Display(m => m.Answer)%>
+	<%=Html.Display(m => m.Title)%>
+	<%=Html.Display(m => m.Answer)%>
 </div>

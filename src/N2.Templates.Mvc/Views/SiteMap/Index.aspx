@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" AutoEventWireup="true"
-	Inherits="N2.Web.Mvc.N2ViewPage<N2.Templates.Mvc.Items.Pages.SiteMap>" %>
+	Inherits="System.Web.Mvc.ViewPage<N2.Templates.Mvc.Items.Pages.SiteMap>" %>
 <%@ Import Namespace="N2.Collections"%>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
-	<%=this.EditableDisplay(m => m.Title)%>
-	<%=this.EditableDisplay(m => m.Text)%>
+	<%=Html.Display(m => m.Title)%>
+	<%=Html.Display(m => m.Text)%>
 
 	<div id="product-category-info">
 		<%=RenderSiteMap()%>

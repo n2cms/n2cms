@@ -1,5 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewUserControl<CommentList>" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<CommentList>" %>
 
 <div class="list">
-	<%= this.Zone("Comments") %>
+	<% Html.RenderZone("Comments"); %>
 </div>

@@ -1,6 +1,6 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewUserControl<Subscribe>" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<Subscribe>" %>
 
-<%=this.EditableDisplay(m => m.Title)%>
+<%=Html.Display(m => m.Title)%>
 <div class="box">
 	<div class="inner">
 	<%= N2.Web.Link.To(Model.SelectedFeed)

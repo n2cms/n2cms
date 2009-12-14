@@ -1,4 +1,14 @@
-﻿- drag an drop support for MVC templates
+﻿- refactored mvc extensions & templates
+	- display & zone extensions into html helpers (use Html.Display, Html.Zone, etc. instead of this.Display, this.Zone)
+	- obsoleted N2ViewPage/UserControl/MasterPage (use classes in mvc)
+	- refactored N2ModelViewPage/UserControl into ContentViewPage/UserControl with:
+		- CurrentPage is inferred from context (to pass other item explicitly use this.View(...,ContentItem) controller extension)
+		- Model <- The model (doesn't need to inherit from IItemContainer<>)
+		- Html <- Html helper working on the model
+		- Content <- The current page/item (inferred from context)
+		- ContentHtml <- Html helper working on the current page/item
+	- obsoleted EditableDisplay (may be re-introduced in the future)
+- drag an drop support for MVC templates
 - rewrite of drag'n'drop parts feature
 - refactored code into command factory/dispatcher for testable workflow of content items
 - introduced [Service] attribute used to auto-inject services

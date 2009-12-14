@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewPage<RssFeed>" %>
+<%@ Page Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<RssFeed>" %>
 <html>
 	<head></head>
 	<body>

@@ -8,6 +8,7 @@ namespace N2.Web.Mvc
 	/// A ViewUserControl implementation that allows N2 Display helpers to be used.
 	/// </summary>
 	/// <typeparam name="TItem"></typeparam>
+    [Obsolete("Prefer System.Web.Mvc.ViewUserControl<>")]
 	public class N2ViewUserControl<TItem> : ViewUserControl<TItem>, IItemContainer<TItem>
 		where TItem : ContentItem
 	{

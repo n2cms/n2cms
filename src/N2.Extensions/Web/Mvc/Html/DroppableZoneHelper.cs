@@ -12,12 +12,6 @@ namespace N2.Web.Mvc.Html
 	{
         ControlPanelState state = ControlPanelState.Hidden;
 
-        public DroppableZoneHelper(ViewContext viewContext, string zoneName)
-            : base(viewContext, zoneName)
-		{
-            state = viewContext.HttpContext.ControlPanelState();
-		}
-
         public DroppableZoneHelper(ViewContext viewContext, string zoneName, ContentItem currentItem)
             : base(viewContext, zoneName, currentItem)
 		{

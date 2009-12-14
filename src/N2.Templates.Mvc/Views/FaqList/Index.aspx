@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.master" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewPage<FaqList>" Title="" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<FaqList>" Title="" %>
 
 <asp:Content ContentPlaceHolderID="Head" runat="server">
 	<link href="<%=ResolveUrl("~/Content/Css/Faq.css") %>" type="text/css" rel="stylesheet" />
@@ -6,6 +6,6 @@
 
 <asp:Content ContentPlaceHolderID="PostContent" runat="server">
 	<div class="list">
-	<%=this.DroppableZone(Zones.Questions).WrapIn("div", new{@class="uc faq"}) %>
+	<% Html.DroppableZone(Zones.Questions).WrapIn("div", new { @class = "uc faq" }).Render(); %>
 	</div>
 </asp:Content>

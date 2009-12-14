@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.master" AutoEventWireup="true" 
-	Inherits="N2.Web.Mvc.N2ModelViewPage<ImageGalleryModel, ImageGallery>" Title="" %>
+	Inherits="N2.Web.Mvc.ContentViewPage<ImageGalleryModel, ImageGallery>" Title="" %>
 <%@ Import Namespace="N2.Collections"%>
 
 <asp:Content ContentPlaceHolderID="Head" runat="server">
@@ -9,8 +9,8 @@
 <asp:Content ContentPlaceHolderID="ContentAndSidebar" runat="server">
 	<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
 	
-	<%=this.EditableDisplay(m => m.Title)%>
-	<%=this.EditableDisplay(m => m.Text)%>
+	<%=ContentHtml.Display(m => m.Title)%>
+	<%=ContentHtml.Display(m => m.Text)%>
 	
 	<div id="thumbnails">
 		<%foreach(var item in Model.GalleryItems){ %>

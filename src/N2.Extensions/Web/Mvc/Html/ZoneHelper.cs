@@ -13,25 +13,20 @@ namespace N2.Web.Mvc.Html
 	{
 		private readonly ITemplateRenderer _templateRenderer = Context.Current.Resolve<ITemplateRenderer>();
 
-        public ZoneHelper(ViewContext viewContext, string zoneName)
-            : base(viewContext)
-        {
-            ZoneName = zoneName;
-        }
         public ZoneHelper(ViewContext viewContext, string zoneName, ContentItem currentItem)
             : base(viewContext, currentItem)
         {
             ZoneName = zoneName;
         }
 
-		protected System.Web.Mvc.TagBuilder TagBuilder { get; set; }
+		protected System.Web.Mvc.TagBuilder Wrapper { get; set; }
 
 		protected string ZoneName { get; set; }
 
 		public ZoneHelper WrapIn(string tagName, object attributes)
 		{
-			TagBuilder = new System.Web.Mvc.TagBuilder(tagName);
-			TagBuilder.MergeAttributes(new RouteValueDictionary(attributes));
+			Wrapper = new System.Web.Mvc.TagBuilder(tagName);
+			Wrapper.MergeAttributes(new RouteValueDictionary(attributes));
 
 			return this;
 		}
@@ -46,6 +41,11 @@ namespace N2.Web.Mvc.Html
 			return partialResult.ToString();
 		}
 
+        public virtual void Render()
+        {
+            Render(ViewContext.HttpContext.Response.Output);
+        }
+
         public virtual void Render(TextWriter writer)
         {
             foreach (var child in GetItems())
@@ -56,14 +56,14 @@ namespace N2.Web.Mvc.Html
 
         protected virtual void RenderTemplate(TextWriter writer, ContentItem model)
         {
-            if (TagBuilder != null)
-                writer.Write(TagBuilder.ToString(TagRenderMode.StartTag));
+            if (Wrapper != null)
+                writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
 
             string partial = _templateRenderer.RenderTemplate(model, ViewContext);
             writer.Write(partial);
 
-            if (TagBuilder != null)
-                writer.WriteLine(TagBuilder.ToString(TagRenderMode.EndTag));
+            if (Wrapper != null)
+                writer.WriteLine(Wrapper.ToString(TagRenderMode.EndTag));
         }
 
 		private ItemList GetItems()

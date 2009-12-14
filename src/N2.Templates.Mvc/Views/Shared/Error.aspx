@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" Inherits="N2.Web.Mvc.N2ViewPage<ContentItem>" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" Inherits="System.Web.Mvc.ViewPage<ContentItem>" %>
 <%@ Import Namespace="N2"%>
 
 <asp:Content ID="errorContent" ContentPlaceHolderID="ContentAndSidebar" runat="server">

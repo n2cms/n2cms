@@ -28,7 +28,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets the displayable attribute</summary>
 		public IDisplayable Displayable
 		{
-			get { return displayable ?? (displayable = GetDisplayableAttribute(PropertyName, CurrentItem)); }
+			get { return displayable ?? (displayable = GetDisplayableAttribute(PropertyName, CurrentItem, !SwallowExceptions)); }
 		}
 
 		/// <summary>Gets the control responsible of displaying the detail.</summary>
@@ -131,25 +131,24 @@ namespace N2.Web.UI.WebControls
 		}
 
 
-		private IDisplayable GetDisplayableAttribute(string propertyName, ContentItem item)
+		public static IDisplayable GetDisplayableAttribute(string propertyName, ContentItem item, bool showExceptions)
 		{
-			if (item == null)
+            if (item == null && showExceptions)
 			{
-				return Throw<IDisplayable>(new ArgumentNullException("item"));
+				throw new ArgumentNullException("item");
 			}
 
 			PropertyInfo pi = item.GetType().GetProperty(propertyName);
-			if (pi == null)
+            if (pi == null && showExceptions)
 			{
-                return Throw<IDisplayable>(new N2Exception("No property '{0}' found on the item #{1} of type '{2}'.", propertyName, item.ID, item.GetType()));
+                throw new N2Exception("No property '{0}' found on the item #{1} of type '{2}'.", propertyName, item.ID, item.GetType());
 			}
 			else
 			{
 				IDisplayable[] attributes = (IDisplayable[])pi.GetCustomAttributes(typeof(IDisplayable), false);
-				if (attributes.Length == 0)
+                if (attributes.Length == 0 && showExceptions)
 				{
-					return Throw<IDisplayable>(new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}",
-										  propertyName, item.ID, item.GetType()));
+					throw new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, item.ID, item.GetType());
 				}
 				return attributes[0];
 			}

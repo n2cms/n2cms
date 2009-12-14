@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ModelViewUserControl<StatisticsModel, Statistics>" %>
 
 <div class="uc statistics">
-	<h4><%= CurrentItem.Title %></h4>
+	<%= ContentHtml.Display(m => m.Title) %>
 	<div class="field">
 		<label># of pages:</label>
 		<span><%=Model.NumberOfPages%></span>

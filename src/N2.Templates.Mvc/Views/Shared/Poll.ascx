@@ -1,7 +1,7 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewUserControl<Poll>" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<Poll>" %>
 <%@ Import Namespace="N2"%>
 
-<n2:EditableDisplay runat="server" PropertyName="Title" />
+<%= Html.Display(m => m.Title) %>
 
 <div class="box">
 	<div class="inner">
@@ -20,7 +20,7 @@
 			<%=Html.ValidationMessage("Poll.Errors")%>
 			<div class="buttons">
 				<input type="submit" value="Submit" />
-				<a href="<%=CurrentPage.Url%>?p=show">Display results</a>
+				<a href="<%= Html.CurrentPage().Url %>?p=show">Display results</a>
 			</div>
 		<%}%>
 	</div>

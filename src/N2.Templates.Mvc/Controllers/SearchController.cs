@@ -21,12 +21,12 @@ namespace N2.Templates.Mvc.Controllers
 		public ActionResult Index(string q, int? p)
 		{ 
 			if (String.IsNullOrEmpty(q))
-				return View(new SearchModel(CurrentItem, new ContentItem[0]));
+				return View(new SearchModel(new ContentItem[0]));
 
 			int totalRecords;
 			var hits = CurrentItem.Search(q, p ?? 0, PAGE_SIZE, out totalRecords);
 
-			return View(new SearchModel(CurrentItem, hits) {SearchTerm = q, TotalResults = totalRecords, PageSize = PAGE_SIZE, PageNumber = p ?? 0});
+			return View(new SearchModel(hits) {SearchTerm = q, TotalResults = totalRecords, PageSize = PAGE_SIZE, PageNumber = p ?? 0});
 		}
 	}
 }

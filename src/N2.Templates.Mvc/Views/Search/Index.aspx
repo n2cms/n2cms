@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.master" AutoEventWireup="true" 
-	Inherits="N2.Web.Mvc.N2ModelViewPage<SearchModel, AbstractSearch>" Title="" %>
+	Inherits="N2.Web.Mvc.ContentViewPage<SearchModel, AbstractSearch>" Title="" %>
 
 <asp:Content runat="server" ContentPlaceHolderID="Head">
 	<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/Content/Css/Search.css") %>" />

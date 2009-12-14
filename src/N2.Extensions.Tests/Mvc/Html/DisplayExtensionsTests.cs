@@ -108,17 +108,11 @@ namespace N2.Extensions.Tests.Mvc.Html
 		[Test]
 		public void ModelViewPageSyntaxTestWithLambda()
 		{
-			var page = new N2ModelViewPage<RegularPageContainer, RegularPage>
-			           	{
-			           		ViewData = new ViewDataDictionary<RegularPageContainer>(new RegularPageContainer(new RegularPage
-			           		                                                                                 	{
-			           		                                                                                 		Title = "A Title",
-			           		                                                                                 	})),
-			           		ViewContext = new ViewContext(),
-			           	};
-			page.InitHelpers();
+            var item = new RegularPage { Title = "A Title" };
+            var page = MvcTestUtilities.CreateContentViewPage(new RegularPageContainer(item), item);
+            page.InitHelpers();
 
-			var result = page.Display(m => m.Title).ToString();
+            var result = page.ContentHtml.Display(m => m.Title).ToString();
 
 			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
 		}
@@ -126,17 +120,11 @@ namespace N2.Extensions.Tests.Mvc.Html
 		[Test]
 		public void ModelViewPageSyntaxTestWithString()
 		{
-			var page = new N2ModelViewPage<RegularPageContainer, RegularPage>
-			           	{
-			           		ViewData = new ViewDataDictionary<RegularPageContainer>(new RegularPageContainer(new RegularPage
-			           		                                                                                 	{
-			           		                                                                                 		Title = "A Title",
-			           		                                                                                 	})),
-			           		ViewContext = new ViewContext(),
-			           	};
+            var item = new RegularPage { Title = "A Title" };
+            var page = MvcTestUtilities.CreateContentViewPage(new RegularPageContainer(item), item);
 			page.InitHelpers();
 
-			var result = page.Display("Title").ToString();
+			var result = page.ContentHtml.Display("Title").ToString();
 
 			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
 		}
@@ -144,17 +132,10 @@ namespace N2.Extensions.Tests.Mvc.Html
 		[Test]
 		public void ViewPageSyntaxTestWithLambda()
 		{
-			var page = new N2ViewPage<RegularPage>
-			           	{
-			           		ViewData = new ViewDataDictionary<RegularPage>(new RegularPage
-			           		                                               	{
-			           		                                               		Title = "A Title",
-			           		                                               	}),
-			           		ViewContext = new ViewContext(),
-			           	};
+            var page = MvcTestUtilities.CreateViewPage(new RegularPage { Title = "A Title" });
 			page.InitHelpers();
 
-			var result = page.Display(m => m.Title).ToString();
+			var result = page.Html.Display(m => m.Title).ToString();
 
 			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
 		}
@@ -162,17 +143,10 @@ namespace N2.Extensions.Tests.Mvc.Html
 		[Test]
 		public void ViewPageSyntaxTestWithString()
 		{
-			var page = new N2ViewPage<RegularPage>
-			           	{
-			           		ViewData = new ViewDataDictionary<RegularPage>(new RegularPage
-			           		                                               	{
-			           		                                               		Title = "A Title",
-			           		                                               	}),
-			           		ViewContext = new ViewContext(),
-			           	};
+            var page = MvcTestUtilities.CreateViewPage(new RegularPage { Title = "A Title" });
 			page.InitHelpers();
 
-			var result = page.Display("Title").ToString();
+            var result = page.Html.Display("Title").ToString();
 
 			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
 		}
@@ -189,14 +163,10 @@ namespace N2.Extensions.Tests.Mvc.Html
 			               		Text = "RootTestItem",
 			               		Property = new DisplayableItem {Text = "NestedTestItem"},
 			               	};
-			var page = new N2ViewPage<DisplayableItem>
-			           	{
-			           		ViewData = new ViewDataDictionary<DisplayableItem>(testItem),
-			           		ViewContext = new ViewContext(),
-			           	};
+            var page = MvcTestUtilities.CreateViewPage(testItem);
 			page.InitHelpers();
 
-			var result = page.Display(p => p.Property).ToString();
+            var result = page.Html.Display(p => p.Property).ToString();
 
 			Assert.That(result, Is.EqualTo("Testing"));
 			_templateRenderer.VerifyAllExpectations();

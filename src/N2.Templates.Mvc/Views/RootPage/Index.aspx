@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewPage<RootPage>" Title="Root" %>
+<%@ Page Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<RootPage>" Title="Root" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,21 +30,21 @@
 <body>
 	<form id="form1" runat="server">
 	<div>
-		<%=this.Zone("Above")%>
+		<% Html.RenderZone("Above"); %>
 		<table>
 			<tr>
 				<td>
-					<%=this.Zone(Zones.Left)%>
+					<% Html.RenderZone(Zones.Left); %>
 				</td>
 				<td>
-					<%=this.Zone("Center")%>
+					<% Html.RenderZone("Center"); %>
 				</td>
 				<td>
-					<%=this.Zone(Zones.Right)%>
+					<% Html.RenderZone(Zones.Right); %>
 				</td>
 			</tr>
 		</table>
-		<%=this.Zone("Below")%>
+		<% Html.RenderZone("Below"); %>
 	</div>
 	</form>
 </body>

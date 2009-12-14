@@ -27,6 +27,7 @@ namespace N2.Templates.Mvc.Items.Pages
 			set { SetDetail("EventDate", value); }
 		}
 
+        [DisplayableLiteral]
 		public virtual string EventDateString
 		{
 			get

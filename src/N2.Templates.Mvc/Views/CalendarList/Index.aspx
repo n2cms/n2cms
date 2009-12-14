@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" AutoEventWireup="true"
-	Inherits="N2.Web.Mvc.N2ModelViewPage<CalendarModel, N2.Templates.Mvc.Items.Pages.Calendar>" %>
+	Inherits="N2.Web.Mvc.ContentViewPage<CalendarModel, N2.Templates.Mvc.Items.Pages.Calendar>" %>
 <%@ Import Namespace="N2.Collections"%>
 
 <asp:Content runat="server" ContentPlaceHolderID="Head">

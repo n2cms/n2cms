@@ -10,7 +10,11 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override System.Web.Mvc.ActionResult Index()
 		{
-			return View(new TrackingModel(CurrentItem, CurrentItem.TrackEditors || !Engine.SecurityManager.IsEditor(User)));
+            bool showTracking = CurrentItem.TrackEditors || !Engine.SecurityManager.IsEditor(User);
+            if (showTracking)
+                return View(CurrentItem);
+            else
+                return Content("");
 		}
 	}
 }

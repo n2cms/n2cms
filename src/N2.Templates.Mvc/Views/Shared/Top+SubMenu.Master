@@ -24,25 +24,25 @@
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
 			<div id="header">
-				<%=this.EditableDisplay(Find.ClosestStartPage, p => p.Header)%>
+				<%=Html.Display(Find.ClosestStartPage, p => p.Header)%>
 				<%Html.RenderAction<NavigationController>(c => c.TopMenu()); %>
 			</div>
 		</asp:ContentPlaceHolder>
 		<asp:ContentPlaceHolder ID="PageWrapper" runat="server">
 			<div id="page" class="cf">
 				<asp:ContentPlaceHolder ID="PageTop" runat="server">
-					<%=this.Display("TopImage").SwallowExceptions()%>
+					<%=Html.Display("TopImage").SwallowExceptions()%>
 				</asp:ContentPlaceHolder>
 				<asp:ContentPlaceHolder ID="Menu" runat="server">
 					<div id="menu" class="secondary">
 						<% Html.RenderAction<NavigationController>(c => c.SubMenu()); %>
 
-						<%=this.DroppableZone(Zones.SiteLeft, Find.ClosestStartPage)
-							.WrapIn("div", new {@class="uc"})%>
-						<%=this.DroppableZone(Zones.Left)
-							.WrapIn("div", new { @class = "uc" })%>
-						<%=this.DroppableZone(Zones.RecursiveLeft)
-							.WrapIn("div", new { @class = "uc" })%>
+						<% Html.DroppableZone(Find.ClosestStartPage, Zones.SiteLeft)
+                            .WrapIn("div", new { @class = "uc" }).Render();%>
+						<% Html.DroppableZone(Zones.Left)
+                            .WrapIn("div", new { @class = "uc" }).Render();%>
+						<% Html.DroppableZone(Zones.RecursiveLeft)
+                            .WrapIn("div", new { @class = "uc" }).Render();%>
 					</div>
 				</asp:ContentPlaceHolder>
 				<div id="content" class="">
@@ -50,30 +50,30 @@
 						<div id="main">
 							<asp:ContentPlaceHolder ID="PreContent" runat="server">
 								<%--TODO: <n2:DraggableToolbar ID="dt" runat="server" />--%>
-								<%=this.DroppableZone(Zones.RecursiveAbove)%>
+								<% Html.DroppableZone(Zones.RecursiveAbove).Render();%>
 							</asp:ContentPlaceHolder>
 							<asp:ContentPlaceHolder ID="Content" runat="server">
 								<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
 								<%--<n2:Path ID="p" runat="server" VisibilityLevel="2" />--%>
-								<%=this.EditableDisplay("Image").SwallowExceptions()%>
+								<%=Html.Display("Image").SwallowExceptions()%>
 								<asp:ContentPlaceHolder ID="TextContent" runat="server">
-									<%=this.EditableDisplay("Title").SwallowExceptions()%>
-									<%=this.EditableDisplay("Text").SwallowExceptions()%>
+									<%=Html.Display("Title").SwallowExceptions()%>
+									<%=Html.Display("Text").SwallowExceptions()%>
 								</asp:ContentPlaceHolder>
 							</asp:ContentPlaceHolder>
 							<asp:ContentPlaceHolder ID="PostContent" runat="server">
-								<%=this.DroppableZone(Zones.Content)%>
-								<%=this.DroppableZone(Zones.RecursiveBelow)%>
+								<% Html.DroppableZone(Zones.Content).Render();%>
+								<% Html.DroppableZone(Zones.RecursiveBelow).Render();%>
 							</asp:ContentPlaceHolder>
 						</div>
 						<asp:ContentPlaceHolder ID="Sidebar" runat="server">
 							<div id="extras" class="secondary">
-								<%=this.DroppableZone(Zones.RecursiveRight)
-									.WrapIn("div", new { @class = "uc" })%>
-								<%=this.DroppableZone(Zones.Right)
-									.WrapIn("div", new { @class = "uc" })%>
-								<%=this.DroppableZone(Zones.SiteRight, Find.ClosestStartPage)
-									.WrapIn("div", new { @class = "uc" })%>
+								<% Html.DroppableZone(Zones.RecursiveRight)
+                                    .WrapIn("div", new { @class = "uc" }).Render();%>
+								<% Html.DroppableZone(Zones.Right)
+                                    .WrapIn("div", new { @class = "uc" }).Render();%>
+								<% Html.DroppableZone(Find.ClosestStartPage, Zones.SiteRight)
+                                    .WrapIn("div", new { @class = "uc" }).Render();%>
 							</div>
 						</asp:ContentPlaceHolder>
 					</asp:ContentPlaceHolder>
@@ -81,7 +81,7 @@
 			</div>
 			<div id="footer">
 				<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
-				<%=this.EditableDisplay(Find.ClosestStartPage, p => p.FooterText)%>
+				<%=Html.Display(Find.ClosestStartPage, p => p.FooterText)%>
 			</div>
 		</asp:ContentPlaceHolder>
 	</div>

@@ -11,13 +11,9 @@ namespace N2.Web.Mvc.Html
 		PartsAdapter _partsAdapter;
         ContentItem currentItem;
 
-        protected ItemHelper(ViewContext viewContext)
-		{
-            ViewContext = viewContext;
-		}
         protected ItemHelper(ViewContext viewContext, ContentItem currentItem)
-            : this(viewContext)
-		{
+        {
+            ViewContext = viewContext;
             CurrentItem = currentItem;
 		}
 

@@ -4,6 +4,8 @@ using System.Web.Mvc;
 using System.Web.UI;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Details;
+using System.Web.Routing;
 
 namespace N2.Web.Mvc.Html
 {
@@ -11,39 +13,32 @@ namespace N2.Web.Mvc.Html
 	{
 		private readonly ITemplateRenderer _templateRenderer;
 
-		private readonly string _detailName;
-		private string _path;
-		private bool _swallowExceptions;
+		readonly string propertyName;
+		string path;
+		bool swallowExceptions;
 
-        public Displayable(ViewContext viewContext, ITemplateRenderer templateRenderer, string detailName)
-			: base(viewContext)
-		{
-			if (templateRenderer == null) throw new ArgumentNullException("templateRenderer");
-
-			_templateRenderer = templateRenderer;
-			_detailName = detailName;
-		}
-
-        public Displayable(ViewContext viewContext, ITemplateRenderer templateRenderer, string detailName, ContentItem currentItem)
+        public Displayable(ViewContext viewContext, ITemplateRenderer templateRenderer, string propertyName, ContentItem currentItem)
             : base(viewContext, currentItem)
         {
             if (templateRenderer == null) throw new ArgumentNullException("templateRenderer");
+            if (propertyName == null) throw new ArgumentNullException("propertyName");
 
-            _templateRenderer = templateRenderer;
-            _detailName = detailName;
+            this._templateRenderer = templateRenderer;
+            this.propertyName = propertyName;
         }
 
+        protected System.Web.Mvc.TagBuilder Wrapper { get; set; }
 		public string Value
 		{
 			get
 			{
 				try
 				{
-					return Convert.ToString(CurrentItem[_detailName]);
+					return Convert.ToString(CurrentItem[propertyName]);
 				}
 				catch
 				{
-					if (_swallowExceptions)
+					if (swallowExceptions)
 						return String.Empty;
 
 					throw;
@@ -51,75 +46,89 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
+        public Displayable WrapIn(string tagName, object attributes)
+        {
+            Wrapper = new System.Web.Mvc.TagBuilder(tagName);
+            Wrapper.MergeAttributes(new RouteValueDictionary(attributes));
+
+            return this;
+        }
+
 		public Displayable InPath(string path)
 		{
-			_path = path;
+			this.path = path;
 
 			return this;
 		}
 
 		public Displayable SwallowExceptions()
 		{
-			_swallowExceptions = true;
+			swallowExceptions = true;
 
 			return this;
 		}
 
 		public override string ToString()
 		{
-			var display = new Display
-			              	{
-			              		CurrentItem = CurrentItem,
-			              		PropertyName = _detailName,
-			              		SwallowExceptions = _swallowExceptions
-			              	};
+            using (var writer = new StringWriter())
+            {
+                Render(writer);
 
-			if (!String.IsNullOrEmpty(_path))
-				display.Path = _path;
-
-			try
-			{
-				if (display.Displayable == null)
-					return Value;
-
-				var container = CreateContainer(display);
-
-				using (var writer = new StringWriter())
-				{
-					container.RenderControl(new HtmlTextWriter(writer));
-
-					return writer.ToString();
-				}
-			}
-			catch (Exception)
-			{
-				if (_swallowExceptions)
-					return String.Empty;
-
-				throw;
-			}
+                return writer.ToString();
+            }
 		}
 
-		private ViewUserControl CreateContainer(Display display)
+        internal void Render(TextWriter writer)
+        {
+            if (!string.IsNullOrEmpty(path))
+                CurrentItem = ItemUtility.WalkPath(CurrentItem, path);
+
+            if (CurrentItem == null)
+                return;
+
+            try
+            {
+                var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, !swallowExceptions);
+                if (displayable == null) return;
+
+                var container = CreateContainer(displayable);
+
+                if (Wrapper != null)
+                    writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
+
+                container.RenderControl(new HtmlTextWriter(writer));
+
+                if (Wrapper != null)
+                    writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
+            }
+            catch (Exception)
+            {
+                if (swallowExceptions)
+                    return;
+
+                throw;
+            }
+        }
+
+		private ViewUserControl CreateContainer(IDisplayable displayable)
 		{
-			var item = CurrentItem[_detailName] as ContentItem;
-
+			var item = CurrentItem[propertyName] as ContentItem;
 			if (item != null)
-				return CreateContentItemContainer(item, display);
+                return CreateContentItemContainer(item, displayable);
 
-			var viewData = new ViewDataDictionary(display.CurrentItem);
+			var viewData = new ViewDataDictionary(CurrentItem);
 
 			var container = new ViewUserControl
 			                	{
 			                		Page = (ViewContext.View is Control) ? ((Control) ViewContext.View).Page : null,
 			                		ViewData = viewData,
 			                	};
-			display.Displayable.AddTo(display.CurrentItem, _detailName, container);
+			displayable.AddTo(CurrentItem, propertyName, container);
 
 			return container;
 		}
 
-		protected ViewUserControl CreateContentItemContainer(ContentItem item, Display display)
+        protected ViewUserControl CreateContentItemContainer(ContentItem item, IDisplayable displayable)
 		{
 			var userControl = new ViewUserControl();
 

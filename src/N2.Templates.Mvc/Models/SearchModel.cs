@@ -6,21 +6,12 @@ using N2.Web.UI;
 
 namespace N2.Templates.Mvc.Models
 {
-	public class SearchModel : IItemContainer<AbstractSearch>
+	public class SearchModel
 	{
-		public SearchModel(AbstractSearch currentItem, ICollection<ContentItem> results)
+		public SearchModel(ICollection<ContentItem> results)
 		{
-			CurrentItem = currentItem;
 			Results = results;
 		}
-
-		/// <summary>Gets the item associated with the item container.</summary>
-		ContentItem IItemContainer.CurrentItem
-		{
-			get { return CurrentItem; }
-		}
-
-		public AbstractSearch CurrentItem { get; private set; }
 
 		public ICollection<ContentItem> Results { get; private set; }
 

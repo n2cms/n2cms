@@ -1,10 +1,10 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewUserControl<Columns>" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<Columns>" %>
 
 <div class="uc columns cf">
 	<div class="left">
-		<%=this.DroppableZone(Zones.ColumnLeft).AllowExternalManipulation()%>
+		<% Html.DroppableZone(Zones.ColumnLeft).AllowExternalManipulation().Render();%>
 	</div>
 	<div class="right">
-		<%=this.DroppableZone(Zones.ColumnRight).AllowExternalManipulation()%>
+		<% Html.DroppableZone(Zones.ColumnRight).AllowExternalManipulation().Render();%>
 	</div>
 </div>

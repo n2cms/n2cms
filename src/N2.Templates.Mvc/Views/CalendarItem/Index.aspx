@@ -1,9 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" AutoEventWireup="true"
-	Inherits="N2.Web.Mvc.N2ViewPage<Event>" %>
+	Inherits="System.Web.Mvc.ViewPage<Event>" %>
 
 <asp:Content ID="cpc" ContentPlaceHolderID="TextContent" runat="server">
-	<%=this.EditableDisplay(m => m.Title)%>
-	<span class="date"><%= CurrentItem.EventDateString %></span>
-	<p class="introduction"><%=this.EditableDisplay(m => m.Introduction)%></p>
-	<%=this.EditableDisplay(m => m.Text)%>
+	<%= Html.Display(m => m.Title)%>
+	<%= Html.Display("EventDateString").WrapIn("span", new { @class = "date" }) %>
+	<%= Html.Display(m => m.Introduction).WrapIn("p", new { @class = "introduction" }) %>
+	<%= Html.Display(m => m.Text)%>
 </asp:Content>

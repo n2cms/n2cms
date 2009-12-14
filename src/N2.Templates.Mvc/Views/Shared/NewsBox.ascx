@@ -1,7 +1,8 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ViewUserControl<NewsList>" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<NewsList>" %>
 <%@ Import Namespace="N2.Templates.Mvc.Items.Pages"%>
 <%@ Import Namespace="N2.Templates.Mvc.Items.Items"%>
-<n2:EditableDisplay runat="server" PropertyName="Title" />
+
+<%= Html.Display(m => m.Title) %>
 <div class="box"><div class="inner">
 		<div class="sidelist">
 		<%

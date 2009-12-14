@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CalendarTeaser.ascx.cs"
 	Inherits="N2.Web.Mvc.N2ModelViewUserControl<CalendarTeaserModel, CalendarTeaser>" %>
 
-<%=this.EditableDisplay(m => m.Title)%>
+<%= ContentHtml.Display(m => m.Title)%>
 <div class="box calendarTeaser">
 	<div class="inner">
 		<%if (Model.Events.Count > 0){%>
