@@ -88,7 +88,7 @@ namespace N2.Web.Mvc.Html
 
             try
             {
-                var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, !swallowExceptions);
+                var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, swallowExceptions);
                 if (displayable == null) return;
 
                 var container = CreateContainer(displayable);

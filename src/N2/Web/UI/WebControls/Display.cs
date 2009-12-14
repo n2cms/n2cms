@@ -28,7 +28,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets the displayable attribute</summary>
 		public IDisplayable Displayable
 		{
-			get { return displayable ?? (displayable = GetDisplayableAttribute(PropertyName, CurrentItem, !SwallowExceptions)); }
+			get { return displayable ?? (displayable = GetDisplayableAttribute(PropertyName, CurrentItem, SwallowExceptions)); }
 		}
 
 		/// <summary>Gets the control responsible of displaying the detail.</summary>
@@ -131,33 +131,33 @@ namespace N2.Web.UI.WebControls
 		}
 
 
-		public static IDisplayable GetDisplayableAttribute(string propertyName, ContentItem item, bool showExceptions)
+        public static IDisplayable GetDisplayableAttribute(string propertyName, ContentItem item, bool swallowExceptions)
 		{
-            if (item == null && showExceptions)
+            if (item == null)
 			{
-				throw new ArgumentNullException("item");
+                return ThrowUnless(swallowExceptions, new ArgumentNullException("item"));
 			}
 
 			PropertyInfo pi = item.GetType().GetProperty(propertyName);
-            if (pi == null && showExceptions)
+            if (pi == null)
 			{
-                throw new N2Exception("No property '{0}' found on the item #{1} of type '{2}'.", propertyName, item.ID, item.GetType());
+                return ThrowUnless(swallowExceptions, new N2Exception("No property '{0}' found on the item #{1} of type '{2}'.", propertyName, item.ID, item.GetType()));
 			}
 			else
 			{
 				IDisplayable[] attributes = (IDisplayable[])pi.GetCustomAttributes(typeof(IDisplayable), false);
-                if (attributes.Length == 0 && showExceptions)
+                if (attributes.Length == 0)
 				{
-					throw new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, item.ID, item.GetType());
+                    return ThrowUnless(swallowExceptions, new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, item.ID, item.GetType()));
 				}
 				return attributes[0];
 			}
 		}
 
-		private T Throw<T>(Exception ex)
-			where T : class
+        private static IDisplayable ThrowUnless<T>(bool swallowExceptions, T ex)
+			where T : Exception
 		{
-			if (SwallowExceptions)
+            if (swallowExceptions)
 				return null;
 			throw ex;
 		}
