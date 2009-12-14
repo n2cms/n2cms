@@ -274,25 +274,24 @@ window.n2ddcp = new n2DragDrop();
 		/// <summary>Gets the url for editing the page directly.</summary>
 		public virtual string GetQuickEditUrl(string editParameter)
 		{
-            return Url.Parse(Request.RawUrl).SetQueryParameter("edit", editParameter);
+            return Url.Parse(Page.Request.RawUrl).SetQueryParameter("edit", editParameter);
 		}
 
 		#endregion
 
 		#region Static Methods
 
-		protected static HttpRequest Request
-		{
-			get { return HttpContext.Current.Request; }
-		}
-		protected static IPrincipal User
-		{
-			get { return HttpContext.Current.User; }
-		}
+        public static ControlPanelState GetState(Control control)
+        {
+            if (HttpContext.Current != null)
+                return GetState(control.Page.User, control.Page.Request.QueryString);
+
+            return ControlPanelState.Unknown;
+        }
 
 		public static ControlPanelState GetState(IPrincipal user, NameValueCollection queryString)
 		{
-			if (N2.Context.SecurityManager.IsEditor(User))
+			if (N2.Context.SecurityManager.IsEditor(user))
 			{
                 if (queryString["edit"] == "true")
 					return ControlPanelState.Editing;

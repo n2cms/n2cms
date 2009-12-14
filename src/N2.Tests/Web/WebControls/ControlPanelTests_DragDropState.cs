@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Xml.Linq;
 using N2.Web.UI.WebControls;
 using NUnit.Framework;
+using System.Web;
 
 namespace N2.Tests.Web.WebControls
 {
@@ -20,12 +21,9 @@ namespace N2.Tests.Web.WebControls
 		{
 			N2.Context.Current.Definitions.GetDefinitions();
 
-			Zone z = new DroppableZone();
+            Zone z = new DroppableZone().AddedToFakePage(HttpContext.Current);
 			z.CurrentItem = page;
 			z.ZoneName = ZoneName;
-
-			Page p = new Page();
-			p.Controls.Add(z);
 
 			z.EnsureChildControls();
 

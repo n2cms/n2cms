@@ -30,7 +30,7 @@ namespace N2.Web.UI.WebControls
 
     	protected override void CreateItems(Control container)
 		{
-            state = ControlPanel.GetState(Page.User, Page.Request.QueryString);
+            state = ControlPanel.GetState(Page);
             if (state == ControlPanelState.DragDrop && (AllowExternalManipulation || CurrentItem == CurrentPage))
 			{
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
@@ -116,22 +116,5 @@ namespace N2.Web.UI.WebControls
 			}
 			return string.Join(",", allowedDefinitions.ToArray());
 		}
-
-        private void RegisterArray(string arrayName, string arrayValue)
-        {
-            ControlPanel.RegisterArrayValue(Page, arrayName, arrayValue);
-        }
-
-        private void RegisterArray(string arrayName, string arrayValueFormat, params object[] values)
-        {
-            RegisterArray(arrayName, string.Format(arrayValueFormat, values));
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            base.Render(writer);
-
-
-        }
 	}
 }

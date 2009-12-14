@@ -5,6 +5,8 @@ using N2.Engine;
 using N2.Tests.Web.Items;
 using NUnit.Framework;
 using System.Configuration;
+using System.Collections;
+using System;
 
 namespace N2.Tests.Web.WebControls
 {
@@ -35,8 +37,11 @@ namespace N2.Tests.Web.WebControls
 		protected void Initialize(string queryString)
 		{
 			var request = new HttpRequest("/default.aspx", "http://localhost/", queryString);
-			request.Browser = new HttpBrowserCapabilities();
-			var response = new HttpResponse(new StringWriter(new StringBuilder()));
+            request.Browser = new HttpBrowserCapabilities();
+            request.Browser.Capabilities = new Hashtable();
+            request.Browser.Capabilities["ecmascriptversion"] = "1.7";
+            request.Browser.Capabilities["w3cdomversion"] = "1.7";
+            var response = new HttpResponse(new StringWriter(new StringBuilder()));
 			HttpContext.Current = new HttpContext(request, response)
 			{
 				ApplicationInstance = new HttpApplication(), 
