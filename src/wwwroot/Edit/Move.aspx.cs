@@ -14,13 +14,15 @@ namespace N2.Edit
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			if (!IsPostBack)
+            btnCancel.NavigateUrl = Selection.SelectedItem.FindPath(PathData.DefaultAction).RewrittenUrl;
+            
+            if (!IsPostBack)
 			{
+                pnlNewName.Visible = false;
+                ContentItem toMove = Selection.MemorizedItem;
+
                 try
                 {
-					pnlNewName.Visible = false;
-                    ContentItem toMove = MemorizedItem;
-
                 	EnsureAuthorization(Permission.Write);
 					EnsureAuthorization(toMove, Permission.Write);
 
@@ -53,39 +55,39 @@ namespace N2.Edit
                     SetErrorMessage(cvMove, ex);
                 }
 
-				if(MemorizedItem != null)
-					LoadDefaultsAndInfo();
+				if(toMove != null)
+                    LoadDefaultsAndInfo(toMove, Selection.SelectedItem);
 			}
 		}
 
-		private void LoadDefaultsAndInfo()
+		private void LoadDefaultsAndInfo(ContentItem moved, ContentItem destination)
 		{
-            btnCancel.NavigateUrl = Selection.MemorizedItem.Url;
-            txtNewName.Text = Selection.MemorizedItem.Name;
+            txtNewName.Text = moved.Name;
 
-			Title = string.Format(GetLocalResourceString("MovePage.TitleFormat"),
-                                  Selection.MemorizedItem.Title,
-                                  Selection.SelectedItem.Title);
+            Title = string.Format(GetLocalResourceString("MovePage.TitleFormat"),
+                                  moved.Title,
+                                  destination.Title);
 
-			from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
-                                      Selection.MemorizedItem.Parent != null ? Selection.MemorizedItem.Parent.Path : "",
-                                      Selection.MemorizedItem.Path);
+            from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
+                                      moved.Parent != null ? moved.Parent.Path : "",
+                                      moved.Path);
 
-			to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
-                                    Selection.SelectedItem.Path,
-                                    Selection.MemorizedItem.Name);
+            to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
+                                    destination.Path,
+                                    moved.Name);
 
-            itemsToMove.CurrentItem = Selection.MemorizedItem;
-			itemsToMove.DataBind();
+            itemsToMove.CurrentItem = moved;
+            itemsToMove.DataBind();
 		}
 
 		protected void OnMoveClick(object sender, EventArgs e)
 		{
 			try
 			{
-				MemorizedItem.Name = txtNewName.Text;
-                Engine.Persister.Move(Selection.MemorizedItem, Selection.SelectedItem);
-                Refresh(Selection.MemorizedItem, ToolbarArea.Both);
+                var movedItem = Selection.MemorizedItem;
+                movedItem.Name = txtNewName.Text;
+                Engine.Persister.Move(movedItem, Selection.SelectedItem);
+                Refresh(movedItem, ToolbarArea.Both);
 			}
 			catch (NameOccupiedException ex)
 			{

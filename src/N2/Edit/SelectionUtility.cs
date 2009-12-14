@@ -26,18 +26,23 @@ namespace N2.Edit
         /// <summary>The selected item.</summary>
         public ContentItem SelectedItem
         {
-            get { return selectedItem ?? (selectedItem = GetFromUrl() ?? engine.UrlParser.StartPage); }
+            get { return selectedItem ?? (selectedItem = GetSelectionFromUrl() ?? engine.UrlParser.StartPage); }
             set { selectedItem = value; }
         }
 
         /// <summary>The item placed in memory.</summary>
         public ContentItem MemorizedItem
         {
-            get { return memorizedItem ?? (memorizedItem = engine.Resolve<Navigator>().Navigate(container.Page.Request.QueryString["memory"])); }
+            get { return memorizedItem ?? (memorizedItem = GetMemoryFromUrl()); }
             set { memorizedItem = value; }
         }
 
-        private ContentItem GetFromUrl()
+        private ContentItem GetMemoryFromUrl()
+        {
+            return engine.Resolve<Navigator>().Navigate(container.Page.Request["memory"]);
+        }
+
+        private ContentItem GetSelectionFromUrl()
         {
             string selected = container.Page.Request["selected"];
             if (!string.IsNullOrEmpty(selected))

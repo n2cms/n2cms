@@ -43,7 +43,6 @@ namespace N2.Edit
 
 		private void LoadDefaultsAndInfo()
 		{
-            btnCancel.NavigateUrl = Selection.SelectedItem.FindPath(PathData.DefaultAction).RewrittenUrl;
 			txtNewName.Text = MemorizedItem.Name;
 
 			this.Title = string.Format(GetLocalResourceString("CopyPage.TitleFormat"),

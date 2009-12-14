@@ -15,9 +15,6 @@ namespace N2.Edit.Web
 	/// </summary>
     public class EditPage : Page
     {
-		private ContentItem selectedItem;
-		private ContentItem memorizedItem = null;
-
 		public EditPage()
 		{
 			PreInit += EditPage_PreInit;
@@ -336,7 +333,7 @@ if(window.n2ctx){{
         [Obsolete("Use Selection.MemorizedItem")]
         protected ContentItem MemorizedItem
 		{
-			get { return memorizedItem ?? (memorizedItem = Engine.Resolve<Navigator>().Navigate(Request.QueryString["memory"])); }
+            get { return Selection.MemorizedItem; }
 		}
 
 		#endregion

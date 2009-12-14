@@ -31,8 +31,7 @@ namespace N2.Edit
 		Navigation = 1,
 		/// <summary>The far right area above the preview area.</summary>
 		Preview = 2,
-		/// <summary>Both panes. OBSOLETE.</summary>
-		[Obsolete("This option will be removed in a subsequent release.")]
+		/// <summary>Both panes. Used when referencing multiple panes in user interfaces.</summary>
 		Both = 3,
 		/// <summary>
 		/// The central area above the preview area
