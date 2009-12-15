@@ -13,7 +13,8 @@
         input{vertical-align:middle;margin-bottom:5px;}
         ul,li{margin-top:0;margin-bottom:0;}
         textarea{height:55px;width:70%;background-color:salmon;border:none;font-size:11px}
-        .defs td{font-size:.75em;vertical-align:top;text-alignment:left;border:solid 1px silver;}
+        .t thead td{ font-weight:bold; background-color:#eee;}
+        .t td{font-size:.75em;vertical-align:top;text-alignment:left;border:solid 1px silver; padding:1px;}
         .EnabledFalse { color:#999; }
         .IsDefinedFalse { color:Red; }
     </style>
@@ -87,7 +88,7 @@
             <i>These settings are generated at application start from attributes in the project source code.</i>
             <asp:Repeater ID="rptDefinitions" runat="server">
                 <HeaderTemplate>
-					<table class="defs">
+					<table class="t">
 						<thead>
 							<tr>
 								<td colspan="2">Definition</td>
@@ -147,6 +148,14 @@
 				</FooterTemplate>
             </asp:Repeater>
             <asp:Label ID="lblDefinitions" runat="server" />
+            
+            <h2>Assemblies</h2>
+            <asp:Repeater ID="rptAssembly" runat="server">
+                <HeaderTemplate><table class="t"><thead><tr><td>Assembly</td></tr></thead><tbody></HeaderTemplate>
+                <ItemTemplate><tr><td><%# Eval("FullName") %></td></tr></ItemTemplate>
+                <FooterTemplate></tbody></table></FooterTemplate>
+            </asp:Repeater>
+            <asp:Label ID="lblAssemblies" runat="server" />
         </div>
     </form>
 </body>

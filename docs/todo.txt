@@ -12,7 +12,7 @@
 - mvc templates
 	- 960 grid?
 	- globalization
-	- drag'n'drop
+	- areas (mvc2)
 - update data model
 	- reference to start page
 	- valid until
@@ -20,6 +20,7 @@
 	- split pages and parts
 	- remove authorized roles
 	- sort order on details
+- fix future publish
 - allow custom user type
 - make all objects editable
 - deprecate and replace mail stuff

@@ -1,4 +1,5 @@
-﻿- refactored mvc extensions & templates
+﻿- updated nhibernate to 2.1.2
+- refactored mvc extensions & templates
 	- display & zone extensions into html helpers (use Html.Display, Html.Zone, etc. instead of this.Display, this.Zone)
 	- obsoleted N2ViewPage/UserControl/MasterPage (use classes in mvc)
 	- refactored N2ModelViewPage/UserControl into ContentViewPage/UserControl with:

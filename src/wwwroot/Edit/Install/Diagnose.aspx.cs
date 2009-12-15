@@ -16,6 +16,7 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Installation;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Edit.Install
 {
@@ -73,6 +74,16 @@ namespace N2.Edit.Install
 			{
 				lblDefinitions.Text = formatException(ex);
 			}
+
+            try
+            {
+                rptAssembly.DataSource = N2.Context.Current.Resolve<ITypeFinder>().GetAssemblies();
+                rptAssembly.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblAssemblies.Text = formatException(ex);
+            }
 		}
 
 		private void ShowLastError()
