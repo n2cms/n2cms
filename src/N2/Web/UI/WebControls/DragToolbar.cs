@@ -43,38 +43,8 @@ namespace N2.Web.UI.WebControls
 
             if (ControlPanel.GetState(Page.User, Page.Request.QueryString) == ControlPanelState.DragDrop)
 			{
-                WriteTitleBar(writer, e.EditManager, Definition, CurrentItem);
+                PartUtilities.WriteTitleBar(writer, e.EditManager, Definition, CurrentItem);
 			}
 		}
-
-        public static void WriteTitleBar(TextWriter writer, IEditManager editManager, ItemDefinition definition, ContentItem item)
-        {
-            writer.Write("<div class='titleBar ");
-            writer.Write(definition.Discriminator);
-            writer.Write("'>");
-
-            var returnUrl = Url.Parse(editManager.GetPreviewUrl(item)).AppendQuery("edit", "drag");
-            WriteCommand(writer, "Edit part", "command edit", Url.Parse(editManager.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
-            WriteCommand(writer, "Delete part", "command delete", Url.Parse(editManager.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
-            WriteTitle(writer, definition);
-
-            writer.Write("</div>");
-        }
-
-        protected static void WriteCommand(TextWriter writer, string title, string @class, string url)
-        {
-            writer.Write("<a title='" + title + "' class='" + @class + "' href='");
-            writer.Write(url);
-            writer.Write("'></a>");
-        }
-
-        protected static void WriteTitle(TextWriter writer, ItemDefinition definition)
-        {
-            writer.Write("<span class='title' style='background-image:url(");
-            writer.Write(Url.ToAbsolute(definition.IconUrl));
-            writer.Write(");'>");
-            writer.Write(definition.Title);
-            writer.Write("</span>");
-        }
 	}
 }

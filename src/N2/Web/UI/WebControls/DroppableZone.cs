@@ -36,9 +36,9 @@ namespace N2.Web.UI.WebControls
 				if (ZoneName.IndexOfAny(new[] {'.', ',', ' ', '\'', '"', '\t', '\r', '\n'}) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
                 Panel zoneContainer = AddPanel(this, ZoneName + " dropZone");
-                zoneContainer.Attributes["item"] = CurrentItem.Path;
-                zoneContainer.Attributes["zone"] = ZoneName;
-                zoneContainer.Attributes["allowed"] = GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Page.User));
+                zoneContainer.Attributes[PartUtilities.PathAttribute] = CurrentItem.Path;
+                zoneContainer.Attributes[PartUtilities.ZoneAttribute] = ZoneName;
+                zoneContainer.Attributes[PartUtilities.AllowedAttribute] = PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Page.User));
                 zoneContainer.ToolTip = GetToolTip(GetDefinition(CurrentItem), ZoneName);
                 base.CreateItems(zoneContainer);
 			}
@@ -54,8 +54,8 @@ namespace N2.Web.UI.WebControls
 			{
 				ItemDefinition definition = GetDefinition(item);
 				Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
-                itemContainer.Attributes["item"] = item.Path;
-                itemContainer.Attributes["type"] = definition.Discriminator;
+                itemContainer.Attributes[PartUtilities.PathAttribute] = item.Path;
+                itemContainer.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
 				Control toolbar = AddToolbar(itemContainer, item, definition);
 				base.AddChildItem(itemContainer, item);
 			}
@@ -105,16 +105,6 @@ namespace N2.Web.UI.WebControls
 			p.CssClass = className;
 			container.Controls.Add(p);
 			return p;
-		}
-
-		public static string GetAllowedNames(string zoneName, IEnumerable<ItemDefinition> definitions)
-		{
-			List<string> allowedDefinitions = new List<string>();
-			foreach (ItemDefinition potentialChild in definitions)
-			{
-				allowedDefinitions.Add(potentialChild.Discriminator);
-			}
-			return string.Join(",", allowedDefinitions.ToArray());
 		}
 	}
 }

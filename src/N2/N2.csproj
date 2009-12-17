@@ -573,6 +573,7 @@
     <Compile Include="Web\UI\ContentUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\UI\PartUtilities.cs" />
     <Compile Include="Web\UI\WebControls\A.cs" />
     <Compile Include="Web\UI\WebControls\OptionsMenu.cs" />
     <Compile Include="Web\UI\WebControls\RawUrlForm.cs" />

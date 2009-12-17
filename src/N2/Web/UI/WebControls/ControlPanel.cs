@@ -173,7 +173,7 @@ namespace N2.Web.UI.WebControls
 				HtmlGenericControl div = new HtmlGenericControl("div");
 				div.Attributes["title"] = definition.ToolTip;
                 div.Attributes["id"] = definition.Discriminator;
-                div.Attributes["type"] = definition.Discriminator;
+                div.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
                 div.Attributes["class"] = "definition " + definition.Discriminator;
 				div.InnerHtml = FormatImageAndText(Url.ToAbsolute(definition.IconUrl), definition.Title);
 				definitions.Controls.Add(div);

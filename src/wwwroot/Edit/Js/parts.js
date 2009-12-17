@@ -48,11 +48,11 @@
         },
 
         makeDropPoints: function(dragged) {
-            var type = $(dragged).addClass("dragged").attr("type");
+            var type = $(dragged).addClass("dragged").attr("data-type");
 
             $(".dropZone").each(function() {
                 var zone = this;
-                var allowed = $(zone).attr("allowed") + ",";
+                var allowed = $(zone).attr("data-allowed") + ",";
                 var title = $(zone).attr("title");
                 if (allowed.indexOf(type + ",") >= 0) {
                     $(zone).append("<div class='dropPoint below'/>");
@@ -100,11 +100,11 @@
 
                 var data = {
                     ctrlKey: e.ctrlKey,
-                    item: $draggable.attr("item"),
-                    discriminator: $draggable.attr("type"),
-                    before: $droppable.filter(".before").next().attr("item") || "",
-                    below: $droppable.closest(".dropZone").attr("item"),
-                    zone: $droppable.closest(".dropZone").attr("zone"),
+                    item: $draggable.attr("data-item"),
+                    discriminator: $draggable.attr("data-type"),
+                    before: $droppable.filter(".before").next().attr("data-item") || "",
+                    below: $droppable.closest(".dropZone").attr("data-item"),
+                    zone: $droppable.closest(".dropZone").attr("data-zone"),
                     returnUrl: window.location.href,
                     dropped: true
                 };
@@ -127,7 +127,7 @@
             handler.makeDroppable();
 
             dragged.dropHandler = function(ctrl) {
-                var id = $(this).attr("item");
+                var id = $(this).attr("data-item");
                 if (!id)
                     t.createIn(s.id, d);
                 else if (ctrl)
