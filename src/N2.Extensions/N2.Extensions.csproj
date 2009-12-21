@@ -121,6 +121,7 @@
     <Compile Include="Web\Mvc\ItemExtractor.cs" />
     <Compile Include="Web\Mvc\MvcEngine.cs" />
     <Compile Include="Web\Mvc\MvcConventionTemplateAttribute.cs" />
+    <Compile Include="Web\Mvc\MvcPathData.cs" />
     <Compile Include="Web\Mvc\N2ControllerFactory.cs" />
     <Compile Include="Web\Mvc\N2ViewEngine.cs" />
     <Compile Include="Web\Mvc\FallbackContentController.cs" />

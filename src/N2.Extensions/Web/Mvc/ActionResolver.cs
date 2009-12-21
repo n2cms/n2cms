@@ -60,26 +60,4 @@ namespace N2.Web.Mvc
 			return templateUrl;
 		}
 	}
-
-	public class MvcPathData : PathData
-	{
-		private readonly string _controllerName;
-
-		public MvcPathData(ContentItem item, string templateUrl, string action, string arguments, string controllerName)
-			: base(item, templateUrl, action, arguments)
-		{
-			_controllerName = controllerName;
-		}
-
-		public override Url RewrittenUrl
-		{
-			get
-			{
-				if (Action.ToLowerInvariant() == "index")
-					return "~/" + _controllerName;
-
-				return String.Format("~/{0}/{1}", _controllerName, Action);
-			}
-		}
-	}
 }
