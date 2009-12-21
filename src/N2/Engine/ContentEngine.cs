@@ -12,6 +12,7 @@
 
 using System;
 using System.Configuration;
+using System.Runtime.Serialization;
 using Castle.Windsor;
 using N2.Configuration;
 using N2.Definitions;
@@ -136,9 +137,18 @@ namespace N2.Engine
 			foreach (ComponentElement component in engineConfig.Components)
 			{
 				Type implementation = Type.GetType(component.Implementation);
-				Type service = Type.GetType(component.Service) ?? implementation;
-				if (service != null)
-					container.AddComponent(service.FullName, service, implementation);
+				Type service = Type.GetType(component.Service);
+
+				if (implementation == null)
+					throw new ComponentRegistrationException(component.Implementation);
+
+				if (service == null && !String.IsNullOrEmpty(component.Service))
+					throw new ComponentRegistrationException(component.Service);
+
+				if(service == null)
+					service = implementation;
+				
+				container.AddComponent(service.FullName, service, implementation);
 			}
 		}
 
@@ -302,5 +312,20 @@ namespace N2.Engine
 		}
 
 		#endregion
+	}
+
+	[Serializable]
+	public class ComponentRegistrationException : Exception
+	{
+		public ComponentRegistrationException(string serviceName)
+			: base(String.Format("Component {0} could not be found but is registered in the n2/engine/components section", serviceName))
+		{
+		}
+
+		protected ComponentRegistrationException(
+			SerializationInfo info,
+			StreamingContext context) : base(info, context)
+		{
+		}
 	}
 }
