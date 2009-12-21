@@ -280,6 +280,8 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Configuration\ComponentParameterCollection.cs" />
+    <Compile Include="Configuration\ComponentParameterElement.cs" />
     <Compile Include="Configuration\PermissionElement.cs" />
     <Compile Include="Configuration\VersionsElement.cs" />
     <Compile Include="Configuration\VirtualPathCollection.cs" />
@@ -377,6 +379,7 @@
     <Compile Include="Edit\Trash\TrashPurgeInterval.cs" />
     <Compile Include="Edit\ValidationError.cs" />
     <Compile Include="Engine\AsyncWorker.cs" />
+    <Compile Include="Engine\ComponentRegistrationException.cs" />
     <Compile Include="Engine\IServiceContainer.cs" />
     <Compile Include="Engine\IWorker.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />

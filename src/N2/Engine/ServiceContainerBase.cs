@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using N2.Configuration;
 
 namespace N2.Engine
@@ -12,6 +13,7 @@ namespace N2.Engine
 
 		public abstract void AddFacility(string key, object facility);
 		public abstract void AddComponent(string key, Type serviceType, Type classType);
+		public abstract void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties1);
 		public abstract void AddComponentInstance(string key, Type serviceType, object instance);
 		public abstract void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle);
 		public abstract object Resolve(Type type);

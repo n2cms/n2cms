@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace N2.Configuration
 {
@@ -22,5 +23,13 @@ namespace N2.Configuration
             get { return (string)base["implementation"]; }
             set { base["implementation"] = value; }
         }
+
+		/// <summary>A collection of properties (eg configuration values) that should be registered with the service and used for its instantiation</summary>
+		[ConfigurationProperty("parameters")]
+		public ComponentParameterCollection Parameters
+		{
+			get { return (ComponentParameterCollection)base["parameters"]; }
+			set { base["parameters"] = value; }
+		}
     }
 }

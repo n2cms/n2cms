@@ -135,7 +135,7 @@ namespace N2.Persistence
 		/// <summary>Retrieves all versions of an item including the master version.</summary>
 		/// <param name="publishedItem">The item whose versions to get.</param>
 		/// <returns>A list of versions of the item.</returns>
-		public IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
+		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
 		{
 			return GetVersionsQuery(publishedItem)
 				.Select();
@@ -145,7 +145,7 @@ namespace N2.Persistence
 		/// <param name="publishedItem">The item whose versions to get.</param>
 		/// <param name="count">The number of versions to get.</param>
 		/// <returns>A list of versions of the item.</returns>
-		public IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count)
+		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count)
 		{
 			return GetVersionsQuery(publishedItem)
 				.MaxResults(count)
@@ -159,7 +159,7 @@ namespace N2.Persistence
 				.OrderBy.VersionIndex.Desc;
 		}
 
-		public void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions)
+		public virtual void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions)
 		{
 			if (maximumNumberOfVersions < 0) throw new ArgumentOutOfRangeException("maximumNumberOfVersions");
 			if (maximumNumberOfVersions == 0) return;

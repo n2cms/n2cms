@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
 using Castle.Core;
 using Castle.Core.Resource;
 using Castle.Facilities.Startable;
 using Castle.MicroKernel;
+using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
 using Castle.Windsor.Installer;
@@ -49,6 +52,19 @@ namespace N2.Engine
 			                              	: LifestyleType.Transient;
 
 			container.AddComponentLifeStyle(key, type, lifeStyleType);
+		}
+
+		public override void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties)
+		{
+			var registration = Component.For(serviceType)
+				.ImplementedBy(classType);
+
+			foreach(var keyValue in properties)
+			{
+				registration.Parameters(Parameter.ForKey(keyValue.Key).Eq(keyValue.Value));
+			}
+
+			container.Register(registration);
 		}
 
 		public override void AddComponentInstance(string key, Type type, object instance)

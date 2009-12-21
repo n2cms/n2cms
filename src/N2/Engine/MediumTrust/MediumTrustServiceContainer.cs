@@ -51,6 +51,11 @@ namespace N2.Engine.MediumTrust
 			}
 		}
 
+		public override void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties)
+		{
+			throw new NotImplementedException();
+		}
+
 		public override void AddComponentInstance(string key, Type serviceType, object instance)
 		{
 			if (resolvers.ContainsKey(serviceType))

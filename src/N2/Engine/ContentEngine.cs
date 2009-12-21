@@ -12,7 +12,6 @@
 
 using System;
 using System.Configuration;
-using System.Runtime.Serialization;
 using Castle.Windsor;
 using N2.Configuration;
 using N2.Definitions;
@@ -147,8 +146,16 @@ namespace N2.Engine
 
 				if(service == null)
 					service = implementation;
-				
-				container.AddComponent(service.FullName, service, implementation);
+
+				if (component.Parameters.Count == 0)
+				{
+					container.AddComponent(service.FullName, service, implementation);
+				}
+				else
+				{
+					container.AddComponentWithParameters(service.FullName, service, implementation,
+														 component.Parameters.ToDictionary());
+				}
 			}
 		}
 
@@ -312,20 +319,5 @@ namespace N2.Engine
 		}
 
 		#endregion
-	}
-
-	[Serializable]
-	public class ComponentRegistrationException : Exception
-	{
-		public ComponentRegistrationException(string serviceName)
-			: base(String.Format("Component {0} could not be found but is registered in the n2/engine/components section", serviceName))
-		{
-		}
-
-		protected ComponentRegistrationException(
-			SerializationInfo info,
-			StreamingContext context) : base(info, context)
-		{
-		}
 	}
 }

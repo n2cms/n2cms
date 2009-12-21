@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using N2.Configuration;
 using N2.Plugin;
 
@@ -23,7 +24,7 @@ namespace N2.Engine
 		/// <param name="classType"></param>
 		void AddComponent(string key, Type serviceType, Type classType);
 		/// <summary>
-		/// Adds the specified instance to the container as for the given service
+		/// Registers the specified instance to the container as for the given service
 		/// </summary>
 		/// <param name="key"></param>
 		/// <param name="serviceType"></param>
@@ -36,6 +37,15 @@ namespace N2.Engine
 		/// <param name="serviceType"></param>
 		/// <param name="lifeStyle"></param>
 		void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle);
+		/// <summary>
+		/// Registers the service of the specified type with the container, giving a number of properties for use during instantiation.
+		/// </summary>
+		/// <param name="key"></param>
+		/// <param name="serviceType"></param>
+		/// <param name="classType"></param>
+		/// <param name="properties"></param>
+		void AddComponentWithParameters(string key, Type serviceType, Type classType,
+														IDictionary<string, string> properties);
 		/// <summary>
 		/// Returns the first registered service of the given type
 		/// </summary>
