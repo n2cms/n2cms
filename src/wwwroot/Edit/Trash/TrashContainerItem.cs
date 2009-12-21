@@ -40,7 +40,12 @@ namespace N2.Edit.Trash
 
 		public override string Url
 		{
-			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
+			get
+			{
+			    var url = new Url(Context.Current.EditManager.GetEditInterfaceUrl());
+				
+			    return url.AppendSegment("Trash/default.aspx").AppendQuery( PathData.PageQueryKey, ID);
+			}
 		}
 
 		public override string IconUrl
