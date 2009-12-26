@@ -1,3 +1,5 @@
+- Parts/Pages
+- ShowTitle mvc
 - refactor state to use new concepts
 	- TreePosition
 		- MoveToLocation

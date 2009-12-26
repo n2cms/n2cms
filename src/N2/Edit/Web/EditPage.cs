@@ -78,7 +78,9 @@ namespace N2.Edit.Web
 
 		protected virtual string CancelUrl()
         {
-            return Request["returnUrl"] ?? (Selection.SelectedItem.VersionOf ?? SelectedNode).PreviewUrl;
+            if(!string.IsNullOrEmpty(Request["returnUrl"]))
+                return Request["returnUrl"];
+            return Engine.EditManager.GetPreviewUrl(Selection.SelectedItem.VersionOf ?? Selection.SelectedItem);
         }
 
 		/// <summary>Checks that the user has the required permission on the given item. Throws exceptions if authorization is missing.</summary>

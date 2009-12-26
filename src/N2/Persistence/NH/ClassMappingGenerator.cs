@@ -5,6 +5,7 @@ using System.Text;
 using N2.Definitions;
 using System.Reflection;
 using N2.Persistence;
+using System.Diagnostics;
 
 namespace N2.Persistence.NH
 {
@@ -13,25 +14,38 @@ namespace N2.Persistence.NH
     /// </summary>
     public class ClassMappingGenerator
     {
-        readonly IDefinitionManager definitions;
         private string classFormat = @"<subclass name=""{0}"" extends=""{1}"" discriminator-value=""{2}"" lazy=""false"">{3}</subclass>";
 
-        public ClassMappingGenerator(IDefinitionManager definitions)
+        /// <summary>Gets the mapping xml for a type</summary>
+        /// <param name="definition">The type to generate mapping for</param>
+        /// <param name="allDefinitions">All definitions in the system.</param>
+        /// <returns>An xml string</returns>
+        public virtual string GetMapping(ItemDefinition definition, ICollection<ItemDefinition> allDefinitions)
         {
-            this.definitions = definitions;
+            string typeName = GetName(definition.ItemType);
+            string discriminator = GetDiscriminator(definition);
+            string parentName = GetParent(definition, allDefinitions);
+            string properties = GetProperties(definition.ItemType);
+
+            Trace.WriteLine("Generating mapping for {type = " + definition.ItemType + ", discriminator=" + discriminator + ", parent: " + parentName + ", properties: " + properties.Length + "}");
+            return string.Format(classFormat, typeName, parentName, discriminator, properties);
         }
 
-        /// <summary>Gets the mapping xml for a type</summary>
-        /// <param name="type">The type to generate mapping for</param>
-        /// <returns>An xml string</returns>
-        public virtual string GetMapping(Type type)
+        private string GetParent(ItemDefinition currentDefinition, ICollection<ItemDefinition> allDefinitions)
         {
-            string typeName = GetName(type);
-            string discriminator = GetDiscriminator(type);
-            string parentName = GetName(GetFirstSuitableBaseType(type.BaseType));
-            string properties = GetProperties(type);
-
-            return string.Format(classFormat, typeName, parentName, discriminator, properties);
+            // try to find a defined item in the type tree
+            foreach (var baseType in Utility.GetBaseTypes(currentDefinition.ItemType))
+            {
+                foreach (var definition in allDefinitions)
+                {
+                    if (definition.ItemType == baseType)
+                    {
+                        return GetName(baseType);
+                    }
+                }
+            }
+            // or revert to content item
+            return GetName(typeof(ContentItem));
         }
 
         private string GetProperties(Type attributedType)
@@ -62,13 +76,12 @@ namespace N2.Persistence.NH
             return itemType;
         }
 
-        private string GetDiscriminator(Type itemType)
+        private string GetDiscriminator(ItemDefinition definition)
         {
-            ItemDefinition definition = definitions.GetDefinition(itemType);
             if (definition != null)
                 return definition.Discriminator;
             else
-                return itemType.Name;
+                return definition.ItemType.Name;
         }
     }
 

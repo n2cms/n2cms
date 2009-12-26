@@ -35,11 +35,6 @@ namespace N2.Edit
 
 		protected override void OnInit(EventArgs e)
 		{
-            if (Request["cancel"] == "reloadTop")
-                hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
-            else
-                hlCancel.NavigateUrl = CancelUrl();
-
 			if(Request["refresh"] == "true")
                 Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
 
@@ -52,6 +47,11 @@ namespace N2.Edit
 
 		private void InitButtons()
 		{
+            if (Request["cancel"] == "reloadTop")
+                hlCancel.NavigateUrl = "javascript:window.top.location.reload();";
+            else
+                hlCancel.NavigateUrl = CancelUrl();
+
             bool isPublicableByUser = Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
             bool isVersionable = ie.CurrentItem.GetType().GetCustomAttributes(typeof(NotVersionableAttribute), true).Length == 0;
             bool isWritableByUser = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);

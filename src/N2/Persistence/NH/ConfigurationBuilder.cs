@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
+using System.Linq;
+using N2.Configuration;
 using N2.Definitions;
 using NHibernate;
 using NHibernate.Mapping;
-using N2.Configuration;
-using System.Configuration;
-using System.Text;
 
 namespace N2.Persistence.NH
 {
@@ -257,59 +258,46 @@ namespace N2.Persistence.NH
 			return a.GetManifestResourceStream(pathAssemblyPair[0]);
 		}
 
-		private IEnumerable<Type> EnumerateDefinedTypes()
-        {
-            List<Type> types = new List<Type>();
-            foreach (ItemDefinition definition in definitions.GetDefinitions())
-            {
-                foreach (Type t in EnumerateBaseTypes(definition.ItemType))
-                {
-                    if (t.IsSubclassOf(typeof(ContentItem)) && !types.Contains(t))
-                    {
-                        int index = types.IndexOf(t.BaseType);
-                        types.Insert(index + 1, t);
-                    }
-                }
-            }
-            return types;
-        }
-
 		/// <summary>Generates subclasses nhibernate xml configuration as an alternative to NHibernate definition file and adds them to the configuration.</summary>
 		/// <param name="cfg">The nhibernate configuration to build.</param>
 		protected virtual void GenerateMappings(NHibernate.Cfg.Configuration cfg)
 		{
             Debug.Write("Adding");
             StringBuilder mappings = new StringBuilder(mappingStartTag);
-            foreach (Type t in EnumerateDefinedTypes())
+            List<ItemDefinition> allDefinitions = definitions.GetDefinitions()
+                .OrderBy(d => Utility.GetBaseTypes(d.ItemType).Count()) // order by inheritance depth so that nh doesn't puke on yet unmapped classes
+                .ToList();
+
+            foreach (ItemDefinition definition in allDefinitions)
             {
-                if (GeneratorHelper.IsUnsuiteableForMapping(t))
+                if (GeneratorHelper.IsUnsuiteableForMapping(definition.ItemType))
 					continue;
             	
-                if (!TryLocatingHbmResources)
+                if (!AddedMappingFromHbmResource(definition, cfg))
                 {
-                    AddGeneratedClassMapping(mappings, t);
+                    string classMapping = generator.GetMapping(definition, allDefinitions);
+                    mappings.Append(classMapping);
                 }
-                else
-                {
-                    Stream hbmXmlStream = t.Assembly.GetManifestResourceStream(t.FullName + ".hbm.xml");
-                    if (hbmXmlStream == null)
-                    {
-                        AddGeneratedClassMapping(mappings, t);
-                    }
-                    else
-                    {
-                        using (hbmXmlStream)
-                        {
-                            cfg.AddInputStream(hbmXmlStream);
-                        }
-                    }
-                }
-
-                Debug.Write(" " + t.Name);
             }
             mappings.Append(mappingEndTag);
             cfg.AddXml(FormatMapping(mappings.ToString()));
 		}
+
+        private bool AddedMappingFromHbmResource(ItemDefinition definition, NHibernate.Cfg.Configuration cfg)
+        {
+            if (!TryLocatingHbmResources)
+                return false;
+
+            Stream hbmXmlStream = definition.ItemType.Assembly.GetManifestResourceStream(definition.ItemType.FullName + ".hbm.xml");
+            if (hbmXmlStream == null)
+                return false;
+            
+            using (hbmXmlStream)
+            {
+                cfg.AddInputStream(hbmXmlStream);
+                return true;
+            }
+        }
 
 		/// <summary>Enumerates base type chain of the supplied type.</summary>
 		/// <param name="t">The type whose base types will be enumerated.</param>
@@ -362,14 +350,6 @@ namespace N2.Persistence.NH
 					return true;
 			return false;
 		}
-
-		/// <summary>Generates the configuration xml for a subclass without any properties and adds it to the NHibernate configuration.</summary>
-		/// <param name="mappings">The current nhhibernate configuration xml.</param>
-		/// <param name="itemType">The type to to generate a subclassed NHibernate hbm xml for.</param>
-		protected virtual void AddGeneratedClassMapping(StringBuilder mappings, Type itemType)
-		{
-            mappings.Append(generator.GetMapping(itemType));
-        }
 
 		#endregion
 	}

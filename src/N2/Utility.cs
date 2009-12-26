@@ -397,7 +397,22 @@ namespace N2
 
 			string ancestralTrail = item.AncestralTrail ?? GetTrail(item.Parent);
 			return ancestralTrail + item.ID + "/";
-		}
+        }
+
+        /// <summary>Gets the base types of a given item.</summary>
+        /// <param name="type">The type whose base types to get.</param>
+        /// <returns>The base types of the type.</returns>
+        public static IEnumerable<Type> GetBaseTypes(Type type)
+        {
+            if (type == null || type.IsInterface || type.IsValueType)
+                yield break;
+            
+            while (type != null)
+            {
+                type = type.BaseType;
+                yield return type;
+            }
+        }
 
 		/// <summary>
 		/// Finds the trust level of the running application (http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx)

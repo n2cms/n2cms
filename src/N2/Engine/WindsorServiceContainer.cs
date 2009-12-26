@@ -12,6 +12,7 @@ using Castle.Windsor.Configuration.Interpreters;
 using Castle.Windsor.Installer;
 using N2.Configuration;
 using N2.Plugin;
+using System.Diagnostics;
 
 namespace N2.Engine
 {
@@ -114,6 +115,8 @@ namespace N2.Engine
 
 		private static void KernelComponentCreated(ComponentModel model, object instance)
 		{
+            Trace.WriteLine("Created " + instance);
+
 			if (instance is IStartable)
 				return;
 
@@ -139,6 +142,7 @@ namespace N2.Engine
 						if (h.CurrentState == HandlerState.Valid)
 						{
 							object component = kernel[model.Name];
+                            Trace.WriteLine("Starting " + component);
 							if (component is IStartable)
 								(component as IStartable).Start();
 							else if (component is IAutoStart)

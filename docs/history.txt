@@ -1,4 +1,5 @@
-﻿- updated nhibernate to 2.1.2
+﻿- fixed nh mapping generation for ReplaceParentDefinition attribute to work as expected
+- updated nhibernate to 2.1.2
 - refactored mvc extensions & templates
 	- display & zone extensions into html helpers (use Html.Display, Html.Zone, etc. instead of this.Display, this.Zone)
 	- obsoleted N2ViewPage/UserControl/MasterPage (use classes in mvc)

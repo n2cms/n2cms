@@ -24,7 +24,7 @@ namespace N2.Tests
 
             DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
             ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, new ClassMappingGenerator(definitions), config, connectionStrings);
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, new ClassMappingGenerator(), config, connectionStrings);
 
             FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
             sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), interceptor, context);

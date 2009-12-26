@@ -19,7 +19,10 @@ namespace N2.Web.Compilation
 		/// <returns>The value or null.</returns>
 		public static object GetStartPageValue(string expression)
 		{
-			return N2.Find.StartPage[expression];
+            ContentItem startPage = N2.Find.StartPage;
+            if(startPage != null)
+                return startPage[expression];
+            return null;
 		}
 
 		protected override string ExpressionFormat
