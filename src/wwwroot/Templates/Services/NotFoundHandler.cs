@@ -11,7 +11,7 @@ namespace N2.Templates.Services
 	/// Makes sure the not found page is displayed whenever an url not leading 
 	/// to a page is used.
 	/// </summary>
-	public class NotFoundHandler : IStartable, IAutoStart
+	public class NotFoundHandler : IAutoStart
 	{
 		IUrlParser parser;
 		

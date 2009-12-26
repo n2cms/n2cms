@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using N2.Configuration;
+using N2.Engine.Configuration;
 
 namespace N2.Engine
 {
-    /// <summary>
-    /// Wraps an inversion of control container. The default container used by N2 is Windsor.
-    /// </summary>
+	/// <summary>
+	/// Wraps an inversion of control container. The default container used by N2 is Windsor.
+	/// </summary>
 	public abstract class ServiceContainerBase : IServiceContainer
 	{
 		#region IServiceContainer Members
@@ -19,7 +19,7 @@ namespace N2.Engine
 		public abstract object Resolve(Type type);
 		public abstract object Resolve(string key);
 		public abstract void Release(object instance);
-		public abstract void Configure(IEngine engine, EngineSection engineConfig);
+		public abstract IServiceContainerConfigurer ServiceContainerConfigurer { get; }
 		public abstract void StartComponents();
 
 		public virtual T Resolve<T>()

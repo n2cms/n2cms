@@ -6,11 +6,11 @@ using N2.Plugin;
 
 namespace N2.Engine.Globalization
 {
-    /// <summary>
-    /// Intercepts and acts upon operations on the node tree. The purpose is to 
-    /// keep the language branches synchronized.
-    /// </summary>
-	public class LanguageInterceptor : IAutoStart, Castle.Core.IStartable
+	/// <summary>
+	/// Intercepts and acts upon operations on the node tree. The purpose is to 
+	/// keep the language branches synchronized.
+	/// </summary>
+	public class LanguageInterceptor : IAutoStart
 	{
 		private const string DeletingKey = "LanguageInterceptor_Deleting";
 
@@ -18,15 +18,15 @@ namespace N2.Engine.Globalization
 		readonly IDefinitionManager definitions;
 		readonly IWebContext context;
 		readonly ILanguageGateway gateway;
-        bool enabled = true;
-		bool autoDeleteTranslations;
+		readonly bool enabled = true;
+		readonly bool autoDeleteTranslations;
 
-        public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway, EngineSection config)
-            : this(persister, definitions, context, gateway)
-        {
-            enabled = config.Globalization.Enabled;
-        	autoDeleteTranslations = config.Globalization.AutoDeleteTranslations;
-        }
+		public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway, EngineSection config)
+			: this(persister, definitions, context, gateway)
+		{
+			enabled = config.Globalization.Enabled;
+			autoDeleteTranslations = config.Globalization.AutoDeleteTranslations;
+		}
 
 		public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway)
 		{
@@ -39,7 +39,7 @@ namespace N2.Engine.Globalization
 
 		void definitions_ItemCreated(object sender, ItemEventArgs e)
 		{
-            if (GetLanguageKey() != null)
+			if (GetLanguageKey() != null)
 			{
 				if (e.AffectedItem is ILanguage)
 					return;
@@ -48,18 +48,18 @@ namespace N2.Engine.Globalization
 			}
 		}
 
-        private string GetLanguageKey()
-        {
-            return context.Url.LocalUrl.GetQuery(LanguageGateway.LanguageKey);
-        }
+		private string GetLanguageKey()
+		{
+			return context.Url.LocalUrl.GetQuery(LanguageGateway.LanguageKey);
+		}
 
 		private void UpdateSortOrder(ContentItem item)
 		{
 			int languageKey;
-            if (int.TryParse(GetLanguageKey(), out languageKey))
+			if (int.TryParse(GetLanguageKey(), out languageKey))
 			{
 				ContentItem translation = persister.Get(languageKey);
-				if(translation != null)
+				if (translation != null)
 					item.SortOrder = translation.SortOrder;
 			}
 		}
@@ -82,7 +82,7 @@ namespace N2.Engine.Globalization
 			{
 				if (item is ILanguage)
 					return;
-				
+
 				DeleteTranslations(item);
 			}
 		}
@@ -139,57 +139,57 @@ namespace N2.Engine.Globalization
 		private void UpdateLanguageKey(ContentItem item)
 		{
 			int languageKey = item.ID;
-            string languageKeyString = GetLanguageKey();
+			string languageKeyString = GetLanguageKey();
 			if (languageKeyString != null)
 			{
 				int.TryParse(languageKeyString, out languageKey);
-                if (item[LanguageGateway.LanguageKey] == null)
-                {
-                    item[LanguageGateway.LanguageKey] = languageKey;
-                    persister.Save(item);
+				if (item[LanguageGateway.LanguageKey] == null)
+				{
+					item[LanguageGateway.LanguageKey] = languageKey;
+					persister.Save(item);
 
-                    if (languageKey != item.ID)
-                    {
-                        EnsureLanguageKeyOnInitialTranslation(item, languageKey);
-                    }
-                }
-            }
+					if (languageKey != item.ID)
+					{
+						EnsureLanguageKeyOnInitialTranslation(item, languageKey);
+					}
+				}
+			}
 		}
 
 		private void EnsureLanguageKeyOnInitialTranslation(ContentItem item, int languageKey)
-		{	
+		{
 			ContentItem initialTranslation = persister.Get(languageKey);
-			if (initialTranslation != null && initialTranslation[LanguageGateway.LanguageKey] == null)
-			{
-				initialTranslation[LanguageGateway.LanguageKey] = languageKey;
-				persister.Save(initialTranslation);
-			}
+			if (initialTranslation == null || initialTranslation[LanguageGateway.LanguageKey] != null)
+				return;
+
+			initialTranslation[LanguageGateway.LanguageKey] = languageKey;
+			persister.Save(initialTranslation);
 		}
 
 		#region IStartable Members
 
 		public void Start()
 		{
-            if (enabled)
-            {
-                persister.ItemSaved += persister_ItemSaved;
-                persister.ItemMoved += persister_ItemMoved;
-                persister.ItemDeleting += persister_ItemDeleting;
-                definitions.ItemCreated += definitions_ItemCreated;
-				persister.ItemCopied += persister_ItemCopied;
-            }
+			if (!enabled)
+				return;
+
+			persister.ItemSaved += persister_ItemSaved;
+			persister.ItemMoved += persister_ItemMoved;
+			persister.ItemDeleting += persister_ItemDeleting;
+			definitions.ItemCreated += definitions_ItemCreated;
+			persister.ItemCopied += persister_ItemCopied;
 		}
 
 		public void Stop()
 		{
-            if (enabled)
-            {
-                persister.ItemSaved -= persister_ItemSaved;
-                persister.ItemMoved -= persister_ItemMoved;
-                persister.ItemDeleting -= persister_ItemDeleting;
-                definitions.ItemCreated -= definitions_ItemCreated;
-				persister.ItemCopied -= persister_ItemCopied;
-            }
+			if (!enabled)
+				return;
+
+			persister.ItemSaved -= persister_ItemSaved;
+			persister.ItemMoved -= persister_ItemMoved;
+			persister.ItemDeleting -= persister_ItemDeleting;
+			definitions.ItemCreated -= definitions_ItemCreated;
+			persister.ItemCopied -= persister_ItemCopied;
 		}
 
 		#endregion

@@ -1,5 +1,4 @@
 using System;
-using Castle.Core;
 using N2.Persistence;
 using N2.Plugin;
 
@@ -9,7 +8,7 @@ namespace N2.Integrity
 	/// Subscribes to persister envents and throws exceptions if something 
 	/// illegal is about to be done.
 	/// </summary>
-	public class IntegrityEnforcer : IIntegrityEnforcer, IStartable, IAutoStart
+	public class IntegrityEnforcer : IIntegrityEnforcer, IAutoStart
 	{
 		private readonly IPersister persister;
 		private readonly IIntegrityManager integrity;

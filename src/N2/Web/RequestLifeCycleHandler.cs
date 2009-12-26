@@ -5,7 +5,6 @@ using System.Diagnostics;
 using N2.Configuration;
 using N2.Installation;
 using N2.Web.UI;
-using Castle.Core;
 using N2.Plugin;
 
 namespace N2.Web
@@ -14,7 +13,7 @@ namespace N2.Web
 	/// Handles the request life cycle for N2 by invoking url rewriting, 
 	/// authorizing and closing NHibernate session.
 	/// </summary>
-	public class RequestLifeCycleHandler : IRequestLifeCycleHandler, IStartable, IAutoStart
+	public class RequestLifeCycleHandler : IRequestLifeCycleHandler, IAutoStart
 	{
 		readonly IErrorHandler errors;
 		readonly IWebContext webContext;

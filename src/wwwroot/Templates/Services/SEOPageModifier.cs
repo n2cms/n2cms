@@ -7,7 +7,7 @@ using N2.Web.UI;
 
 namespace N2.Templates.Services
 {
-    public class SEOPageModifier : IPageModifier, IStartable, IAutoStart
+    public class SEOPageModifier : IPageModifier, IAutoStart
     {
         private readonly IPageModifierContainer modifierContainer;
 

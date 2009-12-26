@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using N2.Plugin;
-using Castle.Core;
 
 namespace N2.Engine
 {
     /// <summary>
     /// Registers service in the N2 inversion of container upon start.
     /// </summary>
-    public class ServiceRegistrator : IAutoStart, IStartable
+    public class ServiceRegistrator : IAutoStart
     {
         ITypeFinder finder;
         IServiceContainer container;

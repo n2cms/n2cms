@@ -1,4 +1,4 @@
-using N2.Configuration;
+using N2.Castle;
 using N2.Definitions;
 using N2.Details;
 using N2.Engine;

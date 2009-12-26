@@ -60,6 +60,7 @@ namespace N2.Engine
 		/// <summary>Resolves a named service configured for the factory.</summary>
 		/// <param name="key">The name of the service to resolve.</param>
 		/// <returns>An instance of the resolved service.</returns>
+		[Obsolete("No longer supported.  Use another method on the Container property")]
 		object Resolve(string key);
 
 		/// <summary>Registers a component in the IoC container.</summary>
@@ -88,6 +89,7 @@ namespace N2.Engine
 		/// <summary>Adds a "facility" to the IoC container. Unless this has been changed it's assumed that tihs is a <see cref="Castle.MicroKernel.IFacility"/>.</summary>
 		/// <param name="key">The name of the facility.</param>
 		/// <param name="facility">The facility instance.</param>
+		[Obsolete("Not supportable by all service containers. Use the specific IServiceContainer implementation")]
 		void AddFacility(string key, object facility);
 
 		/// <summary>Releases a component from the IoC container.</summary>

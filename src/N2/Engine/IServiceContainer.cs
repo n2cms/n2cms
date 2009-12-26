@@ -1,21 +1,15 @@
 using System;
 using System.Collections.Generic;
-using N2.Configuration;
+using N2.Engine.Configuration;
 using N2.Plugin;
 
 namespace N2.Engine
 {
-    /// <summary>
-    /// Wraps an inversion of control container. The default container used by N2 is Windsor.
-    /// </summary>
-    public interface IServiceContainer
+	/// <summary>
+	/// Wraps an inversion of control container. The default container used by N2 is Windsor.
+	/// </summary>
+	public interface IServiceContainer
 	{
-		/// <summary>
-		/// Adds the speficied Facility to the container
-		/// </summary>
-		/// <param name="key"></param>
-		/// <param name="facility"></param>
-		void AddFacility(string key, object facility);
 		/// <summary>
 		/// Registers the service of the specified type with the container
 		/// </summary>
@@ -44,8 +38,7 @@ namespace N2.Engine
 		/// <param name="serviceType"></param>
 		/// <param name="classType"></param>
 		/// <param name="properties"></param>
-		void AddComponentWithParameters(string key, Type serviceType, Type classType,
-														IDictionary<string, string> properties);
+		void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties);
 		/// <summary>
 		/// Returns the first registered service of the given type
 		/// </summary>
@@ -66,22 +59,14 @@ namespace N2.Engine
 		/// <returns></returns>
 		object Resolve(Type type);
 		/// <summary>
-		/// Returns the service registered for the given key.
-		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
-		object Resolve(string key);
-		/// <summary>
 		/// Frees the resources assiciated with the given object instance
 		/// </summary>
 		/// <param name="instance"></param>
 		void Release(object instance);
 		/// <summary>
-		/// Performs Container-specific configuration, such as adding the core N2 and any user-defined services.
+		/// Returns a component that performs Container-specific configuration, such as adding the core N2 and any user-defined services.
 		/// </summary>
-		/// <param name="engine"></param>
-		/// <param name="engineConfig"></param>
-		void Configure(IEngine engine, EngineSection engineConfig);
+		IServiceContainerConfigurer ServiceContainerConfigurer { get; }
 		/// <summary>
 		/// Starts any <see cref="IAutoStart"/> components in the container
 		/// </summary>

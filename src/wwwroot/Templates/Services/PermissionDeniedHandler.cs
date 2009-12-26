@@ -7,7 +7,7 @@ using N2.Templates.Items;
 
 namespace N2.Templates.Services
 {
-    public class PermissionDeniedHandler : IStartable, IAutoStart
+    public class PermissionDeniedHandler : IAutoStart
     {
         ISecurityEnforcer securityEnforcer;
         IUrlParser parser;

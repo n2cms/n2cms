@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Castle.Core;
-using System.Diagnostics;
 using System.Security.Principal;
 using N2.Plugin;
 
@@ -11,7 +7,7 @@ namespace N2.Security
 	/// <summary>
 	/// Checks against unauthorized requests, and updates of content items.
 	/// </summary>
-	public class SecurityEnforcer : ISecurityEnforcer, IStartable, IAutoStart
+	public class SecurityEnforcer : ISecurityEnforcer, IAutoStart
 	{
 		/// <summary>
 		/// Is invoked when a security violation is encountered. The security 

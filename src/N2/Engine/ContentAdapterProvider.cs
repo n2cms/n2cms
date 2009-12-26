@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Castle.Core;
 using N2.Plugin;
 using N2.Web;
 using System.Reflection;
@@ -10,7 +9,7 @@ namespace N2.Engine
 	/// <summary>
 	/// Keeps track of and provides content adapters in the system.
 	/// </summary>
-	public class ContentAdapterProvider : IContentAdapterProvider, IStartable, IAutoStart
+	public class ContentAdapterProvider : IContentAdapterProvider, IAutoStart
 	{
 		readonly IEngine engine;
 		readonly ITypeFinder finder;

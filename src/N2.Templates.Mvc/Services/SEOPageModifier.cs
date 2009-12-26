@@ -6,7 +6,7 @@ using N2.Web;
 
 namespace N2.Templates.Mvc.Services
 {
-	public class SEOPageModifier : IPageModifier, IStartable, IAutoStart
+	public class SEOPageModifier : IPageModifier, IAutoStart
 	{
 		private readonly IPageModifierContainer modifierContainer;
 		private readonly IUrlParser urlParser;

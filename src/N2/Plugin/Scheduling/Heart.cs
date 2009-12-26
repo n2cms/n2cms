@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Castle.Core;
 using System.Timers;
 using System.Diagnostics;
 
@@ -10,7 +9,7 @@ namespace N2.Plugin.Scheduling
     /// <summary>
     /// A wrapper for a timer that beats at a certain interval.
     /// </summary>
-    public class Heart : IStartable, IAutoStart, IHeart
+    public class Heart : IAutoStart, IHeart
     {
         Timer timer;
 

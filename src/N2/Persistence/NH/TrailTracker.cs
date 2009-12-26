@@ -1,12 +1,12 @@
-﻿using Castle.Core;
-using N2.Engine;
+﻿using N2.Engine;
+using N2.Plugin;
 
 namespace N2.Persistence.NH
 {
 	/// <summary>
 	/// Ensures that the ancestral trail on content items is up to date
 	/// </summary>
-	public class TrailTracker : IStartable
+	public class TrailTracker : IAutoStart
 	{
 		readonly IPersister persister;
 

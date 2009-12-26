@@ -7,7 +7,7 @@ namespace N2.Edit.Trash
 	/// <summary>
 	/// Intercepts delete operations.
 	/// </summary>
-	public class DeleteInterceptor : IAutoStart, IStartable
+	public class DeleteInterceptor : IAutoStart
 	{
 		private readonly IPersister persister;
 		private readonly ITrashHandler trashHandler;

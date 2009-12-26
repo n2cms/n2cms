@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Services
 	/// to the items implementing the <see cref="ISyndicatable" />
 	/// interface.
 	/// </summary>
-	public class SyndicatableDefinitionAppender : IStartable, IAutoStart
+	public class SyndicatableDefinitionAppender : IAutoStart
 	{
 		private readonly IDefinitionManager definitions;
 		private string checkBoxText = "Make available for syndication.";

@@ -6,7 +6,7 @@ using N2.Plugin;
 
 namespace N2.Templates.Services
 {
-    public class SEODefinitionAppender : IStartable, IAutoStart
+    public class SEODefinitionAppender : IAutoStart
     {
         private readonly IDefinitionManager definitions;
         private string titleTitle = "Page title";

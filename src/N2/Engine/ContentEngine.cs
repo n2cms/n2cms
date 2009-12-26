@@ -12,7 +12,9 @@
 
 using System;
 using System.Configuration;
+using Castle.MicroKernel;
 using Castle.Windsor;
+using N2.Castle;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Edit;
@@ -90,7 +92,7 @@ namespace N2.Engine
 			AddComponentInstance(config.GetSection("connectionStrings") as ConnectionStringsSection);
 			InitializeEnvironment(hostConfig, engineConfig);
 
-			container.Configure(this, engineConfig);
+			container.ServiceContainerConfigurer.Configure(this, engineConfig);
 			AddComponentInstance(broker);
 		}
 
@@ -103,7 +105,7 @@ namespace N2.Engine
 			AddComponentInstance(ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection);
 
 			InitializeEnvironment(hostConfig, engineConfig);
-			container.Configure(this, engineConfig);
+			container.ServiceContainerConfigurer.Configure(this, engineConfig);
 		}
 
 		protected void InitializeEnvironment(HostSection hostConfig, EngineSection engineConfig)
@@ -263,9 +265,15 @@ namespace N2.Engine
 		/// <summary>Resolves a named service configured in the factory.</summary>
 		/// <param name="key">The name of the service to resolve.</param>
 		/// <returns>An instance of the resolved service.</returns>
+		[Obsolete("No longer supported.  Use another method on the Container property")]
 		public object Resolve(string key)
 		{
-			return Container.Resolve(key);
+			var windsorServiceContainer = container as WindsorServiceContainer;
+
+			if (windsorServiceContainer == null)
+				throw new InvalidOperationException("Only supported for a Windsor Service Container.");
+
+			return windsorServiceContainer.Container.Resolve(key);
 		}
 
 		/// <summary>Registers a component in the IoC container.</summary>
@@ -299,9 +307,15 @@ namespace N2.Engine
 			Container.AddComponentLifeStyle(key, classType, lifeStyle);
 		}
 
+		[Obsolete("Not supportable by all service containers. Use the IServiceContainer implementation of this")]
 		public void AddFacility(string key, object facility)
 		{
-			Container.AddFacility(key, facility);
+			var windsorServiceContainer = container as WindsorServiceContainer;
+
+			if(windsorServiceContainer == null)
+				throw new InvalidOperationException("Only supported for a Windsor Service Container.");
+
+			windsorServiceContainer.Container.AddFacility(key, (IFacility) facility);
 		}
 
 		public void Release(object instance)

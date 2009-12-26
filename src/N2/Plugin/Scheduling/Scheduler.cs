@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
-using System.Threading;
-using Castle.Core;
 using System.Runtime.CompilerServices;
 using N2.Web;
 using N2.Engine;
@@ -14,7 +11,7 @@ namespace N2.Plugin.Scheduling
     /// Maintains a list of scheduler actions and checks wether it's time to 
     /// execute them.
     /// </summary>
-    public class Scheduler : IStartable, IAutoStart
+    public class Scheduler : IAutoStart
     {
         IList<ScheduledAction> actions;
         IHeart heart;

@@ -7,7 +7,7 @@ using N2.Web;
 
 namespace N2.Templates.Mvc.Services
 {
-	public class PermissionDeniedHandler : IStartable, IAutoStart
+	public class PermissionDeniedHandler : IAutoStart
 	{
 		ISecurityEnforcer securityEnforcer;
 		IUrlParser parser;

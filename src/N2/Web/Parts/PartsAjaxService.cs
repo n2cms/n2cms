@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Specialized;
-using N2.Web;
 using System.Text;
-using Castle.Core;
 using N2.Plugin;
 
 namespace N2.Web.Parts
@@ -10,7 +8,7 @@ namespace N2.Web.Parts
 	/// <summary>
 	/// Ajax service that adds itself to the ajax request dispatecher upon start.
 	/// </summary>
-	public abstract class PartsAjaxService : IAjaxService, IStartable, IAutoStart
+	public abstract class PartsAjaxService : IAjaxService, IAutoStart
 	{
 		private readonly AjaxRequestDispatcher dispatcher;
 
