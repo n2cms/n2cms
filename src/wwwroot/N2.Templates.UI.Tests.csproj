@@ -98,6 +98,13 @@
     <Compile Include="Addons\UITests\UI\ControlDesigners.aspx.designer.cs">
       <DependentUpon>ControlDesigners.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Addons\UITests\UI\Events.aspx.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\Events.aspx.designer.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Addons\UITests\UI\GridViewTest.aspx.cs">
       <DependentUpon>GridViewTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -187,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\UITests\UI\Css.aspx" />
+    <Content Include="Addons\UITests\UI\Events.aspx" />
     <Content Include="Addons\UITests\UI\Html_Tree.Between.aspx" />
     <Content Include="Addons\UITests\UI\Html_Link.To.aspx" />
     <Content Include="Addons\UITests\UI\Displayable_DataBind.aspx" />
