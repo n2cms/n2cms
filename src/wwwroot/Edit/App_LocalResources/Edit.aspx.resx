@@ -129,10 +129,10 @@
   <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
     <value>Test Save these changes without publishing them. You can resume your work at a later point or discard the changes.</value>
   </data>
-  <data name="btnSavePublishInFuture.Text" xml:space="preserve">
+  <data name="hlSavePublishInFuture.Text" xml:space="preserve">
     <value>Save and publish in the future</value>
   </data>
-  <data name="btnSavePublishInFuture.ToolTip" xml:space="preserve">
+  <data name="hlSavePublishInFuture.ToolTip" xml:space="preserve">
     <value>Save these changes without publishing them. You can publish in future.</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
@@ -194,5 +194,14 @@
   </data>
   <data name="btnPreview.ToolTip" xml:space="preserve">
     <value>Save a version of these changes and preview them before publishing.</value>
+  </data>
+  <data name="btnSavePublishInFuture.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="dpFuturePublishDate.Label.Text" xml:space="preserve">
+    <value>When</value>
+  </data>
+  <data name="hlCancelSavePublishInFuture.Text" xml:space="preserve">
+    <value>Cancel</value>
   </data>
 </root>

@@ -107,16 +107,19 @@ namespace N2.Workflow
                 throw new NotSupportedException("Preview is not supported while " + context.Interface);
 
             if (context.Data is IActiveContent)
+                // handles it's own persistence
                 return Compose("Save and Preview", Authorize(Permission.Write), validate, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
-            if (context.Data.VersionOf == null)
-                // is master version
-                return Compose("Save and preview", Authorize(Permission.Write), validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
-            else if (context.Data.State == ContentState.Unpublished)
+            
+            if (context.Data.ID != 0 && context.Data.VersionOf == null)
+                // update a master version
+                Compose("Save and preview", Authorize(Permission.Write), validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
+            
+            if (context.Data.State == ContentState.Unpublished)
                 // has been published before
                 return Compose("Save and preview", Authorize(Permission.Write), validate, clone,         updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
-            else
-                // has never been published before
-                return Compose("Save and preview", Authorize(Permission.Write), validate,                updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
+            
+            // has never been published before
+            return Compose("Save and preview", Authorize(Permission.Write), validate,                updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
         }
 
         /// <summary>Gets the command to save changes to an item without leaving the editing interface.</summary>
@@ -128,16 +131,19 @@ namespace N2.Workflow
                 throw new NotSupportedException("Save is not supported while " + context.Interface);
 
             if (context.Data is IActiveContent)
+                // handles it's own persistence
                 return Compose("Save changes", Authorize(Permission.Write), validate, saveActiveContent, showEdit);
-            if (context.Data.VersionOf == null)
-                // is master version
+            
+            if (context.Data.ID != 0 && context.Data.VersionOf == null)
+                // update a master version
                 return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion,        updateObject, setVersionIndex, makeDraft, save, showEdit);
-            else if (context.Data.State == ContentState.Unpublished)
+            
+            if (context.Data.State == ContentState.Unpublished)
                 // previously published
                 return Compose("Save changes", Authorize(Permission.Write), validate,                clone, updateObject, setVersionIndex, makeDraft, save, showEdit);
-            else
-                // has never been published before
-                return Compose("Save changes", Authorize(Permission.Write), validate,                       updateObject,                  makeDraft, save, showEdit);
+            
+            // has never been published before
+            return Compose("Save changes", Authorize(Permission.Write), validate,                       updateObject,                  makeDraft, save, showEdit);
         }
 
         private CommandBase<CommandContext> Authorize(Permission permission)

@@ -60,7 +60,7 @@ namespace N2.Edit
             btnSavePublish.Enabled = isPublicableByUser;
             btnPreview.Enabled = isVersionable && isWritableByUser;
             btnSaveUnpublished.Enabled = isVersionable && isWritableByUser;
-            btnSavePublishInFuture.Enabled = isWritableByUser && isExisting;
+            hlFuturePublish.Enabled = isWritableByUser && isExisting;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -123,6 +123,9 @@ namespace N2.Edit
 				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
 			}
         }
+
+
+
 
         private void HandleResult(CommandContext ctx)
         {
@@ -199,7 +202,7 @@ namespace N2.Edit
 		{
 			foreach(EditToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-                plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, MemorizedItem, ControlPanelState.Visible));
+                plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, ControlPanelState.Visible));
 			}
 		}
 
@@ -244,6 +247,8 @@ namespace N2.Edit
                 ie.CurrentItem = Selection.SelectedItem;
 			}
 			ie.ZoneName = base.Page.Request["zoneName"];
+
+            dpFuturePublishDate.SelectedDate = ie.CurrentItem.Published;
 		}
 
 		private void LoadZones()
@@ -261,29 +266,6 @@ namespace N2.Edit
 			ucInfo.DataBind();
 		}
 
-        private void SaveChanges()
-        {
-            //Engine.Resolve<Workflow.CommandProvider>().PublishCommand()
-
-			ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionAndSave : ItemEditorVersioningMode.SaveAsMaster;
-        	ContentItem currentItem = ie.Save(ie.CurrentItem, mode);
-
-            if (Request["before"] != null)
-            {
-                ContentItem before = Engine.Resolve<N2.Edit.Navigator>().Navigate(Request["before"]);
-                Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.Before, before);
-            }
-            else if (Request["after"] != null)
-            {
-                ContentItem after = Engine.Resolve<N2.Edit.Navigator>().Navigate(Request["after"]);
-                Engine.Resolve<ITreeSorter>().MoveTo(currentItem, NodePosition.After, after);
-            }
-
-            Refresh(currentItem.VersionOf ?? currentItem, ToolbarArea.Both);
-            Title = string.Format(GetLocalResourceString("SavedFormat"), currentItem.Title);
-            ie.Visible = false;
-        }
-
 		private ContentItem SaveVersion()
 		{
 			ItemEditorVersioningMode mode = (ie.CurrentItem.VersionOf == null) ? ItemEditorVersioningMode.VersionOnly : ItemEditorVersioningMode.SaveOnly;
@@ -295,13 +277,7 @@ namespace N2.Edit
             // Explicitly setting the current versions FuturePublishDate.
             // The database will end up with two new rows in the detail table.
             // On row pointing to the master and one to the latest/new version.
-            System.Web.UI.Control item = null;
-            if(ie.AddedEditors.TryGetValue("FuturePublishDate", out item))
-            {
-                DatePicker futurePublishDate = item as DatePicker;
-                if(futurePublishDate != null)
-                    ie.CurrentItem["FuturePublishDate"] = futurePublishDate.Text;
-            }
+            ie.CurrentItem["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;
             return SaveVersion();
         }
     }

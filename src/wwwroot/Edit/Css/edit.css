@@ -87,4 +87,15 @@ body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD
 .framed .preview.iconed { background-image:url(../img/ico/png/zoom.png); }
 .framed .future.iconed { background-image:url(../img/ico/png/clock.png); }
 
-
+.popup
+{
+    width:340px;
+    top:11%;
+    left:22%;
+    
+    position:absolute;
+    border:solid 1px #bbb;
+    background:#fff;
+    padding:10px;
+    z-index:188;
+}

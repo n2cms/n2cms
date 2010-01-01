@@ -13,11 +13,15 @@ namespace N2.Web.UI.WebControls
 	[ValidationProperty("SelectedDate")]
 	public class DatePicker : Control, IEditableTextControl, INamingContainer
 	{
+        Label label = new Label();
 		TextBox datePicker = new TextBox();
 		TextBox timePicker = new TextBox();
 
 		protected override void CreateChildControls()
 		{
+            Label.AssociatedControlID = "date";
+            Controls.Add(Label);
+
 			DatePickerBox.ID = "date";
 			Controls.Add(DatePickerBox);
 			DatePickerBox.CssClass = "datePicker";
@@ -30,6 +34,13 @@ namespace N2.Web.UI.WebControls
 
 			base.CreateChildControls();
 		}
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            label.Visible = label.Text.Length > 0;
+        }
 
 		void OnTextChanged(object sender, EventArgs e)
 		{
@@ -131,7 +142,13 @@ jQuery('.datePicker').datePicker({{ startDate: '{2}' }});";
 					TimePickerBox.Text = string.Empty;
 				}
 			}
-		}
+        }
+
+        [NotifyParentProperty(true)]
+        public Label Label
+        {
+            get { return label; }
+        }
 
 		[NotifyParentProperty(true)]
 		public TextBox DatePickerBox

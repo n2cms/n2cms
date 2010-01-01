@@ -32,12 +32,5 @@ namespace N2.Templates.Items
 			get { return base.Visible; }
 			set { base.Visible = value; }
 		}
-
-        [WithEditablePublishInTheFutureDateAttribute("Future Publish Date", 31, ContainerName = Tabs.Advanced)]
-        public virtual DateTime? FuturePublishDate
-        {
-            get { return (DateTime?)GetDetail("FuturePublishDate"); }
-            set { SetDetail("FuturePublishDate", value); }
-        }
 	}
 }

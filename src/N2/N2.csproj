@@ -363,7 +363,6 @@
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
-    <Compile Include="Details\WithEditablePublishInTheFutureDateAttribute.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
     <Compile Include="Edit\EditableAdapter.cs" />
@@ -713,7 +712,9 @@
     <Compile Include="Workflow\Commands\ActiveContentSaveCommand.cs" />
     <Compile Include="Workflow\Commands\AuthorizeCommand.cs" />
     <Compile Include="Workflow\Commands\CloneCommand.cs" />
+    <Compile Include="Workflow\Commands\EnsureNotPublishedCommand.cs" />
     <Compile Include="Workflow\Commands\DeleteCommand.cs" />
+    <Compile Include="Workflow\Commands\EnsurePublishedCommand.cs" />
     <Compile Include="Workflow\Commands\IncrementVersionIndexCommand.cs" />
     <Compile Include="Workflow\Commands\MakeVersionCommand.cs" />
     <Compile Include="Workflow\Commands\OnMasterCommand.cs" />

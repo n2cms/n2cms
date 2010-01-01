@@ -68,13 +68,13 @@ namespace N2.Edit {
         protected global::System.Web.UI.WebControls.LinkButton btnSaveUnpublished;
         
         /// <summary>
-        /// btnSavePublishInFuture control.
+        /// hlFuturePublish control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSavePublishInFuture;
+        protected global::System.Web.UI.WebControls.HyperLink hlFuturePublish;
         
         /// <summary>
         /// hlCancel control.
@@ -138,6 +138,33 @@ namespace N2.Edit {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CustomValidator cvException;
+        
+        /// <summary>
+        /// dpFuturePublishDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::N2.Web.UI.WebControls.DatePicker dpFuturePublishDate;
+        
+        /// <summary>
+        /// btnSavePublishInFuture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSavePublishInFuture;
+        
+        /// <summary>
+        /// hlCancelSavePublishInFuture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlCancelSavePublishInFuture;
         
         /// <summary>
         /// ie control.
