@@ -155,7 +155,7 @@ if(window.n2ctx){{
             string script = string.Format(RefreshBothFormat,
                 Url.ToAbsolute("~/Edit/Default.aspx"), // 0
                 GetNavigationUrl(item), // 1
-                previewUrl, // 2
+                Url.ToAbsolute(previewUrl), // 2
                 item.ID, // 3
                 item.Path // 4
             );

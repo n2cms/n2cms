@@ -124,7 +124,7 @@
     <value />
   </data>
   <data name="btnSaveUnpublished.Text" xml:space="preserve">
-    <value>Save without publishing</value>
+    <value>Save changes</value>
   </data>
   <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
     <value>Test Save these changes without publishing them. You can resume your work at a later point or discard the changes.</value>

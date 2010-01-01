@@ -128,16 +128,16 @@ namespace N2.Workflow
                 throw new NotSupportedException("Save is not supported while " + context.Interface);
 
             if (context.Data is IActiveContent)
-                return Compose("Save", Authorize(Permission.Write), validate, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
+                return Compose("Save changes", Authorize(Permission.Write), validate, saveActiveContent, showEdit);
             if (context.Data.VersionOf == null)
                 // is master version
-                return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, showEdit);
+                return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion,        updateObject, setVersionIndex, makeDraft, save, showEdit);
             else if (context.Data.State == ContentState.Unpublished)
                 // previously published
-                return Compose("Save changes", Authorize(Permission.Write), validate, clone,         updateObject, setVersionIndex, makeDraft, save, showEdit);
+                return Compose("Save changes", Authorize(Permission.Write), validate,                clone, updateObject, setVersionIndex, makeDraft, save, showEdit);
             else
                 // has never been published before
-                return Compose("Save changes", Authorize(Permission.Write), validate, updateObject, makeDraft, save, showEdit);
+                return Compose("Save changes", Authorize(Permission.Write), validate,                       updateObject,                  makeDraft, save, showEdit);
         }
 
         private CommandBase<CommandContext> Authorize(Permission permission)

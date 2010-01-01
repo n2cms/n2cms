@@ -62,7 +62,7 @@ namespace N2.Workflow
         /// <param name="context">Contains data and information used to for saving an item.</param>
         public virtual void Save(CommandContext context)
         {
-            Execute(commandFactory.GetPreviewCommand(context), context);
+            Execute(commandFactory.GetSaveCommand(context), context);
         }
     }
 }
