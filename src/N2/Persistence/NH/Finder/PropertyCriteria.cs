@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using N2.Persistence.Finder;
 
 namespace N2.Persistence.NH.Finder
@@ -36,7 +37,12 @@ namespace N2.Persistence.NH.Finder
 
 		public IQueryAction In(params T[] anyOf)
 		{
-			throw new NotImplementedException("not yet");
+			if (typeof (T).IsAssignableFrom(typeof (ContentItem)))
+			{
+				query.Criterias.Add(new PropertyInHqlProvider<int>(op, name, anyOf.Select(t => (t as ContentItem).ID).ToArray()));
+				return query;
+			}
+			throw new NotImplementedException();
 		}
 
 		#endregion

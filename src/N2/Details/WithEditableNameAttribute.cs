@@ -38,7 +38,7 @@ namespace N2.Details
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public WithEditableNameAttribute(string title, int sortOrder)
-			: base(title, "Name", sortOrder)
+			: base(title, "URI Name", sortOrder)
 		{
 		}
 

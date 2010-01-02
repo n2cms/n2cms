@@ -445,8 +445,13 @@
     </Compile>
     <Compile Include="PageDefinitionAttribute.cs" />
     <Compile Include="PartDefinitionAttribute.cs" />
+    <Compile Include="Persistence\Finder\IComparisonCriteria.cs" />
+    <Compile Include="Persistence\Finder\INullableComparisonCriteria.cs" />
+    <Compile Include="Persistence\Finder\INullableCriteria.cs" />
     <Compile Include="Persistence\IActiveContent.cs" />
     <Compile Include="Persistence\IUpdatable.cs" />
+    <Compile Include="Persistence\NH\Finder\NullablePropertyCriteria.cs" />
+    <Compile Include="Persistence\NH\Finder\PropertyIsNullHqlProvider.cs" />
     <Compile Include="Persistence\PersistableAttribute.cs" />
     <Compile Include="Persistence\NH\ClassMappingGenerator.cs" />
     <Compile Include="Persistence\NH\GeneratorHelper.cs" />
@@ -620,7 +625,6 @@
     <Compile Include="Persistence\Finder\IDetailCriteria.cs" />
     <Compile Include="Persistence\Finder\IQueryEnd.cs" />
     <Compile Include="Persistence\Finder\ICriteria.cs" />
-    <Compile Include="Persistence\Finder\ICompareCriteria.cs" />
     <Compile Include="Persistence\Finder\IOrderBy.cs" />
     <Compile Include="Persistence\Finder\ISortDirection.cs" />
     <Compile Include="Persistence\Finder\IStringCriteria.cs" />

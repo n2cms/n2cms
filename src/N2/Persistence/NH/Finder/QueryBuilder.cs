@@ -153,14 +153,14 @@ namespace N2.Persistence.NH.Finder
 			get { return new PropertyCriteria<DateTime>(this, "Updated"); }
 		}
 
-		public IComparisonCriteria<DateTime> Published
+		public INullableComparisonCriteria<DateTime> Published
 		{
-			get { return new PropertyCriteria<DateTime>(this, "Published"); }
+            get { return new NullablePropertyCriteria<DateTime>(this, "Published"); }
 		}
 
-		public IComparisonCriteria<DateTime> Expires
+        public INullableComparisonCriteria<DateTime> Expires
 		{
-			get { return new PropertyCriteria<DateTime>(this, "Expires"); }
+            get { return new NullablePropertyCriteria<DateTime>(this, "Expires"); }
 		}
 
 		public IComparisonCriteria<int> SortOrder
