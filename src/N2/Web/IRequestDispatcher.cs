@@ -4,7 +4,7 @@ namespace N2.Web
 {
 	/// <summary>
 	/// Resolves and constructs the controller used to further control 
-	/// various aspects related to content items.
+	/// various operations to content items.
 	/// </summary>
 	public interface IRequestDispatcher
 	{

@@ -391,7 +391,6 @@
     <Compile Include="Engine\ServiceRegistrator.cs" />
     <Compile Include="Castle\WindsorServiceContainer.cs" />
     <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
-    <Compile Include="Obsolete\EditableAspectController.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />
     <Compile Include="Edit\FileSystem\FileData.cs" />
     <Compile Include="Edit\FileSystem\IFileSystem.cs" />
@@ -432,8 +431,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Obsolete\DragDropControlPanel.cs" />
-    <Compile Include="Obsolete\InstallerModule.cs" />
-    <Compile Include="Obsolete\InstallerSection.cs" />
     <Compile Include="Obsolete\Page.generic.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -499,7 +496,6 @@
     <Compile Include="Obsolete\Configuration\MediumTrustSectionHandler.cs" />
     <Compile Include="Configuration\TypeElementCollection.cs" />
     <Compile Include="Configuration\TypeElement.cs" />
-    <Compile Include="Obsolete\Factory.cs" />
     <Compile Include="Integrity\IntegrityMappingAttribute.cs" />
     <Compile Include="Integrity\AllowedZones.cs" />
     <Compile Include="Integrity\IIntegrityEnforcer.cs" />
@@ -507,7 +503,6 @@
     <Compile Include="Integrity\TypeIntegrityAttribute.cs" />
     <Compile Include="Integrity\IntegrityEnforcer.cs" />
     <Compile Include="Integrity\RestrictParentsAttribute.cs" />
-    <Compile Include="Obsolete\InitializerModule.cs" />
     <Compile Include="Obsolete\ItemAttribute.cs" />
     <Compile Include="Persistence\NH\ConfigurationBuilder.cs" />
     <Compile Include="Persistence\NH\ContentPersister.cs" />
@@ -536,7 +531,6 @@
     <Compile Include="Web\PathDictionary.cs" />
     <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Parts\IAddablePart.cs" />
-    <Compile Include="Obsolete\PartsAspectController.cs" />
     <Compile Include="Web\RequestAdapter.cs" />
     <Compile Include="Web\AdaptiveContext.cs" />
     <Compile Include="Web\CachingUrlParserDecorator.cs" />
@@ -550,7 +544,6 @@
     <Compile Include="Web\IRequestDispatcher.cs" />
     <Compile Include="Web\DynamicTemplateAttribute.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
-    <Compile Include="Obsolete\RequestAspectController.cs" />
     <Compile Include="Web\RequestDispatcher.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlFilter.cs" />

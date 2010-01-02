@@ -10,7 +10,7 @@ using System;
 namespace N2.Web.Parts
 {
 	/// <summary>
-	/// Controls aspects related to zones, zone definitions, and items to display in a zone.
+	/// Adapts operations related to zones, zone definitions, and items to display in a zone.
 	/// </summary>
 	[Controls(typeof(ContentItem))]
 	public class PartsAdapter : AbstractContentAdapter

@@ -12,7 +12,7 @@ namespace N2.Web
 	/// </summary>
 	public class RequestDispatcher : IRequestDispatcher
 	{
-		readonly IContentAdapterProvider aspectProvider;
+		readonly IContentAdapterProvider adapterProvider;
 		readonly IWebContext webContext;
 		readonly IUrlParser parser;
 		readonly IErrorHandler errorHandler;
@@ -21,9 +21,9 @@ namespace N2.Web
 		readonly string[] observedExtensions = new[] { ".aspx" };
 		readonly string[] nonRewritablePaths = new[] {"~/edit/"};
 
-		public RequestDispatcher(IContentAdapterProvider aspectProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
+		public RequestDispatcher(IContentAdapterProvider adapterProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
 		{
-			this.aspectProvider = aspectProvider;
+			this.adapterProvider = adapterProvider;
 			this.webContext = webContext;
 			this.parser = parser;
 			this.errorHandler = errorHandler;
@@ -55,7 +55,7 @@ namespace N2.Web
 			}
 
 			PathData data = ResolveUrl(url);
-			controller = aspectProvider.ResolveAdapter<T>(data);
+			controller = adapterProvider.ResolveAdapter<T>(data);
 			
 			RequestItem<T>.Instance = controller;
 			return controller;

@@ -4,7 +4,7 @@ using System;
 namespace N2.Engine
 {
 	/// <summary>
-	/// Base interface for user overridable controllers of various aspects. 
+	/// Base interface for user overridable adapters. 
 	/// </summary>
 	public interface IContentAdapter
 	{

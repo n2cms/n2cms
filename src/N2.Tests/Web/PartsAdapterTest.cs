@@ -43,7 +43,7 @@ namespace N2.Tests.Web
 
 
 		[Test]
-		public void CanResolve_ZoneAspectController()
+		public void CanResolve_ZoneAdapter()
 		{
 			webContext.CurrentPath = dispatcher.ResolveUrl("/");
 			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>();

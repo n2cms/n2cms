@@ -72,7 +72,7 @@ namespace N2.Engine
 				}
 			}
 
-			throw new N2Exception("Couldn't find an aspect controller '{0}' for the item '{1}' on the path '{2}'.", typeof(T).FullName, path.CurrentItem, path.Path);
+			throw new N2Exception("Couldn't find a content adapter '{0}' for the item '{1}' on the path '{2}'.", typeof(T).FullName, path.CurrentItem, path.Path);
 		}
 
 		#region IStartable Members
