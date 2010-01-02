@@ -112,7 +112,7 @@ namespace N2.Workflow
             
             if (context.Data.ID != 0 && context.Data.VersionOf == null)
                 // update a master version
-                Compose("Save and preview", Authorize(Permission.Write), validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
+                return Compose("Save and preview", Authorize(Permission.Write), validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
             
             if (context.Data.State == ContentState.Unpublished)
                 // has been published before
