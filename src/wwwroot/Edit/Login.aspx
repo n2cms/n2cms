@@ -29,8 +29,8 @@
         h1 { margin-bottom:20px; }
         .login-label { display:block; text-align:right }
         .login-button { margin-top:5px; width:100px;font-size:1.2em;float:right;}
-        .login-input { width:160px }
-        td { padding:2px; }
+        .login-input { width:160px;font-size:1.5em;}
+        td { padding:2px; vertical-align:middle; }
     </style>
 </head>
 <body class="edit login">
