@@ -52,7 +52,10 @@ body.edit .uploadableContainer .fileSelector
     { width: 184px; }
 body.edit .selector img, body.edit .uploader img
     { vertical-align:middle; margin-right:1px; }
-
+table.editDetail { border-collapse:collapse; }
+.keepUpdated { background:transparent url(../img/ico/png/lock_open.png) no-repeat; padding:2px; cursor:pointer; }
+.keepUpdated input { visibility:hidden; }
+.unchecked { background-image:url(../img/ico/png/lock.png); }
 
 body.edit .delete { float:right; }
 body.edit .versionInfo { background-image:url(../img/ico/png/information.png); }

@@ -1,4 +1,5 @@
-﻿- embedded future publish in edit interface
+﻿- lock icon for name-to-title sync
+- embedded future publish in edit interface
 - fixed nh mapping generation for ReplaceParentDefinition attribute to work as expected
 - updated nhibernate to 2.1.2
 - refactored mvc extensions & templates

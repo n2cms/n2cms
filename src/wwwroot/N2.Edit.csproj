@@ -1805,6 +1805,7 @@
     <Content Include="Edit\img\ico\png\clock.png" />
     <Content Include="Edit\img\ico\png\eye.png" />
     <Content Include="Edit\img\ico\png\link_break.png" />
+    <Content Include="Edit\img\ico\png\lock_open.png" />
     <Content Include="Edit\img\lighten10.png" />
     <Content Include="Edit\img\lighten25.png" />
     <Content Include="Edit\img\lighten5.png" />
@@ -1895,6 +1896,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Edit\Install\Upgrade.aspx" />
+    <Content Include="Edit\Js\plugins\jquery.n2name.js" />
     <Content Include="Edit\KeepAlive\ping.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

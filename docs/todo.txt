@@ -1,4 +1,4 @@
-- content aspects
+- content aspects (ContentPart, children->pages+parts, n2parts)
 - Parts/Pages
 - ShowTitle mvc
 - refactor state to use new concepts

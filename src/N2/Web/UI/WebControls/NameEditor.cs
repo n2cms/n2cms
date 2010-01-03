@@ -143,6 +143,7 @@ namespace N2.Web.UI.WebControls
 
 			keepUpdated.ID = "ku";
 			keepUpdated.Checked = true;
+            keepUpdated.CssClass = "keepUpdated";
 			Controls.Add(keepUpdated);
 
 			base.CreateChildControls();
@@ -167,14 +168,11 @@ namespace N2.Web.UI.WebControls
 						string nameID = editor.ClientID;
 						char whitespaceReplacement = (WhitespaceReplacement ?? Config.WhitespaceReplacement);
 						string toLower = (ToLower ?? Config.ToLower).ToString().ToLower();
-						string replacements = GetReplacements();
-						string keepUpdatedBox = (ShowKeepUpdated ?? Config.ShowKeepUpdated) ? keepUpdated.ClientID : "";
-						string s = updateNameScript + Environment.NewLine +
-						           string.Format(startupScriptFormat, titleID, nameID, whitespaceReplacement, toLower, replacements, keepUpdatedBox);
+						string replacements = GetReplacementsJson();
+						string keepUpdatedBoxID = (ShowKeepUpdated ?? Config.ShowKeepUpdated) ? keepUpdated.ClientID : "";
+                        string s = string.Format("jQuery('#{0}').n2name({{nameId:'{0}', titleId:'{1}', whitespaceReplacement:'{2}', toLower:{3}, replacements:{4}, keepUpdatedBoxId:'{5}'}});",
+                            nameID, titleID, whitespaceReplacement, toLower, replacements, keepUpdatedBoxID);
 						Page.ClientScript.RegisterStartupScript(typeof(NameEditor), "UpdateScript", s, true);
-                        tbTitle.Attributes["onkeyup"] = "invokeUpdateName();";
-                        tbTitle.Attributes["onblur"] = "invokeUpdateName();";
-                        Attributes["onfocus"] = "invokeUpdateName();";
 					}
 				}
 				catch (KeyNotFoundException ex)
@@ -186,7 +184,7 @@ namespace N2.Web.UI.WebControls
 			base.OnPreRender(e);
 		}
 
-		string GetReplacements()
+		string GetReplacementsJson()
 		{
 			StringBuilder sb = new StringBuilder("[");
 			foreach(PatternValueElement element in Config.Replacements)
@@ -198,45 +196,6 @@ namespace N2.Web.UI.WebControls
 			sb.Append("]");
 			return sb.ToString();
 		}
-
-		#region OnPreRender Helpers
-
-		private const string startupScriptFormat = @"
-var invokeUpdateName = function(){{
-	updateName('{0}', '{1}', '{2}', {3}, {4}, '{5}');
-}};
-if('{5}'){{
-	var chk = document.getElementById('{5}');
-	var name = getName('{0}', '{2}', {3}, {4});
-	var title = document.getElementById('{1}').value
-	chk.checked = !name || !title || (name == title);
-	jQuery(chk).click(invokeUpdateName);
-}}
-";
-
-		private const string updateNameScript =
-			@"
-function getName(titleid, whitespace, tolower, replacements){
-    var titleBox=document.getElementById(titleid);
-	var name = titleBox.value.replace(/[.]+/g, '-')
-		.replace(/[%?&/+:<>]/g, '')
-		.replace(/\s+/g, whitespace)
-		.replace(/[-]+/g, '-')
-		.replace(/[-]+$/g, '');
-	if(tolower) name = name.toLowerCase();
-	for (var i in replacements){
-		name = name.replace(replacements[i].pattern, replacements[i].value);
-	}
-	return name;
-}
-function updateName(titleid, nameid, whitespace, tolower, replacements, checkboxid){
-	var name = getName(titleid, whitespace, tolower, replacements);
-    if(checkboxid && document.getElementById(checkboxid).checked)
-		document.getElementById(nameid).value = name;
-}
-";
-
-		#endregion
 
 		#endregion
 

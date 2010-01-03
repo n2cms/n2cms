@@ -29,7 +29,7 @@ namespace N2.Details
 		/// Creates a new instance of the WithEditableAttribute class with default values.
 		/// </summary>
 		public WithEditableNameAttribute()
-			: this("URI Name", 10)
+			: this("Name", 10)
 		{
 		}
 		/// <summary>
@@ -38,7 +38,7 @@ namespace N2.Details
 		/// <param name="title">The label displayed to editors</param>
 		/// <param name="sortOrder">The order of this editor</param>
 		public WithEditableNameAttribute(string title, int sortOrder)
-			: base(title, "URI Name", sortOrder)
+			: base(title, "Name", sortOrder)
 		{
 		}
 
