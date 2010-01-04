@@ -5,7 +5,16 @@ using System.Text;
 namespace N2.Tests.Content
 {
 	public class AnItem : N2.ContentItem
-	{
+    {
+        public void SetDetailAccessor<T>(string detailName, T value, T defaultValue)
+        {
+            SetDetail<T>(detailName, value, defaultValue);
+        }
+        public void SetDetailAccessor<T>(string detailName, T value)
+        {
+            SetDetail<T>(detailName, value);
+        }
+
 		public virtual int IntProperty
 		{
 			get { return (int)(GetDetail("IntProperty") ?? 0); }

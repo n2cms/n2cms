@@ -1,6 +1,7 @@
 ﻿using System;
 using N2.Security;
 using NUnit.Framework;
+using N2.Details;
 
 namespace N2.Tests.Content
 {
@@ -596,10 +597,139 @@ namespace N2.Tests.Content
 			Assert.That(destination.GetDetailCollection("Partial", false), Is.Not.Null);
 			Assert.That(destination.GetDetailCollection("Partial", false).Count, Is.EqualTo(1));
 			Assert.That(destination.GetDetailCollection("Partial", false)[0], Is.EqualTo(1));
-		}
+        }
 
+        [Test]
+        public void SetDetail_ToString_AddsDetail()
+        {
+            AnItem item = new AnItem();
 
-		[Serializable]
+            item.SetDetailAccessor("ADetail", "hello");
+
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
+        }
+
+        [Test]
+        public void SetDetail_ToString_AddsStringDetail()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", "hello");
+
+            Assert.That(item.Details["ADetail"], Is.TypeOf<StringDetail>());
+        }
+
+        [Test]
+        public void SetDetail_ToString_AddsStringDetail_WithSameValue()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", "hello");
+
+            Assert.That(item.Details["ADetail"].Value, Is.EqualTo("hello"));
+        }
+
+        [Test]
+        public void SetDetail_ToString_WithDefault_AddsDetail()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", "hello", "howdy");
+
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
+        }
+
+        [Test]
+        public void SetDetail_ToString_WithDefault_AddsStringDetail()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", "hello", "howdy");
+
+            Assert.That(item.Details["ADetail"], Is.TypeOf<StringDetail>());
+        }
+
+        [Test]
+        public void SetDetail_ToString_WithDefault_AddsStringDetail_WithSameValue()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", "hello", "howdy");
+
+            Assert.That(item.Details["ADetail"].Value, Is.EqualTo("hello"));
+        }
+
+        [Test]
+        public void SetDetail_ToString_WithSameValueAsDefault_DoesntAddDetail()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", "howdy", "howdy");
+
+            Assert.That(item.Details.ContainsKey("ADetail"), Is.False);
+        }
+
+        [Test]
+        public void SetDetail_ToBoolean_AddsDetail()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", false);
+
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
+        }
+
+        [Test]
+        public void SetDetail_ToBoolean_AddsBooleanDetail()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", false);
+
+            Assert.That(item.Details["ADetail"], Is.TypeOf<BooleanDetail>());
+        }
+
+        [Test]
+        public void SetDetail_ToBoolean_WithDefault_AddsDetail()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", false, true);
+
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
+        }
+
+        [Test]
+        public void SetDetail_ToBoolean_WithSameValueAsDefault_DoesntAddDetail_False()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", false, false);
+
+            Assert.That(item.Details.ContainsKey("ADetail"), Is.False);
+        }
+
+        [Test]
+        public void SetDetail_ToBoolean_WithSameValueAsDefault_DoesntAddDetail_True()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", true, true);
+
+            Assert.That(item.Details.ContainsKey("ADetail"), Is.False);
+        }
+
+        [Test]
+        public void SetDetail_WithBoolean_AddsDetail()
+        {
+            AnItem item = new AnItem();
+
+            item.SetDetailAccessor("ADetail", false);
+
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
+        }
+
+        [Serializable]
 		private class X
 		{
 			public int Number { get; set; }
