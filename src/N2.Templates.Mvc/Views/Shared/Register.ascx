@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Register.ascx.cs" Inherits="N2.Web.Mvc.N2ModelViewUserControl<UserRegistrationModel, UserRegistration>" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Register.ascx.cs" Inherits="N2.Web.Mvc.ContentViewUserControl<UserRegistrationModel, UserRegistration>" %>
 <%@ Import Namespace="MvcContrib.FluentHtml"%>
 
 <%=Html.ValidationSummary()%>

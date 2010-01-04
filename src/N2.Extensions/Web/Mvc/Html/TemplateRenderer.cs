@@ -104,6 +104,15 @@ namespace N2.Web.Mvc.Html
 			{
 				try
 				{
+					// Copy any new/replaced cookies to the old context
+					foreach(var cookieName in CurrentContext.Response.Cookies.AllKeys)
+					{
+						var cookie = CurrentContext.Response.Cookies[cookieName];
+
+						if(cookie != null)
+							_oldContext.Response.Cookies.Add(cookie);
+					}
+
 					HttpContext.Current = _oldContext;
 				}
 				catch (SecurityException)
