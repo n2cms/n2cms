@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
-	
+
 	<!-- AuthorizedRole -->
 	<class name="N2.Security.AuthorizedRole,N2" table="{TablePrefix}AllowedRole">
 		<cache usage="nonstrict-read-write" />
@@ -11,7 +11,7 @@
 		<many-to-one name="EnclosingItem" column="ItemID" class="N2.ContentItem,N2" not-null="true" />
 		<property name="Role" column="Role" type="String" not-null="true" length="50" />
 	</class>
-	
+
 
 	<!-- ContentDetail: Boolean-, Integer-, Link-, Double-, DateTime-, String-, Object-Detail -->
 	<class name="N2.Details.ContentDetail,N2" table="{TablePrefix}Detail">
@@ -55,7 +55,7 @@
 			<property name="Value" type="Serializable" length="2147483647" />
 		</subclass>
 	</class>
-	
+
 
 	<!-- ContentItem -->
 	<class name="N2.ContentItem,N2" table="{TablePrefix}Item">
@@ -78,14 +78,14 @@
 		<property name="SortOrder"	access="property" not-null="true" />
 		<property name="Visible"	  access="property" not-null="true" />
 		<property name="SavedBy"	  access="property" length="50" />
-    <property name="State"      access="property" />
-    <property name="AncestralTrail" access="property" length="100" />
-    <property name="VersionIndex"		access="property" />
+		<property name="State"      access="property" />
+		<property name="AncestralTrail" access="property" length="100" />
+		<property name="VersionIndex"		access="property" />
 
-    <many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
+		<many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
 		<many-to-one name="Parent"		column="ParentID"		class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />
 
-		<bag name="Children" cascade="all" generic="true" inverse="true" order-by="SortOrder" lazy="true" batch-size="{BatchSize}">
+		<bag name="Children" cascade="all" generic="true" inverse="true" order-by="SortOrder" lazy="{ChildrenLaziness}" batch-size="{BatchSize}">
 			<cache usage="read-write" />
 			<key column="ParentID" />
 			<one-to-many class="N2.ContentItem,N2"/>
@@ -111,7 +111,7 @@
 			<one-to-many class="N2.Security.AuthorizedRole, N2"/>
 		</bag>
 	</class>
-	
+
 
 	<!-- DetailCollection -->
 	<class name="N2.Details.DetailCollection,N2" table="{TablePrefix}DetailCollection">

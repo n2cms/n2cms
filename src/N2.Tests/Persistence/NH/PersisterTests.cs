@@ -1,6 +1,7 @@
 using System;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
+using System.Diagnostics;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -47,7 +48,7 @@ namespace N2.Tests.Persistence.NH
 		public void CanUpdate()
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "updatableRoot", null);
-			
+
 			using (persister)
 			{
 				item["someproperty"] = "hello";
@@ -211,10 +212,10 @@ namespace N2.Tests.Persistence.NH
 				ContentItem invokedTo = null;
 				EventHandler<CancellableDestinationEventArgs> handler = delegate(object sender, CancellableDestinationEventArgs e)
 				{
-					e.FinalAction = delegate(ContentItem from, ContentItem to) 
-					{ 
+					e.FinalAction = delegate(ContentItem from, ContentItem to)
+					{
 						invokedFrom = from;
-					    invokedTo = to;
+						invokedTo = to;
 						return null;
 					};
 				};
@@ -313,6 +314,35 @@ namespace N2.Tests.Persistence.NH
 			{
 				persister.Delete(fromDB ?? item);
 
+			}
+		}
+
+		[Test]
+		public void Laziness()
+		{
+			ContentItem root = CreateOneItem<PersistableItem1>(0, "root", null);
+			ContentItem root2 = CreateOneItem<PersistableItem1>(0, "root2", null);
+			for (int i = 0; i < 30; i++)
+			{
+				PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "item", root);
+			}
+			using (persister)
+			{
+				persister.Save(root);
+				persister.Save(root2);
+			}
+			using (persister)
+			{
+				root = persister.Get(root.ID);
+				Debug.WriteLine("Got: " + root + " with Children.Count: " + root.Children.Count);
+				foreach (var child in root.Children)
+				{
+				}
+				root2 = persister.Get(root2.ID);
+				Debug.WriteLine("Got: " + root2 + " with Children.Count: " + root2.Children.Count);
+				foreach (var child in root2.Children)
+				{
+				}
 			}
 		}
 	}

@@ -19,27 +19,28 @@ namespace N2.Persistence.NH
 	/// </summary>
 	public class ConfigurationBuilder : IConfigurationBuilder
 	{
-        private ClassMappingGenerator generator;
+		private ClassMappingGenerator generator;
 
-        bool tryLocatingHbmResources = false;
+		bool tryLocatingHbmResources = false;
 		readonly IDefinitionManager definitions;
 		IDictionary<string, string> properties = new Dictionary<string, string>();
 		IList<Assembly> assemblies = new List<Assembly>();
-        IList<string> mappingNames = new List<string>();
+		IList<string> mappingNames = new List<string>();
 		string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
 		string tablePrefix = "n2";
 		int batchSize = 25;
+		string childrenLaziness = "extra";
 		int stringLength = 1073741823;
-        string mappingStartTag = @"<?xml version=""1.0"" encoding=""utf-16""?>
+		string mappingStartTag = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">";
-        string mappingEndTag = "</hibernate-mapping>";
+		string mappingEndTag = "</hibernate-mapping>";
 
 
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
-        public ConfigurationBuilder(IDefinitionManager definitions, ClassMappingGenerator generator, DatabaseSection config, ConnectionStringsSection connectionStrings)
+		public ConfigurationBuilder(IDefinitionManager definitions, ClassMappingGenerator generator, DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			this.definitions = definitions;
-            this.generator = generator;
+			this.generator = generator;
 
 			if (config == null) config = new DatabaseSection();
 
@@ -49,20 +50,21 @@ namespace N2.Persistence.NH
 				DefaultMapping = config.HibernateMapping;
 
 			SetupProperties(config, connectionStrings);
-            SetupMappings(config);
+			SetupMappings(config);
 
-            TryLocatingHbmResources = config.TryLocatingHbmResources;
+			TryLocatingHbmResources = config.TryLocatingHbmResources;
 			tablePrefix = config.TablePrefix;
 			batchSize = config.BatchSize;
+			childrenLaziness = config.ChildrenLaziness;
 		}
 
-        private void SetupMappings(DatabaseSection config)
-        {
-            foreach (MappingElement me in config.Mappings)
-            {
-                mappingNames.Add(me.Name);
-            }
-        }
+		private void SetupMappings(DatabaseSection config)
+		{
+			foreach (MappingElement me in config.Mappings)
+			{
+				mappingNames.Add(me.Name);
+			}
+		}
 
 		/// <summary>Sets properties configuration dictionary based on configuration in the database section.</summary>
 		/// <param name="config">The database section configuration.</param>
@@ -76,7 +78,7 @@ namespace N2.Persistence.NH
 			if (flavour == DatabaseFlavour.AutoDetect)
 			{
 				ConnectionStringSettings css = connectionStrings.ConnectionStrings[config.ConnectionStringName];
-				if(css == null)
+				if (css == null)
 					throw new ConfigurationErrorsException("Could not find the connection string named '" + config.ConnectionStringName + "' that was defined in the n2/database configuration section.");
 				flavour = DetectFlavor(css);
 			}
@@ -96,30 +98,30 @@ namespace N2.Persistence.NH
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlClientDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSql2005Dialect).AssemblyQualifiedName;
 					break;
-                case DatabaseFlavour.SqlCe:
-					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof (NHibernate.Driver.SqlServerCeDriver).AssemblyQualifiedName;
+				case DatabaseFlavour.SqlCe:
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlServerCeDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSqlCeDialect).AssemblyQualifiedName;
 					break;
-                case DatabaseFlavour.MySql:
+				case DatabaseFlavour.MySql:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.MySqlDataDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MySQLDialect).AssemblyQualifiedName;
-                    break;
-                case DatabaseFlavour.SqLite:
+					break;
+				case DatabaseFlavour.SqLite:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SQLite20Driver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.SQLiteDialect).AssemblyQualifiedName;
-                    break;
-                case DatabaseFlavour.Firebird:
+					break;
+				case DatabaseFlavour.Firebird:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.FirebirdDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.FirebirdDialect).AssemblyQualifiedName;
-                    break;
-                case DatabaseFlavour.Generic:
+					break;
+				case DatabaseFlavour.Generic:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OleDbDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.GenericDialect).AssemblyQualifiedName;
-                    break;
-                case DatabaseFlavour.Jet:
-                    Properties[NHibernate.Cfg.Environment.ConnectionDriver] = "NHibernate.JetDriver.JetDriver, NHibernate.JetDriver";
+					break;
+				case DatabaseFlavour.Jet:
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = "NHibernate.JetDriver.JetDriver, NHibernate.JetDriver";
 					Properties[NHibernate.Cfg.Environment.Dialect] = "NHibernate.JetDriver.JetDialect, NHibernate.JetDriver";
-                    break;
+					break;
 				case DatabaseFlavour.DB2:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OdbcDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.DB2Dialect).AssemblyQualifiedName;
@@ -128,25 +130,25 @@ namespace N2.Persistence.NH
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
 
-            Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = config.Caching.ToString();
+			Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = config.Caching.ToString();
 			Properties[NHibernate.Cfg.Environment.UseQueryCache] = config.Caching.ToString();
 			Properties[NHibernate.Cfg.Environment.CacheProvider] = config.CacheProviderClass;
 #if NH2_1
 			Properties[NHibernate.Cfg.Environment.ProxyFactoryFactoryClass] = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
 #endif
 			foreach (string key in config.HibernateProperties.AllKeys)
-            {
-                Properties[key] = config.HibernateProperties[key].Value;
-            }
+			{
+				Properties[key] = config.HibernateProperties[key].Value;
+			}
 		}
 
 		private DatabaseFlavour DetectFlavor(ConnectionStringSettings css)
 		{
 			string provider = css.ProviderName;
 
-			if(provider == "" || provider.StartsWith("System.Data.SqlClient"))
+			if (provider == "" || provider.StartsWith("System.Data.SqlClient"))
 				return DatabaseFlavour.SqlServer2005;
-			if(provider.StartsWith("System.Data.SQLite"))
+			if (provider.StartsWith("System.Data.SQLite"))
 				return DatabaseFlavour.SqLite;
 			if (provider.StartsWith("MySql.Data.MySqlClient"))
 				return DatabaseFlavour.MySql;
@@ -154,13 +156,13 @@ namespace N2.Persistence.NH
 			throw new ConfigurationErrorsException("Could not auto-detect the database flavor. Please configure this explicitly in the n2/database section.");
 		}
 
-        #region Properties
+		#region Properties
 
-        public bool TryLocatingHbmResources
-        {
-            get { return tryLocatingHbmResources; }
-            set { tryLocatingHbmResources = value; }
-        }
+		public bool TryLocatingHbmResources
+		{
+			get { return tryLocatingHbmResources; }
+			set { tryLocatingHbmResources = value; }
+		}
 
 		/// <summary>Gets assemblies that will be added to the NHibernate configuration.</summary>
 		public IList<Assembly> Assemblies
@@ -170,7 +172,7 @@ namespace N2.Persistence.NH
 		}
 
 		/// <summary>Gets NHibernate configuration properties.</summary>
-		public IDictionary<string,string> Properties
+		public IDictionary<string, string> Properties
 		{
 			get { return properties; }
 			set { properties = value; }
@@ -195,7 +197,7 @@ namespace N2.Persistence.NH
 			AddProperties(cfg);
 
 			AddDefaultMapping(cfg);
-            AddMappings(cfg);
+			AddMappings(cfg);
 			AddAssemblies(cfg);
 			GenerateMappings(cfg);
 
@@ -217,24 +219,25 @@ namespace N2.Persistence.NH
 		{
 			return mappingXml.Replace("{TablePrefix}", tablePrefix)
 				.Replace("{StringLength}", stringLength.ToString())
-				.Replace("{BatchSize}", batchSize.ToString());
+				.Replace("{BatchSize}", batchSize.ToString())
+				.Replace("{ChildrenLaziness}", childrenLaziness);
 		}
 
-        protected virtual void AddMappings(NHibernate.Cfg.Configuration cfg)
-        {
-            foreach (string mappingName in this.mappingNames)
-            {
-                AddMapping(cfg, mappingName);
-            }
-        }
+		protected virtual void AddMappings(NHibernate.Cfg.Configuration cfg)
+		{
+			foreach (string mappingName in this.mappingNames)
+			{
+				AddMapping(cfg, mappingName);
+			}
+		}
 
 		/// <summary>Adds mappings to the configuration.</summary>
 		/// <param name="cfg">The configuration to add the mappings to.</param>
 		/// <param name="name">The resource name of the embedded resource.</param>
 		protected virtual void AddMapping(NHibernate.Cfg.Configuration cfg, string name)
 		{
-            if (!string.IsNullOrEmpty(name))
-            {
+			if (!string.IsNullOrEmpty(name))
+			{
 				using (Stream stream = GetStreamFromName(name))
 				{
 					if (stream == null) throw new ArgumentException("Could not read stream from embedded resource '" + name + "'", "name");
@@ -246,13 +249,13 @@ namespace N2.Persistence.NH
 						cfg.AddXml(mappingXml);
 					}
 				}
-            }
+			}
 		}
 
 		protected Stream GetStreamFromName(string name)
 		{
 			string[] pathAssemblyPair = name.Split(',');
-			if (pathAssemblyPair.Length != 2) throw new ArgumentException( "Expected the property DefaultMapping to be in the format [manifest resource path],[assembly name] but was: " + DefaultMapping);
+			if (pathAssemblyPair.Length != 2) throw new ArgumentException("Expected the property DefaultMapping to be in the format [manifest resource path],[assembly name] but was: " + DefaultMapping);
 
 			Assembly a = Assembly.Load(pathAssemblyPair[1]);
 			return a.GetManifestResourceStream(pathAssemblyPair[0]);
@@ -262,42 +265,42 @@ namespace N2.Persistence.NH
 		/// <param name="cfg">The nhibernate configuration to build.</param>
 		protected virtual void GenerateMappings(NHibernate.Cfg.Configuration cfg)
 		{
-            Debug.Write("Adding");
-            StringBuilder mappings = new StringBuilder(mappingStartTag);
-            List<ItemDefinition> allDefinitions = definitions.GetDefinitions()
-                .OrderBy(d => Utility.GetBaseTypes(d.ItemType).Count()) // order by inheritance depth so that nh doesn't puke on yet unmapped classes
-                .ToList();
+			Debug.Write("Adding");
+			StringBuilder mappings = new StringBuilder(mappingStartTag);
+			List<ItemDefinition> allDefinitions = definitions.GetDefinitions()
+				.OrderBy(d => Utility.GetBaseTypes(d.ItemType).Count()) // order by inheritance depth so that nh doesn't puke on yet unmapped classes
+				.ToList();
 
-            foreach (ItemDefinition definition in allDefinitions)
-            {
-                if (GeneratorHelper.IsUnsuiteableForMapping(definition.ItemType))
+			foreach (ItemDefinition definition in allDefinitions)
+			{
+				if (GeneratorHelper.IsUnsuiteableForMapping(definition.ItemType))
 					continue;
-            	
-                if (!AddedMappingFromHbmResource(definition, cfg))
-                {
-                    string classMapping = generator.GetMapping(definition, allDefinitions);
-                    mappings.Append(classMapping);
-                }
-            }
-            mappings.Append(mappingEndTag);
-            cfg.AddXml(FormatMapping(mappings.ToString()));
+
+				if (!AddedMappingFromHbmResource(definition, cfg))
+				{
+					string classMapping = generator.GetMapping(definition, allDefinitions);
+					mappings.Append(classMapping);
+				}
+			}
+			mappings.Append(mappingEndTag);
+			cfg.AddXml(FormatMapping(mappings.ToString()));
 		}
 
-        private bool AddedMappingFromHbmResource(ItemDefinition definition, NHibernate.Cfg.Configuration cfg)
-        {
-            if (!TryLocatingHbmResources)
-                return false;
+		private bool AddedMappingFromHbmResource(ItemDefinition definition, NHibernate.Cfg.Configuration cfg)
+		{
+			if (!TryLocatingHbmResources)
+				return false;
 
-            Stream hbmXmlStream = definition.ItemType.Assembly.GetManifestResourceStream(definition.ItemType.FullName + ".hbm.xml");
-            if (hbmXmlStream == null)
-                return false;
-            
-            using (hbmXmlStream)
-            {
-                cfg.AddInputStream(hbmXmlStream);
-                return true;
-            }
-        }
+			Stream hbmXmlStream = definition.ItemType.Assembly.GetManifestResourceStream(definition.ItemType.FullName + ".hbm.xml");
+			if (hbmXmlStream == null)
+				return false;
+
+			using (hbmXmlStream)
+			{
+				cfg.AddInputStream(hbmXmlStream);
+				return true;
+			}
+		}
 
 		/// <summary>Enumerates base type chain of the supplied type.</summary>
 		/// <param name="t">The type whose base types will be enumerated.</param>
