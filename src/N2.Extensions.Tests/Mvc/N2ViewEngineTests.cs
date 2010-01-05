@@ -16,11 +16,22 @@ namespace N2.Extensions.Tests.Mvc
 	{
 		private IViewEngine mockViewEngine;
 		private IView mockView;
+		private IControllerMapper mockControllerMapper;
 
 		[SetUp]
 		public override void SetUp()
 		{
-			PathDictionary.Instance[typeof(RegularPage)] = new[] { new MvcConventionTemplateAttribute("Regular") };
+			mockControllerMapper = MockRepository.GenerateStub<IControllerMapper>();
+
+			MvcConventionTemplateAttribute attribute;
+			PathDictionary.Instance[typeof (RegularPage)] = new[]
+			                                                	{
+			                                                		attribute = new MvcConventionTemplateAttribute("Regular")
+			                                                			{ControllerMapper = mockControllerMapper}
+			                                                	};
+
+			mockControllerMapper.Stub(m => m.GetControllerName(null)).IgnoreArguments().Return("Default");
+			mockControllerMapper.Stub(m => m.ControllerHasAction("Default", attribute.DefaultAction)).IgnoreArguments().Return(true);
 
 			mockViewEngine = MockRepository.GenerateMock<IViewEngine>();
 			mockView = MockRepository.GenerateStub<IView>();

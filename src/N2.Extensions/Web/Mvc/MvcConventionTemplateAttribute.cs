@@ -10,6 +10,7 @@ namespace N2.Web.Mvc
 	public class MvcConventionTemplateAttribute : Attribute, IPathFinder
 	{
 		private readonly string _otherTemplateName;
+		private IControllerMapper _controllerMapper;
 
 		public string DefaultAction { get; set; }
 
@@ -44,9 +45,26 @@ namespace N2.Web.Mvc
 
 			string action = remainingUrl ?? DefaultAction;
 
+			if (ActionDoesNotExistOnController(item, action))
+				return null;
+
 			return new PathData(item, templateName, action, String.Empty);
 		}
 
 		#endregion
+
+		// For unit tests
+		public IControllerMapper ControllerMapper
+		{
+			get { return _controllerMapper = _controllerMapper ?? N2.Context.Current.Resolve<IControllerMapper>(); }
+			set { _controllerMapper = value; }
+		}
+
+		private bool ActionDoesNotExistOnController(ContentItem item, string action)
+		{
+			var controllerName = ControllerMapper.GetControllerName(item.GetType());
+
+			return !ControllerMapper.ControllerHasAction(controllerName, action);
+		}
 	}
 }

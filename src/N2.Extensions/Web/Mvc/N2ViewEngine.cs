@@ -106,6 +106,9 @@ namespace N2.Web.Mvc
 			{
 				var result = engine.FindView(controllerContext, viewName, masterName, useCache);
 
+				if(result == null)
+					return null;
+
 				searchedLocations.AddRange(result.SearchedLocations ?? new string[0]);
 				if (result.View != null)
 					return result;
