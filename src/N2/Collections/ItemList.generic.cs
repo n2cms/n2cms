@@ -30,27 +30,48 @@ namespace N2.Collections
 	/// A generic item list.
 	/// </summary>
 	/// <typeparam name="T">The type of item to list.</typeparam>
-	public class ItemList<T> : List<T>, IHierarchicalEnumerable where T : ContentItem
+	public class ItemList<T> : IList<T>, IHierarchicalEnumerable where T : ContentItem
 	{
+		IList<T> inner;
+
         #region Constructors
 
         /// <summary>Initializes an empty instance of the ItemList class.</summary>
         public ItemList()
         {
-        }
+			inner = new List<T>();
+		}
+
+		/// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
+		public ItemList(IList<T> items)
+		{
+			inner = items ?? new List<T>();
+		}
 
         /// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
         public ItemList(IEnumerable<T> items)
-            : base(items)
         {
+			inner = new List<T>(items);
         }
 
 		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
 		/// <param name="items">The full enumeration of items to initialize with.</param>
 		/// <param name="filters">The filters that should be applied to the full collection.</param>
 		public ItemList(IEnumerable items, params ItemFilter[] filters)
+			: this()
 		{
 			AddRange(items, filters);
+		}
+
+		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
+		/// <param name="items">The full enumeration of items to initialize with.</param>
+		/// <param name="filters">The filters that should be applied to the full collection.</param>
+		public ItemList(ICollection<T> items, ItemFilter filter)
+			: this()
+		{
+			if (items.Count == 0)
+				return;
+			AddRange(items, filter);
 		}
 
 		#endregion
@@ -86,6 +107,25 @@ namespace N2.Collections
 			return true;
 		}
 
+		/// <summary>Sorts the elements in the entire list using the default comparer.</summary>
+		public void Sort()
+		{
+			List<T> copy = new List<T>(inner);
+			copy.Sort();
+			inner = copy;
+		}
+
+		/// <summary>Sorts the elements in the entire list using the specified comparer.</summary>
+		/// <param name="comparer">The comparer to use.</param>
+		public void Sort(IComparer<T> comparer)
+		{
+			List<T> copy = new List<T>(inner);
+			copy.Sort(comparer);
+			inner = copy;
+		}
+
+		/// <summary>Sorts the elements in the entire list using the specified expression.</summary>
+		/// <param name="sortExpression">A sort expression, e.g. Published DESC.</param>
 		public void Sort(string sortExpression)
 		{
 			Sort(new ItemComparer<T>(sortExpression));
@@ -163,6 +203,88 @@ namespace N2.Collections
 			}
 
 			#endregion
+		}
+
+		#endregion
+
+		#region IList<T> Members
+
+		public int IndexOf(T item)
+		{
+			return inner.IndexOf(item);
+		}
+
+		public void Insert(int index, T item)
+		{
+			inner.Insert(index, item);
+		}
+
+		public void RemoveAt(int index)
+		{
+			inner.RemoveAt(index);
+		}
+
+		public T this[int index]
+		{
+			get { return inner[index]; }
+			set { inner[index] = value; }
+		}
+
+		#endregion
+
+		#region ICollection<T> Members
+
+		public void Add(T item)
+		{
+			inner.Add(item);
+		}
+
+		public void Clear()
+		{
+			inner.Clear();
+		}
+
+		public bool Contains(T item)
+		{
+			return inner.Contains(item);
+		}
+
+		public void CopyTo(T[] array, int arrayIndex)
+		{
+			inner.CopyTo(array, arrayIndex);
+		}
+
+		public int Count
+		{
+			get { return inner.Count; }
+		}
+
+		public bool IsReadOnly
+		{
+			get { return inner.IsReadOnly; }
+		}
+
+		public bool Remove(T item)
+		{
+			return inner.Remove(item);
+		}
+
+		#endregion
+
+		#region IEnumerable<T> Members
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			return inner.GetEnumerator();
+		}
+
+		#endregion
+
+		#region IEnumerable Members
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return inner.GetEnumerator();
 		}
 
 		#endregion

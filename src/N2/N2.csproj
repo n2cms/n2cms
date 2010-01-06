@@ -109,7 +109,6 @@
     <Compile Include="Collections\ItemList.generic.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
-    <Compile Include="Obsolete\Configuration\N2ConfigurationSectionHandler.cs" />
     <Compile Include="Definitions\IDefinitionManager.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
@@ -381,6 +380,8 @@
     <Compile Include="Castle\CastleServiceContainerConfigurer.cs" />
     <Compile Include="Engine\ComponentRegistrationException.cs" />
     <Compile Include="Engine\Configuration\IServiceContainerConfigurer.cs" />
+    <Compile Include="Engine\StructureBoundCache.cs" />
+    <Compile Include="Engine\Globalization\LanguageInfo.cs" />
     <Compile Include="Engine\IServiceContainer.cs" />
     <Compile Include="Engine\IWorker.cs" />
     <Compile Include="Engine\MediumTrust\MediumTrustEngine.cs" />
@@ -390,6 +391,8 @@
     <Compile Include="Engine\ServiceContainerBase.cs" />
     <Compile Include="Engine\ServiceRegistrator.cs" />
     <Compile Include="Castle\WindsorServiceContainer.cs" />
+    <Compile Include="Engine\StructureBoundDictionaryCache.cs" />
+    <Compile Include="Engine\ValueEventArgs.cs" />
     <Compile Include="Integrity\RestrictChildrenAttribute.cs" />
     <Compile Include="Edit\FileSystem\DirectoryData.cs" />
     <Compile Include="Edit\FileSystem\FileData.cs" />
@@ -493,7 +496,6 @@
     </Compile>
     <Compile Include="Engine\ContentEngine.cs" />
     <Compile Include="INode.cs" />
-    <Compile Include="Obsolete\Configuration\MediumTrustSectionHandler.cs" />
     <Compile Include="Configuration\TypeElementCollection.cs" />
     <Compile Include="Configuration\TypeElement.cs" />
     <Compile Include="Integrity\IntegrityMappingAttribute.cs" />

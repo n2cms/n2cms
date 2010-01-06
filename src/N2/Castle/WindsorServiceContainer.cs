@@ -72,14 +72,14 @@ namespace N2.Castle
 			container.Register(registration);
 		}
 
-		public override void AddComponentInstance(string key, Type type, object instance)
+		public override void AddComponentInstance(string key, Type serviceType, object instance)
 		{
-			container.Kernel.AddComponentInstance(key, type, instance);
+			container.Kernel.AddComponentInstance(key, serviceType, instance);
 		}
 
-		public override void AddComponent(string key, Type type, Type classType)
+		public override void AddComponent(string key, Type serviceType, Type classType)
 		{
-			container.AddComponent(key, type, classType);
+			container.AddComponent(key, serviceType, classType);
 		}
 
 		public override object Resolve(string key)
@@ -151,20 +151,6 @@ namespace N2.Castle
 				Kernel.ComponentRegistered += OnComponentRegistered;
 			}
 
-			private static void OnComponentModelCreated(ComponentModel model)
-			{
-				Trace.WriteLine("Created " + model);
-				bool startable = CheckIfComponentImplementsIStartable(model);
-
-				model.ExtendedProperties["startable"] = startable;
-
-				if (!startable)
-					return;
-
-				model.LifecycleSteps.Add(LifecycleStepType.Commission, StartConcern.Instance);
-				model.LifecycleSteps.AddFirst(LifecycleStepType.Decommission, StopConcern.Instance);
-			}
-
 			private void OnComponentRegistered(String key, IHandler handler)
 			{
 				bool startable = (bool?)handler.ComponentModel.ExtendedProperties["startable"] ?? false;
@@ -182,6 +168,20 @@ namespace N2.Castle
 				}
 
 				CheckWaitingList();
+			}
+
+			private void OnComponentModelCreated(ComponentModel model)
+			{
+				Trace.WriteLine("Created " + model);
+				bool startable = CheckIfComponentImplementsIStartable(model);
+
+				model.ExtendedProperties["startable"] = startable;
+
+				if (!startable)
+					return;
+
+				model.LifecycleSteps.Add(LifecycleStepType.Commission, StartConcern.Instance);
+				model.LifecycleSteps.AddFirst(LifecycleStepType.Decommission, StopConcern.Instance);
 			}
 
 			private void OnHandlerStateChanged(object source, EventArgs args)

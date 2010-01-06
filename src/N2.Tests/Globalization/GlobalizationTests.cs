@@ -21,8 +21,12 @@ namespace N2.Tests.Globalization
 		public override void TestFixtureSetUp()
 		{
 			base.TestFixtureSetUp();
-			engine.AddComponent("LanguageGateway", typeof(ILanguageGateway), typeof(LanguageGateway));
-			engine.AddComponent("LanguageInterceptor", typeof(LanguageInterceptor));
+
+			//var x = engine.Container.Resolve<N2.Engine.StructureBoundCache<string>>();
+			//var y = engine.Container.Resolve<N2.Engine.StructureBoundDictionaryCache<string,string>>();
+
+			engine.Container.AddComponent("LanguageGateway", typeof(ILanguageGateway), typeof(LanguageGateway));
+			engine.Container.AddComponent("LanguageInterceptor", typeof(LanguageInterceptor), typeof(LanguageInterceptor));
 		}
 
 		[SetUp]

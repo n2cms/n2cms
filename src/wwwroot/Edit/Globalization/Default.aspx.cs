@@ -44,26 +44,26 @@ namespace N2.Edit.Globalization
 
 		protected IEnumerable<ContentItem> GetChildren(bool getPages)
 		{
-            ItemList items = new ItemList();
-            foreach (ContentItem parent in gateway.FindTranslations(Selection.SelectedItem))
-            {
-                foreach (ContentItem child in parent.GetChildren(Engine.EditManager.GetEditorFilter(User)))
-                {
-                    if(!items.ContainsAny(gateway.FindTranslations(child)))
-                    {
-                        items.Add(child);
-                    }
-                }
-            }
-            items.Sort();
+			ItemList items = new ItemList();
+			foreach (ContentItem parent in gateway.FindTranslations(Selection.SelectedItem))
+			{
+				foreach (ContentItem child in parent.GetChildren(Engine.EditManager.GetEditorFilter(User)))
+				{
+					if (!items.ContainsAny(gateway.FindTranslations(child)))
+					{
+						items.Add(child);
+					}
+				}
+			}
+			items.Sort();
 
-            foreach (ContentItem item in items)
-            {
-                if (item is ILanguage)
-                    continue;
-                else if (item.IsPage == getPages)
-                    yield return item;
-            }
+			foreach (ContentItem item in items)
+			{
+				if (item is ILanguage)
+					continue;
+				else if (item.IsPage == getPages)
+					yield return item;
+			}
 		}
 
         protected string ReturnUrl

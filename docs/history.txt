@@ -1,4 +1,6 @@
-﻿- made the Children collection extra lazy (configurable), i.e. select count(*) rather than fetch collection
+﻿- inmporved performance of language gateway
+- tweaked ItemList to wrap list instead of copy values (breaking change)
+- made the Children collection extra lazy (configurable), i.e. select count(*) rather than fetch collection
 - lock icon for name-to-title sync
 - embedded future publish in edit interface
 - fixed nh mapping generation for ReplaceParentDefinition attribute to work as expected

@@ -9,13 +9,14 @@ using N2.Definitions;
 using N2.Security;
 using N2.Configuration;
 using N2.Edit.Trash;
+using N2.Plugin;
 
 namespace N2.Engine.Globalization
 {
     /// <summary>
     /// Globalization handler.
     /// </summary>
-	public class LanguageGateway : ILanguageGateway
+	public class LanguageGateway : ILanguageGateway, IAutoStart
 	{
 		public const string LanguageKey = "LanguageKey";
 
@@ -27,23 +28,30 @@ namespace N2.Engine.Globalization
 		int recursionDepth = 3;
         ISecurityManager security;
         IWebContext context;
+		StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
         bool enabled = true;
 
-        public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context, EngineSection config)
-            : this(persister, finder, editManager, definitions, host, security, context)
+		public LanguageGateway(
+			IPersister persister, 
+			IItemFinder finder, 
+			IEditManager editManager, 
+			IDefinitionManager definitions, 
+			IHost host, 
+			ISecurityManager security, 
+			IWebContext context,
+			//StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
+			EngineSection config)
         {
-            Enabled = config.Globalization.Enabled;
-        }
-
-		public LanguageGateway(IPersister persister, IItemFinder finder, IEditManager editManager, IDefinitionManager definitions, IHost host, ISecurityManager security, IWebContext context)
-		{
 			this.persister = persister;
 			this.finder = finder;
 			this.editManager = editManager;
 			this.definitions = definitions;
 			this.host = host;
-            this.security = security;
-            this.context = context;
+			this.security = security;
+			this.context = context;
+			this.languagesCache = new StructureBoundDictionaryCache<int, LanguageInfo[]>(persister);
+			//this.languagesCache = languagesCache;
+			Enabled = config.Globalization.Enabled;
         }
 
         public bool Enabled
@@ -91,15 +99,26 @@ namespace N2.Engine.Globalization
 
 		public IEnumerable<ILanguage> GetAvailableLanguages()
 		{
-			ContentItem root = persister.Get(host.CurrentSite.RootItemID);
-			IEnumerable<ILanguage> languages = new RecursiveFinder().Find<ILanguage>(root, RecursionDepth, typeof(ITrashCan));
-			foreach (ILanguage language in languages)
+			var languages = languagesCache.GetValue(host.CurrentSite.RootItemID, FindLanguagesRecursive);
+			foreach(var language in languages)
+			{
+				yield return persister.Get(language.ID) as ILanguage;
+			}
+		}
+
+		private LanguageInfo[] FindLanguagesRecursive(int rootNodeID)
+		{
+			List<LanguageInfo> languages = new List<LanguageInfo>();
+			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(rootNodeID), RecursionDepth, typeof(ITrashCan)))
 			{
 				if (!string.IsNullOrEmpty(language.LanguageCode))
 				{
-					yield return language;
+					var languageItem = language as ContentItem;
+					if (languageItem != null && languageItem.ID > 0)
+						languages.Add(new LanguageInfo { ID = languageItem.ID, LanguageCode = language.LanguageCode });
 				}
 			}
+			return languages.ToArray();
 		}
 
     	public IEnumerable<ContentItem> FindTranslations(ContentItem item)
@@ -266,6 +285,20 @@ namespace N2.Engine.Globalization
                 item[LanguageGateway.LanguageKey] = appointedMaster[LanguageGateway.LanguageKey];
                 yield return item;
             }
-        }
-    }
+		}
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+			languagesCache.Start();
+		}
+
+		public void Stop()
+		{
+			languagesCache.Stop();
+		}
+
+		#endregion
+	}
 }
