@@ -23,15 +23,18 @@ namespace N2
 		/// <returns>The converted value.</returns>
 		public static object Convert(object value, Type destinationType)
 		{
-			if(value != null)
+			if (value != null)
 			{
-				TypeConverter converter = TypeDescriptor.GetConverter(destinationType);
-                if (converter != null && converter.CanConvertFrom(value.GetType()))
-                    return converter.ConvertFrom(value);
-                else if (destinationType.IsEnum && value is int)
-                    return Enum.ToObject(destinationType, (int)value);
-                else if (!destinationType.IsAssignableFrom(value.GetType()))
-                    return System.Convert.ChangeType(value, destinationType);
+				TypeConverter destinationConverter = TypeDescriptor.GetConverter(destinationType);
+				TypeConverter sourceConverter = TypeDescriptor.GetConverter(value.GetType());
+				if (destinationConverter != null && destinationConverter.CanConvertFrom(value.GetType()))
+					return destinationConverter.ConvertFrom(value);
+				if (sourceConverter != null && sourceConverter.CanConvertTo(destinationType))
+					return sourceConverter.ConvertTo(value, destinationType);
+				if (destinationType.IsEnum && value is int)
+					return Enum.ToObject(destinationType, (int)value);
+				if (!destinationType.IsAssignableFrom(value.GetType()))
+					return System.Convert.ChangeType(value, destinationType);
 			}
 			return value;
 		}

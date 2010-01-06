@@ -1,4 +1,5 @@
-﻿- inmporved performance of language gateway
+﻿- Applied James Crowley's patch: TypeDescriptor conversions
+- inmporved performance of language gateway
 - tweaked ItemList to wrap list instead of copy values (breaking change)
 - made the Children collection extra lazy (configurable), i.e. select count(*) rather than fetch collection
 - lock icon for name-to-title sync
