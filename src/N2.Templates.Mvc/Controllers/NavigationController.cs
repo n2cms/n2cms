@@ -22,8 +22,9 @@ namespace N2.Templates.Mvc.Controllers
 			ContentItem branchRoot = Find.AncestorAtLevel(2, Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList(),
 														  N2.Find.CurrentPage);
 
-			var model = new TopMenuModel(GetTranslations(), branchRoot, Find.Items.Where.Parent.Eq(Find.StartPage)
-				.Filters(new VisibleFilter(), new PageFilter()).Select());
+			var model = new TopMenuModel(GetTranslations(), branchRoot, Find.StartPage
+			                                                            	.GetChildren(new NavigationFilter())
+			                                                            	.OrderBy(i => i.SortOrder));
 
 			return PartialView(model);
 		}
