@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -12,7 +13,6 @@ namespace MvcTest
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-			routes.IgnoreRoute("{resource}.ashx/{*pathInfo}");
             
 			// This route detects content item paths and executes their controller
 			routes.Add(new ContentRoute(engine));
@@ -29,9 +29,17 @@ namespace MvcTest
 		{
 			// normally the engine is initialized by the initializer module but it can also be initialized this programmatically
 			// since we attach programmatically we need to associate the event broker with a http application
-			IEngine engine = N2.Context.Initialize(false);
+
+			var engine = MvcEngine.Create();
+
+			engine.RegisterControllers(typeof(GlobalApplication).Assembly);
 
 			RegisterRoutes(RouteTable.Routes, engine);
+
+			foreach (var ve in ViewEngines.Engines.Where(ve => ve is N2ViewEngine).ToList())
+			{
+				ViewEngines.Engines.Remove(ve);
+			}
 		}
 
 		public override void Init()

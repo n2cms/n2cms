@@ -100,7 +100,7 @@
     <Content Include="Content\comment_edit.png" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="Views\Content\DefaultView.aspx" />
+    <Content Include="Views\Content\Index.aspx" />
     <Content Include="Views\NewsContainer\Index.aspx" />
     <Content Include="Views\News\Comment.aspx" />
     <Content Include="Views\News\Index.aspx" />

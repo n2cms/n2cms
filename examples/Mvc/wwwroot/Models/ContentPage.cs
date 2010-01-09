@@ -12,10 +12,5 @@ namespace MvcTest.Models
 			get { return (string)(GetDetail("Text") ?? string.Empty); }
 			set { SetDetail("Text", value, string.Empty); }
 		}
-
-		public override string TemplateUrl
-		{
-			get { return "~/Views/Content/DefaultView.aspx"; }
-		}
 	}
 }
