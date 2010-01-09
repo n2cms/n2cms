@@ -64,3 +64,4 @@ CONTRIBUTORS
 * Tonez
 * Stanley Ipkiss
 * Kennet
+* James Crowley

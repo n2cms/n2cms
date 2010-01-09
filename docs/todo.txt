@@ -1,3 +1,6 @@
+- extend user object: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=73897
+- stack overflow mvc: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=80172
+- image resize on upload
 - mvc in sub-app with no ending slash
 - content aspects (ContentPart, children->pages+parts, n2parts)
 - Parts/Pages
