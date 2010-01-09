@@ -16,7 +16,7 @@ namespace N2.Engine.Globalization
     /// <summary>
     /// Globalization handler.
     /// </summary>
-	public class LanguageGateway : ILanguageGateway, IAutoStart
+	public class LanguageGateway : ILanguageGateway
 	{
 		public const string LanguageKey = "LanguageKey";
 
@@ -39,7 +39,7 @@ namespace N2.Engine.Globalization
 			IHost host, 
 			ISecurityManager security, 
 			IWebContext context,
-			//StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
+			StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
 			EngineSection config)
         {
 			this.persister = persister;
@@ -49,8 +49,7 @@ namespace N2.Engine.Globalization
 			this.host = host;
 			this.security = security;
 			this.context = context;
-			this.languagesCache = new StructureBoundDictionaryCache<int, LanguageInfo[]>(persister);
-			//this.languagesCache = languagesCache;
+			this.languagesCache = languagesCache;
 			Enabled = config.Globalization.Enabled;
         }
 
@@ -286,19 +285,5 @@ namespace N2.Engine.Globalization
                 yield return item;
             }
 		}
-
-		#region IAutoStart Members
-
-		public void Start()
-		{
-			languagesCache.Start();
-		}
-
-		public void Stop()
-		{
-			languagesCache.Stop();
-		}
-
-		#endregion
 	}
 }

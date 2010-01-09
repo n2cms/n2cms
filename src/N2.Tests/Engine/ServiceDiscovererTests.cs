@@ -6,6 +6,9 @@ using NUnit.Framework;
 using N2.Engine;
 using N2.Engine.MediumTrust;
 using N2.Castle;
+using N2.Persistence;
+using N2.Persistence.NH;
+using N2.Details;
 
 namespace N2.Tests.Engine
 {
@@ -30,71 +33,6 @@ namespace N2.Tests.Engine
 
     public abstract class ServiceDiscovererTests
 	{
-		#region Test Classes
-		[Service(Key = "Sesame")]
-        class SelfService
-        {
-        }
-
-		[Service]
-		class DependingService
-		{
-			public SelfService service;
-			public DependingService(SelfService service)
-			{
-				this.service = service;
-			}
-		}
-
-		[Service]
-		class GenericSelfService<T>
-		{
-		}
-
-		[Service]
-		class GenericDependingService
-		{
-			public GenericSelfService<int> service;
-			public GenericDependingService(GenericSelfService<int> service)
-			{
-				this.service = service;
-			}
-		}
-
-        interface IService
-        {
-        }
-
-        [Service(typeof(IService))]
-        class InterfacedService : IService
-        {
-		}
-
-		interface IGenericService<T>
-		{
-		}
-
-		[Service(typeof(IGenericService<>))]
-		class GenericInterfacedService<T> : IGenericService<T>
-		{
-		}
-
-		[Service]
-		class GenericInterfaceDependingService
-		{
-			public IGenericService<int> service;
-			public GenericInterfaceDependingService(IGenericService<int> service)
-			{
-				this.service = service;
-			}
-		}
-
-        class NonAttributed
-        {
-		}
-
-		#endregion
-
         protected IServiceContainer container;
 
         [Test]
@@ -187,7 +125,7 @@ namespace N2.Tests.Engine
 		}
 
 		[Test]
-		public void GenericServices_CanDepend_OnGenericServiceInterface()
+		public void Services_CanDepend_OnGenericServiceInterface()
 		{
 			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(GenericInterfaceDependingService), typeof(GenericInterfacedService<>));
 
@@ -198,5 +136,108 @@ namespace N2.Tests.Engine
 			Assert.That(service, Is.InstanceOf<GenericInterfaceDependingService>());
 			Assert.That(service.service, Is.InstanceOf<GenericInterfacedService<int>>());
 		}
-    }
+
+		[Test]
+		public void GenericServices_CanDepend_OnService()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(SelfService), typeof(DependingGenericSelfService<>));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.Start();
+
+			var service = container.Resolve<DependingGenericSelfService<string>>();
+			Assert.That(service, Is.InstanceOf<DependingGenericSelfService<string>>());
+			Assert.That(service.service, Is.InstanceOf<SelfService>());
+		}
+
+		[Test]
+		public void X()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(ContentItem).Assembly.GetTypes());
+			container.AddComponentInstance("x",
+				typeof(IPersister), 
+				new ContentPersister(new Fakes.FakeRepository<ContentItem>(), new Fakes.FakeRepository<LinkDetail>(), null));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.Start();
+			
+			var service = container.Resolve<N2.Engine.StructureBoundDictionaryCache<int, string>>();
+			Assert.That(service, Is.InstanceOf<N2.Engine.StructureBoundDictionaryCache<int, string>>());
+		}
+	}
+
+	#region Test Classes
+	[Service(Key = "Sesame")]
+	public class SelfService
+	{
+	}
+
+	[Service]
+	public class DependingService
+	{
+		public SelfService service;
+		public DependingService(SelfService service)
+		{
+			this.service = service;
+		}
+	}
+
+	[Service]
+	public class GenericSelfService<T>
+	{
+	}
+
+	[Service]
+	public class DependingGenericSelfService<T>
+	{
+		public SelfService service;
+		public DependingGenericSelfService(SelfService service)
+		{
+			this.service = service;
+		}
+	}
+
+	[Service]
+	public class GenericDependingService
+	{
+		public GenericSelfService<int> service;
+		public GenericDependingService(GenericSelfService<int> service)
+		{
+			this.service = service;
+		}
+	}
+
+	public interface IService
+	{
+	}
+
+	[Service(typeof(IService))]
+	public class InterfacedService : IService
+	{
+	}
+
+	public interface IGenericService<T>
+	{
+	}
+
+	[Service(typeof(IGenericService<>))]
+	public class GenericInterfacedService<T> : IGenericService<T>
+	{
+	}
+
+	[Service]
+	public class GenericInterfaceDependingService
+	{
+		public IGenericService<int> service;
+		public GenericInterfaceDependingService(IGenericService<int> service)
+		{
+			this.service = service;
+		}
+	}
+
+	public class NonAttributed
+	{
+	}
+
+	#endregion
 }

@@ -164,7 +164,7 @@ namespace N2.Engine.MediumTrust
 				throw new N2Exception(errorMessage.ToString());
 			}
 			ConstructorInfo constructor = constructorInfo.ConstructorInfo;
-
+			
 			object[] parameters = CreateConstructorParameters(constructor.GetParameters());
 			object componentInstance = constructor.Invoke(parameters);
 			AddComponentInstance(key, serviceType, componentInstance);

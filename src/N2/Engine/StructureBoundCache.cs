@@ -11,17 +11,27 @@ namespace N2.Engine
 	/// </summary>
 	/// <typeparam name="T">The type of value to store.</typeparam>
 	[Service]
-	public class StructureBoundCache<T> : IAutoStart where T:class
+	public class StructureBoundCache<T> : IDisposable where T:class
 	{
 		IPersister persister;
 
 		public StructureBoundCache(IPersister persister)
 		{
 			this.persister = persister;
+
+			persister.ItemCopied += StateChanged;
+			persister.ItemDeleted += StateChanged;
+			persister.ItemMoved += StateChanged;
+			persister.ItemSaved += StateChanged;
 		}
 
 		/// <summary>The value that is cached.</summary>
-		public T Value { get; set; }
+		protected T Value { get; set; }
+
+		void StateChanged(object sender, EventArgs e)
+		{
+			Expire();
+		}
 
 		/// <summary>Gets an existing or creates a new cached value.</summary>
 		/// <param name="valueFactory">The method that creates the value when it is null.</param>
@@ -54,27 +64,19 @@ namespace N2.Engine
 		public event EventHandler<ValueEventArgs<T>> ValueCreated;
 		public event EventHandler<ValueEventArgs<T>> ValueExpiring;
 
-		#region IAutoStart Members
+		#region IDisposable Members
 
-		public void Start()
+		bool isDisposed;
+		public void Dispose()
 		{
-			persister.ItemCopied += StateChanged;
-			persister.ItemDeleted += StateChanged;
-			persister.ItemMoved += StateChanged;
-			persister.ItemSaved += StateChanged;
-		}
-
-		public void Stop()
-		{
-			persister.ItemCopied -= StateChanged;
-			persister.ItemDeleted -= StateChanged;
-			persister.ItemMoved -= StateChanged;
-			persister.ItemSaved -= StateChanged;
-		}
-
-		void StateChanged(object sender, EventArgs e)
-		{
-			Expire();
+			if (!isDisposed)
+			{
+				isDisposed = true;
+				persister.ItemCopied -= StateChanged;
+				persister.ItemDeleted -= StateChanged;
+				persister.ItemMoved -= StateChanged;
+				persister.ItemSaved -= StateChanged;
+			}
 		}
 
 		#endregion
