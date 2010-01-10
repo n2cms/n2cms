@@ -69,22 +69,28 @@ namespace N2.Workflow
                     return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
                 
                 // Editing
-                if(context.Data.VersionOf == null)
-                    return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
-                else if (context.Data.State == ContentState.Unpublished)
-                    // has been published before
+				if (context.Data.VersionOf == null)
+				{
+					if(context.Data.ID == 0)
+						return Compose("Publish", Authorize(Permission.Publish), validate,			updateObject, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
+					
+					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
+				}
+
+				// has been published before
+				if (context.Data.State == ContentState.Unpublished)
                     return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
-                else
-                    // has never been published before (remove old version)
-                    return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
+                
+                // has never been published before (remove old version)
+                return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
             }
             else if (context.Interface == Interfaces.Viewing && context.Data.VersionOf != null)
             {
                 // Viewing
                 if (context.Data.State == ContentState.Unpublished)
                     return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
-                else
-                    return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
+                
+                return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
             }
 
             throw new NotSupportedException();
