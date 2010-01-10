@@ -103,16 +103,6 @@ namespace N2.Web.UI.WebControls
 				AppendDefinedTemplate(VisibleHeaderTemplate, this);
 				AddPlugins(state);
 				AppendDefinedTemplate(VisibleFooterTemplate, this);
-
-                if (CurrentItem != null && EnableEditInterfaceIntegration && !OriginatesFromEdit())
-                {
-                    string navigationUrl = N2.Context.Current.EditManager.GetNavigationUrl(CurrentItem);
-                    string previewUrl = N2.Context.Current.EditManager.GetPreviewUrl(CurrentItem);
-                    string script = string.Format(scriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
-                    Page.ClientScript.RegisterStartupScript(typeof(ControlPanel), "updateNavigation", script, true);
-                }
-                else
-                    Page.ClientScript.RegisterStartupScript(typeof(ControlPanel), "updateNavigation", @"if(window.n2ctx && window.n2ctx.hasTop()) jQuery('.cpAdminister').hide();", true);
             }
 			else if (state == ControlPanelState.DragDrop)
 			{
@@ -219,15 +209,6 @@ window.n2ddcp = new n2DragDrop();
 			}
 		}
         
-		string scriptFormat = @"if(window.n2ctx){{
-    window.n2ctx.setupToolbar('{0}','{1}');
-    window.n2ctx.refreshNavigation('{2}');
-    if(window.n2ctx.hasTop())
-        jQuery('.cpAdminister').hide();
-    else
-        jQuery('.cpView').hide();
-}}";
-
 		protected override void Render(HtmlTextWriter writer)
 		{
 			var arrays = GetArrays(Page);
@@ -248,14 +229,34 @@ window.n2ddcp = new n2DragDrop();
 			}
 			if(EnableEditInterfaceIntegration)
 			{
-				writer.WriteLineNoTabs("if(window.n2ctx){window.n2ctx.select('preview');}");
+				writer.WriteLineNoTabs("if(window.n2ctx){");
+				writer.WriteLineNoTabs("window.n2ctx.select('preview');");
+				if (CurrentItem != null)
+				{
+					string navigationUrl = Engine.EditManager.GetNavigationUrl(CurrentItem);
+					string previewUrl = Engine.EditManager.GetPreviewUrl(CurrentItem);
+					string script = string.Format(switchScriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
+					writer.WriteLineNoTabs(script);
+				}
+				writer.WriteLineNoTabs("}");
 			}
+
 			writer.Write(@"//--></script>");
 
 			writer.Write("<div class='controlPanel'>");
 			base.Render(writer);
 			writer.Write("</div>");
 		}
+
+		const string switchScriptFormat = @"
+jQuery(document).ready(function(){{
+    window.n2ctx.setupToolbar('{0}','{1}');
+    window.n2ctx.refreshNavigation('{2}');
+    if(window.n2ctx.hasTop())
+        jQuery('.cpAdminister').hide();
+    else
+        jQuery('.cpView').hide();
+}});";
 
 		#endregion
 
