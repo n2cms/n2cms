@@ -25,6 +25,10 @@ namespace N2.Extensions.Tests.Fakes
 		{
 			get { return "/"; }
 		}
+		public override string PathInfo
+		{
+			get { return ""; }
+		}
 
 		public NameValueCollection serverVariables = new NameValueCollection();
 		public override NameValueCollection ServerVariables

@@ -68,9 +68,17 @@ namespace N2.Web
 		public PathData ResolvePath(string url)
 		{
 			Url requestedUrl = url;
-			ContentItem item = TryLoadingFromQueryString(requestedUrl, PathData.PageQueryKey);
-			if(item != null)
-				return item.FindPath(requestedUrl["action"] ?? PathData.DefaultAction).SetArguments(requestedUrl["arguments"]).UpdateParameters(requestedUrl.GetQueries());
+			ContentItem item = TryLoadingFromQueryString(requestedUrl, PathData.ItemQueryKey);
+			ContentItem page = TryLoadingFromQueryString(requestedUrl, PathData.PageQueryKey);
+
+			if (page != null)
+			{
+				var directPath = page.FindPath(requestedUrl["action"] ?? PathData.DefaultAction)
+					.SetArguments(requestedUrl["arguments"])
+					.UpdateParameters(requestedUrl.GetQueries());
+
+				return UseItemIfAvailable(item, directPath);
+			}
 
 			ContentItem startPage = GetStartPage(requestedUrl);
 			if (startPage == null)
@@ -103,6 +111,16 @@ namespace N2.Web
 			}
 
 			data.HonorExistingFile = !IgnoreExisting(webContext.PhysicalPath);
+			return UseItemIfAvailable(item, data);
+		}
+
+		private static PathData UseItemIfAvailable(ContentItem item, PathData data)
+		{
+			if (item != null)
+			{
+				data.CurrentPage = data.CurrentItem;
+				data.CurrentItem = item;
+			}
 			return data;
 		}
 

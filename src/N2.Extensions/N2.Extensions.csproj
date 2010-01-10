@@ -124,7 +124,6 @@
     <Compile Include="Web\Mvc\MvcPathData.cs" />
     <Compile Include="Web\Mvc\N2ControllerFactory.cs" />
     <Compile Include="Web\Mvc\N2ViewEngine.cs" />
-    <Compile Include="Web\Mvc\FallbackContentController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Mvc\Obsolete\EditableDisplayableExtensions.cs" />
     <Compile Include="Web\Mvc\Obsolete\ObsoleteExtensions.cs" />

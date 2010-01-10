@@ -129,26 +129,18 @@ namespace N2.Web.Mvc
 			if (item == null)
 				return null;
 
-			string requestedController = values[ControllerKey] as string;
 			string itemController = controllerMapper.GetControllerName(item.GetType());
+			string requestedController = values[ControllerKey] as string ?? itemController;
 			if (!string.Equals(requestedController, itemController, StringComparison.InvariantCultureIgnoreCase))
 				return null;
 
+			// pass a placeholder we fill with the content path
+			values["controller"] = "$CTRL";
 			var pathData = base.GetVirtualPath(requestContext, values);
 			Url itemUrl = item.Url;
-			Url pathUrl = pathData.VirtualPath;
-
-			if (item.IsPage)
-			{
-				pathUrl = pathUrl.RemoveSegment(0).PrependSegment(itemUrl.PathWithoutExtension.TrimStart('/'))
-					.PathAndQuery.TrimStart('/');
-			}
-			else
-			{
-				pathUrl = pathUrl.AppendQuery(ContentItemIdKey, item.ID.ToString());
-			}
-			pathData.VirtualPath = pathUrl;
-
+			Url actionUrl = pathData.VirtualPath.Replace("$CTRL", itemUrl.Path);
+			pathData.VirtualPath = actionUrl.AppendQuery(itemUrl.Query).PathAndQuery.TrimStart('/');
+			
 			return pathData;
 		}
 	}

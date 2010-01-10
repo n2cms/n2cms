@@ -12,7 +12,7 @@ namespace N2.Extensions.Tests.Mvc.Models
 
 		public override string Url
 		{
-			get { return "/" + Name + Web.Url.DefaultExtension; }
+			get { return Parent != null ? Parent.Url + "/" + Name : "/"; }
 		}
 	}
 }

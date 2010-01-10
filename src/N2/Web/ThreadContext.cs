@@ -63,7 +63,7 @@ namespace N2.Web
 			{ 
 				currentPath = value;
 				if (value != null)
-					CurrentPage = value.CurrentItem;
+					CurrentPage = value.CurrentPage;
 				else
 					currentPath = null;
 			}

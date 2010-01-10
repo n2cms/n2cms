@@ -4,7 +4,7 @@
 	{
 		public override string Url
 		{
-			get { return "/" + Name; }
+			get { return Parent != null ? Parent.Url + "/" + Name : "/"; }
 		}
 	}
 }

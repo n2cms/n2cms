@@ -1,38 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Routing;
+using Microsoft.Web.Mvc;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Engine;
 using N2.Extensions.Tests.Fakes;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
-using N2.Persistence;
 using N2.Persistence.NH;
+using N2.Tests;
+using N2.Web;
 using N2.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
-using N2.Web;
-using Microsoft.Web.Mvc;
-using System.Web.Mvc.Html;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
-using System.Diagnostics;
 
 namespace N2.Extensions.Tests.Mvc
 {
 	[TestFixture]
 	public class ContentRouteTests : N2.Tests.ItemPersistenceMockingBase
 	{
+		#region SetUp
+
 		IEngine engine;
 		FakeHttpContext httpContext;
+		RequestContext requestContext;
+		RouteCollection routes;
+		IControllerMapper controllerMapper;
+		
 		RegularPage root;
 		AboutUsSectionPage about;
 		ExecutiveTeamPage executives;
 		SearchPage search;
 		ContentRoute route;
-		RouteCollection routes;
-		IControllerMapper controllerMapper;
-			
+
 		[SetUp]
 		public override void SetUp()
 		{
@@ -44,27 +47,13 @@ namespace N2.Extensions.Tests.Mvc
 			search = CreateOneItem<SearchPage>(4, "search", root);
 
 			var typeFinder = new FakeTypeFinder();
-			typeFinder.typeMap[typeof (ContentItem)] = new[]
-			{
-				typeof(RegularPage),
-				typeof(AboutUsSectionPage),
-				typeof(ExecutiveTeamPage),
-				typeof(ContentItem),
-				typeof(SearchPage),
-				typeof(TestItem),
-			};
-			typeFinder.typeMap[typeof (IController)] = new[]
-			{
-				typeof (ExecutiveTeamController),
-				typeof (AboutUsSectionPageController), 
-				typeof (RegularController), 
-				typeof (FallbackContentController),
-				typeof (NonN2Controller),
-				typeof (SearchController),
-				typeof (TestItemController),
-			};
+			typeFinder.typeMap[typeof(ContentItem)] = this.NearbyTypes()
+				.BelowNamespace("N2.Extensions.Tests.Mvc.Models").AssignableTo<ContentItem>().Union(typeof(ContentItem)).ToArray();
+			typeFinder.typeMap[typeof(IController)] = this.NearbyTypes()
+				.BelowNamespace("N2.Extensions.Tests.Mvc.Controllers").AssignableTo<IController>().Except(typeof(AnotherRegularController))
+				.ToArray();
 
-            var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Workflow.StateChanger(), null);
+			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Workflow.StateChanger(), null);
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, new NotifyingInterceptor(), host, new HostSection());
@@ -85,9 +74,10 @@ namespace N2.Extensions.Tests.Mvc
 
 		void SetPath(string url)
 		{
-			Debug.WriteLine("Setting path to " + url);
 			httpContext.request.appRelativeCurrentExecutionFilePath = url;
 			httpContext.request.rawUrl = url;
+			var data = route.GetRouteData(httpContext);
+			requestContext = new RequestContext(httpContext, data);
 		}
 
 		private RequestContext CreateRouteContext(ContentItem item)
@@ -99,6 +89,12 @@ namespace N2.Extensions.Tests.Mvc
 			ctx.RouteData.Values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetType());
 			return ctx;
 		}
+		#endregion
+
+		// /			-> RegularPage
+		// /about/		-> AboutUsSectionPage
+		// /executives/ -> ExecutiveTeamPage
+		// /search/		-> SearchPage
 
 		[Test]
 		public void CanFindController_ForContentPage()
@@ -109,6 +105,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(about));
 			Assert.That(data.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
+			Assert.That(data.Values["action"], Is.EqualTo("index"));
 		}
 
 		[Test]
@@ -120,6 +117,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(root));
 			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
+			Assert.That(data.Values["action"], Is.EqualTo("index"));
 		}
 
 		[Test]
@@ -131,6 +129,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(root));
 			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
+			Assert.That(data.Values["action"], Is.EqualTo("index"));
 		}
 
 		[Test]
@@ -142,6 +141,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(executives));
 			Assert.That(data.Values["controller"], Is.EqualTo("ExecutiveTeam"));
+			Assert.That(data.Values["action"], Is.EqualTo("index"));
 		}
 
 		[Test]
@@ -171,7 +171,7 @@ namespace N2.Extensions.Tests.Mvc
 		}
 
 		[Test]
-		public void GeneratesNullVirtualPathData_WhenLinkingToAVanillaMvcPageFromAContentPage()
+		public void GeneratesNullVirtualPathData_WhenLinkingTo_AVanillaMvcPage_FromAContentPage()
 		{
 			SetPath("/about/");
 
@@ -185,26 +185,64 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(virtualPath, Is.Null);
 		}
 
-		[Test, Ignore]
-		public void CanCreate_RouteLink()
+		[Test]
+		public void GetVirtualPath_ToSelf()
 		{
 			SetPath("/search/");
-			HtmlHelper helper = new HtmlHelper(new ViewContext(), new ViewPage());
 
-			string html = helper.RouteLink("Search", new {controller = "Search", q = "hello"});
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary());
 
-			Assert.That(html, Is.EqualTo("<a href=\"/search?q=hello\">Search</a>"));
+			Assert.That(vpd.VirtualPath, Is.EqualTo("search"));
 		}
 
-		[Test, Ignore]
-		public void Can_GenerateRouteLink()
+		[Test]
+		public void GetVirtualPath_ToOtherAction_OnSelf()
 		{
 			SetPath("/search/");
 
-			var rc = new RequestContext(new FakeHttpContext(), new RouteData());
-			string html = HtmlHelper.GenerateRouteLink(rc, new RouteCollection(), "Search", null, new RouteValueDictionary(new {controller = "Search", q = "hello"}), new Dictionary<string, object>());
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { action = "find" }));
 
-			Assert.That(html, Is.EqualTo("<a href=\"/search?q=hello\">Search</a>"));
+			Assert.That(vpd.VirtualPath, Is.EqualTo("search/find"));
+		}
+
+		[Test]
+		public void GetVirtualPath_ToOtherAction_OnSelf_WithParameter()
+		{
+			SetPath("/search/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { action = "find", q = "query" }));
+
+			Assert.That(vpd.VirtualPath, Is.EqualTo("search/find?q=query"));
+		}
+
+		[Test]
+		public void GetVirtualPathTo_OtherContentItem()
+		{
+			SetPath("/search/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2_item = executives }));
+
+			Assert.That(vpd.VirtualPath, Is.EqualTo("about/executives"));
+		}
+
+		[Test]
+		public void GetVirtualPath_ToAction_OnOtherContentItem()
+		{
+			SetPath("/about/executives/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2_item = search, action = "find" }));
+
+			Assert.That(vpd.VirtualPath, Is.EqualTo("search/find"));
+		}
+
+		[Test]
+		public void GetVirtualPath_ToAction_OnOtherContentItem_WithParameters()
+		{
+			SetPath("/about/executives/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2_item = search, action = "find", q = "what", x = "y" }));
+
+			Assert.That(vpd.VirtualPath, Is.EqualTo("search/find?q=what&x=y"));
 		}
 
 		[Test]
@@ -250,15 +288,49 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(html, Is.EqualTo("/search/Find?q=hello"));
 		}
 
+		// parts
+
 		[Test]
-		public void CanCreate_ActionLinkFromItem()
+		public void CanRoute_ToPart()
 		{
-			var rc = CreateRouteContext(new TestItem { ID = 10 });
+			var part = CreateOneItem<TestItem>(10, "whatever", root);
+			SetPath(part.Url);
+
+			var r = routes.GetRouteData(httpContext);
+			Assert.That(r.Values["controller"], Is.EqualTo("TestItem"));
+		}
+
+		[Test]
+		public void GetVirtualPath_ToPartDefaultAction()
+		{
+			var part = CreateOneItem<TestItem>(10, "whatever", about);
+			SetPath("/about/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2_item = part }));
+
+			Assert.That(vpd.VirtualPath, Is.EqualTo("about?item=10"));
+		}
+
+		[Test]
+		public void GetVirtualPath_ToPart_OtherActionAction()
+		{
+			var part = CreateOneItem<TestItem>(10, "whatever", about);
+			SetPath("/about/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { n2_item = part, action = "doit" }));
+
+			Assert.That(vpd.VirtualPath, Is.EqualTo("about/doit?item=10"));
+		}
+
+		[Test]
+		public void CanCreate_ActionLink_ToPart()
+		{
+			var rc = CreateRouteContext(CreateOneItem<TestItem>(10, "whatever", root));
 			var helper = new HtmlHelper(CreateViewContext(rc), new ViewPage(), routes);
 
 			string html = helper.ActionLink("Hello", "Submit", new { q = "something", controller = "TestItem" });
 
-			Assert.That(html, Is.EqualTo("<a href=\"/TestItem/Submit?q=something&amp;n2_itemid=10\">Hello</a>"));
+			Assert.That(html, Is.EqualTo("<a href=\"/Submit?q=something&amp;item=10\">Hello</a>"));
 		}
 
 		ViewContext CreateViewContext(RequestContext rc)

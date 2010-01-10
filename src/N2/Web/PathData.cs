@@ -11,6 +11,7 @@ namespace N2.Web
 	[Serializable, DebuggerDisplay("PathData ({CurrentItem})")]
 	public class PathData
 	{
+		#region Static
 		public const string DefaultAction = "";
 
 		/// <summary>An empty path. This probably indicates that the path didn't correspond to an item in the hierarchy.</summary>
@@ -39,9 +40,11 @@ namespace N2.Web
 			get { return pageQueryKey; }
 			set { pageQueryKey = value; }
 		}
+		#endregion
 
 
-
+		ContentItem currentPage;
+		
 		public PathData(ContentItem item, string templateUrl, string action, string arguments)
 			: this()
 		{
@@ -79,6 +82,13 @@ namespace N2.Web
 
 		/// <summary>The item behind this path.</summary>
 		public ContentItem CurrentItem { get; set; }
+
+		/// <summary>The page behind this path (might differ from CurrentItem when the path leads to a part).</summary>
+		public ContentItem CurrentPage
+		{
+			get { return currentPage ?? CurrentItem; }
+			set { currentPage = value;}
+		}
 
 		/// <summary>The template handling this path.</summary>
 		public string TemplateUrl { get; set; }

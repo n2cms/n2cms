@@ -30,7 +30,6 @@ namespace N2.Extensions.Tests.Mvc
 				typeof (ExecutiveTeamController),
 				typeof (AboutUsSectionPageController), 
 				typeof (RegularController), 
-				typeof (FallbackContentController),
 				typeof (NonN2Controller),
 				typeof (SearchController),
 				typeof (TestItemController),

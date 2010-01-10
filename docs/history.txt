@@ -1,4 +1,7 @@
-﻿- added performance box box with database queries and timings
+﻿- removed FallbackContentController
+- refactored and tweaked content route
+- Added CurrentPage to PathData (possibly breaking change)
+- added performance box box with database queries and timings
 - Applied James Crowley's patch: TypeDescriptor conversions
 - inmporved performance of language gateway
 - tweaked ItemList to wrap list instead of copy values (breaking change)

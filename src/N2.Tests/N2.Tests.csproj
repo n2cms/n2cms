@@ -161,6 +161,7 @@
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
+    <Compile Include="Types.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
     <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
     <Compile Include="Workflow\CommandFactory_SavingTests.cs" />
