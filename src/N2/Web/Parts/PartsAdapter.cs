@@ -34,16 +34,31 @@ namespace N2.Web.Parts
 		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, string zoneName, IPrincipal user)
 		{
-			ItemDefinition containerDefinition = Engine.Definitions.GetDefinition(parentItem.GetType());
-
-			foreach (ItemDefinition childDefinition in containerDefinition.AllowedChildren)
+			foreach (var childDefinition in GetAllowedDefinitions(parentItem, user))
 			{
-				if (childDefinition.IsAllowedInZone(zoneName) && childDefinition.Enabled && childDefinition.IsAuthorized(user))
+				if (childDefinition.IsAllowedInZone(zoneName))
 				{
 					yield return childDefinition;
 				}
 			}
-        }
+		}
+
+		/// <summary>Retrieves allowed item definitions.</summary>
+		/// <param name="parentItem">The parent item.</param>
+		/// <param name="user">The user to restrict access for.</param>
+		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
+		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
+		{
+			ItemDefinition containerDefinition = Engine.Definitions.GetDefinition(parentItem.GetType());
+
+			foreach (ItemDefinition childDefinition in containerDefinition.AllowedChildren)
+			{
+				if (childDefinition.Enabled && childDefinition.IsAuthorized(user))
+				{
+					yield return childDefinition;
+				}
+			}
+		}
 
 		/// <summary>Adds a content item part to a containing control hierarchy (typically a zone control).</summary>
 		/// <param name="item">The item to add a part.</param>

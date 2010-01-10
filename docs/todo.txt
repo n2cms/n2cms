@@ -1,4 +1,3 @@
-- add parts mvc
 - decouple views from content item
 - lock name on published items
 - extend user object: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=73897

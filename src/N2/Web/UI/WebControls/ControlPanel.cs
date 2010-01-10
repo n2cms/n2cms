@@ -65,7 +65,7 @@ namespace N2.Web.UI.WebControls
 			get { return N2.Context.Current; }
 		}
 
-		protected virtual PartsAdapter ZoneController
+		protected virtual PartsAdapter ZoneAdapter
 		{
 			get { return Engine.Resolve<IRequestDispatcher>().ResolveAdapter<PartsAdapter>(); }
 		}
@@ -137,26 +137,17 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddDefinitions(Control container)
 		{
-			IList<Zone> pageZones = Page.Items[Zone.PageKey] as IList<Zone>;
-			if(pageZones == null) return;
-
 			HtmlGenericControl definitions = new HtmlGenericControl("div");
 			definitions.Attributes["class"] = "definitions";
 			container.Controls.Add(definitions);
 
-			List<ItemDefinition> availableDefinitions = new List<ItemDefinition>();
-			foreach(Zone z in pageZones)
-			{
-				ContentItem item = z.CurrentItem;
-				string zoneName = z.ZoneName;
-				if(item == null || string.IsNullOrEmpty(zoneName)) continue;
+			IEnumerable<ItemDefinition> availableDefinitions;
 
-				foreach(ItemDefinition definition in ZoneController.GetAllowedDefinitions(item, zoneName, Page.User))
-				{
-					if(!availableDefinitions.Contains(definition))
-						availableDefinitions.Add(definition);
-				}
-			}
+			IList<Zone> pageZones = Page.Items[Zone.PageKey] as IList<Zone>;
+			if (pageZones == null)
+				availableDefinitions = ZoneAdapter.GetAllowedDefinitions(CurrentItem, Page.User);
+			else
+				availableDefinitions = GetPossibleDefinitions(pageZones);
 
 			foreach (ItemDefinition definition in availableDefinitions)
 			{
@@ -168,6 +159,24 @@ namespace N2.Web.UI.WebControls
 				div.InnerHtml = FormatImageAndText(Url.ToAbsolute(definition.IconUrl), definition.Title);
 				definitions.Controls.Add(div);
 			}
+		}
+
+		private List<ItemDefinition> GetPossibleDefinitions(IList<Zone> pageZones)
+		{
+			List<ItemDefinition> availableDefinitions = new List<ItemDefinition>();
+			foreach (Zone z in pageZones)
+			{
+				ContentItem item = z.CurrentItem;
+				string zoneName = z.ZoneName;
+				if (item == null || string.IsNullOrEmpty(zoneName)) continue;
+
+				foreach (ItemDefinition definition in ZoneAdapter.GetAllowedDefinitions(item, zoneName, Page.User))
+				{
+					if (!availableDefinitions.Contains(definition))
+						availableDefinitions.Add(definition);
+				}
+			}
+			return availableDefinitions;
 		}
 
 		private void RegisterDragDropStyles()
