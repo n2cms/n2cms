@@ -32,6 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\net3.5\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\net3.5\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -76,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Addons\UITests\Items\AdaptiveRequestAdapter.cs" />
     <Compile Include="Addons\UITests\Items\AdaptiveItemPage.cs" />
+    <Compile Include="Addons\UITests\Items\QueryViewerItem.cs" />
     <Compile Include="Addons\UITests\Items\UITestItemItem.cs" />
     <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.cs">
       <DependentUpon>AdaptiveItem.aspx</DependentUpon>
@@ -140,6 +149,13 @@
     <Compile Include="Addons\UITests\UI\PageMethods.aspx.designer.cs">
       <DependentUpon>PageMethods.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Addons\UITests\UI\QueryViewer.ascx.cs">
+      <DependentUpon>QueryViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\QueryViewer.ascx.designer.cs">
+      <DependentUpon>QueryViewer.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Addons\UITests\UI\UITestItem.ascx.cs">
       <DependentUpon>UITestItem.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -200,6 +216,7 @@
     <Content Include="Addons\UITests\UI\Displayable_DataBind.aspx" />
     <Content Include="Addons\UITests\UI\Displayable.aspx" />
     <Content Include="Addons\UITests\UI\Html_Tree.From.aspx" />
+    <Content Include="Addons\UITests\UI\QueryViewer.ascx" />
     <Content Include="Addons\UITests\UI\Tabs.aspx" />
     <Content Include="Addons\UITests\UI\ZoneLoading.aspx" />
     <Content Include="Addons\UITests\UI\System.Web.Extensions\1.0.61025.0\MicrosoftAjax.js" />
