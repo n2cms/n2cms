@@ -1,4 +1,16 @@
-﻿- removed FallbackContentController
+﻿- completely reorganized edit folder and moved it into templates.mvc project (breaking change):
+	/edit/login.aspx		->	/n2/login.aspx
+	/edit/*					->	/n2/content/
+	/edit/filemanagement/*	->	/n2/files/
+	/edit/install/*			->	/n2/installation/
+	/edit/membership/*		->	/n2/users/
+	- upgrade:
+		- remove /edit and /bin/n2.edit.dll
+		- web.config: change login url: loginUrl="N2/Login.aspx"
+		- web.config: exchange N2.Edit -> N2.Management
+	- note for webforms: run src\Prepare_Dependencies.bat (/edit is no longer in use)
+- upgraded tinyMCE to 3.2.7
+- removed FallbackContentController
 - refactored and tweaked content route
 - Added CurrentPage to PathData (possibly breaking change)
 - added performance box box with database queries and timings

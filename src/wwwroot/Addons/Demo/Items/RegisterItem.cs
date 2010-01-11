@@ -93,7 +93,7 @@ namespace Demo.Items
 		{
 			get
 			{
-				return "~/Edit/Img/Ico/key.gif";
+				return "~/N2/Resources/Img/Ico/key.gif";
 			}
 		}
 

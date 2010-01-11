@@ -33,7 +33,7 @@ namespace N2.Engine.Globalization
 
             foreach (ILanguage language in gateway.GetAvailableLanguages())
             {
-                Url url = Url.ToAbsolute("~/Edit/Globalization/Translate.aspx");
+                Url url = Url.ToAbsolute("~/N2/Content/Globalization/Translate.aspx");
                 url = url.AppendQuery("language", language.LanguageCode);
                 url = url.AppendQuery("selected={selected}");
 

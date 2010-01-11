@@ -19,6 +19,6 @@ file in an IIS directory and run. To install in another database read install.tx
 
 WHAT'S HERE
 
-- The templates implementation files and compiled "code-behind": /... and N2.Templates?.dll
+- The templates implementation files and compiled "code-behind": /... and N2.Templates.dll
 - The core N2 library: N2.dll and N2.Security.dll
-- Edit interface files and compiled "code-behind": /edit/* and N2.Edit.dll
+- Edit interface files and compiled "code-behind": /N2/* and N2.Management.dll

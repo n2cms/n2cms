@@ -81,11 +81,11 @@ namespace N2.Plugin.Scheduling
 
         public int CompareTo(IPlugin other)
         {
-            if (SortOrder != other.SortOrder)
-                return SortOrder - other.SortOrder;
-            else
-                return Name.CompareTo(other.Name);
-        }
+			if (other == null)
+				return 1;
+			int result = SortOrder.CompareTo(other.SortOrder) * 2 + Name.CompareTo(other.Name);
+			return result;
+		}
 
         #region Equals & GetHashCode Methods
 

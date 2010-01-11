@@ -11,7 +11,7 @@ namespace N2.Security.Items
 {
     [PartDefinition("User List", 
 		SortOrder = 2000, 
-		IconUrl= "~/Edit/Img/Ico/Png/group.png")]
+		IconUrl= "~/N2/Resources/Img/Ico/Png/group.png")]
 	[WithEditableTitle("Title", 10)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
     [NotThrowable]

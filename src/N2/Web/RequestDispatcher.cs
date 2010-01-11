@@ -19,7 +19,7 @@ namespace N2.Web
 		readonly bool rewriteEmptyExtension = true;
 		readonly bool observeAllExtensions = true;
 		readonly string[] observedExtensions = new[] { ".aspx" };
-		readonly string[] nonRewritablePaths = new[] {"~/edit/"};
+		readonly string[] nonRewritablePaths = new[] {"~/N2/Content/"};
 
 		public RequestDispatcher(IContentAdapterProvider adapterProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
 		{

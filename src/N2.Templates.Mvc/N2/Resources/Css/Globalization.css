@@ -1,0 +1,5 @@
+﻿body.edit .languages a { display:inline;}
+body.edit .languages .current {font-weight:bold;}
+body.edit .languages .new {padding-left:40px; background:transparent url(../../Resources/img/ico/png/add.png) no-repeat 24px 50%; font-style:italic;}
+body.edit .languages .th td { font-weight:bold; padding:4px 8px; }
+body.edit .languages tbody .i0 td { border-top:solid 5px #CCC; }

@@ -198,7 +198,7 @@ namespace N2.Resources
 		public static void JQuery(Page page)
 		{
 #if DEBUG
-			JavaScript(page, N2.Web.Url.ToAbsolute("~/Edit/Js/jquery-" + JQueryVersion + ".js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, N2.Web.Url.ToAbsolute("~/N2/Resources/Js/jquery-" + JQueryVersion + ".js"), ScriptOptions.Prioritize | ScriptOptions.Include);
 #else
 			JavaScript(page, typeof(Register), "N2.Resources.jquery-" + JQueryVersion + ".min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #endif
@@ -242,13 +242,13 @@ namespace N2.Resources
 			if (page.Items[key] == null)
 			{
 				JQuery(page);
-				JavaScript(page, "~/Edit/Js/TabPanel.js");
+				JavaScript(page, "~/N2/Resources/Js/TabPanel.js");
 				string script = string.Format(tabPanelFormat, selector, selector.Replace('.', '_'));
 				JavaScript(page, script, ScriptOptions.DocumentReady);
 				page.Items[key] = new object();
 				if (registerTabCss)
 				{
-					StyleSheet(page, "~/Edit/Css/TabPanel.css");
+					StyleSheet(page, "~/N2/Resources/Css/TabPanel.css");
 				}
 			}
 		}
@@ -264,7 +264,7 @@ namespace N2.Resources
 		}
 		#endregion
 
-		static string pluginsUrl = "~/Edit/Js/plugins.ashx?v=" + typeof (Register).Assembly.GetName().Version;
+		static string pluginsUrl = "~/N2/Resources/Js/plugins.ashx?v=" + typeof (Register).Assembly.GetName().Version;
 		public static void JQueryPlugins(Page page)
 		{
 			JavaScript(page, pluginsUrl);
@@ -272,7 +272,7 @@ namespace N2.Resources
 
 		public static void TinyMCE(Page page)
 		{
-			JavaScript(page, "~/edit/js/tiny_mce/tiny_mce.js");
+			JavaScript(page, "~/N2/Resources/tiny_mce/tiny_mce.js");
 		}
 	}
 }

@@ -24,7 +24,7 @@ namespace N2.Web
 		protected bool initialized = false;
 		protected bool checkInstallation = false;
 		protected RewriteMethod rewriteMethod = RewriteMethod.RewriteRequest;
-		protected string installerUrl = "~/Edit/Install/Begin/Default.aspx";
+		protected string installerUrl = "~/N2/Installation/Begin/Default.aspx";
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
@@ -96,7 +96,7 @@ namespace N2.Web
 
         private void CheckInstallation()
         {
-            bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl).StartsWith("~/edit", StringComparison.InvariantCultureIgnoreCase);
+            bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl).StartsWith("~/N2/Content", StringComparison.InvariantCultureIgnoreCase);
             if (!isEditing && !installer.GetStatus().IsInstalled)
             {
                 webContext.Response.Redirect(installerUrl);

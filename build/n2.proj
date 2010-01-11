@@ -16,7 +16,7 @@
 
 		<SrcFolder>$(RootFolder)\src</SrcFolder>
 		<WebFolder>$(RootFolder)\src\wwwroot</WebFolder>
-		<EditFolder>$(RootFolder)\src\wwwroot\Edit</EditFolder>
+		<EditFolder>$(RootFolder)\src\N2.Templates.Mvc\N2</EditFolder>
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 

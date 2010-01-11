@@ -23,13 +23,13 @@ namespace N2.Web.UI.WebControls
 
 		public string ScriptUrl
 		{
-			get { return (string)(ViewState["ScriptUrl"] ?? "~/Edit/Js/parts.js"); }
+			get { return (string)(ViewState["ScriptUrl"] ?? "~/N2/Resources/Js/parts.js"); }
 			set { ViewState["ScriptUrl"] = value; }
 		}
 
 		public string StyleSheetUrl
 		{
-			get { return (string)(ViewState["StyleSheetUrl"] ?? "~/Edit/Css/Parts.css"); }
+			get { return (string)(ViewState["StyleSheetUrl"] ?? "~/N2/Resources/Css/Parts.css"); }
 			set { ViewState["StyleSheetUrl"] = value; }
 		}
 

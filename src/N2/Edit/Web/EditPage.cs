@@ -41,7 +41,7 @@ namespace N2.Edit.Web
             if (themeCookie != null && !string.IsNullOrEmpty(themeCookie.Value))
                 theme = themeCookie.Value;
 
-            Register.StyleSheet(this, "~/edit/css/themes/" + theme);
+            Register.StyleSheet(this, "~/N2/Resources/Css/themes/" + theme);
         }
 
 		private void SetupAspNetTheming()
@@ -118,7 +118,7 @@ namespace N2.Edit.Web
 
 		protected string MapCssUrl(string cssFileName)
 		{
-			return Url.ToAbsolute(N2.Context.Current.EditManager.GetEditInterfaceUrl() + "Css/" + cssFileName);
+			return Url.ToAbsolute(N2.Context.Current.EditManager.GetEditInterfaceUrl() + "../Resources/Css/" + cssFileName);
 		}
 
     	#region Refresh Methods
@@ -153,7 +153,7 @@ if(window.n2ctx){{
         protected virtual void Refresh(ContentItem item, string previewUrl)
         {
             string script = string.Format(RefreshBothFormat,
-                Url.ToAbsolute("~/Edit/Default.aspx"), // 0
+                Url.ToAbsolute("~/N2/Content/Default.aspx"), // 0
                 GetNavigationUrl(item), // 1
                 Url.ToAbsolute(previewUrl), // 2
                 item.ID, // 3
@@ -180,7 +180,7 @@ if(window.n2ctx){{
 				format = RefreshNavigationFormat;
 
 			string script = string.Format(format,
-				Url.ToAbsolute("~/Edit/Default.aspx"), // 0
+				Url.ToAbsolute("~/N2/Content/Default.aspx"), // 0
 				GetNavigationUrl(item), // 1
 				GetPreviewUrl(item), // 2
 				item.ID, // 3

@@ -27,7 +27,7 @@ namespace N2.Configuration
         }
 
         /// <summary>Url to the free text area editor css file.</summary>
-        [ConfigurationProperty("cssUrl", DefaultValue = "~/Edit/Css/Editor.css")]
+        [ConfigurationProperty("cssUrl", DefaultValue = "~/N2/Resources/Css/Editor.css")]
         public string CssUrl
         {
             get { return (string)base["cssUrl"]; }

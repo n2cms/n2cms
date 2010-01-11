@@ -64,7 +64,7 @@ namespace N2.Engine.Globalization
 		{
 			string flagUrl = language.FlagUrl;
 			if (string.IsNullOrEmpty(flagUrl))
-				return string.Format(N2.Web.Url.ToAbsolute("~/Edit/Globalization/flags/{0}.png"), language.LanguageCode);
+				return string.Format(N2.Web.Url.ToAbsolute("~/N2/Resources/Img/Flags/{0}.png"), language.LanguageCode);
 			else
 				return flagUrl;
 		}

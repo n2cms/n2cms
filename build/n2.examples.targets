@@ -26,18 +26,19 @@
 
 	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\N2\%(RecursiveDir)" />
 	</Target>
 	<Target Name="Examples-VisualBasic-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\N2\%(RecursiveDir)" />
 	</Target>
 	<Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups;Templates-Deploy">
 		<ItemGroup>
-			<_TemplatesFiles Include="$(DeployFolder)\Templates\wwwroot\**\*" />
+			<_TemplatesFiles Include="$(DeployFolder)\Templates_WebForms\wwwroot\**\*" />
 		</ItemGroup>
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\bin" />
 		<Copy SourceFiles="@(_TemplatesFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\N2\%(RecursiveDir)" />
 	</Target>
 	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
@@ -45,7 +46,7 @@
                        $(LibFolder)\System.Web.Mvc.dll;"
 					DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\Bin" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 
 	<!-- Build -->
@@ -76,9 +77,9 @@
 		<MSBuild Projects="$(Examples-Folder)\N2.Examples-VisualBasic.sln" Targets="Clean" />
 
 		<ItemGroup>
-			<DependencyFolders Include="$(Examples-Folder)\MinimalCSharp\wwwroot\Edit\;
-									    $(Examples-Folder)\MinimalVisualBasic\wwwroot\Edit\;
-									    $(Examples-Folder)\Mvc\wwwroot\Edit\;
+			<DependencyFolders Include="$(Examples-Folder)\MinimalCSharp\wwwroot\N2\;
+									    $(Examples-Folder)\MinimalVisualBasic\wwwroot\N2\;
+									    $(Examples-Folder)\Mvc\wwwroot\N2\;
 									    $(Examples-Folder)\TemplatesSite\wwwroot\App_Browsers\;
 									    $(Examples-Folder)\TemplatesSite\wwwroot\App_GlobalResources\;
 									    $(Examples-Folder)\TemplatesSite\wwwroot\App_Themes\;
@@ -124,7 +125,7 @@
 		</ItemGroup>
 		<Copy SourceFiles="@(ExampleSource-VBFiles)" DestinationFolder="$(Example-VB-DeployFolder)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(Framework-BinFiles)"    DestinationFolder="$(Example-VB-DeployFolder)\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"   DestinationFolder="$(Example-VB-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)"   DestinationFolder="$(Example-VB-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Example-VB-DeployFolder)" />
 	</Target>
 	
@@ -134,7 +135,7 @@
 		</ItemGroup>
 		<Copy SourceFiles="@(ExampleSource-CSFiles)" DestinationFolder="$(Example-CS-DeployFolder)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(Framework-BinFiles)"    DestinationFolder="$(Example-CS-DeployFolder)\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"   DestinationFolder="$(Example-CS-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)"   DestinationFolder="$(Example-CS-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Example-CS-DeployFolder)" />
 		<Copy SourceFiles="@(Snippets)"              DestinationFolder="$(Example-CS-DeployFolder)\Snippets" />
 	</Target>
@@ -144,8 +145,8 @@
 			<ExampleSource-TemplatesSiteFiles Include="$(Examples-Templates-SourceFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
 		</ItemGroup>
 		<Copy SourceFiles="@(ExampleSource-TemplatesSiteFiles)" DestinationFolder="$(Example-Templates-DeployFolder)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"				DestinationFolder="$(Example-Templates-DeployFolder)\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"				DestinationFolder="$(Example-Templates-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)"								DestinationFolder="$(Example-Templates-DeployFolder)\wwwroot\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)"							DestinationFolder="$(Example-Templates-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"                        DestinationFolder="$(Example-Templates-DeployFolder)" />
 		<Copy SourceFiles="@(Snippets)"                         DestinationFolder="$(Example-Templates-DeployFolder)\Snippets" />
 	</Target>
@@ -156,14 +157,14 @@
 		</ItemGroup>
 		<Copy SourceFiles="@(ExampleSource-MvcFiles)"       DestinationFolder="$(Example-Mvc-DeployFolder)\%(RecursiveDir)" />
 		<Copy SourceFiles="@(Framework-BinFiles)"           DestinationFolder="$(Example-Mvc-DeployFolder)\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"          DestinationFolder="$(Example-Mvc-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)"          DestinationFolder="$(Example-Mvc-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"                    DestinationFolder="$(Example-Mvc-DeployFolder)" />
 		<Copy SourceFiles="@(Snippets)"                     DestinationFolder="$(Example-Mvc-DeployFolder)\Snippets" />
 	</Target>
 
 	<Target Name="Examples-CreateItemGroups" DependsOnTargets="Framework-CreateItemGroups">
 		<ItemGroup>
-			<ExampleSource-Exclude Include="$(Examples-Folder)\**\Edit\**\*;
+			<ExampleSource-Exclude Include="$(Examples-Folder)\**\N2\**\*;
 											$(Examples-Folder)\**\.svn\**\*;
 											$(Examples-Folder)\**\_*\**\*;
 											$(Examples-Folder)\**\*WebSetup\**\*;

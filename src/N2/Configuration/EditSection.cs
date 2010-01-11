@@ -46,7 +46,7 @@ namespace N2.Configuration
             set { base["uploadFolders"] = value; }
 		}
 
-    	[ConfigurationProperty("editTreeUrl", DefaultValue = "~/edit/Navigation/Tree.aspx")]
+    	[ConfigurationProperty("editTreeUrl", DefaultValue = "~/N2/Content/Navigation/Tree.aspx")]
         public string EditTreeUrl
         {
             get { return (string)base["editTreeUrl"]; }
@@ -60,28 +60,28 @@ namespace N2.Configuration
             set { base["editPreviewUrlFormat"] = value; }
         }
 
-        [ConfigurationProperty("editItemUrl", DefaultValue = "~/edit/edit.aspx")]
+        [ConfigurationProperty("editItemUrl", DefaultValue = "~/N2/Content/edit.aspx")]
         public string EditItemUrl
         {
             get { return (string)base["editItemUrl"]; }
             set { base["editItemUrl"] = value; }
         }
 
-        [ConfigurationProperty("editInterfaceUrl", DefaultValue = "~/edit/")]
+        [ConfigurationProperty("editInterfaceUrl", DefaultValue = "~/N2/Content/")]
         public string EditInterfaceUrl
         {
             get { return (string)base["editInterfaceUrl"]; }
             set { base["editInterfaceUrl"] = value; }
         }
 
-        [ConfigurationProperty("newItemUrl", DefaultValue = "~/edit/new.aspx")]
+        [ConfigurationProperty("newItemUrl", DefaultValue = "~/N2/Content/new.aspx")]
         public string NewItemUrl
         {
             get { return (string)base["newItemUrl"]; }
             set { base["newItemUrl"] = value; }
         }
 
-        [ConfigurationProperty("deleteItemUrl", DefaultValue = "~/edit/delete.aspx")]
+        [ConfigurationProperty("deleteItemUrl", DefaultValue = "~/N2/Content/delete.aspx")]
         public string DeleteItemUrl
         {
             get { return (string)base["deleteItemUrl"]; }

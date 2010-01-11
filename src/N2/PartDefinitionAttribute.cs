@@ -27,7 +27,7 @@ namespace N2
 		public PartDefinitionAttribute()
 		{
 			IsPage = false;
-			IconUrl = "~/edit/img/ico/page_white.gif";
+			IconUrl = "~/N2/Resources/Img/ico/page_white.gif";
 			AllowedIn = AllowedZones.AllNamed;
 		}
 

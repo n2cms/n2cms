@@ -10,7 +10,7 @@ namespace N2.Configuration
 	{
 		public VirtualPathCollection()
 		{
-			BaseAdd(new VirtualPathElement("edit", "~/edit/"));
+			BaseAdd(new VirtualPathElement("edit", "~/N2/Content/"));
 		}
 
 		protected override ConfigurationElement CreateNewElement()

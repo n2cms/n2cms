@@ -139,7 +139,7 @@
     <value>New item one level down from this page</value>
   </data>
   <data name="cpAdminister.ToolTip" xml:space="preserve">
-    <value>Administer site</value>
+    <value>Manage content</value>
   </data>
   <data name="cpDelete.ToolTip" xml:space="preserve">
     <value>Delete this page</value>

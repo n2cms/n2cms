@@ -33,7 +33,7 @@ namespace N2.Web.UI.WebControls
                 }
             }
             else
-                Url.ToAbsolute("~/Edit/Css/Editor.css");
+                Url.ToAbsolute("~/N2/Resources/Css/Editor.css");
         }
 
 		public FreeTextArea()
@@ -65,7 +65,7 @@ namespace N2.Web.UI.WebControls
                 Register.JQueryPlugins(Page);
 
                 string script = string.Format("freeTextArea_init('{0}', {1});", 
-                    Url.ToAbsolute("~/Edit/FileManagement/default.aspx"), 
+                    Url.ToAbsolute("~/N2/Files/default.aspx"), 
                     GetOverridesJson());
                 Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
             }
@@ -78,7 +78,7 @@ namespace N2.Web.UI.WebControls
             overrides["content_css"] = configCssUrl;
 
         	string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
-			if (HostingEnvironment.VirtualPathProvider.FileExists("~/Edit/Js/tiny_mce/langs/" + language + ".js"))
+			if (HostingEnvironment.VirtualPathProvider.FileExists("~/N2/Resources/tiny_mce/langs/" + language + ".js"))
 				overrides["language"] = language;
 
             if (!string.IsNullOrEmpty(DocumentBaseUrl))

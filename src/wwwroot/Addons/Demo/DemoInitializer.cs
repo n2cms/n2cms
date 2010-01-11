@@ -56,25 +56,6 @@ namespace Demo
 			File.Copy(server.MapPath("~/Addons/Demo/Resources/logo_white.png"), server.MapPath("~/upload/logo_white.png"), true);
 		}
 
-		//void Persister_ItemSaving(object sender, CancellableItemEventArgs e)
-		//{
-		//    var file = e.AffectedItem as N2.Edit.FileSystem.Items.File;
-		//    if(file != null)
-		//    {
-		//        if (!System.Text.RegularExpressions.Regex.IsMatch(file.Name, "\\.gif$|\\.jpg$|\\.jpeg$|\\.png$|\\.txt$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-		//        {
-		//            file.Delete();
-		//            throw new Exception("Invalid extension for demo site: " + file.Name);
-		//        }
-		//    }
-		//}
-
-		//public static void FileManager_FileUploading(object sender, N2.Edit.FileManagement.FileEventArgs e)
-		//{
-		//    if (!System.Text.RegularExpressions.Regex.IsMatch(e.FileName, "\\.gif$|\\.jpg$|\\.jpeg$|\\.png$|\\.txt$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-		//        throw new Exception("Invalid extension for demo site: " + e.FileName);
-		//}
-
 		private static void DeleteFilesAndFolders(string upload)
 		{
 			foreach (string path in Directory.GetFiles(upload))

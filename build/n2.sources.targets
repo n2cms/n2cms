@@ -24,7 +24,7 @@
 								   $(MSBuildProjectDirectory)\..\**\*.Publish.xml;
 								   $(MSBuildProjectDirectory)\..\**\Thumbs.db;
 								   $(DeployFolder)\**\*;
-								   $(Examples-Folder)\**\Edit\**\*;
+								   $(Examples-Folder)\**\N2\**\*;
 								   $(LibFolder)\*.pdb" />
 		</ItemGroup>
 

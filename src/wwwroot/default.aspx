@@ -13,7 +13,7 @@
 			<p>Here are a few known causes.</p>
 
 			<h3>Site Not Installed</h3>
-			<p>Follow the instructions in the <a href="edit/install">installation wizard</a> to set up database and create your start node.</p>
+			<p>Follow the instructions in the <a href="N2/Installation">installation wizard</a> to set up database and create your start node.</p>
 			<p>Please leave this file here to start ASP.NET when requesting the root folder (/).</p>
 			
 			<h3>Undefined Template</h3>

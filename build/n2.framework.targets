@@ -61,7 +61,7 @@
 
 	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(DeployFolder)\Framework\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(DeployFolder)\Framework\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(DeployFolder)\Framework\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Framework" />
 	</Target>
 

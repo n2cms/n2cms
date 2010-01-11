@@ -1,5 +1,5 @@
 - Compile and run the application (Ctrl+F5)
-- Browse to /edit/install (use admin/changeme to log in)
+- Browse to /n2/installation (use admin/changeme to log in)
 - Follow the instructions on the installation page (also below)
 	- Create an empty database in your server of choice. 
 	- Update the connection string in web.config.

@@ -2,12 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
-    <script type="text/javascript" src="/edit/js/jquery-1.3.2.js"></script>
-    <script type="text/javascript" src="/edit/js/plugins/jquery.n2glow.js"></script>
+    <script type="text/javascript" src="/N2/Resources/js/jquery-1.3.2.js"></script>
+    <script type="text/javascript" src="/N2/Resources/js/plugins/jquery.n2glow.js"></script>
     <style>
         body { background-color:Silver }
-        div { background: #fff url(/edit/img/toolbar_button_bg.png) no-repeat scroll 0 0; height:30px; }
-        div:hover { background-image: url(/edit/img/toolbar_button_bg_hover.png); }
+        div { background: #fff url(/N2/Resources/img/toolbar_button_bg.png) no-repeat scroll 0 0; height:30px; }
+        div:hover { background-image: url(/N2/Resources/img/toolbar_button_bg_hover.png); }
         .r1 { background-position: 0% 10px }
         .r2 { background-position: 33% 10px }
         .r3 { background-position: 66% 10px }

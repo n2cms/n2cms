@@ -14,7 +14,7 @@ WHAT'S HERE
 
 * The core N2 library: N2.dll
 * Edit interface files and compiled "code-behind": /edit and N2.Edit.dll
-* Optional edit mode components: /edit/... and N2.Edit.?.dll
+* Optional edit mode components: /edit/... and N2.Management.dll
 	* Export & import 
 	* Install interface
 	* Link tracker
@@ -28,4 +28,4 @@ WHAT'S HERE
 TO INSTALL
 
 - Create or get some templates (an implementation)
-- Compile, run and navigate to /edit/install
+- Compile, run and navigate to /n2/installation

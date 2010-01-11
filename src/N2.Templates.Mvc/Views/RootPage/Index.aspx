@@ -4,9 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
 	<title>Root</title>
-	<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/edit/css/edit.css")%>" />
+	<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/N2/Resources/Css/edit.css")%>" />
 	<style type="text/css">
-		@import url(/edit/Css/edit.css);
+		@import url(/N2/Resources/Css/edit.css);
 
 		.nameEditor, .titleEditor{
 			display:block;

@@ -15,7 +15,7 @@ namespace N2.Configuration
             set { base["checkInstallationStatus"] = value; }
         }
 
-        [ConfigurationProperty("installUrl", DefaultValue = "~/Edit/Install/Begin/Default.aspx")]
+		[ConfigurationProperty("installUrl", DefaultValue = "~/N2/Installation/Begin/Default.aspx")]
         public string InstallUrl
         {
             get { return (string)base["installUrl"]; }

@@ -38,7 +38,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Url to the page responsible for selecting urls.</summary>
 		public string BrowserUrl
 		{
-			get { return (string) ViewState["BrowserUrl"] ?? N2.Web.Url.ToAbsolute("~/Edit/FileManagement/default.aspx"); }
+			get { return (string) ViewState["BrowserUrl"] ?? N2.Web.Url.ToAbsolute("~/N2/Files/default.aspx"); }
 			set { ViewState["BrowserUrl"] = value; }
 		}
 

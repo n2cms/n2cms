@@ -41,7 +41,7 @@ namespace N2.Templates.Items
                 else
                 {
                     string[] parts = LanguageCode.Split('-');
-                    return string.Format("~/Edit/Globalization/flags/{0}.png", parts[parts.Length - 1]);
+					return string.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1]);
                 }
             }
         }

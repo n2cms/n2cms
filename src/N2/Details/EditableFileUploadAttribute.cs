@@ -117,7 +117,7 @@ namespace N2.Details
 				Controls.Add(SelectorContainer);
 
 				HtmlImage selectorImage = new HtmlImage();
-				selectorImage.Src = "~/Edit/Img/Ico/page_white_link.gif";
+				selectorImage.Src = "~/N2/Resources/Img/Ico/page_white_link.gif";
 				SelectorContainer.Controls.Add(selectorImage);
 				SelectorContainer.Controls.Add(SelectorControl);
 
@@ -126,7 +126,7 @@ namespace N2.Details
 				Controls.Add(UploadContainer);
 
 				HtmlImage uploadImage = new HtmlImage();
-				uploadImage.Src = "~/Edit/Img/Ico/page_white_get.gif";
+				uploadImage.Src = "~/N2/Resources/Img/Ico/page_white_get.gif";
 				UploadContainer.Controls.Add(uploadImage);
 				UploadContainer.Controls.Add(UploadControl);
 			}

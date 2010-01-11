@@ -1,6 +1,14 @@
+- fix create item before/after
+- remove path from adapters
 - decouple views from content item
 - lock name on published items
 - extend user object: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=73897
+	/n2/
+	/n2/content/
+	/n2/files/
+	/n2/installation/
+	/n2/users/
+	/n2/myself/
 - stack overflow mvc: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=80172
 - image resize on upload
 - mvc in sub-app with no ending slash

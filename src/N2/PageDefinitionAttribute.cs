@@ -27,7 +27,7 @@ namespace N2
 		{
 			InstallerVisibility = InstallerHint.Default;
 			IsPage = true;
-			IconUrl = "~/edit/img/ico/page.gif";
+			IconUrl = "~/N2/Resources/Img/ico/page.gif";
 		}
 
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)

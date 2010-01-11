@@ -23,10 +23,10 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	[PersistChildren(false)]
 	[ParseChildren(true)]
-    [ControlPanelLink("cpOrganize", "~/edit/img/ico/png/layout_edit.png", "{Selected.Url}", "Organize parts", -10, ControlPanelState.Visible, 
+    [ControlPanelLink("cpOrganize", "~/N2/Resources/Img/ico/png/layout_edit.png", "{Selected.Url}", "Organize parts", -10, ControlPanelState.Visible, 
         UrlEncode = false, 
         NavigateQuery = "edit=drag")]
-	[ControlPanelLink("cpUnorganize", "~/edit/img/ico/png/page_refresh.png", "{Selected.Url}", "Done", -10, ControlPanelState.DragDrop, 
+	[ControlPanelLink("cpUnorganize", "~/N2/Resources/Img/ico/png/page_refresh.png", "{Selected.Url}", "Done", -10, ControlPanelState.DragDrop, 
         UrlEncode = false, 
         Title = "Done")]
 	public class ControlPanel : Control, IItemContainer
@@ -44,19 +44,19 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the url to a style sheet added to the page when editing.</summary>
 		public string StyleSheetUrl
 		{
-			get { return (string)(ViewState["StyleSheetUrl"] ?? "~/edit/Css/edit.css"); }
+			get { return (string)(ViewState["StyleSheetUrl"] ?? "~/N2/Resources/Css/edit.css"); }
 			set { ViewState["StyleSheetUrl"] = value; }
 		}
 
 		public string DragDropScriptUrl
 		{
-			get { return (string)(ViewState["DragDropScriptUrl"] ?? "~/Edit/Js/parts.js"); }
+			get { return (string)(ViewState["DragDropScriptUrl"] ?? "~/N2/Resources/Js/parts.js"); }
 			set { ViewState["DragDropScriptUrl"] = value; }
 		}
 
 		public string DragDropStyleSheetUrl
 		{
-			get { return (string)(ViewState["DragDropStyleSheetUrl"] ?? "~/Edit/Css/Parts.css"); }
+			get { return (string)(ViewState["DragDropStyleSheetUrl"] ?? "~/N2/Resources/Css/Parts.css"); }
 			set { ViewState["DragDropStyleSheetUrl"] = value; }
 		}
 
@@ -187,7 +187,7 @@ namespace N2.Web.UI.WebControls
 		private void RegisterDragDropScripts()
 		{
 			Register.JQuery(Page);
-			Register.JavaScript(Page, "~/edit/js/jquery.ui.ashx");
+			Register.JavaScript(Page, "~/N2/Resources/Js/jquery.ui.ashx");
 			Register.JavaScript(Page, DragDropScriptUrl);
 
 			Register.JavaScript(Page, @"
@@ -261,10 +261,11 @@ window.n2ddcp = new n2DragDrop();
 jQuery(document).ready(function(){{
     window.n2ctx.setupToolbar('{0}','{1}');
     window.n2ctx.refreshNavigation('{2}');
-    if(window.n2ctx.hasTop())
-        jQuery('.cpAdminister').hide();
-    else
-        jQuery('.cpView').hide();
+	if(window.n2ctx.hasTop()){{
+		jQuery('.cpAdminister').hide();
+	}}else{{
+		jQuery('.cpView').hide();
+	}}
 }});";
 
 		#endregion

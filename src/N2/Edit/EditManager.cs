@@ -34,16 +34,16 @@ namespace N2.Edit
         readonly IPluginFinder pluginFinder;
         readonly StateChanger stateChanger;
         readonly NavigationSettings settings;
-		string deleteItemUrl = "~/edit/delete.aspx";
-		string editInterfaceUrl = "~/edit/";
-		string editItemUrl = "~/edit/edit.aspx";
+		string deleteItemUrl = "~/N2/Content/delete.aspx";
+		string editInterfaceUrl = "~/N2/Content/";
+		string editItemUrl = "~/N2/Content/edit.aspx";
 		string editPreviewUrlFormat = "{0}";
-		string editTreeUrl = "~/edit/Navigation/Tree.aspx";
+		string editTreeUrl = "~/N2/Content/Navigation/Tree.aspx";
 		string editTreeUrlFormat = "{1}?selected={0}";
 		bool enableVersioning = true;
 		string editTheme = "";
 		protected EventHandlerList Events = new EventHandlerList();
-		string newItemUrl = "~/edit/new.aspx";
+		string newItemUrl = "~/N2/Content/new.aspx";
 		readonly IList<string> uploadFolders = new List<string>();
 
         [Obsolete]

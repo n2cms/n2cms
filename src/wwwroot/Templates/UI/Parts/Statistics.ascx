@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Statistics.ascx.cs" Inherits="N2.Templates.UI.Parts.Statistics" %>
-<%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Edit" %>
+<%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <h4><%= CurrentItem.Title %></h4>
 <div class="field">
     <edit:InfoLabel Label="# of pages" id="lblPages" runat="server" />

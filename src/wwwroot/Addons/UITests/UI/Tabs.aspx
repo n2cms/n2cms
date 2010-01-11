@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
     <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
-    <link rel="Stylesheet" href="/edit/css/framed.css" />
+    <link rel="Stylesheet" href="/N2/Resources/css/framed.css" />
 </head>
 <body>
 	<n2:TabPanel ID="TabPanel1" runat="server" ToolTip="Tab 1" CssClass="tabPanel group1">

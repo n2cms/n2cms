@@ -1,0 +1,62 @@
+﻿
+/* INK THEME */
+
+body .header
+{
+    background-color:#444; 
+    background-image:url(../../Resources/img/darken25.png);
+}
+body .subbar,
+body #splitter .vsplitbar
+{
+    background-color:#555; 
+    border-color:#222;
+}
+body .subbar
+{
+    border-top-color:#666;
+}
+#top .item
+{
+    border-left-color:#444;
+    border-right-color:#222;
+    background-color:#333;
+}
+#top a
+{
+    color:#ccc;
+}
+#top .selected a
+{
+    background-color:#222;
+}
+#top .selected a,
+#top a:hover
+{
+    color:#fff;
+}
+#sort a
+{
+    border-top:solid 1px #444;
+    border-bottom:solid 1px #222;
+}
+body .toolbar, 
+body .optionGroup,
+body .commandOptions .opener,
+body .gv th,
+body .gv thead td
+{
+    background:#aaa;
+	border-color:#666;
+}
+body,
+body .gv .alt td { background-color:#eee; }
+
+body .toolbar .toggled,
+body .toolbar .command:hover{
+	border-color:#bbb;
+}
+body .toolbar a
+{
+	color:#333;
+}

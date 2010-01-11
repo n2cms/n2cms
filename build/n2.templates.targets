@@ -24,9 +24,14 @@
 		<Copy SourceFiles="@(_TemplatesTempFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\%(RecursiveDir)" />
 		<RemoveDir Directories="$(TempFolder)_PublishedWebsites\N2.Templates\"/>
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-DeployFolder)" />
 		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db" DestinationFiles="$(Templates-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
+	</Target>
+	
+	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-SourceFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 
 	<!-- MVC TEMPLATES -->
@@ -37,10 +42,10 @@
                        $(LibFolder)\System.Web.Mvc.dll;"
 					DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\Edit\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
-	
-	<Target Name="Templates-Mvc-Build" DependsOnTargets="Templates-Mvc-PrepareDependencies">
+
+	<Target Name="Templates-Mvc-Build">
+		<!--DependsOnTargets="Templates-Mvc-PrepareDependencies">-->
 		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
 	</Target>
 
@@ -57,12 +62,12 @@
 										$(Templates-Mvc-SourceFolder)\**\*.user;
 										$(Templates-Mvc-SourceFolder)\**\*.Publish.xml;
 										$(Templates-Mvc-SourceFolder)\**\Thumbs.db;
-										$(Templates-Mvc-SourceFolder)\Edit\**\*;" />
+										$(Templates-Mvc-SourceFolder)\N2\**\*;" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(templatesMvcFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\%(RecursiveDir)" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\Edit\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
 

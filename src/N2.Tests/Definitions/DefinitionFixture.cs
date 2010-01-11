@@ -135,7 +135,7 @@ namespace N2.Tests.Definitions
 		public void Definition_UsesDefinedIconUrl_NotRuntimeIconUrl()
 		{
 			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-			Assert.AreEqual("~/edit/img/ico/page.gif", definition.IconUrl);
+			Assert.AreEqual("~/N2/Resources/Img/ico/page.gif", definition.IconUrl);
 		}
 
 		[Test]

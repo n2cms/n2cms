@@ -17,7 +17,7 @@ namespace N2
 		{
 			Installer = InstallerHint.Default;
 			IsPage = true;
-			IconUrl = "~/edit/img/ico/page.gif";
+			IconUrl = "~/N2/Resources/Img/ico/page.gif";
 		}
 
 		/// <summary>Initializes a new instance of ItemAttribute class.</summary>

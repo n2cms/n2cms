@@ -1,0 +1,1479 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Management</RootNamespace>
+    <AssemblyName>N2.Management</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.1.0.5853, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\net3.5\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\AffectedItems.ascx" />
+    <Content Include="N2\Content\Copy.aspx" />
+    <Content Include="N2\Resources\Css\editor.css" />
+    <Content Include="N2\Resources\Css\default.css" />
+    <Content Include="N2\Resources\Css\all.css" />
+    <Content Include="N2\Files\Css\filemanager.css" />
+    <Content Include="N2\Content\Default.aspx" />
+    <Content Include="N2\Content\Delete.aspx" />
+    <Content Include="N2\Content\Edit.aspx" />
+    <Content Include="N2\Files\Default.aspx" />
+    <Content Include="N2\Login.aspx" />
+    <Content Include="N2\Content\Move.aspx" />
+    <Content Include="N2\Content\New.aspx" />
+    <Content Include="N2\Web.config" />
+    <None Include="N2\Content\Dependencies.aspx" />
+    <Content Include="N2\Resources\KeepAlive\Ping.ashx" />
+    <Content Include="N2\Resources\KeepAlive\Web.config" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="N2\Content\AffectedItems.ascx.cs">
+      <DependentUpon>AffectedItems.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\AffectedItems.ascx.designer.cs">
+      <DependentUpon>AffectedItems.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\AutoPublish\PublishScheduledAction.cs" />
+    <Compile Include="N2\Content\AvailableZones.ascx.cs">
+      <DependentUpon>AvailableZones.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\AvailableZones.ascx.designer.cs">
+      <DependentUpon>AvailableZones.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\ControlPanelEditingSaveAttribute.cs" />
+    <Compile Include="N2\Content\ControlPanelPreviewDiscardAttribute.cs" />
+    <Compile Include="N2\Content\ControlPanelPreviewPublishAttribute.cs" />
+    <Compile Include="N2\Content\Copy.aspx.cs">
+      <DependentUpon>Copy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Copy.aspx.designer.cs">
+      <DependentUpon>Copy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Delete.aspx.cs">
+      <DependentUpon>Delete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Delete.aspx.designer.cs">
+      <DependentUpon>Delete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\DiscardPreview.aspx.cs">
+      <DependentUpon>DiscardPreview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\DiscardPreview.aspx.designer.cs">
+      <DependentUpon>DiscardPreview.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Export\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Export\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Export\DefinitionNotFoundException.cs" />
+    <Compile Include="N2\Content\Export\InvalidXmlException.cs" />
+    <Compile Include="N2\Content\Export\N2XmlReader.cs" />
+    <Compile Include="N2\Content\Export\N2XmlWriter.cs" />
+    <Compile Include="N2\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Files\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\FileSystem\Directory.aspx.cs">
+      <DependentUpon>Directory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\FileSystem\Directory.aspx.designer.cs">
+      <DependentUpon>Directory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\FileSystem\Editables\EditableFolderPathAttribute.cs" />
+    <Compile Include="N2\Content\FileSystem\Editables\EditableUploadAttribute.cs" />
+    <Compile Include="N2\Content\FileSystem\File.aspx.cs">
+      <DependentUpon>File.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\FileSystem\File.aspx.designer.cs">
+      <DependentUpon>File.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\FileSystem\Items\Directory.cs" />
+    <Compile Include="N2\Content\FileSystem\Items\File.cs" />
+    <Compile Include="N2\Content\FileSystem\Items\AbstractDirectory.cs" />
+    <Compile Include="N2\Content\FileSystem\Items\AbstractNode.cs" />
+    <Compile Include="N2\Content\FileSystem\Items\RootDirectory.cs" />
+    <Compile Include="N2\Content\Framed.Master.cs">
+      <DependentUpon>Framed.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Framed.Master.designer.cs">
+      <DependentUpon>Framed.Master</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Globalization\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Globalization\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Globalization\LanguageInitializer.cs" />
+    <Compile Include="N2\Content\Globalization\LanguageMenu.ascx.cs">
+      <DependentUpon>LanguageMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Globalization\LanguageMenu.ascx.designer.cs">
+      <DependentUpon>LanguageMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Globalization\Languages.ascx.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Globalization\Languages.ascx.designer.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Globalization\Translate.aspx.cs">
+      <DependentUpon>Translate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Globalization\Translate.aspx.designer.cs">
+      <DependentUpon>Translate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\ItemInfo.ascx.cs">
+      <DependentUpon>ItemInfo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\ItemInfo.ascx.designer.cs">
+      <DependentUpon>ItemInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Installation\Begin\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\Begin\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Installation\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Installation\Diagnose.aspx.cs">
+      <DependentUpon>Diagnose.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\Diagnose.aspx.designer.cs">
+      <DependentUpon>Diagnose.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Installation\Fix.aspx.cs">
+      <DependentUpon>Fix.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\Fix.aspx.designer.cs">
+      <DependentUpon>Fix.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Installation\FixClass.aspx.cs">
+      <DependentUpon>FixClass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\FixClass.aspx.designer.cs">
+      <DependentUpon>FixClass.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Installation\Upgrade.aspx.cs">
+      <DependentUpon>Upgrade.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\Upgrade.aspx.designer.cs">
+      <DependentUpon>Upgrade.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Resources\Js\DirectoryCompiler.cs" />
+    <Compile Include="N2\Resources\Js\jquery.ui.ashx.cs">
+      <DependentUpon>jquery.ui.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Resources\Js\plugins.ashx.cs">
+      <DependentUpon>plugins.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Resources\Js\tinymce.ashx.cs">
+      <DependentUpon>tinymce.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Resources\KeepAlive\Ping.ashx.cs">
+      <DependentUpon>Ping.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Resources\KeepAlive\Pinger.cs" />
+    <Compile Include="N2\Content\LinkTracker\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\LinkTracker\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\LinkTracker\LinkTrackerInitializer.cs" />
+    <Compile Include="N2\Content\LinkTracker\Tracker.cs" />
+    <Compile Include="N2\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Users\Edit.aspx.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Users\Edit.aspx.designer.cs">
+      <DependentUpon>Edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Users\MembershipToolbarPluginAttribute.cs" />
+    <Compile Include="N2\Users\New.aspx.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Users\New.aspx.designer.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Users\Password.aspx.cs">
+      <DependentUpon>Password.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Users\Password.aspx.designer.cs">
+      <DependentUpon>Password.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Users\Users.aspx.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Users\Users.aspx.designer.cs">
+      <DependentUpon>Users.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Move.aspx.cs">
+      <DependentUpon>Move.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Move.aspx.designer.cs">
+      <DependentUpon>Move.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\ContextMenu.ascx.cs">
+      <DependentUpon>ContextMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\ContextMenu.ascx.designer.cs">
+      <DependentUpon>ContextMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\HelpfulHandler.cs" />
+    <Compile Include="N2\Content\Navigation\LoadTree.ashx.cs">
+      <DependentUpon>LoadTree.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\NavigationPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\SearchControlAttribute.cs" />
+    <Compile Include="N2\Content\Navigation\SortDown.ashx.cs">
+      <DependentUpon>SortDown.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\SortPlugin.cs" />
+    <Compile Include="N2\Content\Navigation\SortUp.ashx.cs">
+      <DependentUpon>SortUp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\Tree.aspx.cs">
+      <DependentUpon>Tree.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Navigation\Tree.aspx.designer.cs">
+      <DependentUpon>Tree.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\paste.aspx.cs">
+      <DependentUpon>Paste.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\paste.aspx.designer.cs">
+      <DependentUpon>Paste.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\New.aspx.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\New.aspx.designer.cs">
+      <DependentUpon>New.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\PersonalSettings.cs" />
+    <Compile Include="N2\Properties\AssemblyInfo.cs" />
+    <Compile Include="N2\Content\ItemSelection\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\ItemSelection\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\PublishPreview.aspx.cs">
+      <DependentUpon>PublishPreview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\PublishPreview.aspx.designer.cs">
+      <DependentUpon>PublishPreview.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\ReferencingItems.ascx.cs">
+      <DependentUpon>ReferencingItems.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\ReferencingItems.ascx.designer.cs">
+      <DependentUpon>ReferencingItems.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Security\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Security\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Settings\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Settings\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Settings\SettingsEditor.ascx.cs">
+      <DependentUpon>SettingsEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Settings\SettingsEditor.ascx.designer.cs">
+      <DependentUpon>SettingsEditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Trash\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Trash\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Trash\DeleteInterceptor.cs" />
+    <Compile Include="N2\Content\Trash\TrashcanInitializer.cs" />
+    <Compile Include="N2\Content\Trash\TrashCleanupAgent.cs" />
+    <Compile Include="N2\Content\Trash\TrashContainerItem.cs" />
+    <Compile Include="N2\Content\Trash\TrashHandler.cs" />
+    <Compile Include="N2\Content\Versions\ControlPanelPendingVersionAttribute.cs" />
+    <Compile Include="N2\Content\Versions\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Versions\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Web\DirectoryNode.cs" />
+    <Compile Include="N2\Content\Web\FileNode.cs" />
+    <Compile Include="N2\Content\Web\FileSiteMapNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Web\FileSiteMapProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Web\RootNode.cs" />
+    <Compile Include="N2\Content\Web\UI\Controls\FieldSet.cs" />
+    <Compile Include="N2\Content\Web\UI\Controls\InfoLabel.cs" />
+    <Compile Include="N2\Content\Web\UI\Controls\OptionsMenu.cs" />
+    <Compile Include="N2\Content\Web\UI\Controls\ToolbarPluginDisplay.cs" />
+    <Compile Include="N2\Content\Web\UI\Controls\Tree.cs" />
+    <Compile Include="N2\Content\Web\UI\Controls\TreeView.cs" />
+    <Compile Include="N2\Content\Web\UrlSelectionPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Wizard\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Content\Wizard\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Content\Wizard\Details\EditableDefinitionAttribute.cs" />
+    <Compile Include="N2\Content\Wizard\Items\MagicLocation.cs" />
+    <Compile Include="N2\Content\Wizard\Items\Wonderland.cs" />
+    <Compile Include="N2\Content\Wizard\LocationWizard.cs" />
+    <Compile Include="N2\Content\Wizard\Settings.cs" />
+    <Compile Include="N2\Content\Wizard\WizardInitialzer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\App_LocalResources\AvailableZones.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Copy.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Delete.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Framed.Master.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Login.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Move.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\New.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Paste.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\AvailableZones.ascx" />
+    <Content Include="N2\Resources\Css\framed.css" />
+    <Content Include="N2\Resources\Css\IE6.css" />
+    <Content Include="N2\Resources\img\bg.gif" />
+    <Content Include="N2\Resources\img\framed_bg.gif" />
+    <Content Include="N2\Resources\img\framed_toolbar.gif" />
+    <Content Include="N2\Resources\img\framed_top.gif" />
+    <Content Include="N2\Resources\img\grid_alt.gif" />
+    <Content Include="N2\Resources\img\ico\accept.gif" />
+    <Content Include="N2\Resources\img\ico\add.gif" />
+    <Content Include="N2\Resources\img\ico\bin.gif" />
+    <Content Include="N2\Resources\img\ico\bin_closed.gif" />
+    <Content Include="N2\Resources\img\ico\bin_empty.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_add.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_arrow_bottom.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_arrow_down.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_arrow_top.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_arrow_up.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_delete.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_disk.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_error.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_key.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_star.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_toggle_plus.gif" />
+    <Content Include="N2\Resources\img\ico\bullet_wrench.gif" />
+    <Content Include="N2\Resources\img\ico\cancel.gif" />
+    <Content Include="N2\Resources\img\ico\comment.gif" />
+    <Content Include="N2\Resources\img\ico\control_rewind.gif" />
+    <Content Include="N2\Resources\img\ico\control_start.gif" />
+    <Content Include="N2\Resources\img\ico\cross.gif" />
+    <Content Include="N2\Resources\img\ico\cut.gif" />
+    <Content Include="N2\Resources\img\ico\delete.gif" />
+    <Content Include="N2\Resources\img\ico\disk.gif" />
+    <Content Include="N2\Resources\img\ico\email.gif" />
+    <Content Include="N2\Resources\img\ico\exclamation.gif" />
+    <Content Include="N2\Resources\img\ico\feed.gif" />
+    <Content Include="N2\Resources\img\ico\find.gif" />
+    <Content Include="N2\Resources\img\ico\flag_blue.gif" />
+    <Content Include="N2\Resources\img\ico\folder.gif" />
+    <Content Include="N2\Resources\img\ico\folder_add.gif" />
+    <Content Include="N2\Resources\img\ico\folder_delete.gif" />
+    <Content Include="N2\Resources\img\ico\group.gif" />
+    <Content Include="N2\Resources\img\ico\group_key.gif" />
+    <Content Include="N2\Resources\img\ico\information.gif" />
+    <Content Include="N2\Resources\img\ico\key.gif" />
+    <Content Include="N2\Resources\img\ico\lightning.gif" />
+    <Content Include="N2\Resources\img\ico\lock.gif" />
+    <Content Include="N2\Resources\img\ico\new.gif" />
+    <Content Include="N2\Resources\img\ico\newspaper.gif" />
+    <Content Include="N2\Resources\img\ico\newspaper_add.gif" />
+    <Content Include="N2\Resources\img\ico\package.gif" />
+    <Content Include="N2\Resources\img\ico\package_come_and_go.gif" />
+    <Content Include="N2\Resources\img\ico\page.gif" />
+    <Content Include="N2\Resources\img\ico\page_add.gif" />
+    <Content Include="N2\Resources\img\ico\page_attach.gif" />
+    <Content Include="N2\Resources\img\ico\page_code.gif" />
+    <Content Include="N2\Resources\img\ico\page_copy.gif" />
+    <Content Include="N2\Resources\img\ico\page_delete.gif" />
+    <Content Include="N2\Resources\img\ico\page_edit.gif" />
+    <Content Include="N2\Resources\img\ico\page_error.gif" />
+    <Content Include="N2\Resources\img\ico\page_find.gif" />
+    <Content Include="N2\Resources\img\ico\page_gear.gif" />
+    <Content Include="N2\Resources\img\ico\page_go.gif" />
+    <Content Include="N2\Resources\img\ico\page_green.gif" />
+    <Content Include="N2\Resources\img\ico\page_key.gif" />
+    <Content Include="N2\Resources\img\ico\page_lightning.gif" />
+    <Content Include="N2\Resources\img\ico\page_link.gif" />
+    <Content Include="N2\Resources\img\ico\page_paintbrush.gif" />
+    <Content Include="N2\Resources\img\ico\page_paste.gif" />
+    <Content Include="N2\Resources\img\ico\page_red.gif" />
+    <Content Include="N2\Resources\img\ico\page_refresh.gif" />
+    <Content Include="N2\Resources\img\ico\page_rewind.gif" />
+    <Content Include="N2\Resources\img\ico\page_save.gif" />
+    <Content Include="N2\Resources\img\ico\page_white.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_add.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_copy.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_delete.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_edit.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_error.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_find.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_get.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_key.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_lightning.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_link.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_magnify.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_paste.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_put.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_stack.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_text.gif" />
+    <Content Include="N2\Resources\img\ico\page_white_wrench.gif" />
+    <Content Include="N2\Resources\img\ico\page_world.gif" />
+    <Content Include="N2\Resources\img\ico\plugin.gif" />
+    <Content Include="N2\Resources\img\ico\png\accept.png" />
+    <Content Include="N2\Resources\img\ico\png\add.png" />
+    <Content Include="N2\Resources\img\ico\png\anchor.png" />
+    <Content Include="N2\Resources\img\ico\png\bin.png" />
+    <Content Include="N2\Resources\img\ico\png\bin_closed.png" />
+    <Content Include="N2\Resources\img\ico\png\bin_empty.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_add.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_arrow_bottom.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_arrow_down.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_arrow_top.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_arrow_up.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_delete.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_disk.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_error.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_go.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_key.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_star.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_toggle_plus.png" />
+    <Content Include="N2\Resources\img\ico\png\bullet_wrench.png" />
+    <Content Include="N2\Resources\img\ico\png\cancel.png" />
+    <Content Include="N2\Resources\img\ico\png\comment.png" />
+    <Content Include="N2\Resources\img\ico\png\control_rewind.png" />
+    <Content Include="N2\Resources\img\ico\png\control_start.png" />
+    <Content Include="N2\Resources\img\ico\png\cross.png" />
+    <Content Include="N2\Resources\img\ico\png\cut.png" />
+    <Content Include="N2\Resources\img\ico\png\delete.png" />
+    <Content Include="N2\Resources\img\ico\png\disk.png" />
+    <Content Include="N2\Resources\img\ico\png\email.png" />
+    <Content Include="N2\Resources\img\ico\png\feed.png" />
+    <Content Include="N2\Resources\img\ico\png\find.png" />
+    <Content Include="N2\Resources\img\ico\png\flag_blue.png" />
+    <Content Include="N2\Resources\img\ico\png\folder.png" />
+    <Content Include="N2\Resources\img\ico\png\folder_add.png" />
+    <Content Include="N2\Resources\img\ico\png\folder_delete.png" />
+    <Content Include="N2\Resources\img\ico\png\group.png" />
+    <Content Include="N2\Resources\img\ico\png\group_key.png" />
+    <Content Include="N2\Resources\img\ico\png\information.png" />
+    <Content Include="N2\Resources\img\ico\png\key.png" />
+    <Content Include="N2\Resources\img\ico\png\lightning.png" />
+    <Content Include="N2\Resources\img\ico\png\lock.png" />
+    <Content Include="N2\Resources\img\ico\png\new.png" />
+    <Content Include="N2\Resources\img\ico\png\newspaper.png" />
+    <Content Include="N2\Resources\img\ico\png\newspaper_add.png" />
+    <Content Include="N2\Resources\img\ico\png\package.png" />
+    <Content Include="N2\Resources\img\ico\png\package_come_and_go.png" />
+    <Content Include="N2\Resources\img\ico\png\page.png" />
+    <Content Include="N2\Resources\img\ico\png\page_add.png" />
+    <Content Include="N2\Resources\img\ico\png\page_attach.png" />
+    <Content Include="N2\Resources\img\ico\png\page_code.png" />
+    <Content Include="N2\Resources\img\ico\png\page_copy.png" />
+    <Content Include="N2\Resources\img\ico\png\page_delete.png" />
+    <Content Include="N2\Resources\img\ico\png\page_edit.png" />
+    <Content Include="N2\Resources\img\ico\png\page_error.png" />
+    <Content Include="N2\Resources\img\ico\png\page_find.png" />
+    <Content Include="N2\Resources\img\ico\png\page_gear.png" />
+    <Content Include="N2\Resources\img\ico\png\page_go.png" />
+    <Content Include="N2\Resources\img\ico\png\page_green.png" />
+    <Content Include="N2\Resources\img\ico\png\page_key.png" />
+    <Content Include="N2\Resources\img\ico\png\page_lightning.png" />
+    <Content Include="N2\Resources\img\ico\png\page_link.png" />
+    <Content Include="N2\Resources\img\ico\png\page_paintbrush.png" />
+    <Content Include="N2\Resources\img\ico\png\page_paste.png" />
+    <Content Include="N2\Resources\img\ico\png\page_red.png" />
+    <Content Include="N2\Resources\img\ico\png\page_refresh.png" />
+    <Content Include="N2\Resources\img\ico\png\page_rewind.png" />
+    <Content Include="N2\Resources\img\ico\png\page_save.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_add.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_copy.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_delete.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_edit.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_error.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_find.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_get.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_key.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_lightning.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_link.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_magnify.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_paste.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_put.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_stack.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_text.png" />
+    <Content Include="N2\Resources\img\ico\png\page_white_wrench.png" />
+    <Content Include="N2\Resources\img\ico\png\page_world.png" />
+    <Content Include="N2\Resources\img\ico\png\plugin.png" />
+    <Content Include="N2\Resources\img\ico\png\printer.png" />
+    <Content Include="N2\Resources\img\ico\png\script.png" />
+    <Content Include="N2\Resources\img\ico\png\server_edit.png" />
+    <Content Include="N2\Resources\img\ico\png\sitemap.png" />
+    <Content Include="N2\Resources\img\ico\png\sitemap_color.png" />
+    <Content Include="N2\Resources\img\ico\png\table.png" />
+    <Content Include="N2\Resources\img\ico\png\tag_blue.png" />
+    <Content Include="N2\Resources\img\ico\png\user.png" />
+    <Content Include="N2\Resources\img\ico\png\user_add.png" />
+    <Content Include="N2\Resources\img\ico\png\user_delete.png" />
+    <Content Include="N2\Resources\img\ico\png\user_edit.png" />
+    <Content Include="N2\Resources\img\ico\png\world.png" />
+    <Content Include="N2\Resources\img\ico\png\wrench.png" />
+    <Content Include="N2\Resources\img\ico\printer.gif" />
+    <Content Include="N2\Resources\img\ico\script.gif" />
+    <Content Include="N2\Resources\img\ico\server_edit.gif" />
+    <Content Include="N2\Resources\img\ico\sitemap.gif" />
+    <Content Include="N2\Resources\img\ico\sitemap_color.gif" />
+    <Content Include="N2\Resources\img\ico\table.gif" />
+    <Content Include="N2\Resources\img\ico\tag_blue.gif" />
+    <Content Include="N2\Resources\img\ico\user.gif" />
+    <Content Include="N2\Resources\img\ico\user_add.gif" />
+    <Content Include="N2\Resources\img\ico\user_delete.gif" />
+    <Content Include="N2\Resources\img\ico\user_edit.gif" />
+    <Content Include="N2\Resources\img\ico\world.gif" />
+    <Content Include="N2\Resources\img\ico\wrench.gif" />
+    <Content Include="N2\Resources\img\login_bg.gif" />
+    <Content Include="N2\Resources\img\login_panel.gif" />
+    <Content Include="N2\Resources\img\tab_selected.gif" />
+    <Content Include="N2\Resources\img\toolbar_bg.gif" />
+    <Content Include="N2\Resources\img\tv\tv-collapsable-last.gif" />
+    <Content Include="N2\Resources\img\tv\tv-collapsable.gif" />
+    <Content Include="N2\Resources\img\tv\tv-expandable-last.gif" />
+    <Content Include="N2\Resources\img\tv\tv-expandable.gif" />
+    <Content Include="N2\Resources\img\tv\tv-item-last.gif" />
+    <Content Include="N2\Resources\img\tv\tv-item.gif" />
+    <Content Include="N2\Content\ItemInfo.ascx" />
+    <Content Include="N2\Resources\Js\ContextMenu.js" />
+    <Content Include="N2\Files\Js\FileSelection.js" />
+    <Content Include="N2\Content\ItemSelection\Js\ItemSelection.js" />
+    <Content Include="N2\Content\App_LocalResources\AffectedItems.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Resources\Js\UrlSelection.js" />
+    <Content Include="N2\Content\Navigation\App_LocalResources\Search.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Navigation\App_LocalResources\Settings.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Navigation\App_LocalResources\Table.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Navigation\App_LocalResources\Tree.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Files\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\ItemSelection\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Toolbar.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Settings\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\Edit.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Navigation\App_LocalResources\Navigation.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\App_LocalResources\ItemInfo.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Framed.Master" />
+    <Content Include="N2\Content\Navigation\ContextMenu.ascx" />
+    <Content Include="N2\Content\Navigation\Search.aspx" />
+    <Content Include="N2\Content\Navigation\Tree.aspx" />
+    <Content Include="N2\Content\Paste.aspx" />
+    <Content Include="N2\Content\Security\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Export\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Users\App_LocalResources\Edit.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Users\App_LocalResources\New.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Users\App_LocalResources\Password.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Users\App_LocalResources\Users.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Versions\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\ItemSelection\Default.aspx" />
+    <Content Include="N2\Content\ReferencingItems.ascx" />
+    <Content Include="N2\Content\Settings\Default.aspx" />
+    <Content Include="N2\Content\Versions.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Edit\..\..\N2\N2.csproj">
+      <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
+      <Name>N2</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="Edit\{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Files\Js\jquery.MultiFile.js" />
+    <Content Include="N2\Resources\img\gripper.gif" />
+    <Content Include="N2\Resources\img\ico\png\help.png" />
+    <Content Include="N2\Resources\img\ico\png\script_edit.png" />
+    <Content Include="N2\Resources\img\ico\png\shape_move_front.png" />
+    <Content Include="N2\Resources\img\ico\png\star.png" />
+    <Content Include="N2\Resources\img\shading.png" />
+    <Content Include="N2\Resources\img\SlidingCurtain_bg.png" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2optionmenu.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.splitter.js" />
+    <Content Include="N2\Resources\Js\plugins\n2.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Resources\Js\plugins.ashx" />
+    <Content Include="N2\Resources\Js\jquery.ui.ashx" />
+    <Content Include="N2\Resources\tiny_mce\langs\en.js" />
+    <Content Include="N2\Resources\tiny_mce\license.txt" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advhr\css\advhr.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advhr\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advhr\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advhr\js\rule.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advhr\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advhr\rule.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advimage\css\advimage.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advimage\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advimage\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advimage\image.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advimage\img\sample.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advimage\js\image.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advimage\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advlink\css\advlink.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advlink\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advlink\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advlink\js\advlink.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advlink\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\advlink\link.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\autosave\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\autosave\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\bbcode\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\bbcode\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\compat2x\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\compat2x\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\contextmenu\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\contextmenu\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\directionality\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\directionality\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\emotions.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-cool.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-cry.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-embarassed.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-foot-in-mouth.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-frown.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-innocent.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-kiss.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-laughing.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-money-mouth.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-sealed.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-smile.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-surprised.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-tongue-out.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-undecided.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-wink.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\img\smiley-yell.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\js\emotions.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\emotions\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\example\dialog.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\example\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\example\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\example\img\example.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\example\js\dialog.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\example\langs\en.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\example\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullpage\css\fullpage.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullpage\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullpage\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullpage\fullpage.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullpage\js\fullpage.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullpage\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullscreen\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullscreen\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\fullscreen\fullscreen.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\iespell\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\iespell\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\alert.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\button.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\buttons.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\confirm.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\corners.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\horizontal.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\skins\clearlooks2\img\vertical.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\skins\clearlooks2\window.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\inlinepopups\template.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\insertdatetime\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\insertdatetime\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\layer\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\layer\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\css\content.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\css\media.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\img\flash.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\img\flv_player.swf" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\img\quicktime.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\img\realmedia.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\img\shockwave.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\img\trans.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\img\windowsmedia.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\js\embed.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\js\media.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\media\media.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\nonbreaking\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\nonbreaking\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\noneditable\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\noneditable\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\css\content.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\img\pagebreak.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\pagebreak\img\trans.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\blank.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\css\blank.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\css\pasteword.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\js\pastetext.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\js\pasteword.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\pastetext.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\paste\pasteword.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\preview\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\preview\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\preview\example.html" />
+    <Content Include="N2\Resources\tiny_mce\plugins\preview\jscripts\embed.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\print\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\print\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\safari\blank.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\safari\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\safari\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\save\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\save\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\searchreplace\css\searchreplace.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\searchreplace\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\searchreplace\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\searchreplace\js\searchreplace.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\searchreplace\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\searchreplace\searchreplace.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\spellchecker\css\content.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\spellchecker\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\spellchecker\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\spellchecker\img\wline.gif" />
+    <Content Include="N2\Resources\tiny_mce\plugins\style\css\props.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\style\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\style\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\style\js\props.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\style\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\style\props.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\cell.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\css\cell.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\css\row.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\css\table.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\js\cell.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\js\merge_cells.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\js\row.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\js\table.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\merge_cells.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\row.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\table\table.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\template\blank.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\template\css\template.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\template\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\template\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\template\js\template.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\template\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\template\template.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\visualchars\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\visualchars\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\abbr.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\acronym.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\attributes.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\cite.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\css\attributes.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\css\popup.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\css\xhtmlxtras.css" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\del.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\editor_plugin.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\editor_plugin_src.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\ins.htm" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\js\abbr.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\js\acronym.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\js\attributes.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\js\cite.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\js\del.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\js\element_common.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\js\ins.js" />
+    <Content Include="N2\Resources\tiny_mce\plugins\xhtmlxtras\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\about.htm" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\anchor.htm" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\charmap.htm" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\color_picker.htm" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\editor_template.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\editor_template_src.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\image.htm" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\colorpicker.jpg" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\img\icons.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\js\about.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\js\anchor.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\js\charmap.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\js\color_picker.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\js\image.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\js\link.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\js\source_editor.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\langs\en.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\langs\en_dlg.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\link.htm" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\content.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\dialog.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\buttons.png" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\items.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\menu_arrow.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\menu_check.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\progress.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\img\tabs.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\default\ui.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\o2k7\content.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\o2k7\dialog.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\o2k7\img\button_bg.png" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\skins\o2k7\ui.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\advanced\source_editor.htm" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\editor_template.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\editor_template_src.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\img\icons.gif" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\langs\en.js" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\skins\default\content.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\skins\default\ui.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\skins\o2k7\content.css" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\skins\o2k7\img\button_bg.png" />
+    <Content Include="N2\Resources\tiny_mce\themes\simple\skins\o2k7\ui.css" />
+    <Content Include="N2\Resources\tiny_mce\tiny_mce.js" />
+    <Content Include="N2\Resources\tiny_mce\tiny_mce_popup.js" />
+    <Content Include="N2\Resources\tiny_mce\tiny_mce_src.js" />
+    <Content Include="N2\Resources\tiny_mce\utils\editable_selects.js" />
+    <Content Include="N2\Resources\tiny_mce\utils\form_utils.js" />
+    <Content Include="N2\Resources\tiny_mce\utils\mclayer.js" />
+    <Content Include="N2\Resources\tiny_mce\utils\mctabs.js" />
+    <Content Include="N2\Resources\tiny_mce\utils\validate.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Resources\img\ico\png\book_next.png" />
+    <Content Include="N2\Resources\img\ico\png\book_previous.png" />
+    <Content Include="N2\Resources\img\ico\png\zoom.png" />
+    <Content Include="N2\Resources\img\treeview\collapsable-last.gif" />
+    <Content Include="N2\Resources\img\treeview\collapsable.gif" />
+    <Content Include="N2\Resources\img\treeview\expandable-last.gif" />
+    <Content Include="N2\Resources\img\treeview\expandable.gif" />
+    <Content Include="N2\Resources\img\treeview\leaf-last.gif" />
+    <Content Include="N2\Resources\img\treeview\leaf.gif" />
+    <Content Include="N2\Resources\img\treeview\root.gif" />
+    <Content Include="N2\Resources\img\treeview\spacer.gif" />
+    <Content Include="N2\Resources\img\treeview\spinner.gif" />
+    <Content Include="N2\Resources\Js\plugins\jquery.SimpleTree.js" />
+    <Content Include="N2\Resources\Js\tinymce.ashx" />
+    <Content Include="N2\Content\Security\Default.aspx" />
+    <Content Include="N2\Resources\Css\Versions.css" />
+    <Content Include="N2\Content\Versions\Default.aspx" />
+    <Content Include="N2\Resources\img\book_previous.gif" />
+    <Content Include="N2\Resources\img\bullet_star.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Resources\img\n2.gif" />
+    <Content Include="N2\Resources\img\toolarea_bg.gif" />
+    <Content Include="N2\Resources\img\toolitem_separator.gif" />
+    <Content Include="N2\Content\Navigation\LoadTree.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\Navigation\SortUp.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Resources\Css\Parts.css" />
+    <Content Include="N2\Resources\Css\exportImport.css" />
+    <Content Include="N2\Content\Export\Default.aspx" />
+    <Content Include="N2\Resources\img\framed_opener.gif" />
+    <Content Include="N2\Resources\img\ico\png\pencil.png" />
+    <Content Include="N2\Resources\img\part_bg.png" />
+    <Content Include="N2\Resources\img\pencil.png" />
+    <Content Include="N2\Resources\img\shading_blue.png" />
+    <Content Include="N2\Resources\img\shading_green.png" />
+    <Content Include="N2\Resources\img\shading_purple.png" />
+    <Content Include="N2\Resources\img\splitter.gif" />
+    <Content Include="N2\Resources\img\tabs_base.gif" />
+    <Content Include="N2\Resources\img\tabs_begin.gif" />
+    <Content Include="N2\Resources\img\tab_end.gif" />
+    <Content Include="N2\Resources\Js\jquery.ui\jquery.n2contextmenu-0.3.js" />
+    <Content Include="N2\Resources\Js\parts.js" />
+    <Content Include="N2\Users\Css\Membership.css" />
+    <Content Include="N2\Users\Edit.aspx" />
+    <Content Include="N2\Users\New.aspx" />
+    <Content Include="N2\Users\Password.aspx" />
+    <Content Include="N2\Users\Users.aspx" />
+    <Content Include="N2\Content\Navigation\SortDown.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\Globalization\Default.aspx" />
+    <Content Include="N2\Content\Globalization\LanguageMenu.ascx" />
+    <Content Include="N2\Content\Globalization\Languages.ascx" />
+    <Content Include="N2\Resources\Css\Globalization.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\Globalization\App_LocalResources\Languages.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Resources\img\flags\ad.png" />
+    <Content Include="N2\Resources\img\flags\ae.png" />
+    <Content Include="N2\Resources\img\flags\af.png" />
+    <Content Include="N2\Resources\img\flags\ag.png" />
+    <Content Include="N2\Resources\img\flags\ai.png" />
+    <Content Include="N2\Resources\img\flags\al.png" />
+    <Content Include="N2\Resources\img\flags\am.png" />
+    <Content Include="N2\Resources\img\flags\an.png" />
+    <Content Include="N2\Resources\img\flags\ao.png" />
+    <Content Include="N2\Resources\img\flags\ar.png" />
+    <Content Include="N2\Resources\img\flags\as.png" />
+    <Content Include="N2\Resources\img\flags\at.png" />
+    <Content Include="N2\Resources\img\flags\au.png" />
+    <Content Include="N2\Resources\img\flags\aw.png" />
+    <Content Include="N2\Resources\img\flags\ax.png" />
+    <Content Include="N2\Resources\img\flags\az.png" />
+    <Content Include="N2\Resources\img\flags\ba.png" />
+    <Content Include="N2\Resources\img\flags\bb.png" />
+    <Content Include="N2\Resources\img\flags\bd.png" />
+    <Content Include="N2\Resources\img\flags\be.png" />
+    <Content Include="N2\Resources\img\flags\bf.png" />
+    <Content Include="N2\Resources\img\flags\bg.png" />
+    <Content Include="N2\Resources\img\flags\bh.png" />
+    <Content Include="N2\Resources\img\flags\bi.png" />
+    <Content Include="N2\Resources\img\flags\bj.png" />
+    <Content Include="N2\Resources\img\flags\bm.png" />
+    <Content Include="N2\Resources\img\flags\bn.png" />
+    <Content Include="N2\Resources\img\flags\bo.png" />
+    <Content Include="N2\Resources\img\flags\br.png" />
+    <Content Include="N2\Resources\img\flags\bs.png" />
+    <Content Include="N2\Resources\img\flags\bt.png" />
+    <Content Include="N2\Resources\img\flags\bv.png" />
+    <Content Include="N2\Resources\img\flags\bw.png" />
+    <Content Include="N2\Resources\img\flags\by.png" />
+    <Content Include="N2\Resources\img\flags\bz.png" />
+    <Content Include="N2\Resources\img\flags\ca.png" />
+    <Content Include="N2\Resources\img\flags\catalonia.png" />
+    <Content Include="N2\Resources\img\flags\cc.png" />
+    <Content Include="N2\Resources\img\flags\cd.png" />
+    <Content Include="N2\Resources\img\flags\cf.png" />
+    <Content Include="N2\Resources\img\flags\cg.png" />
+    <Content Include="N2\Resources\img\flags\ch.png" />
+    <Content Include="N2\Resources\img\flags\ci.png" />
+    <Content Include="N2\Resources\img\flags\ck.png" />
+    <Content Include="N2\Resources\img\flags\cl.png" />
+    <Content Include="N2\Resources\img\flags\cm.png" />
+    <Content Include="N2\Resources\img\flags\cn.png" />
+    <Content Include="N2\Resources\img\flags\co.png" />
+    <Content Include="N2\Resources\img\flags\cr.png" />
+    <Content Include="N2\Resources\img\flags\cs.png" />
+    <Content Include="N2\Resources\img\flags\cu.png" />
+    <Content Include="N2\Resources\img\flags\cv.png" />
+    <Content Include="N2\Resources\img\flags\cx.png" />
+    <Content Include="N2\Resources\img\flags\cy.png" />
+    <Content Include="N2\Resources\img\flags\cz.png" />
+    <Content Include="N2\Resources\img\flags\de.png" />
+    <Content Include="N2\Resources\img\flags\dj.png" />
+    <Content Include="N2\Resources\img\flags\dk.png" />
+    <Content Include="N2\Resources\img\flags\dm.png" />
+    <Content Include="N2\Resources\img\flags\do.png" />
+    <Content Include="N2\Resources\img\flags\dz.png" />
+    <Content Include="N2\Resources\img\flags\ec.png" />
+    <Content Include="N2\Resources\img\flags\ee.png" />
+    <Content Include="N2\Resources\img\flags\eg.png" />
+    <Content Include="N2\Resources\img\flags\eh.png" />
+    <Content Include="N2\Resources\img\flags\en.png" />
+    <Content Include="N2\Resources\img\flags\er.png" />
+    <Content Include="N2\Resources\img\flags\es.png" />
+    <Content Include="N2\Resources\img\flags\et.png" />
+    <Content Include="N2\Resources\img\flags\eu.png" />
+    <Content Include="N2\Resources\img\flags\fam.png" />
+    <Content Include="N2\Resources\img\flags\fi.png" />
+    <Content Include="N2\Resources\img\flags\fj.png" />
+    <Content Include="N2\Resources\img\flags\fk.png" />
+    <Content Include="N2\Resources\img\flags\fm.png" />
+    <Content Include="N2\Resources\img\flags\fo.png" />
+    <Content Include="N2\Resources\img\flags\fr.png" />
+    <Content Include="N2\Resources\img\flags\ga.png" />
+    <Content Include="N2\Resources\img\flags\gb.png" />
+    <Content Include="N2\Resources\img\flags\gd.png" />
+    <Content Include="N2\Resources\img\flags\ge.png" />
+    <Content Include="N2\Resources\img\flags\gf.png" />
+    <Content Include="N2\Resources\img\flags\gh.png" />
+    <Content Include="N2\Resources\img\flags\gi.png" />
+    <Content Include="N2\Resources\img\flags\gl.png" />
+    <Content Include="N2\Resources\img\flags\gm.png" />
+    <Content Include="N2\Resources\img\flags\gn.png" />
+    <Content Include="N2\Resources\img\flags\gp.png" />
+    <Content Include="N2\Resources\img\flags\gq.png" />
+    <Content Include="N2\Resources\img\flags\gr.png" />
+    <Content Include="N2\Resources\img\flags\gs.png" />
+    <Content Include="N2\Resources\img\flags\gt.png" />
+    <Content Include="N2\Resources\img\flags\gu.png" />
+    <Content Include="N2\Resources\img\flags\gw.png" />
+    <Content Include="N2\Resources\img\flags\gy.png" />
+    <Content Include="N2\Resources\img\flags\hk.png" />
+    <Content Include="N2\Resources\img\flags\hm.png" />
+    <Content Include="N2\Resources\img\flags\hn.png" />
+    <Content Include="N2\Resources\img\flags\hr.png" />
+    <Content Include="N2\Resources\img\flags\ht.png" />
+    <Content Include="N2\Resources\img\flags\hu.png" />
+    <Content Include="N2\Resources\img\flags\id.png" />
+    <Content Include="N2\Resources\img\flags\ie.png" />
+    <Content Include="N2\Resources\img\flags\il.png" />
+    <Content Include="N2\Resources\img\flags\in.png" />
+    <Content Include="N2\Resources\img\flags\io.png" />
+    <Content Include="N2\Resources\img\flags\iq.png" />
+    <Content Include="N2\Resources\img\flags\ir.png" />
+    <Content Include="N2\Resources\img\flags\is.png" />
+    <Content Include="N2\Resources\img\flags\it.png" />
+    <Content Include="N2\Resources\img\flags\jm.png" />
+    <Content Include="N2\Resources\img\flags\jo.png" />
+    <Content Include="N2\Resources\img\flags\jp.png" />
+    <Content Include="N2\Resources\img\flags\ke.png" />
+    <Content Include="N2\Resources\img\flags\kg.png" />
+    <Content Include="N2\Resources\img\flags\kh.png" />
+    <Content Include="N2\Resources\img\flags\ki.png" />
+    <Content Include="N2\Resources\img\flags\km.png" />
+    <Content Include="N2\Resources\img\flags\kn.png" />
+    <Content Include="N2\Resources\img\flags\kp.png" />
+    <Content Include="N2\Resources\img\flags\kr.png" />
+    <Content Include="N2\Resources\img\flags\kw.png" />
+    <Content Include="N2\Resources\img\flags\ky.png" />
+    <Content Include="N2\Resources\img\flags\kz.png" />
+    <Content Include="N2\Resources\img\flags\la.png" />
+    <Content Include="N2\Resources\img\flags\lb.png" />
+    <Content Include="N2\Resources\img\flags\lc.png" />
+    <Content Include="N2\Resources\img\flags\li.png" />
+    <Content Include="N2\Resources\img\flags\lk.png" />
+    <Content Include="N2\Resources\img\flags\lr.png" />
+    <Content Include="N2\Resources\img\flags\ls.png" />
+    <Content Include="N2\Resources\img\flags\lt.png" />
+    <Content Include="N2\Resources\img\flags\lu.png" />
+    <Content Include="N2\Resources\img\flags\lv.png" />
+    <Content Include="N2\Resources\img\flags\ly.png" />
+    <Content Include="N2\Resources\img\flags\ma.png" />
+    <Content Include="N2\Resources\img\flags\mc.png" />
+    <Content Include="N2\Resources\img\flags\md.png" />
+    <Content Include="N2\Resources\img\flags\me.png" />
+    <Content Include="N2\Resources\img\flags\mg.png" />
+    <Content Include="N2\Resources\img\flags\mh.png" />
+    <Content Include="N2\Resources\img\flags\mk.png" />
+    <Content Include="N2\Resources\img\flags\ml.png" />
+    <Content Include="N2\Resources\img\flags\mm.png" />
+    <Content Include="N2\Resources\img\flags\mn.png" />
+    <Content Include="N2\Resources\img\flags\mo.png" />
+    <Content Include="N2\Resources\img\flags\mp.png" />
+    <Content Include="N2\Resources\img\flags\mq.png" />
+    <Content Include="N2\Resources\img\flags\mr.png" />
+    <Content Include="N2\Resources\img\flags\ms.png" />
+    <Content Include="N2\Resources\img\flags\mt.png" />
+    <Content Include="N2\Resources\img\flags\mu.png" />
+    <Content Include="N2\Resources\img\flags\mv.png" />
+    <Content Include="N2\Resources\img\flags\mw.png" />
+    <Content Include="N2\Resources\img\flags\mx.png" />
+    <Content Include="N2\Resources\img\flags\my.png" />
+    <Content Include="N2\Resources\img\flags\mz.png" />
+    <Content Include="N2\Resources\img\flags\na.png" />
+    <Content Include="N2\Resources\img\flags\nc.png" />
+    <Content Include="N2\Resources\img\flags\ne.png" />
+    <Content Include="N2\Resources\img\flags\nf.png" />
+    <Content Include="N2\Resources\img\flags\ng.png" />
+    <Content Include="N2\Resources\img\flags\ni.png" />
+    <Content Include="N2\Resources\img\flags\nl.png" />
+    <Content Include="N2\Resources\img\flags\no.png" />
+    <Content Include="N2\Resources\img\flags\np.png" />
+    <Content Include="N2\Resources\img\flags\nr.png" />
+    <Content Include="N2\Resources\img\flags\nu.png" />
+    <Content Include="N2\Resources\img\flags\nz.png" />
+    <Content Include="N2\Resources\img\flags\om.png" />
+    <Content Include="N2\Resources\img\flags\pa.png" />
+    <Content Include="N2\Resources\img\flags\pe.png" />
+    <Content Include="N2\Resources\img\flags\pf.png" />
+    <Content Include="N2\Resources\img\flags\pg.png" />
+    <Content Include="N2\Resources\img\flags\ph.png" />
+    <Content Include="N2\Resources\img\flags\pk.png" />
+    <Content Include="N2\Resources\img\flags\pl.png" />
+    <Content Include="N2\Resources\img\flags\pm.png" />
+    <Content Include="N2\Resources\img\flags\pn.png" />
+    <Content Include="N2\Resources\img\flags\pr.png" />
+    <Content Include="N2\Resources\img\flags\ps.png" />
+    <Content Include="N2\Resources\img\flags\pt.png" />
+    <Content Include="N2\Resources\img\flags\pw.png" />
+    <Content Include="N2\Resources\img\flags\py.png" />
+    <Content Include="N2\Resources\img\flags\qa.png" />
+    <Content Include="N2\Resources\img\flags\re.png" />
+    <Content Include="N2\Resources\img\flags\ro.png" />
+    <Content Include="N2\Resources\img\flags\rs.png" />
+    <Content Include="N2\Resources\img\flags\ru.png" />
+    <Content Include="N2\Resources\img\flags\rw.png" />
+    <Content Include="N2\Resources\img\flags\sa.png" />
+    <Content Include="N2\Resources\img\flags\sb.png" />
+    <Content Include="N2\Resources\img\flags\sc.png" />
+    <Content Include="N2\Resources\img\flags\scotland.png" />
+    <Content Include="N2\Resources\img\flags\sd.png" />
+    <Content Include="N2\Resources\img\flags\se.png" />
+    <Content Include="N2\Resources\img\flags\sg.png" />
+    <Content Include="N2\Resources\img\flags\sh.png" />
+    <Content Include="N2\Resources\img\flags\si.png" />
+    <Content Include="N2\Resources\img\flags\sj.png" />
+    <Content Include="N2\Resources\img\flags\sk.png" />
+    <Content Include="N2\Resources\img\flags\sl.png" />
+    <Content Include="N2\Resources\img\flags\sm.png" />
+    <Content Include="N2\Resources\img\flags\sn.png" />
+    <Content Include="N2\Resources\img\flags\so.png" />
+    <Content Include="N2\Resources\img\flags\sr.png" />
+    <Content Include="N2\Resources\img\flags\st.png" />
+    <Content Include="N2\Resources\img\flags\sv.png" />
+    <Content Include="N2\Resources\img\flags\sy.png" />
+    <Content Include="N2\Resources\img\flags\sz.png" />
+    <Content Include="N2\Resources\img\flags\tc.png" />
+    <Content Include="N2\Resources\img\flags\td.png" />
+    <Content Include="N2\Resources\img\flags\tf.png" />
+    <Content Include="N2\Resources\img\flags\tg.png" />
+    <Content Include="N2\Resources\img\flags\th.png" />
+    <Content Include="N2\Resources\img\flags\tj.png" />
+    <Content Include="N2\Resources\img\flags\tk.png" />
+    <Content Include="N2\Resources\img\flags\tl.png" />
+    <Content Include="N2\Resources\img\flags\tm.png" />
+    <Content Include="N2\Resources\img\flags\tn.png" />
+    <Content Include="N2\Resources\img\flags\to.png" />
+    <Content Include="N2\Resources\img\flags\tr.png" />
+    <Content Include="N2\Resources\img\flags\tt.png" />
+    <Content Include="N2\Resources\img\flags\tv.png" />
+    <Content Include="N2\Resources\img\flags\tw.png" />
+    <Content Include="N2\Resources\img\flags\tz.png" />
+    <Content Include="N2\Resources\img\flags\ua.png" />
+    <Content Include="N2\Resources\img\flags\ug.png" />
+    <Content Include="N2\Resources\img\flags\um.png" />
+    <Content Include="N2\Resources\img\flags\us.png" />
+    <Content Include="N2\Resources\img\flags\uy.png" />
+    <Content Include="N2\Resources\img\flags\uz.png" />
+    <Content Include="N2\Resources\img\flags\va.png" />
+    <Content Include="N2\Resources\img\flags\vc.png" />
+    <Content Include="N2\Resources\img\flags\ve.png" />
+    <Content Include="N2\Resources\img\flags\vg.png" />
+    <Content Include="N2\Resources\img\flags\vi.png" />
+    <Content Include="N2\Resources\img\flags\vn.png" />
+    <Content Include="N2\Resources\img\flags\vu.png" />
+    <Content Include="N2\Resources\img\flags\wales.png" />
+    <Content Include="N2\Resources\img\flags\wf.png" />
+    <Content Include="N2\Resources\img\flags\ws.png" />
+    <Content Include="N2\Resources\img\flags\ye.png" />
+    <Content Include="N2\Resources\img\flags\yt.png" />
+    <Content Include="N2\Resources\img\flags\za.png" />
+    <Content Include="N2\Resources\img\flags\zm.png" />
+    <Content Include="N2\Resources\img\flags\zw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\Globalization\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Resources\img\ico\linktracker.css" />
+    <Content Include="N2\Content\LinkTracker\Default.aspx" />
+    <Content Include="N2\Content\Trash\Default.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\Trash\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Content\Wizard\Default.aspx" />
+    <Content Include="N2\Resources\img\ico\png\brick.png" />
+    <Content Include="N2\Resources\img\ico\png\bricks.png" />
+    <Content Include="N2\Resources\img\ico\png\brick_add.png" />
+    <Content Include="N2\Resources\img\ico\png\wand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Content\FileSystem\Directory.aspx" />
+    <Content Include="N2\Content\FileSystem\File.aspx" />
+    <Content Include="N2\Content\Globalization\Translate.aspx" />
+    <Content Include="N2\Resources\img\ico\png\bullet_toggle_minus.png" />
+    <Content Include="N2\Content\Wizard\App_LocalResources\Default.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Resources\Css\TabPanel.css" />
+    <Content Include="N2\Content\DiscardPreview.aspx" />
+    <Content Include="N2\Resources\img\ajax-loader.gif" />
+    <Content Include="N2\Resources\img\bullet_arrow_down.gif" />
+    <Content Include="N2\Resources\img\ico\png\add.gif" />
+    <Content Include="N2\Resources\img\ico\png\application.png" />
+    <Content Include="N2\Resources\img\ico\png\application_side_tree.png" />
+    <Content Include="N2\Resources\img\ico\png\bin.gif" />
+    <Content Include="N2\Resources\img\ico\png\calendar.png" />
+    <Content Include="N2\Resources\img\ico\png\delete.gif" />
+    <Content Include="N2\Resources\img\ico\png\layout_edit.png" />
+    <Content Include="N2\Resources\img\login_logo.png" />
+    <Content Include="N2\Resources\img\separator.png" />
+    <Content Include="N2\Resources\img\SlidingCurtain_close.png" />
+    <Content Include="N2\Resources\img\SlidingCurtain_logo.png" />
+    <Content Include="N2\Resources\img\SlidingCurtain_open.png" />
+    <Content Include="N2\Resources\Js\jquery-1.3.2.js" />
+    <Content Include="N2\Resources\Js\jquery.ui\jquery-ui-personalized.min.js" />
+    <Content Include="N2\Resources\Js\plugins\date.js" />
+    <Content Include="N2\Content\App_LocalResources\Dependencies.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="N2\Resources\Js\plugins\FreeTextArea.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.cookie.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.datePicker.min-2.1.1.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2dimmable.js" />
+    <Content Include="N2\Resources\Js\TabPanel.js" />
+    <Content Include="N2\Content\PublishPreview.aspx" />
+    <Content Include="N2\Content\Settings\SettingsEditor.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Default.aspx" />
+    <Content Include="N2\Installation\Begin\Default.aspx" />
+    <Content Include="N2\Installation\Default.aspx" />
+    <Content Include="N2\Installation\Diagnose.aspx" />
+    <Content Include="N2\Installation\Fix.aspx" />
+    <Content Include="N2\Installation\FixClass.aspx" />
+    <Content Include="N2\Installation\Upgrade.aspx" />
+    <Content Include="N2\Resources\Css\edit.css" />
+    <Content Include="N2\Resources\Css\themes\default.css" />
+    <Content Include="N2\Resources\Css\themes\ink.css" />
+    <Content Include="N2\Resources\img\darken10.png" />
+    <Content Include="N2\Resources\img\darken25.png" />
+    <Content Include="N2\Resources\img\fieldset_bg.png" />
+    <Content Include="N2\Resources\img\ico\clock.gif" />
+    <Content Include="N2\Resources\img\ico\png\clock.png" />
+    <Content Include="N2\Resources\img\ico\png\eye.png" />
+    <Content Include="N2\Resources\img\ico\png\link_break.png" />
+    <Content Include="N2\Resources\img\ico\png\lock_open.png" />
+    <Content Include="N2\Resources\img\lighten10.png" />
+    <Content Include="N2\Resources\img\lighten25.png" />
+    <Content Include="N2\Resources\img\lighten5.png" />
+    <Content Include="N2\Resources\img\n2.png" />
+    <Content Include="N2\Resources\img\tab_button_bg.png" />
+    <Content Include="N2\Resources\img\toolbar_button_bg.png" />
+    <Content Include="N2\Resources\img\toolbar_button_bg_hover.png" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2glow.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2name.js" />
+    <Content Include="N2\Resources\KeepAlive\ping.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="N2\Content\Wizard\Img\" />
+    <Folder Include="N2\Myself\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
