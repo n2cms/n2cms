@@ -17,15 +17,15 @@ namespace N2.Workflow.Commands
 
         public override void Process(CommandContext state)
         {
-            var masterVersion = state.Data.VersionOf ?? state.Data;
+            var masterVersion = state.Content.VersionOf ?? state.Content;
             var versions = versionProvider.GetVersionsOf(masterVersion);
             if (versions.Count > 0)
             {
                 int greatestIndex = versions.Max(v => v.VersionIndex);
-                state.Data.VersionIndex = greatestIndex + 1;
+                state.Content.VersionIndex = greatestIndex + 1;
             }
             else
-                state.Data.VersionIndex = 0;
+                state.Content.VersionIndex = 0;
         }
     }
 }

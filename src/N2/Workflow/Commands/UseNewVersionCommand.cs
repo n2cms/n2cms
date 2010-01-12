@@ -15,7 +15,7 @@ namespace N2.Workflow.Commands
         }
         public override void Process(CommandContext state)
         {
-            state.Data = versionMaker.SaveVersion(state.Data);
+            state.Content = versionMaker.SaveVersion(state.Content);
         }
     }
 }

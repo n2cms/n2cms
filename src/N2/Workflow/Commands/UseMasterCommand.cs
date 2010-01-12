@@ -9,7 +9,7 @@ namespace N2.Workflow.Commands
     {
         public override void Process(CommandContext state)
         {
-            state.Data = state.Data.VersionOf;
+            state.Content = state.Content.VersionOf;
         }
     }
 }

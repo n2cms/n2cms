@@ -362,11 +362,10 @@
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
+    <Compile Include="Workflow\Binding.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />
     <Compile Include="Edit\EditableAdapter.cs" />
-    <Compile Include="Edit\IBinderOfT.cs" />
-    <Compile Include="Edit\IValidatorOfT.cs" />
     <Compile Include="Edit\NullBinderOfT.cs" />
     <Compile Include="Edit\NullValidatorOfT.cs" />
     <Compile Include="Edit\Web\PageValidator.cs" />
@@ -375,7 +374,7 @@
     <Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
     <Compile Include="Edit\IDocumentBaseSource.cs" />
     <Compile Include="Edit\Trash\TrashPurgeInterval.cs" />
-    <Compile Include="Edit\ValidationError.cs" />
+    <Compile Include="Workflow\ValidationError.cs" />
     <Compile Include="Engine\AsyncWorker.cs" />
     <Compile Include="Castle\CastleServiceContainerConfigurer.cs" />
     <Compile Include="Engine\ComponentRegistrationException.cs" />
@@ -721,7 +720,9 @@
     <Compile Include="Workflow\Commands\RedirectToPreviewCommand.cs" />
     <Compile Include="Workflow\Commands\ReplaceMasterCommand.cs" />
     <Compile Include="Workflow\Commands\SaveCommand.cs" />
+    <Compile Include="Workflow\IBinderOfT.cs" />
     <Compile Include="Workflow\ICommandFactory.cs" />
+    <Compile Include="Workflow\IValidatorOfT.cs" />
     <Compile Include="Workflow\StopExecutionException.cs" />
     <Compile Include="Workflow\CommandBaseOfT.cs" />
     <Compile Include="Workflow\Commands\CompositeCommand.cs" />

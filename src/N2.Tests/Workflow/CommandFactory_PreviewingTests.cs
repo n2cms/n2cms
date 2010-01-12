@@ -30,7 +30,7 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(context.RedirectTo, Is.EqualTo(((INode)context.Data).PreviewUrl + "&preview=" + context.Data.ID + "&original=" + item.ID));
+            Assert.That(context.RedirectTo, Is.EqualTo(((INode)context.Content).PreviewUrl + "&preview=" + context.Content.ID + "&original=" + item.ID));
         }
 
         [Test]

@@ -24,8 +24,8 @@ namespace N2.Tests.Workflow
         protected IDefinitionManager definitions;
         protected FakeVersionManager versions;
         protected ContentItem item;
-        protected IBinder<ContentItem> nullBinder = new NullBinder<ContentItem>();
-        protected IValidator<ContentItem> nullValidator = new NullValidator<ContentItem>();
+		protected IBinder<CommandContext> nullBinder = new NullBinder<CommandContext>();
+		protected IValidator<CommandContext> nullValidator = new NullValidator<CommandContext>();
         
         [SetUp]
         public override void SetUp()
@@ -51,7 +51,7 @@ namespace N2.Tests.Workflow
             DynamicPermissionMap.SetRoles(item, Permission.Read, "None");
             if (useVersion)
                 item = MakeVersion(item);
-            var context = new CommandContext(item, userInterface, CreatePrincipal("someone"), new NullBinder<ContentItem>(), new NullValidator<ContentItem>());
+			var context = new CommandContext(item, userInterface, CreatePrincipal("someone"), new NullBinder<CommandContext>(), new NullValidator<CommandContext>());
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -67,7 +67,7 @@ namespace N2.Tests.Workflow
             if (useVersion)
                 item = MakeVersion(item);
 
-            var validator = mocks.Stub<IValidator<ContentItem>>();
+			var validator = mocks.Stub<IValidator<CommandContext>>();
             mocks.ReplayAll();
 
             var context = new CommandContext(item, userInterface, CreatePrincipal("admin"), nullBinder, validator);
@@ -75,7 +75,7 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            validator.AssertWasCalled(b => b.Validate(item));
+            validator.AssertWasCalled(b => b.Validate(context));
         }
 
         [Test]

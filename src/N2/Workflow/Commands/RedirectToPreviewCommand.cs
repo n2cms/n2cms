@@ -18,11 +18,11 @@ namespace N2.Workflow.Commands
 
         public override void Process(CommandContext state)
         {
-            state.RedirectTo = editManager.GetPreviewUrl(state.Data);
-            if (state.Data.VersionOf != null)
+            state.RedirectTo = editManager.GetPreviewUrl(state.Content);
+            if (state.Content.VersionOf != null)
                 state.RedirectTo = Url.Parse(state.RedirectTo)
-                    .AppendQuery("preview", state.Data.ID)
-                    .AppendQuery("original", state.Data.VersionOf.ID);
+                    .AppendQuery("preview", state.Content.ID)
+                    .AppendQuery("original", state.Content.VersionOf.ID);
         }
     }
 }

@@ -9,9 +9,9 @@ namespace N2.Workflow.Commands
     {
         public override void Process(CommandContext state)
         {
-            var clone = state.Data.Clone(false);
-            clone.VersionOf = state.Data.VersionOf;
-            state.Data = clone;
+            var clone = state.Content.Clone(false);
+            clone.VersionOf = state.Content.VersionOf;
+            state.Content = clone;
         }
     }
 }

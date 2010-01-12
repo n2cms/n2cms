@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Persistence;
+﻿using N2.Persistence;
 
 namespace N2.Workflow.Commands
 {
@@ -16,7 +12,14 @@ namespace N2.Workflow.Commands
 
         public override void Process(CommandContext state)
         {
-            persister.Save(state.Data);
+            persister.Save(state.Content);
+			foreach (ContentItem item in state.GetItemsToSave())
+			{
+				if (item != state.Content)
+				{
+					persister.Save(item);
+				}
+			}
         }
     }
 }

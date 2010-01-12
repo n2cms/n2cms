@@ -16,7 +16,7 @@ namespace N2.Workflow.Commands
 
         public override void Process(CommandContext ctx)
         {
-            if (!security.IsAuthorized(ctx.User, ctx.Data, requiredPermission))
+            if (!security.IsAuthorized(ctx.User, ctx.Content, requiredPermission))
             {
                 ctx.ValidationErrors.Add(new ValidationError("Unauthorized", "Not authorized to " + requiredPermission));
                 throw new StopExecutionException();

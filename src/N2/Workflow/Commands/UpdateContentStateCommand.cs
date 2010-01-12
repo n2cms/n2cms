@@ -23,7 +23,7 @@ namespace N2.Workflow.Commands
 
         public override void Process(CommandContext state)
         {
-            changer.ChangeTo(state.Data, toState);
+            changer.ChangeTo(state.Content, toState);
         }
     }
 }

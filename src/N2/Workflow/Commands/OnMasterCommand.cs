@@ -22,15 +22,15 @@ namespace N2.Workflow.Commands
 
             public override void Process(CommandContext state)
             {
-                var incoming = state.Data;
-                state.Data = state.Data.VersionOf;
+                var incoming = state.Content;
+                state.Content = state.Content.VersionOf;
                 try
                 {
                     command.Process(state);
                 }
                 finally
                 {
-                    state.Data = incoming;
+                    state.Content = incoming;
                 }
             }
         }

@@ -17,7 +17,7 @@ namespace N2.Workflow.Commands
 
         public override void Process(CommandContext state)
         {
-            repository.Delete(state.Data);
+            repository.Delete(state.Content);
         }
     }
 }

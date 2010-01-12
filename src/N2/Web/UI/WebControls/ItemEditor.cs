@@ -14,14 +14,15 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2.Definitions;
 using N2.Edit;
 using N2.Engine;
-using N2.Definitions;
+using N2.Workflow;
 
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>A form that generates an edit interface for content items.</summary>
-	public class ItemEditor : WebControl, INamingContainer, IItemEditor, IBinder<ContentItem>
+	public class ItemEditor : WebControl, INamingContainer, IItemEditor, IBinder<CommandContext>
 	{
 		#region Constructor
 
@@ -178,7 +179,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Updates the <see cref="CurrentItem"/> with the values entered in the form without saving it.</summary>
 		public void Update()
 		{
-            UpdateObject(CurrentItem);
+			EditController.UpdateItem(CurrentItem, AddedEditors, Page.User);
 		}
 
 		#endregion
@@ -198,18 +199,40 @@ namespace N2.Web.UI.WebControls
 
 		#endregion
 
-        #region IBinder<ContentItem> Members
+        #region IBinder<CommandContext> Members
 
-        public bool UpdateObject(ContentItem value)
+		internal N2.Workflow.CommandContext BinderContext { get; set; }
+
+		public bool UpdateObject(N2.Workflow.CommandContext value)
         {
-            EnsureChildControls();
-            return EditController.UpdateItem(value, AddedEditors, Page.User);
+			try
+			{
+				BinderContext = value;
+				EnsureChildControls();
+				if (!EditController.UpdateItem(value.Content, AddedEditors, Page.User))
+					return false;
+				BinderContext.RegisterItemToSave(value.Content);
+				return true;
+			}
+			finally
+			{
+				BinderContext = null;
+			}
         }
 
-        public void UpdateInterface(ContentItem value)
+		public void UpdateInterface(N2.Workflow.CommandContext value)
         {
-            EnsureChildControls();
-            Engine.EditManager.UpdateEditors(value, AddedEditors, Page.User);
+           	try
+			{
+				BinderContext = value;
+				EnsureChildControls();
+				Engine.EditManager.UpdateEditors(value.Content, AddedEditors, Page.User);
+			}
+			finally
+			{
+				BinderContext = null;
+			}
+
         }
 
         #endregion

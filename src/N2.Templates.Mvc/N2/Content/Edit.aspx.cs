@@ -85,7 +85,7 @@ namespace N2.Edit
 
         protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
-            var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
+			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
             ctx.RedirectTo = Request["returnUrl"];
             Engine.Resolve<CommandDispatcher>().Publish(ctx);
 
@@ -94,7 +94,7 @@ namespace N2.Edit
 
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
-            var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
+			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
             ctx.RedirectTo = Request["returnUrl"];
             Engine.Resolve<CommandDispatcher>().Preview(ctx);
 
@@ -103,8 +103,8 @@ namespace N2.Edit
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
-            var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<ContentItem>(Page));
-            Url redirectTo = Url.Parse(Engine.EditManager.GetEditExistingItemUrl(ctx.Data));
+			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
+            Url redirectTo = Url.Parse(Engine.EditManager.GetEditExistingItemUrl(ctx.Content));
             if (!string.IsNullOrEmpty(Request["returnUrl"]))
                 redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
             ctx.RedirectTo = redirectTo;
@@ -141,7 +141,7 @@ namespace N2.Edit
             }
             else if (!string.IsNullOrEmpty(ctx.RedirectTo))
             {
-                Refresh(ctx.Data, ctx.RedirectTo);
+                Refresh(ctx.Content, ctx.RedirectTo);
             }
         }
 

@@ -17,7 +17,7 @@ namespace N2.Workflow.Commands
 
         public override void Process(CommandContext state)
         {
-            state.RedirectTo = editManager.GetEditExistingItemUrl(state.Data);
+            state.RedirectTo = editManager.GetEditExistingItemUrl(state.Content);
         }
     }
 }

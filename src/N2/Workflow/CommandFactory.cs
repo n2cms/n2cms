@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Engine;
-using N2.Workflow.Commands;
 using N2.Edit;
-using N2.Security;
+using N2.Engine;
 using N2.Persistence;
-using System.Diagnostics;
+using N2.Security;
+using N2.Workflow.Commands;
 
 namespace N2.Workflow
 {
@@ -65,29 +61,29 @@ namespace N2.Workflow
         {
             if (context.Interface == Interfaces.Editing)
             {
-                if (context.Data is IActiveContent)
+                if (context.Content is IActiveContent)
                     return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
                 
                 // Editing
-				if (context.Data.VersionOf == null)
+				if (context.Content.VersionOf == null)
 				{
-					if(context.Data.ID == 0)
+					if(context.Content.ID == 0)
 						return Compose("Publish", Authorize(Permission.Publish), validate,			updateObject, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
 					
 					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
 				}
 
 				// has been published before
-				if (context.Data.State == ContentState.Unpublished)
+				if (context.Content.State == ContentState.Unpublished)
                     return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
                 
                 // has never been published before (remove old version)
                 return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
             }
-            else if (context.Interface == Interfaces.Viewing && context.Data.VersionOf != null)
+            else if (context.Interface == Interfaces.Viewing && context.Content.VersionOf != null)
             {
                 // Viewing
-                if (context.Data.State == ContentState.Unpublished)
+                if (context.Content.State == ContentState.Unpublished)
                     return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
                 
                 return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
@@ -112,15 +108,15 @@ namespace N2.Workflow
             if (context.Interface != Interfaces.Editing)
                 throw new NotSupportedException("Preview is not supported while " + context.Interface);
 
-            if (context.Data is IActiveContent)
+            if (context.Content is IActiveContent)
                 // handles it's own persistence
                 return Compose("Save and Preview", Authorize(Permission.Write), validate, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
             
-            if (context.Data.ID != 0 && context.Data.VersionOf == null)
+            if (context.Content.ID != 0 && context.Content.VersionOf == null)
                 // update a master version
                 return Compose("Save and preview", Authorize(Permission.Write), validate, useNewVersion, updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
             
-            if (context.Data.State == ContentState.Unpublished)
+            if (context.Content.State == ContentState.Unpublished)
                 // has been published before
                 return Compose("Save and preview", Authorize(Permission.Write), validate, clone,         updateObject, setVersionIndex, makeDraft, save, ReturnTo(context.RedirectTo) ?? showPreview);
             
@@ -136,15 +132,15 @@ namespace N2.Workflow
             if (context.Interface != Interfaces.Editing)
                 throw new NotSupportedException("Save is not supported while " + context.Interface);
 
-            if (context.Data is IActiveContent)
+            if (context.Content is IActiveContent)
                 // handles it's own persistence
                 return Compose("Save changes", Authorize(Permission.Write), validate, saveActiveContent, showEdit);
             
-            if (context.Data.ID != 0 && context.Data.VersionOf == null)
+            if (context.Content.ID != 0 && context.Content.VersionOf == null)
                 // update a master version
                 return Compose("Save changes", Authorize(Permission.Write), validate, useNewVersion,        updateObject, setVersionIndex, makeDraft, save, showEdit);
             
-            if (context.Data.State == ContentState.Unpublished)
+            if (context.Content.State == ContentState.Unpublished)
                 // previously published
                 return Compose("Save changes", Authorize(Permission.Write), validate,                clone, updateObject, setVersionIndex, makeDraft, save, showEdit);
             

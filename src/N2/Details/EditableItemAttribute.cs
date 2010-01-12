@@ -88,7 +88,7 @@ namespace N2.Details
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			ItemEditor itemEditor = editor as ItemEditor;
-            itemEditor.UpdateObject(itemEditor.CurrentItem);
+			itemEditor.Update();
 			return true;
 		}
 

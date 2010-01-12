@@ -25,7 +25,7 @@ namespace N2.Tests.Workflow
         {
             item = MakeVersion(item);
 
-            var validator = MockRepository.GenerateStub<IValidator<ContentItem>>();
+			var validator = MockRepository.GenerateStub<IValidator<CommandContext>>();
             mocks.ReplayAll();
 
             var context = new CommandContext(item, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, validator);
@@ -33,7 +33,7 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            validator.AssertWasNotCalled(b => b.Validate(item));
+            validator.AssertWasNotCalled(b => b.Validate(context));
         }
 
         [Test]
@@ -70,8 +70,8 @@ namespace N2.Tests.Workflow
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
 
-            Assert.That(context.Data.Name, Is.EqualTo("tha masta"));
-            Assert.That(context.Data.VersionOf, Is.Null);
+            Assert.That(context.Content.Name, Is.EqualTo("tha masta"));
+            Assert.That(context.Content.VersionOf, Is.Null);
         }
 
         [TestCase(Interfaces.Viewing, true)]

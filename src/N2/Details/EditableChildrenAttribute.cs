@@ -1,8 +1,9 @@
+using System;
+using System.Reflection;
 using System.Web.UI;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
-using System.Reflection;
-using System;
+using N2.Workflow;
 
 namespace N2.Details
 {
@@ -38,6 +39,7 @@ namespace N2.Details
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
+			bool wasUpdated = false;
 			ItemEditorList listEditor = (ItemEditorList)editor;
 			for (int i = 0; i < listEditor.ItemEditors.Count; i++)
 			{
@@ -49,7 +51,15 @@ namespace N2.Details
 				{
 					ItemEditor childEditor = listEditor.ItemEditors[i];
 					IItemEditor parentEditor = ItemUtility.FindInParents<IItemEditor>(editor.Parent);
-					parentEditor.Saved += delegate { childEditor.Save(); };
+					ItemEditor itemEditor = parentEditor as ItemEditor;
+					if (itemEditor != null)
+					{
+						var subContext = itemEditor.BinderContext.CreateNestedContext(childEditor, childEditor.CurrentItem);
+						if (subContext.Binder.UpdateObject(subContext))
+							wasUpdated = true;
+					}
+					else
+						parentEditor.Saved += delegate { childEditor.Save(); };
 				}
 			}
 			return listEditor.DeletedIndexes.Count > 0 || listEditor.AddedTypes.Count > 0;

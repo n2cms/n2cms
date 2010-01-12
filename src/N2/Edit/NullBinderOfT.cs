@@ -1,4 +1,5 @@
-﻿
+﻿using N2.Workflow;
+
 namespace N2.Edit
 {
     /// <summary>

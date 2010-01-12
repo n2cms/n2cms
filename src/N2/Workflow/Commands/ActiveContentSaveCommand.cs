@@ -10,7 +10,7 @@ namespace N2.Workflow.Commands
     {
         public override void Process(CommandContext state)
         {
-            ((IActiveContent)state.Data).Save();
+            ((IActiveContent)state.Content).Save();
         }
     }
 }
