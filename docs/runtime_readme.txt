@@ -13,8 +13,8 @@ download the example at http://www.codeplex.com/n2/Release/ProjectReleases.aspx.
 WHAT'S HERE
 
 * The core N2 library: N2.dll
-* Edit interface files and compiled "code-behind": /edit and N2.Edit.dll
-* Optional edit mode components: /edit/... and N2.Management.dll
+* Edit interface files and compiled "code-behind": /n2/ and N2.Management.dll
+* Optional edit mode components: /n2/... and N2.Management.dll
 	* Export & import 
 	* Install interface
 	* Link tracker

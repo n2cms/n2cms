@@ -31,7 +31,7 @@ namespace N2.Tests.Definitions.Static
 		[Test]
 		public void Instance_HasPageIconUrl()
 		{
-			Assert.That(page.IconUrl, Is.EqualTo("/N2/Content/img/ico/page.gif"));
+			Assert.That(page.IconUrl, Is.EqualTo("/N2/Resources/Img/ico/page.gif"));
 		}
 
 		[Test]

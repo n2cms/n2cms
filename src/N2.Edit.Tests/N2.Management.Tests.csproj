@@ -87,6 +87,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\N2.Templates.Mvc\N2.Management.csproj">
+      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
+      <Name>N2.Management</Name>
+    </ProjectReference>
     <ProjectReference Include="..\N2.Tests\N2.Tests.csproj">
       <Project>{4B026365-D03B-40B4-862B-11608BA756B0}</Project>
       <Name>N2.Tests</Name>
@@ -94,10 +98,6 @@
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\wwwroot\N2.Edit.csproj">
-      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
-      <Name>N2.Edit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
