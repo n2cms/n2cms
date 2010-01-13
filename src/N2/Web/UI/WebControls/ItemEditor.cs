@@ -49,7 +49,7 @@ namespace N2.Web.UI.WebControls
 		public virtual IEngine Engine { get; set;}
 
 		/// <summary>The content adapter related to the current page item.</summary>
-		protected virtual EditableAdapter EditController
+		protected virtual EditableAdapter EditAdapter
 		{
 			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<EditableAdapter>(CurrentItem.FindPath(PathData.DefaultAction)); }
 		}
@@ -148,10 +148,10 @@ namespace N2.Web.UI.WebControls
             Type itemType = CurrentItemType;
 			if (itemType != null)
 			{
-				AddedEditors = EditController.AddDefinedEditors(itemType, this, Page.User);
+				AddedEditors = EditAdapter.AddDefinedEditors(itemType, this, Page.User);
 				if (!Page.IsPostBack)
 				{
-					EditController.LoadAddedEditors(CurrentItem, AddedEditors, Page.User);
+					EditAdapter.LoadAddedEditors(CurrentItem, AddedEditors, Page.User);
 				}
 			}
 
@@ -162,7 +162,7 @@ namespace N2.Web.UI.WebControls
 		public ContentItem Save(ContentItem item, ItemEditorVersioningMode mode)
 		{
 			EnsureChildControls();
-			item = EditController.SaveItem(item, AddedEditors, mode, Page.User);
+			item = EditAdapter.SaveItem(item, AddedEditors, mode, Page.User);
 			if (Saved != null)
 				Saved.Invoke(this, new ItemEventArgs(item));
 			return item;
@@ -179,7 +179,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Updates the <see cref="CurrentItem"/> with the values entered in the form without saving it.</summary>
 		public void Update()
 		{
-			EditController.UpdateItem(CurrentItem, AddedEditors, Page.User);
+			UpdateObject(new CommandContext(CurrentItem, "Unknown", Page.User, this, new NullValidator<CommandContext>()));
 		}
 
 		#endregion
@@ -209,7 +209,7 @@ namespace N2.Web.UI.WebControls
 			{
 				BinderContext = value;
 				EnsureChildControls();
-				if (!EditController.UpdateItem(value.Content, AddedEditors, Page.User))
+				if (!EditAdapter.UpdateItem(value.Content, AddedEditors, Page.User))
 					return false;
 				BinderContext.RegisterItemToSave(value.Content);
 				return true;

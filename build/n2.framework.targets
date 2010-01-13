@@ -34,27 +34,37 @@
 
 	<Target Name="Framework-CreateItemGroups" DependsOnTargets="Framework-Build">
 		<ItemGroup>
-			<Framework-EditFiles Include="$(EditFolder)\**\*.as?x;
-									 $(EditFolder)\**\*.master;
-									 $(EditFolder)\**\*.resx;
-									 $(EditFolder)\**\*.config;
-									 $(EditFolder)\**\*.css;
-									 $(EditFolder)\**\*.js;
-									 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
-									 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"
-								 Exclude="$(EditFolder)\**\*_src.js;" />
-			<Framework-BinFiles Include="$(WebFolder)\Bin\*.dll;
-										 $(WebFolder)\Bin\N2.xml;"
-								Exclude="$(WebFolder)\Bin\N2.Templates*;
-										 $(WebFolder)\Bin\AddonCatalog*;
-										 $(WebFolder)\Bin\Demo*;
-										 $(WebFolder)\Bin\MyAddon*;
-										 $(WebFolder)\Bin\n2markdown*;
-										 $(WebFolder)\Bin\Scrum*;
-										 $(WebFolder)\Bin\TabPanel*;
-										 $(WebFolder)\Bin\Tagging*;
-										 $(WebFolder)\Bin\Wiki*;"/>
+			<Framework-EditFiles	Include="$(EditFolder)\**\*.as?x;
+																		 $(EditFolder)\**\*.master;
+																		 $(EditFolder)\**\*.resx;
+																		 $(EditFolder)\**\*.config;
+																		 $(EditFolder)\**\*.css;
+																		 $(EditFolder)\**\*.js;
+																		 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
+																		 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"
+														Exclude="$(EditFolder)\**\*_src.js;" />
+			<Framework-BinFiles		Include="$(ManagementFolder)\Bin\*.dll;
+																		 $(ManagementFolder)\Bin\N2.xml*;"
+														Exclude="$(ManagementFolder)\Bin\N2.Templates*;
+																		 $(ManagementFolder)\Bin\AddonCatalog*;
+																		 $(ManagementFolder)\Bin\Demo*;
+																		 $(ManagementFolder)\Bin\MyAddon*;
+																		 $(ManagementFolder)\Bin\n2markdown*;
+																		 $(ManagementFolder)\Bin\Scrum*;
+																		 $(ManagementFolder)\Bin\TabPanel*;
+																		 $(ManagementFolder)\Bin\Tagging*;
+																		 $(ManagementFolder)\Bin\Wiki*;
+																		 $(ManagementFolder)\Bin\Microsoft.Web.Mvc*;
+																		 $(ManagementFolder)\Bin\MvcContrib*;
+																		 $(ManagementFolder)\Bin\N2.Templates.Mvc*;"/>
 		</ItemGroup>
+	</Target>
+
+	<Target Name="Framework-OutputItemGroups" DependsOnTargets="Framework-CreateItemGroups">
+		<Message Text="Framework-BinFiles:" Importance="high" />
+		<Message Text="@(Framework-BinFiles)" />
+		<Message Text="Framework-EditFiles:" Importance="high" />
+		<Message Text="@(Framework-EditFiles)" />
 	</Target>
 	
 	<!-- Deploy -->

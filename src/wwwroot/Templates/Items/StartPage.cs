@@ -4,6 +4,7 @@ using N2.Integrity;
 using N2.Installation;
 using N2.Edit.FileSystem;
 using N2.Web;
+using N2.Definitions;
 
 namespace N2.Templates.Items
 {
@@ -15,7 +16,7 @@ namespace N2.Templates.Items
 		SortOrder = 440,
 		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage,
 		IconUrl = "~/Templates/UI/Img/page_world.png")]
-    [RestrictParents(typeof(RootPage))]
+	[RestrictParents(typeof(IRoot))]
     [AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
 	public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource
     {

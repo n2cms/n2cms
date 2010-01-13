@@ -16,6 +16,7 @@
 
 		<SrcFolder>$(RootFolder)\src</SrcFolder>
 		<WebFolder>$(RootFolder)\src\wwwroot</WebFolder>
+		<ManagementFolder>$(RootFolder)\N2.Templates.Mvc\</ManagementFolder>
 		<EditFolder>$(RootFolder)\src\N2.Templates.Mvc\N2</EditFolder>
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
@@ -131,6 +132,90 @@
 		</PropertyGroup>
 		<Message Text="$(Exe)" />
 		<Exec Command="$(Exe)" />
+	</Target>
+
+
+
+
+
+
+
+
+	<!-- IN PROGRESS -->
+
+	<PropertyGroup>
+		<FrameworkOutDir>$(RootFolder)\Output\Framework\</FrameworkOutDir>
+		<WebFormsOutDir>$(RootFolder)\Output\Templates\WebForms\</WebFormsOutDir>
+		<MvcOutDir>$(RootFolder)\Output\Templates\Mvc\</MvcOutDir>
+	</PropertyGroup>
+
+	<!-- Copy dependencies to example folders -->
+	<Target Name="Prepare-Examples-CSharp" DependsOnTargets="Define-Framework">
+		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
+	</Target>
+	<Target Name="Prepare-Examples-VisualBasic" DependsOnTargets="Define-Framework">
+		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
+	</Target>
+	<Target Name="Prepare-Examples-Mvc" DependsOnTargets="Define-Framework">
+		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
+	</Target>
+	<Target Name="Prepare-Examples-TemplatesSite" DependsOnTargets="Define-Templates-WebForms">
+		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(WebFormsFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(WebFormsBinaries)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
+	</Target>
+	<!--Copy dependencies to sources-->
+	<Target Name="Prepare-Templates-WebForms" DependsOnTargets="Define-Framework">
+		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Templates-SourceFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Templates-SourceFolder)\bin\" SkipUnchangedFiles="true" />
+	</Target>
+	<Target Name="Prepare-Templates-Mvc" DependsOnTargets="Prepare-Framework">
+	</Target>
+	<Target Name="Prepare-Framework">
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(ManagementFolder)" />
+	</Target>
+
+	<!-- Create item groups used for copy dependencies for examples -->
+	<Target Name="Define-Framework" DependsOnTargets="Deploy-Framework">
+		<ItemGroup>
+			<FrameworkFiles Include="$(FrameworkOutDir)_PublishedWebsites\N2.Management\**\*" 
+											Exclude="$(FrameworkOutDir)_PublishedWebsites\N2.Management\web.config"/>
+			<FrameworkBinaries Include="$(FrameworkOutDir)\*.dll;" />
+		</ItemGroup>
+	</Target>
+	<Target Name="Define-Templates-WebForms" DependsOnTargets="Define-Framework;Deploy-Templates-WebForms">
+		<ItemGroup>
+			<WebFormsFiles Include="$(WebFormsOutDir)_PublishedWebsites\N2.Templates\**\*" />
+			<WebFormsFiles Include="$(WebFormsOutDir)_PublishedWebsites\AddonCatalog\**\*" />
+			<WebFormsFiles Include="$(WebFormsOutDir)_PublishedWebsites\Tagging\**\*" />
+			<WebFormsFiles Include="$(WebFormsOutDir)_PublishedWebsites\Wiki\**\*" />
+			<WebFormsBinaries Include="$(WebFormsOutDir)\*.dll" />
+		</ItemGroup>
+	</Target>
+	<Target Name="Define-Templates-Mvc" DependsOnTargets="Define-Framework;Deploy-Templates-Mvc">
+		<ItemGroup>
+			<WebFormsFiles Include="$(MvcOutDir)_PublishedWebsites\N2.Templates.Mvc\**\*" />
+			<WebFormsBinaries Include="$(MvcOutDir)\*.dll" />
+		</ItemGroup>
+	</Target>
+
+	<!-- Deploy sources to output folder -->
+	<Target Name="Deploy-Framework">
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" RebaseOutputs="true" 
+						 Properties="OutDir=$(FrameworkOutDir);Configuration=ReleaseFramework" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(FrameworkOutDir)" />
+	</Target>
+	<Target Name="Deploy-Templates-WebForms">
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" RebaseOutputs="true"
+						 Properties="OutDir=$(WebFormsOutDir);Configuration=ReleaseWebForms" />
+	</Target>
+	<Target Name="Deploy-Templates-Mvc">
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" RebaseOutputs="true"
+						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc" />
 	</Target>
 
 </Project>

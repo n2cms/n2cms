@@ -6,6 +6,7 @@ using System.Web.UI;
 using N2.Definitions;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
+using N2.Workflow;
 
 namespace N2.Details
 {
@@ -85,11 +86,11 @@ namespace N2.Details
 
 		#region Methods
 
-		public override bool UpdateItem(ContentItem item, Control editor)
+		public override bool UpdateItem(ContentItem parentItem, Control editor)
 		{
 			ItemEditor itemEditor = editor as ItemEditor;
-			itemEditor.Update();
-			return true;
+			ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
+			return itemEditor.UpdateObject(parentEditor.BinderContext.CreateNestedContext(itemEditor, itemEditor.CurrentItem));
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)

@@ -39,7 +39,6 @@ namespace N2.Details
 
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
-			bool wasUpdated = false;
 			ItemEditorList listEditor = (ItemEditorList)editor;
 			for (int i = 0; i < listEditor.ItemEditors.Count; i++)
 			{
@@ -50,16 +49,20 @@ namespace N2.Details
 				else
 				{
 					ItemEditor childEditor = listEditor.ItemEditors[i];
-					IItemEditor parentEditor = ItemUtility.FindInParents<IItemEditor>(editor.Parent);
-					ItemEditor itemEditor = parentEditor as ItemEditor;
-					if (itemEditor != null)
+					ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
+					if (parentEditor != null)
 					{
-						var subContext = itemEditor.BinderContext.CreateNestedContext(childEditor, childEditor.CurrentItem);
-						if (subContext.Binder.UpdateObject(subContext))
-							wasUpdated = true;
+						var subContext = parentEditor.BinderContext.CreateNestedContext(childEditor, childEditor.CurrentItem);
+						return subContext.Binder.UpdateObject(subContext);
 					}
 					else
-						parentEditor.Saved += delegate { childEditor.Save(); };
+					{
+						IItemEditor fallbackEditor = ItemUtility.FindInParents<IItemEditor>(editor.Parent);
+						if (fallbackEditor != null)
+						{
+							fallbackEditor.Saved += delegate { childEditor.Save(); };
+						}
+					}
 				}
 			}
 			return listEditor.DeletedIndexes.Count > 0 || listEditor.AddedTypes.Count > 0;

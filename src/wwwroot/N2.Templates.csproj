@@ -70,51 +70,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ControlPanel.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\ru\EditableContainers.ru.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EditableContainers.ru.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ru\Definitions.ru.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Definitions.ru.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ru\Editables.ru.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Editables.ru.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ru\Zones.ru.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Zones.ru.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\sl\ControlPanel.sl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ControlPanel.sl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\sl\Definitions.sl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Definitions.sl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\sl\EditableContainers.sl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EditableContainers.sl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\sl\Editables.sl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Editables.sl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\sl\Zones.sl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Zones.sl.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Toolbar.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -171,7 +126,6 @@
     <Compile Include="Templates\Items\Question.cs" />
     <Compile Include="Templates\Items\RandomImage.cs" />
     <Compile Include="Templates\Items\Redirect.cs" />
-    <Compile Include="Templates\Items\RootPage.cs" />
     <Compile Include="Templates\Items\RssAggregator.cs" />
     <Compile Include="Templates\Items\RssFeed.cs" />
     <Compile Include="Templates\Items\SidebarItem.cs" />
@@ -179,7 +133,6 @@
     <Compile Include="Templates\Items\SiteMap.cs" />
     <Compile Include="Templates\Items\SocialBookmarks.cs" />
     <Compile Include="Templates\Items\StartPage.cs" />
-    <Compile Include="Templates\Items\Statistics.cs" />
     <Compile Include="Templates\Items\Subscribe.cs" />
     <Compile Include="Templates\Items\Teaser.cs" />
     <Compile Include="Templates\Items\TextItem.cs" />
@@ -286,13 +239,6 @@
     <Compile Include="Templates\UI\Parts\RssAggregator.ascx.designer.cs">
       <DependentUpon>RssAggregator.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Templates\UI\Parts\Statistics.ascx.cs">
-      <DependentUpon>Statistics.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\UI\Parts\Statistics.ascx.designer.cs">
-      <DependentUpon>Statistics.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Templates\UI\Parts\Teaser.ascx.cs">
       <DependentUpon>Teaser.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -327,13 +273,6 @@
     </Compile>
     <Compile Include="Templates\UI\Layouts\Top+SubMenu.Master.designer.cs">
       <DependentUpon>Top+SubMenu.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Templates\Secured\Root.aspx.cs">
-      <DependentUpon>Root.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Templates\Secured\Root.aspx.designer.cs">
-      <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
     <Compile Include="Templates\Services\SyndicatableDefinitionAppender.cs" />
     <Compile Include="Templates\UI\Views\404.aspx.cs">
@@ -546,50 +485,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Definitions.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\nl\Definitions.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\nl\Definitions.nl1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Definitions.nl.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\EditableContainers.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EditableContainers.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\nl\EditableContainers.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\nl\EditableContainers.nl1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EditableContainers.nl.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Editables.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Editables.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\nl\Editables.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\nl\Editables.nl1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Editables.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\nl\Toolbar.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\nl\Toolbar.nl1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.nl.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Zones.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\nl\Zones.nl.designer.cs" />
-    <Compile Include="App_GlobalResources\nl\Zones.nl1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Zones.nl.resx</DependentUpon>
     </Compile>
     <Compile Include="Templates\UI\Image.ashx.cs">
       <DependentUpon>Image.ashx</DependentUpon>
@@ -681,33 +590,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\nl\Definitions.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Definitions.nl1.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\EditableContainers.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>EditableContainers.nl1.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\Editables.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Editables.nl1.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\Toolbar.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.nl1.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\Zones.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Zones.nl1.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="App_Themes\Corporate\amazed.gif" />
     <Content Include="App_Themes\Corporate\body_bg.gif" />
     <Content Include="App_Themes\Corporate\happy.gif" />
@@ -738,7 +620,6 @@
     <None Include="App_Data\KhakiTabs_SampleData.gz" />
     <None Include="App_Data\Plain_SampleData.gz" />
     <Content Include="Templates\UI\Layouts\Top+SubMenu.Master" />
-    <Content Include="Templates\Secured\Web.config" />
     <Content Include="App_Themes\n2cms\Menu.skin" />
     <Content Include="App_Themes\Corporate\Menu.skin" />
   </ItemGroup>
@@ -844,7 +725,6 @@
     <Content Include="Templates\UI\Img\heart.png" />
     <Content Include="Templates\UI\Img\key.png" />
     <Content Include="Templates\UI\Img\page.png" />
-    <Content Include="Templates\UI\Img\page_gear.png" />
     <Content Include="Templates\UI\Img\page_go.png" />
     <Content Include="Templates\UI\Img\page_white.png" />
     <Content Include="Templates\UI\Img\page_white_link.png" />
@@ -867,7 +747,6 @@
     <Content Include="Templates\UI\Layouts\SubMenu.ascx" />
     <Content Include="Templates\UI\Parts\RandomImage.ascx" />
     <Content Include="Templates\UI\Parts\Register.ascx" />
-    <Content Include="Templates\UI\Parts\Statistics.ascx" />
     <Content Include="Templates\UI\Parts\Teaser.ascx" />
     <Content Include="Templates\UI\Parts\Text.ascx" />
     <Content Include="Templates\UI\Parts\Top.ascx" />
@@ -887,8 +766,6 @@
     <Content Include="Templates\UI\Parts\App_LocalResources\Poll.ascx.sv.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Templates\Secured\Edit.css" />
-    <Content Include="Templates\Secured\Root.aspx" />
     <Content Include="Templates\UI\Views\Form.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -900,28 +777,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\ru\Definitions.ru.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Definitions.ru.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\ru\Editables.ru.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Editables.ru.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\ru\Zones.ru.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Zones.ru.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\ru\EditableContainers.ru.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Templates\UI\Img\SocialBookmarks\Blinklist_16x16.png" />
     <Content Include="Templates\UI\Img\SocialBookmarks\BlogMarks_16x16.png" />
     <Content Include="Templates\UI\Img\SocialBookmarks\delicious_16x16.png" />
@@ -959,31 +814,6 @@
       <LastGenOutput>ControlPanel.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_GlobalResources\sl\ControlPanel.sl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>ControlPanel.sl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\sl\Definitions.sl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Definitions.sl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\sl\EditableContainers.sl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>EditableContainers.sl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\sl\Editables.sl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Editables.sl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\sl\Zones.sl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Zones.sl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Toolbar.resx">
@@ -997,11 +827,15 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>TrashPurgeInterval.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="Upload\lav.jpg" />
+    <Content Include="Upload\lime.jpg" />
+    <Content Include="Upload\logo_white.png" />
+    <Content Include="Upload\skal.jpg" />
+    <Content Include="Upload\thorn.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="Properties\" />
-    <Folder Include="Upload\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />

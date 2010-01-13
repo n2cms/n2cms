@@ -65,10 +65,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\N2.Templates.Mvc\N2.Management.csproj">
-      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
-      <Name>N2.Management</Name>
-    </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>

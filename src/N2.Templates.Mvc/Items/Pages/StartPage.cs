@@ -5,6 +5,7 @@ using N2.Installation;
 using N2.Edit.FileSystem;
 using N2.Templates.Details;
 using N2.Web;
+using N2.Definitions;
 
 namespace N2.Templates.Mvc.Items.Pages
 {
@@ -16,7 +17,7 @@ namespace N2.Templates.Mvc.Items.Pages
 		SortOrder = 440,
 		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage,
 		IconUrl = "~/Content/Img/page_world.png")]
-	[RestrictParents(typeof (RootPage))]
+	[RestrictParents(typeof (IRoot))]
 	[AvailableZone("Site Wide Top", Zones.SiteTop), 
      AvailableZone("Site Wide Left", Zones.SiteLeft),
 	 AvailableZone("Site Wide Right", Zones.SiteRight)]

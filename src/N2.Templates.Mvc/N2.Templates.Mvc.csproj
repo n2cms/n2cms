@@ -184,12 +184,10 @@
     <Compile Include="Controllers\NewsListController.cs" />
     <Compile Include="Controllers\PollController.cs" />
     <Compile Include="Controllers\RedirectController.cs" />
-    <Compile Include="Controllers\RootPageController.cs" />
     <Compile Include="Controllers\RssAggregatorController.cs" />
     <Compile Include="Controllers\RssFeedController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SocialBookmarksController.cs" />
-    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
     <Compile Include="Controllers\UserRegistrationController.cs" />
     <Compile Include="Details\DropDownAttribute.cs" />
@@ -241,7 +239,6 @@
     <Compile Include="Items\Items\Question.cs" />
     <Compile Include="Items\Items\RandomImage.cs" />
     <Compile Include="Items\Pages\Redirect.cs" />
-    <Compile Include="Items\Pages\RootPage.cs" />
     <Compile Include="Items\Items\RssAggregator.cs" />
     <Compile Include="Items\Pages\RssFeed.cs" />
     <Compile Include="Items\Items\SidebarItem.cs" />
@@ -249,7 +246,6 @@
     <Compile Include="Items\Pages\SiteMap.cs" />
     <Compile Include="Items\Items\SocialBookmarks.cs" />
     <Compile Include="Items\Pages\StartPage.cs" />
-    <Compile Include="Items\Items\Statistics.cs" />
     <Compile Include="Items\Items\Subscribe.cs" />
     <Compile Include="Items\Items\Teaser.cs" />
     <Compile Include="Items\Items\TextItem.cs" />
@@ -267,7 +263,6 @@
     <Compile Include="Models\RssItem.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SocialBookmarksModel.cs" />
-    <Compile Include="Models\StatisticsModel.cs" />
     <Compile Include="Models\SubMenuModel.cs" />
     <Compile Include="Models\TopMenuModel.cs" />
     <Compile Include="Models\UserRegistrationModel.cs" />
@@ -350,7 +345,6 @@
     <Content Include="Content\Img\newspaper_go.png" />
     <Content Include="Content\Img\newspaper_link.png" />
     <Content Include="Content\Img\page.png" />
-    <Content Include="Content\Img\page_gear.png" />
     <Content Include="Content\Img\page_go.png" />
     <Content Include="Content\Img\page_white.png" />
     <Content Include="Content\Img\page_white_link.png" />
@@ -579,12 +573,10 @@
     <Content Include="Views\SiteMap\Index.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\RootPage\Index.aspx" />
     <Content Include="Views\Shared\App_LocalResources\CalendarTeaser.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Shared\Bubble.ascx" />
-    <Content Include="Views\Shared\Statistics.ascx" />
     <Content Include="Views\Shared\UrchinTracking.ascx" />
   </ItemGroup>
   <ItemGroup>

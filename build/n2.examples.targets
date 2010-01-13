@@ -17,11 +17,11 @@
 
 	<!-- Prepare dependencies -->
 	
-	<Target Name="Examples-PrepareDependencies">
-		<CallTarget Targets="Examples-CSharp-PrepareDependencies;
+	<Target Name="Examples-PrepareDependencies" DependsOnTargets="Prepare-Examples-CSharp;Prepare-Examples-VisualBasic;Prepare-Examples-Mvc;Prepare-Examples-TemplatesSite">
+		<!--<CallTarget Targets="Examples-CSharp-PrepareDependencies;
 							 Examples-VisualBasic-PrepareDependencies;
 							 Examples-TemplatesSite-PrepareDependencies;
-							 Examples-Mvc-PrepareDependencies"/>
+							 Examples-Mvc-PrepareDependencies"/>-->
 	</Target>
 
 	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
