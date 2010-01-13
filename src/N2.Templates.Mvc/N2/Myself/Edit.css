@@ -1,0 +1,18 @@
+@import url(../N2/Resources/Css/edit.css);
+
+.nameEditor, .titleEditor
+{
+	display:block;
+	width:auto;
+	width:100%;
+}
+#main .columns
+{
+}
+#main .columns .left,
+#main .columns .right
+{
+	margin-top:10px;
+	width:auto;
+	float:none;
+}
