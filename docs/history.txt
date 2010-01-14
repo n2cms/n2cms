@@ -1,4 +1,6 @@
-﻿- completely reorganized edit folder and moved it into templates.mvc project (breaking change):
+﻿- applied jronaldi's patch #4931: Top menu is not multi-lingual
+- moved item information to data tokens in mvc route
+- completely reorganized edit folder and moved it into templates.mvc project (breaking change):
 	/edit/login.aspx		->	/n2/login.aspx
 	/edit/*					->	/n2/content/
 	/edit/filemanagement/*	->	/n2/files/

@@ -19,10 +19,10 @@ namespace N2.Templates.Mvc.Controllers
 
 		public PartialViewResult TopMenu()
 		{
-			ContentItem branchRoot = Find.AncestorAtLevel(2, Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList(),
-														  N2.Find.CurrentPage);
+            // Top menu for the current language starts at the nearest language root
+            ContentItem branchRoot = Find.ClosestLanguageRoot; 
 
-			var model = new TopMenuModel(GetTranslations(), branchRoot, Find.StartPage
+            var model = new TopMenuModel(GetTranslations(), branchRoot, branchRoot
 			                                                            	.GetChildren(new NavigationFilter())
 			                                                            	.OrderBy(i => i.SortOrder));
 
