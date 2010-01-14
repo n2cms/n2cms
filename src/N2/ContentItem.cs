@@ -530,7 +530,7 @@ namespace N2
 					return data;
 			}
 
-			return PathData.Empty;
+			return PathData.None(this, remainingUrl);
 		}
 
     	/// <summary>Tries to get a child item with a given name. This method igonres user permissions and any trailing '.aspx' that might be part of the name.</summary>
@@ -844,11 +844,12 @@ namespace N2
 			if (this == obj) return true;
 			ContentItem other = obj as ContentItem;
 			return other != null && id != 0 && id == other.id;
-    }
+		}
 
 		int? hashCode;
 		/// <summary>Gets a hash code based on the ID.</summary>
 		/// <returns>A hash code.</returns>
+		[DebuggerStepThrough]
 		public override int GetHashCode()
 		{
 			if (!hashCode.HasValue)
@@ -858,6 +859,7 @@ namespace N2
 
 		/// <summary>Returns this item's name.</summary>
 		/// <returns>The item's name.</returns>
+		[DebuggerStepThrough]
 		public override string ToString()
 		{
 			return Name + "#" + ID;

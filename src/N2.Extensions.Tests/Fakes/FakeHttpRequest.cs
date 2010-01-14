@@ -6,17 +6,17 @@ namespace N2.Extensions.Tests.Fakes
 	public class FakeHttpRequest : HttpRequestBase
 	{
 		public string appRelativeCurrentExecutionFilePath;
+		public NameValueCollection query = new NameValueCollection();
+		public string rawUrl;
+		
 		public override string AppRelativeCurrentExecutionFilePath
 		{
 			get { return appRelativeCurrentExecutionFilePath; }
 		}
-		public string rawUrl;
 		public override string RawUrl
 		{
 			get { return rawUrl; }
 		}
-		public StringDictionary query = new StringDictionary();
-
 		public override string this[string key]
 		{
 			get { return query[key]; }
@@ -29,14 +29,15 @@ namespace N2.Extensions.Tests.Fakes
 		{
 			get { return ""; }
 		}
+		public override NameValueCollection QueryString
+		{
+			get { return query; }
+		}
 
 		public NameValueCollection serverVariables = new NameValueCollection();
 		public override NameValueCollection ServerVariables
 		{
-			get
-			{
-				return serverVariables;
-			}
+			get { return serverVariables; }
 		}
 	}
 }

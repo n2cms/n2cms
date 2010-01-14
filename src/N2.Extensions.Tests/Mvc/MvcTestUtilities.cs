@@ -16,7 +16,7 @@ namespace N2.Extensions.Tests.Mvc
             var page = new ViewPage<T>();
             page.ViewData = new ViewDataDictionary<T>(model);
             page.ViewContext = new ViewContext(new ControllerContext(), new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary());
-            page.ViewContext.RouteData.Values[ContentRoute.ContentItemKey] = model;
+			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = model;
             return page;
         }
 
@@ -30,7 +30,7 @@ namespace N2.Extensions.Tests.Mvc
                 RouteData = new RouteData(new Route("anything", new MvcRouteHandler()), new MvcRouteHandler()),
                 Controller = new StubController()
             };
-            controllerContext.RequestContext.RouteData.Values[ContentRoute.ContentItemKey] = item;
+			controllerContext.RequestContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
             controllerContext.Controller.ControllerContext = controllerContext;
 
             page.ViewContext = new ViewContext(controllerContext, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary());

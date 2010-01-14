@@ -20,12 +20,21 @@ namespace N2.Web
 			get { return new PathData(); }
 		}
 
+		/// <summary>The path didn't correspond to a content item. The caller may use the last found item and remaining url to take action.</summary>
+		/// <param name="closestMatch">The last item reporting no match.</param>
+		/// <param name="remainingUrl">The remaining url when no match was found.</param>
+		/// <returns>A an empty path data with additional information.</returns>
+		public static PathData None(ContentItem reportedBy, string remainingUrl)
+		{
+			return new PathData { StopItem = reportedBy, Argument = remainingUrl };
+		}
+
 		/// <summary>Creates a path that isn't rewritten to it's template.</summary>
 		/// <param name="item">The item associated with path.</param>
 		/// <returns>A path data that is not rewritten.</returns>
 		public static PathData NonRewritable(ContentItem item)
 		{
-			return new PathData(item, null) {IsRewritable = false};
+			return new PathData(item, null) { IsRewritable = false };
 		}
 
 		static string itemQueryKey = "item";
@@ -89,6 +98,9 @@ namespace N2.Web
 			get { return currentPage ?? CurrentItem; }
 			set { currentPage = value;}
 		}
+
+		/// <summary>The item reporting that the path isn't a match.</summary>
+		public ContentItem StopItem { get; set; }
 
 		/// <summary>The template handling this path.</summary>
 		public string TemplateUrl { get; set; }

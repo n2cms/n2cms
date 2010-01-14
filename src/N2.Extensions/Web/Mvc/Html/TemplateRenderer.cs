@@ -31,8 +31,11 @@ namespace N2.Web.Mvc.Html
 		{
 			var routeData = new RouteData();
 
-			routeData.Values[ContentRoute.ContentItemKey] = item;
-			routeData.Values[ContentRoute.ContentEngineKey] = _engine;
+			routeData.DataTokens[ContentRoute.ContentItemKey] = item;
+			routeData.Values[ContentRoute.ContentItemIdKey] = item.ID;
+			routeData.DataTokens[ContentRoute.ContentPageKey] = viewContext.RouteData.DataTokens[ContentRoute.ContentPageKey];
+			routeData.Values[ContentRoute.ContentPageIdKey] = viewContext.RouteData.Values[ContentRoute.ContentPageIdKey];
+			routeData.DataTokens[ContentRoute.ContentEngineKey] = _engine;
 			routeData.Values[ContentRoute.ControllerKey] = _controllerMapper.GetControllerName(item.GetType());
 			routeData.Values[ContentRoute.ActionKey] = "index";
 
@@ -53,6 +56,10 @@ namespace N2.Web.Mvc.Html
 
 			return writer.ToString();
 		}
+ 
+
+ 
+
 
         class SimpleViewDataContainer : IViewDataContainer
         {

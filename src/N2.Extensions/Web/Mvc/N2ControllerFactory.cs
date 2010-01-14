@@ -23,6 +23,25 @@ namespace N2.Web.Mvc
 			_engine = engine;
 		}
 
+		public override IController CreateController(System.Web.Routing.RequestContext requestContext, string controllerName)
+		{
+			// TODO
+			EnsureDataToken(ContentRoute.ContentItemKey, ContentRoute.ContentItemIdKey, requestContext.RouteData);
+			EnsureDataToken(ContentRoute.ContentPageKey, ContentRoute.ContentPageIdKey, requestContext.RouteData);
+			if(!requestContext.RouteData.DataTokens.ContainsKey(ContentRoute.ContentEngineKey))
+			    requestContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = _engine;
+			return base.CreateController(requestContext, controllerName);
+		}
+
+		private void EnsureDataToken(string contentKey, string idKey, System.Web.Routing.RouteData routeData)
+		{
+			if (!routeData.DataTokens.ContainsKey(contentKey) && routeData.Values.ContainsKey(idKey))
+			{
+				int id = Convert.ToInt32(routeData.Values[idKey]);
+				routeData.DataTokens[contentKey] = _engine.Persister.Get(id);
+			}
+		}
+
 		protected override IController GetControllerInstance(Type controllerType)
 		{
 			if (controllerType == null)

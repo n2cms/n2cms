@@ -29,7 +29,7 @@ namespace N2.Web.Mvc
 			{
 				if (_engine == null)
 				{
-					_engine = ControllerContext.RouteData.Values[ContentRoute.ContentEngineKey] as IEngine
+					_engine = ControllerContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
 					          ?? Context.Current;
 				}
 				return _engine;
@@ -44,8 +44,8 @@ namespace N2.Web.Mvc
 			{
 				if (_currentItem == null)
 				{
-					_currentItem = ControllerContext.RouteData.Values[ContentRoute.ContentItemKey] as T
-					               ?? GetCurrentItemById();
+					_currentItem = ControllerContext.RequestContext.CurrentItem<T>()
+								   ?? GetCurrentItemById(ContentRoute.ContentItemIdKey);
 				}
 				return _currentItem;
 			}
@@ -56,18 +56,15 @@ namespace N2.Web.Mvc
 		{
 			get
 			{
-				ContentItem page = CurrentItem;
-				while (page != null && !page.IsPage)
-					page = page.Parent;
-
-				return page;
+				return ControllerContext.RequestContext.CurrentPage<ContentItem>()
+					?? CurrentItem.ClosestPage();
 			}
 		}
 
-		private T GetCurrentItemById()
+		private T GetCurrentItemById(string key)
 		{
 			int itemId;
-			if (Int32.TryParse(ControllerContext.RouteData.Values[ContentRoute.ContentItemIdKey] as string, out itemId)
+			if (Int32.TryParse(ControllerContext.RouteData.Values[key] as string, out itemId)
 				|| Int32.TryParse(Request[ContentRoute.ContentItemIdKey], out itemId))
 				return Engine.Persister.Get(itemId) as T;
 

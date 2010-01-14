@@ -48,8 +48,10 @@ namespace N2.Web.Mvc
 		private ControllerBase BuildController(ControllerContext context)
 		{
 			var routeData = context.RouteData;
-			routeData.Values[ContentRoute.ContentItemKey] = _thePage;
+			routeData.DataTokens[ContentRoute.ContentItemKey] = _thePage;
+			routeData.DataTokens[ContentRoute.ContentPageKey] = _thePage;
 			routeData.Values[ContentRoute.ContentItemIdKey] = _thePage.ID;
+			routeData.Values[ContentRoute.ContentPageIdKey] = _thePage.ID;
 			routeData.Values["action"] = "Index";
 
 			var requestContext = new RequestContext(context.HttpContext, routeData);

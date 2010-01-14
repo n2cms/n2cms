@@ -47,14 +47,14 @@ namespace N2.Web.Mvc
 
 		private static ContentItem ExtractItemFromContext(ControllerContext controllerContext)
 		{
-			var item = (ContentItem)controllerContext.RouteData.Values[ContentRoute.ContentItemKey];
+			var item = (ContentItem)controllerContext.RouteData.DataTokens[ContentRoute.ContentItemKey];
 
 			var viewContext = controllerContext as ViewContext;
 			if(viewContext != null)
 			{
 				item = ItemExtractor.ExtractFromModel(viewContext.ViewData.Model) ?? item;
 
-				controllerContext.RouteData.Values[ContentRoute.ContentItemKey] = item;
+				controllerContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
 			}
 			return item;
 		}

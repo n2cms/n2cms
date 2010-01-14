@@ -20,7 +20,7 @@
 			<%=Html.ValidationMessage("Poll.Errors")%>
 			<div class="buttons">
 				<input type="submit" value="Submit" />
-				<a href="<%= Html.CurrentPage().Url %>?p=show">Display results</a>
+				<a href="<%= N2.Web.Url.Parse(Html.CurrentPage().Url).AppendQuery("p=show") %>">Display results</a>
 			</div>
 		<%}%>
 	</div>

@@ -6,6 +6,8 @@ using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Extensions.Tests.Fakes;
+using N2.Web.Mvc;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -15,7 +17,7 @@ namespace N2.Extensions.Tests.Mvc
 		[Test]
 		public void TakesCareOfPartsRenderedWithView()
 		{
-			var controller = new TestItemController();
+			var controller = Create<TestItemController>();
 			controller.CurrentItem = new TestItem();
 
 			controller.UsingView().AssertResultIs<PartialViewResult>();
@@ -24,7 +26,7 @@ namespace N2.Extensions.Tests.Mvc
 		[Test]
 		public void ReturnsViewWhenIndexCalledOnPageController()
 		{
-			var controller = new RegularController();
+			var controller = Create<RegularController>();
 			controller.CurrentItem = new RegularPage();
 
 			controller.Index().AssertResultIs<ViewResult>();
@@ -33,7 +35,7 @@ namespace N2.Extensions.Tests.Mvc
 		[Test]
 		public void ReturnsPartialWhenIndexCalledOnPartController()
 		{
-			var controller = new TestItemController();
+			var controller = Create<TestItemController>();
 			controller.CurrentItem = new TestItem();
 
 			controller.Index().AssertResultIs<PartialViewResult>();
@@ -52,7 +54,7 @@ namespace N2.Extensions.Tests.Mvc
 		public void ParentPage()
 		{
 			var page = new RegularPage();
-			var controller = new TestItemController();
+			var controller = Create<TestItemController>();
 			controller.CurrentItem = new TestItem
 			{
 				Parent = page,
@@ -65,7 +67,7 @@ namespace N2.Extensions.Tests.Mvc
 		public void ParentPage_MultipleLevel()
 		{
 			var page = new RegularPage();
-			var controller = new TestItemController();
+			var controller = Create<TestItemController>();
 			controller.CurrentItem = new TestItem
 			{
 				Parent = new TestItem{Parent = page},
@@ -78,7 +80,7 @@ namespace N2.Extensions.Tests.Mvc
 		public void ViewParentPage_WithPage()
 		{
 			var page = new RegularPage();
-			var controller = new RegularController();
+			var controller = Create<RegularController>();
 			controller.CurrentItem = page;
 
 			controller.Engine = MockRepository.GenerateStub<IEngine>();
@@ -90,7 +92,7 @@ namespace N2.Extensions.Tests.Mvc
 		public void ViewParentPage_WithItem()
 		{
 			var page = new RegularPage();
-			var controller = new TestItemController();
+			var controller = Create<TestItemController>();
 			controller.CurrentItem = new TestItem
 			{
 				Parent = new TestItem { Parent = page },
@@ -105,11 +107,18 @@ namespace N2.Extensions.Tests.Mvc
 		public void ViewPage_WithSamePage()
 		{
 			var page = new RegularPage();
-			var controller = new RegularController();
+			var controller = Create<RegularController>();
 			controller.CurrentItem = page;
 			controller.Engine = MockRepository.GenerateStub<IEngine>();
 
 			Assert.Throws<InvalidOperationException>(() => controller.ViewPage(page));
+		}
+
+		private T Create<T>() where T : Controller, new()
+		{
+			T c = new T();
+			c.ControllerContext = new ControllerContext(new System.Web.Routing.RequestContext(new FakeHttpContext(), new System.Web.Routing.RouteData()), c);
+			return c;
 		}
 	}
 }

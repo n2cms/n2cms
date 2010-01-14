@@ -17,7 +17,7 @@ namespace N2.Web.Mvc.Html
         {
             if (helper == null) throw new ArgumentNullException("helper");
 
-            return helper.ViewContext.CurrentItem<T>();
+            return helper.ViewContext.CurrentPage<T>();
         }
 
         public static ContentItem CurrentItem(this HtmlHelper helper)
@@ -45,24 +45,27 @@ namespace N2.Web.Mvc.Html
                 ?? context.RequestContext.CurrentItem<T>();
         }
 
-        private static T CurrentItem<T>(this ViewDataDictionary viewData) where T : ContentItem
-        {
-            if (viewData == null) throw new ArgumentNullException("viewData");
+		public static T CurrentPage<T>(this ViewContext context) where T : ContentItem
+		{
+			if (context == null) throw new ArgumentNullException("context");
 
-            return viewData.Model as T
-                ?? viewData[ContentRoute.ContentItemKey] as T;
-        }
+			return context.ViewData.CurrentPage<T>()
+				?? context.RequestContext.CurrentPage<T>();
+		}
 
 
-        public static ContentItem CurrentItem(this RequestContext context)
-        {
-            return context.CurrentItem<ContentItem>();
-        }
-        public static T CurrentItem<T>(this RequestContext context) where T:ContentItem
-        {
-            if (context == null) throw new ArgumentNullException("context");
-            
-            return context.RouteData.Values[ContentRoute.ContentItemKey] as T;
-        }
+		private static T CurrentItem<T>(this ViewDataDictionary viewData) where T : ContentItem
+		{
+			if (viewData == null) throw new ArgumentNullException("viewData");
+
+			return viewData.Model as T
+				?? viewData[ContentRoute.ContentItemKey] as T;
+		}
+		private static T CurrentPage<T>(this ViewDataDictionary viewData) where T : ContentItem
+		{
+			if (viewData == null) throw new ArgumentNullException("viewData");
+
+			return viewData[ContentRoute.ContentPageKey] as T;
+		}
     }
 }

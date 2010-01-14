@@ -45,7 +45,7 @@ namespace N2.Templates.Mvc.Controllers
 
 			Engine.Persister.Save(comment);
 
-			return Redirect(comment.Url);
+			return Redirect(CurrentPage.Url);
 		}
 	}
 }
