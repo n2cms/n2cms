@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<NewsList>" %>
-<%@ Import Namespace="N2.Templates.Mvc.Items.Pages"%>
-<%@ Import Namespace="N2.Templates.Mvc.Items.Items"%>
+<%@ Import Namespace="N2.Templates.Mvc.Models.Pages"%>
+<%@ Import Namespace="N2.Templates.Mvc.Models.Parts"%>
 
 <%= Html.Display(m => m.Title) %>
 <div class="box"><div class="inner">

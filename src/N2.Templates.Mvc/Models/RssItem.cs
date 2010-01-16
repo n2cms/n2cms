@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using N2.Templates.Mvc.Items.Items;
+using N2.Templates.Mvc.Models.Parts;
 
 namespace N2.Templates.Mvc.Models
 {

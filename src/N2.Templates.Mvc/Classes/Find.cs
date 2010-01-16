@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using N2.Collections;
-using N2.Templates.Mvc.Items.Pages;
+using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc
 {

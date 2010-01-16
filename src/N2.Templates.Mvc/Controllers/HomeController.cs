@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Web.Mvc;
-using N2.Templates.Mvc.Items.Pages;
+using N2.Templates.Mvc.Models.Pages;
 using N2.Web;
 using N2.Web.Mvc;
 
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof(StartPage))]
-	public class HomeController : N2Controller<StartPage>
+	public class HomeController : TemplatesControllerBase<StartPage>
 	{
 		public ActionResult NotFound()
 		{

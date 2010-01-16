@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using N2.Templates.Mvc.Items.Items;
-using N2.Templates.Mvc.Items.Pages;
+using N2.Templates.Mvc.Models.Parts;
+using N2.Templates.Mvc.Models.Pages;
 using N2.Web.Mvc;
 using N2.Web.UI;
 

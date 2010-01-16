@@ -109,51 +109,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Editables.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\nl\Definitions.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Definitions.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\nl\EditableContainers.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EditableContainers.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\nl\Editables.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Editables.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\nl\Toolbar.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbar.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\nl\Zones.nl.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Zones.nl.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ru\Definitions.ru.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Definitions.ru.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ru\EditableContainers.ru.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EditableContainers.ru.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ru\Editables.ru.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Editables.ru.resx</DependentUpon>
-    </Compile>
-    <Compile Include="App_GlobalResources\ru\Zones.ru.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Zones.ru.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Zones.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -174,12 +129,13 @@
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CalendarTeaserController.cs" />
     <Compile Include="Controllers\CommentInputController.cs" />
-    <Compile Include="Controllers\DefaultController.cs" />
+    <Compile Include="Controllers\DefaultPageController.cs" />
+    <Compile Include="Controllers\DefaultPartController.cs" />
     <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\ImageGalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\N2Controller.cs" />
+    <Compile Include="Controllers\TemplatesControllerBase.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\NewsListController.cs" />
     <Compile Include="Controllers\PollController.cs" />
@@ -204,56 +160,55 @@
     <Compile Include="Image.ashx.cs">
       <DependentUpon>Image.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Items\Pages\AbstractContentPage.cs" />
-    <Compile Include="Items\Items\AbstractItem.cs" />
-    <Compile Include="Items\AbstractPage.cs" />
-    <Compile Include="Items\Pages\AbstractSearch.cs" />
-    <Compile Include="Items\Items\BoxedTextItem.cs" />
-    <Compile Include="Items\Items\BubbleItem.cs" />
-    <Compile Include="Items\Pages\Calendar.cs" />
-    <Compile Include="Items\Items\CalendarTeaser.cs" />
-    <Compile Include="Items\Items\Columns.cs" />
-    <Compile Include="Items\Items\Comment.cs" />
-    <Compile Include="Items\Items\CommentInput.cs" />
-    <Compile Include="Items\Items\CommentList.cs" />
-    <Compile Include="Items\Items\ControlPanel.cs" />
-    <Compile Include="Items\Pages\DatabaseSearch.cs" />
-    <Compile Include="Items\Pages\Event.cs" />
-    <Compile Include="Items\Items\Faq.cs" />
-    <Compile Include="Items\Pages\FaqList.cs" />
-    <Compile Include="Items\Items\Form.cs" />
-    <Compile Include="Items\Pages\FormPage.cs" />
-    <Compile Include="Items\Pages\GalleryItem.cs" />
-    <Compile Include="Items\Pages\ImageGallery.cs" />
-    <Compile Include="Items\IStructuralPage.cs" />
-    <Compile Include="Items\ISurvey.cs" />
-    <Compile Include="Items\Pages\LanguageRoot.cs" />
-    <Compile Include="Items\Items\LoginItem.cs" />
-    <Compile Include="Items\Items\MultipleSelect.cs" />
-    <Compile Include="Items\Pages\News.cs" />
-    <Compile Include="Items\Pages\NewsContainer.cs" />
-    <Compile Include="Items\Items\NewsList.cs" />
-    <Compile Include="Items\Items\Option.cs" />
-    <Compile Include="Items\Items\OptionSelectQuestion.cs" />
-    <Compile Include="Items\Items\Poll.cs" />
-    <Compile Include="Items\Items\Question.cs" />
-    <Compile Include="Items\Items\RandomImage.cs" />
-    <Compile Include="Items\Pages\Redirect.cs" />
-    <Compile Include="Items\Items\RssAggregator.cs" />
-    <Compile Include="Items\Pages\RssFeed.cs" />
-    <Compile Include="Items\Items\SidebarItem.cs" />
-    <Compile Include="Items\Items\SingleSelect.cs" />
-    <Compile Include="Items\Pages\SiteMap.cs" />
-    <Compile Include="Items\Items\SocialBookmarks.cs" />
-    <Compile Include="Items\Pages\StartPage.cs" />
-    <Compile Include="Items\Items\Subscribe.cs" />
-    <Compile Include="Items\Items\Teaser.cs" />
-    <Compile Include="Items\Items\TextItem.cs" />
-    <Compile Include="Items\Pages\TextPage.cs" />
-    <Compile Include="Items\Items\TextQuestion.cs" />
-    <Compile Include="Items\Items\Top.cs" />
-    <Compile Include="Items\Items\Tracking.cs" />
-    <Compile Include="Items\Items\UserRegistration.cs" />
+    <Compile Include="Models\Pages\AbstractContentPage.cs" />
+    <Compile Include="Models\Parts\AbstractItem.cs" />
+    <Compile Include="Models\Pages\AbstractPage.cs" />
+    <Compile Include="Models\Pages\AbstractSearch.cs" />
+    <Compile Include="Models\Parts\BoxedTextItem.cs" />
+    <Compile Include="Models\Parts\BubbleItem.cs" />
+    <Compile Include="Models\Pages\Calendar.cs" />
+    <Compile Include="Models\Parts\CalendarTeaser.cs" />
+    <Compile Include="Models\Parts\Columns.cs" />
+    <Compile Include="Models\Parts\Comment.cs" />
+    <Compile Include="Models\Parts\CommentInput.cs" />
+    <Compile Include="Models\Parts\CommentList.cs" />
+    <Compile Include="Models\Parts\ControlPanel.cs" />
+    <Compile Include="Models\Pages\DatabaseSearch.cs" />
+    <Compile Include="Models\Pages\Event.cs" />
+    <Compile Include="Models\Parts\Faq.cs" />
+    <Compile Include="Models\Pages\FaqList.cs" />
+    <Compile Include="Models\Parts\Form.cs" />
+    <Compile Include="Models\Pages\FormPage.cs" />
+    <Compile Include="Models\Pages\GalleryItem.cs" />
+    <Compile Include="Models\Pages\ImageGallery.cs" />
+    <Compile Include="Models\Pages\ISurvey.cs" />
+    <Compile Include="Models\Pages\LanguageRoot.cs" />
+    <Compile Include="Models\Parts\LoginItem.cs" />
+    <Compile Include="Models\Parts\MultipleSelect.cs" />
+    <Compile Include="Models\Pages\News.cs" />
+    <Compile Include="Models\Pages\NewsContainer.cs" />
+    <Compile Include="Models\Parts\NewsList.cs" />
+    <Compile Include="Models\Parts\Option.cs" />
+    <Compile Include="Models\Parts\OptionSelectQuestion.cs" />
+    <Compile Include="Models\Parts\Poll.cs" />
+    <Compile Include="Models\Parts\Question.cs" />
+    <Compile Include="Models\Parts\RandomImage.cs" />
+    <Compile Include="Models\Pages\Redirect.cs" />
+    <Compile Include="Models\Parts\RssAggregator.cs" />
+    <Compile Include="Models\Pages\RssFeed.cs" />
+    <Compile Include="Models\Parts\SidebarItem.cs" />
+    <Compile Include="Models\Parts\SingleSelect.cs" />
+    <Compile Include="Models\Pages\SiteMap.cs" />
+    <Compile Include="Models\Parts\SocialBookmarks.cs" />
+    <Compile Include="Models\Pages\StartPage.cs" />
+    <Compile Include="Models\Parts\Subscribe.cs" />
+    <Compile Include="Models\Parts\Teaser.cs" />
+    <Compile Include="Models\Parts\TextItem.cs" />
+    <Compile Include="Models\Pages\TextPage.cs" />
+    <Compile Include="Models\Parts\TextQuestion.cs" />
+    <Compile Include="Models\Parts\Top.cs" />
+    <Compile Include="Models\Parts\Tracking.cs" />
+    <Compile Include="Models\Parts\UserRegistration.cs" />
     <Compile Include="Models\CalendarModel.cs" />
     <Compile Include="Models\CalendarTeaserModel.cs" />
     <Compile Include="Models\CommentInputModel.cs" />
@@ -509,51 +464,6 @@
     <Content Include="App_GlobalResources\Editables.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Editables.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\Definitions.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Definitions.nl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\EditableContainers.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>EditableContainers.nl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\Editables.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Editables.nl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\Toolbar.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Toolbar.nl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\nl\Zones.nl.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Zones.nl.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\ru\Definitions.ru.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Definitions.ru.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\ru\EditableContainers.ru.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>EditableContainers.ru.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\ru\Editables.ru.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Editables.ru.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="App_GlobalResources\ru\Zones.ru.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Zones.ru.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_GlobalResources\Zones.resx">

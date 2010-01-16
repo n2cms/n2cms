@@ -1,9 +1,9 @@
 using System.Web.Mvc;
 using N2.Templates.Mvc.Controllers;
-using N2.Templates.Mvc.Items.Items;
 using N2.Templates.Mvc.Models;
 using NUnit.Framework;
 using MvcContrib.TestHelper;
+using N2.Templates.Mvc.Models.Parts;
 
 namespace N2.Templates.Mvc.Tests.Controllers
 {

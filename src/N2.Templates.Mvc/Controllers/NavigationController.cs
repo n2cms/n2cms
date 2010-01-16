@@ -8,7 +8,7 @@ using N2.Templates.Mvc.Models;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	public class NavigationController : N2Controller<ContentItem>
+	public class NavigationController : TemplatesControllerBase<ContentItem>
 	{
 		private readonly ILanguageGateway _languageGateway;
 

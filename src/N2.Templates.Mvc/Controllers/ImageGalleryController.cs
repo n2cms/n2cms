@@ -1,5 +1,5 @@
 using N2.Collections;
-using N2.Templates.Mvc.Items.Pages;
+using N2.Templates.Mvc.Models.Pages;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 using N2.Web.Mvc;

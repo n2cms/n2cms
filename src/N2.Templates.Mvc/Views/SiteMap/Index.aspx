@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" AutoEventWireup="true"
-	Inherits="System.Web.Mvc.ViewPage<N2.Templates.Mvc.Items.Pages.SiteMap>" %>
+	Inherits="System.Web.Mvc.ViewPage<N2.Templates.Mvc.Models.Pages.SiteMap>" %>
 <%@ Import Namespace="N2.Collections"%>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">

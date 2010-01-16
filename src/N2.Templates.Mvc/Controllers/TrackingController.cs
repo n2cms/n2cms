@@ -1,4 +1,4 @@
-using N2.Templates.Mvc.Items.Items;
+using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 using N2.Web.Mvc;

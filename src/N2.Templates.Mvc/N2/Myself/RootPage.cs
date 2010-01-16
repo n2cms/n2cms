@@ -20,7 +20,7 @@ namespace N2.Management.Myself
     [AvailableZone("Above", "Above")]
     [AvailableZone("Below", "Below")]
     [N2.Web.UI.TabContainer("smtp", "Smtp settings", 30)]
-	public class RootPage : ContentItem, IRoot
+	public class RootPage : ContentItem, IRootPage
     {
         [EditableTextBox("Smtp Host", 100, ContainerName = "smtp")]
         public virtual string SmtpHost

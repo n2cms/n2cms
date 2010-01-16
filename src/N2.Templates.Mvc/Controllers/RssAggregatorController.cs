@@ -4,14 +4,14 @@ using System.Security;
 using System.Web.Mvc;
 using System.Xml;
 using System.Xml.XPath;
-using N2.Templates.Mvc.Items.Items;
+using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof (RssAggregator))]
-	public class RssAggregatorController : N2Controller<RssAggregator>
+	public class RssAggregatorController : TemplatesControllerBase<RssAggregator>
 	{
 		private const int ExpirationTime = 1;
 

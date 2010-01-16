@@ -348,8 +348,10 @@
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
-    <Compile Include="Definitions\IRoot.cs" />
+    <Compile Include="Definitions\IRootPage.cs" />
     <Compile Include="Definitions\ISortableRefiner.cs" />
+    <Compile Include="Definitions\IStartPage.cs" />
+    <Compile Include="Definitions\IStructuralPage.cs" />
     <Compile Include="Definitions\RefineOrder.cs" />
     <Compile Include="Definitions\RemoveEditableAttribute.cs" />
     <Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />

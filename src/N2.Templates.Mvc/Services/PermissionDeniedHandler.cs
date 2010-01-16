@@ -2,7 +2,7 @@ using System;
 using Castle.Core;
 using N2.Plugin;
 using N2.Security;
-using N2.Templates.Mvc.Items.Pages;
+using N2.Templates.Mvc.Models.Pages;
 using N2.Web;
 
 namespace N2.Templates.Mvc.Services

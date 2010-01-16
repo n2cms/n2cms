@@ -16,7 +16,7 @@ namespace N2.Templates.Items
 		SortOrder = 440,
 		InstallerVisibility = InstallerHint.PreferredRootPage | InstallerHint.PreferredStartPage,
 		IconUrl = "~/Templates/UI/Img/page_world.png")]
-	[RestrictParents(typeof(IRoot))]
+	[RestrictParents(typeof(IRootPage))]
     [AvailableZone("Site Wide Top", Zones.SiteTop), AvailableZone("Site Wide Left", Zones.SiteLeft), AvailableZone("Site Wide Right", Zones.SiteRight)]
 	public class StartPage : LanguageRoot, IFileSystemContainer, ISitesSource
     {

@@ -1,12 +1,12 @@
 using System;
 using System.Web.Mvc;
 using N2.Web;
-using N2.Templates.Mvc.Items.Pages;
+using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof(Redirect))]
-	public class RedirectController : N2Controller<Redirect>
+	public class RedirectController : TemplatesControllerBase<Redirect>
 	{
 		public override System.Web.Mvc.ActionResult Index()
 		{

@@ -2,7 +2,7 @@ using System;
 using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Security;
-using N2.Templates.Mvc.Items.Items;
+using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 using N2.Web.Mail;
@@ -10,7 +10,7 @@ using N2.Web.Mail;
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof (UserRegistration))]
-	public class UserRegistrationController : N2Controller<UserRegistration>
+	public class UserRegistrationController : TemplatesControllerBase<UserRegistration>
 	{
 		private readonly IErrorHandler _errorHandler;
 		private readonly IMailSender _mailSender;

@@ -1,14 +1,14 @@
 using System;
 using System.Web.Mvc;
 using N2.Edit;
-using N2.Templates.Mvc.Items.Items;
+using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof(CommentInput))]
-	public class CommentInputController : N2Controller<CommentInput>
+	public class CommentInputController : TemplatesControllerBase<CommentInput>
 	{
 		public override ActionResult Index()
 		{

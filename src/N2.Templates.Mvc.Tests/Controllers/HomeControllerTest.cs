@@ -3,11 +3,10 @@ using System.Web.Mvc;
 using MvcContrib.TestHelper;
 using N2.Engine;
 using N2.Templates.Mvc.Controllers;
-using N2.Templates.Mvc.Items.Pages;
-using N2.Templates.Mvc.Tests.Items;
 using N2.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Tests.Controllers
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using MvcContrib;
 using N2.Templates.Mvc.Details;
-using N2.Templates.Mvc.Items.Items;
+using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 using N2.Web.Mail;
@@ -13,7 +13,7 @@ using N2.Web.Mail;
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof (Form))]
-	public class FormController : N2Controller<Form>
+	public class FormController : TemplatesControllerBase<Form>
 	{
 		private readonly IMailSender _mailSender;
 

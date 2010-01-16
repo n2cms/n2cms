@@ -1,13 +1,13 @@
 using System.Web.Mvc;
 using System.Web.Security;
-using N2.Templates.Mvc.Items.Items;
+using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
 
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof(LoginItem))]
-	public class LoginController : N2Controller<LoginItem>
+	public class LoginController : TemplatesControllerBase<LoginItem>
 	{
 		public override ActionResult Index()
 		{

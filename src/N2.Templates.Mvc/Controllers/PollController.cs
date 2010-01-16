@@ -1,11 +1,11 @@
 using System.Web.Mvc;
-using N2.Templates.Mvc.Items.Items;
+using N2.Templates.Mvc.Models.Parts;
 using N2.Web;
 
 namespace N2.Templates.Mvc.Controllers
 {
 	[Controls(typeof(Poll))]
-	public class PollController : N2Controller<Poll>
+	public class PollController : TemplatesControllerBase<Poll>
 	{
 		public ActionResult Submit(int? selectedItem)
 		{
