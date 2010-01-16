@@ -1,8 +1,8 @@
 - allow webform addons in mvc templates
+	- decouple views from content item
 - msdeploy
 - default container (put all editables in one container)
 - remove path from adapters
-- decouple views from content item
 - lock name on published items
 - extend user object: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=73897
 	/n2/
