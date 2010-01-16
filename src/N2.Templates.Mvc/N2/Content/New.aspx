@@ -42,16 +42,6 @@
                     <li>other item</li>
                 </ul></blockquote>
             </asp:ListItem>
-            <asp:ListItem Value="2" meta:resourceKey="fsPosition_after">
-                After the selected item (at the same depth)
-                <blockquote><ul>
-                    <li><strong>selected item</strong><ul>
-                        <li>other item</li>
-                    </ul></li>
-                    <li><em>new item</em></li>
-                    <li>other items</li>
-                </ul></blockquote>
-            </asp:ListItem>
         </asp:RadioButtonList>
     </n2:TabPanel>
     

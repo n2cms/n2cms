@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
+using N2.Engine;
 
 namespace N2.Collections
 {
@@ -40,6 +42,30 @@ namespace N2.Collections
 		public IList<HierarchyNode<T>> Children
 		{
 			get { return children; }
+		}
+
+		public string ToString(Function<T, string> begin, Function<T, string> indent, Function<T, string> outdent, Function<T, string> end)
+		{
+			using (var sw = new StringWriter())
+			{
+				Write(sw, begin, indent, outdent, end);
+				return sw.ToString();
+			}
+		}
+
+		public void Write(TextWriter writer, Function<T, string> begin, Function<T, string> indent, Function<T, string> outdent, Function<T, string> end)
+		{
+			writer.Write(begin(Current));
+			if (Children.Count > 0)
+			{
+				writer.Write(indent(Current));
+				foreach (var child in Children)
+				{
+					child.Write(writer, begin, indent, outdent, end);
+				}
+				writer.Write(outdent(Current));
+			}
+			writer.Write(end(Current));
 		}
 	}
 }

@@ -139,6 +139,40 @@ namespace N2.Persistence
 			}
 		}
 
+		/// <summary>Enumerates siblings of an item including the item itself.</summary>
+		/// <param name="rootItem">The item whose siblings to enumerate. The item itself is included.</param>
+		/// <returns>An enumeration of all siblings of an item.</returns>
+		public static IEnumerable<ContentItem> EnumerateSiblings(ContentItem item)
+		{
+			if (item.Parent == null)
+				yield break;
+			foreach (var sibling in item.Parent.Children)
+				yield return sibling;
+		}
+
+		/// <summary>Enumerates siblings of an item including the item itself.</summary>
+		/// <param name="rootItem">The item whose siblings to enumerate. The item itself is included.</param>
+		/// <returns>An enumeration of all siblings of an item.</returns>
+		public static IEnumerable<ContentItem> EnumerateSiblings(ContentItem item, int numberOfItemsBefore, int numberOfItemsAfter)
+		{
+			if (item.Parent == null)
+				yield break;
+			
+			var siblings = item.Parent.Children;
+			int itemIndex = siblings.IndexOf(item);
+			if (itemIndex < 0)
+				yield break;
+
+			for (int i = itemIndex > numberOfItemsBefore ? itemIndex - numberOfItemsBefore : 0; i < itemIndex; i++)
+			{
+				yield return siblings[i];
+			}
+			for (int i = itemIndex; i <= itemIndex + numberOfItemsAfter && i < siblings.Count; i++)
+			{
+				yield return siblings[i];
+			}
+		}
+
 		/// <summary>Enumerates child items and their children, and so on.</summary>
 		/// <param name="item">The parent item whose child items to enumerate. The item itself is not returned.</param>
 		/// <returns>An enumeration of all children of an item.</returns>

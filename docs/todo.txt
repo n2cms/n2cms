@@ -1,5 +1,6 @@
+- allow webform addons in mvc templates
+- msdeploy
 - default container (put all editables in one container)
-- fix create item before/after
 - remove path from adapters
 - decouple views from content item
 - lock name on published items

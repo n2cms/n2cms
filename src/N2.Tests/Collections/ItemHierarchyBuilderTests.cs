@@ -124,5 +124,23 @@ namespace N2.Tests.Collections
 			ItemHierarchyNavigator ih = new ItemHierarchyNavigator(node);
 			EnumerableAssert.Count(1, ih.EnumerateAllItems());
 		}
+
+		[Test]
+		public void HierarchyNode_CanWrite_SingleNode_ToString()
+		{
+			HierarchyNode<ContentItem> node = new HierarchyNode<ContentItem>(a);
+
+			var result = node.ToString((c) => "[" + c.ID, (p) => "<", p => ">", (c) => "]");
+			Assert.That(result, Is.EqualTo("[1]"));
+		}
+
+		[Test]
+		public void HierarchyNodeCanWrite_Hierarchy_ToString()
+		{
+			HierarchyNode<ContentItem> node = new TreeHierarchyBuilder(a, 2).Build();
+
+			var result = node.ToString((c) => "[" + c.ID, (p) => "<", p => ">", (c) => "]");
+			Assert.That(result, Is.EqualTo("[1<[2][3]>]"));
+		}
 	}
 }

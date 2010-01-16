@@ -87,7 +87,9 @@ namespace N2.Edit
 		{
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
             ctx.RedirectTo = Request["returnUrl"];
-            Engine.Resolve<CommandDispatcher>().Publish(ctx);
+			ctx.Parameters["MoveBefore"] = Request["before"];
+			ctx.Parameters["MoveAfter"] = Request["after"];
+			Engine.Resolve<CommandDispatcher>().Publish(ctx);
 
             HandleResult(ctx);
 		}

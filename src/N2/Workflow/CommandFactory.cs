@@ -30,6 +30,7 @@ namespace N2.Workflow
         UpdateContentStateCommand makeDraft;
         UpdateContentStateCommand makePublished;
         ActiveContentSaveCommand saveActiveContent;
+		MoveToPositionCommand moveToPosition;
         ISecurityManager security;
 
         public CommandFactory(IPersister persister, ISecurityManager security, IVersionManager versionMaker, IEditManager editManager, StateChanger changer)
@@ -52,6 +53,7 @@ namespace N2.Workflow
             makeDraft = new UpdateContentStateCommand(changer, ContentState.Draft);
             makePublished = new UpdateContentStateCommand(changer, ContentState.Published);
             saveActiveContent = new ActiveContentSaveCommand();
+			moveToPosition = new MoveToPositionCommand();
         }
 
         /// <summary>Gets the command used to publish an item.</summary>
@@ -62,31 +64,31 @@ namespace N2.Workflow
             if (context.Interface == Interfaces.Editing)
             {
                 if (context.Content is IActiveContent)
-                    return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
+					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, moveToPosition, saveActiveContent, ReturnTo(context.RedirectTo) ?? showPreview);
                 
                 // Editing
 				if (context.Content.VersionOf == null)
 				{
 					if(context.Content.ID == 0)
-						return Compose("Publish", Authorize(Permission.Publish), validate,			updateObject, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
-					
-					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
+						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, setVersionIndex, makePublished, moveToPosition, save, ReturnTo(context.RedirectTo) ?? showPreview);
+
+					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, makePublished, moveToPosition, save, ReturnTo(context.RedirectTo) ?? showPreview);
 				}
 
 				// has been published before
 				if (context.Content.State == ContentState.Unpublished)
-                    return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
+					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, moveToPosition, save, ReturnTo(context.RedirectTo) ?? showPreview);
                 
                 // has never been published before (remove old version)
-                return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
+				return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, moveToPosition, save, ReturnTo(context.RedirectTo) ?? showPreview);
             }
             else if (context.Interface == Interfaces.Viewing && context.Content.VersionOf != null)
             {
                 // Viewing
                 if (context.Content.State == ContentState.Unpublished)
-                    return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
-                
-                return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, save, ReturnTo(context.RedirectTo) ?? showPreview);
+					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, makePublished, moveToPosition, save, ReturnTo(context.RedirectTo) ?? showPreview);
+
+				return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, makePublished, moveToPosition, save, ReturnTo(context.RedirectTo) ?? showPreview);
             }
 
             throw new NotSupportedException();

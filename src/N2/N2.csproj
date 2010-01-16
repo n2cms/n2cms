@@ -375,6 +375,7 @@
     <Compile Include="Edit\FileSystem\IDefaultDirectory.cs" />
     <Compile Include="Edit\IDocumentBaseSource.cs" />
     <Compile Include="Edit\Trash\TrashPurgeInterval.cs" />
+    <Compile Include="Workflow\Commands\MoveToPositionCommand.cs" />
     <Compile Include="Workflow\ValidationError.cs" />
     <Compile Include="Engine\AsyncWorker.cs" />
     <Compile Include="Castle\CastleServiceContainerConfigurer.cs" />

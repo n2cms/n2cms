@@ -8,6 +8,7 @@ using N2.Security;
 using N2.Edit;
 using Rhino.Mocks;
 using N2.Workflow.Commands;
+using N2.Tests.Workflow.Items;
 
 namespace N2.Tests.Workflow
 {
@@ -112,6 +113,20 @@ namespace N2.Tests.Workflow
             dispatcher.Execute(command, context);
 
             Assert.That(context.RedirectTo, Is.EqualTo("/take/me/back"));
-        }
+		}
+
+		[Test]
+		public void CanMoveItem_ToBefore_Item()
+		{
+			var child2 = CreateOneItem<StatefulItem>(0, "child2", item);
+			var context = new CommandContext(child2, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			context.Parameters["MoveBefore"] = child.Path;
+			var command = CreateCommand(context);
+			dispatcher.Execute(command, context);
+
+			Assert.That(item.Children.Count, Is.EqualTo(2));
+			Assert.That(item.Children[0], Is.EqualTo(child2));
+			Assert.That(item.Children[1], Is.EqualTo(child));
+		}
     }
 }

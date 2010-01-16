@@ -214,10 +214,12 @@ body.edit .type a { display:block; padding:2px 0; }
 body.edit .type a:hover { background-color:#f8f8f8; }
 body.edit .type .title { font-weight:bold; }
 
-
-body.edit .position { width:100%; }
-body.edit .position blockquote { font-size:.9em; background-color:#eee; border:solid 1px #ddd; padding:5px; margin:2px 10px 10px 25px; }
-body.edit .position em { font-weight:bold; color:Green; }
+body.edit .position em { color:Green; font-weight:bold; }
+.position input, .position label { float:left; display:block; }
+.position label .indent { border:solid 1px silver;}
+.position span { display:block;}
+.position .indent { border:solid 1px silver; padding:5px; width:400px;}
+.position .indent .indent { padding:0 0 0 20px; border:none; width:auto; }
 
 body.edit #nav .day { color:#393; }
 body.edit #nav .week { color:#363; }

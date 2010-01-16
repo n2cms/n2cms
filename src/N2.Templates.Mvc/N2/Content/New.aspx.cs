@@ -26,6 +26,7 @@ using N2.Integrity;
 using N2.Web.UI.WebControls;
 using N2.Security;
 using N2.Web;
+using N2.Collections;
 
 namespace N2.Edit
 {
@@ -51,12 +52,84 @@ namespace N2.Edit
         protected void Page_Init(object sender, EventArgs e)
         {
             hlCancel.NavigateUrl = CancelUrl();
-            if (Selection.SelectedItem.Parent == null)
+			if (Selection.SelectedItem.Parent == null)
 			{
 				rblPosition.Enabled = false;
 			}
+			else
+			{
+				rblPosition.Items[0].Text = "Create new item before: " + BuildHierarchy(Selection.SelectedItem, CreationPosition.Before);
+				rblPosition.Items[1].Text = "Create new item below: " + BuildHierarchy(Selection.SelectedItem, CreationPosition.Below);
+			}
             rptTypes.ItemDataBound += new RepeaterItemEventHandler(rptTypes_ItemDataBound);
         }
+
+		private string BuildHierarchy(ContentItem selected, CreationPosition position)
+		{
+			var filter = Engine.EditManager.GetEditorFilter(User);
+			var siblings = Find.EnumerateSiblings(selected, 1, 1);
+			HierarchyNode<string> root = new HierarchyNode<string>(null);
+			foreach (var sibling in filter.Pipe(siblings))
+			{
+				if (sibling == selected)
+				{
+					var node = new HierarchyNode<string>(GetNodeText(sibling, true));
+					if (position == CreationPosition.Before)
+						root.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/Img/Ico/png/add.png' alt='add'/></a> New item"));
+
+					ContentItem first = First(sibling.Children, filter);
+					if (first != null)
+					{
+						node.Children.Add(new HierarchyNode<string>(GetNodeText(first, false)));
+						ContentItem last = Last(sibling.Children, filter);
+						if (last != null)
+						{
+							node.Children.Add(new HierarchyNode<string>("..."));
+							node.Children.Add(new HierarchyNode<string>(GetNodeText(last, false)));
+						}
+					}
+					if (position == CreationPosition.Below)
+						node.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/Img/Ico/png/add.png' alt='add'/></a> New item"));
+
+					root.Children.Add(node);
+					if (position == CreationPosition.After)
+						root.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/Img/Ico/png/add.png' alt='add'/></a> New item"));
+				}
+				else
+					root.Children.Add(new HierarchyNode<string>(GetNodeText(sibling, false)));
+			}
+			return root.ToString((c) => c == null ? "" : "<span>" + c, (p) => "<span class='indent'>", (p) => "</span>", (c) => c == null ? "" : "</span>");
+		}
+
+		private string GetNodeText(ContentItem item, bool isCurrent)
+		{
+			string format = "<a href='{2}' title='{1}'><img src='{0}' alt='{3}'/></a> {1} ";
+			if(isCurrent)
+				format = "<strong>" + format + "</strong>";
+
+			return string.Format(format, ResolveClientUrl(item.IconUrl), item.Title, item.Url, "icon", "current");
+		}
+
+		private static ContentItem Last(IList<ContentItem> children, ItemFilter filter)
+		{
+			for (int i = children.Count - 1; i >= 0; i--)
+			{
+				if (!filter.Match(children[i]))
+					continue;
+
+				return children[i];
+			}
+			return null;
+		}
+
+		private static ContentItem First(IEnumerable<ContentItem> children, ItemFilter filter)
+		{
+			foreach (var child in filter.Pipe(children))
+			{
+				return child;
+			}
+			return null;
+		}
 
         void rptTypes_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {

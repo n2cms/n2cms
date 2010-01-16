@@ -23,7 +23,7 @@ namespace N2.Tests.Workflow
         protected CommandDispatcher dispatcher;
         protected IDefinitionManager definitions;
         protected FakeVersionManager versions;
-        protected ContentItem item;
+        protected ContentItem item, child;
 		protected IBinder<CommandContext> nullBinder = new NullBinder<CommandContext>();
 		protected IValidator<CommandContext> nullValidator = new NullValidator<CommandContext>();
         
@@ -39,8 +39,9 @@ namespace N2.Tests.Workflow
             var security = new SecurityManager(new FakeWebContextWrapper(), new EditSection());
             commands = new CommandFactory(persister, security, versions, editManager, changer);
             dispatcher = new CommandDispatcher(commands);
-            item = CreateOneItem<StatefulItem>(1, "first", null);
-        }
+			item = CreateOneItem<StatefulItem>(1, "first", null);
+			child = CreateOneItem<StatefulItem>(2, "child", item);
+		}
 
         protected abstract CommandBase<CommandContext> CreateCommand(CommandContext context);
 
