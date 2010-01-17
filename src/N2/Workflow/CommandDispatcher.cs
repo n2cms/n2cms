@@ -48,13 +48,6 @@ namespace N2.Workflow
             Execute(commandFactory.GetPublishCommand(context), context);
         }
 
-        /// <summary>Saves and previews the data specified by the provided context.</summary>
-        /// <param name="context">Contains data and information used to for saving and previewing an item.</param>
-        public virtual void Preview(CommandContext context)
-        {
-            Execute(commandFactory.GetPreviewCommand(context), context);
-        }
-
         /// <summary>Saves the data specified by the provided context.</summary>
         /// <param name="context">Contains data and information used to for saving an item.</param>
         public virtual void Save(CommandContext context)

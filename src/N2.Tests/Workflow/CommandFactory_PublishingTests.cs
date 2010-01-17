@@ -75,20 +75,6 @@ namespace N2.Tests.Workflow
             Assert.That(context.Content.VersionOf, Is.Null);
         }
 
-        [TestCase(Interfaces.Viewing, true)]
-        [TestCase(Interfaces.Editing, false)]
-        [TestCase(Interfaces.Editing, true)]
-        public void RedirectsTo_PreviewUrl(string userInterface, bool useVersion)
-        {
-            var version = useVersion ? MakeVersion(item) : item;
-            var context = new CommandContext(version, userInterface, CreatePrincipal("admin"), nullBinder, nullValidator);
-
-            var command = CreateCommand(context);
-            dispatcher.Execute(command, context);
-
-            Assert.That(context.RedirectTo, Is.EqualTo(((INode)item).PreviewUrl));
-        }
-
         [Test]
         public void PreviouslyPublishedVersion_CausesNewVersion_FromView()
         {
@@ -103,18 +89,6 @@ namespace N2.Tests.Workflow
             Assert.That(versions.GetVersionsOf(item).Count, Is.EqualTo(3));
         }
 
-        [Test]
-        public void RedirectsTo_OriginalRedirect_WhenPresent()
-        {
-            var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
-            context.RedirectTo = "/take/me/back";
-
-            var command = CreateCommand(context);
-            dispatcher.Execute(command, context);
-
-            Assert.That(context.RedirectTo, Is.EqualTo("/take/me/back"));
-		}
-
 		[Test]
 		public void CanMoveItem_ToBefore_Item()
 		{
@@ -127,6 +101,20 @@ namespace N2.Tests.Workflow
 			Assert.That(item.Children.Count, Is.EqualTo(2));
 			Assert.That(item.Children[0], Is.EqualTo(child2));
 			Assert.That(item.Children[1], Is.EqualTo(child));
+		}
+
+		[Test]
+		public void Sets_PublishedDate()
+		{
+			var item = new StatefulItem();
+			item.Published = null;
+			var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+
+			var command = CreateCommand(context);
+			dispatcher.Execute(command, context);
+
+			Assert.That(item.Published, Is.Not.Null);
+			Assert.That(item.Published.Value, Is.GreaterThanOrEqualTo(DateTime.Now.AddSeconds(-10)));
 		}
     }
 }

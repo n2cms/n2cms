@@ -9,8 +9,7 @@ namespace N2.Workflow.Commands
     {
         public override void Process(CommandContext state)
         {
-            if (state.Content.Published.HasValue)
-                state.Content.Published = null;
+            state.Content.Published = null;
         }
     }
 }

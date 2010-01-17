@@ -86,33 +86,31 @@ namespace N2.Edit
         protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
-            ctx.RedirectTo = Request["returnUrl"];
 			ctx.Parameters["MoveBefore"] = Request["before"];
 			ctx.Parameters["MoveAfter"] = Request["after"];
 			Engine.Resolve<CommandDispatcher>().Publish(ctx);
 
-            HandleResult(ctx);
+			HandleResult(ctx, Request["returnUrl"], Engine.EditManager.GetPreviewUrl(ctx.Content));
 		}
 
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
-            ctx.RedirectTo = Request["returnUrl"];
-            Engine.Resolve<CommandDispatcher>().Preview(ctx);
+			Engine.Resolve<CommandDispatcher>().Save(ctx);
 
-            HandleResult(ctx);
+            HandleResult(ctx, Request["returnUrl"], Engine.EditManager.GetPreviewUrl(ctx.Content));
 		}
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
-            Url redirectTo = Url.Parse(Engine.EditManager.GetEditExistingItemUrl(ctx.Content));
-            if (!string.IsNullOrEmpty(Request["returnUrl"]))
-                redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
-            ctx.RedirectTo = redirectTo;
             Engine.Resolve<CommandDispatcher>().Save(ctx);
 
-            HandleResult(ctx);
+			Url redirectTo = Engine.EditManager.GetEditExistingItemUrl(ctx.Content);
+			if (!string.IsNullOrEmpty(Request["returnUrl"]))
+				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
+			
+			HandleResult(ctx, redirectTo, Engine.EditManager.GetEditExistingItemUrl(ctx.Content));
         }
 
         protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
@@ -129,7 +127,7 @@ namespace N2.Edit
 
 
 
-        private void HandleResult(CommandContext ctx)
+        private void HandleResult(CommandContext ctx, params string[] redirectSequence)
         {
             if (ctx.Errors.Count > 0)
             {
@@ -141,10 +139,17 @@ namespace N2.Edit
                 }
                 FailValidation(message);
             }
-            else if (!string.IsNullOrEmpty(ctx.RedirectTo))
-            {
-                Refresh(ctx.Content, ctx.RedirectTo);
-            }
+			else if(ctx.ValidationErrors.Count == 0)
+			{
+				foreach (string redirectUrl in redirectSequence)
+				{
+					if (!string.IsNullOrEmpty(redirectUrl))
+					{
+						Refresh(ctx.Content, redirectUrl);
+						return;
+					}
+				}
+			}
         }
 
         void FailValidation(string message)

@@ -16,7 +16,6 @@
 - mvc in sub-app with no ending slash
 - content aspects (ContentPart, children->pages+parts, n2parts)
 - Parts/Pages
-- ShowTitle mvc
 - refactor state to use new concepts
 	- TreePosition
 		- MoveToLocation

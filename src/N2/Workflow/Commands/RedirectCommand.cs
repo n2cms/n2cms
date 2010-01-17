@@ -16,7 +16,7 @@ namespace N2.Workflow.Commands
 
         public override void Process(CommandContext ctx)
         {
-            ctx.RedirectTo = Url;
+            ctx["RedirectTo"] = Url;
         }
     }
 }

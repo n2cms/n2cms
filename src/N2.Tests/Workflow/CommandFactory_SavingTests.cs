@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using N2.Workflow.Commands;
 using N2.Workflow;
+using N2.Tests.Workflow.Items;
 
 namespace N2.Tests.Workflow
 {
@@ -15,5 +16,17 @@ namespace N2.Tests.Workflow
         {
             return commands.GetSaveCommand(context);
         }
+
+		[Test]
+		public void Clears_PublishedDate()
+		{
+			var item = new StatefulItem();
+			var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+
+			var command = CreateCommand(context);
+			dispatcher.Execute(command, context);
+
+			Assert.That(item.Published, Is.Null);
+		}
     }
 }

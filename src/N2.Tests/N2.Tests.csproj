@@ -167,7 +167,6 @@
     <Compile Include="Workflow\CommandFactory_SavingTests.cs" />
     <Compile Include="Engine\ContentAdapterProviderTest.cs" />
     <Compile Include="Engine\ContainerSanityTests.cs" />
-    <Compile Include="Workflow\CommandFactory_PreviewingTests.cs" />
     <Compile Include="Engine\Items\AdapterA.cs" />
     <Compile Include="Engine\Items\AdapterAA.cs" />
     <Compile Include="Engine\Items\AdapterAAA.cs" />

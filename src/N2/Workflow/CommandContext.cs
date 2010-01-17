@@ -27,7 +27,6 @@ namespace N2.Workflow
 
         public ContentItem Content { get; set; }
         public string Interface { get; set; }
-        public string RedirectTo { get; set; }
         public IPrincipal User { get; set; }
 
 		public IDictionary<string, object> Parameters { get; set; }
@@ -39,18 +38,24 @@ namespace N2.Workflow
 
         public override string ToString()
         {
-            return "CommandContext {Data=" + Content + ", Interface=" + Interface + ", RedirectTo=" + RedirectTo + "}";
+            return "CommandContext {Data=" + Content + ", Interface=" + Interface + "}";
         }
 
         public bool ApplyRedirection(HttpResponse response)
         {
-            if(!string.IsNullOrEmpty(RedirectTo))
+            if(this["RedirectTo"] != null)
             {
-                response.Redirect(RedirectTo);
+                response.Redirect((string)this["RedirectTo"]);
                 return true;
             }
             return false;
         }
+
+		public object this[string key]
+		{
+			get { return Parameters.ContainsKey(key) ? Parameters[key] : null; }
+			set { Parameters[key] = value; }
+		}
     }
 
 }
