@@ -12,7 +12,6 @@ namespace N2.Templates.Mvc.Models.Pages
 		SortOrder = 110,
 		IconUrl = "~/Content/Img/calendar_view_day.png")]
 	[RestrictParents(typeof (Calendar))]
-	[MvcConventionTemplate("CalendarItem")]
 	public class Event : AbstractContentPage, ISyndicatable
 	{
 		public Event()

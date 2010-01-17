@@ -50,12 +50,13 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return Container.GetChildren(new TypeFilter(typeof (News)), new CountFilter(0, MaxNews)).Cast<News>(); }
 		}
 
-		protected override string TemplateName
-		{
-			get { return InTheMiddle() ? "NewsList" : "NewsBox"; }
-		}
+		//TODO: implement in controller
+		//protected override string TemplateName
+		//{
+		//    get { return InTheMiddle() ? "NewsList" : "NewsBox"; }
+		//}
 
-		private bool InTheMiddle()
+		public bool IsCentered()
 		{
 			return ZoneName == Zones.Content || ZoneName == Zones.ColumnLeft || ZoneName == Zones.ColumnRight;
 		}

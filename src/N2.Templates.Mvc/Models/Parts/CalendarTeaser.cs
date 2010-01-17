@@ -15,10 +15,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (Calendar) GetDetail("Container"); }
 			set { SetDetail("Container", value); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "CalendarTeaser"; }
-		}
 	}
 }

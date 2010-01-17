@@ -8,9 +8,5 @@ namespace N2.Templates.Mvc.Models.Parts
 	[AllowedZones("Content")]
 	public class Columns : AbstractItem
 	{
-		protected override string TemplateName
-		{
-			get { return "Columns"; }
-		}
 	}
 }

@@ -13,7 +13,6 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("Text Page",
 		Description = "A simple text page. It displays a vertical menu, the content and provides a sidebar column",
 		SortOrder = 20)]
-	[MvcConventionTemplate("Text")]
 	public class TextPage : AbstractContentPage, IStructuralPage, ISyndicatable
 	{
 		[FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]

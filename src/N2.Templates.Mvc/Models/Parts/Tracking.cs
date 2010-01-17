@@ -31,10 +31,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (string) (GetDetail("UACCT") ?? string.Empty); }
 			set { SetDetail("UACCT", value, string.Empty); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "UrchinTracking"; }
-		}
 	}
 }

@@ -129,8 +129,8 @@
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CalendarTeaserController.cs" />
     <Compile Include="Controllers\CommentInputController.cs" />
-    <Compile Include="Controllers\DefaultPageController.cs" />
-    <Compile Include="Controllers\DefaultPartController.cs" />
+    <Compile Include="Controllers\SharedPagesController.cs" />
+    <Compile Include="Controllers\SharedPartsController.cs" />
     <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\ImageGalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -396,57 +396,42 @@
     <Content Include="Upload\thorn.jpg" />
     <Content Include="Views\Navigation\TopMenu.ascx" />
     <Content Include="Views\Feed\Index.aspx" />
-    <Content Include="Views\Shared\BoxedText.ascx" />
-    <Content Include="Views\Shared\CalendarTeaser.ascx" />
-    <Content Include="Views\Shared\Columns.ascx" />
-    <Content Include="Views\Shared\Comment.ascx" />
-    <Content Include="Views\Shared\CommentInput.ascx" />
-    <Content Include="Views\Shared\CommentList.ascx" />
-    <Content Include="Views\Shared\Login.ascx" />
-    <Content Include="Views\Shared\NewsBox.ascx" />
-    <Content Include="Views\Shared\NewsList.ascx" />
-    <Content Include="Views\Shared\Poll.ascx" />
-    <Content Include="Views\Shared\RssAggregator.ascx" />
-    <Content Include="Views\Shared\SocialBookmarks.ascx" />
-    <Content Include="Views\Shared\Subscribe.ascx" />
-    <Content Include="Views\Shared\Teaser.ascx" />
-    <Content Include="Views\Shared\Text.ascx" />
-    <Content Include="Views\Shared\Top.ascx" />
+    <Content Include="Views\SharedParts\BoxedTextItem.ascx" />
+    <Content Include="Views\CalendarTeaser\Index.ascx" />
+    <Content Include="Views\SharedParts\Columns.ascx" />
+    <Content Include="Views\SharedParts\Comment.ascx" />
+    <Content Include="Views\CommentInput\Index.ascx" />
+    <Content Include="Views\SharedParts\CommentList.ascx" />
+    <Content Include="Views\SharedParts\Login.ascx" />
+    <Content Include="Views\NewsList\BoxedList.ascx" />
+    <Content Include="Views\NewsList\List.ascx" />
+    <Content Include="Views\SharedParts\Poll.ascx" />
+    <Content Include="Views\RssAggregator\Index.ascx" />
+    <Content Include="Views\SocialBookmarks\Index.ascx" />
+    <Content Include="Views\SharedParts\Subscribe.ascx" />
+    <Content Include="Views\SharedParts\Teaser.ascx" />
+    <Content Include="Views\SharedParts\TextItem.ascx" />
+    <Content Include="Views\SharedParts\Top.ascx" />
     <Content Include="Views\Navigation\SubMenu.ascx" />
     <Content Include="Views\Shared\Top+SubMenu.Master" />
-    <Content Include="Views\Start\Index.aspx" />
-    <Content Include="Views\Text\Index.aspx" />
+    <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Views\SharedPages\TextPage.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\CommentInput.ascx.resx">
+    <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\Poll.ascx.sv.resx">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\Form.ascx.it.resx">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\Form.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\Form.ascx.sv.resx">
+    <Content Include="Views\Form\App_LocalResources\Index.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Navigation\Breadcrumb.ascx" />
-    <Content Include="Views\NewsItem\Index.aspx" />
-    <Content Include="Views\NewsList\Index.aspx" />
-    <Content Include="Views\Shared\App_LocalResources\Poll.ascx.resx">
+    <Content Include="Views\SharedPages\News.aspx" />
+    <Content Include="Views\SharedPages\NewsContainer.aspx" />
+    <Content Include="Views\SharedParts\App_LocalResources\Poll.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
@@ -471,23 +456,22 @@
       <LastGenOutput>Zones.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\CalendarItem\Index.aspx" />
-    <Content Include="Views\CalendarList\Index.aspx" />
-    <Content Include="Views\FaqList\Index.aspx" />
-    <Content Include="Views\Form\Index.aspx" />
+    <Content Include="Views\SharedPages\Event.aspx" />
+    <Content Include="Views\Calendar\Index.aspx" />
+    <Content Include="Views\SharedPages\FaqList.aspx" />
     <Content Include="Views\ImageGallery\Index.aspx" />
     <Content Include="Views\Search\Index.aspx" />
-    <Content Include="Views\Shared\Register.ascx" />
-    <Content Include="Views\Shared\Faq.ascx" />
-    <Content Include="Views\Shared\Form.ascx" />
-    <Content Include="Views\SiteMap\Index.aspx" />
+    <Content Include="Views\UserRegistration\Index.ascx" />
+    <Content Include="Views\SharedParts\Faq.ascx" />
+    <Content Include="Views\Form\Index.ascx" />
+    <Content Include="Views\SharedPages\SiteMap.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\App_LocalResources\CalendarTeaser.ascx.resx">
+    <Content Include="Views\CalendarTeaser\App_LocalResources\Index.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Shared\Bubble.ascx" />
-    <Content Include="Views\Shared\UrchinTracking.ascx" />
+    <Content Include="Views\SharedParts\BubbleItem.ascx" />
+    <Content Include="Views\SharedParts\UrchinTracking.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\Corporate\amazed.gif" />
@@ -544,9 +528,15 @@
     <Content Include="App_Themes\TomatoTabs\SidebarRightBg.gif" />
     <Content Include="App_Themes\TomatoTabs\Style.css" />
     <Content Include="App_Themes\TomatoTabs\TopBg.gif" />
-    <Content Include="Views\CalendarList\App_LocalResources\Index.aspx.resx">
+    <Content Include="Views\Calendar\App_LocalResources\Index.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\SharedPages\FormPage.aspx" />
+    <Content Include="Views\Login\Index.ascx" />
+    <Content Include="Views\SharedPages\GalleryItem.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Shared\App_LocalResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

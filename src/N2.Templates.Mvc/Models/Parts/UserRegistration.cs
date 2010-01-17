@@ -63,10 +63,5 @@ namespace N2.Templates.Mvc.Models.Parts
 		{
 			get { return GetDetailCollection("Roles", true); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "Register"; }
-		}
 	}
 }

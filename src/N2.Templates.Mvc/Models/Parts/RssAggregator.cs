@@ -34,10 +34,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (int) (GetDetail("MaxCount") ?? 5); }
 			set { SetDetail("MaxCount", value, 5); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "RssAggregator"; }
-		}
 	}
 }

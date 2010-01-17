@@ -73,10 +73,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (string) (GetDetail("MailBody") ?? string.Empty); }
 			set { SetDetail("MailBody", value, string.Empty); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "Form"; }
-		}
 	}
 }

@@ -17,7 +17,6 @@ namespace N2.Templates.Mvc.Models.Pages
 	[RestrictParents(typeof (IStructuralPage))]
 	[WithEditableTitle("Title", 10),
 	 WithEditableName("Name", 20)]
-	[MvcConventionTemplate("Feed")]
 	public class RssFeed : AbstractContentPage, IFeed, INode
 	{
 		[EditableLink("Feed root", 90, ContainerName = Tabs.Content)]

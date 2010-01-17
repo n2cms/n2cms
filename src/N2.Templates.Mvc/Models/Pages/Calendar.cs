@@ -11,7 +11,6 @@ namespace N2.Templates.Mvc.Models.Pages
 		Description = "A list of recent events.", 
 		SortOrder = 120)]
 	[RestrictParents(typeof (IStructuralPage))]
-	[MvcConventionTemplate("CalendarList")]
 	public class Calendar : AbstractContentPage
 	{
 		public virtual IEnumerable<Event> GetEvents()

@@ -14,9 +14,5 @@ namespace N2.Templates.Mvc.Models.Parts
 	[ItemAuthorizedRoles("Administrators")]
 	public class ControlPanel : SidebarItem
 	{
-		protected override string TemplateName
-		{
-			get { return "ControlPanel"; }
-		}
 	}
 }

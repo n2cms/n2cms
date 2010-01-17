@@ -47,10 +47,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (string) (GetDetail("LogoLinkUrl") ?? "/"); }
 			set { SetDetail("LogoLinkUrl", value, "/"); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "Top"; }
-		}
 	}
 }

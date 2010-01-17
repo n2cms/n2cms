@@ -38,11 +38,6 @@ namespace N2.Templates.Mvc.Items
 			                       new ZoneFilter(zoneName));
 		}
 
-		public override string TemplateUrl
-		{
-			get { return "~/Views/" + GetType().Name + "/Index.aspx"; }
-		}
-
 		/// <summary>Gets the item associated with the item container.</summary>
 		public ContentItem CurrentItem
 		{

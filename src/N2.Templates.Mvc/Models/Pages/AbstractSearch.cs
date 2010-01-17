@@ -8,7 +8,6 @@ using N2.Definitions;
 namespace N2.Templates.Mvc.Models.Pages
 {
 	[RestrictParents(typeof (IStructuralPage))]
-	[MvcConventionTemplate("Search")]
 	public abstract class AbstractSearch : AbstractContentPage
 	{
 		public abstract ICollection<ContentItem> Search(string query, int pageSize, int pageNumber, out int totalRecords);

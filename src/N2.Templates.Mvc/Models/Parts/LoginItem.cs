@@ -58,10 +58,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (ContentItem) GetDetail("LoginPage"); }
 			set { SetDetail("LoginPage", value); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "Login"; }
-		}
 	}
 }

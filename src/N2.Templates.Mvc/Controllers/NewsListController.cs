@@ -7,6 +7,12 @@ namespace N2.Templates.Mvc.Controllers
 	[Controls(typeof(NewsList))]
 	public class NewsListController : ContentController<NewsList>
 	{
-
+		public override System.Web.Mvc.ActionResult Index()
+		{
+			if (CurrentItem.IsCentered())
+				return View("List");
+			else
+				return View("BoxedList");
+		}
 	}
 }

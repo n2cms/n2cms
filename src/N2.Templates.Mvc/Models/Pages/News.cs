@@ -9,7 +9,6 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("News", Description = "A news page.", SortOrder = 155,
 		IconUrl = "~/Content/Img/newspaper.png")]
 	[RestrictParents(typeof (NewsContainer))]
-	[MvcConventionTemplate("NewsItem")]
 	public class News : AbstractContentPage, ISyndicatable
 	{
 		public News()

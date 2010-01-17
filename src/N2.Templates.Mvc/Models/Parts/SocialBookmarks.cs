@@ -26,10 +26,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (bool) (GetDetail("ShowText") ?? true); }
 			set { SetDetail("ShowText", value, true); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "SocialBookmarks"; }
-		}
 	}
 }

@@ -31,10 +31,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (string) GetDetail("LinkUrl"); }
 			set { SetDetail("LinkUrl", value, string.Empty); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "Teaser"; }
-		}
 	}
 }

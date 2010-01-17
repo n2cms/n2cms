@@ -6,9 +6,14 @@ using N2.Web.Mvc;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[Controls(typeof(StartPage))]
+	[Controls(typeof(LanguageRoot))]
 	public class HomeController : TemplatesControllerBase<StartPage>
 	{
+		public override ActionResult Index()
+		{
+			return View(CurrentItem);
+		}
+
 		public ActionResult NotFound()
 		{
 			Response.Status = "404 Not Found";

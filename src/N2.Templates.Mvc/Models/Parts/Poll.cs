@@ -64,10 +64,5 @@ namespace N2.Templates.Mvc.Models.Parts
 		{
 			return Question != null && request["p" + Question.ID] != null;
 		}
-
-		protected override string TemplateName
-		{
-			get { return "Poll"; }
-		}
 	}
 }

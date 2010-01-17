@@ -1,4 +1,5 @@
-﻿- reorganized mvc Items/Items and Items/Pages into Models/Pages and Models/Parts (breaking change)
+﻿- reorganized mvc views into SharedPages/SharedPages + MVC convention folders (breaking change)
+- reorganized mvc Items/Items and Items/Pages into Models/Pages and Models/Parts (breaking change)
 - improved (and fixed) create new item at position
 - added Find.EnumerateSiblings(...)
 - applied jronaldi's patch #4931: Top menu is not multi-lingual

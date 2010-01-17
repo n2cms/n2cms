@@ -21,10 +21,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return GetDetail("SelectedFeed") as RssFeed; }
 			set { SetDetail("SelectedFeed", value); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "Subscribe"; }
-		}
 	}
 }

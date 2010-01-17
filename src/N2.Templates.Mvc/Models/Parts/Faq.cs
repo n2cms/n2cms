@@ -28,10 +28,5 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return (string) (GetDetail("Answer") ?? string.Empty); }
 			set { SetDetail("Answer", value, string.Empty); }
 		}
-
-		protected override string TemplateName
-		{
-			get { return "Faq"; }
-		}
 	}
 }

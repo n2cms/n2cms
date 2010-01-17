@@ -10,7 +10,6 @@ namespace N2.Templates.Mvc.Models.Pages
 		SortOrder = 240,
 		IconUrl = "~/Content/Img/report.png")]
 	[TabContainer(FormPage.FormTab, "Form", Tabs.ContentIndex + 2)]
-	[MvcConventionTemplate("Form")]
 	public class FormPage : AbstractContentPage
 	{
 		public const string FormTab = "formPanel";

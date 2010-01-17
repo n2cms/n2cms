@@ -51,7 +51,7 @@ namespace N2.Web.Mvc
 
 			RegisterAdditionalComponents(engine);
 
-			ViewEngines.Engines.Insert(0, new N2ViewEngine(ViewEngines.Engines));
+			//ViewEngines.Engines.Insert(0, new N2ViewEngine(ViewEngines.Engines));
 
 			ControllerBuilder.Current.SetControllerFactory(new N2ControllerFactory(engine));
 
