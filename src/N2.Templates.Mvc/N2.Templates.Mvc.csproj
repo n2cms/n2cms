@@ -471,7 +471,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\SharedParts\BubbleItem.ascx" />
-    <Content Include="Views\SharedParts\UrchinTracking.ascx" />
+    <Content Include="Views\Tracking\Index.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\Corporate\amazed.gif" />
