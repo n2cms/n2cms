@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using System.Text.RegularExpressions;
 using N2.Web.UI.WebControls;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -13,21 +14,18 @@ namespace N2.Edit
 		{
 		}
 
-		public PluginContext(ContentItem item, ContentItem memorizedItem, ControlPanelState state)
-			: this(item, state)
-		{
-			Memorized = memorizedItem;
-		}
-
-		public PluginContext(ContentItem selected, ControlPanelState state)
+		public PluginContext(ContentItem selected, ContentItem memorizedItem, ControlPanelState state, string managementInterfaceUrl)
 		{
 			State = state;
 			Selected = selected;
+			Memorized = memorizedItem;
+			ManagementInterfaceUrl = managementInterfaceUrl;
 		}
 
 		public ControlPanelState State { get; set;}
 		public ContentItem Selected { get; set; }
 		public ContentItem Memorized { get; set; }
+		public string ManagementInterfaceUrl { get; set; }
 		
 		static Regex expressionExpression = new Regex("{(?<expr>[^})]+)}");
 
@@ -38,6 +36,12 @@ namespace N2.Edit
 				.Replace("{action}", "{Action}");
 
 			return expressionExpression.Replace(format, delegate(Match m) { return Evaluate(m.Groups["expr"].Value, urlEncode); });
+		}
+
+		public string Rebase(string url)
+		{
+			string rebasedUrl = Url.Combine(ManagementInterfaceUrl, url);
+			return rebasedUrl;
 		}
 
 		string Evaluate(string expression, bool urlEncode)

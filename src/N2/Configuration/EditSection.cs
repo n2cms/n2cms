@@ -65,7 +65,14 @@ namespace N2.Configuration
         {
             get { return (string)base["editItemUrl"]; }
             set { base["editItemUrl"] = value; }
-        }
+		}
+
+		[ConfigurationProperty("managementInterfaceUrl", DefaultValue = "~/N2/")]
+		public string ManagementInterfaceUrl
+		{
+			get { return (string)base["managementInterfaceUrl"]; }
+			set { base["managementInterfaceUrl"] = value; }
+		}
 
         [ConfigurationProperty("editInterfaceUrl", DefaultValue = "~/N2/Content/")]
         public string EditInterfaceUrl

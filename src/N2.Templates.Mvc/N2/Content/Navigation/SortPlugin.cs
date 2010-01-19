@@ -23,11 +23,11 @@ namespace N2.Edit.Navigation
 			div.Attributes["class"] = "sort command";
 			container.Controls.Add(div);
 
-            HtmlAnchor up = AddSortAnchor(div, context.Format("Navigation/sortUp.ashx?selected={Selected.Path}", true), "~/N2/Resources/Img/Ico/png/bullet_arrow_up.png", "up");
-			RegisterToolbarUrl(container, up.ClientID, "Navigation/sortUp.ashx?selected={selected}");
+			HtmlAnchor up = AddSortAnchor(div, context.Rebase(context.Format("Navigation/sortUp.ashx?selected={Selected.Path}", true)), "~/N2/Resources/Img/Ico/png/bullet_arrow_up.png", "up");
+			RegisterToolbarUrl(container, up.ClientID, context.Rebase("Content/Navigation/sortUp.ashx?selected={selected}"));
 
-            HtmlAnchor down = AddSortAnchor(div, context.Format("Navigation/sortDown.ashx?selected={Selected.Path}", true), "~/N2/Resources/Img/Ico/png/bullet_arrow_down.png", "down");
-			RegisterToolbarUrl(container, down.ClientID, "Navigation/sortDown.ashx?selected={selected}");
+			HtmlAnchor down = AddSortAnchor(div, context.Rebase(context.Format("Navigation/sortDown.ashx?selected={Selected.Path}", true)), "~/N2/Resources/Img/Ico/png/bullet_arrow_down.png", "down");
+			RegisterToolbarUrl(container, down.ClientID, context.Rebase("Content/Navigation/sortDown.ashx?selected={selected}"));
 
 			return div;
 		}

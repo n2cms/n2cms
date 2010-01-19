@@ -5,7 +5,7 @@ using System.Web.UI;
 
 namespace N2.Edit.Settings
 {
-    [ToolbarPlugin("SETTINGS", "settings", "settings/default.aspx?selected={selected}", ToolbarArea.Options, "navigation", "~/N2/Resources/Img/Ico/png/wrench.png", -10, ToolTip = "settings", GlobalResourceClassName = "Toolbar")]
+	[ToolbarPlugin("SETTINGS", "settings", "Content/Settings/default.aspx?selected={selected}", ToolbarArea.Options, "navigation", "~/N2/Resources/Img/Ico/png/wrench.png", -10, ToolTip = "settings", GlobalResourceClassName = "Toolbar")]
 	public partial class Default : Web.EditPage
 	{
 		protected override void OnInit(EventArgs e)

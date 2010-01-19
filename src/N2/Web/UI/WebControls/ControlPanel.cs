@@ -203,7 +203,7 @@ window.n2ddcp = new n2DragDrop();
 
 			foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 			{
-				plugin.AddTo(pluginPanel, new PluginContext(CurrentItem, state));
+				plugin.AddTo(pluginPanel, new PluginContext(CurrentItem, null, state, Engine.EditManager.GetManagementInterfaceUrl()));
 			}
 		}
 

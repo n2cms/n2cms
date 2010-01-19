@@ -76,7 +76,7 @@ namespace N2.Edit
 		{
 			HyperLink a = AddAnchor(container, context);
 
-			RegisterToolbarUrl(container, a.ClientID, Url.ToAbsolute(UrlFormat));
+			RegisterToolbarUrl(container, a.ClientID, context.Rebase(UrlFormat));
 
 			return a;
 		}
@@ -95,7 +95,7 @@ namespace N2.Edit
 
 			HyperLink a = new HyperLink();
 			a.ID = "h" + Name;
-			a.NavigateUrl = context.Format(UrlFormat, true);
+			a.NavigateUrl = context.Rebase(context.Format(UrlFormat, true));
 			a.SkinID = "ToolBarLink_" + Name;
 
 			a.Target = Target;

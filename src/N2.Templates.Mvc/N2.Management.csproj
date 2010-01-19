@@ -73,6 +73,7 @@
     <Content Include="N2\Content\New.aspx" />
     <Content Include="N2\Web.config" />
     <None Include="N2\Content\Dependencies.aspx" />
+    <Content Include="N2\Top.master" />
     <Content Include="N2\Resources\KeepAlive\Ping.ashx" />
     <Content Include="N2\Resources\KeepAlive\Web.config" />
     <Content Include="Web.config" />
@@ -180,12 +181,12 @@
     <Compile Include="N2\Content\FileSystem\Items\AbstractDirectory.cs" />
     <Compile Include="N2\Content\FileSystem\Items\AbstractNode.cs" />
     <Compile Include="N2\Content\FileSystem\Items\RootDirectory.cs" />
-    <Compile Include="N2\Content\Framed.Master.cs">
-      <DependentUpon>Framed.Master</DependentUpon>
+    <Compile Include="N2\Content\Framed.master.cs">
+      <DependentUpon>Framed.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="N2\Content\Framed.Master.designer.cs">
-      <DependentUpon>Framed.Master</DependentUpon>
+    <Compile Include="N2\Content\Framed.master.designer.cs">
+      <DependentUpon>Framed.master</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Globalization\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -311,6 +312,13 @@
     </Compile>
     <Compile Include="N2\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Top.master.cs">
+      <DependentUpon>Top.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Top.master.designer.cs">
+      <DependentUpon>Top.master</DependentUpon>
     </Compile>
     <Compile Include="N2\Users\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
@@ -776,7 +784,7 @@
     <Content Include="N2\Content\App_LocalResources\ItemInfo.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="N2\Content\Framed.Master" />
+    <Content Include="N2\Content\Framed.master" />
     <Content Include="N2\Content\Navigation\ContextMenu.ascx" />
     <Content Include="N2\Content\Navigation\Search.aspx" />
     <Content Include="N2\Content\Navigation\Tree.aspx" />

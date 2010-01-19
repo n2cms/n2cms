@@ -2,10 +2,10 @@ using System;
 
 namespace N2.Edit.Navigation
 {
-    [ToolbarPlugin("", "tree", "navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/N2/Resources/Img/Ico/png/sitemap_color.png", -30, 
-        ToolTip = "hierarchical navigation", 
-        GlobalResourceClassName = "Toolbar", 
-        SortOrder = -1)]
+	//[ToolbarPlugin("", "tree", "Content/Navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/N2/Resources/Img/Ico/png/sitemap_color.png", -30, 
+	//    ToolTip = "hierarchical navigation", 
+	//    GlobalResourceClassName = "Toolbar", 
+	//    SortOrder = -1)]
 	public partial class Tree : NavigationPage
 	{
 		protected override void OnInit(EventArgs e)

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace N2.Edit.Export
 {
-    [ToolbarPlugin("EXPORT", "exportimport", "~/N2/Content/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/Img/Ico/png/package_come_and_go.png", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
+    [ToolbarPlugin("EXPORT", "exportimport", "Content/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/Img/Ico/png/package_come_and_go.png", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage
 	{
 		protected Control tpExport;

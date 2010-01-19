@@ -29,7 +29,7 @@ namespace N2.Edit.Web.UI.Controls
                 command.Attributes["class"] = "item";
                 Controls.Add(command);
 
-                plugin.AddTo(command, new PluginContext(Selection.SelectedItem, ControlPanelState.Visible));
+				plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
             }
         }
 

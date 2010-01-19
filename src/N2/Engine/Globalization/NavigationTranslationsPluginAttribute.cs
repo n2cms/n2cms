@@ -40,7 +40,7 @@ namespace N2.Engine.Globalization
                 HyperLink h = new HyperLink();
                 h.ID = language.LanguageCode.Replace('-', '_').Replace(' ', '_');
                 h.Target = Targets.Preview;
-                h.NavigateUrl = context.Format(url, true);
+				h.NavigateUrl = context.Rebase(context.Format(url, true));
                 h.CssClass = "language";
                 h.ToolTip = language.LanguageTitle;
                 h.Text = string.Format("<img src='{0}' alt=''/>", N2.Web.Url.ToAbsolute(language.FlagUrl));

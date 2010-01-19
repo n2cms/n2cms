@@ -662,5 +662,33 @@ namespace N2.Web
         {
             return ToString().Replace(Amp, "&amp;");
         }
-    }
+
+		/// <summary>Mimics the behavior of VirtualPathUtility.Combine with less restrictions and minimal dependencies.</summary>
+		/// <param name="url1">First part</param>
+		/// <param name="url2">Last part</param>
+		/// <returns>The combined URL.</returns>
+		public static string Combine(string url1, string url2)
+		{
+			if (string.IsNullOrEmpty(url2))
+				return ToAbsolute(url1);
+			if(string.IsNullOrEmpty(url1))
+				return ToAbsolute(url2);
+
+			if (url2.StartsWith("/"))
+				return url2;
+			if (url2.StartsWith("~"))
+				return ToAbsolute(url2);
+			if (url2.StartsWith("{"))
+				return url2;
+			if (url2.IndexOf(':') >= 0)
+				return url2;
+
+			url1 = RemoveExtension(url1);
+
+			Url first = url1;
+			Url second = url2;
+
+			return first.AppendSegment(second.Path).AppendQuery(second.Query);
+		}
+	}
 }

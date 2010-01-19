@@ -36,6 +36,7 @@ namespace N2.Edit
         readonly NavigationSettings settings;
 		string deleteItemUrl = "~/N2/Content/delete.aspx";
 		string editInterfaceUrl = "~/N2/Content/";
+		string managementInterfaceUrl = "~/N2/";
 		string editItemUrl = "~/N2/Content/edit.aspx";
 		string editPreviewUrlFormat = "{0}";
 		string editTreeUrl = "~/N2/Content/Navigation/Tree.aspx";
@@ -46,28 +47,23 @@ namespace N2.Edit
 		string newItemUrl = "~/N2/Content/new.aspx";
 		readonly IList<string> uploadFolders = new List<string>();
 
-        [Obsolete]
-		private EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner, 
-						   ISecurityManager securityManager, IPluginFinder pluginFinder, StateChanger changer, NavigationSettings settings)
+		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
+						   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
+                           StateChanger changer, EditSection config)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
 			this.versioner = versioner;
 			this.securityManager = securityManager;
 			this.pluginFinder = pluginFinder;
-            this.stateChanger = changer;
-            this.settings = settings;
-        }
+			this.stateChanger = changer;
+			this.settings = settings;
 
-		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
-						   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
-                           StateChanger changer, EditSection config)
-			: this(definitions, persister, versioner, securityManager, pluginFinder, changer, settings)
-		{
 			EditTheme = config.EditTheme;
 			EditTreeUrl = config.EditTreeUrl;
 			EditPreviewUrlFormat = config.EditPreviewUrlFormat;
 			EditItemUrl = config.EditItemUrl;
+			ManagementInterfaceUrl = config.ManagementInterfaceUrl;
 			EditInterfaceUrl = config.EditInterfaceUrl;
 			NewItemUrl = config.NewItemUrl;
 			DeleteItemUrl = config.DeleteItemUrl;
@@ -86,6 +82,12 @@ namespace N2.Edit
 		{
 			get { return editInterfaceUrl; }
 			set { editInterfaceUrl = value; }
+		}
+
+		public string ManagementInterfaceUrl
+		{
+			get { return managementInterfaceUrl; }
+			set { managementInterfaceUrl = value; }
 		}
 
 		public string EditTreeUrl
@@ -130,6 +132,8 @@ namespace N2.Edit
 
 		/// <summary>Number of item versions to keep.</summary>
 		public int MaximumNumberOfVersions { get; set; }
+
+
 
 		#region IEditManager Members
 
@@ -274,6 +278,13 @@ namespace N2.Edit
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
+		/// <returns>The url to the edit interface.</returns>
+		public string GetManagementInterfaceUrl()
+		{
+			return Url.ToAbsolute(ManagementInterfaceUrl);
+		}
+
+		/// <summary>Gets the url to the edit interface.</summary>
 		/// <param name="selectedItem">The item to select in edit mode.</param>
 		/// <returns>The url to the edit interface.</returns>
 		public string GetEditInterfaceUrl(ContentItem selectedItem)
@@ -414,6 +425,8 @@ namespace N2.Edit
 		}
 
 		#endregion
+
+
 
 		/// <summary>
 		/// Event that is triggered when page is saved/published

@@ -33,13 +33,11 @@ namespace N2.Edit
 		Preview = 2,
 		/// <summary>Both panes. Used when referencing multiple panes in user interfaces.</summary>
 		Both = 3,
-		/// <summary>
-		/// The central area above the preview area
-		/// </summary>
+		/// <summary>The central area above the preview area.</summary>
 		Operations = 4,
-		/// <summary>
-		/// Before the search box, above the tool bar.
-		/// </summary>
-		Options = 8
+		/// <summary>Before the search box, above the tool bar.</summary>
+		Options = 8,
+		/// <summary>Displayed across all management interfaces.</summary>
+		Management = 16
 	}
 }

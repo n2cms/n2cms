@@ -85,7 +85,12 @@ namespace N2.Edit
 
         /// <summary>Gets the url to the edit interface.</summary>
         /// <returns>The url to the edit interface.</returns>
-        string GetEditInterfaceUrl();
+		string GetEditInterfaceUrl();
+
+		/// <summary>Gets the url to the management interface with a certain item selected.</summary>
+		/// <param name="selectedItem">The item to select in edit mode.</param>
+		/// <returns>The url to the edit interface.</returns>
+		string GetManagementInterfaceUrl();
 
 		/// <summary>Gets the url to the select type of item to create.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>

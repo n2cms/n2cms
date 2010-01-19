@@ -1,17 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Management.N2.Default" %>
+﻿<%@ Page MasterPageFile="~/N2/Top.Master" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Management.N2.Default" %>
+<%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-		<a href="..">Site</a>
-		<a href="Content">Content</a>
-    </div>
-    </form>
-</body>
-</html>
+<asp:Content ContentPlaceHolderID="Content" runat="server">
+	<div class="subbar cf">
+	</div>
+	
+	Home!
+</asp:Content>

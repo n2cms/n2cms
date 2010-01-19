@@ -11,12 +11,12 @@ using N2.Persistence;
 
 namespace N2.Edit
 {
-    [NavigationLinkPlugin("Edit", "edit", "../edit.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/Img/ico/png/page_edit.png", 20, 
+	[NavigationLinkPlugin("Edit", "edit", "Content/edit.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/Img/ico/png/page_edit.png", 20, 
 		GlobalResourceClassName = "Navigation")]
-    [ToolbarPlugin("EDIT", "edit", "edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/Img/Ico/png/page_edit.png", 50, ToolTip = "edit", 
+	[ToolbarPlugin("EDIT", "edit", "Content/edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/Img/Ico/png/page_edit.png", 50, ToolTip = "edit", 
 		GlobalResourceClassName = "Toolbar")]
-    [ControlPanelLink("cpEdit", "~/N2/Resources/Img/ico/png/page_edit.png", "~/N2/Content/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
-    [ControlPanelLink("cpEditPreview", "~/N2/Resources/Img/ico/png/page_edit.png", "~/N2/Content/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
+    [ControlPanelLink("cpEdit", "~/N2/Resources/Img/ico/png/page_edit.png", "Content/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
+    [ControlPanelLink("cpEditPreview", "~/N2/Resources/Img/ico/png/page_edit.png", "Content/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, 
 		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
 	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30, 
@@ -209,7 +209,7 @@ namespace N2.Edit
 		{
 			foreach(EditToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-                plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, ControlPanelState.Visible));
+                plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
 			}
 		}
 

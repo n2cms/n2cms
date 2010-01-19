@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using N2.Web;
+using System.Web;
 
 namespace N2.Tests.Web
 {
@@ -826,6 +827,27 @@ namespace N2.Tests.Web
 		{
 			Url u = "/";
 			Assert.That(u.IsAbsolute, Is.False);
+		}
+
+		[TestCase("", "", "")]
+		[TestCase("", "/", "/")]
+		[TestCase("/", "", "/")]
+		[TestCase("/", "/", "/")]
+		[TestCase("", "hello", "hello")]
+		[TestCase("/", "/hello", "/hello")]
+		[TestCase("/hello", "hello", "/hello/hello")]
+		[TestCase("/hello", "/hello", "/hello")]
+		[TestCase("/hello.aspx", "hello.aspx", "/hello/hello.aspx")]
+		[TestCase("/hello", "hello?one=1", "/hello/hello?one=1")]
+		[TestCase("/hello?one=1", "hello", "/hello/hello?one=1")]
+		[TestCase("/hello?one=1", "hello?two=2", "/hello/hello?one=1&two=2")]
+		[TestCase("/hello?one=1&two=2", "hello?three=3&four=4", "/hello/hello?one=1&two=2&three=3&four=4")]
+		[TestCase("/n2/", "{selected}", "{selected}")]
+		[TestCase("/n2/", "javascript:alert(1);", "javascript:alert(1);")]
+		public void Combine1(string url1, string url2, string expected)
+		{
+			string result = Url.Combine(url1, url2);
+			Assert.That(result, Is.EqualTo(expected), "'" + url1 + "' + '" + url2 + "' != '" + expected + "'");
 		}
     }
 }

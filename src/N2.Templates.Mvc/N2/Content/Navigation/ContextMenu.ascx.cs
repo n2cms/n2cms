@@ -9,9 +9,9 @@ namespace N2.Edit.Navigation
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			foreach (NavigationPluginAttribute a in N2.Context.Current.EditManager.GetPlugins<NavigationPluginAttribute>(Page.User))
+			foreach (NavigationPluginAttribute a in Engine.EditManager.GetPlugins<NavigationPluginAttribute>(Page.User))
 			{
-				a.AddTo(plhMenuItems, new PluginContext(SelectedItem, ControlPanelState.Visible));
+				a.AddTo(plhMenuItems, new PluginContext(Selection.SelectedItem, null, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
 			}
 			base.OnInit(e);
 		}
