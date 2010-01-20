@@ -25,7 +25,7 @@ namespace N2.Edit.ItemSelection
 			if (!IsPostBack)
 			{
 				hlFiles.Visible = AllModesAvailable;
-				hlFiles.NavigateUrl = AppendQueryString("../Files/Default.aspx");
+				hlFiles.NavigateUrl = AppendQueryString("../../Files/Default.aspx");
 			}
 			siteTreeView.RootNode = RootNode;
             siteTreeView.SelectedItem = Selection.SelectedItem;
