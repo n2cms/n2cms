@@ -2,20 +2,63 @@
 using System.IO;
 using N2.Collections;
 using System.Diagnostics;
+using System.Web;
+using System;
+using Management.N2.Files;
 
 namespace N2.Edit.FileSystem.Items
 {
     public abstract class AbstractDirectory : AbstractNode
     {
-        public IList<File> GetFiles()
+		public override ContentItem GetChild(string childName)
+		{
+			string name = childName.Trim('/');
+			foreach (var file in GetFiles())
+			{
+				if (file.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+					return file;
+
+				foreach(var file2 in file.Children)
+				{
+					if (file2.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+						return file2;
+				}
+			}
+			return base.GetChild(childName);
+		}
+
+		public IList<File> GetFiles()
         {
             try
             {
-				List<File> files = new List<File>();
-				foreach(FileData file in FileSystem.GetFiles(Url))
+				IList<File> files = new List<File>();
+
+				string lastFileName = "";
+				string lastFileExtension = "";
+				File lastFile = null;
+				foreach (var fd in FileSystem.GetFiles(Url))
 				{
-					files.Add(CreateFile(file));
+					var file = CreateFile(fd);
+					if (lastFile != null
+						&& file.Name.StartsWith(lastFileName + ImagesUtility.Separator)
+						&& file.Name.EndsWith(lastFileExtension))
+					{
+						lastFile.Add(file);
+					}
+					else
+					{
+						files.Add(file);
+
+						int dotIndex = file.Name.LastIndexOf('.');
+						if (dotIndex >= 0)
+						{
+							lastFileName = file.Name.Substring(0, dotIndex);
+							lastFileExtension = file.Name.Substring(dotIndex);
+							lastFile = file;
+						}
+					}
 				}
+
             	return files;
             }
             catch (DirectoryNotFoundException ex)
@@ -23,13 +66,13 @@ namespace N2.Edit.FileSystem.Items
                 Trace.TraceWarning(ex.ToString());
                 return new List<File>();
             }
-        }
+		}
 
-        public IList<Directory> GetDirectories()
+		public IList<Directory> GetDirectories()
         {
             try
             {
-				List<Directory> directories = new List<Directory>();
+				IList<Directory> directories = new List<Directory>();
 				foreach(DirectoryData dir in FileSystem.GetDirectories(Url))
 				{
 					directories.Add(CreateDirectory(dir));

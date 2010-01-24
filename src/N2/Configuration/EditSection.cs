@@ -142,6 +142,14 @@ namespace N2.Configuration
 			set { base["versions"] = value; }
 		}
 
+		/// <summary>Information about images.</summary>
+		[ConfigurationProperty("images")]
+		public ImagesElement Images
+		{
+			get { return (ImagesElement)base["images"]; }
+			set { base["images"] = value; }
+		}
+
 		// deprecated
 
 		[Obsolete("Use Versions.Enabled instead"), ConfigurationProperty("enableVersioning", DefaultValue = true)]

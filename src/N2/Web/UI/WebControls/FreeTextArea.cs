@@ -64,8 +64,8 @@ namespace N2.Web.UI.WebControls
             	Register.TinyMCE(Page);
                 Register.JQueryPlugins(Page);
 
-                string script = string.Format("freeTextArea_init('{0}', {1});", 
-                    Url.ToAbsolute("~/N2/Files/default.aspx"), 
+                string script = string.Format("freeTextArea_init('{0}', {1});",
+					Url.ToAbsolute("~/N2/Files/Selector.aspx"), 
                     GetOverridesJson());
                 Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
             }

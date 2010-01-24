@@ -22,12 +22,13 @@ namespace N2.Tests
 			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 			
 			engine = new ContentEngine(config, "n2", EventBroker.Instance);
-            engine.Initialize();
-			engine.Resolve<ISecurityEnforcer>().Start();
 
 			var configurationBuilder = engine.Resolve<IConfigurationBuilder>();
 			sessionProvider = (FakeSessionProvider)engine.Resolve<ISessionProvider>();
 			schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
+			CreateDatabaseSchema();
+
+			engine.Initialize();
 		}
 
 		[TearDown]

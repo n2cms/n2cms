@@ -33,7 +33,11 @@ namespace N2.Persistence.NH
 
 			using (var tx = persister.Repository.BeginTransaction())
 			{
-				persister.Repository.SaveOrUpdate(parent);
+				if (parent is IActiveContent)
+					(parent as IActiveContent).Save();
+				else
+					persister.Repository.SaveOrUpdate(parent);
+
 				tx.Commit();
 			}
 		}

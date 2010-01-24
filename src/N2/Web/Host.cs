@@ -68,23 +68,41 @@ namespace N2.Web
     	/// <param name="additionalSites">Sites to add.</param>
 		public void AddSites(IEnumerable<Site> additionalSites)
         {
-			lock(this)
+			var args = new SitesChangedEventArgs { PreviousSites = sites, PreviousDefault = defaultSite };
+
+			lock (this)
 			{
 				sites = Union(Sites, additionalSites);
+
+				args.CurrentSites = sites;
+				args.CurrentDefault = defaultSite;
 			}
-        }
+
+			if (SitesChanged != null)
+				SitesChanged.Invoke(this, args);
+		}
 
     	/// <summary>Replaces the site list with new sites.</summary>
     	/// <param name="defaultSite">The default site to use.</param>
     	/// <param name="newSites">The new site list.</param>
-    	public void ReplaceSites(Site defaultSite, IEnumerable<Site> newSites)
+    	public void ReplaceSites(Site newDefaultSite, IEnumerable<Site> newSites)
         {
             if(newSites == null) throw new ArgumentNullException("newSites");
 
+			var args = new SitesChangedEventArgs { PreviousSites = sites, PreviousDefault = defaultSite };
+
 			lock (this)
 			{
-				this.defaultSite = defaultSite;
+				defaultSite = newDefaultSite;
 				sites = new List<Site>(newSites).ToArray();
+
+				args.CurrentSites = sites;
+				args.CurrentDefault = defaultSite;
+			}
+
+			if (SitesChanged != null)
+			{
+				SitesChanged.Invoke(this, args);
 			}
 		}
 
@@ -131,5 +149,12 @@ namespace N2.Web
 			}
 			return sites;
 		}
+
+		#region IHost Members
+
+		/// <summary>Is triggered when the sites collection changes.</summary>
+		public event EventHandler<SitesChangedEventArgs> SitesChanged;
+
+		#endregion
 	}
 }

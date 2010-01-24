@@ -73,134 +73,137 @@ var n2toggle = {
 };
 
 var initn2context = function(w) {
-    if (w.n2ctx)
-        return w.n2ctx;
+	if (w.n2ctx)
+		return w.n2ctx;
 
-    try {
-        if (w.name != "top" && w != w.parent) {
-            w.n2ctx = initn2context(w.parent);
-            return w.n2ctx;
-        }
-    } catch (e) { }
+	try {
+		if (w.name != "top" && w != w.parent) {
+			w.n2ctx = initn2context(w.parent);
+			return w.n2ctx;
+		}
+	} catch (e) { }
 
-    w.n2ctx = {
-        selectedPath: "/",
-        selectedUrl: null,
-        memorizedPath: null,
-        actionType: null,
+	w.n2ctx = {
+		selectedPath: "/",
+		selectedUrl: null,
+		memorizedPath: null,
+		actionType: null,
 
-        // whether there is a top frame
-        hasTop: function() {
-            return false;
-        },
+		// whether there is a top frame
+		hasTop: function() {
+			return false;
+		},
 
-        // selects a toolbar item by name
-        toolbarSelect: function(name) {
-            jQuery(document).ready(function() {
-                w.n2.select(name);
-                $(window).unload(function() {
-                    w.n2.unselect(name);
-                });
-            });
-        },
+		// selects a toolbar item by name
+		toolbarSelect: function(name) {
+			jQuery(document).ready(function() {
+				w.n2.select(name);
+				$(window).unload(function() {
+					w.n2.unselect(name);
+				});
+			});
+		},
 
-        // copy/paste
-        memorize: function(selected, action) {
-            this.memorizedPath = selected;
-            this.actionType = action;
-        },
-        getSelected: function() {
-            return this.selectedPath;
-        },
-        getSelectedUrl: function() {
-            return this.selectedUrl;
-        },
-        getMemory: function() {
-            return encodeURIComponent(this.memorizedPath);
-        },
-        getAction: function() {
-            return encodeURIComponent(this.actionType);
-        },
+		// copy/paste
+		memorize: function(selected, action) {
+			this.memorizedPath = selected;
+			this.actionType = action;
+		},
+		getSelected: function() {
+			return this.selectedPath;
+		},
+		getSelectedUrl: function() {
+			return this.selectedUrl;
+		},
+		getMemory: function() {
+			return encodeURIComponent(this.memorizedPath);
+		},
+		getAction: function() {
+			return encodeURIComponent(this.actionType);
+		},
 
-        initToolbar: function() {
-            $("a.command").click(function(e) {
-                if (this.hash == "#stop")
-                    e.preventDefault();
-            });
-        },
+		initToolbar: function() {
+			$("a.command").click(function(e) {
+				if (this.hash == "#stop")
+					e.preventDefault();
+			});
+		},
 
-        // selection memory
-        setupToolbar: function(path, url) {
-            if (!this.hasTop()) return;
+		// selection memory
+		setupToolbar: function(path, url) {
+			if (!this.hasTop()) return;
 
-            path = encodeURIComponent(path);
-            url = url || this.selectedUrl;
-            var memory = this.getMemory();
-            var action = this.getAction();
-            this.selectedPath = path;
-            this.selectedUrl = url;
-            for (var i = 0; i < toolbarPlugIns.length; i++) {
-                var a = w.document.getElementById(toolbarPlugIns[i].linkId);
-                var href = toolbarPlugIns[i].urlFormat;
-                var formats = { url: url, selected: path, memory: memory, action: action };
-                for (var key in formats) {
-                    var format = "{" + key + "}";
-                    if (href.indexOf(format) >= 0 && formats[key] == "null") {
-                        href = "#stop";
-                        $(a).addClass("disabled");
-                        break;
-                    }
-                    else $(a).removeClass("disabled");
+			path = encodeURIComponent(path);
+			url = url || this.selectedUrl;
+			var memory = this.getMemory();
+			var action = this.getAction();
+			this.selectedPath = path;
+			this.selectedUrl = url;
+			
+			if (typeof(toolbarPlugIns) == "undefined")
+				return;
+			for (var i = 0; i < toolbarPlugIns.length; i++) {
+				var a = w.document.getElementById(toolbarPlugIns[i].linkId);
+				var href = toolbarPlugIns[i].urlFormat;
+				var formats = { url: url, selected: path, memory: memory, action: action };
+				for (var key in formats) {
+					var format = "{" + key + "}";
+					if (href.indexOf(format) >= 0 && formats[key] == "null") {
+						href = "#stop";
+						$(a).addClass("disabled");
+						break;
+					}
+					else $(a).removeClass("disabled");
 
-                    href = href.replace(format, formats[key]);
-                }
-                a.href = href;
+					href = href.replace(format, formats[key]);
+				}
+				a.href = href;
 
-            }
-        },
+			}
+		},
 
-        // update frames
-        refreshNavigation: function(navigationUrl) {
-            if (!this.hasTop()) return;
-            var nav = w.document.getElementById("navigationFrame");
-            nav.src = navigationUrl;
-        },
-        refreshPreview: function(previewUrl) {
-            if (this.hasTop()) {
-                var previewFrame = w.document.getElementById("previewFrame");
-                previewFrame.src = previewUrl;
-            } else {
-                window.location = previewUrl;
-            }
-        },
-        refresh: function(navigationUrl, previewUrl) {
-            this.refreshNavigation(navigationUrl);
-            this.refreshPreview(previewUrl);
-        },
+		// update frames
+		refreshNavigation: function(navigationUrl) {
+			if (!this.hasTop()) return;
+			var nav = w.document.getElementById("navigationFrame");
+			nav.src = navigationUrl;
+		},
+		refreshPreview: function(previewUrl) {
+			if (this.hasTop()) {
+				var previewFrame = w.document.getElementById("previewFrame");
+				previewFrame.src = previewUrl;
+			} else {
+				window.location = previewUrl;
+			}
+		},
+		refresh: function(navigationUrl, previewUrl) {
+			this.refreshNavigation(navigationUrl);
+			this.refreshPreview(previewUrl);
+		},
 
-        // toolbar selection
-        select: function(name) {
-            if (!name) return;
+		// toolbar selection
+		select: function(name) {
+			if (!name) return;
 
-            $s = jQuery("#" + name);
-            var selectedTarget = $s.find("a").attr("target");
-            $(".selected a").filter(function() { return this.target === selectedTarget || !this.target; })
+			$s = jQuery("#" + name);
+			var selectedTarget = $s.find("a").attr("target");
+			$(".selected a").filter(function() { return this.target === selectedTarget || !this.target; })
                 .closest(".selected")
                 .each(function() {
-                    n2.unselect(this.id);
+                	n2.unselect(this.id);
                 });
-            $s.addClass("selected");
-            jQuery(document.body).addClass(name + "Selected");
-        },
-        unselect: function(name) {
-            if (!name) return;
+			$s.addClass("selected");
+			jQuery(document.body).addClass(name + "Selected");
+		},
+		unselect: function(name) {
+			if (!name) return;
 
-            jQuery("#" + name).removeClass("selected");
-            jQuery(document.body).removeClass(name + "Selected");
-        }
-    };
+			jQuery("#" + name).removeClass("selected");
+			jQuery(document.body).removeClass(name + "Selected");
+		}
+	};
 
-    return w.n2ctx;
+	return w.n2ctx;
 };
 window.n2 = initn2context(window);
 

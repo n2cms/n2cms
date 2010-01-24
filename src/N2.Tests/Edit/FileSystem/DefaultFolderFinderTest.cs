@@ -33,11 +33,11 @@ namespace N2.Tests.Edit.FileSystem
 			item2 = CreateOneItem<Items.NormalPage>(3, "item2", item1);
 		}
 
-		[TestCase(DefaultDirectoryMode.RecursiveNames, "~/Upload/item1/item2/")]
-		[TestCase(DefaultDirectoryMode.TopNodeName, "~/Upload/item1/")]
-		[TestCase(DefaultDirectoryMode.NodeName, "~/Upload/item2/")]
-		[TestCase(DefaultDirectoryMode.UploadFolder, "~/Upload/")]
-		[TestCase(DefaultDirectoryMode.RecursiveNamesFromParent, "~/Upload/item1/")]
+		[TestCase(DefaultDirectoryMode.RecursiveNames, "~/upload/item1/item2/")]
+		[TestCase(DefaultDirectoryMode.TopNodeName, "~/upload/item1/")]
+		[TestCase(DefaultDirectoryMode.NodeName, "~/upload/item2/")]
+		[TestCase(DefaultDirectoryMode.UploadFolder, "~/upload/")]
+		[TestCase(DefaultDirectoryMode.RecursiveNamesFromParent, "~/upload/item1/")]
 		public void CanFind_ShadowFolder_WithoutDefaultFolderRoot(DefaultDirectoryMode stragegy, string expectedPath)
 		{
 			config.DefaultDirectory.Mode = stragegy;

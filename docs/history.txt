@@ -1,4 +1,8 @@
-﻿- reorganized mvc views into SharedPages/SharedPages + MVC convention folders (breaking change)
+﻿- Auto-resize of uploaded images (<n2><edit><images><sizes><add name="x" width="123" height="123")
+- First step at refurbishing file manager
+- New concept: virtual nodes
+- added events to IFileSystem (breaking for file custom file systems implementators)
+- reorganized mvc views into SharedPages/SharedPages + MVC convention folders (breaking change)
 - reorganized mvc Items/Items and Items/Pages into Models/Pages and Models/Parts (breaking change)
 - improved (and fixed) create new item at position
 - added Find.EnumerateSiblings(...)

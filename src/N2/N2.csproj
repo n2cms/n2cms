@@ -96,6 +96,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -279,8 +280,12 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Collections\StaticHierarchyBuilder.cs" />
     <Compile Include="Configuration\ComponentParameterCollection.cs" />
     <Compile Include="Configuration\ComponentParameterElement.cs" />
+    <Compile Include="Configuration\ImagesElement.cs" />
+    <Compile Include="Configuration\ImageSizeElement.cs" />
+    <Compile Include="Configuration\ImageSizesCollection.cs" />
     <Compile Include="Configuration\PermissionElement.cs" />
     <Compile Include="Configuration\VersionsElement.cs" />
     <Compile Include="Configuration\VirtualPathCollection.cs" />
@@ -365,6 +370,11 @@
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
+    <Compile Include="Edit\FileEventArgs.cs" />
+    <Compile Include="Edit\VirtualNodeFactory.cs" />
+    <Compile Include="Web\ImageResizeHandler.cs" />
+    <Compile Include="Web\ImageResizer.cs" />
+    <Compile Include="Web\SitesChangedEventArgs.cs" />
     <Compile Include="Workflow\Binding.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
     <Compile Include="Edit\ControlPanelSeparatorAttribute.cs" />

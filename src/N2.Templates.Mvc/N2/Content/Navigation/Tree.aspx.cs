@@ -1,22 +1,65 @@
 using System;
+using N2.Collections;
+using N2.Edit.FileSystem.Items;
+using N2.Web;
 
 namespace N2.Edit.Navigation
 {
-	//[ToolbarPlugin("", "tree", "Content/Navigation/tree.aspx?selected={selected}", ToolbarArea.Navigation, "navigation", "~/N2/Resources/Img/Ico/png/sitemap_color.png", -30, 
-	//    ToolTip = "hierarchical navigation", 
-	//    GlobalResourceClassName = "Toolbar", 
-	//    SortOrder = -1)]
 	public partial class Tree : NavigationPage
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			siteTreeView.RootNode = RootNode;
-            siteTreeView.SelectedItem = Selection.SelectedItem;
+			if (Request["filter"] == "Files")
+			{
+				HierarchyNode<ContentItem> root;
+				
+				IHost host = Engine.Resolve<IHost>();
+				if (host.Sites.Count > 1)
+				{
+					root = new HierarchyNode<ContentItem>(Engine.Persister.Get(host.DefaultSite.RootItemID));
+					foreach (var site in host.Sites)
+					{
+						root.Children.Add(CreateSiteFilesNode(site));
+					}
+				}
+				else
+				{
+					root = CreateSiteFilesNode(host.CurrentSite);
+				}
+				siteTreeView.Nodes = root;
+			}
+			else
+			{
+				var filter = Engine.EditManager.GetEditorFilter(Page.User);
+				siteTreeView.Filter = filter;
+				siteTreeView.RootNode = RootNode;
+				siteTreeView.SelectedItem = Selection.SelectedItem;
+			}
+			
 			siteTreeView.DataBind();
 
-			Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
-
 			base.OnInit(e);
+		}
+
+		private HierarchyNode<ContentItem> CreateSiteFilesNode(Site site)
+		{
+			var siteNode = Engine.Persister.Get(site.StartPageID);
+			HierarchyNode<ContentItem> node = new HierarchyNode<ContentItem>(siteNode);
+			foreach (string uploadFolder in site.UploadFolders)
+			{
+				node.Children.Add(CreateDirectory(uploadFolder, siteNode));
+			}
+			foreach (string uploadFolder in Engine.EditManager.UploadFolders)
+			{
+				node.Children.Add(CreateDirectory(uploadFolder, siteNode));
+			}
+			return node;
+		}
+
+		private HierarchyNode<ContentItem> CreateDirectory(string uploadFolder, ContentItem siteNode)
+		{
+			var dir = Engine.Resolve<N2.Edit.FileSystem.IFileSystem>().GetDirectory(uploadFolder);
+			return new HierarchyNode<ContentItem>(new Directory(dir, siteNode));
 		}
 	}
 }

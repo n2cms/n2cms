@@ -9,6 +9,9 @@ namespace N2.Engine.MediumTrust
 {
 	public class MediumTrustServiceContainer : ServiceContainerBase
 	{
+		bool isInitialized = false;
+
+		private readonly IDictionary<Type, Type> waitingList = new Dictionary<Type, Type>();
 		private readonly IDictionary<Type, object> container = new Dictionary<Type, object>();
 		private readonly IDictionary<Type, Function<Type, object>> resolvers = new Dictionary<Type, Function<Type, object>>();
 
@@ -101,9 +104,18 @@ namespace N2.Engine.MediumTrust
 
 		public override void StartComponents()
 		{
-			foreach (var resolver in resolvers)
+			isInitialized = true;
+			List<Type> keys = new List<Type>(waitingList.Keys);
+			foreach (var key in keys)
 			{
-				CheckForAutoStart(resolver.Key.FullName.ToLowerInvariant(), resolver.Key, resolver.Key);
+				try
+				{
+					CheckForAutoStart(key.FullName.ToLowerInvariant(), key, waitingList[key]);
+					waitingList.Remove(key);
+				}
+				catch (MissingDependencyException)
+				{
+				}
 			}
 		}
 
@@ -117,10 +129,17 @@ namespace N2.Engine.MediumTrust
 
 		private void CheckForAutoStart(string key, Type serviceType, Type classType)
 		{
-			foreach (Type t in classType.GetInterfaces())
+			if (typeof(IAutoStart).IsAssignableFrom(classType))
 			{
-				if (t == typeof (IAutoStart))
-					container[serviceType] = CreateInstance(serviceType, classType, key);
+				if (!isInitialized)
+				{
+					waitingList[serviceType] = classType;
+					return;
+				}
+
+				IAutoStart instance = CreateInstance(serviceType, classType, key) as IAutoStart;
+				instance.Start();
+				container[serviceType] = instance;
 			}
 		}
 
@@ -161,7 +180,7 @@ namespace N2.Engine.MediumTrust
 					errorMessage.AppendLine("\nCould not resolve " + parameter.ParameterType);
 				}
 
-				throw new N2Exception(errorMessage.ToString());
+				throw new MissingDependencyException(errorMessage.ToString());
 			}
 			ConstructorInfo constructor = constructorInfo.ConstructorInfo;
 			
@@ -233,5 +252,13 @@ namespace N2.Engine.MediumTrust
 		}
 
 		#endregion
+
+		class MissingDependencyException : Exception
+		{
+			public MissingDependencyException(string message)
+				: base(message)
+			{
+			}
+		}
 	}
 }

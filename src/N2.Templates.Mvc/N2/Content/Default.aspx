@@ -53,11 +53,6 @@
 			window.n2.frameManager.init();
 			jQuery(document).ready(function() {
 			    jQuery(".command").n2glow();
-			    jQuery(".operations a").click(function(e) {
-			        if (jQuery(document.body).is(".editSelected, .wizardSelected, .versionsSelected, .securitySelected, .exportimportSelected, .globalizationSelected, .linktrackerSelected, .usersSelected, .filemanagerSelected")) {
-			            e.preventDefault();
-			        };
-			    });
 			});
         </script>
 	</body>

@@ -108,8 +108,6 @@ namespace N2.Web
 
 		public override string ToString()
 		{
-			IHierarchyNavigator<ContentItem> navigator = new ItemHierarchyNavigator(builder, filters);
-
 			StringBuilder sb = new StringBuilder();
 			using (HtmlTextWriter writer = new HtmlTextWriter(new StringWriter(sb)))
 			{
@@ -121,20 +119,19 @@ namespace N2.Web
 
 		public Control ToControl()
 		{
-			IHierarchyNavigator<ContentItem> navigator = new ItemHierarchyNavigator(builder, filters);
-			TreeNode rootNode = BuildNodesRecursive(navigator);
+			TreeNode rootNode = BuildNodesRecursive(builder.Build(filters));
 			rootNode.ChildrenOnly = exclude;
 			return rootNode;
 		}
 
-		private TreeNode BuildNodesRecursive(IHierarchyNavigator<ContentItem> navigator)
+		private TreeNode BuildNodesRecursive(HierarchyNode<ContentItem> navigator)
 		{
 			ContentItem item = navigator.Current;
 
 			TreeNode node = new TreeNode(item, linkProvider(item).ToControl());
 			node.LiClass = classProvider(item);
 
-			foreach (IHierarchyNavigator<ContentItem> childNavigator in navigator.Children)
+			foreach (var childNavigator in navigator.Children)
 			{
 				TreeNode childNode = BuildNodesRecursive(childNavigator);
 				node.Controls.Add(childNode);

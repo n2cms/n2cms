@@ -15,13 +15,9 @@ namespace N2.Edit.Web
 	/// </summary>
     public class EditPage : Page
     {
-		public EditPage()
+		protected override void OnPreInit(EventArgs e)
 		{
-			PreInit += EditPage_PreInit;
-		}
-
-		void EditPage_PreInit(object sender, EventArgs e)
-		{
+			base.OnPreInit(e);
 			SetupAspNetTheming();
 		}
 		
@@ -30,7 +26,8 @@ namespace N2.Edit.Web
 			RegisterScripts();
             RegisterThemeCss();
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
-			
+			Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
+
             base.OnInit(e);
 		}
 
@@ -118,7 +115,7 @@ namespace N2.Edit.Web
 
 		protected string MapCssUrl(string cssFileName)
 		{
-			return Url.ToAbsolute(N2.Context.Current.EditManager.GetEditInterfaceUrl() + "../Resources/Css/" + cssFileName);
+			return Url.ToAbsolute(N2.Context.Current.EditManager.GetManagementInterfaceUrl() + "Resources/Css/" + cssFileName);
 		}
 
     	#region Refresh Methods

@@ -67,12 +67,12 @@
     <Content Include="N2\Content\Default.aspx" />
     <Content Include="N2\Content\Delete.aspx" />
     <Content Include="N2\Content\Edit.aspx" />
-    <Content Include="N2\Files\Default.aspx" />
     <Content Include="N2\Login.aspx" />
     <Content Include="N2\Content\Move.aspx" />
     <Content Include="N2\Content\New.aspx" />
     <Content Include="N2\Web.config" />
     <None Include="N2\Content\Dependencies.aspx" />
+    <Content Include="N2\Files\Resize.ashx" />
     <Content Include="N2\Top.master" />
     <Content Include="N2\Resources\KeepAlive\Ping.ashx" />
     <Content Include="N2\Resources\KeepAlive\Web.config" />
@@ -153,34 +153,6 @@
     <Compile Include="N2\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Files\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="N2\Files\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="N2\Content\FileSystem\Directory.aspx.cs">
-      <DependentUpon>Directory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="N2\Content\FileSystem\Directory.aspx.designer.cs">
-      <DependentUpon>Directory.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="N2\Content\FileSystem\Editables\EditableFolderPathAttribute.cs" />
-    <Compile Include="N2\Content\FileSystem\Editables\EditableUploadAttribute.cs" />
-    <Compile Include="N2\Content\FileSystem\File.aspx.cs">
-      <DependentUpon>File.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="N2\Content\FileSystem\File.aspx.designer.cs">
-      <DependentUpon>File.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="N2\Content\FileSystem\Items\Directory.cs" />
-    <Compile Include="N2\Content\FileSystem\Items\File.cs" />
-    <Compile Include="N2\Content\FileSystem\Items\AbstractDirectory.cs" />
-    <Compile Include="N2\Content\FileSystem\Items\AbstractNode.cs" />
-    <Compile Include="N2\Content\FileSystem\Items\RootDirectory.cs" />
     <Compile Include="N2\Content\Framed.master.cs">
       <DependentUpon>Framed.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -223,6 +195,52 @@
     </Compile>
     <Compile Include="N2\Content\ItemInfo.ascx.designer.cs">
       <DependentUpon>ItemInfo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Files\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\Directory.aspx.cs">
+      <DependentUpon>Directory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\Directory.aspx.designer.cs">
+      <DependentUpon>Directory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\Editables\EditableFolderPathAttribute.cs" />
+    <Compile Include="N2\Files\FileSystem\Editables\EditableUploadAttribute.cs" />
+    <Compile Include="N2\Files\FileSystem\File.aspx.cs">
+      <DependentUpon>File.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\File.aspx.designer.cs">
+      <DependentUpon>File.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Files\FileSystem\Pages\AbstractDirectory.cs" />
+    <Compile Include="N2\Files\FileSystem\Pages\AbstractNode.cs" />
+    <Compile Include="N2\Files\FileSystem\Pages\Directory.cs" />
+    <Compile Include="N2\Files\FileSystem\Pages\TemporaryRootDirectory.cs" />
+    <Compile Include="N2\Files\FileSystem\Pages\File.cs" />
+    <Compile Include="N2\Files\FileSystem\Pages\RootDirectory.cs" />
+    <Compile Include="N2\Files\ImagesUtility.cs" />
+    <Compile Include="N2\Files\Start.aspx.cs">
+      <DependentUpon>Start.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\Start.aspx.designer.cs">
+      <DependentUpon>Start.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Files\UploadedFilesResizer.cs" />
+    <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
+    <Compile Include="N2\Files\Selector.aspx.cs">
+      <DependentUpon>Selector.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Files\Selector.aspx.designer.cs">
+      <DependentUpon>Selector.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Installation\Begin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -470,22 +488,23 @@
     <Compile Include="N2\Content\Versions\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Content\Web\DirectoryNode.cs" />
-    <Compile Include="N2\Content\Web\FileNode.cs" />
-    <Compile Include="N2\Content\Web\FileSiteMapNode.cs">
+    <Compile Include="N2\Web\DirectoryNode.cs" />
+    <Compile Include="N2\Web\FileNode.cs" />
+    <Compile Include="N2\Web\FileSiteMapNode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="N2\Content\Web\FileSiteMapProvider.cs">
+    <Compile Include="N2\Web\FileSiteMapProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="N2\Content\Web\RootNode.cs" />
-    <Compile Include="N2\Content\Web\UI\Controls\FieldSet.cs" />
-    <Compile Include="N2\Content\Web\UI\Controls\InfoLabel.cs" />
-    <Compile Include="N2\Content\Web\UI\Controls\OptionsMenu.cs" />
-    <Compile Include="N2\Content\Web\UI\Controls\ToolbarPluginDisplay.cs" />
-    <Compile Include="N2\Content\Web\UI\Controls\Tree.cs" />
-    <Compile Include="N2\Content\Web\UI\Controls\TreeView.cs" />
-    <Compile Include="N2\Content\Web\UrlSelectionPage.cs">
+    <Compile Include="N2\Web\RootNode.cs" />
+    <Compile Include="N2\Web\UI\Controls\FieldSet.cs" />
+    <Compile Include="N2\Web\UI\Controls\InfoLabel.cs" />
+    <Compile Include="N2\Web\UI\Controls\OptionsMenu.cs" />
+    <Compile Include="N2\Web\UI\Controls\ResizedImage.cs" />
+    <Compile Include="N2\Web\UI\Controls\ToolbarPluginDisplay.cs" />
+    <Compile Include="N2\Web\UI\Controls\Tree.cs" />
+    <Compile Include="N2\Web\UI\Controls\TreeView.cs" />
+    <Compile Include="N2\Web\UrlSelectionPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Wizard\Default.aspx.cs">
@@ -1173,8 +1192,6 @@
     <Content Include="N2\Resources\img\ico\png\wand.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="N2\Content\FileSystem\Directory.aspx" />
-    <Content Include="N2\Content\FileSystem\File.aspx" />
     <Content Include="N2\Content\Globalization\Translate.aspx" />
     <Content Include="N2\Resources\img\ico\png\bullet_toggle_minus.png" />
     <Content Include="N2\Content\Wizard\App_LocalResources\Default.aspx.resx">
@@ -1215,6 +1232,11 @@
   <ItemGroup>
     <Content Include="Edit\default.aspx" />
     <Content Include="N2\Default.aspx" />
+    <Content Include="N2\Files\Default.aspx" />
+    <Content Include="N2\Files\FileSystem\Directory.aspx" />
+    <Content Include="N2\Files\FileSystem\File.aspx" />
+    <Content Include="N2\Files\Start.aspx" />
+    <Content Include="N2\Files\Selector.aspx" />
     <Content Include="N2\Installation\Begin\Default.aspx" />
     <Content Include="N2\Installation\Default.aspx" />
     <Content Include="N2\Installation\Diagnose.aspx" />

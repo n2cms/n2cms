@@ -34,11 +34,11 @@ namespace N2.Edit.FileSystem.Items
             {
                 new N2Exception(newParent + " is not a Directory. AddTo only works on directories.");
             }
-        }
+		}
 
-        #region IActiveRecord Members
+		#region IActiveContent Members
 
-        public void Save()
+		public void Save()
         {
 			if(!FileSystem.DirectoryExists(Url))
 				FileSystem.CreateDirectory(Url);

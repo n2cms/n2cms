@@ -5,24 +5,28 @@ using N2.Collections;
 using N2.Persistence;
 using N2.Web;
 using N2.Web.UI;
+using N2.Engine;
 
 namespace N2.Edit
 {
 	public class Navigator
 	{
-		private readonly IPersister persister;
-		private readonly IHost host;
-
-		public Navigator(IPersister persister, IHost host)
+		readonly IPersister persister;
+		readonly IHost host;
+		readonly VirtualNodeFactory virtualNodes;
+		
+		public Navigator(IPersister persister, IHost host, VirtualNodeFactory nodes)
 		{
 			this.persister = persister;
 			this.host = host;
+			this.virtualNodes = nodes;
 		}
 
 		public ContentItem Navigate(ContentItem startingPoint, string path)
 		{
-			return startingPoint.GetChild(path);
-		}	
+			return startingPoint.GetChild(path) 
+				?? virtualNodes.FindNode(path);
+		}
 
 		public ContentItem Navigate(string path)
 		{
@@ -33,7 +37,8 @@ namespace N2.Edit
 			{
 				if (path.StartsWith("~"))
 				{
-					return Navigate(persister.Get(host.CurrentSite.StartPageID), path.Substring(1));
+					return Navigate(persister.Get(host.CurrentSite.StartPageID), path.Substring(1))
+						?? virtualNodes.FindNode(path);
 				}
 				throw new ArgumentException("The path must start with a slash '/', was '" + path + "'", "path");
 			}

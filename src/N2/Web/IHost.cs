@@ -37,5 +37,8 @@ namespace N2.Web
 		/// <param name="item">The item to check.</param>
 		/// <returns>True if the item is a configured start page.</returns>
 		bool IsStartPage(ContentItem item);
+
+		/// <summary>Is triggered when the sites collection changes.</summary>
+		event EventHandler<SitesChangedEventArgs> SitesChanged;
 	}
 }

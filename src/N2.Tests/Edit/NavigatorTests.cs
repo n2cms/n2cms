@@ -8,20 +8,16 @@ using Rhino.Mocks;
 namespace N2.Tests.Edit
 {
 	[TestFixture]
-	public class NavigatorTests : ItemTestsBase
+	public class NavigatorTests : ItemPersistenceMockingBase
 	{
 		[Test]
-		public void CanNavigateFromRoot()
+		public void CanNavigate_FromRoot()
 		{
 			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
 			ContentItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 			ContentItem item1_item12 = CreateOneItem<AnItem>(2, "item1.2", item1);
 
-			IPersister persister = mocks.StrictMock<IPersister>();
-			Expect.Call(persister.Get(1)).Return(root);
-			mocks.ReplayAll();
-
-            Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 1));
+            Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 1), new VirtualNodeFactory());
 
 			ContentItem navigatedItem = n.Navigate("/item1/item1.2");
 
@@ -29,22 +25,17 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void CanNavigateFromStartPage()
+		public void CanNavigate_FromStartPage()
 		{
 			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
 			ContentItem start = CreateOneItem<AnItem>(2, "start", root);
-			ContentItem item1_item12 = CreateOneItem<AnItem>(2, "item1", start);
+			ContentItem item1 = CreateOneItem<AnItem>(3, "item1", start);
 
-			IPersister persister = mocks.StrictMock<IPersister>();
-			Expect.Call(persister.Get(2)).Return(start);
-
-			mocks.ReplayAll();
-
-            Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 2));
+			Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 2), new VirtualNodeFactory());
 
 			ContentItem navigatedItem = n.Navigate("~/item1");
 
-			Assert.AreSame(item1_item12, navigatedItem);
+			Assert.AreSame(item1, navigatedItem);
 		}
 
 		[Test]
@@ -54,7 +45,7 @@ namespace N2.Tests.Edit
 			ContentItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 			ContentItem item1_item12 = CreateOneItem<AnItem>(2, "item1.2", item1);
 
-			Navigator n = new Navigator(null, null);
+			Navigator n = new Navigator(null, null, new VirtualNodeFactory());
 
 			ContentItem navigatedItem = n.Navigate(item1, "item1.2");
 
@@ -62,21 +53,30 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void CanNavigateToRoot()
+		public void CanNavigate_ToRoot()
 		{
 			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
 			ContentItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 			
-			IPersister persister = mocks.StrictMock<IPersister>();
-			Expect.Call(persister.Get(1)).Return(root);
-
-			mocks.ReplayAll();
-
-            Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 1));
+			Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 1), new VirtualNodeFactory());
 
 			ContentItem navigatedItem = n.Navigate("/");
 
 			Assert.AreSame(root, navigatedItem);
+		}
+
+		[Test]
+		public void Fallbacks_ToVirtualNodes()
+		{
+			ContentItem root = CreateOneItem<AnItem>(1, "root", null);
+			ContentItem item1 = CreateOneItem<AnItem>(2, "item1", root);
+
+			var factory = new VirtualNodeFactory();
+			factory.Register("/item1/hello/", (p) => new AnItem { Name = p });
+			Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 1), factory);
+
+			ContentItem navigatedItem = n.Navigate("/item1/hello/world/");
+			Assert.That(navigatedItem.Name, Is.EqualTo("world/"));
 		}
 	}
 }

@@ -107,6 +107,9 @@ namespace N2.Edit.FileSystem
 			string path = MapPath(virtualPath);
 
 			File.Delete(path);
+
+			if (FileDeleted != null)
+				FileDeleted.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
 		/// <summary>Deletes a directory including all files and sub-directories.</summary>
@@ -115,6 +118,9 @@ namespace N2.Edit.FileSystem
 		{
 			string path = MapPath(virtualPath);
 			Directory.Delete(path, true);
+
+			if (DirectoryDeleted != null)
+				DirectoryDeleted.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
 		/// <summary>Moves a file to a new location.</summary>
@@ -126,6 +132,9 @@ namespace N2.Edit.FileSystem
 			string toPath = MapPath(destinationVirtualPath);
 
 			File.Move(fromPath, toPath);
+
+			if (FileMoved != null)
+				FileMoved.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
 		}
 
 		/// <summary>Moves a directory.</summary>
@@ -137,6 +146,9 @@ namespace N2.Edit.FileSystem
 			string toPath = MapPath(destinationVirtualPath);
 
 			Directory.Move(fromPath, toPath);
+
+			if (DirectoryMoved != null)
+				DirectoryMoved.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
 		}
 
 		/// <summary>Copies a file.</summary>
@@ -148,6 +160,9 @@ namespace N2.Edit.FileSystem
 			string toPath = MapPath(destinationVirtualPath);
 
 			File.Copy(fromPath, toPath);
+
+			if (FileCopied != null)
+				FileCopied.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
 		}
 
 		/// <summary>Creates a directory.</summary>
@@ -157,6 +172,9 @@ namespace N2.Edit.FileSystem
 			string path = MapPath(virtualPath);
 
 			Directory.CreateDirectory(path);
+			
+			if (DirectoryCreated != null)
+				DirectoryCreated.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
 		public virtual Stream OpenFile(string virtualPath)
@@ -189,6 +207,9 @@ namespace N2.Edit.FileSystem
 					TransferBetweenStreams(inputStream, fileStream);
 				}
 			}
+
+			if (FileWritten != null)
+				FileWritten.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
 		void TransferBetweenStreams(Stream inputStream, Stream outputStream)
@@ -244,5 +265,24 @@ namespace N2.Edit.FileSystem
 		{
 			return HostingEnvironment.MapPath(virtualPath);
 		}
+
+		#region IFileSystem Members
+
+
+		public event System.EventHandler<FileEventArgs> FileWritten;
+
+		public event System.EventHandler<FileEventArgs> FileCopied;
+
+		public event System.EventHandler<FileEventArgs> FileMoved;
+
+		public event System.EventHandler<FileEventArgs> FileDeleted;
+
+		public event System.EventHandler<FileEventArgs> DirectoryCreated;
+
+		public event System.EventHandler<FileEventArgs> DirectoryMoved;
+
+		public event System.EventHandler<FileEventArgs> DirectoryDeleted;
+
+		#endregion
 	}
 }

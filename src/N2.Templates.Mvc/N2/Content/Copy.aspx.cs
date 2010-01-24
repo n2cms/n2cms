@@ -66,7 +66,7 @@ namespace N2.Edit
 			try
 			{
 				pnlNewName.Visible = false;
-				N2.ContentItem newItem = MemorizedItem.Clone(true);
+				N2.ContentItem newItem = Selection.MemorizedItem.Clone(true);
 				newItem.Name = txtNewName.Text;
                 newItem = Engine.Persister.Copy(newItem, Selection.SelectedItem);
 				Refresh(newItem, ToolbarArea.Both);

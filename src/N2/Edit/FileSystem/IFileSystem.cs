@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 namespace N2.Edit.FileSystem
 {
@@ -79,5 +80,13 @@ namespace N2.Edit.FileSystem
 		/// <summary>Creates a directory.</summary>
 		/// <param name="virtualPath">The directory path to create.</param>
 		void CreateDirectory(string virtualPath);
+
+		event EventHandler<FileEventArgs> FileWritten;
+		event EventHandler<FileEventArgs> FileCopied;
+		event EventHandler<FileEventArgs> FileMoved;
+		event EventHandler<FileEventArgs> FileDeleted;
+		event EventHandler<FileEventArgs> DirectoryCreated;
+		event EventHandler<FileEventArgs> DirectoryMoved;
+		event EventHandler<FileEventArgs> DirectoryDeleted;
 	}
 }

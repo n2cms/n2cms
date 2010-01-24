@@ -11,15 +11,23 @@ using File=N2.Edit.FileSystem.Items.File;
 using System.IO;
 using System.Diagnostics;
 using N2.Tests.Persistence;
+using System.Linq.Expressions;
 
 namespace N2.Edit.Tests.FileSystem
 {
     [TestFixture]
     public class FileSystemTests : DatabasePreparingBase
-    {
+	{
+		#region Set up & tear down
+		string basePath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem\";
+		string backupPath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem_backup\";
+		FakeFileSystem fs;
         RootNode root;
         RootDirectory upload;
         
+		List<string> operations;
+		List<FileEventArgs> arguments;
+
         [TestFixtureSetUp]
         public override void TestFixtureSetUp()
         {
@@ -28,21 +36,37 @@ namespace N2.Edit.Tests.FileSystem
 
             Url.DefaultExtension = "/";
         	Url.ApplicationPath = "/";
-			FakeFileSystem fs = (FakeFileSystem)engine.Resolve<IFileSystem>();
-			fs.BasePath = AppDomain.CurrentDomain.BaseDirectory + @"\FileSystem\";
+			fs = (FakeFileSystem)engine.Resolve<IFileSystem>();
+			fs.BasePath = basePath;
 			fs.PathProvider = new FakePathProvider(fs.BasePath);
-        }
+
+			fs.DirectoryCreated += (s, e) => Triggered("DirectoryCreated", e);
+			fs.DirectoryDeleted += (s, e) => Triggered("DirectoryDeleted", e);
+			fs.DirectoryMoved += (s, e) => Triggered("DirectoryMoved", e);
+			fs.FileCopied += (s, e) => Triggered("FileCopied", e);
+			fs.FileDeleted += (s, e) => Triggered("FileDeleted", e);
+			fs.FileMoved += (s, e) => Triggered("FileMoved", e);
+			fs.FileWritten += (s, e) => Triggered("FileWritten", e);
+
+			System.IO.Directory.Move(basePath, backupPath);
+		}
 
         [TestFixtureTearDown]
         public void TestFixtureTearDown()
         {
-            Url.DefaultExtension = ".aspx";
+			System.IO.Directory.Move(backupPath, basePath);
+			Url.DefaultExtension = ".aspx";
         }
 
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
+
+			CopyFilesRecursively(new DirectoryInfo(backupPath), new DirectoryInfo(basePath));
+
+			operations = new List<string>();
+			arguments = new List<FileEventArgs>();
 
 			root = engine.Definitions.CreateInstance<RootNode>(null);
 			engine.Persister.Save(root);
@@ -52,8 +76,30 @@ namespace N2.Edit.Tests.FileSystem
 			upload = engine.Definitions.CreateInstance<RootDirectory>(root);
             upload.Title = "Upload";
             upload.Name = "Upload";
-			engine.Persister.Save(upload);
-        }
+			engine.Persister.Save(upload);			
+		}
+
+		[TearDown]
+		public override void TearDown()
+		{
+			System.IO.Directory.Delete(basePath, true);
+			base.TearDown();
+		}
+
+		public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+		{
+			foreach (DirectoryInfo dir in source.GetDirectories())
+				CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
+			foreach (FileInfo file in source.GetFiles())
+				file.CopyTo(Path.Combine(target.FullName, file.Name));
+		}
+
+		void Triggered(string operation, FileEventArgs args)
+		{
+			operations.Add(operation);
+			arguments.Add(args);
+		}
+		#endregion
 
         [Test]
         public void CanListFiles_InRootDirectory()
@@ -144,7 +190,29 @@ namespace N2.Edit.Tests.FileSystem
 				if(System.IO.File.Exists(destinationPath))
 					System.IO.File.Move(destinationPath, sourcePath);
             }
-        }
+		}
+
+		[Test]
+		public void MovingFile_TriggersEvent()
+		{
+			File f = (File)upload.GetChild("Folder 2/Folder 3/File 3.txt");
+			string sourcePath = MapPath(@"/Upload/Folder 2/Folder 3/File 3.txt");
+			string destinationPath = MapPath(@"/Upload/Folder1/File 3.txt");
+			Directory d = (Directory)upload.GetChild("Folder1");
+			try
+			{
+				f.AddTo(d);
+
+				Assert.That(arguments[0].SourcePath, Is.EqualTo(@"/Upload/Folder 2/Folder 3/File 3.txt"));
+				Assert.That(arguments[0].VirtualPath, Is.EqualTo(@"/Upload/Folder1/File 3.txt"));
+				Assert.That(operations[0], Is.EqualTo("FileMoved"));
+			}
+			finally
+			{
+				if (System.IO.File.Exists(destinationPath))
+					System.IO.File.Move(destinationPath, sourcePath);
+			}
+		}
 
         [Test]
         public void CanMoveFile_ToRootDirectory()
@@ -182,7 +250,27 @@ namespace N2.Edit.Tests.FileSystem
 				if(System.IO.Directory.Exists(destinationPath))
 					System.IO.Directory.Move(destinationPath, sourcePath);
             }
-        }
+		}
+
+		[Test]
+		public void MoveDirectory_TriggersEvent()
+		{
+			Directory d = (Directory)upload.GetChild("Folder 2/Folder 3");
+			string sourcePath = MapPath("/Upload/Folder 2/Folder 3");
+			string destinationPath = MapPath("/Upload/Folder1/Folder 3");
+			try
+			{
+				d.AddTo(upload.GetChild("Folder1"));
+				Assert.That(arguments[0].SourcePath, Is.EqualTo("/Upload/Folder 2/Folder 3/"));
+				Assert.That(arguments[0].VirtualPath, Is.EqualTo("/Upload/Folder1/Folder 3"));
+				Assert.That(operations[0], Is.EqualTo("DirectoryMoved"));
+			}
+			finally
+			{
+				if (System.IO.Directory.Exists(destinationPath))
+					System.IO.Directory.Move(destinationPath, sourcePath);
+			}
+		}
 
         [Test]
         public void CanMoveDirectory_ToRootDirectory()
@@ -224,35 +312,6 @@ namespace N2.Edit.Tests.FileSystem
             AssertMovement((from, to) => engine.Persister.Move(from, to));
         }
 
-        private void AssertMovement(N2.Engine.Action<File, Directory> moveAction)
-        {
-			Directory sourceDirectory = (Directory)upload.GetChild("Folder1");
-			Directory destinationDirectory = (Directory)upload.GetChild("Folder 2");
-			File f = (File)sourceDirectory.GetChild("File1.txt");
-            try
-            {
-                moveAction(f, destinationDirectory);
-				Assert.That(sourceDirectory.GetChild("File1.txt"), Is.Null);
-                Assert.That(f.Parent, Is.EqualTo(destinationDirectory));
-				Assert.That(destinationDirectory.GetChild("File1.txt"), Is.Not.Null);
-            }
-			catch(Exception ex)
-			{
-				Trace.WriteLine(ex.ToString());
-			}
-            finally
-            {
-            	try
-            	{
-					f.MoveTo(sourceDirectory);
-				}
-            	catch (Exception ex)
-            	{
-					Trace.WriteLine(ex.ToString());
-            	}
-            }
-        }
-
         [Test]
         public void CanCopyAndDeleteFile()
         {
@@ -260,7 +319,7 @@ namespace N2.Edit.Tests.FileSystem
             {
                 return from.CopyTo(to);
             });
-        }
+		}
 
         [Test]
         public void CanCopyAndDeleteFile_UsingPersister()
@@ -270,6 +329,44 @@ namespace N2.Edit.Tests.FileSystem
                 return engine.Persister.Copy(from, to);
             });
         }
+
+		[Test]
+		public void CopyAndDeleteFile_TriggersCopy()
+		{
+			CopyAndDelete(delegate(File from, Directory to)
+			{
+				return from.CopyTo(to);
+			});
+
+			Assert.That(operations[0], Is.EqualTo("FileCopied"));
+			Assert.That(arguments[0].SourcePath, Is.EqualTo("/Upload/Folder1/File1.txt"));
+			Assert.That(arguments[0].VirtualPath, Is.EqualTo("/Upload/Folder 2/File1.txt"));
+		}
+
+		[Test]
+		public void CopyAndDeleteFile_TriggersDelete()
+		{
+			CopyAndDelete(delegate(File from, Directory to)
+			{
+				return from.CopyTo(to);
+			});
+
+			Assert.That(operations[1], Is.EqualTo("FileDeleted"));
+			Assert.That(arguments[1].SourcePath, Is.EqualTo(null));
+			Assert.That(arguments[1].VirtualPath, Is.EqualTo("/Upload/Folder 2/File1.txt"));
+		}
+
+		private void AssertMovement(N2.Engine.Action<File, Directory> moveAction)
+		{
+			Directory sourceDirectory = (Directory)upload.GetChild("Folder1");
+			Directory destinationDirectory = (Directory)upload.GetChild("Folder 2");
+			File f = (File)sourceDirectory.GetChild("File1.txt");
+
+			moveAction(f, destinationDirectory);
+			Assert.That(sourceDirectory.GetChild("File1.txt"), Is.Null);
+			Assert.That(f.Parent, Is.EqualTo(destinationDirectory));
+			Assert.That(destinationDirectory.GetChild("File1.txt"), Is.Not.Null);
+		}
 
         private void CopyAndDelete(Func<File, Directory, ContentItem> copyAction)
         {

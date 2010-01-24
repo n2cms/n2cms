@@ -8,7 +8,7 @@ namespace N2.Configuration
         public FileSystemFolderCollection()
         {
             FolderElement folder = new FolderElement();
-            folder.Path = "~/Upload";
+            folder.Path = "~/upload/";
             base.BaseAdd(folder);
         }
 

@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="<%=MapCssUrl("framed.css")%>" type="text/css" />
 		</asp:PlaceHolder>
         <script src="../../Resources/Js/jquery.ui.ashx" type="text/javascript" ></script>
+		<script src="../../Resources/Js/ContextMenu.js?v2" type="text/javascript" ></script>
     </head>
 <body class="edit navigation tree">
     <form id="form1" runat="server">

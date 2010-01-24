@@ -114,27 +114,30 @@ namespace N2.Templates.Web.UI.WebControls
 			ContentItem startingPoint = GetStartingPoint();
 			if(startingPoint != null)
 			{
-				ItemHierarchyNavigator navigator;
+				HierarchyBuilder builder = null;
+						
 				if (BranchMode)
 				{
-					navigator = new ItemHierarchyNavigator(new BranchHierarchyBuilder(currentItem, startingPoint), Filters);
+					builder = new BranchHierarchyBuilder(currentItem, startingPoint);
 				}
 				else
 				{
-					navigator = new ItemHierarchyNavigator(new TreeHierarchyBuilder(startingPoint, MaxLevels), Filters);
+					builder = new TreeHierarchyBuilder(startingPoint, MaxLevels);
 				}
-				if (navigator.Current != null)
+				
+				HierarchyNode<ContentItem> node = builder.Build(Filters);
+				if (node.Current != null)
 				{
-					AddControlsRecursive(this, navigator, CurrentPage, ancestors);
+					AddControlsRecursive(this, node, CurrentPage, ancestors);
 				}
 			}
 		}
 
 		Dictionary<string, Control> addedControls = new Dictionary<string, Control>();
 
-		private void AddControlsRecursive(Control container, IHierarchyNavigator<ContentItem> ih, ContentItem selectedPage, IEnumerable<ContentItem> ancestors)
+		private void AddControlsRecursive(Control container, HierarchyNode<ContentItem> ih, ContentItem selectedPage, IEnumerable<ContentItem> ancestors)
 		{
-			foreach (ItemHierarchyNavigator childHierarchy in ih.Children)
+			foreach (HierarchyNode<ContentItem> childHierarchy in ih.Children)
 			{
 				if (!childHierarchy.Current.IsPage)
 					continue;

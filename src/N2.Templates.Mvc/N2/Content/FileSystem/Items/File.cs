@@ -43,9 +43,9 @@ namespace N2.Edit.FileSystem.Items
 
     	public string NewName { get; set; }
 
-    	#region IActiveRecord Members
+		#region IActiveContent Members
 
-        public void Save()
+		public void Save()
         {
 			if (!string.IsNullOrEmpty(NewName))
 			{
@@ -85,5 +85,10 @@ namespace N2.Edit.FileSystem.Items
         }
 
         #endregion
+
+		internal void Add(File file)
+		{
+			Children.Add(file);
+		}
 	}
 }

@@ -20,7 +20,7 @@
 				<div id="top">
 					<div id="topbar" class="header cf">
 				        <asp:ContentPlaceHolder ID="Toolbar" runat="server">
-        					<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Management" runat="server" />
+        					<edit:ToolbarPluginDisplay ID="NavigationPlugins" Area="Navigation" runat="server" />
 						</asp:ContentPlaceHolder>
 					</div>
 

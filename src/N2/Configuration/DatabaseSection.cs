@@ -63,8 +63,8 @@ namespace N2.Configuration
 			set { base["childrenLaziness"] = value; }
 		}
 
-		/// <summary>The prefix used for tables in this site. This can be used to install multiple installations in the same database.</summary>
-		[ConfigurationProperty("batchSize", DefaultValue = "25")]
+		/// <summary>NHibernate option for database query batching.</summary>
+		[ConfigurationProperty("batchSize", DefaultValue = 25)]
 		public int BatchSize
 		{
 			get { return (int)base["batchSize"]; }

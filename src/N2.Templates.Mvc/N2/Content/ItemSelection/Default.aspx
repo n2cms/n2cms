@@ -6,7 +6,7 @@
     <script src="Js/ItemSelection.js" type="text/javascript" ></script>
 </asp:Content>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
-    <asp:HyperLink ID="hlFiles" runat="server" CssClass="command switch" NavigateUrl="../../Files/Default.aspx" meta:resourceKey="hlFiles">files</asp:HyperLink>
+    <asp:HyperLink ID="hlFiles" runat="server" CssClass="command switch" NavigateUrl="../../Files/Selector.aspx" meta:resourceKey="hlFiles">files</asp:HyperLink>
     <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" NavigateUrl="javascript:window.close();" meta:resourceKey="hlCancel">cancel</asp:HyperLink>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">

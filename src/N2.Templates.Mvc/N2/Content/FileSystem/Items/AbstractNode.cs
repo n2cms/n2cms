@@ -1,6 +1,7 @@
 ﻿using N2.Edit.Trash;
 using N2.Persistence;
 using N2.Web;
+using Management.N2.Files;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -27,6 +28,12 @@ namespace N2.Edit.FileSystem.Items
         {
             get { return string.Empty; }
         }
+
+		protected string iconUrl;
+		public override string IconUrl
+		{
+			get { return iconUrl ?? base.IconUrl; }
+		}
 
         string INode.PreviewUrl
         {
@@ -67,6 +74,11 @@ namespace N2.Edit.FileSystem.Items
 			f.Created = file.Created;
 			f.Parent = this;
 			((N2.Web.IUrlParserDependency)f).SetUrlParser(N2.Context.UrlParser);
+
+			string iconUrl = ImagesUtility.GetResizedPath(file.VirtualPath, "icon");
+			if (FileSystem.FileExists(iconUrl))
+				f.iconUrl = iconUrl;
+
 			return f;
 		}
 

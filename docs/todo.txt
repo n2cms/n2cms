@@ -1,3 +1,6 @@
+- virtual nodes
+- metablog api
+- url caching too mutch
 - allow item interaction on other pages than parents
 - msdeploy
 - default container (put all editables in one container)

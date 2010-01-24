@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System;
 
 namespace N2.Collections
 {
 	/// <summary>
 	/// Navigates a graph of content item nodes.
 	/// </summary>
+	[Obsolete("Use hierarchy builders and hierarchy nodes")]
 	public class ItemHierarchyNavigator : IHierarchyNavigator<ContentItem>
 	{
 		private readonly HierarchyNode<ContentItem> currentNode = null;

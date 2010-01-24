@@ -104,32 +104,6 @@ namespace N2.Castle
 
 		public override void StartComponents()
 		{
-			StartComponents(container.Kernel);
-		}
-
-		private void StartComponents(IKernel kernel)
-		{
-			var naming = (INamingSubSystem) kernel.GetSubSystem(SubSystemConstants.NamingKey);
-			foreach (GraphNode node in kernel.GraphNodes)
-			{
-				var model = node as ComponentModel;
-				if (model == null) 
-					continue;
-				if (!typeof (IStartable).IsAssignableFrom(model.Implementation) &&
-				    !typeof (IAutoStart).IsAssignableFrom(model.Implementation)) 
-					continue;
-
-				IHandler h = naming.GetHandler(model.Name);
-				if (h.CurrentState != HandlerState.Valid)
-					continue;
-
-				var component = kernel[model.Name];
-				Trace.WriteLine("Starting " + component);
-				if (component is IStartable)
-					(component as IStartable).Start();
-				else if (component is IAutoStart)
-					(component as IAutoStart).Start();
-			}
 			container.AddFacility<StartableFacility>();
 			container.AddFacility<AutoStartFacility>();
 		}
@@ -149,6 +123,30 @@ namespace N2.Castle
 			{
 				Kernel.ComponentModelCreated += OnComponentModelCreated;
 				Kernel.ComponentRegistered += OnComponentRegistered;
+
+				StartComponents();
+			}
+
+			private void StartComponents()
+			{
+				var naming = (INamingSubSystem)Kernel.GetSubSystem(SubSystemConstants.NamingKey);
+				Debug.WriteLine("StartComponents " + Kernel.GraphNodes.Length);
+				foreach (GraphNode node in Kernel.GraphNodes)
+				{
+					var model = node as ComponentModel;
+					if (model == null)
+						continue;
+					if (!typeof(IAutoStart).IsAssignableFrom(model.Implementation))
+						continue;
+
+					IHandler h = naming.GetHandler(model.Name);
+					if (h.CurrentState != HandlerState.Valid)
+						continue;
+
+					var instance = Kernel[model.Name] as IAutoStart;
+					Trace.WriteLine("Starting " + instance);
+					instance.Start();
+				}
 			}
 
 			private void OnComponentRegistered(String key, IHandler handler)
@@ -172,7 +170,6 @@ namespace N2.Castle
 
 			private void OnComponentModelCreated(ComponentModel model)
 			{
-				Trace.WriteLine("Created " + model);
 				bool startable = CheckIfComponentImplementsIStartable(model);
 
 				model.ExtendedProperties["startable"] = startable;
