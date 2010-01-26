@@ -2,11 +2,18 @@
 using N2.Edit.Web;
 using N2.Collections;
 using N2.Edit.FileSystem.Items;
+using N2.Resources;
 
 namespace N2.Edit.FileSystem
 {
     public partial class Directory1 : EditPage
     {
+		protected override void RegisterToolbarSelection()
+		{
+			string script = GetToolbarSelectScript("filesPreview");
+			Register.JavaScript(this, script, ScriptPosition.Bottom, ScriptOptions.ScriptTags);
+		}
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Title = Selection.SelectedItem.Title;

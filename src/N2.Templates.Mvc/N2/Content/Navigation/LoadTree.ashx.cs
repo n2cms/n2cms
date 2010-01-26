@@ -25,7 +25,7 @@ namespace N2.Edit.Navigation
 			ItemFilter filter = N2.Context.Current.EditManager.GetEditorFilter(context.User);
 			TreeNode tn = (TreeNode)N2.Web.Tree
 				.From(selectedNode, 2)
-				.LinkProvider(delegate(ContentItem node) { return BuildLink(node, selectedNode, target); })
+				.LinkProvider(delegate(ContentItem node) { return N2.Edit.Web.UI.Controls.Tree.BuildLink(node, node.Path == selectedNode.Path, target); })
 				.Filters(filter)
 				.ToControl();
 			
@@ -45,16 +45,18 @@ namespace N2.Edit.Navigation
 			}
 		}
 
-        public ILinkBuilder BuildLink(INode node, ContentItem selectedNode, string target)
-		{
-			string className = node.ClassNames;
+		//public ILinkBuilder BuildLink(INode node, ContentItem selectedNode, string target)
+		//{
+		//    string className = node.ClassNames;
 
-			ILinkBuilder builder = Link.To(node).Target(target).Class(className)
-                .Href(node.PreviewUrl)
-                .Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
-				.Attribute("rel", node.Path);
+		//    ILinkBuilder builder = Link.To(node)
+		//        .Target(target)
+		//        .Class(className)
+		//        .Href(node.PreviewUrl)
+		//        .Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
+		//        .Attribute("rel", node.Path);
 
-			return builder;
-		}
+		//    return builder;
+		//}
 	}
 }

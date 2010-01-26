@@ -26,6 +26,14 @@
 
 					<asp:HyperLink ID="logout" runat="server" CssClass="logout" NavigateUrl="Login.aspx?logout=true" Text="Log out" />
 					<asp:HyperLink ID="hlLogo" runat="server" SkinID="Logo" CssClass="logo" NavigateUrl="http://n2cms.com" Text="To the home of N2 CMS" ImageUrl="~/N2/Resources/Img/n2.png" />
+					
+					<div class="subbar cf">
+						<asp:ContentPlaceHolder ID="Subbar" runat="server">
+							
+						</asp:ContentPlaceHolder>
+						<div class="blinds"></div>
+					</div>
+
 				</div>
                 
 		        <asp:ContentPlaceHolder ID="Content" runat="server">

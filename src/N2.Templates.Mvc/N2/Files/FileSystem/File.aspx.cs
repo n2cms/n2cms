@@ -2,11 +2,18 @@
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Edit.FileSystem.Items;
+using N2.Resources;
 
 namespace N2.Edit.FileSystem
 {
     public partial class File1 : EditPage
     {
+		protected override void RegisterToolbarSelection()
+		{
+			string script = GetToolbarSelectScript("filesPreview");
+			Register.JavaScript(this, script, ScriptPosition.Bottom, ScriptOptions.ScriptTags);
+		}
+
         protected File SelectedFile
         {
             get { return Selection.SelectedItem as File; }

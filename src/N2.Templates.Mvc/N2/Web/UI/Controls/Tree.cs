@@ -16,9 +16,7 @@ namespace N2.Edit.Web.UI.Controls
 		ContentItem selectedtItem = null;
 		ContentItem rootItem = null;
 		ItemFilter filter = null;
-		HierarchyBuilder hierarchy = null;
 		string target = Targets.Preview;
-		bool preview = true;
 
 		public Tree()
 		{
@@ -42,12 +40,6 @@ namespace N2.Edit.Web.UI.Controls
 		{
 			get { return filter ?? N2.Context.Current.EditManager.GetEditorFilter(Page.User); }
 			set { filter = value; }
-		}
-
-		public bool Preview
-		{
-			get { return preview; }
-			set { preview = value; }
 		}
 
 		public string Target
@@ -108,18 +100,31 @@ namespace N2.Edit.Web.UI.Controls
 			tn.Controls.Add(li);
 		}
 
-		private ILinkBuilder BuildLink(INode node)
+		private ILinkBuilder BuildLink(ContentItem item)
 		{
-			string className = node.ClassNames;
-			if (node.Path == SelectedItem.Path)
-				className += "selected ";
-			
-			ILinkBuilder builder = Link.To(node).Target(target).Class(className)
-                .Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
-				.Attribute("rel", node.Path);
+			return BuildLink(item, item.Path == SelectedItem.Path, Target);
+		}
 
-			if (Preview)
-				builder.Href(node.PreviewUrl);
+		internal static ILinkBuilder BuildLink(ContentItem item, bool selected, string target)
+		{
+			INode node = item;
+			string className = node.ClassNames;
+			if (selected)
+				className += "selected ";
+
+			ILinkBuilder builder = Link.To(node)
+				.Target(target)
+				.Class(className)
+				.Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
+				.Attribute("rel", node.Path)
+				.Attribute("data-id", item.ID.ToString())
+				.Attribute("data-type", item.GetType().Name)
+				.Attribute("data-path", item.Path)
+				.Attribute("data-url", item.Url)
+				.Attribute("data-page", item.IsPage.ToString().ToLower())
+				.Attribute("data-zone", item.ZoneName);
+
+			builder.Href(node.PreviewUrl);
 
 			return builder;
 		}

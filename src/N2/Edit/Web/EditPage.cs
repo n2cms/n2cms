@@ -24,8 +24,9 @@ namespace N2.Edit.Web
 		protected override void OnInit(EventArgs e)
 		{
 			RegisterScripts();
-            RegisterThemeCss();
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+			RegisterToolbarSelection();
+			RegisterThemeCss();
+			Response.Cache.SetCacheability(HttpCacheability.NoCache);
 			Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
 
             base.OnInit(e);
@@ -59,18 +60,21 @@ namespace N2.Edit.Web
 		{
 			Register.JQuery(this);
 			Register.JQueryPlugins(this);
+		}
 
-			// select toolbar
-			foreach(ToolbarPluginAttribute toolbarPlugin in GetType().GetCustomAttributes(typeof(ToolbarPluginAttribute), true))
+		/// <summary>Selects a toolbar item in the top frame</summary>
+		protected virtual void RegisterToolbarSelection()
+		{
+			foreach (ToolbarPluginAttribute toolbarPlugin in GetType().GetCustomAttributes(typeof(ToolbarPluginAttribute), true))
 			{
-				string script = GetToolbarSelectScript(toolbarPlugin);
+				string script = GetToolbarSelectScript(toolbarPlugin.Name);
 				Register.JavaScript(this, script, ScriptPosition.Bottom, ScriptOptions.ScriptTags);
 			}
 		}
 
-		protected virtual string GetToolbarSelectScript(ToolbarPluginAttribute toolbarPlugin)
+		protected virtual string GetToolbarSelectScript(string toolbarPluginName)
 		{
-			return string.Format("if(window.n2ctx)window.n2ctx.toolbarSelect('{0}');", toolbarPlugin.Name);
+			return string.Format("if(window.n2ctx)window.n2ctx.toolbarSelect('{0}');", toolbarPluginName);
 		}
 
 		protected virtual string CancelUrl()
@@ -192,7 +196,8 @@ if(window.n2ctx){{
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
 		{
-			return Engine.EditManager.GetNavigationUrl(selectedItem);
+			Url url = Engine.EditManager.GetNavigationUrl(selectedItem);
+			return url.AppendQuery("location=content");
 		}
 
 		protected virtual string GetPreviewUrl(ContentItem selectedItem)
@@ -287,12 +292,6 @@ if(window.n2ctx){{
 		}
 
         [Obsolete]
-		protected ContentItem RootNode
-		{
-			get { return Engine.Resolve<Navigator>().Navigate(Path); }
-		}
-
-        [Obsolete]
         public FormsHelper Html
         {
             get { return new FormsHelper(this, Selection.SelectedItem); }
@@ -302,7 +301,21 @@ if(window.n2ctx){{
         protected virtual INode SelectedNode
         {
             get { return Selection.SelectedItem as INode; }
-        }
+		}
+
+		/// <summary>Gets the currently selected item by the tree menu in edit mode.</summary>
+		[Obsolete("Use Selection.SelectedItem")]
+		public virtual ContentItem SelectedItem
+		{
+			get { return Selection.SelectedItem; }
+			set { Selection.SelectedItem = value; }
+		}
+
+		[Obsolete("Use Selection.MemorizedItem")]
+		protected ContentItem MemorizedItem
+		{
+			get { return Selection.MemorizedItem; }
+		}
         #endregion
 
         #region Properties
@@ -321,18 +334,9 @@ if(window.n2ctx){{
             set { selection = value; }
         }
 
-		/// <summary>Gets the currently selected item by the tree menu in edit mode.</summary>
-        [Obsolete("Use Selection.SelectedItem")]
-		public virtual ContentItem SelectedItem
+		protected ContentItem RootNode
 		{
-			get { return Selection.SelectedItem; }
-			set { Selection.SelectedItem = value; }
-		}
-
-        [Obsolete("Use Selection.MemorizedItem")]
-        protected ContentItem MemorizedItem
-		{
-            get { return Selection.MemorizedItem; }
+			get { return Engine.Resolve<Navigator>().Navigate(Path); }
 		}
 
 		#endregion

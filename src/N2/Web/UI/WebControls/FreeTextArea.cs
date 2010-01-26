@@ -65,7 +65,7 @@ namespace N2.Web.UI.WebControls
                 Register.JQueryPlugins(Page);
 
                 string script = string.Format("freeTextArea_init('{0}', {1});",
-					Url.ToAbsolute("~/N2/Files/Selector.aspx"), 
+					Url.Parse("~/N2/Content/Navigation/Tree.aspx").AppendQuery("location=selection"), 
                     GetOverridesJson());
                 Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
             }

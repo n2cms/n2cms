@@ -19,9 +19,9 @@
 	        n2nav.parentInputId = '<%= OpenerInputId %>';
             n2nav.setupLinks('#tree');
 			$("#tree").SimpleTree({
-				success: function(el){
-					n2nav.refreshLinks(el);
-				}
+//				success: function(el){
+//					n2nav.refreshLinks(el);
+//				}
 			});
 		});
     </script>

@@ -38,7 +38,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Url to the page responsible for selecting urls.</summary>
 		public string BrowserUrl
 		{
-			get { return (string)ViewState["BrowserUrl"] ?? N2.Web.Url.ToAbsolute("~/N2/Files/Selector.aspx"); }
+			get { return (string)ViewState["BrowserUrl"] ?? N2.Web.Url.Parse("~/N2/Content/Navigation/Tree.aspx").AppendQuery("location=selection"); }
 			set { ViewState["BrowserUrl"] = value; }
 		}
 
@@ -82,7 +82,7 @@ namespace N2.Web.UI.WebControls
 function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableModes){{
     var tb = document.getElementById(tbId);
     window.open(popupUrl
-				+ '?tbid=' + tbId 
+				+ '&tbid=' + tbId 
 				+ '&defaultMode=' + defaultMode 
 				+ '&availableModes=' + availableModes
 				+ '&selectedUrl=' + encodeURIComponent(tb.value),

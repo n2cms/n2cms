@@ -160,12 +160,12 @@ namespace N2.Edit
 		
 		
 		
-		protected override string GetToolbarSelectScript(ToolbarPluginAttribute toolbarPlugin)
+		protected override string GetToolbarSelectScript(string toolbarPluginName)
 		{
 			if (CreatingNew)
 				return "n2ctx.toolbarSelect('new');";
 
-			return base.GetToolbarSelectScript(toolbarPlugin);
+			return base.GetToolbarSelectScript(toolbarPluginName);
 		}
 
 		private void CheckRelatedVersions(ContentItem item)

@@ -61,6 +61,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
     display:none;
 }
 
+.newSelected .blinds, 
 .editSelected .blinds, 
 .wizardSelected .blinds, 
 .versionsSelected .blinds, 
@@ -68,8 +69,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 .exportimportSelected .blinds, 
 .globalizationSelected .blinds, 
 .linktrackerSelected .blinds,
-.usersSelected .blinds,
-.filemanagerSelected .blinds
+.usersSelected .blinds
 {
     display:block;
 }

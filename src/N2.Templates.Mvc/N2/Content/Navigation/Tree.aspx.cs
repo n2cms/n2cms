@@ -9,7 +9,7 @@ namespace N2.Edit.Navigation
 	{
 		protected override void OnInit(EventArgs e)
 		{
-			if (Request["filter"] == "Files")
+			if (Request["location"] == "files" || Request["location"] == "filesselection")
 			{
 				HierarchyNode<ContentItem> root;
 				
@@ -26,6 +26,7 @@ namespace N2.Edit.Navigation
 				{
 					root = CreateSiteFilesNode(host.CurrentSite);
 				}
+
 				siteTreeView.Nodes = root;
 			}
 			else

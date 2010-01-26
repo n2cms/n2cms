@@ -6,8 +6,9 @@ using N2.Installation;
 namespace N2.Edit.FileSystem.Items
 {
 	[PageDefinition("Directory",
+        IconUrl = "~/N2/Resources/Img/ico/png/folder.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-        IconUrl = "~/N2/Resources/Img/ico/png/folder.png")]
+		SortOrder = 2015)]
     [RestrictParents(typeof(AbstractDirectory))]
     [WithEditableName]
 	[N2.Web.Template("info", "~/N2/Files/FileSystem/Directory.aspx")]

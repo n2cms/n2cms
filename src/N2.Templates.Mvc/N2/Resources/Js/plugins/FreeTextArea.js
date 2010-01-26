@@ -28,7 +28,7 @@ var fileBrowserUrl;
 var srcField;
 function fileBrowserCallBack(field_name, url, destinationType, win) {
     srcField = win.document.forms[0].elements[field_name];
-    var fileSelectorWindow = window.open(fileBrowserUrl + '?availableModes=All&tbid='+ srcField.id +'&destinationType='+ destinationType +'&selectedUrl='+ encodeURIComponent(url), 'FileBrowser', 'height=600,width=400,resizable=yes,status=yes,scrollbars=yes');
+    var fileSelectorWindow = window.open(fileBrowserUrl + '&availableModes=All&tbid='+ srcField.id +'&destinationType='+ destinationType +'&selectedUrl='+ encodeURIComponent(url), 'FileBrowser', 'height=600,width=400,resizable=yes,status=yes,scrollbars=yes');
     fileSelectorWindow.focus();
 }
 function onFileSelected(selectedUrl) {

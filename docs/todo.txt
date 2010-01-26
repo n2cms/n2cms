@@ -1,3 +1,6 @@
+- files & refresh loosing file tree
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
+- http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
 - virtual nodes
 - metablog api
 - url caching too mutch

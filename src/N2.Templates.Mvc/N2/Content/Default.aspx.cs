@@ -34,7 +34,7 @@ namespace N2.Edit
 			catch(Exception ex)
 			{
 				Trace.Write(ex.ToString());
-				Response.Redirect("install/begin/default.aspx");
+				Response.Redirect("../installation/begin/default.aspx");
 			}
 
 			base.OnInit(e);

@@ -12,6 +12,7 @@ namespace N2.Web.UI.WebControls
 			this.CssClass = "fileSelector urlSelector";
 			this.DefaultMode = UrlSelectorMode.Files;
 			this.AvailableModes = UrlSelectorMode.Files;
+			BrowserUrl = N2.Web.Url.Parse("~/N2/Content/Navigation/Tree.aspx").AppendQuery("location=filesselection");
 		}
 	}
 }

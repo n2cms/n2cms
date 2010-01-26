@@ -49,6 +49,7 @@
 			window.n2ctx.hasTop = function() { return true; }
 			window.n2ctx.initToolbar();
 			window.n2ctx.setupToolbar('<%= SelectedPath %>', '<%= ResolveClientUrl(SelectedUrl) %>');
+			window.n2ctx.location = "content";
 
 			window.n2.frameManager.init();
 			jQuery(document).ready(function() {

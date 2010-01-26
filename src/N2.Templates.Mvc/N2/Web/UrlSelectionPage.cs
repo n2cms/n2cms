@@ -36,7 +36,7 @@ namespace N2.Edit.Web
 		}
 		protected string AppendQueryString(string baseUrl)
 		{
-			return baseUrl += "?tbid=" + OpenerInputId
+			return baseUrl += "&tbid=" + OpenerInputId
 				+ "&redirect=false"
 				+ "&defaultMode=" + DefaultMode 
 				+ "&availableModes=" + AvailableModes

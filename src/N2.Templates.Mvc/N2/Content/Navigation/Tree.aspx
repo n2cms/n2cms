@@ -16,7 +16,6 @@
     </head>
 <body class="edit navigation tree">
     <form id="form1" runat="server">
-
         <div id="nav" class="tree nav">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
@@ -52,14 +51,73 @@
         		jQuery("#nav").SimpleTree({
         			success: function(el) {
         				toDraggable(el);
-        				n2nav.refreshLinks(el);
         				setUpContextMenu(el);
         			}
         		});
-        		
+        		jQuery("#nav").click(function(e) {
+        			var $a = $(e.target);
+        			if (!$a.is("a"))
+        				$a = $a.closest("a");
+
+        			if (!$a.is("a"))
+        				return;
+
+        			var handler = n2nav.handlers[$a.attr("data-type")] || n2nav.handlers["fallback"];
+        			handler.call($a[0], e);
+        		});
         		toDraggable(jQuery("#nav li li"));
         	});
         </script>
+        <% if (Request["location"] == "filesselection" || Request["location"] == "contentselection" || Request["location"] == "selection") { %>
+        <script type="text/javascript">
+        	var updateOpenerAndClose = function(e) {
+        		if (window.opener) {
+        			var relativeUrl = $(this).attr("data-url");
+        			if (window.opener.onFileSelected && window.opener.srcField)
+        				window.opener.onFileSelected(relativeUrl);
+        			else
+        				window.opener.document.getElementById('<%= Request["tbid"] %>').value = relativeUrl;
+        			window.close();
+        		}
+        		e.preventDefault();
+        	};
+        	n2nav.handlers["fallback"] = updateOpenerAndClose;
+        </script>
+        <% } %>
+		
+		<% if (Request["location"] == "filesselection") { %>
+        <script type="text/javascript">
+        	n2nav.handlers["fallback"] = function(e) {
+        		e.preventDefault();
+        		if ($(this).attr("data-type") == "File")
+        			updateOpenerAndClose.call(this, e);
+        	};
+        </script>
+    	<% } %>
+		
+		<% if (Request["location"] == "contentselection") { %>
+        <script type="text/javascript">
+			n2nav.handlers["fallback"] = function(e) {
+				e.preventDefault();
+				if ($(this).attr("data-id") != "0")
+					updateOpenerAndClose.call(this, e);
+			};
+        </script>
+    	<% } %>
+		
+		<% if (Request["location"] == "files") { %>
+        <script type="text/javascript">
+        	var fallback = n2nav.handlers["fallback"];
+        	n2nav.handlers["fallback"] = function(e) {
+        		var type = $(this).attr("data-type");
+        		if (type == "File" || type == "Directory" || type == "RootDirectory")
+        			fallback.call(this, e);
+    			else
+    				e.preventDefault();
+        	};
+        </script>
+    	<% } %>
+    	
         <nav:ContextMenu id="cm" runat="server" />
     </form>
 </body>

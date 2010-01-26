@@ -38,6 +38,8 @@ namespace N2.Edit
 		/// <summary>Before the search box, above the tool bar.</summary>
 		Options = 8,
 		/// <summary>Displayed across all management interfaces.</summary>
-		Management = 16
+		Management = 16,
+		/// <summary>Displayed on files.</summary>
+		Files = 32
 	}
 }

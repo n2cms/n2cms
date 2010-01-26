@@ -3,12 +3,14 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Installation;
 using Management.N2.Files;
+using System.Web;
 
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("File",
         IconUrl = "~/N2/Resources/Img/ico/png/page_white.png",
-		InstallerVisibility = InstallerHint.NeverRootOrStartPage)]
+		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
+		SortOrder = 2010)]
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]
 	[N2.Web.Template("info", "~/N2/Files/FileSystem/File.aspx")]
@@ -47,7 +49,7 @@ namespace N2.Edit.FileSystem.Items
 		string url;
 		public override string Url
 		{
-			get { return url ?? (Parent.Url + Name); }
+			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
 		}
 
 		public bool Exists
@@ -64,6 +66,9 @@ namespace N2.Edit.FileSystem.Items
 
 		public void WriteToDisk(Stream stream)
 		{
+			if (!FileSystem.DirectoryExists(Directory.Url))
+				FileSystem.CreateDirectory(Directory.Url);
+
 			FileSystem.WriteFile(Url, stream);
 		}
 
