@@ -7,7 +7,7 @@ using N2.Web;
 
 namespace N2.Edit.FileSystem.Items
 {
-	[Template("info", "~/N2/Content/FileSystem/Directory.aspx")]
+	[Template("info", "~/N2/Files/FileSystem/Directory.aspx")]
 	public class TemporaryRootDirectory : AbstractDirectory
 	{
 		IList<string> configuredFolders;

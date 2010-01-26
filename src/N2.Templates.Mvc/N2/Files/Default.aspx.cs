@@ -8,7 +8,7 @@ using N2.Edit.Web;
 
 namespace Management.N2.Files
 {
-	[ToolbarPlugin("FILES", "filemanager", "Files/Default.aspx", ToolbarArea.Navigation, Targets.Top, "~/N2/Resources/Img/Ico/png/folder.png", 120, 
+	[ToolbarPlugin("FILES", "filemanager", "Files/Default.aspx?selected={selected}", ToolbarArea.Navigation, Targets.Top, "~/N2/Resources/Img/Ico/png/folder.png", 120, 
 		ToolTip = "file manager", 
 		GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage

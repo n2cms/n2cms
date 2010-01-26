@@ -10,11 +10,11 @@ namespace N2.Edit.FileSystem.Items
 		SortOrder = 600, 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
         IconUrl = "~/N2/Resources/Img/ico/png/folder.png",
-		TemplateUrl = "~/N2/Content/FileSystem/Directory.aspx")]
+		TemplateUrl = "~/N2/Files/FileSystem/Directory.aspx")]
     [RestrictParents(typeof(IFileSystemContainer))]
     [ItemAuthorizedRoles("Administrators", "admin")]
     [Editables.EditableFolderPath]
-	[Template("info", "~/N2/Content/FileSystem/Directory.aspx")]
+	[Template("info", "~/N2/Files/FileSystem/Directory.aspx")]
     public class RootDirectory : AbstractDirectory
     {
         public RootDirectory()
