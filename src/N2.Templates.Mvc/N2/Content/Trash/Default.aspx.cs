@@ -15,6 +15,9 @@ namespace N2.Edit.Trash
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
+
+			N2.Resources.Register.JQueryPlugins(Page);
+
 			this.hlCancel.NavigateUrl = N2.Context.UrlParser.StartPage.Url;
 			this.cvRestore.IsValid = true;
 			this.btnClear.Enabled = CurrentItem.Children.Count > 0;
@@ -56,7 +59,7 @@ namespace N2.Edit.Trash
 		}
 
 		#region RegisterRefreshNavigationScript
-		private const string refreshScriptFormat = @"if(window.n2ctx){{window.n2ctx.setupToolbar('{3}');window.n2ctx.refreshNavigation({{ navigationUrl: '{1}', path: '{4}'}});}}";
+		private const string refreshScriptFormat = @"n2ctx.refresh({{ navigationUrl: '{1}', path: '{4}'}});";
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
 		{

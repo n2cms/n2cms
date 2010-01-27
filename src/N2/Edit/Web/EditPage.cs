@@ -123,22 +123,9 @@ namespace N2.Edit.Web
 		}
 
     	#region Refresh Methods
-		private const string RefreshBothFormat = @"
-if(window.n2ctx){{
-	window.n2ctx.setupToolbar('{4}','{2}'); 
-	window.n2ctx.refresh('{1}', '{2}');
-}}";
-
-		private const string RefreshNavigationFormat = @"
-if(window.n2ctx){{
-	window.n2ctx.setupToolbar('{4}','{2}'); 
-	window.n2ctx.refreshNavigation({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}' }});
-}}";
-		private const string RefreshPreviewFormat = @"
-if(window.n2ctx){{
-	window.n2ctx.setupToolbar('{4}','{2}'); 
-	window.n2ctx.refreshPreview('{1}', '{2}');
-}}";
+		private const string RefreshBothFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}' }});";
+		private const string RefreshNavigationFormat = @"if(window.n2ctx) n2ctx.refresh({{ navigationUrl:'{1}', path:'{4}' }});";
+		private const string RefreshPreviewFormat = @"if(window.n2ctx) n2ctx.refresh({{ previewUrl: '{2}', path:'{4}' }});";
 
         protected virtual void Refresh(ContentItem item)
         {
@@ -208,7 +195,7 @@ if(window.n2ctx){{
 		#region Setup Toolbar Methods
 		protected virtual string SetupToolbarScriptFormat
 		{
-			get { return "if(window.n2ctx)window.n2ctx.setupToolbar('{0}','{2}');"; }
+			get { return "n2ctx.update({{ path:'{0}', previewUrl:'{2}'}});"; }
 		}
 
 		protected virtual void RegisterSetupToolbarScript(ContentItem item)

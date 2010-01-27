@@ -1,3 +1,6 @@
+- file manager 
+	- select on refresh
+	- copy generated images
 - http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=103042
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=71522
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825

@@ -259,13 +259,12 @@ window.n2ddcp = new n2DragDrop();
 
 		const string switchScriptFormat = @"
 jQuery(document).ready(function(){{
-    window.n2ctx.setupToolbar('{0}','{1}');
-    window.n2ctx.refreshNavigation({{ navigationUrl: '{2}', path: '{0}' }});
-	if(window.n2ctx.hasTop()){{
-		jQuery('.cpAdminister').hide();
-	}}else{{
-		jQuery('.cpView').hide();
+    if(window.n2ctx){{
+		n2ctx.refresh({{ navigationUrl: '{2}', path: '{0}', force:false }});
+		if(n2ctx.hasTop()) jQuery('.cpAdminister').hide();
+		else jQuery('.cpView').hide();
 	}}
+	if(window.n2SlidingCurtain) n2SlidingCurtain.recalculate();
 }});";
 
 		#endregion

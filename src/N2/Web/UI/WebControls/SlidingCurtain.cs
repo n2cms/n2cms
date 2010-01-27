@@ -33,7 +33,7 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["StyleSheetUrl"] = value; }
 		}
 
-		private static readonly string scriptFormat = "SlidingCurtain('#{0}',{1});";
+		private static readonly string scriptFormat = "n2SlidingCurtain.init('#{0}',{1});";
 
 		protected override void OnPreRender(System.EventArgs e)
 		{

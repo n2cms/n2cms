@@ -61,11 +61,9 @@ n2nav.handlers = {
 //n2nav.targetHandlers["preview"] = function(a,i) {
 //    $(a).addClass("enabled").bind("click", null, n2nav.previewClickHandler);
 //}
-n2nav.setupToolbar = function(path,url){
-    if (window.n2ctx)
-        window.n2ctx.setupToolbar(path,url);
+n2nav.setupToolbar = function(path, url) {
+	n2ctx.update({ path: path, previewUrl: url });
 }
-
 
 
 
@@ -128,8 +126,6 @@ var initn2context = function(w) {
 			if (arguments.length == 0)
 				return this._path;
 
-			window.location.hash = this._path;
-			
 			this._path = value;
 			return this;
 		},
@@ -150,22 +146,26 @@ var initn2context = function(w) {
 			});
 		},
 
+		//		setupToolbar: function(path, url) {
+		//			this.update({ previewUrl: url, path: path });
+		//		},
+
 		// selection memory
-		setupToolbar: function(path, url) {
+		update: function(options) {
 			if (!this.hasTop()) return;
 
-			url = url || this.selectedUrl;
+			options.previewUrl = options.previewUrl || this.selectedUrl;
 			var memory = this.getMemory();
 			var action = this.getAction();
-			this.selectedPath = path;
-			this.selectedUrl = url;
+			this.selectedPath = options.path;
+			this.selectedUrl = options.previewUrl;
 
 			if (typeof (toolbarPlugIns) == "undefined")
 				return;
 			for (var i = 0; i < toolbarPlugIns.length; i++) {
 				var a = w.document.getElementById(toolbarPlugIns[i].linkId);
 				var href = toolbarPlugIns[i].urlFormat;
-				var formats = { url: url, selected: path, memory: memory, action: action };
+				var formats = { url: options.previewUrl, selected: options.path, memory: memory, action: action };
 				for (var key in formats) {
 					var format = "{" + key + "}";
 					if (href.indexOf(format) >= 0 && formats[key] == "null") {
@@ -181,32 +181,34 @@ var initn2context = function(w) {
 
 			}
 		},
-		
-		append: function(url, data){
-			return url + (url.indexOf('?')>=0 ? "&" : "?") + jQuery.param(data); 
+
+		append: function(url, data) {
+			return url + (url.indexOf('?') >= 0 ? "&" : "?") + jQuery.param(data);
 		},
 
-		// update frames
-		refreshNavigation: function(values) {
-			if (!this.hasTop()) return;
-			if (this.path() == values.path) return;
-
-			this.path(values.path);
-
-			var nav = w.document.getElementById("navigationFrame");
-			nav.src = this.append(values.navigationUrl, { location: this.location });
-		},
-		refreshPreview: function(previewUrl) {
+		/// update frames
+		/// * previewUrl: url to load preview frame
+		/// * navigationUrl: url to load navigation frame
+		/// * force: force navigation refresh (default true)
+		/// * path: update path to
+		refresh: function(options) {
+			options = jQuery.extend({ previewUrl: null, navigationUrl: null, force: true }, options);
+			
 			if (this.hasTop()) {
-				var previewFrame = w.document.getElementById("previewFrame");
-				previewFrame.src = previewUrl;
-			} else {
-				window.location = previewUrl;
+				if (options.previewUrl) {
+					var previewFrame = w.document.getElementById("previewFrame");
+					previewFrame.src = options.previewUrl;
+				}
+				if (options.navigationUrl) {
+					var navigationFrame = w.document.getElementById("navigationFrame");
+					navigationFrame.src = this.append(options.navigationUrl, { location: this.location });
+				}
+			} else if (options.previewUrl) {
+				window.location = options.previewUrl;
 			}
-		},
-		refresh: function(navigationUrl, previewUrl) {
-			this.refreshNavigation({ navigationUrl: navigationUrl });
-			this.refreshPreview(previewUrl);
+			if (options.path)
+				this.path(options.path);
+			this.update(options);
 		},
 
 		// toolbar selection

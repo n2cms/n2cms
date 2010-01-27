@@ -19,10 +19,10 @@
 	
 	<script type="text/javascript">
 		window.name = "top";
-		window.n2ctx.hasTop = function() { return true; }
-		window.n2ctx.initToolbar();
-		window.n2ctx.setupToolbar('<%= Selection.SelectedItem.Path %>', '<%= ResolveClientUrl(Selection.SelectedItem.Url) %>');
-		window.n2ctx.location = "files";
+		n2ctx.hasTop = function() { return true; }
+		n2ctx.initToolbar();
+		n2ctx.update({ path: '<%= Selection.SelectedItem.Path %>', previewUrl: '<%= ResolveClientUrl(Selection.SelectedItem.Url) %>' });
+		n2ctx.location = "files";
 		
 		window.n2.frameManager.init();
 		jQuery(document).ready(function() {
