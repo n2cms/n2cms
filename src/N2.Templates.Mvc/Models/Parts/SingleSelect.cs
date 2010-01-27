@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
-using MvcContrib;
-using MvcContrib.UI;
-using MvcContrib.UI.Tags;
+using MvcContrib.FluentHtml.Elements;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
@@ -16,19 +14,9 @@ namespace N2.Templates.Mvc.Models.Parts
 
 		public override IElement CreateHtmlElement()
 		{
-			var list = new RadioList
-			           	{
-			           		Name = ElementID
-			           	};
+			RadioSet radioSet = new RadioSet(ElementID).Options(base.Options, x => x.ID, x => x.Title);
 
-			foreach (var field in base.Options)
-			{
-				var radioField = new RadioField {Id = "ss_el_" + field.ID, Value = field.ID, Label = field.Title};
-
-				list.Add(radioField);
-			}
-
-			return new Element("span", new Hash(@class => "alternatives")) {InnerText = list.ToString()};
+			return new Literal("").Html(radioSet.ToString()).Class("alternatives");
 		}
 
 		public override string GetAnswerText(string value)

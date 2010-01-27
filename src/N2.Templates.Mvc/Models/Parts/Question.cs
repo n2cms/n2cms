@@ -1,4 +1,4 @@
-using MvcContrib.UI;
+using MvcContrib.FluentHtml.Elements;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Mvc.Details;

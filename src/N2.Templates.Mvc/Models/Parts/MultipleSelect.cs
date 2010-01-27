@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
-using MvcContrib;
-using MvcContrib.UI;
-using MvcContrib.UI.Tags;
+using MvcContrib.FluentHtml.Elements;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
@@ -16,19 +14,9 @@ namespace N2.Templates.Mvc.Models.Parts
 
 		public override IElement CreateHtmlElement()
 		{
-			var list = new CheckBoxList
-			           	{
-			           		Name = ElementID
-			           	};
+			var cbl = new CheckBoxList(ElementID).Options(base.Options, x => x.ID, x => x.Title);
 
-			foreach (var field in base.Options)
-			{
-				var radioField = new CheckBoxField {Id = "ms_el_" + field.ID, Value = field.ID, Label = field.Title};
-
-				list.Add(radioField);
-			}
-
-			return new Element("span", new Hash(@class => "alternatives")) {InnerText = list.ToString()};
+			return new Literal("").Html(cbl.ToString()).Class("alternatives");
 		}
 
 		public override string GetAnswerText(string value)

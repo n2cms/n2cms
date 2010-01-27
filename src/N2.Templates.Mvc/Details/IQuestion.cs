@@ -1,4 +1,4 @@
-﻿using MvcContrib.UI;
+﻿using MvcContrib.FluentHtml.Elements;
 
 namespace N2.Templates.Mvc.Details
 {

@@ -1,5 +1,5 @@
 using System;
-using MvcContrib.UI;
+using MvcContrib.FluentHtml.Elements;
 using N2.Details;
 
 namespace N2.Templates.Mvc.Models.Parts
@@ -33,7 +33,7 @@ namespace N2.Templates.Mvc.Models.Parts
 
 		public override IElement CreateHtmlElement()
 		{
-			return new MvcContrib.UI.Tags.TextArea {Id = ElementID, Name = ElementID};
+			return new TextArea(ElementID);
 		}
 	}
 }
