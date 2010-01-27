@@ -35,11 +35,6 @@ namespace MvcTest
 			engine.RegisterControllers(typeof(GlobalApplication).Assembly);
 
 			RegisterRoutes(RouteTable.Routes, engine);
-
-			foreach (var ve in ViewEngines.Engines.Where(ve => ve is N2ViewEngine).ToList())
-			{
-				ViewEngines.Engines.Remove(ve);
-			}
 		}
 
 		public override void Init()

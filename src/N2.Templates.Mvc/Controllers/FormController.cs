@@ -51,7 +51,7 @@ namespace N2.Templates.Mvc.Controllers
 			{
 				sb.AppendFormat("{0}: {1}{2}", q.QuestionText, q.GetAnswerText(collection[q.ElementID]), Environment.NewLine);
 			}
-			var mm = new MailMessage(CurrentItem.MailFrom, CurrentItem.MailTo)
+			var mm = new MailMessage(CurrentItem.MailFrom, CurrentItem.MailTo.Replace(";", ","))
 			         	{
 			         		Subject = CurrentItem.MailSubject,
 			         		Body = sb.ToString()
