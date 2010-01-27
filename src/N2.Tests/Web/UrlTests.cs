@@ -844,6 +844,7 @@ namespace N2.Tests.Web
 		[TestCase("/hello?one=1&two=2", "hello?three=3&four=4", "/hello/hello?one=1&two=2&three=3&four=4")]
 		[TestCase("/n2/", "{selected}", "{selected}")]
 		[TestCase("/n2/", "javascript:alert(1);", "javascript:alert(1);")]
+		[TestCase("/hello", "hello#world", "/hello/hello#world")]
 		public void Combine1(string url1, string url2, string expected)
 		{
 			string result = Url.Combine(url1, url2);

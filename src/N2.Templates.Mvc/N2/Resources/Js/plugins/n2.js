@@ -96,6 +96,7 @@ var initn2context = function(w) {
 
 	w.n2ctx = {
 		selectedPath: "/",
+		_path: "/",
 		selectedUrl: null,
 		memorizedPath: null,
 		actionType: null,
@@ -123,6 +124,15 @@ var initn2context = function(w) {
 		getSelected: function() {
 			return this.selectedPath;
 		},
+		path: function(value) {
+			if (arguments.length == 0)
+				return this._path;
+
+			window.location.hash = this._path;
+			
+			this._path = value;
+			return this;
+		},
 		getSelectedUrl: function() {
 			return this.selectedUrl;
 		},
@@ -144,14 +154,13 @@ var initn2context = function(w) {
 		setupToolbar: function(path, url) {
 			if (!this.hasTop()) return;
 
-			path = encodeURIComponent(path);
 			url = url || this.selectedUrl;
 			var memory = this.getMemory();
 			var action = this.getAction();
 			this.selectedPath = path;
 			this.selectedUrl = url;
-			
-			if (typeof(toolbarPlugIns) == "undefined")
+
+			if (typeof (toolbarPlugIns) == "undefined")
 				return;
 			for (var i = 0; i < toolbarPlugIns.length; i++) {
 				var a = w.document.getElementById(toolbarPlugIns[i].linkId);
@@ -172,12 +181,20 @@ var initn2context = function(w) {
 
 			}
 		},
+		
+		append: function(url, data){
+			return url + (url.indexOf('?')>=0 ? "&" : "?") + jQuery.param(data); 
+		},
 
 		// update frames
-		refreshNavigation: function(navigationUrl) {
+		refreshNavigation: function(values) {
 			if (!this.hasTop()) return;
+			if (this.path() == values.path) return;
+
+			this.path(values.path);
+
 			var nav = w.document.getElementById("navigationFrame");
-			nav.src = navigationUrl;
+			nav.src = this.append(values.navigationUrl, { location: this.location });
 		},
 		refreshPreview: function(previewUrl) {
 			if (this.hasTop()) {
@@ -188,7 +205,7 @@ var initn2context = function(w) {
 			}
 		},
 		refresh: function(navigationUrl, previewUrl) {
-			this.refreshNavigation(navigationUrl);
+			this.refreshNavigation({ navigationUrl: navigationUrl });
 			this.refreshPreview(previewUrl);
 		},
 

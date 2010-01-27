@@ -10,7 +10,7 @@ namespace N2.Edit.FileSystem
     {
 		protected override void RegisterToolbarSelection()
 		{
-			string script = GetToolbarSelectScript("filesPreview");
+			string script = GetToolbarSelectScript("preview");
 			Register.JavaScript(this, script, ScriptPosition.Bottom, ScriptOptions.ScriptTags);
 		}
 

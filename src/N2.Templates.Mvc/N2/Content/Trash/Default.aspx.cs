@@ -56,7 +56,7 @@ namespace N2.Edit.Trash
 		}
 
 		#region RegisterRefreshNavigationScript
-		private const string refreshScriptFormat = @"if(window.n2ctx){{window.n2ctx.setupToolbar('{3}');window.n2ctx.refreshNavigation('{1}');}}";
+		private const string refreshScriptFormat = @"if(window.n2ctx){{window.n2ctx.setupToolbar('{3}');window.n2ctx.refreshNavigation({{ navigationUrl: '{1}', path: '{4}'}});}}";
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
 		{
@@ -69,7 +69,8 @@ namespace N2.Edit.Trash
 				VirtualPathUtility.ToAbsolute("~/N2/Content/Default.aspx"), // 0
 				GetNavigationUrl(item), // 1
 				item.ID, // 2
-				item.FindPath(PathData.DefaultAction).RewrittenUrl // 3
+				item.FindPath(PathData.DefaultAction).RewrittenUrl, // 3
+				item.Path // 4
 				);
 
 			ClientScript.RegisterClientScriptBlock(

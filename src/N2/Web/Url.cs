@@ -451,8 +451,16 @@ namespace N2.Web
 			return new Url(scheme, authority, PathWithoutExtension + extension, query, fragment);
 		}
 
+
+
+		/// <summary>Returns an url with the specified fragment</summary>
+		/// <param name="fragment">The fragment to use in the Url.</param>
+		/// <returns>An url with the given fragment.</returns>
 		public Url SetFragment(string fragment)
 		{
+			if (fragment == null)
+				return this; 
+			
 			return new Url(scheme, authority, path, query, fragment.TrimStart('#'));
 		}
 
@@ -688,7 +696,7 @@ namespace N2.Web
 			Url first = url1;
 			Url second = url2;
 
-			return first.AppendSegment(second.Path).AppendQuery(second.Query);
+			return first.AppendSegment(second.Path).AppendQuery(second.Query).SetFragment(second.Fragment);
 		}
 	}
 }

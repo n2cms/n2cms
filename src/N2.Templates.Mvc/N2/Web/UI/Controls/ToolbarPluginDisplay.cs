@@ -21,7 +21,7 @@ namespace N2.Edit.Web.UI.Controls
 
             foreach (ToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<ToolbarPluginAttribute>(Engine.Resolve<IWebContext>().User))
             {
-                if (plugin.Area != Area)
+                if ((plugin.Area & Area) != Area)
                     continue;
 
                 HtmlGenericControl command = new HtmlGenericControl("div");

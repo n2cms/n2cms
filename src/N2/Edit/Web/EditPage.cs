@@ -132,7 +132,7 @@ if(window.n2ctx){{
 		private const string RefreshNavigationFormat = @"
 if(window.n2ctx){{
 	window.n2ctx.setupToolbar('{4}','{2}'); 
-	window.n2ctx.refreshNavigation('{1}', '{2}');
+	window.n2ctx.refreshNavigation({{ navigationUrl:'{1}', previewUrl:'{2}', path:'{4}' }});
 }}";
 		private const string RefreshPreviewFormat = @"
 if(window.n2ctx){{
@@ -196,8 +196,7 @@ if(window.n2ctx){{
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
 		{
-			Url url = Engine.EditManager.GetNavigationUrl(selectedItem);
-			return url.AppendQuery("location=content");
+			return Engine.EditManager.GetNavigationUrl(selectedItem);
 		}
 
 		protected virtual string GetPreviewUrl(ContentItem selectedItem)
