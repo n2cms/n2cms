@@ -1,4 +1,5 @@
-﻿- Virtual nodes support via VirtualNodeFactory
+﻿- applied meixger's patch #5071: routing multi-language MVC site
+- Virtual nodes support via VirtualNodeFactory
 - Moved down some namespaces (breaking change: Castle, Installation, Mappings)
 - Added NavigationAdapter
 - Refactored adapters (breaking change: [Controller(...)] -> [Adapts(...)], ResolveAdapter(PathData) -> ResolveAdapter(item.GetType()))

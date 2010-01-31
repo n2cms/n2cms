@@ -1,4 +1,4 @@
-- http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=103042
+- navigation selection mvc
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=71522
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
 - http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
