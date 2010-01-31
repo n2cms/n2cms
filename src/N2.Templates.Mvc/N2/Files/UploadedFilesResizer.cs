@@ -38,6 +38,36 @@ namespace N2.Management.Files
 			}
 		}
 
+		void files_FileCopied(object sender, FileEventArgs e)
+		{
+			if (IsResizedPath(e.VirtualPath))
+				return;
+			
+			foreach (ImageSizeElement size in images.Sizes)
+			{
+				Url sourceUrl = e.SourcePath;
+				Url destinationUrl = e.VirtualPath;
+
+				string sourcePath = ImagesUtility.GetResizedPath(sourceUrl, size.Name);
+
+				if (!files.FileExists(sourcePath))
+					continue;
+
+				string destinationPath = ImagesUtility.GetResizedPath(destinationUrl, size.Name);
+				files.CopyFile(sourcePath, destinationPath);
+			}
+		}
+
+		private bool IsResizedPath(string path)
+		{
+			foreach (ImageSizeElement size in images.Sizes)
+			{
+				if (Url.RemoveExtension(path).EndsWith("_" + size.Name))
+					return true;
+			}
+			return false;
+		}
+
 		void files_FileMoved(object sender, FileEventArgs e)
 		{
 			if (!ImagesUtility.IsImagePath(e.VirtualPath))
@@ -78,6 +108,7 @@ namespace N2.Management.Files
 			files.FileWritten += files_FileWritten;
 			files.FileMoved += files_FileMoved;
 			files.FileDeleted += files_FileDeleted;
+			files.FileCopied += files_FileCopied;
 		}
 
 		public void Stop()
@@ -86,8 +117,9 @@ namespace N2.Management.Files
 				return;
 
 			files.FileWritten -= files_FileWritten;
-			files.FileMoved += files_FileMoved;
-			files.FileDeleted += files_FileDeleted;
+			files.FileMoved -= files_FileMoved;
+			files.FileDeleted -= files_FileDeleted;
+			files.FileCopied -= files_FileCopied;
 		}
 
 		#endregion
