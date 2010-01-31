@@ -15,7 +15,7 @@ namespace N2.Tests.Web
 	{
 		FakeRequestLifeCycleHandler handler;
 		IUrlParser parser;
-		RequestDispatcher dispatcher;
+		RequestPathProvider dispatcher;
 		FakeWebContextWrapper webContext;
 		ContentItem root, two, three;
 		CustomExtensionItem one;
@@ -177,8 +177,8 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			dispatcher = new RequestDispatcher(adapterProvider, webContext, parser, errorHandler, config);
-			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, errorHandler);
+			dispatcher = new RequestPathProvider(adapterProvider, webContext, parser, errorHandler, config);
+			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, adapterProvider, errorHandler, new EditSection(), new HostSection());
 		}
 	}
 }

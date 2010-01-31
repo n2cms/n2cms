@@ -41,7 +41,7 @@ namespace N2.Tests.Web
 	public abstract class PartsAdapterTest : ItemPersistenceMockingBase
 	{
 		ContentItem pageItem, customItem, dataItem;
-		IRequestDispatcher dispatcher;
+		IContentAdapterProvider dispatcher;
 		protected IEngine engine;
 
 		public override void SetUp()
@@ -51,7 +51,7 @@ namespace N2.Tests.Web
 			CreateDefaultStructure();
 			
 			((ContentAdapterProvider)engine.Resolve<IContentAdapterProvider>()).Start();
-			dispatcher = engine.Resolve<IRequestDispatcher>();
+			dispatcher = engine.Resolve<IContentAdapterProvider>();
 		}
 
 		// /					pageItem	(PageItem)
@@ -65,7 +65,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanResolve_ZoneAdapter()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem.GetType());
 
 			Assert.That(controller, Is.TypeOf(typeof(PageZoneAdapter)));
 		}
@@ -73,7 +73,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void Retrieves_ItemsInZone()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(customItem);
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(customItem.GetType());
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(customItem, "Zone1");
 
@@ -83,7 +83,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFilter_ItemsInZone()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem.GetType());
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneNone");
 
@@ -93,7 +93,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanAddTo_ItemsInZone()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem.GetType());
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneAll");
 
@@ -103,7 +103,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanResolve_PossibleChildren()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem.GetType());
 
 			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, "Zone1", null);
 

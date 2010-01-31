@@ -20,7 +20,8 @@ namespace N2.Web
 		readonly IWebContext webContext;
 		readonly EventBroker broker;
 		readonly InstallationManager installer;
-		readonly IRequestDispatcher dispatcher;
+		readonly RequestPathProvider dispatcher;
+		readonly IContentAdapterProvider adapters;
 
 		protected bool initialized = false;
 		protected bool checkInstallation = false;
@@ -35,24 +36,14 @@ namespace N2.Web
 		/// <param name="errors"></param>
 		/// <param name="editConfig"></param>
 		/// <param name="hostConfig"></param>
-		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors, EditSection editConfig, HostSection hostConfig)
-            : this(webContext, broker, installer, dispatcher, errors)
+		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, RequestPathProvider dispatcher, IContentAdapterProvider adapters, IErrorHandler errors, EditSection editConfig, HostSection hostConfig)
         {
 			checkInstallation = editConfig.Installer.CheckInstallationStatus;
             installerUrl = editConfig.Installer.InstallUrl;
 			rewriteMethod = hostConfig.Web.Rewrite;
-        }
-
-		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
-		/// <param name="webContext">The web context wrapper.</param>
-		/// <param name="broker"></param>
-		/// <param name="installer"></param>
-		/// <param name="dispatcher"></param>
-		/// <param name="errors"></param>
-		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors)
-		{
 			this.webContext = webContext;
 			this.broker = broker;
+			this.adapters = adapters;
 			this.errors = errors;
 			this.installer = installer;
 			this.dispatcher = dispatcher;
@@ -90,7 +81,7 @@ namespace N2.Web
 			webContext.CurrentPath = dispatcher.GetCurrentPath();
 			if (webContext.CurrentPage != null)
 			{
-				RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
+				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
 				if (adapter != null)
 				{
 					adapter.RewriteRequest(webContext.CurrentPath, rewriteMethod);
@@ -112,7 +103,7 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
+			RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
 			adapter.InjectCurrentPage(webContext.CurrentPath, webContext.Handler);
 		}
 
@@ -120,7 +111,7 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			RequestAdapter adapter = dispatcher.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
+			RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
 			adapter.AuthorizeRequest(webContext.User);
 		}
 

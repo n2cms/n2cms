@@ -9,13 +9,8 @@ namespace N2.Tests.Fakes
 {
 	public class FakeRequestLifeCycleHandler : RequestLifeCycleHandler
 	{
-		public FakeRequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors, EditSection editConfig, HostSection hostConfig)
-			: base(webContext, EventBroker.Instance, installer, dispatcher, errors, editConfig, hostConfig)
-		{
-			initialized = true;
-		}
-		public FakeRequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, IRequestDispatcher dispatcher, IErrorHandler errors)
-			: base(webContext, EventBroker.Instance, installer, dispatcher, errors)
+		public FakeRequestLifeCycleHandler(IWebContext webContext, InstallationManager installer, RequestPathProvider dispatcher, IContentAdapterProvider adapters, IErrorHandler errors, EditSection editConfig, HostSection hostConfig)
+			: base(webContext, EventBroker.Instance, installer, dispatcher, adapters, errors, editConfig, hostConfig)
 		{
 			initialized = true;
 		}

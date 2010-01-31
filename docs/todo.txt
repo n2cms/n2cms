@@ -1,12 +1,11 @@
-- clean up request dispatcher
 - http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=103042
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=71522
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
 - http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
 - metablog api
 - url caching too mutch
-- allow item interaction on other pages than parents
-- msdeploy
+- allow mvc item interaction on other pages than parents
+- msdeploy support
 - default container (put all editables in one container)
 - remove path from adapters
 - lock name on published items

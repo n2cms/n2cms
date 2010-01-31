@@ -384,6 +384,7 @@
     <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />
     <Compile Include="Web\ImageResizeHandler.cs" />
     <Compile Include="Web\ImageResizer.cs" />
+    <Compile Include="Web\RequestPathProvider.cs" />
     <Compile Include="Web\SitesChangedEventArgs.cs" />
     <Compile Include="Workflow\Binding.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />
@@ -552,10 +553,8 @@
     <Compile Include="Engine\IContentAdapter.cs" />
     <Compile Include="Web\IAdapterDescriptor.cs" />
     <Compile Include="Web\IRequestContextAccessor.cs" />
-    <Compile Include="Web\IRequestDispatcher.cs" />
     <Compile Include="Web\DynamicTemplateAttribute.cs" />
     <Compile Include="Web\ErrorHandler.cs" />
-    <Compile Include="Web\RequestDispatcher.cs" />
     <Compile Include="Web\Host.cs" />
     <Compile Include="Web\HtmlFilter.cs" />
     <Compile Include="Web\IClosable.cs" />

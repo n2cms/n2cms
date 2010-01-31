@@ -11,7 +11,7 @@ namespace N2.Web
 	/// controller or additional imprativly using the ConnectControllers method 
 	/// or declarativly using the [Controls] attribute registered.
 	/// </summary>
-	public class RequestDispatcher : IRequestDispatcher
+	public class RequestPathProvider
 	{
 		readonly IContentAdapterProvider adapterProvider;
 		readonly IWebContext webContext;
@@ -22,7 +22,7 @@ namespace N2.Web
 		readonly string[] observedExtensions = new[] { ".aspx" };
 		readonly string[] nonRewritablePaths = new[] {"~/N2/Content/"};
 
-		public RequestDispatcher(IContentAdapterProvider adapterProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
+		public RequestPathProvider(IContentAdapterProvider adapterProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
 		{
 			this.adapterProvider = adapterProvider;
 			this.webContext = webContext;
@@ -40,30 +40,8 @@ namespace N2.Web
 			nonRewritablePaths = config.Web.Urls.NonRewritable.GetPaths(webContext);
 		}
 
-	
-		
-		#region IRequestDispatcher Members
 
-		public T ResolveAdapter<T>(ContentItem item) where T : AbstractContentAdapter
-		{
-			var cache = RequestItem<Dictionary<Type, T>>.Instance;
-			if (cache == null)
-			{
-				RequestItem<Dictionary<Type, T>>.Instance = cache = new Dictionary<Type, T>();
-			}
-
-			Type contentType = item.GetType();
-			T adapter;
-			if (!cache.TryGetValue(contentType, out adapter))
-			{
-				adapter = adapterProvider.ResolveAdapter<T>(contentType);
-			}
-
-			cache[contentType] = adapter;
-			return adapter;
-		}
-
-		public PathData GetCurrentPath()
+		public virtual PathData GetCurrentPath()
 		{
 			Url url = webContext.Url;
 			string path = url.Path;
@@ -77,23 +55,7 @@ namespace N2.Web
 			return data;
 		}
 
-		/// <summary>Resolves the controller for the current Url.</summary>
-		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual T ResolveAdapter<T>() where T : AbstractContentAdapter, new()
-		{
-			T adapter = RequestItem<T>.Instance;
-			if (adapter != null) return adapter;
-
-			var data = GetCurrentPath();
-			adapter = adapterProvider.ResolveAdapter<T>(data.CurrentItem.GetType());
-			
-			RequestItem<T>.Instance = adapter;
-			return adapter;
-		}
-
-		#endregion
-
-		public PathData ResolveUrl(string url)
+		public virtual PathData ResolveUrl(string url)
 		{
 			try
 			{

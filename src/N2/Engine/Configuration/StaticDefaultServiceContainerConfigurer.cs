@@ -58,7 +58,7 @@ namespace N2.Engine.Configuration
 			engine.Container.AddComponent("n2.host", typeof(IHost), typeof(Host));
 			engine.Container.AddComponent("n2.sitesProvider", typeof(ISitesProvider), typeof(DynamicSitesProvider));
 			engine.Container.AddComponent("n2.htmlFilter", typeof(HtmlFilter), typeof(HtmlFilter));
-			engine.Container.AddComponent("n2.requestDispatcher", typeof(IRequestDispatcher), typeof(RequestDispatcher));
+			engine.Container.AddComponent("n2.requestPathAnalyzer", typeof(RequestPathProvider), typeof(RequestPathProvider));
 			engine.Container.AddComponent("n2.ajaxRequestDispatcher", typeof(AjaxRequestDispatcher), typeof(AjaxRequestDispatcher));
 			engine.Container.AddComponent("n2.cacheManager", typeof(ICacheManager), typeof(CacheManager));
 			engine.Container.AddComponent("n2.security", typeof(ISecurityManager), typeof(SecurityManager));

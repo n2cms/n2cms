@@ -55,7 +55,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void CanRetrieve_ImportantServices()
 		{
-			Assert.That(container.Resolve<IRequestDispatcher>(), Is.Not.Null);
+			Assert.That(container.Resolve<RequestPathProvider>(), Is.Not.Null);
 			Assert.That(container.Resolve<IWebContext>(), Is.Not.Null);
 			Assert.That(container.Resolve<IHost>(), Is.Not.Null);
 
