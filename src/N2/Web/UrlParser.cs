@@ -110,7 +110,7 @@ namespace N2.Web
 				}
 			}
 
-			data.HonorExistingFile = !IgnoreExisting(webContext.PhysicalPath);
+			data.Ignore = !IgnoreExisting(webContext.PhysicalPath);
 			return UseItemIfAvailable(item, data);
 		}
 

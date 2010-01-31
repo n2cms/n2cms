@@ -121,7 +121,7 @@ namespace N2.Web
 		public IDictionary<string, string> QueryParameters { get; set; }
 		
 		/// <summary>Indicates that an existing file handle this path and it shouldn't be rewritten.</summary>
-		public bool HonorExistingFile { get; set; }
+		public bool Ignore { get; set; }
 		
 		/// <summary>Indicates that this path shouldn't be rewritten.</summary>
 		public bool IsRewritable { get; set; }
@@ -159,6 +159,7 @@ namespace N2.Web
 		public virtual PathData Detach()
 		{
 			PathData data = new PathData(ID, Path, TemplateUrl, Action, Argument);
+			data.Ignore = Ignore;
 			data.QueryParameters = new Dictionary<string, string>(data.QueryParameters);
 			return data;
 		}
@@ -170,6 +171,7 @@ namespace N2.Web
 		{
 			ContentItem item = persister.Repository.Load(ID);
 			PathData data = new PathData(item, TemplateUrl, Action, Argument);
+			data.Ignore = Ignore;
 			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
 			return data;
 		}

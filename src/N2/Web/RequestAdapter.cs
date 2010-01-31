@@ -36,7 +36,7 @@ namespace N2.Web
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		public virtual void RewriteRequest(PathData path, RewriteMethod rewriteMethod)
 		{
-			if (path == null || path.IsEmpty() || !path.IsRewritable || path.HonorExistingFile)
+			if (path == null || path.IsEmpty() || !path.IsRewritable || path.Ignore)
 				return;
 			
 			string templateUrl = GetHandlerPath(path);

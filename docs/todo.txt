@@ -3,7 +3,6 @@
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
 - http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
 - metablog api
-- url caching too mutch
 - allow mvc item interaction on other pages than parents
 - msdeploy support
 - default container (put all editables in one container)
