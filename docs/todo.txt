@@ -1,9 +1,9 @@
-- navigation selection mvc
-- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=71522
+- add metablog support
+- MVC: show deeper page structures
+- MVC: new skin
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
 - http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
-- metablog api
-- allow mvc item interaction on other pages than parents
+- MVC: allow item interaction on other pages than immediate parent
 - msdeploy support
 - default container (put all editables in one container)
 - remove path from adapters
@@ -16,7 +16,6 @@
 	/n2/users/
 	/n2/myself/
 - stack overflow mvc: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=80172
-- image resize on upload
 - mvc in sub-app with no ending slash
 - content aspects (ContentPart, children->pages+parts, n2parts)
 - Parts/Pages

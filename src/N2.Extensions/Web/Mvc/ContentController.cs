@@ -56,7 +56,8 @@ namespace N2.Web.Mvc
 			get
 			{
 				return ControllerContext.RequestContext.CurrentPage<ContentItem>()
-					?? CurrentItem.ClosestPage();
+					?? CurrentItem.ClosestPage()
+					?? Engine.UrlParser.CurrentPage;
 			}
 		}
 

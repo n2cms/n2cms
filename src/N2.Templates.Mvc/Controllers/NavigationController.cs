@@ -20,9 +20,9 @@ namespace N2.Templates.Mvc.Controllers
 		public PartialViewResult TopMenu()
 		{
             // Top menu for the current language starts at the nearest language root
-            ContentItem branchRoot = Find.ClosestLanguageRoot; 
-
-            var model = new TopMenuModel(GetTranslations(), branchRoot, branchRoot
+            ContentItem branchRoot = Find.ClosestLanguageRoot;
+			var selected = Find.AncestorAtLevel(2, Find.EnumerateParents(CurrentPage, branchRoot, true), CurrentPage);
+			var model = new TopMenuModel(GetTranslations(), selected, branchRoot
 			                                                            	.GetChildren(new NavigationFilter())
 			                                                            	.OrderBy(i => i.SortOrder));
 
@@ -46,13 +46,14 @@ namespace N2.Templates.Mvc.Controllers
 
 		public PartialViewResult SubMenu()
 		{
-			ContentItem branchRoot = Find.AncestorAtLevel(2, Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList(),
-			                                              N2.Find.CurrentPage);
+			ContentItem startPage = Find.ClosestLanguageRoot;
+			var ancestors = Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList();
+			ContentItem branchRoot = Find.AncestorAtLevel(2, ancestors, N2.Find.CurrentPage);
 			var model = new SubMenuModel();
 
-			if (branchRoot != null && branchRoot.GetChildren(new NavigationFilter()).Count > 0)
+			if (branchRoot != null && !startPage.Equals(CurrentPage) && branchRoot.GetChildren(new NavigationFilter()).Count > 0)
 			{
-				model.CurrentItem = N2.Find.CurrentPage;
+				model.CurrentItem = Find.AncestorAtLevel(3, ancestors, CurrentPage) ?? CurrentPage;
 				model.BranchRoot = branchRoot;
 				model.Items = branchRoot.GetChildren(new NavigationFilter());
 			}
