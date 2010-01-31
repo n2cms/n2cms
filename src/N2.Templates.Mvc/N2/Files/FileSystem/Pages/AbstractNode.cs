@@ -2,6 +2,7 @@
 using N2.Persistence;
 using N2.Web;
 using Management.N2.Files;
+using System;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -54,9 +55,10 @@ namespace N2.Edit.FileSystem.Items
             {
                 return true;
             }
-            AbstractNode otherNode = obj as AbstractNode;
-            return otherNode != null && Url == otherNode.Url;
-        }
+            AbstractNode other = obj as AbstractNode;
+			return other != null
+				&& string.Equals(other.Path, this.Path, StringComparison.InvariantCultureIgnoreCase);
+		}
 
         public override int GetHashCode()
         {

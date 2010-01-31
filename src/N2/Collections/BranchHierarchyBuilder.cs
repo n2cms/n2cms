@@ -57,7 +57,7 @@ namespace N2.Collections
 
 				foreach (ContentItem childItem in GetChildren(currentItem))
 				{
-					if (previousNode != null && previousNode.Current == childItem)
+					if (previousNode != null && childItem.Equals(previousNode.Current))
 					{
 						currentNode.Children.Add(previousNode);
 					}
