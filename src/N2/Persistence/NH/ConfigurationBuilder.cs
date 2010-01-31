@@ -26,7 +26,7 @@ namespace N2.Persistence.NH
 		IDictionary<string, string> properties = new Dictionary<string, string>();
 		IList<Assembly> assemblies = new List<Assembly>();
 		IList<string> mappingNames = new List<string>();
-		string defaultMapping = "N2.Mappings.Default.hbm.xml,N2";
+		string defaultMapping = "N2.Persistence.NH.Mappings.Default.hbm.xml,N2";
 		string tablePrefix = "n2";
 		int batchSize = 25;
 		string childrenLaziness = "extra";

@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using N2.Engine;
 using N2.Engine.MediumTrust;
-using N2.Castle;
+using N2.Engine.Castle;
 using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Details;

@@ -13,7 +13,7 @@ using N2.Engine;
 using N2.Engine.Configuration;
 using N2.Plugin;
 
-namespace N2.Castle
+namespace N2.Engine.Castle
 {
 	/// <summary>
 	/// Wraps usage of the Castle Windsor inversion of control container.

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace N2.Installation
+namespace N2.Edit.Installation
 {
 	public enum SqlServerType
 	{

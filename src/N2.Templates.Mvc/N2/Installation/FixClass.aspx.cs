@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using N2.Installation;
 using N2.Web;
+using N2.Edit.Installation;
 
 namespace N2.Edit.Install
 {

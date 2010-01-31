@@ -6,7 +6,7 @@ using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
 using N2.Engine.MediumTrust;
-using N2.Castle;
+using N2.Engine.Castle;
 
 namespace N2.Tests.Engine
 {

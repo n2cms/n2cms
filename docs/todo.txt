@@ -1,3 +1,4 @@
+- clean up request dispatcher
 - file manager 
 	- select on refresh
 	- copy generated images

@@ -1,4 +1,9 @@
-﻿- Auto-resize of uploaded images (<n2><edit><images><sizes><add name="x" width="123" height="123")
+﻿- Moved down some namespaces (breaking change: Castle, Installation, Mappings)
+- Implemented virtual directory nodes via navigation adapter
+- Added NavigationAdapter
+- Refactored adapters (breaking change: [Controller(...)] -> [Adapts(...)], ResolveAdapter(PathData) -> ResolveAdapter(item.GetType()))
+- Changed HierarchyBuilder to use delegate rather than filter to control children to get
+- Auto-resize of uploaded images (<n2><edit><images><sizes><add name="x" width="123" height="123")
 - First step at refurbishing file manager
 - New concept: virtual nodes
 - added events to IFileSystem (breaking for file custom file systems implementators)

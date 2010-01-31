@@ -1,6 +1,6 @@
 using System;
 
-namespace N2.Installation
+namespace N2.Edit.Installation
 {
 	/// <summary>
 	/// Summarizes database status.

@@ -19,6 +19,7 @@ using N2.Web.UI;
 using N2.Workflow;
 using NHibernate;
 using NHibernate.Cfg;
+using N2.Edit.Installation;
 
 namespace N2.Engine.Configuration
 {

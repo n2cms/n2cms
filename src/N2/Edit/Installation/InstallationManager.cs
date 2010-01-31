@@ -18,8 +18,9 @@ using Environment=NHibernate.Cfg.Environment;
 using N2.Persistence;
 using NHibernate.SqlTypes;
 using System.Diagnostics;
+using N2.Installation;
 
-namespace N2.Installation
+namespace N2.Edit.Installation
 {
     /// <summary>
     /// Wraps functionality to request database status and generate n2's 

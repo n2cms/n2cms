@@ -6,6 +6,7 @@ using N2.Configuration;
 using N2.Installation;
 using N2.Web.UI;
 using N2.Plugin;
+using N2.Edit.Installation;
 
 namespace N2.Web
 {

@@ -10,6 +10,7 @@ using System.Web;
 using System.IO;
 using System.Web.Configuration;
 using N2.Configuration;
+using N2.Edit.Installation;
 
 namespace N2.Edit.Install
 {

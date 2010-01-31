@@ -9,6 +9,7 @@ using NHibernate;
 using N2.Security;
 using N2.Persistence.NH;
 using N2.Installation;
+using N2.Edit.Installation;
 
 namespace N2.Web
 {

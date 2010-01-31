@@ -17,6 +17,7 @@ using N2.Definitions;
 using N2.Installation;
 using N2.Web;
 using N2.Engine;
+using N2.Edit.Installation;
 
 namespace N2.Edit.Install
 {

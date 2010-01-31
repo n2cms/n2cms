@@ -7,7 +7,7 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Engine.Configuration;
 
-namespace N2.Castle
+namespace N2.Engine.Castle
 {
 	public class CastleServiceContainerConfigurer : IServiceContainerConfigurer
 	{
