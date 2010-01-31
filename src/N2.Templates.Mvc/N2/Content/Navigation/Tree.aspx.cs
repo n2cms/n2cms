@@ -52,7 +52,7 @@ namespace N2.Edit.Navigation
 
 			HierarchyNode<ContentItem> node = new HierarchyNode<ContentItem>(siteNode);
 			foreach (DirectoryData dir in Engine.Resolve<IContentAdapterProvider>()
-				.ResolveAdapter<NavigationAdapter>(siteNode.GetType())
+				.ResolveAdapter<NodeAdapter>(siteNode.GetType())
 				.GetUploadDirectories(siteNode))
 			{
 				node.Children.Add(new HierarchyNode<ContentItem>(new Directory(dir, siteNode)));

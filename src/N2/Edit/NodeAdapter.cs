@@ -1,21 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Engine;
+﻿using System.Collections.Generic;
+using System.Security.Principal;
 using N2.Collections;
-using N2.Web;
 using N2.Edit.FileSystem;
+using N2.Engine;
+using N2.Web;
 using N2.Workflow;
+using N2.Security;
 
 namespace N2.Edit
 {
 	[Adapts(typeof(ContentItem))]
-	public class NavigationAdapter : AbstractContentAdapter
+	public class NodeAdapter : AbstractContentAdapter
 	{
 		IEditManager editManager;
+		IWebContext webContext;
 		IHost host;
 		IFileSystem fileSystem;
+		VirtualNodeFactory nodeFactory;
+		ISecurityManager security;
+
+		public ISecurityManager Security
+		{
+			get { return security ?? Engine.Resolve<ISecurityManager>(); }
+			set { security = value; }
+		}
+
+		public IWebContext WebContext
+		{
+			get { return webContext ?? Engine.Resolve<IWebContext>(); }
+			set { webContext = value; }
+		}
+
+		public VirtualNodeFactory NodeFactory
+		{
+			get { return nodeFactory ?? Engine.Resolve<VirtualNodeFactory>(); }
+			set { nodeFactory = value; }
+		}
 
 		public IFileSystem FileSystem
 		{
@@ -35,13 +55,13 @@ namespace N2.Edit
 			set { editManager = value; }
 		}
 
-		/// <summary>Gets the filter used to filter child pages.</summary>
-		/// <param name="user">The user to filter pages for.</param>
-		/// <returns>An item filter used when filtering children to display.</returns>
-		public virtual ItemFilter GetChildFilter(System.Security.Principal.IPrincipal user)
-		{
-			return EditManager.GetEditorFilter(user);
-		}
+		///// <summary>Gets the filter used to filter child pages.</summary>
+		///// <param name="user">The user to filter pages for.</param>
+		///// <returns>An item filter used when filtering children to display.</returns>
+		//public virtual ItemFilter GetManagementFilter()
+		//{
+		//    return EditManager.GetEditorFilter(webContext.User);
+		//}
 
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(ContentItem startPage)
 		{
@@ -65,7 +85,17 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
 		{
-			return parent.GetChildren();
+			foreach (var child in parent.GetChildren(new AccessFilter(webContext.User, security)))
+			{
+				yield return child;
+			}
+			if (Interfaces.Managing == userInterface)
+			{
+				foreach (var child in NodeFactory.FindChildren(parent.Path))
+				{
+					yield return child;
+				}
+			}
 		}
 	}
 }

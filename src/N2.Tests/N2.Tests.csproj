@@ -157,9 +157,11 @@
     <Compile Include="Edit\FileSystem\DefaultFolderFinderTest.cs" />
     <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />
     <Compile Include="Edit\Items\NotVersionableItem.cs" />
+    <Compile Include="Edit\NodeAdapterTests.cs" />
     <Compile Include="Edit\WhileDealingWithVersions.cs" />
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
+    <Compile Include="Fakes\FakeFileSystem2.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />

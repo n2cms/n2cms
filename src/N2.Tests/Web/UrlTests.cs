@@ -493,6 +493,32 @@ namespace N2.Tests.Web
 			Assert.That(u.ToString(), Is.EqualTo("/"));
 		}
 
+		[TestCase("/hello/world.aspx", "/hello/")]
+		[TestCase("/hello/world/", "/hello/")]
+		[TestCase("/hello.aspx", "/")]
+		[TestCase("/hello/", "/")]
+		[TestCase("/", "")]
+		[TestCase("", null)]
+		public void CanRemove_LastSegment(string input, string expected)
+		{
+			string result = Url.RemoveLastSegment(input);
+
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
+		[TestCase("/hello/world.aspx", "world.aspx")]
+		[TestCase("/hello/world/", "world")]
+		[TestCase("/hello.aspx", "hello.aspx")]
+		[TestCase("/hello/", "hello")]
+		[TestCase("/", "")]
+		[TestCase("", null)]
+		public void CanGet_Name(string input, string expected)
+		{
+			string result = Url.GetName(input);
+
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
 		[Test]
 		public void CanRemove_SegmentIndex0()
 		{

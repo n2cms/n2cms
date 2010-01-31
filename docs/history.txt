@@ -1,5 +1,5 @@
-﻿- Moved down some namespaces (breaking change: Castle, Installation, Mappings)
-- Implemented virtual directory nodes via navigation adapter
+﻿- Virtual nodes support via VirtualNodeFactory
+- Moved down some namespaces (breaking change: Castle, Installation, Mappings)
 - Added NavigationAdapter
 - Refactored adapters (breaking change: [Controller(...)] -> [Adapts(...)], ResolveAdapter(PathData) -> ResolveAdapter(item.GetType()))
 - Changed HierarchyBuilder to use delegate rather than filter to control children to get

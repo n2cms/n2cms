@@ -666,6 +666,50 @@ namespace N2.Web
 			return new Url(scheme, authority, newPath, query, fragment);
 		}
 
+		/// <summary>Removes the last segment from a path, e.g. "/hello/world" -> "/hello/"</summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static string RemoveLastSegment(string path)
+		{
+			if (string.IsNullOrEmpty(path))
+				return null;
+			
+			int slashIndex = GetLastSignificatSlash(path);
+			return path.Substring(0, slashIndex + 1);
+		}
+
+		/// <summary>Gets the last segment of a path, e.g. "/hello/world/" -> "world"</summary>
+		/// <param name="path">The path whose name to get.</param>
+		/// <returns>The name of the path or empty.</returns>
+		public static string GetName(string path)
+		{
+			if (string.IsNullOrEmpty(path))
+				return null;
+
+			int slashIndex = GetLastSignificatSlash(path);
+			int lastSlashIndex = path.LastIndexOf('/');
+			if (lastSlashIndex == slashIndex)
+				return path.Substring(slashIndex + 1);
+
+			return path.Substring(slashIndex + 1, lastSlashIndex - slashIndex - 1);
+		}
+
+		private static int GetLastSignificatSlash(string path)
+		{
+			int i = path.Length - 1;
+			for (; i >= 0; i--)
+			{
+				if (path[i] != '/')
+					break;
+			}
+			for (; i >= 0; i--)
+			{
+				if (path[i] == '/')
+					break;
+			}
+			return i;
+		}
+
         public string Encode()
         {
             return ToString().Replace(Amp, "&amp;");

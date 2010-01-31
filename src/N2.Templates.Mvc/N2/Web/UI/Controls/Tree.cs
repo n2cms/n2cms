@@ -69,7 +69,7 @@ namespace N2.Edit.Web.UI.Controls
 
 			if (Nodes == null)
 				Nodes = new BranchHierarchyBuilder(SelectedItem, RootNode, true)
-					.Children((item) => adapters.ResolveAdapter<NavigationAdapter>(item.GetType()).GetChildren(item, Interfaces.Managing))
+					.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item.GetType()).GetChildren(item, Interfaces.Managing))
 					.Build();
 
 			var tree = new N2.Web.Tree(Nodes)

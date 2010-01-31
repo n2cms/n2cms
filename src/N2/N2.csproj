@@ -376,8 +376,9 @@
     <Compile Include="Edit\Installation\InstallationManager.cs" />
     <Compile Include="Edit\Installation\InstallerHint.cs" />
     <Compile Include="Edit\Installation\SqlServerType.cs" />
-    <Compile Include="Edit\NavigationAdapter.cs" />
+    <Compile Include="Edit\NodeAdapter.cs" />
     <Compile Include="Edit\VirtualNodeFactory.cs" />
+    <Compile Include="Edit\NodeFactoryDelegate.cs" />
     <Compile Include="Engine\AdaptsAttribute.cs" />
     <Compile Include="Engine\Castle\CastleServiceContainerConfigurer.cs" />
     <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />

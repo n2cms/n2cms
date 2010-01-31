@@ -9,31 +9,64 @@ namespace N2.Edit
 	[Service]
 	public class VirtualNodeFactory
 	{
-		Dictionary<string, Function<string, ContentItem>> pathToFactory = new Dictionary<string, Function<string, ContentItem>>(StringComparer.InvariantCultureIgnoreCase);
+		Dictionary<string, NodeFactoryInfo> pathToFactoryMap = new Dictionary<string, NodeFactoryInfo>(StringComparer.InvariantCultureIgnoreCase);
+		static string EmptyPath = string.Empty;
 
 		public virtual ContentItem FindNode(string path)
 		{
-			if (pathToFactory.ContainsKey(path))
-				return pathToFactory[path]("");
+			var map = pathToFactoryMap;
 
-			foreach (var pair in pathToFactory)
+			if (map.ContainsKey(path))
+				return map[path].FactoryMethod(EmptyPath);
+
+			foreach (var info in map.Values)
 			{
-				if (path.StartsWith(pair.Key, StringComparison.InvariantCultureIgnoreCase))
-					return pair.Value(path.Substring(pair.Key.Length));
+				if (path.StartsWith(info.Path, StringComparison.InvariantCultureIgnoreCase))
+					return info.FactoryMethod(path.Substring(info.Path.Length));
 			}
 
 			return null;
 		}
 
-		public void Register(string path, Function<string, ContentItem> factoryMethod)
+		public virtual IEnumerable<ContentItem> FindChildren(string path)
 		{
-			pathToFactory[path] = factoryMethod;
+			foreach (var info in pathToFactoryMap.Values)
+			{
+				if (string.Equals(info.ParentPath, path, StringComparison.InvariantCultureIgnoreCase))
+					yield return info.FactoryMethod(EmptyPath);
+			}
 		}
 
-		public void Unregister(string path)
+		public virtual void Register(string path, NodeFactoryDelegate factoryMethod)
 		{
-			if(pathToFactory.ContainsKey(path))
-				pathToFactory.Remove(path);
+			var next = new Dictionary<string, NodeFactoryInfo>(pathToFactoryMap, StringComparer.InvariantCultureIgnoreCase);
+			next[path] = new NodeFactoryInfo(path, factoryMethod);
+			pathToFactoryMap = next;
+		}
+
+		public virtual void Unregister(string path)
+		{
+			var next = new Dictionary<string, NodeFactoryInfo>(pathToFactoryMap, StringComparer.InvariantCultureIgnoreCase);
+
+			if (next.ContainsKey(path))
+			{
+				next.Remove(path);
+				pathToFactoryMap = next;
+			}
+		}
+
+		class NodeFactoryInfo
+		{
+			public NodeFactoryInfo(string path, NodeFactoryDelegate factoryMethod)
+			{
+				Path = path;
+				ParentPath = N2.Web.Url.RemoveLastSegment(Path);
+				FactoryMethod = factoryMethod;
+			}
+
+			public NodeFactoryDelegate FactoryMethod { get; set; }
+			public string Path { get; set; }
+			public string ParentPath { get; set; }
 		}
 	}
 }
