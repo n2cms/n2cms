@@ -2,6 +2,8 @@ using System;
 using N2.Collections;
 using N2.Edit.FileSystem.Items;
 using N2.Web;
+using N2.Engine;
+using N2.Edit.FileSystem;
 
 namespace N2.Edit.Navigation
 {
@@ -14,9 +16,11 @@ namespace N2.Edit.Navigation
 				HierarchyNode<ContentItem> root;
 				
 				IHost host = Engine.Resolve<IHost>();
-				if (host.Sites.Count > 1)
+				if (host.Sites.Count > 0)
 				{
 					root = new HierarchyNode<ContentItem>(Engine.Persister.Get(host.DefaultSite.RootItemID));
+
+					root.Children.Add(CreateSiteFilesNode(host.DefaultSite));
 					foreach (var site in host.Sites)
 					{
 						root.Children.Add(CreateSiteFilesNode(site));
@@ -45,22 +49,16 @@ namespace N2.Edit.Navigation
 		private HierarchyNode<ContentItem> CreateSiteFilesNode(Site site)
 		{
 			var siteNode = Engine.Persister.Get(site.StartPageID);
-			HierarchyNode<ContentItem> node = new HierarchyNode<ContentItem>(siteNode);
-			foreach (string uploadFolder in site.UploadFolders)
-			{
-				node.Children.Add(CreateDirectory(uploadFolder, siteNode));
-			}
-			foreach (string uploadFolder in Engine.EditManager.UploadFolders)
-			{
-				node.Children.Add(CreateDirectory(uploadFolder, siteNode));
-			}
-			return node;
-		}
 
-		private HierarchyNode<ContentItem> CreateDirectory(string uploadFolder, ContentItem siteNode)
-		{
-			var dir = Engine.Resolve<N2.Edit.FileSystem.IFileSystem>().GetDirectory(uploadFolder);
-			return new HierarchyNode<ContentItem>(new Directory(dir, siteNode));
+			HierarchyNode<ContentItem> node = new HierarchyNode<ContentItem>(siteNode);
+			foreach (DirectoryData dir in Engine.Resolve<IContentAdapterProvider>()
+				.ResolveAdapter<NavigationAdapter>(siteNode.GetType())
+				.GetUploadDirectories(siteNode))
+			{
+				node.Children.Add(new HierarchyNode<ContentItem>(new Directory(dir, siteNode)));
+			}
+
+			return node;
 		}
 	}
 }

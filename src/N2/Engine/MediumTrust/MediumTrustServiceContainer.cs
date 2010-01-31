@@ -90,6 +90,28 @@ namespace N2.Engine.MediumTrust
 			throw new N2Exception("Couldn't find any service of the type " + serviceType);
 		}
 
+		/// <summary>Resolves all services serving the given interface.</summary>
+		/// <param name="serviceType">The type of service to resolve.</param>
+		/// <returns>All services registered to serve the provided interface.</returns>
+		public override Array ResolveAll(Type serviceType)
+		{
+			if (!container.ContainsKey(serviceType) && !resolvers.ContainsKey(serviceType))
+				return new object[0];
+			
+			return new object[] { Resolve(serviceType) };
+		}
+
+		/// <summary>Resolves all services of the given type.</summary>
+		/// <typeparam name="T">The type of service to resolve.</typeparam>
+		/// <returns>All services registered to serve the provided interface.</returns>
+		public override T[] ResolveAll<T>()
+		{
+			if(!container.ContainsKey(typeof(T)) && !resolvers.ContainsKey(typeof(T)))
+				return new T[0];
+
+			return new T[] { Resolve<T>() };
+		}
+
 		public override void Release(object instance)
 		{
 			foreach (var pair in container)

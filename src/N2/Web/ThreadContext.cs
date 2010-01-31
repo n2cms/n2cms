@@ -18,7 +18,6 @@ namespace N2.Web
 
     	[ThreadStatic] ContentItem currentPage;
     	[ThreadStatic] PathData currentPath;
-		[ThreadStatic] RequestAdapter currentController;
 		[ThreadStatic] static IDictionary items;
     	[ThreadStatic] Url localUrl = new Url("/");
     	[ThreadStatic] Url url = new Url("http://localhost");
@@ -69,18 +68,6 @@ namespace N2.Web
 			}
 		}
 
-		public RequestAdapter CurrentController
-		{
-			get { return currentController; }
-			set
-			{
-				currentController = value; 
-				if (value != null) 
-					CurrentPath = value.Path;
-				else
-					CurrentPath = null;
-			}
-		}
 		public virtual void Close()
         {
             string[] keys = new string[RequestItems.Keys.Count];

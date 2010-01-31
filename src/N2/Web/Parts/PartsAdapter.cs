@@ -12,7 +12,7 @@ namespace N2.Web.Parts
 	/// <summary>
 	/// Adapts operations related to zones, zone definitions, and items to display in a zone.
 	/// </summary>
-	[Controls(typeof(ContentItem))]
+	[Adapts(typeof(ContentItem))]
 	public class PartsAdapter : AbstractContentAdapter
 	{
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>

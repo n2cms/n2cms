@@ -8,8 +8,12 @@ namespace N2.Web
 	/// </summary>
 	public interface IRequestDispatcher
 	{
-		/// <summary>Resolves the controller for the current Url.</summary>
-		/// <returns>A suitable controller for the given Url.</returns>
-		T ResolveAdapter<T>() where T : class, IContentAdapter;
+		/// <summary>Resolves the adapter for the current Url.</summary>
+		/// <returns>A suitable adapter for the current Url.</returns>
+		T ResolveAdapter<T>(ContentItem item) where T : AbstractContentAdapter;
+
+		/// <summary>Resolves the adapter for the current Url.</summary>
+		/// <returns>A suitable adapter for the current Url.</returns>
+		PathData GetCurrentPath();
 	}
 }

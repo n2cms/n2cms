@@ -8,6 +8,8 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using System.Security.Principal;
+using N2.Engine;
+using N2.Workflow;
 
 namespace N2.Edit.Web.UI.Controls
 {
@@ -17,6 +19,7 @@ namespace N2.Edit.Web.UI.Controls
 		ContentItem rootItem = null;
 		ItemFilter filter = null;
 		string target = Targets.Preview;
+		IEngine engine;
 
 		public Tree()
 		{
@@ -48,6 +51,12 @@ namespace N2.Edit.Web.UI.Controls
 			set { target = value; }
 		}
 
+		public IEngine Engine
+		{
+			get { return engine ?? (engine = N2.Context.Current); }
+			set { engine = value; }
+		}
+
 		public override void DataBind()
 		{
 			EnsureChildControls();
@@ -56,11 +65,14 @@ namespace N2.Edit.Web.UI.Controls
 
 		protected override void CreateChildControls()
 		{
-			HierarchyBuilder builder = Nodes != null 
-				? (HierarchyBuilder)new StaticHierarchyBuilder(Nodes) 
-				: new BranchHierarchyBuilder(SelectedItem, RootNode, true);
+			IContentAdapterProvider adapters = Engine.Resolve<IContentAdapterProvider>();
 
-			var tree = new N2.Web.Tree(builder)
+			if (Nodes == null)
+				Nodes = new BranchHierarchyBuilder(SelectedItem, RootNode, true)
+					.Children((item) => adapters.ResolveAdapter<NavigationAdapter>(item.GetType()).GetChildren(item, Interfaces.Managing))
+					.Build();
+
+			var tree = new N2.Web.Tree(Nodes)
 				.OpenTo(SelectedItem)
 				.Filters(Filter)
 				.LinkProvider(BuildLink)

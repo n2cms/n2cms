@@ -2,13 +2,14 @@
 using N2.Templates.Items;
 using N2.Web;
 using N2.Web.Parts;
+using N2.Engine;
 
 namespace N2.Templates.Services
 {
 	/// <summary>
 	/// Implements "Recusive" zones functionality.
 	/// </summary>
-	[Controls(typeof(AbstractPage))]
+	[Adapts(typeof(AbstractPage))]
 	public class TemplatesPartsAdapter : PartsAdapter
 	{
 		public override ItemList GetItemsInZone(ContentItem parentItem, string zoneName)

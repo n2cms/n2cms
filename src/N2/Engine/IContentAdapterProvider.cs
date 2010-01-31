@@ -1,16 +1,18 @@
 ﻿using System.Text;
 using N2.Web;
+using System;
 
 namespace N2.Engine
 {
 	public interface IContentAdapterProvider
-	{
+	{		
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		T ResolveAdapter<T>(PathData path) where T : class, IContentAdapter;
+		T ResolveAdapter<T>(Type contentType) where T : AbstractContentAdapter;
 
-		/// <summary>Adds controller descriptors to the list of descriptors. This is typically auto-wired using the [Controls] attribute.</summary>
-		/// <param name="descriptorsToAdd">The controller descriptors to add.</param>
-		void RegisterAdapter(params IAdapterDescriptor[] descriptorsToAdd);
+		/// <summary>Resolves the controller for the current Url.</summary>
+		/// <returns>A suitable controller for the given Url.</returns>
+		[Obsolete("Use T ResolveAdapter<T>(ContentItem item)", true)]
+		T ResolveAdapter<T>(PathData path) where T : AbstractContentAdapter;
 	}
 }

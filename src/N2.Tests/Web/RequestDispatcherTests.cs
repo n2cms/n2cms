@@ -6,17 +6,46 @@ using NUnit.Framework;
 using N2.Web;
 using N2.Tests.Web.Items;
 using N2.Engine;
+using N2.Engine.MediumTrust;
 
 namespace N2.Tests.Web
 {
 	[TestFixture]
-	public class RequestDispatcherTests : ItemPersistenceMockingBase
+	public class WindsorRequestDispatcherTests : RequestDispatcherTests
+	{
+		[SetUp]
+		public override void SetUp()
+		{
+			base.SetUp();
+
+			ContentAdapterProvider provider = new ContentAdapterProvider(new ContentEngine(), new AppDomainTypeFinder());
+			provider.Start();
+			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
+		}
+	}
+
+	[TestFixture]
+	public class MediumTrustRequestDispatcherTests : RequestDispatcherTests
+	{
+		[SetUp]
+		public override void SetUp()
+		{
+			base.SetUp();
+
+			ContentAdapterProvider provider = new ContentAdapterProvider(new MediumTrustEngine(), new AppDomainTypeFinder());
+			provider.Start();
+			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
+		}
+	}
+	
+	public abstract class RequestDispatcherTests : ItemPersistenceMockingBase
 	{
 		protected PageItem startItem, item1, item1_1, item2, item2_1;
 		protected ContentItem custom3, particular4, special5, other6;
-		UrlParser parser;
-		FakeWebContextWrapper webContext;
-		RequestDispatcher dispatcher;
+		protected HostSection hostSection;
+		protected UrlParser parser;
+		protected FakeWebContextWrapper webContext;
+		protected RequestDispatcher dispatcher;
 
 		public override void SetUp()
 		{
@@ -24,11 +53,8 @@ namespace N2.Tests.Web
 
 			CreateDefaultStructure();
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
-			HostSection hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};
+			hostSection = new HostSection {Web = new WebElement {ObserveEmptyExtension = true}};
 			parser = new UrlParser(persister, webContext, new NotifyingInterceptor(), new Host(webContext, startItem.ID, startItem.ID), hostSection);
-			ContentAdapterProvider provider = new ContentAdapterProvider(null, new AppDomainTypeFinder());
-			provider.Start(); 
-			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
 		}
 
 		[Test]

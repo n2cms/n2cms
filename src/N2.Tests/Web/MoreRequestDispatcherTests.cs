@@ -6,6 +6,7 @@ using N2.Tests.Web.Items;
 using NUnit.Framework;
 using N2.Persistence;
 using N2.Web;
+using N2.Engine.MediumTrust;
 
 namespace N2.Tests.Web
 {

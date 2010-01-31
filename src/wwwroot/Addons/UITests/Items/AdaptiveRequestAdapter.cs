@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Addons.UITests.Items
 {
-	[Controls(typeof(AdaptiveItemPage))]
+	[Adapts(typeof(AdaptiveItemPage))]
 	public class AdaptiveRequestAdapter : RequestAdapter
 	{
 		public override void AuthorizeRequest(System.Security.Principal.IPrincipal user)
@@ -11,19 +12,19 @@ namespace N2.Addons.UITests.Items
 			Debug.WriteLine("AuthorizeRequest");
 			base.AuthorizeRequest(user);
 		}
-		public override void InjectCurrentPage(System.Web.IHttpHandler handler)
+		public override void InjectCurrentPage(PathData path, System.Web.IHttpHandler handler)
 		{
 			Debug.WriteLine("InjectCurrentPage");
-			base.InjectCurrentPage(handler);
+			base.InjectCurrentPage(path, handler);
 		}
-		public override void RewriteRequest(N2.Configuration.RewriteMethod rewriteMethod)
+		public override void RewriteRequest(PathData path, N2.Configuration.RewriteMethod rewriteMethod)
 		{
 			Debug.WriteLine("RewriteRequest");
-			base.RewriteRequest(rewriteMethod);
+			base.RewriteRequest(path, rewriteMethod);
 		}
 	}
 
-	[Controls(typeof(AdaptiveItemPage))]
+	[Adapts(typeof(AdaptiveItemPage))]
 	public class AdaptiveZoneAdapter : N2.Web.Parts.PartsAdapter
 	{
 		public override N2.Collections.ItemList GetItemsInZone(ContentItem parentItem, string zoneName)

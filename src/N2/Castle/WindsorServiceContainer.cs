@@ -15,19 +15,25 @@ using N2.Plugin;
 
 namespace N2.Castle
 {
+	/// <summary>
+	/// Wraps usage of the Castle Windsor inversion of control container.
+	/// </summary>
 	public class WindsorServiceContainer : ServiceContainerBase
 	{
 		private readonly IWindsorContainer container;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="WindsorServiceContainer"/> class using an empty Windsor container.
+		/// Initializes a new instance of the <see cref="WindsorServiceContainer"/> 
+		/// class using an empty Windsor container.
 		/// </summary>
 		public WindsorServiceContainer() : this(new WindsorContainer())
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="WindsorServiceContainer"/> class using an existing container.  Any additional/replacement service defined by the user will be added to the container.
+		/// Initializes a new instance of the <see cref="WindsorServiceContainer"/> 
+		/// class using an existing container.  Any additional/replacement service 
+		/// defined by the user will be added to the container.
 		/// </summary>
 		/// <param name="container">The container.</param>
 		public WindsorServiceContainer(IWindsorContainer container)
@@ -90,6 +96,22 @@ namespace N2.Castle
 		public override object Resolve(Type type)
 		{
 			return container.Resolve(type);
+		}
+
+		/// <summary>Resolves all services serving the given interface.</summary>
+		/// <param name="serviceType">The type of service to resolve.</param>
+		/// <returns>All services registered to serve the provided interface.</returns>
+		public override Array ResolveAll(Type serviceType)
+		{
+			return container.ResolveAll(serviceType);
+		}
+
+		/// <summary>Resolves all services of the given type.</summary>
+		/// <typeparam name="T">The type of service to resolve.</typeparam>
+		/// <returns>All services registered to serve the provided interface.</returns>
+		public override T[] ResolveAll<T>()
+		{
+			return container.ResolveAll<T>();
 		}
 
 		public override void AddFacility(string key, object facility)

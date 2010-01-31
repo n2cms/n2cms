@@ -12,9 +12,24 @@ namespace N2.Edit
 	/// <summary>
 	/// Controls aspects related to the editor interface and editing content items.
 	/// </summary>
-	[Controls(typeof(ContentItem))]
+	[Adapts(typeof(ContentItem))]
 	public class EditableAdapter : AbstractContentAdapter
 	{
+		IDefaultDirectory defaultDirectory;
+		IEditManager editManager;
+
+		public IDefaultDirectory DefaultDirectory
+		{
+			get { return defaultDirectory ?? Engine.Resolve<IDefaultDirectory>(); }
+			set { defaultDirectory = value; }
+		}
+
+		public IEditManager EditManager
+		{
+			get { return editManager ?? Engine.Resolve<IEditManager>(); }
+			set { editManager = value; }
+		}
+
 		/// <summary>Adds the editors defined for the item to the control hierarchy.</summary>
 		/// <param name="itemType">The type to add editors for.</param>
 		/// <param name="container">The container onto which to add editors.</param>
@@ -22,7 +37,7 @@ namespace N2.Edit
 		/// <returns>A editor name to control map of added editors.</returns>
 		public virtual IDictionary<string, Control> AddDefinedEditors(Type itemType, Control container, IPrincipal user)
 		{
-			return Engine.EditManager.AddEditors(itemType, container, user);
+			return EditManager.AddEditors(itemType, container, user);
 		}
 
 		/// <summary>Updates editors with values from the item.</summary>
@@ -40,7 +55,7 @@ namespace N2.Edit
 		/// <param name="user">The user to filter access by.</param>
 		public virtual bool UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			return Engine.EditManager.UpdateItem(item, addedEditors, user);
+			return EditManager.UpdateItem(item, addedEditors, user);
 		}
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>
@@ -51,7 +66,7 @@ namespace N2.Edit
 		/// <returns>The item to continue using.</returns>
 		public virtual ContentItem SaveItem(ContentItem item, IDictionary<string, Control> addedEditors, ItemEditorVersioningMode versioningMode, IPrincipal user)
 		{
-			return Engine.EditManager.Save(item, addedEditors, versioningMode, user);
+			return EditManager.Save(item, addedEditors, versioningMode, user);
 		}
 
 		/// <summary>Gets the default folder for an item.</summary>
@@ -59,7 +74,7 @@ namespace N2.Edit
 		/// <returns>The default folder.</returns>
 		public virtual string GetDefaultFolder(ContentItem item)
 		{
-			return Engine.Resolve<IDefaultDirectory>().GetDefaultDirectory(item);
+			return DefaultDirectory.GetDefaultDirectory(item);
 		}
 	}
 }

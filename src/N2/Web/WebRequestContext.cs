@@ -57,19 +57,6 @@ namespace N2.Web
 			}
 		}
 
-		public RequestAdapter CurrentController
-		{
-			get { return RequestItems["CurrentController"] as RequestAdapter; }
-			set
-			{
-				RequestItems["CurrentController"] = value; 
-				if (value != null) 
-					CurrentPath = value.Path;
-				else
-					CurrentPath = null;
-			}
-		}
-
         /// <summary>The handler associated with the current request.</summary>
         public IHttpHandler Handler
         {

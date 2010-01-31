@@ -235,6 +235,7 @@
     </Compile>
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
+    <Compile Include="N2\Files\VirtualFolderNavigationAdapter.cs" />
     <Compile Include="N2\Installation\Begin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

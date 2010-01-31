@@ -36,7 +36,7 @@ namespace N2.Web.Mvc.Html
 			get
 			{
 				return _partsAdapter ?? (_partsAdapter = Engine.Resolve<IContentAdapterProvider>()
-				                                         	.ResolveAdapter<PartsAdapter>(CurrentItem.FindPath(PathData.DefaultAction)));
+				                                         	.ResolveAdapter<PartsAdapter>(CurrentItem.GetType()));
 			}
 		}
 	}

@@ -62,7 +62,25 @@ namespace N2.Web
                 if (site.Is(hostUrl.Authority))
                     return site;
             return null;
-        }
+		}
+
+		/// <summary>Gets the site associated with an item.</summary>
+		/// <param name="item">The item whose site to get.</param>
+		/// <returns>The site this node belongs to.</returns>
+		public Site GetSite(ContentItem item)
+		{
+			if (item == null)
+				return null;
+
+			if (item.ID == DefaultSite.StartPageID)
+				return DefaultSite;
+
+			foreach (Site site in Sites)
+				if (item.ID == site.StartPageID)
+					return site;
+
+			return GetSite(item.Parent);
+		}
 
     	/// <summary>Adds sites to the available sites.</summary>
     	/// <param name="additionalSites">Sites to add.</param>

@@ -10,43 +10,62 @@ using N2.Web;
 using N2.Web.Parts;
 using NUnit.Framework;
 using N2.Definitions;
+using N2.Engine.MediumTrust;
 
 namespace N2.Tests.Web
 {
 	[TestFixture]
-	public class PartsAdapterTest : ItemPersistenceMockingBase
+	public class WindsorPartsAdapterTest : PartsAdapterTest
+	{
+		[SetUp]
+		public override void SetUp()
+		{
+			engine = new ContentEngine();
+			base.SetUp();
+		}
+	}
+
+	[TestFixture, Ignore]
+	public class MediumTrustPartsAdapterTest : PartsAdapterTest
+	{
+		[SetUp]
+		public override void SetUp()
+		{
+			engine = new MediumTrustEngine();
+			//engine.Resolve<EngineSection>().Assemblies.Add(new System.Web.Configuration.AssemblyInfo("N2"));
+			//engine.Resolve<EngineSection>().Assemblies.Add(new System.Web.Configuration.AssemblyInfo("N2.Tests"));
+			base.SetUp();
+		}
+	}
+
+	public abstract class PartsAdapterTest : ItemPersistenceMockingBase
 	{
 		ContentItem pageItem, customItem, dataItem;
-		UrlParser parser;
-		FakeWebContextWrapper webContext;
-		RequestDispatcher dispatcher;
-		IEngine engine;
+		IRequestDispatcher dispatcher;
+		protected IEngine engine;
 
 		public override void SetUp()
 		{
 			base.SetUp();
 
 			CreateDefaultStructure();
-			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
-			HostSection hostSection = new HostSection();
-			hostSection.Web.Extension = "/";
-			parser = new UrlParser(persister, webContext, new NotifyingInterceptor(), new Host(webContext, pageItem.ID, pageItem.ID), hostSection);
-			engine = new FakeEngine();
-			AppDomainTypeFinder finder = new AppDomainTypeFinder();
-            engine.AddComponentInstance(null, typeof(IDefinitionManager), new DefinitionManager(new DefinitionBuilder(finder, new EngineSection()), new N2.Workflow.StateChanger(), null));
-			ContentAdapterProvider provider = new ContentAdapterProvider(engine, new AppDomainTypeFinder());
-			provider.Start();
-			dispatcher = new RequestDispatcher(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
-			engine.AddComponentInstance("", typeof(IContentAdapterProvider), provider);
+			
+			((ContentAdapterProvider)engine.Resolve<IContentAdapterProvider>()).Start();
+			dispatcher = engine.Resolve<IRequestDispatcher>();
 		}
 
-
+		// /					pageItem	(PageItem)
+		// /data2							(DataItem)
+		// /data3							(DataItem)
+		// /item4				customItem	(PageItem)
+		// /item4/data5			dataItem	(DataItem)
+		// /item4/data5/nested7				(DataItem)
+		// /item4/data5/nested7				(DataItem)
 
 		[Test]
 		public void CanResolve_ZoneAdapter()
 		{
-			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>();
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
 			Assert.That(controller, Is.TypeOf(typeof(PageZoneAdapter)));
 		}
@@ -54,8 +73,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void Retrieves_ItemsInZone()
 		{
-			webContext.CurrentPath = dispatcher.ResolveUrl("/item4");
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>();
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(customItem);
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(customItem, "Zone1");
 
@@ -65,8 +83,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFilter_ItemsInZone()
 		{
-			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>();
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneNone");
 
@@ -76,8 +93,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanAddTo_ItemsInZone()
 		{
-			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>();
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneAll");
 
@@ -87,10 +103,9 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanResolve_PossibleChildren()
 		{
-			webContext.CurrentPath = dispatcher.ResolveUrl("/");
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>();
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
-			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(webContext.CurrentPage, "Zone1", null);
+			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, "Zone1", null);
 
 			Assert.That(items.Count(), Is.GreaterThan(0));
 		}

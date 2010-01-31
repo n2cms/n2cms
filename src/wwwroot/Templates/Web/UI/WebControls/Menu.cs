@@ -125,7 +125,7 @@ namespace N2.Templates.Web.UI.WebControls
 					builder = new TreeHierarchyBuilder(startingPoint, MaxLevels);
 				}
 				
-				HierarchyNode<ContentItem> node = builder.Build(Filters);
+				HierarchyNode<ContentItem> node = builder.Children(Filters).Build();
 				if (node.Current != null)
 				{
 					AddControlsRecursive(this, node, CurrentPage, ancestors);

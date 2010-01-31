@@ -80,12 +80,18 @@ namespace Demo
 
 			ContentItem imported = record.RootItem;
 
-            RootPage rootPage = factory.Persister.Get<RootPage>(factory.Host.CurrentSite.RootItemID);
+			ContentItem rootPage = factory.Persister.Get<ContentItem>(factory.Host.CurrentSite.RootItemID);
 
 			factory.SecurityManager.ScopeEnabled = false;
-			((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = false;
-			RemoveExistingPages(factory, rootPage);
-			((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = true;
+			try
+			{
+				((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = false;
+				RemoveExistingPages(factory, rootPage);
+			}
+			finally
+			{
+				((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = true;
+			}
 			UpdateRootPage(factory, imported, rootPage);
 
 			imp.Import(record, rootPage, ImportOption.Children);

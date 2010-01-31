@@ -62,14 +62,7 @@ namespace N2.Web
 
 		public int CompareTo(IAdapterDescriptor other)
 		{
-			return InheritanceDepth(other.ItemType) - InheritanceDepth(ItemType);
-		}
-
-		int InheritanceDepth(Type type)
-		{
-			if (type == null || type == typeof(object))
-				return 0;
-			return 1 + InheritanceDepth(type.BaseType);
+			return Utility.InheritanceDepth(other.ItemType) - Utility.InheritanceDepth(ItemType);
 		}
 
 		#endregion

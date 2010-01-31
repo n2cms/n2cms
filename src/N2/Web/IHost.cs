@@ -22,7 +22,12 @@ namespace N2.Web
 		/// <summary>Gets the site associated with an url.</summary>
 		/// <param name="hostUrl">The url of the site.</param>
 		/// <returns>The associated site or null if no matching site is found.</returns>
-        Site GetSite(Url hostUrl);
+		Site GetSite(Url hostUrl);
+
+		/// <summary>Gets the site associated with an item.</summary>
+		/// <param name="item">The item whose site to get.</param>
+		/// <returns>The site this node belongs to.</returns>
+		Site GetSite(ContentItem item);
 
 		/// <summary>Adds sites to the available sites.</summary>
 		/// <param name="additionalSites">Sites to add.</param>

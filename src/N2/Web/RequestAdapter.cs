@@ -14,35 +14,51 @@ namespace N2.Web
 	/// for customizing the behaviour (decorate the inherited class with the 
 	/// [Controls] attribute).
 	/// </summary>
-	[Controls(typeof(ContentItem))]
+	[Adapts(typeof(ContentItem))]
 	public class RequestAdapter : AbstractContentAdapter
 	{
-		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
-		public virtual void RewriteRequest(RewriteMethod rewriteMethod)
+		IWebContext webContext;
+		ISecurityEnforcer securityEnforcer;
+
+		public ISecurityEnforcer SecurityEnforcer
 		{
-			if(Path == null || Path.IsEmpty() || !Path.IsRewritable || Path.HonorExistingFile)
+			get { return securityEnforcer ?? Engine.Resolve<ISecurityEnforcer>(); }
+			set { securityEnforcer = value; }
+		}
+
+		public IWebContext WebContext
+		{
+			get { return webContext ?? Engine.Resolve<IWebContext>(); }
+			set { webContext = value; }
+		}
+
+
+		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
+		public virtual void RewriteRequest(PathData path, RewriteMethod rewriteMethod)
+		{
+			if (path == null || path.IsEmpty() || !path.IsRewritable || path.HonorExistingFile)
 				return;
 			
-			string templateUrl = GetHandlerPath();
+			string templateUrl = GetHandlerPath(path);
 			if(rewriteMethod == RewriteMethod.RewriteRequest)
-				Engine.Resolve<IWebContext>().RewritePath(templateUrl);
+				WebContext.RewritePath(templateUrl);
 			else if(rewriteMethod == RewriteMethod.TransferRequest)
-				Engine.Resolve<IWebContext>().TransferRequest(templateUrl);
+				WebContext.TransferRequest(templateUrl);
 		}
 
         /// <summary>Gets the path to the handler (aspx template) to rewrite to.</summary>
         /// <returns></returns>
-		protected virtual string GetHandlerPath()
+		protected virtual string GetHandlerPath(PathData path)
 		{
-			return Path.RewrittenUrl;
+			return path.RewrittenUrl;
 		}
 
 		/// <summary>Inject the current page into the page handler.</summary>
 		/// <param name="handler">The handler executing the request.</param>
-		public virtual void InjectCurrentPage(IHttpHandler handler)
+		public virtual void InjectCurrentPage(PathData path, IHttpHandler handler)
 		{
 			IContentTemplate template = handler as IContentTemplate;
-			if (template != null && Path != null)
+			if (template != null && path != null)
 			{
 				template.CurrentItem = Path.CurrentItem;
 			}
@@ -52,7 +68,7 @@ namespace N2.Web
 		/// <param name="user">The user for which to authorize the request.</param>
 		public virtual void AuthorizeRequest(IPrincipal user)
 		{
-			Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest();
+			SecurityEnforcer.AuthorizeRequest();
 		}
 	}
 }

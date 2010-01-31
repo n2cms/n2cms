@@ -12,7 +12,11 @@ namespace N2.Workflow
     {
         /// <summary>The editing interface</summary>
         public const string Editing = "Editing";
+
         /// <summary>The preview interface</summary>
-        public const string Viewing = "Viewing";
+		public const string Viewing = "Viewing";
+
+		/// <summary>The managing interface</summary>
+		public const string Managing = "Managing";
     }
 }

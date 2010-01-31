@@ -9,6 +9,8 @@ using System.IO;
 using N2.Web.UI.WebControls;
 using N2.Web;
 using N2.Collections;
+using N2.Engine;
+using N2.Workflow;
 
 namespace N2.Edit.Navigation
 {
@@ -22,9 +24,13 @@ namespace N2.Edit.Navigation
 			
 			context.Response.ContentType = "text/plain";
 
-			ItemFilter filter = N2.Context.Current.EditManager.GetEditorFilter(context.User);
-			TreeNode tn = (TreeNode)N2.Web.Tree
-				.From(selectedNode, 2)
+			ItemFilter filter = Engine.EditManager.GetEditorFilter(context.User);
+			IContentAdapterProvider adapters = Engine.Resolve<IContentAdapterProvider>();
+			var root = new TreeHierarchyBuilder(selectedNode, 2)
+				.Children((item) => adapters.ResolveAdapter<NavigationAdapter>(item.GetType()).GetChildren(item, Interfaces.Managing))
+				.Build();
+
+			TreeNode tn = (TreeNode)new N2.Web.Tree(root)
 				.LinkProvider(delegate(ContentItem node) { return N2.Edit.Web.UI.Controls.Tree.BuildLink(node, node.Path == selectedNode.Path, target); })
 				.Filters(filter)
 				.ToControl();
@@ -44,19 +50,5 @@ namespace N2.Edit.Navigation
 				}
 			}
 		}
-
-		//public ILinkBuilder BuildLink(INode node, ContentItem selectedNode, string target)
-		//{
-		//    string className = node.ClassNames;
-
-		//    ILinkBuilder builder = Link.To(node)
-		//        .Target(target)
-		//        .Class(className)
-		//        .Href(node.PreviewUrl)
-		//        .Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
-		//        .Attribute("rel", node.Path);
-
-		//    return builder;
-		//}
 	}
 }

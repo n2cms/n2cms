@@ -5,24 +5,49 @@ using N2.Tests.Engine.Items;
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
+using N2.Engine.MediumTrust;
+using N2.Castle;
 
 namespace N2.Tests.Engine
 {
 	[TestFixture]
-	public class ContentAdapterProviderTest : ItemPersistenceMockingBase
+	public class WindsorContentAdapterProviderTest : ContentAdapterProviderTest
+	{
+		[SetUp]
+		public override void SetUp()
+		{
+			base.SetUp();
+			provider = new ContentAdapterProvider(new ContentEngine(), new AppDomainTypeFinder());
+			provider.Start();
+		}
+	}
+
+	[TestFixture]
+	public class MediumTrustContentAdapterProviderTest : ContentAdapterProviderTest
+	{
+		[SetUp]
+		public override void SetUp()
+		{
+			base.SetUp();
+
+			provider = new ContentAdapterProvider(new MediumTrustEngine(), new AppDomainTypeFinder());
+			provider.Start();
+		}
+
+	}
+
+	public abstract class ContentAdapterProviderTest : ItemPersistenceMockingBase
 	{
 		protected ContentItem aItem, aaItem, aaaItem, abItem, aabItem;
 		FakeWebContextWrapper webContext;
-		ContentAdapterProvider provider;
+		protected ContentAdapterProvider provider;
 			
 		public override void SetUp()
 		{
 			base.SetUp();
 
 			webContext = new FakeWebContextWrapper("http://www.n2cms.com/");
-			provider = new ContentAdapterProvider(null, new AppDomainTypeFinder());
-			provider.Start();
-
+			
 			aItem = CreateOneItem<ItemA>(0, "root", null);
 			aaItem = CreateOneItem<ItemAA>(0, "aa", aItem);
 			aaaItem = CreateOneItem<ItemAAA>(0, "aaa", aItem);
@@ -59,10 +84,10 @@ namespace N2.Tests.Engine
 		[Test]
 		public void Adapters_AreSorted_AccordingToInheritanceDepth()
 		{
-			var descriptors = provider.AdapterDescriptors.ToList();
-			int aIndex = descriptors.FindIndex(d => d.ItemType == typeof(ItemA));
-			int aaIndex = descriptors.FindIndex(d => d.ItemType == typeof(ItemAA));
-			int aaaIndex = descriptors.FindIndex(d => d.ItemType == typeof(ItemAAA));
+			var adapters = provider.Adapters.ToList();
+			int aIndex = adapters.FindIndex(d => d.AdaptedType == typeof(ItemA));
+			int aaIndex = adapters.FindIndex(d => d.AdaptedType == typeof(ItemAA));
+			int aaaIndex = adapters.FindIndex(d => d.AdaptedType == typeof(ItemAAA));
 
 			Assert.That(aIndex, Is.GreaterThan(aaIndex));
 			Assert.That(aaIndex, Is.GreaterThan(aaaIndex));
@@ -71,7 +96,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfItemA()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(new PathData(aItem, "/default.aspx"));
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aItem.GetType());
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterA)));
 		}
@@ -79,7 +104,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfItemAA()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(new PathData(aaItem, "/default.aspx"));
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aaItem.GetType());
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterAA)));
 		}
@@ -87,7 +112,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfItemAAA()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(new PathData(aaaItem, "/default.aspx"));
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aaaItem.GetType());
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterAAA)));
 		}
@@ -95,7 +120,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfParentItemAdapter()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(new PathData(abItem, "/default.aspx"));
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(abItem.GetType());
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterA)));
 		}
@@ -103,7 +128,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfMostRelevant_ParentItemAdapter()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(new PathData(aabItem, "/default.aspx"));
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aabItem.GetType());
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterAA)));
 		}

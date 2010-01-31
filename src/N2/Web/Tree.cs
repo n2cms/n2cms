@@ -15,21 +15,27 @@ namespace N2.Web
 	/// </summary>
 	public class Tree
 	{
-		private readonly HierarchyBuilder builder;
+		private HierarchyNode<ContentItem> root;
 
 		public delegate ILinkBuilder LinkProviderDelegate(ContentItem currentItem);
 		public delegate string ClassProviderDelegate(ContentItem currentItem);
 
 		private LinkProviderDelegate linkProvider;
 		private ClassProviderDelegate classProvider = delegate { return string.Empty; };
-		private ItemFilter[] filters = null;
+		private ItemFilter filter = new NullFilter();
 		private bool exclude = false;
 
 		#region Constructor
 
 		public Tree(HierarchyBuilder builder)
 		{
-			this.builder = builder;
+			root = builder.Build();
+			linkProvider = Link.To;
+		}
+
+		public Tree(HierarchyNode<ContentItem> root)
+		{
+			this.root = root;
 			linkProvider = Link.To;
 		}
 
@@ -62,7 +68,11 @@ namespace N2.Web
 
 		public Tree Filters(params ItemFilter[] filters)
 		{
-			this.filters = filters;
+			if (filters.Length == 1)
+				this.filter = filters[0];
+			else
+				this.filter = new CompositeFilter(filters);
+
 			return this;
 		}
 
@@ -119,7 +129,7 @@ namespace N2.Web
 
 		public Control ToControl()
 		{
-			TreeNode rootNode = BuildNodesRecursive(builder.Build(filters));
+			TreeNode rootNode = BuildNodesRecursive(root);
 			rootNode.ChildrenOnly = exclude;
 			return rootNode;
 		}
@@ -133,6 +143,9 @@ namespace N2.Web
 
 			foreach (var childNavigator in navigator.Children)
 			{
+				if (!filter.Match(childNavigator.Current))
+					continue;
+
 				TreeNode childNode = BuildNodesRecursive(childNavigator);
 				node.Controls.Add(childNode);
 			}

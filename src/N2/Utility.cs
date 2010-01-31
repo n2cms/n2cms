@@ -439,5 +439,12 @@ namespace N2
 
 			return AspNetHostingPermissionLevel.None;
 		}
+
+		internal static int InheritanceDepth(Type type)
+		{
+			if (type == null || type == typeof(object))
+				return 0;
+			return 1 + InheritanceDepth(type.BaseType);
+		}
 	}
 }

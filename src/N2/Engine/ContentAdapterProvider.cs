@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using N2.Plugin;
 using N2.Web;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace N2.Engine
 {
@@ -13,7 +14,7 @@ namespace N2.Engine
 	{
 		readonly IEngine engine;
 		readonly ITypeFinder finder;
-		IAdapterDescriptor[] adapterDescriptors = new IAdapterDescriptor[0];
+		AbstractContentAdapter[] adapters = new AbstractContentAdapter[0];
 
 		public ContentAdapterProvider(IEngine engine, ITypeFinder finder)
 		{
@@ -21,9 +22,9 @@ namespace N2.Engine
 			this.finder = finder;
 		}
 
-		public IEnumerable<IAdapterDescriptor> AdapterDescriptors
+		public IEnumerable<AbstractContentAdapter> Adapters
 		{
-			get { return adapterDescriptors; }
+			get { return adapters; }
 		}
 
 		#region IContentAdapterProvider Members
@@ -31,44 +32,68 @@ namespace N2.Engine
 
 		/// <summary>Resolves the controller for the current Url.</summary>
 		/// <returns>A suitable controller for the given Url.</returns>
-		public virtual T ResolveAdapter<T>(PathData path) where T : class, IContentAdapter
+		[Obsolete("Use ResolveAdapter<T>(Type)", true)]
+		public virtual T ResolveAdapter<T>(PathData path) where T : AbstractContentAdapter
 		{
 			if (path == null || path.IsEmpty()) return null;
 
-			T controller = CreateAdapterInstance<T>(path);
-			if (controller == null) return null;
+			T adapter = CreateAdapterInstance<T>(path);
+			if (adapter == null) return null;
 
-			controller.Path = path;
-			controller.Engine = engine;
-			return controller;
+			adapter.Engine = engine;
+			return adapter;
 		}
 
+		public T ResolveAdapter<T>(Type contentType) where T : AbstractContentAdapter
+		{
+			foreach (var adapter in adapters)
+			{
+				var a = adapter as T;
+				if (a != null && a.AdaptedType.IsAssignableFrom(contentType))
+					return a;
+			}
 
+			throw new NotSupportedException("No " + typeof(T) + " adapter supports " + contentType);
+		}
 
-		/// <summary>Adds an adapter descriptors to the list of descriptors. This is typically auto-wired using the [Controls] attribute.</summary>
-		/// <param name="descriptorsToAdd">The adapter descriptors to add.</param>
-		public void RegisterAdapter(params IAdapterDescriptor[] descriptorsToAdd)
+		/// <summary>Adds an adapter to the list of adapters. This is typically auto-wired using the [Adapts] attribute.</summary>
+		/// <param name="adapterToAdd">The adapter instnace to add.</param>
+		public void RegisterAdapter(params AbstractContentAdapter[] adapterToAdd)
 		{
 			lock (this)
 			{
-				List<IAdapterDescriptor> references = new List<IAdapterDescriptor>(adapterDescriptors);
-				references.AddRange(descriptorsToAdd);
+				List<AbstractContentAdapter> references = new List<AbstractContentAdapter>(adapters);
+				references.AddRange(adapterToAdd);
 				references.Sort();
-				adapterDescriptors = references.ToArray();
+				adapters = references.ToArray();
+			}
+		}
+
+		/// <summary>Removes an adapter from the list of adapters.</summary>
+		/// <param name="descriptorsToAdd">The adapter to add.</param>
+		public void UnregisterAdapter(params AbstractContentAdapter[] adaptersToRemove)
+		{
+			lock (this)
+			{
+				List<AbstractContentAdapter> references = new List<AbstractContentAdapter>(adapters);
+				foreach (var adapterToRemove in adaptersToRemove)
+					references.Remove(adapterToRemove);
+				adapters = references.ToArray();
 			}
 		}
 
 		#endregion
 
-		protected virtual T CreateAdapterInstance<T>(PathData path) where T : class, IContentAdapter
+		protected virtual T CreateAdapterInstance<T>(PathData path) where T : AbstractContentAdapter
 		{
 			Type requestedType = typeof(T);
 
-			foreach (IAdapterDescriptor reference in adapterDescriptors)
+			foreach (AbstractContentAdapter adapter in adapters)
 			{
-				if (requestedType.IsAssignableFrom(reference.AdapterType) && reference.IsAdapterFor(path, requestedType))
+				var a = adapter as T;
+				if (a != null && requestedType.IsAssignableFrom(a.AdaptedType))
 				{
-					return Activator.CreateInstance(reference.AdapterType) as T;
+					return a;
 				}
 			}
 
@@ -79,27 +104,71 @@ namespace N2.Engine
 
 		public void Start()
 		{
-			List<IAdapterDescriptor> references = new List<IAdapterDescriptor>();
-			foreach (Type controllerType in finder.Find(typeof(IContentAdapter)))
+			List<AbstractContentAdapter> references = new List<AbstractContentAdapter>();
+			foreach (Type adapterType in finder.Find(typeof(AbstractContentAdapter)))
 			{
-				foreach (IAdapterDescriptor reference in controllerType.GetCustomAttributes(typeof(IAdapterDescriptor), false))
+				if (adapterType.IsAbstract)
+					continue;
+
+				foreach (AdaptsAttribute adapts in adapterType.GetCustomAttributes(typeof(AdaptsAttribute), false))
 				{
-					reference.AdapterType = controllerType;
-					references.Add(reference);
+					var adapter = CreateAdapter(adapterType, adapts.ContentType);
+					references.Add(adapter);
+				}
+
+				// TODO: remove this legacy support (collect by [Controls] attributes)
+				foreach (ControlsAttribute controls in adapterType.GetCustomAttributes(typeof(ControlsAttribute), false))
+				{
+					Trace.WriteLine("Adding adapter with [Controls] this is deprecated and may no longer work in the future: " + adapterType);
+
+					var adapter = CreateAdapter(adapterType, controls.ItemType);
+					references.Add(adapter);
 				}
 			}
-			
-			//collect [assembly: Controls(..)] attributes
-			foreach(ICustomAttributeProvider assembly in finder.GetAssemblies()) {
-				foreach(IAdapterDescriptor reference in assembly.GetCustomAttributes(typeof(IAdapterDescriptor), false)) {
-					if (null == reference.ItemType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(null)] attribute with no ItemType specified. Please specify this property: [assembly: Controls(typeof(MyItem), AdapterType = typeof(MyAdapter)]", assembly);
-					if (null == reference.AdapterType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(typeof({1})] attribute with no AdapterType specified. Please specify this property: [assembly: Controls(typeof({1}), AdapterType = typeof(MyAdapter)]", assembly, reference.ItemType.Name);
 
-					references.Add(reference);
+			// TODO: remove this legacy support (collect [assembly: Controls(..)] attributes)
+			foreach(ICustomAttributeProvider assembly in finder.GetAssemblies()) 
+			{
+				foreach (ControlsAttribute controls in assembly.GetCustomAttributes(typeof(ControlsAttribute), false))
+				{
+					if (null == controls.ItemType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(null)] attribute with no ItemType specified. Please specify this property: [assembly: Controls(typeof(MyItem), AdapterType = typeof(MyAdapter)]", assembly);
+					if (null == controls.AdapterType) throw new N2Exception("The assembly '{0}' defines a [assembly: Controls(typeof({1})] attribute with no AdapterType specified. Please specify this property: [assembly: Controls(typeof({1}), AdapterType = typeof(MyAdapter)]", assembly, controls.ItemType.Name);
+
+					Trace.WriteLine("Adding adapter from [Controls] this is deprecated and may no longer work in the future: " + controls.AdapterType);
+
+					var adapter = CreateAdapter(controls.AdapterType, controls.ItemType);
+					references.Add(adapter);
 				}
 			}
 			
 			RegisterAdapter(references.ToArray());
+		}
+
+		private AbstractContentAdapter CreateAdapter(Type adapterType, Type contentType)
+		{
+			AbstractContentAdapter adapter;
+			if (!ContainsServiceOfType(engine.Container.ResolveAll(adapterType), adapterType))
+			{
+				// add the adapter to the IoC container to resolve it's dependencies
+				engine.Container.AddComponent(adapterType.FullName, adapterType, adapterType);
+				adapter = engine.Container.Resolve(adapterType) as AbstractContentAdapter;
+			}
+			else
+				adapter = engine.Container.Resolve(adapterType) as AbstractContentAdapter;
+			
+			adapter.AdaptedType = contentType;
+			adapter.Engine = engine;
+			return adapter;
+		}
+
+		private bool ContainsServiceOfType(Array services, Type adapterType)
+		{
+			foreach (var service in services)
+			{
+				if (service.GetType() == adapterType)
+					return true;
+			}
+			return false;
 		}
 
 		public void Stop()
