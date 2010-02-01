@@ -1,4 +1,5 @@
-﻿- applied meixger's patch #5071: routing multi-language MVC site
+﻿- added MappedFileSystem that might work better in medium trust environments
+- applied meixger's patch #5071: routing multi-language MVC site
 - Virtual nodes support via VirtualNodeFactory
 - Moved down some namespaces (breaking change: Castle, Installation, Mappings)
 - Added NavigationAdapter

@@ -32,7 +32,7 @@ namespace N2.Edit.FileSystem.Items
 		string url;
 		public override string Url
 		{
-			get { return url; }
+			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
 		}
 
         public override void AddTo(ContentItem newParent)

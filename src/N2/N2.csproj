@@ -372,6 +372,7 @@
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\FileEventArgs.cs" />
+    <Compile Include="Edit\FileSystem\MappedFileSystem.cs" />
     <Compile Include="Edit\Installation\DatabaseStatus.cs" />
     <Compile Include="Edit\Installation\InstallationManager.cs" />
     <Compile Include="Edit\Installation\InstallerHint.cs" />
