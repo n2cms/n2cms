@@ -54,7 +54,7 @@ namespace N2.Web.Mvc
 		public override RouteData GetRouteData(HttpContextBase httpContext)
 		{
 			string path = httpContext.Request.AppRelativeCurrentExecutionFilePath;
-			if (path.StartsWith("~/N2/Content/", StringComparison.InvariantCultureIgnoreCase))
+			if (path.StartsWith("~/N2/", StringComparison.InvariantCultureIgnoreCase))
                 return new RouteData(this, new StopRoutingHandler());
             if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
                 return new RouteData(this, new StopRoutingHandler());

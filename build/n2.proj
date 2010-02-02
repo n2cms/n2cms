@@ -16,7 +16,7 @@
 
 		<SrcFolder>$(RootFolder)\src</SrcFolder>
 		<WebFolder>$(RootFolder)\src\wwwroot</WebFolder>
-		<ManagementFolder>$(RootFolder)\N2.Templates.Mvc\</ManagementFolder>
+		<ManagementFolder>$(SrcFolder)\N2.Templates.Mvc\</ManagementFolder>
 		<EditFolder>$(RootFolder)\src\N2.Templates.Mvc\N2</EditFolder>
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
@@ -148,6 +148,16 @@
 		<WebFormsOutDir>$(RootFolder)\Output\Templates\WebForms\</WebFormsOutDir>
 		<MvcOutDir>$(RootFolder)\Output\Templates\Mvc\</MvcOutDir>
 	</PropertyGroup>
+	<ItemGroup>
+		<Framework-Dependencies Include="$(LibFolder)\**\System.Data.SQLite.dll;
+																		 $(LibFolder)\**\NHibernate*.dll;
+																		 $(LibFolder)\**\Castle*.dll;
+																		 $(LibFolder)\**\Antlr3.Runtime.dll;
+																		 $(LibFolder)\**\Iesi.Collections.dll;
+																		 $(LibFolder)\**\log4net.dll;
+																		 $(LibFolder)\**\System*.dll;
+																		 " />
+	</ItemGroup>
 
 	<!-- Copy dependencies to example folders -->
 	<Target Name="Prepare-Examples-CSharp" DependsOnTargets="Define-Framework">
@@ -176,7 +186,7 @@
 	<Target Name="Prepare-Templates-Mvc" DependsOnTargets="Prepare-Framework">
 	</Target>
 	<Target Name="Prepare-Framework">
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(ManagementFolder)" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(ManagementFolder)\Bin" />
 	</Target>
 
 	<!-- Create item groups used for copy dependencies for examples -->
@@ -218,4 +228,13 @@
 						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc" />
 	</Target>
 
+	<!--<Target Name="X">
+		<MSBuild Projects="n2.publish.targets"
+						 Targets="PublishAllFiles"
+						 Properties="ProjectDir=$(SrcFolder)\N2.Templates.Mvc\;
+												 ProjectFile=N2.Templates.Mvc.csproj;
+												 OutputPath=$(MvcOutDir)\Project\"
+						 >
+		</MSBuild>
+	</Target>-->
 </Project>

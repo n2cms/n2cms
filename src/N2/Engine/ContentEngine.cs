@@ -223,8 +223,8 @@ namespace N2.Engine
 			AddComponentInstance<IEngine>(this);
             AddComponentInstance<IServiceContainer>(this.Container);
 
-			var invoker = Resolve<IPluginBootstrapper>();
-			invoker.InitializePlugins(this, invoker.GetPluginDefinitions());
+			var bootstrapper = Resolve<IPluginBootstrapper>();
+			bootstrapper.InitializePlugins(this, bootstrapper.GetPluginDefinitions());
 
 			container.StartComponents();
 		}
