@@ -136,7 +136,10 @@ namespace N2.Edit.Web.UI.Controls
 				.Attribute("data-page", item.IsPage.ToString().ToLower())
 				.Attribute("data-zone", item.ZoneName);
 
-			builder.Href(node.PreviewUrl);
+			if (string.IsNullOrEmpty(node.PreviewUrl))
+				builder.Href("~/N2/Empty.aspx");
+			else
+				builder.Href(node.PreviewUrl);
 
 			return builder;
 		}

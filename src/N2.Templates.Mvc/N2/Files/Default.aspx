@@ -13,7 +13,7 @@
 			<iframe id="navigationFrame" src="../Content/Navigation/Tree.aspx?location=files&root=<%= Engine.UrlParser.StartPage.Path %>" frameborder="0" name="navigation" class="frame"></iframe>
 		</div>
 		<div id="rightPane" class="pane">
-			<iframe id="previewFrame" src="Start.aspx" frameborder="0" name="preview" class="frame"></iframe>
+			<iframe id="previewFrame" src="../Empty.aspx" frameborder="0" name="preview" class="frame"></iframe>
 		</div>
 	</div>
 	

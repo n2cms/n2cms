@@ -4,9 +4,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Management.N2.Files
+namespace Management.N2
 {
-	public partial class Start : System.Web.UI.Page
+	public partial class Empty : System.Web.UI.Page
 	{
+		protected void Page_Load(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
