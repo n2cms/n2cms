@@ -27,7 +27,10 @@ namespace N2.Templates.UI
 
 				string extension = VirtualPathUtility.GetExtension(imageUrl);
 				ImageResizer ir = new ImageResizer();
-				ir.Resize(fs.OpenFile(imageUrl), extension, width, height, context.Response.OutputStream);
+				using (var s = fs.OpenFile(imageUrl))
+				{
+					ir.Resize(s, extension, width, height, context.Response.OutputStream);
+				}
         	}
         	else
         	{

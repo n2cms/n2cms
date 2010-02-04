@@ -1,5 +1,6 @@
 using System.Collections.Specialized;
 using System.Web;
+using System;
 
 namespace N2.Extensions.Tests.Fakes
 {
@@ -8,7 +9,11 @@ namespace N2.Extensions.Tests.Fakes
 		public string appRelativeCurrentExecutionFilePath;
 		public NameValueCollection query = new NameValueCollection();
 		public string rawUrl;
-		
+
+		public override System.Uri Url
+		{
+			get { return new Uri("http://localhost" + rawUrl, UriKind.RelativeOrAbsolute); }
+		}
 		public override string AppRelativeCurrentExecutionFilePath
 		{
 			get { return appRelativeCurrentExecutionFilePath; }

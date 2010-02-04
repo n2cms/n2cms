@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using N2.Workflow.Commands;
-using N2.Workflow;
+using N2.Edit.Workflow.Commands;
+using N2.Edit.Workflow;
 using N2.Tests.Workflow.Items;
 
 namespace N2.Tests.Workflow

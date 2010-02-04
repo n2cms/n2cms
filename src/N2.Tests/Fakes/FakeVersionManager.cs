@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Persistence;
-using N2.Workflow;
+using N2.Edit.Workflow;
 
 namespace N2.Tests.Fakes
 {

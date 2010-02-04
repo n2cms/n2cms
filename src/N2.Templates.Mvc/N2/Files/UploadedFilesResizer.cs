@@ -34,7 +34,10 @@ namespace N2.Management.Files
 			{
 				Url url = e.VirtualPath;
 				string resizedPath = ImagesUtility.GetResizedPath(url, size.Name);
-				resizer.Resize(files.OpenFile(e.VirtualPath), url.Extension, size.Width, size.Height, files.OpenFile(resizedPath));
+				using (var s = files.OpenFile(e.VirtualPath))
+				{
+					resizer.Resize(s, url.Extension, size.Width, size.Height, files.OpenFile(resizedPath));
+				}
 			}
 		}
 

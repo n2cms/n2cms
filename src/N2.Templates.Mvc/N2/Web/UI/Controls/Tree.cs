@@ -9,7 +9,7 @@ using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using System.Security.Principal;
 using N2.Engine;
-using N2.Workflow;
+using N2.Edit.Workflow;
 
 namespace N2.Edit.Web.UI.Controls
 {

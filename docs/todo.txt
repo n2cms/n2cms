@@ -1,3 +1,6 @@
+- mvc parts to add (includes too much)
+- reference actions on same/other content item controllers
+- list referencing items
 - add metablog support
 - MVC: show deeper page structures
 - MVC: new skin

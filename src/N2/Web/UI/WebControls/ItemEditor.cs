@@ -17,7 +17,7 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit;
 using N2.Engine;
-using N2.Workflow;
+using N2.Edit.Workflow;
 
 namespace N2.Web.UI.WebControls
 {
@@ -201,9 +201,9 @@ namespace N2.Web.UI.WebControls
 
         #region IBinder<CommandContext> Members
 
-		internal N2.Workflow.CommandContext BinderContext { get; set; }
+		internal N2.Edit.Workflow.CommandContext BinderContext { get; set; }
 
-		public bool UpdateObject(N2.Workflow.CommandContext value)
+		public bool UpdateObject(N2.Edit.Workflow.CommandContext value)
         {
 			try
 			{
@@ -220,7 +220,7 @@ namespace N2.Web.UI.WebControls
 			}
         }
 
-		public void UpdateInterface(N2.Workflow.CommandContext value)
+		public void UpdateInterface(N2.Edit.Workflow.CommandContext value)
         {
            	try
 			{

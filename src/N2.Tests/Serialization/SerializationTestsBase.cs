@@ -31,7 +31,7 @@ namespace N2.Tests.Serialization
 			notifier = mocks.Stub<IItemNotifier>();
 			mocks.Replay(notifier);
 
-			definitions = new DefinitionManager(new DefinitionBuilder(finder, new EngineSection()), new N2.Workflow.StateChanger(), notifier);
+			definitions = new DefinitionManager(new DefinitionBuilder(finder, new EngineSection()), new N2.Edit.Workflow.StateChanger(), notifier);
 			
 			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser)

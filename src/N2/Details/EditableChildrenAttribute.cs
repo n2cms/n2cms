@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Web.UI;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
-using N2.Workflow;
+using N2.Edit.Workflow;
 
 namespace N2.Details
 {

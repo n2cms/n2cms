@@ -30,7 +30,7 @@ using N2.Details;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Web;
-using N2.Workflow;
+using N2.Edit.Workflow;
 
 namespace N2
 {

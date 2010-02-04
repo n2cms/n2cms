@@ -7,7 +7,7 @@ using NUnit.Framework;
 using N2.Edit;
 using N2.Edit.FileSystem;
 using N2.Web;
-using N2.Workflow;
+using N2.Edit.Workflow;
 using N2.Security;
 using N2.Tests.Fakes;
 

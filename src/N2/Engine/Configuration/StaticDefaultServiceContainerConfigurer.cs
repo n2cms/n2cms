@@ -16,7 +16,7 @@ using N2.Security;
 using N2.Serialization;
 using N2.Web;
 using N2.Web.UI;
-using N2.Workflow;
+using N2.Edit.Workflow;
 using NHibernate;
 using NHibernate.Cfg;
 using N2.Edit.Installation;

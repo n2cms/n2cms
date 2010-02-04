@@ -88,9 +88,19 @@ namespace N2.Edit.FileSystem
 		public void WriteFile(string virtualPath, System.IO.Stream inputStream)
 		{
 			if (FileExists(virtualPath))
-				TransferBetweenStreams(inputStream, File.OpenWrite(MapPath(virtualPath)));
+			{
+				using (var s = File.OpenWrite(MapPath(virtualPath)))
+				{
+					TransferBetweenStreams(inputStream, s);
+				}
+			}
 			else
-				TransferBetweenStreams(inputStream, File.Create(MapPath(virtualPath)));
+			{
+				using (var s = File.Create(MapPath(virtualPath)))
+				{
+					TransferBetweenStreams(inputStream, s);
+				}
+			}
 
 			if (FileWritten != null)
 				FileWritten.Invoke(this, new FileEventArgs(virtualPath, null));

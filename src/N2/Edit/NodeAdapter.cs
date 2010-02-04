@@ -4,7 +4,7 @@ using N2.Collections;
 using N2.Edit.FileSystem;
 using N2.Engine;
 using N2.Web;
-using N2.Workflow;
+using N2.Edit.Workflow;
 using N2.Security;
 
 namespace N2.Edit

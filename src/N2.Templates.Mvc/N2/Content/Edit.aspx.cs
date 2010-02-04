@@ -6,7 +6,7 @@ using N2.Edit.Web;
 using N2.Security;
 using N2.Web;
 using N2.Web.UI.WebControls;
-using N2.Workflow;
+using N2.Edit.Workflow;
 using N2.Persistence;
 
 namespace N2.Edit

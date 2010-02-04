@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using N2.Persistence;
 using System.Security.Principal;
 using N2.Security;
-using N2.Workflow;
+using N2.Edit.Workflow;
 
 namespace N2.Definitions
 {
