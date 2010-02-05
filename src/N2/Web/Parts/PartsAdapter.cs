@@ -53,7 +53,7 @@ namespace N2.Web.Parts
 
 			foreach (ItemDefinition childDefinition in containerDefinition.AllowedChildren)
 			{
-				if (childDefinition.Enabled && childDefinition.IsAuthorized(user))
+				if (childDefinition.Enabled && childDefinition.IsAuthorized(user) && childDefinition.AllowedIn != N2.Integrity.AllowedZones.None)
 				{
 					yield return childDefinition;
 				}

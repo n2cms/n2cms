@@ -46,7 +46,7 @@ namespace N2.Definitions
 		string iconUrl = null;
 		bool enabled = true;
 		bool isDefined = false;
-		AllowedZones allowedIn = AllowedZones.SpecifiedZones;
+		AllowedZones allowedIn = AllowedZones.None;
 
 		IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
 		IList<string> allowedZoneNames = new List<string>();
@@ -245,14 +245,15 @@ namespace N2.Definitions
 				return true;
 			if (AllowedIn == AllowedZones.AllNamed && !string.IsNullOrEmpty(zoneName))
 				return true;
-			if (AllowedIn == AllowedZones.None)
-				return false;
 
 			if (AllowedZoneNames == null)
 				return true;
 
 			if (string.IsNullOrEmpty(zoneName) && AllowedZoneNames.Count == 0 && AllowedIn != AllowedZones.AllNamed)
 				return true;
+
+			if (AllowedIn == AllowedZones.None)
+				return false;
 
 			return AllowedZoneNames.Contains(zoneName);
 		}
