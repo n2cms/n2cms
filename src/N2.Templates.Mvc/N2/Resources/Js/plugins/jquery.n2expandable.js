@@ -6,14 +6,16 @@
 
 		if ($c.length == 0)
 			return;
-		
-		var $l = (args.expander) 
-			? $(args.expander) 
-			: $("<a href='#' class='expander'><span>Show/Hide</span></a>");
-		if ($c[0].tagName == "LEGEND")
-			$l.prependTo($c[0]);
-		else
-			$l.prependTo(this).wrap("<legend/>");
+
+		var text = "Details";
+		if (text = this.attr("title"))
+			this.attr("title", "");
+			
+		var $l = (args.expander)
+			? $(args.expander)
+			: $("<a href='#' class='expander'>" + text + "</a>");
+
+		$l.appendTo(this);
 
 		var self = this;
 		$l.click(function(e) {

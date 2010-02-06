@@ -93,7 +93,7 @@
 
     		$(".dimmable").n2dimmable();
 
-    		$(".expandable").n2expandable({ visible: "div:first,div.uncontractable" });
+    		$(".expandable").n2expandable({ visible: ".uncontractable" });
     	});
 
     </script>

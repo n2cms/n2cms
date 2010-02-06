@@ -123,6 +123,9 @@
   <data name="content.TabText" xml:space="preserve">
     <value>Content</value>
   </data>
+  <data name="details.Legend" xml:space="preserve">
+    <value>Page details</value>
+  </data>
   <data name="seo.TabText" xml:space="preserve">
     <value>SEO</value>
   </data>

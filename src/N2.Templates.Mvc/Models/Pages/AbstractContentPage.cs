@@ -9,8 +9,8 @@ namespace N2.Templates.Mvc.Models.Pages
 	/// <summary>
 	/// A page item with a convenient set of properties defined by default.
 	/// </summary>
-	[WithEditableName("Name", 7, ContainerName = Tabs.Defaults),
-	 WithEditablePublishedRange("Published Between", 8, ContainerName = Tabs.Defaults, BetweenText = " and ")]
+	[WithEditableName("Name", 14, ContainerName = Tabs.Details),
+	 WithEditablePublishedRange("Published Between", 16, ContainerName = Tabs.Details, BetweenText = " and ")]
 	[AvailableZone("Right", Zones.Right),
 	 AvailableZone("Recursive Right", Zones.RecursiveRight),
 	 AvailableZone("Left", Zones.Left),
@@ -28,7 +28,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { SetDetail("Text", value, string.Empty); }
 		}
 
-		[EditableCheckBox("Visible", 40, ContainerName = Tabs.Defaults)]
+		[EditableCheckBox("Visible", 12, ContainerName = Tabs.Details)]
 		public override bool Visible
 		{
 			get { return base.Visible; }

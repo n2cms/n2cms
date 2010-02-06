@@ -103,10 +103,28 @@ body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD
     z-index:188;
 }
 
+.expandable 
+{
+	border-bottom:dotted 1px #ccc;
+	position:relative;
+	margin:10px 0;
+}
+.expanded
+{
+	padding:9px;
+	border:solid 1px #ccc;
+}
 .expandable .expander
 {
-	padding-left: 20px;
-	background:transparent url(../img/ico/png/bullet_arrow_down.png) no-repeat 2px 2px;
+	display:block;
+	padding-left:20px;
+	padding-right:5px;
+	height:15px;
+	background:transparent url(../img/ico/png/bullet_arrow_down.png) no-repeat 2px 50%;
+	position:absolute;
+	bottom:-6px;
+	left:10px;
+	background-color:#fff;
 }
 .expanded .expander
 {

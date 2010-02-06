@@ -5,6 +5,7 @@ using System.Text;
 using N2.Definitions;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
+using System.Web.UI.WebControls;
 
 namespace N2.Web.UI
 {
@@ -38,9 +39,9 @@ namespace N2.Web.UI
 		/// <returns>The newly added fieldset.</returns>
 		public override Control AddTo(Control container)
 		{
-			FieldSet fieldSet = new FieldSet();
+			Panel fieldSet = new Panel();
 			fieldSet.ID = Name;
-			fieldSet.Legend = GetLocalizedText("Legend") ?? Legend;
+			fieldSet.ToolTip = GetLocalizedText("Legend") ?? Legend;
 			fieldSet.CssClass = "expandable";
 			container.Controls.Add(fieldSet);
 			return fieldSet;
