@@ -107,7 +107,7 @@ body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD
 {
 	border-bottom:dotted 1px #ccc;
 	position:relative;
-	margin:10px 0;
+	margin:15px 0;
 }
 .expanded
 {
@@ -117,18 +117,17 @@ body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD
 .expandable .expander
 {
 	display:block;
-	padding-left:20px;
-	padding-right:5px;
+	padding:2px 5px 2px 20px;
 	height:15px;
-	background:transparent url(../img/ico/png/bullet_arrow_down.png) no-repeat 2px 50%;
+	background:transparent url(../img/ico/png/bullet_toggle_plus.png) no-repeat 2px 50%;
 	position:absolute;
-	bottom:-6px;
-	left:10px;
+	bottom:-10px;
+	left:15px;
 	background-color:#fff;
 }
 .expanded .expander
 {
-	background-image:url(../img/ico/png/bullet_arrow_up.png);
+	background-image:url(../img/ico/png/bullet_toggle_minus.png);
 }
 .expandable .expander span
 {
