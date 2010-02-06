@@ -24,15 +24,15 @@ namespace N2.Web.UI.WebControls
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-
-			Visible = Controls.Count > 0;
 		}
 
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
 
-			Register.TabPanel(Page, "." + CssClass.Replace(' ', '.'), RegisterTabCss);
+			Visible = Controls.Count > 0;
+			if(Visible)
+				Register.TabPanel(Page, "." + CssClass.Replace(' ', '.'), RegisterTabCss);
 		}
 	}
 }

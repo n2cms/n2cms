@@ -33,7 +33,7 @@ body.edit .content fieldset { clear:left; padding:10px; }
 
 body.edit textarea.textEditor { width:580px; }
 body.edit textarea.freeTextArea { height:380px; }
-body.edit .itemEditor .editDetail { margin:0 0 5px 0; clear:left; }
+body.edit .itemEditor .editDetail { margin:0 0 10px 0; clear:left; }
 body.edit .itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 0; }
 body.edit .itemEditor fieldset .editorLabel { width:100px; }
 body.edit .itemEditor .editControl { float:left; padding:0; margin:0 0 5px 0; }
