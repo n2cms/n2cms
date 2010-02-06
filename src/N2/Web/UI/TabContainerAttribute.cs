@@ -18,7 +18,7 @@ namespace N2.Web.UI
 	/// Defines a tab panel that can be used to contain editor controls.
 	/// </summary>
 	/// <example>
-	///     [N2.Web.UI.TabPanel("default", "Default", 100)] // editables with the ContainerName="default" will be placed in a tab with the name "Default"
+	///     [N2.Web.UI.TabContainer("default", "Default", 100)] // editables with the ContainerName="default" will be placed in a tab with the name "Default"
 	///     public class MyPage : N2.ContentItem
 	///     {
 	///         [N2.Details.EditableFreeTextArea("Text", 110, ContainerName="default")]

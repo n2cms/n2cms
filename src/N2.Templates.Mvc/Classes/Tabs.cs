@@ -11,6 +11,9 @@ namespace N2.Templates.Mvc
 	{
 		/// <summary>The default content tab when editing.</summary>
 		public const string Content = "content";
+		
+		/// <summary>The expandable default container.</summary>
+		public const string Defaults = "defaults";
 
 		/// <summary>Advanced tab while editing.</summary>
 		public const string Advanced = "advanced";

@@ -1,28 +1,27 @@
-using System;
-using System.Web.UI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using N2.Definitions;
+using System.Web.UI;
 using N2.Web.UI.WebControls;
 
 namespace N2.Web.UI
 {
-	[Obsolete("The [FieldSet] attribute is renamed to [FieldSetContainer] attribute to conform with a redefined nomenclature.")]
-	public class FieldSetAttribute : FieldSetContainerAttribute
-	{
-		public FieldSetAttribute(string name, string legend, int sortOrder)
-			: base(name, legend, sortOrder)
-		{
-		}
-	}
-
 	/// <summary>
-	/// Defines a fieldset that can contain editors when editing an item.
+	/// Organizes editors in a field set that can be expanded to show all details.
 	/// </summary>
-	public class FieldSetContainerAttribute : EditorContainerAttribute
+	public class ExpandableContainerAttribute : EditorContainerAttribute
 	{
 		private string legend;
 
-		public FieldSetContainerAttribute(string name, string legend, int sortOrder)
+		public ExpandableContainerAttribute(string name, int sortOrder)
 			: base(name, sortOrder)
+		{
+		}
+
+		public ExpandableContainerAttribute(string name, string legend, int sortOrder)
+			: this(name, sortOrder)
 		{
 			Legend = legend;
 		}
@@ -42,6 +41,7 @@ namespace N2.Web.UI
 			FieldSet fieldSet = new FieldSet();
 			fieldSet.ID = Name;
 			fieldSet.Legend = GetLocalizedText("Legend") ?? Legend;
+			fieldSet.CssClass = "expandable";
 			container.Controls.Add(fieldSet);
 			return fieldSet;
 		}

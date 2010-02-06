@@ -373,6 +373,7 @@
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\FileEventArgs.cs" />
     <Compile Include="Edit\FileSystem\MappedFileSystem.cs" />
+    <Compile Include="Edit\IContentBinder.cs" />
     <Compile Include="Edit\Installation\DatabaseStatus.cs" />
     <Compile Include="Edit\Installation\InstallationManager.cs" />
     <Compile Include="Edit\Installation\InstallerHint.cs" />
@@ -611,6 +612,7 @@
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\CacheManager.cs" />
     <Compile Include="Web\UI\ContentCacheDependency.cs" />
+    <Compile Include="Web\UI\ExpandableContainerAttribute.cs" />
     <Compile Include="Web\UI\ICacheManager.cs" />
     <Compile Include="Web\UI\IContentTemplate.cs" />
     <Compile Include="Web\UI\ContentPage.cs">

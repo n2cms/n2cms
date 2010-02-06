@@ -41,58 +41,60 @@
     <n2:ItemEditor ID="ie" runat="server" />
         
     <script type="text/javascript">
-        $(document).ready(function() {
-            // future publish
-            $("#futurePanel").hide().click(function(e) { e.stopPropagation(); });
-            $(".future").click(function(e) {
-                $("#futurePanel").css({ left: e.clientX + "px", top: e.clientY + "px" }).show();
-                $("#futurePanel input:first").focus();
-                e.preventDefault();
-                e.stopPropagation();
-            });
+    	$(document).ready(function() {
+    		// future publish
+    		$("#futurePanel").hide().click(function(e) { e.stopPropagation(); });
+    		$(".future").click(function(e) {
+    			$("#futurePanel").css({ left: e.clientX + "px", top: e.clientY + "px" }).show();
+    			$("#futurePanel input:first").focus();
+    			e.preventDefault();
+    			e.stopPropagation();
+    		});
 
-            $("#futurePanel .cancel").click(function() {
-                $("#futurePanel").hide();
-            });
-            $(document.body).click(function(e) {
-                if ($(e.target).closest(".jCalendar").length == 0)
-                    $("#futurePanel").hide();
-            });
+    		$("#futurePanel .cancel").click(function() {
+    			$("#futurePanel").hide();
+    		});
+    		$(document.body).click(function(e) {
+    			if ($(e.target).closest(".jCalendar").length == 0)
+    				$("#futurePanel").hide();
+    		});
 
-            $(".helpPanel").click(function() {
-                var $hp = $(this);
-                $hp.toggleClass("helpVisible");
-            });
+    		$(".helpPanel").click(function() {
+    			var $hp = $(this);
+    			$hp.toggleClass("helpVisible");
+    		});
 
-            $(".right fieldset").hide();
+    		$(".right fieldset").hide();
 
-            $(".showInfo").toggle(function() {
-                n2toggle.show(this, ".infoBox");
-            }, function() {
-                n2toggle.hide(this, ".infoBox");
-            });
+    		$(".showInfo").toggle(function() {
+    			n2toggle.show(this, ".infoBox");
+    		}, function() {
+    			n2toggle.hide(this, ".infoBox");
+    		});
 
-            $(".showZones").toggle(function() {
-                n2toggle.show(this, ".zonesBox");
-            }, function() {
-                n2toggle.hide(this, ".zonesBox");
-            });
+    		$(".showZones").toggle(function() {
+    			n2toggle.show(this, ".zonesBox");
+    		}, function() {
+    			n2toggle.hide(this, ".zonesBox");
+    		});
 
-            if ($.cookie(".infoBox"))
-                $(".showInfo").click();
-            if ($.cookie(".zonesBox"))
-                $(".showZones").click();
+    		if ($.cookie(".infoBox"))
+    			$(".showInfo").click();
+    		if ($.cookie(".zonesBox"))
+    			$(".showZones").click();
 
-            // hide mce toolbar to prevent it getting skewed
-            $(".tabs a").click(function() {
-                $(".mceExternalToolbar").hide();
-            });
-            $("input").focus(function() {
-                $(".mceExternalToolbar").hide();
-            });
+    		// hide mce toolbar to prevent it getting skewed
+    		$(".tabs a").click(function() {
+    			$(".mceExternalToolbar").hide();
+    		});
+    		$("input").focus(function() {
+    			$(".mceExternalToolbar").hide();
+    		});
 
-            $(".dimmable").n2dimmable();
-        });
+    		$(".dimmable").n2dimmable();
+
+    		$(".expandable").n2expandable({ visible: "div:first,div.uncontractable" });
+    	});
 
     </script>
 </asp:Content>

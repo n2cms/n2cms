@@ -21,6 +21,13 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["RegisterTabCss"] = value; }
 		}
 
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			Visible = Controls.Count > 0;
+		}
+
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);

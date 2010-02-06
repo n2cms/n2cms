@@ -1,6 +1,12 @@
+- home page
+	- wizards
+	- site events
+	- analytics (stats)
+	- rss
+	- injectable
 - reference actions on same/other content item controllers
-- list referencing items
-- add metablog support
+- list referencing items issue
+- metablog support
 - MVC: show deeper page structures
 - MVC: new skin
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825

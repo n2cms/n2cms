@@ -1,4 +1,6 @@
-﻿- added MappedFileSystem that might work better in medium trust environments
+﻿- grouped page metadata with title and hid it a bit
+- removed pages from mvc parts to add (this changes default behavior to allow everything as parts, now [PartDefinition] or [AllowedZones] is required)
+- added MappedFileSystem that might work better in medium trust environments
 - applied meixger's patch #5071: routing multi-language MVC site
 - Virtual nodes support via VirtualNodeFactory
 - Moved down some namespaces (breaking change: Castle, Installation, Mappings)

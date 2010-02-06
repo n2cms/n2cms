@@ -14,13 +14,12 @@ n2nav.findLink = function(el) {
 		el = el.parentNode;
 	return el;
 }
+
 n2nav.displaySelection = function(el){
     $(".selected").removeClass("selected");
     $(el).addClass("selected");
 }
-//n2nav.getUrl = function(a){
-//	return a.rel;
-//}
+
 n2nav.getPath = function(a) {
 	return $(a).attr("data-path");
 }
@@ -29,38 +28,14 @@ n2nav.onTargetClick = function(el){
     if(n2nav.onUrlSelected)
     	n2nav.onUrlSelected(n2nav.getPath(el));
 }
-//n2nav.targetHandlers = new Array();
+
 n2nav.handlers = {
 	fallback: function(e) {
 		n2nav.onTargetClick(this)
 		n2nav.setupToolbar(n2nav.getPath(this), this.href);
 	}
 };
-//n2nav.handleLink = function(i,a){
-//	if(n2nav.targetHandlers[a.target]){
-//        n2nav.targetHandlers[a.target](a,i);
-//	}
-//}
-//n2nav.refreshLinks = function(container) {
-//	console.log("refreshLinks ", n2nav);
-//	if (!container) {
-//		container = n2nav.linkContainerId;
-//	}
-//	$("a", container).each(n2nav.handleLink);
-//}
-//n2nav.setupLinks = function(containerId){
-//	this.linkContainerId = containerId;
-//	//this.refreshLinks();
-//}
-//n2nav.previewClickHandler = function(event){
-//	var a = n2nav.findLink(event.target);
-//    n2nav.onTargetClick(a)
-//    n2nav.setupToolbar(n2nav.getUrl(a), a.href);
-//}
 
-//n2nav.targetHandlers["preview"] = function(a,i) {
-//    $(a).addClass("enabled").bind("click", null, n2nav.previewClickHandler);
-//}
 n2nav.setupToolbar = function(path, url) {
 	n2ctx.update({ path: path, previewUrl: url });
 }
