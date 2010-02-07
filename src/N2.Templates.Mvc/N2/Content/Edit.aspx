@@ -93,6 +93,16 @@
 
     		$(".dimmable").n2dimmable();
 
+    		$(".uploader > label").each(function() {
+    			$("<a href='#' class='revealer'/>").html(this.innerHTML)
+    			.insertBefore(this)
+    			.click(function() {
+    				$(this).hide()
+    				.siblings().show()
+    				.end().closest(".editDetail").addClass("crowded");
+    			}).siblings().hide();
+    		});
+
     		$(".expandable").n2expandable({ visible: ".uncontractable" });
     	});
 

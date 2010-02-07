@@ -96,6 +96,7 @@
     <Compile Include="Linq\QueryableExtensions.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
+    <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />
     <Compile Include="Web\Mvc\Traversal.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
     <Compile Include="Web\Mvc\ContentViewPage.cs">

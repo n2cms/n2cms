@@ -49,7 +49,6 @@
 	- split pages and parts
 	- remove authorized roles
 	- sort order on details
-- fix future publish
 - allow custom user type
 - make all objects editable
 - deprecate and replace mail stuff

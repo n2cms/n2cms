@@ -47,6 +47,9 @@ namespace N2.Details
 			set { cssClass = value; }
 		}
 
+		/// <summary>CSS class on the image element.</summary>
+		public string UploadText { get; set; }
+
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			SelectorUploadComposite composite = (SelectorUploadComposite)editor;
@@ -87,6 +90,7 @@ namespace N2.Details
 		{
 			SelectorUploadComposite composite = new SelectorUploadComposite();
 			composite.ID = Name;
+			composite.UploadLabel.Text = UploadText ?? "Upload";
 			container.Controls.Add(composite);
 			return composite;
 		}
@@ -98,6 +102,7 @@ namespace N2.Details
 			public HtmlGenericControl SelectorContainer { get; set; }
 			public HtmlGenericControl UploadContainer { get; set; }
 			public FileSelector SelectorControl { get; set; }
+			public Label UploadLabel { get; set; }
 			public FileUpload UploadControl { get; set; }
 
 			public SelectorUploadComposite()
@@ -106,6 +111,8 @@ namespace N2.Details
 				SelectorControl.ID = "Selector";
 				UploadControl = new FileUpload();
 				UploadControl.ID = "Uploader";
+				UploadLabel = new Label();
+				UploadLabel.AssociatedControlID = UploadControl.ID;
 			}
 
 			protected override void CreateChildControls()
@@ -113,21 +120,16 @@ namespace N2.Details
 				base.CreateChildControls();
 
 				SelectorContainer = new HtmlGenericControl("span");
-				SelectorContainer.Attributes["class"] = "uploadableContainer dimmable selector";
+				SelectorContainer.Attributes["class"] = "uploadableContainer selector";
 				Controls.Add(SelectorContainer);
 
-				HtmlImage selectorImage = new HtmlImage();
-				selectorImage.Src = "~/N2/Resources/Img/Ico/page_white_link.gif";
-				SelectorContainer.Controls.Add(selectorImage);
 				SelectorContainer.Controls.Add(SelectorControl);
 
 				UploadContainer = new HtmlGenericControl("span");
-				UploadContainer.Attributes["class"] = "uploadableContainer dimmable uploader";
+				UploadContainer.Attributes["class"] = "uploadableContainer uploader";
 				Controls.Add(UploadContainer);
 
-				HtmlImage uploadImage = new HtmlImage();
-				uploadImage.Src = "~/N2/Resources/Img/Ico/page_white_get.gif";
-				UploadContainer.Controls.Add(uploadImage);
+				UploadContainer.Controls.Add(UploadLabel);
 				UploadContainer.Controls.Add(UploadControl);
 			}
 
@@ -137,9 +139,9 @@ namespace N2.Details
 				SelectorControl.Url = url;
 
 				if (string.IsNullOrEmpty(url))
-					SelectorContainer.Attributes["class"] = "uploadableContainer dimmable selector dimmed";
+					SelectorContainer.Attributes["class"] = "uploadableContainer selector";
 				else
-					UploadContainer.Attributes["class"] = "uploadableContainer dimmable uploader dimmed";
+					UploadContainer.Attributes["class"] = "uploadableContainer uploader";
 			}
 		}
 

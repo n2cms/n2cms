@@ -42,15 +42,15 @@
 					<asp:ContentPlaceHolder ID="ContentAndSidebar" runat="server">
 						<div id="main">
 							<asp:ContentPlaceHolder ID="PreContent" runat="server">
-								<%--TODO: <n2:DraggableToolbar ID="dt" runat="server" />--%>
 								<% Html.DroppableZone(Zones.RecursiveAbove).Render();%>
 							</asp:ContentPlaceHolder>
 							<asp:ContentPlaceHolder ID="Content" runat="server">
 								<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
-								<%--<n2:Path ID="p" runat="server" VisibilityLevel="2" />--%>
 								<%=Html.Display("Image").SwallowExceptions()%>
 								<asp:ContentPlaceHolder ID="TextContent" runat="server">
-									<%=Html.Display("Title").SwallowExceptions()%>
+									<% if (Html.ValueEquals("ShowTitle", true)) { %>
+									<%= Html.Display("Title").SwallowExceptions()%>
+									<% } %>
 									<%=Html.Display("Text").SwallowExceptions()%>
 								</asp:ContentPlaceHolder>
 							</asp:ContentPlaceHolder>

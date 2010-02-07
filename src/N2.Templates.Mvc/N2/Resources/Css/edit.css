@@ -46,16 +46,13 @@ body.edit .titleEditor { font-size:1.5em; }
 body.edit .popupButton { margin-right:10px;}
 body.edit input.disabled, body.edit .disabled *, body.edit input.dimmed, body.edit .dimmed *
     { opacity:.50; filter: alpha(opacity=50); }
-body.edit .selector, body.edit .uploader
-    { margin-right:10px;}
-body.edit .uploadableContainer .fileSelector
-    { width: 184px; }
-body.edit .selector img, body.edit .uploader img
-    { vertical-align:middle; margin-right:1px; }
 table.editDetail { border-collapse:collapse; }
 .keepUpdated { background:transparent url(../../Resources/img/ico/png/lock_open.png) no-repeat; padding:2px; cursor:pointer; }
 .keepUpdated input { visibility:hidden; }
 .unchecked { background-image:url(../../Resources/img/ico/png/lock.png); }
+
+.uploader label { margin-right:10px; }
+.crowded .uploadableContainer .fileSelector { width:184px }
 
 body.edit .delete { float:right; }
 body.edit .versionInfo { background-image:url(../../Resources/img/ico/png/information.png); }
@@ -76,11 +73,16 @@ body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD
 #content .defaultSkin table.mceLayout tr.mceFirst td { border:none; }
 #content .defaultSkin table.mceLayout tr.mceFirst { background:#F8F8E8 url(../../Resources/img/darken10.png) repeat-x scroll 0 30px; }
 #content .mceStatusbar,
-#content .mceIframeContainer { border:none; border-left:solid 1px #F8F8E8; border-right:solid 1px #F8F8E8; }
-#content .mceButton { background:#fff url(../../Resources/img/darken10.png) repeat-x 0 -10px; border:solid 1px #fff; }
-#content .mceButtonActive { background:#fff url(../../Resources/img/lighten10.png) repeat-x 0 -20px; border:solid 1px #ddd; }
+#content .mceIframeContainer { border:none; border-left:solid 1px #EEE; border-right:solid 1px #EEE; }
+#content .mceStatusbar * { color:#999;}
+#content .mceToolbar { margin:0; }
+#content .mceButton { background:transparent url(../../Resources/img/darken10.png) repeat-x; border:none; padding:3px; margin:0; }
+#content .mceButton:hover { padding:2px; border:solid 1px #AAA; }
+#content .mceButtonDisabled:hover { padding:3px; border:none; }
+#content .mceButtonActive { background:transparent url(../../Resources/img/lighten25.png) repeat-x 0 -10px; border:none; padding:2px; border:solid 1px #AAA; }
 #content .mceToolbar table { background-color:transparent; }
 #content .mceStatusbar { background:#F8F8E8 url(../../Resources/img/lighten10.png) repeat-x scroll 0 -35px; border:none !important;}
+
 
 .framed .toolbar .iconed { background:transparent none no-repeat 2px 5px; padding-left:20px; }
 .framed .toolbar .iconed:hover  { background-position:1px 4px; padding-left:19px; }
