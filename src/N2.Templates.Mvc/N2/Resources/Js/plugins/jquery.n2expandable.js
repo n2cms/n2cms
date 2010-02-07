@@ -1,34 +1,45 @@
 ﻿(function($) {
 	$.fn.n2expandable = function(args) {
-		var $c = this.children();
+		var $children = this.children();
 		if (args.visible)
-			$c = $c.not(args.visible);
+			$children = $children.not(args.visible);
 
-		if ($c.length == 0)
+		if ($children.length == 0)
 			return;
 
 		var text = "Details";
 		if (text = this.attr("title"))
 			this.attr("title", "");
-			
-		var $l = (args.expander)
+
+		var $expander = (args.expander)
 			? $(args.expander)
 			: $("<a href='#' class='expander'>" + text + "</a>");
 
-		$l.appendTo(this);
+		$expander.prependTo(this);
 
 		var self = this;
-		$l.click(function(e) {
-			if (self.is(".expanded")) {
-				$c.hide();
-				self.removeClass("expanded");
+		$expander.click(function(e) {
+			if (self.is(".expandable-expanded")) {
+				$children.hide();
+				self.removeClass("expandable-expanded");
+				self.addClass("expandable-contracted");
 			} else {
-				$c.fadeIn();
-				self.addClass("expanded");
+				$children.fadeIn();
+				self.addClass("expandable-expanded");
+				self.removeClass("expandable-contracted");
 			}
 			e.preventDefault();
+			e.stopPropagation();
+		});
+		this.click(function(e) {
+			if (!self.is(".expandable-expanded")) {
+				$children.fadeIn();
+				self.addClass("expandable-expanded");
+				self.removeClass("expandable-contracted");
+			}
 		});
 
-		$c.hide();
+		$children.hide();
+		this.addClass("expandable-contracted");
 	};
 })(jQuery);

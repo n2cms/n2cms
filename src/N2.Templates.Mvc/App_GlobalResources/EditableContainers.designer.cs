@@ -79,7 +79,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Page details.
+        ///   Looks up a localized string similar to Extended page properties.
         /// </summary>
         internal static string details_Legend {
             get {
