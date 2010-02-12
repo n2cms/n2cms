@@ -1,4 +1,11 @@
-﻿- added support for separator
+﻿- mvc: allow part interaction on other pages than immediate parent
+	/[pageurl]/?action=[action]&part=[id]
+	/[pageurl]/[action]
+- mvc: allow part alternative actions
+- mvc: allow linking via routes 
+	- Url.Action("[action]", new { item = [item] })
+	- Url.Action("[action]", new { page = [page], part = [part] })
+- added support for separator
 - tweaked (uncluttered) image/upload image editable
 - fixed show title in MVC
 - grouped page extended properties in an expandable panel

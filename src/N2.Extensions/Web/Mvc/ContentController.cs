@@ -44,7 +44,7 @@ namespace N2.Web.Mvc
 				if (_currentItem == null)
 				{
 					_currentItem = ControllerContext.RequestContext.CurrentItem<T>()
-								   ?? GetCurrentItemById(ContentRoute.ContentItemIdKey);
+								   ?? GetCurrentItemById(ContentRoute.ContentItemKey);
 				}
 				return _currentItem;
 			}
@@ -65,7 +65,7 @@ namespace N2.Web.Mvc
 		{
 			int itemId;
 			if (Int32.TryParse(ControllerContext.RouteData.Values[key] as string, out itemId)
-				|| Int32.TryParse(Request[ContentRoute.ContentItemIdKey], out itemId))
+				|| Int32.TryParse(Request[ContentRoute.ContentItemKey], out itemId))
 				return Engine.Persister.Get(itemId) as T;
 
 			return null;

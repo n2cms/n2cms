@@ -21,7 +21,6 @@ The partial view '~/Views/SharedParts/RandomImage.ascx' could not be found. The 
 - MVC: new skin
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
 - http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
-- MVC: allow item interaction on other pages than immediate parent
 - msdeploy support
 - default container (put all editables in one container)
 - remove path from adapters

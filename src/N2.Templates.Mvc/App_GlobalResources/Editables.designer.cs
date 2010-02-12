@@ -214,7 +214,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show title above content.
+        ///   Looks up a localized string similar to Display title above text content.
         /// </summary>
         internal static string ShowTitle_CheckBoxText {
             get {
@@ -313,7 +313,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show page in navigation.
+        ///   Looks up a localized string similar to Reveal page in navigation.
         /// </summary>
         internal static string Visible_CheckBoxText {
             get {

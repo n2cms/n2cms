@@ -7,6 +7,11 @@ namespace N2.Templates.Mvc.Controllers
 	[Controls(typeof(Poll))]
 	public class PollController : TemplatesControllerBase<Poll>
 	{
+		public override ActionResult Index()
+		{
+			return PartialView(CurrentItem);
+		}
+
 		public ActionResult Submit(int? selectedItem)
 		{
 			if (selectedItem == null)

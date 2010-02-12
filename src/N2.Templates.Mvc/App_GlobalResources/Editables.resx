@@ -172,7 +172,7 @@
     <value>Unchecking this options hides the page title</value>
   </data>
   <data name="ShowTitle.CheckBoxText" xml:space="preserve">
-    <value>Show title above content</value>
+    <value>Display title above text content</value>
   </data>
   <data name="SmtpHost.Title" xml:space="preserve">
     <value>Host</value>
@@ -205,6 +205,6 @@
     <value>Unchecking this options hides the page in menus but it's still available if you know the address to it.</value>
   </data>
   <data name="Visible.CheckBoxText" xml:space="preserve">
-    <value>Show page in navigation</value>
+    <value>Reveal page in navigation</value>
   </data>
 </root>

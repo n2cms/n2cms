@@ -26,19 +26,19 @@ namespace N2.Web.Mvc
 		public override IController CreateController(System.Web.Routing.RequestContext requestContext, string controllerName)
 		{
 			// TODO
-			EnsureDataToken(ContentRoute.ContentItemKey, ContentRoute.ContentItemIdKey, requestContext.RouteData);
-			EnsureDataToken(ContentRoute.ContentPageKey, ContentRoute.ContentPageIdKey, requestContext.RouteData);
+			EnsureDataToken(ContentRoute.ContentItemKey, requestContext.RouteData);
+			EnsureDataToken(ContentRoute.ContentPageKey, requestContext.RouteData);
 			if(!requestContext.RouteData.DataTokens.ContainsKey(ContentRoute.ContentEngineKey))
 			    requestContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = _engine;
 			return base.CreateController(requestContext, controllerName);
 		}
 
-		private void EnsureDataToken(string contentKey, string idKey, System.Web.Routing.RouteData routeData)
+		private void EnsureDataToken(string key, System.Web.Routing.RouteData routeData)
 		{
-			if (!routeData.DataTokens.ContainsKey(contentKey) && routeData.Values.ContainsKey(idKey))
+			if (!routeData.DataTokens.ContainsKey(key) && routeData.Values.ContainsKey(key))
 			{
-				int id = Convert.ToInt32(routeData.Values[idKey]);
-				routeData.DataTokens[contentKey] = _engine.Persister.Get(id);
+				int id = Convert.ToInt32(routeData.Values[key]);
+				routeData.DataTokens[key] = _engine.Persister.Get(id);
 			}
 		}
 

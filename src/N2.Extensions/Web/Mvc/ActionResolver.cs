@@ -10,7 +10,7 @@ namespace N2.Web.Mvc
 	{
 		private readonly IControllerMapper _controllerMapper;
 		private readonly string[] _methods;
-		private const string DefaultAction = "index";
+		//private const string DefaultAction = "index";
 
 		public ActionResolver(IControllerMapper controllerMapper, string[] methods)
 		{
@@ -25,8 +25,8 @@ namespace N2.Web.Mvc
 
 		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
-			if (string.IsNullOrEmpty(remainingUrl) || string.Equals(remainingUrl, "default", StringComparison.InvariantCultureIgnoreCase))
-				remainingUrl = DefaultAction;
+			//if (string.IsNullOrEmpty(remainingUrl) || string.Equals(remainingUrl, "default", StringComparison.InvariantCultureIgnoreCase))
+			//    remainingUrl = DefaultAction;
 			int slashIndex = remainingUrl.IndexOf('/');
 			
 			string action = remainingUrl;

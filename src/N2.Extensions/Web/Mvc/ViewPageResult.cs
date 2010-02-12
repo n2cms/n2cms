@@ -35,9 +35,9 @@ namespace N2.Web.Mvc
 		{
 			SetupN2ForNewPageRequest();
 
-			ControllerBase controller = BuildController(context);
+			context = BuildPageControllerContext(context);
 
-			_actionInvoker.InvokeAction(controller.ControllerContext, "Index");
+			_actionInvoker.InvokeAction(context, "Index");
 		}
 
 		private void SetupN2ForNewPageRequest()
@@ -45,24 +45,32 @@ namespace N2.Web.Mvc
 			_webContext.CurrentPage = _thePage;
 		}
 
-		private ControllerBase BuildController(ControllerContext context)
+		private ControllerContext BuildPageControllerContext(ControllerContext context)
 		{
+			string controllerName = _controllerMapper.GetControllerName(_thePage.GetType());
+			
 			var routeData = context.RouteData;
 			routeData.DataTokens[ContentRoute.ContentItemKey] = _thePage;
 			routeData.DataTokens[ContentRoute.ContentPageKey] = _thePage;
-			routeData.Values[ContentRoute.ContentItemIdKey] = _thePage.ID;
-			routeData.Values[ContentRoute.ContentPageIdKey] = _thePage.ID;
+			routeData.Values[ContentRoute.ContentItemKey] = _thePage.ID;
+			routeData.Values[ContentRoute.ContentPageKey] = _thePage.ID;
+			routeData.Values[ContentRoute.ControllerKey] = controllerName;
 			routeData.Values["action"] = "Index";
+			if (routeData.Values.ContainsKey(ContentRoute.ContentPartKey))
+			{
+				routeData.Values[ContentRoute.ContentPartKey] = context.RouteData.Values[ContentRoute.ContentPartKey];
+				routeData.DataTokens[ContentRoute.ContentPartKey] = context.RouteData.DataTokens[ContentRoute.ContentPartKey];
+			}
 
 			var requestContext = new RequestContext(context.HttpContext, routeData);
 
 			var controller = (ControllerBase)ControllerBuilder.Current.GetControllerFactory()
-			                                 	.CreateController(requestContext, _controllerMapper.GetControllerName(_thePage.GetType()));
+			                                 	.CreateController(requestContext, controllerName);
 
 			controller.ControllerContext = new ControllerContext(requestContext, controller);
 			controller.ViewData.ModelState.Merge(context.Controller.ViewData.ModelState);
 
-			return controller;
+			return controller.ControllerContext;
 		}
 	}
 }

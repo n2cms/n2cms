@@ -53,6 +53,7 @@ namespace N2.Web
 
 
 		ContentItem currentPage;
+		ContentItem currentItem;
 		
 		public PathData(ContentItem item, string templateUrl, string action, string arguments)
 			: this()
@@ -73,14 +74,17 @@ namespace N2.Web
 
 		}
 
-		public PathData(int id, string path, string templateUrl, string action, string arguments)
+		public PathData(int id, int pageID, string path, string templateUrl, string action, string arguments, bool ignore, IDictionary<string, string> queryParameters)
 			: this()
 		{
 			ID = id;
+			PageID = pageID;
 			Path = path;
 			TemplateUrl = templateUrl;
 			Action = action;
 			Argument = arguments;
+			Ignore = ignore;
+			QueryParameters = new Dictionary<string, string>(queryParameters);
 		}
 
 		public PathData()
@@ -90,13 +94,25 @@ namespace N2.Web
 		}
 
 		/// <summary>The item behind this path.</summary>
-		public ContentItem CurrentItem { get; set; }
+		public ContentItem CurrentItem 
+		{
+			get { return currentItem; }
+			set
+			{
+				currentItem = value;
+				ID = value != null ? value.ID : 0;
+			}
+		}
 
 		/// <summary>The page behind this path (might differ from CurrentItem when the path leads to a part).</summary>
 		public ContentItem CurrentPage
 		{
 			get { return currentPage ?? CurrentItem; }
-			set { currentPage = value;}
+			set 
+			{ 
+				currentPage = value;
+				PageID = value != null ? value.ID : 0;
+			}
 		}
 
 		/// <summary>The item reporting that the path isn't a match.</summary>
@@ -107,6 +123,9 @@ namespace N2.Web
 		
 		/// <summary>The identifier of the content item behind this path.</summary>
 		public int ID { get; set; }
+
+		/// <summary>The identifier of the content page behind this path.</summary>
+		public int PageID { get; set; }
 
 		/// <summary>?</summary>
 		public string Path { get; set; }
@@ -158,9 +177,7 @@ namespace N2.Web
 		/// <returns>A copy of the path data.</returns>
 		public virtual PathData Detach()
 		{
-			PathData data = new PathData(ID, Path, TemplateUrl, Action, Argument);
-			data.Ignore = Ignore;
-			data.QueryParameters = new Dictionary<string, string>(data.QueryParameters);
+			PathData data = new PathData(ID, PageID, Path, TemplateUrl, Action, Argument, Ignore, QueryParameters);
 			return data;
 		}
 
@@ -169,10 +186,12 @@ namespace N2.Web
 		/// <returns>A copy of the path data.</returns>
 		public virtual PathData Attach(N2.Persistence.IPersister persister)
 		{
-			ContentItem item = persister.Repository.Load(ID);
-			PathData data = new PathData(item, TemplateUrl, Action, Argument);
-			data.Ignore = Ignore;
-			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
+			PathData data = new PathData(ID, PageID, Path, TemplateUrl, Action, Argument, Ignore, QueryParameters);
+			
+			data.CurrentItem = persister.Repository.Load(ID);
+			if (PageID != 0)
+				data.CurrentPage = persister.Repository.Load(PageID);
+
 			return data;
 		}
 

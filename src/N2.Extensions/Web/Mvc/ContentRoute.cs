@@ -12,15 +12,26 @@ namespace N2.Web.Mvc
 	/// </summary>
 	public class ContentRoute : RouteBase
 	{
-		public const string ContentItemKey = "n2_item";
-		public const string ContentPageKey = "n2_page";
-		public const string ContentItemIdKey = "n2_itemid";
-		public const string ContentPageIdKey = "n2_pageid";
-		public const string ContentEngineKey = "n2_engine";
-		public const string ContentUrlKey = "url";
+		/// <summary>Used to reference the currently executing content item in the route value dictionary.</summary>
+		public const string ContentItemKey = "item";
+		/// <summary>Used to reference the content page in the route value dictionary.</summary>
+		public const string ContentPageKey = "page";
+		/// <summary>Used to reference the content part in the route value dictionary.</summary>
+		public const string ContentPartKey = "part";
+		/// <summary>Used to reference the N2 content engine.</summary>
+		public const string ContentEngineKey = "engine";
+		/// <summary>Convenience reference to the MVC controller</summary>
 		public const string ControllerKey = "controller";
+		/// <summary>Convenience reference to the MVC action</summary>
 		public const string ActionKey = "action";
 
+		[Obsolete("Unused, will be gone")]
+		public const string ContentItemIdKey = "item";
+		[Obsolete("Unused, will be gone")]
+		public const string ContentPageIdKey = "page";
+		[Obsolete("Unused, will be gone")]
+		public const string ContentUrlKey = "url";
+		
 		readonly IEngine engine;
 		readonly IRouteHandler routeHandler;
 		readonly IControllerMapper controllerMapper;
@@ -83,8 +94,8 @@ namespace N2.Web.Mvc
 
 			if (controllerMapper.ControllerHasAction(controllerName, actionName))
 			{
-				ApplyContent(routeData, context.Request.QueryString, ContentItemIdKey, ContentItemKey);
-				ApplyContent(routeData, context.Request.QueryString, ContentPageIdKey, ContentPageKey);
+				ApplyContent(routeData, context.Request.QueryString, ContentItemKey);
+				ApplyContent(routeData, context.Request.QueryString, ContentPageKey);
 				routeData.DataTokens[ContentEngineKey] = engine;
 
 				return routeData;
@@ -93,14 +104,13 @@ namespace N2.Web.Mvc
 			return null;
 		}
 
-		private void ApplyContent(RouteData routeData, System.Collections.Specialized.NameValueCollection query, string idKey, string contentKey)
+		private void ApplyContent(RouteData routeData, System.Collections.Specialized.NameValueCollection query, string key)
 		{
-			string idValue = query[idKey];
-			if (!string.IsNullOrEmpty(idValue))
+			int id;
+			if (int.TryParse(query[key], out id))
 			{
-				int id = int.Parse(idValue);
-				routeData.Values[idKey] = id;
-				routeData.DataTokens[contentKey] = engine.Persister.Get(id);
+				routeData.Values[key] = id;
+				routeData.DataTokens[key] = engine.Persister.Get(id);
 			}
 		}
 
@@ -134,18 +144,29 @@ namespace N2.Web.Mvc
 			if (td.CurrentItem == null)
 				return null;
 
-			var part = td.CurrentItem;
+			var item = td.CurrentItem;
 			var page = td.CurrentPage;
 			var action = td.Action;
+			if (string.IsNullOrEmpty(action))
+				action = request.QueryString["action"] ?? "index";
 
-			if (td.QueryParameters.ContainsKey("preview"))
+			ContentItem part = null;
+			if (!string.IsNullOrEmpty(request.QueryString["part"]))
 			{
-				int itemId;
-				if (Int32.TryParse(td.QueryParameters["preview"], out itemId))
-					part = engine.Persister.Get(itemId);
+				// part in query string is used to render a part
+				int partId;
+				if (int.TryParse(request.QueryString["part"], out partId))
+					item = part = engine.Persister.Get(partId);
 			}
 
-			var controllerName = controllerMapper.GetControllerName(part.GetType());
+			if (part == null && item != page && !item.IsPage)
+			{
+				// isn't a page but wasn't passed via ?part=#, avoid rendering it
+				part = item;
+				item = page;
+			}
+
+			var controllerName = controllerMapper.GetControllerName(item.GetType());
 
 			if (controllerName == null)
 				return null;
@@ -154,11 +175,17 @@ namespace N2.Web.Mvc
 				return null;
 
 			var data = new RouteData(this, routeHandler);
-			data.DataTokens[ContentItemKey] = part;
-			data.Values[ContentItemIdKey] = part.ID;
+
+			data.DataTokens[ContentPartKey] = part;
+			data.DataTokens[ContentItemKey] = item;
 			data.DataTokens[ContentPageKey] = page;
-			data.Values[ContentPageIdKey] = page.ID;
 			data.DataTokens[ContentEngineKey] = engine;
+
+			if (part != null)
+				data.Values[ContentPartKey] = part.ID;
+			data.Values[ContentItemKey] = item.ID;
+			data.Values[ContentPageKey] = page.ID;
+			
 			data.Values[ControllerKey] = controllerName;
 			data.Values[ActionKey] = action;
 
@@ -168,41 +195,92 @@ namespace N2.Web.Mvc
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
 			ContentItem item;
-			if(values.ContainsKey(ContentItemKey))
+
+			// try retrieving the item from the route values
+			if (!TryConvertContentToController(values, ContentPartKey, out item)
+				&& !TryConvertContentToController(values, ContentItemKey, out item)
+				&& !TryConvertContentToController(values, ContentPageKey, out item))
 			{
-				item = values[ContentItemKey] as ContentItem;
-				values.Remove(ContentItemKey);
-			}
-			else
-				item = requestContext.RouteData.DataTokens[ContentItemKey] as ContentItem;
+				// no item was passed, fallback to current content item
+				item = requestContext.CurrentItem();
 
-			if (item == null)
-				return null;
-
-			string controller = controllerMapper.GetControllerName(item.GetType());
-			if (values.ContainsKey(ControllerKey) && !string.Equals(values[ControllerKey] as string, controller, StringComparison.InvariantCultureIgnoreCase))
-				// someone's asking for a specific controller so we let another route handle it
-				return null;
-
-			if (item.IsPage)
-			{
-				const string controllerPlaceHolder = "$(CTRL)";
-				values[ControllerKey] = controllerPlaceHolder; // pass a placeholder we'll fill with the content path
-				VirtualPathData vpd = GetVirtualPathFromRoutes(requestContext, values);
-				if (vpd == null)
+				if (item == null)
+					// no item = no play
 					return null;
 
-				Url url = item.Url;
-				Url actionUrl = vpd.VirtualPath.Replace(controllerPlaceHolder, url.Path);
-				vpd.VirtualPath = actionUrl.AppendQuery(url.Query).PathAndQuery.TrimStart('/');
-				return vpd;
+				string controller = controllerMapper.GetControllerName(item.GetType());
+				if (values.ContainsKey(ControllerKey) && !string.Equals(values[ControllerKey] as string, controller, StringComparison.InvariantCultureIgnoreCase))
+					// someone's asking for a specific controller so we let another route handle it
+					return null;
 			}
-			else
+
+			if (item.IsPage)
+				return ResolveActionUrl(requestContext, values, item);
+
+			// try to find an appropriate page to use as path (part data goes into the query strings)
+			ContentItem page;
+			if (TryConvertContentToController(values, ContentPageKey, out page))
+				// a page parameter was passed
+				return ResolvePartActionUrl(requestContext, values, page, item);
+
+			page = requestContext.CurrentPage<ContentItem>();
+			if (page != null && page.IsPage)
+				// next use the current page
+				return ResolvePartActionUrl(requestContext, values, page, item);
+
+			page = item.ClosestPage();
+			if (page != null && page.IsPage)
+				// fallback to finding the closest page
+				return ResolvePartActionUrl(requestContext, values, page, item);
+
+			// can't find a page, don't link
+			return null;
+		}
+
+		private VirtualPathData ResolvePartActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem page, ContentItem item)
+		{
+			var pageVpd = ResolveActionUrl(requestContext, new RouteValueDictionary { { "action", "index" } }, page);
+
+			if (values.ContainsKey(ControllerKey))
+				values.Remove(ControllerKey);
+			values[ContentPartKey] = item.ID;
+
+			pageVpd.VirtualPath = Url.Parse(pageVpd.VirtualPath).UpdateQuery(values);
+			return pageVpd;
+		}
+
+		private VirtualPathData ResolveActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem item)
+		{
+			const string controllerPlaceHolder = "$(CTRL)";
+			values[ControllerKey] = controllerPlaceHolder; // pass a placeholder we'll fill with the content path
+			VirtualPathData vpd = GetVirtualPathFromRoutes(requestContext, values);
+			if (vpd == null)
+				return null;
+
+			Url url = item.Url;
+			Url actionUrl = vpd.VirtualPath.Replace(controllerPlaceHolder, url.Path);
+
+			vpd.VirtualPath = actionUrl.AppendQuery(url.Query).PathAndQuery.TrimStart('/');
+			return vpd;
+		}
+
+		private bool TryConvertContentToController(RouteValueDictionary values, string key, out ContentItem item)
+		{
+			if (!values.ContainsKey(key))
 			{
-				values[ControllerKey] = controller;
-				values[ContentItemIdKey] = item.ID;
-				return GetVirtualPathFromRoutes(requestContext, values);
+				item = null;
+				return false;
 			}
+
+			item = values[key] as ContentItem;
+			if (item != null)
+			{
+				// overwrite currently executing controller when "item" is passed
+				values.Remove(key);
+				values["controller"] = controllerMapper.GetControllerName(item.GetType());
+				return true;
+			}
+			return false;
 		}
 
 		private VirtualPathData GetVirtualPathFromRoutes(RequestContext requestContext, RouteValueDictionary values)

@@ -31,14 +31,14 @@ namespace N2.Web.Mvc.Html
 		{
 			var routeData = new RouteData();
 
-			routeData.DataTokens[ContentRoute.ContentItemKey] = item;
-			routeData.Values[ContentRoute.ContentItemIdKey] = item.ID;
-			routeData.DataTokens[ContentRoute.ContentPageKey] = viewContext.RouteData.DataTokens[ContentRoute.ContentPageKey];
-			routeData.Values[ContentRoute.ContentPageIdKey] = viewContext.RouteData.Values[ContentRoute.ContentPageIdKey];
-			routeData.DataTokens[ContentRoute.ContentEngineKey] = _engine;
 			routeData.Values[ContentRoute.ControllerKey] = _controllerMapper.GetControllerName(item.GetType());
+			routeData.Values[ContentRoute.ContentItemKey] = item.ID;
+			routeData.Values[ContentRoute.ContentPageKey] = viewContext.RouteData.Values[ContentRoute.ContentPageKey];
 			routeData.Values[ContentRoute.ActionKey] = "index";
-
+			routeData.DataTokens[ContentRoute.ContentItemKey] = item;
+			routeData.DataTokens[ContentRoute.ContentPageKey] = viewContext.RouteData.DataTokens[ContentRoute.ContentPageKey];
+			routeData.DataTokens[ContentRoute.ContentEngineKey] = _engine;
+			
 			var writer = new StringWriter();
 
 			using (var scope = new HttpContextScope(writer))

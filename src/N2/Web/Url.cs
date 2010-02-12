@@ -541,6 +541,15 @@ namespace N2.Web
 			return u;
 		}
 
+		public Url UpdateQuery(IDictionary<string,object> queryString)
+		{
+			Url u = new Url(this);
+			foreach (KeyValuePair<string,object> pair in queryString)
+				if(pair.Value != null)
+					u = u.SetQueryParameter(pair.Key, pair.Value.ToString());
+			return u;
+		}
+
 		/// <summary>Returns the url without the file extension (if any).</summary>
 		/// <returns>An url with it's extension removed.</returns>
 		public Url RemoveExtension()
