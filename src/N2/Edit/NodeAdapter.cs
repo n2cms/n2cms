@@ -65,10 +65,10 @@ namespace N2.Edit
 
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(ContentItem startPage)
 		{
-			if (!host.IsStartPage(startPage))
+			if (!Host.IsStartPage(startPage))
 				yield break;
 
-			Site site = host.GetSite(startPage);
+			Site site = Host.GetSite(startPage);
 			foreach (string uploadFolder in site.UploadFolders)
 			{
 				yield return FileSystem.GetDirectory(uploadFolder);
@@ -85,7 +85,7 @@ namespace N2.Edit
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
 		{
-			foreach (var child in parent.GetChildren(new AccessFilter(webContext.User, security)))
+			foreach (var child in parent.GetChildren(new AccessFilter(WebContext.User, Security)))
 			{
 				yield return child;
 			}
