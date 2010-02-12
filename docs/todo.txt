@@ -1,7 +1,5 @@
 http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83374
 http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
-The partial view '~/Views/SharedParts/RandomImage.ascx' could not be found. The following locations were searched:
-~/Views/SharedParts/RandomImage.ascx 
 - support for list items
 	- scenarios: site events, news, blog posts
 	- properties: id, type, title, savedBy, details, detailCollections
