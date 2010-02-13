@@ -24,7 +24,7 @@ a { color:#333333; text-decoration:none; }
 a:hover{ text-decoration:underline; }
     a img{ vertical-align:middle; text-decoration:none; }
 img{ border:none; }
-h1{ margin:.5em 0; font-size:1.5em; }
+h1{ margin:1em 0; font-size:1.5em; }
 h2{ border-top:solid 1px silver; margin:5px 0; padding-top:5px; font-size:1.2em; width:95%; }
 
 /* toolbar */

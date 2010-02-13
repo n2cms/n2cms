@@ -127,8 +127,7 @@ body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD
 
 fieldset 
 {
-	border: none;
-	border-top:solid 1px #E8E8D8;
+	border:solid 1px #E8E8D8;
 	background-color:#F8F8E8;
 	position:relative;
 	margin:30px 0;
