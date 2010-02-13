@@ -12,7 +12,7 @@ namespace N2.Resources
 	/// </summary>
 	public class Register
 	{
-		public const string JQueryVersion = "1.3.2";
+		public const string JQueryVersion = "1.4.1";
 
 		/// <summary>Register an embedded style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>
@@ -172,7 +172,7 @@ namespace N2.Resources
 			return l;
 		}
 
-		private static void AddScriptInclude(Page page, string resourceUrl, Control holder, bool priority)
+		private static Control AddScriptInclude(Page page, string resourceUrl, Control holder, bool priority)
 		{
 			HtmlGenericControl script = new HtmlGenericControl("script");
 			page.Items[resourceUrl] = script;
@@ -185,6 +185,8 @@ namespace N2.Resources
 				holder.Controls.AddAt(0, script);
 			else
 				holder.Controls.Add(script);
+
+			return script;
 		}
 
 		/// <summary>Registers a script reference in the page's header.</summary>

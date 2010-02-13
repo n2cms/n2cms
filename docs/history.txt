@@ -1,4 +1,5 @@
-﻿- mvc: allow part interaction on other pages than immediate parent
+﻿- updated jQuery to 1.4.1
+- mvc: allow part interaction on other pages than immediate parent
 	/[pageurl]/?action=[action]&part=[id]
 	/[pageurl]/[action]
 - mvc: allow part alternative actions

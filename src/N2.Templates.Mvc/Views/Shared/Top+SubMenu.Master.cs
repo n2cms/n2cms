@@ -21,6 +21,7 @@ namespace N2.Templates.Mvc.Views.Shared
 		protected override void OnInit(EventArgs e)
 		{
 			N2.Context.Current.Resolve<IPageModifierContainer>().Modify(Page);
+			N2.Resources.Register.JQuery(Page);
 
 			base.OnInit(e);
 		}

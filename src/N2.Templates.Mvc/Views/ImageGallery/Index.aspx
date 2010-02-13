@@ -2,10 +2,6 @@
 	Inherits="N2.Web.Mvc.ContentViewPage<ImageGalleryModel, ImageGallery>" Title="" %>
 <%@ Import Namespace="N2.Collections"%>
 
-<asp:Content ContentPlaceHolderID="Head" runat="server">
-	<script type="text/javascript" src="<%=ResolveUrl("~/Content/Scripts/jquery-1.3.2.min.js")%>"></script>
-</asp:Content>
-
 <asp:Content ContentPlaceHolderID="ContentAndSidebar" runat="server">
 	<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
 	

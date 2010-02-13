@@ -1197,7 +1197,6 @@
     <Content Include="N2\Resources\img\SlidingCurtain_close.png" />
     <Content Include="N2\Resources\img\SlidingCurtain_logo.png" />
     <Content Include="N2\Resources\img\SlidingCurtain_open.png" />
-    <Content Include="N2\Resources\Js\jquery-1.3.2.js" />
     <Content Include="N2\Resources\Js\jquery.ui\jquery-ui-personalized.min.js" />
     <Content Include="N2\Resources\Js\plugins\date.js" />
     <Content Include="N2\Content\App_LocalResources\Dependencies.aspx.resx">
@@ -1245,6 +1244,7 @@
     <Content Include="N2\Resources\img\tab_button_bg.png" />
     <Content Include="N2\Resources\img\toolbar_button_bg.png" />
     <Content Include="N2\Resources\img\toolbar_button_bg_hover.png" />
+    <Content Include="N2\Resources\Js\jquery-1.4.1.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2glow.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2name.js" />
     <Content Include="N2\Resources\KeepAlive\ping.aspx" />
