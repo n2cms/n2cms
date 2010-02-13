@@ -12,7 +12,6 @@ http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
 	- analytics (stats)
 	- rss
 	- injectable
-- references to actions on same/other content item controllers
 - list referencing items issue
 - metablog support
 - MVC: show deeper page structures

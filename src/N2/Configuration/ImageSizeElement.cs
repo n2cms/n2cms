@@ -6,16 +6,8 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
-	public class ImageSizeElement : ConfigurationElement
+	public class ImageSizeElement : NamedElement
 	{
-		/// <summary>The name of this size.</summary>
-		[ConfigurationProperty("name", IsKey = true, IsRequired = true)]
-		public string Name
-		{
-			get { return (string)base["name"]; }
-			set { base["name"] = value; }
-		}
-
 		/// <summary>Maximum width of images resized to this size.</summary>
 		[ConfigurationProperty("width", DefaultValue = 0)]
 		public int Width

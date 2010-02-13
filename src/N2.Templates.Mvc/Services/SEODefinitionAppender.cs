@@ -10,10 +10,10 @@ namespace N2.Templates.Mvc.Services
 	public class SEODefinitionAppender : IAutoStart
 	{
 		private readonly IDefinitionManager definitions;
-		private string titleTitle = "Page title";
-		private string metaKeywordsTitle = "Meta keywords";
-		private string metaDescriptionTitle = "Meta description";
-		private string seoTabTitle = "SEO";
+		private string titleTitle = "Alternative title";
+		private string metaKeywordsTitle = "Keywords";
+		private string metaDescriptionTitle = "Description";
+		private int sortIndex = 200;
 
 		public SEODefinitionAppender(IDefinitionManager definitions)
 		{
@@ -38,10 +38,10 @@ namespace N2.Templates.Mvc.Services
 			set { metaDescriptionTitle = value; }
 		}
 
-		public string SeoTabTitle
+		public int SortIndex
 		{
-			get { return seoTabTitle; }
-			set { seoTabTitle = value; }
+			get { return sortIndex; }
+			set { sortIndex = value; }
 		}
 
 		#region IStartable Members
@@ -52,22 +52,27 @@ namespace N2.Templates.Mvc.Services
 			{
 				if(IsPage(definition))
 				{
-					TabContainerAttribute seoTab = new TabContainerAttribute("seo", SeoTabTitle, 30);
-					definition.Add(seoTab);
+					SeparatorAttribute separator = new SeparatorAttribute("seo", SortIndex);
+					separator.ContainerName = Tabs.Details;
+					definition.Add(separator);
 
-					AddEditableText(definition, TitleTitle, TitleAndMetaTagApplyer.HeadTitle, 151, 200);
-					AddEditableText(definition, MetaKeywordsTitle, TitleAndMetaTagApplyer.MetaKeywords, 152, 400);
-					AddEditableText(definition, MetaDescriptionTitle, TitleAndMetaTagApplyer.MetaDescription, 153, 1000);
+					var titleEditor = AddEditableText(definition, TitleTitle, TitleAndMetaTagApplyer.HeadTitle, SortIndex + 3, 200);
+					titleEditor.HelpTitle = "This text is displayed in the browser's title bar and in search engine result lists, when this value is empty the page title is used.";
+					var keywordsEditor = AddEditableText(definition, MetaKeywordsTitle, TitleAndMetaTagApplyer.MetaKeywords, SortIndex + 6, 400);
+					keywordsEditor.HelpTitle = "Keywords that may be used by search engines to pinpoint whe subject of this page. Text content and incoming links also affect this.";
+					var descriptionEditor = AddEditableText(definition, MetaDescriptionTitle, TitleAndMetaTagApplyer.MetaDescription, SortIndex + 9, 1000);
+					descriptionEditor.HelpTitle = "A text that can be used by search engines to describe this page when displaying it in search results.";
 				}
 			}
 		}
 
-		private void AddEditableText(ItemDefinition definition, string title, string name, int sortOrder, int maxLength)
+		private EditableTextBoxAttribute AddEditableText(ItemDefinition definition, string title, string name, int sortOrder, int maxLength)
 		{
-			EditableTextBoxAttribute titleEditor = new EditableTextBoxAttribute(title, sortOrder, maxLength);
-			titleEditor.Name = name;
-			titleEditor.ContainerName = "seo";
-			definition.Add(titleEditor);
+			EditableTextBoxAttribute editor = new EditableTextBoxAttribute(title, sortOrder, maxLength);
+			editor.Name = name;
+			editor.ContainerName = Tabs.Details;
+			definition.Add(editor);
+			return editor;
 		}
 
 		private bool IsPage(ItemDefinition definition)
