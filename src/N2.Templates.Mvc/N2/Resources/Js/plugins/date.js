@@ -108,7 +108,7 @@ Date.fullYearStart = '20';
 	 *
 	 * @private
 	 */
-	function add(name, method) {
+	var add = function(name, method) {
 		if( !Date.prototype[name] ) {
 			Date.prototype[name] = method;
 		}

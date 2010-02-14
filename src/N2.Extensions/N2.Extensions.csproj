@@ -120,7 +120,6 @@
     <Compile Include="Web\Mvc\Html\ZoneHelper.cs" />
     <Compile Include="Web\Mvc\IControllerMapper.cs" />
     <Compile Include="Web\Mvc\IItemContainer.cs" />
-    <Compile Include="Web\Mvc\ItemExtractor.cs" />
     <Compile Include="Web\Mvc\MvcEngine.cs" />
     <Compile Include="Web\Mvc\MvcConventionTemplateAttribute.cs" />
     <Compile Include="Web\Mvc\MvcPathData.cs" />

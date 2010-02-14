@@ -404,7 +404,7 @@
     <Content Include="Views\SharedParts\Login.ascx" />
     <Content Include="Views\NewsList\BoxedList.ascx" />
     <Content Include="Views\NewsList\List.ascx" />
-    <Content Include="Views\RssAggregator\Index.ascx" />
+    <Content Include="Views\RssAggregator\List.ascx" />
     <Content Include="Views\SocialBookmarks\Index.ascx" />
     <Content Include="Views\SharedParts\Subscribe.ascx" />
     <Content Include="Views\SharedParts\Teaser.ascx" />

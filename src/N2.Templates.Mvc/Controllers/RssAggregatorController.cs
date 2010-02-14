@@ -18,6 +18,11 @@ namespace N2.Templates.Mvc.Controllers
 		[OutputCache(Duration = ExpirationTime, VaryByParam = "*")]
 		public override ActionResult Index()
 		{
+			return AsyncView("list");
+		}
+
+		public ActionResult List()
+		{
 			return View(new RssAggregatorModel(CurrentItem, GetNewsItems(CurrentItem.RssUrl)));
 		}
 

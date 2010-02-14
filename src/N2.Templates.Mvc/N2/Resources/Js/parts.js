@@ -151,11 +151,13 @@
 				command.action = command.ctrlKey ? "copy" : "move";
 			else
 				command.action = "create";
-			command.random = new Date();
+			command.random = Math.random();
 
 			var url = this.urls[command.action];
 
+			var reloaded = false;
 			$.getJSON(url, command, function(data) {
+				reloaded = true;
 				if (data.error)
 					alert(data.message);
 				else if (data.redirect)
@@ -163,6 +165,12 @@
 				else
 					window.location.reload();
 			});
+			
+			// hack: why no succes??
+			setTimeout(function() {
+				if (!reloaded) 
+					window.location.reload();
+			}, 1000);
 		}
 	};
 

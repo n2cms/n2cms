@@ -30,18 +30,23 @@ namespace N2.Web.Mvc.Html
 
         public override void Render(TextWriter writer)
         {
-            if (ZoneName.IndexOfAny(new[] { '.', ',', ' ', '\'', '"', '\t', '\r', '\n' }) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
+			if (state == ControlPanelState.DragDrop)
+			{
+				if (ZoneName.IndexOfAny(new[] { '.', ',', ' ', '\'', '"', '\t', '\r', '\n' }) >= 0) throw new N2Exception("Zone '" + ZoneName + "' contains illegal characters.");
 
-            writer.Write("<div class='" + ZoneName + " dropZone'");
-            writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path)
-                .WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
-                .WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, ViewContext.HttpContext.User)))
-                .WriteAttribute("title", DroppableZone.GetToolTip(Context.Current.Definitions.GetDefinition(CurrentItem.GetType()), ZoneName))
-                .Write(">");
-
-            base.Render(writer);
-
-            writer.Write("</div>");
+				writer.Write("<div class='" + ZoneName + " dropZone'");
+				writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path)
+					.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
+					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, ViewContext.HttpContext.User)))
+					.WriteAttribute("title", DroppableZone.GetToolTip(Context.Current.Definitions.GetDefinition(CurrentItem.GetType()), ZoneName))
+					.Write(">");
+				
+				base.Render(writer);
+				
+				writer.Write("</div>");
+			}
+			else
+				base.Render(writer);
         }
 
         protected override void RenderTemplate(TextWriter writer, ContentItem model)

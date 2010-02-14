@@ -14,26 +14,25 @@ namespace N2.Web.Mvc
 	public abstract class ContentController<T> : Controller
 		where T : ContentItem
 	{
-		private T _currentItem;
-		private IEngine _engine;
-
-		protected ContentController()
-		{
-			TempDataProvider = new SessionAndPerRequestTempDataProvider();
-		}
+		#region Accessors
+		ContentItem currentPart;
+		T currentItem;
+		ContentItem currentPage;
+		IEngine engine;
+		
 
 		public virtual IEngine Engine
 		{
 			get
 			{
-				if (_engine == null)
+				if (engine == null)
 				{
-					_engine = ControllerContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
+					engine = ControllerContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
 					          ?? Context.Current;
 				}
-				return _engine;
+				return engine;
 			}
-			set { _engine = value; }
+			set { engine = value; }
 		}
 
 		/// <summary>The content item associated with the requested path.</summary>
@@ -41,25 +40,44 @@ namespace N2.Web.Mvc
 		{
 			get
 			{
-				if (_currentItem == null)
-				{
-					_currentItem = ControllerContext.RequestContext.CurrentItem<T>()
-								   ?? GetCurrentItemById(ContentRoute.ContentItemKey);
-				}
-				return _currentItem;
+				if (currentItem == null)
+					currentItem = ControllerContext.RequestContext.CurrentItem<T>()
+						?? GetCurrentItemById(ContentRoute.ContentItemKey);
+
+				return currentItem;
 			}
-			set { _currentItem = value; }
+			set { currentItem = value; }
 		}
 
 		public ContentItem CurrentPage
 		{
 			get
 			{
-				return ControllerContext.RequestContext.CurrentPage<ContentItem>()
-					?? CurrentItem.ClosestPage()
-					?? Engine.UrlParser.CurrentPage;
+				if(currentPage == null)
+					currentPage = ControllerContext.RequestContext.CurrentPage<ContentItem>()
+						?? CurrentItem.ClosestPage()
+						?? Engine.UrlParser.CurrentPage;
+
+				return currentPage;
 			}
 		}
+
+		public ContentItem CurrentPart
+		{
+			get { return currentPart ?? (currentPart = ControllerContext.RequestContext.CurrentPart<ContentItem>()); }
+		}
+		#endregion
+
+
+
+		/// <summary>Defaults to the current item's TemplateUrl and pass the item itself as view data.</summary>
+		/// <returns>A reference to the item's template.</returns>
+		public virtual ActionResult Index()
+		{
+			return View(CurrentItem);
+		}
+
+
 
 		private T GetCurrentItemById(string key)
 		{
@@ -107,13 +125,6 @@ namespace N2.Web.Mvc
 			}
 		}
 
-		/// <summary>Defaults to the current item's TemplateUrl and pass the item itself as view data.</summary>
-		/// <returns>A reference to the item's template.</returns>
-		public virtual ActionResult Index()
-		{
-			return View(CurrentItem);
-		}
-
 		protected virtual ActionResult RedirectToParentPage()
 		{
 			return Redirect(CurrentPage.Url);
@@ -149,8 +160,10 @@ namespace N2.Web.Mvc
 			if(thePage == CurrentItem)
 				throw new InvalidOperationException("The page passed into ViewPage was the current page. This would cause an infinite loop.");
 
-			return new ViewPageResult(thePage, Engine.Resolve<IControllerMapper>(), Engine.Resolve<IWebContext>(),
-									  ActionInvoker);
+			var mapper = Engine.Resolve<IControllerMapper>();
+			var webContext = Engine.Resolve<IWebContext>();
+
+			return new ViewPageResult(thePage, mapper, webContext, ActionInvoker);
 		}
 
 		/// <summary>
@@ -162,116 +175,5 @@ namespace N2.Web.Mvc
 		{
 			return View(viewName, CurrentItem);
 		}
-
-		/// <summary>
-		/// Overrides/hides the most common method of rendering a View and calls View or PartialView depending on the type of the model
-		/// </summary>
-		/// <param name="model"></param>
-		/// <returns></returns>
-		protected new ViewResultBase View(object model)
-		{
-			ContentItem item = ItemExtractor.ExtractFromModel(model) ?? CurrentItem;
-
-			if (item != null && !item.IsPage)
-				return PartialView(model);
-
-			return base.View(model);
-		}
-
-		/// <summary>
-		/// Overrides/hides the most common method of rendering a View and calls View or PartialView depending on the type of the model
-		/// </summary>
-		/// <param name="viewName"></param>
-		/// <param name="model"></param>
-		/// <returns></returns>
-		protected new ViewResultBase View(string viewName, object model)
-		{
-			ContentItem item = ItemExtractor.ExtractFromModel(model) ?? CurrentItem;
-
-			if (item != null && !item.IsPage)
-				return PartialView(viewName, model);
-
-			return base.View(viewName, model);
-		}
-
-		protected override ViewResult View(IView view, object model)
-		{
-			CheckForPageRender(model);
-
-			return base.View(view, model ?? CurrentItem);
-		}
-
-		protected override ViewResult View(string viewName, string masterName, object model)
-		{
-			CheckForPageRender(model);
-
-			return base.View(viewName, masterName, model ?? CurrentItem);
-		}
-
-		private void CheckForPageRender(object model)
-		{
-			ContentItem item = ItemExtractor.ExtractFromModel(model) ?? CurrentItem;
-
-			if (item != null && !item.IsPage)
-				throw new InvalidOperationException(@"Rendering of Parts using View(..) is no longer supported. Use PartialView(..) to render this item.
-			
-- Item of type " + item.GetType() + @"
-- Controller is " + GetType() + @"
-- Action is " + ViewData[ContentRoute.ActionKey]);
-		}
-
-		#region Nested type: SessionAndPerRequestTempDataProvider
-
-		/// <summary>
-		/// Overrides the default behaviour in the SessionStateTempDataProvider to make TempData available for the entire request, not just for the first controller it sees
-		/// </summary>
-		private sealed class SessionAndPerRequestTempDataProvider : ITempDataProvider
-		{
-			private const string TempDataSessionStateKey = "__ControllerTempData";
-
-			#region ITempDataProvider Members
-
-			public IDictionary<string, object> LoadTempData(ControllerContext controllerContext)
-			{
-				HttpContextBase httpContext = controllerContext.HttpContext;
-
-				if (httpContext.Session == null)
-				{
-					throw new InvalidOperationException("Session state appears to be disabled.");
-				}
-
-				var tempDataDictionary = (httpContext.Session[TempDataSessionStateKey]
-				                          ?? httpContext.Items[TempDataSessionStateKey])
-				                         as Dictionary<string, object>;
-
-				if (tempDataDictionary == null)
-				{
-					return new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-				}
-
-				// If we got it from Session, remove it so that no other request gets it
-				httpContext.Session.Remove(TempDataSessionStateKey);
-				// Cache the data in the HttpContext Items to keep available for the rest of the request
-				httpContext.Items[TempDataSessionStateKey] = tempDataDictionary;
-
-				return tempDataDictionary;
-			}
-
-			public void SaveTempData(ControllerContext controllerContext, IDictionary<string, object> values)
-			{
-				HttpContextBase httpContext = controllerContext.HttpContext;
-
-				if (httpContext.Session == null)
-				{
-					throw new InvalidOperationException("Session state appears to be disabled.");
-				}
-
-				httpContext.Session[TempDataSessionStateKey] = values;
-			}
-
-			#endregion
-		}
-
-		#endregion
 	}
 }

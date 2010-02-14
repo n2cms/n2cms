@@ -77,7 +77,7 @@
         </div>
     </div>
 </n2:Box>
-<script type="text/javascript">
+<script type="text/javascript">//<![CDATA[
 	function showComment(quick) {
         if (document.forms[0].action.indexOf("#") < 0)
         	document.forms[0].action += "#commentInput";
@@ -90,4 +90,4 @@
     }
     if (location.hash == "#commentInput")
         showComment(true);
-</script>
+//]]></script>
