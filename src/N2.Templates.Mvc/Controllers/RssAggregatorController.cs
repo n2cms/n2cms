@@ -15,12 +15,12 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		private const int ExpirationTime = 1;
 
-		[OutputCache(Duration = ExpirationTime, VaryByParam = "*")]
 		public override ActionResult Index()
 		{
 			return AsyncView("list");
 		}
 
+		[OutputCache(Duration = ExpirationTime, VaryByParam = "*")]
 		public ActionResult List()
 		{
 			return View(new RssAggregatorModel(CurrentItem, GetNewsItems(CurrentItem.RssUrl)));

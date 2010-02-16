@@ -18,6 +18,7 @@ namespace N2.Edit.Workflow.Commands
         public override void Process(CommandContext state)
         {
             repository.Delete(state.Content);
+			state.UnregisterItemToSave(state.Content);
         }
     }
 }

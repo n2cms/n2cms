@@ -13,6 +13,16 @@ namespace N2.Edit.Workflow
 			context.Parameters[Key] = itemsToSave;
 		}
 
+		public static void UnregisterItemToSave(this CommandContext context, ContentItem item)
+		{
+			var itemsToSave = context.GetItemsToSave();
+			if (itemsToSave.Contains(item))
+			{
+				itemsToSave.Remove(item);
+				context.Parameters[Key] = itemsToSave;
+			}
+		}
+
 		public static IList<ContentItem> GetItemsToSave(this CommandContext context)
 		{
 			if (context.Parameters.ContainsKey(Key))

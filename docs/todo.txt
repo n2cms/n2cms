@@ -1,5 +1,7 @@
-http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83374
-http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
+- fix delete previous version + cascading save issue
+- fix preview version issue
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83374
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
 - support for list items
 	- scenarios: site events, news, blog posts
 	- properties: id, type, title, savedBy, details, detailCollections
@@ -32,7 +34,6 @@ http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
 - stack overflow mvc: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=80172
 - mvc in sub-app with no ending slash
 - content aspects (ContentPart, children->pages+parts, n2parts)
-- Parts/Pages
 - refactor state to use new concepts
 	- TreePosition
 		- MoveToLocation
@@ -42,7 +43,6 @@ http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
 	- Command
 		- Publish
 		- CreateDraft
-	- fix publish in the future
 	- move to trash -> deleted state
 - mvc templates
 	- 960 grid?
