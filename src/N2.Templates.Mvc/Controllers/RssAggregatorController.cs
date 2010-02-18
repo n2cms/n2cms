@@ -17,7 +17,7 @@ namespace N2.Templates.Mvc.Controllers
 
 		public override ActionResult Index()
 		{
-			return AsyncView("list");
+			return PartialView(CurrentItem);
 		}
 
 		[OutputCache(Duration = ExpirationTime, VaryByParam = "*")]

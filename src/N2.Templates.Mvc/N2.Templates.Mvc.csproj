@@ -340,6 +340,7 @@
     <Content Include="Content\Scripts\jquery-1.3.2.min.js" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Views\RssAggregator\Index.ascx" />
     <Content Include="Web.config" />
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Web.config" />
