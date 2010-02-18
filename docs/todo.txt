@@ -1,7 +1,36 @@
+v2
 - fix delete previous version + cascading save issue
 - fix preview version issue
+- mvc templates
+	- new skin
+		- 960 grid?
+	- deeper page structures
+	- fancy drop down menu
+	- globalization issue?
+	- areas (mvc2)
+- command factory
+	- delete
+	- move
+	- copy
+	- ?
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83374
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
+- http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
+- default container (put all editables in one container)
+- extend user object: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=73897
+	/n2/
+	/n2/content/
+	/n2/files/
+	/n2/installation/
+	/n2/users/
+	/n2/myself/
+- stack overflow mvc: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=80172
+- allow custom user type
+
+v2.1+
+
+- auto-parts
 - support for list items
 	- scenarios: site events, news, blog posts
 	- properties: id, type, title, savedBy, details, detailCollections
@@ -16,22 +45,9 @@
 	- injectable
 - list referencing items issue
 - metablog support
-- MVC: show deeper page structures
-- MVC: new skin
-- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
-- http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
 - msdeploy support
-- default container (put all editables in one container)
 - remove path from adapters
 - lock name on published items
-- extend user object: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=73897
-	/n2/
-	/n2/content/
-	/n2/files/
-	/n2/installation/
-	/n2/users/
-	/n2/myself/
-- stack overflow mvc: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=80172
 - mvc in sub-app with no ending slash
 - content aspects (ContentPart, children->pages+parts, n2parts)
 - refactor state to use new concepts
@@ -44,10 +60,6 @@
 		- Publish
 		- CreateDraft
 	- move to trash -> deleted state
-- mvc templates
-	- 960 grid?
-	- globalization
-	- areas (mvc2)
 - update data model
 	- reference to start page
 	- valid until
@@ -55,10 +67,8 @@
 	- split pages and parts
 	- remove authorized roles
 	- sort order on details
-- allow custom user type
 - make all objects editable
 - deprecate and replace mail stuff
-- auto-parts
 - "hidden" non-parts pages
 - track "EditableLinks"
 - track external links and "trackbacks"
@@ -70,7 +80,6 @@
 - introduce IStartPage and move some logic to the content items
 - restrict children
 - filter plugins
-- edit tree adapter
 - templates adapter
 - drag nested items in ie
 - XML Store instead of DB
