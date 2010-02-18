@@ -2,8 +2,8 @@
 	Inherits="System.Web.Mvc.ViewPage<Event>" %>
 
 <asp:Content ID="cpc" ContentPlaceHolderID="TextContent" runat="server">
-	<%= Html.Display(m => m.Title)%>
-	<%= Html.Display("EventDateString").WrapIn("span", new { @class = "date" }) %>
-	<%= Html.Display(m => m.Introduction).WrapIn("p", new { @class = "introduction" }) %>
-	<%= Html.Display(m => m.Text)%>
+	<%= Html.DisplayContent(m => m.Title)%>
+	<%= Html.DisplayContent("EventDateString").WrapIn("span", new { @class = "date" }) %>
+	<%= Html.DisplayContent(m => m.Introduction).WrapIn("p", new { @class = "introduction" }) %>
+	<%= Html.DisplayContent(m => m.Text)%>
 </asp:Content>

@@ -48,6 +48,7 @@ namespace N2.Web.Mvc.Html
                                                             {
                                                                 HttpContext = new HttpContextWrapper(scope.CurrentContext),
                                                                 ViewData = viewContext.ViewData,
+																TempData = viewContext.TempData
                                                             },
                                                            new SimpleViewDataContainer { ViewData = viewContext.ViewData });
 

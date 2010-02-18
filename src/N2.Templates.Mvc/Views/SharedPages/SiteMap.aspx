@@ -3,8 +3,8 @@
 <%@ Import Namespace="N2.Collections"%>
 
 <asp:Content ContentPlaceHolderID="Content" runat="server">
-	<%=Html.Display(m => m.Title)%>
-	<%=Html.Display(m => m.Text)%>
+	<%=Html.DisplayContent(m => m.Title)%>
+	<%=Html.DisplayContent(m => m.Text)%>
 
 	<div id="product-category-info">
 		<%=RenderSiteMap()%>

@@ -3,7 +3,7 @@
 <div class="uc bubble">
 	<div class="inner">
 		<div class="text">
-			<%= Html.Display(m => m.Text) %>
+			<%= Html.DisplayContent(m => m.Text) %>
 		</div>
 		<div class="bottom"></div>
 	</div>

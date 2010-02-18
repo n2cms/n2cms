@@ -4,6 +4,116 @@
         <name>MvcContrib</name>
     </assembly>
     <members>
+        <member name="T:MvcContrib.ActionResults.PermanentRedirectResult">
+            <summary>
+            Action result that performs an HTTP 301 permanent redirect to a url.
+            </summary>
+            <example>
+            <![CDATA[
+            public PermanentRedirectResult OldActionName() {
+            	return new PermanentRedirectResult("http://www.asp.net/mvc/");
+            }
+            ]]>
+            </example>
+        </member>
+        <member name="M:MvcContrib.ActionResults.PermanentRedirectResult.#ctor">
+            <summary>
+            Creates a new instance of the PermanentRedirectResult class
+            </summary>
+        </member>
+        <member name="M:MvcContrib.ActionResults.PermanentRedirectResult.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the PermanentRedirectResult class
+            </summary>
+            <param name="url"></param>
+        </member>
+        <member name="M:MvcContrib.ActionResults.PermanentRedirectResult.ExecuteResult(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Sends an HTTP 301 Permanent Redirect to the result stream.
+            </summary>
+            <param name="context">The controller context for the current request.</param>
+        </member>
+        <member name="P:MvcContrib.ActionResults.PermanentRedirectResult.Url">
+            <summary>
+            The url.
+            </summary>
+        </member>
+        <member name="T:MvcContrib.ActionResults.PermanentRedirectToActionResult">
+            <summary>
+            Action Result that performs an HTTP 301 permanent redirect to an action.
+            </summary>
+            <example>
+            <![CDATA[
+            public PermanentRedirectToActionResult OldActionName(int id) {
+            	return new PermanentRedirectToActionResult("NewActionName", new { id = id });
+            }
+            ]]>
+            </example>
+        </member>
+        <member name="M:MvcContrib.ActionResults.PermanentRedirectToActionResult.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the PermanentRedirectToActionResult class
+            </summary>
+            <param name="actionName">The name of the action.</param>
+        </member>
+        <member name="M:MvcContrib.ActionResults.PermanentRedirectToActionResult.#ctor(System.String,System.Object)">
+            <summary>
+            Creates a new instance of the PermanentRedirectToActionResult class
+            </summary>
+            <param name="actionName">The name of the action.</param>
+            <param name="routeValues">An object containing the parameters for a route. The parameters are retrieved via reflection by examining the properties of the object. Typically created using object initializer syntax.</param>
+        </member>
+        <member name="M:MvcContrib.ActionResults.PermanentRedirectToActionResult.#ctor(System.String,System.String,System.Object)">
+            <summary>
+            Creates a new instance of the PermanentRedirectToActionResult class
+            </summary>
+            <param name="actionName">The name of the action.</param>
+            <param name="controllerName">The name of the controller.</param>
+            <param name="routeValues">An object containing the parameters for a route. The parameters are retrieved via reflection by examining the properties of the object. Typically created using object initializer syntax.</param>
+        </member>
+        <member name="M:MvcContrib.ActionResults.PermanentRedirectToActionResult.ExecuteResult(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Calculates the url based on the values passed, and sends an HTTP 301 Permanent Redirect to the result stream.
+            </summary>
+            <param name="context">The controller context for the current request.</param>
+        </member>
+        <member name="P:MvcContrib.ActionResults.PermanentRedirectToActionResult.ControllerName">
+            <summary>
+            The name of the controller.
+            </summary>
+        </member>
+        <member name="P:MvcContrib.ActionResults.PermanentRedirectToActionResult.ActionName">
+            <summary>
+            The name of the action.
+            </summary>
+        </member>
+        <member name="P:MvcContrib.ActionResults.PermanentRedirectToActionResult.RouteValues">
+            <summary>
+            An object containing the parameters for a route. The parameters are retrieved via reflection by examining the properties of the object. Typically created using object initializer syntax.
+            </summary>
+        </member>
+        <member name="T:MvcContrib.ActionResults.RedirectToRouteResult`1">
+            <summary>
+            Represents a result that performs a redirect using a lambda expression to generate the route values.
+            </summary>
+            <typeparam name="T">Type of controller</typeparam>
+        </member>
+        <member name="M:MvcContrib.ActionResults.RedirectToRouteResult`1.#ctor(System.Linq.Expressions.Expression{System.Action{`0}})">
+            <summary>
+            Creates a new instance of the RedirectToRouteResult class.
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="M:MvcContrib.ActionResults.RedirectToRouteResult`1.#ctor(System.Linq.Expressions.Expression{System.Action{`0}},MvcContrib.ActionResults.ExpressionToRouteValueConverter{`0})">
+            <summary>
+            Creates a new instance of the RedirectToRouteResult class using the specified ExpressionParser
+            </summary>
+        </member>
+        <member name="P:MvcContrib.ActionResults.RedirectToRouteResult`1.Expression">
+            <summary>
+            The route values.
+            </summary>
+        </member>
         <member name="T:MvcContrib.ActionResults.XmlResult">
             <summary>
             Action result that serializes the specified object into XML and outputs it to the response stream.
@@ -62,32 +172,6 @@
              If a parameter value is found in more than one location, they will be returned in comma separated form in the above order
              e.g. QueryString = 4, Form = 6, TempData = 2, RouteData = 1 "4,6,3,2"
             </summary>
-        </member>
-        <member name="T:MvcContrib.Attributes.AcceptGetAttribute">
-            <summary>
-            Ensures that an action is not executed unless it is accessed through an HTTP GET.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.Attributes.AcceptGetAttribute.IsValidForRequest(System.Web.Mvc.ControllerContext,System.Reflection.MethodInfo)">
-            <summary>
-            Ensures that the action decorated by this attribute is only valid if the HTTP method is a GET.
-            </summary>
-            <param name="controllerContext">The current controller context</param>
-            <param name="methodInfo">The current action method</param>
-            <returns>True if the action is being accessed via an HTTP GET</returns>
-        </member>
-        <member name="T:MvcContrib.Attributes.AcceptPostAttribute">
-            <summary>
-            Ensures that an action is not executed unless it is accessed through an HTTP POST.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.Attributes.AcceptPostAttribute.IsValidForRequest(System.Web.Mvc.ControllerContext,System.Reflection.MethodInfo)">
-            <summary>
-            Ensures that the action decorated by this attribute is only valid if the HTTP method is a POST.
-            </summary>
-            <param name="controllerContext">The current controller context</param>
-            <param name="methodInfo">The current action method</param>
-            <returns>True if the action is being accessed via an HTTP POST</returns>
         </member>
         <member name="T:MvcContrib.Binders.SubControllerBinder">
             <summary>
@@ -180,6 +264,17 @@
             When placed on a controller or action, this attribute will ensure
             that parameters passed into RedirectToAction&lt;T&gt;() will get
             passed to the controller or action that this attribute is placed on.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.Filters.PassParametersDuringRedirectAttribute.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            Loads parameters from TempData into the ActionParameters dictionary.
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="M:MvcContrib.Filters.PassParametersDuringRedirectAttribute.OnActionExecuted(System.Web.Mvc.ActionExecutedContext)">
+            <summary>
+            Stores any parameters passed to the generic RedirectToAction method in TempData.
             </summary>
         </member>
         <member name="T:MvcContrib.Filters.RescueAttribute">
@@ -923,14 +1018,6 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="T:MvcContrib.UI.BlockRenderer">
-            <summary>Renders an Action delegate and captures all output to a string. </summary>
-        </member>
-        <member name="M:MvcContrib.UI.BlockRenderer.Capture(System.Action)">
-            <summary>Renders the action and returns a string.</summary>
-            <param name="viewRenderer">The delegate to render.</param>
-            <returns>The rendered text.</returns>
-        </member>
         <member name="T:MvcContrib.UI.CleanTagBuilder">
             <summary>
              Exactly like a tag builder, except doesn't leave empty attributes in the generated html
@@ -1145,18 +1232,132 @@
             Section overrides for this grid model.
             </summary>
         </member>
-        <member name="M:MvcContrib.UI.HtmlAttributeRendererExtensions.BuildHtmlAttributes(System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="T:MvcContrib.UI.Grid.ColumnSortOptions">
+            <summary>
+            Maintains state data for sorted columns.
+            </summary>
+        </member>
+        <member name="P:MvcContrib.UI.Grid.ColumnSortOptions.IsDefault">
+            <summary>
+            Has column been identified as the default sorted column?
+            </summary>
+        </member>
+        <member name="P:MvcContrib.UI.Grid.ColumnSortOptions.SortOrder">
+            <summary>
+            What is the current sort direction for this particular column?
+            </summary>
+        </member>
+        <member name="P:MvcContrib.UI.Grid.ColumnSortOptions.SortByQueryParameterName">
+            <summary>
+            The parameter name to render for this columns's link based on the renderer rendering the columns's header.
+            </summary>
+        </member>
+        <member name="P:MvcContrib.UI.Grid.ColumnSortOptions.SortOrderQueryParameterName">
+            <summary>
+            The parameter name to render for this columns's link based on the renderer rendering the columns's header.
+            </summary>
+        </member>
+        <member name="T:MvcContrib.UI.Grid.ISortableDataSource`1">
+            <summary>
+            Any IEnumerable&lt;T&gt; based list that holds state for sorting.
+            </summary>
+            <typeparam name="T">The type of the obje underlying enumerable's instance.</typeparam>
+        </member>
+        <member name="T:MvcContrib.UI.Grid.ComparableSortList`1">
+            <summary>
+            A generic list container to sort the list by any identified property of the list type T.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:MvcContrib.UI.Grid.ISortableGridRenderer`1">
+            <summary>
+            A IGridRenderer extension that takes a sortable data source.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:MvcContrib.UI.Grid.IGridRenderer`1">
+            <summary>
+            A renderer responsible for rendering a grid.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.UI.Grid.IGridRenderer`1.Render(MvcContrib.UI.Grid.IGridModel{`0},System.Collections.Generic.IEnumerable{`0},System.IO.TextWriter,System.Web.Mvc.ViewContext)">
+            <summary>
+            Renders a grid
+            </summary>
+            <param name="gridModel">The grid model to render</param>
+            <param name="dataSource">Data source for the grid</param>
+            <param name="output">The TextWriter to which the grid should be rendered/</param>
+            <param name="viewContext">View context</param>
+        </member>
+        <member name="T:MvcContrib.UI.Grid.SortableLinkRenderer`1">
+            <summary>
+            Renders links for sortable column headers in a sorted grid based on current HttpRequest params and column state.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:MvcContrib.UI.Grid.SortableLinkRenderer`1.SortLink">
+            <summary>
+            The link to use in a sortable column that will provide data to help sort the underlying grid's data source.
+            </summary>
+            <returns>an html hyperlink tag with the url and name set.</returns>
+        </member>
+        <member name="T:MvcContrib.UI.Grid.SortableHtmlTableGridRenderer`1">
+            <summary>
+            Adds the header row with column name links which carry data to enable sorting.
+            </summary>
+            <typeparam name="T">The type of the object in the data source list of the grid to be rendered</typeparam>
+        </member>
+        <member name="T:MvcContrib.UI.Grid.HtmlTableGridRenderer`1">
+            <summary>
+            Renders a grid as an HTML table.
+            </summary>
+        </member>
+        <member name="T:MvcContrib.UI.Grid.GridRenderer`1">
+            <summary>
+            Base class for Grid Renderers. 
+            </summary>
+        </member>
+        <member name="M:MvcContrib.UI.Grid.HtmlTableGridRenderer`1.BuildHtmlAttributes(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Converts the specified attributes dictionary of key-value pairs into a string of HTML attributes. 
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.HtmlAttributeRendererExtensions.BuildHtmlAttributes(System.Collections.Generic.IDictionary{System.String,System.Object},System.Boolean)">
+        <member name="M:MvcContrib.UI.Grid.SortableHtmlTableGridRenderer`1.#ctor(System.Web.Mvc.ViewEngineCollection)">
             <summary>
-            Converts the specified attributes dictionary of key-value pairs into a string of HTML attributes. 
+            Creates an instance of a SortableHtmlTableGridRenderer to render a sortable grid.
             </summary>
-            <param name="startSpace">Should it start with a space if <param name="attributes"/> isn't empty.</param>
+            <param name="engines">The view engines used by the renderer</param>
+        </member>
+        <member name="M:MvcContrib.UI.Grid.SortableHtmlTableGridRenderer`1.#ctor">
+            <summary>
+            Creates an instance of a SortableHtmlTableGridRenderer to render a sortable grid.
+            </summary>
+        </member>
+        <member name="M:MvcContrib.UI.Grid.SortableHtmlTableGridRenderer`1.#ctor(System.String,System.String)">
+             <summary>
+             Creates an instance of a SortableHtmlTableGridRenderer to render a sortable grid.
+             </summary>
+            <param name="orderByQueryStringName">The name of the query string parameter which carries the name of the column to sort by.</param>
+            <param name="sortOrderQueryStringName">The name of the query string parameter which carries order direction.</param>
+        </member>
+        <member name="M:MvcContrib.UI.Grid.SortableHtmlTableGridRenderer`1.WithQueryParameterNames(System.String,System.String)">
+             <summary>
+             Fluent query string parameter name modifer for renderer instance.
+             </summary>
+            <param name="sortByParameterName">The name of the query string parameter which carries the name of the column to sort by.</param>
+            <param name="sortOrderParameterName">The name of the query string parameter which carries order direction.</param>
             <returns></returns>
+        </member>
+        <member name="P:MvcContrib.UI.Grid.SortableHtmlTableGridRenderer`1.OrderQueryStringName">
+            <summary>
+            The name of the query string parameter which carries order direction. SortOrder by default.
+            </summary>
+        </member>
+        <member name="P:MvcContrib.UI.Grid.SortableHtmlTableGridRenderer`1.ColumnQueryStringName">
+            <summary>
+            The name of the query string parameter which carries the name of the column to sort by. SortBy by default.
+            </summary>
         </member>
         <member name="T:MvcContrib.UI.Grid.ActionSyntax.ActionSyntaxExtensions">
             <summary>
@@ -1217,13 +1418,6 @@
             </summary>
             <param name="name"></param>
         </member>
-        <member name="M:MvcContrib.UI.Grid.ColumnBuilder`1.ExpressionToName``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
-            <summary>
-            Grabs the property name from a member expression.
-            </summary>
-            <param name="expression">The expression</param>
-            <returns>The name of the property</returns>
-        </member>
         <member name="T:MvcContrib.UI.Grid.GridColumn`1">
             <summary>
             Column for the grid
@@ -1272,6 +1466,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:MvcContrib.UI.Grid.IGridColumn`1.Sortable(System.Boolean)">
+            <summary>
+            Render column with sort link in header.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:MvcContrib.UI.Grid.IGridColumn`1.HeaderAttributes(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Defines additional attributes for the column heading.
@@ -1296,7 +1496,7 @@
             Custom item renderer
             </summary>
         </member>
-        <member name="M:MvcContrib.UI.Grid.GridColumn`1.#ctor(System.Func{`0,System.Object},System.String)">
+        <member name="M:MvcContrib.UI.Grid.GridColumn`1.#ctor(System.Func{`0,System.Object},System.String,System.Type)">
             <summary>
             Creates a new instance of the GridColumn class
             </summary>
@@ -1316,6 +1516,12 @@
         <member name="P:MvcContrib.UI.Grid.GridColumn`1.DisplayName">
             <summary>
             Display name for the column
+            </summary>
+        </member>
+        <member name="P:MvcContrib.UI.Grid.GridColumn`1.ColumnType">
+            <summary>
+            The type of the object being rendered for thsi column. 
+            Note: this will return null if the type cannot be inferred.
             </summary>
         </member>
         <member name="P:MvcContrib.UI.Grid.GridColumn`1.CustomHeaderRenderer">
@@ -1521,25 +1727,6 @@
             Specifies that the grid's columns should be automatically generated from the public properties on the model object.
             </summary>
         </member>
-        <member name="T:MvcContrib.UI.Grid.GridRenderer`1">
-            <summary>
-            Base class for Grid Renderers. 
-            </summary>
-        </member>
-        <member name="T:MvcContrib.UI.Grid.IGridRenderer`1">
-            <summary>
-            A renderer responsible for rendering a grid.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.UI.Grid.IGridRenderer`1.Render(MvcContrib.UI.Grid.IGridModel{`0},System.Collections.Generic.IEnumerable{`0},System.IO.TextWriter,System.Web.Mvc.ViewContext)">
-            <summary>
-            Renders a grid
-            </summary>
-            <param name="gridModel">The grid model to render</param>
-            <param name="dataSource">Data source for the grid</param>
-            <param name="output">The TextWriter to which the grid should be rendered/</param>
-            <param name="viewContext">View context</param>
-        </member>
         <member name="T:MvcContrib.UI.Grid.GridRow`1">
             <summary>
             Represents a Grid Row
@@ -1588,387 +1775,66 @@
             Sections for a grid.
             </summary>
         </member>
-        <member name="T:MvcContrib.UI.Grid.HtmlTableGridRenderer`1">
-            <summary>
-            Renders a grid as an HTML table.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.UI.Grid.HtmlTableGridRenderer`1.BuildHtmlAttributes(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Converts the specified attributes dictionary of key-value pairs into a string of HTML attributes. 
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:MvcContrib.UI.Grid.RenderingContext">
             <summary>
             Context class used when rendering the grid.
             </summary>
         </member>
-        <member name="T:MvcContrib.UI.DomQuery">
-            <summary>A representation of a query to find Elements in the Dom.</summary>
-        </member>
-        <member name="M:MvcContrib.UI.DomQuery.ToString">
-            <summary>The query string.</summary>
-            <returns>The CSS Selector query string.</returns>
-        </member>
-        <member name="M:MvcContrib.UI.DomQuery.op_Implicit(System.String)~MvcContrib.UI.DomQuery">
-            <summary>Converts a regular string into a DomQuery.</summary>
-            <param name="query">The CSS Selector query.</param>
-            <returns>The DomQuery</returns>
-            <remarks>The query will always have <see cref="P:MvcContrib.UI.DomQuery.HasOnlyIds"/> <c>== false</c>
-            and will always return an empty collection of <see cref="P:MvcContrib.UI.DomQuery.Ids"/>.
-            </remarks>
-        </member>
-        <member name="P:MvcContrib.UI.DomQuery.IsSimple">
-            <summary>True if the query is only a single element id</summary>
-        </member>
-        <member name="P:MvcContrib.UI.DomQuery.HasOnlyIds">
-            <summary>True if the query string is only a selection of html id's.</summary>
-            <remarks>IJSGenerator implementors can use this to develop more efficient
-            javascript than always calling a css selector function.</remarks>
-        </member>
-        <member name="P:MvcContrib.UI.DomQuery.Ids">
-            <summary>The list of raw id's that are included in the query string.</summary>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.GridColumn`1">
+        <member name="F:MvcContrib.UI.Html.ModelVisualizerExtension.HtmlContainer">
             <summary>
-            A column to be rendered as part of a grid.
-            </summary>
-            <typeparam name="T">Type of object to be rendered in the grid.</typeparam>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridColumn`1.#ctor">
-            <summary>
-            Creates a new instance of the <see cref="T:MvcContrib.UI.LegacyGrid.GridColumn`1"/>
+            Snipped that allows the rendered table to be collapsed
             </summary>
         </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridColumn`1.SplitPascalCase(System.String)">
+        <member name="M:MvcContrib.UI.Html.ModelVisualizerExtension.ModelVisualizer(System.Web.Mvc.HtmlHelper)">
             <summary>
-            Replaces pascal casing with spaces. For example "CustomerId" would become "Customer Id".
-            Strings that already contain spaces are ignored.
+            Renders Model as table
             </summary>
-            <param name="input">String to split</param>
-            <returns>The string after being split</returns>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.ColumnDelegate">
-            <summary>
-            Delegate that will be invoked on each item in the in the datasource in order to obtain the current item's value.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.Name">
-            <summary>
-            Name of the column
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.Format">
-            <summary>
-            Custom format for the cell output.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.DoNotSplit">
-            <summary>
-            Whether or not PascalCased names should be split.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.CellCondition">
-            <summary>
-            Delegate used to hide the contents of the cells in a column.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.ColumnCondition">
-            <summary>
-            Delegate used to hide the entire column
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.CustomRenderer">
-            <summary>
-            Delegate that can be used to perform custom rendering actions.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.CustomHeader">
-            <summary>
-            Delegate used to specify a custom heading.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.Encode">
-            <summary>
-            Whether to HTML-Encode the output (default is true).
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridColumn`1.HeaderAttributes">
-            <summary>
-            The attributs to apply to the header of the column.
-            </summary>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.GridColumnBuilder`1">
-            <summary>
-            Constructs GridColumn objects representing the columns to be rendered in a grid.
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.IExpressionColumnBuilder`1">
-             <summary>
-             Used in the construction of columns that have been specified using a lambda expression.
-             </summary>
-            <typeparam name="T">Type of object to generate grid rows for.</typeparam>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.INestedGridColumnBuilder`1">
-            <summary>
-            Used in the construction of grid columns.
-            </summary>
-            <typeparam name="T">Type of object to generate grid rows for.</typeparam>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.INestedGridColumnBuilder`1.Formatted(System.String)">
-            <summary>
-            Specifies that when rendered, the value for the column should have the specified string formatting applied to it.
-            </summary>
-            <param name="format">The format to apply.</param>
+            <param name="htmlHelper"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.INestedGridColumnBuilder`1.DoNotEncode">
+        <member name="M:MvcContrib.UI.Html.ModelVisualizerExtension.RenderSelectListTable(System.Collections.Generic.IEnumerable{System.Web.Mvc.SelectListItem})">
             <summary>
-            By default, all output is HTML-Encoded. Specifying DoNotEncode will disable the encoding for all cells in this column.
+            render items of SelectList (ie for DropDown)
             </summary>
+            <param name="selectListToRender"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.INestedGridColumnBuilder`1.CellCondition(System.Func{`0,System.Boolean})">
+        <member name="M:MvcContrib.UI.Html.ModelVisualizerExtension.RenderObjectTable(System.Object)">
             <summary>
-            Can be used to hide the contents of all the cells in the current column. If the specified func returns false then the contents of the cells will not be rendered.
+            Render properties of an object as table
             </summary>
-            <param name="condition">Delegate that will be invoked to determine whether the contents of the cells should be rendered.</param>
+            <param name="objectToRender"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.INestedGridColumnBuilder`1.ColumnCondition(System.Func{System.Boolean})">
+        <member name="M:MvcContrib.UI.Html.ModelVisualizerExtension.RenderGenericList(System.Collections.IEnumerable)">
             <summary>
-            Can be used to hide the entire column. If the specified func returns false then the column will not be rendered.
+            Render list of objects
             </summary>
-            <param name="condition">Delegate that will be invoked to determine whether the column should be rendered.</param>
+            <param name="listToRender"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.INestedGridColumnBuilder`1.Header(System.Action)">
+        <member name="M:MvcContrib.UI.Html.ModelVisualizerExtension.IsMicrosoftType(System.Type)">
             <summary>
-            Can be used to perform custom rendering for a column's heading.
+            Framework types are rendered with "ToString"
             </summary>
-            <param name="block">Delegate to invoke to perform the rendering.</param>
+            <param name="type"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.INestedGridColumnBuilder`1.HeaderAttributes(System.Collections.IDictionary)">
+        <member name="M:MvcContrib.UI.Html.ModelVisualizerExtension.RenderDictionaryTable(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Applies the specified attributes to the header.
+            Enables Rendering of typed Model and untyped ViewData
             </summary>
-            <param name="attributes">A dictionary containing HTML attributes</param>
+            <param name="viewData"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.IExpressionColumnBuilder`1.DoNotSplit">
+        <member name="M:MvcContrib.UI.Html.ModelVisualizerExtension.ModelToHtmlTable(System.Object)">
             <summary>
-            By default, a property such as "CustomerName" will be be parsed in order to produce a column heading of "Customer Name".
-            Calling DoNotSplit will disable the parsing of the property names for this column heading.
+            render object as table
             </summary>
+            <param name="objectToRender"></param>
             <returns></returns>
         </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.ISimpleColumnBuilder`1">
-            <summary>
-            Used in the construction of Grid columns. 
-            </summary>
-            <typeparam name="T">Type of item to render the column for.</typeparam>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.ISimpleColumnBuilder`1.Do(System.Action{`0})">
-            <summary>
-            Specifies a custom delegate for the rendering of a particular cell. 
-            </summary>
-            <param name="block">The delegate to invoke</param>
-            <returns>The grid column builder.</returns>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.IRootGridColumnBuilder`1">
-            <summary>
-            Used in the construction of grid columns.
-            </summary>
-            <typeparam name="T">Type of object to generate grid rows for.</typeparam>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.IRootGridColumnBuilder`1.For(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
-            <summary>
-            Uses a lambda expression to specify which property the column should be rendered for.
-            </summary>
-            <param name="expression">Lambda expression for the property.</param>
-            <returns>A Column builder.</returns>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.IRootGridColumnBuilder`1.For(System.Func{`0,System.Object},System.String)">
-            <summary>
-            Uses a lambda expression to specify which property the column should be rendered for.
-            </summary>
-            <param name="func">Lambda expression for the property.</param>
-            <param name="name">Custom column heading.</param>
-            <returns>A Column builder.</returns>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.IRootGridColumnBuilder`1.For(System.String)">
-            <summary>
-            Specifies a string representation of a property name for which a column should be created. 
-            Using this approach will resort to using reflection to obtain the property value.
-            </summary>
-            <param name="name">Property name to generate the column for.</param>
-            <returns>A Column builder</returns>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.IGridSections`1">
-            <summary>
-            Used to provide custon sections to the grid.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.IGridSections`1.RowStart(System.Action{`0})">
-            <summary>
-            Executes a delegate that can be used to specify custom HTML to replace the built in rendering of the start of the row.
-            </summary>
-            <param name="block">Action that renders the HTML.</param>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.IGridSections`1.RowStart(System.Action{`0,System.Boolean})">
-            <summary>
-            Executes a delegate that can be used to specify custom HTML to replace the built in rendering of the start of the row with alternate row as additional parameter.
-            </summary>
-            <param name="block">Action that renders the HTML.</param>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.IGridSections`1.RowEnd(System.Action{`0})">
-            <summary>
-            Executes a delegate that can be used to specify custom HTML to replace the built in rendering of the end of the row.
-            </summary>
-            <param name="block">Action that renders the HTML.</param>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridColumnBuilder`1.HeaderAttributes(System.Collections.IDictionary)">
-            <summary>
-            Applies the specified attributes to the header of the current column.
-            </summary>
-            <param name="attributes"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridColumnBuilder`1.ExpressionToName(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
-            <summary>
-            Grabs the property name from a member expression.
-            </summary>
-            <param name="expression">The expression</param>
-            <returns>The name of the property</returns>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.GridExtensions">
-            <summary>
-            Extension methods on the HtmlHelper for creating Grid instances.
-            </summary>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.Grid`1">
-            <summary>
-            Implementation of the grid for rendering HTML in a gridview style.
-            </summary>
-            <typeparam name="T">Type of object to be rendered in each row.</typeparam>
-        </member>
-        <member name="T:MvcContrib.UI.LegacyGrid.GridBase`1">
-            <summary>
-            Base class for SmartGrid functionality.
-            </summary>
-            <typeparam name="T">The type of object for each row in the grid.</typeparam>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridBase`1.RenderText(System.String)">
-            <summary>
-            Renders text to the output stream
-            </summary>
-            <param name="text">The text to render</param>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridBase`1.Render">
-            <summary>
-            Performs the rendering of the grid.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridBase`1.RenderItems">
-            <summary>
-            Iterates over the items collection, builds up the markup for each row and outputs the results.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridBase`1.RenderHeader">
-            <summary>
-            If there are items to display, iterate over each column and output the results. 
-            If there are no items to display, return false to indicate execution of RenderItems should not take place.
-            </summary>
-            <returns>boolean indication whether or not items should be rendered.</returns>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridBase`1.RenderRowStart(`0,System.Boolean)">
-            <summary>
-            Renders the start of a row to the output stream.
-            </summary>
-            <param name="item">The item to be rendered into this row.</param>
-            <param name="isAlternate">Whether the row is an alternate row</param>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.GridBase`1.RenderRowEnd(`0)">
-            <summary>
-            Renders the end of a row to the output stream.
-            </summary>
-            <param name="item">The item being rendered in to this row.</param>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridBase`1.Items">
-            <summary>
-            The items to be displayed in the grid.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridBase`1.Columns">
-            <summary>
-            The columns to generate.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridBase`1.Writer">
-            <summary>
-            The writer to output the results to.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.GridBase`1.EmptyMessageText">
-            <summary>
-            Message to be displayed if the Items property is empty.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.Grid`1.#ctor(System.String,System.Web.Mvc.ViewContext,MvcContrib.UI.LegacyGrid.GridColumnBuilder{`0},System.Collections.IDictionary,System.IO.TextWriter)">
-            <summary>
-            Creates a new instance of the <see cref="T:MvcContrib.UI.LegacyGrid.Grid`1"/> class using the specified viewDataKey to extract the data source from the viewdata.
-            </summary>
-            <param name="viewDataKey">Key to use to extract the </param>
-            <param name="viewContext">The view context</param>
-            <param name="columns">Columns</param>
-            <param name="htmlAttributes">Custom html attributes and options</param>
-            <param name="writer">Where to write the output</param>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.Grid`1.#ctor(System.Collections.Generic.IEnumerable{`0},MvcContrib.UI.LegacyGrid.GridColumnBuilder{`0},System.Collections.IDictionary,System.IO.TextWriter,System.Web.HttpContextBase)">
-            <summary>
-            Creates a new instance of the <see cref="T:MvcContrib.UI.LegacyGrid.Grid`1"/> using the specified data source.
-            </summary>
-            <param name="items">Data source</param>
-            <param name="columns">Columns</param>
-            <param name="htmlAttributes">Custom attributes and options</param>
-            <param name="writer">Where to write the output</param>
-            <param name="context">HTTP Context</param>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.Grid`1.RenderPagination(MvcContrib.Pagination.IPagination)">
-            <summary>
-            Renders the pagination section of the grid.
-            Eg "Showing 1 - 10 of 20 | last, prev, next, last"
-            </summary>
-            <param name="pagedList"></param>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.Grid`1.CreatePageLink(System.Int32,System.String)">
-            <summary>
-            Creates a pagination link and includes and curren
-            </summary>
-            <param name="pageNumber"></param>
-            <param name="text"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MvcContrib.UI.LegacyGrid.Grid`1.BuildHtmlAttributes(System.Collections.IDictionary)">
-            <summary>
-            Converts the specified attributes dictionary of key-value pairs into a string of HTML attributes. 
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.Grid`1.HtmlAttributes">
-            <summary>
-            Custom HTML attributes.
-            </summary>
-        </member>
-        <member name="P:MvcContrib.UI.LegacyGrid.Grid`1.Context">
-            <summary>
-            The HTTP Context.
-            </summary>
-        </member>
-        <member name="M:MvcContrib.UI.Html.HtmlHelperExtensions.ResolveUrl(System.Web.Mvc.HtmlHelper,System.String)">
+        <member name="M:MvcContrib.UI.Html.HtmlHelperExtension.ResolveUrl(System.Web.Mvc.HtmlHelper,System.String)">
             <summary>
             Normalizes a url in the form ~/path/to/resource.aspx.
             </summary>
@@ -1976,7 +1842,7 @@
             <param name="relativeUrl"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.Html.HtmlHelperExtensions.Stylesheet(System.Web.Mvc.HtmlHelper,System.String)">
+        <member name="M:MvcContrib.UI.Html.HtmlHelperExtension.Stylesheet(System.Web.Mvc.HtmlHelper,System.String)">
             <summary>
             Renders a link tag referencing the stylesheet.  Assumes the CSS is in the /content/css directory unless a
             full relative URL is specified.
@@ -1985,7 +1851,18 @@
             <param name="cssFile"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.Html.HtmlHelperExtensions.ScriptInclude(System.Web.Mvc.HtmlHelper,System.String)">
+        <member name="M:MvcContrib.UI.Html.HtmlHelperExtension.Stylesheet(System.Web.Mvc.HtmlHelper,System.String,System.String)">
+            <summary>
+            Renders a link tag referencing the stylesheet.  Assumes the CSS is in the /content/css directory unless a
+            full relative URL is specified.  Also provides an additional parameter to specify the media
+            that the stylesheet is targeting.
+            </summary>
+            <param name="html"></param>
+            <param name="cssFile"></param>
+            <param name="media"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MvcContrib.UI.Html.HtmlHelperExtension.ScriptInclude(System.Web.Mvc.HtmlHelper,System.String)">
             <summary>
             Renders a script tag referencing the javascript file.  Assumes the file is in the /scripts directory
             unless a full relative URL is specified.
@@ -1994,7 +1871,7 @@
             <param name="jsFile"></param>
             <returns></returns>
         </member>
-        <member name="M:MvcContrib.UI.Html.HtmlHelperExtensions.Favicon(System.Web.Mvc.HtmlHelper)">
+        <member name="M:MvcContrib.UI.Html.HtmlHelperExtension.Favicon(System.Web.Mvc.HtmlHelper)">
             <summary>
             Renders a favicon link tag.  Points to ~/favicon.ico.
             </summary>
@@ -2311,6 +2188,12 @@
             Text for the 'last' link
             </summary>
         </member>
+        <member name="M:MvcContrib.UI.Pager.Pager.Link(System.Func{System.Int32,System.String})">
+            <summary>
+            Uses a lambda expression to generate the URL for the page links.
+            </summary>
+            <param name="urlBuilder">Lambda expression for generating the URL used in the page links</param>
+        </member>
         <member name="T:MvcContrib.UI.Pager.PaginationExtensions">
             <summary>
             Extension methods for the pager.
@@ -2331,6 +2214,11 @@
             <param name="helper">The HTML Helper</param>
             <param name="pagination">The datasource</param>
             <returns>A Pager component</returns>
+        </member>
+        <member name="T:MvcContrib.UrlHelperExtensions">
+            <summary>
+            Extension methods for UrlHelper
+            </summary>
         </member>
         <member name="M:MvcContrib.ViewDataExtensions.Add``1(System.Collections.Generic.IDictionary{System.String,System.Object},``0)">
             <summary>

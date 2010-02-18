@@ -5,6 +5,7 @@ using System.Text;
 using N2.Web.Mvc;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.IO;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -15,7 +16,7 @@ namespace N2.Extensions.Tests.Mvc
         {
             var page = new ViewPage<T>();
             page.ViewData = new ViewDataDictionary<T>(model);
-            page.ViewContext = new ViewContext(new ControllerContext(), new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary());
+            page.ViewContext = new ViewContext(new ControllerContext(), new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter());
 			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = model;
             return page;
         }
@@ -33,7 +34,7 @@ namespace N2.Extensions.Tests.Mvc
 			controllerContext.RequestContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
             controllerContext.Controller.ControllerContext = controllerContext;
 
-            page.ViewContext = new ViewContext(controllerContext, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary());
+            page.ViewContext = new ViewContext(controllerContext, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter());
             return page;
         }
 

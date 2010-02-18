@@ -2,11 +2,11 @@
 <%@ Import Namespace="System.Resources"%>
 
 <%if(Model.FormSubmitted){%>
-	<%=ContentHtml.Display(m => m.SubmitText)%>
+	<%=ContentHtml.DisplayContent(m => m.SubmitText)%>
 <%}else{%>
 	<%using(Html.BeginForm<FormController>(c => c.Submit(null), FormMethod.Post)){%>
-		<%=ContentHtml.Display(m => m.Title)%>
-		<%=ContentHtml.Display(m => m.IntroText)%>
+		<%=ContentHtml.DisplayContent(m => m.Title)%>
+		<%=ContentHtml.DisplayContent(m => m.IntroText)%>
 
 		<div class="inputForm">
 			<%foreach(var formElement in Model.Elements){%>

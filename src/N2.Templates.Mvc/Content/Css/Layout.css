@@ -14,3 +14,11 @@ a img { border:none; vertical-align:middle; }
 .inputForm .tb { width:240px; }
 
 .commentInput .box { display:none; }
+
+.validation-summary-errors
+{
+	background-color:#f98;
+	border:solid 1px red;
+	padding:.2em;
+	margin-bottom:1em;
+}

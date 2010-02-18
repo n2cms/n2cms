@@ -10,7 +10,7 @@ using N2.Web.UI;
 
 namespace N2.Templates.Mvc.Models
 {
-	public class UserRegistrationModel : IItemContainer<UserRegistration>, IViewModelContainer<UserRegistrationModel>, IDataErrorInfo
+	public class UserRegistrationModel : IItemContainer<UserRegistration>, IDataErrorInfo
 	{
 		public UserRegistrationModel()
 		{
@@ -21,13 +21,13 @@ namespace N2.Templates.Mvc.Models
 			CurrentItem = userRegistration;
 		}
 
-		public string UserName { get; set; }
+		public string RegisterUserName { get; set; }
 
-		public string Password { get; set; }
+		public string RegisterPassword { get; set; }
 
-		public string ConfirmPassword { get; set; }
+		public string RegisterConfirmPassword { get; set; }
 
-		public string Email { get; set; }
+		public string RegisterEmail { get; set; }
 
 		#region IItemContainer<UserRegistration> Members
 
@@ -38,28 +38,6 @@ namespace N2.Templates.Mvc.Models
 		}
 
 		public UserRegistration CurrentItem { get; set; }
-
-		#endregion
-
-		#region IViewModelContainer<UserRegistrationModel> Members
-
-		public UserRegistrationModel ViewModel
-		{
-			get { return this; }
-		}
-
-		public IEnumerable<IBehaviorMarker> Behaviors
-		{
-			get { return new IBehaviorMarker[0]; }
-		}
-
-		public string HtmlNamePrefix { get; set; }
-
-		public ViewDataDictionary ViewData
-		{
-			get { return new ViewDataDictionary(this); }
-			set { }
-		}
 
 		#endregion
 
@@ -82,32 +60,23 @@ namespace N2.Templates.Mvc.Models
 			switch (propertyName.ToLower())
 			{
 				case "username":
-					if (String.IsNullOrEmpty(UserName))
+					if (String.IsNullOrEmpty(RegisterUserName))
 						return "User Name cannot be empty";
 					break;
 				case "password":
-					if (String.IsNullOrEmpty(Password))
+					if (String.IsNullOrEmpty(RegisterPassword))
 						return "Password cannot be empty";
 					break;
 				case "email":
-					if (String.IsNullOrEmpty(Email))
+					if (String.IsNullOrEmpty(RegisterEmail))
 						return "Email cannot be empty";
 					break;
 				case "confirmpassword":
-					if (ConfirmPassword != Password)
+					if (RegisterConfirmPassword != RegisterPassword)
 						return "Passwords do not match";
 					break;
 			}
 			return String.Empty;
 		}
-
-        #region IViewModelContainer<UserRegistrationModel> Members
-
-        public HtmlHelper Html
-        {
-            get { throw new NotImplementedException(); }
         }
-
-        #endregion
-    }
 }

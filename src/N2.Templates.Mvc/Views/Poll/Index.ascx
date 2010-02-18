@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<Poll>" %>
 <%@ Import Namespace="N2"%>
 
-<%= Html.Display(m => m.Title) %>
+<%= Html.DisplayContent(m => m.Title) %>
 
 <div class="box">
 	<div class="inner">

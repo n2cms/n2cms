@@ -13,7 +13,7 @@ namespace N2.Web.Mvc.Html
         {
             var contentDictionary = new ViewDataDictionary<TItem>(viewContext.CurrentItem<TItem>());
             var controllerContext = viewContext.Controller.ControllerContext;
-            var contentContext = new ViewContext(controllerContext, viewContext.View, contentDictionary, viewContext.TempData);
+            var contentContext = new ViewContext(controllerContext, viewContext.View, contentDictionary, viewContext.TempData, viewContext.HttpContext.Response.Output);
             var content = new HtmlHelper<TItem>(contentContext, new ItemViewDataContainer { ViewData = contentDictionary });
             return content;
         }

@@ -1,8 +1,8 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<Top>" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<N2.Templates.Mvc.Models.Parts.Top>" %>
 <%@ Import Namespace="N2.Templates.Mvc.Models.Parts"%>
 <%if(!String.IsNullOrEmpty(Model.LogoUrl)){%>
 <a class="siteLogo" href="<%= ResolveUrl(Model.LogoLinkUrl) %>">
-	<%=Html.Display(top => top.LogoUrl).SwallowExceptions() %>
+	<%=Html.DisplayContent(top => top.LogoUrl).SwallowExceptions() %>
 </a>
 <%}%>
 <%if(!String.IsNullOrEmpty(Model.Title)){%>

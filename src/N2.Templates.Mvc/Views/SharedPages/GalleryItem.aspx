@@ -6,9 +6,9 @@
 <asp:Content ContentPlaceHolderID="ContentAndSidebar" runat="server">
 	<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
 	
-	<%=Html.Display(m => m.Title)%>
+	<%=Html.DisplayContent(m => m.Title)%>
 	
 	<img alt="<%=Model.Title%>" src="<%=ResolveUrl(Model.ResizedImageUrl)%>" />
 	
-	<%=Html.Display(m => m.Text)%>
+	<%=Html.DisplayContent(m => m.Text)%>
 </asp:Content>

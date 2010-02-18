@@ -24,6 +24,7 @@ namespace N2.Templates.Mvc.Controllers
 			if(Membership.ValidateUser(userName, password) || FormsAuthentication.Authenticate(userName, password))
 			{
 				FormsAuthentication.SetAuthCookie(userName, remember ?? false);
+				return RedirectToParentPage();
 			}
 			else
 			{
@@ -36,7 +37,7 @@ namespace N2.Templates.Mvc.Controllers
 		{
 			FormsAuthentication.SignOut();
 
-			return ViewParentPage();
+			return RedirectToParentPage();
 		}
 	}
 }

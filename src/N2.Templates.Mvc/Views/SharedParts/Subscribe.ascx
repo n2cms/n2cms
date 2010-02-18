@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<Subscribe>" %>
 
-<%=Html.Display(m => m.Title)%>
+<%=Html.DisplayContent(m => m.Title)%>
 <div class="box">
 	<div class="inner">
 	<%= N2.Web.Link.To(Model.SelectedFeed)

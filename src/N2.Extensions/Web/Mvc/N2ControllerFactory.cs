@@ -42,11 +42,11 @@ namespace N2.Web.Mvc
 			}
 		}
 
-		protected override IController GetControllerInstance(Type controllerType)
+		protected override IController GetControllerInstance(System.Web.Routing.RequestContext requestContext, Type controllerType)
 		{
 			if (controllerType == null)
 			{
-				throw new HttpException(404, string.Format("The controller for path '{0}' could not be found or it does not implement IController.", RequestContext.HttpContext.Request.Path));
+				throw new HttpException(404, string.Format("The controller for path '{0}' could not be found or it does not implement IController.", requestContext.HttpContext.Request.Path));
 			}
 
 			return (IController)_engine.Resolve(controllerType);

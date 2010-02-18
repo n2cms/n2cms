@@ -11,7 +11,7 @@
 	}
 </script>
 
-<%= ContentHtml.Display(m => m.Title)%>
+<%= ContentHtml.DisplayContent(m => m.Title)%>
 
 <div class="box">
 	<div class="inner">

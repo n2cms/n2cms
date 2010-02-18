@@ -360,9 +360,9 @@ namespace N2.Extensions.Tests.Mvc
 			var rc = CreateRouteContext(search);
 			var helper = new HtmlHelper(CreateViewContext(rc), new ViewPage(), routes);
 
-			string html = helper.ActionLink("Hello", "find", new { q = "something", controller = "Search" });
+			var html = helper.ActionLink("Hello", "find", new { q = "something", controller = "Search" });
 
-			Assert.That(html, Is.EqualTo("<a href=\"/search/find?q=something\">Hello</a>"));
+			Assert.That(html.ToString(), Is.EqualTo("<a href=\"/search/find?q=something\">Hello</a>"));
 		}
 
 		[Test]
@@ -533,9 +533,9 @@ namespace N2.Extensions.Tests.Mvc
 			var rc = CreateRouteContext(CreateOneItem<TestItem>(10, "whatever", root));
 			var helper = new HtmlHelper(CreateViewContext(rc), new ViewPage(), routes);
 
-			string html = helper.ActionLink("Hello", "Submit", new { q = "something", controller = "TestItem" });
+			var html = helper.ActionLink("Hello", "Submit", new { q = "something", controller = "TestItem" });
 
-			Assert.That(html, Is.EqualTo("<a href=\"/?part=10&amp;q=something&amp;action=Submit\">Hello</a>"));
+			Assert.That(html.ToString(), Is.EqualTo("<a href=\"?part=10&amp;q=something&amp;action=Submit\">Hello</a>"));
 		}
 
 		ViewContext CreateViewContext(RequestContext rc)

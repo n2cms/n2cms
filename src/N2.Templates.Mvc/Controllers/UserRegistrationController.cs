@@ -24,23 +24,19 @@ namespace N2.Templates.Mvc.Controllers
 		[NonAction]
 		public override ActionResult Index()
 		{
-			return Index(null, new UserRegistrationModel());
+			return Index(new UserRegistrationModel());
 		}
 
-		public ActionResult Index(string verify, UserRegistrationModel model)
+		public ActionResult Index(UserRegistrationModel model)
 		{
-			if (verify != null)
-			{
-				return VerifyUser(verify);
-			}
 			model.CurrentItem = CurrentItem;
 
 			return PartialView(model);
 		}
 
-		private ActionResult VerifyUser(string encryptedTicket)
+		public ActionResult Verify(string ticket)
 		{
-			FormsAuthenticationTicket t = FormsAuthentication.Decrypt(encryptedTicket);
+			FormsAuthenticationTicket t = FormsAuthentication.Decrypt(ticket);
 			MembershipUser user = Membership.GetUser(t.Name);
 			user.IsApproved = true;
 			Membership.UpdateUser(user);
@@ -55,7 +51,7 @@ namespace N2.Templates.Mvc.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Submit(UserRegistrationModel model)
 		{
-			if (IsEditorOrAdmin(model.UserName) || Membership.GetUser(model.UserName) != null)
+			if (IsEditorOrAdmin(model.RegisterUserName) || Membership.GetUser(model.RegisterUserName) != null)
 			{
 				ModelState.AddModelError("UserName", "Invalid user name.");
 
@@ -70,8 +66,8 @@ namespace N2.Templates.Mvc.Controllers
 
 		private ActionResult CreateUser(UserRegistrationModel model)
 		{
-			string un = model.UserName;
-			string pw = model.Password;
+			string un = model.RegisterUserName;
+			string pw = model.RegisterPassword;
 
 			Membership.CreateUser(un, pw);
 
@@ -84,14 +80,15 @@ namespace N2.Templates.Mvc.Controllers
 				Membership.UpdateUser(user);
 
 				string crypto = FormsAuthentication.Encrypt(new FormsAuthenticationTicket(un, true, 60*24*7));
-				var url = new Url(Request.Url.Scheme, Request.Url.Authority, CurrentItem.Url).AppendQuery("verify", crypto);
+				var route = new UrlHelper(ControllerContext.RequestContext).Action("verify", new { item = CurrentItem, ticket = crypto });
+				var url = new Url(Request.Url.Scheme, Request.Url.Authority, route);
 
 				string subject = CurrentItem.VerificationSubject;
 				string body = CurrentItem.VerificationText.Replace("{VerificationUrl}", url);
 
 				try
 				{
-					_mailSender.Send(CurrentItem.VerificationSender, model.Email, subject, body);
+					_mailSender.Send(CurrentItem.VerificationSender, model.RegisterEmail, subject, body);
 
 					if (CurrentItem.SuccessPage != null)
 					{

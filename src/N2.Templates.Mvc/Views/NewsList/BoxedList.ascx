@@ -2,7 +2,7 @@
 <%@ Import Namespace="N2.Templates.Mvc.Models.Pages"%>
 <%@ Import Namespace="N2.Templates.Mvc.Models.Parts"%>
 
-<%= Html.Display(m => m.Title) %>
+<%= Html.DisplayContent(m => m.Title) %>
 <div class="box"><div class="inner">
 		<div class="sidelist">
 		<%

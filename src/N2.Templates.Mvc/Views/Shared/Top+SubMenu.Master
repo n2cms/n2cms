@@ -16,14 +16,14 @@
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
 			<div id="header">
-				<%=Html.Display(Find.ClosestStartPage, p => p.Header)%>
+				<%=Html.DisplayContent(Find.ClosestStartPage, p => p.Header)%>
 				<%Html.RenderAction<NavigationController>(c => c.TopMenu()); %>
 			</div>
 		</asp:ContentPlaceHolder>
 		<asp:ContentPlaceHolder ID="PageWrapper" runat="server">
 			<div id="page" class="cf">
 				<asp:ContentPlaceHolder ID="PageTop" runat="server">
-					<%=Html.Display("TopImage").SwallowExceptions()%>
+					<%=Html.DisplayContent("TopImage").SwallowExceptions()%>
 				</asp:ContentPlaceHolder>
 				<asp:ContentPlaceHolder ID="Menu" runat="server">
 					<div id="menu" class="secondary">
@@ -45,12 +45,12 @@
 							</asp:ContentPlaceHolder>
 							<asp:ContentPlaceHolder ID="Content" runat="server">
 								<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
-								<%=Html.Display("Image").SwallowExceptions()%>
+								<%=Html.DisplayContent("Image").SwallowExceptions()%>
 								<asp:ContentPlaceHolder ID="TextContent" runat="server">
 									<% if (Html.ValueEquals("ShowTitle", true)) { %>
-									<%= Html.Display("Title").SwallowExceptions()%>
+									<%= Html.DisplayContent("Title").SwallowExceptions()%>
 									<% } %>
-									<%=Html.Display("Text").SwallowExceptions()%>
+									<%=Html.DisplayContent("Text").SwallowExceptions()%>
 								</asp:ContentPlaceHolder>
 							</asp:ContentPlaceHolder>
 							<asp:ContentPlaceHolder ID="PostContent" runat="server">
@@ -73,7 +73,7 @@
 			</div>
 			<div id="footer">
 				<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
-				<%=Html.Display(Find.ClosestStartPage, p => p.FooterText)%>
+				<%=Html.DisplayContent(Find.ClosestStartPage, p => p.FooterText)%>
 			</div>
 		</asp:ContentPlaceHolder>
 	</div>

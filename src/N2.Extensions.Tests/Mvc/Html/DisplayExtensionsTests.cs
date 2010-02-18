@@ -112,7 +112,7 @@ namespace N2.Extensions.Tests.Mvc.Html
             var page = MvcTestUtilities.CreateContentViewPage(new RegularPageContainer(item), item);
             page.InitHelpers();
 
-            var result = page.ContentHtml.Display(m => m.Title).ToString();
+            var result = page.ContentHtml.DisplayContent(m => m.Title).ToString();
 
 			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
 		}
@@ -124,7 +124,7 @@ namespace N2.Extensions.Tests.Mvc.Html
             var page = MvcTestUtilities.CreateContentViewPage(new RegularPageContainer(item), item);
 			page.InitHelpers();
 
-			var result = page.ContentHtml.Display("Title").ToString();
+			var result = page.ContentHtml.DisplayContent("Title").ToString();
 
 			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
 		}
@@ -135,7 +135,7 @@ namespace N2.Extensions.Tests.Mvc.Html
             var page = MvcTestUtilities.CreateViewPage(new RegularPage { Title = "A Title" });
 			page.InitHelpers();
 
-			var result = page.Html.Display(m => m.Title).ToString();
+			var result = page.Html.DisplayContent(m => m.Title).ToString();
 
 			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
 		}
@@ -146,7 +146,7 @@ namespace N2.Extensions.Tests.Mvc.Html
             var page = MvcTestUtilities.CreateViewPage(new RegularPage { Title = "A Title" });
 			page.InitHelpers();
 
-            var result = page.Html.Display("Title").ToString();
+            var result = page.Html.DisplayContent("Title").ToString();
 
 			Assert.That(result, Is.EqualTo("<h1>A Title</h1>"));
 		}
@@ -166,7 +166,7 @@ namespace N2.Extensions.Tests.Mvc.Html
             var page = MvcTestUtilities.CreateViewPage(testItem);
 			page.InitHelpers();
 
-            var result = page.Html.Display(p => p.Property).ToString();
+            var result = page.Html.DisplayContent(p => p.Property).ToString();
 
 			Assert.That(result, Is.EqualTo("Testing"));
 			_templateRenderer.VerifyAllExpectations();

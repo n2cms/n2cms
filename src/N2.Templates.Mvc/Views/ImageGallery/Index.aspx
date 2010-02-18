@@ -5,8 +5,8 @@
 <asp:Content ContentPlaceHolderID="ContentAndSidebar" runat="server">
 	<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
 	
-	<%=ContentHtml.Display(m => m.Title)%>
-	<%=ContentHtml.Display(m => m.Text)%>
+	<%=ContentHtml.DisplayContent(m => m.Title)%>
+	<%=ContentHtml.DisplayContent(m => m.Text)%>
 	
 	<div id="thumbnails">
 		<%foreach(var item in Model.GalleryItems){ %>

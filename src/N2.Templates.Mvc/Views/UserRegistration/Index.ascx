@@ -7,10 +7,10 @@
 	<%=Html.AntiForgeryToken("register") %>
 	
 	<div class="inputForm">
-		<div class="row cf"><%=Model.TextBox(m => m.UserName).Label("User Name:", "label")%></div>
-		<div class="row cf"><%=Model.Password(m => m.Password).Label("Password:", "label").Value("")%></div>
-		<div class="row cf"><%=Model.Password(m => m.ConfirmPassword).Label("Confirm Password:", "label").Value("")%></div>
-		<div class="row cf"><%=Model.TextBox(m => m.Email).Label("Email:", "label")%></div>
-		<div class="row cf"><%=Model.SubmitButton("Create User")%></div>
+		<div class="row cf"><label class="label" for="RegisterUserName">User Name:</label><%= Html.TextBox("RegisterUserName") %></div>
+		<div class="row cf"><label class="label" for="RegisterPassword">Password:</label><%= Html.Password("RegisterPassword", "")%></div>
+		<div class="row cf"><label class="label" for="RegisterConfirmPassword">Confirm Password:</label><%= Html.Password("RegisterConfirmPassword", "")%></div>
+		<div class="row cf"><label class="label" for="RegisterEmail">Email:</label><%= Html.TextBox("RegisterEmail")%></div>
+		<div class="row cf"><%= Html.SubmitButton("Create User") %></div>
 	</div>
 <%} %>
