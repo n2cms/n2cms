@@ -41,16 +41,6 @@ namespace N2.Edit.Workflow
             return "CommandContext {Data=" + Content + ", Interface=" + Interface + "}";
         }
 
-        public bool ApplyRedirection(HttpResponse response)
-        {
-            if(this["RedirectTo"] != null)
-            {
-                response.Redirect((string)this["RedirectTo"]);
-                return true;
-            }
-            return false;
-        }
-
 		public object this[string key]
 		{
 			get { return Parameters.ContainsKey(key) ? Parameters[key] : null; }

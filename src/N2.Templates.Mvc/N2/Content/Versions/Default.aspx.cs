@@ -44,10 +44,11 @@ namespace N2.Edit.Versions
 			}
 			else if (e.CommandName == "Publish")
 			{
-				N2.ContentItem previousVersion = Engine.Persister.Get(id);
-				versioner.ReplaceVersion(currentVersion, previousVersion);
+				N2.ContentItem versionToRestored = Engine.Persister.Get(id);
+				ContentItem unpublishedVersion = versioner.ReplaceVersion(currentVersion, versionToRestored, true);
 
 				currentVersion.SavedBy = User.Identity.Name;
+				currentVersion.VersionIndex = unpublishedVersion.VersionIndex + 1;
 				persister.Save(currentVersion);
 
 				Refresh(currentVersion, ToolbarArea.Both);

@@ -754,6 +754,9 @@ namespace N2
 		{
 			get
 			{
+				if (VersionOf != null)
+					return VersionOf.Path;
+
 				string path = "/";
 				for (ContentItem item = this; item.Parent != null; item = item.Parent)
 				{
