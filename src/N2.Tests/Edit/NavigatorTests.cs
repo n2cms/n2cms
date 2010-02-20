@@ -72,7 +72,7 @@ namespace N2.Tests.Edit
 			ContentItem item1 = CreateOneItem<AnItem>(2, "item1", root);
 
 			var factory = new VirtualNodeFactory();
-			factory.Register("/item1/hello/", (p) => new AnItem { Name = p });
+			factory.Register(new FunctionalNodeProvider("/item1/hello/", (p) => new AnItem { Name = p }));
 			Navigator n = new Navigator(persister, new Host(new ThreadContext(), 1, 1), factory);
 
 			ContentItem navigatedItem = n.Navigate("/item1/hello/world/");

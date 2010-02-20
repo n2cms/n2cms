@@ -390,11 +390,13 @@
     <Compile Include="Edit\FileEventArgs.cs" />
     <Compile Include="Edit\FileSystem\MappedFileSystem.cs" />
     <Compile Include="Edit\IContentBinder.cs" />
+    <Compile Include="Edit\INodeProvider.cs" />
     <Compile Include="Edit\Installation\DatabaseStatus.cs" />
     <Compile Include="Edit\Installation\InstallationManager.cs" />
     <Compile Include="Edit\Installation\InstallerHint.cs" />
     <Compile Include="Edit\Installation\SqlServerType.cs" />
     <Compile Include="Edit\NodeAdapter.cs" />
+    <Compile Include="Edit\FunctionalNodeProvider.cs" />
     <Compile Include="Edit\VirtualNodeFactory.cs" />
     <Compile Include="Edit\NodeFactoryDelegate.cs" />
     <Compile Include="Edit\Workflow\Binding.cs" />

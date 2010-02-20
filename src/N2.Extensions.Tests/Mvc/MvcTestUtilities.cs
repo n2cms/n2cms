@@ -6,6 +6,7 @@ using N2.Web.Mvc;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.IO;
+using N2.Extensions.Tests.Fakes;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -29,12 +30,16 @@ namespace N2.Extensions.Tests.Mvc
             page.ViewData = new ViewDataDictionary<TModel>(model);
             var controllerContext = new ControllerContext { 
                 RouteData = new RouteData(new Route("anything", new MvcRouteHandler()), new MvcRouteHandler()),
-                Controller = new StubController()
+                Controller = new StubController(),
+				HttpContext = new FakeHttpContext("/")
             };
 			controllerContext.RequestContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
             controllerContext.Controller.ControllerContext = controllerContext;
 
-            page.ViewContext = new ViewContext(controllerContext, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter());
+			page.ViewContext = new ViewContext(controllerContext, new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter())
+			{
+				HttpContext = controllerContext.HttpContext
+			};
             return page;
         }
 

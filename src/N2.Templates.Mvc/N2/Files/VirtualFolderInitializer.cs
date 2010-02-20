@@ -77,12 +77,12 @@ namespace N2.Management.Files
 			if (dd == null)
 				return;
 
-			virtualNodes.Register(itemPath + folder.TrimStart('~', '/'),
+			virtualNodes.Register(new FunctionalNodeProvider(itemPath + folder.TrimStart('~', '/'),
 				(remainingPath) => 
 				{
 					var dir = new Directory(dd, persister.Get(site.StartPageID));
 					return string.IsNullOrEmpty(remainingPath) ? dir : dir.GetChild(remainingPath);
-				});
+				}));
 		}
 
 		private void UnregisterUploadFolders(Site site, IList<Site> sites)

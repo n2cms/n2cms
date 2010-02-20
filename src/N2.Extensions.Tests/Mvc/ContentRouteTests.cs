@@ -535,7 +535,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			var html = helper.ActionLink("Hello", "Submit", new { q = "something", controller = "TestItem" });
 
-			Assert.That(html.ToString(), Is.EqualTo("<a href=\"?part=10&amp;q=something&amp;action=Submit\">Hello</a>"));
+			Assert.That(html.ToString(), Is.EqualTo("<a href=\"/?part=10&amp;q=something&amp;action=Submit\">Hello</a>"));
 		}
 
 		ViewContext CreateViewContext(RequestContext rc)

@@ -25,7 +25,7 @@ namespace N2.Edit
 		public ContentItem Navigate(ContentItem startingPoint, string path)
 		{
 			return startingPoint.GetChild(path) 
-				?? virtualNodes.FindNode(path);
+				?? virtualNodes.Find(path);
 		}
 
 		public ContentItem Navigate(string path)
@@ -38,7 +38,7 @@ namespace N2.Edit
 				if (path.StartsWith("~"))
 				{
 					return Navigate(persister.Get(host.CurrentSite.StartPageID), path.Substring(1))
-						?? virtualNodes.FindNode(path);
+						?? virtualNodes.Find(path);
 				}
 				throw new ArgumentException("The path must start with a slash '/', was '" + path + "'", "path");
 			}

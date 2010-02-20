@@ -9,20 +9,16 @@ namespace N2.Edit
 	[Service]
 	public class VirtualNodeFactory
 	{
-		Dictionary<string, NodeFactoryInfo> pathToFactoryMap = new Dictionary<string, NodeFactoryInfo>(StringComparer.InvariantCultureIgnoreCase);
+		INodeProvider[] providers = new INodeProvider[0];
 		static string EmptyPath = string.Empty;
 
-		public virtual ContentItem FindNode(string path)
+		public virtual ContentItem Find(string path)
 		{
-			var map = pathToFactoryMap;
-
-			if (map.ContainsKey(path))
-				return map[path].FactoryMethod(EmptyPath);
-
-			foreach (var info in map.Values)
+			foreach (var provider in providers)
 			{
-				if (path.StartsWith(info.Path, StringComparison.InvariantCultureIgnoreCase))
-					return info.FactoryMethod(path.Substring(info.Path.Length));
+				ContentItem item = provider.Get(path);
+				if (item != null)
+					return item;
 			}
 
 			return null;
@@ -30,43 +26,25 @@ namespace N2.Edit
 
 		public virtual IEnumerable<ContentItem> FindChildren(string path)
 		{
-			foreach (var info in pathToFactoryMap.Values)
+			foreach (var provider in providers)
 			{
-				if (string.Equals(info.ParentPath, path, StringComparison.InvariantCultureIgnoreCase))
-					yield return info.FactoryMethod(EmptyPath);
+				foreach (var item in provider.GetChildren(path))
+					yield return item;
 			}
 		}
 
-		public virtual void Register(string path, NodeFactoryDelegate factoryMethod)
+		public virtual void Register(INodeProvider provider)
 		{
-			var next = new Dictionary<string, NodeFactoryInfo>(pathToFactoryMap, StringComparer.InvariantCultureIgnoreCase);
-			next[path] = new NodeFactoryInfo(path, factoryMethod);
-			pathToFactoryMap = next;
+			List<INodeProvider> next = new List<INodeProvider>(providers);
+			next.Add(provider);
+			providers = next.ToArray();
 		}
 
 		public virtual void Unregister(string path)
 		{
-			var next = new Dictionary<string, NodeFactoryInfo>(pathToFactoryMap, StringComparer.InvariantCultureIgnoreCase);
-
-			if (next.ContainsKey(path))
-			{
-				next.Remove(path);
-				pathToFactoryMap = next;
-			}
-		}
-
-		class NodeFactoryInfo
-		{
-			public NodeFactoryInfo(string path, NodeFactoryDelegate factoryMethod)
-			{
-				Path = path;
-				ParentPath = N2.Web.Url.RemoveLastSegment(Path);
-				FactoryMethod = factoryMethod;
-			}
-
-			public NodeFactoryDelegate FactoryMethod { get; set; }
-			public string Path { get; set; }
-			public string ParentPath { get; set; }
+			List<INodeProvider> next = new List<INodeProvider>(providers);
+			next.RemoveAll(p => p.Get(path) != null);
+			providers = next.ToArray();
 		}
 	}
 }

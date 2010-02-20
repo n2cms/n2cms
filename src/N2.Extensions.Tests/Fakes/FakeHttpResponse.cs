@@ -1,4 +1,5 @@
 using System.Web;
+using System.IO;
 
 namespace N2.Extensions.Tests.Fakes
 {
@@ -7,6 +8,12 @@ namespace N2.Extensions.Tests.Fakes
 		public override string ApplyAppPathModifier(string virtualPath)
 		{
 			return virtualPath;
+		}
+
+		public TextWriter output;
+		public override TextWriter Output
+		{
+			get { return output ?? (output = new StringWriter()); }
 		}
 	}
 }
