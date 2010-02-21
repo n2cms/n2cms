@@ -1,4 +1,5 @@
-﻿- MVC 2
+﻿- configurable tiny mce init script
+- MVC 2
 - async actions in templates mvc
 - moved SEO properties into extended page properties
 - updated tinyMCE to 3.3b2

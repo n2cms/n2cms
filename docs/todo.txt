@@ -14,7 +14,6 @@ v2
 	- move
 	- copy
 	- ?
-- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83374
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
 - http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
@@ -28,6 +27,10 @@ v2
 	/n2/myself/
 - stack overflow mvc: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=80172
 - allow custom user type
+- interfaces concept
+	- management
+	- browsing
+	- append nodes
 
 v2.1+
 

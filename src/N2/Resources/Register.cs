@@ -23,10 +23,10 @@ namespace N2.Resources
 			StyleSheet(page, page.ClientScript.GetWebResourceUrl(type, resourceName), Media.All);
 		}
 
-		public static void Parts(Page page)
-		{
+		//public static void Parts(Page page)
+		//{
 
-		}
+		//}
 
 		/// <summary>Register a style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>
@@ -42,6 +42,9 @@ namespace N2.Resources
 		/// <param name="media">The media type to assign, e.g. print.</param>
 		public static void StyleSheet(Page page, string resourceUrl, Media media)
 		{
+			if (page == null) throw new ArgumentNullException("page");
+			if (resourceUrl == null) throw new ArgumentNullException("resourceUrl");
+			
 			resourceUrl = N2.Web.Url.ToAbsolute(resourceUrl);
 
 			if (page.Items[resourceUrl] == null)
@@ -85,6 +88,8 @@ namespace N2.Resources
 		/// <param name="options">Script registration options.</param>
 		public static void JavaScript(Page page, string script, ScriptPosition position, ScriptOptions options)
 		{
+			if (page == null) throw new ArgumentNullException("page");
+			
 			if (position == ScriptPosition.Header)
 			{
 				JavaScript(page, script, options);
@@ -117,6 +122,8 @@ namespace N2.Resources
 
 		public static void JavaScript(Page page, string script, ScriptOptions options)
 		{
+			if (page == null) throw new ArgumentNullException("page");
+			
 			if (page.Items[script] == null)
 			{
 				PlaceHolder holder = GetPlaceHolder(page);
@@ -150,13 +157,11 @@ namespace N2.Resources
 			protected override void Render(HtmlTextWriter writer)
 			{
 				writer.Write("<script type='text/javascript'>");
-				writer.Write(Environment.NewLine);
-				writer.Write("<!--");
+				writer.Write("//<![CDATA[");
 				writer.Write(Environment.NewLine);
 				base.Render(writer);
 				writer.Write(Environment.NewLine);
-				writer.Write("//-->");
-				writer.Write(Environment.NewLine);
+				writer.Write("//]]>");
 				writer.Write("</script>");
 			}
 		}
@@ -174,6 +179,8 @@ namespace N2.Resources
 
 		private static Control AddScriptInclude(Page page, string resourceUrl, Control holder, bool priority)
 		{
+			if (page == null) throw new ArgumentNullException("page");
+			
 			HtmlGenericControl script = new HtmlGenericControl("script");
 			page.Items[resourceUrl] = script;
 
@@ -194,6 +201,9 @@ namespace N2.Resources
 		/// <param name="resourceUrl">The url to the javascript to register.</param>
 		public static void JavaScript(Page page, string resourceUrl)
 		{
+			if (page == null) throw new ArgumentNullException("page");
+			if (resourceUrl == null) throw new ArgumentNullException("resourceUrl");
+
 			JavaScript(page, resourceUrl, ScriptOptions.Include);
 		}
 

@@ -1198,7 +1198,6 @@
     <Content Include="N2\Content\App_LocalResources\Dependencies.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="N2\Resources\Js\plugins\FreeTextArea.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.cookie.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.datePicker.min-2.1.1.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2dimmable.js" />
@@ -1240,6 +1239,7 @@
     <Content Include="N2\Resources\img\tab_button_bg.png" />
     <Content Include="N2\Resources\img\toolbar_button_bg.png" />
     <Content Include="N2\Resources\img\toolbar_button_bg_hover.png" />
+    <Content Include="N2\Resources\Js\FreeTextArea.js" />
     <Content Include="N2\Resources\Js\jquery-1.4.1.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2glow.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2name.js" />

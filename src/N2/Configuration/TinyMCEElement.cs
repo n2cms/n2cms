@@ -32,6 +32,14 @@ namespace N2.Configuration
         {
             get { return (string)base["cssUrl"]; }
             set { base["cssUrl"] = value; }
-        }
+		}
+
+		/// <summary>Url to the free text area editor configuration script file.</summary>
+		[ConfigurationProperty("scriptUrl", DefaultValue = "~/N2/Resources/Js/FreeTextArea.js")]
+		public string ScriptUrl
+		{
+			get { return (string)base["scriptUrl"]; }
+			set { base["scriptUrl"] = value; }
+		}
     }
 }

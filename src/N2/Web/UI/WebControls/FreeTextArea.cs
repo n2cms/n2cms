@@ -18,22 +18,27 @@ namespace N2.Web.UI.WebControls
 	public class FreeTextArea : TextBox
 	{
         static string configCssUrl;
+		static string configScriptUrl;
         static NameValueCollection configSettings = new NameValueCollection();
         static bool configEnabled = true;
         static FreeTextArea()
         {
             EditSection config = WebConfigurationManager.GetSection("n2/edit") as EditSection;
-            if (config != null)
-            {
-                configCssUrl = Url.ToAbsolute(config.TinyMCE.CssUrl);
-                configEnabled = config.TinyMCE.Enabled;
-                foreach (KeyValueConfigurationElement element in config.TinyMCE.Settings)
-                {
-                    configSettings[element.Key] = element.Value;
-                }
-            }
-            else
-                Url.ToAbsolute("~/N2/Resources/Css/Editor.css");
+			if (config != null)
+			{
+				configCssUrl = Url.ToAbsolute(config.TinyMCE.CssUrl);
+				configScriptUrl = Url.ToAbsolute(config.TinyMCE.ScriptUrl);
+				configEnabled = config.TinyMCE.Enabled;
+				foreach (KeyValueConfigurationElement element in config.TinyMCE.Settings)
+				{
+					configSettings[element.Key] = element.Value;
+				}
+			}
+			else
+			{
+				configCssUrl = Url.ToAbsolute("~/N2/Resources/Css/Editor.css");
+				configScriptUrl = Url.ToAbsolute("~/N2/Resources/Js/FreeTextArea.js");
+			}
         }
 
 		public FreeTextArea()
@@ -62,7 +67,7 @@ namespace N2.Web.UI.WebControls
             {
                 Register.JQuery(Page);
             	Register.TinyMCE(Page);
-                Register.JQueryPlugins(Page);
+				Register.JavaScript(Page, configScriptUrl);
 
                 string script = string.Format("freeTextArea_init('{0}', {1});",
 					Url.Parse("~/N2/Content/Navigation/Tree.aspx").AppendQuery("location=selection"), 
