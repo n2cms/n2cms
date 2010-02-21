@@ -96,7 +96,6 @@
     <Compile Include="N2\Content\AutoPublish\PublishScheduledAction.cs" />
     <Compile Include="N2\Content\AvailableZones.ascx.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\AvailableZones.ascx.designer.cs">
       <DependentUpon>AvailableZones.ascx</DependentUpon>
@@ -106,42 +105,36 @@
     <Compile Include="N2\Content\ControlPanelPreviewPublishAttribute.cs" />
     <Compile Include="N2\Content\Copy.aspx.cs">
       <DependentUpon>Copy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Copy.aspx.designer.cs">
       <DependentUpon>Copy.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Delete.aspx.cs">
       <DependentUpon>Delete.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Delete.aspx.designer.cs">
       <DependentUpon>Delete.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\DiscardPreview.aspx.cs">
       <DependentUpon>DiscardPreview.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\DiscardPreview.aspx.designer.cs">
       <DependentUpon>DiscardPreview.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Export\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Export\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -166,7 +159,6 @@
     </Compile>
     <Compile Include="N2\Content\Globalization\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Globalization\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -174,21 +166,18 @@
     <Compile Include="N2\Content\Globalization\LanguageInitializer.cs" />
     <Compile Include="N2\Content\Globalization\LanguageMenu.ascx.cs">
       <DependentUpon>LanguageMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Globalization\LanguageMenu.ascx.designer.cs">
       <DependentUpon>LanguageMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Globalization\Languages.ascx.cs">
       <DependentUpon>Languages.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Globalization\Languages.ascx.designer.cs">
       <DependentUpon>Languages.ascx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Globalization\Translate.aspx.cs">
       <DependentUpon>Translate.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Globalization\Translate.aspx.designer.cs">
       <DependentUpon>Translate.aspx</DependentUpon>
@@ -209,14 +198,12 @@
     </Compile>
     <Compile Include="N2\Files\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Files\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Files\FileSystem\Directory.aspx.cs">
       <DependentUpon>Directory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Files\FileSystem\Directory.aspx.designer.cs">
       <DependentUpon>Directory.aspx</DependentUpon>
@@ -225,7 +212,6 @@
     <Compile Include="N2\Files\FileSystem\Editables\EditableUploadAttribute.cs" />
     <Compile Include="N2\Files\FileSystem\File.aspx.cs">
       <DependentUpon>File.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Files\FileSystem\File.aspx.designer.cs">
       <DependentUpon>File.aspx</DependentUpon>
@@ -282,7 +268,6 @@
     </Compile>
     <Compile Include="N2\Myself\Root.aspx.cs">
       <DependentUpon>Root.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Myself\Root.aspx.designer.cs">
       <DependentUpon>Root.aspx</DependentUpon>
@@ -291,7 +276,6 @@
     </Compile>
     <Compile Include="N2\Myself\Statistics.ascx.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Myself\Statistics.ascx.designer.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
@@ -313,7 +297,6 @@
     <Compile Include="N2\Resources\KeepAlive\Pinger.cs" />
     <Compile Include="N2\Content\LinkTracker\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\LinkTracker\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -322,7 +305,6 @@
     <Compile Include="N2\Content\LinkTracker\Tracker.cs" />
     <Compile Include="N2\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -344,7 +326,6 @@
     <Compile Include="N2\Users\MembershipToolbarPluginAttribute.cs" />
     <Compile Include="N2\Users\New.aspx.cs">
       <DependentUpon>New.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Users\New.aspx.designer.cs">
       <DependentUpon>New.aspx</DependentUpon>
@@ -358,21 +339,18 @@
     </Compile>
     <Compile Include="N2\Users\Users.aspx.cs">
       <DependentUpon>Users.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Users\Users.aspx.designer.cs">
       <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Move.aspx.cs">
       <DependentUpon>Move.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Move.aspx.designer.cs">
       <DependentUpon>Move.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Navigation\ContextMenu.ascx.cs">
       <DependentUpon>ContextMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Navigation\ContextMenu.ascx.designer.cs">
       <DependentUpon>ContextMenu.ascx</DependentUpon>
@@ -383,13 +361,11 @@
     </Compile>
     <Compile Include="N2\Content\Navigation\Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Navigation\Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Navigation\NavigationPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Navigation\SearchControlAttribute.cs" />
     <Compile Include="N2\Content\Navigation\SortDown.ashx.cs">
@@ -401,21 +377,18 @@
     </Compile>
     <Compile Include="N2\Content\Navigation\Tree.aspx.cs">
       <DependentUpon>Tree.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Navigation\Tree.aspx.designer.cs">
       <DependentUpon>Tree.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\paste.aspx.cs">
       <DependentUpon>Paste.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\paste.aspx.designer.cs">
       <DependentUpon>Paste.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\New.aspx.cs">
       <DependentUpon>New.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\New.aspx.designer.cs">
       <DependentUpon>New.aspx</DependentUpon>
@@ -424,7 +397,6 @@
     <Compile Include="N2\Properties\AssemblyInfo.cs" />
     <Compile Include="N2\Content\PublishPreview.aspx.cs">
       <DependentUpon>PublishPreview.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\PublishPreview.aspx.designer.cs">
       <DependentUpon>PublishPreview.aspx</DependentUpon>
@@ -438,28 +410,24 @@
     </Compile>
     <Compile Include="N2\Content\Security\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Security\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Settings\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Settings\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Settings\SettingsEditor.ascx.cs">
       <DependentUpon>SettingsEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Settings\SettingsEditor.ascx.designer.cs">
       <DependentUpon>SettingsEditor.ascx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Trash\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Trash\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -472,7 +440,6 @@
     <Compile Include="N2\Content\Versions\ControlPanelPendingVersionAttribute.cs" />
     <Compile Include="N2\Content\Versions\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Versions\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -494,11 +461,9 @@
     <Compile Include="N2\Web\UI\Controls\Tree.cs" />
     <Compile Include="N2\Web\UI\Controls\TreeView.cs" />
     <Compile Include="N2\Web\UrlSelectionPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Wizard\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="N2\Content\Wizard\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1201,7 +1166,7 @@
     <Content Include="N2\Resources\Js\plugins\jquery.cookie.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.datePicker.min-2.1.1.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2dimmable.js" />
-    <Content Include="N2\Resources\Js\TabPanel.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2tabs.js" />
     <Content Include="N2\Content\PublishPreview.aspx" />
     <Content Include="N2\Content\Settings\SettingsEditor.ascx" />
   </ItemGroup>

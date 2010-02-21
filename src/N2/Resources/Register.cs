@@ -254,6 +254,8 @@ namespace N2.Resources
 			if (page.Items[key] == null)
 			{
 				JQuery(page);
+				JQueryPlugins(page);
+
 				JavaScript(page, "~/N2/Resources/Js/TabPanel.js");
 				string script = string.Format(tabPanelFormat, selector, selector.Replace('.', '_'));
 				JavaScript(page, script, ScriptOptions.DocumentReady);
@@ -279,6 +281,7 @@ namespace N2.Resources
 		static string pluginsUrl = "~/N2/Resources/Js/plugins.ashx?v=" + typeof (Register).Assembly.GetName().Version;
 		public static void JQueryPlugins(Page page)
 		{
+			JQuery(page);
 			JavaScript(page, pluginsUrl);
 		}
 
