@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true"
 	Inherits="N2.Web.Mvc.ContentViewPage<CalendarModel, N2.Templates.Mvc.Models.Pages.Calendar>" %>
 <%@ Import Namespace="N2.Collections"%>
 

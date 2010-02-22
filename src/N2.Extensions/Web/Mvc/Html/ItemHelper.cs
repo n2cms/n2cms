@@ -8,7 +8,7 @@ namespace N2.Web.Mvc.Html
 {
 	public abstract class ItemHelper
 	{
-		PartsAdapter _partsAdapter;
+		PartsAdapter partsAdapter;
         ContentItem currentItem;
 
         protected ItemHelper(ViewContext viewContext, ContentItem currentItem)
@@ -35,8 +35,9 @@ namespace N2.Web.Mvc.Html
 		{
 			get
 			{
-				return _partsAdapter ?? (_partsAdapter = Engine.Resolve<IContentAdapterProvider>()
-				                                         	.ResolveAdapter<PartsAdapter>(CurrentItem.GetType()));
+				if (partsAdapter == null)
+					partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem != null ? CurrentItem.GetType() : typeof(ContentItem));
+				return partsAdapter;
 			}
 		}
 	}

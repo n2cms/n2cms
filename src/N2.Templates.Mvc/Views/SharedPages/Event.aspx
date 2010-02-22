@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true"
 	Inherits="System.Web.Mvc.ViewPage<Event>" %>
 
 <asp:Content ID="cpc" ContentPlaceHolderID="TextContent" runat="server">

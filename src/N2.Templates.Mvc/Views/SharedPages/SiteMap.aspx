@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Top+SubMenu.Master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true"
 	Inherits="System.Web.Mvc.ViewPage<N2.Templates.Mvc.Models.Pages.SiteMap>" %>
 <%@ Import Namespace="N2.Collections"%>
 

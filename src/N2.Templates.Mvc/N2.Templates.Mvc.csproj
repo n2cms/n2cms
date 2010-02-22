@@ -251,12 +251,12 @@
     <Compile Include="Services\TemplatesInitializer.cs" />
     <Compile Include="Services\TemplatesPartsAdapter.cs" />
     <Compile Include="Services\TitleAndMetaTagApplyer.cs" />
-    <Compile Include="Views\Shared\Top+SubMenu.Master.cs">
-      <DependentUpon>Top+SubMenu.Master</DependentUpon>
+    <Compile Include="Views\Shared\Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Shared\Top+SubMenu.Master.designer.cs">
-      <DependentUpon>Top+SubMenu.Master</DependentUpon>
+    <Compile Include="Views\Shared\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
     </Compile>
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
@@ -428,7 +428,7 @@
     <Content Include="Views\SharedParts\TextItem.ascx" />
     <Content Include="Views\SharedParts\Top.ascx" />
     <Content Include="Views\Navigation\SubMenu.ascx" />
-    <Content Include="Views\Shared\Top+SubMenu.Master" />
+    <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\SharedPages\TextPage.aspx" />
   </ItemGroup>

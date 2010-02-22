@@ -50,16 +50,10 @@ namespace N2.Web.Mvc
 			string controllerName = _controllerMapper.GetControllerName(_thePage.GetType());
 			
 			var routeData = context.RouteData;
-			routeData.DataTokens[ContentRoute.ContentItemKey] = _thePage;
-			routeData.DataTokens[ContentRoute.ContentPageKey] = _thePage;
-			routeData.Values[ContentRoute.ContentItemKey] = _thePage.ID;
-			routeData.Values[ContentRoute.ContentPageKey] = _thePage.ID;
-			routeData.Values[ContentRoute.ControllerKey] = controllerName;
-			routeData.Values["action"] = "Index";
-			if (routeData.Values.ContainsKey(ContentRoute.ContentPartKey))
+			routeData.ApplyCurrentItem(controllerName, "Index", _thePage, _thePage, null);
+			if (context.RouteData.DataTokens.ContainsKey(ContentRoute.ContentPartKey))
 			{
-				routeData.Values[ContentRoute.ContentPartKey] = context.RouteData.Values[ContentRoute.ContentPartKey];
-				routeData.DataTokens[ContentRoute.ContentPartKey] = context.RouteData.DataTokens[ContentRoute.ContentPartKey];
+				routeData.ApplyContentItem(ContentRoute.ContentPartKey, context.RouteData.DataTokens[ContentRoute.ContentPartKey] as ContentItem);
 			}
 
 			var requestContext = new RequestContext(context.HttpContext, routeData);

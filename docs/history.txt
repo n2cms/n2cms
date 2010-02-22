@@ -1,4 +1,5 @@
-﻿- configurable tiny mce init script
+﻿- simplify sharing master page on webforms, mvc & interfaces without content item
+- configurable tiny mce init script
 - MVC 2
 - async actions in templates mvc
 - moved SEO properties into extended page properties

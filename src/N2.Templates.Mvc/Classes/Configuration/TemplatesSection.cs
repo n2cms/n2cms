@@ -16,12 +16,12 @@ namespace N2.Templates.Mvc.Configuration
             set { base["mailConfiguration"] = value; }
         }
 
-        /// <summary>The master page used for template pages.</summary>
-        [ConfigurationProperty("masterPageFile", DefaultValue = "~/Views/Shared/Top+SubMenu.Master")]
-        public string MasterPageFile
-        {
-            get { return (string)base["masterPageFile"]; }
-            set { base["masterPageFile"] = value; }
+		/// <summary>The master page used for template pages.</summary>
+		[ConfigurationProperty("masterPageFile", DefaultValue = "~/Views/Shared/Site.master")]
+		public string MasterPageFile
+		{
+			get { return (string)base["masterPageFile"]; }
+			set { base["masterPageFile"] = value; }
 		}
 
 		/// <summary>Image resize handler url.</summary>

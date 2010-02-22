@@ -176,18 +176,8 @@ namespace N2.Web.Mvc
 
 			var data = new RouteData(this, routeHandler);
 
-			data.DataTokens[ContentPartKey] = part;
-			data.DataTokens[ContentItemKey] = item;
-			data.DataTokens[ContentPageKey] = page;
+			data.ApplyCurrentItem(controllerName, action, item, page, part);
 			data.DataTokens[ContentEngineKey] = engine;
-
-			if (part != null)
-				data.Values[ContentPartKey] = part.ID;
-			data.Values[ContentItemKey] = item.ID;
-			data.Values[ContentPageKey] = page.ID;
-			
-			data.Values[ControllerKey] = controllerName;
-			data.Values[ActionKey] = action;
 
 			return data;
 		}

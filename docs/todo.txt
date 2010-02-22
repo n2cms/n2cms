@@ -1,4 +1,5 @@
 v2
+- write permissions for uploading files
 - windsor 2.1.1
 - fix delete previous version + cascading save issue
 - fix preview version issue
@@ -33,7 +34,6 @@ v2
 	- append nodes
 
 v2.1+
-
 - auto-parts
 - support for list items
 	- scenarios: site events, news, blog posts
