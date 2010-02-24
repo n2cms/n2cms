@@ -27,6 +27,8 @@
 - Refactored adapters (breaking change: [Controller(...)] -> [Adapts(...)], ResolveAdapter(PathData) -> ResolveAdapter(item.GetType()))
 - Changed HierarchyBuilder to use delegate rather than filter to control children to get
 - Auto-resize of uploaded images (<n2><edit><images><sizes><add name="x" width="123" height="123")
+	- configurable
+	- default name is resized (original as sub-item)
 - First step at refurbishing file manager
 - New concept: virtual nodes
 - added events to IFileSystem (breaking for file custom file systems implementators)

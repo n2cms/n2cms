@@ -8,6 +8,7 @@ using N2.Edit;
 using N2.Web;
 using N2.Configuration;
 using Management.N2.Files;
+using System.IO;
 
 namespace N2.Management.Files
 {
@@ -29,14 +30,45 @@ namespace N2.Management.Files
 		{
 			if (!ImagesUtility.IsImagePath(e.VirtualPath))
 				return;
-			
+
+			if(images.Sizes.Count == 0)
+				return;
+
+			byte[] image;
+			using (var s = files.OpenFile(e.VirtualPath))
+			{
+				image = new byte[s.Length];
+				s.Read(image, 0, image.Length);
+			}
+
 			foreach (ImageSizeElement size in images.Sizes)
 			{
 				Url url = e.VirtualPath;
 				string resizedPath = ImagesUtility.GetResizedPath(url, size.Name);
-				using (var s = files.OpenFile(e.VirtualPath))
+
+				using (var sourceStream = new MemoryStream(image))
 				{
-					resizer.Resize(s, url.Extension, size.Width, size.Height, files.OpenFile(resizedPath));
+					if (size.Width <= 0 && size.Height <= 0)
+					{
+						using (var destinationStream = files.OpenFile(resizedPath))
+						{
+							int b;
+							while((b = sourceStream.ReadByte()) != -1) 
+							{
+								destinationStream.WriteByte((byte)b);
+							}
+						}
+					}
+					else
+					{
+						if (!files.FileExists(resizedPath))
+						{
+							using (var destinationStream = files.OpenFile(resizedPath))
+							{
+								resizer.Resize(sourceStream, url.Extension, size.Width, size.Height, destinationStream);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -57,7 +89,8 @@ namespace N2.Management.Files
 					continue;
 
 				string destinationPath = ImagesUtility.GetResizedPath(destinationUrl, size.Name);
-				files.CopyFile(sourcePath, destinationPath);
+				if(!files.FileExists(destinationPath))
+					files.CopyFile(sourcePath, destinationPath);
 			}
 		}
 
@@ -82,7 +115,8 @@ namespace N2.Management.Files
 				if (files.FileExists(source))
 				{
 					string destination = ImagesUtility.GetResizedPath(e.VirtualPath, size.Name);
-					files.MoveFile(source, destination);
+					if (!files.FileExists(destination))
+						files.MoveFile(source, destination);
 				}
 			}
 		}

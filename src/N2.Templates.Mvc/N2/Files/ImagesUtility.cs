@@ -25,9 +25,12 @@ namespace Management.N2.Files
 
 		public static string GetResizedPath(Url url, string resizedSuffix)
 		{
-			return url.PathWithoutExtension + Separator + resizedSuffix + url.Extension;
+			if(!string.IsNullOrEmpty(resizedSuffix))
+				return url.PathWithoutExtension + Separator + resizedSuffix + url.Extension;
+			return url.Path;
 		}
 
+		/// <summary>Separator between the size suffix and the file name.</summary>
 		public const string Separator = "_";
 	}
 }
