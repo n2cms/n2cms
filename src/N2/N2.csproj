@@ -437,6 +437,7 @@
     <Compile Include="Engine\AdaptsAttribute.cs" />
     <Compile Include="Engine\Castle\CastleServiceContainerConfigurer.cs" />
     <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />
+    <Compile Include="Security\PermissionRemapAttribute.cs" />
     <Compile Include="Web\ImageResizeHandler.cs" />
     <Compile Include="Web\ImageResizer.cs" />
     <Compile Include="Web\RequestPathProvider.cs" />

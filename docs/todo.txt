@@ -1,5 +1,4 @@
 v2
-- write permissions for uploading files
 - windsor 2.1.1
 - fix delete previous version + cascading save issue
 - fix preview version issue
@@ -15,7 +14,6 @@ v2
 	- move
 	- copy
 	- ?
-- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=83280
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=81825
 - http://n2cms.codeplex.com/WorkItem/View.aspx?WorkItemId=26023
 - default container (put all editables in one container)
@@ -26,7 +24,6 @@ v2
 	/n2/installation/
 	/n2/users/
 	/n2/myself/
-- stack overflow mvc: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=80172
 - allow custom user type
 - interfaces concept
 	- management

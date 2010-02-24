@@ -136,6 +136,39 @@ namespace N2.Tests.Security
 			Assert.IsFalse(security.IsAdmin(user));
 		}
 
+		[Test]
+		public void Administrator_IsAuthorized_ToPublish()
+		{
+			ContentItem item = CreateOneItem<Items.SecurityPage>(1, "root", null);
+			IPrincipal adminUser = CreatePrincipal("admin");
+
+			var isAuthorized = security.IsAuthorized(adminUser, item, Permission.Publish);
+
+			Assert.That(isAuthorized, Is.True);
+		}
+
+		[Test]
+		public void Writer_IsNotAuthorized_ToPublish()
+		{
+			ContentItem item = CreateOneItem<Items.SecurityPage>(1, "root", null);
+			IPrincipal writerUser = CreatePrincipal("joe", "Writers");
+
+			var isAuthorized = security.IsAuthorized(writerUser, item, Permission.Publish);
+
+			Assert.That(isAuthorized, Is.False);
+		}
+
+		[Test]
+		public void Writer_IsAuthorized_ToPublish_OnRemappedPage()
+		{
+			ContentItem remappedItem = CreateOneItem<Items.RemappedPage>(1, "root", null);
+			IPrincipal writerUser = CreatePrincipal("joe", "Writers");
+
+			var isAuthorized = security.IsAuthorized(writerUser, remappedItem, Permission.Publish);
+
+			Assert.That(isAuthorized, Is.True);
+		}
+
 
 		[Test]
 		public void AuthorizedRolePropertyOnItems()
