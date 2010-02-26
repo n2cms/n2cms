@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.UI;
 using N2.Web;
 using N2.Engine;
+using System.Web;
 
 namespace N2.Edit
 {
@@ -12,16 +13,22 @@ namespace N2.Edit
     /// </summary>
     public class SelectionUtility
     {
-        Control container;
+        HttpRequest request;
         IEngine engine;
         ContentItem selectedItem;
         ContentItem memorizedItem;
 
         public SelectionUtility(Control container, IEngine engine)
         {
-            this.container = container;
+			this.request = container.Page.Request;
             this.engine = engine;
-        }
+		}
+
+		public SelectionUtility(HttpRequest request, IEngine engine)
+		{
+			this.request = request;
+			this.engine = engine;
+		}
 
         /// <summary>The selected item.</summary>
         public ContentItem SelectedItem
@@ -39,20 +46,20 @@ namespace N2.Edit
 
         private ContentItem GetMemoryFromUrl()
         {
-            return engine.Resolve<Navigator>().Navigate(container.Page.Request["memory"]);
+            return engine.Resolve<Navigator>().Navigate(request["memory"]);
         }
 
         private ContentItem GetSelectionFromUrl()
         {
-            string selected = container.Page.Request["selected"];
+            string selected = request["selected"];
             if (!string.IsNullOrEmpty(selected))
                 return engine.Resolve<Navigator>().Navigate(selected);
 
-            string selectedUrl = container.Page.Request["selectedUrl"];
+            string selectedUrl = request["selectedUrl"];
             if (!string.IsNullOrEmpty(selectedUrl))
                 return engine.UrlParser.Parse(selectedUrl);
 
-            string itemId = container.Page.Request[PathData.ItemQueryKey];
+            string itemId = request[PathData.ItemQueryKey];
             if (!string.IsNullOrEmpty(itemId))
                 return engine.Persister.Get(int.Parse(itemId));
 

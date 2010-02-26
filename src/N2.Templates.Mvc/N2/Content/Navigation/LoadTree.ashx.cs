@@ -20,7 +20,8 @@ namespace N2.Edit.Navigation
 		{
             string target = context.Request["target"] ?? Targets.Preview;
 
-			ContentItem selectedNode = GetSelectedItem(context.Request.QueryString);
+			var selection = new SelectionUtility(context.Request, N2.Context.Current);
+			ContentItem selectedNode = selection.SelectedItem;
 			
 			context.Response.ContentType = "text/plain";
 

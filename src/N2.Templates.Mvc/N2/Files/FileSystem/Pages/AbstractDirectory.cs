@@ -12,7 +12,7 @@ namespace N2.Edit.FileSystem.Items
     {
 		public override ContentItem GetChild(string childName)
 		{
-			string name = childName.Trim('/');
+			string name = HttpUtility.UrlDecode(childName.Trim('/'));
 			foreach (var file in GetFiles())
 			{
 				if (file.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))

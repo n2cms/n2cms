@@ -256,7 +256,6 @@ namespace N2.Resources
 				JQuery(page);
 				JQueryPlugins(page);
 
-				JavaScript(page, "~/N2/Resources/Js/TabPanel.js");
 				string script = string.Format(tabPanelFormat, selector, selector.Replace('.', '_'));
 				JavaScript(page, script, ScriptOptions.DocumentReady);
 				page.Items[key] = new object();
