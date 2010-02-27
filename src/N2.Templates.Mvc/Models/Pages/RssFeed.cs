@@ -54,9 +54,9 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { base.Visible = value; }
 		}
 
-		public override string Url
+		public string PreviewUrl
 		{
-			get { return base.Url + "?hungry=yes"; }
+			get { return new Url(Url).AppendSegment("Preview"); }
 		}
 
 		public virtual IEnumerable<ISyndicatable> GetItems()

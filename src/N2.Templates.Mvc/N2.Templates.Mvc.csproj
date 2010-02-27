@@ -411,7 +411,6 @@
     <Content Include="Upload\skal.jpg" />
     <Content Include="Upload\thorn.jpg" />
     <Content Include="Views\Navigation\TopMenu.ascx" />
-    <Content Include="Views\Feed\Index.aspx" />
     <Content Include="Views\SharedParts\BoxedTextItem.ascx" />
     <Content Include="Views\CalendarTeaser\Index.ascx" />
     <Content Include="Views\SharedParts\Columns.ascx" />
@@ -547,6 +546,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Poll\Index.ascx" />
+    <Content Include="Views\RssFeed\Preview.aspx" />
     <Content Include="Views\SharedPages\FormPage.aspx" />
     <Content Include="Views\Login\Index.ascx" />
     <Content Include="Views\SharedPages\GalleryItem.aspx" />
