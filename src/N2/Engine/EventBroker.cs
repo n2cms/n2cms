@@ -24,16 +24,14 @@ namespace N2.Engine
 			protected set { Singleton<EventBroker>.Instance = value; }
 		}
 
-		int observedApplications;
-
 		/// <summary>Attaches to events from the application instance.</summary>
 		public virtual void Attach(HttpApplication application)
 		{
-			Interlocked.Increment(ref observedApplications);
-			Trace.WriteLine("EventBroker: Attaching to " + application + " - " + observedApplications);
+			Trace.WriteLine("EventBroker: Attaching to " + application);
 
 			application.BeginRequest += Application_BeginRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
+			application.PostMapRequestHandler += Application_PostMapRequestHandler;
 			application.AcquireRequestState += Application_AcquireRequestState;
 			application.Error += Application_Error;
 			application.EndRequest += Application_EndRequest;
@@ -44,22 +42,13 @@ namespace N2.Engine
 		/// <summary>Detaches events from the application instance.</summary>
 		void Application_Disposed(object sender, EventArgs e)
 		{
-			Interlocked.Decrement(ref observedApplications);
-			Trace.WriteLine("EventBroker: Disposing " + sender + " - " + observedApplications);
-
-            //events can only be applied during init, hence..
-            //HttpApplication application = sender as HttpApplication;
-
-            //application.BeginRequest -= Application_BeginRequest;
-            //application.AuthorizeRequest -= Application_AuthorizeRequest;
-            //application.AcquireRequestState -= Application_AcquireRequestState;
-            //application.Error -= Application_Error;
-            //application.EndRequest -= Application_EndRequest;
+			Trace.WriteLine("EventBroker: Disposing " + sender);
 		}
 
 		public EventHandler<EventArgs> BeginRequest;
 		public EventHandler<EventArgs> AuthorizeRequest;
 		public EventHandler<EventArgs> AcquireRequestState;
+		public EventHandler<EventArgs> PostMapRequestHandler;
 		public EventHandler<EventArgs> Error;
 		public EventHandler<EventArgs> EndRequest;
 
@@ -69,16 +58,22 @@ namespace N2.Engine
 				BeginRequest(sender, e);
 		}
 
+		void Application_PostMapRequestHandler(object sender, EventArgs e)
+		{
+			if (PostMapRequestHandler != null && !IsStaticResource(sender))
+				PostMapRequestHandler(sender, e);
+		}
+
 		protected void Application_AcquireRequestState(object sender, EventArgs e)
 		{
-			if (AuthorizeRequest != null && !IsStaticResource(sender))
-				AuthorizeRequest(sender, e);
+			if (AcquireRequestState != null && !IsStaticResource(sender))
+				AcquireRequestState(sender, e);
 		}
 
 		protected void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
-			if (AcquireRequestState != null && !IsStaticResource(sender))
-				AcquireRequestState(sender, e);
+			if (AuthorizeRequest != null && !IsStaticResource(sender))
+				AuthorizeRequest(sender, e);
 		}
 
 		protected void Application_Error(object sender, EventArgs e)

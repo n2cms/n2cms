@@ -15,10 +15,12 @@ namespace N2.Edit.FileSystem.Items
     public class Directory : AbstractDirectory, IActiveContent
     {
 		protected Directory() 
+			: base(N2.Context.Current.Resolve<IFileSystem>())
 		{
 		}
 
-		public Directory(DirectoryData directory, ContentItem parent)
+		public Directory(IFileSystem fs, DirectoryData directory, ContentItem parent)
+			: base(fs)
 		{
 			Parent = parent;
 
@@ -91,7 +93,7 @@ namespace N2.Edit.FileSystem.Items
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.CreateDirectory(to);
-        	Directory copy = new Directory(FileSystem.GetDirectory(to), d);
+			Directory copy = new Directory(FileSystem, FileSystem.GetDirectory(to), d);
 
 			foreach (File f in GetFiles())
 				f.CopyTo(copy);

@@ -94,6 +94,7 @@
     <Compile Include="FileSystem\FakePathProvider.cs" />
     <Compile Include="FileSystem\FileSystemTests.cs" />
     <Compile Include="FileSystem\RootNode.cs" />
+    <Compile Include="FileSystem\VirtualFolderInitializerTests.cs" />
     <Compile Include="LinkTracker\FindLinksFixture.cs" />
     <Compile Include="LinkTracker\Items\TrackableItem.cs" />
     <Compile Include="LinkTracker\TrackerTests.cs" />
@@ -138,6 +139,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="FileSystem\Upload\Image.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upload\File.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upload\Folder 2\File 2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upload\Folder 2\Folder 3\File 3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upload\Folder1\File1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Upload\Image.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

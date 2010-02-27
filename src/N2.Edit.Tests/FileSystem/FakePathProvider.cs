@@ -45,7 +45,7 @@ namespace N2.Edit.Tests.FileSystem
 			readonly FakePathProvider provider;
 
 			public VF(string path, FakePathProvider provider)
-				: base(path)
+				: base(path.TrimStart('~'))
 			{
 				this.provider = provider;
 			}
@@ -60,10 +60,10 @@ namespace N2.Edit.Tests.FileSystem
 			readonly FakePathProvider provider;
 			DirectoryInfo dir;
 			public VD(string path, FakePathProvider provider) 
-				: base(path)
+				: base(path.TrimStart('~'))
 			{
 				this.provider = provider;
-				dir = new DirectoryInfo(provider.MapPath(VirtualPath));
+				dir = new DirectoryInfo(provider.MapPath(path));
 			}
 
 			public override System.Collections.IEnumerable Children

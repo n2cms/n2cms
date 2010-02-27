@@ -63,17 +63,9 @@ namespace N2.Edit
 		//    return EditManager.GetEditorFilter(webContext.User);
 		//}
 
-		public virtual IEnumerable<DirectoryData> GetUploadDirectories(ContentItem startPage)
+		public virtual IEnumerable<DirectoryData> GetUploadDirectories(Site site)
 		{
-			if (!Host.IsStartPage(startPage))
-				yield break;
-
-			Site site = Host.GetSite(startPage);
 			foreach (string uploadFolder in site.UploadFolders)
-			{
-				yield return FileSystem.GetDirectory(uploadFolder);
-			}
-			foreach (string uploadFolder in EditManager.UploadFolders)
 			{
 				yield return FileSystem.GetDirectory(uploadFolder);
 			}
@@ -91,7 +83,7 @@ namespace N2.Edit
 			}
 			if (Interfaces.Managing == userInterface)
 			{
-				foreach (var child in NodeFactory.FindChildren(parent.Path))
+				foreach (var child in NodeFactory.GetChildren(parent.Path))
 				{
 					yield return child;
 				}

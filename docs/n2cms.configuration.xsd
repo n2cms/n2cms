@@ -45,6 +45,7 @@
 													<xs:element name="uploadFolders" minOccurs="0">
 														<xs:complexType>
 															<xs:sequence>
+																<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
 																<xs:element name="add" maxOccurs="unbounded">
 																	<xs:complexType>
 																		<xs:attribute name="path" type="xs:string" use="required" />

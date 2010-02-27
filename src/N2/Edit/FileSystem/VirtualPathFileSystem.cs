@@ -69,6 +69,8 @@ namespace N2.Edit.FileSystem
 		public virtual DirectoryData GetDirectory(string virtualPath)
 		{
 			VirtualDirectory dir = PathProvider.GetDirectory(virtualPath);
+			if (dir == null)
+				return null;
 
 			DirectoryData d = new DirectoryData();
 			d.Name = dir.Name;

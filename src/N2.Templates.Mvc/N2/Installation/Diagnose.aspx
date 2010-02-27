@@ -40,6 +40,23 @@
 			<!--  -->	
             <label>Last error</label><asp:Label ID="lblError" runat="server" /><br />
             
+            <% try { %>
+				<label>Default (fallback) site</label>
+				<ul>
+					<li><%= host.DefaultSite %></li>
+				</ul>
+				<label>Current site (<%= Request.Url.Authority %>)</label>
+				<ul>
+					<li><%= host.CurrentSite %></li>
+				</ul>
+				<label>All sites</label>
+				<ul>
+				<% foreach (var site in host.Sites){ %>
+					<li><%= site %></li>
+				<% } %>
+				</ul>
+            <% } catch (Exception ex) { Response.Write(ex.ToString()); } %>
+            
             <h2>Database operations</h2>
             <i>These buttons can be used to create N2 tables in the database configured in the connection string. Be careful. From here you can remove all content in one click.</i><br />
 

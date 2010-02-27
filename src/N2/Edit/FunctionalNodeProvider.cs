@@ -24,7 +24,7 @@ namespace N2.Edit
 			return null;
 		}
 
-		public IEnumerable<ContentItem> GetChildren(string path)
+		public virtual IEnumerable<ContentItem> GetChildren(string path)
 		{
 			if (string.Equals(ParentPath, path, StringComparison.InvariantCultureIgnoreCase))
 				yield return FactoryMethod("");

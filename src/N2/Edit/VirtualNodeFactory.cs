@@ -7,12 +7,12 @@ using N2.Engine;
 namespace N2.Edit
 {
 	[Service]
-	public class VirtualNodeFactory
+	public class VirtualNodeFactory : INodeProvider
 	{
 		INodeProvider[] providers = new INodeProvider[0];
 		static string EmptyPath = string.Empty;
 
-		public virtual ContentItem Find(string path)
+		public virtual ContentItem Get(string path)
 		{
 			foreach (var provider in providers)
 			{
@@ -24,7 +24,7 @@ namespace N2.Edit
 			return null;
 		}
 
-		public virtual IEnumerable<ContentItem> FindChildren(string path)
+		public virtual IEnumerable<ContentItem> GetChildren(string path)
 		{
 			foreach (var provider in providers)
 			{
@@ -35,16 +35,16 @@ namespace N2.Edit
 
 		public virtual void Register(INodeProvider provider)
 		{
-			List<INodeProvider> next = new List<INodeProvider>(providers);
-			next.Add(provider);
-			providers = next.ToArray();
+			List<INodeProvider> temp = new List<INodeProvider>(providers);
+			temp.Add(provider);
+			providers = temp.ToArray();
 		}
 
-		public virtual void Unregister(string path)
+		public virtual void Unregister(INodeProvider provider)
 		{
-			List<INodeProvider> next = new List<INodeProvider>(providers);
-			next.RemoveAll(p => p.Get(path) != null);
-			providers = next.ToArray();
+			List<INodeProvider> temp = new List<INodeProvider>(providers);
+			temp.RemoveAll(p => p == provider);
+			providers = temp.ToArray();
 		}
 	}
 }

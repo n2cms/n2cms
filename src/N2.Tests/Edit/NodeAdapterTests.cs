@@ -69,13 +69,12 @@ namespace N2.Tests.Edit
 		}
 
 		[Test]
-		public void GlobalUploadFolders_AreAdded()
+		public void GlobalUploadFolders_AreNotAdded()
 		{
 			fs.CreateDirectory("~/upload/");
 
-			var uploads = adapter.GetUploadDirectories(start);
-			Assert.That(uploads.Count(), Is.EqualTo(1));
-			Assert.That(uploads.Any(u => u.VirtualPath == "~/upload/"));
+			var uploads = adapter.GetUploadDirectories(adapter.Host.DefaultSite);
+			Assert.That(uploads.Count(), Is.EqualTo(0));
 		}
 
 		[Test]
@@ -85,9 +84,9 @@ namespace N2.Tests.Edit
 			fs.CreateDirectory("~/siteupload/");
 			adapter.Host.DefaultSite.UploadFolders.Add("~/siteupload/");
 
-			var uploads = adapter.GetUploadDirectories(start);
+			var uploads = adapter.GetUploadDirectories(adapter.Host.DefaultSite);
 
-			Assert.That(uploads.Count(), Is.EqualTo(2));
+			Assert.That(uploads.Count(), Is.EqualTo(1));
 			Assert.That(uploads.Any(u => u.VirtualPath == "~/siteupload/"));
 		}
 	}

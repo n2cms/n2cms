@@ -10,9 +10,18 @@ namespace N2.Edit.FileSystem.Items
     [NotThrowable, NotVersionable, PermissionRemap(From = Permission.Publish, To = Permission.Write)]
     public abstract class AbstractNode : ContentItem, INode
     {
+		IFileSystem fileSystem;
+
+
+		public AbstractNode(IFileSystem fs)
+		{
+			fileSystem = fs;
+		}
+
+
     	protected virtual IFileSystem FileSystem
     	{
-			get { return Context.Current.Resolve<IFileSystem>(); }
+			get { return fileSystem; }
     	}
 
         public override string Title
@@ -20,6 +29,11 @@ namespace N2.Edit.FileSystem.Items
             get { return Name; }
             set { Name = value; }
         }
+
+		public override string Path
+		{
+			get { return base.Path; }
+		}
 
 		public virtual AbstractDirectory Directory
         {

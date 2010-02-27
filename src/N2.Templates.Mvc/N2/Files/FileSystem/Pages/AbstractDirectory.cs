@@ -10,6 +10,12 @@ namespace N2.Edit.FileSystem.Items
 {
     public abstract class AbstractDirectory : AbstractNode
     {
+		public AbstractDirectory(IFileSystem fs)
+			: base(fs)
+		{
+		}
+
+
 		public override ContentItem GetChild(string childName)
 		{
 			string name = HttpUtility.UrlDecode(childName.Trim('/'));
@@ -38,7 +44,7 @@ namespace N2.Edit.FileSystem.Items
 				File lastFile = null;
 				foreach (var fd in FileSystem.GetFiles(Url))
 				{
-					var file = new File(fd, this);
+					var file = new File(FileSystem, fd, this);
 					if (lastFile != null
 						&& file.Name.StartsWith(lastFileName + ImagesUtility.Separator)
 						&& file.Name.EndsWith(lastFileExtension))
@@ -75,7 +81,7 @@ namespace N2.Edit.FileSystem.Items
 				IList<Directory> directories = new List<Directory>();
 				foreach(DirectoryData dir in FileSystem.GetDirectories(Url))
 				{
-					directories.Add(new Directory(dir, this));
+					directories.Add(new Directory(FileSystem, dir, this));
 				}
             	return directories;
             }

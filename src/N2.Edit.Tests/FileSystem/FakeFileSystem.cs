@@ -21,7 +21,7 @@ namespace N2.Edit.Tests.FileSystem
 
 		protected override string MapPath(string virtualDir)
 		{
-			return BasePath + virtualDir.TrimStart('~', '/').Replace('/', '\\');
+			return Path.Combine(BasePath, virtualDir.TrimStart('~', '/').Replace('/', '\\'));
 		}
 	}
 }

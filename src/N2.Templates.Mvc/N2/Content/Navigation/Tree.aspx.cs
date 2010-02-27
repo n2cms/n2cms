@@ -4,6 +4,7 @@ using N2.Edit.FileSystem.Items;
 using N2.Web;
 using N2.Engine;
 using N2.Edit.FileSystem;
+using N2.Configuration;
 
 namespace N2.Edit.Navigation
 {
@@ -13,24 +14,22 @@ namespace N2.Edit.Navigation
 		{
 			if (Request["location"] == "files" || Request["location"] == "filesselection")
 			{
-				HierarchyNode<ContentItem> root;
-				
 				IHost host = Engine.Resolve<IHost>();
-				if (host.Sites.Count > 0)
-				{
-					root = new HierarchyNode<ContentItem>(Engine.Persister.Get(host.DefaultSite.RootItemID));
+				HierarchyNode<ContentItem> root = new HierarchyNode<ContentItem>(Engine.Persister.Get(host.DefaultSite.RootItemID));
 
-					root.Children.Add(CreateSiteFilesNode(host.DefaultSite));
-					foreach (var site in host.Sites)
-					{
-						root.Children.Add(CreateSiteFilesNode(site));
-					}
-				}
-				else
+				var fs = Engine.Resolve<IFileSystem>();
+				foreach (string uploadFolder in Engine.EditManager.UploadFolders)
 				{
-					root = CreateSiteFilesNode(host.CurrentSite);
+					var dd = fs.GetDirectory(uploadFolder);
+					root.Children.Add(new HierarchyNode<ContentItem>(new Directory(fs, dd, root.Current)));
 				}
 
+				AddSiteFilesNodes(fs, root, host.DefaultSite);
+				foreach (var site in host.Sites)
+				{
+					AddSiteFilesNodes(fs, root, site);
+				}
+				
 				siteTreeView.Nodes = root;
 			}
 			else
@@ -46,19 +45,22 @@ namespace N2.Edit.Navigation
 			base.OnInit(e);
 		}
 
-		private HierarchyNode<ContentItem> CreateSiteFilesNode(Site site)
+		private void AddSiteFilesNodes(IFileSystem fs, HierarchyNode<ContentItem> parent, Site site)
 		{
 			var siteNode = Engine.Persister.Get(site.StartPageID);
 
-			HierarchyNode<ContentItem> node = new HierarchyNode<ContentItem>(siteNode);
+			HierarchyNode<ContentItem> node = null;
 			foreach (DirectoryData dir in Engine.Resolve<IContentAdapterProvider>()
 				.ResolveAdapter<NodeAdapter>(siteNode.GetType())
-				.GetUploadDirectories(siteNode))
+				.GetUploadDirectories(site))
 			{
-				node.Children.Add(new HierarchyNode<ContentItem>(new Directory(dir, siteNode)));
+				if(node == null)
+					node = new HierarchyNode<ContentItem>(siteNode);
+				node.Children.Add(new HierarchyNode<ContentItem>(new Directory(fs, dir, siteNode)));
 			}
 
-			return node;
+			if (node != null)
+				parent.Children.Add(node);
 		}
 	}
 }

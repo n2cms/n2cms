@@ -22,6 +22,11 @@ namespace N2.Configuration
             return ((FolderElement)element).Path;
         }
 
+		public void Add(string folderPath)
+		{
+			BaseAdd(new FolderElement { Path = folderPath });
+		}
+
         public FolderElement this[int index]
         {
             get { return (FolderElement)base.BaseGet(index); }

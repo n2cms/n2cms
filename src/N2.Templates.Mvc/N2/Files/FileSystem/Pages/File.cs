@@ -16,11 +16,13 @@ namespace N2.Edit.FileSystem.Items
 	[N2.Web.Template("info", "~/N2/Files/FileSystem/File.aspx")]
     public class File : AbstractNode, IActiveContent
     {
-		protected File() 
+		protected File()
+			: base(N2.Context.Current.Resolve<IFileSystem>())
 		{
 		}
 
-		public File(FileData file, AbstractDirectory parent)
+		public File(IFileSystem fs, FileData file, AbstractDirectory parent)
+			: base(fs)
 		{
 			Parent = parent;
 

@@ -23,6 +23,15 @@ namespace N2.Edit.Install
 {
 	public partial class Diagnose : Page
 	{
+		protected IHost host;
+
+		protected override void OnLoad(EventArgs e)
+		{
+			host = N2.Context.Current.Resolve<IHost>();
+
+			base.OnLoad(e);
+		}
+
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
