@@ -31,6 +31,7 @@ namespace N2.Edit.Navigation
 				}
 				
 				siteTreeView.Nodes = root;
+				//TODO:siteTreeView.SelectedItem = Selection.SelectedItem;
 			}
 			else
 			{

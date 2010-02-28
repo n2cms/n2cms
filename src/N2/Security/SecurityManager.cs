@@ -187,7 +187,7 @@ namespace N2.Security
 		/// <param name="user">The principal to check for allowance.</param>
 		/// <param name="permission">The type of permission to map against.</param>
 		/// <returns>True if the item has public access or the principal is allowed to access it.</returns>
-		public bool IsAuthorized(IPrincipal user, ContentItem item, Permission permission)
+		public virtual bool IsAuthorized(IPrincipal user, ContentItem item, Permission permission)
 		{
 			if(permission == Permission.None)
 				return true;

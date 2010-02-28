@@ -25,7 +25,7 @@ namespace N2.Edit
 
 		protected override void OnInit(EventArgs e)
 		{
-            logout.ToolTip = string.Format(GetLocalResourceString("logout.ToolTipFormat"), User.Identity.Name);
+            //logout.ToolTip = string.Format(GetLocalResourceString("logout.ToolTipFormat"), User.Identity.Name);
 			try
 			{
                 selectedPath = Selection.SelectedItem.Path;

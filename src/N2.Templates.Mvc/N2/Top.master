@@ -16,7 +16,6 @@
 </head>
 	<body id="default" class="edit">
 		<div class="frameForm">
-			<form id="form2" runat="server">
 				<div id="top">
 					<div id="topbar" class="header cf">
 				        <asp:ContentPlaceHolder ID="Toolbar" runat="server">
@@ -39,7 +38,8 @@
 		        <asp:ContentPlaceHolder ID="Content" runat="server">
 				</asp:ContentPlaceHolder>
 
-			</form>
+			
+			<form id="form2" runat="server"></form>
 		</div>
 	</body>
 </html>
