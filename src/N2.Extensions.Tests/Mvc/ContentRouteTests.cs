@@ -68,7 +68,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetupResult.For(engine.Persister).Return(persister);
 			engine.Replay();
 
-			route = new ContentRoute(engine, new MvcRouteHandler(), controllerMapper);
+			route = new ContentRoute(engine, new MvcRouteHandler(), controllerMapper, null);
 
 			httpContext = new FakeHttpContext();
 			routes = new RouteCollection { route };

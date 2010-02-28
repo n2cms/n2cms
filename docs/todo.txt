@@ -1,4 +1,5 @@
 v2
+- scheduled publishing issue?
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=200360
 - windsor 2.1.1
 - fix delete previous version + cascading save issue

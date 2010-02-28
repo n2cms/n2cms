@@ -116,9 +116,11 @@
     <Compile Include="Linq\QueryableExtensions.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
+    <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
     <Compile Include="Web\Mvc\Html\AjaxExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />
     <Compile Include="Web\Mvc\Html\LinkExtensions.cs" />
+    <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
     <Compile Include="Web\Mvc\RouteExtensions.cs" />
     <Compile Include="Web\Mvc\Traversal.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />

@@ -4,7 +4,7 @@ using N2.Collections;
 using N2.Details;
 using N2.Web.UI;
 
-namespace N2.Templates.Mvc.Items
+namespace N2.Templates.Mvc.Models.Pages
 {
 	/// <summary>
 	/// A base class for page items in the template project. Provides automatic

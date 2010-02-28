@@ -1,7 +1,7 @@
 ﻿using N2.Definitions;
 using N2.Edit.Trash;
 using N2.Integrity;
-using N2.Templates.Mvc.Items;
+using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Models.Parts
 {

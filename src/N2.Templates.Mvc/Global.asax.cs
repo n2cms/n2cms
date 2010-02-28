@@ -24,7 +24,7 @@ namespace N2.Templates.Mvc
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
-			routes.Add(new ContentRoute(engine));
+			routes.MapContentRoute("Content", engine);
 
 			routes.MapRoute(
 				"Default", // Route name

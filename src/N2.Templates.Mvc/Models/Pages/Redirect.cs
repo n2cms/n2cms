@@ -4,7 +4,7 @@ using N2.Web.Mvc;
 using N2.Web.UI.WebControls;
 using N2.Web.UI;
 using N2.Definitions;
-using N2.Templates.Mvc.Items;
+using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Models.Pages
 {

@@ -51,16 +51,15 @@ namespace N2.Web.Mvc
 
 			RegisterAdditionalComponents(engine);
 
-			//ViewEngines.Engines.Insert(0, new N2ViewEngine(ViewEngines.Engines));
-
-			ControllerBuilder.Current.SetControllerFactory(new N2ControllerFactory(engine));
+			ControllerBuilder.Current.SetControllerFactory(engine.Resolve<IControllerFactory>());
 
 			return engine;
 		}
 
 		private static void RegisterAdditionalComponents(IEngine engine)
 		{
-			engine.AddComponent("n2.mvc.controllerMapper", typeof (IControllerMapper), typeof (ControllerMapper));
+			engine.AddComponent("n2.mvc.controllerFactory", typeof(IControllerFactory), typeof(N2ControllerFactory));
+			engine.AddComponent("n2.mvc.controllerMapper", typeof(IControllerMapper), typeof(ControllerMapper));
 			engine.AddComponent("n2.mvc.templateRenderer", typeof (ITemplateRenderer), typeof (TemplateRenderer));
 		}
 	}

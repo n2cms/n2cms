@@ -1,4 +1,4 @@
-﻿using N2.Templates.Mvc.Items;
+﻿using N2.Templates.Mvc.Models.Pages;
 using N2.Web;
 
 namespace N2.Templates.Mvc.Controllers

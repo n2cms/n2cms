@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web;
 using N2.Engine;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace N2.Web.Mvc
 {
@@ -35,31 +36,23 @@ namespace N2.Web.Mvc
 		readonly IEngine engine;
 		readonly IRouteHandler routeHandler;
 		readonly IControllerMapper controllerMapper;
-
-		readonly List<RouteBase> routes = new List<RouteBase>();
+		readonly Route innerRoute;
 
 		public ContentRoute(IEngine engine)
-			: this(engine, new MvcRouteHandler())
+			: this(engine, null, null, null)
 		{
 		}
 
-		public ContentRoute(IEngine engine, IRouteHandler routeHandler)
-			: this(engine, routeHandler, null)
-		{
-		}
-
-		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper)
+		public ContentRoute(IEngine engine, IRouteHandler routeHandler, IControllerMapper controllerMapper, Route innerRoute)
 		{
 			this.engine = engine;
-			this.routeHandler = routeHandler;
+			this.routeHandler = routeHandler ?? new MvcRouteHandler();
 			this.controllerMapper = controllerMapper ?? engine.Resolve<IControllerMapper>();
-
-			var defaultRoute = new Route("{controller}/{action}", 
+			this.innerRoute = innerRoute ?? new Route("{controller}/{action}", 
 				new RouteValueDictionary(new { action = "Index" }), 
 				new RouteValueDictionary(), 
 				new RouteValueDictionary(new { engine }), 
 				routeHandler);
-			routes.Add(defaultRoute);
 		}
 
 		public override RouteData GetRouteData(HttpContextBase httpContext)
@@ -78,59 +71,7 @@ namespace N2.Web.Mvc
 				return routeData;
 
 			var baseRouteData = CheckForContentController(httpContext);
-
 			return baseRouteData;
-		}
-
-		private RouteData CheckForContentController(HttpContextBase context)
-		{
-			var routeData = GetRouteDataFromRoutes(context);
-
-			if(routeData == null)
-				return null;
-
-			var controllerName = Convert.ToString(routeData.Values[ControllerKey]);
-			var actionName = Convert.ToString(routeData.Values[ActionKey]);
-
-			if (controllerMapper.ControllerHasAction(controllerName, actionName))
-			{
-				ApplyContent(routeData, context.Request.QueryString, ContentItemKey);
-				ApplyContent(routeData, context.Request.QueryString, ContentPageKey);
-				routeData.DataTokens[ContentEngineKey] = engine;
-
-				return routeData;
-			}
-
-			return null;
-		}
-
-		private void ApplyContent(RouteData routeData, System.Collections.Specialized.NameValueCollection query, string key)
-		{
-			int id;
-			if (int.TryParse(query[key], out id))
-			{
-				routeData.Values[key] = id;
-				routeData.DataTokens[key] = engine.Persister.Get(id);
-			}
-		}
-
-		private int? ParseInteger(string input)
-		{
-			int output;
-			if(int.TryParse(input, out output))
-				return output;
-			return null;
-		}
-
-		private RouteData GetRouteDataFromRoutes(HttpContextBase context)
-		{
-			foreach (RouteBase route in routes)
-			{
-				RouteData routeData = route.GetRouteData(context);
-				if (routeData != null)
-					return routeData;
-			}
-			return null;
 		}
 
 		private RouteData GetRouteDataForPath(HttpRequestBase request)
@@ -146,9 +87,9 @@ namespace N2.Web.Mvc
 
 			var item = td.CurrentItem;
 			var page = td.CurrentPage;
-			var action = td.Action;
-			if (string.IsNullOrEmpty(action))
-				action = request.QueryString["action"] ?? "index";
+			var actionName = td.Action;
+			if (string.IsNullOrEmpty(actionName))
+				actionName = request.QueryString["action"] ?? "index";
 
 			ContentItem part = null;
 			if (!string.IsNullOrEmpty(request.QueryString["part"]))
@@ -171,16 +112,57 @@ namespace N2.Web.Mvc
 			if (controllerName == null)
 				return null;
 
-			if (action == null || !controllerMapper.ControllerHasAction(controllerName, action))
+			if (actionName == null || !controllerMapper.ControllerHasAction(controllerName, actionName))
 				return null;
 
 			var data = new RouteData(this, routeHandler);
 
-			data.ApplyCurrentItem(controllerName, action, item, page, part);
+			foreach (var kvp in innerRoute.Defaults)
+				data.Values[kvp.Key] = kvp.Value;
+			foreach (var kvp in innerRoute.DataTokens)
+				data.DataTokens[kvp.Key] = kvp.Value;
+
+			data.ApplyCurrentItem(controllerName, actionName, item, page, part);
 			data.DataTokens[ContentEngineKey] = engine;
 
 			return data;
 		}
+
+		/// <summary>Responds to the path /{controller}/{action}/?page=123&item=234</summary>
+		private RouteData CheckForContentController(HttpContextBase context)
+		{
+			var routeData = innerRoute.GetRouteData(context);
+
+			if (routeData == null)
+				return null;
+
+			var controllerName = Convert.ToString(routeData.Values[ControllerKey]);
+			var actionName = Convert.ToString(routeData.Values[ActionKey]);
+
+			if (controllerMapper.ControllerHasAction(controllerName, actionName))
+			{
+				bool appliedItem = ApplyContent(routeData, context.Request.QueryString, ContentItemKey);
+				bool appliedPage = ApplyContent(routeData, context.Request.QueryString, ContentPageKey);
+				routeData.DataTokens[ContentEngineKey] = engine;
+
+				return routeData;
+			}
+
+			return null;
+		}
+
+		private bool ApplyContent(RouteData routeData, NameValueCollection query, string key)
+		{
+			int id;
+			if (int.TryParse(query[key], out id))
+			{
+				routeData.ApplyContentItem(key, engine.Persister.Get(id));
+				return true;
+			}
+			return false;
+		}
+
+
 
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
@@ -243,7 +225,8 @@ namespace N2.Web.Mvc
 		{
 			const string controllerPlaceHolder = "$(CTRL)";
 			values[ControllerKey] = controllerPlaceHolder; // pass a placeholder we'll fill with the content path
-			VirtualPathData vpd = GetVirtualPathFromRoutes(requestContext, values);
+
+			VirtualPathData vpd = innerRoute.GetVirtualPath(requestContext, values);
 			if (vpd == null)
 				return null;
 
@@ -271,17 +254,6 @@ namespace N2.Web.Mvc
 				return true;
 			}
 			return false;
-		}
-
-		private VirtualPathData GetVirtualPathFromRoutes(RequestContext requestContext, RouteValueDictionary values)
-		{
-			foreach (RouteBase route in routes)
-			{
-				VirtualPathData vpd = route.GetVirtualPath(requestContext, values);
-				if (vpd != null)
-					return vpd;
-			}
-			return null;
 		}
 	}
 }

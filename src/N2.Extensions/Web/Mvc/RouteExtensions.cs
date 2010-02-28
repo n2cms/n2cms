@@ -31,5 +31,12 @@ namespace N2.Web.Mvc
 
 			return data;
 		}
+
+		public static ContentItem CurrentItem(this RouteValueDictionary data)
+		{
+			if (data.ContainsKey(ContentRoute.ContentItemKey))
+				return data[ContentRoute.ContentItemKey] as ContentItem;
+			return null;
+		}
 	}
 }
