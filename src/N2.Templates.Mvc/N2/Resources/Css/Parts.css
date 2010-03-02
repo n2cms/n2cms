@@ -70,7 +70,7 @@ div:hover.zoneItem .titleBar .command   { display:inline;}
     .opened .open {display:none; }
     .opened .close {display:inline;}
 
-.definitions,.controlPanel .new { padding:10px 0 25px 0; clear:left; }
+.definitions,.controlPanel .new { padding:10px 0 25px 0; clear:left; max-height:300px; overflow:auto; margin-bottom:30px; }
     .definition { cursor:move; padding:1px 10px; }
     .definition:hover { background-color:#eee; }
     .definition:hover { background-image:url(../../Resources/img/part_bg.png) }
