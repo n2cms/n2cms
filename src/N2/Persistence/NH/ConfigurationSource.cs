@@ -1,4 +1,5 @@
 using NHibernate;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
@@ -6,6 +7,7 @@ namespace N2.Persistence.NH
 	/// An unncessary abstraction that stores the single session factory 
 	/// instance for whoomever may need it.
 	/// </summary>
+	[Service(typeof(IConfigurationBuilder))]
 	public class ConfigurationSource : IConfigurationBuilder
 	{
 		readonly ConfigurationBuilder builder;

@@ -16,6 +16,7 @@ namespace N2.Web.Mvc.Html
         string RenderTemplate(ContentItem item, ViewContext context);
 	}
 
+	[Service(typeof(ITemplateRenderer))]
 	public class TemplateRenderer : ITemplateRenderer
 	{
 		private readonly IControllerMapper _controllerMapper;

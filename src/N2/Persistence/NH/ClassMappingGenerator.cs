@@ -6,12 +6,14 @@ using N2.Definitions;
 using System.Reflection;
 using N2.Persistence;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
     /// <summary>
     /// Generates nhibernate mappings for item types.
     /// </summary>
+	[Service]
     public class ClassMappingGenerator
     {
         private string classFormat = @"<subclass name=""{0}"" extends=""{1}"" discriminator-value=""{2}"" lazy=""false"">{3}</subclass>";

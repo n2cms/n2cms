@@ -1,6 +1,7 @@
 using System;
 using N2.Persistence;
 using N2.Plugin;
+using N2.Engine;
 
 namespace N2.Integrity
 {
@@ -8,6 +9,7 @@ namespace N2.Integrity
 	/// Subscribes to persister envents and throws exceptions if something 
 	/// illegal is about to be done.
 	/// </summary>
+	[Service(typeof(IIntegrityEnforcer))]
 	public class IntegrityEnforcer : IIntegrityEnforcer, IAutoStart
 	{
 		private readonly IPersister persister;

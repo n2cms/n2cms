@@ -4,6 +4,7 @@ using N2.Engine;
 using N2.Web;
 using System.Configuration;
 using System.IO;
+using N2.Engine.MediumTrust;
 
 namespace N2.Tests.Engine
 {
@@ -16,9 +17,8 @@ namespace N2.Tests.Engine
 		[SetUp]
 		public void SetUp()
 		{
-			string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Engine\\MultipleSites.exe");
-			var cfg = ConfigurationManager.OpenExeConfiguration(path);
-			engine = new ContentEngine(cfg, "n2", EventBroker.Instance);
+			var cfg = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+			engine = new ContentEngine(cfg, "n2multiplesites", new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
             host = engine.Resolve<IHost>();
 		}
 

@@ -19,9 +19,7 @@ namespace N2.Tests
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetUp()
 		{
-			var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-			
-			engine = new ContentEngine(config, "n2", EventBroker.Instance);
+			engine = new ContentEngine();
 
 			var configurationBuilder = engine.Resolve<IConfigurationBuilder>();
 			sessionProvider = (FakeSessionProvider)engine.Resolve<ISessionProvider>();

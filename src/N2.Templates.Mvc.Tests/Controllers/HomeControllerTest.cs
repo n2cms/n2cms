@@ -24,7 +24,7 @@ namespace N2.Templates.Mvc.Tests.Controllers
 			_homeController = new HomeController { CurrentItem = new StartPage() };
 			new MvcContrib.TestHelper.TestControllerBuilder().InitializeController(_homeController);
 
-			N2.Context.Initialize(MockRepository.GenerateStub<IEngine>());
+			N2.Context.Replace(MockRepository.GenerateStub<IEngine>());
 		}
 
 		[Test]

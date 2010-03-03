@@ -4,9 +4,11 @@ using System.Text;
 using N2.Persistence;
 using N2.Collections;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Edit
 {
+	[Service(typeof(ITreeSorter))]
 	public class TreeSorter : ITreeSorter
 	{
 		IPersister persister;

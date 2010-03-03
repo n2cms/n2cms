@@ -1,8 +1,10 @@
 using System.IO;
 using System.IO.Compression;
+using N2.Engine;
 
 namespace N2.Serialization
 {
+	[Service(typeof(Exporter))]
 	public class GZipExporter : Exporter
 	{
 		public GZipExporter(ItemXmlWriter writer)

@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Xml;
 using N2.Definitions;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Serialization
 {
     /// <summary>
     /// A content item xml serializer.
     /// </summary>
+	[Service]
 	public class ItemXmlWriter
 	{
 		private readonly IDefinitionManager definitions;

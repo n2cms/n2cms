@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using N2.Persistence.Finder;
 using N2.Edit.Workflow;
+using N2.Engine;
 
 namespace N2.Persistence
 {
 	/// <summary>
 	/// Handles saving and restoring versions of items.
 	/// </summary>
+	[Service(typeof(IVersionManager))]
 	public class VersionManager : IVersionManager
 	{
         readonly IRepository<int, ContentItem> itemRepository;

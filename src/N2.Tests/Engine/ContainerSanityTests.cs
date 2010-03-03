@@ -16,22 +16,22 @@ using N2.Edit.Installation;
 namespace N2.Tests.Engine
 {
 	[TestFixture]
-	public class WindsorCastleServiceContainerTests : ContainerSanityTests
+	public class WindsorCastleContainerSanityTests : ContainerSanityTests
 	{
 		protected override IEngine CreateEngine()
 		{
-			var engine = new ContentEngine(new WindsorServiceContainer());
+			var engine = new ContentEngine(new WindsorServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 
 			return engine;
 		}
 	}
 
 	[TestFixture]
-	public class MediumTrustServiceContainerTests : ContainerSanityTests
+	public class MediumTrustContainerSanityTests : ContainerSanityTests
 	{
 		protected override IEngine CreateEngine()
 		{
-			var engine = new ContentEngine(new MediumTrustServiceContainer());
+			var engine = new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 
 			return engine;
 		}

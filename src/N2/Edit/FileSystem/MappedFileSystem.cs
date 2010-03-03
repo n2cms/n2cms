@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
+using N2.Engine;
 
 namespace N2.Edit.FileSystem
 {
 	/// <summary>
 	/// Uses HttpContext.Current and System.IO to operate files.
 	/// </summary>
+	[Service(typeof(IFileSystem))]
 	public class MappedFileSystem : IFileSystem
 	{
 		#region IFileSystem Members

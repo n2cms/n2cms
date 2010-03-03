@@ -104,7 +104,7 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void Throwing_IsIntercepted_InMediumTrust()
         {
-            MediumTrustEngine engine = new MediumTrustEngine();
+			IEngine engine = new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 			var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
 #if NH2_1
 			schemaCreator.Execute(false, true, false, engine.Resolve<ISessionProvider>().OpenSession.Session.Connection, null);

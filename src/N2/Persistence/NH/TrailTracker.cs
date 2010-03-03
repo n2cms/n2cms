@@ -6,6 +6,7 @@ namespace N2.Persistence.NH
 	/// <summary>
 	/// Ensures that the ancestral trail on content items is up to date
 	/// </summary>
+	[Service(typeof(TrailTracker))]
 	public class TrailTracker : IAutoStart
 	{
 		readonly IPersister persister;

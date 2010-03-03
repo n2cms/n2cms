@@ -1,12 +1,14 @@
 using System;
 using System.Web;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Edit.Settings
 {
 	/// <summary>
 	/// Abstracts the storage of user display data items settings.
 	/// </summary>
+	[Service]
 	public class NavigationSettings
 	{
 		private IWebContext context;

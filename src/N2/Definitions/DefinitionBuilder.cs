@@ -12,6 +12,7 @@ namespace N2.Definitions
 	/// <summary>
 	/// Inspects available types in the AppDomain and builds item definitions.
 	/// </summary>
+	[Service]
 	public class DefinitionBuilder
 	{
 		private readonly ITypeFinder typeFinder;

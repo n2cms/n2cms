@@ -19,6 +19,7 @@ using N2.Persistence;
 using NHibernate.SqlTypes;
 using System.Diagnostics;
 using N2.Installation;
+using N2.Engine;
 
 namespace N2.Edit.Installation
 {
@@ -26,6 +27,7 @@ namespace N2.Edit.Installation
     /// Wraps functionality to request database status and generate n2's 
     /// database schema on multiple database flavours.
     /// </summary>
+	[Service]
 	public class InstallationManager
 	{
         IConfigurationBuilder configurationBuilder;

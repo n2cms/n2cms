@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using N2.Engine;
 
 namespace N2.Edit.Workflow
 {
     /// <summary>
     /// Helps to change state of an item and notify observers about the change.
     /// </summary>
+	[Service]
     public class StateChanger
     {
         /// <summary>Is invoked when the state has changed.</summary>

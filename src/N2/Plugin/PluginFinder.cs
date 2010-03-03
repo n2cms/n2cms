@@ -11,6 +11,7 @@ namespace N2.Plugin
 	/// <summary>
 	/// Investigates the execution environment to find plugins.
 	/// </summary>
+	[Service(typeof(IPluginFinder))]
     public class PluginFinder : IPluginFinder
     {
         private IList<IPlugin> plugins = null;

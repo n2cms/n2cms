@@ -9,6 +9,7 @@ using N2.Engine;
 
 namespace N2.Edit
 {
+	[Service]
 	public class Navigator
 	{
 		readonly IPersister persister;

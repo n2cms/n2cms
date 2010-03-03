@@ -5,6 +5,7 @@ namespace N2.Engine
 	/// <summary>
 	/// Performs work asynchronously.
 	/// </summary>
+	[Service(typeof(IWorker))]
 	public class AsyncWorker : IWorker
 	{
 		int executingWorkItems = 0;

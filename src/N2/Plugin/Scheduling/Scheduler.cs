@@ -11,6 +11,7 @@ namespace N2.Plugin.Scheduling
     /// Maintains a list of scheduler actions and checks wether it's time to 
     /// execute them.
     /// </summary>
+	[Service]
     public class Scheduler : IAutoStart
     {
         IList<ScheduledAction> actions;

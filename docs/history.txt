@@ -1,4 +1,6 @@
-﻿- mvc: content centric action link helpers
+﻿- refactored service registration into an attribute based model
+- upgraded castle windsor to 2.1 (DP 2.2, Core 1.2)
+- mvc: content centric action link helpers
 - simplify sharing master page on webforms, mvc & interfaces without content item
 - configurable tiny mce init script
 - MVC 2

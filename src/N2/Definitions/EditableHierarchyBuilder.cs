@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using N2.Engine;
 
 namespace N2.Definitions
 {
 	/// <summary>
 	/// Adds editables and containers to containers.
 	/// </summary>
+	[Service]
 	public class EditableHierarchyBuilder
 	{
 		/// <summary>Build the container hierarchy adding containers and editors to a root container.</summary>

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
+using N2.Engine;
 
 namespace N2.Serialization
 {

@@ -5,9 +5,11 @@ using N2.Definitions;
 using N2.Edit;
 using N2.Persistence;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Web.Parts
 {
+	[Service]
 	public class CreateUrlProvider : PartsAjaxService
 	{
         readonly IPersister persister;

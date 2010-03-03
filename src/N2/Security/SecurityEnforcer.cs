@@ -1,12 +1,14 @@
 using System;
 using System.Security.Principal;
 using N2.Plugin;
+using N2.Engine;
 
 namespace N2.Security
 {
 	/// <summary>
 	/// Checks against unauthorized requests, and updates of content items.
 	/// </summary>
+	[Service(typeof(ISecurityEnforcer))]
 	public class SecurityEnforcer : ISecurityEnforcer, IAutoStart
 	{
 		/// <summary>

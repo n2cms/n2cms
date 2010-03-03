@@ -28,7 +28,7 @@ namespace N2.Extensions.Tests.Mvc.Html
 			var engine = MockRepository.GenerateStub<IEngine>();
 			engine.Expect(e => e.Resolve<ITemplateRenderer>()).Return(_templateRenderer).Repeat.Any();
 
-			Context.Initialize(engine);
+			Context.Replace(engine);
 		}
 
 		#endregion

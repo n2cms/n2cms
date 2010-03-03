@@ -4,12 +4,14 @@ using N2.Persistence;
 using System.Security.Principal;
 using N2.Security;
 using N2.Edit.Workflow;
+using N2.Engine;
 
 namespace N2.Definitions
 {
 	/// <summary>
 	/// Stores item definitions and constructs new items.
 	/// </summary>
+	[Service(typeof(IDefinitionManager))]
 	public class DefinitionManager : IDefinitionManager
 	{
 		readonly IDictionary<Type, ItemDefinition> definitions;

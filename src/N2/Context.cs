@@ -41,10 +41,16 @@ namespace N2
 			return Singleton<IEngine>.Instance;
 		}
 
-		/// <summary>Sets the static factory instance to the supplied factory. Use this method to supply your own engine implementation.</summary>
-		/// <param name="engine">The factory to use.</param>
-		/// <remarks>Only use this method if you know what you're doing.</remarks>
+		[Obsolete("Use Context.Replace(IEngine)", false)]
 		public static void Initialize(IEngine engine)
+		{
+			Singleton<IEngine>.Instance = engine;
+		}
+
+		/// <summary>Sets the static engine instance to the supplied engine. Use this method to supply your own engine implementation.</summary>
+		/// <param name="engine">The engine to use.</param>
+		/// <remarks>Only use this method if you know what you're doing.</remarks>
+		public static void Replace(IEngine engine)
 		{
 			Singleton<IEngine>.Instance = engine;
 		}
@@ -81,12 +87,12 @@ namespace N2
 					return Activator.CreateInstance(engineType) as IEngine;
 				}
 
-				return new ContentEngine(EventBroker.Instance);
+				return new ContentEngine();
             }
             catch (SecurityException ex)
             {
                 Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
-                return new MediumTrustEngine(EventBroker.Instance);
+				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
             }
 		}
 

@@ -28,7 +28,7 @@ namespace N2.Tests.Collections
 			Expect.On(engine).Call(engine.SecurityManager).Return(security);
 			mocks.ReplayAll();
 
-			Context.Initialize(engine);
+			Context.Replace(engine);
 		}
 		protected ItemList CreateList()
 		{

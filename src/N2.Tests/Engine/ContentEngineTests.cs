@@ -3,24 +3,39 @@ using N2.Engine;
 using N2.Web;
 using N2.Persistence.NH;
 using System.Configuration;
+using N2.Engine.Castle;
+using N2.Engine.MediumTrust;
 
 namespace N2.Tests.Engine
 {
 	[TestFixture]
-	public class ContentEngineTests
+	public class WindsorContentEngine : ContentEngineTests
 	{
-		ContentEngine engine;
-
 		[SetUp]
 		public void SetUp()
 		{
-			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2", EventBroker.Instance);
+			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2", new WindsorServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 		}
+	}
+
+	[TestFixture]
+	public class MediumTrustContentEngine : ContentEngineTests
+	{
+		[SetUp]
+		public void SetUp()
+		{
+			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2", new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+		}
+	}
+
+	public abstract class ContentEngineTests
+	{
+		protected ContentEngine engine;
 
 		[Test]
 		public void CanCreateWithEventBroker()
 		{
-			engine = new ContentEngine(EventBroker.Instance);
+			engine = new ContentEngine();
 		}
 
 		[Test]

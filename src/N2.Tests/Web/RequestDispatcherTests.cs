@@ -32,7 +32,7 @@ namespace N2.Tests.Web
 		{
 			base.SetUp();
 
-			ContentAdapterProvider provider = new ContentAdapterProvider(new MediumTrustEngine(), new AppDomainTypeFinder());
+			ContentAdapterProvider provider = new ContentAdapterProvider(new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer()), new AppDomainTypeFinder());
 			provider.Start();
 			dispatcher = new RequestPathProvider(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
 		}

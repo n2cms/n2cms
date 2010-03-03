@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using N2.Configuration;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -8,6 +9,7 @@ namespace N2.Web
     /// Reads the configuration to build and maintains knowledge of 
     /// <see cref="Site"/>s in the application
     /// </summary>
+	[Service(typeof(IHost))]
 	public class Host : IHost
 	{
 		private readonly IWebContext context;

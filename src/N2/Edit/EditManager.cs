@@ -15,6 +15,7 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Edit.Workflow;
+using N2.Engine;
 
 namespace N2.Edit
 {
@@ -22,6 +23,7 @@ namespace N2.Edit
 	/// Class responsible for plugins in edit mode, knowling links to edit
 	/// pages and saving interaction.
 	/// </summary>
+	[Service(typeof(IEditManager))]
 	public class EditManager : IEditManager
 	{
 		protected static readonly object addedEditorKey = new object();

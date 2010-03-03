@@ -46,9 +46,6 @@ namespace N2.Engine
 			return (T)Resolve(key);
 		}
 
-		/// <summary>Returns a component that performs Container-specific configuration, such as adding the core N2 and any user-defined services.</summary>
-		public abstract IServiceContainerConfigurer ServiceContainerConfigurer { get; }
-
 		/// <summary>Starts any <see cref="IAutoStart"/> components in the container.</summary>
 		public abstract void StartComponents();
 

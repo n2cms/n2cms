@@ -8,6 +8,7 @@ namespace N2.Web.Mvc
 	/// <summary>
 	/// Controller Factory class for instantiating controllers using the Windsor IoC container.
 	/// </summary>
+	[Service(typeof(IControllerFactory))]
 	public class N2ControllerFactory : DefaultControllerFactory
 	{
 		private IEngine _engine;

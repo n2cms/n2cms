@@ -1,6 +1,7 @@
 using System;
 using N2;
 using N2.Web.UI;
+using N2.Engine;
 
 namespace N2.Integrity
 {
@@ -11,6 +12,7 @@ namespace N2.Integrity
 	/// not allowing recusive parent-child relationships, siblings with the 
 	/// same name and un-allowed parent-child combinations.
 	/// </summary>
+	[Service(typeof(IIntegrityManager))]
     public class IntegrityManager : IIntegrityManager
     {
 		#region Private Fields

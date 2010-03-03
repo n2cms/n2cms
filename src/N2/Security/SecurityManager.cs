@@ -22,6 +22,7 @@ using System;
 using System.Security.Principal;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using N2.Engine;
 
 namespace N2.Security
 {
@@ -29,6 +30,7 @@ namespace N2.Security
 	/// Manages security by subscribing to persister events and providing 
 	/// methods to authorize request event.
 	/// </summary>
+	[Service(typeof(ISecurityManager))]
 	public class SecurityManager : ISecurityManager
 	{
 		static string[] defaultAdministratorRoles = new[] { "Administrators" };

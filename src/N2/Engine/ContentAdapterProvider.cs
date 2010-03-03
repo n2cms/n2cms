@@ -10,6 +10,7 @@ namespace N2.Engine
 	/// <summary>
 	/// Keeps track of and provides content adapters in the system.
 	/// </summary>
+	[Service(typeof(IContentAdapterProvider))]
 	public class ContentAdapterProvider : IContentAdapterProvider, IAutoStart
 	{
 		readonly IEngine engine;

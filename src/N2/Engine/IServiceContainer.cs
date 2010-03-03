@@ -44,9 +44,6 @@ namespace N2.Engine
 		/// <returns>All services registered to serve the provided interface.</returns>
 		T[] ResolveAll<T>();
 
-		/// <summary>Returns a component that performs Container-specific configuration, such as adding the core N2 and any user-defined services.</summary>
-		IServiceContainerConfigurer ServiceContainerConfigurer { get; }
-
 		/// <summary>Starts any <see cref="IAutoStart"/> components in the container.</summary>
 		void StartComponents();
 	}

@@ -5,9 +5,11 @@ using System.Web.UI;
 using System.Web;
 using N2.Configuration;
 using N2.Persistence;
+using N2.Engine;
 
 namespace N2.Web.UI
 {
+	[Service]
     public class CacheManager : N2.Web.UI.ICacheManager
     {
         IWebContext context;

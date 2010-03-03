@@ -10,12 +10,14 @@ using N2.Security;
 using N2.Persistence.NH;
 using N2.Installation;
 using N2.Edit.Installation;
+using N2.Engine;
 
 namespace N2.Web
 {
     /// <summary>
     /// Is notified of errors in the web context and tries to do something barely useful about them.
     /// </summary>
+	[Service(typeof(IErrorHandler))]
     public class ErrorHandler : IErrorHandler
     {
         ISecurityManager security;
@@ -47,7 +49,7 @@ namespace N2.Web
         	this.installer = installer;
         }
 
-		public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer, EngineSection config)
+		protected ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer, EngineSection config)
             : this(context, security, installer)
         {
             action = config.Errors.Action;

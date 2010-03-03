@@ -50,6 +50,7 @@ namespace N2.Engine.Configuration
 			engine.Container.AddComponent("n2.versioning", typeof(IVersionManager), typeof(VersionManager));
 			engine.Container.AddComponent("n2.persister", typeof(IPersister), typeof(ContentPersister));
 			engine.Container.AddComponent("n2.itemFinder", typeof(IItemFinder), typeof(ItemFinder));
+			//trail tracker
 			engine.Container.AddComponent("n2.attributeExplorer", typeof(AttributeExplorer), typeof(AttributeExplorer));
 			engine.Container.AddComponent("n2.editableHierarchyBuilder", typeof(EditableHierarchyBuilder),
 			                       typeof(EditableHierarchyBuilder));

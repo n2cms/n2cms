@@ -30,7 +30,7 @@ namespace N2.Tests.Engine
 		{
 			base.SetUp();
 
-			provider = new ContentAdapterProvider(new MediumTrustEngine(), new AppDomainTypeFinder());
+			provider = new ContentAdapterProvider(new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer()), new AppDomainTypeFinder());
 			provider.Start();
 		}
 

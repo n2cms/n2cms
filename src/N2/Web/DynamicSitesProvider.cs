@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using N2.Collections;
 using N2.Configuration;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -11,6 +12,7 @@ namespace N2.Web
 	/// Finds available sites by looking for content items implementing the 
 	/// <see cref="ISitesSource"/> interface.
 	/// </summary>
+	[Service(typeof(ISitesProvider))]
 	public class DynamicSitesProvider : N2.Web.ISitesProvider
 	{
 		#region Private Fields

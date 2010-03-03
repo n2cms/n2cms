@@ -16,7 +16,7 @@ namespace N2.Tests
 			engine.AddComponentInstance(typeof(IServiceContainer).FullName, typeof(IServiceContainer), engine.Container);
 			engine.Container.StartComponents();
 			//var cache = engine.Container.Resolve<N2.Engine.StructureBoundCache<N2.Engine.Globalization.LanguageInfo>>();
-			var cache = engine.Container.Resolve<N2.Tests.Engine.DependingGenericSelfService<string>>();
+			var cache = engine.Container.Resolve<N2.Tests.Engine.Services.DependingGenericSelfService<string>>();
 			
 
 			//var c = new N2.Castle.WindsorServiceContainer();

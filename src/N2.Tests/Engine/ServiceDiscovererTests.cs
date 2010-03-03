@@ -9,6 +9,7 @@ using N2.Engine.Castle;
 using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Details;
+using N2.Tests.Engine.Services;
 
 namespace N2.Tests.Engine
 {
@@ -21,6 +22,7 @@ namespace N2.Tests.Engine
 			container = new MediumTrustServiceContainer();
 		}
 	}
+
 	[TestFixture]
 	public class WindsorServiceDiscovererTests : ServiceDiscovererTests
 	{
@@ -41,7 +43,7 @@ namespace N2.Tests.Engine
             ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(SelfService), typeof(NonAttributed));
 
             ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-            registrator.Start();
+            registrator.RegisterServices(registrator.FindServices());
 
             Assert.That(container.Resolve<SelfService>(), Is.InstanceOf<SelfService>());
             Assert.That(new TestDelegate(() => container.Resolve<NonAttributed>()), Throws.Exception);
@@ -53,7 +55,7 @@ namespace N2.Tests.Engine
 			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(SelfService), typeof(DependingService));
 
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.Start();
+			registrator.RegisterServices(registrator.FindServices());
 
 			var service = container.Resolve<DependingService>();
 			Assert.That(service, Is.InstanceOf<DependingService>());
@@ -66,7 +68,7 @@ namespace N2.Tests.Engine
 			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(SelfService));
 
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.Start();
+			registrator.RegisterServices(registrator.FindServices());
 
 			var one = container.Resolve<SelfService>();
 			var two = container.Resolve<SelfService>();
@@ -80,7 +82,7 @@ namespace N2.Tests.Engine
             ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(InterfacedService), typeof(NonAttributed));
 
             ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-            registrator.Start();
+            registrator.RegisterServices(registrator.FindServices());
 
             Assert.That(container.Resolve<IService>(), Is.Not.Null);
             Assert.That(container.Resolve<IService>(), Is.InstanceOf<InterfacedService>());
@@ -93,7 +95,7 @@ namespace N2.Tests.Engine
 			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(GenericSelfService<>));
 
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.Start();
+			registrator.RegisterServices(registrator.FindServices());
 
 			Assert.That(container.Resolve<GenericSelfService<int>>(), Is.InstanceOf<GenericSelfService<int>>());
 			Assert.That(container.Resolve<GenericSelfService<string>>(), Is.InstanceOf<GenericSelfService<string>>());
@@ -105,7 +107,7 @@ namespace N2.Tests.Engine
 			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(GenericInterfacedService<>));
 
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.Start();
+			registrator.RegisterServices(registrator.FindServices());
 
 			Assert.That(container.Resolve<IGenericService<int>>(), Is.InstanceOf<GenericInterfacedService<int>>());
 			Assert.That(container.Resolve<IGenericService<string>>(), Is.InstanceOf<GenericInterfacedService<string>>());
@@ -117,7 +119,7 @@ namespace N2.Tests.Engine
 			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(GenericSelfService<>), typeof(GenericDependingService));
 
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.Start();
+			registrator.RegisterServices(registrator.FindServices());
 
 			var service = container.Resolve<GenericDependingService>();
 			Assert.That(service, Is.InstanceOf<GenericDependingService>());
@@ -130,7 +132,7 @@ namespace N2.Tests.Engine
 			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(GenericInterfaceDependingService), typeof(GenericInterfacedService<>));
 
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.Start();
+			registrator.RegisterServices(registrator.FindServices());
 
 			var service = container.Resolve<GenericInterfaceDependingService>();
 			Assert.That(service, Is.InstanceOf<GenericInterfaceDependingService>());
@@ -143,11 +145,25 @@ namespace N2.Tests.Engine
 			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(SelfService), typeof(DependingGenericSelfService<>));
 
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.Start();
+			registrator.RegisterServices(registrator.FindServices());
 
 			var service = container.Resolve<DependingGenericSelfService<string>>();
 			Assert.That(service, Is.InstanceOf<DependingGenericSelfService<string>>());
 			Assert.That(service.service, Is.InstanceOf<SelfService>());
+		}
+
+		[Test, Ignore("TODO")]
+		public void Service_CanDecorate_ServiceOfSameType()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(DecoratingService), typeof(InterfacedService));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+
+			var service = container.Resolve<IService>();
+
+			Assert.That(service, Is.InstanceOf<DecoratingService>());
+			Assert.That(((DecoratingService)service).decorated, Is.InstanceOf<InterfacedService>());
 		}
 
 		[Test]
@@ -159,85 +175,10 @@ namespace N2.Tests.Engine
 				new ContentPersister(new Fakes.FakeRepository<ContentItem>(), new Fakes.FakeRepository<LinkDetail>(), null));
 
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
-			registrator.Start();
+			registrator.RegisterServices(registrator.FindServices());
 			
 			var service = container.Resolve<N2.Engine.StructureBoundDictionaryCache<int, string>>();
 			Assert.That(service, Is.InstanceOf<N2.Engine.StructureBoundDictionaryCache<int, string>>());
 		}
 	}
-
-	#region Test Classes
-	[Service(Key = "Sesame")]
-	public class SelfService
-	{
-	}
-
-	[Service]
-	public class DependingService
-	{
-		public SelfService service;
-		public DependingService(SelfService service)
-		{
-			this.service = service;
-		}
-	}
-
-	[Service]
-	public class GenericSelfService<T>
-	{
-	}
-
-	[Service]
-	public class DependingGenericSelfService<T>
-	{
-		public SelfService service;
-		public DependingGenericSelfService(SelfService service)
-		{
-			this.service = service;
-		}
-	}
-
-	[Service]
-	public class GenericDependingService
-	{
-		public GenericSelfService<int> service;
-		public GenericDependingService(GenericSelfService<int> service)
-		{
-			this.service = service;
-		}
-	}
-
-	public interface IService
-	{
-	}
-
-	[Service(typeof(IService))]
-	public class InterfacedService : IService
-	{
-	}
-
-	public interface IGenericService<T>
-	{
-	}
-
-	[Service(typeof(IGenericService<>))]
-	public class GenericInterfacedService<T> : IGenericService<T>
-	{
-	}
-
-	[Service]
-	public class GenericInterfaceDependingService
-	{
-		public IGenericService<int> service;
-		public GenericInterfaceDependingService(IGenericService<int> service)
-		{
-			this.service = service;
-		}
-	}
-
-	public class NonAttributed
-	{
-	}
-
-	#endregion
 }

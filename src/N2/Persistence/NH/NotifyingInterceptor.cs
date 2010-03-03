@@ -2,12 +2,14 @@ using System;
 using NHibernate;
 using NHibernate.Type;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
 	/// <summary>
 	/// This class is used to notify subscribers about loaded items.
 	/// </summary>
+	[Service(typeof(IItemNotifier))]
 	public class NotifyingInterceptor : EmptyInterceptor, IItemNotifier
 	{
 		/// <summary>Sets rewriter and definition manager on a content item object at load time.</summary>

@@ -33,9 +33,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using NHibernate;
 using NHibernate.Criterion;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
+	[Service(typeof(IRepository<int, ContentItem>), Key = "n2.repository.ContentItem")]
 	public class ContentItemRepository : NHRepository<int, ContentItem>
 	{
 		public ContentItemRepository(ISessionProvider sessionProvider)
@@ -66,7 +68,9 @@ namespace N2.Persistence.NH
 		}
 	}
 
-	public class NHRepository<TKey, TEntity> : INHRepository<TKey, TEntity> where TEntity:class 
+	[Service(typeof(IRepository<,>), Key = "n2.repository.generic")]
+	[Service(typeof(INHRepository<,>), Key = "n2.nhrepository.ContentItem")]
+	public class NHRepository<TKey, TEntity> : INHRepository<TKey, TEntity> where TEntity : class 
 	{
 		private ISessionProvider sessionProvider;
 

@@ -7,6 +7,7 @@ using N2.Engine;
 
 namespace N2.Web.Mvc
 {
+	[Service(typeof(IControllerMapper))]
 	public class ControllerMapper : IControllerMapper
 	{
 		private readonly IDictionary<Type, string> _controllerMap = new Dictionary<Type, string>();

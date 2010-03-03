@@ -62,7 +62,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.5853, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core, Version 1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\Castle.Core.dll</HintPath>
     </Reference>
@@ -164,6 +164,8 @@
     <Compile Include="Edit\WhileDealingWithVersions.cs" />
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
+    <Compile Include="Engine\ServiceContainerTests.cs" />
+    <Compile Include="Engine\Services\Services.cs" />
     <Compile Include="Fakes\FakeFileSystem2.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
     <Compile Include="Types.cs" />
@@ -364,12 +366,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="Engine\MultipleSites.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Engine\MultipleSites.exe.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\N2.Security\N2.Security.csproj">

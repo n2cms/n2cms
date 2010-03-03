@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Timers;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2.Plugin.Scheduling
 {
     /// <summary>
     /// A wrapper for a timer that beats at a certain interval.
     /// </summary>
+	[Service(typeof(IHeart))]
     public class Heart : IAutoStart, IHeart
     {
         Timer timer;

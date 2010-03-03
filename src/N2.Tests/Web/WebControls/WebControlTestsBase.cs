@@ -7,6 +7,8 @@ using NUnit.Framework;
 using System.Configuration;
 using System.Collections;
 using System;
+using N2.Engine.MediumTrust;
+using N2.Engine.Castle;
 
 namespace N2.Tests.Web.WebControls
 {
@@ -17,12 +19,27 @@ namespace N2.Tests.Web.WebControls
 		protected PageItem page;
 		protected DataItem data;
 
+		[TestFixtureSetUp]
+		public virtual void TestFixtureSetUp()
+		{
+			var engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None),
+				"n2nodb",
+				new WindsorServiceContainer(),
+				EventBroker.Instance,
+				new ContainerConfigurer());
+			N2.Context.Replace(engine);
+			engine.Initialize();
+			engine.Host.CurrentSite.RootItemID = 1;
+			engine.Host.CurrentSite.StartPageID = 1;
+
+			page = CreateOneItem<PageItem>(1, "page", null);
+		}
+
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
 
-			page = CreateOneItem<PageItem>(1, "page", null);
 			data = CreateOneItem<DataItem>(2, "data", page);
 			data.ZoneName = ZoneName;
 		}
@@ -47,12 +64,6 @@ namespace N2.Tests.Web.WebControls
 				ApplicationInstance = new HttpApplication(), 
 				User = SecurityUtilities.CreatePrincipal("admin")
 			};
-
-			var engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2nodb", EventBroker.Instance);
-			N2.Context.Initialize(engine);
-			engine.Initialize();
-			engine.Host.CurrentSite.RootItemID = 1;
-			engine.Host.CurrentSite.StartPageID = 1;
 		}
 	}
 }

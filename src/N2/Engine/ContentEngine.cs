@@ -35,130 +35,42 @@ namespace N2.Engine
 		private readonly IServiceContainer container;
 
 		/// <summary>
-		/// Creates an instance of the content engine using known configuration sections.
+		/// Creates an instance of the content engine using default settings and configuration.
 		/// </summary>
 		public ContentEngine()
-			: this(new WindsorServiceContainer())
-		{
-		}
-
-		public ContentEngine(EventBroker broker)
-			: this(new WindsorServiceContainer(), broker)
-		{
-		}
-
-		/// <summary>Sets the windsor container to the given container.</summary>
-		/// <param name="container">An previously prepared windsor container.</param>
-		public ContentEngine(IWindsorContainer container)
-			: this(new WindsorServiceContainer(container))
-		{
-		}
-
-		/// <summary>Sets the current container to the given container.</summary>
-		/// <param name="container">An previously prepared service container.</param>
-		public ContentEngine(IServiceContainer container)
-			:this(container, EventBroker.Instance)
+			: this(new WindsorServiceContainer(), EventBroker.Instance, new ContainerConfigurer())
 		{
 		}
 
 		/// <summary>Sets the current container to the given container.</summary>
 		/// <param name="container">An previously prepared service container.</param>
 		/// <param name="broker"></param>
-		public ContentEngine(IServiceContainer container, EventBroker broker)
+		public ContentEngine(IServiceContainer container, EventBroker broker, ContainerConfigurer configurer)
 		{
 			this.container = container;
-
-			AddComponentInstance(broker);
-
-			Configure();
+			configurer.Configure(this, broker, 
+				ConfigurationManager.GetSection("n2/host") as HostSection,
+				ConfigurationManager.GetSection("n2/engine") as EngineSection,
+				ConfigurationManager.GetSection("n2/database") as DatabaseSection,
+				ConfigurationManager.GetSection("n2/edit") as EditSection,
+				ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection);
 		}
 
 		/// <summary>Tries to determine runtime parameters from the given configuration.</summary>
 		/// <param name="config">The configuration to use.</param>
 		/// <param name="sectionGroup">The configuration section to retrieve configuration from</param>
 		/// <param name="broker">Web ap event provider</param>
-		public ContentEngine(System.Configuration.Configuration config, string sectionGroup, EventBroker broker)
+		public ContentEngine(System.Configuration.Configuration config, string sectionGroup, IServiceContainer container, EventBroker broker, ContainerConfigurer configurer)
 		{
-			if (string.IsNullOrEmpty(sectionGroup))
-				throw new ArgumentException("Must be non-empty and match a section group in the configuration file.", "sectionGroup");
+			if (string.IsNullOrEmpty(sectionGroup)) throw new ArgumentException("Must be non-empty and match a section group in the configuration file.", "sectionGroup");
 
-			container = new WindsorServiceContainer();
-
-			RegisterConfigurationSections(config, sectionGroup);
-			HostSection hostConfig = AddComponentInstance(config.GetSection(sectionGroup + "/host") as HostSection);
-			EngineSection engineConfig = AddComponentInstance(config.GetSection(sectionGroup + "/engine") as EngineSection);
-			AddComponentInstance(config.GetSection(sectionGroup + "/database") as DatabaseSection);
-			AddComponentInstance(config.GetSection(sectionGroup + "/edit") as EditSection);
-			AddComponentInstance(config.GetSection("connectionStrings") as ConnectionStringsSection);
-			InitializeEnvironment(hostConfig, engineConfig);
-
-			container.ServiceContainerConfigurer.Configure(this, engineConfig);
-			AddComponentInstance(broker);
-		}
-
-		protected void Configure()
-		{
-			HostSection hostConfig = AddComponentInstance(ConfigurationManager.GetSection("n2/host") as HostSection);
-			EngineSection engineConfig = AddComponentInstance(ConfigurationManager.GetSection("n2/engine") as EngineSection);
-			AddComponentInstance(ConfigurationManager.GetSection("n2/database") as DatabaseSection);
-			AddComponentInstance(ConfigurationManager.GetSection("n2/edit") as EditSection);
-			AddComponentInstance(ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection);
-
-			InitializeEnvironment(hostConfig, engineConfig);
-			container.ServiceContainerConfigurer.Configure(this, engineConfig);
-		}
-
-		protected void InitializeEnvironment(HostSection hostConfig, EngineSection engineConfig)
-		{
-			if (hostConfig != null && engineConfig != null)
-			{
-				Url.DefaultExtension = hostConfig.Web.Extension;
-
-				RegisterConfiguredComponents(engineConfig);
-
-				if (!hostConfig.Web.IsWeb)
-					container.AddComponentInstance("n2.webContext.notWeb", typeof (IWebContext), new ThreadContext());
-
-				if (hostConfig.Web.Urls.EnableCaching)
-					container.AddComponent("n2.web.cachingUrlParser", typeof (IUrlParser), typeof (CachingUrlParserDecorator));
-				DetermineUrlParser(hostConfig);
-			}
-		}
-
-		private void DetermineUrlParser(HostSection hostConfig)
-		{
-			if (hostConfig.MultipleSites)
-				container.AddComponent("n2.multipleSitesParser", typeof(IUrlParser), typeof(MultipleSitesParser));
-			else
-				container.AddComponent("n2.urlParser", typeof(IUrlParser), typeof(UrlParser));
-		}
-
-		private void RegisterConfiguredComponents(EngineSection engineConfig)
-		{
-			foreach (ComponentElement component in engineConfig.Components)
-			{
-				Type implementation = Type.GetType(component.Implementation);
-				Type service = Type.GetType(component.Service);
-
-				if (implementation == null)
-					throw new ComponentRegistrationException(component.Implementation);
-
-				if (service == null && !String.IsNullOrEmpty(component.Service))
-					throw new ComponentRegistrationException(component.Service);
-
-				if(service == null)
-					service = implementation;
-
-				if (component.Parameters.Count == 0)
-				{
-					container.AddComponent(service.FullName, service, implementation);
-				}
-				else
-				{
-					container.AddComponentWithParameters(service.FullName, service, implementation,
-														 component.Parameters.ToDictionary());
-				}
-			}
+			this.container = container;
+			configurer.Configure(this, broker,
+				config.GetSection(sectionGroup + "/host") as HostSection,
+				config.GetSection(sectionGroup + "/engine") as EngineSection,
+				config.GetSection(sectionGroup + "/database") as DatabaseSection,
+				config.GetSection(sectionGroup + "/edit") as EditSection,
+				config.GetSection("connectionStrings") as ConnectionStringsSection);
 		}
 
 		#region Properties
@@ -220,31 +132,10 @@ namespace N2.Engine
 
 		public void Initialize()
 		{
-			AddComponentInstance<IEngine>(this);
-            AddComponentInstance<IServiceContainer>(this.Container);
-
 			var bootstrapper = Resolve<IPluginBootstrapper>();
 			bootstrapper.InitializePlugins(this, bootstrapper.GetPluginDefinitions());
 
 			container.StartComponents();
-		}
-
-		/// <summary>Registers configuration sections into the container. These may be used as input for various components.</summary>
-		/// <param name="config">The congiuration file.</param>
-		/// <param name="sectionGroup">The config section that contains the configuration.</param>
-		protected void RegisterConfigurationSections(System.Configuration.Configuration config, string sectionGroup)
-		{
-			object nhConfiguration = config.GetSection("hibernate-configuration");
-			if (nhConfiguration != null)
-				container.AddComponentInstance("hibernate-configuration", nhConfiguration.GetType(), nhConfiguration);
-			var n2Group = config.GetSectionGroup(sectionGroup) as SectionGroup;
-			if (n2Group != null)
-			{
-				foreach (ConfigurationSection section in n2Group.Sections)
-				{
-					container.AddComponentInstance(section.SectionInformation.Name, section.GetType(), section);
-				}
-			}
 		}
 
 		#endregion

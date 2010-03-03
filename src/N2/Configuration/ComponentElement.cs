@@ -7,7 +7,15 @@ namespace N2.Configuration
     /// A service definition to add to the N2 container. This can be used to replace core services.
     /// </summary>
     public class ComponentElement : ConfigurationElement
-    {
+	{
+		/// <summary>Optional name of the component</summary>
+		[ConfigurationProperty("key")]
+		public string Key
+		{
+			get { return (string)base["key"]; }
+			set { base["key"] = value; }
+		}
+
         /// <summary>Class and name and assembly of the service interface, e.g. "MyNamespace.MyInterface, MyAssembly"</summary>
         [ConfigurationProperty("service")]
         public string Service

@@ -14,6 +14,7 @@ namespace N2.Web
 	/// Handles the request life cycle for N2 by invoking url rewriting, 
 	/// authorizing and closing NHibernate session.
 	/// </summary>
+	[Service(typeof(IRequestLifeCycleHandler))]
 	public class RequestLifeCycleHandler : IRequestLifeCycleHandler, IAutoStart
 	{
 		readonly IErrorHandler errors;

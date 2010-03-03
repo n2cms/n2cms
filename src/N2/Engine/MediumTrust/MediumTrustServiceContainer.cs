@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using N2.Engine.Configuration;
 using N2.Plugin;
+using System.Diagnostics;
 
 namespace N2.Engine.MediumTrust
 {
@@ -15,11 +16,6 @@ namespace N2.Engine.MediumTrust
 		private readonly IDictionary<Type, object> container = new Dictionary<Type, object>();
 		private readonly IDictionary<Type, Function<Type, object>> resolvers = new Dictionary<Type, Function<Type, object>>();
 
-		public override IServiceContainerConfigurer ServiceContainerConfigurer
-		{
-			get { return new StaticDefaultServiceContainerConfigurer(); }
-		}
-
 		public override void AddFacility(string key, object facility)
 		{
 			throw new NotImplementedException();
@@ -27,14 +23,13 @@ namespace N2.Engine.MediumTrust
 
 		public override void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
 		{
-			CheckForAutoStart(key, serviceType, serviceType);
-
 			switch (lifeStyle)
 			{
 				case ComponentLifeStyle.Transient:
 					RegisterTransientResolver(key, serviceType, serviceType);
 					break;
 				default:
+					CheckForAutoStart(key, serviceType, serviceType);
 					RegisterSingletonResolver(key, serviceType, serviceType);
 					break;
 			}
@@ -63,7 +58,6 @@ namespace N2.Engine.MediumTrust
 		public override void AddComponent(string key, Type serviceType, Type classType)
 		{
 			CheckForAutoStart(key, serviceType, classType);
-
 			RegisterSingletonResolver(key, serviceType, classType);
 		}
 
@@ -151,7 +145,7 @@ namespace N2.Engine.MediumTrust
 
 		private void CheckForAutoStart(string key, Type serviceType, Type classType)
 		{
-			if (typeof(IAutoStart).IsAssignableFrom(classType))
+			if (IsAutoStart(classType))
 			{
 				if (!isInitialized)
 				{
@@ -165,22 +159,40 @@ namespace N2.Engine.MediumTrust
 			}
 		}
 
+		private static bool IsAutoStart(Type classType)
+		{
+			return typeof(IAutoStart).IsAssignableFrom(classType);
+		}
+
 		private void RegisterSingletonResolver(string key, Type serviceType, Type classType)
 		{
+			if (resolvers.ContainsKey(serviceType))
+			{
+				Trace.WriteLine("Already contains service " + serviceType + ". Overwriting registration with " + classType);
+			}
+			
 			resolvers[serviceType] = delegate(Type type)
-			                         	{
-			                         		if (container.ContainsKey(type))
-			                         			return container[type];
+										{
+											if (container.ContainsKey(type))
+												return container[type];
 
-			                         		object componentInstance = CreateInstance(type, classType, key);
-			                         		container[type] = componentInstance;
-			                         		return componentInstance;
-			                         	};
+											object componentInstance = CreateInstance(type, classType, key);
+											container[type] = componentInstance;
+											return componentInstance;
+										};
 		}
 
 		private void RegisterTransientResolver(string key, Type serviceType, Type classType)
 		{
-			resolvers[serviceType] = delegate(Type type) { return CreateInstance(type, classType, key); };
+			if (IsAutoStart(classType))
+				resolvers[serviceType] = delegate(Type type) 
+				{
+					var instance = CreateInstance(type, classType, key);
+					((IAutoStart)instance).Start();
+					return instance;
+				};
+			else
+				resolvers[serviceType] = delegate(Type type) { return CreateInstance(type, classType, key); };
 		}
 
 		protected object CreateInstance(Type serviceType, Type classType, string key)

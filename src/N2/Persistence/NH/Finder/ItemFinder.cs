@@ -1,11 +1,13 @@
 using N2.Definitions;
 using N2.Persistence.Finder;
+using N2.Engine;
 
 namespace N2.Persistence.NH.Finder
 {
 	/// <summary>
 	/// Provides the query builder.
 	/// </summary>
+	[Service(typeof(IItemFinder))]
 	public class ItemFinder : IItemFinder
 	{
 		ISessionProvider sessionProvider;

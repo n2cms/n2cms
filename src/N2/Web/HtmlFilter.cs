@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using N2.Engine;
 
 namespace N2.Web
 {
+	[Service]
 	public class HtmlFilter
 	{
 		protected Regex tagExpression = new Regex(@"<(?<slash>/?)\s*?(?<tag>\w+)\s?(?<attr>[^>]*?)(?<close>/>|>|$)");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web;
 using N2.Security;
+using N2.Engine;
 
 namespace N2.Web
 {
@@ -10,6 +11,7 @@ namespace N2.Web
 	/// Dispatches an ajax request to the handler specified by the action 
 	/// parameter.
 	/// </summary>
+	[Service]
 	public class AjaxRequestDispatcher
 	{
 		private readonly ISecurityManager security;

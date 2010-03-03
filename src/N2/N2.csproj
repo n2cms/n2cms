@@ -66,27 +66,27 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.5853, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core, Version 1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Castle.DynamicProxy2, Version=2.0.3.4831, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.DynamicProxy2, Version 2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\Castle.DynamicProxy2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Castle.MicroKernel, Version=1.0.3.4994, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.MicroKernel, Version 2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\Castle.MicroKernel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Castle.Windsor, Version=1.0.3.4994, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Windsor, Version 2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\Castle.Windsor.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Iesi.Collections, Version=2.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="Iesi.Collections, Version 1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
@@ -96,7 +96,7 @@
       <HintPath>..\..\lib\net3.5\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate, Version 2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\NHibernate.dll</HintPath>
     </Reference>
@@ -281,19 +281,8 @@
     <Compile Include="Web\UrlParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Edit\edit.castle.config" />
-    <EmbeddedResource Include="Engine\engine.castle.config" />
-    <EmbeddedResource Include="Definitions\definitions.castle.config" />
     <None Include="ContentModel.cd" />
-    <EmbeddedResource Include="Edit\Installation\installation.castle.config" />
-    <EmbeddedResource Include="Web\Parts\parts.castle.config" />
     <EmbeddedResource Include="Engine\Globalization\globalization.castle.config" />
-    <EmbeddedResource Include="Plugin\plugin.castle.config" />
-    <EmbeddedResource Include="Integrity\integrity.castle.config" />
-    <EmbeddedResource Include="Security\security.castle.config" />
-    <EmbeddedResource Include="Web\web.castle.config" />
-    <EmbeddedResource Include="Persistence\NH\persistence.castle.config" />
-    <EmbeddedResource Include="Serialization\serialization.castle.config" />
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
@@ -387,6 +376,7 @@
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
+    <Compile Include="Engine\AttributeInfo.cs" />
     <Compile Include="Edit\FileEventArgs.cs" />
     <Compile Include="Edit\FileSystem\MappedFileSystem.cs" />
     <Compile Include="Edit\IContentBinder.cs" />
@@ -435,8 +425,8 @@
     <Compile Include="Edit\Workflow\StopExecutionException.cs" />
     <Compile Include="Edit\Workflow\ValidationError.cs" />
     <Compile Include="Engine\AdaptsAttribute.cs" />
-    <Compile Include="Engine\Castle\CastleServiceContainerConfigurer.cs" />
     <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />
+    <Compile Include="Engine\ContainerConfigurer.cs" />
     <Compile Include="Security\PermissionRemapAttribute.cs" />
     <Compile Include="Web\ImageResizeHandler.cs" />
     <Compile Include="Web\ImageResizer.cs" />
@@ -783,7 +773,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\castle.config" />
     <EmbeddedResource Include="Persistence\NH\Mappings\Default.hbm.xml" />
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

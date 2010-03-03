@@ -2,12 +2,14 @@ using System.Diagnostics;
 using N2.Web;
 using NHibernate;
 using System;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
 	/// <summary>
 	/// Provides access to opened nhibernate sessions.
 	/// </summary>
+	[Service(typeof(ISessionProvider))]
 	public class SessionProvider : ISessionProvider
 	{
 		private static string RequestItemsKey = "SessionProvider.Session";

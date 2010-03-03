@@ -31,7 +31,7 @@ namespace N2.Tests.Web
 		[SetUp]
 		public override void SetUp()
 		{
-			engine = new MediumTrustEngine();
+			engine = new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 			//engine.Resolve<EngineSection>().Assemblies.Add(new System.Web.Configuration.AssemblyInfo("N2"));
 			//engine.Resolve<EngineSection>().Assemblies.Add(new System.Web.Configuration.AssemblyInfo("N2.Tests"));
 			base.SetUp();

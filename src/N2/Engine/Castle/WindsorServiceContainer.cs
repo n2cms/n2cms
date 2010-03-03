@@ -51,11 +51,6 @@ namespace N2.Engine.Castle
 			container.Release(instance);
 		}
 
-		public override IServiceContainerConfigurer ServiceContainerConfigurer
-		{
-			get { return new CastleServiceContainerConfigurer(container); }
-		}
-
 		public override void AddComponentLifeStyle(string key, Type type, ComponentLifeStyle lifeStyle)
 		{
 			LifestyleType lifeStyleType = lifeStyle == ComponentLifeStyle.Singleton

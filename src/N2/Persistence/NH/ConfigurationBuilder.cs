@@ -10,6 +10,7 @@ using N2.Configuration;
 using N2.Definitions;
 using NHibernate;
 using NHibernate.Mapping;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
@@ -17,6 +18,7 @@ namespace N2.Persistence.NH
 	/// Builds NHibernate configuration by reading hbm files and generating 
 	/// mappings for item types without hbm.xml mappings files.
 	/// </summary>
+	[Service]
 	public class ConfigurationBuilder : IConfigurationBuilder
 	{
 		private ClassMappingGenerator generator;

@@ -19,17 +19,9 @@ namespace N2.Web.Mvc
 		/// <returns></returns>
 		public static IEngine Create()
 		{
-			IEngine engine;
-			try
-			{
-				engine = new ContentEngine();
-			}
-			catch (SecurityException)
-			{
-				engine = new MediumTrustEngine();
-			}
+			IEngine engine = N2.Context.Initialize(false);
 
-			return Initialize(engine);
+			return MvcInitialize(engine);
 		}
 
 		/// <summary>
@@ -38,29 +30,16 @@ namespace N2.Web.Mvc
 		/// <returns></returns>
 		public static IEngine Create(IServiceContainer container)
 		{
-			IEngine engine = new ContentEngine(container);
+			IEngine engine = new ContentEngine(container, EventBroker.Instance, new ContainerConfigurer());
 
-			return Initialize(engine);
+			return MvcInitialize(engine);
 		}
 
-		private static IEngine Initialize(IEngine engine)
+		private static IEngine MvcInitialize(IEngine engine)
 		{
-			Context.Initialize(engine);
-
-			engine.Initialize();
-
-			RegisterAdditionalComponents(engine);
-
 			ControllerBuilder.Current.SetControllerFactory(engine.Resolve<IControllerFactory>());
 
 			return engine;
-		}
-
-		private static void RegisterAdditionalComponents(IEngine engine)
-		{
-			engine.AddComponent("n2.mvc.controllerFactory", typeof(IControllerFactory), typeof(N2ControllerFactory));
-			engine.AddComponent("n2.mvc.controllerMapper", typeof(IControllerMapper), typeof(ControllerMapper));
-			engine.AddComponent("n2.mvc.templateRenderer", typeof (ITemplateRenderer), typeof (TemplateRenderer));
 		}
 	}
 

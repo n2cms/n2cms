@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using N2.Configuration;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Edit.FileSystem
 {
 	/// <summary>
 	/// Finds the default folder associated with an item.
 	/// </summary>
+	[Service(typeof(IDefaultDirectory))]
 	public class DefaultDirectorySelector : IDefaultDirectory
 	{
 		readonly IHost host;

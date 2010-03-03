@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
 using N2.Definitions;
+using N2.Engine;
 
 namespace N2.Serialization
 {
+	[Service]
 	public class ItemXmlReader : XmlReader
 	{
 		private readonly IDefinitionManager definitions;

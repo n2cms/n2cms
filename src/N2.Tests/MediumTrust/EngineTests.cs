@@ -13,7 +13,7 @@ namespace N2.Tests.MediumTrust
 		[SetUp]
 		public void SetUp()
 		{
-			engine = new ContentEngine(new MediumTrustServiceContainer());
+			engine = new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 		}
 
 		[Test]

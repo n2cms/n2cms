@@ -6,9 +6,11 @@ using System.Web;
 using N2.Edit;
 using N2.Persistence;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Web.Parts
 {
+	[Service]
 	public class EditUrlProvider : PartsAjaxService
 	{
 		readonly IEditManager editManager;

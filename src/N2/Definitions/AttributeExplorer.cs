@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using N2.Details;
 using N2.Security;
+using N2.Engine;
 
 namespace N2.Definitions
 {
@@ -12,6 +13,7 @@ namespace N2.Definitions
 	/// class must have their name attribute set, and attributes defined on a
 	/// property their name set to the property's name.
 	/// </summary>
+	[Service]
 	public class AttributeExplorer
 	{
 		/// <summary>

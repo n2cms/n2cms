@@ -32,7 +32,7 @@ namespace N2.Edit.Tests.FileSystem
         public override void TestFixtureSetUp()
         {
 			base.TestFixtureSetUp();
-        	N2.Context.Initialize(engine);
+			N2.Context.Replace(engine);
 
             Url.DefaultExtension = "/";
         	Url.ApplicationPath = "/";

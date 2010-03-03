@@ -11,6 +11,7 @@ namespace N2.Web
 	/// controller or additional imprativly using the ConnectControllers method 
 	/// or declarativly using the [Controls] attribute registered.
 	/// </summary>
+	[Service]
 	public class RequestPathProvider
 	{
 		readonly IContentAdapterProvider adapterProvider;

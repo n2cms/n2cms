@@ -10,6 +10,7 @@ namespace N2.Plugin
 	/// <summary>
 	/// Finds plugins and calls their initializer.
 	/// </summary>
+	[Service(typeof(IPluginBootstrapper))]
 	public class PluginBootstrapper : IPluginBootstrapper
 	{
 		private readonly ITypeFinder typeFinder;

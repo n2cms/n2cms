@@ -18,12 +18,14 @@ using N2.Details;
 using N2.Persistence.Finder;
 using NHibernate.Criterion;
 using NHibernate;
+using N2.Engine;
 
 namespace N2.Persistence.NH
 {
 	/// <summary>
 	/// A wrapper for NHibernate persistence functionality.
 	/// </summary>
+	[Service(typeof(IPersister))]
 	public class ContentPersister : IPersister
 	{
 		private readonly IRepository<int, ContentItem> itemRepository;
