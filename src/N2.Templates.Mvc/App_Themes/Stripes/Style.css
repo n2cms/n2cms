@@ -1,4 +1,4 @@
-@import url(../../Templates/UI/Css/Layout.css);
+@import url(../../Content/Css/Layout.css);
 /********* GLOBALS *********/
 
 * {margin:0;padding:0}
@@ -57,13 +57,13 @@ body { margin:0; background:#000 url(bg.gif) 50% 0%; }
 .secondary .uc { margin-bottom:15px; }
 
 /*menu*/
-.topMenu { width:700px; padding-left:200px; position:absolute; top:110px; left:50%; margin-left:-450px; }
+.topMenu { width:700px; padding-left:200px; position:absolute; top:130px; left:50%; margin-left:-450px; }
 	.topMenu li { display:inline; }
 	.topMenu a { color:#fff; margin-right:10px; }
 	.topMenu .current a,
 	.topMenu .trail a { font-weight:bold; color:#0096DB; }
 
-.languageMenu { width:150px; position:absolute; top:110px; left:50%; margin-left:285px; text-align:right; }
+.languageMenu { width:150px; position:absolute; top:130px; left:50%; margin-left:285px; text-align:right; }
 	.languageMenu a { opacity:.4;}
 	.languageMenu .current { cursor:default; opacity:1;}
 	.languageMenu a:hover { opacity:1;}

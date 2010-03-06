@@ -8,8 +8,9 @@ dl,ol,ul {list-style:none}
 button,select,textarea,input {font:100% serif}
 table {border-collapse:collapse}
 caption,th,td {text-align:left}
-h1,h2,h3,h4,h5,h6,p {margin:.5em 0 .5em 0;}
-h1{font-size:1.8em;}h2{font-size:1.4em;}
+h1,h2,h3,h4,h5,h6,p {margin:.7em 0;}
+h1 {font-size:1.8em;}
+h2 {font-size:1.4em;}
 #footer {margin-top:10px;}
 	#footer .n2{color:#a2a796;float:right;font-size:.8em;}
 /* colors */
@@ -77,6 +78,9 @@ body { margin:0; background-color:#cce5a2; }
 	.list .a0 { background: #f4f8ed url(list_dark.gif) no-repeat 50% -1px; }
 	.list,
 	.list .a1 { background: #fff url(list_light.gif) no-repeat 50% -1px; }
+	
+.sidelist {}
+	.sidelist .item { margin:.3em 0; }
 
 /* path */
 .path { margin-bottom:10px; }

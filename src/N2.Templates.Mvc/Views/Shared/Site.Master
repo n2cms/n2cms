@@ -30,11 +30,11 @@
 						<% Html.RenderAction<NavigationController>(c => c.SubMenu()); %>
 
 						<% Html.DroppableZone(Find.ClosestStartPage, Zones.SiteLeft)
-                            .WrapIn("div", new { @class = "uc" }).Render();%>
+                            .Render();%>
 						<% Html.DroppableZone(Zones.Left)
-                            .WrapIn("div", new { @class = "uc" }).Render();%>
+                            .Render();%>
 						<% Html.DroppableZone(Zones.RecursiveLeft)
-                            .WrapIn("div", new { @class = "uc" }).Render();%>
+                            .Render();%>
 					</div>
 				</asp:ContentPlaceHolder>
 				<div id="content" class="">
@@ -61,11 +61,11 @@
 						<asp:ContentPlaceHolder ID="Sidebar" runat="server">
 							<div id="extras" class="secondary">
 								<% Html.DroppableZone(Zones.RecursiveRight)
-                                    .WrapIn("div", new { @class = "uc" }).Render();%>
+                                    .Render();%>
 								<% Html.DroppableZone(Zones.Right)
-                                    .WrapIn("div", new { @class = "uc" }).Render();%>
+                                    .Render();%>
 								<% Html.DroppableZone(Find.ClosestStartPage, Zones.SiteRight)
-                                    .WrapIn("div", new { @class = "uc" }).Render();%>
+                                    .Render();%>
 							</div>
 						</asp:ContentPlaceHolder>
 					</asp:ContentPlaceHolder>

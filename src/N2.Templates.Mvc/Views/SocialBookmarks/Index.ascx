@@ -13,14 +13,16 @@
 
 <%= ContentHtml.DisplayContent(m => m.Title)%>
 
-<div class="box">
-	<div class="inner">
-	<%foreach(var bookmark in Model.Bookmarks){%>
-		<a href="<%=String.Format(bookmark.UrlFormat, BookmarkUrl, BookmarkTitle)%>">
-			<img src="<%=ResolveUrl("~/Content/Img/" + bookmark.ImageName) %>"
-				alt="<%=bookmark.Text%>" />
-			<%=Model.CurrentItem.ShowText ? bookmark.Text : null%>
-		</a>
-	<%}%>
+<div class="uc">
+	<div class="box">
+		<div class="inner">
+		<%foreach(var bookmark in Model.Bookmarks){%>
+			<a href="<%=String.Format(bookmark.UrlFormat, BookmarkUrl, BookmarkTitle)%>">
+				<img src="<%=ResolveUrl("~/Content/Img/" + bookmark.ImageName) %>"
+					alt="<%=bookmark.Text%>" />
+				<%=Model.CurrentItem.ShowText ? bookmark.Text : null%>
+			</a>
+		<%}%>
+		</div>
 	</div>
 </div>

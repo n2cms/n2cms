@@ -22,7 +22,7 @@ namespace N2.Web.Mvc.Html
 
 		public static IDisposable BeginAsyncAction(this HtmlHelper helper, string actionName, RouteValueDictionary routeValues)
 		{
-			var id = Guid.NewGuid().ToString();
+			var id = "async" + Guid.NewGuid().ToString().Replace('-', '_');
 			var url = new UrlHelper(helper.ViewContext.RequestContext).Action(actionName, routeValues);
 
 			var tag = new System.Web.Mvc.TagBuilder("div");

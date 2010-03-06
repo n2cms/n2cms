@@ -5,7 +5,7 @@
     <asp:Repeater ID="Repeater1" runat="server" DataSourceID="idsNews">
         <HeaderTemplate><div class="sidelist"></HeaderTemplate>
         <ItemTemplate>
-            <div class="news i<%# Container.ItemIndex %> a<%# Container.ItemIndex % 2 %>">
+            <div class="item news i<%# Container.ItemIndex %> a<%# Container.ItemIndex % 2 %>">
                 <a href='<%# Eval("Url") %>' title='<%# Eval("Published") + ", " + Eval("Introduction") %>'><%# Eval("Title") %></a>
             </div>
         </ItemTemplate>

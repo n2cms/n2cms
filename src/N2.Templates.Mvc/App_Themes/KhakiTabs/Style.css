@@ -1,4 +1,4 @@
-@import url(../../Templates/UI/Css/Layout.css);
+@import url(../../Content/Css/Layout.css);
 /********* GLOBALS *********/
 
 * {margin:0;padding:0}
@@ -25,8 +25,8 @@ a:hover { text-decoration:underline; }
 
 body { margin:0; background:#FFF url(TopBg.gif) repeat-x; }
 	#wrap { width:900px; margin:0 auto; }
-		#header { height:100px; position:relative; }
-			#header .siteLogo { vertical-align:bottom; }
+		#header { margin-top:10px; height:90px; position:relative; }
+			#header .siteLogo { vertical-align:bottom; float:left; margin-right:20px; }
 			#header .siteHeader a { color:#fff; font-style:italic; font-weight:normal;}
 		#page { padding:15px; }
 			#content { margin-left:180px; }
