@@ -49,7 +49,6 @@
     <Compile Include="Global.cs" />
     <Compile Include="HorizontalMenu.ascx.cs">
       <DependentUpon>HorizontalMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HorizontalMenu.ascx.designer.cs">
       <DependentUpon>HorizontalMenu.ascx</DependentUpon>
@@ -57,7 +56,6 @@
     <Compile Include="HorizontalMenu.cs" />
     <Compile Include="Menu.ascx.cs">
       <DependentUpon>Menu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Menu.ascx.designer.cs">
       <DependentUpon>Menu.ascx</DependentUpon>
@@ -66,7 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VerticalMenu.ascx.cs">
       <DependentUpon>VerticalMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="VerticalMenu.ascx.designer.cs">
       <DependentUpon>VerticalMenu.ascx</DependentUpon>

@@ -41,7 +41,7 @@
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\N2\%(RecursiveDir)" />
 	</Target>
 	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
-		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\N2.Extensions.dll; 
+		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\$(Configuration)\N2.Extensions.dll; 
                        $(LibFolder)\Microsoft.Web.Mvc.dll; 
                        $(LibFolder)\System.Web.Mvc.dll;"
 					DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\Bin" />

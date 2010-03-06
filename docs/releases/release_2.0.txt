@@ -3,16 +3,17 @@ THIS IS PRE-RELEASE INFORMATION AND MAY CHANGE BEFORE RELEASE
 N2 is a lightweight CMS framework for ASP.NET. It helps you build great web sites that anyone can update.
 
 Major Changes
-* New fresh UI
-* Linq support
-* MVC templates
+* ASP.NET MVC 2 templates
+* Refreshed management UI
+* LINQ support
 * Performance improvements
+* Auto image resize
 
 First time with N2?
 * Try the demo site: http://templates.n2cms.com/
 * Download the templates starter kit with (above) and open the project in Visual Studio
 * Look at the documentation: http://n2cms.com/Documentation/Startup_guide/Installation.aspx
 
-Upgrading from an earlier version? Read upgrade_1.5.txt
+Upgrading from an earlier version? Read upgrade_2.0.txt
 
 Enjoy!

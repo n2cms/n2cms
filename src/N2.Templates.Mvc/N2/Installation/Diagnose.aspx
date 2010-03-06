@@ -12,7 +12,7 @@
         label{font-weight:bold;margin:5px 10px 0 0;}
         input{vertical-align:middle;margin-bottom:5px;}
         ul,li{margin-top:0;margin-bottom:0;}
-        textarea{height:55px;width:70%;background-color:salmon;border:none;font-size:11px}
+        textarea{height:55px;width:70%;background-color:#FFA07A;border:none;font-size:11px}
         .t thead td{ font-weight:bold; background-color:#eee;}
         .t td{font-size:.75em;vertical-align:top;text-alignment:left;border:solid 1px silver; padding:1px;}
         .EnabledFalse { color:#999; }

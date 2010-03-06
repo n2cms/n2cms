@@ -21,9 +21,9 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<p style="background-color:salmon;font-weight:bold;padding:5px">This is an early alpha of the upgrade wizard. Please help out testing this feature.</p>
+		<p style="background-color:#FFA07A;font-weight:bold;padding:5px">This is an early alpha of the upgrade wizard. Please help out testing this feature.</p>
         <n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
-			<h1>Upgrade database from <%= Status.DatabaseVersion %> to <%= N2.Installation.DatabaseStatus.RequiredDatabaseVersion %></h1>
+			<h1>Upgrade database from <%= Status.DatabaseVersion %> to <%= N2.Edit.Installation.DatabaseStatus.RequiredDatabaseVersion%></h1>
 			
 			<% if (Status.NeedsUpgrade) { %>
 			<p class="warning">The database needs to be upgraded.</p>
