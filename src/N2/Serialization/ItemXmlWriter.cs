@@ -27,7 +27,8 @@ namespace N2.Serialization
 
 			foreach(ContentItem child in item.Children)
 			{
-				Write(child, options, writer);
+				if (child.ID != 0)
+					Write(child, options, writer);
 			}
 		}
 

@@ -8,6 +8,7 @@ using N2.Serialization;
 using N2.Xml;
 using N2.Web.UI;
 using System.Text;
+using N2.Edit.FileSystem;
 
 namespace N2.Edit.Export
 {
@@ -187,7 +188,7 @@ namespace N2.Edit.Export
 
 		protected string CheckExists(string url)
 		{
-			if (HostingEnvironment.VirtualPathProvider.FileExists(url))
+			if (Engine.Resolve<IFileSystem>().FileExists(url))
 				return "(existing file will be overwritten)";
 			return string.Empty;
 		}
