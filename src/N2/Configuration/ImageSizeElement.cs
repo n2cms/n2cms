@@ -23,5 +23,13 @@ namespace N2.Configuration
 			get { return (int)base["height"]; }
 			set { base["height"] = value; }
 		}
+
+		/// <summary>Maximum height of images resized to this size.</summary>
+		[ConfigurationProperty("replace", DefaultValue = false)]
+		public bool Replace
+		{
+			get { return (bool)base["replace"]; }
+			set { base["replace"] = value; }
+		}
 	}
 }

@@ -61,7 +61,7 @@ namespace N2.Management.Files
 					}
 					else
 					{
-						if (!files.FileExists(resizedPath))
+						if (!files.FileExists(resizedPath) || size.Replace)
 						{
 							using (var destinationStream = files.OpenFile(resizedPath))
 							{
