@@ -116,7 +116,7 @@
 		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Targets="Clean" />
 	</Target>
 
-	<Target Name="PrepareDependencies" DependsOnTargets="Framework-PrepareDependencies;Examples-PrepareDependencies">
+	<Target Name="PrepareDependencies" DependsOnTargets="Prepare-Framework;Examples-PrepareDependencies;Prepare-Templates-Mvc;Prepare-Templates-WebForms">
 	</Target>
 
 	<Target Name="Clean-Output">
