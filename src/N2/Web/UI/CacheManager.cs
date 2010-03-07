@@ -9,7 +9,7 @@ using N2.Engine;
 
 namespace N2.Web.UI
 {
-	[Service]
+	[Service(typeof(ICacheManager))]
     public class CacheManager : N2.Web.UI.ICacheManager
     {
         IWebContext context;

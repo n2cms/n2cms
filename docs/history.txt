@@ -1,4 +1,5 @@
-﻿- refactored service registration into an attribute based model
+﻿- updated tinyMCE to 3.3rc1
+- refactored service registration into an attribute based model
 - upgraded castle windsor to 2.1 (DP 2.2, Core 1.2)
 - mvc: content centric action link helpers
 - simplify sharing master page on webforms, mvc & interfaces without content item
@@ -6,7 +7,6 @@
 - MVC 2
 - async actions in templates mvc
 - moved SEO properties into extended page properties
-- updated tinyMCE to 3.3b2
 - updated jQuery to 1.4.1
 - mvc: allow part interaction on other pages than immediate parent
 	/[pageurl]/?action=[action]&part=[id]
