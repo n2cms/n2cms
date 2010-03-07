@@ -51,7 +51,7 @@
 				</ul>
 				<label>All sites</label>
 				<ul>
-				<% foreach (var site in host.Sites){ %>
+				<% foreach (Site site in host.Sites){ %>
 					<li><%= site %></li>
 				<% } %>
 				</ul>
