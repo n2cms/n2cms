@@ -1,9 +1,10 @@
 THIS IS PRE-RELEASE INFORMATION AND MAY CHANGE BEFORE RELEASE
 
-Make a complete backup (including database), delete /edit, any /Templates folders, drop upgrade files and recompile your solution.
+Make a complete backup (including database), delete /edit and /bin, drop upgrade files and recompile your solution.
 
 Breaking changes:
 - .NET 3.5 (or greater) is now required
 - N2.Web.HtmlHelper is now deprecated and renamed to FormsHelper (to avoid conflicts with MVC)
-- Adapters are not decorated with [Adapts] attribute rather than [Controls]
+- Adapters are not decorated with [Adapts] attribute rather than [Controls] and are not shared between instances
 - Management interface is moved from /edit to /n2/content
+- N2.Edit has been renamed to N2.Management
