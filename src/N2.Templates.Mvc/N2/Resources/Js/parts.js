@@ -158,9 +158,7 @@
 			var reloaded = false;
 			$.getJSON(url, command, function(data) {
 				reloaded = true;
-				if (data.error)
-					alert(data.message);
-				else if (data.redirect)
+				if (data.redirect)
 					window.location = data.redirect;
 				else
 					window.location.reload();

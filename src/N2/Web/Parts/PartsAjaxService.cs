@@ -35,10 +35,10 @@ namespace N2.Web.Parts
             StringBuilder sb = new StringBuilder();
             using (new N2.Persistence.NH.Finder.StringWrapper(sb, "{", "}"))
             {
-                sb.AppendFormat("{0}: {1}", "error", "false");
+                sb.AppendFormat(@"""{0}"": ""{1}""", "error", "false");
                 foreach (string key in response.Keys)
                 {
-                    sb.AppendFormat(",{0}: '{1}'", key, response[key]);
+                    sb.AppendFormat(@", ""{0}"": ""{1}""", key, response[key]);
                 }
             }
             return sb.ToString();

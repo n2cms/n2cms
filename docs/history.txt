@@ -1,4 +1,7 @@
-﻿- updated tinyMCE to 3.3rc1
+﻿- applied jean f poulin's patch #26428: Organize Parts broken since JQuery 1.4
+
+2.0 beta
+- updated tinyMCE to 3.3rc1
 - refactored service registration into an attribute based model
 - upgraded castle windsor to 2.1 (DP 2.2, Core 1.2)
 - mvc: content centric action link helpers
