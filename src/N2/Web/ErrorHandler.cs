@@ -125,6 +125,9 @@ namespace N2.Web
 
         private void TryHandleWrongClassException(Exception ex)
         {
+			if (ex == null)
+				return;
+
 			if (!security.IsAdmin(context.User))
 				return;
 
@@ -132,6 +135,7 @@ namespace N2.Web
             {
             	WrongClassException wex = ex as WrongClassException;
             	RedirectToFix(wex);
+				return;
             }
         	if (ex is LazyInitializationException)
 			{
@@ -146,7 +150,11 @@ namespace N2.Web
 				catch
 				{
 				}
+				return;
 			}
+			
+			// recusively check inner exception to handle exceptions within child requests
+			TryHandleWrongClassException(ex.InnerException);
         }
 
     	void RedirectToFix(WrongClassException wex)
