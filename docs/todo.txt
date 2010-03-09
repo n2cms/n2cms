@@ -1,3 +1,5 @@
+http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204226 (Cannot cast the current page)
+
 v2
 - scheduled publishing issue?
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=200360
@@ -31,6 +33,7 @@ v2
 	- management
 	- browsing
 	- append nodes
+- group controls in organize panel
 
 v2.1+
 - auto-parts

@@ -51,7 +51,7 @@ namespace N2.Web
 			{ 
 				RequestItems["CurrentTemplate"] = value;
 				if (value != null)
-					CurrentPage = value.CurrentItem;
+					CurrentPage = value.CurrentPage;
 				else
 					CurrentPage = null;
 			}

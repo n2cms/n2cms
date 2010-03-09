@@ -60,7 +60,7 @@ namespace N2.Web
 			IContentTemplate template = handler as IContentTemplate;
 			if (template != null && path != null)
 			{
-				template.CurrentItem = path.CurrentItem;
+				template.CurrentItem = path.CurrentPage;
 			}
 		}
 
