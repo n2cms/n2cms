@@ -39,7 +39,7 @@ namespace N2.Web
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		public ContentItem CurrentPage
 		{
-			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentItem); }
+			get { return webContext.CurrentPage ?? (webContext.CurrentPage = ResolvePath(webContext.Url).CurrentPage); }
 		}
 
 		/// <summary>Gets the current start page.</summary>
