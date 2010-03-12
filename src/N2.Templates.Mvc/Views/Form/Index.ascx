@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="N2.Web.Mvc.N2ModelViewUserControl<FormModel, Form>" %>
-<%@ Import Namespace="System.Resources"%>
+
 <div class="uc">
 	<%if(Model.FormSubmitted){%>
 		<%=ContentHtml.DisplayContent(m => m.SubmitText)%>

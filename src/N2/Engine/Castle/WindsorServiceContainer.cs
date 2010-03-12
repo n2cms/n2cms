@@ -9,8 +9,6 @@ using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.LifecycleConcerns;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using N2.Engine;
-using N2.Engine.Configuration;
 using N2.Plugin;
 
 namespace N2.Engine.Castle
@@ -107,16 +105,6 @@ namespace N2.Engine.Castle
 		public override T[] ResolveAll<T>()
 		{
 			return container.ResolveAll<T>();
-		}
-
-		public override void AddFacility(string key, object facility)
-		{
-			var castleFacility = facility as IFacility;
-
-			if (castleFacility != null)
-				container.Kernel.AddFacility(key, castleFacility);
-			else
-				throw new ArgumentException("Only classes implementing Castle.MicroKernel.IFacilty are supported.");
 		}
 
 		public override void StartComponents()

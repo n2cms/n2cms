@@ -13,7 +13,6 @@
 using System;
 using System.Configuration;
 using Castle.MicroKernel;
-using Castle.Windsor;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Edit;

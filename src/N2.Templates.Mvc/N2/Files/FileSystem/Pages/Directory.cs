@@ -6,15 +6,15 @@ using N2.Installation;
 namespace N2.Edit.FileSystem.Items
 {
 	[PageDefinition("Directory",
-        IconUrl = "~/N2/Resources/Img/ico/png/folder.png",
+		IconUrl = "~/N2/Resources/Img/ico/png/folder.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2015)]
-    [RestrictParents(typeof(AbstractDirectory))]
-    [WithEditableName]
+	[RestrictParents(typeof(AbstractDirectory))]
+	[WithEditableName]
 	[N2.Web.Template("info", "~/N2/Files/FileSystem/Directory.aspx")]
-    public class Directory : AbstractDirectory, IActiveContent
-    {
-		protected Directory() 
+	public class Directory : AbstractDirectory, IActiveContent
+	{
+		protected Directory()
 			: base(N2.Context.Current.Resolve<IFileSystem>())
 		{
 		}
@@ -37,44 +37,44 @@ namespace N2.Edit.FileSystem.Items
 			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
 		}
 
-        public override void AddTo(ContentItem newParent)
-        {
-            if (newParent is AbstractDirectory)
-            {
+		public override void AddTo(ContentItem newParent)
+		{
+			if (newParent is AbstractDirectory)
+			{
 				AbstractDirectory dir = EnsureDirectory(newParent);
 
 				string to = Combine(dir.Url, Name);
 				if (FileSystem.FileExists(to))
 					throw new NameOccupiedException(this, dir);
 
-				if(FileSystem.DirectoryExists(Url))
+				if (FileSystem.DirectoryExists(Url))
 					FileSystem.MoveDirectory(Url, to);
 				else
 					FileSystem.CreateDirectory(to);
-            	
+
 				Parent = newParent;
-            }
-            else if(newParent != null)
-            {
-                new N2Exception(newParent + " is not a Directory. AddTo only works on directories.");
-            }
+			}
+			else if (newParent != null)
+			{
+				new N2Exception(newParent + " is not a Directory. AddTo only works on directories.");
+			}
 		}
 
 		#region IActiveContent Members
 
 		public void Save()
-        {
-			if(!FileSystem.DirectoryExists(Url))
+		{
+			if (!FileSystem.DirectoryExists(Url))
 				FileSystem.CreateDirectory(Url);
-        }
+		}
 
-        public void Delete()
-        {
+		public void Delete()
+		{
 			FileSystem.DeleteDirectory(Url);
-        }
+		}
 
-        public void MoveTo(ContentItem destination)
-        {
+		public void MoveTo(ContentItem destination)
+		{
 			AbstractDirectory d = EnsureDirectory(destination);
 
 			string to = Combine(d.Url, Name);
@@ -82,11 +82,11 @@ namespace N2.Edit.FileSystem.Items
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.MoveDirectory(Url, to);
-        }
+		}
 
-        public ContentItem CopyTo(ContentItem destination)
-        {
-            AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
+		public ContentItem CopyTo(ContentItem destination)
+		{
+			AbstractDirectory d = AbstractDirectory.EnsureDirectory(destination);
 
 			string to = Combine(d.Url, Name);
 			if (FileSystem.FileExists(to))
@@ -101,9 +101,9 @@ namespace N2.Edit.FileSystem.Items
 			foreach (Directory childDir in GetDirectories())
 				childDir.CopyTo(copy);
 
-        	return copy;
-        }
+			return copy;
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

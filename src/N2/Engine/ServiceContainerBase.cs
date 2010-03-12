@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using N2.Engine.Configuration;
+using N2.Plugin;
 
 namespace N2.Engine
 {
@@ -10,8 +10,6 @@ namespace N2.Engine
 	public abstract class ServiceContainerBase : IServiceContainer
 	{
 		#region IServiceContainer Members
-
-		public abstract void AddFacility(string key, object facility);
 
 		/// <summary>Registers the service of the specified type with the container.</summary>
 		public abstract void AddComponent(string key, Type serviceType, Type classType);

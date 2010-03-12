@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using N2.Engine.Configuration;
 using N2.Plugin;
 using System.Diagnostics;
 
@@ -15,11 +14,6 @@ namespace N2.Engine.MediumTrust
 		private readonly IDictionary<Type, Type> waitingList = new Dictionary<Type, Type>();
 		private readonly IDictionary<Type, object> container = new Dictionary<Type, object>();
 		private readonly IDictionary<Type, Function<Type, object>> resolvers = new Dictionary<Type, Function<Type, object>>();
-
-		public override void AddFacility(string key, object facility)
-		{
-			throw new NotImplementedException();
-		}
 
 		public override void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
 		{

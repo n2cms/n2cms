@@ -43,10 +43,10 @@ namespace N2.Edit.Web
         }
 
 		private void SetupAspNetTheming()
-		{            
-            // asp.net themes are a bit cumbersome to work and deploy 
-            // so I think this is going to be deprecated some time in the future
-			if(EnableTheming)
+		{
+			// asp.net themes are a bit cumbersome to work and deploy 
+			// so I think this is going to be deprecated some time in the future
+			if (EnableTheming)
 				Theme = Engine.EditManager.EditTheme;
 		}
 

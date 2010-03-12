@@ -13,6 +13,11 @@ using N2.Collections;
 
 namespace N2.Management.Files
 {
+	/// <summary>
+	/// Auto-startable service that registers a custom <see cref="INodeProvider" /> within N2's <see cref="VirtualNodeFactory" /> infrastructure.
+	/// 
+	/// The <see cref="INodeProvider" /> provides the contents of the file manager library, effectively integrating the file manager with N2's page tree.
+	/// </summary>
 	[Service]
 	public class VirtualFolderInitializer : IAutoStart
 	{
@@ -23,6 +28,14 @@ namespace N2.Management.Files
 		VirtualNodeFactory virtualNodes;
 		FolderNodeProvider nodeProvider;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="VirtualFolderInitializer"/> class.
+		/// </summary>
+		/// <param name="host">The host.</param>
+		/// <param name="persister">The persister.</param>
+		/// <param name="fs">The fs.</param>
+		/// <param name="virtualNodes">The virtual nodes.</param>
+		/// <param name="editConfig">The edit config.</param>
 		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, EditSection editConfig)
 		{
 			this.host = host;
@@ -89,8 +102,9 @@ namespace N2.Management.Files
 			}
 		}
 
-
-
+		/// <summary>
+		/// A custom <see cref="INodeProvider" /> that enumerates the FileSystem as special ContentItem instances
+		/// </summary>
 		class FolderNodeProvider : INodeProvider
 		{
 			IFileSystem fs;
