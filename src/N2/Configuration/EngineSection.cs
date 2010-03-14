@@ -8,7 +8,7 @@ namespace N2.Configuration
     /// Configuration related to inversion of control and the dynamic aspects 
     /// of n2 definition.
     /// </summary>
-	public class EngineSection : ConfigurationSection
+	public class EngineSection : ConfigurationSectionBase
 	{
 		/// <summary>A custom <see cref="IEngine"/> to manage the application instead of the default.</summary>
 		[ConfigurationProperty("engineType")]

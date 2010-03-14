@@ -77,7 +77,9 @@ namespace N2.Web
 					.SetArguments(requestedUrl["arguments"])
 					.UpdateParameters(requestedUrl.GetQueries());
 
-				return UseItemIfAvailable(item, directPath);
+				var directData = UseItemIfAvailable(item, directPath);
+				directData.IsRewritable = false; // do not rewrite requests with page in query string since this probably is an already rewritten url
+				return directData;
 			}
 
 			ContentItem startPage = GetStartPage(requestedUrl);

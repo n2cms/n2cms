@@ -13,21 +13,22 @@ namespace N2.Engine
 	/// </summary>
 	public class ContainerConfigurer
 	{
-		public virtual void Configure(IEngine engine, EventBroker broker, HostSection hostSection, EngineSection engineSection, DatabaseSection databaseSection, EditSection editSection, ConnectionStringsSection connectionStringsSection)
+		public virtual void Configure(IEngine engine, EventBroker broker, ConfigurationManagerWrapper configuration)
 		{
+			engine.Container.AddComponentInstance("n2.configuration", typeof(ConfigurationManagerWrapper), configuration);
 			engine.Container.AddComponentInstance("n2.engine", typeof(IEngine), engine);
 			engine.Container.AddComponentInstance("n2.container", typeof(IServiceContainer), engine.Container);
 			engine.Container.AddComponentInstance("n2.containerConfigurer", typeof(ContainerConfigurer), this);
 
-			AddComponentInstance(engine.Container, connectionStringsSection);
-			AddComponentInstance(engine.Container, engineSection);
-			if (engineSection != null)
-				RegisterConfiguredComponents(engine.Container, engineSection);
-			AddComponentInstance(engine.Container, hostSection);
-			if (hostSection != null)
-				InitializeEnvironment(engine.Container, hostSection);
-			AddComponentInstance(engine.Container, databaseSection);
-			AddComponentInstance(engine.Container, editSection);
+			AddComponentInstance(engine.Container, configuration.GetConnectionStringsSection());
+			AddComponentInstance(engine.Container, configuration.Sections.Engine);
+			if (configuration.Sections.Engine != null)
+				RegisterConfiguredComponents(engine.Container, configuration.Sections.Engine);
+			AddComponentInstance(engine.Container, configuration.Sections.Web);
+			if (configuration.Sections.Web != null)
+				InitializeEnvironment(engine.Container, configuration.Sections.Web);
+			AddComponentInstance(engine.Container, configuration.Sections.Database);
+			AddComponentInstance(engine.Container, configuration.Sections.Management);
 
 			AddComponentInstance(engine.Container, broker);
 

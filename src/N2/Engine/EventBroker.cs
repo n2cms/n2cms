@@ -30,8 +30,9 @@ namespace N2.Engine
 			Trace.WriteLine("EventBroker: Attaching to " + application);
 
 			application.BeginRequest += Application_BeginRequest;
+			//application.PostAuthorizeRequest += application_PostAuthorizeRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
-			application.PostMapRequestHandler += Application_PostMapRequestHandler;
+			//application.PostMapRequestHandler += Application_PostMapRequestHandler;
 			application.AcquireRequestState += Application_AcquireRequestState;
 			application.Error += Application_Error;
 			application.EndRequest += Application_EndRequest;
@@ -47,33 +48,45 @@ namespace N2.Engine
 
 		public EventHandler<EventArgs> BeginRequest;
 		public EventHandler<EventArgs> AuthorizeRequest;
+		//public EventHandler<EventArgs> PostAuthorizeRequest;
 		public EventHandler<EventArgs> AcquireRequestState;
-		public EventHandler<EventArgs> PostMapRequestHandler;
+		//public EventHandler<EventArgs> PostMapRequestHandler;
 		public EventHandler<EventArgs> Error;
 		public EventHandler<EventArgs> EndRequest;
 
 		protected void Application_BeginRequest(object sender, EventArgs e)
 		{
+			Debug.WriteLine("Application_BeginRequest");
 			if (BeginRequest != null && !IsStaticResource(sender))
 				BeginRequest(sender, e);
 		}
 
-		void Application_PostMapRequestHandler(object sender, EventArgs e)
+		protected void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
-			if (PostMapRequestHandler != null && !IsStaticResource(sender))
-				PostMapRequestHandler(sender, e);
+			Debug.WriteLine("Application_AuthorizeRequest");
+			if (AuthorizeRequest != null && !IsStaticResource(sender))
+				AuthorizeRequest(sender, e);
 		}
+
+		//void application_PostAuthorizeRequest(object sender, EventArgs e)
+		//{
+		//    Debug.WriteLine("application_PostAuthorizeRequest");
+		//    if (PostAuthorizeRequest != null && !IsStaticResource(sender))
+		//        PostAuthorizeRequest(sender, e);
+		//}
+
+		//void Application_PostMapRequestHandler(object sender, EventArgs e)
+		//{
+		//    Debug.WriteLine("Application_PostMapRequestHandler");
+		//    if (PostMapRequestHandler != null && !IsStaticResource(sender))
+		//        PostMapRequestHandler(sender, e);
+		//}
 
 		protected void Application_AcquireRequestState(object sender, EventArgs e)
 		{
+			Debug.WriteLine("Application_AcquireRequestState");
 			if (AcquireRequestState != null && !IsStaticResource(sender))
 				AcquireRequestState(sender, e);
-		}
-
-		protected void Application_AuthorizeRequest(object sender, EventArgs e)
-		{
-			if (AuthorizeRequest != null && !IsStaticResource(sender))
-				AuthorizeRequest(sender, e);
 		}
 
 		protected void Application_Error(object sender, EventArgs e)

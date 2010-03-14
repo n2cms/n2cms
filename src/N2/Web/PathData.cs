@@ -178,6 +178,8 @@ namespace N2.Web
 		public virtual PathData Detach()
 		{
 			PathData data = new PathData(ID, PageID, Path, TemplateUrl, Action, Argument, Ignore, QueryParameters);
+			data.Ignore = Ignore;
+			data.IsRewritable = IsRewritable;
 			return data;
 		}
 
@@ -187,6 +189,8 @@ namespace N2.Web
 		public virtual PathData Attach(N2.Persistence.IPersister persister)
 		{
 			PathData data = new PathData(ID, PageID, Path, TemplateUrl, Action, Argument, Ignore, QueryParameters);
+			data.Ignore = Ignore;
+			data.IsRewritable = IsRewritable;
 			
 			data.CurrentItem = persister.Repository.Load(ID);
 			if (PageID != 0)

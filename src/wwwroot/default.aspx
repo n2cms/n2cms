@@ -13,8 +13,7 @@
 			<p>Here are a few known causes.</p>
 
 			<h3>Site Not Installed</h3>
-			<p>Follow the instructions in the <a href="N2/Installation">installation wizard</a> to set up database and create your start node.</p>
-			<p>Please leave this file here to start ASP.NET when requesting the root folder (/).</p>
+			<p>Follow the instructions in the <a href="N2/Installation">installation wizard</a> to set up database and create your start node. Leave a file here to start ASP.NET when requesting the root folder (/).</p>
 			
 			<h3>Undefined Template</h3>
 			<p>If you know you have installed you might need to decorate the content class for the start page node with the [Template] attribute.</p>
@@ -25,8 +24,12 @@
 	}
 			</code></pre>
 
+			<h3>Ignore existing files = false</h3>
+			<p>The system is configured to not rewrite when the file exists. Since this page (~/default.aspx) exists the start page template will not be rendered. To fix this problem either (1.) replace this file with the start page template, or (2.) configure &lt;web ignoreExistingFiles="true" /&gt;. To secure with ASP.NET authorization use method (1.)</p>
+			
 			<h3>Error during initialization</h3>
-			<p>This could happen when the database contains nodes that have no corresponding class. When using medium trust this could be due to an assmebly not beeing defined.</p>
+			<p>This could happen when the database contains nodes that have no corresponding class. When using medium trust this could be due to an assmebly not beeing defined. Re-start the site and check for any exceptions occurring during the first request.</p>
+			
 		</div>
 	</body>
 </html>

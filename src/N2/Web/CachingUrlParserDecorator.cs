@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Caching;
 using N2.Persistence;
 using N2.Web.UI;
+using System.Diagnostics;
 
 namespace N2.Web
 {
@@ -60,17 +61,21 @@ namespace N2.Web
 		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
 		public PathData ResolvePath(string url)
 		{
-			string key = string.Intern(url.ToLowerInvariant());
+			string key = url.ToLowerInvariant();
 
 			PathData data = HttpRuntime.Cache[key] as PathData;
 			if(data == null)
 			{
 				data = inner.ResolvePath(url);
-				if(data.ID != 0)
+				if (!data.IsEmpty())
+				{
+					Debug.WriteLine("Adding " + url + " to cache");
 					HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);
+				}
 			}
 			else
 			{
+				Debug.WriteLine("Retrieving " + url + " from cache");
 				data = data.Attach(persister);
 				data.UpdateParameters(Url.Parse(url).GetQueries());
 			}

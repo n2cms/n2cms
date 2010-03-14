@@ -47,12 +47,7 @@ namespace N2.Engine
 		public ContentEngine(IServiceContainer container, EventBroker broker, ContainerConfigurer configurer)
 		{
 			this.container = container;
-			configurer.Configure(this, broker, 
-				ConfigurationManager.GetSection("n2/host") as HostSection,
-				ConfigurationManager.GetSection("n2/engine") as EngineSection,
-				ConfigurationManager.GetSection("n2/database") as DatabaseSection,
-				ConfigurationManager.GetSection("n2/edit") as EditSection,
-				ConfigurationManager.GetSection("connectionStrings") as ConnectionStringsSection);
+			configurer.Configure(this, broker, new ConfigurationManagerWrapper());
 		}
 
 		/// <summary>Tries to determine runtime parameters from the given configuration.</summary>
@@ -64,12 +59,23 @@ namespace N2.Engine
 			if (string.IsNullOrEmpty(sectionGroup)) throw new ArgumentException("Must be non-empty and match a section group in the configuration file.", "sectionGroup");
 
 			this.container = container;
-			configurer.Configure(this, broker,
-				config.GetSection(sectionGroup + "/host") as HostSection,
-				config.GetSection(sectionGroup + "/engine") as EngineSection,
-				config.GetSection(sectionGroup + "/database") as DatabaseSection,
-				config.GetSection(sectionGroup + "/edit") as EditSection,
-				config.GetSection("connectionStrings") as ConnectionStringsSection);
+			configurer.Configure(this, broker, new ConfigurationReadingWrapper(config, sectionGroup));
+		}
+
+		private class ConfigurationReadingWrapper : ConfigurationManagerWrapper
+		{
+			System.Configuration.Configuration config;
+
+			public ConfigurationReadingWrapper(System.Configuration.Configuration config, string sectionGroup)
+				: base(sectionGroup)
+			{
+				this.config = config;
+			}
+
+			public override T GetSection<T>(string sectionName)
+			{
+				return config.GetSection(sectionName) as T;
+			}
 		}
 
 		#region Properties

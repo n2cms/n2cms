@@ -48,8 +48,8 @@ namespace N2.Web
 			string path = url.Path;
 			foreach (string nonRewritablePath in nonRewritablePaths)
 			{
-				if (path.StartsWith(nonRewritablePath))
-					return null;
+				if (path.StartsWith(nonRewritablePath, StringComparison.InvariantCultureIgnoreCase))
+					return PathData.Empty;
 			}
 
 			PathData data = ResolveUrl(url);

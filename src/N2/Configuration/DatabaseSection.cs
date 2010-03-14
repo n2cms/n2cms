@@ -8,7 +8,7 @@ namespace N2.Configuration
 	/// <summary>
 	/// Database configuration section for nhibernate database connection.
 	/// </summary>
-	public class DatabaseSection : ConfigurationSection
+	public class DatabaseSection : ConfigurationSectionBase
 	{
 		/// <summary>Whether cacheing should be enabled.</summary>
 		[ConfigurationProperty("caching", DefaultValue = false)]

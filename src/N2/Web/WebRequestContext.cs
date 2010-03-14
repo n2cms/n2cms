@@ -124,7 +124,7 @@ namespace N2.Web
         public void RewritePath(string path)
         {
             Debug.WriteLine("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
-            CurrentHttpContext.RewritePath(path, false);
+			CurrentHttpContext.RewritePath(path, false);
         }
 
         public void TransferRequest(string path)

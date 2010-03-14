@@ -36,8 +36,7 @@ namespace N2.Engine.Configuration
 			engine.Container.AddComponent("n2.stateChanger", typeof(StateChanger), typeof(StateChanger));
 			engine.Container.AddComponent("n2.webContext", typeof(IWebContext), typeof(AdaptiveContext));
 			engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(MediumTrustTypeFinder));
-			engine.Container.AddComponent("n2.aspectControllerProvider", typeof(IContentAdapterProvider),
-			                       typeof(ContentAdapterProvider));
+			engine.Container.AddComponent("n2.adapterProvider", typeof(IContentAdapterProvider), typeof(ContentAdapterProvider));
 			engine.Container.AddComponent("n2.pluginBootstrapper", typeof(IPluginBootstrapper), typeof(PluginBootstrapper));
 			engine.Container.AddComponent("n2.classMappingGenerator", typeof(ClassMappingGenerator), typeof(ClassMappingGenerator));
 			engine.Container.AddComponent("n2.configurationBuilder", typeof(ConfigurationBuilder), typeof(ConfigurationBuilder));
@@ -52,8 +51,7 @@ namespace N2.Engine.Configuration
 			engine.Container.AddComponent("n2.itemFinder", typeof(IItemFinder), typeof(ItemFinder));
 			//trail tracker
 			engine.Container.AddComponent("n2.attributeExplorer", typeof(AttributeExplorer), typeof(AttributeExplorer));
-			engine.Container.AddComponent("n2.editableHierarchyBuilder", typeof(EditableHierarchyBuilder),
-			                       typeof(EditableHierarchyBuilder));
+			engine.Container.AddComponent("n2.editableHierarchyBuilder", typeof(EditableHierarchyBuilder), typeof(EditableHierarchyBuilder));
 			engine.Container.AddComponent("n2.definitions", typeof(IDefinitionManager), typeof(DefinitionManager));
 			engine.Container.AddComponent("n2.definitionBuilder", typeof(DefinitionBuilder), typeof(DefinitionBuilder));
 			engine.Container.AddComponent("n2.host", typeof(IHost), typeof(Host));

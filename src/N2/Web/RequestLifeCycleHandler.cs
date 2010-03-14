@@ -65,39 +65,37 @@ namespace N2.Web
 
 		protected virtual void Application_BeginRequest(object sender, EventArgs e)
 		{
-            if (!initialized)
-            {
-                // we need to have reached begin request before we can do certain 
-                // things in IIS7. concurrency isn't crucial here.
-                initialized = true;
-                if (webContext.IsWeb)
-                {
-                    if (Url.ServerUrl == null)
-                        Url.ServerUrl = webContext.Url.HostUrl;
-                    if (checkInstallation)
-                        CheckInstallation();
-                }
-            }
-
-			webContext.CurrentPath = dispatcher.GetCurrentPath();
-			if (webContext.CurrentPage != null)
+			if (!initialized)
 			{
-				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
-				if (adapter != null)
+				// we need to have reached begin request before we can do certain 
+				// things in IIS7. concurrency isn't crucial here.
+				initialized = true;
+				if (webContext.IsWeb)
 				{
-					adapter.RewriteRequest(webContext.CurrentPath, rewriteMethod);
+					if (Url.ServerUrl == null)
+						Url.ServerUrl = webContext.Url.HostUrl;
+					if (checkInstallation)
+						CheckInstallation();
 				}
 			}
-		}
 
-        private void CheckInstallation()
-        {
-            bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl).StartsWith("~/N2/Content", StringComparison.InvariantCultureIgnoreCase);
-            if (!isEditing && !installer.GetStatus().IsInstalled)
-            {
-                webContext.Response.Redirect(installerUrl);
-            }
-        }
+			var data = dispatcher.GetCurrentPath();
+			webContext.CurrentPath = data;
+			if (data != null && !data.IsEmpty())
+			{
+				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage.GetType());
+				adapter.RewriteRequest(data, rewriteMethod);
+			}
+		}
+		
+		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
+		{
+			if (webContext.CurrentPath != null && !webContext.CurrentPath.IsEmpty())
+			{
+				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
+				adapter.AuthorizeRequest(webContext.CurrentPath, webContext.User);
+			}
+		}
 
 		/// <summary>Infuses the http handler (usually an aspx page) with the content page associated with the url if it implements the <see cref="IContentTemplate"/> interface.</summary>
 		protected virtual void Application_AcquireRequestState(object sender, EventArgs e)
@@ -106,14 +104,6 @@ namespace N2.Web
 
 			RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
 			adapter.InjectCurrentPage(webContext.CurrentPath, webContext.Handler);
-		}
-
-		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
-		{
-			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
-
-			RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
-			adapter.AuthorizeRequest(webContext.User);
 		}
 
         protected virtual void Application_Error(object sender, EventArgs e)
@@ -134,12 +124,20 @@ namespace N2.Web
 			webContext.Close();
 		}
 
+		private void CheckInstallation()
+		{
+			bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl).StartsWith("~/N2/Content", StringComparison.InvariantCultureIgnoreCase);
+			if (!isEditing && !installer.GetStatus().IsInstalled)
+			{
+				webContext.Response.Redirect(installerUrl);
+			}
+		}
+
 		#region IStartable Members
 
 		public void Start()
 		{
 			broker.BeginRequest += Application_BeginRequest;
-			broker.AuthorizeRequest += Application_AuthorizeRequest;
 			broker.AcquireRequestState += Application_AcquireRequestState;
 			broker.Error += Application_Error;
 			broker.EndRequest += Application_EndRequest;
@@ -148,7 +146,6 @@ namespace N2.Web
 		public void Stop()
 		{
 			broker.BeginRequest -= Application_BeginRequest;
-			broker.AuthorizeRequest -= Application_AuthorizeRequest;
 			broker.AcquireRequestState -= Application_AcquireRequestState;
 			broker.Error -= Application_Error;
 			broker.EndRequest -= Application_EndRequest;
