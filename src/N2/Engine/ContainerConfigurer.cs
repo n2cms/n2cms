@@ -15,6 +15,7 @@ namespace N2.Engine
 	{
 		public virtual void Configure(IEngine engine, EventBroker broker, ConfigurationManagerWrapper configuration)
 		{
+			configuration.Start();
 			engine.Container.AddComponentInstance("n2.configuration", typeof(ConfigurationManagerWrapper), configuration);
 			engine.Container.AddComponentInstance("n2.engine", typeof(IEngine), engine);
 			engine.Container.AddComponentInstance("n2.container", typeof(IServiceContainer), engine.Container);

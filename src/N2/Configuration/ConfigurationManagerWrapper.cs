@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 using N2.Configuration;
+using N2.Plugin;
 
 namespace N2.Configuration
 {
@@ -21,11 +22,6 @@ namespace N2.Configuration
 		public ConfigurationManagerWrapper(string sectionGroup)
 		{
 			this.sectionGroup = sectionGroup;
-			Sections = new ContentSectionTable(
-				GetContentSection<HostSection>("host"),
-				GetContentSection<EngineSection>("engine"),
-				GetContentSection<DatabaseSection>("database"),
-				GetContentSection<EditSection>("edit"));
 		}
 
 		public ContentSectionTable Sections { get; protected set; }
@@ -64,5 +60,23 @@ namespace N2.Configuration
 			public DatabaseSection Database { get; protected set; }
 			public EditSection Management { get; protected set; }
 		}
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+			Sections = new ContentSectionTable(
+				GetContentSection<HostSection>("host"),
+				GetContentSection<EngineSection>("engine"),
+				GetContentSection<DatabaseSection>("database"),
+				GetContentSection<EditSection>("edit"));
+		}
+
+		public void Stop()
+		{
+			Sections = null;
+		}
+
+		#endregion
 	}
 }

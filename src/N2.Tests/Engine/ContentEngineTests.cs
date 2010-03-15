@@ -14,7 +14,7 @@ namespace N2.Tests.Engine
 		[SetUp]
 		public void SetUp()
 		{
-			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2", new WindsorServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			engine = new ContentEngine(new WindsorServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 		}
 	}
 
@@ -24,7 +24,7 @@ namespace N2.Tests.Engine
 		[SetUp]
 		public void SetUp()
 		{
-			engine = new ContentEngine(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), "n2", new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			engine = new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
 		}
 	}
 

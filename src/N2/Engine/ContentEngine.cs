@@ -56,6 +56,7 @@ namespace N2.Engine
 		/// <param name="broker">Web ap event provider</param>
 		public ContentEngine(System.Configuration.Configuration config, string sectionGroup, IServiceContainer container, EventBroker broker, ContainerConfigurer configurer)
 		{
+			if (config == null) throw new ArgumentNullException("config");
 			if (string.IsNullOrEmpty(sectionGroup)) throw new ArgumentException("Must be non-empty and match a section group in the configuration file.", "sectionGroup");
 
 			this.container = container;
