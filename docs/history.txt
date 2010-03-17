@@ -1,4 +1,5 @@
-﻿- fixed Url parsing url with host in query
+﻿- applied Naisui's oracle support (ThreadId=79879)
+- fixed Url parsing url with host in query
 - refactored rewriting mechanism to simplify asp.net authorization usage
 - applied jean f poulin's patch #26428: Organize Parts broken since JQuery 1.4
 

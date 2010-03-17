@@ -12,6 +12,8 @@
         Generic,
         Jet,
 		DB2,
+		Oracle9i,
+		Oracle10g,
 		AutoDetect
 	}
 }

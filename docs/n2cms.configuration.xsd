@@ -265,6 +265,8 @@
 									<xs:enumeration value="Generic"/>
 									<xs:enumeration value="Jet"/>
 									<xs:enumeration value="DB2"/>
+									<xs:enumeration value="Oracle9i"/>
+									<xs:enumeration value="Oracle10g"/>
 									<xs:enumeration value="AutoDetect"/>
 								</xs:restriction>
 							</xs:simpleType>

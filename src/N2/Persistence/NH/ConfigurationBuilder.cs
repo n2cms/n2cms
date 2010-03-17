@@ -128,6 +128,14 @@ namespace N2.Persistence.NH
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OdbcDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.DB2Dialect).AssemblyQualifiedName;
 					break;
+				case DatabaseFlavour.Oracle9i:
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OracleClientDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.Oracle9iDialect).AssemblyQualifiedName;
+					break;
+				case DatabaseFlavour.Oracle10g:
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OracleClientDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.Oracle10gDialect).AssemblyQualifiedName;
+					break;
 				default:
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
@@ -154,6 +162,8 @@ namespace N2.Persistence.NH
 				return DatabaseFlavour.SqLite;
 			if (provider.StartsWith("MySql.Data.MySqlClient"))
 				return DatabaseFlavour.MySql;
+			if (provider.StartsWith("System.Data.OracleClient"))
+				return DatabaseFlavour.Oracle10g;
 
 			throw new ConfigurationErrorsException("Could not auto-detect the database flavor. Please configure this explicitly in the n2/database section.");
 		}
