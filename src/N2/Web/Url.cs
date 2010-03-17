@@ -62,6 +62,8 @@ namespace N2.Web
 				int queryIndex = QueryIndex(url);
 				int hashIndex = url.IndexOf('#', queryIndex > 0 ? queryIndex : 0);
 				int authorityIndex = url.IndexOf("://");
+				if (queryIndex >= 0 && authorityIndex > queryIndex)
+					authorityIndex = -1;
 
 				LoadFragment(url, hashIndex);
 				LoadQuery(url, queryIndex, hashIndex);

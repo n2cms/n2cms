@@ -876,5 +876,14 @@ namespace N2.Tests.Web
 			string result = Url.Combine(url1, url2);
 			Assert.That(result, Is.EqualTo(expected), "'" + url1 + "' + '" + url2 + "' != '" + expected + "'");
 		}
+
+		[Test]
+		public void CanParse_RelativePath_WithUrl_AsQuery()
+		{
+			Url u = "/path?dns=host.com&url=http://www.hello.net/howdy";
+
+			Assert.That(u.Path, Is.EqualTo("/path"));
+			Assert.That(u.Query, Is.EqualTo("dns=host.com&url=http://www.hello.net/howdy"));
+		}
     }
 }

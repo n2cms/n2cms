@@ -1,4 +1,5 @@
-﻿- refactored rewriting mechanism to simplify asp.net authorization usage
+﻿- fixed Url parsing url with host in query
+- refactored rewriting mechanism to simplify asp.net authorization usage
 - applied jean f poulin's patch #26428: Organize Parts broken since JQuery 1.4
 
 2.0 beta
