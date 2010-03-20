@@ -19,6 +19,8 @@ namespace N2.Edit.Web.UI.Controls
         {
             base.CreateChildControls();
 
+			var start = Engine.Resolve<IUrlParser>().StartPage;
+			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
             foreach (ToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<ToolbarPluginAttribute>(Engine.Resolve<IWebContext>().User))
             {
                 if ((plugin.Area & Area) != Area)
@@ -29,7 +31,7 @@ namespace N2.Edit.Web.UI.Controls
                 command.Attributes["class"] = "item";
                 Controls.Add(command);
 
-				plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
+				plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, start, root, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
             }
         }
 

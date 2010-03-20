@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using N2.Edit.Web;
 using N2.Web.UI.WebControls;
+using N2.Web;
 
 namespace N2.Edit.Navigation
 {
@@ -9,9 +10,11 @@ namespace N2.Edit.Navigation
 	{
 		protected override void OnInit(EventArgs e)
 		{
+			var start = Engine.Resolve<IUrlParser>().StartPage;
+			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (NavigationPluginAttribute a in Engine.EditManager.GetPlugins<NavigationPluginAttribute>(Page.User))
 			{
-				a.AddTo(plhMenuItems, new PluginContext(Selection.SelectedItem, null, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
+				a.AddTo(plhMenuItems, new PluginContext(Selection.SelectedItem, null, start, root, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
 			}
 			base.OnInit(e);
 		}

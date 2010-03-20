@@ -57,14 +57,5 @@ namespace N2.Management.Myself {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::N2.Edit.Web.UI.Controls.InfoLabel lblChangesLastWeek;
-        
-        /// <summary>
-        /// rptLatestChanges control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptLatestChanges;
     }
 }

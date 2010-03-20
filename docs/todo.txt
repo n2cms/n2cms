@@ -1,14 +1,7 @@
-http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=79879
-http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=205039 (file locks)
-http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=77613 (return url)
 http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204407 (root page)
 http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204226 (Cannot cast the current page)
 
 v2
-- scheduled publishing issue?
-- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=200360
-- windsor 2.1.1
-- fix delete previous version + cascading save issue
 - fix preview version issue
 - mvc templates
 	- new skin

@@ -207,9 +207,11 @@ namespace N2.Edit
 
 		private void InitPlugins()
 		{
-			foreach(EditToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
+			var start = Engine.Resolve<IUrlParser>().StartPage;
+			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+			foreach (EditToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-                plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
+				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
 			}
 		}
 

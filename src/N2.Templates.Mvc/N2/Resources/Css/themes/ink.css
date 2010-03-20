@@ -6,6 +6,11 @@ body .header
     background-color:#444; 
     background-image:url(../../img/darken25.png);
 }
+body .box
+{
+    border:solid 1px #222;
+}
+
 body .subbar,
 body #splitter .vsplitbar
 {

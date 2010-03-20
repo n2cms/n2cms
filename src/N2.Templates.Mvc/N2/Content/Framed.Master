@@ -20,7 +20,7 @@
             </div></div>
             <asp:ContentPlaceHolder ID="Outside" runat="server" />
             <div id="content" class="content">
-                <h1 id="h1" runat="server" />
+				<h1 id="h1" runat="server" />
                 <asp:ContentPlaceHolder ID="Content" runat="server" />
             </div>
         </form>

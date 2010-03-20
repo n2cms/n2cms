@@ -1,30 +1,30 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Statistics.ascx.cs" Inherits="N2.Management.Myself.Statistics" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
-<h4><%= CurrentItem.Title %></h4>
-<div class="field">
-    <edit:InfoLabel Label="# of pages" id="lblPages" runat="server" />
-</div>
-<div class="field">
-    <edit:InfoLabel Label="Total # of items:" id="lblItems" runat="server" />
-</div>
-<div class="field">
-    <edit:InfoLabel Label="Pages served (since startup):" id="lblServed" runat="server" />
-</div>
-<div class="field">
-    <edit:InfoLabel Label="Versions per item:" id="lblVersionsRatio" runat="server" />
-</div>
-<div class="field">
-    <edit:InfoLabel Label="# of changes last week:" id="lblChangesLastWeek" runat="server" />
-</div>
-<div>
-    <label>Latest changes:</label>
-</div>
-<div>
-    <asp:Repeater ID="rptLatestChanges" runat="server">
-        <ItemTemplate>
-            <div>
-                <asp:HyperLink NavigateUrl='<%# Eval("Url") %>' runat="server" Text='<%# Eval("Title") %>' ToolTip='<%# Eval("SavedBy") +", "+ Eval("Updated") %>' />
-            </div>
-        </ItemTemplate>
-    </asp:Repeater>
+
+<div class="box">
+	<h4 class="header"><%= CurrentItem.Title %></h4>
+	<table><tbody>
+		<tr><th>
+			# of pages
+		</th><td>
+			<edit:InfoLabel Label="" id="lblPages" runat="server" />
+		</td></tr><tr><th>
+			Total # of items:
+		</th><td>
+			<edit:InfoLabel Label="" id="lblItems" runat="server" />
+		</td></tr><tr><th>
+			Pages served (since startup):
+		</th><td>
+			<edit:InfoLabel Label="" id="lblServed" runat="server" />
+		</td></tr><tr><th>
+			Versions per item:
+		</th><td>
+			<edit:InfoLabel Label="" id="lblVersionsRatio" runat="server" />
+		</td></tr><tr><th>
+			# of changes last week:
+		</th><td>
+				<edit:InfoLabel Label="" id="lblChangesLastWeek" runat="server" />
+		</th></tr>
+		
+	</tbody></table>
 </div>

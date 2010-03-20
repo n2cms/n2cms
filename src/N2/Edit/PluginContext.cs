@@ -14,17 +14,21 @@ namespace N2.Edit
 		{
 		}
 
-		public PluginContext(ContentItem selected, ContentItem memorizedItem, ControlPanelState state, string managementInterfaceUrl)
+		public PluginContext(ContentItem selected, ContentItem memorizedItem, ContentItem startItem, ContentItem rootItem, ControlPanelState state, string managementInterfaceUrl)
 		{
 			State = state;
 			Selected = selected;
 			Memorized = memorizedItem;
 			ManagementInterfaceUrl = managementInterfaceUrl;
+			Start = startItem;
+			Root = rootItem;
 		}
 
 		public ControlPanelState State { get; set;}
 		public ContentItem Selected { get; set; }
 		public ContentItem Memorized { get; set; }
+		public ContentItem Start { get; set; }
+		public ContentItem Root { get; set; }
 		public string ManagementInterfaceUrl { get; set; }
 		
 		static Regex expressionExpression = new Regex("{(?<expr>[^})]+)}");

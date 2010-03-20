@@ -5,7 +5,7 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Definitions;
 
-namespace N2.Management.Myself
+namespace N2.Templates.Items
 {
     [PageDefinition("Root Page", 
 		Description = "A root page used to organize start pages.", 

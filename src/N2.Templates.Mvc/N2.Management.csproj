@@ -280,6 +280,20 @@
     <Compile Include="N2\Installation\Upgrade.aspx.designer.cs">
       <DependentUpon>Upgrade.aspx</DependentUpon>
     </Compile>
+    <Compile Include="N2\Myself\Activity.ascx.cs">
+      <DependentUpon>Activity.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Myself\Activity.ascx.designer.cs">
+      <DependentUpon>Activity.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="N2\Myself\Languages.ascx.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Myself\Languages.ascx.designer.cs">
+      <DependentUpon>Languages.ascx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Myself\Root.aspx.cs">
       <DependentUpon>Root.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -287,8 +301,9 @@
     <Compile Include="N2\Myself\Root.aspx.designer.cs">
       <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Myself\RootPage.cs">
+    <Compile Include="N2\Myself\RootBase.cs">
     </Compile>
+    <Compile Include="N2\Myself\RootPartBase.cs" />
     <Compile Include="N2\Myself\Statistics.ascx.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -296,7 +311,13 @@
     <Compile Include="N2\Myself\Statistics.ascx.designer.cs">
       <DependentUpon>Statistics.ascx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Myself\Statistics.cs" />
+    <Compile Include="N2\Myself\Wizards.ascx.cs">
+      <DependentUpon>Wizards.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Myself\Wizards.ascx.designer.cs">
+      <DependentUpon>Wizards.ascx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Resources\Js\DirectoryCompiler.cs" />
     <Compile Include="N2\Resources\Js\jquery.ui.ashx.cs">
       <DependentUpon>jquery.ui.ashx</DependentUpon>
@@ -1215,10 +1236,13 @@
     <Content Include="N2\Installation\Fix.aspx" />
     <Content Include="N2\Installation\FixClass.aspx" />
     <Content Include="N2\Installation\Upgrade.aspx" />
-    <Content Include="N2\Myself\Edit.css" />
+    <Content Include="N2\Myself\Activity.ascx" />
+    <Content Include="N2\Myself\Languages.ascx" />
     <Content Include="N2\Myself\Root.aspx" />
     <Content Include="N2\Myself\Statistics.ascx" />
+    <Content Include="N2\Myself\Wizards.ascx" />
     <Content Include="N2\Resources\Css\edit.css" />
+    <Content Include="N2\Resources\Css\Root.css" />
     <Content Include="N2\Resources\Css\themes\default.css" />
     <Content Include="N2\Resources\Css\themes\ink.css" />
     <Content Include="N2\Resources\img\darken10.png" />

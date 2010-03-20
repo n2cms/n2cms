@@ -201,9 +201,11 @@ window.n2ddcp = new n2DragDrop();
 			pluginPanel.CssClass = "plugins";
 			Controls.Add(pluginPanel);
 
+			var start = Engine.Resolve<IUrlParser>().StartPage;
+			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 			{
-				plugin.AddTo(pluginPanel, new PluginContext(CurrentItem, null, state, Engine.EditManager.GetManagementInterfaceUrl()));
+				plugin.AddTo(pluginPanel, new PluginContext(CurrentItem, null, start, root, state, Engine.EditManager.GetManagementInterfaceUrl()));
 			}
 		}
 

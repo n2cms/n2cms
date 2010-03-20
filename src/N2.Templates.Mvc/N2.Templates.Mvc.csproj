@@ -176,6 +176,7 @@
       <DependentUpon>Image.ashx</DependentUpon>
     </Compile>
     <Compile Include="Models\Pages\AbstractContentPage.cs" />
+    <Compile Include="Models\Pages\RootPage.cs" />
     <Compile Include="Models\Parts\AbstractItem.cs" />
     <Compile Include="Models\Pages\AbstractPage.cs" />
     <Compile Include="Models\Pages\AbstractSearch.cs" />

@@ -1,11 +1,23 @@
 using System;
-using N2.Collections;
 using System.Collections.Generic;
+using N2.Collections;
+using N2.Details;
 using N2.Web.UI;
 
 namespace N2.Management.Myself
 {
-	public partial class Statistics : ContentUserControl<RootPage, StatisticsPart>
+	[PartDefinition("Statistics", Name = "Statistics", TemplateUrl = "~/N2/Myself/Statistics.ascx")]
+	[WithEditableTitle("Title", 10)]
+	public class StatisticsPart : RootPartBase
+	{
+		public override string Title
+		{
+			get { return base.Title ?? "Statistics"; }
+			set { base.Title = value; }
+		}
+	}
+
+	public partial class Statistics : ContentUserControl<ContentItem, StatisticsPart>
 	{
 		protected override void OnLoad(EventArgs e)
 		{
@@ -23,7 +35,6 @@ namespace N2.Management.Myself
 
 			lblServed.Text = "unknown";
 			lblChangesLastWeek.Text = Find.Items.Where.Updated.Ge(DateTime.Now.AddDays(-7)).Select().Count.ToString();
-			rptLatestChanges.DataSource = Find.Items.All.MaxResults(CurrentItem.LatestChangesMaxCount).OrderBy.Updated.Desc.Select();
 
 			DataBind();
 		}

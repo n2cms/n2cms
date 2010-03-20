@@ -14,22 +14,13 @@ namespace N2.Management.Myself {
     public partial class Root {
         
         /// <summary>
-        /// h control.
+        /// sc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead h;
-        
-        /// <summary>
-        /// form1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::N2.Web.UI.WebControls.SlidingCurtain sc;
         
         /// <summary>
         /// Zone1 control.
@@ -47,7 +38,7 @@ namespace N2.Management.Myself {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Zone Zone2;
+        protected global::N2.Web.UI.WebControls.DroppableZone Zone2;
         
         /// <summary>
         /// Zone3 control.
@@ -56,7 +47,7 @@ namespace N2.Management.Myself {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Zone Zone3;
+        protected global::N2.Web.UI.WebControls.DroppableZone Zone3;
         
         /// <summary>
         /// Zone4 control.
@@ -65,7 +56,7 @@ namespace N2.Management.Myself {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Zone Zone4;
+        protected global::N2.Web.UI.WebControls.DroppableZone Zone4;
         
         /// <summary>
         /// Zone5 control.

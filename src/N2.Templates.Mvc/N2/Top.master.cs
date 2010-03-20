@@ -8,9 +8,5 @@ namespace Management.N2
 {
 	public partial class Top : System.Web.UI.MasterPage
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

@@ -24,6 +24,7 @@ namespace N2.Edit
 		{
 			title.Text = Page.Title;
 			h1.InnerHtml = Page.Title;
+			h1.Visible = !string.IsNullOrEmpty(Page.Title);
 
 			base.OnPreRender(e);
 		}
