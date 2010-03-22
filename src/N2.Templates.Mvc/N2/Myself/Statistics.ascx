@@ -1,8 +1,9 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Statistics.ascx.cs" Inherits="N2.Management.Myself.Statistics" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 
-<div class="box">
+<div class="uc">
 	<h4 class="header"><%= CurrentItem.Title %></h4>
+	<div class="box">
 	<table><tbody>
 		<tr><th>
 			# of pages
@@ -27,4 +28,5 @@
 		</th></tr>
 		
 	</tbody></table>
-</div>
+
+</div></div>

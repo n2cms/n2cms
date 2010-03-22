@@ -19,12 +19,12 @@ namespace N2.Web.Mvc.Html
 	[Service(typeof(ITemplateRenderer))]
 	public class TemplateRenderer : ITemplateRenderer
 	{
-		private readonly IControllerMapper _controllerMapper;
+		private readonly IControllerMapper controllerMapper;
 		private readonly IEngine _engine;
 
 		public TemplateRenderer(IControllerMapper controllerMapper, IEngine engine)
 		{
-			_controllerMapper = controllerMapper;
+			this.controllerMapper = controllerMapper;
 			_engine = engine;
 		}
 
@@ -32,7 +32,11 @@ namespace N2.Web.Mvc.Html
 		{
 			var routeData = new RouteData();
 
-			routeData.Values[ContentRoute.ControllerKey] = _controllerMapper.GetControllerName(item.GetType());
+			var controllerName = controllerMapper.GetControllerName(item.GetType());
+			if (controllerName == null)
+				throw new InvalidOperationException("Couldn't find a controller that controls the item '" + item + "'. Does a controller attributed with the [Controls(typeof(" + item.GetType() + ")] attribute exist in the solution?");
+
+			routeData.Values[ContentRoute.ControllerKey] = controllerName;
 			routeData.Values[ContentRoute.ContentItemKey] = item.ID;
 			routeData.Values[ContentRoute.ContentPageKey] = viewContext.RouteData.Values[ContentRoute.ContentPageKey];
 			routeData.Values[ContentRoute.ActionKey] = "index";

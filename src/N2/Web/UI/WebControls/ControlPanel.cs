@@ -72,7 +72,7 @@ namespace N2.Web.UI.WebControls
 
 		public virtual ContentItem CurrentItem
 		{
-			get { return Find.CurrentPage; }
+			get { return Find.ClosestItem(Parent); }
 		}
 
 		#endregion
@@ -240,8 +240,8 @@ window.n2ddcp = new n2DragDrop();
 			}
 			if(EnableEditInterfaceIntegration)
 			{
-				writer.WriteLineNoTabs("if(window.n2ctx){");
-				writer.WriteLineNoTabs("window.n2ctx.select('preview');");
+				writer.WriteLineNoTabs("if(n2ctx){");
+				writer.WriteLineNoTabs("n2ctx.select('preview');");
 				if (CurrentItem != null)
 				{
 					string navigationUrl = Engine.EditManager.GetNavigationUrl(CurrentItem);

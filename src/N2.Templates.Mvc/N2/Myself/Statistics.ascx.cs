@@ -6,7 +6,9 @@ using N2.Web.UI;
 
 namespace N2.Management.Myself
 {
-	[PartDefinition("Statistics", Name = "Statistics", TemplateUrl = "~/N2/Myself/Statistics.ascx")]
+	[PartDefinition("Statistics", Name = "Statistics", 
+		TemplateUrl = "~/N2/Myself/Statistics.ascx",
+		IconUrl = "~/N2/Resources/Img/Ico/png/chart_bar.png")]
 	[WithEditableTitle("Title", 10)]
 	public class StatisticsPart : RootPartBase
 	{

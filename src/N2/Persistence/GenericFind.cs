@@ -16,19 +16,25 @@ namespace N2.Persistence
 		/// <summary>Gets the current start page (this may vary depending on host url).</summary>
 		public static TStart StartPage
 		{
-			get { return (TStart)Context.UrlParser.StartPage; }
+			get { return (TStart)Context.Current.UrlParser.StartPage; }
 		}
 
 		/// <summary>Gets the site's root items.</summary>
 		public static TRoot RootItem
 		{
-			get { return (TRoot)Context.Persister.Repository.Load(Context.Current.Resolve<IHost>().CurrentSite.RootItemID); }
+			get { return (TRoot)Context.Current.Persister.Repository.Load(Context.Current.Resolve<IHost>().CurrentSite.RootItemID); }
 		}
 
 		/// <summary>Gets the currently displayed page (based on the query string).</summary>
 		public static ContentItem CurrentPage
 		{
-			get { return Context.CurrentPage; }
+			get { return Context.Current.UrlParser.CurrentPage; }
+		}
+
+		/// <summary>Gets the currently displayed page (based on the query string).</summary>
+		public static ContentItem ClosestItem(System.Web.UI.Control currentControl)
+		{
+			return N2.Web.UI.ItemUtility.FindCurrentItem(currentControl) ?? CurrentPage;
 		}
 
 		/// <summary>Gets an enumeration of pages leading to the current page.</summary>

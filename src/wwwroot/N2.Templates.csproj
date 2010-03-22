@@ -117,7 +117,6 @@
     <Compile Include="Templates\Items\FormPage.cs" />
     <Compile Include="Templates\Items\GalleryItem.cs" />
     <Compile Include="Templates\Items\ImageGallery.cs" />
-    <Compile Include="Templates\Items\IStructuralPage.cs" />
     <Compile Include="Templates\Items\ISurvey.cs" />
     <Compile Include="Templates\Items\LoginItem.cs" />
     <Compile Include="Templates\Items\MultipleSelect.cs" />

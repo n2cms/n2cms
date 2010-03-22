@@ -133,6 +133,7 @@
     <Compile Include="Classes\Configuration\TemplatesSection.cs" />
     <Compile Include="Classes\Configuration\WikiElement.cs" />
     <Compile Include="Classes\Find.cs" />
+    <Compile Include="Classes\MvcOnWebFormPartAdapter.cs" />
     <Compile Include="Classes\Tabs.cs" />
     <Compile Include="Classes\Web\IPageModifier.cs" />
     <Compile Include="Classes\Web\IPageModifierContainer.cs" />

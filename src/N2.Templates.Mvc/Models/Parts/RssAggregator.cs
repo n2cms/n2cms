@@ -12,7 +12,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[WithEditableTitle("Title", 10, Required = false)]
 	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft,
 		Zones.ColumnRight)]
-	public class RssAggregator : SidebarItem
+	public class RssAggregator : AbstractItem
 	{
 		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text

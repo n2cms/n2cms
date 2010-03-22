@@ -4,6 +4,7 @@ using N2.Details;
 using N2.Web;
 using N2.Web.UI;
 using System;
+using N2.Definitions;
 
 namespace N2.Templates.Items
 {
@@ -18,7 +19,7 @@ namespace N2.Templates.Items
 	[Template("create", "~/N2/Content/new.aspx")]
 	[Template("update", "~/N2/Content/edit.aspx")]
 	[Template("delete", "~/N2/Content/delete.aspx")]
-	public abstract class AbstractPage : ContentItem
+	public abstract class AbstractPage : ContentItem, IPage
 	{
 		/// <summary>The name without extension .png of an icon file located in /Templates/UI/Img/. Defaults to "page".</summary>
 		[Obsolete("No longer useful, sorry.")]

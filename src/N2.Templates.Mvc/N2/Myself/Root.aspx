@@ -3,9 +3,9 @@
 	<link href="../Resources/Css/Root.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
-	<div id="root">
+	<div id="home">
 		<n2:SlidingCurtain ID="sc" runat="server">
-			<n2:ControlPanel runat="server" />
+			<n2:ControlPanel runat="server" EnableEditInterfaceIntegration="false" />
 		</n2:SlidingCurtain>
 		<n2:Zone ID="Zone1" ZoneName="Above" runat="server" />
 		<table class="columns">

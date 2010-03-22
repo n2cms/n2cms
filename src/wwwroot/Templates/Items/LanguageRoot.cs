@@ -6,6 +6,7 @@ using N2.Serialization;
 using N2.Web;
 using N2.Web.UI;
 using N2.Integrity;
+using N2.Definitions;
 
 namespace N2.Templates.Items
 {
@@ -19,7 +20,7 @@ namespace N2.Templates.Items
     [FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
     [FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
 	[ConventionTemplate("Start")]
-	public class LanguageRoot : AbstractContentPage, IStructuralPage, ILanguage
+	public class LanguageRoot : AbstractContentPage, IStartPage, IStructuralPage, ILanguage
 	{
         public LanguageRoot()
         {

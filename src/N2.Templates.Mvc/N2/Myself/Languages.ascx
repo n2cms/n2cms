@@ -1,7 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Languages.ascx.cs" Inherits="N2.Management.Myself.Languages" %>
 
-<div class="box">
+<div class="uc">
 	<h4 class="header"><%= CurrentItem.Title %></h4>
+	<div class="box">
 
 	<asp:Repeater ID="rptLanguages" runat="server">
 		<HeaderTemplate>
@@ -38,4 +39,5 @@
 	</table>
 		</FooterTemplate>
 	</asp:Repeater>
-</div>
+
+</div></div>

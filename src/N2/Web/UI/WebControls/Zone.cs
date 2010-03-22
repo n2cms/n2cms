@@ -60,7 +60,27 @@ namespace N2.Web.UI.WebControls
 				isDataBound = false;
 			}
 		}
+
+		public override ContentItem CurrentItem
+		{
+			get
+			{
+				return base.CurrentItem;
+			}
+			set
+			{
+				base.CurrentItem = value;
+
+				if (ChildControlsCreated)
+				{
+					ChildControlsCreated = false;
+					EnsureChildControls();
+				}
+			}
+		}
 	    
+		// templates
+
         /// <summary>Inserted between added child items.</summary>
         [DefaultValue((string)null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(SimpleTemplateContainer))]
         public virtual ITemplate SeparatorTemplate
@@ -85,6 +105,7 @@ namespace N2.Web.UI.WebControls
             set { this.footerTemplate = value; }
         }
 
+		// control overrides
 
 		protected override void OnInit(EventArgs e)
 		{

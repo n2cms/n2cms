@@ -361,6 +361,8 @@
     <Compile Include="Definitions\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
+    <Compile Include="Definitions\IPage.cs" />
+    <Compile Include="Definitions\IPart.cs" />
     <Compile Include="Definitions\IRootPage.cs" />
     <Compile Include="Definitions\ISortableRefiner.cs" />
     <Compile Include="Definitions\IStartPage.cs" />

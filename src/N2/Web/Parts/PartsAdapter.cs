@@ -15,6 +15,14 @@ namespace N2.Web.Parts
 	[Adapts(typeof(ContentItem))]
 	public class PartsAdapter : AbstractContentAdapter
 	{
+		IContentAdapterProvider adapters;
+
+		public IContentAdapterProvider Adapters
+		{
+			get { return adapters ?? Engine.Resolve<IContentAdapterProvider>(); }
+			set { adapters = value; }
+		}
+
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
 		/// <param name="parentItem">The item whose items to get.</param>
 		/// <param name="zoneName">The zone in which the items should be contained.</param>
@@ -60,10 +68,20 @@ namespace N2.Web.Parts
 			}
 		}
 
-		/// <summary>Adds a content item part to a containing control hierarchy (typically a zone control).</summary>
+		/// <summary>Adds a content item part to a containing control hierarchy (typically a zone control). Override this method to adapt how a parent gets it's children added.</summary>
 		/// <param name="item">The item to add a part.</param>
 		/// <param name="container">The container control to host the part user interface.</param>
 		public virtual Control AddChildPart(ContentItem item, Control container)
+		{
+			var adapter = Adapters.ResolveAdapter<PartsAdapter>(item.GetType());
+			return adapter.AddTo(item, container);
+		}
+
+		/// <summary>Adds a content part to a containing control. Override this method to adapt how a part is added to a parent.</summary>
+		/// <param name="item"></param>
+		/// <param name="container"></param>
+		/// <returns></returns>
+		public virtual Control AddTo(ContentItem item, Control container)
 		{
 			IAddablePart addablePart = item as IAddablePart;
 			if (addablePart != null)
@@ -72,7 +90,7 @@ namespace N2.Web.Parts
 			}
 
 			string templateUrl = GetTemplateUrl(item);
-			if(string.IsNullOrEmpty(templateUrl))
+			if (string.IsNullOrEmpty(templateUrl))
 				return null;
 
 			return ItemUtility.AddUserControl(templateUrl, container, item);

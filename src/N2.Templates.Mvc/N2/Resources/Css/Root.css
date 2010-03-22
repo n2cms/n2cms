@@ -1,18 +1,21 @@
 ﻿#toolbar { display:none; }
 
-#root .cpView, #root .cpNew, #root .cpEdit, #root .cpDelete 
+#home .cpView, #home .cpNew, #home .cpEdit, #home .cpDelete, #home .cpAdminister
 { display:none; }
 
 table.columns { margin:0 auto; width:99%; }
 	td.column { width:33%; padding:5px; overflow:visible; }
-	
-		.box { margin-bottom:10px; background-color:#fff; }
-			.box h4 { padding:5px 10px; color:#fff; margin:0; }
-			.box .inner { padding:10px; }
 
+		.uc { margin-bottom:10px; }
+			.uc .box { background-color:#fff; }
+				.uc .box .inner { padding:10px; }
+			.uc h4 { padding:5px 10px; color:#fff; margin:0; }
 				.field { margin:2px 0; }
 				label { font-weight:bold; margin-right:10px; }
-				.column table { border-collapse:collapse; width:100%; }
-				.column th { font-weight:bold; padding:4px; background-color:#eee; border:solid 1px #fff; }
-				.column td { border:solid 1px #eee; padding:1px 4px; }
 				
+				.uc table { border-collapse:collapse; width:100%; }
+				.uc th { font-weight:bold; background-color:#eee; border:solid 1px #fff; }
+				.uc thead th { padding:4px; }
+				.uc td { border:solid 1px #eee; padding:1px 4px; }
+		.uc .list .item,
+		.uc .sidelist .item { margin-bottom:.5em; }

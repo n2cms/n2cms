@@ -1,7 +1,9 @@
-﻿- restored root page to template projects
+﻿- mvc part support on webform root
+- returned root page to template projects
 - improved root (home)
 	- wizards
 	- languages
+	- splitted statistics into 2
 - applied Naisui's oracle support (ThreadId=79879)
 - fixed Url parsing url with host in query
 - refactored rewriting mechanism to simplify asp.net authorization usage

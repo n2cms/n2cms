@@ -80,13 +80,8 @@ var initn2context = function(w) {
 		},
 
 		// selects a toolbar item by name
-		toolbarSelect: function(name) {
-			jQuery(document).ready(function() {
-				w.n2.select(name);
-				$(window).unload(function() {
-					w.n2.unselect(name);
-				});
-			});
+		toolbarSelect: function(name, context) {
+			w.n2.select(name);
 		},
 
 		// copy/paste
@@ -120,10 +115,6 @@ var initn2context = function(w) {
 					e.preventDefault();
 			});
 		},
-
-		//		setupToolbar: function(path, url) {
-		//			this.update({ previewUrl: url, path: path });
-		//		},
 
 		// selection memory
 		update: function(options) {
@@ -168,7 +159,7 @@ var initn2context = function(w) {
 		/// * path: update path to
 		refresh: function(options) {
 			options = jQuery.extend({ previewUrl: null, navigationUrl: null, force: true }, options);
-			
+
 			if (this.hasTop()) {
 				if (options.previewUrl) {
 					var previewFrame = w.document.getElementById("previewFrame");
@@ -191,14 +182,16 @@ var initn2context = function(w) {
 			if (!name) return;
 
 			$s = jQuery("#" + name);
-			var selectedTarget = $s.find("a").attr("target");
-			$(".selected a").filter(function() { return this.target === selectedTarget || !this.target; })
+			n2.unselectFrame($s.find("a").attr("target"));
+			$s.addClass("selected");
+			jQuery(document.body).addClass(name + "Selected");
+		},
+		unselectFrame: function(frame) {
+			$(".selected a").filter(function() { return this.target === frame || !this.target; })
                 .closest(".selected")
                 .each(function() {
                 	n2.unselect(this.id);
                 });
-			$s.addClass("selected");
-			jQuery(document.body).addClass(name + "Selected");
 		},
 		unselect: function(name) {
 			if (!name) return;

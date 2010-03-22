@@ -74,7 +74,7 @@ namespace N2.Edit.Web
 
 		protected virtual string GetToolbarSelectScript(string toolbarPluginName)
 		{
-			return string.Format("if(window.n2ctx)window.n2ctx.toolbarSelect('{0}');", toolbarPluginName);
+			return string.Format("if(n2ctx){{ n2ctx.select('{0}'); jQuery(window).unload(function(){{n2ctx.unselect('{0}');}}); }}", toolbarPluginName);
 		}
 
 		protected virtual string CancelUrl()

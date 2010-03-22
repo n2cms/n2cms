@@ -51,8 +51,8 @@ namespace N2.Web.Mvc
 			this.innerRoute = innerRoute ?? new Route("{controller}/{action}", 
 				new RouteValueDictionary(new { action = "Index" }), 
 				new RouteValueDictionary(), 
-				new RouteValueDictionary(new { engine }), 
-				routeHandler);
+				new RouteValueDictionary(new { this.engine }), 
+				this.routeHandler);
 		}
 
 		public override RouteData GetRouteData(HttpContextBase httpContext)
@@ -65,13 +65,21 @@ namespace N2.Web.Mvc
             if (path.EndsWith(".n2.ashx", StringComparison.InvariantCultureIgnoreCase))
                 return new RouteData(this, new StopRoutingHandler());
 
-			var routeData = GetRouteDataForPath(httpContext.Request);
+			RouteData routeData = null;
 
-			if(routeData != null)
-				return routeData;
+			// part in query string, this is an indicator of a request to a part
+			if(httpContext.Request.QueryString[ContentPartKey] != null)
+				routeData = CheckForContentController(httpContext);
 
-			var baseRouteData = CheckForContentController(httpContext);
-			return baseRouteData;
+			// this might be a friendly url
+			if(routeData == null)
+				routeData = GetRouteDataForPath(httpContext.Request);
+
+			// fallback to route to controller/action
+			if(routeData == null)
+				routeData = CheckForContentController(httpContext);
+
+			return routeData;
 		}
 
 		private RouteData GetRouteDataForPath(HttpRequestBase request)
@@ -141,8 +149,15 @@ namespace N2.Web.Mvc
 
 			if (controllerMapper.ControllerHasAction(controllerName, actionName))
 			{
-				bool appliedItem = ApplyContent(routeData, context.Request.QueryString, ContentItemKey);
-				bool appliedPage = ApplyContent(routeData, context.Request.QueryString, ContentPageKey);
+				var part = ApplyContent(routeData, context.Request.QueryString, ContentPartKey);
+				if (part != null)
+					routeData.ApplyContentItem(ContentItemKey, part);
+				else
+					ApplyContent(routeData, context.Request.QueryString, ContentItemKey);
+				
+				var page = ApplyContent(routeData, context.Request.QueryString, ContentPageKey);
+				if (page == null)
+					routeData.ApplyContentItem(ContentPageKey, part.ClosestPage());
 				routeData.DataTokens[ContentEngineKey] = engine;
 
 				return routeData;
@@ -151,15 +166,16 @@ namespace N2.Web.Mvc
 			return null;
 		}
 
-		private bool ApplyContent(RouteData routeData, NameValueCollection query, string key)
+		private ContentItem ApplyContent(RouteData routeData, NameValueCollection query, string key)
 		{
 			int id;
 			if (int.TryParse(query[key], out id))
 			{
-				routeData.ApplyContentItem(key, engine.Persister.Get(id));
-				return true;
+				var item = engine.Persister.Get(id);
+				routeData.ApplyContentItem(key, item);
+				return item;
 			}
-			return false;
+			return null;
 		}
 
 
@@ -187,7 +203,7 @@ namespace N2.Web.Mvc
 			}
 
 			if (item.IsPage)
-				return ResolveActionUrl(requestContext, values, item);
+				return ResolveContentActionUrl(requestContext, values, item);
 
 			// try to find an appropriate page to use as path (part data goes into the query strings)
 			ContentItem page;
@@ -211,17 +227,21 @@ namespace N2.Web.Mvc
 
 		private VirtualPathData ResolvePartActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem page, ContentItem item)
 		{
-			var pageVpd = ResolveActionUrl(requestContext, new RouteValueDictionary { { "action", "index" } }, page);
-
-			if (values.ContainsKey(ControllerKey))
-				values.Remove(ControllerKey);
+			values[ContentPageKey] = page.ID;
 			values[ContentPartKey] = item.ID;
+			var vpd = innerRoute.GetVirtualPath(requestContext, values);
+			return vpd;
+			//var pageVpd = ResolveContentActionUrl(requestContext, new RouteValueDictionary { { "action", "index" } }, page);
 
-			pageVpd.VirtualPath = Url.Parse(pageVpd.VirtualPath).UpdateQuery(values);
-			return pageVpd;
+			//if (values.ContainsKey(ControllerKey))
+			//    values.Remove(ControllerKey);
+			//values[ContentPartKey] = item.ID;
+
+			//pageVpd.VirtualPath = Url.Parse(pageVpd.VirtualPath).UpdateQuery(values);
+			//return pageVpd;
 		}
 
-		private VirtualPathData ResolveActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem item)
+		private VirtualPathData ResolveContentActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem item)
 		{
 			const string controllerPlaceHolder = "$(CTRL)";
 			values[ControllerKey] = controllerPlaceHolder; // pass a placeholder we'll fill with the content path

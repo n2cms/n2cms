@@ -382,10 +382,68 @@ namespace N2.Extensions.Tests.Mvc
 		public void CanRoute_ToPart()
 		{
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
-			RoutePath("/?part=10");
+			RoutePath("/TestItem/?part=10");
 
 			var r = routes.GetRouteData(httpContext);
-			Assert.That(r.Values["controller"], Is.EqualTo("TestItem"));
+			Assert.That(r.Values[ContentRoute.ControllerKey], Is.EqualTo("TestItem"));
+			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("Index"));
+			Assert.That(r.Values[ContentRoute.ContentPartKey], Is.EqualTo(part.ID));
+			Assert.That(r.Values[ContentRoute.ContentItemKey], Is.EqualTo(part.ID));
+			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
+			Assert.That(r.DataTokens[ContentRoute.ContentPartKey], Is.EqualTo(part));
+			Assert.That(r.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(part));
+			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
+		}
+
+		[Test]
+		public void CanRoute_ToPart_WithPage()
+		{
+			var part = CreateOneItem<TestItem>(10, "whatever", root);
+			RoutePath("/TestItem/?page=1&part=10");
+
+			var r = routes.GetRouteData(httpContext);
+			Assert.That(r.Values[ContentRoute.ControllerKey], Is.EqualTo("TestItem"));
+			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("Index"));
+			Assert.That(r.Values[ContentRoute.ContentPartKey], Is.EqualTo(part.ID));
+			Assert.That(r.Values[ContentRoute.ContentItemKey], Is.EqualTo(part.ID));
+			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
+			Assert.That(r.DataTokens[ContentRoute.ContentPartKey], Is.EqualTo(part));
+			Assert.That(r.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(part));
+			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
+		}
+
+		[Test]
+		public void CanRoute_ToPart_Action()
+		{
+			var part = CreateOneItem<TestItem>(10, "whatever", root);
+			RoutePath("/TestItem/Submit/?part=10");
+
+			var r = routes.GetRouteData(httpContext);
+			Assert.That(r.Values[ContentRoute.ControllerKey], Is.EqualTo("TestItem"));
+			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("Submit"));
+			Assert.That(r.Values[ContentRoute.ContentPartKey], Is.EqualTo(part.ID));
+			Assert.That(r.Values[ContentRoute.ContentItemKey], Is.EqualTo(part.ID));
+			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
+			Assert.That(r.DataTokens[ContentRoute.ContentPartKey], Is.EqualTo(part));
+			Assert.That(r.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(part));
+			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
+		}
+
+		[Test]
+		public void CanRoute_ToPart_Action_WithPage()
+		{
+			var part = CreateOneItem<TestItem>(10, "whatever", root);
+			RoutePath("/TestItem/Submit/?page=1&part=10");
+
+			var r = routes.GetRouteData(httpContext);
+			Assert.That(r.Values[ContentRoute.ControllerKey], Is.EqualTo("TestItem"));
+			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("Submit"));
+			Assert.That(r.Values[ContentRoute.ContentPartKey], Is.EqualTo(part.ID));
+			Assert.That(r.Values[ContentRoute.ContentItemKey], Is.EqualTo(part.ID));
+			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
+			Assert.That(r.DataTokens[ContentRoute.ContentPartKey], Is.EqualTo(part));
+			Assert.That(r.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(part));
+			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
 		}
 
 		[Test]
@@ -502,7 +560,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = part }));
 
-			Assert.That(vpd.VirtualPath, Is.EqualTo("about?part=10"));
+			Assert.That(vpd.VirtualPath, Is.EqualTo("TestItem?page=2&part=10"));
 		}
 
 		[Test]
@@ -513,7 +571,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { part = part }));
 
-			Assert.That(vpd.VirtualPath, Is.EqualTo("about?part=10"));
+			Assert.That(vpd.VirtualPath, Is.EqualTo("TestItem?page=2&part=10"));
 		}
 
 		[Test]
@@ -524,7 +582,7 @@ namespace N2.Extensions.Tests.Mvc
 
 			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { item = part, action = "doit" }));
 
-			Assert.That(vpd.VirtualPath, Is.EqualTo("about?part=10&action=doit"));
+			Assert.That(vpd.VirtualPath, Is.EqualTo("TestItem/doit?page=2&part=10"));
 		}
 
 		[Test]
@@ -533,9 +591,9 @@ namespace N2.Extensions.Tests.Mvc
 			var rc = CreateRouteContext(CreateOneItem<TestItem>(10, "whatever", root));
 			var helper = new HtmlHelper(CreateViewContext(rc), new ViewPage(), routes);
 
-			var html = helper.ActionLink("Hello", "Submit", new { q = "something", controller = "TestItem" });
+			var html = helper.ActionLink("Hello"/*text*/, "Submit"/*action*/, new { q = "something", controller = "TestItem" });
 
-			Assert.That(html.ToString(), Is.EqualTo("<a href=\"/?part=10&amp;q=something&amp;action=Submit\">Hello</a>"));
+			Assert.That(html.ToString(), Is.EqualTo("<a href=\"/TestItem/Submit?q=something&amp;page=1&amp;part=10\">Hello</a>"));
 		}
 
 		ViewContext CreateViewContext(RequestContext rc)

@@ -13,7 +13,9 @@ using N2.Details;
 
 namespace Management.N2.Myself
 {
-	[PartDefinition("Wizards", TemplateUrl = "~/N2/Myself/Wizards.ascx")]
+	[PartDefinition("Wizards", 
+		TemplateUrl = "~/N2/Myself/Wizards.ascx",
+		IconUrl = "~/N2/Resources/Img/Ico/Png/wand.png")]
 	[WithEditableTitle("Title", 10)]
 	public partial class WizardsPart : RootPartBase
 	{

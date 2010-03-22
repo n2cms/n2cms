@@ -4,6 +4,7 @@ using N2.Details;
 using N2.Integrity;
 using N2.Templates.Services;
 using N2.Web;
+using N2.Definitions;
 
 namespace N2.Templates.Items
 {
