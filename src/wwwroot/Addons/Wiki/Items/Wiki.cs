@@ -4,6 +4,7 @@ using N2.Details;
 using N2.Security.Details;
 using System.Collections.Generic;
 using N2.Web;
+using N2.Definitions;
 
 namespace N2.Addons.Wiki.Items
 {

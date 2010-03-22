@@ -3,12 +3,13 @@ using N2.Integrity;
 using N2.Details;
 using N2;
 using N2.Web.UI;
+using N2.Definitions;
 
 namespace Demo.Items
 {
 	[Definition("Demo Registration", "DemoRegister")]
     [AllowedZones("Right")]
-	[RestrictParents(typeof(N2.Templates.Items.IStructuralPage))]
+	[RestrictParents(typeof(IStructuralPage))]
 	[TabContainer("web", "Web", 10)]
 	[TabContainer("mail", "E-Mail", 20)]
 	[TabContainer("auto", "Auto Login", 30)]

@@ -7,10 +7,15 @@ namespace N2.Addons.UITests.Items
 	[Adapts(typeof(AdaptiveItemPage))]
 	public class AdaptiveRequestAdapter : RequestAdapter
 	{
-		public override void AuthorizeRequest(System.Security.Principal.IPrincipal user)
+		public override void AuthorizeRequest(PathData path, System.Security.Principal.IPrincipal user)
 		{
 			Debug.WriteLine("AuthorizeRequest");
-			base.AuthorizeRequest(user);
+			base.AuthorizeRequest(path, user);
+		}
+		protected override string GetHandlerPath(PathData path)
+		{
+			Debug.WriteLine("GetHandlerPath");
+			return base.GetHandlerPath(path);
 		}
 		public override void InjectCurrentPage(PathData path, System.Web.IHttpHandler handler)
 		{
