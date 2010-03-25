@@ -64,10 +64,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Mvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\net3.5\Microsoft.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate, Version=2.1.0.2002, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\NHibernate.dll</HintPath>
@@ -115,6 +111,7 @@
     <Compile Include="Linq\EngineExtensions.cs" />
     <Compile Include="Linq\QueryableExtensions.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
+    <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
     <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
     <Compile Include="Web\Mvc\Html\AjaxExtensions.cs" />

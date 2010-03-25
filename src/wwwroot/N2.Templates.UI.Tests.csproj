@@ -88,21 +88,18 @@
     <Compile Include="Addons\UITests\Items\UITestItemItem.cs" />
     <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.cs">
       <DependentUpon>AdaptiveItem.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\UITests\UI\AdaptiveItem.aspx.designer.cs">
       <DependentUpon>AdaptiveItem.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\UITests\UI\ContentCreator.ascx.cs">
       <DependentUpon>ContentCreator.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\UITests\UI\ContentCreator.ascx.designer.cs">
       <DependentUpon>ContentCreator.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\UITests\UI\ControlDesigners.aspx.cs">
       <DependentUpon>ControlDesigners.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\UITests\UI\ControlDesigners.aspx.designer.cs">
       <DependentUpon>ControlDesigners.aspx</DependentUpon>
@@ -123,14 +120,12 @@
     </Compile>
     <Compile Include="Addons\UITests\UI\Item.ascx.cs">
       <DependentUpon>Item.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\UITests\UI\Item.ascx.designer.cs">
       <DependentUpon>Item.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\UITests\UI\ItemEditor.aspx.cs">
       <DependentUpon>ItemEditor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\UITests\UI\ItemEditor.aspx.designer.cs">
       <DependentUpon>ItemEditor.aspx</DependentUpon>
@@ -151,14 +146,12 @@
     </Compile>
     <Compile Include="Addons\UITests\UI\QueryViewer.ascx.cs">
       <DependentUpon>QueryViewer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\UITests\UI\QueryViewer.ascx.designer.cs">
       <DependentUpon>QueryViewer.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\UITests\UI\UITestItem.ascx.cs">
       <DependentUpon>UITestItem.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\UITests\UI\UITestItem.ascx.designer.cs">
       <DependentUpon>UITestItem.ascx</DependentUpon>

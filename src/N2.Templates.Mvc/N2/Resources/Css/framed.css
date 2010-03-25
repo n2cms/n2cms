@@ -98,23 +98,23 @@ a img,
 }
 
 
-body.edit select,
-body.edit input,
-body.edit label{
+body.framed select,
+body.framed input,
+body.framed label{
 	vertical-align:middle;
 }
-body.edit .cbl input{
+body.framed .cbl input{
 	vertical-align:middle;
 }
-body.edit .cbl label{
+body.framed .cbl label{
 	float:none;
 	font-weight:normal;
 }
-body.edit #toolbar{
+body.framed #toolbar{
 	z-index:77;
 	white-space:nowrap;
 }
-body.edit #toolbar label{
+body.framed #toolbar label{
 	color:#333333;
 	float:none;
 	clear:none;
@@ -124,16 +124,16 @@ ul{
 	margin:0 0 0 10px;
 	padding:0;
 }
-body.edit .formField{
+body.framed .formField{
 	clear:both;
 	margin:5px 0;
 }
-body.edit .formField label{
+body.framed .formField label{
 	vertical-align:top;
 }
 
-body.edit .info,
-body.edit .validator{
+body.framed .info,
+body.framed .validator{
 	display:block;
 	background:#D6D9D8 none no-repeat 5px 50%;
 	margin:10px 0;
@@ -141,16 +141,16 @@ body.edit .validator{
 	border:solid 1px #cecac7;
 }
 
-body.edit .info{
+body.framed .info{
 	padding-left:24px;
 }
 
 /* validation */
-body.edit .validator{
+body.framed .validator{
 	background-image:url(../../Resources/img/ico/exclamation.gif);
 	padding-left:24px;
 }
-body.edit .validator ul{
+body.framed .validator ul{
 	margin-left:20px;
 }
 
@@ -163,32 +163,32 @@ body.edit .validator ul{
     .striped, .striped td, .striped th {  }
 
 /* NAVIGATCONTEXTMENU */
-body.edit #contextMenu { min-width:75px; border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; }
-    body.edit #contextMenu a { margin:1px; }
-    body.edit #contextMenu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
-    body.edit #contextMenu .command { display:block; padding:1px; white-space:nowrap; border:solid 1px #fff; }
-    body.edit #contextMenu .command img { margin-right:3px; }
-    body.edit #contextMenu .separator { border-bottom:solid 1px #dedad7; margin:0 1px;}
-    body.edit #contextMenu .languages { display:block; width:75px; }
+body.framed #contextMenu { min-width:75px; border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; }
+    body.framed #contextMenu a { margin:1px; }
+    body.framed #contextMenu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
+    body.framed #contextMenu .command { display:block; padding:1px; white-space:nowrap; border:solid 1px #fff; }
+    body.framed #contextMenu .command img { margin-right:3px; }
+    body.framed #contextMenu .separator { border-bottom:solid 1px #dedad7; margin:0 1px;}
+    body.framed #contextMenu .languages { display:block; width:75px; }
 
 /* NAVIGATIONTABLE */
-body.edit .path { display:block; }
-    body.edit .path a { white-space:nowrap; }
-    body.edit .path .current { font-weight:bold; }
+body.framed .path { display:block; }
+    body.framed .path a { white-space:nowrap; }
+    body.framed .path .current { font-weight:bold; }
 
-body.edit .gv .sort a { display:inline; }
-body.edit .tb,
-body.edit .btn { vertical-align:middle; }
-body.edit a.title { white-space:nowrap; }
+body.framed .gv .sort a { display:inline; }
+body.framed .tb,
+body.framed .btn { vertical-align:middle; }
+body.framed a.title { white-space:nowrap; }
 
 /* navigation */
 
-body.edit .nav .selected { font-weight:bold; border: 1px dotted #CCC; margin:0;}
+body.framed .nav .selected { font-weight:bold; border: 1px dotted #CCC; margin:0;}
 .tree { padding:5px; }
 
 /* tree */
 
-body.edit .nav a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px;}
+body.framed .nav a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px;}
 
 li, ul { padding:0; margin:0; display:block; clear:both; padding-bottom:1px; }
 
@@ -201,36 +201,36 @@ li.leaf-last { background-image: url(../../Resources/img/treeview/leaf-last.gif)
 .folder-open-last { background-image: url(../../Resources/img/treeview/collapsable-last.gif); }
     li li { padding-left:16px; }
 
-body.edit .toggler { left:0; position:absolute; height:16px; width:16px; background-image:url(../../Resources/img/treeview/spacer.gif); cursor:pointer; }
+body.framed .toggler { left:0; position:absolute; height:16px; width:16px; background-image:url(../../Resources/img/treeview/spacer.gif); cursor:pointer; }
 
-body.edit ul.ajax { background: transparent url(../../Resources/img/treeview/spinner.gif) no-repeat 0 0; height: 16px; display:none; }
-	body.edit ul.ajax li { display:none; }
+body.framed ul.ajax { background: transparent url(../../Resources/img/treeview/spinner.gif) no-repeat 0 0; height: 16px; display:none; }
+	body.framed ul.ajax li { display:none; }
 
-body.edit .droppable-hover { background-color:#eee; }
+body.framed .droppable-hover { background-color:#eee; }
 
 /* NEW */
-body.edit .type { clear:both; }
-body.edit .type a { display:block; padding:2px 0; }
-body.edit .type a:hover { background-color:#f8f8f8; }
-body.edit .type .title { font-weight:bold; }
+body.framed .type { clear:both; }
+body.framed .type a { display:block; padding:2px 0; }
+body.framed .type a:hover { background-color:#f8f8f8; }
+body.framed .type .title { font-weight:bold; }
 
-body.edit .position em { color:Green; font-weight:bold; }
+body.framed .position em { color:Green; font-weight:bold; }
 .position input, .position label { float:left; display:block; }
 .position label .indent { border:solid 1px silver;}
 .position span { display:block;}
 .position .indent { border:solid 1px silver; padding:5px; width:400px;}
 .position .indent .indent { padding:0 0 0 20px; border:none; width:auto; }
 
-body.edit #nav .day { color:#393; }
-body.edit #nav .week { color:#363; }
-body.edit #nav .invisible{ color:#999;}
-body.edit #nav .unpublished,
-body.edit #nav .expired,
-body.edit #nav .locked { color:#C66; }
+body.framed #nav .day { color:#393; }
+body.framed #nav .week { color:#363; }
+body.framed #nav .invisible{ color:#999;}
+body.framed #nav .unpublished,
+body.framed #nav .expired,
+body.framed #nav .locked { color:#C66; }
 
-body.edit #nav .locked { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_key.png) no-repeat 100% 50%; }
-body.edit #nav .unpublished { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_arrow_down.png) no-repeat 100% 50%; }
-body.edit #nav .expired { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_arrow_top.png) no-repeat 100% 50%; }
+body.framed #nav .locked { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_key.png) no-repeat 100% 50%; }
+body.framed #nav .unpublished { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_arrow_down.png) no-repeat 100% 50%; }
+body.framed #nav .expired { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_arrow_top.png) no-repeat 100% 50%; }
 
 
 /* TABS */

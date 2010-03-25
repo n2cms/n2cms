@@ -1,0 +1,29 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Simple.master.cs" Inherits="N2.Management.Simple" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head id="Head1" runat="server">
+        <title id="title" runat="server"></title>
+        
+		<asp:PlaceHolder runat="server">
+		
+        <link rel="stylesheet" href="<%= ResolveClientUrl("Resources/Css/all.css") %>" type="text/css" />
+        <link rel="stylesheet" href="<%= ResolveClientUrl("Resources/Css/framed.css") %>" type="text/css" />
+        <!--[if lte IE 6]>
+            <link href="<%= ResolveClientUrl("Resources/Css/IE6.css") %>" rel="stylesheet" type="text/css" />
+        <![endif]-->
+        <asp:ContentPlaceHolder ID="Head" runat="server" />
+        </asp:PlaceHolder>
+    </head>
+    <body class="framed">
+		<asp:ContentPlaceHolder ID="Frame" runat="server">
+			<div id="toolbar" class="toolbar"><div class="inner">
+				<asp:ContentPlaceHolder ID="Toolbar" runat="server" />
+			</div></div>
+			<asp:ContentPlaceHolder ID="Outside" runat="server" />
+			<div id="content" class="content">
+				<h1 id="h1" runat="server" />
+				<asp:ContentPlaceHolder ID="Content" runat="server" />
+			</div>
+        </asp:ContentPlaceHolder>
+    </body>
+</html>

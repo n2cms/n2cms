@@ -25,8 +25,7 @@
 			# of changes last week:
 		</th><td>
 				<edit:InfoLabel Label="" id="lblChangesLastWeek" runat="server" />
-		</th></tr>
-		
+		</td></tr>		
 	</tbody></table>
 
 </div></div>

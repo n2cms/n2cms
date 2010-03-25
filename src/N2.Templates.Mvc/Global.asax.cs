@@ -24,6 +24,8 @@ namespace N2.Templates.Mvc
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
+			AreaRegistration.RegisterAllAreas(new AreaRegistrationState(engine));
+
 			routes.MapContentRoute("Content", engine);
 
 			routes.MapRoute(

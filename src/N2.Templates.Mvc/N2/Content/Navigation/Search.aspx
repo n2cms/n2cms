@@ -12,7 +12,7 @@
 		</asp:PlaceHolder>
         <script src="../../Resources/Js/jquery.ui.ashx" type="text/javascript" ></script>
     </head>
-<body class="edit navigation search">
+<body class="framed navigation search">
     <form id="form1" runat="server">
         <asp:Panel runat="server" CssClass="list">
             <n2:ItemDataSource ID="idsItems" runat="server" />

@@ -5,14 +5,14 @@ using N2.Web;
 using N2.Web.UI;
 using N2.Definitions;
 
-namespace N2.Templates.Mvc.Models.Pages
+namespace N2.Templates.Mvc.Areas.Management.Models
 {
     [PageDefinition("Root Page", 
 		Description = "A root page used to organize start pages.", 
 		SortOrder = 0,
 		InstallerVisibility = InstallerHint.PreferredRootPage,
 		IconUrl = "~/N2/Resources/Img/Ico/Png/page_gear.png",
-		TemplateUrl = "~/N2/Myself/Root.aspx")]
+		TemplateUrl = "~/Areas/Management/Root.aspx")]
     [RestrictParents(AllowedTypes.None)]
     [AvailableZone("Left", "Left")]
     [AvailableZone("Center", "Center")]

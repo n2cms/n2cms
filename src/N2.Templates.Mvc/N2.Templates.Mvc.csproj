@@ -71,6 +71,9 @@
       <HintPath>..\..\lib\net3.5\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -129,6 +132,27 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Management\Controllers\ManageAnalyticsController.cs" />
+    <Compile Include="Areas\Management\ManagementAreaRegistration.cs" />
+    <Compile Include="Areas\Management\Models\AnalyticsViewModel.cs" />
+    <Compile Include="Areas\Management\Models\Extensions.cs" />
+    <Compile Include="Areas\Management\Models\ManageAnalyticsPart.cs" />
+    <Compile Include="Areas\Management\Models\AnalyticsPartBase.cs" />
+    <Compile Include="Areas\Management\Models\ReimersGoogle\AnalyticsAccountInfo.cs" />
+    <Compile Include="Areas\Management\Models\ReimersGoogle\CityReport.cs" />
+    <Compile Include="Areas\Management\Models\ReimersGoogle\Dimension.cs" />
+    <Compile Include="Areas\Management\Models\ReimersGoogle\GenericEntry.cs" />
+    <Compile Include="Areas\Management\Models\ReimersGoogle\Metric.cs" />
+    <Compile Include="Areas\Management\Models\ReimersGoogle\ReportRequestor.cs" />
+    <Compile Include="Areas\Management\Models\ReimersGoogle\TokenRequestor.cs" />
+    <Compile Include="Areas\Management\Models\ConfigureAnalyticsViewModel.cs" />
+    <Compile Include="Areas\Management\Root.aspx.cs">
+      <DependentUpon>Root.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Areas\Management\Root.aspx.designer.cs">
+      <DependentUpon>Root.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Classes\Configuration\MailConfigSource.cs" />
     <Compile Include="Classes\Configuration\TemplatesSection.cs" />
     <Compile Include="Classes\Configuration\WikiElement.cs" />
@@ -177,7 +201,7 @@
       <DependentUpon>Image.ashx</DependentUpon>
     </Compile>
     <Compile Include="Models\Pages\AbstractContentPage.cs" />
-    <Compile Include="Models\Pages\RootPage.cs" />
+    <Compile Include="Areas\Management\Models\RootPage.cs" />
     <Compile Include="Models\Parts\AbstractItem.cs" />
     <Compile Include="Models\Pages\AbstractPage.cs" />
     <Compile Include="Models\Pages\AbstractSearch.cs" />
@@ -370,6 +394,8 @@
     <None Include="App_Data\DarkStrips_SampleData.gz" />
     <None Include="App_Data\KhakiTabs_SampleData.gz" />
     <None Include="App_Data\Plain_SampleData.gz" />
+    <Content Include="Areas\Management\Web.config" />
+    <Content Include="Areas\Management\Views\Web.config" />
     <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
     <Content Include="App_Themes\ContentFocus\content_top.gif" />
     <Content Include="App_Themes\ContentFocus\list_dark.gif" />
@@ -544,6 +570,12 @@
     <Content Include="App_Themes\TomatoTabs\SidebarRightBg.gif" />
     <Content Include="App_Themes\TomatoTabs\Style.css" />
     <Content Include="App_Themes\TomatoTabs\TopBg.gif" />
+    <Content Include="Areas\Management\Root.aspx" />
+    <Content Include="Areas\Management\Views\ManageAnalytics\ConfigureStatistics.ascx" />
+    <Content Include="Areas\Management\Views\ManageAnalytics\Index.ascx" />
+    <Content Include="Areas\Management\Views\ManageAnalytics\InputToken.ascx" />
+    <Content Include="Areas\Management\Views\ManageAnalytics\SelectAccount.ascx" />
+    <Content Include="Areas\Management\Views\ManageAnalytics\Statistics.ascx" />
     <Content Include="Views\Calendar\App_LocalResources\Index.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -555,6 +587,7 @@
     <Content Include="Views\SharedParts\RandomImage.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Management\Views\Shared\" />
     <Folder Include="Views\Shared\App_LocalResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

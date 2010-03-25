@@ -19,3 +19,19 @@ table.columns { margin:0 auto; width:99%; }
 				.uc td { border:solid 1px #eee; padding:1px 4px; }
 		.uc .list .item,
 		.uc .sidelist .item { margin-bottom:.5em; }
+
+.validation-summary-errors
+{
+	padding:5px;
+	margin-bottom:10px;
+	background-color:#fcc;
+}
+.input-validation-error
+{
+	border-color:#f00;
+	background-color:#fcc;
+}
+input[type=submit]
+{
+	margin-top:10px;
+}

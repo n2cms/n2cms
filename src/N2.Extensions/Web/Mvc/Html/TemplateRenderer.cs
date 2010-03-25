@@ -4,8 +4,8 @@ using System.IO;
 using System.Security;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Routing;
-using Microsoft.Web.Mvc;
 using N2.Engine;
 using N2.Web.UI;
 
@@ -30,37 +30,57 @@ namespace N2.Web.Mvc.Html
 
         public string RenderTemplate(ContentItem item, ViewContext viewContext)
 		{
-			var routeData = new RouteData();
+			foreach (var route in RouteTable.Routes)
+			{
+				var contentRoute = route as ContentRoute;
+				if (contentRoute != null)
+				{
+					var rv = contentRoute.GetRouteValues(item, viewContext.RouteData.Values);
+					if(rv != null)
+						return Render(viewContext, rv);
+				}
+			}
+
+			RouteValueDictionary values = new RouteValueDictionary();
+			CopyValues(viewContext.RouteData.DataTokens, values);
+			CopyValues(viewContext.RouteData.Values, values);
 
 			var controllerName = controllerMapper.GetControllerName(item.GetType());
 			if (controllerName == null)
 				throw new InvalidOperationException("Couldn't find a controller that controls the item '" + item + "'. Does a controller attributed with the [Controls(typeof(" + item.GetType() + ")] attribute exist in the solution?");
 
-			routeData.Values[ContentRoute.ControllerKey] = controllerName;
-			routeData.Values[ContentRoute.ContentItemKey] = item.ID;
-			routeData.Values[ContentRoute.ContentPageKey] = viewContext.RouteData.Values[ContentRoute.ContentPageKey];
-			routeData.Values[ContentRoute.ActionKey] = "index";
-			routeData.DataTokens[ContentRoute.ContentItemKey] = item;
-			routeData.DataTokens[ContentRoute.ContentPageKey] = viewContext.RouteData.DataTokens[ContentRoute.ContentPageKey];
-			routeData.DataTokens[ContentRoute.ContentEngineKey] = _engine;
-			
-			var writer = new StringWriter();
+			values[ContentRoute.ControllerKey] = controllerName;
+			values[ContentRoute.ContentItemKey] = item.ID;
+			values[ContentRoute.ActionKey] = "index";
 
+			return Render(viewContext, values);
+		}
+
+		private string Render(ViewContext viewContext, RouteValueDictionary values)
+		{
+			var writer = new StringWriter();
 			using (var scope = new HttpContextScope(writer))
 			{
 				// execute the action
-                var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
-                                                            {
-                                                                HttpContext = new HttpContextWrapper(scope.CurrentContext),
-                                                                ViewData = viewContext.ViewData,
-																TempData = viewContext.TempData
-                                                            },
-                                                           new SimpleViewDataContainer { ViewData = viewContext.ViewData });
+				var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
+					{
+						HttpContext = new HttpContextWrapper(scope.CurrentContext),
+						ViewData = viewContext.ViewData,
+						TempData = viewContext.TempData
+					},
+					new SimpleViewDataContainer { ViewData = viewContext.ViewData });
 
-				helper.RenderRoute(routeData.Values);
+				helper.RenderAction("index", values);
+				
+				return writer.ToString();
 			}
+		}
 
-			return writer.ToString();
+		private RouteValueDictionary CopyValues(RouteValueDictionary from, RouteValueDictionary to)
+		{
+			foreach (var kvp in from)
+				to[kvp.Key] = kvp.Value;
+			return to;
 		}
  
 

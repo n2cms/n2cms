@@ -1,20 +1,20 @@
 /* clearfix */
-body.edit .cf:after,
-body.edit .editDetail:after,
-body.edit .tree li:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
+.cf:after,
+.editDetail:after,
+.tree li:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
 
-body.edit .cf,
-body.edit .editDetail,
-body.edit .tree li { *display: inline-block; }
+.cf,
+.editDetail,
+.tree li { *display: inline-block; }
 
 /* Hides from IE-mac \*/
-body.edit * html .cf,
-body.edit * html .editDetail,
-body.edit * html .tree li { height: 1%; }
+body.framed * html .cf,
+body.framed * html .editDetail,
+body.framed * html .tree li { height: 1%; }
 
-body.edit .cf,
-body.edit .editDetail,
-body.edit .tree li { display: block; }
+body.framed .cf,
+body.framed .editDetail,
+body.framed .tree li { display: block; }
 /* End hide from IE-mac */
 
 body { padding:0; margin:0; }
@@ -28,21 +28,21 @@ h1{ margin:1em 0; font-size:1.5em; }
 h2{ border-top:solid 1px silver; margin:5px 0; padding-top:5px; font-size:1.2em; width:95%; }
 
 /* toolbar */
-body.edit fieldset{
+body.framed fieldset{
 	margin-bottom:10px;
 }
 .command img{
 	position:relative;
 	top:-2px;
 }
-body.edit .toolbar .command[disabled=disabled]{
+body.framed .toolbar .command[disabled=disabled]{
 	color:silver;
 	opacity:.5;
 }
 
-body.edit .commandOptions{
+body.framed .commandOptions{
 	float:left;
 }
-body.edit .toolbar .rightAligned{
+body.framed .toolbar .rightAligned{
 	float:right;
 }

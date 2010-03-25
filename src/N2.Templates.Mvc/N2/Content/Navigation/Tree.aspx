@@ -14,7 +14,7 @@
         <script src="../../Resources/Js/jquery.ui.ashx" type="text/javascript" ></script>
 		<script src="../../Resources/Js/ContextMenu.js?v2" type="text/javascript" ></script>
     </head>
-<body class="edit navigation tree">
+<body class="framed navigation tree">
     <form id="form1" runat="server">
         <div id="nav" class="tree nav">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
@@ -114,7 +114,8 @@
         			fallback.call(this, e);
     			else
     				e.preventDefault();
-        	};
+    		};
+    		$("a.selected").focus();
         </script>
     	<% } %>
     	

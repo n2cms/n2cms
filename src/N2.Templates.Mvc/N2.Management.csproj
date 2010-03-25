@@ -75,6 +75,7 @@
     <Content Include="N2\Content\New.aspx" />
     <Content Include="N2\Web.config" />
     <None Include="N2\Content\Dependencies.aspx" />
+    <Content Include="N2\Simple.master" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2expandable.js" />
     <Content Include="N2\Files\Resize.ashx" />
     <Content Include="N2\Top.master" />
@@ -238,6 +239,13 @@
     <Compile Include="N2\Files\ImagesUtility.cs" />
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
+    <Compile Include="N2\Simple.master.cs">
+      <DependentUpon>Simple.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Simple.master.designer.cs">
+      <DependentUpon>Simple.master</DependentUpon>
+    </Compile>
     <Compile Include="N2\Installation\Begin\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1249,6 +1257,9 @@
     <Content Include="N2\Resources\img\darken25.png" />
     <Content Include="N2\Resources\img\fieldset_bg.png" />
     <Content Include="N2\Resources\img\ico\clock.gif" />
+    <Content Include="N2\Resources\img\ico\png\chart_bar.png" />
+    <Content Include="N2\Resources\img\ico\png\chart_curve.png" />
+    <Content Include="N2\Resources\img\ico\png\chart_pie.png" />
     <Content Include="N2\Resources\img\ico\png\clock.png" />
     <Content Include="N2\Resources\img\ico\png\cog.png" />
     <Content Include="N2\Resources\img\ico\png\eye.png" />

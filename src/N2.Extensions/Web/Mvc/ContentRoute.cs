@@ -55,6 +55,37 @@ namespace N2.Web.Mvc
 				this.routeHandler);
 		}
 
+		/// <summary>Gets route data for for items this route handles.</summary>
+		/// <param name="item">The item whose route to get.</param>
+		/// <param name="routeValues">The route values to apply to the route data.</param>
+		/// <returns>A route data object or null.</returns>
+		public virtual RouteValueDictionary GetRouteValues(ContentItem item, RouteValueDictionary routeValues)
+		{
+			string actionName = "index";
+			if (routeValues.ContainsKey(ActionKey))
+				actionName = (string)routeValues[ActionKey];
+
+			string controllerName = controllerMapper.GetControllerName(item.GetType());
+			if (!controllerMapper.ControllerHasAction(controllerName, actionName))
+				return null;
+
+			var values = new RouteValueDictionary(routeValues);
+
+			foreach (var kvp in innerRoute.Defaults)
+				if(!values.ContainsKey(kvp.Key))
+					values[kvp.Key] = kvp.Value;
+			foreach (var kvp in innerRoute.DataTokens)
+				if (!values.ContainsKey(kvp.Key))
+					values[kvp.Key] = kvp.Value;
+
+			values[ControllerKey] = controllerName;
+			values[ActionKey] = actionName;
+			values[item.IsPage ? ContentPageKey : ContentPartKey] = item.ID;
+			values[ContentItemKey] = item.ID;
+
+			return values;
+		}
+
 		public override RouteData GetRouteData(HttpContextBase httpContext)
 		{
 			string path = httpContext.Request.AppRelativeCurrentExecutionFilePath;
@@ -147,23 +178,22 @@ namespace N2.Web.Mvc
 			var controllerName = Convert.ToString(routeData.Values[ControllerKey]);
 			var actionName = Convert.ToString(routeData.Values[ActionKey]);
 
-			if (controllerMapper.ControllerHasAction(controllerName, actionName))
-			{
-				var part = ApplyContent(routeData, context.Request.QueryString, ContentPartKey);
-				if (part != null)
-					routeData.ApplyContentItem(ContentItemKey, part);
-				else
-					ApplyContent(routeData, context.Request.QueryString, ContentItemKey);
-				
-				var page = ApplyContent(routeData, context.Request.QueryString, ContentPageKey);
-				if (page == null)
-					routeData.ApplyContentItem(ContentPageKey, part.ClosestPage());
-				routeData.DataTokens[ContentEngineKey] = engine;
+			if (!controllerMapper.ControllerHasAction(controllerName, actionName))
+				return null;
 
-				return routeData;
-			}
+			
+			var part = ApplyContent(routeData, context.Request.QueryString, ContentPartKey);
+			if (part != null)
+				routeData.ApplyContentItem(ContentItemKey, part);
+			else
+				ApplyContent(routeData, context.Request.QueryString, ContentItemKey);
+			
+			var page = ApplyContent(routeData, context.Request.QueryString, ContentPageKey);
+			if (page == null)
+				routeData.ApplyContentItem(ContentPageKey, part.ClosestPage());
+			routeData.DataTokens[ContentEngineKey] = engine;
 
-			return null;
+			return routeData;
 		}
 
 		private ContentItem ApplyContent(RouteData routeData, NameValueCollection query, string key)
@@ -206,8 +236,8 @@ namespace N2.Web.Mvc
 				return ResolveContentActionUrl(requestContext, values, item);
 
 			// try to find an appropriate page to use as path (part data goes into the query strings)
-			ContentItem page;
-			if (TryConvertContentToController(values, ContentPageKey, out page))
+			ContentItem page = values.CurrentItem<ContentItem>(ContentPageKey, engine.Persister);
+			if (page != null)
 				// a page parameter was passed
 				return ResolvePartActionUrl(requestContext, values, page, item);
 
@@ -265,14 +295,22 @@ namespace N2.Web.Mvc
 				return false;
 			}
 
-			item = values[key] as ContentItem;
+			object value = values[key];
+			item = value as ContentItem;
 			if (item != null)
 			{
 				// overwrite currently executing controller when "item" is passed
 				values.Remove(key);
-				values["controller"] = controllerMapper.GetControllerName(item.GetType());
+				values[ControllerKey] = controllerMapper.GetControllerName(item.GetType());
 				return true;
 			}
+			else if (value is int)
+			{
+				item = engine.Persister.Get((int)value);
+				values[ControllerKey] = controllerMapper.GetControllerName(item.GetType());
+				return true;
+			}
+
 			return false;
 		}
 	}

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Web.Routing;
+using N2.Persistence;
+using N2.Engine;
 
 namespace N2.Web.Mvc
 {
@@ -26,7 +28,16 @@ namespace N2.Web.Mvc
 		{
 			if (context == null) throw new ArgumentNullException("context");
 
-			return context.RouteData.DataTokens[key] as T;
+			return context.RouteData.DataTokens[key] as T
+				?? context.RouteData.Values.CurrentItem<T>(
+					key, 
+					context.RouteData.GetEngine().Persister);
+		}
+
+		private static IEngine GetEngine(this RouteData routeData)
+		{
+			return routeData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
+				?? N2.Context.Current;
 		}
 	}
 }

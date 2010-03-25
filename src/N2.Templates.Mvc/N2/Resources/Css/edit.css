@@ -1,5 +1,5 @@
 /* right */
-body.edit .right{
+body.framed .right{
 	position:absolute;
 	top:40px;
 	right:10px;
@@ -7,16 +7,16 @@ body.edit .right{
 	background-color:White;
 	z-index:10;
 }
-body.edit .right fieldset{
+body.framed .right fieldset{
 	margin-right:10px;
 	padding:10px;
 }
 
 /* Info */
-body.edit .infoBox label{
+body.framed .infoBox label{
 	margin-right:5px;
 }
-body.edit .infoBox span{
+body.framed .infoBox span{
 	font-weight:bold;
 	vertical-align:middle;
 }
@@ -29,21 +29,21 @@ body.edit .infoBox span{
 .zonesBox .iconed { background:transparent none no-repeat 2px 50%; padding:2px 2px 2px 19px; float:right; }
 
 /* Edit details */
-body.edit .content fieldset { clear:left; padding:10px; }
+body.framed .content fieldset { clear:left; padding:10px; }
 
-body.edit .titleEditor { width:580px; }
-body.edit textarea.textEditor { width:580px; }
-body.edit textarea.freeTextArea { height:380px; }
-body.edit .itemEditor .editDetail { margin:0 0 10px 0; clear:left; }
-body.edit .itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 0; }
-body.edit .itemEditor .editControl { float:left; padding:0; margin:0 0 5px 0; }
-body.edit .itemEditor .editControl label { font-weight:normal; display:inline; float:none; }
-body.edit .itemEditor .editControl input { vertical-align:middle; }
-body.edit .nameEditor { width:142px; }
-body.edit .urlSelector, body.edit .textEditor { width:284px; }
-body.edit .titleEditor { font-size:1.5em; }
-body.edit .popupButton { margin-right:10px;}
-body.edit input.disabled, body.edit .disabled *, body.edit input.dimmed, body.edit .dimmed *
+body.framed .titleEditor { width:580px; }
+body.framed textarea.textEditor { width:580px; }
+body.framed textarea.freeTextArea { height:380px; }
+body.framed .itemEditor .editDetail { margin:0 0 10px 0; clear:left; }
+body.framed .itemEditor .editorLabel { width:110px; float:left; clear:left; padding:5px 5px 0 0; margin:0 0 5px 0; }
+body.framed .itemEditor .editControl { float:left; padding:0; margin:0 0 5px 0; }
+body.framed .itemEditor .editControl label { font-weight:normal; display:inline; float:none; }
+body.framed .itemEditor .editControl input { vertical-align:middle; }
+body.framed .nameEditor { width:142px; }
+body.framed .urlSelector, body.framed .textEditor { width:284px; }
+body.framed .titleEditor { font-size:1.5em; }
+body.framed .popupButton { margin-right:10px;}
+body.framed input.disabled, body.framed .disabled *, body.framed input.dimmed, body.framed .dimmed *
     { opacity:.50; filter: alpha(opacity=50); }
 table.editDetail { border-collapse:collapse; }
 .keepUpdated { background:transparent url(../../Resources/img/ico/png/lock_open.png) no-repeat; padding:2px; cursor:pointer; }
@@ -53,21 +53,21 @@ table.editDetail { border-collapse:collapse; }
 .uploader label { margin:0 10px; }
 .crowded .uploadableContainer .fileSelector { width:184px }
 
-body.edit .delete { float:right; }
-body.edit .versionInfo { background-image:url(../../Resources/img/ico/png/information.png); }
+body.framed .delete { float:right; }
+body.framed .versionInfo { background-image:url(../../Resources/img/ico/png/information.png); }
 
 /* tab overrides */
-body.edit .tabPanel { margin-bottom:10px; }
-body.edit .tabPanel fieldset { left:0; }
-body.edit .itemEditor hr { margin:15px 0 }
+body.framed .tabPanel { margin-bottom:10px; }
+body.framed .tabPanel fieldset { left:0; }
+body.framed .itemEditor hr { margin:15px 0 }
 
-body.edit .help { vertical-align:middle; }
+body.framed .help { vertical-align:middle; }
 
-body.edit .helpPanel { cursor:pointer; }
+body.framed .helpPanel { cursor:pointer; }
 
-body.edit .helpText { display:none; float:left; }
-body.edit .helpText b { display:block; }
-body.edit .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD7; margin-bottom:10px; padding-bottom:10px; }
+body.framed .helpText { display:none; float:left; }
+body.framed .helpText b { display:block; }
+body.framed .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD7; margin-bottom:10px; padding-bottom:10px; }
 
 #content .defaultSkin table.mceLayout,
 #content .defaultSkin table.mceLayout tr.mceFirst td { border:none; }

@@ -41,8 +41,7 @@ namespace N2.Web.Mvc
 			get
 			{
 				if (currentItem == null)
-					currentItem = ControllerContext.RequestContext.CurrentItem<T>()
-						?? GetCurrentItemById(ContentRoute.ContentItemKey);
+					currentItem = ControllerContext.RequestContext.CurrentItem<T>();
 
 				return currentItem;
 			}
@@ -79,15 +78,6 @@ namespace N2.Web.Mvc
 
 
 
-		private T GetCurrentItemById(string key)
-		{
-			int itemId;
-			if (Int32.TryParse(ControllerContext.RouteData.Values[key] as string, out itemId)
-				|| Int32.TryParse(Request[ContentRoute.ContentItemKey], out itemId))
-				return Engine.Persister.Get(itemId) as T;
-
-			return null;
-		}
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
