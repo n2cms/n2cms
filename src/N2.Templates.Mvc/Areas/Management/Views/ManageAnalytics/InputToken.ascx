@@ -13,7 +13,7 @@
 				<label>Password: <input name="password" type="password" /></label>
 			</div>
 			<div class="buttons">
-			<input type="submit" />
+			<input type="submit" value="Save" />
 			Your password is not saved but all editors will see the statistics.
 			</div>
 			<% Html.EndForm(); %>

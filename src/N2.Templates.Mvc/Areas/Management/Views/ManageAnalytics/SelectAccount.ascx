@@ -17,7 +17,7 @@
 				</label>
 			</div>
 			<div class="buttons">
-				<input type="submit" />
+				<input type="submit" value="Save" />
 			</div>
 			<% Html.EndForm(); %>
 		</div>

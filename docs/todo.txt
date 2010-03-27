@@ -1,5 +1,6 @@
-http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204407 (root page)
-http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204226 (Cannot cast the current page)
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204407 (root page)
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204226 (Cannot cast the current page)
+- fix routing to areas
 
 v2
 - fix preview version issue

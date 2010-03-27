@@ -35,7 +35,7 @@
 				</fieldset>
 			</div>
 			<div class="buttons">
-				<input type="submit" />
+				<input type="submit" value="Save" />
 				No data? Choosing less metrics and shorter time periods might help
 			</div>
 			<% Html.EndForm(); %>
