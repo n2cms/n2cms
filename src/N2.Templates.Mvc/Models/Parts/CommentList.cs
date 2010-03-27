@@ -6,7 +6,8 @@ using N2.Templates.Mvc.Models.Pages;
 namespace N2.Templates.Mvc.Models.Parts
 {
 	[Disable] // This item is added by the CommentInput thus it's disabled
-	[NotThrowable]
+	[Throwable(AllowInTrash.No)]
+	[Versionable(AllowVersions.No)]
 	[PartDefinition("Comment List",
 		IconUrl = "~/Content/Img/comments.png")]
 	[RestrictParents(typeof (AbstractPage))]

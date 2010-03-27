@@ -4,6 +4,7 @@ using System.Reflection;
 using N2.Persistence.Finder;
 using N2.Edit.Workflow;
 using N2.Engine;
+using N2.Definitions;
 
 namespace N2.Persistence
 {
@@ -161,6 +162,9 @@ namespace N2.Persistence
 				.OrderBy.VersionIndex.Desc;
 		}
 
+		/// <summary>Removes exessive versions.</summary>
+		/// <param name="publishedItem">The item whose versions to trim.</param>
+		/// <param name="maximumNumberOfVersions">The maximum number of versions to keep.</param>
 		public virtual void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions)
 		{
 			if (maximumNumberOfVersions < 0) throw new ArgumentOutOfRangeException("maximumNumberOfVersions");
@@ -181,6 +185,17 @@ namespace N2.Persistence
 				itemRepository.Flush();
 				transaction.Commit();
 			}
+		}
+
+		/// <summary>Checks whether an item  may have versions.</summary>
+		/// <param name="item">The item to check.</param>
+		/// <returns>True if the item is allowed to have versions.</returns>
+		public bool IsVersionable(ContentItem item)
+		{
+			var versionables = (VersionableAttribute[])item.GetType().GetCustomAttributes(typeof(VersionableAttribute), true);
+			bool isVersionable = versionables.Length == 0 || versionables[0].Versionable == N2.Definitions.AllowVersions.Yes;
+			
+			return isVersionable;
 		}
 
 		#endregion

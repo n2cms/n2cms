@@ -450,7 +450,7 @@ namespace N2.Edit
 				if (itemToUpdate == null)
 					throw new ArgumentException("Expected the current item to be a version of another item.", "item");
 
-				if (ShouldStoreVersion(item))
+				if (ShouldCreateVersionOf(item))
 					SaveVersion(itemToUpdate);
 
 				DateTime? published = itemToUpdate.Published;
@@ -493,7 +493,7 @@ namespace N2.Edit
 		{
 			using (ITransaction tx = persister.Repository.BeginTransaction())
 			{
-				if (ShouldStoreVersion(item))
+				if (ShouldCreateVersionOf(item))
 					SaveVersion(item);
 
 				DateTime? initialPublished = item.Published;
@@ -527,7 +527,7 @@ namespace N2.Edit
 		{
 			using (ITransaction tx = persister.Repository.BeginTransaction())
 			{
-				if (ShouldStoreVersion(item))
+				if (ShouldCreateVersionOf(item))
 					item = SaveVersion(item);
 
 				bool wasUpdated = UpdateItem(item, addedEditors, user);
@@ -546,10 +546,9 @@ namespace N2.Edit
 			}
 		}
 
-		private bool ShouldStoreVersion(ContentItem item)
+		private bool ShouldCreateVersionOf(ContentItem item)
 		{
-			return EnableVersioning && !IsNew(item) &&
-				   item.GetType().GetCustomAttributes(typeof(NotVersionableAttribute), true).Length == 0;
+			return EnableVersioning && !IsNew(item) && versioner.IsVersionable(item);
 		}
 
 		private string FormatSelectedUrl(ContentItem selectedItem, string path)

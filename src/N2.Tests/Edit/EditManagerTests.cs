@@ -28,6 +28,7 @@ namespace N2.Tests.Edit
 				typeof(ItemWithRequiredProperty),
 				typeof(ItemWithModification),
                 typeof(NotVersionableItem),
+                typeof(LegacyNotVersionableItem),
                 typeof(ItemWithSecuredContainer)
 			};
 		}

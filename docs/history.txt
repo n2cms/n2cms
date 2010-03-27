@@ -1,4 +1,5 @@
-﻿- mvc2 area support
+﻿- refactored nonthrowable->throwable(no), nonversionable->versionable(no)
+- mvc2 area support
 - google analytics part (mvc only)
 	- reimers google integration
 	- flot graph rendering

@@ -31,7 +31,8 @@ namespace N2.Tests.Edit
 
 			Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
 			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
-            mocks.Replay(versioner);
+			versioner.Expect(v => v.IsVersionable(item)).Return(true);
+			mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
             DoTheSaving(null, editor);
@@ -47,6 +48,7 @@ namespace N2.Tests.Edit
 
             Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
 			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
+			versioner.Expect(v => v.IsVersionable(item)).Return(true);
             mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
@@ -64,7 +66,8 @@ namespace N2.Tests.Edit
 
 			Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(version);
 			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
-            mocks.Replay(versioner);
+			versioner.Expect(v => v.IsVersionable(item)).Return(true);
+			mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionOnly);
             DoTheSaving(null, editor);
@@ -108,6 +111,7 @@ namespace N2.Tests.Edit
 
 			Expect.Call(versioner.SaveVersion(currentMaster)).Return(null);
 			versioner.Expect(v => v.TrimVersionCountTo(null, 100)).IgnoreArguments().Repeat.Any();
+			versioner.Expect(v => v.IsVersionable(versionToBeMaster)).Return(true);
 
             mocks.ReplayAll();
 
@@ -140,7 +144,8 @@ namespace N2.Tests.Edit
 
 			Expect.Call(versioner.SaveVersion(newItem)).Return(new ComplexContainersItem(2, "ignored"));
 			versioner.Expect(v => v.TrimVersionCountTo(null, 100)).IgnoreArguments().Repeat.Any();
-            mocks.ReplayAll();
+			versioner.Expect(v => v.IsVersionable(newItem)).Return(true);
+			mocks.ReplayAll();
 
             IItemEditor editor = SimulateEditor(newItem, ItemEditorVersioningMode.VersionAndSave);
             DoTheSaving(null, editor);
@@ -162,6 +167,7 @@ namespace N2.Tests.Edit
 
 			Expect.Call(versioner.SaveVersion(currentMaster)).Return(null);
 			versioner.Expect(v => v.TrimVersionCountTo(currentMaster, 100)).IgnoreArguments().Repeat.Any();
+			versioner.Expect(v => v.IsVersionable(versionToBeMaster)).Return(true);
 
             mocks.ReplayAll();
 
@@ -182,7 +188,8 @@ namespace N2.Tests.Edit
 
 			Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
 			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
-            mocks.Replay(versioner);
+			versioner.Expect(v => v.IsVersionable(item)).Return(true);
+			mocks.Replay(versioner);
 
             editManager.SavingVersion += new EventHandler<CancellableItemEventArgs>(editManager_SavingVersion);
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
@@ -198,15 +205,31 @@ namespace N2.Tests.Edit
             NotVersionableItem item = new NotVersionableItem();
             item.ID = 123;
 
+			versioner.Expect(v => v.IsVersionable(item)).Return(false);
             Expect.Call(versioner.SaveVersion(item)).Repeat.Never();
-            mocks.ReplayAll();
+			mocks.ReplayAll();
 
             var editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
             DoTheSaving(null, editor);
 
             mocks.VerifyAll();
-            //versioner.AssertWasNotCalled(delegate(VersionManager vm) { vm.SaveVersion(item); });
-        }
+		}
+
+		[Test]
+		public void SavingItem_ThatIsNotVersionable_DoesntStoreVersion_LegacyAttribute()
+		{
+			LegacyNotVersionableItem item = new LegacyNotVersionableItem();
+			item.ID = 123;
+
+			Expect.Call(versioner.SaveVersion(item)).Repeat.Never();
+			versioner.Expect(v => v.IsVersionable(item)).Return(false);
+			mocks.ReplayAll();
+
+			var editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);
+			DoTheSaving(null, editor);
+
+			mocks.VerifyAll();
+		}
 
         [Test]
         public void SavingVersionEvent_IsNotInvoked_WhenNewItem()

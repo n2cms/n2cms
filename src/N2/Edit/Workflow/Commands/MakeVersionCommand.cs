@@ -15,9 +15,8 @@ namespace N2.Edit.Workflow.Commands
         }
         public override void Process(CommandContext state)
         {
-            if (state.Content.GetType().GetCustomAttributes(typeof(N2.Persistence.NotVersionableAttribute), true).Length > 0)
-                return;
-            versionMaker.SaveVersion(state.Content);
+            if (versionMaker.IsVersionable(state.Content))
+                versionMaker.SaveVersion(state.Content);
         }
     }
 

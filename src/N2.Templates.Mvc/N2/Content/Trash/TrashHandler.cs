@@ -66,7 +66,9 @@ namespace N2.Edit.Trash
 			TrashContainerItem trash = GetTrashContainer(false);
             bool enabled = trash == null || trash.Enabled;
             bool alreadyThrown = IsInTrash(affectedItem);
-            bool throwable = affectedItem.GetType().GetCustomAttributes(typeof(NotThrowableAttribute), true).Length == 0;
+
+			var throwables = (ThrowableAttribute[])affectedItem.GetType().GetCustomAttributes(typeof(ThrowableAttribute), true);
+			bool throwable = throwables.Length == 0 || throwables[0].Throwable == AllowInTrash.Yes;
 			return enabled && !alreadyThrown && throwable;
 		}
 

@@ -334,6 +334,7 @@ namespace N2.Tests.Edit
 
 			Expect.On(versioner).Call(versioner.SaveVersion(item)).Return(item.Clone(false));
 			versioner.Expect(v => v.TrimVersionCountTo(item, 100)).IgnoreArguments().Repeat.Any();
+			versioner.Expect(v => v.IsVersionable(item)).Return(true);
             mocks.Replay(versioner);
 
             IItemEditor editor = SimulateEditor(item, ItemEditorVersioningMode.VersionAndSave);

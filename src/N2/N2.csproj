@@ -374,6 +374,8 @@
     <Compile Include="Definitions\Static\Description.cs" />
     <Compile Include="Definitions\Static\DescriptionDictionary.cs" />
     <Compile Include="Definitions\Static\IDescriptionRefiner.cs" />
+    <Compile Include="Definitions\ThrowableAttribute.cs" />
+    <Compile Include="Definitions\VersionableAttribute.cs" />
     <Compile Include="Details\EditableCheckBoxAttribute.cs" />
     <Compile Include="Details\EditableDateAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />

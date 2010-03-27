@@ -23,11 +23,11 @@ namespace N2.Edit.Versions
             hlCancel.NavigateUrl = CancelUrl();
             Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title"), Selection.SelectedItem.Title);
 
-            bool isVersionable = SelectedItem.GetType().GetCustomAttributes(typeof(Persistence.NotVersionableAttribute), true).Length == 0;
-            cvVersionable.IsValid = isVersionable;
-			
 			persister = N2.Context.Persister;
 			versioner = N2.Context.Current.Resolve<Persistence.IVersionManager>();
+
+			bool isVersionable = versioner.IsVersionable(SelectedItem);
+            cvVersionable.IsValid = isVersionable;
 
             publishedItem = Selection.SelectedItem.VersionOf ?? SelectedItem;
 

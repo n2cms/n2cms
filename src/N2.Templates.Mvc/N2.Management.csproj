@@ -1251,7 +1251,8 @@
     <Content Include="N2\Myself\Wizards.ascx" />
     <Content Include="N2\Resources\Css\edit.css" />
     <Content Include="N2\Resources\Css\Root.css" />
-    <Content Include="N2\Resources\Css\themes\chock.css" />
+    <Content Include="N2\Resources\Css\themes\choc.css" />
+    <Content Include="N2\Resources\Css\themes\icms.css" />
     <Content Include="N2\Resources\Css\themes\default.css" />
     <Content Include="N2\Resources\Css\themes\ink.css" />
     <Content Include="N2\Resources\img\darken10.png" />
@@ -1529,6 +1530,7 @@
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

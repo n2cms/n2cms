@@ -102,8 +102,28 @@ namespace N2.Tests.Workflow
             dispatcher.Execute(command, context);
 
             Assert.That(versions.GetVersionsOf(item).Count, Is.EqualTo(3));
-        }
+		}
 
+		[Test]
+		public void CreatesVersion_OfVersionableItem()
+		{
+			var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+
+			dispatcher.Execute(CreateCommand(context), context);
+
+			Assert.That(repository.database.Values.Count(v => v.VersionOf == item), Is.GreaterThan(0), "Expected version to be created");
+		}
+
+		[Test]
+		public void DoesntCreateVersion_OfNonVersionableItem()
+		{
+			var unversionable = new UnversionableStatefulItem();
+			var context = new CommandContext(unversionable, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			dispatcher.Execute(CreateCommand(context), context);
+
+			dispatcher.Execute(CreateCommand(context), context);
+			Assert.That(repository.database.Values.Count(v => v.VersionOf == unversionable), Is.EqualTo(0), "Expected no version to be created");
+		}
 
         protected ContentItem MakeVersion(ContentItem master)
         {

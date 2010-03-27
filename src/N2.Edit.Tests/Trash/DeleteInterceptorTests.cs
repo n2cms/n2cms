@@ -70,9 +70,30 @@ namespace N2.Edit.Tests.Trash
 
             Assert.That(deleteArgs.Cancel, Is.False);
             Assert.That(trash.Children.Count, Is.EqualTo(0));
+		}
 
-            //mocks.VerifyAll();
-        }
+		[Test]
+		public void NonThrowableItem_IsNotMovedToTrashcan_LegacyAttribute()
+		{
+			IDefinitionManager definitions = mocks.Stub<IDefinitionManager>();
+
+			IPersister persister = mocks.Stub<IPersister>();
+			Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
+			persister.ItemDeleting += null;
+			IEventRaiser invokeDelete = LastCall.IgnoreArguments().GetEventRaiser();
+
+			mocks.ReplayAll();
+
+			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1));
+			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
+			interceptor.Start();
+
+			CancellableItemEventArgs deleteArgs = new CancellableItemEventArgs(nonThrowable2);
+			invokeDelete.Raise(persister, deleteArgs);
+
+			Assert.That(deleteArgs.Cancel, Is.False);
+			Assert.That(trash.Children.Count, Is.EqualTo(0));
+		}
 
         [Test]
         public void TrashedItem_MovedFromTrashcan_IsUnexpired()

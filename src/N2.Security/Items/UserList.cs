@@ -14,8 +14,8 @@ namespace N2.Security.Items
 		IconUrl= "~/N2/Resources/Img/Ico/Png/group.png")]
 	[WithEditableTitle("Title", 10)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
-    [NotThrowable]
-    public class UserList : N2.ContentItem
+	[Throwable(AllowInTrash.No)]
+	public class UserList : N2.ContentItem
 	{
 		[EditableTextBox("Roles", 100, TextMode=TextBoxMode.MultiLine)]
 		[DetailAuthorizedRoles("admin", "Administrators")]

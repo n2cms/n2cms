@@ -4,10 +4,11 @@ using N2.Web;
 using Management.N2.Files;
 using System;
 using N2.Security;
+using N2.Definitions;
 
 namespace N2.Edit.FileSystem.Items
 {
-    [NotThrowable, NotVersionable, PermissionRemap(From = Permission.Publish, To = Permission.Write)]
+    [Throwable(AllowInTrash.No), Versionable(AllowVersions.No), PermissionRemap(From = Permission.Publish, To = Permission.Write)]
     public abstract class AbstractNode : ContentItem, INode
     {
 		IFileSystem fileSystem;

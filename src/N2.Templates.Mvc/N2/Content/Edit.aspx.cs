@@ -53,7 +53,7 @@ namespace N2.Edit
                 hlCancel.NavigateUrl = CancelUrl();
 
             bool isPublicableByUser = Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
-            bool isVersionable = ie.CurrentItem.GetType().GetCustomAttributes(typeof(NotVersionableAttribute), true).Length == 0;
+			bool isVersionable = Engine.Resolve<IVersionManager>().IsVersionable(ie.CurrentItem);
             bool isWritableByUser = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
             bool isExisting = ie.CurrentItem.ID != 0;
 

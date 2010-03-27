@@ -2,13 +2,15 @@
 using N2.Integrity;
 using System.Web.UI.WebControls;
 using N2.Edit.Trash;
+using N2.Definitions;
 
 namespace N2.Templates.Items
 {
 	[PartDefinition("Comment",
 		IconUrl = "~/Templates/UI/Img/comment.png")]
-    [NotThrowable]
-    [RestrictParents(typeof(CommentList))]
+	[Throwable(AllowInTrash.No)]
+	[Versionable(AllowVersions.No)]
+	[RestrictParents(typeof(CommentList))]
     [WithEditableTitle]
     public class Comment : AbstractItem
     {

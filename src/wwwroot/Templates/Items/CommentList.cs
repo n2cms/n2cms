@@ -5,7 +5,8 @@ using N2.Integrity;
 namespace N2.Templates.Items
 {
     [Disable] // This item is added by the CommentInput thus it's disabled
-    [NotThrowable]
+	[Throwable(AllowInTrash.No)]
+	[Versionable(AllowVersions.No)]
 	[PartDefinition("Comment List",
 		IconUrl = "~/Templates/UI/Img/comments.png")]
     [RestrictParents(typeof(AbstractPage))]

@@ -48,6 +48,11 @@ namespace N2.Tests.Fakes
         {
         }
 
-        #endregion
-    }
+		public bool IsVersionable(ContentItem item)
+		{
+			return original.IsVersionable(item);
+		}
+
+		#endregion
+	}
 }

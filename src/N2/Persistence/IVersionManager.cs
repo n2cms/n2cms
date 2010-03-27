@@ -44,5 +44,10 @@ namespace N2.Persistence
 		/// <param name="publishedItem">The item whose versions to trim.</param>
 		/// <param name="maximumNumberOfVersions">The maximum number of versions to keep.</param>
 		void TrimVersionCountTo(ContentItem publishedItem, int maximumNumberOfVersions);
+
+		/// <summary>Checks whether an item  may have versions.</summary>
+		/// <param name="item">The item to check.</param>
+		/// <returns>True if the item is allowed to have versions.</returns>
+		bool IsVersionable(ContentItem item);
 	}
 }

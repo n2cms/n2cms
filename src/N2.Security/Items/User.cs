@@ -4,12 +4,15 @@ using N2.Details;
 using N2.Integrity;
 using N2.Security.Details;
 using N2.Edit.Trash;
+using N2.Persistence;
+using N2.Definitions;
 
 namespace N2.Security.Items
 {
 	[PartDefinition("User")]
 	[RestrictParents(typeof (UserList))]
-    [NotThrowable]
+    [Throwable(AllowInTrash.No)]
+	[Versionable(AllowVersions.No)]
     public class User : N2.ContentItem
 	{
 		[EditableTextBox("Title", 10, Required = true)]
