@@ -8,22 +8,12 @@
 			<%= m.Key %>: <%= m.Value %>
 		<%} %>
 		-
+		<em>
 		<% foreach (var d in ge.Dimensions){ %>
-			<%= d.Key %>: <%= d.Value %>
+			<span><%= d.Key %>: <%= d.Value %></span>
 		<%} %>
+		</em>
 		</li>
 	<%} %>
 	</ul>
-	
-	<fieldset><legend>Clear</legend>
-	<% using (Html.BeginForm("ClearUser", "ManageAnalytics")){ %>
-		<input type="submit" value="Login" />
-	<% } %>
-	<% using (Html.BeginForm("ClearAccount", "ManageAnalytics")){ %>
-		<input type="submit" value="Account" />
-	<% } %>
-	<% using (Html.BeginForm("ClearConfiguration", "ManageAnalytics")){ %>
-		<input type="submit" value="Dimensions & Metrics" />
-	<% } %>
-	</fieldset>
 </div>

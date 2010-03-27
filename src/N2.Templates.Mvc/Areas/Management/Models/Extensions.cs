@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Areas.Management.Models
 	{
 		public static string SplitWords(this string word)
 		{
-			return Regex.Replace(word, "[0-9A-Z]", (w) => " " + w.Value.ToLower());
+			return Regex.Replace(word, "([0-9]+|[A-Z]+)", (w) => " " + w.Value.ToLower());
 		}
 	}
 }

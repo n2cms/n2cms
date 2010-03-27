@@ -26,18 +26,25 @@ namespace N2.Templates.Mvc.Areas.Management.Models
 			set { SetDetail("AccountID", value, 0); }
 		}
 
-		[EditableTextBox("Username", 110)]
-		public virtual string Username
+		[EditableTextBox("ProfileID", 100)]
+		public virtual int ProfileID
 		{
-			get { return (string)GetDetail("Username"); }
-			set { SetDetail("Username", value, string.Empty); }
+			get { return GetDetail("ProfileID", 0); }
+			set { SetDetail("ProfileID", value, 0); }
 		}
 
-		[EditableTextBox("Password", 120)]
-		public virtual string Password
+		[EditableTextBox("AccountName", 100)]
+		public virtual string AccountName
 		{
-			get { return (string)GetDetail("Password"); }
-			set { SetDetail("Password", value, string.Empty); }
+			get { return GetDetail("AccountName", ""); }
+			set { SetDetail("AccountName", value, ""); }
+		}
+
+		[EditableTextBox("ChartPeriod", 100)]
+		public virtual int ChartPeriod
+		{
+			get { return GetDetail("ChartPeriod", 31); }
+			set { SetDetail("ChartPeriod", value, 31); }
 		}
 
 		public virtual IEnumerable<Dimension> Dimensions

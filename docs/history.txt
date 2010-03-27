@@ -1,5 +1,7 @@
 ﻿- mvc2 area support
 - google analytics part (mvc only)
+	- reimers google integration
+	- flot graph rendering
 - fixed GetCurrentItemById http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=207288
 - mvc part support on webform root
 - returned root page to template projects

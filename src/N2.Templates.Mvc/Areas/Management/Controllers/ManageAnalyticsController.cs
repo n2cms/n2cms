@@ -21,13 +21,13 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
         {
 			if (CurrentItem.Token == null)
 				return InputToken();
-			if (CurrentItem.AccountID == 0)
+			if (CurrentItem.AccountID == 0 || Request["changeaccount"] == CurrentItem.ID.ToString())
 				return SelectAccount();
 			
 			var dimensions = CurrentItem.Dimensions;
 			var metrics = CurrentItem.Metrics;
 
-			if (dimensions.Count() == 0 || metrics.Count() == 0)
+			if (dimensions.Count() == 0 || metrics.Count() == 0 || Request["reconfigure"] == CurrentItem.ID.ToString())
 				return ConfigureStatistics();
 
             return PartialView(CurrentItem);
@@ -36,51 +36,110 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
 
 		public ActionResult Statistics()
 		{
-			var rr = new ReportRequestor(CurrentItem.Token);
-			var accounts = rr.GetAccounts();
-
-			var entries = rr.RequestReport(accounts.First(a => a.AccountID == CurrentItem.AccountID),
-				CurrentItem.Dimensions,
-				CurrentItem.Metrics,
-				DateTime.Today.AddMonths(-1),
-				DateTime.Now);
+			var entries = GetStatisticsEntries(DateTime.Today.AddDays(-CurrentItem.ChartPeriod), DateTime.Now);
 
 			return PartialView(new AnalyticsViewModel { Entries = entries });
 		}
 
+		[HttpPost]
+		public ActionResult StatisticsData(DateTime? from, DateTime? to)
+		{
+			var start = from ?? DateTime.Today.AddDays(-CurrentItem.ChartPeriod);
+			var stop = to ?? DateTime.Now;
+			var entries = GetStatisticsEntries(start, stop).ToList();
+
+			var labels = new string[entries.Count];
+			Dictionary<Metric, int[]> metrics = new Dictionary<Metric, int[]>();
+			foreach(var metric in CurrentItem.Metrics)
+				metrics[metric] = new int[entries.Count];
+			
+			for (int i = 0; i < entries.Count; i++)
+			{
+				labels[i] = string.Join(", ", entries[i].Dimensions.Select(d => DimensionToString(ref start, ref d)).ToArray());
+				foreach (var metric in entries[i].Metrics)
+				{
+					try
+					{
+						metrics[metric.Key][i] = int.Parse(metric.Value);
+					}
+					catch
+					{
+						metrics[metric.Key][i] = 0;
+					}
+				}
+			}
+
+			var tickSize = labels.Length < 8 ? 1 : (int)(labels.Length / 8);
+
+			var data = new
+			{
+				values = metrics.Select(m =>
+					new
+					{
+						label = m.Key.ToString().SplitWords(),
+						data = m.Value.Select((v, i) => new int[] { i, v })
+					}),
+				options = new
+				{
+					xaxis = new
+					{
+						ticks = labels.Select((l, i) => new { i, l })
+							.Where(v => v.i % tickSize == 0)
+							.Select((v) => new object[] { v.i, v.l })
+					}
+				}
+			};
+
+			return Json(data);
+		}
+
+		private static string DimensionToString(ref DateTime start, ref KeyValuePair<Dimension, string> d)
+		{
+			switch (d.Key)
+			{
+				case Dimension.day:
+					return start.AddDays(double.Parse(d.Value)).ToShortDateString();
+				case Dimension.hour:
+					return start.AddHours(double.Parse(d.Value)).ToShortTimeString();
+				case Dimension.month:
+					return start.AddMonths(int.Parse(d.Value)).ToString("MMM");
+				case Dimension.week:
+					return start.AddDays(7 * double.Parse(d.Value)).ToShortDateString();
+				case Dimension.year:
+					return start.AddYears(int.Parse(d.Value)).Year.ToString();
+				default:
+					return d.Value.ToString().SplitWords();
+			}
+		}
 
 		[HttpPost]
 		public ActionResult ClearUser()
 		{
 			CurrentItem.Token = null;
-
-			return ClearAccount();
-		}
-
-		[HttpPost]
-		public ActionResult ClearAccount()
-		{
-			CurrentItem.AccountID = 0;
-			
-			return ClearConfiguration();
-		}
-
-		[HttpPost]
-		public ActionResult ClearConfiguration()
-		{
-			CurrentItem.Metrics = new Metric[0];
-			CurrentItem.Dimensions = new Dimension[0];
-
 			Engine.Persister.Save(CurrentItem);
 
 			return Redirect(CurrentPage.Url);
 		}
 
+		[HttpPost]
+		public ActionResult ChangeAccount()
+		{
+			N2.Web.Url url = CurrentPage.Url;
+			return Redirect(url.AppendQuery("changeaccount", CurrentItem.ID));
+		}
+
+		[HttpPost]
+		public ActionResult Reconfigure()
+		{
+			N2.Web.Url url = CurrentPage.Url;
+			return Redirect(url.AppendQuery("reconfigure", CurrentItem.ID));
+		}
+
 		
 		public ActionResult InputToken()
 		{
-			if (Request["failure"] == "true")
-				ModelState.AddModelError("password", Request["passwordError"]);
+			if (Request["failure"] == CurrentItem.ID.ToString())
+				ModelState.AddModelError("password", Request["errorText"]);
 
 			return PartialView("InputToken", CurrentItem);
 		}
@@ -116,22 +175,27 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
 			return PartialView("SelectAccount", accounts);
 		}
 		[HttpPost]
-		public ActionResult SaveSelectedAccount()
+		public ActionResult SaveSelectedAccount(int profileID)
 		{
-			if (!TryUpdateModel<ManageAnalyticsPart>(CurrentItem, new[] { "AccountID" }))
-			{
-				return Redirect(CurrentPage.Url);
-			}
+			var rr = new ReportRequestor(CurrentItem.Token);
+			var accounts = rr.GetAccounts();
 
-			Engine.Persister.Save(CurrentItem);
-			
+			var account = accounts.Where(a => a.ProfileID == profileID).FirstOrDefault();
+			if (account != null)
+			{
+				CurrentItem.ProfileID = profileID;
+				CurrentItem.AccountID = account.AccountID;
+				CurrentItem.AccountName = account.AccountName;
+				CurrentItem.Title = account.Title;
+				Engine.Persister.Save(CurrentItem);
+			}
 			return Redirect(CurrentPage.Url);
 		}
 
 
 		public ActionResult ConfigureStatistics()
 		{
-			if (Request["failure"] == "true")
+			if (Request["failure"] == CurrentItem.ID.ToString())
 				ModelState.AddModelError("password", Request["errorText"]);
 
 			var vd = new ConfigureAnalyticsViewModel
@@ -139,17 +203,32 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
 				AllDimensions = Enum.GetValues(typeof(Dimension)).OfType<Dimension>().ToList(),
 				AllMetrics = Enum.GetValues(typeof(Metric)).OfType<Metric>().ToList(),
 				SelectedDimensions = CurrentItem.Dimensions.ToList(),
-				SelectedMetrics = CurrentItem.Metrics.ToList()
+				SelectedMetrics = CurrentItem.Metrics.ToList(),
+				Period = CurrentItem.ChartPeriod,
+				Periods = new [] { SLI("Day", 1), SLI("Week", 7), SLI("Month", 31), SLI("Year", 365) }
 			};
+			if (vd.SelectedDimensions.Count == 0)
+				vd.SelectedDimensions.Add(Dimension.date);
+			if (vd.SelectedMetrics.Count == 0)
+				vd.SelectedMetrics.AddRange(new[] { Metric.visits, Metric.pageviews });
 
-			if (Request["failure"] == "true")
+			if (Request["failure"] == CurrentItem.ID.ToString())
 				ModelState.AddModelError("password", Request["errorText"]);
 
 			return PartialView("ConfigureStatistics", vd);
 		}
 
+		private SelectListItem SLI(string text, int value)
+		{
+			return new SelectListItem
+			{
+				Text = text,
+				Value = value.ToString()
+			};
+		} 
+
 		[HttpPost]
-		public ActionResult SaveStatisticsConfiguration()
+		public ActionResult SaveStatisticsConfiguration(int period)
 		{
 			var dimensions = Read<Dimension>("Dimension").ToList();
 			var metrics = Read<Metric>("Metric").ToList();
@@ -157,6 +236,7 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
 			if (dimensions.Count == 0 || metrics.Count == 0)
 				return RedirectToIndex("Must select at least one from dimensions and one from metrics");
 
+			CurrentItem.ChartPeriod = period;
 			CurrentItem.Dimensions = dimensions;
 			CurrentItem.Metrics = metrics;
 			Engine.Persister.Save(CurrentItem);
@@ -181,7 +261,20 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
 		private ActionResult RedirectToIndex(string errorText)
 		{
 			N2.Web.Url url = CurrentPage.Url;
-			return Redirect(url.AppendQuery("failure", "true").AppendQuery("errorText", errorText));
+			return Redirect(url.AppendQuery("failure", CurrentItem.ID).AppendQuery("errorText", errorText));
+		}
+
+		private IEnumerable<GenericEntry> GetStatisticsEntries(DateTime from, DateTime to)
+		{
+			var rr = new ReportRequestor(CurrentItem.Token);
+			
+			var entries = rr.RequestReport(
+				new AnalyticsAccountInfo { AccountID = CurrentItem.AccountID, ProfileID = CurrentItem.ProfileID, Title = CurrentItem.Title, AccountName = CurrentItem.AccountName },
+				CurrentItem.Dimensions,
+				CurrentItem.Metrics,
+				from,
+				to);
+			return entries;
 		}
     }
 }

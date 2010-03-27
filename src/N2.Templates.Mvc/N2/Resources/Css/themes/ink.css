@@ -1,7 +1,8 @@
 ﻿
 /* INK THEME */
 
-body .header
+body .header,
+#home h4
 {
     background-color:#444; 
     background-image:url(../../img/darken25.png);

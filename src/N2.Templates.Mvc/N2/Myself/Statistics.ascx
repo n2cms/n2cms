@@ -4,7 +4,7 @@
 <div class="uc">
 	<h4 class="header"><%= CurrentItem.Title %></h4>
 	<div class="box">
-	<table><tbody>
+	<table class="data"><tbody>
 		<tr><th>
 			# of pages
 		</th><td>

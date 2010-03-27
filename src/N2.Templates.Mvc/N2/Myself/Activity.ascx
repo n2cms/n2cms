@@ -5,7 +5,7 @@
 	<div class="box">
 	<asp:Repeater ID="rptLatestChanges" runat="server">
 		<HeaderTemplate>
-	<table>
+	<table class="data">
 		<thead><tr><th>Changed item</th><th>Saved by</th><th>Last updated</th></tr></thead>
 		<tbody>
 		</HeaderTemplate>

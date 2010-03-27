@@ -54,10 +54,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Mvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\net3.5\Microsoft.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="MvcContrib, Version=1.0.0.916, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net3.5\MvcContrib.dll</HintPath>
@@ -76,9 +72,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.SQLite, Version=1.0.52.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
@@ -108,8 +101,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_GlobalResources\Definitions.designer.cs">
@@ -570,6 +561,7 @@
     <Content Include="App_Themes\TomatoTabs\SidebarRightBg.gif" />
     <Content Include="App_Themes\TomatoTabs\Style.css" />
     <Content Include="App_Themes\TomatoTabs\TopBg.gif" />
+    <Content Include="Areas\Management\Resources\jquery.flot.js" />
     <Content Include="Areas\Management\Root.aspx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\ConfigureStatistics.ascx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\Index.ascx" />

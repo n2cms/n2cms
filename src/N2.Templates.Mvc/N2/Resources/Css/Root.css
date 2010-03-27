@@ -13,10 +13,10 @@ table.columns { margin:0 auto; width:99%; }
 				.field { margin:2px 0; }
 				label { font-weight:bold; margin-right:10px; }
 				
-				.uc table { border-collapse:collapse; width:100%; }
-				.uc th { font-weight:bold; background-color:#eee; border:solid 1px #fff; }
-				.uc thead th { padding:4px; }
-				.uc td { border:solid 1px #eee; padding:1px 4px; }
+				.uc table.data { border-collapse:collapse; width:100%; }
+				.uc table.data th { font-weight:bold; background-color:#eee; border:solid 1px #fff; }
+				.uc table.data thead th { padding:4px; }
+				.uc table.data td { border:solid 1px #eee; padding:1px 4px; }
 		.uc .list .item,
 		.uc .sidelist .item { margin-bottom:.5em; }
 
@@ -31,7 +31,7 @@ table.columns { margin:0 auto; width:99%; }
 	border-color:#f00;
 	background-color:#fcc;
 }
-input[type=submit]
+.buttons
 {
-	margin-top:10px;
+	padding-top:10px;
 }

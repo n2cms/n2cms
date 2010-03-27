@@ -5,20 +5,26 @@
 </style>
 
 <div class="uc analytics">
-	<h4>Google Analytics Dimensions & Metrics</h4>
+	<h4>Google Analytics: Configure</h4>
 	<div class="box">
 		<div class="inner">	
 			<% Html.BeginForm("SaveStatisticsConfiguration", "ManageAnalytics"); %>
 			<%= Html.ValidationSummary() %>
 			<div>
-				<fieldset><legend>Dimensions</legend>
-				<% foreach(var dimension in Model.AllDimensions) { %>
 				<label>
-					<input type="checkbox" name="Dimension" <%= Model.SelectedDimensions.Contains(dimension) ? "checked='checked'" : "" %> value="<%= dimension %>" />
-					<%= dimension.ToString().SplitWords()%>
+					Dimension: 
+					<%= Html.DropDownList(
+							"Dimension",
+							Model.AllDimensions.Select(d => 
+								new SelectListItem { Value = d.ToString(), Text = d.ToString().SplitWords(), Selected = Model.SelectedDimensions.Contains(d)}))%>
+						
 				</label>
-				<% } %>
-				</fieldset>
+				<label>
+					Show values from last:
+					<%= Html.DropDownListFor(m => m.Period, Model.Periods) %>			
+				</label>
+			</div>
+			<div style="clear:both">
 				<fieldset><legend>Metrics</legend>
 				<% foreach(var metric in Model.AllMetrics) { %>
 				<label>
@@ -28,7 +34,9 @@
 				<% } %>
 				</fieldset>
 			</div>
-			<input type="submit" />
+			<div class="buttons">
+				<input type="submit" />
+			</div>
 			<% Html.EndForm(); %>
 		</div>
 	</div>

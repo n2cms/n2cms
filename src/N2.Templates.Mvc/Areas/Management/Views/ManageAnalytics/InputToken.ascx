@@ -1,20 +1,21 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<ManageAnalyticsPart>" %>
 
 <div class="uc">
-	<h4>Google Analytics username & password</h4>
+	<h4>Google Analytics: Google Username &amp; Password</h4>
 	<div class="box">
 		<div class="inner">	
 			<% Html.BeginForm("InputToken", "ManageAnalytics"); %>
 			<%= Html.ValidationSummary() %>
 			<div>
-				<%= Html.LabelFor(m => m.Username) %>
-				<%= Html.EditorFor(m => m.Username)%>
+				<label>Username: <input name="username" /></label>
 			</div>
 			<div>
-				<%= Html.LabelFor(m => m.Password) %>
-				<%= Html.EditorFor(m => m.Password)%>
+				<label>Password: <input name="password" type="password" /></label>
 			</div>
+			<div class="buttons">
 			<input type="submit" />
+			Your password is not saved but all editors will see the statistics.
+			</div>
 			<% Html.EndForm(); %>
 		</div>
 	</div>

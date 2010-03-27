@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Reimers.Google.Analytics;
+using System.Web.Mvc;
 
 namespace N2.Templates.Mvc.Areas.Management.Models
 {
@@ -12,5 +13,7 @@ namespace N2.Templates.Mvc.Areas.Management.Models
 		public List<Metric> AllMetrics { get; set; }
 		public List<Dimension> SelectedDimensions { get; set; }
 		public List<Metric> SelectedMetrics { get; set; }
+		public int Period { get; set; }
+		public SelectListItem[] Periods { get; set; }
 	}
 }

@@ -6,7 +6,7 @@
 	<div class="box">
 
 	<n2:Repeater ID="rptLocations" runat="server">
-		<HeaderTemplate><table><thead><tr><th colspan="2">Wizard</th><th>Location</th></tr></thead><tbody></HeaderTemplate>
+		<HeaderTemplate><table class="data"><thead><tr><th colspan="2">Wizard</th><th>Location</th></tr></thead><tbody></HeaderTemplate>
 		<ItemTemplate>
 			<tr><td>
 				<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">

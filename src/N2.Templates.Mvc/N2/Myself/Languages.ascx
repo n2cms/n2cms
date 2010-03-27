@@ -6,7 +6,7 @@
 
 	<asp:Repeater ID="rptLanguages" runat="server">
 		<HeaderTemplate>
-	<table>
+	<table class="data">
 		<thead><tr><th>Language</th><th># of items</th><th colspan="2">Changes</th></tr></thead>
 		<tbody>
 		</HeaderTemplate>
