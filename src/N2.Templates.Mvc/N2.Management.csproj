@@ -1251,6 +1251,7 @@
     <Content Include="N2\Myself\Wizards.ascx" />
     <Content Include="N2\Resources\Css\edit.css" />
     <Content Include="N2\Resources\Css\Root.css" />
+    <Content Include="N2\Resources\Css\themes\chock.css" />
     <Content Include="N2\Resources\Css\themes\default.css" />
     <Content Include="N2\Resources\Css\themes\ink.css" />
     <Content Include="N2\Resources\img\darken10.png" />

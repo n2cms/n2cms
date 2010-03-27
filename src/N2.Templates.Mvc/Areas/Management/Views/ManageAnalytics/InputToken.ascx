@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<ManageAnalyticsPart>" %>
 
 <div class="uc">
-	<h4>Google Analytics: Google Username &amp; Password</h4>
+	<h4>Google Username &amp; Password</h4>
 	<div class="box">
 		<div class="inner">	
 			<% Html.BeginForm("InputToken", "ManageAnalytics"); %>

@@ -1,11 +1,12 @@
 ﻿
-/* INK THEME */
+/* CHOC THEME */
 
 body .header,
 #home h4
 {
-    background-color:#444; 
-    background-image:url(../../img/darken25.png);
+    background-color:#520A17; 
+    border-color:#AB8E5B;
+    background-position:0 0;
 }
 body .box
 {
@@ -14,8 +15,8 @@ body .box
 body .subbar,
 body #splitter .vsplitbar
 {
-    background-color:#555; 
-    border-color:#222;
+    background-color:#668F91; 
+    border-color:#648D8F;
 }
 body .subbar
 {
@@ -23,17 +24,21 @@ body .subbar
 }
 #top .item
 {
-    border-left-color:#444;
-    border-right-color:#222;
-    background-color:#333;
+    border-left-color:#F5E6AC;
+    border-right-color:#52301C;
+    background-color:#AB8E5B;
 }
 #top a
 {
-    color:#ccc;
+    color:#fff;
+}
+#top .selected
+{
+    border-left-color:#AB8E5B;
 }
 #top .selected a
 {
-    background-color:#222;
+    background-color:#52301C;
 }
 #top .selected a,
 #top a:hover
@@ -51,11 +56,11 @@ body .commandOptions .opener,
 body .gv th,
 body .gv thead td
 {
-    background:#aaa;
-	border-color:#666;
+    background:#668F91;
+	border-color:#648D8F;
 }
 body,
-body .gv .alt td { background-color:#eee; }
+body .gv .alt td { background-color:#F8E9AF; }
 
 body .toolbar .toggled,
 body .toolbar .command:hover{

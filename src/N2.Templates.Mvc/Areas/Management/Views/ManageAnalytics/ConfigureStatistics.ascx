@@ -5,7 +5,7 @@
 </style>
 
 <div class="uc analytics">
-	<h4>Google Analytics: Configure</h4>
+	<h4>Configure Report Data</h4>
 	<div class="box">
 		<div class="inner">	
 			<% Html.BeginForm("SaveStatisticsConfiguration", "ManageAnalytics"); %>

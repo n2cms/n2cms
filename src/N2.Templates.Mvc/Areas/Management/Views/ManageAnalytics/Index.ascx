@@ -5,7 +5,7 @@
 <div id="<%= containerID %>" class="uc cf analytics">
 	<% using (Html.BeginForm("ClearUser", "ManageAnalytics", FormMethod.Post, new { title = "Log out from google analytics. This affects all users." })) { %>
 	<h4 class="header">
-		Google Analytics: <span title="<%= Model.AccountName %>"><%= Model.Title %></span>
+		<span title="<%= Model.AccountName %>"><%= Model.Title %></span>
 		<span class="right">
 			<a title="Change profile" href="<%= Html.CurrentPage().Url.ToUrl().AppendQuery("changeaccount", Model.ID) %>">Profile</a>
 			| <a title="Reconfigure report" href="<%= Html.CurrentPage().Url.ToUrl().AppendQuery("reconfigure", Model.ID) %>">Report</a>
@@ -21,7 +21,7 @@
 <style>
 	.analytics .alter { margin-top:5px; border-top:solid 1px silver; }
 	.analytics .right { float:right; margin-top:-1px }
-	.analytics .right a { padding:0 10px; font-size:10px; color:#fff; }
+	.analytics .right a { padding:0 5px; font-size:10px; color:#fff; }
 	.analytics .right input { font-size:10px; margin-top:-2px; }
 	.chart { height:300px; width:100%; }
 	.chart canvas { position:absolute; }

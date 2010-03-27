@@ -2,7 +2,7 @@
 
 
 <div class="uc">
-	<h4>Google Analytics: Report profile selection</h4>
+	<h4>Report profile selection</h4>
 	<div class="box">
 		<div class="inner">	
 			<% Html.BeginForm("SaveSelectedAccount", "ManageAnalytics"); %>

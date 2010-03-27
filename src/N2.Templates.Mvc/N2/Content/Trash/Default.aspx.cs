@@ -2,10 +2,11 @@ using System;
 using System.Web;
 using System.Web.UI.WebControls;
 using N2.Web;
+using N2.Web.UI;
 
 namespace N2.Edit.Trash
 {
-	public partial class Default : N2.Web.UI.ContentPage<TrashContainerItem>
+	public partial class Default : N2.Edit.Web.EditPage, IContentTemplate, IItemContainer
 	{
 		protected ITrashHandler Trash
 		{
@@ -61,11 +62,6 @@ namespace N2.Edit.Trash
 		#region RegisterRefreshNavigationScript
 		private const string refreshScriptFormat = @"n2ctx.refresh({{ navigationUrl: '{1}', path: '{4}'}});";
 
-		protected string GetNavigationUrl(ContentItem selectedItem)
-		{
-			return N2.Context.Current.EditManager.GetNavigationUrl(selectedItem);
-		}
-
 		protected virtual void RegisterRefreshNavigationScript(ContentItem item)
 		{
 			string script = string.Format(refreshScriptFormat,
@@ -83,5 +79,16 @@ namespace N2.Edit.Trash
 		}
 		#endregion
 
+
+		#region IContentTemplate Members
+
+		public ContentItem currentItem;
+		public ContentItem CurrentItem 
+		{
+			get { return currentItem ?? (currentItem = Engine.UrlParser.Parse(Request.RawUrl)); }
+			set { currentItem = value; }
+		}
+
+		#endregion
 	}
 }
