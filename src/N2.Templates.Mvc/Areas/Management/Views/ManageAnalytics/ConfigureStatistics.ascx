@@ -12,16 +12,16 @@
 			<%= Html.ValidationSummary() %>
 			<div>
 				<label>
+					Show values from last:
+					<%= Html.DropDownListFor(m => m.Period, Model.Periods) %>			
+				</label>
+				<label>
 					Dimension: 
 					<%= Html.DropDownList(
 							"Dimension",
 							Model.AllDimensions.Select(d => 
 								new SelectListItem { Value = d.ToString(), Text = d.ToString().SplitWords(), Selected = Model.SelectedDimensions.Contains(d)}))%>
 						
-				</label>
-				<label>
-					Show values from last:
-					<%= Html.DropDownListFor(m => m.Period, Model.Periods) %>			
 				</label>
 			</div>
 			<div style="clear:both">
@@ -36,6 +36,7 @@
 			</div>
 			<div class="buttons">
 				<input type="submit" />
+				No data? Choosing less metrics and shorter time periods might help
 			</div>
 			<% Html.EndForm(); %>
 		</div>

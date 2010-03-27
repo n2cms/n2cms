@@ -432,6 +432,7 @@
     <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />
     <Compile Include="Engine\ContainerConfigurer.cs" />
     <Compile Include="Security\PermissionRemapAttribute.cs" />
+    <Compile Include="Web\Extensions.cs" />
     <Compile Include="Web\ImageResizeHandler.cs" />
     <Compile Include="Web\ImageResizer.cs" />
     <Compile Include="Web\RequestPathProvider.cs" />

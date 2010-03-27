@@ -38,7 +38,7 @@ namespace N2.Web.Mvc
 		{
 			var rd = base.GetRouteData(httpContext);
 
-			if(rd.DataTokens.CurrentItem() is T)
+			if(rd != null && rd.DataTokens.CurrentItem() is T)
 				// don't route items of the wrong type
 				return rd;
 

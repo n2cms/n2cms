@@ -2,19 +2,23 @@
 
 
 <div class="uc">
-	<h4>Google Analytics: Account Selection</h4>
+	<h4>Google Analytics: Report profile selection</h4>
 	<div class="box">
 		<div class="inner">	
 			<% Html.BeginForm("SaveSelectedAccount", "ManageAnalytics"); %>
 			<div>
+				<label>Profile: 
 				<%= Html.DropDownList("ProfileID",
-											Model.Select(a => new SelectListItem { 
-												Text = a.Title, 
+											Model.Select(a => new SelectListItem {
+												Text = a.Title + " (" + a.AccountName + ")", 
 												Value = a.ProfileID.ToString(),
 												Selected = a.ProfileID == Html.CurrentItem<ManageAnalyticsPart>().ProfileID
 											}))%>
+				</label>
 			</div>
-			<input type="submit" />
+			<div class="buttons">
+				<input type="submit" />
+			</div>
 			<% Html.EndForm(); %>
 		</div>
 	</div>

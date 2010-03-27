@@ -69,7 +69,7 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
 				}
 			}
 
-			var tickSize = labels.Length < 8 ? 1 : (int)(labels.Length / 8);
+			var tickSize = labels.Length < 7 ? 1 : (int)(labels.Length / 7);
 
 			var data = new
 			{
@@ -93,16 +93,25 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
 			return Json(data);
 		}
 
-		private static string DimensionToString(ref DateTime start, ref KeyValuePair<Dimension, string> d)
+		private string DimensionToString(ref DateTime start, ref KeyValuePair<Dimension, string> d)
 		{
 			switch (d.Key)
 			{
 				case Dimension.day:
-					return start.AddDays(double.Parse(d.Value)).ToShortDateString();
+					if (CurrentItem.ChartPeriod <= 1)
+						return start.AddDays(double.Parse(d.Value)).ToShortDateString();
+					else
+						return start.AddDays(double.Parse(d.Value)).DayOfWeek.ToString();
 				case Dimension.hour:
-					return start.AddHours(double.Parse(d.Value)).ToShortTimeString();
+					if (CurrentItem.ChartPeriod <= 1)
+						return start.AddHours(double.Parse(d.Value)).ToShortTimeString();
+					else
+						return start.AddHours(double.Parse(d.Value)).ToString();
 				case Dimension.month:
-					return start.AddMonths(int.Parse(d.Value)).ToString("MMM");
+					if (CurrentItem.ChartPeriod < 365)
+						return start.AddMonths(int.Parse(d.Value)).ToString("MMM");
+					else
+						return start.AddMonths(int.Parse(d.Value)).ToShortDateString();
 				case Dimension.week:
 					return start.AddDays(7 * double.Parse(d.Value)).ToShortDateString();
 				case Dimension.year:
@@ -205,7 +214,7 @@ namespace N2.Templates.Mvc.Areas.Management.Controllers
 				SelectedDimensions = CurrentItem.Dimensions.ToList(),
 				SelectedMetrics = CurrentItem.Metrics.ToList(),
 				Period = CurrentItem.ChartPeriod,
-				Periods = new [] { SLI("Day", 1), SLI("Week", 7), SLI("Month", 31), SLI("Year", 365) }
+				Periods = new[] { SLI("Day", 1), SLI("Week", 7), SLI("2 weeks", 14), SLI("Month", 31), SLI("Quarter", 92), SLI("Year", 365), SLI("2 years", 2 * 365), SLI("4 years", 4 * 365) }
 			};
 			if (vd.SelectedDimensions.Count == 0)
 				vd.SelectedDimensions.Add(Dimension.date);
