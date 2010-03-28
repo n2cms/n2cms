@@ -382,6 +382,8 @@
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
+    <Compile Include="Edit\Installation\DatabaseStatusCache.cs" />
+    <Compile Include="Edit\Installation\SystemStatusLevel.cs" />
     <Compile Include="Engine\AttributeInfo.cs" />
     <Compile Include="Edit\FileEventArgs.cs" />
     <Compile Include="Edit\FileSystem\MappedFileSystem.cs" />

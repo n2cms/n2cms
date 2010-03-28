@@ -34,7 +34,7 @@
 			<p>Wait a minute, <a href="../upgrade.aspx">I just want to <strong>upgrade</strong> from a previous version &raquo;</a></p>
 			<h2>Other options...</h2>
 			<p><strong>Downloaded the trunk (svn)?</strong> You may want to <a href="http://n2cms.com/upload/app_data.zip">get an SQL Server Express database</a> and unzip into [wwwroot]\App_Data</p>
-			<p><strong>Already installed the database?</strong> Then there might be a problem with the database connection. To ensure that this screen doesn't appear to unsuspecting visitors you should remove &lt;add name="n2.installer" type="N2.Installation.InstallerModule, N2" /&gt; from the &lt;httpModules&gt; section in web.config.</p>
+			<p><strong>Already installed?</strong> There might be a problem with the database connection. To ensure that this screen doesn't appear to unsuspecting visitors you should set &lt;n2&gt;&lt;edit&gt;&lt;installer checkInstallationStatus="false"/&gt; in web.config.</p>
 		</div>
     </div>
     </form>

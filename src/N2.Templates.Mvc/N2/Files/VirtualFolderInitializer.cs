@@ -10,6 +10,8 @@ using N2.Edit.FileSystem;
 using N2.Edit;
 using N2.Edit.FileSystem.Items;
 using N2.Collections;
+using System.Diagnostics;
+using N2.Edit.Installation;
 
 namespace N2.Management.Files
 {
@@ -27,6 +29,7 @@ namespace N2.Management.Files
 		IFileSystem fs;
 		VirtualNodeFactory virtualNodes;
 		FolderNodeProvider nodeProvider;
+		DatabaseStatusCache dbStatus;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="VirtualFolderInitializer"/> class.
@@ -36,12 +39,13 @@ namespace N2.Management.Files
 		/// <param name="fs">The fs.</param>
 		/// <param name="virtualNodes">The virtual nodes.</param>
 		/// <param name="editConfig">The edit config.</param>
-		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, EditSection editConfig)
+		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, DatabaseStatusCache dbStatus, EditSection editConfig)
 		{
 			this.host = host;
 			this.persister = persister;
 			this.fs = fs;
 			this.virtualNodes = virtualNodes;
+			this.dbStatus = dbStatus;
 			this.folders = editConfig.UploadFolders;
 
 			nodeProvider = new FolderNodeProvider(fs, persister);
@@ -51,9 +55,20 @@ namespace N2.Management.Files
 
 		public void Start()
 		{
-			nodeProvider.UploadFolderPaths = GetUploadFolderPaths();
-			virtualNodes.Register(nodeProvider);
-			host.SitesChanged += host_SitesChanged;
+			if (dbStatus.GetStatus() >= SystemStatusLevel.UpAndRunning)
+			{
+				nodeProvider.UploadFolderPaths = GetUploadFolderPaths();
+				virtualNodes.Register(nodeProvider);
+				host.SitesChanged += host_SitesChanged;
+			}
+			else
+				dbStatus.DatabaseStatusChanged += dbStatus_DatabaseStatusChanged;
+		}
+
+		void dbStatus_DatabaseStatusChanged(object sender, EventArgs e)
+		{
+			dbStatus.DatabaseStatusChanged -= dbStatus_DatabaseStatusChanged;
+			Start();
 		}
 
 		public void Stop()

@@ -15,7 +15,7 @@ namespace N2.Web
 	/// authorizing and closing NHibernate session.
 	/// </summary>
 	[Service(typeof(IRequestLifeCycleHandler))]
-	public class RequestLifeCycleHandler : IRequestLifeCycleHandler, IAutoStart
+	public class RequestLifeCycleHandler : IRequestLifeCycleHandler
 	{
 		readonly IErrorHandler errors;
 		readonly IWebContext webContext;
@@ -50,18 +50,18 @@ namespace N2.Web
 			this.dispatcher = dispatcher;
 		}
 
-		/// <summary>Subscribes to applications events.</summary>
-		/// <param name="broker">The application.</param>
-		public void Init(EventBroker broker)
-		{
-            Debug.WriteLine("RequestLifeCycleHandler.Init");
+		///// <summary>Subscribes to applications events.</summary>
+		///// <param name="broker">The application.</param>
+		//public void Init(EventBroker broker)
+		//{
+		//    Debug.WriteLine("RequestLifeCycleHandler.Init");
 
-			broker.BeginRequest += Application_BeginRequest;
-			broker.AuthorizeRequest += Application_AuthorizeRequest;
-			broker.AcquireRequestState += Application_AcquireRequestState;
-            broker.Error += Application_Error;
-			broker.EndRequest += Application_EndRequest;
-		}
+		//    broker.BeginRequest += Application_BeginRequest;
+		//    broker.AuthorizeRequest += Application_AuthorizeRequest;
+		//    broker.AcquireRequestState += Application_AcquireRequestState;
+		//    broker.Error += Application_Error;
+		//    broker.EndRequest += Application_EndRequest;
+		//}
 
 		protected virtual void Application_BeginRequest(object sender, EventArgs e)
 		{
@@ -126,29 +126,21 @@ namespace N2.Web
 
 		private void CheckInstallation()
 		{
-			bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl).StartsWith("~/N2/Content", StringComparison.InvariantCultureIgnoreCase);
+			bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl).StartsWith("~/N2/", StringComparison.InvariantCultureIgnoreCase);
 			if (!isEditing && !installer.GetStatus().IsInstalled)
 			{
 				webContext.Response.Redirect(installerUrl);
 			}
 		}
 
-		#region IStartable Members
+		#region IRequestLifeCycleHandler Members
 
-		public void Start()
+		public void Initialize()
 		{
 			broker.BeginRequest += Application_BeginRequest;
 			broker.AcquireRequestState += Application_AcquireRequestState;
 			broker.Error += Application_Error;
 			broker.EndRequest += Application_EndRequest;
-		}
-
-		public void Stop()
-		{
-			broker.BeginRequest -= Application_BeginRequest;
-			broker.AcquireRequestState -= Application_AcquireRequestState;
-			broker.Error -= Application_Error;
-			broker.EndRequest -= Application_EndRequest;
 		}
 
 		#endregion

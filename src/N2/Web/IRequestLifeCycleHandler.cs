@@ -9,5 +9,6 @@ namespace N2.Web
 	/// </summary>
 	public interface IRequestLifeCycleHandler
 	{
+		void Initialize();
 	}
 }

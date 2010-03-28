@@ -9,6 +9,7 @@ using N2.Web;
 using N2.Edit.FileSystem;
 using N2.Configuration;
 using N2.Collections;
+using N2.Edit.Installation;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -38,9 +39,22 @@ namespace N2.Edit.Tests.FileSystem
 
 			vnf = new VirtualNodeFactory();
 			config = new EditSection();
-			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, config);
+			
+			initializer = new VirtualFolderInitializer(host, persister, fs, vnf, new FakeStatus(), config);
 		}
 
+		class FakeStatus : DatabaseStatusCache
+		{
+			public FakeStatus()
+				: base(null)
+			{
+			}
+
+			public override SystemStatusLevel GetStatus()
+			{
+				return SystemStatusLevel.UpAndRunning;
+			}
+		}
 
 
 		[Test]

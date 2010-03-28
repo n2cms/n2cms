@@ -37,6 +37,25 @@ namespace N2.Edit.Installation
 
         public bool NeedsUpgrade { get { return RequiredDatabaseVersion > DatabaseVersion && DatabaseVersion > 0; } }
 
+		public SystemStatusLevel Level
+		{
+			get
+			{
+				if (!IsConnected)
+					return SystemStatusLevel.NoConnection;
+				if (!HasSchema)
+					return SystemStatusLevel.NoSchema;
+				if (NeedsUpgrade)
+					return SystemStatusLevel.OldVersion;
+				if (RootItem == null)
+					return SystemStatusLevel.NoRootNode;
+				if (StartPage == null)
+					return SystemStatusLevel.NoStartNode;
+
+				return SystemStatusLevel.UpAndRunning;
+			}
+		}
+
 		public string ToStatusString()
 		{
 			if (StartPage != null && RootItem != null)
