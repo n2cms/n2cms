@@ -10,7 +10,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
         .toolbox .item a:hover { color:#000; background-image:url(../../Resources/img/toolbar_button_bg_hover.png); }
         .toolbox .item.selected a.command { background-color:#fff; background-image:none; color:#000; cursor:auto; }
         .toolbox .item.selected a.command:hover { background-image:none; }
-           .toolbox .item .command img { margin:0 4px 0 0; }
+           .toolbox .item .command img { margin:2px 4px 0 0; }
 
 .header { padding:6px 10px; background:transparent url(../../Resources/img/darken10.png) repeat-x 0px bottom;}
     .header .toolbox { float:left; border-bottom:none; margin-right:10px; }
@@ -28,6 +28,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 #sort { height:28px; width:28px; padding:0; }
     #sort .command { padding:0; }
         .sort a { display:block; height:12px; padding:0 5px; border-top:solid 1px #fff; }
+			#sort a img { margin-top:0 }
         .sort .up { border-bottom:solid 1px #d8d8d8; }
 
 #search{ background:transparent; padding:0; }

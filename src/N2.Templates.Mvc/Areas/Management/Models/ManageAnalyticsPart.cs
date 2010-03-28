@@ -9,7 +9,9 @@ using Reimers.Google.Analytics;
 
 namespace N2.Templates.Mvc.Areas.Management.Models
 {
-	[PartDefinition, RestrictParents(typeof(IRootPage))]
+	[PartDefinition("Analytics", 
+		IconUrl = "~/N2/Resources/icons/chart_pie.png")]
+	[RestrictParents(typeof(IRootPage))]
 	public class ManageAnalyticsPart : AnalyticsPartBase
 	{
 		[EditableTextBox("Token", 100)]

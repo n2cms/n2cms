@@ -1,7 +1,5 @@
 <html>
 <head><style>img {width:16px;height:16px}</style>
-
-	<script src="Js/jquery-1.4.1.js" type="text/javascript"></script>
 </head>
 <body>
 <img src="icons/accept.png" /> 
@@ -1004,8 +1002,24 @@
 <img src="icons/zoom.png" /> 
 <img src="icons/zoom_in.png" /> 
 <img src="icons/zoom_out.png" /> 
-<input id="search" />
-<script type="text/javascript">
 
+<script type="text/javascript">
+	for (var i = document.images.length - 1; i >= 0; i--) {
+		var img = document.images[i];
+		img.title = img.src.match(/\w*.png$/);
+	}
+	function filter(q) {
+		for (var i = document.images.length - 1; i >= 0;  i--) {
+			var img = document.images[i];
+			if (!q || img.title.indexOf(q) >=0)
+				img.style.visibility = "visible";
+			else
+				img.style.visibility = "hidden";
+		}
+		return false;
+	};
 </script>
+<hr />
+<input onkeyup="filter(this.value);" /><input type="button" value="ok" />
+
 </body></html>
