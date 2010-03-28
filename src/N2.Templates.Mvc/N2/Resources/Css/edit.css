@@ -46,15 +46,15 @@ body.framed .popupButton { margin-right:10px;}
 body.framed input.disabled, body.framed .disabled *, body.framed input.dimmed, body.framed .dimmed *
     { opacity:.50; filter: alpha(opacity=50); }
 table.editDetail { border-collapse:collapse; }
-.keepUpdated { background:transparent url(../../Resources/img/ico/png/lock_open.png) no-repeat; padding:2px; cursor:pointer; }
+.keepUpdated { background:transparent url(../../Resources/icons/lock_open.png) no-repeat; padding:2px; cursor:pointer; }
 .keepUpdated input { visibility:hidden; }
-.unchecked { background-image:url(../../Resources/img/ico/png/lock.png); }
+.unchecked { background-image:url(../../Resources/icons/lock.png); }
 
 .uploader label { margin:0 10px; }
 .crowded .uploadableContainer .fileSelector { width:184px }
 
 body.framed .delete { float:right; }
-body.framed .versionInfo { background-image:url(../../Resources/img/ico/png/information.png); }
+body.framed .versionInfo { background-image:url(../../Resources/icons/information.png); }
 
 /* tab overrides */
 body.framed .tabPanel { margin-bottom:10px; }
@@ -87,10 +87,10 @@ body.framed .helpVisible .helpText { display:block; border-bottom:solid 1px #DED
 .framed .toolbar .iconed { background:transparent none no-repeat 2px 5px; padding-left:20px; }
 .framed .toolbar .iconed:hover  { background-position:1px 4px; padding-left:19px; }
 
-.framed .publish.iconed { background-image:url(../../Resources/img/ico/png/disk.png); }
-.framed .save.iconed { background-image:url(../../Resources/img/ico/png/book_next.png); }
-.framed .preview.iconed { background-image:url(../../Resources/img/ico/png/zoom.png); }
-.framed .future.iconed { background-image:url(../../Resources/img/ico/png/clock.png); }
+.framed .publish.iconed { background-image:url(../../Resources/icons/disk.png); }
+.framed .save.iconed { background-image:url(../../Resources/icons/book_next.png); }
+.framed .preview.iconed { background-image:url(../../Resources/icons/zoom.png); }
+.framed .future.iconed { background-image:url(../../Resources/icons/clock.png); }
 
 .popup
 {
@@ -115,14 +115,14 @@ body.framed .helpVisible .helpText { display:block; border-bottom:solid 1px #DED
 		display:block;
 		padding:2px 5px 2px 20px;
 		height:15px;
-		background:transparent url(../img/ico/png/bullet_toggle_plus.png) no-repeat 2px 50%;
+		background:transparent url(../icons/bullet_toggle_plus.png) no-repeat 2px 50%;
 		position:absolute;
 		top:-20px;
 		right:15px;
 		background-color:#F8F8E8;
 		font-weight:bold;
 	}
-	.expandable-expanded .expander { background-image:url(../img/ico/png/bullet_toggle_minus.png); }
+	.expandable-expanded .expander { background-image:url(../icons/bullet_toggle_minus.png); }
 
 
 fieldset 

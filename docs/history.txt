@@ -1,4 +1,6 @@
-﻿- refactored nonthrowable->throwable(no), nonversionable->versionable(no)
+﻿- icons for file types
+- relocated icons (resources/img/ico/png -> resources/icons)
+- refactored nonthrowable->throwable(no), nonversionable->versionable(no)
 - mvc2 area support
 - google analytics part (mvc only)
 	- reimers google integration

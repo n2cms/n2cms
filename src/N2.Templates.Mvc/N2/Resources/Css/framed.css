@@ -75,7 +75,7 @@ a img,
 	    height:10px;
 	    float:left;
 	    display:block;
-	    padding:12px 4px 6px 4px;
+	    padding:6px 0 12px 0;
 	    margin-right:5px;
 	    position:relative;
 	    cursor:pointer;
@@ -225,9 +225,9 @@ body.framed #nav .unpublished,
 body.framed #nav .expired,
 body.framed #nav .locked { color:#C66; }
 
-body.framed #nav .locked { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_key.png) no-repeat 100% 50%; }
-body.framed #nav .unpublished { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_arrow_down.png) no-repeat 100% 50%; }
-body.framed #nav .expired { padding-right:16px; background:transparent url(../../Resources/img/ico/png/bullet_arrow_top.png) no-repeat 100% 50%; }
+body.framed #nav .locked { padding-right:16px; background:transparent url(../../Resources/icons/bullet_key.png) no-repeat 100% 50%; }
+body.framed #nav .unpublished { padding-right:16px; background:transparent url(../../Resources/icons/bullet_arrow_down.png) no-repeat 100% 50%; }
+body.framed #nav .expired { padding-right:16px; background:transparent url(../../Resources/icons/bullet_arrow_top.png) no-repeat 100% 50%; }
 
 
 /* TABS */
@@ -297,7 +297,7 @@ a.dp-choose-date {
 	margin: 5px 3px 0;
 	text-indent: -2000px;
 	overflow: hidden;
-	background: url(../../Resources/img/ico/png/calendar.png) no-repeat; 
+	background: url(../../Resources/icons/calendar.png) no-repeat; 
 	text-decoration:none;
 }
 a.dp-choose-date.dp-disabled {

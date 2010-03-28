@@ -23,10 +23,10 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	[PersistChildren(false)]
 	[ParseChildren(true)]
-    [ControlPanelLink("cpOrganize", "~/N2/Resources/Img/ico/png/layout_edit.png", "{Selected.Url}", "Organize parts", -10, ControlPanelState.Visible, 
+    [ControlPanelLink("cpOrganize", "~/N2/Resources/icons/layout_edit.png", "{Selected.Url}", "Organize parts", -10, ControlPanelState.Visible, 
         UrlEncode = false, 
         NavigateQuery = "edit=drag")]
-	[ControlPanelLink("cpUnorganize", "~/N2/Resources/Img/ico/png/page_refresh.png", "{Selected.Url}", "Done", -10, ControlPanelState.DragDrop, 
+	[ControlPanelLink("cpUnorganize", "~/N2/Resources/icons/page_refresh.png", "{Selected.Url}", "Done", -10, ControlPanelState.DragDrop, 
         UrlEncode = false, 
         Title = "Done")]
 	public class ControlPanel : Control, IItemContainer

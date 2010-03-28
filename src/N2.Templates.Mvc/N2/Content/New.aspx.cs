@@ -30,9 +30,9 @@ using N2.Collections;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("New", "new", "Content/new.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/Img/ico/png/add.png", 10, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("NEW", "new", "Content/new.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/N2/Resources/Img/Ico/png/add.png", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
-    [ControlPanelLink("cpNew", "~/N2/Resources/Img/Ico/png/add.png", "Content/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
+	[NavigationLinkPlugin("New", "new", "Content/new.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/icons/add.png", 10, GlobalResourceClassName = "Navigation")]
+	[ToolbarPlugin("NEW", "new", "Content/new.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/N2/Resources/icons/add.png", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
+    [ControlPanelLink("cpNew", "~/N2/Resources/icons/add.png", "Content/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;
@@ -75,7 +75,7 @@ namespace N2.Edit
 				{
 					var node = new HierarchyNode<string>(GetNodeText(sibling, true));
 					if (position == CreationPosition.Before)
-						root.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/Img/Ico/png/add.png' alt='add'/></a> New item"));
+						root.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/icons/add.png' alt='add'/></a> New item"));
 
 					ContentItem first = First(sibling.Children, filter);
 					if (first != null)
@@ -89,11 +89,11 @@ namespace N2.Edit
 						}
 					}
 					if (position == CreationPosition.Below)
-						node.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/Img/Ico/png/add.png' alt='add'/></a> New item"));
+						node.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/icons/add.png' alt='add'/></a> New item"));
 
 					root.Children.Add(node);
 					if (position == CreationPosition.After)
-						root.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/Img/Ico/png/add.png' alt='add'/></a> New item"));
+						root.Children.Add(new HierarchyNode<string>("<a href='#'><img src='../Resources/icons/add.png' alt='add'/></a> New item"));
 				}
 				else
 					root.Children.Add(new HierarchyNode<string>(GetNodeText(sibling, false)));

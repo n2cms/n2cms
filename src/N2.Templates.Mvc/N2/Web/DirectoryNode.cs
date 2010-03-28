@@ -10,7 +10,7 @@ namespace N2.Edit.Web
 
         public override string IconUrl
         {
-			get { return "../Resources/img/ico/png/folder.png"; }
+			get { return "../Resources/icons/folder.png"; }
         }
 
         public override string Target

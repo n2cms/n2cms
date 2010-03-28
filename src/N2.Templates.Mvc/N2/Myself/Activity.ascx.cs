@@ -10,7 +10,7 @@ namespace N2.Management.Myself
 {
 	[PartDefinition("Activity", 
 		TemplateUrl = "~/N2/Myself/Activity.ascx",
-		IconUrl = "~/N2/Resources/img/ico/png/text_list_numbers.png")]
+		IconUrl = "~/N2/Resources/icons/text_list_numbers.png")]
 	[WithEditableTitle("Title", 10)]
 	public class ActivityPart : RootPartBase
 	{

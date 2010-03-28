@@ -8,7 +8,7 @@ using System.Web;
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("File",
-        IconUrl = "~/N2/Resources/Img/ico/png/page_white.png",
+        IconUrl = "~/N2/Resources/icons/page_white.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2010)]
     [RestrictParents(typeof(AbstractDirectory))]
@@ -52,6 +52,63 @@ namespace N2.Edit.FileSystem.Items
 		public override string Url
 		{
 			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
+		}
+
+		public override string IconUrl
+		{
+			get
+			{
+				if(iconUrl != null)
+					return base.IconUrl;
+
+				string extension = VirtualPathUtility.GetExtension(Name).ToLower();
+				switch (extension)
+				{
+					case ".gif":
+					case ".png":
+					case ".jpg":
+					case ".jpeg":
+						return IconPath("page_white_picture");
+					case ".pdf":
+						return IconPath("page_white_acrobat");
+					case ".cs":
+					case ".vb":
+					case ".js":
+						return IconPath("page_white_csharp");
+					case ".html":
+					case ".htm":
+					case ".xml":
+					case ".aspx":
+					case ".php":
+						return IconPath("page_white_code");
+					case ".zip":
+					case ".gz":
+					case ".7z":
+					case ".rar":
+						return IconPath("page_white_compressed");
+					case ".swf":
+						return IconPath("page_white_flash");
+					case ".txt":
+						return IconPath("page_white_text");
+					case ".xls":
+					case ".xlsx":
+						return IconPath("page_white_excel");
+					case ".xps":
+					case ".ppt":
+					case ".pptx":
+						return IconPath("page_white_powerpoint");
+					case ".doc":
+					case ".docx":
+						return IconPath("page_white_word");
+					default:
+						return IconPath("page_white");
+				}
+			}
+		}
+
+		private string IconPath(string iconName)
+		{
+			return N2.Web.Url.ToAbsolute(string.Format("~/N2/Resources/icons/{0}.png", iconName));
 		}
 
 		public bool Exists

@@ -11,7 +11,7 @@ namespace N2.Management.Myself
 {
 	[PartDefinition("Languages", 
 		TemplateUrl = "~/N2/Myself/Languages.ascx",
-		IconUrl = "~/N2/Resources/Img/Ico/png/world.png")]
+		IconUrl = "~/N2/Resources/icons/world.png")]
 	[WithEditableTitle("Title", 10)]
 	public class LanguagesPart : RootPartBase
 	{

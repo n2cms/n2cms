@@ -59,7 +59,7 @@
         			if (!$a.is("a"))
         				$a = $a.closest("a");
 
-        			if (!$a.is("a"))
+        			if (!$a.is("a") || $a.is(".toggler"))
         				return;
 
         			var handler = n2nav.handlers[$a.attr("data-type")] || n2nav.handlers["fallback"];

@@ -11,7 +11,7 @@ namespace N2.Management.Myself
 		Description = "A fallback root page used to organize start pages. This root can be replaced or inherited in a web application project.", 
 		SortOrder = 0,
 		InstallerVisibility = InstallerHint.PreferredRootPage,
-		IconUrl = "~/N2/Resources/Img/Ico/Png/page_gear.png",
+		IconUrl = "~/N2/Resources/icons/page_gear.png",
 		TemplateUrl = "~/N2/Myself/Root.aspx")]
     [RestrictParents(AllowedTypes.None)]
     [AvailableZone("Left", "Left")]

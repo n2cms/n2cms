@@ -9,7 +9,7 @@ namespace N2.Edit.FileSystem.Items
 		Description = "A node that maps to files in the file system.",
 		SortOrder = 600, 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-        IconUrl = "~/N2/Resources/Img/ico/png/folder.png",
+        IconUrl = "~/N2/Resources/icons/folder.png",
 		TemplateUrl = "~/N2/Files/FileSystem/Directory.aspx")]
     [RestrictParents(typeof(IFileSystemContainer))]
     [ItemAuthorizedRoles("Administrators", "admin")]

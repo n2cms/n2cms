@@ -6,7 +6,7 @@ using N2.Installation;
 namespace N2.Edit.FileSystem.Items
 {
 	[PageDefinition("Directory",
-		IconUrl = "~/N2/Resources/Img/ico/png/folder.png",
+		IconUrl = "~/N2/Resources/icons/folder.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2015)]
 	[RestrictParents(typeof(AbstractDirectory))]
@@ -35,6 +35,16 @@ namespace N2.Edit.FileSystem.Items
 		public override string Url
 		{
 			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
+		}
+
+		public override string IconUrl
+		{
+			get
+			{
+				if (base.GetFiles().Count > 0)
+					return N2.Web.Url.ToAbsolute("~/N2/Resources/icons/folder_page_white.png");
+				return base.IconUrl;
+			}
 		}
 
 		public override void AddTo(ContentItem newParent)

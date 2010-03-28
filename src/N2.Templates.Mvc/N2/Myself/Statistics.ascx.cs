@@ -8,7 +8,7 @@ namespace N2.Management.Myself
 {
 	[PartDefinition("Statistics", Name = "Statistics", 
 		TemplateUrl = "~/N2/Myself/Statistics.ascx",
-		IconUrl = "~/N2/Resources/Img/Ico/png/information.png")]
+		IconUrl = "~/N2/Resources/icons/information.png")]
 	[WithEditableTitle("Title", 10)]
 	public class StatisticsPart : RootPartBase
 	{

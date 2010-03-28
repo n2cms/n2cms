@@ -13,7 +13,7 @@ namespace N2.Edit
 	public class ControlPanelPreviewDiscardAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelPreviewDiscardAttribute(string toolTip, int sortOrder)
-            : base("cpPreviewDiscard", "~/N2/Resources/Img/ico/png/cancel.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
+            : base("cpPreviewDiscard", "~/N2/Resources/icons/cancel.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
 		{
 		}
 

@@ -15,7 +15,7 @@ namespace Management.N2.Myself
 {
 	[PartDefinition("Wizards", 
 		TemplateUrl = "~/N2/Myself/Wizards.ascx",
-		IconUrl = "~/N2/Resources/Img/Ico/Png/wand.png")]
+		IconUrl = "~/N2/Resources/icons/wand.png")]
 	[WithEditableTitle("Title", 10)]
 	public partial class WizardsPart : RootPartBase
 	{
