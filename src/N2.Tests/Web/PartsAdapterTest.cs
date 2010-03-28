@@ -25,7 +25,7 @@ namespace N2.Tests.Web
 		}
 	}
 
-	[TestFixture, Ignore]
+	[TestFixture]
 	public class MediumTrustPartsAdapterTest : PartsAdapterTest
 	{
 		[SetUp]

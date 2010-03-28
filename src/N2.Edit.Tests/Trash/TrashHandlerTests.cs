@@ -105,14 +105,16 @@ namespace N2.Edit.Tests.Trash
         public void Throwing_IsIntercepted_InMediumTrust()
         {
 			IEngine engine = new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			engine.Initialize();
+
 			var schemaCreator = new SchemaExport(engine.Resolve<IConfigurationBuilder>().BuildConfiguration());
+			var conn = engine.Resolve<ISessionProvider>().OpenSession.Session.Connection;
 #if NH2_1
-			schemaCreator.Execute(false, true, false, engine.Resolve<ISessionProvider>().OpenSession.Session.Connection, null);
+			schemaCreator.Execute(true, true, false, conn, null);
 #else
-			schemaCreator.Execute(false, true, false, false, engine.Resolve<ISessionProvider>().OpenSession.Session.Connection, null);
+			schemaCreator.Execute(false, true, false, false, conn, null);
 #endif
 
-            engine.Initialize();
             engine.SecurityManager.Enabled = false;
 
             ContentItem root = new ThrowableItem();
