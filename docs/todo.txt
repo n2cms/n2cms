@@ -1,6 +1,9 @@
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=207820 (preview parts)
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=207609 (published automatically)
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=205283 (virtual folders as upload)
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204407 (root page)
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=204226 (Cannot cast the current page)
-- fix routing to areas
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=208227 (editableitem for abstract items)
 
 v2
 - fix preview version issue

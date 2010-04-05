@@ -21,17 +21,12 @@ namespace N2.Web.Mvc
 		public const string ContentPartKey = "part";
 		/// <summary>Used to reference the N2 content engine.</summary>
 		public const string ContentEngineKey = "engine";
-		/// <summary>Convenience reference to the MVC controller</summary>
+		/// <summary>Convenience reference to the MVC controller.</summary>
 		public const string ControllerKey = "controller";
-		/// <summary>Convenience reference to the MVC action</summary>
+		/// <summary>Convenience reference to the MVC area.</summary>
+		public const string AreaKey = "area";
+		/// <summary>Convenience reference to the MVC action.</summary>
 		public const string ActionKey = "action";
-
-		[Obsolete("Unused, will be gone")]
-		public const string ContentItemIdKey = "item";
-		[Obsolete("Unused, will be gone")]
-		public const string ContentPageIdKey = "page";
-		[Obsolete("Unused, will be gone")]
-		public const string ContentUrlKey = "url";
 		
 		readonly IEngine engine;
 		readonly IRouteHandler routeHandler;
@@ -156,10 +151,10 @@ namespace N2.Web.Mvc
 
 			var data = new RouteData(this, routeHandler);
 
-			foreach (var kvp in innerRoute.Defaults)
-				data.Values[kvp.Key] = kvp.Value;
-			foreach (var kvp in innerRoute.DataTokens)
-				data.DataTokens[kvp.Key] = kvp.Value;
+			foreach (var defaultPair in innerRoute.Defaults)
+				data.Values[defaultPair.Key] = defaultPair.Value;
+			foreach (var tokenPair in innerRoute.DataTokens)
+				data.DataTokens[tokenPair.Key] = tokenPair.Value;
 
 			data.ApplyCurrentItem(controllerName, actionName, item, page, part);
 			data.DataTokens[ContentEngineKey] = engine;
@@ -261,27 +256,27 @@ namespace N2.Web.Mvc
 			values[ContentPartKey] = item.ID;
 			var vpd = innerRoute.GetVirtualPath(requestContext, values);
 			return vpd;
-			//var pageVpd = ResolveContentActionUrl(requestContext, new RouteValueDictionary { { "action", "index" } }, page);
-
-			//if (values.ContainsKey(ControllerKey))
-			//    values.Remove(ControllerKey);
-			//values[ContentPartKey] = item.ID;
-
-			//pageVpd.VirtualPath = Url.Parse(pageVpd.VirtualPath).UpdateQuery(values);
-			//return pageVpd;
 		}
 
 		private VirtualPathData ResolveContentActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem item)
 		{
 			const string controllerPlaceHolder = "$(CTRL)";
+			const string areaPlaceHolder = "$(AREA)";
+		
 			values[ControllerKey] = controllerPlaceHolder; // pass a placeholder we'll fill with the content path
+			bool useAreas = innerRoute.DataTokens.ContainsKey("area");
+			if (useAreas)
+				values[AreaKey] = areaPlaceHolder;
 
 			VirtualPathData vpd = innerRoute.GetVirtualPath(requestContext, values);
 			if (vpd == null)
 				return null;
 
 			Url url = item.Url;
-			Url actionUrl = vpd.VirtualPath.Replace(controllerPlaceHolder, url.Path);
+			Url actionUrl = vpd.VirtualPath
+				.Replace(controllerPlaceHolder, url.Path);
+			if (useAreas)
+				actionUrl = actionUrl.SetPath(actionUrl.Path.Replace(areaPlaceHolder + "/", ""));
 
 			vpd.VirtualPath = actionUrl.AppendQuery(url.Query).PathAndQuery.TrimStart('/');
 			return vpd;

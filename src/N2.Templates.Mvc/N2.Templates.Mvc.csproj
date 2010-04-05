@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,7 +15,6 @@
     <MvcBuildViews>false</MvcBuildViews>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -27,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -144,6 +144,12 @@
     <Compile Include="Areas\Management\Root.aspx.designer.cs">
       <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Tests\Controllers\TestContentController.cs" />
+    <Compile Include="Areas\Tests\Controllers\TestController.cs" />
+    <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
+    <Compile Include="Areas\Tests\Models\TestPage.cs" />
+    <Compile Include="Areas\Tests\Models\TestPart.cs" />
+    <Compile Include="Areas\Tests\TestsAreaRegistration.cs" />
     <Compile Include="Classes\Configuration\MailConfigSource.cs" />
     <Compile Include="Classes\Configuration\TemplatesSection.cs" />
     <Compile Include="Classes\Configuration\WikiElement.cs" />
@@ -385,6 +391,7 @@
     <None Include="App_Data\DarkStrips_SampleData.gz" />
     <None Include="App_Data\KhakiTabs_SampleData.gz" />
     <None Include="App_Data\Plain_SampleData.gz" />
+    <Content Include="Areas\Tests\Views\Web.config" />
     <Content Include="Areas\Management\Web.config" />
     <Content Include="Areas\Management\Views\Web.config" />
     <Content Include="App_Themes\ContentFocus\content_bottom.gif" />
@@ -571,6 +578,10 @@
     <Content Include="Areas\Management\Views\ManageAnalytics\InputToken.ascx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\SelectAccount.ascx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\Statistics.ascx" />
+    <Content Include="Areas\Tests\Views\TestContent\Dictionary.ascx" />
+    <Content Include="Areas\Tests\Views\TestContent\Partial.ascx" />
+    <Content Include="Areas\Tests\Views\TestContent\Index.aspx" />
+    <Content Include="Areas\Tests\Views\TestContent\Urls.ascx" />
     <Content Include="Views\Calendar\App_LocalResources\Index.aspx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -583,6 +594,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Management\Views\Shared\" />
+    <Folder Include="Areas\Tests\Views\Shared\" />
     <Folder Include="Views\Shared\App_LocalResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

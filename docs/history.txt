@@ -1,4 +1,7 @@
-﻿- icons for file types
+﻿- fixed routing to areas
+
+2.0 beta2
+- icons for file types
 - relocated icons (resources/img/ico/png -> resources/icons)
 - refactored nonthrowable->throwable(no), nonversionable->versionable(no)
 - mvc2 area support

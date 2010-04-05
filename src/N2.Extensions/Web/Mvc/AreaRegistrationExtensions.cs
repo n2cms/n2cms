@@ -36,7 +36,7 @@ namespace N2.Web.Mvc
 			
 			var routeHandler = new MvcRouteHandler();
 			var controllerMapper = state.Engine.Resolve<IControllerMapper>();
-			var innerRoute = new Route(arc.AreaName + "/{controller}/{action}",
+			var innerRoute = new Route("{area}/{controller}/{action}",
 				new RouteValueDictionary(new { action = "Index" }),
 				new RouteValueDictionary(),
 				new RouteValueDictionary(new { engine = state.Engine, area = arc.AreaName }),

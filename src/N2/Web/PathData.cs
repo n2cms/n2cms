@@ -177,9 +177,12 @@ namespace N2.Web
 		/// <returns>A copy of the path data.</returns>
 		public virtual PathData Detach()
 		{
-			PathData data = new PathData(ID, PageID, Path, TemplateUrl, Action, Argument, Ignore, QueryParameters);
-			data.Ignore = Ignore;
-			data.IsRewritable = IsRewritable;
+			PathData data = MemberwiseClone() as PathData;
+
+			// clear persistent objects before caching
+			data.currentItem = null;
+			data.currentPage = null;
+			data.StopItem = null;
 			return data;
 		}
 
@@ -188,10 +191,10 @@ namespace N2.Web
 		/// <returns>A copy of the path data.</returns>
 		public virtual PathData Attach(N2.Persistence.IPersister persister)
 		{
-			PathData data = new PathData(ID, PageID, Path, TemplateUrl, Action, Argument, Ignore, QueryParameters);
-			data.Ignore = Ignore;
-			data.IsRewritable = IsRewritable;
+			PathData data = MemberwiseClone() as PathData;
 			
+			// reload persistent objects and clone non-immutable objects
+			data.QueryParameters = new Dictionary<string, string>(QueryParameters);
 			data.CurrentItem = persister.Repository.Load(ID);
 			if (PageID != 0)
 				data.CurrentPage = persister.Repository.Load(PageID);

@@ -74,26 +74,6 @@ namespace N2.Extensions.Tests.Mvc
 			routes = new RouteCollection { route };
 		}
 
-		RouteData RoutePath(Url url)
-		{
-			httpContext.request.appRelativeCurrentExecutionFilePath = "~" + url.Path;
-			httpContext.request.rawUrl = url;
-			foreach (var kvp in url.GetQueries())
-				httpContext.request.query[kvp.Key] = kvp.Value;
-			var data = route.GetRouteData(httpContext);
-			requestContext = new RequestContext(httpContext, data);
-			return data;
-		}
-
-		private RequestContext CreateRouteContext(ContentItem item)
-		{
-			RoutePath(item.Url);
-
-			var ctx = new RequestContext(httpContext, new RouteData());
-			ctx.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
-			ctx.RouteData.Values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetType());
-			return ctx;
-		}
 		#endregion
 
 		// /					-> RegularPage
@@ -102,6 +82,32 @@ namespace N2.Extensions.Tests.Mvc
 		// /search/				-> SearchPage
 
 		/*** GetRouteData ***/
+
+		[Test]
+		public void CanFindController_ForStartPage()
+		{
+			var data = RoutePath("/");
+
+			Assert.That(data.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(root));
+			Assert.That(data.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
+			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(root.ID));
+			Assert.That(data.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
+			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
+			Assert.That(data.Values["action"], Is.EqualTo("index"));
+		}
+
+		[Test]
+		public void CanFindController_ForStartPage_default_aspx()
+		{
+			var data = RoutePath("/default.aspx");
+
+			Assert.That(data.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(root));
+			Assert.That(data.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
+			Assert.That(data.Values[ContentRoute.ContentItemKey], Is.EqualTo(root.ID));
+			Assert.That(data.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
+			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
+			Assert.That(data.Values["action"], Is.EqualTo("index"));
+		}
 
 		[Test]
 		public void CanFindController_ForContentPage()
@@ -123,26 +129,6 @@ namespace N2.Extensions.Tests.Mvc
 
 			Assert.That(data.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(about));
 			Assert.That(data.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
-			Assert.That(data.Values["action"], Is.EqualTo("index"));
-		}
-
-		[Test]
-		public void CanFindController_DefaultAspx()
-		{
-			var data = RoutePath("/default.aspx");
-
-			Assert.That(data.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(root));
-			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
-			Assert.That(data.Values["action"], Is.EqualTo("index"));
-		}
-
-		[Test]
-		public void CanFindController_Slash()
-		{
-			var data = RoutePath("/");
-			
-			Assert.That(data.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(root));
-			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
 			Assert.That(data.Values["action"], Is.EqualTo("index"));
 		}
 
@@ -175,20 +161,6 @@ namespace N2.Extensions.Tests.Mvc
 		}
 
 		[Test]
-		public void WontGetVirtualPath_ForNonN2Controllers()
-		{
-			RoutePath("/about/");
-
-			RouteData routeData = new RouteData();
-			routeData.DataTokens[ContentRoute.ContentItemKey] = new RegularPage();
-			var data = route.GetVirtualPath(
-				new RequestContext(httpContext, routeData), 
-				new RouteValueDictionary { {"controller", "NonN2"} });
-
-			Assert.That(data, Is.Null);
-		}
-
-		[Test]
 		public void CanGet_ActionName_FromUrl()
 		{
 			RoutePath("/about/submit");
@@ -216,7 +188,7 @@ namespace N2.Extensions.Tests.Mvc
 		/*** GetVirtualPath ***/
 
 		[Test]
-		public void GeneratesNullVirtualPathData_WhenLinkingTo_AVanillaMvcPage_FromAContentPage()
+		public void VirtualPath_IsNull_ForVanillaController()
 		{
 			RoutePath("/about/");
 
@@ -477,7 +449,7 @@ namespace N2.Extensions.Tests.Mvc
 		public void RoutingToPart_PassesPart_AsContentPart()
 		{
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
-			var r = RoutePath("/?part=10");
+			var r = RoutePath("/TestItem/?part=10");
 
 			Assert.That(r.Values[ContentRoute.ContentPartKey], Is.EqualTo(part.ID));
 			Assert.That(r.DataTokens[ContentRoute.ContentPartKey], Is.EqualTo(part));
@@ -487,9 +459,9 @@ namespace N2.Extensions.Tests.Mvc
 		public void RoutingToPart_PassesAssociatedPage_AsContentPage()
 		{
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
-			var r = RoutePath("/?part=10");
+			var r = RoutePath("/TestItem/?part=10");
 
-			Assert.That(r.Values[ContentRoute.ContentPageIdKey], Is.EqualTo(root.ID));
+			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
 			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
 		}
 
@@ -497,7 +469,7 @@ namespace N2.Extensions.Tests.Mvc
 		public void RoutingToPart_PassesController_OfThePart()
 		{
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
-			var r = RoutePath("/?part=10");
+			var r = RoutePath("/TestItem/?part=10");
 
 			Assert.That(r.Values[ContentRoute.ControllerKey], Is.EqualTo("TestItem"));
 		}
@@ -506,17 +478,17 @@ namespace N2.Extensions.Tests.Mvc
 		public void RoutingToPart_PassesAction_DefinedByQueryString()
 		{
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
-			RoutePath("/?part=10&action=withmodel");
+			RoutePath("/TestItem/WithModel/?part=10");
 
 			var r = routes.GetRouteData(httpContext);
-			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("withmodel"));
+			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("WithModel"));
 		}
 
 		[Test]
 		public void RoutingToPart_PassesPage_AsContentPage()
 		{
 			var part = CreateOneItem<TestItem>(10, "whatever", root);
-			var r = RoutePath("/search/?part=10");
+			var r = RoutePath("/TestItem/?part=10&page=" + search.ID);
 
 			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(search.ID));
 			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(search));
@@ -546,7 +518,7 @@ namespace N2.Extensions.Tests.Mvc
 			RoutePath(vpd.VirtualPath);
 
 			var r = routes.GetRouteData(httpContext);
-			Assert.That(r.Values[ContentRoute.ContentPageIdKey], Is.EqualTo(root.ID.ToString()));
+			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID.ToString()));
 			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
 		}
 
@@ -596,9 +568,32 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(html.ToString(), Is.EqualTo("<a href=\"/TestItem/Submit?q=something&amp;page=1&amp;part=10\">Hello</a>"));
 		}
 
+
+
 		ViewContext CreateViewContext(RequestContext rc)
 		{
 			return new ViewContext { RequestContext = rc, HttpContext = httpContext, RouteData = rc.RouteData };
+		}
+
+		RouteData RoutePath(Url url)
+		{
+			httpContext.request.appRelativeCurrentExecutionFilePath = "~" + url.Path;
+			httpContext.request.rawUrl = url;
+			foreach (var kvp in url.GetQueries())
+				httpContext.request.query[kvp.Key] = kvp.Value;
+			var data = route.GetRouteData(httpContext);
+			requestContext = new RequestContext(httpContext, data);
+			return data;
+		}
+
+		private RequestContext CreateRouteContext(ContentItem item)
+		{
+			RoutePath(item.Url);
+
+			var ctx = new RequestContext(httpContext, new RouteData());
+			ctx.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
+			ctx.RouteData.Values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetType());
+			return ctx;
 		}
 	}
 }

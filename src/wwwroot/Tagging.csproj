@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -14,7 +14,6 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -73,21 +72,18 @@
     </Compile>
     <Compile Include="Addons\Tagging\UI\Tag.aspx.cs">
       <DependentUpon>Tag.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Tagging\UI\Tag.aspx.designer.cs">
       <DependentUpon>Tag.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Tagging\UI\TagBox.ascx.cs">
       <DependentUpon>TagBox.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Tagging\UI\TagBox.ascx.designer.cs">
       <DependentUpon>TagBox.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\Tagging\UI\TagContainer.aspx.cs">
       <DependentUpon>TagContainer.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\Tagging\UI\TagContainer.aspx.designer.cs">
       <DependentUpon>TagContainer.aspx</DependentUpon>
