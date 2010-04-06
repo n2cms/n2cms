@@ -54,6 +54,9 @@ namespace N2.Web.Mvc
 			if (item == null)
 				return null;
 
+			if (Area != null && !values.ContainsKey(AreaKey))
+				values[AreaKey] = Area;
+
 			// only supply path to items of the correct type
 			return base.GetVirtualPath(requestContext, values);
 		}
@@ -63,14 +66,8 @@ namespace N2.Web.Mvc
 		string area;
 		public string Area
 		{
-			get
-			{
-				return area;
-			}
-			protected set
-			{
-				area = value;
-			}
+			get { return area; }
+			protected set { area = value; }
 		}
 
 		#endregion

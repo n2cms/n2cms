@@ -63,6 +63,7 @@
     <Compile Include="Addons\AddonCatalog\Items\Requirement.cs" />
     <Compile Include="Addons\AddonCatalog\UI\EditAddon.aspx.cs">
       <DependentUpon>EditAddon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\EditAddon.aspx.designer.cs">
       <DependentUpon>EditAddon.aspx</DependentUpon>
@@ -76,30 +77,35 @@
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\AddonSummary.ascx.cs">
       <DependentUpon>AddonSummary.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\AddonSummary.ascx.designer.cs">
       <DependentUpon>AddonSummary.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\AddonPage.aspx.cs">
       <DependentUpon>AddonPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\AddonPage.aspx.designer.cs">
       <DependentUpon>AddonPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\AddonEditForm.ascx.cs">
       <DependentUpon>AddonEditForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\AddonEditForm.ascx.designer.cs">
       <DependentUpon>AddonEditForm.ascx</DependentUpon>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\AddonCatalogPage.aspx.cs">
       <DependentUpon>AddonCatalogPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\AddonCatalogPage.aspx.designer.cs">
       <DependentUpon>AddonCatalogPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\Download.aspx.cs">
       <DependentUpon>Download.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Addons\AddonCatalog\UI\Download.aspx.designer.cs">
       <DependentUpon>Download.aspx</DependentUpon>
