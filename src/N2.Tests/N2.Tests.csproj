@@ -163,6 +163,8 @@
     <Compile Include="Edit\WhileDealingWithVersions.cs" />
     <Compile Include="Edit\WhileEditingContentData.cs" />
     <Compile Include="Edit\WhileNavigatingToTheEditPage.cs" />
+    <Compile Include="Engine\Items\AdapterIInterfaced.cs" />
+    <Compile Include="Engine\Items\ItemAC.cs" />
     <Compile Include="Engine\ServiceContainerTests.cs" />
     <Compile Include="Engine\Services\Services.cs" />
     <Compile Include="Fakes\FakeFileSystem2.cs" />

@@ -1,22 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using N2.Engine;
+using N2.Engine.MediumTrust;
 using N2.Tests.Engine.Items;
 using N2.Tests.Fakes;
 using N2.Web;
 using NUnit.Framework;
-using N2.Engine.MediumTrust;
-using N2.Engine.Castle;
 
 namespace N2.Tests.Engine
 {
 	[TestFixture]
 	public class WindsorContentAdapterProviderTest : ContentAdapterProviderTest
 	{
-		[SetUp]
-		public override void SetUp()
+		[TestFixtureSetUp]
+		public void TestFixtureSetUp()
 		{
-			base.SetUp();
 			provider = new ContentAdapterProvider(new ContentEngine(), new AppDomainTypeFinder());
 			provider.Start();
 		}
@@ -25,11 +22,9 @@ namespace N2.Tests.Engine
 	[TestFixture]
 	public class MediumTrustContentAdapterProviderTest : ContentAdapterProviderTest
 	{
-		[SetUp]
-		public override void SetUp()
+		[TestFixtureSetUp]
+		public void TestFixtureSetUp()
 		{
-			base.SetUp();
-
 			provider = new ContentAdapterProvider(new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer()), new AppDomainTypeFinder());
 			provider.Start();
 		}
@@ -38,7 +33,7 @@ namespace N2.Tests.Engine
 
 	public abstract class ContentAdapterProviderTest : ItemPersistenceMockingBase
 	{
-		protected ContentItem aItem, aaItem, aaaItem, abItem, aabItem;
+		protected ContentItem aItem, aaItem, abItem, acItem, aaaItem, aabItem;
 		FakeWebContextWrapper webContext;
 		protected ContentAdapterProvider provider;
 			
@@ -50,39 +45,14 @@ namespace N2.Tests.Engine
 			
 			aItem = CreateOneItem<ItemA>(0, "root", null);
 			aaItem = CreateOneItem<ItemAA>(0, "aa", aItem);
-			aaaItem = CreateOneItem<ItemAAA>(0, "aaa", aItem);
 			abItem = CreateOneItem<ItemAB>(0, "ab", aItem);
+			acItem = CreateOneItem<ItemAC>(0, "ac", aItem);
+			aaaItem = CreateOneItem<ItemAAA>(0, "aaa", aItem);
 			aabItem = CreateOneItem<ItemAAB>(0, "aab", aItem);
 		}
 
 		[Test]
-		public void ListedDescriptors_AreSorted_FromDeepestHierarchy_ToShallowest()
-		{
-			List<IAdapterDescriptor> descriptors = new List<IAdapterDescriptor>();
-			descriptors.Add(new ControlsAttribute(typeof(ItemA)));
-			descriptors.Add(new ControlsAttribute(typeof (ItemAA)));
-
-			descriptors.Sort();
-
-			Assert.That(descriptors[0].ItemType, Is.EqualTo(typeof(ItemAA)));
-			Assert.That(descriptors[1].ItemType, Is.EqualTo(typeof(ItemA)));
-		}
-
-		[Test]
-		public void ListedDescriptors_AreChanged_WhenAlreadySorted_FromDeepestHierarchy_ToShallowest()
-		{
-			List<IAdapterDescriptor> descriptors = new List<IAdapterDescriptor>();
-			descriptors.Add(new ControlsAttribute(typeof(ItemAA)));
-			descriptors.Add(new ControlsAttribute(typeof(ItemA)));
-
-			descriptors.Sort();
-
-			Assert.That(descriptors[0].ItemType, Is.EqualTo(typeof (ItemAA)));
-			Assert.That(descriptors[1].ItemType, Is.EqualTo(typeof(ItemA)));
-		}
-
-		[Test]
-		public void Adapters_AreSorted_AccordingToInheritanceDepth()
+		public void Adapters_AreSorted_AccordingTo_InheritanceDepth()
 		{
 			var adapters = provider.Adapters.ToList();
 			int aIndex = adapters.FindIndex(d => d.AdaptedType == typeof(ItemA));
@@ -91,6 +61,20 @@ namespace N2.Tests.Engine
 
 			Assert.That(aIndex, Is.GreaterThan(aaIndex));
 			Assert.That(aaIndex, Is.GreaterThan(aaaIndex));
+		}
+
+		[Test]
+		public void Adapters_AreSorted_AccordingTo_InheritanceDepth_InterfacesFirst()
+		{
+			var adapters = provider.Adapters.ToList();
+			int aIndex = adapters.FindIndex(d => d.AdaptedType == typeof(ItemA));
+			int aaIndex = adapters.FindIndex(d => d.AdaptedType == typeof(ItemAA));
+			int aaaIndex = adapters.FindIndex(d => d.AdaptedType == typeof(ItemAAA));
+			int iiIndex = adapters.FindIndex(d => d.AdaptedType == typeof(IInterfacedItem));
+
+			Assert.That(aaIndex, Is.LessThan(aIndex));
+			Assert.That(aaaIndex, Is.LessThan(aaIndex));
+			Assert.That(iiIndex, Is.LessThan(aaaIndex));
 		}
 
 		[Test]
@@ -131,6 +115,14 @@ namespace N2.Tests.Engine
 			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aabItem.GetType());
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterAA)));
+		}
+
+		[Test]
+		public void ResolvesAdapter_OfInterface_BeforeClassAdapter()
+		{
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(acItem.GetType());
+
+			Assert.That(adapter, Is.TypeOf(typeof(AdapterIInterfaced)));
 		}
 	}
 }

@@ -11,19 +11,15 @@ namespace N2.Web.Mvc.Html
 {
 	public class Displayable : ItemHelper
 	{
-		private readonly ITemplateRenderer _templateRenderer;
-
 		readonly string propertyName;
 		string path;
 		bool swallowExceptions;
 
-        public Displayable(ViewContext viewContext, ITemplateRenderer templateRenderer, string propertyName, ContentItem currentItem)
-            : base(viewContext, currentItem)
+        public Displayable(HtmlHelper helper, string propertyName, ContentItem currentItem)
+            : base(helper, currentItem)
         {
-            if (templateRenderer == null) throw new ArgumentNullException("templateRenderer");
             if (propertyName == null) throw new ArgumentNullException("propertyName");
 
-            this._templateRenderer = templateRenderer;
             this.propertyName = propertyName;
         }
 
@@ -70,15 +66,25 @@ namespace N2.Web.Mvc.Html
 
 		public override string ToString()
 		{
-            using (var writer = new StringWriter())
-            {
-                Render(writer);
+			var previousWriter = Html.ViewContext.Writer;
+			try
+			{
+				using (var writer = new StringWriter())
+				{
+					Html.ViewContext.Writer = writer;
+					
+					Render(Html);
 
-                return writer.ToString();
-            }
+					return writer.ToString();
+				}
+			}
+			finally
+			{
+				Html.ViewContext.Writer = previousWriter;
+			}
 		}
 
-        internal void Render(TextWriter writer)
+        internal void Render(HtmlHelper helper)
         {
             if (!string.IsNullOrEmpty(path))
                 CurrentItem = ItemUtility.WalkPath(CurrentItem, path);
@@ -91,15 +97,21 @@ namespace N2.Web.Mvc.Html
                 var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, swallowExceptions);
                 if (displayable == null) return;
 
-                var container = CreateContainer(displayable);
-
                 if (Wrapper != null)
-                    writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
+					helper.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
 
-                container.RenderControl(new HtmlTextWriter(writer));
-
+				var referencedItem = CurrentItem[propertyName] as ContentItem;
+				if (referencedItem != null)
+				{
+					GetMvcAdapterFor(referencedItem.GetType()).RenderTemplate(helper, referencedItem);
+				}
+				else
+				{
+					var container = CreateContainer(displayable);
+					container.RenderControl(new HtmlTextWriter(helper.ViewContext.Writer));
+				}
                 if (Wrapper != null)
-                    writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
+					helper.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
             }
             catch (Exception)
             {
@@ -112,29 +124,16 @@ namespace N2.Web.Mvc.Html
 
 		private ViewUserControl CreateContainer(IDisplayable displayable)
 		{
-			var item = CurrentItem[propertyName] as ContentItem;
-			if (item != null)
-                return CreateContentItemContainer(item, displayable);
-
 			var viewData = new ViewDataDictionary(CurrentItem);
 
 			var container = new ViewUserControl
 			                	{
-			                		Page = (ViewContext.View is Control) ? ((Control) ViewContext.View).Page : null,
+									Page = (Html.ViewContext.View is Control) ? ((Control)Html.ViewContext.View).Page : null,
 			                		ViewData = viewData,
 			                	};
 			displayable.AddTo(CurrentItem, propertyName, container);
 
 			return container;
-		}
-
-        protected ViewUserControl CreateContentItemContainer(ContentItem item, IDisplayable displayable)
-		{
-			var userControl = new ViewUserControl();
-
-			userControl.Controls.Add(new LiteralControl(_templateRenderer.RenderTemplate(item, ViewContext)));
-
-			return userControl;
 		}
 	}
 }

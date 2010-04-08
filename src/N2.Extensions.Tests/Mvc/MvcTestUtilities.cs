@@ -7,6 +7,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.IO;
 using N2.Extensions.Tests.Fakes;
+using Rhino.Mocks;
+using N2.Engine;
+using N2.Web.Mvc.Html;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -19,7 +22,8 @@ namespace N2.Extensions.Tests.Mvc
             page.ViewData = new ViewDataDictionary<T>(model);
             page.ViewContext = new ViewContext(new ControllerContext(), new WebFormView("~/page.aspx"), page.ViewData, new TempDataDictionary(), new StringWriter());
 			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentItemKey] = model;
-            return page;
+			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
+			return page;
         }
 
         public static ContentViewPage<TModel, TItem> CreateContentViewPage<TModel, TItem>(TModel model, TItem item)
@@ -28,8 +32,11 @@ namespace N2.Extensions.Tests.Mvc
         {
             var page = new ContentViewPage<TModel, TItem>();
             page.ViewData = new ViewDataDictionary<TModel>(model);
-            var controllerContext = new ControllerContext { 
-                RouteData = new RouteData(new Route("anything", new MvcRouteHandler()), new MvcRouteHandler()),
+			var rd = new RouteData(new Route("anything", new MvcRouteHandler()), new MvcRouteHandler());
+			rd.DataTokens[ContentRoute.ContentEngineKey] = StubEngine();
+			var controllerContext = new ControllerContext
+			{ 
+                RouteData = rd,
                 Controller = new StubController(),
 				HttpContext = new FakeHttpContext("/")
             };
@@ -42,6 +49,14 @@ namespace N2.Extensions.Tests.Mvc
 			};
             return page;
         }
+
+		private static IEngine StubEngine()
+		{
+			var engine = MockRepository.GenerateStub<IEngine>();
+			engine.Expect(e => e.Resolve<ITemplateRenderer>()).Return(new TemplateRenderer(
+				MockRepository.GenerateStub<IControllerMapper>())).Repeat.Any();
+			return engine;
+		}
 
         private class StubController : Controller
         {

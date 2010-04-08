@@ -149,13 +149,22 @@
     <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
     <Compile Include="Areas\Tests\Models\TestPage.cs" />
     <Compile Include="Areas\Tests\Models\TestPart.cs" />
+    <Compile Include="Areas\Tests\Models\TestWebFormPart.cs" />
     <Compile Include="Areas\Tests\TestsAreaRegistration.cs" />
+    <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.cs">
+      <DependentUpon>TestWebFormPart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.designer.cs">
+      <DependentUpon>TestWebFormPart.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Classes\Configuration\MailConfigSource.cs" />
     <Compile Include="Classes\Configuration\TemplatesSection.cs" />
     <Compile Include="Classes\Configuration\WikiElement.cs" />
     <Compile Include="Classes\Find.cs" />
     <Compile Include="Classes\MvcOnWebFormPartAdapter.cs" />
     <Compile Include="Classes\Tabs.cs" />
+    <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
     <Compile Include="Classes\Web\IPageModifier.cs" />
     <Compile Include="Classes\Web\IPageModifierContainer.cs" />
     <Compile Include="Classes\Web\LanguageModifier.cs" />
@@ -578,6 +587,7 @@
     <Content Include="Areas\Management\Views\ManageAnalytics\InputToken.ascx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\SelectAccount.ascx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\Statistics.ascx" />
+    <Content Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx" />
     <Content Include="Areas\Tests\Views\TestContent\Dictionary.ascx" />
     <Content Include="Areas\Tests\Views\TestContent\Partial.ascx" />
     <Content Include="Areas\Tests\Views\TestContent\Index.aspx" />

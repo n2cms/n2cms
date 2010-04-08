@@ -38,7 +38,11 @@ namespace N2.Engine
 
 		int IComparable<AbstractContentAdapter>.CompareTo(AbstractContentAdapter other)
 		{
-			return 2 * Utility.InheritanceDepth(other.AdaptedType).CompareTo(Utility.InheritanceDepth(AdaptedType)) // order by depth of adapted type first
+			int adaptedTypeComparisonResult = Utility.InheritanceDepth(other.AdaptedType).CompareTo(Utility.InheritanceDepth(AdaptedType));
+			if (AdaptedType.IsInterface ^ other.AdaptedType.IsInterface)
+				// if one of the items is an interface sort it before the class
+				adaptedTypeComparisonResult = AdaptedType.IsInterface ? -1 : 1;
+			return 2 * adaptedTypeComparisonResult // order by depth of adapted type first
 				+ Utility.InheritanceDepth(other.GetType()).CompareTo(Utility.InheritanceDepth(GetType())); // then by depth of adapter
 		}
 

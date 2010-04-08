@@ -13,37 +13,38 @@ namespace N2.Web.Mvc.Html
 {
 	public interface ITemplateRenderer
 	{
-        string RenderTemplate(ContentItem item, ViewContext context);
+        void RenderTemplate(ContentItem item, HtmlHelper helper);
 	}
 
 	[Service(typeof(ITemplateRenderer))]
 	public class TemplateRenderer : ITemplateRenderer
 	{
 		private readonly IControllerMapper controllerMapper;
-		private readonly IEngine _engine;
 
-		public TemplateRenderer(IControllerMapper controllerMapper, IEngine engine)
+		public TemplateRenderer(IControllerMapper controllerMapper)
 		{
 			this.controllerMapper = controllerMapper;
-			_engine = engine;
 		}
 
-        public string RenderTemplate(ContentItem item, ViewContext viewContext)
+		public void RenderTemplate(ContentItem item, HtmlHelper helper)
 		{
 			foreach (var route in RouteTable.Routes)
 			{
 				var contentRoute = route as ContentRoute;
 				if (contentRoute != null)
 				{
-					var rv = contentRoute.GetRouteValues(item, viewContext.RouteData.Values);
-					if(rv != null)
-						return Render(viewContext, rv);
+					var rv = contentRoute.GetRouteValues(item, helper.ViewContext.RouteData.Values);
+					if (rv != null)
+					{
+						helper.RenderAction("index", rv);
+						return;
+					}
 				}
 			}
 
 			RouteValueDictionary values = new RouteValueDictionary();
-			CopyValues(viewContext.RouteData.DataTokens, values);
-			CopyValues(viewContext.RouteData.Values, values);
+			CopyValues(helper.ViewContext.RouteData.DataTokens, values);
+			CopyValues(helper.ViewContext.RouteData.Values, values);
 
 			var controllerName = controllerMapper.GetControllerName(item.GetType());
 			if (controllerName == null)
@@ -53,28 +54,28 @@ namespace N2.Web.Mvc.Html
 			values[ContentRoute.ContentItemKey] = item.ID;
 			values[ContentRoute.ActionKey] = "index";
 
-			return Render(viewContext, values);
+			helper.RenderAction("index", values);
 		}
 
-		private string Render(ViewContext viewContext, RouteValueDictionary values)
-		{
-			var writer = new StringWriter();
-			using (var scope = new HttpContextScope(writer))
-			{
-				// execute the action
-				var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
-					{
-						HttpContext = new HttpContextWrapper(scope.CurrentContext),
-						ViewData = viewContext.ViewData,
-						TempData = viewContext.TempData
-					},
-					new SimpleViewDataContainer { ViewData = viewContext.ViewData });
+		//private string Render(ViewContext viewContext, RouteValueDictionary values)
+		//{
+		//    var writer = new StringWriter();
+		//    using (var scope = new HttpContextScope(writer))
+		//    {
+		//        // execute the action
+		//        var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
+		//            {
+		//                HttpContext = new HttpContextWrapper(scope.CurrentContext),
+		//                ViewData = viewContext.ViewData,
+		//                TempData = viewContext.TempData
+		//            },
+		//            new SimpleViewDataContainer { ViewData = viewContext.ViewData });
 
-				helper.RenderAction("index", values);
+		//        helper.RenderAction("index", values);
 				
-				return writer.ToString();
-			}
-		}
+		//        return writer.ToString();
+		//    }
+		//}
 
 		private RouteValueDictionary CopyValues(RouteValueDictionary from, RouteValueDictionary to)
 		{

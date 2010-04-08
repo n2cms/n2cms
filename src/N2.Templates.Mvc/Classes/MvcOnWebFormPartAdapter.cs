@@ -24,48 +24,74 @@ namespace N2.Templates.Mvc.Classes
 
 		public override Control AddTo(ContentItem item, Control container)
 		{
-			// fake an mvc context and render an mvc part
-			var rd = CreateRouteData(item, container);
-			var vc = CreateViewContext(container, rd);			
-			var html = renderer.RenderTemplate(item, vc);
-
-			var lc = new LiteralControl(html);
-			container.Controls.Add(lc);
-			return lc;
+			var cw = new ControllerWrapper(item, renderer);
+			container.Controls.Add(cw);
+			return cw;
 		}
 
-		private static ViewContext CreateViewContext(Control container, RouteData rd)
+		class ControllerWrapper : Control, IViewDataContainer
 		{
-			var vc = new ViewContext(
-				new ControllerContext(
-					new RequestContext(
-						new HttpContextWrapper(HttpContext.Current),
-						rd),
-					new TempController()),
-				new WebFormView(container.Page.Request.AppRelativeCurrentExecutionFilePath),
-				new ViewDataDictionary(),
-				new TempDataDictionary(),
-				container.Page.Response.Output);
-			return vc;
-		}
+			ITemplateRenderer renderer;
+			ContentItem item;
 
-		private static RouteData CreateRouteData(ContentItem item, Control container)
-		{
-			ContentItem page = item;
-			var ic = container.Page as IItemContainer;
-			if (ic != null)
-				page = ic.CurrentItem;
-
-			var rd = new RouteData();
-			rd.ApplyCurrentItem("webform", "index", item, page, item);
-			return rd;
-		}
-
-		class TempController : ControllerBase
-		{
-			protected override void ExecuteCore()
+			public ControllerWrapper(ContentItem item, ITemplateRenderer renderer)
 			{
-				throw new NotImplementedException();
+				ViewData = new ViewDataDictionary(item);
+				this.renderer = renderer;
+				this.item = item;
+			}
+
+			public HtmlHelper<ContentItem> Html { get; set; }
+
+			#region IViewDataContainer Members
+
+			public ViewDataDictionary ViewData { get; set; }
+
+			#endregion
+
+			protected override void Render(HtmlTextWriter writer)
+			{
+				// fake an mvc context and render an mvc part
+				var rd = CreateRouteData();
+				var vc = CreateViewContext(rd, writer);
+				Html = new HtmlHelper<ContentItem>(vc, this);
+
+				renderer.RenderTemplate(item, Html);
+			}
+
+			private ViewContext CreateViewContext(RouteData rd, HtmlTextWriter writer)
+			{
+				var vc = new ViewContext(
+					new ControllerContext(
+						new RequestContext(
+							new HttpContextWrapper(HttpContext.Current),
+							rd),
+						new TempController()),
+					new WebFormView(this.Page.Request.AppRelativeCurrentExecutionFilePath),
+					new ViewDataDictionary(),
+					new TempDataDictionary(),
+					writer);
+				return vc;
+			}
+
+			private RouteData CreateRouteData()
+			{
+				ContentItem page = item;
+				var ic = Page as IItemContainer;
+				if (ic != null)
+					page = ic.CurrentItem;
+
+				var rd = new RouteData();
+				rd.ApplyCurrentItem("webform", "index", item, page, item);
+				return rd;
+			}
+
+			class TempController : ControllerBase
+			{
+				protected override void ExecuteCore()
+				{
+					throw new NotImplementedException();
+				}
 			}
 		}
 	}

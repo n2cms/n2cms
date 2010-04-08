@@ -1,4 +1,7 @@
-﻿- fixed routing to areas
+﻿- refactored display helpers (and removed some previously obsoleted helpers)
+- introduced MvcAdapter to allow adpatation of part rendering
+- [Adapts(typeof(interface))] support for content adapters
+- fixed routing to areas
 
 2.0 beta2
 - icons for file types

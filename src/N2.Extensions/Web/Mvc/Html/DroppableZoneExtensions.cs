@@ -22,7 +22,7 @@ namespace N2.Web.Mvc.Html
         /// <returns></returns>
         public static DroppableZoneHelper DroppableZone(this HtmlHelper helper, string zoneName)
         {
-            return new DroppableZoneHelper(helper.ViewContext, zoneName, helper.CurrentItem());
+            return new DroppableZoneHelper(helper, zoneName, helper.CurrentItem());
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace N2.Web.Mvc.Html
         /// <returns></returns>
         public static DroppableZoneHelper DroppableZone(this HtmlHelper helper, ContentItem item, string zoneName)
         {
-            return new DroppableZoneHelper(helper.ViewContext, zoneName, item);
+            return new DroppableZoneHelper(helper, zoneName, item);
         }
 	}
 }

@@ -16,23 +16,6 @@ namespace N2.Extensions.Tests.Mvc.Html
 	[TestFixture]
 	public class DisplayExtensionsTests
 	{
-		private ITemplateRenderer _templateRenderer;
-
-		#region Setup/Teardown
-
-		[SetUp]
-		public void SetUp()
-		{
-			_templateRenderer = MockRepository.GenerateStub<ITemplateRenderer>();
-
-			var engine = MockRepository.GenerateStub<IEngine>();
-			engine.Expect(e => e.Resolve<ITemplateRenderer>()).Return(_templateRenderer).Repeat.Any();
-
-			Context.Replace(engine);
-		}
-
-		#endregion
-
 		private class RegularPageContainer : IItemContainer<RegularPage>
 		{
 			public RegularPageContainer(RegularPage page)
@@ -103,6 +86,10 @@ namespace N2.Extensions.Tests.Mvc.Html
 		[Controls(typeof (DisplayableItem))]
 		public class DisplayableItemController : Controller
 		{
+			public ActionResult Index()
+			{
+				return Content("Hello");
+			}
 		}
 
 		[Test]
@@ -152,24 +139,30 @@ namespace N2.Extensions.Tests.Mvc.Html
 		}
 
 		[Test]
-		public void WhenPassedDisplayableForContentItemPassesThatContentItemAsModel()
+		public void WhenPassedDisplayable_ForContentItem_PassesThatContentItem_AsModel()
 		{
-			_templateRenderer.Expect(r => r.RenderTemplate(null, null))
-				.Return("Testing")
-				.IgnoreArguments().Repeat.Once();
-
 			var testItem = new DisplayableItem
 			               	{
 			               		Text = "RootTestItem",
 			               		Property = new DisplayableItem {Text = "NestedTestItem"},
 			               	};
-            var page = MvcTestUtilities.CreateViewPage(testItem);
+			var page = MvcTestUtilities.CreateViewPage(testItem);
 			page.InitHelpers();
+
+			var adapter = MockRepository.GenerateMock<MvcAdapter>();
+			adapter.Expect(r => r.RenderTemplate(page.Html, testItem.Property));
+			
+			var adapterProvider = MockRepository.GenerateStub<IContentAdapterProvider>();
+			adapterProvider.Expect(ap => ap.ResolveAdapter<MvcAdapter>(testItem.Property.GetType())).Return(adapter);
+			
+			var engine = MockRepository.GenerateStub<IEngine>();
+			engine.Expect(e => e.Resolve<IContentAdapterProvider>()).Return(adapterProvider).Repeat.Any();
+			
+			page.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] = engine;
 
             var result = page.Html.DisplayContent(p => p.Property).ToString();
 
-			Assert.That(result, Is.EqualTo("Testing"));
-			_templateRenderer.VerifyAllExpectations();
+			adapter.VerifyAllExpectations();
 		}
 	}
 }

@@ -4,11 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Routing;
+using N2.Engine;
 
 namespace N2.Web.Mvc.Html
 {
     public static class ContentItemExtensions
     {
+		public static T ResolveService<T>(this HtmlHelper helper) where T: class
+		{
+			IEngine engine = null;
+			if (helper.ViewContext.RouteData.DataTokens.ContainsKey(ContentRoute.ContentEngineKey))
+				engine = helper.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] as IEngine;
+			if (engine == null)
+				engine = N2.Context.Current;
+
+			return engine.Resolve<T>();
+		}
+
         public static ContentItem CurrentPage(this HtmlHelper helper)
         {
             return helper.CurrentPage<ContentItem>();

@@ -22,10 +22,10 @@ namespace N2.Web.Mvc.Html
 
         ControlPanelState state = ControlPanelState.Hidden;
 
-        public DroppableZoneHelper(ViewContext viewContext, string zoneName, ContentItem currentItem)
-            : base(viewContext, zoneName, currentItem)
+        public DroppableZoneHelper(HtmlHelper helper, string zoneName, ContentItem currentItem)
+            : base(helper, zoneName, currentItem)
 		{
-            state = viewContext.HttpContext.ControlPanelState();
+            state = helper.ViewContext.HttpContext.ControlPanelState();
         }
 
         public override void Render(TextWriter writer)
@@ -37,7 +37,7 @@ namespace N2.Web.Mvc.Html
 				writer.Write("<div class='" + ZoneName + " dropZone'");
 				writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path)
 					.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
-					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, ViewContext.HttpContext.User)))
+					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
 					.WriteAttribute("title", DroppableZone.GetToolTip(Context.Current.Definitions.GetDefinition(CurrentItem.GetType()), ZoneName))
 					.Write(">");
 				

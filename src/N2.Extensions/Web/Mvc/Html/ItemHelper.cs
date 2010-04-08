@@ -9,24 +9,20 @@ namespace N2.Web.Mvc.Html
 	public abstract class ItemHelper
 	{
 		PartsAdapter partsAdapter;
-        ContentItem currentItem;
+		MvcAdapter mvcAdapter;
+		ContentItem currentItem;
 
-        protected ItemHelper(ViewContext viewContext, ContentItem currentItem)
+        protected ItemHelper(HtmlHelper helper, ContentItem currentItem)
         {
-            ViewContext = viewContext;
+			Html = helper;
             CurrentItem = currentItem;
 		}
 
-		protected ViewContext ViewContext { get; set; }
-
-        protected virtual IEngine Engine
-		{
-			get { return Context.Current; }
-		}
+		protected HtmlHelper Html { get; set; }
 
         protected ContentItem CurrentItem
         {
-            get { return currentItem ?? (currentItem = ViewContext.CurrentItem()); }
+            get { return currentItem ?? (currentItem = Html.CurrentItem()); }
             set { this.currentItem = value; }
         }
 
@@ -36,9 +32,30 @@ namespace N2.Web.Mvc.Html
 			get
 			{
 				if (partsAdapter == null)
-					partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem != null ? CurrentItem.GetType() : typeof(ContentItem));
+					partsAdapter = Adapters.ResolveAdapter<PartsAdapter>(CurrentItem != null ? CurrentItem.GetType() : typeof(ContentItem));
 				return partsAdapter;
 			}
+		}
+
+		/// <summary>The content adapter related to the current page item.</summary>
+		protected virtual MvcAdapter MvcAdapter
+		{
+			get
+			{
+				if (mvcAdapter == null)
+					mvcAdapter = GetMvcAdapterFor(CurrentItem != null ? CurrentItem.GetType() : typeof(ContentItem));
+				return mvcAdapter;
+			}
+		}
+
+		protected virtual MvcAdapter GetMvcAdapterFor(Type contentType)
+		{
+			return Adapters.ResolveAdapter<MvcAdapter>(contentType);
+		}
+
+		private IContentAdapterProvider Adapters
+		{
+			get { return Html.ResolveService<IContentAdapterProvider>(); }
 		}
 	}
 }

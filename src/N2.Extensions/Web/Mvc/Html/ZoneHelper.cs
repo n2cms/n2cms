@@ -11,10 +11,8 @@ namespace N2.Web.Mvc.Html
 {
 	public class ZoneHelper : ItemHelper
 	{
-		private readonly ITemplateRenderer _templateRenderer = Context.Current.Resolve<ITemplateRenderer>();
-
-        public ZoneHelper(ViewContext viewContext, string zoneName, ContentItem currentItem)
-            : base(viewContext, currentItem)
+        public ZoneHelper(HtmlHelper helper, string zoneName, ContentItem currentItem)
+			: base(helper, currentItem)
         {
             ZoneName = zoneName;
         }
@@ -43,12 +41,12 @@ namespace N2.Web.Mvc.Html
 
         public virtual void Render()
         {
-            Render(ViewContext.HttpContext.Response.Output);
+            Render(Html.ViewContext.HttpContext.Response.Output);
         }
 
         public virtual void Render(TextWriter writer)
         {
-            foreach (var child in GetItems())
+			foreach (var child in PartsAdapter.GetItemsInZone(CurrentItem, ZoneName))
             {
                 RenderTemplate(writer, child);
             }
@@ -59,19 +57,10 @@ namespace N2.Web.Mvc.Html
             if (Wrapper != null)
                 writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
 
-            string partial = _templateRenderer.RenderTemplate(model, ViewContext);
-            writer.Write(partial);
+			GetMvcAdapterFor(model.GetType()).RenderTemplate(Html, model);
 
             if (Wrapper != null)
                 writer.WriteLine(Wrapper.ToString(TagRenderMode.EndTag));
         }
-
-		private ItemList GetItems()
-		{
-			if (PartsAdapter == null)
-				return CurrentItem.GetChildren(ZoneName);
-
-			return PartsAdapter.GetItemsInZone(CurrentItem, ZoneName);
-		}
 	}
 }

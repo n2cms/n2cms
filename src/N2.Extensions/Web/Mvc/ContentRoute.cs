@@ -61,7 +61,7 @@ namespace N2.Web.Mvc
 				actionName = (string)routeValues[ActionKey];
 
 			string controllerName = controllerMapper.GetControllerName(item.GetType());
-			if (!controllerMapper.ControllerHasAction(controllerName, actionName))
+			if (controllerName == null || !controllerMapper.ControllerHasAction(controllerName, actionName))
 				return null;
 
 			var values = new RouteValueDictionary(routeValues);
