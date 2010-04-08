@@ -144,8 +144,11 @@
     <Compile Include="Areas\Management\Root.aspx.designer.cs">
       <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Tests\Controllers\QueryViewerController.cs" />
     <Compile Include="Areas\Tests\Controllers\TestContentController.cs" />
     <Compile Include="Areas\Tests\Controllers\TestController.cs" />
+    <Compile Include="Areas\Tests\Models\QueryViewData.cs" />
+    <Compile Include="Areas\Tests\Models\QueryViewerPart.cs" />
     <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
     <Compile Include="Areas\Tests\Models\TestPage.cs" />
     <Compile Include="Areas\Tests\Models\TestPart.cs" />
@@ -588,6 +591,7 @@
     <Content Include="Areas\Management\Views\ManageAnalytics\SelectAccount.ascx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\Statistics.ascx" />
     <Content Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx" />
+    <Content Include="Areas\Tests\Views\QueryViewer\Index.ascx" />
     <Content Include="Areas\Tests\Views\TestContent\Dictionary.ascx" />
     <Content Include="Areas\Tests\Views\TestContent\Partial.ascx" />
     <Content Include="Areas\Tests\Views\TestContent\Index.aspx" />

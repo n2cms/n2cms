@@ -49,6 +49,7 @@ namespace N2.Persistence.NH
 		{
 			ICriteria c = GetContentItemCriteria();
 			return c.Add(NHibernate.Criterion.Expression.Eq("ID", id))
+				.SetCacheable(true)
 				.UniqueResult<ContentItem>();
 		}
 
@@ -56,6 +57,7 @@ namespace N2.Persistence.NH
 		{
 			ICriteria c = GetContentItemCriteria();
 			return c.Add(NHibernate.Criterion.Expression.Eq("ID", id))
+				.SetCacheable(true)
 				.UniqueResult<T>();
 		}
 

@@ -1,4 +1,5 @@
-﻿- refactored display helpers (and removed some previously obsoleted helpers)
+﻿- ported query viewer to mvc
+- refactored display helpers (and removed some previously obsoleted helpers)
 - introduced MvcAdapter to allow adpatation of part rendering
 - [Adapts(typeof(interface))] support for content adapters
 - fixed routing to areas
