@@ -63,7 +63,13 @@ namespace N2.Details
 
 		protected override void ModifyEditor(TextBox tb)
 		{
-			// do nothing
+			// set width and height to control the size of the tinyMCE editor
+			// 1 column is evaluated to 10px
+			// 1 row is evaluated to 20px
+			if (Columns > 0)
+				tb.Style.Add("width", (Columns * 10).ToString() + "px");
+			if (Rows > 0)
+				tb.Style.Add("height", (Rows * 20).ToString() + "px");
 		}
 
 		protected override TextBox CreateEditor()

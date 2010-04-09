@@ -65,3 +65,4 @@ CONTRIBUTORS
 * Stanley Ipkiss
 * Kennet
 * James Crowley
+* Wayne Wong
