@@ -1,4 +1,5 @@
-﻿- applied WayneWong's patches
+﻿- applied candland's patch #5075: single row on mvc form
+- applied WayneWong's patches
 	- #5721: table prefix fix
 	- #5048: free text editor size
 - ported query viewer to mvc

@@ -33,7 +33,9 @@ namespace N2.Templates.Mvc.Models.Parts
 
 		public override IElement CreateHtmlElement()
 		{
-			return new TextArea(ElementID);
+			if (Rows == 1)
+				return new TextBox(ElementID).Size(Columns ?? 60);
+			return new TextArea(ElementID).Rows(Rows).Columns(Columns ?? 60);
 		}
 	}
 }
