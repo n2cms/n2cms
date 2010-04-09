@@ -22,11 +22,7 @@
 			</ItemTemplate>
 		</asp:Repeater>
 		
-		<asp:SqlDataSource ID="sdsItems" runat="server" 
-			SelectCommand="SELECT * FROM [n2Item]" 
-			DeleteCommand="DELETE FROM [n2detail] WHERE [ItemID] = @ID DELETE FROM [n2detailCollection] WHERE [ItemID] = @ID DELETE FROM [n2AllowedRole] WHERE [ItemID] = @ID DELETE FROM [n2Item] WHERE [ID] = @ID" 
-			InsertCommand="INSERT INTO [n2Item] ([Type], [Updated], [Name], [ZoneName], [Title], [Created], [Published], [Expires], [SortOrder], [Visible], [SavedBy], [VersionOfID], [ParentID]) VALUES (@Type, @Updated, @Name, @ZoneName, @Title, @Created, @Published, @Expires, @SortOrder, @Visible, @SavedBy, @VersionOfID, @ParentID)" 
-			UpdateCommand="UPDATE [n2Item] SET [Type] = @Type, [Updated] = @Updated, [Name] = @Name, [ZoneName] = @ZoneName, [Title] = @Title, [Created] = @Created, [Published] = @Published, [Expires] = @Expires, [SortOrder] = @SortOrder, [Visible] = @Visible, [SavedBy] = @SavedBy, [VersionOfID] = @VersionOfID, [ParentID] = @ParentID WHERE [ID] = @ID">
+		<asp:SqlDataSource ID="sdsItems" runat="server">
 			<DeleteParameters>
 				<asp:Parameter Name="ID" Type="Int32" />
 			</DeleteParameters>

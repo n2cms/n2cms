@@ -1,4 +1,5 @@
-﻿- ported query viewer to mvc
+﻿- applied WayneWong's patch #5721: table prefix fix
+- ported query viewer to mvc
 - refactored display helpers (and removed some previously obsoleted helpers)
 - introduced MvcAdapter to allow adpatation of part rendering
 - [Adapts(typeof(interface))] support for content adapters

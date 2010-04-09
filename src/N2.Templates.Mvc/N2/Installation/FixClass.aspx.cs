@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using N2.Configuration;
 using N2.Installation;
 using N2.Web;
 using N2.Edit.Installation;
@@ -13,6 +14,7 @@ namespace N2.Edit.Install
     public partial class FixClass : System.Web.UI.Page
     {
         InstallationManager installer = N2.Context.Current.Resolve<InstallationManager>();
+        string tablePrefix = N2.Context.Current.Resolve<DatabaseSection>().TablePrefix;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,7 +23,7 @@ namespace N2.Edit.Install
                 using (IDbConnection conn = installer.GetConnection())
                 {
                     conn.Open();
-                    string sql = "select * from n2item where Type = (select Type from n2item where ID = " + int.Parse(Request["id"]) + ")";
+                    string sql = string.Format("select * from {0}item where Type = (select Type from {0}item where ID = ", tablePrefix) + int.Parse(Request["id"]) + ")";
                     using (IDbCommand cmd = installer.GenerateCommand(CommandType.Text, sql))
                     {
                         cmd.Connection = conn;
@@ -45,20 +47,20 @@ namespace N2.Edit.Install
 
                     List<int> ids = new List<int>();
 
-                    cmd.CommandText = "select id from n2item where Type = (select Type from n2item where ID = " + int.Parse(Request["id"]) + ")";
+                    cmd.CommandText = string.Format("select id from {0}item where Type = (select Type from {0}item where ID = ", tablePrefix) + int.Parse(Request["id"]) + ")";
                     AppendIds(cmd, ids);
                     AppendChildrenIdsRecursive(cmd, ids);
 
                     ids.Reverse();
                     foreach(int id in ids)
                     {                        
-                        cmd.CommandText = "delete from n2detail where ItemID = " + id + " or LinkValue = " + id;
+                        cmd.CommandText = string.Format("delete from {0}detail where ItemID = ", tablePrefix) + id + " or LinkValue = " + id;
                         cmd.ExecuteNonQuery();
 
-                        cmd.CommandText = "delete from n2allowedrole where ItemID = " + id;
+                        cmd.CommandText = string.Format("delete from {0}allowedrole where ItemID = ", tablePrefix) + id;
                         cmd.ExecuteNonQuery();
 
-                        cmd.CommandText = "delete from n2item where ID = " + id;
+                        cmd.CommandText = string.Format("delete from {0}item where ID = ", tablePrefix) + id;
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -75,7 +77,7 @@ namespace N2.Edit.Install
             List<int> newids = new List<int>();
             foreach (int id in ids)
             {
-                cmd.CommandText = "select id from n2item where ParentID = " + id;
+                cmd.CommandText = string.Format("select id from {0}item where ParentID = ", tablePrefix) + id;
                 AppendIds(cmd, newids);
             }
             AppendChildrenIdsRecursive(cmd, newids);
@@ -102,7 +104,7 @@ namespace N2.Edit.Install
             using (IDbConnection conn = installer.GetConnection())
             {
                 conn.Open();
-                string sql = "update n2item set type = '" + ddlType.SelectedValue.Replace("'", "''") + "' where Type = (select Type from n2item where ID = " + int.Parse(Request["id"]) + ")";
+                string sql = string.Format("update {0}item set type = '", tablePrefix) + ddlType.SelectedValue.Replace("'", "''") + string.Format("' where Type = (select Type from {0}item where ID = ", tablePrefix) + int.Parse(Request["id"]) + ")";
                 using (IDbCommand cmd = installer.GenerateCommand(CommandType.Text, sql))
                 {
                     cmd.Connection = conn;
