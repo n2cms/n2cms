@@ -14,6 +14,7 @@ namespace N2.Edit.Trash
 	/// </summary>
 	public class TrashHandler : ITrashHandler
 	{
+		public const string TrashContainerName = "Trash";
 		public const string FormerName = "FormerName";
 		public const string FormerParent = "FormerParent";
 		public const string FormerExpires = "FormerExpires";
@@ -39,15 +40,18 @@ namespace N2.Edit.Trash
 			get { return GetTrashContainer(false) as ITrashCan; }
 		}
 
+		/// <summary>Navigate for nodes rather than use database queries. This is less performant but more easily testable.</summary>
+		public bool UseNavigationMode { get; set; }
+
 		public TrashContainerItem GetTrashContainer(bool create)
 		{
 			ContentItem rootItem = persister.Get(host.CurrentSite.RootItemID);
-			TrashContainerItem trashContainer = rootItem.GetChild("Trash") as TrashContainerItem;
+			TrashContainerItem trashContainer = GetExistingContainer(rootItem);
 			if (create && trashContainer == null)
 			{
 				trashContainer = definitions.CreateInstance<TrashContainerItem>(rootItem);
-				trashContainer.Name = "Trash";
-				trashContainer.Title = "Trash";
+				trashContainer.Name = TrashContainerName;
+				trashContainer.Title = TrashContainerName;
 				trashContainer.Visible = false;
 				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "admin"));
 				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Editors"));
@@ -56,6 +60,15 @@ namespace N2.Edit.Trash
 				persister.Save(trashContainer);
 			}
 			return trashContainer;
+		}
+
+		private TrashContainerItem GetExistingContainer(ContentItem rootItem)
+		{
+			if (UseNavigationMode)
+				return rootItem.GetChild(TrashContainerName) as TrashContainerItem;
+			
+			var items = finder.Where.Parent.Eq(rootItem).And.Type.Eq(typeof(TrashContainerItem)).MaxResults(1).Select<TrashContainerItem>();
+			return items.Count > 0 ? items[0] : null;
 		}
 
         /// <summary>Checks if the trash is enabled, the item is not already thrown and for the NotThrowable attribute.</summary>
@@ -163,9 +176,23 @@ namespace N2.Edit.Trash
 			if (trash.PurgeInterval == TrashPurgeInterval.Never) return;
 
 			DateTime tresholdDate = Utility.CurrentTime().AddDays(-(int)trash.PurgeInterval);
-			var expiredItems = finder.Where.Parent.Eq(trash)
-				.And.Detail(TrashHandler.DeletedDate).Le(tresholdDate)
-				.Select();
+			IList<ContentItem> expiredItems = null;
+			if (UseNavigationMode)
+			{
+				expiredItems = new List<ContentItem>();
+				foreach (var item in Find.EnumerateChildren(trash))
+				{
+					var deletedDate = item[TrashHandler.DeletedDate];
+					if (deletedDate != null && ((DateTime)deletedDate) <= tresholdDate)
+						expiredItems.Add(item);
+				}
+			}
+			else
+			{
+				expiredItems = finder.Where.Parent.Eq(trash)
+					.And.Detail(TrashHandler.DeletedDate).Le(tresholdDate)
+					.Select();
+			}
 			
 			try
 			{

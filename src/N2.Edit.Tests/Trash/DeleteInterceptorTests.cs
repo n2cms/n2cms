@@ -34,6 +34,7 @@ namespace N2.Edit.Tests.Trash
             LastCall.IgnoreArguments();
 
 			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
+			th.UseNavigationMode = true;
             Expect.Call(delegate { th.Throw(item); });
 
             mocks.ReplayAll();
@@ -61,7 +62,7 @@ namespace N2.Edit.Tests.Trash
 
             mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1));
+			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1)) { UseNavigationMode = true };
             DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
@@ -84,7 +85,7 @@ namespace N2.Edit.Tests.Trash
 
 			mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1));
+			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1)) { UseNavigationMode = true };
 			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
 			interceptor.Start();
 
@@ -108,6 +109,7 @@ namespace N2.Edit.Tests.Trash
             IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
 			TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
+			th.UseNavigationMode = true;
             th.RestoreValues(item);
 
             mocks.ReplayAll();
@@ -134,6 +136,7 @@ namespace N2.Edit.Tests.Trash
             LastCall.IgnoreArguments();
 
 			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
+			th.UseNavigationMode = true;
             th.RestoreValues(item);
 
             mocks.ReplayAll();
@@ -164,6 +167,7 @@ namespace N2.Edit.Tests.Trash
             IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
 			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
+			th.UseNavigationMode = true;
             th.ExpireTrashedItem(item);
 
             mocks.ReplayAll();

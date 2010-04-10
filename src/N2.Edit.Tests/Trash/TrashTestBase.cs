@@ -5,7 +5,7 @@ using N2.Edit.Trash;
 
 namespace N2.Edit.Tests.Trash
 {
-    public class TrashTestBase
+    public abstract class TrashTestBase
     {
         protected ThreadContext webContext;
         protected Host host;
