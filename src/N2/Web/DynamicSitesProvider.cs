@@ -5,6 +5,9 @@ using System.Diagnostics;
 using N2.Collections;
 using N2.Configuration;
 using N2.Engine;
+using N2.Definitions;
+using N2.Persistence;
+using N2.Persistence.Finder;
 
 namespace N2.Web
 {
@@ -16,51 +19,43 @@ namespace N2.Web
 	public class DynamicSitesProvider : N2.Web.ISitesProvider
 	{
 		#region Private Fields
-		private Persistence.IPersister persister;
-	    private readonly IHost host;
-	    private readonly HostSection config;
-		private int recursionDepth = 2;
+		readonly IPersister persister;
+		readonly IDefinitionManager definitions;
+		readonly IItemFinder finder;
+	    readonly IHost host;
+	    readonly HostSection config;
 		#endregion
 
 		#region Constructors
-		public DynamicSitesProvider(Persistence.IPersister persister, IHost host, HostSection config)
+		public DynamicSitesProvider(Persistence.IPersister persister, IItemFinder finder, IDefinitionManager definitions, IHost host, HostSection config)
 		{
-			if (persister == null) throw new ArgumentNullException("persister");
-			if (config == null) throw new ArgumentNullException("config");
-
 			this.persister = persister;
+			this.finder = finder;
+			this.definitions = definitions;
 		    this.host = host;
 		    this.config = config;
 		} 
 		#endregion
 
-		/// <summary>Gets or sets the number of levels to look for site sources. 0 means root item only. 1 also includes the root item's child pages, etc.</summary>
-		public int RecursionDepth
-		{
-			get { return recursionDepth; }
-			set { recursionDepth = value; }
-		}
-
-
         public virtual IEnumerable<Site> GetSites()
 		{
-			if (RecursionDepth < 0) throw new N2Exception("The DynamicSitesProvider requires the RecursionDepth property to be at least 0");
-
             List<Site> foundSites = new List<Site>();
 
             try
             {
-                AddSites(config.RootID, foundSites);
-                
-                foreach (SiteElement element in config.Sites)
-                {
-                        if(element.RootID.HasValue)
-                        {
-                            int rootID = element.RootID.Value;
-
-                            AddSites(rootID, foundSites);
-                        }
-                }
+				foreach (ItemDefinition definition in definitions.GetDefinitions())
+				{
+					if (typeof(ISitesSource).IsAssignableFrom(definition.ItemType))
+					{
+						foreach (ISitesSource source in finder.Where.Type.Eq(definition.ItemType).Select())
+						{
+							foreach (Site s in source.GetSites())
+							{
+								foundSites.Add(s);
+							}
+						}
+					}
+				}
             }
             catch (Exception ex)
             {
@@ -69,20 +64,5 @@ namespace N2.Web
 
 		    return foundSites;
 		}
-
-	    private void AddSites(int rootID, List<Site> foundSites)
-	    {
-	        ContentItem rootItem = persister.Get(rootID);
-	        if (rootItem == null)
-	            return;
-
-	        foreach (ISitesSource source in new RecursiveFinder().Find<ISitesSource>(rootItem, RecursionDepth))
-	        {
-	            foreach (Site s in source.GetSites())
-	            {
-	                foundSites.Add(s);
-	            }
-	        }
-	    }
 	}
 }

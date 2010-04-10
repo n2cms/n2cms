@@ -13,6 +13,7 @@ using N2.Edit;
 using N2.Persistence.Finder;
 using N2.Security;
 using N2.Web;
+using N2.Edit.Workflow;
 
 namespace N2.Tests
 {
@@ -34,7 +35,15 @@ namespace N2.Tests
             schemaCreator = new SchemaExport(configurationBuilder.BuildConfiguration());
         }
 
-        public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, params Type[] itemTypes)
+		public static IDefinitionManager SetupDefinitions(params Type[] itemTypes)
+		{
+			IItemNotifier notifier;
+			IDefinitionManager definitions;
+			Setup(out definitions, out notifier, itemTypes);
+			return definitions;
+		}
+
+		public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, params Type[] itemTypes)
         {
             ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
 

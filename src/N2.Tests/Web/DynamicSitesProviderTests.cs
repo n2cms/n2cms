@@ -3,6 +3,13 @@ using N2.Tests.Web.Items;
 using NUnit.Framework;
 using N2.Web;
 using N2.Configuration;
+using N2.Persistence.NH.Finder;
+using System.Collections;
+using System;
+using System.Collections.Generic;
+using N2.Persistence.Finder;
+using N2.Tests.Fakes;
+using N2.Definitions;
 
 namespace N2.Tests.Web
 {
@@ -24,7 +31,9 @@ namespace N2.Tests.Web
 			mocks.ReplayAll();
 
 		    config = new HostSection {RootID = rootItem.ID, StartPageID = rootItem.ID};
-            sitesProvider = new DynamicSitesProvider(persister, host, config);
+			var definitions = TestSupport.SetupDefinitions(typeof(SiteProvidingItem), typeof(PageItem));
+			var finder = new FakeItemFinder(definitions, () => base.repository.database.Values.OfType<SiteProvidingItem>().Cast<ContentItem>());
+			sitesProvider = new DynamicSitesProvider(persister, finder, definitions, host, config);
 		}
 
 		protected SiteProvidingItem CreateTheItemTree()
@@ -46,24 +55,9 @@ namespace N2.Tests.Web
 		}
 
 		[Test]
-		public void CanFindSite_OnRootItem()
+		public void CanFind_AllSites()
 		{
-			sitesProvider.RecursionDepth = 0;
-            Assert.That(sitesProvider.GetSites().Count(), Is.EqualTo(1));
-		}
-
-		[Test]
-		public void CanFindSites_One_DepthDown()
-		{
-			sitesProvider.RecursionDepth = 1;
-			EnumerableAssert.Count(3, sitesProvider.GetSites());
-		}
-
-		[Test]
-		public void CanFindSites_Two_DepthsDown()
-		{
-			sitesProvider.RecursionDepth = 2;
-			EnumerableAssert.Count(5, sitesProvider.GetSites());
+			Assert.That(sitesProvider.GetSites().Count(), Is.EqualTo(5));
 		}
 	}
 }

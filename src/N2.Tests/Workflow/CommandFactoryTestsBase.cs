@@ -31,11 +31,10 @@ namespace N2.Tests.Workflow
         public override void SetUp()
         {
             base.SetUp();
-            var changer = new StateChanger();
-            versions = new FakeVersionManager(repository, changer);
-            var builder = new DefinitionBuilder(new FakeTypeFinder(typeof(StatefulItem)), new EngineSection());
-            definitions = new DefinitionManager(builder, changer, new NotifyingInterceptor());
-            var editManager = new EditManager(definitions, persister, versions, null, null, null, changer, new EditSection());
+			var changer = new StateChanger();
+            definitions = TestSupport.SetupDefinitions(typeof(StatefulItem));
+			versions = new FakeVersionManager(repository, changer);
+			var editManager = new EditManager(definitions, persister, versions, null, null, null, changer, new EditSection());
             var security = new SecurityManager(new FakeWebContextWrapper(), new EditSection());
             commands = new CommandFactory(persister, security, versions, editManager, changer);
             dispatcher = new CommandDispatcher(commands);

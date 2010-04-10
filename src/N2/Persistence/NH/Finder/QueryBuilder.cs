@@ -369,7 +369,7 @@ namespace N2.Persistence.NH.Finder
 
 		#region IQueryEnd Members
 
-		public int Count()
+		public virtual int Count()
 		{
 			if (Filters.Count > 0)
 				throw new N2Exception("Cannot use filters when selecting count, sorry.");
@@ -383,7 +383,7 @@ namespace N2.Persistence.NH.Finder
 			return Select<ContentItem>();
 		}
 
-		public IList<T> Select<T>() where T : ContentItem
+		public virtual IList<T> Select<T>() where T : ContentItem
 		{
             ItemList<T> items = new ItemList<T>(
                 CreateQuery().List<T>(), 

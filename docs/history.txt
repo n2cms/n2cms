@@ -1,5 +1,6 @@
 ﻿- applied mjwills' patches #26289:
 	- trash startup performance
+	- dynamic sistes finder performance
 - applied candland's patch #5075: single row on mvc form
 - applied WayneWong's patches
 	- #5721: table prefix fix
