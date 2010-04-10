@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using N2.Configuration;
 using N2.Engine;
+using System.Linq;
 
 namespace N2.Web
 {
@@ -13,8 +14,7 @@ namespace N2.Web
 	public class Host : IHost
 	{
 		private readonly IWebContext context;
-		private Site defaultSite;
-		private Site[] sites = new Site[0];
+		SiteTable sites = new SiteTable(null, Enumerable.Empty<Site>());
 
 		public Host(IWebContext context, HostSection config)
 		{
@@ -31,14 +31,14 @@ namespace N2.Web
 		public Host(IWebContext context, Site defaultSite)
 		{
 			this.context = context;
-			this.defaultSite = defaultSite;
+			this.sites = new SiteTable(defaultSite, Enumerable.Empty<Site>());
 		}
 
     	/// <summary>The default site if the current cannot be determined.</summary>
     	public Site DefaultSite
 		{
-			get { return defaultSite; }
-			set { defaultSite = value; }
+			get { return sites.DefaultSite; }
+			set { sites = new SiteTable(value, sites.Sites); }
 		}
 
     	/// <summary>The current site based on the request's host header information. Fallbacks to defualt site.</summary>
@@ -50,7 +50,7 @@ namespace N2.Web
     	/// <summary>All sites in the system.</summary>
     	public IList<Site> Sites
         {
-            get { return sites; }
+            get { return sites.Sites; }
         }
 
     	/// <summary>Gets the site associated with an url.</summary>
@@ -60,10 +60,10 @@ namespace N2.Web
         {
             if (hostUrl == null)
                 return null;
-            foreach (Site site in sites)
-                if (site.Is(hostUrl.Authority))
-                    return site;
-            return null;
+            if(hostUrl.Authority == null)
+				return null;
+
+			return sites[hostUrl.Authority];
 		}
 
 		/// <summary>Gets the site associated with an item.</summary>
@@ -71,33 +71,30 @@ namespace N2.Web
 		/// <returns>The site this node belongs to.</returns>
 		public Site GetSite(ContentItem item)
 		{
-			if (item == null)
-				return null;
+			return sites.SiteOf(item);
+		}
 
-			if (item.ID == DefaultSite.StartPageID)
-				return DefaultSite;
-
-			foreach (Site site in Sites)
-				if (item.ID == site.StartPageID)
-					return site;
-
-			return GetSite(item.Parent);
+		/// <summary>Gets the site with the given start page ID.</summary>
+		/// <param name="startPageId">The id of the site's start page.</param>
+		/// <returns>The site or null if no start page with that id exists.</returns>
+		public Site GetSite(int startPageID)
+		{
+			return sites[startPageID];
 		}
 
     	/// <summary>Adds sites to the available sites.</summary>
     	/// <param name="additionalSites">Sites to add.</param>
 		public void AddSites(IEnumerable<Site> additionalSites)
         {
-			var args = new SitesChangedEventArgs { PreviousSites = sites, PreviousDefault = defaultSite };
+			var previous = sites;
+			sites = previous.Add(additionalSites);
 
-			lock (this)
-			{
-				sites = Union(Sites, additionalSites);
-
-				args.CurrentSites = sites;
-				args.CurrentDefault = defaultSite;
-			}
-
+			var args = new SitesChangedEventArgs();
+			args.PreviousDefault = previous.DefaultSite;
+			args.PreviousSites = previous.Sites;
+			args.CurrentDefault = sites.DefaultSite;
+			args.CurrentSites = sites.Sites;
+			
 			if (SitesChanged != null)
 				SitesChanged.Invoke(this, args);
 		}
@@ -109,16 +106,14 @@ namespace N2.Web
         {
             if(newSites == null) throw new ArgumentNullException("newSites");
 
-			var args = new SitesChangedEventArgs { PreviousSites = sites, PreviousDefault = defaultSite };
+			var previous = sites;
+			sites = new SiteTable(newDefaultSite, newSites);
 
-			lock (this)
-			{
-				defaultSite = newDefaultSite;
-				sites = new List<Site>(newSites).ToArray();
-
-				args.CurrentSites = sites;
-				args.CurrentDefault = defaultSite;
-			}
+			var args = new SitesChangedEventArgs();
+			args.PreviousDefault = previous.DefaultSite;
+			args.PreviousSites = previous.Sites;
+			args.CurrentDefault = sites.DefaultSite;
+			args.CurrentSites = sites.Sites;
 
 			if (SitesChanged != null)
 			{
@@ -133,25 +128,20 @@ namespace N2.Web
 		{
 			if (item == null) throw new ArgumentNullException("item");
 
-			if (item.ID == DefaultSite.StartPageID)
-				return true;
-
-			foreach (Site site in Sites)
-				if (item.ID == site.StartPageID)
-					return true;
-
-			return false;
+			return sites.ContainsKey(item.ID);
 		}
 
+		// static helpers
+
 		public static Site[] Union(IEnumerable<Site> sites, IEnumerable<Site> sitesToAdd)
-        {
-            List<Site> writableSites = new List<Site>(sites);
-            foreach (Site s in sitesToAdd)
-            {
-                if (!writableSites.Contains(s))
-                    writableSites.Add(s);
-            }
-            return writableSites.ToArray();
+		{
+			List<Site> writableSites = new List<Site>(sites);
+			foreach (Site s in sitesToAdd)
+			{
+				if (!writableSites.Contains(s))
+					writableSites.Add(s);
+			}
+			return writableSites.ToArray();
 		}
 
 		public static IList<Site> ExtractSites(HostSection config)
@@ -170,11 +160,107 @@ namespace N2.Web
 			return sites;
 		}
 
-		#region IHost Members
-
 		/// <summary>Is triggered when the sites collection changes.</summary>
 		public event EventHandler<SitesChangedEventArgs> SitesChanged;
 
+		#region class SiteTable	
+
+		class SiteTable
+		{
+			bool wildcards;
+			Site defaultSite;
+			Dictionary<string, Site> sitesByAuthority = new Dictionary<string, Site>(StringComparer.InvariantCultureIgnoreCase);
+			Dictionary<int, Site> sitesById = new Dictionary<int, Site>();
+			Site[] sites;
+
+
+
+			public SiteTable(Site defaultSite, IEnumerable<Site> sites)
+			{
+				this.defaultSite = defaultSite;
+				this.sites = new List<Site>(sites).ToArray();
+
+				Add(defaultSite);
+				foreach (var site in sites)
+					Add(site);
+			}
+
+
+
+			public Site DefaultSite
+			{
+				get { return defaultSite; }
+			}
+
+			public Site[] Sites
+			{
+				get { return sites; }
+			}
+
+
+
+			private void Add(Site site)
+			{
+				if (site == null)
+					return;
+
+				if(site.Authority != null)
+					sitesByAuthority[site.Authority] = site;
+				sitesById[site.StartPageID] = site;
+				
+				wildcards |= site.Wildcards;
+			}
+
+			public Site this[string authority]
+			{
+				get 
+				{
+					Site site;
+					if (sitesByAuthority.TryGetValue(authority, out site))
+						return site;
+
+					if (wildcards)
+					{
+						int dotIndex = authority.IndexOf('.');
+						if(dotIndex >= 0)
+							return this[authority.Substring(dotIndex + 1)];
+					}
+
+					return null;
+				}
+			}
+
+			public Site this[int siteId]
+			{
+				get
+				{
+					Site site;
+					sitesById.TryGetValue(siteId, out site);
+					return site;
+				}
+			}
+
+			public Site SiteOf(ContentItem item)
+			{
+				if(item == null)
+					return null;
+
+				return this[item.ID] ?? SiteOf(item.Parent);
+			}
+
+			public bool ContainsKey(int startPageId)
+			{
+				return sitesById.ContainsKey(startPageId);
+			}
+
+			public SiteTable Add(IEnumerable<Site> additionalSites)
+			{
+				List<Site> sites = new List<Site>(this.sites);
+				sites.AddRange(additionalSites);
+
+				return new SiteTable(defaultSite, sites);
+			}
+		}
 		#endregion
 	}
 }

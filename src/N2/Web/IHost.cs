@@ -29,6 +29,11 @@ namespace N2.Web
 		/// <returns>The site this node belongs to.</returns>
 		Site GetSite(ContentItem item);
 
+		/// <summary>Gets the site with the given start page ID.</summary>
+		/// <param name="startPageId">The id of the site's start page.</param>
+		/// <returns>The site or null if no start page with that id exists.</returns>
+        Site GetSite(int startPageId);
+
 		/// <summary>Adds sites to the available sites.</summary>
 		/// <param name="additionalSites">Sites to add.</param>
         void AddSites(IEnumerable<Site> additionalSites);

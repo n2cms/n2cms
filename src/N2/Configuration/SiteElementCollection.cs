@@ -17,5 +17,15 @@ namespace N2.Configuration
 		{
 			return ((SiteElement)element).Name;
 		}
+
+		public void Add(SiteElement site)
+		{
+			BaseAdd(site);
+		}
+
+		public void Remove(string siteName)
+		{
+			BaseRemove(siteName);
+		}
 	}
 }

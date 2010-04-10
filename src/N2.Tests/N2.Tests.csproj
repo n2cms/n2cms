@@ -171,6 +171,7 @@
     <Compile Include="Fakes\FakeItemFinder.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="Web\HostTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
     <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
     <Compile Include="Workflow\CommandFactory_SavingTests.cs" />

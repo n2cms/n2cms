@@ -17,21 +17,18 @@ namespace N2.Web
 		private Dictionary<string, object> settings = new Dictionary<string, object>();
 	    private IList<string> uploadFolders = new List<string>();
 
-	    public Site(int rootItemID)
+	    public Site(int rootItemID) : this(rootItemID, rootItemID)
 		{
-			this.rootItemID = rootItemID;
-			this.startPageID = rootItemID;
 		}
 
-		public Site(int rootItemID, int startPageID)
+		public Site(int rootItemID, int startPageID) : this(rootItemID, startPageID, "")
 		{
-			this.rootItemID = rootItemID;
-			this.startPageID = startPageID;
 		}
 
 		public Site(int rootItemID, int startPageID, string host)
-			: this(rootItemID, startPageID)
 		{
+			this.rootItemID = rootItemID;
+			this.startPageID = startPageID;
 			this.authority = host;
 		}
 

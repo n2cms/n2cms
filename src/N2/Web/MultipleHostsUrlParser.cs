@@ -116,14 +116,10 @@ namespace N2.Web
             	return Url.ToAbsolute("~" + url.PathAndQuery);
             }
 
-			// find the start page and use it's host name
-			foreach (Site site in host.Sites)
-				if (current.ID == site.StartPageID)
-					return GetHostedUrl(item, url, site);
+            var site = host.GetSite(current.ID) ?? host.DefaultSite;
 
-			// revert to default site
-			return GetHostedUrl(item, url, host.DefaultSite);
-		}
+            return GetHostedUrl(item, url, site);
+        }
 
         private string GetHostedUrl(ContentItem item, string url, Site site)
         {
