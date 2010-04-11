@@ -11,6 +11,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		Description = "A list of recent events.", 
 		SortOrder = 120)]
 	[RestrictParents(typeof (IStructuralPage))]
+	[SortChildren(SortBy.Expression, SortExpression = "EventDate")]
 	public class Calendar : AbstractContentPage
 	{
 		public virtual IEnumerable<Event> GetEvents()

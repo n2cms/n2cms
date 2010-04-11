@@ -16,11 +16,6 @@ namespace N2.Templates.Mvc.Models.Pages
 			Visible = false;
 		}
 
-		public override void AddTo(ContentItem newParent)
-		{
-			Utility.Insert(this, newParent, "Published DESC");
-		}
-
 		[EditableTextBox("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4,
 			Columns = 80)]
 		public virtual string Introduction

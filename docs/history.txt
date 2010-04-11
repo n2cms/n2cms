@@ -1,7 +1,9 @@
-﻿- applied mjwills' patches #26289:
+﻿- [SortChildren] attribute to control childrne sort order
+- applied mjwills' patches #26289:
 	- trash startup performance
 	- dynamic sistes finder performance
 	- hosts performance using dictionaries
+	- option to avoid re-sorting children
 - applied candland's patch #5075: single row on mvc form
 - applied WayneWong's patches
 	- #5721: table prefix fix

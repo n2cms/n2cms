@@ -11,7 +11,7 @@ namespace N2
 	/// makes more assumptions about the item beeing defined and provides more
 	/// meta-data options.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 	public class PageDefinitionAttribute : AbstractDefinition
 	{
 		/// <summary>Instructs the installation screen how to treat this definition during installation.</summary>

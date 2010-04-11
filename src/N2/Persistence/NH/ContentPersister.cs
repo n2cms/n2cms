@@ -19,6 +19,7 @@ using N2.Persistence.Finder;
 using NHibernate.Criterion;
 using NHibernate;
 using N2.Engine;
+using N2.Definitions;
 
 namespace N2.Persistence.NH
 {
@@ -105,12 +106,15 @@ namespace N2.Persistence.NH
 
 		private void EnsureSortOrder(ContentItem unsavedItem)
 		{
-			if (unsavedItem.Parent != null)
+			var parent = unsavedItem.Parent;
+			if (parent != null)
 			{
-				IEnumerable<ContentItem> updatedItems = Utility.UpdateSortOrder(unsavedItem.Parent.Children);
-				foreach (ContentItem updatedItem in updatedItems)
+				foreach (SortChildrenAttribute attribute in parent.GetType().GetCustomAttributes(typeof(SortChildrenAttribute), true))
 				{
-					itemRepository.SaveOrUpdate(updatedItem);
+					foreach (ContentItem updatedItem in attribute.ReorderChildren(parent))
+					{
+						itemRepository.SaveOrUpdate(updatedItem);
+					}
 				}
 			}
 		}

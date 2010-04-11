@@ -46,11 +46,6 @@ namespace N2.Templates.Mvc.Models.Pages
 			set { SetDetail("Introduction", value, string.Empty); }
 		}
 
-		public override void AddTo(ContentItem newParent)
-		{
-			Utility.Insert(this, newParent, "EventDate");
-		}
-
 		string ISyndicatable.Summary
 		{
 			get { return Introduction; }

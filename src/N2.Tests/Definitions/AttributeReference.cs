@@ -52,12 +52,19 @@ namespace N2.Tests.Definitions
 			}
 		}
 
+		[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+		public class OddAttribute : Attribute
+		{
+		}
+
 		[OffRoad]
+		[Odd]
 		public class Car
 		{
 		}
 
 		[FourWheeler]
+		[Odd]
 		public class Volvo : Car
 		{
 		}
@@ -104,6 +111,23 @@ namespace N2.Tests.Definitions
 			Assert.AreEqual(3, c2.Length);
 			foreach (IVeichle i in c2)
 				Debug.WriteLine("c2: " + i.GetDescription());
+
+			int oddCar = typeof(Car).GetCustomAttributes(typeof(OddAttribute), true).Length;
+			int oddVolvo = typeof(Volvo).GetCustomAttributes(typeof(OddAttribute), true).Length;
+			int oddVolvoV70 = typeof(VolvoV70).GetCustomAttributes(typeof(OddAttribute), true).Length;
+			Assert.That(oddCar, Is.EqualTo(1));
+			Assert.That(oddVolvo, Is.EqualTo(1));
+			Assert.That(oddVolvoV70, Is.EqualTo(0));
+
+			int offCar = typeof(Car).GetCustomAttributes(typeof(OffRoadAttribute), true).Length;
+			int offVolvo = typeof(Volvo).GetCustomAttributes(typeof(OffRoadAttribute), true).Length;
+			Assert.That(offCar, Is.EqualTo(1));
+			Assert.That(offVolvo, Is.EqualTo(1));
+
+			int offCarNonInherit = typeof(Car).GetCustomAttributes(typeof(OffRoadAttribute), false).Length;
+			int offVolvoNonInherit = typeof(Volvo).GetCustomAttributes(typeof(OffRoadAttribute), false).Length;
+			Assert.That(offCarNonInherit, Is.EqualTo(1));
+			Assert.That(offVolvoNonInherit, Is.EqualTo(0));
 		}
 	}
 }

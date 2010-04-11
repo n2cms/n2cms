@@ -31,6 +31,7 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Web;
 using N2.Edit.Workflow;
+using N2.Definitions;
 
 namespace N2
 {
@@ -58,6 +59,7 @@ namespace N2
 	[Serializable, DebuggerDisplay("{Name}#{ID}")]
 	[DynamicTemplate]
 	[RestrictParents(typeof(ContentItem))]
+	[SortChildren(SortBy.CurrentOrder)]
 	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, INode, IUpdatable<ContentItem>
     {
         #region Private Fields

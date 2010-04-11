@@ -26,7 +26,7 @@ namespace N2.Tests.Persistence.NH
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
 		{
-            TestSupport.Setup(out definitions, out interceptor, out sessionProvider, out finder, out schemaCreator, typeof(Definitions.PersistableItem1));
+			TestSupport.Setup(out definitions, out interceptor, out sessionProvider, out finder, out schemaCreator, typeof(Definitions.PersistableItem1), typeof(Definitions.PersistableItem2), typeof(Definitions.NonVirtualItem));
 		}
 
 		[SetUp]

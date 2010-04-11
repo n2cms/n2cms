@@ -14,7 +14,6 @@ namespace N2.Tests.Persistence.NH
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "saveableRoot", null);
 			persister.Save(item);
 			Assert.AreNotEqual(0, item.ID);
-			persister.Delete(item);
 		}
 
 		[Test, Ignore]
@@ -31,17 +30,16 @@ namespace N2.Tests.Persistence.NH
 			persister.Dispose();
 
 			Assert.That(storedItem.Children.Count, Is.EqualTo(1));
-
-			persister.Delete(item);
 		}
 
 		[Test]
 		public void SavingItemWithEmptyName_NameIsSetToNull()
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "", null);
+
 			persister.Save(item);
+
 			Assert.AreEqual(item.ID.ToString(), item.Name);
-			persister.Delete(item);
 		}
 
 		[Test]
@@ -61,7 +59,6 @@ namespace N2.Tests.Persistence.NH
 			{
 				item = persister.Get(item.ID);
 				Assert.AreEqual("world", item["someproperty"]);
-				persister.Delete(item);
 			}
 		}
 
@@ -114,8 +111,6 @@ namespace N2.Tests.Persistence.NH
 				Assert.AreEqual(1, root.Children.Count);
 				Assert.AreEqual(1, item1.Children.Count);
 				Assert.AreEqual(item1, item2.Parent);
-
-				persister.Delete(root);
 			}
 		}
 
@@ -153,8 +148,6 @@ namespace N2.Tests.Persistence.NH
 				Assert.AreNotEqual(root, item1.Children[0]);
 				Assert.AreNotEqual(item1, item1.Children[0]);
 				Assert.AreNotEqual(item2, item1.Children[0]);
-
-				persister.Delete(root);
 			}
 		}
 
@@ -297,24 +290,17 @@ namespace N2.Tests.Persistence.NH
 		{
 			PersistableItem1 item = CreateOneItem<PersistableItem1>(0, "root", null);
 			PersistableItem1 fromDB = null;
-			try
+
+			string guid = item.WritableGuid;
+			item.WritableGuid = guid;
+			using (persister)
 			{
-				string guid = item.WritableGuid;
-				item.WritableGuid = guid;
-				using (persister)
-				{
-					persister.Save(item);
-				}
-
-				fromDB = persister.Get<PersistableItem1>(item.ID);
-
-				Assert.That(fromDB.WritableGuid, Is.EqualTo(guid));
+				persister.Save(item);
 			}
-			finally
-			{
-				persister.Delete(fromDB ?? item);
 
-			}
+			fromDB = persister.Get<PersistableItem1>(item.ID);
+
+			Assert.That(fromDB.WritableGuid, Is.EqualTo(guid));
 		}
 
 		[Test]
@@ -344,6 +330,58 @@ namespace N2.Tests.Persistence.NH
 				{
 				}
 			}
+		}
+
+		[Test]
+		public void Save_CausesSortOrder_ToBeUpdated()
+		{
+			ContentItem parent = CreateOneItem<Definitions.PersistableItem1>(0, "parent", null);
+			persister.Save(parent);
+
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "child1", parent);
+			persister.Save(child1);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "child2", parent);
+			persister.Save(child2);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "child3", parent);
+			persister.Save(child3);
+
+			Assert.That(child1.SortOrder, Is.LessThan(child2.SortOrder));
+			Assert.That(child2.SortOrder, Is.LessThan(child3.SortOrder));
+		}
+
+		[Test]
+		public void Save_OnParentWith_SortChildrenByUnordered_CausesSortOrder_NotToBeUpdated()
+		{
+			ContentItem parent = CreateOneItem<Definitions.NonVirtualItem>(0, "parent", null);
+			persister.Save(parent);
+
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "child1", parent);
+			persister.Save(child1);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "child2", parent);
+			persister.Save(child2);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "child3", parent);
+			persister.Save(child3);
+
+			Assert.That(child1.SortOrder, Is.EqualTo(0));
+			Assert.That(child2.SortOrder, Is.EqualTo(0));
+			Assert.That(child3.SortOrder, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Save_OnParentWith_SortChildren_ByExpression_NameDesc_CausesChildrenToBeReordered()
+		{
+			ContentItem parent = CreateOneItem<Definitions.PersistableItem2>(0, "parent", null);
+			persister.Save(parent);
+
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "child1", parent);
+			persister.Save(child1);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "child2", parent);
+			persister.Save(child2);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "child3", parent);
+			persister.Save(child3);
+
+			Assert.That(child1.SortOrder, Is.GreaterThan(child2.SortOrder));
+			Assert.That(child2.SortOrder, Is.GreaterThan(child3.SortOrder));
 		}
 	}
 }

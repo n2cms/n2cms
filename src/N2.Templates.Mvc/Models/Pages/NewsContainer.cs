@@ -12,6 +12,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		SortOrder = 150,
 		IconUrl = "~/Content/Img/newspaper_link.png")]
 	[RestrictParents(typeof (IStructuralPage))]
+	[SortChildren(SortBy.PublishedDescending)]
 	public class NewsContainer : AbstractContentPage
 	{
 		public IList<News> NewsItems

@@ -366,6 +366,7 @@
     <Compile Include="Definitions\ISortableRefiner.cs" />
     <Compile Include="Definitions\IStartPage.cs" />
     <Compile Include="Definitions\IStructuralPage.cs" />
+    <Compile Include="Definitions\SortChildrenAttribute.cs" />
     <Compile Include="Definitions\RefineOrder.cs" />
     <Compile Include="Definitions\RemoveEditableAttribute.cs" />
     <Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />
