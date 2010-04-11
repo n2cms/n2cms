@@ -84,7 +84,7 @@ namespace N2.Details
 			}
 			else
 			{
-				item[Name] = Utility.GetProperty(editor, editorPropertyName);
+				Utility.SetProperty(editor, editorPropertyName, item[Name]);
 			}
 		}
 

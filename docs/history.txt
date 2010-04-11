@@ -1,4 +1,5 @@
-﻿- fixed #26619: Incorrect redirect after deleting a part
+﻿- applied jeanfpoulin's #26543: [EditableUserControl] attribute problem updating editor
+- fixed #26619: Incorrect redirect after deleting a part
 - [SortChildren] attribute to control childrne sort order
 - applied mjwills' patches #26289:
 	- trash queries database for finding trash container, increased when many nodes below root
