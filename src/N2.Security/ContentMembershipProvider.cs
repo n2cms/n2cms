@@ -20,7 +20,7 @@ namespace N2.Security
 
 		protected virtual ItemBridge Bridge
 		{
-			get { return bridge ?? (bridge ?? Context.Current.Resolve<ItemBridge>()); }
+			get { return bridge ?? (bridge = Context.Current.Resolve<ItemBridge>()); }
 		}
 
 		private string applicationName = "N2.Security";
