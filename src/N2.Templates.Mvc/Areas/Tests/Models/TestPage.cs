@@ -7,7 +7,7 @@ using N2.Details;
 
 namespace N2.Templates.Mvc.Areas.Tests.Models
 {
-	[PageDefinition]
+	[PageDefinition(SortOrder = int.MaxValue)]
 	[WithEditableTitle]
 	public class TestPage : TestItemBase
 	{

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Web.Routing;
 
 namespace N2.Web.Mvc
 {
@@ -42,7 +43,11 @@ namespace N2.Web.Mvc
 			{
 				if (string.Equals(method, action, StringComparison.InvariantCultureIgnoreCase))
 				{
-					return new PathData(item, null, action, arguments) { IsRewritable = false };
+					return new PathData(item, null, action, arguments) 
+					{ 
+						IsRewritable = false, 
+						TemplateUrl = string.Format("~/{0}/{1}", controllerName, method, item.ID) // workaround for start pages
+					};
 				}
 			}
 
