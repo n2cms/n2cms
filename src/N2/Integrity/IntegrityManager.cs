@@ -2,6 +2,7 @@ using System;
 using N2;
 using N2.Web.UI;
 using N2.Engine;
+using N2.Persistence.Finder;
 
 namespace N2.Integrity
 {
@@ -15,18 +16,18 @@ namespace N2.Integrity
 	[Service(typeof(IIntegrityManager))]
     public class IntegrityManager : IIntegrityManager
     {
-		#region Private Fields
-		private readonly Web.IUrlParser urlParser;
-		private readonly Definitions.IDefinitionManager definitions;
-		#endregion
+		readonly Web.IUrlParser urlParser;
+		readonly IItemFinder finder;
+		readonly Definitions.IDefinitionManager definitions;
 
 		#region Constructor
 		/// <summary>Creates a new instance of the <see cref="IntegrityManager"/>.</summary>
 		/// <param name="definitions">The definition manager.</param>
 		/// <param name="urlParser"></param>
-		public IntegrityManager(Definitions.IDefinitionManager definitions, Web.IUrlParser urlParser)
+		public IntegrityManager(Definitions.IDefinitionManager definitions, IItemFinder finder, Web.IUrlParser urlParser)
 		{
 			this.definitions = definitions;
+			this.finder = finder;
 			this.urlParser = urlParser;
 		}
 
@@ -157,13 +158,11 @@ namespace N2.Integrity
             ContentItem parentItem = item.Parent;
             if (parentItem != null)
             {
-				foreach (ContentItem potentiallyClashingItem in parentItem.Children)
+				var itemsWithSameName = finder.Where.Parent.Eq(parentItem).And.Name.Like(name).Select();
+				foreach (var potentiallyClashingItem in itemsWithSameName)
 				{
-					if (potentiallyClashingItem.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)
-						&& !potentiallyClashingItem.Equals(item))
-					{
+					if (!potentiallyClashingItem.Equals(item))
 						return false;
-					}
 				}
             }
             return true;

@@ -1,9 +1,10 @@
 ﻿- [SortChildren] attribute to control childrne sort order
 - applied mjwills' patches #26289:
-	- trash startup performance
-	- dynamic sistes finder performance
-	- hosts performance using dictionaries
-	- option to avoid re-sorting children
+	- trash queries database for finding trash container, increased when many nodes below root
+	- dynamic sites finder does database queries, increased performance for many sites
+	- hosts lookup uses dictionaries, increased performance when many sites
+	- option to avoid re-sorting children, increased performance when using SortBy.Unsorted
+	- name uniqueness check in database, increased performance when adding items
 - applied candland's patch #5075: single row on mvc form
 - applied WayneWong's patches
 	- #5721: table prefix fix

@@ -12,6 +12,8 @@ using N2.Web;
 using N2.Web.UI;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
+using N2.Tests.Fakes;
+using System.Linq;
 
 namespace N2.Tests.Integrity
 {
@@ -22,6 +24,7 @@ namespace N2.Tests.Integrity
 		private IDefinitionManager definitions;
 		private IUrlParser parser;
 		private IntegrityManager integrityManger;
+		FakeItemFinder finder;
 
 		private IEventRaiser moving;
 		private IEventRaiser copying;
@@ -44,7 +47,8 @@ namespace N2.Tests.Integrity
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
             definitions = new DefinitionManager(builder, new N2.Edit.Workflow.StateChanger(), notifier);
-			integrityManger = new IntegrityManager(definitions, parser);
+			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
+			integrityManger = new IntegrityManager(definitions, finder, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger);
 			enforcer.Start();
 		}
@@ -357,6 +361,7 @@ namespace N2.Tests.Integrity
 		public void CannotSaveNotLocallyUniqueItem()
 		{
 			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
+			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
 			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", startPage);
@@ -369,6 +374,7 @@ namespace N2.Tests.Integrity
 		public void LocallyUniqueItemThatWithoutNameYet()
 		{
 			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
+			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
 			Page page2 = CreateOneItem<Page>(2, null, startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", startPage);
@@ -381,6 +387,7 @@ namespace N2.Tests.Integrity
 		public void CannotSaveNotLocallyUniqueItemEvent()
 		{
 			StartPage startPage = CreateOneItem<StartPage>(1, "start", null);
+			finder.Selector = () => startPage.Children.Where(c => c.Name.Equals("Sasha", StringComparison.InvariantCultureIgnoreCase));
 
 			Page page2 = CreateOneItem<Page>(2, "Sasha", startPage);
 			Page page3 = CreateOneItem<Page>(3, "Sasha", startPage);

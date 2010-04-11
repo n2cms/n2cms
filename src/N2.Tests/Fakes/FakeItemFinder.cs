@@ -28,12 +28,12 @@ namespace N2.Tests.Fakes
 
 		public IQueryBuilder Where
 		{
-			get { return new FakeQueryBuilder(definitions, Selector); }
+			get { return new FakeQueryBuilder(definitions, () => Selector()); }
 		}
 
 		public IQueryEnding All
 		{
-			get { return new FakeQueryBuilder(definitions, Selector); }
+			get { return new FakeQueryBuilder(definitions, () => Selector()); }
 		}
 
 		#endregion
