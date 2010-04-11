@@ -152,9 +152,9 @@ namespace N2.Web
 				if(IsEmpty() || string.IsNullOrEmpty(TemplateUrl))
 					return null;
 
-				if (CurrentItem.IsPage)
-					return Url.Parse(TemplateUrl).UpdateQuery(QueryParameters).SetQueryParameter(PathData.PageQueryKey, CurrentItem.ID);
-				
+				if (CurrentPage.IsPage)
+					return Url.Parse(TemplateUrl).UpdateQuery(QueryParameters).SetQueryParameter(PathData.PageQueryKey, CurrentPage.ID);
+
 				for (ContentItem ancestor = CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
 					if (ancestor.IsPage)
 						return ancestor.FindPath(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);

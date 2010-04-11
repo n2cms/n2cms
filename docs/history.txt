@@ -1,4 +1,5 @@
-﻿- [SortChildren] attribute to control childrne sort order
+﻿- fixed #26619: Incorrect redirect after deleting a part
+- [SortChildren] attribute to control childrne sort order
 - applied mjwills' patches #26289:
 	- trash queries database for finding trash container, increased when many nodes below root
 	- dynamic sites finder does database queries, increased performance for many sites

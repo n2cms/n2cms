@@ -8,8 +8,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 {
 	public class QueryViewData
 	{
-		public List<string> Queries { get; set; }
-		public List<string> All { get; set; }
+		public Func<List<string>> Queries { get; set; }
+		public Func<List<string>> All { get; set; }
 	}
 }
 #endif

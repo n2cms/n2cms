@@ -23,7 +23,7 @@ namespace N2.Edit
 
         protected override void OnLoad(EventArgs e)
         {
-            if (N2.Context.UrlParser.IsRootOrStartPage(Selection.SelectedItem))
+            if (Engine.UrlParser.IsRootOrStartPage(Selection.SelectedItem))
             {
                 cvDelete.IsValid = false;
                 this.btnDelete.Enabled = false;

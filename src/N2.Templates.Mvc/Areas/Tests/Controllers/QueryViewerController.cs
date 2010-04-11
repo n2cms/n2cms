@@ -30,8 +30,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
         public override ActionResult Index()
         {
 			return View(new QueryViewData { 
-				All = CountToContextItemsAppender.GetOrCreateList("All"),
-				Queries = CountToContextItemsAppender.GetOrCreateList("Queries") 
+				All = () => CountToContextItemsAppender.GetOrCreateList("All"),
+				Queries = () => CountToContextItemsAppender.GetOrCreateList("Queries") 
 			});
         }
     }
