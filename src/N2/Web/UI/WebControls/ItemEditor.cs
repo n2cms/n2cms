@@ -18,6 +18,7 @@ using N2.Definitions;
 using N2.Edit;
 using N2.Engine;
 using N2.Edit.Workflow;
+using System.Web;
 
 namespace N2.Web.UI.WebControls
 {
@@ -101,7 +102,7 @@ namespace N2.Web.UI.WebControls
 			{
 				if (currentItem == null && !string.IsNullOrEmpty(Discriminator))
 				{
-                    ContentItem parentItem = Engine.Resolve<Navigator>().Navigate(ParentPath);
+                    ContentItem parentItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(ParentPath));
 					currentItem = Engine.Definitions.CreateInstance(CurrentItemType, parentItem);
 					currentItem.ZoneName = ZoneName;
 				}

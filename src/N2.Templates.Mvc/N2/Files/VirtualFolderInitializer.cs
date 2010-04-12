@@ -91,7 +91,8 @@ namespace N2.Management.Files
 			// configured folders to the root node
 			foreach (FolderElement folder in folders)
 			{
-				var pair = new FolderPair(host.DefaultSite.RootItemID, folder.Path.TrimStart('~'), folder.Path);
+				var root = persister.Get(host.DefaultSite.RootItemID);
+				var pair = new FolderPair(root.ID, root.Path, folder.Path.TrimStart('~'), folder.Path);
 				paths.Add(pair);
 			}
 			// site-upload folders to their respective nodes
@@ -113,7 +114,7 @@ namespace N2.Management.Files
 			string itemPath = item.Path;
 			foreach (string path in site.UploadFolders)
 			{
-				yield return new FolderPair(item.ID, itemPath + path.TrimStart('~', '/'), path);
+				yield return new FolderPair(item.ID, item.Path, itemPath + path.TrimStart('~', '/'), path);
 			}
 		}
 
@@ -143,7 +144,7 @@ namespace N2.Management.Files
 				{
 					if (path.StartsWith(pair.Path, StringComparison.InvariantCultureIgnoreCase))
 					{
-						var dir = CreateDirectory(pair.FolderPath, pair.ParentID);
+						var dir = CreateDirectory(pair);
 
 						string remaining = path.Substring(pair.Path.Length);
 						if (string.IsNullOrEmpty(remaining))
@@ -162,17 +163,22 @@ namespace N2.Management.Files
 					if (pair.ParentPath.Equals(path, StringComparison.InvariantCultureIgnoreCase))
 					{
 						var dd = fs.GetDirectory(pair.FolderPath);
-						yield return new Directory(fs, dd, persister.Get(pair.ParentID));
+						var dir = CreateDirectory(pair);
+						yield return dir;
 					}
 				}
 			}
 
-			private Directory CreateDirectory(string folderPath, int parentID)
+			private Directory CreateDirectory(FolderPair pair)
 			{
-				var dd = fs.GetDirectory(folderPath);
-				var parent = persister.Get(parentID);
+				var dd = fs.GetDirectory(pair.FolderPath);
+				var parent = persister.Get(pair.ParentID);
 
-				return new Directory(fs, dd, parent);
+				var dir = new Directory(fs, dd, parent);
+				dir.Title = pair.Path.Substring(pair.ParentPath.Length).Trim('/');
+				dir.Name = dir.Title;
+
+				return dir;
 			}
 
 			#endregion
@@ -182,11 +188,11 @@ namespace N2.Management.Files
 
 		struct FolderPair
 		{
-			public FolderPair(int parentID, string path, string folderPath)
+			public FolderPair(int parentID, string parentPath, string path, string folderPath)
 			{
 				ParentID = parentID;
 				Path = path;
-				ParentPath = N2.Web.Url.RemoveLastSegment(path);
+				ParentPath = parentPath;
 				FolderPath = folderPath;
 			}
 

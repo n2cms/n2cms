@@ -24,6 +24,7 @@ namespace N2.Edit.Navigation
 				foreach (string uploadFolder in Engine.EditManager.UploadFolders)
 				{
 					var dd = fs.GetDirectory(uploadFolder);
+					
 					root.Children.Add(new HierarchyNode<ContentItem>(new Directory(fs, dd, root.Current)));
 				}
 

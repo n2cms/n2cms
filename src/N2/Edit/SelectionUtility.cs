@@ -53,7 +53,7 @@ namespace N2.Edit
         {
             string selected = request["selected"];
             if (!string.IsNullOrEmpty(selected))
-                return engine.Resolve<Navigator>().Navigate(selected);
+                return engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
 
             string selectedUrl = request["selectedUrl"];
             if (!string.IsNullOrEmpty(selectedUrl))

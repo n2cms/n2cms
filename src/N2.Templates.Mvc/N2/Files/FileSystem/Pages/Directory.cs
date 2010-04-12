@@ -2,6 +2,7 @@
 using N2.Details;
 using N2.Persistence;
 using N2.Installation;
+using System.Web;
 
 namespace N2.Edit.FileSystem.Items
 {

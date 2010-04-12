@@ -25,12 +25,6 @@ namespace N2.Edit.FileSystem.Items
 			get { return fileSystem; }
     	}
 
-        public override string Title
-        {
-            get { return Name; }
-            set { Name = value; }
-        }
-
 		public override string Path
 		{
 			get { return base.Path; }
