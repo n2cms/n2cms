@@ -481,11 +481,7 @@
     <Compile Include="Edit\FileSystem\IFileSystemContainer.cs" />
     <Compile Include="Edit\Settings\ISettingsEditor.cs" />
     <Compile Include="Engine\AbstractContentAdapter.cs" />
-    <Compile Include="Engine\Action.cs" />
     <Compile Include="Engine\ContentAdapterProvider.cs" />
-    <Compile Include="Engine\Function.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Engine\Globalization\DictionaryScope.cs" />
     <Compile Include="Engine\Globalization\ILanguage.cs" />
     <Compile Include="Engine\Globalization\ILanguageGateway.cs" />
