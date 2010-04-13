@@ -1,3 +1,4 @@
+using System;
 namespace N2.Engine
 {
 	/// <summary>

@@ -8,9 +8,9 @@ namespace N2.Collections
 	/// </summary>
 	public class DelegateFilter : ItemFilter
 	{
-		readonly Function<ContentItem, bool> isPositiveMatch;
+		readonly Func<ContentItem, bool> isPositiveMatch;
 
-		public DelegateFilter(Function<ContentItem, bool> isPositiveMatch)
+		public DelegateFilter(Func<ContentItem, bool> isPositiveMatch)
 		{
 			if (isPositiveMatch == null) throw new ArgumentNullException("isPositiveMatch");
 

@@ -1,4 +1,5 @@
-﻿- support for fluent [Persistable] property search
+﻿- replaced action and function with system.core equivalents (breaking change)
+- support for fluent [Persistable] property search
 - fixed published automatically issue (ThreadId=207609)
 - support for upload directory in virtual folder (avoid site restart when remove folder)
 - worked around issue linking to new start pages (prevents empty url)

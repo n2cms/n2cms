@@ -44,7 +44,7 @@ namespace N2.Collections
 			get { return children; }
 		}
 
-		public string ToString(Function<T, string> begin, Function<T, string> indent, Function<T, string> outdent, Function<T, string> end)
+		public string ToString(Func<T, string> begin, Func<T, string> indent, Func<T, string> outdent, Func<T, string> end)
 		{
 			using (var sw = new StringWriter())
 			{
@@ -53,7 +53,7 @@ namespace N2.Collections
 			}
 		}
 
-		public void Write(TextWriter writer, Function<T, string> begin, Function<T, string> indent, Function<T, string> outdent, Function<T, string> end)
+		public void Write(TextWriter writer, Func<T, string> begin, Func<T, string> indent, Func<T, string> outdent, Func<T, string> end)
 		{
 			writer.Write(begin(Current));
 			if (Children.Count > 0)

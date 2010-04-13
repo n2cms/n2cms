@@ -3,13 +3,14 @@ using N2.Security;
 using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Collections;
+using System;
 
 namespace N2.Extensions.Tests.Extensions
 {
 	[TestFixture]
 	public class FilterExtensionsTests : ExtensionTests
 	{
-		Function<ISecurityManager> backup;
+		Func<ISecurityManager> backup;
 
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()

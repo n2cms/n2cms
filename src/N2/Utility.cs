@@ -338,7 +338,7 @@ namespace N2
 				return GetLocalResourceString(resourceKey);
 		}
 
-        public static Function<DateTime> CurrentTime = delegate { return DateTime.Now; };
+        public static Func<DateTime> CurrentTime = delegate { return DateTime.Now; };
 
         [Obsolete("Moved to N2.Web.Url.ToAbsolute")]
         public static string ToAbsolute(string relativePath)
@@ -373,7 +373,7 @@ namespace N2
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="finalAction">The default action to execute if the event didn't signal cancel.</param>
 		/// <returns>The result of the action (if any).</returns>
-		public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Function<ContentItem, ContentItem, ContentItem> finalAction)
+		public static ContentItem InvokeEvent(EventHandler<CancellableDestinationEventArgs> handler, object sender, ContentItem source, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction)
 		{
 			if (handler != null && source.VersionOf == null)
 			{

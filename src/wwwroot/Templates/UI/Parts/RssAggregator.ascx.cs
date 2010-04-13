@@ -33,7 +33,7 @@ namespace N2.Templates.UI.Parts
 
         private static string CacheKey = "RssAggregator.NewsItems";
         private static TimeSpan ExpirationTime = TimeSpan.FromMinutes(1);
-        private IEnumerable<RssItem> CacheNewsItems(string url, Function<string, IEnumerable<RssItem>> reader)
+        private IEnumerable<RssItem> CacheNewsItems(string url, Func<string, IEnumerable<RssItem>> reader)
         {
             IEnumerable<RssItem> items = Cache[CacheKey] as IEnumerable<RssItem>;
             if(items == null)

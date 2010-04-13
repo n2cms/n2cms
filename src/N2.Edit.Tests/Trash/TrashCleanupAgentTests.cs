@@ -23,7 +23,7 @@ namespace N2.Edit.Tests.Trash
 		ContentEngine engine;
 		ContentItem root;
 		TrashContainerItem trash;
-		Function<DateTime> currentTimeBackup;
+		Func<DateTime> currentTimeBackup;
 
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()

@@ -80,7 +80,7 @@ namespace N2.Tests.Plugin.Scheduling
         {
             RepeatAction repeat = SelectThe<RepeatAction>();
 
-            Function<DateTime> prev = N2.Utility.CurrentTime;
+            Func<DateTime> prev = N2.Utility.CurrentTime;
             try
             {
                 raiser.Raise(null, new EventArgs());
@@ -99,7 +99,7 @@ namespace N2.Tests.Plugin.Scheduling
         {
             RepeatAction repeat = SelectThe<RepeatAction>();
 
-            Function<DateTime> prev = N2.Utility.CurrentTime;
+            Func<DateTime> prev = N2.Utility.CurrentTime;
             try
             {
                 raiser.Raise(null, new EventArgs());

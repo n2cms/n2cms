@@ -356,7 +356,7 @@ namespace N2.Edit.Tests.FileSystem
 			Assert.That(arguments[1].VirtualPath, Is.EqualTo("/Upload/Folder 2/File1.txt"));
 		}
 
-		private void AssertMovement(N2.Engine.Action<File, Directory> moveAction)
+		private void AssertMovement(Action<File, Directory> moveAction)
 		{
 			Directory sourceDirectory = (Directory)upload.GetChild("Folder1");
 			Directory destinationDirectory = (Directory)upload.GetChild("Folder 2");

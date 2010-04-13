@@ -35,7 +35,7 @@ namespace N2.Addons.Wiki.Renderers
         }
 
         /// <summary>Testability seam. Do not change. Invokes System.IO.File.Exists.</summary>
-        public static Function<string, bool> FileExists = File.Exists;
+        public static Func<string, bool> FileExists = File.Exists;
 
         private Control CreateImage(Control container, ViewContext context, string fragment)
         {

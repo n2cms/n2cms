@@ -1,4 +1,5 @@
 using N2.Engine;
+using System;
 
 namespace N2
 {
@@ -8,9 +9,9 @@ namespace N2
     public class CancellableDestinationEventArgs : DestinationEventArgs
     {
         private bool cancel;
-		private Function<ContentItem, ContentItem, ContentItem> finalAction;
+		private Func<ContentItem, ContentItem, ContentItem> finalAction;
 
-		public CancellableDestinationEventArgs(ContentItem item, ContentItem destination, Function<ContentItem, ContentItem, ContentItem> finalAction)
+		public CancellableDestinationEventArgs(ContentItem item, ContentItem destination, Func<ContentItem, ContentItem, ContentItem> finalAction)
 			: base(item, destination)
 		{
 			this.finalAction = finalAction;
@@ -29,7 +30,7 @@ namespace N2
 		}
 
 		/// <summary>The action to execute unless the event is cancelled. This action can be exchanged by observers to alter the default behaviour.</summary>
-		public Function<ContentItem, ContentItem, ContentItem> FinalAction
+		public Func<ContentItem, ContentItem, ContentItem> FinalAction
 		{
 			get { return finalAction; }
 			set { finalAction = value; }

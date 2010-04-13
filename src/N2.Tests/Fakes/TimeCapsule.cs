@@ -8,7 +8,7 @@ namespace N2.Tests.Fakes
 	/// </summary>
 	public class TimeCapsule : IDisposable
 	{
-		Function<DateTime> backup;
+		Func<DateTime> backup;
 
 		public TimeCapsule(DateTime time)
 		{

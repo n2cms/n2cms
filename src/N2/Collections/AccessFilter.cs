@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Web;
 using N2.Engine;
 using N2.Security;
+using System;
 
 namespace N2.Collections
 {
@@ -12,12 +13,12 @@ namespace N2.Collections
 	public class AccessFilter : ItemFilter
     {
 		/// <summary>Used to decouple from HttpContext during testing.</summary>
-		public static Function<IPrincipal> CurrentUser = delegate
+		public static Func<IPrincipal> CurrentUser = delegate
 		{
 			return HttpContext.Current != null ? HttpContext.Current.User : null;
 		};
 		/// <summary>Used to decouple from N2.Context.Current during testing.</summary>
-		public static Function<ISecurityManager> CurrentSecurityManager = delegate
+		public static Func<ISecurityManager> CurrentSecurityManager = delegate
 		{
 			return Context.Current.SecurityManager;
 		};

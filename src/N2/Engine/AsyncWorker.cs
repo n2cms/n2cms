@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System;
 
 namespace N2.Engine
 {
@@ -11,7 +12,7 @@ namespace N2.Engine
 		int executingWorkItems = 0;
 
 		/// <summary>Testability seam for the async worker.</summary>
-		public Function<WaitCallback, bool> QueueUserWorkItem = ThreadPool.QueueUserWorkItem;
+		public Func<WaitCallback, bool> QueueUserWorkItem = ThreadPool.QueueUserWorkItem;
 
 		#region IWorker Members
 
