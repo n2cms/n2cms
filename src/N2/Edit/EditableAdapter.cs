@@ -53,7 +53,8 @@ namespace N2.Edit
 		/// <param name="item">The item to update.</param>
 		/// <param name="addedEditors">Editors containing interesting values.</param>
 		/// <param name="user">The user to filter access by.</param>
-		public virtual bool UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		/// <returns>Detail names that were updated.</returns>
+		public virtual string[] UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
 			return EditManager.UpdateItem(item, addedEditors, user);
 		}

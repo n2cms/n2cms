@@ -11,7 +11,7 @@ namespace N2.Persistence.NH.Finder
 
 		public PropertyStringCriteria(QueryBuilder query, string name)
 		{
-			op = query.CurrentOperator;
+			this.op = query.CurrentOperator;
 			this.query = query;
 			this.name = name;
 		}

@@ -210,8 +210,13 @@ namespace N2.Web.UI.WebControls
 			{
 				BinderContext = value;
 				EnsureChildControls();
-				if (!EditAdapter.UpdateItem(value.Content, AddedEditors, Page.User))
+				foreach (string key in AddedEditors.Keys)
+					BinderContext.GetDefinedDetails().Add(key);
+				var modifiedDetails = EditAdapter.UpdateItem(value.Content, AddedEditors, Page.User);
+				if (modifiedDetails.Length == 0)
 					return false;
+				foreach (string detailName in modifiedDetails)
+					BinderContext.GetUpdatedDetails().Add(detailName);
 				BinderContext.RegisterItemToSave(value.Content);
 				return true;
 			}

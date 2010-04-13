@@ -864,11 +864,161 @@ namespace N2.Tests.Persistence.NH
 				});
 		}
 
+		[Test]
+		public void FilterByProperty_Boolean_Equals_MatchingValue()
+		{
+			var items = finder.Where.Property("BoolPersistableProperty").Eq(true).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_Boolean_Equals_NonMatchingValue()
+		{
+			var items = finder.Where.Property("BoolPersistableProperty").Eq(false).Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void FilterByProperty_Double_Equals_MatchingValue()
+		{
+			var items = finder.Where.Property("DoublePersistableProperty").Eq(555.555).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_Double_GreaterThan_MatchingValue()
+		{
+			var items = finder.Where.Property("DoublePersistableProperty").Gt(444.444).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_Double_Equals_NonMatchingValue()
+		{
+			var items = finder.Where.Property("DoublePersistableProperty").Eq(666.666).Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_Double_LessThan_NonMatchingValue()
+		{
+			var items = finder.Where.Property("DoublePersistableProperty").Lt(444.444).Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void FilterByProperty_Integer_Equals_MatchingValue()
+		{
+			var items = finder.Where.Property("IntPersistableProperty").Eq(555).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_Integer_LessThanOrEquals_MatchingValue()
+		{
+			var items = finder.Where.Property("IntPersistableProperty").Le(555).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_Integer_Equals_NonMatchingValue()
+		{
+			var items = finder.Where.Property("IntPersistableProperty").Eq(666).Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_Integer_GreaterThanOrEquals_NonMatchingValue()
+		{
+			var items = finder.Where.Property("IntPersistableProperty").Ge(556).Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void FilterByProperty_String_Equals_MatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").Eq("in table text").Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_String_NotEquals_MatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").NotEq("in table text").Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_String_Like_MatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").Like("in table%").Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_String_NotLike_MatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").NotLike("in table%").Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_String_Equals_NonMatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").Eq("non in table").Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_String_NotEquals_NonMatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").NotEq("non in table").Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_String_Like_NonMatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").Like("non in table%").Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_String_NotLike_NonMatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").NotLike("non in table%").Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+
+		[Test]
+		public void FilterByProperty_DateTime_Equals_MatchingValue()
+		{
+			var items = finder.Where.Property("DateTimePersistableProperty").Eq(new DateTime(2010, 06, 18, 14, 30, 00)).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_DateTime_Equals_NonMatchingValue()
+		{
+			var items = finder.Where.Property("DateTimePersistableProperty").Eq(DateTime.Now).Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_DateTime_GreaterThan_MatchingValue()
+		{
+			var items = finder.Where.Property("DateTimePersistableProperty").Gt(new DateTime(2010, 06, 18, 14, 29, 59)).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_DateTime_GreaterThan_NonMatchingValue()
+		{
+			var items = finder.Where.Property("DateTimePersistableProperty").Gt(new DateTime(2010, 06, 18, 14, 30, 01)).Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void FilterByProperty_Link_Equals_MatchingValue()
+		{
+			var items = finder.Where.Property("LinkPersistableProperty").Eq(rootItem).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
+		[Test]
+		public void FilterByProperty_Link_Equals_NonMatchingValue()
+		{
+			var items = finder.Where.Property("LinkPersistableProperty").Eq(startPage).Select();
+			Assert.That(items.Count, Is.EqualTo(0));
+		}
+
 		#region Helpers
 		
 		private ContentItem CreatePageBelow(ContentItem parentPage, int index)
 		{
-			ContentItem item = CreateOneItem<PersistableItem2>(0, "item" + index, parentPage);
+			var item = CreateOneItem<PersistableItem2>(0, "item" + index, parentPage);
             item.State = ContentState.Published;
             
 			N2.Details.DetailCollection details = item.GetDetailCollection("DetailCollection", true);
@@ -878,6 +1028,13 @@ namespace N2.Tests.Persistence.NH
 			details.Add("string in a collection " + index);
 			details.Add(parentPage);
 			details.Add(new DateTime(2009 + index, 1, 1));
+
+			item.BoolPersistableProperty = true;
+			item.DateTimePersistableProperty = new DateTime(2010, 06, 18, 14, 30, 00);
+			item.DoublePersistableProperty = 555.555;
+			item.IntPersistableProperty = 555;
+			item.LinkPersistableProperty = rootItem;
+			item.StringPersistableProperty = "in table text";
 
 			engine.Persister.Save(item);
 			return item;

@@ -63,7 +63,7 @@ namespace N2.Edit.Workflow
         /// <summary>Gets the command used to publish an item.</summary>
         /// <param name="context">The command context used to determine which command to return.</param>
         /// <returns>A command that when executed will publish an item.</returns>
-        public virtual CommandBase<CommandContext> GetPublishCommand(CommandContext context)
+		public virtual CompositeCommand GetPublishCommand(CommandContext context)
         {
             if (context.Interface == Interfaces.Editing)
             {
@@ -74,25 +74,25 @@ namespace N2.Edit.Workflow
 				if (context.Content.VersionOf == null)
 				{
 					if(context.Content.ID == 0)
-						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, setVersionIndex, publishedState, moveToPosition, publishedDate, save);
+						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, setVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
 
-					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, publishedState, moveToPosition, publishedDate, save);
+					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
 				}
 
 				// has been published before
 				if (context.Content.State == ContentState.Unpublished)
-					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, publishedState, moveToPosition, publishedDate, save);
+					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
                 
                 // has never been published before (remove old version)
-				return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition, publishedDate, save);
+				return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition/*, publishedDate*/, save);
             }
             else if (context.Interface == Interfaces.Viewing && context.Content.VersionOf != null)
             {
                 // Viewing
                 if (context.Content.State == ContentState.Unpublished)
-					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, publishedState, moveToPosition, publishedDate, save);
+					return Compose("Re-Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
 
-				return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition, publishedDate, save);
+				return Compose("Publish", Authorize(Permission.Publish),/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition/*, publishedDate*/, save);
             }
 
             throw new NotSupportedException();
@@ -101,7 +101,7 @@ namespace N2.Edit.Workflow
 		/// <summary>Gets the command to save changes to an item without leaving the editing interface.</summary>
 		/// <param name="context">The command context used to determine which command to return.</param>
 		/// <returns>A command that when executed will save an item.</returns>
-		public virtual CommandBase<CommandContext> GetSaveCommand(CommandContext context)
+		public virtual CompositeCommand GetSaveCommand(CommandContext context)
 		{
 			if (context.Interface != Interfaces.Editing)
 				throw new NotSupportedException("Save is not supported while " + context.Interface);
@@ -135,9 +135,9 @@ namespace N2.Edit.Workflow
             return new AuthorizeCommand(security, permission);
         }
 
-        protected virtual CommandBase<CommandContext> Compose(string title, params CommandBase<CommandContext>[] commands)
+		protected virtual CompositeCommand Compose(string title, params CommandBase<CommandContext>[] commands)
         {
-            return new CompositeCommand(persister.Repository, title, commands);
+            return new CompositeCommand(title, commands);
         }
     }
    

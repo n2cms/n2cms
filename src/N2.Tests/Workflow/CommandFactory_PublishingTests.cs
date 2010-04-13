@@ -103,18 +103,19 @@ namespace N2.Tests.Workflow
 			Assert.That(item.Children[1], Is.EqualTo(child));
 		}
 
-		[Test]
-		public void Sets_PublishedDate()
-		{
-			var item = new StatefulItem();
-			item.Published = null;
-			var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+		//What's the point, really?
+		//[Test]
+		//public void Sets_PublishedDate()
+		//{
+		//    var item = new StatefulItem();
+		//    item.Published = null;
+		//    var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
-			var command = CreateCommand(context);
-			dispatcher.Execute(command, context);
+		//    var command = CreateCommand(context);
+		//    dispatcher.Execute(command, context);
 
-			Assert.That(item.Published, Is.Not.Null);
-			Assert.That(item.Published.Value, Is.GreaterThanOrEqualTo(DateTime.Now.AddSeconds(-10)));
-		}
+		//    Assert.That(item.Published, Is.Not.Null);
+		//    Assert.That(item.Published.Value, Is.GreaterThanOrEqualTo(DateTime.Now.AddSeconds(-10)));
+		//}
     }
 }

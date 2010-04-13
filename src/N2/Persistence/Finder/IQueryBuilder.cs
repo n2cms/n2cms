@@ -70,5 +70,9 @@ namespace N2.Persistence.Finder
 
 		/// <summary>Finds items belonging to a certain type. Note that derived types are not found with this method.</summary>
 		ICriteria<Type> Type { get; }
+
+		/// <summary>Finds items with a [Persistable] property named.</summary>
+		/// <param name="propertyName">The name of the property.</param>
+		IPropertyCriteria Property(string persistablePropertyName);
 	}
 }

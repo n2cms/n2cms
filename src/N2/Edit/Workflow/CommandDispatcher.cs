@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using N2.Engine;
+using N2.Persistence;
 
 namespace N2.Edit.Workflow
 {
@@ -10,11 +11,13 @@ namespace N2.Edit.Workflow
     [Service]
     public class CommandDispatcher
     {
-        ICommandFactory commandFactory;
+		readonly ICommandFactory commandFactory;
+		readonly IPersister persister;
 
-        public CommandDispatcher(ICommandFactory commandFactory)
-        {
-            this.commandFactory = commandFactory;
+		public CommandDispatcher(ICommandFactory commandFactory, IPersister persister)
+		{
+			this.commandFactory = commandFactory;
+			this.persister = persister;
         }
 
         /// <summary>Executes the supplied command</summary>
@@ -23,23 +26,29 @@ namespace N2.Edit.Workflow
         public virtual void Execute(CommandBase<CommandContext> command, CommandContext context)
         {
             Trace.Write(command.Name + " processing " + context);
-            try
-            {
-                command.Process(context);
-            }
-            catch (StopExecutionException)
-            {
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex);
-                throw;
-            }
-            finally
-            {
-                Trace.WriteLine(" -> " + context);
-            }
-        }
+			using (var tx = persister.Repository.BeginTransaction())
+			{
+				try
+				{
+					command.Process(context);
+					tx.Commit();
+				}
+				catch (StopExecutionException)
+				{
+					tx.Rollback();
+				}
+				catch (Exception ex)
+				{
+					tx.Rollback();
+					Trace.WriteLine(ex);
+					throw;
+				}
+				finally
+				{
+					Trace.WriteLine(" -> " + context);
+				}
+			}
+		}
 
         /// <summary>Publishes the data specified by the provided context.</summary>
         /// <param name="context">Contains data and information used to for publishing an item.</param>

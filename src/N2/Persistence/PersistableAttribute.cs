@@ -23,26 +23,32 @@ namespace N2.Persistence
     [AttributeUsage(AttributeTargets.Property)]
     public class PersistableAttribute : Attribute
     {
-        /// <summary>This property is required, i.i. not nullable.</summary>
-        bool Required { get; set; }
-        
         /// <summary>The length of this column (usually for string properties)</summary>
-        public int Length { get; set; }
+		public int Length { get; set; }
+
+		/// <summary>An alternative name of the column (optional).</summary>
+		public string Column { get; set; }
 
         /// <summary>Generates the mapping xml for this property.</summary>
         /// <param name="info">The property the attribute was added to.</param>
         /// <returns>An hbm xml snippet.</returns>
         public virtual string GenerateMapping(PropertyInfo info)
         {
-            const string format = "<property name=\"{0}\" column=\"{1}\" type=\"{2}\" not-null=\"{3}\" length=\"{4}\" />";
+            const string propertyFormat = "<property name=\"{0}\" column=\"{1}\" type=\"{2}\" length=\"{3}\" />";
+			const string relationFormat = "<many-to-one name=\"{0}\" column=\"{1}\" class=\"{2}\" not-null=\"false\" />";
 
+			string columnName = Column ?? info.Name;
+			string length = Length > 0 ? Length.ToString() : "{StringLength}";
             bool isNullable = (info.PropertyType.IsGenericType && info.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)));
-            string typeName = isNullable
-                ? info.PropertyType.GetGenericArguments()[0].Name
-                : info.PropertyType.Name;
-            string length = Length > 0 ? Length.ToString() : "{StringLength}";
+			var type = isNullable
+                ? info.PropertyType.GetGenericArguments()[0]
+                : info.PropertyType;
+			string typeName = type.FullName + ", " + info.PropertyType.Assembly.FullName.Split(',')[0];
 
-            return string.Format(format, info.Name, info.Name, typeName, Required.ToString().ToLower(), length);
+			string format = propertyFormat;
+			if (typeof(ContentItem).IsAssignableFrom(type))
+				format = relationFormat;
+			return string.Format(format, info.Name, columnName, typeName, length);
         }
     }
 }

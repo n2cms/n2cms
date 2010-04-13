@@ -211,30 +211,33 @@ namespace N2.Edit
 		/// <param name="addedEditors">The previously added editors.</param>
 		/// <param name="user">The user for filtering updatable editors.</param>
 		/// <returns>Whether any property on the item was updated.</returns>
-		public virtual bool UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		public virtual string[] UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
 			if (item == null) throw new ArgumentNullException("item");
 			if (addedEditors == null) throw new ArgumentNullException("addedEditors");
 
-			bool updated = false;
+			List<string> updatedDetails = new List<string>();
+
 			ItemDefinition definition = definitions.GetDefinition(item.GetType());
 			foreach (IEditable e in definition.GetEditables(user))
 			{
 				if (addedEditors.ContainsKey(e.Name))
 				{
-					updated = e.UpdateItem(item, addedEditors[e.Name]) || updated;
+					bool wasUpdated = e.UpdateItem(item, addedEditors[e.Name]);
+					if (wasUpdated)
+						updatedDetails.Add(e.Name);
 				}
 			}
 
 
-			if (updated)
+			if (updatedDetails.Count > 0)
 			{
 				item.Updated = Utility.CurrentTime();
 				if (user != null)
 					item.SavedBy = user.Identity.Name;
 			}
 
-			return updated;
+			return updatedDetails.ToArray();
 		}
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>
@@ -454,7 +457,7 @@ namespace N2.Edit
 					SaveVersion(itemToUpdate);
 
 				DateTime? published = itemToUpdate.Published;
-				bool wasUpdated = UpdateItem(itemToUpdate, addedEditors, user);
+				bool wasUpdated = UpdateItem(itemToUpdate, addedEditors, user).Length > 0;
 				if (wasUpdated || IsNew(itemToUpdate))
 				{
 					itemToUpdate.Published = published ?? Utility.CurrentTime();
@@ -471,7 +474,7 @@ namespace N2.Edit
 
 		private ContentItem SaveOnly(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			bool wasUpdated = UpdateItem(item, addedEditors, user);
+			bool wasUpdated = UpdateItem(item, addedEditors, user).Length > 0;
             if (wasUpdated || IsNew(item))
             {
                 if (item.VersionOf == null)
@@ -497,7 +500,7 @@ namespace N2.Edit
 					SaveVersion(item);
 
 				DateTime? initialPublished = item.Published;
-				bool wasUpdated = UpdateItem(item, addedEditors, user);
+				bool wasUpdated = UpdateItem(item, addedEditors, user).Length > 0;
 				DateTime? updatedPublished = item.Published;
 
 				// the item was the only version of an unpublished item - publish it
@@ -530,7 +533,7 @@ namespace N2.Edit
 				if (ShouldCreateVersionOf(item))
 					item = SaveVersion(item);
 
-				bool wasUpdated = UpdateItem(item, addedEditors, user);
+				bool wasUpdated = UpdateItem(item, addedEditors, user).Length > 0;
 				if (wasUpdated || IsNew(item))
 				{
 					item.Published = null;

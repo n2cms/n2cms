@@ -70,7 +70,8 @@ namespace N2.Edit
 		/// <param name="item">The item to update.</param>
 		/// <param name="addedEditors">The previously added editors.</param>
 		/// <param name="user">The user for filtering updatable editors.</param>
-		bool UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user);
+		/// <returns>Details that were updated.</returns>
+		string[] UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user);
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>
 		/// <param name="item">The item to update.</param>

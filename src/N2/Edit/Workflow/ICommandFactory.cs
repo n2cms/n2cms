@@ -1,4 +1,5 @@
 ﻿using System;
+using N2.Edit.Workflow.Commands;
 namespace N2.Edit.Workflow
 {
     /// <summary>
@@ -9,11 +10,11 @@ namespace N2.Edit.Workflow
         /// <summary>Gets the command used to publish an item.</summary>
         /// <param name="context">The command context used to determine which command to return.</param>
         /// <returns>A command that when executed will publish an item.</returns>
-        CommandBase<CommandContext> GetPublishCommand(CommandContext context);
+		CompositeCommand GetPublishCommand(CommandContext context);
         
         /// <summary>Gets the command to save changes to an item without leaving the editing interface.</summary>
         /// <param name="context">The command context used to determine which command to return.</param>
         /// <returns>A command that when executed will save an item.</returns>
-        CommandBase<CommandContext> GetSaveCommand(CommandContext context);
+		CompositeCommand GetSaveCommand(CommandContext context);
     }
 }

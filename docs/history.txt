@@ -1,4 +1,6 @@
-﻿- support for upload directory in virtual folder (avoid site restart when remove folder)
+﻿- support for fluent [Persistable] property search
+- fixed published automatically issue (ThreadId=207609)
+- support for upload directory in virtual folder (avoid site restart when remove folder)
 - worked around issue linking to new start pages (prevents empty url)
 - applied WayneWong's #26451: Little mistake in ContentMembershipProvider
 - applied jeanfpoulin's #26543: [EditableUserControl] attribute problem updating editor

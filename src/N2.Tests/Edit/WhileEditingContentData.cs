@@ -117,9 +117,9 @@ namespace N2.Tests.Edit
             ftap3.Text = "rock";
             cbp4.Checked = true;
 
-            bool result = editManager.UpdateItem(item, added, null);
+            var result = editManager.UpdateItem(item, added, null);
 
-            Assert.IsTrue(result, "UpdateItem didn't return true even though the editors were changed.");
+            Assert.IsTrue(result.Length > 0, "UpdateItem didn't return true even though the editors were changed.");
         }
 
         [Test]
@@ -137,9 +137,9 @@ namespace N2.Tests.Edit
             item.MyProperty4 = true;
             editManager.UpdateEditors(item, added, null);
 
-            bool result = editManager.UpdateItem(item, added, null);
+            var result = editManager.UpdateItem(item, added, null);
 
-            Assert.IsFalse(result, "UpdateItem didn't return false even though the editors were unchanged.");
+            Assert.IsFalse(result.Length > 0, "UpdateItem didn't return false even though the editors were unchanged.");
         }
 
         [Test]

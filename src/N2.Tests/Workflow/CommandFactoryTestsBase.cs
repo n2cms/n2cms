@@ -37,7 +37,7 @@ namespace N2.Tests.Workflow
 			var editManager = new EditManager(definitions, persister, versions, null, null, null, changer, new EditSection());
             var security = new SecurityManager(new FakeWebContextWrapper(), new EditSection());
             commands = new CommandFactory(persister, security, versions, editManager, changer);
-            dispatcher = new CommandDispatcher(commands);
+			dispatcher = new CommandDispatcher(commands, persister);
 			item = CreateOneItem<StatefulItem>(1, "first", null);
 			child = CreateOneItem<StatefulItem>(2, "child", item);
 		}

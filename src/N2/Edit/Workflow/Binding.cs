@@ -5,6 +5,8 @@ namespace N2.Edit.Workflow
 	internal static class Binding
 	{
 		const string Key = "ItemsToSave";
+		const string UpdatedDetailsKey = "UpdatedDetailsKey";
+		const string DefinedDetailsKey = "DefinedDetailsKey";
 
 		public static void RegisterItemToSave(this CommandContext context, ContentItem item)
 		{
@@ -29,6 +31,22 @@ namespace N2.Edit.Workflow
 				return context.Parameters[Key] as IList<ContentItem> ?? new List<ContentItem>();
 			else
 				return new List<ContentItem>();
+		}
+
+		public static IList<string> GetUpdatedDetails(this CommandContext context)
+		{
+			object updatedDetails;
+			if (!context.Parameters.TryGetValue(UpdatedDetailsKey, out updatedDetails))
+				context.Parameters[UpdatedDetailsKey] = updatedDetails = new List<string>();
+			return updatedDetails as IList<string>;
+		}
+
+		public static IList<string> GetDefinedDetails(this CommandContext context)
+		{
+			object definedDetails;
+			if (!context.Parameters.TryGetValue(DefinedDetailsKey, out definedDetails))
+				context.Parameters[DefinedDetailsKey] = definedDetails = new List<string>();
+			return definedDetails as IList<string>;
 		}
 
 		public static CommandContext CreateNestedContext(this CommandContext context, IBinder<CommandContext> subBinder, ContentItem subItem)

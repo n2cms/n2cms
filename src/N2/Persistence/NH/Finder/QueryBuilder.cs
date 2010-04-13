@@ -220,6 +220,11 @@ namespace N2.Persistence.NH.Finder
 			get { return new PropertyClassCriteria(this); }
 		}
 
+		public IPropertyCriteria Property(string persistablePropertyName)
+		{
+			return new PersistablePropertyCriteria(this, persistablePropertyName);
+		}
+
 		#endregion
 
 		#region Methods

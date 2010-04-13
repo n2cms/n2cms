@@ -6,16 +6,13 @@ namespace N2.Edit.Workflow.Commands
 {
     public class CompositeCommand : CommandBase<CommandContext>
     {
-        IRepository<int, ContentItem> repository;
-
-        public CompositeCommand(IRepository<int, ContentItem> repository, string title, params CommandBase<CommandContext>[] commands)
+        public CompositeCommand(string title, params CommandBase<CommandContext>[] commands)
         {
-            this.repository = repository;
             Title = title;
             Commands = commands;
         }
 
-        public IEnumerable<CommandBase<CommandContext>> Commands { get; set; }
+        public CommandBase<CommandContext>[] Commands { get; set; }
 
         public override string Name
         {
@@ -24,14 +21,10 @@ namespace N2.Edit.Workflow.Commands
 
         public override void Process(CommandContext context)
         {
-            using (var tx = repository.BeginTransaction())
-            {
-                foreach (var command in Commands)
-                {
-                    command.Process(context);
-                }
-                tx.Commit();
-            }
+			foreach (var command in Commands)
+			{
+				command.Process(context);
+			}
         }
     }
 }
