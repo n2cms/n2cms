@@ -10,6 +10,8 @@ using N2.Persistence;
 using N2.Persistence.NH;
 using N2.Details;
 using N2.Tests.Engine.Services;
+using N2.Web;
+using N2.Configuration;
 
 namespace N2.Tests.Engine
 {
@@ -167,18 +169,16 @@ namespace N2.Tests.Engine
 		}
 
 		[Test]
-		public void X()
+		public void CanResolve_ServiceWithDependency_OnComponentInstance()
 		{
-			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(ContentItem).Assembly.GetTypes());
-			container.AddComponentInstance("x",
-				typeof(IPersister), 
-				new ContentPersister(new Fakes.FakeRepository<ContentItem>(), new Fakes.FakeRepository<LinkDetail>(), null));
-
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(DependingServiceWithMissingDependency).Assembly.GetTypes());
 			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
 			registrator.RegisterServices(registrator.FindServices());
-			
-			var service = container.Resolve<N2.Engine.StructureBoundDictionaryCache<int, string>>();
-			Assert.That(service, Is.InstanceOf<N2.Engine.StructureBoundDictionaryCache<int, string>>());
+
+			container.AddComponentInstance("ud", typeof(UnregisteredDependency), new UnregisteredDependency());
+
+			var service = container.Resolve<DependingServiceWithMissingDependency>();
+			Assert.That(service, Is.InstanceOf<DependingServiceWithMissingDependency>());
 		}
 	}
 }

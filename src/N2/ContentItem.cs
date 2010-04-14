@@ -85,6 +85,7 @@ namespace N2
     	private string ancestralTrail;
         private int versionIndex;
         private ContentState state = ContentState.None;
+		private N2.Security.Permission alteredPermissions = N2.Security.Permission.None;
         #endregion
 
         #region Constructor
@@ -252,6 +253,13 @@ namespace N2
             get { return state; }
             set { state = value; }
         }
+
+        [DisplayableLiteral]
+		public virtual N2.Security.Permission AlteredPermissions
+        {
+			get { return alteredPermissions; }
+			set { alteredPermissions = value; }
+        }
 		#endregion
 
 		#region Generated Properties
@@ -311,10 +319,11 @@ namespace N2
 			{
 				if (authorizedRoles == null)
 					authorizedRoles = new List<Security.AuthorizedRole>();
-				return authorizedRoles; 
+				return authorizedRoles;
 			}
 			set { authorizedRoles = value; }
 		}
+
 		#endregion
 
         #region this[]
@@ -806,10 +815,11 @@ namespace N2
 		/// <returns>True if the item is open for all or the user has the required permissions.</returns>
 		public virtual bool IsAuthorized(IPrincipal user)
 		{
-			if (AuthorizedRoles == null || AuthorizedRoles.Count == 0)
-			{
+			if ((AlteredPermissions & N2.Security.Permission.Read) == N2.Security.Permission.None)
 				return true;
-			}
+
+			if (AuthorizedRoles == null || AuthorizedRoles.Count == 0)
+				return true;
 
 			// Iterate allowed roles to find an allowed role
 			foreach (Security.Authorization auth in AuthorizedRoles)

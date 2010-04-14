@@ -166,7 +166,7 @@ namespace N2.Tests.Definitions
 		public void HasCorrectNumberOfDisplayableAttributes()
 		{
 			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));
-			Assert.That(definition.Displayables.Count, Is.EqualTo(13));
+			Assert.That(definition.Displayables.Count, Is.EqualTo(14));
 		}
 
 		[Test]

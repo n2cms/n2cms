@@ -50,7 +50,7 @@
     <table>
 		<thead>
 			<tr>
-				<td class="permissionsHeader"></td>
+				<td class="permissionsHeader" title="Altered: <%= Selection.SelectedItem.AlteredPermissions %>"></td>
 				<asp:Repeater ID="rptHeaders" runat="server" DataSource="<%# Permissions %>"><ItemTemplate>
 					<td><%# Container.DataItem %></td>
 				</ItemTemplate></asp:Repeater>

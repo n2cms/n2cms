@@ -57,11 +57,12 @@ namespace N2.Persistence.NH
 
 		private bool HandleSaveOrUpdate(ContentItem item, string[] propertyNames, object[] state)
 		{
-			if(item != null)
+			bool wasAltered = false;
+			if (item != null)
 			{
 				if (ItemSaving != null)
 					ItemSaving(this, new NotifiableItemEventArgs(item));
-
+				
 				for (int i = 0; i < propertyNames.Length; i++)
 				{
 					if(propertyNames[i] == "AncestralTrail")
@@ -70,12 +71,19 @@ namespace N2.Persistence.NH
 						if(trail != (string)state[i])
 						{
 							state[i] = trail;
-							return true;
+							wasAltered = true;
 						}
+					}
+					if (propertyNames[i] == "AlteredPermissions" 
+						&& item.AlteredPermissions == N2.Security.Permission.None 
+						&& item.AuthorizedRoles.Count > 0)
+					{
+						state[i] = N2.Security.Permission.Read;
+						wasAltered = true;
 					}
 				}
 			}
-			return false;
+			return wasAltered;
 		}
 
 		#region IItemNotifier Members

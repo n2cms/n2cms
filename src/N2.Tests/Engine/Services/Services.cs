@@ -22,6 +22,20 @@ namespace N2.Tests.Engine.Services
 		}
 	}
 
+	public class UnregisteredDependency
+	{
+	}
+
+	[Service]
+	public class DependingServiceWithMissingDependency
+	{
+		public UnregisteredDependency service;
+		public DependingServiceWithMissingDependency(UnregisteredDependency service)
+		{
+			this.service = service;
+		}
+	}
+
 	[Service]
 	public class GenericSelfService<T>
 	{
@@ -53,6 +67,14 @@ namespace N2.Tests.Engine.Services
 
 	[Service(typeof(IService))]
 	public class InterfacedService : IService
+	{
+	}
+
+	public class ConcreteService : AbstractService
+	{
+	}
+
+	public abstract class AbstractService : IService
 	{
 	}
 

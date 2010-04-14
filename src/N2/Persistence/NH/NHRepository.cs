@@ -47,18 +47,20 @@ namespace N2.Persistence.NH
 
 		public override ContentItem Get(int id)
 		{
-			ICriteria c = GetContentItemCriteria();
-			return c.Add(NHibernate.Criterion.Expression.Eq("ID", id))
-				.SetCacheable(true)
-				.UniqueResult<ContentItem>();
+			return SessionProvider.OpenSession.Session.Get<ContentItem>(id);
+			//ICriteria c = GetContentItemCriteria();
+			//return c.Add(NHibernate.Criterion.Expression.Eq("ID", id))
+			//    .SetCacheable(true)
+			//    .UniqueResult<ContentItem>();
 		}
 
 		public override T Get<T>(int id)
 		{
-			ICriteria c = GetContentItemCriteria();
-			return c.Add(NHibernate.Criterion.Expression.Eq("ID", id))
-				.SetCacheable(true)
-				.UniqueResult<T>();
+			return SessionProvider.OpenSession.Session.Get<T>(id);
+			//ICriteria c = GetContentItemCriteria();
+			//return c.Add(NHibernate.Criterion.Expression.Eq("ID", id))
+			//    .SetCacheable(true)
+			//    .UniqueResult<T>();
 		}
 
 		ICriteria GetContentItemCriteria()

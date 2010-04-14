@@ -59,8 +59,7 @@ namespace N2.Tests.Collections
 		protected ContentItem CreateItem<T>(int id, params string[] authorizedRoles) where T : ContentItem
 		{
 			T item = CreateOneItem<T>(id, id.ToString(), null);
-			foreach (string role in authorizedRoles)
-				item.AuthorizedRoles.Add(new AuthorizedRole(item, role));
+			DynamicPermissionMap.SetRoles(item, Permission.Read, authorizedRoles);
 			return item;
 		}
 	}

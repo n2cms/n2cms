@@ -289,5 +289,50 @@ namespace N2.Tests.Security
 
 			Assert.That(isAuthorized, Is.True);
 		}
+
+		[TestCase(Permission.None)]
+		[TestCase(Permission.Read)]
+		[TestCase(Permission.Write)]
+		[TestCase(Permission.ReadWrite)]
+		[TestCase(Permission.Publish)]
+		[TestCase(Permission.ReadWritePublish)]
+		[TestCase(Permission.Administer)]
+		[TestCase(Permission.Full)]
+		public void ChangingPermissions_ModifiesAlteredPermissions(Permission permission)
+		{
+			var map = new DynamicPermissionMap();
+			DynamicPermissionMap.SetRoles(item, permission, "rolename");
+			
+			Assert.That(item.AlteredPermissions & permission, Is.EqualTo(permission));
+		}
+
+		[Test]
+		public void ResettingPermissions_RestoresAlteredPermissions()
+		{
+			var map = new DynamicPermissionMap();
+			DynamicPermissionMap.SetRoles(item, Permission.Read, "rolename");
+			DynamicPermissionMap.SetRoles(item, Permission.Read);
+
+			Assert.That(item.AlteredPermissions, Is.EqualTo(Permission.None));
+		}
+
+		[Test]
+		public void SettingPermissions_AddsDetailCollection()
+		{
+			var map = new DynamicPermissionMap();
+			DynamicPermissionMap.SetRoles(item, Permission.Write, "rolename");
+
+			Assert.That(item.GetDetailCollection(DynamicPermissionMap.AuthorizedRolesPrefix + Permission.Write, false), Is.Not.Null);
+		}
+
+		[Test]
+		public void ResettingPermissions_RemovesDetailCollection()
+		{
+			var map = new DynamicPermissionMap();
+			DynamicPermissionMap.SetRoles(item, Permission.Write, "rolename");
+			DynamicPermissionMap.SetRoles(item, Permission.Write);
+
+			Assert.That(item.GetDetailCollection(DynamicPermissionMap.AuthorizedRolesPrefix + Permission.Write, false), Is.Null);
+		}
 	}
 }

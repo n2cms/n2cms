@@ -1,4 +1,10 @@
-﻿- replaced action and function with system.core equivalents (breaking change)
+﻿- content migrations
+	- update ContentItem.AncestralTrail
+	- update ContentItem.AlteredPermissions
+- support for ResolveAll<ServiceT> in medium trust
+- added AlteredPermissions (in-table info about permissions, can increase performance on public sites)
+- replaced braindead query with session.get when retrieving single items (reduces number of queries)
+- replaced action and function with system.core equivalents (breaking change)
 - support for fluent [Persistable] property search
 - fixed published automatically issue (ThreadId=207609)
 - support for upload directory in virtual folder (avoid site restart when remove folder)

@@ -36,13 +36,74 @@ namespace N2.Tests.Engine
 		protected IServiceContainer container;
 
 		[Test]
-		public void RegisterService()
+		public void Resolve_Service_Generic()
 		{
 			container.AddComponent("key", typeof(IService), typeof(InterfacedService));
 
 			var service = container.Resolve<IService>();
 
 			Assert.That(service, Is.InstanceOf<InterfacedService>());
+		}
+
+		[Test]
+		public void Resolve_Service_WithParameter()
+		{
+			container.AddComponent("key", typeof(IService), typeof(InterfacedService));
+
+			var service = container.Resolve(typeof(IService));
+			
+			Assert.That(service, Is.InstanceOf<InterfacedService>());
+		}
+
+		[Test, Ignore]
+		public void RegisteringService_AlsoRegisters_ConcreteType()
+		{
+			container.AddComponent("key", typeof(AbstractService), typeof(ConcreteService));
+
+			var service = container.Resolve<ConcreteService>();
+
+			Assert.That(service, Is.InstanceOf<ConcreteService>());
+		}
+
+		[Test]
+		public void ResolveAll_SingleServices()
+		{
+			container.AddComponent("key", typeof(IService), typeof(InterfacedService));
+
+			var services = container.ResolveAll<IService>();
+
+			Assert.That(services.Count(), Is.EqualTo(1));
+			Assert.That(services.First(), Is.InstanceOf<InterfacedService>());
+		}
+
+		[Test]
+		public void ResolveAll_MultipleServices_Generic()
+		{
+			container.AddComponent("keyA", typeof(Startable), typeof(ServiceA));
+			container.AddComponent("keyB", typeof(Startable), typeof(ServiceB));
+			container.AddComponent("keyC", typeof(Startable), typeof(ServiceC));
+
+			var services = container.ResolveAll<Startable>();
+
+			Assert.That(services.Count(), Is.EqualTo(3));
+			Assert.That(services.Any(s => s.GetType() == typeof(ServiceA)));
+			Assert.That(services.Any(s => s.GetType() == typeof(ServiceB)));
+			Assert.That(services.Any(s => s.GetType() == typeof(ServiceC)));
+		}
+
+		[Test]
+		public void ResolveAll_MultipleServices_WithParameter()
+		{
+			container.AddComponent("keyA", typeof(Startable), typeof(ServiceA));
+			container.AddComponent("keyB", typeof(Startable), typeof(ServiceB));
+			container.AddComponent("keyC", typeof(Startable), typeof(ServiceC));
+
+			var services = container.ResolveAll(typeof(Startable)).OfType<object>();
+
+			Assert.That(services.Count(), Is.EqualTo(3));
+			Assert.That(services.Any(s => s.GetType() == typeof(ServiceA)));
+			Assert.That(services.Any(s => s.GetType() == typeof(ServiceB)));
+			Assert.That(services.Any(s => s.GetType() == typeof(ServiceC)));
 		}
 
 		[Test, Ignore("TODO")]

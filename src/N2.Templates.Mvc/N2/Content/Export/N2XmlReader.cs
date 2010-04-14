@@ -177,7 +177,7 @@ namespace N2.Xml
 			{
 				do
 				{
-					Console.WriteLine(navigator.Value);
+					Debug.WriteLine(navigator.Value);
 					item.AuthorizedRoles.Add(new AuthorizedRole(item, navigator.Value));
 				} while (navigator.MoveToNext());
 				navigator.MoveToParent();

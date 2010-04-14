@@ -81,6 +81,7 @@
 		<property name="State"      access="property" />
 		<property name="AncestralTrail" access="property" length="100" />
 		<property name="VersionIndex"		access="property" />
+		<property name="AlteredPermissions"	  access="property" />
 
 		<many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
 		<many-to-one name="Parent"		column="ParentID"		class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />
@@ -105,7 +106,7 @@
 			<one-to-many class="N2.Details.DetailCollection, N2"/>
 		</map>
 
-		<bag name="AuthorizedRoles" inverse="true" cascade="all-delete-orphan" generic="true" fetch="join" lazy="true" batch-size="{BatchSize}">
+		<bag name="AuthorizedRoles" inverse="true" cascade="all-delete-orphan" generic="true" lazy="true" batch-size="{BatchSize}">
 			<cache usage="read-write" />
 			<key column="ItemID"/>
 			<one-to-many class="N2.Security.AuthorizedRole, N2"/>

@@ -7,6 +7,7 @@ using N2.Edit;
 using N2.Web.Parts;
 using N2.Engine;
 using System.ComponentModel;
+using System.Diagnostics;
 
 [assembly: WebResource("N2.Resources.add.gif", "image/gif")]
 [assembly: WebResource("N2.Resources.bin.gif", "image/gif")]
@@ -133,7 +134,7 @@ namespace N2.Web.UI.WebControls
 			deletedIndexes = (List<int>)p.Third;
 			EnsureChildControls();
 
-			Console.WriteLine("addedTypes: " + addedTypes.Count + ", deletedIndexes: " + deletedIndexes.Count);
+			Debug.WriteLine("addedTypes: " + addedTypes.Count + ", deletedIndexes: " + deletedIndexes.Count);
 		}
 
 		protected override void CreateChildControls()

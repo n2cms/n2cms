@@ -84,11 +84,26 @@ namespace N2.Security
 						if(!item.AuthorizedRoles.Contains(temp))
 							item.AuthorizedRoles.Add(temp);
 					}
+
+					AlterPermissions(item.AuthorizedRoles.Count > 0, item, permissionLevel);
 				}
 				else
 				{
-					DetailCollection details = item.GetDetailCollection(AuthorizedRolesPrefix + permissionLevel, true);
-					details.Replace(roles);
+					string collectionName = AuthorizedRolesPrefix + permissionLevel;
+					if (roles.Length == 0)
+					{
+						if (item.DetailCollections.ContainsKey(collectionName))
+						{
+							item.DetailCollections[collectionName].EnclosingItem = null;
+							item.DetailCollections.Remove(collectionName);
+						}
+					}
+					else
+					{
+						DetailCollection details = item.GetDetailCollection(collectionName, true);
+						details.Replace(roles);
+					}
+					AlterPermissions(roles.Length > 0, item, permissionLevel);
 				}
 			}
 		}
@@ -103,6 +118,8 @@ namespace N2.Security
 		{
 			foreach (Permission permissionLevel in SplitPermission(permission))
 			{
+				AlterPermissions(false, item, permissionLevel);
+				
 				if (permissionLevel == Permission.Read)
 				{
 					item.AuthorizedRoles.Clear();
@@ -113,6 +130,14 @@ namespace N2.Security
 				if (details != null)
 					item.DetailCollections.Remove(details.Name);
 			}
+		}
+
+		private static void AlterPermissions(bool isAltered, ContentItem item, Permission permissionLevel)
+		{
+			if (isAltered)
+				item.AlteredPermissions |= permissionLevel;
+			else
+				item.AlteredPermissions &= ~permissionLevel;
 		}
 
 		public static bool IsAllRoles(ContentItem item, Permission permission)

@@ -157,24 +157,18 @@ namespace N2.Edit.Installation
 			{
 				using (sessionProvider)
 				{
+					status.DatabaseVersion = 0;
 					sessionProvider.OpenSession.Session.CreateQuery("select ci.ID from ContentItem ci").SetMaxResults(1).List();
-				}
-				status.DatabaseVersion = 1;
-			}
-			catch (Exception ex)
-			{
-				Trace.WriteLine(ex);
-				status.DatabaseVersion = 0;
-			}
+					status.DatabaseVersion = 1;
 
-			try
-			{
-				using (sessionProvider)
-				{
 					// checking for properties added between version 1 and 2
 					sessionProvider.OpenSession.Session.CreateQuery("select ci.AncestralTrail from ContentItem ci").SetMaxResults(1).List();
+					status.DatabaseVersion = 2;
+
+					// checking for properties added between version 2 and 3
+					sessionProvider.OpenSession.Session.CreateQuery("select ci.AlteredPermissions from ContentItem ci").SetMaxResults(1).List();
+					status.DatabaseVersion = 3;
 				}
-				status.DatabaseVersion = 2;
 			}
 			catch (Exception ex)
 			{
@@ -429,6 +423,27 @@ namespace N2.Edit.Installation
 		public static bool Is(InstallerHint flags, InstallerHint expected)
 		{
 			return (flags & expected) == expected;
+		}
+
+		public const string QueryItemsWithAuthorizedRoles = "select distinct ci from ContentItem ci join ci.AuthorizedRoles ar where ci.AlteredPermissions is null or ci.AlteredPermissions = 0 order by ci.ID";
+		public const string QueryItemsWithoutAncestralTrail = "from ContentItem ci where ci.AncestralTrail is null order by ci.ID";
+		public virtual IEnumerable<ContentItem> ExecuteQuery(string query)
+		{
+			int iterationSize = 100;
+			long count = persister.Repository.Count();
+			long iterations = (count + iterationSize - 1) / iterationSize;
+			for (int i = 0; i < iterations; i++)
+			{
+				var all = this.sessionProvider.OpenSession.Session.CreateQuery(query)
+					.SetFirstResult(i * iterationSize)
+					.SetMaxResults(iterationSize)
+					.List<ContentItem>();
+
+				foreach (var item in all)
+				{
+					yield return item;
+				}
+			}
 		}
 	}
 }

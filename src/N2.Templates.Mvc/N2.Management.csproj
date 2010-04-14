@@ -241,6 +241,8 @@
     <Compile Include="N2\Files\ImagesUtility.cs" />
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
+    <Compile Include="N2\Installation\UpdateAlteredPermissionsMigration.cs" />
+    <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Simple.master.cs">
       <DependentUpon>Simple.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

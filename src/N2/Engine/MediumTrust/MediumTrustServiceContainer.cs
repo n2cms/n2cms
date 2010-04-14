@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using N2.Plugin;
 using System.Diagnostics;
+using System.Linq;
 
 namespace N2.Engine.MediumTrust
 {
@@ -14,6 +15,7 @@ namespace N2.Engine.MediumTrust
 		private readonly IDictionary<Type, Type> waitingList = new Dictionary<Type, Type>();
 		private readonly IDictionary<Type, object> container = new Dictionary<Type, object>();
 		private readonly IDictionary<Type, Func<Type, object>> resolvers = new Dictionary<Type, Func<Type, object>>();
+		private readonly IDictionary<Type, Func<Type, IEnumerable<object>>> listResolvers = new Dictionary<Type, Func<Type, IEnumerable<object>>>();
 
 		public override void AddComponentLifeStyle(string key, Type serviceType, ComponentLifeStyle lifeStyle)
 		{
@@ -83,10 +85,11 @@ namespace N2.Engine.MediumTrust
 		/// <returns>All services registered to serve the provided interface.</returns>
 		public override Array ResolveAll(Type serviceType)
 		{
-			if (!container.ContainsKey(serviceType) && !resolvers.ContainsKey(serviceType))
+			Func<Type, IEnumerable<object>> listResolver;
+			if (!listResolvers.TryGetValue(serviceType, out listResolver))
 				return new object[0];
-			
-			return new object[] { Resolve(serviceType) };
+
+			return listResolver(serviceType).ToArray();
 		}
 
 		/// <summary>Resolves all services of the given type.</summary>
@@ -94,10 +97,7 @@ namespace N2.Engine.MediumTrust
 		/// <returns>All services registered to serve the provided interface.</returns>
 		public override T[] ResolveAll<T>()
 		{
-			if(!container.ContainsKey(typeof(T)) && !resolvers.ContainsKey(typeof(T)))
-				return new T[0];
-
-			return new T[] { Resolve<T>() };
+			return ResolveAll(typeof(T)).Cast<T>().ToArray();
 		}
 
 		public override void Release(object instance)
@@ -147,7 +147,7 @@ namespace N2.Engine.MediumTrust
 					return;
 				}
 
-				IAutoStart instance = CreateInstance(serviceType, classType, key) as IAutoStart;
+				IAutoStart instance = CreateInstance(key, serviceType, classType) as IAutoStart;
 				instance.Start();
 				container[serviceType] = instance;
 			}
@@ -164,16 +164,73 @@ namespace N2.Engine.MediumTrust
 			{
 				Trace.WriteLine("Already contains service " + serviceType + ". Overwriting registration with " + classType);
 			}
-			
-			resolvers[serviceType] = delegate(Type type)
-										{
-											if (container.ContainsKey(type))
-												return container[type];
 
-											object componentInstance = CreateInstance(type, classType, key);
-											container[type] = componentInstance;
-											return componentInstance;
-										};
+			var instanceResolver = CreateInstanceResolver(key, classType);
+			AddBaseTypes(resolvers, serviceType, instanceResolver);
+
+			var listResolver = CreateListResolver(serviceType, instanceResolver);
+			AddBaseTypes(listResolvers, serviceType, listResolver);
+		}
+
+		private Func<Type, object> CreateInstanceResolver(string key, Type classType)
+		{
+			if (classType.ContainsGenericParameters)
+			{
+				return delegate(Type type)
+				{
+					object instance;
+					if (container.TryGetValue(type, out instance))
+						return instance;
+
+					object componentInstance = CreateInstance(key, type, classType);
+					container[type] = componentInstance;
+					return componentInstance;
+				};
+			}
+			else
+			{
+				return delegate(Type type)
+				{
+					object instance;
+					if (container.TryGetValue(classType, out instance))
+						return instance;
+
+					object componentInstance = CreateInstance(key, type, classType);
+					container[classType] = componentInstance;
+					container[type] = componentInstance;
+					return componentInstance;
+				};
+			}
+		}
+
+		private Func<Type, IEnumerable<object>> CreateListResolver(Type serviceType, Func<Type, object> resolver)
+		{
+			Func<Type, IEnumerable<object>> previousListResolver, listResolver;
+			if (listResolvers.TryGetValue(serviceType, out previousListResolver))
+			{
+				listResolver = delegate(Type type)
+				{
+					List<object> instances = new List<object>();
+					instances.AddRange(previousListResolver(type));
+					instances.Add(resolver(type));
+					return instances;
+				};
+			}
+			else
+			{
+				listResolver = delegate(Type type)
+				{
+					return new object[] { resolver(type) };
+				};
+			}
+			return listResolver;
+		}
+
+		private void AddBaseTypes<T>(IDictionary<Type, Func<Type, T>> resolvers, Type serviceType, Func<Type, T> resolver)
+		{
+			resolvers[serviceType] = resolver;
+			if (serviceType.IsClass && serviceType != typeof(object))
+				AddBaseTypes(resolvers, serviceType.BaseType, resolver);
 		}
 
 		private void RegisterTransientResolver(string key, Type serviceType, Type classType)
@@ -181,15 +238,15 @@ namespace N2.Engine.MediumTrust
 			if (IsAutoStart(classType))
 				resolvers[serviceType] = delegate(Type type) 
 				{
-					var instance = CreateInstance(type, classType, key);
+					var instance = CreateInstance(key, type, classType);
 					((IAutoStart)instance).Start();
 					return instance;
 				};
 			else
-				resolvers[serviceType] = delegate(Type type) { return CreateInstance(type, classType, key); };
+				resolvers[serviceType] = delegate(Type type) { return CreateInstance(key, type, classType); };
 		}
 
-		protected object CreateInstance(Type serviceType, Type classType, string key)
+		protected object CreateInstance(string key, Type serviceType, Type classType)
 		{
 			if (classType.ContainsGenericParameters)
 			{

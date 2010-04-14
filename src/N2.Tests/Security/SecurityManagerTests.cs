@@ -188,7 +188,7 @@ namespace N2.Tests.Security
 			mocks.ReplayAll();
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
-			root.AuthorizedRoles.Add(new N2.Security.AuthorizedRole(root, "User1"));
+			DynamicPermissionMap.SetRoles(root, Permission.Read, "User1");
 
 			IPrincipal user = CreatePrincipal("User1");
 			Assert.IsFalse(security.IsAuthorized(root, user), "User1 shouldn't have has access.");
@@ -489,7 +489,7 @@ namespace N2.Tests.Security
 			mocks.Replay(context);
 
 			ContentItem root = CreateOneItem<Items.SecurityPage>(1, "root", null);
-			root.AuthorizedRoles.Add(new N2.Security.AuthorizedRole(root, "Editors"));
+			DynamicPermissionMap.SetRoles(root, Permission.Read, "Editors");
 			return root;
 		}
 	}
