@@ -32,8 +32,30 @@ namespace N2.Tests.Serialization
 
             ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
-            Assert.That(item, Is.TypeOf(typeof(XmlableItem)));
-        }
+			Assert.That(readItem, Is.TypeOf(typeof(XmlableItem)));
+		}
+
+		[Test]
+		public void ExportedImportedItem_CanContain_ComplexProperties_CastingToString()
+		{
+			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.Version = new Version(2, 0);
+
+			XmlableItem readItem = (XmlableItem)ExportAndImport(item, ExportOptions.Default);
+
+			Assert.That(readItem.Version, Is.EqualTo(new Version(2, 0)));
+		}
+
+		[Test]
+		public void ExportedImportedItem_CanContain_DetailCollection()
+		{
+			XmlableItem item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.GetDetailCollection("hello", true).Add("world");
+
+			XmlableItem readItem = (XmlableItem)ExportAndImport(item, ExportOptions.Default);
+
+			Assert.That(readItem.GetDetailCollection("hello", false)[0], Is.EqualTo("world"));
+		}
 
         [Test]
         public void CanExport_SimpleItem_AndIgnore_NotDefinedData()

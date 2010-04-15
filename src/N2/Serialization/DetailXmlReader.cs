@@ -26,7 +26,7 @@ namespace N2.Serialization
 
 			if (type != typeof(ContentItem))
 			{
-				item[name] = Parse(navigator.Value, type);
+				item.SetDetail(name, Parse(navigator.Value, type), type);
 			}
 			else
 			{
@@ -38,13 +38,17 @@ namespace N2.Serialization
 				}
 				else
 				{
-					journal.ItemAdded += delegate(object sender, ItemEventArgs e)
-									{
-										if (e.AffectedItem.ID == referencedItemID)
-										{
-											item[name] = e.AffectedItem;
-										}
-									};
+					EventHandler<ItemEventArgs> handler = null;
+					handler = delegate(object sender, ItemEventArgs e)
+					{
+						if (e.AffectedItem.ID == referencedItemID)
+						{
+							item[name] = e.AffectedItem;
+							journal.ItemAdded -= handler;
+						}
+					};
+					
+					journal.ItemAdded += handler;
 				}
 			}
 		}

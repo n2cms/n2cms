@@ -419,12 +419,22 @@ namespace N2
 		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten.</summary>
 		/// <param name="detailName">The name of the item to set.</param>
 		/// <param name="value">The value to set. If this parameter is null the detail is removed.</param>
-		protected virtual void SetDetail<T>(string detailName, T value)
+		/// <typeparam name="T">The type of value to store in details.</typeparam>
+		protected internal virtual void SetDetail<T>(string detailName, T value)
+		{
+			SetDetail(detailName, value, typeof(T));
+		}
+
+		/// <summary>Set a value into the <see cref="Details"/> bag. If a value with the same name already exists it is overwritten.</summary>
+		/// <param name="detailName">The name of the item to set.</param>
+		/// <param name="value">The value to set. If this parameter is null the detail is removed.</param>
+		/// <param name="valueType">The type of value to store in details.</param>
+		protected internal virtual void SetDetail(string detailName, object value, Type valueType)
 		{
 			ContentDetail detail = null;
-			if(Details.TryGetValue(detailName, out detail))
+			if (Details.TryGetValue(detailName, out detail))
 			{
-				if (value != null && detail.ValueType.IsAssignableFrom(typeof(T)))
+				if (value != null && detail.ValueType.IsAssignableFrom(valueType))
 				{
 					// update an existing detail of same type
 					detail.Value = value;
@@ -438,7 +448,7 @@ namespace N2
 			if (value != null)
 				// add new detail
 				Details.Add(detailName, N2.Details.ContentDetail.New(this, detailName, value));
-		} 
+		}
 		#endregion
 
 		#region GetDetailCollection
