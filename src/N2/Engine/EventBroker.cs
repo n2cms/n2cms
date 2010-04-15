@@ -56,16 +56,20 @@ namespace N2.Engine
 
 		protected void Application_BeginRequest(object sender, EventArgs e)
 		{
-			Debug.WriteLine("Application_BeginRequest");
 			if (BeginRequest != null && !IsStaticResource(sender))
+			{
+				Debug.WriteLine("Application_BeginRequest");
 				BeginRequest(sender, e);
+			}
 		}
 
 		protected void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
-			Debug.WriteLine("Application_AuthorizeRequest");
 			if (AuthorizeRequest != null && !IsStaticResource(sender))
+			{
+				Debug.WriteLine("Application_AuthorizeRequest");
 				AuthorizeRequest(sender, e);
+			}
 		}
 
 		//void application_PostAuthorizeRequest(object sender, EventArgs e)
@@ -84,9 +88,11 @@ namespace N2.Engine
 
 		protected void Application_AcquireRequestState(object sender, EventArgs e)
 		{
-			Debug.WriteLine("Application_AcquireRequestState");
 			if (AcquireRequestState != null && !IsStaticResource(sender))
+			{
+				Debug.WriteLine("Application_AcquireRequestState");
 				AcquireRequestState(sender, e);
+			}
 		}
 
 		protected void Application_Error(object sender, EventArgs e)
