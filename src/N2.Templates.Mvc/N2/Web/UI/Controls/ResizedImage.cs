@@ -36,7 +36,7 @@ namespace N2.Edit.Web.UI.Controls
 		/// <param name="width">The maximum width.</param>
 		/// <param name="height">The maximum height.</param>
 		/// <returns>The path to a handler that performs resizing of the image.</returns>
-		protected static string GetResizedImageUrl(string imageUrl, double width, double height)
+		public static string GetResizedImageUrl(string imageUrl, double width, double height)
 		{
 			string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
 			

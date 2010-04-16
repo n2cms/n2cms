@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/N2/Content/Framed.Master" AutoEventWireup="true" CodeBehind="File.aspx.cs" Inherits="N2.Edit.FileSystem.File1" Title="Untitled Page" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/N2/Content/Framed.Master" AutoEventWireup="true" CodeBehind="File.aspx.cs" Inherits="N2.Edit.FileSystem.File1" %>
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
 	<asp:LinkButton ID="btnDownload" runat="server" Text="Download" CssClass="command" OnCommand="OnDownloadCommand" />
@@ -7,6 +7,8 @@
 	<asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CssClass="command cancel" OnCommand="OnCancelCommand" Visible="false" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
+	<h1><% foreach(var node in ancestors) { %>/<a href="<%= Engine.EditManager.GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
+
     <a href="<%= SelectedItem.Url %>">
         <img src="<%= N2.Web.Url.ToAbsolute(SelectedItem.IconUrl) %>" alt="icon" />
         <%= SelectedItem.Title %>

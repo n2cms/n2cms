@@ -23,21 +23,21 @@ namespace N2.Edit.FileSystem {
         protected global::System.Web.UI.WebControls.HyperLink hlNewFile;
         
         /// <summary>
-        /// lblDirectories control.
+        /// rptDirectories control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.InfoLabel lblDirectories;
+        protected global::System.Web.UI.WebControls.Repeater rptDirectories;
         
         /// <summary>
-        /// lblFiles control.
+        /// rptFiles control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Edit.Web.UI.Controls.InfoLabel lblFiles;
+        protected global::System.Web.UI.WebControls.Repeater rptFiles;
     }
 }

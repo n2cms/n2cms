@@ -22,10 +22,11 @@ namespace N2.Edit
 
 		protected override void OnPreRender(EventArgs e)
 		{
-			Page.Title = Page.Title;
-			h1.InnerHtml = Page.Title;
-			h1.Visible = !string.IsNullOrEmpty(Page.Title);
-
+			if (h1 != null)
+			{
+				h1.InnerHtml = Page.Title;
+				h1.Visible = !string.IsNullOrEmpty(Page.Title);
+			}
 			base.OnPreRender(e);
 		}
 

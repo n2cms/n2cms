@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
 using N2.Edit.FileSystem.Items;
 using N2.Resources;
 using N2.Configuration;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace N2.Edit.FileSystem
 {
     public partial class File1 : EditPage
     {
+		protected IEnumerable<ContentItem> ancestors;
+
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -17,6 +22,12 @@ namespace N2.Edit.FileSystem
 			{
 				btnEdit.Visible = true;
 			}
+
+			ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
+
+			DataBind();
+
+			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
 		}
 
 		protected override void RegisterToolbarSelection()
@@ -28,12 +39,6 @@ namespace N2.Edit.FileSystem
         protected File SelectedFile
         {
             get { return Selection.SelectedItem as File; }
-        }
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            Title = Selection.SelectedItem.Title;
-			DataBind();
         }
 
     	protected void OnDownloadCommand(object sender, CommandEventArgs e)
