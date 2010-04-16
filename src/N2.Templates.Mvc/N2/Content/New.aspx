@@ -5,18 +5,20 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" ID="cc" runat="server">
 	<asp:CustomValidator ID="cvPermission" CssClass="validator info" ErrorMessage="Not authorized" Display="Dynamic" runat="server" />
-    <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType" >
+    <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType">
+		<div class="cf">
 		<asp:Repeater ID="rptTypes" runat="server">
 			<ItemTemplate>
 				<div class="type cf i<%# Container.ItemIndex %> a<%# Container.ItemIndex % 2 %>">
 					<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((ItemDefinition)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
-						<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" />
+						<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" ToolTip='<%# Eval("NumberOfItems") %>' />
 						<span class="title"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Title") ?? Eval("Title") %></span>
 						<%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%>
 					</asp:HyperLink>
 				</div>
 			</ItemTemplate>
 		</asp:Repeater>
+		</div>
     </n2:TabPanel>
     
     <n2:TabPanel runat="server" ToolTip="Position" meta:resourceKey="tpPosition" >

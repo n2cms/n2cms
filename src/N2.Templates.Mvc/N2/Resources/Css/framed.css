@@ -206,10 +206,19 @@ body.framed ul.ajax { background: transparent url(../../Resources/img/treeview/s
 body.framed .droppable-hover { background-color:#eee; }
 
 /* NEW */
-body.framed .type { clear:both; }
-body.framed .type a { display:block; padding:2px 0; }
+body.framed .type { clear:both; position:relative; width:99%; }
+body.framed .type a { display:block; padding:4px 0 4px 30px; border-bottom:solid 1px #EED; color:#666 }
 body.framed .type a:hover { background-color:#f8f8f8; }
-body.framed .type .title { font-weight:bold; }
+body.framed .type .title { font-weight:bold; color:#333; margin-right:10px; min-width:100px; display:inline-block; }
+body.framed .type img { position:absolute; left:8px; }
+body.framed .type.i0 a, 
+body.framed .type.i1 a,
+body.framed .type.i2 a, 
+body.framed .type.i3 a { padding:8px 0 8px 30px; display:block; }
+body.framed .type.i0 span.title, 
+body.framed .type.i1 span.title,
+body.framed .type.i2 span.title, 
+body.framed .type.i3 span.title { display:block; }
 
 body.framed .position em { color:Green; font-weight:bold; }
 .position input, .position label { float:left; display:block; }

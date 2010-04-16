@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using N2.Definitions;
@@ -190,6 +191,9 @@ namespace N2.Edit
 			else
 			{
 				Title = string.Format(GetLocalResourceString("NewPage.Title.Select"), ActualItem.Title);
+
+				var mostPopular = allowedChildren.Where(d => d.NumberOfItems > 0).OrderByDescending(d => d.NumberOfItems).Take(2).ToList();
+				allowedChildren = mostPopular.Union(allowedChildren).ToList();
 
 				rptTypes.DataSource = allowedChildren;
 				rptTypes.DataBind();

@@ -47,6 +47,8 @@ namespace N2.Definitions
 		bool enabled = true;
 		bool isDefined = false;
 		AllowedZones allowedIn = AllowedZones.None;
+		
+		public int NumberOfItems { get; set; }
 
 		IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
 		IList<string> allowedZoneNames = new List<string>();

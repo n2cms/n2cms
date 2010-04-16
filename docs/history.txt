@@ -1,4 +1,5 @@
-﻿- fixed ThreadId=209322: importing with properties of different type than detail
+﻿- new item prioritazion
+- fixed ThreadId=209322: importing with properties of different type than detail
 - content migrations
 	- update ContentItem.AncestralTrail
 	- update ContentItem.AlteredPermissions
