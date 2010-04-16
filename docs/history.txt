@@ -1,4 +1,5 @@
-﻿- preview images in folder
+﻿- multiple directory/file delete
+- preview images in folder
 - write to text files in file system
 - new item prioritazion based on number of items
 - fixed ThreadId=209322: importing with properties of different type than detail

@@ -5,6 +5,7 @@ using N2.Collections;
 using N2.Edit.FileSystem.Items;
 using N2.Resources;
 using System.Collections.Generic;
+using System.Web.UI.WebControls;
 
 namespace N2.Edit.FileSystem
 {
@@ -18,6 +19,9 @@ namespace N2.Edit.FileSystem
 
 		protected IEnumerable<ContentItem> ancestors;
 
+		IList<Directory> directories;
+		IList<File> files;
+
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -26,15 +30,40 @@ namespace N2.Edit.FileSystem
 
 			ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 
+			Reload();
+
+			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+		}
+
+		private void Reload()
+		{
 			var dir = Selection.SelectedItem as Directory;
-			var directories = dir.GetDirectories();
-			var files = dir.GetFiles();
+			directories = dir.GetDirectories();
+			files = dir.GetFiles();
 
 			rptDirectories.DataSource = directories;
 			rptFiles.DataSource = files;
 			DataBind();
+		}
 
-			Refresh(Selection.SelectedItem, ToolbarArea.Navigation);
+		public void OnDeleteCommand(object sender, CommandEventArgs args)
+		{
+			Delete(Request.Form["directory"], directories.Select(f => f.Url), Engine.Resolve<IFileSystem>().DeleteDirectory);
+			Delete(Request.Form["file"], files.Select(f => f.Url), Engine.Resolve<IFileSystem>().DeleteFile);
+		}
+
+		private void Delete(string itemsToDelete, IEnumerable<string> allowed, Action<string> deleteAction)
+		{
+			if (string.IsNullOrEmpty(itemsToDelete))
+				return;
+
+			var items = itemsToDelete.Split(',');
+			foreach (string item in items.Intersect(allowed))
+			{
+				deleteAction(item);
+			}
+
+			Reload();
 		}
 	}
 }

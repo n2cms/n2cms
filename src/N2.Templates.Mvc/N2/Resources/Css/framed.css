@@ -473,13 +473,19 @@ div.dp-popup .dp-nav-next .dp-nav-next-month
 	margin:0 5px 5px 0;
 	overflow:hidden;
 }
-.directory .file div
+.directory .file input, .directory .file img
 {
+	vertical-align:middle;
+}
+.directory .file label
+{
+	display:block;
 	height:60px;
 	background:#ddc none no-repeat 50% 50%;
 	padding:1px;
 }
-.directory .file span
+.directory .file a
 {
+	display:block;
 	overflow: hidden;
 }
