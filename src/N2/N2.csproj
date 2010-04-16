@@ -290,6 +290,7 @@
     <Compile Include="Configuration\ComponentParameterElement.cs" />
     <Compile Include="Configuration\ConfigurationManagerWrapper.cs" />
     <Compile Include="Configuration\ConfigurationSectionBase.cs" />
+    <Compile Include="Configuration\FileSystemElement.cs" />
     <Compile Include="Configuration\ImagesElement.cs" />
     <Compile Include="Configuration\ImageSizeElement.cs" />
     <Compile Include="Configuration\ImageSizesCollection.cs" />

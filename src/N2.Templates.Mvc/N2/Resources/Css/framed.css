@@ -209,6 +209,7 @@ body.framed .droppable-hover { background-color:#eee; }
 body.framed .type { clear:both; position:relative; width:99%; }
 body.framed .type a { display:block; padding:4px 0 4px 30px; border-bottom:solid 1px #EED; color:#666 }
 body.framed .type a:hover { background-color:#f8f8f8; }
+body.framed .type a:hover { background-color:#f8f8f8; text-decoration:none; }
 body.framed .type .title { font-weight:bold; color:#333; margin-right:10px; min-width:100px; display:inline-block; }
 body.framed .type img { position:absolute; left:8px; }
 body.framed .type.i0 a, 
@@ -452,3 +453,13 @@ div.dp-popup .dp-nav-next .dp-nav-next-month
 
 .datePicker { width:75px; }
 .timePicker { width:75px; }
+
+.fileContents
+{
+	margin-top:10px;
+}
+.fileContents textarea
+{
+	width:100%;
+	height:300px;
+}

@@ -46,6 +46,13 @@ namespace N2.Configuration
             set { base["uploadFolders"] = value; }
 		}
 
+		[ConfigurationProperty("fileSystem")]
+		public FileSystemElement FileSystem
+		{
+			get { return (FileSystemElement)base["fileSystem"]; }
+			set { base["fileSystem"] = value; }
+		}
+
     	[ConfigurationProperty("editTreeUrl", DefaultValue = "~/N2/Content/Navigation/Tree.aspx")]
         public string EditTreeUrl
         {

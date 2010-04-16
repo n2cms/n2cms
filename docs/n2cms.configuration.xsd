@@ -376,6 +376,11 @@
 									<xs:attribute name="maximumPerItem" type="xs:int" default="100" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="fileSystem" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="textFileExtensions" type="xs:string" use="optional" default=".cs,.vb,.js,.html,.htm,.xml,.aspx,.ascx,.ashx,.php,.txt" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
 						<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />

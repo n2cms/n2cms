@@ -4,6 +4,7 @@ using N2.Persistence;
 using N2.Installation;
 using Management.N2.Files;
 using System.Web;
+using System.Text;
 
 namespace N2.Edit.FileSystem.Items
 {
@@ -78,7 +79,11 @@ namespace N2.Edit.FileSystem.Items
 					case ".html":
 					case ".htm":
 					case ".xml":
+					case ".xsd":
+					case ".xslt":
 					case ".aspx":
+					case ".ascx":
+					case ".ashx":
 					case ".php":
 						return IconPath("page_white_code");
 					case ".zip":
@@ -178,5 +183,22 @@ namespace N2.Edit.FileSystem.Items
         }
 
         #endregion
+
+		public string ReadFile()
+		{
+			using (var fs = FileSystem.OpenFile(Url))
+			using (var sr = new StreamReader(fs))
+			{
+				return sr.ReadToEnd();
+			}
+		}
+
+		public void WriteFile(string text)
+		{
+			using (var ms = new MemoryStream(Encoding.ASCII.GetBytes(text)))
+			{
+				FileSystem.WriteFile(Url, ms);
+			}
+		}
 	}
 }

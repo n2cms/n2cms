@@ -60,26 +60,41 @@ namespace N2.Edit.FileSystem
 
 		public void MoveFile(string fromVirtualPath, string destinationVirtualPath)
 		{
-			File.Move(MapPath(fromVirtualPath), MapPath(destinationVirtualPath));
+			MoveFileInternal(fromVirtualPath, destinationVirtualPath);
 
 			if (FileMoved != null)
 				FileMoved.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
 		}
 
+		private void MoveFileInternal(string fromVirtualPath, string destinationVirtualPath)
+		{
+			File.Move(MapPath(fromVirtualPath), MapPath(destinationVirtualPath));
+		}
+
 		public void DeleteFile(string virtualPath)
 		{
-			File.Delete(MapPath(virtualPath));
+			DeleteFileInternal(virtualPath);
 
 			if (FileDeleted != null)
 				FileDeleted.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
+		private void DeleteFileInternal(string virtualPath)
+		{
+			File.Delete(MapPath(virtualPath));
+		}
+
 		public void CopyFile(string fromVirtualPath, string destinationVirtualPath)
 		{
-			File.Copy(MapPath(fromVirtualPath), MapPath(destinationVirtualPath));
+			CopyFileInternal(fromVirtualPath, destinationVirtualPath);
 
 			if (FileCopied != null)
 				FileCopied.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
+		}
+
+		private void CopyFileInternal(string fromVirtualPath, string destinationVirtualPath)
+		{
+			File.Copy(MapPath(fromVirtualPath), MapPath(destinationVirtualPath));
 		}
 
 		public System.IO.Stream OpenFile(string virtualPath)
@@ -91,26 +106,46 @@ namespace N2.Edit.FileSystem
 		{
 			if (FileExists(virtualPath))
 			{
-				using (var s = File.OpenWrite(MapPath(virtualPath)))
-				{
-					TransferBetweenStreams(inputStream, s);
-				}
+				ReplaceFile(virtualPath, inputStream);
 			}
 			else
 			{
-				using (var s = File.Create(MapPath(virtualPath)))
-				{
-					TransferBetweenStreams(inputStream, s);
-				}
+				CreateFile(virtualPath, inputStream);
 			}
 
 			if (FileWritten != null)
 				FileWritten.Invoke(this, new FileEventArgs(virtualPath, null));
 		}
 
+		private void ReplaceFile(string virtualPath, System.IO.Stream inputStream)
+		{
+			string tempFile = virtualPath + "." + Path.GetRandomFileName();
+			try
+			{
+				CreateFile(tempFile, inputStream);
+				DeleteFileInternal(virtualPath);
+				MoveFileInternal(tempFile, virtualPath);
+			}
+			finally
+			{
+				DeleteFile(tempFile);
+			}
+		}
+
+		private void CreateFile(string virtualPath, System.IO.Stream inputStream)
+		{
+			using (var s = File.Create(MapPath(virtualPath)))
+			{
+				TransferBetweenStreams(inputStream, s);
+			}
+		}
+
 		public void ReadFileContents(string virtualPath, System.IO.Stream outputStream)
 		{
-			TransferBetweenStreams(File.OpenRead(MapPath(virtualPath)), outputStream);
+			using(var s = File.OpenRead(MapPath(virtualPath)))
+			{
+				TransferBetweenStreams(s, outputStream);
+			}
 		}
 
 		public bool DirectoryExists(string virtualPath)
