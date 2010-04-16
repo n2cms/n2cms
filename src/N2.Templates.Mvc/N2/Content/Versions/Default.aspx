@@ -12,11 +12,13 @@
 			<asp:TemplateField HeaderText="Version" meta:resourceKey="v" ItemStyle-CssClass="Version">
 				<ItemTemplate>
 					<%# IsPublished(Container.DataItem) ? "<img src='../../Resources/icons/bullet_star.png' alt='published' />" : string.Empty%>
+					<%# ((N2.ContentItem)Container.DataItem)["FuturePublishDate"] is DateTime ? "<img src='../../Resources/icons/clock.png' title='" + ((N2.ContentItem)Container.DataItem)["FuturePublishDate"] + "'/>" : ""%>
 					<span title='<%# Eval("State") %>'><%# ((N2.ContentItem)Container.DataItem).VersionIndex + 1 %></span>
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
-				<ItemTemplate><a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# VirtualPathUtility.ToAbsolute((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
+				<ItemTemplate>
+				<a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# VirtualPathUtility.ToAbsolute((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
 			</asp:TemplateField>
 			<asp:BoundField HeaderText="ID" DataField="ID" meta:resourceKey="id" />
 			<asp:BoundField HeaderText="Published" DataField="Published" meta:resourceKey="published" />

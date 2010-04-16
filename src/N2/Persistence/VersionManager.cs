@@ -91,12 +91,20 @@ namespace N2.Persistence
 
                         Replace(currentItem, replacementItem);
 
+						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf == currentItem)
+							// drafts can be removed once they have been published
+							itemRepository.Delete(replacementItem);
+
                         transaction.Commit();
                         return versionOfCurrentItem;
                     }
                     else
                     {
                         Replace(currentItem, replacementItem);
+
+						if (replacementItem.State == ContentState.Draft && replacementItem.VersionOf == currentItem)
+							// drafts can be removed once they have been published
+							itemRepository.Delete(replacementItem);
 
                         transaction.Commit();
                         return currentItem;

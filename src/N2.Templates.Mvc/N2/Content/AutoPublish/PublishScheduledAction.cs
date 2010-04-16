@@ -24,40 +24,18 @@ namespace N2.Edit.AutoPublish
             if (Debugger.IsAttached)
                 return;
 
-            var allAutoPublishPages = Finder.Where.Detail("FuturePublishDate").Lt(DateTime.Now).Select();
-            foreach (var page in allAutoPublishPages)
-            {
-                var allVersions = Versioner.GetVersionsOf(page);
-
-                // Getting the item wich was created last
-                int newVersion = page.ID;
-                DateTime latestDateTime = page.Updated;
-                foreach (ContentItem item in allVersions)
-                {
-                    if (item.Updated > latestDateTime)
-                    {
-                        latestDateTime = item.Updated;
-                        newVersion = item.ID;
-                    }
-                }
-
+            var scheduledForAutoPublish = Finder
+				.Where.Detail("FuturePublishDate").Lt(DateTime.Now)
+				.PreviousVersions(VersionOption.Include).Select();
+			for (int i = 0; i < scheduledForAutoPublish.Count; i++)
+			{
                 // Get the relevant versions
-                N2.ContentItem latestVersion = Persister.Get(newVersion);
-                N2.ContentItem masterVersion = Persister.Get(page.ID);
+				var scheduledVersion = scheduledForAutoPublish[i];
+				var masterVersion = scheduledVersion.VersionOf;
 
                 // Removing the DelayPublishingUntil Date so that it won't get picked up again
-                latestVersion["FuturePublishDate"] = null;
-                masterVersion["FuturePublishDate"] = null;
-                Versioner.ReplaceVersion(masterVersion, latestVersion);
-
-                // Get rid of all the "FuturePublishDate" dates so that it won't get called again
-                // There might be a few hanging around because new version get saved
-                foreach (ContentItem item in allVersions)
-                {
-                    N2.ContentItem version = Persister.Get(item.ID);
-                    version["FuturePublishDate"] = null;
-                    Persister.Save(latestVersion);
-                }
+                scheduledVersion["FuturePublishDate"] = null;
+                Versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
             }
         }
     }

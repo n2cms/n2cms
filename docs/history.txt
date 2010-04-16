@@ -1,4 +1,6 @@
-﻿- multiple directory/file delete
+﻿2.0 rc
+- future publish improvments (code simplified, future publish of new page, remove drafts once published)
+- multiple directory/file delete
 - preview images in folder
 - write to text files in file system
 - new item prioritazion based on number of items

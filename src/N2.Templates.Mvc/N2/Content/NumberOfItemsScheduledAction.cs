@@ -10,15 +10,11 @@ using N2.Persistence.Finder;
 
 namespace Management.N2.Content
 {
-	[ScheduleExecution(Repeat.Once)]
+	[ScheduleExecution(1, TimeUnit.Hours)]
 	public class NumberOfItemsScheduledAction : ScheduledAction
 	{
 		IDefinitionManager definitions;
 		IItemFinder finder;
-
-		public NumberOfItemsScheduledAction()
-		{
-		}
 
 		public override void Execute()
 		{

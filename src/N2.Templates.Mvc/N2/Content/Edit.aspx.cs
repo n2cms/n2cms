@@ -60,7 +60,7 @@ namespace N2.Edit
             btnSavePublish.Enabled = isPublicableByUser;
             btnPreview.Enabled = isVersionable && isWritableByUser;
             btnSaveUnpublished.Enabled = isVersionable && isWritableByUser;
-            hlFuturePublish.Enabled = isWritableByUser && isExisting;
+            hlFuturePublish.Enabled = isWritableByUser;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -286,8 +286,13 @@ namespace N2.Edit
             // Explicitly setting the current versions FuturePublishDate.
             // The database will end up with two new rows in the detail table.
             // On row pointing to the master and one to the latest/new version.
-            ie.CurrentItem["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;
-            return SaveVersion();
+            var item = SaveVersion();
+			if (item.VersionOf == null)
+				item.Published = dpFuturePublishDate.SelectedDate;
+			else
+				item["FuturePublishDate"] = dpFuturePublishDate.SelectedDate;
+			Engine.Persister.Save(item);
+			return item;
         }
     }
 }
