@@ -10,8 +10,8 @@ Namespace Models
 	''' in this class it's Title and Name are also editable. This is because of the
 	''' abstract/MustInherit base class <see cref="MyItemBase"/> it inherits.
 	''' </remarks>
-	<N2.Definition("Default page")> _
-	Public Class PageItem
+	<N2.Definition("Default page", Installer:=N2.Installation.InstallerHint.PreferredStartPage)> _
+ Public Class PageItem
 		Inherits MyItemBase
 
 		<N2.Details.EditableFreeTextArea("Text", 100)> _

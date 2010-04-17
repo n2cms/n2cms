@@ -5,7 +5,7 @@
 	<asp:LinkButton ID="btnDelete" runat="server" Text="Delete selected" CssClass="command" OnCommand="OnDeleteCommand" OnClientClick="return confirm('Delete selected files and folders?');" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">	
-	<h1><% foreach(var node in ancestors) { %>/<a href="<%= Engine.EditManager.GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
+	<h1><% foreach (N2.ContentItem node in ancestors) { %>/<a href="<%= Engine.EditManager.GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
 	<div class="directory">
 		<asp:Repeater ID="rptDirectories" runat="server">
 			<ItemTemplate>

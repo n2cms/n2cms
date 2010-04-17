@@ -7,7 +7,7 @@
 	<asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" CssClass="command cancel" OnCommand="OnCancelCommand" Visible="false" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" runat="server">
-	<h1><% foreach(var node in ancestors) { %>/<a href="<%= Engine.EditManager.GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
+	<h1><% foreach (N2.ContentItem node in ancestors){ %>/<a href="<%= Engine.EditManager.GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
 
     <a href="<%= SelectedItem.Url %>">
         <img src="<%= N2.Web.Url.ToAbsolute(SelectedItem.IconUrl) %>" alt="icon" />

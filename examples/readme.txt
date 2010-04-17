@@ -1,4 +1,5 @@
-Exemplifies a few ways to work with the N2 CMS framework
+Exemplifies the very basics of working with the N2 CMS framework. If you're 
+looking for more features out of the box download the "templates" instead.
 
 
 HOW TO BUILD
@@ -9,18 +10,13 @@ core and edit. Running Prepare_Dependencies-vs2008.bat should do it.
 
 WHAT'S HERE
 
-* MinimalCSharp
+* Minimal CSharp
 A minimal implementation showing how to use the framework to define content 
 and bind data to a page template in C#
 
-* MinimalVisualBasic
+* Minimal VisualBasic
 A minimal implementation showing how to use the framework to define content 
 and bind data to a page template in VB.NET.
 
-* Mvc
+* Minimal MVC
 An example of N2 running with the ASP.NET MVC framework.
-
-* TemplatesSite
-One way to work with the existing templates without changing them. The templates 
-are compiled and run in the same site but there is an implementation project 
-where changes are made. There are implementation projects in C# and VB.NET.
