@@ -1,0 +1,30 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="App.UI.Site" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+		<n2:SlidingCurtain ID="SlidingCurtain1" runat="server"><n2:ControlPanel ID="ControlPanel1" runat="server" /></n2:SlidingCurtain>
+		<h5 class="header">The N2 Example Site</h5>
+		<div class="menu">
+			<asp:SiteMapDataSource ID="N2SiteMap" runat="server" SiteMapProvider="PublicSiteMap" ShowStartingNode="false" />
+			<asp:Menu ID="Menu1" runat="server" DataSourceID="N2SiteMap" Orientation="Horizontal" StaticSelectedStyle-Font-Bold="true">
+				<DynamicMenuStyle CssClass="subMenu" />
+				<DynamicHoverStyle CssClass="menuHover" />
+				<StaticHoverStyle CssClass="menuHover" />
+			</asp:Menu>
+		</div>
+        <asp:ContentPlaceHolder ID="content" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

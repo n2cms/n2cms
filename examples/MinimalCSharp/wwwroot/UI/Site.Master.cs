@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using N2;
 
-namespace App
+namespace App.UI
 {
-	public partial class Default : N2.Web.UI.ContentPage<Models.PageItem>
+	public partial class Site : N2.Web.UI.MasterPage<ContentItem>
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{

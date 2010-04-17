@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Calculator.ascx.cs" Inherits="UI_Calculator" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Calculator.ascx.cs" Inherits="App.UI.Calculator1" %>
 
 <table class="calculator">
 	<!-- Using the part's title and the page's title -->
@@ -75,4 +75,4 @@
 		</td>
 	</tr>
 	</tbody>
-	</table>
+</table>
