@@ -1,4 +1,7 @@
 ﻿2.0 rc
+- removed templates integration example
+- removed scrum addon
+- removed obsoleted stuff project
 - future publish improvments (code simplified, future publish of new page, remove drafts once published)
 - multiple directory/file delete
 - preview images in folder

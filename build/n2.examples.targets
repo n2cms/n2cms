@@ -7,21 +7,15 @@
 		<Examples-VB-SourceFolder>$(Examples-Folder)\MinimalVisualBasic</Examples-VB-SourceFolder>
 		<Examples-CS-SourceFolder>$(Examples-Folder)\MinimalCSharp</Examples-CS-SourceFolder>
 		<Examples-Mvc-SourceFolder>$(Examples-Folder)\Mvc</Examples-Mvc-SourceFolder>
-		<Examples-Templates-SourceFolder>$(Examples-Folder)\TemplatesSite</Examples-Templates-SourceFolder>
 
 		<Example-CS-DeployFolder>$(DeployFolder)\Example_CS</Example-CS-DeployFolder>
 		<Example-VB-DeployFolder>$(DeployFolder)\Example_VB</Example-VB-DeployFolder>
-		<Example-Templates-DeployFolder>$(DeployFolder)\Example_TemplatesIntegration</Example-Templates-DeployFolder>
 		<Example-Mvc-DeployFolder>$(DeployFolder)\Example_Mvc</Example-Mvc-DeployFolder>
 	</PropertyGroup>
 
 	<!-- Prepare dependencies -->
 	
-	<Target Name="Examples-PrepareDependencies" DependsOnTargets="Prepare-Examples-CSharp;Prepare-Examples-VisualBasic;Prepare-Examples-Mvc;Prepare-Examples-TemplatesSite">
-		<!--<CallTarget Targets="Examples-CSharp-PrepareDependencies;
-							 Examples-VisualBasic-PrepareDependencies;
-							 Examples-TemplatesSite-PrepareDependencies;
-							 Examples-Mvc-PrepareDependencies"/>-->
+	<Target Name="Examples-PrepareDependencies" DependsOnTargets="Prepare-Examples-CSharp;Prepare-Examples-VisualBasic;Prepare-Examples-Mvc;">
 	</Target>
 
 	<Target Name="Examples-CSharp-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
@@ -31,14 +25,6 @@
 	<Target Name="Examples-VisualBasic-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\bin" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\N2\%(RecursiveDir)" />
-	</Target>
-	<Target Name="Examples-TemplatesSite-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups;Templates-Deploy">
-		<ItemGroup>
-			<_TemplatesFiles Include="$(DeployFolder)\Templates_WebForms\wwwroot\**\*" />
-		</ItemGroup>
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\bin" />
-		<Copy SourceFiles="@(_TemplatesFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\N2\%(RecursiveDir)" />
 	</Target>
 	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\$(Configuration)\N2.Extensions.dll; 
@@ -63,9 +49,6 @@
 	<Target Name="Example-SimpleVisualBasic-Build" DependsOnTargets="Examples-VisualBasic-PrepareDependencies">
 		<MSBuild Projects="$(Examples-VB-SourceFolder)\VisualBasic_Example-vs2008.sln"/>
 	</Target>
-	<Target Name="Examples-TemplatesSite-Build" DependsOnTargets="Examples-TemplatesSite-PrepareDependencies">
-		<MSBuild Projects="$(Examples-Templates-SourceFolder)\MyProject-vs2008.sln" />
-	</Target>
 	<Target Name="Examples-Mvc-Build" DependsOnTargets="Examples-Mvc-PrepareDependencies">
 		<MSBuild Projects="$(Examples-Mvc-SourceFolder)\Mvc_Example.sln" />
 	</Target>
@@ -73,22 +56,21 @@
 	<!-- Clean -->
 	
 	<Target Name="Examples-Clean">
-		<MSBuild Projects="$(Examples-Folder)\N2.Examples-vs2008.sln" Targets="Clean" />
-		<MSBuild Projects="$(Examples-Folder)\N2.Examples-VisualBasic.sln" Targets="Clean" />
-
 		<ItemGroup>
-			<DependencyFolders Include="$(Examples-Folder)\MinimalCSharp\wwwroot\N2\;
-									    $(Examples-Folder)\MinimalVisualBasic\wwwroot\N2\;
-									    $(Examples-Folder)\Mvc\wwwroot\N2\;
-									    $(Examples-Folder)\TemplatesSite\wwwroot\App_Browsers\;
-									    $(Examples-Folder)\TemplatesSite\wwwroot\App_GlobalResources\;
-									    $(Examples-Folder)\TemplatesSite\wwwroot\App_Themes\;
-									    $(Examples-Folder)\TemplatesSite\wwwroot\Templates\;
-									    $(Examples-Folder)\TemplatesSite\wwwroot\Upload\;"/>
-			<BinFiles Include="$(Examples-Folder)\**\bin\*" />
+			<_Configurations Include="Debug;Release;" />
+			<_ExamplesSolutions Include="$(Examples-Folder)\**\*.sln"
+													Exclude="$(Examples-Folder)\**\*vs2005.sln" />
+			<_DependencyFolders Include="$(Examples-Folder)\MinimalCSharp\wwwroot\N2\;
+																		$(Examples-Folder)\MinimalVisualBasic\wwwroot\N2\;
+																		$(Examples-Folder)\Mvc\wwwroot\N2\;
+																		$(Examples-Folder)\**\PrecompiledWeb"/>
+			<_BinFiles Include="$(Examples-Folder)\**\bin\*" />
 		</ItemGroup>
-		<RemoveDir Directories="@(DependencyFolders)" />
-		<Delete Files="@(BinFiles)" />
+
+		<MSBuild Projects="%(_ExamplesSolutions.Identity)" Targets="Clean" Properties="Configuration=Debug" />
+		<MSBuild Projects="%(_ExamplesSolutions.Identity)" Targets="Clean" Properties="Configuration=Release" />
+		<RemoveDir Directories="@(_DependencyFolders)" />
+		<Delete Files="@(_BinFiles)" />
 	</Target>
 
 	<!-- Deploy -->
@@ -96,7 +78,6 @@
 	<Target Name="Examples-Deploy">
 		<CallTarget Targets="Examples-VB-Deploy;
 							 Examples-CS-Deploy;
-							 Examples-TemplatesSite-Deploy;
 							 Examples-Mvc-Deploy" />
 	</Target>
 
@@ -104,18 +85,15 @@
 		<ItemGroup>
 			<ZipDeploy-CSExample Include="$(Example-CS-DeployFolder)\**" />
 			<ZipDeploy-VBExample Include="$(Example-VB-DeployFolder)\**" />
-			<ZipDeploy-TemplateExample Include="$(Example-Templates-DeployFolder)\**" />
 			<ZipDeploy-MvcExample Include="$(Example-Mvc-DeployFolder)\**" />
 		</ItemGroup>
 
 		<Error Condition="'@(ZipDeploy-CSExample)' == ''" Text="Nothing in '$(Example-CS-DeployFolder)'. Do deploy first." />
 		<Error Condition="'@(ZipDeploy-VBExample)' == ''" Text="Nothing in '$(Example-VB-DeployFolder)'. Do deploy first." />
-		<Error Condition="'@(ZipDeploy-TemplateExample)' == ''" Text="Nothing in '$(Example-Templates-DeployFolder)'. Do deploy first." />
 		<Error Condition="'@(ZipDeploy-MvcExample)' == ''" Text="Nothing in '$(Example-Mvc-DeployFolder)'. Do deploy first." />
 
 		<Zip Files="@(ZipDeploy-CSExample)"       WorkingDirectory="$(Example-CS-DeployFolder)"				ZipFileName="$(Example-CS-DeployFolder).zip" />
 		<Zip Files="@(ZipDeploy-VBExample)"       WorkingDirectory="$(Example-VB-DeployFolder)"				ZipFileName="$(Example-VB-DeployFolder).zip" />
-		<Zip Files="@(ZipDeploy-TemplateExample)" WorkingDirectory="$(Example-Templates-DeployFolder)" ZipFileName="$(Example-Templates-DeployFolder).zip" />
 		<Zip Files="@(ZipDeploy-MvcExample)"      WorkingDirectory="$(Example-Mvc-DeployFolder)"			ZipFileName="$(Example-Mvc-DeployFolder).zip" />
 	</Target>
 
@@ -138,17 +116,6 @@
 		<Copy SourceFiles="@(Framework-EditFiles)"   DestinationFolder="$(Example-CS-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"             DestinationFolder="$(Example-CS-DeployFolder)" />
 		<Copy SourceFiles="@(Snippets)"              DestinationFolder="$(Example-CS-DeployFolder)\Snippets" />
-	</Target>
-	
-	<Target Name="Examples-TemplatesSite-Deploy" DependsOnTargets="Examples-CreateItemGroups">
-		<ItemGroup>
-			<ExampleSource-TemplatesSiteFiles Include="$(Examples-Templates-SourceFolder)\**\*.*" Exclude="@(ExampleSource-Exclude)" />
-		</ItemGroup>
-		<Copy SourceFiles="@(ExampleSource-TemplatesSiteFiles)" DestinationFolder="$(Example-Templates-DeployFolder)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"								DestinationFolder="$(Example-Templates-DeployFolder)\wwwroot\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)"							DestinationFolder="$(Example-Templates-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)"                        DestinationFolder="$(Example-Templates-DeployFolder)" />
-		<Copy SourceFiles="@(Snippets)"                         DestinationFolder="$(Example-Templates-DeployFolder)\Snippets" />
 	</Target>
 	
 	<Target Name="Examples-Mvc-Deploy" DependsOnTargets="Examples-CreateItemGroups">

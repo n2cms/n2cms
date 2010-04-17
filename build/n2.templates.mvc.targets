@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+	<!-- MVC TEMPLATES -->
+
+	<PropertyGroup>
+		<Templates-Mvc-SourceFolder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-SourceFolder>
+		<Templates-Mvc-DeployFolder>$(DeployFolder)\Templates_Mvc</Templates-Mvc-DeployFolder>
+	</PropertyGroup>
+
+	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
+		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\$(Configuration)\N2.Extensions.dll; 
+                       $(LibFolder)\Microsoft.Web.Mvc.dll; 
+                       $(LibFolder)\System.Web.Mvc.dll;"
+					DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
+	</Target>
+
+	<Target Name="Templates-Mvc-Build">
+		<!--DependsOnTargets="Templates-Mvc-PrepareDependencies">-->
+		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);" />
+	</Target>
+
+	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Framework-CreateItemGroups">
+		<ItemGroup>
+			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*"
+							   Exclude="$(Templates-Mvc-SourceFolder)\**\.svn\**\*;
+												$(Templates-Mvc-SourceFolder)\**\obj\**\*;
+												$(Templates-Mvc-SourceFolder)\**\bin\*.pdb;
+												$(Templates-Mvc-SourceFolder)\**\Ankh.Load;
+												$(Templates-Mvc-SourceFolder)\**\*.sln.cache;
+												$(Templates-Mvc-SourceFolder)\**\*.resharper;
+												$(Templates-Mvc-SourceFolder)\**\*.suo;
+												$(Templates-Mvc-SourceFolder)\**\*.user;
+												$(Templates-Mvc-SourceFolder)\**\*.Publish.xml;
+												$(Templates-Mvc-SourceFolder)\**\Thumbs.db;
+												$(Templates-Mvc-SourceFolder)\N2\**\*;
+												$(Templates-Mvc-SourceFolder)\N2.Management.*" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(templatesMvcFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
+		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
+
+		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />
+	</Target>
+
+	<Target Name="Templates-Mvc-Zip" DependsOnTargets="Templates-Mvc-Deploy">
+		<ItemGroup>
+			<ZipDeploy-MvcTemplates Include="$(Templates-Mvc-DeployFolder)\**" />
+		</ItemGroup>
+
+		<Error Condition="'@(ZipDeploy-MvcTemplates)' == ''" Text="Nothing in '$(Templates-Mvc-DeployFolder)'. Do deploy first." />
+
+		<Zip Files="@(ZipDeploy-MvcTemplates)"    WorkingDirectory="$(Templates-Mvc-DeployFolder)"	ZipFileName="$(DeployFolder)\Templates_Mvc.zip" />
+	</Target>
+
+	<Target Name="Templates-Mvc-RemoveProjectReferences">
+		<PropertyGroup>
+			<SourceFile>$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj</SourceFile>
+			<DestinationFile>$(Templates-Mvc-DeployFolder)\wwwroot\N2.Templates.Mvc.csproj</DestinationFile>
+		</PropertyGroup>
+		<PropertyGroup>
+			<Code>
+				<![CDATA[
+public static string Rehint(Match m)
+{
+	if (!m.Groups["Contents"].Success || !m.Groups["Contents"].Value.Contains("<HintPath"))
+		return m.Value;
+
+	return @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>".Replace("${Name}", m.Groups["Name"].Value);
+}
+public static string ScriptMain() {
+	string lines = File.ReadAllText(@"$(SourceFile)");
+	
+	string pattern = "<ProjectReference.*?<Name>(?<Name>[^<]*).*?</ProjectReference>";
+	string replacement = @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
+	lines = Regex.Replace(lines, pattern, replacement, RegexOptions.Singleline);
+
+	string pattern2 = "<Reference Include=\"(?<Name>[^,\"]*)(,[^\"]*)?\">(?<Contents>.*?)</Reference>";
+	lines = Regex.Replace(lines, pattern2, Rehint, RegexOptions.Singleline);
+	
+	return Regex.Replace(lines, @"([($]+LibPath[)])|([\.\\]+lib)", "bin");
+}
+			]]>
+			</Code>
+		</PropertyGroup>
+		<Script Code="$(Code)" Language="C#">
+			<Output TaskParameter="ReturnValue" PropertyName="FileContents" />
+		</Script>
+		<WriteLinesToFile File="$(DestinationFile)" Lines="$(FileContents)" Overwrite="true" />
+	</Target>
+</Project>

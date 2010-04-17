@@ -35,7 +35,7 @@
 			<textarea readonly="readonly"><%= Installer.ExportUpgradeSchema() %></textarea>
 			<p>In addition to updating the database schema, the following migrations will be executed on the <%= Status.Items %> items in your database: </p>
 			<ul style="background-color:#FFB;">
-				<% foreach (var migration in Migrator.GetMigrations(Status)){ %>
+				<% foreach (N2.Edit.Installation.AbstractMigration migration in Migrator.GetMigrations(Status)) { %>
 				<li><strong><%= migration.Title %></strong> <%= migration.Description %></li>
 				<%} %>
 			</ul>

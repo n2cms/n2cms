@@ -11,11 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ASP.NET MVC", "ASP.NET MVC"
 		Mvc\mvc_readme.txt = Mvc\mvc_readme.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates Integration", "Templates Integration", "{91671D3F-E6C3-412B-89FF-BC14C0A0DE39}"
-	ProjectSection(SolutionItems) = preProject
-		TemplatesSite\implementation_readme.txt = TemplatesSite\implementation_readme.txt
-	EndProjectSection
-EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "MinimalCSharp\wwwroot\", "{8626A229-195E-42D6-ACB6-4009C3818797}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = ""
@@ -41,8 +36,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "MinimalCSharp\ww
 		VWDVirtualPath = "/"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject", "TemplatesSite\wwwroot\MyProject.csproj", "{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTest", "Mvc\wwwroot\MvcTest.csproj", "{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}"
 EndProject
 Global
@@ -65,16 +58,6 @@ Global
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Release|Any CPU.ActiveCfg = Debug|.NET
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
 		{8626A229-195E-42D6-ACB6-4009C3818797}.Release|Mixed Platforms.Build.0 = Debug|.NET
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|.NET.ActiveCfg = Release|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -92,7 +75,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8626A229-195E-42D6-ACB6-4009C3818797} = {D037EABD-718B-468A-A23D-4439AF936DCD}
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D} = {FFDFE4E3-10CF-428A-A77C-51AFDC4561E5}
-		{EA85AF3E-9AD8-46EE-AF7D-33E94B27E2B3} = {91671D3F-E6C3-412B-89FF-BC14C0A0DE39}
 	EndGlobalSection
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1

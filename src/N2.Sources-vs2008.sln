@@ -73,7 +73,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{CC6F803A
 		..\build\n2.framework.targets = ..\build\n2.framework.targets
 		..\build\n2.proj = ..\build\n2.proj
 		..\build\n2.sources.targets = ..\build\n2.sources.targets
-		..\build\n2.templates.targets = ..\build\n2.templates.targets
+		..\build\n2.templates.mvc.targets = ..\build\n2.templates.mvc.targets
+		..\build\n2.templates.webforms.targets = ..\build\n2.templates.webforms.targets
 		..\Prepare_Dependencies-vs2008.bat = ..\Prepare_Dependencies-vs2008.bat
 		..\readme.txt = ..\readme.txt
 	EndProjectSection

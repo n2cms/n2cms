@@ -6,27 +6,38 @@
 	<PropertyGroup>
 		<Templates-SourceFolder>$(SrcFolder)\wwwroot</Templates-SourceFolder>
 		<Templates-DeployFolder>$(DeployFolder)\Templates_WebForms</Templates-DeployFolder>
-		<Templates-Mvc-SourceFolder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-SourceFolder>
-		<Templates-Mvc-DeployFolder>$(DeployFolder)\Templates_Mvc</Templates-Mvc-DeployFolder>
 	</PropertyGroup>
 
 
 	<Target Name="Templates-Build">
-		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
-		<CallTarget Targets="Templates-Mvc-Build"/>
+		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);" />
 	</Target>
 
 	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Framework-CreateItemGroups">
 		<ItemGroup>
-			<_TemplatesTempFiles Include="$(TempFolder)_PublishedWebsites\N2.Templates\**\*"/>
+			<templatesTempFiles Include="$(Templates-SourceFolder)\**\*"
+													 Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
+																		$(Templates-SourceFolder)\**\obj\**\*;
+																		$(Templates-SourceFolder)\**\bin\*.pdb;
+																		$(Templates-SourceFolder)\**\Ankh.Load;
+																		$(Templates-SourceFolder)\**\*.sln.cache;
+																		$(Templates-SourceFolder)\**\*.resharper;
+																		$(Templates-SourceFolder)\**\*.suo;
+																		$(Templates-SourceFolder)\**\*.user;
+																		$(Templates-SourceFolder)\**\*.Publish.xml;
+																		$(Templates-SourceFolder)\**\Thumbs.db;
+																		$(Templates-SourceFolder)\N2\**\*;
+																		$(Templates-SourceFolder)\N2.Management.*" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(_TemplatesTempFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\%(RecursiveDir)" />
+		<Copy SourceFiles="@(templatesTempFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\%(RecursiveDir)" />
 		<RemoveDir Directories="$(TempFolder)_PublishedWebsites\N2.Templates\"/>
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\bin\" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-DeployFolder)" />
 		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db" DestinationFiles="$(Templates-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
+		<Copy SourceFiles="$(SrcFolder)\AssemblyVersion.cs" DestinationFiles="$(Templates-DeployFolder)\AssemblyVersion.cs" />
+		<CallTarget Targets="Templates-RemoveProjectReferences" />
 	</Target>
 	
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
@@ -34,47 +45,7 @@
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-SourceFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 
-	<!-- MVC TEMPLATES -->
-
-	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
-		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\$(Configuration)\N2.Extensions.dll; 
-                       $(LibFolder)\Microsoft.Web.Mvc.dll; 
-                       $(LibFolder)\System.Web.Mvc.dll;"
-					DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
-	</Target>
-
-	<Target Name="Templates-Mvc-Build">
-		<!--DependsOnTargets="Templates-Mvc-PrepareDependencies">-->
-		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
-	</Target>
-
-	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Framework-CreateItemGroups">
-		<ItemGroup>
-			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*"
-							   Exclude="$(Templates-Mvc-SourceFolder)\**\.svn\**\*;
-										$(Templates-Mvc-SourceFolder)\**\obj\**\*;
-										$(Templates-Mvc-SourceFolder)\**\bin\*.pdb;
-										$(Templates-Mvc-SourceFolder)\**\Ankh.Load;
-										$(Templates-Mvc-SourceFolder)\**\*.sln.cache;
-										$(Templates-Mvc-SourceFolder)\**\*.resharper;
-										$(Templates-Mvc-SourceFolder)\**\*.suo;
-										$(Templates-Mvc-SourceFolder)\**\*.user;
-										$(Templates-Mvc-SourceFolder)\**\*.Publish.xml;
-										$(Templates-Mvc-SourceFolder)\**\Thumbs.db;
-										$(Templates-Mvc-SourceFolder)\N2\**\*;" />
-		</ItemGroup>
-
-		<Copy SourceFiles="@(templatesMvcFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
-		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db" DestinationFiles="$(Templates-Mvc-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
-
-		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />
-	</Target>
-
-	<Target Name="Templates-Zip" DependsOnTargets="Templates-Deploy;Templates-Mvc-Deploy">
+	<Target Name="Templates-Zip" DependsOnTargets="Templates-Deploy;">
 		<ItemGroup>
 			<ZipDeploy-Templates Include="$(Templates-DeployFolder)\**" />
 			<ZipDeploy-MvcTemplates Include="$(Templates-Mvc-DeployFolder)\**" />
@@ -87,21 +58,25 @@
 		<Zip Files="@(ZipDeploy-MvcTemplates)"    WorkingDirectory="$(Templates-Mvc-DeployFolder)"	ZipFileName="$(DeployFolder)\Templates_Mvc.zip" />
 	</Target>
 
-	<Target Name="Templates-Mvc-RemoveProjectReferences">
+	<Target Name="Templates-RemoveProjectReferences">
 		<PropertyGroup>
-			<SourceFile>$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj</SourceFile>
-			<DestinationFile>$(Templates-Mvc-DeployFolder)\wwwroot\N2.Templates.Mvc.csproj</DestinationFile>
+			<SourceFile>$(Templates-SourceFolder)\N2.Templates.csproj</SourceFile>
+			<DestinationFile>$(Templates-DeployFolder)\wwwroot\N2.Templates.csproj</DestinationFile>
 		</PropertyGroup>
 		<PropertyGroup>
 			<Code>
 				<![CDATA[
 public static string ScriptMain() {
 	string lines = File.ReadAllText(@"$(SourceFile)");
+	
 	string pattern = "<ProjectReference.*?<Name>(?<Name>[^<]*).*?</ProjectReference>";
 	string replacement = @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
-	
 	lines = Regex.Replace(lines, pattern, replacement, RegexOptions.Singleline);
-	
+
+	//string pattern2 = "<Reference.*?<HintPath>[.\\\\]*?lib.net3.5.(?<Name>[^<]*).dll</HintPath>.*?</Reference>";
+	//string replacement2 = @"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
+	//lines = Regex.Replace(lines, pattern2, replacement2, RegexOptions.Singleline);
+
 	return Regex.Replace(lines, @"([($]+LibPath[)])|([\.\\]+lib)", "bin");
 }
 			]]>

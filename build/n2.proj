@@ -30,7 +30,8 @@
 
 	<Import Project="$(RootFolder)\lib\MSBuild.Community.Tasks.Targets"/>
 	<Import Project="n2.framework.targets"/>
-	<Import Project="n2.templates.targets"/>
+	<Import Project="n2.templates.webforms.targets"/>
+	<Import Project="n2.templates.mvc.targets"/>
 	<Import Project="n2.examples.targets"/>
 	<Import Project="n2.sources.targets"/>
 
@@ -41,13 +42,6 @@
 		<CallTarget Targets="Examples-Build"/>
 	</Target>
 	
-	<Target Name="Build-NH2_1" DependsOnTargets="DefineProperties-NH2_1">
-		<Error Text="TODO" />
-		<Message Text="Building Everything"/>
-
-		<CallTarget Targets="Framework-Build"/>
-	</Target>
-
 	<Target Name="SanityCheck">
 		<ItemGroup>
 			<_SolutionFiles Include="$(RootFolder)\**\*.sln" />
@@ -58,14 +52,9 @@
 
 	<!-- Clean -->
 
-	<Target Name="Clean">
-		<MSBuild Projects="$(RootFolder)\N2.Everything-vs2008.sln" Targets="Clean" />
-
-		<CallTarget Targets="Examples-Clean" />
-		<ItemGroup>
-			<binFiles Include="$(SrcFolder)\**\bin\*" />
-		</ItemGroup>
-		<Delete Files="@(binFiles)" />
+	<Target Name="Clean" DependsOnTargets="Source-Clean;Examples-Clean;">
+		<MSBuild Projects="$(RootFolder)\N2.Everything-vs2008.sln" Targets="Clean" Properties="Configuration=Debug" />
+		<MSBuild Projects="$(RootFolder)\N2.Everything-vs2008.sln" Targets="Clean" Properties="Configuration=Release" />
 	</Target>
 
 	<!-- Deploy -->
@@ -81,22 +70,6 @@
 		<RemoveDir Directories="$(DeployFolder)\temp" ContinueOnError="true" />
 	</Target>
 
-	<Target Name="Deploy-NH2_1" DependsOnTargets="Clean;Clean-Output;DefineProperties-NH2_1">
-		<Error Text="TODO" ContinueOnError="true"/>
-		<Message Text="Deploying Everything using NHibernate $(NHVersion)"/>
-
-		<CallTarget Targets="Framework-Deploy"/>
-		<CallTarget Targets="Templates-Deploy"/>
-		<CallTarget Targets="Examples-Deploy"/>
-	</Target>
-
-	<Target Name="DefineProperties-NH2_1">
-		<PropertyGroup>
-			<NHVersion>2.1</NHVersion>
-			<DeployFolder>$(RootFolder)\output\net3.5</DeployFolder>
-		</PropertyGroup>
-	</Target>
-
 	<!-- Zip -->
 
 	<Target Name="ZipDeploy" DependsOnTargets="Deploy;Zip">
@@ -107,14 +80,10 @@
 	</Target>
 
 	<Target Name="Zip">
-		<CallTarget Targets="Framework-Zip;Source-Zip;Templates-Zip;Examples-Zip" />
+		<CallTarget Targets="Framework-Zip;Source-Zip;Templates-Zip;Templates-Mvc-Zip;Examples-Zip" />
 	</Target>
 
 	<!-- Clean sources -->
-	
-	<Target Name="Clean">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Targets="Clean" />
-	</Target>
 
 	<Target Name="PrepareDependencies" DependsOnTargets="Prepare-Framework;Examples-PrepareDependencies;Prepare-Templates-Mvc;Prepare-Templates-WebForms">
 	</Target>

@@ -8,24 +8,24 @@
 		<ItemGroup>
 			<Source-Files Include="$(MSBuildProjectDirectory)\..\**\*"
 						  Exclude="$(MSBuildProjectDirectory)\..\**\.svn\**\*;
-								   $(MSBuildProjectDirectory)\..\output\**\*;
-								   $(MSBuildProjectDirectory)\..\**\_*\**\*;
-								   $(MSBuildProjectDirectory)\..\**\*WebSetup\**\*;
-								   $(MSBuildProjectDirectory)\..\**\*VsTemplate\**\*;
-								   $(MSBuildProjectDirectory)\..\**\obj\**\*;
-								   $(MSBuildProjectDirectory)\..\**\bin\**\*;
-								   $(MSBuildProjectDirectory)\..\**\PrecompiledWeb\**\*;
-								   $(MSBuildProjectDirectory)\..\**\Ankh.Load;
-								   $(MSBuildProjectDirectory)\..\**\*.sln.cache;
-								   $(MSBuildProjectDirectory)\..\**\*.resharper;
-								   $(MSBuildProjectDirectory)\..\**\*.suo;
-								   $(MSBuildProjectDirectory)\..\**\*.user;
-								   $(MSBuildProjectDirectory)\..\*.xml;
-								   $(MSBuildProjectDirectory)\..\**\*.Publish.xml;
-								   $(MSBuildProjectDirectory)\..\**\Thumbs.db;
-								   $(DeployFolder)\**\*;
-								   $(Examples-Folder)\**\N2\**\*;
-								   $(LibFolder)\*.pdb" />
+											 $(MSBuildProjectDirectory)\..\output\**\*;
+											 $(MSBuildProjectDirectory)\..\**\_*\**\*;
+											 $(MSBuildProjectDirectory)\..\**\*WebSetup\**\*;
+											 $(MSBuildProjectDirectory)\..\**\*VsTemplate\**\*;
+											 $(MSBuildProjectDirectory)\..\**\obj\**\*;
+											 $(MSBuildProjectDirectory)\..\**\bin\**\*;
+											 $(MSBuildProjectDirectory)\..\**\PrecompiledWeb\**\*;
+											 $(MSBuildProjectDirectory)\..\**\Ankh.Load;
+											 $(MSBuildProjectDirectory)\..\**\*.sln.cache;
+											 $(MSBuildProjectDirectory)\..\**\*.resharper;
+											 $(MSBuildProjectDirectory)\..\**\*.suo;
+											 $(MSBuildProjectDirectory)\..\**\*.user;
+											 $(MSBuildProjectDirectory)\..\*.xml;
+											 $(MSBuildProjectDirectory)\..\**\*.Publish.xml;
+											 $(MSBuildProjectDirectory)\..\**\Thumbs.db;
+											 $(DeployFolder)\**\*;
+											 $(Examples-Folder)\**\N2\**\*;
+											 $(LibFolder)\*.pdb" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(DeployFolder)\Source\%(RecursiveDir)"  />
@@ -40,5 +40,17 @@
 
 		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(DeployFolder)\Source"                 ZipFileName="$(DeployFolder)\Sources.zip" />
 	</Target>
-	
+
+	<Target Name="Source-Clean">
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Targets="Clean" Properties="Configuration=Debug" />
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Targets="Clean" Properties="Configuration=Release" />
+
+		<ItemGroup>
+			<binFiles Include="$(SrcFolder)\**\bin\*;
+												 $(SrcFolder)\**\obj\*" />
+			<dependencyDirectories Include="$(SrcFolder)\wwwroot\N2\;$(SrcFolder)\wwwroot\Edit\" />
+		</ItemGroup>
+		<Delete Files="@(binFiles)" />
+		<RemoveDir Directories="@(dependencyDirectories)" />
+	</Target>
 </Project>
