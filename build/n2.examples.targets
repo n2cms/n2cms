@@ -8,9 +8,9 @@
 		<Examples-CS-SourceFolder>$(Examples-Folder)\MinimalCSharp</Examples-CS-SourceFolder>
 		<Examples-Mvc-SourceFolder>$(Examples-Folder)\Mvc</Examples-Mvc-SourceFolder>
 
-		<Example-CS-DeployFolder>$(DeployFolder)\Example_CS</Example-CS-DeployFolder>
-		<Example-VB-DeployFolder>$(DeployFolder)\Example_VB</Example-VB-DeployFolder>
-		<Example-Mvc-DeployFolder>$(DeployFolder)\Example_Mvc</Example-Mvc-DeployFolder>
+		<Example-CS-DeployFolder>$(DeployFolder)\$(DeployPrefix)Example_CS</Example-CS-DeployFolder>
+		<Example-VB-DeployFolder>$(DeployFolder)\$(DeployPrefix)Example_VB</Example-VB-DeployFolder>
+		<Example-Mvc-DeployFolder>$(DeployFolder)\$(DeployPrefix)Example_Mvc</Example-Mvc-DeployFolder>
 	</PropertyGroup>
 
 	<!-- Prepare dependencies -->
@@ -75,13 +75,13 @@
 
 	<!-- Deploy -->
 	
-	<Target Name="Examples-Deploy">
-		<CallTarget Targets="Examples-VB-Deploy;
-							 Examples-CS-Deploy;
-							 Examples-Mvc-Deploy" />
+	<Target Name="Examples-Deploy" DependsOnTargets="Examples-VB-Deploy;Examples-CS-Deploy;Examples-Mvc-Deploy">
 	</Target>
 
-	<Target Name="Examples-Zip" DependsOnTargets="Examples-Deploy">
+	<Target Name="Examples-ZipDeploy" DependsOnTargets="Examples-Deploy;Examples-Zip">
+	</Target>
+
+	<Target Name="Examples-Zip">
 		<ItemGroup>
 			<ZipDeploy-CSExample Include="$(Example-CS-DeployFolder)\**" />
 			<ZipDeploy-VBExample Include="$(Example-VB-DeployFolder)\**" />
@@ -92,9 +92,9 @@
 		<Error Condition="'@(ZipDeploy-VBExample)' == ''" Text="Nothing in '$(Example-VB-DeployFolder)'. Do deploy first." />
 		<Error Condition="'@(ZipDeploy-MvcExample)' == ''" Text="Nothing in '$(Example-Mvc-DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-CSExample)"       WorkingDirectory="$(Example-CS-DeployFolder)"				ZipFileName="$(Example-CS-DeployFolder).zip" />
-		<Zip Files="@(ZipDeploy-VBExample)"       WorkingDirectory="$(Example-VB-DeployFolder)"				ZipFileName="$(Example-VB-DeployFolder).zip" />
-		<Zip Files="@(ZipDeploy-MvcExample)"      WorkingDirectory="$(Example-Mvc-DeployFolder)"			ZipFileName="$(Example-Mvc-DeployFolder).zip" />
+		<Zip Files="@(ZipDeploy-CSExample)"       WorkingDirectory="$(Example-CS-DeployFolder).."				ZipFileName="$(Example-CS-DeployFolder).zip" />
+		<Zip Files="@(ZipDeploy-VBExample)"       WorkingDirectory="$(Example-VB-DeployFolder).."				ZipFileName="$(Example-VB-DeployFolder).zip" />
+		<Zip Files="@(ZipDeploy-MvcExample)"      WorkingDirectory="$(Example-Mvc-DeployFolder).."			ZipFileName="$(Example-Mvc-DeployFolder).zip" />
 	</Target>
 
 	<Target Name="Examples-VB-Deploy" DependsOnTargets="Examples-CreateItemGroups">

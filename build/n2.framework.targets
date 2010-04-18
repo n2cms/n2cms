@@ -69,20 +69,26 @@
 	
 	<!-- Deploy -->
 
+	<PropertyGroup>
+		<Framework-DeployFolder>$(DeployFolder)\$(DeployPrefix)Framework</Framework-DeployFolder>
+	</PropertyGroup>
+
 	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(DeployFolder)\Framework\Bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(DeployFolder)\Framework\N2\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(DeployFolder)\Framework" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\Bin" />
+		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
 	</Target>
 
-	<Target Name="Framework-Zip" DependsOnTargets="Framework-Deploy">
+	<Target Name="Framework-ZipDeploy" DependsOnTargets="Framework-Deploy;Framework-Zip" />
+
+	<Target Name="Framework-Zip">
 		<ItemGroup>
-			<ZipDeploy-Framework Include="$(DeployFolder)\Framework\**" />
+			<ZipDeploy-Framework Include="$(Framework-DeployFolder)\**" />
 		</ItemGroup>
 
-		<Error Condition="'@(ZipDeploy-Framework)' == ''" Text="Nothing in '$(DeployFolder)\Framework'. Do deploy first." />
+		<Error Condition="'@(ZipDeploy-Framework)' == ''" Text="Nothing in '$(Framework-DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-Framework)"       WorkingDirectory="$(DeployFolder)\Framework"              ZipFileName="$(DeployFolder)\CompiledRuntime.zip" />
+		<Zip Files="@(ZipDeploy-Framework)"       WorkingDirectory="$(Framework-DeployFolder).."              ZipFileName="$(Framework-DeployFolder).zip" />
 	</Target>
 
 </Project>

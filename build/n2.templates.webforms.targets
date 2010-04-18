@@ -5,7 +5,7 @@
 
 	<PropertyGroup>
 		<Templates-SourceFolder>$(SrcFolder)\wwwroot</Templates-SourceFolder>
-		<Templates-DeployFolder>$(DeployFolder)\Templates_WebForms</Templates-DeployFolder>
+		<Templates-DeployFolder>$(DeployFolder)\$(DeployPrefix)Templates_WebForms</Templates-DeployFolder>
 	</PropertyGroup>
 
 
@@ -30,13 +30,14 @@
 																		$(Templates-SourceFolder)\N2.Management.*" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(templatesTempFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\%(RecursiveDir)" />
+		<Copy SourceFiles="@(templatesTempFiles)"						DestinationFolder="$(Templates-DeployFolder)\wwwroot\%(RecursiveDir)" />
 		<RemoveDir Directories="$(TempFolder)_PublishedWebsites\N2.Templates\"/>
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Templates-DeployFolder)" />
-		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db" DestinationFiles="$(Templates-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
+		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Templates-DeployFolder)\wwwroot\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Templates-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Templates-DeployFolder)" />
+		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db"	DestinationFiles="$(Templates-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
 		<Copy SourceFiles="$(SrcFolder)\AssemblyVersion.cs" DestinationFiles="$(Templates-DeployFolder)\AssemblyVersion.cs" />
+		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Templates-DeployFolder)\Snippets" />
 		<CallTarget Targets="Templates-RemoveProjectReferences" />
 	</Target>
 	
@@ -45,17 +46,17 @@
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-SourceFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 
-	<Target Name="Templates-Zip" DependsOnTargets="Templates-Deploy;">
+	<Target Name="Templates-ZipDeploy" DependsOnTargets="Templates-Deploy;Templates-Zip">
+	</Target>
+	
+	<Target Name="Templates-Zip">
 		<ItemGroup>
 			<ZipDeploy-Templates Include="$(Templates-DeployFolder)\**" />
-			<ZipDeploy-MvcTemplates Include="$(Templates-Mvc-DeployFolder)\**" />
 		</ItemGroup>
 
 		<Error Condition="'@(ZipDeploy-Templates)' == ''" Text="Nothing in '$(Templates-DeployFolder)'. Do deploy first." />
-		<Error Condition="'@(ZipDeploy-MvcTemplates)' == ''" Text="Nothing in '$(Templates-Mvc-DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(Templates-DeployFolder)"		ZipFileName="$(DeployFolder)\Templates_WebForms.zip" />
-		<Zip Files="@(ZipDeploy-MvcTemplates)"    WorkingDirectory="$(Templates-Mvc-DeployFolder)"	ZipFileName="$(DeployFolder)\Templates_Mvc.zip" />
+		<Zip Files="@(ZipDeploy-Templates)"       WorkingDirectory="$(Templates-DeployFolder).."		ZipFileName="$(Templates-DeployFolder).zip" />
 	</Target>
 
 	<Target Name="Templates-RemoveProjectReferences">

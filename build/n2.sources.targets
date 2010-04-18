@@ -3,6 +3,9 @@
 
 	<!-- SOURCE -->
 
+	<PropertyGroup>
+		<Source-DeployFolder>$(DeployFolder)\$(DeployPrefix)Source</Source-DeployFolder>
+	</PropertyGroup>
 
 	<Target Name="Source-Deploy">
 		<ItemGroup>
@@ -28,17 +31,20 @@
 											 $(LibFolder)\*.pdb" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(DeployFolder)\Source\%(RecursiveDir)"  />
+		<Copy SourceFiles="@(Source-Files)" DestinationFolder="$(Source-DeployFolder)\%(RecursiveDir)"  />
 	</Target>
 
-	<Target Name="Source-Zip" DependsOnTargets="Source-Deploy">
+	<Target Name="Source-ZipDeploy" DependsOnTargets="Source-Deploy;Source-Zip">
+	</Target>
+	
+	<Target Name="Source-Zip">
 		<ItemGroup>
-			<ZipDeploy-Source Include="$(DeployFolder)\Source\**" />
+			<ZipDeploy-Source Include="$(Source-DeployFolder)\**" />
 		</ItemGroup>
 
-		<Error Condition="'@(ZipDeploy-Source)' == ''" Text="Nothing in '$(DeployFolder)\Source'. Do deploy first." />
+		<Error Condition="'@(ZipDeploy-Source)' == ''" Text="Nothing in '$(Source-DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(DeployFolder)\Source"                 ZipFileName="$(DeployFolder)\Sources.zip" />
+		<Zip Files="@(ZipDeploy-Source)"          WorkingDirectory="$(Source-DeployFolder).."                 ZipFileName="$(Source-DeployFolder).zip" />
 	</Target>
 
 	<Target Name="Source-Clean">
