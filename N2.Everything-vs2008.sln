@@ -120,33 +120,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{72
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcTest", "examples\Mvc\wwwroot\MvcTest.csproj", "{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "wwwroot", "examples\MinimalCSharp\wwwroot\", "{2FE869CB-9D8D-41BF-990F-267538A6B051}"
-	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""
-		SccAuxPath = ""
-		SccLocalPath = ""
-		SccProvider = ""
-		TargetFramework = "2.0"
-		ProjectReferences = "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}|N2.dll;"
-		Debug.AspNetCompiler.VirtualPath = "/wwwroot"
-		Debug.AspNetCompiler.PhysicalPath = "examples\MinimalCSharp\wwwroot\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/wwwroot"
-		Release.AspNetCompiler.PhysicalPath = "examples\MinimalCSharp\wwwroot\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\wwwroot\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "4500"
-		VWDVirtualPath = "/"
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mnimal", "Mnimal", "{B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebForms", "WebForms", "{B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{CD0CB04E-C4F8-4343-B8EB-39741236B222}"
 	ProjectSection(SolutionItems) = preProject
@@ -154,6 +128,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{CD0CB04E-C4F
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{1049B0C4-91C6-4A4D-B14D-CB37EC84916C}"
+	ProjectSection(SolutionItems) = preProject
+		readme.txt = readme.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B56F738-E780-4F6E-9B7F-7D161F7E3521}"
 EndProject
@@ -189,6 +166,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management", "src\N2.Templates.Mvc\N2.Management.csproj", "{10F7C179-B92D-4FCA-B78C-011E428D0CA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management.Tests", "src\N2.Edit.Tests\N2.Management.Tests.csproj", "{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCS", "examples\MinimalCSharp\wwwroot\AppCS.csproj", "{1A6297F1-B181-473D-936B-BFE8D27B79ED}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AppVB", "examples\MinimalVisualBasic\wwwroot\AppVB.vbproj", "{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Releases", "Releases", "{ADCE41A8-1D80-4153-B869-2BD119086BF5}"
+	ProjectSection(SolutionItems) = preProject
+		docs\releases\release_2.0.txt = docs\releases\release_2.0.txt
+		docs\releases\upgrade_2.0.txt = docs\releases\upgrade_2.0.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -259,12 +246,6 @@ Global
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.NET2.0|Any CPU.Build.0 = Release|Any CPU
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FE869CB-9D8D-41BF-990F-267538A6B051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FE869CB-9D8D-41BF-990F-267538A6B051}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FE869CB-9D8D-41BF-990F-267538A6B051}.NET2.0|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FE869CB-9D8D-41BF-990F-267538A6B051}.NET2.0|Any CPU.Build.0 = Debug|Any CPU
-		{2FE869CB-9D8D-41BF-990F-267538A6B051}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FE869CB-9D8D-41BF-990F-267538A6B051}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}.NET2.0|Any CPU.ActiveCfg = Release|Any CPU
@@ -289,6 +270,18 @@ Global
 		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}.NET2.0|Any CPU.Build.0 = NET2.0|Any CPU
 		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.NET2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.NET2.0|Any CPU.Build.0 = Release|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.NET2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.NET2.0|Any CPU.Build.0 = Release|Any CPU
+		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -318,9 +311,11 @@ Global
 		{CD0CB04E-C4F8-4343-B8EB-39741236B222} = {7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}
 		{B1A96D3E-318C-4105-9A3E-2A4A88B59F0D} = {7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}
 		{1A6049A8-9F5D-4BBA-A0C5-106CBF4EAE0D} = {CD0CB04E-C4F8-4343-B8EB-39741236B222}
-		{2FE869CB-9D8D-41BF-990F-267538A6B051} = {B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}
+		{1A6297F1-B181-473D-936B-BFE8D27B79ED} = {B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}
+		{C502382D-CEEF-4CC2-9C9E-A9FADD06F62D} = {B1A96D3E-318C-4105-9A3E-2A4A88B59F0D}
 		{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322} = {AF8671B0-7A7E-43EF-BE48-4A2006C53CED}
 		{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1} = {AF8671B0-7A7E-43EF-BE48-4A2006C53CED}
+		{ADCE41A8-1D80-4153-B869-2BD119086BF5} = {CB15BB2E-35B2-499D-9C27-D29F08432CAD}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
