@@ -1,16 +1,45 @@
-- Compile and run the application (Ctrl+F5)
-- Browse to /n2/installation (use admin/changeme to log in)
-- Follow the instructions on the installation page (also below)
-	- Create an empty database in your server of choice. 
-	- Update the connection string in web.config.
-	- Update the database flavour attribute in the n2/database 
-	  section.
-	- If you can't use the web based installation interface you 
-	  can find create database scripts on:
-	  http://n2cms.com/Documentation/The database.aspx.
-	- Now you need to insert the first node, I strongly recommend 
-	  using the installation page to do this.
-	- IMPORTANT! Change the default password in web.config. If 
-	  you've installed, configured and created an administrator 
-	  account using a membership provider, comment out this 
-	  section entirely. 
+
+DEVELOPMENT ENVIRONMENT
+
+Follow these steps to get started with in a development environment depending 
+on the download type you picked.
+
+A. Templates or example package
+
+* Unzip the package
+* Find a solution file (.sln) in a sub-directory and open it
+* Compile and run the application (Ctrl+F5)
+* A browser starts, and you can manage content via /n2/
+
+B. Complete Sources package
+
+* Unzip the package
+* Find a batch file "Prepare_Dependencies.bat" and double-click
+* Open "src\N2.Sources-vs2008.sln"
+* Right-click on the N2.Templates.Mvc (or N2.Templates for WebForms) project 
+  and set it as "Set it as StartUp Project"
+* Compile and run the application (Ctrl+F5)
+* A browser starts, and you can manage content via /n2/
+
+
+
+SERVER ENVIRONMENT
+
+The development environment is set up to use SQLite embedded database engine.
+In production MySQL or SQL Server are better choices.
+
+* Open your project in Visual Studio
+* Right-click on the web application project and select "Publish..."
+* Publish to a local directory
+* Go to this directory and copy the N2 management files to it. These files can 
+  be downloaded separately and most of them resize below the /N2/ subdirectory
+* Open web.config in the local directory and:
+  * update the connection string
+  * change the "admin" password to something really hard to figure out
+* Remove bin/System.Data.SQLite.dll
+* Open an FTP client and upload the files to the server
+* Browse to the site, you should be automatically redirected to the on-line 
+  installation page (otherwise the path is /n2/installation/)
+* Follow the instructions in the wizard. It's also possible to export content 
+  from your development environment and use it on step 4. in the wizard.
+* If the hosting provider run in medium trust you can find hints here: http://n2cms.com/wiki/Medium%20trust.aspx

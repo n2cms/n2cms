@@ -10,22 +10,18 @@ consists of N2.dll and the UI management files residing below the /N2/ folder.
 HOW TO GET STARTED
 
 1. Double-click on Prepare_Dependencies-vs2008.bat
-
-2. Choose amount of templates (from little to many features in the box):
+2. Choose amount of templates (ranging from minimal example to many features in the box):
 	* Examples - Minimal C#
 	* Examples - Minimal Visual Basic
 	* Examples - Minimal MVC
-	* Examples - WebForm templates integration
 	* Src - MVC Templates
 	* Src - WebForm Templates
-
 3. Choose between N2.Everything-vs2008 to open everything, or venture down the 
    directory structure of Src or Examples and open a solution down there.
-
 4. Find the Visual Studio solution explorer find the web project you chose (2.), 
    right-click on it and select "Set as StartUp Project".
-
-5. Compile and run (Ctrl+F5)
+5. Set the a web site project as startup project (N2.Templates... in src)
+6. Compile and run (Ctrl+F5)
 
 
 

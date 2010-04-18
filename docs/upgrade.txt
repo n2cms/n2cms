@@ -1,6 +1,6 @@
 To v1.5:
 Upgrade hints:
-- PageDefinition & PartDefinition are now reccomended for defining pages and parts
+- PageDefinition & PartDefinition are now recommended for defining pages and parts
 - [Page/PartDefinition("The Title", TemplateUrl = "/path/to/the/template.as?x")] is preferred for referincing the template
 
 Possibly breaking changes:

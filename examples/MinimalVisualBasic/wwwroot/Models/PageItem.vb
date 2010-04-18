@@ -10,7 +10,7 @@ Namespace Models
 	''' in this class it's Title and Name are also editable. This is because of the
 	''' abstract/MustInherit base class <see cref="MyItemBase"/> it inherits.
 	''' </remarks>
-	<N2.Definition("Default page", Installer:=N2.Installation.InstallerHint.PreferredStartPage)> _
+	<N2.Definition("Default page", TemplateUrl:="~/Default.aspx", Installer:=N2.Installation.InstallerHint.PreferredStartPage)> _
  Public Class PageItem
 		Inherits MyItemBase
 

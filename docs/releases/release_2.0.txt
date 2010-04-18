@@ -7,7 +7,7 @@ Major Changes
 * Refreshed management UI
 * LINQ support
 * Performance improvements
-* Auto image resize
+* File manager improvements
 
 First time with N2?
 * Try the demo site: http://templates.n2cms.com/

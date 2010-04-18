@@ -8,3 +8,6 @@ Breaking changes:
 - Adapters are not decorated with [Adapts] attribute rather than [Controls] and are not shared between instances
 - Management interface is moved from /edit to /n2/content
 - N2.Edit has been renamed to N2.Management
+- Action<T> and Function<T> have been replaced with their equivalent in .NET 3.5
+- Some namespaces have changed (e.g. Castle, Installation)
+- The Alpha MVC templates have undergone a lot of changes (see http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=208270)
