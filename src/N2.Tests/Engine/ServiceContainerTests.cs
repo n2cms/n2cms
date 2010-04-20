@@ -125,17 +125,22 @@ namespace N2.Tests.Engine
 			public int startOrder = 0;
 			public bool started = false;
 			public bool stopped = false;
+			public int timesStarted = 0;
+			public int timesStopped = 0;
+
 			#region IAutoStart Members
 
 			public void Start()
 			{
 				startOrder = ++counter;
 				started = true;
+				timesStarted++;
 			}
 
 			public void Stop()
 			{
 				stopped = true;
+				timesStopped++;
 			}
 
 			#endregion
@@ -164,13 +169,37 @@ namespace N2.Tests.Engine
 		}
 
 		[Test]
-		public void AutoStartServices_AreStarted_WhenEvenAfterStartSignal()
+		public void AutoStartServices_RetrieveBeforeGeneralStart_AreSameInstance()
+		{
+			container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
+
+			var s1 = container.Resolve<IAutoStart>();
+			container.StartComponents();
+			var s2 = container.Resolve<IAutoStart>();
+
+			Assert.That(s1, Is.SameAs(s2));
+		}
+
+		[Test]
+		public void AutoStartServices_AreStarted_WhenAddedAfterStartSignal()
 		{
 			container.StartComponents();
-			container.AddComponent("key", typeof(Startable), typeof(Startable));
-			var s = container.Resolve<Startable>();
+			container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
+			var s = (Startable)container.Resolve<IAutoStart>();
 
 			Assert.That(s.started, Is.True);
+		}
+
+		[Test]
+		public void AutoStartServices_AreStarted_Once()
+		{
+			container.AddComponent("key", typeof(IAutoStart), typeof(Startable));
+			container.Resolve<IAutoStart>();
+			container.StartComponents();
+			container.Resolve<IAutoStart>();
+			var s = (Startable)container.Resolve<IAutoStart>();
+
+			Assert.That(s.timesStarted, Is.EqualTo(1));
 		}
 	}
 }

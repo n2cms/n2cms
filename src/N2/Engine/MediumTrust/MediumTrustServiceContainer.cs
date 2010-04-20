@@ -25,8 +25,8 @@ namespace N2.Engine.MediumTrust
 					RegisterTransientResolver(key, serviceType, serviceType);
 					break;
 				default:
-					CheckForAutoStart(key, serviceType, serviceType);
 					RegisterSingletonResolver(key, serviceType, serviceType);
+					CheckForAutoStart(key, serviceType, serviceType);
 					break;
 			}
 		}
@@ -53,8 +53,8 @@ namespace N2.Engine.MediumTrust
 
 		public override void AddComponent(string key, Type serviceType, Type classType)
 		{
-			CheckForAutoStart(key, serviceType, classType);
 			RegisterSingletonResolver(key, serviceType, classType);
+			CheckForAutoStart(key, serviceType, classType);
 		}
 
 		public override object Resolve(string key)
@@ -147,9 +147,8 @@ namespace N2.Engine.MediumTrust
 					return;
 				}
 
-				IAutoStart instance = CreateInstance(key, serviceType, classType) as IAutoStart;
+				IAutoStart instance = Resolve(serviceType) as IAutoStart;
 				instance.Start();
-				container[serviceType] = instance;
 			}
 		}
 
