@@ -11,6 +11,7 @@
 		<RootFolder>$(MSBuildProjectDirectory)\..</RootFolder>
 		<LibFolder>$(RootFolder)\lib\net3.5</LibFolder>
 		<DocFolder>$(RootFolder)\docs</DocFolder>
+		<BuildFolder>$(RootFolder)\build</BuildFolder>
 		<SnippetsFolder>$(RootFolder)\snippets</SnippetsFolder>
 
 		<SrcFolder>$(RootFolder)\src</SrcFolder>

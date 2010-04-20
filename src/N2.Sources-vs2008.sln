@@ -178,6 +178,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management", "N2.Templates.Mvc\N2.Management.csproj", "{10F7C179-B92D-4FCA-B78C-011E428D0CA3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{5B744FE6-34F6-4BEC-A500-570D703BB946}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\deploy\install.mysql = ..\build\deploy\install.mysql
+		..\build\deploy\install.sql = ..\build\deploy\install.sql
+		..\build\deploy\manifest.xml = ..\build\deploy\manifest.xml
+		..\build\deploy\parameters.xml = ..\build\deploy\parameters.xml
+		..\build\deploy\Readme.htm = ..\build\deploy\Readme.htm
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -415,6 +424,7 @@ Global
 		{AA0C3414-F509-44A2-A677-409DE6B49B1C} = {59E8CCC9-1A61-489B-8605-61D5654D4DF4}
 		{03223418-97AD-4087-A568-6BBFD274864D} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
 		{A226177B-0B92-4296-ADD1-1F5749B31E3F} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
+		{5B744FE6-34F6-4BEC-A500-570D703BB946} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
 		{58340449-0688-4CB3-84DB-FF927391152F} = {04E4D1B1-EE03-488C-B53D-989700FE6018}
 		{93260B8B-5947-4094-B128-117355ACAF0D} = {04E4D1B1-EE03-488C-B53D-989700FE6018}
 		{0F286C8B-A322-43E6-B02C-F118BF29D3D5} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
