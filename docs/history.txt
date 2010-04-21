@@ -1,7 +1,7 @@
-﻿- preliminary webdeploy support
-- fixed issue with auto-start singletons in medium trust
+﻿- web platform installer support for webform & mvc templates
 
 2.0 rc
+- fixed issue with auto-start singletons in medium trust
 - changed c# & vb examples to web applications (from web site)
 - removed templates integration example
 - removed scrum addon

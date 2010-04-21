@@ -6,6 +6,7 @@
 	<PropertyGroup>
 		<Templates-Mvc-SourceFolder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-SourceFolder>
 		<Templates-Mvc-DeployFolder>$(DeployFolder)\$(DeployPrefix)Templates_Mvc</Templates-Mvc-DeployFolder>
+		<Templates-Mvc-DeployFolder-Path>$(Templates-Mvc-DeployFolder)\N2CMS</Templates-Mvc-DeployFolder-Path>
 	</PropertyGroup>
 
 	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
@@ -17,7 +18,6 @@
 	</Target>
 
 	<Target Name="Templates-Mvc-Build">
-		<!--DependsOnTargets="Templates-Mvc-PrepareDependencies">-->
 		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);" />
 	</Target>
 
@@ -38,10 +38,10 @@
 												$(Templates-Mvc-SourceFolder)\N2.Management.*" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(templatesMvcFiles)"						DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Templates-Mvc-DeployFolder)\wwwroot\N2\%(RecursiveDir)" />
-		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db"	DestinationFiles="$(Templates-Mvc-DeployFolder)\wwwroot\App_Data\n2.sqlite.db" />
+		<Copy SourceFiles="@(templatesMvcFiles)"						DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Templates-Mvc-DeployFolder-Path)\N2\%(RecursiveDir)" />
+		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db"	DestinationFiles="$(Templates-Mvc-DeployFolder-Path)\App_Data\n2.sqlite.db" />
 		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Templates-Mvc-DeployFolder)\" />
 		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Templates-DeployFolder)\Snippets" />
 		<CallTarget Targets="Templates-Mvc-RemoveProjectReferences" />
@@ -50,20 +50,30 @@
 	<Target Name="Templates-Mvc-ZipDeploy" DependsOnTargets="Templates-Mvc-Deploy;Templates-Mvc-Zip">
 	</Target>
 
-	<Target Name="Templates-Mvc-Zip">
+	<Target Name="Templates-Mvc-PrepareZip">
+		<ItemGroup>
+			<ZipDeploy-Templates-Mvc-Includes Include="$(BuildFolder)\deploy\*" />
+			<ZipDeploy-Templates-Mvc-Libs Include="$(RootFolder)\lib\*.Data.*dll;" />
+		</ItemGroup>
+		<Delete Files="$(Templates-Mvc-DeployFolder-Path)\bin\System.Data.SQLite.dll" Condition="Exists('$(Templates-Mvc-DeployFolder-Path)\bin\System.Data.SQLite.dll')" />
+		<Copy SourceFiles="@(ZipDeploy-Templates-Mvc-Libs)" DestinationFolder="$(Templates-Mvc-DeployFolder)\Libraries" />
+		<Copy SourceFiles="@(ZipDeploy-Templates-Mvc-Includes)" DestinationFolder="$(Templates-Mvc-DeployFolder)" />
+	</Target>
+
+	<Target Name="Templates-Mvc-Zip" DependsOnTargets="Templates-Mvc-PrepareZip">
 		<ItemGroup>
 			<ZipDeploy-MvcTemplates Include="$(Templates-Mvc-DeployFolder)\**" />
 		</ItemGroup>
 
 		<Error Condition="'@(ZipDeploy-MvcTemplates)' == ''" Text="Nothing in '$(Templates-Mvc-DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-MvcTemplates)"    WorkingDirectory="$(Templates-Mvc-DeployFolder).."	ZipFileName="$(Templates-Mvc-DeployFolder).zip" />
+		<Zip Files="@(ZipDeploy-MvcTemplates)"    WorkingDirectory="$(Templates-Mvc-DeployFolder)"	ZipFileName="$(Templates-Mvc-DeployFolder).zip" />
 	</Target>
 
 	<Target Name="Templates-Mvc-RemoveProjectReferences">
 		<PropertyGroup>
 			<SourceFile>$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj</SourceFile>
-			<DestinationFile>$(Templates-Mvc-DeployFolder)\wwwroot\N2.Templates.Mvc.csproj</DestinationFile>
+			<DestinationFile>$(Templates-Mvc-DeployFolder-Path)\N2.Templates.Mvc.csproj</DestinationFile>
 		</PropertyGroup>
 		<PropertyGroup>
 			<Code>

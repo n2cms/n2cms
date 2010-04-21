@@ -50,7 +50,7 @@
 	<Target Name="Templates-ZipDeploy" DependsOnTargets="Templates-Deploy;Templates-Zip">
 	</Target>
 
-	<Target Name="Templates-PrepareMsdeploy">
+	<Target Name="Templates-PrepareZip">
 		<ItemGroup>
 			<ZipDeploy-Templates-Includes Include="$(BuildFolder)\deploy\*" />
 			<ZipDeploy-Templates-Libs Include="$(RootFolder)\lib\*.Data.*dll;" />
@@ -60,7 +60,7 @@
 		<Copy SourceFiles="@(ZipDeploy-Templates-Includes)" DestinationFolder="$(Templates-DeployFolder)" />
 	</Target>
 	
-	<Target Name="Templates-Zip" DependsOnTargets="Templates-PrepareMsdeploy">
+	<Target Name="Templates-Zip" DependsOnTargets="Templates-PrepareZip">
 		<ItemGroup>
 			<ZipDeploy-Templates Include="$(Templates-DeployFolder)\**" />
 		</ItemGroup>

@@ -171,13 +171,13 @@
         
         <n2:TabPanel runat="server" tooltip="5. Finishing touches">
 			<h1>Almost done!</h1>
-            <p><b>IMPORTANT!</b> Change the default password in web.config. If you've installed, configured and created an administrator account using a membership provider, comment out this section entirely.</p>
-            <p><b>Advice:</b> remove the installation directory (/n2/installation) to prevent nasty surprises.</p>
-            <p>It's advisable to 
+            <p><b>IMPORTANT!</b> Change the default password in web.config. Once you've created a new administrator user using the management interface, comment out the credentials configuration section entirely.</p>
+            <p><b>Advice:</b> remove the installation wizard located below /n2/installation/ to prevent nasty surprises.</p>
+            <p>Please 
 				<asp:Button runat="server" OnClick="btnRestart_Click" Text="restart" CausesValidation="false" />
 				before you continue.
             </p>
-            <p>Good luck and happy <a href="..">editing</a>.</p>
+            <p>Good luck and happy <a href="..">managing</a>!</p>
             <p>/Cristian</p>
         </n2:TabPanel>
         <pre><asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" /></pre>

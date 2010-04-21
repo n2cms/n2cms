@@ -293,7 +293,7 @@ namespace N2.Edit.Install
 
 		protected void btnRestart_Click(object sender, EventArgs e)
 		{
-			HttpRuntime.UnloadAppDomain();
+			ExecuteWithErrorHandling(HttpRuntime.UnloadAppDomain);
 		}
 
 		protected override void OnPreRender(EventArgs e)

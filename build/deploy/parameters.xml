@@ -66,7 +66,7 @@
 		<parameterEntry type="XmlFile" scope="\\web.config$" match="//system.web/authentication/forms/credentials/user/@name" />
 		<parameterEntry type="XmlFile" scope="\\N2\web.config$" match="//authorization/allow[users='Admin']/@users" />
 	</parameter>
-	<parameter name="webPassword" friendlyName="Web Administrator Password" defaultValue="changeme" tags="iisapp" description="The admin password used to manage the site from the web" >
+	<parameter name="webPassword" friendlyName="Web Administrator Password" defaultValue="changeme" tags="" description="The admin password used to manage the site from the web" >
 		<parameterEntry type="XmlFile" scope="\\web.config$" match="//system.web/authentication/forms/credentials/user/@password" />
 	</parameter>
 	

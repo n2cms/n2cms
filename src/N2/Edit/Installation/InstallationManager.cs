@@ -66,6 +66,13 @@ namespace N2.Edit.Installation
 		/// <summary>Executes sql create database scripts.</summary>
 		public void Install()
 		{
+			var sf = configurationBuilder.BuildSessionFactory();
+			sf.EvictQueries();
+			foreach (var collectionMetadata in sf.GetAllCollectionMetadata())
+				sf.EvictCollection(collectionMetadata.Key);
+			foreach (var classMetadata in sf.GetAllClassMetadata())
+				sf.EvictEntity(classMetadata.Key);
+
 			SchemaExport exporter = new SchemaExport(Cfg);
 			exporter.Create(ConsoleOutput, DatabaseExport);
 		}
