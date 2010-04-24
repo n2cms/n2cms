@@ -5,7 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
     <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
-    <asp:ContentPlaceHolder ID="Head" runat="server" />
+    <asp:ContentPlaceHolder ID="Head" runat="server">
+    	<link rel="canonical" href="<%= CurrentPage != null ? CurrentPage.Url : Request.RawUrl %>" />
+    </asp:ContentPlaceHolder>
 </head>
 <body class="<%= GetBodyClass() %>">
     <form id="F" runat="server">

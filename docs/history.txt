@@ -1,4 +1,6 @@
-﻿- web platform installer support for webform & mvc templates
+﻿- Added canonical link to template's master pages
+- Applied ThreadId=208270: UrlEncode -> EscapeDataString
+- web platform installer support for webform & mvc templates
 
 2.0 rc
 - fixed issue with auto-start singletons in medium trust

@@ -781,7 +781,10 @@ namespace N2
 				string path = "/";
 				for (ContentItem item = this; item.Parent != null; item = item.Parent)
 				{
-					path = "/" + HttpUtility.UrlEncode(item.Name) + path;
+					if (item.Name != null)
+						path = "/" + Uri.EscapeDataString(item.Name) + path;
+					else
+						path = "/" + item.ID + path;
 				}
 				return path;
 			}
