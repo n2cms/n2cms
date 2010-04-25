@@ -6,6 +6,7 @@ using N2.Web.UI;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web;
+using N2.Templates.Mvc.Services;
 
 namespace N2.Templates.Mvc.Views.Shared
 {
@@ -15,7 +16,6 @@ namespace N2.Templates.Mvc.Views.Shared
 
 		protected override void OnInit(EventArgs e)
 		{
-			N2.Context.Current.Resolve<IPageModifierContainer>().Modify(Page);
 			N2.Resources.Register.JQuery(Page);
 
 			ViewPage view = Page as ViewPage;
@@ -24,6 +24,12 @@ namespace N2.Templates.Mvc.Views.Shared
 			else
 				Html = BuildHtmlHelper();
 
+			var item = Html.CurrentPage();
+			if (item != null)
+			{
+				foreach (var vc in Engine.Container.ResolveAll<IViewConcern>())
+					vc.Apply(item, Page);
+			}
 			base.OnInit(e);
 		}
 

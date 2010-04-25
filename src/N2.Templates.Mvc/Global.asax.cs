@@ -4,6 +4,7 @@ using System.Web.Routing;
 using N2.Engine;
 using N2.Templates.Mvc.Controllers;
 using N2.Web.Mvc;
+using N2.Templates.Mvc.Web;
 
 namespace N2.Templates.Mvc
 {
@@ -12,18 +13,11 @@ namespace N2.Templates.Mvc
 
 	public class MvcApplication : HttpApplication
 	{
-		class ViewEngine : WebFormViewEngine
-		{
-			public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
-			{
-
-				return base.FindView(controllerContext, viewName, masterName, useCache);
-			}
-		}
-
 		protected void Application_Start()
 		{
 			var engine = MvcEngine.Create();
+
+			ViewEngines.Engines.Insert(0, new ThemedMasterViewEngine());
 
 			engine.RegisterControllers(typeof (HomeController).Assembly);
 

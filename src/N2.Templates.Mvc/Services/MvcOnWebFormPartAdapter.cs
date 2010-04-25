@@ -11,7 +11,7 @@ using System.Web.UI;
 using N2.Web.Mvc;
 using N2.Web.UI;
 
-namespace N2.Templates.Mvc.Classes
+namespace N2.Templates.Mvc.Services
 {
 	[Adapts(typeof(Models.Parts.AbstractItem))]
 	public class MvcOnWebFormPartAdapter : PartsAdapter

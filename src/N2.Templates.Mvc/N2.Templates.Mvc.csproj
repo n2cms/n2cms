@@ -165,15 +165,12 @@
     <Compile Include="Classes\Configuration\TemplatesSection.cs" />
     <Compile Include="Classes\Configuration\WikiElement.cs" />
     <Compile Include="Classes\Find.cs" />
-    <Compile Include="Classes\MvcOnWebFormPartAdapter.cs" />
+    <Compile Include="Services\IViewConcern.cs" />
+    <Compile Include="Services\MvcOnWebFormPartAdapter.cs" />
     <Compile Include="Classes\Tabs.cs" />
     <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
-    <Compile Include="Classes\Web\IPageModifier.cs" />
-    <Compile Include="Classes\Web\IPageModifierContainer.cs" />
-    <Compile Include="Classes\Web\LanguageModifier.cs" />
-    <Compile Include="Classes\Web\MasterPageModifier.cs" />
-    <Compile Include="Classes\Web\TemplatePageModifier.cs" />
-    <Compile Include="Classes\Web\ThemeModifier.cs" />
+    <Compile Include="Services\ThemedMasterViewEngine.cs" />
+    <Compile Include="Services\LanguageConcern.cs" />
     <Compile Include="Classes\Zones.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CalendarTeaserController.cs" />
@@ -280,12 +277,11 @@
     <Compile Include="Services\NotFoundHandler.cs" />
     <Compile Include="Services\PermissionDeniedHandler.cs" />
     <Compile Include="Services\RssWriter.cs" />
-    <Compile Include="Services\SEODefinitionAppender.cs" />
-    <Compile Include="Services\SEOPageModifier.cs" />
+    <Compile Include="Services\SeoDefinitionAppender.cs" />
     <Compile Include="Services\SyndicatableDefinitionAppender.cs" />
     <Compile Include="Services\TemplatesInitializer.cs" />
     <Compile Include="Services\TemplatesPartsAdapter.cs" />
-    <Compile Include="Services\TitleAndMetaTagApplyer.cs" />
+    <Compile Include="Services\SeoConcern.cs" />
     <Compile Include="Views\Shared\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -527,6 +523,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\Concrete\Style.css" />
+    <Content Include="App_Themes\Concrete\Thumbnail.jpg" />
+    <Content Include="App_Themes\ContentFocus\Thumbnail.jpg" />
     <Content Include="App_Themes\Corporate\amazed.gif" />
     <Content Include="App_Themes\Corporate\body_bg.gif" />
     <Content Include="App_Themes\Corporate\happy.gif" />
@@ -539,11 +537,13 @@
     <Content Include="App_Themes\Corporate\tab_bg.gif" />
     <Content Include="App_Themes\Corporate\tab_item.gif" />
     <Content Include="App_Themes\Corporate\tab_item2.gif" />
+    <Content Include="App_Themes\Corporate\Thumbnail.jpg" />
     <Content Include="App_Themes\KhakiTabs\MenuDimmed.gif" />
     <Content Include="App_Themes\KhakiTabs\MenuSelected.gif" />
     <Content Include="App_Themes\KhakiTabs\SidebarLeftBg.gif" />
     <Content Include="App_Themes\KhakiTabs\SidebarRightBg.gif" />
     <Content Include="App_Themes\KhakiTabs\Style.css" />
+    <Content Include="App_Themes\KhakiTabs\Thumbnail.jpg" />
     <Content Include="App_Themes\KhakiTabs\TopBg.gif" />
     <Content Include="App_Themes\n2cms\bg.gif" />
     <Content Include="App_Themes\n2cms\body_bg.gif" />
@@ -552,6 +552,7 @@
     <Content Include="App_Themes\n2cms\menu_selected.gif" />
     <Content Include="App_Themes\n2cms\Style.css" />
     <Content Include="App_Themes\Plain\Style.css" />
+    <Content Include="App_Themes\Plain\Thumbnail.jpg" />
     <Content Include="App_Themes\SkyTabs\MenuDimmed.gif" />
     <Content Include="App_Themes\SkyTabs\MenuSelected.gif" />
     <Content Include="App_Themes\SkyTabs\SidebarLeftBg.gif" />
@@ -566,6 +567,7 @@
     <Content Include="App_Themes\Stripes\secondary_bg.gif" />
     <Content Include="App_Themes\Stripes\sidebar_bg.gif" />
     <Content Include="App_Themes\Stripes\Style.css" />
+    <Content Include="App_Themes\Stripes\Thumbnail.jpg" />
     <Content Include="App_Themes\Stripes\top_bg.gif" />
     <Content Include="App_Themes\Stripes\top_bg.png" />
     <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
@@ -598,6 +600,7 @@
   <ItemGroup>
     <Folder Include="Areas\Management\Views\Shared\" />
     <Folder Include="Areas\Tests\Views\Shared\" />
+    <Folder Include="Classes\Web\" />
     <Folder Include="Views\Shared\App_LocalResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

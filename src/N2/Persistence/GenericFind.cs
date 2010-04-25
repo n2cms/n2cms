@@ -37,6 +37,22 @@ namespace N2.Persistence
 			return N2.Web.UI.ItemUtility.FindCurrentItem(currentControl) ?? CurrentPage;
 		}
 
+		/// <summary>
+		/// Gets the item at of the specified type.
+		/// </summary>
+		/// <returns>An ancestor at the specified level.</returns>
+		public static T Closest<T>(ContentItem item) where T : ContentItem
+		{
+			if (item == null)
+				return null;
+
+			var typed = item as T;
+			if (typed != null)
+				return typed;
+
+			return Closest<T>(item.Parent);
+		}
+
 		/// <summary>Gets an enumeration of pages leading to the current page.</summary>
 		public static IEnumerable<ContentItem> Parents
 		{

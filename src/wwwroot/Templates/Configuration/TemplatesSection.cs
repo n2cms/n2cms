@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System;
 
 namespace N2.Templates.Configuration
 {
@@ -17,7 +18,7 @@ namespace N2.Templates.Configuration
 
         /// <summary>The master page used for template pages.</summary>
         [ConfigurationProperty("masterPageFile", DefaultValue = "~/Templates/UI/Layouts/Top+SubMenu.Master")]
-        public string MasterPageFile
+		public string MasterPageFile
         {
             get { return (string)base["masterPageFile"]; }
             set { base["masterPageFile"] = value; }

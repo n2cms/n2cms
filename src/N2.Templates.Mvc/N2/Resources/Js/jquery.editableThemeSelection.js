@@ -5,8 +5,8 @@
 (function($) {
 	$.fn.editableThemeSelection = function(thumbnails) {
 		var $img = $("<img style='display:none' />")
-		.insertAfter(this)
-		.wrap("<span class='themeThumbnail'/>");
+			.insertAfter(this)
+			.wrap("<span class='themeThumbnail'/>");
 
 
 		$(this).hover(function() {
@@ -17,12 +17,13 @@
 				$img.hide();
 			}
 		}, function() {
-			$img.fadeOut();
+			$img.hide();
 		}).change(function() {
 			var thumbnail = thumbnails[this.value];
 			if (thumbnail) {
-				$img.attr("src", thumbnail)
-					.show().fadeOut(2000);
+				setTimeout(function() {
+					$img.attr("src", thumbnail).show().fadeOut(2000);
+				}, 10);
 			}
 		});
 	};

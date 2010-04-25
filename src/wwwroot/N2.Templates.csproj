@@ -146,10 +146,11 @@
     <Compile Include="Templates\Items\Top.cs" />
     <Compile Include="Templates\Items\Tracking.cs" />
     <Compile Include="Templates\Items\UserRegistration.cs" />
-    <Compile Include="Templates\Services\SEODefinitionAppender.cs" />
-    <Compile Include="Templates\Services\SEOPageModifier.cs" />
+    <Compile Include="Templates\Web\MasterPageConcern.cs" />
+    <Compile Include="Templates\Web\UI\ITemplatePage.cs" />
+    <Compile Include="Templates\Services\SeoDefinitionAppender.cs" />
     <Compile Include="Templates\Services\TemplatesPartsAdapter.cs" />
-    <Compile Include="Templates\Services\TitleAndMetaTagApplyer.cs" />
+    <Compile Include="Templates\Services\SeoConcern.cs" />
     <Compile Include="Templates\Services\DynamicMailSender.cs" />
     <Compile Include="Templates\Services\FakeMailSender.cs" />
     <Compile Include="Templates\Services\NotFoundHandler.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Templates\Services\IFeed.cs" />
     <Compile Include="Templates\Services\ISyndicatable.cs" />
     <Compile Include="Templates\Services\RssWriter.cs" />
+    <Compile Include="Templates\Services\TemplateConcern.cs" />
     <Compile Include="Templates\Tabs.cs" />
     <Compile Include="Templates\Services\TemplatesInitializer.cs" />
     <Compile Include="Templates\UI\Layouts\Translation.cs" />
@@ -463,12 +465,8 @@
     <Compile Include="Templates\Web\Adapters\FormAdapter.cs" />
     <Compile Include="Templates\Web\Adapters\ImageAdapter.cs" />
     <Compile Include="Templates\Web\Adapters\UserControlWrapperAdapter.cs" />
-    <Compile Include="Templates\Web\IPageModifier.cs" />
-    <Compile Include="Templates\Web\IPageModifierContainer.cs" />
-    <Compile Include="Templates\Web\LanguageModifier.cs" />
-    <Compile Include="Templates\Web\MasterPageModifier.cs" />
-    <Compile Include="Templates\Web\TemplatePageModifier.cs" />
-    <Compile Include="Templates\Web\ThemeModifier.cs" />
+    <Compile Include="Templates\Web\LanguageConcern.cs" />
+    <Compile Include="Templates\Web\ThemeConcern.cs" />
     <Compile Include="Templates\Web\UI\TemplateMasterPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -832,6 +830,11 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>TrashPurgeInterval.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="App_Themes\ContentFocus\Thumbnail.jpg" />
+    <Content Include="App_Themes\Corporate\Thumbnail.jpg" />
+    <Content Include="App_Themes\KhakiTabs\Thumbnail.jpg" />
+    <Content Include="App_Themes\Plain\Thumbnail.jpg" />
+    <Content Include="App_Themes\Stripes\Thumbnail.jpg" />
     <Content Include="Upload\lav.jpg" />
     <Content Include="Upload\lime.jpg" />
     <Content Include="Upload\logo_white.png" />

@@ -15,7 +15,6 @@ namespace N2.Templates.Mvc.Services
 	{
 		public void Initialize(IEngine engine)
 		{
-			engine.AddComponent("n2.templates.pagemodifier", typeof(IPageModifierContainer), typeof (TemplatePageModifier));
 			TemplatesSection config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
 			if (config == null || config.MailConfiguration == MailConfigSource.ContentRootOrConfiguration)
 			{
@@ -30,8 +29,7 @@ namespace N2.Templates.Mvc.Services
 			engine.AddComponent("n2.templates.syndication.rssWriter", typeof(RssWriter));
 			engine.AddComponent("n2.templates.rss.definitionAppender", typeof(SyndicatableDefinitionAppender));
 
-			engine.AddComponent("n2.templates.seo.definitions", typeof(SEODefinitionAppender));
-			engine.AddComponent("n2.templates.seo.modifier", typeof(SEOPageModifier));
+			engine.AddComponent("n2.templates.seo.definitions", typeof(SeoDefinitionAppender));
 		}
 	}
 }

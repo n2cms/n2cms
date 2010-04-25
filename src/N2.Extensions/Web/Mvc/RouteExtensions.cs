@@ -40,6 +40,20 @@ namespace N2.Web.Mvc
 			return null;
 		}
 
+		public static ContentItem CurrentItem(this RouteData routeData)
+		{
+			if (routeData.DataTokens.ContainsKey(ContentRoute.ContentItemKey))
+				return routeData.DataTokens[ContentRoute.ContentItemKey] as ContentItem;
+			return null;
+		}
+
+		public static ContentItem CurrentPage(this RouteData routeData)
+		{
+			if (routeData.DataTokens.ContainsKey(ContentRoute.ContentPageKey))
+				return routeData.DataTokens[ContentRoute.ContentPageKey] as ContentItem;
+			return null;
+		}
+
 		public static T CurrentItem<T>(this RouteValueDictionary data, string key, IPersister persister)
 			where T: ContentItem
 		{

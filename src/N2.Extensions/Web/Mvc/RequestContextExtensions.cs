@@ -29,9 +29,7 @@ namespace N2.Web.Mvc
 			if (context == null) throw new ArgumentNullException("context");
 
 			return context.RouteData.DataTokens[key] as T
-				?? context.RouteData.Values.CurrentItem<T>(
-					key, 
-					context.RouteData.GetEngine().Persister);
+				?? context.RouteData.Values.CurrentItem<T>(key, context.RouteData.GetEngine().Persister);
 		}
 
 		private static IEngine GetEngine(this RouteData routeData)

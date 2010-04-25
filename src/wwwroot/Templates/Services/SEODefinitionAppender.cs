@@ -6,7 +6,7 @@ using N2.Plugin;
 
 namespace N2.Templates.Services
 {
-    public class SEODefinitionAppender : IAutoStart
+    public class SeoDefinitionAppender : IAutoStart
     {
         private readonly IDefinitionManager definitions;
         private string titleTitle = "Page title";
@@ -14,7 +14,7 @@ namespace N2.Templates.Services
         private string metaDescriptionTitle = "Meta description";
         private string seoTabTitle = "SEO";
 
-        public SEODefinitionAppender(IDefinitionManager definitions)
+        public SeoDefinitionAppender(IDefinitionManager definitions)
         {
             this.definitions = definitions;
         }
@@ -54,9 +54,9 @@ namespace N2.Templates.Services
                     TabContainerAttribute seoTab = new TabContainerAttribute("seo", SeoTabTitle, 30);
                     definition.Add(seoTab);
 
-                    AddEditableText(definition, TitleTitle, TitleAndMetaTagApplyer.HeadTitle, 151, 200);
-                    AddEditableText(definition, MetaKeywordsTitle, TitleAndMetaTagApplyer.MetaKeywords, 152, 400);
-                    AddEditableText(definition, MetaDescriptionTitle, TitleAndMetaTagApplyer.MetaDescription, 153, 1000);
+                    AddEditableText(definition, TitleTitle, SeoConcern.HeadTitle, 151, 200);
+                    AddEditableText(definition, MetaKeywordsTitle, SeoConcern.MetaKeywords, 152, 400);
+                    AddEditableText(definition, MetaDescriptionTitle, SeoConcern.MetaDescription, 153, 1000);
                 }
             }
         }

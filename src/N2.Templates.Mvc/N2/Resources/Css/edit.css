@@ -162,4 +162,4 @@ hr
 }
 
 .themeThumbnail { position:relative; }
-.themeThumbnail img { position:absolute; top:-100%; left:10px; z-index:1000; }
+.themeThumbnail img { position:absolute; top:-15px; left:10px; z-index:1000; }

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using N2.Collections;
 using N2.Engine.Globalization;
 using N2.Templates.Mvc.Models;
+using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -66,7 +67,7 @@ namespace N2.Templates.Mvc.Controllers
 
 		public PartialViewResult Breadcrumb()
 		{
-			var items = Find.EnumerateParents(Find.CurrentPage, Find.ClosestStartPage, true).Reverse().ToArray();
+			var items = Find.EnumerateParents(CurrentPage, Find.Closest<LanguageRoot>(CurrentPage), true).Reverse().ToArray();
 
 			if(items.Length == 1)
 				return null;

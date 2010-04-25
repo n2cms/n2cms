@@ -1,40 +1,33 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using N2.Engine;
 
 namespace N2.Templates.Mvc.Services
 {
 	/// <summary>
 	/// Adds SEO title, keywords and description to the page.
 	/// </summary>
-	public class TitleAndMetaTagApplyer
+	[Service(typeof(IViewConcern))]
+	public class SeoConcern : IViewConcern
 	{
-		private readonly Page page;
-		private readonly ContentItem item;
-
 		public const string HeadTitle = "HeadTitle";
 		public const string MetaKeywords = "MetaKeywords";
 		public const string MetaDescription = "MetaDescription";
 
-		public TitleAndMetaTagApplyer(Page page, ContentItem item)
-		{
-			this.page = page;
-			this.item = item;
-			if(item != null)
-				page.Init += Page_Init;
-		}
+		#region IViewConcern Members
 
-		void Page_Init(object sender, EventArgs e)
+		public void Apply(ContentItem item, Page page)
 		{
-			if(page.Header == null)
+			if (page.Header == null)
 				return;
 
 			page.Title = item[HeadTitle] as string ?? item.Title;
-			AddMeta("keywords", item[MetaKeywords] as string);
-			AddMeta("description", item[MetaDescription] as string);
+			AddMeta(page, "keywords", item[MetaKeywords] as string);
+			AddMeta(page, "description", item[MetaDescription] as string);
 		}
 
-		private void AddMeta(string name, string content)
+		private void AddMeta(Page page, string name, string content)
 		{
 			if (!string.IsNullOrEmpty(content))
 			{
@@ -44,5 +37,7 @@ namespace N2.Templates.Mvc.Services
 				page.Header.Controls.Add(meta);
 			}
 		}
+
+		#endregion
 	}
 }

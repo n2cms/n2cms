@@ -1,5 +1,6 @@
 using System;
 using N2.Web.UI;
+using N2.Templates.Services;
 
 namespace N2.Templates.Web.UI
 {
@@ -8,7 +9,7 @@ namespace N2.Templates.Web.UI
 	/// inheriting from this class will be associated with certain behaviours 
 	/// such as injected master page and theme.
 	/// </summary>
-	public class TemplatePage : TemplatePage<ContentItem>
+	public class TemplatePage : TemplatePage<ContentItem>, ITemplatePage
 	{
 	}
 
@@ -18,7 +19,7 @@ namespace N2.Templates.Web.UI
 	/// such as injected master page and theme.
 	/// </summary>
 	/// <typeparam name="TPage">Bind this template to strongly typed content class. This facilitates accessing class properties.</typeparam>
-	public class TemplatePage<TPage> : ContentPage<TPage> 
+	public class TemplatePage<TPage> : ContentPage<TPage>, ITemplatePage
 		where TPage: ContentItem
 	{
 		public override string ID
@@ -28,7 +29,8 @@ namespace N2.Templates.Web.UI
 
 		protected override void OnPreInit(EventArgs e)
 		{
-            Engine.Resolve<IPageModifierContainer>().Modify(this);
+			foreach (var concern in Engine.Container.ResolveAll<TemplateConcern>())
+				concern.OnPreInit(this);
 
 			base.OnPreInit(e);
 		}

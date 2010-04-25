@@ -2,21 +2,25 @@
 using N2.Templates.Items;
 using N2.Engine.Globalization;
 using N2.Web.UI;
+using N2.Templates.Services;
+using N2.Engine;
 
 namespace N2.Templates.Web
 {
-	public class LanguageModifier : IPageModifier
+	[Service(typeof(TemplateConcern))]
+	public class LanguageConcern : TemplateConcern
 	{
 		ILanguageGateway gateway;
 
-		public LanguageModifier(ILanguageGateway gateway)
+		public LanguageConcern(ILanguageGateway gateway)
 		{
 			this.gateway = gateway;
 		}
 
-		public void Modify<T>(ContentPage<T> page) where T : ContentItem
+		public override void OnPreInit(ITemplatePage template)
 		{
-			ILanguage language = gateway.GetLanguage(page.CurrentPage);
+			var page = template.Page;
+			ILanguage language = gateway.GetLanguage(template.CurrentItem);
 			if (language != null && !string.IsNullOrEmpty(language.LanguageCode))
 			{
 				page.Culture = language.LanguageCode;

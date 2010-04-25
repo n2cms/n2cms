@@ -7,7 +7,7 @@ using N2.Plugin;
 
 namespace N2.Templates.Mvc.Services
 {
-	public class SEODefinitionAppender : IAutoStart
+	public class SeoDefinitionAppender : IAutoStart
 	{
 		private readonly IDefinitionManager definitions;
 		private string titleTitle = "Alternative title";
@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc.Services
 		private string metaDescriptionTitle = "Description";
 		private int sortIndex = 200;
 
-		public SEODefinitionAppender(IDefinitionManager definitions)
+		public SeoDefinitionAppender(IDefinitionManager definitions)
 		{
 			this.definitions = definitions;
 		}
@@ -56,11 +56,11 @@ namespace N2.Templates.Mvc.Services
 					separator.ContainerName = Tabs.Details;
 					definition.Add(separator);
 
-					var titleEditor = AddEditableText(definition, TitleTitle, TitleAndMetaTagApplyer.HeadTitle, SortIndex + 3, 200);
+					var titleEditor = AddEditableText(definition, TitleTitle, SeoConcern.HeadTitle, SortIndex + 3, 200);
 					titleEditor.HelpTitle = "This text is displayed in the browser's title bar and in search engine result lists, when this value is empty the page title is used.";
-					var keywordsEditor = AddEditableText(definition, MetaKeywordsTitle, TitleAndMetaTagApplyer.MetaKeywords, SortIndex + 6, 400);
+					var keywordsEditor = AddEditableText(definition, MetaKeywordsTitle, SeoConcern.MetaKeywords, SortIndex + 6, 400);
 					keywordsEditor.HelpTitle = "Keywords that may be used by search engines to pinpoint whe subject of this page. Text content and incoming links also affect this.";
-					var descriptionEditor = AddEditableText(definition, MetaDescriptionTitle, TitleAndMetaTagApplyer.MetaDescription, SortIndex + 9, 1000);
+					var descriptionEditor = AddEditableText(definition, MetaDescriptionTitle, SeoConcern.MetaDescription, SortIndex + 9, 1000);
 					descriptionEditor.HelpTitle = "A text that can be used by search engines to describe this page when displaying it in search results.";
 				}
 			}
