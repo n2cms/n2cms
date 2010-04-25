@@ -1,4 +1,7 @@
-﻿- Added canonical link to template's master pages
+﻿- New theme "Concrete"
+- Removed themes tomato tabs, pink tabs
+- Theme thumbnail feature
+- Added canonical link to template's master pages
 - Applied ThreadId=208270: UrlEncode -> EscapeDataString
 - web platform installer support for webform & mvc templates
 

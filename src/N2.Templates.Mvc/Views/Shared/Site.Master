@@ -16,10 +16,10 @@
 	</n2:SlidingCurtain>
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
-			<div id="header">
+			<div id="header"><div class="inner">
 				<%=Html.DisplayContent(Find.ClosestStartPage, p => p.Header)%>
 				<%Html.RenderAction<NavigationController>(c => c.TopMenu()); %>
-			</div>
+			</div></div>
 		</asp:ContentPlaceHolder>
 		<asp:ContentPlaceHolder ID="PageWrapper" runat="server">
 			<div id="page" class="cf">

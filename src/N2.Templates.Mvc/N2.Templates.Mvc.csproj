@@ -526,6 +526,7 @@
     <Content Include="Views\Tracking\Index.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Themes\Concrete\Style.css" />
     <Content Include="App_Themes\Corporate\amazed.gif" />
     <Content Include="App_Themes\Corporate\body_bg.gif" />
     <Content Include="App_Themes\Corporate\happy.gif" />
@@ -550,12 +551,6 @@
     <Content Include="App_Themes\n2cms\logo.gif" />
     <Content Include="App_Themes\n2cms\menu_selected.gif" />
     <Content Include="App_Themes\n2cms\Style.css" />
-    <Content Include="App_Themes\PinkTabs\MenuDimmed.gif" />
-    <Content Include="App_Themes\PinkTabs\MenuSelected.gif" />
-    <Content Include="App_Themes\PinkTabs\SidebarLeftBg.gif" />
-    <Content Include="App_Themes\PinkTabs\SidebarRightBg.gif" />
-    <Content Include="App_Themes\PinkTabs\Style.css" />
-    <Content Include="App_Themes\PinkTabs\TopBg.gif" />
     <Content Include="App_Themes\Plain\Style.css" />
     <Content Include="App_Themes\SkyTabs\MenuDimmed.gif" />
     <Content Include="App_Themes\SkyTabs\MenuSelected.gif" />
@@ -574,12 +569,6 @@
     <Content Include="App_Themes\Stripes\top_bg.gif" />
     <Content Include="App_Themes\Stripes\top_bg.png" />
     <Content Include="App_Themes\Stripes\top_bottom_bg.gif" />
-    <Content Include="App_Themes\TomatoTabs\MenuDimmed.gif" />
-    <Content Include="App_Themes\TomatoTabs\MenuSelected.gif" />
-    <Content Include="App_Themes\TomatoTabs\SidebarLeftBg.gif" />
-    <Content Include="App_Themes\TomatoTabs\SidebarRightBg.gif" />
-    <Content Include="App_Themes\TomatoTabs\Style.css" />
-    <Content Include="App_Themes\TomatoTabs\TopBg.gif" />
     <Content Include="Areas\Management\Resources\excanvas.js" />
     <Content Include="Areas\Management\Resources\excanvas.min.js" />
     <Content Include="Areas\Management\Resources\jquery.flot.js" />

@@ -89,7 +89,14 @@ namespace N2.Edit.Install
                 var files = Directory.GetFiles(dir, "*.gz");
 				foreach (string file in files)
 				{
-					rblExports.Items.Add(new ListItem(Path.GetFileName(file)));
+					string value = Path.GetFileName(file);
+					string text = value.Substring(0, value.Length - 3).Replace('_', ' ').Replace('.', ' ');
+					string descriptionPath = Path.Combine(dir, value) + ".txt";
+					if (File.Exists(descriptionPath))
+					{
+						text = File.ReadAllText(descriptionPath);
+					}
+					rblExports.Items.Add(new ListItem(text, value));
 				}
                 if (files.Length > 0)
                     rblExports.SelectedIndex = 0;

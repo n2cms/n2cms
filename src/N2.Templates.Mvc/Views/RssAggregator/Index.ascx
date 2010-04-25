@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<RssAggregator>" %>
-<div class="uc">
 <% using (Html.BeginAsyncAction("list")) { %>
+<div class="uc">
 	<h4><%=Model.Title %></h4>
 	<div class="box">
 		<div class="inner">
@@ -10,5 +10,5 @@
 			</div>
 		</div>
 	</div>
-<% } %>
 </div>
+<% } %>

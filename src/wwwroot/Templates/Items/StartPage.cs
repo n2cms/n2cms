@@ -72,7 +72,7 @@ namespace N2.Templates.Items
 
         // content
 
-        [Details.ThemeSelector("Theme", 74, ContainerName = LayoutArea)]
+        [EditableThemeSelection("Theme", 74, ContainerName = LayoutArea)]
         public string Theme
         {
             get { return (string)(GetDetail("Theme") ?? string.Empty); }

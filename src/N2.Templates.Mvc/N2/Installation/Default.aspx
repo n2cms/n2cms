@@ -100,7 +100,9 @@
                 <p>
                     Pick the <b>content package</b> that tickle your fancy and import it into your site.
                 </p>
-			    <asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Flow" />
+                <div class="exports">
+					<asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Table" RepeatColumns="2" />
+				</div>
 			    <p>
 			        <asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="Please import this" ToolTip="Insert existing package" CausesValidation="false" />
 			        <asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" />

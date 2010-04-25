@@ -382,6 +382,7 @@
     <Compile Include="Details\EditableEnumAttribute.cs" />
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
+    <Compile Include="Details\EditableThemeSelectionAttribute.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\Installation\DatabaseStatusCache.cs" />
     <Compile Include="Edit\Installation\AbstractMigration.cs" />

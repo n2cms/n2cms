@@ -8,6 +8,7 @@ using N2.Details;
 namespace N2.Templates.Details
 {
 	[AttributeUsage(AttributeTargets.Property)]
+	[Obsolete("Use N2.Details.EditableThemeSelectionAttribute")]
 	public class ThemeSelectorAttribute : EditableDropDownAttribute
 	{
 		public ThemeSelectorAttribute(string title, int sortOrder)

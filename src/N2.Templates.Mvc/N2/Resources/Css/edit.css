@@ -160,3 +160,6 @@ hr
 {
 	visibility:visible;
 }
+
+.themeThumbnail { position:relative; }
+.themeThumbnail img { position:absolute; top:-100%; left:10px; z-index:1000; }

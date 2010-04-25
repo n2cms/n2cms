@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 namespace N2.Templates.Details
 {
 	[AttributeUsage(AttributeTargets.Property)]
+	[Obsolete("Use N2.Details.EditableThemeSelectionAttribute")]
 	public class ThemeSelectorAttribute : DropDownAttribute
 	{
 		public ThemeSelectorAttribute(string title, int sortOrder)

@@ -12,6 +12,15 @@ namespace N2.Templates.Mvc
 
 	public class MvcApplication : HttpApplication
 	{
+		class ViewEngine : WebFormViewEngine
+		{
+			public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+			{
+
+				return base.FindView(controllerContext, viewName, masterName, useCache);
+			}
+		}
+
 		protected void Application_Start()
 		{
 			var engine = MvcEngine.Create();
