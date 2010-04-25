@@ -1,11 +1,10 @@
-- fix master pages
-- blueprint
-- taxonomy
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=207820 (preview parts)
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=210129 (editablechildren)
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=205075 (rolemanager breaking upgrade)
 
 v2
 - fix preview version issue
+- taxonomy
 - mvc templates
 	- new skin
 		- 960 grid?

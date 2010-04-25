@@ -1,4 +1,7 @@
-﻿- New theme "Concrete"
+﻿- Refactored master page story in templates
+	- allow change master page via config in MVC
+	- page modifier -> template concern (breaking change)
+- New theme "Concrete"
 - Removed themes tomato tabs, pink tabs
 - Theme thumbnail feature
 - Added canonical link to template's master pages
