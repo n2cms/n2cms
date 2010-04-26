@@ -219,7 +219,7 @@ body.framed .type.i3 a { padding:8px 0 8px 30px; display:block; }
 body.framed .type.i0 span.title, 
 body.framed .type.i1 span.title,
 body.framed .type.i2 span.title, 
-body.framed .type.i3 span.title { display:block; }
+body.framed .type.i3 span.title { display:block; font-size:1.1em; }
 
 body.framed .position em { color:Green; font-weight:bold; }
 .position input, .position label { float:left; display:block; }

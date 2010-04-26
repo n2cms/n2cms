@@ -119,6 +119,23 @@
         </script>
     	<% } %>
     	
+		<script type="text/javascript">
+			var key = { left:37, up: 38, right: 39, down: 40 };
+			jQuery(document).keyup(function(e) {
+				if (e.keyCode == key.up || e.keyCode == key.down) {
+					$selectables = $("#nav a:not(.toggler):visible");
+					var index = $selectables.index($(":focus"));
+					index += e.keyCode == key.up ? -1 : 1;
+					$selectables.eq(index).focus();
+				} else if (e.keyCode == key.left) {
+					$(":focus").siblings(".folder-open > .toggler").click();
+				} else if (e.keyCode == key.right) {
+					$(":focus").siblings(".folder-close > .toggler").click();
+				}
+			});
+			jQuery("a.selected").focus();
+		</script>
+	    
         <nav:ContextMenu id="cm" runat="server" />
     </form>
 </body>
