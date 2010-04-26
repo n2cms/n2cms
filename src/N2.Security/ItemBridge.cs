@@ -7,6 +7,7 @@ using N2.Web.UI;
 using N2.Configuration;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using N2.Security.Items;
 
 namespace N2.Security
 {
@@ -105,13 +106,17 @@ namespace N2.Security
 
 		public virtual Items.UserList GetUserContainer(bool create)
 		{
-			ContentItem parent = persister.Get(UserContainerParentID);
-			Items.UserList m = parent.GetChild(UserContainerName) as Items.UserList;
-			if (m == null && create)
+			var q = Finder.Where.Name.Eq(UserContainerName).And.ParentID.Eq(UserContainerParentID).MaxResults(1);
+			foreach (var container in q.Select<UserList>())
 			{
-				m = CreateUserContainer(parent);
+				return container;
 			}
-			return m;
+			
+			if (!create)
+				return null;
+
+			ContentItem parent = persister.Get(UserContainerParentID);
+			return CreateUserContainer(parent);
 		}
 
 		protected Items.UserList CreateUserContainer(ContentItem parent)
