@@ -1,7 +1,7 @@
 using System.Xml;
 using N2.Details;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public class DetailCollectionXmlWriter : DetailXmlWriter
 	{

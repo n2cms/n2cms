@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
     /// <summary>
     /// Hints for the export service.

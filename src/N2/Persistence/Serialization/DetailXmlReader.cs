@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	/// <summary>
 	/// Reads a content detail from the input navigator.

@@ -4,7 +4,7 @@ using N2.Definitions;
 using N2.Web;
 using N2.Engine;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
     /// <summary>
     /// A content item xml serializer.

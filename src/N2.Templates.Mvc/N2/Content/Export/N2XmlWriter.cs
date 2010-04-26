@@ -5,6 +5,7 @@ using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using N2.Collections;
+using N2.Persistence.Serialization;
 
 namespace N2.Xml
 {
@@ -96,7 +97,7 @@ namespace N2.Xml
 			xtw.WriteAttributeString("url", engine.UrlParser.BuildUrl(item));
 			xtw.WriteAttributeString("visible", item.Visible.ToString());
 			xtw.WriteAttributeString("savedBy", item.SavedBy);
-			xtw.WriteAttributeString("typeName", Serialization.SerializationUtility.GetTypeAndAssemblyName(item.GetType()));
+			xtw.WriteAttributeString("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetType()));
 			xtw.WriteAttributeString("discriminator", engine.Definitions.GetDefinition(item.GetType()).Discriminator);
 		}
 
@@ -122,7 +123,7 @@ namespace N2.Xml
 		{
 			xtw.WriteStartElement("detail");
 			xtw.WriteAttributeString("name", detail.Name);
-			xtw.WriteAttributeString("typeName", Serialization.SerializationUtility.GetTypeAndAssemblyName(detail.ValueType));
+			xtw.WriteAttributeString("typeName", SerializationUtility.GetTypeAndAssemblyName(detail.ValueType));
 			if (detail.ValueType == typeof(object))
 			{
 				BinaryFormatter bf = new BinaryFormatter();

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public static class SerializationUtility
 	{

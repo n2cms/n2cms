@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public class ChildXmlWriter : IXmlWriter
 	{

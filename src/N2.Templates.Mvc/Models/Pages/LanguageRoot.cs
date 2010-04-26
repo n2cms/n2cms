@@ -2,7 +2,7 @@
 using System.Web.UI.WebControls;
 using N2.Engine.Globalization;
 using N2.Details;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Web;
 using N2.Web.Mvc;

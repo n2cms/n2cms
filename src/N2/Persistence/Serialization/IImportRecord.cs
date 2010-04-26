@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public interface IImportRecord
 	{

@@ -2,7 +2,7 @@ using N2.Integrity;
 using N2.Details;
 using N2.Web;
 using N2.Web.UI;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 
 namespace N2.Templates.Items
 {

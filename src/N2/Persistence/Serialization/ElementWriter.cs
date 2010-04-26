@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public class ElementWriter : IDisposable
 	{

@@ -4,7 +4,7 @@ using System.Text;
 using N2.Definitions;
 using N2.Details;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
     public class DefinedDetailXmlWriter : DetailXmlWriter
     {

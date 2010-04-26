@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using N2.Security;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public class AuthorizationXmlWriter : IXmlWriter
 	{

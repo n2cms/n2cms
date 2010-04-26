@@ -2,7 +2,7 @@ using System;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public interface IAttachmentHandler : Definitions.IUniquelyNamed, IComparable<IAttachmentHandler>
 	{

@@ -6,7 +6,7 @@ using N2.Details;
 using N2.Persistence;
 using System.Diagnostics;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public class Importer
 	{

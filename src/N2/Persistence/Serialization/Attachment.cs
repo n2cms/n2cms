@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
     /// <summary>
     /// A binary attachment to serialized items.

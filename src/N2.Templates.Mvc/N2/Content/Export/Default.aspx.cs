@@ -4,7 +4,7 @@ using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit.Web;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using N2.Xml;
 using N2.Web.UI;
 using System.Text;

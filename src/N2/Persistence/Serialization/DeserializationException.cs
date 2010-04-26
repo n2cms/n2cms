@@ -1,4 +1,4 @@
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
     /// <summary>
     /// An exception that may be thrown when problems occur in the deseralization 

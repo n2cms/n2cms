@@ -1,4 +1,6 @@
-﻿- Fixed part preview in mvc (ThreadId=207820)
+﻿- Moved namespace N2.Serialization -> N2.Persistence.Serialization (breaking change)
+- Refactored membership to find container via query (performance tweak)
+- Fixed part preview in mvc (ThreadId=207820)
 - First stab at keyboard navigation
 	- tree navigation
 	- new item

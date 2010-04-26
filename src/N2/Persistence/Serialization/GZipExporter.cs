@@ -2,7 +2,7 @@ using System.IO;
 using System.IO.Compression;
 using N2.Engine;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	[Service(typeof(Exporter))]
 	public class GZipExporter : Exporter

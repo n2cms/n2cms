@@ -1,5 +1,5 @@
 using N2.Details;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using System;
 
 namespace N2.Tests.Serialization.Items

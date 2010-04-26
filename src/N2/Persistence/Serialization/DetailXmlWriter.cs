@@ -5,7 +5,7 @@ using System.Xml;
 using N2.Details;
 using System.Collections.Generic;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public class DetailXmlWriter : IXmlWriter
 	{

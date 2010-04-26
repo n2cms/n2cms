@@ -5,7 +5,7 @@ using System.Web;
 using System.Xml;
 using N2.Engine;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	/// <summary>
 	/// Exports items to a stream.

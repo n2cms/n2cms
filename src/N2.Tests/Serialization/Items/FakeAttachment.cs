@@ -2,7 +2,7 @@ using System;
 using System.Xml;
 using System.Xml.XPath;
 using NUnit.Framework;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 
 namespace N2.Tests.Serialization.Items
 {

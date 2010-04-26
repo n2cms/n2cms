@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml.XPath;
 using N2.Definitions;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public class AttachmentXmlReader : XmlReader, IXmlReader
 	{

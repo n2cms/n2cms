@@ -1,6 +1,6 @@
 using System;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	[Flags]
 	public enum ImportOption

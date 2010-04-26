@@ -1,6 +1,6 @@
 using System.Xml.XPath;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public interface IXmlReader
 	{

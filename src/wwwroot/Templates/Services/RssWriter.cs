@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using N2.Web;
 
 namespace N2.Templates.Services

@@ -13,7 +13,7 @@ using N2.Persistence.NH.Finder;
 using N2.Plugin;
 using N2.Plugin.Scheduling;
 using N2.Security;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using N2.Web;
 using N2.Web.UI;
 using N2.Edit.Workflow;

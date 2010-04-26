@@ -11,10 +11,13 @@ namespace N2.Persistence.Finder
 	/// </summary>
 	public interface IQueryBuilder
 	{
-		/// <summary>Finds items with by ID, effectivly Persister.Get.</summary>
+		/// <summary>Finds items with by ID, effectivly Persister.Get(id).</summary>
 		IComparisonCriteria<int> ID { get; }
 
-		/// <summary>Finds items by parent item, effectively Persister.Get(?).GetChildren()</summary>
+		/// <summary>Finds items with by it's parent item's ID, effectively Persister.Get(id).GetChildren().</summary>
+		IComparisonCriteria<int> ParentID { get; }
+
+		/// <summary>Finds items by parent item, effectively Persister.Get(id).GetChildren()</summary>
 		IComparisonCriteria<ContentItem> Parent { get; }
 
 		/// <summary>Find items with a certain title.</summary>

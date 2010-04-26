@@ -9,7 +9,7 @@ using N2.Definitions;
 using N2.Details;
 using N2.Persistence.NH;
 using N2.Security;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using N2.Web;
 using NHibernate;
 using NHibernate.Driver;

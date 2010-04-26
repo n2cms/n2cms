@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 using NUnit.Framework;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using N2.Tests.Serialization.Items;
 using System.Threading;
 

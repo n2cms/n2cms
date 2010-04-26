@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public class FileAttachmentAttribute : Attribute, IAttachmentHandler
 	{

@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.XPath;
 
-namespace N2.Serialization
+namespace N2.Persistence.Serialization
 {
 	public abstract class XmlReader
 	{

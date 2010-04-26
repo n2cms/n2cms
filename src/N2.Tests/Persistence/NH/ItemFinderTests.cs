@@ -62,6 +62,14 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void ByProperty_Parent_ID()
+		{
+			IList<ContentItem> items = finder.Where.ParentID.Eq(rootItem.ID).Select();
+			Assert.AreEqual(1, items.Count);
+			Assert.AreEqual(startPage, items[0]);
+		}
+
+		[Test]
 		public void ByProperty_Title()
 		{
 			IList<ContentItem> items = finder.Where.Title.Eq(rootItem.Title).Select();

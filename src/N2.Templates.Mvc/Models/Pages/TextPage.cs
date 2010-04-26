@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using N2.Details;
 using N2.Templates.Mvc.Services;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using N2.Web.Mvc;
 using N2.Definitions;
 

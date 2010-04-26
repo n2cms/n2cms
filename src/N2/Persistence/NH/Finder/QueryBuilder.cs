@@ -123,6 +123,11 @@ namespace N2.Persistence.NH.Finder
 			get { return new PropertyCriteria<int>(this, "ID"); }
 		}
 
+		public IComparisonCriteria<int> ParentID
+		{
+			get { return new PropertyCriteria<int>(this, "Parent.ID"); }
+		}
+
 		public IComparisonCriteria<ContentItem> Parent
 		{
 			get { return new PropertyCriteria<ContentItem>(this, "Parent"); }
