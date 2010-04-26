@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using System.Text;
 using System.IO;
 using N2.Definitions;
+using N2.Persistence;
 
 namespace N2.Web.Mvc.Html
 {
@@ -40,14 +41,41 @@ namespace N2.Web.Mvc.Html
 					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
 					.WriteAttribute("title", DroppableZone.GetToolTip(Context.Current.Definitions.GetDefinition(CurrentItem.GetType()), ZoneName))
 					.Write(">");
-				
-				base.Render(writer);
+
+				if (string.IsNullOrEmpty(Html.ViewContext.HttpContext.Request["preview"]))
+				{
+					base.Render(writer);
+				}
+				else
+				{
+					string preview = Html.ViewContext.HttpContext.Request["preview"];
+					RenderReplacingPreviewed(writer, preview);
+				}
 				
 				writer.Write("</div>");
 			}
 			else
 				base.Render(writer);
-        }
+		}
+
+		protected void RenderReplacingPreviewed(TextWriter writer, string preview)
+		{
+			int itemID;
+			if (int.TryParse(preview, out itemID))
+			{
+				ContentItem previewedItem = Html.ResolveService<IPersister>().Get(itemID);
+				if (previewedItem != null && previewedItem.VersionOf != null)
+				{
+					foreach (var child in PartsAdapter.GetItemsInZone(CurrentItem, ZoneName))
+					{
+						if (previewedItem.VersionOf == child)
+							RenderTemplate(writer, previewedItem);
+						else
+							RenderTemplate(writer, child);
+					}
+				}
+			}
+		}
 
         protected override void RenderTemplate(TextWriter writer, ContentItem model)
         {			

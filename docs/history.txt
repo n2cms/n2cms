@@ -1,4 +1,5 @@
-﻿- First stab at keyboard navigation
+﻿- Fixed part preview in mvc (ThreadId=207820)
+- First stab at keyboard navigation
 	- tree navigation
 	- new item
 - Refactored master page story in templates

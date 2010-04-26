@@ -1,5 +1,3 @@
-- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=207820 (preview parts)
-- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=210129 (editablechildren)
 - http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=205075 (rolemanager breaking upgrade)
 
 v2
@@ -35,6 +33,7 @@ v2
 - group controls in organize panel
 
 v2.1+
+- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=210129 (editablechildren)
 - auto-parts
 - support for list items
 	- scenarios: site events, news, blog posts

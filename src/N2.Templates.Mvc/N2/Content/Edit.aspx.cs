@@ -98,7 +98,13 @@ namespace N2.Edit
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
 			Engine.Resolve<CommandDispatcher>().Save(ctx);
 
-            HandleResult(ctx, Request["returnUrl"], Engine.EditManager.GetPreviewUrl(ctx.Content));
+			string returnUrl = Request["returnUrl"];
+			if (!string.IsNullOrEmpty(returnUrl))
+			{
+				returnUrl = Url.Parse(returnUrl).AppendQuery("preview", ctx.Content.ID);
+			}
+
+			HandleResult(ctx, returnUrl, Engine.EditManager.GetPreviewUrl(ctx.Content));
 		}
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
@@ -110,7 +116,7 @@ namespace N2.Edit
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
 				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
 			
-			HandleResult(ctx, redirectTo, Engine.EditManager.GetEditExistingItemUrl(ctx.Content));
+			HandleResult(ctx, redirectTo);
         }
 
         protected void OnSaveFuturePublishCommand(object sender, CommandEventArgs e)
