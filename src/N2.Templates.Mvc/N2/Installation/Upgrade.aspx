@@ -14,6 +14,7 @@
     	li { margin-bottom:10px; }
     	form { padding:20px; }
     	.warning { color:#f00; }
+    	.error { color:#f00; padding:5px; background-color:Yellow; }
     	.ok { color:#0c0; }
     	textarea { width:95%;height:120px;border:none;background-color:#FFB; }
     </style>
@@ -21,12 +22,15 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<p style="background-color:#FFA07A;font-weight:bold;padding:5px">This is a beta of the upgrade wizard. Please help out testing this feature.</p>
+		<p style="background-color:#FFA07A;font-weight:bold;padding:5px">This is an early version of the upgrade wizard. Please help out testing this feature.</p>
         <n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
 			<h1>Upgrade database from <%= Status.DatabaseVersion %> to <%= N2.Edit.Installation.DatabaseStatus.RequiredDatabaseVersion%></h1>
 			
-			<% if (Status.NeedsUpgrade) { %>
+			<% if (Status.NeedsUpgrade){ %>
 			<p class="warning">The database needs to be upgraded.</p>
+			<% } else if (!Status.IsInstalled){ %>
+			<p class="error">No database to be upgraded. Please <a href="Default.aspx">install using the installation wizard</a>.</p>
+			<hr />
 			<% } else {%>
 			<p class="ok">The database looks fine. Happy <a href="..">editing</a>.</p>
 			<%} %>

@@ -8,6 +8,7 @@ using N2.Configuration;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using N2.Security.Items;
+using System.Diagnostics;
 
 namespace N2.Security
 {
@@ -84,25 +85,33 @@ namespace N2.Security
 
 		public virtual Items.User GetUser(string username)
 		{
-            IList<Items.User> users = GetUsers(username, 0, 1);
-			if(users.Count == 0)
+			try
+			{
+				IList<Items.User> users = GetUsers(username, 0, 1);
+				if (users.Count == 0)
+					return null;
+				return users[0];
+			}
+			catch (NHibernate.ADOException ex)
+			{
+				Trace.Write(ex);
 				return null;
-            return users[0];
+			}
         }
 
-        public virtual IList<Items.User> GetUsers(string username, int firstResult, int maxResults)
-        {
-            Items.UserList users = GetUserContainer(false);
-            if (users == null)
-                return new List<Items.User>();
+		public virtual IList<Items.User> GetUsers(string username, int firstResult, int maxResults)
+		{
+			Items.UserList users = GetUserContainer(false);
+			if (users == null)
+				return new List<Items.User>();
 
-            return finder.Where.Parent.Eq(users)
-                .And.Type.Eq(typeof(Items.User))
-                .And.Name.Like(username)
-                .FirstResult(firstResult)
-                .MaxResults(maxResults)
-                .Select<Items.User>();
-        }
+			return finder.Where.Parent.Eq(users)
+				.And.Type.Eq(typeof(Items.User))
+				.And.Name.Like(username)
+				.FirstResult(firstResult)
+				.MaxResults(maxResults)
+				.Select<Items.User>();
+		}
 
 		public virtual Items.UserList GetUserContainer(bool create)
 		{

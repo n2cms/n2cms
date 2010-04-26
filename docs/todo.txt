@@ -1,5 +1,3 @@
-- http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=205075 (rolemanager breaking upgrade)
-
 v2
 - fix preview version issue
 - taxonomy
