@@ -10,9 +10,9 @@ More information and documentation on the project web site: http://n2cms.com/
 
 GETTING STARTED
 
-The easiest option is probably downloading the examples. Either templates 
-implementation example for more fluff or the simple example to get the bare 
-bones.
+The easiest option is probably downloading one of the examples or template 
+packages. Examples contain very little code to show the development model.
+Templates contain a more complex site you can use as a base or as reference.
 
 
 INSTALLATION

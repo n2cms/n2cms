@@ -5,35 +5,36 @@ Follow these steps to get started with in a development environment depending
 on the download type you picked.
 
 
-A. Templates or example package
-
-Option A.1. (unzip & go)
+A. Example package (unzip & go)
 * Unzip the package
 * Copy Libraries\System.Data.SQLite.dll into N2CMS\bin
 * Find a solution file (.sln) in a sub-directory and open it
 * Compile and run the application (Ctrl+F5)
-* A browser starts, and you can manage content via /n2/
+* A browser starts, and you can manage content via /n2/ (log in: admin/changeme)
 
-Option A.2. (Web Platform Installer, templates only)
+B Templates package
+
+B1 (unzip & go)
+* Same procedure as A (example package)
+
+B2 (Web Platform Installer)
 * Start IIS Manager
 * Right-click on Sites\Default Web Site and select Deploy\Import Application...
 * Follow the instructions in the wizard (if you select SQLite you will need to 
   manually copy Libraries\System.Data.SQLite.dll into N2CMS\bin)
 
-
-B. Complete Sources package
+C. Complete Sources package
 
 * Unzip the package
 * Find a batch file "Prepare_Dependencies.bat" and double-click
 * Open "src\N2.Sources-vs2008.sln"
 * Right-click on the N2.Templates.Mvc (or N2.Templates for WebForms) project 
-  and set it as "Set it as StartUp Project"
+  and "Set it as StartUp Project"
 * Compile and run the application (Ctrl+F5)
-* A browser starts, and you can manage content via /n2/
+* A browser starts, and you can manage content via /n2/ (log in: admin/changeme)
 
 
-
-SERVER ENVIRONMENT
+MOVE TO SERVER ENVIRONMENT
 
 The development environment is set up to use SQLite embedded database engine.
 In production MySQL or SQL Server are better choices.

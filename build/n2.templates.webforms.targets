@@ -36,12 +36,11 @@
 		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Templates-DeployFolder-Path)\bin\" />
 		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Templates-DeployFolder-Path)\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Templates-DeployFolder)" />
-		<Copy SourceFiles="$(RootFolder)\lib\n2.sqlite.db"	DestinationFiles="$(Templates-DeployFolder-Path)\App_Data\n2.sqlite.db" />
 		<Copy SourceFiles="$(SrcFolder)\AssemblyVersion.cs" DestinationFiles="$(Templates-DeployFolder)\AssemblyVersion.cs" />
 		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Templates-DeployFolder)\Snippets" />
 		<CallTarget Targets="Templates-RemoveProjectReferences" />
 	</Target>
-	
+
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\Bin" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-SourceFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />

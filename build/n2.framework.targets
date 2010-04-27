@@ -12,10 +12,10 @@
 									$(RootFolder)\lib\System.Data.SQLite.dll"/>
 
 		<TextFiles Include="$(DocFolder)\history.txt;
-							$(DocFolder)\install.txt;
-							$(DocFolder)\license.txt;
-							$(DocFolder)\n2_readme.txt;
-							$(DocFolder)\example.web.config" />
+												$(DocFolder)\howto_install.txt;
+												$(DocFolder)\howto_develop.txt;
+												$(DocFolder)\license.txt;
+												$(DocFolder)\n2_readme.txt" />
 
 		<Snippets Include="$(SnippetsFolder)\*" />
 	</ItemGroup>
