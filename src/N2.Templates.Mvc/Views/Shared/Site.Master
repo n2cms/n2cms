@@ -5,7 +5,7 @@
 <head runat="server">
 	<title></title>
 	<asp:PlaceHolder runat="server">
-		<link href="<%=ResolveUrl("~/App_Themes/" + Find.ClosestStartPage.Theme + "/Style.css")%>" type="text/css" rel="stylesheet" />
+		<link href="<%=ResolveUrl("~/App_Themes/" + Find.Closest<StartPage>(CurrentPage).Theme + "/Style.css")%>" type="text/css" rel="stylesheet" />
 		<link rel="canonical" href="<%= Html.CurrentPage() != null ? Html.CurrentPage().Url : Request.RawUrl %>" />
 	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
@@ -17,7 +17,7 @@
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
 			<div id="header"><div class="inner">
-				<%=Html.DisplayContent(Find.ClosestStartPage, p => p.Header)%>
+				<%=Html.DisplayContent(Find.Closest<StartPage>(CurrentPage), p => p.Header)%>
 				<%Html.RenderAction<NavigationController>(c => c.TopMenu()); %>
 			</div></div>
 		</asp:ContentPlaceHolder>
@@ -30,7 +30,7 @@
 					<div id="menu" class="secondary">
 						<% Html.RenderAction<NavigationController>(c => c.SubMenu()); %>
 
-						<% Html.DroppableZone(Find.ClosestStartPage, Zones.SiteLeft)
+						<% Html.DroppableZone(Find.Closest<LanguageRoot>(CurrentPage), Zones.SiteLeft)
                             .Render();%>
 						<% Html.DroppableZone(Zones.Left)
                             .Render();%>
@@ -65,7 +65,7 @@
                                     .Render();%>
 								<% Html.DroppableZone(Zones.Right)
                                     .Render();%>
-								<% Html.DroppableZone(Find.ClosestStartPage, Zones.SiteRight)
+								<% Html.DroppableZone(Find.Closest<LanguageRoot>(CurrentPage), Zones.SiteRight)
                                     .Render();%>
 							</div>
 						</asp:ContentPlaceHolder>
@@ -74,7 +74,7 @@
 			</div>
 			<div id="footer">
 				<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
-				<%=Html.DisplayContent(Find.ClosestStartPage, p => p.FooterText)%>
+				<%=Html.DisplayContent(Find.Closest<LanguageRoot>(CurrentItem), p => p.FooterText)%>
 			</div>
 		</asp:ContentPlaceHolder>
 	</div>
