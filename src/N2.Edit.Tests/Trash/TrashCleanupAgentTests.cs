@@ -86,7 +86,7 @@ namespace N2.Edit.Tests.Trash
 			engine.Persister.Save(item);
 			engine.Persister.Delete(item);
 
-			Utility.CurrentTime = () => DateTime.Now.AddDays((int)interval).AddSeconds(-1);
+			Utility.CurrentTime = () => DateTime.Now.AddDays((int)interval).AddSeconds(-10);
 
 			engine.Resolve<ITrashHandler>().PurgeOldItems();
 

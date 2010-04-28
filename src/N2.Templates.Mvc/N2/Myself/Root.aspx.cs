@@ -50,7 +50,13 @@ namespace N2.Management.Myself
 
 		#region IContentTemplate Members
 
-		public ContentItem CurrentItem { get; set; }
+		private ContentItem currentItem;
+
+		public ContentItem CurrentItem
+		{
+			get { return currentItem ?? (currentItem = Engine.UrlParser.Parse(Request.RawUrl)); }
+			set { currentItem = value; }
+		}
 
 		#endregion
 	}

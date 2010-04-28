@@ -18,15 +18,17 @@ namespace N2.Details
 	/// 		set { SetDetail("FeedRoot", value); }
 	///		}
 	/// </example>
-	public class EditableLinkAttribute : AbstractEditableAttribute, IDisplayable
+	public class EditableLinkAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer
 	{
 		public EditableLinkAttribute()
+			: this(null, 100)
 		{
 		}
 
 		public EditableLinkAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
+			RelativeWhen = RelativityMode.ExportRelativeImportAbsolute;
 		}
 
 		protected override Control AddEditor(Control container)
@@ -67,6 +69,22 @@ namespace N2.Details
 			}
 			return null;
 		}
+		#endregion
+
+		#region IRelativityTransformer Members
+
+		public RelativityMode RelativeWhen { get; set; }
+
+		string IRelativityTransformer.ToAbsolute(string applicationPath, string value)
+		{
+			return N2.Web.Url.ToAbsolute(applicationPath, value);
+		}
+
+		string IRelativityTransformer.ToRelative(string applicationPath, string value)
+		{
+			return N2.Web.Url.ToRelative(applicationPath, value);
+		}
+
 		#endregion
 	}
 }

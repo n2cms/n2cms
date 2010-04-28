@@ -85,6 +85,8 @@ namespace N2.Persistence.Serialization
 			item.Expires = ToNullableDateTime(attributes["expires"]);
 			item.ID = Convert.ToInt32(attributes["id"]);
 			item.Name = attributes["name"];
+			if (item.ID.ToString() == item.Name)
+				item.Name = null;
 			item.Published = ToNullableDateTime(attributes["published"]);
 			item.SavedBy = attributes["savedBy"];
 			item.SortOrder = Convert.ToInt32(attributes["sortOrder"]);

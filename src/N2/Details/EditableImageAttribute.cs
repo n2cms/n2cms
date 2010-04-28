@@ -21,7 +21,7 @@ namespace N2.Details
 	/// 		}
 	///		}
 	/// </example>
-	public class EditableImageAttribute : AbstractEditableAttribute, IDisplayable
+	public class EditableImageAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer
 	{
 		private string alt = string.Empty;
 		private string cssClass = string.Empty;
@@ -29,13 +29,14 @@ namespace N2.Details
 
 
 		public EditableImageAttribute()
-			: base(null, 40)
+			: this(null, 40)
 		{
 		}
 
 		public EditableImageAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
+			RelativeWhen = RelativityMode.ExportRelativeImportAbsolute;
 		}
 
 
@@ -90,6 +91,22 @@ namespace N2.Details
 		{
 			return DisplayableImageAttribute.AddImage(container, item, detailName, cssClass, altText);
 		}
+		#endregion
+
+		#region IRelativityTransformer Members
+
+		public RelativityMode RelativeWhen { get; set; }
+
+		string IRelativityTransformer.ToAbsolute(string applicationPath, string value)
+		{
+			return N2.Web.Url.ToAbsolute(applicationPath, value);
+		}
+
+		string IRelativityTransformer.ToRelative(string applicationPath, string value)
+		{
+			return N2.Web.Url.ToRelative(applicationPath, value);
+		}
+
 		#endregion
 	}
 }

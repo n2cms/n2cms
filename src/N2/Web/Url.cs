@@ -564,10 +564,19 @@ namespace N2.Web
 		/// <returns>The absolute url.</returns>
 		public static string ToAbsolute(string path)
 		{
+			return ToAbsolute(ApplicationPath, path);
+		}
+
+		/// <summary>Converts a possibly relative to an absolute url.</summary>
+		/// <param name="applicationPath">The application path to be absolute about.</param>
+		/// <param name="path">The url to convert.</param>
+		/// <returns>The absolute url.</returns>
+		public static string ToAbsolute(string applicationPath, string path)
+		{
 			if (!string.IsNullOrEmpty(path) && path[0] == '~' && path.Length > 1)
-				return ApplicationPath + path.Substring(2);
+				return applicationPath + path.Substring(2);
 			else if (path == "~")
-				return ApplicationPath;
+				return applicationPath;
 			return path;
 		}
 
@@ -576,8 +585,16 @@ namespace N2.Web
 		/// <returns>A relative path</returns>
 		public static string ToRelative(string path)
 		{
-			if (!string.IsNullOrEmpty(path) && path.StartsWith(ApplicationPath, StringComparison.OrdinalIgnoreCase))
-				return "~/" + path.Substring(ApplicationPath.Length);
+			return ToRelative(ApplicationPath, path);
+		}
+
+		/// <summary>Converts a virtual path to a relative path, e.g. /myapp/path/to/a/page.aspx -> ~/path/to/a/page.aspx</summary>
+		/// <param name="path">The virtual path.</param>
+		/// <returns>A relative path</returns>
+		public static string ToRelative(string applicationPath, string path)
+		{
+			if (!string.IsNullOrEmpty(path) && path.StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase))
+				return "~/" + path.Substring(applicationPath.Length);
 			return path;
 		}
 

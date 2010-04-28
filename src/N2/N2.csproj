@@ -383,6 +383,7 @@
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\EditableThemeSelectionAttribute.cs" />
+    <Compile Include="Details\RelativityMode.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
     <Compile Include="Edit\Installation\DatabaseStatusCache.cs" />
     <Compile Include="Edit\Installation\AbstractMigration.cs" />
@@ -464,6 +465,7 @@
     <Compile Include="Persistence\Serialization\IImportRecord.cs" />
     <Compile Include="Persistence\Serialization\Importer.cs" />
     <Compile Include="Persistence\Serialization\ImportOption.cs" />
+    <Compile Include="Details\IRelativityTransformer.cs" />
     <Compile Include="Persistence\Serialization\ItemXmlReader.cs" />
     <Compile Include="Persistence\Serialization\ItemXmlWriter.cs" />
     <Compile Include="Persistence\Serialization\IXmlReader.cs" />

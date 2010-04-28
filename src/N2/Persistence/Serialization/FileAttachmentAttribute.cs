@@ -2,18 +2,16 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
+using N2.Web;
 
 namespace N2.Persistence.Serialization
 {
+	/// <summary>
+	/// Attaches files to exports.
+	/// </summary>
 	public class FileAttachmentAttribute : Attribute, IAttachmentHandler
 	{
-		private string name;
-
-		public string Name
-		{
-			get { return name; }
-			set { name = value; }
-		}
+		public string Name { get; set; }
 
 		public void Write(ContentItem item, XmlTextWriter writer)
 		{

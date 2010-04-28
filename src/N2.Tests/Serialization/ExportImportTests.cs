@@ -7,6 +7,7 @@ using NUnit.Framework;
 using N2.Persistence.Serialization;
 using N2.Tests.Serialization.Items;
 using System.Threading;
+using N2.Web;
 
 namespace N2.Tests.Serialization
 {
@@ -33,6 +34,17 @@ namespace N2.Tests.Serialization
             ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
 
 			Assert.That(readItem, Is.TypeOf(typeof(XmlableItem)));
+		}
+
+		[Test]
+		public void ExportedImportedItem_ClearsNames_SameAsOldId()
+		{
+			XmlableItem item = CreateOneItem<XmlableItem>(1, "1", null);
+
+			ContentItem readItem = ExportAndImport(item, ExportOptions.Default);
+			readItem.ID = 0;
+
+			Assert.That(readItem.Name, Is.Null);
 		}
 
 		[Test]
@@ -186,7 +198,34 @@ namespace N2.Tests.Serialization
             {
                 Thread.CurrentThread.CurrentCulture = originalCulture;
             }
-        }
+		}
+
+		[TestCase("/hello/", "/hello/upload/image.gif", "/world/", "/world/upload/image.gif")]
+		[TestCase("/hello/", "/hello/upload/image.gif", "/hello/", "/hello/upload/image.gif")]
+		[TestCase("/", "/upload/image.gif", "/world/", "/world/upload/image.gif")]
+		[TestCase("/", "/upload/image.gif", "/", "/upload/image.gif")]
+		[TestCase("/hello/", "/other/upload/image.gif", "/world/", "/other/upload/image.gif")]
+		[TestCase("/hello/", "~/upload/image.gif", "/world/", "/world/upload/image.gif")]
+		public void ExportingImageUrl_BetweenApplications_WithDifferentRelativeUrl(string fromApplicationPath, string fromUrl, string toApplicationPath, string toExpectedUrl)
+		{
+			var item = CreateOneItem<XmlableItem>(1, "item", null);
+			item.ImageUrl = fromUrl;
+
+			Url.ApplicationPath = fromApplicationPath;
+			string xml = ExportToString(item, CreateExporter(), ExportOptions.Default);
+
+			Url.ApplicationPath = toApplicationPath;
+			var readItem = (XmlableItem)ImportFromString(xml, CreateImporter()).RootItem;
+
+			try
+			{
+				Assert.That(readItem.ImageUrl, Is.EqualTo(toExpectedUrl));
+			}
+			finally
+			{
+				Url.ApplicationPath = null;
+			}
+		}
 
         private void AssertEquals(DateTime? expected, DateTime? actual)
         {

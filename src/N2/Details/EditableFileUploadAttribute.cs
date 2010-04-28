@@ -14,7 +14,7 @@ namespace N2.Details
 	/// <summary>
 	/// Allows to upload or select a file to use.
 	/// </summary>
-	public class EditableFileUploadAttribute : AbstractEditableAttribute, IDisplayable
+	public class EditableFileUploadAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer
 	{
 		private string alt = string.Empty;
 		private string cssClass = string.Empty;
@@ -22,13 +22,14 @@ namespace N2.Details
 
 
 		public EditableFileUploadAttribute()
-			: base(null, 42)
+			: this(null, 42)
 		{
 		}
 
 		public EditableFileUploadAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
+			RelativeWhen = RelativityMode.ExportRelativeImportAbsolute;
 		}
 
 
@@ -167,6 +168,22 @@ namespace N2.Details
 				return DisplayableImageAttribute.AddImage(container, item, detailName, CssClass, Alt);
 			}
 			return null;
+		}
+
+		#endregion
+
+		#region IRelativityTransformer Members
+
+		public RelativityMode RelativeWhen { get; set; }
+
+		string IRelativityTransformer.ToAbsolute(string applicationPath, string value)
+		{
+			return N2.Web.Url.ToAbsolute(applicationPath, value);
+		}
+
+		string IRelativityTransformer.ToRelative(string applicationPath, string value)
+		{
+			return N2.Web.Url.ToRelative(applicationPath, value);
 		}
 
 		#endregion

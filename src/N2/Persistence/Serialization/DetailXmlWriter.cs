@@ -9,13 +9,15 @@ namespace N2.Persistence.Serialization
 {
 	public class DetailXmlWriter : IXmlWriter
 	{
+		string applicationPath = N2.Web.Url.ApplicationPath ?? "/";
+
 		public virtual void Write(ContentItem item, XmlTextWriter writer)
 		{
 			using (new ElementWriter("details", writer))
 			{
                 foreach (ContentDetail detail in GetDetails(item))
 				{
-					WriteDetail(detail, writer);
+					WriteDetail(item, detail, writer);
 				}
 			}
 		}
@@ -25,7 +27,7 @@ namespace N2.Persistence.Serialization
             return item.Details.Values;
         }
 
-		public virtual void WriteDetail(ContentDetail detail, XmlTextWriter writer)
+		public virtual void WriteDetail(ContentItem item, ContentDetail detail, XmlTextWriter writer)
 		{
 			using (ElementWriter detailElement = new ElementWriter("detail", writer))
 			{
@@ -41,12 +43,27 @@ namespace N2.Persistence.Serialization
 				{
 					detailElement.Write(((LinkDetail)detail).LinkedItem.ID.ToString());
 				}
-				else if (detail.ValueType == typeof(string))//was detail.Value a typo?
+				else if (detail.ValueType == typeof(string))
 				{
-					string _value = ((StringDetail)detail).StringValue;
-					
-					if(!string.IsNullOrEmpty(_value)) {
-						detailElement.WriteCData(_value);
+					string value = ((StringDetail)detail).StringValue;
+
+					if (!string.IsNullOrEmpty(value))
+					{
+						if (value.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase))
+						{
+							var pi = item.GetType().GetProperty(detail.Name);
+							if (pi != null)
+							{
+								var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);
+								foreach (IRelativityTransformer transformer in transformers)
+								{
+									if (transformer.RelativeWhen == RelativityMode.ExportRelativeImportAbsolute)
+										value = transformer.ToRelative(applicationPath, value);
+								}
+							}
+						}
+
+						detailElement.WriteCData(value);
 					}
 				}
 				else if(detail.ValueType == typeof(DateTime)) {

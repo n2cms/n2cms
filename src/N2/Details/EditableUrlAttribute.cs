@@ -14,13 +14,13 @@ namespace N2.Details
 	/// }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableUrlAttribute : AbstractEditableAttribute
+	public class EditableUrlAttribute : AbstractEditableAttribute, IRelativityTransformer
 	{
 		private UrlSelectorMode openingMode = UrlSelectorMode.Items;
 		private UrlSelectorMode availableModes = UrlSelectorMode.All;
 
 		public EditableUrlAttribute()
-			: base(null, 30)
+			: this(null, 30)
 		{
 		}
 
@@ -30,6 +30,7 @@ namespace N2.Details
 		public EditableUrlAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
+			RelativeWhen = RelativityMode.ExportRelativeImportAbsolute;
 		}
 
 		/// <summary>Defines whether files or content items are available to be picked</summary>
@@ -77,5 +78,21 @@ namespace N2.Details
 
 			return selector;
 		}
+
+		#region IRelativityTransformer Members
+
+		public RelativityMode RelativeWhen { get; set; }
+
+		string IRelativityTransformer.ToAbsolute(string applicationPath, string value)
+		{
+			return N2.Web.Url.ToAbsolute(applicationPath, value);
+		}
+
+		string IRelativityTransformer.ToRelative(string applicationPath, string value)
+		{
+			return N2.Web.Url.ToRelative(applicationPath, value);
+		}
+
+		#endregion
 	}
 }

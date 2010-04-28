@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.XPath;
+using N2.Details;
 
 namespace N2.Persistence.Serialization
 {
@@ -9,6 +10,8 @@ namespace N2.Persistence.Serialization
 	/// </summary>
 	public class DetailXmlReader : XmlReader, IXmlReader
 	{
+		string applicationPath = N2.Web.Url.ApplicationPath ?? "/";
+
 		public void Read(XPathNavigator navigator, ContentItem item, ReadingJournal journal)
 		{
 			foreach (XPathNavigator detailElement in EnumerateChildren(navigator))
@@ -26,7 +29,11 @@ namespace N2.Persistence.Serialization
 
 			if (type != typeof(ContentItem))
 			{
-				item.SetDetail(name, Parse(navigator.Value, type), type);
+				object value = Parse(navigator.Value, type);
+				if (value is string)
+					value = PrepareStringDetail(item, name, value as string);
+
+				item.SetDetail(name, value, type);
 			}
 			else
 			{
@@ -51,6 +58,24 @@ namespace N2.Persistence.Serialization
 					journal.ItemAdded += handler;
 				}
 			}
+		}
+
+		private object PrepareStringDetail(ContentItem item, string name, string value)
+		{
+			if (value.StartsWith("~"))
+			{
+				var pi = item.GetType().GetProperty(name);
+				if (pi != null)
+				{
+					var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);
+					foreach (IRelativityTransformer transformer in transformers)
+					{
+						if(transformer.RelativeWhen == RelativityMode.ExportRelativeImportAbsolute)
+							value = transformer.ToAbsolute(applicationPath, value);
+					}
+				}
+			}
+			return value;
 		}
 	}
 }

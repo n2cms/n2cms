@@ -11,19 +11,19 @@ namespace N2.Persistence.Serialization
 			{
 				foreach (DetailCollection collection in item.DetailCollections.Values)
 				{
-					WriteDetailCollection(writer, collection);
+					WriteDetailCollection(item, writer, collection);
 				}
 			}
 		}
 
-		protected virtual void WriteDetailCollection(XmlTextWriter writer, DetailCollection collection)
+		protected virtual void WriteDetailCollection(ContentItem item, XmlTextWriter writer, DetailCollection collection)
 		{
 			using (ElementWriter collectionElement = new ElementWriter("collection", writer))
 			{
 				collectionElement.WriteAttribute("name", collection.Name);
 				foreach (ContentDetail detail in collection.Details)
 				{
-					WriteDetail(detail, writer);
+					WriteDetail(item, detail, writer);
 				}
 			}
 		}

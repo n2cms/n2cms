@@ -8,7 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F
 		..\docs\favicon.ico = ..\docs\favicon.ico
 		..\docs\history.txt = ..\docs\history.txt
 		..\docs\howto_build.txt = ..\docs\howto_build.txt
-		..\docs\install.txt = ..\docs\install.txt
+		..\docs\howto_develop.txt = ..\docs\howto_develop.txt
+		..\docs\howto_install.txt = ..\docs\howto_install.txt
 		..\docs\License.txt = ..\docs\License.txt
 		..\docs\n2_readme.txt = ..\docs\n2_readme.txt
 		..\docs\n2cms.configuration.xsd = ..\docs\n2cms.configuration.xsd
@@ -76,7 +77,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{CC6F803A
 		..\build\n2.templates.mvc.targets = ..\build\n2.templates.mvc.targets
 		..\build\n2.templates.webforms.targets = ..\build\n2.templates.webforms.targets
 		..\Prepare_Dependencies-vs2008.bat = ..\Prepare_Dependencies-vs2008.bat
-		..\readme.txt = ..\readme.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Tests", "N2.Templates.Tests\N2.Templates.Tests.csproj", "{CEE6525F-F502-4890-AA36-7B8755A5E47D}"
@@ -84,7 +84,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snippets", "{3C49EAD0-C3FF-406F-8290-23229BD4BADF}"
 	ProjectSection(SolutionItems) = preProject
 		..\snippets\N2 Item Template.zip = ..\snippets\N2 Item Template.zip
-		..\snippets\N2 Page Template.zip = ..\snippets\N2 Page Template.zip
 		..\snippets\n2prop.snippet = ..\snippets\n2prop.snippet
 		..\snippets\n2propcb.snippet = ..\snippets\n2propcb.snippet
 		..\snippets\n2propenum.snippet = ..\snippets\n2propenum.snippet
@@ -175,6 +174,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net2.0", "net2.0", "{93260B
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D81A7C9-BB9E-4D94-B502-6DBDF048FD96}"
+	ProjectSection(SolutionItems) = preProject
+		..\readme.txt = ..\readme.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management", "N2.Templates.Mvc\N2.Management.csproj", "{10F7C179-B92D-4FCA-B78C-011E428D0CA3}"
 EndProject
@@ -184,7 +186,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{5B744F
 		..\build\deploy\install.sql = ..\build\deploy\install.sql
 		..\build\deploy\manifest.xml = ..\build\deploy\manifest.xml
 		..\build\deploy\parameters.xml = ..\build\deploy\parameters.xml
-		..\build\deploy\Readme.htm = ..\build\deploy\Readme.htm
 	EndProjectSection
 EndProject
 Global
