@@ -1,3 +1,5 @@
+- culture+top part: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=210729
+
 v2
 - fix preview version issue
 - taxonomy

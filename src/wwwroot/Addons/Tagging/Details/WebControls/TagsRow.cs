@@ -1,10 +1,11 @@
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using N2.Addons.Tagging.Details.WebControls;
+using System.Web.UI;
 
 namespace N2.Addons.Tagging.Details.WebControls
 {
-	internal class TagsRow : TableRow
+	internal class TagsRow : TableRow, INamingContainer
 	{
 		readonly TagsEditor table;
 		ListBox AvailableList { get; set; }
