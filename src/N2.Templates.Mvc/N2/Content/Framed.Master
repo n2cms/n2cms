@@ -13,4 +13,12 @@
             <asp:ContentPlaceHolder ID="Content" runat="server" />
         </div>
     </form>
+    <script type="text/javascript">
+    	jQuery(document).keyup(function(e) {
+    		var key = { esc: 27 };
+    		if (e.keyCode == key.esc) {
+    			$("#toolbar a.cancel").focus();
+    		}
+    	});
+    </script>
 </asp:Content>

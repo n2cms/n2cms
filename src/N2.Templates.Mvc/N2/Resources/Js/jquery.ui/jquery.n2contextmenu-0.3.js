@@ -73,15 +73,17 @@
 		return this.css({ position: "absolute", left: "-9999px", top: "-9999px" });
 	}
 
+	$.fn.n2trigger = function() {
+		$(this).parents().andSelf().filter("a").each(function() {
+			var f = window.frames[this.target] || window.parent.frames[this.target] || window;
+			f.location = this.href;
+			hideAll();
+		});
+	}
+
 	$.fn.n2rightToLeftClick = function() {
 		return this.bind('contextmenu', function(e) {
-			$(e.target).click().each(function() {
-				$(this).parents().andSelf().filter("a").each(function() {
-					var f = window.frames[this.target] || window.parent.frames[this.target] || window;
-					f.location = this.href;
-					hideAll();
-				});
-			});
+			$(e.target).click().n2trigger();
 			e.stopPropagation();
 			e.preventDefault();
 		});

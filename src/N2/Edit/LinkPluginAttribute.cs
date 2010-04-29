@@ -99,7 +99,7 @@ namespace N2.Edit
 			a.SkinID = "ToolBarLink_" + Name;
 
 			a.Target = Target;
-			a.Attributes["class"] = "command";
+			a.Attributes["class"] = "command " + Name;
 			a.Text = tooltip;
             a.ToolTip = tooltip;
 

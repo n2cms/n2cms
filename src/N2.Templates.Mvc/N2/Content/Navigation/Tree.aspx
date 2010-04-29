@@ -16,7 +16,7 @@
     </head>
 <body class="framed navigation tree">
     <form id="form1" runat="server">
-        <div id="nav" class="tree nav">
+        <div id="nav" class="tree nav focusGroup">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
         <script type="text/javascript">
@@ -120,17 +120,31 @@
     	<% } %>
     	
 		<script type="text/javascript">
-			var key = { left:37, up: 38, right: 39, down: 40 };
+			var key = { esc: 27, left: 37, up: 38, right: 39, down: 40, del: 46, c: 67, n: 78, v: 86, x: 88 };
 			jQuery(document).keyup(function(e) {
 				if (e.keyCode == key.up || e.keyCode == key.down) {
-					$selectables = $("#nav a:not(.toggler):visible");
+					$selectables = $(".focusGroup a:not(.toggler):visible");
 					var index = $selectables.index($(":focus"));
 					index += e.keyCode == key.up ? -1 : 1;
 					$selectables.eq(index).focus();
 				} else if (e.keyCode == key.left) {
-					$(":focus").siblings(".folder-open > .toggler").click();
+					$(".focusGroup :focus").closest(".folder-open")
+						.children(".toggler").click()
+						.siblings(":not(.toggler)").focus();
 				} else if (e.keyCode == key.right) {
-					$(":focus").siblings(".folder-close > .toggler").click();
+					$(".focusGroup :focus").siblings(".folder-close > .toggler").click();
+				} else if (e.keyCode == key.esc) {
+					$("#contextMenu").n2hide();
+				} else if (e.keyCode == key.del) {
+					$("#contextMenu a.delete").n2trigger();
+				} else if (e.keyCode == key.c) {
+					$("#contextMenu a.copy").n2trigger();
+				} else if (e.keyCode == key.n) {
+					$("#contextMenu a.new").n2trigger();
+				} else if (e.keyCode == key.v) {
+					$("#contextMenu a.paste").n2trigger();
+				} else if (e.keyCode == key.x) {
+					$("#contextMenu a.move").n2trigger();
 				}
 			});
 			jQuery("a.selected").focus();

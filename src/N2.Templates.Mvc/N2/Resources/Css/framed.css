@@ -163,7 +163,7 @@ body.framed .validator ul{
 body.framed #contextMenu { min-width:75px; border:solid 1px silver; background:#fff; position:absolute; top:-9999px; left:-9999px; }
     body.framed #contextMenu a { margin:1px; }
     body.framed #contextMenu a:hover { background-color:#f7f7f7; border-color:#dedad7; text-decoration:none; }
-    body.framed #contextMenu .command { display:block; padding:1px; white-space:nowrap; border:solid 1px #fff; }
+    body.framed #contextMenu .command { display:block; padding:2px 1px 0 1px; white-space:nowrap; border:solid 1px #fff; }
     body.framed #contextMenu .command img { margin-right:3px; }
     body.framed #contextMenu .separator { border-bottom:solid 1px #dedad7; margin:0 1px;}
     body.framed #contextMenu .languages { display:block; width:75px; }
@@ -180,7 +180,7 @@ body.framed a.title { white-space:nowrap; }
 
 /* navigation */
 
-body.framed .nav .selected { font-weight:bold; border: 1px dotted #CCC; margin:0;}
+body.framed .nav .selected { font-weight:bold; margin:1px;}
 .tree { padding:5px; }
 
 /* tree */

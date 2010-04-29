@@ -1,4 +1,7 @@
-﻿- Fixed issue accessing secured pages (ThreadId=210836)
+﻿- More keyboard support (cut(x)/copy(c)/paste(v)/new(n) in tree, esc in framed interfaces)
+
+2.0 rc2
+- Fixed issue accessing secured pages (ThreadId=210836)
 - Export to relative url (and make absolute on import)
 - Swallowing database exceptions loading users in membership & role providers which may prevent upgrade (ThreadId=205075)
 - Moved namespace N2.Serialization -> N2.Persistence.Serialization (breaking change)
