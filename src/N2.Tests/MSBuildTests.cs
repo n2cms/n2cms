@@ -51,7 +51,7 @@ namespace N2.Tests
   <ItemGroup>
     <Reference Include=""Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL"">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\net3.5\Castle.Core.dll</HintPath>
+      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include=""System"" />
     <Reference Include=""System.Core"">
@@ -76,7 +76,7 @@ namespace N2.Tests
   <ItemGroup>
     <Reference Include=""NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL"">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\net3.5\NHibernate.dll</HintPath>
+      <HintPath>..\..\lib\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include=""System"" />
     <Reference Include=""System.ComponentModel.DataAnnotations"">
@@ -88,7 +88,7 @@ namespace N2.Tests
     </Reference>
     <Reference Include=""System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\net3.5\System.Web.Abstractions.dll</HintPath>
+      <HintPath>..\..\lib\System.Web.Abstractions.dll</HintPath>
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
   </ItemGroup>

@@ -109,18 +109,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Site MVC", "Site MVC", "{C6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net3.5", "net3.5", "{58340449-0688-4CB3-84DB-FF927391152F}"
 	ProjectSection(SolutionItems) = preProject
-		..\lib\net3.5\Antlr3.Runtime.dll = ..\lib\net3.5\Antlr3.Runtime.dll
-		..\lib\net3.5\Castle.Core.dll = ..\lib\net3.5\Castle.Core.dll
-		..\lib\net3.5\Castle.DynamicProxy.license.txt = ..\lib\net3.5\Castle.DynamicProxy.license.txt
-		..\lib\net3.5\Castle.DynamicProxy2.dll = ..\lib\net3.5\Castle.DynamicProxy2.dll
-		..\lib\net3.5\Castle.MicroKernel.dll = ..\lib\net3.5\Castle.MicroKernel.dll
-		..\lib\net3.5\Castle.Windsor.dll = ..\lib\net3.5\Castle.Windsor.dll
-		..\lib\net3.5\Iesi.Collections.dll = ..\lib\net3.5\Iesi.Collections.dll
-		..\lib\net3.5\Iesi.Collections.license.txt = ..\lib\net3.5\Iesi.Collections.license.txt
-		..\lib\net3.5\log4net.dll = ..\lib\net3.5\log4net.dll
-		..\lib\net3.5\log4net.license.txt = ..\lib\net3.5\log4net.license.txt
-		..\lib\net3.5\NHibernate.Caches.SysCache2.dll = ..\lib\net3.5\NHibernate.Caches.SysCache2.dll
-		..\lib\net3.5\NHibernate.Linq.dll = ..\lib\net3.5\NHibernate.Linq.dll
+		..\lib\Antlr3.Runtime.dll = ..\lib\Antlr3.Runtime.dll
+		..\lib\Castle.Core.dll = ..\lib\Castle.Core.dll
+		..\lib\Castle.DynamicProxy.license.txt = ..\lib\Castle.DynamicProxy.license.txt
+		..\lib\Castle.DynamicProxy2.dll = ..\lib\Castle.DynamicProxy2.dll
+		..\lib\Castle.MicroKernel.dll = ..\lib\Castle.MicroKernel.dll
+		..\lib\Castle.Windsor.dll = ..\lib\Castle.Windsor.dll
+		..\lib\Iesi.Collections.dll = ..\lib\Iesi.Collections.dll
+		..\lib\Iesi.Collections.license.txt = ..\lib\Iesi.Collections.license.txt
+		..\lib\log4net.dll = ..\lib\log4net.dll
+		..\lib\log4net.license.txt = ..\lib\log4net.license.txt
+		..\lib\NHibernate.Caches.SysCache2.dll = ..\lib\NHibernate.Caches.SysCache2.dll
+		..\lib\NHibernate.Linq.dll = ..\lib\NHibernate.Linq.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net2.0", "net2.0", "{93260B8B-5947-4094-B128-117355ACAF0D}"

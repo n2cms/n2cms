@@ -84,7 +84,7 @@ public static string ScriptMain() {
 	string replacement=@"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
 	lines=Regex.Replace(lines, pattern, replacement, RegexOptions.Singleline);
 
-	//string pattern2="<Reference.*?<HintPath>[.\\\\]*?lib.net3.5.(?<Name>[^<]*).dll</HintPath>.*?</Reference>";
+	//string pattern2="<Reference.*?<HintPath>[.\\\\]*?lib.(?<Name>[^<]*).dll</HintPath>.*?</Reference>";
 	//string replacement2=@"<Reference Include=""${Name}""><SpecificVersion>False</SpecificVersion><HintPath>bin\${Name}.dll</HintPath></Reference>";
 	//lines=Regex.Replace(lines, pattern2, replacement2, RegexOptions.Singleline);
 
