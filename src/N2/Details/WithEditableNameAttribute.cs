@@ -85,6 +85,9 @@ namespace N2.Details
 			set { keepUpdatedToolTip = value; }
 		}
 
+		/// <summary>Sets focus on the name editor.</summary>
+		public bool Focus { get; set; }
+
     	public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			NameEditor ne = (NameEditor)editor;
@@ -138,6 +141,7 @@ namespace N2.Details
 			ne.KeepUpdated.Text = KeepUpdatedText;
 			ne.KeepUpdated.ToolTip = KeepUpdatedToolTip;
 			container.Controls.Add(ne);
+			if (Focus) ne.Focus();
 			return ne;
 		}
 	}

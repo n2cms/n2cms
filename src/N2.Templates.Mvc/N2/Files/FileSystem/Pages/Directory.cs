@@ -11,7 +11,7 @@ namespace N2.Edit.FileSystem.Items
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2015)]
 	[RestrictParents(typeof(AbstractDirectory))]
-	[WithEditableName]
+	[WithEditableName(Focus = true)]
 	[N2.Web.Template("info", "~/N2/Files/FileSystem/Directory.aspx")]
 	public class Directory : AbstractDirectory, IActiveContent
 	{
