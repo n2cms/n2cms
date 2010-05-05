@@ -8,29 +8,50 @@
 	
 	<!-- DATABASE -->
 
-	<!-- Used to create user and build connection string -->
-	<parameter name="dbServer" defaultValue=".\SQLEXPRESS" tags="SQL, MySQL, dbServer">
+	<!-- MySQL -->
+	<!--
+	<parameter name="MySQLDbServer" defaultValue="localhost" tags="MySQL, dbServer" />
+	<parameter name="MySQLDbName" defaultValue="N2CMS" tags="MySQL, dbName">
+		<parameterEntry type="TextFile" scope="install.mysql" match="PlaceHolderForDb" />
 	</parameter>
-	<parameter name="dbName" defaultValue="N2CMS" tags="SQL, MySQL, dbName">
+	<parameter name="MySQLDbUsername" defaultValue="N2CMSUser" tags="MySQL, dbUsername">
+		<parameterEntry type="TextFile" scope="install.mysql" match="PlaceHolderForUser" />
+	</parameter>
+	<parameter name="MySQLDbUserPassword" tags="New, Password, MySQL, dbUserPassword">
+		<parameterValidation type="RegularExpression" validationString="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" />
+		<parameterEntry type="TextFile" scope="install.mysql" match="PlaceHolderForPassword" />
+	</parameter>
+	<parameter name="ConnectionString_MySQL" tags="MySQL, Hidden" description="Sets the connection string in web.config" defaultValue="Data Source={MySQLDbServer};Database={MySQLDbName};User Id={MySQLDbUsername};Password={MySQLDbUserPassword};">
+		<parameterEntry type="XmlFile" scope="\\web.config$" match="//connectionStrings/add/@connectionString" />
+	</parameter>
+	<parameter name="ConnectionStringProvider_MySQL" tags="MySQL, Hidden" description="Sets the connection provider in web.config" defaultValue="MySql.Data.MySqlClient">
+		<parameterEntry type="XmlFile" scope="\\web.config$" match="//connectionStrings/add/@providerName" />
+	</parameter>
+	<parameter name="MySQLDbAdminUsername" defaultValue="root" tags="MySQL, dbAdminUsername" />
+	<parameter name="MySQLDbAdminPassword" tags="Password, MySQL, dbAdminPassword" />
+	<parameter name="MySQLConnectionString" defaultValue="Server={MySQLDbServer};Database={MySQLDbName};uid={MySQLDbAdminUsername};Pwd={MySQLDbAdminPassword};" tags="MySQL, Hidden, MySQLConnectionString, Validate">
+		<parameterEntry type="ProviderPath" scope="dbmysql" match="install.mysql" />
+	</parameter>
+	-->
+
+	<!-- SQL Server - Used to create user and build connection string -->
+	<parameter name="dbServer" defaultValue=".\SQLEXPRESS" tags="SQL, dbServer" />
+
+	<parameter name="dbName" defaultValue="N2CMS" tags="SQL, dbName">
 		<parameterEntry type="TextFile" scope="install.sql" match="PlaceHolderForDb" />
 	</parameter>
-	<parameter name="dbUsername" defaultValue="N2CMSUser" tags="SQL, MySQL, dbUsername">
+	<parameter name="dbUsername" defaultValue="N2CMSUser" tags="SQL, dbUsername">
 		<parameterEntry type="TextFile" scope="install.sql" match="PlaceHolderForUser" />
 	</parameter>
-	<parameter name="dbUserPassword" tags="New, Password, SQL, MySQL, dbUserPassword">
+	<parameter name="dbUserPassword" tags="New, Password, SQL, dbUserPassword">
 		<parameterValidation type="RegularExpression" validationString="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" />
 		<parameterEntry type="TextFile" scope="install.sql" match="PlaceHolderForPassword" />
 	</parameter>
 
-	<!-- Used to create the database -->
-	<parameter name="dbAdminUsername" defaultValue="sa" tags="SQL, dbAdminUsername">
-	</parameter>
-	<parameter name="dbAdminPassword" tags="Password, SQL, dbAdminPassword">
-	</parameter>
+	<parameter name="dbAdminUsername" defaultValue="sa" tags="SQL, dbAdminUsername"/>
+	<parameter name="dbAdminPassword" tags="Password, SQL, dbAdminPassword"/>
+
 	<parameter name="SQLConnectionString" defaultValue="Server={dbServer};Database={dbName};uid={dbAdminUsername};Pwd={dbAdminPassword};" tags="SQL, Hidden, SQLConnectionString, Validate">
-		<parameterEntry type="ProviderPath" scope="dbfullsql" match="install.sql" />
-	</parameter>
-	<parameter name="MySQLConnectionString" defaultValue="Server={dbServer};Database={dbName};uid={dbAdminUsername};Pwd={dbAdminPassword};" tags="MySQL, Hidden, MySQLConnectionString, Validate">
 		<parameterEntry type="ProviderPath" scope="dbfullsql" match="install.sql" />
 	</parameter>
 
@@ -45,20 +66,12 @@
 		<parameterEntry type="XmlFile" scope="\\web.config$" match="//connectionStrings/add/@providerName" />
 	</parameter>
 
-
-	<parameter name="ConnectionString_SQLite" tags="SQLite, Hidden" description="Sets the connection string in web.config" defaultValue="Data Source=|DataDirectory|\n2.db;Version=3;New=True;">
+	<!--<parameter name="ConnectionString_SQLite" tags="SQLite, Hidden" description="Sets the connection string in web.config" defaultValue="Data Source=|DataDirectory|\n2.db;Version=3;New=True;">
 		<parameterEntry type="XmlFile" scope="\\web.config$" match="//connectionStrings/add/@connectionString" />
 	</parameter>
 	<parameter name="ConnectionStringProvider_SQLite" tags="SQLite, Hidden" description="Sets the connection provider in web.config" defaultValue="System.Data.SQLite">
 		<parameterEntry type="XmlFile" scope="\\web.config$" match="//connectionStrings/add/@providerName" />
-	</parameter>
-	
-	<parameter name="ConnectionString_MySQL" tags="MySQL, Hidden" description="Sets the connection string in web.config" defaultValue="Data Source={dbServer};Database={dbName};User Id={dbUsername};Password={dbUserPassword};">
-		<parameterEntry type="XmlFile" scope="\\web.config$" match="//connectionStrings/add/@connectionString" />
-	</parameter>
-	<parameter name="ConnectionStringProvider_MySQL" tags="MySQL, Hidden" description="Sets the connection provider in web.config" defaultValue="MySql.Data.MySqlClient">
-		<parameterEntry type="XmlFile" scope="\\web.config$" match="//connectionStrings/add/@providerName" />
-	</parameter>
+	</parameter>-->
 
 	<!-- web administration login -->
 

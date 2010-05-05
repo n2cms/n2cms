@@ -4,9 +4,9 @@
 
 	<dbfullsql path="install.sql" />
 
-	<dbmysql path="install.mysql"
+	<!--<dbmysql path="install.mysql"
 					 commandDelimiter="//"
-					 removeCommandDelimiter="true" />
+					 removeCommandDelimiter="true" />-->
 
 	<setAcl path="N2CMS/App_Data" setAclAccess="Modify" />
   <setAcl path="N2CMS/Upload" setAclAccess="Modify" />
