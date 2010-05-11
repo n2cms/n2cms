@@ -59,6 +59,7 @@ namespace N2.Edit.Installation
 
 		public string ToStatusString()
 		{
+			const string statusWithErrorDetails = "{0} <a href='#statusError' onclick=\"document.getElementById('statusError').style.display='block';return false;\">Detailed error message</a><pre id='statusError' style='display:none'>{1}</pre>";
 			if (StartPage != null && RootItem != null)
 				return string.Format("Everything looks fine, Start page: {0}, Root item: {1}, # of items: {2}",
 					 StartPage.Title, RootItem.Title, Items);
@@ -69,12 +70,12 @@ namespace N2.Edit.Installation
 			if (HasSchema)
 				return string.Format("The database is installed but there is no content root with the id: {0}", RootItemID);
 			if(IsConnected)
-				return string.Format(
-					"The connection to the database seems fine but the database tables might not be created.<br/>Error message: <pre>{0}</pre>",
+				return string.Format(statusWithErrorDetails,
+					"The connection to the database seems fine but the database tables might not be created.",
 					SchemaError);
 			
-			return string.Format(
-				"No database or not properly configured connection string (error message: {0}", 
+			return string.Format(statusWithErrorDetails,
+				"No database or not properly configured connection string", 
 				ConnectionError);
 		}
 

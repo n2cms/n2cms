@@ -1,6 +1,10 @@
 - culture+top part: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=210729
 
 v2
+- globalization changes http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=212056&ProjectName=n2cms
+- .net4 request validation http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=211901
+- .net4 routing http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=211877
+- mvc contrib pagination http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=69809
 - fix preview version issue
 - taxonomy
 - mvc templates

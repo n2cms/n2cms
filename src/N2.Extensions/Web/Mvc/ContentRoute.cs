@@ -113,7 +113,7 @@ namespace N2.Web.Mvc
 			//On a multi-lingual site with separate domains per language,
 			//the full url (with host) should be passed to UrlParser.ResolvePath():
 			string host = (request.Url.IsDefaultPort) ? request.Url.Host : request.Url.Authority;
-			string hostAndRawUrl = String.Format("{0}://{1}{2}", request.Url.Scheme, host, request.RawUrl);
+			string hostAndRawUrl = String.Format("{0}://{1}{2}", request.Url.Scheme, host, Url.ToAbsolute(request.AppRelativeCurrentExecutionFilePath));
 			PathData td = engine.UrlParser.ResolvePath(hostAndRawUrl);
 
 			if (td.CurrentItem == null)

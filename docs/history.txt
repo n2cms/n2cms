@@ -1,4 +1,6 @@
 ﻿- More keyboard support (cut(x)/copy(c)/paste(v)/new(n) in tree, esc in framed interfaces)
+- Fixed issue with virtual directory without ending slash,
+- Updated import packages to use relative path for home
 
 2.0 rc2
 - Fixed issue accessing secured pages (ThreadId=210836)

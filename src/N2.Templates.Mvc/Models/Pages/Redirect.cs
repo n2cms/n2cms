@@ -27,7 +27,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			get { return N2.Web.Url.ToAbsolute(RedirectUrl); }
 		}
 
-		[Editable("Redirect to", typeof (UrlSelector), "Url", 40, ContainerName = Tabs.Content, Required = true)]
+		[EditableUrl("Redirect to", 40, ContainerName = Tabs.Content, Required = true)]
 		public virtual string RedirectUrl
 		{
 			get { return (string) base.GetDetail("RedirectUrl"); }

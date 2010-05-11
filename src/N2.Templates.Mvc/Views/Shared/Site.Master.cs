@@ -7,11 +7,14 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web;
 using N2.Templates.Mvc.Services;
+using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Views.Shared
 {
 	public partial class Site : N2.Web.UI.MasterPage<ContentItem>
 	{
+		protected StartPage Start { get; set; }
+		protected LanguageRoot Language { get; set; }
 		protected HtmlHelper Html { get; set; }
 
 		protected override void OnInit(EventArgs e)
@@ -29,6 +32,9 @@ namespace N2.Templates.Mvc.Views.Shared
 			{
 				foreach (var vc in Engine.Container.ResolveAll<IViewConcern>())
 					vc.Apply(item, Page);
+
+				Start = Find.Closest<StartPage>(item);
+				Language = Find.Closest<LanguageRoot>(item);
 			}
 			base.OnInit(e);
 		}

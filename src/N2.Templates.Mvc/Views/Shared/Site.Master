@@ -1,11 +1,10 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="N2.Templates.Mvc.Views.Shared.Site" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
 	<asp:PlaceHolder runat="server">
-		<link href="<%=ResolveUrl("~/App_Themes/" + Find.Closest<StartPage>(CurrentPage).Theme + "/Style.css")%>" type="text/css" rel="stylesheet" />
+		<link href="<%=ResolveUrl("~/App_Themes/" + (Start != null ? Start.Theme : "Default") + "/Style.css")%>" type="text/css" rel="stylesheet" />
 		<link rel="canonical" href="<%= Html.CurrentPage() != null ? Html.CurrentPage().Url : Request.RawUrl %>" />
 	</asp:PlaceHolder>
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
@@ -17,7 +16,7 @@
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
 			<div id="header"><div class="inner">
-				<%=Html.DisplayContent(Find.Closest<StartPage>(CurrentPage), p => p.Header)%>
+				<%=Html.DisplayContent(Start, p => p.Header)%>
 				<%Html.RenderAction<NavigationController>(c => c.TopMenu()); %>
 			</div></div>
 		</asp:ContentPlaceHolder>
@@ -30,7 +29,7 @@
 					<div id="menu" class="secondary">
 						<% Html.RenderAction<NavigationController>(c => c.SubMenu()); %>
 
-						<% Html.DroppableZone(Find.Closest<LanguageRoot>(CurrentPage), Zones.SiteLeft)
+						<% Html.DroppableZone(Language, Zones.SiteLeft)
                             .Render();%>
 						<% Html.DroppableZone(Zones.Left)
                             .Render();%>
@@ -65,7 +64,7 @@
                                     .Render();%>
 								<% Html.DroppableZone(Zones.Right)
                                     .Render();%>
-								<% Html.DroppableZone(Find.Closest<LanguageRoot>(CurrentPage), Zones.SiteRight)
+								<% Html.DroppableZone(Language, Zones.SiteRight)
                                     .Render();%>
 							</div>
 						</asp:ContentPlaceHolder>
@@ -74,7 +73,7 @@
 			</div>
 			<div id="footer">
 				<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>
-				<%=Html.DisplayContent(Find.Closest<LanguageRoot>(CurrentItem), p => p.FooterText)%>
+				<%=Html.DisplayContent(Language, p => p.FooterText)%>
 			</div>
 		</asp:ContentPlaceHolder>
 	</div>
