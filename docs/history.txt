@@ -1,4 +1,5 @@
-﻿- More keyboard support (cut(x)/copy(c)/paste(v)/new(n) in tree, esc in framed interfaces)
+﻿- Fiex view from the files interface (ThreadId=212370)
+- More keyboard support (cut(x)/copy(c)/paste(v)/new(n) in tree, esc in framed interfaces)
 - Fixed issue with virtual directory without ending slash,
 - Updated import packages to use relative path for home
 

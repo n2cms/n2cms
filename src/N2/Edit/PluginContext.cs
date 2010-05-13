@@ -44,6 +44,9 @@ namespace N2.Edit
 
 		public string Rebase(string url)
 		{
+			if (string.IsNullOrEmpty(url))
+				url = "empty.aspx";
+
 			string rebasedUrl = Url.Combine(ManagementInterfaceUrl, url);
 			return rebasedUrl;
 		}
