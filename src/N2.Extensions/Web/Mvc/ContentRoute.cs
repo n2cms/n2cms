@@ -260,8 +260,8 @@ namespace N2.Web.Mvc
 
 		private VirtualPathData ResolveContentActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem item)
 		{
-			const string controllerPlaceHolder = "$(CTRL)";
-			const string areaPlaceHolder = "$(AREA)";
+            const string controllerPlaceHolder = "---(CTRL)---";
+            const string areaPlaceHolder = "---(AREA)---";
 		
 			values[ControllerKey] = controllerPlaceHolder; // pass a placeholder we'll fill with the content path
 			bool useAreas = innerRoute.DataTokens.ContainsKey("area");
