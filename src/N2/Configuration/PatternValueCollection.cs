@@ -5,6 +5,7 @@ namespace N2.Configuration
 	/// <summary>
 	/// A collection of pattern replacements for the name editor.
 	/// </summary>
+	[ConfigurationCollection(typeof(PatternValueElement))]
 	public class PatternValueCollection : ConfigurationElementCollection
 	{
 		public PatternValueCollection()

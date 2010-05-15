@@ -373,6 +373,9 @@
     <Content Include="Global.asax" />
     <Content Include="Views\RssAggregator\Index.ascx" />
     <Content Include="Web.config" />
+    <Content Include="App_Data\web.n2.host.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
     <Content Include="Views\Shared\Error.aspx" />
     <Content Include="Views\Web.config" />
   </ItemGroup>

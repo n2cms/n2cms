@@ -10,6 +10,5 @@
 
 	<setAcl path="N2CMS/App_Data" setAclAccess="Modify" />
   <setAcl path="N2CMS/Upload" setAclAccess="Modify" />
-  <setAcl path="N2CMS/Web.config" setAclResourceType="File"  setAclAccess="Read,Write" />
 
 </MSDeploy.iisApp>

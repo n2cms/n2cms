@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Xml;
+using System.Linq;
 
 namespace N2.Configuration
 {
@@ -10,10 +11,11 @@ namespace N2.Configuration
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public abstract class LazyRemovableCollection<T> : ConfigurationElementCollection
-		where T : NamedElement, new()
+		where T : ConfigurationElement, IIdentifiable, new()
 	{
 		List<T> removedElements = new List<T>();
-		bool clear;
+		List<T> defaults = new List<T>();
+		bool isCleared;
 
 		/// <summary>Elements that were "removed".</summary>
 		public IEnumerable<T> RemovedElements
@@ -22,13 +24,31 @@ namespace N2.Configuration
 			set { removedElements = new List<T>(value ?? new T[0]); }
 		}
 
-		/// <summary>Elements that were added.</summary>
+		/// <summary>Elements that were "removed".</summary>
+		public IEnumerable<T> Defaults
+		{
+			get { return defaults.AsReadOnly(); }
+			set { defaults = new List<T>(value ?? new T[0]); }
+		}
+
+		/// <summary>All added elements except those that have been removed.</summary>
 		public IEnumerable<T> AddedElements
 		{
 			get
 			{
+				object[] removedKeys = RemovedElements.Select(e => e.ElementKey).ToArray();
+				foreach (T element in Defaults)
+				{
+					var key = ((IIdentifiable)element).ElementKey;
+					if (!removedKeys.Contains(key))
+						yield return element;
+				}
 				foreach (T element in this)
-					yield return element;
+				{
+					var key = ((IIdentifiable)element).ElementKey;
+					if(!removedKeys.Contains(key))
+						yield return element;
+				}
 			}
 			set
 			{
@@ -40,12 +60,17 @@ namespace N2.Configuration
 			}
 		}
 
-		public bool Clear
+		public bool IsCleared
 		{
-			get { return clear; }
-			set { clear = value; }
+			get { return isCleared; }
 		}
 
+		/// <summary>Adds an element to the collection of defaults.</summary>
+		/// <param name="element">The element to add.</param>
+		public void AddDefault(T element)
+		{
+			defaults.Add(element);
+		}
 
 		/// <summary>Adds an element to the collection.</summary>
 		/// <param name="element">The element to add.</param>
@@ -61,7 +86,13 @@ namespace N2.Configuration
 			removedElements.Add(element);
 		}
 
-
+		/// <summary>Clears all the elements in this collection.</summary>
+		public void Clear()
+		{
+			isCleared = true;
+			defaults.Clear();
+			BaseClear();
+		}
 
 		protected override ConfigurationElement CreateNewElement()
 		{
@@ -70,7 +101,7 @@ namespace N2.Configuration
 
 		protected override object GetElementKey(ConfigurationElement element)
 		{
-			return ((T)element).Name;
+			return ((IIdentifiable)element).ElementKey;
 		}
 
 		protected override bool OnDeserializeUnrecognizedElement(string elementName, XmlReader reader)
@@ -78,16 +109,16 @@ namespace N2.Configuration
 			if (elementName == "remove")
 			{
 				T element = new T();
-				element.Name = reader.GetAttribute("name");
+				element.ElementKey = reader.GetAttribute("name");
 
 				OnDeserializeRemoveElement(element, reader);
-				
-				removedElements.Add(element);
+
+				Remove(element);
 				return true;
 			}
 			if(elementName == "clear")
 			{
-				clear = true;
+				Clear();
 				return true;
 			}
 			return base.OnDeserializeUnrecognizedElement(elementName, reader);

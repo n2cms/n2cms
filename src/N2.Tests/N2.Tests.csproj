@@ -135,6 +135,7 @@
     <Compile Include="Collections\Items\FirstItem.cs" />
     <Compile Include="Collections\TypeFilterTests.cs" />
     <Compile Include="Collections\ZoneFilterTests.cs" />
+    <Compile Include="Configuration\LazyRemovableCollectionTests.cs" />
     <Compile Include="Content\AnItem.cs" />
     <Compile Include="Content\ContentItemTests.cs" />
     <Compile Include="Definitions\DefinitionConfigurationTests.cs" />

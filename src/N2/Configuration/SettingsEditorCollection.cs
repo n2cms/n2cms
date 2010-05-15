@@ -2,6 +2,7 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
+	[ConfigurationCollection(typeof(SettingsEditorElement))]
 	public class SettingsEditorCollection : ConfigurationElementCollection
 	{
 		public SettingsEditorCollection()

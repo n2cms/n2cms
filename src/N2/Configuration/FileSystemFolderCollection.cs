@@ -3,6 +3,7 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
+	[ConfigurationCollection(typeof(FolderElement))]
 	public class FileSystemFolderCollection : ConfigurationElementCollection
     {
         public FileSystemFolderCollection()

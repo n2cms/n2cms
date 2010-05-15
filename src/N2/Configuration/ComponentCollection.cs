@@ -5,6 +5,7 @@ namespace N2.Configuration
     /// <summary>
     /// Services to register instead of/in addition to existing N2 services.
     /// </summary>
+	[ConfigurationCollection(typeof(ComponentElement))]
     public class ComponentCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

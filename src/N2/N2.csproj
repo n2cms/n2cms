@@ -286,11 +286,14 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Collections\ChildFactoryDelegate.cs" />
+    <Compile Include="Configuration\AssemblyCollection.cs" />
+    <Compile Include="Configuration\AssemblyElement.cs" />
     <Compile Include="Configuration\ComponentParameterCollection.cs" />
     <Compile Include="Configuration\ComponentParameterElement.cs" />
     <Compile Include="Configuration\ConfigurationManagerWrapper.cs" />
     <Compile Include="Configuration\ConfigurationSectionBase.cs" />
     <Compile Include="Configuration\FileSystemElement.cs" />
+    <Compile Include="Configuration\IIdentifiable.cs" />
     <Compile Include="Configuration\ImagesElement.cs" />
     <Compile Include="Configuration\ImageSizeElement.cs" />
     <Compile Include="Configuration\ImageSizesCollection.cs" />

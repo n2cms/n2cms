@@ -1,4 +1,6 @@
 using System.Configuration;
+using NHibernate.Mapping;
+using System.Collections.Generic;
 
 namespace N2.Configuration
 {
@@ -6,11 +8,12 @@ namespace N2.Configuration
 	/// The configured collection of paths instructs N2's url rewriter to 
 	/// ignore certain virtual paths when considering a path for rewrite.
 	/// </summary>
-	public class VirtualPathCollection : ConfigurationElementCollection
+	[ConfigurationCollection(typeof(VirtualPathElement))]
+	public class VirtualPathCollection : LazyRemovableCollection<VirtualPathElement>
 	{
 		public VirtualPathCollection()
 		{
-			BaseAdd(new VirtualPathElement("management", "~/N2/"));
+			AddDefault(new VirtualPathElement("management", "~/N2/"));
 		}
 
 		protected override ConfigurationElement CreateNewElement()
@@ -25,13 +28,13 @@ namespace N2.Configuration
 
 		public string[] GetPaths(N2.Web.IWebContext webContext)
 		{
-			string[] paths = new string[Count];
-			for (int i = 0; i < paths.Length; i++)
+			List<string> paths = new List<string>();
+			foreach (var vpe in AddedElements)
 			{
-				string path = ((VirtualPathElement) BaseGet(i)).VirtualPath;
-				paths[i] = webContext.ToAbsolute(path);
+				paths.Add(webContext.ToAbsolute(vpe.VirtualPath));
 			}
-			return paths;
+
+			return paths.ToArray();
 		}
 	}
 }

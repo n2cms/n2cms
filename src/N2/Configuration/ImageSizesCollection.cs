@@ -6,6 +6,7 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
+	[ConfigurationCollection(typeof(ImageSizeElement))]
 	public class ImageSizesCollection : ConfigurationElementCollection
 	{
 		public ImageSizesCollection()

@@ -1,8 +1,11 @@
+using System.Configuration;
+
 namespace N2.Configuration
 {
 	/// <summary>
 	/// A collection of configured item definitions that supports remove and add.
 	/// </summary>
+	[ConfigurationCollection(typeof(DefinitionElement))]
 	public class DefinitionCollection : LazyRemovableCollection<DefinitionElement>
 	{
 		protected override void OnDeserializeRemoveElement(DefinitionElement element, System.Xml.XmlReader reader)
