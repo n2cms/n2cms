@@ -7,35 +7,39 @@ using N2.Configuration;
 
 namespace N2.Tests.Configuration
 {
+	public class NamedCollectionTester : LazyRemovableCollection<NamedElement>
+	{
+	}
+
 	[TestFixture]
 	public class LazyRemovableCollectionTests
 	{
 		[Test]
 		public void CanAddElement()
 		{
-			AssemblyCollection assemblies = new AssemblyCollection();
-			assemblies.Add(new AssemblyElement { Assembly = "N2" });
+			NamedCollectionTester assemblies = new NamedCollectionTester();
+			assemblies.Add(new NamedElement { Name = "N2" });
 
 			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(1));
-			Assert.That(assemblies.AddedElements.First().Assembly, Is.EqualTo("N2"));
+			Assert.That(assemblies.AddedElements.First().Name, Is.EqualTo("N2"));
 		}
 
 		[Test]
 		public void CanAddDefaultElement()
 		{
-			AssemblyCollection assemblies = new AssemblyCollection();
-			assemblies.AddDefault(new AssemblyElement { Assembly = "N2" });
+			NamedCollectionTester assemblies = new NamedCollectionTester();
+			assemblies.AddDefault(new NamedElement { Name = "N2" });
 
 			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(1));
-			Assert.That(assemblies.AddedElements.First().Assembly, Is.EqualTo("N2"));
+			Assert.That(assemblies.AddedElements.First().Name, Is.EqualTo("N2"));
 		}
 
 		[Test]
 		public void CanRemoveElement()
 		{
-			AssemblyCollection assemblies = new AssemblyCollection();
-			assemblies.Add(new AssemblyElement { Assembly = "N2" });
-			assemblies.Remove(new AssemblyElement { Assembly = "N2" });
+			NamedCollectionTester assemblies = new NamedCollectionTester();
+			assemblies.Add(new NamedElement { Name = "N2" });
+			assemblies.Remove(new NamedElement { Name = "N2" });
 
 			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(0));
 		}
@@ -43,9 +47,9 @@ namespace N2.Tests.Configuration
 		[Test]
 		public void CanRemoveDefaultElement()
 		{
-			AssemblyCollection assemblies = new AssemblyCollection();
-			assemblies.AddDefault(new AssemblyElement { Assembly = "N2" });
-			assemblies.Remove(new AssemblyElement { Assembly = "N2" });
+			NamedCollectionTester assemblies = new NamedCollectionTester();
+			assemblies.AddDefault(new NamedElement { Name = "N2" });
+			assemblies.Remove(new NamedElement { Name = "N2" });
 
 			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(0));
 		}
@@ -53,8 +57,8 @@ namespace N2.Tests.Configuration
 		[Test]
 		public void CanClearElement()
 		{
-			AssemblyCollection assemblies = new AssemblyCollection();
-			assemblies.Add(new AssemblyElement { Assembly = "N2" });
+			NamedCollectionTester assemblies = new NamedCollectionTester();
+			assemblies.Add(new NamedElement { Name = "N2" });
 			assemblies.Clear();
 
 			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(0));
@@ -64,8 +68,8 @@ namespace N2.Tests.Configuration
 		[Test]
 		public void CanClearDefaultElement()
 		{
-			AssemblyCollection assemblies = new AssemblyCollection();
-			assemblies.AddDefault(new AssemblyElement { Assembly = "N2" });
+			NamedCollectionTester assemblies = new NamedCollectionTester();
+			assemblies.AddDefault(new NamedElement { Name = "N2" });
 			assemblies.Clear();
 
 			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(0));

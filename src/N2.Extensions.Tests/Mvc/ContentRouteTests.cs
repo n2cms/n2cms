@@ -17,6 +17,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
 using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -579,6 +580,7 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			httpContext.request.appRelativeCurrentExecutionFilePath = "~" + url.Path;
 			httpContext.request.rawUrl = url;
+			httpContext.request.query = url.GetQueries().ToNameValueCollection();
 			foreach (var kvp in url.GetQueries())
 				httpContext.request.query[kvp.Key] = kvp.Value;
 			var data = route.GetRouteData(httpContext);
@@ -594,6 +596,17 @@ namespace N2.Extensions.Tests.Mvc
 			ctx.RouteData.DataTokens[ContentRoute.ContentItemKey] = item;
 			ctx.RouteData.Values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetType());
 			return ctx;
+		}
+	}
+
+	static class UrlExtensions
+	{
+		public static NameValueCollection ToNameValueCollection(this IDictionary<string, string> dictionary)
+		{
+			NameValueCollection nvc = new NameValueCollection();
+			foreach (var kvp in dictionary)
+				nvc[kvp.Key] = kvp.Value;
+			return nvc;
 		}
 	}
 }

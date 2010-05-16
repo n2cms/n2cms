@@ -133,6 +133,13 @@ namespace N2.Web.Mvc
 				if (int.TryParse(request.QueryString["part"], out partId))
 					item = part = engine.Persister.Get(partId);
 			}
+			else if (!string.IsNullOrEmpty(request.QueryString["item"]))
+			{
+				// item in query string is passed as information to maintain similar behavior to webforms
+				int itemId;
+				if (int.TryParse(request.QueryString["item"], out itemId))
+					part = engine.Persister.Get(itemId);
+			}
 
 			if (part == null && item != page && !item.IsPage)
 			{
