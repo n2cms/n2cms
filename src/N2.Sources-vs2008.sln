@@ -96,16 +96,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snipp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE03-488C-B53D-989700FE6018}"
 	ProjectSection(SolutionItems) = preProject
-		..\lib\ILMerge.exe = ..\lib\ILMerge.exe
+		..\lib\Antlr3.Runtime.dll = ..\lib\Antlr3.Runtime.dll
+		..\lib\Castle.Core.dll = ..\lib\Castle.Core.dll
+		..\lib\Castle.DynamicProxy2.dll = ..\lib\Castle.DynamicProxy2.dll
+		..\lib\Castle.Facilities.Logging.dll = ..\lib\Castle.Facilities.Logging.dll
+		..\lib\Castle.MicroKernel.dll = ..\lib\Castle.MicroKernel.dll
+		..\lib\Castle.Windsor.dll = ..\lib\Castle.Windsor.dll
+		..\lib\Iesi.Collections.dll = ..\lib\Iesi.Collections.dll
+		..\lib\log4net.dll = ..\lib\log4net.dll
+		..\lib\Microsoft.Web.Mvc.dll = ..\lib\Microsoft.Web.Mvc.dll
 		..\lib\MSBuild.Community.Tasks.dll = ..\lib\MSBuild.Community.Tasks.dll
-		..\lib\MSBuild.Community.Tasks.Targets = ..\lib\MSBuild.Community.Tasks.Targets
+		..\lib\MvcContrib.Castle.dll = ..\lib\MvcContrib.Castle.dll
+		..\lib\MvcContrib.dll = ..\lib\MvcContrib.dll
+		..\lib\MvcContrib.FluentHtml.dll = ..\lib\MvcContrib.FluentHtml.dll
+		..\lib\MvcContrib.TestHelper.dll = ..\lib\MvcContrib.TestHelper.dll
 		..\lib\MySql.Data.dll = ..\lib\MySql.Data.dll
-		..\lib\nunit-console.exe = ..\lib\nunit-console.exe
-		..\lib\nunit-console.exe.config = ..\lib\nunit-console.exe.config
+		..\lib\NHibernate.ByteCode.Castle.dll = ..\lib\NHibernate.ByteCode.Castle.dll
+		..\lib\NHibernate.Caches.SysCache2.dll = ..\lib\NHibernate.Caches.SysCache2.dll
+		..\lib\NHibernate.dll = ..\lib\NHibernate.dll
+		..\lib\NHibernate.Linq.dll = ..\lib\NHibernate.Linq.dll
+		..\lib\nunit-console-runner.dll = ..\lib\nunit-console-runner.dll
+		..\lib\nunit.core.dll = ..\lib\nunit.core.dll
+		..\lib\nunit.core.interfaces.dll = ..\lib\nunit.core.interfaces.dll
 		..\lib\nunit.framework.dll = ..\lib\nunit.framework.dll
-		..\lib\readme.txt = ..\lib\readme.txt
+		..\lib\nunit.util.dll = ..\lib\nunit.util.dll
 		..\lib\Rhino.Mocks.dll = ..\lib\Rhino.Mocks.dll
+		..\lib\System.Core.dll = ..\lib\System.Core.dll
 		..\lib\System.Data.SQLite.DLL = ..\lib\System.Data.SQLite.DLL
+		..\lib\System.Web.Abstractions.dll = ..\lib\System.Web.Abstractions.dll
+		..\lib\System.Web.Mvc.dll = ..\lib\System.Web.Mvc.dll
+		..\lib\System.Web.Routing.dll = ..\lib\System.Web.Routing.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddonCatalog", "wwwroot\AddonCatalog.csproj", "{0F286C8B-A322-43E6-B02C-F118BF29D3D5}"
@@ -131,10 +151,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc", "N2.Templates.Mvc\N2.Templates.Mvc.csproj", "{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc.Tests", "N2.Templates.Mvc.Tests\N2.Templates.Mvc.Tests.csproj", "{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net3.5", "net3.5", "{58340449-0688-4CB3-84DB-FF927391152F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net2.0", "net2.0", "{93260B8B-5947-4094-B128-117355ACAF0D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D81A7C9-BB9E-4D94-B502-6DBDF048FD96}"
 	ProjectSection(SolutionItems) = preProject
@@ -389,8 +405,6 @@ Global
 		{03223418-97AD-4087-A568-6BBFD274864D} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
 		{A226177B-0B92-4296-ADD1-1F5749B31E3F} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
 		{5B744FE6-34F6-4BEC-A500-570D703BB946} = {CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}
-		{58340449-0688-4CB3-84DB-FF927391152F} = {04E4D1B1-EE03-488C-B53D-989700FE6018}
-		{93260B8B-5947-4094-B128-117355ACAF0D} = {04E4D1B1-EE03-488C-B53D-989700FE6018}
 		{0F286C8B-A322-43E6-B02C-F118BF29D3D5} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
 		{77B21028-EA50-4CED-8334-307E836B0ECB} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
 		{250D978B-3C2C-4151-9A69-B36F3F53E8B8} = {AA0C3414-F509-44A2-A677-409DE6B49B1C}
