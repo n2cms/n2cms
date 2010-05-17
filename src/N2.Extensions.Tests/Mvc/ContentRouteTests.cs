@@ -386,6 +386,24 @@ namespace N2.Extensions.Tests.Mvc
 		}
 
 		[Test]
+		public void CanRoute_ToPage_ViaController()
+		{
+			var part = CreateOneItem<TestItem>(10, "whatever", root);
+			RoutePath("/Regular/?page=1");
+
+			var r = routes.GetRouteData(httpContext);
+
+			Assert.That(r.Values[ContentRoute.ControllerKey], Is.EqualTo("Regular"));
+			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("index"));
+			Assert.That(r.Values[ContentRoute.ContentPageKey], Is.EqualTo(root.ID));
+			Assert.That(r.Values[ContentRoute.ContentItemKey], Is.EqualTo(root.ID));
+			Assert.That(r.Values[ContentRoute.ContentPartKey], Is.Null);
+			Assert.That(r.DataTokens[ContentRoute.ContentPageKey], Is.EqualTo(root));
+			Assert.That(r.DataTokens[ContentRoute.ContentItemKey], Is.EqualTo(root));
+			Assert.That(r.DataTokens[ContentRoute.ContentPartKey], Is.Null);
+		}
+
+		[Test]
 		public void CanRoute_ToPart_Action()
 		{
 			var part = CreateOneItem<TestItem>(10, "whatever", root);

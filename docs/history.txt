@@ -1,4 +1,6 @@
-﻿- Security enhanchments for web platform installer (web.config protection, hidden password field)
+﻿- Fixed issue showing feed with max items (ThreadId=212853)
+- Added mvc item template
+- Security enhanchments for web platform installer (web.config protection, hidden password field)
 - Applied WayneWong's patch #5909: Fixe the (CTRL) URL error in .NET4
 - Fiex view from the files interface (ThreadId=212370)
 - More keyboard support (cut(x)/copy(c)/paste(v)/new(n) in tree, esc in framed interfaces)

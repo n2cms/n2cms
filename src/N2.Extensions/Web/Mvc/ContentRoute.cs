@@ -116,14 +116,19 @@ namespace N2.Web.Mvc
 			string hostAndRawUrl = String.Format("{0}://{1}{2}", request.Url.Scheme, host, Url.ToAbsolute(request.AppRelativeCurrentExecutionFilePath));
 			PathData td = engine.UrlParser.ResolvePath(hostAndRawUrl);
 
-			if (td.CurrentItem == null)
-				return null;
-
 			var item = td.CurrentItem;
 			var page = td.CurrentPage;
+
 			var actionName = td.Action;
 			if (string.IsNullOrEmpty(actionName))
 				actionName = request.QueryString["action"] ?? "index";
+
+			if (!string.IsNullOrEmpty(request.QueryString["page"]))
+			{
+				int pageId;
+				if (int.TryParse(request.QueryString["page"], out pageId))
+					td.CurrentItem = item = page = engine.Persister.Get(pageId);
+			}
 
 			ContentItem part = null;
 			if (!string.IsNullOrEmpty(request.QueryString["part"]))

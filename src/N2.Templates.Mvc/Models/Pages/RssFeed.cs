@@ -61,24 +61,21 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		public virtual IEnumerable<ISyndicatable> GetItems()
 		{
-			foreach (ISyndicatable item in N2.Find.Items
-				.Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true)
-				.Filters(GetFilters())
+			var filter = new AccessFilter();
+			var q = N2.Find.Items.Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true);
+			if(FeedRoot != null)
+				q = q.And.AncestralTrail.Like(Utility.GetTrail(FeedRoot) + "%");
+
+			foreach (ContentItem item in q
 				.OrderBy.Published.Desc
 				.Select().Take(NumberOfItems))
 			{
-				yield return item;
+				var syndicatable = item as ISyndicatable;
+				if (syndicatable != null && filter.Match(item))
+				{
+					yield return syndicatable;
+				}
 			}
-		}
-
-		private ItemFilter[] GetFilters()
-		{
-			ItemFilter[] filters;
-			if (FeedRoot != null)
-				filters = new ItemFilter[] {new TypeFilter(typeof (ISyndicatable)), new AccessFilter(), new ParentFilter(FeedRoot)};
-			else
-				filters = new ItemFilter[] {new TypeFilter(typeof (ISyndicatable)), new AccessFilter()};
-			return filters;
 		}
 	}
 }
