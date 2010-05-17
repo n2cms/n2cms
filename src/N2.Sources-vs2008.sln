@@ -81,6 +81,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snippets", "{3C49EAD0-C3FF-406F-8290-23229BD4BADF}"
 	ProjectSection(SolutionItems) = preProject
 		..\snippets\N2 Item Template.zip = ..\snippets\N2 Item Template.zip
+		..\snippets\N2 Page Controller.zip = ..\snippets\N2 Page Controller.zip
+		..\snippets\N2 Page Template.zip = ..\snippets\N2 Page Template.zip
 		..\snippets\n2prop.snippet = ..\snippets\n2prop.snippet
 		..\snippets\n2propcb.snippet = ..\snippets\n2propcb.snippet
 		..\snippets\n2propenum.snippet = ..\snippets\n2propenum.snippet
