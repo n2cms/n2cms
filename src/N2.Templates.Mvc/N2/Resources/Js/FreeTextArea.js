@@ -34,11 +34,19 @@ function fileBrowserCallBack(field_name, url, destinationType, win) {
     	modes = "Files";
     	location = "filesselection";
     }
-    var fileSelectorWindow = window.open(fileBrowserUrl + (fileBrowserUrl.indexOf('?') >= 0 ? "&" : "?") + 'location=' + location + '&availableModes=' + modes + '&tbid=' + srcField.id + '&destinationType=' + destinationType + '&selectedUrl=' + encodeURIComponent(url), 'FileBrowser', 'height=600,width=400,resizable=yes,status=yes,scrollbars=yes');
-    fileSelectorWindow.focus();
+    tinymce.activeEditor.windowManager.open({
+		file: fileBrowserUrl + (fileBrowserUrl.indexOf('?') >= 0 ? "&" : "?") + 'location=' + location + '&availableModes=' + modes + '&tbid=' + srcField.id + '&destinationType=' + destinationType + '&selectedUrl=' + encodeURIComponent(url),
+		height: 500,
+		width: 400,
+		close_previous: false,
+		inline: true,
+		scrollbars: true,
+		resizable: true,
+		maximizable: true
+	});
 }
 function onFileSelected(selectedUrl) {
-    srcField.value = selectedUrl;
+	srcField.value = selectedUrl;
 }
 function freeTextArea_init(fileBrowser, overrides) {
     fileBrowserUrl = fileBrowser;

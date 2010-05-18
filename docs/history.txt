@@ -1,4 +1,5 @@
-﻿- Enabled firefox spellchecking
+﻿- Enabled inline popups for tinymce file selection
+- Enabled firefox spellchecking
 - Updated tinyMCE to 3.3.5.1
 - Restricted of selectable images to files (ThreadId=213036)
 - Fixed issue uploading to folder with extension (ThreadId=213036)

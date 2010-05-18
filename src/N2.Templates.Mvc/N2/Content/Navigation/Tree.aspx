@@ -69,15 +69,22 @@
         	});
         </script>
         <% if (Request["location"] == "filesselection" || Request["location"] == "contentselection" || Request["location"] == "selection") { %>
+        <script src="../../Resources/tiny_mce/tiny_mce_popup.js" type="text/javascript"></script>
         <script type="text/javascript">
         	var updateOpenerAndClose = function(e) {
-        		if (window.opener) {
-        			var relativeUrl = $(this).attr("data-url");
-        			if (window.opener.onFileSelected && window.opener.srcField)
-        				window.opener.onFileSelected(relativeUrl);
+        		var relativeUrl = $(this).attr("data-url");
+        		function selectIn(opener) {
+        			if (opener.onFileSelected && opener.srcField)
+        				opener.onFileSelected(relativeUrl);
         			else
-        				window.opener.document.getElementById('<%= Request["tbid"] %>').value = relativeUrl;
+        				opener.document.getElementById('<%= Request["tbid"] %>').value = relativeUrl;
+        		}
+        		if (window.opener) {
+        			selectIn(window.opener);
         			window.close();
+        		} else if (typeof tinyMCEPopup != "undefined" && tinyMCEPopup.getWin()) {
+        			selectIn(tinyMCEPopup.getWin());
+        			tinyMCEPopup.close();
         		}
         		e.preventDefault();
         	};
