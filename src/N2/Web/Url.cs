@@ -763,12 +763,10 @@ namespace N2.Web
 			if (url2.IndexOf(':') >= 0)
 				return url2;
 
-			url1 = RemoveExtension(url1);
-
 			Url first = url1;
 			Url second = url2;
 
-			return first.AppendSegment(second.Path).AppendQuery(second.Query).SetFragment(second.Fragment);
+			return first.AppendSegment(second.Path, "").AppendQuery(second.Query).SetFragment(second.Fragment);
 		}
 	}
 }

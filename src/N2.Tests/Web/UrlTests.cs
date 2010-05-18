@@ -863,7 +863,7 @@ namespace N2.Tests.Web
 		[TestCase("/", "/hello", "/hello")]
 		[TestCase("/hello", "hello", "/hello/hello")]
 		[TestCase("/hello", "/hello", "/hello")]
-		[TestCase("/hello.aspx", "hello.aspx", "/hello/hello.aspx")]
+		[TestCase("/hello.aspx", "hello.aspx", "/hello.aspx/hello.aspx")]
 		[TestCase("/hello", "hello?one=1", "/hello/hello?one=1")]
 		[TestCase("/hello?one=1", "hello", "/hello/hello?one=1")]
 		[TestCase("/hello?one=1", "hello?two=2", "/hello/hello?one=1&two=2")]
