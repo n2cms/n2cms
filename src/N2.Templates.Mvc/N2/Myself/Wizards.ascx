@@ -1,5 +1,5 @@
 ﻿<%@ Import Namespace="N2.Edit.Wizard.Items" %>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Wizards.ascx.cs" Inherits="Management.N2.Myself.Wizards" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Wizards.ascx.cs" Inherits="N2.Management.Myself.Wizards" %>
 
 <div class="uc">
 	<h4 class="header"><%= CurrentItem.Title %></h4>

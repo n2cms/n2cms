@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
 using N2.Web;
-using Management.N2.Files;
+using N2.Management.Files;
 
 namespace N2.Edit.Web.UI.Controls
 {

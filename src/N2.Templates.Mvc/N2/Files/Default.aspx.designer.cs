@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Management.N2.Files {
+namespace N2.Management.Files {
     
     
     public partial class Default {

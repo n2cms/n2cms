@@ -381,6 +381,34 @@
 									<xs:attribute name="textFileExtensions" type="xs:string" use="optional" default=".cs,.vb,.js,.html,.htm,.xml,.aspx,.ascx,.ashx,.php,.txt" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="images" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="sizes" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="clear" minOccurs="0" maxOccurs="1"/>
+													<xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="add" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="name" type="xs:string" use="required" />
+															<xs:attribute name="width" type="xs:int" use="required" />
+															<xs:attribute name="height" type="xs:int" use="required" />
+															<xs:attribute name="replace" type="xs:boolean"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+									<xs:attribute name="resizedExtensions" type="xs:string" use="optional" default=".jpg,.jpeg" />
+									<xs:attribute name="resizeUploadedImages" type="xs:boolean" use="optional" default="true" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
 						<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />

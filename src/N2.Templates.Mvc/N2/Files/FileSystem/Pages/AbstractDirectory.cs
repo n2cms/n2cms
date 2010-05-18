@@ -4,7 +4,7 @@ using N2.Collections;
 using System.Diagnostics;
 using System.Web;
 using System;
-using Management.N2.Files;
+using N2.Management.Files;
 
 namespace N2.Edit.FileSystem.Items
 {

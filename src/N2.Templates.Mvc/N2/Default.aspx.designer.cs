@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Management.N2 {
+namespace N2.Management {
     
     
     public partial class Default {

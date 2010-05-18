@@ -7,7 +7,7 @@ using N2.Edit.FileSystem;
 using N2.Edit;
 using N2.Web;
 using N2.Configuration;
-using Management.N2.Files;
+using N2.Management.Files;
 using System.IO;
 
 namespace N2.Management.Files
@@ -28,7 +28,7 @@ namespace N2.Management.Files
 
 		void files_FileWritten(object sender, FileEventArgs e)
 		{
-			if (!ImagesUtility.IsImagePath(e.VirtualPath))
+			if (!IsResizableImagePath(e.VirtualPath))
 				return;
 
 			if(images.Sizes.Count == 0)
@@ -106,7 +106,7 @@ namespace N2.Management.Files
 
 		void files_FileMoved(object sender, FileEventArgs e)
 		{
-			if (!ImagesUtility.IsImagePath(e.VirtualPath))
+			if (!IsResizableImagePath(e.VirtualPath))
 				return;
 			
 			foreach (ImageSizeElement size in images.Sizes)
@@ -123,7 +123,7 @@ namespace N2.Management.Files
 
 		void files_FileDeleted(object sender, FileEventArgs e)
 		{
-			if (!ImagesUtility.IsImagePath(e.VirtualPath))
+			if (!IsResizableImagePath(e.VirtualPath))
 				return;
 
 			foreach (ImageSizeElement size in images.Sizes)
@@ -133,6 +133,12 @@ namespace N2.Management.Files
 				if (files.FileExists(resizedPath))
 					files.DeleteFile(resizedPath);
 			}
+		}
+
+		public bool IsResizableImagePath(string imageUrl)
+		{
+			string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
+			return images.ResizedExtensions.Contains(fileExtension.ToLower());
 		}
 
 		#region IAutoStart Members

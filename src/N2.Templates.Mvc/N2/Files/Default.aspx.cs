@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Edit.Web;
 
-namespace Management.N2.Files
+namespace N2.Management.Files
 {
 	[ToolbarPlugin("FILES", "filemanager", "Files/Default.aspx?selected={selected}", ToolbarArea.Navigation, Targets.Top, "~/N2/Resources/icons/folder.png", 120, 
 		ToolTip = "file manager", 

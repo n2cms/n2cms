@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using N2.Management.Myself;
-using N2.Web.UI;
+using N2.Details;
+using N2.Edit;
 using N2.Edit.Wizard;
 using N2.Edit.Wizard.Items;
-using N2.Edit;
-using N2;
-using N2.Details;
+using N2.Web.UI;
 
-namespace Management.N2.Myself
+namespace N2.Management.Myself
 {
 	[PartDefinition("Wizards", 
 		TemplateUrl = "~/N2/Myself/Wizards.ascx",

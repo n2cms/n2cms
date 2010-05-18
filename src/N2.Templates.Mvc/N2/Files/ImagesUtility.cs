@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Web;
 using N2.Web;
 
-namespace Management.N2.Files
+namespace N2.Management.Files
 {
 	public class ImagesUtility
 	{
+		
 		public static bool IsImagePath(string imageUrl)
 		{
 			string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));

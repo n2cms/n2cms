@@ -8,7 +8,7 @@ using N2.Definitions;
 using N2.Persistence;
 using N2.Persistence.Finder;
 
-namespace Management.N2.Content
+namespace N2.Management.Content
 {
 	[ScheduleExecution(1, TimeUnit.Hours)]
 	public class NumberOfItemsScheduledAction : ScheduledAction

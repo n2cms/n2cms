@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace N2.Configuration
 {
@@ -13,6 +15,13 @@ namespace N2.Configuration
 		{
 			get { return (bool)base["resizeUploadedImages"]; }
 			set { base["resizeUploadedImages"] = value; }
+		}
+
+		[ConfigurationProperty("resizedExtensions", DefaultValue = ".jpg,.jpeg"), TypeConverter(typeof(CommaDelimitedStringCollectionConverter))]
+		public StringCollection ResizedExtensions
+		{
+			get { return (CommaDelimitedStringCollection)base["resizedExtensions"]; }
+			set { base["resizedExtensions"] = value; }
 		}
 
 		/// <summary>Information about images.</summary>

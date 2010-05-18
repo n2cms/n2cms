@@ -2,7 +2,7 @@
 using N2.Integrity;
 using N2.Persistence;
 using N2.Installation;
-using Management.N2.Files;
+using N2.Management.Files;
 using System.Web;
 using System.Text;
 

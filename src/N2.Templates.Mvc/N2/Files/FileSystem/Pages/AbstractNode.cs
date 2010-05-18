@@ -1,7 +1,7 @@
 ﻿using N2.Edit.Trash;
 using N2.Persistence;
 using N2.Web;
-using Management.N2.Files;
+using N2.Management.Files;
 using System;
 using N2.Security;
 using N2.Definitions;
