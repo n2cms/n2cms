@@ -70,7 +70,7 @@ namespace N2.Web.UI.WebControls
 				Register.JavaScript(Page, configScriptUrl);
 
                 string script = string.Format("freeTextArea_init('{0}', {1});",
-					Url.Parse("~/N2/Content/Navigation/Tree.aspx").AppendQuery("location=selection"), 
+					Url.Parse("~/N2/Content/Navigation/Tree.aspx"), 
                     GetOverridesJson());
                 Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
             }
