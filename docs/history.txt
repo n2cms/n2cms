@@ -1,4 +1,6 @@
-﻿- Restricted of selectable images to files (ThreadId=213036)
+﻿- Enabled firefox spellchecking
+- Updated tinyMCE to 3.3.5.1
+- Restricted of selectable images to files (ThreadId=213036)
 - Fixed issue uploading to folder with extension (ThreadId=213036)
 - Removed resize of gifs and pngs (ThreadId=213036)
 - Fixed issue showing feed with max items (ThreadId=212853)
