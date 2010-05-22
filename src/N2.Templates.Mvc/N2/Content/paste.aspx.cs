@@ -1,4 +1,5 @@
 using System;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -8,7 +9,7 @@ namespace N2.Edit
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-			string selected = Request.QueryString["selected"];
+			string selected = Request.QueryString[PathData.SelectedQueryKey];
 			string memory = Request.QueryString["memory"];
 			string action = Request.QueryString["action"];
 			if (string.IsNullOrEmpty(memory) || string.IsNullOrEmpty(action))

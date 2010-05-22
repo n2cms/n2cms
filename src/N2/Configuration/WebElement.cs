@@ -11,14 +11,38 @@ namespace N2.Configuration
     /// Configuration related to integration with ASP.NET and urls.
     /// </summary>
     public class WebElement : ConfigurationElement
-    {
-        /// <summary>The default extension used by the url parser.</summary>
-        [ConfigurationProperty("extension", DefaultValue = ".aspx")]
-        public string Extension
-        {
-            get { return (string)base["extension"]; }
-            set { base["extension"] = value; }
-        }
+	{
+		/// <summary>The default extension used by the url parser.</summary>
+		[ConfigurationProperty("extension", DefaultValue = ".aspx")]
+		public string Extension
+		{
+			get { return (string)base["extension"]; }
+			set { base["extension"] = value; }
+		}
+
+		/// <summary>The query string key used to identify the page.</summary>
+		[ConfigurationProperty("pageQueryKey", DefaultValue = "page")]
+		public string PageQueryKey
+		{
+			get { return (string)base["pageQueryKey"]; }
+			set { base["pageQueryKey"] = value; }
+		}
+
+		/// <summary>The query string key used to identify the item.</summary>
+		[ConfigurationProperty("itemQueryKey", DefaultValue = "item")]
+		public string ItemQueryKey
+		{
+			get { return (string)base["itemQueryKey"]; }
+			set { base["itemQueryKey"] = value; }
+		}
+
+		/// <summary>The query string key used to identify the part.</summary>
+		[ConfigurationProperty("partQueryKey", DefaultValue = "part")]
+		public string PartQueryKey
+		{
+			get { return (string)base["partQueryKey"]; }
+			set { base["partQueryKey"] = value; }
+		}
 
         /// <summary>Look for a content page when the requested resource has no extension.</summary>
         [ConfigurationProperty("observeEmptyExtension")]

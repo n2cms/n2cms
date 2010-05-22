@@ -1,4 +1,5 @@
-﻿- Enabled inline popups for tinymce file selection
+﻿- Option to re-configure the query string used for page, item and part
+- Enabled inline popups for tinymce file selection
 - Enabled firefox spellchecking
 - Updated tinyMCE to 3.3.5.1
 - Restricted of selectable images to files (ThreadId=213036)

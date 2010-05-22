@@ -1,3 +1,4 @@
+- upload from file selector (ThreadId=213011)
 - culture+top part: http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=210729
 
 v2

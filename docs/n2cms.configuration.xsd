@@ -88,6 +88,9 @@
 										</xs:element>
 									</xs:all>
 									<xs:attribute name="extension" type="xs:string" use="optional" />
+									<xs:attribute name="pageQueryKey" type="xs:string" use="optional" />
+									<xs:attribute name="itemQueryKey" type="xs:string" use="optional" />
+									<xs:attribute name="partQueryKey" type="xs:string" use="optional" />
 									<xs:attribute name="isWeb" type="xs:boolean" use="optional" />
 									<xs:attribute name="rewrite" use="optional">
 										<xs:simpleType>

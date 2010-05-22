@@ -52,6 +52,9 @@ namespace N2.Engine
 			if (hostConfig != null)
 			{
 				Url.DefaultExtension = hostConfig.Web.Extension;
+				PathData.PageQueryKey = hostConfig.Web.PageQueryKey;
+				PathData.ItemQueryKey = hostConfig.Web.ItemQueryKey;
+				PathData.PartQueryKey = hostConfig.Web.PartQueryKey;
 
 				if (!hostConfig.Web.IsWeb)
 					container.AddComponentInstance("n2.webContext.notWeb", typeof(IWebContext), new ThreadContext());

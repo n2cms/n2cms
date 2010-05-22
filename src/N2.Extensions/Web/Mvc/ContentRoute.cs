@@ -123,26 +123,26 @@ namespace N2.Web.Mvc
 			if (string.IsNullOrEmpty(actionName))
 				actionName = request.QueryString["action"] ?? "index";
 
-			if (!string.IsNullOrEmpty(request.QueryString["page"]))
+			if (!string.IsNullOrEmpty(request.QueryString[PathData.PageQueryKey]))
 			{
 				int pageId;
-				if (int.TryParse(request.QueryString["page"], out pageId))
+				if (int.TryParse(request.QueryString[PathData.PageQueryKey], out pageId))
 					td.CurrentItem = item = page = engine.Persister.Get(pageId);
 			}
 
 			ContentItem part = null;
-			if (!string.IsNullOrEmpty(request.QueryString["part"]))
+			if (!string.IsNullOrEmpty(request.QueryString[PathData.PartQueryKey]))
 			{
 				// part in query string is used to render a part
 				int partId;
-				if (int.TryParse(request.QueryString["part"], out partId))
+				if (int.TryParse(request.QueryString[PathData.PartQueryKey], out partId))
 					item = part = engine.Persister.Get(partId);
 			}
-			else if (!string.IsNullOrEmpty(request.QueryString["item"]))
+			else if (!string.IsNullOrEmpty(request.QueryString[PathData.ItemQueryKey]))
 			{
 				// item in query string is passed as information to maintain similar behavior to webforms
 				int itemId;
-				if (int.TryParse(request.QueryString["item"], out itemId))
+				if (int.TryParse(request.QueryString[PathData.ItemQueryKey], out itemId))
 					part = engine.Persister.Get(itemId);
 			}
 

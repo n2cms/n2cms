@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Collections.Specialized;
 using N2.Engine;
+using N2.Web;
 
 namespace N2.Edit.Navigation
 {
@@ -28,7 +29,7 @@ namespace N2.Edit.Navigation
 
 		protected ContentItem GetSelectedItem(NameValueCollection queryString)
 		{
-			string path = queryString["selected"];
+			string path = queryString[PathData.SelectedQueryKey];
 			return N2.Context.Current.Resolve<N2.Edit.Navigator>().Navigate(path);
 		}
 	}

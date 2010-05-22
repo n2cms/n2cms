@@ -39,15 +39,35 @@ namespace N2.Web
 
 		static string itemQueryKey = "item";
 		static string pageQueryKey = "page";
+		static string partQueryKey = "part";
+		static string selectedQueryKey = "selected";
+
+		/// <summary>The item query string parameter.</summary>
 		public static string ItemQueryKey
 		{
 			get { return itemQueryKey; }
 			set { itemQueryKey = value; }
 		}
+
+		/// <summary>The page query string parameter.</summary>
 		public static string PageQueryKey
 		{
 			get { return pageQueryKey; }
 			set { pageQueryKey = value; }
+		}
+
+		/// <summary>The part query string parameter.</summary>
+		public static string PartQueryKey
+		{
+			get { return partQueryKey; }
+			set { partQueryKey = value; }
+		}
+		
+		/// <summary>The selection query string parameter.</summary>
+		public static string SelectedQueryKey
+		{
+			get { return PathData.selectedQueryKey; }
+			set { PathData.selectedQueryKey = value; }
 		}
 		#endregion
 
