@@ -63,7 +63,7 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="web">
+							<xs:element name="web" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
 										<xs:element name="urls" minOccurs="0">
@@ -115,10 +115,11 @@
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
-						<xs:attribute name="rootID" type="xs:integer" use="required" />
-						<xs:attribute name="startPageID" type="xs:integer" use="required" />
+						<xs:attribute name="rootID" type="xs:integer" use="optional" />
+						<xs:attribute name="startPageID" type="xs:integer" use="optional" />
 						<xs:attribute name="multipleSites" type="xs:boolean" use="optional" />
 						<xs:attribute name="wildcards" type="xs:boolean" use="optional" />
+						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="engine">
@@ -223,6 +224,8 @@
 												<xs:attribute name="sortOrder" type="xs:int" />
 												<xs:attribute name="toolTip" type="xs:string" />
 												<xs:attribute name="description" type="xs:string" />
+												<xs:attribute name="engineType" type="xs:string" />
+												<xs:attribute name="dynamicDiscovery" type="xs:boolean" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
@@ -233,6 +236,8 @@
 						<xs:attribute name="multipleSitesConfiguration" type="xs:string" use="optional" />
 						<xs:attribute name="dynamicDiscovery" type="xs:boolean" use="optional" />
 						<xs:attribute name="castleSection" type="xs:string" use="optional" />
+						<xs:attribute name="engineType" type="xs:string" use="optional" />
+						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="database">
@@ -275,6 +280,7 @@
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="hibernateMapping" type="xs:string" use="optional" />
+						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="edit">
@@ -421,6 +427,7 @@
 						<xs:attribute name="editInterfaceUrl" type="xs:string" use="optional" />
 						<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
 						<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
+						<xs:attribute name="configSource" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="templates">

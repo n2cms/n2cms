@@ -153,6 +153,9 @@ namespace N2.Web.Mvc
 				item = page;
 			}
 
+			if (item == null)
+				return null;
+
 			var controllerName = controllerMapper.GetControllerName(item.GetType());
 
 			if (controllerName == null)
