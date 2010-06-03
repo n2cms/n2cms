@@ -2,7 +2,6 @@
 - allow running migrations regardless of version (ThreadId=213350)
 - upload from file selector (ThreadId=213011)
 - culture+top part (ThreadId=210729)
-- Moderation of comments
 
 v2
 - globalization changes http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=212056&ProjectName=n2cms

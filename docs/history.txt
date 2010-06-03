@@ -1,4 +1,5 @@
-﻿- Fixed RenderAction issue (ThreadId=214754)
+﻿- Moderation of comments (MVC)
+- Fixed RenderAction issue (ThreadId=214754)
 - Option to re-configure the query string used for page, item and part
 - Enabled inline popups for tinymce file selection
 - Enabled firefox spellchecking
