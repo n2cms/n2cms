@@ -38,10 +38,14 @@ namespace N2.Edit.Installation
 			return results;
 		}
 
+		public virtual IEnumerable<AbstractMigration> GetAllMigrations()
+		{
+			return container.ResolveAll<AbstractMigration>();
+		}
+
 		public virtual IEnumerable<AbstractMigration> GetMigrations(DatabaseStatus initialStatus)
 		{
-			return container.ResolveAll<AbstractMigration>()
-				.Where(m => m.IsApplicable(initialStatus));
+			return GetAllMigrations().Where(m => m.IsApplicable(initialStatus));
 		}
 	}
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using N2.Installation;
 using N2.Edit.Installation;
 using System.Collections.Generic;
 using System.Text;
+using System.Web.UI.WebControls;
 
 namespace N2.Edit.Install
 {
@@ -28,6 +30,16 @@ namespace N2.Edit.Install
 			}
 		}
 
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			foreach(var m in Migrator.GetAllMigrations())
+			{
+				cblMigrations.Items.Add(new ListItem(m.Title, m.GetType().Name) { Selected = m.IsApplicable(Status) });
+			}
+		}
+
 		protected void btnInstallAndMigrate_Click(object sender, EventArgs e)
 		{
 			ExecuteWithErrorHandling(() =>
@@ -41,7 +53,11 @@ namespace N2.Edit.Install
 		{
 			ExecuteWithErrorHandling(() =>
 				{
-					ShowResults(Migrator.MigrateOnly(Status));
+					var results = Migrator.GetAllMigrations()
+						.Where(m => cblMigrations.Items.FindByValue(m.GetType().Name).Selected)
+						.Select(m => m.Migrate(Status))
+						.ToList();
+					ShowResults(results);
 				});
 			status = null;
 		}
@@ -49,14 +65,17 @@ namespace N2.Edit.Install
 		private void ShowResults(IEnumerable<MigrationResult> results)
 		{
 			StringBuilder errorText = new StringBuilder();
+			lblResult.Text += "<ul>";
 			foreach (var result in results)
 			{
-				lblResult.Text += result.Migration.Title + " executed updating " + result.UpdatedItems + " items.<br/>";
+				string message = result.Migration.Title + " executed updating " + result.UpdatedItems + " items.";
 				foreach(string error in result.Errors)
 				{
 					errorText.AppendFormat("{0} error: {1}<br/>", result.Migration.Title, error);
 				}
+				lblResult.Text += string.Format("<li class='{0}'>{1}</li>", result.Errors.Count > 0 ? "warning" : "ok", message);
 			}
+			lblResult.Text += "</ul>";
 
 			errorLabel.Text = errorText.ToString();
 		}

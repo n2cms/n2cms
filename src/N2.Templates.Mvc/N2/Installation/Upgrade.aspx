@@ -60,15 +60,26 @@
 		    </script>
 		    <hr />
 			<p><a href="#advancedcontentoptions" onclick="return showadvancedcontentoptions.call(this);">Advanced options (includes update schema only and script download).</a></p>
-			<p id="advancedcontentoptions" style="display:none;">
-				Optionally I can 
-				<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="update tables" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Click this button to update the database schema" CausesValidation="false"/> 
-				only, 
-				<asp:Button ID="btnMigrate" runat="server" OnClick="btnMigrate_Click" Text="run migrations" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Execute migrations against current database" CausesValidation="false"/> 
-				against the current version, or 
-				<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate update database script" CausesValidation="false" />
-				for the connection type <strong><%= Status.ConnectionType %></strong> and create the tables myself.
-            </p>
+			<div id="advancedcontentoptions" style="display:none;">
+				<p>
+					Only 
+					<asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="update tables" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Click this button to update the database schema" CausesValidation="false"/> 
+					without running migrations.
+				</p>
+				<p>
+					<asp:Button ID="btnExport" runat="server" OnClick="btnExportSchema_Click" Text="download the SQL script" ToolTip="Click this button to generate update database script" CausesValidation="false" />
+					for the connection type <strong><%= Status.ConnectionType %></strong> and manually update tables.
+				</p>
+				<p>
+					Manually select 
+					<blockquote>
+						<asp:CheckBoxList ID="cblMigrations" runat="server" />
+					</blockquote>
+					and 
+					<asp:Button ID="btnMigrate" runat="server" OnClick="btnMigrate_Click" Text="run selected migrations" OnClientClick="return confirm('Updating the database makes changes to the information on the site. I confirm that everything is backed-up and want to continue.');" ToolTip="Execute migrations against current database" CausesValidation="false"/> 
+					against the current version of the database.
+				</p>
+            </div>
 		</n2:TabPanel>
         <asp:Label EnableViewState="false" ID="errorLabel" runat="server" CssClass="errorLabel" />
     </div>

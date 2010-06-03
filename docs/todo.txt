@@ -1,5 +1,3 @@
-- controller issue (ThreadId=213586)
-- allow running migrations regardless of version (ThreadId=213350)
 - upload from file selector (ThreadId=213011)
 - culture+top part (ThreadId=210729)
 
