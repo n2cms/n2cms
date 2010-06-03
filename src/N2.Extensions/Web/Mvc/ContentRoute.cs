@@ -225,9 +225,9 @@ namespace N2.Web.Mvc
 			ContentItem item;
 
 			// try retrieving the item from the route values
-			if (!TryConvertContentToController(values, ContentPartKey, out item)
-				&& !TryConvertContentToController(values, ContentItemKey, out item)
-				&& !TryConvertContentToController(values, ContentPageKey, out item))
+			if (!TryConvertContentToController(requestContext, values, ContentPartKey, out item)
+				&& !TryConvertContentToController(requestContext, values, ContentItemKey, out item)
+				&& !TryConvertContentToController(requestContext, values, ContentPageKey, out item))
 			{
 				// no item was passed, fallback to current content item
 				item = requestContext.CurrentItem();
@@ -236,8 +236,7 @@ namespace N2.Web.Mvc
 					// no item = no play
 					return null;
 
-				string controller = controllerMapper.GetControllerName(item.GetType());
-				if (values.ContainsKey(ControllerKey) && !string.Equals(values[ControllerKey] as string, controller, StringComparison.InvariantCultureIgnoreCase))
+				if (!RequestedControllerMatchesItemController(values, item))
 					// someone's asking for a specific controller so we let another route handle it
 					return null;
 			}
@@ -263,6 +262,17 @@ namespace N2.Web.Mvc
 
 			// can't find a page, don't link
 			return null;
+		}
+
+		private bool RequestedControllerMatchesItemController(RouteValueDictionary values, ContentItem item)
+		{
+			string requestedController = values[ControllerKey] as string;
+			if (requestedController == null)
+				return true;
+
+			string itemController = controllerMapper.GetControllerName(item.GetType());
+
+			return string.Equals(requestedController, itemController, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		private VirtualPathData ResolvePartActionUrl(RequestContext requestContext, RouteValueDictionary values, ContentItem page, ContentItem item)
@@ -297,7 +307,7 @@ namespace N2.Web.Mvc
 			return vpd;
 		}
 
-		private bool TryConvertContentToController(RouteValueDictionary values, string key, out ContentItem item)
+		private bool TryConvertContentToController(RequestContext request, RouteValueDictionary values, string key, out ContentItem item)
 		{
 			if (!values.ContainsKey(key))
 			{
@@ -307,21 +317,19 @@ namespace N2.Web.Mvc
 
 			object value = values[key];
 			item = value as ContentItem;
-			if (item != null)
-			{
-				// overwrite currently executing controller when "item" is passed
-				values.Remove(key);
-				values[ControllerKey] = controllerMapper.GetControllerName(item.GetType());
-				return true;
-			}
-			else if (value is int)
+			if (item == null && value is int)
 			{
 				item = engine.Persister.Get((int)value);
-				values[ControllerKey] = controllerMapper.GetControllerName(item.GetType());
-				return true;
 			}
 
-			return false;
+			if (item == null || item == request.CurrentItem())
+				// got item from merged values
+				return false;
+			
+			// replace requested controller when other "item" is passed
+			values.Remove(key);
+			values[ControllerKey] = controllerMapper.GetControllerName(item.GetType());
+			return true;
 		}
 	}
 }

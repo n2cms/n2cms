@@ -287,6 +287,38 @@ namespace N2.Extensions.Tests.Mvc
 		}
 
 		[Test]
+		public void GetVirtualPathTo_SameController_IsNotNull()
+		{
+			RoutePath("/about/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "aboutussectionpage" }));
+
+			Assert.That(vpd, Is.Not.Null);
+			Assert.That(vpd.VirtualPath, Is.EqualTo("about"));
+		}
+
+		[Test]
+		public void GetVirtualPathTo_SameController_AddsAction()
+		{
+			RoutePath("/about/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "aboutussectionpage", action = "more" }));
+
+			Assert.That(vpd, Is.Not.Null);
+			Assert.That(vpd.VirtualPath, Is.EqualTo("about/more"));
+		}
+
+		[Test]
+		public void GetVirtualPathTo_OtherController_IsNull()
+		{
+			RoutePath("/about/");
+
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "hello", action = "index" }));
+
+			Assert.That(vpd, Is.Null);
+		}
+
+		[Test]
 		public void GetVirtualPath_ToAction_OnOtherContentItem()
 		{
 			RoutePath("/about/executives/");
