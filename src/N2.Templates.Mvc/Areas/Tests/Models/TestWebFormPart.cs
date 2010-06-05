@@ -6,7 +6,7 @@ using System.Web;
 
 namespace N2.Templates.Mvc.Areas.Tests.Models
 {
-	[PartDefinition(TemplateUrl = "~/Areas/Tests/Views/Forms/TestWebFormPart.ascx")]
+	[PartDefinition("Test WebForm", TemplateUrl = "~/Areas/Tests/Views/Forms/TestWebFormPart.ascx", SortOrder = 1002)]
 	public class TestWebFormPart : ContentItem
 	{
 	}

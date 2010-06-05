@@ -144,9 +144,14 @@
     <Compile Include="Areas\Management\Root.aspx.designer.cs">
       <DependentUpon>Root.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Tests\Controllers\DemoController.cs" />
     <Compile Include="Areas\Tests\Controllers\QueryViewerController.cs" />
     <Compile Include="Areas\Tests\Controllers\TestContentController.cs" />
     <Compile Include="Areas\Tests\Controllers\TestController.cs" />
+    <Compile Include="Areas\Tests\Demo\DemoFileSystem.cs" />
+    <Compile Include="Areas\Tests\Demo\DemoInitializer.cs" />
+    <Compile Include="Areas\Tests\Models\DemoPart.cs" />
+    <Compile Include="Areas\Tests\Models\DemoViewModel.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewData.cs" />
     <Compile Include="Areas\Tests\Models\QueryViewerPart.cs" />
     <Compile Include="Areas\Tests\Models\TestItemBase.cs" />
@@ -397,6 +402,7 @@
     <Content Include="Image.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App_Data\Concrete_SampleData.gz" />
     <None Include="App_Data\ContentFocus_SampleData.gz" />
     <None Include="App_Data\Corporate_SampleData.gz" />
     <None Include="App_Data\DarkStrips_SampleData.gz" />
@@ -525,6 +531,12 @@
     <Content Include="Views\Tracking\Index.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Concrete_SampleData.gz.txt" />
+    <Content Include="App_Data\ContentFocus_SampleData.gz.txt" />
+    <Content Include="App_Data\Corporate_SampleData.gz.txt" />
+    <Content Include="App_Data\DarkStrips_SampleData.gz.txt" />
+    <Content Include="App_Data\KhakiTabs_SampleData.gz.txt" />
+    <Content Include="App_Data\Plain_SampleData.gz.txt" />
     <Content Include="App_Themes\Concrete\Style.css" />
     <Content Include="App_Themes\Concrete\Thumbnail.jpg" />
     <Content Include="App_Themes\ContentFocus\Thumbnail.jpg" />
@@ -584,6 +596,13 @@
     <Content Include="Areas\Management\Views\ManageAnalytics\InputToken.ascx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\SelectAccount.ascx" />
     <Content Include="Areas\Management\Views\ManageAnalytics\Statistics.ascx" />
+    <Content Include="Areas\Tests\Demo\lav.jpg" />
+    <Content Include="Areas\Tests\Demo\lime.jpg" />
+    <Content Include="Areas\Tests\Demo\logo_white.png" />
+    <Content Include="Areas\Tests\Demo\skal.jpg" />
+    <Content Include="Areas\Tests\Demo\thorn.jpg" />
+    <Content Include="Areas\Tests\Views\Demo\Authenticated.ascx" />
+    <Content Include="Areas\Tests\Views\Demo\Unauthenticated.ascx" />
     <Content Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx" />
     <Content Include="Areas\Tests\Views\QueryViewer\Index.ascx" />
     <Content Include="Areas\Tests\Views\TestContent\Dictionary.ascx" />

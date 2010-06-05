@@ -1,0 +1,130 @@
+#if DEMO
+using System;
+using System.Configuration;
+using System.IO;
+using System.Web;
+using N2;
+using N2.Details;
+using N2.Plugin;
+using N2.Persistence.Serialization;
+using N2.Templates.Mvc.Models.Pages;
+
+namespace N2.Templates.Mvc.Areas.Tests.Demo
+{
+	[AutoInitialize]
+	public class DemoInitializer : IPluginInitializer
+	{
+		public void Initialize(N2.Engine.IEngine factory)
+		{
+			if (ConfigurationManager.AppSettings["Demo.EnableContentReset"] == "true")
+			{
+				ReplaceContent(factory);
+
+				CopyFiles(factory);
+
+				factory.Persister.ItemSaving += Persister_ItemSaving;
+			}
+		}
+
+
+		void Persister_ItemSaving(object sender, CancellableItemEventArgs e)
+		{
+			foreach (var cd in e.AffectedItem.Details.Values)
+			{
+				var sd = cd as StringDetail;
+				if(sd != null)
+				{
+					if(sd.StringValue.Contains("script"))
+					{
+						throw new Exception("The demo site does not allow scripts to be entered.");
+					}
+				}
+			}
+		}
+
+		private static void CopyFiles(N2.Engine.IEngine factory)
+		{
+			HttpServerUtility server = HttpContext.Current.Server;
+			foreach(string folder in factory.EditManager.UploadFolders)
+			{
+                string upload = server.MapPath(folder);
+                DeleteFilesAndFolders(upload);
+			}
+			File.Copy(server.MapPath("~/Areas/Tests/Demo/lav.jpg"), server.MapPath("~/upload/lav.jpg"), true);
+			File.Copy(server.MapPath("~/Areas/Tests/Demo/lime.jpg"), server.MapPath("~/upload/lime.jpg"), true);
+			File.Copy(server.MapPath("~/Areas/Tests/Demo/skal.jpg"), server.MapPath("~/upload/skal.jpg"), true);
+			File.Copy(server.MapPath("~/Areas/Tests/Demo/thorn.jpg"), server.MapPath("~/upload/thorn.jpg"), true);
+			File.Copy(server.MapPath("~/Areas/Tests/Demo/logo_white.png"), server.MapPath("~/upload/logo_white.png"), true);
+		}
+
+		private static void DeleteFilesAndFolders(string upload)
+		{
+			foreach (string path in Directory.GetFiles(upload))
+				File.Delete(path);
+			foreach (string path in Directory.GetDirectories(upload))
+				if((new System.IO.DirectoryInfo(path).Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
+					Directory.Delete(path, true);
+		}
+
+
+		private void ReplaceContent(N2.Engine.IEngine factory)
+		{
+			var installer = factory.Resolve<N2.Edit.Installation.InstallationManager>();
+			installer.Install();
+			var root = installer.InsertExportFile(File.OpenRead(HttpContext.Current.Server.MapPath("~/App_Data/Concrete_SampleData.gz")), "Concrete_SampleData.gz");
+			if (root.ID != factory.Host.CurrentSite.RootItemID)
+				factory.Host.CurrentSite.RootItemID = root.ID;
+			foreach (ContentItem item in root.Children)
+			{
+				if (item.ID == factory.Host.DefaultSite.StartPageID && item is StartPage)
+				{
+					CreateDemoPanel(factory, item);
+					return;
+				}
+			}
+
+			foreach (ContentItem item in root.Children)
+			{
+				if (item is StartPage)
+				{
+					CreateDemoPanel(factory, item);
+					factory.Host.DefaultSite.StartPageID = item.ID;
+					return;
+				}
+			}
+		}
+
+
+		private static void CreateDemoPanel(N2.Engine.IEngine factory, ContentItem item)
+		{
+			var part = factory.Definitions.CreateInstance<Models.DemoPart>(item);
+			part.ZoneName = "Right";
+			part.SortOrder = -1000000;
+			item.Children.Insert(0, part);
+
+			factory.Persister.Save(part);
+		}
+
+		private static void RemoveExistingPages(N2.Engine.IEngine factory, ContentItem rootPage)
+		{
+			while (rootPage.Children.Count > 0)
+				factory.Persister.Delete(rootPage.Children[0]);
+		}
+
+		private static void UpdateRootPage(N2.Engine.IEngine factory, ContentItem imported, ContentItem startPage)
+		{
+			startPage.Title = imported.Title;
+			startPage.Name = imported.Name;
+			foreach (N2.Details.ContentDetail detail in imported.Details.Values)
+				startPage[detail.Name] = detail.Value;
+			factory.Persister.Save(startPage);
+		}
+
+		private static void ClearPreviousVersions(N2.Engine.IEngine factory, ContentItem rootPage)
+		{
+			foreach (ContentItem version in factory.Resolve<N2.Persistence.Finder.IItemFinder>().Where.VersionOf.Eq(rootPage).Select())
+				factory.Persister.Delete(version);
+		}
+	}
+}
+#endif

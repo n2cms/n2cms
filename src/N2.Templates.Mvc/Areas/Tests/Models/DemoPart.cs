@@ -1,4 +1,4 @@
-﻿#if DEBUG
+﻿#if DEMO
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +6,8 @@ using System.Web;
 
 namespace N2.Templates.Mvc.Areas.Tests.Models
 {
-	[PartDefinition("Test", SortOrder = 1001)]
-	public class TestPart : TestItemBase
+	[PartDefinition("Demo", SortOrder = 2000)]
+	public class DemoPart : TestPart
 	{
 	}
 }
