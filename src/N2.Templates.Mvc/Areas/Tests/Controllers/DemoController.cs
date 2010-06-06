@@ -82,11 +82,11 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			string serverUn = ConfigurationManager.AppSettings["Demo.SmtpUN"];
 			string serverPw = ConfigurationManager.AppSettings["Demo.SmtpPW"];
 
-			MailMessage mm = new MailMessage(from, to);
-			mm.Subject = subject;
-			mm.Body = string.Format(body, body);
 			try
 			{
+				MailMessage mm = new MailMessage(from, to);
+				mm.Subject = subject;
+				mm.Body = string.Format(body, body);
 				SmtpClient sc = new SmtpClient();
 				if (!string.IsNullOrEmpty(serverUn))
 					sc.Credentials = new System.Net.NetworkCredential(serverUn, serverPw);

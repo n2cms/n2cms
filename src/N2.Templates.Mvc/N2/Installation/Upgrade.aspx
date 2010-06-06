@@ -28,6 +28,9 @@
 			
 			<% if (Status.NeedsUpgrade){ %>
 			<p class="warning">The database needs to be upgraded.</p>
+				<% if(Status.ConnectionType == "MySqlConnection") {%>
+			<p class="warning">MySQL database might not be upgradeable from this interface. Execute <a href="mysql.upgrade.2.sql">mysql.upgrade.2.sql</a> with an SQL admin tool and manually execute migrations from advanced optins.</p>
+				<% } %>
 			<% } else if (!Status.IsInstalled){ %>
 			<p class="error">No database to be upgraded. Please <a href="Default.aspx">install using the installation wizard</a>.</p>
 			<hr />

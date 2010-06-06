@@ -20,7 +20,10 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 			{
 				ReplaceContent(factory);
 
-				CopyFiles(factory);
+				if (ConfigurationManager.AppSettings["Demo.EnableUploadReset"] == "true")
+				{
+					CopyFiles(factory);
+				}
 
 				factory.Persister.ItemSaving += Persister_ItemSaving;
 			}
@@ -50,11 +53,13 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
                 string upload = server.MapPath(folder);
                 DeleteFilesAndFolders(upload);
 			}
-			File.Copy(server.MapPath("~/Areas/Tests/Demo/lav.jpg"), server.MapPath("~/upload/lav.jpg"), true);
-			File.Copy(server.MapPath("~/Areas/Tests/Demo/lime.jpg"), server.MapPath("~/upload/lime.jpg"), true);
-			File.Copy(server.MapPath("~/Areas/Tests/Demo/skal.jpg"), server.MapPath("~/upload/skal.jpg"), true);
-			File.Copy(server.MapPath("~/Areas/Tests/Demo/thorn.jpg"), server.MapPath("~/upload/thorn.jpg"), true);
-			File.Copy(server.MapPath("~/Areas/Tests/Demo/logo_white.png"), server.MapPath("~/upload/logo_white.png"), true);
+			foreach(string file in Directory.GetFiles(server.MapPath("~/Areas/Tests/Demo/")))
+			{
+				if(file.EndsWith(".jpg") || file.EndsWith(".png"))
+				{
+					File.Copy(file, server.MapPath("~/upload/" + Path.GetFileName(file)), true);
+				}
+			}
 		}
 
 		private static void DeleteFilesAndFolders(string upload)

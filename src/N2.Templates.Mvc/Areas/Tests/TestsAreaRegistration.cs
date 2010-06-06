@@ -1,4 +1,4 @@
-﻿#if DEBUG
+﻿#if DEMO
 using System.Web.Mvc;
 using N2.Web.Mvc;
 
@@ -8,10 +8,7 @@ namespace N2.Templates.Mvc.Areas.Tests
 	{
 		public override string AreaName
 		{
-			get
-			{
-				return "Tests";
-			}
+			get { return "Tests"; }
 		}
 
 		public override void RegisterArea(AreaRegistrationContext context)

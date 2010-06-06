@@ -7,7 +7,7 @@ using System.Web;
 namespace N2.Templates.Mvc.Areas.Tests.Models
 {
 	[PartDefinition("Demo", SortOrder = 2000)]
-	public class DemoPart : TestPart
+	public class DemoPart : TestItemBase
 	{
 	}
 }
