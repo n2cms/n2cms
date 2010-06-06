@@ -67,9 +67,6 @@
     <Content Include="default.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyVersion.cs">
-      <Link>AssemblyVersion.cs</Link>
-    </Compile>
     <Compile Include="App_GlobalResources\ControlPanel.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -591,10 +588,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
-		<Content Include="App_Data\Web.n2.host.config">
-			<DependentUpon>Web.config</DependentUpon>
-		</Content>
-	</ItemGroup>
+    <Content Include="App_Data\Web.n2.host.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\Corporate\amazed.gif" />
     <Content Include="App_Themes\Corporate\body_bg.gif" />
