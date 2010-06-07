@@ -63,9 +63,9 @@ namespace N2.Security
         {
             this.webContext = webContext;
 
-			Administrators = config.Editors.ToPermissionMap(Permission.Full, defaultAdministratorRoles, defaultAdministratorUsers);
+			Administrators = config.Administrators.ToPermissionMap(Permission.Full, defaultAdministratorRoles, defaultAdministratorUsers);
 			Editors = config.Editors.ToPermissionMap(Permission.ReadWritePublish, defaultEditorRoles, none);
-			Writers = config.Editors.ToPermissionMap(Permission.ReadWrite, defaultWriterRoles, none);
+			Writers = config.Writers.ToPermissionMap(Permission.ReadWrite, defaultWriterRoles, none);
         }
 
 		#region Properties
