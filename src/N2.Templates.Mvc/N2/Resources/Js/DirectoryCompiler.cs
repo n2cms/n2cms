@@ -15,13 +15,37 @@ namespace N2.Edit.Js
 
 		protected virtual TimeSpan CacheExpiration
 		{
-			get { return TimeSpan.FromHours(12); }
+			get { return TimeSpan.FromHours(1); }
 		}
 
 		public void ProcessRequest(HttpContext context)
 		{
 			this.Context = context;
 			
+			string ifModifiedSince = context.Request.Headers["If-Modified-Since"];
+			if (!string.IsNullOrEmpty(ifModifiedSince))
+			{
+				DateTimeOffset since;
+				if (DateTimeOffset.TryParse(ifModifiedSince, out since))
+				{
+					bool wasModifiedSince = false;
+					foreach (string file in GetFiles(context))
+					{
+						if (File.GetLastWriteTimeUtc(file) > since)
+						{
+							wasModifiedSince = true;
+							break;
+						}
+					}
+
+					if (!wasModifiedSince)
+					{
+						context.Response.Status = "304 Not Modified";
+						context.Response.End();
+					}
+				}
+			}
+
 			context.Response.ContentType = this.ContentType;
 			context.Response.Buffer = false;
 			SetCache(context);
@@ -29,8 +53,13 @@ namespace N2.Edit.Js
 			foreach (string file in GetFiles(context))
 			{
 #if DEBUG
-//TODO ensure that it correct for JS and CSS, at least '//' doesn't work for CSS
-				context.Response.Write(Environment.NewLine + "/*" + Path.GetFileName(file) + "*/" + Environment.NewLine);
+				context.Response.Write(Environment.NewLine
+					+ Environment.NewLine
+					+ "/*** " + Path.GetFileName(file) + " ***/"
+					+ Environment.NewLine
+					+ Environment.NewLine);
+#else
+				context.Response.Write(Environment.NewLine + Environment.NewLine);
 #endif
 
 				context.Response.Write(this.ReadFileContent(file));
@@ -39,7 +68,7 @@ namespace N2.Edit.Js
 
 		protected virtual IEnumerable<string> GetFiles(HttpContext context)
 		{
-			string dir = HostingEnvironment.MapPath(FolderUrl);
+			string dir = context.Server.MapPath(FolderUrl);
 			List<string> _files = new List<string>();
 			
 			foreach(string _mask in this.FileMasks) {
@@ -51,11 +80,11 @@ namespace N2.Edit.Js
 		
 		protected virtual void SetCache(HttpContext context)
 		{
-			context.Response.Cache.SetExpires(DateTime.Now.Add(CacheExpiration));
+			context.Response.Cache.SetExpires(DateTime.UtcNow.Add(CacheExpiration));
 			context.Response.Cache.SetCacheability(HttpCacheability.Public);
-			context.Response.Cache.SetValidUntilExpires(false);
-			context.Response.Cache.VaryByHeaders["Accept-Encoding"] = true;
-			context.Response.Cache.VaryByParams["*"] = true;
+			context.Response.Cache.SetLastModified(DateTime.UtcNow);
+			context.Response.Cache.SetMaxAge(CacheExpiration);
+			context.Response.Cache.SetValidUntilExpires(true);
 		}
 		
 		/// <summary>

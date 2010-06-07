@@ -25,4 +25,4 @@
     						.focus(toggleDimmer)
     						.blur(checkDimming);
     };
-})(jQuery);
+})(jQuery);;

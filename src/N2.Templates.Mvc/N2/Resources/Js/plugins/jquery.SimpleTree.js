@@ -1,4 +1,4 @@
-$.fn.SimpleTree = function(opt) {
+﻿$.fn.SimpleTree = function(opt) {
 	this.each(function() {
 		var TREE = this;
 		var ROOT = $('li:first', this);
@@ -57,7 +57,7 @@ $.fn.SimpleTree = function(opt) {
 			$(obj).prepend('<a class="toggler" href="#">&nbsp;</a>');
 			$('>.toggler', obj).bind('click', function(e) {
 				e.preventDefault();
-				
+
 				var childUl = $('>ul', obj);
 				var className = obj.className;
 				if (childUl.is(':visible')) {
@@ -124,4 +124,4 @@ $.fn.SimpleTree = function(opt) {
 		};
 		TREE.init(ROOT);
 	});
-}
+};;

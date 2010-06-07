@@ -35,5 +35,5 @@
         $(document.body).click(closeMenu);
         return $menu;
     }
-})(jQuery);
+})(jQuery);;
 

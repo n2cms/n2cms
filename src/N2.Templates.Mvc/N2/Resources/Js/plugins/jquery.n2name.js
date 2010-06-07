@@ -58,4 +58,4 @@
                 $ku.trigger('click');
         }
     };
-})(jQuery);
+})(jQuery);;

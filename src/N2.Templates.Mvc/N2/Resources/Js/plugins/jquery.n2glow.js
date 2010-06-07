@@ -26,4 +26,4 @@
     $.fn.n2glow = function() {
         return this.hover(over, out).mousemove(move);
     };
-})(jQuery);
+})(jQuery);;

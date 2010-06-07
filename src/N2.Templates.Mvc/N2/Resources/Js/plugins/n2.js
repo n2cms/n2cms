@@ -234,4 +234,4 @@ window.n2.frameManager = {
     contentHeight: function() {
         return ;
     }
-};
+};;

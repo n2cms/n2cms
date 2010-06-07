@@ -23,8 +23,8 @@
 		<%} %>
 	</div></div>
 </div>
-<script type="text/javascript">
+<script type="text/javascript">	//<![CDATA[
 	$(document).ready(function() {
 		$("#demo .box").fadeIn("slow");
 	});
-</script>
+//]]></script>

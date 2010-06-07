@@ -1,4 +1,4 @@
-/*
+﻿/*
  * n2tabs 0.2 - Copyright (c) 2007 Cristian Libardo
  */
 
@@ -128,4 +128,4 @@
 		}, 200);
 		this.n2tabs_handlePostBack(toShowId);
 	}
-})(jQuery);
+})(jQuery); ;
