@@ -121,7 +121,7 @@
     <value>Annuller</value>
   </data>
   <data name="btnCopy.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/png/page_copy.png' alt='kopier'/&gt; Forsøg igen</value>
+    <value>&lt;img src='../Resources/Icons/page_copy.png' alt='kopier'/&gt; Forsøg igen</value>
   </data>
   <data name="CopyPage.TitleFormat" xml:space="preserve">
     <value>Kopier "{0}" til "{1}"</value>

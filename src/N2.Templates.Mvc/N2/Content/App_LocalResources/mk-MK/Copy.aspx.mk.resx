@@ -121,7 +121,7 @@
     <value>Откажи</value>
   </data>
   <data name="btnCopy.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/png/page_copy.png' /&gt; Пробајте повторно</value>
+    <value>&lt;img src='../Resources/Icons/page_copy.png' /&gt; Пробајте повторно</value>
   </data>
   <data name="CopyPage.TitleFormat" xml:space="preserve">
     <value>Копирај го "{0}" во "{1}"</value>

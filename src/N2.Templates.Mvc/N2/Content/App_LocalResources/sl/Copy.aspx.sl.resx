@@ -121,7 +121,7 @@
     <value>Prekliči</value>
   </data>
   <data name="btnCopy.Text" xml:space="preserve">
-    <value>&lt;img src='img/ico/png/page_copy.png' /&gt; Poskusi ponovno</value>
+    <value>&lt;img src='../Resources/Icons/page_copy.png' /&gt; Poskusi ponovno</value>
   </data>
   <data name="CopyPage.TitleFormat" xml:space="preserve">
     <value>Kopiraj "{0}" v "{1}"</value>
