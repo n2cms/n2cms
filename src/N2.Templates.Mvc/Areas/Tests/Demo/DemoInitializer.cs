@@ -76,7 +76,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 		{
 			var installer = factory.Resolve<N2.Edit.Installation.InstallationManager>();
 			installer.Install();
-			var root = installer.InsertExportFile(File.OpenRead(HttpContext.Current.Server.MapPath("~/App_Data/Concrete_SampleData.gz")), "Concrete_SampleData.gz");
+			var root = installer.InsertExportFile(File.OpenRead(HttpContext.Current.Server.MapPath("~/App_Data/Demo.n2.xml.gz")), "Concrete_SampleData.gz");
 			if (root.ID != factory.Host.CurrentSite.RootItemID)
 				factory.Host.CurrentSite.RootItemID = root.ID;
 			foreach (ContentItem item in root.Children)
@@ -102,12 +102,15 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 
 		private static void CreateDemoPanel(N2.Engine.IEngine factory, ContentItem item)
 		{
-			var part = factory.Definitions.CreateInstance<Models.DemoPart>(item);
-			part.ZoneName = "Right";
-			part.SortOrder = -1000000;
-			item.Children.Insert(0, part);
+			if (ConfigurationManager.AppSettings["Demo.CreateDemoPanel"] == "true")
+			{
+				var part = factory.Definitions.CreateInstance<Models.DemoPart>(item);
+				part.ZoneName = "Right";
+				part.SortOrder = -1000000;
+				item.Children.Insert(0, part);
 
-			factory.Persister.Save(part);
+				factory.Persister.Save(part);
+			}
 		}
 
 		private static void RemoveExistingPages(N2.Engine.IEngine factory, ContentItem rootPage)

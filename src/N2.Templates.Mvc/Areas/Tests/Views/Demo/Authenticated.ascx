@@ -28,3 +28,6 @@
 		$("#demo .box").fadeIn("slow");
 	});
 //]]></script>
+<style>
+	.bubble { display:none; }
+</style>

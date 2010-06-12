@@ -18,3 +18,6 @@
 		$("#demo .box").css("background-color", "#ffc").slideDown().fadeIn("slow");
 	});
 //]]></script>
+<style>
+	.bubble { left:30px; top:20px; }
+</style>
