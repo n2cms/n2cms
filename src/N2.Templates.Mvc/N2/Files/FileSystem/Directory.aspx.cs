@@ -6,6 +6,7 @@ using N2.Edit.FileSystem.Items;
 using N2.Resources;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using N2.Web;
 
 namespace N2.Edit.FileSystem
 {
@@ -26,7 +27,7 @@ namespace N2.Edit.FileSystem
 		{
 			base.OnInit(e);
 
-			hlNewFile.NavigateUrl = Engine.EditManager.GetEditNewPageUrl(Selection.SelectedItem, Engine.Definitions.GetDefinition(typeof(File)), null, CreationPosition.Below);
+			hlNewFile.NavigateUrl = Selection.ActionUrl("upload");
 
 			ancestors = Find.EnumerateParents(Selection.SelectedItem, null, true).Where(a => a is AbstractNode).Reverse();
 
@@ -58,7 +59,7 @@ namespace N2.Edit.FileSystem
 				return;
 
 			var items = itemsToDelete.Split(',');
-			foreach (string item in items.Intersect(allowed))
+			foreach (string item in items.Select(i => i.TrimEnd('/')).Intersect(allowed.Select(a => a.TrimEnd('/'))))
 			{
 				deleteAction(item);
 			}

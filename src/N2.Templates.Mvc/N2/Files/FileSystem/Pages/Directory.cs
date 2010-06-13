@@ -13,6 +13,7 @@ namespace N2.Edit.FileSystem.Items
 	[RestrictParents(typeof(AbstractDirectory))]
 	[WithEditableName(Focus = true)]
 	[N2.Web.Template("info", "~/N2/Files/FileSystem/Directory.aspx")]
+	[N2.Web.Template("upload", "~/N2/Files/FileSystem/Upload.aspx")]
 	public class Directory : AbstractDirectory, IActiveContent
 	{
 		protected Directory()

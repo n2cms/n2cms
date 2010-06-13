@@ -1,4 +1,7 @@
-﻿- Support running migrations regardless of version (ThreadId=213350)
+﻿- upload multiple files (http://www.codeproject.com/KB/aspnet/FlashUpload.aspx)
+
+2.0
+- Support running migrations regardless of version (ThreadId=213350)
 - Moderation of comments (MVC)
 - Fixed RenderAction issue (ThreadId=214754)
 - Option to re-configure the query string used for page, item and part

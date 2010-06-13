@@ -41,7 +41,8 @@
 																		 $(EditFolder)\**\*.css;
 																		 $(EditFolder)\**\*.js;
 																		 $(EditFolder)\**\*.gif;$(EditFolder)\**\*.png;$(EditFolder)\**\*.jpg;$(EditFolder)\**\*.png;
-																		 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html"
+																		 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html;
+																		 $(EditFolder)\**\*.swf"
 														Exclude="$(EditFolder)\**\*_src.js;" />
 			<Framework-BinFiles		Include="$(ManagementFolder)\Bin\*.dll;
 																		 $(ManagementFolder)\Bin\N2.xml*;"

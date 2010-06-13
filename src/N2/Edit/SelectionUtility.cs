@@ -65,5 +65,10 @@ namespace N2.Edit
 
             return null;
         }
-    }
+
+		public string ActionUrl(string actionName)
+		{
+			return Url.Parse(SelectedItem.FindPath(actionName).TemplateUrl).AppendQuery("selected", SelectedItem.Path);
+		}
+	}
 }

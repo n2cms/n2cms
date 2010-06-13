@@ -159,6 +159,16 @@ namespace N2.Edit.Web
         /// <param name="area"></param>
 		protected virtual void Refresh(ContentItem item, ToolbarArea area)
 		{
+			string script = GetRefreshScript(item, area);
+
+			ClientScript.RegisterClientScriptBlock(
+				typeof(EditPage),
+				"RefreshFramesScript",
+				script, true);
+		}
+
+		protected string GetRefreshScript(ContentItem item, ToolbarArea area)
+		{
 			string format;
 			if (area == ToolbarArea.Both)
 				format = RefreshBothFormat;
@@ -174,11 +184,7 @@ namespace N2.Edit.Web
 				item.ID, // 3
 				item.Path // 4
 				);
-
-			ClientScript.RegisterClientScriptBlock(
-				typeof(EditPage),
-				"RefreshFramesScript",
-				script, true);
+			return script;
 		}
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
