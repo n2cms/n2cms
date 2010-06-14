@@ -602,6 +602,8 @@ namespace N2
 		/// <returns>True if the supplied name is considered the same as the item's.</returns>
         protected virtual bool Equals(string name)
         {
+            if (Name == null)
+                return false;
             return Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) 
 				|| (Name + Extension).Equals(name, StringComparison.InvariantCultureIgnoreCase);
         }
