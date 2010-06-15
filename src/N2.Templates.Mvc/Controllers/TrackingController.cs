@@ -10,7 +10,10 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override System.Web.Mvc.ActionResult Index()
 		{
-            bool showTracking = CurrentItem.TrackEditors || !Engine.SecurityManager.IsEditor(User);
+            bool showTracking = CurrentItem.Enabled
+				&& !string.IsNullOrEmpty(CurrentItem.UACCT)
+				&& (CurrentItem.TrackEditors || !Engine.SecurityManager.IsEditor(User));
+
             if (showTracking)
                 return View(CurrentItem);
             else
