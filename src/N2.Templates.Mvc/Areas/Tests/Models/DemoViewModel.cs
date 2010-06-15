@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 {
 	public class DemoViewModel
 	{
-		[DisplayName("Email"), Required, RegularExpression("[^@]+@[^.]+(\\.[^.])+", ErrorMessage = "Come on, that's not even close.")]
+		[DisplayName("Email"), Required, RegularExpression("[^@]+@[^.]+(\\.[^.]*)+", ErrorMessage = "Come on, that's not even close.")]
 		public string Email { get; set; }
 
 		public const string FeedbackInstruction = "How so, and what would you have liked to see?";

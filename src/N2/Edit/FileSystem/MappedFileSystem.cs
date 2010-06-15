@@ -27,10 +27,10 @@ namespace N2.Edit.FileSystem
 			return new FileData
 			{
 				Name = info.Name,
-				Created = info.CreationTime,
-				Updated = info.LastWriteTime,
+				Created = GetSafely(info, i => i.CreationTime),
+				Updated = GetSafely(info, i => i.LastWriteTime),
 				VirtualPath = virtualPath,
-				Length = info.Length
+				Length = GetSafely(info, i => i.Length)
 			};
 		}
 
@@ -46,9 +46,9 @@ namespace N2.Edit.FileSystem
 			DirectoryInfo info = new DirectoryInfo(MapPath(virtualPath));
 			return new DirectoryData 
 			{ 
-				Name = info.Name, 
-				Created = info.CreationTime, 
-				Updated = info.LastWriteTime, 
+				Name = info.Name,
+				Created = GetSafely(info, i => i.CreationTime),
+				Updated = GetSafely(info, i => i.LastWriteTime), 
 				VirtualPath = virtualPath 
 			};
 		}
@@ -209,6 +209,18 @@ namespace N2.Edit.FileSystem
 		protected virtual string MapPath(string virtualPath)
 		{
 			return HttpContext.Current.Server.MapPath(virtualPath);
+		}
+
+		private static T GetSafely<K, T>(K value, Func<K, T> getter)
+		{
+			try
+			{
+				return getter(value);
+			}
+			catch (Exception)
+			{
+				return default(T);
+			}
 		}
 	}
 }

@@ -18,6 +18,8 @@
 			});
 
 			// ensure there's an initial tab
+			if (!initial || initial == "") initial = this.get(0);
+			
 			var $current = this.filter(initial);
 			if ($current.length == 0) {
 				// try to select enclosing tab when nested tab is selected
