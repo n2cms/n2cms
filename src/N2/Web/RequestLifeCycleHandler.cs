@@ -59,8 +59,6 @@ namespace N2.Web
 				initialized = true;
 				if (webContext.IsWeb)
 				{
-					if (Url.ServerUrl == null)
-						Url.ServerUrl = webContext.Url.HostUrl;
 					if (checkInstallation)
 						CheckInstallation();
 				}

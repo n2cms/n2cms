@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using N2.Engine;
+using N2.Tests.Fakes;
+using NUnit.Framework;
 using N2.Web;
 using System.Web;
 
@@ -881,9 +883,30 @@ namespace N2.Tests.Web
 		public void CanParse_RelativePath_WithUrl_AsQuery()
 		{
 			Url u = "/path?dns=host.com&url=http://www.hello.net/howdy";
-
 			Assert.That(u.Path, Is.EqualTo("/path"));
 			Assert.That(u.Query, Is.EqualTo("dns=host.com&url=http://www.hello.net/howdy"));
 		}
+
+        [Test]
+        public void ServerUrl_Returns_DifferentValues_InRequestForDifferentSites()
+        {
+            var oldEngine = Singleton<IEngine>.Instance;
+            try
+            {
+                var engine = new FakeEngine();
+                var webContext = new FakeWebContextWrapper();
+                engine.AddComponentInstance("", typeof (IWebContext), webContext);
+                Singleton<IEngine>.Instance = engine;
+
+                webContext.Url = "http://site1/app";
+                Assert.That(Url.ServerUrl, Is.EqualTo("http://site1"));
+                webContext.Url = "http://site2/app";
+                Assert.That(Url.ServerUrl, Is.EqualTo("http://site2"));
+            }
+            finally
+            {
+                Singleton<IEngine>.Instance = oldEngine;
+            }
+        }
     }
 }

@@ -620,12 +620,17 @@ namespace N2.Web
 			set { applicationPath = value; }
 		}
 
-		static string serverUrl;
+	    static IWebContext webContext;
 		/// <summary>The address to the server where the site is running.</summary>
 		public static string ServerUrl
 		{
-			get { return serverUrl; }
-			set { serverUrl = value; }
+			get
+			{
+                // we need get the server url of current request, it can't be cached in multiple-sites environment 
+                if (webContext == null)
+                    webContext = Context.Current.RequestContext; // resovle and cache the web context service
+			    return webContext.Url.HostUrl;
+			}
 		}
 
 		/// <summary>Removes the file extension from a path.</summary>
