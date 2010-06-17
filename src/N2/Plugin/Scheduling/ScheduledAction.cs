@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using N2.Engine;
+using N2.Web;
 
 namespace N2.Plugin.Scheduling
 {
@@ -63,6 +64,17 @@ namespace N2.Plugin.Scheduling
 		public virtual bool ShouldExecute()
         {
             return !IsExecuting && (!LastExecuted.HasValue || LastExecuted.Value.Add(Interval) < Utility.CurrentTime());
+        }
+
+        /// <summary>
+        /// This method will be called when error occured in the action's Execute() method. 
+        /// It can be overrided to write custom error handling routine. 
+        /// The default behavior is to call IErrorHandler.Notify() with the exception.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        public virtual void OnError(Exception ex)
+        {
+            Context.Current.Resolve<IErrorHandler>().Notify(ex);
         }
     }
 }

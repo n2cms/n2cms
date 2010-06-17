@@ -83,7 +83,7 @@ namespace N2.Plugin.Scheduling
                         catch (Exception ex)
                         {
                             action.ErrorCount++;
-                            errorHandler.Notify(ex);
+                            action.OnError(ex);
                         }
                         finally
                         {
