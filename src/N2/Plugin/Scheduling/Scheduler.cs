@@ -83,7 +83,7 @@ namespace N2.Plugin.Scheduling
                         catch (Exception ex)
                         {
                             action.ErrorCount++;
-                            action.OnError(ex);
+                            action.OnError(ex);     // wayne: call custom action error handler
                         }
                         finally
                         {

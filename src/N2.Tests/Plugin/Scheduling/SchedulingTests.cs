@@ -123,7 +123,7 @@ namespace N2.Tests.Plugin.Scheduling
             RepeatAction repeat = SelectThe<RepeatAction>();
 
             mocks.BackToRecord(errorHandler);
-            errorHandler.Notify(ex);
+            //errorHandler.Notify(ex);  // wayne: custom error handler called instead of the error 
             mocks.ReplayAll();
 
             raiser.Raise(null, new EventArgs());

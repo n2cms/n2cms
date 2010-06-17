@@ -74,7 +74,8 @@ namespace N2.Plugin.Scheduling
         /// <param name="ex">The ex.</param>
         public virtual void OnError(Exception ex)
         {
-            Context.Current.Resolve<IErrorHandler>().Notify(ex);
+            if(Engine != null)
+                Engine.Resolve<IErrorHandler>().Notify(ex);
         }
     }
 }
