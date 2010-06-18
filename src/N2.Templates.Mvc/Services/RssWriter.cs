@@ -49,8 +49,9 @@ namespace N2.Templates.Mvc.Services
 			xtw.WriteElementString("link", GetLink(feed.Url));
 			xtw.WriteElementString("description", feed.Tagline);
 			xtw.WriteElementString("language", "en-us");
-			xtw.WriteElementString("pubDate", feed.Published.ToString());
-			xtw.WriteElementString("lastBuildDate", DateTime.Now.ToString());
+            if(feed.Published != null)
+                xtw.WriteElementString("pubDate", GetDate(feed.Published.Value));
+            xtw.WriteElementString("lastBuildDate", GetDate(DateTime.Now));
 			xtw.WriteElementString("generator", "N2 CMS");
 			xtw.WriteElementString("managingEditor", feed.Author);
 		}
@@ -60,6 +61,13 @@ namespace N2.Templates.Mvc.Services
 			return context.Url.HostUrl + url;
 		}
 
+        private string GetDate(DateTime dateTime)
+        {
+            // The datetime should in format like: Sat, 07 Sep 2002 00:00:01 GMT
+            // http://asg.web.cmu.edu/rfc/rfc822.html#sec-5
+            return TimeZone.CurrentTimeZone.ToUniversalTime(dateTime).ToString("R");
+        }
+
 		private void WriteItem(ISyndicatable item, XmlTextWriter xtw)
 		{
 			using (new ElementWriter("item", xtw))
@@ -67,7 +75,8 @@ namespace N2.Templates.Mvc.Services
 				xtw.WriteElementString("title", item.Title);
 				xtw.WriteElementString("link", GetLink(item.Url));
 				xtw.WriteElementString("description", item.Summary);
-				xtw.WriteElementString("pubDate", item.Published.ToString());
+                if (item.Published != null)
+                    xtw.WriteElementString("pubDate", GetDate(item.Published.Value));
 				//xtw.WriteElementString("guid", "urn:uuid:" + item.MessageID);
 			}
 		}
