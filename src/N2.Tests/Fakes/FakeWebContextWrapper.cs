@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -38,5 +39,11 @@ namespace N2.Tests.Fakes
 		{
 			rewrittenPath = path;
 		}
+
+	    public bool isWeb;
+	    public override bool IsWeb
+	    {
+            get { return isWeb; }
+	    }
 	}
 }

@@ -59,6 +59,7 @@ namespace N2.Web
 				initialized = true;
 				if (webContext.IsWeb)
 				{
+				    var dummy = Url.ServerUrl;  // wayne: DOT NOT REMOVE, initialize the server url
 					if (checkInstallation)
 						CheckInstallation();
 				}

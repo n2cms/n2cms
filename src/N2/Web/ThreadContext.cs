@@ -43,7 +43,7 @@ namespace N2.Web
 			get { return Thread.CurrentPrincipal; }
 		}
 
-        public bool IsWeb
+        public virtual bool IsWeb
         {
             get { return false; }
         }

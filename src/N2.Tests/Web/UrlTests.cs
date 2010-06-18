@@ -888,6 +888,31 @@ namespace N2.Tests.Web
 		}
 
         [Test]
+        public void ServerUrl_Returns_FallbackValue_InThreadContext()
+        {
+            var oldEngine = Singleton<IEngine>.Instance;
+            try
+            {
+                var engine = new FakeEngine();
+                var webContext = new FakeWebContextWrapper();
+                webContext.isWeb = true;
+                engine.AddComponentInstance("", typeof(IWebContext), webContext);
+                Singleton<IEngine>.Instance = engine;
+
+                webContext.Url = "http://site1/app";
+                Assert.That(Url.ServerUrl, Is.EqualTo("http://site1"));
+
+                webContext.isWeb = false;
+                webContext.Url = "http://site2/app";
+                Assert.That(Url.ServerUrl, Is.EqualTo("http://site1"));
+            }
+            finally
+            {
+                Singleton<IEngine>.Instance = oldEngine;
+            }
+        }
+
+        [Test]
         public void ServerUrl_Returns_DifferentValues_InRequestForDifferentSites()
         {
             var oldEngine = Singleton<IEngine>.Instance;
@@ -895,6 +920,7 @@ namespace N2.Tests.Web
             {
                 var engine = new FakeEngine();
                 var webContext = new FakeWebContextWrapper();
+                webContext.isWeb = true;
                 engine.AddComponentInstance("", typeof (IWebContext), webContext);
                 Singleton<IEngine>.Instance = engine;
 
@@ -908,5 +934,6 @@ namespace N2.Tests.Web
                 Singleton<IEngine>.Instance = oldEngine;
             }
         }
+
     }
 }

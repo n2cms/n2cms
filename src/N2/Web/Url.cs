@@ -620,16 +620,23 @@ namespace N2.Web
 			set { applicationPath = value; }
 		}
 
-	    static IWebContext webContext;
+	    private static string fallbackServerUrl;
 		/// <summary>The address to the server where the site is running.</summary>
 		public static string ServerUrl
 		{
 			get
 			{
                 // we need get the server url of current request, it can't be cached in multiple-sites environment 
+			    var webContext = Context.Current.RequestContext;
                 if (webContext == null)
-                    webContext = Context.Current.RequestContext; // resovle and cache the web context service
-			    return webContext.Url.HostUrl;
+                    return null;
+                if(webContext.IsWeb)
+                {
+                    if(fallbackServerUrl == null)
+                        fallbackServerUrl = webContext.Url.HostUrl;
+                    return webContext.Url.HostUrl;
+                }
+                return fallbackServerUrl; // fallback for ThreadContext
 			}
 		}
 
