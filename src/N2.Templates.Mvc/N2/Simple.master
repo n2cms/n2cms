@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
     <head id="Head1" runat="server">
         <title id="title" runat="server"></title>
-        
+        <meta name="robots" content="noindex, nofollow" />
 		<asp:PlaceHolder runat="server">
 		
         <link rel="stylesheet" href="<%= ResolveClientUrl("Resources/Css/all.css") %>" type="text/css" />
