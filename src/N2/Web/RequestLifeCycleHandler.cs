@@ -98,7 +98,7 @@ namespace N2.Web
             if(application != null)
             {
             	Exception ex = application.Server.GetLastError();
-				if(ex != null)
+                if (ex != null && new HttpException(null, ex).GetHttpCode() != 404)  // we should not notify 404 errors, otherwise, the maxErrorReportsPerHour limit will soon be exceeds.
 				{
 					errors.Notify(ex);
 				}

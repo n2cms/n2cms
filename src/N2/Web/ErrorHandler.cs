@@ -49,7 +49,7 @@ namespace N2.Web
         	this.installer = installer;
         }
 
-		protected ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer, EngineSection config)
+        public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer, EngineSection config)
             : this(context, security, installer)
         {
             action = config.Errors.Action;
