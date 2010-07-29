@@ -557,7 +557,7 @@ namespace N2
     	/// <summary>Tries to get a child item with a given name. This method igonres user permissions and any trailing '.aspx' that might be part of the name.</summary>
 		/// <param name="childName">The name of the child item to get.</param>
 		/// <returns>The child item if it is found otherwise null.</returns>
-		/// <remarks>If the method is passed an empty or null string it will return itself.</remarks>
+		/// <remarks>If the method is passed an empty or null string it will return null.</remarks>
 		public virtual ContentItem GetChild(string childName)
 		{
 			if (string.IsNullOrEmpty(childName))
