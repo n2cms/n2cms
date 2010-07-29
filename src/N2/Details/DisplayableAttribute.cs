@@ -78,7 +78,7 @@ namespace N2.Details
         /// <returns>True if the items are of the same type and have the same name.</returns>
         public override bool Equals(object obj)
         {
-            ControlAssociationAttribute other = obj as ControlAssociationAttribute;
+			DisplayableAttribute other = obj as DisplayableAttribute;
             if (other == null)
                 return false;
             return (this.Name == other.Name);
