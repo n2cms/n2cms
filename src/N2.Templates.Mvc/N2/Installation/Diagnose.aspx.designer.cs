@@ -131,33 +131,6 @@ namespace N2.Edit.Install {
         protected global::System.Web.UI.WebControls.Label lblAddSchemaResult;
         
         /// <summary>
-        /// txtPreviousVersion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPreviousVersion;
-        
-        /// <summary>
-        /// btnUpgrade control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpgrade;
-        
-        /// <summary>
-        /// lblUpgradeResult control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUpgradeResult;
-        
-        /// <summary>
         /// btnInsert control.
         /// </summary>
         /// <remarks>

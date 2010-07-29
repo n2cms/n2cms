@@ -11,6 +11,7 @@ using N2.Persistence.NH;
 using N2.Installation;
 using N2.Edit.Installation;
 using N2.Engine;
+using System.Reflection;
 
 namespace N2.Web
 {
@@ -71,10 +72,10 @@ namespace N2.Web
             errorCount++;
 
             if (ex is HttpUnhandledException)
-            {
                 ex = ex.InnerException;
-            }
-
+			if (ex is TargetInvocationException)
+				ex = ex.InnerException;
+			
             if (ex != null)
             {
                 Trace.TraceError("ErrorHandler.Notify: " + FormatError(ex));

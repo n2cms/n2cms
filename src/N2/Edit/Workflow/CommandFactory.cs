@@ -76,13 +76,16 @@ namespace N2.Edit.Workflow
 					if(context.Content.ID == 0)
 						return Compose("Publish", Authorize(Permission.Publish), validate, updateObject, setVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
 
+					if (context.Content.State == ContentState.Draft && context.Content.Published.HasValue == false)
+						return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, publishedState, moveToPosition, publishedDate, save);
+					
 					return Compose("Publish", Authorize(Permission.Publish), validate, makeVersion, updateObject, setVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
 				}
 
 				// has been published before
 				if (context.Content.State == ContentState.Unpublished)
 					return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, useMaster, setVersionIndex, publishedState, moveToPosition/*, publishedDate*/, save);
-                
+
                 // has never been published before (remove old version)
 				return Compose("Publish", Authorize(Permission.Publish), validate, updateObject,/* makeVersionOfMaster,*/ replaceMaster, delete, useMaster, publishedState, moveToPosition/*, publishedDate*/, save);
             }

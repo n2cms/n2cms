@@ -80,14 +80,6 @@
 				<asp:Button ID="btnAddSchema" runat="server" OnClick="btnAddSchema_Click" Text="CREATE" OnClientClick="return confirm('drop and recreate all tables?');" />
 				<asp:Label runat="server" ID="lblAddSchemaResult" />
 			</td></tr>
-	            
-			<tr><td>
-				<label>Upgrade database (from version)</label>
-			</td><td>
-				<asp:TextBox ID="txtPreviousVersion" Text="1.0.0.0" runat="server" />
-				<asp:Button ID="btnUpgrade" runat="server" OnClick="btnUpgrade_Click" Text="Upgrade" />
-				<asp:Label runat="server" ID="lblUpgradeResult" />
-			</td></tr>
 
 			<tr><td>
 	            <label>Insert root node</label>
@@ -131,32 +123,32 @@
                         <!-- Child definitions -->
                         <asp:Repeater ID="Repeater1" runat="server" DataSource='<%# Eval("AllowedChildren") %>'>
                             <ItemTemplate> * <%# Eval("Title")%><br></ItemTemplate>
-                        </asp:Repeater>
+                        </asp:Repeater>&nbsp;
                     </td><td>
                         <!-- Available zones -->
                         <asp:Repeater ID="Repeater2" runat="server" DataSource='<%# Eval("AvailableZones") %>'>
                             <ItemTemplate> * <%# Eval("ZoneName") %> (<%# Eval("Title") %>)<br></ItemTemplate>
-                        </asp:Repeater>
+                        </asp:Repeater>&nbsp;
                     </td><td>
 						<b><%# Eval("AllowedIn")%>: </b><br />
                         <!-- Allowed in zone -->
                         <asp:Repeater ID="Repeater3" runat="server" DataSource='<%# Eval("AllowedZoneNames") %>'>
                             <ItemTemplate> * <%# Container.DataItem %><br></ItemTemplate>
-                        </asp:Repeater>
+                        </asp:Repeater>&nbsp;
                     </td><td>
                         <!-- Editable attributes -->
                         <asp:Repeater ID="Repeater4" runat="server" DataSource='<%# Eval("Editables") %>'>
                             <ItemTemplate> * <%# Eval("Title")%> (<%# Eval("Name")%>)<br></ItemTemplate>
-                        </asp:Repeater>
+                        </asp:Repeater>&nbsp;
                     </td><td>
                         <!-- Displayable attributes -->
                         <asp:Repeater ID="Repeater5" runat="server" DataSource='<%# Eval("Displayables") %>'>
                             <ItemTemplate> * <%# ((N2.Details.IDisplayable)Container.DataItem).Name %><br></ItemTemplate>
-                        </asp:Repeater>
+                        </asp:Repeater>&nbsp;
                     </td><td>
                         <asp:Repeater ID="Repeater6" runat="server" DataSource='<%# PathDictionary.GetFinders((Type)Eval("ItemType")) %>'>
                             <ItemTemplate> * <%# Container.DataItem is TemplateAttribute ? ("/" + Eval("Action") + "&nbsp;->&nbsp;" + Eval("TemplateUrl")) : ("(" + Container.DataItem.GetType().Name + ")")%><br></ItemTemplate>
-                        </asp:Repeater>
+                        </asp:Repeater>&nbsp;
                     </td></tr>
                 </ItemTemplate>
                 <FooterTemplate>
@@ -168,8 +160,15 @@
             
             <h2>Assemblies</h2>
             <asp:Repeater ID="rptAssembly" runat="server">
-                <HeaderTemplate><table class="t"><thead><tr><td>Assembly</td></tr></thead><tbody></HeaderTemplate>
-                <ItemTemplate><tr><td><%# Eval("FullName") %></td></tr></ItemTemplate>
+                <HeaderTemplate><table class="t"><thead><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td></tr></thead><tbody></HeaderTemplate>
+                <ItemTemplate><tr>
+                <asp:Repeater runat="server" DataSource=<%# Eval("FullName").ToString().Split(',') %>>
+					<ItemTemplate>
+						<td><%# Container.DataItem %></td>
+					</ItemTemplate>
+                </asp:Repeater>
+                <td><%# Array.Find(((System.Reflection.Assembly)Container.DataItem).GetReferencedAssemblies(), delegate(System.Reflection.AssemblyName an) { return an.Name.StartsWith("N2"); }) != null %></td>
+                </tr></ItemTemplate>
                 <FooterTemplate></tbody></table></FooterTemplate>
             </asp:Repeater>
             <asp:Label ID="lblAssemblies" runat="server" />

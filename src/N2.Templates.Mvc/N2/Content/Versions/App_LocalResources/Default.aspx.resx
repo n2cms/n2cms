@@ -147,4 +147,28 @@
   <data name="cvVersionable.Text" xml:space="preserve">
     <value>This item is not versionable.</value>
   </data>
+  <data name="ContentState.Deleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="ContentState.Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="ContentState.New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ContentState.None" xml:space="preserve">
+    <value>None (unknown)</value>
+  </data>
+  <data name="ContentState.Published" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="ContentState.Unpublished" xml:space="preserve">
+    <value>Unpublished</value>
+  </data>
+  <data name="ContentState.Waiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="state.HeaderText" xml:space="preserve">
+    <value>State</value>
+  </data>
 </root>

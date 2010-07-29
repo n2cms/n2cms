@@ -205,10 +205,6 @@ namespace N2.Edit.Install
 		{
 		}
 
-		protected void btnUpgrade_Click(object sender, EventArgs e)
-		{
-		}
-
 		private string formatException(Exception ex)
 		{
 			return
