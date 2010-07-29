@@ -168,7 +168,7 @@
 			setTimeout(function() {
 				if (!reloaded) 
 					window.location.reload();
-			}, 1000);
+			}, 15000);
 		}
 	};
 

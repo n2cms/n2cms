@@ -1,3 +1,4 @@
+- include sites in error reports (wi=27515)
 - consider language (ThreadId=219929)
 - update integrating documentation (ThreadId=221503)
 - custom session factory (ThreadId=221116)
