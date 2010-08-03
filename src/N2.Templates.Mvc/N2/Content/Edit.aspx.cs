@@ -104,7 +104,12 @@ namespace N2.Edit
 				returnUrl = Url.Parse(returnUrl).AppendQuery("preview", ctx.Content.ID);
 			}
 
-			HandleResult(ctx, returnUrl, Engine.EditManager.GetPreviewUrl(ctx.Content));
+			Url previewUrl = Engine.EditManager.GetPreviewUrl(ctx.Content);
+			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
+			if(ctx.Content.VersionOf != null)
+				previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);
+
+			HandleResult(ctx, returnUrl, previewUrl);
 		}
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
