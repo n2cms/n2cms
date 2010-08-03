@@ -45,6 +45,8 @@ namespace N2.Persistence
 		{
 			if (item == null)
 				return null;
+			if (item.VersionOf != null)
+				return Closest<T>(item.VersionOf);
 
 			var typed = item as T;
 			if (typed != null)

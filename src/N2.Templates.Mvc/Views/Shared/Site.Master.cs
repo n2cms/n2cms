@@ -33,8 +33,8 @@ namespace N2.Templates.Mvc.Views.Shared
 				foreach (var vc in Engine.Container.ResolveAll<IViewConcern>())
 					vc.Apply(item, Page);
 
-				Start = Find.Closest<StartPage>(item);
-				Language = Find.Closest<LanguageRoot>(item);
+				Start = Find.Closest<StartPage>(item) ?? Find.ClosestStartPage;
+				Language = Find.Closest<LanguageRoot>(item) ?? Find.ClosestLanguageRoot;
 			}
 			base.OnInit(e);
 		}

@@ -67,7 +67,7 @@ namespace N2.Templates.Mvc.Controllers
 
 		public PartialViewResult Breadcrumb()
 		{
-			var items = Find.EnumerateParents(CurrentPage, Find.Closest<LanguageRoot>(CurrentPage), true).Reverse().ToArray();
+			var items = Find.EnumerateParents(CurrentPage, Find.Closest<LanguageRoot>(CurrentPage) ?? Find.ClosestLanguageRoot, true).Reverse().ToArray();
 
 			if(items.Length == 1)
 				return null;

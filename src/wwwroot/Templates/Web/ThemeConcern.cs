@@ -20,7 +20,7 @@ namespace N2.Templates.Web
 			if (item == null)
 				return;
 
-			var startPage = Find.Closest<StartPage>(item);
+			var startPage = Find.Closest<StartPage>(item) ?? Find.ClosestStartPage;
 			if (startPage == null)
 				return;
 

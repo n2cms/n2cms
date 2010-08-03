@@ -30,7 +30,7 @@ namespace N2.Templates.Mvc.Web
 				if (!string.IsNullOrEmpty(masterPageFile))
 					masterName = masterPageFile;
 
-				var root = Find.Closest<StartPage>(controllerContext.RouteData.CurrentPage());
+				var root = Find.Closest<StartPage>(controllerContext.RouteData.CurrentPage()) ?? Find.ClosestStartPage;
 				if (root != null)
 				{
 					string theme = root.Theme;
