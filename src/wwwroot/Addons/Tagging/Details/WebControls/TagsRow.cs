@@ -15,7 +15,7 @@ namespace N2.Addons.Tagging.Details.WebControls
 		Button TagButton { get; set; }
 		Button AddButton { get; set; }
 		Label Label { get; set; }
-
+		RequiredFieldValidator AddValidator { get; set; }
 
 		public TagsRow(TagsEditor table)
 		{
@@ -24,8 +24,10 @@ namespace N2.Addons.Tagging.Details.WebControls
 			AddedList = new ListBox();
 			TagButton = new Button();
 			UntagButton = new Button();
+			
 			AddButton = new Button();
 			AdditionalBox = new TextBox();
+			AddValidator = new RequiredFieldValidator();
 			AvailableList = new ListBox();
 			Label = new Label();
 		}
@@ -73,6 +75,11 @@ namespace N2.Addons.Tagging.Details.WebControls
 				ListItem item = new ListItem(tag.Title + " (" + tag.ReferenceCount + ")", tag.Title);
 				AvailableList.Items.Add(item);
 			}
+			
+			string validationGroup = "AddTo" + container.Name;
+			AddButton.ValidationGroup = validationGroup;
+			AdditionalBox.ValidationGroup = validationGroup;
+			AddValidator.ValidationGroup = validationGroup;			
 		}
 
 		public void Select(IEnumerable<string> selectedTags)
@@ -144,9 +151,9 @@ namespace N2.Addons.Tagging.Details.WebControls
 			TableCell rightCell = new TableCell();
 			rightCell.CssClass = "tagsRight";
 
-			RequiredFieldValidator rfv = new RequiredFieldValidator();
-			rfv.ControlToValidate = AdditionalBox.ID;
-			rfv.Text = "*";
+			AddValidator.ControlToValidate = AdditionalBox.ID;
+			AddValidator.Text = "*";
+			AddValidator.EnableClientScript = false;
 			
 			Controls.Add(labelCell);
 			Controls.Add(leftCell);
@@ -158,7 +165,7 @@ namespace N2.Addons.Tagging.Details.WebControls
 			leftCell.Controls.Add(addPanel);
 			addPanel.Controls.Add(AdditionalBox);
 			addPanel.Controls.Add(AddButton);
-			addPanel.Controls.Add(rfv);
+			addPanel.Controls.Add(AddValidator);
 
 			middleCell.Controls.Add(TagButton);
 			middleCell.Controls.Add(UntagButton);

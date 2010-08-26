@@ -25,6 +25,7 @@ h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
 		#header .uc h2 { display:inline; }
 			#header .uc h2 a { color:#E5D7C4; }
 	.topMenu { width:960px; margin:0 auto; }
+		.topMenu li { float:left; }
 		.topMenu a { background-color:#403C37; float:left; height:20px; padding:60px 30px 20px 30px; border-left:solid 1px #33302C; border-right:solid 1px #4D4842; }
 		.topMenu a:hover { background-color:#423E39 }
 		.topMenu .current a { position:relative; top:2px; color:#E5D7C4; }

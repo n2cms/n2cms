@@ -1,3 +1,9 @@
+- start page caching, ThreadId=224336
+- content stating, workflow ThreadId=214629
+- file attachment and mappath ThreadId=223694
+- share master page ThreadId=222496
+- transaction deadlock ThreadId=222604
+- fix tagging: ThreadId=222444
 - include sites in error reports (wi=27515)
 - consider language (ThreadId=219929)
 - update integrating documentation (ThreadId=221503)
@@ -11,6 +17,8 @@
 - themes for deleted items (ThreadId=216799)
 - upload from file selector (ThreadId=213011)
 - culture+top part (ThreadId=210729)
+- personas
+- channels
 
 v2
 - globalization changes http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=212056&ProjectName=n2cms
