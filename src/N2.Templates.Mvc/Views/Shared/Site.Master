@@ -16,8 +16,8 @@
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
 			<div id="header"><div class="inner">
-				<%=Html.DisplayContent(Start, p => p.Header)%>
-				<%Html.RenderAction<NavigationController>(c => c.TopMenu()); %>
+				<%= Html.DisplayContent(Start, p => p.Header) %>
+				<% Html.RenderAction("TopMenu", "Navigation", new { area = "" }); %>
 			</div></div>
 		</asp:ContentPlaceHolder>
 		<asp:ContentPlaceHolder ID="PageWrapper" runat="server">
@@ -25,9 +25,10 @@
 				<asp:ContentPlaceHolder ID="PageTop" runat="server">
 					<%=Html.DisplayContent("TopImage").SwallowExceptions()%>
 				</asp:ContentPlaceHolder>
+				<asp:ContentPlaceHolder ID="MainContent" runat="server">
 				<asp:ContentPlaceHolder ID="Menu" runat="server">
 					<div id="menu" class="secondary">
-						<% Html.RenderAction<NavigationController>(c => c.SubMenu()); %>
+						<% Html.RenderAction("SubMenu", "Navigation", new { area = "" }); %>
 
 						<% Html.DroppableZone(Language, Zones.SiteLeft)
                             .Render();%>
@@ -70,6 +71,7 @@
 						</asp:ContentPlaceHolder>
 					</asp:ContentPlaceHolder>
 				</div>
+				</asp:ContentPlaceHolder>
 			</div>
 			<div id="footer">
 				<a class="n2" title="N2 Open Source ASP.NET CMS" href="http://n2cms.com/">powered by n2 cms</a>

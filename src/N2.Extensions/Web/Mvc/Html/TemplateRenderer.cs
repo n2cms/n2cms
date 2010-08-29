@@ -28,6 +28,7 @@ namespace N2.Web.Mvc.Html
 
 		public void RenderTemplate(ContentItem item, HtmlHelper helper)
 		{
+			// TODO: figure out what this was for
 			foreach (var route in RouteTable.Routes)
 			{
 				var contentRoute = route as ContentRoute;

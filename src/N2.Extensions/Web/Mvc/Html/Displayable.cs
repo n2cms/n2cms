@@ -103,7 +103,8 @@ namespace N2.Web.Mvc.Html
 				var referencedItem = CurrentItem[propertyName] as ContentItem;
 				if (referencedItem != null)
 				{
-					GetMvcAdapterFor(referencedItem.GetType()).RenderTemplate(helper, referencedItem);
+					var adapter = GetMvcAdapterFor(referencedItem.GetType());
+					adapter.RenderTemplate(helper, referencedItem);
 				}
 				else
 				{

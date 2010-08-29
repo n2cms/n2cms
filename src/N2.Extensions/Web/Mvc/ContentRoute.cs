@@ -77,6 +77,7 @@ namespace N2.Web.Mvc
 			values[ActionKey] = actionName;
 			values[item.IsPage ? ContentPageKey : ContentPartKey] = item.ID;
 			values[ContentItemKey] = item.ID;
+			values[AreaKey] = innerRoute.DataTokens["area"];
 
 			return values;
 		}

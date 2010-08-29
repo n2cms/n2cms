@@ -14,6 +14,7 @@ namespace N2.Templates.Mvc.Areas.Tests
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
 			context.MapContentRoute<Models.TestItemBase>();
+			context.MapRoute("hello", "Tests/{controller}/{action}", new { action = "index" });
 		}
 	}
 }
