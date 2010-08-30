@@ -126,15 +126,15 @@ jQuery('.datePicker').datePicker({{ startDate: '{2}' }});";
 			{
 				if(value != null)
 				{
-					string[] dateTime = value.Split(' ');
-					DatePickerBox.Text = dateTime[0];
-					if (dateTime.Length > 1)
-						TimePickerBox.Text = dateTime[1].EndsWith(":00") ? dateTime[1].Substring(0, dateTime[1].Length - 3) : dateTime[1];
-					else
-						TimePickerBox.Text = string.Empty;
-
-					if (dateTime.Length > 2)
-						TimePickerBox.Text += " " + dateTime[2]; // This could be AM/PM
+                    DateTime parsed;
+                    if (DateTime.TryParse(value, out parsed))
+                    {
+                        DatePickerBox.Text = parsed.ToShortDateString();
+                        if (parsed.Second == 0)
+                            TimePickerBox.Text = parsed.ToShortTimeString();
+                        else
+                            TimePickerBox.Text = parsed.ToLongTimeString();
+                    }
 				}
 				else
 				{

@@ -1,4 +1,6 @@
-﻿- Fixed ThreadId=221999: error when trying to preview content
+﻿- Applied ondrejsv's patch #28710: DatePicker bug in certain cultures 
+- Added example of non-content bound controller (StaticController)
+- Fixed ThreadId=221999: error when trying to preview content
 - Fixed #28033: Save and Publish after Save and Preview not working as expected  
 - enabled "autosave" warning when abandoning tiny mce input
 - upload multiple files (http://www.codeproject.com/KB/aspnet/FlashUpload.aspx)
