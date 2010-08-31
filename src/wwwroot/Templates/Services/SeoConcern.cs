@@ -32,13 +32,14 @@ namespace N2.Templates.Services
 
         private void AddMeta(Page page, string name, string content)
         {
-            if (!string.IsNullOrEmpty(content))
+			if (!string.IsNullOrEmpty(content))
             {
-				if (page.Header.FindControl(name) != null)
+				string id = "meta" + name;
+				if (page.Header.FindControl(id) != null)
 					return;
 
                 HtmlGenericControl meta = new HtmlGenericControl("meta");
-				meta.ID = name;
+				meta.ID = id;
                 meta.Attributes["name"] = name;
                 meta.Attributes["content"] = content;
                 page.Header.Controls.Add(meta);
