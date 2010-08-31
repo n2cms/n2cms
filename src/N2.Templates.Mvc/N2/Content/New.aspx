@@ -13,7 +13,7 @@
 					<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((ItemDefinition)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
 						<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" ToolTip='<%# Eval("NumberOfItems") %>' />
 						<span class="title"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Title") ?? Eval("Title") %></span>
-						<%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%>
+						<span class="description"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%></span>
 					</asp:HyperLink>
 				</div>
 			</ItemTemplate>
