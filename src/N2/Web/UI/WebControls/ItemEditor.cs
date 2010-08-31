@@ -163,6 +163,7 @@ namespace N2.Web.UI.WebControls
 		public ContentItem Save(ContentItem item, ItemEditorVersioningMode mode)
 		{
 			EnsureChildControls();
+			BinderContext = new CommandContext(item, "Unknown", Page.User, this, new N2.Edit.Web.PageValidator<CommandContext>(Page));
 			item = EditAdapter.SaveItem(item, AddedEditors, mode, Page.User);
 			if (Saved != null)
 				Saved.Invoke(this, new ItemEventArgs(item));

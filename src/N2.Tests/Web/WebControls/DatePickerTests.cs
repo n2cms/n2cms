@@ -45,6 +45,18 @@ namespace N2.Tests.Web.WebControls
         }
 
         [Test]
+        public void DatePickerSetSelectedDate_svSECulture_ShouldCorrectlyFormatDateAndTimePart()
+		{
+			Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("sv-SE");
+
+			DatePicker picker = new DatePicker();
+			picker.SelectedDate = new DateTime(2010, 08, 29, 13, 12, 33);
+
+			Assert.That(picker.DatePickerBox.Text, Is.EqualTo("2010-08-29"));
+			Assert.That(picker.TimePickerBox.Text, Is.EqualTo("13:12:33"));
+		}
+
+        [Test]
         public void DatePickerSetSelectedDate_enUSCultureAndZeroSeconds_ShouldTrimSeconds()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
