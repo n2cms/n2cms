@@ -34,7 +34,11 @@ namespace N2.Templates.Services
         {
             if (!string.IsNullOrEmpty(content))
             {
+				if (page.Header.FindControl(name) != null)
+					return;
+
                 HtmlGenericControl meta = new HtmlGenericControl("meta");
+				meta.ID = name;
                 meta.Attributes["name"] = name;
                 meta.Attributes["content"] = content;
                 page.Header.Controls.Add(meta);
