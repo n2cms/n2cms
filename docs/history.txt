@@ -1,4 +1,5 @@
-﻿- Applied ondrejsv's patch #28710: DatePicker bug in certain cultures 
+﻿- Fixed #28739: Mata tags beeing applied twice when nesting master pages
+- Applied ondrejsv's patch #28710: DatePicker bug in certain cultures 
 - Added example of non-content bound controller (StaticController)
 - Fixed ThreadId=221999: error when trying to preview content
 - Fixed #28033: Save and Publish after Save and Preview not working as expected  

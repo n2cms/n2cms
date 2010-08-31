@@ -21,7 +21,7 @@ namespace N2.Templates.Services
 			var item = template.CurrentItem;
 			if (item != null)
 			{
-				template.Page.Init += delegate
+				template.Page.PreRender += delegate
 				{
 					template.Page.Title = item[HeadTitle] as string ?? item.Title;
 					AddMeta(template.Page, "keywords", item[MetaKeywords] as string);
