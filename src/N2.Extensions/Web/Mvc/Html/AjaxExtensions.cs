@@ -32,7 +32,7 @@ namespace N2.Web.Mvc.Html
 			helper.ViewContext.Writer.Write(tag.ToString(TagRenderMode.StartTag));
 
 			var asyncLoadScript = string.Format(@"<script type='text/javascript'>//<![CDATA[
-jQuery('#{0}').load('{1}');//]]></script>", id, url);
+jQuery(document).ready(function(){{jQuery('#{0}').load('{1}');}});//]]></script>", id, url);
 
 			var end = tag.ToString(TagRenderMode.EndTag) + asyncLoadScript;
 			
