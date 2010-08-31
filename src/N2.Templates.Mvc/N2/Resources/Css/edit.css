@@ -63,11 +63,12 @@ body.framed .itemEditor hr { margin:15px 0 }
 
 body.framed .help { vertical-align:middle; }
 
-body.framed .helpPanel { cursor:pointer; }
-
-body.framed .helpText { display:none; float:left; }
-body.framed .helpText b { display:block; }
-body.framed .helpVisible .helpText { display:block; border-bottom:solid 1px #DEDAD7; margin-bottom:10px; padding-bottom:10px; }
+body.framed .helpPanel { cursor:pointer; padding:5px; }
+	body.framed .helpText { display:none; }
+		body.framed .helpText b { }
+body.framed .helpVisible { background-color:#ffa; }
+	body.framed .helpVisible img { visibility:visible; }
+	body.framed .helpVisible .helpText { display:inline; margin-left:5px; }
 
 #content .defaultSkin table.mceLayout,
 #content .defaultSkin table.mceLayout tr.mceFirst td { border:none; }
@@ -130,7 +131,7 @@ fieldset
 	border:solid 1px #E8E8D8;
 	background-color:#F8F8E8;
 	position:relative;
-	margin:30px 0;
+	margin-bottom:30px;
 	padding:15px;
 }
 	fieldset legend

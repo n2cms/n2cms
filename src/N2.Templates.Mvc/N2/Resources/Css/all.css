@@ -29,7 +29,6 @@ h2{ border-top:solid 1px silver; margin:5px 0; padding-top:5px; font-size:1.2em;
 
 /* toolbar */
 body.framed fieldset{
-	margin-bottom:10px;
 }
 .command img{
 	position:relative;

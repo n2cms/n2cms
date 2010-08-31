@@ -189,7 +189,7 @@ body.framed .nav a { color:#000; text-decoration:none; padding:0 4px 0 1px; whit
 
 li, ul { padding:0; margin:0; display:block; clear:both; padding-bottom:1px; }
 
-li { background: transparent none no-repeat 0 0; list-style: none; position:relative; }
+li { background: transparent none no-repeat 0 0; list-style: none; }
 li.leaf { background-image: url(../../Resources/img/treeview/leaf.gif); }
 li.leaf-last { background-image: url(../../Resources/img/treeview/leaf-last.gif); }
 .folder-close { background-image: url(../../Resources/img/treeview/expandable.gif); }
@@ -280,7 +280,7 @@ ul.tabs{
 	border:solid 1px #DDDDCC;
 	border-top-style:none;
 	border-left-style:none;
-	padding:15px;
+	padding:30px 15px;
 }
 .tabContentHidden{
 	position:absolute;
