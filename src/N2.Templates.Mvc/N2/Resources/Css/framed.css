@@ -185,18 +185,18 @@ body.framed .nav .selected { font-weight:bold; margin:1px;}
 
 /* tree */
 
-body.framed .nav a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px;}
+.nav a { color:#000; text-decoration:none; padding:0 4px 0 1px; white-space: nowrap; margin:1px;}
 
-li, ul { padding:0; margin:0; display:block; clear:both; padding-bottom:1px; }
+.nav li, .nav ul { padding:0; margin:0; display:block; clear:both; padding-bottom:1px; }
 
-li { background: transparent none no-repeat 0 0; list-style: none; }
-li.leaf { background-image: url(../../Resources/img/treeview/leaf.gif); }
-li.leaf-last { background-image: url(../../Resources/img/treeview/leaf-last.gif); }
-.folder-close { background-image: url(../../Resources/img/treeview/expandable.gif); }
-.folder-close-last { background-image: url(../../Resources/img/treeview/expandable-last.gif); }
-.folder-open { background-image: url(../../Resources/img/treeview/collapsable.gif); }
-.folder-open-last { background-image: url(../../Resources/img/treeview/collapsable-last.gif); }
-    li li { padding-left:16px; }
+.nav li { background: transparent none no-repeat 0 0; list-style: none; position:relative}
+.nav .leaf { background-image: url(../../Resources/img/treeview/leaf.gif); }
+.nav .leaf-last { background-image: url(../../Resources/img/treeview/leaf-last.gif); }
+.nav .folder-close { background-image: url(../../Resources/img/treeview/expandable.gif); }
+.nav .folder-close-last { background-image: url(../../Resources/img/treeview/expandable-last.gif); }
+.nav .folder-open { background-image: url(../../Resources/img/treeview/collapsable.gif); }
+.nav .folder-open-last { background-image: url(../../Resources/img/treeview/collapsable-last.gif); }
+    .nav li li { padding-left:16px; }
 
 body.framed .toggler { left:0; position:absolute; height:16px; width:16px; background-image:url(../../Resources/img/treeview/spacer.gif); cursor:pointer; }
 
