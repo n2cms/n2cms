@@ -584,6 +584,79 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
+		public void WithFilterAndMaxResults()
+		{
+			IList<ContentItem> items = finder.All
+				.Filters(new CountFilter(1, 2))
+				.MaxResults(2)
+				.OrderBy.ID.Asc.Select();
+
+			Assert.AreEqual(2, items.Count);
+			Assert.AreEqual(startPage, items[0]);
+			Assert.AreEqual(item1, items[1]);
+		}
+
+		[Test]
+		public void WithFilter_AndFirstResult()
+		{
+			IList<ContentItem> items = finder.All
+				.Filters(new CountFilter(1, 2))
+				.FirstResult(1)
+				.OrderBy.ID.Asc.Select();
+
+			Assert.AreEqual(2, items.Count);
+			Assert.AreEqual(item1, items[0]);
+			Assert.AreEqual(item2, items[1]);
+		}
+
+		[Test]
+		public void WithFilter_AndFirstResult_AndMaxResults()
+		{
+			IList<ContentItem> items = finder.All
+				.Filters(new CountFilter(1, 2))
+				.FirstResult(2)
+				.MaxResults(2)
+				.OrderBy.ID.Asc.Select();
+
+			Assert.AreEqual(2, items.Count);
+			Assert.AreEqual(item2, items[0]);
+			Assert.AreEqual(item3, items[1]);
+		}
+
+		[Test]
+		public void WithFilterAndHugeMaxResults()
+		{
+			IList<ContentItem> items = finder.All
+				.Filters(new CountFilter(1, 2))
+				.MaxResults(200)
+				.OrderBy.ID.Asc.Select();
+
+			Assert.AreEqual(2, items.Count);
+		}
+
+		[Test]
+		public void WithNoneFilteredAndMaxResults()
+		{
+			IList<ContentItem> items = finder.All
+				.Filters(new NullFilter())
+				.MaxResults(2)
+				.OrderBy.ID.Asc.Select();
+
+			Assert.AreEqual(2, items.Count);
+		}
+
+		[Test]
+		public void WithNoneFilteredAndHugeMaxResults()
+		{
+			IList<ContentItem> items = finder.All
+				.Filters(new NullFilter())
+				.MaxResults(200)
+				.OrderBy.ID.Asc.Select();
+
+			Assert.AreEqual(5, items.Count);
+		}
+
+		[Test]
 		public void FindWithFilterEnumeration()
 		{
 			IList<ItemFilter> filters = new List<ItemFilter>();

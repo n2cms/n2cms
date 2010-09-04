@@ -37,5 +37,20 @@ namespace N2.Collections
 					return false;
 			return true;
 		}
+
+		public static ItemFilter Wrap(IList<ItemFilter> filters)
+		{
+			if (filters == null || filters.Count == 0)
+				return new NullFilter();
+			else if (filters.Count == 1)
+				return filters[0];
+			else
+				return new CompositeFilter(filters);
+		}
+
+		public static ItemFilter Wrap(params ItemFilter[] filters)
+		{
+			return Wrap((IList<ItemFilter>)filters);
+		}
 	}
 }

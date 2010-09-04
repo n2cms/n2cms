@@ -65,9 +65,13 @@ namespace N2.Templates.Items
 
         public virtual IEnumerable<ISyndicatable> GetItems()
         {
-            foreach (ISyndicatable item in N2.Find.Items
-                .Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true)
-                .Filters(GetFilters())
+			var query = N2.Find.Items
+                .Where.Detail(SyndicatableDefinitionAppender.SyndicatableDetailName).Eq(true);
+			if (FeedRoot != null)
+				query = query.And.AncestralTrail.Like(Utility.GetTrail(FeedRoot) + "%");
+
+			foreach (ISyndicatable item in query
+				.Filters(new TypeFilter(typeof(ISyndicatable)), new AccessFilter())
                 .MaxResults(NumberOfItems)
                 .OrderBy.Published.Desc
                 .Select())
@@ -82,7 +86,7 @@ namespace N2.Templates.Items
             if(FeedRoot != null)
                 filters = new ItemFilter[] { new TypeFilter(typeof(ISyndicatable)), new AccessFilter(), new ParentFilter(FeedRoot) };
             else
-                filters = new ItemFilter[] { new TypeFilter(typeof(ISyndicatable)), new AccessFilter() };
+                filters = new ItemFilter[] {  };
             return filters;
         }
     }

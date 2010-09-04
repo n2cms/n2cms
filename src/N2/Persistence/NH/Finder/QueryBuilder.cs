@@ -244,17 +244,15 @@ namespace N2.Persistence.NH.Finder
 			return definition.Discriminator;
 		}
 
+		const string selectHql = "select ci from ContentItem ci";
+
 		protected virtual IQuery CreateQuery()
 		{
-			return CreateQuery("select ci from ContentItem ci");
+			return CreateQuery(selectHql);
 		}
 
-		protected virtual IQuery CreateQuery(string selectFrom)
+		protected virtual IQuery CreateQuery(string selectFrom, int skip, int take, bool cacheable)
 		{
-			if (MaxResults > 0 && Filters.Count > 0)
-				throw new N2Exception("Cannot use filters when using MaxResults, sorry.");
-			if (FirstResult > 0 && Filters.Count > 0)
-				throw new N2Exception("Cannot use filters when using FirstResult, sorry.");
 
 			StringBuilder from = new StringBuilder(selectFrom, 256);
 			StringBuilder where = new StringBuilder(128);
@@ -272,20 +270,25 @@ namespace N2.Persistence.NH.Finder
 				from.Append(" order by ").Append(OrderBy);
 
 			string hql = from.ToString();
-            IQuery query = sessionProvider.OpenSession.Session.CreateQuery(hql);
+			IQuery query = sessionProvider.OpenSession.Session.CreateQuery(hql);
 
 			for (int i = 0; i < criterias.Count; i++)
 			{
 				criterias[i].SetParameters(query, i);
 			}
 
-			if (MaxResults > 0)
-				query.SetMaxResults(MaxResults);
-			if (FirstResult > 0)
-				query.SetFirstResult(FirstResult);
-			query.SetCacheable(Cachable);
+			if (skip > 0)
+				query.SetFirstResult(skip);
+			if (take > 0)
+				query.SetMaxResults(take);
+			query.SetCacheable(cacheable);
 
 			return query;
+		}
+
+		private IQuery CreateQuery(string selectFrom)
+		{
+			return CreateQuery(selectFrom, FirstResult, MaxResults, Cachable);
 		}
 
 		private StringWrapper GetAppender(StringBuilder where)
@@ -382,7 +385,11 @@ namespace N2.Persistence.NH.Finder
 		public virtual int Count()
 		{
 			if (Filters.Count > 0)
-				throw new N2Exception("Cannot use filters when selecting count, sorry.");
+				throw new N2Exception("Cannot use Filters when Count(), sorry.");
+			if (MaxResults > 0)
+				throw new N2Exception("Cannot use MaxResults with Count(), sorry.");
+			if (FirstResult > 0)
+				throw new N2Exception("Cannot use FirstResult with Count(), sorry.");
 
 			IQuery q = CreateQuery("select count(*) from ContentItem ci");
 			return Convert.ToInt32(q.List()[0]);
@@ -395,14 +402,55 @@ namespace N2.Persistence.NH.Finder
 
 		public virtual IList<T> Select<T>() where T : ContentItem
 		{
-            ItemList<T> items = new ItemList<T>(
-                CreateQuery().List<T>(), 
-                new CompositeFilter(Filters ?? new ItemFilter[0]));
-
+			var retrievedItems = CreateQuery().List<T>();
+			ItemList<T> items;
+			if(retrievedItems.Count == 0)
+				items = new ItemList<T>();
+			else if (Filters != null)
+			{
+				var filter = CompositeFilter.Wrap(Filters);
+				items = ToListWithFillup<T>(retrievedItems, filter, /*maxRequeries*/10);
+			}
+			else
+				items = new ItemList<T>(retrievedItems);
+			
 			if (SortExpression != null)
 				items.Sort(SortExpression);
 
 			return items;
+		}
+
+		private ItemList<T> ToListWithFillup<T>(IList<T> retrievedItems, ItemFilter filter, int maxRequeries) where T : ContentItem
+		{
+			ItemList<T> items = new ItemList<T>();
+			int totalRetrievedItems = 0;
+			while (retrievedItems.Count > 0)
+			{
+				int addedCount = 0;
+				foreach (var item in filter.Pipe(retrievedItems))
+				{
+					if (ReachedMaxResults(items.Count))
+						break;
+					++addedCount;
+					items.Add(item);
+				}
+				if (addedCount == retrievedItems.Count)
+					break; // we've already added all items down there
+				if (ReachedMaxResults(items.Count))
+					break; // we've reached the items we need
+				if (--maxRequeries == 0)
+					break;
+	
+				// try finding more items in the database
+				totalRetrievedItems += retrievedItems.Count;
+				retrievedItems = CreateQuery(selectHql, totalRetrievedItems + FirstResult, MaxResults, Cachable).List<T>();
+			}
+			return items;
+		}
+
+		private bool ReachedMaxResults(int itemCount)
+		{
+			return MaxResults > 0 && itemCount >= MaxResults;
 		}
 
 		#endregion
