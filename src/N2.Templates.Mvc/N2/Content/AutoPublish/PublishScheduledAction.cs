@@ -32,10 +32,12 @@ namespace N2.Edit.AutoPublish
                 // Get the relevant versions
 				var scheduledVersion = scheduledForAutoPublish[i];
 				var masterVersion = scheduledVersion.VersionOf;
-
-                // Removing the DelayPublishingUntil Date so that it won't get picked up again
+				// Removing the DelayPublishingUntil Date so that it won't get picked up again
                 scheduledVersion["FuturePublishDate"] = null;
-                Versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
+				if (masterVersion == null)
+					Persister.Save(scheduledVersion);
+				else
+					Versioner.ReplaceVersion(masterVersion, scheduledVersion, true);
             }
         }
     }
