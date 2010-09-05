@@ -6,6 +6,7 @@ using N2.Security.Details;
 using N2.Edit.Trash;
 using N2.Persistence;
 using N2.Definitions;
+using System.Security.Principal;
 
 namespace N2.Security.Items
 {
@@ -161,6 +162,11 @@ namespace N2.Security.Items
 				roles[i] = Roles[i] as string;
 			}
 			return roles;
+		}
+
+		public override bool IsAuthorized(IPrincipal user)
+		{
+			return base.IsAuthorized(user) && Context.SecurityManager.IsAdmin(user);
 		}
 	}
 }

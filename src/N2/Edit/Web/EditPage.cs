@@ -23,6 +23,7 @@ namespace N2.Edit.Web
 		
 		protected override void OnInit(EventArgs e)
 		{
+			EnsureAuthorization(Permission.Read);
 			RegisterScripts();
 			RegisterToolbarSelection();
 			RegisterThemeCss();

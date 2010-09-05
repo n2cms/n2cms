@@ -6,6 +6,7 @@ using N2.Collections;
 using N2.Definitions;
 using N2.Details;
 using N2.Edit.Trash;
+using System.Security.Principal;
 
 namespace N2.Security.Items
 {
@@ -77,6 +78,11 @@ namespace N2.Security.Items
 				totalRecords++;
 			}
 			return muc;
+		}
+
+		public override bool IsAuthorized(IPrincipal user)
+		{
+			return base.IsAuthorized(user) && Context.SecurityManager.IsAdmin(user);
 		}
 	}
 }
