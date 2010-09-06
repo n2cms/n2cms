@@ -17,7 +17,6 @@
 - remove traces of Microsoft.Web.Mvc (ThreadId=217382)
 - consider tagging in mvc (ThreadId=216968)
 - themes for deleted items (ThreadId=216799)
-- upload from file selector (ThreadId=213011)
 - culture+top part (ThreadId=210729)
 - personas
 - channels

@@ -4,7 +4,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<html xmlns="http://www.w3.org/1999/xhtml" class="navigation <%= Server.HtmlEncode(Request.QueryString["location"]) %>Location">
     <head runat="server">
         <title>Navigation</title>
         <asp:PlaceHolder runat="server">
@@ -13,9 +13,22 @@
 		</asp:PlaceHolder>
         <script src="../../Resources/Js/jquery.ui.ashx" type="text/javascript" ></script>
 		<script src="../../Resources/Js/ContextMenu.js?v2" type="text/javascript" ></script>
+		<style>
+			.nodeOption { display:none; padding:5px; }
+			.filesselectionLocation .DirectorySelected .onDirectorySelected
+			{
+				display:block;
+			}
+		</style>
     </head>
-<body class="framed navigation tree">
+<body class="framed">
     <form id="form1" runat="server">
+		<div class="onDirectorySelected nodeOption">
+			<input id="inputLocation" type="hidden" runat="server" class="uploadDirectoryLocation" />
+			<input id="inputFile" type="file" runat="server" onchange="this.form.submit();" />
+			<%--document.getElementById('<%= btnUpload.ClientID %>').click();--%>
+			<%--<asp:Button ID="btnUpload" runat="server" OnCommand="btnUpload_Command" />--%>
+		</div>
         <div id="nav" class="tree nav focusGroup">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
@@ -54,6 +67,7 @@
         				setUpContextMenu(el);
         			}
         		});
+
         		jQuery("#nav").click(function(e) {
         			var $a = $(e.target);
         			if (!$a.is("a"))
@@ -64,15 +78,22 @@
 
         			var handler = n2nav.handlers[$a.attr("data-type")] || n2nav.handlers["fallback"];
         			handler.call($a[0], e);
+
+        			document.body.className = document.body.className.replace(/\w+Selected ?/g, $a.attr("data-type") + "Selected");
         		});
+
         		toDraggable(jQuery("#nav li li"));
+
+        		$(".tree a.selected").each(function() { document.body.className += " " + $(this).attr("data-type") + "Selected"; });
         	});
         </script>
+        <style>
+			
+        </style>
         <% if (Request["location"] == "filesselection" || Request["location"] == "contentselection" || Request["location"] == "selection") { %>
         <script src="../../Resources/tiny_mce/tiny_mce_popup.js" type="text/javascript"></script>
         <script type="text/javascript">
-        	var updateOpenerAndClose = function(e) {
-        		var relativeUrl = $(this).attr("data-url");
+        	var updateOpenerWithUrlAndClose = function(relativeUrl) {
         		function selectIn(opener) {
         			if (opener.onFileSelected && opener.srcField)
         				opener.onFileSelected(relativeUrl);
@@ -86,6 +107,10 @@
         			selectIn(tinyMCEPopup.getWin());
         			tinyMCEPopup.close();
         		}
+	        }
+        	var updateOpenerAndClose = function(e) {
+        		var relativeUrl = $(this).attr("data-url");
+        		updateOpenerWithUrlAndClose(relativeUrl);
         		e.preventDefault();
         	};
         	n2nav.handlers["fallback"] = updateOpenerAndClose;
@@ -98,6 +123,8 @@
         		e.preventDefault();
         		if ($(this).attr("data-type") == "File")
         			updateOpenerAndClose.call(this, e);
+        		if ($(this).attr("data-type") == "Directory")
+        			$(".uploadDirectoryLocation").attr("value", $(this).attr("data-url"));
         	};
         </script>
     	<% } %>

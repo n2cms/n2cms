@@ -180,6 +180,7 @@ body.framed a.title { white-space:nowrap; }
 
 /* navigation */
 
+html.navigation,html.navigation body { height:100%;}
 body.framed .nav .selected { font-weight:bold; margin:1px;}
 .tree { padding:5px; }
 

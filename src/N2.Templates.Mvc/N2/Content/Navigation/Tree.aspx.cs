@@ -6,6 +6,8 @@ using N2.Engine;
 using N2.Edit.FileSystem;
 using N2.Configuration;
 using System.Collections.Generic;
+using System.Web.UI.HtmlControls;
+using System.Web;
 
 namespace N2.Edit.Navigation
 {
@@ -14,9 +16,25 @@ namespace N2.Edit.Navigation
 		GlobalResourceClassName = "Toolbar", SortOrder = -1)]
 	public partial class Tree : NavigationPage
 	{
+		protected HtmlInputHidden inputLocation;
+		protected HtmlInputFile inputFile;
+
 		protected override void OnInit(EventArgs e)
 		{
-			if (Request["location"] == "files" || Request["location"] == "filesselection")
+			if (IsPostBack && !string.IsNullOrEmpty(inputFile.PostedFile.FileName))
+			{
+				var fs = Engine.Resolve<IFileSystem>();
+				string uploadFolder = Request["inputLocation"];
+				if(!IsAvailable(uploadFolder))
+					throw new N2Exception("Cannot upload to " + Server.HtmlEncode(uploadFolder));
+
+				string fileName = System.IO.Path.GetFileName(inputFile.PostedFile.FileName);
+				string filePath = VirtualPathUtility.Combine(uploadFolder, fileName);
+				fs.WriteFile(filePath, inputFile.PostedFile.InputStream);
+
+				ClientScript.RegisterStartupScript(typeof(Tree), "select", "updateOpenerWithUrlAndClose('" + ResolveUrl(filePath) + "');", true);
+			}
+			else if (Request["location"] == "files" || Request["location"] == "filesselection")
 			{
 				IHost host = Engine.Resolve<IHost>();
 				HierarchyNode<ContentItem> root = new HierarchyNode<ContentItem>(Engine.Persister.Get(host.DefaultSite.RootItemID));
@@ -56,6 +74,18 @@ namespace N2.Edit.Navigation
 			siteTreeView.DataBind();
 
 			base.OnInit(e);
+		}
+
+		private bool IsAvailable(string uploadFolder)
+		{
+			if (string.IsNullOrEmpty(uploadFolder))
+				return false;
+			foreach (string availableFolder in Engine.EditManager.UploadFolders)
+			{
+				if (availableFolder.StartsWith(uploadFolder, StringComparison.InvariantCultureIgnoreCase))
+					return true;
+			}
+			return false;
 		}
 
 		private void AddSiteFilesNodes(IFileSystem fs, HierarchyNode<ContentItem> parent, Site site, List<ContentItem> selectionTrail)
