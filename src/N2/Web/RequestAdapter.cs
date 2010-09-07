@@ -40,14 +40,14 @@ namespace N2.Web
 			if (path == null || path.IsEmpty() || !path.IsRewritable || path.Ignore)
 				return;
 
-            if (!WebContext.SkipAuthorization 
-				&& WebContext.Request.Cookies[FormsAuthentication.FormsCookieName] == null)
-				//When you login-protected pages of your site, and go to URL http://website.com/, you are redirected not to http://website.com/login.aspx?ReturnUrl=%2fdefault.aspx
-				//but you end up on http://website.com/login.aspx?ReturnUrl=%2fdefault.aspx%3fpage%3d1&page=1
-				//After successful login, you are redirected to http://website.com/default.aspx?page%3d1&page=1
-				//This url actually works, but looks ugly. The thing is - URL should not be rewritten at all before login is done.
-				//I submit patch that does actually that - modification of ReqauestAdapter that checks if page is password protected, and if user is not authenticated, prevents url rewriting.
-                return;
+			//if (!WebContext.SkipAuthorization 
+			//    && WebContext.Request.Cookies[FormsAuthentication.FormsCookieName] == null)
+			//    //When you login-protected pages of your site, and go to URL http://website.com/, you are redirected not to http://website.com/login.aspx?ReturnUrl=%2fdefault.aspx
+			//    //but you end up on http://website.com/login.aspx?ReturnUrl=%2fdefault.aspx%3fpage%3d1&page=1
+			//    //After successful login, you are redirected to http://website.com/default.aspx?page%3d1&page=1
+			//    //This url actually works, but looks ugly. The thing is - URL should not be rewritten at all before login is done.
+			//    //I submit patch that does actually that - modification of ReqauestAdapter that checks if page is password protected, and if user is not authenticated, prevents url rewriting.
+			//    return;
 
 			string templateUrl = GetHandlerPath(path);
 			if(rewriteMethod == RewriteMethod.RewriteRequest)

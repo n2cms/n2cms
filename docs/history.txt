@@ -1,5 +1,4 @@
-﻿- Applied milicicd's patch #6351: returnUrl looks ugly
-- Fixed issue displaying computed url using WithEditableName
+﻿- Fixed issue displaying computed url using WithEditableName
 - Restored upload from file selector (ThreadId=213011)
 - Fixed ThreadId=226099: security issue with content membership provider
 - Fixed ThreadId=225487: Versioning Error
