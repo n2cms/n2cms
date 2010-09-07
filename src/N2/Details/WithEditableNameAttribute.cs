@@ -117,8 +117,10 @@ namespace N2.Details
                     string parentUrl = item.Parent.Url;
                     if (!parentUrl.Contains("?"))
                     {
-                        int aspxIndex = parentUrl.IndexOf(item.Extension, StringComparison.InvariantCultureIgnoreCase);
-                        string prefix = parentUrl.Substring(0, aspxIndex) + "/";
+                        int extensionIndex = parentUrl.Length;
+						if (!string.IsNullOrEmpty(item.Parent.Extension))
+							extensionIndex = parentUrl.IndexOf(item.Extension, StringComparison.InvariantCultureIgnoreCase);
+                        string prefix = parentUrl.Substring(0, extensionIndex) + "/";
                         if (prefix.Length > 60)
                             prefix = prefix.Substring(0, 50) + ".../";
                         ne.Prefix = prefix;
