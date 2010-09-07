@@ -38,8 +38,10 @@ namespace N2.Web
 		/// <summary>The template used to serve this request.</summary>
 		PathData CurrentPath { get; set; }
 
-		///// <summary>Interacts with the request phases to provide an extensibility point.</summary>
-		//BaseController CurrentController { get; set; }
+		/// <summary>
+		/// Specifies whether the UrlAuthorizationModule should skip authorization for the current request.
+		/// </summary>
+		bool SkipAuthorization { get; }
 
 		/// <summary>The local part of the requested path, e.g. http://n2cms.com/path/to/a/page.aspx?some=query.</summary>
         Url Url { get; }

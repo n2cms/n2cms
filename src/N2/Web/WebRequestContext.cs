@@ -48,13 +48,20 @@ namespace N2.Web
 		{
 			get { return RequestItems["CurrentTemplate"] as PathData; }
 			set 
-			{ 
+			{
 				RequestItems["CurrentTemplate"] = value;
 				if (value != null)
 					CurrentPage = value.CurrentPage;
 				else
 					CurrentPage = null;
 			}
+		}
+
+		/// <summary>Specifies whether the UrlAuthorizationModule should skip authorization for the current request.</summary>
+		public bool SkipAuthorization
+		{
+			get { return CurrentHttpContext.SkipAuthorization; }
+			set { CurrentHttpContext.SkipAuthorization = value; }
 		}
 
         /// <summary>The handler associated with the current request.</summary>

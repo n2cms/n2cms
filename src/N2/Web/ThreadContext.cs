@@ -68,6 +68,9 @@ namespace N2.Web
 			}
 		}
 
+		/// <summary>Specifies whether the UrlAuthorizationModule should skip authorization for the current request.</summary>
+		public bool SkipAuthorization { get; set; }
+
 		public virtual void Close()
         {
             string[] keys = new string[RequestItems.Keys.Count];
