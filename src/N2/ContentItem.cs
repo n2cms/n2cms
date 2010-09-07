@@ -56,7 +56,7 @@ namespace N2
     /// you should manually change the discriminator in the database or set the 
     /// name of the definition attribute, e.g. [Definition("Title", "OldClassName")]
     /// </remarks>
-	[Serializable, DebuggerDisplay("{Name}#{ID}")]
+	[Serializable, DebuggerDisplay("{GetType().Name}: {Name}#{ID}")]
 	[DynamicTemplate]
 	[RestrictParents(typeof(ContentItem))]
 	[SortChildren(SortBy.CurrentOrder)]

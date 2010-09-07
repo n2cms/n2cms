@@ -35,14 +35,11 @@ namespace N2.Templates.Items
 
         public virtual Control AddTo(Control container)
         {
-            Control c;
-            if (DisplayResult(container.Page.Request))
-                c = container.Page.LoadControl("~/Templates/UI/Parts/Result.ascx");
-            else
-                c = container.Page.LoadControl(TemplateUrl);
-            (c as IContentTemplate).CurrentItem = this;
-            container.Controls.Add(c);
-            return c;
+            string templateUrl = (DisplayResult(container.Page.Request))
+				? "~/Templates/UI/Parts/Result.ascx"
+				: TemplateUrl;
+
+			return N2.Web.UI.ItemUtility.AddUserControl(templateUrl, container, this);
         }
 
         public virtual void AddAnswer(IPersister persister, int selectedItem)
