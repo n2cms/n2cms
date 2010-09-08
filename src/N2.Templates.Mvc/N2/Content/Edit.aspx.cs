@@ -60,7 +60,7 @@ namespace N2.Edit
             btnSavePublish.Enabled = isPublicableByUser;
             btnPreview.Enabled = isVersionable && isWritableByUser;
             btnSaveUnpublished.Enabled = isVersionable && isWritableByUser;
-            hlFuturePublish.Enabled = isWritableByUser;
+			hlFuturePublish.Enabled = isPublicableByUser;
 		}
 
 		protected override void OnLoad(EventArgs e)
