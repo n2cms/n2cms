@@ -149,7 +149,11 @@ namespace N2.Web.UI.WebControls
 			else
 				availableDefinitions = GetPossibleDefinitions(pageZones);
 
-			foreach (ItemDefinition definition in availableDefinitions)
+			List<ItemDefinition> sortedDefinitions = new List<ItemDefinition>();
+			sortedDefinitions.AddRange(availableDefinitions);
+			sortedDefinitions.Sort();
+
+			foreach (ItemDefinition definition in sortedDefinitions)
 			{
 				HtmlGenericControl div = new HtmlGenericControl("div");
 				div.Attributes["title"] = definition.ToolTip;

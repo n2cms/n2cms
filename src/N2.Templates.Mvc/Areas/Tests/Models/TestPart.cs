@@ -6,7 +6,7 @@ using System.Web;
 
 namespace N2.Templates.Mvc.Areas.Tests.Models
 {
-	[PartDefinition("Test", SortOrder = 1001)]
+	[PartDefinition("Test", SortOrder = 21001)]
 	public class TestPart : TestItemBase
 	{
 	}
