@@ -50,8 +50,8 @@ namespace N2.Web
 
     	void Resize(string extension, Bitmap original, double ratio, Stream output)
     	{
-    		int newWidth = (int)(original.Width * ratio);
-    		int newHeight = (int)(original.Height * ratio);
+    		int newWidth = (int)Math.Round(original.Width * ratio);
+    		int newHeight = (int)Math.Round(original.Height * ratio);
 
     		Bitmap resized = new Bitmap(newWidth, newHeight, original.PixelFormat);
     		resized.SetResolution(original.HorizontalResolution, original.VerticalResolution);

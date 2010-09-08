@@ -1,4 +1,5 @@
-﻿- Applied rmorse's patch #6158: Draggable parts arn't sorted by sort order
+﻿- Applied meixger's patch #6153: rounding errors in ImageResizer.Resize()
+- Applied rmorse's patch #6158: Draggable parts arn't sorted by sort order
 - Applied zhangyaoxing's patch #6436: Fix a compatibility issue with prototype
 - Fixed ThreadId=226247: Cannot view result of poll
 - Fixed issue displaying computed url using WithEditableName
