@@ -187,7 +187,7 @@ var initn2context = function(w) {
 			jQuery(document.body).addClass(name + "Selected");
 		},
 		unselectFrame: function(frame) {
-			$(".selected a").filter(function() { return this.target === frame || !this.target; })
+			jQuery(".selected a").filter(function() { return this.target === frame || !this.target; })
                 .closest(".selected")
                 .each(function() {
                 	n2.unselect(this.id);
