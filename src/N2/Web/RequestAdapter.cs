@@ -13,7 +13,7 @@ namespace N2.Web
 	/// The default controller for N2 content items. Controls behaviour such as 
 	/// rewriting, authorization and more. This class can be used as base class 
 	/// for customizing the behaviour (decorate the inherited class with the 
-	/// [Controls] attribute).
+	/// [Adapts] attribute).
 	/// </summary>
 	[Adapts(typeof(ContentItem))]
 	public class RequestAdapter : AbstractContentAdapter

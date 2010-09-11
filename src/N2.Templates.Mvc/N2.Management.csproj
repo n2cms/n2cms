@@ -2330,6 +2330,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="N2\Files\FileSystem\App_LocalResources\Upload.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Files\FileSystem\App_LocalResources\Directory.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="N2\Files\FileSystem\App_LocalResources\File.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="N2\Content\Wizard\Img\" />
     <Folder Include="N2\Resources\tiny_mce\plugins\autosave\images\" />
     <Folder Include="N2\Resources\tiny_mce\plugins\paste\css\" />
