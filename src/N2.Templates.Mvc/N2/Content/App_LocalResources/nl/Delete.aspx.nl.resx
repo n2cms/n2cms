@@ -139,6 +139,6 @@
     <value>Verwijzende items</value>
   </data>
   <data name="hlReferencingItems.Text" xml:space="preserve">
-    <value>Overzicht verwijzende items</value>
+    <value>Toon verwijzende items</value>
   </data>
 </root>

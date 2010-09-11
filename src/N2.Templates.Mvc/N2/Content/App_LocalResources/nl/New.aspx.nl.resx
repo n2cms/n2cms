@@ -117,23 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultResource.Title" xml:space="preserve">
-    <value>Maak een nieuw item aan</value>
-  </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Annuleer</value>
   </data>
   <data name="lblPosition.Text" xml:space="preserve">
-    <value>Kies waar het item geplaatst moet worden</value>
+    <value>Kies waar het item te plaatsen</value>
   </data>
   <data name="lblZone.Text" xml:space="preserve">
-    <value>Kies een zone waar het item aangemaakte gemaakt moet worden</value>
+    <value>Kies een zone waarin het item gemaakt moet worden</value>
   </data>
   <data name="NewPage.Title.NoneAllowed" xml:space="preserve">
     <value>Onder type "{0}" mag geen item aangemaakt worden</value>
   </data>
   <data name="NewPage.Title.Select" xml:space="preserve">
-    <value>Selecteer het type van het item onder "{0}"</value>
+    <value>Kies het type van item onder "{0}"</value>
   </data>
   <data name="tpPosition.ToolTip" xml:space="preserve">
     <value>Positie</value>
@@ -143,5 +140,8 @@
   </data>
   <data name="tpZone.ToolTip" xml:space="preserve">
     <value>Zone</value>
+  </data>
+  <data name="DefaultResource.Title" xml:space="preserve">
+    <value>Nieuw item aanmaken</value>
   </data>
 </root>

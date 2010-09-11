@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnPreview.Text" xml:space="preserve">
-    <value>Bekijk een voorbeeld</value>
-  </data>
-  <data name="btnPreview.ToolTip" xml:space="preserve">
-    <value>Bekijk een niet gepubliceerd voorbeeld van de wijzigingen</value>
-  </data>
   <data name="btnSave.Text" xml:space="preserve">
     <value>Opslaan en publiceren</value>
   </data>
@@ -130,16 +124,16 @@
     <value />
   </data>
   <data name="btnSaveUnpublished.Text" xml:space="preserve">
-    <value>Ongepubliceerde versie opslaan</value>
+    <value>Wijzigingen opslaan</value>
   </data>
   <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
-    <value />
+    <value>Wijzigingen opslaan zonder deze te publiceren. Je kan op een later tijdstip verder gaan.</value>
   </data>
-  <data name="EditPage.TitleFormat.New" xml:space="preserve">
-    <value>Nieuw "{0}"</value>
+  <data name="hlSavePublishInFuture.Text" xml:space="preserve">
+    <value>Opslaan en later publiceren</value>
   </data>
-  <data name="EditPage.TitleFormat.Update" xml:space="preserve">
-    <value>Wijzig "{0}"</value>
+  <data name="hlSavePublishInFuture.ToolTip" xml:space="preserve">
+    <value>Wijzigingen opslaan zonder deze te publiceren. Je kan ze later alsnog publiceren.</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Annuleer</value>
@@ -160,13 +154,13 @@
     <value />
   </data>
   <data name="hlNewerVersionResource1.Text" xml:space="preserve">
-    <value>Er is een nieuwere maar niet gepubliceerde versie van dit item. Wijzig de nieuwere versie &amp;raquo;</value>
+    <value>Er is een ongepubliceerde versie. Klik hier om de nieuwe versie te wijzigen &amp;raquo;</value>
   </data>
   <data name="hlNewerVersionResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="hlOlderVersionResource1.Text" xml:space="preserve">
-    <value>Dit is een niet gepubliceerde versie, klik hier om de nu gepubliceerde versie te wijzigen.</value>
+    <value>&amp;laquo; Klik hier om de actuele versie te wijzigen. Dit is een ongepubliceerde versie.</value>
   </data>
   <data name="hlOlderVersionResource1.ToolTip" xml:space="preserve">
     <value />
@@ -180,13 +174,34 @@
   <data name="PageResource1.Title" xml:space="preserve">
     <value>Wijzig</value>
   </data>
-  <data name="SavedFormat" xml:space="preserve">
-    <value>'{0}' opgeslagen, door aan het sturen...</value>
-  </data>
   <data name="vsEdit.HeaderText" xml:space="preserve">
-    <value>Het item kon niet worden opgeslagen. Controleer ajb het volgende:</value>
+    <value>Het item kon niet worden opgeslagen. Controleer het volgende:</value>
   </data>
   <data name="vsEdit.ToolTip" xml:space="preserve">
     <value />
+  </data>
+  <data name="EditPage.TitleFormat.New" xml:space="preserve">
+    <value>Nieuw "{0}"</value>
+  </data>
+  <data name="EditPage.TitleFormat.Update" xml:space="preserve">
+    <value>Wijzig "{0}"</value>
+  </data>
+  <data name="SavedFormat" xml:space="preserve">
+    <value>'{0}' opgeslagen, moment ajb...</value>
+  </data>
+  <data name="btnPreview.Text" xml:space="preserve">
+    <value>Opslaan en previewen</value>
+  </data>
+  <data name="btnPreview.ToolTip" xml:space="preserve">
+    <value>Sla een versie met de wijzigingen op en preview deze voor te publiceren.</value>
+  </data>
+  <data name="btnSavePublishInFuture.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="dpFuturePublishDate.Label.Text" xml:space="preserve">
+    <value>Wanneer</value>
+  </data>
+  <data name="hlCancelSavePublishInFuture.Text" xml:space="preserve">
+    <value>Annuleer</value>
   </data>
 </root>

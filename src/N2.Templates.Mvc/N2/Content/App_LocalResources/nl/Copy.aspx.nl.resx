@@ -124,7 +124,7 @@
     <value>&lt;img src='../Resources/Icons/page_copy.png' /&gt; Probeer opnieuw</value>
   </data>
   <data name="CopyPage.TitleFormat" xml:space="preserve">
-    <value>Kopieer "{0}" naar "{1}"</value>
+    <value>Kopieer "{0}" op "{1}"</value>
   </data>
   <data name="from.TextFormat" xml:space="preserve">
     <value>{0}&lt;b&gt;{1}&lt;/b&gt;</value>
@@ -142,10 +142,10 @@
     <value>Naar</value>
   </data>
   <data name="NameOccupiedExceptionFormat" xml:space="preserve">
-    <value>Een item genaamd "{0}" bestaat al onder "{1}"</value>
+    <value>Een item met naam "{0}" bestaat al onder "{1}"</value>
   </data>
   <data name="NotAllowedParentExceptionFormat" xml:space="preserve">
-    <value>Het item van type "{0}" mag niet onder doel "{1}"</value>
+    <value>Het item van type "{0}" mag niet onder type "{1}"</value>
   </data>
   <data name="to.TextFormat" xml:space="preserve">
     <value>{0}&lt;b&gt;{1}&lt;/b&gt;</value>

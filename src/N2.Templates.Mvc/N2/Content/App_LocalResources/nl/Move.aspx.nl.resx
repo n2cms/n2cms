@@ -121,13 +121,13 @@
     <value>Annuleer</value>
   </data>
   <data name="btnMove.Text" xml:space="preserve">
-    <value>Probeer nogmaals</value>
+    <value>Probeer opnieuw</value>
   </data>
   <data name="cvMove.ErrorMessage" xml:space="preserve">
     <value>Fout</value>
   </data>
   <data name="DestinationOnOrBelowItselfExceptionFormat" xml:space="preserve">
-    <value>Kan een item niet naar zichzelf of onder zichzelf verplaatsen</value>
+    <value>Een item kan niet op of onder zichzelf worden geplaatst.</value>
   </data>
   <data name="from.TextFormat" xml:space="preserve">
     <value>{0}&lt;b&gt;{1}&lt;/b&gt;</value>
@@ -145,13 +145,13 @@
     <value>Naar</value>
   </data>
   <data name="MovePage.TitleFormat" xml:space="preserve">
-    <value>Verplaat "{0}" naar "{1}"</value>
+    <value>Verplaats "{0}" op "{1}"</value>
   </data>
   <data name="NameOccupiedExceptionFormat" xml:space="preserve">
-    <value>Een item genaamd "{0}" bestaat al onder "{1}"</value>
+    <value>Een item met naam "{0}" bestaat al onder "{1}"</value>
   </data>
   <data name="NotAllowedParentExceptionFormat" xml:space="preserve">
-    <value>Het item van type "{0}" mag niet onder doel "{1}"</value>
+    <value>Het item van type "{0}" mag niet onder type "{1}"</value>
   </data>
   <data name="to.TextFormat" xml:space="preserve">
     <value>{0}&lt;b&gt;{1}&lt;/b&gt;</value>

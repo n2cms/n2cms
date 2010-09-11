@@ -118,9 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="logout.LogoutText" xml:space="preserve">
-    <value>&lt;img src='img/ico/png/key.png' alt='Log uit'/&gt;</value>
+    <value>&lt;img src='img/ico/png/key.png' alt='Uitloggen'/&gt;</value>
   </data>
   <data name="logout.ToolTipFormat" xml:space="preserve">
-    <value>Log uit {0}</value>
+    <value>Uitloggen {0}</value>
+  </data>
+  <data name="search.Text" xml:space="preserve">
+    <value>Zoeken</value>
   </data>
 </root>
