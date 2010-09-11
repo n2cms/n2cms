@@ -286,6 +286,7 @@
       <Link>AssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Collections\ChildFactoryDelegate.cs" />
+    <Compile Include="Collections\IPipeline.cs" />
     <Compile Include="Configuration\AssemblyCollection.cs" />
     <Compile Include="Configuration\AssemblyElement.cs" />
     <Compile Include="Configuration\ComponentParameterCollection.cs" />

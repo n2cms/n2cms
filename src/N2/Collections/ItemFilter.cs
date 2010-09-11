@@ -7,7 +7,7 @@ namespace N2.Collections
 	/// <summary>
 	/// The abstract base class of item filters.
 	/// </summary>
-	public abstract class ItemFilter
+	public abstract class ItemFilter : N2.Collections.IPipeline
 	{
 		/// <summary>Matches an item against the current filter.</summary>
 		/// <param name="item"></param>
@@ -34,6 +34,14 @@ namespace N2.Collections
                     yield return item;
         }
 
+		/// <summary>Filters the supplied items according to the current filter type.</summary>
+		/// <param name="items">The initial item enumeration.</param>
+		/// <returns>The filtered item enumeration.</returns>
+		public virtual IEnumerable<ContentItem> Pipe(IEnumerable<ContentItem> items)
+		{
+			return Pipe<ContentItem>(items);
+		}
+        
 		/// <summary>Applies a filter on a list of items.</summary>
 		/// <param name="items">The items to filter.</param>
 		/// <param name="filter">The filter to apply.</param>

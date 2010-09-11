@@ -18,6 +18,10 @@
 	<object id="flashUploader" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
 		codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0"
 		width="575" height="375" id="fileUpload" align="middle">
+		<div style="padding:10px;">
+			<asp:FileUpload runat="server" ID="fuAlternative" />
+			<asp:Button runat="server" ID="btnAlternative" OnCommand="btnAlternative_Command" Text="Upload" meta:resourceKey="btnAlternative" />
+		</div>
 		<param name="allowScriptAccess" value="sameDomain" />
 		<param name="movie" value="<%= Movie %>" />
 		<param name="quality" value="high" />
