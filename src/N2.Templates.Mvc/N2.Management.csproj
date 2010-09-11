@@ -2073,6 +2073,7 @@
     <Content Include="N2\Resources\Js\jquery.editableThemeSelection.js" />
     <Content Include="N2\Resources\Js\FreeTextArea.js" />
     <Content Include="N2\Resources\Js\jquery-1.4.1.js" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2keyboard.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2glow.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2name.js" />
     <Content Include="N2\Resources\KeepAlive\ping.aspx" />

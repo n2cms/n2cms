@@ -494,3 +494,7 @@ div.dp-popup .dp-nav-next .dp-nav-next-month
 	display:block;
 	overflow: hidden;
 }
+.focused
+{
+	background-color:#eef;
+}

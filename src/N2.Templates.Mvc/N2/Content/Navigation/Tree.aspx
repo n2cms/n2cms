@@ -87,9 +87,7 @@
         		$(".tree a.selected").each(function() { document.body.className += " " + $(this).attr("data-type") + "Selected"; });
         	});
         </script>
-        <style>
-			
-        </style>
+        
         <% if (Request["location"] == "filesselection" || Request["location"] == "contentselection" || Request["location"] == "selection") { %>
         <script src="../../Resources/tiny_mce/tiny_mce_popup.js" type="text/javascript"></script>
         <script type="text/javascript">
@@ -152,36 +150,27 @@
     		$("a.selected").focus();
         </script>
     	<% } %>
-    	
+
 		<script type="text/javascript">
-			var key = { esc: 27, left: 37, up: 38, right: 39, down: 40, del: 46, c: 67, n: 78, v: 86, x: 88 };
-			jQuery(document).keyup(function(e) {
-				if (e.keyCode == key.up || e.keyCode == key.down) {
-					$selectables = $(".focusGroup a:not(.toggler):visible");
-					var index = $selectables.index($(":focus"));
-					index += e.keyCode == key.up ? -1 : 1;
-					$selectables.eq(index).focus();
-				} else if (e.keyCode == key.left) {
-					$(".focusGroup :focus").closest(".folder-open")
-						.children(".toggler").click()
-						.siblings(":not(.toggler)").focus();
-				} else if (e.keyCode == key.right) {
-					$(".focusGroup :focus").siblings(".folder-close > .toggler").click();
-				} else if (e.keyCode == key.esc) {
-					$("#contextMenu").n2hide();
-				} else if (e.keyCode == key.del) {
-					$("#contextMenu a.delete").n2trigger();
-				} else if (e.keyCode == key.c) {
-					$("#contextMenu a.copy").n2trigger();
-				} else if (e.keyCode == key.n) {
-					$("#contextMenu a.new").n2trigger();
-				} else if (e.keyCode == key.v) {
-					$("#contextMenu a.paste").n2trigger();
-				} else if (e.keyCode == key.x) {
-					$("#contextMenu a.move").n2trigger();
-				}
+			$(document).ready(function() {
+				$(".focusGroup a:not(.toggler):visible").n2keyboard({
+					left: function(e, ctx) {					
+						var el = ctx.focused().closest(".folder-open")
+							.children(".toggler").click()
+							.siblings("a:not(.toggler)");
+						ctx.focus(el);
+					},
+					right: function(e, ctx) {
+						ctx.focused().siblings(".folder-close > .toggler").click();
+					},
+					esc: function() { $("#contextMenu").n2hide(); },
+					del: function() { $("#contextMenu a.delete").n2trigger(); },
+					c: function() { $("#contextMenu a.copy").n2trigger(); },
+					n: function() { $("#contextMenu a.new").n2trigger(); },
+					v: function() { $("#contextMenu a.paste").n2trigger(); },
+					x: function() { $("#contextMenu a.move").n2trigger(); }
+				}, ".selected");
 			});
-			jQuery("a.selected").focus();
 		</script>
 	    
         <nav:ContextMenu id="cm" runat="server" />

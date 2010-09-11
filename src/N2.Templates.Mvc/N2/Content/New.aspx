@@ -55,14 +55,9 @@
     </n2:TabPanel>
     
     <script type="text/javascript">
-    	var key = { up: 38, right: 39, down: 40 };
-    	jQuery(document).keyup(function(e) {
-    		if (e.keyCode == key.up || e.keyCode == key.down) {
-    			$selectables = $(".type a");
-    			var index = $selectables.index($(":focus"));
-    			index += e.keyCode == key.up ? -1 : 1;
-    			$selectables.eq(index).focus();
-    		}
+    	//var key = { up: 38, right: 39, down: 40 };
+    	jQuery(document).ready(function() {
+    		$(".type a").n2keyboard({}, ":first");
     	});
     </script>
 </asp:Content>

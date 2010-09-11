@@ -61,7 +61,7 @@ namespace N2.Persistence.Serialization
 		protected virtual void WriteDefaultAttributes(ElementWriter itemElement, ContentItem item)
 		{
 			itemElement.WriteAttribute("id", item.ID);
-			itemElement.WriteAttribute("name", item.Name);
+			itemElement.WriteAttribute("name", item.ID.ToString() == item.Name ? "" : item.Name);
 			itemElement.WriteAttribute("parent", item.Parent != null ? item.Parent.ID.ToString() : string.Empty);
 			itemElement.WriteAttribute("title", item.Title);
 			itemElement.WriteAttribute("zoneName", item.ZoneName);
