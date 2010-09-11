@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnAssociate.Text" xml:space="preserve">
-    <value>Koppel</value>
+    <value>Koppelen</value>
   </data>
   <data name="btnUnassociate.Text" xml:space="preserve">
-    <value>Ontkoppel</value>
+    <value>Ontkoppelen</value>
   </data>
   <data name="cvAssociate.Text" xml:space="preserve">
     <value>Kies twee of meer items om te koppelen</value>
   </data>
   <data name="cvGlobalizationDisabled.Text" xml:space="preserve">
-    <value>Globalisatie is niet actief. Wijzig het bestand web.config om dit te wijzigen.</value>
+    <value>Globalisatie is niet actief.Werk het web.config bestand bij om te activeren.</value>
   </data>
   <data name="cvOutsideGlobalization.Text" xml:space="preserve">
-    <value>Deze pagina kan niet vertaald worden. Voeg de pagina eerst aan een taalroot toe om globalizatie te activeren.</value>
+    <value>Deze pagina kan niet worden vertaald. Hang de pagina onder een taalroot om dit mogelijk et maken.</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
-    <value>Annuleer</value>
+    <value>Annuleren</value>
   </data>
   <data name="lblSelected.Text" xml:space="preserve">
-    <value>Gekozen:</value>
+    <value>Gekozen: </value>
   </data>
 </root>

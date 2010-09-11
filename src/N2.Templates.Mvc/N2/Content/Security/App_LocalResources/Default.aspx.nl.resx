@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="btnSaveRecursiveResource1.Text" xml:space="preserve">
-    <value>Sla alles op</value>
+    <value>Save whole branch</value>
   </data>
   <data name="btnSaveRecursiveResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="btnSaveResource1.Text" xml:space="preserve">
-    <value>Opslaan</value>
+    <value>Save</value>
   </data>
   <data name="btnSaveResource1.ToolTip" xml:space="preserve">
     <value />
@@ -133,7 +133,7 @@
     <value />
   </data>
   <data name="cvSomethingSelectedResource1.ErrorMessage" xml:space="preserve">
-    <value>Minimaal een rol moet zijn gedefinieerd</value>
+    <value>At least one role must be selected</value>
   </data>
   <data name="cvSomethingSelectedResource1.Text" xml:space="preserve">
     <value />
@@ -142,12 +142,15 @@
     <value />
   </data>
   <data name="hlCancelResource1.Text" xml:space="preserve">
-    <value>Annuleer</value>
+    <value>Cancel</value>
   </data>
   <data name="hlCancelResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
-    <value>Beveiligingsinstellingen</value>
+    <value>Item Security Settings</value>
+  </data>
+  <data name="DefaultText" xml:space="preserve">
+    <value>Default</value>
   </data>
 </root>

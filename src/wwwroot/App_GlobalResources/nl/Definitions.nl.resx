@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Calendar.Title" xml:space="preserve">
-    <value>Calender Pagina</value>
+    <value>Kalender pagina</value>
   </data>
   <data name="Redirect.Title" xml:space="preserve">
     <value>Verwijzing</value>
@@ -127,6 +127,6 @@
     <value>Sitemap</value>
   </data>
   <data name="TextPage.Title" xml:space="preserve">
-    <value>Platte inhoud pagina</value>
+    <value>Tekst pagina</value>
   </data>
 </root>

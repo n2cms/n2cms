@@ -117,67 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnAddResource1.Text" xml:space="preserve">
-    <value>Toevoegen</value>
+  <data name="affectedItems.Legend" xml:space="preserve">
+    <value>Alle verwijderde items</value>
   </data>
-  <data name="btnAddResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnDelete.Text" xml:space="preserve">
+    <value>Verwijder</value>
   </data>
-  <data name="ddlTypesResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="confirm.message" xml:space="preserve">
+    <value>Verwijder {0} ({1})?</value>
+  </data>
+  <data name="cvDelete.ErrorMessage" xml:space="preserve">
+    <value>Kan de startpagina niet verwijderen</value>
+  </data>
+  <data name="DeletePage.TitleFormat" xml:space="preserve">
+    <value>Verwijder "{0}"</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Annuleer</value>
   </data>
-  <data name="hlCancel.ToolTip" xml:space="preserve">
-    <value />
+  <data name="referencingItems.Legend" xml:space="preserve">
+    <value>Verwijzende items</value>
   </data>
-  <data name="imgIcoResource1.AlternateText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="imgIcoResource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="LabelResource1.Text" xml:space="preserve">
-    <value>Titel</value>
-  </data>
-  <data name="LabelResource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="LabelResource2.Text" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="LabelResource2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="LabelResource3.Text" xml:space="preserve">
-    <value>Toegevoegd</value>
-  </data>
-  <data name="LabelResource3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PageResource1.Title" xml:space="preserve">
-    <value>Wizard</value>
-  </data>
-  <data name="tpAddResource1.GroupingText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tpAddResource1.ToolTip" xml:space="preserve">
-    <value>Locatie toevoegen</value>
-  </data>
-  <data name="tpTypeResource1.GroupingText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tpTypeResource1.ToolTip" xml:space="preserve">
-    <value>Kies type</value>
-  </data>
-  <data name="txtTitleResource1.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txtTitleResource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="lblNoItems.Text" xml:space="preserve">
-    <value>Geen locaties toegevoegd. Ga naar een locatie in de boomstructuur waar je de snelkoppelking wilt toevoegen en kies 'Locatie toevoegen'</value>
+  <data name="hlReferencingItems.Text" xml:space="preserve">
+    <value>Toon verwijzende items</value>
   </data>
 </root>

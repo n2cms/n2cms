@@ -117,67 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnAddResource1.Text" xml:space="preserve">
-    <value>Toevoegen</value>
+  <data name="cpEdit.ToolTip" xml:space="preserve">
+    <value>Wijzigpagina</value>
   </data>
-  <data name="btnAddResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="cpEditingCancel.ToolTip" xml:space="preserve">
+    <value>Annuleer wijzigingen</value>
   </data>
-  <data name="ddlTypesResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="cpEditingSave.ToolTip" xml:space="preserve">
+    <value>Wijzigingen opslaan</value>
   </data>
-  <data name="hlCancel.Text" xml:space="preserve">
-    <value>Annuleer</value>
+  <data name="cpEditPreview.ToolTip" xml:space="preserve">
+    <value>Terug naar beheer</value>
   </data>
-  <data name="hlCancel.ToolTip" xml:space="preserve">
-    <value />
+  <data name="cpPreviewPublish.ToolTip" xml:space="preserve">
+    <value>Publiceer de nu zichtbare versie.</value>
   </data>
-  <data name="imgIcoResource1.AlternateText" xml:space="preserve">
-    <value />
+  <data name="cpPreviewDiscard.ToolTip" xml:space="preserve">
+    <value>Verwijder de nu zichtbare versie permanent.</value>
   </data>
-  <data name="imgIcoResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="cpNew.ToolTip" xml:space="preserve">
+    <value>Nieuw item direct onder deze pagina</value>
   </data>
-  <data name="LabelResource1.Text" xml:space="preserve">
-    <value>Titel</value>
+  <data name="cpAdminister.ToolTip" xml:space="preserve">
+    <value>Beheer website</value>
   </data>
-  <data name="LabelResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="cpDelete.ToolTip" xml:space="preserve">
+    <value>Verwijder deze pagina</value>
   </data>
-  <data name="LabelResource2.Text" xml:space="preserve">
-    <value>Type</value>
+  <data name="cpOrganize.ToolTip" xml:space="preserve">
+    <value>Beheer parts</value>
   </data>
-  <data name="LabelResource2.ToolTip" xml:space="preserve">
-    <value />
+  <data name="cpPendingVersion.ToolTip" xml:space="preserve">
+    <value>Er is een nieuwere, niet gepubliceerde, versie van deze pagina</value>
   </data>
-  <data name="LabelResource3.Text" xml:space="preserve">
-    <value>Toegevoegd</value>
-  </data>
-  <data name="LabelResource3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PageResource1.Title" xml:space="preserve">
-    <value>Wizard</value>
-  </data>
-  <data name="tpAddResource1.GroupingText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tpAddResource1.ToolTip" xml:space="preserve">
-    <value>Locatie toevoegen</value>
-  </data>
-  <data name="tpTypeResource1.GroupingText" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tpTypeResource1.ToolTip" xml:space="preserve">
-    <value>Kies type</value>
-  </data>
-  <data name="txtTitleResource1.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txtTitleResource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="lblNoItems.Text" xml:space="preserve">
-    <value>Geen locaties toegevoegd. Ga naar een locatie in de boomstructuur waar je de snelkoppelking wilt toevoegen en kies 'Locatie toevoegen'</value>
+  <data name="tpPreview.ToolTip" xml:space="preserve">
+    <value>Wijzig</value>
   </data>
 </root>

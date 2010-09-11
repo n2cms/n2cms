@@ -1,4 +1,6 @@
-﻿- Fixed writer able to publish via publish in the future
+﻿- Applied Martijn's dutch translations
+- Noflash alternative upload
+- Fixed writer able to publish via publish in the future
 - Applied meixger's patch #6153: rounding errors in ImageResizer.Resize()
 - Applied rmorse's patch #6158: Draggable parts arn't sorted by sort order
 - Applied zhangyaoxing's patch #6436: Fix a compatibility issue with prototype

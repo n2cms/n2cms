@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="colName.HeaderText" xml:space="preserve">
-    <value>Naam</value>
+    <value>Naame</value>
   </data>
   <data name="colPublished.HeaderText" xml:space="preserve">
-    <value>Publ.</value>
+    <value>Gepubl.</value>
   </data>
   <data name="colTitle.HeaderText" xml:space="preserve">
     <value>Titel</value>
@@ -130,6 +130,6 @@
     <value>Zone</value>
   </data>
   <data name="tablePage.Title" xml:space="preserve">
-    <value>Tabel navigatie</value>
+    <value>Tabel naviagatie</value>
   </data>
 </root>

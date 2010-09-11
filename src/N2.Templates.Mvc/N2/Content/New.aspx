@@ -13,7 +13,7 @@
 					<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((ItemDefinition)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
 						<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" ToolTip='<%# Eval("NumberOfItems") %>' />
 						<span class="title"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Title") ?? Eval("Title") %></span>
-						<span class="description"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%></span>
+						<%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%>
 					</asp:HyperLink>
 				</div>
 			</ItemTemplate>
@@ -55,9 +55,14 @@
     </n2:TabPanel>
     
     <script type="text/javascript">
-    	//var key = { up: 38, right: 39, down: 40 };
-    	jQuery(document).ready(function() {
-    		$(".type a").n2keyboard({}, ":first");
+    	var key = { up: 38, right: 39, down: 40 };
+    	jQuery(document).keyup(function(e) {
+    		if (e.keyCode == key.up || e.keyCode == key.down) {
+    			$selectables = $(".type a");
+    			var index = $selectables.index($(":focus"));
+    			index += e.keyCode == key.up ? -1 : 1;
+    			$selectables.eq(index).focus();
+    		}
     	});
     </script>
 </asp:Content>

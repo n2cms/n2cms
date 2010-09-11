@@ -117,14 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnAddResource1.Text" xml:space="preserve">
-    <value>Toevoegen</value>
+  <data name="btnSave.Text" xml:space="preserve">
+    <value>Opslaan en publiceren</value>
   </data>
-  <data name="btnAddResource1.ToolTip" xml:space="preserve">
+  <data name="btnSave.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="ddlTypesResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnSaveUnpublished.Text" xml:space="preserve">
+    <value>Wijzigingen opslaan</value>
+  </data>
+  <data name="btnSaveUnpublished.ToolTip" xml:space="preserve">
+    <value>Wijzigingen opslaan zonder deze te publiceren. Je kan op een later tijdstip verder gaan.</value>
+  </data>
+  <data name="hlSavePublishInFuture.Text" xml:space="preserve">
+    <value>Opslaan en later publiceren</value>
+  </data>
+  <data name="hlSavePublishInFuture.ToolTip" xml:space="preserve">
+    <value>Wijzigingen opslaan zonder deze te publiceren. Je kan ze later alsnog publiceren.</value>
   </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Annuleer</value>
@@ -132,52 +141,67 @@
   <data name="hlCancel.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="imgIcoResource1.AlternateText" xml:space="preserve">
+  <data name="hlEditParent.Text" xml:space="preserve">
+    <value>Wijzig bovenliggende</value>
+  </data>
+  <data name="hlEditParent.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="imgIcoResource1.ToolTip" xml:space="preserve">
+  <data name="hlInfo.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="hlInfo.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="LabelResource1.Text" xml:space="preserve">
-    <value>Titel</value>
+  <data name="hlNewerVersionResource1.Text" xml:space="preserve">
+    <value>Er is een ongepubliceerde versie. Klik hier om de nieuwe versie te wijzigen &amp;raquo;</value>
   </data>
-  <data name="LabelResource1.ToolTip" xml:space="preserve">
+  <data name="hlNewerVersionResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="LabelResource2.Text" xml:space="preserve">
-    <value>Type</value>
+  <data name="hlOlderVersionResource1.Text" xml:space="preserve">
+    <value>&amp;laquo; Klik hier om de actuele versie te wijzigen. Dit is een ongepubliceerde versie.</value>
   </data>
-  <data name="LabelResource2.ToolTip" xml:space="preserve">
+  <data name="hlOlderVersionResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="LabelResource3.Text" xml:space="preserve">
-    <value>Toegevoegd</value>
+  <data name="HyperLinkResource1.Text" xml:space="preserve">
+    <value />
   </data>
-  <data name="LabelResource3.ToolTip" xml:space="preserve">
+  <data name="HyperLinkResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="PageResource1.Title" xml:space="preserve">
-    <value>Wizard</value>
+    <value>Wijzig</value>
   </data>
-  <data name="tpAddResource1.GroupingText" xml:space="preserve">
+  <data name="vsEdit.HeaderText" xml:space="preserve">
+    <value>Het item kon niet worden opgeslagen. Controleer het volgende:</value>
+  </data>
+  <data name="vsEdit.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="tpAddResource1.ToolTip" xml:space="preserve">
-    <value>Locatie toevoegen</value>
+  <data name="EditPage.TitleFormat.New" xml:space="preserve">
+    <value>Nieuw "{0}"</value>
   </data>
-  <data name="tpTypeResource1.GroupingText" xml:space="preserve">
-    <value />
+  <data name="EditPage.TitleFormat.Update" xml:space="preserve">
+    <value>Wijzig "{0}"</value>
   </data>
-  <data name="tpTypeResource1.ToolTip" xml:space="preserve">
-    <value>Kies type</value>
+  <data name="SavedFormat" xml:space="preserve">
+    <value>'{0}' opgeslagen, moment ajb...</value>
   </data>
-  <data name="txtTitleResource1.Text" xml:space="preserve">
-    <value />
+  <data name="btnPreview.Text" xml:space="preserve">
+    <value>Opslaan en previewen</value>
   </data>
-  <data name="txtTitleResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="btnPreview.ToolTip" xml:space="preserve">
+    <value>Sla een versie met de wijzigingen op en preview deze voor te publiceren.</value>
   </data>
-  <data name="lblNoItems.Text" xml:space="preserve">
-    <value>Geen locaties toegevoegd. Ga naar een locatie in de boomstructuur waar je de snelkoppelking wilt toevoegen en kies 'Locatie toevoegen'</value>
+  <data name="btnSavePublishInFuture.Text" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="dpFuturePublishDate.Label.Text" xml:space="preserve">
+    <value>Wanneer</value>
+  </data>
+  <data name="hlCancelSavePublishInFuture.Text" xml:space="preserve">
+    <value>Annuleer</value>
   </data>
 </root>

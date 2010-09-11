@@ -117,67 +117,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnAddResource1.Text" xml:space="preserve">
-    <value>Toevoegen</value>
+  <data name="copy.Title" xml:space="preserve">
+    <value>KOPIEER</value>
   </data>
-  <data name="btnAddResource1.ToolTip" xml:space="preserve">
+  <data name="copy.ToolTip" xml:space="preserve">
+    <value>Kopieer item en onderliggende items</value>
+  </data>
+  <data name="DefaultResource.Title" xml:space="preserve">
+    <value>N2 Beheer</value>
+  </data>
+  <data name="delete.Title" xml:space="preserve">
+    <value>VERWIJDER</value>
+  </data>
+  <data name="delete.ToolTip" xml:space="preserve">
+    <value>Verwijder item en onderliggende items</value>
+  </data>
+  <data name="edit.Title" xml:space="preserve">
+    <value>WIJZIG</value>
+  </data>
+  <data name="edit.ToolTip" xml:space="preserve">
+    <value>Wijzig gekozen item</value>
+  </data>
+  <data name="move.Title" xml:space="preserve">
+    <value>KNIP</value>
+  </data>
+  <data name="move.ToolTip" xml:space="preserve">
+    <value>Knip</value>
+  </data>
+  <data name="new.Title" xml:space="preserve">
+    <value>NIEUW</value>
+  </data>
+  <data name="new.ToolTip" xml:space="preserve">
+    <value>Nieuw item toevoegen onder het geselecteerde item</value>
+  </data>
+  <data name="paste.Title" xml:space="preserve">
+    <value>PLAK</value>
+  </data>
+  <data name="paste.ToolTip" xml:space="preserve">
+    <value>Plak het item in het geheugen</value>
+  </data>
+  <data name="search.Title" xml:space="preserve">
     <value />
   </data>
-  <data name="ddlTypesResource1.ToolTip" xml:space="preserve">
+  <data name="search.ToolTip" xml:space="preserve">
+    <value>Zoek items</value>
+  </data>
+  <data name="settings.Title" xml:space="preserve">
+    <value>INSTELLINGEN</value>
+  </data>
+  <data name="settings.ToolTip" xml:space="preserve">
+    <value>Instellingen</value>
+  </data>
+  <data name="table.Title" xml:space="preserve">
     <value />
   </data>
-  <data name="hlCancel.Text" xml:space="preserve">
-    <value>Annuleer</value>
+  <data name="table.ToolTip" xml:space="preserve">
+    <value>Tabulair overzicht</value>
   </data>
-  <data name="hlCancel.ToolTip" xml:space="preserve">
-    <value />
+  <data name="tree.Title" xml:space="preserve">
+    <value>PAGINA'S</value>
   </data>
-  <data name="imgIcoResource1.AlternateText" xml:space="preserve">
-    <value />
+  <data name="tree.ToolTip" xml:space="preserve">
+    <value>Boomstructuur</value>
   </data>
-  <data name="imgIcoResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="versions.Title" xml:space="preserve">
+    <value>VERSIES</value>
   </data>
-  <data name="LabelResource1.Text" xml:space="preserve">
-    <value>Titel</value>
+  <data name="versions.ToolTip" xml:space="preserve">
+    <value>Vorige versies</value>
   </data>
-  <data name="LabelResource1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="filemanager.ToolTip" xml:space="preserve">
+    <value>Upload and organiseer bestanden</value>
   </data>
-  <data name="LabelResource2.Text" xml:space="preserve">
-    <value>Type</value>
+  <data name="exportimport.ToolTip" xml:space="preserve">
+    <value>Import/Export items</value>
   </data>
-  <data name="LabelResource2.ToolTip" xml:space="preserve">
-    <value />
+  <data name="linktracker.ToolTip" xml:space="preserve">
+    <value>Toon in en uitgaande links naar/van het huidige item</value>
   </data>
-  <data name="LabelResource3.Text" xml:space="preserve">
-    <value>Toegevoegd</value>
+  <data name="security.ToolTip" xml:space="preserve">
+    <value>Wijzig de rechten van de pagina</value>
   </data>
-  <data name="LabelResource3.ToolTip" xml:space="preserve">
-    <value />
+  <data name="users.ToolTip" xml:space="preserve">
+    <value>Beheer gebruikers</value>
   </data>
-  <data name="PageResource1.Title" xml:space="preserve">
-    <value>Wizard</value>
+  <data name="wizard.ToolTip" xml:space="preserve">
+    <value>Onthoudt en definieer standaard type/locatie combinaties voor snelle toevoeging</value>
   </data>
-  <data name="tpAddResource1.GroupingText" xml:space="preserve">
-    <value />
+  <data name="globalization.ToolTip" xml:space="preserve">
+    <value>Bekijk vertalingen van de gekozen pagina en onderliggende pagina's</value>
   </data>
-  <data name="tpAddResource1.ToolTip" xml:space="preserve">
-    <value>Locatie toevoegen</value>
+  <data name="search.Text" xml:space="preserve">
+    <value>Zoek</value>
   </data>
-  <data name="tpTypeResource1.GroupingText" xml:space="preserve">
-    <value />
+  <data name="logout.LogoutText" xml:space="preserve">
+    <value>&lt;img src='img/ico/png/key.png' alt='Uitloggen'/&gt;</value>
   </data>
-  <data name="tpTypeResource1.ToolTip" xml:space="preserve">
-    <value>Kies type</value>
-  </data>
-  <data name="txtTitleResource1.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txtTitleResource1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="lblNoItems.Text" xml:space="preserve">
-    <value>Geen locaties toegevoegd. Ga naar een locatie in de boomstructuur waar je de snelkoppelking wilt toevoegen en kies 'Locatie toevoegen'</value>
+  <data name="logout.ToolTipFormat" xml:space="preserve">
+    <value>Uitloggen {0}</value>
   </data>
 </root>
