@@ -55,7 +55,7 @@ namespace N2.Definitions
 				definitions.Remove(definition);
 			}
 
-			foreach(DefinitionElement element in config.Definitions.AddedElements)
+			foreach(DefinitionElement element in config.Definitions.AllElements)
 			{
 				ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
 				if(definition == null)
@@ -72,7 +72,7 @@ namespace N2.Definitions
 				definition.ToolTip = element.ToolTip ?? definition.ToolTip;
 				definition.IsDefined = true;
 
-				foreach (ContainableElement editable in element.Editables.AddedElements)
+				foreach (ContainableElement editable in element.Editables.AllElements)
 				{
 					AddContainable(definition, editable);
 				}
@@ -80,7 +80,7 @@ namespace N2.Definitions
 				{
 					RemoveContainable(definition, editable);
 				}
-				foreach (ContainableElement container in element.Containers.AddedElements)
+				foreach (ContainableElement container in element.Containers.AllElements)
 				{
 					AddContainable(definition, container);
 				}

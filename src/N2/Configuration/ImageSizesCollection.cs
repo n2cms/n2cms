@@ -3,28 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using N2.Web;
 
 namespace N2.Configuration
 {
 	[ConfigurationCollection(typeof(ImageSizeElement))]
-	public class ImageSizesCollection : ConfigurationElementCollection
+	public class ImageSizesCollection : LazyRemovableCollection<ImageSizeElement>
 	{
 		public ImageSizesCollection()
 		{
-			BaseAdd(new ImageSizeElement { Name = "", Width = 500, Height = 500, Replace = true });
-			BaseAdd(new ImageSizeElement { Name = "icon", Width = 32, Height = 16 });
-			//BaseAdd(new ImageSizeElement { Name = "thumbnail", Width = 64, Height = 64 });
-			BaseAdd(new ImageSizeElement { Name = "original", Width = 0, Height = 0 });
-		}
-
-		protected override ConfigurationElement CreateNewElement()
-		{
-			return new ImageSizeElement();
-		}
-
-		protected override object GetElementKey(ConfigurationElement element)
-		{
-			return ((ImageSizeElement)element).Name;
+			AddDefault(new ImageSizeElement { Name = "", Width = 500, Height = 500, Replace = true });
+			AddDefault(new ImageSizeElement { Name = "icon", Width = 16, Height = 16, Mode = ImageResizeMode.Fill });
+			AddDefault(new ImageSizeElement { Name = "original", Width = 0, Height = 0 });
 		}
 	}
 }

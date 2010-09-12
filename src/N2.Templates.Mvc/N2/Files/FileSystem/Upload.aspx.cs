@@ -22,14 +22,14 @@ namespace N2.Management.Files.FileSystem
 
 			var config = ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
 			maxFileSize = config.MaxRequestLength * 1024 - 10000;
-
 		}
 
 		protected void btnAlternative_Command(object sender, CommandEventArgs args)
 		{
 			if(fuAlternative.PostedFile.ContentLength > 0)
 			{
-				string url = VirtualPathUtility.Combine(Selection.SelectedItem.Url, System.IO.Path.GetFileName(fuAlternative.PostedFile.FileName));
+				string filename = System.IO.Path.GetFileName(fuAlternative.PostedFile.FileName);
+				string url = Selection.SelectedItem.Url.TrimEnd('/') + "/" + filename;
 				Engine.Resolve<IFileSystem>().WriteFile(url, fuAlternative.PostedFile.InputStream);
 				Refresh(Selection.SelectedItem);
 			}

@@ -21,7 +21,7 @@ namespace N2.Engine.MediumTrust
 		public override IList<Assembly> GetAssemblies()
 		{
 			List<Assembly> assemblies = new List<Assembly>();
-			foreach(var element in engineConfiguration.Assemblies.AddedElements)
+			foreach(var element in engineConfiguration.Assemblies.AllElements)
 				assemblies.Add(Assembly.Load(element.Assembly));
 			return assemblies;
 		}

@@ -27,7 +27,7 @@ namespace N2.Engine
 		{
 			this.webContext = webContext;
 			this.ensureBinFolderAssembliesLoaded = engineConfiguration.DynamicDiscovery;
-			foreach (var assembly in engineConfiguration.Assemblies.AddedElements)
+			foreach (var assembly in engineConfiguration.Assemblies.AllElements)
 				AssemblyNames.Add(assembly.Assembly);
 		}
 

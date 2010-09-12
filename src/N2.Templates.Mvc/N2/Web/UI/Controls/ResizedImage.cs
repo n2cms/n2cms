@@ -38,15 +38,26 @@ namespace N2.Edit.Web.UI.Controls
 		/// <returns>The path to a handler that performs resizing of the image.</returns>
 		public static string GetResizedImageUrl(string imageUrl, double width, double height)
 		{
+			return GetResizedImageUrl(imageUrl, width, height, ImageResizeMode.Fit);
+		}
+
+		/// <summary>Returns the path to an image handler that resizes the given image to the appropriate size.</summary>
+		/// <param name="imageUrl">The image to resize.</param>
+		/// <param name="width">The maximum width.</param>
+		/// <param name="height">The maximum height.</param>
+		/// <param name="mode">How to fit the image</param>
+		/// <returns>The path to a handler that performs resizing of the image.</returns>
+		public static string GetResizedImageUrl(string imageUrl, double width, double height, ImageResizeMode mode)
+		{
 			string fileExtension = VirtualPathUtility.GetExtension(Url.PathPart(imageUrl));
-			
+
 			bool isAlreadyImageHandler = string.Equals(fileExtension, ".ashx", StringComparison.OrdinalIgnoreCase);
 			if (isAlreadyImageHandler) return Url.ToAbsolute(imageUrl);
 
 			Url url = ImageHandlerUrl.SetQueryParameter("img", Url.ToAbsolute(imageUrl));
 			if (width > 0) url = url.SetQueryParameter("w", (int)width);
 			if (height > 0) url = url.SetQueryParameter("h", (int)height);
-
+			url = url.AppendQuery("m", mode.ToString());
 			return url;
 		}
 	}

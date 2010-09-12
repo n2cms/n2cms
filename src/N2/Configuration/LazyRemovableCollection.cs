@@ -31,8 +31,23 @@ namespace N2.Configuration
 			set { defaults = new List<T>(value ?? new T[0]); }
 		}
 
-		/// <summary>All added elements except those that have been removed.</summary>
+		/// <summary>All added elements except those that have been removed but not default elements.</summary>
 		public IEnumerable<T> AddedElements
+		{
+			get
+			{
+				object[] removedKeys = RemovedElements.Select(e => e.ElementKey).ToArray();
+				foreach (T element in this)
+				{
+					var key = ((IIdentifiable)element).ElementKey;
+					if (!removedKeys.Contains(key))
+						yield return element;
+				}
+			}
+		}
+
+		/// <summary>All added elements except those that have been removed.</summary>
+		public IEnumerable<T> AllElements
 		{
 			get
 			{

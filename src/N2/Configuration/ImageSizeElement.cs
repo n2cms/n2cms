@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using N2.Web;
 
 namespace N2.Configuration
 {
@@ -24,12 +25,20 @@ namespace N2.Configuration
 			set { base["height"] = value; }
 		}
 
-		/// <summary>Maximum height of images resized to this size.</summary>
+		/// <summary>Replace existing file when creating this image size.</summary>
 		[ConfigurationProperty("replace", DefaultValue = false)]
 		public bool Replace
 		{
 			get { return (bool)base["replace"]; }
 			set { base["replace"] = value; }
+		}
+
+		/// <summary>Maximum height of images resized to this size.</summary>
+		[ConfigurationProperty("mode", DefaultValue = ImageResizeMode.Fit)]
+		public ImageResizeMode Mode
+		{
+			get { return (ImageResizeMode)base["mode"]; }
+			set { base["mode"] = value; }
 		}
 	}
 }

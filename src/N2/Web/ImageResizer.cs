@@ -4,56 +4,92 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using N2.Engine;
+using N2.Configuration;
 
 namespace N2.Web
 {
+	/// <summary>
+	/// How to fit the image in the max width and height.
+	/// </summary>
+	public enum ImageResizeMode
+	{
+		/// <summary>Stretch the image to fit</summary>
+		Stretch,
+		/// <summary>Fit the image inside the box.</summary>
+		Fit,
+		/// <summary>Crop portions of the image outside the box</summary>
+		Fill
+	}
+
 	/// <summary>
 	/// Resizes an image.
 	/// </summary>
 	[Service]
     public class ImageResizer
     {
-        private void Resize(string imagePath, double width, double height, Stream output)
-        {
-            if (imagePath == null) throw new ArgumentNullException("imagePath");
+		[Obsolete("Use overload with resize mode")]
+		private void Resize(string imagePath, double maxWidth, double maxHeight, Stream output)
+		{
+			Resize(imagePath, maxWidth, maxHeight, ImageResizeMode.Fit, output);
+		}
 
-            if (File.Exists(imagePath))
-            {
-                using (Bitmap original = new Bitmap(imagePath))
-				{
-					double ratio = GetRatio(original, width, height);
-					Resize(Path.GetExtension(imagePath), original, ratio, output);
-                }
+		private bool Resize(string physicalImagePath, double maxWidth, double maxHeight, ImageResizeMode mode, Stream outputStream)
+        {
+            if (physicalImagePath == null) throw new ArgumentNullException("imagePath");
+
+			if (!File.Exists(physicalImagePath))
+				return false;
+            
+            using (Bitmap original = new Bitmap(physicalImagePath))
+			{
+				//if (original.Width < maxWidth && original.Height < maxHeight)
+				//{
+				//    using (var fs = File.OpenRead(physicalImagePath))
+				//    {
+				//        TransferBetweenStreams(fs, outputStream);
+				//    }
+				//    return true;
+				//}
+				Resize(Path.GetExtension(physicalImagePath), original, maxWidth, maxHeight, mode, outputStream);
+				return true;
             }
 		}
 
-		public virtual void Resize(Stream inputStream, string extension, double newWidth, double newHeight, Stream outputStream)
+		[Obsolete("Use overload with resize mode")]
+		public virtual void Resize(Stream inputStream, string extension, double maxWidth, double maxHeight, Stream outputStream)
+		{
+			Resize(inputStream, extension, maxWidth, maxHeight, ImageResizeMode.Fit, outputStream);
+		}
+
+		public virtual bool Resize(Stream inputStream, string extension, double maxWidth, double maxHeight, ImageResizeMode mode, Stream outputStream)
 		{
 			using (Bitmap original = new Bitmap(inputStream))
 			{
-				double ratio = GetRatio(original, newWidth, newHeight);
-				Resize(extension, original, ratio, outputStream);
+				//if (original.Width < maxWidth && original.Height < maxHeight)
+				//{
+				//    TransferBetweenStreams(inputStream, outputStream);
+				//    return true;
+				//}
+
+				Resize(extension, original, maxWidth, maxHeight, mode, outputStream);
+				return true;
 			}
 		}
 
-		double GetRatio(Bitmap original, double width, double height)
-		{
-			double ratioY = height / original.Height;
-			double ratioX = width / original.Width;
-			
-			double ratio = Math.Min(ratioX, ratioY);
-			if(ratio == 0)
-				ratio = Math.Max(ratioX, ratioY);
-			if (ratio <= 0 || ratio > 1) ratio = 1;
-			return ratio;
-		}
-
-    	void Resize(string extension, Bitmap original, double ratio, Stream output)
+    	private void Resize(string extension, Bitmap original, double maxWidth, double maxHeight, ImageResizeMode mode, Stream output)
     	{
-    		int newWidth = (int)Math.Round(original.Width * ratio);
-    		int newHeight = (int)Math.Round(original.Height * ratio);
+    		Bitmap resized;
 
-    		Bitmap resized = new Bitmap(newWidth, newHeight, original.PixelFormat);
+			if (mode == ImageResizeMode.Fit)
+			{
+				double resizeRation = GetResizeRatio(original, maxWidth, maxHeight);
+				int newWidth = (int)Math.Round(original.Width * resizeRation);
+				int newHeight = (int)Math.Round(original.Height * resizeRation);
+				resized = new Bitmap(newWidth, newHeight, original.PixelFormat);
+			}
+			else
+				resized = new Bitmap((int)maxWidth, (int)maxHeight, original.PixelFormat);
+
     		resized.SetResolution(original.HorizontalResolution, original.VerticalResolution);
 
     		Graphics g;
@@ -83,10 +119,43 @@ namespace N2.Web
     			using (ImageAttributes attr = new ImageAttributes())
     			{
     				attr.SetWrapMode(WrapMode.TileFlipXY);
-    				g.DrawImage(original, new Rectangle(0, 0, newWidth, newHeight), 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
-    			}
+					if (mode == ImageResizeMode.Fill)
+					{
+						Rectangle destRec = (original.Height < original.Width) // is landscape?
+							? destRec = new Rectangle((original.Height - original.Width) / 2 * resized.Width / original.Width, 0, resized.Width * original.Width / original.Height, resized.Height)
+							: destRec = new Rectangle(0, (original.Height - original.Width) / 2 * resized.Height / original.Height, resized.Width, resized.Height * original.Width / original.Height);
+						g.DrawImage(original, destRec, 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
+					}
+					else
+						g.DrawImage(original, new Rectangle(Point.Empty, resized.Size), 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
+				}
     			resized.Save(output, ImageFormat.Jpeg);
     		}
     	}
+
+		double GetResizeRatio(Bitmap original, double width, double height)
+		{
+			double ratioY = height / original.Height;
+			double ratioX = width / original.Width;
+
+			double ratio = Math.Min(ratioX, ratioY);
+			if (ratio == 0)
+				ratio = Math.Max(ratioX, ratioY);
+			if (ratio <= 0 || ratio > 1) ratio = 1;
+			return ratio;
+		}
+
+		protected virtual void TransferBetweenStreams(Stream inputStream, Stream outputStream)
+		{
+			byte[] buffer = new byte[32768];
+			while (true)
+			{
+				int bytesRead = inputStream.Read(buffer, 0, buffer.Length);
+				if (bytesRead <= 0)
+					break;
+
+				outputStream.Write(buffer, 0, bytesRead);
+			}
+		}
     }
 }

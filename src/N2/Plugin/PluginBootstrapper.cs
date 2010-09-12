@@ -24,7 +24,7 @@ namespace N2.Plugin
 		public PluginBootstrapper(ITypeFinder typeFinder, EngineSection config)
 			: this(typeFinder)
 		{
-			addedInitializers = config.PluginInitializers.AddedElements;
+			addedInitializers = config.PluginInitializers.AllElements;
 			removedInitializers = config.PluginInitializers.RemovedElements;
 		}
 

@@ -41,7 +41,8 @@ namespace N2.Edit.FileSystem.Items
 				this.iconUrl = icon;
 		}
 
-        public long Size { get; set; }
+		public long Size { get; set; }
+		public bool IsIcon { get; set; }
 
         public override void AddTo(ContentItem newParent)
         {
@@ -53,6 +54,11 @@ namespace N2.Edit.FileSystem.Items
 		public override string Url
 		{
 			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
+		}
+
+		public override bool IsPage
+		{
+			get { return !IsIcon; }
 		}
 
 		public override string IconUrl

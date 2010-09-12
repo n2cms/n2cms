@@ -18,12 +18,27 @@ namespace N2.Web
 			string imageUrl = HttpUtility.UrlDecode(context.Request["img"]);
 			string w = context.Request["w"];
 			string h = context.Request["h"];
+			string m = context.Request["m"];
 
 			double width = 0;
 			double.TryParse(w, out width);
 
 			double height = 0;
 			double.TryParse(h, out height);
+
+			ImageResizeMode mode;
+			switch (m)
+			{
+				case "Fill":
+					mode = ImageResizeMode.Fill;
+					break;
+				case "Stretch":
+					mode = ImageResizeMode.Stretch;
+					break;
+				default:
+					mode = ImageResizeMode.Fit;
+					break;
+			}
 
 			IFileSystem fs = N2.Context.Current.Resolve<IFileSystem>();
 			if (fs.FileExists(imageUrl))
@@ -35,7 +50,7 @@ namespace N2.Web
 
 				using (var s = fs.OpenFile(imageUrl))
 				{
-					ir.Resize(s, extension, width, height, context.Response.OutputStream);
+					ir.Resize(s, extension, width, height, mode, context.Response.OutputStream);
 				}
 			}
 			else

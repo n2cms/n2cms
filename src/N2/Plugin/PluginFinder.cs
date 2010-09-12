@@ -21,7 +21,7 @@ namespace N2.Plugin
 
         public PluginFinder(ITypeFinder typeFinder, EngineSection config)
         {
-        	addedPlugins = config.InterfacePlugins.AddedElements;
+        	addedPlugins = config.InterfacePlugins.AllElements;
         	removedPlugins = config.InterfacePlugins.RemovedElements;
 			this.typeFinder = typeFinder;
 			this.plugins = FindPlugins();

@@ -49,6 +49,9 @@ namespace N2.Edit.FileSystem.Items
 						&& file.Name.StartsWith(lastFileName + ImagesUtility.Separator)
 						&& file.Name.EndsWith(lastFileExtension))
 					{
+						int lastFileNameLength = (lastFileName + ImagesUtility.Separator).Length;
+						if (file.Name.Substring(lastFileNameLength, file.Name.Length - lastFileNameLength - lastFileExtension.Length) == "icon")
+							file.IsIcon = true;
 						lastFile.Add(file);
 					}
 					else

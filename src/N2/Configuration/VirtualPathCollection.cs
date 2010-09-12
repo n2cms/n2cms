@@ -29,7 +29,7 @@ namespace N2.Configuration
 		public string[] GetPaths(N2.Web.IWebContext webContext)
 		{
 			List<string> paths = new List<string>();
-			foreach (var vpe in AddedElements)
+			foreach (var vpe in AllElements)
 			{
 				paths.Add(webContext.ToAbsolute(vpe.VirtualPath));
 			}

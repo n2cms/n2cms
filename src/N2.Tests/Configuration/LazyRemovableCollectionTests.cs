@@ -20,8 +20,8 @@ namespace N2.Tests.Configuration
 			NamedCollectionTester assemblies = new NamedCollectionTester();
 			assemblies.Add(new NamedElement { Name = "N2" });
 
-			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(1));
-			Assert.That(assemblies.AddedElements.First().Name, Is.EqualTo("N2"));
+			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(1));
+			Assert.That(assemblies.AllElements.First().Name, Is.EqualTo("N2"));
 		}
 
 		[Test]
@@ -30,8 +30,8 @@ namespace N2.Tests.Configuration
 			NamedCollectionTester assemblies = new NamedCollectionTester();
 			assemblies.AddDefault(new NamedElement { Name = "N2" });
 
-			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(1));
-			Assert.That(assemblies.AddedElements.First().Name, Is.EqualTo("N2"));
+			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(1));
+			Assert.That(assemblies.AllElements.First().Name, Is.EqualTo("N2"));
 		}
 
 		[Test]
@@ -41,7 +41,7 @@ namespace N2.Tests.Configuration
 			assemblies.Add(new NamedElement { Name = "N2" });
 			assemblies.Remove(new NamedElement { Name = "N2" });
 
-			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(0));
+			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(0));
 		}
 
 		[Test]
@@ -51,7 +51,7 @@ namespace N2.Tests.Configuration
 			assemblies.AddDefault(new NamedElement { Name = "N2" });
 			assemblies.Remove(new NamedElement { Name = "N2" });
 
-			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(0));
+			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(0));
 		}
 
 		[Test]
@@ -61,7 +61,7 @@ namespace N2.Tests.Configuration
 			assemblies.Add(new NamedElement { Name = "N2" });
 			assemblies.Clear();
 
-			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(0));
+			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(0));
 			Assert.That(assemblies.IsCleared);
 		}
 
@@ -72,7 +72,7 @@ namespace N2.Tests.Configuration
 			assemblies.AddDefault(new NamedElement { Name = "N2" });
 			assemblies.Clear();
 
-			Assert.That(assemblies.AddedElements.Count(), Is.EqualTo(0));
+			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(0));
 			Assert.That(assemblies.IsCleared);
 		}
 	}

@@ -16,7 +16,10 @@ namespace N2.Edit.FileSystem
 
 		public IEnumerable<FileData> GetFiles(string parentVirtualPath)
 		{
-			foreach (var file in new DirectoryInfo(MapPath(parentVirtualPath)).GetFiles())
+			string path = MapPath(parentVirtualPath);
+			if (!Directory.Exists(path))
+				yield break;
+			foreach (var file in new DirectoryInfo(path).GetFiles())
 				if(!file.Name.StartsWith("."))
 					yield return GetFile(N2.Web.Url.Combine(parentVirtualPath, file.Name));
 		}
@@ -36,7 +39,10 @@ namespace N2.Edit.FileSystem
 
 		public IEnumerable<DirectoryData> GetDirectories(string parentVirtualPath)
 		{
-			foreach (var dir in new DirectoryInfo(MapPath(parentVirtualPath)).GetDirectories())
+			string path = MapPath(parentVirtualPath);
+			if (!Directory.Exists(path))
+				yield break;
+			foreach (var dir in new DirectoryInfo(path).GetDirectories())
 				if (!dir.Name.StartsWith("."))
 					yield return GetDirectory(N2.Web.Url.Combine(parentVirtualPath, dir.Name));
 		}

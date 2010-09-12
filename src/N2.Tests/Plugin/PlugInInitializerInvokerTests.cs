@@ -201,7 +201,7 @@ namespace N2.Tests.PlugIn
 			{
 				PluginInitializers = new PluginInitializerCollection
 				{
-					AddedElements = addedPlugins,
+					AllElements = addedPlugins,
 					RemovedElements = removedPlugins
 				}
 			};

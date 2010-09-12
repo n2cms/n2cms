@@ -41,7 +41,7 @@ namespace N2.Management.Files
 				s.Read(image, 0, image.Length);
 			}
 
-			foreach (ImageSizeElement size in images.Sizes)
+			foreach (ImageSizeElement size in images.Sizes.AllElements)
 			{
 				Url url = e.VirtualPath;
 				string resizedPath = ImagesUtility.GetResizedPath(url, size.Name);
@@ -65,7 +65,7 @@ namespace N2.Management.Files
 						{
 							using (var destinationStream = files.OpenFile(resizedPath))
 							{
-								resizer.Resize(sourceStream, url.Extension, size.Width, size.Height, destinationStream);
+								resizer.Resize(sourceStream, url.Extension, size.Width, size.Height, size.Mode, destinationStream);
 							}
 						}
 					}
@@ -78,7 +78,7 @@ namespace N2.Management.Files
 			if (IsResizedPath(e.VirtualPath))
 				return;
 			
-			foreach (ImageSizeElement size in images.Sizes)
+			foreach (ImageSizeElement size in images.Sizes.AllElements)
 			{
 				Url sourceUrl = e.SourcePath;
 				Url destinationUrl = e.VirtualPath;
@@ -96,7 +96,7 @@ namespace N2.Management.Files
 
 		private bool IsResizedPath(string path)
 		{
-			foreach (ImageSizeElement size in images.Sizes)
+			foreach (ImageSizeElement size in images.Sizes.AllElements)
 			{
 				if (Url.RemoveExtension(path).EndsWith("_" + size.Name))
 					return true;
@@ -109,7 +109,7 @@ namespace N2.Management.Files
 			if (!IsResizableImagePath(e.VirtualPath))
 				return;
 			
-			foreach (ImageSizeElement size in images.Sizes)
+			foreach (ImageSizeElement size in images.Sizes.AllElements)
 			{
 				string source = ImagesUtility.GetResizedPath(e.SourcePath, size.Name);
 				if (files.FileExists(source))
@@ -126,7 +126,7 @@ namespace N2.Management.Files
 			if (!IsResizableImagePath(e.VirtualPath))
 				return;
 
-			foreach (ImageSizeElement size in images.Sizes)
+			foreach (ImageSizeElement size in images.Sizes.AllElements)
 			{
 				string resizedPath = ImagesUtility.GetResizedPath(e.VirtualPath, size.Name);
 
