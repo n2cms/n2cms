@@ -1,4 +1,5 @@
-﻿- Added option to fit, fill or stretch uploaded images
+﻿- Improve file manager performance with caching
+- Added option to fit, fill or stretch uploaded images
 - Applied Martijn's dutch translations
 - Noflash alternative upload
 - Fixed writer able to publish via publish in the future

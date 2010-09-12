@@ -21,6 +21,7 @@ namespace N2.Tests.Configuration
 			assemblies.Add(new NamedElement { Name = "N2" });
 
 			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(1));
+			Assert.That(assemblies.Count, Is.EqualTo(1));
 			Assert.That(assemblies.AllElements.First().Name, Is.EqualTo("N2"));
 		}
 
@@ -31,6 +32,7 @@ namespace N2.Tests.Configuration
 			assemblies.AddDefault(new NamedElement { Name = "N2" });
 
 			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(1));
+			Assert.That(assemblies.Count, Is.EqualTo(1));
 			Assert.That(assemblies.AllElements.First().Name, Is.EqualTo("N2"));
 		}
 
@@ -42,6 +44,7 @@ namespace N2.Tests.Configuration
 			assemblies.Remove(new NamedElement { Name = "N2" });
 
 			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(0));
+			Assert.That(assemblies.Count, Is.EqualTo(0));
 		}
 
 		[Test]
@@ -52,6 +55,7 @@ namespace N2.Tests.Configuration
 			assemblies.Remove(new NamedElement { Name = "N2" });
 
 			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(0));
+			Assert.That(assemblies.Count, Is.EqualTo(0));
 		}
 
 		[Test]
@@ -73,7 +77,20 @@ namespace N2.Tests.Configuration
 			assemblies.Clear();
 
 			Assert.That(assemblies.AllElements.Count(), Is.EqualTo(0));
+			Assert.That(assemblies.Count, Is.EqualTo(0));
 			Assert.That(assemblies.IsCleared);
+		}
+
+		[Test]
+		public void CanEnumerateViewCollection()
+		{
+			NamedCollectionTester assemblies = new NamedCollectionTester();
+			assemblies.Add(new NamedElement { Name = "N2" });
+			assemblies.AddDefault(new NamedElement { Name = "N3" });
+
+			Assert.That(assemblies.Count(), Is.EqualTo(2));
+			Assert.That(assemblies.Any(a => a.Name == "N2"));
+			Assert.That(assemblies.Any(a => a.Name == "N3"));
 		}
 	}
 }

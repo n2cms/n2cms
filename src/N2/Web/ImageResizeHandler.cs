@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using N2.Edit.FileSystem;
+using System.IO;
 
 namespace N2.Web
 {
@@ -43,6 +44,12 @@ namespace N2.Web
 			IFileSystem fs = N2.Context.Current.Resolve<IFileSystem>();
 			if (fs.FileExists(imageUrl))
 			{
+				string path = context.Server.MapPath(imageUrl);
+				if (CacheUtility.IsModifiedSince(context.Request, path))
+				{
+					CacheUtility.NotModified(context.Response);
+				}
+
 				context.Response.ContentType = "image/jpeg";
 
 				string extension = VirtualPathUtility.GetExtension(imageUrl);
@@ -52,6 +59,8 @@ namespace N2.Web
 				{
 					ir.Resize(s, extension, width, height, mode, context.Response.OutputStream);
 				}
+
+				CacheUtility.SetValidUntilExpires(context.Response, TimeSpan.FromDays(7));
 			}
 			else
 			{

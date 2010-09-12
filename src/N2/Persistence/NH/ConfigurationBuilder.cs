@@ -75,6 +75,7 @@ namespace N2.Persistence.NH
 		{
 			Properties[NHibernate.Cfg.Environment.ConnectionStringName] = config.ConnectionStringName;
 			Properties[NHibernate.Cfg.Environment.ConnectionProvider] = "NHibernate.Connection.DriverConnectionProvider";
+			Properties[NHibernate.Cfg.Environment.Hbm2ddlKeyWords] = "none";
 
 			DatabaseFlavour flavour = config.Flavour;
 			if (flavour == DatabaseFlavour.AutoDetect)

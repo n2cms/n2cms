@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.IO;
 using System.Collections.Generic;
+using N2.Web;
 
 namespace N2.Edit.Js
 {
@@ -21,29 +22,10 @@ namespace N2.Edit.Js
 		public void ProcessRequest(HttpContext context)
 		{
 			this.Context = context;
-			
-			string ifModifiedSince = context.Request.Headers["If-Modified-Since"];
-			if (!string.IsNullOrEmpty(ifModifiedSince))
-			{
-				DateTimeOffset since;
-				if (DateTimeOffset.TryParse(ifModifiedSince, out since))
-				{
-					bool wasModifiedSince = false;
-					foreach (string file in GetFiles(context))
-					{
-						if (File.GetLastWriteTimeUtc(file) > since)
-						{
-							wasModifiedSince = true;
-							break;
-						}
-					}
 
-					if (!wasModifiedSince)
-					{
-						context.Response.Status = "304 Not Modified";
-						context.Response.End();
-					}
-				}
+			if (CacheUtility.IsModifiedSince(context.Request, GetFiles(context)))
+			{
+				CacheUtility.NotModified(context.Response);
 			}
 
 			context.Response.ContentType = this.ContentType;
@@ -80,11 +62,7 @@ namespace N2.Edit.Js
 		
 		protected virtual void SetCache(HttpContext context)
 		{
-			context.Response.Cache.SetExpires(DateTime.UtcNow.Add(CacheExpiration));
-			context.Response.Cache.SetCacheability(HttpCacheability.Public);
-			context.Response.Cache.SetLastModified(DateTime.UtcNow);
-			context.Response.Cache.SetMaxAge(CacheExpiration);
-			context.Response.Cache.SetValidUntilExpires(true);
+			CacheUtility.SetValidUntilExpires(context.Response, CacheExpiration);
 		}
 		
 		/// <summary>

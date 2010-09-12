@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Xml;
 using System.Linq;
+using System.Collections;
 
 namespace N2.Configuration
 {
@@ -10,7 +11,7 @@ namespace N2.Configuration
 	/// implement "remove" semantics reading from the RemovedElements collection.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class LazyRemovableCollection<T> : ConfigurationElementCollection
+	public abstract class LazyRemovableCollection<T> : ConfigurationElementCollection, IEnumerable<T>, IEnumerable
 		where T : ConfigurationElement, IIdentifiable, new()
 	{
 		List<T> removedElements = new List<T>();
@@ -37,11 +38,10 @@ namespace N2.Configuration
 			get
 			{
 				object[] removedKeys = RemovedElements.Select(e => e.ElementKey).ToArray();
-				foreach (T element in this)
+				foreach (object key in base.BaseGetAllKeys())
 				{
-					var key = ((IIdentifiable)element).ElementKey;
 					if (!removedKeys.Contains(key))
-						yield return element;
+						yield return base.BaseGet(key) as T;
 				}
 			}
 		}
@@ -58,16 +58,15 @@ namespace N2.Configuration
 					if (!removedKeys.Contains(key))
 						yield return element;
 				}
-				foreach (T element in this)
+				foreach (T element in AddedElements)
 				{
-					var key = ((IIdentifiable)element).ElementKey;
-					if(!removedKeys.Contains(key))
-						yield return element;
+					yield return element;
 				}
 			}
 			set
 			{
 				BaseClear();
+				defaults.Clear();
 				if(value == null) return;
 
 				foreach (T element in value)
@@ -142,5 +141,28 @@ namespace N2.Configuration
 		protected virtual void OnDeserializeRemoveElement(T element, XmlReader reader)
 		{
 		}
+
+		public new int Count
+		{
+			get { return AllElements.Count(); }
+		}
+
+		#region IEnumerable<T> Members
+
+		public new IEnumerator<T> GetEnumerator()
+		{
+			return AllElements.GetEnumerator();
+		}
+
+		#endregion
+
+		#region IEnumerable Members
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return AllElements.GetEnumerator();
+		}
+
+		#endregion
 	}
 }

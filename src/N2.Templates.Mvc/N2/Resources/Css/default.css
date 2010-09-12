@@ -1,4 +1,5 @@
-﻿body { background:#F8F8E8; }
+﻿html { overflow:hidden; height:100% }
+body { background:#F8F8E8; height:100%; }
 body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 
 /* Toolbar */
