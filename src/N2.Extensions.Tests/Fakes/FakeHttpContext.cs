@@ -9,6 +9,7 @@ namespace N2.Extensions.Tests.Fakes
 		{
 			request = new FakeHttpRequest();
 			response = new FakeHttpResponse();
+			server = new FakeHttpServerUtility();
 		}
 		public FakeHttpContext(Url url)
 			: this()
@@ -27,6 +28,11 @@ namespace N2.Extensions.Tests.Fakes
 		public override HttpResponseBase Response
 		{
 			get { return response; }
+		}
+		public FakeHttpServerUtility server;
+		public override HttpServerUtilityBase Server
+		{
+			get { return server; }
 		}
 	}
 }

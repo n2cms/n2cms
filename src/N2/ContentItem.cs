@@ -279,7 +279,7 @@ namespace N2
 		public virtual string Url
 		{
 			get 
-			{ 
+			{
 				if(url == null)
 				{
 					if (urlParser != null)

@@ -19,7 +19,7 @@ namespace N2.Templates.Mvc
 
 			ViewEngines.Engines.Insert(0, new ThemedMasterViewEngine());
 
-			engine.RegisterControllers(typeof (HomeController).Assembly);
+			engine.RegisterControllers(typeof (StartController).Assembly);
 
 			RegisterRoutes(RouteTable.Routes, engine);
 		}
@@ -33,8 +33,7 @@ namespace N2.Templates.Mvc
 			routes.MapRoute(
 				"Default", // Route name
 				"{controller}/{action}/{id}", // URL with parameters
-				new {controller = "Home", action = "Index", id = ""} // Parameter defaults
-				);
+				new { action = "Index", id = "" }); // Parameter defaults
 		}
 	}
 }

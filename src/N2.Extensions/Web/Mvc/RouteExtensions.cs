@@ -9,17 +9,16 @@ namespace N2.Web.Mvc
 {
 	public static class RouteExtensions
 	{
-		public static RouteData ApplyCurrentItem(this RouteData data, string controllerName, string actionName, ContentItem item, ContentItem page, ContentItem part)
+		public static RouteData ApplyCurrentItem(this RouteData data, string controllerName, string actionName, ContentItem page, ContentItem part)
 		{
 			data.Values[ContentRoute.ControllerKey] = controllerName;
 			data.Values[ContentRoute.ActionKey] = actionName;
 
-			return data.ApplyContentItem(ContentRoute.ContentItemKey, item)
-				.ApplyContentItem(ContentRoute.ContentPageKey, page)
+			return data.ApplyContentItem(ContentRoute.ContentPageKey, page)
 				.ApplyContentItem(ContentRoute.ContentPartKey, part);
 		}
 
-		public static RouteData ApplyContentItem(this RouteData data, string key, ContentItem item)
+		internal static RouteData ApplyContentItem(this RouteData data, string key, ContentItem item)
 		{
 			if (data == null) throw new ArgumentNullException("data");
 			if (key == null) throw new ArgumentNullException("key");
@@ -33,24 +32,21 @@ namespace N2.Web.Mvc
 			return data;
 		}
 
-		public static ContentItem CurrentItem(this RouteValueDictionary data)
-		{
-			if (data.ContainsKey(ContentRoute.ContentItemKey))
-				return data[ContentRoute.ContentItemKey] as ContentItem;
-			return null;
-		}
-
 		public static ContentItem CurrentItem(this RouteData routeData)
 		{
-			if (routeData.DataTokens.ContainsKey(ContentRoute.ContentItemKey))
-				return routeData.DataTokens[ContentRoute.ContentItemKey] as ContentItem;
-			return null;
+			return routeData.DataTokens.CurrentItem(ContentRoute.ContentPartKey)
+				?? routeData.DataTokens.CurrentItem(ContentRoute.ContentPageKey);
 		}
 
 		public static ContentItem CurrentPage(this RouteData routeData)
 		{
-			if (routeData.DataTokens.ContainsKey(ContentRoute.ContentPageKey))
-				return routeData.DataTokens[ContentRoute.ContentPageKey] as ContentItem;
+			return routeData.DataTokens.CurrentItem(ContentRoute.ContentPageKey);
+		}
+
+		internal static ContentItem CurrentItem(this RouteValueDictionary data, string key)
+		{
+			if (data.ContainsKey(key))
+				return data[key] as ContentItem;
 			return null;
 		}
 

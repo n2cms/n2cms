@@ -331,19 +331,7 @@ namespace N2.Web
 
 		public IDictionary<string, string> GetQueries()
 		{
-			var dictionary = new Dictionary<string, string>();
-			if (query == null)
-				return dictionary;
-
-			string[] queries = query.Split(querySplitter, StringSplitOptions.RemoveEmptyEntries);
-			for (int i = 0; i < queries.Length; i++)
-			{
-				string q = queries[i];
-				int eqIndex = q.IndexOf("=");
-				if (eqIndex >= 0)
-					dictionary[q.Substring(0, eqIndex)] = q.Substring(eqIndex + 1);
-			}
-			return dictionary;
+			return ParseQueryString(query);
 		}
 
 		public Url AppendQuery(string key, string value)
@@ -779,6 +767,26 @@ namespace N2.Web
 			Url second = url2;
 
 			return first.AppendSegment(second.Path, "").AppendQuery(second.Query).SetFragment(second.Fragment);
+		}
+
+		/// <summary>Converts a text query string to a dictionary.</summary>
+		/// <param name="query">The query string</param>
+		/// <returns>A dictionary of the query parts.</returns>
+		public static IDictionary<string, string> ParseQueryString(string query)
+		{
+			var dictionary = new Dictionary<string, string>();
+			if (query == null)
+				return dictionary;
+
+			string[] queries = query.Split(querySplitter, StringSplitOptions.RemoveEmptyEntries);
+			for (int i = 0; i < queries.Length; i++)
+			{
+				string q = queries[i];
+				int eqIndex = q.IndexOf("=");
+				if (eqIndex >= 0)
+					dictionary[q.Substring(0, eqIndex)] = q.Substring(eqIndex + 1);
+			}
+			return dictionary;
 		}
 	}
 }

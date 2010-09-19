@@ -50,7 +50,7 @@ namespace N2.Web.Mvc
 			string controllerName = _controllerMapper.GetControllerName(_thePage.GetType());
 			
 			var routeData = context.RouteData;
-			routeData.ApplyCurrentItem(controllerName, "Index", _thePage, _thePage, null);
+			routeData.ApplyCurrentItem(controllerName, "Index", _thePage, null);
 			if (context.RouteData.DataTokens.ContainsKey(ContentRoute.ContentPartKey))
 			{
 				routeData.ApplyContentItem(ContentRoute.ContentPartKey, context.RouteData.DataTokens[ContentRoute.ContentPartKey] as ContentItem);

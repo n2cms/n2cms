@@ -93,7 +93,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 					System.Web.HttpContext.Current.Items[listName] = list = new List<string>();
 				return list;
 			}
-
+			if (nonWebList == null)
+				nonWebList = new List<string>();
 			if (nonWebList.Count > 10000)
 				nonWebList.RemoveRange(0, nonWebList.Count / 2);
 			return nonWebList;

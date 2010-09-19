@@ -52,6 +52,16 @@ namespace N2.Web.UI.WebControls
 		{
             if (state == ControlPanelState.DragDrop && IsMovableOnThisPage(item))
 			{
+				string preview = Page.Request.QueryString["preview"];
+				if (!string.IsNullOrEmpty(preview))
+				{
+					int previewdItemID;
+					int publishedItemID;
+					if (int.TryParse(preview, out previewdItemID) && int.TryParse(Page.Request.QueryString["item"], out publishedItemID))
+						if (publishedItemID == item.ID)
+							item = Engine.Persister.Get(previewdItemID);
+				}
+
 				ItemDefinition definition = GetDefinition(item);
 				Panel itemContainer = AddPanel(container, "zoneItem " + definition.Discriminator);
                 itemContainer.Attributes[PartUtilities.PathAttribute] = item.Path;

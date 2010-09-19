@@ -193,7 +193,7 @@
     <Compile Include="Controllers\SharedPartsController.cs" />
     <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\ImageGalleryController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StartController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\TemplatesControllerBase.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
@@ -479,7 +479,7 @@
     <Content Include="Views\SharedParts\Top.ascx" />
     <Content Include="Views\Navigation\SubMenu.ascx" />
     <Content Include="Views\Shared\Site.Master" />
-    <Content Include="Views\Home\Index.aspx" />
+    <Content Include="Views\Start\Index.aspx" />
     <Content Include="Views\SharedPages\TextPage.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -648,7 +648,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3374</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

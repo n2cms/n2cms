@@ -16,12 +16,12 @@ namespace N2.Templates.Mvc.Tests.Controllers
 	[TestFixture]
 	public class HomeControllerTest
 	{
-		private HomeController _homeController;
+		private StartController _homeController;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_homeController = new HomeController { CurrentItem = new StartPage() };
+			_homeController = new StartController { CurrentItem = new StartPage() };
 			new MvcContrib.TestHelper.TestControllerBuilder().InitializeController(_homeController);
 
 			N2.Context.Replace(MockRepository.GenerateStub<IEngine>());

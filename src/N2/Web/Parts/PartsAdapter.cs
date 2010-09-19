@@ -6,6 +6,7 @@ using System.Security.Principal;
 using N2.Web.UI;
 using System.Web.UI;
 using System;
+using N2.Persistence;
 
 namespace N2.Web.Parts
 {
@@ -16,6 +17,20 @@ namespace N2.Web.Parts
 	public class PartsAdapter : AbstractContentAdapter
 	{
 		IContentAdapterProvider adapters;
+		IWebContext webContext;
+		IPersister persister;
+
+		public IPersister Persister
+		{
+			get { return persister ?? Engine.Resolve<IPersister>(); }
+			set { persister = value; }
+		}
+
+		public IWebContext WebContext
+		{
+			get { return webContext ?? Engine.Resolve<IWebContext>(); }
+			set { webContext = value; }
+		}
 
 		public IContentAdapterProvider Adapters
 		{

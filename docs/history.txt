@@ -1,4 +1,7 @@
-﻿- Improve file manager performance with caching
+﻿- Fixed RenderAction issues ThreadId=227284
+- Fixed preview parts issue ThreadId=226685
+- TinyMCE 3.3.9
+- Improve file manager performance with caching
 - Added option to fit, fill or stretch uploaded images
 - Applied Martijn's dutch translations
 - Noflash alternative upload

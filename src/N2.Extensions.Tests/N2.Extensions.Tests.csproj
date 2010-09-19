@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
-    </FileUpgradeFlags>    
+    </FileUpgradeFlags>
     <UpgradeBackupLocation />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="Extensions\FilterExtensionsTests.cs" />
     <Compile Include="Extensions\TrashExtensionsTests.cs" />
+    <Compile Include="Fakes\FakeHttpServerUtility.cs" />
     <Compile Include="Linq\ExpressionBuilding.cs" />
     <Compile Include="Linq\ExpressionQueryableExtensions.cs" />
     <Compile Include="Linq\LinqTestsBase.cs" />
@@ -124,8 +125,14 @@
     <Compile Include="Linq\VanillaLinqing.cs" />
     <Compile Include="Mvc\ContentControllerTests.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
+    <Compile Include="Mvc\ContentRouteTests_GetRouteData.cs" />
+    <Compile Include="Mvc\ContentRouteTests_GetRouteData_Parts.cs" />
+    <Compile Include="Mvc\ContentRouteTests_GetVirtualPath.cs" />
+    <Compile Include="Mvc\ContentRouteTests_GetVirtualPath_Parts.cs" />
+    <Compile Include="Mvc\ContentRouteTests_RenderAction.cs" />
     <Compile Include="Mvc\ControllerMapperTests.cs" />
     <Compile Include="Mvc\Controllers\AnotherRegularController.cs" />
+    <Compile Include="Mvc\Controllers\ContentRouteTests_GetRouteData.cs" />
     <Compile Include="Mvc\Controllers\RegularController.cs" />
     <Compile Include="Mvc\Controllers\ExecutiveTeamController.cs" />
     <Compile Include="Mvc\Controllers\AboutUsSectionPageController.cs" />

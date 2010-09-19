@@ -72,7 +72,16 @@ namespace N2.Web.UI.WebControls
 
 		public virtual ContentItem CurrentItem
 		{
-			get { return Find.ClosestItem(Parent); }
+			get 
+			{
+				int selectedItemID;
+				if(int.TryParse(Page.Request["item"], out selectedItemID))
+				{
+					return Engine.Persister.Get(selectedItemID);
+				}
+
+				return Find.ClosestItem(Parent); 
+			}
 		}
 
 		#endregion

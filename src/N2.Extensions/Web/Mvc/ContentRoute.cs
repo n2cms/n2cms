@@ -5,6 +5,7 @@ using System.Web;
 using N2.Engine;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace N2.Web.Mvc
 {
@@ -69,13 +70,9 @@ namespace N2.Web.Mvc
 			foreach (var kvp in innerRoute.Defaults)
 				if(!values.ContainsKey(kvp.Key))
 					values[kvp.Key] = kvp.Value;
-			foreach (var kvp in innerRoute.DataTokens)
-				if (!values.ContainsKey(kvp.Key))
-					values[kvp.Key] = kvp.Value;
 
 			values[ControllerKey] = controllerName;
 			values[ActionKey] = actionName;
-			values[item.IsPage ? ContentPageKey : ContentPartKey] = item.ID;
 			values[ContentItemKey] = item.ID;
 			values[AreaKey] = innerRoute.DataTokens["area"];
 
@@ -106,6 +103,7 @@ namespace N2.Web.Mvc
 			if(routeData == null)
 				routeData = CheckForContentController(httpContext);
 
+			Debug.WriteLine("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
 			return routeData;
 		}
 
@@ -117,7 +115,6 @@ namespace N2.Web.Mvc
 			string hostAndRawUrl = String.Format("{0}://{1}{2}", request.Url.Scheme, host, Url.ToAbsolute(request.AppRelativeCurrentExecutionFilePath));
 			PathData td = engine.UrlParser.ResolvePath(hostAndRawUrl);
 
-			var item = td.CurrentItem;
 			var page = td.CurrentPage;
 
 			var actionName = td.Action;
@@ -128,7 +125,7 @@ namespace N2.Web.Mvc
 			{
 				int pageId;
 				if (int.TryParse(request.QueryString[PathData.PageQueryKey], out pageId))
-					td.CurrentItem = item = page = engine.Persister.Get(pageId);
+					td.CurrentPage = page = engine.Persister.Get(pageId);
 			}
 
 			ContentItem part = null;
@@ -137,27 +134,15 @@ namespace N2.Web.Mvc
 				// part in query string is used to render a part
 				int partId;
 				if (int.TryParse(request.QueryString[PathData.PartQueryKey], out partId))
-					item = part = engine.Persister.Get(partId);
-			}
-			else if (!string.IsNullOrEmpty(request.QueryString[PathData.ItemQueryKey]))
-			{
-				// item in query string is passed as information to maintain similar behavior to webforms
-				int itemId;
-				if (int.TryParse(request.QueryString[PathData.ItemQueryKey], out itemId))
-					part = engine.Persister.Get(itemId);
+					td.CurrentItem = part = engine.Persister.Get(partId);
 			}
 
-			if (part == null && item != page && !item.IsPage)
-			{
-				// isn't a page but wasn't passed via ?part=#, avoid rendering it
-				part = item;
-				item = page;
-			}
-
-			if (item == null)
+			if (page == null && part == null)
 				return null;
+			else if (page == null)
+				page = part.ClosestPage();
 
-			var controllerName = controllerMapper.GetControllerName(item.GetType());
+			var controllerName = controllerMapper.GetControllerName((part ?? page).GetType());
 
 			if (controllerName == null)
 				return null;
@@ -172,7 +157,7 @@ namespace N2.Web.Mvc
 			foreach (var tokenPair in innerRoute.DataTokens)
 				data.DataTokens[tokenPair.Key] = tokenPair.Value;
 
-			data.ApplyCurrentItem(controllerName, actionName, item, page, part);
+			data.ApplyCurrentItem(controllerName, actionName, page, part);
 			data.DataTokens[ContentEngineKey] = engine;
 
 			return data;
@@ -225,10 +210,10 @@ namespace N2.Web.Mvc
 		{
 			ContentItem item;
 
+			Debug.WriteLine("GetVirtualPath for values: " + values.ToQueryString());
+
 			// try retrieving the item from the route values
-			if (!TryConvertContentToController(requestContext, values, ContentPartKey, out item)
-				&& !TryConvertContentToController(requestContext, values, ContentItemKey, out item)
-				&& !TryConvertContentToController(requestContext, values, ContentPageKey, out item))
+			if (!TryConvertContentToController(requestContext, values, ContentItemKey, out item))
 			{
 				// no item was passed, fallback to current content item
 				item = requestContext.CurrentItem();
@@ -298,13 +283,20 @@ namespace N2.Web.Mvc
 			if (vpd == null)
 				return null;
 
-			Url url = item.Url;
+			string relativeUrl = Url.ToRelative(item.Url);
 			Url actionUrl = vpd.VirtualPath
-				.Replace(controllerPlaceHolder, url.Path);
+				.Replace(controllerPlaceHolder, Url.PathPart(relativeUrl).TrimStart('~'));
 			if (useAreas)
 				actionUrl = actionUrl.SetPath(actionUrl.Path.Replace(areaPlaceHolder + "/", ""));
 
-			vpd.VirtualPath = actionUrl.AppendQuery(url.Query).PathAndQuery.TrimStart('/');
+			foreach (var kvp in Url.ParseQueryString(Url.QueryPart(relativeUrl)))
+			{
+				if ("item".Equals(kvp.Value, StringComparison.InvariantCultureIgnoreCase))
+					continue;
+
+				actionUrl = actionUrl.AppendQuery(kvp.Key, kvp.Value);
+			}
+			vpd.VirtualPath = actionUrl.PathAndQuery.TrimStart('/');
 			return vpd;
 		}
 
@@ -326,10 +318,11 @@ namespace N2.Web.Mvc
 			if (item == null || item == request.CurrentItem())
 				// got item from merged values
 				return false;
-			
+
 			// replace requested controller when other "item" is passed
 			values.Remove(key);
 			values[ControllerKey] = controllerMapper.GetControllerName(item.GetType());
+		
 			return true;
 		}
 	}
