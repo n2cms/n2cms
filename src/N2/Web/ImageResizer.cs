@@ -119,19 +119,32 @@ namespace N2.Web
     			using (ImageAttributes attr = new ImageAttributes())
     			{
     				attr.SetWrapMode(WrapMode.TileFlipXY);
-					if (mode == ImageResizeMode.Fill)
-					{
-						Rectangle destRec = (original.Height < original.Width) // is landscape?
-							? destRec = new Rectangle((original.Height - original.Width) / 2 * resized.Width / original.Width, 0, resized.Width * original.Width / original.Height, resized.Height)
-							: destRec = new Rectangle(0, (original.Height - original.Width) / 2 * resized.Height / original.Height, resized.Width, resized.Height * original.Width / original.Height);
-						g.DrawImage(original, destRec, 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
-					}
-					else
-						g.DrawImage(original, new Rectangle(Point.Empty, resized.Size), 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
+
+					Rectangle destinationFrame = mode == ImageResizeMode.Fill
+						? GetFillDestinationRectangle(original.Size, resized.Size)
+						: new Rectangle(Point.Empty, resized.Size);
+					g.DrawImage(original, destinationFrame, 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
 				}
     			resized.Save(output, ImageFormat.Jpeg);
     		}
     	}
+
+		public static Rectangle GetFillDestinationRectangle(Size original, Size resized)
+		{
+			double resizeWidth = resized.Width / (double)original.Width;
+			double resizeHeight = resized.Height / (double)original.Height;
+			double resizeMax = Math.Max(resizeWidth, resizeHeight);
+
+			var size = new Size((int)(original.Width * resizeMax), (int)(original.Height * resizeMax));
+
+			bool isBeeingMadeNarrower = resizeWidth < resizeHeight;
+
+			Point relocated = isBeeingMadeNarrower
+				? new Point((resized.Width - size.Width) / 2, 0)
+				: new Point(0, (resized.Height - size.Height) / 2);
+
+			return new Rectangle(relocated, size);
+		}
 
 		double GetResizeRatio(Bitmap original, double width, double height)
 		{

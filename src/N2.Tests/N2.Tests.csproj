@@ -110,6 +110,7 @@
       <HintPath>..\..\lib\System.Data.SQLite.DLL</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
@@ -175,6 +176,7 @@
     <Compile Include="Fakes\FakeVersionManager.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\HostTests.cs" />
+    <Compile Include="Web\ImageResizerTests.cs" />
     <Compile Include="Web\WebControls\DatePickerTests.cs" />
     <Compile Include="Workflow\CommandFactoryTestsBase.cs" />
     <Compile Include="Workflow\CommandFactory_PublishingTests.cs" />
