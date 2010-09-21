@@ -1,4 +1,5 @@
-﻿- Removed 404 error page (workaround against oracle padding vulnerability)
+﻿- Applied knst's #28919: It is impossible to register several content item types within an area
+- Removed 404 error page (workaround against oracle padding vulnerability)
 - Applied Paul Knopf's patch, #28928: ImageResizer support for transparency and png's
 - Changed MVC doctype to XHTML Strict
 - Fixed RenderAction issues ThreadId=227284

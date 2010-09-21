@@ -43,7 +43,7 @@ namespace N2.Web.Mvc
 				routeHandler);
 
 			var cr = new ContentRoute<T>(state.Engine, routeHandler, controllerMapper, innerRoute);
-			arc.Routes.Add(arc.AreaName, cr);
+			arc.Routes.Add(arc.AreaName + "_" + typeof(T).FullName, cr);
 			return cr;
 		}
 	}
