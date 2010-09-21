@@ -270,6 +270,13 @@ namespace N2.Web.UI.WebControls
 			DeletedIndexes.Add(index);
 			ItemEditors[index].Enabled = false;
 			ItemEditors[index].CssClass += " disabled";
+			foreach(var validator in N2.Web.UI.ItemUtility.FindInChildren<IValidator>(ItemEditors[index]))
+			{
+				if (validator is BaseValidator)
+					(validator as BaseValidator).Enabled = false;
+				if(Page.Validators.Contains(validator))
+					Page.Validators.Remove(validator);
+			}
 		}
 
 		private void MoveItemUpClick(object sender, ImageClickEventArgs e)

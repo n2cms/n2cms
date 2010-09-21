@@ -1,4 +1,5 @@
-﻿- Fixed problem with file attachment and mappath ThreadId=223694
+﻿- Fixed #28588: Deleting a required field in [EditableChildren] makes it impossible to save
+- Fixed problem with file attachment and mappath ThreadId=223694
 - Applied Paul Knopf's patch, #28915: WebForms MasterPageConcern TemplatesSection
 - Applied knst's #28919: It is impossible to register several content item types within an area
 - Removed 404 error page (workaround against oracle padding vulnerability)
