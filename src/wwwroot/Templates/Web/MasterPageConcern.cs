@@ -20,7 +20,7 @@ namespace N2.Templates.Web
 
 		public MasterPageConcern(ConfigurationManagerWrapper configuration)
 		{
-			var section = configuration.GetSection<TemplatesSection>("templates");
+			var section = configuration.GetContentSection<TemplatesSection>("templates");
 			if (section != null)
 				masterPageFile = section.MasterPageFile;
 		}

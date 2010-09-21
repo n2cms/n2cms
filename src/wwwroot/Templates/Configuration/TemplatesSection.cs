@@ -1,12 +1,13 @@
 ﻿using System.Configuration;
 using System;
+using N2.Configuration;
 
 namespace N2.Templates.Configuration
 {
 	/// <summary>
 	/// Configuration options for the N2 functional templates project.
 	/// </summary>
-    public class TemplatesSection : ConfigurationSection
+	public class TemplatesSection : ConfigurationSectionBase
     {
         /// <summary>The database flavour decides which propertes the nhibernate configuration will receive.</summary>
         [ConfigurationProperty("mailConfiguration", DefaultValue = MailConfigSource.ContentRootOrConfiguration)]
