@@ -7,6 +7,7 @@
     <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
     <asp:ContentPlaceHolder ID="Head" runat="server">
     	<link rel="canonical" href="<%= CurrentPage != null ? CurrentPage.Url : Request.RawUrl %>" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </asp:ContentPlaceHolder>
 </head>
 <body class="<%= GetBodyClass() %>">
