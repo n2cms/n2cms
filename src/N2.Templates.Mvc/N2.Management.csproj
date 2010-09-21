@@ -2348,6 +2348,8 @@
     <Folder Include="N2\Content\Wizard\Img\" />
     <Folder Include="N2\Resources\tiny_mce\plugins\autosave\images\" />
     <Folder Include="N2\Resources\tiny_mce\plugins\paste\css\" />
+    <Folder Include="N2\Resources\tiny_mce\plugins\spellchecker\classes\utils\" />
+    <Folder Include="N2\Resources\tiny_mce\plugins\spellchecker\includes\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

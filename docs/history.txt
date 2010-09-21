@@ -1,4 +1,5 @@
-﻿- Fixed #28447: Cannot add two RssAggregator items on the same page
+﻿- Added some tiny_mce localizations (#28406)
+- Fixed #28447: Cannot add two RssAggregator items on the same page
 - Fixed #28588: Deleting a required field in [EditableChildren] makes it impossible to save
 - Fixed problem with file attachment and mappath ThreadId=223694
 - Applied Paul Knopf's patch, #28915: WebForms MasterPageConcern TemplatesSection
