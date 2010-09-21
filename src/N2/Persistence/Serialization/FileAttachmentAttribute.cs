@@ -35,7 +35,10 @@ namespace N2.Persistence.Serialization
 
 		protected virtual string MapPath(string url)
 		{
-			return AppDomain.CurrentDomain.BaseDirectory + url.Replace('/', '\\');
+			if(System.Web.HttpContext.Current == null)
+				return AppDomain.CurrentDomain.BaseDirectory + url.Replace('/', '\\'); 
+
+			return System.Web.HttpContext.Current.Server.MapPath(url);
 		}
 
 		public Attachment Read(XPathNavigator navigator, ContentItem item)
