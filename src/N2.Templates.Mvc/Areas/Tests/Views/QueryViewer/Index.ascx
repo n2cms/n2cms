@@ -19,5 +19,6 @@
 	</div>
 	<div>Collections: <%= Html.ResolveService<N2.Persistence.NH.ISessionProvider>().OpenSession.Session.Statistics.CollectionCount %></div>
 	<div>Entities: <%= Html.ResolveService<N2.Persistence.NH.ISessionProvider>().OpenSession.Session.Statistics.EntityCount%></div>
-	<div>Time: <%= (int)(DateTime.Now - Context.Timestamp).TotalMilliseconds %> ms</div>
+	<div>Elapsed: <%= (int)(DateTime.Now - Context.Timestamp).TotalMilliseconds %> ms</div>
+	<div>Time: <%= DateTime.Now %></div>
 </div></div></div>

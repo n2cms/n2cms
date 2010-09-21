@@ -69,3 +69,5 @@ CONTRIBUTORS
 * James Crowley
 * Wayne Wong
 * mjwills
+* And Poulsen
+* Paul Knopf

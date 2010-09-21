@@ -100,7 +100,7 @@ namespace N2.Web
     				g = Graphics.FromImage(resized);
     				break;
     			default:
-    				Bitmap temp = new Bitmap(resized.Width, resized.Height);
+    				Bitmap temp = new Bitmap(resized.Width, resized.Height, original.PixelFormat);
     				g = Graphics.FromImage(temp);
     				g.DrawImage(resized, new Rectangle(0, 0, temp.Width, temp.Height), 0, 0, resized.Width, resized.Height, GraphicsUnit.Pixel);
     				resized = temp;
@@ -125,7 +125,7 @@ namespace N2.Web
 						: new Rectangle(Point.Empty, resized.Size);
 					g.DrawImage(original, destinationFrame, 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attr);
 				}
-    			resized.Save(output, ImageFormat.Jpeg);
+    			resized.Save(output, original.RawFormat);
     		}
     	}
 

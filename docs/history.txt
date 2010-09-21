@@ -1,4 +1,7 @@
-﻿- Fixed RenderAction issues ThreadId=227284
+﻿- Removed 404 error page (workaround against oracle padding vulnerability)
+- Applied Paul Knopf's patch, #28928: ImageResizer support for transparency and png's
+- Changed MVC doctype to XHTML Strict
+- Fixed RenderAction issues ThreadId=227284
 - Fixed preview parts issue ThreadId=226685
 - TinyMCE 3.3.9
 - Improve file manager performance with caching

@@ -127,37 +127,37 @@
     <value />
   </data>
   <data name="createUserWizardResource1.AnswerLabelText" xml:space="preserve">
-    <value>Antwoord op controle vraag:</value>
+    <value>Beveiligingsvraag:</value>
   </data>
   <data name="createUserWizardResource1.AnswerRequiredErrorMessage" xml:space="preserve">
-    <value>Antwoord op controle vraag is verplicht.</value>
+    <value>Beveiligingsvraag is verplicht.</value>
   </data>
   <data name="createUserWizardResource1.CancelButtonText" xml:space="preserve">
     <value>Annuleer</value>
   </data>
   <data name="createUserWizardResource1.CompleteSuccessText" xml:space="preserve">
-    <value>Je account is succesvol aangemaakt.</value>
+    <value>Je account is succesvol aangemaakt</value>
   </data>
   <data name="createUserWizardResource1.ConfirmPasswordCompareErrorMessage" xml:space="preserve">
-    <value>Het wachtwoord en het controle wachtwoord moeten gelijk zijn.</value>
+    <value>De wachtwoorden moeten overeenkomen</value>
   </data>
   <data name="createUserWizardResource1.ConfirmPasswordLabelText" xml:space="preserve">
-    <value>Controle wachtwoord:</value>
+    <value>Bevestig wachtwoord:</value>
   </data>
   <data name="createUserWizardResource1.ConfirmPasswordRequiredErrorMessage" xml:space="preserve">
-    <value>Controle wachtwoord is verplicht.</value>
+    <value>Bevstig wachtwoord is verplicht.</value>
   </data>
   <data name="createUserWizardResource1.ContinueButtonText" xml:space="preserve">
-    <value>Verder</value>
+    <value>Ga verder</value>
   </data>
   <data name="createUserWizardResource1.CreateUserButtonText" xml:space="preserve">
     <value>Gebruiker aanmaken</value>
   </data>
   <data name="createUserWizardResource1.DuplicateEmailErrorMessage" xml:space="preserve">
-    <value>Het e-mail adres dat je invulde is al in gebruik. Gebruik a.u.b. een ander e-mail adres.</value>
+    <value>Het opgegeven e-mail adres is al in gebruikt. Gebruik een ander e-mail adres.</value>
   </data>
   <data name="createUserWizardResource1.DuplicateUserNameErrorMessage" xml:space="preserve">
-    <value>Geef a.u.b. een andere gebruikersnaam.</value>
+    <value>Gebruik een andere gebruikersnaam aub.</value>
   </data>
   <data name="createUserWizardResource1.EditProfileText" xml:space="preserve">
     <value />
@@ -166,13 +166,13 @@
     <value>E-mail:</value>
   </data>
   <data name="createUserWizardResource1.EmailRequiredErrorMessage" xml:space="preserve">
-    <value>E-mail is verplicht.</value>
+    <value>E-mail is required.</value>
   </data>
   <data name="createUserWizardResource1.FinishCompleteButtonText" xml:space="preserve">
-    <value>Gereed</value>
+    <value>Voltooien</value>
   </data>
   <data name="createUserWizardResource1.FinishPreviousButtonText" xml:space="preserve">
-    <value>Vorige</value>
+    <value>VOrige</value>
   </data>
   <data name="createUserWizardResource1.HeaderText" xml:space="preserve">
     <value />
@@ -184,16 +184,16 @@
     <value />
   </data>
   <data name="createUserWizardResource1.InvalidAnswerErrorMessage" xml:space="preserve">
-    <value>Geef een andere controle vraag.</value>
+    <value>Geef een andere beveiligingsvraag aub.</value>
   </data>
   <data name="createUserWizardResource1.InvalidEmailErrorMessage" xml:space="preserve">
-    <value>Geef a.u.b. een geldig e-mail adres.</value>
+    <value>Geef een valide wachtwoord op.</value>
   </data>
   <data name="createUserWizardResource1.InvalidPasswordErrorMessage" xml:space="preserve">
-    <value>Het wachtwoord moet minimaal {0} lang zijn. {1} niet alfanumerieke karakters verplicht.</value>
+    <value>Minimum lengte wachtwoord: {0}. Aantal niet alfanumeriek karakters verplicht: {1}.</value>
   </data>
   <data name="createUserWizardResource1.InvalidQuestionErrorMessage" xml:space="preserve">
-    <value>Geef a.u.b. een andere controle vraag.</value>
+    <value>Geef een andere beveiligingsvraag aub.</value>
   </data>
   <data name="createUserWizardResource1.PasswordHintText" xml:space="preserve">
     <value />
@@ -202,16 +202,16 @@
     <value>Wachtwoord:</value>
   </data>
   <data name="createUserWizardResource1.PasswordRequiredErrorMessage" xml:space="preserve">
-    <value>Wachtwoord is verplicht.</value>
+    <value>Wachtwoord is verplicht</value>
   </data>
   <data name="createUserWizardResource1.Question" xml:space="preserve">
     <value />
   </data>
   <data name="createUserWizardResource1.QuestionLabelText" xml:space="preserve">
-    <value>Controle vraag::</value>
+    <value>Beveiligingsvraaag:</value>
   </data>
   <data name="createUserWizardResource1.QuestionRequiredErrorMessage" xml:space="preserve">
-    <value>Controle vraag is verplicht.</value>
+    <value>Beveiligingsvraag is verplicht.</value>
   </data>
   <data name="createUserWizardResource1.SkipLinkText" xml:space="preserve">
     <value />
@@ -229,16 +229,16 @@
     <value />
   </data>
   <data name="createUserWizardResource1.UnknownErrorMessage" xml:space="preserve">
-    <value>Je account is niet aangemaakt. Probeer het nog eens.</value>
+    <value>Je account was niet aangemaakt, probeer het nogmaals</value>
   </data>
   <data name="createUserWizardResource1.UserNameLabelText" xml:space="preserve">
     <value>Gebruikersnaam:</value>
   </data>
   <data name="createUserWizardResource1.UserNameRequiredErrorMessage" xml:space="preserve">
-    <value>Gebruikersnaam is verplicht.</value>
+    <value>Gebruikersnaam is verplicht</value>
   </data>
   <data name="cuwsCreateResource1.Title" xml:space="preserve">
-    <value>Inschrijving voor een nieuwe account</value>
+    <value>Maak een nieuwe account aan</value>
   </data>
   <data name="EmailResource2.Text" xml:space="preserve">
     <value />
@@ -259,7 +259,7 @@
     <value />
   </data>
   <data name="lblPasswordResource1.Text" xml:space="preserve">
-    <value>Wachtwoord</value>
+    <value>Wachtoord</value>
   </data>
   <data name="lblPasswordResource1.ToolTip" xml:space="preserve">
     <value />

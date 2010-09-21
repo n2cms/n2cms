@@ -5,6 +5,7 @@
 a img { border:none; vertical-align:middle; }
 .menu,.menu ul { list-style-type:none;}
 
+/* forms */
 .inputForm .row { margin-bottom:5px; }
 .inputForm .label { width:120px; float:left; }
 .secondary .label { display:block; }

@@ -7,6 +7,7 @@
 		<div class="inner">
 			<%using(Html.BeginForm<PollController>(c => c.Submit(null))){%>
 				<p><%=Model.Question.Title%></p>
+				<p>
 				<%foreach(var option in Model.Question.Options){ %>
 					<input type="radio" name="selectedItem" value="<%=option.ID%>" id="poll_<%=Model.ID + "_" + option.ID%>" />
 					<label for="poll_<%=Model.ID + "_" + option.ID%>"><%=option.Title%></label>
@@ -18,6 +19,7 @@
 					<br />
 				<%}%>
 				<%=Html.ValidationMessage("Poll.Errors")%>
+				</p>
 				<div class="buttons">
 					<input type="submit" value="Submit" />
 					<a href="<%= N2.Web.Url.Parse(Html.CurrentPage().Url).AppendQuery("p=show") %>">Display results</a>
@@ -26,7 +28,3 @@
 		</div>
 	</div>
 </div>
-
-<style type="text/css">
-	@import "<%=ResolveUrl("~/Content/Css/Poll.css")%>";
-</style>

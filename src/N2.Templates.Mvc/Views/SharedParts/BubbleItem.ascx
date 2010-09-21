@@ -6,7 +6,4 @@
 		</div>
 		<div class="bottom"></div>
 	</div>
-	<style type="text/css">
-		@import "<%=ResolveUrl("~/Content/Css/Faq.css")%>";	
-	</style>
 </div>

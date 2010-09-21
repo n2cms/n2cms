@@ -15,7 +15,4 @@
 			<%} %>
 		</div>
 	</div>
-	<style type="text/css">
-		@import "<%=ResolveUrl("~/Content/Css/Calendar.css")%>";
-	</style>
 </div>

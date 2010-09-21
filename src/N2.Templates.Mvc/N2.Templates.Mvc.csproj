@@ -428,11 +428,7 @@
     <Content Include="App_Themes\ContentFocus\secondary_header.gif" />
     <Content Include="App_Themes\ContentFocus\Style.css" />
     <Content Include="App_Themes\ContentFocus\top.gif" />
-    <Content Include="Content\Css\Calendar.css" />
-    <Content Include="Content\Css\Faq.css" />
     <Content Include="Content\Css\Layout.css" />
-    <Content Include="Content\Css\Poll.css" />
-    <Content Include="Content\Css\Search.css" />
     <Content Include="Content\Img\SocialBookmarks\Blinklist_16x16.png" />
     <Content Include="Content\Img\SocialBookmarks\BlogMarks_16x16.png" />
     <Content Include="Content\Img\SocialBookmarks\delicious_16x16.png" />
@@ -618,6 +614,7 @@
     <Content Include="Areas\Tests\Views\TestContent\Partial.ascx" />
     <Content Include="Areas\Tests\Views\TestContent\Index.aspx" />
     <Content Include="Areas\Tests\Views\TestContent\Urls.ascx" />
+    <Content Include="Content\Css\Application.css" />
     <Content Include="favicon.ico" />
     <Content Include="Views\Calendar\App_LocalResources\Index.aspx.resx">
       <SubType>Designer</SubType>
@@ -648,7 +645,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3374</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -1,3 +1,12 @@
+- MVC
+	- Css/Js registration
+	- Remove master page code behind
+	- reduce number of parts (e.g. top)
+	- Rename SharedParts/Pages -> AutoParts/Pages
+	- News paging
+	- Configure page&part query parameter
+	- New image gallery
+- update latest nh & castle
 - external links ThreadId=227538
 - fixed pages (undeletable pages with known address)
 	- data templates (ThreadId=226067)

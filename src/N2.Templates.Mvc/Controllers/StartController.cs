@@ -19,7 +19,7 @@ namespace N2.Templates.Mvc.Controllers
 			Response.Status = "404 Not Found";
 			Response.StatusCode = 404;
 
-			StartPage startPage = CurrentPage as StartPage;
+			StartPage startPage = CurrentPage as StartPage ?? Find.StartPage;
 			if (startPage != null && startPage.NotFoundPage != null)
 				return ViewPage(startPage.NotFoundPage);
 
@@ -31,7 +31,7 @@ namespace N2.Templates.Mvc.Controllers
 			Response.Status = "500 Internal Server Error";
 			Response.StatusCode = 500;
 
-			StartPage startPage = CurrentPage as StartPage;
+			StartPage startPage = CurrentPage as StartPage ?? Find.StartPage;
 			if (startPage != null && startPage.ErrorPage != null)
 				return ViewPage(startPage.ErrorPage);
 			
