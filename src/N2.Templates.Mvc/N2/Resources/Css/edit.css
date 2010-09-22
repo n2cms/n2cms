@@ -59,6 +59,7 @@ body.framed .versionInfo { background-image:url(../../Resources/icons/informatio
 /* tab overrides */
 body.framed .tabPanel { margin-bottom:10px; }
 body.framed .tabPanel fieldset { left:0; }
+body.framed .tabPanel fieldset fieldset { margin-top:20px; }
 body.framed .itemEditor hr { margin:15px 0 }
 
 body.framed .help { vertical-align:middle; }
