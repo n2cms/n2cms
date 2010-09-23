@@ -27,9 +27,9 @@ namespace N2.Templates.Mvc.Controllers
 		public override System.Web.Mvc.ActionResult Index()
 		{
 			if(CurrentItem.IsPage)
-				return View(string.Format("~/Views/SharedPages/{0}.aspx", CurrentItem.GetType().Name), CurrentItem);
+				return View(string.Format("PageTemplates/{0}", CurrentItem.GetType().Name), CurrentItem);
 			else
-				return PartialView(string.Format("~/Views/SharedParts/{0}.ascx", CurrentItem.GetType().Name), CurrentItem);
+				return PartialView(string.Format("PartTemplates/{0}", CurrentItem.GetType().Name), CurrentItem);
 		}
 
 		//// View overloads ////

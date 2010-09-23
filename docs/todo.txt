@@ -2,7 +2,6 @@
 	- Css/Js registration
 	- Remove master page code behind
 	- reduce number of parts (e.g. top)
-	- Rename SharedParts/Pages -> AutoParts/Pages
 	- News paging
 	- Configure page&part query parameter
 	- New image gallery

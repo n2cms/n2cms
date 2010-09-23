@@ -458,25 +458,15 @@
     <Content Include="Upload\skal.jpg" />
     <Content Include="Upload\thorn.jpg" />
     <Content Include="Views\Navigation\TopMenu.ascx" />
-    <Content Include="Views\SharedParts\BoxedTextItem.ascx" />
     <Content Include="Views\CalendarTeaser\Index.ascx" />
-    <Content Include="Views\SharedParts\Columns.ascx" />
-    <Content Include="Views\SharedParts\Comment.ascx" />
     <Content Include="Views\CommentInput\Index.ascx" />
-    <Content Include="Views\SharedParts\CommentList.ascx" />
-    <Content Include="Views\SharedParts\Login.ascx" />
     <Content Include="Views\NewsList\BoxedList.ascx" />
     <Content Include="Views\NewsList\List.ascx" />
     <Content Include="Views\RssAggregator\List.ascx" />
     <Content Include="Views\SocialBookmarks\Index.ascx" />
-    <Content Include="Views\SharedParts\Subscribe.ascx" />
-    <Content Include="Views\SharedParts\Teaser.ascx" />
-    <Content Include="Views\SharedParts\TextItem.ascx" />
-    <Content Include="Views\SharedParts\Top.ascx" />
     <Content Include="Views\Navigation\SubMenu.ascx" />
     <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Start\Index.aspx" />
-    <Content Include="Views\SharedPages\TextPage.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
@@ -490,11 +480,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Navigation\Breadcrumb.ascx" />
-    <Content Include="Views\SharedPages\News.aspx" />
-    <Content Include="Views\SharedPages\NewsContainer.aspx" />
-    <Content Include="Views\SharedParts\App_LocalResources\Poll.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Definitions.resx">
@@ -517,21 +502,16 @@
       <LastGenOutput>Zones.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\SharedPages\Event.aspx" />
     <Content Include="Views\Calendar\Index.aspx" />
-    <Content Include="Views\SharedPages\FaqList.aspx" />
     <Content Include="Views\ImageGallery\Index.aspx" />
     <Content Include="Views\Search\Index.aspx" />
     <Content Include="Views\UserRegistration\Index.ascx" />
-    <Content Include="Views\SharedParts\Faq.ascx" />
     <Content Include="Views\Form\Index.ascx" />
-    <Content Include="Views\SharedPages\SiteMap.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CalendarTeaser\App_LocalResources\Index.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\SharedParts\BubbleItem.ascx" />
     <Content Include="Views\Tracking\Index.ascx" />
   </ItemGroup>
   <ItemGroup>
@@ -621,10 +601,31 @@
     </Content>
     <Content Include="Views\Poll\Index.ascx" />
     <Content Include="Views\RssFeed\Preview.aspx" />
-    <Content Include="Views\SharedPages\FormPage.aspx" />
     <Content Include="Views\Login\Index.ascx" />
-    <Content Include="Views\SharedPages\GalleryItem.aspx" />
-    <Content Include="Views\SharedParts\RandomImage.ascx" />
+    <Content Include="Views\Shared\PageTemplates\Event.aspx" />
+    <Content Include="Views\Shared\PageTemplates\FaqList.aspx" />
+    <Content Include="Views\Shared\PageTemplates\FormPage.aspx" />
+    <Content Include="Views\Shared\PageTemplates\GalleryItem.aspx" />
+    <Content Include="Views\Shared\PageTemplates\News.aspx" />
+    <Content Include="Views\Shared\PageTemplates\NewsContainer.aspx" />
+    <Content Include="Views\Shared\PageTemplates\SiteMap.aspx" />
+    <Content Include="Views\Shared\PageTemplates\TextPage.aspx" />
+    <Content Include="Views\Shared\PartTemplates\BoxedTextItem.ascx" />
+    <Content Include="Views\Shared\PartTemplates\BubbleItem.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Columns.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Comment.ascx" />
+    <Content Include="Views\Shared\PartTemplates\CommentList.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Faq.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Login.ascx" />
+    <Content Include="Views\Shared\PartTemplates\RandomImage.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Subscribe.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Teaser.ascx" />
+    <Content Include="Views\Shared\PartTemplates\TextItem.ascx" />
+    <Content Include="Views\Shared\PartTemplates\Top.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Poll.ascx.resx" />
+    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Poll.ascx.sv.resx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Management\Views\Shared\" />
