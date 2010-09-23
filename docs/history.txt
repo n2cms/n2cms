@@ -1,4 +1,5 @@
-﻿- Renamed MVC Shared[Parts|Pages] -> Shared/[Part|Page]Templates (changes convention)
+﻿- MVC honors n2/host/web pageQueryKey and partQueryKey (change key used to identify pages)
+- Renamed MVC Shared[Parts|Pages] -> Shared/[Part|Page]Templates (changes convention)
 - Added some tiny_mce localizations (#28406)
 - Fixed #28447: Cannot add two RssAggregator items on the same page
 - Fixed #28588: Deleting a required field in [EditableChildren] makes it impossible to save

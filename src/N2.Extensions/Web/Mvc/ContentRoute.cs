@@ -15,11 +15,20 @@ namespace N2.Web.Mvc
 	public class ContentRoute : RouteBase
 	{
 		/// <summary>Used to reference the currently executing content item in the route value dictionary.</summary>
-		public const string ContentItemKey = "item";
+		public static string ContentItemKey
+		{
+			get { return PathData.ItemQueryKey; }
+		}
 		/// <summary>Used to reference the content page in the route value dictionary.</summary>
-		public const string ContentPageKey = "page";
+		public static string ContentPageKey
+		{
+			get { return PathData.PageQueryKey; }
+		}
 		/// <summary>Used to reference the content part in the route value dictionary.</summary>
-		public const string ContentPartKey = "part";
+		public static string ContentPartKey
+		{
+			get { return PathData.PartQueryKey; }
+		}
 		/// <summary>Used to reference the N2 content engine.</summary>
 		public const string ContentEngineKey = "engine";
 		/// <summary>Convenience reference to the MVC controller.</summary>
