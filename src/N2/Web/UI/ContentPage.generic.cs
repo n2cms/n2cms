@@ -47,7 +47,7 @@ namespace N2.Web.UI
                 if (cacheManager.Enabled)
                 {
                     InitOutputCache(cacheManager.GetOutputCacheParameters());
-                    cacheManager.AddCacheInvalidation(this);
+                    cacheManager.AddCacheInvalidation(Response);
                 }
             }
             

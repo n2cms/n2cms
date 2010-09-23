@@ -43,10 +43,15 @@ namespace N2.Web.Mvc
 				?? context.RouteData.Values.CurrentItem<T>(key, context.RouteData.GetEngine().Persister);
 		}
 
-		private static IEngine GetEngine(this RouteData routeData)
+		internal static IEngine GetEngine(this RouteData routeData)
 		{
 			return routeData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
 				?? N2.Context.Current;
+		}
+
+		internal static T ResolveService<T>(this RouteData routeData) where T : class
+		{
+			return routeData.GetEngine().Resolve<T>();
 		}
 	}
 }

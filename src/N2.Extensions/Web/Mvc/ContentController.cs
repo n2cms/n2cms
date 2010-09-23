@@ -20,50 +20,40 @@ namespace N2.Web.Mvc
 		ContentItem currentPage;
 		IEngine engine;
 		
-
+		/// <summary>
+		/// Used to resolve services.
+		/// </summary>
 		public virtual IEngine Engine
 		{
-			get
-			{
-				if (engine == null)
-				{
-					engine = ControllerContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] as IEngine
-					          ?? Context.Current;
-				}
-				return engine;
-			}
+			get { return engine 
+				?? (engine = RouteData.GetEngine()); }
 			set { engine = value; }
 		}
 
 		/// <summary>The content item associated with the requested path.</summary>
 		public virtual T CurrentItem
 		{
-			get
-			{
-				if (currentItem == null)
-					currentItem = ControllerContext.RequestContext.CurrentItem<T>();
-
-				return currentItem;
-			}
+			get { return currentItem
+				?? (currentItem = ControllerContext.RequestContext.CurrentItem<T>()); }
 			set { currentItem = value; }
 		}
 
+		/// <summary>The page beeing served by this request, or the page a part has been added to.</summary>
 		public ContentItem CurrentPage
 		{
-			get
-			{
-				if(currentPage == null)
-					currentPage = ControllerContext.RequestContext.CurrentPage<ContentItem>()
+			get { return currentPage 
+					?? (currentPage = RouteData.CurrentPage()
 						?? CurrentItem.ClosestPage()
-						?? Engine.UrlParser.CurrentPage;
-
-				return currentPage;
-			}
+						?? Engine.UrlParser.CurrentPage); }
+			set { currentPage = value; }
 		}
 
+		/// <summary>The currently displayed part or null if a page is beeing executed.</summary>
 		public ContentItem CurrentPart
 		{
-			get { return currentPart ?? (currentPart = ControllerContext.RequestContext.CurrentPart<ContentItem>()); }
+			get { return currentPart 
+				?? (currentPart = ControllerContext.RequestContext.CurrentPart<ContentItem>()); }
+			set { currentPart = value; }
 		}
 		#endregion
 
@@ -81,30 +71,16 @@ namespace N2.Web.Mvc
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
-			CheckItemSecurity(filterContext);
+			ValidateAuthorization(filterContext);
 
 			MergeModelStateFromEarlierStep(filterContext.HttpContext);
 
 			base.OnActionExecuting(filterContext);
 		}
 
-		private void MergeModelStateFromEarlierStep(HttpContextBase context)
-		{
-			const string modelStateForMergingKey = "N2_ModelStateForMerging";
-
-			ModelStateDictionary modelState = ModelState;
-			if(context.Items.Contains(modelStateForMergingKey))
-			{
-				modelState = context.Items[modelStateForMergingKey] as ModelStateDictionary;
-
-				if(modelState != null)
-					ModelState.Merge(modelState);
-			}
-
-			context.Items[modelStateForMergingKey] = modelState;
-		}
-
-		private void CheckItemSecurity(ActionExecutingContext filterContext)
+		/// <summary>Validates that the user is allowed to read the rendered item.</summary>
+		/// <param name="filterContext"></param>
+		protected virtual void ValidateAuthorization(ActionExecutingContext filterContext)
 		{
 			if (CurrentItem != null)
 			{
@@ -113,6 +89,36 @@ namespace N2.Web.Mvc
 				if (!securityManager.IsAuthorized(CurrentItem, User))
 					filterContext.Result = new HttpUnauthorizedResult();
 			}
+		}
+
+		protected override void OnResultExecuting(ResultExecutingContext filterContext)
+		{
+			ProcessOutputCache(filterContext);
+
+			base.OnResultExecuting(filterContext);
+		}
+
+		/// <summary>Applies output cache as configured in the n2/host/outputCache config section.</summary>
+		/// <param name="filterContext"></param>
+		protected virtual void ProcessOutputCache(ResultExecutingContext filterContext)
+		{
+			new ContentOutputCacheAttribute().OnResultExecuting(filterContext);
+		}
+
+		private void MergeModelStateFromEarlierStep(HttpContextBase context)
+		{
+			const string modelStateForMergingKey = "N2_ModelStateForMerging";
+
+			ModelStateDictionary modelState = ModelState;
+			if (context.Items.Contains(modelStateForMergingKey))
+			{
+				modelState = context.Items[modelStateForMergingKey] as ModelStateDictionary;
+
+				if (modelState != null)
+					ModelState.Merge(modelState);
+			}
+
+			context.Items[modelStateForMergingKey] = modelState;
 		}
 
 		protected virtual ActionResult RedirectToParentPage()

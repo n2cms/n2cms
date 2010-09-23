@@ -1,4 +1,5 @@
-﻿- MVC honors n2/host/web pageQueryKey and partQueryKey (change key used to identify pages)
+﻿- Enabled configurable output cache for MVC n2/host/outputCache
+- MVC honors n2/host/web pageQueryKey and partQueryKey (change key used to identify pages)
 - Renamed MVC Shared[Parts|Pages] -> Shared/[Part|Page]Templates (changes convention)
 - Added some tiny_mce localizations (#28406)
 - Fixed #28447: Cannot add two RssAggregator items on the same page

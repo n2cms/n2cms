@@ -6,6 +6,7 @@ using System.Web;
 using N2.Configuration;
 using N2.Persistence;
 using N2.Engine;
+using System.Web.Configuration;
 
 namespace N2.Web.UI
 {
@@ -46,10 +47,10 @@ namespace N2.Web.UI
                 validationStatus = HttpValidationStatus.IgnoreThisRequest;
         }
 
-        public virtual void AddCacheInvalidation(System.Web.UI.Page page)
+        public virtual void AddCacheInvalidation(HttpResponse response)
         {
-            page.Response.AddCacheDependency(new ContentCacheDependency(persister));
-            page.Response.Cache.AddValidationCallback(ValidateCacheRequest, null);
+			response.AddCacheDependency(new ContentCacheDependency(persister));
+			response.Cache.AddValidationCallback(ValidateCacheRequest, null);
         }
 
         public virtual OutputCacheParameters GetOutputCacheParameters()
@@ -77,4 +78,31 @@ namespace N2.Web.UI
             return parameters;
         }
     }
+
+	public static class CacheUtility
+	{
+		public static void InitOutputCache(ICacheManager cacheManager, HttpContext context)
+		{
+			if (!cacheManager.Enabled)
+				return;
+
+			OutputCacheParameters cacheSettings = cacheManager.GetOutputCacheParameters();
+
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

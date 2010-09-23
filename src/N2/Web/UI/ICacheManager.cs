@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Web.UI;
+using System.Web;
 namespace N2.Web.UI
 {
     public interface ICacheManager
     {
         bool Enabled { get; }
 
-        void AddCacheInvalidation(System.Web.UI.Page page);
+        void AddCacheInvalidation(HttpResponse response);
         OutputCacheParameters GetOutputCacheParameters();
     }
 }

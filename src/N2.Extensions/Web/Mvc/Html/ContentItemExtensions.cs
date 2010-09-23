@@ -12,13 +12,7 @@ namespace N2.Web.Mvc.Html
     {
 		public static T ResolveService<T>(this HtmlHelper helper) where T: class
 		{
-			IEngine engine = null;
-			if (helper.ViewContext.RouteData.DataTokens.ContainsKey(ContentRoute.ContentEngineKey))
-				engine = helper.ViewContext.RouteData.DataTokens[ContentRoute.ContentEngineKey] as IEngine;
-			if (engine == null)
-				engine = N2.Context.Current;
-
-			return engine.Resolve<T>();
+			return helper.ViewContext.RouteData.ResolveService<T>();
 		}
 
         public static ContentItem CurrentPage(this HtmlHelper helper)

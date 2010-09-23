@@ -112,6 +112,8 @@
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />
+    <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs">
+    </Compile>
     <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
     <Compile Include="Web\Mvc\Html\AjaxExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />
