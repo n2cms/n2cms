@@ -384,6 +384,7 @@
     <Compile Include="Details\EditableCheckBoxAttribute.cs" />
     <Compile Include="Details\EditableDateAttribute.cs" />
     <Compile Include="Details\EditableEnumAttribute.cs" />
+    <Compile Include="Details\EditableImageSizeAttribute.cs" />
     <Compile Include="Details\EditableListControlAttribute.cs" />
     <Compile Include="Details\EditableFileUploadAttribute.cs" />
     <Compile Include="Details\EditableThemeSelectionAttribute.cs" />
@@ -480,9 +481,11 @@
     <Compile Include="Persistence\Serialization\XmlReader.cs" />
     <Compile Include="Security\PermissionRemapAttribute.cs" />
     <Compile Include="Web\CacheUtility.cs" />
+    <Compile Include="Web\Drawing\ImageResizeMode.cs" />
     <Compile Include="Web\Extensions.cs" />
-    <Compile Include="Web\ImageResizeHandler.cs" />
-    <Compile Include="Web\ImageResizer.cs" />
+    <Compile Include="Web\Drawing\ImageResizeHandler.cs" />
+    <Compile Include="Web\Drawing\ImageResizer.cs" />
+    <Compile Include="Web\Drawing\ImagesUtility.cs" />
     <Compile Include="Web\RequestPathProvider.cs" />
     <Compile Include="Web\SitesChangedEventArgs.cs" />
     <Compile Include="Edit\ControlPanelDragPluginAttribute.cs" />

@@ -6,7 +6,6 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Text", Name = "Text",
 		IconUrl = "~/Content/Img/text_align_left.png",
 		SortOrder = -90)]
-	[AllowedZones(AllowedZones.AllNamed)]
 	public class TextItem : AbstractItem
 	{
 		[EditableFreeTextArea("Text", 100)]

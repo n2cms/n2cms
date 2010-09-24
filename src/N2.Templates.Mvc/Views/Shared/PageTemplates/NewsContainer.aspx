@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<NewsContainer>" Title="" %>
+<%@ Page Language="C#" MasterPageFile="../Site.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<NewsContainer>" Title="" %>
 
 <asp:Content ContentPlaceHolderID="PostContent" runat="server">
     <div class="list">

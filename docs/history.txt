@@ -1,4 +1,9 @@
-﻿- Enabled configurable output cache for MVC n2/host/outputCache
+﻿- MVC Remove zone restrictions for a lot of parts
+- MVC gallery use configured sizes
+- MVC gallery using Galleria (http://galleria.aino.se)
+- File selector remember last folder
+- Fixed file selector not expanding to selected file
+- Enabled configurable output cache for MVC n2/host/outputCache
 - MVC honors n2/host/web pageQueryKey and partQueryKey (change key used to identify pages)
 - Renamed MVC Shared[Parts|Pages] -> Shared/[Part|Page]Templates (changes convention)
 - Added some tiny_mce localizations (#28406)

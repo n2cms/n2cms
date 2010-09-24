@@ -624,6 +624,30 @@
     <Content Include="Views\Shared\PartTemplates\Top.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Galleria\themes\classic\classic-loader.gif" />
+    <Content Include="Content\Galleria\themes\classic\classic-map.png" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.css" />
+    <Content Include="Content\Galleria\themes\classic\galleria.classic.js" />
+    <Content Include="Content\Galleria\themes\dots\dot.png" />
+    <Content Include="Content\Galleria\themes\dots\galleria.dots.css" />
+    <Content Include="Content\Galleria\themes\dots\galleria.dots.js" />
+    <Content Include="Content\Galleria\themes\dots\l.png" />
+    <Content Include="Content\Galleria\themes\dots\loader.gif" />
+    <Content Include="Content\Galleria\themes\dots\nav.png" />
+    <Content Include="Content\Galleria\themes\dots\r.png" />
+    <Content Include="Content\Galleria\themes\fullscreen\b.png" />
+    <Content Include="Content\Galleria\themes\fullscreen\down.gif" />
+    <Content Include="Content\Galleria\themes\fullscreen\fix.gif" />
+    <Content Include="Content\Galleria\themes\fullscreen\galleria.fullscreen.css" />
+    <Content Include="Content\Galleria\themes\fullscreen\galleria.fullscreen.js" />
+    <Content Include="Content\Galleria\themes\fullscreen\i.png" />
+    <Content Include="Content\Galleria\themes\fullscreen\l.gif" />
+    <Content Include="Content\Galleria\themes\fullscreen\loader.gif" />
+    <Content Include="Content\Galleria\themes\fullscreen\n.gif" />
+    <Content Include="Content\Galleria\themes\fullscreen\p.gif" />
+    <Content Include="Content\Galleria\themes\fullscreen\r.gif" />
+    <Content Include="Content\Galleria\themes\fullscreen\up.gif" />
+    <Content Include="Content\Galleria\jquery.galleria.js" />
     <Content Include="Views\Shared\PartTemplates\App_LocalResources\Poll.ascx.resx" />
     <Content Include="Views\Shared\PartTemplates\App_LocalResources\Poll.ascx.sv.resx" />
   </ItemGroup>

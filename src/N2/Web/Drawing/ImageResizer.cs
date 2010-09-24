@@ -6,21 +6,8 @@ using System.Drawing.Drawing2D;
 using N2.Engine;
 using N2.Configuration;
 
-namespace N2.Web
+namespace N2.Web.Drawing
 {
-	/// <summary>
-	/// How to fit the image in the max width and height.
-	/// </summary>
-	public enum ImageResizeMode
-	{
-		/// <summary>Stretch the image to fit</summary>
-		Stretch,
-		/// <summary>Fit the image inside the box.</summary>
-		Fit,
-		/// <summary>Crop portions of the image outside the box</summary>
-		Fill
-	}
-
 	/// <summary>
 	/// Resizes an image.
 	/// </summary>

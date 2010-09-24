@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
+using N2.Web.Drawing;
 using NUnit.Framework;
-using N2.Web;
-using System.Drawing;
 
 namespace N2.Tests.Web
 {

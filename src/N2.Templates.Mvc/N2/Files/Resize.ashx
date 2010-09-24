@@ -1,1 +1,1 @@
-<%@ WebHandler Language="C#" Class="N2.Web.ImageResizeHandler" %>
+<%@ WebHandler Language="C#" Class="N2.Web.Drawing.ImageResizeHandler" %>

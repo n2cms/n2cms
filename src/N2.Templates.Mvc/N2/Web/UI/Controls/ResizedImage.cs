@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web;
 using System.Web.UI.WebControls;
 using N2.Web;
-using N2.Management.Files;
+using N2.Web.Drawing;
 
 namespace N2.Edit.Web.UI.Controls
 {

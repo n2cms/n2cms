@@ -9,10 +9,10 @@ namespace N2.Templates.Mvc.Controllers
 	{
 		public override System.Web.Mvc.ActionResult Index()
 		{
-			if (CurrentItem.IsCentered())
-				return View("List");
-			else
+			if (CurrentItem.Boxed)
 				return View("BoxedList");
+			else
+				return View("List");
 		}
 	}
 }

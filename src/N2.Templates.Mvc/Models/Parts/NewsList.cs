@@ -12,8 +12,6 @@ namespace N2.Templates.Mvc.Models.Parts
 		SortOrder = 160,
 		IconUrl = "~/Content/Img/newspaper_go.png")]
 	[WithEditableTitle("Title", 10, Required = false)]
-	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft,
-		Zones.ColumnRight)]
 	public class NewsList : SidebarItem
 	{
 		public enum HeadingLevel
@@ -45,16 +43,17 @@ namespace N2.Templates.Mvc.Models.Parts
 			set { SetDetail("MaxNews", value, 3); }
 		}
 
+		[EditableCheckBox("Boxed", 19)]
+		public virtual bool Boxed
+		{
+			get { return GetDetail("Boxed", true); }
+			set { SetDetail("Boxed", value, true); }
+		}
+
 		public IEnumerable<News> FilteredNewsItems
 		{
 			get { return Container.GetChildren(new TypeFilter(typeof (News)), new CountFilter(0, MaxNews)).Cast<News>(); }
 		}
-
-		//TODO: implement in controller
-		//protected override string TemplateName
-		//{
-		//    get { return InTheMiddle() ? "NewsList" : "NewsBox"; }
-		//}
 
 		public bool IsCentered()
 		{

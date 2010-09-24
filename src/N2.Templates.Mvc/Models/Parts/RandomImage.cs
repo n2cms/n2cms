@@ -8,7 +8,6 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Random image",
 		IconUrl = "~/Content/Img/photos.png")]
-	[AllowedZones(Zones.Content, Zones.RecursiveAbove, Zones.Left, Zones.Right)]
 	[NotVersionable]
 	public class RandomImage : AbstractItem
 	{

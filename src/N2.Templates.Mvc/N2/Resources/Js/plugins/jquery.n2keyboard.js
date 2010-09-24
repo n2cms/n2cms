@@ -7,7 +7,7 @@
 	for (var i = key.a; i < key.z; i++) {
 		key[String.fromCharCode(i)] = i;
 	}
-	$.fn.n2keyboard = function(bindings,focusOn) {
+	$.fn.n2keyboard = function(bindings, focusOn) {
 		var s = this.selector;
 		bindings = bindings || {};
 
@@ -21,7 +21,7 @@
 			offset: function(i) {
 				var a = this.all();
 				var fi = a.index(this.focused());
-				return a[Math.min(Math.max(0, fi + i), a.length-1)];
+				return a[Math.min(Math.max(0, fi + i), a.length - 1)];
 			}
 		}
 
@@ -38,6 +38,7 @@
 			if (boundKeys[e.keyCode]) {
 				boundKeys[e.keyCode](e, ctx);
 				e.preventDefault();
+				e.stopPropagation();
 			}
 		});
 

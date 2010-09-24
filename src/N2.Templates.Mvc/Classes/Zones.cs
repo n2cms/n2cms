@@ -28,7 +28,9 @@
 		/// <summary>Left on this page</summary>
 		public const string Left = "Left";
 
+		/// <summary>On the left side of a two column container</summary>
 		public const string ColumnLeft = "ColumnLeft";
+		/// <summary>On the right side of a two column container</summary>
 		public const string ColumnRight = "ColumnRight";
 
 		/// <summary>In the content column (below text) on this page.</summary>

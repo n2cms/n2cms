@@ -1,10 +1,10 @@
 ﻿using System.IO;
+using System.Text;
+using System.Web;
+using N2.Installation;
 using N2.Integrity;
 using N2.Persistence;
-using N2.Installation;
-using N2.Management.Files;
-using System.Web;
-using System.Text;
+using N2.Web.Drawing;
 
 namespace N2.Edit.FileSystem.Items
 {

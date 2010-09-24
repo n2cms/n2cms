@@ -251,7 +251,6 @@
     <Compile Include="N2\Files\FileSystem\UploadFile.ashx.cs">
       <DependentUpon>UploadFile.ashx</DependentUpon>
     </Compile>
-    <Compile Include="N2\Files\ImagesUtility.cs" />
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
     <Compile Include="N2\Installation\UpdateAlteredPermissionsMigration.cs" />

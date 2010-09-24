@@ -10,8 +10,6 @@ namespace N2.Templates.Mvc.Models.Parts
 		SortOrder = 165,
 		IconUrl = "~/Content/Img/rss.png")]
 	[WithEditableTitle("Title", 10, Required = false)]
-	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left, Zones.Content, Zones.ColumnLeft,
-		Zones.ColumnRight)]
 	public class RssAggregator : AbstractItem
 	{
 		[EditableFreeTextArea("Text", 100)]

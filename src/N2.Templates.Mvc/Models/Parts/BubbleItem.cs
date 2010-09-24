@@ -4,6 +4,7 @@ using N2.Details;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
+	[Obsolete]
 	[PartDefinition("Bubble",
 		IconUrl = "~/Content/Img/help.png")]
 	[AllowedZones(Zones.Left, Zones.Right, Zones.ColumnLeft, Zones.ColumnRight)]

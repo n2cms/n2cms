@@ -7,7 +7,6 @@ namespace N2.Templates.Mvc.Models.Parts
 		Name = "BoxedText",
 		IconUrl = "~/Content/Img/application_view_columns.png",
 		SortOrder = -100)]
-	[AllowedZones(Zones.Left, Zones.Right, Zones.RecursiveLeft, Zones.RecursiveRight, Zones.SiteLeft, Zones.SiteRight)]
 	[WithEditableTitle]
 	public class BoxedTextItem : AbstractItem
 	{

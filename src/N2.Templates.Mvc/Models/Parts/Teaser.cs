@@ -7,7 +7,6 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Teaser",
 		IconUrl = "~/Content/Img/heart.png")]
-	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Left, Zones.Right)]
 	[WithEditableTitle("Title", 10)]
 	public class Teaser : AbstractItem
 	{

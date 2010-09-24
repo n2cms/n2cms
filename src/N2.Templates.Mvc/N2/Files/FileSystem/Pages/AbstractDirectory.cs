@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using N2.Collections;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Web;
-using System;
-using N2.Management.Files;
+using N2.Collections;
+using N2.Web.Drawing;
 
 namespace N2.Edit.FileSystem.Items
 {

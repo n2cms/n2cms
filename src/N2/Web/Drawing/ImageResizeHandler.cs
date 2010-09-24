@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web;
 using N2.Edit.FileSystem;
-using System.IO;
 
-namespace N2.Web
+namespace N2.Web.Drawing
 {
 	/// <summary>
 	/// Resizes the requested image to the requested size.

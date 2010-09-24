@@ -9,7 +9,6 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Social bookmarks",
 		IconUrl = "~/Content/Img/digg.png")]
 	[RestrictParents(typeof (AbstractContentPage))]
-	[AllowedZones(Zones.SiteRight, Zones.Right, Zones.RecursiveRight, Zones.SiteLeft)]
 	[WithEditableTitle("Title", 90)]
 	public class SocialBookmarks : AbstractItem
 	{

@@ -6,7 +6,6 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Calendar Teaser",
 		IconUrl = "~/Content/Img/calendar_view_month.png")]
-	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.Right, Zones.Left)]
 	public class CalendarTeaser : SidebarItem
 	{
 		[EditableLink("Calendar container", 100)]

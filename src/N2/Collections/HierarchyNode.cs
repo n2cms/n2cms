@@ -67,5 +67,24 @@ namespace N2.Collections
 			}
 			writer.Write(end(Current));
 		}
+
+		#region Equals & GetHashCode
+		public override bool Equals(object obj)
+		{
+			if (Current == null)
+				return false;
+			var other = obj as HierarchyNode<T>;
+			if (other == null)
+				return false;
+
+			return Current.Equals(other.Current);
+		}
+		public override int GetHashCode()
+		{
+			if (Current == null)
+				return 0.GetHashCode();
+			return Current.GetHashCode();
+		}
+		#endregion
 	}
 }

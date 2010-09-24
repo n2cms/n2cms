@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.IO;
 using System.Web;
+using N2.Configuration;
+using N2.Edit;
+using N2.Edit.FileSystem;
 using N2.Engine;
 using N2.Plugin;
-using N2.Edit.FileSystem;
-using N2.Edit;
 using N2.Web;
-using N2.Configuration;
-using N2.Management.Files;
-using System.IO;
+using N2.Web.Drawing;
 
 namespace N2.Management.Files
 {

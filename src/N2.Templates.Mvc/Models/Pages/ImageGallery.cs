@@ -1,8 +1,7 @@
-using N2.Integrity;
-using N2.Details;
-using N2.Web.Mvc;
-using N2.Web.UI;
 using N2.Definitions;
+using N2.Details;
+using N2.Integrity;
+using N2.Web.UI;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -16,32 +15,18 @@ namespace N2.Templates.Mvc.Models.Pages
 
 		public const string GallerySettings = "gallerySettings";
 
-		[EditableTextBox("Max Image Width", 200, ContainerName = GallerySettings)]
-		public virtual int MaxImageWidth
+		[EditableImageSize("Preferred Image Size", 200, ContainerName = GallerySettings)]
+		public virtual string PreferredImageSize
 		{
-			get { return (int) (GetDetail("MaxImageWidth") ?? 685); }
-			set { SetDetail("MaxImageWidth", value); }
+			get { return GetDetail("PreferredImageSize", "wide"); }
+			set { SetDetail("PreferredImageSize", value, "wide"); }
 		}
 
-		[EditableTextBox("Max Image Height", 210, ContainerName = GallerySettings)]
-		public virtual int MaxImageHeight
+		[EditableImageSize("Preferred Thumbnail Size", 202, ContainerName = GallerySettings)]
+		public virtual string PreferredThumbnailSize
 		{
-			get { return (int) (GetDetail("MaxImageHeight") ?? 685); }
-			set { SetDetail("MaxImageHeight", value); }
-		}
-
-		[EditableTextBox("Max Thumbnail Width", 220, ContainerName = GallerySettings)]
-		public virtual int MaxThumbnailWidth
-		{
-			get { return (int) (GetDetail("MaxThumbnailWidth") ?? 70); }
-			set { SetDetail("MaxThumbnailWidth", value); }
-		}
-
-		[EditableTextBox("Max Thumbnail Height", 230, ContainerName = GallerySettings)]
-		public virtual int MaxThumbnailHeight
-		{
-			get { return (int) (GetDetail("MaxThumbnailHeight") ?? 60); }
-			set { SetDetail("MaxThumbnailHeight", value); }
+			get { return GetDetail("PreferredThumbnailSize", "thumb"); }
+			set { SetDetail("PreferredThumbnailSize", value, "thumb"); }
 		}
 
 		#endregion

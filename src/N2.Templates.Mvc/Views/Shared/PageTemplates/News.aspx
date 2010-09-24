@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<News>" %>
+<%@ Page Language="C#" MasterPageFile="../Site.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<News>" %>
 
 <asp:Content ContentPlaceHolderID="TextContent" runat="server">
 	<%= Html.DisplayContent(m => m.Title) %>

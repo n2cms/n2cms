@@ -12,7 +12,6 @@ namespace N2.Templates.Mvc.Models.Parts
 		SortOrder = 370,
 		IconUrl = "~/Content/Img/feed_link.png")]
 	[RestrictParents(typeof (IStructuralPage))]
-	[AllowedZones(Zones.Right, Zones.Left, Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteRight, Zones.SiteLeft)]
 	public class Subscribe : SidebarItem
 	{
 		[EditableLink("Feed", 50)]

@@ -31,8 +31,8 @@ h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
 		.topMenu a:hover { background-color:#423E39 }
 		.topMenu .current a { position:relative; top:2px; color:#E5D7C4; }
 	.languageMenu { position:absolute; bottom:15px; right:30px; }
-#page { width:960px; padding:15px 0; background-color:#fff; margin:0 auto; }
-	.subMenu { padding:0 30px 15px 30px; border-bottom:solid 1px #E5D7C4;  }
+#page { width:960px; background-color:#fff; margin:0 auto; }
+	.subMenu { padding:15px 30px; border-bottom:solid 1px #E5D7C4;  }
 		#menu h4 { display:none; margin:0; }
 			.subMenu li { display:inline; margin-right:15px; white-space:nowrap; }
 			.subMenu .current a { font-weight:bold; color:#403C37; }
@@ -42,10 +42,10 @@ h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
 		#main { float:left; width:590px; margin:15px 0; }
 			#main img.main { width:590px; }
 		#extras { float:left; width:280px; margin:15px 0 0 30px; }
-			#extras .uc { margin-bottom:15px; }
-				#extras .uc h4 { padding:5px 15px; background:#403C37; color:#FFEFDA; margin:0; }
-				#extras .uc .box { border:solid 1px #E5D7C4; }
-				#extras .uc .inner { padding:15px; }
+			.columns .uc, #extras .uc { margin-bottom:15px; }
+				.columns .uc h4, #extras .uc h4 { padding:5px 15px; background:#403C37; color:#FFEFDA; margin:0; }
+				.columns .uc .box, #extras .uc .box { border:solid 1px #E5D7C4; }
+					.columns .uc .inner, #extras .uc .inner { padding:15px; }
 	#footer { width:900px; margin:0 auto; background-color:#403C37; padding:15px 30px; color:#E5D7C4 }
 		#footer a { float:right; }
 

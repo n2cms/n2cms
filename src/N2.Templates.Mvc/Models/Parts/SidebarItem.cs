@@ -1,5 +1,6 @@
 using N2.Details;
 using N2.Web.UI.WebControls;
+using N2.Integrity;
 
 namespace N2.Templates.Mvc.Models.Parts
 {

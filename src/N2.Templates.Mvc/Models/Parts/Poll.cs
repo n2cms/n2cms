@@ -13,7 +13,6 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Poll",
 		IconUrl = "~/Content/Img/chart_pie.png")]
-	[AllowedZones(Zones.Left, Zones.Right, Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteLeft, Zones.SiteRight)]
 	[RestrictParents(typeof (AbstractContentPage))]
 	[AllowedChildren(typeof (SingleSelect))]
 	[FieldSetContainer("questionContainer", "Question", 100)]

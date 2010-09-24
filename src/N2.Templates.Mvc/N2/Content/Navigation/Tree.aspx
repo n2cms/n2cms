@@ -98,6 +98,7 @@
         			else
         				opener.document.getElementById('<%= Request["tbid"] %>').value = relativeUrl;
         		}
+        		$.cookie('lastSelection', relativeUrl);
         		if (window.opener) {
         			selectIn(window.opener);
         			window.close();
@@ -105,7 +106,7 @@
         			selectIn(tinyMCEPopup.getWin());
         			tinyMCEPopup.close();
         		}
-	        }
+        	}
         	var updateOpenerAndClose = function(e) {
         		var relativeUrl = $(this).attr("data-url");
         		updateOpenerWithUrlAndClose(relativeUrl);
@@ -154,7 +155,7 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$(".focusGroup a:not(.toggler):visible").n2keyboard({
-					left: function(e, ctx) {					
+					left: function(e, ctx) {
 						var el = ctx.focused().closest(".folder-open")
 							.children(".toggler").click()
 							.siblings("a:not(.toggler)");
@@ -168,7 +169,8 @@
 					c: function() { $("#contextMenu a.copy").n2trigger(); },
 					n: function() { $("#contextMenu a.new").n2trigger(); },
 					v: function() { $("#contextMenu a.paste").n2trigger(); },
-					x: function() { $("#contextMenu a.move").n2trigger(); }
+					x: function() { $("#contextMenu a.move").n2trigger(); },
+					enter: function() { ctx.focused().click(); }
 				}, ".selected");
 			});
 		</script>

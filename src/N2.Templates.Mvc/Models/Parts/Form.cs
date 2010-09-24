@@ -11,7 +11,6 @@ namespace N2.Templates.Mvc.Models.Parts
 		Description = "A form that can be sumitted and sent to an email address.",
 		SortOrder = 250,
 		IconUrl = "~/Content/Img/report.png")]
-	[AllowedZones("Content", "ColumnLeft", "ColumnRight")]
 	[RestrictParents(typeof (AbstractContentPage))]
 	[AllowedChildren(typeof (Question))]
 	[AvailableZone("Questions", "Questions")]

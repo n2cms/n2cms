@@ -56,8 +56,9 @@ namespace N2.Edit
                 return engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(selected));
 
             string selectedUrl = request["selectedUrl"];
-            if (!string.IsNullOrEmpty(selectedUrl))
-                return engine.UrlParser.Parse(selectedUrl);
+			if (!string.IsNullOrEmpty(selectedUrl))
+				return engine.UrlParser.Parse(selectedUrl)
+					?? SelectFile(selectedUrl);
 
             string itemId = request[PathData.ItemQueryKey];
             if (!string.IsNullOrEmpty(itemId))
@@ -65,6 +66,15 @@ namespace N2.Edit
 
             return null;
         }
+
+		private ContentItem SelectFile(string selectedUrl)
+		{
+			string location = request.QueryString["location"];
+			if (string.IsNullOrEmpty(location))
+				return null;
+
+			return engine.Resolve<Navigator>().Navigate(Url.ToRelative(selectedUrl).TrimStart('~'));
+		}
 
 		public string ActionUrl(string actionName)
 		{

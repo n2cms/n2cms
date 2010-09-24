@@ -6,7 +6,6 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Login", Name = "Login",
 		IconUrl = "~/Content/Img/key.png")]
-	[AllowedZones(Zones.RecursiveRight, Zones.RecursiveLeft, Zones.SiteLeft, Zones.SiteRight, Zones.Left, Zones.Right)]
 	[WithEditableTitle("Title", 10)]
 	public class LoginItem : AbstractItem
 	{

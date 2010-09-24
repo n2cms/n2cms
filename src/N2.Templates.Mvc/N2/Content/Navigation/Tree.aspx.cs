@@ -21,6 +21,7 @@ namespace N2.Edit.Navigation
 
 		protected override void OnInit(EventArgs e)
 		{
+			var selected = Selection.SelectedItem;
 			if (IsPostBack && !string.IsNullOrEmpty(inputFile.PostedFile.FileName))
 			{
 				var fs = Engine.Resolve<IFileSystem>();
@@ -40,9 +41,13 @@ namespace N2.Edit.Navigation
 				HierarchyNode<ContentItem> root = new HierarchyNode<ContentItem>(Engine.Persister.Get(host.DefaultSite.RootItemID));
 
 				var selectionTrail = new List<ContentItem>();
-				if (Selection.SelectedItem is AbstractNode)
+				if (selected is AbstractNode)
 				{
-					selectionTrail = new List<ContentItem>(Find.EnumerateParents(Selection.SelectedItem, null, true));
+					selectionTrail = new List<ContentItem>(Find.EnumerateParents(selected, null, true));
+				}
+				else
+				{
+					TrySelectingPrevious(ref selected, ref selectionTrail);
 				}
 
 				var fs = Engine.Resolve<IFileSystem>();
@@ -61,19 +66,42 @@ namespace N2.Edit.Navigation
 				}
 
 				siteTreeView.Nodes = root;
-				siteTreeView.SelectedItem = Selection.SelectedItem;
+				siteTreeView.SelectedItem = selected;
 			}
 			else
 			{
 				var filter = Engine.EditManager.GetEditorFilter(Page.User);
 				siteTreeView.Filter = filter;
 				siteTreeView.RootNode = RootNode;
-				siteTreeView.SelectedItem = Selection.SelectedItem;
+				siteTreeView.SelectedItem = selected;
 			}
 			
 			siteTreeView.DataBind();
 
 			base.OnInit(e);
+		}
+
+		private void TrySelectingPrevious(ref ContentItem selected, ref List<ContentItem> selectionTrail)
+		{
+			string recenSelectionUrl = Request.Cookies["lastSelection"].Value;
+			if (!string.IsNullOrEmpty(recenSelectionUrl))
+			{
+				recenSelectionUrl = Server.UrlDecode(recenSelectionUrl);
+				try
+				{
+					string dir = VirtualPathUtility.GetDirectory(recenSelectionUrl);
+					var recentlySelected = Engine.UrlParser.Parse(dir) // was url
+						?? Engine.Resolve<Navigator>().Navigate(Url.ToRelative(dir).TrimStart('~')); // was file url
+					if (recentlySelected != null)
+					{
+						selectionTrail = new List<ContentItem>(Find.EnumerateParents(recentlySelected, null, true));
+						selected = recentlySelected;
+					}
+				}
+				catch (HttpException)
+				{
+				}
+			}
 		}
 
 		private bool IsAvailable(string uploadFolder)
