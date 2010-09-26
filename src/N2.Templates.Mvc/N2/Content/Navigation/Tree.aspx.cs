@@ -83,24 +83,24 @@ namespace N2.Edit.Navigation
 
 		private void TrySelectingPrevious(ref ContentItem selected, ref List<ContentItem> selectionTrail)
 		{
-			string recenSelectionUrl = Request.Cookies["lastSelection"].Value;
-			if (!string.IsNullOrEmpty(recenSelectionUrl))
+			var cookie = Request.Cookies["lastSelection"];
+			if (cookie == null || string.IsNullOrEmpty(cookie.Value))
+				return;
+
+			string recenSelectionUrl = Server.UrlDecode(cookie.Value);
+			try
 			{
-				recenSelectionUrl = Server.UrlDecode(recenSelectionUrl);
-				try
+				string dir = VirtualPathUtility.GetDirectory(recenSelectionUrl);
+				var recentlySelected = Engine.UrlParser.Parse(dir) // was url
+					?? Engine.Resolve<Navigator>().Navigate(Url.ToRelative(dir).TrimStart('~')); // was file url
+				if (recentlySelected != null)
 				{
-					string dir = VirtualPathUtility.GetDirectory(recenSelectionUrl);
-					var recentlySelected = Engine.UrlParser.Parse(dir) // was url
-						?? Engine.Resolve<Navigator>().Navigate(Url.ToRelative(dir).TrimStart('~')); // was file url
-					if (recentlySelected != null)
-					{
-						selectionTrail = new List<ContentItem>(Find.EnumerateParents(recentlySelected, null, true));
-						selected = recentlySelected;
-					}
+					selectionTrail = new List<ContentItem>(Find.EnumerateParents(recentlySelected, null, true));
+					selected = recentlySelected;
 				}
-				catch (HttpException)
-				{
-				}
+			}
+			catch (HttpException)
+			{
 			}
 		}
 

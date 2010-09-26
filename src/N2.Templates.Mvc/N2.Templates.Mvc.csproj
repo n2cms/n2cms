@@ -452,11 +452,6 @@
     <Content Include="Content\Img\SocialBookmarks\Technorati_16x16.png" />
     <Content Include="Content\Img\SocialBookmarks\Twitter_16x16.png" />
     <Content Include="Content\Img\SocialBookmarks\Youtube_16x16.png" />
-    <Content Include="Upload\lav.jpg" />
-    <Content Include="Upload\lime.jpg" />
-    <Content Include="Upload\logo_white.png" />
-    <Content Include="Upload\skal.jpg" />
-    <Content Include="Upload\thorn.jpg" />
     <Content Include="Views\Navigation\TopMenu.ascx" />
     <Content Include="Views\CalendarTeaser\Index.ascx" />
     <Content Include="Views\CommentInput\Index.ascx" />
@@ -655,6 +650,7 @@
     <Folder Include="Areas\Management\Views\Shared\" />
     <Folder Include="Areas\Tests\Views\Shared\" />
     <Folder Include="Classes\Web\" />
+    <Folder Include="Upload\" />
     <Folder Include="Views\Shared\App_LocalResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

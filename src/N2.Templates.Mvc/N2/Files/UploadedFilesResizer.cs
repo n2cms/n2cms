@@ -41,6 +41,9 @@ namespace N2.Management.Files
 
 			foreach (ImageSizeElement size in images.Sizes.AllElements)
 			{
+				if (!size.ResizeOnUpload)
+					continue;
+
 				Url url = e.VirtualPath;
 				string resizedPath = ImagesUtility.GetResizedPath(url, size.Name);
 

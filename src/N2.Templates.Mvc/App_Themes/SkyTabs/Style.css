@@ -15,7 +15,7 @@ h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
 /* colors */
 a { color:#3E5A78; text-decoration:none; }
 a:hover { text-decoration:underline; }
-#page a:visited { color:#785E32; }
+a:visited { color:#785E32; }
 
 
 #footer {margin-top:10px;color:#ccc;}
@@ -25,10 +25,11 @@ a:hover { text-decoration:underline; }
 
 body { margin:0; background:#FFF url(TopBg.gif) repeat-x; }
 	#wrap { width:900px; margin:0 auto; }
-		#header { height:100px; position:relative; }
+		#header { height:100px; position:relative; padding:0 15px; }
 			#header .siteLogo { vertical-align:bottom; }
 			#header .siteHeader a { color:#fff; font-style:italic; font-weight:normal;}
 		#page { padding:15px; }
+			img.top { width:100%; margin-bottom:10px; }
 			#content { margin-left:180px; }
 				.secondary { width:170px; float:left; margin-bottom:1px; }
 				#main { width:500px; float:left; padding-bottom:15px; }
@@ -49,9 +50,9 @@ body { margin:0; background:#FFF url(TopBg.gif) repeat-x; }
 #extras .box { background:transparent url(SidebarRightBg.gif) no-repeat 0% 100%; padding:10px 10px 20px 20px; }
 
 /*top*/
-#header .top { padding-top:35px; }
-	#header .top img { vertical-align:text-bottom; }
-	#header .top h2 { display:inline; }
+#header div.top { padding-top:35px; }
+	#header div.top img { vertical-align:text-bottom; }
+	#header div.top h2 { display:inline; }
 
 /*menu*/
 .topMenu { position:absolute; bottom:0px; width:900px; }
@@ -84,7 +85,8 @@ ul.subMenu ul { margin:0 0 5px 15px; }
 .list .item { padding:5px; }
 
 /*path*/
-.path { margin-bottom:10px; }
+.path { margin-bottom:10px; font-size:.9em; color:#999; }
+.path a { color:#666 }
 .path .current { color:#333; }
 .path a.current:hover { cursor:default; text-decoration:none; }
 

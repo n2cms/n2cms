@@ -33,6 +33,14 @@ namespace N2.Configuration
 			set { base["replace"] = value; }
 		}
 
+		/// <summary>Replace existing file when creating this image size.</summary>
+		[ConfigurationProperty("resizeOnUpload", DefaultValue = true)]
+		public bool ResizeOnUpload
+		{
+			get { return (bool)base["resizeOnUpload"]; }
+			set { base["resizeOnUpload"] = value; }
+		}
+
 		/// <summary>Maximum height of images resized to this size.</summary>
 		[ConfigurationProperty("mode", DefaultValue = ImageResizeMode.Fit)]
 		public ImageResizeMode Mode

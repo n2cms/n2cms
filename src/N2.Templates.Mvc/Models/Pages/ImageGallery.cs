@@ -18,8 +18,8 @@ namespace N2.Templates.Mvc.Models.Pages
 		[EditableImageSize("Preferred Image Size", 200, ContainerName = GallerySettings)]
 		public virtual string PreferredImageSize
 		{
-			get { return GetDetail("PreferredImageSize", "wide"); }
-			set { SetDetail("PreferredImageSize", value, "wide"); }
+			get { return GetDetail("PreferredImageSize", "original"); }
+			set { SetDetail("PreferredImageSize", value, "original"); }
 		}
 
 		[EditableImageSize("Preferred Thumbnail Size", 202, ContainerName = GallerySettings)]

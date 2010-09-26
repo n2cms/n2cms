@@ -12,7 +12,6 @@ caption,th,td {text-align:left}
 h1,h2,h3,h4,h5,h6,p {margin:.7em 0;}
 h1 {font-size:1.8em;}
 h2 {font-size:1.4em;}
-#footer {margin-top:10px;}
 	#footer .n2{color:#a2a796;float:right;font-size:.8em;}
 /* colors */
 #header h2 a { color:#fff; }
@@ -26,12 +25,14 @@ a:hover { text-decoration:underline; }
 body { margin:0; background-color:#cce5a2; }
 	#wrap { width:900px; margin:0 auto; }
 		#header { height:100px; background:#a2a796 url(top.gif) no-repeat; }
-		#page { padding:15px 15px 6px 15px; background:#fff url(content_bottom.gif) no-repeat 50% 100%; }
+		#page { padding:15px 15px 6px 15px; background:#fff; }
+			img.top { width:100%; margin-bottom:15px; }
 			#content { 	width:685px; float:right; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; margin-bottom:15px; }
 				#extras { float:right; }
 				#main { width:500px; float:left; padding-bottom:15px; }
+		#footer { padding:15px; background:transparent url(content_bottom.gif) no-repeat 50% 0%; color:#7e8371; }
 
 /*box*/
 .secondary .box { background:#eaf2db url(secondary_borders.gif) no-repeat -170px 100%; _height:1px; padding-bottom:10px; }
@@ -105,13 +106,6 @@ body { margin:0; background-color:#cce5a2; }
 .login .tb { width:130px; }
 .login .ff { margin-bottom:5px; }
 .register td { padding:0 5px 5px 0; }
-
-/* gallery */
-.thumbnail { opacity:.4; }
-.thumbnail:hover, .selected { opacity:1; }
-#thumbnails {padding-bottom:10px;}
-#thumbnails .text { display:none; }
-.thumbnail {margin-bottom:10px;margin-right:5px;}
 
 /* news */
 .intro {font-size:1.1em;font-style:italic;}

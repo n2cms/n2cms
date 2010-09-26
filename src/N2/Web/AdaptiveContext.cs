@@ -126,6 +126,12 @@ namespace N2.Web
 			CurrentContext.TransferRequest(path);
 		}
 
+		/// <summary>Calls into HttpContext.ClearError().</summary>
+		public void ClearError()
+		{
+			CurrentContext.ClearError();
+		}
+
 		/// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
 		public void Close()
 		{

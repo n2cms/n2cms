@@ -71,5 +71,8 @@ namespace N2.Web
         /// <summary>Transferes the request to the given path.</summary>
         /// <param name="path">The path to the template that will handle the request.</param>
 		void TransferRequest(string path);
-    }
+
+		/// <summary>Calls into HttpContext.ClearError().</summary>
+		void ClearError();
+	}
 }

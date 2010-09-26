@@ -44,7 +44,7 @@ body { margin:0; padding:0; background:#fff url(body_bg.gif) repeat-x; }
 
 /* top */
 #header { position:relative; }
-	.top { position:absolute; right:15px; top:15px; }
+	div.top { position:absolute; right:15px; top:15px; }
 	.siteLogo { float:left; }
 	.siteHeader { float:left; margin:2px; }
 	.siteHeader a { color:#BCC5C1; }

@@ -24,6 +24,7 @@ body { margin:0; padding:0; background:#fff url(body_bg.gif) repeat-x; }
 	#wrap { width:920px; margin:0 auto; }
 		#header { height:150px; }
 		#page { margin:15px 0; background: transparent url(page_bg.gif) no-repeat 50% 100%; padding:0 25px 25px 25px; }
+			img.top { width:100%; margin-bottom:15px; }
 			#content { }
 				.secondary { width:150px; float:right; margin-bottom:1px;}
 				#menu { border-left: solid 1px #dfe5e6; padding-left:15px;}
@@ -39,7 +40,7 @@ body { margin:0; padding:0; background:#fff url(body_bg.gif) repeat-x; }
 
 /* top */
 #header { position:relative; }
-	.top { float:right; padding:15px 15px 0 15px;}
+	div.top { float:right; padding:15px 15px 0 15px;}
 	.siteLogo { float:left; padding:6px 12px;}
 	.siteHeader { float:left;}
 	.siteHeader a {color:#fff;}

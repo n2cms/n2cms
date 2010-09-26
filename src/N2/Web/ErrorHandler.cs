@@ -161,6 +161,7 @@ namespace N2.Web
     	void RedirectToFix(WrongClassException wex)
     	{
     		string url = Url.Parse("~/N2/Installation/FixClass.aspx").AppendQuery("id", wex.Identifier);
+			context.ClearError();
     		context.Response.Redirect(url);
     	}
 

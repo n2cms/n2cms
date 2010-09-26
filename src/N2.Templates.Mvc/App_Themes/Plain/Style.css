@@ -24,7 +24,9 @@ body { margin:0; background-color:#ffd451; }
 	#wrap { width:900px; margin:0 auto; }
 		#header { height:100px; background:#ecac00; }
 		#page { padding:15px 15px 6px 15px; background-color:#fff; }
+			img.top { width:100%; margin-bottom:15px; }
 			#content { 	width:685px; float:right; }
+				img.main { width:100%; }
 				.secondary { width:170px; margin-bottom:1px; }
 				#menu { float:left; }
 				#extras { float:right; }

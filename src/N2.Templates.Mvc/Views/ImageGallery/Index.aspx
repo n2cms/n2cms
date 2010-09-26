@@ -3,11 +3,6 @@
 <%@ Import Namespace="N2.Collections"%>
 <asp:Content ContentPlaceHolderID="Head" runat="server">
 	<script src="<%= ResolveClientUrl("~/Content/Galleria/jquery.galleria.js") %>" type="text/javascript"></script>
-
-    <style>
-        #content { margin:0; }
-    </style>
-
 </asp:Content>
 <asp:Content ContentPlaceHolderID="ContentAndSidebar" runat="server">
 

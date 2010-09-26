@@ -140,6 +140,11 @@ namespace N2.Web
 			throw new NotSupportedException("TransferRequest is not supported in thread context. No handler when not running in http web context.");
         }
 
+		/// <summary>Doen't do anything.</summary>
+		public void ClearError()
+		{
+		}
+
 		#region IDisposable Members
 
 		void IDisposable.Dispose()

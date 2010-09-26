@@ -76,6 +76,7 @@ h1,h2 {font-family:Georgia,"Times New Roman",Times,serif;font-weight:normal; }
 .register td { padding:0 5px 5px 0; }
 
 /* gallery */
+.imageGallery #content { margin:0; }
 .imageGallery .path { margin-top:15px; }
 #thumbnails { float:right; width:280px; margin-right:30px; padding-bottom:30px;}
 	#thumbnails .text { display:none; }

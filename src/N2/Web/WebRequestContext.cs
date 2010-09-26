@@ -140,6 +140,12 @@ namespace N2.Web
             CurrentHttpContext.Server.TransferRequest(url, true);
         }
 
+		/// <summary>Calls into HttpContext.ClearError().</summary>
+		public void ClearError()
+		{
+			CurrentHttpContext.ClearError();
+		}
+
         /// <summary>Disposes request items that needs disposing. This method should be called at the end of each request.</summary>
 		public virtual void Close()
         {
