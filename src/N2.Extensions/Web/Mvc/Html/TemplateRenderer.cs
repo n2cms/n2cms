@@ -26,57 +26,24 @@ namespace N2.Web.Mvc.Html
 			this.controllerMapper = controllerMapper;
 		}
 
+
 		public void RenderTemplate(ContentItem item, HtmlHelper helper)
 		{
-			// TODO: figure out what this was for
-			foreach (var route in RouteTable.Routes)
-			{
-				var contentRoute = route as ContentRoute;
-				if (contentRoute != null)
-				{
-					var rv = contentRoute.GetRouteValues(item, helper.ViewContext.RouteData.Values);
-					if (rv != null)
-					{
-						helper.RenderAction("index", rv);
-						return;
-					}
-				}
-			}
-
 			RouteValueDictionary values = new RouteValueDictionary();
-			CopyValues(helper.ViewContext.RouteData.DataTokens, values);
-			CopyValues(helper.ViewContext.RouteData.Values, values);
-
-			var controllerName = controllerMapper.GetControllerName(item.GetType());
-			if (controllerName == null)
-				throw new InvalidOperationException("Couldn't find a controller that controls the item '" + item + "'. Does a controller attributed with the [Controls(typeof(" + item.GetType() + ")] attribute exist in the solution?");
-
-			values[ContentRoute.ControllerKey] = controllerName;
-			values[ContentRoute.ContentItemKey] = item.ID;
+			values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetType());
 			values[ContentRoute.ActionKey] = "index";
+			values[ContentRoute.ContentItemKey] = item.ID;
+
+			// retrieve the virtual path so we can figure out if this item is routed through an area
+			var vpd = helper.RouteCollection.GetVirtualPath(helper.ViewContext.RequestContext, values);
+			if (vpd == null)
+				throw new InvalidOperationException("Unable to render " + item + " (" + values.ToQueryString() + " did not match any route)");
+			string area = vpd.DataTokens["area"] as string;
+			if (!string.IsNullOrEmpty(area))
+				values["area"] = vpd.DataTokens["area"];
 
 			helper.RenderAction("index", values);
 		}
-
-		//private string Render(ViewContext viewContext, RouteValueDictionary values)
-		//{
-		//    var writer = new StringWriter();
-		//    using (var scope = new HttpContextScope(writer))
-		//    {
-		//        // execute the action
-		//        var helper = new System.Web.Mvc.HtmlHelper(new ViewContext
-		//            {
-		//                HttpContext = new HttpContextWrapper(scope.CurrentContext),
-		//                ViewData = viewContext.ViewData,
-		//                TempData = viewContext.TempData
-		//            },
-		//            new SimpleViewDataContainer { ViewData = viewContext.ViewData });
-
-		//        helper.RenderAction("index", values);
-				
-		//        return writer.ToString();
-		//    }
-		//}
 
 		private RouteValueDictionary CopyValues(RouteValueDictionary from, RouteValueDictionary to)
 		{

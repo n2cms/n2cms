@@ -47,18 +47,19 @@ namespace N2.Web.Mvc
 
 		public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
 		{
-			var item = values.CurrentItem<T>(ContentItemKey, engine.Persister);
-			if(item == null)
-				item = requestContext.CurrentItem<T>();
+			values = new RouteValueDictionary(values);
 
-			if (item == null)
-				return null;
-
-			if (Area != null && !values.ContainsKey(AreaKey))
-				values[AreaKey] = Area;
+			var item = values.CurrentItem<T>(ContentItemKey, engine.Persister)
+				?? requestContext.CurrentItem<T>();
 
 			// only supply path to items of the correct type
-			return base.GetVirtualPath(requestContext, values);
+			values[AreaKey] = Area;
+			var vpd = base.GetVirtualPath(requestContext, values);
+
+			if (vpd != null && Area != null)
+				vpd.DataTokens[AreaKey] = Area;
+
+			return vpd;
 		}
 
 		#region IRouteWithArea Members

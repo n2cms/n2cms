@@ -2,7 +2,6 @@
 	- Css/Js registration
 	- Remove master page code behind
 	- reduce number of parts (e.g. top)
-	- News paging
 	- Add all images in folder to gallery
 - update latest nh & castle
 - external links ThreadId=227538

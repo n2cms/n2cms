@@ -1,4 +1,5 @@
-﻿- MVC Remove zone restrictions for a lot of parts
+﻿- MVC news paging with "infinite scroll"
+- MVC Remove zone restrictions for a lot of parts
 - MVC gallery use configured sizes
 - MVC gallery using Galleria (http://galleria.aino.se)
 - File selector remember last folder

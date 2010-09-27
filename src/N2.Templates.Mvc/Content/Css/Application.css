@@ -140,3 +140,9 @@ table.calendar
 {
 	padding:10px;
 }
+.scroller
+{
+	background-color:#eee;
+	padding:10px 5px;
+	display:block;
+}

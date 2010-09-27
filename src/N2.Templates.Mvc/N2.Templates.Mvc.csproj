@@ -179,6 +179,8 @@
     <Compile Include="Classes\Configuration\TemplatesSection.cs" />
     <Compile Include="Classes\Configuration\WikiElement.cs" />
     <Compile Include="Classes\Find.cs" />
+    <Compile Include="Controllers\NewsContainerController.cs" />
+    <Compile Include="Models\NewsContainerModel.cs" />
     <Compile Include="Services\IViewConcern.cs" />
     <Compile Include="Services\MvcOnWebFormPartAdapter.cs" />
     <Compile Include="Classes\Tabs.cs" />
@@ -602,7 +604,6 @@
     <Content Include="Views\Shared\PageTemplates\FormPage.aspx" />
     <Content Include="Views\Shared\PageTemplates\GalleryItem.aspx" />
     <Content Include="Views\Shared\PageTemplates\News.aspx" />
-    <Content Include="Views\Shared\PageTemplates\NewsContainer.aspx" />
     <Content Include="Views\Shared\PageTemplates\SiteMap.aspx" />
     <Content Include="Views\Shared\PageTemplates\TextPage.aspx" />
     <Content Include="Views\Shared\PartTemplates\BoxedTextItem.ascx" />
@@ -643,6 +644,8 @@
     <Content Include="Content\Galleria\themes\fullscreen\r.gif" />
     <Content Include="Content\Galleria\themes\fullscreen\up.gif" />
     <Content Include="Content\Galleria\jquery.galleria.js" />
+    <Content Include="Views\NewsContainer\Index.aspx" />
+    <Content Include="Views\NewsContainer\Range.ascx" />
     <Content Include="Views\Shared\PartTemplates\App_LocalResources\Poll.ascx.resx" />
     <Content Include="Views\Shared\PartTemplates\App_LocalResources\Poll.ascx.sv.resx" />
   </ItemGroup>

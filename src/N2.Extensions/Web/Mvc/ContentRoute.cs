@@ -221,6 +221,8 @@ namespace N2.Web.Mvc
 
 			Debug.WriteLine("GetVirtualPath for values: " + values.ToQueryString());
 
+			values = new RouteValueDictionary(values);
+
 			// try retrieving the item from the route values
 			if (!TryConvertContentToController(requestContext, values, ContentItemKey, out item))
 			{
@@ -275,6 +277,8 @@ namespace N2.Web.Mvc
 			values[ContentPageKey] = page.ID;
 			values[ContentPartKey] = item.ID;
 			var vpd = innerRoute.GetVirtualPath(requestContext, values);
+			if (vpd != null)
+				vpd.Route = this;
 			return vpd;
 		}
 
@@ -291,6 +295,7 @@ namespace N2.Web.Mvc
 			VirtualPathData vpd = innerRoute.GetVirtualPath(requestContext, values);
 			if (vpd == null)
 				return null;
+			vpd.Route = this;
 
 			string relativeUrl = Url.ToRelative(item.Url);
 			Url actionUrl = vpd.VirtualPath
