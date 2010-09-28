@@ -2,6 +2,8 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Collections;
+using System.Collections.Generic;
 
 [assembly: WebResource("N2.Resources.jquery-"+ N2.Resources.Register.JQueryVersion + ".min.js", "text/javascript")]
 
@@ -22,11 +24,6 @@ namespace N2.Resources
 		{
 			StyleSheet(page, page.ClientScript.GetWebResourceUrl(type, resourceName), Media.All);
 		}
-
-		//public static void Parts(Page page)
-		//{
-
-		//}
 
 		/// <summary>Register a style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>
@@ -61,6 +58,25 @@ namespace N2.Resources
 				page.Items[resourceUrl] = null;
 			}
 		}
+
+		///// <summary>Register a style sheet reference in the page's header with media type.</summary>
+		///// <param name="state">The state controlling whether the style sheet is returned or not.</param>
+		///// <param name="resourceUrl">The url to the style sheet to register.</param>
+		///// <param name="media">The media type to assign, e.g. print.</param>
+		//public static string StyleSheet(IDictionary state, string resourceUrl, Media media)
+		//{
+		//    if (state == null) throw new ArgumentNullException("state");
+		//    if (resourceUrl == null) throw new ArgumentNullException("resourceUrl");
+
+		//    resourceUrl = N2.Web.Url.ToAbsolute(resourceUrl);
+
+		//    if (RegistrationStateMap.TryRegisterUrl(state, resourceUrl))
+		//    {
+		//        return string.Format("<link rel=\"stylesheet\" type=\"text/css\" media=\"{0}\" href=\"{1}\"/>", media.ToString().ToLower(), resourceUrl);
+		//    }
+
+		//    return null;
+		//}
 
 		/// <summary>Register an embedded javascript resource reference in the page header.</summary>
 		/// <param name="page">The page in whose header to register the javascript.</param>
@@ -288,5 +304,33 @@ namespace N2.Resources
 		{
 			JavaScript(page, "~/N2/Resources/tiny_mce/tiny_mce.js");
 		}
+
+		//static class RegistrationStateMap
+		//{
+		//    public static bool TryRegisterUrl(IDictionary state, string url)
+		//    {
+		//        if (IsRegistered(state, url))
+		//            return false;
+		//        RegisterUrl(state, url);
+		//        return true;
+		//    }
+
+		//    public static void RegisterUrl(IDictionary state, string url)
+		//    {
+		//        List<string> added = state["n2rsm"] as List<string>;
+		//        if (added == null)
+		//            state["n2rsm"] = added = new List<string>();
+
+		//        added.Add(url.ToLowerInvariant());
+		//    }
+
+		//    public static bool IsRegistered(IDictionary state, string url)
+		//    {
+		//        List<string> added = state["n2rsm"] as List<string>;
+		//        if (added == null)
+		//            return true;
+		//        return added.Contains(url.ToLowerInvariant());
+		//    }
+		//}
 	}
 }

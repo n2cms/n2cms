@@ -37,7 +37,7 @@ namespace N2.Edit.FileSystem.Items
         {
             try
             {
-				IList<File> files = new List<File>();
+				List<File> files = new List<File>();
 
 				string lastFileName = "";
 				string lastFileExtension = "";
@@ -67,7 +67,7 @@ namespace N2.Edit.FileSystem.Items
 						}
 					}
 				}
-
+				files.Sort(new TitleComparer<File>());
             	return files;
             }
             catch (DirectoryNotFoundException ex)
@@ -81,11 +81,12 @@ namespace N2.Edit.FileSystem.Items
         {
             try
             {
-				IList<Directory> directories = new List<Directory>();
+				List<Directory> directories = new List<Directory>();
 				foreach(DirectoryData dir in FileSystem.GetDirectories(Url))
 				{
 					directories.Add(new Directory(FileSystem, dir, this));
 				}
+				directories.Sort(new TitleComparer<Directory>());
             	return directories;
             }
             catch (DirectoryNotFoundException ex)
@@ -102,6 +103,19 @@ namespace N2.Edit.FileSystem.Items
             items.AddRange(filter.Pipe(GetFiles()));
             return items;
         }
+
+		class TitleComparer<T> : IComparer<T> where T: ContentItem
+		{
+			#region IComparer<ContentItem> Members
+
+			public int Compare(T x, T y)
+			{
+				return StringComparer.InvariantCultureIgnoreCase.Compare(x.Title, y.Title);
+			}
+
+			#endregion
+		}
+
 
         public static AbstractDirectory EnsureDirectory(ContentItem item)
         {
