@@ -69,10 +69,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NHibernate.ByteCode.Castle.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.Linq, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\NHibernate.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.5.0.8258, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\nunit.framework.dll</HintPath>

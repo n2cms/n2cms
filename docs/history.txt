@@ -1,4 +1,5 @@
-﻿- Sort File System alphabetically
+﻿- Updated to NH3alpha3 (breaking most LINQing)
+- Sort File System alphabetically
 - MVC news paging with "infinite scroll"
 - MVC Remove zone restrictions for a lot of parts
 - MVC gallery use configured sizes

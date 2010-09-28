@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace N2.Extensions.Tests.Linq
 {
-	[TestFixture]
+	[TestFixture, Ignore("Wait for NH3beta")]
 	public class ExpressionQueryableExtensions : LinqTestsBase
 	{
 		//Expr: value(NHibernate.Linq.Query`1[N2.Extensions.Tests.Linq.LinqItem]).Where(ci => ci.Details.Values.OfType().Any(value(N2.Linq.QueryableExtensions+<>c__DisplayClassc`1[N2.Extensions.Tests.Linq.LinqItem]).

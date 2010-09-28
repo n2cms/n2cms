@@ -10,6 +10,8 @@ using Castle.MicroKernel.LifecycleConcerns;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using N2.Plugin;
+using Castle.MicroKernel.SubSystems.Naming;
+using Castle.Core.Internal;
 
 namespace N2.Engine.Castle
 {
@@ -73,17 +75,17 @@ namespace N2.Engine.Castle
 
 		public override void AddComponentInstance(string key, Type serviceType, object instance)
 		{
-			container.Kernel.AddComponentInstance(key, serviceType, instance);
+			container.Register(Component.For(serviceType).Instance(instance).Named(key));
 		}
 
 		public override void AddComponent(string key, Type serviceType, Type classType)
 		{
-			container.AddComponent(key, serviceType, classType);
+			container.Register(Component.For(serviceType).ImplementedBy(classType).Named(key));
 		}
 
 		public override object Resolve(string key)
 		{
-			return container.Resolve(key);
+			return container.Resolve(key, new Arguments());
 		}
 
 		public override object Resolve(Type type)
@@ -182,8 +184,8 @@ namespace N2.Engine.Castle
 				if (!startable)
 					return;
 
-				model.LifecycleSteps.Add(LifecycleStepType.Commission, StartConcern.Instance);
-				model.LifecycleSteps.AddFirst(LifecycleStepType.Decommission, StopConcern.Instance);
+				model.Lifecycle.Add(StartConcern.Instance);
+				model.Lifecycle.AddFirst(StopConcern.Instance);
 			}
 
 			private void OnHandlerStateChanged(object source, EventArgs args)
@@ -239,7 +241,7 @@ namespace N2.Engine.Castle
 				{
 					inStart = true;
 
-					object instance = Kernel[key];
+					object instance = Kernel.Resolve(key, new Arguments());
 				}
 				finally
 				{
@@ -252,7 +254,7 @@ namespace N2.Engine.Castle
 				return typeof(IAutoStart).IsAssignableFrom(model.Implementation);
 			}
 
-			class StartConcern : ILifecycleConcern
+			class StartConcern : ILifecycleConcern, ICommissionConcern
 			{
 				private static readonly StartConcern instance = new StartConcern();
 
@@ -276,7 +278,7 @@ namespace N2.Engine.Castle
 				}
 			}
 
-			class StopConcern : ILifecycleConcern
+			class StopConcern : ILifecycleConcern, IDecommissionConcern
 			{
 				private static readonly StopConcern instance = new StopConcern();
 

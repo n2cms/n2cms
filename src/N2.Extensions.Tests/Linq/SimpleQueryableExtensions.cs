@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace N2.Extensions.Tests.Linq
 {
-	[TestFixture]
+	[TestFixture, Ignore("Wait for NH3beta")]
 	public class SimpleQueryableExtensions : LinqTestsBase
 	{
 		[Test]

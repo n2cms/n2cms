@@ -178,7 +178,7 @@ namespace N2.Engine
 			if (windsorServiceContainer == null)
 				throw new InvalidOperationException("Only supported for a Windsor Service Container.");
 
-			return windsorServiceContainer.Container.Resolve(key);
+			return windsorServiceContainer.Resolve(key);
 		}
 
 		/// <summary>Registers a component in the IoC container.</summary>

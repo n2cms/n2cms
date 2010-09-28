@@ -9,7 +9,7 @@ namespace N2.Extensions.Tests.Linq
 	/// <summary>
 	/// these tests asserts nhibernate.linq's built-in capabilities
 	/// </summary>
-	[TestFixture]
+	[TestFixture, Ignore("Wait for NH3beta")]
 	public class VanillaLinqing : LinqTestsBase
 	{
 		[Test]
