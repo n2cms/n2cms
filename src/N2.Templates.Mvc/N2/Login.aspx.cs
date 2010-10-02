@@ -31,15 +31,18 @@ namespace N2.Edit
 		{
 			try
 			{
-				if (FormsAuthentication.Authenticate(Login1.UserName, Login1.Password))
+				if (FormsAuthentication.Authenticate(Login1.UserName, Login1.Password) 
+					|| System.Web.Security.Membership.ValidateUser(Login1.UserName, Login1.Password))
 				{
 					e.Authenticated = true;
-					FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
-				}
-				else if (System.Web.Security.Membership.ValidateUser(Login1.UserName, Login1.Password))
-				{
-					e.Authenticated = true;
-					FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
+					//Travis Pettijohn - Oct 2010 - pettijohn.com
+					//Using FormsAuthentication.RedirectFromLoginPage crashes the Azure dev fabric load balancer (dfloadbalancer.exe).
+					//Switching up the logic to set the cookie and redirect here with endResponse set to TRUE fixes the glitch. 
+
+					//FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
+					FormsAuthentication.SetAuthCookie(Login1.UserName, Login1.RememberMeSet);
+					string returnUrl = FormsAuthentication.GetRedirectUrl(Login1.UserName, Login1.RememberMeSet);
+					Response.Redirect(returnUrl, true);
 				}
 			}
 			catch (Exception ex)

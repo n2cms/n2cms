@@ -1,3 +1,5 @@
+- Issue installing (ThreadId=229351)
+- Empty trash - generate error (ThreadId=228987)
 - MVC
 	- Css/Js registration
 	- Remove master page code behind
