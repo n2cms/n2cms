@@ -1,4 +1,5 @@
-﻿- Applied pettijohn's ThreadId=229406: Logging in Crashes Azure Dev Fabric
+﻿- Added example part to MVC Example
+- Applied pettijohn's ThreadId=229406: Logging in Crashes Azure Dev Fabric
 - Updated to NH3alpha3 (breaking most LINQing)
 - Sort File System alphabetically
 - MVC news paging with "infinite scroll"

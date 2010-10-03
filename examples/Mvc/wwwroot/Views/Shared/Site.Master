@@ -32,6 +32,7 @@
                     <ul>
 						<%= N2.Web.Tree.Between(N2.Find.CurrentPage, N2.Find.StartPage, true, 2).Filters(new N2.Collections.NavigationFilter()).ExcludeRoot(true) %>
                     </ul>
+					<% Html.DroppableZone("Left").Render(); %>
                 </div><!--/leftColumn-->
 
                 <div class="rightColumn">
