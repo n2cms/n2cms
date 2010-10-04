@@ -12,6 +12,9 @@
 			// ensure each tab content has an id
 			this.each(function(i) {
 				if (!this.id) this.id = tabGroupName + i;
+				$("a[href='#" + this.id + "']").click(function() {
+					$.fn.n2tabs_show($(this.hash));
+				});
 				this.n2tab = { index: i,
 					group: tabGroupName
 				};
@@ -19,7 +22,7 @@
 
 			// ensure there's an initial tab
 			if (!initial || initial == "") initial = this.get(0);
-			
+
 			var $current = this.filter(initial);
 			if ($current.length == 0) {
 				// try to select enclosing tab when nested tab is selected
@@ -130,4 +133,4 @@
 		}, 200);
 		this.n2tabs_handlePostBack(toShowId);
 	}
-})(jQuery); ;
+})(jQuery);  ;

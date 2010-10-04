@@ -6,7 +6,7 @@ using N2.Edit.Web;
 
 namespace N2.Edit
 {
-	public partial class Login : EditPage
+	public partial class Login : Page
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{

@@ -128,10 +128,9 @@ namespace N2.Persistence.NH
 
 		void DeleteAction(ContentItem itemNoMore)
 		{
-			Trace.TraceInformation("NHPersistenceManager.Delete " + itemNoMore);
-
 			if (itemNoMore is IActiveContent)
 			{
+				TraceInformation("ContentPersister.DeleteAction " + itemNoMore + " is IActiveContent");
 				(itemNoMore as IActiveContent).Delete();
 			}
 			else
@@ -152,20 +151,35 @@ namespace N2.Persistence.NH
 		{
 			DeletePreviousVersions(itemNoMore);
 
-            List<ContentItem> children = new List<ContentItem>(itemNoMore.Children);
-			foreach(ContentItem child in children)
-                DeleteRecursive(child);
+			DeleteInboundLinks(itemNoMore);
+
+			try
+			{
+				Trace.Indent();
+				List<ContentItem> children = new List<ContentItem>(itemNoMore.Children);
+				foreach (ContentItem child in children)
+					DeleteRecursive(child);
+			}
+			finally
+			{
+				Trace.Unindent();
+			}
 
 			itemNoMore.AddTo(null);
 
-			DeleteInboundLinks(itemNoMore);
-
+			TraceInformation("ContentPersister.DeleteRecursive " + itemNoMore);
 			itemRepository.Delete(itemNoMore);
 		}
 
 		private void DeletePreviousVersions(ContentItem itemNoMore)
 		{
-			foreach (ContentItem previousVersion in finder.Where.VersionOf.Eq(itemNoMore).Select())
+			var previousVersions = finder.Where.VersionOf.Eq(itemNoMore).Select();
+			if (previousVersions.Count == 0)
+				return;
+
+			TraceInformation("ContentPersister.DeletePreviousVersions " + previousVersions.Count + " of " + itemNoMore);
+
+			foreach (ContentItem previousVersion in previousVersions)
 			{
 				itemRepository.Delete(previousVersion);
 			}
@@ -173,13 +187,19 @@ namespace N2.Persistence.NH
 
 		private void DeleteInboundLinks(ContentItem itemNoMore)
 		{
-			foreach (LinkDetail detail in linkRepository.FindAll(Expression.Eq("LinkedItem", itemNoMore)))
+			var inboundLinks = linkRepository.FindAll(Expression.Eq("LinkedItem", itemNoMore));
+			if (inboundLinks.Count == 0)
+				return;
+				
+			TraceInformation("ContentPersister.DeleteInboundLinks " + inboundLinks.Count + " of " + itemNoMore);
+			
+			foreach (LinkDetail detail in inboundLinks)
 			{
-				if (detail.EnclosingCollection != null)
-					detail.EnclosingCollection.Remove(detail);
-				detail.EnclosingItem.Details.Remove(detail.Name);
+				// do not remove from enclosing (NHibernate.ObjectDeletedException : deleted object would be re-saved by cascade (remove deleted object from associations)[N2.Details.LinkDetail#1])
+				detail.LinkedItem = null;
 				linkRepository.Delete(detail);
 			}
+			linkRepository.Flush();
 		}
 
 		#endregion
@@ -200,12 +220,14 @@ namespace N2.Persistence.NH
 		{
 			if (source is IActiveContent)
 			{
+				TraceInformation("ContentPersister.MoveAction " + source + " (is IActiveContent) to " + destination);
 				(source as IActiveContent).MoveTo(destination);
 			}
 			else
 			{
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
+					TraceInformation("ContentPersister.MoveAction " + source + " to " + destination);
 					source.AddTo(destination);
 					//source.AncestralTrail = null;
 					Save(source);
@@ -236,9 +258,11 @@ namespace N2.Persistence.NH
 			{
 				if (copiedItem is IActiveContent)
 				{
+					TraceInformation("ContentPersister.Copy " + source + " (is IActiveContent) to " + destination);
 					return (copiedItem as IActiveContent).CopyTo(destinationItem);
 				}
 
+				TraceInformation("ContentPersister.Copy " + source + " to " + destination);
 				ContentItem cloned = copiedItem.Clone(includeChildren);
 				if(cloned.Name == source.ID.ToString())
 					cloned.Name = null;
@@ -310,5 +334,10 @@ namespace N2.Persistence.NH
                 handler.Invoke(this, args);
             return args;
         }
+
+		private void TraceInformation(string logMessage)
+		{
+			Trace.TraceInformation(logMessage);
+		}
     }
 }

@@ -11,6 +11,7 @@ using System.IO;
 using System.Web.Configuration;
 using N2.Configuration;
 using N2.Edit.Installation;
+using System.Web.Security;
 
 namespace N2.Edit.Install
 {
@@ -306,21 +307,24 @@ namespace N2.Edit.Install
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
+			Response.CacheControl = "no-cache";
+			Response.AddHeader("Pragma", "no-cache");
+			Response.Expires = -1;
 			DataBind();
 		}
 
 		protected string GetStatusText()
 		{
 			if (Status.IsInstalled)
-             	return "Everything looks fine (just check step 5).";
+				return "Installation looks fine (just review <a href='#Finish'>step 3</a>).";
 			if (status.NeedsUpgrade)
 				return "Switch to the <a href='upgrade.aspx'>upgrade wizard</a> to upgrade from a previous version of the database";
 			if (Status.HasSchema)
-				return "Create root node on step 4.";
-			if (Status.IsConnected) 
-				return "Create database table on step 3.";
+				return "Create content on <a href='#Content'>step 2</a>.";
+			if (Status.IsConnected)
+				return "Create database tables on <a href='#Database'>step 1</a>.";
 
-			return "Check connection on step 2.";
+			return "Check connection on <a href='#Database'>step 1</a>.";
 		}
 
 		private void InstallFromUpload()
@@ -404,5 +408,18 @@ namespace N2.Edit.Install
                 return "Unknown error";
             return "<b>" + ex.Message + "</b>" + ex.StackTrace;
         }
+
+		protected bool IsDefaultPassword()
+		{
+			try
+			{
+				return FormsAuthentication.Authenticate("admin", "changeme")
+					|| System.Web.Security.Membership.ValidateUser("admin", "changeme");
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
 	}
 }

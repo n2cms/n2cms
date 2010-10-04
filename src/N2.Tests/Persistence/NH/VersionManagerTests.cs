@@ -53,7 +53,7 @@ namespace N2.Tests.Persistence.NH
 		}
 
 		[Test]
-		public void RestoreVersionSetExpireDate()
+		public void RestoreVersion_SetExpireDate()
 		{
             string key = "TheKey";
 
@@ -203,6 +203,52 @@ namespace N2.Tests.Persistence.NH
             versioner.ReplaceVersion(item, CreateOneItem<Definitions.PersistableItem1>(0, "root2", null));
 
             Assert.That(item.VersionIndex, Is.EqualTo(0));
-        }
+		}
+
+		[Test]
+		public void Delete_PreviousVersions_AreDeleted()
+		{
+			ContentItem item, version;
+			using (persister)
+			{
+				item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+				persister.Save(item);
+
+				version = versioner.SaveVersion(item);
+			}
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+				persister.Delete(item);
+
+				var loadedVersioin = persister.Get(version.ID);
+				Assert.That(loadedVersioin, Is.Null);
+			}
+		}
+
+		[Test]
+		public void Delete_References_OnPreviousVersions_AreDeleted()
+		{
+			ContentItem item, referenced, version;
+			using (persister)
+			{
+				referenced = CreateOneItem<Definitions.PersistableItem1>(0, "reference", null);
+				persister.Save(referenced);
+
+				item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+				item["Reference"] = referenced;
+				persister.Save(item);
+
+				version = versioner.SaveVersion(item);
+			}
+			using (persister)
+			{
+				referenced = persister.Get(referenced.ID);
+				persister.Delete(referenced);
+
+				var loadedVersioin = persister.Get(version.ID);
+				Assert.That(loadedVersioin["Reference"], Is.Null);
+			}
+		}
 	}
 }

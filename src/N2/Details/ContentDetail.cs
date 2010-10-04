@@ -198,5 +198,41 @@ namespace N2.Details
         }
 
         #endregion
+
+		public void AddTo(ContentItem newEnclosingItem)
+		{
+			AddTo((DetailCollection)null);
+
+			if (newEnclosingItem == EnclosingItem)
+				return;
+
+			RemoveFromEnclosingItem();
+
+			if (newEnclosingItem != null)
+			{
+				EnclosingItem = newEnclosingItem;
+				newEnclosingItem.Details.Add(Name, this);
+			}
+		}
+
+		internal void RemoveFromEnclosingItem()
+		{
+			if (EnclosingItem != null)
+				EnclosingItem.Details.Remove(Name);
+		}
+
+		public void AddTo(DetailCollection newEnclosingCollection)
+		{
+			RemoveFromEnclosingCollection();
+
+			if (newEnclosingCollection != null)
+				newEnclosingCollection.Add(newEnclosingCollection);
+		}
+
+		internal void RemoveFromEnclosingCollection()
+		{
+			if (EnclosingCollection != null)
+				EnclosingCollection.Remove(this);
+		}
     }
 }

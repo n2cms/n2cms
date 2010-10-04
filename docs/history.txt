@@ -1,4 +1,8 @@
-﻿- Added example part to MVC Example
+﻿- Updated to latest and greatest NHibernate + Castle Windsor
+- Fixed empty trash - generate error (ThreadId=228987)
+- Reduced number of steps in installation wizard
+- Fixed issue installing (ThreadId=229351)
+- Added example part to MVC Example
 - Applied pettijohn's ThreadId=229406: Logging in Crashes Azure Dev Fabric
 - Updated to NH3alpha3 (breaking most LINQing)
 - Sort File System alphabetically

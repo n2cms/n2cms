@@ -96,7 +96,7 @@ namespace N2.Edit.Web
 
 		/// <summary>Checks that the user has the required permission on the selected item. Throws exceptions if authorization is missing.</summary>
 		/// <param name="permission">The permission to check.</param>
-		protected void EnsureAuthorization(Permission permission)
+		protected virtual void EnsureAuthorization(Permission permission)
 		{
             EnsureAuthorization(Selection.SelectedItem, permission);
 		}
