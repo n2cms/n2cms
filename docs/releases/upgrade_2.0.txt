@@ -1,5 +1,3 @@
-THIS IS PRE-RELEASE INFORMATION AND MAY CHANGE BEFORE RELEASE
-
 Make a complete backup (including database), delete /edit and /bin, drop upgrade files and recompile your solution.
 
 Breaking changes:

@@ -1,0 +1,5 @@
+Make a complete backup (including database), delete /n2, /edit and /bin, drop upgrade files and recompile your solution.
+
+Breaking changes:
+* LINQ doesn't currently work (as well as before)
+* Shared[Parts|Pages] -> Shared/[Part|Page]Templates (changes convention)

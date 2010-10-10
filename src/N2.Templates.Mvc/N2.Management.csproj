@@ -1032,7 +1032,6 @@
     <Content Include="N2\Content\Settings\SettingsEditor.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Edit\default.aspx" />
     <Content Include="N2\Default.aspx" />
     <Content Include="N2\Empty.aspx" />
     <Content Include="N2\Files\Default.aspx" />
