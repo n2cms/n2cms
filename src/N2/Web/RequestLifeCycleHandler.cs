@@ -69,7 +69,7 @@ namespace N2.Web
 			webContext.CurrentPath = data;
 			if (data != null && !data.IsEmpty())
 			{
-				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage.GetType());
+				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage.GetContentType());
 				adapter.RewriteRequest(data, rewriteMethod);
 			}
 		}
@@ -78,7 +78,7 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath != null && !webContext.CurrentPath.IsEmpty())
 			{
-				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
+				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetContentType());
 				adapter.AuthorizeRequest(webContext.CurrentPath, webContext.User);
 			}
 		}
@@ -88,7 +88,7 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetType());
+			RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetContentType());
 			adapter.InjectCurrentPage(webContext.CurrentPath, webContext.Handler);
 		}
 

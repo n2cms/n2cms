@@ -24,10 +24,11 @@ namespace N2.Templates.Mvc.Models.Pages
 	{
 		[EditableFreeTextArea("Text", 100, ContainerName = Tabs.Content)]
 		public virtual string Text
-		{
-			get { return (string) (GetDetail("Text") ?? string.Empty); }
-			set { SetDetail("Text", value, string.Empty); }
-		}
+		//{
+		//    get { return (string) (GetDetail("Text") ?? string.Empty); }
+		//    set { SetDetail("Text", value, string.Empty); }
+		//}
+		{ get; set; }
 
 		[EditableCheckBox("Visible", 12, ContainerName = Tabs.Details)]
 		public override bool Visible

@@ -10,9 +10,9 @@ namespace N2.Tests.Fakes
 	public class FakeSessionProvider : SessionProvider, IDisposable
 	{
 		ISession session;
-		IItemNotifier interceptor;
+		IInterceptor interceptor;
 
-		public FakeSessionProvider(IConfigurationBuilder builder, IItemNotifier interceptor, IWebContext webContext)
+		public FakeSessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext)
 			: base(builder, interceptor, webContext)
 		{
 			this.interceptor = interceptor;

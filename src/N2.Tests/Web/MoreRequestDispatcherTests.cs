@@ -36,7 +36,7 @@ namespace N2.Tests.Web
 
 			webContext = new FakeWebContextWrapper();
 			HostSection hostSection = new HostSection();
-			parser = new UrlParser(persister, webContext, mocks.Stub<IItemNotifier>(), new Host(webContext, root.ID, root.ID), hostSection);
+			parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), hostSection);
 			errorHandler = new ErrorHandler(webContext, null, null);
 			engine = new FakeEngine();
 			engine.AddComponentInstance(null, typeof(IWebContext), webContext);

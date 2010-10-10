@@ -30,7 +30,7 @@ namespace N2.Web.Mvc.Html
 		public void RenderTemplate(ContentItem item, HtmlHelper helper)
 		{
 			RouteValueDictionary values = new RouteValueDictionary();
-			values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetType());
+			values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetContentType());
 			values[ContentRoute.ActionKey] = "index";
 			values[ContentRoute.ContentItemKey] = item.ID;
 

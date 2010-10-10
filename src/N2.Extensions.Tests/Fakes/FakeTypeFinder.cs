@@ -4,7 +4,7 @@ using N2.Engine;
 
 namespace N2.Extensions.Tests.Fakes
 {
-	public class FakeTypeFinder : AppDomainTypeFinder
+	public class FakeTypeFinder2 : AppDomainTypeFinder
 	{
 		public Dictionary<Type, IList<Type>> typeMap = new Dictionary<Type, IList<Type>>();
 		public override IList<Type> Find(Type requestedType)

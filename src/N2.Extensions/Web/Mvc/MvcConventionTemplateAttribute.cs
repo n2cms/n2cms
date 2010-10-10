@@ -39,7 +39,7 @@ namespace N2.Web.Mvc
 			if (item == null)
 				throw new ArgumentNullException("item");
 
-			Type itemType = item.GetType();
+			Type itemType = item.GetContentType();
 
 			string templateName = _otherTemplateName ?? itemType.Name;
 
@@ -62,7 +62,7 @@ namespace N2.Web.Mvc
 
 		private bool ActionDoesNotExistOnController(ContentItem item, string action)
 		{
-			var controllerName = ControllerMapper.GetControllerName(item.GetType());
+			var controllerName = ControllerMapper.GetControllerName(item.GetContentType());
 
 			return !ControllerMapper.ControllerHasAction(controllerName, action);
 		}

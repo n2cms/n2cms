@@ -1,4 +1,5 @@
-﻿- Updated to latest and greatest NHibernate + Castle Windsor
+﻿- Added support for automatic access to details via auto-properties (from propertyinterception branch), based on contribution by And Poulsen
+- Updated to latest and greatest NHibernate + Castle Windsor
 - Fixed empty trash - generate error (ThreadId=228987)
 - Reduced number of steps in installation wizard
 - Fixed issue installing (ThreadId=229351)

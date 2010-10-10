@@ -358,7 +358,7 @@ namespace N2.Edit.Install
 			// try to find a suitable start page
 			foreach (ContentItem item in root.Children)
 			{
-				ItemDefinition id = N2.Context.Definitions.GetDefinition(item.GetType());
+				ItemDefinition id = N2.Context.Definitions.GetDefinition(item.GetContentType());
 				if (InstallationManager.Is(id.Installer, InstallerHint.PreferredStartPage))
 				{
 					if (item.ID == Status.StartPageID && root.ID == Status.RootItemID)

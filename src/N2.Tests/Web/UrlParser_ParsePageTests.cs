@@ -13,7 +13,7 @@ namespace N2.Tests.Web
 		public override void SetUp()
 		{
 			base.SetUp();
-			base.parser = parser = new UrlParser(persister, wrapper, notifier, host, new HostSection());
+			base.parser = parser = new UrlParser(persister, wrapper, host, new HostSection());
 			CreateDefaultStructure();
 		}
 

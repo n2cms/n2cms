@@ -69,7 +69,7 @@ namespace N2.Edit.Web.UI.Controls
 
 			if (Nodes == null)
 				Nodes = new BranchHierarchyBuilder(SelectedItem, RootNode, true)
-					.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item.GetType()).GetChildren(item, Interfaces.Managing))
+					.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item.GetContentType()).GetChildren(item, Interfaces.Managing))
 					.Build();
 
 			var tree = new N2.Web.Tree(Nodes)
@@ -130,7 +130,7 @@ namespace N2.Edit.Web.UI.Controls
 				.Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
 				.Attribute("rel", node.Path)
 				.Attribute("data-id", item.ID.ToString())
-				.Attribute("data-type", item.GetType().Name)
+				.Attribute("data-type", item.GetContentType().Name)
 				.Attribute("data-path", item.Path)
 				.Attribute("data-url", item.Url)
 				.Attribute("data-page", item.IsPage.ToString().ToLower())

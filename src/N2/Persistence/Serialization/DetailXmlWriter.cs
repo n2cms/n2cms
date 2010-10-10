@@ -51,7 +51,7 @@ namespace N2.Persistence.Serialization
 					{
 						if (value.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase))
 						{
-							var pi = item.GetType().GetProperty(detail.Name);
+							var pi = item.GetContentType().GetProperty(detail.Name);
 							if (pi != null)
 							{
 								var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);

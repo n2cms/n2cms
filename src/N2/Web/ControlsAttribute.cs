@@ -55,7 +55,7 @@ namespace N2.Web
 			if (path.IsEmpty())
 				return false;
 
-			return ItemType.IsAssignableFrom(path.CurrentItem.GetType()) && requiredType.IsAssignableFrom(adapterType);
+			return ItemType.IsAssignableFrom(path.CurrentItem.GetContentType()) && requiredType.IsAssignableFrom(adapterType);
 		}
 
 		#region IComparable<IAdapterDescriptor> Members

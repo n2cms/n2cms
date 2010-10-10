@@ -97,8 +97,8 @@ namespace N2.Xml
 			xtw.WriteAttributeString("url", engine.UrlParser.BuildUrl(item));
 			xtw.WriteAttributeString("visible", item.Visible.ToString());
 			xtw.WriteAttributeString("savedBy", item.SavedBy);
-			xtw.WriteAttributeString("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetType()));
-			xtw.WriteAttributeString("discriminator", engine.Definitions.GetDefinition(item.GetType()).Discriminator);
+			xtw.WriteAttributeString("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetContentType()));
+			xtw.WriteAttributeString("discriminator", engine.Definitions.GetDefinition(item.GetContentType()).Discriminator);
 		}
 
 		protected virtual void OnWritingAuthorizedRoles(ContentItem item, XmlTextWriter xtw)

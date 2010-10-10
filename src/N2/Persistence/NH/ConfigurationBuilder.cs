@@ -46,8 +46,6 @@ namespace N2.Persistence.NH
 
 			if (config == null) config = new DatabaseSection();
 
-			NHibernate.Cfg.Environment.UseReflectionOptimizer = Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium;
-
 			if (!string.IsNullOrEmpty(config.HibernateMapping))
 				DefaultMapping = config.HibernateMapping;
 
@@ -73,6 +71,9 @@ namespace N2.Persistence.NH
 		/// <param name="connectionStrings">Connection strings from configuration</param>
 		protected void SetupProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
+			NHibernate.Cfg.Environment.UseReflectionOptimizer = Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium;
+			Properties[NHibernate.Cfg.Environment.ProxyFactoryFactoryClass] = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
+
 			Properties[NHibernate.Cfg.Environment.ConnectionStringName] = config.ConnectionStringName;
 			Properties[NHibernate.Cfg.Environment.ConnectionProvider] = "NHibernate.Connection.DriverConnectionProvider";
 			Properties[NHibernate.Cfg.Environment.Hbm2ddlKeyWords] = "none";
@@ -144,9 +145,7 @@ namespace N2.Persistence.NH
 			Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = config.Caching.ToString();
 			Properties[NHibernate.Cfg.Environment.UseQueryCache] = config.Caching.ToString();
 			Properties[NHibernate.Cfg.Environment.CacheProvider] = config.CacheProviderClass;
-#if NH2_1
-			Properties[NHibernate.Cfg.Environment.ProxyFactoryFactoryClass] = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
-#endif
+
 			foreach (string key in config.HibernateProperties.AllKeys)
 			{
 				Properties[key] = config.HibernateProperties[key].Value;

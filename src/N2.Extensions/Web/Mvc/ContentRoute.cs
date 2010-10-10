@@ -70,7 +70,7 @@ namespace N2.Web.Mvc
 			if (routeValues.ContainsKey(ActionKey))
 				actionName = (string)routeValues[ActionKey];
 
-			string controllerName = controllerMapper.GetControllerName(item.GetType());
+			string controllerName = controllerMapper.GetControllerName(item.GetContentType());
 			if (controllerName == null || !controllerMapper.ControllerHasAction(controllerName, actionName))
 				return null;
 
@@ -151,7 +151,7 @@ namespace N2.Web.Mvc
 			else if (page == null)
 				page = part.ClosestPage();
 
-			var controllerName = controllerMapper.GetControllerName((part ?? page).GetType());
+			var controllerName = controllerMapper.GetControllerName((part ?? page).GetContentType());
 
 			if (controllerName == null)
 				return null;
@@ -267,7 +267,7 @@ namespace N2.Web.Mvc
 			if (requestedController == null)
 				return true;
 
-			string itemController = controllerMapper.GetControllerName(item.GetType());
+			string itemController = controllerMapper.GetControllerName(item.GetContentType());
 
 			return string.Equals(requestedController, itemController, StringComparison.InvariantCultureIgnoreCase);
 		}
@@ -335,7 +335,7 @@ namespace N2.Web.Mvc
 
 			// replace requested controller when other "item" is passed
 			values.Remove(key);
-			values[ControllerKey] = controllerMapper.GetControllerName(item.GetType());
+			values[ControllerKey] = controllerMapper.GetControllerName(item.GetContentType());
 		
 			return true;
 		}

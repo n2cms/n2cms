@@ -41,7 +41,7 @@ namespace N2.Addons.Wiki
 
         Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
         {
-            if (!(item is IArticle)) throw new ArgumentException("The supplied item " + item.Path + "#" + item.ID + " of type '" + item.GetType().FullName + "' doesn't implement IArticle.", "item");
+            if (!(item is IArticle)) throw new ArgumentException("The supplied item " + item.Path + "#" + item.ID + " of type '" + item.GetContentType().FullName + "' doesn't implement IArticle.", "item");
 
             WikiParser parser = Engine.Resolve<WikiParser>();
             WikiRenderer renderer = Engine.Resolve<WikiRenderer>();

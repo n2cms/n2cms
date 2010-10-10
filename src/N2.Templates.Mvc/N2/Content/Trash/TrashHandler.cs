@@ -80,7 +80,7 @@ namespace N2.Edit.Trash
             bool enabled = trash == null || trash.Enabled;
             bool alreadyThrown = IsInTrash(affectedItem);
 
-			var throwables = (ThrowableAttribute[])affectedItem.GetType().GetCustomAttributes(typeof(ThrowableAttribute), true);
+			var throwables = (ThrowableAttribute[])affectedItem.GetContentType().GetCustomAttributes(typeof(ThrowableAttribute), true);
 			bool throwable = throwables.Length == 0 || throwables[0].Throwable == AllowInTrash.Yes;
 			return enabled && !alreadyThrown && throwable;
 		}

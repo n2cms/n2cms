@@ -64,7 +64,7 @@ namespace N2.Persistence.Serialization
 		{
 			if (value.StartsWith("~"))
 			{
-				var pi = item.GetType().GetProperty(name);
+				var pi = item.GetContentType().GetProperty(name);
 				if (pi != null)
 				{
 					var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);

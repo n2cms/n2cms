@@ -12,6 +12,7 @@ using Rhino.Mocks;
 namespace N2.Templates.Tests.Wiki
 {
 	using N2.Addons.Wiki;
+	using N2.Persistence;
 
     [TestFixture]
     public class RenderingWikiText : ItemTestsBase
@@ -29,11 +30,11 @@ namespace N2.Templates.Tests.Wiki
             var urlParser = new FakeUrlParser();
 			wiki = new N2.Addons.Wiki.Items.Wiki();
             wiki.Name = "wiki";
-            ((IUrlParserDependency)wiki).SetUrlParser(urlParser);
+			((IDependentEntity<IUrlParser>)wiki).Set(urlParser);
 			article = new N2.Addons.Wiki.Items.WikiArticle();
             article.Name = "existing-article";
             article.SavedBy = "admin";
-            ((IUrlParserDependency)article).SetUrlParser(urlParser);
+			((IDependentEntity<IUrlParser>)article).Set(urlParser);
             article.AddTo(wiki);
 
             parser = new WikiParser();

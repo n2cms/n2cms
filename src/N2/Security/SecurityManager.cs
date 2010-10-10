@@ -196,7 +196,7 @@ namespace N2.Security
 			if (permission == Permission.Read)
 				return IsAuthorized(item, user);
 
-			foreach (PermissionRemapAttribute remap in item.GetType().GetCustomAttributes(typeof(PermissionRemapAttribute), true))
+			foreach (PermissionRemapAttribute remap in item.GetContentType().GetCustomAttributes(typeof(PermissionRemapAttribute), true))
 				permission = remap.Remap(permission);
 
 			return Administrators.Authorizes(user, item, permission)

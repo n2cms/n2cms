@@ -12,7 +12,7 @@ namespace N2.Persistence.Serialization
 
 		public void Write(ContentItem item, XmlTextWriter writer)
 		{
-			IList<IAttachmentHandler> attachments = explorer.Find<IAttachmentHandler>(item.GetType());
+			IList<IAttachmentHandler> attachments = explorer.Find<IAttachmentHandler>(item.GetContentType());
 			if(attachments.Count > 0)
 			{
 				using(new ElementWriter("attachments", writer))

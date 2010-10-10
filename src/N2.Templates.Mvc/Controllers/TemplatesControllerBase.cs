@@ -27,9 +27,9 @@ namespace N2.Templates.Mvc.Controllers
 		public override System.Web.Mvc.ActionResult Index()
 		{
 			if(CurrentItem.IsPage)
-				return View(string.Format("PageTemplates/{0}", CurrentItem.GetType().Name), CurrentItem);
+				return View(string.Format("PageTemplates/{0}", CurrentItem.GetContentType().Name), CurrentItem);
 			else
-				return PartialView(string.Format("PartTemplates/{0}", CurrentItem.GetType().Name), CurrentItem);
+				return PartialView(string.Format("PartTemplates/{0}", CurrentItem.GetContentType().Name), CurrentItem);
 		}
 
 		//// View overloads ////
@@ -124,7 +124,7 @@ jQuery('#{0}').load('{1}');//]]></script>", id, url));
 			if (item != null && !item.IsPage)
 				throw new InvalidOperationException(@"Rendering of Parts using View(..) is no longer supported. Use PartialView(..) to render this item.
 			
-- Item of type " + item.GetType() + @"
+- Item of type " + item.GetContentType() + @"
 - Controller is " + GetType() + @"
 - Action is " + ViewData[ContentRoute.ActionKey]);
 		}

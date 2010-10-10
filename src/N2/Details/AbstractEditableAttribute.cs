@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Security;
 using N2.Engine;
+using N2.Persistence.Proxying;
 
 namespace N2.Details
 {
@@ -15,7 +16,7 @@ namespace N2.Details
 	/// class implements properties, provides comparison and equality but does
 	/// not add any controls.
 	/// </summary>
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -411,6 +412,14 @@ namespace N2.Details
 		/// <returns>A reference to the addeed editor.</returns>
 		/// <remarks>Please note that this is a breaking change. This method was added after version 1.3.1 to reduce duplicated code induced by having <see cref="AddTo"/> abstract.</remarks>
 		protected abstract Control AddEditor(Control container);
+
+		#region IInterceptableProperty Members
+
+		public PropertyPersistenceOption StoreAs { get; set; }
+
+		public object DefaultValue { get; set; }
+
+		#endregion
 	}
 }
 

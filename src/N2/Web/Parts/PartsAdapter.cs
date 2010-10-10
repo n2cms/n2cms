@@ -72,7 +72,7 @@ namespace N2.Web.Parts
 		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
 		{
-			ItemDefinition containerDefinition = Engine.Definitions.GetDefinition(parentItem.GetType());
+			ItemDefinition containerDefinition = Engine.Definitions.GetDefinition(parentItem.GetContentType());
 
 			foreach (ItemDefinition childDefinition in containerDefinition.AllowedChildren)
 			{
@@ -88,7 +88,7 @@ namespace N2.Web.Parts
 		/// <param name="container">The container control to host the part user interface.</param>
 		public virtual Control AddChildPart(ContentItem item, Control container)
 		{
-			var adapter = Adapters.ResolveAdapter<PartsAdapter>(item.GetType());
+			var adapter = Adapters.ResolveAdapter<PartsAdapter>(item.GetContentType());
 			return adapter.AddTo(item, container);
 		}
 

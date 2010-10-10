@@ -1,3 +1,4 @@
+- Fix form feature
 - MVC
 	- Css/Js registration
 	- Remove master page code behind

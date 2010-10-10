@@ -10,12 +10,17 @@ namespace N2.Persistence
 	/// also be invoked when new items are created and when items are lazily
 	/// loaded e.g. through the children collection.
 	/// </summary>
-	public interface IItemNotifier : IInterceptor
+	public interface IItemNotifier
 	{
 		/// <summary>Notify subscribers that an item was loaded or created.</summary>
 		/// <param name="newlyCreatedItem">The item that was loaded or created.</param>
 		/// <returns>True if the item was modified.</returns>
 		bool NotifiyCreated(ContentItem newlyCreatedItem);
+
+		/// <summary>Notify subscribers that an item is to be saved.</summary>
+		/// <param name="itemToBeSaved">The item that is to be saved.</param>
+		/// <returns>True if the item was modified.</returns>
+		bool NotifySaving(ContentItem itemToBeSaved);
 
 		/// <summary>Is triggered when an item was created or loaded from the database.</summary>
 		event EventHandler<NotifiableItemEventArgs> ItemCreated;

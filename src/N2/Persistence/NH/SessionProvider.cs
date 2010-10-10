@@ -13,12 +13,12 @@ namespace N2.Persistence.NH
 	public class SessionProvider : ISessionProvider
 	{
 		private static string RequestItemsKey = "SessionProvider.Session";
-		private IItemNotifier interceptor;
+		private IInterceptor interceptor;
 		private readonly IWebContext webContext;
 		private readonly ISessionFactory nhSessionFactory;
         private FlushMode flushAt = FlushMode.Commit;
 
-		public SessionProvider(IConfigurationBuilder builder, IItemNotifier interceptor, IWebContext webContext)
+		public SessionProvider(IConfigurationBuilder builder, IInterceptor interceptor, IWebContext webContext)
 		{
             nhSessionFactory = builder.BuildSessionFactory();
             Debug.WriteLine("Built Session Factory " + DateTime.Now);

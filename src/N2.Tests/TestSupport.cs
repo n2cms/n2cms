@@ -14,21 +14,24 @@ using N2.Persistence.Finder;
 using N2.Security;
 using N2.Web;
 using N2.Edit.Workflow;
+using N2.Persistence.Proxying;
+using NHibernate;
 
 namespace N2.Tests
 {
     public static class TestSupport
     {
-        public static void Setup(out IDefinitionManager definitions, out IItemNotifier interceptor, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, params Type[] itemTypes)
+        public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, params Type[] itemTypes)
         {
-            Setup(out definitions, out interceptor, itemTypes);
+			Setup(out definitions, out notifier, itemTypes);
 
             DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
             ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, new ClassMappingGenerator(), config, connectionStrings);
 
             FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
-            sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), interceptor, context);
+            
+			sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), new NHInterceptor(new StubInterceptionFactory(), configurationBuilder, notifier), context);
 
             finder = new ItemFinder(sessionProvider, definitions);
 
@@ -48,9 +51,15 @@ namespace N2.Tests
             ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
 
             DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
-            notifier = new NotifyingInterceptor();
-            definitions = new DefinitionManager(definitionBuilder, new N2.Edit.Workflow.StateChanger(), notifier);
+			notifier = new ItemNotifier();
+			definitions = new DefinitionManager(definitionBuilder, new N2.Edit.Workflow.StateChanger(), notifier, new StubInterceptionFactory());
         }
+
+		public static T Stub<T>()
+			where T: class
+		{
+			return Rhino.Mocks.MockRepository.GenerateStub<T>();
+		}
 
         public static void Setup(out N2.Edit.IEditManager editor, out IVersionManager versions, IDefinitionManager definitions, IPersister persister, IItemFinder finder)
         {

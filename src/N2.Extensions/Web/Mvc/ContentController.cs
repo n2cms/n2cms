@@ -151,7 +151,7 @@ namespace N2.Web.Mvc
 				throw new ArgumentNullException("thePage");
 
 			if (!thePage.IsPage)
-				throw new InvalidOperationException("Item " + thePage.GetType().Name + " is not a page type and cannot be rendered on its own.");
+				throw new InvalidOperationException("Item " + thePage.GetContentType().Name + " is not a page type and cannot be rendered on its own.");
 
 			if(thePage == CurrentItem)
 				throw new InvalidOperationException("The page passed into ViewPage was the current page. This would cause an infinite loop.");

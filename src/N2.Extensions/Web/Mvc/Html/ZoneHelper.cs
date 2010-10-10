@@ -57,7 +57,7 @@ namespace N2.Web.Mvc.Html
             if (Wrapper != null)
                 writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
 
-			GetMvcAdapterFor(model.GetType()).RenderTemplate(Html, model);
+			GetMvcAdapterFor(model.GetContentType()).RenderTemplate(Html, model);
 
             if (Wrapper != null)
                 writer.WriteLine(Wrapper.ToString(TagRenderMode.EndTag));

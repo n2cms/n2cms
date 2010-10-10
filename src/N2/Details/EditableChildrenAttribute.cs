@@ -77,7 +77,7 @@ namespace N2.Details
 			listEditor.ZoneName = ZoneName;
 
             // filtering of children by property generic type
-            PropertyInfo info = item.GetType().GetProperty(Name);
+            PropertyInfo info = item.GetContentType().GetProperty(Name);
             if (info != null)
             {
                 foreach (Type argument in info.PropertyType.GetGenericArguments())

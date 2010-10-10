@@ -67,9 +67,8 @@ namespace N2.Tests.Web
         [Test]
         public void PagesOutsideStartPage_AreReferenced_ThroughTheirRewrittenUrl()
         {
-            notifier = mocks.Stub<IItemNotifier>();
             host = new Host(wrapper, 10, 1);
-            parser = new UrlParser(persister, wrapper, notifier, host, new HostSection());
+            parser = new UrlParser(persister, wrapper, host, new HostSection());
 
             CreateDefaultStructure();
             ContentItem root = CreateOneItem<PageItem>(10, "root", null);

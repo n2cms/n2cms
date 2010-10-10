@@ -28,7 +28,7 @@ namespace N2.Templates.Web.Adapters
 
 		protected override void Render(HtmlTextWriter writer)
 		{
-			string typeName = ItemContainer.CurrentItem.GetType().Name;
+			string typeName = ItemContainer.CurrentItem.GetContentType().Name;
 
 			writer.Write("<div class='uc ");
 			writer.Write(typeName[0] + typeName.Substring(1));

@@ -35,7 +35,7 @@ namespace N2.Web.Mvc
 				arguments = remainingUrl.Substring(slashIndex + 1);
 			}
 
-			var controllerName = controllerMapper.GetControllerName(item.GetType());
+			var controllerName = controllerMapper.GetControllerName(item.GetContentType());
 			if (string.IsNullOrEmpty(action) || string.Equals(action, "default.aspx", StringComparison.InvariantCultureIgnoreCase))
 				action = "index";
 

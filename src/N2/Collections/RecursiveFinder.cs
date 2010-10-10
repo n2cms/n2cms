@@ -58,7 +58,7 @@ namespace N2.Collections
         private static bool Is(ContentItem child, Type[] except)
         {
             foreach (Type t in except)
-                if (t.IsAssignableFrom(child.GetType()))
+                if (t.IsAssignableFrom(child.GetContentType()))
                     return true;
             return false;
         }

@@ -12,7 +12,7 @@ namespace N2.Persistence.Serialization
 
 		public void Read(XPathNavigator navigator, ContentItem item, ReadingJournal journal)
 		{
-			IDictionary<string, IAttachmentHandler> attachments = explorer.Map<IAttachmentHandler>(item.GetType());
+			IDictionary<string, IAttachmentHandler> attachments = explorer.Map<IAttachmentHandler>(item.GetContentType());
 			
 			foreach(XPathNavigator attachmentElement in EnumerateChildren(navigator))
 			{

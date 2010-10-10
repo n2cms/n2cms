@@ -3,15 +3,38 @@ using NHibernate;
 using NHibernate.Type;
 using System.Diagnostics;
 using N2.Engine;
+using N2.Persistence.Proxying;
 
 namespace N2.Persistence.NH
 {
 	/// <summary>
 	/// This class is used to notify subscribers about loaded items.
 	/// </summary>
-	[Service(typeof(IItemNotifier))]
-	public class NotifyingInterceptor : EmptyInterceptor, IItemNotifier
+	[Service(typeof(IInterceptor))]
+	public class NHInterceptor : EmptyInterceptor
 	{
+		private readonly IProxyFactory interceptor;
+		private readonly ISessionFactory sessionFactory;
+		private readonly IItemNotifier notifier;
+
+		public NHInterceptor(IProxyFactory interceptor, IConfigurationBuilder builder, IItemNotifier notifier)
+		{
+			this.interceptor = interceptor;
+			this.sessionFactory = builder.BuildSessionFactory();
+			this.notifier = notifier;
+		}
+
+		public override object Instantiate(string clazz, EntityMode entityMode, object id)
+		{
+			Debug.WriteLine("Instantiate: " + clazz + " " + entityMode + " " + id);
+			object instance = interceptor.Create(clazz);
+			if (instance != null)
+			{
+				sessionFactory.GetClassMetadata(clazz).SetIdentifier(instance, id, entityMode);
+			}
+			return instance;
+		}
+
 		/// <summary>Sets rewriter and definition manager on a content item object at load time.</summary>
 		/// <param name="entity">The potential content item whose definition manager and rewriter will be set.</param>
 		/// <param name="id">Ignored.</param>
@@ -21,13 +44,8 @@ namespace N2.Persistence.NH
 		/// <returns>True if the entity was a content item.</returns>
 		public override bool OnLoad(object entity, object id, object[] state, string[] propertyNames, IType[] types)
 		{
+			interceptor.OnLoaded(entity);
 			return NotifiyCreated(entity as ContentItem);
-		}
-
-		public override object Instantiate(string clazz, EntityMode entityMode, object id)
-		{
-			Debug.WriteLine("Instantiate: " + clazz + " " + entityMode + " " + id);
-			return base.Instantiate(clazz, entityMode, id);
 		}
 
 		/// <summary>Invokes the notifier's saving event.</summary>
@@ -40,7 +58,15 @@ namespace N2.Persistence.NH
 		/// <returns>True if the entity was a content item.</returns>
 		public override bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState, string[] propertyNames, IType[] types)
 		{
-			return HandleSaveOrUpdate(entity as ContentItem, propertyNames, currentState);
+			bool changed = HandleSaveOrUpdate(entity as ContentItem, propertyNames, currentState);
+			if (changed)
+				interceptor.OnSaving(entity);
+			return changed;
+		}
+
+		public override string GetEntityName(object entity)
+		{
+			return interceptor.GetTypeName(entity);
 		}
 
 		/// <summary>Invokes the notifier's saving event.</summary>
@@ -52,35 +78,34 @@ namespace N2.Persistence.NH
 		/// <returns>True if the entity was a content item.</returns>
 		public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)
 		{
+			interceptor.OnSaving(entity);
 			return HandleSaveOrUpdate(entity as ContentItem, propertyNames, state);
 		}
 
 		private bool HandleSaveOrUpdate(ContentItem item, string[] propertyNames, object[] state)
 		{
-			bool wasAltered = false;
-			if (item != null)
+			if (item == null)
+				return false;
+			
+			bool wasAltered = notifier.NotifySaving(item);
+			
+			for (int i = 0; i < propertyNames.Length; i++)
 			{
-				if (ItemSaving != null)
-					ItemSaving(this, new NotifiableItemEventArgs(item));
-				
-				for (int i = 0; i < propertyNames.Length; i++)
+				if(propertyNames[i] == "AncestralTrail")
 				{
-					if(propertyNames[i] == "AncestralTrail")
+					string trail = Utility.GetTrail(item.Parent);
+					if(trail != (string)state[i])
 					{
-						string trail = Utility.GetTrail(item.Parent);
-						if(trail != (string)state[i])
-						{
-							state[i] = trail;
-							wasAltered = true;
-						}
-					}
-					if (propertyNames[i] == "AlteredPermissions" 
-						&& item.AlteredPermissions == N2.Security.Permission.None 
-						&& item.AuthorizedRoles.Count > 0)
-					{
-						state[i] = N2.Security.Permission.Read;
+						state[i] = trail;
 						wasAltered = true;
 					}
+				}
+				if (propertyNames[i] == "AlteredPermissions" 
+					&& item.AlteredPermissions == N2.Security.Permission.None 
+					&& item.AuthorizedRoles.Count > 0)
+				{
+					state[i] = N2.Security.Permission.Read;
+					wasAltered = true;
 				}
 			}
 			return wasAltered;
@@ -93,20 +118,11 @@ namespace N2.Persistence.NH
 		/// <returns>True if the item was modified.</returns>
 		public bool NotifiyCreated(ContentItem newlyCreatedItem)
 		{
-			if(newlyCreatedItem != null && ItemCreated != null)
-			{
-				NotifiableItemEventArgs e = new NotifiableItemEventArgs(newlyCreatedItem);
-				ItemCreated(this, e);
-				return e.WasModified;
-			}
-			return false;
+			if (newlyCreatedItem == null)
+				return false;
+			
+			return notifier.NotifiyCreated(newlyCreatedItem); 
 		}
-
-		/// <summary>Is triggered when an item was created or loaded from the database.</summary>
-		public event EventHandler<NotifiableItemEventArgs> ItemCreated;
-
-		/// <summary>Is triggered when an item is to be saved the database.</summary>
-		public event EventHandler<NotifiableItemEventArgs> ItemSaving;
 
 		#endregion
 	}

@@ -29,7 +29,7 @@ namespace N2.Templates.Items
         /// <summary>The name without extension .aspx of an icon file located in /Templates/UI/Views/. Defaults to ClassName.</summary>
         protected virtual string TemplateName
         {
-            get { return GetType().Name; }
+            get { return GetContentType().Name; }
         }
 	}
 }

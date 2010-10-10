@@ -22,7 +22,7 @@ namespace N2.Web
         public event EventHandler<PageNotFoundEventArgs> PageNotFound;
 
 
-		public UrlParser(IPersister persister, IWebContext webContext, IItemNotifier notifier, IHost host, HostSection config)
+		public UrlParser(IPersister persister, IWebContext webContext, IHost host, HostSection config)
 		{
 			if (host == null) throw new ArgumentNullException("host");
 
@@ -31,10 +31,7 @@ namespace N2.Web
 			this.host = host;
 
 			ignoreExistingFiles = config.Web.IgnoreExistingFiles;
-
-			notifier.ItemCreated += OnItemCreated;
-        }
-
+		}
 
 		/// <summary>Parses the current url to retrieve the current page.</summary>
 		public ContentItem CurrentPage
@@ -54,16 +51,6 @@ namespace N2.Web
             get { return defaultDocument; }
             set { defaultDocument = value; }
         }
-
-
-		/// <summary>Invoked when an item is created or loaded from persistence medium.</summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		protected virtual void OnItemCreated(object sender, NotifiableItemEventArgs e)
-		{
-			((IUrlParserDependency)e.AffectedItem).SetUrlParser(this);
-			e.WasModified = true;
-		}
 
 		public PathData ResolvePath(string url)
 		{

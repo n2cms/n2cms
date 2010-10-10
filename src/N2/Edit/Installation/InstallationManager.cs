@@ -277,8 +277,8 @@ namespace N2.Edit.Installation
 			ContentItem rootItem = persister.Get(rootID);
 			if (rootItem != null)
 				return String.Format("Root node OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
-									 rootItem.ID, rootItem.Name, rootItem.GetType(),
-									 definitions.GetDefinition(rootItem.GetType()), rootItem.Published, rootItem.Expires);
+									 rootItem.ID, rootItem.Name, rootItem.GetContentType(),
+									 definitions.GetDefinition(rootItem.GetContentType()), rootItem.Published, rootItem.Expires);
 			else
 				return "No root item found with the id: " + rootID;
 		}
@@ -291,8 +291,8 @@ namespace N2.Edit.Installation
 			ContentItem startPage = persister.Get(startID);
 			if(startPage != null)
 				return String.Format("Root node OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
-									 startPage.ID, startPage.Name, startPage.GetType(),
-									 definitions.GetDefinition(startPage.GetType()), startPage.Published, startPage.Expires);
+									 startPage.ID, startPage.Name, startPage.GetContentType(),
+									 definitions.GetDefinition(startPage.GetContentType()), startPage.Published, startPage.Expires);
 			else
 				return "No start page found with the id: " + startID;
 		}

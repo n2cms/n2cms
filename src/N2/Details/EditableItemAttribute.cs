@@ -126,7 +126,7 @@ namespace N2.Details
 			ContentItem childItem = Utility.GetProperty(item, Name) as ContentItem;
 			if (childItem == null)
 			{
-				PropertyInfo pi = item.GetType().GetProperty(Name);
+				PropertyInfo pi = item.GetContentType().GetProperty(Name);
 
 				if (pi == null)
 					throw new N2Exception("The item should have had a property named '{0}'", Name);

@@ -126,7 +126,7 @@ namespace N2.Tests.Edit
         public void UpdateItem_WithNoChanges_ReturnsFalse()
         {
             ComplexContainersItem item = new ComplexContainersItem();
-            Type itemType = item.GetType();
+            Type itemType = item.GetContentType();
             Control editorContainer = new Control();
             IDictionary<string, Control> added = editManager.AddEditors(itemType, editorContainer, null);
 

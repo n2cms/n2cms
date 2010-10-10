@@ -199,7 +199,7 @@ namespace N2.Collections
 
 			string IHierarchyData.Type
 			{
-				get { return item.GetType().Name; }
+				get { return item.GetContentType().Name; }
 			}
 
 			#endregion

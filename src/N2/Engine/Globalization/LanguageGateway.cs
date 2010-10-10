@@ -159,7 +159,7 @@ namespace N2.Engine.Globalization
 					if (translation == null && language == itemlanguage)
 						translation = item;
 
-					ItemDefinition definition = definitions.GetDefinition(item.GetType());
+					ItemDefinition definition = definitions.GetDefinition(item.GetContentType());
 					if (translation != null)
 					{
 						string url = editManager.GetEditExistingItemUrl(translation);

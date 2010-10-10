@@ -60,7 +60,7 @@ namespace N2.Templates.Mvc.Views.Shared
 		{
 			if (CurrentItem != null)
 			{
-                string className = CurrentItem.GetType().Name;
+                string className = CurrentItem.GetContentType().Name;
 				return className.Substring(0, 1).ToLower() + className.Substring(1);
 			}
 			return null;

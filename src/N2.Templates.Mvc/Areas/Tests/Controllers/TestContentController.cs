@@ -30,7 +30,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			if (CurrentItem.IsPage)
 				return View();
 			else
-				return PartialView("Partial", definitions.GetAllowedChildren(definitions.GetDefinition(CurrentPage.GetType()), null, User));
+				return PartialView("Partial", definitions.GetAllowedChildren(definitions.GetDefinition(CurrentPage.GetContentType()), null, User));
         }
 
 		[HttpPost]

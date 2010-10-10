@@ -10,6 +10,8 @@ using Rhino.Mocks;
 using N2.Persistence;
 using N2.Web;
 using N2.Details;
+using N2.Persistence.Proxying;
+using N2.Persistence.NH;
 
 namespace N2.Edit.Tests.LinkTracker
 {
@@ -30,8 +32,7 @@ namespace N2.Edit.Tests.LinkTracker
 			base.SetUp();
 
 			var wrapper = new N2.Tests.Fakes.FakeWebContextWrapper();
-			var notifier = CreateNotifier(true);
-			parser = new UrlParser(persister, wrapper, notifier, new Host(wrapper, 1, 1), new HostSection());
+			parser = new UrlParser(persister, wrapper, new Host(wrapper, 1, 1), new HostSection());
 
 			root = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(1, "root", null);
 			item1 = CreateOneItem<N2.Tests.Edit.LinkTracker.Items.TrackableItem>(2, "item1", root);
@@ -157,7 +158,7 @@ namespace N2.Edit.Tests.LinkTracker
 				new FakePathProvider(((FakeFileSystem) Context.Current.Resolve<IFileSystem>()).BasePath);
 
 			RootDirectory rootDir = CreateOneItem<RootDirectory>(4, "FileSystem", root);
-			((N2.Web.IUrlParserDependency)rootDir).SetUrlParser(new UrlParser(persister, null, new N2.Persistence.NH.NotifyingInterceptor(), new Host(null, 1, 1), new HostSection()));
+			((IDependentEntity<IUrlParser>)rootDir).Set(new UrlParser(persister, null, new Host(null, 1, 1), new HostSection()));
 
 			root["TestDetail"] = @"<a href=""/FileSystem/upload/File.txt"">download pdf</a>";
 			persister.Save(root);

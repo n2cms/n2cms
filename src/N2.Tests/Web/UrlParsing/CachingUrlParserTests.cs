@@ -16,7 +16,7 @@ namespace N2.Tests.Web.UrlParsing
 		public override void SetUp()
 		{
 			base.SetUp();
-			UrlParser inner = new UrlParser(persister, wrapper, notifier, host, new HostSection());
+			UrlParser inner = new UrlParser(persister, wrapper, host, new HostSection());
 			parser = new CachingUrlParserDecorator(inner, persister);
 			CreateDefaultStructure();
 			repository = (FakeRepository<ContentItem>) persister.Repository;

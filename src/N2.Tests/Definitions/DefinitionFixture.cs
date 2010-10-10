@@ -142,7 +142,7 @@ namespace N2.Tests.Definitions
 		public void CanCreateInstanceWithNullParent()
 		{
 			ContentItem item = engine.Definitions.CreateInstance(typeof (ItemWithDetails), null);
-			Assert.AreEqual(typeof (ItemWithDetails), item.GetType());
+			Assert.AreEqual(typeof (ItemWithDetails), item.GetContentType());
 		}
 
 		[Test]
@@ -150,8 +150,8 @@ namespace N2.Tests.Definitions
 		{
 			ContentItem item1 = engine.Definitions.CreateInstance(typeof(ItemWithDetails), null);
 			ContentItem item2 = engine.Definitions.CreateInstance(typeof(ItemInZone1Or2), item1);
-			Assert.AreEqual(typeof (ItemWithDetails), item1.GetType());
-			Assert.AreEqual(typeof (ItemInZone1Or2), item2.GetType());
+			Assert.AreEqual(typeof (ItemWithDetails), item1.GetContentType());
+			Assert.AreEqual(typeof (ItemInZone1Or2), item2.GetContentType());
 		}
 
 		[Test]

@@ -166,6 +166,9 @@
     <Compile Include="Fakes\FakeFileSystem2.cs" />
     <Compile Include="Fakes\FakeItemFinder.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
+    <Compile Include="Fakes\StubInterceptionFactory.cs" />
+    <Compile Include="Persistence\ContentDependencyInjectorTests.cs" />
+    <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\HostTests.cs" />
     <Compile Include="Web\ImageResizerTests.cs" />

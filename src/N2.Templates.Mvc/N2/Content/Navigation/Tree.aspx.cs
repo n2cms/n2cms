@@ -122,7 +122,7 @@ namespace N2.Edit.Navigation
 
 			HierarchyNode<ContentItem> node = null;
 			foreach (DirectoryData dd in Engine.Resolve<IContentAdapterProvider>()
-				.ResolveAdapter<NodeAdapter>(siteNode.GetType())
+				.ResolveAdapter<NodeAdapter>(siteNode.GetContentType())
 				.GetUploadDirectories(site))
 			{
 				if(node == null)

@@ -197,7 +197,7 @@ namespace N2.Edit
 			if (item == null) throw new ArgumentNullException("item");
 			if (addedEditors == null) throw new ArgumentNullException("addedEditors");
 
-			ItemDefinition definition = definitions.GetDefinition(item.GetType());
+			ItemDefinition definition = definitions.GetDefinition(item.GetContentType());
 			ApplyModifications(definition, addedEditors);
 			foreach (IEditable e in definition.GetEditables(user))
 			{
@@ -218,7 +218,7 @@ namespace N2.Edit
 
 			List<string> updatedDetails = new List<string>();
 
-			ItemDefinition definition = definitions.GetDefinition(item.GetType());
+			ItemDefinition definition = definitions.GetDefinition(item.GetContentType());
 			foreach (IEditable e in definition.GetEditables(user))
 			{
 				if (addedEditors.ContainsKey(e.Name))

@@ -10,13 +10,14 @@ using N2.Web;
 using N2.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
+using N2.Tests.Fakes;
 
 namespace N2.Extensions.Tests.Mvc
 {
 	[TestFixture]
 	public class ControllerMapperTests
 	{
-		private FakeTypeFinder typeFinder;
+		private FakeTypeFinder2 typeFinder;
 		private IDefinitionManager definitions;
 
 		[SetUp]
@@ -24,7 +25,7 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			PathDictionary.AllSingletons.Clear();
 
-			typeFinder = new FakeTypeFinder();
+			typeFinder = new FakeTypeFinder2();
 			typeFinder.typeMap[typeof(IController)] = new[]
 			{
 				typeof (ExecutiveTeamController),

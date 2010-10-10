@@ -47,7 +47,7 @@ namespace N2.Web.UI.WebControls
 
 		protected void AddEditable()
 		{
-			editable = GetEditable(CurrentItem.GetType());
+			editable = GetEditable(CurrentItem.GetContentType());
 			editor = editable.AddTo(this);
 			if (!Page.IsPostBack)
 				editable.UpdateEditor(CurrentItem, editor);

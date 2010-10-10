@@ -67,7 +67,7 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual PartsAdapter ZoneAdapter
 		{
-			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem.GetType()); }
+			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem.GetContentType()); }
 		}
 
 		public virtual ContentItem CurrentItem

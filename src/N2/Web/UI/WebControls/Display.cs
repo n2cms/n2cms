@@ -138,17 +138,17 @@ namespace N2.Web.UI.WebControls
                 return ThrowUnless(swallowExceptions, new ArgumentNullException("item"));
 			}
 
-			PropertyInfo pi = item.GetType().GetProperty(propertyName);
+			PropertyInfo pi = item.GetContentType().GetProperty(propertyName);
             if (pi == null)
 			{
-                return ThrowUnless(swallowExceptions, new N2Exception("No property '{0}' found on the item #{1} of type '{2}'.", propertyName, item.ID, item.GetType()));
+                return ThrowUnless(swallowExceptions, new N2Exception("No property '{0}' found on the item #{1} of type '{2}'.", propertyName, item.ID, item.GetContentType()));
 			}
 			else
 			{
 				IDisplayable[] attributes = (IDisplayable[])pi.GetCustomAttributes(typeof(IDisplayable), false);
                 if (attributes.Length == 0)
 				{
-                    return ThrowUnless(swallowExceptions, new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, item.ID, item.GetType()));
+                    return ThrowUnless(swallowExceptions, new N2Exception("No attribute implementing IDisplayable found on the property '{0}' of the item #{1} of type {2}", propertyName, item.ID, item.GetContentType()));
 				}
 				return attributes[0];
 			}

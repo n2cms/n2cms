@@ -99,7 +99,7 @@ namespace N2.Web.UI.WebControls
 
         public PartsAdapter Parts
         {
-			get { return partsAdapter ?? (partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem.GetType())); }
+			get { return partsAdapter ?? (partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem.GetContentType())); }
             set { partsAdapter = value; }
         }
 
@@ -327,7 +327,7 @@ namespace N2.Web.UI.WebControls
 		protected virtual void AddToContainer(Control container, ItemEditor itemEditor, ContentItem item)
 		{
 			FieldSet fs = new FieldSet();
-            fs.Legend = Engine.Definitions.GetDefinition(item.GetType()).Title;
+            fs.Legend = Engine.Definitions.GetDefinition(item.GetContentType()).Title;
 			container.Controls.Add(fs);
 			fs.Controls.Add(itemEditor);
 		}
@@ -348,7 +348,7 @@ namespace N2.Web.UI.WebControls
 
 				parentItem = value;
 				ParentItemID = value.ID;
-				ParentItemType = value.GetType().AssemblyQualifiedName;
+				ParentItemType = value.GetContentType().AssemblyQualifiedName;
 			}
 		}
 

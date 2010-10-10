@@ -200,7 +200,7 @@ namespace N2.Persistence
 		/// <returns>True if the item is allowed to have versions.</returns>
 		public bool IsVersionable(ContentItem item)
 		{
-			var versionables = (VersionableAttribute[])item.GetType().GetCustomAttributes(typeof(VersionableAttribute), true);
+			var versionables = (VersionableAttribute[])item.GetContentType().GetCustomAttributes(typeof(VersionableAttribute), true);
 			bool isVersionable = versionables.Length == 0 || versionables[0].Versionable == N2.Definitions.AllowVersions.Yes;
 			
 			return isVersionable;

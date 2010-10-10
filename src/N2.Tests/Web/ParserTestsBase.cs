@@ -10,7 +10,6 @@ namespace N2.Tests.Web
 	public abstract class ParserTestsBase : ItemPersistenceMockingBase
 	{
         protected FakeWebContextWrapper wrapper;
-		protected IItemNotifier notifier;
 		protected IHost host;
 		protected IUrlParser parser;
 		protected PageItem startItem, item1, item1_1, item2, item2_1;
@@ -23,7 +22,6 @@ namespace N2.Tests.Web
 
 			wrapper = new FakeWebContextWrapper("http://www.n2cms.com/");
 
-			notifier = mocks.Stub<IItemNotifier>();
 			host = new Host(wrapper, 1, 1);
             
             parser = CreateUrlParser();
@@ -31,7 +29,7 @@ namespace N2.Tests.Web
 
         protected virtual UrlParser CreateUrlParser()
         {
-            return new UrlParser(persister, wrapper, notifier, host, new HostSection());
+            return new UrlParser(persister, wrapper, host, new HostSection());
         }
 
 		protected void CreateDefaultStructure()

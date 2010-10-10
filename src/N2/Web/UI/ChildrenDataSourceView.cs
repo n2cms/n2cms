@@ -81,11 +81,11 @@ namespace N2.Web.UI
 			if (e.AffectedItem != null)
 			{
 				IDefinitionManager definitions = Engine.Definitions;
-				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem.GetType());
+				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem.GetContentType());
 
 				if (parentDefinition.IsChildAllowed(parentDefinition))
 				{
-					e.AffectedItem = Engine.Definitions.CreateInstance(parentItem.GetType(), parentItem);
+					e.AffectedItem = Engine.Definitions.CreateInstance(parentItem.GetContentType(), parentItem);
 					return;
 				}
 				foreach (ItemDefinition definition in definitions.GetAllowedChildren(parentDefinition, null, HttpContext.Current.User))

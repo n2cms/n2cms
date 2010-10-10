@@ -85,7 +85,7 @@ namespace N2.Integrity
 				return new NameOccupiedException(source, destination);
 
 			if (!IsTypeAllowedBelowDestination(source, destination))
-				return new Definitions.NotAllowedParentException(definitions.GetDefinition(source.GetType()), destination.GetType());
+				return new Definitions.NotAllowedParentException(definitions.GetDefinition(source.GetContentType()), destination.GetContentType());
 
 			return null;
         }
@@ -99,7 +99,7 @@ namespace N2.Integrity
                 return new NameOccupiedException(source, destination);
 
 			if (!IsTypeAllowedBelowDestination(source, destination))
-				return new Definitions.NotAllowedParentException(definitions.GetDefinition(source.GetType()), destination.GetType());
+				return new Definitions.NotAllowedParentException(definitions.GetDefinition(source.GetContentType()), destination.GetContentType());
 
 			return null;
 		}
@@ -123,7 +123,7 @@ namespace N2.Integrity
                 return new NameOccupiedException(item, item.Parent);
 
 			if (!IsTypeAllowedBelowDestination(item, item.Parent))
-				return new Definitions.NotAllowedParentException(definitions.GetDefinition(item.GetType()), item.Parent.GetType());
+				return new Definitions.NotAllowedParentException(definitions.GetDefinition(item.GetContentType()), item.Parent.GetContentType());
 
 			return null;
 		}
@@ -187,8 +187,8 @@ namespace N2.Integrity
 		{
 			if (destination != null)
 			{
-				Definitions.ItemDefinition sourceDefinition = definitions.GetDefinition(source.GetType());
-				Definitions.ItemDefinition destinationDefinition = definitions.GetDefinition(destination.GetType());
+				Definitions.ItemDefinition sourceDefinition = definitions.GetDefinition(source.GetContentType());
+				Definitions.ItemDefinition destinationDefinition = definitions.GetDefinition(destination.GetContentType());
 
 				return destinationDefinition.IsChildAllowed(sourceDefinition);
 			}

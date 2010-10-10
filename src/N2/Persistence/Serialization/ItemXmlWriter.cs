@@ -73,8 +73,8 @@ namespace N2.Persistence.Serialization
 			itemElement.WriteAttribute("url", parser.BuildUrl(item));
 			itemElement.WriteAttribute("visible", item.Visible);
 			itemElement.WriteAttribute("savedBy", item.SavedBy);
-			itemElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetType()));
-			itemElement.WriteAttribute("discriminator", definitions.GetDefinition(item.GetType()).Discriminator);
+			itemElement.WriteAttribute("typeName", SerializationUtility.GetTypeAndAssemblyName(item.GetContentType()));
+			itemElement.WriteAttribute("discriminator", definitions.GetDefinition(item.GetContentType()).Discriminator);
 		}
 	}
 }

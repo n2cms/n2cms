@@ -15,7 +15,7 @@ namespace N2.Tests.Web
 				new Site(1, 4/*item2.ID*/, "n2.libardo.com"), 
 				new Site(1, 5/*item2_1.ID*/, "www.n2cms.com:8080") 
 			};
-			MultipleSitesParser parser = new MultipleSitesParser(persister, wrapper, notifier, host, new StaticSitesProvider(sites), new HostSection() { MultipleSites = true, DynamicSites = true });
+			MultipleSitesParser parser = new MultipleSitesParser(persister, wrapper, host, new StaticSitesProvider(sites), new HostSection() { MultipleSites = true, DynamicSites = true });
 			return parser;
 		}
 

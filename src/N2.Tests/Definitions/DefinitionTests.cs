@@ -9,6 +9,7 @@ using N2.Details;
 using N2.Integrity;
 using N2.Persistence;
 using N2.Tests.Definitions.Items;
+using N2.Tests.Fakes;
 
 namespace N2.Tests.Definitions
 {
@@ -60,7 +61,7 @@ namespace N2.Tests.Definitions
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-            definitions = new DefinitionManager(builder, new N2.Edit.Workflow.StateChanger(), notifier);
+			definitions = new DefinitionManager(builder, new N2.Edit.Workflow.StateChanger(), notifier, new StubInterceptionFactory());
 		}
 
 		#endregion

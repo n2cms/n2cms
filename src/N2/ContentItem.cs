@@ -32,6 +32,7 @@ using N2.Persistence;
 using N2.Web;
 using N2.Edit.Workflow;
 using N2.Definitions;
+using N2.Persistence.Proxying;
 
 namespace N2
 {
@@ -60,7 +61,13 @@ namespace N2
 	[DynamicTemplate]
 	[RestrictParents(typeof(ContentItem))]
 	[SortChildren(SortBy.CurrentOrder)]
-	public abstract class ContentItem : IComparable, IComparable<ContentItem>, ICloneable, Web.IUrlParserDependency, INode, IUpdatable<ContentItem>
+	public abstract class ContentItem : IComparable, 
+		IComparable<ContentItem>, 
+		ICloneable,
+		IDependentEntity<IUrlParser>, 
+		INode, 
+		IUpdatable<ContentItem>, 
+		IInterceptableType
     {
         #region Private Fields
         private int id;
@@ -272,7 +279,7 @@ namespace N2
 		/// <summary>Gets whether this item is a page. This is used for and site map purposes.</summary>
 		public virtual bool IsPage
 		{
-			get { return Definitions.Static.DescriptionDictionary.GetDescription(GetType()).IsPage; }
+			get { return Definitions.Static.DescriptionDictionary.GetDescription(GetContentType()).IsPage; }
 		}
 
 		/// <summary>Gets the public url to this item. This is computed by walking the parent path and prepending their names to the url.</summary>
@@ -300,7 +307,7 @@ namespace N2
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
 		public virtual string IconUrl
         {
-			get { return N2.Web.Url.ToAbsolute(Definitions.Static.DescriptionDictionary.GetDescription(GetType()).IconUrl); }
+			get { return N2.Web.Url.ToAbsolute(Definitions.Static.DescriptionDictionary.GetDescription(GetContentType()).IconUrl); }
         }
 
 		/// <summary>Gets the non-friendly url to this item (e.g. "/default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/default.aspx?page=1&amp;item&#61;27").</summary>
@@ -361,7 +368,7 @@ namespace N2
                 if (string.IsNullOrEmpty(detailName))
 					throw new ArgumentNullException("Parameter 'detailName' cannot be null or empty.", "detailName");
 
-                PropertyInfo info = GetType().GetProperty(detailName);
+                PropertyInfo info = GetContentType().GetProperty(detailName);
 				if (info != null && info.CanWrite)
 				{
 					if (value != null && info.PropertyType != value.GetType())
@@ -404,7 +411,7 @@ namespace N2
 		/// <param name="detailName">The name of the item to set.</param>
 		/// <param name="value">The value to set. If this parameter is null or equal to defaultValue the detail is removed.</param>
 		/// <param name="defaultValue">The default value. If the value is equal to this value the detail will be removed.</param>
-		protected virtual void SetDetail<T>(string detailName, T value, T defaultValue)
+		protected internal virtual void SetDetail<T>(string detailName, T value, T defaultValue)
 		{
 			if (value == null || !value.Equals(defaultValue))
 			{
@@ -429,7 +436,7 @@ namespace N2
 		/// <param name="detailName">The name of the item to set.</param>
 		/// <param name="value">The value to set. If this parameter is null the detail is removed.</param>
 		/// <param name="valueType">The type of value to store in details.</param>
-		protected internal virtual void SetDetail(string detailName, object value, Type valueType)
+		public virtual void SetDetail(string detailName, object value, Type valueType)
 		{
 			ContentDetail detail = null;
 			if (Details.TryGetValue(detailName, out detail))
@@ -542,7 +549,7 @@ namespace N2
 
 		private PathData GetTemplate(string remainingUrl)
 		{
-			IPathFinder[] finders = PathDictionary.GetFinders(GetType());
+			IPathFinder[] finders = PathDictionary.GetFinders(GetContentType());
 
 			foreach (IPathFinder finder in finders)
 			{
@@ -675,7 +682,7 @@ namespace N2
 		/// <returns>The cloned item with or without cloned child items.</returns>
 		public virtual ContentItem Clone(bool includeChildren)
         {
-			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetType(), true);
+			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetContentType(), true);
 			
 			CloneFields(this, cloned, true);
 			CloneDetails(this, cloned);
@@ -760,15 +767,6 @@ namespace N2
 
 
         #endregion
-
-		#region IUrlRewriterDependency Members
-
-		void Web.IUrlParserDependency.SetUrlParser(Web.IUrlParser parser)
-		{
-			urlParser = parser;
-		}
-
-		#endregion
 
 		#region INode Members
 
@@ -934,6 +932,25 @@ namespace N2
 					// remove detail collections not present in source
 					destination.DetailCollections.Remove(key);
 			}
+		}
+
+		#endregion
+
+
+		#region IInterceptable Members
+
+		public virtual Type GetContentType()
+		{
+			return base.GetType();
+		}
+
+		#endregion
+
+		#region IDependentEntity<IUrlParser> Members
+
+		void IDependentEntity<IUrlParser>.Set(IUrlParser dependency)
+		{
+			urlParser = dependency;
 		}
 
 		#endregion

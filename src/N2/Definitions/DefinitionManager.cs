@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Persistence;
 using System.Security.Principal;
 using N2.Security;
 using N2.Edit.Workflow;
 using N2.Engine;
+using N2.Persistence.Proxying;
 
 namespace N2.Definitions
 {
@@ -18,9 +20,10 @@ namespace N2.Definitions
 		readonly IItemNotifier notifier;
         readonly StateChanger stateChanger;
 
-		public DefinitionManager(DefinitionBuilder builder, StateChanger changer, IItemNotifier notifier)
+		public DefinitionManager(DefinitionBuilder builder, StateChanger changer, IItemNotifier notifier, IProxyFactory interceptor)
 		{
 			definitions = builder.GetDefinitions();
+			interceptor.Initialize(definitions.Values.Select(d => d.ItemType));
             this.stateChanger = changer;
 			this.notifier = notifier;
 		}
@@ -46,14 +49,14 @@ namespace N2.Definitions
 		{
 			if (parentItem != null)
 			{
-				ItemDefinition parentDefinition = GetDefinition(parentItem.GetType());
-				ItemDefinition itemDefinition = GetDefinition(item.GetType());
+				ItemDefinition parentDefinition = GetDefinition(parentItem.GetContentType());
+				ItemDefinition itemDefinition = GetDefinition(item.GetContentType());
 
-				if (parentDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the parent item '" + parentItem + "' of type '" + parentItem.GetType() + "'");
-				if (itemDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the item '" + item + "' of type '" + item.GetType() + "'");
+				if (parentDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the parent item '" + parentItem + "' of type '" + parentItem.GetContentType() + "'");
+				if (itemDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the item '" + item + "' of type '" + item.GetContentType() + "'");
 
 				if(!parentDefinition.IsChildAllowed(itemDefinition))
-					throw new NotAllowedParentException(itemDefinition, parentItem.GetType());
+					throw new NotAllowedParentException(itemDefinition, parentItem.GetContentType());
 
 				item.Parent = parentItem;
 				foreach (AuthorizedRole role in parentItem.AuthorizedRoles)

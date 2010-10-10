@@ -81,13 +81,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=3.0.0.1003, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate, Version=3.0.0.2001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.ByteCode.Castle, Version=3.0.0.1003, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="NHibernate.ByteCode.Castle, Version=3.0.0.2001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NHibernate.ByteCode.Castle.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Caches.SysCache2, Version=3.0.0.2000, Culture=neutral, PublicKeyToken=6876f2ea66c9f443, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NHibernate.Caches.SysCache2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -221,7 +225,7 @@
     <Compile Include="Persistence\Finder\IQueryBuilder.cs" />
     <Compile Include="Persistence\IRepository.cs" />
     <Compile Include="Persistence\ITransaction.cs" />
-    <Compile Include="Persistence\NH\NotifyingInterceptor.cs" />
+    <Compile Include="Persistence\NH\NHInterceptor.cs" />
     <Compile Include="Persistence\NH\Finder\ItemFinder.cs" />
     <Compile Include="Persistence\NH\NHRepository.cs" />
     <Compile Include="Persistence\NH\NHTransaction.cs" />
@@ -233,7 +237,6 @@
     <Compile Include="Web\ISitesSource.cs" />
     <Compile Include="Web\ISitesProvider.cs" />
     <Compile Include="Web\IUrlParser.cs" />
-    <Compile Include="Web\IUrlParserDependency.cs" />
     <Compile Include="Engine\ITypeFinder.cs" />
     <Compile Include="Integrity\AllowedChildrenAttribute.cs" />
     <Compile Include="Integrity\CannotDeleteRootException.cs" />
@@ -429,8 +432,22 @@
     <Compile Include="Engine\AdaptsAttribute.cs" />
     <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />
     <Compile Include="Engine\ContainerConfigurer.cs" />
+    <Compile Include="Persistence\EntityDependencySetter.cs" />
+    <Compile Include="Persistence\ContentDependencyInjector.cs" />
+    <Compile Include="Persistence\IDependencySetter.cs" />
+    <Compile Include="Persistence\IDependentEntityOfT.cs" />
+    <Compile Include="Persistence\ItemNotifier.cs" />
+    <Compile Include="Persistence\Proxying\DetailPropertyInterceptor.cs" />
+    <Compile Include="Persistence\Proxying\EmptyProxyFactory.cs" />
+    <Compile Include="Persistence\Proxying\IInterceptableProperty.cs" />
+    <Compile Include="Persistence\Proxying\IInterceptableType.cs" />
+    <Compile Include="Persistence\Proxying\IInterceptedType.cs" />
+    <Compile Include="Persistence\Proxying\IProxyFactory.cs" />
+    <Compile Include="Persistence\Proxying\InterceptingProxyFactory.cs" />
     <Compile Include="Persistence\Finder\IPropertyCriteria.cs" />
     <Compile Include="Persistence\NH\Finder\PersistablePropertyCriteria.cs" />
+    <Compile Include="Persistence\Proxying\PropertyPersistenceOption.cs" />
+    <Compile Include="Persistence\Proxying\MethodInfoExtensions.cs" />
     <Compile Include="Persistence\Serialization\Attachment.cs" />
     <Compile Include="Persistence\Serialization\AttachmentXmlReader.cs" />
     <Compile Include="Persistence\Serialization\AttachmentXmlWriter.cs" />

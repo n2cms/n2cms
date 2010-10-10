@@ -52,7 +52,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>The content adapter related to the current page item.</summary>
 		protected virtual EditableAdapter EditAdapter
 		{
-			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<EditableAdapter>(CurrentItem.GetType()); }
+			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<EditableAdapter>(CurrentItem.GetContentType()); }
 		}
 
 		/// <summary>Gets a dictionary of editor controls added this control.</summary>
@@ -113,7 +113,7 @@ namespace N2.Web.UI.WebControls
 				currentItem = value;
 				if (value != null)
 				{
-                    Discriminator = Engine.Definitions.GetDefinition(value.GetType()).Discriminator;
+                    Discriminator = Engine.Definitions.GetDefinition(value.GetContentType()).Discriminator;
 					if (value.VersionOf != null && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;
 					EnsureChildControls();

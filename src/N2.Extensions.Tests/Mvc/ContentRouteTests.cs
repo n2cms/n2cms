@@ -8,8 +8,9 @@ using N2.Engine;
 using N2.Extensions.Tests.Fakes;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
-using N2.Persistence.NH;
+using N2.Persistence;
 using N2.Tests;
+using N2.Tests.Fakes;
 using N2.Web;
 using N2.Web.Mvc;
 using NUnit.Framework;
@@ -51,17 +52,17 @@ namespace N2.Extensions.Tests.Mvc
 			executives = CreateOneItem<ExecutiveTeamPage>(3, "executives", about);
 			search = CreateOneItem<SearchPage>(4, "search", root);
 
-			var typeFinder = new FakeTypeFinder();
+			var typeFinder = new FakeTypeFinder2();
 			typeFinder.typeMap[typeof(ContentItem)] = this.NearbyTypes()
 				.BelowNamespace("N2.Extensions.Tests.Mvc.Models").AssignableTo<ContentItem>().Union(typeof(ContentItem)).ToArray();
 			typeFinder.typeMap[typeof(IController)] = this.NearbyTypes()
 				.BelowNamespace("N2.Extensions.Tests.Mvc.Controllers").AssignableTo<IController>().Except(typeof(AnotherRegularController))
 				.ToArray();
 
-			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Edit.Workflow.StateChanger(), null);
+			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Edit.Workflow.StateChanger(), null, new StubInterceptionFactory());
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
-			var parser = new UrlParser(persister, webContext, new NotifyingInterceptor(), host, new HostSection());
+			var parser = new UrlParser(persister, webContext, host, new HostSection());
 			controllerMapper = new ControllerMapper(typeFinder, definitions);
 			Url.DefaultExtension = "";
 

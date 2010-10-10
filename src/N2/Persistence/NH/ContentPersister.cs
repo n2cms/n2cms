@@ -109,7 +109,7 @@ namespace N2.Persistence.NH
 			var parent = unsavedItem.Parent;
 			if (parent != null)
 			{
-				foreach (SortChildrenAttribute attribute in parent.GetType().GetCustomAttributes(typeof(SortChildrenAttribute), true))
+				foreach (SortChildrenAttribute attribute in parent.GetContentType().GetCustomAttributes(typeof(SortChildrenAttribute), true))
 				{
 					foreach (ContentItem updatedItem in attribute.ReorderChildren(parent))
 					{

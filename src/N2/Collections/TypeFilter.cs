@@ -59,7 +59,7 @@ namespace N2.Collections
 		#region Methods
 		public override bool Match(ContentItem item)
 		{
-			Type itemType = item.GetType();
+			Type itemType = item.GetContentType();
 			foreach (Type t in allowedTypes)
 				if (t.IsAssignableFrom(itemType))
 					return !inverse;

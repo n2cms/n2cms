@@ -19,10 +19,11 @@ namespace N2.Templates.Mvc.Models.Pages
 	{
 		[EditableCheckBox("Show Title", 10, ContainerName = Tabs.Details)]
 		public virtual bool ShowTitle
-		{
-			get { return (bool) (GetDetail("ShowTitle") ?? true); }
-			set { SetDetail("ShowTitle", value, true); }
-		}
+		//{
+		//    get { return (bool) (GetDetail("ShowTitle") ?? true); }
+		//    set { SetDetail("ShowTitle", value, true); }
+		//}
+		{ get; set; }
 
 		public virtual IList<T> GetChildren<T>() where T : ContentItem
 		{

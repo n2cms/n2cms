@@ -32,7 +32,7 @@ namespace N2.Web
 		{
 			if(string.IsNullOrEmpty(remainingUrl))
 			{
-				Type itemType = item.GetType();
+				Type itemType = item.GetContentType();
 				string virtualDirectory = ConventionTemplateDirectoryAttribute.GetDirectory(itemType);
 
 				string templateName = otherTemplateName ?? itemType.Name;

@@ -13,6 +13,7 @@ using Rhino.Mocks;
 using N2.Persistence;
 using N2.Tests.Edit.Items;
 using System.Security.Principal;
+using N2.Tests.Fakes;
 
 namespace N2.Tests.Edit
 {
@@ -41,7 +42,7 @@ namespace N2.Tests.Edit
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
             var changer = new N2.Edit.Workflow.StateChanger();
-            DefinitionManager definitions = new DefinitionManager(builder, changer, notifier);
+			DefinitionManager definitions = new DefinitionManager(builder, changer, notifier, new StubInterceptionFactory());
 			
 			versioner = mocks.StrictMock<IVersionManager>();
 			editManager = new EditManager(definitions, persister, versioner, null, null, null, changer, new EditSection());
@@ -50,7 +51,7 @@ namespace N2.Tests.Edit
 
 		protected IDictionary<string, Control> AddEditors(ComplexContainersItem item)
 		{
-			Type itemType = item.GetType();
+			Type itemType = item.GetContentType();
 			Control editorContainer = new Control();
 			IDictionary<string, Control> added = editManager.AddEditors(itemType, editorContainer, null);
 			return added;

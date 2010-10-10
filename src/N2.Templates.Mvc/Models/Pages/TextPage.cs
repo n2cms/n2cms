@@ -17,10 +17,11 @@ namespace N2.Templates.Mvc.Models.Pages
 	{
 		[FileAttachment, EditableFileUploadAttribute("Image", 90, ContainerName = Tabs.Content, CssClass = "main")]
 		public virtual string Image
-		{
-			get { return (string) (GetDetail("Image") ?? string.Empty); }
-			set { SetDetail("Image", value, string.Empty); }
-		}
+		//{
+		//    get { return (string) (GetDetail("Image") ?? string.Empty); }
+		//    set { SetDetail("Image", value, string.Empty); }
+		//}
+		{ get; set; }
 
 		public string Summary
 		{

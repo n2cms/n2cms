@@ -15,7 +15,7 @@ namespace N2.Edit
 	{
 		protected Definitions.ItemDefinition CurrentDefinition
 		{
-			get { return N2.Context.Definitions.GetDefinition(CurrentItem.GetType()); }
+			get { return N2.Context.Definitions.GetDefinition(CurrentItem.GetContentType()); }
 		}
 
 		public ContentItem currentItem;

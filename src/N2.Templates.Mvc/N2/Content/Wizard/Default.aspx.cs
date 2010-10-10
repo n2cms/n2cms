@@ -20,7 +20,7 @@ namespace N2.Edit.Wizard
             hlCancel.NavigateUrl = CancelUrl();
 
             txtTitle.Text = Selection.SelectedItem.Title;
-            ItemDefinition d = Engine.Definitions.GetDefinition(Selection.SelectedItem.GetType());
+            ItemDefinition d = Engine.Definitions.GetDefinition(Selection.SelectedItem.GetContentType());
 			ddlTypes.DataSource = d.AllowedChildren;
 			ddlTypes.DataBind();
 		}

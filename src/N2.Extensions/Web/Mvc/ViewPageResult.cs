@@ -47,7 +47,7 @@ namespace N2.Web.Mvc
 
 		private ControllerContext BuildPageControllerContext(ControllerContext context)
 		{
-			string controllerName = _controllerMapper.GetControllerName(_thePage.GetType());
+			string controllerName = _controllerMapper.GetControllerName(_thePage.GetContentType());
 			
 			var routeData = context.RouteData;
 			routeData.ApplyCurrentItem(controllerName, "Index", _thePage, null);
