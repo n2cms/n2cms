@@ -17,7 +17,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[ExpandableContainer(Tabs.Details, 6, Legend = "Details", ContainerName = Tabs.Content)]
 	public abstract class AbstractPage : ContentItem, IItemContainer
 	{
-		[EditableCheckBox("Show Title", 10, ContainerName = Tabs.Details)]
+		[EditableCheckBox("Show Title", 10, ContainerName = Tabs.Details, DefaultValue = true)]
 		public virtual bool ShowTitle
 		//{
 		//    get { return (bool) (GetDetail("ShowTitle") ?? true); }

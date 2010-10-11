@@ -31,15 +31,18 @@ namespace N2.Persistence.Proxying
 					methods[method] = getContentTypeAction;
 			}
 
-			foreach (var method in interceptedType.GetMethods())
+			for (var type = interceptedType; type != null; type = type.BaseType)
 			{
-				if (!method.IsVirtual)
-					continue;
-				var action = PrepareMethod(method);
-				if (action != null)
+				foreach (var method in type.GetMethods())
 				{
-					methods[method] = action;
-					InterceptedProperties++;
+					if (!method.IsVirtual)
+						continue;
+					var action = PrepareMethod(method);
+					if (action != null)
+					{
+						methods[method] = action;
+						InterceptedProperties++;
+					}
 				}
 			}
 		}

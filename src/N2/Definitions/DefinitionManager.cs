@@ -19,6 +19,7 @@ namespace N2.Definitions
 		readonly IDictionary<Type, ItemDefinition> definitions;
 		readonly IItemNotifier notifier;
         readonly StateChanger stateChanger;
+		readonly IProxyFactory interceptor;
 
 		public DefinitionManager(DefinitionBuilder builder, StateChanger changer, IItemNotifier notifier, IProxyFactory interceptor)
 		{
@@ -26,6 +27,7 @@ namespace N2.Definitions
 			interceptor.Initialize(definitions.Values.Select(d => d.ItemType));
             this.stateChanger = changer;
 			this.notifier = notifier;
+			this.interceptor = interceptor;
 		}
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
@@ -39,7 +41,9 @@ namespace N2.Definitions
 		/// <returns>A new instance of an item.</returns>
 		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem)
 		{
-			ContentItem item = Activator.CreateInstance(itemType, true) as ContentItem;
+			object intercepted = interceptor.Create(itemType.FullName);
+			ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
+				as ContentItem;
             stateChanger.ChangeTo(item, ContentState.New);
 			OnItemCreating(item, parentItem);
 			return item;

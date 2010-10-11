@@ -1,4 +1,7 @@
-﻿2.1
+﻿2.1beta(refresh)
+- Fixed issue with auto-implemented properties and inheritance
+
+2.1beta
 - Updated to NH3beta1 (breaking most LINQing)
 - Added support for automatic access to details via auto-properties (from propertyinterception branch), based on contribution by And Poulsen
 - Updated to latest and greatest NHibernate + Castle Windsor

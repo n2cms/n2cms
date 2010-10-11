@@ -32,6 +32,9 @@ namespace N2.Tests.Persistence.Proxying
 			set { StandardBoolProperty_set = true; SetDetail("StandardBoolProperty", value, false); }
 		}
 	}
+	public class InterceptableInheritorItem : InterceptableItem
+	{
+	}
 
 	[TestFixture]
 	public class InterceptionFactoryTests
@@ -43,7 +46,7 @@ namespace N2.Tests.Persistence.Proxying
 		public void SetUp()
 		{
 			factory = new InterceptingProxyFactory();
-			factory.Initialize(new [] { typeof(InterceptableItem) });
+			factory.Initialize(new[] { typeof(InterceptableItem), typeof(InterceptableInheritorItem) });
 			item = factory.Create(typeof(InterceptableItem).FullName) as InterceptableItem;
 		}
 
@@ -213,5 +216,26 @@ namespace N2.Tests.Persistence.Proxying
 
 			Assert.That(type, Is.EqualTo(typeof(InterceptableItem)));
 		}
+
+		// Inheritance
+
+		[Test]
+		public void InheritingClass_WithInterceptedProperties_Get_IsIntercepted()
+		{
+			var inheritor = factory.Create(typeof(InterceptableInheritorItem).FullName) as InterceptableInheritorItem;
+			inheritor.SetDetail("StringProperty", "hello", typeof(string));
+
+			Assert.That(inheritor.StringProperty, Is.EqualTo("hello"));
+		}
+
+		[Test]
+		public void InheritingClass_WithInterceptedProperties_Set_IsIntercepted()
+		{
+			var inheritor = factory.Create(typeof(InterceptableInheritorItem).FullName) as InterceptableInheritorItem;
+			inheritor.StringProperty = "world";
+
+			Assert.That(inheritor.GetDetail("StringProperty"), Is.EqualTo("world"));
+		}
+
 	}
 }
