@@ -23,7 +23,7 @@ namespace N2.Security
 					if (!u.Roles.Contains(role))
 					{
 						u.Roles.Add(role);
-						Context.Persister.Save(u);
+						Bridge.Save(u);
 					}
 				}
 			}
@@ -41,7 +41,7 @@ namespace N2.Security
 		{
 			Items.UserList ul = Bridge.GetUserContainer(true);
 			ul.AddRole(roleName);
-			Context.Persister.Save(ul);
+			Bridge.Save(ul);
 		}
 
 		public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
@@ -51,7 +51,7 @@ namespace N2.Security
 			
 			Items.UserList ul = Bridge.GetUserContainer(true);
 			ul.RemoveRole(roleName);
-			Context.Persister.Save(ul);
+			Bridge.Save(ul);
 			return true;
 		}
 
@@ -111,7 +111,7 @@ namespace N2.Security
 					if (u.Roles.Contains(role))
 					{
 						u.Roles.Remove(role);
-						Context.Persister.Save(u);
+						Bridge.Save(u);
 					}
 				}
 			}

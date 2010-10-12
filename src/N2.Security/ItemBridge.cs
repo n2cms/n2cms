@@ -21,25 +21,22 @@ namespace N2.Security
 		readonly private IDefinitionManager definitions;
 		readonly private IItemFinder finder;
 		readonly private IPersister persister;
+		readonly private ISecurityManager security;
 	    private readonly IHost host;
 		private string userContainerName = "TemplateUsers";
 		private string[] defaultRoles = new string[] { "Everyone", "Members", "Writers", "Editors", "Administrators" };
 		string[] editorUsernames = new string[] {"admin"};
 		string[] administratorUsernames = new string[] { "admin" };
 
-		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, IHost host, EditSection config)
-			: this(definitions, finder, persister, host)
+		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, ISecurityManager security, IHost host, EditSection config)
 		{
 			editorUsernames = ToArray(config.Editors.Users);
 			administratorUsernames = ToArray(config.Administrators.Users);
-		}
-
-		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, IHost host)
-		{
+			this.security = security;
 			this.definitions = definitions;
 			this.finder = finder;
 			this.persister = persister;
-		    this.host = host;
+			this.host = host;
 		}
 
 		public IItemFinder Finder
@@ -77,8 +74,8 @@ namespace N2.Security
 			u.PasswordQuestion = passwordQuestion;
 			u.PasswordAnswer = passwordAnswer;
 			u.IsApproved = isApproved;
-			
-			persister.Save(u);
+
+			Save(u);
 			
 			return u;
 		}
@@ -138,18 +135,34 @@ namespace N2.Security
 				m.AddRole(role);
 			}
 
-			persister.Save(m);
+			Save(m);
 			return m;
 		}
 
 		public virtual void Delete(ContentItem item)
 		{
-			persister.Delete(item);
+			try
+			{
+				security.ScopeEnabled = false;
+				persister.Delete(item);
+			}
+			finally
+			{
+				security.ScopeEnabled = true;
+			}
 		}
 
 		public virtual void Save(ContentItem item)
 		{
-			persister.Save(item);
+			try
+			{
+				security.ScopeEnabled = false;
+				persister.Save(item);
+			}
+			finally
+			{
+				security.ScopeEnabled = true;
+			}
 		}
 
 		string[] ToArray(StringCollection users)
