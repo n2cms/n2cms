@@ -67,7 +67,7 @@ namespace N2.Web
 			if(data == null)
 			{
 				data = inner.ResolvePath(url);
-				if (!data.IsEmpty())
+				if (!data.IsEmpty() && data.IsCacheable)
 				{
 					Debug.WriteLine("Adding " + url + " to cache");
 					HttpRuntime.Cache.Add(key, data.Detach(), new ContentCacheDependency(persister), Cache.NoAbsoluteExpiration, SlidingExpiration, CacheItemPriority.Normal, null);

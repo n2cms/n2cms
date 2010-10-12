@@ -111,6 +111,7 @@ namespace N2.Web
 		{
 			QueryParameters = new Dictionary<string, string>();
 			IsRewritable = true;
+			IsCacheable = true;
 		}
 
 		/// <summary>The item behind this path.</summary>
@@ -162,8 +163,11 @@ namespace N2.Web
 		/// <summary>Indicates that an existing file handle this path and it shouldn't be rewritten.</summary>
 		public bool Ignore { get; set; }
 		
-		/// <summary>Indicates that this path shouldn't be rewritten.</summary>
+		/// <summary>Indicates that this path may be rewritten.</summary>
 		public bool IsRewritable { get; set; }
+		
+		/// <summary>Indicates that this path may be cached.</summary>
+		public bool IsCacheable { get; set; }
 
 		public virtual Url RewrittenUrl
 		{
