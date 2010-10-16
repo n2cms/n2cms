@@ -1,4 +1,5 @@
-﻿- Applied rmorse's patch #7090: GoogleSiteMapHandler doesn't handle "redirect" items
+﻿- Changed rendering mode to IE8+ throughout
+- Applied rmorse's patch #7090: GoogleSiteMapHandler doesn't handle "redirect" items
 - "Check installation status" now defaults to true
 - Made ItemFilters disposable which triggers reset/clear
 - Added IsCacheable to PathData (can be used when creating items dynamically)

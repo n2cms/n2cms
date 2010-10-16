@@ -1,13 +1,13 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Top+SubMenu.master.cs" Inherits="N2.Templates.UI.Layouts.Top_SubMenu" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Top+SubMenu.master.cs" Inherits="N2.Templates.UI.Layouts.Top_SubMenu" %>
 <%@ Register TagPrefix="parts" TagName="SubMenu" Src="SubMenu.ascx" %>
 <%@ Register TagPrefix="parts" TagName="TopMenu" Src="TopMenu.ascx" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="h" runat="server">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title id="t" runat="server" title='<%$ CurrentPage: Title %>' />
     <asp:ContentPlaceHolder ID="Head" runat="server">
-    	<link rel="canonical" href="<%= CurrentPage != null ? CurrentPage.Url : Request.RawUrl %>" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="canonical" href="<%= CurrentPage != null ? CurrentPage.Url : Request.RawUrl %>" />
     </asp:ContentPlaceHolder>
 </head>
 <body class="<%= GetBodyClass() %>">
