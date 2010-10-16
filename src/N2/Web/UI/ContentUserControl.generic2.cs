@@ -7,16 +7,16 @@ namespace N2.Web.UI
 	/// <summary>A user control that can be dynamically created, bound to non-page items and added to a page.</summary>
 	/// <typeparam name="TPage">The type of page item this user control will have to deal with.</typeparam>
     /// <typeparam name="TItem">The type of non-page (data) item this user control will be bound to.</typeparam>
-	public abstract class ContentUserControl<TPage, TItem> : ContentUserControl<TPage>, IItemContainer, IContentTemplate
+	public abstract class ContentUserControl<TPage, TPart> : ContentUserControl<TPage>, IItemContainer, IContentTemplate
 		where TPage : N2.ContentItem
-		where TItem : N2.ContentItem
+		where TPart : N2.ContentItem
 	{
-		private TItem currentItem = null;
+		private TPart currentItem = null;
 
 		/// <summary>Gets the current data item of the dynamically added part.</summary>
-		public new TItem CurrentItem
+		public new TPart CurrentItem
 		{
-			get { return this.currentItem ?? (currentItem = ItemUtility.CurrentContentItem as TItem); }
+			get { return this.currentItem ?? (currentItem = ItemUtility.CurrentContentItem as TPart); }
 			set { currentItem = value; }
 		}
 
@@ -35,7 +35,7 @@ namespace N2.Web.UI
 		ContentItem IContentTemplate.CurrentItem
 		{
 			get { return CurrentItem; }
-			set { CurrentItem = ItemUtility.EnsureType<TItem>(value); }
+			set { CurrentItem = ItemUtility.EnsureType<TPart>(value); }
 		}
 
 		ContentItem IItemContainer.CurrentItem

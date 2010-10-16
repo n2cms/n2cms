@@ -7,7 +7,7 @@ namespace N2.Collections
 	/// <summary>
 	/// The abstract base class of item filters.
 	/// </summary>
-	public abstract class ItemFilter : N2.Collections.IPipeline
+	public abstract class ItemFilter : IPipeline, IDisposable
 	{
 		/// <summary>Matches an item against the current filter.</summary>
 		/// <param name="item"></param>
@@ -18,9 +18,12 @@ namespace N2.Collections
 		/// <param name="items">The items to perform the filtering on.</param>
 		public virtual void Filter(IList<ContentItem> items)
 		{
-			for (int i = items.Count - 1; i >= 0; i--)
-				if (!Match(items[i]))
-					items.RemoveAt(i);
+			using (this)
+			{
+				for (int i = items.Count - 1; i >= 0; i--)
+					if (!Match(items[i]))
+						items.RemoveAt(i);
+			}
 		}
 
         /// <summary>Filters the supplied items according to the current filter type.</summary>
@@ -29,9 +32,12 @@ namespace N2.Collections
         public virtual IEnumerable<T> Pipe<T>(IEnumerable<T> items)
             where T : ContentItem
         {
-            foreach (T item in items)
-                if (Match(item))
-                    yield return item;
+			using (this)
+			{
+				foreach (T item in items)
+					if (Match(item))
+						yield return item;
+			}
         }
 
 		/// <summary>Filters the supplied items according to the current filter type.</summary>
@@ -49,5 +55,15 @@ namespace N2.Collections
 		{
 			filter.Filter(items);
         }
+
+		#region IDisposable Members
+
+		/// <summary>Resets the filter if applicable.</summary>
+		public virtual void Dispose()
+		{
+			// do nothing
+		}
+
+		#endregion
 	}
 }

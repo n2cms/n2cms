@@ -35,5 +35,14 @@ namespace N2.Collections
 		{
 			ItemFilter.Filter(items, new DuplicateFilter());
 		}
+
+		#region IDisposable Members
+
+		public override void Dispose()
+		{
+			Clear();
+		}
+
+		#endregion
 	}
 }

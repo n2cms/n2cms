@@ -1,7 +1,10 @@
-﻿- Added IsCacheable to PathData (can be used when creating items dynamically)
+﻿- "Check installation status" now defaults to true
+- Made ItemFilters disposable which triggers reset/clear
+- Added IsCacheable to PathData (can be used when creating items dynamically)
 - Fixed create user PermissionDeniedException (ThreadId=230549)
 
 2.1beta(refresh)
+- Fixed form feature
 - Fixed issue with auto-implemented properties and inheritance
 
 2.1beta

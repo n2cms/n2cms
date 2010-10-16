@@ -427,10 +427,12 @@ namespace N2.Persistence.NH.Finder
 			while (retrievedItems.Count > 0)
 			{
 				int addedCount = 0;
-				foreach (var item in filter.Pipe(retrievedItems))
+				foreach (var item in retrievedItems)
 				{
 					if (ReachedMaxResults(items.Count))
 						break;
+					if (!filter.Match(item))
+						continue;
 					++addedCount;
 					items.Add(item);
 				}

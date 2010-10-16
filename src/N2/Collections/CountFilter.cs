@@ -79,5 +79,14 @@ namespace N2.Collections
 			ItemFilter.Filter(items, new CountFilter(startIndex, maxCount));
 		}
 		#endregion
+
+		#region IDisposable Members
+
+		public override void Dispose()
+		{
+			Reset();
+		}
+
+		#endregion
 	}
 }
