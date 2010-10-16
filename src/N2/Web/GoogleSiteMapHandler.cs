@@ -74,15 +74,18 @@ namespace N2.Web
 				foreach (var item in list)
 				{
 					// <url>
-					writer.WriteStartElement("url");
+					if (!item.Url.StartsWith("http"))
+					{
+						writer.WriteStartElement("url");
 
-					writer.WriteElementString("loc", domain + item.Url);
-					writer.WriteElementString("lastmod", item.Published.GetValueOrDefault().ToString("yyyy-MM-dd")); // Google doesn't like IS0 8601/W3C 
-					writer.WriteElementString("changefreq", "weekly"); // TODO make this a setting
-					writer.WriteElementString("priority", "0"); // TODO make this a setting
+						writer.WriteElementString("loc", domain + item.Url);
+						writer.WriteElementString("lastmod", item.Published.GetValueOrDefault().ToString("yyyy-MM-dd")); // Google doesn't like IS0 8601/W3C 
+						writer.WriteElementString("changefreq", "weekly"); // TODO make this a setting
+						writer.WriteElementString("priority", "0"); // TODO make this a setting
 
-					// </url>
-					writer.WriteEndElement();
+						// </url>
+						writer.WriteEndElement();
+					}
 				}
 
 				// <urlset>

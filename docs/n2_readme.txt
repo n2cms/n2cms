@@ -71,3 +71,4 @@ CONTRIBUTORS
 * mjwills
 * And Poulsen
 * Paul Knopf
+* rmorse
