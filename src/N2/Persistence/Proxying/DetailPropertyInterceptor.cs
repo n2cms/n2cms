@@ -16,9 +16,7 @@ namespace N2.Persistence.Proxying
 		private static readonly Action<IInvocation> proceedAction = (invocation) => invocation.Proceed();
 		private static MethodInfo getEntityNameMethod = typeof(IInterceptedType).GetMethod("GetTypeName");
 
-		public int InterceptedProperties { get; private set; }
-		
-		public DetailPropertyInterceptor(Type interceptedType)
+		public DetailPropertyInterceptor(Type interceptedType, IEnumerable<PropertyInfo> interceptedProperties)
 		{
 			string typeName = interceptedType.FullName;
 			methods[getEntityNameMethod] = invocation => invocation.ReturnValue = typeName;
@@ -31,20 +29,43 @@ namespace N2.Persistence.Proxying
 					methods[method] = getContentTypeAction;
 			}
 
-			for (var type = interceptedType; type != null; type = type.BaseType)
+			foreach (var property in interceptedProperties)
 			{
-				foreach (var method in type.GetMethods())
-				{
-					if (!method.IsVirtual)
-						continue;
-					var action = PrepareMethod(method);
-					if (action != null)
-					{
-						methods[method] = action;
-						InterceptedProperties++;
-					}
-				}
+				var attribute = (IInterceptableProperty)property.GetCustomAttributes(typeof(IInterceptableProperty), true).FirstOrDefault();
+				if (attribute == null || attribute.PersistAs != PropertyPersistenceMode.InterceptedDetails)
+				    continue;
+
+				var getMethod = property.GetGetMethod();
+				if (getMethod == null)
+					continue; // no public getter? let's move on
+				if (!getMethod.IsCompilerGenerated())
+					continue; // only intercept auto-implemented properties
+
+				object defaultValue = GetDefaultValue(property.PropertyType, attribute.DefaultValue);
+
+				methods[getMethod] = GetGetDetail(property.Name, defaultValue);
+
+				var setMethod = property.GetSetMethod();
+				if (setMethod == null)
+					continue; // no public setter? that's okay
+				methods[setMethod] = GetSetDetail(property.Name, defaultValue, property.PropertyType);
 			}
+
+
+			//for (var type = interceptedType; type != null; type = type.BaseType)
+			//{
+			//    foreach (var method in type.GetMethods())
+			//    {
+			//        if (!method.IsVirtual)
+			//            continue;
+			//        var action = PrepareMethod(method);
+			//        if (action != null)
+			//        {
+			//            methods[method] = action;
+			//            InterceptedProperties++;
+			//        }
+			//    }
+			//}
 		}
 
 		public void Intercept(IInvocation invocation)
@@ -56,43 +77,26 @@ namespace N2.Persistence.Proxying
 				invocation.Proceed();
 		}
 
-		private Action<IInvocation> PrepareMethod(MethodInfo method)
+		//private Action<IInvocation> PrepareMethod(PropertyInfo property, MethodInfo method, object defaultValue)
+		//{
+		//    string propertyName = property.Name;
+			
+		//    if (property.GetGetMethod() == method)
+		//        return GetGetDetail(propertyName, defaultValue);
+
+		//    if (property.GetSetMethod() == method)
+		//        return GetSetDetail(propertyName, defaultValue, property.PropertyType);
+
+		//    return null;
+		//}
+
+		private static object GetDefaultValue(Type propertyType, object defaultValue)
 		{
-			var properties = method.DeclaringType.GetProperties();
-
-			foreach (var property in properties)
-			{
-				if (!property.IsCompilerGenerated())
-					continue;
-				var attribute = (IInterceptableProperty)property.GetCustomAttributes(typeof(IInterceptableProperty), true).FirstOrDefault();
-				if (attribute == null || attribute.StoreAs == PropertyPersistenceOption.Ignore)
-					continue;
-
-				string propertyName = property.Name;
-				object defaultValue = GetDefaultValue(property, attribute);
-
-				if (property.GetGetMethod() == method)
-				{
-					return GetGetDetail(propertyName, defaultValue);
-				}
-
-				if (property.GetSetMethod() == method)
-				{
-					return GetSetDetail(propertyName, defaultValue, property.PropertyType);
-				}
-			}
-
-			return null;
-		}
-
-		private static object GetDefaultValue(PropertyInfo property, IInterceptableProperty attribute)
-		{
-			object defaultValue = attribute.DefaultValue;
 			if (defaultValue == null)
 			{
-				if (property.PropertyType.IsValueType)
-					defaultValue = Activator.CreateInstance(property.PropertyType);
-				else if (property.PropertyType == typeof(string))
+				if (propertyType.IsValueType)
+					defaultValue = Activator.CreateInstance(propertyType);
+				else if (propertyType == typeof(string))
 					defaultValue = string.Empty;
 			}
 			return defaultValue;

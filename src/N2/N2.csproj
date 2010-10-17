@@ -454,7 +454,7 @@
     <Compile Include="Persistence\Proxying\InterceptingProxyFactory.cs" />
     <Compile Include="Persistence\Finder\IPropertyCriteria.cs" />
     <Compile Include="Persistence\NH\Finder\PersistablePropertyCriteria.cs" />
-    <Compile Include="Persistence\Proxying\PropertyPersistenceOption.cs" />
+    <Compile Include="Persistence\Proxying\PropertyPersistenceMode.cs" />
     <Compile Include="Persistence\Proxying\MethodInfoExtensions.cs" />
     <Compile Include="Persistence\Serialization\Attachment.cs" />
     <Compile Include="Persistence\Serialization\AttachmentXmlReader.cs" />

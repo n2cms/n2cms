@@ -22,12 +22,14 @@ namespace N2.Persistence.Proxying
 			return null;
 		}
 
-		public virtual void OnLoaded(object instance)
+		public virtual bool OnLoaded(object instance)
 		{
+			return false;
 		}
 
-		public virtual void OnSaving(object instance)
+		public virtual bool OnSaving(object instance)
 		{
+			return false;
 		}
 
 		public virtual string GetTypeName(object entity)

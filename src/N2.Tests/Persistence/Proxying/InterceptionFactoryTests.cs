@@ -36,17 +36,28 @@ namespace N2.Tests.Persistence.Proxying
 	{
 	}
 
+	public class IgnoringItem : InterceptableItem
+	{
+		[EditableCheckBox("Ignored Property", 100, PersistAs = PropertyPersistenceMode.Ignore)]
+		public virtual bool IgnoredProperty { get; set; }
+	}
+
 	[TestFixture]
 	public class InterceptionFactoryTests
 	{
 		InterceptingProxyFactory factory;
 		InterceptableItem item;
 
+		[TestFixtureSetUp]
+		public void TestFixtureSetUp()
+		{
+			factory = new InterceptingProxyFactory();
+			factory.Initialize(new[] { typeof(InterceptableItem), typeof(InterceptableInheritorItem), typeof(IgnoringItem) });
+		}
+
 		[SetUp]
 		public void SetUp()
 		{
-			factory = new InterceptingProxyFactory();
-			factory.Initialize(new[] { typeof(InterceptableItem), typeof(InterceptableInheritorItem) });
 			item = factory.Create(typeof(InterceptableItem).FullName) as InterceptableItem;
 		}
 
@@ -237,5 +248,67 @@ namespace N2.Tests.Persistence.Proxying
 			Assert.That(inheritor.GetDetail("StringProperty"), Is.EqualTo("world"));
 		}
 
+		// Ignore properties
+
+		[Test]
+		public void IgnoringClass_WithIgnoredProperty_Get_IsNotIntercepted()
+		{
+			var ignoring = factory.Create(typeof(IgnoringItem).FullName) as IgnoringItem;
+			ignoring.SetDetail("IgnoredProperty", true, typeof(bool));
+
+			Assert.That(ignoring.IgnoredProperty, Is.False);
+		}
+
+		[Test]
+		public void IgnoringClass_WithIgnoredProperty_Set_IsNotIntercepted()
+		{
+			var ignoring = factory.Create(typeof(IgnoringItem).FullName) as IgnoringItem;
+			ignoring.IgnoredProperty = true;
+
+			Assert.That(ignoring.GetDetail("IgnoredProperty"), Is.Null);
+		}
+
+		// Unproxied entities
+
+		[Test]
+		public void Unproxied_StoresChanges_OnSaving()
+		{
+			var interceptable = new InterceptableItem();
+
+			interceptable.BoolProperty = true;
+			interceptable.EnumProperty = TextBoxMode.Password;
+			interceptable.StringProperty = "hello";
+
+			factory.OnSaving(interceptable);
+
+			Assert.That(interceptable.GetDetail("BoolProperty"), Is.EqualTo(true));
+			Assert.That(interceptable.GetDetail("EnumProperty"), Is.EqualTo(TextBoxMode.Password));
+			Assert.That(interceptable.GetDetail("StringProperty"), Is.EqualTo("hello"));
+		}
+
+		[Test]
+		public void Unproxied_ReportsChanges_WhenChangesWereMade()
+		{
+			var interceptable = new InterceptableItem();
+
+			interceptable.BoolProperty = true;
+
+			bool wasChanged = factory.OnSaving(interceptable);
+
+			Assert.That(wasChanged);
+		}
+
+		[Test]
+		public void Unproxied_DoesntReportChanges_WhenNoChangesWereMade()
+		{
+			var interceptable = new InterceptableItem();
+			interceptable.SetDetail("BoolProperty", false, typeof(bool));
+			interceptable.SetDetail("EnumProperty", TextBoxMode.SingleLine, typeof(TextBoxMode));
+			interceptable.SetDetail("StringProperty", null, typeof(string));
+
+			bool wasChanged = factory.OnSaving(interceptable);
+
+			Assert.That(wasChanged, Is.False);
+		}
 	}
 }

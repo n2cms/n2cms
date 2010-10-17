@@ -19,11 +19,11 @@ namespace N2.Persistence.Proxying
 
 		/// <summary>Optional modifications of a loaded instance.</summary>
 		/// <param name="instance">The instance to modify.</param>
-		void OnLoaded(object instance);
+		bool OnLoaded(object instance);
 		
 		/// <summary>Optional modifications of a instance to be saved.</summary>
 		/// <param name="instance">The instance to modify.</param>
-		void OnSaving(object instance);
+		bool OnSaving(object instance);
 
 		/// <summary>Gets the type name of a proxied instance.</summary>
 		/// <param name="instance">The proxied instance.</param>

@@ -415,7 +415,7 @@ namespace N2.Details
 
 		#region IInterceptableProperty Members
 
-		public PropertyPersistenceOption StoreAs { get; set; }
+		public PropertyPersistenceMode PersistAs { get; set; }
 
 		public object DefaultValue { get; set; }
 

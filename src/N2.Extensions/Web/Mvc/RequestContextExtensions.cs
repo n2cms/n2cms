@@ -53,5 +53,10 @@ namespace N2.Web.Mvc
 		{
 			return routeData.GetEngine().Resolve<T>();
 		}
+
+		internal static T[] ResolveServices<T>(this RouteData routeData) where T : class
+		{
+			return routeData.GetEngine().Container.ResolveAll<T>();
+		}
 	}
 }

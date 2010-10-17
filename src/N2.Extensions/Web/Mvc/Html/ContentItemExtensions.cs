@@ -9,10 +9,15 @@ using N2.Engine;
 namespace N2.Web.Mvc.Html
 {
     public static class ContentItemExtensions
-    {
-		public static T ResolveService<T>(this HtmlHelper helper) where T: class
+	{
+		public static T ResolveService<T>(this HtmlHelper helper) where T : class
 		{
 			return helper.ViewContext.RouteData.ResolveService<T>();
+		}
+
+		public static T[] ResolveServices<T>(this HtmlHelper helper) where T : class
+		{
+			return helper.ViewContext.RouteData.ResolveServices<T>();
 		}
 
         public static ContentItem CurrentPage(this HtmlHelper helper)
