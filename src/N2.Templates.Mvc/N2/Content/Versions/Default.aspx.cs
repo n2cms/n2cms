@@ -20,11 +20,10 @@ namespace N2.Edit.Versions
 
 		protected override void OnInit(EventArgs e)
 		{
-            hlCancel.NavigateUrl = CancelUrl();
             Page.Title = string.Format("{0}: {1}", GetLocalResourceString("VersionsPage.Title"), Selection.SelectedItem.Title);
 
-			persister = N2.Context.Persister;
-			versioner = N2.Context.Current.Resolve<Persistence.IVersionManager>();
+			persister = Engine.Persister;
+			versioner = Engine.Resolve<Persistence.IVersionManager>();
 
 			bool isVersionable = versioner.IsVersionable(SelectedItem);
             cvVersionable.IsValid = isVersionable;

@@ -8,6 +8,8 @@ using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Edit.Workflow;
 using N2.Persistence;
+using N2.Edit.Templating;
+using N2.Persistence.Finder;
 
 namespace N2.Edit
 {
@@ -33,6 +35,24 @@ namespace N2.Edit
 			get { return Request["discriminator"] != null; }
 		}
 
+		protected ISecurityManager Security;
+		protected IDefinitionManager Definitions;
+		protected ITemplateRepository Templates;
+		protected IVersionManager Versions;
+		protected CommandDispatcher Commands;
+		protected IEditManager Edits;
+
+		protected override void OnPreInit(EventArgs e)
+		{
+			base.OnPreInit(e);
+			Security = Engine.SecurityManager;
+			Definitions = Engine.Definitions;
+			Templates = Engine.Resolve<ITemplateRepository>();
+			Versions = Engine.Resolve<IVersionManager>();
+			Commands = Engine.Resolve<CommandDispatcher>();
+			Edits = Engine.EditManager;
+		}
+
 		protected override void OnInit(EventArgs e)
 		{
 			if(Request["refresh"] == "true")
@@ -52,9 +72,9 @@ namespace N2.Edit
             else
                 hlCancel.NavigateUrl = CancelUrl();
 
-            bool isPublicableByUser = Engine.SecurityManager.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
-			bool isVersionable = Engine.Resolve<IVersionManager>().IsVersionable(ie.CurrentItem);
-            bool isWritableByUser = Engine.SecurityManager.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
+            bool isPublicableByUser = Security.IsAuthorized(User, ie.CurrentItem, Permission.Publish);
+			bool isVersionable = Versions.IsVersionable(ie.CurrentItem);
+            bool isWritableByUser = Security.IsAuthorized(User, Selection.SelectedItem, Permission.Write);
             bool isExisting = ie.CurrentItem.ID != 0;
 
             btnSavePublish.Enabled = isPublicableByUser;
@@ -88,15 +108,15 @@ namespace N2.Edit
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
 			ctx.Parameters["MoveBefore"] = Request["before"];
 			ctx.Parameters["MoveAfter"] = Request["after"];
-			Engine.Resolve<CommandDispatcher>().Publish(ctx);
+			Commands.Publish(ctx);
 
-			HandleResult(ctx, Request["returnUrl"], Engine.EditManager.GetPreviewUrl(ctx.Content));
+			HandleResult(ctx, Request["returnUrl"], Edits.GetPreviewUrl(ctx.Content));
 		}
 
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
-			Engine.Resolve<CommandDispatcher>().Save(ctx);
+			Commands.Save(ctx);
 
 			string returnUrl = Request["returnUrl"];
 			if (!string.IsNullOrEmpty(returnUrl))
@@ -104,7 +124,7 @@ namespace N2.Edit
 				returnUrl = Url.Parse(returnUrl).AppendQuery("preview", ctx.Content.ID);
 			}
 
-			Url previewUrl = Engine.EditManager.GetPreviewUrl(ctx.Content);
+			Url previewUrl = Edits.GetPreviewUrl(ctx.Content);
 			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
 			if(ctx.Content.VersionOf != null)
 				previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);
@@ -115,9 +135,9 @@ namespace N2.Edit
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
-            Engine.Resolve<CommandDispatcher>().Save(ctx);
+            Commands.Save(ctx);
 
-			Url redirectTo = Engine.EditManager.GetEditExistingItemUrl(ctx.Content);
+			Url redirectTo = Edits.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
 				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
 			
@@ -130,7 +150,7 @@ namespace N2.Edit
             if (IsValid)
             {
                 ContentItem savedVersion = SaveVersionForFuturePublishing();
-                Url redirectUrl = Engine.EditManager.GetEditExistingItemUrl(savedVersion);
+                Url redirectUrl = Edits.GetEditExistingItemUrl(savedVersion);
 				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
 			}
         }
@@ -190,7 +210,7 @@ namespace N2.Edit
 			}
 			else
 			{
-				IList<ContentItem> unpublishedVersions = Find.Items
+				IList<ContentItem> unpublishedVersions = Engine.Resolve<IItemFinder>()
 					.Where.VersionOf.Eq(item)
 					.And.Updated.Gt(item.Updated)
 					.OrderBy.Updated.Desc.MaxResults(1).Select();
@@ -204,14 +224,14 @@ namespace N2.Edit
 
 		private void DisplayThisHasNewerVersionInfo(ContentItem itemToLink)
 		{
-            string url = Url.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
+            string url = Url.ToAbsolute(Edits.GetEditExistingItemUrl(itemToLink));
 			hlNewerVersion.NavigateUrl = url;
 			hlNewerVersion.Visible = true;
 		}
 
 		private void DisplayThisIsVersionInfo(ContentItem itemToLink)
 		{
-            string url = Url.ToAbsolute(Engine.EditManager.GetEditExistingItemUrl(itemToLink));
+            string url = Url.ToAbsolute(Edits.GetEditExistingItemUrl(itemToLink));
 			hlOlderVersion.NavigateUrl = url;
 			hlOlderVersion.Visible = true;
 		}
@@ -220,9 +240,9 @@ namespace N2.Edit
 		{
 			var start = Engine.Resolve<IUrlParser>().StartPage;
 			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
-			foreach (EditToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
+			foreach (EditToolbarPluginAttribute plugin in Edits.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
+				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root, ControlPanelState.Visible, Edits.GetManagementInterfaceUrl()));
 			}
 		}
 
@@ -230,10 +250,19 @@ namespace N2.Edit
 		{
 			if (ie.CurrentItem.ID == 0)
 			{
-				ItemDefinition definition = Engine.Definitions.GetDefinition(ie.CurrentItemType);
+				ItemDefinition definition = Definitions.GetDefinition(ie.CurrentItemType);
 				string definitionTitle = GetGlobalResourceString("Definitions", definition.Discriminator + ".Title") ?? definition.Title;
 				string format = GetLocalResourceString("EditPage.TitleFormat.New");
+				
+				string template = Request["template"];
+				if (!string.IsNullOrEmpty(template))
+				{
+					var info = Templates.GetTemplate(template);
+					definitionTitle = info.Title;
+				}
+
 				Title = string.Format(format, definitionTitle);
+				
 			}
 			else
 			{
@@ -246,9 +275,16 @@ namespace N2.Edit
 		{
 			string dataType = Request["dataType"];
 			string discriminator = Request["discriminator"];
+			string template = Request["template"];
+			if (!string.IsNullOrEmpty(template))
+			{
+				var info = Templates.GetTemplate(template);
+				ie.CurrentItem = info.Template;
+				ie.CurrentItem.Parent = Selection.SelectedItem;
+			}
 			if(!string.IsNullOrEmpty(discriminator))
 			{
-                ie.Discriminator = Engine.Definitions.GetDefinition(discriminator).Discriminator;
+                ie.Discriminator = Definitions.GetDefinition(discriminator).Discriminator;
                 ie.ParentPath = Selection.SelectedItem.Path;
 			}
 			else if (!string.IsNullOrEmpty(dataType))
@@ -256,7 +292,7 @@ namespace N2.Edit
                 Type t = Type.GetType(dataType);
                 if (t == null)
                     throw new ArgumentException("Couldn't load a type of the given parameter '" + dataType + "'", "dataType");
-                ItemDefinition d = Engine.Definitions.GetDefinition(discriminator);
+                ItemDefinition d = Definitions.GetDefinition(discriminator);
                 if(d == null)
                     throw new N2Exception("Couldn't find any definition for type '" + t + "'");
                 ie.Discriminator = d.Discriminator;

@@ -10,6 +10,7 @@ using N2.Integrity;
 using N2.Persistence;
 using N2.Tests.Definitions.Items;
 using N2.Tests.Fakes;
+using N2.Persistence.Proxying;
 
 namespace N2.Tests.Definitions
 {
@@ -61,7 +62,7 @@ namespace N2.Tests.Definitions
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			definitions = new DefinitionManager(builder, new N2.Edit.Workflow.StateChanger(), notifier, new StubInterceptionFactory());
+			definitions = new DefinitionManager(builder, new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
 		}
 
 		#endregion

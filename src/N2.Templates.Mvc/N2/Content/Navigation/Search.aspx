@@ -17,9 +17,12 @@
         <asp:Panel runat="server" CssClass="list">
             <n2:ItemDataSource ID="idsItems" runat="server" />
             <div id="nav" class="nav">
-                <asp:DataGrid ID="dgrItems" DataSourceID="idsItems" DataMember="Query" runat="server" DataKeyField="ID" AutoGenerateColumns="false" CssClass="gv striped" AlternatingItemStyle-CssClass="alt" UseAccessibleHeader="true" ShowHeader="false">
+                <asp:GridView ID="dgrItems" runat="server" 
+					DataSourceID="idsItems" DataKeyNames="ID" DataMember="Query" 
+					AutoGenerateColumns="false" CssClass="gv striped" AlternatingRowStyle-CssClass="alt" 
+					UseAccessibleHeader="true" ShowHeader="false">
                     <Columns>
-                        <asp:TemplateColumn HeaderText="Title" meta:resourceKey="colTitle" >
+						<asp:TemplateField  HeaderText="Title" meta:resourceKey="colTitle" >
                             <ItemTemplate>
                                 <asp:HyperLink ID="hlShow" runat="server" Target="preview" runat="server" 
                                     NavigateUrl='<%# ((N2.INode)Container.DataItem).PreviewUrl %>'
@@ -30,9 +33,12 @@
                                     <%# string.IsNullOrEmpty((string)Eval("ZoneName")) ? "" : Eval("ZoneName", " ({0})") %>
                                 </asp:HyperLink>
                             </ItemTemplate>
-                        </asp:TemplateColumn>
+                        </asp:TemplateField>
                     </Columns>
-                </asp:DataGrid>
+                    <EmptyDataTemplate>
+						<asp:Literal runat="server" Text="No hits" meta:resourceKey="ltNoHits" />
+                    </EmptyDataTemplate>
+                </asp:GridView>
             </div>
             <nav:ContextMenu id="cm" runat="server" />
             <script type="text/javascript">

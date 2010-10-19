@@ -1,4 +1,6 @@
-﻿- Changed rendering mode to IE8+ throughout
+﻿- Added support for "Content Templates"
+- Fixed issue cloning items with auto-implemented properties
+- Changed rendering mode to IE8+ throughout
 - Applied rmorse's patch #7090: GoogleSiteMapHandler doesn't handle "redirect" items
 - "Check installation status" now defaults to true
 - Made ItemFilters disposable which triggers reset/clear

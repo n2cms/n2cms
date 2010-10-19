@@ -10,7 +10,7 @@ namespace N2.Edit.Trash
 	{
 		protected ITrashHandler Trash
 		{
-			get { return N2.Context.Current.Resolve<ITrashHandler>(); }
+			get { return Engine.Resolve<ITrashHandler>(); }
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -19,7 +19,7 @@ namespace N2.Edit.Trash
 
 			N2.Resources.Register.JQueryPlugins(Page);
 
-			this.hlCancel.NavigateUrl = N2.Context.UrlParser.StartPage.Url;
+			this.hlCancel.NavigateUrl = Engine.UrlParser.StartPage.Url;
 			this.cvRestore.IsValid = true;
 			this.btnClear.Enabled = CurrentItem.Children.Count > 0;
 		}
@@ -28,7 +28,7 @@ namespace N2.Edit.Trash
 		{
 			int itemIndex = Convert.ToInt32(e.CommandArgument);
 			int itemID = Convert.ToInt32(gvTrash.DataKeys[itemIndex].Value);
-			ContentItem item = N2.Context.Persister.Get(itemID);
+			ContentItem item = Engine.Persister.Get(itemID);
 
 			if (e.CommandName == "Restore")
 			{
@@ -53,7 +53,7 @@ namespace N2.Edit.Trash
 		{
 			foreach (ContentItem child in this.CurrentItem.GetChildren())
 			{
-				N2.Context.Persister.Delete(child);
+				Engine.Persister.Delete(child);
 			}
 			this.DataBind();
 			RegisterRefreshNavigationScript(this.CurrentItem);

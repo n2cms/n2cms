@@ -24,14 +24,21 @@ namespace N2.Edit.Web.UI.Controls
             foreach (ToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<ToolbarPluginAttribute>(Engine.Resolve<IWebContext>().User))
             {
                 if ((plugin.Area & Area) != Area)
-                    continue;
+					continue;
 
-                HtmlGenericControl command = new HtmlGenericControl("div");
-                command.Attributes["id"] = plugin.Name;
-                command.Attributes["class"] = "item";
-                Controls.Add(command);
+				HtmlGenericControl item = new HtmlGenericControl("div");
+				item.Attributes["id"] = plugin.Name;
+				item.Attributes["class"] = "item";
+				Controls.Add(item);
 
-				plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, start, root, ControlPanelState.Visible, Engine.EditManager.GetManagementInterfaceUrl()));
+				HtmlGenericControl command = new HtmlGenericControl("div");
+				command.Attributes["id"] = plugin.Name;
+				command.Attributes["class"] = "command";
+				item.Controls.Add(command);
+
+				plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, start, root, 
+					ControlPanelState.Visible, 
+					Engine.EditManager.GetManagementInterfaceUrl()));
             }
         }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using N2.Definitions;
 using N2.Persistence;
 using N2.Web;
@@ -21,17 +22,22 @@ namespace N2.Edit.Trash
 		public const string DeletedDate = "DeletedDate";
 		private readonly IPersister persister;
 		private readonly IItemFinder finder;
-		private readonly IDefinitionManager definitions;
 		private readonly ISecurityManager security;
-		private readonly IHost host;
+		private readonly ContainerRepository<TrashContainerItem> container;
 
-		public TrashHandler(IPersister persister, IItemFinder finder, IDefinitionManager definitions, ISecurityManager security, IHost host)
+		/// <summary>Instructs this class to navigate rather than query for items.</summary>
+		public bool UseNavigationMode
+		{
+			get { return container.Navigate; }
+			set { container.Navigate = value; }
+		}
+
+		public TrashHandler(IPersister persister, IItemFinder finder, ISecurityManager security, ContainerRepository<TrashContainerItem> container)
 		{
 			this.finder = finder;
 			this.persister = persister;
-			this.definitions = definitions;
 			this.security = security;
-			this.host = host;
+			this.container = container;
 		}
 
         /// <summary>The container of thrown items.</summary>
@@ -40,16 +46,13 @@ namespace N2.Edit.Trash
 			get { return GetTrashContainer(false) as ITrashCan; }
 		}
 
-		/// <summary>Navigate for nodes rather than use database queries. This is less performant but more easily testable.</summary>
-		public bool UseNavigationMode { get; set; }
-
 		public TrashContainerItem GetTrashContainer(bool create)
 		{
-			ContentItem rootItem = persister.Get(host.CurrentSite.RootItemID);
-			TrashContainerItem trashContainer = GetExistingContainer(rootItem);
-			if (create && trashContainer == null)
+			if (!create)
+				container.GetBelowRoot();
+
+			return container.GetOrCreateBelowRoot((trashContainer) =>
 			{
-				trashContainer = definitions.CreateInstance<TrashContainerItem>(rootItem);
 				trashContainer.Name = TrashContainerName;
 				trashContainer.Title = TrashContainerName;
 				trashContainer.Visible = false;
@@ -57,18 +60,7 @@ namespace N2.Edit.Trash
 				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Editors"));
 				trashContainer.AuthorizedRoles.Add(new AuthorizedRole(trashContainer, "Administrators"));
 				trashContainer.SortOrder = int.MaxValue - 1000000;
-				persister.Save(trashContainer);
-			}
-			return trashContainer;
-		}
-
-		private TrashContainerItem GetExistingContainer(ContentItem rootItem)
-		{
-			if (UseNavigationMode)
-				return rootItem.GetChild(TrashContainerName) as TrashContainerItem;
-			
-			var items = finder.Where.Parent.Eq(rootItem).And.Type.Eq(typeof(TrashContainerItem)).MaxResults(1).Select<TrashContainerItem>();
-			return items.Count > 0 ? items[0] : null;
+			});
 		}
 
         /// <summary>Checks if the trash is enabled, the item is not already thrown and for the NotThrowable attribute.</summary>
@@ -177,22 +169,16 @@ namespace N2.Edit.Trash
 
 			DateTime tresholdDate = Utility.CurrentTime().AddDays(-(int)trash.PurgeInterval);
 			IList<ContentItem> expiredItems = null;
+
 			if (UseNavigationMode)
-			{
-				expiredItems = new List<ContentItem>();
-				foreach (var item in Find.EnumerateChildren(trash))
-				{
-					var deletedDate = item[TrashHandler.DeletedDate];
-					if (deletedDate != null && ((DateTime)deletedDate) <= tresholdDate)
-						expiredItems.Add(item);
-				}
-			}
+				expiredItems = trash.Children
+					.Where(i => i[DeletedDate] != null)
+					.Where(i => ((DateTime)i[DeletedDate]) < tresholdDate)
+					.ToList();
 			else
-			{
 				expiredItems = finder.Where.Parent.Eq(trash)
 					.And.Detail(TrashHandler.DeletedDate).Le(tresholdDate)
 					.Select();
-			}
 			
 			try
 			{

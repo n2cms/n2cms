@@ -2,6 +2,8 @@ using System;
 using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Security;
+using N2.Persistence.Finder;
+using System.Web.UI;
 
 namespace N2.Edit
 {
@@ -12,11 +14,22 @@ namespace N2.Edit
     {
         protected override void OnInit(EventArgs e)
         {
-            hlCancel.NavigateUrl = CancelUrl();
-
             itemsToDelete.CurrentItem = Selection.SelectedItem;
             itemsToDelete.DataBind();
-            this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?selected=" + Selection.SelectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
+			var q = Engine.Resolve<IItemFinder>().Where.Detail().Eq(Selection.SelectedItem);
+			int count = q.Count();
+			if (count > 0)
+			{
+				referencingItems.Legend += " (" + count + ")";
+				rptReferencing.DataSource = q.MaxResults(10).Select();
+				rptReferencing.DataBind();
+				if (count > 10)
+					referencingItems.Controls.Add(new LiteralControl("..."));
+			}
+			else
+				referencingItems.Visible = false;
+
+			this.hlReferencingItems.NavigateUrl = "Dependencies.aspx?selected=" + Selection.SelectedItem.Path + "&returnUrl=" + Server.HtmlEncode(Request.RawUrl);
 
             base.OnInit(e);
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using N2.Persistence;
+using N2.Persistence.Proxying;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -42,7 +43,8 @@ namespace N2.Tests.Persistence.NH
         [NUnit.Framework.TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
-            TestSupport.Setup(out definitions, out interceptor, out sessionProvider, out finder, out schemaCreator, typeof(PropertyItemType));
+			InterceptingProxyFactory proxyFactory;
+			TestSupport.Setup(out definitions, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, typeof(PropertyItemType));
         }
 
         // string

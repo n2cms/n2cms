@@ -21,17 +21,17 @@ namespace N2.Tests
 {
     public static class TestSupport
     {
-        public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, params Type[] itemTypes)
+        public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
-			Setup(out definitions, out notifier, itemTypes);
+			Setup(out definitions, out notifier, out proxyFactory, itemTypes);
 
             DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
             ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(definitions, new ClassMappingGenerator(), config, connectionStrings);
 
             FakeWebContextWrapper context = new Fakes.FakeWebContextWrapper();
-            
-			sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), new NHInterceptor(new StubInterceptionFactory(), configurationBuilder, notifier), context);
+
+			sessionProvider = new FakeSessionProvider(new ConfigurationSource(configurationBuilder), new NHInterceptor(proxyFactory, configurationBuilder, notifier), context);
 
             finder = new ItemFinder(sessionProvider, definitions);
 
@@ -42,17 +42,19 @@ namespace N2.Tests
 		{
 			IItemNotifier notifier;
 			IDefinitionManager definitions;
-			Setup(out definitions, out notifier, itemTypes);
+			InterceptingProxyFactory proxyFactory;
+			Setup(out definitions, out notifier, out proxyFactory, itemTypes);
 			return definitions;
 		}
 
-		public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, params Type[] itemTypes)
+		public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
             ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
 
             DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
 			notifier = new ItemNotifier();
-			definitions = new DefinitionManager(definitionBuilder, new N2.Edit.Workflow.StateChanger(), notifier, new StubInterceptionFactory());
+			proxyFactory = new InterceptingProxyFactory();
+			definitions = new DefinitionManager(definitionBuilder, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
         }
 
 		public static T Stub<T>()

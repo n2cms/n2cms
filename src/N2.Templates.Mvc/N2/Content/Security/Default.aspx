@@ -8,7 +8,7 @@
         <asp:LinkButton ID="btnSave" runat="server" CssClass="command" OnCommand="btnSave_Command" meta:resourcekey="btnSaveResource1">Save</asp:LinkButton>
         <asp:LinkButton ID="btnSaveRecursive" runat="server" CssClass="command" OnCommand="btnSaveRecursive_Command" meta:resourcekey="btnSaveRecursiveResource1">Save whole branch</asp:LinkButton>
     </n2:OptionsMenu>
-    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourcekey="hlCancelResource1">Cancel</asp:HyperLink>
+    <edit:CancelLink ID="hlCancel" runat="server" meta:resourcekey="hlCancelResource1">Cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
     <asp:CustomValidator ID="cvSomethingSelected" runat="server" Display="Dynamic" CssClass="validator" Text="" ErrorMessage="At least one role must be selected" OnServerValidate="cvSomethingSelected_ServerValidate" meta:resourcekey="cvSomethingSelectedResource1" />

@@ -2,6 +2,7 @@ using System;
 using System.Security.Principal;
 using System.Web.UI;
 using N2.Plugin;
+using System.Web.UI.WebControls;
 
 namespace N2.Edit
 {
@@ -49,6 +50,9 @@ namespace N2.Edit
 			set { enabled = value; }
 		}
 
+		/// <summary>Url to the anchor's image icon.</summary>
+		public string IconUrl { get; set; }
+
 		#endregion
 
 		/// <summary>Find out whether a user has permission to view this plugin in the toolbar.</summary>
@@ -69,6 +73,12 @@ namespace N2.Edit
 			if (string.IsNullOrEmpty(iconUrl))
 				return text;
 			return string.Format("<img src='{0}' alt='{1}'/>{2}", N2.Web.Url.ToAbsolute(iconUrl), alt, text);
+		}
+
+		protected virtual void ApplyStyles(WebControl ctrl)
+		{
+			if (!string.IsNullOrEmpty(IconUrl))
+				ctrl.Style[HtmlTextWriterStyle.BackgroundImage] = N2.Web.Url.ToAbsolute(IconUrl);
 		}
 
 		public abstract Control AddTo(Control container, PluginContext context);

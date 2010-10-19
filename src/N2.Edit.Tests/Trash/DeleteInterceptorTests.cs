@@ -33,7 +33,7 @@ namespace N2.Edit.Tests.Trash
             persister.ItemMoving += null;
             LastCall.IgnoreArguments();
 
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, new Host(webContext, 1, 1), null));
 			th.UseNavigationMode = true;
             Expect.Call(delegate { th.Throw(item); });
 
@@ -62,7 +62,8 @@ namespace N2.Edit.Tests.Trash
 
             mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1)) { UseNavigationMode = true };
+			var host = new Host(webContext, 1, 1);
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null)) { UseNavigationMode = true };
             DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
             interceptor.Start();
 
@@ -85,7 +86,8 @@ namespace N2.Edit.Tests.Trash
 
 			mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1)) { UseNavigationMode = true };
+			var host = new Host(webContext, 1, 1);
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null)) { UseNavigationMode = true };
 			DeleteInterceptor interceptor = new DeleteInterceptor(persister, th);
 			interceptor.Start();
 
@@ -108,7 +110,7 @@ namespace N2.Edit.Tests.Trash
             persister.ItemMoving += null;
             IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
-			TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
+			TrashHandler th = mocks.PartialMock<TrashHandler>(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, new Host(webContext, 1, 1), null));
 			th.UseNavigationMode = true;
             th.RestoreValues(item);
 
@@ -135,7 +137,7 @@ namespace N2.Edit.Tests.Trash
             persister.ItemMoving += null;
             LastCall.IgnoreArguments();
 
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, new Host(webContext, 1, 1), null));
 			th.UseNavigationMode = true;
             th.RestoreValues(item);
 
@@ -166,7 +168,7 @@ namespace N2.Edit.Tests.Trash
             persister.ItemMoving += null;
             IEventRaiser invokeMoved = LastCall.IgnoreArguments().GetEventRaiser();
 
-			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, null, new Host(webContext, 1, 1));
+			TrashHandler th = mocks.StrictMock<TrashHandler>(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, new Host(webContext, 1, 1), null));
 			th.UseNavigationMode = true;
             th.ExpireTrashedItem(item);
 

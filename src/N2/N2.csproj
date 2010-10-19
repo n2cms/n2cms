@@ -385,10 +385,13 @@
     <Compile Include="Details\EditableThemeSelectionAttribute.cs" />
     <Compile Include="Details\RelativityMode.cs" />
     <Compile Include="Details\WithEditableDateRangeAttribute.cs" />
+    <Compile Include="Edit\ContainerRepositoryOfT.cs" />
     <Compile Include="Edit\Installation\DatabaseStatusCache.cs" />
     <Compile Include="Edit\Installation\AbstractMigration.cs" />
     <Compile Include="Edit\Installation\MigrationEngine.cs" />
     <Compile Include="Edit\Installation\SystemStatusLevel.cs" />
+    <Compile Include="Edit\Templating\ITemplateRepository.cs" />
+    <Compile Include="Edit\Templating\TemplateInfo.cs" />
     <Compile Include="Engine\AttributeInfo.cs" />
     <Compile Include="Edit\FileEventArgs.cs" />
     <Compile Include="Edit\FileSystem\MappedFileSystem.cs" />

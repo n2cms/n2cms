@@ -16,6 +16,7 @@ using N2.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
+using N2.Persistence.Proxying;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -59,7 +60,7 @@ namespace N2.Extensions.Tests.Mvc
 				.BelowNamespace("N2.Extensions.Tests.Mvc.Controllers").AssignableTo<IController>().Except(typeof(AnotherRegularController))
 				.ToArray();
 
-			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Edit.Workflow.StateChanger(), null, new StubInterceptionFactory());
+			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Edit.Workflow.StateChanger(), null, new EmptyProxyFactory());
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, host, new HostSection());

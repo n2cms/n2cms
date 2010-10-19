@@ -10,8 +10,6 @@ namespace N2.Edit.Settings
 	{
 		protected override void OnInit(EventArgs e)
 		{
-            hlCancel.NavigateUrl = GetNavigationUrl(Selection.SelectedItem);
-
 			EditSection config = Engine.Resolve<EditSection>();
 			if (config == null) throw new ConfigurationErrorsException("Cannot find configuration n2/edit");
 

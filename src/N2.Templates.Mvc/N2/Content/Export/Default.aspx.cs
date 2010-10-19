@@ -33,12 +33,6 @@ namespace N2.Edit.Export
 
 		#region Page Event Handlers
 
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-            hlCancel.NavigateUrl = CancelUrl();
-		}
-
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);

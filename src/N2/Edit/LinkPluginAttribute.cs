@@ -14,7 +14,6 @@ namespace N2.Edit
 	public abstract class LinkPluginAttribute : AdministrativePluginAttribute
 	{
 		private string globalResourceClassName;
-		private string iconUrl;
 		private string target = Targets.Preview;
 		private string title;
 		private string toolTip;
@@ -25,13 +24,6 @@ namespace N2.Edit
 		{
 			get { return target; }
 			set { target = value; }
-		}
-
-		/// <summary>The plugin's icon.</summary>
-		public string IconUrl
-		{
-			get { return iconUrl; }
-			set { iconUrl = value; }
 		}
 
 		/// <summary>The plugin's text.</summary>
@@ -99,11 +91,13 @@ namespace N2.Edit
 			a.SkinID = "ToolBarLink_" + Name;
 
 			a.Target = Target;
-			a.Attributes["class"] = "command " + Name;
+			a.Attributes["class"] = Name;
 			a.Text = tooltip;
             a.ToolTip = tooltip;
-
-            a.Controls.Add(new LiteralControl(GetInnerHtml(IconUrl, alternative, title)));
+			a.Text = title;
+			ApplyStyles(a);
+			//if (!string.IsNullOrEmpty(IconUrl))
+			//    a.Style[HtmlTextWriterStyle.BackgroundImage] = N2.Web.Url.ToAbsolute(IconUrl);
 
 			container.Controls.Add(a);
 			return a;

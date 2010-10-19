@@ -28,6 +28,8 @@ using N2.Web.UI.WebControls;
 using N2.Security;
 using N2.Web;
 using N2.Collections;
+using System.Web.UI;
+using N2.Edit.Templating;
 
 namespace N2.Edit
 {
@@ -38,6 +40,8 @@ namespace N2.Edit
     {
 		ItemDefinition ParentItemDefinition = null;
 		protected string ZoneName = null;
+		protected IDefinitionManager Definitions;
+		protected ITemplateRepository Templates;
 
 		public ContentItem ActualItem
 		{
@@ -50,9 +54,17 @@ namespace N2.Edit
 			}
 		}
 
-        protected void Page_Init(object sender, EventArgs e)
-        {
-            hlCancel.NavigateUrl = CancelUrl();
+		protected override void OnPreInit(EventArgs e)
+		{
+			base.OnPreInit(e);
+			Definitions = Engine.Resolve<IDefinitionManager>();
+			Templates = Engine.Resolve<ITemplateRepository>();
+		}
+
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
 			if (Selection.SelectedItem.Parent == null)
 			{
 				rblPosition.Enabled = false;
@@ -62,8 +74,48 @@ namespace N2.Edit
 				rblPosition.Items[0].Text = "Create new item before: " + BuildHierarchy(Selection.SelectedItem, CreationPosition.Before);
 				rblPosition.Items[1].Text = "Create new item below: " + BuildHierarchy(Selection.SelectedItem, CreationPosition.Below);
 			}
-            rptTypes.ItemDataBound += new RepeaterItemEventHandler(rptTypes_ItemDataBound);
         }
+
+        protected void rptTypes_OnItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemIndex == 0)
+			{
+				Control hlNew = e.Item.FindControl("hlNew");
+				if(hlNew != null)
+					hlNew.Focus();
+			}
+        }
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			ParentItemDefinition = Definitions.GetDefinition(ActualItem.GetContentType());
+			if (!IsPostBack)
+			{
+				LoadZones();
+			}
+			ZoneName = rblZone.SelectedValue;
+        }
+
+		protected void rblPosition_OnSelectedIndexChanged(object sender, EventArgs args)
+		{
+			ParentItemDefinition = Definitions.GetDefinition(ActualItem.GetContentType());
+			LoadZones();
+			ZoneName = rblZone.SelectedValue;
+		}
+
+		protected void rblZone_OnSelectedIndexChanged(object sender, EventArgs args)
+		{
+			ZoneName = rblZone.SelectedValue;
+		}
+
+		protected override void OnPreRender(EventArgs e)
+		{
+			base.OnPreRender(e);
+			
+			LoadAllowedTypes();
+		}
 
 		private string BuildHierarchy(ContentItem selected, CreationPosition position)
 		{
@@ -105,7 +157,7 @@ namespace N2.Edit
 		private string GetNodeText(ContentItem item, bool isCurrent)
 		{
 			string format = "<a href='{2}' title='{1}'><img src='{0}' alt='{3}'/></a> {1} ";
-			if(isCurrent)
+			if (isCurrent)
 				format = "<strong>" + format + "</strong>";
 
 			return string.Format(format, ResolveClientUrl(item.IconUrl), item.Title, item.Url, "icon", "current");
@@ -132,47 +184,10 @@ namespace N2.Edit
 			return null;
 		}
 
-        void rptTypes_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemIndex == 0)
-                e.Item.FindControl("hlNew").Focus();
-        }
-
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-			ParentItemDefinition = Engine.Definitions.GetDefinition(ActualItem.GetContentType());
-			if (!IsPostBack)
-			{
-				LoadZones();
-			}
-			ZoneName = rblZone.SelectedValue;
-        }
-
-		protected void rblPosition_OnSelectedIndexChanged(object sender, EventArgs args)
-		{
-			ParentItemDefinition = Engine.Definitions.GetDefinition(ActualItem.GetContentType());
-			LoadZones();
-			ZoneName = rblZone.SelectedValue;
-		}
-
-		protected void rblZone_OnSelectedIndexChanged(object sender, EventArgs args)
-		{
-			ZoneName = rblZone.SelectedValue;
-		}
-
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
-			
-			LoadAllowedTypes();
-		}
-
 		private void LoadAllowedTypes()
 		{
 			int allowedChildrenCount = ParentItemDefinition.AllowedChildren.Count;
-			IList<ItemDefinition> allowedChildren = Engine.Definitions.GetAllowedChildren(ParentItemDefinition, ZoneName, this.User);
+			IList<ItemDefinition> allowedChildren = Definitions.GetAllowedChildren(ParentItemDefinition, ZoneName, this.User);
 
 			if(!IsAuthorized(Permission.Write))
 			{

@@ -136,7 +136,7 @@
     <value>Cancel</value>
   </data>
   <data name="referencingItems.Legend" xml:space="preserve">
-    <value>Referring items</value>
+    <value>Referencing items</value>
   </data>
   <data name="hlReferencingItems.Text" xml:space="preserve">
     <value>List Referencing Items</value>

@@ -20,7 +20,7 @@ namespace N2.Edit.Navigation
 		public override Control AddTo(Control container, PluginContext context)
 		{
 			HtmlGenericControl div = new HtmlGenericControl("div");
-			div.Attributes["class"] = "sort command";
+			div.Attributes["class"] = "sort";
 			container.Controls.Add(div);
 
 			HtmlAnchor up = AddSortAnchor(div, context.Rebase(context.Format("Navigation/sortUp.ashx?selected={Selected.Path}", true)), "~/N2/Resources/icons/bullet_arrow_up.png", "up");
@@ -41,8 +41,7 @@ namespace N2.Edit.Navigation
 			a.Target = Target;
 			a.Attributes["class"] = key;
 			a.Title = Utility.GetResourceString(GlobalResourceClassName, key + Name + ".ToolTip") ?? ToolTip;
-
-			a.InnerHtml = string.Format("<img src='{0}' alt=''/>", N2.Web.Url.ToAbsolute(iconUrl));
+			a.Style[HtmlTextWriterStyle.BackgroundImage] = N2.Web.Url.ToAbsolute(iconUrl);
 
 			container.Controls.Add(a);
 			return a;

@@ -137,7 +137,7 @@ namespace N2.Persistence.NH
 			{
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
-					DeleteRecursive(itemNoMore);
+					DeleteRecursive(itemNoMore, itemNoMore);
 
 					transaction.Commit();
 				}
@@ -147,28 +147,28 @@ namespace N2.Persistence.NH
 
 		#region Delete Helper Methods
 
-		private void DeleteRecursive(ContentItem itemNoMore)
+		private void DeleteRecursive(ContentItem topItem, ContentItem itemToDelete)
 		{
-			DeletePreviousVersions(itemNoMore);
+			DeletePreviousVersions(itemToDelete);
 
-			DeleteInboundLinks(itemNoMore);
+			DeleteInboundLinks(topItem, itemToDelete);
 
 			try
 			{
 				Trace.Indent();
-				List<ContentItem> children = new List<ContentItem>(itemNoMore.Children);
+				List<ContentItem> children = new List<ContentItem>(itemToDelete.Children);
 				foreach (ContentItem child in children)
-					DeleteRecursive(child);
+					DeleteRecursive(topItem, child);
 			}
 			finally
 			{
 				Trace.Unindent();
 			}
 
-			itemNoMore.AddTo(null);
+			itemToDelete.AddTo(null);
 
-			TraceInformation("ContentPersister.DeleteRecursive " + itemNoMore);
-			itemRepository.Delete(itemNoMore);
+			TraceInformation("ContentPersister.DeleteRecursive " + itemToDelete);
+			itemRepository.Delete(itemToDelete);
 		}
 
 		private void DeletePreviousVersions(ContentItem itemNoMore)
@@ -185,7 +185,7 @@ namespace N2.Persistence.NH
 			}
 		}
 
-		private void DeleteInboundLinks(ContentItem itemNoMore)
+		private void DeleteInboundLinks(ContentItem topItem, ContentItem itemNoMore)
 		{
 			var inboundLinks = linkRepository.FindAll(Expression.Eq("LinkedItem", itemNoMore));
 			if (inboundLinks.Count == 0)
@@ -197,7 +197,8 @@ namespace N2.Persistence.NH
 			{
 				// do not remove from enclosing (NHibernate.ObjectDeletedException : deleted object would be re-saved by cascade (remove deleted object from associations)[N2.Details.LinkDetail#1])
 				detail.LinkedItem = null;
-				linkRepository.Delete(detail);
+				if(!detail.EnclosingItem.AncestralTrail.StartsWith(topItem.AncestralTrail))
+					linkRepository.Delete(detail);
 			}
 			linkRepository.Flush();
 		}

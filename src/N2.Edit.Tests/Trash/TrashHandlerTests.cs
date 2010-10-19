@@ -31,7 +31,7 @@ namespace N2.Edit.Tests.Trash
 		    
             mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, definitions, null, host) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, definitions)) { UseNavigationMode = true };
             th.Throw(item);
 
             Assert.AreEqual(trash, item.Parent);
@@ -146,7 +146,8 @@ namespace N2.Edit.Tests.Trash
 
             mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1)) { UseNavigationMode = true };
+			var host = new Host(webContext, 1, 1);
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, definitions)) { UseNavigationMode = true };
 
             bool throwingWasInvoked = false;
             bool throwedWasInvoked = false;
@@ -171,7 +172,8 @@ namespace N2.Edit.Tests.Trash
 
             mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, definitions, null, new Host(webContext, 1, 1)) { UseNavigationMode = true };
+			var host = new Host(webContext, 1, 1);
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, null)) { UseNavigationMode = true };
 
             th.ItemThrowing += delegate(object sender, CancellableItemEventArgs args) { args.Cancel = true; };
             th.Throw(item);
@@ -193,7 +195,7 @@ namespace N2.Edit.Tests.Trash
 			
             mocks.ReplayAll();
 
-			return new TrashHandler(persister, null, definitions, null, host) { UseNavigationMode = true };
+			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, definitions)) { UseNavigationMode = true };
         }
 
         private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)

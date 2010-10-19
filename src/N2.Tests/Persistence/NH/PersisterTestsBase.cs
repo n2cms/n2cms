@@ -11,6 +11,7 @@ using N2.Persistence.NH.Finder;
 using System.Configuration;
 using N2.Configuration;
 using System;
+using N2.Persistence.Proxying;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -21,12 +22,14 @@ namespace N2.Tests.Persistence.NH
 		protected FakeSessionProvider sessionProvider;
 		protected ItemFinder finder;
 		protected SchemaExport schemaCreator;
-		protected IItemNotifier interceptor;
+		protected IItemNotifier notifier;
+		protected InterceptingProxyFactory proxyFactory;
+		protected Type[] persistedTypes = new[] { typeof(Definitions.PersistableItem1), typeof(Definitions.PersistableItem2), typeof(Definitions.NonVirtualItem) };
 			
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
 		{
-			TestSupport.Setup(out definitions, out interceptor, out sessionProvider, out finder, out schemaCreator, typeof(Definitions.PersistableItem1), typeof(Definitions.PersistableItem2), typeof(Definitions.NonVirtualItem));
+			TestSupport.Setup(out definitions, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, persistedTypes);
 		}
 
 		[SetUp]

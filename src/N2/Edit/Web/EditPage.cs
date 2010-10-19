@@ -321,7 +321,7 @@ namespace N2.Edit.Web
         }
 
         SelectionUtility selection;
-        protected SelectionUtility Selection
+        public SelectionUtility Selection
         {
             get { return selection ?? (selection = new SelectionUtility(this, Engine)); }
             set { selection = value; }

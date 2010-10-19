@@ -11,18 +11,43 @@ namespace N2.Web.UI.WebControls
 	{
 		private ITemplate emptyTemplate = null;
 		int itemsCreated;
-		
+		bool useDataSource;
+
 		[DefaultValue(null), PersistenceMode(PersistenceMode.InnerProperty), TemplateContainer(typeof(System.Web.UI.WebControls.RepeaterItem)), Browsable(false)]
 		public virtual ITemplate EmptyTemplate
 		{
 			get { return this.emptyTemplate; }
 			set { this.emptyTemplate = value; }
 		}
+
 		protected override void CreateControlHierarchy(bool useDataSource)
 		{
 			itemsCreated = 0;
+			this.useDataSource = useDataSource;
 			base.CreateControlHierarchy(useDataSource);
+		}
 
+		protected override void OnItemCreated(System.Web.UI.WebControls.RepeaterItemEventArgs e)
+		{
+			base.OnItemCreated(e);
+
+			switch (e.Item.ItemType)
+			{	
+				case ListItemType.Header:
+				case ListItemType.Pager:
+				case ListItemType.Separator:
+					break;
+				case ListItemType.Footer:
+					InstantiateEmptyTemplate();
+					break;
+				default:
+					itemsCreated++;
+					break;
+			}
+		}
+
+		private void InstantiateEmptyTemplate()
+		{
 			if (itemsCreated == 0 && EmptyTemplate != null)
 			{
 				System.Web.UI.WebControls.RepeaterItem ri = new System.Web.UI.WebControls.RepeaterItem(0, System.Web.UI.WebControls.ListItemType.Header);
@@ -34,23 +59,6 @@ namespace N2.Web.UI.WebControls
 					ri.DataBind();
 					OnItemDataBound(new System.Web.UI.WebControls.RepeaterItemEventArgs(ri));
 				}
-			}
-		}
-
-		protected override void OnItemCreated(System.Web.UI.WebControls.RepeaterItemEventArgs e)
-		{
-			base.OnItemCreated(e);
-
-			switch (e.Item.ItemType)
-			{	
-				case ListItemType.Footer:
-				case ListItemType.Header:
-				case ListItemType.Pager:
-				case ListItemType.Separator:
-					break;
-				default:
-					itemsCreated++;
-					break;
 			}
 		}
 	}

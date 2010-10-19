@@ -22,7 +22,6 @@ namespace N2.Edit.Security
 		{
 			InitValues();
 
-			hlCancel.NavigateUrl = CancelUrl();
 			base.OnInit(e);
 		}
 

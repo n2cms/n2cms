@@ -218,7 +218,11 @@ window.n2ddcp = new n2DragDrop();
 			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
 			foreach (IControlPanelPlugin plugin in Engine.Resolve<IPluginFinder>().GetPlugins<IControlPanelPlugin>())
 			{
-				plugin.AddTo(pluginPanel, new PluginContext(CurrentItem, null, start, root, state, Engine.EditManager.GetManagementInterfaceUrl()));
+				HtmlGenericControl span = new HtmlGenericControl("span");
+				span.Attributes["class"] = "control";
+				pluginPanel.Controls.Add(span);
+
+				plugin.AddTo(span, new PluginContext(CurrentItem, null, start, root, state, Engine.EditManager.GetManagementInterfaceUrl()));
 			}
 		}
 

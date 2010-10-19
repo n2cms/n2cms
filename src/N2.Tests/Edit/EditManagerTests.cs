@@ -14,6 +14,7 @@ using N2.Persistence;
 using N2.Tests.Edit.Items;
 using System.Security.Principal;
 using N2.Tests.Fakes;
+using N2.Persistence.Proxying;
 
 namespace N2.Tests.Edit
 {
@@ -42,7 +43,7 @@ namespace N2.Tests.Edit
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
             var changer = new N2.Edit.Workflow.StateChanger();
-			DefinitionManager definitions = new DefinitionManager(builder, changer, notifier, new StubInterceptionFactory());
+			DefinitionManager definitions = new DefinitionManager(builder, changer, notifier, new EmptyProxyFactory());
 			
 			versioner = mocks.StrictMock<IVersionManager>();
 			editManager = new EditManager(definitions, persister, versioner, null, null, null, changer, new EditSection());

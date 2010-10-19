@@ -1,23 +1,34 @@
 <%@ Page MasterPageFile="Framed.Master" Language="C#" AutoEventWireup="true" CodeBehind="New.aspx.cs" Inherits="N2.Edit.New" Title="Create new item" meta:resourceKey="DefaultResource" %>
+<%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <%@ Import namespace="N2.Definitions"%>
 <asp:Content ContentPlaceHolderID="Toolbar" ID="ct" runat="server">
-    <asp:HyperLink ID="hlCancel" runat="server" CssClass="cancel command" meta:resourceKey="hlCancel">cancel</asp:HyperLink>
+    <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Content" ID="cc" runat="server">
 	<asp:CustomValidator ID="cvPermission" CssClass="validator info" ErrorMessage="Not authorized" Display="Dynamic" runat="server" />
     <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType">
 		<div class="cf">
-		<asp:Repeater ID="rptTypes" runat="server">
+		<n2:Repeater ID="rptTypes" runat="server" OnItemDataBound="rptTypes_OnItemDataBound">
 			<ItemTemplate>
 				<div class="type cf i<%# Container.ItemIndex %> a<%# Container.ItemIndex % 2 %>">
-					<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((ItemDefinition)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
-						<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" ToolTip='<%# Eval("NumberOfItems") %>' />
+					<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((ItemDefinition)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server" style='<%# "background-image:url(" + ResolveUrl((string)Eval("IconUrl")) + ")" %>'>
 						<span class="title"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Title") ?? Eval("Title") %></span>
-						<%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%>
+						<span class="description"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%></span>
 					</asp:HyperLink>
+					<asp:Repeater runat="server" DataSource='<%# Templates.GetTemplates(((ItemDefinition)Container.DataItem).ItemType, User) %>'>
+						<ItemTemplate>
+							<div class="template">
+								<a href="<%# GetEditUrl((ItemDefinition)Eval("Definition")) %>&template=<%# Eval("Name") %>">
+									<span class="title"><%# Eval("Title") %></span>
+									<span><%# Eval("Description") %></span>								
+								</a>
+							</div>
+						</ItemTemplate>
+					</asp:Repeater>
 				</div>
 			</ItemTemplate>
-		</asp:Repeater>
+			<EmptyTemplate><em><asp:Label ID="lblNone" Text="Nothing can be created here." meta:resourceKey="lblNone" runat="server" /></em></EmptyTemplate>
+		</n2:Repeater>
 		</div>
     </n2:TabPanel>
     

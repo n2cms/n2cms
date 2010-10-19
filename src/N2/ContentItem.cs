@@ -682,9 +682,9 @@ namespace N2
 		/// <returns>The cloned item with or without cloned child items.</returns>
 		public virtual ContentItem Clone(bool includeChildren)
         {
-			ContentItem cloned = (ContentItem)Activator.CreateInstance(GetContentType(), true);
-			
-			CloneFields(this, cloned, true);
+			ContentItem cloned = (ContentItem)MemberwiseClone(); //Activator.CreateInstance(GetContentType(), true);
+
+			ClearUnclonable(cloned);
 			CloneDetails(this, cloned);
 			CloneChildren(this, cloned, includeChildren);
 			CloneAuthorizedRoles(this, cloned);
@@ -693,25 +693,31 @@ namespace N2
         }
 
 		#region Clone Helper Methods
-		static void CloneFields(ContentItem source, ContentItem destination, bool partialUpdate)
+		static void CloneFields(ContentItem source, ContentItem destination)
 		{
 			destination.title = source.title;
 			destination.name = source.name;
 			destination.created = source.created;
 			destination.updated = source.updated;
-			if (partialUpdate)
-			{
-				destination.zoneName = source.zoneName;
-				destination.published = source.published;
-				destination.expires = source.expires;
-                destination.sortOrder = source.sortOrder;
-                destination.state = source.state;
-			}
-            destination.versionIndex = source.versionIndex;
-            destination.visible = source.visible;
+			destination.versionIndex = source.versionIndex;
+			destination.visible = source.visible;
 			destination.savedBy = source.savedBy;
 			destination.urlParser = source.urlParser;
 			destination.url = null;
+		}
+
+		private static void ClearUnclonable(ContentItem destination)
+		{
+			destination.id = 0;
+			destination.url = null;
+			destination.parent = null;
+			destination.versionOf = null;
+			destination.ancestralTrail = null;
+			destination.hashCode = null;
+			destination.authorizedRoles = new List<Security.AuthorizedRole>();
+			destination.children = new List<ContentItem>();
+			destination.details = new Dictionary<string, Details.ContentDetail>();
+			destination.detailCollections = new Dictionary<string, Details.DetailCollection>();
 		}
 
 		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)
@@ -898,7 +904,7 @@ namespace N2
 
 		void IUpdatable<ContentItem>.UpdateFrom(ContentItem source)
 		{
-			CloneFields(source, this, false);
+			CloneFields(source, this);
 			CloneDetails(source, this);
 			ClearMissingDetails(source, this);
 		}

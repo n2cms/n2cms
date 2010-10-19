@@ -43,9 +43,6 @@ namespace N2.Edit
 		/// <summary>The anchor's url query.</summary>
 		public string NavigateQuery { get; set; }
 
-		/// <summary>Url to the anchor's image icon.</summary>
-		public string IconUrl { get; set; }
-
 		/// <summary>The control panel state that displays this link.</summary>
 		public ControlPanelState ShowDuring { get; set; }
 
@@ -69,7 +66,7 @@ namespace N2.Edit
 			link.NavigateUrl = url;
 			link.ToolTip = context.Format(tooltip, false);
             link.CssClass = Name;
-
+			
 			AddTargetAttribute(link);
 
 			container.Controls.Add(link);
