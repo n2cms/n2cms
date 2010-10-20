@@ -16,15 +16,21 @@ namespace N2.Edit
         {
             itemsToDelete.CurrentItem = Selection.SelectedItem;
             itemsToDelete.DataBind();
-			var q = Engine.Resolve<IItemFinder>().Where.Detail().Eq(Selection.SelectedItem);
-			int count = q.Count();
-			if (count > 0)
+
+			if (Selection.SelectedItem.ID != 0)
 			{
-				referencingItems.Legend += " (" + count + ")";
-				rptReferencing.DataSource = q.MaxResults(10).Select();
-				rptReferencing.DataBind();
-				if (count > 10)
-					referencingItems.Controls.Add(new LiteralControl("..."));
+				var q = Engine.Resolve<IItemFinder>().Where.Detail().Eq(Selection.SelectedItem);
+				int count = q.Count();
+				if (count > 0)
+				{
+					referencingItems.Legend += " (" + count + ")";
+					rptReferencing.DataSource = q.MaxResults(10).Select();
+					rptReferencing.DataBind();
+					if (count > 10)
+						referencingItems.Controls.Add(new LiteralControl("..."));
+				}
+				else
+					referencingItems.Visible = false;
 			}
 			else
 				referencingItems.Visible = false;
