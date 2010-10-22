@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
@@ -20,7 +21,7 @@ namespace N2.Edit.Web.UI.Controls
             base.CreateChildControls();
 
 			var start = Engine.Resolve<IUrlParser>().StartPage;
-			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
+			var root = Engine.Persister.Get(Engine.Resolve<IHost>().CurrentSite.RootItemID);
             foreach (ToolbarPluginAttribute plugin in Engine.EditManager.GetPlugins<ToolbarPluginAttribute>(Engine.Resolve<IWebContext>().User))
             {
                 if ((plugin.Area & Area) != Area)
@@ -32,15 +33,39 @@ namespace N2.Edit.Web.UI.Controls
 				Controls.Add(item);
 
 				HtmlGenericControl command = new HtmlGenericControl("div");
-				command.Attributes["id"] = plugin.Name;
 				command.Attributes["class"] = "command";
 				item.Controls.Add(command);
 
-				plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, start, root, 
-					ControlPanelState.Visible, 
-					Engine.EditManager.GetManagementInterfaceUrl()));
+				if (plugin.OptionProvider != null)
+				{
+					var optionProvider = Engine.Resolve(plugin.OptionProvider) as IProvider<ToolbarOption>;
+					var options = optionProvider.GetAll().ToList();
+
+					if (options.Count > 0)
+					{
+						OptionsMenu menu = new OptionsMenu();
+						command.Controls.Add(menu);
+
+						AddPlugin(start, root, plugin, menu);
+
+						foreach (var option in options)
+						{
+							option.AddTo(menu);
+						}
+						continue;
+					}
+				}
+				
+				AddPlugin(start, root, plugin, command);
             }
         }
+
+		private void AddPlugin(ContentItem start, ContentItem root, ToolbarPluginAttribute plugin, Control command)
+		{
+			plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, start, root,
+				ControlPanelState.Visible,
+				Engine.EditManager.GetManagementInterfaceUrl()));
+		}
 
         protected override void Render(HtmlTextWriter writer)
         {

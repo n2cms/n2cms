@@ -5,8 +5,8 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 /* Toolbar */
 #top{ position:relative; }
 
-.toolbox { font-size: 10px; overflow:hidden; font-family: 'Lucida Console', Monaco, monospace; }
-    .toolbox .item { overflow:hidden; float:left; text-align:center; border-left:solid 1px #fff; border-right:solid 1px #d8d8d8; background-color:#fff; }
+.toolbox { font-size: 10px; font-family: 'Lucida Console', Monaco, monospace; }
+    .toolbox .item { float:left; text-align:center; border-left:solid 1px #fff; border-right:solid 1px #d8d8d8; background-color:#fff; }
         .toolbox .item .command { text-decoration:none; background-repeat:no-repeat; background-position:50% bottom; }
         .toolbox .item .command:hover { background-image:url(../../Resources/img/toolbar_button_bg_hover.png); }
         .toolbox .item.selected .command { background-color:#fff; background-image:none; color:#000; cursor:auto; }
@@ -14,7 +14,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 			.toolbox .item .command a { padding:4px 5px 3px 22px; color:#6F6F6F; display:block; height:18px; line-height:18px; color:#6F6F6F; text-decoration:none; background:transparent none no-repeat 3px 50%; }
 			.toolbox .item .command a:hover { color:#000; }
 
-.header { padding:3px 10px; background:transparent url(../../Resources/img/darken10.png) repeat-x 0px bottom;}
+.header { padding:1px 8px; background:transparent url(../../Resources/img/darken10.png) repeat-x 0px bottom;}
     .header .toolbox { float:left; border-bottom:none; margin-right:10px; }
         .header .toolbox .item { background:#fff url(../../Resources/img/lighten10.png) repeat-x 0 50%; }
             .header .toolbox .item .command:hover { background-image:url(../../Resources/img/toolbar_button_bg_hover.png); }
@@ -23,7 +23,7 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 #top .logo{ position:absolute; right:10px; top:5px; height:30px; }
 #top .logout { position: absolute; right:60px; top:18px; color:#fff; }
 
-.subbar { border: solid 1px #999; border-left:none; border-right:none; background:transparent url(../../Resources/img/lighten10.png) repeat-x 0px bottom; position:relative; padding:2px 10px;}
+.subbar { border: solid 1px #999; border-left:none; border-right:none; background:transparent url(../../Resources/img/lighten10.png) repeat-x 0px bottom; position:relative; padding:1px 8px;}
     .subbar .operations { float:left; }
     .subbar .options { float:right; }
 
@@ -86,4 +86,73 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 #top .disabled:hover
 {
     background-image:none;
+}
+
+
+
+
+/* button/option drop down */
+#top .toolbox .commandOptions {
+	position:relative;
+}
+    #top .toolbox .commandOptions a {
+    	float:left;
+    }
+    #top .toolbox .commandOptions .opener {
+		text-indent:-10000px;
+		width:13px;
+	    float:left;
+	    display:block;
+	    cursor:pointer;
+	    cursor:hand;
+		border-left:dotted 1px #e8e8e8;
+		background:transparent url(../icons/bullet_arrow_up.png) no-repeat 50% 50%;
+	    height:25px;
+    }
+    #top #topbar .toolbox .commandOptions .opener {
+	    height:34px;
+    }
+    #top .toolbox .closed .opener {
+		background:transparent url(../icons/bullet_arrow_down.png) no-repeat 50% 50%;
+    }
+    #top .toolbox .optionGroup {
+	    padding:0 1px;
+	    position:absolute;
+	    top:0;
+	    left:-2px;
+	    z-index:9009;
+    }
+    #top .toolbox .closed .optionGroup {
+	    top:-9999px;
+	    left:-9999px;
+    }
+
+        #top .toolbox .commandOptions .option {
+        	display:none;
+        }
+        #top .toolbox .commandOptions .optionGroup a {
+	        float:none;
+	        display:block;
+	        width:280px;
+	        text-decoration:none;
+			text-align:left;
+			visibility:hidden;
+        }
+        #top .toolbox .commandOptions .optionGroup .option {
+        	visibility:visible;
+        	height:auto;
+        	padding:1px 4px;
+        	border:solid 1px #ddd;
+        	border-bottom-style:none;
+			background-color:#fff;
+			font-family:Arial,Sans-Serif;
+			font-size:10px;
+        }
+    #top .toolbox .commandOptions .opener:hover {
+    }
+
+/* custom */
+#edit a
+{
+	min-width:58px;
 }

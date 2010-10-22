@@ -14,7 +14,7 @@ namespace N2.Web.UI.WebControls
 	{
 		protected override void OnPreRender(System.EventArgs e)
 		{
-            string script = string.Format("jQuery('#{0}').n2optionmenu({{opener:\"<span class='opener'><img src='{1}' alt='more options'/></span>\"}});", ClientID, N2.Web.Url.ToAbsolute("~/N2/Resources/icons/bullet_arrow_down.png"));
+            string script = string.Format("jQuery('#{0}').n2optionmenu();", ClientID);
 			Register.JavaScript(Page, script, ScriptOptions.DocumentReady);
 			base.OnPreRender(e);
 		}

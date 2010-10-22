@@ -28,6 +28,10 @@ body .subbar
     border-right-color:#52301C;
     background-color:#AB8E5B;
 }
+body #top .toolbox .commandOptions .optionGroup .option
+{
+    background-color:#AB8E5B;
+}
 #top a
 {
     color:#fff;
@@ -51,12 +55,13 @@ body .subbar
     border-bottom:solid 1px #222;
 }
 body .toolbar, 
-body .optionGroup,
-body .commandOptions .opener,
+body .framed .optionGroup,
+body .framed .commandOptions .opener,
 body .gv th,
-body .gv thead td
+body .gv thead td,
+body .toolbar .option
 {
-    background:#668F91;
+    background-color:#668F91;
 	border-color:#648D8F;
 }
 body,

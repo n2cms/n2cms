@@ -21,12 +21,12 @@ body .subbar
     border-top-color:#ccc;
 }
 body .toolbar, 
-body .optionGroup,
-body .commandOptions .opener,
+body .framed .optionGroup,
+body .framed .commandOptions .opener,
 body .gv th,
 body .gv thead td
 {
-    background:#ddc;
+    background-color:#ddc;
 	border-color:#ccc;
 }
 body,

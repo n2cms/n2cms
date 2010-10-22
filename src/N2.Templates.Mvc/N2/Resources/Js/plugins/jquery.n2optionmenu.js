@@ -4,9 +4,9 @@
 
 (function($) {
     $.fn.n2optionmenu = function(options) {
-        settings = {
+        var settings = {
             wrapper: "<div class='commandOptions closed'></div>",
-            opener: "<span class='opener'><img src='img/ico/png/bullet_arrow_down.png' alt='more options'/></span>",
+            opener: "<span class='opener'>open</span>",
             closedClass: "closed"
         };
         $.extend(settings, options || {});

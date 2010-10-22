@@ -29,7 +29,6 @@ using N2.Security;
 using N2.Web;
 using N2.Collections;
 using System.Web.UI;
-using N2.Edit.Templating;
 
 namespace N2.Edit
 {
@@ -41,7 +40,7 @@ namespace N2.Edit
 		ItemDefinition ParentItemDefinition = null;
 		protected string ZoneName = null;
 		protected IDefinitionManager Definitions;
-		protected ITemplateRepository Templates;
+		protected IContentTemplateRepository Templates;
 
 		public ContentItem ActualItem
 		{
@@ -58,7 +57,7 @@ namespace N2.Edit
 		{
 			base.OnPreInit(e);
 			Definitions = Engine.Resolve<IDefinitionManager>();
-			Templates = Engine.Resolve<ITemplateRepository>();
+			Templates = Engine.Resolve<IContentTemplateRepository>();
 		}
 
 		protected override void OnInit(EventArgs e)

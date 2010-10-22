@@ -58,10 +58,14 @@ namespace N2.Persistence.NH
 		/// <returns>True if the entity was a content item.</returns>
 		public override bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState, string[] propertyNames, IType[] types)
 		{
-			bool changed = HandleSaveOrUpdate(entity as ContentItem, propertyNames, currentState);
-			if (changed)
-				interceptor.OnSaving(entity);
-			return changed;
+			bool wasHandled = HandleSaveOrUpdate(entity as ContentItem, propertyNames, currentState);
+			bool wasAltered = interceptor.OnSaving(entity);
+			if (wasHandled || wasAltered)
+			{
+				Debug.WriteLine("OnFlushDirty: " + entity + " " + id);
+				return true;
+			}
+			return false;
 		}
 
 		public override string GetEntityName(object entity)
@@ -78,8 +82,14 @@ namespace N2.Persistence.NH
 		/// <returns>True if the entity was a content item.</returns>
 		public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, IType[] types)
 		{
-			interceptor.OnSaving(entity);
-			return HandleSaveOrUpdate(entity as ContentItem, propertyNames, state);
+			bool wasHandled = HandleSaveOrUpdate(entity as ContentItem, propertyNames, state);
+			bool wasAltered = interceptor.OnSaving(entity);
+			if (wasHandled || wasAltered)
+			{
+				Debug.WriteLine("OnSave: " + entity + " " + id);
+				return true;
+			}
+			return false;
 		}
 
 		private bool HandleSaveOrUpdate(ContentItem item, string[] propertyNames, object[] state)

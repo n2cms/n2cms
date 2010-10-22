@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Edit.Web;
-using N2.Edit.Templating;
 using N2.Definitions;
 
 namespace N2.Management.Content.Templates
@@ -16,16 +15,16 @@ namespace N2.Management.Content.Templates
 		GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage
 	{
-		protected ITemplateRepository Templates { get; set; }
+		protected IContentTemplateRepository Templates { get; set; }
 		protected IDefinitionManager Definitions { get; set; }
-		protected IEditManager Edit { get; set; }
+		protected IEditManager Edits { get; set; }
 		
 		protected override void OnPreInit(EventArgs e)
 		{
 			base.OnPreInit(e);
-			Templates = Engine.Resolve<ITemplateRepository>();
+			Templates = Engine.Resolve<IContentTemplateRepository>();
 			Definitions = Engine.Resolve<IDefinitionManager>();
-			Edit = Engine.Resolve<IEditManager>();
+			Edits = Engine.Resolve<IEditManager>();
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -54,10 +53,10 @@ namespace N2.Management.Content.Templates
 				
 			}
 			template.Title = txtTitle.Text;
-			template[TemplateRepository.TemplateDescription] = txtDescription.Text;
+			template[ContentTemplateRepository.TemplateDescription] = txtDescription.Text;
 			Templates.AddTemplate(template);
 
-			Response.Redirect(Selection.SelectedItem.Url);
+			Response.Redirect("Default.aspx#" + tpTemplates.ClientID);
 		}
 	}
 }

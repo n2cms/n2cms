@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using N2.Edit.Templating;
 using N2.Engine;
 using N2.Web;
 using N2.Persistence;
@@ -14,8 +13,8 @@ using System.Security.Principal;
 
 namespace N2.Management.Content.Templates
 {
-	[Service(typeof(ITemplateRepository))]
-	public class TemplateRepository : ITemplateRepository
+	[Service(typeof(IContentTemplateRepository))]
+	public class ContentTemplateRepository : IContentTemplateRepository
 	{
 		public const string TemplateDescription = "TemplateDescription";
 
@@ -23,7 +22,7 @@ namespace N2.Management.Content.Templates
 		IDefinitionManager definitions;
 		ContainerRepository<TemplateContainer> container;
 
-		public TemplateRepository(IPersister persister, IDefinitionManager definitions, ContainerRepository<TemplateContainer> container)
+		public ContentTemplateRepository(IPersister persister, IDefinitionManager definitions, ContainerRepository<TemplateContainer> container)
 		{
 			this.persister = persister;
 			this.definitions = definitions;
@@ -32,7 +31,7 @@ namespace N2.Management.Content.Templates
 
 		#region ITemplateRepository Members
 
-		public TemplateInfo GetTemplate(string templateName)
+		public ContentTemplate GetTemplate(string templateName)
 		{
 			TemplateContainer templates = container.GetBelowRoot();
 			if (templates == null)
@@ -42,25 +41,27 @@ namespace N2.Management.Content.Templates
 			return CreateTemplateInfo(template);
 		}
 
-		private TemplateInfo CreateTemplateInfo(ContentItem template)
+		private ContentTemplate CreateTemplateInfo(ContentItem template)
 		{
-			template = template.Clone(true);
-			var info = new TemplateInfo
+			var clone = template.Clone(true);
+			var info = new ContentTemplate
 			{
 				Name = template.Name,
 				Title = template.Title,
 				Description = template.GetDetail(TemplateDescription, ""),
+				TemplateUrl = template.Url,
 				Definition = definitions.GetDefinition(template.GetContentType()),
-				Template = template
+				Template = clone,
+				Original = template
 				//HiddenEditors = (template.GetDetailCollection("HiddenEditors", false) ?? new DetailCollection()).ToList<string>(),
 			};
-			template.SetDetail(TemplateDescription, null, typeof(string));
-			template.Title = "";
-			template.Name = null;
+			clone.SetDetail(TemplateDescription, null, typeof(string));
+			clone.Title = "";
+			clone.Name = null;
 			return info;
 		}
 
-		public IEnumerable<TemplateInfo> GetAllTemplates()
+		public IEnumerable<ContentTemplate> GetAllTemplates()
 		{
 			TemplateContainer templates = container.GetBelowRoot();
 			if (templates == null)
@@ -72,7 +73,7 @@ namespace N2.Management.Content.Templates
 			}
 		}
 
-		public IEnumerable<TemplateInfo> GetTemplates(Type contentType, IPrincipal user)
+		public IEnumerable<ContentTemplate> GetTemplates(Type contentType, IPrincipal user)
 		{
 			foreach(var template in GetAllTemplates())
 			{

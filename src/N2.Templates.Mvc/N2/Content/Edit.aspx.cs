@@ -8,7 +8,6 @@ using N2.Web;
 using N2.Web.UI.WebControls;
 using N2.Edit.Workflow;
 using N2.Persistence;
-using N2.Edit.Templating;
 using N2.Persistence.Finder;
 
 namespace N2.Edit
@@ -37,7 +36,7 @@ namespace N2.Edit
 
 		protected ISecurityManager Security;
 		protected IDefinitionManager Definitions;
-		protected ITemplateRepository Templates;
+		protected IContentTemplateRepository Templates;
 		protected IVersionManager Versions;
 		protected CommandDispatcher Commands;
 		protected IEditManager Edits;
@@ -47,7 +46,7 @@ namespace N2.Edit
 			base.OnPreInit(e);
 			Security = Engine.SecurityManager;
 			Definitions = Engine.Definitions;
-			Templates = Engine.Resolve<ITemplateRepository>();
+			Templates = Engine.Resolve<IContentTemplateRepository>();
 			Versions = Engine.Resolve<IVersionManager>();
 			Commands = Engine.Resolve<CommandDispatcher>();
 			Edits = Engine.EditManager;

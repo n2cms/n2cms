@@ -67,20 +67,20 @@ a img,
 	        float:none;
 	        display:block;
 	        width:280px;
-        }
-        .commandOptions .optionGroup a{
 	        text-decoration:none;
         }
     .commandOptions .opener{
-	    height:10px;
+	    height:28px;
+		text-indent:-9999px;
+		width:13px;
 	    float:left;
 	    display:block;
-	    padding:6px 0 12px 0;
 	    margin-right:5px;
 	    position:relative;
 	    cursor:pointer;
 	    cursor:hand;
 		border:solid 1px #ddd;
+		background:transparent url(../icons/bullet_arrow_down.png) no-repeat 50% 50%;
     }
     .commandOptions .opener:hover{
     }
@@ -497,4 +497,10 @@ div.dp-popup .dp-nav-next .dp-nav-next-month
 .focused
 {
 	background-color:#eef;
+}
+.label
+{
+	width:100px;
+	float:left;
+	margin-bottom:10px;
 }

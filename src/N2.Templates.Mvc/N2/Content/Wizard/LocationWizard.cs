@@ -2,19 +2,22 @@ using System.Collections.Generic;
 using N2.Edit.Wizard.Items;
 using N2.Persistence;
 using N2.Web;
+using System;
+using N2.Engine;
 
 namespace N2.Edit.Wizard
 {
+	[Service]
 	public class LocationWizard
 	{
 		private Settings wizardSettings;
 		private readonly IPersister persister;
-		private readonly IHost host;
+		private readonly ContainerRepository<Wonderland> containers;
 
-		public LocationWizard(IPersister persister, IHost host)
+		public LocationWizard(IPersister persister, IHost host, ContainerRepository<Wonderland> containers)
 		{
 			this.persister = persister;
-			this.host = host;
+			this.containers = containers;
 			wizardSettings = new Settings("Wizard", string.Empty, "Wizard settings");
 		}
 
@@ -24,42 +27,41 @@ namespace N2.Edit.Wizard
 			set { wizardSettings = value; }
 		}
 
-		public virtual IList<MagicLocation> GetLocations()
+		public virtual IEnumerable<MagicLocation> GetLocations()
 		{
-			List<MagicLocation> locations = new List<MagicLocation>();
-			foreach (ContentItem child in GetWizardContainer().GetChildren())
+			var container = containers.GetBelowRoot();
+			if (containers == null)
+				yield break;
+
+			foreach (ContentItem child in container.GetChildren())
 			{
-				locations.Add(child as MagicLocation);
+				yield return child as MagicLocation;
 			}
-			return locations;
 		}
 
-		public virtual Wonderland GetWizardContainer()
+		public Items.MagicLocation AddLocation(ContentItem location, string discriminator, string templateName, string title, string zone)
 		{
-			ContentItem root = persister.Get(host.CurrentSite.RootItemID);
-			Wonderland container = root.GetChild(WizardSettings.Name) as Wonderland;
-			if(container == null)
+			ContentItem wonderland = containers.GetOrCreateBelowRoot((container) =>
 			{
-				container = new Wonderland();
-				container.Parent = root;
 				container.Title = WizardSettings.Title;
 				container.Name = WizardSettings.Name;
 				container.ZoneName = WizardSettings.ZoneName;
-				persister.Save(container);
-			}
-			return container;
-		}
-
-        public Items.MagicLocation AddLocation(ContentItem location, string discriminator, string title, string zone)
-		{
-            ContentItem wonderland = GetWizardContainer();
+			});
 			Items.MagicLocation ml = Context.Definitions.CreateInstance<Items.MagicLocation>(wonderland);
 			ml.Location = location;
 			ml.ItemDiscriminator = discriminator;
+			ml.ContentTemplate = templateName;
 			ml.Title = title;
 			ml.ItemZoneName = zone;
-			Context.Persister.Save(ml);
+			persister.Save(ml);
 			return ml;
+		}
+
+		public void RemoveLocation(int id)
+		{
+			var location = persister.Get<MagicLocation>(id);
+			if (location != null)
+				persister.Delete(location);
 		}
 	}
 }

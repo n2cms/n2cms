@@ -3,7 +3,7 @@
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="Frame" ID="cf" runat="server">
-    <form id="f" runat="server">
+    <form id="f" runat="server" class="framed">
         <div id="toolbar" class="toolbar"><div class="inner">
             <asp:ContentPlaceHolder ID="Toolbar" runat="server" />
         </div></div>

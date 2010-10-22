@@ -390,8 +390,10 @@
     <Compile Include="Edit\Installation\AbstractMigration.cs" />
     <Compile Include="Edit\Installation\MigrationEngine.cs" />
     <Compile Include="Edit\Installation\SystemStatusLevel.cs" />
-    <Compile Include="Edit\Templating\ITemplateRepository.cs" />
-    <Compile Include="Edit\Templating\TemplateInfo.cs" />
+    <Compile Include="Edit\IContentTemplateRepository.cs" />
+    <Compile Include="Edit\ContentTemplate.cs" />
+    <Compile Include="Edit\ToolbarOption.cs" />
+    <Compile Include="Engine\IProviderOfT.cs" />
     <Compile Include="Engine\AttributeInfo.cs" />
     <Compile Include="Edit\FileEventArgs.cs" />
     <Compile Include="Edit\FileSystem\MappedFileSystem.cs" />
@@ -443,6 +445,7 @@
     <Compile Include="Engine\AdaptsAttribute.cs" />
     <Compile Include="Engine\Castle\WindsorServiceContainer.cs" />
     <Compile Include="Engine\ContainerConfigurer.cs" />
+    <Compile Include="Engine\ServiceProvider.cs" />
     <Compile Include="Persistence\EntityDependencySetter.cs" />
     <Compile Include="Persistence\ContentDependencyInjector.cs" />
     <Compile Include="Persistence\IDependencySetter.cs" />

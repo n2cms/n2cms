@@ -10,13 +10,21 @@
 	fieldset div.container { max-height:120px; overflow:auto; margin-bottom:20px; }
 </style>
     <n2:tabpanel ID="tpTemplates" runat="server" ToolTip="Templates" CssClass="tabPanel" meta:resourcekey="tpTemplates" RegisterTabCss="False">
-        <asp:GridView id="gvTemplates" runat="server" AutoGenerateColumns="False" CssClass="gv"
+        <asp:GridView id="gvTemplates" runat="server" AutoGenerateColumns="False" CssClass="gv" ShowHeader="false"
 			DataKeyNames="Name" OnRowDeleting="gvTemplates_OnRowDeleting"
 			DataSource="<%# Templates.GetAllTemplates() %>" 
 			meta:resourcekey="gvTemplatesResource1">
 			<Columns>
 				<asp:TemplateField HeaderText="Template" meta:resourcekey="TemplateFieldResource1"><ItemTemplate>
-					<%# Eval("Title") %>
+					<asp:HyperLink runat="server" NavigateUrl='<%# Eval("TemplateUrl") %>'>
+						<asp:Image runat="server" ImageUrl='<%# Eval("Template.IconUrl") %>' />
+						<%# Eval("Title") %>
+					</asp:HyperLink>
+				</ItemTemplate></asp:TemplateField>
+				<asp:BoundField DataField="Description" />
+				
+				<asp:TemplateField HeaderText="Template" meta:resourcekey="TemplateFieldResource1"><ItemTemplate>
+					<asp:HyperLink runat="server" NavigateUrl='<%# Edits.GetEditExistingItemUrl((N2.ContentItem)Eval("Original")) + "&returnUrl=" + Request.RawUrl %>' Text="Edit" meta:resourceKey="hlEdit" />
 				</ItemTemplate></asp:TemplateField>
 				<asp:ButtonField CommandName="Delete" Text="Delete" meta:resourcekey="ButtonFieldResource1" />
 			</Columns>
@@ -28,7 +36,7 @@
     <n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add template" CssClass="tabPanel" meta:resourcekey="tpAdd" RegisterTabCss="False">
 		<table>
 		<tr><td>
-			<asp:Label ID="lblTitle" runat="server" AssociatedControlID="txtTitle" 
+			<asp:Label ID="lblTitle" runat="server" AssociatedControlID="txtTitle" CssClass="label"
 				Text="Title" meta:resourcekey="lblTitleResource1" />
 		</td><td colspan="1">
 			<asp:TextBox ID="txtTitle" runat="server" 
@@ -36,7 +44,7 @@
 					meta:resourcekey="txtTitleResource1" />
 		</td></tr>
 		<tr><td>
-			<asp:Label ID="lblDescription" runat="server" AssociatedControlID="txtDescription" 
+			<asp:Label ID="lblDescription" runat="server" AssociatedControlID="txtDescription" CssClass="label"
 				Text="Description" meta:resourcekey="lblDescription" />
 		</td><td colspan="1">
 			<asp:TextBox ID="txtDescription" runat="server" meta:resourcekey="txtDescription" />

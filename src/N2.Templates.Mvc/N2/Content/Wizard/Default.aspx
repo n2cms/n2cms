@@ -8,40 +8,74 @@
 </asp:Content>
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
     <n2:tabpanel ID="tpType" runat="server" ToolTip="Select type" CssClass="tabPanel" meta:resourcekey="tpTypeResource1" RegisterTabCss="False">
-        <n2:Repeater ID="rptLocations" runat="server">
-            <ItemTemplate>
-			    <div class="type cf">
-				    <asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
-						<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
-                        <%# Eval("Title") %>
-                    </asp:HyperLink>
-				    <%# Eval("Description") %>
-			    </div>
-            </ItemTemplate>
-            <EmptyTemplate>
-				<asp:Label runat="server" ID="lblNoItems" meta:resourcekey="lblNoItems" Text="No locations added." />
-            </EmptyTemplate>
-        </n2:Repeater>
+        <asp:GridView ID="gvLocations" runat="server" 
+			OnRowDeleting="gvLocations_OnRowDeleting" DataKeyNames="ID"
+			CssClass="gv" AutoGenerateColumns="false" ShowHeader="false">
+			<Columns>
+				<asp:TemplateField>
+					<ItemTemplate>
+						<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
+							<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
+							<%# Eval("Title") %>
+						</asp:HyperLink>
+					</ItemTemplate>
+				</asp:TemplateField>
+				<asp:BoundField DataField="Description" />
+				<asp:TemplateField>
+					<ItemTemplate>
+						<asp:HyperLink ID="hlNew" NavigateUrl='<%# Eval("Location.Url") %>' runat="server">
+							<asp:Image ID="imgIco" ImageUrl='<%# Eval("Location.IconUrl") %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
+							<%# Eval("Location.Title")%>
+						</asp:HyperLink>
+					</ItemTemplate>
+				</asp:TemplateField>
+				<asp:ButtonField Text="Delete" CommandName="Delete" />
+			</Columns>
+			<EmptyDataTemplate>
+				<asp:Literal ID="ltWizards" Text="No wizards configured" runat="server" meta:resourceKey="ltWizards" />
+			</EmptyDataTemplate>
+        </asp:GridView>
     </n2:tabpanel>
     <n2:tabpanel ID="tpAdd" runat="server" ToolTip="Add location" CssClass="tabPanel" meta:resourcekey="tpAddResource1" RegisterTabCss="False">
         <asp:MultiView ID="mvAdd" runat="server" ActiveViewIndex="0">
             <asp:View runat="server">
                 <div class="cf">
-                    <asp:Label runat="server" Text="Title" AssociatedControlID="txtTitle" 
+                    <asp:Label ID="lblLocation" runat="server" Text="Location" AssociatedControlID="lblLocationTitle" CssClass="label" meta:resourcekey="lblLocation" />
+                    <strong><asp:Label ID="lblLocationTitle" runat="server" CssClass="title"
+						  Text=<%# Selection.SelectedItem.Title %>/></strong>
+                </div>
+                <div class="cf">
+                    <asp:Label runat="server" Text="Title" AssociatedControlID="txtTitle" CssClass="label"
 						meta:resourcekey="LabelResource1" />
-                    <asp:TextBox ID="txtTitle" runat="server" 
+                    <asp:TextBox ID="txtTitle" runat="server" CssClass="title"
 						meta:resourcekey="txtTitleResource1" />
                 </div>
                 <div class="cf">
-                    <asp:Label runat="server" Text="Type" AssociatedControlID="ddlTypes" 
+                    <asp:Label runat="server" Text="Type" AssociatedControlID="ddlTypes" CssClass="label"
 						meta:resourcekey="LabelResource2" />
-                    <asp:DropDownList ID="ddlTypes" runat="server" DataTextField="Title" 
-						DataValueField="Discriminator" meta:resourcekey="ddlTypesResource1" />
+                    <asp:DropDownList ID="ddlTypes" runat="server" DataTextField="Title" CssClass="types"
+						DataValueField="Value" meta:resourcekey="ddlTypesResource1" />
                 </div>
                 <div class="cf">
                     <asp:Button ID="btnAdd" runat="server" Text="Add" OnCommand="btnAdd_Command" 
 						meta:resourcekey="btnAddResource1" />
                 </div>
+                <script type="text/javascript">
+                	var append = function() {
+                		var $t = $("input.title");
+                		var selected = " - " + this.options[this.selectedIndex].text.replace(/^\W+/, "");
+                		var last = $t.data("type") || "";
+                		var value = $t.attr("value");
+                		var index = value.lastIndexOf(selected);
+                		if (index < 0)
+                			index = value.lastIndexOf(last);
+                		if (index > 0) {
+                			$t.attr("value", value.substr(0, index) + selected);
+                			$t.data("type", selected);
+                		}
+                	};
+                	$(".types").change(append).each(append);
+                </script>
             </asp:View>
             <asp:View runat="server">
                 <asp:Label runat="server" Text="Added" meta:resourcekey="LabelResource3" />

@@ -32,13 +32,13 @@ namespace N2.Edit.Wizard {
         protected global::N2.Web.UI.WebControls.TabPanel tpType;
         
         /// <summary>
-        /// rptLocations control.
+        /// gvLocations control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Repeater rptLocations;
+        protected global::System.Web.UI.WebControls.GridView gvLocations;
         
         /// <summary>
         /// tpAdd control.
@@ -57,6 +57,24 @@ namespace N2.Edit.Wizard {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.MultiView mvAdd;
+        
+        /// <summary>
+        /// lblLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLocation;
+        
+        /// <summary>
+        /// lblLocationTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLocationTitle;
         
         /// <summary>
         /// btnAdd control.

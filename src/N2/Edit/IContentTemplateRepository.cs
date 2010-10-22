@@ -5,13 +5,13 @@ using System.Text;
 using N2.Definitions;
 using System.Security.Principal;
 
-namespace N2.Edit.Templating
+namespace N2.Edit
 {
-	public interface ITemplateRepository
+	public interface IContentTemplateRepository
 	{
-		TemplateInfo GetTemplate(string templateName);
-		IEnumerable<TemplateInfo> GetAllTemplates();
-		IEnumerable<TemplateInfo> GetTemplates(Type contentType, IPrincipal User);
+		ContentTemplate GetTemplate(string templateName);
+		IEnumerable<ContentTemplate> GetAllTemplates();
+		IEnumerable<ContentTemplate> GetTemplates(Type contentType, IPrincipal User);
 		void AddTemplate(ContentItem templateItem);
 		void RemoveTemplate(string templateName);
 	}

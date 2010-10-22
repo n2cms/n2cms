@@ -163,7 +163,8 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="N2\Content\Templates\TemplateContainer.cs" />
-    <Compile Include="N2\Content\Templates\TemplateRepository.cs" />
+    <Compile Include="N2\Content\Templates\ContentTemplateRepository.cs" />
+    <Compile Include="N2\Content\Wizard\WizardOptionProvider.cs" />
     <Compile Include="N2\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -543,7 +544,6 @@
     <Compile Include="N2\Web\UI\Controls\FieldSet.cs" />
     <Compile Include="N2\Web\UI\Controls\InfoLabel.cs" />
     <Compile Include="N2\Web\UI\Controls\ContentLink.cs" />
-    <Compile Include="N2\Web\UI\Controls\OptionsMenu.cs" />
     <Compile Include="N2\Web\UI\Controls\ResizedImage.cs" />
     <Compile Include="N2\Web\UI\Controls\ToolbarPluginDisplay.cs" />
     <Compile Include="N2\Web\UI\Controls\Tree.cs" />

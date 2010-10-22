@@ -712,6 +712,7 @@ namespace N2
 			destination.url = null;
 			destination.parent = null;
 			destination.versionOf = null;
+			destination.versionIndex = 0;
 			destination.ancestralTrail = null;
 			destination.hashCode = null;
 			destination.authorizedRoles = new List<Security.AuthorizedRole>();

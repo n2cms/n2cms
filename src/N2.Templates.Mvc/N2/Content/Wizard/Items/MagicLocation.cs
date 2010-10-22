@@ -21,11 +21,18 @@ namespace N2.Edit.Wizard.Items
 			set { SetDetail("Location", value); }
 		}
 
-		[EditableDefinition("Item definition", 110)]
+		[EditableDefinition("Definition", 110)]
 		public virtual string ItemDiscriminator
 		{
 			get { return (string)GetDetail("ItemDiscriminator"); }
 			set { SetDetail("ItemDiscriminator", value); }
+		}
+
+		[EditableTextBox("Content template", 110)]
+		public virtual string ContentTemplate
+		{
+			get { return (string)GetDetail("ContentTemplate"); }
+			set { SetDetail("ContentTemplate", value); }
 		}
 
 		[EditableTextBox("Zone name", 120)]

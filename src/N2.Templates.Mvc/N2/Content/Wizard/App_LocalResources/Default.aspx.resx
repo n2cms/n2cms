@@ -180,4 +180,10 @@
   <data name="lblNoItems.Text" xml:space="preserve">
     <value>No locations added. Please navigate to a location in the tree where you want to create a shortcut and 'Add location'.</value>
   </data>
+  <data name="ltWizards.Text" xml:space="preserve">
+    <value>No wizards configured</value>
+  </data>
+  <data name="lblLocation.Text" xml:space="preserve">
+    <value>Location</value>
+  </data>
 </root>

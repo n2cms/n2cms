@@ -1,3 +1,4 @@
+- Update jQuery UI
 - incorporate mono fixes ThreadId=230071
 - MVC
 	- Css/Js registration
