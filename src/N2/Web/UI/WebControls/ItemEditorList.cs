@@ -9,12 +9,6 @@ using N2.Engine;
 using System.ComponentModel;
 using System.Diagnostics;
 
-[assembly: WebResource("N2.Resources.add.gif", "image/gif")]
-[assembly: WebResource("N2.Resources.bin.gif", "image/gif")]
-[assembly: WebResource("N2.Resources.delete.gif", "image/gif")]
-[assembly: WebResource("N2.Resources.bullet_arrow_up.png", "image/png")]
-[assembly: WebResource("N2.Resources.bullet_arrow_down.png", "image/png")]
-
 namespace N2.Web.UI.WebControls
 {
 	public class ItemEditorList : WebControl
@@ -191,7 +185,7 @@ namespace N2.Web.UI.WebControls
 
 			ImageButton b = new ImageButton();
 			Controls.Add(b);
-			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof (ItemEditorList), "N2.Resources.add.gif");
+			b.ImageUrl = Url.ToAbsolute("~/N2/Resources/icons/add.png");
 			b.ToolTip = "Add item";
 			b.CausesValidation = false;
 			b.Click += AddItemClick;
@@ -225,7 +219,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_d_" + itemEditorIndex;
-			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.delete.gif");
+			b.ImageUrl = Url.ToAbsolute("~/N2/Resources/icons/delete.png");
 			b.ToolTip = "Delete item";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;
@@ -238,7 +232,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_up_" + itemEditorIndex;
-			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.bullet_arrow_up.png");
+			b.ImageUrl = Url.ToAbsolute("~/N2/Resources/icons/bullet_arrow_up.png");
 			b.ToolTip = "Move item up";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;
@@ -251,7 +245,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_down_" + itemEditorIndex;
-			b.ImageUrl = Page.ClientScript.GetWebResourceUrl(typeof(ItemEditorList), "N2.Resources.bullet_arrow_down.png");
+			b.ImageUrl = Url.ToAbsolute("~/N2/Resources/icons/bullet_arrow_down.png");
 			b.ToolTip = "Move item down";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;

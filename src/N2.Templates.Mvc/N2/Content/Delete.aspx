@@ -12,12 +12,12 @@
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
     <asp:CustomValidator ID="cvDelete" runat="server" CssClass="validator info" meta:resourceKey="cvDelete" Display="Dynamic" />
     <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />
-	<edit:FieldSet ID="referencingItems" class="referencingItems" runat="server" Legend="Referencing items" meta:resourceKey="referencingItems">
-		<div style="padding:5px">
+	<fieldset id="referencingItems" runat="server" style="padding:8px; margin-bottom:10px">
+		<legend><asp:CheckBox ID="chkAllow" Checked="true" AutoPostBack="true" OnCheckedChanged="chkAllow_OnCheckedChanged" runat="server" Text="Delete and break references" meta:resourceKey="chkAllow" /></legend>
 		<asp:Repeater ID="rptReferencing" runat="server">
 			<ItemTemplate><div><edit:ContentLink runat="server" DataSource='<%# Container.DataItem %>' /></div></ItemTemplate>
 		</asp:Repeater>
-		</div>
+	</fieldset>
 	</edit:FieldSet>
 	<edit:FieldSet class="affectedItems" runat="server" Legend="Affected items" meta:resourceKey="affectedItems">
 		<uc1:AffectedItems id="itemsToDelete" runat="server" />

@@ -2079,7 +2079,6 @@
     <Content Include="N2\Resources\img\toolbar_button_bg_hover.png" />
     <Content Include="N2\Resources\Js\jquery.editableThemeSelection.js" />
     <Content Include="N2\Resources\Js\FreeTextArea.js" />
-    <Content Include="N2\Resources\Js\jquery-1.4.1.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2keyboard.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2glow.js" />
     <Content Include="N2\Resources\Js\plugins\jquery.n2name.js" />
@@ -2355,6 +2354,8 @@
   <ItemGroup>
     <Content Include="N2\Content\Templates\App_LocalResources\Default.aspx.resx" />
     <Content Include="N2\Resources\Css\all.css" />
+    <Content Include="N2\Resources\Js\jquery-1.4.2.js" />
+    <Content Include="N2\Resources\Js\jquery-1.4.2.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="N2\Content\Wizard\Img\" />

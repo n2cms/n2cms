@@ -801,11 +801,6 @@
     <EmbeddedResource Include="Engine\n2.configuration.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\add.gif" />
-    <EmbeddedResource Include="Resources\bin.gif" />
-    <EmbeddedResource Include="Resources\delete.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
@@ -813,9 +808,6 @@
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Resources\jquery-1.4.1.min.js" />
-    <EmbeddedResource Include="Resources\bullet_arrow_down.png" />
-    <EmbeddedResource Include="Resources\bullet_arrow_up.png" />
     <EmbeddedResource Include="Web\n2.multiplesites.xml" />
     <EmbeddedResource Include="Web\n2.notweb.xml" />
   </ItemGroup>

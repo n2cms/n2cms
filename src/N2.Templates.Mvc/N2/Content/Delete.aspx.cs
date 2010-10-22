@@ -23,7 +23,7 @@ namespace N2.Edit
 				int count = q.Count();
 				if (count > 0)
 				{
-					referencingItems.Legend += " (" + count + ")";
+					chkAllow.Text += " (" + count + ")";
 					rptReferencing.DataSource = q.MaxResults(10).Select();
 					rptReferencing.DataBind();
 					if (count > 10)
@@ -39,6 +39,11 @@ namespace N2.Edit
 
             base.OnInit(e);
         }
+
+		protected void chkAllow_OnCheckedChanged(object sender, EventArgs e)
+		{
+			btnDelete.Enabled = chkAllow.Checked;
+		}
 
         protected override void OnLoad(EventArgs e)
         {

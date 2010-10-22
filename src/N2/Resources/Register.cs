@@ -5,8 +5,6 @@ using System.Web.UI.WebControls;
 using System.Collections;
 using System.Collections.Generic;
 
-[assembly: WebResource("N2.Resources.jquery-"+ N2.Resources.Register.JQueryVersion + ".min.js", "text/javascript")]
-
 namespace N2.Resources
 {
 	/// <summary>
@@ -14,7 +12,7 @@ namespace N2.Resources
 	/// </summary>
 	public class Register
 	{
-		public const string JQueryVersion = "1.4.1";
+		public const string JQueryVersion = "1.4.2";
 
 		/// <summary>Register an embedded style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>
@@ -228,7 +226,7 @@ namespace N2.Resources
 #if DEBUG
 			JavaScript(page, N2.Web.Url.ToAbsolute("~/N2/Resources/Js/jquery-" + JQueryVersion + ".js"), ScriptOptions.Prioritize | ScriptOptions.Include);
 #else
-			JavaScript(page, typeof(Register), "N2.Resources.jquery-" + JQueryVersion + ".min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, N2.Web.Url.ToAbsolute("~/N2/Resources/Js/jquery-" + JQueryVersion + ".min.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
 #endif
 		}
 
