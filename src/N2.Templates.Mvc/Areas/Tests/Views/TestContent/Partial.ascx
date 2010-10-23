@@ -1,6 +1,18 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IList<N2.Definitions.ItemDefinition>>" %>
 
 <div class="uc">
+	<h4 title="<%= Html.CurrentPage().Title %>/<%= Html.CurrentItem().Title %>">Random Content Creator</h4>
+	<div class="box"><div class="inner">
+	<% using (Html.BeginForm("Random", null)){ %>
+		<%= Html.DropDownList("discriminator", Model.Select(d => new SelectListItem { Value = d.Discriminator, Text = d.Title }))%>
+		<input name="name" value="Random" title="name" />
+		<input name="amount" value="100" title="amount" />
+		<input type="submit" value="Create" />
+	<% } %>
+	</div></div>
+</div>
+
+<div class="uc">
 	<h4 title="<%= Html.CurrentPage().Title %>/<%= Html.CurrentItem().Title %>">Content Creator</h4>
 	<div class="box"><div class="inner">
 	<% using (Html.BeginForm("Create", null)){ %>
@@ -12,6 +24,8 @@
 	<% } %>
 	</div></div>
 </div>
+
+
 <div class="uc">
 	<div class="box">
 		<h4>Route Values</h4>
