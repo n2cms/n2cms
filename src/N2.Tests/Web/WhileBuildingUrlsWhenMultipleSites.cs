@@ -59,7 +59,7 @@ namespace N2.Tests.Web
             mocks.ReplayAll();
 
             string url = parser.BuildUrl(itemOnTheOutside);
-            Assert.That(url, Is.EqualTo("/default.aspx?page=99"));
+            Assert.That(url, Is.EqualTo("/Default.aspx?page=99"));
         }
 
         [Test]

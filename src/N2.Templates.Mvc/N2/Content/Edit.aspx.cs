@@ -12,12 +12,12 @@ using N2.Persistence.Finder;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("Edit", "edit", "Content/edit.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/icons/page_edit.png", 20, 
+	[NavigationLinkPlugin("Edit", "edit", "Content/Edit.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/icons/page_edit.png", 20, 
 		GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("EDIT", "edit", "Content/edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/icons/page_edit.png", 50, ToolTip = "edit", 
+	[ToolbarPlugin("EDIT", "edit", "Content/Edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/icons/page_edit.png", 50, ToolTip = "edit", 
 		GlobalResourceClassName = "Toolbar")]
-    [ControlPanelLink("cpEdit", "~/N2/Resources/icons/page_edit.png", "Content/edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
-    [ControlPanelLink("cpEditPreview", "~/N2/Resources/icons/page_edit.png", "Content/edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
+    [ControlPanelLink("cpEdit", "~/N2/Resources/icons/page_edit.png", "Content/Edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
+    [ControlPanelLink("cpEditPreview", "~/N2/Resources/icons/page_edit.png", "Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, 
 		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
 	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30, 

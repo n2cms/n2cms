@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title>Diagnose N2</title>
-    <link rel="stylesheet" href="../Resources/css/All.css" type="text/css" />
+    <link rel="stylesheet" href="../Resources/Css/All.css" type="text/css" />
     <style>
         label{font-weight:bold;margin:5px 10px 0 0;}
         input{vertical-align:middle;margin-bottom:5px;}
@@ -23,7 +23,7 @@
     <form id="form1" runat="server">
         <div>
             <h1>Diagnose N2</h1>
-            <em>This page is used to upgrade N2 database schema or diagnose configuration problems. If you don't get a lot of okays here there probably is some kind of problem. Look at any error message to find clues about what's wrong.</em> <a href="default.aspx">Back to edit page</a><br /><br />
+            <em>This page is used to upgrade N2 database schema or diagnose configuration problems. If you don't get a lot of okays here there probably is some kind of problem. Look at any error message to find clues about what's wrong.</em> <a href="Default.aspx">Back to edit page</a><br /><br />
 
 			<!-- Database -->	
             <label>Connection</label> <asp:Label ID="lblDbConnection" runat="server" /><br />

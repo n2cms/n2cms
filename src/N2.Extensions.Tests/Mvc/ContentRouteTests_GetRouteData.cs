@@ -15,18 +15,18 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(data.CurrentItem(), Is.EqualTo(root));
 			Assert.That(data.CurrentPage(), Is.EqualTo(root));
 			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
-			Assert.That(data.Values["action"], Is.EqualTo("index"));
+			Assert.That(data.Values["action"], Is.EqualTo("Index"));
 		}
 
 		[Test]
 		public void CanFindController_ForStartPage_default_aspx()
 		{
-			var data = RequestingUrl("/default.aspx");
+			var data = RequestingUrl("/Default.aspx");
 
 			Assert.That(data.CurrentItem(), Is.EqualTo(root));
 			Assert.That(data.CurrentPage(), Is.EqualTo(root));
 			Assert.That(data.Values["controller"], Is.EqualTo("Regular"));
-			Assert.That(data.Values["action"], Is.EqualTo("index"));
+			Assert.That(data.Values["action"], Is.EqualTo("Index"));
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(data.CurrentItem(), Is.EqualTo(about));
 			Assert.That(data.CurrentPage(), Is.EqualTo(about));
 			Assert.That(data.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
-			Assert.That(data.Values["action"], Is.EqualTo("index"));
+			Assert.That(data.Values["action"], Is.EqualTo("Index"));
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(data.CurrentItem(), Is.EqualTo(about));
 			Assert.That(data.CurrentPage(), Is.EqualTo(about));
 			Assert.That(data.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
-			Assert.That(data.Values["action"], Is.EqualTo("index"));
+			Assert.That(data.Values["action"], Is.EqualTo("Index"));
 		}
 
 		[Test]
@@ -60,7 +60,7 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(data.CurrentItem(), Is.EqualTo(about));
 			Assert.That(data.CurrentPage(), Is.EqualTo(about));
 			Assert.That(data.Values["controller"], Is.EqualTo("AboutUsSectionPage"));
-			Assert.That(data.Values["action"], Is.EqualTo("index"));
+			Assert.That(data.Values["action"], Is.EqualTo("Index"));
 		}
 
 		[Test]
@@ -73,7 +73,7 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(data.CurrentItem(), Is.EqualTo(executives));
 			Assert.That(data.CurrentPage(), Is.EqualTo(executives));
 			Assert.That(data.Values["controller"], Is.EqualTo("ExecutiveTeam"));
-			Assert.That(data.Values["action"], Is.EqualTo("index"));
+			Assert.That(data.Values["action"], Is.EqualTo("Index"));
 		}
 
 		[Test]
@@ -99,7 +99,7 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(r.CurrentItem(), Is.EqualTo(root));
 			Assert.That(r.CurrentPage(), Is.EqualTo(root));
 			Assert.That(r.Values[ContentRoute.ControllerKey], Is.EqualTo("Regular"));
-			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("index"));
+			Assert.That(r.Values[ContentRoute.ActionKey], Is.EqualTo("Index"));
 		}
 
 		[Test, Ignore("TODO")]

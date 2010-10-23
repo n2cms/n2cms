@@ -29,7 +29,7 @@
 	<!-- Prepare dependencies -->
 
 	<Target Name="Framework-PrepareDependencies">
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(WebFolder)\Bin\" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(WebFolder)\bin\" />
 	</Target>
 
 	<Target Name="Framework-CreateItemGroups" DependsOnTargets="Framework-Build">
@@ -44,20 +44,20 @@
 																		 $(EditFolder)\**\*.htm;$(EditFolder)\**\*.html;
 																		 $(EditFolder)\**\*.swf"
 														Exclude="$(EditFolder)\**\*_src.js;" />
-			<Framework-BinFiles		Include="$(ManagementFolder)\Bin\*.dll;
-																		 $(ManagementFolder)\Bin\N2.xml*;"
-														Exclude="$(ManagementFolder)\Bin\N2.Templates*;
-																		 $(ManagementFolder)\Bin\AddonCatalog*;
-																		 $(ManagementFolder)\Bin\Demo*;
-																		 $(ManagementFolder)\Bin\MyAddon*;
-																		 $(ManagementFolder)\Bin\n2markdown*;
-																		 $(ManagementFolder)\Bin\Scrum*;
-																		 $(ManagementFolder)\Bin\TabPanel*;
-																		 $(ManagementFolder)\Bin\Tagging*;
-																		 $(ManagementFolder)\Bin\Wiki*;
-																		 $(ManagementFolder)\Bin\Microsoft.Web.Mvc*;
-																		 $(ManagementFolder)\Bin\MvcContrib*;
-																		 $(ManagementFolder)\Bin\N2.Templates.Mvc*;"/>
+			<Framework-BinFiles		Include="$(ManagementFolder)\bin\*.dll;
+																		 $(ManagementFolder)\bin\N2.xml*;"
+														Exclude="$(ManagementFolder)\bin\N2.Templates*;
+																		 $(ManagementFolder)\bin\AddonCatalog*;
+																		 $(ManagementFolder)\bin\Demo*;
+																		 $(ManagementFolder)\bin\MyAddon*;
+																		 $(ManagementFolder)\bin\n2markdown*;
+																		 $(ManagementFolder)\bin\Scrum*;
+																		 $(ManagementFolder)\bin\TabPanel*;
+																		 $(ManagementFolder)\bin\Tagging*;
+																		 $(ManagementFolder)\bin\Wiki*;
+																		 $(ManagementFolder)\bin\Microsoft.Web.Mvc*;
+																		 $(ManagementFolder)\bin\MvcContrib*;
+																		 $(ManagementFolder)\bin\N2.Templates.Mvc*;"/>
 		</ItemGroup>
 	</Target>
 
@@ -75,7 +75,7 @@
 	</PropertyGroup>
 
 	<Target Name="Framework-Deploy" DependsOnTargets="Framework-CreateItemGroups">
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\Bin" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Framework-DeployFolder)\bin" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Framework-DeployFolder)\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)" DestinationFolder="$(Framework-DeployFolder)" />
 	</Target>

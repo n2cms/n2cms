@@ -76,14 +76,14 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanParse_StartPage()
 		{
-			ContentItem parsedItem = parser.Parse("/default.aspx");
+			ContentItem parsedItem = parser.Parse("/Default.aspx");
 			Assert.AreEqual(startItem, parsedItem);
 		}
 
 		[Test]
 		public void CanParse_StartPage2()
 		{
-			ContentItem parsedItem = parser.Parse("/default.aspx?");
+			ContentItem parsedItem = parser.Parse("/Default.aspx?");
 			Assert.AreEqual(startItem, parsedItem);
 		}
 	}

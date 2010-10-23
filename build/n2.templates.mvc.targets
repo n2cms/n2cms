@@ -13,8 +13,8 @@
 		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\$(Configuration)\N2.Extensions.dll; 
                        $(LibFolder)\Microsoft.Web.Mvc.dll; 
                        $(LibFolder)\System.Web.Mvc.dll;"
-					DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\Bin" />
+					DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
 	</Target>
 
 	<Target Name="Templates-Mvc-Build">

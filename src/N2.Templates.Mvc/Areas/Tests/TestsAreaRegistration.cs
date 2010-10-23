@@ -16,7 +16,7 @@ namespace N2.Templates.Mvc.Areas.Tests
 			context.MapContentRoute<Models.TestItemBase>();
 			context.MapRoute("hello",
 				"Tests/{controller}/{action}",
-				new { action = "index" },
+				new { action = "Index" },
 				new { area = "Tests" }
 				);
 		}

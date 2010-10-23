@@ -45,7 +45,7 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			RequestingUrl("/about/");
 
-			var result = urlHelper.Action("index", new { item = executives });
+			var result = urlHelper.Action("Index", new { item = executives });
 
 			Assert.That(result, Is.EqualTo("/about/executives"));
 		}
@@ -127,7 +127,7 @@ namespace N2.Extensions.Tests.Mvc
 		{
 			RequestingUrl("/about/");
 
-			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "hello", action = "index" }));
+			var vpd = route.GetVirtualPath(requestContext, new RouteValueDictionary(new { controller = "hello", action = "Index" }));
 
 			Assert.That(vpd, Is.Null);
 		}

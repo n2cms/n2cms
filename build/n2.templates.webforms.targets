@@ -42,7 +42,7 @@
 	</Target>
 
 	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\Bin" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\bin" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-SourceFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 

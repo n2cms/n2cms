@@ -9,15 +9,17 @@
 		<HeaderTemplate><table class="data"><thead><tr><th colspan="2">Wizard</th><th>Location</th></tr></thead><tbody></HeaderTemplate>
 		<ItemTemplate>
 			<tr><td>
-				<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server">
-					<asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
-					<%# Eval("Title") %>
-				</asp:HyperLink>
+				<asp:HyperLink ID="hlNew" 
+					NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' 
+					ToolTip='<%# Eval("ToolTip") %>' runat="server" 
+					meta:resourcekey="hlNewResource1"><asp:Image ID="imgIco" ImageUrl='<%# Eval("IconUrl") %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
+<%# Eval("Title") %></asp:HyperLink>
 			</td><td>
 				<%# Eval("Description") %>
 			</td><td>
 				<a href="<%# Eval("Location.Url") %>">
-					<asp:Image runat=server ImageUrl='<%# Eval("Location.IconUrl") %>' />
+					<asp:Image runat=server ImageUrl='<%# Eval("Location.IconUrl") %>' 
+						meta:resourcekey="ImageResource1" />
 					<%# Eval("Location.Title") %>
 				</a>
 			</td></tr>

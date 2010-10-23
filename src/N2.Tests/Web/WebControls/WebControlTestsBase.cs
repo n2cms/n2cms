@@ -53,7 +53,7 @@ namespace N2.Tests.Web.WebControls
 
 		protected void Initialize(string queryString)
 		{
-			var request = new HttpRequest("/default.aspx", "http://localhost/", queryString);
+			var request = new HttpRequest("/Default.aspx", "http://localhost/", queryString);
             request.Browser = new HttpBrowserCapabilities();
             request.Browser.Capabilities = new Hashtable();
             request.Browser.Capabilities["ecmascriptversion"] = "1.7";

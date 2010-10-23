@@ -5,9 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>Untitled Page</title>
-    <link rel="stylesheet" type="text/css" href="../Resources/css/all.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/css/framed.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/css/themes/default.css" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
     <style>
     	body {font-size:.7em;font-family:Verdana;}
 		td {white-space:nowrap;}

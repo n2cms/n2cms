@@ -44,7 +44,7 @@ namespace N2.Edit.Trash
 			{
 			    var url = new Url(Context.Current.EditManager.GetEditInterfaceUrl());
 				
-			    return url.AppendSegment("Trash/default.aspx").AppendQuery( PathData.PageQueryKey, ID);
+			    return url.AppendSegment("Trash/Default.aspx").AppendQuery( PathData.PageQueryKey, ID);
 			}
 		}
 

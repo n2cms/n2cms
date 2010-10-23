@@ -16,8 +16,8 @@ namespace N2.Templates.Items
 	[WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content)]
 	[TabContainer(Tabs.Content, "Content", Tabs.ContentIndex)]
     [TabContainer(Tabs.Advanced, "Advanced", Tabs.AdvancedIndex)]
-	[Template("create", "~/N2/Content/new.aspx")]
-	[Template("update", "~/N2/Content/edit.aspx")]
+	[Template("create", "~/N2/Content/New.aspx")]
+	[Template("update", "~/N2/Content/Edit.aspx")]
 	[Template("delete", "~/N2/Content/delete.aspx")]
 	public abstract class AbstractPage : ContentItem, IPage
 	{

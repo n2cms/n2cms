@@ -11,7 +11,7 @@ using System.Web;
 
 namespace N2.Edit.Navigation
 {
-	[ToolbarPlugin("PAGES", "tree", "Content/default.aspx?selected={selected}", ToolbarArea.Navigation, Targets.Top, "~/N2/Resources/icons/sitemap_color.png", -30,
+	[ToolbarPlugin("PAGES", "tree", "Content/Default.aspx?selected={selected}", ToolbarArea.Navigation, Targets.Top, "~/N2/Resources/icons/sitemap_color.png", -30,
 		ToolTip = "show navigation", 
 		GlobalResourceClassName = "Toolbar", SortOrder = -1)]
 	public partial class Tree : NavigationPage

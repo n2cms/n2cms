@@ -25,7 +25,7 @@
 			</code></pre>
 
 			<h3>Ignore existing files = false</h3>
-			<p>The system is configured to not rewrite when the file exists. Since this page (~/default.aspx) exists the start page template will not be rendered. To fix this problem either (1.) replace this file with the start page template, or (2.) configure &lt;web ignoreExistingFiles="true" /&gt;. To secure with ASP.NET authorization use method (1.)</p>
+			<p>The system is configured to not rewrite when the file exists. Since this page (~/Default.aspx) exists the start page template will not be rendered. To fix this problem either (1.) replace this file with the start page template, or (2.) configure &lt;web ignoreExistingFiles="true" /&gt;. To secure with ASP.NET authorization use method (1.)</p>
 			
 			<h3>Error during initialization</h3>
 			<p>This could happen when the database contains nodes that have no corresponding class. When using medium trust this could be due to an assmebly not beeing defined. Re-start the site and check for any exceptions occurring during the first request.</p>

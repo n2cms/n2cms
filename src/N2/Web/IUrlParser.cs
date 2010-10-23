@@ -36,8 +36,8 @@ namespace N2.Web
 		/// <returns>The content item matching the supplied url.</returns>
 		ContentItem Parse(string url);
 
-		/// <summary>Removes a trailing default.aspx from an URL.</summary>
-		/// <param name="path">A URL path without query strings from which to remove any trailing default.aspx.</param>
+		/// <summary>Removes a trailing Default.aspx from an URL.</summary>
+		/// <param name="path">A URL path without query strings from which to remove any trailing Default.aspx.</param>
 		/// <returns>The same path or one stripped of the remaining default document segment.</returns>
 		string StripDefaultDocument(string path);
 	}

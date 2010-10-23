@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewUserControl<NewsList>" %>
 <div class="uc">
-	<h<%=Model.TitleLevel%>><%=Model.Title%></h<%=Model.TitleLevel%>>
+	<%= string.Format("<h{0}>{1}</h{0}>", Model.TitleLevel, Model.Title)%>
 
 	<div class="sidelist">
 	<%

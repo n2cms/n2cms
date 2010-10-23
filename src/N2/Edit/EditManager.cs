@@ -39,14 +39,14 @@ namespace N2.Edit
 		string deleteItemUrl = "~/N2/Content/delete.aspx";
 		string editInterfaceUrl = "~/N2/Content/";
 		string managementInterfaceUrl = "~/N2/";
-		string editItemUrl = "~/N2/Content/edit.aspx";
+		string editItemUrl = "~/N2/Content/Edit.aspx";
 		string editPreviewUrlFormat = "{0}";
 		string editTreeUrl = "~/N2/Content/Navigation/Tree.aspx";
 		string editTreeUrlFormat = "{1}?selected={0}";
 		bool enableVersioning = true;
 		string editTheme = "";
 		protected EventHandlerList Events = new EventHandlerList();
-		string newItemUrl = "~/N2/Content/new.aspx";
+		string newItemUrl = "~/N2/Content/New.aspx";
 		readonly IList<string> uploadFolders = new List<string>();
 
 		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,

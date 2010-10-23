@@ -123,7 +123,7 @@ namespace N2.Extensions.Tests.Mvc
 	//    [Test]
 	//    public void CanFindController_ForStartPage_default_aspx()
 	//    {
-	//        var data = RequestingUrl("/default.aspx");
+	//        var data = RequestingUrl("/Default.aspx");
 
 	//        Assert.That(data.CurrentItem(), Is.EqualTo(root));
 	//        Assert.That(data.CurrentPage(), Is.EqualTo(root));

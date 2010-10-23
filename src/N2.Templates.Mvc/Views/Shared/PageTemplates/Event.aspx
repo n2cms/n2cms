@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="../Site.Master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="../Site.master" AutoEventWireup="true"
 	Inherits="System.Web.Mvc.ViewPage<Event>" %>
 
 <asp:Content ID="cpc" ContentPlaceHolderID="TextContent" runat="server">

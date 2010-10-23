@@ -36,8 +36,8 @@ namespace N2.Web.Mvc
 			}
 
 			var controllerName = controllerMapper.GetControllerName(item.GetContentType());
-			if (string.IsNullOrEmpty(action) || string.Equals(action, "default.aspx", StringComparison.InvariantCultureIgnoreCase))
-				action = "index";
+			if (string.IsNullOrEmpty(action) || string.Equals(action, "Default.aspx", StringComparison.InvariantCultureIgnoreCase))
+				action = "Index";
 
 			foreach (string method in methods)
 			{

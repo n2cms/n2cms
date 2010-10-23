@@ -67,7 +67,7 @@ namespace N2.Configuration
             set { base["editPreviewUrlFormat"] = value; }
         }
 
-        [ConfigurationProperty("editItemUrl", DefaultValue = "~/N2/Content/edit.aspx")]
+        [ConfigurationProperty("editItemUrl", DefaultValue = "~/N2/Content/Edit.aspx")]
         public string EditItemUrl
         {
             get { return (string)base["editItemUrl"]; }
@@ -88,7 +88,7 @@ namespace N2.Configuration
             set { base["editInterfaceUrl"] = value; }
         }
 
-        [ConfigurationProperty("newItemUrl", DefaultValue = "~/N2/Content/new.aspx")]
+        [ConfigurationProperty("newItemUrl", DefaultValue = "~/N2/Content/New.aspx")]
         public string NewItemUrl
         {
             get { return (string)base["newItemUrl"]; }

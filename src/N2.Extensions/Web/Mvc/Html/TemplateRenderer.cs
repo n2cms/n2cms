@@ -31,7 +31,7 @@ namespace N2.Web.Mvc.Html
 		{
 			RouteValueDictionary values = new RouteValueDictionary();
 			values[ContentRoute.ControllerKey] = controllerMapper.GetControllerName(item.GetContentType());
-			values[ContentRoute.ActionKey] = "index";
+			values[ContentRoute.ActionKey] = "Index";
 			values[ContentRoute.ContentItemKey] = item.ID;
 
 			// retrieve the virtual path so we can figure out if this item is routed through an area
@@ -42,7 +42,7 @@ namespace N2.Web.Mvc.Html
 			if (!string.IsNullOrEmpty(area))
 				values["area"] = vpd.DataTokens["area"];
 
-			helper.RenderAction("index", values);
+			helper.RenderAction("Index", values);
 		}
 
 		private RouteValueDictionary CopyValues(RouteValueDictionary from, RouteValueDictionary to)

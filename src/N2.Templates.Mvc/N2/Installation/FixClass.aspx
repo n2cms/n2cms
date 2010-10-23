@@ -6,9 +6,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="../Resources/css/all.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/css/framed.css" />
-    <link rel="stylesheet" type="text/css" href="../Resources/css/themes/default.css" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Css/all.css" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Css/framed.css" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Css/themes/default.css" />
     <style>b { color:red;}pre{margin:10px 0;border-left:solid 10px #eee;padding-left:10px;}input{vertical-align:middle} .msg{font-weight:bold; font-size:1.4em;color:green;background-color:Yellow;padding:10px 0;}</style>
 </head>
 <body>

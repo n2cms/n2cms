@@ -1,7 +1,7 @@
 ﻿<browsers>
   <browser refID="Default">
     <controlAdapters>
-      <adapter controlType="System.Web.UI.WebControls.Image" adapterType="N2.Templates.Web.Adapters.ImageAdapter" />
+      <adapter controlType="System.Web.UI.WebControls.Image" adapterType="N2.Templates.Web.Adapters.ImageAdapter, N2.Templates" />
     </controlAdapters>
   </browser>
 </browsers>

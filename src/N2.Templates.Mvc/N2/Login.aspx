@@ -18,13 +18,13 @@
 			bottom:50%;
 			left:50%;
 			width:  350px;
-			background: #F8F8E8 url(Resources/img/darken10.png) repeat-x 100% 100%;
+			background: #F8F8E8 url(Resources/Img/darken10.png) repeat-x 100% 100%;
         }
         #login-container .inner	
         {
 			margin:0 auto;
 			padding:30px;
-            background:transparent url(Resources/img/lighten10.png) repeat-x;
+            background:transparent url(Resources/Img/lighten10.png) repeat-x;
         }
         table.login { margin:0 auto; }
         h1 { margin-bottom:20px; }

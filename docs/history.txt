@@ -1,4 +1,5 @@
-﻿- jQuery UI 1.8.5
+﻿- Incorporated some changes to support mono (ThreadId=230071)
+- jQuery UI 1.8.5
 - Improved wizard
 	- Delete wizards (ThreadId=231454)
 	- Added wizard items to toolbar option menu

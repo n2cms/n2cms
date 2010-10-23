@@ -117,40 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnCreateFolder.Text" xml:space="preserve">
-    <value>OK</value>
+  <data name="hlNewResource1.Text" xml:space="preserve">
+    <value />
   </data>
-  <data name="btnDelete.Text" xml:space="preserve">
-    <value>&lt;img src="../Resources/icons/delete.png" /&gt; Delete</value>
+  <data name="ImageResource1.AlternateText" xml:space="preserve">
+    <value />
   </data>
-  <data name="cvDeleteProblem.ErrorMessage" xml:space="preserve">
-    <value>Error deleting file/folder. Possible causes include read-only files and insufficient permissions to the upload directory on the server.</value>
+  <data name="ImageResource1.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="cvDeleteRoot.ErrorMessage" xml:space="preserve">
-    <value>The main folder cannot be deleted</value>
+  <data name="imgIcoResource1.AlternateText" xml:space="preserve">
+    <value />
   </data>
-  <data name="fileManagementPage.Title" xml:space="preserve">
-    <value>File Manager</value>
+  <data name="imgIcoResource1.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="hlCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="lblNoItems.Text" xml:space="preserve">
+    <value>No locations added.</value>
   </data>
-  <data name="hlItems.Text" xml:space="preserve">
-    <value>&lt;img src="../Resources/icons/page.png" /&gt; Items</value>
-  </data>
-  <data name="hlNewFolder.Text" xml:space="preserve">
-    <value>&lt;img src="../Resources/icons/folder_add.png" /&gt; New folder</value>
-  </data>
-  <data name="hlUpload.Text" xml:space="preserve">
-    <value>&lt;img src="../Resources/Img/ico/page_white_add.gif" /&gt; Upload</value>
-  </data>
-  <data name="lblFolder.Text" xml:space="preserve">
-    <value>Directory name</value>
-  </data>
-  <data name="lblUpload.Text" xml:space="preserve">
-    <value>Select file</value>
-  </data>
-  <data name="revFolder.ErrorMessage" xml:space="preserve">
-    <value>Only alphanumeric characters supported.</value>
+  <data name="lblNoItems.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

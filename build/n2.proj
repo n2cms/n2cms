@@ -158,7 +158,7 @@
 	<Target Name="Prepare-Templates-Mvc" DependsOnTargets="Prepare-Framework">
 	</Target>
 	<Target Name="Prepare-Framework">
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(ManagementFolder)\Bin" />
+		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(ManagementFolder)\bin" />
 	</Target>
 
 	<!-- Create item groups used for copy dependencies for examples -->

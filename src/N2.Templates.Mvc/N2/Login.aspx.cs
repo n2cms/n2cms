@@ -16,7 +16,7 @@ namespace N2.Edit
 				return;
 
 			FormsAuthentication.SignOut();
-            Response.Redirect("login.aspx?returnUrl=default.aspx");
+            Response.Redirect("login.aspx?returnUrl=Default.aspx");
 		}
 
 		protected void Login1_LoggingIn(object sender, LoginCancelEventArgs e)

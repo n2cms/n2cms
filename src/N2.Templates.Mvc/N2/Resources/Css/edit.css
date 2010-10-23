@@ -73,17 +73,17 @@ body.framed .helpVisible { background-color:#ffa; }
 
 #content .defaultSkin table.mceLayout,
 #content .defaultSkin table.mceLayout tr.mceFirst td { border:none; }
-#content .defaultSkin table.mceLayout tr.mceFirst { background:#F8F8E8 url(../../Resources/img/darken10.png) repeat-x scroll 0 30px; }
+#content .defaultSkin table.mceLayout tr.mceFirst { background:#F8F8E8 url(../../Resources/Img/darken10.png) repeat-x scroll 0 30px; }
 #content .mceStatusbar,
 #content .mceIframeContainer { border:none; border-left:solid 1px #EEE; border-right:solid 1px #EEE; }
 #content .mceStatusbar * { color:#999;}
 #content .mceToolbar { margin:0; }
-#content .mceButton { background:transparent url(../../Resources/img/darken10.png) repeat-x; border:none; padding:3px; margin:0; }
+#content .mceButton { background:transparent url(../../Resources/Img/darken10.png) repeat-x; border:none; padding:3px; margin:0; }
 #content .mceButton:hover { padding:2px; border:solid 1px #AAA; }
 #content .mceButtonDisabled:hover { padding:3px; border:none; }
-#content .mceButtonActive { background:transparent url(../../Resources/img/lighten25.png) repeat-x 0 -10px; border:none; padding:2px; border:solid 1px #AAA; }
+#content .mceButtonActive { background:transparent url(../../Resources/Img/lighten25.png) repeat-x 0 -10px; border:none; padding:2px; border:solid 1px #AAA; }
 #content .mceToolbar table { background-color:transparent; }
-#content .mceStatusbar { background:#F8F8E8 url(../../Resources/img/lighten10.png) repeat-x scroll 0 -35px; border:none !important;}
+#content .mceStatusbar { background:#F8F8E8 url(../../Resources/Img/lighten10.png) repeat-x scroll 0 -35px; border:none !important;}
 
 
 .framed .toolbar .iconed { background:transparent none no-repeat 2px 5px; padding-left:20px; }

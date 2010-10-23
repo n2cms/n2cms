@@ -16,7 +16,7 @@ namespace N2.Web.Mvc
 
 		public MvcConventionTemplateAttribute()
 		{
-			DefaultAction = "index";
+			DefaultAction = "Index";
 		}
 
 		/// <summary>
@@ -33,7 +33,7 @@ namespace N2.Web.Mvc
 
 		public PathData GetPath(ContentItem item, string remainingUrl)
 		{
-			if (remainingUrl != null && (remainingUrl.ToLowerInvariant() == "default.aspx" || remainingUrl.Contains("/")))
+			if (remainingUrl != null && (remainingUrl.ToLowerInvariant() == "Default.aspx" || remainingUrl.Contains("/")))
 				return null;
 
 			if (item == null)

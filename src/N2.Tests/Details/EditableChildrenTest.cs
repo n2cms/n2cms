@@ -142,7 +142,7 @@ namespace N2.Tests.Details
             {
                 get
                 {
-                    return new HttpContext(new HttpRequest("/default.aspx", "http://localhost/", ""), new HttpResponse(new StringWriter(new StringBuilder())))
+                    return new HttpContext(new HttpRequest("/Default.aspx", "http://localhost/", ""), new HttpResponse(new StringWriter(new StringBuilder())))
                     { 
                         User = new GenericPrincipal(new GenericIdentity("user"), new string[0]) 
                     };

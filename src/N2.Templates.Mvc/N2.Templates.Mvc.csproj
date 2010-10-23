@@ -290,12 +290,12 @@
     <Compile Include="Services\TemplatesInitializer.cs" />
     <Compile Include="Services\TemplatesPartsAdapter.cs" />
     <Compile Include="Services\SeoConcern.cs" />
-    <Compile Include="Views\Shared\Site.Master.cs">
-      <DependentUpon>Site.Master</DependentUpon>
+    <Compile Include="Views\Shared\Site.master.cs">
+      <DependentUpon>Site.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Shared\Site.Master.designer.cs">
-      <DependentUpon>Site.Master</DependentUpon>
+    <Compile Include="Views\Shared\Site.master.designer.cs">
+      <DependentUpon>Site.master</DependentUpon>
     </Compile>
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
@@ -454,7 +454,7 @@
     <Content Include="Views\RssAggregator\List.ascx" />
     <Content Include="Views\SocialBookmarks\Index.ascx" />
     <Content Include="Views\Navigation\SubMenu.ascx" />
-    <Content Include="Views\Shared\Site.Master" />
+    <Content Include="Views\Shared\Site.master" />
     <Content Include="Views\Start\Index.aspx" />
   </ItemGroup>
   <ItemGroup>

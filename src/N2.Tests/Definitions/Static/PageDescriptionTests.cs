@@ -38,7 +38,7 @@ namespace N2.Tests.Definitions.Static
 		public void Instance_DoesntGet_TemplateUrl_FromDefinition_WhenEmpty()
 		{
 			PathData path = page.FindPath(PathData.DefaultAction);
-			Assert.That(path.TemplateUrl, Is.EqualTo("~/default.aspx"));
+			Assert.That(path.TemplateUrl, Is.EqualTo("~/Default.aspx"));
 		}
 	}
 }

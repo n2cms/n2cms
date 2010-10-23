@@ -15,7 +15,7 @@ namespace N2.Web
         protected readonly IPersister persister;
 		protected readonly IHost host;
         protected readonly IWebContext webContext;
-		private string defaultDocument = "default.aspx";
+		private string defaultDocument = "Default.aspx";
 		readonly bool ignoreExistingFiles;
 
 
@@ -45,7 +45,7 @@ namespace N2.Web
 			get { return persister.Repository.Load(host.CurrentSite.StartPageID); }
 		}
 
-        /// <summary>Gets or sets the default content document name. This is usually "/default.aspx".</summary>
+        /// <summary>Gets or sets the default content document name. This is usually "/Default.aspx".</summary>
         public string DefaultDocument
         {
             get { return defaultDocument; }
@@ -123,10 +123,10 @@ namespace N2.Web
 
 		bool IgnoreExisting(string physicalPath)
 		{
-			// N2 has a history of requiring the start page's template to be located at /default.aspx.
-			// Since a previous version this is no longer required with the consequence of /default.aspx
+			// N2 has a history of requiring the start page's template to be located at /Default.aspx.
+			// Since a previous version this is no longer required with the consequence of /Default.aspx
 			// beeing required only for igniting an asp.net web request when accessing /. With the new
-			// behaviour access to the default document (/ or /default.aspx) will be rewritten to which-
+			// behaviour access to the default document (/ or /Default.aspx) will be rewritten to which-
 			// ever template the current start page specifies. The previous behaviour can be restored
 			// by configuring n2 to ignore existing files.
 			return ignoreExistingFiles || (!File.Exists(physicalPath) && !Directory.Exists(physicalPath));
@@ -285,8 +285,8 @@ namespace N2.Web
 			return item.ID == host.CurrentSite.RootItemID || host.IsStartPage(item);
 		}
 
-		/// <summary>Removes a trailing default.aspx from an URL.</summary>
-		/// <param name="path">A URL path without query strings from which to remove any trailing default.aspx.</param>
+		/// <summary>Removes a trailing Default.aspx from an URL.</summary>
+		/// <param name="path">A URL path without query strings from which to remove any trailing Default.aspx.</param>
 		/// <returns>The same path or one stripped of the remaining default document segment.</returns>
 		public string StripDefaultDocument(string path)
 		{

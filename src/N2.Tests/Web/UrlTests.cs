@@ -665,9 +665,9 @@ namespace N2.Tests.Web
         [Test]
         public void CanParsePath_WithSlashInQuery()
         {
-            Url u = "/UI/500.aspx?aspxerrorpath=/default.aspx";
+            Url u = "/UI/500.aspx?aspxerrorpath=/Default.aspx";
             Assert.That(u.Path, Is.EqualTo("/UI/500.aspx"));
-            Assert.That(u.Query, Is.EqualTo("aspxerrorpath=/default.aspx"));
+            Assert.That(u.Query, Is.EqualTo("aspxerrorpath=/Default.aspx"));
         }
 
         [Test]
@@ -837,10 +837,10 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanConstruct_WithBaseSchemeAndRawUrl()
 		{
-			Url u = new Url("http", "www.n2cms.com", "/default.aspx?");
+			Url u = new Url("http", "www.n2cms.com", "/Default.aspx?");
 			Assert.That(u.Scheme, Is.EqualTo("http"));
 			Assert.That(u.Authority, Is.EqualTo("www.n2cms.com"));
-			Assert.That(u.PathAndQuery, Is.EqualTo("/default.aspx"));
+			Assert.That(u.PathAndQuery, Is.EqualTo("/Default.aspx"));
 		}
 
 		[Test]

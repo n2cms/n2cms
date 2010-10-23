@@ -301,7 +301,7 @@ namespace N2
 		/// <summary>Gets the template that handle the presentation of this content item. For non page items (IsPage) this can be a user control (ascx).</summary>
         public virtual string TemplateUrl
         {
-            get { return "~/default.aspx"; }
+            get { return "~/Default.aspx"; }
         }
 		
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
@@ -310,7 +310,7 @@ namespace N2
 			get { return N2.Web.Url.ToAbsolute(Definitions.Static.DescriptionDictionary.GetDescription(GetContentType()).IconUrl); }
         }
 
-		/// <summary>Gets the non-friendly url to this item (e.g. "/default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/default.aspx?page=1&amp;item&#61;27").</summary>
+		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
 		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).RewrittenUrl")]
         public virtual string RewrittenUrl
         {

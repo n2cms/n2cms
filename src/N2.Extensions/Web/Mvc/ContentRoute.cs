@@ -66,7 +66,7 @@ namespace N2.Web.Mvc
 		/// <returns>A route data object or null.</returns>
 		public virtual RouteValueDictionary GetRouteValues(ContentItem item, RouteValueDictionary routeValues)
 		{
-			string actionName = "index";
+			string actionName = "Index";
 			if (routeValues.ContainsKey(ActionKey))
 				actionName = (string)routeValues[ActionKey];
 
@@ -128,7 +128,7 @@ namespace N2.Web.Mvc
 
 			var actionName = td.Action;
 			if (string.IsNullOrEmpty(actionName))
-				actionName = request.QueryString["action"] ?? "index";
+				actionName = request.QueryString["action"] ?? "Index";
 
 			if (!string.IsNullOrEmpty(request.QueryString[PathData.PageQueryKey]))
 			{

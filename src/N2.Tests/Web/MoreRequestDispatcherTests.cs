@@ -55,7 +55,7 @@ namespace N2.Tests.Web
 
 			handler.BeginRequest();
 
-			Assert.That(webContext.rewrittenPath, Is.EqualTo("/default.aspx?page=3"));
+			Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?page=3"));
 		}
 
 		[Test]
@@ -65,7 +65,7 @@ namespace N2.Tests.Web
 
 			handler.BeginRequest();
 
-			Assert.That(webContext.rewrittenPath, Is.EqualTo("/default.aspx?happy=true&flip=feet&page=3"));
+			Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?happy=true&flip=feet&page=3"));
 		}
 
 		[Test]
@@ -148,7 +148,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdateContentPage_WithRewrittenUrl()
 		{
-			webContext.Url = "/default.aspx?page=3";
+			webContext.Url = "/Default.aspx?page=3";
 
 			handler.BeginRequest();
 
@@ -158,7 +158,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdateContentPage_WithItemReference_UpdatesWithPage()
 		{
-			webContext.Url = "/default.aspx?item=4&page=3";
+			webContext.Url = "/Default.aspx?item=4&page=3";
 
 			handler.BeginRequest();
 
@@ -168,7 +168,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdatesCurrentPage_WhenUrl_IsWebDevStartPage()
 		{
-			webContext.Url = "/default.aspx?";
+			webContext.Url = "/Default.aspx?";
 
 			handler.BeginRequest();
 

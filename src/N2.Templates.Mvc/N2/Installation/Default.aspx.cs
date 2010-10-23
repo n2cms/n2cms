@@ -318,7 +318,7 @@ namespace N2.Edit.Install
 			if (Status.IsInstalled)
 				return "Installation looks fine (just review <a href='#Finish'>step 3</a>).";
 			if (status.NeedsUpgrade)
-				return "Switch to the <a href='upgrade.aspx'>upgrade wizard</a> to upgrade from a previous version of the database";
+				return "Switch to the <a href='Upgrade.aspx'>upgrade wizard</a> to upgrade from a previous version of the database";
 			if (Status.HasSchema)
 				return "Create content on <a href='#Content'>step 2</a>.";
 			if (Status.IsConnected)
