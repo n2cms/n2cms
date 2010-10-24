@@ -27,7 +27,7 @@
 	    <asp:MultiView ID="uploadFlow" runat="server" ActiveViewIndex="0">
 		    <asp:View ID="uploadView" runat="server">
 			    <div class="upload">
-				    <div>
+				    <div class="cf">
 				        <asp:FileUpload ID="fuImport" runat="server" />
 				        <asp:RequiredFieldValidator ID="rfvUpload" ControlToValidate="fuImport" runat="server" ErrorMessage="*"  meta:resourceKey="rfvImport"/>
 				    </div>

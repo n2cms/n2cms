@@ -158,16 +158,28 @@ var initn2context = function(w) {
 		/// * force: force navigation refresh (default true)
 		/// * path: update path to
 		refresh: function(options) {
-			options = jQuery.extend({ previewUrl: null, navigationUrl: null, force: true }, options);
+			options = jQuery.extend({ previewUrl: null, navigationUrl: null, force: true,
+				showPreview: function() {
+					var previewFrame = w.document.getElementById("previewFrame");
+					previewFrame.src = this.previewUrl;
+				},
+				showNavigation: function(ctx) {
+					var navigationFrame = w.document.getElementById("navigationFrame");
+					navigationFrame.src = ctx.append(this.navigationUrl, { location: ctx.location });
+				}
+			}, options);
 
 			if (this.hasTop()) {
+
 				if (options.previewUrl) {
-					var previewFrame = w.document.getElementById("previewFrame");
-					previewFrame.src = options.previewUrl;
+					if (w.frames.preview && w.frames.preview.onPreviewing)
+						w.frames.preview.onPreviewing(options);
+					options.showPreview();
 				}
 				if (options.navigationUrl) {
-					var navigationFrame = w.document.getElementById("navigationFrame");
-					navigationFrame.src = this.append(options.navigationUrl, { location: this.location });
+					if (w.frames.navigation && w.frames.navigation.onNavigating)
+						w.frames.navigation.onNavigating(options);
+					options.showNavigation(this);
 				}
 			} else if (options.previewUrl) {
 				window.location = options.previewUrl;

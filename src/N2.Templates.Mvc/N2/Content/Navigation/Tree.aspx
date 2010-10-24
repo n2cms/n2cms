@@ -82,6 +82,14 @@
         			document.body.className = document.body.className.replace(/\w+Selected ?/g, $a.attr("data-type") + "Selected");
         		});
 
+
+        		window.onNavigating = function(options) {
+        			$("a[data-path=" + options.path + "]", this.document).each(function() {
+        				$(this).trigger("click");
+        				options.showNavigation = function() { };
+        			});
+        		};
+
         		toDraggable(jQuery("#nav li li"));
 
         		$(".tree a.selected").each(function() { document.body.className += " " + $(this).attr("data-type") + "Selected"; });

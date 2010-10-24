@@ -31,7 +31,8 @@
         $firstEnabled.clone(true).insertBefore($menu)
 			.bind('contextmenu', openMenu)
 			.after(settings.opener)
-			.next().click(openMenu);
+			.next().click(openMenu)
+			.bind('contextmenu', openMenu);
         $(document.body).click(closeMenu);
         return $menu;
     }

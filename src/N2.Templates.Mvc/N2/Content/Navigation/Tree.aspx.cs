@@ -11,27 +11,30 @@ using System.Web;
 
 namespace N2.Edit.Navigation
 {
-	[ToolbarPlugin("PAGES", "tree", "Content/Default.aspx?selected={selected}", ToolbarArea.Navigation, Targets.Top, "~/N2/Resources/icons/sitemap_color.png", -30,
-		ToolTip = "show navigation", 
-		GlobalResourceClassName = "Toolbar", SortOrder = -1)]
 	public partial class Tree : NavigationPage
 	{
 		protected HtmlInputHidden inputLocation;
 		protected HtmlInputFile inputFile;
+		protected IFileSystem FS;
+
+		protected override void OnPreInit(EventArgs e)
+		{
+			base.OnPreInit(e);
+			FS = Engine.Resolve<IFileSystem>();
+		}
 
 		protected override void OnInit(EventArgs e)
 		{
 			var selected = Selection.SelectedItem;
 			if (IsPostBack && !string.IsNullOrEmpty(inputFile.PostedFile.FileName))
 			{
-				var fs = Engine.Resolve<IFileSystem>();
 				string uploadFolder = Request["inputLocation"];
 				if(!IsAvailable(uploadFolder))
 					throw new N2Exception("Cannot upload to " + Server.HtmlEncode(uploadFolder));
 
 				string fileName = System.IO.Path.GetFileName(inputFile.PostedFile.FileName);
 				string filePath = VirtualPathUtility.Combine(uploadFolder, fileName);
-				fs.WriteFile(filePath, inputFile.PostedFile.InputStream);
+				FS.WriteFile(filePath, inputFile.PostedFile.InputStream);
 
 				ClientScript.RegisterStartupScript(typeof(Tree), "select", "updateOpenerWithUrlAndClose('" + ResolveUrl(filePath) + "');", true);
 			}
@@ -50,19 +53,18 @@ namespace N2.Edit.Navigation
 					TrySelectingPrevious(ref selected, ref selectionTrail);
 				}
 
-				var fs = Engine.Resolve<IFileSystem>();
 				foreach (string uploadFolder in Engine.EditManager.UploadFolders)
 				{
-					var dd = fs.GetDirectory(uploadFolder);
+					var dd = FS.GetDirectory(uploadFolder);
 
-					var node = CreateDirectoryNode(fs, new Directory(fs, dd, root.Current), root, selectionTrail);
+					var node = CreateDirectoryNode(FS, new Directory(FS, dd, root.Current), root, selectionTrail);
 					root.Children.Add(node);
 				}
 
-				AddSiteFilesNodes(fs, root, host.DefaultSite, selectionTrail);
+				AddSiteFilesNodes(root, host.DefaultSite, selectionTrail);
 				foreach (var site in host.Sites)
 				{
-					AddSiteFilesNodes(fs, root, site, selectionTrail);
+					AddSiteFilesNodes(root, site, selectionTrail);
 				}
 
 				siteTreeView.Nodes = root;
@@ -116,7 +118,7 @@ namespace N2.Edit.Navigation
 			return false;
 		}
 
-		private void AddSiteFilesNodes(IFileSystem fs, HierarchyNode<ContentItem> parent, Site site, List<ContentItem> selectionTrail)
+		private void AddSiteFilesNodes(HierarchyNode<ContentItem> parent, Site site, List<ContentItem> selectionTrail)
 		{
 			var siteNode = Engine.Persister.Get(site.StartPageID);
 
@@ -127,7 +129,7 @@ namespace N2.Edit.Navigation
 			{
 				if(node == null)
 					node = new HierarchyNode<ContentItem>(siteNode);
-				var directoryNode = CreateDirectoryNode(fs, new Directory(fs, dd, parent.Current), node, selectionTrail);
+				var directoryNode = CreateDirectoryNode(FS, new Directory(FS, dd, parent.Current), node, selectionTrail);
 				node.Children.Add(directoryNode);
 			}
 
@@ -153,6 +155,11 @@ namespace N2.Edit.Navigation
 					parent.Children.Add(CreateDirectoryNode(fs, child, parent, selectionTrail));
 				}
 			}
+		}
+
+		protected override string GetToolbarSelectScript(string toolbarPluginName)
+		{
+			return base.GetToolbarSelectScript(toolbarPluginName);
 		}
 	}
 }

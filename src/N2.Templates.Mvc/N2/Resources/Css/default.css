@@ -154,5 +154,5 @@ body .frameForm { position:absolute; height:100%; width:100%; overflow:hidden; }
 /* custom */
 #edit a
 {
-	min-width:58px;
+	min-width:50px;
 }
