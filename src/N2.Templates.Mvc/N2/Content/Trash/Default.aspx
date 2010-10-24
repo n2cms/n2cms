@@ -17,12 +17,12 @@
 					</asp:HyperLink>
 				</ItemTemplate>
 			</asp:TemplateField>
-			<asp:TemplateField HeaderText="Deleted">
+			<asp:TemplateField HeaderText="Deleted" meta:resourceKey="colDeleted">
 				<ItemTemplate>
 					<%# ((N2.ContentItem)Container.DataItem)["DeletedDate"] %>				
 				</ItemTemplate>
 			</asp:TemplateField>
-			<asp:TemplateField HeaderText="Previous location">
+			<asp:TemplateField HeaderText="Previous location" meta:resourceKey="colPrevious">
 				<ItemTemplate>
 					<asp:HyperLink ID="hlPreviousLocation" runat="server" NavigateUrl='<%# DataBinder.Eval(((N2.ContentItem)Container.DataItem)["FormerParent"], "Url") %>'>
 						<asp:Image runat="server" ImageUrl='<%# DataBinder.Eval(((N2.ContentItem)Container.DataItem)["FormerParent"], "IconUrl") %>' />

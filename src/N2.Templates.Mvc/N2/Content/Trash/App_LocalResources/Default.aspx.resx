@@ -123,6 +123,21 @@
   <data name="btnClear.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="colDelete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="colDeleted.HeaderText" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="colPrevious.HeaderText" xml:space="preserve">
+    <value>Previous location</value>
+  </data>
+  <data name="colRestore.Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="colTitle.HeaderText" xml:space="preserve">
+    <value>Title</value>
+  </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>

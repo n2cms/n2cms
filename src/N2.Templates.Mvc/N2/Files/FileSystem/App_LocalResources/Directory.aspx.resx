@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="btnDelete.OnClientClick" xml:space="preserve">
+    <value>return confirm('Delete selected files and folders?');</value>
+  </data>
+  <data name="btnDelete.Text" xml:space="preserve">
+    <value>Delete selected</value>
+  </data>
   <data name="hlCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
