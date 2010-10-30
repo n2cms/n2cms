@@ -49,7 +49,6 @@ namespace N2.Details
 		private int columns = 0;
 		private int rows = 0;
 		private TextBoxMode textMode = TextBoxMode.SingleLine;
-		private string defaultValue = string.Empty;
 
 		public EditableTextBoxAttribute()
 			: base(null, 50)
@@ -104,13 +103,6 @@ namespace N2.Details
 			set { maxLength = value; }
 		}
 
-		/// <summary>Gets or sets the default value. When the editor's value equals this value then null is saved instead.</summary>
-		public string DefaultValue
-		{
-			get { return defaultValue; }
-			set { defaultValue = value; }
-		}
-
 	    #endregion
 
 		#region IDisplayable Members
@@ -133,7 +125,9 @@ namespace N2.Details
 		public override bool UpdateItem(ContentItem item, Control editor)
 		{
 			TextBox tb = editor as TextBox;
-			string value = (tb.Text == DefaultValue) ? null : tb.Text;
+			string value = tb.Text;
+			if (DefaultValue is string && tb.Text == (string)DefaultValue)
+				value = null;
 			if(!AreEqual(value, item[Name]))
 			{
 				item[Name] = value;
@@ -145,7 +139,7 @@ namespace N2.Details
 		public override void UpdateEditor(ContentItem item, Control editor)
 		{
 			TextBox tb = editor as TextBox;
-			tb.Text = Utility.Convert<string>(item[Name]) ?? DefaultValue;
+			tb.Text = Utility.Convert<string>(item[Name]) ?? DefaultValue as string;
 		}
 
 		/// <summary>Creates a text box editor.</summary>

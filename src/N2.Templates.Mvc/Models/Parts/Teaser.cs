@@ -8,7 +8,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Teaser",
 		IconUrl = "~/Content/Img/heart.png")]
 	[WithEditableTitle("Title", 10)]
-	public class Teaser : AbstractItem
+	public class Teaser : PartBase
 	{
 		[Displayable(typeof (H4), "Text")]
 		public override string Title

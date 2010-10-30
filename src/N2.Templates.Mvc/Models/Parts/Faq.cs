@@ -13,7 +13,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[RestrictParents(typeof (FaqList))]
 	[AllowedZones("Questions")]
 	[WithEditableTitle("Question", 90, Focus = false)]
-	public class Faq : AbstractItem
+	public class Faq : PartBase
 	{
 		[Displayable(typeof (H3), "Text")]
 		public override string Title

@@ -20,7 +20,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	 WithEditablePublishedRange("Published Between", 30, ContainerName = Tabs.Advanced, BetweenText = " and ")]
 	[TabContainer(Tabs.Advanced, "Advanced", 100)]
 	[RestrictParents(typeof (IStructuralPage))]
-	public class Redirect : AbstractPage, IStructuralPage
+	public class Redirect : PageBase, IStructuralPage
 	{
 		public override string Url
 		{

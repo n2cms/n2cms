@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		IconUrl = "~/Content/Img/photos.png")]
 	[RestrictParents(typeof (IStructuralPage))]
 	[FieldSetContainer(ImageGallery.GallerySettings, "Gallery Settings", 500, ContainerName = Tabs.Content)]
-	public class ImageGallery : AbstractContentPage
+	public class ImageGallery : ContentPageBase
 	{
 		#region GallerySettings
 

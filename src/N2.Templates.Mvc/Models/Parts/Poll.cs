@@ -13,7 +13,7 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Poll",
 		IconUrl = "~/Content/Img/chart_pie.png")]
-	[RestrictParents(typeof (AbstractContentPage))]
+	[RestrictParents(typeof (ContentPageBase))]
 	[AllowedChildren(typeof (SingleSelect))]
 	[FieldSetContainer("questionContainer", "Question", 100)]
 	public class Poll : SidebarItem, IAddablePart

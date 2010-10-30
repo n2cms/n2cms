@@ -13,7 +13,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[RestrictParents(typeof (LanguageRoot))]
 	// The top region is placed on the start page and displayed on all underlying pages
 	[AllowedZones("SiteTop")]
-	public class Top : AbstractItem
+	public class Top : PartBase
 	{
 		[Displayable(typeof (N2.Web.UI.WebControls.H2), "Text")]
 		[EditableTextBox("Top text", 40, ContainerName = "top")]

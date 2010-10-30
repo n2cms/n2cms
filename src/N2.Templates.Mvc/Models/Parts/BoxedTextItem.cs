@@ -8,7 +8,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		IconUrl = "~/Content/Img/application_view_columns.png",
 		SortOrder = -100)]
 	[WithEditableTitle]
-	public class BoxedTextItem : AbstractItem
+	public class BoxedTextItem : PartBase
 	{
 		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text

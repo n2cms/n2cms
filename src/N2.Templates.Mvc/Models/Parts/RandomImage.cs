@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Random image",
 		IconUrl = "~/Content/Img/photos.png")]
 	[NotVersionable]
-	public class RandomImage : AbstractItem
+	public class RandomImage : PartBase
 	{
 		[DisplayableImage(CssClass = "main")]
 		public virtual string RandomImageUrl

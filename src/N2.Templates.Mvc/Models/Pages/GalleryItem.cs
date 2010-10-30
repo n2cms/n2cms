@@ -12,7 +12,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		IconUrl = "~/Content/Img/photo.png")]
 	[RestrictParents(typeof (ImageGallery))]
 	[TabContainer("advanced", "Advanced", 100)]
-	public class GalleryItem : AbstractContentPage
+	public class GalleryItem : ContentPageBase
 	{
 		public GalleryItem()
 		{

@@ -77,7 +77,7 @@ namespace N2.Templates.Mvc.Services
 
 		private bool IsPage(ItemDefinition definition)
 		{
-			return typeof (AbstractPage).IsAssignableFrom(definition.ItemType);
+			return typeof (PageBase).IsAssignableFrom(definition.ItemType);
 		}
 
 		public void Stop()

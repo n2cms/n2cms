@@ -15,15 +15,14 @@ namespace N2.Templates.Mvc.Models.Pages
 	[TabContainer(Tabs.Content, "Content", 0)]
 	[TabContainer(Tabs.Advanced, "Advanced", 100)]
 	[ExpandableContainer(Tabs.Details, 6, Legend = "Details", ContainerName = Tabs.Content)]
-	public abstract class AbstractPage : ContentItem, IItemContainer
+	public abstract class PageBase : ContentItem
 	{
+		// editables
+
 		[EditableCheckBox("Show Title", 10, ContainerName = Tabs.Details, DefaultValue = true)]
-		public virtual bool ShowTitle
-		//{
-		//    get { return (bool) (GetDetail("ShowTitle") ?? true); }
-		//    set { SetDetail("ShowTitle", value, true); }
-		//}
-		{ get; set; }
+		public virtual bool ShowTitle { get; set; }
+
+		// helpers
 
 		public virtual IList<T> GetChildren<T>() where T : ContentItem
 		{
@@ -39,7 +38,11 @@ namespace N2.Templates.Mvc.Models.Pages
 			                       new TypeFilter(typeof (T)),
 			                       new ZoneFilter(zoneName));
 		}
+	}
 
+	[Obsolete("Use PageBase and [PageDefinition]")]
+	public abstract class AbstractPage : PageBase, IItemContainer
+	{
 		/// <summary>Gets the item associated with the item container.</summary>
 		public ContentItem CurrentItem
 		{

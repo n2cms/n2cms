@@ -5,9 +5,9 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Comment Input Form",
 		IconUrl = "~/Content/Img/comment_add.png")]
-	[RestrictParents(typeof (AbstractPage))]
+	[RestrictParents(typeof (PageBase))]
 	[AllowedZones(Zones.Content, Zones.RecursiveBelow)]
-	public class CommentInput : AbstractItem
+	public class CommentInput : PartBase
 	{
 	}
 }

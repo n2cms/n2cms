@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		Description = "Searches for items searching for texts in the database.",
 		SortOrder = 200,
 		IconUrl = "~/Content/Img/zoom.png")]
-	public class DatabaseSearch : AbstractSearch
+	public class DatabaseSearch : SearchBase
 	{
 		public virtual IQueryEnding CreateQuery(string query)
 		{

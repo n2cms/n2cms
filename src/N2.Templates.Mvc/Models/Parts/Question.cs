@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[WithEditableTitle("Question", 10, Focus = false)]
 	[RestrictParents(typeof (ISurvey))]
 	[AllowedZones("Questions", "")]
-	public abstract class Question : AbstractItem, IQuestion
+	public abstract class Question : PartBase, IQuestion
 	{
 		public abstract IElement CreateHtmlElement();
 

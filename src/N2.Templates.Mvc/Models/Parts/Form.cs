@@ -11,14 +11,14 @@ namespace N2.Templates.Mvc.Models.Parts
 		Description = "A form that can be sumitted and sent to an email address.",
 		SortOrder = 250,
 		IconUrl = "~/Content/Img/report.png")]
-	[RestrictParents(typeof (AbstractContentPage))]
+	[RestrictParents(typeof (ContentPageBase))]
 	[AllowedChildren(typeof (Question))]
 	[AvailableZone("Questions", "Questions")]
 	[WithEditableTitle(Required = false, ContainerName = Form.ContentTab)]
 	[TabContainer(Form.FieldsTab, "Fields", 0, CssClass = "tabPanel formTab")]
 	[TabContainer(Form.ContentTab, "Content", 10, CssClass = "tabPanel formTab")]
 	[TabContainer(Form.EmailTab, "Email", 20, CssClass = "tabPanel formTab")]
-	public class Form : AbstractItem
+	public class Form : PartBase
 	{
 		public const string FieldsTab = "formFieldsTab";
 		public const string ContentTab = "formContentTab";

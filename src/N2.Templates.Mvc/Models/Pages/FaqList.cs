@@ -12,7 +12,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		IconUrl = "~/Content/Img/help.png")]
 	[AvailableZone("Questions", "Questions")]
 	[RestrictParents(typeof (IStructuralPage))]
-	public class FaqList : AbstractContentPage, IStructuralPage
+	public class FaqList : ContentPageBase, IStructuralPage
 	{
 		[N2.Details.EditableChildren("Questions", "Questions", 110, ContainerName = Tabs.Content)]
 		public virtual IList<Faq> Questions

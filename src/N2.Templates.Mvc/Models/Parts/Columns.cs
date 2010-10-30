@@ -6,7 +6,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		IconUrl = "~/Content/Img/text_columns.png")]
 	[AvailableZone("Left", "ColumnLeft"), AvailableZone("Right", "ColumnRight")]
 	[AllowedZones("Content")]
-	public class Columns : AbstractItem
+	public class Columns : PartBase
 	{
 	}
 }

@@ -7,8 +7,8 @@ using N2.Web.Mvc;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[Controls(typeof(AbstractSearch))]
-	public class SearchController : ContentController<AbstractSearch>
+	[Controls(typeof(SearchBase))]
+	public class SearchController : ContentController<SearchBase>
 	{
 		private const int PAGE_SIZE = 10;
 

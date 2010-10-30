@@ -7,7 +7,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Login", Name = "Login",
 		IconUrl = "~/Content/Img/key.png")]
 	[WithEditableTitle("Title", 10)]
-	public class LoginItem : AbstractItem
+	public class LoginItem : PartBase
 	{
 		[Displayable(typeof (H4), "Text")]
 		public override string Title

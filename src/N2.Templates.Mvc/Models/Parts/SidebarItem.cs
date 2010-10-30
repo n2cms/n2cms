@@ -5,7 +5,7 @@ using N2.Integrity;
 namespace N2.Templates.Mvc.Models.Parts
 {
 	[WithEditableTitle("Title", 10)]
-	public abstract class SidebarItem : AbstractItem
+	public abstract class SidebarItem : PartBase
 	{
 		[Displayable(typeof (H4), "Text")]
 		public override string Title

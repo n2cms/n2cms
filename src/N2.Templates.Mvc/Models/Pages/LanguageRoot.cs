@@ -22,7 +22,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[RestrictParents(typeof (StartPage))]
 	[FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
 	[FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
-	public class LanguageRoot : AbstractContentPage, IStructuralPage, ILanguage, IStartPage
+	public class LanguageRoot : ContentPageBase, IStructuralPage, ILanguage, IStartPage
 	{
 		public LanguageRoot()
 		{

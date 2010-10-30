@@ -9,8 +9,8 @@ namespace N2.Templates.Mvc.Controllers
 	/// behavior is to render a template with this pattern:
 	///  * "~/Views/SharedPages/{ContentTypeName}.aspx"
 	/// </summary>
-	[Controls(typeof(AbstractPage))]
-	public class SharedPagesController : TemplatesControllerBase<AbstractPage>
+	[Controls(typeof(PageBase))]
+	public class SharedPagesController : TemplatesControllerBase<PageBase>
 	{
 	}
 }

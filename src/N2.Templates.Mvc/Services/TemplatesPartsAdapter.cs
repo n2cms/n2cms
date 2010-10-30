@@ -8,14 +8,14 @@ namespace N2.Templates.Mvc.Services
 	/// <summary>
 	/// Implements "Recusive" zones functionality.
 	/// </summary>
-	[Controls(typeof(AbstractPage))]
+	[Controls(typeof(PageBase))]
 	public class TemplatesPartsAdapter : PartsAdapter
 	{
 		public override ItemList GetItemsInZone(ContentItem parentItem, string zoneName)
 		{
 			ItemList items =  base.GetItemsInZone(parentItem, zoneName);
 			ContentItem grandParentItem = parentItem;
-			if (zoneName.StartsWith("Recursive") && grandParentItem is AbstractContentPage && !(grandParentItem is LanguageRoot))
+			if (zoneName.StartsWith("Recursive") && grandParentItem is ContentPageBase && !(grandParentItem is LanguageRoot))
 			{
 				if(parentItem.VersionOf == null)
 					items.AddRange(GetItemsInZone(parentItem.Parent, zoneName));

@@ -6,7 +6,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[WithEditableTitle("Text", 10)]
 	[RestrictParents(typeof (OptionSelectQuestion))]
 	[PartDefinition("Option")]
-	public class Option : AbstractItem
+	public class Option : PartBase
 	{
 		[N2.Details.EditableTextBox("Answers", 100)]
 		public virtual int Answers

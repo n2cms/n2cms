@@ -8,9 +8,9 @@ namespace N2.Templates.Mvc.Models.Parts
 {
 	[PartDefinition("Social bookmarks",
 		IconUrl = "~/Content/Img/digg.png")]
-	[RestrictParents(typeof (AbstractContentPage))]
+	[RestrictParents(typeof (ContentPageBase))]
 	[WithEditableTitle("Title", 90)]
-	public class SocialBookmarks : AbstractItem
+	public class SocialBookmarks : PartBase
 	{
 		[Displayable(typeof (H4), "Text")]
 		public override string Title

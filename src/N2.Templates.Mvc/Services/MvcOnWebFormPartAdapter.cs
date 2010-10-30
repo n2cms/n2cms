@@ -13,7 +13,7 @@ using N2.Web.UI;
 
 namespace N2.Templates.Mvc.Services
 {
-	[Adapts(typeof(Models.Parts.AbstractItem))]
+	[Adapts(typeof(Models.Parts.PartBase))]
 	public class MvcOnWebFormPartAdapter : PartsAdapter
 	{
 		ITemplateRenderer renderer;

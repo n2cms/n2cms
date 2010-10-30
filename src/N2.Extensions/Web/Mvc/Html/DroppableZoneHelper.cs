@@ -20,6 +20,7 @@ namespace N2.Web.Mvc.Html
 
 	public class DroppableZoneHelper : ZoneHelper
 	{
+		protected string ZoneTitle { get; set; }
 
         ControlPanelState state = ControlPanelState.Hidden;
 
@@ -28,6 +29,13 @@ namespace N2.Web.Mvc.Html
 		{
             state = helper.ViewContext.HttpContext.ControlPanelState();
         }
+
+		public ZoneHelper Title(string title)
+		{
+			ZoneTitle = title;
+
+			return this;
+		}
 
         public override void Render(TextWriter writer)
         {
@@ -39,7 +47,7 @@ namespace N2.Web.Mvc.Html
 				writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path)
 					.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
 					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
-					.WriteAttribute("title", DroppableZone.GetToolTip(Context.Current.Definitions.GetDefinition(CurrentItem.GetContentType()), ZoneName))
+					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Context.Current.Definitions.GetDefinition(CurrentItem.GetContentType()), ZoneName))
 					.Write(">");
 
 				if (string.IsNullOrEmpty(Html.ViewContext.HttpContext.Request["preview"]))

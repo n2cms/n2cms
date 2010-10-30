@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Pages
 	[PageDefinition("News", Description = "A news page.", SortOrder = 155,
 		IconUrl = "~/Content/Img/newspaper.png")]
 	[RestrictParents(typeof (NewsContainer))]
-	public class News : AbstractContentPage, ISyndicatable
+	public class News : ContentPageBase, ISyndicatable
 	{
 		public News()
 		{

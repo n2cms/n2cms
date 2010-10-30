@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		SortOrder = 2000)]
 	[RestrictParents(typeof (LanguageRoot))]
 	[AllowedZones(Zones.SiteRight)]
-	public class Tracking : AbstractItem
+	public class Tracking : PartBase
 	{
 		[EditableCheckBox("Enabled", 100)]
 		public virtual bool Enabled

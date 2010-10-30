@@ -10,8 +10,8 @@ namespace N2.Templates.Mvc.Models.Parts
 	[Versionable(AllowVersions.No)]
 	[PartDefinition("Comment List",
 		IconUrl = "~/Content/Img/comments.png")]
-	[RestrictParents(typeof (AbstractPage))]
-	public class CommentList : AbstractItem
+	[RestrictParents(typeof (PageBase))]
+	public class CommentList : PartBase
 	{
 	}
 }

@@ -8,7 +8,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Bubble",
 		IconUrl = "~/Content/Img/help.png")]
 	[AllowedZones(Zones.Left, Zones.Right, Zones.ColumnLeft, Zones.ColumnRight)]
-	public class BubbleItem : AbstractItem
+	public class BubbleItem : PartBase
 	{
 		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text

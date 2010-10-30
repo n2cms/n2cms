@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		SortOrder = 420,
 		IconUrl = "~/Content/Img/sitemap.png")]
 	[RestrictParents(typeof (IStructuralPage))]
-	public class SiteMap : AbstractContentPage, IStructuralPage
+	public class SiteMap : ContentPageBase, IStructuralPage
 	{
 	}
 }

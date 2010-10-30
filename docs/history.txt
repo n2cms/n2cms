@@ -1,4 +1,6 @@
-﻿- Fixed #28342: Missing translations for the file manager and trash features
+﻿- Converted projects to 2010
+- Added A/B testing container
+- Fixed #28342: Missing translations for the file manager and trash features
 - Fixed #29241: Security issue with upload folder
 - Improved navigation to refresh and clear state less often (ThreadId=231867)- Incorporated some changes to support mono (ThreadId=230071)
 - jQuery UI 1.8.5

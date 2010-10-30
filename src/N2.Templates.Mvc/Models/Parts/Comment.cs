@@ -12,7 +12,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[Versionable(AllowVersions.No)]
 	[RestrictParents(typeof(CommentList))]
 	[WithEditableTitle]
-	public class Comment : AbstractItem
+	public class Comment : PartBase
 	{
 		[EditableTextBox("AuthorName", 100)]
 		public virtual string AuthorName

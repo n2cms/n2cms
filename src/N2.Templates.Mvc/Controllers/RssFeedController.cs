@@ -20,6 +20,7 @@ namespace N2.Templates.Mvc.Controllers
 
 		public ActionResult Preview()
 		{
+			
 			return View(CurrentItem);
 		}
 	}

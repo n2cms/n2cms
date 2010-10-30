@@ -6,7 +6,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[PartDefinition("Text", Name = "Text",
 		IconUrl = "~/Content/Img/text_align_left.png",
 		SortOrder = -90)]
-	public class TextItem : AbstractItem
+	public class TextItem : PartBase
 	{
 		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text

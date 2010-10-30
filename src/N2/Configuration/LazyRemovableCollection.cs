@@ -142,14 +142,14 @@ namespace N2.Configuration
 		{
 		}
 
-		public new int Count
+		public int Count
 		{
 			get { return AllElements.Count(); }
 		}
 
 		#region IEnumerable<T> Members
 
-		public new IEnumerator<T> GetEnumerator()
+		public IEnumerator<T> GetEnumerator()
 		{
 			return AllElements.GetEnumerator();
 		}

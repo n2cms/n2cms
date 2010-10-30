@@ -12,7 +12,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		SortOrder = 120)]
 	[RestrictParents(typeof (IStructuralPage))]
 	[SortChildren(SortBy.Expression, SortExpression = "EventDate")]
-	public class Calendar : AbstractContentPage
+	public class Calendar : ContentPageBase
 	{
 		public virtual IEnumerable<Event> GetEvents()
 		{

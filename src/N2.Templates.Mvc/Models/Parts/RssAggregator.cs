@@ -10,7 +10,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		SortOrder = 165,
 		IconUrl = "~/Content/Img/rss.png")]
 	[WithEditableTitle("Title", 10, Required = false)]
-	public class RssAggregator : AbstractItem
+	public class RssAggregator : PartBase
 	{
 		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text
