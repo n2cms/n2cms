@@ -8,16 +8,6 @@ using N2.Templates.Mvc.Web;
 
 namespace N2.Templates.Mvc
 {
-	[Adapts(typeof(N2.Templates.Mvc.Models.Pages.NewsContainer))]
-	public class NewsAdapter : N2.Edit.NodeAdapter
-	{
-		public override System.Collections.Generic.IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
-		{
-			yield break;
-			//return base.GetChildren(parent, userInterface);
-		}
-	}
-
 	// Note: For instructions on enabling IIS6 or IIS7 classic mode, 
 	// visit http://go.microsoft.com/?LinkId=9394801
 

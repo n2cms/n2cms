@@ -78,23 +78,23 @@ namespace N2.Edit.Web.UI.Controls
 				.LinkProvider(BuildLink)
 				.ToControl();
 
-			AppendExpanderNodeRecursive(tree, Filter, Target);
+			AppendExpanderNodeRecursive(tree, Filter, Target, adapters);
 
 			Controls.Add(tree);
 			
 			base.CreateChildControls();
 		}
 
-		public static void AppendExpanderNodeRecursive(Control tree, ItemFilter filter, string target)
+		public static void AppendExpanderNodeRecursive(Control tree, ItemFilter filter, string target, IContentAdapterProvider adapters)
 		{
 			TreeNode tn = tree as TreeNode;
 			if (tn != null)
 			{
 				foreach (Control child in tn.Controls)
 				{
-					AppendExpanderNodeRecursive(child, filter, target);
+					AppendExpanderNodeRecursive(child, filter, target, adapters);
 				}
-				if (tn.Controls.Count == 0 && tn.Node.GetChildren(filter).Count > 0)
+				if (tn.Controls.Count == 0 && adapters.ResolveAdapter<NodeAdapter>(tn.Node.GetContentType()).HasChildren(tn.Node, filter))
 				{
 					AppendExpanderNode(tn, target);
 				}

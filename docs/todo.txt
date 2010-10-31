@@ -1,4 +1,3 @@
-- Strange node when using custom node filters (ThreadId=229960)
 - comment moderation (ThreadId=232279)
 - alt on editableimage (ThreadId=232342)
 - relocate virtual directory (ThreadId=232683)

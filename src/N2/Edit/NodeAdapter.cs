@@ -72,7 +72,7 @@ namespace N2.Edit
 		}
 
 		/// <summary>Gets the children of the given item for the given user interface.</summary>
-		/// <param name="item">The item whose children to get.</param>
+		/// <param name="parent">The item whose children to get.</param>
 		/// <param name="userInterface">The interface where the children are displayed.</param>
 		/// <returns>An enumeration of the children.</returns>
 		public virtual IEnumerable<ContentItem> GetChildren(ContentItem parent, string userInterface)
@@ -88,6 +88,15 @@ namespace N2.Edit
 					yield return child;
 				}
 			}
+		}
+
+		/// <summary>Returns true when an item has children.</summary>
+		/// <param name="filter">The filter to apply.</param>
+		/// <param name="parent">The item whose childrens existence is to be determined.</param>
+		/// <returns>True when there are children.</returns>
+		public virtual bool HasChildren(ContentItem parent, ItemFilter filter)
+		{
+			return parent.GetChildren(filter).Count > 0;
 		}
 	}
 }

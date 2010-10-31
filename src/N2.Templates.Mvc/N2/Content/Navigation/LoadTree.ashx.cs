@@ -32,11 +32,11 @@ namespace N2.Edit.Navigation
 				.Build();
 
 			TreeNode tn = (TreeNode)new N2.Web.Tree(root)
-				.LinkProvider(delegate(ContentItem node) { return N2.Edit.Web.UI.Controls.Tree.BuildLink(node, node.Path == selectedNode.Path, target); })
+				.LinkProvider(node => Web.UI.Controls.Tree.BuildLink(node, node.Path == selectedNode.Path, target))
 				.Filters(filter)
 				.ToControl();
-			
-			Web.UI.Controls.Tree.AppendExpanderNodeRecursive(tn, filter, target);
+
+			Web.UI.Controls.Tree.AppendExpanderNodeRecursive(tn, filter, target, adapters);
 
 			RenderControls(tn.Controls, context.Response.Output);
 		}
