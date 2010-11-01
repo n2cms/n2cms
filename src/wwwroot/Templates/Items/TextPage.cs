@@ -1,6 +1,4 @@
-using System.Text.RegularExpressions;
 using N2.Details;
-using N2.Templates.Services;
 using N2.Persistence.Serialization;
 using N2.Web;
 using N2.Definitions;
@@ -25,27 +23,9 @@ namespace N2.Templates.Items
 
         public string Summary
         {
-            get { return ExtractFirstSentences(Text, 250); }
+			get { return Utility.ExtractFirstSentences(Text, 250); }
         }
 
-        private static string ExtractFirstSentences(string text, int maxLength)
-        {
-            text = Regex.Replace(text, "<!*[^<>]*>", string.Empty, RegexOptions.Compiled | RegexOptions.Multiline);
-            int separatorIndex = 0;
-            for (int i = 0; i < text.Length && i < maxLength; i++)
-            {
-                switch (text[i])
-                {
-                    case '.':
-                    case '!':
-                    case '?':
-                        separatorIndex = i;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return text.Substring(0, separatorIndex + 1);
-        }
+		public bool Syndicate { get; set; }
     }
 }

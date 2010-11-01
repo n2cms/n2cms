@@ -4,12 +4,15 @@ using System.IO;
 using System.Xml;
 using N2.Persistence.Serialization;
 using N2.Web;
+using N2.Definitions;
+using N2.Engine;
 
-namespace N2.Templates.Mvc.Services
+namespace N2.Web
 {
 	/// <summary>
 	/// Writes an RSS feed to an output stream.
 	/// </summary>
+	[Service]
 	public class RssWriter
 	{
 		private readonly IWebContext context;

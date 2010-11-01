@@ -1,11 +1,8 @@
-﻿using N2.Templates.Web.UI;
-using N2.Templates.Items;
-using N2.Engine.Globalization;
+﻿using N2.Engine.Globalization;
 using N2.Web.UI;
-using N2.Templates.Services;
 using N2.Engine;
 
-namespace N2.Templates.Web
+namespace N2.Templates.Mvc.Services.WebForms
 {
 	[Service(typeof(ContentPageConcern))]
 	public class LanguageConcern : ContentPageConcern

@@ -4,7 +4,7 @@ namespace N2.Addons.Wiki.Items
 {
 	[PartDefinition("Wiki Part", TemplateUrl = "~/Addons/Wiki/UI/Parts/WikiPart.ascx", IconUrl = "~/Addons/Wiki/UI/Img/part_wiki.gif")]
     [RestrictParents(typeof(WikiArticle))]
-    public class WikiText : Templates.Items.AbstractItem, IArticle
+    public class WikiText : ContentItem, IArticle
     {
         #region IArticle Members
 

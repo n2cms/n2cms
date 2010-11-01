@@ -169,10 +169,7 @@
     <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.designer.cs">
       <DependentUpon>TestWebFormPart.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Classes\Configuration\MailConfigSource.cs" />
-    <Compile Include="Classes\Configuration\TemplatesSection.cs" />
-    <Compile Include="Classes\Configuration\WikiElement.cs" />
-    <Compile Include="Classes\Find.cs" />
+    <Compile Include="Find.cs" />
     <Compile Include="Controllers\ABTestingController.cs" />
     <Compile Include="Controllers\NewsContainerController.cs" />
     <Compile Include="Models\ABTestingModel.cs" />
@@ -180,12 +177,12 @@
     <Compile Include="Models\NewsContainerModel.cs" />
     <Compile Include="Models\Parts\ABTestingContainer.cs" />
     <Compile Include="Services\IViewConcern.cs" />
-    <Compile Include="Services\MvcOnWebFormPartAdapter.cs" />
-    <Compile Include="Classes\Tabs.cs" />
+    <Compile Include="Services\WebForms\MvcOnWebFormPartAdapter.cs" />
+    <Compile Include="Tabs.cs" />
     <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
     <Compile Include="Services\ThemedMasterViewEngine.cs" />
     <Compile Include="Services\LanguageConcern.cs" />
-    <Compile Include="Classes\Zones.cs" />
+    <Compile Include="Zones.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CalendarTeaserController.cs" />
     <Compile Include="Controllers\CommentInputController.cs" />
@@ -284,18 +281,16 @@
     <Compile Include="Models\UserRegistrationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DynamicMailSender.cs" />
-    <Compile Include="Services\FakeMailSender.cs" />
-    <Compile Include="Services\IFeed.cs" />
-    <Compile Include="Services\ImageResizer.cs" />
-    <Compile Include="Services\ISyndicatable.cs" />
     <Compile Include="Services\NotFoundHandler.cs" />
     <Compile Include="Services\PermissionDeniedHandler.cs" />
-    <Compile Include="Services\RssWriter.cs" />
     <Compile Include="Services\SeoDefinitionAppender.cs" />
     <Compile Include="Services\SyndicatableDefinitionAppender.cs" />
     <Compile Include="Services\TemplatesInitializer.cs" />
     <Compile Include="Services\TemplatesPartsAdapter.cs" />
     <Compile Include="Services\SeoConcern.cs" />
+    <Compile Include="Services\WebForms\LanguageConcern.cs" />
+    <Compile Include="Services\WebForms\MasterPageConcern.cs" />
+    <Compile Include="Services\WebForms\ThemeConcern.cs" />
     <Compile Include="Views\Shared\Site.master.cs">
       <DependentUpon>Site.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -464,6 +459,7 @@
     <Content Include="Views\Navigation\SubMenu.ascx" />
     <Content Include="Views\Shared\Site.master" />
     <Content Include="Views\Start\Index.aspx" />
+    <Content Include="Views\Shared\WebForms.master" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
@@ -652,7 +648,6 @@
   <ItemGroup>
     <Folder Include="Areas\Management\Views\Shared\" />
     <Folder Include="Areas\Tests\Views\Shared\" />
-    <Folder Include="Classes\Web\" />
     <Folder Include="Upload\" />
     <Folder Include="Views\Shared\App_LocalResources\" />
   </ItemGroup>

@@ -122,7 +122,11 @@
     <Compile Include="Collections\ItemList.generic.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
+    <Compile Include="Definitions\ICommentable.cs" />
+    <Compile Include="Definitions\IContentPage.cs" />
     <Compile Include="Definitions\IDefinitionManager.cs" />
+    <Compile Include="Definitions\IFeed.cs" />
+    <Compile Include="Definitions\ISyndicatable.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
@@ -155,6 +159,8 @@
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
+    <Compile Include="Web\RssWriter.cs" />
+    <Compile Include="Web\UI\ContentPageConcern.cs" />
     <Compile Include="Web\UI\ItemDataSourceSelectingEventArgs.cs" />
     <Compile Include="Web\UI\ItemDataSourceView.cs" />
     <Compile Include="Web\UI\QueryDataSourceView.cs" />
@@ -276,7 +282,6 @@
     <Compile Include="Web\UrlParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ContentModel.cd" />
     <EmbeddedResource Include="Engine\Globalization\globalization.castle.config" />
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>

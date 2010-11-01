@@ -369,6 +369,13 @@ namespace N2.Web
 
 		public Url SetQueryParameter(string key, string value)
 		{
+			return SetQueryParameter(key, value, false);
+		}
+
+		public Url SetQueryParameter(string key, string value, bool removeNullValue)
+		{
+			if (removeNullValue && value == null && query == null)
+				return this;
 			if (query == null)
 				return AppendQuery(key, value);
 

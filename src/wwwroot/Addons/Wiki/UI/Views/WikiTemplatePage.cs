@@ -1,9 +1,9 @@
 using System;
-using N2.Templates.Web.UI;
+using N2.Web.UI;
 
 namespace N2.Addons.Wiki.UI.Views
 {
-	public class WikiTemplatePage : TemplatePage<Items.WikiArticle>
+	public class WikiTemplatePage : ContentPage<Items.WikiArticle>
 	{
 		protected bool IsAuthorized
 		{

@@ -3,31 +3,30 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using N2.Templates.Web.UI;
 using N2.Engine;
+using N2.Web.UI;
 
 namespace N2.Templates.Services
 {
     /// <summary>
     /// Adds SEO title, keywords and description to the page.
     /// </summary>
-	[Service(typeof(TemplateConcern))]
-	public class SeoConcern : TemplateConcern
+	[Service(typeof(ContentPageConcern))]
+	public class SeoConcern : ContentPageConcern
     {
         public const string HeadTitle = "HeadTitle";
         public const string MetaKeywords = "MetaKeywords";
         public const string MetaDescription = "MetaDescription";
 
-		public override void OnPreInit(ITemplatePage template)
+		public override void OnPreInit(Page page, ContentItem item)
 		{
-			var item = template.CurrentItem;
-			if (item != null)
+			if (item == null) return;
+
+			page.PreRender += delegate
 			{
-				template.Page.PreRender += delegate
-				{
-					template.Page.Title = item[HeadTitle] as string ?? item.Title;
-					AddMeta(template.Page, "keywords", item[MetaKeywords] as string);
-					AddMeta(template.Page, "description", item[MetaDescription] as string);
-				};
-			}
+				page.Title = item[HeadTitle] as string ?? item.Title;
+				AddMeta(page, "keywords", item[MetaKeywords] as string);
+				AddMeta(page, "description", item[MetaDescription] as string);
+			};
 		}
 
         private void AddMeta(Page page, string name, string content)
@@ -45,5 +44,5 @@ namespace N2.Templates.Services
                 page.Header.Controls.Add(meta);
             }
         }
-    }
+	}
 }

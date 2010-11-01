@@ -2,6 +2,7 @@ using System.Web;
 using System.Web.Hosting;
 using N2.Edit.FileSystem;
 using N2.Templates.Services;
+using N2.Web.Drawing;
 
 namespace N2.Templates.UI
 {

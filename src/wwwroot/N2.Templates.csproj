@@ -94,7 +94,6 @@
     <Compile Include="Templates\Find.cs" />
     <Compile Include="Templates\Items\DefaultTemplateAttribute.cs" />
     <Compile Include="Templates\Items\RootPage.cs" />
-    <Compile Include="Templates\Services\ImageResizer.cs" />
     <Compile Include="Templates\Items\AbstractContentPage.cs" />
     <Compile Include="Templates\Items\AbstractItem.cs" />
     <Compile Include="Templates\Items\AbstractPage.cs" />
@@ -144,6 +143,7 @@
     <Compile Include="Templates\Items\Top.cs" />
     <Compile Include="Templates\Items\Tracking.cs" />
     <Compile Include="Templates\Items\UserRegistration.cs" />
+    <Compile Include="Templates\Services\TemplateConcern.cs" />
     <Compile Include="Templates\Web\MasterPageConcern.cs" />
     <Compile Include="Templates\Web\UI\ITemplatePage.cs" />
     <Compile Include="Templates\Services\SeoDefinitionAppender.cs" />
@@ -153,10 +153,6 @@
     <Compile Include="Templates\Services\FakeMailSender.cs" />
     <Compile Include="Templates\Services\NotFoundHandler.cs" />
     <Compile Include="Templates\Services\PermissionDeniedHandler.cs" />
-    <Compile Include="Templates\Services\IFeed.cs" />
-    <Compile Include="Templates\Services\ISyndicatable.cs" />
-    <Compile Include="Templates\Services\RssWriter.cs" />
-    <Compile Include="Templates\Services\TemplateConcern.cs" />
     <Compile Include="Templates\Tabs.cs" />
     <Compile Include="Templates\Services\TemplatesInitializer.cs" />
     <Compile Include="Templates\UI\Layouts\Translation.cs" />

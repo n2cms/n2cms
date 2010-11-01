@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Templates/UI/Layouts/Top+SubMenu.master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.SearchArticle" Title="Untitled Page" %>
+<%@ Page Language="C#" MasterPageFile="Fallback.master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="N2.Addons.Wiki.UI.Views.SearchArticle" Title="Untitled Page" %>
 <%@ Import Namespace="N2.Addons.Wiki.UI.Views"%>
 <asp:Content ID="Content9" ContentPlaceHolderID="TextContent" runat="server">
     <h1>Searching for '<%= CurrentArguments %>'</h1>
@@ -12,4 +12,12 @@
             </div>
         </ItemTemplate>
     </asp:Repeater>
+</asp:Content>
+
+<asp:Content ID="sc" ContentPlaceHolderID="Sidebar" runat="server">
+    <div id="extras" class="secondary">
+        <n2:DroppableZone ID="zrr" ZoneName="RecursiveRight" runat="server" />
+        <n2:DroppableZone ID="zr" ZoneName="Right" runat="server" />
+        <n2:DroppableZone ID="zsr" ZoneName="SiteRight" runat="server" Path="~/" />
+    </div>
 </asp:Content>

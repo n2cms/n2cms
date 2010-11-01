@@ -245,6 +245,22 @@ namespace N2.Tests.Web
             Assert.That(u.Query, Is.EqualTo("key=someothervalue"));
         }
 
+		[Test]
+		public void CanRemoveValue_UsingKeyAndValue()
+		{
+			Url u = "/";
+			u = u.SetQueryParameter("key", null, true);
+			Assert.That(u.Query, Is.Null);
+		}
+
+		[Test]
+		public void CanRemoveValue_OnExistingQueryString_UsingKeyAndValue()
+		{
+			Url u = "/?key=somevalue";
+			u = u.SetQueryParameter("key", null, true);
+			Assert.That(u.Query, Is.Null);
+		}
+
         [Test]
         public void AppendedValue_IsUrlEncoded()
         {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Resources;
+using System.Text.RegularExpressions;
 using System.Web;
 using N2.Integrity;
 using System.Diagnostics;
@@ -438,6 +439,37 @@ namespace N2
 			}
 
 			return AspNetHostingPermissionLevel.None;
+		}
+
+		static readonly Regex StripTagsExpression = new Regex("<!*[^<>]*>", RegexOptions.Multiline);
+		/// <summary>Strips tags and extracts sentences uptil the given max string length.</summary>
+		/// <param name="html">The html to strip and substring.</param>
+		/// <param name="maxLength">The maximum length of the returned string.</param>
+		/// <returns>A string with complete sentences uptil the supplied max length.</returns>
+		public static string ExtractFirstSentences(string html, int maxLength)
+		{
+			if (html == null) return null;
+
+			html = StripTagsExpression.Replace(html, "");
+			int separatorIndex = 0;
+			for (int i = 0; i < html.Length && i < maxLength; i++)
+			{
+				switch (html[i])
+				{
+					case '.':
+					case '!':
+					case '?':
+						separatorIndex = i;
+						break;
+					default:
+						break;
+				}
+			}
+
+			if (separatorIndex == 0 && html.Length > 0)
+				return html.Substring(0, Math.Min(html.Length, maxLength));
+
+			return html.Substring(0, separatorIndex + 1);
 		}
 
 		internal static int InheritanceDepth(Type type)

@@ -39,22 +39,43 @@ namespace N2.Web.UI
             get { return true; }
         }
 
-        protected override void OnInit(EventArgs e)
+		protected override void OnPreInit(EventArgs e)
+		{
+			ApplyConcerns(CurrentItem);
+
+			base.OnPreInit(e);
+		}
+
+    	protected override void OnInit(EventArgs e)
         {
             if (AllowOutputCache && (User == null || !User.Identity.IsAuthenticated))
             {
-                ICacheManager cacheManager = Engine.Resolve<ICacheManager>();
-                if (cacheManager.Enabled)
-                {
-                    InitOutputCache(cacheManager.GetOutputCacheParameters());
-                    cacheManager.AddCacheInvalidation(Response);
-                }
+                ApplyCaching();
             }
             
             base.OnInit(e);
         }
 
-		#region IContentTemplate Members
+		/// <summary>Applies all <see cref="ContentPageConcern"/> added to <see cref="IServiceContainer"/>.</summary>
+		/// <param name="item">The current item.</param>
+		protected virtual void ApplyConcerns(ContentItem item)
+		{
+			foreach (var concern in Engine.Container.ResolveAll<ContentPageConcern>())
+				concern.OnPreInit(this, item);
+		}
+
+		/// <summary>Applies configured cache parameters to this page.</summary>
+		protected virtual void ApplyCaching()
+    	{
+    		ICacheManager cacheManager = Engine.Resolve<ICacheManager>();
+    		if (cacheManager.Enabled)
+    		{
+    			InitOutputCache(cacheManager.GetOutputCacheParameters());
+    			cacheManager.AddCacheInvalidation(Response);
+    		}
+    	}
+
+    	#region IContentTemplate Members
 
 		ContentItem IItemContainer.CurrentItem
 		{

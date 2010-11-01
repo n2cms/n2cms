@@ -1,4 +1,5 @@
 using System.Web.UI.WebControls;
+using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Mvc.Services;
@@ -14,6 +15,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		public News()
 		{
 			Visible = false;
+			Syndicate = true;
 		}
 
 		[EditableTextBox("Introduction", 90, ContainerName = Tabs.Content, TextMode = TextBoxMode.MultiLine, Rows = 4,
@@ -28,5 +30,7 @@ namespace N2.Templates.Mvc.Models.Pages
 		{
 			get { return Introduction; }
 		}
+
+		public virtual bool Syndicate { get; set; }
 	}
 }

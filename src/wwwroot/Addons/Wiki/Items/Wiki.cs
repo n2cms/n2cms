@@ -1,4 +1,3 @@
-using N2.Templates.Items;
 using N2.Integrity;
 using N2.Details;
 using N2.Security.Details;
@@ -14,7 +13,6 @@ namespace N2.Addons.Wiki.Items
 		SortOrder = 460)]
     [RestrictParents(typeof(IStructuralPage))]
     [N2.Web.UI.TabContainer(Wiki.WikiTab, "Wiki", 110)]
-    [AllowedChildren(typeof(Subscribe))]
 	[Template("search", "~/Addons/Wiki/UI/Views/Search.aspx")]
 	[Template("nohits", "~/Addons/Wiki/UI/Views/NoHits.aspx")]
 	public class Wiki : WikiArticle, IWiki
@@ -73,6 +71,13 @@ namespace N2.Addons.Wiki.Items
             get { return (string)(GetDetail("NoHitsText") ?? DefaultNoHitsText); }
             set { SetDetail("NoHitsText", value, DefaultNoHitsText); }
         }
+
+		[EditableCheckBox("Enable Free Text Editing", 112, ContainerName = Wiki.WikiTab)]
+		public virtual bool EnableFreeText
+		{
+			get { return GetDetail("EnableFreeText", false); }
+			set { SetDetail("EnableFreeText", value, false); }
+		}
 
 		[EditableTextBox("Image Width (0 = disable)", 100, ContainerName = Wiki.WikiTab)]
 		public virtual int ImageWidth

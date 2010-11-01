@@ -1,11 +1,10 @@
-using N2.Templates.Items;
-using N2.Templates.Web.UI;
 using N2.Security;
+using N2.Web.UI;
 
 namespace N2.Addons.Wiki.Web
 {
-    public class WikiUserControl<T> : TemplateUserControl<T>, IWikiTemplate
-        where T:AbstractContentPage, IArticle
+    public class WikiUserControl<T> : ContentUserControl<T>, IWikiTemplate
+        where T:Items.WikiBase, IArticle
     {
         protected bool IsAuthorized
         {

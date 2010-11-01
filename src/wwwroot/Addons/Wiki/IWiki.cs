@@ -8,5 +8,6 @@ namespace N2.Addons.Wiki
         IEnumerable<string> ModifyRoles { get; }
         string UploadFolder { get; }
 		int ImageWidth { get; }
+		bool EnableFreeText { get; set; }
 	}
 }

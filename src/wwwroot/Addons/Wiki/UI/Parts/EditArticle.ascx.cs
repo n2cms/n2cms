@@ -1,18 +1,6 @@
 using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using N2.Templates.Services;
 using N2.Addons.Wiki.Web;
 using N2.Persistence;
-using N2.Templates.Configuration;
-using System.Web.Configuration;
 using N2.Resources;
 using N2.Web;
 
@@ -34,6 +22,7 @@ namespace N2.Addons.Wiki.UI.Parts
                 h1.Text = CurrentPage.Title;
                 txtText.Text = CurrentPage.Text;
             }
+        	txtText.EnableFreeTextArea = CurrentPage.WikiRoot.EnableFreeText;
             phSubmit.Visible = cvAuthorized.IsValid = IsAuthorized;
             if (!string.IsNullOrEmpty(Text))
             {
@@ -41,9 +30,6 @@ namespace N2.Addons.Wiki.UI.Parts
                 WikiRenderer renderer = Engine.Resolve<WikiRenderer>();
                 renderer.AddTo(parser.Parse(Text), pnlMessage, CurrentPage);
             }
-
-            TemplatesSection config = WebConfigurationManager.GetSection("n2/templates") as TemplatesSection;
-            txtText.EnableFreeTextArea = config != null && config.Wiki.FreeTextMode;
 
             Register.JQuery(Page);
 
@@ -72,7 +58,7 @@ namespace N2.Addons.Wiki.UI.Parts
             }
             article["SavedDate"] = DateTime.Now;
             article["SavedByAddress"] = Request.UserHostAddress;
-            article[SyndicatableDefinitionAppender.SyndicatableDetailName] = CurrentPage.WikiRoot[SyndicatableDefinitionAppender.SyndicatableDetailName];
+			article["Syndicatable"] = CurrentPage.WikiRoot["Syndicatable"];
             article.Text = filter.FilterHtml(txtText.Text);
             Engine.Persister.Save(article);
 

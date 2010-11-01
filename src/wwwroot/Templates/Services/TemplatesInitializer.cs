@@ -26,7 +26,6 @@ namespace N2.Templates.Services
             }
             engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
 
-			engine.AddComponent("n2.templates.syndication.rssWriter", typeof(RssWriter));
 			engine.AddComponent("n2.templates.rss.definitionAppender", typeof(SyndicatableDefinitionAppender));
 
 			engine.AddComponent("n2.templates.seo.definitions", typeof(SeoDefinitionAppender));

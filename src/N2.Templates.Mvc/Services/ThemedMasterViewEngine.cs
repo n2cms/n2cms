@@ -5,23 +5,13 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using N2.Web.Mvc;
-using N2.Templates.Mvc.Configuration;
 using N2.Templates.Mvc.Models.Pages;
 
 namespace N2.Templates.Mvc.Web
 {
 	public class ThemedMasterViewEngine : WebFormViewEngine
 	{
-		string masterPageFile;
-
-		public ThemedMasterViewEngine()
-		{
-			var config = System.Configuration.ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
-			if (config != null)
-			{
-				masterPageFile = config.MasterPageFile;
-			}
-		}
+		string masterPageFile = "~/Views/Shared/Site.master";
 
 		public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
 		{

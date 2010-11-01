@@ -177,14 +177,21 @@ namespace N2.Web
 					return null;
 
 				if (CurrentPage.IsPage)
-					return Url.Parse(TemplateUrl).UpdateQuery(QueryParameters).SetQueryParameter(PathData.PageQueryKey, CurrentPage.ID);
+					return Url.Parse(TemplateUrl)
+						.UpdateQuery(QueryParameters)
+						.SetQueryParameter(PathData.PageQueryKey, CurrentPage.ID)
+						.SetQueryParameter("argument", Argument, true);
 
 				for (ContentItem ancestor = CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
 					if (ancestor.IsPage)
-						return ancestor.FindPath(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
+						return ancestor.FindPath(DefaultAction).RewrittenUrl
+							.UpdateQuery(QueryParameters)
+							.SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
 
 				if (CurrentItem.VersionOf != null)
-					return CurrentItem.VersionOf.FindPath(DefaultAction).RewrittenUrl.UpdateQuery(QueryParameters).SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
+					return CurrentItem.VersionOf.FindPath(DefaultAction).RewrittenUrl
+						.UpdateQuery(QueryParameters)
+						.SetQueryParameter(PathData.ItemQueryKey, CurrentItem.ID);
 
 				throw new TemplateNotFoundException(CurrentItem);
 			}
@@ -193,7 +200,13 @@ namespace N2.Web
 		public virtual PathData UpdateParameters(IDictionary<string, string> queryString)
 		{
 			foreach (KeyValuePair<string, string> pair in queryString)
-				QueryParameters[pair.Key] = pair.Value;
+			{
+				if (string.Equals(pair.Key, "argument"))
+					Argument = pair.Value;
+				else
+					QueryParameters[pair.Key] = pair.Value;
+			}
+
 			return this;
 		}
 

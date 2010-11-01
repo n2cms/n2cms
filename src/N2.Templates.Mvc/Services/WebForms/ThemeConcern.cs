@@ -1,12 +1,10 @@
 using System.Web.Hosting;
 using System.IO;
+using N2.Templates.Mvc.Models.Pages;
 using N2.Web.UI;
-using N2.Templates.Services;
-using N2.Templates.Items;
-using N2.Templates.Web.UI;
 using N2.Engine;
 
-namespace N2.Templates.Web
+namespace N2.Templates.Mvc.Services.WebForms
 {
     /// <summary>
     /// Sets the theme of the page template.
@@ -19,7 +17,7 @@ namespace N2.Templates.Web
 			if (item == null)
 				return;
 
-			var startPage = Find.Closest<StartPage>(item) ?? Find.ClosestStartPage;
+			var startPage = N2.Find.Closest<StartPage>(item) ?? Find.ClosestStartPage;
 			if (startPage == null)
 				return;
 

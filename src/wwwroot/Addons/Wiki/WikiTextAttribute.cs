@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Details;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Addons.Wiki.Fragmenters;
 using N2.Web.UI.WebControls;
-using N2.Templates.Configuration;
-using System.Web.Configuration;
 
 namespace N2.Addons.Wiki
 {
@@ -18,26 +13,14 @@ namespace N2.Addons.Wiki
         {
         }
 
-        bool? freeText = null;
+		public override void UpdateEditor(ContentItem item, Control editor)
+		{
+			base.UpdateEditor(item, editor);
 
-        protected override TextBox CreateEditor()
-        {
-            if (freeText == null)
-            {
-                TemplatesSection config = WebConfigurationManager.GetSection("n2/templates") as TemplatesSection;
-                if (config != null)
-                {
-                    freeText = config.Wiki.FreeTextMode;
-                }
-                else
-                {
-                    freeText = false;
-                }
-            }
-            FreeTextArea fta = base.CreateEditor() as FreeTextArea;
-            fta.EnableFreeTextArea = freeText.Value;
-            return fta;
-        }
+			FreeTextArea fta = editor as FreeTextArea;
+			IArticle article = item as IArticle;
+			fta.EnableFreeTextArea = article.WikiRoot.EnableFreeText;
+		}
 
         Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
         {
