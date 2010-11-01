@@ -1,4 +1,6 @@
-﻿- Refactored MVC templates to support the wiki addon
+﻿- Fixed #29298: NullReferenceException related to wizard
+- Changed build scripts to use .NET Framework 4.0.30319
+- Refactored MVC templates to support the wiki addon
 - Moved some marker interfaces to N2.dll
 - Fixed strange node when using custom node filters (ThreadId=229960): override HasChildren
 - Converted projects to 2010

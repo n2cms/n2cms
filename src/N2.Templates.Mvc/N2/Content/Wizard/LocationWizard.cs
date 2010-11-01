@@ -30,7 +30,7 @@ namespace N2.Edit.Wizard
 		public virtual IEnumerable<MagicLocation> GetLocations()
 		{
 			var container = containers.GetBelowRoot();
-			if (containers == null)
+			if (container == null)
 				yield break;
 
 			foreach (ContentItem child in container.GetChildren())
