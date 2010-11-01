@@ -173,14 +173,19 @@ namespace N2.Web
 		{
 			get
 			{
-				if(IsEmpty() || string.IsNullOrEmpty(TemplateUrl))
+				if (IsEmpty() || string.IsNullOrEmpty(TemplateUrl))
 					return null;
 
 				if (CurrentPage.IsPage)
-					return Url.Parse(TemplateUrl)
+				{
+					Url url = Url.Parse(TemplateUrl)
 						.UpdateQuery(QueryParameters)
-						.SetQueryParameter(PathData.PageQueryKey, CurrentPage.ID)
-						.SetQueryParameter("argument", Argument, true);
+						.SetQueryParameter(PathData.PageQueryKey, CurrentPage.ID);
+					if(!string.IsNullOrEmpty(Argument))
+						url = url.SetQueryParameter("argument", Argument);
+
+					return url;
+				}
 
 				for (ContentItem ancestor = CurrentItem.Parent; ancestor != null; ancestor = ancestor.Parent)
 					if (ancestor.IsPage)
