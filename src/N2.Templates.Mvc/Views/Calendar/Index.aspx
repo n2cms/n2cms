@@ -2,10 +2,6 @@
 	Inherits="N2.Web.Mvc.ContentViewPage<CalendarModel, N2.Templates.Mvc.Models.Pages.Calendar>" %>
 <%@ Import Namespace="N2.Collections"%>
 
-<asp:Content runat="server" ContentPlaceHolderID="Head">
-	<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/Content/Css/Calendar.css") %>" />
-</asp:Content>
-
 <asp:Content ID="cpc" ContentPlaceHolderID="PostContent" runat="server">
 	<%if(Model.Events.Count > 0){%>
 		<div class="list">

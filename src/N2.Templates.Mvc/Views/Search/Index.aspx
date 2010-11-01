@@ -1,9 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" 
-	Inherits="N2.Web.Mvc.ContentViewPage<SearchModel, AbstractSearch>" Title="" %>
-
-<asp:Content runat="server" ContentPlaceHolderID="Head">
-	<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/Content/Css/Search.css") %>" />
-</asp:Content>
+	Inherits="N2.Web.Mvc.ContentViewPage<SearchModel, SearchBase>" Title="" %>
 
 <asp:Content ContentPlaceHolderID="PostContent" runat="server">
 	<%using(Html.BeginForm<SearchController>(c => c.Index(null, null), FormMethod.Get)){%>
