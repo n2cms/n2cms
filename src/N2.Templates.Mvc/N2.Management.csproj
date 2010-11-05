@@ -274,6 +274,7 @@
     </Compile>
     <Compile Include="N2\Installation\UpdateAlteredPermissionsMigration.cs" />
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
+    <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
     <Compile Include="N2\Simple.master.cs">
       <DependentUpon>Simple.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

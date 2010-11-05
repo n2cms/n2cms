@@ -22,7 +22,7 @@
     <form id="form1" runat="server">
     <div>
 		<% 
-			string action = Request["action"] ?? "install";
+			string action = Request["action"];
 			Version version = typeof (N2.ContentItem).Assembly.GetName().Version;
 			N2.Configuration.InstallerElement config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
 

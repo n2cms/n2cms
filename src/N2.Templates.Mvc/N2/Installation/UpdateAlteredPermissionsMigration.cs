@@ -19,7 +19,7 @@ namespace N2.Management.Installation
 			Description = "In order to increase performance some information is now stored in the n2item table. Not running this migration on existing content will cause security protected content to become visible to anyone until it is re-saved.";
 		}
 
-		public override bool IsApplicable(N2.Edit.Installation.DatabaseStatus status)
+		public override bool IsApplicable(DatabaseStatus status)
 		{
 			return status.DatabaseVersion < 3;
 		}

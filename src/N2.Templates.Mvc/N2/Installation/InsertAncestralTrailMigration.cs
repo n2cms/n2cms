@@ -19,7 +19,7 @@ namespace N2.Management.Installation
 			Description = "This allows to query the database for all items in a hierarchy.";
 		}
 
-		public override bool IsApplicable(N2.Edit.Installation.DatabaseStatus status)
+		public override bool IsApplicable(DatabaseStatus status)
 		{
 			return status.DatabaseVersion < 3;
 		}
