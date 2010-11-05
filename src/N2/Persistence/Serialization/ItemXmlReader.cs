@@ -111,7 +111,7 @@ namespace N2.Persistence.Serialization
 		private ContentItem CreateInstance(Dictionary<string, string> attributes)
 		{
 			ItemDefinition definition = FindDefinition(attributes);
-			return definitions.CreateInstance(definition.ItemType, null);
+			return definitions.CreateInstance(definition.ItemType, null, false);
 		}
 
 		protected virtual ItemDefinition FindDefinition(Dictionary<string, string> attributes)

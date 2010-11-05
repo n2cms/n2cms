@@ -100,7 +100,7 @@ namespace N2.Web
 		}
 
     	/// <summary>Replaces the site list with new sites.</summary>
-    	/// <param name="defaultSite">The default site to use.</param>
+		/// <param name="newDefaultSite">The default site to use.</param>
     	/// <param name="newSites">The new site list.</param>
     	public void ReplaceSites(Site newDefaultSite, IEnumerable<Site> newSites)
         {

@@ -22,7 +22,6 @@
 <body>
     <form id="form1" runat="server">
     <div>
-		<p style="background-color:#FFA07A;font-weight:bold;padding:5px">This is an early version of the upgrade wizard. Please help out testing this feature.</p>
         <n2:TabPanel ID="TabPanel1" ToolTip="Upgrade" runat="server">
 			<h1>Upgrade database from <%= Status.DatabaseVersion %> to <%= N2.Edit.Installation.DatabaseStatus.RequiredDatabaseVersion%></h1>
 			

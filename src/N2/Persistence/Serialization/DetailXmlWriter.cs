@@ -57,8 +57,8 @@ namespace N2.Persistence.Serialization
 								var transformers = pi.GetCustomAttributes(typeof(IRelativityTransformer), false);
 								foreach (IRelativityTransformer transformer in transformers)
 								{
-									if (transformer.RelativeWhen == RelativityMode.ExportRelativeImportAbsolute)
-										value = transformer.ToRelative(applicationPath, value);
+									if (transformer.RelativeWhen == RelativityMode.Always || transformer.RelativeWhen == RelativityMode.ImportingOrExporting)
+										value = transformer.Rebase(value, applicationPath, "~/");
 								}
 							}
 						}

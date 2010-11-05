@@ -10,7 +10,9 @@ namespace N2.Details
 	/// </summary>
 	public enum RelativityMode
 	{
-		Never,
-		ExportRelativeImportAbsolute,
+		Always,
+		ImportingOrExporting,
+		Rebasing,
+		Never
 	}
 }

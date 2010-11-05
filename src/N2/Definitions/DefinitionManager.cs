@@ -41,10 +41,19 @@ namespace N2.Definitions
 		/// <returns>A new instance of an item.</returns>
 		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem)
 		{
-			object intercepted = interceptor.Create(itemType.FullName);
+			return CreateInstance(itemType, parentItem, true);
+		}
+
+		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
+		/// <returns>A new instance of an item.</returns>
+		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, bool allowProvy)
+		{
+			object intercepted = allowProvy
+			                     	? interceptor.Create(itemType.FullName)
+			                     	: null;
 			ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
 				as ContentItem;
-            stateChanger.ChangeTo(item, ContentState.New);
+			stateChanger.ChangeTo(item, ContentState.New);
 			OnItemCreating(item, parentItem);
 			return item;
 		}

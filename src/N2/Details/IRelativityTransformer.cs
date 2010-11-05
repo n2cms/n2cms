@@ -15,15 +15,10 @@ namespace N2.Details
 		RelativityMode RelativeWhen { get; }
 
 		/// <summary>Makes a relative url absolute (used when importing).</summary>
-		/// <param name="applicationPath">The path of the web application.</param>
-		/// <param name="absoluteOrRelativePath">The path to make absolute.</param>
+		/// <param name="value">The content to rebase</param>
+		/// <param name="fromAppPath">The current path.</param>
+		/// <param name="toAppPath">The target path.</param>
 		/// <returns>An absolute url.</returns>
-		string ToAbsolute(string applicationPath, string absoluteOrRelativePath);
-
-		/// <summary>Makes an absolute url relative (used when exporting).</summary>
-		/// <param name="applicationPath">The path of the web application.</param>
-		/// <param name="absoluteOrRelativePath">The path to make relative.</param>
-		/// <returns>An application relative url.</returns>
-		string ToRelative(string applicationPath, string absoluteOrRelativePath);
+		string Rebase(string value, string fromAppPath, string toAppPath);
 	}
 }

@@ -67,6 +67,7 @@
     <Content Include="N2\Content\AffectedItems.ascx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
+    <Content Include="N2\Installation\Rebase.aspx" />
     <Content Include="N2\Resources\Css\editor.css" />
     <Content Include="N2\Resources\Css\default.css" />
     <Content Include="N2\Files\Css\filemanager.css" />
@@ -264,6 +265,13 @@
     </Compile>
     <Compile Include="N2\Files\UploadedFilesResizer.cs" />
     <Compile Include="N2\Files\VirtualFolderInitializer.cs" />
+    <Compile Include="N2\Installation\Rebase.aspx.cs">
+      <DependentUpon>Rebase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="N2\Installation\Rebase.aspx.designer.cs">
+      <DependentUpon>Rebase.aspx</DependentUpon>
+    </Compile>
     <Compile Include="N2\Installation\UpdateAlteredPermissionsMigration.cs" />
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Simple.master.cs">

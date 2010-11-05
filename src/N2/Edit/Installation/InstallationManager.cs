@@ -30,14 +30,18 @@ namespace N2.Edit.Installation
 	[Service]
 	public class InstallationManager
 	{
-        IConfigurationBuilder configurationBuilder;
+		public const string InstallationAppPath = "Installation.AppPath";
+		public const string installationHost = "Installation.Host";
+		
+		IConfigurationBuilder configurationBuilder;
         IDefinitionManager definitions;
         Importer importer;
         IPersister persister;
         ISessionProvider sessionProvider;
         IHost host;
+    	IWebContext webContext;
 
-        public InstallationManager(IHost host, IDefinitionManager definitions, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder)
+        public InstallationManager(IHost host, IDefinitionManager definitions, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext)
 		{
             this.host = host;
             this.definitions = definitions;
@@ -45,8 +49,10 @@ namespace N2.Edit.Installation
             this.persister = persister;
             this.sessionProvider = sessionProvider;
             this.configurationBuilder = configurationBuilder;
+        	this.webContext = webContext;
 		}
-        NHibernate.Cfg.Configuration cfg;
+        
+		NHibernate.Cfg.Configuration cfg;
         protected NHibernate.Cfg.Configuration Cfg
         {
             get { return cfg ?? (cfg = configurationBuilder.BuildConfiguration()); }
@@ -137,8 +143,26 @@ namespace N2.Edit.Installation
 			UpdateSchema(status);
 			UpdateCount(status);
 			UpdateItems(status);
-
+			UpdateAppPath(status);
 			return status;
+		}
+
+		const string installationAppPath = "Installation.AppPath";
+
+		private void UpdateAppPath(DatabaseStatus status)
+		{
+			try
+			{
+				if (status.RootItem == null)
+					return;
+
+				status.AppPath = status.RootItem[installationAppPath] as string;
+				status.NeedsRebase = !string.IsNullOrEmpty(status.AppPath) && !string.Equals(status.AppPath, webContext.ToAbsolute("~/"));
+			}
+			catch (Exception ex)
+			{
+				status.ItemsError = ex.Message;
+			}
 		}
 
 		private void UpdateItems(DatabaseStatus status)
@@ -302,6 +326,8 @@ namespace N2.Edit.Installation
 			ContentItem item = definitions.CreateInstance(type, null);
 			item.Name = name;
 			item.Title = title;
+			item[InstallationAppPath] = webContext.ToAbsolute("~/");
+			item[installationHost] = webContext.Url.HostUrl.ToString();
 			persister.Save(item);
 			return item;
 		}
@@ -349,7 +375,9 @@ namespace N2.Edit.Installation
 		public ContentItem InsertExportFile(Stream stream, string filename)
 		{
 			IImportRecord record = importer.Read(stream, filename);
-            importer.Import(record, null, ImportOption.All);
+			record.RootItem["Installation.AppPath"] = webContext.ToAbsolute("~/");
+			record.RootItem["Installation.Host"] = webContext.Url.HostUrl.ToString(); 
+			importer.Import(record, null, ImportOption.All);
 
 			return record.RootItem;
 		}

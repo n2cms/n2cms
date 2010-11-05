@@ -21,19 +21,47 @@
 <body>
     <form id="form1" runat="server">
     <div>
+		<% 
+			string action = Request["action"] ?? "install";
+			Version version = typeof (N2.ContentItem).Assembly.GetName().Version;
+			N2.Configuration.InstallerElement config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
+
+			string continueUrl = action == "install"
+			                     	? config.InstallUrl
+			                     	: action == "upgrade"
+			                     	  	? config.UpgradeUrl
+			                     	  	: action == "rebase"
+			                     	  	  	? config.RebaseUrl
+			                     	  	  	: config.InstallUrl;
+			continueUrl = ResolveUrl(continueUrl);
+		%>
 		<ul class="tabs">
 			<li class="tab selected"><a href="#">0. Prepare yourself</a></li>
-			<li class="tab"><a href="../Default.aspx">1-5. Continue installation</a></li>
+			<li class="tab"><a href="<%= continueUrl %>">1-3. Continue installation</a></li>
 		</ul>
 		<div class="tabPanel">
-			<h1>Welcome to N2 CMS</h1>
-			<% Version version = typeof(N2.ContentItem).Assembly.GetName().Version; %>
-			<p>Congratulations! You're well on your way to <a href="http://n2cms.com/">N2 CMS</a> experience.</p>
-			<p>Next, you need to log in. Unless you already have changed this during installation the username/password is <strong>admin/changeme</strong>. Once the installation is complete it is recommended to create an administrator from users section and remove the system.web/authentication/forms/credentials section from web.config.</p>
-			<p>Okay, <a href="../Default.aspx">please help me <strong>install</strong> a the database for a new site &raquo;</a></p>
-			<p>Wait, <a href="../Upgrade.aspx">I want to <strong>upgrade</strong> from a previous version &raquo;</a></p>
-			<h2>Other options...</h2>
-			<p><strong>Already installed?</strong> There might be a problem with the database connection. To ensure that this screen doesn't appear to unsuspecting visitors you should set &lt;n2&gt;&lt;edit&gt;&lt;installer checkInstallationStatus="false"/&gt; in web.config.</p>
+			<% if(action == "install") {%>
+				<h1>Welcome to N2 CMS Installation</h1>
+				<p>Congratulations! You're well on your way to the <a href="http://n2cms.com/">N2 CMS</a> experience.</p>
+				<p>To continue you need to log in. Unless you already have changed this during installation the username/password is <strong>admin/changeme</strong>.</p>
+				<p>Okay, <a href="<%= continueUrl %>">please help me <strong>install</strong> a the database for a new site &raquo;</a></p>
+			<%} else if(action == "upgrade") {%>
+				<h1>Welcome to N2 CMS Upgrade to <%= version %></h1>
+				<p>To continue you need to log in. Unless you already have changed this during installation the username/password is <strong>admin/changeme</strong>.</p>
+				<p><a href="<%= continueUrl %>">I want to <strong>upgrade</strong> from a previous version &raquo;</a></p>
+			<%} else if (action == "rebase") {%>
+				<h1>Welcome to N2 CMS Rebase Tool</h1>
+				<p>To continue you need to log in. Unless you already have changed this during installation the username/password is <strong>admin/changeme</strong>.</p>
+				<p><a href="<%= continueUrl %>"><strong>Rebase</strong> from a previous virtual directory &raquo;</a></p>
+			<%} else {%>
+				<h1>Welcome to N2 CMS</h1>
+				<p>What do you want to do with <a href="http://n2cms.com/">N2 CMS</a>?</p>
+				<p><a href="<%= ResolveUrl(config.InstallUrl) %>"><strong>Install</strong> a the database for a new site &raquo;</a></p>
+				<p><a href="<%= ResolveUrl(config.UpgradeUrl) %>"><strong>Upgrade</strong> from a previous version &raquo;</a></p>
+				<p><a href="<%= ResolveUrl(config.RebaseUrl) %>"><strong>Rebase</strong> links from another virtual directory &raquo;</a></p>
+			<%}%>
+
+			<p><strong>Already done this?</strong> There might be a problem with the database connection. To ensure that this screen doesn't appear to unsuspecting visitors you should set &lt;n2&gt;&lt;edit&gt;&lt;installer checkInstallationStatus="false"/&gt; in web.config.</p>
 		</div>
     </div>
     </form>

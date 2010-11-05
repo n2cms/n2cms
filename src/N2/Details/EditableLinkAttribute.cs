@@ -28,7 +28,6 @@ namespace N2.Details
 		public EditableLinkAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{
-			RelativeWhen = RelativityMode.ExportRelativeImportAbsolute;
 		}
 
 		protected override Control AddEditor(Control container)
@@ -75,14 +74,9 @@ namespace N2.Details
 
 		public RelativityMode RelativeWhen { get; set; }
 
-		string IRelativityTransformer.ToAbsolute(string applicationPath, string value)
+		string IRelativityTransformer.Rebase(string currentPath, string fromAppPath, string toAppPath)
 		{
-			return N2.Web.Url.ToAbsolute(applicationPath, value);
-		}
-
-		string IRelativityTransformer.ToRelative(string applicationPath, string value)
-		{
-			return N2.Web.Url.ToRelative(applicationPath, value);
+			return N2.Web.Url.Rebase(currentPath, fromAppPath, toAppPath);
 		}
 
 		#endregion

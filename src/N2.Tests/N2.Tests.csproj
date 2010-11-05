@@ -166,6 +166,7 @@
     <Compile Include="Fakes\FakeFileSystem2.cs" />
     <Compile Include="Fakes\FakeItemFinder.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />
+    <Compile Include="Installation\AppPathRebaseTests.cs" />
     <Compile Include="Persistence\ContentDependencyInjectorTests.cs" />
     <Compile Include="Persistence\NH\ClonedProxiedItemsTest.cs" />
     <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />

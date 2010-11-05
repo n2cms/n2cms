@@ -27,7 +27,7 @@ namespace N2.Web
 		protected bool initialized = false;
 		protected bool checkInstallation = false;
 		protected RewriteMethod rewriteMethod = RewriteMethod.RewriteRequest;
-		protected string installerUrl = "~/N2/Installation/Begin/Default.aspx";
+		protected string welcomeUrl = "~/N2/Installation/Begin/Default.aspx";
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
@@ -40,7 +40,7 @@ namespace N2.Web
 		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer, RequestPathProvider dispatcher, IContentAdapterProvider adapters, IErrorHandler errors, EditSection editConfig, HostSection hostConfig)
         {
 			checkInstallation = editConfig.Installer.CheckInstallationStatus;
-            installerUrl = editConfig.Installer.InstallUrl;
+			welcomeUrl = editConfig.Installer.WelcomeUrl;
 			rewriteMethod = hostConfig.Web.Rewrite;
 			this.webContext = webContext;
 			this.broker = broker;
@@ -112,11 +112,31 @@ namespace N2.Web
 
 		private void CheckInstallation()
 		{
-			bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl).StartsWith("~/N2/", StringComparison.InvariantCultureIgnoreCase);
-			if (!isEditing && !installer.GetStatus().IsInstalled)
+			bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl)
+				.StartsWith("~/N2/", StringComparison.InvariantCultureIgnoreCase);
+			if(isEditing)
+				return;
+			
+			var status = installer.GetStatus();
+			Url redirectUrl = welcomeUrl;
+
+			if (!status.IsInstalled)
 			{
-				webContext.Response.Redirect(installerUrl);
+				redirectUrl = redirectUrl.AppendQuery("action", "install");
 			}
+			else if (status.NeedsUpgrade)
+			{
+				redirectUrl = redirectUrl.AppendQuery("action", "upgrade");
+			}
+			else if (status.NeedsRebase)
+			{
+				redirectUrl = redirectUrl.AppendQuery("action", "rebase");
+			}
+			else
+			{
+				return;
+			}
+			webContext.Response.Redirect(redirectUrl);
 		}
 
 		#region IRequestLifeCycleHandler Members

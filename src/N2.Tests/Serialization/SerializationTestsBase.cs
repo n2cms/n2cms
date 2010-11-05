@@ -22,7 +22,7 @@ namespace N2.Tests.Serialization
         protected IPersister persister;
 		protected FakeTypeFinder finder;
 		protected IItemNotifier notifier;
-			
+
 		[SetUp]
 		public override void SetUp()
 		{

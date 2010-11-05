@@ -344,6 +344,11 @@ namespace N2.Web
 			return AppendQuery(key + "=" + value);
 		}
 
+		public Url AppendQuery(string key, bool value)
+		{
+			return AppendQuery(key + (value ? "=true" : "=false"));
+		}
+
 		public Url AppendQuery(string key, object value)
 		{
 			if (value == null)
@@ -794,6 +799,14 @@ namespace N2.Web
 					dictionary[q.Substring(0, eqIndex)] = q.Substring(eqIndex + 1);
 			}
 			return dictionary;
+		}
+
+		public static string Rebase(string currentPath, string fromAppPath, string toAppPath)
+		{
+			if(currentPath == null || !currentPath.StartsWith(fromAppPath))
+				return currentPath;
+
+			return toAppPath + currentPath.Substring(fromAppPath.Length);
 		}
 	}
 }

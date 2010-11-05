@@ -26,6 +26,8 @@ namespace N2.Edit.Installation
 		public int RootItemID { get; set; }
 		public bool IsInstalled { get; set; }
 		public string ItemsError { get; set; }
+		public string AppPath { get; set; }
+		public bool NeedsRebase { get; set; }
 		
 		/// <summary>
 		/// Known database versions:

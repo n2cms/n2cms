@@ -15,11 +15,32 @@ namespace N2.Configuration
             set { base["checkInstallationStatus"] = value; }
         }
 
-		[ConfigurationProperty("installUrl", DefaultValue = "~/N2/Installation/Begin/Default.aspx")]
-        public string InstallUrl
-        {
-            get { return (string)base["installUrl"]; }
-            set { base["installUrl"] = value; }
-        }
+		[ConfigurationProperty("welcomeUrl", DefaultValue = "~/N2/Installation/Begin/Default.aspx")]
+		public string WelcomeUrl
+		{
+			get { return (string)base["welcomeUrl"]; }
+			set { base["welcomeUrl"] = value; }
+		}
+
+		[ConfigurationProperty("installUrl", DefaultValue = "~/N2/Installation/Default.aspx")]
+		public string InstallUrl
+		{
+			get { return (string)base["installUrl"]; }
+			set { base["installUrl"] = value; }
+		}
+
+		[ConfigurationProperty("upgradeUrl", DefaultValue = "~/N2/Installation/Upgrade.aspx")]
+		public string UpgradeUrl
+		{
+			get { return (string)base["upgradeUrl"]; }
+			set { base["upgradeUrl"] = value; }
+		}
+
+		[ConfigurationProperty("rebaseUrl", DefaultValue = "~/N2/Installation/Rebase.aspx")]
+		public string RebaseUrl
+		{
+			get { return (string)base["rebaseUrl"]; }
+			set { base["rebaseUrl"] = value; }
+		}
     }
 }
