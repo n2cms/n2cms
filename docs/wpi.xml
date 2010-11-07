@@ -19,7 +19,7 @@
 		<version>2.1 release candidate (mvc)</version>
 
 		<summary>Templates Pack using ASP.NET MVC and the N2 CMS Framework.</summary>
-		<id>http://n2cms.codeplex.com/releases/view/53739#DownloadId=156524</id>
+		<id>http://n2cms.codeplex.com/releases/view/55245#DownloadId=164800</id>
 		<updated>2010-10-10T13:00:00Z</updated>
 		<published>2010-10-10T13:00:00Z</published>
 		<longSummary>
@@ -32,7 +32,7 @@
 
 		<productFamily>Releases</productFamily>
 
-		<link href="http://n2cms.codeplex.com/releases/view/53739" />
+		<link href="http://n2cms.codeplex.com/releases/view/55245#DownloadId=164800" />
 
 		<author>
 			<name>N2 CMS</name>
@@ -52,8 +52,8 @@
 				<id>1</id>
 				<languageId>en</languageId>
 				<installerFile>
-					<fileSize>7799</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=156524</installerURL>
+					<fileSize>7678</fileSize>
+					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=164800</installerURL>
 
 					<sha1>C206931C6ABD0C0C5ECB2A678B70FB1F0DE90B02</sha1>
 				</installerFile>
@@ -72,7 +72,7 @@
 		<version>2.1 release candidate (wf)</version>
 
 		<summary>Templates Pack using ASP.NET WebForms and the N2 CMS Framework.</summary>
-		<id>http://n2cms.codeplex.com/releases/view/53739#DownloadId=156525</id>
+		<id>http://n2cms.codeplex.com/releases/view/55245#DownloadId=164801</id>
 		<updated>2010-10-10T14:00:00Z</updated>
 		<published>2010-10-10T14:00:00Z</published>
 		<longSummary>
@@ -84,7 +84,7 @@
 
 		<productFamily>Releases</productFamily>
 
-		<link href="http://n2cms.codeplex.com/releases/view/53739" />
+		<link href="http://n2cms.codeplex.com/releases/view/55245#DownloadId=164801" />
 
 		<author>
 			<name>N2 CMS</name>
@@ -104,8 +104,8 @@
 				<id>1</id>
 				<languageId>en</languageId>
 				<installerFile>
-					<fileSize>8036</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=156525</installerURL>
+					<fileSize>7013</fileSize>
+					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=164801</installerURL>
 					<sha1>3D194B1FA875B3806A83ED884F6A35458838B796</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>

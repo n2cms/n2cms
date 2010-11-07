@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F3B1-439D-BA8E-F5E923B327CA}"
 	ProjectSection(SolutionItems) = preProject
-		..\docs\ContentModel.png = ..\docs\ContentModel.png
 		..\docs\example.web.config = ..\docs\example.web.config
-		..\docs\favicon.ico = ..\docs\favicon.ico
 		..\docs\history.txt = ..\docs\history.txt
 		..\docs\howto_build.txt = ..\docs\howto_build.txt
 		..\docs\howto_develop.txt = ..\docs\howto_develop.txt
@@ -19,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E74B5507-F
 		..\docs\templates_readme.txt = ..\docs\templates_readme.txt
 		..\docs\todo.txt = ..\docs\todo.txt
 		..\docs\upgrade.txt = ..\docs\upgrade.txt
+		..\docs\wpi.xml = ..\docs\wpi.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "releases", "releases", "{0AFCEA00-8510-48F6-B949-22796F899C77}"
