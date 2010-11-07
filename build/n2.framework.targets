@@ -23,7 +23,7 @@
 	<!-- Build -->
 
 	<Target Name="Framework-Build" DependsOnTargets="Framework-PrepareDependencies">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Properties="Configuration=$(Configuration);NHVersion=$(NHVersion)" />
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" Properties="Configuration=$(Configuration);" />
 	</Target>
 
 	<!-- Prepare dependencies -->
