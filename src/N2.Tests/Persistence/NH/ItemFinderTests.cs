@@ -957,6 +957,12 @@ namespace N2.Tests.Persistence.NH
 			var items = finder.Where.Property("BoolPersistableProperty").Eq(false).Select();
 			Assert.That(items.Count, Is.EqualTo(0));
 		}
+		[Test]
+		public void FilterByProperty_Boolean_In_MatchingValue()
+		{
+			var items = finder.Where.Property("BoolPersistableProperty").In(true, false).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
 
 		[Test]
 		public void FilterByProperty_Double_Equals_MatchingValue()
@@ -982,6 +988,12 @@ namespace N2.Tests.Persistence.NH
 			var items = finder.Where.Property("DoublePersistableProperty").Lt(444.444).Select();
 			Assert.That(items.Count, Is.EqualTo(0));
 		}
+		[Test]
+		public void FilterByProperty_Double_In_MatchingValue()
+		{
+			var items = finder.Where.Property("DoublePersistableProperty").In(444.444, 555.555).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
 
 		[Test]
 		public void FilterByProperty_Integer_Equals_MatchingValue()
@@ -1006,6 +1018,12 @@ namespace N2.Tests.Persistence.NH
 		{
 			var items = finder.Where.Property("IntPersistableProperty").Ge(556).Select();
 			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_Integer_In_MatchingValue()
+		{
+			var items = finder.Where.Property("IntPersistableProperty").In(555, 666).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
 		}
 
 		[Test]
@@ -1056,6 +1074,12 @@ namespace N2.Tests.Persistence.NH
 			var items = finder.Where.Property("StringPersistableProperty").NotLike("non in table%").Select();
 			Assert.That(items.Count, Is.EqualTo(3));
 		}
+		[Test]
+		public void FilterByProperty_String_In_MatchingValue()
+		{
+			var items = finder.Where.Property("StringPersistableProperty").In("in table text", "not in table").Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
 
 		[Test]
 		public void FilterByProperty_DateTime_Equals_MatchingValue()
@@ -1081,6 +1105,12 @@ namespace N2.Tests.Persistence.NH
 			var items = finder.Where.Property("DateTimePersistableProperty").Gt(new DateTime(2010, 06, 18, 14, 30, 01)).Select();
 			Assert.That(items.Count, Is.EqualTo(0));
 		}
+		[Test]
+		public void FilterByProperty_DateTime_In_MatchingValue()
+		{
+			var items = finder.Where.Property("DateTimePersistableProperty").In(new DateTime(2010, 06, 18, 14, 30, 00), DateTime.Now).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
+		}
 
 		[Test]
 		public void FilterByProperty_Link_Equals_MatchingValue()
@@ -1093,6 +1123,12 @@ namespace N2.Tests.Persistence.NH
 		{
 			var items = finder.Where.Property("LinkPersistableProperty").Eq(startPage).Select();
 			Assert.That(items.Count, Is.EqualTo(0));
+		}
+		[Test]
+		public void FilterByProperty_Link_In_NonMatchingValue()
+		{
+			var items = finder.Where.Property("LinkPersistableProperty").In(rootItem, startPage).Select();
+			Assert.That(items.Count, Is.EqualTo(3));
 		}
 
 		#region Helpers

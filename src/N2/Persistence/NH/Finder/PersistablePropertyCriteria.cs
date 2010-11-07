@@ -82,7 +82,9 @@ namespace N2.Persistence.NH.Finder
 				query.Criterias.Add(new PropertyInHqlProvider<int>(op, name, anyOf.Select(t => (t as ContentItem).ID).ToArray()));
 				return query;
 			}
-			throw new NotImplementedException();
+
+			query.Criterias.Add(new PropertyInHqlProvider<T>(op, name, anyOf));
+			return query;
 		}
 
 		#endregion

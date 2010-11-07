@@ -1,4 +1,6 @@
-﻿- Rebase links & images feature
+﻿- Fixed #29364: PropertyCriteria In not implemented
+- Refactored IRelativityTransformer beyond recognition (breaking change)
+- Rebase links & images feature
 - Updated NHibernate to 3.0 beta2
 - Fixed #29298: NullReferenceException related to wizard
 - Changed build scripts to use .NET Framework 4.0.30319
