@@ -42,6 +42,9 @@ namespace N2.Details
 		{
 			ItemSelector selector = (ItemSelector)editor;
 			selector.SelectedItem = item[Name] as ContentItem;
+			var pi = item.GetType().GetProperty(Name);
+			if(pi != null)
+				selector.RequiredType = pi.PropertyType;
 		}
 		
 		public override bool UpdateItem(ContentItem item, Control editor)

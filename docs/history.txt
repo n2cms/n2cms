@@ -1,4 +1,7 @@
-﻿2.1rc
+﻿- Added type validation to item selector control 
+- Fixed exception when removing news container (ThreadId=234388)
+
+2.1rc
 - Fixed #29360: Inline part icons clipped 
 - Fixed #29364: PropertyCriteria In not implemented
 - Refactored IRelativityTransformer beyond recognition (breaking change)

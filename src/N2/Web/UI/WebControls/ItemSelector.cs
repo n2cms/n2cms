@@ -1,10 +1,12 @@
+using System.Web.UI;
+
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>
 	/// An input box that can be updated with a page selected through a popup 
 	/// window.
 	/// </summary>
-	public class ItemSelector : UrlSelector
+	public class ItemSelector : UrlSelector, IValidator
 	{
 		public ItemSelector()
 		{
@@ -12,6 +14,7 @@ namespace N2.Web.UI.WebControls
 			DefaultMode = UrlSelectorMode.Items;
 			AvailableModes = UrlSelectorMode.Items;
 			BrowserUrl = N2.Web.Url.Parse("~/N2/Content/Navigation/Tree.aspx").AppendQuery("location=contentselection");
+			ErrorMessage = "The selected item is not of the required type.";
 		}
 
 		/// <summary>Gets the selected item or null if none is selected.</summary>
@@ -27,5 +30,30 @@ namespace N2.Web.UI.WebControls
 			get { return SelectedItem != null ? SelectedItem.ID : 0; }
 			set { SelectedItem = N2.Context.Persister.Get(value); }
 		}
+
+		/// <summary>The type the select item should conform to.</summary>
+		public System.Type RequiredType { get; set; }
+
+		protected override void OnInit(System.EventArgs e)
+		{
+			base.OnInit(e);
+			Page.Validators.Add(this);
+		}
+
+		#region IValidator Members
+
+		/// <summary>The message to display.</summary>
+		public string ErrorMessage { get; set; }
+
+		/// <summary>True if the item is valid.</summary>
+		public bool IsValid { get; set; }
+
+		/// <summary>Validates the selected item.</summary>
+		public void Validate()
+		{
+			IsValid = (SelectedItem != null) ? RequiredType.IsAssignableFrom(SelectedItem.GetContentType()) : true;
+		}
+
+		#endregion
 	}
 }

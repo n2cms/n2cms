@@ -59,7 +59,7 @@
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
-					<startPage>n2/installation/begin/default.aspx</startPage>
+					<startPage>n2/installation/begin/default.aspx?action=install</startPage>
 				</msDeploy>
 			</installer>
 		</installers>
@@ -110,7 +110,7 @@
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
-					<startPage>n2/installation/begin/default.aspx</startPage>
+					<startPage>n2/installation/begin/default.aspx?action=install</startPage>
 				</msDeploy>
 			</installer>
 		</installers>
@@ -163,7 +163,7 @@
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
-					<startPage>n2/installation/begin/default.aspx</startPage>
+					<startPage>n2/installation/begin/default.aspx?action=install</startPage>
 				</msDeploy>
 			</installer>
 		</installers>
@@ -213,7 +213,7 @@
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
-					<startPage>n2/installation/begin/default.aspx</startPage>
+					<startPage>n2/installation/begin/default.aspx?action=install</startPage>
 				</msDeploy>
 			</installer>
 		</installers>
