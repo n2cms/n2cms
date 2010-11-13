@@ -14,6 +14,7 @@ namespace N2.Web.UI.WebControls
 			DefaultMode = UrlSelectorMode.Items;
 			AvailableModes = UrlSelectorMode.Items;
 			BrowserUrl = N2.Web.Url.Parse("~/N2/Content/Navigation/Tree.aspx").AppendQuery("location=contentselection");
+			IsValid = true;
 			ErrorMessage = "The selected item is not of the required type.";
 		}
 
