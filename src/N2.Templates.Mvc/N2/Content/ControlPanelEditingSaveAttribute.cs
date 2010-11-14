@@ -68,7 +68,7 @@ namespace N2.Edit
 		{
 			string url = page.Request["returnUrl"];
 			if (string.IsNullOrEmpty(url))
-				url = Context.Current.EditManager.GetPreviewUrl(item);
+				url = Engine.GetContentAdapter<NodeAdapter>(item).GetPreviewUrl(item);
 
 			page.Response.Redirect(url);
 		}

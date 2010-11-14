@@ -32,7 +32,7 @@ namespace N2.Edit
 			try
 			{
                 selectedPath = Selection.SelectedItem.Path;
-                selectedUrl = Engine.EditManager.GetPreviewUrl(Selection.SelectedItem);
+				selectedUrl = Engine.GetContentAdapter<NodeAdapter>(Selection.SelectedItem).GetPreviewUrl(Selection.SelectedItem);
 			}
 			catch(Exception ex)
 			{

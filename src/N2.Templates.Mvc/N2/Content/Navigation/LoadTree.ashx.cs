@@ -32,7 +32,7 @@ namespace N2.Edit.Navigation
 				.Build();
 
 			TreeNode tn = (TreeNode)new N2.Web.Tree(root)
-				.LinkProvider(node => Web.UI.Controls.Tree.BuildLink(node, node.Path == selectedNode.Path, target))
+				.LinkProvider(node => Web.UI.Controls.Tree.BuildLink(adapters.ResolveAdapter<NodeAdapter>(node.GetContentType()), node, node.Path == selectedNode.Path, target))
 				.Filters(filter)
 				.ToControl();
 

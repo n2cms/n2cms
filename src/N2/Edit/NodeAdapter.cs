@@ -98,5 +98,23 @@ namespace N2.Edit
 		{
 			return parent.GetChildren(filter).Count > 0;
 		}
+
+		/// <summary>Gets the url used from the management UI when previewing an item.</summary>
+		/// <param name="item">The item to preview.</param>
+		/// <returns>An url to preview the item.</returns>
+		public virtual string GetPreviewUrl(ContentItem item)
+		{
+			string url = EditManager.GetPreviewUrl(item);
+			url =  string.IsNullOrEmpty(url) ? "~/N2/Empty.aspx" : url;
+			return webContext.ToAbsolute(url);
+		}
+
+		/// <summary>Gets the url to the icon representing this item.</summary>
+		/// <param name="item">The item whose icon to get.</param>
+		/// <returns>An url to an icon.</returns>
+		public string GetIconUrl(ContentItem item)
+		{
+			return webContext.ToAbsolute(item.IconUrl);
+		}
 	}
 }

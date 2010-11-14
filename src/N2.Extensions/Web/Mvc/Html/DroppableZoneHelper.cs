@@ -1,4 +1,5 @@
 using System;
+using N2.Engine;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using System.Web.Mvc;
@@ -96,7 +97,7 @@ namespace N2.Web.Mvc.Html
                     .WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator)
                     .Write(">");
 
-                PartUtilities.WriteTitleBar(writer, Context.Current.EditManager, definition, model);
+                PartUtilities.WriteTitleBar(writer, Context.Current.EditManager, Context.Current.Resolve<IContentAdapterProvider>(), definition, model);
                 
                 base.RenderTemplate(writer, model);
 

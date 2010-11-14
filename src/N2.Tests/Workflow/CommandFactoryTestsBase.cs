@@ -36,7 +36,7 @@ namespace N2.Tests.Workflow
 			versions = new FakeVersionManager(repository, changer);
 			var editManager = new EditManager(definitions, persister, versions, null, null, null, changer, new EditSection());
             var security = new SecurityManager(new FakeWebContextWrapper(), new EditSection());
-            commands = new CommandFactory(persister, security, versions, editManager, changer);
+            commands = new CommandFactory(persister, security, versions, editManager, null, changer);
 			dispatcher = new CommandDispatcher(commands, persister);
 			item = CreateOneItem<StatefulItem>(1, "first", null);
 			child = CreateOneItem<StatefulItem>(2, "child", item);

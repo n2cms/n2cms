@@ -5,6 +5,7 @@ using System.Text;
 using N2.Definitions;
 using System.IO;
 using N2.Edit;
+using N2.Engine;
 
 namespace N2.Web.UI
 {
@@ -28,13 +29,19 @@ namespace N2.Web.UI
             return string.Join(",", allowedDefinitions.ToArray());
         }
 
-        public static void WriteTitleBar(TextWriter writer, IEditManager editManager, ItemDefinition definition, ContentItem item)
+		[Obsolete("Use overload with adapters parameter.")]
+		public static void WriteTitleBar(TextWriter writer, IEditManager editManager, ItemDefinition definition, ContentItem item)
+		{
+			WriteTitleBar(writer, editManager, N2.Context.Current.Resolve<IContentAdapterProvider>(), definition, item);
+		}
+
+        public static void WriteTitleBar(TextWriter writer, IEditManager editManager, IContentAdapterProvider adapters, ItemDefinition definition, ContentItem item)
         {
             writer.Write("<div class='titleBar ");
             writer.Write(definition.Discriminator);
             writer.Write("'>");
 
-            var returnUrl = Url.Parse(editManager.GetPreviewUrl(item)).AppendQuery("edit", "drag");
+			var returnUrl = Url.Parse(adapters.ResolveAdapter<NodeAdapter>(item.GetContentType()).GetPreviewUrl(item)).AppendQuery("edit", "drag");
             WriteCommand(writer, "Edit part", "command edit", Url.Parse(editManager.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
             WriteCommand(writer, "Delete part", "command delete", Url.Parse(editManager.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
             WriteTitle(writer, definition);

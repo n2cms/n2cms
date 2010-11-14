@@ -4,21 +4,22 @@ using System.Linq;
 using System.Text;
 using N2.Edit;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Edit.Workflow.Commands
 {
     public class RedirectToPreviewCommand : CommandBase<CommandContext>
     {
-        IEditManager editManager;
+        IContentAdapterProvider adapters;
 
-        public RedirectToPreviewCommand(IEditManager editManager)
+        public RedirectToPreviewCommand(IContentAdapterProvider adapters)
         {
-            this.editManager = editManager;
+        	this.adapters = adapters;
         }
 
-        public override void Process(CommandContext state)
+    	public override void Process(CommandContext state)
         {
-            string redirectTo = editManager.GetPreviewUrl(state.Content);
+            string redirectTo = adapters.ResolveAdapter<NodeAdapter>(state.Content.GetType()).GetPreviewUrl(state.Content);
             if (state.Content.VersionOf != null)
                 redirectTo = Url.Parse(redirectTo)
                     .AppendQuery("preview", state.Content.ID)

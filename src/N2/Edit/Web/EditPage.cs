@@ -82,7 +82,8 @@ namespace N2.Edit.Web
         {
             if(!string.IsNullOrEmpty(Request["returnUrl"]))
                 return Request["returnUrl"];
-            return Engine.EditManager.GetPreviewUrl(Selection.SelectedItem.VersionOf ?? Selection.SelectedItem);
+			var item = Selection.SelectedItem.VersionOf ?? Selection.SelectedItem;
+			return Engine.GetContentAdapter<NodeAdapter>(item).GetPreviewUrl(item);
         }
 
 		/// <summary>Checks that the user has the required permission on the given item. Throws exceptions if authorization is missing.</summary>
@@ -195,7 +196,7 @@ namespace N2.Edit.Web
 
 		protected virtual string GetPreviewUrl(ContentItem selectedItem)
 		{
-			return Request["returnUrl"] ?? Engine.EditManager.GetPreviewUrl(selectedItem);
+			return Request["returnUrl"] ?? Engine.GetContentAdapter<NodeAdapter>(selectedItem).GetPreviewUrl(selectedItem);
 		}
 		#endregion
 

@@ -16,7 +16,7 @@ namespace N2
 	/// <summary>
 	/// Mixed utility functions used by N2.
 	/// </summary>
-	public class Utility
+	public static class Utility
 	{
 		/// <summary>Converts a value to a destination type.</summary>
 		/// <param name="value">The value to convert.</param>
@@ -477,6 +477,16 @@ namespace N2
 			if (type == null || type == typeof(object))
 				return 0;
 			return 1 + InheritanceDepth(type.BaseType);
+		}
+
+		/// <summary>Shorthand for resolving an adapter.</summary>
+		/// <typeparam name="T">The type of adapter to get.</typeparam>
+		/// <param name="engine">Used to resolve the provider.</param>
+		/// <param name="item">The item whose adapter to get.</param>
+		/// <returns>The most relevant adapter.</returns>
+		internal static T GetContentAdapter<T>(this IEngine engine, ContentItem item) where T:AbstractContentAdapter
+		{
+			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item.GetContentType());
 		}
 	}
 }

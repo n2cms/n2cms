@@ -30,10 +30,10 @@ namespace N2.Edit.Versions
 			ContentItem latestVersion = engine.Resolve<IVersionManager>().GetVersionsOf(context.Selected, 1)[0];
 			if (latestVersion == context.Selected) return null;
 
-			Url versionPreviewUrl = engine.EditManager.GetPreviewUrl(latestVersion);
+			Url versionPreviewUrl = engine.GetContentAdapter<NodeAdapter>(latestVersion).GetPreviewUrl(latestVersion);
 			versionPreviewUrl = versionPreviewUrl.AppendQuery("preview", latestVersion.ID);
 			versionPreviewUrl = versionPreviewUrl.AppendQuery("original", context.Selected.ID);
-			versionPreviewUrl = versionPreviewUrl.AppendQuery("returnUrl=" + engine.EditManager.GetPreviewUrl(context.Selected));
+			versionPreviewUrl = versionPreviewUrl.AppendQuery("returnUrl=" + engine.GetContentAdapter<NodeAdapter>(context.Selected).GetPreviewUrl(context.Selected));
 
 			HyperLink hl = new HyperLink();
 			hl.NavigateUrl = versionPreviewUrl;

@@ -1,3 +1,4 @@
+- IOrderBy.Detail does sorting (ThreadId=234194)
 - comment moderation (ThreadId=232279)
 - alt on editableimage (ThreadId=232342)
 - relocate virtual directory (ThreadId=232683)

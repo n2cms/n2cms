@@ -109,7 +109,7 @@ namespace N2.Edit
 			ctx.Parameters["MoveAfter"] = Request["after"];
 			Commands.Publish(ctx);
 
-			HandleResult(ctx, Request["returnUrl"], Edits.GetPreviewUrl(ctx.Content));
+			HandleResult(ctx, Request["returnUrl"], Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content));
 		}
 
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
@@ -123,7 +123,7 @@ namespace N2.Edit
 				returnUrl = Url.Parse(returnUrl).AppendQuery("preview", ctx.Content.ID);
 			}
 
-			Url previewUrl = Edits.GetPreviewUrl(ctx.Content);
+			Url previewUrl = Engine.GetContentAdapter<NodeAdapter>(ctx.Content).GetPreviewUrl(ctx.Content);
 			previewUrl = previewUrl.AppendQuery("preview", ctx.Content.ID);
 			if(ctx.Content.VersionOf != null)
 				previewUrl = previewUrl.AppendQuery("original", ctx.Content.VersionOf.ID);

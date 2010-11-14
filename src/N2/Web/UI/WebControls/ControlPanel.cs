@@ -262,7 +262,7 @@ window.n2ddcp = new n2DragDrop();
 				if (CurrentItem != null)
 				{
 					string navigationUrl = Engine.EditManager.GetNavigationUrl(CurrentItem);
-					string previewUrl = Engine.EditManager.GetPreviewUrl(CurrentItem);
+					string previewUrl = Engine.GetContentAdapter<NodeAdapter>(CurrentItem).GetPreviewUrl(CurrentItem);
 					string script = string.Format(switchScriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
 					writer.WriteLineNoTabs(script);
 				}

@@ -77,6 +77,7 @@
     <Content Include="N2\Login.aspx" />
     <Content Include="N2\Content\Move.aspx" />
     <Content Include="N2\Content\New.aspx" />
+    <Content Include="N2\Resources\Js\plugins\jquery.n2contextmenu-0.3.js" />
     <Content Include="N2\Web.config" />
     <None Include="N2\Content\Dependencies.aspx" />
     <Content Include="N2\Files\FileSystem\UploadFile.ashx" />
@@ -275,6 +276,7 @@
     <Compile Include="N2\Installation\UpdateAlteredPermissionsMigration.cs" />
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
+    <Compile Include="N2\ManagementUtility.cs" />
     <Compile Include="N2\Simple.master.cs">
       <DependentUpon>Simple.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -75,7 +75,7 @@ namespace N2.Edit.Web.UI.Controls
 			var tree = new N2.Web.Tree(Nodes)
 				.OpenTo(SelectedItem)
 				.Filters(Filter)
-				.LinkProvider(BuildLink)
+				.LinkProvider(item => BuildLink(adapters.ResolveAdapter<NodeAdapter>(item.GetContentType()), item, item.Path == SelectedItem.Path, Target))
 				.ToControl();
 
 			AppendExpanderNodeRecursive(tree, Filter, Target, adapters);
@@ -112,12 +112,7 @@ namespace N2.Edit.Web.UI.Controls
 			tn.Controls.Add(li);
 		}
 
-		private ILinkBuilder BuildLink(ContentItem item)
-		{
-			return BuildLink(item, item.Path == SelectedItem.Path, Target);
-		}
-
-		internal static ILinkBuilder BuildLink(ContentItem item, bool selected, string target)
+		internal static ILinkBuilder BuildLink(NodeAdapter adapter, ContentItem item, bool selected, string target)
 		{
 			INode node = item;
 			string className = node.ClassNames;
@@ -127,7 +122,7 @@ namespace N2.Edit.Web.UI.Controls
 			ILinkBuilder builder = Link.To(node)
 				.Target(target)
 				.Class(className)
-				.Text("<img src='" + N2.Web.Url.ToAbsolute(node.IconUrl) + "'/>" + node.Contents)
+				.Text("<img src='" + adapter.GetIconUrl(item) + "'/>" + node.Contents)
 				.Attribute("rel", node.Path)
 				.Attribute("data-id", item.ID.ToString())
 				.Attribute("data-type", item.GetContentType().Name)
@@ -136,10 +131,7 @@ namespace N2.Edit.Web.UI.Controls
 				.Attribute("data-page", item.IsPage.ToString().ToLower())
 				.Attribute("data-zone", item.ZoneName);
 
-			if (string.IsNullOrEmpty(node.PreviewUrl))
-				builder.Href("~/N2/Empty.aspx");
-			else
-				builder.Href(node.PreviewUrl);
+			builder.Href(adapter.GetPreviewUrl(item));
 
 			return builder;
 		}
