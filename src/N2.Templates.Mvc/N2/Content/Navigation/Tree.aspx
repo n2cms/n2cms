@@ -22,13 +22,12 @@
 			}
 		</style>
     </head>
-<body class="framed">
+<body class="framed noneSelected">
     <form id="form1" runat="server">
 		<div class="onDirectorySelected nodeOption">
 			<input id="inputLocation" type="hidden" runat="server" class="uploadDirectoryLocation" />
 			<input id="inputFile" type="file" runat="server" onchange="this.form.submit();" />
-			<%--document.getElementById('<%= btnUpload.ClientID %>').click();--%>
-			<%--<asp:Button ID="btnUpload" runat="server" OnCommand="btnUpload_Command" />--%>
+			<asp:Image ImageUrl="../../Resources/Icons/page_white_get.png" runat="server" style="vertical-align:middle" />
 		</div>
         <div id="nav" class="tree nav focusGroup">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
@@ -62,8 +61,8 @@
         </script>
         <% } %>
 		
-		<% if (Request["location"] == "filesselection") { %>
         <script type="text/javascript">
+		<% if (Request["location"] == "filesselection") { %>
         	n2nav.handlers["fallback"] = function(e) {
         		e.preventDefault();
         		if ($(this).attr("data-type") == "File")
@@ -71,21 +70,17 @@
         		if ($(this).attr("data-type") == "Directory")
         			$(".uploadDirectoryLocation").attr("value", $(this).attr("data-url"));
         	};
-        </script>
     	<% } %>
 		
 		<% if (Request["location"] == "contentselection") { %>
-        <script type="text/javascript">
 			n2nav.handlers["fallback"] = function(e) {
 				e.preventDefault();
 				if ($(this).attr("data-id") != "0")
 					updateOpenerAndClose.call(this, e);
 			};
-        </script>
     	<% } %>
 		
 		<% if (Request["location"] == "files") { %>
-        <script type="text/javascript">
         	var fallback = n2nav.handlers["fallback"];
         	n2nav.handlers["fallback"] = function(e) {
         		var type = $(this).attr("data-type");
@@ -95,8 +90,8 @@
     				e.preventDefault();
     		};
     		$("a.selected").focus();
-        </script>
     	<% } %>
+        </script>
 
         <nav:ContextMenu id="cm" runat="server" />
     </form>

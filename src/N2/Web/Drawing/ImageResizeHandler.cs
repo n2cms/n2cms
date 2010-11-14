@@ -49,7 +49,7 @@ namespace N2.Web.Drawing
 				context.Response.ContentType = "image/jpeg";
 
 				string extension = VirtualPathUtility.GetExtension(imageUrl);
-				ImageResizer ir = new ImageResizer();
+				ImageResizer ir = N2.Context.Current.Resolve<ImageResizer>();
 
 				using (var s = fs.OpenFile(imageUrl))
 				{

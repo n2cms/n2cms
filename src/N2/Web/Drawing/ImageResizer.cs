@@ -79,20 +79,7 @@ namespace N2.Web.Drawing
 
     		resized.SetResolution(original.HorizontalResolution, original.VerticalResolution);
 
-    		Graphics g;
-			switch (extension.ToLower())
-    		{
-    			case ".jpg":
-    			case ".jpeg":
-    				g = Graphics.FromImage(resized);
-    				break;
-    			default:
-    				Bitmap temp = new Bitmap(resized.Width, resized.Height, original.PixelFormat);
-    				g = Graphics.FromImage(temp);
-    				g.DrawImage(resized, new Rectangle(0, 0, temp.Width, temp.Height), 0, 0, resized.Width, resized.Height, GraphicsUnit.Pixel);
-    				resized = temp;
-    				break;
-    		}
+    		Graphics g = CreateGraphics(original, ref resized, extension);
 
     		using (g)
     		{
@@ -115,6 +102,31 @@ namespace N2.Web.Drawing
     			resized.Save(output, original.RawFormat);
     		}
     	}
+
+		private Graphics CreateGraphics(Bitmap original, ref Bitmap resized, string extension)
+		{
+			switch (extension.ToLower())
+			{
+				case ".jpg":
+				case ".jpeg":
+					if (resized.PixelFormat == PixelFormat.Format1bppIndexed || resized.PixelFormat == PixelFormat.Format4bppIndexed || resized.PixelFormat == PixelFormat.Format8bppIndexed)
+						return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
+					return Graphics.FromImage(resized);
+				case ".gif":
+					return GetResizedBitmap(ref resized, PixelFormat.Format24bppRgb);
+				default:
+					return GetResizedBitmap(ref resized, original.PixelFormat);
+			}
+		}
+
+		private Graphics GetResizedBitmap(ref Bitmap resized, PixelFormat format)
+		{
+			Bitmap temp = new Bitmap(resized.Width, resized.Height, format);
+			var g = Graphics.FromImage(temp);
+			g.DrawImage(resized, new Rectangle(0, 0, temp.Width, temp.Height), 0, 0, resized.Width, resized.Height, GraphicsUnit.Pixel);
+			resized = temp;
+			return g;
+		}
 
 		public static Rectangle GetFillDestinationRectangle(Size original, Size resized)
 		{
