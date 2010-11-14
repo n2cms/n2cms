@@ -22,7 +22,8 @@ namespace N2.Templates.Mvc.Services
 			if (page.Header == null)
 				return;
 
-			page.Title = item[HeadTitle] as string ?? item.Title;
+			string title = item[HeadTitle] as string;
+			page.Title = string.IsNullOrEmpty(title) ? item.Title : title;
 			AddMeta(page, "keywords", item[MetaKeywords] as string);
 			AddMeta(page, "description", item[MetaDescription] as string);
 		}
