@@ -3,26 +3,65 @@ using N2.Configuration;
 using N2.Engine;
 using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
-using NUnit.Framework;
-using N2.Persistence;
 using N2.Web;
-using N2.Engine.MediumTrust;
+using NUnit.Framework;
 
 namespace N2.Tests.Web
 {
 	[TestFixture]
-	public class MoreRequestDispatcherTests : ItemPersistenceMockingBase
+	public class BeginRequestMoreRequestDispatcherTests : MoreRequestDispatcherTests
 	{
-		FakeRequestLifeCycleHandler handler;
+		public BeginRequestMoreRequestDispatcherTests()
+		{
+			rewriteMethod = RewriteMethod.BeginRequest;
+		}
+
+		[Test]
+		public void Context_IsNot_RewrittenBack_ToFriendlyUrl_AfterMapRequestHandler()
+		{
+			webContext.Url = "/one/two.aspx";
+
+			TriggerRewrite();
+			handler.PostMapRequestHandler();
+
+			Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?page=3"));
+		}
+	}
+
+	[TestFixture]
+	public class SurroundMapRequestHandlerMoreRequestDispatcherTests : MoreRequestDispatcherTests
+	{
+		public SurroundMapRequestHandlerMoreRequestDispatcherTests()
+		{
+			rewriteMethod = RewriteMethod.SurroundMapRequestHandler;
+		}
+
+		[Test]
+		public void Context_IsRewrittenBack_ToFriendlyUrl_AfterMapRequestHandler()
+		{
+			webContext.Url = "/one/two.aspx";
+
+			TriggerRewrite();
+			handler.PostMapRequestHandler();
+
+			Assert.That(webContext.rewrittenPath, Is.EqualTo("/one/two.aspx"));
+		}
+	}
+
+
+	public abstract class MoreRequestDispatcherTests : ItemPersistenceMockingBase
+	{
+		protected FakeRequestLifeCycleHandler handler;
 		IUrlParser parser;
 		RequestPathProvider dispatcher;
-		FakeWebContextWrapper webContext;
+		protected FakeWebContextWrapper webContext;
 		ContentItem root, two, three;
 		CustomExtensionItem one;
 		ErrorHandler errorHandler;
 		IEngine engine;
 		ContentAdapterProvider adapterProvider;
-
+		protected RewriteMethod rewriteMethod = RewriteMethod.BeginRequest;
+			
 		[SetUp]
 		public override void SetUp()
 		{
@@ -35,7 +74,7 @@ namespace N2.Tests.Web
 			three = CreateOneItem<PageItem>(5, "three.3", root);
 
 			webContext = new FakeWebContextWrapper();
-			HostSection hostSection = new HostSection();
+			HostSection hostSection = new HostSection { Web = new WebElement { Rewrite = rewriteMethod }};
 			parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), hostSection);
 			errorHandler = new ErrorHandler(webContext, null, null);
 			engine = new FakeEngine();
@@ -46,14 +85,18 @@ namespace N2.Tests.Web
 			ReCreateDispatcherWithConfig(hostSection);
 		}
 
-
+		protected void TriggerRewrite()
+		{
+			handler.BeginRequest();
+			handler.PostResolveRequestCache();
+		}
 
 		[Test]
 		public void CanRewriteUrl()
 		{
 			webContext.Url = "/one/two.aspx";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?page=3"));
 		}
@@ -63,7 +106,7 @@ namespace N2.Tests.Web
 		{
 			webContext.Url = "/one/two.aspx?happy=true&flip=feet";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.rewrittenPath, Is.EqualTo("/Default.aspx?happy=true&flip=feet&page=3"));
 		}
@@ -73,7 +116,7 @@ namespace N2.Tests.Web
 		{
 			webContext.Url = "/one/two.aspx";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPath, Is.Not.Null);
 			Assert.That(webContext.CurrentPage, Is.EqualTo(two));
@@ -84,7 +127,7 @@ namespace N2.Tests.Web
         {
 			webContext.Url = "/one.aspx";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
         }
@@ -96,7 +139,7 @@ namespace N2.Tests.Web
 			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } });
         	webContext.Url = "/one.htm";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
         }
@@ -107,7 +150,7 @@ namespace N2.Tests.Web
 			ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObservedExtensions = new CommaDelimitedStringCollection()}});
 			webContext.Url = "/one.html";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.Null);
 		}
@@ -118,7 +161,7 @@ namespace N2.Tests.Web
 			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObserveAllExtensions = true} });
 			webContext.Url = "/three.3";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(three));
 		}
@@ -129,7 +172,7 @@ namespace N2.Tests.Web
 			ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObserveEmptyExtension = false}});
 			webContext.Url = "/one";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.Null);
 		}
@@ -140,7 +183,7 @@ namespace N2.Tests.Web
         	ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection()}});
 			webContext.Url = "/one";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
         }
@@ -150,7 +193,7 @@ namespace N2.Tests.Web
 		{
 			webContext.Url = "/Default.aspx?page=3";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(two));
 		}
@@ -160,7 +203,7 @@ namespace N2.Tests.Web
 		{
 			webContext.Url = "/Default.aspx?item=4&page=3";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(two));
 		}
@@ -170,7 +213,7 @@ namespace N2.Tests.Web
 		{
 			webContext.Url = "/Default.aspx?";
 
-			handler.BeginRequest();
+			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(root));
 		}
@@ -178,7 +221,7 @@ namespace N2.Tests.Web
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
 			dispatcher = new RequestPathProvider(adapterProvider, webContext, parser, errorHandler, config);
-			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, adapterProvider, errorHandler, new EditSection(), new HostSection());
+			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, adapterProvider, errorHandler, new EditSection(), config);
 		}
 	}
 }

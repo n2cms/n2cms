@@ -9,14 +9,6 @@ namespace N2.Templates.Configuration
 	/// </summary>
 	public class TemplatesSection : ConfigurationSectionBase
     {
-        /// <summary>The database flavour decides which propertes the nhibernate configuration will receive.</summary>
-        [ConfigurationProperty("mailConfiguration", DefaultValue = MailConfigSource.ContentRootOrConfiguration)]
-        public MailConfigSource MailConfiguration
-        {
-            get { return (MailConfigSource)base["mailConfiguration"]; }
-            set { base["mailConfiguration"] = value; }
-        }
-
         /// <summary>The master page used for template pages.</summary>
         [ConfigurationProperty("masterPageFile", DefaultValue = "~/Templates/UI/Layouts/Top+SubMenu.Master")]
 		public string MasterPageFile

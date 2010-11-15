@@ -57,9 +57,9 @@ namespace N2.Web
 		/// <summary>The template used to serve this request.</summary>
 		public PathData CurrentPath
 		{
-			get { return currentPath; }
-			set 
-			{ 
+			get { return currentPath ?? PathData.Empty; }
+			set
+			{
 				currentPath = value;
 				if (value != null)
 					CurrentPage = value.CurrentPage;
@@ -120,10 +120,15 @@ namespace N2.Web
 			get { return MapPath(Url.Path); }
         }
 
-        public virtual void RewritePath(string path)
-        {
+		public virtual void RewritePath(string path)
+		{
 			throw new NotSupportedException("RewritePath not supported in thread context. No handler when not running in http web context.");
-        }
+		}
+
+		public virtual void RewritePath(string path, string query)
+		{
+			throw new NotSupportedException("RewritePath not supported in thread context. No handler when not running in http web context.");
+		}
 
         public virtual string ToAbsolute(string virtualPath)
         {
@@ -135,6 +140,7 @@ namespace N2.Web
         	return "~" + ToAbsolute(virtualPath);
         }
 
+		[Obsolete]
         public void TransferRequest(string path)
         {
 			throw new NotSupportedException("TransferRequest is not supported in thread context. No handler when not running in http web context.");

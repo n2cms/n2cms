@@ -20,7 +20,7 @@ namespace N2.Edit.Web
 
 		public IEngine Engine
 		{
-			get { return this.EditPage.Engine; }
+			get { return (base.Page as EditPage) != null ? (base.Page as EditPage).Engine : N2.Context.Current; }
         }
 
         SelectionUtility selection;

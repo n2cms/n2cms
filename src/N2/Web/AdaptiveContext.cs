@@ -121,6 +121,15 @@ namespace N2.Web
 			CurrentContext.RewritePath(path);
 		}
 
+		/// <summary>Rewrites the request to the given path.</summary>
+		/// <param name="path">The path to the template that will handle the request.</param>
+		/// <param name="query">The query string to rewrite to.</param>
+		public void RewritePath(string path, string query)
+		{
+			CurrentContext.RewritePath(path, query);
+		}
+
+		[Obsolete]
 		public void TransferRequest(string path)
 		{
 			CurrentContext.TransferRequest(path);

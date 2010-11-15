@@ -2,7 +2,6 @@ using System;
 using System.Security.Principal;
 using System.Collections;
 using System.Web;
-using System.Collections.Specialized;
 
 namespace N2.Web
 {
@@ -68,8 +67,14 @@ namespace N2.Web
         /// <param name="path">The path to the template that will handle the request.</param>
 		void RewritePath(string path);
 
+		/// <summary>Transferes the request to the given path.</summary>
+		/// <param name="path">The path to the template that will handle the request.</param>
+		/// <param name="queryString">The query string to rewrite to.</param>
+		void RewritePath(string path, string queryString);
+
         /// <summary>Transferes the request to the given path.</summary>
         /// <param name="path">The path to the template that will handle the request.</param>
+        [Obsolete]
 		void TransferRequest(string path);
 
 		/// <summary>Calls into HttpContext.ClearError().</summary>

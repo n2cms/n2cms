@@ -77,7 +77,7 @@ namespace N2.Configuration
         }
 
         /// <summary>Enables rewriting of requests to the page handler of a certain content item.</summary>
-        [ConfigurationProperty("rewrite", DefaultValue = RewriteMethod.RewriteRequest)]
+		[ConfigurationProperty("rewrite", DefaultValue = RewriteMethod.SurroundMapRequestHandler)]
         public RewriteMethod Rewrite
         {
             get { return (RewriteMethod)base["rewrite"]; }

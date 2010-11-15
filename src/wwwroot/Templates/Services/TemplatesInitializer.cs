@@ -15,15 +15,6 @@ namespace N2.Templates.Services
     {
         public void Initialize(IEngine engine)
         {
-            TemplatesSection config = ConfigurationManager.GetSection("n2/templates") as TemplatesSection;
-            if (config == null || config.MailConfiguration == MailConfigSource.ContentRootOrConfiguration)
-            {
-                engine.AddComponent("n2.templates.contentMailSender", typeof(IMailSender), typeof(DynamicMailSender));
-            }
-            else
-            {
-                engine.AddComponent("n2.templates.fakeMailSender", typeof(IMailSender), typeof(FakeMailSender));
-            }
             engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
 
 			engine.AddComponent("n2.templates.rss.definitionAppender", typeof(SyndicatableDefinitionAppender));

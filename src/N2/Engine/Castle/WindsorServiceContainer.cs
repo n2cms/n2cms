@@ -57,7 +57,7 @@ namespace N2.Engine.Castle
 			                              	? LifestyleType.Singleton
 			                              	: LifestyleType.Transient;
 
-			container.AddComponentLifeStyle(key, type, lifeStyleType);
+			container.Register(Component.For(type).Named(key).LifeStyle.Is(lifeStyleType));
 		}
 
 		public override void AddComponentWithParameters(string key, Type serviceType, Type classType, IDictionary<string, string> properties)
@@ -150,7 +150,7 @@ namespace N2.Engine.Castle
 					if (h.CurrentState != HandlerState.Valid)
 						continue;
 
-					var instance = Kernel[model.Name] as IAutoStart;
+					var instance = Kernel.Resolve(model.Name, new Arguments()) as IAutoStart;
 					Trace.WriteLine("Starting " + instance);
 					instance.Start();
 				}

@@ -58,7 +58,7 @@ namespace N2.Web
             mailFrom = config.Errors.MailFrom;
             maxErrorReportsPerHour = config.Errors.MaxErrorReportsPerHour;
             handleWrongClassException = config.Errors.HandleWrongClassException;
-            mailSender = new StaticMailSender();
+            mailSender = new SmtpMailSender();
         }
 
 		public ErrorHandler(IWebContext context, ISecurityManager security, InstallationManager installer, IMailSender mailSender, EngineSection config)
@@ -184,7 +184,7 @@ namespace N2.Web
                 }
             }
             body.Append(ex.ToString());
-            return body.ToString();            
+            return body.ToString();
         }
     }
 }

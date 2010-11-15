@@ -26,7 +26,8 @@ namespace N2.Web
 
 		protected bool initialized = false;
 		protected bool checkInstallation = false;
-		protected RewriteMethod rewriteMethod = RewriteMethod.RewriteRequest;
+		protected RewriteMethod rewriteMethod = RewriteMethod.SurroundMapRequestHandler;
+		private bool isLegacyRewriteMode = false;
 		protected string welcomeUrl = "~/N2/Installation/Begin/Default.aspx";
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
@@ -42,6 +43,7 @@ namespace N2.Web
 			checkInstallation = editConfig.Installer.CheckInstallationStatus;
 			welcomeUrl = editConfig.Installer.WelcomeUrl;
 			rewriteMethod = hostConfig.Web.Rewrite;
+			isLegacyRewriteMode = rewriteMethod == RewriteMethod.BeginRequest || rewriteMethod == RewriteMethod.TransferRequest;
 			this.webContext = webContext;
 			this.broker = broker;
 			this.adapters = adapters;
@@ -59,7 +61,7 @@ namespace N2.Web
 				initialized = true;
 				if (webContext.IsWeb)
 				{
-				    var dummy = Url.ServerUrl;  // wayne: DOT NOT REMOVE, initialize the server url
+					var dummy = Url.ServerUrl; // wayne: DOT NOT REMOVE, initialize the server url
 					if (checkInstallation)
 						CheckInstallation();
 				}
@@ -67,19 +69,48 @@ namespace N2.Web
 
 			var data = dispatcher.GetCurrentPath();
 			webContext.CurrentPath = data;
-			if (data != null && !data.IsEmpty())
+
+			webContext.RequestItems[this] = new RewriteMemory {OriginalPath = webContext.Url.LocalUrl};
+
+			if (isLegacyRewriteMode && data != null && !data.IsEmpty())
 			{
 				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage.GetContentType());
 				adapter.RewriteRequest(data, rewriteMethod);
 			}
 		}
-		
+
 		protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
 		{
 			if (webContext.CurrentPath != null && !webContext.CurrentPath.IsEmpty())
 			{
 				RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetContentType());
 				adapter.AuthorizeRequest(webContext.CurrentPath, webContext.User);
+			}
+		}
+
+		protected virtual void Application_PostResolveRequestCache(object sender, EventArgs e)
+		{
+			if (!isLegacyRewriteMode)
+			{
+				var data = webContext.CurrentPath;
+				if (data != null && !data.IsEmpty())
+				{
+					RequestAdapter adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage.GetContentType());
+					adapter.RewriteRequest(data, rewriteMethod);
+				}
+			}
+		}
+
+		protected virtual void Application_PostMapRequestHandler(object sender, EventArgs e)
+		{
+			if(!isLegacyRewriteMode)
+			{
+				var info = webContext.RequestItems[this] as RewriteMemory;
+				if (info != null)
+				{
+					Url path = info.OriginalPath;
+					webContext.RewritePath(path.Path, path.Query ?? "");
+				}
 			}
 		}
 
@@ -144,12 +175,21 @@ namespace N2.Web
 		public void Initialize()
 		{
 			broker.BeginRequest += Application_BeginRequest;
+			broker.PostResolveRequestCache += Application_PostResolveRequestCache;
+			broker.PostMapRequestHandler += Application_PostMapRequestHandler;
 			broker.AuthorizeRequest += Application_AuthorizeRequest;
 			broker.AcquireRequestState += Application_AcquireRequestState;
 			broker.Error += Application_Error;
 			broker.EndRequest += Application_EndRequest;
 		}
 
+		#endregion
+
+		#region class RewriteMemory
+		public class RewriteMemory
+		{
+			public string OriginalPath { get; set; }
+		}
 		#endregion
 	}
 }

@@ -40,6 +40,13 @@ namespace N2.Tests.Fakes
 			rewrittenPath = path;
 		}
 
+		public override void RewritePath(string path, string query)
+		{
+			rewrittenPath = string.IsNullOrEmpty(query) 
+				? path 
+				: (path + "?" + query);
+		}
+
 	    public bool isWeb;
 	    public override bool IsWeb
 	    {

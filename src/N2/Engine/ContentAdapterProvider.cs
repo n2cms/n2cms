@@ -157,11 +157,14 @@ namespace N2.Engine
 			else
 				adapter = engine.Container.Resolve(adapterType) as AbstractContentAdapter;
 			
+			if(adapter == null)
+				throw new ArgumentException("Cannot create adapter of type " + adapterType + " for content type " + contentType);
+
 			adapter.AdaptedType = contentType;
-			adapter.Engine = engine;
+			adapter.engine = engine;
 			return adapter;
 		}
-
+		 
 		private bool ContainsServiceOfType(Array services, Type adapterType)
 		{
 			foreach (var service in services)

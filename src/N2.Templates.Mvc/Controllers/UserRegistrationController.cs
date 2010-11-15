@@ -12,13 +12,13 @@ namespace N2.Templates.Mvc.Controllers
 	[Controls(typeof (UserRegistration))]
 	public class UserRegistrationController : TemplatesControllerBase<UserRegistration>
 	{
-		private readonly IErrorHandler _errorHandler;
-		private readonly IMailSender _mailSender;
+		private readonly IErrorHandler errorHandler;
+		private readonly IMailSender mailSender;
 
 		public UserRegistrationController(IMailSender mailSender, IErrorHandler errorHandler)
 		{
-			_mailSender = mailSender;
-			_errorHandler = errorHandler;
+			this.mailSender = mailSender;
+			this.errorHandler = errorHandler;
 		}
 
 		[NonAction]
@@ -88,7 +88,7 @@ namespace N2.Templates.Mvc.Controllers
 
 				try
 				{
-					_mailSender.Send(CurrentItem.VerificationSender, model.RegisterEmail, subject, body);
+					mailSender.Send(CurrentItem.VerificationSender, model.RegisterEmail, subject, body);
 
 					if (CurrentItem.SuccessPage != null)
 					{
@@ -98,7 +98,7 @@ namespace N2.Templates.Mvc.Controllers
 				catch (InvalidOperationException ex)
 				{
 					ModelState.AddModelError("general", ex.Message);
-					_errorHandler.Notify(ex);
+					errorHandler.Notify(ex);
 
 					return ViewParentPage();
 				}

@@ -49,6 +49,14 @@ namespace N2.Integrity
 			Types = allowedParentTypes;
 		}
 
+		/// <summary>Initializes a new instance of the RestrictParentsAttribute which is used to restrict which types of items may be added below which.</summary>
+		/// <param name="allowedParentType">A list of allowed types. Null is interpreted as all types are allowed.</param>
+		public RestrictParentsAttribute(Type allowedParentType)
+			: this()
+		{
+			Types = new [] { allowedParentType };
+		}
+
 		/// <summary>Changes allowed parents on the item definition.</summary>
 		/// <param name="currentDefinition">The definition to alter.</param>
 		/// <param name="allDefinitions">All definitions.</param>

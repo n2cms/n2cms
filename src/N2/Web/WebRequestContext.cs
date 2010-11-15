@@ -46,8 +46,8 @@ namespace N2.Web
 		/// <summary>The template used to serve this request.</summary>
 		public PathData CurrentPath
 		{
-			get { return RequestItems["CurrentTemplate"] as PathData; }
-			set 
+			get { return RequestItems["CurrentTemplate"] as PathData ?? PathData.Empty; }
+			set
 			{
 				RequestItems["CurrentTemplate"] = value;
 				if (value != null)
@@ -126,13 +126,22 @@ namespace N2.Web
 			return HostingEnvironment.MapPath(path);
         }
 
-        /// <summary>Assigns a rewrite path.</summary>
-        /// <param name="path">The path to the template that will handle the request.</param>
-        public void RewritePath(string path)
-        {
-            Debug.WriteLine("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
+		/// <summary>Assigns a rewrite path.</summary>
+		/// <param name="path">The path to the template that will handle the request.</param>
+		public void RewritePath(string path)
+		{
+			Debug.WriteLine("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
 			CurrentHttpContext.RewritePath(path, false);
-        }
+		}
+
+		/// <summary>Assigns a rewrite path.</summary>
+		/// <param name="path">The path to the template that will handle the request.</param>
+		/// <param name="queryString">The query string to rewrite to.</param>
+		public void RewritePath(string path, string queryString)
+		{
+			Debug.WriteLine("Rewriting '" + Url.LocalUrl + "' to '" + path + "'");
+			CurrentHttpContext.RewritePath(path, "", queryString);
+		}
 
         public void TransferRequest(string path)
         {

@@ -19,23 +19,30 @@ namespace N2.Web.Parts
 		IContentAdapterProvider adapters;
 		IWebContext webContext;
 		IPersister persister;
+		IDefinitionManager definitions;
 
 		public IPersister Persister
 		{
-			get { return persister ?? Engine.Resolve<IPersister>(); }
+			get { return persister ?? engine.Resolve<IPersister>(); }
 			set { persister = value; }
 		}
 
 		public IWebContext WebContext
 		{
-			get { return webContext ?? Engine.Resolve<IWebContext>(); }
+			get { return webContext ?? engine.Resolve<IWebContext>(); }
 			set { webContext = value; }
 		}
 
 		public IContentAdapterProvider Adapters
 		{
-			get { return adapters ?? Engine.Resolve<IContentAdapterProvider>(); }
+			get { return adapters ?? engine.Resolve<IContentAdapterProvider>(); }
 			set { adapters = value; }
+		}
+
+		public IDefinitionManager Definitions
+		{
+			get { return definitions ?? engine.Definitions; }
+			set { definitions = value; }
 		}
 
 		/// <summary>Retrieves content items added to a zone of the parnet item.</summary>
@@ -72,7 +79,7 @@ namespace N2.Web.Parts
 		/// <returns>Item definitions allowed by zone, parent restrictions and security.</returns>
 		public virtual IEnumerable<ItemDefinition> GetAllowedDefinitions(ContentItem parentItem, IPrincipal user)
 		{
-			ItemDefinition containerDefinition = Engine.Definitions.GetDefinition(parentItem.GetContentType());
+			ItemDefinition containerDefinition = Definitions.GetDefinition(parentItem.GetContentType());
 
 			foreach (ItemDefinition childDefinition in containerDefinition.AllowedChildren)
 			{

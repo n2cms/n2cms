@@ -10,6 +10,8 @@ namespace N2.Engine
 	/// </summary>
 	public abstract class AbstractContentAdapter : IComparable<AbstractContentAdapter>
 	{
+		internal IEngine engine;
+		
 		public AbstractContentAdapter()
 		{
 			AdaptedType = typeof(ContentItem);
@@ -24,12 +26,16 @@ namespace N2.Engine
 			get { return Engine.Resolve<IWebContext>().CurrentPath; }
 		}
 
-		/// <summary>The content engine requesting external control.</summary>
-		[Obsolete("Create constructor or public properties to get adapter dependencies.")]
-		public IEngine Engine { get; set; }
-
 		/// <summary>The type adapted by this adapter instance.</summary>
 		public Type AdaptedType { get; set; }
+
+		/// <summary>The content engine requesting external control.</summary>
+		[Obsolete("Create constructor or public properties to get adapter dependencies.")]
+		public IEngine Engine
+		{
+			get { return engine; }
+			set { engine = value; }
+		}
 
 		#endregion
 

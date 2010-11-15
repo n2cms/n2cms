@@ -15,11 +15,11 @@ namespace N2.Templates.Mvc.Controllers
 	[Controls(typeof (Form))]
 	public class FormController : TemplatesControllerBase<Form>
 	{
-		private readonly IMailSender _mailSender;
+		private readonly IMailSender mailSender;
 
 		public FormController(IMailSender mailSender)
 		{
-			_mailSender = mailSender;
+			this.mailSender = mailSender;
 		}
 
 		public override ActionResult Index()
@@ -57,7 +57,7 @@ namespace N2.Templates.Mvc.Controllers
 			         		Body = sb.ToString()
 			         	};
 
-			_mailSender.Send(mm);
+			mailSender.Send(mm);
 
 			TempData.Add("FormSubmit", true);
 

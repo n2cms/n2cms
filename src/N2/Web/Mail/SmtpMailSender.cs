@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Mail;
 using System.Net;
+using N2.Engine;
 
 namespace N2.Web.Mail
 {
-	[Obsolete]
-	public abstract class SmtpMailSender : IMailSender
+	/// <summary>
+	/// Sends emails using <see cref="SmtpClient"/>.
+	/// </summary>
+	[Service(typeof(IMailSender))]
+	public class SmtpMailSender : IMailSender
 	{
 		public void Send(MailMessage mail)
 		{
@@ -21,7 +25,10 @@ namespace N2.Web.Mail
 			client.Send(from, recipients, subject, body);
 		}
 
-		protected abstract SmtpClient GetSmtpClient();
+		protected virtual SmtpClient GetSmtpClient()
+		{
+			return new SmtpClient();
+		}
 
 		protected SmtpClient CreateSmtpClient(string host, int port, string user, string password)
 		{

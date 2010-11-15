@@ -30,9 +30,11 @@ namespace N2.Engine
 			Trace.WriteLine("EventBroker: Attaching to " + application);
 
 			application.BeginRequest += Application_BeginRequest;
-			//application.PostAuthorizeRequest += application_PostAuthorizeRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
-			//application.PostMapRequestHandler += Application_PostMapRequestHandler;
+
+			application.PostResolveRequestCache += Application_PostResolveRequestCache;
+			application.PostMapRequestHandler += Application_PostMapRequestHandler;
+
 			application.AcquireRequestState += Application_AcquireRequestState;
 			application.Error += Application_Error;
 			application.EndRequest += Application_EndRequest;
@@ -40,17 +42,11 @@ namespace N2.Engine
 			application.Disposed += Application_Disposed;
 		}
 
-		/// <summary>Detaches events from the application instance.</summary>
-		void Application_Disposed(object sender, EventArgs e)
-		{
-			Trace.WriteLine("EventBroker: Disposing " + sender);
-		}
-
 		public EventHandler<EventArgs> BeginRequest;
 		public EventHandler<EventArgs> AuthorizeRequest;
-		//public EventHandler<EventArgs> PostAuthorizeRequest;
+		public EventHandler<EventArgs> PostResolveRequestCache;
 		public EventHandler<EventArgs> AcquireRequestState;
-		//public EventHandler<EventArgs> PostMapRequestHandler;
+		public EventHandler<EventArgs> PostMapRequestHandler;
 		public EventHandler<EventArgs> Error;
 		public EventHandler<EventArgs> EndRequest;
 
@@ -72,19 +68,23 @@ namespace N2.Engine
 			}
 		}
 
-		//void application_PostAuthorizeRequest(object sender, EventArgs e)
-		//{
-		//    Debug.WriteLine("application_PostAuthorizeRequest");
-		//    if (PostAuthorizeRequest != null && !IsStaticResource(sender))
-		//        PostAuthorizeRequest(sender, e);
-		//}
+		private void Application_PostResolveRequestCache(object sender, EventArgs e)
+		{
+			if (PostResolveRequestCache != null && !IsStaticResource(sender))
+			{
+				Debug.WriteLine("Application_PostResolveRequestCache");
+				PostResolveRequestCache(sender, e);
+			}
+		}
 
-		//void Application_PostMapRequestHandler(object sender, EventArgs e)
-		//{
-		//    Debug.WriteLine("Application_PostMapRequestHandler");
-		//    if (PostMapRequestHandler != null && !IsStaticResource(sender))
-		//        PostMapRequestHandler(sender, e);
-		//}
+		private void Application_PostMapRequestHandler(object sender, EventArgs e)
+		{
+			if (PostMapRequestHandler != null && !IsStaticResource(sender))
+			{
+				Debug.WriteLine("Application_PostMapRequestHandler");
+				PostMapRequestHandler(sender, e);
+			}
+		}
 
 		protected void Application_AcquireRequestState(object sender, EventArgs e)
 		{
@@ -105,6 +105,12 @@ namespace N2.Engine
 		{
 			if (EndRequest != null && !IsStaticResource(sender))
 				EndRequest(sender, e);
+		}
+
+		/// <summary>Detaches events from the application instance.</summary>
+		void Application_Disposed(object sender, EventArgs e)
+		{
+			Trace.WriteLine("EventBroker: Disposing " + sender);
 		}
 
 		/// <summary>Returns true if the requested resource is one of the typical resources that needn't be processed by the cms engine.</summary>

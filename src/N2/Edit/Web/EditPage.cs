@@ -328,6 +328,7 @@ namespace N2.Edit.Web
             set { selection = value; }
         }
 
+		[Obsolete]
 		protected ContentItem RootNode
 		{
 			get { return Engine.Resolve<Navigator>().Navigate(Path); }

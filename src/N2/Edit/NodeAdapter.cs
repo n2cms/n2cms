@@ -21,37 +21,37 @@ namespace N2.Edit
 
 		public ISecurityManager Security
 		{
-			get { return security ?? Engine.Resolve<ISecurityManager>(); }
+			get { return security ?? engine.Resolve<ISecurityManager>(); }
 			set { security = value; }
 		}
 
 		public IWebContext WebContext
 		{
-			get { return webContext ?? Engine.Resolve<IWebContext>(); }
+			get { return webContext ?? engine.Resolve<IWebContext>(); }
 			set { webContext = value; }
 		}
 
 		public VirtualNodeFactory NodeFactory
 		{
-			get { return nodeFactory ?? Engine.Resolve<VirtualNodeFactory>(); }
+			get { return nodeFactory ?? engine.Resolve<VirtualNodeFactory>(); }
 			set { nodeFactory = value; }
 		}
 
 		public IFileSystem FileSystem
 		{
-			get { return fileSystem ?? Engine.Resolve<IFileSystem>(); }
+			get { return fileSystem ?? engine.Resolve<IFileSystem>(); }
 			set { fileSystem = value; }
 		}
 
 		public IHost Host
 		{
-			get { return host ?? Engine.Resolve<IHost>(); }
+			get { return host ?? engine.Resolve<IHost>(); }
 			set { host = value; }
 		}
 
 		public IEditManager EditManager
 		{
-			get { return editManager ?? Engine.EditManager; }
+			get { return editManager ?? engine.EditManager; }
 			set { editManager = value; }
 		}
 

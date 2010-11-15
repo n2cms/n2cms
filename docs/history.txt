@@ -1,4 +1,6 @@
-﻿- Added GetPreviewUrl to node adpater
+﻿- Removed unecessary IMailSender from template projects (breaking change)
+- Fixed authorization + rewrite issue (ThreadId=77613) (security model change)
+- Added GetPreviewUrl to node adpater
 - Fixed #29425: Empty <title> after setting then clearing alternative title
 - Fixed #29380: Template's Image.ashx should inherit from ImageResizeHandler 
 - Applied #29376: A Graphics object cannot be created from an image that has an indexed pixel format. 

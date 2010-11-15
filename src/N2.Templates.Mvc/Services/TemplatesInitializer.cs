@@ -13,7 +13,6 @@ namespace N2.Templates.Mvc.Services
 	{
 		public void Initialize(IEngine engine)
 		{
-			engine.AddComponent("n2.templates.contentMailSender", typeof(IMailSender), typeof(DynamicMailSender));
 			engine.AddComponent("n2.templates.permissionDeniedHandler", typeof(PermissionDeniedHandler));
 			engine.AddComponent("n2.templates.rss.definitionAppender", typeof(SyndicatableDefinitionAppender));
 			engine.AddComponent("n2.templates.seo.definitions", typeof(SeoDefinitionAppender));

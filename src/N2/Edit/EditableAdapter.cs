@@ -20,13 +20,13 @@ namespace N2.Edit
 
 		public IDefaultDirectory DefaultDirectory
 		{
-			get { return defaultDirectory ?? Engine.Resolve<IDefaultDirectory>(); }
+			get { return defaultDirectory ?? engine.Resolve<IDefaultDirectory>(); }
 			set { defaultDirectory = value; }
 		}
 
 		public IEditManager EditManager
 		{
-			get { return editManager ?? Engine.Resolve<IEditManager>(); }
+			get { return editManager ?? engine.Resolve<IEditManager>(); }
 			set { editManager = value; }
 		}
 
@@ -46,7 +46,7 @@ namespace N2.Edit
 		/// <param name="user">The user to filter access by.</param>
 		public virtual void LoadAddedEditors(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			Engine.EditManager.UpdateEditors(item, addedEditors, user);
+			EditManager.UpdateEditors(item, addedEditors, user);
 		}
 
 		/// <summary>Updates an item with the values from the editor controls without saving it.</summary>

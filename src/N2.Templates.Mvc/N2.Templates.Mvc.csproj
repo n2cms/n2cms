@@ -280,7 +280,6 @@
     <Compile Include="Models\TopMenuModel.cs" />
     <Compile Include="Models\UserRegistrationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DynamicMailSender.cs" />
     <Compile Include="Services\NotFoundHandler.cs" />
     <Compile Include="Services\PermissionDeniedHandler.cs" />
     <Compile Include="Services\SeoDefinitionAppender.cs" />

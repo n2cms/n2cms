@@ -1,7 +1,6 @@
 using System;
 using N2.Configuration;
 using N2.Engine;
-using N2.Installation;
 using N2.Web;
 using N2.Edit.Installation;
 
@@ -18,6 +17,16 @@ namespace N2.Tests.Fakes
 		public void BeginRequest()
 		{
 			base.Application_BeginRequest(this, new EventArgs());
+		}
+
+		public void PostMapRequestHandler()
+		{
+			base.Application_PostMapRequestHandler(this, new EventArgs());
+		}
+
+		public void PostResolveRequestCache()
+		{
+			base.Application_PostResolveRequestCache(this, new EventArgs());
 		}
 	}
 }
