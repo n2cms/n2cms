@@ -52,7 +52,9 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Validates the selected item.</summary>
 		public void Validate()
 		{
-			IsValid = (SelectedItem != null) ? RequiredType.IsAssignableFrom(SelectedItem.GetContentType()) : true;
+			IsValid = RequiredType == null
+				|| SelectedItem == null
+				|| RequiredType.IsAssignableFrom(SelectedItem.GetContentType());
 		}
 
 		#endregion
