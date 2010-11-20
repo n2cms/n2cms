@@ -1,6 +1,7 @@
 ﻿#if DEMO
 using System.Web.Mvc;
 using N2.Web.Mvc;
+using System.Web.Routing;
 
 namespace N2.Templates.Mvc.Areas.Tests
 {
@@ -17,7 +18,7 @@ namespace N2.Templates.Mvc.Areas.Tests
 			context.MapRoute("hello",
 				"Tests/{controller}/{action}",
 				new { action = "Index" },
-				new { area = "Tests" }
+				new { area = new NonContentConstraint() }
 				);
 		}
 	}

@@ -109,6 +109,7 @@
     <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />
     <Compile Include="Web\Mvc\Html\LinkExtensions.cs" />
     <Compile Include="Web\Mvc\MvcAdapter.cs" />
+    <Compile Include="Web\Mvc\NonContentConstraint.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
     <Compile Include="Web\Mvc\RouteExtensions.cs" />
     <Compile Include="Web\Mvc\Traversal.cs" />

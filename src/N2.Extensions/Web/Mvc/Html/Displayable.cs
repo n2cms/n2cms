@@ -6,6 +6,7 @@ using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Details;
 using System.Web.Routing;
+using System.Diagnostics;
 
 namespace N2.Web.Mvc.Html
 {
@@ -92,36 +93,43 @@ namespace N2.Web.Mvc.Html
             if (CurrentItem == null)
                 return;
 
-            try
-            {
-                var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, swallowExceptions);
-                if (displayable == null) return;
-
-                if (Wrapper != null)
-					helper.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
-
-				var referencedItem = CurrentItem[propertyName] as ContentItem;
-				if (referencedItem != null)
+			if (swallowExceptions)
+			{
+				try
 				{
-					var adapter = GetMvcAdapterFor(referencedItem.GetContentType());
-					adapter.RenderTemplate(helper, referencedItem);
+					RenderDisplayable(helper);
 				}
-				else
+				catch (Exception ex)
 				{
-					var container = CreateContainer(displayable);
-					container.RenderControl(new HtmlTextWriter(helper.ViewContext.Writer));
+					Debug.WriteLine(ex);
 				}
-                if (Wrapper != null)
-					helper.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
-            }
-            catch (Exception)
-            {
-                if (swallowExceptions)
-                    return;
-
-                throw;
-            }
+			}
+			else
+				RenderDisplayable(helper);
         }
+
+		private void RenderDisplayable(HtmlHelper helper)
+		{
+			var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, swallowExceptions);
+			if (displayable == null) return;
+
+			if (Wrapper != null)
+				helper.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
+
+			var referencedItem = CurrentItem[propertyName] as ContentItem;
+			if (referencedItem != null)
+			{
+				var adapter = GetMvcAdapterFor(referencedItem.GetContentType());
+				adapter.RenderTemplate(helper, referencedItem);
+			}
+			else
+			{
+				var container = CreateContainer(displayable);
+				container.RenderControl(new HtmlTextWriter(helper.ViewContext.Writer));
+			}
+			if (Wrapper != null)
+				helper.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
+		}
 
 		private ViewUserControl CreateContainer(IDisplayable displayable)
 		{
