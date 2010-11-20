@@ -1,4 +1,5 @@
-﻿- Removed unecessary IMailSender from template projects (breaking change)
+﻿- Fixed MVC areas inside N2 doesn't work (ThreadId=235361)
+- Removed unecessary IMailSender from template projects (breaking change)
 - Fixed authorization + rewrite issue (ThreadId=77613) (security model change)
 - Added GetPreviewUrl to node adpater
 - Fixed #29425: Empty <title> after setting then clearing alternative title
