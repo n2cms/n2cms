@@ -21,7 +21,7 @@ namespace N2.Management.Installation
 
 		public override bool IsApplicable(DatabaseStatus status)
 		{
-			return status.RootItem[InstallationManager.InstallationAppPath] == null;
+			return status.RootItem != null && status.RootItem[InstallationManager.InstallationAppPath] == null;
 		}
 
 		public override MigrationResult Migrate(DatabaseStatus preSchemaUpdateStatus)
