@@ -32,9 +32,12 @@
         <div id="nav" class="tree nav focusGroup">
             <edit:Tree ID="siteTreeView" runat="server" Target="preview" />
         </div>
+
+		<% if(Request["destinationType"] != null) {%>
+        <script src="../../Resources/tiny_mce/tiny_mce_popup.js" type="text/javascript"></script>
+		<%} %>
         
         <% if (Request["location"] == "filesselection" || Request["location"] == "contentselection" || Request["location"] == "selection") { %>
-        <script src="../../Resources/tiny_mce/tiny_mce_popup.js" type="text/javascript"></script>
         <script type="text/javascript">
         	var updateOpenerWithUrlAndClose = function(relativeUrl) {
         		function selectIn(opener) {
