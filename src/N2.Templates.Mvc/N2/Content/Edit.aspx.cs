@@ -39,7 +39,8 @@ namespace N2.Edit
 		protected IContentTemplateRepository Templates;
 		protected IVersionManager Versions;
 		protected CommandDispatcher Commands;
-		protected IEditManager Edits;
+		protected IEditManager EditManager;
+		protected IEditUrlManager EditUrlManager;
 
 		protected override void OnPreInit(EventArgs e)
 		{
@@ -49,7 +50,8 @@ namespace N2.Edit
 			Templates = Engine.Resolve<IContentTemplateRepository>();
 			Versions = Engine.Resolve<IVersionManager>();
 			Commands = Engine.Resolve<CommandDispatcher>();
-			Edits = Engine.EditManager;
+			EditManager = Engine.EditManager;
+			EditUrlManager = Engine.EditUrlManager;
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -136,7 +138,7 @@ namespace N2.Edit
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
             Commands.Save(ctx);
 
-			Url redirectTo = Edits.GetEditExistingItemUrl(ctx.Content);
+			Url redirectTo = EditUrlManager.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
 				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
 			
@@ -149,7 +151,7 @@ namespace N2.Edit
             if (IsValid)
             {
                 ContentItem savedVersion = SaveVersionForFuturePublishing();
-                Url redirectUrl = Edits.GetEditExistingItemUrl(savedVersion);
+				Url redirectUrl = EditUrlManager.GetEditExistingItemUrl(savedVersion);
 				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
 			}
         }
@@ -223,14 +225,14 @@ namespace N2.Edit
 
 		private void DisplayThisHasNewerVersionInfo(ContentItem itemToLink)
 		{
-            string url = Url.ToAbsolute(Edits.GetEditExistingItemUrl(itemToLink));
+            string url = Url.ToAbsolute(EditUrlManager.GetEditExistingItemUrl(itemToLink));
 			hlNewerVersion.NavigateUrl = url;
 			hlNewerVersion.Visible = true;
 		}
 
 		private void DisplayThisIsVersionInfo(ContentItem itemToLink)
 		{
-            string url = Url.ToAbsolute(Edits.GetEditExistingItemUrl(itemToLink));
+			string url = Url.ToAbsolute(EditUrlManager.GetEditExistingItemUrl(itemToLink));
 			hlOlderVersion.NavigateUrl = url;
 			hlOlderVersion.Visible = true;
 		}
@@ -239,9 +241,10 @@ namespace N2.Edit
 		{
 			var start = Engine.Resolve<IUrlParser>().StartPage;
 			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
-			foreach (EditToolbarPluginAttribute plugin in Edits.GetPlugins<EditToolbarPluginAttribute>(Page.User))
+			foreach (EditToolbarPluginAttribute plugin in EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root, ControlPanelState.Visible, Edits.GetManagementInterfaceUrl()));
+				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root,
+					ControlPanelState.Visible, EditUrlManager));
 			}
 		}
 

@@ -25,7 +25,7 @@ namespace N2.Edit
 			if (context.Selected.VersionOf == null) return null;
 
 			HyperLink hl = new HyperLink();
-			hl.Text = GetInnerHtml(IconUrl, ToolTip, Title);
+			hl.Text = GetInnerHtml(context, IconUrl, ToolTip, Title);
 			hl.NavigateUrl = Url.Parse("|Management|/Content/DiscardPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
 			hl.CssClass = "cancel";
 			hl.Attributes["onclick"] = "return confirm('Are you certain?');";

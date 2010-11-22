@@ -19,7 +19,7 @@ namespace N2.Web
 		private readonly EventBroker broker;
 		private readonly RequestPathProvider dispatcher;
 		private readonly IErrorHandler errors;
-		private readonly IEditManager editManager;
+		private readonly IEditUrlManager editUrlManager;
 		private readonly InstallationManager installer;
 		private readonly bool isLegacyRewriteMode;
 		private readonly IWebContext webContext;
@@ -37,10 +37,10 @@ namespace N2.Web
 		/// <param name="errors"></param>
 		/// <param name="editConfig"></param>
 		/// <param name="hostConfig"></param>
-		/// <param name="editManager"></param>
+		/// <param name="editUrlManager"></param>
 		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer,
 									   RequestPathProvider dispatcher, IContentAdapterProvider adapters, IErrorHandler errors,
-									   IEditManager editManager, EditSection editConfig, HostSection hostConfig)
+									   IEditUrlManager editUrlManager, EditSection editConfig, HostSection hostConfig)
 		{
 			checkInstallation = editConfig.Installer.CheckInstallationStatus;
 			welcomeUrl = editConfig.Installer.WelcomeUrl;
@@ -50,7 +50,7 @@ namespace N2.Web
 			this.broker = broker;
 			this.adapters = adapters;
 			this.errors = errors;
-			this.editManager = editManager;
+			this.editUrlManager = editUrlManager;
 			this.installer = installer;
 			this.dispatcher = dispatcher;
 		}
@@ -172,7 +172,7 @@ namespace N2.Web
 		private void CheckInstallation()
 		{
 			bool isEditing = webContext.ToAppRelative(webContext.Url.LocalUrl)
-				.StartsWith(webContext.ToAppRelative(editManager.GetManagementInterfaceUrl()), StringComparison.InvariantCultureIgnoreCase);
+				.StartsWith(webContext.ToAppRelative(editUrlManager.GetManagementInterfaceUrl()), StringComparison.InvariantCultureIgnoreCase);
 			if (isEditing)
 				return;
 

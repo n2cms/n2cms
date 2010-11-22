@@ -105,7 +105,7 @@ namespace N2.Edit.Web.UI.Controls
 		{
 			Li li = new Li();
 			
-			li.Text = "{url:" + N2.Context.Current.EditManager.ResolveManagementInterfaceUrl("|Management|/Content/Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path)) + "}";
+			li.Text = "{url:" + N2.Context.Current.EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Content/Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path)) + "}";
 
 			tn.UlClass = "ajax";
 			tn.Controls.Add(li);

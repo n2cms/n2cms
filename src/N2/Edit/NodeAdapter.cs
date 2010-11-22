@@ -12,7 +12,7 @@ namespace N2.Edit
 	[Adapts(typeof(ContentItem))]
 	public class NodeAdapter : AbstractContentAdapter
 	{
-		IEditManager editManager;
+		IEditUrlManager editUrlManager;
 		IWebContext webContext;
 		IHost host;
 		IFileSystem fileSystem;
@@ -49,10 +49,10 @@ namespace N2.Edit
 			set { host = value; }
 		}
 
-		public IEditManager EditManager
+		public IEditUrlManager EditUrlManager
 		{
-			get { return editManager ?? engine.EditManager; }
-			set { editManager = value; }
+			get { return editUrlManager ?? engine.EditUrlManager; }
+			set { editUrlManager = value; }
 		}
 
 		///// <summary>Gets the filter used to filter child pages.</summary>
@@ -104,8 +104,8 @@ namespace N2.Edit
 		/// <returns>An url to preview the item.</returns>
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
-			string url = EditManager.GetPreviewUrl(item);
-			url =  string.IsNullOrEmpty(url) ? EditManager.ResolveManagementInterfaceUrl("Empty.aspx") : url;
+			string url = EditUrlManager.GetPreviewUrl(item);
+			url =  string.IsNullOrEmpty(url) ? EditUrlManager.ResolveManagementInterfaceUrl("Empty.aspx") : url;
 			return webContext.ToAbsolute(url);
 		}
 

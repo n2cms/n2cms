@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
 using N2.Details;
+using N2.Edit;
 using N2.Engine;
 using N2.Web.UI;
 using N2.Configuration;
@@ -16,14 +17,16 @@ namespace N2.Definitions
 	public class DefinitionBuilder
 	{
 		private readonly ITypeFinder typeFinder;
-		readonly EngineSection config;
+		private readonly EngineSection config;
+		private readonly IEditUrlManager editUrlManager;
 		private readonly EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder();
 		private readonly AttributeExplorer explorer = new AttributeExplorer();
-		
-		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
+
+		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config, IEditUrlManager editUrlManager)
 		{
 			this.typeFinder = typeFinder;
 			this.config = config;
+			this.editUrlManager = editUrlManager;
 		}
 
 		/// <summary>Builds item definitions in the current environment.</summary>
@@ -39,7 +42,7 @@ namespace N2.Definitions
 		protected List<ItemDefinition> FindDefinitions()
 		{
 			List<ItemDefinition> definitions = new List<ItemDefinition>();
-            foreach (Type itemType in FindConcreteTypes())
+			foreach (Type itemType in FindConcreteTypes())
 			{
 				ItemDefinition definition = new ItemDefinition(itemType);
 				ExploreAndLoad(definition);
@@ -117,7 +120,6 @@ namespace N2.Definitions
 			}
 		}
 
-
 		void RemoveContainable(ItemDefinition definition, ContainableElement editable)
 		{
 			definition.Remove(definition.Get(editable.Name));
@@ -133,6 +135,7 @@ namespace N2.Definitions
 
 		void ExploreAndLoad(ItemDefinition definition)
 		{
+			definition.IconUrl = editUrlManager.ResolveManagementInterfaceUrl(definition.IconUrl);
 			definition.Editables = explorer.Find<IEditable>(definition.ItemType);
 			definition.Containers = explorer.Find<IEditableContainer>(definition.ItemType);
 			definition.Modifiers = explorer.Find<EditorModifierAttribute>(definition.ItemType);

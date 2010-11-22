@@ -245,7 +245,7 @@ namespace N2.Edit
 
         protected string GetEditUrl(ItemDefinition definition)
         {
-            Url newUrl = Engine.EditManager.GetEditNewPageUrl(Selection.SelectedItem, definition, ZoneName, GetCreationPosition());
+            Url newUrl = Engine.EditUrlManager.GetEditNewPageUrl(Selection.SelectedItem, definition, ZoneName, GetCreationPosition());
             return newUrl.AppendQuery("returnUrl", Request["returnUrl"]);
         }
 

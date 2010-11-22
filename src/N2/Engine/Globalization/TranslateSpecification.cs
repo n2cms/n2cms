@@ -10,13 +10,13 @@ namespace N2.Engine.Globalization
 	public class TranslateSpecification
 	{
 		public TranslateSpecification(string editUrl, ILanguage language, ContentItem existingItem, ItemDefinition definition,
-		                              IEditManager editManager)
+		                              IEditUrlManager editUrlManager)
 		{
 			EditUrl = editUrl;
 			Language = language;
 			ExistingItem = existingItem;
 			Definition = definition;
-			FlagUrl = GetFlag(language, editManager);
+			FlagUrl = GetFlag(language, editUrlManager);
 		}
 
 		public ItemDefinition Definition { get; set; }
@@ -34,11 +34,11 @@ namespace N2.Engine.Globalization
 
 		public string FlagUrl { get; set; }
 
-		protected string GetFlag(ILanguage language, IEditManager editManager)
+		protected string GetFlag(ILanguage language, IEditUrlManager editUrlManager)
 		{
 			string flagUrl = language.FlagUrl;
 			if (string.IsNullOrEmpty(flagUrl))
-				return string.Format(editManager.ResolveManagementInterfaceUrl("Resources/Img/Flags/{0}.png"), language.LanguageCode);
+				return string.Format(editUrlManager.ResolveManagementInterfaceUrl("Resources/Img/Flags/{0}.png"), language.LanguageCode);
 
 			return flagUrl;
 		}

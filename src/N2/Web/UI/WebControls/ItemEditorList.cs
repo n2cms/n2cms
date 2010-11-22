@@ -210,7 +210,7 @@ namespace N2.Web.UI.WebControls
 
 			var b = new ImageButton();
 			Controls.Add(b);
-			b.ImageUrl = Engine.EditManager.ResolveManagementInterfaceUrl("Resources/icons/add.png");
+			b.ImageUrl = Engine.EditUrlManager.ResolveManagementInterfaceUrl("Resources/icons/add.png");
 			b.ToolTip = "Add item";
 			b.CausesValidation = false;
 			b.Click += AddItemClick;
@@ -244,7 +244,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_d_" + itemEditorIndex;
-			b.ImageUrl = Engine.EditManager.ResolveManagementInterfaceUrl("Resources/icons/delete.png");
+			b.ImageUrl = Engine.EditUrlManager.ResolveManagementInterfaceUrl("Resources/icons/delete.png");
 			b.ToolTip = "Delete item";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;
@@ -257,7 +257,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_up_" + itemEditorIndex;
-			b.ImageUrl = Engine.EditManager.ResolveManagementInterfaceUrl("Resources/icons/bullet_arrow_up.png");
+			b.ImageUrl = Engine.EditUrlManager.ResolveManagementInterfaceUrl("Resources/icons/bullet_arrow_up.png");
 			b.ToolTip = "Move item up";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;
@@ -270,7 +270,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_down_" + itemEditorIndex;
-			b.ImageUrl = Engine.EditManager.ResolveManagementInterfaceUrl("Resources/icons/bullet_arrow_down.png");
+			b.ImageUrl = Engine.EditUrlManager.ResolveManagementInterfaceUrl("Resources/icons/bullet_arrow_down.png");
 			b.ToolTip = "Move item down";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;

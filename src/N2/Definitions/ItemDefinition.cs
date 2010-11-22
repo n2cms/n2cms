@@ -153,6 +153,7 @@ namespace N2.Definitions
 				}
 				return iconUrl;
 			}
+			set { iconUrl = value; }
 		}
 
 		/// <summary>Gets or sets editables defined for the item.</summary>

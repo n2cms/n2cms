@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.Principal;
-using System.Web;
 using System.Web.UI;
 using N2.Collections;
 using N2.Configuration;
@@ -13,7 +12,6 @@ using N2.Engine;
 using N2.Persistence;
 using N2.Plugin;
 using N2.Security;
-using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 
@@ -43,7 +41,6 @@ namespace N2.Edit
 		                   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
 		                   StateChanger changer, EditSection config)
 		{
-			EditTreeUrlFormat = "{1}?selected={0}";
 			this.definitions = definitions;
 			this.persister = persister;
 			this.versioner = versioner;
@@ -56,81 +53,22 @@ namespace N2.Edit
 			EnableVersioning = config.Versions.Enabled;
 			MaximumNumberOfVersions = config.Versions.MaximumPerItem;
 			uploadFolders = new List<string>(config.UploadFolders.Folders);
-			EditPreviewUrlFormat = config.EditPreviewUrlFormat;
-
-			ManagementInterfaceUrl = config.ManagementInterfaceUrl;
-			EditTreeUrl = DefaultToManagementUrl(config.EditTreeUrl, "Content/Navigation/Tree.aspx");
-			EditItemUrl = DefaultToManagementUrl(config.EditItemUrl, "Content/Edit.aspx");
-			EditInterfaceUrl = DefaultToManagementUrl(config.EditInterfaceUrl, "Content/");
-			NewItemUrl = DefaultToManagementUrl(config.NewItemUrl, "Content/New.aspx");
-			DeleteItemUrl = DefaultToManagementUrl(config.DeleteItemUrl, "Content/delete.aspx");
 		}
-
-		private string DefaultToManagementUrl(string setting, string @default)
-		{
-			if(String.IsNullOrEmpty(setting))
-				return ResolveManagementInterfaceUrl(@default);
-
-			return setting;
-		}
-
-		public string EditInterfaceUrl { get; set; }
-
-		public string ManagementInterfaceUrl { get; set; }
-
-		public string EditTreeUrl { get; set; }
-
-		public string DeleteItemUrl { get; set; }
-
-		public string NewItemUrl { get; set; }
-
-		public string EditItemUrl { get; set; }
-
-		/// <summary>Gets an alternative tree url format when edit mode is displayed.</summary>
-		/// <remarks>Accepted format value is {0} for url encoded selected item.</remarks>
-		public string EditTreeUrlFormat { get; set; }
-
-		/// <summary>Gets an alternative preview url format displayed when edit page is loaded.</summary>
-		/// <remarks>Accepted format values are {0} for selected page and {1} for url encoded selected item.</remarks>
-		public string EditPreviewUrlFormat { get; set; }
 
 		/// <summary>Number of item versions to keep.</summary>
-		public int MaximumNumberOfVersions { get; set; }
+		protected virtual int MaximumNumberOfVersions { get; set; }
 
 		#region IEditManager Members
 
-		public string EditTheme { get; set; }
+		public virtual string EditTheme { get; set; }
 
 		/// <summary>Gets or sets wether a version is saved when updating items.</summary>
-		public bool EnableVersioning { get; set; }
+		public virtual bool EnableVersioning { get; set; }
 
 		/// <summary>Gets folders paths on the server where users are allowed to upload content through the interface.</summary>
-		public IList<string> UploadFolders
+		public virtual IList<string> UploadFolders
 		{
 			get { return uploadFolders; }
-		}
-
-		/// <summary>Gets the url for the navigation frame.</summary>
-		/// <param name="selectedItem">The currently selected item.</param>
-		/// <returns>An url.</returns>
-		public virtual string GetNavigationUrl(INode selectedItem)
-		{
-			if (selectedItem == null)
-				return null;
-
-			return Url.ToAbsolute(string.Format(EditTreeUrlFormat, selectedItem.Path, EditTreeUrl));
-		}
-
-		/// <summary>Gets the url for the preview frame.</summary>
-		/// <param name="selectedItem">The currently selected item.</param>
-		/// <returns>An url.</returns>
-		public virtual string GetPreviewUrl(INode selectedItem)
-		{
-			string url = string.Format(EditPreviewUrlFormat,
-			                           selectedItem.PreviewUrl,
-			                           HttpUtility.UrlEncode(selectedItem.PreviewUrl)
-				);
-			return Url.ToAbsolute(url);
 		}
 
 		/// <summary>Adds defined editors and containers to a control.</summary>
@@ -187,7 +125,6 @@ namespace N2.Edit
 				}
 			}
 
-
 			if (updatedDetails.Count > 0)
 			{
 				item.Updated = Utility.CurrentTime();
@@ -231,115 +168,6 @@ namespace N2.Edit
 			}
 
 			throw new ArgumentException("Unexpected versioning mode.", "versioningMode");
-		}
-
-		/// <summary>Gets the url to the edit interface.</summary>
-		/// <returns>The url to the edit interface.</returns>
-		public string GetEditInterfaceUrl()
-		{
-			return Url.ToAbsolute(EditInterfaceUrl);
-		}
-
-		/// <summary>Gets the url to the edit interface.</summary>
-		/// <returns>The url to the edit interface.</returns>
-		public string GetManagementInterfaceUrl()
-		{
-			return Url.ToAbsolute(ManagementInterfaceUrl);
-		}
-
-		/// <summary>Gets the url to the given resource underneath the management interface.</summary>
-		/// <returns>The url to the edit interface.</returns>
-		public string ResolveManagementInterfaceUrl(string resourceUrl)
-		{
-			string finalUrl = resourceUrl;
-
-			if(resourceUrl.Contains("|Management|"))
-				finalUrl = resourceUrl.Replace("|Management|", ManagementInterfaceUrl.TrimEnd('/'));
-
-			if (finalUrl.StartsWith("~") == false
-				&& finalUrl.StartsWith(ManagementInterfaceUrl, StringComparison.InvariantCultureIgnoreCase) == false)
-				finalUrl = ManagementInterfaceUrl.TrimEnd('/') + "/" + resourceUrl.TrimStart('/');
-
-			return Url.ToAbsolute(finalUrl);
-		}
-
-		/// <summary>Gets the url to the edit interface.</summary>
-		/// <param name="selectedItem">The item to select in edit mode.</param>
-		/// <returns>The url to the edit interface.</returns>
-		public string GetEditInterfaceUrl(ContentItem selectedItem)
-		{
-			return FormatSelectedUrl(selectedItem, EditInterfaceUrl);
-		}
-
-		/// <summary>Gets the url to the select type of item to create.</summary>
-		/// <param name="selectedItem">The currently selected item.</param>
-		/// <returns>The url to the select new item to create page.</returns>
-		public string GetSelectNewItemUrl(ContentItem selectedItem)
-		{
-			return FormatSelectedUrl(selectedItem, NewItemUrl);
-		}
-
-		/// <summary>Gets the url to the select type of item to create.</summary>
-		/// <param name="selectedItem">The currently selected item.</param>
-		/// <param name="zoneName">The zone in which to create the item (typically parts)</param>
-		/// <returns>The url to the select new item to create page.</returns>
-		public string GetSelectNewItemUrl(ContentItem selectedItem, string zoneName)
-		{
-			return FormatSelectedUrl(selectedItem, NewItemUrl + "?zoneName=" + zoneName);
-		}
-
-		/// <summary>Gets the url to the delete item page.</summary>
-		/// <param name="selectedItem">The currently selected item.</param>
-		/// <returns>The url to the delete page.</returns>
-		public string GetDeleteUrl(ContentItem selectedItem)
-		{
-			return FormatSelectedUrl(selectedItem, DeleteItemUrl);
-		}
-
-		/// <summary>Gets the url to edit page creating new items.</summary>
-		/// <param name="selected">The selected item.</param>
-		/// <param name="definition">The type of item to edit.</param>
-		/// <param name="zoneName">The zone to add the item to.</param>
-		/// <param name="position">The position relative to the selected item to add the item.</param>
-		/// <returns>The url to the edit page.</returns>
-		public virtual string GetEditNewPageUrl(ContentItem selected, ItemDefinition definition, string zoneName,
-		                                        CreationPosition position)
-		{
-			if (selected == null) throw new ArgumentNullException("selected");
-			if (definition == null) throw new ArgumentNullException("definition");
-
-			ContentItem parent = (position != CreationPosition.Below)
-			                     	? selected.Parent
-			                     	: selected;
-
-			if (selected == null)
-				throw new N2Exception("Cannot insert item before or after the root page.");
-
-			Url url = EditItemUrl;
-			url = url.AppendQuery("selected", parent.Path);
-			url = url.AppendQuery("discriminator", definition.Discriminator);
-			url = url.AppendQuery("zoneName", zoneName);
-
-			if (position == CreationPosition.Before)
-				url = url.AppendQuery("before", selected.Path);
-			else if (position == CreationPosition.After)
-				url = url.AppendQuery("after", selected.Path);
-			return url;
-		}
-
-		/// <summary>Gets the url to the edit page where to edit an existing item.</summary>
-		/// <param name="item">The item to edit.</param>
-		/// <returns>The url to the edit page</returns>
-		public virtual string GetEditExistingItemUrl(ContentItem item)
-		{
-			if (item == null)
-				return null;
-
-			if (item.VersionOf != null)
-				return string.Format("{0}?selectedUrl={1}", EditItemUrl,
-				                     HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).RewrittenUrl));
-
-			return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
 		}
 
 		public virtual IEnumerable<T> GetPlugins<T>(IPrincipal user)
@@ -523,14 +351,6 @@ namespace N2.Edit
 		private bool ShouldCreateVersionOf(ContentItem item)
 		{
 			return EnableVersioning && !IsNew(item) && versioner.IsVersionable(item);
-		}
-
-		private static string FormatSelectedUrl(ContentItem selectedItem, string path)
-		{
-			Url url = Url.ToAbsolute(path);
-			if (selectedItem != null)
-				url = url.AppendQuery("selected=" + selectedItem.Path);
-			return url;
 		}
 
 		/// <summary>Occurs when a detail editor (a control that contains an editor) is added.</summary>

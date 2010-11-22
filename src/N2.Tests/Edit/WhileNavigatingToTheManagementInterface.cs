@@ -3,12 +3,20 @@
 namespace N2.Tests.Edit
 {
 	[TestFixture]
-	public class WhileNavigatingToTheManagementInterface : EditManagerTests
+	public class WhileNavigatingToTheManagementInterface : EditUrlManagerTests
 	{
 		[Test]
-		public void CanResolveManagementUrl()
+		public void CanGetManagementInterfaceUrl()
 		{
-			var url = editManager.GetManagementInterfaceUrl();
+			var url = editUrlManager.GetManagementInterfaceUrl();
+
+			Assert.That(url, Is.EqualTo("/N2/"));
+		}
+
+		[Test]
+		public void CanResolveManagementUrl_WithNullArgument()
+		{
+			var url = editUrlManager.ResolveManagementInterfaceUrl(null);
 
 			Assert.That(url, Is.EqualTo("/N2/"));
 		}
@@ -16,7 +24,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void CanResolveResourceUnderManagementUrl()
 		{
-			var url = editManager.ResolveManagementInterfaceUrl("Resources/aresource.css");
+			var url = editUrlManager.ResolveManagementInterfaceUrl("Resources/aresource.css");
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}
@@ -24,7 +32,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void CanResolveResourceUnderManagementUrl_UsingManagementTag()
 		{
-			var url = editManager.ResolveManagementInterfaceUrl("|Management|/Resources/aresource.css");
+			var url = editUrlManager.ResolveManagementInterfaceUrl("|Management|/Resources/aresource.css");
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}
@@ -32,7 +40,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void DoesNotDisruptVirtualPaths()
 		{
-			var url = editManager.ResolveManagementInterfaceUrl("~/N2/Resources/aresource.css");
+			var url = editUrlManager.ResolveManagementInterfaceUrl("~/N2/Resources/aresource.css");
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}

@@ -40,7 +40,7 @@ namespace N2.Edit.Web
             if (themeCookie != null && !string.IsNullOrEmpty(themeCookie.Value))
                 theme = themeCookie.Value;
 
-            Register.StyleSheet(this, Engine.EditManager.ResolveManagementInterfaceUrl("Resources/Css/themes/" + theme));
+            Register.StyleSheet(this, Engine.EditUrlManager.ResolveManagementInterfaceUrl("Resources/Css/themes/" + theme));
         }
 
 		private void SetupAspNetTheming()
@@ -121,7 +121,7 @@ namespace N2.Edit.Web
 
 		protected string MapCssUrl(string cssFileName)
 		{
-			return Url.ToAbsolute(N2.Context.Current.EditManager.GetManagementInterfaceUrl() + "Resources/Css/" + cssFileName);
+			return Url.ToAbsolute(N2.Context.Current.EditUrlManager.GetManagementInterfaceUrl() + "Resources/Css/" + cssFileName);
 		}
 
     	#region Refresh Methods
@@ -131,7 +131,7 @@ namespace N2.Edit.Web
 
         protected virtual void Refresh(ContentItem item)
         {
-            string previewUrl = Engine.EditManager.GetEditInterfaceUrl(Selection.SelectedItem);
+            string previewUrl = Engine.EditUrlManager.GetEditInterfaceUrl(Selection.SelectedItem);
             string script = string.Format("window.top.location = '{0}';", previewUrl);
 
             ClientScript.RegisterClientScriptBlock(
@@ -143,7 +143,7 @@ namespace N2.Edit.Web
         protected virtual void Refresh(ContentItem item, string previewUrl)
         {
             string script = string.Format(RefreshBothFormat,
-                Engine.EditManager.GetEditInterfaceUrl(), // 0
+                Engine.EditUrlManager.GetEditInterfaceUrl(), // 0
                 GetNavigationUrl(item), // 1
                 Url.ToAbsolute(previewUrl), // 2
                 item.ID, // 3
@@ -180,7 +180,7 @@ namespace N2.Edit.Web
 				format = RefreshNavigationFormat;
 
 			string script = string.Format(format,
-				Engine.EditManager.GetEditInterfaceUrl(), // 0
+				Engine.EditUrlManager.GetEditInterfaceUrl(), // 0
 				GetNavigationUrl(item), // 1
 				GetPreviewUrl(item), // 2
 				item.ID, // 3
@@ -191,7 +191,7 @@ namespace N2.Edit.Web
 
 		protected string GetNavigationUrl(ContentItem selectedItem)
 		{
-			return Engine.EditManager.GetNavigationUrl(selectedItem);
+			return Engine.EditUrlManager.GetNavigationUrl(selectedItem);
 		}
 
 		protected virtual string GetPreviewUrl(ContentItem selectedItem)

@@ -1,4 +1,5 @@
 using System;
+using N2.Edit;
 using N2.Engine;
 
 namespace N2.Tests

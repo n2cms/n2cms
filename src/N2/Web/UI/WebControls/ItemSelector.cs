@@ -13,7 +13,7 @@ namespace N2.Web.UI.WebControls
 			CssClass = "itemSelector urlSelector";
 			DefaultMode = UrlSelectorMode.Items;
 			AvailableModes = UrlSelectorMode.Items;
-			BrowserUrl = N2.Web.Url.Parse(Engine.EditManager.EditTreeUrl).AppendQuery("location=contentselection");
+			BrowserUrl = N2.Web.Url.Parse(Engine.EditUrlManager.EditTreeUrl).AppendQuery("location=contentselection");
 			IsValid = true;
 			ErrorMessage = "The selected item is not of the required type.";
 		}

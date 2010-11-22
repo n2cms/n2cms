@@ -6,7 +6,6 @@ using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
 using N2.Web;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace N2.Tests.Web
 {
@@ -63,7 +62,7 @@ namespace N2.Tests.Web
 		IEngine engine;
 		ContentAdapterProvider adapterProvider;
 		protected RewriteMethod rewriteMethod = RewriteMethod.BeginRequest;
-		IEditManager editManager;
+		IEditUrlManager editUrlManager;
 
 		[SetUp]
 		public override void SetUp()
@@ -76,14 +75,13 @@ namespace N2.Tests.Web
 			CreateOneItem<DataItem>(4, "four", root);
 			three = CreateOneItem<PageItem>(5, "three.3", root);
 
-			editManager = MockRepository.GenerateStub<IEditManager>();
+			editUrlManager = new FakeEditUrlManager();
 			webContext = new FakeWebContextWrapper();
 			var hostSection = new HostSection { Web = new WebElement { Rewrite = rewriteMethod } };
 			parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), hostSection);
 			errorHandler = new ErrorHandler(webContext, null, null);
 			engine = new FakeEngine();
 			engine.AddComponentInstance(null, typeof(IWebContext), webContext);
-			engine.AddComponentInstance(null, typeof(IEditManager), editManager);
 			adapterProvider = new ContentAdapterProvider(engine, new AppDomainTypeFinder());
 			adapterProvider.Start();
 
@@ -226,7 +224,7 @@ namespace N2.Tests.Web
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
 			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config);
-			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, adapterProvider, errorHandler, engine.EditManager, new EditSection(), config);
+			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, adapterProvider, errorHandler, editUrlManager, new EditSection(), config);
 		}
 	}
 }

@@ -234,8 +234,7 @@ window.n2ddcp = new n2DragDrop();
 				span.Attributes["class"] = "control";
 				pluginPanel.Controls.Add(span);
 
-				plugin.AddTo(span,
-				             new PluginContext(CurrentItem, null, start, root, state, Engine.EditManager.GetManagementInterfaceUrl()));
+				plugin.AddTo(span, new PluginContext(CurrentItem, null, start, root, state, Engine.EditUrlManager));
 			}
 		}
 
@@ -273,7 +272,7 @@ window.n2ddcp = new n2DragDrop();
 				writer.WriteLineNoTabs("n2ctx.select('preview');");
 				if (CurrentItem != null)
 				{
-					string navigationUrl = Engine.EditManager.GetNavigationUrl(CurrentItem);
+					string navigationUrl = Engine.EditUrlManager.GetNavigationUrl(CurrentItem);
 					string previewUrl = Engine.GetContentAdapter<NodeAdapter>(CurrentItem).GetPreviewUrl(CurrentItem);
 					string script = string.Format(switchScriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
 					writer.WriteLineNoTabs(script);
@@ -297,7 +296,7 @@ window.n2ddcp = new n2DragDrop();
 			if (Page.Request.UrlReferrer == null)
 				return false;
 
-			string editUrl = N2.Context.Current.EditManager.GetEditInterfaceUrl();
+			string editUrl = N2.Context.Current.EditUrlManager.GetEditInterfaceUrl();
 			string currentUrl = Page.Request.UrlReferrer.PathAndQuery;
 			return currentUrl.StartsWith(editUrl, StringComparison.InvariantCultureIgnoreCase);
 		}

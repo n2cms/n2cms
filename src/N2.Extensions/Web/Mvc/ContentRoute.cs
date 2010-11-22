@@ -90,7 +90,7 @@ namespace N2.Web.Mvc
 		public override RouteData GetRouteData(HttpContextBase httpContext)
 		{
 			string path = httpContext.Request.AppRelativeCurrentExecutionFilePath;
-			if (path.StartsWith(engine.EditManager.GetManagementInterfaceUrl(), StringComparison.InvariantCultureIgnoreCase))
+			if (path.StartsWith(engine.EditUrlManager.GetManagementInterfaceUrl(), StringComparison.InvariantCultureIgnoreCase))
 				return new RouteData(this, new StopRoutingHandler());
 			if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
 				return new RouteData(this, new StopRoutingHandler());

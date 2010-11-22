@@ -34,7 +34,7 @@ namespace N2.Tests.Workflow
 			var changer = new StateChanger();
             definitions = TestSupport.SetupDefinitions(typeof(StatefulItem));
 			versions = new FakeVersionManager(repository, changer);
-			var editManager = new EditManager(definitions, persister, versions, null, null, null, changer, new EditSection());
+			var editManager = new EditUrlManager(new EditSection());
             var security = new SecurityManager(new FakeWebContextWrapper(), new EditSection());
             commands = new CommandFactory(persister, security, versions, editManager, null, changer);
 			dispatcher = new CommandDispatcher(commands, persister);

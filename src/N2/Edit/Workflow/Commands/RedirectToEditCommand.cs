@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using N2.Edit;
 
 namespace N2.Edit.Workflow.Commands
 {
-    public class RedirectToEditCommand : CommandBase<CommandContext>
-    {
-        IEditManager editManager;
+	public class RedirectToEditCommand : CommandBase<CommandContext>
+	{
+		IEditUrlManager editManager;
 
-        public RedirectToEditCommand(IEditManager editManager)
-        {
-            this.editManager = editManager;
-        }
+		public RedirectToEditCommand(IEditUrlManager editManager)
+		{
+			this.editManager = editManager;
+		}
 
-        public override void Process(CommandContext state)
-        {
-            state["RedirectTo"] = editManager.GetEditExistingItemUrl(state.Content);
-        }
-    }
+		public override void Process(CommandContext state)
+		{
+			state["RedirectTo"] = editManager.GetEditExistingItemUrl(state.Content);
+		}
+	}
 }

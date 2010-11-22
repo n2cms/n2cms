@@ -42,7 +42,7 @@ namespace N2.Edit.Trash
 		{
 			get
 			{
-				var url = new Url(Context.Current.EditManager.ResolveManagementInterfaceUrl("|Management|/Trash/Default.aspx"));
+				var url = new Url(Context.Current.EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Trash/Default.aspx"));
 
 				return url.AppendQuery(PathData.PageQueryKey, ID);
 			}
@@ -52,7 +52,7 @@ namespace N2.Edit.Trash
 		{
 			get
 			{
-				return Context.Current.EditManager.ResolveManagementInterfaceUrl(
+				return Context.Current.EditUrlManager.ResolveManagementInterfaceUrl(
 					this.Children.Count > 0
 						? "|Management|/Resources/icons/bin.png"
 						: "|Management|/Resources/icons/bin_closed.png"

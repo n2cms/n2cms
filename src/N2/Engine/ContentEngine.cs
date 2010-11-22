@@ -122,6 +122,11 @@ namespace N2.Engine
 			get { return Resolve<IEditManager>(); }
 		}
 
+		public IEditUrlManager EditUrlManager
+		{
+			get { return Resolve<IEditUrlManager>(); }
+		}
+
 		public IWebContext RequestContext
 		{
 			get { return Resolve<IWebContext>(); }

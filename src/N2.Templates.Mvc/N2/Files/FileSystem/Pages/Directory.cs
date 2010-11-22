@@ -44,7 +44,7 @@ namespace N2.Edit.FileSystem.Items
 			get
 			{
 				if (base.GetFiles().Count > 0)
-					return Context.Current.EditManager.ResolveManagementInterfaceUrl("|Management|/Resources/icons/folder_page_white.png");
+					return Context.Current.EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Resources/icons/folder_page_white.png");
 				return base.IconUrl;
 			}
 		}

@@ -2,7 +2,7 @@
 
 namespace N2.Templates.Mvc.Models.Parts
 {
-	[PartDefinition("A/B testing container", 
+	[PartDefinition("A/B testing container",
 		IconUrl = "|Management|/Resources/icons/arrow_divide.png",
 		Description = "Randomly displays the contents of one of the nested zones.",
 		SortOrder = 175)]

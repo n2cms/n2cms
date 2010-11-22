@@ -1,7 +1,6 @@
 ﻿using System.Web;
 using System.Text.RegularExpressions;
 using N2.Web.UI.WebControls;
-using N2.Web;
 
 namespace N2.Edit
 {
@@ -10,18 +9,26 @@ namespace N2.Edit
 	/// </summary>
 	public class PluginContext
 	{
+		private readonly IEditUrlManager editUrlManager;
+
 		public PluginContext()
 		{
 		}
 
-		public PluginContext(ContentItem selected, ContentItem memorizedItem, ContentItem startItem, ContentItem rootItem, ControlPanelState state, string managementInterfaceUrl)
+		public PluginContext(ContentItem selected, ContentItem memorizedItem, ContentItem startItem, ContentItem rootItem, 
+			ControlPanelState state, IEditUrlManager editUrlManager)
 		{
+			this.editUrlManager = editUrlManager;
 			State = state;
 			Selected = selected;
 			Memorized = memorizedItem;
-			ManagementInterfaceUrl = managementInterfaceUrl;
 			Start = startItem;
 			Root = rootItem;
+		}
+
+		public IEditUrlManager EditUrlManager
+		{
+			get { return editUrlManager; }
 		}
 
 		public ControlPanelState State { get; set;}
@@ -29,9 +36,8 @@ namespace N2.Edit
 		public ContentItem Memorized { get; set; }
 		public ContentItem Start { get; set; }
 		public ContentItem Root { get; set; }
-		public string ManagementInterfaceUrl { get; set; }
 		
-		static Regex expressionExpression = new Regex("{(?<expr>[^})]+)}");
+		static readonly Regex expressionExpression = new Regex("{(?<expr>[^})]+)}");
 
 		public string Format(string format, bool urlEncode)
 		{
@@ -47,7 +53,7 @@ namespace N2.Edit
 			if (string.IsNullOrEmpty(url))
 				url = "empty.aspx";
 
-			string rebasedUrl = Url.Combine(ManagementInterfaceUrl, url);
+			string rebasedUrl = editUrlManager.ResolveManagementInterfaceUrl(url);
 			return rebasedUrl;
 		}
 

@@ -19,7 +19,7 @@ namespace N2.Tests.Edit
 	public abstract class EditManagerTests : TypeFindingBase
 	{
 		protected EditManager editManager;
-        protected IVersionManager versioner;
+		protected IVersionManager versioner;
 
 		protected override Type[] GetTypes()
 		{
@@ -38,7 +38,7 @@ namespace N2.Tests.Edit
 		public override void SetUp()
 		{
 			base.SetUp();
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
@@ -71,12 +71,12 @@ namespace N2.Tests.Edit
 		}
 
 		protected bool savingVersionEventInvoked = false;
-        protected void editManager_SavingVersion(object sender, CancellableItemEventArgs e)
+		protected void editManager_SavingVersion(object sender, CancellableItemEventArgs e)
 		{
 			savingVersionEventInvoked = true;
 		}
 
-        protected void DoTheSaving(IPrincipal user, IItemEditor editor)
+		protected void DoTheSaving(IPrincipal user, IItemEditor editor)
 		{
 			using (mocks.Playback())
 			{

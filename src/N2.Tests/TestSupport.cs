@@ -51,7 +51,7 @@ namespace N2.Tests
         {
             ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
 
-            DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
+			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
 			definitions = new DefinitionManager(definitionBuilder, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);

@@ -3,8 +3,6 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit.Wizard.Items;
-using N2.Engine;
-using System.Collections.Generic;
 
 namespace N2.Edit.Wizard
 {
@@ -18,7 +16,7 @@ namespace N2.Edit.Wizard
 		protected DropDownList ddlTypes;
 
 		protected IDefinitionManager Definitions;
-		protected IEditManager Edits;
+		protected IEditUrlManager Edits;
 		protected LocationWizard Wizard;
 		protected IContentTemplateRepository Templates;
 
@@ -27,7 +25,7 @@ namespace N2.Edit.Wizard
 			base.OnPreInit(e);
 
 			Definitions = Engine.Definitions;
-			Edits = Engine.EditManager;
+			Edits = Engine.EditUrlManager;
 			Wizard = Engine.Resolve<LocationWizard>();
 			Templates = Engine.Resolve<IContentTemplateRepository>();
 		}

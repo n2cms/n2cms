@@ -36,14 +36,14 @@ namespace N2.Web.UI.WebControls
 			}
 			else
 			{
-				configCssUrl = EditManager.ResolveManagementInterfaceUrl("/Resources/Css/Editor.css");
-				configScriptUrl = EditManager.ResolveManagementInterfaceUrl("/Resources/Js/FreeTextArea.js");
+				configCssUrl = EditUrlManager.ResolveManagementInterfaceUrl("/Resources/Css/Editor.css");
+				configScriptUrl = EditUrlManager.ResolveManagementInterfaceUrl("/Resources/Js/FreeTextArea.js");
 			}
 		}
 
-		private static IEditManager EditManager
+		private static IEditUrlManager EditUrlManager
 		{
-			get { return N2.Context.Current.Resolve<IEditManager>(); }
+			get { return N2.Context.Current.EditUrlManager; }
 		}
 
 		public FreeTextArea()
@@ -75,7 +75,7 @@ namespace N2.Web.UI.WebControls
 				Register.JavaScript(Page, configScriptUrl);
 
 				string script = string.Format("freeTextArea_init('{0}', {1});",
-					Url.Parse(EditManager.EditTreeUrl),
+					Url.Parse(EditUrlManager.EditTreeUrl),
 					GetOverridesJson());
 				Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
 			}
@@ -88,7 +88,7 @@ namespace N2.Web.UI.WebControls
 			overrides["content_css"] = configCssUrl;
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
-			if (HostingEnvironment.VirtualPathProvider.FileExists(EditManager.ResolveManagementInterfaceUrl("Resources/tiny_mce/langs/" + language + ".js")))
+			if (HostingEnvironment.VirtualPathProvider.FileExists(EditUrlManager.ResolveManagementInterfaceUrl("Resources/tiny_mce/langs/" + language + ".js")))
 				overrides["language"] = language;
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))

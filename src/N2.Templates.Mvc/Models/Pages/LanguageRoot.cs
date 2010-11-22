@@ -42,7 +42,7 @@ namespace N2.Templates.Mvc.Models.Pages
 					return "";
 
 				string[] parts = LanguageCode.Split('-');
-				return String.Format("|Management|/Resources/Img/Flags/{0}.png", parts[parts.Length - 1].ToLowerInvariant());
+				return String.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1].ToLowerInvariant());
 			}
 		}
 

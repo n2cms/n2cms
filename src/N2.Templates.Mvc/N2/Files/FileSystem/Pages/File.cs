@@ -119,7 +119,7 @@ namespace N2.Edit.FileSystem.Items
 
 		private string IconPath(string iconName)
 		{
-			return Context.Current.EditManager.ResolveManagementInterfaceUrl(string.Format("|Management|/Resources/icons/{0}.png", iconName));
+			return Context.Current.EditUrlManager.ResolveManagementInterfaceUrl(string.Format("|Management|/Resources/icons/{0}.png", iconName));
 		}
 
 		public bool Exists

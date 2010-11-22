@@ -1,8 +1,6 @@
-using N2.Details;
 using N2.Integrity;
 using N2.Installation;
 using N2.Web;
-using N2.Web.UI;
 using N2.Definitions;
 
 namespace N2.Templates.Mvc.Areas.Management.Models

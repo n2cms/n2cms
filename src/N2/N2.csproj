@@ -140,6 +140,8 @@
     <Compile Include="Details\StringDetail.cs" />
     <Compile Include="Details\DateTimeDetail.cs" />
     <Compile Include="Details\ObjectDetail.cs" />
+    <Compile Include="Edit\EditUrlManager.cs" />
+    <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
     <Compile Include="Edit\Installation\RebaseInfo.cs" />
     <Compile Include="Edit\ToolbarArea.cs" />

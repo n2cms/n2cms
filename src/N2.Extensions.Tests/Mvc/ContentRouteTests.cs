@@ -10,6 +10,7 @@ using N2.Extensions.Tests.Fakes;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
 using N2.Tests;
+using N2.Tests.Fakes;
 using N2.Web;
 using N2.Web.Mvc;
 using NUnit.Framework;
@@ -59,23 +60,20 @@ namespace N2.Extensions.Tests.Mvc
 				.BelowNamespace("N2.Extensions.Tests.Mvc.Controllers").AssignableTo<IController>().Except(typeof(AnotherRegularController))
 				.ToArray();
 
-			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection()), new N2.Edit.Workflow.StateChanger(), null, new EmptyProxyFactory());
+			var editUrlManager = new FakeEditUrlManager();
+			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection(), editUrlManager), new N2.Edit.Workflow.StateChanger(), null, new EmptyProxyFactory());
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, host, new HostSection());
 			controllerMapper = new ControllerMapper(typeFinder, definitions);
 			Url.DefaultExtension = "";
 
-			var editManager = mocks.DynamicMock<IEditManager>();
-			SetupResult.For(editManager.GetManagementInterfaceUrl()).Return("~/N2/");
-			editManager.Replay();
-
 			engine = mocks.DynamicMock<IEngine>();
 			SetupResult.For(engine.Resolve<ITypeFinder>()).Return(typeFinder);
 			SetupResult.For(engine.Definitions).Return(definitions);
 			SetupResult.For(engine.UrlParser).Return(parser);
 			SetupResult.For(engine.Persister).Return(persister);
-			SetupResult.For(engine.EditManager).Return(editManager);
+			SetupResult.For(engine.EditUrlManager).Return(editUrlManager);
 			engine.Replay();
 
 			route = new ContentRoute(engine, new MvcRouteHandler(), controllerMapper, null);

@@ -43,7 +43,7 @@ namespace Demo
 		private static void CopyFiles(N2.Engine.IEngine factory)
 		{
 			HttpServerUtility server = HttpContext.Current.Server;
-			foreach(string folder in factory.EditManager.UploadFolders)
+			foreach(string folder in factory.EditUrlManager.UploadFolders)
 			{
                 string upload = server.MapPath(folder);
                 DeleteFilesAndFolders(upload);

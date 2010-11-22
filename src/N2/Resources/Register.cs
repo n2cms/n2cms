@@ -13,9 +13,9 @@ namespace N2.Resources
 	{
 		public const string JQueryVersion = "1.4.2";
 
-		private static IEditManager EditManager
+		private static IEditUrlManager EditManager
 		{
-			get { return N2.Context.Current.EditManager; }
+			get { return N2.Context.Current.EditUrlManager; }
 		}
 
 		/// <summary>Register an embedded style sheet reference in the page's header.</summary>

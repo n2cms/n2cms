@@ -53,7 +53,7 @@ namespace N2.Edit.Web.UI.Controls
 			bool isAlreadyImageHandler = string.Equals(fileExtension, ".ashx", StringComparison.OrdinalIgnoreCase);
 			if (isAlreadyImageHandler) return Url.ToAbsolute(imageUrl);
 
-			Url url = ImageHandlerUrl.SetQueryParameter("img", N2.Context.Current.EditManager.ResolveManagementInterfaceUrl(imageUrl));
+			Url url = ImageHandlerUrl.SetQueryParameter("img", N2.Context.Current.EditUrlManager.ResolveManagementInterfaceUrl(imageUrl));
 			if (width > 0) url = url.SetQueryParameter("w", (int)width);
 			if (height > 0) url = url.SetQueryParameter("h", (int)height);
 			url = url.AppendQuery("m", mode.ToString());

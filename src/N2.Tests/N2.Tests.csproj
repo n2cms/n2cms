@@ -152,6 +152,7 @@
     <Compile Include="Details\EditableChildrenTest.cs" />
     <Compile Include="Details\EnumableItem.cs" />
     <Compile Include="Details\EditableEnumTests.cs" />
+    <Compile Include="Edit\EditUrlManagerTests.cs" />
     <Compile Include="Edit\FileSystem\DefaultFolderFinderTest.cs" />
     <Compile Include="Edit\Items\ItemWithSecuredContainer.cs" />
     <Compile Include="Edit\Items\NotVersionableItem.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Engine\Items\ItemAC.cs" />
     <Compile Include="Engine\ServiceContainerTests.cs" />
     <Compile Include="Engine\Services\Services.cs" />
+    <Compile Include="Fakes\FakeEditUrlManager.cs" />
     <Compile Include="Fakes\FakeFileSystem2.cs" />
     <Compile Include="Fakes\FakeItemFinder.cs" />
     <Compile Include="Fakes\FakeVersionManager.cs" />

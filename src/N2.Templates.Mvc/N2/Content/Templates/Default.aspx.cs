@@ -17,14 +17,14 @@ namespace N2.Management.Content.Templates
 	{
 		protected IContentTemplateRepository Templates { get; set; }
 		protected IDefinitionManager Definitions { get; set; }
-		protected IEditManager Edits { get; set; }
+		protected IEditUrlManager Edits { get; set; }
 		
 		protected override void OnPreInit(EventArgs e)
 		{
 			base.OnPreInit(e);
 			Templates = Engine.Resolve<IContentTemplateRepository>();
 			Definitions = Engine.Resolve<IDefinitionManager>();
-			Edits = Engine.Resolve<IEditManager>();
+			Edits = Engine.Resolve<IEditUrlManager>();
 		}
 
 		protected override void OnInit(EventArgs e)

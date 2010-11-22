@@ -34,7 +34,7 @@ namespace N2.Management.Myself
 
 		protected virtual string GetEditUrl(MagicLocation location)
 		{
-			return Engine.EditManager.GetEditNewPageUrl(location.Location, location.GetDefinition(Engine.Definitions), location.ZoneName, CreationPosition.Below);
+			return Engine.EditUrlManager.GetEditNewPageUrl(location.Location, location.GetDefinition(Engine.Definitions), location.ZoneName, CreationPosition.Below);
 		}
 	}
 }

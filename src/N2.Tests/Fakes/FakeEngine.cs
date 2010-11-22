@@ -46,6 +46,11 @@ namespace N2.Tests.Fakes
 			get { return container.Resolve<IEditManager>(); }
 		}
 
+		public N2.Edit.IEditUrlManager EditUrlManager
+		{
+			get { return container.Resolve<IEditUrlManager>(); }
+		}
+
 		public N2.Web.IWebContext RequestContext
 		{
 			get { return container.Resolve<IWebContext>(); }
