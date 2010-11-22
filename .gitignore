@@ -41,3 +41,6 @@ ClientBin
 stylecop.*
 ~$*
 *.dbmdl
+
+# Git files to ignore
+*.orig
