@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 using System.Web.Mvc;
-using MvcContrib;
 using N2.Templates.Mvc.Details;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
