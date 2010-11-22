@@ -11,8 +11,8 @@ using N2.Integrity;
 namespace N2.Management.Content.Templates
 {
 	[PartDefinition("Template Container",
-		TemplateUrl = "~/N2/Empty.aspx",
-		IconUrl = "~/N2/Resources/icons/page_white_swoosh.png")]
+		TemplateUrl = "|Management|/Empty.aspx",
+		IconUrl = "|Management|/Resources/icons/page_white_swoosh.png")]
 	[ItemAuthorizedRoles(Roles = new string[0])]
 	[AllowedChildren(typeof(ContentItem))]
 	[NotThrowable]

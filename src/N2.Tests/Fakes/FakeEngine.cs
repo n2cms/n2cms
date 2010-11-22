@@ -146,6 +146,9 @@ namespace N2.Tests.Fakes
 
 			public T Resolve<T>()
 			{
+				if(services.ContainsKey(typeof(T)) == false)
+					throw new InvalidOperationException("No component for service " + typeof(T).Name + " registered");
+
 				return (T)services[typeof(T)];
 			}
 

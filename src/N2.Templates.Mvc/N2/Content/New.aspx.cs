@@ -32,9 +32,9 @@ using System.Web.UI;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("New", "new", "Content/New.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/icons/add.png", 10, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("NEW", "new", "Content/New.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/N2/Resources/icons/add.png", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
-    [ControlPanelLink("cpNew", "~/N2/Resources/icons/add.png", "Content/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
+	[NavigationLinkPlugin("New", "new", "Content/New.aspx?selected={selected}", Targets.Preview, "|Management|/Resources/icons/add.png", 10, GlobalResourceClassName = "Navigation")]
+	[ToolbarPlugin("NEW", "new", "Content/New.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "|Management|/Resources/icons/add.png", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
+    [ControlPanelLink("cpNew", "|Management|/Resources/icons/add.png", "Content/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;

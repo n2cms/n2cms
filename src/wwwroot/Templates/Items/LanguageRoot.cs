@@ -10,15 +10,15 @@ using N2.Definitions;
 
 namespace N2.Templates.Items
 {
-    //[Definition("Language root", "LanguageRoot", "A starting point for translations of the start page.", "", 450)]
+	//[Definition("Language root", "LanguageRoot", "A starting point for translations of the start page.", "", 450)]
 	[PageDefinition("Language root",
 		Description = "A starting point for translations of the start page.",
 		SortOrder = 450,
 		IconUrl = "~/Templates/UI/Img/page_world.png")]
-    [TabContainer(LanguageRoot.SiteArea, "Site", 70, AuthorizedUsers = new[] { "admin" }, AuthorizedRoles = new[] { "Administrators" })]
-    [RestrictParents(typeof(StartPage))]
-    [FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
-    [FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
+	[TabContainer(LanguageRoot.SiteArea, "Site", 70, AuthorizedUsers = new[] { "admin" }, AuthorizedRoles = new[] { "Administrators" })]
+	[RestrictParents(typeof(StartPage))]
+	[FieldSetContainer(StartPage.MiscArea, "Miscellaneous", 80, ContainerName = LanguageRoot.SiteArea)]
+	[FieldSetContainer(StartPage.LayoutArea, "Layout", 75, ContainerName = LanguageRoot.SiteArea)]
 	[ConventionTemplate("Start")]
 	public class LanguageRoot : AbstractContentPage, IStartPage, IStructuralPage, ILanguage
 	{
@@ -42,7 +42,7 @@ namespace N2.Templates.Items
                 else
                 {
                     string[] parts = LanguageCode.Split('-');
-					return string.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1]);
+					return string.Format("|Management|/Resources/Img/Flags/{0}.png", parts[parts.Length - 1]);
                 }
             }
         }

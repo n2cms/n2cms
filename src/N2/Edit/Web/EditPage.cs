@@ -40,7 +40,7 @@ namespace N2.Edit.Web
             if (themeCookie != null && !string.IsNullOrEmpty(themeCookie.Value))
                 theme = themeCookie.Value;
 
-            Register.StyleSheet(this, "~/N2/Resources/Css/themes/" + theme);
+            Register.StyleSheet(this, Engine.EditManager.ResolveManagementInterfaceUrl("Resources/Css/themes/" + theme));
         }
 
 		private void SetupAspNetTheming()
@@ -143,7 +143,7 @@ namespace N2.Edit.Web
         protected virtual void Refresh(ContentItem item, string previewUrl)
         {
             string script = string.Format(RefreshBothFormat,
-                Url.ToAbsolute("~/N2/Content/Default.aspx"), // 0
+                Engine.EditManager.GetEditInterfaceUrl(), // 0
                 GetNavigationUrl(item), // 1
                 Url.ToAbsolute(previewUrl), // 2
                 item.ID, // 3
@@ -180,7 +180,7 @@ namespace N2.Edit.Web
 				format = RefreshNavigationFormat;
 
 			string script = string.Format(format,
-				Url.ToAbsolute("~/N2/Content/Default.aspx"), // 0
+				Engine.EditManager.GetEditInterfaceUrl(), // 0
 				GetNavigationUrl(item), // 1
 				GetPreviewUrl(item), // 2
 				item.ID, // 3

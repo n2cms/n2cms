@@ -2,17 +2,21 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Collections;
-using System.Collections.Generic;
+using N2.Edit;
 
 namespace N2.Resources
 {
 	/// <summary>
 	/// Methods to register styles and javascripts.
 	/// </summary>
-	public class Register
+	public static class Register
 	{
 		public const string JQueryVersion = "1.4.2";
+
+		private static IEditManager EditManager
+		{
+			get { return N2.Context.Current.EditManager; }
+		}
 
 		/// <summary>Register an embedded style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>
@@ -56,25 +60,6 @@ namespace N2.Resources
 				page.Items[resourceUrl] = null;
 			}
 		}
-
-		///// <summary>Register a style sheet reference in the page's header with media type.</summary>
-		///// <param name="state">The state controlling whether the style sheet is returned or not.</param>
-		///// <param name="resourceUrl">The url to the style sheet to register.</param>
-		///// <param name="media">The media type to assign, e.g. print.</param>
-		//public static string StyleSheet(IDictionary state, string resourceUrl, Media media)
-		//{
-		//    if (state == null) throw new ArgumentNullException("state");
-		//    if (resourceUrl == null) throw new ArgumentNullException("resourceUrl");
-
-		//    resourceUrl = N2.Web.Url.ToAbsolute(resourceUrl);
-
-		//    if (RegistrationStateMap.TryRegisterUrl(state, resourceUrl))
-		//    {
-		//        return string.Format("<link rel=\"stylesheet\" type=\"text/css\" media=\"{0}\" href=\"{1}\"/>", media.ToString().ToLower(), resourceUrl);
-		//    }
-
-		//    return null;
-		//}
 
 		/// <summary>Register an embedded javascript resource reference in the page header.</summary>
 		/// <param name="page">The page in whose header to register the javascript.</param>
@@ -224,9 +209,9 @@ namespace N2.Resources
 		public static void JQuery(Page page)
 		{
 #if DEBUG
-			JavaScript(page, N2.Web.Url.ToAbsolute("~/N2/Resources/Js/jquery-" + JQueryVersion + ".js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, EditManager.ResolveManagementInterfaceUrl("Resources/Js/jquery-" + JQueryVersion + ".js"), ScriptOptions.Prioritize | ScriptOptions.Include);
 #else
-			JavaScript(page, N2.Web.Url.ToAbsolute("~/N2/Resources/Js/jquery-" + JQueryVersion + ".min.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, EditManager.ResolveManagementInterfaceUrl("Resources/Js/jquery-" + JQueryVersion + ".min.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
 #endif
 		}
 
@@ -260,7 +245,7 @@ namespace N2.Resources
 		}
 
 		#region TabPanel
-		private static readonly string tabPanelFormat = @"jQuery('{0}').n2tabs('{1}',location.hash);";
+		private const string tabPanelFormat = @"jQuery('{0}').n2tabs('{1}',location.hash);";
 
 		public static void TabPanel(Page page, string selector, bool registerTabCss)
 		{
@@ -275,7 +260,7 @@ namespace N2.Resources
 				page.Items[key] = new object();
 				if (registerTabCss)
 				{
-					StyleSheet(page, "~/N2/Resources/Css/TabPanel.css");
+					StyleSheet(page, EditManager.ResolveManagementInterfaceUrl("Resources/Css/TabPanel.css"));
 				}
 			}
 		}
@@ -291,7 +276,7 @@ namespace N2.Resources
 		}
 		#endregion
 
-		static string pluginsUrl = "~/N2/Resources/Js/plugins.ashx?v=" + typeof (Register).Assembly.GetName().Version;
+		static readonly string pluginsUrl = EditManager.ResolveManagementInterfaceUrl("Resources/Js/plugins.ashx?v=" + typeof (Register).Assembly.GetName().Version);
 		public static void JQueryPlugins(Page page)
 		{
 			JQuery(page);
@@ -300,7 +285,7 @@ namespace N2.Resources
 
 		public static void TinyMCE(Page page)
 		{
-			JavaScript(page, "~/N2/Resources/tiny_mce/tiny_mce.js");
+			JavaScript(page, EditManager.ResolveManagementInterfaceUrl("Resources/tiny_mce/tiny_mce.js"));
 		}
 
 		//static class RegistrationStateMap

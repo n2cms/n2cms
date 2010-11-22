@@ -1,13 +1,10 @@
 using N2.Configuration;
-using N2.Persistence;
-using N2.Persistence.NH;
 using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Web;
 using N2.Tests.Web.Items;
 using N2.Engine;
 using N2.Engine.MediumTrust;
-using N2.Persistence.Proxying;
 
 namespace N2.Tests.Web
 {
@@ -21,7 +18,7 @@ namespace N2.Tests.Web
 
 			ContentAdapterProvider provider = new ContentAdapterProvider(new ContentEngine(), new AppDomainTypeFinder());
 			provider.Start();
-			dispatcher = new RequestPathProvider(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
+			dispatcher = new RequestPathProvider(webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
 		}
 	}
 
@@ -35,7 +32,7 @@ namespace N2.Tests.Web
 
 			ContentAdapterProvider provider = new ContentAdapterProvider(new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer()), new AppDomainTypeFinder());
 			provider.Start();
-			dispatcher = new RequestPathProvider(provider, webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
+			dispatcher = new RequestPathProvider(webContext, parser, new ErrorHandler(webContext, null, null), hostSection);
 		}
 	}
 	

@@ -4,7 +4,7 @@
 	{
 		public override string FolderUrl
 		{
-			get { return "~/N2/Resources/Js/plugins"; }
+			get { return N2.Context.Current.EditManager.ResolveManagementInterfaceUrl("|Management|/Resources/Js/plugins"); }
 		}
 	}
 }

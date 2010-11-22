@@ -750,10 +750,10 @@ namespace N2.Web
 			return i;
 		}
 
-        public string Encode()
-        {
-            return ToString().Replace(Amp, "&amp;");
-        }
+		public string Encode()
+		{
+			return ToString().Replace(Amp, "&amp;");
+		}
 
 		/// <summary>Mimics the behavior of VirtualPathUtility.Combine with less restrictions and minimal dependencies.</summary>
 		/// <param name="url1">First part</param>

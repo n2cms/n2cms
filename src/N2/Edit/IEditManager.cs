@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.UI;
@@ -17,11 +16,14 @@ namespace N2.Edit
 	{
 		/// <summary>Gets or sets wether a version is saved when updating items.</summary>
 		bool EnableVersioning { get; set; }
-	    
-        /// <summary>Gets folders paths on the server where users are allowed to upload content through the interface.</summary>
-        IList<string> UploadFolders { get; }
+
+		/// <summary>Gets folders paths on the server where users are allowed to upload content through the interface.</summary>
+		IList<string> UploadFolders { get; }
 
 		string EditTheme { get; }
+
+		/// <summary>Gets the url for the navigation frame.</summary>
+		string EditTreeUrl { get; }
 
 		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
@@ -85,14 +87,17 @@ namespace N2.Edit
 		/// <returns>The url to the edit interface.</returns>
 		string GetEditInterfaceUrl(ContentItem selectedItem);
 
-        /// <summary>Gets the url to the edit interface.</summary>
-        /// <returns>The url to the edit interface.</returns>
+		/// <summary>Gets the url to the edit interface.</summary>
+		/// <returns>The url to the edit interface.</returns>
 		string GetEditInterfaceUrl();
 
-		/// <summary>Gets the url to the management interface with a certain item selected.</summary>
-		/// <param name="selectedItem">The item to select in edit mode.</param>
+		/// <summary>Gets the url to the management interface.</summary>
 		/// <returns>The url to the edit interface.</returns>
 		string GetManagementInterfaceUrl();
+
+		/// <summary>Gets the url to the given resource underneath the management interface.</summary>
+		/// <returns>The url to the edit interface.</returns>
+		string ResolveManagementInterfaceUrl(string resourceUrl);
 
 		/// <summary>Gets the url to the select type of item to create.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>

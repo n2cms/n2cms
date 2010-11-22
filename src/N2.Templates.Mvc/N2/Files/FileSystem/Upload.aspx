@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/N2/Content/Framed.Master" AutoEventWireup="true" CodeBehind="Upload.aspx.cs" Inherits="N2.Management.Files.FileSystem.Upload" %>
+﻿<%@ Page Language="C#" MasterPageFile="../../Content/Framed.Master" AutoEventWireup="true" CodeBehind="Upload.aspx.cs" Inherits="N2.Management.Files.FileSystem.Upload" %>
 <asp:Content ID="ct" ContentPlaceHolderID="Toolbar" runat="server">
 	<asp:HyperLink ID="hlCancel" runat="server" Text="cancel" CssClass="command cancel" meta:resourceKey="hlCancel" />
 </asp:Content>

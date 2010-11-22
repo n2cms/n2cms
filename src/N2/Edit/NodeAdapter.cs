@@ -105,7 +105,7 @@ namespace N2.Edit
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
 			string url = EditManager.GetPreviewUrl(item);
-			url =  string.IsNullOrEmpty(url) ? "~/N2/Empty.aspx" : url;
+			url =  string.IsNullOrEmpty(url) ? EditManager.ResolveManagementInterfaceUrl("Empty.aspx") : url;
 			return webContext.ToAbsolute(url);
 		}
 

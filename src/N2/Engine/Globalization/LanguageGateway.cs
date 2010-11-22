@@ -9,7 +9,6 @@ using N2.Definitions;
 using N2.Security;
 using N2.Configuration;
 using N2.Edit.Trash;
-using N2.Plugin;
 
 namespace N2.Engine.Globalization
 {
@@ -26,8 +25,8 @@ namespace N2.Engine.Globalization
 		readonly IDefinitionManager definitions;
 		readonly IHost host;
 		int recursionDepth = 3;
-        ISecurityManager security;
-        IWebContext context;
+    	readonly ISecurityManager security;
+    	readonly IWebContext context;
 		StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
         bool enabled = true;
 
@@ -163,7 +162,7 @@ namespace N2.Engine.Globalization
 					if (translation != null)
 					{
 						string url = editManager.GetEditExistingItemUrl(translation);
-						yield return new TranslateSpecification(url, language, translation, definition);
+						yield return new TranslateSpecification(url, language, translation, definition, editManager);
 					}
 					else
 					{
@@ -173,9 +172,9 @@ namespace N2.Engine.Globalization
 							continue;
 
 						Url url = editManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
-					    url = url.AppendQuery(LanguageKey, item[LanguageKey] ?? item.ID);
+						url = url.AppendQuery(LanguageKey, item[LanguageKey] ?? item.ID);
 
-						yield return new TranslateSpecification(url, language, translation, definition);
+						yield return new TranslateSpecification(url, language, translation, definition, editManager);
 					}
 				}
 			}

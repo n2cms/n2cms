@@ -312,10 +312,11 @@ namespace N2
 
 		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>
 		[Obsolete("Use the new template API: item.FindPath(PathData.DefaultAction).RewrittenUrl")]
-        public virtual string RewrittenUrl
-        {
-            get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
+		public virtual string RewrittenUrl
+		{
+			get { return FindPath(PathData.DefaultAction).RewrittenUrl; }
 		}
+
 		#endregion
 
 		#region Security

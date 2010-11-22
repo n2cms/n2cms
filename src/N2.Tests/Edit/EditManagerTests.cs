@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Generic;
 using N2.Configuration;
+using N2.Tests.Fakes;
 using NUnit.Framework;
-using N2.Details;
 using N2.Edit;
 using N2.Definitions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using Rhino.Mocks;
 using N2.Persistence;
 using N2.Tests.Edit.Items;
 using System.Security.Principal;
-using N2.Tests.Fakes;
 using N2.Persistence.Proxying;
 
 namespace N2.Tests.Edit
@@ -25,14 +23,15 @@ namespace N2.Tests.Edit
 
 		protected override Type[] GetTypes()
 		{
-			return new Type[]{
-				typeof(ComplexContainersItem),
-				typeof(ItemWithRequiredProperty),
-				typeof(ItemWithModification),
-                typeof(NotVersionableItem),
-                typeof(LegacyNotVersionableItem),
-                typeof(ItemWithSecuredContainer)
-			};
+			return new[]
+			       	{
+			       		typeof (ComplexContainersItem),
+			       		typeof (ItemWithRequiredProperty),
+			       		typeof (ItemWithModification),
+			       		typeof (NotVersionableItem),
+			       		typeof (LegacyNotVersionableItem),
+			       		typeof (ItemWithSecuredContainer)
+			       	};
 		}
 
 		[SetUp]
@@ -42,12 +41,19 @@ namespace N2.Tests.Edit
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-            var changer = new N2.Edit.Workflow.StateChanger();
+			var changer = new N2.Edit.Workflow.StateChanger();
 			DefinitionManager definitions = new DefinitionManager(builder, changer, notifier, new EmptyProxyFactory());
 			
 			versioner = mocks.StrictMock<IVersionManager>();
 			editManager = new EditManager(definitions, persister, versioner, null, null, null, changer, new EditSection());
 			editManager.EnableVersioning = true;
+
+			var engine = new FakeEngine();
+			engine.AddComponentInstance("editManager", typeof(IEditManager), editManager);
+
+			engine.AddComponentInstance("editSection", typeof(EditSection), new EditSection());
+
+			Context.Replace(engine);
 		}
 
 		protected IDictionary<string, Control> AddEditors(ComplexContainersItem item)

@@ -4,27 +4,27 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>Install N2</title>
-    <link rel="stylesheet" type="text/css" href="../../Resources/Css/all.css" />
-    <link rel="stylesheet" type="text/css" href="../../Resources/Css/framed.css" />
-    <link rel="stylesheet" type="text/css" href="../../Resources/Css/themes/default.css" />
-    <style>
-    	form{font-size:1.1em;width:800px;margin:10px auto;}
-    	a{color:#00e;}
-    	li{margin-bottom:10px}
-    	form{padding:20px}
-    	.warning{color:#f00;}
-    	.ok{color:#0d0;}
-    	textarea{width:80%;height:120px}
-    </style>
+	<title>Install N2</title>
+	<link rel="stylesheet" type="text/css" href="../../Resources/Css/all.css" />
+	<link rel="stylesheet" type="text/css" href="../../Resources/Css/framed.css" />
+	<link rel="stylesheet" type="text/css" href="../../Resources/Css/themes/default.css" />
+	<style>
+		form{font-size:1.1em;width:800px;margin:10px auto;}
+		a{color:#00e;}
+		li{margin-bottom:10px}
+		form{padding:20px}
+		.warning{color:#f00;}
+		.ok{color:#0d0;}
+		textarea{width:80%;height:120px}
+	</style>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <div>
+	<form id="form1" runat="server">
+	<div>
 		<% 
 			string action = Request["action"];
 			Version version = typeof (N2.ContentItem).Assembly.GetName().Version;
-			N2.Configuration.InstallerElement config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
+			var config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
 
 			string continueUrl = action == "install"
 			                     	? config.InstallUrl
@@ -63,7 +63,7 @@
 
 			<p><strong>Already done this?</strong> There might be a problem with the database connection. To ensure that this screen doesn't appear to unsuspecting visitors you should set &lt;n2&gt;&lt;edit&gt;&lt;installer checkInstallationStatus="false"/&gt; in web.config.</p>
 		</div>
-    </div>
-    </form>
+	</div>
+	</form>
 </body>
 </html>

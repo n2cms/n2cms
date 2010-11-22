@@ -88,7 +88,6 @@ namespace N2.Engine.Configuration
 
 			engine.Container.AddComponentInstance("n2.serviceContainer", typeof(IServiceContainer), engine.Container);
 			engine.Container.AddComponent("n2.serviceRegistrator", typeof(ServiceRegistrator), typeof(ServiceRegistrator));
-			//<include uri="assembly://N2/Serialization/serialization.castle.config" />
 		}
 
 		#endregion

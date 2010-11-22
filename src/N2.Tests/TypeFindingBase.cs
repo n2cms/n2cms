@@ -1,8 +1,5 @@
 using System;
 using N2.Engine;
-using Rhino.Mocks;
-using System.Reflection;
-using System.Security.Principal;
 
 namespace N2.Tests
 {

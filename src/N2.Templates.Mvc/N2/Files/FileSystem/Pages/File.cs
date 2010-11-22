@@ -9,12 +9,12 @@ using N2.Web.Drawing;
 namespace N2.Edit.FileSystem.Items
 {
     [PageDefinition("File",
-        IconUrl = "~/N2/Resources/icons/page_white.png",
+        IconUrl = "|Management|/Resources/icons/page_white.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2010)]
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]
-	[N2.Web.Template("info", "~/N2/Files/FileSystem/File.aspx")]
+	[N2.Web.Template("info", "|Management|/Files/FileSystem/File.aspx")]
     public class File : AbstractNode, IActiveContent
     {
 		protected File()
@@ -119,7 +119,7 @@ namespace N2.Edit.FileSystem.Items
 
 		private string IconPath(string iconName)
 		{
-			return N2.Web.Url.ToAbsolute(string.Format("~/N2/Resources/icons/{0}.png", iconName));
+			return Context.Current.EditManager.ResolveManagementInterfaceUrl(string.Format("|Management|/Resources/icons/{0}.png", iconName));
 		}
 
 		public bool Exists

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace N2.Tests.Edit
 {
-    [TestFixture]
+	[TestFixture]
     public class WhileNavigatingToTheEditPage : EditManagerTests
     {
         [Test]
