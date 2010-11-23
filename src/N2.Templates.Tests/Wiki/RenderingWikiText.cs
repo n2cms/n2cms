@@ -224,7 +224,7 @@ namespace N2.Templates.Tests.Wiki
             {
                 string html = ParseAndRenderWikiText("[[Image:n2.png]]");
 
-				Assert.That(html, Is.EqualTo("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"n2.png\" style=\"width:500px;border-width:0px;\" /></a>"));
+				Assert.That(html.StartsWith("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"n2.png\" style=\"width:500px"));
             }
             finally
             {
@@ -242,7 +242,7 @@ namespace N2.Templates.Tests.Wiki
             {
                 string html = ParseAndRenderWikiText("[[Image:n2.png|N2 CMS Logo]]");
 
-				Assert.That(html, Is.EqualTo("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"N2 CMS Logo\" style=\"width:500px;border-width:0px;\" /></a>"));
+				Assert.That(html.StartsWith("<a href=\"/Upload/Wiki/n2.png\"><img src=\"/Upload/Wiki/n2.png\" alt=\"N2 CMS Logo\" style=\"width:500px"));
             }
             finally
             {
