@@ -1,31 +1,45 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using N2.Templates.Details;
-using N2.Web;
+using N2.Web.Mvc.Html;
+using N2.Details;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
+	public enum OptionOrientation
+	{
+		Vertical,
+		Horizontal
+	}
+
 	public abstract class OptionSelectQuestion : Question
 	{
-		public override TagBuilder CreateHtmlElement()
+		public override MvcHtmlString CreateHtmlElement()
 		{
 			var inputs = new List<TagBuilder>();
 
 			foreach (var option in Options)
 			{
 				var id = ElementID + "_" + option.ID;
-				inputs.Add(new TagBuilder("div", new TagBuilder("label", option.Title)
-													.Attr("For", id)
-												 + new TagBuilder("input")
-													.Attr("type", InputType)
-													.Attr("value", option.ID.ToString())
-													.Attr("name", ElementID)
-													.Id(id)));
+				var label = new TagBuilder("label")
+					.Html(option.Title)
+					.Attr("For", id);
+				var input = new TagBuilder("input")
+					.Attr("type", InputType)
+					.Attr("value", option.ID.ToString())
+					.Attr("name", ElementID)
+					.Id(id);
+				inputs.Add(new TagBuilder("span").Attr("class", "option").Html(input.ToString(TagRenderMode.SelfClosing) + label.ToString()));
 			}
 
-			return new TagBuilder("div", String.Join(Environment.NewLine, inputs.Select(i => i.ToString()).ToArray()))
-				.Attr("class", "alternatives");
+			string innerHtml = string.Join(Environment.NewLine, inputs.Select(i => i.ToString()).ToArray());
+			string outerHtml = new TagBuilder("div")
+				.Html(innerHtml)
+				.Attr("class", "alternatives " + Orientation.ToString().ToLower())
+				.ToString();
+			return MvcHtmlString.Create(outerHtml);
 		}
 
 		protected abstract string InputType { get; }
@@ -41,5 +55,8 @@ namespace N2.Templates.Mvc.Models.Parts
 				return options;
 			}
 		}
+
+		[EditableEnum("Orientation", 30, typeof(OptionOrientation))]
+		public virtual OptionOrientation Orientation { get; set; }
 	}
 }

@@ -1,6 +1,7 @@
 using System;
+using System.Web.Mvc;
 using N2.Details;
-using N2.Web;
+using N2.Web.Mvc.Html;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
@@ -31,23 +32,25 @@ namespace N2.Templates.Mvc.Models.Parts
 			return value;
 		}
 
-		public override TagBuilder CreateHtmlElement()
+		public override MvcHtmlString CreateHtmlElement()
 		{
-			TagBuilder tag;
 			if (Rows == 1)
 			{
-				tag = new TagBuilder("input");
-				tag.Attr("type", "text");
-				tag.Attr("size", (Columns ?? 60).ToString());
+				string html = new TagBuilder("input")
+					.Attr("type", "text")
+					.Attr("size", (Columns ?? 60).ToString())
+					.ToString(TagRenderMode.SelfClosing);
+				return MvcHtmlString.Create(html);
 			}
 			else
 			{
-				tag = new TagBuilder("textarea");
-				tag.Attr("rows", Rows.ToString());
-				tag.Attr("cols", (Columns ?? 60).ToString());
+				string html = new TagBuilder("textarea")
+					.Attr("rows", Rows.ToString())
+					.Attr("cols", (Columns ?? 60).ToString())
+					.ToString();
+				return MvcHtmlString.Create(html);
 			}
 
-			return tag;
 		}
 	}
 }

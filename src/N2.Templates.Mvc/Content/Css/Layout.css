@@ -6,13 +6,18 @@ a img { border:none; vertical-align:middle; }
 .menu,.menu ul { list-style-type:none;}
 
 /* forms */
-.inputForm .row { margin-bottom:5px; }
-.inputForm .label { width:120px; float:left; }
-.secondary .label { display:block; }
-.inputForm .alternatives * { vertical-align:middle }
+.inputForm .row { margin-bottom:10px; }
+.inputForm .label { width:120px; float:left; margin-right:10px; }
+.inputForm .alternatives * { }
 .inputForm .alternatives label { margin-right:10px; }
 .inputForm textarea { width:340px; height:120px; }
 .inputForm .tb { width:240px; }
+		.inputForm span.option input { margin-right:5px; }
+.inputForm .vertical { clear:left; }
+	.inputForm .vertical span.option { display:block; }
+
+.secondary .inputForm .label { display:block; float:none; }
+.secondary .inputForm input,.secondary .inputForm textarea { max-width:100%; }
 
 .commentInput .box { display:none; }
 
