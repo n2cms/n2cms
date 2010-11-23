@@ -89,18 +89,18 @@ namespace N2.Tests.Fakes
 			directories[virtualPath] = new DirectoryData { VirtualPath = virtualPath, Created = DateTime.Now, Updated = DateTime.Now, Name = N2.Web.Url.GetName(virtualPath) };
 		}
 
-		public event EventHandler<N2.Edit.FileEventArgs> FileWritten;
+		public event EventHandler<N2.Edit.FileEventArgs> FileWritten = delegate { };
 
-		public event EventHandler<N2.Edit.FileEventArgs> FileCopied;
+		public event EventHandler<N2.Edit.FileEventArgs> FileCopied = delegate { };
 
-		public event EventHandler<N2.Edit.FileEventArgs> FileMoved;
+		public event EventHandler<N2.Edit.FileEventArgs> FileMoved = delegate { };
 
-		public event EventHandler<N2.Edit.FileEventArgs> FileDeleted;
+		public event EventHandler<N2.Edit.FileEventArgs> FileDeleted = delegate { };
 
-		public event EventHandler<N2.Edit.FileEventArgs> DirectoryCreated;
+		public event EventHandler<N2.Edit.FileEventArgs> DirectoryCreated = delegate { };
 
-		public event EventHandler<N2.Edit.FileEventArgs> DirectoryMoved;
+		public event EventHandler<N2.Edit.FileEventArgs> DirectoryMoved = delegate { };
 
-		public event EventHandler<N2.Edit.FileEventArgs> DirectoryDeleted;
+		public event EventHandler<N2.Edit.FileEventArgs> DirectoryDeleted = delegate { };
 	}
 }
