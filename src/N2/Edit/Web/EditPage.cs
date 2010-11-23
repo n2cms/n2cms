@@ -116,12 +116,22 @@ namespace N2.Edit.Web
 		/// <param name="permission">The permission to check.</param>
 		protected bool IsAuthorized(Permission permission)
 		{
-            return IsAuthorized(Selection.SelectedItem, permission);
+			return IsAuthorized(Selection.SelectedItem, permission);
+		}
+
+		protected new string ResolveUrl(string url)
+		{
+			return N2.Context.Current.EditUrlManager.ResolveManagementInterfaceUrl(url);
+		}
+
+		protected string ResolveUrl(object url)
+		{
+			return ResolveUrl(url as string);
 		}
 
 		protected string MapCssUrl(string cssFileName)
 		{
-			return Url.ToAbsolute(N2.Context.Current.EditUrlManager.GetManagementInterfaceUrl() + "Resources/Css/" + cssFileName);
+			return N2.Context.Current.EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Resources/Css/" + cssFileName);
 		}
 
     	#region Refresh Methods

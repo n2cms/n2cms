@@ -23,8 +23,8 @@
 				<asp:Repeater runat="server" DataSource=<%# Eval("Changes") %>>
 					<ItemTemplate>
 						<tr><td>
-							<asp:HyperLink NavigateUrl='<%# Eval("Url") %>' runat="server">
-								<asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
+							<asp:HyperLink NavigateUrl='<%# ResolveUrl(Eval("Url")) %>' runat="server">
+								<asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" />
 								<%# Eval("Title")%>
 							</asp:HyperLink>, 
 						</td><td>

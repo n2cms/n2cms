@@ -19,7 +19,7 @@
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate>
-				<a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# VirtualPathUtility.ToAbsolute((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
+				<a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
 			</asp:TemplateField>
 			<asp:BoundField HeaderText="ID" DataField="ID" meta:resourceKey="id" />
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">

@@ -159,7 +159,7 @@ namespace N2.Edit
 			if (isCurrent)
 				format = "<strong>" + format + "</strong>";
 
-			return string.Format(format, ResolveClientUrl(item.IconUrl), item.Title, item.Url, "icon", "current");
+			return string.Format(format, ResolveUrl(item.IconUrl), item.Title, item.Url, "icon", "current");
 		}
 
 		private static ContentItem Last(IList<ContentItem> children, ItemFilter filter)
