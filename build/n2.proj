@@ -96,7 +96,7 @@
 
 	<Target Name="Test" DependsOnTargets="Clean;Framework-Build">
 		<ItemGroup>
-			<AssembliesToTest Include="$(SrcFolder)\*Tests\bin\$(Configuration)\*.Tests.exe;"/>
+			<AssembliesToTest Include="$(SrcFolder)\*Tests\bin\$(Configuration)\*.Tests.dll;"/>
 		</ItemGroup>
 		<PropertyGroup>
 			<Exe>$(RootFolder)\lib\nunit-console-x86.exe %(AssembliesToTest.FullPath)</Exe>
