@@ -1,3 +1,4 @@
+- SQL timeout exception (ThreadId=234907)
 - Add no-sql support
 - IOrderBy.Detail does sorting (ThreadId=234194)
 - comment moderation (ThreadId=232279)
