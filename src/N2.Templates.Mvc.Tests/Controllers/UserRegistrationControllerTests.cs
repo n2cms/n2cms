@@ -2,7 +2,6 @@ using System.Web.Mvc;
 using N2.Templates.Mvc.Controllers;
 using N2.Templates.Mvc.Models;
 using NUnit.Framework;
-using MvcContrib.TestHelper;
 using N2.Templates.Mvc.Models.Parts;
 
 namespace N2.Templates.Mvc.Tests.Controllers
@@ -19,8 +18,7 @@ namespace N2.Templates.Mvc.Tests.Controllers
 			                 		CurrentItem = userRegistration
 			                 	};
 
-			var result = controller.Index()
-				.AssertResultIs<PartialViewResult>();
+			var result = controller.Index() as PartialViewResult;
 
 			Assert.That(result.ViewData.Model, Is.TypeOf(typeof(UserRegistrationModel)));
 		}
