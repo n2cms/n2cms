@@ -9,7 +9,7 @@ consists of N2.dll and the UI management files residing below the /N2/ folder.
 
 HOW TO GET STARTED
 
-1. Double-click on Prepare_Dependencies-vs2008.bat
+1. Double-click on Prepare_AllDependencies.bat
 2. Choose amount of templates (ranging from minimal example to many features in the box):
 	* Examples - Minimal C#
 	* Examples - Minimal Visual Basic

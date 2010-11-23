@@ -27,7 +27,7 @@ C. Complete Sources package
 
 * Unzip the package
 * Find a batch file "Prepare_Dependencies.bat" and double-click
-* Open "src\N2.Sources-vs2008.sln"
+* Open "src\N2.Sources-vs2010.sln"
 * Right-click on the N2.Templates.Mvc (or N2.Templates for WebForms) project 
   and "Set it as StartUp Project"
 * Compile and run the application (Ctrl+F5)

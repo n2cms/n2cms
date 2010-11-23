@@ -94,7 +94,7 @@
 		<RemoveDir Directories="$(DeployFolder)" ContinueOnError="true"/>
 	</Target>
 
-	<Target Name="Test" DependsOnTargets="Clean;Framework-Build">
+	<Target Name="Test" DependsOnTargets="Framework-Build">
 		<ItemGroup>
 			<AssembliesToTest Include="$(SrcFolder)\*Tests\bin\$(Configuration)\*.Tests.dll;"/>
 		</ItemGroup>
@@ -186,16 +186,16 @@
 
 	<!-- Deploy sources to output folder -->
 	<Target Name="Deploy-Framework">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" RebaseOutputs="true" 
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true" 
 						 Properties="OutDir=$(FrameworkOutDir);Configuration=ReleaseFramework" />
 		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(FrameworkOutDir)" />
 	</Target>
 	<Target Name="Deploy-Templates-WebForms">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" RebaseOutputs="true"
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true"
 						 Properties="OutDir=$(WebFormsOutDir);Configuration=ReleaseWebForms" />
 	</Target>
 	<Target Name="Deploy-Templates-Mvc">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2008.sln" RebaseOutputs="true"
+		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true"
 						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc" />
 	</Target>
 

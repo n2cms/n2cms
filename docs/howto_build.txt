@@ -1,11 +1,11 @@
 Main solution (framework + templates):
 - Download the code, obviously
-- Run Prepare_Dependencies-vs2008.bat to copy certain files needed by the web project
-- Open src\N2.Sources-vs2008.sln
+- Run src\Prepare_SourceDependencies.bat to copy dependencies to the web project
+- Open src\N2.Sources-vs2010.sln
 - Set Templates/N2.Templates as "StartUp Project"
 - Compile and run (Ctrl+F5)
 - If you get errors about database connection or see an install screen:
 	- Create a database manually and reference it from web.config
 
 Examples:
-- Run examples\Prepare_Dependencies-vs2008.bat to copy core and edit to the examples
+- Run examples\Prepare_ExamplesDependencies.bat to copy core and edit to the examples
