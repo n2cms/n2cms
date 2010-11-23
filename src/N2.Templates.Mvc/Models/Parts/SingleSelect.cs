@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using MvcContrib.FluentHtml.Elements;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
@@ -12,13 +11,6 @@ namespace N2.Templates.Mvc.Models.Parts
 			get { return "ss_" + ID; }
 		}
 
-		public override IElement CreateHtmlElement()
-		{
-			RadioSet radioSet = new RadioSet(ElementID).Options(base.Options, x => x.ID, x => x.Title);
-
-			return new Literal("").Html(radioSet.ToString()).Class("alternatives");
-		}
-
 		public override string GetAnswerText(string value)
 		{
 			var selectedOption = Options.FirstOrDefault(opt => opt.ID.ToString() == value);
@@ -27,6 +19,11 @@ namespace N2.Templates.Mvc.Models.Parts
 				return String.Empty;
 
 			return selectedOption.Title;
+		}
+
+		protected override string InputType
+		{
+			get { return "radio"; }
 		}
 	}
 }
