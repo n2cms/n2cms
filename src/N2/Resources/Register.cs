@@ -13,7 +13,7 @@ namespace N2.Resources
 	{
 		public const string JQueryVersion = "1.4.2";
 
-		private static IEditUrlManager EditManager
+		private static IEditUrlManager EditUrlManager
 		{
 			get { return N2.Context.Current.EditUrlManager; }
 		}
@@ -51,7 +51,7 @@ namespace N2.Resources
 				PlaceHolder holder = GetPlaceHolder(page);
 
 				HtmlLink link = new HtmlLink();
-				link.Href = resourceUrl;
+				link.Href = EditUrlManager.ResolveManagementInterfaceUrl(resourceUrl);
 				link.Attributes["type"] = "text/css";
 				link.Attributes["media"] = media.ToString().ToLower();
 				link.Attributes["rel"] = "stylesheet";
@@ -106,7 +106,7 @@ namespace N2.Resources
 					page.ClientScript.RegisterClientScriptBlock(typeof (Register), key, EmbedDocumentReady(script), true);
 				}
 				else if (Is(options, ScriptOptions.Include))
-					page.ClientScript.RegisterClientScriptInclude(key, script);
+					page.ClientScript.RegisterClientScriptInclude(key, EditUrlManager.ResolveManagementInterfaceUrl(script));
 				else
 					throw new ArgumentException("options");
 			}
@@ -183,7 +183,7 @@ namespace N2.Resources
 			HtmlGenericControl script = new HtmlGenericControl("script");
 			page.Items[resourceUrl] = script;
 
-			resourceUrl = N2.Web.Url.ToAbsolute(resourceUrl);
+			resourceUrl = EditUrlManager.ResolveManagementInterfaceUrl(resourceUrl);
 
 			script.Attributes["src"] = resourceUrl;
 			script.Attributes["type"] = "text/javascript";
@@ -209,9 +209,9 @@ namespace N2.Resources
 		public static void JQuery(Page page)
 		{
 #if DEBUG
-			JavaScript(page, EditManager.ResolveManagementInterfaceUrl("Resources/Js/jquery-" + JQueryVersion + ".js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, "|Management|/Resources/Js/jquery-" + JQueryVersion + ".js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #else
-			JavaScript(page, EditManager.ResolveManagementInterfaceUrl("Resources/Js/jquery-" + JQueryVersion + ".min.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, "|Management|/Resources/Js/jquery-" + JQueryVersion + ".min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #endif
 		}
 
@@ -260,7 +260,7 @@ namespace N2.Resources
 				page.Items[key] = new object();
 				if (registerTabCss)
 				{
-					StyleSheet(page, EditManager.ResolveManagementInterfaceUrl("Resources/Css/TabPanel.css"));
+					StyleSheet(page, EditUrlManager.ResolveManagementInterfaceUrl("Resources/Css/TabPanel.css"));
 				}
 			}
 		}
@@ -276,7 +276,7 @@ namespace N2.Resources
 		}
 		#endregion
 
-		static readonly string pluginsUrl = EditManager.ResolveManagementInterfaceUrl("Resources/Js/plugins.ashx?v=" + typeof (Register).Assembly.GetName().Version);
+		static readonly string pluginsUrl = EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version);
 		public static void JQueryPlugins(Page page)
 		{
 			JQuery(page);
@@ -285,35 +285,7 @@ namespace N2.Resources
 
 		public static void TinyMCE(Page page)
 		{
-			JavaScript(page, EditManager.ResolveManagementInterfaceUrl("Resources/tiny_mce/tiny_mce.js"));
+			JavaScript(page, EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Resources/tiny_mce/tiny_mce.js"));
 		}
-
-		//static class RegistrationStateMap
-		//{
-		//    public static bool TryRegisterUrl(IDictionary state, string url)
-		//    {
-		//        if (IsRegistered(state, url))
-		//            return false;
-		//        RegisterUrl(state, url);
-		//        return true;
-		//    }
-
-		//    public static void RegisterUrl(IDictionary state, string url)
-		//    {
-		//        List<string> added = state["n2rsm"] as List<string>;
-		//        if (added == null)
-		//            state["n2rsm"] = added = new List<string>();
-
-		//        added.Add(url.ToLowerInvariant());
-		//    }
-
-		//    public static bool IsRegistered(IDictionary state, string url)
-		//    {
-		//        List<string> added = state["n2rsm"] as List<string>;
-		//        if (added == null)
-		//            return true;
-		//        return added.Contains(url.ToLowerInvariant());
-		//    }
-		//}
 	}
 }

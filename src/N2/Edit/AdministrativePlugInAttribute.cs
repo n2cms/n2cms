@@ -81,13 +81,13 @@ namespace N2.Edit
 		{
 			if (string.IsNullOrEmpty(iconUrl))
 				return text;
-			return string.Format("<img src='{0}' alt='{1}'/>{2}", pluginContext.EditUrlManager.ResolveManagementInterfaceUrl(iconUrl), alt, text);
+			return string.Format("<img src='{0}' alt='{1}'/>{2}", pluginContext.Rebase(iconUrl), alt, text);
 		}
 
 		protected virtual void ApplyStyles(PluginContext pluginContext, WebControl ctrl)
 		{
 			if (!string.IsNullOrEmpty(IconUrl))
-				ctrl.Style[HtmlTextWriterStyle.BackgroundImage] = pluginContext.EditUrlManager.ResolveManagementInterfaceUrl(IconUrl);
+				ctrl.Style[HtmlTextWriterStyle.BackgroundImage] = pluginContext.Rebase(IconUrl);
 		}
 
 		public abstract Control AddTo(Control container, PluginContext context);

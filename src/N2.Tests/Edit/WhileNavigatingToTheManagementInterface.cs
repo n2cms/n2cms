@@ -44,5 +44,13 @@ namespace N2.Tests.Edit
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}
+
+		[Test]
+		public void DoesNotDisruptAbsolutePaths()
+		{
+			var url = editUrlManager.ResolveManagementInterfaceUrl("/N2/Resources/aresource.css");
+
+			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
+		}
 	}
 }

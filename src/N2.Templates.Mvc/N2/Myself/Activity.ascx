@@ -11,7 +11,7 @@
 		</HeaderTemplate>
 		<ItemTemplate>
 			<tr><td>
-				<asp:HyperLink NavigateUrl='<%# Eval("Url") %>' runat="server"><asp:Image ImageUrl='<%# Eval("Iconurl") %>' runat="server" /><%# Eval("Title") %></asp:HyperLink>
+				<asp:HyperLink NavigateUrl='<%# Eval("Url") %>' runat="server"><asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" /><%# Eval("Title") %></asp:HyperLink>
 			</td><td>
 				<%# Eval("SavedBy") %>
 			</td><td>

@@ -8,7 +8,7 @@ namespace N2.Edit.Web.UI.Controls
 {
 	public class ResizedImage : Image
 	{
-		static Url ImageHandlerUrl = "|Management|/Files/Resize.ashx";
+		static Url ImageHandlerUrl = N2.Context.Current.EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Files/Resize.ashx");
 
 		public int MaxWidth { get; set; }
 		public int MaxHeight { get; set; }

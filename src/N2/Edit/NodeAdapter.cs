@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using N2.Collections;
 using N2.Edit.FileSystem;
@@ -55,14 +56,6 @@ namespace N2.Edit
 			set { editUrlManager = value; }
 		}
 
-		///// <summary>Gets the filter used to filter child pages.</summary>
-		///// <param name="user">The user to filter pages for.</param>
-		///// <returns>An item filter used when filtering children to display.</returns>
-		//public virtual ItemFilter GetManagementFilter()
-		//{
-		//    return EditManager.GetEditorFilter(webContext.User);
-		//}
-
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(Site site)
 		{
 			foreach (string uploadFolder in site.UploadFolders)
@@ -105,8 +98,8 @@ namespace N2.Edit
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
 			string url = EditUrlManager.GetPreviewUrl(item);
-			url =  string.IsNullOrEmpty(url) ? EditUrlManager.ResolveManagementInterfaceUrl("Empty.aspx") : url;
-			return webContext.ToAbsolute(url);
+			url =  String.IsNullOrEmpty(url) ? EditUrlManager.ResolveManagementInterfaceUrl("Empty.aspx") : url;
+			return url;
 		}
 
 		/// <summary>Gets the url to the icon representing this item.</summary>
@@ -114,7 +107,7 @@ namespace N2.Edit
 		/// <returns>An url to an icon.</returns>
 		public string GetIconUrl(ContentItem item)
 		{
-			return webContext.ToAbsolute(item.IconUrl);
+			return EditUrlManager.ResolveManagementInterfaceUrl(item.IconUrl);
 		}
 	}
 }

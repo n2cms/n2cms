@@ -70,7 +70,7 @@ namespace N2.Edit
 			                           selectedItem.PreviewUrl,
 			                           HttpUtility.UrlEncode(selectedItem.PreviewUrl)
 				);
-			return Url.ToAbsolute(url);
+			return ResolveManagementInterfaceUrl(url);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
@@ -97,7 +97,7 @@ namespace N2.Edit
 			if (resourceUrl.Contains("|Management|"))
 				finalUrl = resourceUrl.Replace("|Management|", ManagementInterfaceUrl.TrimEnd('/'));
 
-			if (finalUrl.StartsWith("~") == false
+			if (finalUrl.StartsWith("~") == false && finalUrl.StartsWith("/") == false
 			    && finalUrl.StartsWith(ManagementInterfaceUrl, StringComparison.InvariantCultureIgnoreCase) == false)
 				finalUrl = ManagementInterfaceUrl.TrimEnd('/') + "/" + resourceUrl.TrimStart('/');
 

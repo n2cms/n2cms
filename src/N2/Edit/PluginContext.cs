@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Text.RegularExpressions;
 using N2.Web.UI.WebControls;
 
@@ -11,10 +12,6 @@ namespace N2.Edit
 	{
 		private readonly IEditUrlManager editUrlManager;
 
-		public PluginContext()
-		{
-		}
-
 		public PluginContext(ContentItem selected, ContentItem memorizedItem, ContentItem startItem, ContentItem rootItem, 
 			ControlPanelState state, IEditUrlManager editUrlManager)
 		{
@@ -24,11 +21,6 @@ namespace N2.Edit
 			Memorized = memorizedItem;
 			Start = startItem;
 			Root = rootItem;
-		}
-
-		public IEditUrlManager EditUrlManager
-		{
-			get { return editUrlManager; }
 		}
 
 		public ControlPanelState State { get; set;}
@@ -50,7 +42,7 @@ namespace N2.Edit
 
 		public string Rebase(string url)
 		{
-			if (string.IsNullOrEmpty(url))
+			if (String.IsNullOrEmpty(url))
 				url = "empty.aspx";
 
 			string rebasedUrl = editUrlManager.ResolveManagementInterfaceUrl(url);

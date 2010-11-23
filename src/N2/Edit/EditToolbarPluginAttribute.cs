@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web.UI;
 
 namespace N2.Edit
@@ -11,7 +9,7 @@ namespace N2.Edit
 	[AttributeUsage(AttributeTargets.Class)]
 	public class EditToolbarPluginAttribute : AdministrativePluginAttribute
 	{
-		private string userControlUrl;
+		private readonly string userControlUrl;
 
 		public EditToolbarPluginAttribute(string userControlUrl)
 		{
@@ -20,7 +18,7 @@ namespace N2.Edit
 
 		public override Control AddTo(Control container, PluginContext context)
 		{
-			Control c = container.Page.LoadControl(userControlUrl);
+			Control c = container.Page.LoadControl(context.Rebase(userControlUrl));
 			container.Controls.Add(c);
 			return c;
 		}

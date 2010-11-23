@@ -18,7 +18,6 @@
 			<ItemTemplate><div><edit:ContentLink runat="server" DataSource='<%# Container.DataItem %>' /></div></ItemTemplate>
 		</asp:Repeater>
 	</fieldset>
-	</edit:FieldSet>
 	<edit:FieldSet class="affectedItems" runat="server" Legend="Affected items" meta:resourceKey="affectedItems">
 		<uc1:AffectedItems id="itemsToDelete" runat="server" />
 	</edit:FieldSet>
