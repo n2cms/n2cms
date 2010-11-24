@@ -1,3 +1,4 @@
+- SQL timeout exception (ThreadId=234907)
 - Add no-sql support
 - IOrderBy.Detail does sorting (ThreadId=234194)
 - comment moderation (ThreadId=232279)
@@ -26,7 +27,6 @@
 - check service container discrepancies (ThreadId=216762)
 - understand existingResponse=PassThrough (ThreadId=217297)
 - implement password reset (ThreadId=217293)
-- remove traces of Microsoft.Web.Mvc (ThreadId=217382)
 - consider tagging in mvc (ThreadId=216968)
 - themes for deleted items (ThreadId=216799)
 - culture+top part (ThreadId=210729)

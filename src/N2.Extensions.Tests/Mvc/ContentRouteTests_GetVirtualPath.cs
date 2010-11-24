@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc.Html;
 using System.Web.Routing;
-using Microsoft.Web.Mvc;
 using N2.Extensions.Tests.Mvc.Controllers;
 using NUnit.Framework;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
@@ -182,15 +181,15 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(html.ToString(), Is.EqualTo("<a href=\"/search/find?q=something\">Hello</a>"));
 		}
 
-		[Test]
-		public void CanCreate_UrlFromExpression()
-		{
-			RequestingUrl("/search/");
+		//[Test]
+		//public void CanCreate_UrlFromExpression()
+		//{
+		//    RequestingUrl("/search/");
 
-			string html = htmlHelper.BuildUrlFromExpression<SearchController>(s => s.Find("hello"));
+		//    string html = htmlHelper.BuildUrlFromExpression<SearchController>(s => s.Find("hello"));
 
-			Assert.That(html, Is.EqualTo("/search/Find?q=hello"));
-		}
+		//    Assert.That(html, Is.EqualTo("/search/Find?q=hello"));
+		//}
 
 		[Test]
 		public void GetVirtualPath_WhenAppInVirtualDirectory()

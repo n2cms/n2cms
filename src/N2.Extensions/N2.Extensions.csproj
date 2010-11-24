@@ -108,6 +108,7 @@
     <Compile Include="Web\Mvc\Html\AjaxExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />
     <Compile Include="Web\Mvc\Html\LinkExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\TagBuilderExtensions.cs" />
     <Compile Include="Web\Mvc\MvcAdapter.cs" />
     <Compile Include="Web\Mvc\NonContentConstraint.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />

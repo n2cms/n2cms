@@ -326,7 +326,7 @@ namespace N2.Tests.Persistence
 				Assert.AreNotEqual(item1["StringDetail"], previousVersion["StringDetail"]);
 
 				// Restore the previous version
-				engine.Resolve<IVersionManager>().ReplaceVersion(item1, previousVersion);
+				engine.Resolve<IVersionManager>().ReplaceVersion(item1, previousVersion, true);
 
 				// Check that the values are unchanged
 				Assert.AreEqual(item1.Name, previousVersion.Name);
@@ -353,7 +353,7 @@ namespace N2.Tests.Persistence
 				root = engine.Persister.Get(root.ID);
 				previousVersion = engine.Persister.Get(previousVersion.ID);
 
-				engine.Resolve<IVersionManager>().ReplaceVersion(root, previousVersion);
+				engine.Resolve<IVersionManager>().ReplaceVersion(root, previousVersion, true);
 			}
 			using (engine.Persister)
 			{
@@ -451,7 +451,7 @@ namespace N2.Tests.Persistence
 				root = engine.Persister.Get(root.ID);
 				previousVersion = engine.Persister.Get(previousVersion.ID);
 
-				engine.Resolve<IVersionManager>().ReplaceVersion(item, previousVersion);
+				engine.Resolve<IVersionManager>().ReplaceVersion(item, previousVersion, true);
 			}
 
 			using (engine.Persister)

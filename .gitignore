@@ -12,6 +12,7 @@ Release/
 *.aps
 *.obj
 .builds
+TestResult.xml
 
 # ReSharper is a .NET coding add-in
 _ReSharper*
@@ -42,5 +43,5 @@ stylecop.*
 ~$*
 *.dbmdl
 
-# Additional git files
+# Git files to ignore
 *.orig

@@ -1,8 +1,8 @@
-using MvcContrib.FluentHtml.Elements;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Mvc.Details;
 using N2.Templates.Mvc.Models.Pages;
+using System.Web.Mvc;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
@@ -11,7 +11,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[AllowedZones("Questions", "")]
 	public abstract class Question : PartBase, IQuestion
 	{
-		public abstract IElement CreateHtmlElement();
+		public abstract MvcHtmlString CreateHtmlElement();
 
 		public abstract string ElementID { get; }
 		public abstract string GetAnswerText(string value);

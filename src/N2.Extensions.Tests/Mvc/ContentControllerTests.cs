@@ -1,6 +1,5 @@
 using System;
 using System.Web.Mvc;
-using MvcContrib.TestHelper;
 using N2.Engine;
 using N2.Extensions.Tests.Mvc.Controllers;
 using N2.Extensions.Tests.Mvc.Models;
@@ -14,14 +13,14 @@ namespace N2.Extensions.Tests.Mvc
 	[TestFixture]
 	public class ContentControllerTests
 	{
-		[Test, Ignore("TODO: Reconsider this")]
-		public void TakesCareOfPartsRenderedWithView()
-		{
-			var controller = Create<TestItemController>();
-			controller.CurrentItem = new TestItem();
+		//[Test, Ignore("TODO: Reconsider this")]
+		//public void TakesCareOfPartsRenderedWithView()
+		//{
+		//    var controller = Create<TestItemController>();
+		//    controller.CurrentItem = new TestItem();
 
-			controller.UsingView().AssertResultIs<PartialViewResult>();
-		}
+		//    controller.UsingView().AssertResultIs<PartialViewResult>();
+		//}
 
 		[Test]
 		public void ReturnsViewWhenIndexCalledOnPageController()
@@ -29,26 +28,26 @@ namespace N2.Extensions.Tests.Mvc
 			var controller = Create<RegularController>();
 			controller.CurrentItem = new RegularPage();
 
-			controller.Index().AssertResultIs<ViewResult>();
+			Assert.That(controller.Index(), Is.InstanceOf<ViewResult>());
 		}
 
-		[Test, Ignore("TODO: Reconsider this")]
-		public void ReturnsPartialWhenIndexCalledOnPartController()
-		{
-			var controller = Create<TestItemController>();
-			controller.CurrentItem = new TestItem();
+		//[Test, Ignore("TODO: Reconsider this")]
+		//public void ReturnsPartialWhenIndexCalledOnPartController()
+		//{
+		//    var controller = Create<TestItemController>();
+		//    controller.CurrentItem = new TestItem();
 
-			controller.Index().AssertResultIs<PartialViewResult>();
-		}
+		//    controller.Index().AssertResultIs<PartialViewResult>();
+		//}
 
-		[Test, Ignore("TODO: Reconsider this")]
-		public void PartsRenderWithNonContentItemModels()
-		{
-			var controller = new TestItemController();
-			controller.CurrentItem = new TestItem();
+		//[Test, Ignore("TODO: Reconsider this")]
+		//public void PartsRenderWithNonContentItemModels()
+		//{
+		//    var controller = new TestItemController();
+		//    controller.CurrentItem = new TestItem();
 
-			controller.WithModel().AssertResultIs<PartialViewResult>();
-		}
+		//    controller.WithModel().AssertResultIs<PartialViewResult>();
+		//}
 
 		[Test]
 		public void ParentPage()

@@ -19,7 +19,7 @@
 				<label><input type="radio" name="vote" value="Bad" />Could be better</label><br />
 				<textarea name="feedback" style="width:100%" onfocus="if(this.value == '<%= DemoViewModel.FeedbackInstruction %>')this.value = ''"><%= DemoViewModel.FeedbackInstruction %></textarea>
 			</p>
-			<%= Html.SubmitButton("Submit", "Send (It's appreciated)") %>
+			<input type="submit" value="Send (It's appreciated)" />
 		<%} %>
 	</div></div>
 </div>

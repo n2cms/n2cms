@@ -11,7 +11,7 @@ using N2.Web.Mail;
 
 namespace N2.Templates.UI.Parts
 {
-    public partial class Form : TemplateUserControl<AbstractContentPage, Items.Form>
+	public partial class Form : TemplateUserControl<ContentItem, Items.Form>
     {
         protected MultiView mv;
         protected Zone zq;

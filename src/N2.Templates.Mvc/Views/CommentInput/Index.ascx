@@ -8,7 +8,7 @@
 	<div class="box" id="commentInput">
 	<div class="inner">
 		<div class="inputForm">
-		<%using (Html.BeginForm<CommentInputController>(c => c.Submit(null))){%>
+		<%using (Html.BeginForm("Submit", "CommentInput")){%>
 			<div class="row cf">
 				<label for="Email" class="label">Title *</label>
 				<%=Html.TextBoxFor(m => m.Title, new { maxlength = 250, @class = "tb" })%>
@@ -76,7 +76,7 @@
 			</div>
 			<div class="row cf">
 				<label class="label">&nbsp;</label>
-				<%=Html.SubmitButton("Submit", "Submit") %>
+				<input type="submit" />
 			</div>
 		<%} %>
 		</div>

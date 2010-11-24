@@ -15,5 +15,9 @@ namespace N2.Extensions.Tests.Fakes
 		{
 			get { return output ?? (output = new StringWriter()); }
 		}
+
+		public override string Status { get; set; }
+
+		public override int StatusCode { get; set; }
 	}
 }
