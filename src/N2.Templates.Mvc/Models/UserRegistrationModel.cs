@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Web.Mvc;
-using MvcContrib.FluentHtml;
-using MvcContrib.FluentHtml.Behaviors;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Web.Mvc;
 using N2.Web.UI;

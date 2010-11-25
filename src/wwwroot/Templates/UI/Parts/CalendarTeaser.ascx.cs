@@ -8,7 +8,7 @@ using N2.Web;
 
 namespace N2.Templates.UI.Parts
 {
-    public partial class CalendarTeaser : TemplateUserControl<AbstractContentPage, Templates.Items.CalendarTeaser>
+    public partial class CalendarTeaser : TemplateUserControl<ContentItem, Templates.Items.CalendarTeaser>
     {
         protected System.Web.UI.WebControls.Calendar cEvents;
         protected override void OnInit(System.EventArgs e)

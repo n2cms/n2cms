@@ -5,7 +5,7 @@ using N2.Integrity;
 
 namespace N2.Templates.UI.Parts
 {
-	public partial class ControlPanel : Web.UI.TemplateUserControl<Templates.Items.AbstractContentPage, Templates.Items.ControlPanel>
+	public partial class ControlPanel : Web.UI.TemplateUserControl<ContentItem, Templates.Items.ControlPanel>
 	{
 		protected override void OnInit(EventArgs e)
 		{

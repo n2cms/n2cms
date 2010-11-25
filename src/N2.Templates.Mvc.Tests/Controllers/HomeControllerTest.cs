@@ -1,12 +1,13 @@
 using System;
 using System.Web.Mvc;
-using MvcContrib.TestHelper;
 using N2.Engine;
 using N2.Templates.Mvc.Controllers;
 using N2.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
 using N2.Templates.Mvc.Models.Pages;
+using System.Web.Routing;
+using N2.Extensions.Tests.Fakes;
 
 namespace N2.Templates.Mvc.Tests.Controllers
 {
@@ -22,8 +23,8 @@ namespace N2.Templates.Mvc.Tests.Controllers
 		public void SetUp()
 		{
 			_homeController = new StartController { CurrentItem = new StartPage() };
-			new MvcContrib.TestHelper.TestControllerBuilder().InitializeController(_homeController);
-
+			_homeController.ControllerContext = new ControllerContext(new RequestContext(new FakeHttpContext(), new RouteData()), _homeController);
+			
 			N2.Context.Replace(MockRepository.GenerateStub<IEngine>());
 		}
 
@@ -34,10 +35,10 @@ namespace N2.Templates.Mvc.Tests.Controllers
 			_homeController.CurrentItem = new StartPage();
 
 			// Execute
-			var result = _homeController.Index().AssertViewRendered();
+			var result = _homeController.Index() as ViewResult;
 
 			// Verify
-			var item = result.WithViewData<StartPage>();
+			var item = result.ViewData.Model as StartPage;
 
 			Assert.That(item, Is.EqualTo(_homeController.CurrentItem));
 		}

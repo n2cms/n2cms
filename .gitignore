@@ -12,6 +12,7 @@ Release/
 *.aps
 *.obj
 .builds
+TestResult.xml
 
 # ReSharper is a .NET coding add-in
 _ReSharper*

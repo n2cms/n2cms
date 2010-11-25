@@ -5,7 +5,7 @@
 
 	<div class="box">
 		<div class="inner">
-			<%using(Html.BeginForm<PollController>(c => c.Submit(null))){%>
+			<%using(Html.BeginForm("Submit", "Poll")){%>
 				<p><%=Model.Question.Title%></p>
 				<p>
 				<%foreach(var option in Model.Question.Options){ %>

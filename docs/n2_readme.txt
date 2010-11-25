@@ -36,7 +36,7 @@ EXAMPLES
 There are a bunch of examples in the Examples "examples" directory of the 
 source code package. To run them you need to copy the compiled output of the
 core project and the edit interface into the example's web roots. 
-Prepare_Dependencies-vs2008.bat should do this for you. The examples:
+Prepare_AllDependencies.bat should do this for you. The examples:
 
 * MVC
   Example using the ASP.NET MVC framework

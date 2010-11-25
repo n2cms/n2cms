@@ -35,11 +35,5 @@ namespace N2.Edit.Web
 		{
             get { return Selection.SelectedItem; }
 		}
-
-        [Obsolete]
-        public FormsHelper Html
-        {
-            get { return new FormsHelper(this.Page, SelectedItem); }
-        }
 	}
 }

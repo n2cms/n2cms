@@ -77,7 +77,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 		lib\ILMerge.exe = lib\ILMerge.exe
 		lib\log4net.dll = lib\log4net.dll
 		lib\log4net.license.txt = lib\log4net.license.txt
-		lib\Microsoft.Web.Mvc.dll = lib\Microsoft.Web.Mvc.dll
 		lib\MSBuild.Community.Tasks.dll = lib\MSBuild.Community.Tasks.dll
 		lib\MSBuild.Community.Tasks.Targets = lib\MSBuild.Community.Tasks.Targets
 		lib\MySql.Data.dll = lib\MySql.Data.dll
@@ -95,9 +94,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 		lib\Rhino.Mocks.dll = lib\Rhino.Mocks.dll
 		lib\Rhino.Mocks.License.txt = lib\Rhino.Mocks.License.txt
 		lib\System.Data.SQLite.DLL = lib\System.Data.SQLite.DLL
-		lib\System.Web.Abstractions.dll = lib\System.Web.Abstractions.dll
-		lib\System.Web.Mvc.dll = lib\System.Web.Mvc.dll
-		lib\System.Web.Routing.dll = lib\System.Web.Routing.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddonCatalog", "src\wwwroot\AddonCatalog.csproj", "{0F286C8B-A322-43E6-B02C-F118BF29D3D5}"

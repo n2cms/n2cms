@@ -4,7 +4,7 @@
 	<%if(Model.FormSubmitted){%>
 		<%=ContentHtml.DisplayContent(m => m.SubmitText)%>
 	<%}else{%>
-		<%using(Html.BeginForm<FormController>(c => c.Submit(null), FormMethod.Post)){%>
+		<%using(Html.BeginForm("Submit", "Form", FormMethod.Post)){%>
 			<%=ContentHtml.DisplayContent(m => m.Title)%>
 			<%=ContentHtml.DisplayContent(m => m.IntroText)%>
 
@@ -16,8 +16,7 @@
 					</div>
 				<%}%>
 			</div>
-
-			<%=Html.SubmitButton("Submit", "Send")%>
+			<input type="submit" value="Send" />
 		<%}%>
 	<%}%>
 </div>

@@ -657,7 +657,6 @@
     <Compile Include="Engine\EventBroker.cs" />
     <Compile Include="Web\ConventionTemplateAttribute.cs" />
     <Compile Include="Web\ConventionTemplateDirectoryAttribute.cs" />
-    <Compile Include="Web\FormsHelper.cs" />
     <Compile Include="Web\PathDictionary.cs" />
     <Compile Include="Web\GoogleSiteMapHandler.cs" />
     <Compile Include="Web\Parts\IAddablePart.cs" />
@@ -692,7 +691,6 @@
     <Compile Include="Web\RegexTemplateAttribute.cs" />
     <Compile Include="Web\RequestItem.cs" />
     <Compile Include="Web\TemplateAttribute.cs" />
-    <Compile Include="Web\TagBuilder.cs" />
     <Compile Include="Web\ThreadContext.cs" />
     <Compile Include="Web\UI\CacheManager.cs" />
     <Compile Include="Web\UI\ContentCacheDependency.cs" />

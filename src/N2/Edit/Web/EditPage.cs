@@ -296,12 +296,6 @@ namespace N2.Edit.Web
 		}
 
         [Obsolete]
-        public FormsHelper Html
-        {
-            get { return new FormsHelper(this, Selection.SelectedItem); }
-        }
-
-        [Obsolete]
         protected virtual INode SelectedNode
         {
             get { return Selection.SelectedItem as INode; }

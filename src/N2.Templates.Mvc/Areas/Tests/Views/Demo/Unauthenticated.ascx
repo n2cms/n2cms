@@ -9,7 +9,7 @@
 				<%= Html.EditorFor(m => m.Email) %>
 				<%= Html.ValidationMessageFor(m => m.Email) %>
 			</p>
-			<%= Html.SubmitButton("Start", "Start demo") %>
+			<input type="submit" value="Start demo" />
 		<%} %>
 	</div></div>
 </div>
