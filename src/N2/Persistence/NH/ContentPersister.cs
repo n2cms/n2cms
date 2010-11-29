@@ -11,6 +11,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using N2.Collections;
@@ -137,6 +138,8 @@ namespace N2.Persistence.NH
 			{
 				using (ITransaction transaction = itemRepository.BeginTransaction())
 				{
+					DeleteReferencesRecursive(itemNoMore);
+
 					DeleteRecursive(itemNoMore, itemNoMore);
 
 					transaction.Commit();
@@ -145,13 +148,29 @@ namespace N2.Persistence.NH
 			Invoke(ItemDeleted, new ItemEventArgs(itemNoMore));
 		}
 
+		private void DeleteReferencesRecursive(ContentItem itemNoMore)
+		{
+			string itemTrail = Utility.GetTrail(itemNoMore);
+			var inboundLinks = Find.EnumerateChildren(itemNoMore, true)
+				.SelectMany(i => linkRepository.FindAll(Expression.Eq("LinkedItem", i)))
+				.Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
+				.ToList();
+
+			TraceInformation("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
+
+			foreach (LinkDetail link in inboundLinks)
+			{
+				linkRepository.Delete(link);
+				link.AddTo((DetailCollection)null);
+			}
+			linkRepository.Flush();
+		}
+
 		#region Delete Helper Methods
 
 		private void DeleteRecursive(ContentItem topItem, ContentItem itemToDelete)
 		{
 			DeletePreviousVersions(itemToDelete);
-
-			DeleteInboundLinks(topItem, itemToDelete);
 
 			try
 			{
@@ -183,24 +202,6 @@ namespace N2.Persistence.NH
 			{
 				itemRepository.Delete(previousVersion);
 			}
-		}
-
-		private void DeleteInboundLinks(ContentItem topItem, ContentItem itemNoMore)
-		{
-			var inboundLinks = linkRepository.FindAll(Expression.Eq("LinkedItem", itemNoMore));
-			if (inboundLinks.Count == 0)
-				return;
-				
-			TraceInformation("ContentPersister.DeleteInboundLinks " + inboundLinks.Count + " of " + itemNoMore);
-			
-			foreach (LinkDetail detail in inboundLinks)
-			{
-				// do not remove from enclosing (NHibernate.ObjectDeletedException : deleted object would be re-saved by cascade (remove deleted object from associations)[N2.Details.LinkDetail#1])
-				detail.LinkedItem = null;
-				if(!detail.EnclosingItem.AncestralTrail.StartsWith(topItem.AncestralTrail))
-					linkRepository.Delete(detail);
-			}
-			linkRepository.Flush();
 		}
 
 		#endregion

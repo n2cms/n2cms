@@ -172,6 +172,7 @@
     <Compile Include="Installation\AppPathRebaseTests.cs" />
     <Compile Include="Persistence\ContentDependencyInjectorTests.cs" />
     <Compile Include="Persistence\NH\ClonedProxiedItemsTest.cs" />
+    <Compile Include="Persistence\NH\PersisterLinksTests.cs" />
     <Compile Include="Persistence\Proxying\InterceptionFactoryTests.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Web\HostTests.cs" />

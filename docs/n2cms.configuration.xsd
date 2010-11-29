@@ -281,6 +281,7 @@
 						</xs:attribute>
 						<xs:attribute name="hibernateMapping" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
+						<xs:attribute name="batchSize" type="xs:int" use="optional" default="25" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="edit">

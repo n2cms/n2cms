@@ -389,48 +389,5 @@ namespace N2.Tests.Persistence.NH
 			Assert.That(child1.SortOrder, Is.GreaterThan(child2.SortOrder));
 			Assert.That(child2.SortOrder, Is.GreaterThan(child3.SortOrder));
 		}
-
-		[Test]
-		public void Delete_ReferencedItem_ReferencesAreCleared()
-		{
-			ContentItem item1, item2;
-			using (persister)
-			{
-				item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
-				persister.Save(item1);
-				item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", null);
-				item2["Reference"] = item1;
-				persister.Save(item2);
-			}
-			using (persister)
-			{
-				item1 = persister.Get(item1.ID);
-				persister.Delete(item1);
-			}
-			using (persister)
-			{
-				item2 = persister.Get(item2.ID);
-				Assert.That(item2["Reference"], Is.Null);
-			}
-		}
-
-		[Test]
-		public void Delete_ReferencedItem_ReferencedByChild()
-		{
-			ContentItem item1, item2;
-			using (persister)
-			{
-				item1 = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
-				persister.Save(item1);
-				item2 = CreateOneItem<Definitions.PersistableItem1>(0, "item2", item1);
-				item2["Reference"] = item1;
-				persister.Save(item2);
-			}
-			using (persister)
-			{
-				item1 = persister.Get(item1.ID);
-				persister.Delete(item1);
-			}
-		}
 	}
 }

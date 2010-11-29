@@ -203,13 +203,24 @@ namespace N2.Persistence
 		/// <returns>An enumeration of all children of an item.</returns>
 		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item)
 		{
-            if (item.VersionOf != null) item = item.VersionOf;
+			return EnumerateChildren(item, false);
+		}
+
+		/// <summary>Enumerates itself, child items and their children, and so on.</summary>
+		/// <param name="item">The parent item whose child items to enumerate. The item itself is not returned.</param>
+		/// <returns>An enumeration of all children of an item.</returns>
+		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSlef)
+		{
+			if (item.VersionOf != null) item = item.VersionOf;
+
+			if(includeSlef)
+				yield return item;
 
 			foreach (ContentItem child in item.Children)
 			{
 				yield return child;
-				foreach (ContentItem childItem in EnumerateChildren(child))
-					yield return childItem;
+				foreach (ContentItem descendant in EnumerateChildren(child, false))
+					yield return descendant;
 			}
 		}
 

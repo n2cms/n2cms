@@ -36,7 +36,7 @@
 		</subclass>
 
 		<subclass name="N2.Details.LinkDetail,N2" discriminator-value="Link">
-			<many-to-one name="LinkedItem" column="LinkValue" class="N2.ContentItem,N2" lazy="proxy" />
+			<many-to-one name="LinkedItem" column="LinkValue" class="N2.ContentItem,N2" lazy="proxy" cascade="none" />
 		</subclass>
 
 		<subclass name="N2.Details.DoubleDetail,N2" discriminator-value="Double">
