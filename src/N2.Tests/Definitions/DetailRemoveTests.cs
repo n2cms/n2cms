@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Tests.Definitions.Items;
+using N2.Tests.Fakes;
 using NUnit.Framework;
 
 namespace N2.Tests.Definitions
@@ -22,18 +21,14 @@ namespace N2.Tests.Definitions
 				};
 		}
 
-
-
 		[SetUp]
 		public override void SetUp()
 		{
 			base.SetUp();
-			
-			builder = new DefinitionBuilder(typeFinder, new EngineSection());
+
+			builder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
 		}
 
-
-		
 		[Test]
 		public void CanRemove_Detail_InheritedFrom_BaseClass()
 		{

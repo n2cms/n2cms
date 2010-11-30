@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<N2.Templates.Mvc.Services.IFeed>" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.master" AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage<N2.Definitions.IFeed>" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="TextContent" runat="server">
 	
 	<h1><a href="<%= Model.Url %>"><%= Model.Title %></a></h1>

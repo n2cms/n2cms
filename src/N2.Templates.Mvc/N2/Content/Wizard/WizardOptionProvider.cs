@@ -12,13 +12,13 @@ namespace N2.Edit.Wizard
 	public class WizardOptionProvider : IProvider<ToolbarOption>
 	{
 		LocationWizard wizard;
-		IEditManager edits;
+		IEditUrlManager editUrlManager;
 		IDefinitionManager definitions;
 
-		public WizardOptionProvider(LocationWizard wizard, IEditManager edits, IDefinitionManager definitions)
+		public WizardOptionProvider(LocationWizard wizard, IEditUrlManager editUrlManager, IDefinitionManager definitions)
 		{
 			this.wizard = wizard;
-			this.edits = edits;
+			this.editUrlManager = editUrlManager;
 			this.definitions = definitions;
 		}
 
@@ -38,7 +38,7 @@ namespace N2.Edit.Wizard
 					Target = Targets.Preview,
 					SortOrder = i,
 					Name = m.Name,
-					Url = edits.GetEditNewPageUrl(m.Location, m.GetDefinition(definitions), m.ZoneName, CreationPosition.Below) + "&template=" + m.ContentTemplate
+					Url = editUrlManager.GetEditNewPageUrl(m.Location, m.GetDefinition(definitions), m.ZoneName, CreationPosition.Below) + "&template=" + m.ContentTemplate
 				});
 		}
 

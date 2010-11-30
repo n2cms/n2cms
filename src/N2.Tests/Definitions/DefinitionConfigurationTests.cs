@@ -5,6 +5,7 @@ using System.Text;
 using N2.Configuration;
 using N2.Definitions;
 using N2.Tests.Definitions.Items;
+using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Details;
 
@@ -29,7 +30,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(new DefinitionElement { Name = "DefinitionUndefined", Type = typeof(DefinitionUndefined).AssemblyQualifiedName });
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
 
 			var definitions = builder.GetDefinitions();
 			var undefinedDefinition = definitions.Values
@@ -44,7 +45,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Remove(new DefinitionElement { Name = "DefinitionTextPage" });
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinitions = definitions.Values
@@ -61,7 +62,7 @@ namespace N2.Tests.Definitions
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(definitionElement);
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinition = definitions.Values
@@ -82,7 +83,7 @@ namespace N2.Tests.Definitions
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(definitionElement);
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinition = definitions.Values

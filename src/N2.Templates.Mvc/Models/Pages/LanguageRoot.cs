@@ -1,11 +1,10 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using N2.Engine.Globalization;
 using N2.Details;
 using N2.Persistence.Serialization;
 using N2.Templates.Mvc.Models.Parts;
-using N2.Web;
-using N2.Web.Mvc;
 using N2.Web.UI;
 using N2.Integrity;
 using N2.Definitions;
@@ -41,11 +40,9 @@ namespace N2.Templates.Mvc.Models.Pages
 			{
 				if (string.IsNullOrEmpty(LanguageCode))
 					return "";
-				else
-				{
-					string[] parts = LanguageCode.Split('-');
-					return string.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1].ToLowerInvariant());
-				}
+
+				string[] parts = LanguageCode.Split('-');
+				return String.Format("~/N2/Resources/Img/Flags/{0}.png", parts[parts.Length - 1].ToLowerInvariant());
 			}
 		}
 

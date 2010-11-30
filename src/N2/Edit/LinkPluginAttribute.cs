@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using N2.Web;
 
 namespace N2.Edit
 {
@@ -51,8 +47,8 @@ namespace N2.Edit
 			set { toolTip = value; }
 		}
 
-        /// <summary>Alternative text for the icon.</summary>
-        public string AlternativeText { get; set; }
+		/// <summary>Alternative text for the icon.</summary>
+		public string AlternativeText { get; set; }
 
 		/// <summary>Used for translating the plugin's texts from a global resource.</summary>
 		public string GlobalResourceClassName
@@ -73,17 +69,17 @@ namespace N2.Edit
 			return a;
 		}
 
-        protected virtual void RegisterToolbarUrl(Control container, string clientID, string urlFormat)
-        {
-            string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, urlFormat);
-            container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
-        }
+		protected virtual void RegisterToolbarUrl(Control container, string clientID, string urlFormat)
+		{
+			string arrayScript = string.Format("{{ linkId: \"{0}\", urlFormat: \"{1}\" }}", clientID, urlFormat);
+			container.Page.ClientScript.RegisterArrayDeclaration(ArrayVariableName, arrayScript);
+		}
 
 		protected virtual HyperLink AddAnchor(Control container, PluginContext context)
 		{
 			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
-            string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
-            string alternative = Utility.GetResourceString(GlobalResourceClassName, Name + ".AlternativeText") ?? AlternativeText;
+			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
+			string alternative = Utility.GetResourceString(GlobalResourceClassName, Name + ".AlternativeText") ?? AlternativeText;
 
 			HyperLink a = new HyperLink();
 			a.ID = "h" + Name;
@@ -95,9 +91,7 @@ namespace N2.Edit
 			a.Text = tooltip;
             a.ToolTip = tooltip;
 			a.Text = title;
-			ApplyStyles(a);
-			//if (!string.IsNullOrEmpty(IconUrl))
-			//    a.Style[HtmlTextWriterStyle.BackgroundImage] = N2.Web.Url.ToAbsolute(IconUrl);
+			ApplyStyles(context, a);
 
 			container.Controls.Add(a);
 			return a;

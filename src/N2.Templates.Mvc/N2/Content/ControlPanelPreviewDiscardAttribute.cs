@@ -13,7 +13,7 @@ namespace N2.Edit
 	public class ControlPanelPreviewDiscardAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelPreviewDiscardAttribute(string toolTip, int sortOrder)
-            : base("cpPreviewDiscard", "~/N2/Resources/icons/cancel.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
+            : base("cpPreviewDiscard", "|Management|/Resources/icons/cancel.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
 		{
 		}
 
@@ -25,8 +25,8 @@ namespace N2.Edit
 			if (context.Selected.VersionOf == null) return null;
 
 			HyperLink hl = new HyperLink();
-			hl.Text = GetInnerHtml(IconUrl, ToolTip, Title);
-			hl.NavigateUrl = Url.Parse("~/N2/Content/DiscardPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
+			hl.Text = GetInnerHtml(context, IconUrl, ToolTip, Title);
+			hl.NavigateUrl = Url.Parse("|Management|/Content/DiscardPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
 			hl.CssClass = "cancel";
 			hl.Attributes["onclick"] = "return confirm('Are you certain?');";
 

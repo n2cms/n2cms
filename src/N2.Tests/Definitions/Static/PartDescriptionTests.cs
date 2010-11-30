@@ -29,9 +29,15 @@ namespace N2.Tests.Definitions.Static
 		}
 
 		[Test]
+		public void Description_HasDefinitionIconUrl()
+		{
+			Assert.That(description.IconUrl, Is.EqualTo("/N2/Resources/icons/page_white(description).png"));
+		}
+
+		[Test]
 		public void Instance_HasPageIconUrl()
 		{
-			Assert.That(item.IconUrl, Is.EqualTo("/N2/Resources/icons/page_white.png"));
+			Assert.That(item.IconUrl, Is.EqualTo("/N2/Resources/icons/page_white(iconUrl).png"));
 		}
 
 		[Test]

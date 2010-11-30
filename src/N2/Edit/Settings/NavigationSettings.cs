@@ -11,7 +11,7 @@ namespace N2.Edit.Settings
 	[Service]
 	public class NavigationSettings
 	{
-		private IWebContext context;
+		private readonly IWebContext context;
 
 		public NavigationSettings(IWebContext context)
 		{
@@ -27,7 +27,7 @@ namespace N2.Edit.Settings
 			set { GetCookie(context.Response.Cookies).Value = value.ToString(); }
 		}
 
-		private HttpCookie GetCookie(HttpCookieCollection cookies)
+		private static HttpCookie GetCookie(HttpCookieCollection cookies)
 		{
 			HttpCookie ddi = cookies["DDI"];
 			if (ddi == null)

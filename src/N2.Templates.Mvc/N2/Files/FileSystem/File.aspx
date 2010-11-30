@@ -1,6 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/N2/Content/Framed.Master" AutoEventWireup="true" CodeBehind="File.aspx.cs" Inherits="N2.Edit.FileSystem.File1" %>
-<%@ Import Namespace="N2.Engine" %>
-<%@ Import Namespace="N2.Edit" %>
+﻿<%@ Page Language="C#" MasterPageFile="../../Content/Framed.Master" AutoEventWireup="true" CodeBehind="File.aspx.cs" Inherits="N2.Edit.FileSystem.File1" %>
+
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
 	<asp:LinkButton ID="btnDownload" runat="server" Text="Download" CssClass="command" OnCommand="OnDownloadCommand" meta:resourceKey="btnDownload" />
@@ -11,11 +10,11 @@
 <asp:Content ContentPlaceHolderID="Content" runat="server">
 	<h1><% foreach (N2.ContentItem node in ancestors){ %>/<a href="<%= GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
 
-    <a href="<%= SelectedItem.Url %>">
-        <img src="<%= N2.Web.Url.ToAbsolute(SelectedItem.IconUrl) %>" alt="icon" />
-        <%= SelectedItem.Title %>
-        (<%= SelectedFile.Size / 1024 %> kB)
-    </a>
+	<a href="<%= SelectedItem.Url %>">
+		<img src="<%= N2.Web.Url.ToAbsolute(SelectedItem.IconUrl) %>" alt="icon" />
+		<%= SelectedItem.Title %>
+		(<%= SelectedFile.Size / 1024 %> kB)
+	</a>
 
 	<div class="fileContents">
 		<asp:TextBox ID="txtContent" runat="server" CssClass="fileContents" Visible="false" TextMode="MultiLine" />

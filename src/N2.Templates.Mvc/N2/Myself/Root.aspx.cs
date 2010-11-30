@@ -8,7 +8,7 @@ using System.Web.UI;
 
 namespace N2.Management.Myself
 {
-	[ToolbarPlugin("HOME", "home", "~/N2/Myself/Root.aspx", ToolbarArea.Navigation, Targets.Preview, "~/N2/Resources/icons/application_home.png", -50)]
+	[ToolbarPlugin("HOME", "home", "|Management|/Myself/Root.aspx", ToolbarArea.Navigation, Targets.Preview, "|Management|/Resources/icons/application_home.png", -50)]
 	public partial class Root : EditPage, IContentTemplate, IItemContainer
     {
 		protected override void OnPreInit(System.EventArgs e)

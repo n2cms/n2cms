@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Principal;
+using N2.Definitions.Static;
 using N2.Details;
 using N2.Installation;
 using N2.Integrity;
@@ -37,45 +38,34 @@ namespace N2.Definitions
 	/// </summary>
 	public class ItemDefinition : IComparable<ItemDefinition>
 	{
-		string title;
-		string discriminator;
-		string description;
-		int sortOrder;
-		string toolTip;
-		readonly Type itemType;
-		string iconUrl = null;
-		bool enabled = true;
-		bool isDefined = false;
-		AllowedZones allowedIn = AllowedZones.None;
-		
-		public int NumberOfItems { get; set; }
+		private readonly IList<ItemDefinition> allowedChildren = new List<ItemDefinition>();
+		private readonly IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
+		private readonly Type itemType;
+		private AllowedZones allowedIn = AllowedZones.None;
 
-		IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
-		IList<string> allowedZoneNames = new List<string>();
-		IList<ItemDefinition> allowedChildren = new List<ItemDefinition>();
-		IList<string> authorizedRoles;
-		
-		IList<IEditable> editables;
-		IList<IEditableContainer> containers;
-		IList<EditorModifierAttribute> modifiers;
-		IList<IDisplayable> displayables;
-		IEditableContainer rootContainer = null;
-		
+		private IList<string> allowedZoneNames = new List<string>();
+		private IList<string> authorizedRoles;
+		private bool enabled = true;
+		private string iconUrl;
+
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
 		public ItemDefinition(Type itemType)
 		{
-			if (!itemType.IsSubclassOf(typeof(ContentItem))) throw new N2Exception("Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName);
+			if (!itemType.IsSubclassOf(typeof (ContentItem)))
+				throw new N2Exception(
+					"Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName);
 
 			this.itemType = itemType;
-			title = itemType.Name;
-			discriminator = itemType.Name;
-			description = "";
-			toolTip = itemType.FullName;
-			sortOrder = 1000;
+			Title = itemType.Name;
+			Discriminator = itemType.Name;
+			Description = "";
+			ToolTip = itemType.FullName;
+			SortOrder = 1000;
 		}
 
-		
+		public int NumberOfItems { get; set; }
+
 		/// <summary>
 		/// Gets or sets how to treat this definition during installation.
 		/// </summary>
@@ -100,18 +90,10 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets the name used when presenting this item class to editors.</summary>
-		public string Title
-		{
-			get { return title; }
-			set { title = value; }
-		}
+		public string Title { get; set; }
 
 		/// <summary>Gets discriminator value used to to map class when retrieving from persistence. When this is null the type's full name is used.</summary>
-		public string Discriminator
-		{
-			get { return discriminator; }
-			set { discriminator = value; }
-		}
+		public string Discriminator { get; set; }
 
 		/// <summary>Definitions which are not enabled are not available when creating new items.</summary>
 		public bool Enabled
@@ -121,32 +103,16 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets or sets wheter this definition has been defined. Weirdly enough a definition may exist without beeing defined. To define a definition the class must implement the <see cref="N2.PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/>.</summary>
-		public bool IsDefined
-		{
-			get { return isDefined; }
-			internal set { isDefined = value; }
-		}
+		public bool IsDefined { get; internal set; }
 
 		/// <summary>Gets the order of this item type when selecting new item in edit mode.</summary>
-		public int SortOrder
-		{
-			get { return sortOrder; }
-			set { sortOrder = value; }
-		}
+		public int SortOrder { get; set; }
 
 		/// <summary>Gets the tooltip used when presenting this item class to editors.</summary>
-		public string ToolTip
-		{
-			get { return toolTip; }
-			set { toolTip = value; }
-		}
+		public string ToolTip { get; set; }
 
 		/// <summary>Gets the description used when presenting this item class to editors.</summary>
-		public string Description
-		{
-			get { return description; }
-			set { description = value; }
-		}
+		public string Description { get; set; }
 
 		/// <summary>Gets or sets the type of this item.</summary>
 		public Type ItemType
@@ -176,8 +142,8 @@ namespace N2.Definitions
 				{
 					try
 					{
-						iconUrl = Static.DescriptionDictionary.GetDescription(ItemType).IconUrl
-							?? ((ContentItem)Activator.CreateInstance(ItemType)).IconUrl;
+						iconUrl = DescriptionDictionary.GetDescription(ItemType).IconUrl
+						          ?? ((ContentItem) Activator.CreateInstance(ItemType)).IconUrl;
 					}
 					catch (Exception ex)
 					{
@@ -187,28 +153,17 @@ namespace N2.Definitions
 				}
 				return iconUrl;
 			}
+			set { iconUrl = value; }
 		}
 
 		/// <summary>Gets or sets editables defined for the item.</summary>
-		public IList<IEditable> Editables
-		{
-			get { return editables; }
-			set { editables = value; }
-		}
+		public IList<IEditable> Editables { get; set; }
 
 		/// <summary>Gets or sets containers defined for the item.</summary>
-		public IList<IEditableContainer> Containers
-		{
-			get { return containers; }
-			set { containers = value; }
-		}
+		public IList<IEditableContainer> Containers { get; set; }
 
 		/// <summary>Gets or sets the root container used to build the edit interface.</summary>
-		public IEditableContainer RootContainer
-		{
-			get { return rootContainer; }
-			set { rootContainer = value; }
-		}
+		public IEditableContainer RootContainer { get; set; }
 
 		/// <summary>Gets or sets additional child types allowed below this item.</summary>
 		public IList<ItemDefinition> AllowedChildren
@@ -217,18 +172,11 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
-		public IList<EditorModifierAttribute> Modifiers
-		{
-			get { return modifiers; }
-			set { modifiers = value; }
-		}
+		public IList<EditorModifierAttribute> Modifiers { get; set; }
 
 		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
-		public IList<IDisplayable> Displayables
-		{
-			get { return displayables; }
-			set { displayables = value; }
-		}
+		public IList<IDisplayable> Displayables { get; set; }
+
 		public AllowedZones AllowedIn
 		{
 			get { return allowedIn; }
@@ -238,6 +186,7 @@ namespace N2.Definitions
 		#endregion
 
 		#region Methods
+
 		/// <summary>Find out if this item is allowed in a zone.</summary>
 		/// <param name="zoneName">The zone name to check.</param>
 		/// <returns>True if the item is allowed in the zone.</returns>
@@ -264,7 +213,7 @@ namespace N2.Definitions
 		/// <returns>A filtered list of editable fields.</returns>
 		public IList<IEditable> GetEditables(IPrincipal user)
 		{
-			List<IEditable> filteredList = new List<IEditable>();
+			var filteredList = new List<IEditable>();
 			foreach (IEditable e in Editables)
 				if (e.IsAuthorized(user))
 					filteredList.Add(e);
@@ -276,7 +225,7 @@ namespace N2.Definitions
 		/// <returns></returns>
 		public IList<EditorModifierAttribute> GetModifiers(string detailName)
 		{
-			List<EditorModifierAttribute> filtered = new List<EditorModifierAttribute>();
+			var filtered = new List<EditorModifierAttribute>();
 			foreach (EditorModifierAttribute a in Modifiers)
 				if (a.Name == detailName)
 					filtered.Add(a);
@@ -288,42 +237,13 @@ namespace N2.Definitions
 		[Obsolete("Use N2.Factory.Definitions.CreateInstance instead.")]
 		public ContentItem CreateInstance(ContentItem parent)
 		{
-			ContentItem item = (ContentItem) Activator.CreateInstance(ItemType);
+			var item = (ContentItem) Activator.CreateInstance(ItemType);
 
 			item.Parent = parent;
 			return item;
 		}
 
 		#endregion
-
-		public bool HasZone(string zone)
-		{
-			if (string.IsNullOrEmpty(zone))
-				return true;
-			if (AvailableZones != null)
-				foreach (AvailableZoneAttribute a in AvailableZones)
-					if (a.ZoneName == zone)
-						return true;
-			return false;
-		}
-
-		public bool IsAuthorized(IPrincipal user)
-		{
-			if (user == null || authorizedRoles == null)
-				return true;
-			foreach (string role in authorizedRoles)
-				if (string.Equals(user.Identity.Name, role, StringComparison.OrdinalIgnoreCase) || user.IsInRole(role))
-					return true;
-			return false;
-		}
-
-		/// <summary>Find out if this item allows sub-items of a certain type.</summary>
-		/// <param name="child">The item that should be checked whether it is allowed below this item.</param>
-		/// <returns>True if the specified child item is allowed below this item.</returns>
-		public bool IsChildAllowed(ItemDefinition child)
-		{
-			return AllowedChildren.Contains(child);
-		}
 
 		#region IComparable<ItemDefinition> Members
 
@@ -359,11 +279,40 @@ namespace N2.Definitions
 
 		#endregion
 
+		public bool HasZone(string zone)
+		{
+			if (string.IsNullOrEmpty(zone))
+				return true;
+			if (AvailableZones != null)
+				foreach (AvailableZoneAttribute a in AvailableZones)
+					if (a.ZoneName == zone)
+						return true;
+			return false;
+		}
+
+		public bool IsAuthorized(IPrincipal user)
+		{
+			if (user == null || authorizedRoles == null)
+				return true;
+			foreach (string role in authorizedRoles)
+				if (string.Equals(user.Identity.Name, role, StringComparison.OrdinalIgnoreCase) || user.IsInRole(role))
+					return true;
+			return false;
+		}
+
+		/// <summary>Find out if this item allows sub-items of a certain type.</summary>
+		/// <param name="child">The item that should be checked whether it is allowed below this item.</param>
+		/// <returns>True if the specified child item is allowed below this item.</returns>
+		public bool IsChildAllowed(ItemDefinition child)
+		{
+			return AllowedChildren.Contains(child);
+		}
+
 		/// <summary>Adds an allowed child definition to the list of allowed definitions.</summary>
 		/// <param name="definition">The allowed child definition to add.</param>
 		public void AddAllowedChild(ItemDefinition definition)
 		{
-			if(!AllowedChildren.Contains(definition))
+			if (!AllowedChildren.Contains(definition))
 				AllowedChildren.Add(definition);
 		}
 
@@ -393,16 +342,16 @@ namespace N2.Definitions
 		/// <param name="containable">The editable to add.</param>
 		public void Add(IContainable containable)
 		{
-			if(string.IsNullOrEmpty(containable.ContainerName))
+			if (string.IsNullOrEmpty(containable.ContainerName))
 			{
 				RootContainer.AddContained(containable);
 				AddToCollection(containable);
 			}
 			else
 			{
-				foreach(IEditableContainer container in Containers)
+				foreach (IEditableContainer container in Containers)
 				{
-					if(container.Name == containable.ContainerName)
+					if (container.Name == containable.ContainerName)
 					{
 						container.AddContained(containable);
 						AddToCollection(containable);
@@ -427,21 +376,22 @@ namespace N2.Definitions
 				if (container.Name == containableName)
 					return container;
 			}
-			throw new ArgumentException("Could not find the containable '" + containableName + "' amont the definition's Editables and Containers.");
+			throw new ArgumentException("Could not find the containable '" + containableName +
+			                            "' amont the definition's Editables and Containers.");
 		}
 
 		public void Remove(IContainable containable)
 		{
-			if(!string.IsNullOrEmpty(containable.ContainerName))
+			if (!string.IsNullOrEmpty(containable.ContainerName))
 			{
-				IEditableContainer container = (IEditableContainer)Get(containable.ContainerName);
-				container.RemoveContained(containable);	
+				var container = (IEditableContainer) Get(containable.ContainerName);
+				container.RemoveContained(containable);
 			}
-			
+
 			if (containable is IEditable)
-				Editables.Remove((IEditable)containable);
+				Editables.Remove((IEditable) containable);
 			else if (containable is IEditableContainer)
-				Containers.Remove((IEditableContainer)containable);
+				Containers.Remove((IEditableContainer) containable);
 			else
 				throw new ArgumentException("Invalid argument " + containable);
 		}
@@ -450,7 +400,7 @@ namespace N2.Definitions
 		{
 			if (containable is IEditable)
 				Editables.Add(containable as IEditable);
-			else if(containable is IEditableContainer)
+			else if (containable is IEditableContainer)
 				Containers.Add(containable as IEditableContainer);
 		}
 	}

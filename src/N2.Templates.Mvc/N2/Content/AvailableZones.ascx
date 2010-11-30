@@ -6,7 +6,7 @@
 		<ItemTemplate>
 			<dt>
 				<asp:HyperLink CssClass="new" ID="hlNew" runat="server" ToolTip="New item" NavigateUrl="<%# GetNewDataItemUrl(Container.DataItem) %>"
-				    ImageUrl="../Resources/icons/add.png" Text="<%# GetNewDataItemText(Container.DataItem) %>" meta:resourceKey="hlNew" />
+					ImageUrl="../Resources/icons/add.png" Text="<%# GetNewDataItemText(Container.DataItem) %>" meta:resourceKey="hlNew" />
 				<strong><%# GetZoneString((string)Eval("ZoneName")) ?? Eval("Title") %></strong>
 			</dt>
 			<asp:Repeater ID="rptItems" runat="server" DataSource="<%# GetItemsInZone(Container.DataItem) %>">
@@ -14,17 +14,17 @@
 				<ItemTemplate>
 					<div class="edit">
 						<asp:HyperLink runat="server" Text="<%# GetEditDataItemText(Container.DataItem) %>" 
-						    NavigateUrl="<%# GetEditDataItemUrl(Container.DataItem) %>" />
+							NavigateUrl="<%# GetEditDataItemUrl(Container.DataItem) %>" />
 						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>" 
 							Enabled="<%#CanMoveItemDown(Container.DataItem) %>"
 							CssClass="<%#MoveItemDownClass(Container.DataItem)%>"
-							ImageUrl="~/N2/Resources/icons/bullet_arrow_down.png" OnClick="MoveItemDown"	/>
+							ImageUrl="../Resources/icons/bullet_arrow_down.png" OnClick="MoveItemDown" />
 						<asp:ImageButton runat="server" CommandArgument="<%#GetEditDataItemID(Container.DataItem)%>"
 							Enabled="<%#CanMoveItemUp(Container.DataItem) %>"
 							CssClass="<%#MoveItemUpClass(Container.DataItem)%>"
-							ImageUrl="~/N2/Resources/icons/bullet_arrow_up.png" OnClick="MoveItemUp"/>
-					    <asp:HyperLink NavigateUrl="<%# GetDeleteDataItemUrl(Container.DataItem) %>" CssClass="delete" runat="server" 
-					        ImageUrl="../Resources/icons/cross.png" meta:resourceKey="hlDelete" />
+							ImageUrl="../Resources/icons/bullet_arrow_up.png" OnClick="MoveItemUp"/>
+						<asp:HyperLink NavigateUrl="<%# GetDeleteDataItemUrl(Container.DataItem) %>" CssClass="delete" runat="server" 
+							ImageUrl="../Resources/icons/cross.png" meta:resourceKey="hlDelete" />
 					</div>
 				</ItemTemplate>
 				<FooterTemplate></dd></FooterTemplate>

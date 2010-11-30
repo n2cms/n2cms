@@ -9,7 +9,6 @@ using N2.Definitions;
 using N2.Security;
 using N2.Configuration;
 using N2.Edit.Trash;
-using N2.Plugin;
 
 namespace N2.Engine.Globalization
 {
@@ -22,38 +21,38 @@ namespace N2.Engine.Globalization
 
 		readonly IPersister persister;
 		readonly IItemFinder finder;
-		readonly IEditManager editManager;
+		readonly IEditUrlManager editUrlManager;
 		readonly IDefinitionManager definitions;
 		readonly IHost host;
 		int recursionDepth = 3;
-        ISecurityManager security;
-        IWebContext context;
+    	readonly ISecurityManager security;
+    	readonly IWebContext context;
 		StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
         bool enabled = true;
 
 		public LanguageGateway(
-			IPersister persister, 
-			IItemFinder finder, 
-			IEditManager editManager, 
-			IDefinitionManager definitions, 
-			IHost host, 
-			ISecurityManager security, 
+			IPersister persister,
+			IItemFinder finder,
+			IEditUrlManager editUrlManager,
+			IDefinitionManager definitions,
+			IHost host,
+			ISecurityManager security,
 			IWebContext context,
 			StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
 			EngineSection config)
-        {
+		{
 			this.persister = persister;
 			this.finder = finder;
-			this.editManager = editManager;
+			this.editUrlManager = editUrlManager;
 			this.definitions = definitions;
 			this.host = host;
 			this.security = security;
 			this.context = context;
 			this.languagesCache = languagesCache;
 			Enabled = config.Globalization.Enabled;
-        }
+		}
 
-        public bool Enabled
+    	public bool Enabled
         {
             get { return enabled; }
             set { enabled = value; }
@@ -162,8 +161,8 @@ namespace N2.Engine.Globalization
 					ItemDefinition definition = definitions.GetDefinition(item.GetContentType());
 					if (translation != null)
 					{
-						string url = editManager.GetEditExistingItemUrl(translation);
-						yield return new TranslateSpecification(url, language, translation, definition);
+						string url = editUrlManager.GetEditExistingItemUrl(translation);
+						yield return new TranslateSpecification(url, language, translation, definition, editUrlManager);
 					}
 					else
 					{
@@ -172,10 +171,10 @@ namespace N2.Engine.Globalization
 						if (translatedParent == null)
 							continue;
 
-						Url url = editManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
-					    url = url.AppendQuery(LanguageKey, item[LanguageKey] ?? item.ID);
+						Url url = editUrlManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
+						url = url.AppendQuery(LanguageKey, item[LanguageKey] ?? item.ID);
 
-						yield return new TranslateSpecification(url, language, translation, definition);
+						yield return new TranslateSpecification(url, language, translation, definition, editUrlManager);
 					}
 				}
 			}

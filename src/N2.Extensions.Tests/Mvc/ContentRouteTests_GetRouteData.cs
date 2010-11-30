@@ -114,6 +114,5 @@ namespace N2.Extensions.Tests.Mvc
 			Assert.That(routeData.Values["action"], Is.EqualTo("submit"));
 			Assert.That(routeData.Values["id"], Is.EqualTo("123"));
 		}
-
 	}
 }
