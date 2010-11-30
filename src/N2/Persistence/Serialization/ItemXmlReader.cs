@@ -111,19 +111,15 @@ namespace N2.Persistence.Serialization
 		private ContentItem CreateInstance(Dictionary<string, string> attributes)
 		{
 			ItemDefinition definition = FindDefinition(attributes);
-			return definitions.CreateInstance(definition.ItemType, null, false);
+			return definitions.CreateInstance(definition.ItemType, null);
 		}
 
 		protected virtual ItemDefinition FindDefinition(Dictionary<string, string> attributes)
 		{
-			string discriminator = attributes["discriminator"];
-			foreach (ItemDefinition d in definitions.GetDefinitions())
-				if (d.Discriminator == discriminator)
-					return d;
-
-			string title = attributes["title"];
-			string name = attributes["name"];
-			throw new DefinitionNotFoundException(string.Format("No definition found for '{0}' with name '{1}' and discriminator '{2}'", title, name, discriminator), attributes);
+			var definition = definitions.GetDefinition(attributes["discriminator"]);
+			if(definition == null)
+				throw new DefinitionNotFoundException(string.Format("No definition found for '{0}' with name '{1}' and discriminator '{2}'", attributes["title"], attributes["name"], attributes["discriminator"]), attributes);
+			return definition;
 		}
 	}
 }

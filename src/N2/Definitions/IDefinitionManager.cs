@@ -49,10 +49,6 @@ namespace N2.Definitions
 		/// <returns>A new instance of an item.</returns>
 		ContentItem CreateInstance(Type itemType, ContentItem parent);
 
-		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
-		/// <returns>A new instance of an item.</returns>
-		ContentItem CreateInstance(Type itemType, ContentItem parent, bool allowProxy);
-
 		/// <summary>Gets a list of children allowed below a certain type of item and zone by a user.</summary>
 		/// <param name="definition">The type of parent item.</param>
 		/// <param name="zoneName">The zone name.</param>
