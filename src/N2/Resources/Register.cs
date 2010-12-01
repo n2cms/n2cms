@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Edit;
+using N2.Engine;
 
 namespace N2.Resources
 {
@@ -12,11 +13,6 @@ namespace N2.Resources
 	public static class Register
 	{
 		public const string JQueryVersion = "1.4.2";
-
-		private static IEditUrlManager EditUrlManager
-		{
-			get { return N2.Context.Current.EditUrlManager; }
-		}
 
 		/// <summary>Register an embedded style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>
@@ -51,7 +47,7 @@ namespace N2.Resources
 				PlaceHolder holder = GetPlaceHolder(page);
 
 				HtmlLink link = new HtmlLink();
-				link.Href = EditUrlManager.ResolveManagementInterfaceUrl(resourceUrl);
+				link.Href = page.Engine().ManagementPaths.ResolveResourceUrl(resourceUrl);
 				link.Attributes["type"] = "text/css";
 				link.Attributes["media"] = media.ToString().ToLower();
 				link.Attributes["rel"] = "stylesheet";
@@ -106,7 +102,7 @@ namespace N2.Resources
 					page.ClientScript.RegisterClientScriptBlock(typeof (Register), key, EmbedDocumentReady(script), true);
 				}
 				else if (Is(options, ScriptOptions.Include))
-					page.ClientScript.RegisterClientScriptInclude(key, EditUrlManager.ResolveManagementInterfaceUrl(script));
+					page.ClientScript.RegisterClientScriptInclude(key, page.Engine().ManagementPaths.ResolveResourceUrl(script));
 				else
 					throw new ArgumentException("options");
 			}
@@ -183,7 +179,7 @@ namespace N2.Resources
 			HtmlGenericControl script = new HtmlGenericControl("script");
 			page.Items[resourceUrl] = script;
 
-			resourceUrl = EditUrlManager.ResolveManagementInterfaceUrl(resourceUrl);
+			resourceUrl = page.Engine().ManagementPaths.ResolveResourceUrl(resourceUrl);
 
 			script.Attributes["src"] = resourceUrl;
 			script.Attributes["type"] = "text/javascript";
@@ -209,9 +205,9 @@ namespace N2.Resources
 		public static void JQuery(Page page)
 		{
 #if DEBUG
-			JavaScript(page, "|Management|/Resources/Js/jquery-" + JQueryVersion + ".js", ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #else
-			JavaScript(page, "|Management|/Resources/Js/jquery-" + JQueryVersion + ".min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #endif
 		}
 
@@ -260,7 +256,7 @@ namespace N2.Resources
 				page.Items[key] = new object();
 				if (registerTabCss)
 				{
-					StyleSheet(page, EditUrlManager.ResolveManagementInterfaceUrl("Resources/Css/TabPanel.css"));
+					StyleSheet(page, page.Engine().ManagementPaths.ResolveResourceUrl("Resources/Css/TabPanel.css"));
 				}
 			}
 		}
@@ -276,16 +272,15 @@ namespace N2.Resources
 		}
 		#endregion
 
-		static readonly string pluginsUrl = EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version);
 		public static void JQueryPlugins(Page page)
 		{
 			JQuery(page);
-			JavaScript(page, pluginsUrl);
+			JavaScript(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version));
 		}
 
 		public static void TinyMCE(Page page)
 		{
-			JavaScript(page, EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Resources/tiny_mce/tiny_mce.js"));
+			JavaScript(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js"));
 		}
 	}
 }

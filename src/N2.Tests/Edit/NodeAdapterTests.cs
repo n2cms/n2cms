@@ -30,7 +30,7 @@ namespace N2.Tests.Edit
 			start = CreateOneItem<Items.NormalPage>(2, "start", root);
 
 			adapter = new NodeAdapter();
-			adapter.EditUrlManager = new EditUrlManager(new N2.Configuration.EditSection());
+			adapter.ManagementPaths = new EditUrlManager(new N2.Configuration.EditSection());
 			adapter.FileSystem = fs = new FakeFileSystem2();
 			adapter.NodeFactory = new VirtualNodeFactory();
 			adapter.WebContext = new Fakes.FakeWebContextWrapper();

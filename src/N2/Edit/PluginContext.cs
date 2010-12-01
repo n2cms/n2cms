@@ -45,7 +45,7 @@ namespace N2.Edit
 			if (String.IsNullOrEmpty(url))
 				url = "empty.aspx";
 
-			string rebasedUrl = editUrlManager.ResolveManagementInterfaceUrl(url);
+			string rebasedUrl = editUrlManager.ResolveResourceUrl(url);
 			return rebasedUrl;
 		}
 

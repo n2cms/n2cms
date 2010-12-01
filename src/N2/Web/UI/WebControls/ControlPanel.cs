@@ -22,11 +22,11 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	[PersistChildren(false)]
 	[ParseChildren(true)]
-	[ControlPanelLink("cpOrganize", "|Management|/Resources/icons/layout_edit.png", "{Selected.Url}", "Organize parts", -10
+	[ControlPanelLink("cpOrganize", "{ManagementUrl}/Resources/icons/layout_edit.png", "{Selected.Url}", "Organize parts", -10
 		, ControlPanelState.Visible,
 		UrlEncode = false,
 		NavigateQuery = "edit=drag")]
-	[ControlPanelLink("cpUnorganize", "|Management|/Resources/icons/page_refresh.png", "{Selected.Url}", "Done", -10,
+	[ControlPanelLink("cpUnorganize", "{ManagementUrl}/Resources/icons/page_refresh.png", "{Selected.Url}", "Done", -10,
 		ControlPanelState.DragDrop,
 		UrlEncode = false,
 		Title = "Done")]
@@ -45,19 +45,19 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Gets or sets the url to a style sheet added to the page when editing.</summary>
 		public string StyleSheetUrl
 		{
-			get { return (string) (ViewState["StyleSheetUrl"] ?? "|Management|/Resources/Css/edit.css"); }
+			get { return (string) (ViewState["StyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/edit.css"); }
 			set { ViewState["StyleSheetUrl"] = value; }
 		}
 
 		public string DragDropScriptUrl
 		{
-			get { return (string) (ViewState["DragDropScriptUrl"] ?? "|Management|/Resources/Js/parts.js"); }
+			get { return (string) (ViewState["DragDropScriptUrl"] ?? "{ManagementUrl}/Resources/Js/parts.js"); }
 			set { ViewState["DragDropScriptUrl"] = value; }
 		}
 
 		public string DragDropStyleSheetUrl
 		{
-			get { return (string) (ViewState["DragDropStyleSheetUrl"] ?? "|Management|/Resources/Css/Parts.css"); }
+			get { return (string) (ViewState["DragDropStyleSheetUrl"] ?? "{ManagementUrl}/Resources/Css/Parts.css"); }
 			set { ViewState["DragDropStyleSheetUrl"] = value; }
 		}
 
@@ -212,7 +212,7 @@ jQuery(document).ready(function(){{
 		private void RegisterDragDropScripts()
 		{
 			Register.JQuery(Page);
-			Register.JavaScript(Page, "|Management|/Resources/Js/jquery.ui.ashx");
+			Register.JavaScript(Page, "{ManagementUrl}/Resources/Js/jquery.ui.ashx");
 			Register.JavaScript(Page, DragDropScriptUrl);
 
 			Register.JavaScript(Page, @"
@@ -234,7 +234,7 @@ window.n2ddcp = new n2DragDrop();
 				span.Attributes["class"] = "control";
 				pluginPanel.Controls.Add(span);
 
-				plugin.AddTo(span, new PluginContext(CurrentItem, null, start, root, state, Engine.EditUrlManager));
+				plugin.AddTo(span, new PluginContext(CurrentItem, null, start, root, state, Engine.ManagementPaths));
 			}
 		}
 
@@ -272,7 +272,7 @@ window.n2ddcp = new n2DragDrop();
 				writer.WriteLineNoTabs("n2ctx.select('preview');");
 				if (CurrentItem != null)
 				{
-					string navigationUrl = Engine.EditUrlManager.GetNavigationUrl(CurrentItem);
+					string navigationUrl = Engine.ManagementPaths.GetNavigationUrl(CurrentItem);
 					string previewUrl = Engine.GetContentAdapter<NodeAdapter>(CurrentItem).GetPreviewUrl(CurrentItem);
 					string script = string.Format(switchScriptFormat, CurrentItem.Path, previewUrl, navigationUrl);
 					writer.WriteLineNoTabs(script);
@@ -296,7 +296,7 @@ window.n2ddcp = new n2DragDrop();
 			if (Page.Request.UrlReferrer == null)
 				return false;
 
-			string editUrl = N2.Context.Current.EditUrlManager.GetEditInterfaceUrl();
+			string editUrl = N2.Context.Current.ManagementPaths.GetEditInterfaceUrl();
 			string currentUrl = Page.Request.UrlReferrer.PathAndQuery;
 			return currentUrl.StartsWith(editUrl, StringComparison.InvariantCultureIgnoreCase);
 		}

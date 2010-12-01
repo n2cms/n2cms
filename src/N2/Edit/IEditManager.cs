@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Collections;
+using N2.Definitions;
 
 namespace N2.Edit
 {
@@ -59,5 +60,45 @@ namespace N2.Edit
 		/// <param name="user">The user for whom to apply the filter.</param>
 		/// <returns>A filter.</returns>
 		ItemFilter GetEditorFilter(IPrincipal user);
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetDeleteUrl(ContentItem selectedItem);
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetEditExistingItemUrl(ContentItem item);
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetEditInterfaceUrl();
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetEditInterfaceUrl(ContentItem selectedItem);
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetEditNewPageUrl(ContentItem selected, ItemDefinition definition, string zoneName, CreationPosition position);
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetManagementInterfaceUrl();
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetNavigationUrl(INode selectedItem);
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetPreviewUrl(INode selectedItem);
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetSelectNewItemUrl(ContentItem selectedItem);
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		string GetSelectNewItemUrl(ContentItem selectedItem, string zoneName);
 	}
 }

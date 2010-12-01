@@ -38,14 +38,15 @@ namespace N2.Tests.Edit
 		public override void SetUp()
 		{
 			base.SetUp();
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
+			var urls = new FakeEditUrlManager();
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection(), urls);
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
 			DefinitionManager definitions = new DefinitionManager(builder, changer, notifier, new EmptyProxyFactory());
 			
 			versioner = mocks.StrictMock<IVersionManager>();
-			editManager = new EditManager(definitions, persister, versioner, null, null, null, changer, new EditSection());
+			editManager = new EditManager(definitions, persister, versioner, null, null, null, urls, changer, new EditSection());
 			editManager.EnableVersioning = true;
 
 			var engine = new FakeEngine();

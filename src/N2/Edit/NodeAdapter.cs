@@ -50,9 +50,9 @@ namespace N2.Edit
 			set { host = value; }
 		}
 
-		public IEditUrlManager EditUrlManager
+		public IEditUrlManager ManagementPaths
 		{
-			get { return editUrlManager ?? engine.EditUrlManager; }
+			get { return editUrlManager ?? engine.ManagementPaths; }
 			set { editUrlManager = value; }
 		}
 
@@ -97,8 +97,8 @@ namespace N2.Edit
 		/// <returns>An url to preview the item.</returns>
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
-			string url = EditUrlManager.GetPreviewUrl(item);
-			url =  String.IsNullOrEmpty(url) ? EditUrlManager.ResolveManagementInterfaceUrl("Empty.aspx") : url;
+			string url = ManagementPaths.GetPreviewUrl(item);
+			url =  String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("Empty.aspx") : url;
 			return url;
 		}
 
@@ -107,7 +107,7 @@ namespace N2.Edit
 		/// <returns>An url to an icon.</returns>
 		public string GetIconUrl(ContentItem item)
 		{
-			return EditUrlManager.ResolveManagementInterfaceUrl(item.IconUrl);
+			return ManagementPaths.ResolveResourceUrl(item.IconUrl);
 		}
 	}
 }

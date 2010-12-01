@@ -73,7 +73,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetupResult.For(engine.Definitions).Return(definitions);
 			SetupResult.For(engine.UrlParser).Return(parser);
 			SetupResult.For(engine.Persister).Return(persister);
-			SetupResult.For(engine.EditUrlManager).Return(editUrlManager);
+			SetupResult.For(engine.ManagementPaths).Return(editUrlManager);
 			engine.Replay();
 
 			route = new ContentRoute(engine, new MvcRouteHandler(), controllerMapper, null);

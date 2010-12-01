@@ -122,7 +122,7 @@ namespace N2.Engine
 			get { return Resolve<IEditManager>(); }
 		}
 
-		public IEditUrlManager EditUrlManager
+		public IEditUrlManager ManagementPaths
 		{
 			get { return Resolve<IEditUrlManager>(); }
 		}

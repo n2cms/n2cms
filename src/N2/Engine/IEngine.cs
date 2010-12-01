@@ -34,7 +34,7 @@ namespace N2.Engine
 		/// <summary>Gets the class responsible for plugins in edit mode.</summary>
 		IEditManager EditManager { get; }
 
-		IEditUrlManager EditUrlManager { get; }
+		IEditUrlManager ManagementPaths { get; }
 
 		/// <summary>Contextual data associated with the current request.</summary>
 		IWebContext RequestContext { get; }

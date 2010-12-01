@@ -7,7 +7,7 @@ namespace N2.Configuration
 	{
 		public SettingsEditorCollection()
 		{
-			BaseAdd(new SettingsEditorElement("default", "|Management|/Content/Settings/SettingsEditor.ascx"));
+			BaseAdd(new SettingsEditorElement("default", "{ManagementUrl}/Content/Settings/SettingsEditor.ascx"));
 		}
 
 		protected override ConfigurationElement CreateNewElement()

@@ -14,7 +14,7 @@ namespace N2.Edit.Navigation
 			foreach (NavigationPluginAttribute a in Engine.EditManager.GetPlugins<NavigationPluginAttribute>(Page.User))
 			{
 				a.AddTo(plhMenuItems, new PluginContext(Selection.SelectedItem, null, start, root, ControlPanelState.Visible,
-				                                        Engine.EditUrlManager));
+				                                        Engine.ManagementPaths));
 			}
 			base.OnInit(e);
 		}

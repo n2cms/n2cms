@@ -4,14 +4,14 @@ using N2.Web.UI.WebControls;
 
 namespace N2.Edit
 {
-	[ToolbarPlugin("PAGES", "tree", "Content/Default.aspx?selected={selected}", ToolbarArea.Navigation, Targets.Top, "|Management|/Resources/icons/sitemap_color.png", -30,
+	[ToolbarPlugin("PAGES", "tree", "Content/Default.aspx?selected={selected}", ToolbarArea.Navigation, Targets.Top, "{ManagementUrl}/Resources/icons/sitemap_color.png", -30,
 		ToolTip = "show navigation",
 		GlobalResourceClassName = "Toolbar", SortOrder = -1)]
-	[ToolbarPlugin("VIEW", "preview", "{url}", ToolbarArea.Preview | ToolbarArea.Files, Targets.Preview, "|Management|/Resources/icons/eye.png", 0, ToolTip = "Preview", 
+	[ToolbarPlugin("VIEW", "preview", "{url}", ToolbarArea.Preview | ToolbarArea.Files, Targets.Preview, "{ManagementUrl}/Resources/icons/eye.png", 0, ToolTip = "Preview", 
 		GlobalResourceClassName = "Toolbar")]
-	[ControlPanelLink("cpAdminister", "|Management|/Resources/icons/application_side_expand.png", "Content/Default.aspx?selected={Selected.Path}", "Manage content", -50, ControlPanelState.Visible, 
+	[ControlPanelLink("cpAdminister", "{ManagementUrl}/Resources/icons/application_side_expand.png", "Content/Default.aspx?selected={Selected.Path}", "Manage content", -50, ControlPanelState.Visible, 
 		Target = Targets.Top)]
-	[ControlPanelLink("cpView", "|Management|/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
+	[ControlPanelLink("cpView", "{ManagementUrl}/Resources/icons/application_side_contract.png", "{Selected.Url}", "View", -60, ControlPanelState.Visible, 
 		Target = Targets.Top)]
 	public partial class Default : Web.EditPage
 	{

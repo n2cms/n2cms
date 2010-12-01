@@ -32,6 +32,7 @@ namespace N2.Edit
 		private readonly IPluginFinder pluginFinder;
 		private readonly ISecurityManager securityManager;
 		private readonly NavigationSettings settings;
+		private readonly IEditUrlManager urls;
 		private readonly StateChanger stateChanger;
 		private readonly IList<string> uploadFolders = new List<string>();
 		private readonly IVersionManager versioner;
@@ -39,14 +40,15 @@ namespace N2.Edit
 
 		public EditManager(IDefinitionManager definitions, IPersister persister, IVersionManager versioner,
 		                   ISecurityManager securityManager, IPluginFinder pluginFinder, NavigationSettings settings,
-		                   StateChanger changer, EditSection config)
+		                   IEditUrlManager urls, StateChanger changer, EditSection config)
 		{
 			this.definitions = definitions;
 			this.persister = persister;
 			this.versioner = versioner;
 			this.securityManager = securityManager;
 			this.pluginFinder = pluginFinder;
-			stateChanger = changer;
+			this.urls = urls;
+			this.stateChanger = changer;
 			this.settings = settings;
 
 			EditTheme = config.EditTheme;
@@ -394,6 +396,80 @@ namespace N2.Edit
 			var handler = Events[addedEditorKey] as EventHandler<ControlEventArgs>;
 			if (handler != null)
 				handler.Invoke(this, args);
+		}
+
+		#endregion
+
+		#region Obsolete IEditManager Members
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetDeleteUrl(ContentItem selectedItem)
+		{
+			return urls.GetDeleteUrl(selectedItem);
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetEditExistingItemUrl(ContentItem item)
+		{
+			return urls.GetEditExistingItemUrl(item);
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetEditInterfaceUrl()
+		{
+			return urls.GetEditInterfaceUrl();
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetEditInterfaceUrl(ContentItem selectedItem)
+		{
+			return urls.GetEditInterfaceUrl(selectedItem);
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetEditNewPageUrl(ContentItem selected, ItemDefinition definition, string zoneName, CreationPosition position)
+		{
+			return urls.GetEditNewPageUrl(selected, definition, zoneName, position);
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetManagementInterfaceUrl()
+		{
+			return urls.GetManagementInterfaceUrl();
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetNavigationUrl(INode selectedItem)
+		{
+			return urls.GetNavigationUrl(selectedItem);
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetPreviewUrl(INode selectedItem)
+		{
+			return urls.GetPreviewUrl(selectedItem);
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetSelectNewItemUrl(ContentItem selectedItem)
+		{
+			return urls.GetSelectNewItemUrl(selectedItem);
+		}
+
+		/// <summary>Use EditUrlManager instead.</summary>
+		[Obsolete("Use EditUrlManager")]
+		public string GetSelectNewItemUrl(ContentItem selectedItem, string zoneName)
+		{
+			return urls.GetSelectNewItemUrl(selectedItem, zoneName);
 		}
 
 		#endregion

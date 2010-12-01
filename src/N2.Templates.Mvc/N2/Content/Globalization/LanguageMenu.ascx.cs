@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace N2.Edit.Globalization
 {
-	[EditToolbarPlugin("|Management|/Content/Globalization/LanguageMenu.ascx")]
+	[EditToolbarPlugin("{ManagementUrl}/Content/Globalization/LanguageMenu.ascx")]
 	public partial class LanguageMenu : EditPageUserControl
 	{
 		protected Repeater rptLanguages;

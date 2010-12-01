@@ -16,35 +16,11 @@ namespace N2.Web.UI.WebControls
 	/// </summary>
 	public class FreeTextArea : TextBox
 	{
-		static readonly string configCssUrl;
-		static readonly string configScriptUrl;
-		static readonly NameValueCollection configSettings = new NameValueCollection();
-		static readonly bool configEnabled = true;
-
-		static FreeTextArea()
-		{
-			var config = N2.Context.Current.Resolve<EditSection>();
-			if (config != null)
-			{
-				configCssUrl = Url.ToAbsolute(config.TinyMCE.CssUrl);
-				configScriptUrl = Url.ToAbsolute(config.TinyMCE.ScriptUrl);
-				configEnabled = config.TinyMCE.Enabled;
-				foreach (KeyValueConfigurationElement element in config.TinyMCE.Settings)
-				{
-					configSettings[element.Key] = element.Value;
-				}
-			}
-			else
-			{
-				configCssUrl = EditUrlManager.ResolveManagementInterfaceUrl("/Resources/Css/Editor.css");
-				configScriptUrl = EditUrlManager.ResolveManagementInterfaceUrl("/Resources/Js/FreeTextArea.js");
-			}
-		}
-
-		private static IEditUrlManager EditUrlManager
-		{
-			get { return N2.Context.Current.EditUrlManager; }
-		}
+		static string configCssUrl;
+		static string configScriptUrl;
+		static NameValueCollection configSettings = new NameValueCollection();
+		static bool configEnabled = true;
+		static bool isInitalized = false;
 
 		public FreeTextArea()
 		{
@@ -64,6 +40,27 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["DocumentBaseUrl"] = value; }
 		}
 
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			if (!isInitalized)
+			{
+				isInitalized = true;
+				var config = N2.Context.Current.Resolve<EditSection>();
+				if (config != null)
+				{
+					configCssUrl = Page.Engine().ManagementPaths.ResolveResourceUrl(config.TinyMCE.CssUrl);
+					configScriptUrl = Page.Engine().ManagementPaths.ResolveResourceUrl(config.TinyMCE.ScriptUrl);
+					configEnabled = config.TinyMCE.Enabled;
+					foreach (KeyValueConfigurationElement element in config.TinyMCE.Settings)
+					{
+						configSettings[element.Key] = element.Value;
+					}
+				}
+			}
+		}
+
 		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
@@ -72,10 +69,10 @@ namespace N2.Web.UI.WebControls
 			{
 				Register.JQuery(Page);
 				Register.TinyMCE(Page);
-				Register.JavaScript(Page, configScriptUrl);
+				Register.JavaScript(Page, configScriptUrl ?? Page.Engine().ManagementPaths.ResolveResourceUrl("Resources/Js/FreeTextArea.js"));
 
 				string script = string.Format("freeTextArea_init('{0}', {1});",
-					Url.Parse(EditUrlManager.EditTreeUrl),
+					Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl),
 					GetOverridesJson());
 				Page.ClientScript.RegisterStartupScript(GetType(), "FreeTextArea_" + ClientID, script, true);
 			}
@@ -85,10 +82,10 @@ namespace N2.Web.UI.WebControls
 		{
 			IDictionary<string, string> overrides = new Dictionary<string, string>();
 			overrides["elements"] = ClientID;
-			overrides["content_css"] = configCssUrl;
+			overrides["content_css"] = configCssUrl ?? Page.Engine().ManagementPaths.ResolveResourceUrl("Resources/Css/Editor.css");
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
-			if (HostingEnvironment.VirtualPathProvider.FileExists(EditUrlManager.ResolveManagementInterfaceUrl("Resources/tiny_mce/langs/" + language + ".js")))
+			if (HostingEnvironment.VirtualPathProvider.FileExists(Page.Engine().ManagementPaths.ResolveResourceUrl("Resources/tiny_mce/langs/" + language + ".js")))
 				overrides["language"] = language;
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))

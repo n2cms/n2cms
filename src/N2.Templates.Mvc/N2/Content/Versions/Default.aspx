@@ -32,7 +32,7 @@
 			<asp:BoundField HeaderText="Saved by" DataField="SavedBy" meta:resourceKey="savedBy" />
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.EditUrlManager.GetEditExistingItemUrl((N2.ContentItem)Container.DataItem) %>' />
+					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.ManagementPaths.GetEditExistingItemUrl((N2.ContentItem)Container.DataItem) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField>

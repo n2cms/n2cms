@@ -5,8 +5,8 @@ using N2.Web.UI;
 namespace N2.Management.Myself
 {
 	[PartDefinition("Activity", 
-		TemplateUrl = "|Management|/Myself/Activity.ascx",
-		IconUrl = "|Management|/Resources/icons/text_list_numbers.png")]
+		TemplateUrl = "{ManagementUrl}/Myself/Activity.ascx",
+		IconUrl = "{ManagementUrl}/Resources/icons/text_list_numbers.png")]
 	[WithEditableTitle("Title", 10)]
 	public class ActivityPart : RootPartBase
 	{

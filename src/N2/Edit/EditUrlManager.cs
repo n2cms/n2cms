@@ -14,20 +14,12 @@ namespace N2.Edit
 		{
 			EditTreeUrlFormat = "{1}?selected={0}";
 			EditPreviewUrlFormat = config.EditPreviewUrlFormat;
-			ManagementInterfaceUrl = config.ManagementInterfaceUrl;
-			EditTreeUrl = DefaultToManagementUrl(config.EditTreeUrl, "|Management|/Content/Navigation/Tree.aspx");
-			EditItemUrl = DefaultToManagementUrl(config.EditItemUrl, "|Management|/Content/Edit.aspx");
-			EditInterfaceUrl = DefaultToManagementUrl(config.EditInterfaceUrl, "|Management|/Content/");
-			NewItemUrl = DefaultToManagementUrl(config.NewItemUrl, "|Management|/Content/New.aspx");
-			DeleteItemUrl = DefaultToManagementUrl(config.DeleteItemUrl, "|Management|/Content/delete.aspx");
-		}
-
-		private string DefaultToManagementUrl(string setting, string @default)
-		{
-			if (String.IsNullOrEmpty(setting))
-				return ResolveManagementInterfaceUrl(@default);
-
-			return setting;
+			ManagementInterfaceUrl = config.ManagementInterfaceUrl.TrimEnd('/');
+			EditTreeUrl = ResolveResourceUrl(config.EditTreeUrl);
+			EditItemUrl = ResolveResourceUrl(config.EditItemUrl);
+			EditInterfaceUrl = ResolveResourceUrl(config.EditInterfaceUrl);
+			NewItemUrl = ResolveResourceUrl(config.NewItemUrl);
+			DeleteItemUrl = ResolveResourceUrl(config.DeleteItemUrl);
 		}
 
 		protected virtual string EditInterfaceUrl { get; set; }
@@ -70,7 +62,7 @@ namespace N2.Edit
 			                           selectedItem.PreviewUrl,
 			                           HttpUtility.UrlEncode(selectedItem.PreviewUrl)
 				);
-			return ResolveManagementInterfaceUrl(url);
+			return ResolveResourceUrl(url);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
@@ -84,22 +76,22 @@ namespace N2.Edit
 		/// <returns>The url to the edit interface.</returns>
 		public virtual string GetManagementInterfaceUrl()
 		{
-			return Url.ToAbsolute(ManagementInterfaceUrl);
+			return Url.ToAbsolute(ManagementInterfaceUrl + "/");
 		}
 
 		/// <summary>Gets the url to the given resource underneath the management interface.</summary>
-		/// <returns>The url to the edit interface.</returns>
-		public virtual string ResolveManagementInterfaceUrl(string resourceUrl)
+		/// <returns>The url to the given resource rebased to the management path when not aboslute.</returns>
+		public virtual string ResolveResourceUrl(string resourceUrl)
 		{
 			resourceUrl = resourceUrl ?? String.Empty;
 			string finalUrl = resourceUrl;
 
-			if (resourceUrl.Contains("|Management|"))
-				finalUrl = resourceUrl.Replace("|Management|", ManagementInterfaceUrl.TrimEnd('/'));
+			if (resourceUrl.Contains("{ManagementUrl}"))
+				finalUrl = resourceUrl.Replace("{ManagementUrl}", ManagementInterfaceUrl.TrimEnd('/'));
 
 			if (finalUrl.StartsWith("~") == false && finalUrl.StartsWith("/") == false
 			    && finalUrl.StartsWith(ManagementInterfaceUrl, StringComparison.InvariantCultureIgnoreCase) == false)
-				finalUrl = ManagementInterfaceUrl.TrimEnd('/') + "/" + resourceUrl.TrimStart('/');
+				finalUrl = ManagementInterfaceUrl + "/" + resourceUrl.TrimStart('/');
 
 			return Url.ToAbsolute(finalUrl);
 		}

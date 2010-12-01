@@ -10,8 +10,8 @@ using N2.Persistence.Finder;
 namespace N2.Management.Myself
 {
 	[PartDefinition("Languages", 
-		TemplateUrl = "|Management|/Myself/Languages.ascx",
-		IconUrl = "|Management|/Resources/icons/world.png")]
+		TemplateUrl = "{ManagementUrl}/Myself/Languages.ascx",
+		IconUrl = "{ManagementUrl}/Resources/icons/world.png")]
 	[WithEditableTitle("Title", 10)]
 	public class LanguagesPart : RootPartBase
 	{

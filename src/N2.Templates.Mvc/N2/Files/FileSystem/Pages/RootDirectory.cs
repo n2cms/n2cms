@@ -9,12 +9,12 @@ namespace N2.Edit.FileSystem.Items
 		Description = "A node that maps to files in the file system.",
 		SortOrder = 600, 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-        IconUrl = "|Management|/Resources/icons/folder.png",
-		TemplateUrl = "|Management|/Files/FileSystem/Directory.aspx")]
+        IconUrl = "{ManagementUrl}/Resources/icons/folder.png",
+		TemplateUrl = "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
     [RestrictParents(typeof(IFileSystemContainer))]
     [ItemAuthorizedRoles("Administrators", "admin")]
     [Editables.EditableFolderPath]
-	[Template("info", "|Management|/Files/FileSystem/Directory.aspx")]
+	[Template("info", "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
     public class RootDirectory : AbstractDirectory
     {
         public RootDirectory()

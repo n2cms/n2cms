@@ -21,9 +21,9 @@ namespace N2.Edit.Web.UI.Controls
 		{
 		}
 
-		private static IEditUrlManager EditUrlManager
+		private static IEditUrlManager ManagementPaths
 		{
-			get { return N2.Context.Current.EditUrlManager; }
+			get { return N2.Context.Current.ManagementPaths; }
 		}
 
 		public HierarchyNode<ContentItem> Nodes { get; set; }
@@ -106,7 +106,7 @@ namespace N2.Edit.Web.UI.Controls
 		{
 			Li li = new Li();
 			
-			li.Text = "{url:" + EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Content/Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path)) + "}";
+			li.Text = "{url:" + ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path)) + "}";
 
 			tn.UlClass = "ajax";
 			tn.Controls.Add(li);

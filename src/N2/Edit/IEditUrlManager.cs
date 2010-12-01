@@ -45,7 +45,7 @@ namespace N2.Edit
 
 		/// <summary>Gets the url to the given resource underneath the management interface.</summary>
 		/// <returns>The url to the edit interface.</returns>
-		string ResolveManagementInterfaceUrl(string resourceUrl);
+		string ResolveResourceUrl(string resourceUrl);
 
 		/// <summary>Gets the url to the select type of item to create.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>

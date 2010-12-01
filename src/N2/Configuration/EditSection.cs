@@ -53,7 +53,7 @@ namespace N2.Configuration
 			set { base["fileSystem"] = value; }
 		}
 
-		[ConfigurationProperty("editTreeUrl")]
+		[ConfigurationProperty("editTreeUrl", DefaultValue = "{ManagementUrl}/Content/Navigation/Tree.aspx")]
 		public string EditTreeUrl
 		{
 			get { return (string)base["editTreeUrl"]; }
@@ -67,7 +67,7 @@ namespace N2.Configuration
 			set { base["editPreviewUrlFormat"] = value; }
 		}
 
-		[ConfigurationProperty("editItemUrl")]
+		[ConfigurationProperty("editItemUrl", DefaultValue = "{ManagementUrl}/Content/Edit.aspx")]
 		public string EditItemUrl
 		{
 			get { return (string)base["editItemUrl"]; }
@@ -81,21 +81,21 @@ namespace N2.Configuration
 			set { base["managementInterfaceUrl"] = value; }
 		}
 
-		[ConfigurationProperty("editInterfaceUrl")]
+		[ConfigurationProperty("editInterfaceUrl", DefaultValue = "{ManagementUrl}/Content/")]
 		public string EditInterfaceUrl
 		{
 			get { return (string)base["editInterfaceUrl"]; }
 			set { base["editInterfaceUrl"] = value; }
 		}
 
-		[ConfigurationProperty("newItemUrl")]
+		[ConfigurationProperty("newItemUrl", DefaultValue = "{ManagementUrl}/Content/New.aspx")]
 		public string NewItemUrl
 		{
 			get { return (string)base["newItemUrl"]; }
 			set { base["newItemUrl"] = value; }
 		}
 
-		[ConfigurationProperty("deleteItemUrl")]
+		[ConfigurationProperty("deleteItemUrl", DefaultValue = "{ManagementUrl}/Content/delete.aspx")]
 		public string DeleteItemUrl
 		{
 			get { return (string)base["deleteItemUrl"]; }

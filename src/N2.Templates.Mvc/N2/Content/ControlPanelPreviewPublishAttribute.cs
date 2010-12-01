@@ -13,7 +13,7 @@ namespace N2.Edit
 	public class ControlPanelPreviewPublishAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelPreviewPublishAttribute(string toolTip, int sortOrder)
-            : base("cpPreviewPublish", "|Management|/Resources/icons/disk.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
+            : base("cpPreviewPublish", "{ManagementUrl}/Resources/icons/disk.png", null, toolTip, sortOrder, ControlPanelState.Previewing)
 		{
 		}
 
@@ -27,7 +27,7 @@ namespace N2.Edit
 
 			HyperLink hl = new HyperLink();
 			hl.Text = GetInnerHtml(context, IconUrl, ToolTip, Title);
-			hl.NavigateUrl = Url.Parse("|Management|/Content/PublishPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
+			hl.NavigateUrl = Url.Parse("{ManagementUrl}/Content/PublishPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
 			hl.ToolTip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? context.Format(ToolTip, false);
 			hl.CssClass = "publish";
 			container.Controls.Add(hl);

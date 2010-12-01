@@ -38,7 +38,7 @@ namespace N2.Web.UI
 
 		protected string ResolveUrl(string url)
 		{
-			return Engine.EditUrlManager.ResolveManagementInterfaceUrl(url);
+			return Engine.ManagementPaths.ResolveResourceUrl(url);
 		}
 
 		#region IItemContainer & IContentTemplate

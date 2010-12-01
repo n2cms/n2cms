@@ -16,7 +16,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void CanResolveManagementUrl_WithNullArgument()
 		{
-			var url = editUrlManager.ResolveManagementInterfaceUrl(null);
+			var url = editUrlManager.ResolveResourceUrl(null);
 
 			Assert.That(url, Is.EqualTo("/N2/"));
 		}
@@ -24,7 +24,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void CanResolveResourceUnderManagementUrl()
 		{
-			var url = editUrlManager.ResolveManagementInterfaceUrl("Resources/aresource.css");
+			var url = editUrlManager.ResolveResourceUrl("Resources/aresource.css");
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}
@@ -32,7 +32,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void CanResolveResourceUnderManagementUrl_UsingManagementTag()
 		{
-			var url = editUrlManager.ResolveManagementInterfaceUrl("|Management|/Resources/aresource.css");
+			var url = editUrlManager.ResolveResourceUrl("{ManagementUrl}/Resources/aresource.css");
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}
@@ -40,7 +40,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void DoesNotDisruptVirtualPaths()
 		{
-			var url = editUrlManager.ResolveManagementInterfaceUrl("~/N2/Resources/aresource.css");
+			var url = editUrlManager.ResolveResourceUrl("~/N2/Resources/aresource.css");
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}
@@ -48,7 +48,7 @@ namespace N2.Tests.Edit
 		[Test]
 		public void DoesNotDisruptAbsolutePaths()
 		{
-			var url = editUrlManager.ResolveManagementInterfaceUrl("/N2/Resources/aresource.css");
+			var url = editUrlManager.ResolveResourceUrl("/N2/Resources/aresource.css");
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}

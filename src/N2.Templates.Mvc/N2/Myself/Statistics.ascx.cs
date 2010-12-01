@@ -7,8 +7,8 @@ using N2.Web.UI;
 namespace N2.Management.Myself
 {
 	[PartDefinition("Statistics", Name = "Statistics", 
-		TemplateUrl = "|Management|/Myself/Statistics.ascx",
-		IconUrl = "|Management|/Resources/icons/information.png")]
+		TemplateUrl = "{ManagementUrl}/Myself/Statistics.ascx",
+		IconUrl = "{ManagementUrl}/Resources/icons/information.png")]
 	[WithEditableTitle("Title", 10)]
 	public class StatisticsPart : RootPartBase
 	{

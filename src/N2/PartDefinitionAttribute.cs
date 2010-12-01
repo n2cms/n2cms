@@ -27,7 +27,7 @@ namespace N2
 		public PartDefinitionAttribute()
 		{
 			IsPage = false;
-			IconUrl = "|Management|/Resources/icons/page_white.png";
+			IconUrl = "{ManagementUrl}/Resources/icons/page_white.png";
 			AllowedIn = AllowedZones.AllNamed;
 		}
 

@@ -4,9 +4,9 @@ using N2.Web;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("Copy", "copy", "javascript:n2nav.memorize('{selected}','copy');", "", "|Management|/Resources/icons/page_copy.png", 50,
+	[NavigationLinkPlugin("Copy", "copy", "javascript:n2nav.memorize('{selected}','copy');", "", "{ManagementUrl}/Resources/icons/page_copy.png", 50,
 		GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("COPY", "copy", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Operations, "", "|Management|/Resources/icons/page_copy.png", 40,
+	[ToolbarPlugin("COPY", "copy", "javascript:n2.memorize('{selected}','copy');", ToolbarArea.Operations, "", "{ManagementUrl}/Resources/icons/page_copy.png", 40,
 		ToolTip = "copy",
 		GlobalResourceClassName = "Toolbar")]
 	public partial class Copy : Web.EditPage

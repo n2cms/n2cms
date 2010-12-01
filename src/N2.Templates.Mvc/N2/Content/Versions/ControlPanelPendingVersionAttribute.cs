@@ -16,7 +16,7 @@ namespace N2.Edit.Versions
 	public class ControlPanelPendingVersionAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelPendingVersionAttribute(string toolTip, int sortOrder)
-			: base("cpPendingVersion", "|Management|/Resources/icons/book_next.png", null, toolTip, sortOrder, ControlPanelState.Visible)
+			: base("cpPendingVersion", "{ManagementUrl}/Resources/icons/book_next.png", null, toolTip, sortOrder, ControlPanelState.Visible)
 		{
 		}
 

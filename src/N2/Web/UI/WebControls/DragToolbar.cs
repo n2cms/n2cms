@@ -43,7 +43,7 @@ namespace N2.Web.UI.WebControls
 
 			if (ControlPanel.GetState(Page.User, Page.Request.QueryString) == ControlPanelState.DragDrop)
 			{
-				PartUtilities.WriteTitleBar(writer, e.EditUrlManager, e.Resolve<IContentAdapterProvider>(), Definition, CurrentItem);
+				PartUtilities.WriteTitleBar(writer, e.ManagementPaths, e.Resolve<IContentAdapterProvider>(), Definition, CurrentItem);
 			}
 		}
 	}

@@ -10,8 +10,8 @@ namespace N2.Edit.Trash
 	[PageDefinition("Trash", 
 		Name = "TrashContainerItem", 
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
-        IconUrl = "|Management|/Resources/icons/bin.png", 
-		TemplateUrl = "|Management|/Content/Trash/Default.aspx")]
+        IconUrl = "{ManagementUrl}/Resources/icons/bin.png", 
+		TemplateUrl = "{ManagementUrl}/Content/Trash/Default.aspx")]
 	[AllowedChildren(typeof(ContentItem))]
 	[ItemAuthorizedRoles(Roles = new string[0])]
     [NotThrowable]
@@ -42,7 +42,7 @@ namespace N2.Edit.Trash
 		{
 			get
 			{
-				var url = new Url(Context.Current.EditUrlManager.ResolveManagementInterfaceUrl("|Management|/Trash/Default.aspx"));
+				var url = new Url(Context.Current.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Trash/Default.aspx"));
 
 				return url.AppendQuery(PathData.PageQueryKey, ID);
 			}
@@ -52,10 +52,10 @@ namespace N2.Edit.Trash
 		{
 			get
 			{
-				return Context.Current.EditUrlManager.ResolveManagementInterfaceUrl(
+				return Context.Current.ManagementPaths.ResolveResourceUrl(
 					this.Children.Count > 0
-						? "|Management|/Resources/icons/bin.png"
-						: "|Management|/Resources/icons/bin_closed.png"
+						? "{ManagementUrl}/Resources/icons/bin.png"
+						: "{ManagementUrl}/Resources/icons/bin_closed.png"
 					);
 			}
 		}

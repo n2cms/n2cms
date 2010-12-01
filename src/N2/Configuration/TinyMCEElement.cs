@@ -25,7 +25,7 @@ namespace N2.Configuration
 		}
 
 		/// <summary>Url to the free text area editor css file.</summary>
-		[ConfigurationProperty("cssUrl", DefaultValue = "|Management|/Resources/Css/Editor.css")]
+		[ConfigurationProperty("cssUrl", DefaultValue = "{ManagementUrl}/Resources/Css/Editor.css")]
 		public string CssUrl
 		{
 			get { return (string)base["cssUrl"]; }
@@ -33,7 +33,7 @@ namespace N2.Configuration
 		}
 
 		/// <summary>Url to the free text area editor configuration script file.</summary>
-		[ConfigurationProperty("scriptUrl", DefaultValue = "|Management|/Resources/Js/FreeTextArea.js")]
+		[ConfigurationProperty("scriptUrl", DefaultValue = "{ManagementUrl}/Resources/Js/FreeTextArea.js")]
 		public string ScriptUrl
 		{
 			get { return (string)base["scriptUrl"]; }

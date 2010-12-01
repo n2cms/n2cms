@@ -42,7 +42,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Url to the page responsible for selecting urls.</summary>
 		public string BrowserUrl
 		{
-			get { return (string)ViewState["BrowserUrl"] ?? N2.Web.Url.Parse("|Management|/Content/Navigation/Tree.aspx").AppendQuery("location=selection"); }
+			get { return (string)ViewState["BrowserUrl"] ?? N2.Web.Url.Parse("{ManagementUrl}/Content/Navigation/Tree.aspx").AppendQuery("location=selection"); }
 			set { ViewState["BrowserUrl"] = value; }
 		}
 

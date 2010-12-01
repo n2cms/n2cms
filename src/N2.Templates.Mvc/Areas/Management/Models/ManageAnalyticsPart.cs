@@ -10,7 +10,7 @@ using Reimers.Google.Analytics;
 namespace N2.Templates.Mvc.Areas.Management.Models
 {
 	[PartDefinition("Analytics",
-		IconUrl = "|Management|/Resources/icons/chart_pie.png")]
+		IconUrl = "{ManagementUrl}/Resources/icons/chart_pie.png")]
 	[RestrictParents(typeof(IRootPage))]
 	public class ManageAnalyticsPart : AnalyticsPartBase
 	{

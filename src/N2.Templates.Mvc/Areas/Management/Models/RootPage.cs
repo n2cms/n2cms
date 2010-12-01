@@ -9,7 +9,7 @@ namespace N2.Templates.Mvc.Areas.Management.Models
 		Description = "A root page used to organize start pages.", 
 		SortOrder = 0,
 		InstallerVisibility = InstallerHint.PreferredRootPage,
-		IconUrl = "|Management|/Resources/icons/page_gear.png",
+		IconUrl = "{ManagementUrl}/Resources/icons/page_gear.png",
 		TemplateUrl = "~/Areas/Management/Root.aspx")]
     [RestrictParents(AllowedTypes.None)]
     [AvailableZone("Left", "Left")]

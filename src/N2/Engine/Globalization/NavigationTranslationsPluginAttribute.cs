@@ -33,7 +33,7 @@ namespace N2.Engine.Globalization
 
             foreach (ILanguage language in gateway.GetAvailableLanguages())
             {
-                Url url = Engine.EditUrlManager.ResolveManagementInterfaceUrl("Content/Globalization/Translate.aspx");
+				Url url = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Globalization/Translate.aspx");
                 url = url.AppendQuery("language", language.LanguageCode);
                 url = url.AppendQuery("selected={selected}");
 

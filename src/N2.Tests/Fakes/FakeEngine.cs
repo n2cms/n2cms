@@ -46,7 +46,7 @@ namespace N2.Tests.Fakes
 			get { return container.Resolve<IEditManager>(); }
 		}
 
-		public N2.Edit.IEditUrlManager EditUrlManager
+		public N2.Edit.IEditUrlManager ManagementPaths
 		{
 			get { return container.Resolve<IEditUrlManager>(); }
 		}

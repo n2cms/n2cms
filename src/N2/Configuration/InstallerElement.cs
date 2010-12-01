@@ -13,35 +13,35 @@ namespace N2.Configuration
 			set { base["checkInstallationStatus"] = value; }
 		}
 
-		[ConfigurationProperty("welcomeUrl", DefaultValue = "|Management|/Installation/Begin/Default.aspx")]
+		[ConfigurationProperty("welcomeUrl", DefaultValue = "{ManagementUrl}/Installation/Begin/Default.aspx")]
 		public string WelcomeUrl
 		{
 			get { return (string)base["welcomeUrl"]; }
 			set { base["welcomeUrl"] = value; }
 		}
 
-		[ConfigurationProperty("installUrl", DefaultValue = "|Management|/Installation/Default.aspx")]
+		[ConfigurationProperty("installUrl", DefaultValue = "{ManagementUrl}/Installation/Default.aspx")]
 		public string InstallUrl
 		{
 			get { return (string)base["installUrl"]; }
 			set { base["installUrl"] = value; }
 		}
 
-		[ConfigurationProperty("upgradeUrl", DefaultValue = "|Management|/Installation/Upgrade.aspx")]
+		[ConfigurationProperty("upgradeUrl", DefaultValue = "{ManagementUrl}/Installation/Upgrade.aspx")]
 		public string UpgradeUrl
 		{
 			get { return (string)base["upgradeUrl"]; }
 			set { base["upgradeUrl"] = value; }
 		}
 
-		[ConfigurationProperty("rebaseUrl", DefaultValue = "|Management|/Installation/Rebase.aspx")]
+		[ConfigurationProperty("rebaseUrl", DefaultValue = "{ManagementUrl}/Installation/Rebase.aspx")]
 		public string RebaseUrl
 		{
 			get { return (string)base["rebaseUrl"]; }
 			set { base["rebaseUrl"] = value; }
 		}
 
-		[ConfigurationProperty("fixClass", DefaultValue = "|Management|/Installation/FixClass.aspx")]
+		[ConfigurationProperty("fixClass", DefaultValue = "{ManagementUrl}/Installation/FixClass.aspx")]
 		public string FixClassUrl
 		{
 			get { return (string)base["fixClass"]; }
