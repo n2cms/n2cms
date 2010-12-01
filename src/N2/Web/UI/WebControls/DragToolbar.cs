@@ -14,13 +14,13 @@ namespace N2.Web.UI.WebControls
 		private ContentItem currentItem;
 		private ItemDefinition definition;
 
-        public DraggableToolbar()
-        {
-        }
+		public DraggableToolbar()
+		{
+		}
 
 		public DraggableToolbar(ContentItem item, ItemDefinition definition)
 		{
-            if (definition == null) throw new ArgumentNullException("definition");
+			if (definition == null) throw new ArgumentNullException("definition");
 
 			this.currentItem = item;
 			this.definition = definition;
@@ -39,11 +39,11 @@ namespace N2.Web.UI.WebControls
 
 		protected override void Render(HtmlTextWriter writer)
 		{
-            IEngine e = N2.Context.Current;
+			IEngine e = N2.Context.Current;
 
-            if (ControlPanel.GetState(Page.User, Page.Request.QueryString) == ControlPanelState.DragDrop)
+			if (ControlPanel.GetState(Page.User, Page.Request.QueryString) == ControlPanelState.DragDrop)
 			{
-                PartUtilities.WriteTitleBar(writer, e.EditManager, e.Resolve<IContentAdapterProvider>(), Definition, CurrentItem);
+				PartUtilities.WriteTitleBar(writer, e.ManagementPaths, e.Resolve<IContentAdapterProvider>(), Definition, CurrentItem);
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 	{
 		public override string FolderUrl
 		{
-			get { return "~/N2/Resources/Js/jquery.ui"; }
+			get { return N2.Context.Current.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Js/jquery.ui"); }
 		}
 	}
 

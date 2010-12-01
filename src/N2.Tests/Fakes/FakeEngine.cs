@@ -46,6 +46,11 @@ namespace N2.Tests.Fakes
 			get { return container.Resolve<IEditManager>(); }
 		}
 
+		public N2.Edit.IEditUrlManager ManagementPaths
+		{
+			get { return container.Resolve<IEditUrlManager>(); }
+		}
+
 		public N2.Web.IWebContext RequestContext
 		{
 			get { return container.Resolve<IWebContext>(); }
@@ -146,6 +151,9 @@ namespace N2.Tests.Fakes
 
 			public T Resolve<T>()
 			{
+				if(services.ContainsKey(typeof(T)) == false)
+					throw new InvalidOperationException("No component for service " + typeof(T).Name + " registered");
+
 				return (T)services[typeof(T)];
 			}
 

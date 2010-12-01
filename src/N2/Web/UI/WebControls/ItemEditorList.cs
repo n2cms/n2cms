@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit;
-using N2.Web.Parts;
 using N2.Engine;
-using System.ComponentModel;
-using System.Diagnostics;
+using N2.Web.Parts;
 
 namespace N2.Web.UI.WebControls
 {
@@ -15,16 +15,17 @@ namespace N2.Web.UI.WebControls
 	{
 		#region Fields
 
-        DropDownList types = new DropDownList();
-		PlaceHolder itemEditorsContainer;
-		ContentItem parentItem;
-		List<string> addedTypes = new List<string>();
-		List<ItemEditor> itemEditors = new List<ItemEditor>();
-		List<int> deletedIndexes = new List<int>();
-		int itemEditorIndex = 0;
-        IDefinitionManager definitions;
-        PartsAdapter partsAdapter;
-        Type minimumType = typeof(ContentItem);
+		private readonly List<ItemEditor> itemEditors = new List<ItemEditor>();
+		private readonly DropDownList types = new DropDownList();
+		private List<string> addedTypes = new List<string>();
+		private IDefinitionManager definitions;
+		private List<int> deletedIndexes = new List<int>();
+		private int itemEditorIndex;
+		private PlaceHolder itemEditorsContainer;
+		private Type minimumType = typeof (ContentItem);
+		private ContentItem parentItem;
+		private PartsAdapter partsAdapter;
+
 		#endregion
 
 		#region Constructor
@@ -62,14 +63,14 @@ namespace N2.Web.UI.WebControls
 		{
 			get { return (string) (ViewState["ZoneName"] ?? ""); }
 			set { ViewState["ZoneName"] = value; }
-        }
+		}
 
-        /// <summary>The minimum type to filter children by.</summary>
-        public Type MinimumType
-        {
-            get { return minimumType; }
-            set { minimumType = value; }
-        }
+		/// <summary>The minimum type to filter children by.</summary>
+		public Type MinimumType
+		{
+			get { return minimumType; }
+			set { minimumType = value; }
+		}
 
 		public IList<string> AddedTypes
 		{
@@ -81,34 +82,57 @@ namespace N2.Web.UI.WebControls
 			get { return deletedIndexes; }
 		}
 
-        protected virtual IEngine Engine
-        {
-            get { return N2.Context.Current; }
-        }
-        
-		public IDefinitionManager Definitions
+		protected virtual IEngine Engine
 		{
-            get { return definitions ?? (definitions = Engine.Definitions); }
+			get { return N2.Context.Current; }
 		}
 
-        public PartsAdapter Parts
-        {
-			get { return partsAdapter ?? (partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem.GetContentType())); }
-            set { partsAdapter = value; }
-        }
+		public IDefinitionManager Definitions
+		{
+			get { return definitions ?? (definitions = Engine.Definitions); }
+		}
+
+		public PartsAdapter Parts
+		{
+			get
+			{
+				return partsAdapter ??
+				       (partsAdapter =
+				        Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem.GetContentType()));
+			}
+			set { partsAdapter = value; }
+		}
 
 		public ItemDefinition CurrentItemDefinition
 		{
 			get { return Definitions.GetDefinition(Type.GetType(ParentItemType)); }
-        }
+		}
 
-        [NotifyParentProperty(true)]
-        public DropDownList Types
-        {
-            get { return types; }
-        }
+		[NotifyParentProperty(true)]
+		public DropDownList Types
+		{
+			get { return types; }
+		}
 
 		#endregion
+
+		public ContentItem ParentItem
+		{
+			get
+			{
+				return parentItem
+				       ?? (parentItem = Engine.Persister.Get(ParentItemID));
+			}
+			set
+			{
+				if (value == null)
+					throw new ArgumentNullException("value");
+
+				parentItem = value;
+				ParentItemID = value.ID;
+				ParentItemType = value.GetContentType().AssemblyQualifiedName;
+			}
+		}
 
 		protected override void OnInit(EventArgs e)
 		{
@@ -122,10 +146,10 @@ namespace N2.Web.UI.WebControls
 
 		protected override void LoadViewState(object savedState)
 		{
-			Triplet p = (Triplet)savedState;
+			var p = (Triplet) savedState;
 			base.LoadViewState(p.First);
-			addedTypes = (List<string>)p.Second;
-			deletedIndexes = (List<int>)p.Third;
+			addedTypes = (List<string>) p.Second;
+			deletedIndexes = (List<int>) p.Third;
 			EnsureChildControls();
 
 			Debug.WriteLine("addedTypes: " + addedTypes.Count + ", deletedIndexes: " + deletedIndexes.Count);
@@ -140,12 +164,13 @@ namespace N2.Web.UI.WebControls
 
 			foreach (ItemDefinition definition in Parts.GetAllowedDefinitions(ParentItem, ZoneName, Page.User))
 			{
-                if (!minimumType.IsAssignableFrom(definition.ItemType))
-                {
-                    continue;
-                }
+				if (!minimumType.IsAssignableFrom(definition.ItemType))
+				{
+					continue;
+				}
 
-				ListItem li = new ListItem(definition.Title, string.Format("{0},{1}", definition.ItemType.FullName, definition.ItemType.Assembly.FullName));
+				var li = new ListItem(definition.Title,
+				                      string.Format("{0},{1}", definition.ItemType.FullName, definition.ItemType.Assembly.FullName));
 				types.Items.Add(li);
 			}
 
@@ -183,9 +208,9 @@ namespace N2.Web.UI.WebControls
 		{
 			Controls.Add(types);
 
-			ImageButton b = new ImageButton();
+			var b = new ImageButton();
 			Controls.Add(b);
-			b.ImageUrl = Url.ToAbsolute("~/N2/Resources/icons/add.png");
+			b.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("Resources/icons/add.png");
 			b.ToolTip = "Add item";
 			b.CausesValidation = false;
 			b.Click += AddItemClick;
@@ -219,7 +244,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_d_" + itemEditorIndex;
-			b.ImageUrl = Url.ToAbsolute("~/N2/Resources/icons/delete.png");
+			b.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("Resources/icons/delete.png");
 			b.ToolTip = "Delete item";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;
@@ -232,7 +257,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_up_" + itemEditorIndex;
-			b.ImageUrl = Url.ToAbsolute("~/N2/Resources/icons/bullet_arrow_up.png");
+			b.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("Resources/icons/bullet_arrow_up.png");
 			b.ToolTip = "Move item up";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;
@@ -245,7 +270,7 @@ namespace N2.Web.UI.WebControls
 		{
 			var b = new ImageButton();
 			b.ID = ID + "_down_" + itemEditorIndex;
-			b.ImageUrl = Url.ToAbsolute("~/N2/Resources/icons/bullet_arrow_down.png");
+			b.ImageUrl = Engine.ManagementPaths.ResolveResourceUrl("Resources/icons/bullet_arrow_down.png");
 			b.ToolTip = "Move item down";
 			b.CommandArgument = itemEditorIndex.ToString();
 			b.CausesValidation = false;
@@ -256,7 +281,7 @@ namespace N2.Web.UI.WebControls
 
 		private void DeleteItemClick(object sender, ImageClickEventArgs e)
 		{
-			var b = (ImageButton)sender;
+			var b = (ImageButton) sender;
 			b.Enabled = false;
 			b.CssClass += " disabled";
 
@@ -264,45 +289,45 @@ namespace N2.Web.UI.WebControls
 			DeletedIndexes.Add(index);
 			ItemEditors[index].Enabled = false;
 			ItemEditors[index].CssClass += " disabled";
-			foreach(var validator in N2.Web.UI.ItemUtility.FindInChildren<IValidator>(ItemEditors[index]))
+			foreach (IValidator validator in ItemUtility.FindInChildren<IValidator>(ItemEditors[index]))
 			{
 				if (validator is BaseValidator)
 					(validator as BaseValidator).Enabled = false;
-				if(Page.Validators.Contains(validator))
+				if (Page.Validators.Contains(validator))
 					Page.Validators.Remove(validator);
 			}
 		}
 
 		private void MoveItemUpClick(object sender, ImageClickEventArgs e)
 		{
-			var b = (ImageButton)sender;
+			var b = (ImageButton) sender;
 
 			int index = int.Parse(b.CommandArgument);
-			var item = ItemEditors[index].CurrentItem;
+			ContentItem item = ItemEditors[index].CurrentItem;
 
-			var itemIndex = item.Parent.Children.IndexOf(item) - 1;
+			int itemIndex = item.Parent.Children.IndexOf(item) - 1;
 
-			if(itemIndex < 0)
+			if (itemIndex < 0)
 				return;
 
-            Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.Before, item.Parent.Children[itemIndex]);
+			Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.Before, item.Parent.Children[itemIndex]);
 
 			Context.Response.Redirect(Context.Request.Url.PathAndQuery);
 		}
 
 		private void MoveItemDownClick(object sender, ImageClickEventArgs e)
 		{
-			var b = (ImageButton)sender;
+			var b = (ImageButton) sender;
 
 			int index = int.Parse(b.CommandArgument);
-			var item = ItemEditors[index].CurrentItem;
+			ContentItem item = ItemEditors[index].CurrentItem;
 
-			var itemIndex = item.Parent.Children.IndexOf(item) + 1;
+			int itemIndex = item.Parent.Children.IndexOf(item) + 1;
 
 			if (itemIndex == item.Parent.Children.Count)
 				return;
 
-            Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.After, item.Parent.Children[itemIndex]);
+			Engine.Resolve<ITreeSorter>().MoveTo(item, NodePosition.After, item.Parent.Children[itemIndex]);
 
 			Context.Response.Redirect(Context.Request.Url.PathAndQuery);
 		}
@@ -320,32 +345,10 @@ namespace N2.Web.UI.WebControls
 
 		protected virtual void AddToContainer(Control container, ItemEditor itemEditor, ContentItem item)
 		{
-			FieldSet fs = new FieldSet();
-            fs.Legend = Engine.Definitions.GetDefinition(item.GetContentType()).Title;
+			var fs = new FieldSet();
+			fs.Legend = Engine.Definitions.GetDefinition(item.GetContentType()).Title;
 			container.Controls.Add(fs);
 			fs.Controls.Add(itemEditor);
 		}
-
-		#region IItemContainer Members
-
-		public ContentItem ParentItem
-		{
-			get
-			{
-				return parentItem
-                    ?? (parentItem = Engine.Persister.Get(ParentItemID));
-			}
-			set
-			{
-				if (value == null)
-					throw new ArgumentNullException("value");
-
-				parentItem = value;
-				ParentItemID = value.ID;
-				ParentItemType = value.GetContentType().AssemblyQualifiedName;
-			}
-		}
-
-		#endregion
 	}
 }

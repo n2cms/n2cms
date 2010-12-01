@@ -7,13 +7,13 @@ using System.Web;
 namespace N2.Edit.FileSystem.Items
 {
 	[PageDefinition("Directory",
-		IconUrl = "~/N2/Resources/icons/folder.png",
+		IconUrl = "{ManagementUrl}/Resources/icons/folder.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage,
 		SortOrder = 2015)]
 	[RestrictParents(typeof(AbstractDirectory))]
 	[WithEditableName(Focus = true)]
-	[N2.Web.Template("info", "~/N2/Files/FileSystem/Directory.aspx")]
-	[N2.Web.Template("upload", "~/N2/Files/FileSystem/Upload.aspx")]
+	[N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
+	[N2.Web.Template("upload", "{ManagementUrl}/Files/FileSystem/Upload.aspx")]
 	public class Directory : AbstractDirectory, IActiveContent
 	{
 		protected Directory()
@@ -44,7 +44,7 @@ namespace N2.Edit.FileSystem.Items
 			get
 			{
 				if (base.GetFiles().Count > 0)
-					return N2.Web.Url.ToAbsolute("~/N2/Resources/icons/folder_page_white.png");
+					return Context.Current.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/folder_page_white.png");
 				return base.IconUrl;
 			}
 		}

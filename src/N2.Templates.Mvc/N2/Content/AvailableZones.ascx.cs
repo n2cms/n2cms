@@ -38,7 +38,7 @@ namespace N2.Edit
         {
             N2.Integrity.AvailableZoneAttribute a = (N2.Integrity.AvailableZoneAttribute)dataItem;
 
-            Url newUrl = Engine.EditManager.GetSelectNewItemUrl(CurrentItem, a.ZoneName);
+            Url newUrl = Engine.ManagementPaths.GetSelectNewItemUrl(CurrentItem, a.ZoneName);
             return newUrl.AppendQuery("returnUrl", Request.RawUrl);
 		}
 
@@ -56,13 +56,13 @@ namespace N2.Edit
 
         protected string GetEditDataItemUrl(object dataItem)
         {
-            Url editUrl = Engine.EditManager.GetEditExistingItemUrl((ContentItem)dataItem);
+            Url editUrl = Engine.ManagementPaths.GetEditExistingItemUrl((ContentItem)dataItem);
             return editUrl.AppendQuery("returnUrl", Request.RawUrl);
         }
 
         protected string GetDeleteDataItemUrl(object dataItem)
         {
-            Url deleteUrl = Engine.EditManager.GetDeleteUrl((ContentItem)dataItem);
+            Url deleteUrl = Engine.ManagementPaths.GetDeleteUrl((ContentItem)dataItem);
             return deleteUrl.AppendQuery("returnUrl", Request.RawUrl);
         }
 

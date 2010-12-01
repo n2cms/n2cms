@@ -5,18 +5,17 @@ using System.Web.UI.WebControls;
 using N2.Collections;
 using N2.Definitions;
 using N2.Details;
-using N2.Edit.Trash;
 using System.Security.Principal;
 
 namespace N2.Security.Items
 {
     [PartDefinition("User List", 
 		SortOrder = 2000, 
-		IconUrl= "~/N2/Resources/icons/group.png")]
+		IconUrl= "{ManagementUrl}/Resources/icons/group.png")]
 	[WithEditableTitle("Title", 10)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
 	[Throwable(AllowInTrash.No)]
-	public class UserList : N2.ContentItem
+	public class UserList : ContentItem
 	{
 		[EditableTextBox("Roles", 100, TextMode=TextBoxMode.MultiLine)]
 		[DetailAuthorizedRoles("admin", "Administrators")]
@@ -53,7 +52,6 @@ namespace N2.Security.Items
 			}
 			Roles = string.Join(Environment.NewLine, roles.ToArray());
 		}
-
 
 		public virtual MembershipUserCollection GetMembershipUsers(string providerName)
 		{

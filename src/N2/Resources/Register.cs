@@ -2,15 +2,15 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Collections;
-using System.Collections.Generic;
+using N2.Edit;
+using N2.Engine;
 
 namespace N2.Resources
 {
 	/// <summary>
 	/// Methods to register styles and javascripts.
 	/// </summary>
-	public class Register
+	public static class Register
 	{
 		public const string JQueryVersion = "1.4.2";
 
@@ -47,7 +47,7 @@ namespace N2.Resources
 				PlaceHolder holder = GetPlaceHolder(page);
 
 				HtmlLink link = new HtmlLink();
-				link.Href = resourceUrl;
+				link.Href = page.Engine().ManagementPaths.ResolveResourceUrl(resourceUrl);
 				link.Attributes["type"] = "text/css";
 				link.Attributes["media"] = media.ToString().ToLower();
 				link.Attributes["rel"] = "stylesheet";
@@ -56,25 +56,6 @@ namespace N2.Resources
 				page.Items[resourceUrl] = null;
 			}
 		}
-
-		///// <summary>Register a style sheet reference in the page's header with media type.</summary>
-		///// <param name="state">The state controlling whether the style sheet is returned or not.</param>
-		///// <param name="resourceUrl">The url to the style sheet to register.</param>
-		///// <param name="media">The media type to assign, e.g. print.</param>
-		//public static string StyleSheet(IDictionary state, string resourceUrl, Media media)
-		//{
-		//    if (state == null) throw new ArgumentNullException("state");
-		//    if (resourceUrl == null) throw new ArgumentNullException("resourceUrl");
-
-		//    resourceUrl = N2.Web.Url.ToAbsolute(resourceUrl);
-
-		//    if (RegistrationStateMap.TryRegisterUrl(state, resourceUrl))
-		//    {
-		//        return string.Format("<link rel=\"stylesheet\" type=\"text/css\" media=\"{0}\" href=\"{1}\"/>", media.ToString().ToLower(), resourceUrl);
-		//    }
-
-		//    return null;
-		//}
 
 		/// <summary>Register an embedded javascript resource reference in the page header.</summary>
 		/// <param name="page">The page in whose header to register the javascript.</param>
@@ -121,7 +102,7 @@ namespace N2.Resources
 					page.ClientScript.RegisterClientScriptBlock(typeof (Register), key, EmbedDocumentReady(script), true);
 				}
 				else if (Is(options, ScriptOptions.Include))
-					page.ClientScript.RegisterClientScriptInclude(key, script);
+					page.ClientScript.RegisterClientScriptInclude(key, page.Engine().ManagementPaths.ResolveResourceUrl(script));
 				else
 					throw new ArgumentException("options");
 			}
@@ -198,7 +179,7 @@ namespace N2.Resources
 			HtmlGenericControl script = new HtmlGenericControl("script");
 			page.Items[resourceUrl] = script;
 
-			resourceUrl = N2.Web.Url.ToAbsolute(resourceUrl);
+			resourceUrl = page.Engine().ManagementPaths.ResolveResourceUrl(resourceUrl);
 
 			script.Attributes["src"] = resourceUrl;
 			script.Attributes["type"] = "text/javascript";
@@ -224,9 +205,9 @@ namespace N2.Resources
 		public static void JQuery(Page page)
 		{
 #if DEBUG
-			JavaScript(page, N2.Web.Url.ToAbsolute("~/N2/Resources/Js/jquery-" + JQueryVersion + ".js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #else
-			JavaScript(page, N2.Web.Url.ToAbsolute("~/N2/Resources/Js/jquery-" + JQueryVersion + ".min.js"), ScriptOptions.Prioritize | ScriptOptions.Include);
+			JavaScript(page, "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
 #endif
 		}
 
@@ -260,7 +241,7 @@ namespace N2.Resources
 		}
 
 		#region TabPanel
-		private static readonly string tabPanelFormat = @"jQuery('{0}').n2tabs('{1}',location.hash);";
+		private const string tabPanelFormat = @"jQuery('{0}').n2tabs('{1}',location.hash);";
 
 		public static void TabPanel(Page page, string selector, bool registerTabCss)
 		{
@@ -275,7 +256,7 @@ namespace N2.Resources
 				page.Items[key] = new object();
 				if (registerTabCss)
 				{
-					StyleSheet(page, "~/N2/Resources/Css/TabPanel.css");
+					StyleSheet(page, page.Engine().ManagementPaths.ResolveResourceUrl("Resources/Css/TabPanel.css"));
 				}
 			}
 		}
@@ -291,44 +272,15 @@ namespace N2.Resources
 		}
 		#endregion
 
-		static string pluginsUrl = "~/N2/Resources/Js/plugins.ashx?v=" + typeof (Register).Assembly.GetName().Version;
 		public static void JQueryPlugins(Page page)
 		{
 			JQuery(page);
-			JavaScript(page, pluginsUrl);
+			JavaScript(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version));
 		}
 
 		public static void TinyMCE(Page page)
 		{
-			JavaScript(page, "~/N2/Resources/tiny_mce/tiny_mce.js");
+			JavaScript(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js"));
 		}
-
-		//static class RegistrationStateMap
-		//{
-		//    public static bool TryRegisterUrl(IDictionary state, string url)
-		//    {
-		//        if (IsRegistered(state, url))
-		//            return false;
-		//        RegisterUrl(state, url);
-		//        return true;
-		//    }
-
-		//    public static void RegisterUrl(IDictionary state, string url)
-		//    {
-		//        List<string> added = state["n2rsm"] as List<string>;
-		//        if (added == null)
-		//            state["n2rsm"] = added = new List<string>();
-
-		//        added.Add(url.ToLowerInvariant());
-		//    }
-
-		//    public static bool IsRegistered(IDictionary state, string url)
-		//    {
-		//        List<string> added = state["n2rsm"] as List<string>;
-		//        if (added == null)
-		//            return true;
-		//        return added.Contains(url.ToLowerInvariant());
-		//    }
-		//}
 	}
 }

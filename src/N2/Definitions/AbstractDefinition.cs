@@ -33,14 +33,10 @@ namespace N2.Definitions
 		/// <summary>Whether the defined item is a page or not. This affects whether the item is displayed in the edit tree and how it's url is calculated.</summary>
 		public bool IsPage { get; protected set; }
 
-
-
 		protected AbstractDefinition()
 		{
 			RefinementOrder = RefineOrder.First;
 		}
-
-
 
 		#region ISortableRefiner Members
 		
@@ -57,8 +53,6 @@ namespace N2.Definitions
 
 		#endregion
 
-
-
 		#region IPathFinder Members
 
 		public PathData GetPath(ContentItem item, string remainingUrl)
@@ -71,8 +65,6 @@ namespace N2.Definitions
 		}
 
 		#endregion
-
-
 
 		#region IDescriptionRefiner Members
 

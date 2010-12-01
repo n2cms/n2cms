@@ -12,18 +12,18 @@ using N2.Persistence.Finder;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("Edit", "edit", "Content/Edit.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/icons/page_edit.png", 20, 
+	[NavigationLinkPlugin("Edit", "edit", "Content/Edit.aspx?selected={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 20, 
 		GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("EDIT", "edit", "Content/Edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/icons/page_edit.png", 50, ToolTip = "edit", 
+	[ToolbarPlugin("EDIT", "edit", "Content/Edit.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_edit.png", 50, ToolTip = "edit", 
 		GlobalResourceClassName = "Toolbar")]
-    [ControlPanelLink("cpEdit", "~/N2/Resources/icons/page_edit.png", "Content/Edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
-    [ControlPanelLink("cpEditPreview", "~/N2/Resources/icons/page_edit.png", "Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
+    [ControlPanelLink("cpEdit", "{ManagementUrl}/Resources/icons/page_edit.png", "Content/Edit.aspx?selected={Selected.Path}", "Edit page", 50, ControlPanelState.Visible)]
+    [ControlPanelLink("cpEditPreview", "{ManagementUrl}/Resources/icons/page_edit.png", "Content/Edit.aspx?selectedUrl={Selected.Url}", "Back to edit", 10, ControlPanelState.Previewing)]
 	[ControlPanelPreviewPublish("Publish the currently displayed page version.", 20, 
 		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
 	[ControlPanelPreviewDiscard("Irrecoverably delete the currently displayed version.", 30, 
 		AuthorizedRoles = new string[] { "Administrators", "Editors", "admin" })]
 	[ControlPanelEditingSave("Save changes", 10)]
-    [ControlPanelLink("cpEditingCancel", "~/N2/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
+    [ControlPanelLink("cpEditingCancel", "{ManagementUrl}/Resources/icons/cancel.png", "{Selected.Url}", "Cancel changes", 20, ControlPanelState.Editing, 
 		UrlEncode = false)]
 	public partial class Edit : EditPage
 	{
@@ -39,7 +39,8 @@ namespace N2.Edit
 		protected IContentTemplateRepository Templates;
 		protected IVersionManager Versions;
 		protected CommandDispatcher Commands;
-		protected IEditManager Edits;
+		protected IEditManager EditManager;
+		protected IEditUrlManager ManagementPaths;
 
 		protected override void OnPreInit(EventArgs e)
 		{
@@ -49,7 +50,8 @@ namespace N2.Edit
 			Templates = Engine.Resolve<IContentTemplateRepository>();
 			Versions = Engine.Resolve<IVersionManager>();
 			Commands = Engine.Resolve<CommandDispatcher>();
-			Edits = Engine.EditManager;
+			EditManager = Engine.EditManager;
+			ManagementPaths = Engine.ManagementPaths;
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -136,7 +138,7 @@ namespace N2.Edit
 			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
             Commands.Save(ctx);
 
-			Url redirectTo = Edits.GetEditExistingItemUrl(ctx.Content);
+			Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
 			if (!string.IsNullOrEmpty(Request["returnUrl"]))
 				redirectTo = redirectTo.AppendQuery("returnUrl", Request["returnUrl"]);
 			
@@ -149,7 +151,7 @@ namespace N2.Edit
             if (IsValid)
             {
                 ContentItem savedVersion = SaveVersionForFuturePublishing();
-                Url redirectUrl = Edits.GetEditExistingItemUrl(savedVersion);
+				Url redirectUrl = ManagementPaths.GetEditExistingItemUrl(savedVersion);
 				Response.Redirect(redirectUrl.AppendQuery("refresh=true"));
 			}
         }
@@ -223,14 +225,14 @@ namespace N2.Edit
 
 		private void DisplayThisHasNewerVersionInfo(ContentItem itemToLink)
 		{
-            string url = Url.ToAbsolute(Edits.GetEditExistingItemUrl(itemToLink));
+            string url = Url.ToAbsolute(ManagementPaths.GetEditExistingItemUrl(itemToLink));
 			hlNewerVersion.NavigateUrl = url;
 			hlNewerVersion.Visible = true;
 		}
 
 		private void DisplayThisIsVersionInfo(ContentItem itemToLink)
 		{
-            string url = Url.ToAbsolute(Edits.GetEditExistingItemUrl(itemToLink));
+			string url = Url.ToAbsolute(ManagementPaths.GetEditExistingItemUrl(itemToLink));
 			hlOlderVersion.NavigateUrl = url;
 			hlOlderVersion.Visible = true;
 		}
@@ -239,9 +241,10 @@ namespace N2.Edit
 		{
 			var start = Engine.Resolve<IUrlParser>().StartPage;
 			var root = Engine.Persister.Repository.Load(Engine.Resolve<IHost>().CurrentSite.RootItemID);
-			foreach (EditToolbarPluginAttribute plugin in Edits.GetPlugins<EditToolbarPluginAttribute>(Page.User))
+			foreach (EditToolbarPluginAttribute plugin in EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
-				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root, ControlPanelState.Visible, Edits.GetManagementInterfaceUrl()));
+				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root,
+					ControlPanelState.Visible, ManagementPaths));
 			}
 		}
 

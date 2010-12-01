@@ -8,8 +8,6 @@ using N2.Persistence.Serialization;
 using N2.Tests.Serialization.Items;
 using N2.Web;
 using Rhino.Mocks;
-using N2.Engine;
-using System.Reflection;
 using N2.Persistence.Proxying;
 
 namespace N2.Tests.Serialization
@@ -32,8 +30,15 @@ namespace N2.Tests.Serialization
 			notifier = mocks.Stub<IItemNotifier>();
 			mocks.Replay(notifier);
 
-			definitions = new DefinitionManager(new DefinitionBuilder(finder, new EngineSection()), new N2.Edit.Workflow.StateChanger(), notifier, new InterceptingProxyFactory());
-			
+			definitions = new DefinitionManager(
+				new DefinitionBuilder(
+					finder, 
+					new EngineSection(), 
+					new FakeEditUrlManager()), 
+				new N2.Edit.Workflow.StateChanger(), 
+				notifier, 
+				new InterceptingProxyFactory());
+
 			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser)
 				.Call(parser.BuildUrl(null))

@@ -12,7 +12,7 @@ using N2.Edit.FileSystem;
 
 namespace N2.Edit.Export
 {
-    [ToolbarPlugin("EXPORT", "exportimport", "Content/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/icons/package_come_and_go.png", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
+    [ToolbarPlugin("EXPORT", "exportimport", "Content/Export/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/package_come_and_go.png", 150, ToolTip = "export/import page data", AuthorizedRoles = new string[] { "Administrators", "Admin" }, GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage
 	{
 		protected Control tpExport;

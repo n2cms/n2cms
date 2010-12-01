@@ -19,7 +19,7 @@
 			</asp:TemplateField>
 			<asp:TemplateField HeaderText="Title" meta:resourceKey="title" >
 				<ItemTemplate>
-				<a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# VirtualPathUtility.ToAbsolute((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
+				<a href="<%# GetPreviewUrl((N2.ContentItem)Container.DataItem) %>" title="<%# Eval("ID") %>"><img alt="icon" src='<%# ResolveUrl((string)Eval("IconUrl")) %>'/><%# string.IsNullOrEmpty(((N2.ContentItem)Container.DataItem).Title) ? "(untitled)" : ((N2.ContentItem)Container.DataItem).Title %></a></ItemTemplate>
 			</asp:TemplateField>
 			<asp:BoundField HeaderText="ID" DataField="ID" meta:resourceKey="id" />
 			<asp:TemplateField HeaderText="State" meta:resourceKey="state">
@@ -32,7 +32,7 @@
 			<asp:BoundField HeaderText="Saved by" DataField="SavedBy" meta:resourceKey="savedBy" />
 			<asp:TemplateField>
 				<ItemTemplate>
-					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.EditManager.GetEditExistingItemUrl((N2.ContentItem)Container.DataItem) %>' />
+					<asp:HyperLink runat="server" ID="hlEdit" meta:resourceKey="hlEdit" Text="Edit" NavigateUrl='<%# Engine.ManagementPaths.GetEditExistingItemUrl((N2.ContentItem)Container.DataItem) %>' />
 				</ItemTemplate>
 			</asp:TemplateField>
 			<asp:TemplateField>

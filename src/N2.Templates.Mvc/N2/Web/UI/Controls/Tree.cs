@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web;
 using System.Web.UI;
 using N2.Collections;
 using N2.Web;
-using N2.Web.UI;
 using N2.Web.UI.WebControls;
-using System.Security.Principal;
 using N2.Engine;
 using N2.Edit.Workflow;
 
@@ -25,12 +21,17 @@ namespace N2.Edit.Web.UI.Controls
 		{
 		}
 
+		private static IEditUrlManager ManagementPaths
+		{
+			get { return N2.Context.Current.ManagementPaths; }
+		}
+
 		public HierarchyNode<ContentItem> Nodes { get; set; }
 
 		public ContentItem SelectedItem
 		{
-		    get { return selectedtItem ?? (selectedtItem = Find.CurrentPage ?? Find.StartPage); }
-		    set { selectedtItem = value; }
+			get { return selectedtItem ?? (selectedtItem = Find.CurrentPage ?? Find.StartPage); }
+			set { selectedtItem = value; }
 		}
 
 		public ContentItem RootNode
@@ -105,8 +106,7 @@ namespace N2.Edit.Web.UI.Controls
 		{
 			Li li = new Li();
 			
-//TODO respect EditInterfaceUrl setting
-			li.Text = "{url:" + Url.ToAbsolute("~/N2/Content/Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path)) + "}";
+			li.Text = "{url:" + ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Navigation/LoadTree.ashx?target=" + target + "&selected=" + HttpUtility.UrlEncode(tn.Node.Path)) + "}";
 
 			tn.UlClass = "ajax";
 			tn.Controls.Add(li);
@@ -122,6 +122,7 @@ namespace N2.Edit.Web.UI.Controls
 			ILinkBuilder builder = Link.To(node)
 				.Target(target)
 				.Class(className)
+				.Href(adapter.GetPreviewUrl(item))
 				.Text("<img src='" + adapter.GetIconUrl(item) + "'/>" + node.Contents)
 				.Attribute("rel", node.Path)
 				.Attribute("data-id", item.ID.ToString())

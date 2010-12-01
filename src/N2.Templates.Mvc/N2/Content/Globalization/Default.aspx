@@ -28,7 +28,11 @@
 			    </asp:Repeater>
 
 			    <tr class="selected">
-			        <td><%# SelectedItem.Parent != null ? Html.A(Html.Url("Default.aspx").AppendQuery("selected", SelectedItem.Parent.Path), Html.Img("../../Resources/icons/bullet_toggle_minus.png", "up")) : null%></td>
+			        <td>
+						<% if (Selection.SelectedItem.Parent != null){ %>
+							<a href="Default.aspx?selected=<%# Selection.SelectedItem.Parent.Path %>"><img src="../../Resources/icons/bullet_toggle_minus.png" class="up" /></a>
+						<% } %>
+					</td>
 			        <lang:Languages runat="server" DataSource='<%# GetTranslations(SelectedItem) %>' />
                 </tr>
 		    </thead>
@@ -36,7 +40,9 @@
 				<HeaderTemplate><tbody></HeaderTemplate>
 				<ItemTemplate>
 					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %> i<%# Container.ItemIndex %>">
-					    <td><%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 ? Html.A(Html.Url("Default.aspx").AppendQuery("selected", ((N2.ContentItem)Container.DataItem).Path), Html.Img("../../Resources/icons/bullet_toggle_plus.png", "down")) : null%></td>
+					    <td>
+							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# Eval("Path", "Default.aspx?selected={0}") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
+						</td>
 						<lang:Languages runat="server" DataSource='<%# GetTranslations((N2.ContentItem)Container.DataItem) %>' />
 					</tr>
 				</ItemTemplate>
@@ -46,7 +52,9 @@
 			    <HeaderTemplate><tbody></HeaderTemplate>
 				<ItemTemplate>
 					<tr class="<%# Container.ItemIndex % 2 == 1 ? "alt" : "" %> i<%# Container.ItemIndex %>">
-					    <td><%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 ? Html.A(Html.Url("Default.aspx").AppendQuery("selected", ((N2.ContentItem)Container.DataItem).Path), Html.Img("../../Resources/icons/bullet_toggle_plus.png", "down")) : null%></td>
+					    <td>
+							<asp:HyperLink runat="server" Visible="<%# ((N2.ContentItem)Container.DataItem).GetChildren().Count > 0 %>" href='<%# Eval("Path", "Default.aspx?selected={0}") %>'><img src="../../Resources/icons/bullet_toggle_plus.png" class="down" /></asp:HyperLink>
+						</td>
 						<lang:Languages runat="server" DataSource='<%# GetTranslations((N2.ContentItem)Container.DataItem) %>' />
 					</tr>
 				</ItemTemplate>

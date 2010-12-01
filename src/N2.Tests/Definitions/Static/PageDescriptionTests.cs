@@ -25,13 +25,13 @@ namespace N2.Tests.Definitions.Static
 		[Test]
 		public void Description_HasPageIconUrl()
 		{
-			Assert.That(description.IconUrl, Is.EqualTo("~/N2/Resources/icons/page.png"));
+			Assert.That(description.IconUrl, Is.EqualTo("/N2/Resources/icons/page(description).png"));
 		}
 
 		[Test]
 		public void Instance_HasPageIconUrl()
 		{
-			Assert.That(page.IconUrl, Is.EqualTo("/N2/Resources/icons/page.png"));
+			Assert.That(page.IconUrl, Is.EqualTo("/N2/Resources/icons/page(iconUrl).png"));
 		}
 
 		[Test]

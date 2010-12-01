@@ -16,9 +16,9 @@ namespace N2.Templates.Items
 	[WithEditableTitle("Title", 10, Focus = true, ContainerName = Tabs.Content)]
 	[TabContainer(Tabs.Content, "Content", Tabs.ContentIndex)]
     [TabContainer(Tabs.Advanced, "Advanced", Tabs.AdvancedIndex)]
-	[Template("create", "~/N2/Content/New.aspx")]
-	[Template("update", "~/N2/Content/Edit.aspx")]
-	[Template("delete", "~/N2/Content/delete.aspx")]
+	[Template("create", "{ManagementUrl}/Content/New.aspx")]
+	[Template("update", "{ManagementUrl}/Content/Edit.aspx")]
+	[Template("delete", "{ManagementUrl}/Content/delete.aspx")]
 	public abstract class AbstractPage : ContentItem, IPage
 	{
 		/// <summary>The name without extension .png of an icon file located in /Templates/UI/Img/. Defaults to "page".</summary>

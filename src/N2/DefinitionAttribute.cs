@@ -6,24 +6,24 @@ using N2.Installation;
 namespace N2
 {
 	/// <summary>
-    /// Decoration for N2 content items. Provides information needed in edit 
-    /// mode and for data integrity.
-    /// </summary>
-    /// <remarks>This attribute may be deprecated in the future. Use <see cref="PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/> instead.</remarks>
+	/// Decoration for N2 content items. Provides information needed in edit 
+	/// mode and for data integrity.
+	/// </summary>
+	/// <remarks>This attribute may be deprecated in the future. Use <see cref="PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/> instead.</remarks>
 	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 	public class DefinitionAttribute : AbstractDefinition
-    {
+	{
 		public DefinitionAttribute()
 		{
 			Installer = InstallerHint.Default;
 			IsPage = true;
-			IconUrl = "~/N2/Resources/icons/page.png";
+			IconUrl = "{ManagementUrl}/Resources/icons/page.png";
 		}
 
 		/// <summary>Initializes a new instance of ItemAttribute class.</summary>
 		/// <param name="title">The title used when presenting this item type to editors.</param>
 		public DefinitionAttribute(string title)
-			:this()
+			: this()
 		{
 			Title = title;
 		}
@@ -32,7 +32,7 @@ namespace N2
 		/// <param name="title">The title used when presenting this item type to editors.</param>
 		/// <param name="name">The name/discriminator needed to map the appropriate type with content data when retrieving from persistence. When this is null the type's full name is used.</param>
 		public DefinitionAttribute(string title, string name)
-			:this(title)
+			: this(title)
 		{
 			Name = name;
 		}
@@ -44,7 +44,7 @@ namespace N2
 		/// <param name="toolTip">The tool tip displayed when hovering over this item type.</param>
 		/// <param name="sortOrder">The order of this type compared to other items types.</param>
 		public DefinitionAttribute(string title, string name, string description, string toolTip, int sortOrder)
-			:this(title, name)
+			: this(title, name)
 		{
 			Description = description;
 			ToolTip = toolTip;
@@ -58,10 +58,10 @@ namespace N2
 
 		/// <summary>Updates the item definition with the attribute.</summary>
 		public override void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
-    	{
+		{
 			base.Refine(definition, allDefinitions);
 
 			definition.Installer = Installer;
 		}
-    }
+	}
 }

@@ -72,7 +72,7 @@ namespace N2.Web.UI
 		{
 			using (new ItemStacker(item))
 			{
-				Control templateItem = container.Page.LoadControl(templateUrl);
+				Control templateItem = container.Page.LoadControl(Context.Current.ManagementPaths.ResolveResourceUrl(templateUrl));
 				if (templateItem is IContentTemplate)
 					(templateItem as IContentTemplate).CurrentItem = item;
 				container.Controls.Add(templateItem);

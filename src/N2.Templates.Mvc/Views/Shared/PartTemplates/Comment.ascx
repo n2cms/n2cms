@@ -3,7 +3,7 @@
 
 <% if (N2.Context.Current.SecurityManager.IsEditor(ViewContext.HttpContext.User)){ %>
 <div style="position:relative;top:20px;">
-	<% N2.Web.UI.PartUtilities.WriteTitleBar(Html.ViewContext.Writer, N2.Context.Current.EditManager, N2.Context.Current.Resolve<N2.Engine.IContentAdapterProvider>(), N2.Context.Current.Definitions.GetDefinition(Model.GetType()), Model); %>
+	<% N2.Web.UI.PartUtilities.WriteTitleBar(Html.ViewContext.Writer, N2.Context.Current.ManagementPaths, N2.Context.Current.Resolve<N2.Engine.IContentAdapterProvider>(), N2.Context.Current.Definitions.GetDefinition(Model.GetType()), Model); %>
 </div>
 <% } %>
 

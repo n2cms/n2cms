@@ -3,32 +3,32 @@ using System.Configuration;
 
 namespace N2.Configuration
 {
-    /// <summary>
-    /// Configuration related to the edit interface.
-    /// </summary>
+	/// <summary>
+	/// Configuration related to the edit interface.
+	/// </summary>
 	public class EditSection : ConfigurationSectionBase
-    {
-        [ConfigurationProperty("installer")]
-        public InstallerElement Installer
-        {
-            get { return (InstallerElement)base["installer"]; }
-            set { base["editTreeUrl"] = value; }
-        }
+	{
+		[ConfigurationProperty("installer")]
+		public InstallerElement Installer
+		{
+			get { return (InstallerElement)base["installer"]; }
+			set { base["editTreeUrl"] = value; }
+		}
 
-        /// <summary>Users and roles considered editors.</summary>
-        [ConfigurationProperty("editors")]
-        public PermissionElement Editors
-        {
-            get { return (PermissionElement)base["editors"]; }
-            set { base["editors"] = value; }
-        }
+		/// <summary>Users and roles considered editors.</summary>
+		[ConfigurationProperty("editors")]
+		public PermissionElement Editors
+		{
+			get { return (PermissionElement)base["editors"]; }
+			set { base["editors"] = value; }
+		}
 
-        /// <summary>Users and roles considered administrators.</summary>
-        [ConfigurationProperty("administrators")]
-        public PermissionElement Administrators
-        {
-            get { return (PermissionElement)base["administrators"]; }
-            set { base["administrators"] = value; }
+		/// <summary>Users and roles considered administrators.</summary>
+		[ConfigurationProperty("administrators")]
+		public PermissionElement Administrators
+		{
+			get { return (PermissionElement)base["administrators"]; }
+			set { base["administrators"] = value; }
 		}
 
 		/// <summary>Users and roles considered writers.</summary>
@@ -38,12 +38,12 @@ namespace N2.Configuration
 			get { return (PermissionElement)base["writers"]; }
 			set { base["writers"] = value; }
 		}
-		
+
 		[ConfigurationProperty("uploadFolders")]
-        public FileSystemFolderCollection UploadFolders
-        {
-            get { return (FileSystemFolderCollection)base["uploadFolders"]; }
-            set { base["uploadFolders"] = value; }
+		public FileSystemFolderCollection UploadFolders
+		{
+			get { return (FileSystemFolderCollection)base["uploadFolders"]; }
+			set { base["uploadFolders"] = value; }
 		}
 
 		[ConfigurationProperty("fileSystem")]
@@ -53,25 +53,25 @@ namespace N2.Configuration
 			set { base["fileSystem"] = value; }
 		}
 
-    	[ConfigurationProperty("editTreeUrl", DefaultValue = "~/N2/Content/Navigation/Tree.aspx")]
-        public string EditTreeUrl
-        {
-            get { return (string)base["editTreeUrl"]; }
-            set { base["editTreeUrl"] = value; }
-        }
+		[ConfigurationProperty("editTreeUrl", DefaultValue = "{ManagementUrl}/Content/Navigation/Tree.aspx")]
+		public string EditTreeUrl
+		{
+			get { return (string)base["editTreeUrl"]; }
+			set { base["editTreeUrl"] = value; }
+		}
 
-        [ConfigurationProperty("editPreviewUrlFormat", DefaultValue = "{0}")]
-        public string EditPreviewUrlFormat
-        {
-            get { return (string)base["editPreviewUrlFormat"]; }
-            set { base["editPreviewUrlFormat"] = value; }
-        }
+		[ConfigurationProperty("editPreviewUrlFormat", DefaultValue = "{0}")]
+		public string EditPreviewUrlFormat
+		{
+			get { return (string)base["editPreviewUrlFormat"]; }
+			set { base["editPreviewUrlFormat"] = value; }
+		}
 
-        [ConfigurationProperty("editItemUrl", DefaultValue = "~/N2/Content/Edit.aspx")]
-        public string EditItemUrl
-        {
-            get { return (string)base["editItemUrl"]; }
-            set { base["editItemUrl"] = value; }
+		[ConfigurationProperty("editItemUrl", DefaultValue = "{ManagementUrl}/Content/Edit.aspx")]
+		public string EditItemUrl
+		{
+			get { return (string)base["editItemUrl"]; }
+			set { base["editItemUrl"] = value; }
 		}
 
 		[ConfigurationProperty("managementInterfaceUrl", DefaultValue = "~/N2/")]
@@ -81,33 +81,33 @@ namespace N2.Configuration
 			set { base["managementInterfaceUrl"] = value; }
 		}
 
-        [ConfigurationProperty("editInterfaceUrl", DefaultValue = "~/N2/Content/")]
-        public string EditInterfaceUrl
-        {
-            get { return (string)base["editInterfaceUrl"]; }
-            set { base["editInterfaceUrl"] = value; }
-        }
+		[ConfigurationProperty("editInterfaceUrl", DefaultValue = "{ManagementUrl}/Content/")]
+		public string EditInterfaceUrl
+		{
+			get { return (string)base["editInterfaceUrl"]; }
+			set { base["editInterfaceUrl"] = value; }
+		}
 
-        [ConfigurationProperty("newItemUrl", DefaultValue = "~/N2/Content/New.aspx")]
-        public string NewItemUrl
-        {
-            get { return (string)base["newItemUrl"]; }
-            set { base["newItemUrl"] = value; }
-        }
+		[ConfigurationProperty("newItemUrl", DefaultValue = "{ManagementUrl}/Content/New.aspx")]
+		public string NewItemUrl
+		{
+			get { return (string)base["newItemUrl"]; }
+			set { base["newItemUrl"] = value; }
+		}
 
-        [ConfigurationProperty("deleteItemUrl", DefaultValue = "~/N2/Content/delete.aspx")]
-        public string DeleteItemUrl
-        {
-            get { return (string)base["deleteItemUrl"]; }
-            set { base["deleteItemUrl"] = value; }
-        }
+		[ConfigurationProperty("deleteItemUrl", DefaultValue = "{ManagementUrl}/Content/delete.aspx")]
+		public string DeleteItemUrl
+		{
+			get { return (string)base["deleteItemUrl"]; }
+			set { base["deleteItemUrl"] = value; }
+		}
 
-        [ConfigurationProperty("tinyMCE")]
-        public TinyMCEElement TinyMCE
-        {
-            get { return (TinyMCEElement)base["tinyMCE"]; }
-            set { base["tinyMCE"] = value; }
-        }
+		[ConfigurationProperty("tinyMCE")]
+		public TinyMCEElement TinyMCE
+		{
+			get { return (TinyMCEElement)base["tinyMCE"]; }
+			set { base["tinyMCE"] = value; }
+		}
 
 		[ConfigurationProperty("nameEditor")]
 		public NameEditorElement NameEditor
@@ -135,11 +135,11 @@ namespace N2.Configuration
 		/// The ASP.NET Theme to use for the Edit directory
 		/// </summary>
 		[ConfigurationProperty("theme")]
-    	public string EditTheme
+		public string EditTheme
 		{
 			get { return (string)base["theme"]; }
 			set { base["theme"] = value; }
-    	}
+		}
 
 		/// <summary>Information about versioning.</summary>
 		[ConfigurationProperty("versions")]
@@ -165,5 +165,5 @@ namespace N2.Configuration
 			get { return Versions.Enabled; }
 			set { Versions.Enabled = true; }
 		}
-    }
+	}
 }

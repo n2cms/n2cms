@@ -23,7 +23,7 @@ namespace N2.Edit
 				return null;
 
 			HtmlImage img = new HtmlImage();
-			img.Src = "~/N2/Resources/Img/separator.png";
+			img.Src = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Img/separator.png");
 			img.Attributes["class"] = "separator";
 			img.Height = 16;
 			img.Width = 1;

@@ -15,6 +15,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using N2.Engine;
 
 namespace N2.Web.UI.WebControls
 {
@@ -26,19 +27,22 @@ namespace N2.Web.UI.WebControls
 			CssClass = "urlSelector";
 		}
 
-
+		protected IEngine Engine
+		{
+			get { return N2.Context.Current; }
+		}
 
 		/// <summary>Text on the button used to open the popup.</summary>
 		public string ButtonText
 		{
-			get { return (string) ViewState["ButtonText"] ?? "..."; }
+			get { return (string)ViewState["ButtonText"] ?? "..."; }
 			set { ViewState["ButtonText"] = value; }
 		}
 
 		/// <summary>Url to the page responsible for selecting urls.</summary>
 		public string BrowserUrl
 		{
-			get { return (string)ViewState["BrowserUrl"] ?? N2.Web.Url.Parse("~/N2/Content/Navigation/Tree.aspx").AppendQuery("location=selection"); }
+			get { return (string)ViewState["BrowserUrl"] ?? N2.Web.Url.Parse("{ManagementUrl}/Content/Navigation/Tree.aspx").AppendQuery("location=selection"); }
 			set { ViewState["BrowserUrl"] = value; }
 		}
 
@@ -52,7 +56,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Size and features of the popup window.</summary>
 		public virtual string PopupOptions
 		{
-			get { return (string) ViewState["PopupOptions"] ?? "height=600,width=400,resizable=yes,status=yes,scrollbars=yes"; }
+			get { return (string)ViewState["PopupOptions"] ?? "height=600,width=400,resizable=yes,status=yes,scrollbars=yes"; }
 			set { ViewState["PopupOptions"] = value; }
 		}
 
@@ -64,24 +68,22 @@ namespace N2.Web.UI.WebControls
 
 		public virtual UrlSelectorMode DefaultMode
 		{
-			get { return ViewState["DefaultMode"] != null ? (UrlSelectorMode) ViewState["DefaultMode"] : UrlSelectorMode.Items; }
+			get { return ViewState["DefaultMode"] != null ? (UrlSelectorMode)ViewState["DefaultMode"] : UrlSelectorMode.Items; }
 			set { ViewState["DefaultMode"] = value; }
 		}
 
 		public virtual UrlSelectorMode AvailableModes
 		{
-			get { return ViewState["AvailableModes"] != null ? (UrlSelectorMode) ViewState["AvailableModes"] : UrlSelectorMode.All; }
+			get { return ViewState["AvailableModes"] != null ? (UrlSelectorMode)ViewState["AvailableModes"] : UrlSelectorMode.All; }
 			set { ViewState["AvailableModes"] = value; }
 		}
-
-
 
 		#region Script
 		private string script =
 			@"
 function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableModes){{
-    var tb = document.getElementById(tbId);
-    window.open(popupUrl
+	var tb = document.getElementById(tbId);
+	window.open(popupUrl
 				+ '&tbid=' + tbId 
 				+ '&defaultMode=' + defaultMode 
 				+ '&availableModes=' + availableModes
@@ -99,7 +101,7 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 
 			EnsureChildControls();
 			Page.ClientScript.RegisterClientScriptBlock(
-				typeof (UrlSelector),
+				typeof(UrlSelector),
 				"N2.Web.UI.WebControls.FileSelector.script",
 				script,
 				true);
@@ -122,11 +124,11 @@ function openUrlSelectorPopup(popupUrl,tbId,popupOptions,defaultMode,availableMo
 			hib.Attributes["class"] = "popupButton selectorButton";
 			Controls.Add(hib);
 			hib.Attributes["onclick"] = string.Format(OpenPopupFormat,
-                                                      N2.Web.Url.ToAbsolute(BrowserUrl),
-			                                          ClientID,
-			                                          PopupOptions,
-			                                          DefaultMode,
-			                                          AvailableModes);
+													  N2.Web.Url.ToAbsolute(BrowserUrl),
+													  ClientID,
+													  PopupOptions,
+													  DefaultMode,
+													  AvailableModes);
 			hib.RenderControl(writer);
 		}
 	}

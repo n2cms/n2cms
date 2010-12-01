@@ -3,7 +3,6 @@ using System.Web.Routing;
 using System.Web.Mvc;
 using System.Web;
 using N2.Engine;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 
@@ -91,12 +90,12 @@ namespace N2.Web.Mvc
 		public override RouteData GetRouteData(HttpContextBase httpContext)
 		{
 			string path = httpContext.Request.AppRelativeCurrentExecutionFilePath;
-			if (path.StartsWith("~/N2/", StringComparison.InvariantCultureIgnoreCase))
-                return new RouteData(this, new StopRoutingHandler());
-            if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
-                return new RouteData(this, new StopRoutingHandler());
-            if (path.EndsWith(".n2.ashx", StringComparison.InvariantCultureIgnoreCase))
-                return new RouteData(this, new StopRoutingHandler());
+			if (path.StartsWith(engine.ManagementPaths.GetManagementInterfaceUrl(), StringComparison.InvariantCultureIgnoreCase))
+				return new RouteData(this, new StopRoutingHandler());
+			if (path.EndsWith(".axd", StringComparison.InvariantCultureIgnoreCase))
+				return new RouteData(this, new StopRoutingHandler());
+			if (path.EndsWith(".n2.ashx", StringComparison.InvariantCultureIgnoreCase))
+				return new RouteData(this, new StopRoutingHandler());
 
 			RouteData routeData = null;
 

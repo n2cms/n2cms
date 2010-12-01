@@ -32,9 +32,9 @@ using System.Web.UI;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("New", "new", "Content/New.aspx?selected={selected}", Targets.Preview, "~/N2/Resources/icons/add.png", 10, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("NEW", "new", "Content/New.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "~/N2/Resources/icons/add.png", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
-    [ControlPanelLink("cpNew", "~/N2/Resources/icons/add.png", "Content/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
+	[NavigationLinkPlugin("New", "new", "Content/New.aspx?selected={selected}", Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 10, GlobalResourceClassName = "Navigation")]
+	[ToolbarPlugin("NEW", "new", "Content/New.aspx?selected={selected}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/add.png", 40, ToolTip = "new", GlobalResourceClassName = "Toolbar")]
+    [ControlPanelLink("cpNew", "{ManagementUrl}/Resources/icons/add.png", "Content/New.aspx?selected={Selected.Path}", "New item one level down from this page", 40, ControlPanelState.Visible)]
 	public partial class New : Web.EditPage
     {
 		ItemDefinition ParentItemDefinition = null;
@@ -159,7 +159,7 @@ namespace N2.Edit
 			if (isCurrent)
 				format = "<strong>" + format + "</strong>";
 
-			return string.Format(format, ResolveClientUrl(item.IconUrl), item.Title, item.Url, "icon", "current");
+			return string.Format(format, ResolveUrl(item.IconUrl), item.Title, item.Url, "icon", "current");
 		}
 
 		private static ContentItem Last(IList<ContentItem> children, ItemFilter filter)
@@ -245,7 +245,7 @@ namespace N2.Edit
 
         protected string GetEditUrl(ItemDefinition definition)
         {
-            Url newUrl = Engine.EditManager.GetEditNewPageUrl(Selection.SelectedItem, definition, ZoneName, GetCreationPosition());
+            Url newUrl = Engine.ManagementPaths.GetEditNewPageUrl(Selection.SelectedItem, definition, ZoneName, GetCreationPosition());
             return newUrl.AppendQuery("returnUrl", Request["returnUrl"]);
         }
 

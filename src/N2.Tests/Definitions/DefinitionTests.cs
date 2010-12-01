@@ -59,7 +59,7 @@ namespace N2.Tests.Definitions
 
 			user = CreatePrincipal("SomeSchmuck");
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			definitions = new DefinitionManager(builder, new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());

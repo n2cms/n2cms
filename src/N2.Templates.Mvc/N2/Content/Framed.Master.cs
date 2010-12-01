@@ -32,7 +32,7 @@ namespace N2.Edit
 
 		protected string MapCssUrl(string cssFileName)
 		{
-			return Url.ToAbsolute(N2.Context.Current.EditManager.GetEditInterfaceUrl() + "../Resources/Css/" + cssFileName);
+			return Url.ToAbsolute(N2.Context.Current.ManagementPaths.GetEditInterfaceUrl() + "../Resources/Css/" + cssFileName);
 		}
 	}
 }

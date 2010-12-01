@@ -439,6 +439,7 @@
 						<xs:attribute name="newItemUrl" type="xs:string" use="optional" />
 						<xs:attribute name="deleteItemUrl" type="xs:string" use="optional" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
+						<xs:attribute name="managementInterfaceUrl" type="xs:string" use="optional" default="~/N2/" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="templates">

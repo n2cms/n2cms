@@ -18,14 +18,14 @@ namespace N2.Definitions
 	{
 		readonly IDictionary<Type, ItemDefinition> definitions;
 		readonly IItemNotifier notifier;
-        readonly StateChanger stateChanger;
+		private readonly StateChanger stateChanger;
 		readonly IProxyFactory interceptor;
 
 		public DefinitionManager(DefinitionBuilder builder, StateChanger changer, IItemNotifier notifier, IProxyFactory interceptor)
 		{
 			definitions = builder.GetDefinitions();
 			interceptor.Initialize(definitions.Values.Select(d => d.ItemType));
-            this.stateChanger = changer;
+			this.stateChanger = changer;
 			this.notifier = notifier;
 			this.interceptor = interceptor;
 		}

@@ -24,7 +24,7 @@ namespace N2.Edit.Globalization
                 if (translation != null)
                 {
 					// item has a translation
-                    string url = Engine.EditManager.GetEditExistingItemUrl(translation);
+                    string url = Engine.ManagementPaths.GetEditExistingItemUrl(translation);
                     Response.Redirect(url);
                 }
                 else if (Selection.SelectedItem.Parent != null)
@@ -36,7 +36,7 @@ namespace N2.Edit.Globalization
 					{
 						// create new translation below translated parent
                         ItemDefinition definition = Engine.Definitions.GetDefinition(Selection.SelectedItem.GetContentType());
-						Url url = Engine.EditManager.GetEditNewPageUrl(parentTranslation, definition, null, CreationPosition.Below);
+						Url url = Engine.ManagementPaths.GetEditNewPageUrl(parentTranslation, definition, null, CreationPosition.Below);
                         url = url.AppendQuery(LanguageGateway.LanguageKey, Selection.SelectedItem[LanguageGateway.LanguageKey] ?? Selection.SelectedItem.ID);
 						Response.Redirect(url);
 					}

@@ -23,8 +23,7 @@ namespace N2.Details
 		protected override Control AddEditor(Control container)
 		{
 			var editor = base.AddEditor(container);
-
-			Register.JavaScript(container.Page, "~/N2/Resources/Js/jquery.editableThemeSelection.js");
+			Register.JavaScript(container.Page, Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Js/jquery.editableThemeSelection.js"));
 			
 			StringBuilder initializationScript = new StringBuilder();
 			initializationScript.AppendFormat("jQuery('#{0}').editableThemeSelection({{ '' : null", editor.ClientID);

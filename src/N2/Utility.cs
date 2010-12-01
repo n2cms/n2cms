@@ -488,5 +488,17 @@ namespace N2
 		{
 			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item.GetContentType());
 		}
+
+		/// <summary>Tries to retrieve the engine provided by an accessor on the page, or falls back to the global singleton.</summary>
+		/// <param name="page">The accessor from which to retrieve the engine.</param>
+		/// <returns>The content engine.</returns>
+		internal static IEngine Engine(this System.Web.UI.Page page)
+		{
+			var accessor = page as IProvider<IEngine>;
+			if (accessor != null)
+				return accessor.Get();
+			else
+				return N2.Context.Current;
+		}
 	}
 }

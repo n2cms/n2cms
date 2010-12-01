@@ -63,8 +63,8 @@ namespace N2.Edit.Web.UI.Controls
 		private void AddPlugin(ContentItem start, ContentItem root, ToolbarPluginAttribute plugin, Control command)
 		{
 			plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, start, root,
-				ControlPanelState.Visible,
-				Engine.EditManager.GetManagementInterfaceUrl()));
+			                                        ControlPanelState.Visible,
+			                                        Engine.ManagementPaths));
 		}
 
         protected override void Render(HtmlTextWriter writer)

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Specialized;
 using N2.Engine;
 using N2.Configuration;
-using System.Collections.Generic;
 
 namespace N2.Web
 {
@@ -14,33 +13,31 @@ namespace N2.Web
 	[Service]
 	public class RequestPathProvider
 	{
-		readonly IContentAdapterProvider adapterProvider;
-		readonly IWebContext webContext;
-		readonly IUrlParser parser;
-		readonly IErrorHandler errorHandler;
-		readonly bool rewriteEmptyExtension = true;
-		readonly bool observeAllExtensions = true;
-		readonly string[] observedExtensions = new[] { ".aspx" };
-		readonly string[] nonRewritablePaths = new[] {"~/N2/"};
+		private readonly IWebContext webContext;
+		private readonly IUrlParser parser;
+		private readonly IErrorHandler errorHandler;
+		private readonly bool rewriteEmptyExtension = true;
+		private readonly bool observeAllExtensions = true;
+		private readonly string[] observedExtensions = new[] {".aspx"};
+		private readonly string[] nonRewritablePaths;
 
-		public RequestPathProvider(IContentAdapterProvider adapterProvider, IWebContext webContext, IUrlParser parser, IErrorHandler errorHandler, HostSection config)
+		public RequestPathProvider(IWebContext webContext, IUrlParser parser, 
+			IErrorHandler errorHandler, HostSection config)
 		{
-			this.adapterProvider = adapterProvider;
 			this.webContext = webContext;
 			this.parser = parser;
 			this.errorHandler = errorHandler;
 			observeAllExtensions = config.Web.ObserveAllExtensions;
 			rewriteEmptyExtension = config.Web.ObserveEmptyExtension;
 			StringCollection additionalExtensions = config.Web.ObservedExtensions;
-            if (additionalExtensions != null && additionalExtensions.Count > 0)
-            {
-                observedExtensions = new string[additionalExtensions.Count + 1];
-                additionalExtensions.CopyTo(observedExtensions, 1);
-            }
+			if (additionalExtensions != null && additionalExtensions.Count > 0)
+			{
+				observedExtensions = new string[additionalExtensions.Count + 1];
+				additionalExtensions.CopyTo(observedExtensions, 1);
+			}
 			observedExtensions[0] = config.Web.Extension;
 			nonRewritablePaths = config.Web.Urls.NonRewritable.GetPaths(webContext);
 		}
-
 
 		public virtual PathData GetCurrentPath()
 		{

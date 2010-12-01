@@ -13,28 +13,28 @@ namespace N2.Edit.Settings
 		{
 			settings = Engine.Resolve<NavigationSettings>();
 			chkShowDataItems.Checked = settings.DisplayDataItems;
-            ddlThemes.DataSource = Engine.Resolve<IFileSystem>().GetFiles("~/N2/Resources/Css/themes");
-            ddlThemes.DataBind();
-            ddlThemes.SelectedValue = GetOrAddCookie(Request.Cookies, "default.css").Value;
-            
-            base.OnInit(e);
+			ddlThemes.DataSource = Engine.Resolve<IFileSystem>().GetFiles(Engine.ManagementPaths.ResolveResourceUrl("Resources/Css/themes"));
+			ddlThemes.DataBind();
+			ddlThemes.SelectedValue = GetOrAddCookie(Request.Cookies, "default.css").Value;
+
+			base.OnInit(e);
 		}
 
 		public void Save()
 		{
 			settings.DisplayDataItems = chkShowDataItems.Checked;
-            GetOrAddCookie(Response.Cookies, "default.css").Value = ddlThemes.SelectedValue;
-        }
+			GetOrAddCookie(Response.Cookies, "default.css").Value = ddlThemes.SelectedValue;
+		}
 
-        private HttpCookie GetOrAddCookie(HttpCookieCollection cookies, string defaultValue)
-        {
-            HttpCookie ddi = cookies["TH"];
-            if (ddi == null)
-            {
-                ddi = new HttpCookie("TH", defaultValue);
-                cookies.Add(ddi);
-            }
-            return ddi;
-        }
+		private static HttpCookie GetOrAddCookie(HttpCookieCollection cookies, string defaultValue)
+		{
+			HttpCookie ddi = cookies["TH"];
+			if (ddi == null)
+			{
+				ddi = new HttpCookie("TH", defaultValue);
+				cookies.Add(ddi);
+			}
+			return ddi;
+		}
 	}
 }

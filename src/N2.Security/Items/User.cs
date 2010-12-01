@@ -127,7 +127,7 @@ namespace N2.Security.Items
 
 		public override string IconUrl
 		{
-			get { return "~/N2/Resources/icons/user.png"; }
+			get { return "{ManagementUrl}/Resources/icons/user.png"; }
 		}
 
 		public virtual MembershipUser GetMembershipUser(string providerName)

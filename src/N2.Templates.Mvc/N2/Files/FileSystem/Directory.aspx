@@ -1,6 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/N2/Content/Framed.Master" AutoEventWireup="true" CodeBehind="Directory.aspx.cs" Inherits="N2.Edit.FileSystem.Directory1" %>
-<%@ Import Namespace="N2.Management" %>
-<%@ Import Namespace="N2.Edit" %>
+﻿<%@ Page Language="C#" MasterPageFile="../../Content/Framed.Master" AutoEventWireup="true" CodeBehind="Directory.aspx.cs" Inherits="N2.Edit.FileSystem.Directory1" %>
+
 <%@ Register TagPrefix="edit" Namespace="N2.Edit.Web.UI.Controls" Assembly="N2.Management" %>
 <asp:Content ContentPlaceHolderID="Toolbar" runat="server">
 	<asp:HyperLink ID="hlNewFile" runat="server" Text="Upload file(s)" CssClass="command" meta:resourceKey="hlNewFile" />

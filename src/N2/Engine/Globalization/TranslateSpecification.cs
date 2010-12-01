@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using N2.Definitions;
+using N2.Edit;
 
 namespace N2.Engine.Globalization
 {
@@ -10,63 +9,38 @@ namespace N2.Engine.Globalization
 	/// </summary>
 	public class TranslateSpecification
 	{
-		string editUrl;
-		ILanguage language;
-		string flagUrl;
-		ContentItem existingItem;
-		ItemDefinition definition;
-
-		public TranslateSpecification(string editUrl, ILanguage language, ContentItem existingItem, ItemDefinition definition)
+		public TranslateSpecification(string editUrl, ILanguage language, ContentItem existingItem, ItemDefinition definition,
+		                              IEditUrlManager editUrlManager)
 		{
-			this.editUrl = editUrl;
-			this.language = language;
-			this.existingItem = existingItem;
-			this.definition = definition;
-			this.flagUrl = GetFlag(language); ;
+			EditUrl = editUrl;
+			Language = language;
+			ExistingItem = existingItem;
+			Definition = definition;
+			FlagUrl = GetFlag(language, editUrlManager);
 		}
 
-		public ItemDefinition Definition
-		{
-			get { return definition; }
-			set { definition = value; }
-		}
+		public ItemDefinition Definition { get; set; }
 
-		public ILanguage Language
-		{
-			get { return language; }
-			set { language = value; }
-		}
+		public ILanguage Language { get; set; }
 
 		public bool IsNew
 		{
 			get { return ExistingItem == null; }
 		}
 
-		public string EditUrl
-		{
-			get { return editUrl; }
-			set { editUrl = value; }
-		}
+		public string EditUrl { get; set; }
 
-		public ContentItem ExistingItem
-		{
-			get { return existingItem; }
-			set { existingItem = value; }
-		}
+		public ContentItem ExistingItem { get; set; }
 
-		public string FlagUrl
-		{
-			get { return flagUrl; }
-			set { flagUrl = value; }
-		}
+		public string FlagUrl { get; set; }
 
-		protected string GetFlag(ILanguage language)
+		protected string GetFlag(ILanguage language, IEditUrlManager editUrlManager)
 		{
 			string flagUrl = language.FlagUrl;
 			if (string.IsNullOrEmpty(flagUrl))
-				return string.Format(N2.Web.Url.ToAbsolute("~/N2/Resources/Img/Flags/{0}.png"), language.LanguageCode);
-			else
-				return flagUrl;
+				return string.Format(editUrlManager.ResolveResourceUrl("{ManagementUrl}/Resources/Img/Flags/{0}.png"), language.LanguageCode);
+
+			return flagUrl;
 		}
 	}
 }

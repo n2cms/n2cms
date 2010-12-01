@@ -13,15 +13,15 @@ namespace N2.Web.Parts
 	public class CreateUrlProvider : PartsAjaxService
 	{
         readonly IPersister persister;
-		readonly IEditManager editManager;
+		readonly IEditUrlManager editUrlManager;
 		readonly IDefinitionManager definitions;
         readonly Navigator navigator;
 
-		public CreateUrlProvider(IPersister persister, IEditManager editManager, IDefinitionManager definitions, AjaxRequestDispatcher dispatcher, Navigator navigator)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, AjaxRequestDispatcher dispatcher, Navigator navigator)
 			: base(dispatcher)
 		{
             this.persister = persister;
-			this.editManager = editManager;
+			this.editUrlManager = editUrlManager;
 			this.definitions = definitions;
             this.navigator = navigator;
 		}
@@ -79,12 +79,12 @@ namespace N2.Web.Parts
 			if (!string.IsNullOrEmpty(before))
 			{
                 ContentItem beforeItem = navigator.Navigate(before);
-                url = editManager.GetEditNewPageUrl(beforeItem, definition, zone, CreationPosition.Before);
+                url = editUrlManager.GetEditNewPageUrl(beforeItem, definition, zone, CreationPosition.Before);
 			}
 			else
 			{
                 ContentItem parent = navigator.Navigate(below);
-                url = editManager.GetEditNewPageUrl(parent, definition, zone, CreationPosition.Below);
+                url = editUrlManager.GetEditNewPageUrl(parent, definition, zone, CreationPosition.Below);
 			}
 
 			if (!string.IsNullOrEmpty(request["returnUrl"]))

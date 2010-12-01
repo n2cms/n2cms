@@ -229,7 +229,7 @@ namespace N2.Details
 			img.ID = "hi_" + Name;
 			img.Attributes["class"] = "help";
 			img.Attributes["title"] = tooltip;
-			img.Src = N2.Web.Url.ToAbsolute("~/N2/Resources/icons/help.png");
+			img.Src = Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/icons/help.png");
 			container.Controls.Add(img);
 			return img;
 		}

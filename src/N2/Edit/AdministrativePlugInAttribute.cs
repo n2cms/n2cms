@@ -15,18 +15,18 @@ namespace N2.Edit
 	{
 		private string[] authorizedRoles;
 		private bool enabled = true;
-        private string name;
-        private int sortOrder = int.MaxValue;
-        private Type decorates;
+		private string name;
+		private int sortOrder = int.MaxValue;
+		private Type decorates;
 		private IEngine engine;
 
-        #region Public Properties
+		#region Public Properties
 
-        public Type Decorates
-        {
-            get { return decorates; }
-            set { decorates = value; }
-        }
+		public Type Decorates
+		{
+			get { return decorates; }
+			set { decorates = value; }
+		}
 
 		public string Name
 		{
@@ -77,17 +77,17 @@ namespace N2.Edit
 			return false;
 		}
 
-		protected string GetInnerHtml(string iconUrl, string alt, string text)
+		protected string GetInnerHtml(PluginContext pluginContext, string iconUrl, string alt, string text)
 		{
 			if (string.IsNullOrEmpty(iconUrl))
 				return text;
-			return string.Format("<img src='{0}' alt='{1}'/>{2}", N2.Web.Url.ToAbsolute(iconUrl), alt, text);
+			return string.Format("<img src='{0}' alt='{1}'/>{2}", pluginContext.Rebase(iconUrl), alt, text);
 		}
 
-		protected virtual void ApplyStyles(WebControl ctrl)
+		protected virtual void ApplyStyles(PluginContext pluginContext, WebControl ctrl)
 		{
 			if (!string.IsNullOrEmpty(IconUrl))
-				ctrl.Style[HtmlTextWriterStyle.BackgroundImage] = N2.Web.Url.ToAbsolute(IconUrl);
+				ctrl.Style[HtmlTextWriterStyle.BackgroundImage] = pluginContext.Rebase(IconUrl);
 		}
 
 		public abstract Control AddTo(Control container, PluginContext context);

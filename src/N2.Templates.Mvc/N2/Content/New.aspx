@@ -20,7 +20,7 @@
 							<div class="template">
 								<a href="<%# GetEditUrl((ItemDefinition)Eval("Definition")) %>&template=<%# Eval("Name") %>">
 									<span class="title"><%# Eval("Title") %></span>
-									<span><%# Eval("Description") %></span>								
+									<span><%# Eval("Description") %></span>
 								</a>
 							</div>
 						</ItemTemplate>

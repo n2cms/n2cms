@@ -8,7 +8,7 @@ using System.Security.Principal;
 
 namespace N2.Edit.Security
 {
-    [ToolbarPlugin("PERM", "security", "Content/Security/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "~/N2/Resources/icons/key.png", 100, 
+    [ToolbarPlugin("PERM", "security", "Content/Security/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/key.png", 100, 
 		AuthorizedRoles = new[]{ "Editors", "Administrators", "Admin" },
 		ToolTip = "allowed roles for selected item", 
 		GlobalResourceClassName = "Toolbar")]

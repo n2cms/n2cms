@@ -14,7 +14,7 @@ namespace N2.Edit
 	public class ControlPanelEditingSaveAttribute : ControlPanelLinkAttribute
 	{
 		public ControlPanelEditingSaveAttribute(string toolTip, int sortOrder)
-            : base("cpEditingSave", "~/N2/Resources/icons/disk.png", null, toolTip, sortOrder, ControlPanelState.Editing)
+            : base("cpEditingSave", "{ManagementUrl}/Resources/icons/disk.png", null, toolTip, sortOrder, ControlPanelState.Editing)
 		{
 		}
 
@@ -24,7 +24,7 @@ namespace N2.Edit
 				return null;
 
 			LinkButton btn = new LinkButton();
-			btn.Text = GetInnerHtml(IconUrl, ToolTip, Title);
+			btn.Text = GetInnerHtml(context, IconUrl, ToolTip, Title);
 			btn.ToolTip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? context.Format(ToolTip, false);
 			btn.CssClass = "save";
 			container.Controls.Add(btn);

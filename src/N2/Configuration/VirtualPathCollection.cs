@@ -1,5 +1,4 @@
 using System.Configuration;
-using NHibernate.Mapping;
 using System.Collections.Generic;
 
 namespace N2.Configuration
@@ -13,7 +12,7 @@ namespace N2.Configuration
 	{
 		public VirtualPathCollection()
 		{
-			AddDefault(new VirtualPathElement("management", "~/N2/"));
+			AddDefault(new VirtualPathElement("management", "{ManagementUrl}"));
 		}
 
 		protected override ConfigurationElement CreateNewElement()

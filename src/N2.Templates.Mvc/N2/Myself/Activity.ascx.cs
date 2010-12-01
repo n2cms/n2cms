@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Web.UI;
 
 namespace N2.Management.Myself
 {
 	[PartDefinition("Activity", 
-		TemplateUrl = "~/N2/Myself/Activity.ascx",
-		IconUrl = "~/N2/Resources/icons/text_list_numbers.png")]
+		TemplateUrl = "{ManagementUrl}/Myself/Activity.ascx",
+		IconUrl = "{ManagementUrl}/Resources/icons/text_list_numbers.png")]
 	[WithEditableTitle("Title", 10)]
 	public class ActivityPart : RootPartBase
 	{

@@ -13,15 +13,15 @@ namespace Demo
 	[AutoInitialize]
 	public class DemoInitializer : IPluginInitializer
 	{
-		public void Initialize(N2.Engine.IEngine factory)
+		public void Initialize(N2.Engine.IEngine engine)
 		{
 			if (ConfigurationManager.AppSettings["ResetData"] == "true")
 			{
-				ReplaceContent(factory);
+				ReplaceContent(engine);
 
-				CopyFiles(factory);
+				CopyFiles(engine);
 
-				factory.Persister.ItemSaving += Persister_ItemSaving;
+				engine.Persister.ItemSaving += Persister_ItemSaving;
 			}
 		}
 
@@ -40,10 +40,10 @@ namespace Demo
 			}
 		}
 
-		private static void CopyFiles(N2.Engine.IEngine factory)
+		private static void CopyFiles(N2.Engine.IEngine engine)
 		{
 			HttpServerUtility server = HttpContext.Current.Server;
-			foreach(string folder in factory.EditManager.UploadFolders)
+			foreach (string folder in engine.ManagementPaths.UploadFolders)
 			{
                 string upload = server.MapPath(folder);
                 DeleteFilesAndFolders(upload);
@@ -64,9 +64,9 @@ namespace Demo
 				Directory.Delete(path, true);
 		}
 
-		private void ReplaceContent(N2.Engine.IEngine factory)
+		private void ReplaceContent(N2.Engine.IEngine engine)
 		{
-			Importer imp = factory.Resolve<Importer>();
+			Importer imp = engine.Resolve<Importer>();
 			IImportRecord record;
 			HttpContext context = HttpContext.Current;
 			if (context != null && File.Exists(context.Server.MapPath("~/App_Data/export.n2.xml.gz")))
@@ -80,39 +80,39 @@ namespace Demo
 
 			ContentItem imported = record.RootItem;
 
-			ContentItem rootPage = factory.Persister.Get<ContentItem>(factory.Host.CurrentSite.RootItemID);
+			ContentItem rootPage = engine.Persister.Get<ContentItem>(engine.Host.CurrentSite.RootItemID);
 
-			factory.SecurityManager.ScopeEnabled = false;
+			engine.SecurityManager.ScopeEnabled = false;
 			try
 			{
-				((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = false;
-				RemoveExistingPages(factory, rootPage);
+				((N2.Integrity.IntegrityEnforcer)engine.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = false;
+				RemoveExistingPages(engine, rootPage);
 			}
 			finally
 			{
-				((N2.Integrity.IntegrityEnforcer)factory.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = true;
+				((N2.Integrity.IntegrityEnforcer)engine.Resolve<N2.Integrity.IIntegrityEnforcer>()).Enabled = true;
 			}
-			UpdateRootPage(factory, imported, rootPage);
+			UpdateRootPage(engine, imported, rootPage);
 
 			imp.Import(record, rootPage, ImportOption.Children);
 
 			foreach(ContentItem item in rootPage.Children)
 				if (item is StartPage)
-					factory.Resolve<N2.Web.IHost>().DefaultSite.StartPageID = item.ID;
+					engine.Resolve<N2.Web.IHost>().DefaultSite.StartPageID = item.ID;
 
-			factory.Persister.Save(rootPage);
+			engine.Persister.Save(rootPage);
 
 			//foreach (NewsList nl in Find.Items.Where.Type.Eq(typeof(NewsList)).Select())
 			//{
 			//    foreach (NewsContainer nc in Find.Items.Where.Type.Eq(typeof (NewsContainer)).Select())
 			//    {
 			//        nl.Container = nc;
-			//        News n = factory.Definitions.CreateInstance<News>(nc);
+			//        News n = engine.Definitions.CreateInstance<News>(nc);
 			//        n.Title = "Demo site created";
 			//        n.Introduction = "Today at " + DateTime.Now + " a demo site was generated for your convenience.";
 			//        n.Text = "<p>Download the template web if you like.</p>";
 			//        n["Syndicate"] = true;
-			//        factory.Persister.Save(n);
+			//        engine.Persister.Save(n);
 			//    }
 			//}
 
@@ -121,39 +121,39 @@ namespace Demo
 			//    foreach (Calendar c in Find.Items.Where.Type.Eq(typeof(Calendar)).Select())
 			//    {
 			//        ct.Container = c;
-			//        Event e = factory.Definitions.CreateInstance<Event>(c);
+			//        Event e = engine.Definitions.CreateInstance<Event>(c);
 			//        e.Title = "Demo site scheduled for deletion";
 			//        e.Introduction = "30 minutes from now the demo site will be re-created.";
 			//        e.EventDate = DateTime.Now.AddMinutes(30);
 			//        e["Syndicate"] = true;
-			//        factory.Persister.Save(e);
+			//        engine.Persister.Save(e);
 			//    }
 			//}
 
-			ClearPreviousVersions(factory, rootPage);
+			ClearPreviousVersions(engine, rootPage);
 
-			factory.SecurityManager.ScopeEnabled = true;
+			engine.SecurityManager.ScopeEnabled = true;
 		}
 
-		private static void RemoveExistingPages(N2.Engine.IEngine factory, ContentItem rootPage)
+		private static void RemoveExistingPages(N2.Engine.IEngine engine, ContentItem rootPage)
 		{
 			while (rootPage.Children.Count > 0)
-				factory.Persister.Delete(rootPage.Children[0]);
+				engine.Persister.Delete(rootPage.Children[0]);
 		}
 
-		private static void UpdateRootPage(N2.Engine.IEngine factory, ContentItem imported, ContentItem startPage)
+		private static void UpdateRootPage(N2.Engine.IEngine engine, ContentItem imported, ContentItem startPage)
 		{
 			startPage.Title = imported.Title;
 			startPage.Name = imported.Name;
 			foreach (N2.Details.ContentDetail detail in imported.Details.Values)
 				startPage[detail.Name] = detail.Value;
-			factory.Persister.Save(startPage);
+			engine.Persister.Save(startPage);
 		}
 
-		private static void ClearPreviousVersions(N2.Engine.IEngine factory, ContentItem rootPage)
+		private static void ClearPreviousVersions(N2.Engine.IEngine engine, ContentItem rootPage)
 		{
-			foreach (ContentItem version in factory.Resolve<N2.Persistence.Finder.IItemFinder>().Where.VersionOf.Eq(rootPage).Select())
-				factory.Persister.Delete(version);
+			foreach (ContentItem version in engine.Resolve<N2.Persistence.Finder.IItemFinder>().Where.VersionOf.Eq(rootPage).Select())
+				engine.Persister.Delete(version);
 		}
 	}
 }

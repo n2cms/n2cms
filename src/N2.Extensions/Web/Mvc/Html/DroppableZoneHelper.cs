@@ -97,7 +97,7 @@ namespace N2.Web.Mvc.Html
                     .WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator)
                     .Write(">");
 
-                PartUtilities.WriteTitleBar(writer, Context.Current.EditManager, Context.Current.Resolve<IContentAdapterProvider>(), definition, model);
+                PartUtilities.WriteTitleBar(writer, Context.Current.ManagementPaths, Context.Current.Resolve<IContentAdapterProvider>(), definition, model);
                 
                 base.RenderTemplate(writer, model);
 

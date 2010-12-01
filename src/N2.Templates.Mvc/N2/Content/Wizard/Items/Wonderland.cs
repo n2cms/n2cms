@@ -5,7 +5,7 @@ using N2.Edit.Trash;
 namespace N2.Edit.Wizard.Items
 {
 	[PageDefinition("Wizard Container",
-		IconUrl = "~/N2/Resources/icons/wand.png",
+		IconUrl = "{ManagementUrl}/Resources/icons/wand.png",
 		InstallerVisibility = InstallerHint.NeverRootOrStartPage)]
 	[ItemAuthorizedRoles(Roles = new string[0])]
     [NotThrowable]

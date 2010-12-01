@@ -8,7 +8,7 @@ using N2.Edit.Trash;
 namespace N2.Edit.Wizard.Items
 {
 	[PartDefinition("Magic Location",
-		IconUrl = "~/N2/Resources/icons/wand.png")]
+		IconUrl = "{ManagementUrl}/Resources/icons/wand.png")]
 	[RestrictParents(typeof(Wonderland))]
 	[WithEditableTitle("Title", 10)]
     [NotThrowable]
@@ -93,7 +93,7 @@ namespace N2.Edit.Wizard.Items
 			get
 			{
 				return Icon
-					?? "~/N2/Resources/icons/wand.png";
+					?? "{ManagementUrl}/Resources/icons/wand.png";
 			}
 		}
 	}

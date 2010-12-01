@@ -35,7 +35,7 @@ namespace N2.Edit.Workflow
 		EnsurePublishedCommand publishedDate;
         ISecurityManager security;
 
-        public CommandFactory(IPersister persister, ISecurityManager security, IVersionManager versionMaker, IEditManager editManager, IContentAdapterProvider adapters, StateChanger changer)
+        public CommandFactory(IPersister persister, ISecurityManager security, IVersionManager versionMaker, IEditUrlManager editUrlManager, IContentAdapterProvider adapters, StateChanger changer)
         {
             this.persister = persister;
             makeVersionOfMaster = On.Master(new MakeVersionCommand(versionMaker));
@@ -45,7 +45,7 @@ namespace N2.Edit.Workflow
             updateObject = new UpdateObjectCommand();
             delete = new DeleteCommand(persister.Repository);
             showPreview = new RedirectToPreviewCommand(adapters);
-            showEdit = new RedirectToEditCommand(editManager);
+            showEdit = new RedirectToEditCommand(editUrlManager);
             useMaster = new UseMasterCommand();
             clone = new CloneCommand();
             validate = new ValidateCommand();

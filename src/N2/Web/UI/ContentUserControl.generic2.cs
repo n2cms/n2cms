@@ -31,6 +31,16 @@ namespace N2.Web.UI
 			}
 		}
 
+		protected string ResolveUrl(object url)
+		{
+			return ResolveUrl(url as string);
+		}
+
+		protected string ResolveUrl(string url)
+		{
+			return Engine.ManagementPaths.ResolveResourceUrl(url);
+		}
+
 		#region IItemContainer & IContentTemplate
 		ContentItem IContentTemplate.CurrentItem
 		{

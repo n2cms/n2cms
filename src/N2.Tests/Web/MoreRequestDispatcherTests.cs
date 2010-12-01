@@ -1,5 +1,6 @@
 using System.Configuration;
 using N2.Configuration;
+using N2.Edit;
 using N2.Engine;
 using N2.Tests.Fakes;
 using N2.Tests.Web.Items;
@@ -61,7 +62,8 @@ namespace N2.Tests.Web
 		IEngine engine;
 		ContentAdapterProvider adapterProvider;
 		protected RewriteMethod rewriteMethod = RewriteMethod.BeginRequest;
-			
+		IEditUrlManager editUrlManager;
+
 		[SetUp]
 		public override void SetUp()
 		{
@@ -73,8 +75,9 @@ namespace N2.Tests.Web
 			CreateOneItem<DataItem>(4, "four", root);
 			three = CreateOneItem<PageItem>(5, "three.3", root);
 
+			editUrlManager = new FakeEditUrlManager();
 			webContext = new FakeWebContextWrapper();
-			HostSection hostSection = new HostSection { Web = new WebElement { Rewrite = rewriteMethod }};
+			var hostSection = new HostSection { Web = new WebElement { Rewrite = rewriteMethod } };
 			parser = new UrlParser(persister, webContext, new Host(webContext, root.ID, root.ID), hostSection);
 			errorHandler = new ErrorHandler(webContext, null, null);
 			engine = new FakeEngine();
@@ -120,34 +123,34 @@ namespace N2.Tests.Web
 
 			Assert.That(webContext.CurrentPath, Is.Not.Null);
 			Assert.That(webContext.CurrentPage, Is.EqualTo(two));
-        }
+		}
 
-        [Test]
-        public void UpdatesCurrentPage_WhenExtension_IsAspx()
-        {
+		[Test]
+		public void UpdatesCurrentPage_WhenExtension_IsAspx()
+		{
 			webContext.Url = "/one.aspx";
 
 			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
-        }
+		}
 
-        [Test]
-        public void UpdatesCurrentPage_WhenExtension_IsConfiguredAsObserved()
-        {
-        	one.extension = ".htm";
+		[Test]
+		public void UpdatesCurrentPage_WhenExtension_IsConfiguredAsObserved()
+		{
+			one.extension = ".htm";
 			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection { ".html", ".htm" } } });
-        	webContext.Url = "/one.htm";
+			webContext.Url = "/one.htm";
 
 			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
-        }
+		}
 
 		[Test]
 		public void DoesntUpdateCurrentPage_WhenExtension_IsNotObserved()
 		{
-			ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObservedExtensions = new CommaDelimitedStringCollection()}});
+			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObservedExtensions = new CommaDelimitedStringCollection() } });
 			webContext.Url = "/one.html";
 
 			TriggerRewrite();
@@ -158,7 +161,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void UpdatesCurrentPage_WhenAllExtensions_AreObserved_AndOddExtension_IsPassed()
 		{
-			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObserveAllExtensions = true} });
+			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObserveAllExtensions = true } });
 			webContext.Url = "/three.3";
 
 			TriggerRewrite();
@@ -169,7 +172,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void DoesntUpdateCurrentPage_WhenExtension_IsEmpty_AndEmpty_IsNotObserved()
 		{
-			ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObserveEmptyExtension = false}});
+			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObserveEmptyExtension = false } });
 			webContext.Url = "/one";
 
 			TriggerRewrite();
@@ -177,16 +180,16 @@ namespace N2.Tests.Web
 			Assert.That(webContext.CurrentPage, Is.Null);
 		}
 
-        [Test]
-        public void UpdatesCurrentPage_WhenEmptyExtension_IsConfiguredAsObserved()
-        {
-        	ReCreateDispatcherWithConfig(new HostSection {Web = new WebElement {ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection()}});
+		[Test]
+		public void UpdatesCurrentPage_WhenEmptyExtension_IsConfiguredAsObserved()
+		{
+			ReCreateDispatcherWithConfig(new HostSection { Web = new WebElement { ObserveEmptyExtension = true, ObservedExtensions = new CommaDelimitedStringCollection() } });
 			webContext.Url = "/one";
 
 			TriggerRewrite();
 
 			Assert.That(webContext.CurrentPage, Is.EqualTo(one));
-        }
+		}
 
 		[Test]
 		public void UpdateContentPage_WithRewrittenUrl()
@@ -220,8 +223,8 @@ namespace N2.Tests.Web
 
 		void ReCreateDispatcherWithConfig(HostSection config)
 		{
-			dispatcher = new RequestPathProvider(adapterProvider, webContext, parser, errorHandler, config);
-			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, adapterProvider, errorHandler, new EditSection(), config);
+			dispatcher = new RequestPathProvider(webContext, parser, errorHandler, config);
+			handler = new FakeRequestLifeCycleHandler(webContext, null, dispatcher, adapterProvider, errorHandler, editUrlManager, new EditSection(), config);
 		}
 	}
 }

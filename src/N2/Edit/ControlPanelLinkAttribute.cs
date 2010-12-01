@@ -59,7 +59,7 @@ namespace N2.Edit
 			HyperLink link = new HyperLink();
 			string tooltip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? ToolTip;
 			string title = Utility.GetResourceString(GlobalResourceClassName, Name + ".Title") ?? Title;
-			link.Text = GetInnerHtml(IconUrl, tooltip, title);
+			link.Text = GetInnerHtml(context, IconUrl, tooltip, title);
 			Url url = context.Rebase(context.Format(NavigateUrl, UrlEncode));
 			if (!string.IsNullOrEmpty(NavigateQuery))
 				url = url.AppendQuery(context.Format(NavigateQuery, UrlEncode));

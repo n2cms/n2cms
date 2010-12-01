@@ -8,8 +8,8 @@ using N2.Web.UI;
 namespace N2.Management.Myself
 {
 	[PartDefinition("Wizards", 
-		TemplateUrl = "~/N2/Myself/Wizards.ascx",
-		IconUrl = "~/N2/Resources/icons/wand.png")]
+		TemplateUrl = "{ManagementUrl}/Myself/Wizards.ascx",
+		IconUrl = "{ManagementUrl}/Resources/icons/wand.png")]
 	[WithEditableTitle("Title", 10)]
 	public partial class WizardsPart : RootPartBase
 	{
@@ -34,7 +34,7 @@ namespace N2.Management.Myself
 
 		protected virtual string GetEditUrl(MagicLocation location)
 		{
-			return Engine.EditManager.GetEditNewPageUrl(location.Location, location.GetDefinition(Engine.Definitions), location.ZoneName, CreationPosition.Below);
+			return Engine.ManagementPaths.GetEditNewPageUrl(location.Location, location.GetDefinition(Engine.Definitions), location.ZoneName, CreationPosition.Below);
 		}
 	}
 }

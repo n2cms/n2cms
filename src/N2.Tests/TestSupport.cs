@@ -51,7 +51,7 @@ namespace N2.Tests
         {
             ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
 
-            DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
+			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
 			definitions = new DefinitionManager(definitionBuilder, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
@@ -67,7 +67,7 @@ namespace N2.Tests
         {
             var changer = new N2.Edit.Workflow.StateChanger();
             versions = new VersionManager(persister.Repository, finder, changer);
-            editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, changer, null);
+            editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, null);
         }
 
         public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<int, ContentItem> itemRepository, INHRepository<int, N2.Details.LinkDetail> linkRepository, ItemFinder finder, SchemaExport schemaCreator)

@@ -65,7 +65,7 @@ namespace N2.Edit.Trash
 		protected virtual void RegisterRefreshNavigationScript(ContentItem item)
 		{
 			string script = string.Format(refreshScriptFormat,
-				VirtualPathUtility.ToAbsolute("~/N2/Content/Default.aspx"), // 0
+				VirtualPathUtility.ToAbsolute(Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Content/Default.aspx")), // 0
 				GetNavigationUrl(item), // 1
 				item.ID, // 2
 				item.FindPath(PathData.DefaultAction).RewrittenUrl, // 3

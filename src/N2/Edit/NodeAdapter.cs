@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using N2.Collections;
 using N2.Edit.FileSystem;
@@ -12,7 +13,7 @@ namespace N2.Edit
 	[Adapts(typeof(ContentItem))]
 	public class NodeAdapter : AbstractContentAdapter
 	{
-		IEditManager editManager;
+		IEditUrlManager editUrlManager;
 		IWebContext webContext;
 		IHost host;
 		IFileSystem fileSystem;
@@ -49,19 +50,11 @@ namespace N2.Edit
 			set { host = value; }
 		}
 
-		public IEditManager EditManager
+		public IEditUrlManager ManagementPaths
 		{
-			get { return editManager ?? engine.EditManager; }
-			set { editManager = value; }
+			get { return editUrlManager ?? engine.ManagementPaths; }
+			set { editUrlManager = value; }
 		}
-
-		///// <summary>Gets the filter used to filter child pages.</summary>
-		///// <param name="user">The user to filter pages for.</param>
-		///// <returns>An item filter used when filtering children to display.</returns>
-		//public virtual ItemFilter GetManagementFilter()
-		//{
-		//    return EditManager.GetEditorFilter(webContext.User);
-		//}
 
 		public virtual IEnumerable<DirectoryData> GetUploadDirectories(Site site)
 		{
@@ -104,9 +97,9 @@ namespace N2.Edit
 		/// <returns>An url to preview the item.</returns>
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
-			string url = EditManager.GetPreviewUrl(item);
-			url =  string.IsNullOrEmpty(url) ? "~/N2/Empty.aspx" : url;
-			return webContext.ToAbsolute(url);
+			string url = ManagementPaths.GetPreviewUrl(item);
+			url =  String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("Empty.aspx") : url;
+			return url;
 		}
 
 		/// <summary>Gets the url to the icon representing this item.</summary>
@@ -114,7 +107,7 @@ namespace N2.Edit
 		/// <returns>An url to an icon.</returns>
 		public string GetIconUrl(ContentItem item)
 		{
-			return webContext.ToAbsolute(item.IconUrl);
+			return ManagementPaths.ResolveResourceUrl(item.IconUrl);
 		}
 	}
 }

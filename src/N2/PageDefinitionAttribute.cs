@@ -27,7 +27,7 @@ namespace N2
 		{
 			InstallerVisibility = InstallerHint.Default;
 			IsPage = true;
-			IconUrl = "~/N2/Resources/icons/page.png";
+			IconUrl = "{ManagementUrl}/Resources/icons/page.png";
 		}
 
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)

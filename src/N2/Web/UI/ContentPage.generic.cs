@@ -8,7 +8,7 @@ namespace N2.Web.UI
     /// Page base class that provides easy access to the current page item.
     /// </summary>
     /// <typeparam name="TPage">The type of content item served by the page inheriting this class.</typeparam>
-    public class ContentPage<TPage> : System.Web.UI.Page, IItemContainer, IContentTemplate
+    public class ContentPage<TPage> : System.Web.UI.Page, IItemContainer, IContentTemplate, IProvider<IEngine>
         where TPage : N2.ContentItem
     {
 		private TPage currentPage = null;
@@ -87,6 +87,20 @@ namespace N2.Web.UI
 			get { return CurrentPage; }
 			set { CurrentPage = ItemUtility.EnsureType<TPage>(value); }
 		}
+		#endregion
+
+		#region IProvider<IEngine> Members
+
+		IEngine IProvider<IEngine>.Get()
+		{
+			return Engine;
+		}
+
+		System.Collections.Generic.IEnumerable<IEngine> IProvider<IEngine>.GetAll()
+		{
+			return Engine.Container.ResolveAll<IEngine>();
+		}
+
 		#endregion
 	}
 }

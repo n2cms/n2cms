@@ -34,17 +34,19 @@ namespace N2.Engine
 		/// <summary>Gets the class responsible for plugins in edit mode.</summary>
 		IEditManager EditManager { get; }
 
+		IEditUrlManager ManagementPaths { get; }
+
 		/// <summary>Contextual data associated with the current request.</summary>
 		IWebContext RequestContext { get; }
 
-        /// <summary>The base of the web site.</summary>
-        IHost Host { get; }
+		/// <summary>The base of the web site.</summary>
+		IHost Host { get; }
 
 		IServiceContainer Container { get; }
 
 		/// <summary>
-        /// Initialize components and plugins in the N2 CMS environment.
-        /// </summary>
+		/// Initialize components and plugins in the N2 CMS environment.
+		/// </summary>
 		void Initialize();
 
 		/// <summary>Resolves a service configured for the factory.</summary>

@@ -10,7 +10,7 @@
 		<div style="margin:10px">
 		<asp:Repeater runat="server" ID="rptReferencingItems">
 			<ItemTemplate>
-				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" /><%# Eval("Title") %></a></div>
+				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a></div>
 			</ItemTemplate>
 		</asp:Repeater>
 		<div style="margin:10px">
@@ -18,7 +18,7 @@
 	</td><td style="padding:10px;">
 		<img src="../../Resources/Icons/link_go.png" alt="right" />
 	</td><td style="padding:10px;">
-		<a href='<%# Selection.SelectedItem.Url %>'><asp:Image ID="Image1" ImageUrl='<%# Selection.SelectedItem.IconUrl %>' runat="server" /><%# Selection.SelectedItem.Title %></a>
+		<a href='<%# Selection.SelectedItem.Url %>'><asp:Image ID="Image1" ImageUrl='<%# ResolveUrl(Selection.SelectedItem.IconUrl) %>' runat="server" /><%# Selection.SelectedItem.Title %></a>
 	</td><td style="padding:10px;">
 		<img src="../../Resources/Icons/link_go.png" alt="right" />
 	</td><td>
@@ -26,7 +26,7 @@
 		<div style="margin:10px">
 		<asp:Repeater runat="server" ID="rptReferencedItems">
 			<ItemTemplate>
-				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# Eval("IconUrl") %>' runat="server" /><%# Eval("Title") %></a></div>
+				<div><a href='<%# Eval("Url") %>'><asp:Image ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' runat="server" /><%# Eval("Title") %></a></div>
 			</ItemTemplate>
 		</asp:Repeater>	
 		</div>
