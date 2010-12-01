@@ -83,7 +83,7 @@ namespace N2.Web
 				CurrentItem = item;
 				ID = item.ID;
 			}
-			TemplateUrl = templateUrl;
+			TemplateUrl = Url.ResolveTokens(templateUrl);
 			Action = action;
 			Argument = arguments;
 		}

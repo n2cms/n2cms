@@ -27,6 +27,7 @@ namespace N2.Web
 		protected bool initialized;
 		protected RewriteMethod rewriteMethod = RewriteMethod.SurroundMapRequestHandler;
 		protected string welcomeUrl;
+		protected string managementUrl;
 
 		/// <summary>Creates a new instance of the RequestLifeCycleHandler class.</summary>
 		/// <param name="webContext">The web context wrapper.</param>
@@ -44,6 +45,7 @@ namespace N2.Web
 		{
 			checkInstallation = editConfig.Installer.CheckInstallationStatus;
 			welcomeUrl = editConfig.Installer.WelcomeUrl;
+			managementUrl = editConfig.ManagementInterfaceUrl;
 			rewriteMethod = hostConfig.Web.Rewrite;
 			isLegacyRewriteMode = rewriteMethod == RewriteMethod.BeginRequest || rewriteMethod == RewriteMethod.TransferRequest;
 			this.webContext = webContext;
@@ -91,6 +93,7 @@ namespace N2.Web
 					string dummy = Url.ServerUrl; // wayne: DOT NOT REMOVE, initialize the server url
 					if (checkInstallation)
 						CheckInstallation();
+					Url.AddToken(Url.ManagementUrlToken, Url.ToAbsolute(managementUrl).TrimEnd('/'));
 				}
 			}
 

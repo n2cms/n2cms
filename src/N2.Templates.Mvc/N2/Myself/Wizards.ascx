@@ -9,11 +9,10 @@
 		<HeaderTemplate><table class="data"><thead><tr><th colspan="2">Wizard</th><th>Location</th></tr></thead><tbody></HeaderTemplate>
 		<ItemTemplate>
 			<tr><td>
-				<asp:HyperLink ID="hlNew" 
-					NavigateUrl='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' 
-					ToolTip='<%# Eval("ToolTip") %>' runat="server" 
-					meta:resourcekey="hlNewResource1"><asp:Image ID="imgIco" ImageUrl='<%# ResolveUrl(Eval("IconUrl")) %>' CssClass="icon" runat="server" meta:resourcekey="imgIcoResource1" />
-<%# Eval("Title") %></asp:HyperLink>
+				<a href='<%# GetEditUrl((MagicLocation)Container.DataItem) %>' title='<%# Eval("ToolTip") %>'>
+					<img src="<%# Eval("IconUrl") %>" class="icon" />
+					<%# Eval("Title") %>
+				</a>
 			</td><td>
 				<%# Eval("Description") %>
 			</td><td>

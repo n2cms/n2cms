@@ -10,11 +10,17 @@ namespace N2.Web
 	/// </summary>
 	public class Url
 	{
+		/// <summary>Ampersand string.</summary>
 		public const string Amp = "&";
+
+		/// <summary>The token used for resolving the management url.</summary>
+		public const string ManagementUrlToken = "{ManagementUrl}";
+
 		static readonly string[] querySplitter = new[] {"&amp;", Amp};
 		static readonly char[] slashes = new char[] { '/' };
 		static readonly char[] dotsAndSlashes = new char[] { '.', '/' };
 		static string defaultExtension = ".aspx";
+		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "/N2" } };
 
 		string scheme;
 		string authority;
@@ -801,12 +807,53 @@ namespace N2.Web
 			return dictionary;
 		}
 
+		/// <summary>Changes the application base of an url.</summary>
+		/// <param name="currentPath">Replaces an absolute url in one app, to the absolute path of another app.</param>
+		/// <param name="fromAppPath">The origin application path.</param>
+		/// <param name="toAppPath">The destination application path.</param>
+		/// <returns>A rebased url.</returns>
 		public static string Rebase(string currentPath, string fromAppPath, string toAppPath)
 		{
 			if(currentPath == null || !currentPath.StartsWith(fromAppPath))
 				return currentPath;
 
 			return toAppPath + currentPath.Substring(fromAppPath.Length);
+		}
+
+		/// <summary>Gets a replacement used by <see cref="ResolveTokens"/>.</summary>
+		/// <param name="token"></param>
+		/// <returns></returns>
+		public static string GetToken(string token)
+		{
+			string value = null;
+			replacements.TryGetValue(token, out value);
+			return value;
+		}
+
+		/// <summary>Adds a replacement used by <see cref="ResolveTokens"/>.</summary>
+		/// <param name="token">They token to replace.</param>
+		/// <param name="value">The value to replace the token with.</param>
+		public static void AddToken(string token, string value)
+		{
+			if(token == null) throw new ArgumentNullException("key");
+
+			if (value != null)
+				replacements[token] = value;
+			else if (replacements.ContainsKey(token))
+				replacements.Remove(token);
+		}
+
+		/// <summary>Formats an url using replacement tokens.</summary>
+		/// <param name="urlFormat">The url format to resolve, e.g. {ManagementUrl}/Resources/icons/add.png</param>
+		/// <returns>An an absolut path with all tokens replaced by their corresponding value.</returns>
+		public static string ResolveTokens(string urlFormat)
+		{
+			if (string.IsNullOrEmpty(urlFormat))
+				return urlFormat;
+
+			foreach (var kvp in replacements)
+				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
+			return ToAbsolute(urlFormat);
 		}
 	}
 }

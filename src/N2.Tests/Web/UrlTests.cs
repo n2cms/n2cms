@@ -951,5 +951,85 @@ namespace N2.Tests.Web
             }
         }
 
+		[Test]
+		public void Resolve_Uses_DefaultReplacements()
+		{
+			string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
+
+			Assert.That(result, Is.EqualTo("/N2/Resources/Icons/add.png"));
+		}
+
+		[Test]
+		public void Resolve_CanChange_DefaultReplacements()
+		{
+			string backup = Url.GetToken("{ManagementUrl}");
+
+			try
+			{
+				Url.AddToken("{ManagementUrl}", "/Manage");
+
+				string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
+
+				Assert.That(result, Is.EqualTo("/Manage/Resources/Icons/add.png"));
+			}
+			finally
+			{
+				Url.AddToken("{ManagementUrl}", backup);
+			}
+		}
+
+		[Test]
+		public void Resolve_CanAdd_Replcement()
+		{
+			string backup = Url.GetToken("{HelloUrl}");
+
+			try
+			{
+				Url.AddToken("{HelloUrl}", "/Hello/World");
+
+				string result = Url.ResolveTokens("{HelloUrl}/Resources/Icons/add.png");
+
+				Assert.That(result, Is.EqualTo("/Hello/World/Resources/Icons/add.png"));
+			}
+			finally
+			{
+				Url.AddToken("{HelloUrl}", backup);
+			}
+		}
+
+		[Test]
+		public void Resolve_CanClear_Replcement()
+		{
+			string backup = Url.GetToken("{ManagementUrl}");
+
+			try
+			{
+				Url.AddToken("{ManagementUrl}", null);
+
+				string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
+
+				Assert.That(result, Is.EqualTo("{ManagementUrl}/Resources/Icons/add.png"));
+			}
+			finally
+			{
+				Url.AddToken("{ManagementUrl}", backup);
+			}
+		}
+
+		[Test]
+		public void Resolve_DoesntReplace_UnknownTokens()
+		{
+			string result = Url.ResolveTokens("{HelloUrl}/Resources/Icons/add.png");
+
+			Assert.That(result, Is.EqualTo("{HelloUrl}/Resources/Icons/add.png"));
+		}
+
+		[Test]
+		public void Resolve_MakesPath_ToAbsolute()
+		{
+			string result = Url.ResolveTokens("~{ManagementUrl}/Resources/Icons/add.png");
+
+			Assert.That(result, Is.EqualTo("/N2/Resources/Icons/add.png"));
+		}
     }
 }
