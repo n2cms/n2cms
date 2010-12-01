@@ -16,6 +16,7 @@ TestResult.xml
 
 # ReSharper is a .NET coding add-in
 _ReSharper*
+*.resharper
 
 # DocProject is a documentation generator add-in
 DocProject/buildhelp/
