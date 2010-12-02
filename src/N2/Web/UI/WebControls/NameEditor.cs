@@ -26,13 +26,13 @@ namespace N2.Web.UI.WebControls
 		private string prefix = string.Empty;
 		private string suffix = string.Empty;
 		private string uniqueNameErrorFormat = "Another item already has the name '{0}'.";
-		private string nameTooLongErrorFormat = "Name too long, the full url cannot exceed 260 characters: {0}";
+		private string nameTooLongErrorFormat = "Name too long, the full url cannot exceed 250 characters: {0}";
 		private string invalidCharactersErrorFormat = "Invalid characters in path. Only english alphanumerical characters allowed.";
 
 		/// <summary>Constructs the name editor.</summary>
 		public NameEditor()
 		{
-			editor.MaxLength = 60;
+			editor.MaxLength = 250;
 			CssClass = "nameEditor";
 		}
 
