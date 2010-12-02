@@ -86,10 +86,9 @@ namespace N2.Edit
 			resourceUrl = resourceUrl ?? String.Empty;
 			string finalUrl = resourceUrl;
 
-			if (resourceUrl.Contains("{ManagementUrl}"))
-				finalUrl = resourceUrl.Replace("{ManagementUrl}", ManagementInterfaceUrl.TrimEnd('/'));
+			finalUrl = Url.ResolveTokens(finalUrl);
 
-			if (finalUrl.StartsWith("~") == false && finalUrl.StartsWith("/") == false
+			if (finalUrl.StartsWith("~") == false && finalUrl.StartsWith("/") == false && finalUrl.StartsWith("javascript:") == false && finalUrl.Contains("://")
 			    && finalUrl.StartsWith(ManagementInterfaceUrl, StringComparison.InvariantCultureIgnoreCase) == false)
 				finalUrl = ManagementInterfaceUrl + "/" + resourceUrl.TrimStart('/');
 
