@@ -88,7 +88,10 @@ namespace N2.Edit
 
 			finalUrl = Url.ResolveTokens(finalUrl);
 
-			if (finalUrl.StartsWith("~") == false && finalUrl.StartsWith("/") == false && finalUrl.StartsWith("javascript:") == false && finalUrl.Contains("://")
+			if (finalUrl.StartsWith("~") == false 
+				&& finalUrl.StartsWith("/") == false 
+				&& finalUrl.StartsWith("javascript:") == false 
+				&& finalUrl.Contains("://") == false
 			    && finalUrl.StartsWith(ManagementInterfaceUrl, StringComparison.InvariantCultureIgnoreCase) == false)
 				finalUrl = ManagementInterfaceUrl + "/" + resourceUrl.TrimStart('/');
 
