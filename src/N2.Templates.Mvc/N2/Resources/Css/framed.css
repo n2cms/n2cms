@@ -144,7 +144,7 @@ body.framed .info{
 
 /* validation */
 body.framed .validator{
-	background-image:url(../../Resources/Img/ico/exclamation.gif);
+	background-image:url(../../Resources/icons/exclamation.png);
 	padding-left:24px;
 }
 body.framed .validator ul{
