@@ -19,7 +19,7 @@ namespace N2.Edit
 			else
 			{
 				string url = string.Format("{{ManagementUrl}}/Content/{0}.aspx?selected={1}&memory={2}", action, Server.UrlEncode(selected), Server.UrlEncode(memory));
-				Response.Redirect(url);
+				Response.Redirect(Url.ResolveTokens(url));
 			}
 		}
 	}
