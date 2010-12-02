@@ -855,5 +855,12 @@ namespace N2.Web
 				urlFormat = urlFormat.Replace(kvp.Key, kvp.Value);
 			return ToAbsolute(urlFormat);
 		}
+
+		/// <summary>Formsats this url using replacement tokens.</summary>
+		/// <returns>An url without replacement tokens.</returns>
+		public Url ResolveTokens()
+		{
+			return new Url(ResolveTokens(ToString()));
+		}
 	}
 }
