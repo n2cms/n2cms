@@ -115,7 +115,7 @@ namespace N2.Web.Parts
 			if (string.IsNullOrEmpty(templateUrl))
 				return null;
 
-			return ItemUtility.AddUserControl(templateUrl, container, item);
+			return ItemUtility.AddUserControl(Url.ResolveTokens(templateUrl), container, item);
 		}
 
 		/// <summary>Gets the path to the given item's template. This is a way to override the default template provided by the content item.</summary>

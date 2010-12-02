@@ -78,7 +78,7 @@ namespace N2.Edit
 
 		public string ActionUrl(string actionName)
 		{
-			return Url.Parse(SelectedItem.FindPath(actionName).TemplateUrl).AppendQuery("selected", SelectedItem.Path);
+			return Url.Parse(SelectedItem.FindPath(actionName).TemplateUrl).AppendQuery("selected", SelectedItem.Path).ResolveTokens();
 		}
 	}
 }
