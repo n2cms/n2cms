@@ -46,7 +46,7 @@
 								<% Html.DroppableZone(Zones.RecursiveAbove).Render();%>
 							</asp:ContentPlaceHolder>
 							<asp:ContentPlaceHolder ID="Content" runat="server">
-								<% Html.RenderAction("Breadcrumb", "Navigation"); %>
+								<% Html.RenderAction("Breadcrumb", "Navigation", new { area = "" }); %>
 								<%=Html.DisplayContent("Image").SwallowExceptions()%>
 								<asp:ContentPlaceHolder ID="TextContent" runat="server">
 									<% if (Html.ValueEquals("ShowTitle", true)) { %>
