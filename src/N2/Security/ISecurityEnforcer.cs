@@ -1,4 +1,5 @@
 using System;
+using System.Security.Principal;
 
 namespace N2.Security
 {
@@ -13,8 +14,9 @@ namespace N2.Security
 		/// arguments.
 		/// </summary>
 		event EventHandler<CancellableItemEventArgs> AuthorizationFailed;
-		
-		void AuthorizeRequest();
+
+		void AuthorizeRequest(IPrincipal user, ContentItem page, Permission requiredPermission);
+
 		void Start();
 	}
 }

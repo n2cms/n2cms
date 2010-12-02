@@ -60,19 +60,18 @@ namespace N2.Security
 		#region Methods
 
 		/// <summary>Checks that the current user is authorized to access the current item.</summary>
-		public virtual void AuthorizeRequest()
+		public virtual void AuthorizeRequest(IPrincipal user, ContentItem page, Permission requiredPermission)
 		{
-			ContentItem item = webContext.CurrentPage;
-			if (item != null)
+			if (page != null)
 			{
-				if (item != null && !security.IsAuthorized(item, webContext.User))
+				if (page != null && !security.IsAuthorized(user, page, requiredPermission))
 				{
-					CancellableItemEventArgs args = new CancellableItemEventArgs(item);
+					CancellableItemEventArgs args = new CancellableItemEventArgs(page);
 					if (AuthorizationFailed != null)
 						AuthorizationFailed.Invoke(this, args);
 
 					if (!args.Cancel)
-						throw new PermissionDeniedException(item, webContext.User);
+						throw new PermissionDeniedException(page, user);
 				}
 			}
 		}

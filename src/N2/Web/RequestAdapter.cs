@@ -70,7 +70,7 @@ namespace N2.Web
 		/// <param name="user">The user for which to authorize the request.</param>
 		public virtual void AuthorizeRequest(PathData path, IPrincipal user)
 		{
-			SecurityEnforcer.AuthorizeRequest();
+			SecurityEnforcer.AuthorizeRequest(user, path.CurrentPage, Permission.Read);
 		}
 	}
 }

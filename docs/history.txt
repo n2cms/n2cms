@@ -1,4 +1,6 @@
-﻿- Fixed ThreadId=235940: Import Doesn't Import "Text" (N2 RC1)
+﻿- Fixed issue with non-authorized access to create/edit/delete in wf templates.
+- Merged Steve Mason's renamable "N2" path
+- Fixed ThreadId=235940: Import Doesn't Import "Text" (N2 RC1)
 - Fixed #29577: Cannot empty trash, when a deleted item is linked from another item
 - Fixed MVC areas inside N2 doesn't work (ThreadId=235361)
 - Removed unecessary IMailSender from template projects (breaking change)

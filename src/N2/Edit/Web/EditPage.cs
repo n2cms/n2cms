@@ -7,6 +7,7 @@ using N2.Resources;
 using N2.Security;
 using N2.Web;
 using N2.Engine;
+using System.Security.Principal;
 
 namespace N2.Edit.Web
 {
@@ -20,8 +21,17 @@ namespace N2.Edit.Web
 		{
 			base.OnPreInit(e);
 			SetupAspNetTheming();
+			Authorize(User);
 		}
-		
+
+		/// <summary>Determines whether the current page can be displayed.</summary>
+		/// <param name="user">The user to authorize.</param>
+		/// <returns>True if the user is authorized.</returns>
+		protected virtual void Authorize(IPrincipal user)
+		{
+			Engine.Resolve<ISecurityEnforcer>().AuthorizeRequest(user, Selection.SelectedItem, Permission.Write);
+		}
+	
 		protected override void OnInit(EventArgs e)
 		{
 			EnsureAuthorization(Permission.Read);
