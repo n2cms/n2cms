@@ -53,6 +53,10 @@ namespace N2.Tests.Fakes
 			return item.Name == principal.Identity.Name;
 		}
 
+		public void CopyPermissions(ContentItem source, ContentItem destination)
+		{
+		}
+
 		#endregion
 	}
 }

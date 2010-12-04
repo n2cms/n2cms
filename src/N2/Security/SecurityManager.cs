@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Security.Principal;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -212,6 +213,22 @@ namespace N2.Security
                     return true;
             return false;
         }
+
+		static Permission[] permissions = new[] { Permission.Read, Permission.Write, Permission.Publish, Permission.Administer };
+
+		/// <summary>Copies permissions from the source to the destination.</summary>
+		/// <param name="source">The item whose permissions to carry over.</param>
+		/// <param name="destination">The item whose permissions will be modified.</param>
+		public void CopyPermissions(ContentItem source, ContentItem destination)
+		{
+			foreach (Permission p in permissions)
+			{
+				var roles = DynamicPermissionMap.GetRoles(source, p);
+				if (roles == null)
+					continue;
+				DynamicPermissionMap.SetRoles(destination, p, roles.ToArray());
+			}
+		}
 
 		#endregion
 	}

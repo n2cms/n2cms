@@ -11,6 +11,9 @@ using N2.Persistence;
 using N2.Tests.Definitions.Items;
 using N2.Tests.Fakes;
 using N2.Persistence.Proxying;
+using N2.Security;
+using Rhino.Mocks;
+using N2.Web;
 
 namespace N2.Tests.Definitions
 {
@@ -403,15 +406,48 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
-		public void Item_Inherits_AllowedRoles_FromParent()
+		public void Item_Inherits_AllowedReaders_FromParent()
 		{
+			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), definitions, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext());
+			enforcer.Start();
+			
 			DefinitionTextPage page = definitions.CreateInstance<DefinitionTextPage>(null);
 			page.AuthorizedRoles.Add(new N2.Security.AuthorizedRole(page, "Administrators"));
 
-			DefinitionTextPage child = definitions.CreateInstance<DefinitionTextPage>(page);
-			Assert.That(child.AuthorizedRoles.Count, Is.EqualTo(1));
-			Assert.That(child.AuthorizedRoles[0].Role, Is.EqualTo("Administrators"));
-			Assert.That(child.AuthorizedRoles[0].EnclosingItem, Is.EqualTo(child));
+			try
+			{
+				DefinitionTextPage child = definitions.CreateInstance<DefinitionTextPage>(page);
+
+				Assert.That(child.AuthorizedRoles.Count, Is.EqualTo(1));
+				Assert.That(child.AuthorizedRoles[0].Role, Is.EqualTo("Administrators"));
+				Assert.That(child.AuthorizedRoles[0].EnclosingItem, Is.EqualTo(child));
+			}
+			finally
+			{
+				enforcer.Stop();
+			}
+		}
+
+		[Test]
+		public void Item_Inherits_AllowedEditors_FromParent()
+		{
+			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), definitions, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext());
+			enforcer.Start();
+
+			DefinitionTextPage page = definitions.CreateInstance<DefinitionTextPage>(null);
+			DynamicPermissionMap.SetRoles(page, Permission.Publish, new string[] { "Group1" });
+
+			try
+			{
+				DefinitionTextPage child = definitions.CreateInstance<DefinitionTextPage>(page);
+
+				Assert.That(DynamicPermissionMap.GetRoles(child, Permission.Publish).Count(), Is.EqualTo(1));
+				Assert.That(DynamicPermissionMap.GetRoles(child, Permission.Publish).Contains("Group1"));
+			}
+			finally
+			{
+				enforcer.Stop();
+			}
 		}
 
 		[Test]

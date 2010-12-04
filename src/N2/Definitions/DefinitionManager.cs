@@ -52,11 +52,6 @@ namespace N2.Definitions
 		protected virtual void OnItemCreating(ContentItem item, ContentItem parentItem)
 		{
 			item.Parent = parentItem;
-			if (parentItem != null)
-			{
-				foreach (AuthorizedRole role in parentItem.AuthorizedRoles)
-					item.AuthorizedRoles.Add(new AuthorizedRole(item, role.Role));
-			}
 			notifier.NotifiyCreated(item);
 			if (ItemCreated != null)
 				ItemCreated.Invoke(this, new ItemEventArgs(item));

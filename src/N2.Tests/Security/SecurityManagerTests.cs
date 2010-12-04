@@ -9,6 +9,7 @@ using NUnit.Framework;
 using N2.Security;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
+using N2.Definitions;
 
 namespace N2.Tests.Security
 {
@@ -18,6 +19,7 @@ namespace N2.Tests.Security
 		#region Fields
 		N2.Persistence.IPersister persister;
 		SecurityManager security;
+		SecurityEnforcer enforcer;
 		N2.Web.IUrlParser parser;
 		N2.Web.IWebContext context;
 
@@ -37,10 +39,9 @@ namespace N2.Tests.Security
 			parser = mocks.StrictMock<N2.Web.IUrlParser>();
 			context = CreateWebContext(false);
 
-			//EditSection editSection = (EditSection)System.Configuration.ConfigurationManager.GetSection("n2/edit");
 			EditSection editSection = new EditSection();
 			security = new SecurityManager(context, editSection);
-			SecurityEnforcer enforcer = new SecurityEnforcer(persister, security, parser, context);
+			enforcer = new SecurityEnforcer(persister, security, MockRepository.GenerateStub<IDefinitionManager>(), parser, context);
 			enforcer.Start();
 		}
 
@@ -472,6 +473,41 @@ namespace N2.Tests.Security
 			var map = element.ToPermissionMap(Permission.Administer, null, null);
 
 			Assert.That(map, Is.TypeOf(typeof(DynamicPermissionMap)));
+		}
+
+		[Test]
+		public void ReadPermission_CanBeCopied()
+		{
+			var roles = new string[] { "Permitted" };
+			ContentItem parent = CreateOneItem<Items.SecurityPage>(0, "parent", null);
+			DynamicPermissionMap.SetRoles(parent, Permission.Read, roles);
+			
+			ContentItem child = CreateOneItem<Items.SecurityPage>(0, "child", parent);
+			security.CopyPermissions(parent, child);
+
+			bool isPermitted = DynamicPermissionMap.IsPermitted(roles[0], child, Permission.Read);
+			Assert.That(isPermitted, Is.True);
+		}
+
+		[TestCase(Permission.None)]
+		[TestCase(Permission.Read)]
+		[TestCase(Permission.Write)]
+		[TestCase(Permission.Publish)]
+		[TestCase(Permission.Administer)]
+		[TestCase(Permission.ReadWrite)]
+		[TestCase(Permission.ReadWritePublish)]
+		[TestCase(Permission.Full)]
+		public void Permissions_AreCopied(Permission permission)
+		{
+			var roles = new string[] { "Permitted" };
+			ContentItem parent = CreateOneItem<Items.SecurityPage>(0, "parent", null);
+			DynamicPermissionMap.SetRoles(parent, permission, roles);
+
+			ContentItem child = CreateOneItem<Items.SecurityPage>(0, "child", parent);
+			security.CopyPermissions(parent, child);
+
+			bool isPermitted = DynamicPermissionMap.IsPermitted(roles[0], child, permission);
+			Assert.That(isPermitted, Is.True);
 		}
 
 		private ContentItem CreateUserAndItem()

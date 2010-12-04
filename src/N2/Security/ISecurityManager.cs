@@ -43,5 +43,10 @@ namespace N2.Security
 
 		/// <summary>Finds out wether a user is permitted to perform for a certain operation.</summary>
 		bool IsAuthorized(IPrincipal user, ContentItem item, Permission permission);
+
+		/// <summary>Copies permissions from the source to the destination.</summary>
+		/// <param name="source">The item whose permissions to carry over.</param>
+		/// <param name="destination">The item whose permissions will be modified.</param>
+		void CopyPermissions(ContentItem source, ContentItem destination);
 	}
 }

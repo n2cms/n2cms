@@ -147,7 +147,11 @@ namespace N2.Security
 			return GetRoles(item, permission) == null;
 		}
 
-		private static IEnumerable<string> GetRoles(ContentItem item, Permission permission)
+		/// <summary>Gets roles allowed for a certain permission stored in a content item.</summary>
+		/// <param name="item">The item whose permitted roles get.</param>
+		/// <param name="permission">The permission asked for.</param>
+		/// <returns>Permitted roles.</returns>
+		public static IEnumerable<string> GetRoles(ContentItem item, Permission permission)
 		{
 			List<string> roles = null;
 			foreach (Permission permissionLevel in SplitPermission(permission))
