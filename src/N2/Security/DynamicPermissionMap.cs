@@ -54,7 +54,7 @@ namespace N2.Security
 				if(details != null)
 				{
 					string[] rolesAuthorizedByItem = details.ToArray<string>();
-					if (!IsInRoles(user, rolesAuthorizedByItem))
+					if (!IsInRoles(user, rolesAuthorizedByItem) && !IsInUsers(user.Identity.Name))
 						return false;
 
 					isContentAuthorized = true;
