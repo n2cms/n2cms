@@ -4,6 +4,7 @@ using N2.Web.UI;
 using N2.Engine;
 using N2.Persistence.Finder;
 using System.Collections.Generic;
+using N2.Definitions;
 
 namespace N2.Integrity
 {
@@ -76,7 +77,7 @@ namespace N2.Integrity
 		/// <param name="source">The item that is to be moved.</param>
 		/// <param name="destination">The destination onto which the item is to be moved.</param>
 		/// <returns>Null if the item can be moved or an exception if the item can't be moved.</returns>
-		public virtual N2Exception GetMoveException(ContentItem source, ContentItem destination)
+		public virtual Exception GetMoveException(ContentItem source, ContentItem destination)
         {
 			if (IsDestinationBelowSource(source, destination))
 				return new DestinationOnOrBelowItselfException(source, destination);
@@ -92,8 +93,8 @@ namespace N2.Integrity
 
 		/// <summary>Check if an item can be copied.</summary>
 		/// <exception cref="NameOccupiedException"></exception>
-		/// <exception cref="N2Exception"></exception>
-		public virtual N2Exception GetCopyException(ContentItem source, ContentItem destination)
+		/// <exception cref="Exception"></exception>
+		public virtual Exception GetCopyException(ContentItem source, ContentItem destination)
         {
 			if (IsNameOccupiedOnDestination(source, destination))
                 return new NameOccupiedException(source, destination);
@@ -105,8 +106,8 @@ namespace N2.Integrity
 		}
         
 		/// <summary>Check if an item can be deleted.</summary>
-		/// <exception cref="N2Exception"></exception>
-		public virtual N2Exception GetDeleteException(ContentItem item)
+		/// <exception cref="Exception"></exception>
+		public virtual Exception GetDeleteException(ContentItem item)
         {
 			if (urlParser.IsRootOrStartPage(item))
 				return new CannotDeleteRootException();
@@ -116,14 +117,32 @@ namespace N2.Integrity
 
 		/// <summary>Check if an item can be saved.</summary>
 		/// <exception cref="NameOccupiedException"></exception>
-		/// <exception cref="N2Exception"></exception>
-		public virtual N2Exception GetSaveException(ContentItem item)
+		/// <exception cref="Exception"></exception>
+		public virtual Exception GetSaveException(ContentItem item)
         {
             if (!IsLocallyUnique(item.Name, item))
                 return new NameOccupiedException(item, item.Parent);
 
 			if (!IsTypeAllowedBelowDestination(item, item.Parent))
 				return new Definitions.NotAllowedParentException(definitions.GetDefinition(item.GetContentType()), item.Parent.GetContentType());
+
+			return null;
+		}
+
+		/// <summary>Check if an item can be created.</summary>
+		/// <param name="item"></param>
+		/// <param name="parent"></param>
+		/// <returns>The exception that would be thrown if the item was created.</returns>
+		public Exception GetCreateException(ContentItem item, ContentItem parent)
+		{
+			ItemDefinition parentDefinition = definitions.GetDefinition(parent.GetContentType());
+			ItemDefinition itemDefinition = definitions.GetDefinition(item.GetContentType());
+
+			if (parentDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the parent item '" + parent + "' of type '" + parent.GetContentType() + "'");
+			if (itemDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the item '" + item + "' of type '" + item.GetContentType() + "'");
+
+			if (!parentDefinition.IsChildAllowed(itemDefinition))
+				return new NotAllowedParentException(itemDefinition, parent.GetContentType());
 
 			return null;
 		}

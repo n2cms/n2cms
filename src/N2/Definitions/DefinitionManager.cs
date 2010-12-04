@@ -41,16 +41,7 @@ namespace N2.Definitions
 		/// <returns>A new instance of an item.</returns>
 		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem)
 		{
-			return CreateInstance(itemType, parentItem, true);
-		}
-
-		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
-		/// <returns>A new instance of an item.</returns>
-		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem, bool allowProvy)
-		{
-			object intercepted = allowProvy
-			                     	? interceptor.Create(itemType.FullName)
-			                     	: null;
+			object intercepted = interceptor.Create(itemType.FullName);
 			ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
 				as ContentItem;
 			stateChanger.ChangeTo(item, ContentState.New);
@@ -60,18 +51,9 @@ namespace N2.Definitions
 
 		protected virtual void OnItemCreating(ContentItem item, ContentItem parentItem)
 		{
+			item.Parent = parentItem;
 			if (parentItem != null)
 			{
-				ItemDefinition parentDefinition = GetDefinition(parentItem.GetContentType());
-				ItemDefinition itemDefinition = GetDefinition(item.GetContentType());
-
-				if (parentDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the parent item '" + parentItem + "' of type '" + parentItem.GetContentType() + "'");
-				if (itemDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the item '" + item + "' of type '" + item.GetContentType() + "'");
-
-				if(!parentDefinition.IsChildAllowed(itemDefinition))
-					throw new NotAllowedParentException(itemDefinition, parentItem.GetContentType());
-
-				item.Parent = parentItem;
 				foreach (AuthorizedRole role in parentItem.AuthorizedRoles)
 					item.AuthorizedRoles.Add(new AuthorizedRole(item, role.Role));
 			}

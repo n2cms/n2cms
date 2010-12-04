@@ -2,6 +2,7 @@ using System;
 using N2.Persistence;
 using N2.Plugin;
 using N2.Engine;
+using N2.Definitions;
 
 namespace N2.Integrity
 {
@@ -14,12 +15,14 @@ namespace N2.Integrity
 	{
 		private readonly IPersister persister;
 		private readonly IIntegrityManager integrity;
+		private readonly IDefinitionManager definitions;
 		private bool enabled = true;
 
-		public IntegrityEnforcer(IPersister persister, IIntegrityManager integrity)
+		public IntegrityEnforcer(IPersister persister, IIntegrityManager integrity, IDefinitionManager definitions)
 		{
 			this.persister = persister;
 			this.integrity = integrity;
+			this.definitions = definitions;
 		}
 
 		/// <summary>Gets or sets wether the integrity is enforced.</summary>
@@ -57,29 +60,41 @@ namespace N2.Integrity
 
 		protected virtual void OnItemSaving(ContentItem item)
 		{
-			N2Exception ex = integrity.GetSaveException(item);
+			var ex = integrity.GetSaveException(item);
 			if (Enabled && ex != null)
 				throw ex;
 		}
 
 		protected virtual void OnItemMoving(ContentItem source, ContentItem destination)
 		{
-			N2Exception ex = integrity.GetMoveException(source, destination);
+			var ex = integrity.GetMoveException(source, destination);
 			if (Enabled && ex != null)
 				throw ex;
 		}
 
 		protected virtual void OnItemDeleting(ContentItem item)
 		{
-			N2Exception ex = integrity.GetDeleteException(item);
+			var ex = integrity.GetDeleteException(item);
 			if (Enabled && ex != null)
 				throw ex;
 		}
 
 		protected virtual void OnItemCopying(ContentItem source, ContentItem destination)
 		{
-			N2Exception ex = integrity.GetCopyException(source, destination);
+			var ex = integrity.GetCopyException(source, destination);
 			if (Enabled && ex != null)
+				throw ex;
+		}
+
+		protected virtual void ItemCreatedEventHandler(object sender, ItemEventArgs e)
+		{
+			var item = e.AffectedItem;
+			var parentItem = e.AffectedItem.Parent;
+			if (parentItem == null)
+				return;
+
+			var ex = integrity.GetCreateException(item, parentItem);
+			if (ex != null)
 				throw ex;
 		}
 
@@ -93,6 +108,7 @@ namespace N2.Integrity
 			persister.ItemDeleting += ItemDeletingEvenHandler;
 			persister.ItemMoving += ItemMovingEvenHandler;
 			persister.ItemSaving += ItemSavingEvenHandler;
+			definitions.ItemCreated += ItemCreatedEventHandler;
 		}
 
 		public virtual void Stop()
@@ -101,6 +117,7 @@ namespace N2.Integrity
 			persister.ItemDeleting -= ItemDeletingEvenHandler;
 			persister.ItemMoving -= ItemMovingEvenHandler;
 			persister.ItemSaving -= ItemSavingEvenHandler;
+			definitions.ItemCreated -= ItemCreatedEventHandler;
 		}
 
 		#endregion

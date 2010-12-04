@@ -155,14 +155,6 @@ namespace N2.Tests.Definitions
 		}
 
 		[Test]
-		public void CreateInstanceWithUnAllowedParentGivesException()
-		{
-			ContentItem item = engine.Definitions.CreateInstance(typeof (ItemWithDetails), null);
-			
-			Assert.Throws<NotAllowedParentException>(() => engine.Definitions.CreateInstance(typeof (SideshowItem), item));
-		}
-
-		[Test]
 		public void HasCorrectNumberOfDisplayableAttributes()
 		{
 			ItemDefinition definition = engine.Definitions.GetDefinition(typeof (ItemWithDetails));

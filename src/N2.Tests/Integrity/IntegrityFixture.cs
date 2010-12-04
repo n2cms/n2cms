@@ -17,14 +17,6 @@ namespace N2.Tests.Integrity
 		}
 
 		[Test]
-		public void UnAllowedItemBelowRoot()
-		{
-			Definitions.StartPage root = CreateRoot();
-
-			Assert.Throws<NotAllowedParentException>(() => CreateItemBelow(root, typeof(Definitions.SubPage)));
-		}
-
-		[Test]
 		public void AllowedPropagatesToSubclasses()
 		{
 			ContentItem root = CreateItemBelow(null, typeof(Definitions.AlternativeStartPage));
@@ -40,14 +32,6 @@ namespace N2.Tests.Integrity
 			ContentItem item = CreateItemBelow(root, typeof(Definitions.AlternativePage));
 
 			Assert.IsNotNull(item);
-		}
-
-		[Test]
-		public void AllowedItemBelowSubClassOfRootNotAllowedBelowRootItem()
-		{
-			ContentItem root = CreateRoot();
-
-			Assert.Throws<NotAllowedParentException>(() => CreateItemBelow(root, typeof(Definitions.AlternativePage)));
 		}
 
 		[Test]
@@ -79,17 +63,6 @@ namespace N2.Tests.Integrity
 			ContentItem item = CreateItemBelow(realRoot, typeof(Definitions.StartPage));
 			
 			Assert.IsNotNull(item);
-		}
-
-		[Test]
-		public void Root_IsntAllowed_BelowAllowedItem_BelowRoot()
-		{
-			ContentItem root = CreateItemBelow(null, typeof(Definitions.Page));
-
-			ExceptionAssert.Throws<NotAllowedParentException>(delegate
-			{
-				CreateItemBelow(root, typeof(Definitions.StartPage));
-			});
 		}
 
 		private Definitions.StartPage CreateRoot()

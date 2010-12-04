@@ -39,9 +39,31 @@ namespace N2.Integrity
 		/// <returns>True if the item would get a unique name.</returns>
 		bool IsLocallyUnique(string name, ContentItem item);
 
-		N2Exception GetMoveException(ContentItem source, ContentItem destination);
-		N2Exception GetCopyException(ContentItem source, ContentItem destination);
-		N2Exception GetDeleteException(ContentItem item);
-		N2Exception GetSaveException(ContentItem item);
+		/// <summary>Checks if an item can be moved to a destination.</summary>
+		/// <param name="source">The item that is to be moved.</param>
+		/// <param name="destination">The destination onto which the item is to be moved.</param>
+		/// <returns>Null if the item can be moved or an exception if the item can't be moved.</returns>
+		Exception GetMoveException(ContentItem source, ContentItem destination);
+
+		/// <summary>Check if an item can be copied.</summary>
+		/// <exception cref="NameOccupiedException"></exception>
+		/// <exception cref="Exception"></exception>
+		Exception GetCopyException(ContentItem source, ContentItem destination);
+
+		/// <summary>Check if an item can be deleted.</summary>
+		/// <param name="item"></param>
+		/// <returns>The exception that would be thrown if the item was created.</returns>
+		Exception GetDeleteException(ContentItem item);
+
+		/// <summary>Check if an item can be saved.</summary>
+		/// <param name="item"></param>
+		/// <returns>The exception that would be thrown if the item was created.</returns>
+		Exception GetSaveException(ContentItem item);
+
+		/// <summary>Check if an item can be created.</summary>
+		/// <param name="item"></param>
+		/// <param name="parent"></param>
+		/// <returns>The exception that would be thrown if the item was created.</returns>
+		Exception GetCreateException(ContentItem item, ContentItem parent);
 	}
 }

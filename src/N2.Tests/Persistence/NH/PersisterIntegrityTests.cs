@@ -4,6 +4,8 @@ using N2.Web;
 using N2.Tests.Fakes;
 using System.Linq;
 using System;
+using N2.Definitions;
+using Rhino.Mocks;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -24,7 +26,7 @@ namespace N2.Tests.Persistence.NH
 			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
 
 			IntegrityManager integrity = new IntegrityManager(definitions, finder, parser);
-			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity);
+			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity, definitions);
 			enforcer.Start();
 		}
 

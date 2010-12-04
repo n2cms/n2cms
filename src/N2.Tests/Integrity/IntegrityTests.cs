@@ -50,7 +50,7 @@ namespace N2.Tests.Integrity
 			definitions = new DefinitionManager(builder, new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
 			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
 			integrityManger = new IntegrityManager(definitions, finder, parser);
-			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger);
+			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, definitions);
 			enforcer.Start();
 		}
 
@@ -441,6 +441,45 @@ namespace N2.Tests.Integrity
 			Assert.AreEqual(0,
 			                definition.GetEditables(SecurityUtilities.CreatePrincipal("UserNotInTheGroup", "Administrator")).
 			                	Count);
+		}
+
+		#endregion
+
+		#region Create
+
+		[Test]
+		public void CannotCreate_ItemBelow_UnallowedParent()
+		{
+			var page = new Page();
+
+			ExceptionAssert.Throws<NotAllowedParentException>(delegate
+			{
+				var neverReturned = definitions.CreateInstance<StartPage>(page);
+			});
+		}
+
+		[Test]
+		public void AllowedItem_BelowSubClass_OfRoot_NotAllowedBelow_RootItem()
+		{
+			ContentItem root = CreateOneItem<Definitions.StartPage>(0, "root", null);
+
+			Assert.Throws<NotAllowedParentException>(() => definitions.CreateInstance<Definitions.AlternativePage>(root));
+		}
+
+		[Test]
+		public void Root_IsntAllowed_BelowAllowedItem_BelowRoot()
+		{
+			ContentItem root = CreateOneItem<Definitions.Page>(0, "page", null);
+
+			Assert.Throws<NotAllowedParentException>(() => definitions.CreateInstance<Definitions.StartPage>(root));
+		}
+
+		[Test]
+		public void UnAllowedItemBelowRoot()
+		{
+			ContentItem root = CreateOneItem<Definitions.StartPage>(0, "root", null);
+
+			Assert.Throws<NotAllowedParentException>(() => definitions.CreateInstance(typeof(Definitions.SubPage), root));
 		}
 
 		#endregion

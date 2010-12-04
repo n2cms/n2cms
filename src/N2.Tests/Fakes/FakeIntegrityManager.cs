@@ -6,58 +6,59 @@ namespace N2.Tests.Fakes
 {
 	public class FakeIntegrityManager : N2.Integrity.IIntegrityManager
 	{
+		public bool returnBoolean = true;
+		public Exception returnException = null;
+
 		#region IIntegrityManager Members
 
 		public bool CanCopy(ContentItem source, ContentItem destination)
 		{
-			return true;
+			return returnBoolean;
 		}
 
 		public bool CanDelete(ContentItem item)
 		{
-			return true;
+			return returnBoolean;
 		}
 
 		public bool CanMove(ContentItem source, ContentItem destination)
 		{
-			return true;
+			return returnBoolean;
 		}
 
 		public bool CanSave(ContentItem item)
 		{
-			return true;
+			return returnBoolean;
 		}
 
 		public bool IsLocallyUnique(string name, ContentItem item)
 		{
-			return true;
+			return returnBoolean;
 		}
 
-		#endregion
-
-
-
-		#region IIntegrityManager Members
-
-
-		public N2Exception GetMoveException(ContentItem source, ContentItem destination)
+		public Exception GetMoveException(ContentItem source, ContentItem destination)
 		{
-			return null;
+			return returnException;
 		}
 
-		public N2Exception GetCopyException(ContentItem source, ContentItem destination)
+		public Exception GetCopyException(ContentItem source, ContentItem destination)
 		{
-			return null;
+			return returnException;
 		}
 
-		public N2Exception GetDeleteException(ContentItem item)
+		public Exception GetDeleteException(ContentItem item)
 		{
-			return null;
+			return returnException;
 		}
 
-		public N2Exception GetSaveException(ContentItem item)
+		public Exception GetSaveException(ContentItem item)
 		{
-			return null;
+			return returnException;
+		}
+
+		public Exception GetCreateException(ContentItem item, ContentItem parent)
+		{
+			return returnException;
 		}
 
 		#endregion
