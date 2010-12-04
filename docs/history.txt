@@ -1,4 +1,5 @@
-﻿- Increased the name length to 250 (ThreadId=236565)
+﻿- Permission inheritance for other permissions than read (ThreadId=237118)
+- Increased the name length to 250 (ThreadId=236565)
 - Applied junglefreak's solution to breadcrumb exception (ThreadId=235958)
 - Fixed error in mvc login part (ThreadId=234388)
 - Fixed issue with non-authorized access to create/edit/delete in wf templates
