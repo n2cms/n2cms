@@ -38,16 +38,6 @@ namespace N2.Edit.Trash
 			set { SetDetail("PurgeInterval", value, TrashPurgeInterval.Monthly); }
 		}
 
-		public override string Url
-		{
-			get
-			{
-				var url = new Url(Context.Current.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Trash/Default.aspx"));
-
-				return url.AppendQuery(PathData.PageQueryKey, ID);
-			}
-		}
-
 		public override string IconUrl
 		{
 			get
