@@ -814,7 +814,7 @@ namespace N2.Web
 		/// <returns>A rebased url.</returns>
 		public static string Rebase(string currentPath, string fromAppPath, string toAppPath)
 		{
-			if(currentPath == null || !currentPath.StartsWith(fromAppPath))
+			if (currentPath == null || fromAppPath == null || !currentPath.StartsWith(fromAppPath))
 				return currentPath;
 
 			return toAppPath + currentPath.Substring(fromAppPath.Length);
