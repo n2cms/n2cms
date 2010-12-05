@@ -11,8 +11,10 @@ namespace N2.Tests.Web.WebControls
 	public class ControlPanelTests_DragDropState : WebControlTestsBase
 	{
 		[TestFixtureSetUp]
-		public void TestFixtureSetUp()
+		public override void TestFixtureSetUp()
 		{
+			base.TestFixtureSetUp();
+
 			Initialize("edit=drag");
 		}
 

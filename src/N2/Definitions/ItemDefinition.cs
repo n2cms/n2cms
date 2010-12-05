@@ -29,6 +29,7 @@ using N2.Details;
 using N2.Installation;
 using N2.Integrity;
 using N2.Web.UI;
+using N2.Web;
 
 namespace N2.Definitions
 {
@@ -151,7 +152,7 @@ namespace N2.Definitions
 						iconUrl = "";
 					}
 				}
-				return iconUrl;
+				return Url.ResolveTokens(iconUrl);
 			}
 			set { iconUrl = value; }
 		}

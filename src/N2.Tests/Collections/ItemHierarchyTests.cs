@@ -6,6 +6,7 @@ using N2.Collections;
 
 namespace N2.Tests.Collections
 {
+	[Obsolete]
 	[TestFixture]
 	public class ItemHierarchyTests : ItemTestsBase
 	{

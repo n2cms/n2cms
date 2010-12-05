@@ -93,7 +93,7 @@ namespace N2.Web
 					string dummy = Url.ServerUrl; // wayne: DOT NOT REMOVE, initialize the server url
 					if (checkInstallation)
 						CheckInstallation();
-					Url.AddToken(Url.ManagementUrlToken, Url.ToAbsolute(managementUrl).TrimEnd('/'));
+					Url.SetToken(Url.ManagementUrlToken, Url.ToAbsolute(managementUrl).TrimEnd('/'));
 				}
 			}
 

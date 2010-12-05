@@ -63,7 +63,7 @@ namespace N2.Web.UI
 		private static void WriteTitle(TextWriter writer, ItemDefinition definition)
 		{
 			writer.Write("<span class='title' style='background-image:url(");
-			writer.Write(Url.ToAbsolute(definition.IconUrl));
+			writer.Write(Url.ResolveTokens(definition.IconUrl));
 			writer.Write(");'>");
 			writer.Write(definition.Title);
 			writer.Write("</span>");

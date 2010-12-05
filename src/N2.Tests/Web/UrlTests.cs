@@ -966,7 +966,7 @@ namespace N2.Tests.Web
 
 			try
 			{
-				Url.AddToken("{ManagementUrl}", "/Manage");
+				Url.SetToken("{ManagementUrl}", "/Manage");
 
 				string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
 
@@ -974,7 +974,7 @@ namespace N2.Tests.Web
 			}
 			finally
 			{
-				Url.AddToken("{ManagementUrl}", backup);
+				Url.SetToken("{ManagementUrl}", backup);
 			}
 		}
 
@@ -985,7 +985,7 @@ namespace N2.Tests.Web
 
 			try
 			{
-				Url.AddToken("{HelloUrl}", "/Hello/World");
+				Url.SetToken("{HelloUrl}", "/Hello/World");
 
 				string result = Url.ResolveTokens("{HelloUrl}/Resources/Icons/add.png");
 
@@ -993,7 +993,7 @@ namespace N2.Tests.Web
 			}
 			finally
 			{
-				Url.AddToken("{HelloUrl}", backup);
+				Url.SetToken("{HelloUrl}", backup);
 			}
 		}
 
@@ -1004,7 +1004,7 @@ namespace N2.Tests.Web
 
 			try
 			{
-				Url.AddToken("{ManagementUrl}", null);
+				Url.SetToken("{ManagementUrl}", null);
 
 				string result = Url.ResolveTokens("{ManagementUrl}/Resources/Icons/add.png");
 
@@ -1012,7 +1012,7 @@ namespace N2.Tests.Web
 			}
 			finally
 			{
-				Url.AddToken("{ManagementUrl}", backup);
+				Url.SetToken("{ManagementUrl}", backup);
 			}
 		}
 
@@ -1027,9 +1027,17 @@ namespace N2.Tests.Web
 		[Test]
 		public void Resolve_MakesPath_ToAbsolute()
 		{
-			string result = Url.ResolveTokens("~{ManagementUrl}/Resources/Icons/add.png");
+			Url.ApplicationPath = "/hello/";
+			try
+			{
+				string result = Url.ResolveTokens("~/N2/Resources/Icons/add.png");
 
-			Assert.That(result, Is.EqualTo("/N2/Resources/Icons/add.png"));
+				Assert.That(result, Is.EqualTo("/hello/N2/Resources/Icons/add.png"));
+			}
+			finally
+			{
+				Url.ApplicationPath = "/";
+			}
 		}
     }
 }

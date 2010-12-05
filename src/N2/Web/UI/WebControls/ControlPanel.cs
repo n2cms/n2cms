@@ -181,7 +181,7 @@ jQuery(document).ready(function(){{
 				div.Attributes["id"] = definition.Discriminator;
 				div.Attributes[PartUtilities.TypeAttribute] = definition.Discriminator;
 				div.Attributes["class"] = "definition " + definition.Discriminator;
-				div.InnerHtml = FormatImageAndText(Url.ToAbsolute(definition.IconUrl), definition.Title);
+				div.InnerHtml = FormatImageAndText(Url.ResolveTokens(definition.IconUrl), definition.Title);
 				definitions.Controls.Add(div);
 			}
 		}

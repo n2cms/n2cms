@@ -20,7 +20,7 @@ namespace N2.Web
 		static readonly char[] slashes = new char[] { '/' };
 		static readonly char[] dotsAndSlashes = new char[] { '.', '/' };
 		static string defaultExtension = ".aspx";
-		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "/N2" } };
+		static Dictionary<string, string> replacements = new Dictionary<string, string> { { ManagementUrlToken, "~/N2" } };
 
 		string scheme;
 		string authority;
@@ -833,7 +833,7 @@ namespace N2.Web
 		/// <summary>Adds a replacement used by <see cref="ResolveTokens"/>.</summary>
 		/// <param name="token">They token to replace.</param>
 		/// <param name="value">The value to replace the token with.</param>
-		public static void AddToken(string token, string value)
+		public static void SetToken(string token, string value)
 		{
 			if(token == null) throw new ArgumentNullException("key");
 
