@@ -19,7 +19,7 @@
 	    <div class="inner">
 		    <div class="inputForm">
 		    <% 
-		        using (Html.BeginForm<BlogPostController>(c => c.Submit(null))) 
+		        using (Html.BeginForm("Submit", "BlogPost")) 
                 {%>
 			    <div class="row cf">
 				    <label for="Email" class="label">Title *</label>
@@ -47,7 +47,7 @@
 			    </div>
 			    <div class="row cf">
 				    <label class="label">&nbsp;</label>
-				    <%=Html.SubmitButton("Submit", "Submit") %>
+					<input type="submit" value="Submit" />
 			    </div>
 		    <%} %>
 		    </div>
