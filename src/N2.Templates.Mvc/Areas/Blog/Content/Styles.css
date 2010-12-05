@@ -1,0 +1,31 @@
+
+
+
+hr {background:#ddd; color:#ddd; clear:both; float:none; width:85%; height:.1em; margin: .75em auto; border:none;}
+#addComment { margin-bottom: 15px; }
+
+
+
+
+/* Blog */
+.blog-container, .blog-comment, .blog-comment-input { margin-bottom: 15px; font-size: 1em; }
+.blog-title h1, .blog-title-link h1 { margin-bottom: 7px; font-size: 2.5em; }
+.blog-comment-title { background-color: #dddddd; padding: 2px; margin-bottom: 7px; font-size: 1.2em; vertical-align: middle; }
+.blog-title h1, .blog-comment-title { color: #696969; }
+.blog-header { margin-bottom: 7px; }
+.blog-author {  }
+.blog-date { font-style: italic; }
+.blog-image { float: left; padding: 3px 5px 3px 0px; text-align: center; }
+.blog-image-caption { width: 90%; color: #aaaaaa; font-size: .8em; }
+.blog-body { margin-bottom: 7px; }
+.blog-body>p { margin-bottom: 7px; }
+.blog-tag-list { margin-top: 5px; }
+.blog-footer {  }
+.blog-comment-form { margin-bottom: 5px; }
+.blog-comment-text { padding: 0px 0px 0px 7px; margin: 0px 0px 5px 0px; }
+.blog-comment-input { display: none; }
+.blog-left { float: left; }
+.blog-right { float: right }
+.small-text { font-size: .7em; }
+.input-validation-error,input[type=text].input-validation-error, input[type=password].input-validation-error { border: 1px solid #ff6666; background-color: #ffeeee; }
+.field-validation-error { color: #ff2222; font-size: .7em; }

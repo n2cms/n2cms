@@ -117,6 +117,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Zones.resx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Blog\BlogAreaRegistration.cs" />
+    <Compile Include="Areas\Blog\Controllers\BlogPostContainerController.cs" />
+    <Compile Include="Areas\Blog\Controllers\BlogPostController.cs" />
+    <Compile Include="Areas\Blog\Models\BlogCommentInputModel.cs" />
+    <Compile Include="Areas\Blog\Models\BlogPostContainerModel.cs" />
+    <Compile Include="Areas\Blog\Models\Pages\BlogComment.cs" />
+    <Compile Include="Areas\Blog\Models\Pages\BlogPost.cs" />
+    <Compile Include="Areas\Blog\Models\Pages\BlogPostContainer.cs" />
+    <Compile Include="Areas\Blog\Services\HtmlSanitizerStringExtension.cs" />
     <Compile Include="Areas\Management\Controllers\ManageAnalyticsController.cs" />
     <Compile Include="Areas\Management\ManagementAreaRegistration.cs" />
     <Compile Include="Areas\Management\Models\AnalyticsViewModel.cs" />
@@ -292,6 +301,14 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Blog\Content\Styles.css" />
+    <Content Include="Areas\Blog\Views\BlogPostContainer\BlogList.ascx" />
+    <Content Include="Areas\Blog\Views\BlogPostContainer\Index.aspx" />
+    <Content Include="Areas\Blog\Views\BlogPost\BlogComment.ascx" />
+    <Content Include="Areas\Blog\Views\BlogPost\BlogCommentInputForm.ascx" />
+    <Content Include="Areas\Blog\Views\BlogPost\Index.aspx" />
+    <Content Include="Areas\Blog\Views\Shared\BlogBody.ascx" />
+    <Content Include="Areas\Blog\Views\Shared\PageTemplates\BlogComment.aspx" />
     <Content Include="Content\Img\application_view_columns.png" />
     <Content Include="Content\Img\bubble_left.gif" />
     <Content Include="Content\Img\bubble_left.png" />
@@ -451,6 +468,7 @@
     <Content Include="Views\Shared\Site.master" />
     <Content Include="Views\Start\Index.aspx" />
     <Content Include="Views\Shared\WebForms.master" />
+    <Content Include="Areas\Blog\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.resx">
