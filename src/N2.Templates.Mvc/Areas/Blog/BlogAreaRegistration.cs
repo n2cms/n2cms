@@ -15,9 +15,7 @@ namespace N2.Templates.Mvc.Areas.Blog
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            context.MapContentRoute<Models.Pages.BlogComment>();
-            context.MapContentRoute<Models.Pages.BlogPost>();
-            context.MapContentRoute<Models.Pages.BlogPostContainer>();
+			context.MapContentRoute<Models.Pages.BlogBase>();
         }
     }
 }

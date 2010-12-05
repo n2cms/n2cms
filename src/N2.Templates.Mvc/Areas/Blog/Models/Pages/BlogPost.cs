@@ -23,7 +23,7 @@ namespace N2.Templates.Mvc.Areas.Blog.Models.Pages
     [RestrictParents(typeof(BlogPostContainer))]
     [TabContainer("PostSettings", "Post Settings", 5)]
     [FieldSetContainer("CommentSettings", "Comment Settings", 105, ContainerName = "PostSettings")]
-    public class BlogPost : ContentPageBase, ISyndicatable
+	public class BlogPost : BlogBase, ISyndicatable
     {
         public BlogPost()
         {

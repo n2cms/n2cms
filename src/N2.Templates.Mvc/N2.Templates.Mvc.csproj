@@ -122,6 +122,7 @@
     <Compile Include="Areas\Blog\Controllers\BlogPostController.cs" />
     <Compile Include="Areas\Blog\Models\BlogCommentInputModel.cs" />
     <Compile Include="Areas\Blog\Models\BlogPostContainerModel.cs" />
+    <Compile Include="Areas\Blog\Models\Pages\BlogBase.cs" />
     <Compile Include="Areas\Blog\Models\Pages\BlogComment.cs" />
     <Compile Include="Areas\Blog\Models\Pages\BlogPost.cs" />
     <Compile Include="Areas\Blog\Models\Pages\BlogPostContainer.cs" />
@@ -309,6 +310,7 @@
     <Content Include="Areas\Blog\Views\BlogPost\Index.aspx" />
     <Content Include="Areas\Blog\Views\Shared\BlogBody.ascx" />
     <Content Include="Areas\Blog\Views\Shared\PageTemplates\BlogComment.aspx" />
+    <Content Include="Areas\Blog\Views\Shared\Styles.ascx" />
     <Content Include="Content\Img\application_view_columns.png" />
     <Content Include="Content\Img\bubble_left.gif" />
     <Content Include="Content\Img\bubble_left.png" />

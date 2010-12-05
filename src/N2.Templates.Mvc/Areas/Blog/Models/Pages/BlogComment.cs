@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc.Areas.Blog.Models.Pages
     [Throwable(AllowInTrash.No)]
     [Versionable(AllowVersions.No)]
     [RestrictParents(typeof(BlogPost))]
-    public class BlogComment : ContentPageBase
+	public class BlogComment : BlogBase
     {
         public BlogComment()
         {

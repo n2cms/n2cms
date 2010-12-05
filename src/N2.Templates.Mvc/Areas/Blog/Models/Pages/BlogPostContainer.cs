@@ -18,7 +18,7 @@ namespace N2.Templates.Mvc.Areas.Blog.Models.Pages
     [SortChildren(SortBy.PublishedDescending)]
     [TabContainer("BlogSettings", "Blog Settings", 5)]
     [FieldSetContainer("CommentSettings", "Comment Settings", 105, ContainerName = "BlogSettings")]
-    public class BlogPostContainer : ContentPageBase
+	public class BlogPostContainer : BlogBase
     {
         public BlogPostContainer()
         {
