@@ -23,6 +23,7 @@
 		<ItemGroup>
 			<templatesMvcFiles Include="$(Templates-Mvc-SourceFolder)\**\*"
 							   Exclude="$(Templates-Mvc-SourceFolder)\**\.svn\**\*;
+												$(Templates-Mvc-SourceFolder)\**\.git\**\*;
 												$(Templates-Mvc-SourceFolder)\**\obj\**\*;
 												$(Templates-Mvc-SourceFolder)\**\bin\*.pdb;
 												$(Templates-Mvc-SourceFolder)\**\Ankh.Load;

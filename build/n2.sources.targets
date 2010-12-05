@@ -11,6 +11,7 @@
 		<ItemGroup>
 			<Source-Files Include="$(MSBuildProjectDirectory)\..\**\*"
 						  Exclude="$(MSBuildProjectDirectory)\..\**\.svn\**\*;
+											 $(MSBuildProjectDirectory)\..\**\.git\**\*;
 											 $(MSBuildProjectDirectory)\..\output\**\*;
 											 $(MSBuildProjectDirectory)\..\**\_*\**\*;
 											 $(MSBuildProjectDirectory)\..\**\*WebSetup\**\*;

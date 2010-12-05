@@ -131,6 +131,7 @@
 		<ItemGroup>
 			<ExampleSource-Exclude Include="$(Examples-Folder)\**\N2\**\*;
 											$(Examples-Folder)\**\.svn\**\*;
+											$(Examples-Folder)\**\.git\**\*;
 											$(Examples-Folder)\**\_*\**\*;
 											$(Examples-Folder)\**\*WebSetup\**\*;
 											$(Examples-Folder)\**\*VsTemplate\**\*;

@@ -18,6 +18,7 @@
 		<ItemGroup>
 			<templatesTempFiles Include="$(Templates-SourceFolder)\**\*"
 													 Exclude="$(Templates-SourceFolder)\**\.svn\**\*;
+																		$(Templates-SourceFolder)\**\.git\**\*;
 																		$(Templates-SourceFolder)\**\obj\**\*;
 																		$(Templates-SourceFolder)\**\bin\*.pdb;
 																		$(Templates-SourceFolder)\**\Ankh.Load;
