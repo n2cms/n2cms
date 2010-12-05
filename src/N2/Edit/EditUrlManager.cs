@@ -4,22 +4,23 @@ using N2.Configuration;
 using N2.Definitions;
 using N2.Engine;
 using N2.Web;
+using N2.Plugin;
 
 namespace N2.Edit
 {
 	[Service(typeof(IEditUrlManager))]
 	public class EditUrlManager : IEditUrlManager
 	{
+		private string editTreeUrl;
+
 		public EditUrlManager(EditSection config)
 		{
-			EditTreeUrlFormat = "{1}?selected={0}";
-			EditPreviewUrlFormat = config.EditPreviewUrlFormat;
 			ManagementInterfaceUrl = config.ManagementInterfaceUrl.TrimEnd('/');
-			EditTreeUrl = ResolveResourceUrl(config.EditTreeUrl);
-			EditItemUrl = ResolveResourceUrl(config.EditItemUrl);
-			EditInterfaceUrl = ResolveResourceUrl(config.EditInterfaceUrl);
-			NewItemUrl = ResolveResourceUrl(config.NewItemUrl);
-			DeleteItemUrl = ResolveResourceUrl(config.DeleteItemUrl);
+			EditTreeUrl = config.EditTreeUrl;
+			EditItemUrl = config.EditItemUrl;
+			EditInterfaceUrl = config.EditInterfaceUrl;
+			NewItemUrl = config.NewItemUrl;
+			DeleteItemUrl = config.DeleteItemUrl;
 		}
 
 		protected virtual string EditInterfaceUrl { get; set; }
@@ -32,15 +33,11 @@ namespace N2.Edit
 
 		protected virtual string EditItemUrl { get; set; }
 
-		/// <summary>Gets an alternative tree url format when edit mode is displayed.</summary>
-		/// <remarks>Accepted format value is {0} for url encoded selected item.</remarks>
-		protected virtual string EditTreeUrlFormat { get; set; }
-
-		/// <summary>Gets an alternative preview url format displayed when edit page is loaded.</summary>
-		/// <remarks>Accepted format values are {0} for selected page and {1} for url encoded selected item.</remarks>
-		protected virtual string EditPreviewUrlFormat { get; set; }
-
-		public virtual string EditTreeUrl { get; set; }
+		public virtual string EditTreeUrl
+		{
+			get { return Url.ResolveTokens(editTreeUrl); }
+			set { editTreeUrl = value; }
+		}
 
 		/// <summary>Gets the url for the navigation frame.</summary>
 		/// <param name="selectedItem">The currently selected item.</param>
@@ -50,7 +47,7 @@ namespace N2.Edit
 			if (selectedItem == null)
 				return null;
 
-			return Url.ToAbsolute(string.Format(EditTreeUrlFormat, selectedItem.Path, EditTreeUrl));
+			return Url.Parse(EditTreeUrl).AppendQuery("selected", selectedItem.Path);
 		}
 
 		/// <summary>Gets the url for the preview frame.</summary>
@@ -58,25 +55,21 @@ namespace N2.Edit
 		/// <returns>An url.</returns>
 		public virtual string GetPreviewUrl(INode selectedItem)
 		{
-			string url = String.Format(EditPreviewUrlFormat,
-			                           selectedItem.PreviewUrl,
-			                           HttpUtility.UrlEncode(selectedItem.PreviewUrl)
-				);
-			return ResolveResourceUrl(url);
+			return ResolveResourceUrl(selectedItem.PreviewUrl);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
 		/// <returns>The url to the edit interface.</returns>
 		public virtual string GetEditInterfaceUrl()
 		{
-			return Url.ToAbsolute(EditInterfaceUrl);
+			return Url.ResolveTokens(EditInterfaceUrl);
 		}
 
 		/// <summary>Gets the url to the edit interface.</summary>
 		/// <returns>The url to the edit interface.</returns>
 		public virtual string GetManagementInterfaceUrl()
 		{
-			return Url.ToAbsolute(ManagementInterfaceUrl + "/");
+			return Url.ResolveTokens(ManagementInterfaceUrl + "/");
 		}
 
 		/// <summary>Gets the url to the given resource underneath the management interface.</summary>
@@ -88,12 +81,13 @@ namespace N2.Edit
 
 			finalUrl = Url.ResolveTokens(finalUrl);
 
+			string managementUrl = Url.ResolveTokens(ManagementInterfaceUrl);
 			if (finalUrl.StartsWith("~") == false 
 				&& finalUrl.StartsWith("/") == false 
 				&& finalUrl.StartsWith("javascript:") == false 
 				&& finalUrl.Contains("://") == false
-			    && finalUrl.StartsWith(ManagementInterfaceUrl, StringComparison.InvariantCultureIgnoreCase) == false)
-				finalUrl = ManagementInterfaceUrl + "/" + resourceUrl.TrimStart('/');
+			    && finalUrl.StartsWith(managementUrl, StringComparison.InvariantCultureIgnoreCase) == false)
+				finalUrl = managementUrl + "/" + resourceUrl.TrimStart('/');
 
 			return Url.ToAbsolute(finalUrl);
 		}
@@ -150,7 +144,7 @@ namespace N2.Edit
 			if (selected == null)
 				throw new N2Exception("Cannot insert item before or after the root page.");
 
-			Url url = EditItemUrl;
+			Url url = Url.ResolveTokens(EditItemUrl);
 			url = url.AppendQuery("selected", parent.Path);
 			url = url.AppendQuery("discriminator", definition.Discriminator);
 			url = url.AppendQuery("zoneName", zoneName);
@@ -170,16 +164,17 @@ namespace N2.Edit
 			if (item == null)
 				return null;
 
+			string editUrl = Url.ResolveTokens(EditItemUrl);
 			if (item.VersionOf != null)
-				return string.Format("{0}?selectedUrl={1}", EditItemUrl,
+				return string.Format("{0}?selectedUrl={1}", editUrl,
 				                     HttpUtility.UrlEncode(item.FindPath(PathData.DefaultAction).RewrittenUrl));
 
-			return string.Format("{0}?selected={1}", EditItemUrl, item.Path);
+			return Url.Parse(editUrl).AppendQuery("selected", item.Path);
 		}
 
 		private static string FormatSelectedUrl(ContentItem selectedItem, string path)
 		{
-			Url url = Url.ToAbsolute(path);
+			Url url = Url.ResolveTokens(path);
 			if (selectedItem != null)
 				url = url.AppendQuery("selected=" + selectedItem.Path);
 			return url;

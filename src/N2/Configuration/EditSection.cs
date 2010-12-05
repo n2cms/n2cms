@@ -60,13 +60,6 @@ namespace N2.Configuration
 			set { base["editTreeUrl"] = value; }
 		}
 
-		[ConfigurationProperty("editPreviewUrlFormat", DefaultValue = "{0}")]
-		public string EditPreviewUrlFormat
-		{
-			get { return (string)base["editPreviewUrlFormat"]; }
-			set { base["editPreviewUrlFormat"] = value; }
-		}
-
 		[ConfigurationProperty("editItemUrl", DefaultValue = "{ManagementUrl}/Content/Edit.aspx")]
 		public string EditItemUrl
 		{

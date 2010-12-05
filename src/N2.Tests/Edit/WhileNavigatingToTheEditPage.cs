@@ -58,7 +58,7 @@ namespace N2.Tests.Edit
 			ContentItem root = CreateOneItem<ComplexContainersItem>(1, "root", null);
 			string editUrl = editUrlManager.GetEditExistingItemUrl(root);
 
-			Assert.AreEqual("/N2/Content/Edit.aspx?selected=/", editUrl);
+			Assert.AreEqual("/N2/Content/Edit.aspx?selected=%2f", editUrl);
 		}
 
 		[Test]
@@ -68,7 +68,7 @@ namespace N2.Tests.Edit
 			ContentItem item = CreateOneItem<ComplexContainersItem>(2, "child", root);
 			string editUrl = editUrlManager.GetEditExistingItemUrl(item);
 
-			Assert.AreEqual("/N2/Content/Edit.aspx?selected=/child/", editUrl);
+			Assert.AreEqual("/N2/Content/Edit.aspx?selected=%2fchild%2f", editUrl);
 		}
 
 		[Test]
