@@ -13,6 +13,7 @@ Release/
 *.obj
 .builds
 TestResult.xml
+output/
 
 # ReSharper is a .NET coding add-in
 _ReSharper*

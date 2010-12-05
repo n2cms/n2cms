@@ -21,7 +21,7 @@
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 
-		<DeployPrefix>n2cms_2.1rc_</DeployPrefix>
+		<DeployPrefix>n2cms_2.1rc2_</DeployPrefix>
 		<DeployFolder>$(RootFolder)\output</DeployFolder>
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
 		
