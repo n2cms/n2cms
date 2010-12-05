@@ -25,7 +25,7 @@ namespace N2.Templates.Web.UI.WebControls
 
 		public virtual ContentItem CurrentItem
 		{
-			get { return currentItem ?? (currentItem = ItemUtility.FindCurrentItem(Parent)); }
+			get { return currentItem ?? (currentItem = Find.ClosestPage(NamingContainer)); }
 			set { currentItem = value; }
 		}
 
@@ -80,7 +80,7 @@ namespace N2.Templates.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
-			BuildControlHierarchy(CurrentPage, StartPage);
+			BuildControlHierarchy(CurrentItem, StartPage);
 			
 			base.CreateChildControls();
 		}
@@ -128,7 +128,7 @@ namespace N2.Templates.Web.UI.WebControls
 				HierarchyNode<ContentItem> node = builder.Children(Filters).Build();
 				if (node.Current != null)
 				{
-					AddControlsRecursive(this, node, CurrentPage, ancestors);
+					AddControlsRecursive(this, node, CurrentItem, ancestors);
 				}
 			}
 		}
@@ -181,7 +181,7 @@ namespace N2.Templates.Web.UI.WebControls
 
 		private ContentItem GetStartingPoint()
 		{
-			return Find.AncestorAtLevel(StartLevel, Find.EnumerateParents(CurrentPage, StartPage, true), CurrentPage);
+			return Find.AncestorAtLevel(StartLevel, Find.EnumerateParents(CurrentItem, StartPage, true), CurrentItem);
 		}
 
 		private static IEnumerable<ContentItem> GetAncestors(ContentItem currentItem, ContentItem startPage)
@@ -193,9 +193,10 @@ namespace N2.Templates.Web.UI.WebControls
 
 		#region IPageItemContainer Members
 
+		[Obsolete("Use CurrentItem", true)]
 		public ContentItem CurrentPage
 		{
-			get { return Find.CurrentPage; }
+			get { return CurrentItem; }
 		}
 
 		#endregion

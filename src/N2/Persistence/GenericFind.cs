@@ -31,10 +31,26 @@ namespace N2.Persistence
 			get { return Context.Current.UrlParser.CurrentPage; }
 		}
 
-		/// <summary>Gets the currently displayed page (based on the query string).</summary>
+		/// <summary>Gets the currently displayed part or page.</summary>
 		public static ContentItem ClosestItem(System.Web.UI.Control currentControl)
 		{
 			return N2.Web.UI.ItemUtility.FindCurrentItem(currentControl) ?? CurrentPage;
+		}
+
+		/// <summary>Gets the currently displayed page (based on the control hierarchy or query string).</summary>
+		public static ContentItem ClosestPage(System.Web.UI.Control currentControl)
+		{
+			var partOrPage = ClosestItem(currentControl);
+			return ClosestPage(partOrPage);
+		}
+
+		/// <summary>Gets the currently displayed page (based on the query string).</summary>
+		public static ContentItem ClosestPage(ContentItem page)
+		{
+			if (page == null || page.IsPage)
+				return page;
+
+			return ClosestPage(page.Parent);
 		}
 
 		/// <summary>
