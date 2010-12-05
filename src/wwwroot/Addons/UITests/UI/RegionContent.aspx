@@ -2,8 +2,9 @@
 <script runat="server">
 	protected override void OnPreInit(EventArgs e)
 	{
+		CurrentPage = new N2.Templates.Items.Redirect();
+		CurrentPage.Parent = N2.Templates.Find.StartPage;
 		base.OnPreInit(e);
-		Theme = N2.Templates.Find.StartPage.Theme;
 	}
 </script>
 <asp:Content ID="Content8" ContentPlaceHolderID="Content" runat="server">
