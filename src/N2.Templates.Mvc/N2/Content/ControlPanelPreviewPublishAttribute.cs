@@ -27,7 +27,7 @@ namespace N2.Edit
 
 			HyperLink hl = new HyperLink();
 			hl.Text = GetInnerHtml(context, IconUrl, ToolTip, Title);
-			hl.NavigateUrl = Url.Parse("{ManagementUrl}/Content/PublishPreview.aspx").AppendQuery("selectedUrl", context.Selected.Url);
+			hl.NavigateUrl = Url.Parse("{ManagementUrl}/Content/PublishPreview.aspx").ResolveTokens().AppendQuery("selectedUrl", context.Selected.Url);
 			hl.ToolTip = Utility.GetResourceString(GlobalResourceClassName, Name + ".ToolTip") ?? context.Format(ToolTip, false);
 			hl.CssClass = "publish";
 			container.Controls.Add(hl);
