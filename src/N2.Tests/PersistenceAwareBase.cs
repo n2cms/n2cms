@@ -32,7 +32,7 @@ namespace N2.Tests
 
 		protected virtual ContentEngine CreateEngine()
 		{
-			return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			return new ContentEngine();
 		}
 
 		[TearDown]

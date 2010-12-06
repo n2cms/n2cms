@@ -96,13 +96,17 @@
 
 	<Target Name="Test" DependsOnTargets="Framework-Build">
 		<ItemGroup>
-			<AssembliesToTest Include="$(SrcFolder)\*Tests\bin\$(Configuration)\*.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\N2.Tests\bin\$(Configuration)\*.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\N2.Edit.Tests\bin\$(Configuration)\N2.Edit.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\N2.Extensions.Tests\bin\$(Configuration)\N2.Extensions.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\N2.Templates.Mvc.Tests\bin\$(Configuration)\N2.Templates.Mvc.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\N2.Templates.Tests\bin\$(Configuration)\N2.Templates.Tests.dll;"/>
 		</ItemGroup>
 		<PropertyGroup>
-			<Exe>$(RootFolder)\lib\nunit-console-x86.exe %(AssembliesToTest.FullPath)</Exe>
+			<Exe></Exe>
 		</PropertyGroup>
-		<Message Text="$(Exe)" />
-		<Exec Command="$(Exe)" />
+		<Message Text="$(RootFolder)\lib\nunit-console-x86.exe %(AssembliesToTest.FullPath)" />
+		<Exec Command="$(RootFolder)\lib\nunit-console-x86.exe %(AssembliesToTest.FullPath)" />
 	</Target>
 
 

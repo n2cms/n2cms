@@ -159,15 +159,14 @@ namespace N2.Engine.MediumTrust
 
 		private void RegisterSingletonResolver(string key, Type serviceType, Type classType)
 		{
-			var instanceResolver = CreateInstanceResolver(key, classType);
 			if (resolvers.ContainsKey(serviceType))
 			{
-				Trace.WriteLine("Already contains service " + serviceType + ". Skipping registration of " + classType);
+				Trace.WriteLine("Already contains service " + serviceType + ". Overwriting of " + classType);
 			}
-			else
-			{
-				AddBaseTypes(resolvers, serviceType, instanceResolver);
-			}
+
+			var instanceResolver = CreateInstanceResolver(key, classType);
+			AddBaseTypes(resolvers, serviceType, instanceResolver);
+
 			var listResolver = CreateListResolver(serviceType, instanceResolver);
 			AddBaseTypes(listResolvers, serviceType, listResolver);
 		}
