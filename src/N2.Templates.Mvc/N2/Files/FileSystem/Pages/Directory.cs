@@ -16,13 +16,11 @@ namespace N2.Edit.FileSystem.Items
 	[N2.Web.Template("upload", "{ManagementUrl}/Files/FileSystem/Upload.aspx")]
 	public class Directory : AbstractDirectory, IActiveContent
 	{
-		protected Directory()
-			: base(N2.Context.Current.Resolve<IFileSystem>())
+		public Directory()
 		{
 		}
 
-		public Directory(IFileSystem fs, DirectoryData directory, ContentItem parent)
-			: base(fs)
+		public Directory(DirectoryData directory, ContentItem parent)
 		{
 			Parent = parent;
 
@@ -68,7 +66,7 @@ namespace N2.Edit.FileSystem.Items
 			}
 			else if (newParent != null)
 			{
-				new N2Exception(newParent + " is not a Directory. AddTo only works on directories.");
+				throw new N2Exception(newParent + " is not a Directory. AddTo only works on directories.");
 			}
 		}
 
@@ -105,7 +103,8 @@ namespace N2.Edit.FileSystem.Items
 				throw new NameOccupiedException(this, d);
 
 			FileSystem.CreateDirectory(to);
-			Directory copy = new Directory(FileSystem, FileSystem.GetDirectory(to), d);
+			Directory copy = new Directory(FileSystem.GetDirectory(to), d);
+			copy.Set(FileSystem);
 
 			foreach (File f in GetFiles())
 				f.CopyTo(copy);

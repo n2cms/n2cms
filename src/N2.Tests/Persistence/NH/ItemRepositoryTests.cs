@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace N2.Tests.Persistence.NH
 {
-	[TestFixture]
+	[TestFixture, Category("Integration")]
 	public class ItemRepositoryTests : DatabasePreparingBase
 	{
 		NHRepository<int, ContentItem> repository;

@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace N2.Tests.Persistence.NH
 {
-	[TestFixture]
+	[TestFixture, Category("Integration")]
 	public class PerformanceTests : DatabasePreparingBase
 	{
 		#region SetUp

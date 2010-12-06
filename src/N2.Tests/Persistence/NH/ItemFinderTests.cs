@@ -12,7 +12,7 @@ using N2.Edit.Workflow;
 
 namespace N2.Tests.Persistence.NH
 {
-	[TestFixture]
+	[TestFixture, Category("Integration")]
 	public class ItemFinderTests : DatabasePreparingBase
 	{
 		#region SetUp

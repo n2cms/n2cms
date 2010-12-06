@@ -22,9 +22,6 @@ namespace N2.Tests.Globalization
 		{
 			base.TestFixtureSetUp();
 
-			//var x = engine.Container.Resolve<N2.Engine.StructureBoundCache<string>>();
-			//var y = engine.Container.Resolve<N2.Engine.StructureBoundDictionaryCache<string,string>>();
-
 			engine.Container.AddComponent("LanguageGateway", typeof(ILanguageGateway), typeof(LanguageGateway));
 			engine.Container.AddComponent("LanguageInterceptor", typeof(LanguageInterceptor), typeof(LanguageInterceptor));
 		}
@@ -38,14 +35,6 @@ namespace N2.Tests.Globalization
 		}
 
 		protected abstract void CreatePageStructure();
-
-		[TearDown]
-		public override void TearDown()
-		{
-			engine.Persister.Delete(root);
-
-			base.TearDown();
-		}
 
 		[Test]
 		public void CanList_LanguageRoots()

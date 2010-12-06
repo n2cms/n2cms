@@ -17,13 +17,11 @@ namespace N2.Edit.FileSystem.Items
 	[N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/File.aspx")]
     public class File : AbstractNode, IActiveContent
     {
-		protected File()
-			: base(N2.Context.Current.Resolve<IFileSystem>())
+		public File()
 		{
 		}
 
-		public File(IFileSystem fs, FileData file, AbstractDirectory parent)
-			: base(fs)
+		public File(FileData file, AbstractDirectory parent)
 		{
 			Parent = parent;
 
@@ -35,10 +33,6 @@ namespace N2.Edit.FileSystem.Items
 			Created = file.Created;
 
 			url = file.VirtualPath;
-
-			string icon = ImagesUtility.GetResizedPath(file.VirtualPath, "icon");
-			if (FileSystem.FileExists(icon))
-				this.iconUrl = icon;
 		}
 
 		public long Size { get; set; }
