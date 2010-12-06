@@ -164,7 +164,7 @@ namespace N2.Web
 
 		private void RedirectToFix(WrongClassException wex)
 		{
-			string url = Url.Parse(editConfig.Installer.FixClassUrl).AppendQuery("id", wex.Identifier);
+			string url = Url.Parse(editConfig.Installer.FixClassUrl).ResolveTokens().AppendQuery("id", wex.Identifier);
 			context.ClearError();
 			context.Response.Redirect(url);
 		}

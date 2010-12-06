@@ -180,7 +180,7 @@ namespace N2.Web
 				return;
 
 			DatabaseStatus status = installer.GetStatus();
-			Url redirectUrl = welcomeUrl;
+			Url redirectUrl = Url.ResolveTokens(welcomeUrl);
 
 			if (!status.IsInstalled)
 			{
