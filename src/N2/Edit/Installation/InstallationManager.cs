@@ -199,6 +199,10 @@ namespace N2.Edit.Installation
 					// checking for properties added between version 2 and 3
 					sessionProvider.OpenSession.Session.CreateQuery("select ci.AlteredPermissions from ContentItem ci").SetMaxResults(1).List();
 					status.DatabaseVersion = 3;
+
+					// checking persistable properties added in application
+					sessionProvider.OpenSession.Session.CreateQuery("select ci from ContentItem ci").SetMaxResults(1).List();
+					status.DatabaseVersion = 4;
 				}
 			}
 			catch (Exception ex)

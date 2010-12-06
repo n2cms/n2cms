@@ -7,7 +7,7 @@ namespace N2.Edit.Installation
 	/// </summary>
 	public class DatabaseStatus
 	{
-		public const int RequiredDatabaseVersion = 3;
+		public const int RequiredDatabaseVersion = 4;
 
 		public string ConnectionType { get; set; }
 		public int AuthorizedRoles { get; set; }
@@ -46,10 +46,10 @@ namespace N2.Edit.Installation
 			{
 				if (!IsConnected)
 					return SystemStatusLevel.NoConnection;
-				if (!HasSchema)
-					return SystemStatusLevel.NoSchema;
 				if (NeedsUpgrade)
 					return SystemStatusLevel.OldVersion;
+				if (!HasSchema)
+					return SystemStatusLevel.NoSchema;
 				if (RootItem == null)
 					return SystemStatusLevel.NoRootNode;
 				if (StartPage == null)

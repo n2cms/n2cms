@@ -182,13 +182,13 @@ namespace N2.Web
 			DatabaseStatus status = installer.GetStatus();
 			Url redirectUrl = Url.ResolveTokens(welcomeUrl);
 
-			if (!status.IsInstalled)
-			{
-				redirectUrl = redirectUrl.AppendQuery("action", "install");
-			}
-			else if (status.NeedsUpgrade)
+			if (status.NeedsUpgrade)
 			{
 				redirectUrl = redirectUrl.AppendQuery("action", "upgrade");
+			}
+			else if (!status.IsInstalled)
+			{
+				redirectUrl = redirectUrl.AppendQuery("action", "install");
 			}
 			else if (status.NeedsRebase)
 			{
