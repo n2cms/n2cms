@@ -8,7 +8,8 @@ using N2.Persistence.Proxying;
 
 namespace N2.Tests.Persistence.NH
 {
-    public class PropertyItemType : ContentItem
+	#region class PropertyItemType
+	public class PropertyItemType : ContentItem
     {
         [Persistable(Length = 50)]
         public virtual string ShortStringProperty { get; set; }
@@ -34,13 +35,17 @@ namespace N2.Tests.Persistence.NH
         [Persistable]
         public virtual double DoubleProperty { get; set; }
         [Persistable]
-        public virtual double? NullableDoubleProperty { get; set; }
-    }
+		public virtual double? NullableDoubleProperty { get; set; }
 
-    [NUnit.Framework.TestFixture]
+		[Persistable]
+		public virtual ContentItem LinkProperty { get; set; }
+    }
+	#endregion
+
+	[TestFixture]
     public class MappingGeneratorTests : PersisterTestsBase
     {
-        [NUnit.Framework.TestFixtureSetUp]
+        [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
 			InterceptingProxyFactory proxyFactory;
@@ -49,7 +54,7 @@ namespace N2.Tests.Persistence.NH
 
         // string
 
-        [NUnit.Framework.Test]
+        [Test]
         public void StringProperty()
         {
             SaveLoadAndCompare<string>(
@@ -57,7 +62,7 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.LongStringProperty = "Will it blend? ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ"; });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void StringProperty_WithMaxLength()
         {
             SaveLoadAndCompare<string>(
@@ -67,7 +72,7 @@ namespace N2.Tests.Persistence.NH
 
         // integer
 
-        [NUnit.Framework.Test]
+        [Test]
         public void IntegerProperty()
         {
             SaveLoadAndCompare<int>(
@@ -75,7 +80,7 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.IntegerProperty = 432; });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void IntegerProperty_SetNullable()
         {
             SaveLoadAndCompare<int?>(
@@ -83,7 +88,7 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.NullableIntegerProperty = 432; });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void IntegerProperty_StoreNull()
         {
             SaveLoadAndCompare<int?>(
@@ -93,7 +98,7 @@ namespace N2.Tests.Persistence.NH
 
         // boolean
 
-        [NUnit.Framework.Test]
+        [Test]
         public void BooleanProperty()
         {
             SaveLoadAndCompare<bool>(
@@ -101,7 +106,7 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.BooleanProperty = true; });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void BooleanProperty_SetNullable()
         {
             SaveLoadAndCompare<bool?>(
@@ -109,7 +114,7 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.NullableBooleanProperty = true; });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void BooleanProperty_StoreNull()
         {
             SaveLoadAndCompare<bool?>(
@@ -119,7 +124,7 @@ namespace N2.Tests.Persistence.NH
 
         // date time
 
-        [NUnit.Framework.Test]
+        [Test]
         public void DateTimeProperty()
         {
             SaveLoadAndCompare<DateTime>(
@@ -127,7 +132,7 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.DateTimeProperty = DateTime.Now.StripMilliseconds(); });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void DateTimeProperty_SetNullable()
         {
             SaveLoadAndCompare<DateTime?>(
@@ -135,7 +140,7 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.NullableDateTimeProperty = DateTime.Now.StripMilliseconds(); });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void DateTimeProperty_StoreNull()
         {
             SaveLoadAndCompare<DateTime?>(
@@ -145,7 +150,7 @@ namespace N2.Tests.Persistence.NH
 
         // double
 
-        [NUnit.Framework.Test]
+        [Test]
         public void DoubleProperty()
         {
             SaveLoadAndCompare<double>(
@@ -153,7 +158,7 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.DoubleProperty = 432.1; });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void DoubleProperty_SetNullable()
         {
             SaveLoadAndCompare<double?>(
@@ -161,13 +166,72 @@ namespace N2.Tests.Persistence.NH
                 (i) => { i.NullableDoubleProperty = 432.1; });
         }
 
-        [NUnit.Framework.Test]
+        [Test]
         public void DoubleProperty_StoreNull()
         {
             SaveLoadAndCompare<double?>(
                 (i) => i.NullableDoubleProperty,
                 (i) => { i.NullableDoubleProperty = null; });
         }
+
+		[Test]
+		public void Assigning_AttachedEntity_DoesntCreateDetails()
+		{
+			var item = CreateOneItem<PropertyItemType>(0, "item2", null);
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				var linked = CreateOneItem<PropertyItemType>(0, "item1", null);
+				persister.Save(linked);
+
+				var fromDb = persister.Get<PropertyItemType>(item.ID);
+				fromDb.BooleanProperty = true;
+				fromDb.DateTimeProperty = new DateTime(2010, 06, 18, 14, 30, 00);
+				fromDb.DoubleProperty = 555.555;
+				fromDb.IntegerProperty = 555;
+				fromDb.LinkProperty = linked;
+				fromDb.ShortStringProperty = "in table text";
+				fromDb.LongStringProperty = "long table text";
+
+				Assert.That(fromDb.Details.Count, Is.EqualTo(0));
+			}
+		}
+
+		[Test]
+		public void AllOfEm()
+		{
+			var linked = CreateOneItem<PropertyItemType>(0, "item1", null);
+			var item = CreateOneItem<PropertyItemType>(0, "item2", null);
+			item.BooleanProperty = true;
+			item.DateTimeProperty = new DateTime(2010, 06, 18, 14, 30, 00);
+			item.DoubleProperty = 555.555;
+			item.IntegerProperty = 555;
+			item.LinkProperty = linked;
+			item.ShortStringProperty = "in table text";
+			item.LongStringProperty = "long table text";
+			using (persister)
+			{
+				persister.Save(linked);
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				var fromDb = persister.Get<PropertyItemType>(item.ID);
+				Assert.That(fromDb.BooleanProperty, Is.EqualTo(fromDb.BooleanProperty));
+				Assert.That(fromDb.DateTimeProperty, Is.EqualTo(fromDb.DateTimeProperty));
+				Assert.That(fromDb.DoubleProperty, Is.EqualTo(fromDb.DoubleProperty));
+				Assert.That(fromDb.IntegerProperty, Is.EqualTo(fromDb.IntegerProperty));
+				Assert.That(fromDb.LinkProperty, Is.EqualTo(fromDb.LinkProperty));
+				Assert.That(fromDb.ShortStringProperty, Is.EqualTo(fromDb.ShortStringProperty));
+				Assert.That(fromDb.LongStringProperty, Is.EqualTo(fromDb.LongStringProperty));
+				Assert.That(fromDb.Details.Count, Is.EqualTo(0));
+			}
+		}
 
         void SaveLoadAndCompare<T>(Func<PropertyItemType, T> get, Action<PropertyItemType> set)
         {
