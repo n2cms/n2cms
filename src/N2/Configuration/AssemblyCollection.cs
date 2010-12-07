@@ -16,7 +16,6 @@ namespace N2.Configuration
 		{
 			AddDefault(new AssemblyElement("N2"));
 			AddDefault(new AssemblyElement("N2.Management"));
-			AddDefault(new AssemblyElement("N2.Security"));
 		}
 
 		protected override void OnDeserializeRemoveElement(AssemblyElement element, System.Xml.XmlReader reader)

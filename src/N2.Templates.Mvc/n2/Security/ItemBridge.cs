@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using System.Collections.Generic;
 using N2.Security.Items;
 using System.Diagnostics;
+using N2.Engine;
 
 namespace N2.Security
 {
@@ -16,6 +17,7 @@ namespace N2.Security
 	/// Provides access to users and roles stored as nodes in the item 
 	/// hierarchy.
 	/// </summary>
+	[Service]
 	public class ItemBridge
 	{
 		readonly private IDefinitionManager definitions;
@@ -89,7 +91,7 @@ namespace N2.Security
 					return null;
 				return users[0];
 			}
-			catch (NHibernate.ADOException ex)
+			catch (Exception ex)
 			{
 				Trace.Write(ex);
 				return null;

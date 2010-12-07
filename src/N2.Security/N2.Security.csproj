@@ -79,15 +79,7 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="ContentProfileProvider.cs" />
-    <Compile Include="Details\EditableRolesAttribute.cs" />
-    <Compile Include="ItemBridge.cs" />
-    <Compile Include="Items\UserList.cs" />
-    <Compile Include="Items\User.cs" />
-    <Compile Include="ContentMembershipProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ContentRoleProvider.cs" />
-    <Compile Include="SecurityInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
@@ -110,6 +102,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\N2.Templates.Mvc\N2.Management.csproj">
+      <Project>{10F7C179-B92D-4FCA-B78C-011E428D0CA3}</Project>
+      <Name>N2.Management</Name>
+    </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>

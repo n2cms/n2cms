@@ -277,6 +277,12 @@
     <Compile Include="N2\Installation\InsertAncestralTrailMigration.cs" />
     <Compile Include="N2\Installation\UpdateAppPathMigration.cs" />
     <Compile Include="N2\ManagementUtility.cs" />
+    <Compile Include="N2\Security\ContentMembershipProvider.cs" />
+    <Compile Include="N2\Security\ContentProfileProvider.cs" />
+    <Compile Include="N2\Security\ContentRoleProvider.cs" />
+    <Compile Include="N2\Security\ItemBridge.cs" />
+    <Compile Include="N2\Security\Items\User.cs" />
+    <Compile Include="N2\Security\Items\UserList.cs" />
     <Compile Include="N2\Simple.master.cs">
       <DependentUpon>Simple.master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
