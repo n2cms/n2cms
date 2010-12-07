@@ -108,6 +108,10 @@ namespace N2.Web.UI.WebControls
 					value = "true";
 				else if (value == "false")
 					value = "false";
+				else if (value == null)
+					value = "null";
+				else if (value.StartsWith("[") || value.StartsWith("{"))
+					value = value;
 				else
 					value = "'" + value + "'";
 				sb.Append("'").Append(key).Append("': ").Append(value).Append(",");
