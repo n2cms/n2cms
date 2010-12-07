@@ -141,6 +141,9 @@
     <Compile Include="Details\DateTimeDetail.cs" />
     <Compile Include="Details\ObjectDetail.cs" />
     <Compile Include="Edit\EditUrlManager.cs" />
+    <Compile Include="Edit\FileSystem\NH\DatabaseFileSystem.cs" />
+    <Compile Include="Edit\FileSystem\NH\FileSystemItem.cs" />
+    <Compile Include="Edit\FileSystem\NH\Path.cs" />
     <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
     <Compile Include="Edit\Installation\RebaseInfo.cs" />
@@ -835,6 +838,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Persistence\NH\Mappings\nhibernate-mapping.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
