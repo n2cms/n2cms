@@ -33,6 +33,14 @@ namespace N2.Edit.FileSystem.NH
                 .UniqueResult<FileSystemItem>();
         }
 
+        private void AssertParentExists(Path target)
+        {
+            if (!DirectoryExists(target.Parent))
+            {
+                throw new DirectoryNotFoundException("Destination directory not found: " + target.Parent);
+            }
+        }
+
         public IEnumerable<FileData> GetFiles(string parentVirtualPath)
         {
             var path = Path.Directory(parentVirtualPath);
@@ -85,6 +93,11 @@ namespace N2.Edit.FileSystem.NH
                 file.Path = target;
                 trx.Commit();
             }
+
+            if (FileMoved != null)
+            {
+                FileMoved.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
+            }
         }
 
         public void DeleteFile(string virtualPath)
@@ -95,6 +108,11 @@ namespace N2.Edit.FileSystem.NH
                 var item = GetSpecificItem(path);
                 _sessionProvider.OpenSession.Session.Delete(item);
                 trx.Commit();
+            }
+
+            if (FileDeleted != null)
+            {
+                FileDeleted.Invoke(this, new FileEventArgs(virtualPath, null));
             }
         }
 
@@ -120,13 +138,10 @@ namespace N2.Edit.FileSystem.NH
                 _sessionProvider.OpenSession.Session.Save(copy);
                 trx.Commit();
             }
-        }
 
-        private void AssertParentExists(Path target)
-        {
-            if (!DirectoryExists(target.Parent))
+            if (FileCopied != null)
             {
-                throw new DirectoryNotFoundException("Destination directory not found: " + target.Parent);
+                FileCopied.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
             }
         }
 
@@ -158,6 +173,11 @@ namespace N2.Edit.FileSystem.NH
 
                 _sessionProvider.OpenSession.Session.Save(item);
                 trx.Commit();
+            }
+
+            if (FileWritten != null)
+            {
+                FileWritten.Invoke(this, new FileEventArgs(virtualPath, null));
             }
         }
 
@@ -202,6 +222,11 @@ namespace N2.Edit.FileSystem.NH
 
                 trx.Commit();
             }
+
+            if (DirectoryMoved != null)
+            {
+                DirectoryMoved.Invoke(this, new FileEventArgs(destinationVirtualPath, fromVirtualPath));
+            }
         }
 
         public void DeleteDirectory(string virtualPath)
@@ -221,6 +246,11 @@ namespace N2.Edit.FileSystem.NH
 
                 trx.Commit();
             }
+
+            if (DirectoryDeleted != null)
+            {
+                DirectoryDeleted.Invoke(this, new FileEventArgs(virtualPath, null));
+            }
         }
 
         public void CreateDirectory(string virtualPath)
@@ -239,6 +269,11 @@ namespace N2.Edit.FileSystem.NH
 
                 _sessionProvider.OpenSession.Session.Save(item);
                 trx.Commit();
+            }
+
+            if (DirectoryCreated != null)
+            {
+                DirectoryCreated.Invoke(this, new FileEventArgs(virtualPath, null));
             }
         }
 
