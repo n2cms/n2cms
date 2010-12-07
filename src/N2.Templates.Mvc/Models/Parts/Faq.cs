@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[WithEditableTitle("Question", 90, Focus = false)]
 	public class Faq : PartBase
 	{
-		[Displayable(typeof (H3), "Text")]
+		[DisplayableHeading(3)]
 		public override string Title
 		{
 			get { return base.Title; }

@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[AllowedZones("SiteTop")]
 	public class Top : PartBase
 	{
-		[Displayable(typeof (N2.Web.UI.WebControls.H2), "Text")]
+		[DisplayableHeading(2)]
 		[EditableTextBox("Top text", 40, ContainerName = "top")]
 		public override string Title
 		{

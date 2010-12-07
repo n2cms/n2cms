@@ -23,7 +23,7 @@ namespace N2.Templates.Items
 	[WithEditableTitle("Question", 90, Focus = false)]
     public class Faq : AbstractItem
     {
-        [Displayable(typeof(H3), "Text")]
+        [DisplayableHeading(3)]
         public override string Title
         {
             get { return base.Title; }

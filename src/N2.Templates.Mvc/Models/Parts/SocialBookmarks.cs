@@ -12,7 +12,7 @@ namespace N2.Templates.Mvc.Models.Parts
 	[WithEditableTitle("Title", 90)]
 	public class SocialBookmarks : PartBase
 	{
-		[Displayable(typeof (H4), "Text")]
+		[DisplayableHeading(4)]
 		public override string Title
 		{
 			get { return base.Title; }
