@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace N2.Edit.FileSystem.NH
 {
@@ -40,6 +37,16 @@ namespace N2.Edit.FileSystem.NH
         public bool IsDescendantOf(Path source)
         {
             return Parent.StartsWith(source.ToString());
+        }
+
+        public void Rebase(Path source, Path target)
+        {
+            if (!source._isDirectory || !target._isDirectory)
+            {
+                throw new ApplicationException("Rebase parameters \"source\" and \"target\" should both be directory paths.");
+            }
+
+            Parent = target + Parent.Substring(source.ToString().Length);
         }
     }
 

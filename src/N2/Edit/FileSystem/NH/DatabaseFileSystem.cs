@@ -74,7 +74,17 @@ namespace N2.Edit.FileSystem.NH
 
         public void MoveFile(string fromVirtualPath, string destinationVirtualPath)
         {
-            throw new NotImplementedException();
+            var source = Path.File(fromVirtualPath);
+            var target = Path.File(destinationVirtualPath);
+
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            {
+                AssertParentExists(target);
+
+                var file = GetSpecificItem(source);
+                file.Path = target;
+                trx.Commit();
+            }
         }
 
         public void DeleteFile(string virtualPath)
@@ -90,7 +100,34 @@ namespace N2.Edit.FileSystem.NH
 
         public void CopyFile(string fromVirtualPath, string destinationVirtualPath)
         {
-            throw new NotImplementedException();
+            var source = Path.File(fromVirtualPath);
+            var target = Path.File(destinationVirtualPath);
+
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            {
+                AssertParentExists(target);
+
+                var file = GetSpecificItem(source);
+
+                var copy = new FileSystemItem
+                {
+                    Path = target,
+                    Data = file.Data,
+                    Length = file.Length,
+                    Created = DateTime.Now
+                };
+
+                _sessionProvider.OpenSession.Session.Save(copy);
+                trx.Commit();
+            }
+        }
+
+        private void AssertParentExists(Path target)
+        {
+            if (!DirectoryExists(target.Parent))
+            {
+                throw new DirectoryNotFoundException("Destination directory not found: " + target.Parent);
+            }
         }
 
         public Stream OpenFile(string virtualPath)
@@ -102,15 +139,19 @@ namespace N2.Edit.FileSystem.NH
 
         public void WriteFile(string virtualPath, Stream inputStream)
         {
+            var path = Path.File(virtualPath);
+
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             using (var buffer = new MemoryStream())
             {
+                AssertParentExists(path);
+
                 CopyStream(inputStream, buffer);
 
                 var item = new FileSystemItem
                 {
+                    Path = path,
                     Data = buffer.GetBuffer(),
-                    Path = Path.File(virtualPath),
                     Created = DateTime.Now,
                     Length = buffer.Length
                 };
@@ -154,10 +195,10 @@ namespace N2.Edit.FileSystem.NH
 
                 foreach (var item in descendants)
                 {
-                    //item.Path = item.Path.Rebase(fromVirtualPath, destinationVirtualPath);
+                    item.Path.Rebase(source, target);
                 }
 
-                //directory.Path = new Path(destinationVirtualPath);
+                directory.Path = target;
 
                 trx.Commit();
             }
@@ -184,11 +225,15 @@ namespace N2.Edit.FileSystem.NH
 
         public void CreateDirectory(string virtualPath)
         {
+            var path = Path.Directory(virtualPath);
+
             using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
             {
+                AssertParentExists(path);
+
                 var item = new FileSystemItem
                 {
-                    Path = Path.Directory(virtualPath),
+                    Path = path,
                     Created = DateTime.Now
                 };
 
