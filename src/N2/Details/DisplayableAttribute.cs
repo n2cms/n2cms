@@ -94,7 +94,7 @@ namespace N2.Details
 
 		#region IDisplayable Members
 
-		public Control AddTo(ContentItem item, string detailName, Control container)
+		public virtual Control AddTo(ContentItem item, string detailName, Control container)
 		{
 			Control displayer = (Control)Activator.CreateInstance(ControlType);
 			Utility.SetProperty(displayer, ControlPropertyName, item[detailName]);
