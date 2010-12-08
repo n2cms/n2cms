@@ -2,6 +2,7 @@ using System;
 using N2.Configuration;
 using System.Configuration;
 using System.Web.UI;
+using N2.Web;
 
 namespace N2.Edit.Settings
 {
@@ -15,7 +16,7 @@ namespace N2.Edit.Settings
 
 			foreach(SettingsEditorElement element in config.SettingsEditors)
 			{
-				Control editor = LoadControl(element.Path);
+				Control editor = LoadControl(Url.ResolveTokens(element.Path));
 				phSettings.Controls.Add(editor);
 			}
 

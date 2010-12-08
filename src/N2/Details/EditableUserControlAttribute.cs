@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit;
+using N2.Web;
 
 namespace N2.Details
 {
@@ -102,7 +103,7 @@ namespace N2.Details
 
 		protected override Control AddEditor(Control container)
 		{
-			Control c = container.Page.LoadControl(this.UserControlPath);
+			Control c = container.Page.LoadControl(Url.ResolveTokens(this.UserControlPath));
 			container.Controls.Add(c);
 			return c;
 		}
