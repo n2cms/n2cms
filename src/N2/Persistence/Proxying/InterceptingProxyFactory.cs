@@ -79,8 +79,11 @@ namespace N2.Persistence.Proxying
 						continue;
 					if (!property.IsCompilerGenerated())
 						continue;
-					var attribute = (IInterceptableProperty)property.GetCustomAttributes(typeof(IInterceptableProperty), true).FirstOrDefault();
-					if (attribute == null || attribute.PersistAs != PropertyPersistenceMode.InterceptedDetails)
+
+					var attributes = property.GetCustomAttributes(typeof(IInterceptableProperty), true).OfType<IInterceptableProperty>();
+					if (attributes.Any(a => a.PersistAs != PropertyPersistenceMode.InterceptedDetails))
+						continue;
+					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceMode.InterceptedDetails))
 						continue;
 
 					yield return property;

@@ -5,10 +5,14 @@ using System.Text;
 using NUnit.Framework;
 using N2.Persistence;
 using N2.Persistence.Proxying;
+using N2.Details;
 
 namespace N2.Tests.Persistence.NH
 {
-	#region class PropertyItemType
+	#region class PropertyItemTypes
+	public class PropertyItemInheritor1 : PropertyItemType
+	{
+	}
 	public class PropertyItemType : ContentItem
     {
         [Persistable(Length = 50)]
@@ -39,6 +43,9 @@ namespace N2.Tests.Persistence.NH
 
 		[Persistable]
 		public virtual ContentItem LinkProperty { get; set; }
+
+		[Persistable, EditableTextBox]
+		public virtual string PersistableEditableProperty { get; set; }
     }
 	#endregion
 
@@ -49,7 +56,7 @@ namespace N2.Tests.Persistence.NH
         public override void TestFixtureSetup()
         {
 			InterceptingProxyFactory proxyFactory;
-			TestSupport.Setup(out definitions, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, typeof(PropertyItemType));
+			TestSupport.Setup(out definitions, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, typeof(PropertyItemType), typeof(PropertyItemInheritor1));
         }
 
         // string
@@ -185,17 +192,32 @@ namespace N2.Tests.Persistence.NH
 
 			using (persister)
 			{
-				var linked = CreateOneItem<PropertyItemType>(0, "item1", null);
-				persister.Save(linked);
-
 				var fromDb = persister.Get<PropertyItemType>(item.ID);
-				fromDb.BooleanProperty = true;
-				fromDb.DateTimeProperty = new DateTime(2010, 06, 18, 14, 30, 00);
-				fromDb.DoubleProperty = 555.555;
-				fromDb.IntegerProperty = 555;
-				fromDb.LinkProperty = linked;
-				fromDb.ShortStringProperty = "in table text";
-				fromDb.LongStringProperty = "long table text";
+				fromDb.PersistableEditableProperty = "hello world";
+
+				Assert.That(fromDb.Details.Count, Is.EqualTo(0));
+			}
+		}
+
+		[Test]
+		public void Saving_AttachedEntity_DoesntCreateDetails()
+		{
+			var item = CreateOneItem<PropertyItemType>(0, "item2", null);
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				var fromDb = persister.Get<PropertyItemType>(item.ID);
+				fromDb.PersistableEditableProperty = "hello world";
+				persister.Save(fromDb);
+			}
+
+			using (persister)
+			{
+				var fromDb = persister.Get<PropertyItemType>(item.ID);
 
 				Assert.That(fromDb.Details.Count, Is.EqualTo(0));
 			}
@@ -213,6 +235,8 @@ namespace N2.Tests.Persistence.NH
 			item.LinkProperty = linked;
 			item.ShortStringProperty = "in table text";
 			item.LongStringProperty = "long table text";
+			item.PersistableEditableProperty = "hello world";
+
 			using (persister)
 			{
 				persister.Save(linked);
@@ -222,15 +246,26 @@ namespace N2.Tests.Persistence.NH
 			using (persister)
 			{
 				var fromDb = persister.Get<PropertyItemType>(item.ID);
-				Assert.That(fromDb.BooleanProperty, Is.EqualTo(fromDb.BooleanProperty));
-				Assert.That(fromDb.DateTimeProperty, Is.EqualTo(fromDb.DateTimeProperty));
-				Assert.That(fromDb.DoubleProperty, Is.EqualTo(fromDb.DoubleProperty));
-				Assert.That(fromDb.IntegerProperty, Is.EqualTo(fromDb.IntegerProperty));
-				Assert.That(fromDb.LinkProperty, Is.EqualTo(fromDb.LinkProperty));
-				Assert.That(fromDb.ShortStringProperty, Is.EqualTo(fromDb.ShortStringProperty));
-				Assert.That(fromDb.LongStringProperty, Is.EqualTo(fromDb.LongStringProperty));
+				Assert.That(fromDb.BooleanProperty, Is.EqualTo(item.BooleanProperty));
+				Assert.That(fromDb.DateTimeProperty, Is.EqualTo(item.DateTimeProperty));
+				Assert.That(fromDb.DoubleProperty, Is.EqualTo(item.DoubleProperty));
+				Assert.That(fromDb.IntegerProperty, Is.EqualTo(item.IntegerProperty));
+				Assert.That(fromDb.LinkProperty, Is.EqualTo(item.LinkProperty));
+				Assert.That(fromDb.ShortStringProperty, Is.EqualTo(item.ShortStringProperty));
+				Assert.That(fromDb.LongStringProperty, Is.EqualTo(item.LongStringProperty));
+				Assert.That(fromDb.PersistableEditableProperty, Is.EqualTo(item.PersistableEditableProperty));
 				Assert.That(fromDb.Details.Count, Is.EqualTo(0));
 			}
+		}
+
+		[Test]
+		public void QueryFor_MultipleTypes_WithSame_PersistableProperties()
+		{
+			var item1 = CreateOneItem<PropertyItemInheritor1>(0, "item1", null);
+			persister.Save(item1);
+			var items = finder.All.Select();
+
+			Assert.That(items.Count, Is.EqualTo(1));
 		}
 
         void SaveLoadAndCompare<T>(Func<PropertyItemType, T> get, Action<PropertyItemType> set)

@@ -279,21 +279,26 @@ namespace N2.Persistence.NH
 		{
 			Debug.Write("Adding");
 			StringBuilder mappings = new StringBuilder(mappingStartTag);
-			List<ItemDefinition> allDefinitions = definitions.GetDefinitions()
-				.OrderBy(d => Utility.GetBaseTypes(d.ItemType).Count()) // order by inheritance depth so that nh doesn't puke on yet unmapped classes
+
+			var allTypes = definitions.GetDefinitions()
+				.Select(d => d.ItemType)
+				.SelectMany(t => Utility.GetBaseTypesAndSelf(t))
+				.Distinct()
+				.OrderBy(t => Utility.GetBaseTypes(t).Count())
+				.Where(t => t.IsSubclassOf(typeof(ContentItem)))
 				.ToList();
 
-			foreach (ItemDefinition definition in allDefinitions)
+			foreach(var type in allTypes)
 			{
-				if (GeneratorHelper.IsUnsuiteableForMapping(definition.ItemType))
-					continue;
+				string discriminator = type.Name;
+				var definition = definitions.GetDefinition(type);
+				if(definition != null)
+					discriminator = definition.Discriminator ?? discriminator;
 
-				if (!AddedMappingFromHbmResource(definition, cfg))
-				{
-					string classMapping = generator.GetMapping(definition, allDefinitions);
-					mappings.Append(classMapping);
-				}
+				string classMapping = generator.GetMapping(type, type.BaseType, discriminator);
+				mappings.Append(classMapping);
 			}
+
 			mappings.Append(mappingEndTag);
 			cfg.AddXml(FormatMapping(mappings.ToString()));
 		}
@@ -311,19 +316,6 @@ namespace N2.Persistence.NH
 			{
 				cfg.AddInputStream(hbmXmlStream);
 				return true;
-			}
-		}
-
-		/// <summary>Enumerates base type chain of the supplied type.</summary>
-		/// <param name="t">The type whose base types will be enumerated.</param>
-		/// <returns>An enumerator of the supplied item and all it's base types.</returns>
-		protected static IEnumerable<Type> EnumerateBaseTypes(Type t)
-		{
-			if (t != null)
-			{
-				foreach (Type baseType in EnumerateBaseTypes(t.BaseType))
-					yield return baseType;
-				yield return t;
 			}
 		}
 

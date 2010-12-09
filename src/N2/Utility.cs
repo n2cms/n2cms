@@ -409,12 +409,23 @@ namespace N2
         public static IEnumerable<Type> GetBaseTypes(Type type)
         {
             if (type == null || type.IsInterface || type.IsValueType)
+                return new Type[0];
+
+			return GetBaseTypesAndSelf(type.BaseType);
+        }
+
+        /// <summary>Gets the base types of a given item.</summary>
+        /// <param name="type">The type whose base types to get.</param>
+        /// <returns>The base types of the type.</returns>
+        public static IEnumerable<Type> GetBaseTypesAndSelf(Type type)
+        {
+            if (type == null || type.IsInterface || type.IsValueType)
                 yield break;
             
             while (type != null)
             {
-                type = type.BaseType;
                 yield return type;
+                type = type.BaseType;
             }
         }
 

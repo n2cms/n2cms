@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using N2.Persistence.Proxying;
 
 namespace N2.Persistence
 {
@@ -21,7 +22,7 @@ namespace N2.Persistence
     /// }
     /// </example>
     [AttributeUsage(AttributeTargets.Property)]
-    public class PersistableAttribute : Attribute
+	public class PersistableAttribute : Attribute, IInterceptableProperty
     {
         /// <summary>The length of this column (usually for string properties)</summary>
 		public int Length { get; set; }
@@ -50,5 +51,19 @@ namespace N2.Persistence
 				format = relationFormat;
 			return string.Format(format, info.Name, columnName, typeName, length);
         }
-    }
+
+		#region IInterceptableProperty Members
+
+		PropertyPersistenceMode IInterceptableProperty.PersistAs
+		{
+			get { return PropertyPersistenceMode.Ignore; }
+		}
+
+		object IInterceptableProperty.DefaultValue
+		{
+			get { return null; }
+		}
+
+		#endregion
+	}
 }

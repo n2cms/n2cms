@@ -586,7 +586,6 @@
     <Compile Include="Persistence\NH\Finder\PropertyIsNullHqlProvider.cs" />
     <Compile Include="Persistence\PersistableAttribute.cs" />
     <Compile Include="Persistence\NH\ClassMappingGenerator.cs" />
-    <Compile Include="Persistence\NH\GeneratorHelper.cs" />
     <Compile Include="Persistence\NotifiableItemEventArgs.cs" />
     <Compile Include="Persistence\NH\TrailTracker.cs" />
     <Compile Include="Persistence\NH\SessionContext.cs" />
@@ -814,7 +813,9 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persistence\NH\Mappings\Default.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NH\Mappings\Default.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
