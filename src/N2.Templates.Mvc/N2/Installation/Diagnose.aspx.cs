@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.UI;
@@ -24,6 +25,7 @@ namespace N2.Edit.Install
 	public partial class Diagnose : Page
 	{
 		protected IHost host;
+		protected string[] recentChanges = new string[0];
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -63,6 +65,15 @@ namespace N2.Edit.Install
 			catch (Exception ex)
 			{
 				lblStartNode.Text = formatException(ex);
+			}
+
+			try
+			{
+				recentChanges = N2.Find.Items.All.MaxResults(10).OrderBy.Updated.Desc.Select().Select(i => i.ID + ": " + i.Title + " (" + i.Updated + ")").ToArray();
+			}
+			catch (Exception ex)
+			{
+				lblChanges.Text = formatException(ex);
 			}
 
 			try
@@ -208,7 +219,7 @@ namespace N2.Edit.Install
 		private string formatException(Exception ex)
 		{
 			return
-				string.Format("Error while performing the operation.<textarea>{0}\n\n{1}</textarea>", ex.Message, ex.StackTrace);
+				string.Format("<textarea>{0}\n\n{1}</textarea>", ex.Message, ex.StackTrace);
 		}
 	}
 }
