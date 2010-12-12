@@ -13,5 +13,5 @@
 	</div>
 	<hr />
 	<%= N2.Web.Link.To(Model.Back).Text("Back").Class("back") %>
-	<%= Html.ActionLink<MvcTest.Controllers.NewsController>(c => c.Comment(), "Comment", new {Class = "comment"}) %>
+	<%= Html.ActionLink("Comment", "Comment", new { @class = "comment" }) %>
 </asp:Content>	
