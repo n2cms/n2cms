@@ -15,8 +15,15 @@ namespace N2.Edit.FileSystem.Items
     [RestrictParents(typeof(AbstractDirectory))]
     [Editables.EditableUpload]
 	[N2.Web.Template("info", "{ManagementUrl}/Files/FileSystem/File.aspx")]
-    public class File : AbstractNode, IActiveContent
+    public class File : AbstractNode, IActiveContent, IDependentEntity<IEditUrlManager>
     {
+		IEditUrlManager managementPaths;
+
+		protected IEditUrlManager ManagementPaths
+		{
+			get { return managementPaths ?? Context.Current.ManagementPaths; }
+		}
+
 		public File()
 		{
 		}
@@ -105,6 +112,14 @@ namespace N2.Edit.FileSystem.Items
 					case ".doc":
 					case ".docx":
 						return IconPath("page_white_word");
+					case ".mpg":
+					case ".mpeg":
+					case ".avi":
+					case ".wmv":
+					case ".flv":
+					case ".mp4":
+					case ".mov":
+						return IconPath("page_white_dvd");
 					default:
 						return IconPath("page_white");
 				}
@@ -113,7 +128,7 @@ namespace N2.Edit.FileSystem.Items
 
 		private string IconPath(string iconName)
 		{
-			return Context.Current.ManagementPaths.ResolveResourceUrl(string.Format("{{ManagementUrl}}/Resources/icons/{0}.png", iconName));
+			return ManagementPaths.ResolveResourceUrl(string.Format("{{ManagementUrl}}/Resources/icons/{0}.png", iconName));
 		}
 
 		public bool Exists
@@ -208,5 +223,14 @@ namespace N2.Edit.FileSystem.Items
 		{
 			this.url = null;
 		}
+
+		#region IDependentEntity<IEditUrlManager> Members
+
+		public void Set(IEditUrlManager dependency)
+		{
+			managementPaths = dependency;
+		}
+
+		#endregion
 	}
 }
