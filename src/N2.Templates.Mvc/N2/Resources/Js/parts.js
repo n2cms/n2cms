@@ -1,5 +1,11 @@
 ﻿(function($) {
 	var isDragging = false;
+	var dialog = null;
+	var dialogOptions = {
+		modal: true,
+		width: 800,
+		height:600,
+	};
 
 	window.n2DragDrop = function(urls, messages) {
 		this.urls = $.extend({
@@ -18,8 +24,33 @@
 	window.n2DragDrop.prototype = {
 
 		init: function() {
+		var self = this;
 			this.makeDraggable();
 			$(document.body).addClass("dragDrop");
+			$('.titleBar a.command').live('click', function (e) {
+				e.preventDefault();
+				self.showDialog($(this).attr('href'));
+			});
+		},
+
+		showDialog: function(href){
+			window.scrollTop = 0;
+			if (dialog) dialog.remove();
+			dialog = $('<div id="dialog" />').hide();
+			$(document).append(dialog);
+			var iframe = document.createElement('iframe');
+			dialog.append(iframe);
+			iframe.src = href;
+			$(iframe).load(function(){
+				var doc = $(iframe.contentWindow.document);
+				doc.find('form').submit(function(){
+					$(iframe).load(function(){dialog.dialog('close');});
+				});
+				doc.find('#toolbar a.cancel').click(function(){
+					dialog.dialog('close');
+				});
+			});
+			dialog.dialog(dialogOptions);
 		},
 
 		makeDraggable: function() {
@@ -147,24 +178,27 @@
 		},
 
 		process: function(command) {
+			var self = this;
 			if (command.item)
 				command.action = command.ctrlKey ? "copy" : "move";
 			else
 				command.action = "create";
 			command.random = Math.random();
 
-			var url = this.urls[command.action];
+			var url = self.urls[command.action];
 
 			var reloaded = false;
 			$.getJSON(url, command, function(data) {
 				reloaded = true;
-				if (data.redirect)
+				if (data.redirect && command.action == "create")
+					self.showDialog(data.redirect);
+				else if(data.redirect)
 					window.location = data.redirect;
 				else
 					window.location.reload();
 			});
 			
-			// hack: why no succes??
+			// hack: why no success??
 			setTimeout(function() {
 				if (!reloaded) 
 					window.location.reload();
