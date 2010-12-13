@@ -7,7 +7,7 @@
 	/// </summary>
 	public interface IDocumentBaseSource
 	{
-		/// <summary>An url with a trailing slash used to prepend relative urls.</summary>
+		/// <summary>An url with a trailing slash used to prepend relative managementUrls.</summary>
 		string BaseUrl { get; }
 	}
 }

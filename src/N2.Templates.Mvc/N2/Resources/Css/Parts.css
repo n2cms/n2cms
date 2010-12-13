@@ -31,13 +31,13 @@ div:hover.zoneItem .titleBar .command   { display:inline;}
 
 .dropPoint .dpLabel { font:10px Arial, Sans-Serif; padding:0 0 0 4px; color:#888; font-weight:bold; }
 .dropPoint .titleBar { display:none; }
-.dropPoint .dropping { position:absolute; z-index:1000; top:8px; right:8px; height:16px; width:16px; background:transparent url(../../Resources/Img/ajax-loader.gif) no-repeat 50% 50%; }
+.dropPoint .dropping { position:absolute; z-index:980; top:8px; right:8px; height:16px; width:16px; background:transparent url(../../Resources/Img/ajax-loader.gif) no-repeat 50% 50%; }
 :hover.dropPoint { border-color:#d1d4d3; background-position:3px 0; }
 
 .droppable-active { background:url(../../Resources/Img/shading_green.png); padding:0; }
 .droppable-hover { background-color:#8e8; border:solid 2px #8e8; margin-top:-1px; margin-left:-1px; }
 
-.sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:6666; border:none 1px #ccb; border-style:none solid solid none;
+.sc { position:fixed; _position:absolute; top:-200px; left:-200px; z-index:990; border:none 1px #ccb; border-style:none solid solid none;
     background:#fff none repeat-x scroll 0 0; box-shadow: #666 4px 4px 10px -2px; -moz-box-shadow: #666 4px 4px 10px -2px;
 }
     .sc .scContent { }

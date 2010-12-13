@@ -712,7 +712,6 @@
     <Compile Include="Web\UI\WebControls\Repeater.cs" />
     <Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
     <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
-    <Compile Include="Web\UI\WebControls\DropPoint.cs" />
     <Compile Include="Web\UI\WebControls\HasValue.cs" />
     <Compile Include="Web\UI\WebControls\Li.cs" />
     <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />

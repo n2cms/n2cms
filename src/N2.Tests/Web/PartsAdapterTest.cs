@@ -65,7 +65,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanResolve_ZoneAdapter()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem.GetContentType());
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
 			Assert.That(controller, Is.TypeOf(typeof(PageZoneAdapter)));
 		}
@@ -73,7 +73,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void Retrieves_ItemsInZone()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(customItem.GetContentType());
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(customItem);
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(customItem, "Zone1");
 
@@ -83,7 +83,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanFilter_ItemsInZone()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem.GetContentType());
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneNone");
 
@@ -93,7 +93,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanAddTo_ItemsInZone()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem.GetContentType());
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
 			IEnumerable<ContentItem> items = controller.GetItemsInZone(pageItem, "ZoneAll");
 
@@ -103,7 +103,7 @@ namespace N2.Tests.Web
 		[Test]
 		public void CanResolve_PossibleChildren()
 		{
-			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem.GetContentType());
+			PartsAdapter controller = dispatcher.ResolveAdapter<PartsAdapter>(pageItem);
 
 			IEnumerable<ItemDefinition> items = controller.GetAllowedDefinitions(pageItem, "Zone1", null);
 

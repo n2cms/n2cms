@@ -4,15 +4,17 @@ using System;
 
 namespace N2.Engine
 {
+	/// <summary>
+	/// Resolves content adapter for a given type at runtime.
+	/// </summary>
 	public interface IContentAdapterProvider
-	{		
-		/// <summary>Resolves the controller for the current Url.</summary>
-		/// <returns>A suitable controller for the given Url.</returns>
+	{
+		/// <summary>Resolves the adapter for the current type.</summary>
+		/// <returns>A suitable adapter for the given type.</returns>
 		T ResolveAdapter<T>(Type contentType) where T : AbstractContentAdapter;
 
-		/// <summary>Resolves the controller for the current Url.</summary>
-		/// <returns>A suitable controller for the given Url.</returns>
-		[Obsolete("Use T ResolveAdapter<T>(ContentItem item)", true)]
-		T ResolveAdapter<T>(PathData path) where T : AbstractContentAdapter;
+		/// <summary>Resolves the adapter for the current item.</summary>
+		/// <returns>A suitable adapter for the given item.</returns>
+		T ResolveAdapter<T>(ContentItem item) where T : AbstractContentAdapter;
 	}
 }

@@ -32,6 +32,7 @@ namespace N2.Web.UI.WebControls
 			set { currentItem = value; }
 		}
 
+		[Obsolete("Don't use", true)]
 		public ItemDefinition Definition
 		{
 			get { return definition ?? (definition = N2.Context.Definitions.GetDefinition(CurrentItem.GetContentType())); }
@@ -43,7 +44,7 @@ namespace N2.Web.UI.WebControls
 
 			if (ControlPanel.GetState(Page.User, Page.Request.QueryString) == ControlPanelState.DragDrop)
 			{
-				PartUtilities.WriteTitleBar(writer, e.ManagementPaths, e.Resolve<IContentAdapterProvider>(), Definition, CurrentItem);
+				e.Resolve<PartUtilities>().WriteTitleBar(writer, CurrentItem, Page.Request.RawUrl);
 			}
 		}
 	}

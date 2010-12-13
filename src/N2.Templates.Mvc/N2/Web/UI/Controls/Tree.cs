@@ -70,13 +70,13 @@ namespace N2.Edit.Web.UI.Controls
 
 			if (Nodes == null)
 				Nodes = new BranchHierarchyBuilder(SelectedItem, RootNode, true)
-					.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item.GetContentType()).GetChildren(item, Interfaces.Managing))
+					.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing))
 					.Build();
 
 			var tree = new N2.Web.Tree(Nodes)
 				.OpenTo(SelectedItem)
 				.Filters(Filter)
-				.LinkProvider(item => BuildLink(adapters.ResolveAdapter<NodeAdapter>(item.GetContentType()), item, item.Path == SelectedItem.Path, Target))
+				.LinkProvider(item => BuildLink(adapters.ResolveAdapter<NodeAdapter>(item), item, item.Path == SelectedItem.Path, Target))
 				.ToControl();
 
 			AppendExpanderNodeRecursive(tree, Filter, Target, adapters);
@@ -95,7 +95,7 @@ namespace N2.Edit.Web.UI.Controls
 				{
 					AppendExpanderNodeRecursive(child, filter, target, adapters);
 				}
-				if (tn.Controls.Count == 0 && adapters.ResolveAdapter<NodeAdapter>(tn.Node.GetContentType()).HasChildren(tn.Node, filter))
+				if (tn.Controls.Count == 0 && adapters.ResolveAdapter<NodeAdapter>(tn.Node).HasChildren(tn.Node, filter))
 				{
 					AppendExpanderNode(tn, target);
 				}

@@ -497,7 +497,7 @@ namespace N2
 		/// <returns>The most relevant adapter.</returns>
 		internal static T GetContentAdapter<T>(this IEngine engine, ContentItem item) where T:AbstractContentAdapter
 		{
-			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item.GetContentType());
+			return engine.Resolve<IContentAdapterProvider>().ResolveAdapter<T>(item);
 		}
 
 		/// <summary>Tries to retrieve the engine provided by an accessor on the page, or falls back to the global singleton.</summary>

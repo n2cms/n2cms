@@ -1,4 +1,5 @@
-﻿- Updated jquery to 1.4.4
+﻿- Pulled Steve Mason's modal part editing
+- Updated jquery to 1.4.4
 - Fixed no MVC 404 (ThreadId=237393)
 - Tinymce config objects (ThreadId=237328)
 - Added [DisplayableHeading]

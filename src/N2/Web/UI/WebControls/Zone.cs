@@ -29,7 +29,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>The content adapter related to the current page item.</summary>
 		protected virtual PartsAdapter PartsAdapter
 		{
-			get { return partsAdapter ?? (partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem.GetContentType())); }
+			get { return partsAdapter ?? (partsAdapter = Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem)); }
 		}
 
 		/// <summary>Gets or sets the zone from which to featch items.</summary>

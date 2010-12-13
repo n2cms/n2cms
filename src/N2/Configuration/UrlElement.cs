@@ -4,7 +4,7 @@ using System.Configuration;
 namespace N2.Configuration
 {
 	/// <summary>
-	/// Configuration related to urls and url parsing.
+	/// Configuration related to managementUrls and url parsing.
 	/// </summary>
 	public class UrlElement : ConfigurationElement
 	{

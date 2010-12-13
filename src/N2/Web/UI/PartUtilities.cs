@@ -10,12 +10,22 @@ namespace N2.Web.UI
 	/// <summary>
 	/// Helper methods for drag'n'drop support.
 	/// </summary>
-	public static class PartUtilities
+	[Service]
+	public class PartUtilities
 	{
 		public const string TypeAttribute = "data-type";
 		public const string PathAttribute = "data-item";
 		public const string ZoneAttribute = "data-zone";
 		public const string AllowedAttribute = "data-allowed";
+
+		IEditUrlManager managementUrls;
+		IDefinitionManager definitions;
+
+		public PartUtilities(IEditUrlManager managementUrls, IDefinitionManager definitions)
+		{
+			this.managementUrls = managementUrls;
+			this.definitions = definitions;
+		}
 
 		public static string GetAllowedNames(string zoneName, IEnumerable<ItemDefinition> definitions)
 		{
@@ -27,27 +37,24 @@ namespace N2.Web.UI
 			return string.Join(",", allowedDefinitions.ToArray());
 		}
 
-		[Obsolete("Use overload with adapters parameter.")]
-		public static void WriteTitleBar(TextWriter writer, IEditUrlManager editUrlManager, ItemDefinition definition,
-		                                 ContentItem item)
+		[Obsolete("Use overload with returnUrl parameter.", true)]
+		public static void WriteTitleBar(TextWriter writer, IEditUrlManager editUrlManager, IContentAdapterProvider adapters, ItemDefinition definition, ContentItem item)
 		{
-			WriteTitleBar(writer, editUrlManager, Context.Current.Resolve<IContentAdapterProvider>(), definition, item);
+			Url returnUrl = Url.Parse(adapters.ResolveAdapter<NodeAdapter>(item).GetPreviewUrl(item)).AppendQuery("edit", "drag");
+			
+			N2.Context.Current.Resolve<PartUtilities>().WriteTitleBar(writer, item, returnUrl);
 		}
 
-		public static void WriteTitleBar(TextWriter writer, IEditUrlManager editUrlManager, IContentAdapterProvider adapters,
-		                                 ItemDefinition definition, ContentItem item)
+		public void WriteTitleBar(TextWriter writer, ContentItem item, string returnUrl)
 		{
+			var definition = definitions.GetDefinition(item.GetContentType());
+
 			writer.Write("<div class='titleBar ");
 			writer.Write(definition.Discriminator);
 			writer.Write("'>");
 
-			Url returnUrl =
-				Url.Parse(adapters.ResolveAdapter<NodeAdapter>(item.GetContentType()).GetPreviewUrl(item)).AppendQuery("edit",
-				                                                                                                       "drag");
-			WriteCommand(writer, "Edit part", "command edit",
-			             Url.Parse(editUrlManager.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
-			WriteCommand(writer, "Delete part", "command delete",
-			             Url.Parse(editUrlManager.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
+			WriteCommand(writer, "Edit part", "command edit", Url.Parse(managementUrls.GetEditExistingItemUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
+			WriteCommand(writer, "Delete part", "command delete", Url.Parse(managementUrls.GetDeleteUrl(item)).AppendQuery("returnUrl", returnUrl).Encode());
 			WriteTitle(writer, definition);
 
 			writer.Write("</div>");

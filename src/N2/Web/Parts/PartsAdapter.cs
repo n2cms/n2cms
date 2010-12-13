@@ -95,7 +95,7 @@ namespace N2.Web.Parts
 		/// <param name="container">The container control to host the part user interface.</param>
 		public virtual Control AddChildPart(ContentItem item, Control container)
 		{
-			var adapter = Adapters.ResolveAdapter<PartsAdapter>(item.GetContentType());
+			var adapter = Adapters.ResolveAdapter<PartsAdapter>(item);
 			return adapter.AddTo(item, container);
 		}
 

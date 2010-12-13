@@ -110,7 +110,7 @@ namespace N2.Engine
 			get { return Resolve<ISecurityManager>(); }
 		}
 
-		/// <summary>Gets the url parser responsible of mapping urls to items and back again.</summary>
+		/// <summary>Gets the url parser responsible of mapping managementUrls to items and back again.</summary>
 		public IUrlParser UrlParser
 		{
 			get { return Resolve<IUrlParser>(); }

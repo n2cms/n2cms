@@ -28,11 +28,11 @@ namespace N2.Edit.Navigation
 			ItemFilter filter = Engine.EditManager.GetEditorFilter(context.User);
 			IContentAdapterProvider adapters = Engine.Resolve<IContentAdapterProvider>();
 			var root = new TreeHierarchyBuilder(selectedNode, 2)
-				.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item.GetContentType()).GetChildren(item, Interfaces.Managing))
+				.Children((item) => adapters.ResolveAdapter<NodeAdapter>(item).GetChildren(item, Interfaces.Managing))
 				.Build();
 
 			TreeNode tn = (TreeNode)new N2.Web.Tree(root)
-				.LinkProvider(node => Web.UI.Controls.Tree.BuildLink(adapters.ResolveAdapter<NodeAdapter>(node.GetContentType()), node, node.Path == selectedNode.Path, target))
+				.LinkProvider(node => Web.UI.Controls.Tree.BuildLink(adapters.ResolveAdapter<NodeAdapter>(node), node, node.Path == selectedNode.Path, target))
 				.Filters(filter)
 				.ToControl();
 

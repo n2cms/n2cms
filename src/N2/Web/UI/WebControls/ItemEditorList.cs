@@ -98,7 +98,7 @@ namespace N2.Web.UI.WebControls
 			{
 				return partsAdapter ??
 				       (partsAdapter =
-				        Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem.GetContentType()));
+				        Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(ParentItem));
 			}
 			set { partsAdapter = value; }
 		}
