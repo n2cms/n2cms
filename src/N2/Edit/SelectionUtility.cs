@@ -72,6 +72,8 @@ namespace N2.Edit
 			string location = request.QueryString["location"];
 			if (string.IsNullOrEmpty(location))
 				return null;
+			if(Url.Parse(selectedUrl).IsAbsolute)
+				return null;
 
 			return engine.Resolve<Navigator>().Navigate(Url.ToRelative(selectedUrl).TrimStart('~'));
 		}
