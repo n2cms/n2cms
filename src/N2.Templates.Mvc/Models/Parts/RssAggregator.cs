@@ -23,7 +23,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		[EditableTextBox("Rss Urls", 120, Rows = 3, TextMode = TextBoxMode.MultiLine)]
 		public virtual string RssUrls
 		{
-			get { return (string)(GetDetail("RssUrl")) ?? GetDetail("RssUrls", ""); }
+			get { return GetDetail("RssUrls", GetDetail("RssUrl", "")); }
 			set { SetDetail("RssUrls", value, string.Empty); }
 		}
 

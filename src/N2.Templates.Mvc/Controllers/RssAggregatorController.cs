@@ -87,9 +87,10 @@ namespace N2.Templates.Mvc.Controllers
 						return formatter.Feed.Items.Select(i => new RssAggregatorModel.RssItem
 						{
 							Title = i.Title.Text,
-							Introduction = i.Summary.Text,
+							Introduction = i.Summary != null ? i.Summary.Text : "",
 							Published = i.PublishDate,
-							Url = i.Links.Select(l => l.Uri.ToString()).FirstOrDefault()
+							Url = i.Links.Where(l => l.MediaType == "text/html").Select(l => l.Uri.ToString()).FirstOrDefault() 
+								?? i.Links.Select(l => l.Uri.ToString()).FirstOrDefault()
 						});
 					}
 				}
