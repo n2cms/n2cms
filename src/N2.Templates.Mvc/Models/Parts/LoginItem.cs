@@ -33,7 +33,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		[EditableTextBox("Logout Text", 120)]
 		public virtual string LogoutText
 		{
-			get { return (string) (GetDetail("LogoutText") ?? string.Empty); }
+			get { return GetDetail("LogoutText", "Logout"); }
 			set { SetDetail("LogoutText", value, string.Empty); }
 		}
 
