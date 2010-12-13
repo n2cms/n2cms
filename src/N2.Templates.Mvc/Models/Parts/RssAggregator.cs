@@ -1,6 +1,7 @@
 using N2;
 using N2.Details;
 using N2.Integrity;
+using System.Web.UI.WebControls;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
@@ -19,11 +20,11 @@ namespace N2.Templates.Mvc.Models.Parts
 			set { SetDetail("Text", value, string.Empty); }
 		}
 
-		[EditableUrl("Rss Url", 120)]
-		public virtual string RssUrl
+		[EditableTextBox("Rss Urls", 120, Rows = 3, TextMode = TextBoxMode.MultiLine)]
+		public virtual string RssUrls
 		{
-			get { return (string) (GetDetail("RssUrl") ?? string.Empty); }
-			set { SetDetail("RssUrl", value, string.Empty); }
+			get { return (string)(GetDetail("RssUrl")) ?? GetDetail("RssUrls", ""); }
+			set { SetDetail("RssUrls", value, string.Empty); }
 		}
 
 		[EditableTextBox("Max Count", 130)]

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Security;
 using System.Web.Mvc;
@@ -7,69 +8,116 @@ using System.Xml.XPath;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
+using N2.Web.UI;
+using System.ServiceModel.Syndication;
+using System.Diagnostics;
+using System.Xml.Linq;
+using System.IO;
 
 namespace N2.Templates.Mvc.Controllers
 {
-	[Controls(typeof (RssAggregator))]
+	[Controls(typeof(RssAggregator))]
 	public class RssAggregatorController : TemplatesControllerBase<RssAggregator>
 	{
 		private const int ExpirationTime = 1;
 
 		public override ActionResult Index()
 		{
+			RssAggregatorModel.RssItem[] items = GetItemsFromCache();
+			if (items != null)
+				return PartialView("List", new RssAggregatorModel(CurrentItem, items));
+
 			return PartialView(CurrentItem);
 		}
 
-		[OutputCache(Duration = ExpirationTime, VaryByParam = "*")]
 		public ActionResult List()
 		{
-			return View(new RssAggregatorModel(CurrentItem, GetNewsItems(CurrentItem.RssUrl)));
+			RssAggregatorModel.RssItem[] items = GetItemsFromAllHosts();
+			return PartialView(new RssAggregatorModel(CurrentItem, items));
+		}
+
+		private RssAggregatorModel.RssItem[] GetItemsFromAllHosts()
+		{
+			RssAggregatorModel.RssItem[] items = GetItemsFromCache();
+			if (items == null)
+			{
+				items = CurrentItem.RssUrls
+					.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+					.SelectMany(u => GetNewsItems(u))
+					.Distinct()
+					.OrderBy(ri => ri.Published)
+					.Take(CurrentItem.MaxCount)
+					.ToArray();
+
+				HttpContext.Cache.Add(CacheKey,
+					items,
+					new ContentCacheDependency(Engine.Persister),
+					DateTime.Now.AddMinutes(1),
+					TimeSpan.Zero,
+					System.Web.Caching.CacheItemPriority.Normal,
+					null);
+			}
+			return items;
+		}
+
+		private RssAggregatorModel.RssItem[] GetItemsFromCache()
+		{
+			return HttpContext.Cache[CacheKey] as RssAggregatorModel.RssItem[];
+		}
+
+		private string CacheKey
+		{
+			get { return "RssAggregator" + CurrentItem.ID; }
 		}
 
 		private IEnumerable<RssAggregatorModel.RssItem> GetNewsItems(string url)
 		{
 			try
 			{
-				var news = new List<RssAggregatorModel.RssItem>();
-				using (XmlReader reader = XmlReader.Create(url))
+				var xml = XDocument.Load(url).ToString();
+				
+				foreach (var formatter in new SyndicationFeedFormatter[] { new Rss20FeedFormatter(), new Atom10FeedFormatter() })
 				{
-					var doc = new XmlDocument();
-					doc.Load(reader);
-					XPathNavigator navigator = doc.CreateNavigator();
-					foreach (XPathNavigator item in navigator.Select("//item"))
+					using (var reader = new XmlTextReader(new StringReader(xml)))
 					{
-						string title = GetValue(item, "title");
-						string link = GetValue(item, "link");
-						string description = GetValue(item, "description");
-						string pubDate = GetValue(item, "pubDate");
-						var rss = new RssAggregatorModel.RssItem
-						          	{
-						          		Title = title,
-						          		Url = link,
-						          		Introduction = description,
-						          		Published = pubDate
-						          	};
+						if(!formatter.CanRead(reader))
+							continue;
 
-						news.Add(rss);
-						if (news.Count >= CurrentItem.MaxCount)
-							break;
+						formatter.ReadFrom(reader);
+						return formatter.Feed.Items.Select(i => new RssAggregatorModel.RssItem
+						{
+							Title = i.Title.Text,
+							Introduction = i.Summary.Text,
+							Published = i.PublishDate,
+							Url = i.Links.Select(l => l.Uri.ToString()).FirstOrDefault()
+						});
 					}
 				}
-				return news;
 			}
-			catch(SecurityException)
+			catch (SecurityException)
 			{
 				// Cannot use this in Medium Trust
-				return new RssAggregatorModel.RssItem[]
-				       	{
-				       		new RssAggregatorModel.RssItem()
-				       			{
-				       				Title = "Cannot load RSS Feed",
-									Url = "#",
-									Introduction = "Could not load RSS feed because security settings would not allow it",
-				       			}, 
-			};
+				return GetCannotLoadItem("Could not load RSS feed because security settings would not allow it");
 			}
+			catch(Exception ex)
+			{
+				Trace.WriteLine(ex);
+			}
+			return GetCannotLoadItem("");
+		}
+
+		private static IEnumerable<RssAggregatorModel.RssItem> GetCannotLoadItem(string reason)
+		{
+			return new RssAggregatorModel.RssItem[]
+				{
+				    new RssAggregatorModel.RssItem()
+				       	{
+				       		Title = "Cannot load RSS Feed",
+							Published = DateTime.Now,
+							Url = "#",
+							Introduction = reason,
+				       	}, 
+				};
 		}
 
 		private static string GetValue(XPathNavigator item, string xpath)
