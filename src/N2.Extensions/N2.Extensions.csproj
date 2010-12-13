@@ -113,6 +113,7 @@
     <Compile Include="Web\Mvc\NonContentConstraint.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
     <Compile Include="Web\Mvc\RouteExtensions.cs" />
+    <Compile Include="Web\Mvc\ServiceLocatingControllerFactory.cs" />
     <Compile Include="Web\Mvc\Traversal.cs" />
     <Compile Include="Web\Mvc\ContentRoute.cs" />
     <Compile Include="Web\Mvc\ContentViewPage.cs">
@@ -138,8 +139,6 @@
     <Compile Include="Web\Mvc\IItemContainer.cs" />
     <Compile Include="Web\Mvc\MvcEngine.cs" />
     <Compile Include="Web\Mvc\MvcConventionTemplateAttribute.cs" />
-    <Compile Include="Web\Mvc\N2ControllerFactory.cs" />
-    <Compile Include="Web\Mvc\N2ViewEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Mvc\Obsolete\EditableDisplayableExtensions.cs" />
     <Compile Include="Web\Mvc\Obsolete\ObsoleteExtensions.cs" />

@@ -1,4 +1,5 @@
-﻿- Tinymce config objects (ThreadId=237328)
+﻿- Fixed no MVC 404 (ThreadId=237393)
+- Tinymce config objects (ThreadId=237328)
 - Added [DisplayableHeading]
 - Moved all types from N2.Security to N2.Management
 - Permission inheritance for other permissions than read (ThreadId=237118)
