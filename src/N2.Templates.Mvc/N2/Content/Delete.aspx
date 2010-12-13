@@ -6,7 +6,7 @@
 </asp:Content>
 <asp:Content ID="ContentToolbar" ContentPlaceHolderID="Toolbar" runat="server">
     <asp:LinkButton ID="btnDelete" runat="server" OnClick="OnDeleteClick" CssClass="command" meta:resourceKey="btnDelete">delete</asp:LinkButton>
-    <asp:HyperLink runat="server" ID="hlReferencingItems" CssClass="cancel command" Text="List Referencing Items" meta:resourceKey="hlReferencingItems" />
+    <asp:HyperLink runat="server" ID="hlReferencingItems" CssClass="plain command" Text="List Referencing Items" meta:resourceKey="hlReferencingItems" />
     <edit:CancelLink ID="hlCancel" runat="server" meta:resourceKey="hlCancel">cancel</edit:CancelLink>
 </asp:Content>
 <asp:Content ID="ContentContent" ContentPlaceHolderID="Content" runat="server">
