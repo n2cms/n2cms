@@ -12,7 +12,7 @@ namespace N2.Edit.FileSystem.NH
     {
         private readonly ISessionProvider _sessionProvider;
 
-        public class DatabaseFileSystemStream : MemoryStream
+        private class DatabaseFileSystemStream : MemoryStream
         {
             private readonly FileSystemItem attachedTo;
             private readonly DatabaseFileSystem fileSys;
@@ -213,9 +213,7 @@ namespace N2.Edit.FileSystem.NH
                 CreateFile(path, null);
             }
             var blob = GetSpecificItem(path);
-            
-            // Important: don't initialize the Memory stream with a byte[] in the ctor
-            // http://weblogs.asp.net/ashicmahtab/archive/2008/08/25/memorystream-not-expandable-invalid-operation-exception.aspx
+
             var stream = new DatabaseFileSystemStream(blob, this, blob.Data);
             return stream;
         }
@@ -237,7 +235,7 @@ namespace N2.Edit.FileSystem.NH
             }
         }
 
-        protected void UpdateFile(Path virtualPath, Stream inputStream)
+        private void UpdateFile(Path virtualPath, Stream inputStream)
         {
             var file = GetSpecificItem(virtualPath);
                 
