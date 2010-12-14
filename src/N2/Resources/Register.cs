@@ -12,7 +12,7 @@ namespace N2.Resources
 	/// </summary>
 	public static class Register
 	{
-		public const string JQueryVersion = "1.4.2";
+		public const string JQueryVersion = "1.4.4";
 
 		/// <summary>Register an embedded style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>

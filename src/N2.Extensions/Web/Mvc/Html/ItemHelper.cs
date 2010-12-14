@@ -32,7 +32,7 @@ namespace N2.Web.Mvc.Html
 			get
 			{
 				if (partsAdapter == null)
-					partsAdapter = Adapters.ResolveAdapter<PartsAdapter>(CurrentItem != null ? CurrentItem.GetContentType() : typeof(ContentItem));
+					partsAdapter = Adapters.ResolveAdapter<PartsAdapter>(CurrentItem);
 				return partsAdapter;
 			}
 		}
@@ -43,17 +43,18 @@ namespace N2.Web.Mvc.Html
 			get
 			{
 				if (mvcAdapter == null)
-					mvcAdapter = GetMvcAdapterFor(CurrentItem != null ? CurrentItem.GetContentType() : typeof(ContentItem));
+					mvcAdapter = Adapters.ResolveAdapter<MvcAdapter>(CurrentItem);
 				return mvcAdapter;
 			}
 		}
 
+		[Obsolete]
 		protected virtual MvcAdapter GetMvcAdapterFor(Type contentType)
 		{
 			return Adapters.ResolveAdapter<MvcAdapter>(contentType);
 		}
 
-		private IContentAdapterProvider Adapters
+		protected IContentAdapterProvider Adapters
 		{
 			get { return Html.ResolveService<IContentAdapterProvider>(); }
 		}

@@ -6,7 +6,7 @@ using System.Text;
 namespace N2.Details
 {
 	/// <summary>
-	/// Tells the system when to make urls in a detail relative or absolute.
+	/// Tells the system when to make managementUrls in a detail relative or absolute.
 	/// </summary>
 	public enum RelativityMode
 	{

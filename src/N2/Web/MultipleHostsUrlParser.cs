@@ -6,7 +6,7 @@ using N2.Configuration;
 namespace N2.Web
 {
 	/// <summary>
-	/// Parses urls in a multiple host environment.
+	/// Parses managementUrls in a multiple host environment.
 	/// </summary>
 	public class MultipleSitesParser : UrlParser
 	{

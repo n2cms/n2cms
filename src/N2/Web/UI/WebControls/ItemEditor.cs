@@ -52,7 +52,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>The content adapter related to the current page item.</summary>
 		protected virtual EditableAdapter EditAdapter
 		{
-			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<EditableAdapter>(CurrentItem.GetContentType()); }
+			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<EditableAdapter>(CurrentItem); }
 		}
 
 		/// <summary>Gets a dictionary of editor controls added this control.</summary>

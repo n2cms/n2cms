@@ -7,7 +7,7 @@ using N2.Configuration;
 namespace N2.Web
 {
 	/// <summary>
-	/// Creates unique urls for items and finds the corresponding item from
+	/// Creates unique managementUrls for items and finds the corresponding item from
 	/// such an url.
 	/// </summary>
 	public class UrlParser : IUrlParser

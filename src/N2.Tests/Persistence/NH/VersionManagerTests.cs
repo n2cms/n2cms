@@ -7,7 +7,7 @@ using N2.Persistence.NH;
 
 namespace N2.Tests.Persistence.NH
 {
-	[TestFixture]
+	[TestFixture, Category("Integration")]
 	public class VersionManagerTests : DatabasePreparingBase
 	{
 		ContentPersister persister;

@@ -6,7 +6,7 @@ namespace N2.Templates.Items
 	[WithEditableTitle("Title", 10)]
 	public abstract class SidebarItem : AbstractItem
 	{
-		[Displayable(typeof(H4), "Text")]
+		[DisplayableHeading(4)]
 		public override string Title
 		{
 			get { return base.Title; } 

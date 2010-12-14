@@ -38,7 +38,7 @@ namespace N2.Web
 		/// <param name="errors"></param>
 		/// <param name="editConfig"></param>
 		/// <param name="hostConfig"></param>
-		/// <param name="editUrlManager"></param>
+		/// <param name="managementUrls"></param>
 		public RequestLifeCycleHandler(IWebContext webContext, EventBroker broker, InstallationManager installer,
 									   RequestPathProvider dispatcher, IContentAdapterProvider adapters, IErrorHandler errors,
 									   IEditUrlManager editUrlManager, EditSection editConfig, HostSection hostConfig)
@@ -104,7 +104,7 @@ namespace N2.Web
 
 			if (isLegacyRewriteMode && data != null && !data.IsEmpty())
 			{
-				var adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage.GetContentType());
+				var adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage);
 				adapter.RewriteRequest(data, rewriteMethod);
 			}
 		}
@@ -113,7 +113,7 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath != null && !webContext.CurrentPath.IsEmpty())
 			{
-				var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetContentType());
+				var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
 				adapter.AuthorizeRequest(webContext.CurrentPath, webContext.User);
 			}
 		}
@@ -125,7 +125,7 @@ namespace N2.Web
 				PathData data = webContext.CurrentPath;
 				if (data != null && !data.IsEmpty())
 				{
-					var adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage.GetContentType());
+					var adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage);
 					adapter.RewriteRequest(data, rewriteMethod);
 				}
 			}
@@ -149,7 +149,7 @@ namespace N2.Web
 		{
 			if (webContext.CurrentPath == null || webContext.CurrentPath.IsEmpty()) return;
 
-			var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage.GetContentType());
+			var adapter = adapters.ResolveAdapter<RequestAdapter>(webContext.CurrentPage);
 			adapter.InjectCurrentPage(webContext.CurrentPath, webContext.Handler);
 		}
 

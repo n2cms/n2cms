@@ -46,7 +46,7 @@ namespace N2.Details
 			set { openingMode = value; }
 		}
 
-		/// <summary>Defines whether the urls should be stored as app- or server relative.</summary>
+		/// <summary>Defines whether the managementUrls should be stored as app- or server relative.</summary>
 		public UrlRelativityMode RelativeTo { get; set; }
 
 		public override bool UpdateItem(ContentItem item, Control editor)

@@ -19,7 +19,7 @@
             <ul id="mainMenu">
 				<li><a href="<%= N2.Find.StartPage.Url %>">Home</a></li>
 				<%= N2.Web.Tree.From(N2.Find.StartPage, 2).Filters(new N2.Collections.NavigationFilter()).ExcludeRoot(true)%>
-				<li><%= Html.ActionLink<MvcTest.Controllers.StaticController>(c => c.Items("from the menu"), "Static controller") %></li>
+				<li><%= Html.ActionLink("Static controller", "Items", "Static", new { id = "from the menu" }, null)%></li>
             </ul>
         </div>
 

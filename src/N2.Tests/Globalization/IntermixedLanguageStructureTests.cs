@@ -6,7 +6,7 @@ using N2.Engine.Globalization;
 
 namespace N2.Tests.Globalization
 {
-	[TestFixture]
+	[TestFixture, Category("Integration")]
 	public class IntermixedLanguageStructureTests : GlobalizationTests
 	{
 		protected override void CreatePageStructure()

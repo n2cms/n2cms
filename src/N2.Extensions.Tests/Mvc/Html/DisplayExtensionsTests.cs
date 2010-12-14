@@ -153,7 +153,7 @@ namespace N2.Extensions.Tests.Mvc.Html
 			adapter.Expect(r => r.RenderTemplate(page.Html, testItem.Property));
 			
 			var adapterProvider = MockRepository.GenerateStub<IContentAdapterProvider>();
-			adapterProvider.Expect(ap => ap.ResolveAdapter<MvcAdapter>(testItem.Property.GetContentType())).Return(adapter);
+			adapterProvider.Expect(ap => ap.ResolveAdapter<MvcAdapter>(testItem.Property)).Return(adapter);
 			
 			var engine = MockRepository.GenerateStub<IEngine>();
 			engine.Expect(e => e.Resolve<IContentAdapterProvider>()).Return(adapterProvider).Repeat.Any();

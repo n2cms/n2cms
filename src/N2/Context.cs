@@ -137,7 +137,7 @@ namespace N2
 			get { return Current.SecurityManager; }
 		}
 
-		/// <summary>Gets the url parser responsible of mapping urls to items and back again.</summary>
+		/// <summary>Gets the url parser responsible of mapping managementUrls to items and back again.</summary>
 		public static Web.IUrlParser UrlParser
 		{
 			get { return Current.UrlParser; }

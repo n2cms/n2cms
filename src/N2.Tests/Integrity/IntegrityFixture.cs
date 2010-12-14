@@ -4,7 +4,7 @@ using N2.Definitions;
 
 namespace N2.Tests.Integrity
 {
-	[TestFixture]
+	[TestFixture, Category("Integration")]
 	public class IntegrityFixture : Persistence.DatabasePreparingBase
 	{
 		[Test]

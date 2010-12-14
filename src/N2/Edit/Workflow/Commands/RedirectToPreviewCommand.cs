@@ -19,7 +19,7 @@ namespace N2.Edit.Workflow.Commands
 
     	public override void Process(CommandContext state)
         {
-            string redirectTo = adapters.ResolveAdapter<NodeAdapter>(state.Content.GetType()).GetPreviewUrl(state.Content);
+            string redirectTo = adapters.ResolveAdapter<NodeAdapter>(state.Content).GetPreviewUrl(state.Content);
             if (state.Content.VersionOf != null)
                 redirectTo = Url.Parse(redirectTo)
                     .AppendQuery("preview", state.Content.ID)

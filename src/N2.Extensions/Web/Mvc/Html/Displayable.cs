@@ -119,7 +119,7 @@ namespace N2.Web.Mvc.Html
 			var referencedItem = CurrentItem[propertyName] as ContentItem;
 			if (referencedItem != null)
 			{
-				var adapter = GetMvcAdapterFor(referencedItem.GetContentType());
+				var adapter = Adapters.ResolveAdapter<MvcAdapter>(referencedItem);
 				adapter.RenderTemplate(helper, referencedItem);
 			}
 			else

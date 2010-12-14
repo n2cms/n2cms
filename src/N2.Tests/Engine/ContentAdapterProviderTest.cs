@@ -80,7 +80,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfItemA()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aItem.GetContentType());
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aItem);
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterA)));
 		}
@@ -88,7 +88,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfItemAA()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aaItem.GetContentType());
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aaItem);
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterAA)));
 		}
@@ -96,7 +96,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfItemAAA()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aaaItem.GetContentType());
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aaaItem);
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterAAA)));
 		}
@@ -104,7 +104,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfParentItemAdapter()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(abItem.GetContentType());
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(abItem);
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterA)));
 		}
@@ -112,7 +112,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfMostRelevant_ParentItemAdapter()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aabItem.GetContentType());
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(aabItem);
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterAA)));
 		}
@@ -120,7 +120,7 @@ namespace N2.Tests.Engine
 		[Test]
 		public void ResolvesAdapter_OfInterface_BeforeClassAdapter()
 		{
-			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(acItem.GetContentType());
+			RequestAdapter adapter = provider.ResolveAdapter<RequestAdapter>(acItem);
 
 			Assert.That(adapter, Is.TypeOf(typeof(AdapterIInterfaced)));
 		}

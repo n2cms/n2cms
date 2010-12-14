@@ -6,7 +6,7 @@ using N2.Web;
 
 namespace N2.Tests.Globalization
 {
-	[TestFixture]
+	[TestFixture, Category("Integration")]
 	public class FlatLanguageStructureTests : GlobalizationTests
 	{
 		protected override void CreatePageStructure()

@@ -161,7 +161,7 @@ namespace N2.Engine.MediumTrust
 		{
 			if (resolvers.ContainsKey(serviceType))
 			{
-				Trace.WriteLine("Already contains service " + serviceType + ". Overwriting registration with " + classType);
+				Trace.WriteLine("Already contains service " + serviceType + ". Overwriting of " + classType);
 			}
 
 			var instanceResolver = CreateInstanceResolver(key, classType);

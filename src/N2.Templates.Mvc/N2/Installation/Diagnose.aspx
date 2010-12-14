@@ -13,92 +13,100 @@
         input{vertical-align:middle;margin-bottom:5px;}
         ul,li{margin-top:0;margin-bottom:0;}
         textarea{height:55px;width:70%;background-color:#FFA07A;border:none;font-size:11px}
+        .t {font-size:.8em; width:100%;}
         .t thead td{ font-weight:bold; background-color:#eee;}
-        .t td{font-size:.75em;vertical-align:top;text-alignment:left;border:solid 1px silver; padding:1px;}
+		.t th h2 { margin:0; padding:.1em; background-color:#ccc; width:auto;}
+        .t td{vertical-align:top;text-align:left;border:solid 1px #eee; padding:1px; font-size:inherit;}
+        .t input { font-size:inherit; }
         .EnabledFalse { color:#999; }
         .IsDefinedFalse { color:Red; }
+        a { color:Blue; }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
-            <h1>Diagnose N2</h1>
-            <em>This page is used to upgrade N2 database schema or diagnose configuration problems. If you don't get a lot of okays here there probably is some kind of problem. Look at any error message to find clues about what's wrong.</em> <a href="Default.aspx">Back to edit page</a><br /><br />
+            <h1>N2 CMS diagnostic page</h1>
 
-			<!-- Database -->	
-            <label>Connection</label> <asp:Label ID="lblDbConnection" runat="server" /><br />
-			
-			<!-- root item -->	
-            <label>Root item</label> <asp:Label ID="lblRootNode" runat="server" /><br />
-            <label>Start page</label> <asp:Label ID="lblStartNode" runat="server" /><br />
-            <br />
-			<!-- assemblyl versions -->	
-            <label>N2 version</label> <asp:Label ID="lblN2Version" runat="server" /><br />
-            <label>N2.Edit version</label> <asp:Label ID="lblEditVersion" runat="server" /><br />
-            <label>Engine type</label><%= N2.Context.Current.GetType() %><br />
-            <br />
-			<!--  -->	
-            <label>Last error</label><asp:Label ID="lblError" runat="server" /><br />
-            
-            <% try { %>
-				<label>Default (fallback) site</label>
-				<ul>
-					<li><%= host.DefaultSite %></li>
-				</ul>
-				<label>Current site (<%= Request.Url.Authority %>)</label>
-				<ul>
-					<li><%= host.CurrentSite %></li>
-				</ul>
-				<label>All sites</label>
-				<ul>
+			<table class="t">
+				<tbody>
+					<tr><th colspan="2"><h2>Database</h2></th></tr>
+<% try { %>
+					<tr><th>Connection provider</th><td><%= System.Configuration.ConfigurationManager.ConnectionStrings[N2.Context.Current.Resolve<N2.Configuration.DatabaseSection>().ConnectionStringName].ProviderName %></td></tr>
+<% } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
+					<tr><th>Connection</th><td><asp:Label ID="lblDbConnection" runat="server" /></td></tr>
+					<tr><th>Root item</th><td><asp:Label ID="lblRootNode" runat="server" /></td></tr>
+					<tr><th>Start page</th><td><asp:Label ID="lblStartNode" runat="server" /></td></tr>
+					<tr><th rowspan="<%= recentChanges.Length + 1 %>">Recent changes </th><td><asp:Label ID="lblChanges" runat="server" />
+						<% foreach (var change in recentChanges){ %>
+							<%= change %> </td></tr><tr><td>
+						<% } %>
+					</td></tr>
+				</tbody>
+				<tbody>
+					<tr><th colspan="2"><h2>Assemblies</h2></th></tr>
+					<tr><th>N2 version</th><td><asp:Label ID="lblN2Version" runat="server" /></td></tr>
+					<tr><th>N2.Management version</th><td><asp:Label ID="lblEditVersion" runat="server" /></td></tr>
+<% try { %>
+					<tr><th>Engine type</th><td><%= N2.Context.Current.GetType() %></td></tr>
+<% } catch (Exception ex) { Response.Write(ex.ToString()); } %>
+<% try { %>
+					<tr><th>IoC Container type</th><td><%= N2.Context.Current.Container.GetType() %></td></tr>
+<% } catch (Exception ex) { Response.Write(ex.ToString()); } %>
+</tbody>
+				<tbody>
+					<tr><th colspan="2"><h2>Sites</h2></th></tr>
+<% try { %>
+					<tr><th>Default (fallback) site</th><td><%= host.DefaultSite %></td></tr>
+					<tr><th>Current site (<%= Request.Url.Authority %>)</th><td><%= host.CurrentSite %></td></tr>
+					<tr>
+						<th rowspan="<%= host.Sites.Count %>">All sites</th>
 				<% foreach (Site site in host.Sites){ %>
-					<li><%= site %></li>
+						<td><%= site %></td></tr><tr>
 				<% } %>
-				</ul>
-            <% } catch (Exception ex) { Response.Write(ex.ToString()); } %>
-            
-            <h2>Database operations</h2>
-            <i>These buttons can be used to create N2 tables in the database configured in the connection string. Be careful. From here you can remove all content in one click.</i><br />
-
-			<table>
-			<tr><td>
-				<label>Restart web application</label>
-			</td><td>
-				<asp:Button ID="btnRestart" runat="server" OnClick="btnRestart_Click" Text="RESTART" OnClientClick="return confirm('restart site?');" />
-			</td></tr>
-           
-			<tr><td>
-				<label>Drop tables clearing all content data in database</label>
-			</td><td>
+					</tr>
+<% } catch (Exception ex) { Response.Write(ex.ToString()); } %>
+				</tbody>
+				<tbody>
+					<tr><th colspan="2"><h2>Errors</h2></th></tr>
+					<tr><th>Last error</th><td><asp:Label ID="lblError" runat="server" /></td></tr>
+				</tbody>
+				<tbody>
+					<tr><th colspan="2"><h2>MVC</h2></th></tr>
+<% try {%>
+					<tr><th rowspan="3">Versions</th><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Mvc").FullName %></td></tr>
+					<tr><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Abstractions").FullName %></td></tr>
+					<tr><td><%= System.Reflection.Assembly.LoadWithPartialName("System.Web.Routing").FullName %></td></tr>
+<% } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
+<%--<% try {
+	IEnumerable routes = Type.GetType("System.Web.Routing.RouteTable").GetProperty("Routes", System.Reflection.BindingFlags.Static).GetValue(null, null) as IEnumerable;
+	foreach (object route in routes) {%>
+					<tr><th></th><td><%= route %></td></tr>
+<% } } catch (Exception ex) { Response.Write("<tr><td>" + ex + "</td></tr>"); } %>
+--%>				</tbody>
+				<tbody>
+					<tr><th colspan="2"><h2>Operations <span style="font-size:.9em">(prefer the <a href=".">installation wizard</a> before using this)</span></h2></th></tr>
+					<tr><th>Restart web application</th><td><asp:Button ID="btnRestart" runat="server" OnClick="btnRestart_Click" Text="RESTART" OnClientClick="return confirm('restart site?');" /></td></tr>
+					<tr><th>Drop tables clearing all content data in database</th><td>
 				<asp:Button ID="btnClearTables" runat="server" OnClick="btnClearTables_Click" Text="DROP" OnClientClick="return confirm('drop all tables?');" />
-				<asp:Label runat="server" ID="lblClearTablesResult" />
-			</td></tr>
-
-			<tr><td>
-				<label>Create database schema (this drops any existing tables)</label>
-			</td><td>
+				<asp:Label runat="server" ID="lblClearTablesResult" /></td></tr>
+					<tr><th>Create database schema (this drops any existing tables)</th><td>
 				<asp:Button ID="btnAddSchema" runat="server" OnClick="btnAddSchema_Click" Text="CREATE" OnClientClick="return confirm('drop and recreate all tables?');" />
-				<asp:Label runat="server" ID="lblAddSchemaResult" />
-			</td></tr>
-
-			<tr><td>
-	            <label>Insert root node</label>
-			</td><td>
+				<asp:Label runat="server" ID="lblAddSchemaResult" /></td></tr>
+					<tr><th>Insert root node</th><td>
 				<asp:Button ID="btnInsert" runat="server" OnClick="btnInsert_Click" Text="Select type..." />
 				<asp:DropDownList ID="ddlTypes" runat="server" AutoPostBack="True" Visible="False">
 				</asp:DropDownList><asp:Button runat="server" ID="btnInsertRootNode" Text="OK" Visible="false" OnClick="btnInsertRootNode_Click" />
-				<asp:Label ID="lblInsert" runat="server"></asp:Label><br />
-			</td></tr>
+				<asp:Label ID="lblInsert" runat="server"></asp:Label></td></tr>
+				</tbody>
 			</table>
 
-
-
-            <h2>Definitions</h2>
             <i>These settings are generated at application start from attributes in the project source code.</i>
             <asp:Repeater ID="rptDefinitions" runat="server">
                 <HeaderTemplate>
 					<table class="t">
 						<thead>
+							<tr><th colspan="8"><h2>Definitions</h2></th></tr>
 							<tr>
 								<td colspan="2">Definition</td>
 								<td colspan="2">Zones</td>

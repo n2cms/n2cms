@@ -7,6 +7,7 @@ using N2.Installation;
 using N2.Persistence.NH;
 using N2.Security;
 using System.Configuration;
+using N2.Engine.MediumTrust;
 
 namespace N2.Tests
 {
@@ -19,7 +20,7 @@ namespace N2.Tests
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetUp()
 		{
-			engine = new ContentEngine();
+			engine = CreateEngine();
 
 			var configurationBuilder = engine.Resolve<IConfigurationBuilder>();
 			sessionProvider = (FakeSessionProvider)engine.Resolve<ISessionProvider>();
@@ -27,6 +28,11 @@ namespace N2.Tests
 			CreateDatabaseSchema();
 
 			engine.Initialize();
+		}
+
+		protected virtual ContentEngine CreateEngine()
+		{
+			return new ContentEngine();
 		}
 
 		[TearDown]

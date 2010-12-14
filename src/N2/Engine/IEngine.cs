@@ -19,7 +19,7 @@ namespace N2.Engine
 		/// <summary>Gets the persistence manager responsible of storing content items to persistence medium (database).</summary>
 		IPersister Persister { get; }
 
-		/// <summary>Gets the url parser responsible of mapping urls to items and back again.</summary>
+		/// <summary>Gets the url parser responsible of mapping managementUrls to items and back again.</summary>
 		IUrlParser UrlParser { get; }
 
 		/// <summary>Gets the definition manager responsible of maintaining available item definitions.</summary>

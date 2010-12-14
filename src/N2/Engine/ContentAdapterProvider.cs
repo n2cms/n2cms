@@ -30,21 +30,8 @@ namespace N2.Engine
 
 		#region IContentAdapterProvider Members
 
-
-		/// <summary>Resolves the controller for the current Url.</summary>
-		/// <returns>A suitable controller for the given Url.</returns>
-		[Obsolete("Use ResolveAdapter<T>(Type)", true)]
-		public virtual T ResolveAdapter<T>(PathData path) where T : AbstractContentAdapter
-		{
-			if (path == null || path.IsEmpty()) return null;
-
-			T adapter = CreateAdapterInstance<T>(path);
-			if (adapter == null) return null;
-
-			adapter.Engine = engine;
-			return adapter;
-		}
-
+		/// <summary>Resolves the adapter for the current type.</summary>
+		/// <returns>A suitable adapter for the given type.</returns>
 		public T ResolveAdapter<T>(Type contentType) where T : AbstractContentAdapter
 		{
 			foreach (var adapter in adapters)
@@ -55,6 +42,14 @@ namespace N2.Engine
 			}
 
 			throw new NotSupportedException("No " + typeof(T) + " adapter supports " + contentType);
+		}
+
+		/// <summary>Resolves the adapter for the current item.</summary>
+		/// <returns>A suitable adapter for the given item.</returns>
+		public T ResolveAdapter<T>(ContentItem item) where T : AbstractContentAdapter
+		{
+			Type contentType = item != null ? item.GetContentType() : typeof(ContentItem);
+			return ResolveAdapter<T>(contentType);
 		}
 
 		/// <summary>Adds an adapter to the list of adapters. This is typically auto-wired using the [Adapts] attribute.</summary>

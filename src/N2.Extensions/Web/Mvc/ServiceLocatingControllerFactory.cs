@@ -9,15 +9,15 @@ namespace N2.Web.Mvc
 	/// Controller Factory class for instantiating controllers using the Windsor IoC container.
 	/// </summary>
 	[Service(typeof(IControllerFactory))]
-	public class N2ControllerFactory : DefaultControllerFactory
+	public class ServiceLocatingControllerFactory : DefaultControllerFactory
 	{
 		private IEngine _engine;
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="N2ControllerFactory"/> class.
+		/// Creates a new instance of the <see cref="ServiceLocatingControllerFactory"/> class.
 		/// </summary>
 		/// <param name="engine">The N2 engine instance to use when creating controllers.</param>
-		public N2ControllerFactory(IEngine engine)
+		public ServiceLocatingControllerFactory(IEngine engine)
 		{
 			if (engine == null)
 				throw new ArgumentNullException("engine");

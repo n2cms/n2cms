@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using N2.Security.Items;
+using N2.Security;
 
 // General Information about an assembly is controlled through the following set of attributes. Change these attribute values to modify the information associated with an assembly.
 [assembly: AssemblyTitle("N2.Security")]
@@ -15,3 +17,11 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("6bbc6cf1-8e9f-480b-abc4-3ea87f3fcd83")]
+
+[assembly: TypeForwardedTo(typeof(N2.Security.Details.EditableRolesAttribute))]
+[assembly: TypeForwardedTo(typeof(User))]
+[assembly: TypeForwardedTo(typeof(UserList))]
+[assembly: TypeForwardedTo(typeof(ContentMembershipProvider))]
+[assembly: TypeForwardedTo(typeof(ContentProfileProvider))]
+[assembly: TypeForwardedTo(typeof(ContentRoleProvider))]
+[assembly: TypeForwardedTo(typeof(ItemBridge))]

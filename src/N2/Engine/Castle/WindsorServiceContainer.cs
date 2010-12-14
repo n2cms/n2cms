@@ -137,7 +137,7 @@ namespace N2.Engine.Castle
 			private void StartComponents()
 			{
 				var naming = (INamingSubSystem)Kernel.GetSubSystem(SubSystemConstants.NamingKey);
-				Debug.WriteLine("StartComponents " + Kernel.GraphNodes.Length);
+				Trace.Write("Starting components: ");
 				foreach (GraphNode node in Kernel.GraphNodes)
 				{
 					var model = node as ComponentModel;
@@ -151,9 +151,10 @@ namespace N2.Engine.Castle
 						continue;
 
 					var instance = Kernel.Resolve(model.Name, new Arguments()) as IAutoStart;
-					Trace.WriteLine("Starting " + instance);
+					Trace.Write(instance + ", ");
 					instance.Start();
 				}
+				Trace.WriteLine(" out of " + Kernel.GraphNodes.Length);
 			}
 
 			private void OnComponentRegistered(String key, IHandler handler)

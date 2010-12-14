@@ -2,7 +2,7 @@ using System;
 namespace N2.Web
 {
 	/// <summary>
-	/// Classes implementing this interface creates unique urls for items and
+	/// Classes implementing this interface creates unique managementUrls for items and
 	/// can from such an url find the corresponding item.
 	/// </summary>
 	public interface IUrlParser

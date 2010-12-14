@@ -386,10 +386,6 @@
       <Project>{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}</Project>
       <Name>N2.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\N2.Security\N2.Security.csproj">
-      <Project>{CB6A29C5-8355-4C4C-B437-619F652B7540}</Project>
-      <Name>N2.Security</Name>
-    </ProjectReference>
     <ProjectReference Include="..\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>

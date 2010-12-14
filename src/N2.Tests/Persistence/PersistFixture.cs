@@ -8,7 +8,7 @@ using N2.Persistence;
 
 namespace N2.Tests.Persistence
 {
-	[TestFixture]
+	[TestFixture, Category("Integration")]
 	public class PersistFixture : DatabasePreparingBase
 	{
 		[Test]

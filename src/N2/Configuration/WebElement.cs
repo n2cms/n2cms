@@ -8,7 +8,7 @@ using System.ComponentModel;
 namespace N2.Configuration
 {
     /// <summary>
-    /// Configuration related to integration with ASP.NET and urls.
+    /// Configuration related to integration with ASP.NET and managementUrls.
     /// </summary>
     public class WebElement : ConfigurationElement
 	{
@@ -92,7 +92,7 @@ namespace N2.Configuration
             set { base["ignoreExistingFiles"] = value; }
         }
 
-		/// <summary>Configuration related to urls and url parsing.</summary>
+		/// <summary>Configuration related to managementUrls and url parsing.</summary>
 		[ConfigurationProperty("urls")]
 		public UrlElement Urls
 		{

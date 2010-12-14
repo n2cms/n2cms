@@ -31,8 +31,9 @@ namespace N2.Persistence.Proxying
 
 			foreach (var property in interceptedProperties)
 			{
-				var attribute = (IInterceptableProperty)property.GetCustomAttributes(typeof(IInterceptableProperty), true).FirstOrDefault();
-				if (attribute == null || attribute.PersistAs != PropertyPersistenceMode.InterceptedDetails)
+				var attributes = property.GetCustomAttributes(typeof(IInterceptableProperty), true).OfType<IInterceptableProperty>();
+				var attribute = attributes.FirstOrDefault();
+				if (attribute == null || attributes.Any(a => a.PersistAs != PropertyPersistenceMode.InterceptedDetails))
 				    continue;
 
 				var getMethod = property.GetGetMethod();
@@ -50,22 +51,6 @@ namespace N2.Persistence.Proxying
 					continue; // no public setter? that's okay
 				methods[setMethod] = GetSetDetail(property.Name, defaultValue, property.PropertyType);
 			}
-
-
-			//for (var type = interceptedType; type != null; type = type.BaseType)
-			//{
-			//    foreach (var method in type.GetMethods())
-			//    {
-			//        if (!method.IsVirtual)
-			//            continue;
-			//        var action = PrepareMethod(method);
-			//        if (action != null)
-			//        {
-			//            methods[method] = action;
-			//            InterceptedProperties++;
-			//        }
-			//    }
-			//}
 		}
 
 		public void Intercept(IInvocation invocation)
@@ -76,19 +61,6 @@ namespace N2.Persistence.Proxying
 			else
 				invocation.Proceed();
 		}
-
-		//private Action<IInvocation> PrepareMethod(PropertyInfo property, MethodInfo method, object defaultValue)
-		//{
-		//    string propertyName = property.Name;
-			
-		//    if (property.GetGetMethod() == method)
-		//        return GetGetDetail(propertyName, defaultValue);
-
-		//    if (property.GetSetMethod() == method)
-		//        return GetSetDetail(propertyName, defaultValue, property.PropertyType);
-
-		//    return null;
-		//}
 
 		private static object GetDefaultValue(Type propertyType, object defaultValue)
 		{

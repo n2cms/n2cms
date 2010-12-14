@@ -48,7 +48,7 @@ namespace N2.Web.Mvc.Html
 				writer.WriteAttribute(PartUtilities.PathAttribute, CurrentItem.Path)
 					.WriteAttribute(PartUtilities.ZoneAttribute, ZoneName)
 					.WriteAttribute(PartUtilities.AllowedAttribute, PartUtilities.GetAllowedNames(ZoneName, PartsAdapter.GetAllowedDefinitions(CurrentItem, ZoneName, Html.ViewContext.HttpContext.User)))
-					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Context.Current.Definitions.GetDefinition(CurrentItem.GetContentType()), ZoneName))
+					.WriteAttribute("title", ZoneTitle ?? DroppableZone.GetToolTip(Html.ResolveService<IDefinitionManager>().GetDefinition(CurrentItem.GetContentType()), ZoneName))
 					.Write(">");
 
 				if (string.IsNullOrEmpty(Html.ViewContext.HttpContext.Request["preview"]))
@@ -90,14 +90,14 @@ namespace N2.Web.Mvc.Html
         {			
             if (state == ControlPanelState.DragDrop)
             {
-                ItemDefinition definition = Context.Current.Definitions.GetDefinition(model.GetContentType());
+				ItemDefinition definition = Html.ResolveService<IDefinitionManager>().GetDefinition(model.GetContentType());
 
                 writer.Write("<div class='" + definition.Discriminator + " zoneItem'");
                 writer.WriteAttribute(PartUtilities.PathAttribute, model.Path)
                     .WriteAttribute(PartUtilities.TypeAttribute, definition.Discriminator)
                     .Write(">");
 
-                PartUtilities.WriteTitleBar(writer, Context.Current.ManagementPaths, Context.Current.Resolve<IContentAdapterProvider>(), definition, model);
+				Html.ResolveService<PartUtilities>().WriteTitleBar(writer, model, Html.ViewContext.HttpContext.Request.RawUrl);
                 
                 base.RenderTemplate(writer, model);
 

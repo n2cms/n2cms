@@ -10,8 +10,8 @@ namespace N2.Templates.Items
     [WithEditableTitle("Title", 10)]
     public class LoginItem : AbstractItem
     {
-        [Displayable(typeof(H4), "Text")]
-        public override string Title
+		[DisplayableHeading(4)]
+		public override string Title
         {
             get { return base.Title; }
             set { base.Title = value; }

@@ -129,7 +129,9 @@
     <Compile Include="Definitions\ISyndicatable.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
+    <Compile Include="Details\DisplayableHeadingAttribute.cs" />
     <Compile Include="Details\DisplayableLiteralAttribute.cs" />
+    <Compile Include="Details\EditableRolesAttribute.cs" />
     <Compile Include="Details\EditableUrlAttribute.cs" />
     <Compile Include="Details\WithEditableAttribute.cs" />
     <Compile Include="Details\DisplayableAttribute.cs" />
@@ -587,7 +589,6 @@
     <Compile Include="Persistence\NH\Finder\PropertyIsNullHqlProvider.cs" />
     <Compile Include="Persistence\PersistableAttribute.cs" />
     <Compile Include="Persistence\NH\ClassMappingGenerator.cs" />
-    <Compile Include="Persistence\NH\GeneratorHelper.cs" />
     <Compile Include="Persistence\NotifiableItemEventArgs.cs" />
     <Compile Include="Persistence\NH\TrailTracker.cs" />
     <Compile Include="Persistence\NH\SessionContext.cs" />
@@ -714,7 +715,6 @@
     <Compile Include="Web\UI\WebControls\Repeater.cs" />
     <Compile Include="Web\UI\WebControls\SimpleTemplateContainer.cs" />
     <Compile Include="Web\UI\WebControls\DroppableZone.cs" />
-    <Compile Include="Web\UI\WebControls\DropPoint.cs" />
     <Compile Include="Web\UI\WebControls\HasValue.cs" />
     <Compile Include="Web\UI\WebControls\Li.cs" />
     <Compile Include="Web\UI\WebControls\SlidingCurtain.cs" />
@@ -815,7 +815,9 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persistence\NH\Mappings\Default.hbm.xml" />
+    <EmbeddedResource Include="Persistence\NH\Mappings\Default.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="ProjectComments.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

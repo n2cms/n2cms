@@ -5,24 +5,20 @@ using N2.Management.Files;
 using System;
 using N2.Security;
 using N2.Definitions;
+using N2.Web.Drawing;
 
 namespace N2.Edit.FileSystem.Items
 {
     [Throwable(AllowInTrash.No), Versionable(AllowVersions.No), PermissionRemap(From = Permission.Publish, To = Permission.Write)]
-    public abstract class AbstractNode : ContentItem, INode
+    public abstract class AbstractNode : ContentItem, INode, IDependentEntity<IFileSystem>
     {
 		IFileSystem fileSystem;
-
-
-		public AbstractNode(IFileSystem fs)
-		{
-			fileSystem = fs;
-		}
-
+		protected string iconUrl;
 
     	protected virtual IFileSystem FileSystem
     	{
-			get { return fileSystem; }
+			get { return fileSystem ?? (fileSystem = N2.Context.Current.Resolve<IFileSystem>()); }
+			set { fileSystem = value; }
     	}
 
 		public override string Path
@@ -40,10 +36,20 @@ namespace N2.Edit.FileSystem.Items
             get { return string.Empty; }
         }
 
-		protected string iconUrl;
 		public override string IconUrl
 		{
-			get { return iconUrl ?? base.IconUrl; }
+			get 
+			{
+				if (iconUrl == null)
+				{
+					string icon = ImagesUtility.GetResizedPath(Url, "icon");
+					if (FileSystem.FileExists(icon))
+						this.iconUrl = icon;
+					else
+						this.iconUrl = base.IconUrl;
+				}
+				return iconUrl;
+			}
 		}
 
         string INode.PreviewUrl
@@ -79,5 +85,14 @@ namespace N2.Edit.FileSystem.Items
 		{
 			return first.TrimEnd('/') + "/" + second.TrimStart('/');
 		}
-    }
+
+		#region IDependentEntity<IFileSystem> Members
+
+		public void Set(IFileSystem dependency)
+		{
+			fileSystem = dependency;
+		}
+
+		#endregion
+	}
 }

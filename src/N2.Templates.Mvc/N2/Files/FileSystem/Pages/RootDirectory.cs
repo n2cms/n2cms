@@ -18,7 +18,6 @@ namespace N2.Edit.FileSystem.Items
     public class RootDirectory : AbstractDirectory
     {
         public RootDirectory()
-			: base(N2.Context.Current.Resolve<IFileSystem>())
         {
             Visible = false;
             SortOrder = 10000;

@@ -55,7 +55,7 @@
 					<fileSize>7678</fileSize>
 					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=164800</installerURL>
 
-					<sha1>7D358F26B7D88880DB5F0E8BF9BC3ECBE7A9003D</sha1>
+					<sha1>79313C85C886983801AE930A9F9690FD5E8F4288</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
@@ -106,7 +106,7 @@
 				<installerFile>
 					<fileSize>7013</fileSize>
 					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=164801</installerURL>
-					<sha1>E46CC98A781602F220AA7B9AF3A5765A2C1ECB0F</sha1>
+					<sha1>0D0979DC4BF2A45E51E406467BAA1620BAA08769</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>

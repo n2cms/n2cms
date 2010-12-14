@@ -22,69 +22,47 @@ namespace N2.Persistence.NH
         /// <param name="definition">The type to generate mapping for</param>
         /// <param name="allDefinitions">All definitions in the system.</param>
         /// <returns>An xml string</returns>
-        public virtual string GetMapping(ItemDefinition definition, ICollection<ItemDefinition> allDefinitions)
+        public virtual string GetMapping(Type entityType, Type parentType, string discriminator)
         {
-            string typeName = GetName(definition.ItemType);
-            string discriminator = GetDiscriminator(definition);
-            string parentName = GetParent(definition, allDefinitions);
-            string properties = GetProperties(definition.ItemType);
+			string typeName = GetName(entityType);
+			string parentName = GetName(parentType);
+            string properties = GetProperties(entityType);
 
-            Trace.WriteLine("Generating mapping for {type = " + definition.ItemType + ", discriminator=" + discriminator + ", parent: " + parentName + ", properties: " + properties.Length + "}");
+            Trace.WriteLine("Generating mapping for {type = " + entityType + ", discriminator=" + discriminator + ", parent: " + parentName + ", properties: " + properties.Length + "}");
             return string.Format(classFormat, typeName, parentName, discriminator, properties);
-        }
-
-        private string GetParent(ItemDefinition currentDefinition, ICollection<ItemDefinition> allDefinitions)
-        {
-            // try to find a defined item in the type tree
-            foreach (var baseType in Utility.GetBaseTypes(currentDefinition.ItemType))
-            {
-                foreach (var definition in allDefinitions)
-                {
-                    if (definition.ItemType == baseType)
-                    {
-                        return GetName(baseType);
-                    }
-                }
-            }
-            // or revert to content item
-            return GetName(typeof(ContentItem));
         }
 
         private string GetProperties(Type attributedType)
         {
-            string properties = "";
-            foreach (PropertyInfo info in attributedType.GetProperties())
+			StringBuilder properties = new StringBuilder();
+            foreach (var p in GetPersistables(attributedType))
             {
-                foreach (PersistableAttribute attribute in info.GetCustomAttributes(typeof(PersistableAttribute), false))
-                {
-                    properties += attribute.GenerateMapping(info);
-                }
+				properties.Append(p.Attribute.GenerateMapping(p.DeclaringProperty));
             }
-            return properties;
+            return properties.ToString();
         }
+
+		private IEnumerable<Pair> GetPersistables(Type attributedType)
+		{
+			return attributedType.GetProperties()
+				.Where(pi => pi.DeclaringType == attributedType)
+				.SelectMany(pi => pi.GetCustomAttributes(typeof(PersistableAttribute), false)
+					.OfType<PersistableAttribute>()
+					.Select(a => new Pair { Attribute = a, DeclaringProperty = pi }));
+		}
 
         private static string GetName(Type t)
         {
             return t.FullName + ", " + t.Assembly.FullName.Split(',')[0];
         }
 
-        private Type GetFirstSuitableBaseType(Type itemType)
-        {
-            if (itemType == typeof(ContentItem))
-                return itemType;
-            if (GeneratorHelper.IsUnsuiteableForMapping(itemType))
-                return GetFirstSuitableBaseType(itemType.BaseType);
+		// helper classes
 
-            return itemType;
-        }
-
-        private string GetDiscriminator(ItemDefinition definition)
-        {
-            if (definition != null)
-                return definition.Discriminator;
-            else
-                return definition.ItemType.Name;
-        }
+		class Pair
+		{
+			public PersistableAttribute Attribute { get; set; }
+			public PropertyInfo DeclaringProperty { get; set; }
+		}
     }
 
 }

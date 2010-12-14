@@ -13,8 +13,8 @@ namespace N2.Templates.Items
     [AllowedZones("SiteTop")]
     public class Top : AbstractItem
     {
-        [Displayable(typeof(N2.Web.UI.WebControls.H2), "Text")]
-        [EditableTextBox("Top text", 40, ContainerName = "top")]
+		[DisplayableHeading(2)]
+		[EditableTextBox("Top text", 40, ContainerName = "top")]
         public override string Title
         {
             get { return base.Title; }

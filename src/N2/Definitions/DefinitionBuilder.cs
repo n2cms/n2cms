@@ -135,7 +135,6 @@ namespace N2.Definitions
 
 		void ExploreAndLoad(ItemDefinition definition)
 		{
-			definition.IconUrl = definition.IconUrl;
 			definition.Editables = explorer.Find<IEditable>(definition.ItemType);
 			definition.Containers = explorer.Find<IEditableContainer>(definition.ItemType);
 			definition.Modifiers = explorer.Find<EditorModifierAttribute>(definition.ItemType);

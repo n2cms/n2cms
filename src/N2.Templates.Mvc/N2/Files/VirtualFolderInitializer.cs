@@ -174,7 +174,8 @@ namespace N2.Management.Files
 				var dd = fs.GetDirectory(pair.FolderPath);
 				var parent = persister.Get(pair.ParentID);
 
-				var dir = new Directory(fs, dd, parent);
+				var dir = new Directory(dd, parent);
+				dir.Set(fs);
 				dir.Title = pair.Path.Substring(pair.ParentPath.Length).Trim('/');
 				dir.Name = dir.Title;
 

@@ -57,7 +57,9 @@ namespace N2.Edit.Navigation
 				{
 					var dd = FS.GetDirectory(uploadFolder);
 
-					var node = CreateDirectoryNode(FS, new Directory(FS, dd, root.Current), root, selectionTrail);
+					var dir = new Directory(dd, root.Current);
+					dir.Set(FS);
+					var node = CreateDirectoryNode(FS, dir, root, selectionTrail);
 					root.Children.Add(node);
 				}
 
@@ -124,12 +126,14 @@ namespace N2.Edit.Navigation
 
 			HierarchyNode<ContentItem> node = null;
 			foreach (DirectoryData dd in Engine.Resolve<IContentAdapterProvider>()
-				.ResolveAdapter<NodeAdapter>(siteNode.GetContentType())
+				.ResolveAdapter<NodeAdapter>(siteNode)
 				.GetUploadDirectories(site))
 			{
 				if(node == null)
 					node = new HierarchyNode<ContentItem>(siteNode);
-				var directoryNode = CreateDirectoryNode(FS, new Directory(FS, dd, parent.Current), node, selectionTrail);
+				var dir = new Directory(dd, parent.Current);
+				dir.Set(FS);
+				var directoryNode = CreateDirectoryNode(FS, dir, node, selectionTrail);
 				node.Children.Add(directoryNode);
 			}
 

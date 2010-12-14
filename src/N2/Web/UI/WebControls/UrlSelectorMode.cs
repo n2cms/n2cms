@@ -5,7 +5,7 @@ using System.Text;
 namespace N2.Web.UI.WebControls
 {
 	/// <summary>
-	/// Defines what kinds of urls can be selected.
+	/// Defines what kinds of managementUrls can be selected.
 	/// </summary>
 	public enum UrlSelectorMode
 	{
