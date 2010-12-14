@@ -1,4 +1,5 @@
-﻿- Rss aggregator support for multiple feeds, atom and caching for subsequent requests
+﻿- Fixed exception after deleting wizard location (ThreadId=238336)"
+- Rss aggregator support for multiple feeds, atom and caching for subsequent requests
 - Pulled Steve Mason's modal part editing
 - Updated jquery to 1.4.4
 - Fixed no MVC 404 (ThreadId=237393)

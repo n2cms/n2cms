@@ -14,6 +14,11 @@ namespace N2.Edit.Wizard.Items
     [NotThrowable]
     public class MagicLocation : ContentItem
 	{
+		public bool HasLocation
+		{
+			get { return Location != null; }
+		}
+
 		[EditableLink("Location", 100)]
 		public virtual ContentItem Location
 		{

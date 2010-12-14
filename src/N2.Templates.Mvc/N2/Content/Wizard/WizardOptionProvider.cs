@@ -32,6 +32,7 @@ namespace N2.Edit.Wizard
 		public IEnumerable<ToolbarOption> GetAll()
 		{
 			return wizard.GetLocations()
+				.Where(m => m.Location != null)
 				.Select((m, i) => new ToolbarOption
 				{
 					Title = m.Title,
