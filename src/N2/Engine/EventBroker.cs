@@ -2,6 +2,10 @@
 using System.Web;
 using System.Threading;
 using System.Diagnostics;
+using N2.Edit.FileSystem;
+using N2.Edit.FileSystem.NH;
+using N2.Engine.Castle;
+using N2.Persistence.NH;
 
 namespace N2.Engine
 {
@@ -52,6 +56,18 @@ namespace N2.Engine
 
 		protected void Application_BeginRequest(object sender, EventArgs e)
 		{
+		    var path = Context.Current.RequestContext.Request.Path;
+
+            if (path.StartsWith("/upload/"))
+            {
+                var fileSystem = (IFileSystem) N2.Context.Current.Resolve(typeof (IFileSystem));
+                if (fileSystem.FileExists(path))
+                {
+                    fileSystem.ReadFileContents(path, Context.Current.RequestContext.Response.OutputStream);
+                    Context.Current.RequestContext.Response.End();
+                }
+            }
+
 			if (BeginRequest != null && !IsStaticResource(sender))
 			{
 				Debug.WriteLine("Application_BeginRequest");

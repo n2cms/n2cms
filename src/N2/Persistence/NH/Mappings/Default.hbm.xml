@@ -131,5 +131,20 @@
 			<one-to-many class="N2.Details.ContentDetail,N2"/>
 		</bag>
 	</class>
+  
+  <class name="N2.Edit.FileSystem.NH.FileSystemItem,N2" table="{TablePrefix}FileSystemItem" lazy="true">
+    <id name="ID" column="ID" type="Int32" unsaved-value="0">
+      <generator class="native"/>
+    </id>
+
+    <component name="Path" class="N2.Edit.FileSystem.NH.Path,N2" unique="true">
+      <property name="Parent" type="String" length="1024"/>
+      <property name="Name" type="String" length="255"/>
+    </component>
+
+    <property name="Created" not-null="true" />
+    <property name="Length" type="Int64" />
+    <property name="Data" type="BinaryBlob" length="2147483647" lazy="true" />
+  </class>
 
 </hibernate-mapping>
