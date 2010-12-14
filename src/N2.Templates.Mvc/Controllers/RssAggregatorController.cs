@@ -1,18 +1,19 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Security;
+using System.ServiceModel.Syndication;
+using System.Web.Caching;
 using System.Web.Mvc;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
-using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
+using N2.Templates.Mvc.Models.Parts;
 using N2.Web;
 using N2.Web.UI;
-using System.ServiceModel.Syndication;
-using System.Diagnostics;
-using System.Xml.Linq;
-using System.IO;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -52,9 +53,9 @@ namespace N2.Templates.Mvc.Controllers
 				HttpContext.Cache.Add(CacheKey,
 					items,
 					new ContentCacheDependency(Engine.Persister),
-					DateTime.Now.AddMinutes(1),
+					DateTime.Now.AddSeconds(60),
 					TimeSpan.Zero,
-					System.Web.Caching.CacheItemPriority.Normal,
+					CacheItemPriority.Normal,
 					null);
 			}
 			return items;
