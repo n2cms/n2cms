@@ -126,8 +126,7 @@ namespace N2.Edit
 
 			#region IItemEditor Members
 
-
-			public event EventHandler<ItemEventArgs> Saved;
+			public event EventHandler<ItemEventArgs> Saved = delegate {};
 
 			#endregion
 		}

@@ -26,7 +26,7 @@ namespace N2.Edit.Globalization
 		{
 			string className = (bool)Eval("IsNew") ? "new" : "existing";
 
-			if (SelectedItem == (ContentItem)Eval("ExistingItem"))
+			if (Selection.SelectedItem == (ContentItem)Eval("ExistingItem"))
 				className += " current";
 
 			return className;

@@ -18,7 +18,7 @@ namespace N2.Edit
 				try
 				{
 					EnsureAuthorization(Permission.Write);
-					EnsureAuthorization(MemorizedItem, Permission.Read);
+					EnsureAuthorization(Selection.MemorizedItem, Permission.Read);
 
 					N2.ContentItem newItem = Engine.Persister.Copy(Selection.MemorizedItem, Selection.SelectedItem);
 					Refresh(newItem, ToolbarArea.Both);
@@ -46,21 +46,21 @@ namespace N2.Edit
 
 		private void LoadDefaultsAndInfo()
 		{
-			txtNewName.Text = MemorizedItem.Name;
+			txtNewName.Text = Selection.MemorizedItem.Name;
 
 			this.Title = string.Format(GetLocalResourceString("CopyPage.TitleFormat"),
 				Selection.MemorizedItem.Title,
 				Selection.SelectedItem.Title);
 
 			this.from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
-										   MemorizedItem.Parent != null ? MemorizedItem.Parent.Path : "",
-										   MemorizedItem.Path);
+										   Selection.MemorizedItem.Parent != null ? Selection.MemorizedItem.Parent.Path : "",
+										   Selection.MemorizedItem.Path);
 
 			this.to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
 				Selection.SelectedItem.Path,
 				Selection.MemorizedItem.Name);
 
-			itemsToCopy.CurrentItem = MemorizedItem;
+			itemsToCopy.CurrentItem = Selection.MemorizedItem;
 			itemsToCopy.DataBind();
 		}
 

@@ -29,12 +29,12 @@ namespace N2.Edit.Globalization
 		}
 		protected ILanguage CurrentLanguage
 		{
-			get { return Gateway.GetLanguage(SelectedItem); }
+			get { return Gateway.GetLanguage(Selection.SelectedItem); }
 		}
 
 		protected override void OnPreRender(EventArgs e)
 		{
-			List<TranslateSpecification> translations = new List<TranslateSpecification>(Gateway.GetEditTranslations(SelectedItem, false));
+			List<TranslateSpecification> translations = new List<TranslateSpecification>(Gateway.GetEditTranslations(Selection.SelectedItem, false));
 			if (Gateway.Enabled && translations.Count > 0)
 			{
 				if (!CreatingNew)

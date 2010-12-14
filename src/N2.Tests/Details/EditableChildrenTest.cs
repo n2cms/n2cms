@@ -180,7 +180,7 @@ namespace N2.Tests.Details
                 get { throw new NotImplementedException(); }
             }
 
-            public event EventHandler<ItemEventArgs> Saved;
+			public event EventHandler<ItemEventArgs> Saved = delegate { };
 
             #endregion
 
