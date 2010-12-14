@@ -8,6 +8,8 @@ namespace N2.Edit.FileSystem.NH
         public string Name { get; private set; }
         private bool _isDirectory;
 
+        public Path(){}
+
         private Path(string virtualPath)
         {
             var sanitizedPath = virtualPath.TrimStart('~').TrimEnd('/').Replace('\\', '/');

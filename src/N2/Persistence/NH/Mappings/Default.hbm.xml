@@ -138,8 +138,8 @@
     </id>
 
     <component name="Path" class="N2.Edit.FileSystem.NH.Path,N2" unique="true">
-      <property name="Parent" type="String" length="1024" access="field"/>
-      <property name="Name" type="String" length="255" access="field"/>
+      <property name="Parent" type="String" length="1024"/>
+      <property name="Name" type="String" length="255"/>
     </component>
 
     <property name="Created" not-null="true" />

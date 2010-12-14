@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using N2.Configuration;
 using N2.Persistence.NH;
 using NHibernate.Criterion;
 
@@ -10,6 +11,57 @@ namespace N2.Edit.FileSystem.NH
     public class DatabaseFileSystem : IFileSystem
     {
         private readonly ISessionProvider _sessionProvider;
+
+        public class DatabaseFileSystemStream : MemoryStream
+        {
+            private readonly FileSystemItem attachedTo;
+            private readonly DatabaseFileSystem fileSys;
+            private bool changed;
+
+            public DatabaseFileSystemStream(FileSystemItem attachedTo, DatabaseFileSystem fileSys, byte [] data)
+            {
+                if(attachedTo==null) throw new Exception("attachedTo must not be null");
+                if(fileSys == null) throw new Exception("fileSys most not be null");
+
+                this.attachedTo = attachedTo;
+                this.fileSys = fileSys;
+                
+                Write(data, 0, data.Length);
+                Position = 0;
+            }
+
+            public override sealed long Position
+            {
+                get { return base.Position; }
+                set { base.Position = value; }
+            }
+
+            public override sealed void Write(byte[] buffer, int offset, int count)
+            {
+                changed = true;
+                base.Write(buffer, offset, count);
+            }
+
+            public override void WriteByte(byte value)
+            {
+                changed = true;
+                base.WriteByte(value);
+            }
+
+            public override void Flush()
+            {
+                if (changed)
+                    fileSys.UpdateFile(attachedTo.Path, this);
+
+                base.Flush();
+            }
+
+            protected override void  Dispose(bool disposing)
+            {
+                Flush();
+                base.Dispose(disposing);
+            }
+        }
 
         public DatabaseFileSystem(ISessionProvider sessionProvider)
         {
@@ -20,7 +72,7 @@ namespace N2.Edit.FileSystem.NH
         {
             return _sessionProvider.OpenSession.Session
                 .CreateCriteria<FileSystemItem>()
-                .Add(Restrictions.Eq("Path.Parent", path))
+                .Add(Restrictions.Eq("Path.Parent", path.ToString()))
                 .Add(criterion)
                 .List<FileSystemItem>();
         }
@@ -35,6 +87,13 @@ namespace N2.Edit.FileSystem.NH
 
         private void AssertParentExists(Path target)
         {
+            var uploadFolders = new EditSection().UploadFolders;
+
+            if (uploadFolders.Folders.Any(uploadFolder => Path.Directory(uploadFolder).ToString() == target.Parent))
+            {
+                return;
+            }
+
             if (!DirectoryExists(target.Parent))
             {
                 throw new DirectoryNotFoundException("Destination directory not found: " + target.Parent);
@@ -148,36 +207,81 @@ namespace N2.Edit.FileSystem.NH
         public Stream OpenFile(string virtualPath)
         {
             var path = Path.File(virtualPath);
+
+            if(!FileExists(path.ToString()))
+            {
+                CreateFile(path, null);
+            }
             var blob = GetSpecificItem(path);
-            return new MemoryStream(blob.Data);
+            
+            // Important: don't initialize the Memory stream with a byte[] in the ctor
+            // http://weblogs.asp.net/ashicmahtab/archive/2008/08/25/memorystream-not-expandable-invalid-operation-exception.aspx
+            var stream = new DatabaseFileSystemStream(blob, this, blob.Data);
+            return stream;
         }
 
         public void WriteFile(string virtualPath, Stream inputStream)
         {
-            var path = Path.File(virtualPath);
-
-            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
-            using (var buffer = new MemoryStream())
+            if (!FileExists(virtualPath))
             {
-                AssertParentExists(path);
-
-                CopyStream(inputStream, buffer);
-
-                var item = new FileSystemItem
-                {
-                    Path = path,
-                    Data = buffer.GetBuffer(),
-                    Created = DateTime.Now,
-                    Length = buffer.Length
-                };
-
-                _sessionProvider.OpenSession.Session.Save(item);
-                trx.Commit();
+                CreateFile(Path.File(virtualPath), inputStream);
+            }
+            else
+            {
+                UpdateFile(Path.File(virtualPath), inputStream);
             }
 
             if (FileWritten != null)
             {
                 FileWritten.Invoke(this, new FileEventArgs(virtualPath, null));
+            }
+        }
+
+        protected void UpdateFile(Path virtualPath, Stream inputStream)
+        {
+            var file = GetSpecificItem(virtualPath);
+                
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var buffer = new MemoryStream())
+            {
+                if (inputStream != null)
+                {
+                    inputStream.Position = 0;
+                    CopyStream(inputStream, buffer);
+                    inputStream.Position = 0;
+                }
+
+                file.Data = buffer.GetBuffer();
+                file.Created = DateTime.Now;
+                file.Length = buffer.Length;
+                _sessionProvider.OpenSession.Session.Save(file);
+                trx.Commit();
+            }
+        }
+
+        private void CreateFile(Path virtualPath, Stream inputStream)
+        {
+            using (var trx = _sessionProvider.OpenSession.Session.BeginTransaction())
+            using (var buffer = new MemoryStream())
+            {
+                AssertParentExists(virtualPath);
+
+                if (inputStream != null)
+                {
+                    CopyStream(inputStream, buffer);
+                    inputStream.Position = 0;
+                }
+
+                var item = new FileSystemItem
+                               {
+                                   Path = virtualPath,
+                                   Data = buffer.GetBuffer(),
+                                   Created = DateTime.Now,
+                                   Length = buffer.Length
+                               };
+
+                _sessionProvider.OpenSession.Session.Save(item);
+                trx.Commit();
             }
         }
 
