@@ -6,7 +6,6 @@
 		- delete
 	- write
 		- copy draft to
-
 - SQL timeout exception (ThreadId=234907)
 - Add no-sql support
 - IOrderBy.Detail does sorting (ThreadId=234194)
