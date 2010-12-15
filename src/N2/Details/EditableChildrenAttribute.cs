@@ -8,7 +8,7 @@ using N2.Edit.Workflow;
 namespace N2.Details
 {
 	/// <summary>
-	/// Defines a child item editor. Renders a drop down list where you can 
+	/// Defines a deletedChild item editor. Renders a drop down list where you can 
 	/// select what item to add and edit forms of added items.
 	/// </summary>
 	public class EditableChildrenAttribute : AbstractEditableAttribute
@@ -45,7 +45,11 @@ namespace N2.Details
 			{
 				if (listEditor.DeletedIndexes.Contains(i))
 				{
-					Context.Persister.Delete(listEditor.ItemEditors[i].CurrentItem);
+					var deletedChild = listEditor.ItemEditors[i].CurrentItem;
+					if (deletedChild.ID == 0)
+						deletedChild.AddTo(null);
+					else
+						Engine.Persister.Delete(deletedChild);
 				}
 				else
 				{
