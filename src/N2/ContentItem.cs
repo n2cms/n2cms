@@ -900,6 +900,35 @@ namespace N2
 		{
 			return Name + "#" + ID;
 		}
+
+		/// <summary>Compares two content items for equality.</summary>
+		/// <param name="a">The fist item. If equality is overridden this item's method is invoked.</param>
+		/// <param name="b">The second item.</param>
+		/// <returns>True if the items are equal or null.</returns>
+		public static bool operator ==(ContentItem a, ContentItem b)
+		{
+			if (System.Object.ReferenceEquals(a, b))
+				return true; // If both are null, or both are same instance, return true.
+
+			// If one is null, but not both, return false.
+			if (((object)a == null) || ((object)b == null))
+			{
+				return false;
+			}
+
+			// Return true if the fields match:
+			return a.Equals(b);
+		}
+
+		/// <summary>Compares two content items for iverse equality.</summary>
+		/// <param name="a">The fist item. If equality is overridden this item's method is invoked.</param>
+		/// <param name="b">The second item.</param>
+		/// <returns>False if the items are equal or null.</returns>
+		public static bool operator !=(ContentItem a, ContentItem b)
+		{
+			return !(a == b);
+		}
+
 		#endregion
 
 		#region IUpdatable<ContentItem> Members
