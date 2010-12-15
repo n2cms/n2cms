@@ -98,7 +98,7 @@ namespace N2.Edit
 		public virtual string GetPreviewUrl(ContentItem item)
 		{
 			string url = ManagementPaths.GetPreviewUrl(item);
-			url =  String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("Empty.aspx") : url;
+			url = String.IsNullOrEmpty(url) ? ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Empty.aspx") : url;
 			return url;
 		}
 

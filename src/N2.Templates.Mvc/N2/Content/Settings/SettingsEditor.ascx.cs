@@ -13,7 +13,7 @@ namespace N2.Edit.Settings
 		{
 			settings = Engine.Resolve<NavigationSettings>();
 			chkShowDataItems.Checked = settings.DisplayDataItems;
-			ddlThemes.DataSource = Engine.Resolve<IFileSystem>().GetFiles(Engine.ManagementPaths.ResolveResourceUrl("Resources/Css/themes"));
+			ddlThemes.DataSource = Engine.Resolve<IFileSystem>().GetFiles(Engine.ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Css/themes"));
 			ddlThemes.DataBind();
 			ddlThemes.SelectedValue = GetOrAddCookie(Request.Cookies, "default.css").Value;
 

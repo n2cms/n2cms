@@ -82,8 +82,9 @@ namespace N2.Edit
 			finalUrl = Url.ResolveTokens(finalUrl);
 
 			string managementUrl = Url.ResolveTokens(ManagementInterfaceUrl);
-			if (finalUrl.StartsWith("~") == false 
-				&& finalUrl.StartsWith("/") == false 
+			if (finalUrl.StartsWith("~") == false
+				&& finalUrl.StartsWith("/") == false
+				&& finalUrl.StartsWith("{") == false
 				&& finalUrl.StartsWith("javascript:") == false 
 				&& finalUrl.Contains("://") == false
 			    && finalUrl.StartsWith(managementUrl, StringComparison.InvariantCultureIgnoreCase) == false)
