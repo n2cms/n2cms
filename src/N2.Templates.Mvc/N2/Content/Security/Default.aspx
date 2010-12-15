@@ -62,7 +62,7 @@
 				<td><%= GetLocalResourceString("DefaultText")%></td>
 			<asp:Repeater ID="rptEveryone" runat="server" DataSource="<%# Permissions %>"><ItemTemplate>
 				<td>
-					<asp:CheckBox ID="cbEveryone" Checked="<%# IsEveryone((Permission)Container.DataItem) %>" Enabled="<%# IsAuthorized(SelectedItem, (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex %>' />
+					<asp:CheckBox ID="cbEveryone" Checked="<%# IsEveryone((Permission)Container.DataItem) %>" Enabled="<%# IsAuthorized(Selection.SelectedItem, (Permission)Container.DataItem) %>" runat="server" CssClass='<%# "cb permission" + Container.ItemIndex %>' />
 					<asp:CustomValidator ID="cvMarker" ErrorMessage="<%# Container.DataItem.ToString() %>" Text="*" runat="server" />
 				</td>
 			</ItemTemplate></asp:Repeater>

@@ -300,27 +300,27 @@ namespace N2.Edit.Web
 		#endregion
 
         #region Obsolete
-        [Obsolete("Don't use", true)]
+        [Obsolete("Don't use")]
 		protected string Path
 		{
 			get { return Request["root"] ?? "/"; }
 		}
 
-        [Obsolete("Don't use", true)]
+        [Obsolete("Don't use")]
         protected virtual INode SelectedNode
         {
             get { return Selection.SelectedItem as INode; }
 		}
 
 		/// <summary>Gets the currently selected item by the tree menu in edit mode.</summary>
-		[Obsolete("Use Selection.SelectedItem", true)]
+		[Obsolete("Use Selection.SelectedItem")]
 		public virtual ContentItem SelectedItem
 		{
 			get { return Selection.SelectedItem; }
 			set { Selection.SelectedItem = value; }
 		}
 
-		[Obsolete("Use Selection.MemorizedItem", true)]
+		[Obsolete("Use Selection.MemorizedItem")]
 		protected ContentItem MemorizedItem
 		{
 			get { return Selection.MemorizedItem; }

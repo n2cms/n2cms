@@ -14,10 +14,10 @@
 <asp:Content ID="cc" ContentPlaceHolderID="Content" runat="server">
 	<div id="splitter" class="content">
 		<div id="leftPane" class="pane">
-			<iframe id="navigationFrame" src="<%= GetNavigationUrl(SelectedItem) %>" frameborder="0" name="navigation" class="frame"></iframe>
+			<iframe id="navigationFrame" src="<%= GetNavigationUrl(Selection.SelectedItem) %>" frameborder="0" name="navigation" class="frame"></iframe>
 		</div>
 		<div id="rightPane" class="pane">
-			<iframe id="previewFrame" src="<%= GetPreviewUrl(SelectedItem) %>" frameborder="0" name="preview" class="frame"></iframe>
+			<iframe id="previewFrame" src="<%= GetPreviewUrl(Selection.SelectedItem) %>" frameborder="0" name="preview" class="frame"></iframe>
 		</div>
 	</div>
 
