@@ -36,7 +36,7 @@ namespace N2.Web.UI
 			return ResolveUrl(url as string);
 		}
 
-		protected string ResolveUrl(string url)
+		protected new string ResolveUrl(string url)
 		{
 			return Engine.ManagementPaths.ResolveResourceUrl(url);
 		}

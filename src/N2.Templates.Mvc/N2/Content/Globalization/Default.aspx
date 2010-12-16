@@ -19,7 +19,7 @@
 	<asp:Panel ID="pnlLanguages" runat="server" CssClass="languages">
 		<table class="gv">
 		    <thead>
-			    <asp:Repeater runat="server" DataSource='<%# GetTranslations(SelectedItem) %>'>
+			    <asp:Repeater runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>'>
 				    <HeaderTemplate><tr class="th"><td></td></HeaderTemplate>
 				    <ItemTemplate>
 					    <td title='<%# Eval("Language.LanguageCode") %>'><asp:Image ImageUrl='<%# Eval("FlagUrl") %>' AlternateText='<%# Eval("Language.LanguageCode", "{0} flag") %>' runat="server" /> <%# Eval("Language.LanguageTitle") %></td>
@@ -33,7 +33,7 @@
 							<a href="Default.aspx?selected=<%# Selection.SelectedItem.Parent.Path %>"><img src="../../Resources/icons/bullet_toggle_minus.png" class="up" /></a>
 						<% } %>
 					</td>
-			        <lang:Languages runat="server" DataSource='<%# GetTranslations(SelectedItem) %>' />
+			        <lang:Languages runat="server" DataSource='<%# GetTranslations(Selection.SelectedItem) %>' />
                 </tr>
 		    </thead>
 			<asp:Repeater runat="server" DataSource="<%# GetChildren(true) %>">

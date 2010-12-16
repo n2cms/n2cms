@@ -44,9 +44,6 @@
 			iframe.src = href;
 			$(iframe).load(function () {
 				var doc = $(iframe.contentWindow.document);
-				doc.find('form').submit(function () {
-					$(iframe).load(function () { dialog.dialog('close'); });
-				});
 				doc.find('#toolbar a.cancel').click(function () {
 					dialog.dialog('close');
 				});

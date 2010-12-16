@@ -11,7 +11,7 @@
 	<h1><% foreach (N2.ContentItem node in ancestors){ %>/<a href="<%= GetPreviewUrl(node) %>"><%= node.Title %></a><% } %></h1>
 
 	<a href="<%= SelectedItem.Url %>">
-		<img src="<%= N2.Web.Url.ToAbsolute(SelectedItem.IconUrl) %>" alt="icon" />
+		<img src="<%= N2.Web.Url.ToAbsolute(Selection.SelectedItem.IconUrl) %>" alt="icon" />
 		<%= SelectedItem.Title %>
 		(<%= SelectedFile.Size / 1024 %> kB)
 	</a>

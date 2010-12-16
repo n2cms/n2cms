@@ -25,7 +25,7 @@
 		<asp:Repeater ID="rptFiles" runat="server">
 			<ItemTemplate>
 				<div class="file">
-					<label style='background-image:url(<%# N2.Edit.Web.UI.Controls.ResizedImage.GetResizedImageUrl((string)Eval("Url"), 100, 100, N2.Web.Drawing.ImageResizeMode.Fit) %>)'>
+					<label style='<%# ImageBackgroundStyle((string)Eval("Url")) %>'>
 						<input name="file" value="<%# Eval("Url") %>" type="checkbox" />
 						<asp:Image ID="Image1" ImageUrl='<%# Eval("IconUrl") %>' runat="server" />
 					</label>

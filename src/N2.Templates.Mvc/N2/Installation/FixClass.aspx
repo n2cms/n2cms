@@ -18,7 +18,7 @@
         <h1>Invalid item(s) in database (class namechange or missing dll?)</h1>
         <p>An invalid class was found in the database (NHibernate.InvalidClassException). A few possible explanations:</p>
         <ul>
-            <li><b>Missing dll.</b> A dll containing class definitions (e.g. n2.edit.dll) is no longer available in the /bin folder</li>
+            <li><b>Missing dll.</b> A dll containing class definitions (e.g. N2.Management.dll) is no longer available in the /bin folder</li>
             <li><b>Changed or removed class.</b> The name of a class has changed or a class has been removed. E.g. a content class such as
                 <pre><code>[Definition]
 public class PageItem</code></pre> 

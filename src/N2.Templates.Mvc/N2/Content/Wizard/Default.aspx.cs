@@ -69,6 +69,9 @@ namespace N2.Edit.Wizard
 
 		protected virtual string GetEditUrl(MagicLocation location)
 		{
+			if (location.Location == null)
+				return null;
+
 			return Edits.GetEditNewPageUrl(location.Location, 
 				location.GetDefinition(Definitions), 
 				location.ZoneName, 

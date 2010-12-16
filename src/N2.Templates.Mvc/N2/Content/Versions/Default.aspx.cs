@@ -25,10 +25,10 @@ namespace N2.Edit.Versions
 			persister = Engine.Persister;
 			versioner = Engine.Resolve<Persistence.IVersionManager>();
 
-			bool isVersionable = versioner.IsVersionable(SelectedItem);
+			bool isVersionable = versioner.IsVersionable(Selection.SelectedItem);
             cvVersionable.IsValid = isVersionable;
 
-            publishedItem = Selection.SelectedItem.VersionOf ?? SelectedItem;
+			publishedItem = Selection.SelectedItem.VersionOf ?? Selection.SelectedItem;
 
 			base.OnInit(e);
 		}

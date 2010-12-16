@@ -48,6 +48,7 @@ namespace N2.Edit
                 }
 				catch(NullReferenceException ex)
 				{
+					System.Diagnostics.Trace.WriteLine(ex);
 					SetErrorMessage(cvException, "Nothing to move");
 				}
                 catch (Exception ex)

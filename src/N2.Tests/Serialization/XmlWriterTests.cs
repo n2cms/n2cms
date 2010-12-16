@@ -363,7 +363,7 @@ namespace N2.Tests.Serialization
 
 			axw.Write(item, xtw);
 
-			Assert.That(sb.ToString(), Text.Contains("DA IMAGE"));
+			Assert.That(sb.ToString(), Is.StringContaining("DA IMAGE"));
 		}
 	}
 }

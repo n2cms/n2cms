@@ -9,8 +9,10 @@ namespace N2.Tests.Web.WebControls
 	public class ControlPanelTests_EditingState : WebControlTestsBase
 	{
 		[TestFixtureSetUp]
-		public void TestFixtureSetUp()
+		public override void TestFixtureSetUp()
 		{
+			base.TestFixtureSetUp();
+
 			Initialize("edit=true");
 		}
 

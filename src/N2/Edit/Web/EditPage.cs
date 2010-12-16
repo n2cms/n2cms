@@ -300,13 +300,13 @@ namespace N2.Edit.Web
 		#endregion
 
         #region Obsolete
-        [Obsolete]
+        [Obsolete("Don't use")]
 		protected string Path
 		{
 			get { return Request["root"] ?? "/"; }
 		}
 
-        [Obsolete]
+        [Obsolete("Don't use")]
         protected virtual INode SelectedNode
         {
             get { return Selection.SelectedItem as INode; }
@@ -343,7 +343,7 @@ namespace N2.Edit.Web
             set { selection = value; }
         }
 
-		[Obsolete]
+		[Obsolete("Don't use", true)]
 		protected ContentItem RootNode
 		{
 			get { return Engine.Resolve<Navigator>().Navigate(Path); }

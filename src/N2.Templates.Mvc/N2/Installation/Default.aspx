@@ -19,6 +19,15 @@
     	textarea{width:95%;height:120px; border:none; background-color:#FFB}
     	pre { overflow:auto; font-size:10px; color:Gray; }
     </style>
+	<script type="text/javascript">
+		function show(id) {
+			var el = document.getElementById(id);
+			if (!el) return;
+			el.style.display = "block";
+			this.style.display = "none";
+			return false;
+		}
+	</script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -39,18 +48,24 @@
 				</p>
             </asp:Panel>
             <asp:Panel ID="Panel1" runat="server" Visible="<%# Status.IsConnected %>">
-				<h1>Create datbase tables</h1>
-				<asp:Literal runat="server" Visible='<%# !Status.IsConnected %>'>
-					<p class="warning"><b>Advice: </b>Go back and check database connection.</p>
-				</asp:Literal>
-				<p>
-					Please review the following SQL script carefully before creating tables.
-				</p>
-				<textarea readonly="readonly"><%= Installer.ExportSchema() %></textarea>
-				<asp:Literal ID="Literal1" runat="server" Visible="<%# Status.HasSchema %>">
-					<p class="warning">Creating tables will destroy any existing content.</p>
-				</asp:Literal>
-				<p class="buttons"><asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="Create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false"/></p>
+				<% if (Status.HasSchema){ %>
+				<p><a href="#createschema" onclick="return show.call(this, 'createschema');">Re-create database tables.</a></p>
+			    <% } %>
+
+				<div id="createschema" style='display: <%= Status.HasSchema ? "none" : "block"%>'>
+					<h1>Create datbase tables</h1>
+					<asp:Literal runat="server" Visible='<%# !Status.IsConnected %>'>
+						<p class="warning"><b>Advice: </b>Go back and check database connection. </p>
+					</asp:Literal>
+					<p>
+						Please review the following SQL script carefully before creating tables.
+						<asp:Literal ID="Literal1" runat="server" Visible="<%# Status.HasSchema %>">
+							<span class="warning">Creating tables will destroy any existing content.</span>
+						</asp:Literal>
+					</p>
+					<textarea readonly="readonly"><%= Installer.ExportSchema() %></textarea>
+					<p class="buttons"><asp:Button ID="btnInstall" runat="server" OnClick="btnInstall_Click" Text="Create tables" OnClientClick="return confirm('Creating database tables will destroy any existing data. Are you sure?');" ToolTip="Click this button to install database" CausesValidation="false"/></p>
+				</div>
 				<hr />
 				<p>
 					Optionally I can 
@@ -67,7 +82,7 @@
 				</p>
 			</asp:Panel>
         </n2:TabPanel>
-        <n2:TabPanel ID="Content" ToolTip="2. Content Package" runat="server">
+        <n2:TabPanel ID="Content" ToolTip="2. Content Package" runat="server">				
             <asp:Literal runat="server" Visible='<%# Status.IsInstalled %>'>
 				<p class="ok">
 				    <b>Advice: </b> Proceed to <a href="#Finish">step 3</a>
@@ -78,28 +93,22 @@
             <asp:Literal runat="server" Visible='<%# !Status.HasSchema %>'>
 				<p class="warning"><b>Advice: </b>Go back to <a href='#Database'>step 1</a> and check database connection and tables.</p>
             </asp:Literal>
+
 			<h1>Add Content Package</h1>
             <asp:PlaceHolder ID="plhAddContent" runat="server">
                 <div  style="display:<%= rblExports.Items.Count == 0 ? "none" : "block" %>">
-                <p>
-                    Pick the <b>content package</b> that tickle your fancy and import it into your site.
-                </p>
-                <div class="exports">
-					<asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Table" RepeatColumns="2" />
-				</div>
-			    <p class="buttons">
-			        <asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="Please import this" ToolTip="Insert existing package" CausesValidation="false" />
-			        <asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" />
-			    </p>
-			    <script type="text/javascript">
-			        function showadvancedcontentoptions() {
-			            document.getElementById("advancedcontentoptions").style.display = "block";
-			            this.style.display = "none";
-			            return false;
-			        }
-			    </script>
-			    <hr />
-			    <p><a href="#advancedcontentoptions" onclick="return showadvancedcontentoptions.call(this);">Advanced options (includes upload and manual insert).</a></p>
+					<p>
+						Pick the <b>content package</b> that tickle your fancy and import it into your site.
+					</p>
+					<div class="exports">
+						<asp:RadioButtonList ID="rblExports" runat="server" RepeatLayout="Table" RepeatColumns="2" />
+					</div>
+					<p class="buttons">
+						<asp:Button ID="btnInsertExport" runat="server" OnClick="btnInsertExport_Click" Text="Please import this" ToolTip="Insert existing package" CausesValidation="false" />
+						<asp:CustomValidator ID="cvExisting" runat="server" ErrorMessage="Select an export file" Display="Dynamic" />
+					</p>
+					<hr />
+					<p><a href="#advancedcontentoptions" onclick="return show.call(this, 'advancedcontentoptions');">Advanced options (includes upload and manual insert).</a></p>
 			    </div>
 			    <div id="advancedcontentoptions" style="display:<%= rblExports.Items.Count > 0 ? "none" : "block" %>">
 					<p>

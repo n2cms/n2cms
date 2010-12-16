@@ -56,7 +56,7 @@ namespace N2.Templates.Tests.Wiki
             throw new NotImplementedException();
         }
 
-		public PathData ResolvePath(string url)
+		public PathData ResolvePath(Url url)
 		{
 			throw new NotImplementedException();
 		}

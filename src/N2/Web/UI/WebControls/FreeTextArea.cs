@@ -69,7 +69,7 @@ namespace N2.Web.UI.WebControls
 			{
 				Register.JQuery(Page);
 				Register.TinyMCE(Page);
-				Register.JavaScript(Page, configScriptUrl ?? Page.Engine().ManagementPaths.ResolveResourceUrl("Resources/Js/FreeTextArea.js"));
+				Register.JavaScript(Page, configScriptUrl ?? Page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Js/FreeTextArea.js"));
 
 				string script = string.Format("freeTextArea_init('{0}', {1});",
 					Url.Parse(Page.Engine().ManagementPaths.EditTreeUrl),
@@ -82,10 +82,10 @@ namespace N2.Web.UI.WebControls
 		{
 			IDictionary<string, string> overrides = new Dictionary<string, string>();
 			overrides["elements"] = ClientID;
-			overrides["content_css"] = configCssUrl ?? Page.Engine().ManagementPaths.ResolveResourceUrl("Resources/Css/Editor.css");
+			overrides["content_css"] = configCssUrl ?? Page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Css/Editor.css");
 
 			string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
-			if (HostingEnvironment.VirtualPathProvider.FileExists(Page.Engine().ManagementPaths.ResolveResourceUrl("Resources/tiny_mce/langs/" + language + ".js")))
+			if (HostingEnvironment.VirtualPathProvider.FileExists(Page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/tiny_mce/langs/" + language + ".js")))
 				overrides["language"] = language;
 
 			if (!string.IsNullOrEmpty(DocumentBaseUrl))
@@ -110,9 +110,7 @@ namespace N2.Web.UI.WebControls
 					value = "false";
 				else if (value == null)
 					value = "null";
-				else if (value.StartsWith("[") || value.StartsWith("{"))
-					value = value;
-				else
+				else if (!value.StartsWith("[") && !value.StartsWith("{"))
 					value = "'" + value + "'";
 				sb.Append("'").Append(key).Append("': ").Append(value).Append(",");
 			}

@@ -256,7 +256,7 @@ namespace N2.Resources
 				page.Items[key] = new object();
 				if (registerTabCss)
 				{
-					StyleSheet(page, page.Engine().ManagementPaths.ResolveResourceUrl("Resources/Css/TabPanel.css"));
+					StyleSheet(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Css/TabPanel.css"));
 				}
 			}
 		}

@@ -219,15 +219,26 @@ namespace N2.Persistence
 		/// <returns>An enumeration of all children of an item.</returns>
 		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item)
 		{
-			return EnumerateChildren(item, false);
+			return EnumerateChildren(item, false, true);
 		}
 
 		/// <summary>Enumerates itself, child items and their children, and so on.</summary>
 		/// <param name="item">The parent item whose child items to enumerate. The item itself is not returned.</param>
+		/// <param name="includeSlef">Enumerate the item itself and it's descendants.</param>
 		/// <returns>An enumeration of all children of an item.</returns>
 		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSlef)
 		{
-			if (item.VersionOf != null) item = item.VersionOf;
+			return EnumerateChildren(item, includeSlef, true);
+		}
+
+		/// <summary>Enumerates itself, child items and their children, and so on.</summary>
+		/// <param name="item">The parent item whose child items to enumerate. The item itself is not returned.</param>
+		/// <param name="includeSlef">Enumerate the item itself and it's descendants.</param>
+		/// <param name="useMasterVersion">Enumerate descendants of the master version if the passed item is a version.</param>
+		/// <returns>An enumeration of all children of an item.</returns>
+		public static IEnumerable<ContentItem> EnumerateChildren(ContentItem item, bool includeSlef, bool useMasterVersion)
+		{
+			if (useMasterVersion && item.VersionOf != null) item = item.VersionOf;
 
 			if(includeSlef)
 				yield return item;

@@ -1,4 +1,10 @@
-﻿- Rss aggregator support for multiple feeds, atom and caching for subsequent requests
+﻿- Extendable user object (ThreadId=73897)
+- Fixed issue with default.aspx and ?page=
+- Fixed error viewing Folder with non graphic file in Edit Interface (ThreadId=238204)
+- Fixed #29741: Exception when deleting unsaved items wihin [EditableChildren]
+- Fixed issue with postbacks with the new popup item editor (ThreadId=238401)
+- Fixed exception after deleting wizard location (ThreadId=238336)"
+- Rss aggregator support for multiple feeds, atom and caching for subsequent requests
 - Pulled Steve Mason's modal part editing
 - Updated jquery to 1.4.4
 - Fixed no MVC 404 (ThreadId=237393)

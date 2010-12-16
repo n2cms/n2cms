@@ -76,7 +76,7 @@ namespace N2.Edit.Navigation
 			{
 				var filter = Engine.EditManager.GetEditorFilter(Page.User);
 				siteTreeView.Filter = filter;
-				siteTreeView.RootNode = RootNode;
+				siteTreeView.RootNode = Engine.Resolve<Navigator>().Navigate(Request["root"] ?? "/");
 				siteTreeView.SelectedItem = selected;
 			}
 			

@@ -151,7 +151,7 @@ namespace N2.Persistence.NH
 		private void DeleteReferencesRecursive(ContentItem itemNoMore)
 		{
 			string itemTrail = Utility.GetTrail(itemNoMore);
-			var inboundLinks = Find.EnumerateChildren(itemNoMore, true)
+			var inboundLinks = Find.EnumerateChildren(itemNoMore, true, false)
 				.SelectMany(i => linkRepository.FindAll(Expression.Eq("LinkedItem", i)))
 				.Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
 				.ToList();
