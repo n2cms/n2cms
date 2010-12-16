@@ -150,6 +150,14 @@ namespace N2.Configuration
 			set { base["images"] = value; }
 		}
 
+		/// <summary>Information about membership.</summary>
+		[ConfigurationProperty("membership")]
+		public MembershipElement Membership
+		{
+			get { return (MembershipElement)base["membership"]; }
+			set { base["membership"] = value; }
+		}
+
 		// deprecated
 
 		[Obsolete("Use Versions.Enabled instead"), ConfigurationProperty("enableVersioning", DefaultValue = true)]

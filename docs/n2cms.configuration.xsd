@@ -429,6 +429,11 @@
 									<xs:attribute name="resizeUploadedImages" type="xs:boolean" use="optional" default="true" />
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="membership" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="userType" type="xs:string" use="optional" default="N2.Security.Items.User, N2.Management" />
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="theme" type="xs:string" use="optional" />
 						<xs:attribute name="editTreeUrl" type="xs:string" use="optional" />

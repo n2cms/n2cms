@@ -29,16 +29,22 @@ namespace N2.Security
 		private string[] defaultRoles = new string[] { "Everyone", "Members", "Writers", "Editors", "Administrators" };
 		string[] editorUsernames = new string[] {"admin"};
 		string[] administratorUsernames = new string[] { "admin" };
+		Type userType = typeof(User);
 
 		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, ISecurityManager security, IHost host, EditSection config)
 		{
-			editorUsernames = ToArray(config.Editors.Users);
-			administratorUsernames = ToArray(config.Administrators.Users);
 			this.security = security;
 			this.definitions = definitions;
 			this.finder = finder;
 			this.persister = persister;
 			this.host = host;
+			this.editorUsernames = ToArray(config.Editors.Users);
+			this.administratorUsernames = ToArray(config.Administrators.Users);
+
+			Type configuredUserType = Type.GetType(config.Membership.UserType);
+			if (configuredUserType == null) throw new ArgumentException("Couldn't create configured membership user type: " + config.Membership.UserType);
+			if (!typeof(User).IsAssignableFrom(configuredUserType)) throw new ArgumentException("Configured membership user type '" + config.Membership.UserType + "' doesn't derive from '" + typeof(User).AssemblyQualifiedName + "'");
+			this.userType = configuredUserType;
 		}
 
 		public IItemFinder Finder
@@ -68,7 +74,7 @@ namespace N2.Security
 			if(IsEditorOrAdmin(username))
 				throw new ArgumentException("Invalid username.", "username");
 
-			Items.User u = definitions.CreateInstance<Items.User>(GetUserContainer(true));
+			User u = (User)definitions.CreateInstance(userType, GetUserContainer(true));
 			u.Title = username;
 			u.Name = username;
 			u.Password = password;
