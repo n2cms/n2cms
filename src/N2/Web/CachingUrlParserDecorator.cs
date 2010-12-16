@@ -59,9 +59,9 @@ namespace N2.Web
 		/// <summary>Finds the content item and the template associated with an url.</summary>
 		/// <param name="url">The url to the template to locate.</param>
 		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
-		public PathData ResolvePath(string url)
+		public PathData ResolvePath(Url url)
 		{
-			string key = url.ToLowerInvariant();
+			string key = url.ToString().ToLowerInvariant();
 
 			PathData data = HttpRuntime.Cache[key] as PathData;
 			if(data == null)

@@ -29,7 +29,7 @@ namespace N2.Web
 		/// <summary>Finds the content item and the template associated with an url.</summary>
 		/// <param name="url">The url to the template to locate.</param>
 		/// <returns>A TemplateData object. If no template was found the object will have empty properties.</returns>
-		PathData ResolvePath(string url);
+		PathData ResolvePath(Url url);
 
 		/// <summary>Finds an item by traversing names from the starting point root.</summary>
 		/// <param name="url">The url that should be traversed.</param>
