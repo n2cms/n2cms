@@ -1,3 +1,4 @@
+- Fixed issue with default.aspx and ?
 - permission checkout
 	- publish 
 		- move from

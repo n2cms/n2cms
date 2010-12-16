@@ -7,6 +7,7 @@ using N2.Resources;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using N2.Web;
+using N2.Web.Drawing;
 
 namespace N2.Edit.FileSystem
 {
@@ -41,7 +42,7 @@ namespace N2.Edit.FileSystem
 			var dir = Selection.SelectedItem as Directory;
 			directories = dir.GetDirectories();
 			files = dir.GetFiles();
-
+			
 			rptDirectories.DataSource = directories;
 			rptFiles.DataSource = files;
 			DataBind();
@@ -65,6 +66,14 @@ namespace N2.Edit.FileSystem
 			}
 
 			Reload();
+		}
+
+		protected string ImageBackgroundStyle(string url)
+		{
+			if(ImagesUtility.IsImagePath(url))
+				return string.Format("background-image:url({0})", N2.Edit.Web.UI.Controls.ResizedImage.GetResizedImageUrl(url, 100, 100, N2.Web.Drawing.ImageResizeMode.Fit));
+			else
+				return "";
 		}
 	}
 }
