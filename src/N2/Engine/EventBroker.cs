@@ -49,6 +49,7 @@ namespace N2.Engine
 		public EventHandler<EventArgs> BeginRequest;
 		public EventHandler<EventArgs> AuthorizeRequest;
 		public EventHandler<EventArgs> PostResolveRequestCache;
+		public EventHandler<EventArgs> AllPostResolveRequestCache;
 		public EventHandler<EventArgs> AcquireRequestState;
 		public EventHandler<EventArgs> PostMapRequestHandler;
 		public EventHandler<EventArgs> Error;
@@ -56,18 +57,6 @@ namespace N2.Engine
 
 		protected void Application_BeginRequest(object sender, EventArgs e)
 		{
-		    var path = Context.Current.RequestContext.Request.Path;
-
-            if (path.StartsWith("/upload/"))
-            {
-                var fileSystem = (IFileSystem) N2.Context.Current.Resolve(typeof (IFileSystem));
-                if (fileSystem.FileExists(path))
-                {
-                    fileSystem.ReadFileContents(path, Context.Current.RequestContext.Response.OutputStream);
-                    Context.Current.RequestContext.Response.End();
-                }
-            }
-
 			if (BeginRequest != null && !IsStaticResource(sender))
 			{
 				Debug.WriteLine("Application_BeginRequest");
@@ -90,6 +79,11 @@ namespace N2.Engine
 			{
 				Debug.WriteLine("Application_PostResolveRequestCache");
 				PostResolveRequestCache(sender, e);
+			}
+			if (AllPostResolveRequestCache != null)
+			{
+				Debug.WriteLine("Application_AllPostResolveRequestCache");
+				AllPostResolveRequestCache(sender, e);
 			}
 		}
 
