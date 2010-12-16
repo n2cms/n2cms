@@ -66,7 +66,7 @@ namespace N2.Web
 
 				var directData = UseItemIfAvailable(item, directPath);
 				// check whether to rewrite requests with page in query string since this might be already rewritten
-				directData.IsRewritable = !string.Equals(url.ApplicationRelativePath, directData.TemplateUrl, StringComparison.InvariantCultureIgnoreCase);
+				directData.IsRewritable &= !string.Equals(url.ApplicationRelativePath, directData.TemplateUrl, StringComparison.InvariantCultureIgnoreCase);
 				return directData;
 			}
 
