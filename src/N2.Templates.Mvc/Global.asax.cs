@@ -32,8 +32,8 @@ namespace N2.Templates.Mvc
 
 			routes.MapRoute(
 				"Default", // Route name
-				"{controller}/{action}/{*remainder}", // URL with parameters
-				new { action = "Index", remainder = "" } // Parameter defaults
+				"{controller}/{action}/{id}/{*theRest}", // URL with parameters
+                new { action = "Index", id = UrlParameter.Optional, theRest = UrlParameter.Optional } // Parameter defaults
 				);
 		}
 	}
