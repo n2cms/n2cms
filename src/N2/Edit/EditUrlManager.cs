@@ -86,7 +86,7 @@ namespace N2.Edit
 				&& finalUrl.StartsWith("/") == false
 				&& finalUrl.StartsWith("{") == false
 				&& finalUrl.StartsWith("javascript:") == false 
-				&& finalUrl.Contains("://") == false
+				&& finalUrl.Contains(":") == false
 			    && finalUrl.StartsWith(managementUrl, StringComparison.InvariantCultureIgnoreCase) == false)
 				finalUrl = managementUrl + "/" + resourceUrl.TrimStart('/');
 
