@@ -10,7 +10,7 @@ using N2.Definitions;
 
 namespace N2.Management.Content.Templates
 {
-	[ToolbarPlugin("TEMPL", "templates", "Content/Templates/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_white_swoosh.png", 56,
+	[ToolbarPlugin("TEMPL", "templates", "{ManagementUrl}/Content/Templates/Default.aspx?selected={selected}", ToolbarArea.Preview, Targets.Preview, "{ManagementUrl}/Resources/icons/page_white_swoosh.png", 56,
 		ToolTip = "create items with default content",
 		GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage
