@@ -33,7 +33,7 @@ namespace N2.Templates.Mvc
 			routes.MapRoute(
 				"Default", // Route name
 				"{controller}/{action}/{id}/{*theRest}", // URL with parameters
-				new { action = "Index", id = "" } // Parameter defaults
+                new { action = "Index", id = UrlParameter.Optional, theRest = UrlParameter.Optional } // Parameter defaults
 				);
 		}
 	}
