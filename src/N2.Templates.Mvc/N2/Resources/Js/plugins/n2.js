@@ -110,7 +110,7 @@ var initn2context = function(w) {
 		},
 
 		initToolbar: function() {
-			$("a.command").click(function(e) {
+			$(".command a").click(function(e) {
 				if (this.hash == "#stop")
 					e.preventDefault();
 			});
