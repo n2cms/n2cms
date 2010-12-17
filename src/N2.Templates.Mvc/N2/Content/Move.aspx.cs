@@ -15,11 +15,14 @@ namespace N2.Edit
 		protected void Page_Load(object sender, EventArgs e)
 		{
             btnCancel.NavigateUrl = Selection.SelectedItem.FindPath(PathData.DefaultAction).RewrittenUrl;
+
+			ContentItem toMove = Selection.MemorizedItem;
+			if (toMove == null)
+				return;
             
             if (!IsPostBack)
 			{
                 pnlNewName.Visible = false;
-                ContentItem toMove = Selection.MemorizedItem;
 
                 try
                 {
@@ -56,22 +59,21 @@ namespace N2.Edit
                     SetErrorMessage(cvMove, ex);
                 }
 
-				if(toMove != null)
-                    LoadDefaultsAndInfo(toMove, Selection.SelectedItem);
+				txtNewName.Text = toMove.Name;
 			}
+
+			LoadDefaultsAndInfo(toMove, Selection.SelectedItem);
 		}
 
 		private void LoadDefaultsAndInfo(ContentItem moved, ContentItem destination)
 		{
-            txtNewName.Text = moved.Name;
-
             Title = string.Format(GetLocalResourceString("MovePage.TitleFormat"),
                                   moved.Title,
                                   destination.Title);
 
             from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
                                       moved.Parent != null ? moved.Parent.Path : "",
-                                      moved.Path);
+                                      moved.Name);
 
             to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
                                     destination.Path,

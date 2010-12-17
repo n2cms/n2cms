@@ -10,18 +10,20 @@
     <asp:CustomValidator id="cvMove" runat="server" CssClass="validator info" meta:resourceKey="cvMove"/>
     <asp:CustomValidator ID="cvException" runat="server" CssClass="validator info" Display="Dynamic" />
     
-    <asp:Panel ID="pnlNewName" runat="server" CssClass="formField">
-		<asp:Label ID="lblNewName" runat="server" Text="New name"  meta:resourceKey="lblNewName" AssociatedControlID="txtNewName" />
-        <asp:TextBox ID="txtNewName" runat="server" />
-    </asp:Panel>
-    <div class="formField">
-		<asp:Label ID="lblFrom" runat="server" Text="From"  meta:resourceKey="lblFrom" AssociatedControlID="from" />
-        <asp:Label ID="from" runat="server"/>
-    </div>
-    <div class="formField">
-		<asp:Label ID="lblTo" runat="server" Text="To"  meta:resourceKey="lblTo" AssociatedControlID="to" />
-        <asp:Label ID="to" runat="server"/>
-    </div>
+	<div class="cf">
+		<asp:Panel ID="pnlNewName" runat="server" CssClass="formField">
+			<asp:Label ID="lblNewName" runat="server" Text="New name"  meta:resourceKey="lblNewName" AssociatedControlID="txtNewName" CssClass="label" />
+			<asp:TextBox ID="txtNewName" runat="server" />
+		</asp:Panel>
+		<div class="formField">
+			<asp:Label ID="lblFrom" runat="server" Text="From"  meta:resourceKey="lblFrom" AssociatedControlID="from" CssClass="label" />
+			<asp:Label ID="from" runat="server"/>
+		</div>
+		<div class="formField">
+			<asp:Label ID="lblTo" runat="server" Text="To"  meta:resourceKey="lblTo" AssociatedControlID="to" CssClass="label" />
+			<asp:Label ID="to" runat="server"/>
+		</div>
+	</div>
     <hr />
     <h3 id="h3" runat="server" meta:resourceKey="h3" >Moved items:</h3>
     <uc1:AffectedItems id="itemsToMove" runat="server" />
