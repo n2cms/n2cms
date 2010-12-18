@@ -1,4 +1,5 @@
 ﻿2.1 rc3
+- Applied jafin's patch #26064: Catch Additional Exceptions on RSS Aggregator connection failure
 - Fixed #26178: Body class inconsistency: function GetBodyClass()
 - Fixed #27515: Included host in error email
 - Fixed #29777: Problem uploading file with Tree.aspx
