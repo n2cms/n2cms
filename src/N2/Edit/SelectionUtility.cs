@@ -75,7 +75,11 @@ namespace N2.Edit
 			if(Url.Parse(selectedUrl).IsAbsolute)
 				return null;
 
-			return engine.Resolve<Navigator>().Navigate(Url.ToRelative(selectedUrl).TrimStart('~'));
+			string url = Url.ToRelative(selectedUrl).TrimStart('~');
+			if (!url.StartsWith("/"))
+				return null; ;
+
+			return engine.Resolve<Navigator>().Navigate(url);
 		}
 
 		public string ActionUrl(string actionName)
