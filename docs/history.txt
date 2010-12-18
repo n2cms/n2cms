@@ -1,4 +1,6 @@
-﻿- Extendable user object (ThreadId=73897)
+﻿ -Fixed #29780: Popup box blank when creating parts with no details
+- Fixed #29792: <n2:DraggableToolbar> broke
+- Extendable user object (ThreadId=73897)
 - Fixed issue with default.aspx and ?page=
 - Fixed error viewing Folder with non graphic file in Edit Interface (ThreadId=238204)
 - Fixed #29741: Exception when deleting unsaved items wihin [EditableChildren]
