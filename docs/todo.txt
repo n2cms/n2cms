@@ -1,3 +1,6 @@
+- show path in screens
+- modal file selectors
+- change to ordinal string comparisons
 - permission checkout
 	- publish 
 		- move from
