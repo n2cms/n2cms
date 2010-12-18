@@ -42,6 +42,7 @@ body.framed .itemEditor .editControl input { vertical-align:middle; }
 body.framed .nameEditor { width:142px; }
 body.framed .urlSelector, body.framed .textEditor { width:284px; }
 body.framed .titleEditor { font-size:1.5em; }
+body.framed .itemEditor .itemEditor .titleEditor { font-size:1.1em; }
 body.framed .popupButton { margin-right:10px;}
 body.framed input.disabled, body.framed .disabled *, body.framed input.dimmed, body.framed .dimmed *
     { opacity:.50; filter: alpha(opacity=50); }
