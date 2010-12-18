@@ -1,4 +1,6 @@
-﻿- Fixed #29777: Problem uploading file with Tree.aspx
+﻿2.1 rc3
+- Fixed #27515: Included host in error email
+- Fixed #29777: Problem uploading file with Tree.aspx
  -Fixed #29780: Popup box blank when creating parts with no details
 - Fixed #29792: <n2:DraggableToolbar> broke
 - Extendable user object (ThreadId=73897)
@@ -15,6 +17,8 @@
 - Added [DisplayableHeading]
 - Updated NHibernate to 3.0 GA
 - Moved all types from N2.Security to N2.Management
+
+2.1 rc2
 - Permission inheritance for other permissions than read (ThreadId=237118)
 - Increased the name length to 250 (ThreadId=236565)
 - Applied junglefreak's solution to breadcrumb exception (ThreadId=235958)
