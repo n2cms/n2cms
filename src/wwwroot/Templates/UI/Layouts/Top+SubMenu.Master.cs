@@ -37,7 +37,7 @@ namespace N2.Templates.UI.Layouts
             if (CurrentPage != null)
             {
                 string className = CurrentPage.GetContentType().Name;
-                return className.Substring(0, 1).ToLower() + className.Substring(1);
+				return "type" + className;
             }
             return null;
         }
