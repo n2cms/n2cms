@@ -28,7 +28,7 @@ namespace N2.Templates.Mvc.Controllers
 			{
 				if (string.IsNullOrEmpty(url))
 				{
-					throw new ArgumentException("url is null or empty", "url");
+					throw new ArgumentException(Resources.Redirect.UrlNull, "url");
 				}
 				Url = url;
 			}

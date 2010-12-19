@@ -99,7 +99,7 @@ namespace N2.Templates.Mvc.Controllers
 			catch (SecurityException)
 			{
 				// Cannot use this in Medium Trust
-				return GetCannotLoadItem("Could not load RSS feed because security settings would not allow it");
+                return GetCannotLoadItem(Resources.RssAggregator.CannotLoadCauseSecurity);
 			}
 			catch(Exception ex)
 			{
@@ -114,7 +114,7 @@ namespace N2.Templates.Mvc.Controllers
 				{
 				    new RssAggregatorModel.RssItem()
 				       	{
-				       		Title = "Cannot load RSS Feed",
+				       		Title = Resources.RssAggregator.CannotLoadRss,
 							Published = DateTime.Now,
 							Url = "#",
 							Introduction = reason,

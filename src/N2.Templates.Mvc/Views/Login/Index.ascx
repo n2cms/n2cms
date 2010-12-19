@@ -8,15 +8,15 @@
 			<%}else{%>
 			<%using(Html.BeginForm("Login", "Login", FormMethod.Post)){%>
 			<div class="ff username">
-				<label for="userName">User Name</label>
+				<label for="userName"><%=GetLocalResourceObject("UserName") %></label>
 				<input id="userName" name="userName" class="tb" />
 			</div>
 			<div class="ff password">
-				<label for="password">Password</label>
+				<label for="password"><%=GetLocalResourceObject("Password") %></label>
 				<input id="password" name="password" class="tb" type="password" />
 			</div>
 			<div class="ff remember">
-				<label for="remember">Remember me</label>
+				<label for="remember"><%=GetLocalResourceObject("RememberMe") %></label>
 				<input id="remember" name="remember" class="tb" type="checkbox" />
 			</div>
 			<div class="bf">
