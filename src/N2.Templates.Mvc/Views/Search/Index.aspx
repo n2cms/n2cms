@@ -7,8 +7,10 @@
 		<input type="submit" />
 	<%} %>
 
-	<%if(Model.Results.Count > 0){%>
-		<span><%=Model.TotalResults%> pages found for search term '<%=Html.Encode(Model.SearchTerm)%>'.</span>
+	<%if(Model.Results.Count > 0){
+       string resultMessage = string.Format((string)GetLocalResourceObject("SearchResultFmt"), Model.TotalResults, Model.SearchTerm);
+       %>
+		<span><%=Html.Encode(resultMessage)%></span>
 		<div class="list">
 		<% var i = 0; %>
 		<%foreach(var result in Model.Results){%>
@@ -19,7 +21,7 @@
 		</div>
 		<div id="pg">
 			<%if (Model.PageNumber > 0){%>
-			<%=Html.ActionLink("< Prev", "Index", "Search", new{id="pg-prev"})%>
+			<%=Html.ActionLink((string)GetLocalResourceObject("PrevLink"), "Index", "Search", new { id = "pg-prev" })%>
 			<%}%>
 			<%for(i = 0; i < Model.TotalPages; i++){%>
 				<%if(i == Model.PageNumber){%>
@@ -29,7 +31,7 @@
 				<%}%>
 			<%} %>
 			<%if(Model.PageNumber < Model.TotalPages - 1){%>
-			<%=Html.ActionLink("Next >", "Index", "Search", new{id="pg-next"})%>
+			<%=Html.ActionLink((string)GetLocalResourceObject("NextLink"), "Index", "Search", new { id = "pg-next" })%>
 			<%}%>
 		</div>
 	<%}else if(Model.HasSearchTerm){%>

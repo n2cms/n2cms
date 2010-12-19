@@ -162,7 +162,47 @@
     <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.designer.cs">
       <DependentUpon>TestWebFormPart.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Details\AnswerContext.cs" />
+   <Compile Include="Details\AnswerContext.cs" />
+    <Compile Include="Controllers\Resources\UserRegistration.fr.Designer.cs">
+      <DependentUpon>UserRegistration.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\UserRegistration.Designer.cs">
+      <DependentUpon>UserRegistration.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\Redirect.fr.Designer.cs">
+      <DependentUpon>Redirect.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\Redirect.Designer.cs">
+      <DependentUpon>Redirect.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\RssAggregator.fr.Designer.cs">
+      <DependentUpon>RssAggregator.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\RssAggregator.Designer.cs">
+      <DependentUpon>RssAggregator.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Controllers\Resources\Poll.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Poll.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\Resources\Poll.fr.Designer.cs">
+      <DependentUpon>Poll.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Find.cs" />
     <Compile Include="Controllers\ABTestingController.cs" />
     <Compile Include="Controllers\NewsContainerController.cs" />
@@ -632,14 +672,77 @@
     <Content Include="Content\Galleria\jquery.galleria.js" />
     <Content Include="Views\NewsContainer\Index.aspx" />
     <Content Include="Views\NewsContainer\Range.ascx" />
-    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Poll.ascx.resx" />
-    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Poll.ascx.sv.resx" />
+    <Content Include="Views\Poll\App_LocalResources\Index.ascx.resx" />
+    <Content Include="Views\Poll\App_LocalResources\Index.ascx.sv.resx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Management\Views\Shared\" />
     <Folder Include="Areas\Tests\Views\Shared\" />
     <Folder Include="Upload\" />
     <Folder Include="Views\Shared\App_LocalResources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Poll\App_LocalResources\Index.ascx.fr.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controllers\Resources\UserRegistration.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserRegistration.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\UserRegistration.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserRegistration.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\Redirect.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Redirect.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\Redirect.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Redirect.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\RssAggregator.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RssAggregator.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\RssAggregator.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RssAggregator.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\Poll.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Poll.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Resources\Poll.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Poll.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Content Include="Views\Calendar\App_LocalResources\Index.aspx.fr.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\CalendarTeaser\App_LocalResources\Index.ascx.fr.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\CommentInput\App_LocalResources\Index.ascx.fr.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Form\App_LocalResources\Index.ascx.fr.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Login\App_LocalResources\Index.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Login\App_LocalResources\Index.ascx.fr.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Search\App_LocalResources\Index.ascx.resx" />
+    <Content Include="Views\Search\App_LocalResources\Index.ascx.fr.resx" />
+    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Login.ascx.fr.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Shared\PartTemplates\App_LocalResources\Login.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

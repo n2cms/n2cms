@@ -57,7 +57,7 @@ namespace N2.Templates.Mvc.Controllers
 
 			if (IsEditorOrAdmin(model.RegisterUserName) || Membership.GetUser(model.RegisterUserName) != null)
 			{
-				ModelState.AddModelError("UserName", "Invalid user name.");
+				ModelState.AddModelError("UserName", Resources.UserRegistration.InvalidUserName);
 
 				return ViewParentPage();
 			}

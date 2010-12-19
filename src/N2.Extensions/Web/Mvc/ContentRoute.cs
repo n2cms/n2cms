@@ -111,6 +111,17 @@ namespace N2.Web.Mvc
 			if(routeData == null)
 				routeData = CheckForContentController(httpContext);
 
+            // Set the thread's UI culture to match the page's language so that appropriate resources are loaded
+            ContentItem page = routeData.CurrentPage();
+            if (page != null)
+            {
+                if (page.Details.ContainsKey("LanguageCode"))
+                {
+                    System.Threading.Thread.CurrentThread.CurrentUICulture =
+                        System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag((string)page.Details["LanguageCode"].Value);
+                }
+            }
+
 			Debug.WriteLine("GetRouteData for '" + path + "' got values: " + (routeData != null ? routeData.Values.ToQueryString() : "(null)"));
 			return routeData;
 		}
@@ -132,8 +143,10 @@ namespace N2.Web.Mvc
 			if (!string.IsNullOrEmpty(request.QueryString[PathData.PageQueryKey]))
 			{
 				int pageId;
-				if (int.TryParse(request.QueryString[PathData.PageQueryKey], out pageId))
-					td.CurrentPage = page = engine.Persister.Get(pageId);
+                if (int.TryParse(request.QueryString[PathData.PageQueryKey], out pageId))
+                {
+                    td.CurrentPage = page = engine.Persister.Get(pageId);
+                }
 			}
 
 			ContentItem part = null;
