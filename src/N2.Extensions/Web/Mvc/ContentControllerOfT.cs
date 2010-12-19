@@ -4,6 +4,9 @@ using System.Web;
 using System.Web.Mvc;
 using N2.Engine;
 using N2.Security;
+using N2.Engine.Globalization;
+using System.Threading;
+using System.Globalization;
 
 namespace N2.Web.Mvc
 {
@@ -83,11 +86,30 @@ namespace N2.Web.Mvc
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
+			SetCulture(filterContext);
 			ValidateAuthorization(filterContext);
 
 			MergeModelStateFromEarlierStep(filterContext.HttpContext);
 
 			base.OnActionExecuting(filterContext);
+		}
+
+		protected virtual void SetCulture(ActionExecutingContext filterContext)
+		{
+			if (ControllerContext.IsChildAction || CurrentItem == null)
+				return;
+
+			var gateway = Engine.Resolve<ILanguageGateway>();
+			if (!gateway.Enabled)
+				return;
+
+			ILanguage language = gateway.GetLanguage(CurrentItem);
+			if (language == null || string.IsNullOrEmpty(language.LanguageCode))
+				return;
+
+			var culture = CultureInfo.GetCultureInfoByIetfLanguageTag(language.LanguageCode);
+			Thread.CurrentThread.CurrentCulture = culture;
+			Thread.CurrentThread.CurrentUICulture = culture;
 		}
 
 		/// <summary>Validates that the user is allowed to read the rendered item.</summary>

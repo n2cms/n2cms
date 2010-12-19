@@ -162,7 +162,7 @@
     <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.designer.cs">
       <DependentUpon>TestWebFormPart.ascx</DependentUpon>
     </Compile>
-   <Compile Include="Details\AnswerContext.cs" />
+    <Compile Include="Details\AnswerContext.cs" />
     <Compile Include="Controllers\Resources\UserRegistration.fr.Designer.cs">
       <DependentUpon>UserRegistration.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -221,7 +221,6 @@
     <Compile Include="Tabs.cs" />
     <Compile Include="Areas\Tests\WebFormOnMvcPartAdapter.cs" />
     <Compile Include="Services\ThemedMasterViewEngine.cs" />
-    <Compile Include="Services\LanguageConcern.cs" />
     <Compile Include="Zones.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CalendarTeaserController.cs" />
