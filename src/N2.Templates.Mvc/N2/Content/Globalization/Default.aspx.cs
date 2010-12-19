@@ -71,7 +71,7 @@ namespace N2.Edit.Globalization
 
 		protected IEnumerable<TranslateSpecification> GetTranslations(ContentItem item)
 		{
-			foreach (TranslateSpecification translate in gateway.GetEditTranslations(item, true))
+			foreach (TranslateSpecification translate in gateway.GetEditTranslations(item, true, true))
 			{
 				translate.EditUrl += "&returnUrl=" + ReturnUrl;
 				yield return translate;

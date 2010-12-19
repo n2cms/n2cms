@@ -211,7 +211,7 @@ namespace N2.Tests.Globalization
             {
                 engine.Persister.Save(swedishSub);
             }
-			IList<TranslateSpecification> options = new List<TranslateSpecification>(lg.GetEditTranslations(englishSub, false));
+			IList<TranslateSpecification> options = new List<TranslateSpecification>(lg.GetEditTranslations(englishSub, false, false));
 
 			Assert.That(options.Count, Is.EqualTo(2));
 			Assert.That(options[0].IsNew, Is.False);
@@ -229,7 +229,7 @@ namespace N2.Tests.Globalization
 			engine.Persister.Save(swedishSub);
 
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
-			IList<TranslateSpecification> options = new List<TranslateSpecification>(lg.GetEditTranslations(englishSub, true));
+			IList<TranslateSpecification> options = new List<TranslateSpecification>(lg.GetEditTranslations(englishSub, true, false));
 
 			Assert.That(options.Count, Is.EqualTo(3));
 		}
@@ -238,7 +238,7 @@ namespace N2.Tests.Globalization
 		public void GetTranslationOptions_OnNonTranslatedPage_DoesntThrowExceptions()
 		{
 			ILanguageGateway lg = engine.Resolve<ILanguageGateway>();
-			IEnumerable<TranslateSpecification> options = lg.GetEditTranslations(root, false);
+			IEnumerable<TranslateSpecification> options = lg.GetEditTranslations(root, false, false);
 			EnumerableAssert.Count(0, options);
 		}
 

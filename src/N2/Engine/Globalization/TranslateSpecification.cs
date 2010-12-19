@@ -17,7 +17,10 @@ namespace N2.Engine.Globalization
 			ExistingItem = existingItem;
 			Definition = definition;
 			FlagUrl = GetFlag(language, editUrlManager);
+			IsTranslatable = true;
 		}
+
+		public bool IsTranslatable { get; set; }
 
 		public ItemDefinition Definition { get; set; }
 

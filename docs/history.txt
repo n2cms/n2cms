@@ -1,4 +1,6 @@
 ﻿2.1 rc3
+- Fixed incorrect columns in translations overview interface
+- Merged jronaldi's multilingual mvc templates improvement
 - Added support for posted file in custom form (MVC)
 - Refactored custom form
 - Removed irrelevant question types when creating forms
