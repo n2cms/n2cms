@@ -47,7 +47,7 @@ namespace N2.Templates.Mvc.Controllers
 		public PartialViewResult SubMenu()
 		{
 			ContentItem startPage = Find.ClosestLanguageRoot;
-			var ancestors = Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestStartPage, true).ToList();
+			var ancestors = Find.EnumerateParents(N2.Find.CurrentPage, Find.ClosestLanguageRoot, true).ToList();
 			ContentItem branchRoot = Find.AncestorAtLevel(2, ancestors, N2.Find.CurrentPage);
 			var model = new SubMenuModel();
 
