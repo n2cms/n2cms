@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace N2.Templates.Mvc.Models.Parts
+namespace N2.Templates.Mvc.Models.Parts.Questions
 {
 	[PartDefinition("Multiple Select (check boxes)")]
 	public class MultipleSelect : OptionSelectQuestion

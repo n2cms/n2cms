@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using N2.Templates.Details;
 using N2.Templates.Mvc.Models.Parts;
+using N2.Templates.Mvc.Models.Parts.Questions;
 
 namespace N2.Templates.Mvc.Details
 {

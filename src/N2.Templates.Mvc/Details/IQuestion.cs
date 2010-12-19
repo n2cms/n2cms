@@ -8,6 +8,7 @@ namespace N2.Templates.Mvc.Details
 
 		string QuestionText { get; }
 		string ElementID { get; }
-		string GetAnswerText(string value);
+
+		void AppendAnswer(AnswerContext context, string postedValue);
 	}
 }

@@ -45,16 +45,31 @@ namespace N2.Templates.Mvc.Controllers
 
 		public ActionResult Submit(FormCollection collection)
 		{
-			var sb = new StringBuilder(CurrentItem.MailBody);
+			AnswerContext ac = new AnswerContext();
+
+			ac.Subject = CurrentItem.MailSubject;
+			ac.Body.Append(CurrentItem.MailBody);
+			ac.HttpContext = HttpContext;
+			
 			foreach (IQuestion q in GetQuestions())
 			{
-				sb.AppendFormat("{0}: {1}{2}", q.QuestionText, q.GetAnswerText(collection[q.ElementID]), Environment.NewLine);
+				q.AppendAnswer(ac, collection[q.ElementID]);
 			}
-			var mm = new MailMessage(CurrentItem.MailFrom, CurrentItem.MailTo.Replace(";", ","))
-			         	{
-			         		Subject = CurrentItem.MailSubject,
-			         		Body = sb.ToString()
-			         	};
+
+			if(ac.ValidationErrors.Count > 0)
+			{
+				foreach(var error in ac.ValidationErrors)
+				{
+					ModelState.AddModelError(error.Key, error.Value);
+				}
+				return ViewParentPage();
+			}
+
+			var mm = new MailMessage(CurrentItem.MailFrom, CurrentItem.MailTo.Replace(";", ","));
+			mm.Subject = ac.Subject;
+			mm.Body = ac.Body.ToString();
+			foreach(var attachment in ac.Attachments)
+				mm.Attachments.Add(attachment);
 
 			mailSender.Send(mm);
 

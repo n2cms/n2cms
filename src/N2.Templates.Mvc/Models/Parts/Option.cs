@@ -1,5 +1,6 @@
 using N2.Details;
 using N2.Integrity;
+using N2.Templates.Mvc.Models.Parts.Questions;
 
 namespace N2.Templates.Mvc.Models.Parts
 {

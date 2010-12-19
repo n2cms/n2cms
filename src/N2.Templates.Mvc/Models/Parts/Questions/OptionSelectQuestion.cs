@@ -6,7 +6,7 @@ using N2.Templates.Details;
 using N2.Web.Mvc.Html;
 using N2.Details;
 
-namespace N2.Templates.Mvc.Models.Parts
+namespace N2.Templates.Mvc.Models.Parts.Questions
 {
 	public enum OptionOrientation
 	{

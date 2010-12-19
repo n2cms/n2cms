@@ -162,6 +162,7 @@
     <Compile Include="Areas\Tests\Views\Forms\TestWebFormPart.ascx.designer.cs">
       <DependentUpon>TestWebFormPart.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Details\AnswerContext.cs" />
     <Compile Include="Find.cs" />
     <Compile Include="Controllers\ABTestingController.cs" />
     <Compile Include="Controllers\NewsContainerController.cs" />
@@ -169,6 +170,12 @@
     <Compile Include="Models\ContentModelBase.cs" />
     <Compile Include="Models\NewsContainerModel.cs" />
     <Compile Include="Models\Parts\ABTestingContainer.cs" />
+    <Compile Include="Models\Parts\Questions\FileAttachmentQuestion.cs" />
+    <Compile Include="Models\Parts\Questions\MultipleSelect.cs" />
+    <Compile Include="Models\Parts\Questions\OptionSelectQuestion.cs" />
+    <Compile Include="Models\Parts\Questions\Question.cs" />
+    <Compile Include="Models\Parts\Questions\SingleSelect.cs" />
+    <Compile Include="Models\Parts\Questions\TextQuestion.cs" />
     <Compile Include="Services\IViewConcern.cs" />
     <Compile Include="Services\WebForms\MvcOnWebFormPartAdapter.cs" />
     <Compile Include="Tabs.cs" />
@@ -235,20 +242,16 @@
     <Compile Include="Models\Pages\ISurvey.cs" />
     <Compile Include="Models\Pages\LanguageRoot.cs" />
     <Compile Include="Models\Parts\LoginItem.cs" />
-    <Compile Include="Models\Parts\MultipleSelect.cs" />
     <Compile Include="Models\Pages\News.cs" />
     <Compile Include="Models\Pages\NewsContainer.cs" />
     <Compile Include="Models\Parts\NewsList.cs" />
     <Compile Include="Models\Parts\Option.cs" />
-    <Compile Include="Models\Parts\OptionSelectQuestion.cs" />
     <Compile Include="Models\Parts\Poll.cs" />
-    <Compile Include="Models\Parts\Question.cs" />
     <Compile Include="Models\Parts\RandomImage.cs" />
     <Compile Include="Models\Pages\Redirect.cs" />
     <Compile Include="Models\Parts\RssAggregator.cs" />
     <Compile Include="Models\Pages\RssFeed.cs" />
     <Compile Include="Models\Parts\SidebarItem.cs" />
-    <Compile Include="Models\Parts\SingleSelect.cs" />
     <Compile Include="Models\Pages\SiteMap.cs" />
     <Compile Include="Models\Parts\SocialBookmarks.cs" />
     <Compile Include="Models\Pages\StartPage.cs" />
@@ -256,7 +259,6 @@
     <Compile Include="Models\Parts\Teaser.cs" />
     <Compile Include="Models\Parts\TextItem.cs" />
     <Compile Include="Models\Pages\TextPage.cs" />
-    <Compile Include="Models\Parts\TextQuestion.cs" />
     <Compile Include="Models\Parts\Top.cs" />
     <Compile Include="Models\Parts\Tracking.cs" />
     <Compile Include="Models\Parts\UserRegistration.cs" />
