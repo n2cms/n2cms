@@ -33,7 +33,7 @@
 			<%} else {%>
 			<table>
 			<% int count = 0;
-			foreach (var item in RebasedLinks) {%>
+			foreach (N2.Edit.Installation.RebaseInfo item in RebasedLinks) {%>
 			<tr>
 				<td><a href="../Content/Default.aspx?selected=<%= item.ItemPath %>" title="<%= item.ItemID %>"><%= item.ItemTitle%></a></td>
 				<td><%= item.PropertyName%></td>

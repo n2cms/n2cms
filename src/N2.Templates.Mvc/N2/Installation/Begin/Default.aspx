@@ -24,7 +24,7 @@
 		<% 
 			string action = Request["action"];
 			Version version = typeof (N2.ContentItem).Assembly.GetName().Version;
-			var config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
+			N2.Configuration.InstallerElement config = N2.Context.Current.Resolve<N2.Configuration.EditSection>().Installer;
 
 			string continueUrl = action == "install"
 			                     	? config.InstallUrl

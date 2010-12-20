@@ -113,7 +113,7 @@
 			    <div id="advancedcontentoptions" style="display:<%= rblExports.Items.Count > 0 ? "none" : "block" %>">
 					<p>
 						N2 CMS needs content in the database to function correctly.
-						The minum required is a <a href="http://n2cms.com/wiki/Root-node.aspx">root node</a> and a <a href="http://n2cms.com/wiki/Start-Page.aspx">start page</a>.
+						The minimum required is a <a href="http://n2cms.com/wiki/Root-node.aspx">root node</a> and a <a href="http://n2cms.com/wiki/Start-Page.aspx">start page</a>.
 					</p>
 			        <h2>Upload and import package</h2>
 			        <p>Select an export file you may have exported from another site and saved to disk to import on this installation.</p>
