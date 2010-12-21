@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using N2.Configuration;
+using N2.Engine;
 using N2.Persistence.NH;
+using N2.Plugin;
 using NHibernate.Criterion;
 using N2.Plugin;
 using N2.Engine;
@@ -449,17 +451,17 @@ namespace N2.Edit.FileSystem.NH
 		}
 
 		#region IAutoStart Members
+		
+        public void Start()
+        {
+            broker.PreRequestHandlerExecute += UploadFileHttpHandler.HttpApplication_PreRequestHandlerExecute;
+        }
 
-		public void Start()
-		{
-			broker.AllPostResolveRequestCache += Request_PostResolveRequestCache;
-		}
-
-		public void Stop()
-		{
-			broker.AllPostResolveRequestCache -= Request_PostResolveRequestCache;
-		}
+        public void Stop()
+        {
+            broker.PreRequestHandlerExecute -= UploadFileHttpHandler.HttpApplication_PreRequestHandlerExecute;
+        }
 
 		#endregion
-	}
+    }
 }
