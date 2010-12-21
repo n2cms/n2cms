@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Web;
 using System.Threading;
 using System.Diagnostics;
@@ -36,10 +37,11 @@ namespace N2.Engine
 			application.BeginRequest += Application_BeginRequest;
 			application.AuthorizeRequest += Application_AuthorizeRequest;
 
-			application.PostResolveRequestCache += Application_PostResolveRequestCache;
-			application.PostMapRequestHandler += Application_PostMapRequestHandler;
+            application.PostResolveRequestCache += Application_PostResolveRequestCache;
+            application.PostMapRequestHandler += Application_PostMapRequestHandler;
 
 			application.AcquireRequestState += Application_AcquireRequestState;
+		    application.PreRequestHandlerExecute += Application_PreRequestHandlerExecute;
 			application.Error += Application_Error;
 			application.EndRequest += Application_EndRequest;
 
@@ -49,25 +51,14 @@ namespace N2.Engine
 		public EventHandler<EventArgs> BeginRequest;
 		public EventHandler<EventArgs> AuthorizeRequest;
 		public EventHandler<EventArgs> PostResolveRequestCache;
-		public EventHandler<EventArgs> AcquireRequestState;
-		public EventHandler<EventArgs> PostMapRequestHandler;
+        public EventHandler<EventArgs> AcquireRequestState;
+        public EventHandler<EventArgs> PostMapRequestHandler;
+        public EventHandler<EventArgs> PreRequestHandlerExecute;
 		public EventHandler<EventArgs> Error;
 		public EventHandler<EventArgs> EndRequest;
 
 		protected void Application_BeginRequest(object sender, EventArgs e)
 		{
-		    var path = Context.Current.RequestContext.Request.Path;
-
-            if (path.StartsWith("/upload/"))
-            {
-                var fileSystem = (IFileSystem) N2.Context.Current.Resolve(typeof (IFileSystem));
-                if (fileSystem.FileExists(path))
-                {
-                    fileSystem.ReadFileContents(path, Context.Current.RequestContext.Response.OutputStream);
-                    Context.Current.RequestContext.Response.End();
-                }
-            }
-
 			if (BeginRequest != null && !IsStaticResource(sender))
 			{
 				Debug.WriteLine("Application_BeginRequest");
@@ -93,14 +84,14 @@ namespace N2.Engine
 			}
 		}
 
-		private void Application_PostMapRequestHandler(object sender, EventArgs e)
-		{
-			if (PostMapRequestHandler != null && !IsStaticResource(sender))
-			{
-				Debug.WriteLine("Application_PostMapRequestHandler");
-				PostMapRequestHandler(sender, e);
-			}
-		}
+        private void Application_PostMapRequestHandler(object sender, EventArgs e)
+        {
+            if (PostMapRequestHandler != null && !IsStaticResource(sender))
+            {
+                Debug.WriteLine("Application_PostMapRequestHandler");
+                PostMapRequestHandler(sender, e);
+            }
+        }
 
 		protected void Application_AcquireRequestState(object sender, EventArgs e)
 		{
@@ -108,6 +99,15 @@ namespace N2.Engine
 			{
 				Debug.WriteLine("Application_AcquireRequestState");
 				AcquireRequestState(sender, e);
+			}
+		}
+
+        protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
+		{
+            if (PreRequestHandlerExecute != null && !IsStaticResource(sender))
+			{
+                Debug.WriteLine("Application_PreRequestHandlerExecute");
+                PreRequestHandlerExecute(sender, e);
 			}
 		}
 
@@ -163,7 +163,7 @@ namespace N2.Engine
 					case ".js":
 					case ".axd":
 					case ".ashx":
-						return true;
+						return File.Exists(application.Request.PhysicalPath);
 				}
 			}
 			return false;

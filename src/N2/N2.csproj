@@ -143,6 +143,7 @@
     <Compile Include="Details\DateTimeDetail.cs" />
     <Compile Include="Details\ObjectDetail.cs" />
     <Compile Include="Edit\EditUrlManager.cs" />
+    <Compile Include="Edit\FileSystem\UploadFileHttpHandler.cs" />
     <Compile Include="Edit\FileSystem\NH\DatabaseFileSystem.cs" />
     <Compile Include="Edit\FileSystem\NH\FileSystemItem.cs" />
     <Compile Include="Edit\FileSystem\NH\Path.cs" />

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using N2.Configuration;
+using N2.Engine;
 using N2.Persistence.NH;
+using N2.Plugin;
 using NHibernate.Criterion;
 
 namespace N2.Edit.FileSystem.NH
 {
-    public class DatabaseFileSystem : IFileSystem
+    public class DatabaseFileSystem : IFileSystem, IAutoStart
     {
         private readonly ISessionProvider _sessionProvider;
 
@@ -393,6 +395,16 @@ namespace N2.Edit.FileSystem.NH
             int r;
             while ((r = input.Read(b, 0, b.Length)) > 0)
                 output.Write(b, 0, r);
+        }
+
+        public void Start()
+        {
+            EventBroker.Instance.PreRequestHandlerExecute += UploadFileHttpHandler.HttpApplication_PreRequestHandlerExecute;
+        }
+
+        public void Stop()
+        {
+            EventBroker.Instance.PreRequestHandlerExecute -= UploadFileHttpHandler.HttpApplication_PreRequestHandlerExecute;
         }
     }
 }
