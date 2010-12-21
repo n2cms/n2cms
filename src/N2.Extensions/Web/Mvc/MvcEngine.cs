@@ -31,7 +31,7 @@ namespace N2.Web.Mvc
 		public static IEngine Create(IServiceContainer container)
 		{
 			IEngine engine = new ContentEngine(container, EventBroker.Instance, new ContainerConfigurer());
-
+			N2.Context.Replace(engine);
 			return MvcInitialize(engine);
 		}
 
