@@ -1,9 +1,12 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using N2.Details;
 using N2.Integrity;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Web.UI;
+using N2.Templates.Mvc.Details;
+using N2.Templates.Mvc.Models.Parts.Questions;
 
 namespace N2.Templates.Mvc.Models.Parts
 {
@@ -39,9 +42,9 @@ namespace N2.Templates.Mvc.Models.Parts
 		}
 
 		[EditableChildren("Form fields", "Questions", "FormFields", 110, ContainerName = FieldsTab)]
-		public virtual IList<ContentItem> FormFields
+		public virtual IEnumerable<IQuestion> FormFields
 		{
-			get { return GetChildren(); }
+			get { return GetChildren().OfType<IQuestion>(); }
 		}
 
 		[EditableTextBox("Mail from", 120, ContainerName = EmailTab)]

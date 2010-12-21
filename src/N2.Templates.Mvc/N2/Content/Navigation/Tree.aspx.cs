@@ -33,7 +33,7 @@ namespace N2.Edit.Navigation
 					throw new N2Exception("Cannot upload to " + Server.HtmlEncode(uploadFolder));
 
 				string fileName = System.IO.Path.GetFileName(inputFile.PostedFile.FileName);
-				string filePath = VirtualPathUtility.Combine(uploadFolder, fileName);
+				string filePath = Url.Combine(uploadFolder, fileName);
 				FS.WriteFile(filePath, inputFile.PostedFile.InputStream);
 
 				ClientScript.RegisterStartupScript(typeof(Tree), "select", "updateOpenerWithUrlAndClose('" + ResolveUrl(filePath) + "');", true);
@@ -112,9 +112,10 @@ namespace N2.Edit.Navigation
 		{
 			if (string.IsNullOrEmpty(uploadFolder))
 				return false;
+			uploadFolder = Url.ToRelative(uploadFolder);
 			foreach (string availableFolder in Engine.EditManager.UploadFolders)
 			{
-				if (availableFolder.StartsWith(uploadFolder, StringComparison.InvariantCultureIgnoreCase))
+				if (uploadFolder.StartsWith(Url.ToRelative(availableFolder), StringComparison.InvariantCultureIgnoreCase))
 					return true;
 			}
 			return false;

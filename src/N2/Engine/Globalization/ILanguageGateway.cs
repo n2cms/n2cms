@@ -31,7 +31,7 @@ namespace N2.Engine.Globalization
 		/// <param name="item">The item beeing edited.</param>
 		/// <param name="includeCurrent">Wether to include the current item in the enumeratin.</param>
 		/// <returns>An enumeration of translation definitions.</returns>
-		IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent);
+		IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent, bool generateNonTranslated);
 
 		/// <summary>Gets available languages.</summary>
 		/// <returns>An enumeration of available languages.</returns>

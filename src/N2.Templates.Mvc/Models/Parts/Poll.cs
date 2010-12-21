@@ -8,6 +8,7 @@ using N2.Templates.Mvc.Details;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Web.Parts;
 using N2.Web.UI;
+using N2.Templates.Mvc.Models.Parts.Questions;
 
 namespace N2.Templates.Mvc.Models.Parts
 {

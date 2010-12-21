@@ -1,4 +1,16 @@
-﻿- Extendable user object (ThreadId=73897)
+﻿2.1 rc3
+- Fixed incorrect columns in translations overview interface
+- Merged jronaldi's multilingual mvc templates improvement
+- Added support for posted file in custom form (MVC)
+- Refactored custom form
+- Removed irrelevant question types when creating forms
+- Applied jafin's patch #26064: Catch Additional Exceptions on RSS Aggregator connection failure
+- Fixed #26178: Body class inconsistency: function GetBodyClass()
+- Fixed #27515: Included host in error email
+- Fixed #29777: Problem uploading file with Tree.aspx
+ -Fixed #29780: Popup box blank when creating parts with no details
+- Fixed #29792: <n2:DraggableToolbar> broke
+- Extendable user object (ThreadId=73897)
 - Fixed issue with default.aspx and ?page=
 - Fixed error viewing Folder with non graphic file in Edit Interface (ThreadId=238204)
 - Fixed #29741: Exception when deleting unsaved items wihin [EditableChildren]
@@ -12,6 +24,8 @@
 - Added [DisplayableHeading]
 - Updated NHibernate to 3.0 GA
 - Moved all types from N2.Security to N2.Management
+
+2.1 rc2
 - Permission inheritance for other permissions than read (ThreadId=237118)
 - Increased the name length to 250 (ThreadId=236565)
 - Applied junglefreak's solution to breadcrumb exception (ThreadId=235958)

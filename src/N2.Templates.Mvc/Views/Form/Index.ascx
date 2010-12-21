@@ -4,7 +4,8 @@
 	<%if(Model.FormSubmitted){%>
 		<%=ContentHtml.DisplayContent(m => m.SubmitText)%>
 	<%}else{%>
-		<%using(Html.BeginForm("Submit", "Form", FormMethod.Post)){%>
+		<%= Html.ValidationSummary() %>
+		<%using(Html.BeginForm("Submit", "Form", FormMethod.Post, new {enctype="multipart/form-data"})){%>
 			<%=ContentHtml.DisplayContent(m => m.Title)%>
 			<%=ContentHtml.DisplayContent(m => m.IntroText)%>
 

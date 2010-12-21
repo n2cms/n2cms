@@ -132,8 +132,10 @@ namespace N2.Web.Mvc
 			if (!string.IsNullOrEmpty(request.QueryString[PathData.PageQueryKey]))
 			{
 				int pageId;
-				if (int.TryParse(request.QueryString[PathData.PageQueryKey], out pageId))
-					td.CurrentPage = page = engine.Persister.Get(pageId);
+                if (int.TryParse(request.QueryString[PathData.PageQueryKey], out pageId))
+                {
+                    td.CurrentPage = page = engine.Persister.Get(pageId);
+                }
 			}
 
 			ContentItem part = null;

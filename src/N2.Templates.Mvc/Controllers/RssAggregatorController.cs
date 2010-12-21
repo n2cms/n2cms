@@ -14,6 +14,8 @@ using N2.Templates.Mvc.Models;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Web;
 using N2.Web.UI;
+using System.Net;
+using System.Net.Sockets;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -99,7 +101,17 @@ namespace N2.Templates.Mvc.Controllers
 			catch (SecurityException)
 			{
 				// Cannot use this in Medium Trust
-				return GetCannotLoadItem("Could not load RSS feed because security settings would not allow it");
+                return GetCannotLoadItem(Resources.RssAggregator.CannotLoadCauseSecurity);
+			}
+			catch (SocketException)
+			{
+				//Feed Is Offline or inaccessible
+				return GetCannotLoadItem("Could not load RSS feed due to network connectivity failure.");
+			}
+			catch (WebException)
+			{
+				//invalid feed address?
+				return GetCannotLoadItem("Could not load RSS feed, possible failure resolving remote host.");
 			}
 			catch(Exception ex)
 			{
@@ -114,7 +126,7 @@ namespace N2.Templates.Mvc.Controllers
 				{
 				    new RssAggregatorModel.RssItem()
 				       	{
-				       		Title = "Cannot load RSS Feed",
+				       		Title = Resources.RssAggregator.CannotLoadRss,
 							Published = DateTime.Now,
 							Url = "#",
 							Introduction = reason,

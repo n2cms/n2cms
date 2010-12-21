@@ -52,5 +52,18 @@ namespace N2.Tests.Edit
 
 			Assert.That(url, Is.EqualTo("/N2/Resources/aresource.css"));
 		}
+
+		[TestCase("http://n2cms.com", "http")]
+		[TestCase("https://n2cms.com", "https")]
+		[TestCase("javascript:alert('hello');", "javascript")]
+		[TestCase("file:c:\\autoexec.bat", "file uri")]
+		[TestCase("mailto:noone@nowhere.com", "mail")]
+		[TestCase("ftp://ftp.sunet.se:21/", "ftp")]
+		public void DoesNotDisrupt(string input, string type)
+		{
+			var result = editUrlManager.ResolveResourceUrl(input);
+
+			Assert.That(result, Is.EqualTo(input), type + " failed");
+		}
 	}
 }

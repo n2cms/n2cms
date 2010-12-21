@@ -34,7 +34,7 @@ namespace N2.Edit.Globalization
 
 		protected override void OnPreRender(EventArgs e)
 		{
-			List<TranslateSpecification> translations = new List<TranslateSpecification>(Gateway.GetEditTranslations(Selection.SelectedItem, false));
+			List<TranslateSpecification> translations = new List<TranslateSpecification>(Gateway.GetEditTranslations(Selection.SelectedItem, false, false));
 			if (Gateway.Enabled && translations.Count > 0)
 			{
 				if (!CreatingNew)

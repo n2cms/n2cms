@@ -188,7 +188,7 @@
 			var reloaded = false;
 			$.getJSON(url, command, function (data) {
 				reloaded = true;
-				if (data.redirect && command.action == "create")
+				if (data.redirect && command.action == "create" && data.dialog !== "no")
 					self.showDialog(data.redirect);
 				else if (data.redirect)
 					window.location = data.redirect;

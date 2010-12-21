@@ -40,28 +40,27 @@ namespace N2.Edit
 				{
 					SetErrorMessage(this.cvCopy, ex);
 				}
-				LoadDefaultsAndInfo();
+				txtNewName.Text = Selection.MemorizedItem.Name;
 			}
+			LoadDefaultsAndInfo();
 		}
 
 		private void LoadDefaultsAndInfo()
 		{
-			txtNewName.Text = Selection.MemorizedItem.Name;
-
 			this.Title = string.Format(GetLocalResourceString("CopyPage.TitleFormat"),
 				Selection.MemorizedItem.Title,
 				Selection.SelectedItem.Title);
 
+			itemsToCopy.CurrentItem = Selection.MemorizedItem;
+			itemsToCopy.DataBind();
+
 			this.from.Text = string.Format(GetLocalResourceString("from.TextFormat"),
 										   Selection.MemorizedItem.Parent != null ? Selection.MemorizedItem.Parent.Path : "",
-										   Selection.MemorizedItem.Path);
+										   Selection.MemorizedItem.Name);
 
 			this.to.Text = string.Format(GetLocalResourceString("to.TextFormat"),
 				Selection.SelectedItem.Path,
-				Selection.MemorizedItem.Name);
-
-			itemsToCopy.CurrentItem = Selection.MemorizedItem;
-			itemsToCopy.DataBind();
+				txtNewName.Text);
 		}
 
 		protected void OnCopyClick(object sender, EventArgs e)

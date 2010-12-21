@@ -21,8 +21,8 @@
 				<%=Html.ValidationMessage("Poll.Errors")%>
 				</p>
 				<div class="buttons">
-					<input type="submit" value="Submit" />
-					<a href="<%= N2.Web.Url.Parse(Html.CurrentPage().Url).AppendQuery("p=show") %>">Display results</a>
+					<input type="submit" value="<%=(string)GetLocalResourceObject("btnSubmit.Text") %>" /><br />
+					<a href="<%= N2.Web.Url.Parse(Html.CurrentPage().Url).AppendQuery("p=show") %>"><%=(string)GetLocalResourceObject("hlDisplay.Text") %></a>
 				</div>
 			<%}%>
 		</div>

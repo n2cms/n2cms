@@ -21,12 +21,13 @@ namespace N2.Templates.Mvc.Controllers
 			this.errorHandler = errorHandler;
 		}
 
-		[NonAction]
+		[HttpGet]
 		public override ActionResult Index()
 		{
-			return Index(new UserRegistrationModel());
+			return PartialView(new UserRegistrationModel());
 		}
 
+		[HttpPost]
 		public ActionResult Index(UserRegistrationModel model)
 		{
 			model.CurrentItem = CurrentItem;
@@ -51,15 +52,15 @@ namespace N2.Templates.Mvc.Controllers
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ActionResult Submit(UserRegistrationModel model)
 		{
+			if (ModelState.IsValid == false)
+				return ViewParentPage();
+
 			if (IsEditorOrAdmin(model.RegisterUserName) || Membership.GetUser(model.RegisterUserName) != null)
 			{
-				ModelState.AddModelError("UserName", "Invalid user name.");
+				ModelState.AddModelError("UserName", Resources.UserRegistration.InvalidUserName);
 
 				return ViewParentPage();
 			}
-
-			if (ModelState.IsValid == false)
-				return ViewParentPage();
 
 			return CreateUser(model);
 		}

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Web.Mvc;
 using N2.Web.UI;
+using System.ComponentModel.DataAnnotations;
 
 namespace N2.Templates.Mvc.Models
 {
@@ -17,12 +18,16 @@ namespace N2.Templates.Mvc.Models
 			CurrentItem = userRegistration;
 		}
 
+		[Required(ErrorMessage = "User Name is required")]
 		public string RegisterUserName { get; set; }
 
+		[Required(ErrorMessage = "Password is required")]
 		public string RegisterPassword { get; set; }
-
+		
+		[Required(ErrorMessage = "Confirm Password is required")]
 		public string RegisterConfirmPassword { get; set; }
 
+		[Required(ErrorMessage = "Email is required"), RegularExpression("[^@]+@[^.]+(\\.[^.]+)+", ErrorMessage = "Invalid email")]
 		public string RegisterEmail { get; set; }
 
 		#region IItemContainer<UserRegistration> Members
@@ -53,24 +58,10 @@ namespace N2.Templates.Mvc.Models
 
 		private string Validate(string propertyName)
 		{
-			switch (propertyName.ToLower())
+			if (propertyName.ToLower() == "confirmpassword")
 			{
-				case "username":
-					if (String.IsNullOrEmpty(RegisterUserName))
-						return "User Name cannot be empty";
-					break;
-				case "password":
-					if (String.IsNullOrEmpty(RegisterPassword))
-						return "Password cannot be empty";
-					break;
-				case "email":
-					if (String.IsNullOrEmpty(RegisterEmail))
-						return "Email cannot be empty";
-					break;
-				case "confirmpassword":
-					if (RegisterConfirmPassword != RegisterPassword)
-						return "Passwords do not match";
-					break;
+				if (RegisterConfirmPassword != RegisterPassword)
+					return "Passwords do not match";
 			}
 			return String.Empty;
 		}

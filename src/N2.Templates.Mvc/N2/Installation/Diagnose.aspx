@@ -38,7 +38,7 @@
 					<tr><th>Root item</th><td><asp:Label ID="lblRootNode" runat="server" /></td></tr>
 					<tr><th>Start page</th><td><asp:Label ID="lblStartNode" runat="server" /></td></tr>
 					<tr><th rowspan="<%= recentChanges.Length + 1 %>">Recent changes </th><td><asp:Label ID="lblChanges" runat="server" />
-						<% foreach (var change in recentChanges){ %>
+						<% foreach (string change in recentChanges){ %>
 							<%= change %> </td></tr><tr><td>
 						<% } %>
 					</td></tr>

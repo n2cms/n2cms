@@ -2,6 +2,7 @@
 using System.Web;
 using System.Text.RegularExpressions;
 using N2.Web.UI.WebControls;
+using N2.Web;
 
 namespace N2.Edit
 {
@@ -33,7 +34,7 @@ namespace N2.Edit
 
 		public string Format(string format, bool urlEncode)
 		{
-			format = format.Replace("{selected}", "{Selected.Path}")
+			format = Url.ResolveTokens(format).Replace("{selected}", "{Selected.Path}")
 				.Replace("{memory}", "{Memorized.Path}")
 				.Replace("{action}", "{Action}");
 

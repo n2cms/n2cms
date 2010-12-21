@@ -141,7 +141,7 @@ namespace N2.Engine.Globalization
 			return finder.Where.Detail(LanguageKey).Eq(key).Filters(new AccessFilter(context.User, security)).Select();
 		}
 
-		public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent)
+		public IEnumerable<TranslateSpecification> GetEditTranslations(ContentItem item, bool includeCurrent, bool generateNonTranslated)
 		{
 			ILanguage itemlanguage = GetLanguage(item);
 			if (itemlanguage == null)
@@ -169,7 +169,16 @@ namespace N2.Engine.Globalization
 						ContentItem translatedParent = GetTranslatedParent(item, language);
 
 						if (translatedParent == null)
+						{
+							if (generateNonTranslated)
+							{
+								yield return new TranslateSpecification("#", language, translation, definition, editUrlManager)
+								{
+									IsTranslatable = false
+								};
+							}
 							continue;
+						}
 
 						Url url = editUrlManager.GetEditNewPageUrl(translatedParent, definition, item.ZoneName, CreationPosition.Below);
 						url = url.AppendQuery(LanguageKey, item[LanguageKey] ?? item.ID);

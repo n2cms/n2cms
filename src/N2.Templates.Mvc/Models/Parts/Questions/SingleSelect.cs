@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace N2.Templates.Mvc.Models.Parts
+namespace N2.Templates.Mvc.Models.Parts.Questions
 {
 	[PartDefinition("Single Select (radio buttons)")]
 	public class SingleSelect : OptionSelectQuestion

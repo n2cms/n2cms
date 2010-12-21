@@ -14,6 +14,7 @@ namespace N2.Management.Myself
 		IconUrl = "{ManagementUrl}/Resources/icons/page_gear.png",
 		TemplateUrl = "{ManagementUrl}/Myself/Root.aspx")]
     [RestrictParents(AllowedTypes.None)]
+	[AllowedChildren(typeof(ContentItem))]
     [AvailableZone("Left", "Left")]
     [AvailableZone("Center", "Center")]
     [AvailableZone("Right", "Right")]

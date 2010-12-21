@@ -3,8 +3,8 @@ using N2.Web;
 
 namespace N2.Edit
 {
-	[NavigationLinkPlugin("Paste", "paste", "Content/paste.aspx?selected={selected}&memory={memory}&action={action}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_paste.png", 60, GlobalResourceClassName = "Navigation")]
-	[ToolbarPlugin("PASTE", "paste", "Content/Paste.aspx?selected={selected}&memory={memory}&action={action}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/page_paste.png", 50, ToolTip = "paste", GlobalResourceClassName = "Toolbar")] 
+	[NavigationLinkPlugin("Paste", "paste", "{ManagementUrl}/Content/Paste.aspx?selected={selected}&memory={memory}&action={action}", Targets.Preview, "{ManagementUrl}/Resources/icons/page_paste.png", 60, GlobalResourceClassName = "Navigation")]
+	[ToolbarPlugin("PASTE", "paste", "{ManagementUrl}/Content/Paste.aspx?selected={selected}&memory={memory}&action={action}", ToolbarArea.Operations, Targets.Preview, "{ManagementUrl}/Resources/icons/page_paste.png", 50, ToolTip = "paste", GlobalResourceClassName = "Toolbar")] 
 	public partial class paste : Web.EditPage
 	{
 		protected void Page_Load(object sender, EventArgs e)

@@ -3,7 +3,7 @@
 	<ItemTemplate>
 		<td class="item">
 			<input type="radio" name="<%# Eval("Language.LanguageCode") %>" value="<%# Eval("ExistingItem.ID") %>" style="display:<%# (bool)Eval("IsNew") || Eval("ExistingItem") == Eval("Language") ? "none" : "inline" %>" />
-			<asp:HyperLink ID="hlEdit" NavigateUrl='<%# Eval("EditUrl") %>' CssClass='<%# GetClass() %>' runat="server" ToolTip='<%# Eval("ExistingItem.Updated") %>'>
+			<asp:HyperLink ID="hlEdit" NavigateUrl='<%# Eval("EditUrl") %>' CssClass='<%# GetClass() %>' runat="server" ToolTip='<%# Eval("ExistingItem.Updated") %>' Visible='<%# Eval("IsTranslatable") %>'>
 				<asp:Literal ID="ltCreateNew" runat="server" Text='create new' Visible='<%# (bool)Eval("IsNew") %>' meta:resourceKey="ltCreateNew" />
 				
 				<asp:Image ID="imgNew" ImageUrl='<%# Engine.ManagementPaths.ResolveResourceUrl((string)Eval("ExistingItem.IconUrl")) %>' AlternateText="icon" runat="server" Visible='<%# !(bool)Eval("IsNew") %>'/>

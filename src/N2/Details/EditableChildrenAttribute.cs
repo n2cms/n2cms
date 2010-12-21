@@ -86,7 +86,7 @@ namespace N2.Details
             {
                 foreach (Type argument in info.PropertyType.GetGenericArguments())
                 {
-                    if (typeof(ContentItem).IsAssignableFrom(argument))
+                    if (typeof(ContentItem).IsAssignableFrom(argument) || argument.IsInterface)
                     {
                         listEditor.MinimumType = argument;
                         break;

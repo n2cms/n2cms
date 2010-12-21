@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using N2.Details;
 using N2.Web.Mvc.Html;
 
-namespace N2.Templates.Mvc.Models.Parts
+namespace N2.Templates.Mvc.Models.Parts.Questions
 {
 	[PartDefinition("Text question (textbox)")]
 	public class TextQuestion : Question
@@ -25,11 +25,6 @@ namespace N2.Templates.Mvc.Models.Parts
 		public override string ElementID
 		{
 			get { return "txt_" + ID; }
-		}
-
-		public override string GetAnswerText(string value)
-		{
-			return value;
 		}
 
 		public override MvcHtmlString CreateHtmlElement()

@@ -36,13 +36,17 @@ namespace N2.Web.Parts
 			NameValueCollection response = new NameValueCollection();
 
             ItemDefinition definition = GetDefinition(request["discriminator"]);
-            if (definition.Editables.Count > 0)
-                response["redirect"] = GetRedirectUrl(definition, request);
-            else
-            {
-                response["redirect"] = request["returnUrl"];
-                CreateItem(definition, request);
-            }
+			if (definition.Editables.Count > 0)
+			{
+				response["redirect"] = GetRedirectUrl(definition, request);
+				response["dialog"] = "yes";
+			}
+			else
+			{
+				response["redirect"] = request["returnUrl"];
+				response["dialog"] = "no";
+				CreateItem(definition, request);
+			}
 
 			return response;
 		}

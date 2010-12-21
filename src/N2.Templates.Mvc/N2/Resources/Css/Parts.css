@@ -1,18 +1,19 @@
 ﻿.sc, .sc a, .titleBar, .dragShadow {font-family:Arial, Sans-Serif; font-size:12px; color:#333; text-align:left;}
 
 .zoneItem   { position:relative;}
-.titleBar   { background:#fff none no-repeat 1px 50%; color:#333; padding:0 0 1px 18px; 
+.titleBar   { background:#fff none no-repeat 1px 50%; color:#333; padding:0 1px; 
               font-size:.8em; position:relative; border:solid 1px #e3e5e4;
-              position:absolute; left:-11px; top:-10px; z-index:900; height:20px; box-shadow: #666 4px 4px 10px -2px; -moz-box-shadow: #666 4px 4px 10px -2px;}
+              height:20px; box-shadow: #666 4px 4px 10px -2px; -moz-box-shadow: #666 4px 4px 10px -2px; overflow:hidden; white-space:nowrap;}
 .zoneItem .titleBar	{ background-image:url(../../Resources/Img/gripper.gif); cursor:move;}
-.dropZone .dropZone .titleBar { top:0; }
-    .titleBar .command { display:none; cursor:pointer; padding-left:20px; line-height:20px; background:transparent none no-repeat 100% 0;}
+.dropZone .titleBar { top:0; position:absolute; left:-11px; top:-10px; z-index:900; padding-left:18px }
+    .titleBar .command { cursor:pointer; padding-left:20px; line-height:20px; background:transparent none no-repeat 100% 0;}
     .titleBar .delete { background-image:url(../icons/delete.png); }
     .titleBar .edit { background-image:url(../icons/pencil.png); }
-    .titleBar .title { display:none; background:transparent none no-repeat 5px 50%; color:#333; padding-left:22px; padding-right:10px; font-size:10px; line-height:20px; border-left:solid 1px #e3e5e4; margin-left:10px;}
-.titleBar:hover { background-color:#fafafa; border:solid 1px #d1d4d3;}
-	.titleBar:hover .title { display:inline-block;}
-	.titleBar:hover .command { display:inline;}
+    .titleBar .title { background:transparent none no-repeat 5px 50%; color:#333; padding-left:22px; padding-right:10px; font-size:10px; line-height:20px; border-left:solid 1px #e3e5e4; margin-left:10px; display:inline-block;}
+.dropZone .titleBar * { display:none; }
+.dropZone .titleBar:hover { background-color:#fafafa; border:solid 1px #d1d4d3;}
+	.dropZone .titleBar:hover .title { display:inline-block;}
+	.dropZone .titleBar:hover .command { display:inline;}
 
 .dragShadow { opacity: .4; background-color:lightslategray; filter: alpha(opacity=60); min-height:50px; }
 .dragging { cursor:move; }

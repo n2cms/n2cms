@@ -67,6 +67,8 @@
     <Content Include="N2\Content\AffectedItems.ascx" />
     <Content Include="N2\Content\Copy.aspx" />
     <Content Include="N2\Content\Navigation\Tree.js" />
+    <Content Include="N2\Files\Js\FileSelection.js" />
+    <Content Include="N2\Files\Js\jquery.MultiFile.js" />
     <Content Include="N2\Installation\Rebase.aspx" />
     <Content Include="N2\Resources\Css\editor.css" />
     <Content Include="N2\Resources\Css\default.css" />
