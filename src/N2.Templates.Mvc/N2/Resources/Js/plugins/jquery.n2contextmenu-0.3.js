@@ -1,6 +1,6 @@
 ﻿
 /*
- * n2contextmenu 0.3 - Copyright (c) 2007 Cristian Libardo
+ * n2contextmenu 0.4 - Copyright (c) 2007 Cristian Libardo
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -43,20 +43,37 @@
 		$m.n2showat(x, y);
 	};
 
+	function getHandler($m, options) {
+		if (options.target)
+			return function (e) {
+				if (e.ctrlKey) return;
+
+				var count = $(e.target).closest(options.target).each(function () {
+					hideAll();
+					show(e, $m, options);
+				}).length;
+				return count == 0;
+			};
+		else
+			return function (e) {
+				if (e.ctrlKey) return;
+
+				hideAll();
+				show(e, $m, options);
+				return false;
+			};
+	};
+
 	$.fn.n2contextmenu = function (menu, options) {
-		options = $.extend({ offsetX: -2, offsetY: -2, showing: function () { }, appendTo: document.body }, options || {});
+		options = $.extend({ offsetX: -2, offsetY: -2, showing: function () { }, appendTo: document.body, target: null }, options || {});
 
 		var $m = $(menu)
 			.appendTo(options.appendTo)
 			.n2hide()
 			.n2rightToLeftClick();
-		this.bind('contextmenu', function (e) {
-			if (!e.ctrlKey) {
-				hideAll();
-				show(e, $m, options);
-				return false;
-			}
-		});
+
+		this.bind('contextmenu', getHandler($m, options));
+
 		if (menus.length == 0) {
 			$(document.body).click(hideAll).bind('contextmenu', hideAll);
 		}

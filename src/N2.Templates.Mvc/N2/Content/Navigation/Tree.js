@@ -29,7 +29,6 @@
 	jQuery("#nav").SimpleTree({
 		success: function (el) {
 			toDraggable(el);
-			setUpContextMenu(el);
 		}
 	});
 

@@ -4,17 +4,20 @@
 </div>
 
 <script type="text/javascript">
-	function setUpContextMenu(container){
-		jQuery("a[target=preview]", container).click(function() {
-			n2nav.setupToolbar(this.rel);
-		}).focus(function() {
-			n2nav.setupToolbar(this.rel);
-		}).bind("contextmenu", function() {
-            n2nav.setupToolbar(this.rel);
-        })
-        .n2contextmenu("#contextMenu");
-	};
-    jQuery(document).ready(function(){
-		setUpContextMenu("#nav");
-    });
+//<![CDATA[
+	(function ($) {
+		var targetSelector = "a[target=preview]";
+		var handler = function (e) {
+			$(e.target).closest(targetSelector).each(function (e) {
+				n2nav.setupToolbar(this.rel);
+			});
+		};
+		jQuery(document).ready(function () {
+			$("#nav").click(handler)
+				.focus(handler)
+				.bind("contextmenu", handler)
+				.n2contextmenu("#contextMenu", { target: targetSelector });
+		});
+	})(jQuery);
+//]]>
 </script>
