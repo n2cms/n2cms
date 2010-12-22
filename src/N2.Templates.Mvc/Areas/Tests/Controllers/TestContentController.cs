@@ -74,7 +74,6 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 		{
 			var definition = definitions.GetDefinition(discriminator);
 			CreateChildren(CurrentPage, definition.ItemType, name, width, depth);
-			Engine.Persister.Save(CurrentPage);
 			return Content("<script type='text/javascript'>window.location = '" + CurrentPage.Url + "'</script>");
 		}
 
@@ -85,6 +84,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			for (int i = 1; i <= width; i++)
 			{
 				ContentItem item = Create(parent, type, name, depth, i);
+				Engine.Persister.Repository.Save(item);
 				CreateChildren(item, type, name, width, depth - 1);
 			}
 			HttpContext.Response.Write(name + " 0-" + width + " (" + depth + ")" + "<br/>");
