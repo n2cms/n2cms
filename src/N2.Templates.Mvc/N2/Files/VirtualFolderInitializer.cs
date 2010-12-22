@@ -36,7 +36,7 @@ namespace N2.Management.Files
 		/// </summary>
 		/// <param name="host">The host.</param>
 		/// <param name="persister">The persister.</param>
-		/// <param name="fs">The fs.</param>
+		/// <param name="fileSystem">The fileSystem.</param>
 		/// <param name="virtualNodes">The virtual nodes.</param>
 		/// <param name="editConfig">The edit config.</param>
 		public VirtualFolderInitializer(IHost host, IPersister persister, IFileSystem fs, VirtualNodeFactory virtualNodes, DatabaseStatusCache dbStatus, EditSection editConfig)

@@ -14,11 +14,9 @@ using System.Web;
 
 namespace N2.Edit.FileSystem.NH
 {
-    public class DatabaseFileSystem : IFileSystem, IAutoStart
+    public class DatabaseFileSystem : IFileSystem
     {
         private readonly ISessionProvider _sessionProvider;
-		private readonly EventBroker broker;
-		private readonly IWebContext requestContext;
 
 		#region class DatabaseFileSystemStream
 		private class DatabaseFileSystemStream : MemoryStream
@@ -73,11 +71,9 @@ namespace N2.Edit.FileSystem.NH
         }
 		#endregion
 
-		public DatabaseFileSystem(ISessionProvider sessionProvider,IWebContext requestContext,  EventBroker broker)
+		public DatabaseFileSystem(ISessionProvider sessionProvider)
         {
             this._sessionProvider = sessionProvider;
-			this.requestContext = requestContext;
-			this.broker = broker;
         }
 
         private IEnumerable<FileSystemItem> FindChildren(Path path, ICriterion criterion)
@@ -406,62 +402,5 @@ namespace N2.Edit.FileSystem.NH
             while ((r = input.Read(b, 0, b.Length)) > 0)
                 output.Write(b, 0, r);
         }
-
-		//class DatabaseFileHandler : IHttpHandler
-		//{
-		//    IFileSystem fs;
-		//    string path;
-
-		//    public DatabaseFileHandler(IFileSystem fs, string path)
-		//    {
-		//        this.fs = fs;
-		//        this.path = path;
-		//    }
-
-		//    #region IHttpHandler Members
-
-		//    public bool IsReusable
-		//    {
-		//        get { return false; }
-		//    }
-
-		//    public void ProcessRequest(HttpContext context)
-		//    {
-		//        fs.ReadFileContents(path, context.Response.OutputStream);
-		//    }
-
-		//    #endregion
-		//}
-
-
-		void Request_PostResolveRequestCache(object sender, EventArgs args)
-		{
-			var path = requestContext.Request.AppRelativeCurrentExecutionFilePath;
-
-			if (path.StartsWith("~/upload/", StringComparison.InvariantCultureIgnoreCase))
-			{
-				if (FileExists(path))
-				{
-					//TODO figure out messup with routing. HttpContext.Current.RemapHandler(new DatabaseFileHandler(this, path));
-
-					ReadFileContents(path, requestContext.Response.OutputStream);
-					HttpContext.Current.ApplicationInstance.CompleteRequest();
-				}
-			}
-		}
-
-		#region IAutoStart Members
-		
-        public void Start()
-        {
-            broker.PreRequestHandlerExecute += UploadFileHttpHandler.HttpApplication_PreRequestHandlerExecute;
-        }
-
-        public void Stop()
-        {
-            broker.PreRequestHandlerExecute -= UploadFileHttpHandler.HttpApplication_PreRequestHandlerExecute;
-        }
-
-		#endregion
     }
 }

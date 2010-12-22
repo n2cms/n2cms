@@ -7,10 +7,15 @@ namespace N2.Edit.FileSystem
 {
     class UploadFileHttpHandler : IHttpHandler
     {
+		IFileSystem fileSystem;
+
+		public UploadFileHttpHandler(IFileSystem fileSystem)
+		{
+			this.fileSystem = fileSystem;
+		}
+
         public void ProcessRequest(HttpContext context)
         {
-            var fileSystem = Context.Current.Resolve<IFileSystem>();
-
             if (fileSystem.FileExists(context.Request.Path))
             {
                 context.Response.ContentType = GetMimeTypeFromExtension(context.Request.Path);
@@ -56,11 +61,12 @@ namespace N2.Edit.FileSystem
             var app = sender as HttpApplication;
             if (app == null) return;
 
+			
             var uploadFolders = new EditSection().UploadFolders;
 
             if (uploadFolders.Folders.Any(x => app.Request.Path.StartsWith(x.TrimStart('~'), StringComparison.OrdinalIgnoreCase)))
             {
-                app.Context.Handler = new UploadFileHttpHandler();
+                app.Context.Handler = new UploadFileHttpHandler(Context.Current.Resolve<IFileSystem>());
             }
         }
     }

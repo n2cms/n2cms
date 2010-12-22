@@ -31,9 +31,9 @@ namespace N2.Web.Drawing
 			{
 				//if (original.Width < maxWidth && original.Height < maxHeight)
 				//{
-				//    using (var fs = File.OpenRead(physicalImagePath))
+				//    using (var fileSystem = File.OpenRead(physicalImagePath))
 				//    {
-				//        TransferBetweenStreams(fs, outputStream);
+				//        TransferBetweenStreams(fileSystem, outputStream);
 				//    }
 				//    return true;
 				//}
