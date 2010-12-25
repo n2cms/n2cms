@@ -16,6 +16,9 @@ namespace N2.Edit.FileSystem.Items
 	[N2.Web.Template("upload", "{ManagementUrl}/Files/FileSystem/Upload.aspx")]
 	public class Directory : AbstractDirectory, IActiveContent
 	{
+		string url;
+		string originalName;
+
 		public Directory()
 		{
 		}
@@ -24,6 +27,7 @@ namespace N2.Edit.FileSystem.Items
 		{
 			Parent = parent;
 
+			originalName = directory.Name;
 			Name = directory.Name;
 			Title = directory.Name;
 			Updated = directory.Updated;
@@ -31,7 +35,6 @@ namespace N2.Edit.FileSystem.Items
 			url = directory.VirtualPath;
 		}
 
-		string url;
 		public override string Url
 		{
 			get { return url ?? N2.Web.Url.Combine(Parent.Url, Name); }
@@ -74,8 +77,20 @@ namespace N2.Edit.FileSystem.Items
 
 		public void Save()
 		{
+			if (Name != originalName)
+			{
+				string oldPath = N2.Web.Url.Combine(Parent.Url, originalName);
+				string newPath = N2.Web.Url.Combine(Parent.Url, Name);
+				FileSystem.MoveDirectory(oldPath, newPath);
+				ClearUrl();
+			}
 			if (!FileSystem.DirectoryExists(Url))
 				FileSystem.CreateDirectory(Url);
+		}
+
+		private void ClearUrl()
+		{
+			url = null;
 		}
 
 		public void Delete()

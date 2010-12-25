@@ -1,4 +1,6 @@
-﻿2.1 rc3
+﻿- Fixed Error when trying to rename an upload folder (ThreadId=239449)
+
+2.1 rc3
 - Fixed incorrect columns in translations overview interface
 - Merged jronaldi's multilingual mvc templates improvement
 - Added support for posted file in custom form (MVC)
