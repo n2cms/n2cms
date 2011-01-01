@@ -77,5 +77,23 @@ namespace N2.Web
 			}
 			return pathFinders.ToArray();
 		}
+
+		/// <summary>Resolves a path based on the remaining url.</summary>
+		/// <param name="item">The current item beeing navigated.</param>
+		/// <param name="remainingUrl">The url remaining from previous segments.</param>
+		/// <returns>A path data object that may be empty.</returns>
+		public static PathData GetPath(ContentItem item, string remainingUrl)
+		{
+			IPathFinder[] finders = PathDictionary.GetFinders(item.GetContentType());
+
+			foreach (IPathFinder finder in finders)
+			{
+				PathData data = finder.GetPath(item, remainingUrl);
+				if (data != null)
+					return data;
+			}
+
+			return PathData.None(item, remainingUrl);
+		}
 	}
 }

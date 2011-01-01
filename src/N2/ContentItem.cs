@@ -527,12 +527,12 @@ namespace N2
 		public virtual PathData FindPath(string remainingUrl)
 		{
 			if (remainingUrl == null)
-				return GetTemplate(string.Empty);
+				return PathDictionary.GetPath(this, string.Empty);
 
 			remainingUrl = remainingUrl.TrimStart('/');
 
 			if (remainingUrl.Length == 0)
-				return GetTemplate(string.Empty);
+				return PathDictionary.GetPath(this, string.Empty);
 
 			int slashIndex = remainingUrl.IndexOf('/');
 			string nameSegment = HttpUtility.UrlDecode(slashIndex < 0 ? remainingUrl : remainingUrl.Substring(0, slashIndex));
@@ -545,21 +545,7 @@ namespace N2
 				}
 			}
 
-			return GetTemplate(remainingUrl);
-		}
-
-		private PathData GetTemplate(string remainingUrl)
-		{
-			IPathFinder[] finders = PathDictionary.GetFinders(GetContentType());
-
-			foreach (IPathFinder finder in finders)
-			{
-				PathData data = finder.GetPath(this, remainingUrl);
-				if (data != null)
-					return data;
-			}
-
-			return PathData.None(this, remainingUrl);
+			return PathDictionary.GetPath(this, remainingUrl);
 		}
 
     	/// <summary>Tries to get a child item with a given name. This method igonres user permissions and any trailing '.aspx' that might be part of the name.</summary>
