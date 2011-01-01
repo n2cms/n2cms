@@ -15,25 +15,41 @@ namespace N2.Templates.Mvc
 	{
 		protected void Application_Start()
 		{
-			var engine = MvcEngine.Create();
+			var cmsEngine = N2.Context.Current;
 
-			ViewEngines.Engines.Insert(0, new ThemedMasterViewEngine());
+			RegisterControllerFactory(ControllerBuilder.Current, cmsEngine);
 
-			engine.RegisterControllers(typeof (StartController).Assembly);
+			RegisterViewEngines(ViewEngines.Engines);
 
-			RegisterRoutes(RouteTable.Routes, engine);
+			AreaRegistration.RegisterAllAreas(new AreaRegistrationState(cmsEngine));
+
+			RegisterRoutes(RouteTable.Routes, cmsEngine);
+		}
+
+		public void RegisterControllerFactory(ControllerBuilder controllerBuilder, IEngine engine)
+		{
+			engine.RegisterControllers(typeof(StartController).Assembly);
+
+			var controllerFactory = engine.Resolve<ControllerFactoryConfigurator>()
+				.NotFound<StartController>(sc => sc.NotFound())
+				.ControllerFactory;
+
+			controllerBuilder.SetControllerFactory(controllerFactory);
+		}
+
+		public static void RegisterViewEngines(ViewEngineCollection viewEngines)
+		{
+			viewEngines.Insert(0, new ThemedMasterViewEngine());
 		}
 
 		public static void RegisterRoutes(RouteCollection routes, IEngine engine)
 		{
-			AreaRegistration.RegisterAllAreas(new AreaRegistrationState(engine));
-
 			routes.MapContentRoute("Content", engine);
 
 			routes.MapRoute(
 				"Default", // Route name
-				"{controller}/{action}/{id}/{*theRest}", // URL with parameters
-                new { action = "Index", id = UrlParameter.Optional, theRest = UrlParameter.Optional } // Parameter defaults
+				"{controller}/{action}/{*id}", // URL with parameters
+                new { action = "Index", id = UrlParameter.Optional } // Parameter defaults
 				);
 		}
 	}
