@@ -538,7 +538,7 @@ namespace N2
 			string nameSegment = HttpUtility.UrlDecode(slashIndex < 0 ? remainingUrl : remainingUrl.Substring(0, slashIndex));
 			foreach (ContentItem child in GetChildren(new NullFilter()))
 			{
-				if (child.Equals(nameSegment))
+				if (child.IsNamed(nameSegment))
 				{
 					remainingUrl = slashIndex < 0 ? null : remainingUrl.Substring(slashIndex + 1);
 					return child.FindPath(remainingUrl);
@@ -570,7 +570,7 @@ namespace N2
 				string nameSegment = HttpUtility.UrlDecode(childName.Substring(0, slashIndex));
 				foreach (ContentItem child in GetChildren(new NullFilter()))
 				{
-					if (child.Equals(nameSegment))
+					if (child.IsNamed(nameSegment))
 					{
 						return child.GetChild(childName.Substring(slashIndex));
 					}
@@ -581,7 +581,7 @@ namespace N2
 			// no slash, only a name
 			foreach (ContentItem child in GetChildren(new NullFilter()))
 			{
-				if (child.Equals(childName))
+				if (child.IsNamed(childName))
 				{
 					return child;
 				}
@@ -594,7 +594,7 @@ namespace N2
 		/// </summary>
 		/// <param name="name">The name to compare against.</param>
 		/// <returns>True if the supplied name is considered the same as the item's.</returns>
-        protected virtual bool Equals(string name)
+        protected virtual bool IsNamed(string name)
         {
             if (Name == null)
                 return false;
