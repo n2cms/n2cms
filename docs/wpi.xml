@@ -14,12 +14,12 @@
 
 
 	<entry type="application">
-		<productId>N2CMSMVCTemplates21rc2</productId>
-		<title>N2 CMS 2.1 release candidate 2 ASP.NET MVC Templates Pack</title>
-		<version>2.1 release candidate 2 (mvc)</version>
+		<productId>N2CMSMVCTemplates21rtm</productId>
+		<title>N2 CMS 2.1 ASP.NET MVC Templates Pack</title>
+		<version>2.1 (mvc)</version>
 
 		<summary>Templates Pack using ASP.NET MVC and the N2 CMS Framework.</summary>
-		<id>http://n2cms.codeplex.com/releases/view/55245#DownloadId=164800</id>
+		<id>http://n2cms.codeplex.com/releases/view/58473#DownloadId=193225</id>
 		<updated>2010-10-10T13:00:00Z</updated>
 		<published>2010-10-10T13:00:00Z</published>
 		<longSummary>
@@ -32,7 +32,7 @@
 
 		<productFamily>Releases</productFamily>
 
-		<link href="http://n2cms.codeplex.com/releases/view/55245#DownloadId=164800" />
+		<link href="http://n2cms.codeplex.com/releases/view/58473#DownloadId=193225" />
 
 		<author>
 			<name>N2 CMS</name>
@@ -52,10 +52,10 @@
 				<id>1</id>
 				<languageId>en</languageId>
 				<installerFile>
-					<fileSize>7678</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=164800</installerURL>
+					<fileSize>7348</fileSize>
+					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=193225</installerURL>
 
-					<sha1>79313C85C886983801AE930A9F9690FD5E8F4288</sha1>
+					<sha1>DD4470FA8CA940B41EA09653F2D34B7DFF97A767</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
@@ -67,12 +67,12 @@
 	</entry>
 
 	<entry type="application">
-		<productId>N2CMSWFTemplates21rc2</productId>
-		<title>N2 CMS 2.1 release candidate 2 WebForms Templates Pack</title>
-		<version>2.1 release candidate 2 (wf)</version>
+		<productId>N2CMSWFTemplates21rtm</productId>
+		<title>N2 CMS 2.1 WebForms Templates Pack</title>
+		<version>2.1 (wf)</version>
 
 		<summary>Templates Pack using ASP.NET WebForms and the N2 CMS Framework.</summary>
-		<id>http://n2cms.codeplex.com/releases/view/55245#DownloadId=164801</id>
+		<id>http://n2cms.codeplex.com/releases/view/58473#DownloadId=193226</id>
 		<updated>2010-10-10T14:00:00Z</updated>
 		<published>2010-10-10T14:00:00Z</published>
 		<longSummary>
@@ -84,7 +84,7 @@
 
 		<productFamily>Releases</productFamily>
 
-		<link href="http://n2cms.codeplex.com/releases/view/55245#DownloadId=164801" />
+		<link href="http://n2cms.codeplex.com/releases/view/58473#DownloadId=193226" />
 
 		<author>
 			<name>N2 CMS</name>
@@ -104,9 +104,9 @@
 				<id>1</id>
 				<languageId>en</languageId>
 				<installerFile>
-					<fileSize>7013</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=164801</installerURL>
-					<sha1>0D0979DC4BF2A45E51E406467BAA1620BAA08769</sha1>
+					<fileSize>6966</fileSize>
+					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=193226</installerURL>
+					<sha1>41DE71D93CA7EB4855C4C885A7E0691F948BC7C6</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
@@ -134,7 +134,7 @@
 					<groupingId>AppGalleryToolsFamilyGrouping</groupingId>
 
 					<recommended>
-						<productId>N2CMSMVCTemplates21rc2</productId>
+						<productId>N2CMSMVCTemplates21rtm</productId>
 					</recommended>
 				</pillar>
 			</pillarTab>

@@ -1,3 +1,25 @@
+To v2.1:
+Make a complete backup (including database), delete /n2, /edit and /bin, drop upgrade files and recompile your solution.
+
+Breaking changes:
+* LINQ doesn't currently work (as well as before)
+* Shared[Parts|Pages] -> Shared/[Part|Page]Templates (changes convention)
+
+
+To v2.0:
+Make a complete backup (including database), delete /edit and /bin, drop upgrade files and recompile your solution.
+
+Breaking changes:
+- .NET 3.5 (or greater) is now required
+- N2.Web.HtmlHelper is now deprecated and renamed to FormsHelper (to avoid conflicts with MVC)
+- Adapters are not decorated with [Adapts] attribute rather than [Controls] and are not shared between instances
+- Management interface is moved from /edit to /n2/content
+- N2.Edit has been renamed to N2.Management
+- Action<T> and Function<T> have been replaced with their equivalent in .NET 3.5
+- Some namespaces have changed (e.g. Castle, Installation)
+- The Alpha MVC templates have undergone a lot of changes (see http://n2cms.codeplex.com/Thread/View.aspx?ThreadId=208270)
+
+
 To v1.5:
 Upgrade hints:
 - PageDefinition & PartDefinition are now recommended for defining pages and parts

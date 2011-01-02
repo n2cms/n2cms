@@ -45,7 +45,8 @@
 																		 $(EditFolder)\**\*.swf"
 														Exclude="$(EditFolder)\**\*_src.js;" />
 			<Framework-BinFiles		Include="$(ManagementFolder)\bin\*.dll;
-																		 $(ManagementFolder)\bin\N2.xml*;"
+																		 $(ManagementFolder)\bin\N2.xml*;
+																		 $(SrcFolder)\N2.Security\bin\$(Configuration)\**\*.dll;"
 														Exclude="$(ManagementFolder)\bin\N2.Templates*;
 																		 $(ManagementFolder)\bin\AddonCatalog*;
 																		 $(ManagementFolder)\bin\Demo*;
