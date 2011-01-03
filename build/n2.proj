@@ -129,9 +129,11 @@
 																		 $(LibFolder)\**\Castle*.dll;
 																		 $(LibFolder)\**\Antlr3.Runtime.dll;
 																		 $(LibFolder)\**\Iesi.Collections.dll;
-																		 $(LibFolder)\**\log4net.dll;
-																		 $(LibFolder)\**\System*.dll;
-																		 " />
+																		 $(LibFolder)\**\log4net.dll;" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(SqlCe)' != ''">
+		<Framework-Dependencies Include="$(LibFolder)\**\System.Data.SqlServerCe.dll;
+																		 $(LibFolder)\**\sqlceme40.dll;" />
 	</ItemGroup>
 
 	<!-- Copy dependencies to example folders -->

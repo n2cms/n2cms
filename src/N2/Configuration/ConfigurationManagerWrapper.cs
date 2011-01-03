@@ -36,6 +36,12 @@ namespace N2.Configuration
 			return GetSection<ConnectionStringsSection>("connectionStrings");
 		}
 
+		public virtual string GetConnectionString()
+		{
+			string connectionStringName = GetContentSection<DatabaseSection>("database").ConnectionStringName;
+			return GetConnectionStringsSection().ConnectionStrings[connectionStringName].ConnectionString;
+		}
+
 
 		/// <summary>
 		/// Keeps references to used config sections.

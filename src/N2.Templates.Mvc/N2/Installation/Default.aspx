@@ -42,10 +42,13 @@
 				<p>
 					Make sure your database is online and <a href="http://n2cms.com/Documentation/Connection strings.aspx">configure connection string and database dialect</a> in web.config.
 				</p>
-				<p class="buttons"><asp:Button ID="btnTest" runat="server" OnClick="btnTest_Click" Text="test the connection" CausesValidation="false" /></p>
+				<p class="buttons"><asp:Button ID="btnTest" runat="server" OnClick="btnTest_Click" Text="Test the connection" CausesValidation="false" /></p>
 				<p>
 					<asp:Label ID="lblStatus" runat="server" />
 				</p>
+				<% if (Status.ConnectionType == "SqlCeConnection" && !Status.IsConnected){ %>
+				<p class="buttons"><asp:Button ID="btnCreateSqlCe" runat="server" OnClick="btnCreateSqlCeFile_Click" Text="Create SqlCe database file" CausesValidation="false" /></p>
+				<% } %>
             </asp:Panel>
             <asp:Panel ID="Panel1" runat="server" Visible="<%# Status.IsConnected %>">
 				<% if (Status.HasSchema){ %>

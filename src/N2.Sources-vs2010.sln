@@ -95,7 +95,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{04E4D1B1-EE0
 		..\lib\nunit.framework.dll = ..\lib\nunit.framework.dll
 		..\lib\nunit.util.dll = ..\lib\nunit.util.dll
 		..\lib\Rhino.Mocks.dll = ..\lib\Rhino.Mocks.dll
+		..\lib\sqlceme40.dll = ..\lib\sqlceme40.dll
 		..\lib\System.Data.SQLite.DLL = ..\lib\System.Data.SQLite.DLL
+		..\lib\System.Data.SqlServerCe.dll = ..\lib\System.Data.SqlServerCe.dll
 		..\lib\System.Web.Mvc.dll = ..\lib\System.Web.Mvc.dll
 	EndProjectSection
 EndProject

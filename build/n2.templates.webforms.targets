@@ -53,7 +53,8 @@
 	<Target Name="Templates-PrepareZip">
 		<ItemGroup>
 			<ZipDeploy-Templates-Includes Include="$(BuildFolder)\deploy\*" />
-			<ZipDeploy-Templates-Libs Include="$(RootFolder)\lib\MySql.Data.dll;$(RootFolder)\lib\System.Data.SQLite.dll;" />
+			<ZipDeploy-Templates-Libs Include="$(RootFolder)\lib\MySql.Data.dll;
+																				 $(RootFolder)\lib\System.Data.SQLite.dll;" />
 		</ItemGroup>
 		<Delete Files="$(Templates-DeployFolder-Path)\bin\System.Data.SQLite.dll" Condition="Exists('$(Templates-DeployFolder-Path)\bin\System.Data.SQLite.dll')" />
 		<Copy SourceFiles="@(ZipDeploy-Templates-Libs)" DestinationFolder="$(Templates-DeployFolder)\Libraries" />

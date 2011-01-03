@@ -12,6 +12,8 @@ using System.Web.Configuration;
 using N2.Configuration;
 using N2.Edit.Installation;
 using System.Web.Security;
+using N2.Engine;
+using System.Reflection;
 
 namespace N2.Edit.Install
 {
@@ -38,7 +40,7 @@ namespace N2.Edit.Install
 
 		protected InstallationManager Installer
 		{
-			get { return N2.Context.Current.Resolve<InstallationManager>(); }
+			get { return Engine.Resolve<InstallationManager>(); }
 		}
 
 		protected DatabaseStatus Status
@@ -50,6 +52,8 @@ namespace N2.Edit.Install
 				return status;
 			}
 		}
+
+		protected IEngine Engine { get { return N2.Context.Current; } }
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -146,6 +150,12 @@ namespace N2.Edit.Install
 				                 ex.Message;
 				lblStatus.ToolTip = ex.StackTrace;
 			}
+		}
+
+
+		protected void btnCreateSqlCeFile_Click(object sender, EventArgs e)
+		{
+			SqlCEDbHelper.CreateDatabaseFile(Engine.Resolve<N2.Configuration.ConfigurationManagerWrapper>().GetConnectionString());
 		}
 
 		protected void btnInstall_Click(object sender, EventArgs e)
@@ -420,6 +430,35 @@ namespace N2.Edit.Install
 			{
 				return false;
 			}
+		}
+	}
+	/// <summary>
+	/// SqlCEDBHelper courtesy of Ayende Rahien from Rhino.Commons.Helpers
+	/// Full code can be found here: https://svn.sourceforge.net/svnroot/rhino-tools/trunk/rhino-commons/Rhino.Commons/Helpers/SqlCEDbHelper.cs
+	/// </summary>
+	internal static class SqlCEDbHelper
+	{
+		static string engineTypeName = "System.Data.SqlServerCe.SqlCeEngine, System.Data.SqlServerCe";
+
+		internal static void CreateDatabaseFileAt(string filename)
+		{
+			if (File.Exists(filename))
+				File.Delete(filename);
+
+			CreateDatabaseFile(string.Format("Data Source='{0}';", filename));
+		}
+
+		internal static void CreateDatabaseFile(string connectionString)
+		{
+			Type type = Type.GetType(engineTypeName);
+			PropertyInfo localConnectionString = type.GetProperty("LocalConnectionString");
+			MethodInfo createDatabase = type.GetMethod("CreateDatabase");
+						
+			object engine = Activator.CreateInstance(type);
+			localConnectionString
+				.SetValue(engine, connectionString, null);
+			createDatabase
+				.Invoke(engine, new object[0]);
 		}
 	}
 }

@@ -97,18 +97,27 @@ namespace N2.Persistence.NH
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlClientDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSql2000Dialect).AssemblyQualifiedName;
 					break;
+				case DatabaseFlavour.SqlServer:
 				case DatabaseFlavour.SqlServer2005:
-				case DatabaseFlavour.SqlServer2008:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlClientDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSql2005Dialect).AssemblyQualifiedName;
 					break;
-				case DatabaseFlavour.SqlCe:
+				case DatabaseFlavour.SqlServer2008:
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlClientDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSql2008Dialect).AssemblyQualifiedName;
+					break;
+				case DatabaseFlavour.SqlCe3:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlServerCeDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSqlCeDialect).AssemblyQualifiedName;
 					break;
+				case DatabaseFlavour.SqlCe:
+				case DatabaseFlavour.SqlCe4:
+					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SqlServerCeDriver).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MsSqlCe40Dialect).AssemblyQualifiedName;
+					break;
 				case DatabaseFlavour.MySql:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.MySqlDataDriver).AssemblyQualifiedName;
-					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MySQLDialect).AssemblyQualifiedName;
+					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.MySQL5Dialect).AssemblyQualifiedName;
 					break;
 				case DatabaseFlavour.SqLite:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.SQLite20Driver).AssemblyQualifiedName;
@@ -134,6 +143,7 @@ namespace N2.Persistence.NH
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OracleClientDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.Oracle9iDialect).AssemblyQualifiedName;
 					break;
+				case DatabaseFlavour.Oracle:
 				case DatabaseFlavour.Oracle10g:
 					Properties[NHibernate.Cfg.Environment.ConnectionDriver] = typeof(NHibernate.Driver.OracleClientDriver).AssemblyQualifiedName;
 					Properties[NHibernate.Cfg.Environment.Dialect] = typeof(NHibernate.Dialect.Oracle10gDialect).AssemblyQualifiedName;
@@ -157,13 +167,15 @@ namespace N2.Persistence.NH
 			string provider = css.ProviderName;
 
 			if (provider == "" || provider.StartsWith("System.Data.SqlClient"))
-				return DatabaseFlavour.SqlServer2005;
+				return DatabaseFlavour.SqlServer;
 			if (provider.StartsWith("System.Data.SQLite"))
 				return DatabaseFlavour.SqLite;
 			if (provider.StartsWith("MySql.Data.MySqlClient"))
 				return DatabaseFlavour.MySql;
 			if (provider.StartsWith("System.Data.OracleClient"))
-				return DatabaseFlavour.Oracle10g;
+				return DatabaseFlavour.Oracle;
+			if (provider.StartsWith("System.Data.SqlServerCe"))
+				return DatabaseFlavour.SqlCe;
 
 			throw new ConfigurationErrorsException("Could not auto-detect the database flavor. Please configure this explicitly in the n2/database section.");
 		}

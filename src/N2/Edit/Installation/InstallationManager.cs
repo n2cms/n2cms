@@ -261,9 +261,9 @@ namespace N2.Edit.Installation
 			{
 				using (IDbConnection conn = GetConnection())
 				{
+					status.ConnectionType = conn.GetType().Name;
 					conn.Open();
 					conn.Close();
-					status.ConnectionType = conn.GetType().Name;
 				}
 				status.IsConnected = true;
 				status.ConnectionError = null;
