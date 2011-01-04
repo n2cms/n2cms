@@ -87,7 +87,7 @@
 
 	<!-- Clean sources -->
 
-	<Target Name="PrepareDependencies" DependsOnTargets="Prepare-Framework;Examples-PrepareDependencies;Prepare-Templates-Mvc;Prepare-Templates-WebForms">
+	<Target Name="PrepareDependencies" DependsOnTargets="Framework-PrepareDependencies;Examples-PrepareDependencies;Templates-Mvc-PrepareDependencies;Templates-PrepareDependencies">
 	</Target>
 
 	<Target Name="Clean-Output">
@@ -136,36 +136,6 @@
 																		 $(LibFolder)\**\sqlceme40.dll;" />
 	</ItemGroup>
 
-	<!-- Copy dependencies to example folders -->
-	<Target Name="Prepare-Examples-CSharp" DependsOnTargets="Define-Framework">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-CS-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<Target Name="Prepare-Examples-VisualBasic" DependsOnTargets="Define-Framework">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<Target Name="Prepare-Examples-Mvc" DependsOnTargets="Define-Framework">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<Target Name="Prepare-Examples-TemplatesSite" DependsOnTargets="Define-Templates-WebForms">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(WebFormsFiles)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(WebFormsBinaries)" DestinationFolder="$(Examples-Templates-SourceFolder)\wwwroot\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<!--Copy dependencies to sources-->
-	<Target Name="Prepare-Templates-WebForms" DependsOnTargets="Define-Framework">
-		<Copy SourceFiles="@(FrameworkFiles)" DestinationFolder="$(Templates-SourceFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
-		<Copy SourceFiles="@(FrameworkBinaries)" DestinationFolder="$(Templates-SourceFolder)\bin\" SkipUnchangedFiles="true" />
-	</Target>
-	<Target Name="Prepare-Templates-Mvc" DependsOnTargets="Prepare-Framework">
-	</Target>
-	<Target Name="Prepare-Framework">
-		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(ManagementFolder)\bin" />
-	</Target>
-
 	<!-- Create item groups used for copy dependencies for examples -->
 	<Target Name="Define-Framework" DependsOnTargets="Deploy-Framework">
 		<ItemGroup>
@@ -192,16 +162,16 @@
 
 	<!-- Deploy sources to output folder -->
 	<Target Name="Deploy-Framework">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true" 
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true" 
 						 Properties="OutDir=$(FrameworkOutDir);Configuration=ReleaseFramework" />
 		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(FrameworkOutDir)" />
 	</Target>
 	<Target Name="Deploy-Templates-WebForms">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true"
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true"
 						 Properties="OutDir=$(WebFormsOutDir);Configuration=ReleaseWebForms" />
 	</Target>
 	<Target Name="Deploy-Templates-Mvc">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" RebaseOutputs="true"
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true"
 						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc" />
 	</Target>
 

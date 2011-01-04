@@ -49,8 +49,8 @@
 	</Target>
 
 	<Target Name="Source-Clean">
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" Targets="Clean" Properties="Configuration=Debug" />
-		<MSBuild Projects="$(SrcFolder)\N2.Sources-vs2010.sln" Targets="Clean" Properties="Configuration=Release" />
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" Targets="Clean" Properties="Configuration=Debug" />
+		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" Targets="Clean" Properties="Configuration=Release" />
 
 		<ItemGroup>
 			<binFiles Include="$(SrcFolder)\**\bin\*;

@@ -41,9 +41,11 @@
 		<CallTarget Targets="Templates-RemoveProjectReferences" />
 	</Target>
 
-	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
+	<Target Name="Templates-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-SourceFolder)\bin" />
-		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Templates-SourceFolder)\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />
+		
+		<Exec Command="mklink /D $(Templates-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Templates-SourceFolder)\N2\')" />
+		<Message Text="Skipping mklink (folder exists): $(Templates-SourceFolder)\N2\" Condition="Exists('$(Templates-SourceFolder)\N2\')" Importance="high" />
 	</Target>
 
 	<Target Name="Templates-ZipDeploy" DependsOnTargets="Templates-Deploy;Templates-Zip">

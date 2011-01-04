@@ -9,7 +9,7 @@
 		<Templates-Mvc-DeployFolder-Path>$(Templates-Mvc-DeployFolder)\N2CMS</Templates-Mvc-DeployFolder-Path>
 	</PropertyGroup>
 
-	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
+	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
 		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
 					DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
