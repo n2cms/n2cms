@@ -2,6 +2,7 @@ using N2.Details;
 using N2.Persistence.Serialization;
 using N2.Web;
 using N2.Definitions;
+using N2.Persistence;
 
 namespace N2.Templates.Items
 {
@@ -26,6 +27,7 @@ namespace N2.Templates.Items
 			get { return Utility.ExtractFirstSentences(Text, 250); }
         }
 
+		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
 		public bool Syndicate { get; set; }
     }
 }

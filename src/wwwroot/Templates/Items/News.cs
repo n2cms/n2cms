@@ -3,6 +3,7 @@ using N2.Definitions;
 using N2.Details;
 using N2.Integrity;
 using N2.Web;
+using N2.Persistence;
 
 namespace N2.Templates.Items
 {
@@ -35,6 +36,7 @@ namespace N2.Templates.Items
             get { return Introduction; }
         }
 
+		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
 		public bool Syndicate { get; set; }
     }
 }

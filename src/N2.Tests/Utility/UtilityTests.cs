@@ -417,5 +417,79 @@ namespace N2.Tests.Utility
 			Assert.AreEqual(4, item1.Children.Count);
 		}
 
+		// Utility.ExtractFirstSentences
+
+		[Test]
+		public void ExtractFirstSentences_Extracts_SingleSentence_WithinLength()
+		{
+			string input = "Hello world!";
+			string output = N2.Utility.ExtractFirstSentences(input, 100);
+
+			Assert.That(output, Is.EqualTo(input));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_Extracts_SingleSentence_WithinLength_InHtml()
+		{
+			string input = "<p>Hello world!</p>";
+			string output = N2.Utility.ExtractFirstSentences(input, 100);
+
+			Assert.That(output, Is.EqualTo("Hello world!"));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_Extracts_SingleSentence_WithinLength_InHtml_WithAttributes()
+		{
+			string input = "<p><a href='#'>Hello</a> world!</p>";
+			string output = N2.Utility.ExtractFirstSentences(input, 100);
+
+			Assert.That(output, Is.EqualTo("Hello world!"));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_Extracts_FirstSentence_WithinLength()
+		{
+			string input = "Hello world. Hello there!";
+			string output = N2.Utility.ExtractFirstSentences(input, 20);
+
+			Assert.That(output, Is.EqualTo("Hello world."));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_Extracts_TwoSentence_WithinLength()
+		{
+			string input = "Hello world. Hello there. Bye bye!";
+			string output = N2.Utility.ExtractFirstSentences(input, 30);
+
+			Assert.That(output, Is.EqualTo("Hello world. Hello there."));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_GracefullyHandles_Null()
+		{
+			string input = null;
+			string output = N2.Utility.ExtractFirstSentences(input, 30);
+
+			Assert.That(output, Is.EqualTo(input));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_GracefullyHandles_EmptyString()
+		{
+			string input = "";
+			string output = N2.Utility.ExtractFirstSentences(input, 30);
+
+			Assert.That(output, Is.EqualTo(input));
+		}
+
+		[Test]
+		public void ExtractFirstSentences_GracefullyHandles_NoDelimiter()
+		{
+			string input = "Hello world";
+			string output = N2.Utility.ExtractFirstSentences(input, 30);
+
+			Assert.That(output, Is.EqualTo(input));
+		}
+
 	}
 }

@@ -24,11 +24,19 @@ namespace N2.Persistence
     [AttributeUsage(AttributeTargets.Property)]
 	public class PersistableAttribute : Attribute, IInterceptableProperty
     {
+		public PersistableAttribute()
+		{
+			PersistAs = PropertyPersistenceLocation.Column;
+		}
+
         /// <summary>The length of this column (usually for string properties)</summary>
 		public int Length { get; set; }
 
 		/// <summary>An alternative name of the column (optional).</summary>
 		public string Column { get; set; }
+
+		/// <summary>Where to store this property (default is column).</summary>
+		public PropertyPersistenceLocation PersistAs { get; set; }
 
         /// <summary>Generates the mapping xml for this property.</summary>
         /// <param name="info">The property the attribute was added to.</param>
@@ -53,11 +61,6 @@ namespace N2.Persistence
         }
 
 		#region IInterceptableProperty Members
-
-		PropertyPersistenceMode IInterceptableProperty.PersistAs
-		{
-			get { return PropertyPersistenceMode.Ignore; }
-		}
 
 		object IInterceptableProperty.DefaultValue
 		{

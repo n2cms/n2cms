@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Security;
 using N2.Engine;
+using N2.Persistence;
 using N2.Persistence.Proxying;
 
 namespace N2.Details
@@ -415,7 +416,7 @@ namespace N2.Details
 
 		#region IInterceptableProperty Members
 
-		public PropertyPersistenceMode PersistAs { get; set; }
+		public PropertyPersistenceLocation PersistAs { get; set; }
 
 		public object DefaultValue { get; set; }
 

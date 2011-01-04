@@ -11,7 +11,7 @@ namespace N2.Persistence.Proxying
 	public interface IInterceptableProperty
 	{
 		/// <summary>Describes how the property is stored.</summary>
-		PropertyPersistenceMode PersistAs { get; }
+		PropertyPersistenceLocation PersistAs { get; }
 
 		/// <summary>The default value of intercepted properties that have null value.</summary>
 		object DefaultValue { get; }

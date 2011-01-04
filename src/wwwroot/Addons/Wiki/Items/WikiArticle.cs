@@ -3,6 +3,7 @@ using N2.Details;
 using N2.Integrity;
 using N2.Web;
 using N2.Web.UI;
+using N2.Persistence;
 
 namespace N2.Addons.Wiki.Items
 {
@@ -97,6 +98,7 @@ namespace N2.Addons.Wiki.Items
             get { return ""; }
         }
 
+		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
 		public bool Syndicate { get; set; }
 
         #endregion

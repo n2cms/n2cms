@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using N2.Persistence.Proxying;
+﻿using System.Web.UI.WebControls;
 using N2.Details;
-using System.Web.UI.WebControls;
+using N2.Persistence;
+using N2.Persistence.Proxying;
+using NUnit.Framework;
 
 namespace N2.Tests.Persistence.Proxying
 {
@@ -38,7 +35,7 @@ namespace N2.Tests.Persistence.Proxying
 
 	public class IgnoringItem : InterceptableItem
 	{
-		[EditableCheckBox("Ignored Property", 100, PersistAs = PropertyPersistenceMode.Ignore)]
+		[EditableCheckBox("Ignored Property", 100, PersistAs = PropertyPersistenceLocation.Ignore)]
 		public virtual bool IgnoredProperty { get; set; }
 	}
 

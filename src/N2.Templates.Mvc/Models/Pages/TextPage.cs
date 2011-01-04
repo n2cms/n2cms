@@ -4,6 +4,7 @@ using N2.Templates.Mvc.Services;
 using N2.Persistence.Serialization;
 using N2.Web.Mvc;
 using N2.Definitions;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -23,6 +24,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			get { return Utility.ExtractFirstSentences(Text, 250); }
 		}
 
+		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
 		public virtual bool Syndicate { get; set; }
 	}
 }

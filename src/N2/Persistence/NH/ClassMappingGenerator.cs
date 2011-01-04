@@ -48,6 +48,7 @@ namespace N2.Persistence.NH
 				.Where(pi => pi.DeclaringType == attributedType)
 				.SelectMany(pi => pi.GetCustomAttributes(typeof(PersistableAttribute), false)
 					.OfType<PersistableAttribute>()
+					.Where(a => a.PersistAs == PropertyPersistenceLocation.Column)
 					.Select(a => new Pair { Attribute = a, DeclaringProperty = pi }));
 		}
 
