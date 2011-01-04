@@ -24,8 +24,9 @@
 		<DeployPrefix>n2cms_2.1.1_</DeployPrefix>
 		<DeployFolder>$(RootFolder)\output</DeployFolder>
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
-		
+
 		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+		<Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
 		
 		<MSBuildCommunityTasksPath>$(RootFolder)\lib</MSBuildCommunityTasksPath>
 	</PropertyGroup>
@@ -34,6 +35,7 @@
 	<Import Project="n2.framework.targets"/>
 	<Import Project="n2.templates.webforms.targets"/>
 	<Import Project="n2.templates.mvc.targets"/>
+	<Import Project="n2.designerific.targets"/>
 	<Import Project="n2.examples.targets"/>
 	<Import Project="n2.sources.targets"/>
 
@@ -49,7 +51,7 @@
 			<_SolutionFiles Include="$(RootFolder)\**\*.sln" />
 		</ItemGroup>
 
-		<MSBuild Projects="@(_SolutionFiles)" />
+		<MSBuild Projects="@(_SolutionFiles)" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 
 	<!-- Clean -->
@@ -163,16 +165,16 @@
 	<!-- Deploy sources to output folder -->
 	<Target Name="Deploy-Framework">
 		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true" 
-						 Properties="OutDir=$(FrameworkOutDir);Configuration=ReleaseFramework" />
+						 Properties="OutDir=$(FrameworkOutDir);Configuration=ReleaseFramework;Platform=$(Platform)" />
 		<Copy SourceFiles="@(Framework-Dependencies)" DestinationFolder="$(FrameworkOutDir)" />
 	</Target>
 	<Target Name="Deploy-Templates-WebForms">
 		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true"
-						 Properties="OutDir=$(WebFormsOutDir);Configuration=ReleaseWebForms" />
+						 Properties="OutDir=$(WebFormsOutDir);Configuration=ReleaseWebForms;Platform=$(Platform)" />
 	</Target>
 	<Target Name="Deploy-Templates-Mvc">
 		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true"
-						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc" />
+						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc;Platform=$(Platform)" />
 	</Target>
 
 	<!--<Target Name="X">

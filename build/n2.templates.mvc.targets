@@ -16,7 +16,7 @@
 	</Target>
 
 	<Target Name="Templates-Mvc-Build">
-		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);" />
+		<MSBuild Projects="$(Templates-Mvc-SourceFolder)\N2.Templates.Mvc.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 
 	<Target Name="Templates-Mvc-Deploy" DependsOnTargets="Framework-CreateItemGroups">
