@@ -1,4 +1,8 @@
-﻿- Fixed #29845: Legend error with multiple ExpandableContainer items
+﻿2.1.1
+- Fixed "syndicatable" not working (ThreadId=240343)
+
+2.1
+- Fixed #29845: Legend error with multiple ExpandableContainer items
 - Fixed Error when trying to rename an upload folder (ThreadId=239449)
 
 2.1 rc3

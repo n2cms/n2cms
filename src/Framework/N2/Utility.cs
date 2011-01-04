@@ -459,7 +459,7 @@ namespace N2
 		/// <returns>A string with complete sentences uptil the supplied max length.</returns>
 		public static string ExtractFirstSentences(string html, int maxLength)
 		{
-			if (html == null) return null;
+			if (string.IsNullOrEmpty(html)) return html;
 
 			html = StripTagsExpression.Replace(html, "");
 			int separatorIndex = 0;

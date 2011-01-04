@@ -81,9 +81,9 @@ namespace N2.Persistence.Proxying
 						continue;
 
 					var attributes = property.GetCustomAttributes(typeof(IInterceptableProperty), true).OfType<IInterceptableProperty>();
-					if (attributes.Any(a => a.PersistAs != PropertyPersistenceMode.InterceptedDetails))
+					if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail))
 						continue;
-					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceMode.InterceptedDetails))
+					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail))
 						continue;
 
 					yield return property;

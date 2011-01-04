@@ -4,6 +4,7 @@ using N2.Details;
 using N2.Integrity;
 using N2.Templates.Mvc.Services;
 using N2.Web.Mvc;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Models.Pages
 {
@@ -31,6 +32,7 @@ namespace N2.Templates.Mvc.Models.Pages
 			get { return Introduction; }
 		}
 
+		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
 		public virtual bool Syndicate { get; set; }
 	}
 }

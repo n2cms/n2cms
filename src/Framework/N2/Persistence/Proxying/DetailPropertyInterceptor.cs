@@ -33,7 +33,7 @@ namespace N2.Persistence.Proxying
 			{
 				var attributes = property.GetCustomAttributes(typeof(IInterceptableProperty), true).OfType<IInterceptableProperty>();
 				var attribute = attributes.FirstOrDefault();
-				if (attribute == null || attributes.Any(a => a.PersistAs != PropertyPersistenceMode.InterceptedDetails))
+				if (attribute == null || attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail))
 				    continue;
 
 				var getMethod = property.GetGetMethod();
