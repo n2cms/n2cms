@@ -54,21 +54,18 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\N2.Security\N2.Security.csproj">
+    <ProjectReference Include="..\..\Framework\Security\N2.Security.csproj">
       <Project>{CB6A29C5-8355-4C4C-B437-619F652B7540}</Project>
       <Name>N2.Security</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\N2\N2.csproj">
+    <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyVersion.cs">
-      <Link>AssemblyVersion.cs</Link>
-    </Compile>
     <Compile Include="Addons\Wiki\Fragment.cs" />
     <Compile Include="Addons\Wiki\Fragmenters\CommentFragmenter.cs" />
     <Compile Include="Addons\Wiki\Fragmenters\ExternalLinkFragmenter.cs" />

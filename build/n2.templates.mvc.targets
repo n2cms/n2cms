@@ -4,13 +4,13 @@
 	<!-- MVC TEMPLATES -->
 
 	<PropertyGroup>
-		<Templates-Mvc-SourceFolder>$(SrcFolder)\N2.Templates.Mvc</Templates-Mvc-SourceFolder>
+		<Templates-Mvc-SourceFolder>$(SrcFolder)\Mvc\MvcTemplates</Templates-Mvc-SourceFolder>
 		<Templates-Mvc-DeployFolder>$(DeployFolder)\$(DeployPrefix)Templates_Mvc</Templates-Mvc-DeployFolder>
 		<Templates-Mvc-DeployFolder-Path>$(Templates-Mvc-DeployFolder)\N2CMS</Templates-Mvc-DeployFolder-Path>
 	</PropertyGroup>
 
 	<Target Name="Templates-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
-		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\$(Configuration)\N2.Extensions.dll;"
+		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
 					DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Templates-Mvc-SourceFolder)\bin" />
 	</Target>

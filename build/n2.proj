@@ -15,13 +15,13 @@
 		<SnippetsFolder>$(RootFolder)\snippets</SnippetsFolder>
 
 		<SrcFolder>$(RootFolder)\src</SrcFolder>
-		<WebFolder>$(RootFolder)\src\wwwroot</WebFolder>
-		<ManagementFolder>$(SrcFolder)\N2.Templates.Mvc\</ManagementFolder>
-		<EditFolder>$(RootFolder)\src\N2.Templates.Mvc\N2</EditFolder>
+		<WebFolder>$(SrcFolder)\WebForms\WebFormsTemplates</WebFolder>
+		<ManagementFolder>$(SrcFolder)\Mvc\MvcTemplates\</ManagementFolder>
+		<EditFolder>$(RootFolder)\src\Mvc\MvcTemplates\N2</EditFolder>
 
 		<Examples-Folder>$(RootFolder)\examples</Examples-Folder>
 
-		<DeployPrefix>n2cms_2.1rtm_</DeployPrefix>
+		<DeployPrefix>n2cms_2.1.1_</DeployPrefix>
 		<DeployFolder>$(RootFolder)\output</DeployFolder>
 		<TempFolder>$(RootFolder)\output\temp\</TempFolder>
 		
@@ -96,11 +96,11 @@
 
 	<Target Name="Test" DependsOnTargets="Framework-Build">
 		<ItemGroup>
-			<AssembliesToTest Include="$(SrcFolder)\N2.Tests\bin\$(Configuration)\*.Tests.dll;"/>
-			<AssembliesToTest Include="$(SrcFolder)\N2.Edit.Tests\bin\$(Configuration)\N2.Edit.Tests.dll;"/>
-			<AssembliesToTest Include="$(SrcFolder)\N2.Extensions.Tests\bin\$(Configuration)\N2.Extensions.Tests.dll;"/>
-			<AssembliesToTest Include="$(SrcFolder)\N2.Templates.Mvc.Tests\bin\$(Configuration)\N2.Templates.Mvc.Tests.dll;"/>
-			<AssembliesToTest Include="$(SrcFolder)\N2.Templates.Tests\bin\$(Configuration)\N2.Templates.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Framework\Tests\bin\$(Configuration)\*.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Framework\Edit.Tests\bin\$(Configuration)\N2.Edit.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Framework\Extensions.Tests\bin\$(Configuration)\N2.Extensions.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Mvc\MvcTemplates.Tests\bin\$(Configuration)\N2.Templates.Mvc.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\WebForms\WebFormsTemplates.Tests\bin\$(Configuration)\N2.Templates.Tests.dll;"/>
 		</ItemGroup>
 		<PropertyGroup>
 			<Exe></Exe>

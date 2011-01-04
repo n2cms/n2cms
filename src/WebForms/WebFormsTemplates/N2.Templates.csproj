@@ -49,7 +49,7 @@
   <ItemGroup>
     <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
+      <HintPath>..\..\..\lib\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -502,7 +502,7 @@
     <Compile Include="Templates\Zones.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\N2\N2.csproj">
+    <ProjectReference Include="..\..\Framework\N2\N2.csproj">
       <Project>{F3C813FE-C51B-4C10-85E2-FD2560E73E72}</Project>
       <Name>N2</Name>
     </ProjectReference>

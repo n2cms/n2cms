@@ -27,7 +27,7 @@
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-VB-SourceFolder)\wwwroot\N2\%(RecursiveDir)" />
 	</Target>
 	<Target Name="Examples-Mvc-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups">
-		<Copy SourceFiles="$(SrcFolder)\N2.Extensions\bin\$(Configuration)\N2.Extensions.dll;"
+		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
 					DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\bin" />
 		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\bin" />
 		<Copy SourceFiles="@(Framework-EditFiles)" DestinationFolder="$(Examples-Mvc-SourceFolder)\wwwroot\N2\%(RecursiveDir)" SkipUnchangedFiles="true" />

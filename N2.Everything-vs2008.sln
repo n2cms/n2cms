@@ -23,17 +23,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{D652AD73-CA2A-4EFA-A46D-0F7FCAC84AE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2", "src\N2\N2.csproj", "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2", "src\Framework\N2\N2.csproj", "{F3C813FE-C51B-4C10-85E2-FD2560E73E72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Extensions", "src\N2.Extensions\N2.Extensions.csproj", "{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Extensions", "src\Framework\Extensions\N2.Extensions.csproj", "{E1A4B329-2EA0-445E-B22F-08DBAD0DF497}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Extensions.Tests", "src\N2.Extensions.Tests\N2.Extensions.Tests.csproj", "{84876FD2-9055-4A02-A163-1495E5659BC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Extensions.Tests", "src\Framework\Extensions.Tests\N2.Extensions.Tests.csproj", "{84876FD2-9055-4A02-A163-1495E5659BC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Tests", "src\N2.Tests\N2.Tests.csproj", "{4B026365-D03B-40B4-862B-11608BA756B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Tests", "src\Framework\Tests\N2.Tests.csproj", "{4B026365-D03B-40B4-862B-11608BA756B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Security", "src\N2.Security\N2.Security.csproj", "{CB6A29C5-8355-4C4C-B437-619F652B7540}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Security", "src\Framework\Security\N2.Security.csproj", "{CB6A29C5-8355-4C4C-B437-619F652B7540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates", "src\wwwroot\N2.Templates.csproj", "{D42D096E-399D-4618-AEB4-9B023BA1316D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates", "src\WebForms\WebFormsTemplates\N2.Templates.csproj", "{D42D096E-399D-4618-AEB4-9B023BA1316D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}"
 	ProjectSection(SolutionItems) = preProject
@@ -49,7 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{CC6F803A
 		readme.txt = readme.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Tests", "src\N2.Templates.Tests\N2.Templates.Tests.csproj", "{CEE6525F-F502-4890-AA36-7B8755A5E47D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Tests", "src\WebForms\WebFormsTemplates.Tests\N2.Templates.Tests.csproj", "{CEE6525F-F502-4890-AA36-7B8755A5E47D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Snippets", "Code Snippets", "{3C49EAD0-C3FF-406F-8290-23229BD4BADF}"
 	ProjectSection(SolutionItems) = preProject
@@ -96,18 +96,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 		lib\System.Data.SQLite.DLL = lib\System.Data.SQLite.DLL
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddonCatalog", "src\wwwroot\AddonCatalog.csproj", "{0F286C8B-A322-43E6-B02C-F118BF29D3D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddonCatalog", "src\WebForms\WebFormsTemplates\AddonCatalog.csproj", "{0F286C8B-A322-43E6-B02C-F118BF29D3D5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Add-ons", "Add-ons", "{AA0C3414-F509-44A2-A677-409DE6B49B1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiki", "src\wwwroot\Wiki.csproj", "{77B21028-EA50-4CED-8334-307E836B0ECB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiki", "src\WebForms\WebFormsTemplates\Wiki.csproj", "{77B21028-EA50-4CED-8334-307E836B0ECB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{03223418-97AD-4087-A568-6BBFD274864D}"
 	ProjectSection(SolutionItems) = preProject
 		examples\Prepare_Dependencies-vs2008.bat = examples\Prepare_Dependencies-vs2008.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.UI.Tests", "src\wwwroot\N2.Templates.UI.Tests.csproj", "{250D978B-3C2C-4151-9A69-B36F3F53E8B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.UI.Tests", "src\WebForms\WebFormsTemplates\N2.Templates.UI.Tests.csproj", "{250D978B-3C2C-4151-9A69-B36F3F53E8B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{7241079F-3CD3-4BAF-BFF9-8BF8B4AC15B0}"
 	ProjectSection(SolutionItems) = preProject
@@ -130,9 +130,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{1049B0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B56F738-E780-4F6E-9B7F-7D161F7E3521}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc", "src\N2.Templates.Mvc\N2.Templates.Mvc.csproj", "{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc", "src\Mvc\MvcTemplates\N2.Templates.Mvc.csproj", "{92022CD3-9BDC-4E5B-BB9D-2D47531BEBF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc.Tests", "src\N2.Templates.Mvc.Tests\N2.Templates.Mvc.Tests.csproj", "{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc.Tests", "src\Mvc\MvcTemplates.Tests\N2.Templates.Mvc.Tests.csproj", "{72A36B7B-87AD-4E5F-AD85-BBECAA5B8322}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebForms", "WebForms", "{2F1767D9-B52F-497D-8AE1-9B80B9EC5441}"
 EndProject
@@ -159,9 +159,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{CB15BB2E-3
 		docs\upgrade.txt = docs\upgrade.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management", "src\N2.Templates.Mvc\N2.Management.csproj", "{10F7C179-B92D-4FCA-B78C-011E428D0CA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management", "src\Mvc\MvcTemplates\N2.Management.csproj", "{10F7C179-B92D-4FCA-B78C-011E428D0CA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management.Tests", "src\N2.Edit.Tests\N2.Management.Tests.csproj", "{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management.Tests", "src\Framework\Management.Tests\N2.Management.Tests.csproj", "{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCS", "examples\MinimalCSharp\wwwroot\AppCS.csproj", "{1A6297F1-B181-473D-936B-BFE8D27B79ED}"
 EndProject

@@ -55,7 +55,7 @@
 		<ItemGroup>
 			<binFiles Include="$(SrcFolder)\**\bin\*;
 												 $(SrcFolder)\**\obj\*" />
-			<dependencyDirectories Include="$(SrcFolder)\wwwroot\N2\;$(SrcFolder)\wwwroot\Edit\" />
+			<dependencyDirectories Include="$(Templates-SourceFolder)\N2\;$(Templates-SourceFolder)\Edit\" />
 		</ItemGroup>
 		<Delete Files="@(binFiles)" />
 		<RemoveDir Directories="@(dependencyDirectories)" />

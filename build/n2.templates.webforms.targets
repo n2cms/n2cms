@@ -4,7 +4,7 @@
 	<!-- TEMPLATES -->
 
 	<PropertyGroup>
-		<Templates-SourceFolder>$(SrcFolder)\wwwroot</Templates-SourceFolder>
+		<Templates-SourceFolder>$(SrcFolder)\WebForms\WebFormsTemplates</Templates-SourceFolder>
 		<Templates-DeployFolder>$(DeployFolder)\$(DeployPrefix)Templates_WebForms</Templates-DeployFolder>
 		<Templates-DeployFolder-Path>$(Templates-DeployFolder)\N2CMS</Templates-DeployFolder-Path>
 	</PropertyGroup>
@@ -37,7 +37,6 @@
 		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Templates-DeployFolder-Path)\bin\" />
 		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Templates-DeployFolder-Path)\N2\%(RecursiveDir)" />
 		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Templates-DeployFolder)" />
-		<Copy SourceFiles="$(SrcFolder)\AssemblyVersion.cs" DestinationFiles="$(Templates-DeployFolder)\AssemblyVersion.cs" />
 		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Templates-DeployFolder)\Snippets" />
 		<CallTarget Targets="Templates-RemoveProjectReferences" />
 	</Target>
