@@ -255,12 +255,23 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="mappings" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="add" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
 						</xs:all>
 						<xs:attribute name="caching" type="xs:boolean" use="optional" />
 						<xs:attribute name="tryLocatingHbmResources" type="xs:boolean" use="optional" />
 						<xs:attribute name="cacheProviderClass" type="xs:string" use="optional" />
 						<xs:attribute name="connectionStringName" type="xs:string" use="optional" />
-						<xs:attribute name="flavour" use="required">
+						<xs:attribute name="flavour" use="optional">
 							<xs:simpleType>
 								<xs:restriction base="xs:string">
 									<xs:enumeration value="SqlServer2008"/>
@@ -280,6 +291,7 @@
 							</xs:simpleType>
 						</xs:attribute>
 						<xs:attribute name="hibernateMapping" type="xs:string" use="optional" />
+						<xs:attribute name="tablePrefix" type="xs:string" use="optional" default="n2" />
 						<xs:attribute name="configSource" type="xs:string" use="optional" />
 						<xs:attribute name="batchSize" type="xs:int" use="optional" default="25" />
 					</xs:complexType>
