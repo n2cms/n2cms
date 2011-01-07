@@ -2,7 +2,7 @@
 <asp:Content ContentPlaceHolderID="Content" runat="server">
 	<form runat="server">
 		<asp:ContentPlaceHolder ID="Content" runat="server">
-			<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
+			<% Html.RenderAction("Breadcrumb", "Navigation"); %>
 			<%=Html.DisplayContent("Image").SwallowExceptions()%>
 			<asp:ContentPlaceHolder ID="TextContent" runat="server">
 				<% if (Html.ValueEquals("ShowTitle", true)) { %>
