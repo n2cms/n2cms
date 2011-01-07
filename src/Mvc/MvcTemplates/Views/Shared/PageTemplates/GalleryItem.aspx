@@ -4,11 +4,11 @@
 <%@ Import Namespace="N2.Templates.Mvc.Models.Pages"%>
 
 <asp:Content ContentPlaceHolderID="ContentAndSidebar" runat="server">
-	<% Html.RenderAction<NavigationController>(c => c.Breadcrumb()); %>
+	<% Html.RenderAction("Breadcrumb", "Navigation"); %>
 	
 	<%=Html.DisplayContent(m => m.Title)%>
 	
-	<img alt="<%=Model.Title%>" src="<%=ResolveUrl(Model.ResizedImageUrl)%>" />
+	<img alt="<%=Model.Title%>" src="<%=ResolveUrl(Model.GetResizedImageUrl(Html.ResolveService<N2.Edit.FileSystem.IFileSystem>()))%>" />
 	
 	<%=Html.DisplayContent(m => m.Text)%>
 </asp:Content>

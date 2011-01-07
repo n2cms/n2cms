@@ -4,9 +4,9 @@
 	<div class="box">
 		<div class="inner">
 			<%if(Model.LoggedIn){%>
-			<%=Html.ActionLink<LoginController>(c => c.Logout(), Model.CurrentItem.LogoutText)%>
+			<%=Html.ActionLink(Model.CurrentItem.LogoutText, "Logout", "Login")%>
 			<%}else{%>
-			<%using(Html.BeginForm<LoginController>(c => c.Login(null, null, null), FormMethod.Post)){%>
+			<%using(Html.BeginForm("Login", "Login", FormMethod.Post)){%>
 			<div class="ff username">
 				<label for="userName"><%=GetLocalResourceObject("UserName") %></label>
 				<input id="userName" name="userName" class="tb" />
