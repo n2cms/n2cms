@@ -77,7 +77,7 @@ namespace N2.Edit.FileSystem.Items
 
 		public void Save()
 		{
-			if (Name != originalName)
+			if (!string.IsNullOrEmpty(originalName) && Name != originalName)
 			{
 				string oldPath = N2.Web.Url.Combine(Parent.Url, originalName);
 				string newPath = N2.Web.Url.Combine(Parent.Url, Name);
