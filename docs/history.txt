@@ -1,5 +1,6 @@
 ﻿2.1.1
 - Fixed "syndicatable" not working (ThreadId=240343)
+- Fixed can't create directory (ThreadId=241000)
 
 2.1
 - Fixed #29845: Legend error with multiple ExpandableContainer items
