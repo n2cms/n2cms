@@ -23,11 +23,9 @@
 	</div>
 
 	<script type="text/javascript">
-		$(document).ready(function() {
+		Galleria.loadTheme('<%= ResolveClientUrl("~/Content/Galleria/themes/classic/galleria.classic.js") %>');
 
-			// Load theme
-			Galleria.loadTheme('<%= ResolveClientUrl("~/Content/Galleria/themes/classic/galleria.classic.js") %>');
-
+		$(document).ready(function () {
 			// run galleria and add some options
 			$('#galleria').galleria({
 				image_crop: true, // crop all images to fit

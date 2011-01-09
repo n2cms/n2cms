@@ -1,4 +1,6 @@
 ﻿2.1.1
+- Applied pasi's patch #29927: Fix gallery reload
+- Fixed resource files naming according to #29938
 - Fixed feed in WebForms templates
 - Fixed "syndicatable" not working (ThreadId=240343)
 - Fixed can't create directory (ThreadId=241000)
