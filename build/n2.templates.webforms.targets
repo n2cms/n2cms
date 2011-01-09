@@ -11,7 +11,7 @@
 
 
 	<Target Name="Templates-Build">
-		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);" />
+		<MSBuild Projects="$(WebFolder)\N2.Templates.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 
 	<Target Name="Templates-Deploy" DependsOnTargets="Templates-Build;Framework-CreateItemGroups">
@@ -107,7 +107,7 @@ public static string ScriptMain() {
 	</Target>
 
 	<Target Name="AddonCatalog-Build">
-		<MSBuild Projects="$(WebFolder)\AddonCatalog.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(WebFolder)\AddonCatalog.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);OutDir=$(TempFolder)" />
 	</Target>
 	<Target Name="AddonCatalog-Deploy" DependsOnTargets="AddonCatalog-Build">
 		<ItemGroup>
@@ -118,7 +118,7 @@ public static string ScriptMain() {
 	</Target>
 
 	<Target Name="Wiki-Build">
-		<MSBuild Projects="$(WebFolder)\Wiki.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(WebFolder)\Wiki.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);OutDir=$(TempFolder)" />
 	</Target>
 	
 	<Target Name="Wiki-Deploy" DependsOnTargets="Wiki-Build">
@@ -130,7 +130,7 @@ public static string ScriptMain() {
 	</Target>
 
 	<Target Name="Tagging-Build">
-		<MSBuild Projects="$(WebFolder)\Tagging.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(WebFolder)\Tagging.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);OutDir=$(TempFolder)" />
 	</Target>
 
 	<Target Name="Tagging-Deploy" DependsOnTargets="Tagging-Build">
@@ -142,7 +142,7 @@ public static string ScriptMain() {
 	</Target>
 
 	<Target Name="TabPanel-Build">
-		<MSBuild Projects="$(WebFolder)\TabPanel.csproj" Properties="Configuration=$(Configuration);OutDir=$(TempFolder)" />
+		<MSBuild Projects="$(WebFolder)\TabPanel.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);OutDir=$(TempFolder)" />
 	</Target>
 
 	<Target Name="TabPanel-Deploy" DependsOnTargets="TabPanel-Build">
