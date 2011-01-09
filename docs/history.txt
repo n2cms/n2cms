@@ -1,4 +1,5 @@
 ﻿2.1.1
+- Fixed feed in WebForms templates
 - Fixed "syndicatable" not working (ThreadId=240343)
 - Fixed can't create directory (ThreadId=241000)
 

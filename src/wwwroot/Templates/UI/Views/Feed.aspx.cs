@@ -8,16 +8,20 @@ namespace N2.Templates.UI.Views
 {
     public partial class Feed : ContentPage<RssFeed>
     {
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
+		protected override void ApplyConcerns(ContentItem item)
+		{
+			// don't apply master page, etc.
+		}
 
-            if (Request["hungry"] == "yes")
-            {
-                Response.ContentType = "text/xml";
-                Engine.Resolve<RssWriter>().Write(Response.Output, CurrentItem);
-                Response.End();
-            }
-        }
+		protected override void Render(System.Web.UI.HtmlTextWriter writer)
+		{
+			if (Request["hungry"] == "yes")
+			{
+				Response.ContentType = "text/xml";
+				Engine.Resolve<RssWriter>().Write(Response.Output, CurrentItem);
+			}
+			else
+				base.Render(writer);
+		}
     }
 }
