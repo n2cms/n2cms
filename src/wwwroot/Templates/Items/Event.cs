@@ -58,6 +58,6 @@ namespace N2.Templates.Items
         }
 
 		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
-		public bool Syndicate { get; set; }
+		public virtual bool Syndicate { get; set; }
     }
 }
