@@ -1,3 +1,4 @@
+- limit number of items in a zone (ThreadId=241156)
 - show path in screens
 - modal file selectors
 - change to ordinal string comparisons
