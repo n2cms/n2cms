@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using N2.Plugin;
 using Castle.Core;
 using System.Collections.Generic;
@@ -39,5 +40,10 @@ namespace N2.Engine
 				container.AddComponent(info.Attribute.Key ?? info.DecoratedType.FullName, serviceType, info.DecoratedType);
 			}
 		}
-    }
+
+		public virtual IEnumerable<AttributeInfo<ServiceAttribute>> FilterServices(IEnumerable<AttributeInfo<ServiceAttribute>> services, params string[] configurationKeys)
+		{
+			return services.Where(s => s.Attribute.Configuration == null || configurationKeys.Contains(s.Attribute.Configuration));
+		}
+	}
 }

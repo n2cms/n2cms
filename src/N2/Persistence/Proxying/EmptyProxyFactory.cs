@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using N2.Engine;
 
 namespace N2.Persistence.Proxying
 {
 	/// <summary>
 	/// Doesn't intercept at all.
 	/// </summary>
+	[Service(typeof(IProxyFactory), Configuration = ContainerConfigurer.ConfigurationKeys.MediumTrust)]
 	public class EmptyProxyFactory : IProxyFactory
 	{
 		#region IInterceptionFactory Members

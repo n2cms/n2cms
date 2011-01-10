@@ -10,7 +10,7 @@ namespace N2.Persistence.Proxying
 	/// <summary>
 	/// Creates a proxy that rewires auto-generated properties to detail get/set.
 	/// </summary>
-	[Service(typeof(IProxyFactory))]
+	[Service(typeof(IProxyFactory), Configuration = ContainerConfigurer.ConfigurationKeys.FullTrust)]
 	public class InterceptingProxyFactory : EmptyProxyFactory
 	{
 		class Tuple

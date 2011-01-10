@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using N2.Configuration;
 using N2.Web;
+using System.Collections.Generic;
 
 namespace N2.Engine
 {
@@ -9,6 +11,17 @@ namespace N2.Engine
 	/// </summary>
 	public class ContainerConfigurer
 	{
+		/// <summary>
+		/// Known configuration keys used to configure services.
+		/// </summary>
+		public static class ConfigurationKeys
+		{
+			/// <summary>Key used to configure services intended for medium trust.</summary>
+			public const string MediumTrust = "MediumTrust";
+			/// <summary>Key used to configure services intended for full trust.</summary>
+			public const string FullTrust = "FullTrust";
+		}
+
 		public virtual void Configure(IEngine engine, EventBroker broker, ConfigurationManagerWrapper configuration)
 		{
 			configuration.Start();
@@ -34,7 +47,12 @@ namespace N2.Engine
 			engine.Container.AddComponent("n2.serviceRegistrator", typeof(ServiceRegistrator), typeof(ServiceRegistrator));
 
 			var registrator = engine.Container.Resolve<ServiceRegistrator>();
-			registrator.RegisterServices(registrator.FindServices());
+			var services = registrator.FindServices();
+			string serviceConfiguration = (Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium) 
+				? ConfigurationKeys.FullTrust 
+				: ConfigurationKeys.MediumTrust;
+			services = registrator.FilterServices(services, serviceConfiguration);
+			registrator.RegisterServices(services);
 		}
 
 		private void AddComponentInstance(IServiceContainer container, object instance)
