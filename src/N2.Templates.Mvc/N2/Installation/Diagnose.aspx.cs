@@ -221,5 +221,28 @@ namespace N2.Edit.Install
 			return
 				string.Format("<textarea>{0}\n\n{1}</textarea>", ex.Message, ex.StackTrace);
 		}
+
+		/// <summary>
+		/// Finds the trust level of the running application (http://blogs.msdn.com/dmitryr/archive/2007/01/23/finding-out-the-current-trust-level-in-asp-net.aspx)
+		/// </summary>
+		/// <returns>The current trust level.</returns>
+		protected static AspNetHostingPermissionLevel GetTrustLevel()
+		{
+			foreach (AspNetHostingPermissionLevel trustLevel in new[] { AspNetHostingPermissionLevel.Unrestricted, AspNetHostingPermissionLevel.High, AspNetHostingPermissionLevel.Medium, AspNetHostingPermissionLevel.Low, AspNetHostingPermissionLevel.Minimal })
+			{
+				try
+				{
+					new AspNetHostingPermission(trustLevel).Demand();
+				}
+				catch (System.Security.SecurityException)
+				{
+					continue;
+				}
+
+				return trustLevel;
+			}
+
+			return AspNetHostingPermissionLevel.None;
+		}
 	}
 }
