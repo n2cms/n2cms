@@ -205,6 +205,13 @@
 						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc" />
 	</Target>
 
+	<Target Name="Prepare-Development">
+		<ItemGroup>
+			<TemplateFiles Include="$(BuildFolder)\templates\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(TemplateFiles)" DestinationFolder="$(SrcFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
+
 	<!--<Target Name="X">
 		<MSBuild Projects="n2.publish.targets"
 						 Targets="PublishAllFiles"
