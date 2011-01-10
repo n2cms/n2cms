@@ -48,11 +48,24 @@ namespace N2.Engine
 
 			var registrator = engine.Container.Resolve<ServiceRegistrator>();
 			var services = registrator.FindServices();
-			string serviceConfiguration = (Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium) 
-				? ConfigurationKeys.FullTrust 
-				: ConfigurationKeys.MediumTrust;
-			services = registrator.FilterServices(services, serviceConfiguration);
+
+			var configurations = GetComponentConfigurations(configuration);
+
+			services = registrator.FilterServices(services, configurations);
 			registrator.RegisterServices(services);
+		}
+
+		protected virtual string[] GetComponentConfigurations(ConfigurationManagerWrapper configuration)
+		{
+			List<string> configurations = new List<string>();
+			string trustConfiguration = (Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium)
+				? ConfigurationKeys.FullTrust
+				: ConfigurationKeys.MediumTrust;
+			configurations.Add(trustConfiguration);
+			var configured = configuration.GetContentSection<EngineSection>("engine").ComponentConfigurations;
+			configurations.AddRange(configured.AddedElements.Select(e => e.Name));
+			configurations.RemoveAll(c => configured.RemovedElements.Any(e => c == e.Name));
+			return configurations.ToArray();
 		}
 
 		private void AddComponentInstance(IServiceContainer container, object instance)

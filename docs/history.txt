@@ -1,4 +1,5 @@
 ﻿2.1.1
+- Added support for configuration-specific services
 - Included a Castle.Core version that allows partially trusted callers
 - Applied pasi's patch #29927: Fix gallery reload
 - Fixed resource files naming according to #29938

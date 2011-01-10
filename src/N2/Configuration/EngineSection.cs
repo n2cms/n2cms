@@ -4,6 +4,10 @@ using N2.Engine;
 
 namespace N2.Configuration
 {
+	public class NameCollection : LazyRemovableCollection<NamedElement>
+	{
+	}
+
     /// <summary>
     /// Configuration related to inversion of control and the dynamic aspects 
     /// of n2 definition.
@@ -69,6 +73,14 @@ namespace N2.Configuration
         {
             get { return (ComponentCollection)base["components"]; }
             set { base["components"] = value; }
+		}
+
+		/// <summary>Add or remove item definitions. This is most commonly used to prevent unwanted item definitions appearing.</summary>
+		[ConfigurationProperty("componentConfigurations")]
+		public NameCollection ComponentConfigurations
+		{
+			get { return (NameCollection)base["componentConfigurations"]; }
+			set { base["componentConfigurations"] = value; }
 		}
 
 		/// <summary>Add or remove plugin initializers. This is most commonly used to remove automatic plugin initializers in an external assembly.</summary>
