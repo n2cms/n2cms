@@ -6,17 +6,7 @@
 	<%=Html.DisplayContent(m => m.Title)%>
 	<%=Html.DisplayContent(m => m.Text)%>
 
-	<div id="product-category-info">
-		<%=RenderSiteMap()%>
-	</div>
+	<ul>
+		<%= N2.Web.Tree.From(Find.ClosestLanguageRoot).ExcludeRoot(true).Filters(new NavigationFilter()) %>
+	</ul>
 </asp:Content>
-
-<script runat="server">
-	static string RenderSiteMap()
-	{
-		var tree = N2.Web.Tree.From(N2.Context.Current.UrlParser.StartPage)
-			.Filters(new VisibleFilter(), new PageFilter());
-
-		return tree.ToString();
-	}
-</script>
