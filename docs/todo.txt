@@ -1,3 +1,4 @@
+- folder picker (ThreadId=240497)
 - limit number of items in a zone (ThreadId=241156)
 - show path in screens
 - modal file selectors
