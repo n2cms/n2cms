@@ -55,6 +55,11 @@
 <% } catch (Exception ex) { Response.Write(ex.ToString()); } %>
 </tbody>
 				<tbody>
+					<tr><th colspan="2"><h2>Server</h2></th></tr>
+					<tr><th>Trust Level</th><td><%= GetTrustLevel() %></td></tr>
+					<tr><th>Application Path</th><td><%= Request.ApplicationPath %></td></tr>
+				</tbody>
+				<tbody>
 					<tr><th colspan="2"><h2>Sites</h2></th></tr>
 <% try { %>
 					<tr><th>Default (fallback) site</th><td><%= host.DefaultSite %></td></tr>

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using N2.Configuration;
 using N2.Web;
+using System.Collections.Generic;
 
 namespace N2.Engine
 {
@@ -9,6 +11,17 @@ namespace N2.Engine
 	/// </summary>
 	public class ContainerConfigurer
 	{
+		/// <summary>
+		/// Known configuration keys used to configure services.
+		/// </summary>
+		public static class ConfigurationKeys
+		{
+			/// <summary>Key used to configure services intended for medium trust.</summary>
+			public const string MediumTrust = "MediumTrust";
+			/// <summary>Key used to configure services intended for full trust.</summary>
+			public const string FullTrust = "FullTrust";
+		}
+
 		public virtual void Configure(IEngine engine, EventBroker broker, ConfigurationManagerWrapper configuration)
 		{
 			configuration.Start();
@@ -34,7 +47,25 @@ namespace N2.Engine
 			engine.Container.AddComponent("n2.serviceRegistrator", typeof(ServiceRegistrator), typeof(ServiceRegistrator));
 
 			var registrator = engine.Container.Resolve<ServiceRegistrator>();
-			registrator.RegisterServices(registrator.FindServices());
+			var services = registrator.FindServices();
+
+			var configurations = GetComponentConfigurations(configuration);
+
+			services = registrator.FilterServices(services, configurations);
+			registrator.RegisterServices(services);
+		}
+
+		protected virtual string[] GetComponentConfigurations(ConfigurationManagerWrapper configuration)
+		{
+			List<string> configurations = new List<string>();
+			string trustConfiguration = (Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium)
+				? ConfigurationKeys.FullTrust
+				: ConfigurationKeys.MediumTrust;
+			configurations.Add(trustConfiguration);
+			var configured = configuration.GetContentSection<EngineSection>("engine").ComponentConfigurations;
+			configurations.AddRange(configured.AddedElements.Select(e => e.Name));
+			configurations.RemoveAll(c => configured.RemovedElements.Any(e => c == e.Name));
+			return configurations.ToArray();
 		}
 
 		private void AddComponentInstance(IServiceContainer container, object instance)

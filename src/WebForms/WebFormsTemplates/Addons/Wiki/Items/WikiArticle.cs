@@ -99,7 +99,7 @@ namespace N2.Addons.Wiki.Items
         }
 
 		[Persistable(PersistAs = PropertyPersistenceLocation.Detail)]
-		public bool Syndicate { get; set; }
+		public virtual bool Syndicate { get; set; }
 
         #endregion
     }

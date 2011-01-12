@@ -318,7 +318,7 @@ namespace N2.Edit.Installation
 			int startID = host.DefaultSite.StartPageID;
 			ContentItem startPage = persister.Get(startID);
 			if(startPage != null)
-				return String.Format("Root node OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
+				return String.Format("Start page OK, id: {0}, name: {1}, type: {2}, discriminator: {3}, published: {4} - {5}",
 									 startPage.ID, startPage.Name, startPage.GetContentType(),
 									 definitions.GetDefinition(startPage.GetContentType()), startPage.Published, startPage.Expires);
 			else

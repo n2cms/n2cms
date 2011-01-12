@@ -6,6 +6,36 @@ using N2.Engine;
 
 namespace N2.Tests.Engine.Services
 {
+	public interface IBarometer
+	{
+		int GetPressure();
+	}
+
+	[Service(typeof(IBarometer), Configuration = "Low")]
+	public class LowService : IBarometer
+	{
+		#region IBarometer Members
+
+		public int GetPressure()
+		{
+			return 1;
+		}
+
+		#endregion
+	}
+
+	[Service(typeof(IBarometer), Configuration = "High")]
+	public class HighService : IBarometer
+	{
+		#region IBarometer Members
+
+		public int GetPressure()
+		{
+			return 2;
+		}
+
+		#endregion
+	}
 
 	[Service(Key = "Sesame")]
 	public class SelfService

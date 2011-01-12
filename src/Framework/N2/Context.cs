@@ -17,6 +17,7 @@ using System.Security;
 using N2.Configuration;
 using N2.Engine;
 using N2.Engine.MediumTrust;
+using System.IO;
 
 namespace N2
 {
@@ -88,12 +89,20 @@ namespace N2
 				}
 
 				return new ContentEngine();
-            }
-            catch (SecurityException ex)
-            {
-                Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
+			}
+			catch (SecurityException ex)
+			{
+				Trace.TraceInformation("Caught SecurityException, reverting to MediumTrustEngine. " + ex);
 				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
-            }
+			}
+			catch (Exception ex)
+			{
+				if (ex.GetType().Name != "ComponentActivatorException")
+					throw;
+
+				Trace.TraceInformation("Caught ComponentActivatorException, reverting to MediumTrustEngine. " + ex);
+				return new ContentEngine(new MediumTrustServiceContainer(), EventBroker.Instance, new ContainerConfigurer());
+			}
 		}
 
 		#endregion
