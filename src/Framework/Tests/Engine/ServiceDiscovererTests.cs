@@ -180,5 +180,55 @@ namespace N2.Tests.Engine
 			var service = container.Resolve<DependingServiceWithMissingDependency>();
 			Assert.That(service, Is.InstanceOf<DependingServiceWithMissingDependency>());
 		}
+
+		[Test]
+		public void Resolves_OnlyRequestedConfiguration()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			var services = registrator.FilterServices(registrator.FindServices(), "High");
+			registrator.RegisterServices(services);
+
+			Assert.That(container.Resolve<IBarometer>(), Is.InstanceOf<HighService>());
+			Assert.That(container.ResolveAll<IBarometer>().Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Requesting_MultipleConfigurations_GivesAllMatchingServices()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			var services = registrator.FilterServices(registrator.FindServices(), "High", "Medium", "Low");
+			registrator.RegisterServices(services);
+
+			Assert.That(container.ResolveAll<IBarometer>().Count(), Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Requesting_NoConfigurations_DoesntResolveServices_ThatUsesConfigurations()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			var services = registrator.FilterServices(registrator.FindServices());
+			registrator.RegisterServices(services);
+
+			Assert.That(container.ResolveAll<IBarometer>().Count(), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void RequstingConfiguration_AlsoRegisterd_ServicesWithoutConfiguration()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(SelfService), typeof(HighService), typeof(LowService));
+
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FilterServices(registrator.FindServices(), "High"));
+
+			Assert.That(container.Resolve<SelfService>(), Is.InstanceOf<SelfService>());
+			Assert.That(container.Resolve<IBarometer>(), Is.InstanceOf<HighService>());
+			Assert.That(container.ResolveAll<IBarometer>().Count(), Is.EqualTo(1));
+		}
 	}
 }

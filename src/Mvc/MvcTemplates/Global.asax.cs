@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc
 	{
 		protected void Application_Start()
 		{
-			var cmsEngine = N2.Context.Current;
+			var cmsEngine = N2.Context.Initialize(false);
 
 			RegisterControllerFactory(ControllerBuilder.Current, cmsEngine);
 

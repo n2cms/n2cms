@@ -1,5 +1,12 @@
 ﻿2.1.1
+- Applied #22480: Replace AllowedChildren attribute with RestrictChildren for Form and FaqList
+- Added support for configuration-specific services
+- Included a Castle.Core version that allows partially trusted callers
+- Applied pasi's patch #29927: Fix gallery reload
+- Fixed resource files naming according to #29938
+- Fixed feed in WebForms templates
 - Fixed "syndicatable" not working (ThreadId=240343)
+- Fixed can't create directory (ThreadId=241000)
 
 2.1
 - Fixed #29845: Legend error with multiple ExpandableContainer items

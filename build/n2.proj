@@ -27,6 +27,7 @@
 
 		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
 		<Platform Condition="'$(Platform)' == ''">Any CPU</Platform>
+		<Platform Condition="'$(Platform)' == 'MCD'">Any CPU</Platform>
 		
 		<MSBuildCommunityTasksPath>$(RootFolder)\lib</MSBuildCommunityTasksPath>
 	</PropertyGroup>
@@ -175,6 +176,13 @@
 	<Target Name="Deploy-Templates-Mvc">
 		<MSBuild Projects="$(SrcFolder)\N2.Sources.sln" RebaseOutputs="true"
 						 Properties="OutDir=$(MvcOutDir);Configuration=ReleaseMvc;Platform=$(Platform)" />
+	</Target>
+
+	<Target Name="Prepare-Development">
+		<ItemGroup>
+			<TemplateFiles Include="$(BuildFolder)\templates\**\*"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(TemplateFiles)" DestinationFolder="$(SrcFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
 	</Target>
 
 	<!--<Target Name="X">

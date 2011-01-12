@@ -15,7 +15,7 @@ namespace N2.Templates.Mvc.Models.Parts
 		SortOrder = 250,
 		IconUrl = "~/Content/Img/report.png")]
 	[RestrictParents(typeof (ContentPageBase))]
-	[AllowedChildren(typeof (Question))]
+	[RestrictChildren(typeof(IQuestion))]
 	[AvailableZone("Questions", "Questions")]
 	[WithEditableTitle(Required = false, ContainerName = Form.ContentTab)]
 	[TabContainer(Form.FieldsTab, "Fields", 0, CssClass = "tabPanel formTab")]

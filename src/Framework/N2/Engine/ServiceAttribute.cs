@@ -21,6 +21,9 @@ namespace N2.Engine
         public Type ServiceType { get; protected set; }
 
         /// <summary>Optional key to associate with the service.</summary>
-        public string Key { get; set; }
+		public string Key { get; set; }
+
+		/// <summary>Configurations for which this service is registered.</summary>
+		public string Configuration { get; set; }
     }
 }
