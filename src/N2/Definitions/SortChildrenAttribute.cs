@@ -50,7 +50,7 @@ namespace N2.Definitions
 				case SortBy.Updated:
 					return ReorderBy(item, "Updated");
 				case SortBy.UpdatedDescending:
-					return ReorderBy(item, "Updated");
+					return ReorderBy(item, "Updated DESC");
 				case SortBy.CurrentOrder:
 					return Utility.UpdateSortOrder(item.Children);
 				case SortBy.Expression:
@@ -60,7 +60,7 @@ namespace N2.Definitions
 				case SortBy.PublishedDescending:
 					return ReorderBy(item, "Published DESC");
 				case SortBy.Title:
-					return ReorderBy(item, "Title DESC");
+					return ReorderBy(item, "Title");
 				case SortBy.Unordered:
 					return Enumerable.Empty<ContentItem>();
 				default:
