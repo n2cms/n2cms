@@ -23,7 +23,9 @@
 				<%=Html.AntiForgeryToken("login")%>
 				<input value="Login" type="submit" />
 				<%=Html.ValidationMessage("Login.Failed")%>
+                <% if (CurrentItem.RegisterPage != null) { %>
 				<%= Html.ActionLink(CurrentItem.RegisterPage) %>
+                <% } %>
 			</div>
 			<%}%>
 			<%}%>
