@@ -60,4 +60,7 @@
 		<Delete Files="@(binFiles)" />
 		<RemoveDir Directories="@(dependencyDirectories)" />
 	</Target>
+
+	<Target Name="Source-PrepareDependencies" DependsOnTargets="Framework-PrepareDependencies;Templates-Mvc-PrepareDependencies;Templates-PrepareDependencies;Designerific-PrepareDependencies">
+	</Target>
 </Project>
