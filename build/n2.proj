@@ -36,7 +36,7 @@
 	<Import Project="n2.framework.targets"/>
 	<Import Project="n2.templates.webforms.targets"/>
 	<Import Project="n2.templates.mvc.targets"/>
-	<Import Project="n2.designerific.targets"/>
+	<Import Project="n2.dinamico.targets"/>
 	<Import Project="n2.examples.targets"/>
 	<Import Project="n2.sources.targets"/>
 

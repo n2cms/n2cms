@@ -8,7 +8,7 @@ using N2.Web.Mvc;
 using N2.Engine;
 using System.Reflection;
 
-namespace Designerific
+namespace Dinamico
 {
 	// Note: For instructions on enabling IIS6 or IIS7 classic mode, 
 	// visit http://go.microsoft.com/?LinkId=9394801

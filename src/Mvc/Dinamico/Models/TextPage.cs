@@ -5,7 +5,7 @@ using System.Web;
 using N2;
 using N2.Details;
 
-namespace Designerific.Models
+namespace Dinamico.Models
 {
 	[PageDefinition]
 	[WithEditableTitle, WithEditableName]

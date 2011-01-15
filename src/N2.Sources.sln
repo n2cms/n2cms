@@ -55,7 +55,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{CC6F803A-2270-4B3B-8664-0C41C4A1F8AE}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\build.bat = ..\build\build.bat
-		..\build\n2.designerific.targets = ..\build\n2.designerific.targets
+		..\build\n2.dinamico.targets = ..\build\n2.dinamico.targets
 		..\build\n2.examples.targets = ..\build\n2.examples.targets
 		..\build\n2.framework.targets = ..\build\n2.framework.targets
 		..\build\n2.proj = ..\build\n2.proj

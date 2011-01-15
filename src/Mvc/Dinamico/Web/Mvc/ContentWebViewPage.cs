@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Designerific.Web.Mvc
+namespace Dinamico.Web.Mvc
 {
 	public abstract class ContentWebViewPage : WebViewPage
 	{

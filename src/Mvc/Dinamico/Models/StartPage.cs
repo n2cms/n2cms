@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using N2;
 
-namespace Designerific.Models
+namespace Dinamico.Models
 {
 	[PageDefinition]
 	public class StartPage : TextPage
