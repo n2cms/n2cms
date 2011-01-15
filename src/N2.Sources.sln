@@ -153,7 +153,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Templates.Mvc.Tests", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N2.Management", "Mvc\MvcTemplates\N2.Management.csproj", "{10F7C179-B92D-4FCA-B78C-011E428D0CA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Designerific", "Mvc\Designerific\Designerific.csproj", "{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dinamico", "Mvc\Dinamico\Dinamico.csproj", "{E09BC247-32BA-4240-B9C8-5CDDF4BAB2A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
