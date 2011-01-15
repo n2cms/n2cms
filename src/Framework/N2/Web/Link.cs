@@ -58,10 +58,9 @@ namespace N2.Web
 		}
 
 		public Link(ContentItem item, string className)
-			: this(item.Title, string.Empty, string.Empty, item.Url, className)
+			: this(string.Empty, string.Empty, string.Empty, item.Url, className)
 		{
-			if(item is ILink)
-				UpdateFrom(item as ILink);
+			UpdateFrom(item);
 		}
 
 		#endregion
@@ -109,8 +108,11 @@ namespace N2.Web
 
 		#region Methods
 
-		private void UpdateFrom(ILink link)
+		protected void UpdateFrom(ILink link)
 		{
+			if (link == null)
+				return;
+
 			Url = link.Url;
 			Target = link.Target;
 			Contents = link.Contents;
@@ -144,10 +146,7 @@ namespace N2.Web
 
 		public static ILinkBuilder To(ILink linkTarget)
 		{
-			if (linkTarget != null)
-				return new Link(linkTarget);
-			else
-				return new Link();
+			return new Link(linkTarget);
 		}
 
 		#endregion

@@ -1,6 +1,6 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Model.Title;
 }
 
 <h2>@Model.Title</h2>
-@MvcHtmlString.Create(Model.Text)
+@Html.DisplayContent("Text").ToHtmlString()

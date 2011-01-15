@@ -7,6 +7,8 @@
 </head>
 
 <body>
+	@{ Html.RenderControlPanel(); }
+
     <div class="page">
 
         <div id="header">
@@ -21,8 +23,7 @@
             <div id="menucontainer">
 
                 <ul id="menu">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Content.LinkTo(Content.AncestorAtLevel(0))</li>@Content.TreeFrom().ExcludeRoot(true)
                 </ul>
 
             </div>

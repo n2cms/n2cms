@@ -71,17 +71,25 @@ namespace N2.Web.UI.WebControls
 			get { return Engine.Resolve<IContentAdapterProvider>().ResolveAdapter<PartsAdapter>(CurrentItem); }
 		}
 
+		private ContentItem currentItem;
 		public virtual ContentItem CurrentItem
 		{
 			get
 			{
+				if (currentItem != null)
+					return currentItem;
+
 				int selectedItemID;
 				if (int.TryParse(Page.Request["item"], out selectedItemID))
 				{
-					return Engine.Persister.Get(selectedItemID);
+					return currentItem = Engine.Persister.Get(selectedItemID);
 				}
 
-				return Find.ClosestItem(Parent);
+				return currentItem = Find.ClosestItem(Parent);
+			}
+			set
+			{
+				currentItem = value;
 			}
 		}
 
@@ -268,7 +276,7 @@ window.n2ddcp = new n2DragDrop();
 			}
 			if (EnableEditInterfaceIntegration)
 			{
-				writer.WriteLineNoTabs("if(n2ctx){");
+				writer.WriteLineNoTabs("if(window.n2ctx){");
 				writer.WriteLineNoTabs("n2ctx.select('preview');");
 				if (CurrentItem != null)
 				{
@@ -368,6 +376,7 @@ window.n2ddcp = new n2DragDrop();
 
 		#endregion
 
+		#region Templates
 		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
 		 TemplateContainer(typeof (SimpleTemplateContainer))]
 		public virtual ITemplate HiddenTemplate { get; set; }
@@ -403,5 +412,6 @@ window.n2ddcp = new n2DragDrop();
 		[DefaultValue((string) null), Browsable(false), PersistenceMode(PersistenceMode.InnerProperty),
 		 TemplateContainer(typeof (SimpleTemplateContainer))]
 		public virtual ITemplate DragDropFooterTemplate { get; set; }
+		#endregion
 	}
 }
