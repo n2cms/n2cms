@@ -4,77 +4,77 @@
 	<!-- MVC TEMPLATES -->
 
 	<PropertyGroup>
-		<Designerific-SourceFolder>$(SrcFolder)\Mvc\Designerific</Designerific-SourceFolder>
-		<Designerific-DeployFolder>$(DeployFolder)\$(DeployPrefix)Designerific_Mvc</Designerific-DeployFolder>
-		<Designerific-DeployFolder-Path>$(Designerific-DeployFolder)\N2CMS</Designerific-DeployFolder-Path>
+		<Dinamico-SourceFolder>$(SrcFolder)\Mvc\Dinamico</Dinamico-SourceFolder>
+		<Dinamico-DeployFolder>$(DeployFolder)\$(DeployPrefix)Dinamico_Mvc</Dinamico-DeployFolder>
+		<Dinamico-DeployFolder-Path>$(Dinamico-DeployFolder)\N2CMS</Dinamico-DeployFolder-Path>
 	</PropertyGroup>
 
-	<Target Name="Designerific-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
+	<Target Name="Dinamico-PrepareDependencies" DependsOnTargets="Framework-CreateItemGroups-BinFiles">
 		<Copy SourceFiles="$(SrcFolder)\Framework\Extensions\bin\$(Configuration)\N2.Extensions.dll;"
-					DestinationFolder="$(Designerific-SourceFolder)\bin" />
-		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Designerific-SourceFolder)\bin" />
+					DestinationFolder="$(Dinamico-SourceFolder)\bin" />
+		<Copy SourceFiles="@(Framework-BinFiles)" DestinationFolder="$(Dinamico-SourceFolder)\bin" />
 		
-		<Exec Command="mklink /D $(Designerific-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Designerific-SourceFolder)\N2\')" />
-		<Message Text="Skipping mklink (folder exists): $(Designerific-SourceFolder)\N2\" Condition="Exists('$(Designerific-SourceFolder)\N2\')" Importance="high" />
+		<Exec Command="mklink /D $(Dinamico-SourceFolder)\N2\ $(EditFolder)\" Condition="!Exists('$(Dinamico-SourceFolder)\N2\')" />
+		<Message Text="Skipping mklink (folder exists): $(Dinamico-SourceFolder)\N2\" Condition="Exists('$(Dinamico-SourceFolder)\N2\')" Importance="high" />
 	</Target>
 
-	<Target Name="Designerific-Build">
-		<MSBuild Projects="$(Designerific-SourceFolder)\Designerific.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
+	<Target Name="Dinamico-Build">
+		<MSBuild Projects="$(Dinamico-SourceFolder)\Dinamico.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 
-	<Target Name="Designerific-Deploy" DependsOnTargets="Framework-CreateItemGroups">
+	<Target Name="Dinamico-Deploy" DependsOnTargets="Framework-CreateItemGroups">
 		<ItemGroup>
-			<designerificFiles Include="$(Designerific-SourceFolder)\**\*"
-							   Exclude="$(Designerific-SourceFolder)\**\.svn\**\*;
-												$(Designerific-SourceFolder)\**\.git\**\*;
-												$(Designerific-SourceFolder)\**\obj\**\*;
-												$(Designerific-SourceFolder)\**\bin\*.pdb;
-												$(Designerific-SourceFolder)\**\Ankh.Load;
-												$(Designerific-SourceFolder)\**\*.sln.cache;
-												$(Designerific-SourceFolder)\**\*.resharper;
-												$(Designerific-SourceFolder)\**\*.suo;
-												$(Designerific-SourceFolder)\**\*.user;
-												$(Designerific-SourceFolder)\**\*.Publish.xml;
-												$(Designerific-SourceFolder)\**\Thumbs.db;
-												$(Designerific-SourceFolder)\N2\**\*;
-												$(Designerific-SourceFolder)\N2.Management.*" />
+			<DinamicoFiles Include="$(Dinamico-SourceFolder)\**\*"
+							   Exclude="$(Dinamico-SourceFolder)\**\.svn\**\*;
+												$(Dinamico-SourceFolder)\**\.git\**\*;
+												$(Dinamico-SourceFolder)\**\obj\**\*;
+												$(Dinamico-SourceFolder)\**\bin\*.pdb;
+												$(Dinamico-SourceFolder)\**\Ankh.Load;
+												$(Dinamico-SourceFolder)\**\*.sln.cache;
+												$(Dinamico-SourceFolder)\**\*.resharper;
+												$(Dinamico-SourceFolder)\**\*.suo;
+												$(Dinamico-SourceFolder)\**\*.user;
+												$(Dinamico-SourceFolder)\**\*.Publish.xml;
+												$(Dinamico-SourceFolder)\**\Thumbs.db;
+												$(Dinamico-SourceFolder)\N2\**\*;
+												$(Dinamico-SourceFolder)\N2.Management.*" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(designerificFiles)"						DestinationFolder="$(Designerific-DeployFolder-Path)\%(RecursiveDir)" />
-		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Designerific-DeployFolder-Path)\bin\" />
-		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Designerific-DeployFolder-Path)\N2\%(RecursiveDir)" />
-		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Designerific-DeployFolder)\" />
-		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Designerific-DeployFolder)\Snippets" />
-		<CallTarget Targets="Designerific-RemoveProjectReferences" />
+		<Copy SourceFiles="@(DinamicoFiles)"						DestinationFolder="$(Dinamico-DeployFolder-Path)\%(RecursiveDir)" />
+		<Copy SourceFiles="@(Framework-BinFiles)"						DestinationFolder="$(Dinamico-DeployFolder-Path)\bin\" />
+		<Copy SourceFiles="@(Framework-EditFiles)"					DestinationFolder="$(Dinamico-DeployFolder-Path)\N2\%(RecursiveDir)" />
+		<Copy SourceFiles="@(TextFiles)"										DestinationFolder="$(Dinamico-DeployFolder)\" />
+		<Copy SourceFiles="@(Snippets)"											DestinationFolder="$(Dinamico-DeployFolder)\Snippets" />
+		<CallTarget Targets="Dinamico-RemoveProjectReferences" />
 	</Target>
 
-	<Target Name="Designerific-ZipDeploy" DependsOnTargets="Designerific-Deploy;Designerific-Zip">
+	<Target Name="Dinamico-ZipDeploy" DependsOnTargets="Dinamico-Deploy;Dinamico-Zip">
 	</Target>
 
-	<Target Name="Designerific-PrepareZip">
+	<Target Name="Dinamico-PrepareZip">
 		<ItemGroup>
-			<ZipDeploy-Designerific-Includes Include="$(BuildFolder)\deploy\*" />
-			<ZipDeploy-Designerific-Libs Include="$(RootFolder)\lib\MySql.Data.dll;$(RootFolder)\lib\System.Data.SQLite.dll;" />
+			<ZipDeploy-Dinamico-Includes Include="$(BuildFolder)\deploy\*" />
+			<ZipDeploy-Dinamico-Libs Include="$(RootFolder)\lib\MySql.Data.dll;$(RootFolder)\lib\System.Data.SQLite.dll;" />
 		</ItemGroup>
-		<Delete Files="$(Designerific-DeployFolder-Path)\bin\System.Data.SQLite.dll" Condition="Exists('$(Designerific-DeployFolder-Path)\bin\System.Data.SQLite.dll')" />
-		<Copy SourceFiles="@(ZipDeploy-Designerific-Libs)" DestinationFolder="$(Designerific-DeployFolder)\Libraries" />
-		<Copy SourceFiles="@(ZipDeploy-Designerific-Includes)" DestinationFolder="$(Designerific-DeployFolder)" />
+		<Delete Files="$(Dinamico-DeployFolder-Path)\bin\System.Data.SQLite.dll" Condition="Exists('$(Dinamico-DeployFolder-Path)\bin\System.Data.SQLite.dll')" />
+		<Copy SourceFiles="@(ZipDeploy-Dinamico-Libs)" DestinationFolder="$(Dinamico-DeployFolder)\Libraries" />
+		<Copy SourceFiles="@(ZipDeploy-Dinamico-Includes)" DestinationFolder="$(Dinamico-DeployFolder)" />
 	</Target>
 
-	<Target Name="Designerific-Zip" DependsOnTargets="Designerific-PrepareZip">
+	<Target Name="Dinamico-Zip" DependsOnTargets="Dinamico-PrepareZip">
 		<ItemGroup>
-			<ZipDeploy-Designerific Include="$(Designerific-DeployFolder)\**" />
+			<ZipDeploy-Dinamico Include="$(Dinamico-DeployFolder)\**" />
 		</ItemGroup>
 
-		<Error Condition="'@(ZipDeploy-Designerific)' == ''" Text="Nothing in '$(Designerific-DeployFolder)'. Do deploy first." />
+		<Error Condition="'@(ZipDeploy-Dinamico)' == ''" Text="Nothing in '$(Dinamico-DeployFolder)'. Do deploy first." />
 
-		<Zip Files="@(ZipDeploy-Designerific)"    WorkingDirectory="$(Designerific-DeployFolder)"	ZipFileName="$(Designerific-DeployFolder).zip" />
+		<Zip Files="@(ZipDeploy-Dinamico)"    WorkingDirectory="$(Dinamico-DeployFolder)"	ZipFileName="$(Dinamico-DeployFolder).zip" />
 	</Target>
 
-	<Target Name="Designerific-RemoveProjectReferences">
+	<Target Name="Dinamico-RemoveProjectReferences">
 		<PropertyGroup>
-			<SourceFile>$(Designerific-SourceFolder)\Designerific.csproj</SourceFile>
-			<DestinationFile>$(Designerific-DeployFolder-Path)\Designerific.csproj</DestinationFile>
+			<SourceFile>$(Dinamico-SourceFolder)\Dinamico.csproj</SourceFile>
+			<DestinationFile>$(Dinamico-DeployFolder-Path)\Dinamico.csproj</DestinationFile>
 		</PropertyGroup>
 		<PropertyGroup>
 			<Code>
