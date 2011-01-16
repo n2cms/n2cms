@@ -3,6 +3,7 @@
 - Added support for dependency on multiple services
 
 2.1.1
+- Fixed some sorting issues with [SortChildren] attribute (ThreadId=241678)
 - Applied #22480: Replace AllowedChildren attribute with RestrictChildren for Form and FaqList
 - Added support for configuration-specific services
 - Included a Castle.Core version that allows partially trusted callers
