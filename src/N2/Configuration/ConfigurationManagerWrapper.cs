@@ -23,19 +23,16 @@ namespace N2.Configuration
 
 		public virtual T GetSection<T>(string sectionName) where T : ConfigurationSection
 		{
-			return ConfigurationManager.GetSection(sectionName) as T;
+			object section = ConfigurationManager.GetSection(sectionName);
+			if (section == null) throw new ConfigurationErrorsException("Missing configuration section at '" + sectionName + "'");
+			T contentSection = section as T;
+			if (contentSection == null) throw new ConfigurationErrorsException("The configuration section at '" + sectionName + "' is of type '" + section.GetType().FullName + "' instead of '" + typeof(T).FullName + "' which is required.");
+			return contentSection;
 		}
 
 		public virtual T GetContentSection<T>(string relativeSectionName) where T : ConfigurationSectionBase
 		{
-			string sectionName = sectionGroup + "/" + relativeSectionName;
-			object section = GetSection<T>(sectionName);
-			if(section == null) throw new ConfigurationErrorsException("Missing configuration section at '" + sectionName + "'");
-			
-			T contentSection = section as T;
-			if(contentSection == null) throw new ConfigurationErrorsException("The configuration section at '" + sectionName + "' is of type '" + section.GetType().FullName + "' instead of '" + typeof(T).FullName + "' which is required.");
-			
-			return contentSection;
+			return GetSection<T>(sectionGroup + "/" + relativeSectionName);
 		}
 
 		public virtual ConnectionStringsSection GetConnectionStringsSection()
