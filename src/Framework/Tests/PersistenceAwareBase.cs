@@ -8,6 +8,7 @@ using N2.Persistence.NH;
 using N2.Security;
 using System.Configuration;
 using N2.Engine.MediumTrust;
+using N2.Definitions;
 
 namespace N2.Tests
 {

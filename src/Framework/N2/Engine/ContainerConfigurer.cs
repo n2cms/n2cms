@@ -42,10 +42,7 @@ namespace N2.Engine
 
 			AddComponentInstance(engine.Container, broker);
 
-			if(configuration.Sections.Web.Web.IsWeb)
-				engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(WebAppTypeFinder));
-			else
-				engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(AppDomainTypeFinder));
+			engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(WebAppTypeFinder));
 			engine.Container.AddComponent("n2.webContext", typeof(N2.Web.IWebContext), typeof(N2.Web.AdaptiveContext));
 			engine.Container.AddComponent("n2.serviceRegistrator", typeof(ServiceRegistrator), typeof(ServiceRegistrator));
 

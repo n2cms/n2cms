@@ -62,7 +62,7 @@ namespace N2.Edit.Tests.FileSystem
         public override void SetUp()
         {
             base.SetUp();
-
+			
 			CopyFilesRecursively(new DirectoryInfo(backupPath), new DirectoryInfo(basePath));
 
 			operations = new List<string>();

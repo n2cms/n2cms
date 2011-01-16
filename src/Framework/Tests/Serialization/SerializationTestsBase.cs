@@ -15,7 +15,7 @@ namespace N2.Tests.Serialization
 	public abstract class SerializationTestsBase : ItemTestsBase
 	{
 		private delegate string BuildUrl(ContentItem item);
-		protected IDefinitionManager definitions;
+		protected DefinitionManager definitions;
         protected IUrlParser parser;
         protected IPersister persister;
 		protected FakeTypeFinder finder;
@@ -38,7 +38,7 @@ namespace N2.Tests.Serialization
 				new N2.Edit.Workflow.StateChanger(), 
 				notifier, 
 				new InterceptingProxyFactory());
-
+			definitions.Start();
 			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser)
 				.Call(parser.BuildUrl(null))

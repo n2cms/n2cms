@@ -55,6 +55,7 @@ namespace N2.Tests
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
 			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(definitionBuilder)}, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
+			((DefinitionManager)definitions).Start();
         }
 
 		public static T Stub<T>()
