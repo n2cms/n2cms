@@ -42,15 +42,16 @@ namespace N2.Engine
 
 			AddComponentInstance(engine.Container, broker);
 
-			engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(WebAppTypeFinder));
+			if(configuration.Sections.Web.Web.IsWeb)
+				engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(WebAppTypeFinder));
+			else
+				engine.Container.AddComponent("n2.typeFinder", typeof(ITypeFinder), typeof(AppDomainTypeFinder));
 			engine.Container.AddComponent("n2.webContext", typeof(N2.Web.IWebContext), typeof(N2.Web.AdaptiveContext));
 			engine.Container.AddComponent("n2.serviceRegistrator", typeof(ServiceRegistrator), typeof(ServiceRegistrator));
 
 			var registrator = engine.Container.Resolve<ServiceRegistrator>();
 			var services = registrator.FindServices();
-
 			var configurations = GetComponentConfigurations(configuration);
-
 			services = registrator.FilterServices(services, configurations);
 			registrator.RegisterServices(services);
 		}
@@ -75,7 +76,6 @@ namespace N2.Engine
 
 		protected virtual void InitializeEnvironment(IServiceContainer container, HostSection hostConfig)
 		{
-
 			if (hostConfig != null)
 			{
 				Url.DefaultExtension = hostConfig.Web.Extension;

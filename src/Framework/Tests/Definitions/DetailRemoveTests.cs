@@ -34,7 +34,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitions = builder.GetDefinitions();
 
-			var descriptionEditables = definitions[typeof (DefinitionRemoves)]
+			var descriptionEditables = definitions.First(d => d.ItemType == typeof (DefinitionRemoves))
 				.Editables.Where(e => e.Name == "Description");
 
 			Assert.That(descriptionEditables.Count(), Is.EqualTo(0));
@@ -46,7 +46,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitions = builder.GetDefinitions();
 
-			var descriptionEditables = definitions[typeof(DefinitionRemovable)]
+			var descriptionEditables = definitions.First(d => d.ItemType == typeof(DefinitionRemovable))
 				.Editables.Where(e => e.Name == "Description");
 
 			Assert.That(descriptionEditables.Count(), Is.EqualTo(1));
@@ -57,7 +57,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitions = builder.GetDefinitions();
 
-			var textEditables = definitions[typeof(DefinitionRemovable)]
+			var textEditables = definitions.First(d => d.ItemType == typeof(DefinitionRemovable))
 				.Editables.Where(e => e.Name == "Text");
 
 			Assert.That(textEditables.Count(), Is.EqualTo(0));
@@ -68,7 +68,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitions = builder.GetDefinitions();
 
-			var textEditables = definitions[typeof(DefinitionRemoves)]
+			var textEditables = definitions.First(d => d.ItemType == typeof(DefinitionRemoves))
 				.Editables.Where(e => e.Name == "Text");
 
 			Assert.That(textEditables.Count(), Is.EqualTo(0));

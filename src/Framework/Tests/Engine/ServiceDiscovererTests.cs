@@ -154,6 +154,80 @@ namespace N2.Tests.Engine
 			Assert.That(service.service, Is.InstanceOf<SelfService>());
 		}
 
+		[Test]
+		public void CanResolve_MultipleServices()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+
+			var services = container.ResolveAll<IBarometer>();
+			Assert.That(services.Count(), Is.EqualTo(2));
+		}
+
+		[Test]
+		public void ResolveAll_GivesAnArray_OfTheRequestedArrayType()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+
+			var services = container.ResolveAll<IBarometer>();
+			Assert.That(services, Is.InstanceOfType<IBarometer[]>());
+		}
+
+		[Test]
+		public void ResolveAll_WithTypeArgument_GivesAnArray_OfTheRequestedArrayType()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+
+			var services = container.ResolveAll(typeof(IBarometer));
+			Assert.That(services, Is.InstanceOfType<IBarometer[]>());
+		}
+
+		[Test]
+		public void CanDependOn_MultipleServices()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+			container.AddComponent("bw", typeof(BarometerWatcher), typeof(BarometerWatcher));
+
+			var watcher = container.Resolve<BarometerWatcher>();
+			Assert.That(watcher.Barometers.Count(), Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Services_DependingOn_MultipleServices_CanBeSingletons()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+			container.AddComponent("bw", typeof(BarometerWatcher), typeof(BarometerWatcher));
+
+			var watcher = container.Resolve<BarometerWatcher>();
+			var watcher2 = container.Resolve<BarometerWatcher>();
+			Assert.That(watcher, Is.SameAs(watcher));
+		}
+
+		[Test]
+		public void CanRegister_MultipleServices_DependingOnSame_ServiceArray()
+		{
+			ITypeFinder finder = new Fakes.FakeTypeFinder(typeof(HighService), typeof(LowService));
+			ServiceRegistrator registrator = new ServiceRegistrator(finder, container);
+			registrator.RegisterServices(registrator.FindServices());
+			container.AddComponent("bw", typeof(BarometerWatcher), typeof(BarometerWatcher));
+			container.AddComponent("ac", typeof(AltitudeComparer), typeof(AltitudeComparer));
+
+			var watcher = container.Resolve<BarometerWatcher>();
+			var comparer = container.Resolve<AltitudeComparer>();
+
+			Assert.That(watcher.Barometers[0], Is.SameAs(comparer.Barometers[0]));
+			Assert.That(watcher.Barometers[1], Is.SameAs(comparer.Barometers[1]));
+		}
+
 		[Test, Ignore("TODO")]
 		public void Service_CanDecorate_ServiceOfSameType()
 		{

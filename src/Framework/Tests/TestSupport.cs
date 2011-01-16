@@ -54,7 +54,7 @@ namespace N2.Tests
 			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
-			definitions = new DefinitionManager(definitionBuilder, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
+			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(definitionBuilder)}, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
         }
 
 		public static T Stub<T>()

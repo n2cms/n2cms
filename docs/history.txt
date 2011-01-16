@@ -1,4 +1,8 @@
-﻿2.1.1
+﻿2.2
+- Refactored definition manager to allow multiple definition providers
+- Added support for dependency on multiple services
+
+2.1.1
 - Applied #22480: Replace AllowedChildren attribute with RestrictChildren for Form and FaqList
 - Added support for configuration-specific services
 - Included a Castle.Core version that allows partially trusted callers

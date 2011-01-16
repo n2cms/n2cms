@@ -7,6 +7,7 @@ using N2.Security;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Persistence.Proxying;
+using N2.Plugin;
 
 namespace N2.Definitions
 {
@@ -14,17 +15,16 @@ namespace N2.Definitions
 	/// Stores item definitions and constructs new items.
 	/// </summary>
 	[Service(typeof(IDefinitionManager))]
-	public class DefinitionManager : IDefinitionManager
+	public class DefinitionManager : IDefinitionManager, IAutoStart
 	{
-		readonly IDictionary<Type, ItemDefinition> definitions;
-		readonly IItemNotifier notifier;
+		private readonly IDefinitionProvider[] definitionProviders;
+		private readonly IItemNotifier notifier;
 		private readonly StateChanger stateChanger;
-		readonly IProxyFactory interceptor;
+		private readonly IProxyFactory interceptor;
 
-		public DefinitionManager(DefinitionBuilder builder, StateChanger changer, IItemNotifier notifier, IProxyFactory interceptor)
+		public DefinitionManager(IDefinitionProvider[] definitionProviders, StateChanger changer, IItemNotifier notifier, IProxyFactory interceptor)
 		{
-			definitions = builder.GetDefinitions();
-			interceptor.Initialize(definitions.Values.Select(d => d.ItemType));
+			this.definitionProviders = definitionProviders;
 			this.stateChanger = changer;
 			this.notifier = notifier;
 			this.interceptor = interceptor;
@@ -64,9 +64,7 @@ namespace N2.Definitions
 		{
 			if (itemType == null) throw new ArgumentNullException("itemType");
 
-			if(definitions.ContainsKey(itemType))
-				return definitions[itemType];
-			return null;
+			return GetDefinitions().FirstOrDefault(d => d.ItemType == itemType);
 		}
 
 		/// <summary>Gets item definition for a certain discriminator.</summary>
@@ -76,7 +74,7 @@ namespace N2.Definitions
 		{
 			if (discriminator == null) throw new ArgumentNullException("discriminator");
 
-			foreach(ItemDefinition definition in definitions.Values)
+			foreach (ItemDefinition definition in GetDefinitions())
 				if(definition.Discriminator == discriminator)
 					return definition;
 			return null;
@@ -84,9 +82,9 @@ namespace N2.Definitions
 
 		/// <summary>Gets all item definitions.</summary>
 		/// <returns>A collection of item definitoins.</returns>
-		public virtual ICollection<ItemDefinition> GetDefinitions()
+		public virtual IEnumerable<ItemDefinition> GetDefinitions()
 		{
-			return definitions.Values;
+			return definitionProviders.SelectMany(dp => dp.GetDefinitions());
 		}
 
 		/// <summary>Gets items allowed below this item in a certain zone.</summary>
@@ -116,5 +114,18 @@ namespace N2.Definitions
 
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
 		public event EventHandler<ItemEventArgs> ItemCreated;
+
+		#region IAutoStart Members
+
+		public void Start()
+		{
+			interceptor.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()).Select(d => d.ItemType));
+		}
+
+		public void Stop()
+		{
+		}
+
+		#endregion
 	}
 }

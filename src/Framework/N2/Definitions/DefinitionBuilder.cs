@@ -31,12 +31,12 @@ namespace N2.Definitions
 
 		/// <summary>Builds item definitions in the current environment.</summary>
 		/// <returns>A dictionary of item definitions in the current environment.</returns>
-		public virtual IDictionary<Type, ItemDefinition> GetDefinitions()
+		public virtual IEnumerable<ItemDefinition> GetDefinitions()
 		{
 			List<ItemDefinition> definitions = FindDefinitions();
 			ExecuteRefiners(definitions);
 			
-			return ToDictionary(definitions);
+			return definitions;
 		}
 
 		protected List<ItemDefinition> FindDefinitions()
@@ -61,7 +61,9 @@ namespace N2.Definitions
 			foreach(DefinitionElement element in config.Definitions.AllElements)
 			{
 				ItemDefinition definition = definitions.Find(d => d.Discriminator == element.Name);
-				if(definition == null)
+				if (definition != null)
+					definitions.Remove(definition);
+				else
 				{
 					Type itemType = EnsureType<ContentItem>(element.Type);
 
@@ -140,16 +142,6 @@ namespace N2.Definitions
 			definition.Modifiers = explorer.Find<EditorModifierAttribute>(definition.ItemType);
 			definition.Displayables = explorer.Find<IDisplayable>(definition.ItemType);
 			definition.RootContainer = hierarchyBuilder.Build(definition.Containers, definition.Editables);
-		}
-
-		protected static IDictionary<Type, ItemDefinition> ToDictionary(IList<ItemDefinition> definitions)
-		{
-			IDictionary<Type, ItemDefinition> definitionMap = new Dictionary<Type, ItemDefinition>();
-			foreach(ItemDefinition definition in definitions)
-			{
-				definitionMap[definition.ItemType] = definition;
-			}
-			return definitionMap;
 		}
 
 		protected void ExecuteRefiners(IList<ItemDefinition> definitions)

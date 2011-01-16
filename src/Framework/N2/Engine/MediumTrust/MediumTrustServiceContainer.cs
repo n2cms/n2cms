@@ -88,8 +88,11 @@ namespace N2.Engine.MediumTrust
 			Func<Type, IEnumerable<object>> listResolver;
 			if (!listResolvers.TryGetValue(serviceType, out listResolver))
 				return new object[0];
-
-			return listResolver(serviceType).ToArray();
+			
+			var instances = listResolver(serviceType).ToList().ToArray();
+			var returnArray = Activator.CreateInstance(serviceType.MakeArrayType(), instances.Length) as Array;
+			Array.Copy(instances, returnArray, instances.Length);
+			return returnArray;
 		}
 
 		/// <summary>Resolves all services of the given type.</summary>
@@ -279,7 +282,11 @@ namespace N2.Engine.MediumTrust
 			var parameters = new object[parameterInfos.Length];
 			for (int i = 0; i < parameterInfos.Length; i++)
 			{
-				parameters[i] = Resolve(parameterInfos[i].ParameterType);
+				var parameterType = parameterInfos[i].ParameterType;
+				if(parameterType.IsArray)
+					parameters[i] = ResolveAll(parameterType.GetElementType());
+				else
+					parameters[i] = Resolve(parameterType);
 			}
 			return parameters;
 		}
@@ -316,9 +323,10 @@ namespace N2.Engine.MediumTrust
 			var result = new List<ParameterInfo>();
 			foreach (ParameterInfo parameter in parameters)
 			{
-				if (!resolvers.ContainsKey(parameter.ParameterType) &&
-				    (!parameter.ParameterType.IsGenericType ||
-				     !resolvers.ContainsKey(parameter.ParameterType.GetGenericTypeDefinition())))
+				bool resolverExists = resolvers.ContainsKey(parameter.ParameterType);
+				bool genericResolverExists = (parameter.ParameterType.IsGenericType && resolvers.ContainsKey(parameter.ParameterType.GetGenericTypeDefinition()));
+				bool arrayResolverExists = (parameter.ParameterType.IsArray && resolvers.ContainsKey(parameter.ParameterType.GetElementType()));
+				if (!resolverExists && !genericResolverExists && !arrayResolverExists)
 				{
 					result.Add(parameter);
 				}

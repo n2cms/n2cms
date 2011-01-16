@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -80,7 +81,21 @@ namespace N2.Engine.Castle
 
 		public override void AddComponent(string key, Type serviceType, Type classType)
 		{
-			container.Register(Component.For(serviceType).ImplementedBy(classType).Named(key));
+			var registration = Component.For(serviceType).ImplementedBy(classType).Named(key);
+			var constructorParams = classType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).Take(1).SelectMany(c => c.GetParameters()).ToArray();
+			if (constructorParams.Any(p => p.ParameterType.IsArray))
+			{
+				foreach (var constructorParameter in constructorParams.Where(p => p.ParameterType.IsArray))
+				{
+					var elementType = constructorParameter.ParameterType.GetElementType();
+					if (container.Kernel.GetHandler(constructorParameter.ParameterType.FullName) != null)
+						continue;
+					container.Register(Component.For(constructorParameter.ParameterType).Named(constructorParameter.ParameterType.FullName).UsingFactoryMethod(m => m.ResolveAll(elementType)));
+				}
+				registration = registration
+					.UsingFactoryMethod(k => Activator.CreateInstance(classType, constructorParams.Select(cp => Resolve(cp.ParameterType)).ToArray()));
+			}
+			container.Register(registration);
 		}
 
 		public override object Resolve(string key)

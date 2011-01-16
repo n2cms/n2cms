@@ -33,9 +33,8 @@ namespace N2.Tests.Definitions
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
 
 			var definitions = builder.GetDefinitions();
-			var undefinedDefinition = definitions.Values
-				.Where(d => d.ItemType == typeof(DefinitionUndefined))
-				.Single();
+			var undefinedDefinition = definitions
+				.Single(d => d.ItemType == typeof(DefinitionUndefined));
 
 			Assert.That(undefinedDefinition.IsDefined, Is.True);
 		}
@@ -48,7 +47,7 @@ namespace N2.Tests.Definitions
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
 
 			var definitions = builder.GetDefinitions();
-			var textPageDefinitions = definitions.Values
+			var textPageDefinitions = definitions
 				.Where(d => d.ItemType == typeof(DefinitionTextPage));
 
 			Assert.That(textPageDefinitions.Count(), Is.EqualTo(0));
@@ -65,9 +64,8 @@ namespace N2.Tests.Definitions
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
 
 			var definitions = builder.GetDefinitions();
-			var textPageDefinition = definitions.Values
-				.Where(d => d.ItemType == typeof(DefinitionTextPage))
-				.Single();
+			var textPageDefinition = definitions
+				.Single(d => d.ItemType == typeof(DefinitionTextPage));
 
 			var textEditors = textPageDefinition.Editables
 				.Where(e => e.GetType() == typeof(EditableCheckBoxAttribute));
@@ -86,9 +84,8 @@ namespace N2.Tests.Definitions
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
 
 			var definitions = builder.GetDefinitions();
-			var textPageDefinition = definitions.Values
-				.Where(d => d.ItemType == typeof(DefinitionTextPage))
-				.Single();
+			var textPageDefinition = definitions
+				.Single(d => d.ItemType == typeof(DefinitionTextPage));
 
 			var textEditors = textPageDefinition.Editables
 				.Where(e => e.GetType() == typeof(EditableFreeTextAreaAttribute));

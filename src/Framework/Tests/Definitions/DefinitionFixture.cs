@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
 using N2.Definitions;
@@ -15,7 +16,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void DefinitionManagerHasCorrectNumberOfDefinitions()
 		{
-			Assert.Greater(engine.Definitions.GetDefinitions().Count, 9);
+			Assert.Greater(engine.Definitions.GetDefinitions().Count(), 9);
 		}
 
 		[Test]

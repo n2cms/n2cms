@@ -39,7 +39,7 @@ namespace N2.Definitions
 
 		/// <summary>Gets all item definitions.</summary>
 		/// <returns>A collection of item definitoins.</returns>
-		ICollection<ItemDefinition> GetDefinitions();
+		IEnumerable<ItemDefinition> GetDefinitions();
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>

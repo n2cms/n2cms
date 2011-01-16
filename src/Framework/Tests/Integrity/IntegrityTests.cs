@@ -47,7 +47,7 @@ namespace N2.Tests.Integrity
 			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			definitions = new DefinitionManager(builder, new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
+			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
 			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
 			integrityManger = new IntegrityManager(definitions, finder, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, definitions);

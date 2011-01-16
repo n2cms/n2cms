@@ -37,6 +37,26 @@ namespace N2.Tests.Engine.Services
 		#endregion
 	}
 
+	public class BarometerWatcher
+	{
+		public BarometerWatcher(IBarometer[] barometers)
+		{
+			Barometers = barometers;
+		}
+
+		public IBarometer[] Barometers { get; set; }
+	}
+
+	public class AltitudeComparer
+	{
+		public AltitudeComparer(IBarometer[] barometers)
+		{
+			Barometers = barometers;
+		}
+
+		public IBarometer[] Barometers { get; set; }
+	}
+
 	[Service(Key = "Sesame")]
 	public class SelfService
 	{

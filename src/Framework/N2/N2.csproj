@@ -126,8 +126,10 @@
     <Compile Include="Definitions\ICommentable.cs" />
     <Compile Include="Definitions\IContentPage.cs" />
     <Compile Include="Definitions\IDefinitionManager.cs" />
+    <Compile Include="Definitions\IDefinitionProvider.cs" />
     <Compile Include="Definitions\IFeed.cs" />
     <Compile Include="Definitions\ISyndicatable.cs" />
+    <Compile Include="Definitions\ReflectingDefinitionProvider.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />

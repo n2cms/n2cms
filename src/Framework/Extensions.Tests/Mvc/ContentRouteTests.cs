@@ -61,7 +61,7 @@ namespace N2.Extensions.Tests.Mvc
 				.ToArray();
 
 			var editUrlManager = new FakeEditUrlManager();
-			var definitions = new DefinitionManager(new DefinitionBuilder(typeFinder, new EngineSection(), editUrlManager), new N2.Edit.Workflow.StateChanger(), null, new EmptyProxyFactory());
+			var definitions = new DefinitionManager(new [] { new ReflectingDefinitionProvider(new DefinitionBuilder(typeFinder, new EngineSection(), editUrlManager)) }, new N2.Edit.Workflow.StateChanger(), null, new EmptyProxyFactory());
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, host, new HostSection());

@@ -43,7 +43,7 @@ namespace N2.Tests.Edit
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
-			DefinitionManager definitions = new DefinitionManager(builder, changer, notifier, new EmptyProxyFactory());
+			DefinitionManager definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, changer, notifier, new EmptyProxyFactory());
 			
 			versioner = mocks.StrictMock<IVersionManager>();
 			editManager = new EditManager(definitions, persister, versioner, null, null, null, urls, changer, new EditSection());

@@ -31,10 +31,10 @@ namespace N2.Tests.Serialization
 			mocks.Replay(notifier);
 
 			definitions = new DefinitionManager(
-				new DefinitionBuilder(
+				new [] {new ReflectingDefinitionProvider(new DefinitionBuilder(
 					finder, 
 					new EngineSection(), 
-					new FakeEditUrlManager()), 
+					new FakeEditUrlManager()))}, 
 				new N2.Edit.Workflow.StateChanger(), 
 				notifier, 
 				new InterceptingProxyFactory());
