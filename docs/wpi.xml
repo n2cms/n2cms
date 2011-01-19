@@ -14,9 +14,9 @@
 
 
 	<entry type="application">
-		<productId>N2CMSMVCTemplates21rtm</productId>
-		<title>N2 CMS 2.1 ASP.NET MVC Templates Pack</title>
-		<version>2.1 (mvc)</version>
+		<productId>N2CMSMVCTemplates211</productId>
+		<title>N2 CMS 2.1.1 ASP.NET MVC Templates Pack</title>
+		<version>2.1.1 (mvc)</version>
 
 		<summary>Templates Pack using ASP.NET MVC and the N2 CMS Framework.</summary>
 		<id>http://n2cms.codeplex.com/releases/view/58473#DownloadId=193225</id>
@@ -52,10 +52,10 @@
 				<id>1</id>
 				<languageId>en</languageId>
 				<installerFile>
-					<fileSize>7348</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=193225</installerURL>
+					<fileSize>7221</fileSize>
+					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=198510</installerURL>
 
-					<sha1>DD4470FA8CA940B41EA09653F2D34B7DFF97A767</sha1>
+					<sha1>9E0A81E3FD55E7EB7C8FAF77C4452E7AB7C44F6D</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
@@ -67,9 +67,9 @@
 	</entry>
 
 	<entry type="application">
-		<productId>N2CMSWFTemplates21rtm</productId>
-		<title>N2 CMS 2.1 WebForms Templates Pack</title>
-		<version>2.1 (wf)</version>
+		<productId>N2CMSWFTemplates211</productId>
+		<title>N2 CMS 2.1.1 WebForms Templates Pack</title>
+		<version>2.1.1 (wf)</version>
 
 		<summary>Templates Pack using ASP.NET WebForms and the N2 CMS Framework.</summary>
 		<id>http://n2cms.codeplex.com/releases/view/58473#DownloadId=193226</id>
@@ -104,9 +104,9 @@
 				<id>1</id>
 				<languageId>en</languageId>
 				<installerFile>
-					<fileSize>6966</fileSize>
-					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=193226</installerURL>
-					<sha1>41DE71D93CA7EB4855C4C885A7E0691F948BC7C6</sha1>
+					<fileSize>6836</fileSize>
+					<installerURL>http://n2cms.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=198511</installerURL>
+					<sha1>15D2F87CF6F42E5F1258500382737B94D9799EBD</sha1>
 				</installerFile>
 				<helpLink>http://n2cms.codeplex.com/discussions/</helpLink>
 				<msDeploy>
@@ -134,7 +134,7 @@
 					<groupingId>AppGalleryToolsFamilyGrouping</groupingId>
 
 					<recommended>
-						<productId>N2CMSMVCTemplates21rtm</productId>
+						<productId>N2CMSMVCTemplates211</productId>
 					</recommended>
 				</pillar>
 			</pillarTab>
