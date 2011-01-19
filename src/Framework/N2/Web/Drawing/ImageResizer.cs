@@ -63,6 +63,16 @@ namespace N2.Web.Drawing
 			}
 		}
 
+		public virtual byte[] GetResizedBytes(Stream imageStream, string extension, double maxWidth, double maxHeight, ImageResizeMode mode)
+		{
+			using (Bitmap original = new Bitmap(imageStream))
+			{
+				var ms = new MemoryStream();
+				Resize(extension, original, maxWidth, maxHeight, mode, ms);
+				return ms.GetBuffer();
+			}
+		}
+
     	private void Resize(string extension, Bitmap original, double maxWidth, double maxHeight, ImageResizeMode mode, Stream output)
     	{
     		Bitmap resized;
