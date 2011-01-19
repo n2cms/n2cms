@@ -51,12 +51,12 @@ namespace N2.Web.Drawing
 				string extension = VirtualPathUtility.GetExtension(imageUrl);
 				ImageResizer ir = N2.Context.Current.Resolve<ImageResizer>();
 
+				CacheUtility.SetValidUntilExpires(context.Response, TimeSpan.FromDays(7));
 				using (var s = fs.OpenFile(imageUrl))
 				{
-					ir.Resize(s, extension, width, height, mode, context.Response.OutputStream);
+					var resized = ir.GetResizedBytes(s, extension, width, height, mode);
+					context.Response.BinaryWrite(resized);
 				}
-
-				CacheUtility.SetValidUntilExpires(context.Response, TimeSpan.FromDays(7));
 			}
 			else
 			{
