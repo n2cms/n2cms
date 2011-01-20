@@ -9,6 +9,7 @@ using N2.Web.UI.WebControls;
 using N2.Edit.Workflow;
 using N2.Persistence;
 using N2.Persistence.Finder;
+using System.Web;
 
 namespace N2.Edit
 {
@@ -244,7 +245,7 @@ namespace N2.Edit
 			foreach (EditToolbarPluginAttribute plugin in EditManager.GetPlugins<EditToolbarPluginAttribute>(Page.User))
 			{
 				plugin.AddTo(phPluginArea, new PluginContext(Selection.SelectedItem, Selection.MemorizedItem, start, root,
-					ControlPanelState.Visible, ManagementPaths));
+					ControlPanelState.Visible, Engine, new HttpContextWrapper(Context)));
 			}
 		}
 

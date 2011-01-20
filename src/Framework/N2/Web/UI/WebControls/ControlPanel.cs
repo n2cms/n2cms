@@ -170,17 +170,7 @@ jQuery(document).ready(function(){{
 			definitions.Attributes["class"] = "definitions";
 			container.Controls.Add(definitions);
 
-			IEnumerable<ItemDefinition> availableDefinitions;
-
-			var pageZones = Page.Items[Zone.PageKey] as IList<Zone>;
-			if (pageZones == null)
-				availableDefinitions = ZoneAdapter.GetAllowedDefinitions(CurrentItem, Page.User);
-			else
-				availableDefinitions = GetPossibleDefinitions(pageZones);
-
-			var sortedDefinitions = new List<ItemDefinition>();
-			sortedDefinitions.AddRange(availableDefinitions);
-			sortedDefinitions.Sort();
+			var sortedDefinitions = GetPartDefinitions(ZoneAdapter, CurrentItem, Page.Items[Zone.PageKey] as IList<Zone>, Page.User);
 
 			foreach (ItemDefinition definition in sortedDefinitions)
 			{
@@ -194,7 +184,28 @@ jQuery(document).ready(function(){{
 			}
 		}
 
-		private List<ItemDefinition> GetPossibleDefinitions(IList<Zone> pageZones)
+		/// <summary>Gets part definitions that can be added to the given page.</summary>
+		/// <param name="adapter"></param>
+		/// <param name="item"></param>
+		/// <param name="pageZones"></param>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public static IEnumerable<ItemDefinition> GetPartDefinitions(PartsAdapter adapter, ContentItem item, IEnumerable<Zone> pageZones, IPrincipal user)
+		{
+			IEnumerable<ItemDefinition> availableDefinitions;
+
+			if (pageZones == null)
+				availableDefinitions = adapter.GetAllowedDefinitions(item, user);
+			else
+				availableDefinitions = GetPossibleDefinitions(adapter, pageZones, user);
+
+			var sortedDefinitions = new List<ItemDefinition>();
+			sortedDefinitions.AddRange(availableDefinitions);
+			sortedDefinitions.Sort();
+			return sortedDefinitions;
+		}
+
+		private static List<ItemDefinition> GetPossibleDefinitions(PartsAdapter adapter, IEnumerable<Zone> pageZones, IPrincipal user)
 		{
 			var availableDefinitions = new List<ItemDefinition>();
 			foreach (Zone z in pageZones)
@@ -203,7 +214,7 @@ jQuery(document).ready(function(){{
 				string zoneName = z.ZoneName;
 				if (item == null || string.IsNullOrEmpty(zoneName)) continue;
 
-				foreach (ItemDefinition definition in ZoneAdapter.GetAllowedDefinitions(item, zoneName, Page.User))
+				foreach (ItemDefinition definition in adapter.GetAllowedDefinitions(item, zoneName, user))
 				{
 					if (!availableDefinitions.Contains(definition))
 						availableDefinitions.Add(definition);
@@ -242,7 +253,7 @@ window.n2ddcp = new n2DragDrop();
 				span.Attributes["class"] = "control";
 				pluginPanel.Controls.Add(span);
 
-				plugin.AddTo(span, new PluginContext(CurrentItem, null, start, root, state, Engine.ManagementPaths));
+				plugin.AddTo(span, new PluginContext(CurrentItem, null, start, root, state, Engine, new HttpContextWrapper(Context)));
 			}
 		}
 
@@ -343,7 +354,7 @@ window.n2ddcp = new n2DragDrop();
 			return ControlPanelState.Hidden;
 		}
 
-		protected string FormatImageAndText(string iconUrl, string text)
+		public static string FormatImageAndText(string iconUrl, string text)
 		{
 			return string.Format("<img src='{0}' alt=''/>{1}", iconUrl, text);
 		}

@@ -3,6 +3,7 @@ using System.Web;
 using System.Text.RegularExpressions;
 using N2.Web.UI.WebControls;
 using N2.Web;
+using N2.Engine;
 
 namespace N2.Edit
 {
@@ -11,17 +12,17 @@ namespace N2.Edit
 	/// </summary>
 	public class PluginContext
 	{
-		private readonly IEditUrlManager editUrlManager;
-
-		public PluginContext(ContentItem selected, ContentItem memorizedItem, ContentItem startItem, ContentItem rootItem, 
-			ControlPanelState state, IEditUrlManager editUrlManager)
+		public PluginContext(ContentItem selected, ContentItem memorizedItem, ContentItem startItem, ContentItem rootItem, ControlPanelState state, 
+			IEngine engine, HttpContextBase httpContext)
 		{
-			this.editUrlManager = editUrlManager;
 			State = state;
 			Selected = selected;
 			Memorized = memorizedItem;
 			Start = startItem;
 			Root = rootItem;
+
+			Engine = engine;
+			HttpContext = httpContext;
 		}
 
 		public ControlPanelState State { get; set;}
@@ -29,6 +30,8 @@ namespace N2.Edit
 		public ContentItem Memorized { get; set; }
 		public ContentItem Start { get; set; }
 		public ContentItem Root { get; set; }
+		public HttpContextBase HttpContext { get; set; }
+		public IEngine Engine { get; set; }
 		
 		static readonly Regex expressionExpression = new Regex("{(?<expr>[^})]+)}");
 
@@ -46,7 +49,7 @@ namespace N2.Edit
 			if (String.IsNullOrEmpty(url))
 				url = "empty.aspx";
 
-			string rebasedUrl = editUrlManager.ResolveResourceUrl(url);
+			string rebasedUrl = Engine.ManagementPaths.ResolveResourceUrl(url);
 			return rebasedUrl;
 		}
 

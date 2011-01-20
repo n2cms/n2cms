@@ -64,7 +64,7 @@ namespace N2.Edit.Web.UI.Controls
 		{
 			plugin.AddTo(command, new PluginContext(Selection.SelectedItem, null, start, root,
 			                                        ControlPanelState.Visible,
-			                                        Engine.ManagementPaths));
+			                                        Engine, new HttpContextWrapper(Context)));
 		}
 
         protected override void Render(HtmlTextWriter writer)

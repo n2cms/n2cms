@@ -19,7 +19,7 @@ namespace N2.Edit
 
 		public override Control AddTo(Control container, PluginContext context)
 		{
-			if (!IsAuthorized(container.Page.User))
+			if (!IsAuthorized(context.HttpContext.User))
 				return null;
 			if(!ActiveFor(container, context.State)) return null;
 			if (context.Selected.VersionOf == null) return null;

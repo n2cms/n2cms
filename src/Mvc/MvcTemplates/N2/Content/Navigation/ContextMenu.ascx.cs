@@ -2,6 +2,7 @@ using System;
 using N2.Edit.Web;
 using N2.Web.UI.WebControls;
 using N2.Web;
+using System.Web;
 
 namespace N2.Edit.Navigation
 {
@@ -14,7 +15,7 @@ namespace N2.Edit.Navigation
 			foreach (NavigationPluginAttribute a in Engine.EditManager.GetPlugins<NavigationPluginAttribute>(Page.User))
 			{
 				a.AddTo(plhMenuItems, new PluginContext(Selection.SelectedItem, null, start, root, ControlPanelState.Visible,
-				                                        Engine.ManagementPaths));
+				                                        Engine, new HttpContextWrapper(Context)));
 			}
 			base.OnInit(e);
 		}
