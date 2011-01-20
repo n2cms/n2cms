@@ -14,6 +14,14 @@ namespace N2.Addons.UITests.Items
 	[RestrictParents(typeof(AbstractContentPage))]
 	public class AdaptiveItemPage : ContentItem
 	{
+		/// <summary>Property binding style</summary>
+		[EditableUserControl("UC 1", "~/Addons/UITests/UI/EditableUc1.ascx", "PropertyNameOnUserControl", 111)]
+		public virtual string Uc1 { get; set; }
+
+		/// <summary>IContentBinder style</summary>
+		[EditableUserControl("UC 2", "~/Addons/UITests/UI/EditableUc2.ascx", 112)]
+		public virtual string Uc2 { get; set; }
+
 		[EditableFreeTextArea("Text", 100)]
 		public virtual string Text
 		{

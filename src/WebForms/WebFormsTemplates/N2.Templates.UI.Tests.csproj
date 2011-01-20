@@ -107,6 +107,13 @@
     <Compile Include="Addons\UITests\UI\ControlDesigners.aspx.designer.cs">
       <DependentUpon>ControlDesigners.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Addons\UITests\UI\EditableUc2.ascx.cs">
+      <DependentUpon>EditableUc2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Addons\UITests\UI\EditableUc2.ascx.designer.cs">
+      <DependentUpon>EditableUc2.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Addons\UITests\UI\Events.aspx.cs">
       <DependentUpon>Events.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -166,6 +173,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\UITests\UI\AdaptiveItem.aspx" />
+    <Content Include="Addons\UITests\UI\EditableUc1.ascx" />
+    <Content Include="Addons\UITests\UI\EditableUc2.ascx" />
     <Content Include="Addons\UITests\UI\GridViewTest.aspx" />
   </ItemGroup>
   <ItemGroup>
