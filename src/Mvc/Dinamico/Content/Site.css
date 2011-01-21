@@ -127,7 +127,7 @@ page width. Or, you can specify an exact pixel width. */
 
 /* TAB MENU   
 ----------------------------------------------------------*/
-ul#menu
+ul.menu
 {
     border-bottom: 1px #5C87B2 solid;
     padding: 0 0 2px;
@@ -136,13 +136,13 @@ ul#menu
     text-align: right;
 }
 
-ul#menu li
+ul.menu li
 {
     display: inline;
     list-style: none;
 }
 
-ul#menu li#greeting
+ul.menu li#greeting
 {
     padding: 10px 20px;
     font-weight: bold;
@@ -151,7 +151,7 @@ ul#menu li#greeting
     color: #fff;
 }
 
-ul#menu li a
+ul.menu li a
 {
     padding: 10px 20px;
     font-weight: bold;
@@ -161,23 +161,40 @@ ul#menu li a
     color: #034af3;
 }
 
-ul#menu li a:hover
+ul.menu li a:hover
 {
     background-color: #fff;
     text-decoration: none;
 }
 
-ul#menu li a:active
+ul.menu li a:active
 {
     background-color: #a6e2a6;
     text-decoration: none;
 }
 
-ul#menu li.selected a
+ul.menu li.selected a
 {
     background-color: #fff;
     color: #000;
 }
+
+ul.menu li a.trail
+{
+    color: #333;
+}
+ul.menu li a.current
+{
+    background-color: #fff;
+    color: #000;
+}
+ul.submenu li a
+{
+	font-size:.9em;
+    line-height: 2em;
+    padding: 5px 20px;
+}
+
 
 /* FORM LAYOUT ELEMENTS   
 ----------------------------------------------------------*/

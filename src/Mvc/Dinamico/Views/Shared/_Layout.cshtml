@@ -1,39 +1,41 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
-    <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
+	<title>@ViewBag.Title</title>
+	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+	<script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
 </head>
-
 <body>
 	@{ Html.RenderControlPanel(); }
-
-    <div class="page">
-
-        <div id="header">
-            <div id="title">
-                <h1>My MVC Application</h1>
-            </div>
-
-            <div id="logindisplay">
-                @Html.Partial("_LogOnPartial")
-            </div>
-
-            <div id="menucontainer">
-
-                <ul id="menu">
-                    <li>@Content.LinkTo(Content.AncestorAtLevel(0))</li>@Content.TreeFrom().ExcludeRoot(true)
-                </ul>
-
-            </div>
-        </div>
-
-        <div id="main">
-            @RenderBody()
-            <div id="footer">
-            </div>
-        </div>
-    </div>
+	<div class="page">
+		<div id="header">
+			<div id="title">
+				<h1>
+					My MVC Application</h1>
+			</div>
+			<div id="logindisplay">
+				@Html.Partial("_LogOnPartial")
+			</div>
+			<div id="menucontainer">
+				<ul id="menu" class="menu">
+					<li>@Content.LinkTo(Content.StartPage).Class(Content.Current == Content.StartPage ? "current" : "")</li>@Content.TreeFrom(depth: 2, excludeRoot: true)
+				</ul>
+				@foreach (var a in Content.AncestorsBetween(1, 5))
+				{
+				if(Content.Children(a).Any())
+				{
+				<ul class="submenu menu">
+					@foreach (var c in Content.Children(a)){<li>@Content.LinkTo(c).Class(Content.GetNavigationClass(c))</li>}
+				</ul>
+				}
+				}
+			</div>
+		</div>
+		<div id="main">
+			@RenderBody()
+			<div id="footer">
+			</div>
+		</div>
+	</div>
 </body>
 </html>

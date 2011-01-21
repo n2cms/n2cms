@@ -108,14 +108,29 @@ namespace N2.Web.Mvc
 			get { return page.Html.ViewContext.CurrentItem(); }
 		}
 
-		private ContentItem StartItem
+		public ContentItem StartPage
 		{
 			get { return N2.Find.StartPage; }
 		}
 
 		public IEnumerable<ContentItem> Ancestors
 		{
-			get { return N2.Find.EnumerateParents(CurrentItem, StartItem, true); }
+			get { return N2.Find.EnumerateParents(CurrentItem, StartPage, true); }
+		}
+
+		public IEnumerable<ContentItem> AncestorsBetween(int startLevel = 0, int depth = 1)
+		{
+			return N2.Find.EnumerateParents(CurrentItem, StartPage, true).Reverse().Skip(startLevel).Take(depth);
+		}
+
+		public IList<ContentItem> Children(ContentItem item)
+		{
+			return item.GetChildren(new NavigationFilter());
+		}
+
+		public int Level
+		{
+			get { return Ancestors.Count(); }
 		}
 
 		public ContentItem AncestorAtLevel(int level)
@@ -123,9 +138,25 @@ namespace N2.Web.Mvc
 			return Ancestors.Reverse().Skip(level).FirstOrDefault();
 		}
 
-		public Tree TreeFrom(int level = 0, int depth = 3)
+		public Tree TreeFrom(int level = 0, int depth = 3, bool excludeRoot = false, Func<ContentItem, string> classProvider = null)
 		{
-			return new TreeBuilder(new TreeHierarchyBuilder(AncestorAtLevel(level), depth));
+			return TreeFrom(AncestorAtLevel(level), depth, excludeRoot, classProvider);
+		}
+
+		public Tree TreeFrom(ContentItem item, int depth = 3, bool excludeRoot = false, Func<ContentItem, string> classProvider = null)
+		{
+			if (classProvider == null)
+				classProvider = GetNavigationClass;
+
+			return new TreeBuilder(new TreeHierarchyBuilder(item, depth))
+				.ExcludeRoot(excludeRoot)
+				.LinkProvider((i) => LinkTo(i).Class(classProvider(i)))
+				.Filters(new NavigationFilter());
+		}
+
+		public string GetNavigationClass(ContentItem item)
+		{
+			return Current == item ? "current" : Ancestors.Contains(item) ? "trail" : "";
 		}
 
 		public ILinkBuilder LinkTo(ContentItem item)
