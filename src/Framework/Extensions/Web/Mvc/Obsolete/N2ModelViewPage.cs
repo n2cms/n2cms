@@ -28,7 +28,7 @@ namespace N2.Web.Mvc
             InitHelpers();
             ID = Guid.NewGuid().ToString();
 
-            var response = new HttpResponse(viewContext.HttpContext.Response.Output);
+            var response = new HttpResponse(viewContext.Writer);
             var context = new HttpContext(HttpContext.Current.Request, response) { User = viewContext.HttpContext.User };
             foreach (DictionaryEntry contextItem in viewContext.HttpContext.Items)
             {

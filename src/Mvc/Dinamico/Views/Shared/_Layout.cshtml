@@ -32,9 +32,13 @@
 			</div>
 		</div>
 		<div id="main">
-			@RenderBody()
-			<div id="footer">
-			</div>
+			@if (IsSectionDefined("Main")) { RenderSection("Main"); }
+			else
+			{
+			<div id="sidebar">@if (IsSectionDefined("Sidebar")) { RenderSection("Sidebar"); } else { Html.DroppableZone("Sidebar").Render(); }</div>
+			<div id="content">@RenderBody()</div>
+			}
+			<div id="footer"></div>
 		</div>
 	</div>
 </body>

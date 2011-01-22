@@ -9,10 +9,8 @@ using N2.Web;
 namespace Dinamico.Controllers
 {
 	[Controls(typeof(Models.DynamicPage))]
-    public class DynamicController : ContentController
+    public class DynamicPagesController : ContentController
     {
-        //
-        // GET: /Dynamic/
 
         public override ActionResult Index()
         {

@@ -48,7 +48,7 @@ namespace N2.Web.Mvc.Html
         /// <returns></returns>
         public static void RenderZone(this HtmlHelper helper, ContentItem item, string zoneName)
         {
-            new ZoneHelper(helper, zoneName, item).Render(helper.ViewContext.HttpContext.Response.Output);
+            new ZoneHelper(helper, zoneName, item).Render(helper.ViewContext.Writer);
         }
     }
 }

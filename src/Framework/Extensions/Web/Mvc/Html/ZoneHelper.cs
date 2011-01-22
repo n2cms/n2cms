@@ -42,7 +42,7 @@ namespace N2.Web.Mvc.Html
 
         public virtual void Render()
         {
-            Render(Html.ViewContext.HttpContext.Response.Output);
+            Render(Html.ViewContext.Writer);
         }
 
         public virtual void Render(TextWriter writer)

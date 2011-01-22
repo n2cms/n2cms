@@ -25,10 +25,11 @@ namespace N2.Web.Mvc.Html
 		}
 
 		static string format = @"
-<script src='/N2/Resources/Js/jquery-1.4.4.js' type='text/javascript'></script>
-<script src='/N2/Resources/Js/plugins.ashx?v=2.1.1.0' type='text/javascript'></script>
-<script src='/N2/Resources/Js/parts.js' type='text/javascript'></script>
-<link href='/N2/Resources/Css/Parts.css' type='text/css' media='all' rel='stylesheet' />
+<script src='{ManagementUrl}Resources/Js/jquery-1.4.4.js' type='text/javascript'></script>
+<script src='{ManagementUrl}Resources/Js/plugins.ashx?v={Version}' type='text/javascript'></script>
+<script src='{ManagementUrl}Resources/Js/jquery.ui.ashx?v={Version}' type='text/javascript'></script>
+<script src='{ManagementUrl}Resources/Js/parts.js' type='text/javascript'></script>
+<link href='{ManagementUrl}Resources/Css/Parts.css' type='text/css' media='all' rel='stylesheet' />
 <script type='text/javascript'>//<![CDATA[
 	jQuery(document).ready(function () { n2SlidingCurtain.init('#cpCurtain', false); });
 	if (window.n2ctx) {
@@ -41,6 +42,7 @@ namespace N2.Web.Mvc.Html
 				else jQuery('.cpView').hide();
 			}
 			if (window.n2SlidingCurtain) n2SlidingCurtain.recalculate();
+			window.n2ddcp = new n2DragDrop();
 		});
 	}
 //]]></script>
@@ -68,9 +70,11 @@ namespace N2.Web.Mvc.Html
 			var settings = new
 			{
 				NavigationUrl = engine.ManagementPaths.GetNavigationUrl(item),
+				ManagementUrl = engine.ManagementPaths.GetManagementInterfaceUrl(),
 				Path = item.Path,
 				Plugins = Plugins(html, item, state),
-				Definitions = Definitions(html, engine, item, state)
+				Definitions = Definitions(html, engine, item, state),
+				Version = typeof(ContentItem).Assembly.GetName().Version.ToString()
 			};
 
 			string controlPanelHtml = format.Replace(settings);
@@ -107,12 +111,15 @@ namespace N2.Web.Mvc.Html
 			{
 				StringBuilder sb = new StringBuilder();
 
-				foreach (var d in ControlPanel.GetPartDefinitions(engine.ResolveAdapter<PartsAdapter>(item), item, Enumerable.Empty<Zone>(), html.ViewContext.HttpContext.User))
+				foreach (var d in ControlPanel.GetPartDefinitions(engine.ResolveAdapter<PartsAdapter>(item), item, null, html.ViewContext.HttpContext.User))
 				{
 					sb.AppendFormat(
-						"<div id='{0}' title='{1}' data-type='{2}' class='{3}'>{4}</div>", 
-						d.ToolTip, d.Discriminator, d.Discriminator, "definition " + d.Discriminator, ControlPanel.FormatImageAndText(d.IconUrl, d.Title));
+						"<div id='{0}' title='{1}' data-type='{2}' class='{3}'>{4}</div>",
+						d.Discriminator, d.ToolTip, d.Discriminator, "definition " + d.Discriminator, ControlPanel.FormatImageAndText(d.IconUrl, d.Title));
 				}
+
+				if (sb.Length > 0)
+					return "<div class='definitions'>" + sb + "</div>";
 			}
 			return "";
 		}
