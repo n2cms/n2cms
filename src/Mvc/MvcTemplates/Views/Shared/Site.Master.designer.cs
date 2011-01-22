@@ -22,24 +22,6 @@ namespace N2.Templates.Mvc.Views.Shared {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder Head;
         
         /// <summary>
-        /// sc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Web.UI.WebControls.SlidingCurtain sc;
-        
-        /// <summary>
-        /// cp control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::N2.Web.UI.WebControls.ControlPanel cp;
-        
-        /// <summary>
         /// Top control.
         /// </summary>
         /// <remarks>

@@ -11,9 +11,7 @@
 	<asp:ContentPlaceHolder ID="Head" runat="server" />
 </head>
 <body class="<%= GetBodyClass() %>">
-	<n2:SlidingCurtain ID="sc" runat="server">
-		<n2:ControlPanel ID="cp" runat="server"/>
-	</n2:SlidingCurtain>
+	<% Html.RenderControlPanel(); %>
 	<div id="wrap">
 		<asp:ContentPlaceHolder ID="Top" runat="server">
 			<div id="header"><div class="inner">
