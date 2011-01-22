@@ -20,22 +20,22 @@ namespace N2.Web.Mvc.Html
 
 		static string format = @"
 <script type='text/javascript'>//<![CDATA[
-	if (window.n2ctx) {
-		n2ctx.select('preview');
+(function($){
+	if (!window.n2ctx) return;
 
-		jQuery(document).ready(function () {
-			if (window.n2ctx) {
-				n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', force: false });
-				if (n2ctx.hasTop()) jQuery('.cpAdminister').hide();
-				else jQuery('.cpView').hide();
-			}
-			if (window.n2SlidingCurtain) {
-				n2SlidingCurtain.init('#cpCurtain', false);
-				setTimeout(n2SlidingCurtain.recalculate, 1);
-			}
-			window.n2ddcp = new n2DragDrop();
-		});
-	}
+	n2ctx.select('preview');
+	$(document).ready(function () {
+		n2ctx.refresh({ navigationUrl: '{NavigationUrl}', path: '{Path}', force: false });
+		if (n2ctx.hasTop()) $('.cpAdminister').hide();
+		else $('.cpView').hide();
+				
+		if (window.n2SlidingCurtain) {
+			n2SlidingCurtain.init('#cpCurtain', false);
+			n2SlidingCurtain.recalculate();
+			if($.browser.webkit) setTimeout(function(){ n2SlidingCurtain.recalculate(); }, 50);
+		}
+	});
+})(jQuery);
 //]]></script>
 
 <div id='cpCurtain' class='sc'><div class='scContent'>
@@ -74,6 +74,9 @@ namespace N2.Web.Mvc.Html
 
 			string controlPanelHtml = format.Replace(settings);
 			html.ViewContext.Writer.Write(controlPanelHtml);
+
+			if (state == ControlPanelState.DragDrop)
+				html.Register().JavaScript(@"window.n2ddcp = new n2DragDrop();", ScriptOptions.DocumentReady);
 		}
 
 		private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)
