@@ -306,6 +306,9 @@
     <Compile Include="Models\Translation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Tests\Views\TestContent\Test.aspx" />
+    <Content Include="Areas\Tests\Views\Test\Index.aspx" />
+    <Content Include="Areas\Tests\Views\Test\Test.aspx" />
     <Content Include="Content\Img\application_view_columns.png" />
     <Content Include="Content\Img\bubble_left.gif" />
     <Content Include="Content\Img\bubble_left.png" />

@@ -11,7 +11,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Models
 {
 	[PageDefinition(SortOrder = int.MaxValue, Description = "Release compile the project to remove this test")]
 	[RestrictParents(typeof(StartPage))]
-	[WithEditableTitle]
+	[WithEditableTitle, WithEditableName]
 	public class TestPage : TestItemBase
 	{
 	}

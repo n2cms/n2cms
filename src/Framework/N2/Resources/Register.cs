@@ -4,6 +4,8 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using N2.Edit;
 using N2.Engine;
+using System.Collections;
+using N2.Web;
 
 namespace N2.Resources
 {
@@ -13,6 +15,8 @@ namespace N2.Resources
 	public static class Register
 	{
 		public const string JQueryVersion = "1.4.4";
+
+		#region page StyleSheet
 
 		/// <summary>Register an embedded style sheet reference in the page's header.</summary>
 		/// <param name="page">The page onto which to register the style sheet.</param>
@@ -56,6 +60,10 @@ namespace N2.Resources
 				page.Items[resourceUrl] = null;
 			}
 		}
+
+		#endregion
+
+		#region page JavaScript
 
 		/// <summary>Register an embedded javascript resource reference in the page header.</summary>
 		/// <param name="page">The page in whose header to register the javascript.</param>
@@ -281,6 +289,63 @@ namespace N2.Resources
 		public static void TinyMCE(Page page)
 		{
 			JavaScript(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/tiny_mce/tiny_mce.js"));
+		}
+
+		#endregion
+
+		public static bool RegisterResource(IDictionary stateCollection, string resourceUrl)
+		{
+			if (IsRegistered(stateCollection, resourceUrl))
+				return true;
+			
+			stateCollection[resourceUrl] = new object();
+			return false;
+		}
+
+		public static bool IsRegistered(IDictionary stateCollection, string resourceUrl)
+		{
+			return stateCollection.Contains(resourceUrl);
+		}
+
+		public static string JavaScript(IDictionary stateCollection, string resourceUrl)
+		{
+			if (IsRegistered(stateCollection, resourceUrl))
+				return null;
+
+			RegisterResource(stateCollection, resourceUrl);
+
+			return string.Format("<script type='text/javascript' src='{0}'></script>", Url.ResolveTokens(resourceUrl));
+		}
+
+		const string scriptFormat = @"<script type='text/javascript'>//<![CDATA[
+{0}//]]></script>";
+		public static string JavaScript(IDictionary stateCollection, string script, ScriptOptions options)
+		{
+			if (IsRegistered(stateCollection, script))
+				return null;
+
+			RegisterResource(stateCollection, script);
+
+			if (options == ScriptOptions.Include)
+				return JavaScript(stateCollection, script);
+			if (options == ScriptOptions.None)
+				return script;
+			if (options == ScriptOptions.ScriptTags)
+				return string.Format(scriptFormat, script);
+			if (options == ScriptOptions.DocumentReady)
+				return string.Format(scriptFormat, EmbedDocumentReady(script));
+
+			throw new NotSupportedException(options + " not supported");
+		}
+
+		public static string StyleSheet(IDictionary stateCollection, string resourceUrl)
+		{
+			if (IsRegistered(stateCollection, resourceUrl))
+				return null;
+
+			RegisterResource(stateCollection, resourceUrl);
+
+			return string.Format("<link rel='stylesheet' type='text/css' href='{0}'/>", Url.ResolveTokens(resourceUrl));
 		}
 	}
 }

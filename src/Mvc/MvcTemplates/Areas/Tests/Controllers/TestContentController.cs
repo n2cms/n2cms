@@ -22,8 +22,8 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			this.definitions = definitions;
 		}
 
-        public override ActionResult Index()
-        {
+		public override ActionResult Index()
+		{
 			if ("Tests" != (string)RouteData.DataTokens["area"])
 				throw new Exception("Incorrect area: " + RouteData.Values["area"]);
 
@@ -31,7 +31,12 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 				return View();
 			else
 				return PartialView("Partial", definitions.GetAllowedChildren(definitions.GetDefinition(CurrentPage.GetContentType()), null, User));
-        }
+		}
+
+		public ActionResult Test()
+		{
+			return View();
+		}
 
 		[HttpPost]
 		public ActionResult Add(string name)
