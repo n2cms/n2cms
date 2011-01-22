@@ -11,6 +11,7 @@ using System.Web.Routing;
 using N2.Web.Parts;
 using N2.Plugin;
 using N2.Edit;
+using N2.Resources;
 
 namespace N2.Web.Mvc.Html
 {
@@ -18,13 +19,7 @@ namespace N2.Web.Mvc.Html
 	{
 
 		static string format = @"
-<script src='{ManagementUrl}Resources/Js/jquery-1.4.4.js' type='text/javascript'></script>
-<script src='{ManagementUrl}Resources/Js/plugins.ashx?v={Version}' type='text/javascript'></script>
-<script src='{ManagementUrl}Resources/Js/jquery.ui.ashx?v={Version}' type='text/javascript'></script>
-<script src='{ManagementUrl}Resources/Js/parts.js' type='text/javascript'></script>
-<link href='{ManagementUrl}Resources/Css/Parts.css' type='text/css' media='all' rel='stylesheet' />
 <script type='text/javascript'>//<![CDATA[
-	jQuery(document).ready(function () { n2SlidingCurtain.init('#cpCurtain', false); });
 	if (window.n2ctx) {
 		n2ctx.select('preview');
 
@@ -34,7 +29,10 @@ namespace N2.Web.Mvc.Html
 				if (n2ctx.hasTop()) jQuery('.cpAdminister').hide();
 				else jQuery('.cpView').hide();
 			}
-			if (window.n2SlidingCurtain) n2SlidingCurtain.recalculate();
+			if (window.n2SlidingCurtain) {
+				n2SlidingCurtain.init('#cpCurtain', false);
+				setTimeout(n2SlidingCurtain.recalculate, 1);
+			}
 			window.n2ddcp = new n2DragDrop();
 		});
 	}
@@ -69,6 +67,10 @@ namespace N2.Web.Mvc.Html
 				Definitions = Definitions(html, engine, item, state),
 				Version = typeof(ContentItem).Assembly.GetName().Version.ToString()
 			};
+
+			html.Register().JQuery()
+				.JQueryPlugins().JQueryUi()
+				.JavaScript("{ManagementUrl}/Resources/Js/parts.js").StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
 
 			string controlPanelHtml = format.Replace(settings);
 			html.ViewContext.Writer.Write(controlPanelHtml);

@@ -212,10 +212,15 @@ namespace N2.Resources
 
 		public static void JQuery(Page page)
 		{
+			JavaScript(page, JQueryPath(), ScriptOptions.Prioritize | ScriptOptions.Include);
+		}
+
+		public static string JQueryPath()
+		{
 #if DEBUG
-			JavaScript(page, "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".js", ScriptOptions.Prioritize | ScriptOptions.Include);
+			return Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".js");
 #else
-			JavaScript(page, "{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js", ScriptOptions.Prioritize | ScriptOptions.Include);
+			return Url.ResolveTokens("{ManagementUrl}/Resources/Js/jquery-" + JQueryVersion + ".min.js");
 #endif
 		}
 
@@ -283,7 +288,7 @@ namespace N2.Resources
 		public static void JQueryPlugins(Page page)
 		{
 			JQuery(page);
-			JavaScript(page, page.Engine().ManagementPaths.ResolveResourceUrl("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version));
+			JavaScript(page, Url.ResolveTokens("{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version));
 		}
 
 		public static void TinyMCE(Page page)
@@ -293,6 +298,7 @@ namespace N2.Resources
 
 		#endregion
 
+		#region MVC
 		public static bool RegisterResource(IDictionary stateCollection, string resourceUrl)
 		{
 			if (IsRegistered(stateCollection, resourceUrl))
@@ -338,6 +344,26 @@ namespace N2.Resources
 			throw new NotSupportedException(options + " not supported");
 		}
 
+		public static string JQuery(IDictionary stateCollection)
+		{
+			return JavaScript(stateCollection, JQueryPath());
+		}
+
+		public static string JQueryPlugins(IDictionary stateCollection)
+		{
+			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version);
+		}
+
+		public static string JQueryUi(IDictionary stateCollection)
+		{
+			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + typeof(Register).Assembly.GetName().Version);
+		}
+
+		public static string TinyMCE(IDictionary stateCollection)
+		{
+			return JavaScript(stateCollection, "{ManagementUrl}/Resources/tiny_mce/tiny_mce.js");
+		}
+
 		public static string StyleSheet(IDictionary stateCollection, string resourceUrl)
 		{
 			if (IsRegistered(stateCollection, resourceUrl))
@@ -347,5 +373,6 @@ namespace N2.Resources
 
 			return string.Format("<link rel='stylesheet' type='text/css' href='{0}'/>", Url.ResolveTokens(resourceUrl));
 		}
+		#endregion
 	}
 }
