@@ -1,3 +1,5 @@
+- property interception to detail collections
+- property interception avoid proceeding unecessarily
 - folder picker (ThreadId=240497)
 - limit number of items in a zone (ThreadId=241156)
 - show path in screens
