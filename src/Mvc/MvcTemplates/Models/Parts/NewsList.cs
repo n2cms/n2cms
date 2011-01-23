@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using N2.Collections;
@@ -50,9 +51,12 @@ namespace N2.Templates.Mvc.Models.Parts
 			set { SetDetail("Boxed", value, true); }
 		}
 
+		[Obsolete]
 		public IEnumerable<News> FilteredNewsItems
 		{
-			get { return Container.GetChildren(new TypeFilter(typeof (News)), new CountFilter(0, MaxNews)).Cast<News>(); }
+			get { return Container != null 
+				? Container.GetChildren(new TypeFilter(typeof(News)), new CountFilter(0, MaxNews)).Cast<News>()
+				: Enumerable.Empty<News>(); }
 		}
 
 		public bool IsCentered()
