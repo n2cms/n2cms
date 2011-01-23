@@ -9,6 +9,10 @@ namespace N2.Details
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class WithEditablePublishedRangeAttribute : WithEditableDateRangeAttribute
 	{
+		public WithEditablePublishedRangeAttribute()
+			: this("Published between", 1)
+		{
+		}
 		public WithEditablePublishedRangeAttribute(string title, int sortOrder)
 			: base(title, sortOrder, "Published", "Expires")
 		{

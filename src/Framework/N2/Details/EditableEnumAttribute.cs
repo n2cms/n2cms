@@ -12,6 +12,12 @@ namespace N2.Details
     public class EditableEnumAttribute : EditableDropDownAttribute
     {
         Type enumType;
+
+		public EditableEnumAttribute(Type enumType)
+			: this("", 10, enumType)
+		{
+		}
+
         public EditableEnumAttribute(string title, int sortOrder, Type enumType)
             : base(title, sortOrder)
         {

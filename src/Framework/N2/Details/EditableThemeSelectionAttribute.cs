@@ -15,6 +15,11 @@ namespace N2.Details
 	[AttributeUsage(AttributeTargets.Property)]
 	public class EditableThemeSelectionAttribute : EditableListControlAttribute
 	{
+		public EditableThemeSelectionAttribute()
+			: this("", 14)
+		{
+		}
+
 		public EditableThemeSelectionAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{

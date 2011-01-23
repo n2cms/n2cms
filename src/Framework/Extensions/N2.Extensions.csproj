@@ -111,7 +111,7 @@
     <Compile Include="Web\Mvc\Html\ControlPanelExtensions.cs" />
     <Compile Include="Web\Mvc\Html\EngineExnteions.cs" />
     <Compile Include="Web\Mvc\Html\LinkExtensions.cs" />
-    <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
+    <Compile Include="Web\Mvc\Html\ResourcesExtensions.cs" />
     <Compile Include="Web\Mvc\Html\TagBuilderExtensions.cs" />
     <Compile Include="Web\Mvc\MvcAdapter.cs" />
     <Compile Include="Web\Mvc\NonContentConstraint.cs" />

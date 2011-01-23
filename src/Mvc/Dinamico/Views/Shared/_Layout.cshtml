@@ -3,7 +3,15 @@
 <head>
 	<title>@ViewBag.Title</title>
 	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
-	@{ Html.Register().JQuery(); }
+	@{ Html.Resources().JQuery(); }
+	@{
+		Content.RegisterEditables(re => re
+			.Tab("Content", "Content", e => e
+				.Title()
+				.Name())
+			.Tab("Advanced", "Advanced", e => e.PublishedRange())
+			);
+	 }
 </head>
 <body>
 	@{ Html.RenderControlPanel(); }
@@ -17,18 +25,7 @@
 				@Html.Partial("_LogOnPartial")
 			</div>
 			<div id="menucontainer">
-				<ul id="menu" class="menu">
-					<li>@Content.LinkTo(Content.StartPage).Class(Content.Current == Content.StartPage ? "current" : "")</li>@Content.TreeFrom(depth: 2, excludeRoot: true)
-				</ul>
-				@foreach (var a in Content.AncestorsBetween(1, 5))
-				{
-				if(Content.Children(a).Any())
-				{
-				<ul class="submenu menu">
-					@foreach (var c in Content.Children(a)){<li>@Content.LinkTo(c).Class(Content.GetNavigationClass(c))</li>}
-				</ul>
-				}
-				}
+				@Html.Partial("_NavigationPartial")
 			</div>
 		</div>
 		<div id="main">

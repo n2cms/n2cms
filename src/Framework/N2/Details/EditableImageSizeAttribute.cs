@@ -6,6 +6,11 @@ namespace N2.Details
 {
 	public class EditableImageSizeAttribute : EditableDropDownAttribute
 	{
+		public EditableImageSizeAttribute()
+			: this("Image size", 12)
+		{
+		}
+
 		public EditableImageSizeAttribute(string title, int sortOrder)
 			: base(title, sortOrder)
 		{

@@ -1,6 +1,11 @@
 ﻿@model Dinamico.Models.DynamicPage
 
 @{
+	Content.RegisterEditables(re => re
+		.Container("Content", e => e.FreeTextArea("Text")));
+}
+
+@{
     ViewBag.Title = Model.Title;
 }
 

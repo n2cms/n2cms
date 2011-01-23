@@ -68,7 +68,7 @@ namespace N2.Web.Mvc.Html
 				Version = typeof(ContentItem).Assembly.GetName().Version.ToString()
 			};
 
-			html.Register().JQuery()
+			html.Resources().JQuery()
 				.JQueryPlugins().JQueryUi()
 				.JavaScript("{ManagementUrl}/Resources/Js/parts.js").StyleSheet("{ManagementUrl}/Resources/Css/parts.css");
 
@@ -76,7 +76,7 @@ namespace N2.Web.Mvc.Html
 			html.ViewContext.Writer.Write(controlPanelHtml);
 
 			if (state == ControlPanelState.DragDrop)
-				html.Register().JavaScript(@"window.n2ddcp = new n2DragDrop();", ScriptOptions.DocumentReady);
+				html.Resources().JavaScript(@"window.n2ddcp = new n2DragDrop();", ScriptOptions.DocumentReady);
 		}
 
 		private static string Plugins(HtmlHelper html, ContentItem item, ControlPanelState state)
