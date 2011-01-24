@@ -1,3 +1,4 @@
+- fix wiki (ThreadId=243022)
 - property interception to detail collections
 - property interception avoid proceeding unecessarily
 - folder picker (ThreadId=240497)

@@ -168,6 +168,7 @@
     <Compile Include="Engine\Items\ItemAC.cs" />
     <Compile Include="Engine\ServiceContainerTests.cs" />
     <Compile Include="Engine\Services\Services.cs" />
+    <Compile Include="Fakes\FakeDescendantItemFinder.cs" />
     <Compile Include="Fakes\FakeEditUrlManager.cs" />
     <Compile Include="Fakes\FakeFileSystem2.cs" />
     <Compile Include="Fakes\FakeItemFinder.cs" />

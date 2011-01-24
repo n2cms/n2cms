@@ -20,21 +20,17 @@ namespace N2.Web
 	{
 		#region Private Fields
 		readonly IPersister persister;
-		readonly IDefinitionManager definitions;
-		readonly IItemFinder finder;
-	    readonly IHost host;
-	    readonly HostSection config;
+		readonly DescendantItemFinder finder;
+		readonly IHost host;
 		#endregion
 
 		#region Constructors
-		public DynamicSitesProvider(Persistence.IPersister persister, IItemFinder finder, IDefinitionManager definitions, IHost host, HostSection config)
+		public DynamicSitesProvider(DescendantItemFinder finder, IPersister persister, IHost host)
 		{
 			this.persister = persister;
 			this.finder = finder;
-			this.definitions = definitions;
-		    this.host = host;
-		    this.config = config;
-		} 
+			this.host = host;
+		}
 		#endregion
 
         public virtual IEnumerable<Site> GetSites()
@@ -43,17 +39,11 @@ namespace N2.Web
 
             try
             {
-				foreach (ItemDefinition definition in definitions.GetDefinitions())
+				foreach (ISitesSource source in finder.Find<ISitesSource>(persister.Get(host.DefaultSite.RootItemID)))
 				{
-					if (typeof(ISitesSource).IsAssignableFrom(definition.ItemType))
+					foreach (Site s in source.GetSites())
 					{
-						foreach (ISitesSource source in finder.Where.Type.Eq(definition.ItemType).Select())
-						{
-							foreach (Site s in source.GetSites())
-							{
-								foundSites.Add(s);
-							}
-						}
+						foundSites.Add(s);
 					}
 				}
             }

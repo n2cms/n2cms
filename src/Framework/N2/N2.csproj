@@ -163,6 +163,7 @@
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\PropertyPersistenceLocation.cs" />
+    <Compile Include="Persistence\DescendantItemFinder.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />
     <Compile Include="Security\ISecurityManager.cs" />
     <Compile Include="Security\PermissionDeniedException.cs" />
@@ -293,7 +294,6 @@
     <Compile Include="Web\UrlParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Engine\Globalization\globalization.castle.config" />
     <Compile Include="..\AssemblyVersion.cs">
       <Link>AssemblyVersion.cs</Link>
     </Compile>

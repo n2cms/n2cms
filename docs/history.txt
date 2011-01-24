@@ -2,6 +2,9 @@
 - Refactored definition manager to allow multiple definition providers
 - Added support for dependency on multiple services
 
+2.1.2
+- Query for languages rather than recursively iterate to fix slowness (#30025)
+
 2.1.1
 - Fixed some sorting issues with [SortChildren] attribute (ThreadId=241678)
 - Applied #22480: Replace AllowedChildren attribute with RestrictChildren for Form and FaqList
