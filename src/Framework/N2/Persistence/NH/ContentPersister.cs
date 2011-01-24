@@ -31,11 +31,11 @@ namespace N2.Persistence.NH
 	public class ContentPersister : IPersister
 	{
 		private readonly IRepository<int, ContentItem> itemRepository;
-		private readonly INHRepository<int, LinkDetail> linkRepository;
+		private readonly INHRepository<int, ContentDetail> linkRepository;
 		private readonly IItemFinder finder;
 
 		/// <summary>Creates a new instance of the DefaultPersistenceManager.</summary>
-		public ContentPersister(IRepository<int, ContentItem> itemRepository, INHRepository<int, LinkDetail> linkRepository,
+		public ContentPersister(IRepository<int, ContentItem> itemRepository, INHRepository<int, ContentDetail> linkRepository,
 		                        IItemFinder finder)
 		{
 			this.itemRepository = itemRepository;
@@ -152,13 +152,13 @@ namespace N2.Persistence.NH
 		{
 			string itemTrail = Utility.GetTrail(itemNoMore);
 			var inboundLinks = Find.EnumerateChildren(itemNoMore, true, false)
-				.SelectMany(i => linkRepository.FindAll(Expression.Eq("LinkedItem", i)))
+				.SelectMany(i => linkRepository.FindAll(Expression.Eq("LinkedItem", i), Expression.Eq("ValueTypeKey", ContentDetail.TypeKeys.LinkType)))
 				.Where(l => !Utility.GetTrail(l.EnclosingItem).StartsWith(itemTrail))
 				.ToList();
 
 			TraceInformation("ContentPersister.DeleteReferencesRecursive " + inboundLinks.Count + " of " + itemNoMore);
 
-			foreach (LinkDetail link in inboundLinks)
+			foreach (ContentDetail link in inboundLinks)
 			{
 				linkRepository.Delete(link);
 				link.AddTo((DetailCollection)null);

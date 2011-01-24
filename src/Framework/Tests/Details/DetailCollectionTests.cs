@@ -16,7 +16,8 @@ namespace N2.Tests.Details
 			collection.Add(1);
 
 			Assert.That(collection[0], Is.EqualTo(1));
-			Assert.That(collection.Details[0], Is.TypeOf(typeof(IntegerDetail)));
+			Assert.That(collection.Details[0].ValueType, Is.EqualTo(typeof(int)));
+			Assert.That(collection.Details[0].ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.IntType));
 			Assert.That(collection.Details[0].Value, Is.EqualTo(1));
 		}
 
@@ -27,7 +28,8 @@ namespace N2.Tests.Details
 			collection.Add("hello");
 
 			Assert.That(collection[0], Is.EqualTo("hello"));
-			Assert.That(collection.Details[0], Is.TypeOf(typeof(StringDetail)));
+			Assert.That(collection.Details[0].ValueType, Is.EqualTo(typeof(string)));
+			Assert.That(collection.Details[0].ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.StringType));
 			Assert.That(collection.Details[0].Value, Is.EqualTo("hello"));
 		}
 
@@ -110,7 +112,7 @@ namespace N2.Tests.Details
 		public void DoesntThrow_WhenCollection_ContainsNullValue()
 		{
 			DetailCollection collection = new DetailCollection();
-			collection.Details.Add(new StringDetail());
+			collection.Details.Add(new ContentDetail());
 
 			Assert.That(collection.IndexOf("something"), Is.EqualTo(-1));
 		}

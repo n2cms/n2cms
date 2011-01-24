@@ -27,23 +27,56 @@ namespace N2.Details
     /// </summary>
     /// <remarks>Usually content details are created below the hood when working with primitive .NET types against a contnet item.</remarks>
 	[Serializable]
-	public abstract class ContentDetail: ICloneable
+	public class ContentDetail: ICloneable
 	{
+		#region TypeKeys
+		public static class TypeKeys
+		{
+			public const string BoolType = "Bool";
+			public const string IntType = "Int";
+			public const string LinkType = "Link";
+			public const string DoubleType = "Double";
+			public const string DateTimeType = "DateTime";
+			public const string StringType = "String";
+			public const string ObjectType = "Object";
+		}
+		#endregion
+
 		#region Constuctors
 		/// <summary>Creates a new (empty) instance of the content detail.</summary>
 		public ContentDetail()
 		{
 			id = 0;
-            enclosingItem = null; 
-			name = String.Empty;
+            enclosingItem = null;
+			name = string.Empty;
+			ValueTypeKey = TypeKeys.StringType;
+			Value = null;
+		}
+
+		public ContentDetail(ContentItem enclosingItem, string name, object value)
+		{
+			ID = 0;
+			EnclosingItem = enclosingItem;
+			Name = name;
+			Value = value;
 		}
 		#endregion
 
 		#region Private Fields
 		private int id;
         private ContentItem enclosingItem; 
-		private string name; 
+		private string name;
 		private DetailCollection collection;
+		private string valueTypeKey;
+
+		private string stringValue;
+		private ContentItem linkedItem;
+		private int? linkValue;
+		private double? doubleValue;
+		private DateTime? dateTimeValue;
+		private int? intValue;
+		private bool? boolValue;
+		private object objectValue;
 		#endregion
 
 		#region Public Properties
@@ -64,16 +97,187 @@ namespace N2.Details
 		}
 
         /// <summary>Gets or sets this details' value.</summary>
-        public abstract object Value
+        public virtual object Value
         {
-            get;
-            set;
+			get
+			{
+				switch (ValueTypeKey)
+				{
+					case TypeKeys.BoolType:
+						return boolValue;
+					case TypeKeys.DateTimeType:
+						return dateTimeValue;
+					case TypeKeys.DoubleType:
+						return doubleValue;
+					case TypeKeys.IntType:
+						return intValue;
+					case TypeKeys.LinkType:
+						return linkedItem;
+					case TypeKeys.StringType:
+						return stringValue;
+					default:
+						return objectValue;
+				}
+			}
+			set
+			{
+				valueTypeKey = SetValue(value);
+			}
         }
 
-		/// <summary>Gets the type of value associated with this item.</summary>
-		public abstract Type ValueType
+		private string SetValue(object value)
 		{
-			get;
+			if (value == null)
+			{
+				EmptyValue();
+				return valueTypeKey;
+			}
+
+			Type t = value.GetType();
+			EmptyValue();
+			switch (t.FullName)
+			{
+				case "System.Boolean":
+					boolValue = (bool)value;
+					return TypeKeys.BoolType;
+				case "System.Int32":
+					intValue = (int)value;
+					return TypeKeys.IntType;
+				case "System.Double":
+					doubleValue = (double)value;
+					return TypeKeys.DoubleType;
+				case "System.DateTime":
+					dateTimeValue = (DateTime)value;
+					return TypeKeys.DateTimeType;
+				case "System.String":
+					stringValue = (string)value;
+					return TypeKeys.StringType;
+				default:
+					if (t.IsSubclassOf(typeof(ContentItem)))
+					{
+						LinkedItem = (ContentItem)value;
+						return TypeKeys.LinkType;
+					}
+					else
+					{
+						objectValue = value;
+						return TypeKeys.ObjectType;
+					}
+			}
+		}
+
+		private void EmptyValue()
+		{
+			switch (ValueTypeKey)
+			{
+				case TypeKeys.BoolType:
+					boolValue = false;
+					return;
+				case TypeKeys.DateTimeType:
+					dateTimeValue = DateTime.MinValue;
+					return;
+				case TypeKeys.DoubleType:
+					doubleValue = 0;
+					return;
+				case TypeKeys.IntType:
+					intValue = 0;
+					return;
+				case TypeKeys.LinkType:
+					linkedItem = null;
+					return;
+				case TypeKeys.StringType:
+					stringValue = null;
+					return;
+				default:
+					objectValue = null;
+					return;
+			}
+		}
+
+		/// <summary>Gets the type of value associated with this item.</summary>
+		public virtual Type ValueType
+		{
+			get 
+			{
+				switch (ValueTypeKey)
+				{
+					case TypeKeys.BoolType:
+						return typeof(bool);
+					case TypeKeys.DateTimeType:
+						return typeof(DateTime);
+					case TypeKeys.DoubleType:
+						return typeof(double);
+					case TypeKeys.IntType:
+						return typeof(int);
+					case TypeKeys.StringType:
+						return typeof(string);
+					case TypeKeys.LinkType:
+						return typeof(ContentItem);
+					default:
+						return typeof(object);
+				}
+			}
+		}
+
+		public virtual string ValueTypeKey
+		{
+			get { return valueTypeKey; }
+			set { valueTypeKey = value; }
+		}
+
+		public virtual string StringValue
+		{
+			get { return stringValue; }
+			set { stringValue = value; }
+		}
+
+		public virtual ContentItem LinkedItem
+		{
+			get { return linkedItem; }
+			set
+			{
+				linkedItem = value;
+				if (value != null)
+					LinkValue = value.ID;
+				else
+					LinkValue = null;
+			}
+		}
+
+		protected internal virtual int? LinkValue
+		{
+			get { return linkValue; }
+			set { linkValue = value; }
+		}
+
+		public virtual double? DoubleValue
+		{
+			get { return doubleValue; }
+			set { doubleValue = value; }
+		}
+
+		public virtual DateTime? DateTimeValue
+		{
+			get { return dateTimeValue; }
+			set { dateTimeValue = value; }
+		}
+
+		public virtual bool? BoolValue
+		{
+			get { return boolValue; }
+			set { boolValue = value; }
+		}
+
+		public virtual int? IntValue
+		{
+			get { return intValue; }
+			set { intValue = value; }
+		}
+
+		public virtual object ObjectValue
+		{
+			get { return objectValue; }
+			set { objectValue = value; }
 		}
 
 		/// <summary>Gets whether this items belongs to an <see cref="N2.Details.DetailCollection"/>.</summary>
@@ -109,21 +313,7 @@ namespace N2.Details
 			if (value == null)
 				throw new ArgumentNullException("value");
 
-			Type t = value.GetType();
-			if (t == typeof(bool))
-				return new BooleanDetail(item, name, (bool)value);
-			if (t == typeof(int))
-				return new IntegerDetail(item, name, (int)value);
-			if (t == typeof(double))
-				return new DoubleDetail(item, name, (double)value);
-			if (t == typeof(DateTime))
-				return new DateTimeDetail(item, name, (DateTime)value);
-			if (t == typeof(string))
-				return new StringDetail(item, name, (string)value);
-			if (t.IsSubclassOf(typeof(ContentItem)))
-				return new LinkDetail(item, name, (ContentItem)value);
-			
-			return new ObjectDetail(item, name, value);
+			return new ContentDetail(item, name, value);
 		}
 
 		/// <summary>Gets the name of the property on the detail class that can encapsulate the given value.</summary>
@@ -185,11 +375,18 @@ namespace N2.Details
         /// <returns>A new ContentDetail with the same Name and Value.</returns>
 		public virtual ContentDetail Clone()
         {
-            ContentDetail cloned = (ContentDetail)Activator.CreateInstance(this.GetType());
+			ContentDetail cloned = new ContentDetail();
             cloned.ID = 0;
             cloned.Name = this.Name;
-            cloned.Value = this.Value;
-            return cloned;
+			cloned.BoolValue = this.BoolValue;
+			cloned.DateTimeValue = this.DateTimeValue;
+			cloned.DoubleValue = this.DoubleValue;
+			cloned.IntValue = this.IntValue;
+			cloned.LinkedItem = this.LinkedItem;
+			cloned.ObjectValue = this.ObjectValue;
+			cloned.StringValue = this.StringValue;
+			cloned.ValueTypeKey = this.ValueTypeKey;
+			return cloned;
         }
 
         object ICloneable.Clone()

@@ -145,19 +145,19 @@ namespace N2.Linq
 		private DetailInfo GetDetailFromPropertyType(Type propertyType)
 		{
 			if (propertyType == typeof(string))
-				return new DetailInfo(typeof(StringDetail), "StringValue");
+				return new DetailInfo(typeof(ContentDetail), "StringValue");
 			if (propertyType == typeof(bool))
-				return new DetailInfo(typeof(BooleanDetail), "BoolValue");
+				return new DetailInfo(typeof(ContentDetail), "BoolValue");
 			if (propertyType == typeof(int))
-				return new DetailInfo(typeof(IntegerDetail), "IntValue");
+				return new DetailInfo(typeof(ContentDetail), "IntValue");
 			if (propertyType == typeof(double))
-				return new DetailInfo(typeof (DoubleDetail), "DoubleValue");
+				return new DetailInfo(typeof(ContentDetail), "DoubleValue");
 			if (propertyType == typeof(DateTime))
-				return new DetailInfo(typeof(DateTimeDetail), "DateTimeValue");
+				return new DetailInfo(typeof(ContentDetail), "DateTimeValue");
 			if (typeof(ContentItem).IsAssignableFrom(propertyType))
-				return new DetailInfo(typeof(LinkDetail), "LinkedItem");
+				return new DetailInfo(typeof(ContentDetail), "LinkedItem");
 
-			return new DetailInfo(typeof(ObjectDetail), "Value");
+			return new DetailInfo(typeof(ContentDetail), "Value");
 		}
 
 		static Expression GetDetailExpression(ComparisonInfo comparison, DetailInfo detail)

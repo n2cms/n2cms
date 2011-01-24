@@ -59,15 +59,15 @@ namespace N2.Extensions.Tests.Linq
 			var itemParameter = Expression.Parameter(typeof(ContentItem), "ci");
 			var detailsProperty = Expression.Property(itemParameter, "Details");
 			var valuesProperty = Expression.Property(detailsProperty, "Values");
-			var ofTypeMethod = typeof(Enumerable).GetMethod("OfType").GetGenericMethodDefinition().MakeGenericMethod(typeof(StringDetail));
+			var ofTypeMethod = typeof(Enumerable).GetMethod("OfType").GetGenericMethodDefinition().MakeGenericMethod(typeof(ContentDetail));
 			var ofTypeCall = Expression.Call(valuesProperty, ofTypeMethod, valuesProperty);
-			var anyMethod = typeof(Enumerable).GetMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).GetGenericMethodDefinition().MakeGenericMethod(typeof(StringDetail));
+			var anyMethod = typeof(Enumerable).GetMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).GetGenericMethodDefinition().MakeGenericMethod(typeof(ContentDetail));
 
-			var cdParameter = Expression.Parameter(typeof(StringDetail), "cd");
+			var cdParameter = Expression.Parameter(typeof(ContentDetail), "cd");
 			var stringValueProperty = Expression.Property(cdParameter, "StringValue");
 			var constant = Expression.Constant("hello");
 			var equalsExpression = Expression.Equal(stringValueProperty, constant);
-			var anyExpression = Expression.Lambda<Func<StringDetail, bool>>(equalsExpression, cdParameter);
+			var anyExpression = Expression.Lambda<Func<ContentDetail, bool>>(equalsExpression, cdParameter);
 			var anyCall = Expression.Call(ofTypeCall, anyMethod, ofTypeCall, anyExpression);
 			// ---
 			return Expression.Lambda<Func<ContentItem, bool>>(anyCall, itemParameter);
@@ -75,7 +75,7 @@ namespace N2.Extensions.Tests.Linq
 
 		Expression<Func<ContentItem, bool>> inferred()
 		{
-			return ci => ci.Details.Values.OfType<StringDetail>().Any(cd => cd.StringValue == "hello");
+			return ci => ci.Details.Values.Any(cd => cd.StringValue == "hello");
 		}
 	}
 }

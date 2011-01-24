@@ -41,11 +41,11 @@ namespace N2.Persistence.Serialization
 				}
 				else if (detail.ValueType == typeof(ContentItem))
 				{
-					detailElement.Write(((LinkDetail)detail).LinkedItem.ID.ToString());
+					detailElement.Write(detail.LinkValue.HasValue ? detail.LinkValue.Value.ToString() : "0");
 				}
 				else if (detail.ValueType == typeof(string))
 				{
-					string value = ((StringDetail)detail).StringValue;
+					string value = detail.StringValue;
 
 					if (!string.IsNullOrEmpty(value))
 					{
@@ -67,7 +67,7 @@ namespace N2.Persistence.Serialization
 					}
 				}
 				else if(detail.ValueType == typeof(DateTime)) {
-					detailElement.Write(ElementWriter.ToUniversalString(((DateTimeDetail)detail).DateTimeValue));
+					detailElement.Write(ElementWriter.ToUniversalString(detail.DateTimeValue));
 				}
 				else {
 					detailElement.Write(detail.Value.ToString());

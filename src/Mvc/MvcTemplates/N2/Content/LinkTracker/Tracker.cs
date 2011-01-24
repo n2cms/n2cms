@@ -62,9 +62,9 @@ namespace N2.Edit.LinkTracker
 			N2.Collections.ItemList items = new N2.Collections.ItemList();
 			foreach (ContentDetail detail in item.Details.Values)
 			{
-				if (detail is N2.Details.StringDetail)
+				if (detail.StringValue != null)
 				{
-					foreach (string link in FindLinks(((StringDetail)detail).StringValue))
+					foreach (string link in FindLinks(detail.StringValue))
 					{
                         if (string.IsNullOrEmpty(link))
                             continue;

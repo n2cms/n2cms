@@ -88,6 +88,7 @@ namespace N2
 		private IList<ContentItem> children = new List<ContentItem>();
 		private IDictionary<string, Details.ContentDetail> details = new Dictionary<string, Details.ContentDetail>();
 		private IDictionary<string, Details.DetailCollection> detailCollections = new Dictionary<string, Details.DetailCollection>();
+		[NonSerialized]
 		private Web.IUrlParser urlParser;
     	private string ancestralTrail;
         private int versionIndex;

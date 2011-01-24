@@ -47,8 +47,8 @@ namespace N2.Linq
 			if (value == null)
 				return null;
 
-			if (name == null) return (ci) => ci.Details.Values.OfType<BooleanDetail>().Any(cd => cd.BoolValue == value.Value);
-			return (ci) => ci.Details.Values.OfType<BooleanDetail>().Any(cd => cd.Name == name && cd.BoolValue == value.Value);
+			if (name == null) return (ci) => ci.Details.Values.Any(cd => cd.BoolValue == value.Value);
+			return (ci) => ci.Details.Values.Any(cd => cd.Name == name && cd.BoolValue == value.Value);
 		}
 
 		private static Expression<Func<T, bool>> IntegerComparison<T>(string name, int? value) where T : ContentItem
@@ -56,8 +56,8 @@ namespace N2.Linq
 			if (value == null)
 				return null;
 
-			if (name == null) return (ci) => ci.Details.Values.OfType<IntegerDetail>().Any(cd => cd.Name == name && cd.IntValue == value.Value);
-			return (ci) => ci.Details.Values.OfType<IntegerDetail>().Any(cd => cd.Name == name && cd.IntValue == value.Value);
+			if (name == null) return (ci) => ci.Details.Values.Any(cd => cd.Name == name && cd.IntValue == value.Value);
+			return (ci) => ci.Details.Values.Any(cd => cd.Name == name && cd.IntValue == value.Value);
 		}
 
 		private static Expression<Func<T, bool>> DoubleComparison<T>(string name, double? value) where T : ContentItem
@@ -65,8 +65,8 @@ namespace N2.Linq
 			if (value == null)
 				return null;
 
-			if (name == null) return (ci) => ci.Details.Values.OfType<DoubleDetail>().Any(cd => cd.DoubleValue == value.Value);
-			return (ci) => ci.Details.Values.OfType<DoubleDetail>().Any(cd => cd.Name == name && cd.DoubleValue == value.Value);
+			if (name == null) return (ci) => ci.Details.Values.Any(cd => cd.DoubleValue == value.Value);
+			return (ci) => ci.Details.Values.Any(cd => cd.Name == name && cd.DoubleValue == value.Value);
 		}
 
 		private static Expression<Func<T, bool>> DateTimeComparison<T>(string name, DateTime? value) where T : ContentItem
@@ -74,8 +74,8 @@ namespace N2.Linq
 			if (value == null)
 				return null;
 
-			if (name == null) return (ci) => ci.Details.Values.OfType<DateTimeDetail>().Any(cd => cd.DateTimeValue == value.Value);
-			return (ci) => ci.Details.Values.OfType<DateTimeDetail>().Any(cd => cd.Name == name && cd.DateTimeValue == value.Value);
+			if (name == null) return (ci) => ci.Details.Values.Any(cd => cd.DateTimeValue == value.Value);
+			return (ci) => ci.Details.Values.Any(cd => cd.Name == name && cd.DateTimeValue == value.Value);
 		}
 
 		private static Expression<Func<T, bool>> StringComparison<T>(string name, string value) where T : ContentItem
@@ -83,8 +83,8 @@ namespace N2.Linq
 			if (value == null)
 				return null;
 
-			if (name == null) return (ci) => ci.Details.Values.OfType<StringDetail>().Any(cd => cd.StringValue == value);
-			return (ci) => ci.Details.Values.OfType<StringDetail>().Any(cd => cd.Name == name && cd.StringValue == value);
+			if (name == null) return (ci) => ci.Details.Values.Any(cd => cd.StringValue == value);
+			return (ci) => ci.Details.Values.Any(cd => cd.Name == name && cd.StringValue == value);
 		}
 
 		private static Expression<Func<T, bool>> ContentItemComparison<T>(string name, ContentItem value) where T : ContentItem
@@ -92,8 +92,8 @@ namespace N2.Linq
 			if (value == null)
 				return null;
 
-			if (name == null) return (ci) => ci.Details.Values.OfType<LinkDetail>().Any(cd => cd.Name == name && cd.LinkedItem == value);
-			return (ci) => ci.Details.Values.OfType<LinkDetail>().Any(cd => cd.Name == name && cd.LinkedItem == value);
+			if (name == null) return (ci) => ci.Details.Values.Any(cd => cd.Name == name && cd.LinkedItem == value);
+			return (ci) => ci.Details.Values.Any(cd => cd.Name == name && cd.LinkedItem == value);
 		}
 
 		private static Expression<Func<T, bool>> UnknownValueType<T>(string name, object value) where T : ContentItem

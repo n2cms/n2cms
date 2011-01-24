@@ -616,7 +616,8 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", "hello");
 
-            Assert.That(item.Details["ADetail"], Is.TypeOf<StringDetail>());
+			Assert.That(item.Details["ADetail"].ValueType, Is.EqualTo(typeof(string)));
+			Assert.That(item.Details["ADetail"].ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.StringType));
         }
 
         [Test]
@@ -646,7 +647,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", "hello", "howdy");
 
-            Assert.That(item.Details["ADetail"], Is.TypeOf<StringDetail>());
+            Assert.That(item.Details["ADetail"].ValueType, Is.EqualTo(typeof(string)));
         }
 
         [Test]
@@ -686,7 +687,8 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", false);
 
-            Assert.That(item.Details["ADetail"], Is.TypeOf<BooleanDetail>());
+			Assert.That(item.Details["ADetail"].ValueType, Is.EqualTo(typeof(bool)));
+			Assert.That(item.Details["ADetail"].ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.BoolType));
         }
 
         [Test]
@@ -733,6 +735,182 @@ namespace N2.Tests.Content
 		private class X
 		{
 			public int Number { get; set; }
+		}
+	}
+
+	[TestFixture]
+	public class ContentDetailTests
+	{
+		[Test]
+		public void FactoryMethod_Bool()
+		{
+			var detail = ContentDetail.New(null, "Hello", true);
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.BoolValue, Is.True);
+			Assert.That(detail.Value, Is.EqualTo(true));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(bool)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.BoolType));
+		}
+
+		[Test]
+		public void FactoryMethod_DateTime()
+		{
+			var detail = ContentDetail.New(null, "Hello", new DateTime(2010, 06, 16));
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.DateTimeValue, Is.EqualTo(new DateTime(2010, 06, 16)));
+			Assert.That(detail.Value, Is.EqualTo(new DateTime(2010, 06, 16)));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(DateTime)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.DateTimeType));
+		}
+
+		[Test]
+		public void FactoryMethod_Double()
+		{
+			var detail = ContentDetail.New(null, "Hello", 123.456);
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.DoubleValue, Is.EqualTo(123.456));
+			Assert.That(detail.Value, Is.EqualTo(123.456));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(double)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.DoubleType));
+		}
+
+		[Test]
+		public void FactoryMethod_Int()
+		{
+			var detail = ContentDetail.New(null, "Hello", 234);
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.IntValue, Is.EqualTo(234));
+			Assert.That(detail.Value, Is.EqualTo(234));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(int)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.IntType));
+		}
+
+		[Test]
+		public void FactoryMethod_Link()
+		{
+			var item = new Definitions.Definitions.SideshowItem { ID = 123 };
+			var detail = ContentDetail.New(null, "Hello", item);
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.LinkedItem, Is.EqualTo(item));
+			Assert.That(detail.Value, Is.EqualTo(item));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(ContentItem)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.LinkType));
+		}
+
+		[Test]
+		public void FactoryMethod_Object()
+		{
+			var detail = ContentDetail.New(null, "Hello", new[] { "World" });
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.Value, Is.InstanceOf<string[]>());
+			Assert.That(((string[])detail.Value)[0], Is.EqualTo("World"));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(object)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.ObjectType));
+		}
+
+		[Test]
+		public void FactoryMethod_String()
+		{
+			var detail = ContentDetail.New(null, "Hello", "World");
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.StringValue, Is.EqualTo("World"));
+			Assert.That(detail.Value, Is.EqualTo("World"));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(string)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.StringType));
+		}
+
+
+
+		[Test]
+		public void Constructor_Bool()
+		{
+			var detail = new ContentDetail(null, "Hello", true);
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.BoolValue, Is.True);
+			Assert.That(detail.Value, Is.EqualTo(true));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(bool)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.BoolType));
+		}
+
+		[Test]
+		public void Constructor_DateTime()
+		{
+			var detail = new ContentDetail(null, "Hello", new DateTime(2010, 06, 16));
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.DateTimeValue, Is.EqualTo(new DateTime(2010, 06, 16)));
+			Assert.That(detail.Value, Is.EqualTo(new DateTime(2010, 06, 16)));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(DateTime)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.DateTimeType));
+		}
+
+		[Test]
+		public void Constructor_Double()
+		{
+			var detail = new ContentDetail(null, "Hello", 123.456);
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.DoubleValue, Is.EqualTo(123.456));
+			Assert.That(detail.Value, Is.EqualTo(123.456));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(double)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.DoubleType));
+		}
+
+		[Test]
+		public void Constructor_Int()
+		{
+			var detail = new ContentDetail(null, "Hello", 234);
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.IntValue, Is.EqualTo(234));
+			Assert.That(detail.Value, Is.EqualTo(234));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(int)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.IntType));
+		}
+
+		[Test]
+		public void Constructor_Link()
+		{
+			var item = new Definitions.Definitions.SideshowItem { ID = 123 };
+			var detail = new ContentDetail(null, "Hello", item);
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.LinkedItem, Is.EqualTo(item));
+			Assert.That(detail.Value, Is.EqualTo(item));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(ContentItem)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.LinkType));
+		}
+
+		[Test]
+		public void Constructor_Object()
+		{
+			var detail = new ContentDetail(null, "Hello", new[] { "World" });
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.Value, Is.InstanceOf<string[]>());
+			Assert.That(((string[])detail.Value)[0], Is.EqualTo("World"));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(object)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.ObjectType));
+		}
+
+		[Test]
+		public void Constructor_String()
+		{
+			var detail = new ContentDetail(null, "Hello", "World");
+
+			Assert.That(detail, Is.InstanceOf<ContentDetail>());
+			Assert.That(detail.StringValue, Is.EqualTo("World"));
+			Assert.That(detail.Value, Is.EqualTo("World"));
+			Assert.That(detail.ValueType, Is.EqualTo(typeof(string)));
+			Assert.That(detail.ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.StringType));
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace N2.Tests
 		{
 			repository = new Fakes.FakeRepository<ContentItem>();
 
-			var linkRepository = mocks.Stub<INHRepository<int, LinkDetail>>();
+			var linkRepository = mocks.Stub<INHRepository<int, ContentDetail>>();
 			linkRepository.Replay();
 			var finder = mocks.Stub<N2.Persistence.Finder.IItemFinder>();
 			finder.Replay();

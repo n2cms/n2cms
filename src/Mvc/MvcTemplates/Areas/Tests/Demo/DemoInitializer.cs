@@ -34,10 +34,9 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 		{
 			foreach (var cd in e.AffectedItem.Details.Values)
 			{
-				var sd = cd as StringDetail;
-				if(sd != null)
+				if(cd.StringValue != null)
 				{
-					if(sd.StringValue.Contains("script"))
+					if(cd.StringValue.Contains("script"))
 					{
 						throw new Exception("The demo site does not allow scripts to be entered.");
 					}

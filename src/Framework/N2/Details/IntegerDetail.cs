@@ -9,41 +9,8 @@ namespace N2.Details
     /// </summary>
 	[Serializable]
 	[DebuggerDisplay( "{Name}: IntValue: {IntValue}")]
+	[Obsolete("Use ContentDetail instead", true)]
 	public class IntegerDetail : ContentDetail
 	{
-        #region Constuctors
-		public IntegerDetail() : base()
-		{
-		}
-
-        public IntegerDetail(ContentItem containerItem, string name, int value) 
-		{
-            this.ID = 0;
-            this.EnclosingItem = containerItem;
-            this.Name = name;
-            this.intValue = value;
-		}
-		#endregion
-
-        #region Properties
-        private int intValue;
-
-        public virtual int IntValue
-        {
-            get { return intValue; }
-            set { intValue = value; }
-        }
-
-        public override object Value
-        {
-            get { return this.intValue; }
-            set { this.intValue = (int)value; }
-		}
-
-		public override Type ValueType
-		{
-			get { return typeof(int); }
-		}
-        #endregion
     }
 }

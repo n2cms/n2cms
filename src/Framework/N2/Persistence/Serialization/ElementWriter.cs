@@ -41,9 +41,11 @@ namespace N2.Persistence.Serialization
             WriteAttribute(attributeName, value.HasValue ? ToUniversalString(value.Value) : string.Empty);
         }
 
-        internal static string ToUniversalString(DateTime value)
+        internal static string ToUniversalString(DateTime? value)
         {
-            return value.ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture);
+			if (!value.HasValue)
+				return "";
+            return value.Value.ToUniversalTime().ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
 		public void WriteAttribute(string attributeName, string value)

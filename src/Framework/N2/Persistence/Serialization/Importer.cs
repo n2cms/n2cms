@@ -113,7 +113,7 @@ namespace N2.Persistence.Serialization
 				ContentDetail detail = item.Details[key];
 				if (detail.ValueType == typeof(ContentItem))
 				{
-					if (((LinkDetail)detail).LinkedItem == referenceToRemove)
+					if (detail.LinkedItem == referenceToRemove)
 					{
 						item.Details.Remove(key);
 					}
@@ -130,7 +130,7 @@ namespace N2.Persistence.Serialization
 					ContentDetail detail = collection.Details[i];
 					if (detail.ValueType == typeof(ContentItem))
 					{
-						if (((LinkDetail)detail).LinkedItem == referenceToRemove)
+						if (detail.LinkedItem == referenceToRemove)
 						{
 							collection.Remove(referenceToRemove);
 						}

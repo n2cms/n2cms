@@ -133,10 +133,10 @@ namespace N2.Xml
 			}
 			else if (detail.ValueType == typeof(ContentItem))
 			{
-				xtw.WriteString(((N2.Details.LinkDetail)detail).LinkedItem.ID.ToString());
+				xtw.WriteString(detail.LinkedItem.ID.ToString());
 			}
 			else if (detail.Value == typeof(string))
-				xtw.WriteCData(((N2.Details.StringDetail)detail).StringValue);
+				xtw.WriteCData(detail.StringValue);
 			else
 				xtw.WriteString(detail.Value.ToString());
 			xtw.WriteEndElement();

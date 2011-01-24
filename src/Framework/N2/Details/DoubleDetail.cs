@@ -10,41 +10,8 @@ namespace N2.Details
     /// </summary>
 	[Serializable]
 	[DebuggerDisplay("{Name}: DoubleValue: {DoubleValue}")]
+	[Obsolete("Use ContentDetail instead", true)]
 	public class DoubleDetail : ContentDetail
 	{
-        #region Constuctors
-		public DoubleDetail() : base()
-		{
-		}
-
-		public DoubleDetail(ContentItem containerItem, string name, double value) 
-		{
-            this.ID = 0;
-            this.EnclosingItem = containerItem;
-            this.Name = name;
-            this.doubleValue = value;
-		}
-		#endregion
-
-        #region Properties
-		private double doubleValue;
-
-        public virtual double DoubleValue
-        {
-            get { return doubleValue; }
-            set { doubleValue = value; }
-        }
-
-        public override object Value
-        {
-            get { return this.doubleValue; }
-            set { this.doubleValue = (double)value; }
-        }
-
-		public override Type ValueType
-		{
-			get { return typeof(double); }
-		}
-        #endregion
     }
 }

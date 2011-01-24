@@ -20,40 +20,20 @@
 		<id name="ID" column="ID" type="Int32" unsaved-value="0">
 			<generator class="native"/>
 		</id>
-		<discriminator column="Type" type="String" />
+		<property name="ValueTypeKey" column="Type" type="String" length="10" />
 
 		<many-to-one name="EnclosingItem" column="ItemID" class="N2.ContentItem,N2" not-null="true" fetch="select" />
 		<many-to-one name="EnclosingCollection" column="DetailCollectionID" class="N2.Details.DetailCollection,N2" fetch="select" lazy="proxy"/>
 
 		<property name="Name" type="String" length="50" />
 
-		<subclass name="N2.Details.BooleanDetail,N2" discriminator-value="Bool">
-			<property name="BoolValue" type="Boolean" />
-		</subclass>
-
-		<subclass name="N2.Details.IntegerDetail,N2" discriminator-value="Int">
-			<property name="IntValue" type="Int32" />
-		</subclass>
-
-		<subclass name="N2.Details.LinkDetail,N2" discriminator-value="Link">
-			<many-to-one name="LinkedItem" column="LinkValue" class="N2.ContentItem,N2" lazy="proxy" cascade="none" />
-		</subclass>
-
-		<subclass name="N2.Details.DoubleDetail,N2" discriminator-value="Double">
-			<property name="DoubleValue" type="Double" />
-		</subclass>
-
-		<subclass name="N2.Details.DateTimeDetail,N2" discriminator-value="DateTime">
-			<property name="DateTimeValue" type="DateTime" />
-		</subclass>
-
-		<subclass name="N2.Details.StringDetail,N2" discriminator-value="String">
-			<property name="StringValue" type="StringClob" length="{StringLength}" />
-		</subclass>
-
-		<subclass name="N2.Details.ObjectDetail,N2" discriminator-value="Object">
-			<property name="Value" type="Serializable" length="2147483647" />
-		</subclass>
+		<property name="BoolValue" type="Boolean" />
+		<property name="IntValue" type="Int32" />
+		<many-to-one name="LinkedItem" column="LinkValue" class="N2.ContentItem,N2" lazy="proxy" cascade="none" />
+		<property name="DoubleValue" type="Double" />
+		<property name="DateTimeValue" type="DateTime" />
+		<property name="StringValue" type="StringClob" length="{StringLength}" />
+		<property name="ObjectValue" column="Value" type="Serializable" length="2147483647" />
 	</class>
 
 

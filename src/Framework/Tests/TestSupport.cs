@@ -54,9 +54,9 @@ namespace N2.Tests
 			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
-			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(definitionBuilder)}, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
+			definitions = new DefinitionManager(new [] { new ReflectingDefinitionProvider(definitionBuilder) }, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
 			((DefinitionManager)definitions).Start();
-        }
+		}
 
 		public static T Stub<T>()
 			where T: class
@@ -71,7 +71,7 @@ namespace N2.Tests
             editor = new EditManager(definitions, persister, versions, new SecurityManager(new ThreadContext(), new EditSection()), null, null, null, changer, null);
         }
 
-        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<int, ContentItem> itemRepository, INHRepository<int, N2.Details.LinkDetail> linkRepository, ItemFinder finder, SchemaExport schemaCreator)
+        public static void Setup(out ContentPersister persister, ISessionProvider sessionProvider, N2.Persistence.IRepository<int, ContentItem> itemRepository, INHRepository<int, ContentDetail> linkRepository, ItemFinder finder, SchemaExport schemaCreator)
         {
             persister = new ContentPersister(itemRepository, linkRepository, finder);
 
@@ -85,7 +85,7 @@ namespace N2.Tests
         internal static void Setup(out ContentPersister persister, FakeSessionProvider sessionProvider, ItemFinder finder, SchemaExport schemaCreator)
         {
             IRepository<int, ContentItem> itemRepository = new ContentItemRepository(sessionProvider);
-            INHRepository<int, LinkDetail> linkRepository = new NHRepository<int, LinkDetail>(sessionProvider);
+            INHRepository<int, ContentDetail> linkRepository = new NHRepository<int, ContentDetail>(sessionProvider);
 
             Setup(out persister, sessionProvider, itemRepository, linkRepository, finder, schemaCreator);
         }
