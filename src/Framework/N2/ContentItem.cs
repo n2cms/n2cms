@@ -86,7 +86,7 @@ namespace N2
 		private string savedBy;
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
 		private IList<ContentItem> children = new List<ContentItem>();
-		private IDictionary<string, Details.ContentDetail> details = new Dictionary<string, Details.ContentDetail>();
+		private IList<Details.ContentDetail> details = new List<Details.ContentDetail>();
 		private IDictionary<string, Details.DetailCollection> detailCollections = new Dictionary<string, Details.DetailCollection>();
 		[NonSerialized]
 		private Web.IUrlParser urlParser;
@@ -220,7 +220,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the details collection. These are usually accessed using the e.g. item["Detailname"]. This is a place to store content data.</summary>
-		public virtual IDictionary<string, Details.ContentDetail> Details
+		public virtual IList<Details.ContentDetail> Details
 		{
 			get { return details; }
 			set { details = value; }
@@ -394,7 +394,7 @@ namespace N2
 		public virtual object GetDetail(string detailName)
 		{
 			return Details.ContainsKey(detailName)
-				? Details[detailName].Value
+				? Details.Get(detailName).Value
 				: null;
 		}
 
@@ -405,7 +405,7 @@ namespace N2
         public virtual T GetDetail<T>(string detailName, T defaultValue)
         {
             return Details.ContainsKey(detailName)
-                ? (T)Details[detailName].Value
+                ? (T)Details.Get(detailName).Value
                 : defaultValue;
         }
 
@@ -705,7 +705,7 @@ namespace N2
 			destination.hashCode = null;
 			destination.authorizedRoles = new List<Security.AuthorizedRole>();
 			destination.children = new List<ContentItem>();
-			destination.details = new Dictionary<string, Details.ContentDetail>();
+			destination.details = new List<Details.ContentDetail>();
 			destination.detailCollections = new Dictionary<string, Details.DetailCollection>();
 		}
 
@@ -737,17 +737,17 @@ namespace N2
 
 		static void CloneDetails(ContentItem source, ContentItem destination)
 		{
-			foreach (Details.ContentDetail detail in source.Details.Values)
+			foreach (Details.ContentDetail detail in source.Details)
 			{
 				if(destination.details.ContainsKey(detail.Name)) 
 				{
-					destination.details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
+					destination.details.Get(detail.Name).Value = detail.Value;//.Value should behave polymorphically
 				} 
 				else 
 				{
 					ContentDetail clonedDetail = detail.Clone();
 					clonedDetail.EnclosingItem = destination;
-					destination.details[detail.Name] = clonedDetail;
+					destination.details.Set(detail.Name, clonedDetail);
 				}
 			}
 
@@ -930,7 +930,7 @@ namespace N2
 		private void ClearMissingDetails(ContentItem source, ContentItem destination)
 		{
 			// remove details not present in source
-			List<string> detailKeys = new List<string>(destination.Details.Keys);
+			List<string> detailKeys = new List<string>(destination.Details.Keys());
 			foreach(string key in detailKeys)
 			{
 				if (!source.Details.ContainsKey(key))

@@ -391,7 +391,7 @@ namespace N2.Tests.Persistence
 			Assert.AreEqual(root.Title, clonedRoot.Title);
 			Assert.AreNotEqual(root.ID, clonedRoot.ID);
 
-			foreach (N2.Details.ContentDetail detail in root.Details.Values)
+			foreach (N2.Details.ContentDetail detail in root.Details)
 			{
 				Assert.IsNotNull(clonedRoot[detail.Name]);
 				Assert.AreNotSame(detail, clonedRoot[detail.Name]);

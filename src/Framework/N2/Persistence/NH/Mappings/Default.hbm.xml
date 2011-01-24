@@ -72,12 +72,11 @@
 			<one-to-many class="N2.ContentItem,N2"/>
 		</bag>
 
-		<map name="Details" inverse="true" cascade="all-delete-orphan" generic="true" where="DetailCollectionID IS NULL" lazy="true" batch-size="{BatchSize}">
+		<bag name="Details" inverse="true" cascade="all-delete-orphan" generic="true" where="DetailCollectionID IS NULL" lazy="true" batch-size="{BatchSize}">
 			<cache usage="read-write" />
 			<key column="ItemID" />
-			<index column="Name" type="String" />
 			<one-to-many class="N2.Details.ContentDetail, N2"/>
-		</map>
+		</bag>
 
 		<map name="DetailCollections" inverse="true" cascade="all-delete-orphan" generic="true" lazy="true">
 			<cache usage="read-write" />

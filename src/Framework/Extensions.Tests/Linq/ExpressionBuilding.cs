@@ -75,7 +75,7 @@ namespace N2.Extensions.Tests.Linq
 
 		Expression<Func<ContentItem, bool>> inferred()
 		{
-			return ci => ci.Details.Values.Any(cd => cd.StringValue == "hello");
+			return ci => ci.Details.Any(cd => cd.StringValue == "hello");
 		}
 	}
 }

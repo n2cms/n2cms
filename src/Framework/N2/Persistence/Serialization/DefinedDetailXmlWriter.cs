@@ -18,7 +18,7 @@ namespace N2.Persistence.Serialization
         protected override IEnumerable<ContentDetail> GetDetails(ContentItem item)
         {
             ItemDefinition definition = definitions.GetDefinition(item.GetContentType());
-            foreach (ContentDetail detail in item.Details.Values)
+            foreach (ContentDetail detail in item.Details)
             {
                 foreach (IEditable editable in definition.Editables)
                 {

@@ -24,7 +24,7 @@ namespace N2.Persistence.Serialization
 
         protected virtual IEnumerable<ContentDetail> GetDetails(ContentItem item)
         {
-            return item.Details.Values;
+            return item.Details;
         }
 
 		public virtual void WriteDetail(ContentItem item, ContentDetail detail, XmlTextWriter writer)

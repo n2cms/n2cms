@@ -60,7 +60,7 @@ namespace N2.Edit.LinkTracker
 		public virtual IList<ContentItem> FindLinkedItems(ContentItem item)
 		{
 			N2.Collections.ItemList items = new N2.Collections.ItemList();
-			foreach (ContentDetail detail in item.Details.Values)
+			foreach (ContentDetail detail in item.Details)
 			{
 				if (detail.StringValue != null)
 				{

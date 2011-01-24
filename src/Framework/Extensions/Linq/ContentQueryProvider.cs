@@ -127,11 +127,13 @@ namespace N2.Linq
 
 		MethodCallExpression EmbedDetailExpressionInSubselect(DetailInfo detail, ParameterExpression itemParameter, Expression nameAndValueExpression)
 		{
-			var valuesProperty = Expression.Property(Expression.Property(itemParameter, "Details"), "Values"); // ci.Details.Values
-			var ofTypeMethod = ofTypeMethodInfo.MakeGenericMethod(detail.DetailType); // System.Collections.Generic.IEnumerable`1[N2.Details.StringDetail] OfType[StringDetail](System.Collections.IEnumerable)
-			var ofTypeCall = Expression.Call(valuesProperty, ofTypeMethod, valuesProperty); // ci.Details.Values.OfType()
+			//var valuesProperty = Expression.Property(Expression.Property(itemParameter, "Details"), "Values"); // ci.Details.Values
+			var valuesProperty = Expression.Property(itemParameter, "Details"); // ci.Detials
+			//var ofTypeMethod = ofTypeMethodInfo.MakeGenericMethod(detail.DetailType); // System.Collections.Generic.IEnumerable`1[N2.Details.StringDetail] OfType[StringDetail](System.Collections.IEnumerable)
+			//var ofTypeCall = Expression.Call(valuesProperty, ofTypeMethod, valuesProperty); // ci.Details.Values.OfType()
 			var anyMethod = anyMethodInfo.MakeGenericMethod(detail.DetailType); // Boolean Any[StringDetail](System.Collections.Generic.IEnumerable`1[N2.Details.StringDetail], System.Func`2[N2.Details.StringDetail,System.Boolean])
-			return Expression.Call(ofTypeCall, anyMethod, ofTypeCall, nameAndValueExpression);
+			return Expression.Call(anyMethod, valuesProperty, nameAndValueExpression);
+			//return Expression.Call(ofTypeCall, anyMethod, ofTypeCall, nameAndValueExpression);
 		}
 
 		private Type GetExpressionType(MemberExpression nameExpression)
@@ -186,12 +188,12 @@ namespace N2.Linq
 			if(comparison.IsLeftToRight)
 			{
 				left = propertyAccess;
-				right = comparison.ValueExpression;
+				right = GetValueExpression(comparison);
 			}
 			else
 			{
 				right = propertyAccess;
-				left = comparison.ValueExpression;
+				left = GetValueExpression(comparison);
 			}
 
 			switch (comparison.Type)
@@ -212,6 +214,14 @@ namespace N2.Linq
 				default:
 					throw new NotSupportedException("Expression of type " + comparison.Type + " is not supported");
 			}
+		}
+
+		private static Expression GetValueExpression(ComparisonInfo comparison)
+		{
+			if(comparison.ValueExpression.Type.IsValueType)
+				return Expression.Convert(comparison.ValueExpression, typeof(Nullable<>).MakeGenericType(comparison.ValueExpression.Type));
+
+			return comparison.ValueExpression;
 		}
 
 		public IQueryable CreateQuery(Expression expression)

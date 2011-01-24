@@ -112,7 +112,7 @@ namespace N2.Xml
 		protected virtual void OnWritingDetails(ContentItem item, XmlTextWriter xtw)
 		{
 			xtw.WriteStartElement("details");
-			foreach (N2.Details.ContentDetail detail in item.Details.Values)
+			foreach (N2.Details.ContentDetail detail in item.Details)
 			{
 				OnWritingDetail(xtw, detail);
 			}

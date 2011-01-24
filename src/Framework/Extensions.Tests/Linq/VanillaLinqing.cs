@@ -10,7 +10,7 @@ namespace N2.Extensions.Tests.Linq
 	/// these tests asserts nhibernate.linq's built-in capabilities
 	/// </summary>
 	[TestFixture]
-	[Ignore]
+//	[Ignore]
 	public class VanillaLinqing : LinqTestsBase
 	{
 		[Test]
@@ -55,8 +55,24 @@ namespace N2.Extensions.Tests.Linq
 		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue()
 		{
 			var query = engine.QueryItems()
-				.Where(ci => ci.Details.Values
+				.Where(ci => ci.Details
 					.Any(sd => sd.Name == "StringProperty2" && sd.StringValue == "another string"));
+
+			Debug.WriteLine(query.Expression);
+			var items = query.ToList();
+
+			Assert.That(items.Count, Is.EqualTo(1));
+			Assert.That(items.Contains(root));
+			Assert.That(!items.Contains(item));
+		}
+
+		//Expr: value(NHibernate.Linq.NhQueryable`1[N2.ContentItem]).Where(i => (i.VersionOf == null)).Where(ci => ci.Details.Any(sd => ((sd.Name == "IntProperty") AndAlso (sd.IntValue == Convert(123)))))
+		[Test]
+		public void CanSelect_SingleItem_BySubselectingDetail_ByName_AndNullableValue()
+		{
+			var query = engine.QueryItems()
+				.Where(ci => ci.Details
+					.Any(sd => sd.Name == "IntProperty" && sd.IntValue == 123));
 
 			Debug.WriteLine(query.Expression);
 			var items = query.ToList();
@@ -71,7 +87,7 @@ namespace N2.Extensions.Tests.Linq
 		public void CanSelect_SingleItem_BySubselectingDetail_ByName_And_StartsWithValue()
 		{
 			var query = engine.QueryItems()
-				.Where(ci => ci.Details.Values
+				.Where(ci => ci.Details
 					.Any(sd => sd.Name == "StringProperty2" && sd.StringValue.StartsWith("another")));
 
 			Debug.WriteLine(query.Expression);
@@ -87,7 +103,7 @@ namespace N2.Extensions.Tests.Linq
 		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_StronglyTypedQuery()
 		{
 			var query = engine.QueryItems<LinqItem>()
-				.Where(ci => ci.Details.Values
+				.Where(ci => ci.Details
 					.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string"));
 
 			Debug.WriteLine(query.Expression);
@@ -103,7 +119,7 @@ namespace N2.Extensions.Tests.Linq
 		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_StartsWith()
 		{
 			var query = engine.QueryItems<LinqItem>()
-				.Where(ci => ci.Details.Values
+				.Where(ci => ci.Details
 					.Any(cd => cd.Name == "StringProperty2" && cd.StringValue.StartsWith("another")));
 
 			Debug.WriteLine(query.Expression);
@@ -119,9 +135,9 @@ namespace N2.Extensions.Tests.Linq
 		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_OnTwoDetails()
 		{
 			var query = engine.QueryItems<LinqItem>()
-				.Where(ci => ci.Details.Values
+				.Where(ci => ci.Details
 					.Any(cd => cd.Name == "StringProperty" && cd.StringValue == "a string"))
-				.Where(ci => ci.Details.Values
+				.Where(ci => ci.Details
 					.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string"));
 
 			Debug.WriteLine(query.Expression);
@@ -136,8 +152,8 @@ namespace N2.Extensions.Tests.Linq
 		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_And_NameAndValue()
 		{
 			var query = engine.QueryItems<LinqItem>()
-				.Where(ci => ci.Details.Values.Any(cd => cd.Name == "StringProperty" && cd.StringValue == "a string")
-					&& ci.Details.Values.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string"));
+				.Where(ci => ci.Details.Any(cd => cd.Name == "StringProperty" && cd.StringValue == "a string")
+					&& ci.Details.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string"));
 
 			Debug.WriteLine(query.Expression);
 			var items = query.ToList();
@@ -151,8 +167,8 @@ namespace N2.Extensions.Tests.Linq
 		public void CanSelect_SingleItem_BySubselectingDetail_ByNameAndValue_Or_NameAndValue()
 		{
 			var query = engine.QueryItems<LinqItem>()
-				.Where(ci => ci.Details.Values.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string")
-					|| ci.Details.Values.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "yet another string"));
+				.Where(ci => ci.Details.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "another string")
+					|| ci.Details.Any(cd => cd.Name == "StringProperty2" && cd.StringValue == "yet another string"));
 
 			Debug.WriteLine(query.Expression);
 			var items = query.ToList();
