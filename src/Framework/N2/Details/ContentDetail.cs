@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using N2.Collections;
 
 namespace N2.Details
 {
@@ -27,7 +28,7 @@ namespace N2.Details
     /// </summary>
     /// <remarks>Usually content details are created below the hood when working with primitive .NET types against a contnet item.</remarks>
 	[Serializable]
-	public class ContentDetail: ICloneable
+	public class ContentDetail: ICloneable, INameable
 	{
 		#region TypeKeys
 		public static class TypeKeys

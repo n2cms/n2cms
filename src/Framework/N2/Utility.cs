@@ -134,7 +134,7 @@ namespace N2
 		/// <summary>Iterates items and ensures that the item's sort order is ascending.</summary>
 		/// <param name="siblings">The items to iterate.</param>
 		/// <returns>A list of items whose sort order was changed.</returns>
-		public static IEnumerable<ContentItem> UpdateSortOrder(IEnumerable siblings)
+		public static IEnumerable<ContentItem> UpdateSortOrder(IEnumerable<ContentItem> siblings)
 		{
 			List<ContentItem> updatedItems = new List<ContentItem>();
 			int lastSortOrder = int.MinValue;
@@ -511,51 +511,6 @@ namespace N2
 				return accessor.Get();
 			else
 				return N2.Context.Current;
-		}
-
-		public static bool ContainsKey(this IList<Details.ContentDetail> details, string key)
-		{
-			return details.Any(d => d.Name == key);
-		}
-
-		public static IEnumerable<string> Keys(this IList<Details.ContentDetail> details)
-		{
-			return details.Select(d => d.Name);
-		}
-
-		public static bool TryGetValue(this IList<Details.ContentDetail> details, string key, out Details.ContentDetail detail)
-		{
-			detail = details.FirstOrDefault(d => d.Name == key);
-			return detail != null;
-		}
-
-		public static Details.ContentDetail Get(this IList<Details.ContentDetail> details, string key)
-		{
-			return details.FirstOrDefault(d => d.Name == key);
-		}
-
-		public static void Set(this IList<Details.ContentDetail> details, string key, Details.ContentDetail detail)
-		{
-			detail.Name = key;
-			var existing = details.Get(key);
-			if (existing == null)
-				details[details.IndexOf(existing)] = detail;
-			else
-				details.Add(detail);
-		}
-
-		public static bool Remove(this IList<Details.ContentDetail> details, string key)
-		{
-			var detail = details.FirstOrDefault(d => d.Name == key);
-			if (detail != null)
-				details.Remove(detail);
-			return detail != null;
-		}
-
-		public static void Add(this IList<Details.ContentDetail> details, string key, Details.ContentDetail detail)
-		{
-			detail.Name = key;
-			details.Add(detail);
 		}
 	}
 }

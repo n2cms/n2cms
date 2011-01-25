@@ -67,7 +67,8 @@ namespace N2
 		IDependentEntity<IUrlParser>, 
 		INode, 
 		IUpdatable<ContentItem>, 
-		IInterceptableType
+		IInterceptableType,
+		INameable
     {
         #region Private Fields
         private int id;
@@ -85,9 +86,9 @@ namespace N2
 		private ContentItem versionOf = null;
 		private string savedBy;
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
-		private IList<ContentItem> children = new List<ContentItem>();
-		private IList<Details.ContentDetail> details = new List<Details.ContentDetail>();
-		private IDictionary<string, Details.DetailCollection> detailCollections = new Dictionary<string, Details.DetailCollection>();
+		private IPageableList<ContentItem> children = new PageableList<ContentItem>();
+		private IDictionaryList<ContentDetail> details = new DictionaryList<ContentDetail>();
+		private IDictionaryList<DetailCollection> detailCollections = new DictionaryList<DetailCollection>();
 		[NonSerialized]
 		private Web.IUrlParser urlParser;
     	private string ancestralTrail;
@@ -220,21 +221,21 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the details collection. These are usually accessed using the e.g. item["Detailname"]. This is a place to store content data.</summary>
-		public virtual IList<Details.ContentDetail> Details
+		public virtual IDictionaryList<ContentDetail> Details
 		{
 			get { return details; }
 			set { details = value; }
 		}
 
 		/// <summary>Gets or sets the details collection collection. These are details grouped into a collection.</summary>
-		public virtual IDictionary<string, Details.DetailCollection> DetailCollections
+		public virtual IDictionaryList<Details.DetailCollection> DetailCollections
 		{
 			get { return detailCollections; }
 			set { detailCollections = value; }
 		}
 
 		/// <summary>Gets or sets all a collection of child items of this item ignoring permissions. If you want the children the current user has permission to use <see cref="GetChildren()"/> instead.</summary>
-		public virtual IList<ContentItem> Children
+		public virtual IPageableList<ContentItem> Children
 		{
 			get { return children; }
 			set { children = value; }
@@ -394,7 +395,7 @@ namespace N2
 		public virtual object GetDetail(string detailName)
 		{
 			return Details.ContainsKey(detailName)
-				? Details.Get(detailName).Value
+				? Details[detailName].Value
 				: null;
 		}
 
@@ -405,7 +406,7 @@ namespace N2
         public virtual T GetDetail<T>(string detailName, T defaultValue)
         {
             return Details.ContainsKey(detailName)
-                ? (T)Details.Get(detailName).Value
+                ? (T)Details[detailName].Value
                 : defaultValue;
         }
 
@@ -704,9 +705,9 @@ namespace N2
 			destination.ancestralTrail = null;
 			destination.hashCode = null;
 			destination.authorizedRoles = new List<Security.AuthorizedRole>();
-			destination.children = new List<ContentItem>();
-			destination.details = new List<Details.ContentDetail>();
-			destination.detailCollections = new Dictionary<string, Details.DetailCollection>();
+			destination.children = new PageableList<ContentItem>();
+			destination.details = new DictionaryList<ContentDetail>();
+			destination.detailCollections = new DictionaryList<DetailCollection>();
 		}
 
 		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)
@@ -737,17 +738,17 @@ namespace N2
 
 		static void CloneDetails(ContentItem source, ContentItem destination)
 		{
-			foreach (Details.ContentDetail detail in source.Details)
+			foreach (Details.ContentDetail detail in source.Details.Values)
 			{
 				if(destination.details.ContainsKey(detail.Name)) 
 				{
-					destination.details.Get(detail.Name).Value = detail.Value;//.Value should behave polymorphically
+					destination.details[detail.Name].Value = detail.Value;//.Value should behave polymorphically
 				} 
 				else 
 				{
 					ContentDetail clonedDetail = detail.Clone();
 					clonedDetail.EnclosingItem = destination;
-					destination.details.Set(detail.Name, clonedDetail);
+					destination.details[detail.Name] = clonedDetail;
 				}
 			}
 
@@ -864,9 +865,10 @@ namespace N2
 		/// <returns>True if two items have the same ID.</returns>
 		public override bool Equals(object obj)
 		{
-			if (this == obj) return true;
+			if (object.ReferenceEquals(this, obj)) return true;
 			ContentItem other = obj as ContentItem;
 			return other != null && id != 0 && id == other.id;
+			//TODO: add id==0 && name+parent
 		}
 
 		int? hashCode;
@@ -930,7 +932,7 @@ namespace N2
 		private void ClearMissingDetails(ContentItem source, ContentItem destination)
 		{
 			// remove details not present in source
-			List<string> detailKeys = new List<string>(destination.Details.Keys());
+			List<string> detailKeys = new List<string>(destination.Details.Keys);
 			foreach(string key in detailKeys)
 			{
 				if (!source.Details.ContainsKey(key))

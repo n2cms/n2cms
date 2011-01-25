@@ -60,7 +60,7 @@ namespace N2.Tests.Persistence.NH
 				item2 = (InterceptableInheritorItem)item1.Clone(false);
 				persister.Save(item2);
 				var details = item2.Details;
-				var sp = details.Get("StringProperty");
+				var sp = details["StringProperty"];
 				var id = sp.ID;
 				var value = sp.Value;
 			}

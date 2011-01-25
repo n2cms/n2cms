@@ -32,7 +32,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 
 		void Persister_ItemSaving(object sender, CancellableItemEventArgs e)
 		{
-			foreach (var cd in e.AffectedItem.Details.Values)
+			foreach (var cd in e.AffectedItem.Details)
 			{
 				if(cd.StringValue != null)
 				{
@@ -122,7 +122,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 		{
 			startPage.Title = imported.Title;
 			startPage.Name = imported.Name;
-			foreach (N2.Details.ContentDetail detail in imported.Details.Values)
+			foreach (N2.Details.ContentDetail detail in imported.Details)
 				startPage[detail.Name] = detail.Value;
 			factory.Persister.Save(startPage);
 		}

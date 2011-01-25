@@ -15,7 +15,7 @@ namespace N2.Tests.Content
 			item.IntProperty = 3;
 			Assert.AreEqual(1, item.Details.Count);
 			Assert.AreEqual(3, item.IntProperty);
-			Assert.AreEqual(3, item.Details.Get("IntProperty").Value);
+			Assert.AreEqual(3, item.Details["IntProperty"].Value);
 			Assert.AreEqual(3, item["IntProperty"]);
 		}
 
@@ -35,7 +35,7 @@ namespace N2.Tests.Content
 			item.StringProperty = "hello";
 			Assert.AreEqual(1, item.Details.Count);
 			Assert.AreEqual("hello", item.StringProperty);
-			Assert.AreEqual("hello", item.Details.Get("StringProperty").Value);
+			Assert.AreEqual("hello", item.Details["StringProperty"].Value);
 			Assert.AreEqual("hello", item["StringProperty"]);
 		}
 
@@ -606,7 +606,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", "hello");
 
-            Assert.That(item.Details.Get("ADetail"), Is.Not.Null);
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
         }
 
         [Test]
@@ -616,8 +616,8 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", "hello");
 
-			Assert.That(item.Details.Get("ADetail").ValueType, Is.EqualTo(typeof(string)));
-			Assert.That(item.Details.Get("ADetail").ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.StringType));
+			Assert.That(item.Details["ADetail"].ValueType, Is.EqualTo(typeof(string)));
+			Assert.That(item.Details["ADetail"].ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.StringType));
         }
 
         [Test]
@@ -627,7 +627,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", "hello");
 
-            Assert.That(item.Details.Get("ADetail").Value, Is.EqualTo("hello"));
+            Assert.That(item.Details["ADetail"].Value, Is.EqualTo("hello"));
         }
 
         [Test]
@@ -637,7 +637,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", "hello", "howdy");
 
-            Assert.That(item.Details.Get("ADetail"), Is.Not.Null);
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
         }
 
         [Test]
@@ -647,7 +647,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", "hello", "howdy");
 
-            Assert.That(item.Details.Get("ADetail").ValueType, Is.EqualTo(typeof(string)));
+            Assert.That(item.Details["ADetail"].ValueType, Is.EqualTo(typeof(string)));
         }
 
         [Test]
@@ -657,7 +657,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", "hello", "howdy");
 
-            Assert.That(item.Details.Get("ADetail").Value, Is.EqualTo("hello"));
+            Assert.That(item.Details["ADetail"].Value, Is.EqualTo("hello"));
         }
 
         [Test]
@@ -677,7 +677,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", false);
 
-            Assert.That(item.Details.Get("ADetail"), Is.Not.Null);
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
         }
 
         [Test]
@@ -687,8 +687,8 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", false);
 
-			Assert.That(item.Details.Get("ADetail").ValueType, Is.EqualTo(typeof(bool)));
-			Assert.That(item.Details.Get("ADetail").ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.BoolType));
+			Assert.That(item.Details["ADetail"].ValueType, Is.EqualTo(typeof(bool)));
+			Assert.That(item.Details["ADetail"].ValueTypeKey, Is.EqualTo(ContentDetail.TypeKeys.BoolType));
         }
 
         [Test]
@@ -698,7 +698,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", false, true);
 
-            Assert.That(item.Details.Get("ADetail"), Is.Not.Null);
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
         }
 
         [Test]
@@ -728,7 +728,7 @@ namespace N2.Tests.Content
 
             item.SetDetailAccessor("ADetail", false);
 
-            Assert.That(item.Details.Get("ADetail"), Is.Not.Null);
+            Assert.That(item.Details["ADetail"], Is.Not.Null);
         }
 
         [Serializable]

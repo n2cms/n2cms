@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
+using N2.Collections;
 
 namespace N2.Edit.Trash
 {
@@ -17,6 +18,6 @@ namespace N2.Edit.Trash
 		TrashPurgeInterval PurgeInterval { get; }
 
         /// <summary>Currently thrown items.</summary>
-		IList<ContentItem> Children { get; }
+		IPageableList<ContentItem> Children { get; }
 	}
 }

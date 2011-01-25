@@ -107,10 +107,10 @@ namespace N2.Persistence.Serialization
 
 		protected virtual void RemoveDetailReferences(ContentItem referenceToRemove, ContentItem item)
 		{
-			List<string> keys = new List<string>(item.Details.Keys());
+			List<string> keys = new List<string>(item.Details.Keys);
 			foreach (string key in keys)
 			{
-				ContentDetail detail = item.Details.Get(key);
+				ContentDetail detail = item.Details[key];
 				if (detail.ValueType == typeof(ContentItem))
 				{
 					if (detail.LinkedItem == referenceToRemove)

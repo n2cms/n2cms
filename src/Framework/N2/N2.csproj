@@ -162,6 +162,8 @@
     <Compile Include="CancellableItemEventArgs.cs" />
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\IPersister.cs" />
+    <Compile Include="Persistence\NH\DictionaryList.cs" />
+    <Compile Include="Persistence\NH\PageableList.cs" />
     <Compile Include="Persistence\PropertyPersistenceLocation.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />
     <Compile Include="Security\ISecurityManager.cs" />
