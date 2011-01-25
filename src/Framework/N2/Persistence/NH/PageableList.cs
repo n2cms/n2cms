@@ -49,16 +49,16 @@ namespace N2.Collections
 		//     The number of elements contained in the System.Collections.Generic.ICollection<T>.
 		new int Count { get; }
 
-		IEnumerable<T> GetRange(int skip, int take);
+		IList<T> GetRange(int skip, int take);
 	}
 
 	public class PageableList<T> : IPageableList<T> where T : class
 	{
 		private List<T> inner = new List<T>();
 
-		public IEnumerable<T> GetRange(int skip, int take)
+		public IList<T> GetRange(int skip, int take)
 		{
-			return inner.Skip(skip).Take(take);
+			return inner.Skip(skip).Take(take).ToList();
 		}
 
 		public int IndexOf(T item)
@@ -296,7 +296,7 @@ namespace N2.Persistence.NH
 
 		protected ISessionImplementor sessionImplementor = null;
 
-		public virtual IEnumerable<T> GetRange(int skip, int take)
+		public virtual IList<T> GetRange(int skip, int take)
 		{
 			if (!this.WasInitialized)
 			{
@@ -306,11 +306,12 @@ namespace N2.Persistence.NH
 					.SetMaxResults(take)
 					.SetCacheable(true);
 
-				return pagedList.Enumerable<T>();
+				return pagedList.List<T>();
 			}
 
 			return this.Skip(skip)
-				.Take(take);
+				.Take(take)
+				.ToList();
 		}
 
 		public new int Count

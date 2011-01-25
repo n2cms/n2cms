@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using N2.Tests.Persistence.Definitions;
 using NUnit.Framework;
 using System.Diagnostics;
@@ -388,6 +389,81 @@ namespace N2.Tests.Persistence.NH
 
 			Assert.That(child1.SortOrder, Is.GreaterThan(child2.SortOrder));
 			Assert.That(child2.SortOrder, Is.GreaterThan(child3.SortOrder));
+		}
+
+		[Test]
+		public void Uninitialized_Children_CanBePaged()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+
+				var first = item.Children.GetRange(0, 1);
+				var second = item.Children.GetRange(1, 1);
+				var third = item.Children.GetRange(2, 1);
+				var none = item.Children.GetRange(3, 1);
+				var beginning = item.Children.GetRange(0, 2);
+				var ending = item.Children.GetRange(2, 2);
+
+				Assert.That(first.Single(), Is.EqualTo(child1));
+				Assert.That(second.Single(), Is.EqualTo(child2));
+				Assert.That(third.Single(), Is.EqualTo(child3));
+				Assert.That(none.Any(), Is.False);
+				Assert.That(beginning.Count(), Is.EqualTo(2));
+				Assert.That(beginning.First(), Is.EqualTo(child1));
+				Assert.That(beginning.Last(), Is.EqualTo(child2));
+				Assert.That(ending.Count(), Is.EqualTo(1));
+				Assert.That(ending.First(), Is.EqualTo(child3));
+
+				Assert.That(item.Children.Count, Is.EqualTo(3));
+			}
+		}
+
+		[Test]
+		public void Initialized_Children_CanBePaged()
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+				var temp = item.Children[0]; // initilze
+
+				var first = item.Children.GetRange(0, 1);
+				var second = item.Children.GetRange(1, 1);
+				var third = item.Children.GetRange(2, 1);
+				var none = item.Children.GetRange(3, 1);
+				var beginning = item.Children.GetRange(0, 2);
+				var ending = item.Children.GetRange(2, 2);
+
+				Assert.That(first.Single(), Is.EqualTo(child1));
+				Assert.That(second.Single(), Is.EqualTo(child2));
+				Assert.That(third.Single(), Is.EqualTo(child3));
+				Assert.That(none.Any(), Is.False);
+				Assert.That(beginning.Count(), Is.EqualTo(2));
+				Assert.That(beginning.First(), Is.EqualTo(child1));
+				Assert.That(beginning.Last(), Is.EqualTo(child2));
+				Assert.That(ending.Count(), Is.EqualTo(1));
+				Assert.That(ending.First(), Is.EqualTo(child3));
+
+				Assert.That(item.Children.Count, Is.EqualTo(3));
+			}
 		}
 	}
 }
