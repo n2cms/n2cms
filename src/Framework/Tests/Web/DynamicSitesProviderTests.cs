@@ -18,7 +18,6 @@ namespace N2.Tests.Web
 	{
 		ContentItem rootItem;
 	    private IHost host;
-	    private HostSection config;
 	    private DynamicSitesProvider sitesProvider;
 
 		[SetUp]
@@ -30,10 +29,7 @@ namespace N2.Tests.Web
             host = new Host(new Fakes.FakeWebContextWrapper(), rootItem.ID, rootItem.ID);
 			mocks.ReplayAll();
 
-		    config = new HostSection {RootID = rootItem.ID, StartPageID = rootItem.ID};
-			var definitions = TestSupport.SetupDefinitions(typeof(SiteProvidingItem), typeof(PageItem));
-			var finder = new FakeItemFinder(definitions, () => base.repository.database.Values.OfType<SiteProvidingItem>().Cast<ContentItem>());
-			sitesProvider = new DynamicSitesProvider(persister, finder, definitions, host, config);
+			sitesProvider = new DynamicSitesProvider(new FakeDescendantItemFinder(), persister, host);
 		}
 
 		protected SiteProvidingItem CreateTheItemTree()

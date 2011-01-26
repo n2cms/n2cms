@@ -27,7 +27,8 @@ namespace N2.Engine.Globalization
 		int recursionDepth = 3;
     	readonly ISecurityManager security;
     	readonly IWebContext context;
-		StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
+		readonly StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache;
+		readonly DescendantItemFinder descendantFinder;
         bool enabled = true;
 
 		public LanguageGateway(
@@ -39,6 +40,7 @@ namespace N2.Engine.Globalization
 			ISecurityManager security,
 			IWebContext context,
 			StructureBoundDictionaryCache<int, LanguageInfo[]> languagesCache,
+			DescendantItemFinder descendantFinder,
 			EngineSection config)
 		{
 			this.persister = persister;
@@ -49,6 +51,7 @@ namespace N2.Engine.Globalization
 			this.security = security;
 			this.context = context;
 			this.languagesCache = languagesCache;
+			this.descendantFinder = descendantFinder;
 			Enabled = config.Globalization.Enabled;
 		}
 
@@ -107,7 +110,8 @@ namespace N2.Engine.Globalization
 		private LanguageInfo[] FindLanguagesRecursive(int rootNodeID)
 		{
 			List<LanguageInfo> languages = new List<LanguageInfo>();
-			foreach (ILanguage language in new RecursiveFinder().Find<ILanguage>(persister.Get(rootNodeID), RecursionDepth, typeof(ITrashCan)))
+			foreach (ILanguage language in descendantFinder.Find<ILanguage>(persister.Get(rootNodeID)))
+				//new RecursiveFinder().Find<ILanguage>(persister.Get(rootNodeID), RecursionDepth, typeof(ITrashCan)))
 			{
 				if (!string.IsNullOrEmpty(language.LanguageCode))
 				{
