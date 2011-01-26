@@ -1,6 +1,10 @@
 ﻿2.2
 - Refactored definition manager to allow multiple definition providers
 - Added support for dependency on multiple services
+- Added support for retrieving paging children collection
+- Fixed LINQ support
+- Added support for retrieving only items in zone by child collection
+- Added support for retrieving item by name in child collection
 
 2.1.2
 - Query for languages rather than recursively iterate to fix slowness (#30025)

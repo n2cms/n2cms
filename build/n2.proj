@@ -100,7 +100,7 @@
 	<Target Name="Test" DependsOnTargets="Framework-Build">
 		<ItemGroup>
 			<AssembliesToTest Include="$(SrcFolder)\Framework\Tests\bin\$(Configuration)\*.Tests.dll;"/>
-			<AssembliesToTest Include="$(SrcFolder)\Framework\Edit.Tests\bin\$(Configuration)\N2.Edit.Tests.dll;"/>
+			<AssembliesToTest Include="$(SrcFolder)\Framework\Management.Tests\bin\$(Configuration)\N2.Management.Tests.dll;"/>
 			<AssembliesToTest Include="$(SrcFolder)\Framework\Extensions.Tests\bin\$(Configuration)\N2.Extensions.Tests.dll;"/>
 			<AssembliesToTest Include="$(SrcFolder)\Mvc\MvcTemplates.Tests\bin\$(Configuration)\N2.Templates.Mvc.Tests.dll;"/>
 			<AssembliesToTest Include="$(SrcFolder)\WebForms\WebFormsTemplates.Tests\bin\$(Configuration)\N2.Templates.Tests.dll;"/>

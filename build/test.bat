@@ -1,0 +1,1 @@
+build /t:test & pause

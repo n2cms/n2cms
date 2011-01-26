@@ -8,8 +8,8 @@
     <ProjectGuid>{A2CD1737-E43B-4A1B-B5CD-0467FEBC514D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>N2.Edit.Tests</RootNamespace>
-    <AssemblyName>N2.Edit.Tests</AssemblyName>
+    <RootNamespace>N2.Management.Tests</RootNamespace>
+    <AssemblyName>N2.Management.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
