@@ -391,8 +391,9 @@ namespace N2.Tests.Persistence.NH
 			Assert.That(child2.SortOrder, Is.GreaterThan(child3.SortOrder));
 		}
 
-		[Test]
-		public void Uninitialized_Children_CanBePaged()
+		[TestCase(true)]
+		[TestCase(false)]
+		public void Children_CanBePaged(bool forceInitialize)
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
 			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
@@ -407,12 +408,17 @@ namespace N2.Tests.Persistence.NH
 			{
 				item = persister.Get(item.ID);
 
-				var first = item.Children.GetRange(0, 1);
-				var second = item.Children.GetRange(1, 1);
-				var third = item.Children.GetRange(2, 1);
-				var none = item.Children.GetRange(3, 1);
-				var beginning = item.Children.GetRange(0, 2);
-				var ending = item.Children.GetRange(2, 2);
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initilze
+				}
+
+				var first = item.Children.FindRange(0, 1);
+				var second = item.Children.FindRange(1, 1);
+				var third = item.Children.FindRange(2, 1);
+				var none = item.Children.FindRange(3, 1);
+				var beginning = item.Children.FindRange(0, 2);
+				var ending = item.Children.FindRange(2, 2);
 
 				Assert.That(first.Single(), Is.EqualTo(child1));
 				Assert.That(second.Single(), Is.EqualTo(child2));
@@ -428,10 +434,49 @@ namespace N2.Tests.Persistence.NH
 			}
 		}
 
-		[Test]
-		public void Initialized_Children_CanBePaged()
+		[TestCase(true)]
+		[TestCase(false)]
+		public void Children_CanBe_FoundByZone(bool forceInitialize)
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			child1.ZoneName = "First";
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			child2.ZoneName = "Second";
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initilze
+				}
+
+				var nozone = item.Children.FindByZone(null);
+				var emptyzone = item.Children.FindByZone("");
+				var first = item.Children.FindByZone("First");
+				var second = item.Children.FindByZone("Second");
+				var third = item.Children.FindByZone("Third");
+
+				Assert.That(nozone.Single(), Is.EqualTo(child3));
+				Assert.That(emptyzone.Count, Is.EqualTo(0));
+				Assert.That(first.Single(), Is.EqualTo(child1));
+				Assert.That(second.Single(), Is.EqualTo(child2));
+				Assert.That(third.Count, Is.EqualTo(0));
+			}
+		}
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void Children_CanBe_FoundByName(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
 			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
 			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
 			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
@@ -443,26 +488,25 @@ namespace N2.Tests.Persistence.NH
 			using (persister)
 			{
 				item = persister.Get(item.ID);
-				var temp = item.Children[0]; // initilze
 
-				var first = item.Children.GetRange(0, 1);
-				var second = item.Children.GetRange(1, 1);
-				var third = item.Children.GetRange(2, 1);
-				var none = item.Children.GetRange(3, 1);
-				var beginning = item.Children.GetRange(0, 2);
-				var ending = item.Children.GetRange(2, 2);
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initilze
+				}
 
-				Assert.That(first.Single(), Is.EqualTo(child1));
-				Assert.That(second.Single(), Is.EqualTo(child2));
-				Assert.That(third.Single(), Is.EqualTo(child3));
-				Assert.That(none.Any(), Is.False);
-				Assert.That(beginning.Count(), Is.EqualTo(2));
-				Assert.That(beginning.First(), Is.EqualTo(child1));
-				Assert.That(beginning.Last(), Is.EqualTo(child2));
-				Assert.That(ending.Count(), Is.EqualTo(1));
-				Assert.That(ending.First(), Is.EqualTo(child3));
-
-				Assert.That(item.Children.Count, Is.EqualTo(3));
+				var nullname = item.Children.FindByName(null);
+				var emptyname = item.Children.FindByName("");
+				var rootname = item.Children.FindByName("root");
+				var first = item.Children.FindByName("one");
+				var second = item.Children.FindByName("two");
+				var third = item.Children.FindByName("three");
+				
+				Assert.That(nullname, Is.Null);
+				Assert.That(emptyname, Is.Null);
+				Assert.That(rootname, Is.Null);
+				Assert.That(first, Is.EqualTo(child1));
+				Assert.That(second, Is.EqualTo(child2));
+				Assert.That(third, Is.EqualTo(child3));
 			}
 		}
 	}

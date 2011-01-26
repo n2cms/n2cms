@@ -432,5 +432,5 @@ namespace N2.Details
 			if (EnclosingCollection != null)
 				EnclosingCollection.Remove(this);
 		}
-    }
+	}
 }

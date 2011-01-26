@@ -20,6 +20,7 @@
 
 #endregion
 
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.UI;
@@ -30,28 +31,19 @@ namespace N2.Collections
 	/// A generic item list.
 	/// </summary>
 	/// <typeparam name="T">The type of item to list.</typeparam>
-	public class ItemList<T> : IList<T>, IHierarchicalEnumerable where T : ContentItem
+	public class ItemList<T> : ContentList<T>, IContentItemList<T>, IEnumerable<T>, IHierarchicalEnumerable where T : ContentItem
 	{
-		IList<T> inner;
-
         #region Constructors
 
         /// <summary>Initializes an empty instance of the ItemList class.</summary>
         public ItemList()
         {
-			inner = new List<T>();
-		}
-
-		/// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
-		public ItemList(IList<T> items)
-		{
-			inner = items ?? new List<T>();
 		}
 
         /// <summary>Initializes an instance of the ItemList class with the supplied items.</summary>
         public ItemList(IEnumerable<T> items)
         {
-			inner = new List<T>(items);
+			Inner = new List<T>(items);
         }
 
 		/// <summary>Initializes an instance of the ItemList class adding the items matching the supplied filter.</summary>
@@ -110,18 +102,18 @@ namespace N2.Collections
 		/// <summary>Sorts the elements in the entire list using the default comparer.</summary>
 		public void Sort()
 		{
-			List<T> copy = new List<T>(inner);
+			List<T> copy = new List<T>(Inner);
 			copy.Sort();
-			inner = copy;
+			Inner = copy;
 		}
 
 		/// <summary>Sorts the elements in the entire list using the specified comparer.</summary>
 		/// <param name="comparer">The comparer to use.</param>
 		public void Sort(IComparer<T> comparer)
 		{
-			List<T> copy = new List<T>(inner);
+			List<T> copy = new List<T>(Inner);
 			copy.Sort(comparer);
-			inner = copy;
+			Inner = copy;
 		}
 
 		/// <summary>Sorts the elements in the entire list using the specified expression.</summary>
@@ -207,84 +199,11 @@ namespace N2.Collections
 
 		#endregion
 
-		#region IList<T> Members
+		#region IZonedList<T> Members
 
-		public int IndexOf(T item)
+		public IList<T> FindByZone(string zoneName)
 		{
-			return inner.IndexOf(item);
-		}
-
-		public void Insert(int index, T item)
-		{
-			inner.Insert(index, item);
-		}
-
-		public void RemoveAt(int index)
-		{
-			inner.RemoveAt(index);
-		}
-
-		public T this[int index]
-		{
-			get { return inner[index]; }
-			set { inner[index] = value; }
-		}
-
-		#endregion
-
-		#region ICollection<T> Members
-
-		public void Add(T item)
-		{
-			inner.Add(item);
-		}
-
-		public void Clear()
-		{
-			inner.Clear();
-		}
-
-		public bool Contains(T item)
-		{
-			return inner.Contains(item);
-		}
-
-		public void CopyTo(T[] array, int arrayIndex)
-		{
-			inner.CopyTo(array, arrayIndex);
-		}
-
-		public int Count
-		{
-			get { return inner.Count; }
-		}
-
-		public bool IsReadOnly
-		{
-			get { return inner.IsReadOnly; }
-		}
-
-		public bool Remove(T item)
-		{
-			return inner.Remove(item);
-		}
-
-		#endregion
-
-		#region IEnumerable<T> Members
-
-		public IEnumerator<T> GetEnumerator()
-		{
-			return inner.GetEnumerator();
-		}
-
-		#endregion
-
-		#region IEnumerable Members
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return inner.GetEnumerator();
+			return Inner.Where(i => i.ZoneName == zoneName).ToList();
 		}
 
 		#endregion

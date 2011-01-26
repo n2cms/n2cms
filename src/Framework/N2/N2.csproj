@@ -115,12 +115,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\AccessFilter.cs" />
+    <Compile Include="Collections\ContentListOfT.cs" />
     <Compile Include="Collections\CountFilter.cs" />
+    <Compile Include="Collections\IContentItemListOfT.cs" />
+    <Compile Include="Collections\IContentListOfT.cs" />
+    <Compile Include="Collections\INameable.cs" />
+    <Compile Include="Collections\INamedListOfT.cs" />
+    <Compile Include="Collections\IPageableListOfT.cs" />
     <Compile Include="Collections\ItemComparer.generic.cs" />
     <Compile Include="Collections\ItemFilter.cs" />
     <Compile Include="Collections\ItemCollectionEventArgs.cs" />
     <Compile Include="Collections\ItemList.cs" />
     <Compile Include="Collections\ItemList.generic.cs" />
+    <Compile Include="Collections\IZoneable.cs" />
+    <Compile Include="Collections\IZonedListOfT.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
@@ -162,8 +170,10 @@
     <Compile Include="CancellableItemEventArgs.cs" />
     <Compile Include="DestinationEventArgs.cs" />
     <Compile Include="Persistence\IPersister.cs" />
-    <Compile Include="Persistence\NH\DictionaryList.cs" />
-    <Compile Include="Persistence\NH\PageableList.cs" />
+    <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
+    <Compile Include="Persistence\NH\ContentListFactoryOfT.cs" />
+    <Compile Include="Persistence\NH\PersistentContentItemListOfT.cs" />
+    <Compile Include="Persistence\NH\PersistentContentListOfT.cs" />
     <Compile Include="Persistence\PropertyPersistenceLocation.cs" />
     <Compile Include="Security\AuthorizedRole.cs" />
     <Compile Include="Security\ISecurityManager.cs" />

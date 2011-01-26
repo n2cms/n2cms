@@ -13,9 +13,9 @@
 	</class>
 
 
-	<!-- ContentDetail: Boolean-, Integer-, Link-, Double-, DateTime-, String-, Object-Detail -->
+	<!-- ContentDetail -->
 	<class name="N2.Details.ContentDetail,N2" table="{TablePrefix}Detail">
-		<cache usage="read-write" />
+		<cache usage="nonstrict-read-write" />
 
 		<id name="ID" column="ID" type="Int32" unsaved-value="0">
 			<generator class="native"/>
@@ -39,7 +39,7 @@
 
 	<!-- ContentItem -->
 	<class name="N2.ContentItem,N2" table="{TablePrefix}Item">
-		<cache usage="read-write" />
+		<cache usage="nonstrict-read-write" />
 
 		<id name="ID" column="ID" type="Int32" unsaved-value="0" access="property">
 			<generator class="native" />
@@ -66,26 +66,26 @@
 		<many-to-one name="VersionOf"	column="VersionOfID"	class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select"/>
 		<many-to-one name="Parent"		column="ParentID"		class="N2.ContentItem,N2" not-null="false" lazy="proxy" fetch="select" />
 
-		<bag name="Children" inverse="true" collection-type="N2.Persistence.NH.PageableListFactory`1[N2.ContentItem, N2], N2" cascade="all" generic="true" order-by="SortOrder" lazy="{ChildrenLaziness}" batch-size="{BatchSize}">
-			<cache usage="read-write" />
+		<bag name="Children" inverse="true" collection-type="N2.Persistence.NH.ContentItemListFactory`1[N2.ContentItem, N2], N2" cascade="all" generic="true" order-by="SortOrder" lazy="{ChildrenLaziness}" batch-size="{BatchSize}">
+			<cache usage="nonstrict-read-write" />
 			<key column="ParentID" />
 			<one-to-many class="N2.ContentItem,N2"/>
 		</bag>
 
-		<bag name="Details" inverse="true" collection-type="N2.Persistence.NH.DictionaryListFactory`1[N2.Details.ContentDetail, N2], N2" cascade="all-delete-orphan" generic="true" where="DetailCollectionID IS NULL" lazy="true" batch-size="{BatchSize}">
-			<cache usage="read-write" />
+		<bag name="Details" inverse="true" collection-type="N2.Persistence.NH.ContentListFactory`1[N2.Details.ContentDetail, N2], N2" cascade="all-delete-orphan" generic="true" where="DetailCollectionID IS NULL" lazy="true" batch-size="{BatchSize}">
+			<cache usage="nonstrict-read-write" />
 			<key column="ItemID" />
 			<one-to-many class="N2.Details.ContentDetail, N2"/>
 		</bag>
 
-		<bag name="DetailCollections" collection-type="N2.Persistence.NH.DictionaryListFactory`1[N2.Details.DetailCollection, N2], N2" inverse="true" cascade="all-delete-orphan" generic="true" lazy="true">
-			<cache usage="read-write" />
+		<bag name="DetailCollections" inverse="true" collection-type="N2.Persistence.NH.ContentListFactory`1[N2.Details.DetailCollection, N2], N2" cascade="all-delete-orphan" generic="true" lazy="true">
+			<cache usage="nonstrict-read-write" />
 			<key column="ItemID" />
 			<one-to-many class="N2.Details.DetailCollection, N2"/>
 		</bag>
 
 		<bag name="AuthorizedRoles" inverse="true" cascade="all-delete-orphan" generic="true" lazy="true" batch-size="{BatchSize}">
-			<cache usage="read-write" />
+			<cache usage="nonstrict-read-write" />
 			<key column="ItemID"/>
 			<one-to-many class="N2.Security.AuthorizedRole, N2"/>
 		</bag>
@@ -94,7 +94,7 @@
 
 	<!-- DetailCollection -->
 	<class name="N2.Details.DetailCollection,N2" table="{TablePrefix}DetailCollection">
-		<cache usage="read-write" />
+		<cache usage="nonstrict-read-write" />
 
 		<id name="ID" column="ID" type="Int32" unsaved-value="0">
 			<generator class="native"/>
@@ -103,7 +103,7 @@
 		<many-to-one name="EnclosingItem" column="ItemID" class="N2.ContentItem,N2" />
 		<property name="Name"			type="String" not-null="true" length="50" />
 
-		<bag name="Details" generic="true" lazy="false" cascade="all-delete-orphan" inverse="true">
+		<bag name="Details" inverse="true" generic="true" lazy="false" cascade="all-delete-orphan">
 			<cache usage="nonstrict-read-write"/>
 			<key column="DetailCollectionID" />
 			<one-to-many class="N2.Details.ContentDetail,N2"/>

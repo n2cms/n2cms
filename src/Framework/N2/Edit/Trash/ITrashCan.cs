@@ -18,6 +18,6 @@ namespace N2.Edit.Trash
 		TrashPurgeInterval PurgeInterval { get; }
 
         /// <summary>Currently thrown items.</summary>
-		IPageableList<ContentItem> Children { get; }
+		IContentItemList<ContentItem> Children { get; }
 	}
 }

@@ -68,7 +68,8 @@ namespace N2
 		INode, 
 		IUpdatable<ContentItem>, 
 		IInterceptableType,
-		INameable
+		INameable,
+		IZoneable
     {
         #region Private Fields
         private int id;
@@ -86,9 +87,9 @@ namespace N2
 		private ContentItem versionOf = null;
 		private string savedBy;
 		private IList<Security.AuthorizedRole> authorizedRoles = null;
-		private IPageableList<ContentItem> children = new PageableList<ContentItem>();
-		private IDictionaryList<ContentDetail> details = new DictionaryList<ContentDetail>();
-		private IDictionaryList<DetailCollection> detailCollections = new DictionaryList<DetailCollection>();
+		private IContentItemList<ContentItem> children = new ItemList<ContentItem>();
+		private IContentList<ContentDetail> details = new ContentList<ContentDetail>();
+		private IContentList<DetailCollection> detailCollections = new ContentList<DetailCollection>();
 		[NonSerialized]
 		private Web.IUrlParser urlParser;
     	private string ancestralTrail;
@@ -221,21 +222,21 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the details collection. These are usually accessed using the e.g. item["Detailname"]. This is a place to store content data.</summary>
-		public virtual IDictionaryList<ContentDetail> Details
+		public virtual IContentList<ContentDetail> Details
 		{
 			get { return details; }
 			set { details = value; }
 		}
 
 		/// <summary>Gets or sets the details collection collection. These are details grouped into a collection.</summary>
-		public virtual IDictionaryList<Details.DetailCollection> DetailCollections
+		public virtual IContentList<DetailCollection> DetailCollections
 		{
 			get { return detailCollections; }
 			set { detailCollections = value; }
 		}
 
 		/// <summary>Gets or sets all a collection of child items of this item ignoring permissions. If you want the children the current user has permission to use <see cref="GetChildren()"/> instead.</summary>
-		public virtual IPageableList<ContentItem> Children
+		public virtual IContentItemList<ContentItem> Children
 		{
 			get { return children; }
 			set { children = value; }
@@ -705,9 +706,9 @@ namespace N2
 			destination.ancestralTrail = null;
 			destination.hashCode = null;
 			destination.authorizedRoles = new List<Security.AuthorizedRole>();
-			destination.children = new PageableList<ContentItem>();
-			destination.details = new DictionaryList<ContentDetail>();
-			destination.detailCollections = new DictionaryList<DetailCollection>();
+			destination.children = new ItemList<ContentItem>();
+			destination.details = new ContentList<ContentDetail>();
+			destination.detailCollections = new ContentList<DetailCollection>();
 		}
 
 		static void CloneAuthorizedRoles(ContentItem source, ContentItem destination)
