@@ -47,7 +47,7 @@ namespace N2.Web
 			welcomeUrl = editConfig.Installer.WelcomeUrl;
 			managementUrl = editConfig.ManagementInterfaceUrl;
 			rewriteMethod = hostConfig.Web.Rewrite;
-			isLegacyRewriteMode = rewriteMethod == RewriteMethod.BeginRequest || rewriteMethod == RewriteMethod.TransferRequest;
+			isLegacyRewriteMode = rewriteMethod == RewriteMethod.BeginRequest;
 			this.webContext = webContext;
 			this.broker = broker;
 			this.adapters = adapters;

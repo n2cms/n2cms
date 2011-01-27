@@ -44,8 +44,6 @@ namespace N2.Web
 
 			if(rewriteMethod == RewriteMethod.BeginRequest || rewriteMethod == RewriteMethod.SurroundMapRequestHandler)
 				WebContext.RewritePath(templateUrl);
-			else if(rewriteMethod == RewriteMethod.TransferRequest)
-				WebContext.TransferRequest(templateUrl);
 		}
 
         /// <summary>Gets the path to the handler (aspx template) to rewrite to.</summary>

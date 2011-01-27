@@ -245,7 +245,7 @@ namespace N2.Engine.Globalization
         protected void EnsureNoLanguageRoots(IEnumerable<ContentItem> items)
         {
             foreach (ContentItem item in items)
-                if (item == GetLanguage(item))
+                if (object.ReferenceEquals(item, GetLanguage(item)))
                     throw new N2Exception("Cannot associate " + item.Name + " #" + item.ID + " since it's a language root.");
         }
 

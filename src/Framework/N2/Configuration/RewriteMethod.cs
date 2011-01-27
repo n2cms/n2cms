@@ -9,14 +9,6 @@ namespace N2.Configuration
     /// </summary>
     public enum RewriteMethod
     {
-        /// <summary>Use HttpContext.RewriteRequest.</summary>
-		[Obsolete("Use RewriteMethod.BeginRequest")]
-		RewriteRequest = 1,
-
-        /// <summary>Use HttpServerUtility.TransferRequest.</summary>
-        [Obsolete("Don't use")]
-		TransferRequest = 3,
-        
 		/// <summary>Do not rewrite the request. Someone else should pick it up and do something about it.</summary>
         None = 0,
 

@@ -107,10 +107,18 @@ namespace N2.Definitions
 		public void Start()
 		{
 			activator.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()).Select(d => d.ItemType));
+			activator.ItemCreated += new EventHandler<ItemEventArgs>(activator_ItemCreated);
+		}
+
+		void activator_ItemCreated(object sender, ItemEventArgs e)
+		{
+			if (ItemCreated != null)
+				ItemCreated(this, e);
 		}
 
 		public void Stop()
 		{
+			activator.ItemCreated -= new EventHandler<ItemEventArgs>(activator_ItemCreated);
 		}
 
 		#endregion
