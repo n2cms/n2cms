@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web;
 using N2.Definitions;
+using N2.Persistence;
 
 namespace N2.Web.UI
 {
@@ -81,16 +82,17 @@ namespace N2.Web.UI
 			if (e.AffectedItem != null)
 			{
 				IDefinitionManager definitions = Engine.Definitions;
+				ContentActivator activator = Engine.Resolve<ContentActivator>();
 				ItemDefinition parentDefinition = definitions.GetDefinition(parentItem.GetContentType());
 
-				if (parentDefinition.IsChildAllowed(parentDefinition))
+				if (parentDefinition.IsChildAllowed(definitions, parentDefinition))
 				{
-					e.AffectedItem = Engine.Definitions.CreateInstance(parentItem.GetContentType(), parentItem);
+					e.AffectedItem = Engine.Resolve<ContentActivator>().CreateInstance(parentItem.GetContentType(), parentItem);
 					return;
 				}
-				foreach (ItemDefinition definition in definitions.GetAllowedChildren(parentDefinition, null, HttpContext.Current.User))
+				foreach (ItemDefinition definition in definitions.GetAllowedChildren(parentItem, null, HttpContext.Current.User))
 				{
-					e.AffectedItem = definitions.CreateInstance(definition.ItemType, parentItem);
+					e.AffectedItem = activator.CreateInstance(definition.ItemType, parentItem);
 					return;
 				}
 				throw new N2.Definitions.NoItemAllowedException(parentItem);

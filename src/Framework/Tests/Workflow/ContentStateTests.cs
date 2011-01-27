@@ -23,8 +23,8 @@ namespace N2.Tests.Workflow
 {
     [TestFixture]
     public class ContentStateTests : PersistenceAwareBase
-    {
-        IDefinitionManager definitions;
+	{
+		ContentActivator activator;
         IEditManager editManager;
         IVersionManager versionManager;
         IPersister persister;
@@ -39,7 +39,7 @@ namespace N2.Tests.Workflow
             base.SetUp();
 
             persister = engine.Resolve<IPersister>();
-            definitions = engine.Resolve<IDefinitionManager>();
+			activator = engine.Resolve<ContentActivator>();
             editManager = engine.Resolve<IEditManager>();
             versionManager = engine.Resolve<IVersionManager>();
 
@@ -52,7 +52,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void CreateInstance_Generic_SetsItemState_New()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
 
             Assert.That(item.State, Is.EqualTo(ContentState.New));
         }
@@ -60,7 +60,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void CreateInstance_TypeParameter_SetsItemState_New()
         {
-            var item = definitions.CreateInstance(typeof(StatefulItem), null);
+			var item = activator.CreateInstance(typeof(StatefulItem), null);
 
             Assert.That(item.State, Is.EqualTo(ContentState.New));
         }
@@ -70,7 +70,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void VersionAndSave_SetsItemStateTo_Published()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             
             editManager.Save(item, editors, ItemEditorVersioningMode.VersionAndSave, admin);
 
@@ -80,7 +80,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void SaveOnly_SetsItemStateTo_Published()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
 
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
 
@@ -90,7 +90,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void SaveOnly_OnVersion_SetsItemStateTo_Draft()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             persister.Save(item);
             var version = versionManager.SaveVersion(item);
 
@@ -102,7 +102,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void SaveVersion_OnPublishedItem_SetsVersionedItemStateTo_Unpublished()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
             var version = versionManager.SaveVersion(item);
 
@@ -112,7 +112,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void SaveVersion_OnDraft_SetsVersionedItemStateTo_Unpublished()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             persister.Save(item);
             var version = versionManager.SaveVersion(item);
 
@@ -122,7 +122,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void SaveAsMaster_SetsItemState_Published()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             persister.Save(item);
             var version = versionManager.SaveVersion(item);
 
@@ -134,7 +134,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void VersionOnly_SetsVersionedItemStateTo_Draft()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             persister.Save(item);
             
             var result = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
@@ -145,7 +145,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void VersionOnly_DoesntAffect_MasterVersionState()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
             var version = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
 
@@ -155,7 +155,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void VersionOnly_DoesntAffect_MasterVersionIndex()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
             int initialIndex = item.VersionIndex;
             var version = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
@@ -166,7 +166,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void VersionOnly_SavedItem_IncrementsVersionIndex()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
             editors["Title"] = new TextBox { Text = "New title 2" };
             var version = editManager.Save(item, editors, ItemEditorVersioningMode.VersionOnly, admin);
@@ -177,7 +177,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void Publish_DoesntAffect_OldVersionsIndex()
         {
-            var item = definitions.CreateInstance<StatefulItem>(null);
+			var item = activator.CreateInstance<StatefulItem>(null);
             editManager.Save(item, editors, ItemEditorVersioningMode.SaveOnly, admin);
             int initialIndex = item.VersionIndex;
             editors["Title"] = new TextBox { Text = "New title 2" };

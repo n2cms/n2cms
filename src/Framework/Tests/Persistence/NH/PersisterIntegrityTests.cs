@@ -26,7 +26,7 @@ namespace N2.Tests.Persistence.NH
 			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
 
 			IntegrityManager integrity = new IntegrityManager(definitions, finder, parser);
-			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity, definitions);
+			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrity, activator);
 			enforcer.Start();
 		}
 

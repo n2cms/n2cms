@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web;
 using N2.Edit;
+using N2.Definitions;
 
 namespace N2.Edit.Workflow
 {
     public class CommandContext
     {
-        public CommandContext(ContentItem data, string userInterface, IPrincipal user)
-			: this(data, userInterface, user, new NullBinder<CommandContext>(), new NullValidator<CommandContext>())
+        public CommandContext(ItemDefinition definition, ContentItem content, string userInterface, IPrincipal user)
+			: this(definition, content, userInterface, user, new NullBinder<CommandContext>(), new NullValidator<CommandContext>())
         {
         }
 
-		public CommandContext(ContentItem data, string userInterface, IPrincipal user, IBinder<CommandContext> binder, IValidator<CommandContext> validator)
+		public CommandContext(ItemDefinition definition, ContentItem content, string userInterface, IPrincipal user, IBinder<CommandContext> binder, IValidator<CommandContext> validator)
         {
-            Content = data;
+            Content = content;
             Interface = userInterface;
             User = user;
             Binder = binder;
@@ -25,7 +26,8 @@ namespace N2.Edit.Workflow
 			Parameters = new Dictionary<string, object>();
         }
 
-        public ContentItem Content { get; set; }
+		public ContentItem Content { get; set; }
+		public ItemDefinition Definition { get; set; }
         public string Interface { get; set; }
         public IPrincipal User { get; set; }
 
@@ -46,6 +48,6 @@ namespace N2.Edit.Workflow
 			get { return Parameters.ContainsKey(key) ? Parameters[key] : null; }
 			set { Parameters[key] = value; }
 		}
-    }
+	}
 
 }

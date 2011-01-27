@@ -10,6 +10,7 @@ using N2.Security;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 using N2.Definitions;
+using N2.Persistence;
 
 namespace N2.Tests.Security
 {
@@ -41,7 +42,7 @@ namespace N2.Tests.Security
 
 			EditSection editSection = new EditSection();
 			security = new SecurityManager(context, editSection);
-			enforcer = new SecurityEnforcer(persister, security, MockRepository.GenerateStub<IDefinitionManager>(), parser, context);
+			enforcer = new SecurityEnforcer(persister, security, new ContentActivator(null, null, null), parser, context);
 			enforcer.Start();
 		}
 

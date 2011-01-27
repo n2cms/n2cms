@@ -17,6 +17,7 @@ namespace N2.Tests.Persistence.NH
 {
 	public abstract class PersisterTestsBase : ItemTestsBase
 	{
+		protected ContentActivator activator;
 		protected IDefinitionManager definitions;
 		protected ContentPersister persister;
 		protected FakeSessionProvider sessionProvider;
@@ -29,7 +30,7 @@ namespace N2.Tests.Persistence.NH
 		[TestFixtureSetUp]
 		public virtual void TestFixtureSetup()
 		{
-			TestSupport.Setup(out definitions, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, persistedTypes);
+			TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, persistedTypes);
 		}
 
 		[SetUp]

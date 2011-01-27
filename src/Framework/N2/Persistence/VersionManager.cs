@@ -5,6 +5,7 @@ using N2.Persistence.Finder;
 using N2.Edit.Workflow;
 using N2.Engine;
 using N2.Definitions;
+using N2.Collections;
 
 namespace N2.Persistence
 {
@@ -148,6 +149,9 @@ namespace N2.Persistence
 		/// <returns>A list of versions of the item.</returns>
 		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem)
 		{
+			if (publishedItem.ID == 0)
+				return new ItemList { publishedItem };
+
 			return GetVersionsQuery(publishedItem)
 				.Select();
 		}
@@ -158,6 +162,9 @@ namespace N2.Persistence
 		/// <returns>A list of versions of the item.</returns>
 		public virtual IList<ContentItem> GetVersionsOf(ContentItem publishedItem, int count)
 		{
+			if (publishedItem.ID == 0)
+				return new ItemList { publishedItem };
+
 			return GetVersionsQuery(publishedItem)
 				.MaxResults(count)
 				.Select();

@@ -59,7 +59,6 @@ namespace N2
     /// </remarks>
 	[Serializable, DebuggerDisplay("{GetType().Name}: {Name}#{ID}")]
 	[DynamicTemplate]
-	[RestrictParents(typeof(ContentItem))]
 	[SortChildren(SortBy.CurrentOrder)]
 	public abstract class ContentItem : IComparable, 
 		IComparable<ContentItem>, 

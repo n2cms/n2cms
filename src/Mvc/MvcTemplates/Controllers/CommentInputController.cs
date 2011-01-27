@@ -4,6 +4,7 @@ using N2.Edit;
 using N2.Templates.Mvc.Models.Parts;
 using N2.Templates.Mvc.Models;
 using N2.Web;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Controllers
 {
@@ -25,7 +26,7 @@ namespace N2.Templates.Mvc.Controllers
 			var list = CurrentPage.GetChild("Comments") as CommentList;
 			if (list == null)
 			{
-				list = Engine.Definitions.CreateInstance<CommentList>(CurrentPage);
+				list = Engine.Resolve<ContentActivator>().CreateInstance<CommentList>(CurrentPage);
 				list.Title = "Comments";
 				list.Name = "Comments";
 				list.ZoneName = Zones.Content;
@@ -35,7 +36,7 @@ namespace N2.Templates.Mvc.Controllers
 				}
 				Engine.Persister.Save(list);
 			}
-			Comment comment = Engine.Definitions.CreateInstance<Comment>(list);
+			Comment comment = Engine.Resolve<ContentActivator>().CreateInstance<Comment>(list);
 			comment.Title = Server.HtmlEncode(model.Title);
 			comment.AuthorName = Server.HtmlEncode(model.Name);
 			comment.Email = Server.HtmlEncode(model.Email);

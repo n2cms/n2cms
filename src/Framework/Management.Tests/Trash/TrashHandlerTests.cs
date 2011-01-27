@@ -23,7 +23,7 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void ThrownItem_IsMoved_ToTrashcan()
         {
-            IDefinitionManager definitions = mocks.StrictMock<IDefinitionManager>();
+			var activator = new ContentActivator(null, null, null);
 
             IPersister persister = mocks.StrictMock<IPersister>();
             Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
@@ -31,7 +31,7 @@ namespace N2.Edit.Tests.Trash
 		    
             mocks.ReplayAll();
 
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, definitions)) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator)) { UseNavigationMode = true };
             th.Throw(item);
 
             Assert.AreEqual(trash, item.Parent);
@@ -138,7 +138,7 @@ namespace N2.Edit.Tests.Trash
         [Test]
         public void ThrashHandler_Throw_WillInvokeEvents()
         {
-            var definitions = mocks.Stub<IDefinitionManager>();
+			var activator = new ContentActivator(null, null, null);
 
             IPersister persister = mocks.StrictMock<IPersister>();
             Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
@@ -147,7 +147,7 @@ namespace N2.Edit.Tests.Trash
             mocks.ReplayAll();
 
 			var host = new Host(webContext, 1, 1);
-			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, definitions)) { UseNavigationMode = true };
+			TrashHandler th = new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator)) { UseNavigationMode = true };
 
             bool throwingWasInvoked = false;
             bool throwedWasInvoked = false;
@@ -185,7 +185,7 @@ namespace N2.Edit.Tests.Trash
 
         private TrashHandler CreateTrashHandler()
         {
-            IDefinitionManager definitions = MockDefinitions();
+			ContentActivator activator = new ContentActivator(null, null, null);
             IPersister persister = MockPersister(root, trash, item);
             Expect.Call(delegate { persister.Move(null, null); }).IgnoreArguments()
                 .Do(new System.Action<ContentItem, ContentItem>(delegate(ContentItem source, ContentItem destination)
@@ -195,7 +195,7 @@ namespace N2.Edit.Tests.Trash
 			
             mocks.ReplayAll();
 
-			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, definitions)) { UseNavigationMode = true };
+			return new TrashHandler(persister, null, null, new ContainerRepository<TrashContainerItem>(persister, null, host, activator)) { UseNavigationMode = true };
         }
 
         private IPersister MockPersister(ContentItem root, ContentItem trash, ContentItem item)
@@ -204,11 +204,6 @@ namespace N2.Edit.Tests.Trash
             Expect.Call(persister.Get(1)).Return(root).Repeat.Any();
             Expect.Call(delegate { persister.Save(item); }).Repeat.Any();
             return persister;
-        }
-
-        private IDefinitionManager MockDefinitions()
-        {
-            return mocks.StrictMock<IDefinitionManager>();
         }
 
         #endregion

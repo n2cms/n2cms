@@ -19,6 +19,7 @@ using N2.Installation;
 using N2.Web;
 using N2.Engine;
 using N2.Edit.Installation;
+using System.Collections.Generic;
 
 namespace N2.Edit.Install
 {
@@ -243,6 +244,13 @@ namespace N2.Edit.Install
 			}
 
 			return AspNetHostingPermissionLevel.None;
+		}
+
+		protected IEnumerable<ItemDefinition> AllowedChildren(object dataItem)
+		{
+			ItemDefinition d = dataItem as ItemDefinition;
+
+			return d.GetAllowedChildren(N2.Context.Current.Definitions, Activator.CreateInstance(d.ItemType) as ContentItem);
 		}
 	}
 }

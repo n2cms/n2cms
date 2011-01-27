@@ -1,5 +1,6 @@
 ﻿using System;
 using N2.Edit;
+using N2.Persistence;
 
 namespace N2.Templates.UI.Parts
 {
@@ -18,7 +19,7 @@ namespace N2.Templates.UI.Parts
                 Items.CommentList list = CurrentPage.GetChild("Comments") as Items.CommentList;
                 if(list == null)
                 {
-                    list = Engine.Definitions.CreateInstance<Items.CommentList>(CurrentPage);
+					list = Engine.Resolve<ContentActivator>().CreateInstance<Items.CommentList>(CurrentPage);
                     list.Title = "Comments";
                     list.Name = "Comments";
                     list.ZoneName = Zones.Content;
@@ -28,7 +29,7 @@ namespace N2.Templates.UI.Parts
                     }
                     Engine.Persister.Save(list);
                 }
-                Items.Comment comment = Engine.Definitions.CreateInstance<Items.Comment>(list);
+				Items.Comment comment = Engine.Resolve<ContentActivator>().CreateInstance<Items.Comment>(list);
                 comment.Title = Server.HtmlEncode(txtTitle.Text);
                 comment.AuthorName = Server.HtmlEncode(txtName.Text);
                 comment.Email = Server.HtmlEncode(txtEmail.Text);

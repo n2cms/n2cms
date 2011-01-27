@@ -81,7 +81,7 @@ namespace N2.Web.Parts
 		{
 			ItemDefinition containerDefinition = Definitions.GetDefinition(parentItem.GetContentType());
 
-			foreach (ItemDefinition childDefinition in containerDefinition.AllowedChildren)
+			foreach (ItemDefinition childDefinition in containerDefinition.GetAllowedChildren(Definitions, parentItem))
 			{
 				if (childDefinition.Enabled && childDefinition.IsAuthorized(user) && childDefinition.AllowedIn != N2.Integrity.AllowedZones.None)
 				{

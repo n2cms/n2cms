@@ -35,16 +35,18 @@ namespace N2.Edit.Installation
 		
 		IConfigurationBuilder configurationBuilder;
         IDefinitionManager definitions;
+		ContentActivator activator;
         Importer importer;
         IPersister persister;
         ISessionProvider sessionProvider;
         IHost host;
     	IWebContext webContext;
 
-        public InstallationManager(IHost host, IDefinitionManager definitions, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext)
+        public InstallationManager(IHost host, IDefinitionManager definitions, ContentActivator activator, Importer importer, IPersister persister, ISessionProvider sessionProvider, IConfigurationBuilder configurationBuilder, IWebContext webContext)
 		{
             this.host = host;
             this.definitions = definitions;
+			this.activator = activator;
             this.importer = importer;
             this.persister = persister;
             this.sessionProvider = sessionProvider;
@@ -327,7 +329,7 @@ namespace N2.Edit.Installation
 
 		public ContentItem InsertRootNode(Type type, string name, string title)
 		{
-			ContentItem item = definitions.CreateInstance(type, null);
+			ContentItem item = activator.CreateInstance(type, null);
 			item.Name = name;
 			item.Title = title;
 			item[InstallationAppPath] = webContext.ToAbsolute("~/");
@@ -338,7 +340,7 @@ namespace N2.Edit.Installation
 
 		public ContentItem InsertStartPage(Type type, ContentItem root, string name, string title)
 		{
-			ContentItem item = definitions.CreateInstance(type, root);
+			ContentItem item = activator.CreateInstance(type, root);
 			item.Name = name;
 			item.Title = title;
 			persister.Save(item);

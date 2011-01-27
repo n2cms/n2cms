@@ -117,9 +117,17 @@ namespace N2.Definitions
 			this.ContainedEditors.Sort();
 		}
 
+		/// <summary>Removes an editor or sub-container from the container.</summary>
+		/// <param name="containable">The editor or sub-container to remove.</param>
 		public void RemoveContained(IContainable containable)
 		{
 			this.ContainedEditors.Remove(containable);
+		}
+
+		/// <summary>Removes all editors or sub-container from the container.</summary>
+		public void ClearContained()
+		{
+			this.ContainedEditors.Clear();
 		}
 
 		/// <summary>Gets editors and sub-containers in this container.</summary>

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Definitions;
 
@@ -7,7 +8,7 @@ namespace N2.Integrity
 	/// <summary>
 	/// This attribute replace the children allowed with the types 
 	/// </summary>
-	public class RestrictChildrenAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner
+	public class RestrictChildrenAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner, IAllowedDefinitionFilter
 	{
 		/// <summary>Initializes a new instance of the RestrictChildrenAttribute which is used to restrict which types of items may be added below which.</summary>
 		public RestrictChildrenAttribute()
@@ -36,12 +37,24 @@ namespace N2.Integrity
 
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
-			currentDefinition.ClearAllowedChildren();
-			foreach(ItemDefinition definition in allDefinitions)
-			{
-				if(IsAssignable(definition.ItemType))
-					currentDefinition.AddAllowedChild(definition);
-			}
+			currentDefinition.AllowedChildFilters.Add(this);
 		}
+
+		public IEnumerable<ItemDefinition> Filter(IDefinitionManager definitions, ItemDefinition currentDefinition, IEnumerable<ItemDefinition> allDefinitions)
+		{
+			return allDefinitions.Where(d => IsAssignable(d.ItemType));
+		}
+
+		#region IAllowedDefinitionFilter Members
+
+		public AllowedDefinitionResult IsAllowed(AllowedDefinitionContext context)
+		{
+			if (IsAssignable(context.ChildDefinition.ItemType))
+				return AllowedDefinitionResult.Allow;
+			else
+				return AllowedDefinitionResult.Deny;
+		}
+
+		#endregion
 	}
 }

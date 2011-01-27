@@ -8,6 +8,7 @@ using N2.Definitions;
 using N2.Edit;
 using N2.Engine;
 using N2.Web.Parts;
+using N2.Persistence;
 
 namespace N2.Web.UI.WebControls
 {
@@ -199,7 +200,7 @@ namespace N2.Web.UI.WebControls
 
 		private ContentItem CreateItem(Type itemType)
 		{
-			ContentItem item = Engine.Definitions.CreateInstance(itemType, ParentItem);
+			ContentItem item = Engine.Resolve<ContentActivator>().CreateInstance(itemType, ParentItem);
 			item.ZoneName = ZoneName;
 			return item;
 		}

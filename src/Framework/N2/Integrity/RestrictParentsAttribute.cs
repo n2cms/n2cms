@@ -11,6 +11,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Definitions;
 
@@ -62,11 +63,28 @@ namespace N2.Integrity
 		/// <param name="allDefinitions">All definitions.</param>
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
-			foreach (ItemDefinition definition in allDefinitions)
+			currentDefinition.AllowedParentFilters.Add(new Helper { ChildType = currentDefinition.ItemType, Attribute = this });
+		}
+
+		class Helper : IAllowedDefinitionFilter
+		{
+			public Type ChildType { get; set; }
+			public RestrictParentsAttribute Attribute { get; set; }
+
+			#region IAllowedDefinitionFilter Members
+
+			public AllowedDefinitionResult IsAllowed(AllowedDefinitionContext context)
 			{
-				if (IsAssignable(definition.ItemType))
-					definition.AddAllowedChild(currentDefinition);
+				if (ChildType.IsAssignableFrom(context.ChildDefinition.ItemType))
+				{
+					if (this.Attribute.Types == null || this.Attribute.Types.Any(t => t.IsAssignableFrom(context.ParentDefinition.ItemType)))
+						return AllowedDefinitionResult.Allow;
+					return AllowedDefinitionResult.Deny;
+				}
+				return AllowedDefinitionResult.DontCare;
 			}
+
+			#endregion
 		}
 	}
 }

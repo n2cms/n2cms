@@ -7,6 +7,7 @@ using N2.Tests.Persistence;
 using N2.Tests.Globalization.Items;
 using N2.Engine;
 using System.Linq;
+using N2.Persistence;
 
 namespace N2.Tests.Globalization
 {
@@ -324,7 +325,7 @@ namespace N2.Tests.Globalization
 
             using (new LanguageKeyScope(engine, english1.ID))
             {
-                ContentItem swedish1 = engine.Definitions.CreateInstance<Items.TranslatedPage>(swedish);
+				ContentItem swedish1 = engine.Resolve<ContentActivator>().CreateInstance<Items.TranslatedPage>(swedish);
                 engine.Persister.Save(swedish1);
                 Assert.That(swedish1.SortOrder, Is.EqualTo(english1.SortOrder));
             }

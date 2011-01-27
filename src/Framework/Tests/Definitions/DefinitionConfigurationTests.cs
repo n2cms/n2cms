@@ -135,7 +135,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(new DefinitionElement { Name = "DefinitionUndefined", Type = typeof(DefinitionUndefined).AssemblyQualifiedName });
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var undefinedDefinition = definitions
@@ -149,7 +149,7 @@ namespace N2.Tests.Definitions
 		{
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Remove(new DefinitionElement { Name = "DefinitionTextPage" });
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinitions = definitions
@@ -166,7 +166,7 @@ namespace N2.Tests.Definitions
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(definitionElement);
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinition = definitions
@@ -186,7 +186,7 @@ namespace N2.Tests.Definitions
 			var definitionCollection = new DefinitionCollection();
 			definitionCollection.Add(definitionElement);
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection }, new FakeEditUrlManager());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection { Definitions = definitionCollection });
 
 			var definitions = builder.GetDefinitions();
 			var textPageDefinition = definitions

@@ -15,23 +15,23 @@ namespace N2.Engine.Globalization
 		private const string DeletingKey = "LanguageInterceptor_Deleting";
 
 		readonly IPersister persister;
-		readonly IDefinitionManager definitions;
+		readonly ContentActivator activator;
 		readonly IWebContext context;
 		readonly ILanguageGateway gateway;
 		readonly bool enabled = true;
 		readonly bool autoDeleteTranslations;
 
-		public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway, EngineSection config)
-			: this(persister, definitions, context, gateway)
+		public LanguageInterceptor(IPersister persister, ContentActivator activator, IWebContext context, ILanguageGateway gateway, EngineSection config)
+			: this(persister, activator, context, gateway)
 		{
 			enabled = config.Globalization.Enabled;
 			autoDeleteTranslations = config.Globalization.AutoDeleteTranslations;
 		}
 
-		public LanguageInterceptor(IPersister persister, IDefinitionManager definitions, IWebContext context, ILanguageGateway gateway)
+		public LanguageInterceptor(IPersister persister, ContentActivator activator, IWebContext context, ILanguageGateway gateway)
 		{
 			this.persister = persister;
-			this.definitions = definitions;
+			this.activator = activator;
 			this.context = context;
 			this.gateway = gateway;
 		}
@@ -176,7 +176,7 @@ namespace N2.Engine.Globalization
 			persister.ItemSaved += persister_ItemSaved;
 			persister.ItemMoved += persister_ItemMoved;
 			persister.ItemDeleting += persister_ItemDeleting;
-			definitions.ItemCreated += definitions_ItemCreated;
+			activator.ItemCreated += definitions_ItemCreated;
 			persister.ItemCopied += persister_ItemCopied;
 		}
 
@@ -188,7 +188,7 @@ namespace N2.Engine.Globalization
 			persister.ItemSaved -= persister_ItemSaved;
 			persister.ItemMoved -= persister_ItemMoved;
 			persister.ItemDeleting -= persister_ItemDeleting;
-			definitions.ItemCreated -= definitions_ItemCreated;
+			activator.ItemCreated -= definitions_ItemCreated;
 			persister.ItemCopied -= persister_ItemCopied;
 		}
 

@@ -5,7 +5,7 @@
 	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 	@{ Html.Resources().JQuery(); }
 	@{
-		Content.RegisterEditables(re => re
+		Content.Define(re => re
 			.Tab("Content", "Content", e => e
 				.Title()
 				.Name())

@@ -18,43 +18,28 @@ namespace N2.Definitions
 	public class DefinitionManager : IDefinitionManager, IAutoStart
 	{
 		private readonly IDefinitionProvider[] definitionProviders;
-		private readonly IItemNotifier notifier;
-		private readonly StateChanger stateChanger;
-		private readonly IProxyFactory interceptor;
+		private readonly ContentActivator activator;
 
-		public DefinitionManager(IDefinitionProvider[] definitionProviders, StateChanger changer, IItemNotifier notifier, IProxyFactory interceptor)
+		public DefinitionManager(IDefinitionProvider[] definitionProviders, ContentActivator activator)
 		{
 			this.definitionProviders = definitionProviders;
-			this.stateChanger = changer;
-			this.notifier = notifier;
-			this.interceptor = interceptor;
+			this.activator = activator;
 		}
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
+		[Obsolete]
 		public T CreateInstance<T>(ContentItem parentItem) where T : ContentItem
 		{
-			return (T) CreateInstance(typeof(T), parentItem);
+			return activator.CreateInstance<T>(parentItem);
 		}
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
+		[Obsolete]
 		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem)
 		{
-			object intercepted = interceptor.Create(itemType.FullName);
-			ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
-				as ContentItem;
-			stateChanger.ChangeTo(item, ContentState.New);
-			OnItemCreating(item, parentItem);
-			return item;
-		}
-
-		protected virtual void OnItemCreating(ContentItem item, ContentItem parentItem)
-		{
-			item.Parent = parentItem;
-			notifier.NotifiyCreated(item);
-			if (ItemCreated != null)
-				ItemCreated.Invoke(this, new ItemEventArgs(item));
+			return activator.CreateInstance(itemType, parentItem);
 		}
 
 		/// <summary>Gets the definition for a certain item type.</summary>
@@ -88,14 +73,15 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets items allowed below this item in a certain zone.</summary>
-		/// <param name="definition">The parent definition whose allowed children to get.</param>
+		/// <param name="parentItem">The parent whose allowed children to get.</param>
 		/// <param name="zoneName">The zone whose allowed child item types to get.</param>
 		/// <param name="user">The user whose access to query.</param>
 		/// <returns>A list of items allowed in the zone the user is authorized to create.</returns>
-		public virtual IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zoneName, IPrincipal user)
+		public virtual IList<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName, IPrincipal user)
 		{
 			List<ItemDefinition> allowedChildItems = new List<ItemDefinition>();
-			foreach (ItemDefinition childDefinition in definition.AllowedChildren)
+			var definition = GetDefinition(parentItem.GetContentType());
+			foreach (ItemDefinition childDefinition in definition.GetAllowedChildren(this, parentItem))
 			{
 				if (!childDefinition.IsDefined)
 					continue;
@@ -113,13 +99,14 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
+		[Obsolete]
 		public event EventHandler<ItemEventArgs> ItemCreated;
 
 		#region IAutoStart Members
 
 		public void Start()
 		{
-			interceptor.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()).Select(d => d.ItemType));
+			activator.Initialize(definitionProviders.SelectMany(dp => dp.GetDefinitions()).Select(d => d.ItemType));
 		}
 
 		public void Stop()

@@ -16,7 +16,7 @@ namespace N2.Edit
 
             ContentItem previewedItem = Selection.SelectedItem;
 
-            var context = new CommandContext(previewedItem, Interfaces.Viewing, Page.User);
+            var context = new CommandContext(Engine.Definitions.GetDefinition(previewedItem.GetContentType()), previewedItem, Interfaces.Viewing, Page.User);
             var command = Engine.Resolve<ICommandFactory>().GetPublishCommand(context);
             Engine.Resolve<CommandDispatcher>().Execute(command, context);
 

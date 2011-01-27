@@ -19,7 +19,7 @@ namespace N2.Edit
 		IItemFinder finder;
 		IPersister persister;
 		IHost host;
-		IDefinitionManager definitions;
+		ContentActivator activator;
 
 		/// <summary>Instructs this class to navigate the content hierarchy rather than query for items.</summary>
 		public bool Navigate { get; set; }
@@ -27,13 +27,13 @@ namespace N2.Edit
 		/// <summary>Stores dependencies</summary>
 		/// <param name="finder"></param>
 		/// <param name="persister"></param>
-		/// <param name="definitions"></param>
-		public ContainerRepository(IPersister persister, IItemFinder finder, IHost host, IDefinitionManager definitions)
+		/// <param name="activator"></param>
+		public ContainerRepository(IPersister persister, IItemFinder finder, IHost host, ContentActivator activator)
 		{
 			this.finder = finder;
 			this.persister = persister;
 			this.host = host;
-			this.definitions = definitions;
+			this.activator = activator;
 		}
 
 		/// <summary>Gets a container below the root page or null if no container exists.</summary>
@@ -85,7 +85,7 @@ namespace N2.Edit
 		/// <returns></returns>
 		protected virtual T Create(ContentItem containerContainer, Action<T> setupCreatedItem)
 		{
-			var container = definitions.CreateInstance<T>(containerContainer);
+			var container = activator.CreateInstance<T>(containerContainer);
 			setupCreatedItem(container);
 			persister.Save(container);
 			return container;

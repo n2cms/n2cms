@@ -63,6 +63,8 @@
     <Compile Include="Controllers\DynamicPartsController.cs" />
     <Compile Include="Controllers\DynamicPagesController.cs" />
     <Compile Include="Controllers\TextPageController.cs" />
+    <Compile Include="Definitions\Dynamic\RazorTemplateProvider.cs" />
+    <Compile Include="Definitions\Dynamic\TemplateSelectorAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -147,6 +149,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DynamicPages\Test.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DynamicPages\Howdy.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

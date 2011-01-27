@@ -15,14 +15,14 @@ namespace N2.Integrity
 	{
 		private readonly IPersister persister;
 		private readonly IIntegrityManager integrity;
-		private readonly IDefinitionManager definitions;
+		private readonly ContentActivator activator;
 		private bool enabled = true;
 
-		public IntegrityEnforcer(IPersister persister, IIntegrityManager integrity, IDefinitionManager definitions)
+		public IntegrityEnforcer(IPersister persister, IIntegrityManager integrity, ContentActivator activator)
 		{
 			this.persister = persister;
 			this.integrity = integrity;
-			this.definitions = definitions;
+			this.activator = activator;
 		}
 
 		/// <summary>Gets or sets wether the integrity is enforced.</summary>
@@ -108,7 +108,7 @@ namespace N2.Integrity
 			persister.ItemDeleting += ItemDeletingEvenHandler;
 			persister.ItemMoving += ItemMovingEvenHandler;
 			persister.ItemSaving += ItemSavingEvenHandler;
-			definitions.ItemCreated += ItemCreatedEventHandler;
+			activator.ItemCreated += ItemCreatedEventHandler;
 		}
 
 		public virtual void Stop()
@@ -117,16 +117,7 @@ namespace N2.Integrity
 			persister.ItemDeleting -= ItemDeletingEvenHandler;
 			persister.ItemMoving -= ItemMovingEvenHandler;
 			persister.ItemSaving -= ItemSavingEvenHandler;
-			definitions.ItemCreated -= ItemCreatedEventHandler;
-		}
-
-		#endregion
-
-		#region IAutoStart Members
-
-		void IAutoStart.Start()
-		{
-            Start();
+			activator.ItemCreated -= ItemCreatedEventHandler;
 		}
 
 		#endregion

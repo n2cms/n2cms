@@ -26,7 +26,7 @@ namespace N2.Tests.Definitions
 		{
 			base.SetUp();
 
-			builder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
+			builder = new DefinitionBuilder(typeFinder, new EngineSection());
 		}
 
 		[Test]

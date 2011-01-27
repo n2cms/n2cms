@@ -16,7 +16,8 @@ namespace N2.Tests.Serialization
 	{
 		private delegate string BuildUrl(ContentItem item);
 		protected DefinitionManager definitions;
-        protected IUrlParser parser;
+		protected ContentActivator activator;
+		protected IUrlParser parser;
         protected IPersister persister;
 		protected FakeTypeFinder finder;
 		protected IItemNotifier notifier;
@@ -30,14 +31,12 @@ namespace N2.Tests.Serialization
 			notifier = mocks.Stub<IItemNotifier>();
 			mocks.Replay(notifier);
 
+			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, new InterceptingProxyFactory());
 			definitions = new DefinitionManager(
 				new [] {new ReflectingDefinitionProvider(new DefinitionBuilder(
 					finder, 
-					new EngineSection(), 
-					new FakeEditUrlManager()))}, 
-				new N2.Edit.Workflow.StateChanger(), 
-				notifier, 
-				new InterceptingProxyFactory());
+					new EngineSection()))}, 
+				activator);
 			definitions.Start();
 			parser = mocks.StrictMock<IUrlParser>();
 			Expect.On(parser)
@@ -72,11 +71,11 @@ namespace N2.Tests.Serialization
 		}
 		protected ItemXmlReader CreateReader()
 		{
-			return new ItemXmlReader(definitions);
+			return new ItemXmlReader(definitions, activator);
 		}
 		protected Importer CreateImporter()
 		{
-			return new Importer(persister, new ItemXmlReader(definitions));
+			return new Importer(persister, new ItemXmlReader(definitions, activator));
 		}
 	}
 }

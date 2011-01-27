@@ -10,17 +10,19 @@ namespace N2.Persistence.Serialization
 	public class ItemXmlReader : XmlReader
 	{
 		private readonly IDefinitionManager definitions;
+		private readonly ContentActivator activator;
 		private readonly IDictionary<string, IXmlReader> readers;
 		bool ignoreMissingTypes = true;
 
-		public ItemXmlReader(IDefinitionManager definitions)
-			: this(definitions, DefaultReaders())
+		public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator)
+			: this(definitions, activator, DefaultReaders())
 		{
 		}
 
-		public ItemXmlReader(IDefinitionManager definitions, IDictionary<string, IXmlReader> readers)
+		public ItemXmlReader(IDefinitionManager definitions, ContentActivator activator, IDictionary<string, IXmlReader> readers)
 		{
 			this.definitions = definitions;
+			this.activator = activator;
 			this.readers = readers;
 		}
 
@@ -111,7 +113,7 @@ namespace N2.Persistence.Serialization
 		private ContentItem CreateInstance(Dictionary<string, string> attributes)
 		{
 			ItemDefinition definition = FindDefinition(attributes);
-			return definitions.CreateInstance(definition.ItemType, null);
+			return activator.CreateInstance(definition.ItemType, null);
 		}
 
 		protected virtual ItemDefinition FindDefinition(Dictionary<string, string> attributes)

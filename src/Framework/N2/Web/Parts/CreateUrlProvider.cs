@@ -14,15 +14,17 @@ namespace N2.Web.Parts
 	{
         readonly IPersister persister;
 		readonly IEditUrlManager editUrlManager;
+		readonly ContentActivator activator;
 		readonly IDefinitionManager definitions;
         readonly Navigator navigator;
 
-		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, AjaxRequestDispatcher dispatcher, Navigator navigator)
+		public CreateUrlProvider(IPersister persister, IEditUrlManager editUrlManager, IDefinitionManager definitions, ContentActivator activator, AjaxRequestDispatcher dispatcher, Navigator navigator)
 			: base(dispatcher)
 		{
             this.persister = persister;
 			this.editUrlManager = editUrlManager;
 			this.definitions = definitions;
+			this.activator = activator;
             this.navigator = navigator;
 		}
 
@@ -55,7 +57,7 @@ namespace N2.Web.Parts
         {
             ContentItem parent = navigator.Navigate(request["below"]);
 
-            ContentItem item = definitions.CreateInstance(definition.ItemType, parent);
+			ContentItem item = activator.CreateInstance(definition.ItemType, parent);
             item.ZoneName = request["zone"];
             
             string before = request["before"];

@@ -10,7 +10,7 @@ namespace N2.Integrity
 	/// e.g. if they are defined in an external assembly.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Assembly)]
-	public class IntegrityMappingAttribute : TypeIntegrityAttribute, IDefinitionRefiner
+	public class IntegrityMappingAttribute : TypeIntegrityAttribute, IDefinitionRefiner, IAllowedDefinitionFilter
 	{
 		private readonly Type parentType = typeof(ContentItem);
 		private readonly IntegrityMappingOption option = IntegrityMappingOption.AddToExising;
@@ -30,17 +30,36 @@ namespace N2.Integrity
 
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
-			if (parentType.IsAssignableFrom(currentDefinition.ItemType))
+			foreach (var d in allDefinitions)
 			{
-				foreach (ItemDefinition definition in allDefinitions)
-				{
-					bool assignable = IsAssignable(definition.ItemType);
-					if(assignable)
-						currentDefinition.AddAllowedChild(definition);
-					else if (option == IntegrityMappingOption.RemoveOthers)
-						currentDefinition.RemoveAllowedChild(definition);
-				}
+				if (option == IntegrityMappingOption.AddToExising && !parentType.IsAssignableFrom(d.ItemType))
+					continue;
+
+				d.AllowedChildFilters.Add(this);
 			}
+			//if (parentType.IsAssignableFrom(currentDefinition.ItemType))
+			//{
+			//    foreach (ItemDefinition definition in allDefinitions)
+			//    {
+			//        bool assignable = IsAssignable(definition.ItemType);
+			//        if(assignable)
+			//            currentDefinition.AddAllowedChild(definition);
+			//        else if (option == IntegrityMappingOption.RemoveOthers)
+			//            currentDefinition.RemoveAllowedChild(definition);
+			//    }
+			//}
 		}
+
+		#region IAllowedDefinitionFilter Members
+
+		public AllowedDefinitionResult IsAllowed(AllowedDefinitionContext context)
+		{
+			if (parentType.IsAssignableFrom(context.ParentDefinition.ItemType) && IsAssignable(context.ChildDefinition.ItemType))
+				return AllowedDefinitionResult.Allow;
+			else
+				return (option == IntegrityMappingOption.AddToExising) ? AllowedDefinitionResult.DontCare : AllowedDefinitionResult.Deny;
+		}
+
+		#endregion
 	}
 }

@@ -15,10 +15,10 @@
 						<span class="title"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Title") ?? Eval("Title") %></span>
 						<span class="description"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%></span>
 					</asp:HyperLink>
-					<asp:Repeater runat="server" DataSource='<%# Templates.GetTemplates(((ItemDefinition)Container.DataItem).ItemType, User) %>'>
+					<asp:Repeater runat="server" DataSource='<%# GetTemplates((Type)Eval("ItemType")) %>'>
 						<ItemTemplate>
 							<div class="template">
-								<a href="<%# GetEditUrl((ItemDefinition)Eval("Definition")) %>&template=<%# Eval("Name") %>">
+								<a href="<%# GetEditUrl((ItemDefinition)Eval("Definition")) %>">
 									<span class="title"><%# Eval("Title") %></span>
 									<span><%# Eval("Description") %></span>
 								</a>

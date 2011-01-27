@@ -24,7 +24,7 @@ namespace N2.Tests.Workflow
 			var validator = MockRepository.GenerateStub<IValidator<CommandContext>>();
             mocks.ReplayAll();
 
-            var context = new CommandContext(item, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, validator);
+			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, validator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -35,7 +35,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void MakesVersion_OfCurrent()
         {
-            var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -47,7 +47,7 @@ namespace N2.Tests.Workflow
         public void Version_MakesVersion_OfCurrentMaster()
         {
             var version = MakeVersion(item);
-            var context = new CommandContext(version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -61,7 +61,7 @@ namespace N2.Tests.Workflow
         {
             var version = MakeVersion(item);
             version.Name = "tha masta";
-            var context = new CommandContext(version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -76,7 +76,7 @@ namespace N2.Tests.Workflow
             var version = MakeVersion(item);
             version.State = ContentState.Unpublished;
 
-            var context = new CommandContext(version, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Viewing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -88,7 +88,7 @@ namespace N2.Tests.Workflow
 		public void CanMoveItem_ToBefore_Item()
 		{
 			var child2 = CreateOneItem<StatefulItem>(0, "child2", item);
-			var context = new CommandContext(child2, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(child2.GetContentType()), child2, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 			context.Parameters["MoveBefore"] = child.Path;
 			var command = CreateCommand(context);
 			dispatcher.Execute(command, context);

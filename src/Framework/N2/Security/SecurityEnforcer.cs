@@ -2,6 +2,7 @@ using System;
 using System.Security.Principal;
 using N2.Plugin;
 using N2.Engine;
+using N2.Persistence;
 
 namespace N2.Security
 {
@@ -20,16 +21,16 @@ namespace N2.Security
 
 		private readonly Persistence.IPersister persister;
 		private readonly ISecurityManager security;
-		private readonly Definitions.IDefinitionManager definitions;
+		private readonly ContentActivator activator;
 		private readonly Web.IUrlParser urlParser;
 		private readonly Web.IWebContext webContext;
 
-		public SecurityEnforcer(Persistence.IPersister persister, ISecurityManager security, Definitions.IDefinitionManager definitions, Web.IUrlParser urlParser, Web.IWebContext webContext)
+		public SecurityEnforcer(Persistence.IPersister persister, ISecurityManager security, ContentActivator activator, Web.IUrlParser urlParser, Web.IWebContext webContext)
 		{
 			this.webContext = webContext;
 			this.persister = persister;
 			this.security = security;
-			this.definitions = definitions;
+			this.activator = activator;
 			this.urlParser = urlParser;
 		}
 
@@ -137,7 +138,7 @@ namespace N2.Security
 			persister.ItemCopying += ItemCopyingEvenHandler;
 			persister.ItemDeleting += ItemDeletingEvenHandler;
 			persister.ItemMoving +=	ItemMovingEvenHandler;
-			definitions.ItemCreated += ItemCreatedEventHandler;
+			activator.ItemCreated += ItemCreatedEventHandler;
 		}
 
 		public virtual void Stop()
@@ -146,7 +147,7 @@ namespace N2.Security
 			persister.ItemCopying -= ItemCopyingEvenHandler;
 			persister.ItemDeleting -= ItemDeletingEvenHandler;
 			persister.ItemMoving -= ItemMovingEvenHandler;
-			definitions.ItemCreated -= ItemCreatedEventHandler;
+			activator.ItemCreated -= ItemCreatedEventHandler;
 		}
 
 		#endregion

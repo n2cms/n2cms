@@ -56,7 +56,7 @@ namespace N2.Tests.Persistence.NH
         public override void TestFixtureSetup()
         {
 			InterceptingProxyFactory proxyFactory;
-			TestSupport.Setup(out definitions, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, typeof(PropertyItemType), typeof(PropertyItemInheritor1));
+			TestSupport.Setup(out definitions, out activator, out notifier, out sessionProvider, out finder, out schemaCreator, out proxyFactory, typeof(PropertyItemType), typeof(PropertyItemInheritor1));
         }
 
         // string

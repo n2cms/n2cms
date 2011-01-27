@@ -43,20 +43,23 @@ namespace N2.Definitions
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
+		[Obsolete("Use ContentActivator", true)]
 		T CreateInstance<T>(ContentItem parentItem) where T : ContentItem;
 
 		/// <summary>Creates an instance of a certain type of item. It's good practice to create new items through this method so the item's dependencies can be injected by the engine.</summary>
 		/// <returns>A new instance of an item.</returns>
+		[Obsolete("Use ContentActivator", true)]
 		ContentItem CreateInstance(Type itemType, ContentItem parent);
 
 		/// <summary>Gets a list of children allowed below a certain type of item and zone by a user.</summary>
-		/// <param name="definition">The type of parent item.</param>
+		/// <param name="parentItem">The parent item whose allowed children to get.</param>
 		/// <param name="zoneName">The zone name.</param>
 		/// <param name="user">The user to use for filtering by access rights.</param>
 		/// <returns>A list of definitions allowed by the given criterias.</returns>
-		IList<ItemDefinition> GetAllowedChildren(ItemDefinition definition, string zoneName, IPrincipal user);
+		IList<ItemDefinition> GetAllowedChildren(ContentItem parentItem, string zoneName, IPrincipal user);
 
 		/// <summary>Notifies subscriber that an item was created through a <see cref="CreateInstance"/> method.</summary>
+		[Obsolete("Use ContentActivator", true)]
 		event EventHandler<ItemEventArgs> ItemCreated;
 	}
 }

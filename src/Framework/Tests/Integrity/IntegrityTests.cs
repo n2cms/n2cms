@@ -22,6 +22,7 @@ namespace N2.Tests.Integrity
 	public class IntegrityTests : ItemTestsBase
 	{
 		private IPersister persister;
+		private ContentActivator activator;
 		private IDefinitionManager definitions;
 		private IUrlParser parser;
 		private IntegrityManager integrityManger;
@@ -44,13 +45,14 @@ namespace N2.Tests.Integrity
 			parser = mocks.StrictMock<IUrlParser>();
 
 			ITypeFinder typeFinder = CreateTypeFinder();
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
+			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
+			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, activator);
 			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
 			integrityManger = new IntegrityManager(definitions, finder, parser);
-			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, definitions);
+			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, activator);
 			enforcer.Start();
 		}
 
@@ -454,7 +456,7 @@ namespace N2.Tests.Integrity
 
 			ExceptionAssert.Throws<NotAllowedParentException>(delegate
 			{
-				var neverReturned = definitions.CreateInstance<StartPage>(page);
+				var neverReturned = activator.CreateInstance<StartPage>(page);
 			});
 		}
 
@@ -463,7 +465,7 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem root = CreateOneItem<Definitions.StartPage>(0, "root", null);
 
-			Assert.Throws<NotAllowedParentException>(() => definitions.CreateInstance<Definitions.AlternativePage>(root));
+			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance<Definitions.AlternativePage>(root));
 		}
 
 		[Test]
@@ -471,7 +473,7 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem root = CreateOneItem<Definitions.Page>(0, "page", null);
 
-			Assert.Throws<NotAllowedParentException>(() => definitions.CreateInstance<Definitions.StartPage>(root));
+			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance<Definitions.StartPage>(root));
 		}
 
 		[Test]
@@ -479,7 +481,7 @@ namespace N2.Tests.Integrity
 		{
 			ContentItem root = CreateOneItem<Definitions.StartPage>(0, "root", null);
 
-			Assert.Throws<NotAllowedParentException>(() => definitions.CreateInstance(typeof(Definitions.SubPage), root));
+			Assert.Throws<NotAllowedParentException>(() => activator.CreateInstance(typeof(Definitions.SubPage), root));
 		}
 
 		#endregion

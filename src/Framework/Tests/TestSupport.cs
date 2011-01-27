@@ -21,9 +21,9 @@ namespace N2.Tests
 {
     public static class TestSupport
     {
-        public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
+        public static void Setup(out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out FakeSessionProvider sessionProvider, out ItemFinder finder, out SchemaExport schemaCreator, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
-			Setup(out definitions, out notifier, out proxyFactory, itemTypes);
+			Setup(out definitions, out activator, out notifier, out proxyFactory, itemTypes);
 
             DatabaseSection config = (DatabaseSection)ConfigurationManager.GetSection("n2/database");
             ConnectionStringsSection connectionStrings = (ConnectionStringsSection)ConfigurationManager.GetSection("connectionStrings");
@@ -43,18 +43,20 @@ namespace N2.Tests
 			IItemNotifier notifier;
 			IDefinitionManager definitions;
 			InterceptingProxyFactory proxyFactory;
-			Setup(out definitions, out notifier, out proxyFactory, itemTypes);
+			ContentActivator activator;
+			Setup(out definitions, out activator, out notifier, out proxyFactory, itemTypes);
 			return definitions;
 		}
 
-		public static void Setup(out IDefinitionManager definitions, out IItemNotifier notifier, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
+		public static void Setup(out IDefinitionManager definitions, out ContentActivator activator, out IItemNotifier notifier, out InterceptingProxyFactory proxyFactory, params Type[] itemTypes)
         {
             ITypeFinder typeFinder = new Fakes.FakeTypeFinder(itemTypes[0].Assembly, itemTypes);
 
-			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
+			DefinitionBuilder definitionBuilder = new DefinitionBuilder(typeFinder, new EngineSection());
 			notifier = new ItemNotifier();
 			proxyFactory = new InterceptingProxyFactory();
-			definitions = new DefinitionManager(new [] { new ReflectingDefinitionProvider(definitionBuilder) }, new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
+			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, proxyFactory);
+			definitions = new DefinitionManager(new [] { new ReflectingDefinitionProvider(definitionBuilder) }, activator);
 			((DefinitionManager)definitions).Start();
 		}
 

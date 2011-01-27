@@ -21,6 +21,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using N2.Definitions;
 
@@ -33,7 +34,7 @@ namespace N2.Integrity
 	/// considered to be allowed.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class)]
-	public class AllowedChildrenAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner
+	public class AllowedChildrenAttribute : TypeIntegrityAttribute, IInheritableDefinitionRefiner, IAllowedDefinitionFilter
 	{
 		/// <summary>Initializes a new instance of the AllowedChildrenAttribute which is used to restrict which types of items may be added below which.</summary>
 		public AllowedChildrenAttribute()
@@ -51,12 +52,16 @@ namespace N2.Integrity
 
 		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
 		{
-			foreach (ItemDefinition definition in allDefinitions)
-			{
-				bool assignable = IsAssignable(definition.ItemType);
-				if (assignable)
-					currentDefinition.AddAllowedChild(definition);
-			}
+			currentDefinition.AllowedChildFilters.Add(this);
 		}
+
+		#region IAllowedDefinitionFilter Members
+
+		public AllowedDefinitionResult IsAllowed(AllowedDefinitionContext context)
+		{
+			return IsAssignable(context.ChildDefinition.ItemType) ? AllowedDefinitionResult.Allow : AllowedDefinitionResult.DontCare;
+		}
+
+		#endregion
 	}
 }

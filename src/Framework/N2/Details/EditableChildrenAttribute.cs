@@ -57,7 +57,7 @@ namespace N2.Details
 					ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
 					if (parentEditor != null)
 					{
-						var subContext = parentEditor.BinderContext.CreateNestedContext(childEditor, childEditor.CurrentItem);
+						var subContext = parentEditor.BinderContext.CreateNestedContext(childEditor, childEditor.CurrentItem, childEditor.GetDefinition());
 						if (subContext.Binder.UpdateObject(subContext))
 							updated = true;
 					}

@@ -18,15 +18,11 @@ namespace N2.Definitions
 	{
 		private readonly ITypeFinder typeFinder;
 		private readonly EngineSection config;
-		private readonly IEditUrlManager editUrlManager;
-		private readonly EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder();
-		private readonly AttributeExplorer explorer = new AttributeExplorer();
 
-		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config, IEditUrlManager editUrlManager)
+		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
 		{
 			this.typeFinder = typeFinder;
 			this.config = config;
-			this.editUrlManager = editUrlManager;
 		}
 
 		/// <summary>Builds item definitions in the current environment.</summary>
@@ -45,7 +41,7 @@ namespace N2.Definitions
 			foreach (Type itemType in FindConcreteTypes())
 			{
 				ItemDefinition definition = new ItemDefinition(itemType);
-				ExploreAndLoad(definition);
+				definition.ReflectionAdd(itemType);
 				definitions.Add(definition);
 			}
 
@@ -69,7 +65,7 @@ namespace N2.Definitions
 
 					definition = new ItemDefinition(itemType);
 					definition.Discriminator = element.Name;
-					ExploreAndLoad(definition);
+					definition.ReflectionAdd(itemType);
 				}
 
 				definition.SortOrder = element.SortOrder ?? definition.SortOrder;
@@ -133,15 +129,6 @@ namespace N2.Definitions
 			if (type == null) throw new ConfigurationErrorsException("The configuration references a type '" + typeName + "' which could not be loaded. Check the spelling and ensure that the type is available to the application.");
 			if (!typeof(T).IsAssignableFrom(type)) throw new ConfigurationErrorsException("The type '" + typeName + "' referenced by the configuration does not derive from the correct base class or interface '" + typeof(T).FullName + "'. Check the type's inheritance");
 			return type;
-		}
-
-		void ExploreAndLoad(ItemDefinition definition)
-		{
-			definition.Editables = explorer.Find<IEditable>(definition.ItemType);
-			definition.Containers = explorer.Find<IEditableContainer>(definition.ItemType);
-			definition.Modifiers = explorer.Find<EditorModifierAttribute>(definition.ItemType);
-			definition.Displayables = explorer.Find<IDisplayable>(definition.ItemType);
-			definition.RootContainer = hierarchyBuilder.Build(definition.Containers, definition.Editables);
 		}
 
 		protected void ExecuteRefiners(IList<ItemDefinition> definitions)

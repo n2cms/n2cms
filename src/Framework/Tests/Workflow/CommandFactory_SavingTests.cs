@@ -21,7 +21,7 @@ namespace N2.Tests.Workflow
 		public void Clears_PublishedDate()
 		{
 			var item = new StatefulItem();
-			var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
 			var command = CreateCommand(context);
 			dispatcher.Execute(command, context);

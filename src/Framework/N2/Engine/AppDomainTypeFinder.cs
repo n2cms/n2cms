@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -84,6 +85,9 @@ namespace N2.Engine
 			{
 				try
 				{
+					if (!ReferencesAssembly(a, requestedType.Assembly))
+						continue;
+
 					foreach (Type t in a.GetTypes())
 					{
 						if (requestedType.IsAssignableFrom(t))
@@ -104,6 +108,11 @@ namespace N2.Engine
 			}
 
 			return types;
+		}
+
+		private static bool ReferencesAssembly(Assembly assembly, Assembly requestedTypeAssembly)
+		{
+			return assembly == requestedTypeAssembly || assembly.GetReferencedAssemblies().Any(an => an.Name == requestedTypeAssembly.GetName().Name);
 		}
 
 		/// <summary>Gets tne assemblies related to the current implementation.</summary>

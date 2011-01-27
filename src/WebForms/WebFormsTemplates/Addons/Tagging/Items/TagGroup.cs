@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using N2.Collections;
 using N2.Details;
+using N2.Persistence;
 
 namespace N2.Addons.Tagging.Items
 {
@@ -33,7 +34,7 @@ namespace N2.Addons.Tagging.Items
 					return child as Tag;
 			}
 
-			var tag = N2.Context.Current.Definitions.CreateInstance<Tag>(this);
+			var tag = N2.Context.Current.Resolve<ContentActivator>().CreateInstance<Tag>(this);
 			tag.Name = tagName;
 			tag.Title = tagName;
 			N2.Context.Current.Persister.Save(tag);

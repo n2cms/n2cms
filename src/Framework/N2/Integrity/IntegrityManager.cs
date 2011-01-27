@@ -141,7 +141,7 @@ namespace N2.Integrity
 			if (parentDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the parent item '" + parent + "' of type '" + parent.GetContentType() + "'");
 			if (itemDefinition == null) throw new InvalidOperationException("Couldn't find a definition for the item '" + item + "' of type '" + item.GetContentType() + "'");
 
-			if (!parentDefinition.IsChildAllowed(itemDefinition))
+			if (!parentDefinition.IsChildAllowed(definitions, itemDefinition))
 				return new NotAllowedParentException(itemDefinition, parent.GetContentType());
 
 			return null;
@@ -209,7 +209,7 @@ namespace N2.Integrity
 				Definitions.ItemDefinition sourceDefinition = definitions.GetDefinition(source.GetContentType());
 				Definitions.ItemDefinition destinationDefinition = definitions.GetDefinition(destination.GetContentType());
 
-				return destinationDefinition.IsChildAllowed(sourceDefinition);
+				return destinationDefinition.IsChildAllowed(definitions, sourceDefinition);
 			}
 			return true;
 		}

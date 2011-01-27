@@ -77,9 +77,8 @@ namespace N2.Edit
 		/// <param name="itemType">The type of content item whose editors to add.</param>
 		/// <param name="editorContainer">The container onto which add the editors.</param>
 		/// <param name="user">The user whose credentials will be queried.</param>
-		public virtual IDictionary<string, Control> AddEditors(Type itemType, Control editorContainer, IPrincipal user)
+		public virtual IDictionary<string, Control> AddEditors(ItemDefinition definition, Control editorContainer, IPrincipal user)
 		{
-			ItemDefinition definition = definitions.GetDefinition(itemType);
 			IEditableContainer rootContainer = definition.RootContainer;
 			IDictionary<string, Control> addedEditors = new Dictionary<string, Control>();
 			AddEditorsRecursive(rootContainer, editorContainer, user, addedEditors);
@@ -90,12 +89,11 @@ namespace N2.Edit
 		/// <param name="addedEditors">Previously added editor controls.</param>
 		/// <param name="item">The content item to use for update.</param>
 		/// <param name="user">The current user.</param>
-		public virtual void UpdateEditors(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		public virtual void UpdateEditors(ItemDefinition definition, ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
 			if (item == null) throw new ArgumentNullException("item");
 			if (addedEditors == null) throw new ArgumentNullException("addedEditors");
 
-			ItemDefinition definition = definitions.GetDefinition(item.GetContentType());
 			ApplyModifications(definition, addedEditors);
 			foreach (IEditable e in definition.GetEditables(user))
 			{
@@ -109,14 +107,13 @@ namespace N2.Edit
 		/// <param name="addedEditors">The previously added editors.</param>
 		/// <param name="user">The user for filtering updatable editors.</param>
 		/// <returns>Whether any property on the item was updated.</returns>
-		public virtual string[] UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		public virtual string[] UpdateItem(ItemDefinition definition, ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
 			if (item == null) throw new ArgumentNullException("item");
 			if (addedEditors == null) throw new ArgumentNullException("addedEditors");
 
 			var updatedDetails = new List<string>();
 
-			ItemDefinition definition = definitions.GetDefinition(item.GetContentType());
 			foreach (IEditable e in definition.GetEditables(user))
 			{
 				if (addedEditors.ContainsKey(e.Name))
@@ -258,7 +255,7 @@ namespace N2.Edit
 					SaveVersion(itemToUpdate);
 
 				DateTime? published = itemToUpdate.Published;
-				bool wasUpdated = UpdateItem(itemToUpdate, addedEditors, user).Length > 0;
+				bool wasUpdated = UpdateItem(definitions.GetDefinition(itemToUpdate.GetContentType()), itemToUpdate, addedEditors, user).Length > 0;
 				if (wasUpdated || IsNew(itemToUpdate))
 				{
 					itemToUpdate.Published = published ?? Utility.CurrentTime();
@@ -275,7 +272,7 @@ namespace N2.Edit
 
 		private ContentItem SaveOnly(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			bool wasUpdated = UpdateItem(item, addedEditors, user).Length > 0;
+			bool wasUpdated = UpdateItem(definitions.GetDefinition(item.GetContentType()), item, addedEditors, user).Length > 0;
 			if (wasUpdated || IsNew(item))
 			{
 				if (item.VersionOf == null)
@@ -301,7 +298,7 @@ namespace N2.Edit
 					SaveVersion(item);
 
 				DateTime? initialPublished = item.Published;
-				bool wasUpdated = UpdateItem(item, addedEditors, user).Length > 0;
+				bool wasUpdated = UpdateItem(definitions.GetDefinition(item.GetContentType()), item, addedEditors, user).Length > 0;
 				DateTime? updatedPublished = item.Published;
 
 				// the item was the only version of an unpublished item - publish it
@@ -334,7 +331,7 @@ namespace N2.Edit
 				if (ShouldCreateVersionOf(item))
 					item = SaveVersion(item);
 
-				bool wasUpdated = UpdateItem(item, addedEditors, user).Length > 0;
+				bool wasUpdated = UpdateItem(definitions.GetDefinition(item.GetContentType()), item, addedEditors, user).Length > 0;
 				if (wasUpdated || IsNew(item))
 				{
 					item.Published = null;

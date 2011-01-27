@@ -19,19 +19,19 @@ namespace N2.Management.Content.Templates
 		public const string TemplateDescription = "TemplateDescription";
 
 		IPersister persister;
-		IDefinitionManager definitions;
 		ContainerRepository<TemplateContainer> container;
+		IDefinitionManager definitions;
 
-		public ContentTemplateRepository(IPersister persister, IDefinitionManager definitions, ContainerRepository<TemplateContainer> container)
+		public ContentTemplateRepository(IPersister persister, ContainerRepository<TemplateContainer> container, IDefinitionManager definitions)
 		{
 			this.persister = persister;
-			this.definitions = definitions;
 			this.container = container;
+			this.definitions = definitions;
 		}
 
 		#region ITemplateRepository Members
 
-		public ContentTemplate GetTemplate(string templateName)
+		public TemplateDefinition GetTemplate(string templateName)
 		{
 			TemplateContainer templates = container.GetBelowRoot();
 			if (templates == null)
@@ -41,10 +41,10 @@ namespace N2.Management.Content.Templates
 			return CreateTemplateInfo(template);
 		}
 
-		private ContentTemplate CreateTemplateInfo(ContentItem template)
+		private TemplateDefinition CreateTemplateInfo(ContentItem template)
 		{
 			var clone = template.Clone(true);
-			var info = new ContentTemplate
+			var info = new TemplateDefinition
 			{
 				Name = template.Name,
 				Title = template.Title,
@@ -53,7 +53,6 @@ namespace N2.Management.Content.Templates
 				Definition = definitions.GetDefinition(template.GetContentType()),
 				Template = clone,
 				Original = template
-				//HiddenEditors = (template.GetDetailCollection("HiddenEditors", false) ?? new DetailCollection()).ToList<string>(),
 			};
 			clone.SetDetail(TemplateDescription, null, typeof(string));
 			clone.Title = "";
@@ -61,7 +60,7 @@ namespace N2.Management.Content.Templates
 			return info;
 		}
 
-		public IEnumerable<ContentTemplate> GetAllTemplates()
+		public IEnumerable<TemplateDefinition> GetAllTemplates()
 		{
 			TemplateContainer templates = container.GetBelowRoot();
 			if (templates == null)
@@ -73,7 +72,7 @@ namespace N2.Management.Content.Templates
 			}
 		}
 
-		public IEnumerable<ContentTemplate> GetTemplates(Type contentType, IPrincipal user)
+		public IEnumerable<TemplateDefinition> GetTemplates(Type contentType, IPrincipal user)
 		{
 			foreach(var template in GetAllTemplates())
 			{

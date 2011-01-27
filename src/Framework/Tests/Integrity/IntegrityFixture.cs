@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 using N2.Definitions;
+using N2.Persistence;
 
 namespace N2.Tests.Integrity
 {
@@ -39,8 +41,9 @@ namespace N2.Tests.Integrity
 		{
 			ItemDefinition rootDefinition = engine.Definitions.GetDefinition(typeof(Definitions.Root));
 			ItemDefinition startPageDefinition = engine.Definitions.GetDefinition(typeof(Definitions.StartPage));
-			
-			EnumerableAssert.Contains(rootDefinition.AllowedChildren, startPageDefinition);
+
+			Assert.That(rootDefinition.GetAllowedChildren(engine.Definitions, null).Contains(startPageDefinition));
+			//EnumerableAssert.Contains(rootDefinition.AllowedChildren, startPageDefinition);
 			Assert.IsNull(rootDefinition.AuthorizedRoles);
 			Assert.AreEqual(0, rootDefinition.AvailableZones.Count);
 			Assert.AreEqual(0, rootDefinition.Containers.Count);
@@ -48,7 +51,7 @@ namespace N2.Tests.Integrity
 			Assert.AreEqual(typeof(Definitions.Root).Name, rootDefinition.Discriminator);
 			Assert.That(rootDefinition.Displayables.Count, Is.EqualTo(12));
 			Assert.AreEqual(0, rootDefinition.Editables.Count);
-			EnumerableAssert.Contains(engine.Definitions.GetAllowedChildren(rootDefinition, null, null), startPageDefinition);
+			EnumerableAssert.Contains(engine.Definitions.GetAllowedChildren(new Definitions.Root(), null, null), startPageDefinition);
 			Assert.AreEqual(0, rootDefinition.GetEditables(null).Count);
 			Assert.AreEqual(0, rootDefinition.GetModifiers("Title").Count); 
 			Assert.AreEqual(0, rootDefinition.Modifiers.Count);
@@ -72,7 +75,7 @@ namespace N2.Tests.Integrity
 
 		private ContentItem CreateItemBelow(ContentItem parent, Type itemType)
 		{
-			ContentItem item = engine.Definitions.CreateInstance(itemType, parent);
+			ContentItem item = engine.Resolve<ContentActivator>().CreateInstance(itemType, parent);
 			engine.Persister.Save(item);
 			return item;
 		}

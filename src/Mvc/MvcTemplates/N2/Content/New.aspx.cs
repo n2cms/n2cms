@@ -40,7 +40,7 @@ namespace N2.Edit
 		ItemDefinition ParentItemDefinition = null;
 		protected string ZoneName = null;
 		protected IDefinitionManager Definitions;
-		protected IContentTemplateRepository Templates;
+		protected ITemplateProvider[] Templates;
 
 		public ContentItem ActualItem
 		{
@@ -57,7 +57,7 @@ namespace N2.Edit
 		{
 			base.OnPreInit(e);
 			Definitions = Engine.Resolve<IDefinitionManager>();
-			Templates = Engine.Resolve<IContentTemplateRepository>();
+			Templates = Engine.Container.ResolveAll<ITemplateProvider>();
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -185,8 +185,8 @@ namespace N2.Edit
 
 		private void LoadAllowedTypes()
 		{
-			int allowedChildrenCount = ParentItemDefinition.AllowedChildren.Count;
-			IList<ItemDefinition> allowedChildren = Definitions.GetAllowedChildren(ParentItemDefinition, ZoneName, this.User);
+			int allowedChildrenCount = ParentItemDefinition.GetAllowedChildren(Definitions, Selection.SelectedItem).Count();
+			IList<ItemDefinition> allowedChildren = Definitions.GetAllowedChildren(Selection.SelectedItem, ZoneName, this.User);
 
 			if(!IsAuthorized(Permission.Write))
 			{
@@ -257,6 +257,11 @@ namespace N2.Edit
 		protected string GetZoneString(string key)
 		{
 			return Utility.GetGlobalResourceString("Zones", key);
+		}
+
+		protected IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
+		{
+			return Templates.SelectMany(tp => tp.GetTemplates(contentType));
 		}
     }
     

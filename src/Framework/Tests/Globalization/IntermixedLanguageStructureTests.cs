@@ -3,6 +3,7 @@ using NUnit.Framework;
 using N2.Web;
 using N2.Tests.Globalization.Items;
 using N2.Engine.Globalization;
+using N2.Persistence;
 
 namespace N2.Tests.Globalization
 {
@@ -11,19 +12,19 @@ namespace N2.Tests.Globalization
 	{
 		protected override void CreatePageStructure()
 		{
-			root = engine.Definitions.CreateInstance<Items.TranslatedPage>(null);
+			root = engine.Resolve<ContentActivator>().CreateInstance<Items.TranslatedPage>(null);
 
-			english = engine.Definitions.CreateInstance<Items.LanguageRoot>(root);
+			english = engine.Resolve<ContentActivator>().CreateInstance<Items.LanguageRoot>(root);
 			english.LanguageCode = "en-GB";
 			english.Name = english.Title = "english";
             english.AddTo(root);
 
-			swedish = engine.Definitions.CreateInstance<Items.LanguageRoot>(english);
+			swedish = engine.Resolve<ContentActivator>().CreateInstance<Items.LanguageRoot>(english);
 			swedish.LanguageCode = "sv-SE";
 			swedish.Name = swedish.Title = "swedish";
             swedish.AddTo(root);
 
-			italian = engine.Definitions.CreateInstance<Items.LanguageRoot>(swedish);
+			italian = engine.Resolve<ContentActivator>().CreateInstance<Items.LanguageRoot>(swedish);
 			italian.LanguageCode = "it-IT";
 			italian.Name = italian.Title = "italian";
             italian.AddTo(root);
@@ -37,7 +38,7 @@ namespace N2.Tests.Globalization
         [Test]
         public void DoesntFind_LanguageRoot_InTrashcan()
         {
-            TrashCan trash = engine.Definitions.CreateInstance<TrashCan>(root);
+			TrashCan trash = engine.Resolve<ContentActivator>().CreateInstance<TrashCan>(root);
             italian.AddTo(trash);
             swedish.AddTo(trash);
             engine.Persister.Save(trash);

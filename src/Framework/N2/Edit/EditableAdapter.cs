@@ -6,6 +6,7 @@ using N2.Edit.FileSystem;
 using N2.Engine;
 using N2.Web;
 using N2.Web.UI.WebControls;
+using N2.Definitions;
 
 namespace N2.Edit
 {
@@ -35,18 +36,18 @@ namespace N2.Edit
 		/// <param name="container">The container onto which to add editors.</param>
 		/// <param name="user">The user to filter access by.</param>
 		/// <returns>A editor name to control map of added editors.</returns>
-		public virtual IDictionary<string, Control> AddDefinedEditors(Type itemType, Control container, IPrincipal user)
+		public virtual IDictionary<string, Control> AddDefinedEditors(ItemDefinition definition, Control container, IPrincipal user)
 		{
-			return EditManager.AddEditors(itemType, container, user);
+			return EditManager.AddEditors(definition, container, user);
 		}
 
 		/// <summary>Updates editors with values from the item.</summary>
 		/// <param name="item">The item containing values.</param>
 		/// <param name="addedEditors">A map of editors to update (may have been filtered by access).</param>
 		/// <param name="user">The user to filter access by.</param>
-		public virtual void LoadAddedEditors(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		public virtual void LoadAddedEditors(ItemDefinition definition, ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			EditManager.UpdateEditors(item, addedEditors, user);
+			EditManager.UpdateEditors(definition, item, addedEditors, user);
 		}
 
 		/// <summary>Updates an item with the values from the editor controls without saving it.</summary>
@@ -54,9 +55,9 @@ namespace N2.Edit
 		/// <param name="addedEditors">Editors containing interesting values.</param>
 		/// <param name="user">The user to filter access by.</param>
 		/// <returns>Detail names that were updated.</returns>
-		public virtual string[] UpdateItem(ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
+		public virtual string[] UpdateItem(ItemDefinition definition, ContentItem item, IDictionary<string, Control> addedEditors, IPrincipal user)
 		{
-			return EditManager.UpdateItem(item, addedEditors, user);
+			return EditManager.UpdateItem(definition, item, addedEditors, user);
 		}
 
 		/// <summary>Saves an item using values from the supplied item editor.</summary>

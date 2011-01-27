@@ -48,7 +48,7 @@ namespace N2.Addons.Wiki.UI.Parts
             Items.WikiArticle article = CurrentPage;
             if (IsNew)
             {
-                article = Engine.Definitions.CreateInstance<Items.WikiArticle>(CurrentPage);
+				article = Engine.Resolve<ContentActivator>().CreateInstance<Items.WikiArticle>(CurrentPage);
                 article.Title = filter.StripHtml(CurrentArguments);
 				article.Name = filter.CleanUrl(CurrentArguments);
             }

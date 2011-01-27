@@ -1,3 +1,5 @@
+using N2.Security;
+using System.Security.Principal;
 namespace N2.Collections
 {
 	/// <summary>
@@ -8,6 +10,11 @@ namespace N2.Collections
 	{
 		public NavigationFilter()
 			: base(new PageFilter(), new VisibleFilter(), new PublishedFilter(), new AccessFilter())
+		{
+		}
+
+		public NavigationFilter(IPrincipal user, ISecurityManager securityManager)
+			: base(new PageFilter(), new VisibleFilter(), new PublishedFilter(), new AccessFilter(user, securityManager))
 		{
 		}
 	}

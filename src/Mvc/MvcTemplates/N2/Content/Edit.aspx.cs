@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using N2.Definitions;
@@ -37,7 +38,7 @@ namespace N2.Edit
 
 		protected ISecurityManager Security;
 		protected IDefinitionManager Definitions;
-		protected IContentTemplateRepository Templates;
+		protected ITemplateProvider[] Templates;
 		protected IVersionManager Versions;
 		protected CommandDispatcher Commands;
 		protected IEditManager EditManager;
@@ -48,7 +49,7 @@ namespace N2.Edit
 			base.OnPreInit(e);
 			Security = Engine.SecurityManager;
 			Definitions = Engine.Definitions;
-			Templates = Engine.Resolve<IContentTemplateRepository>();
+			Templates = Engine.Container.ResolveAll<ITemplateProvider>();
 			Versions = Engine.Resolve<IVersionManager>();
 			Commands = Engine.Resolve<CommandDispatcher>();
 			EditManager = Engine.EditManager;
@@ -107,7 +108,7 @@ namespace N2.Edit
 
         protected void OnPublishCommand(object sender, CommandEventArgs e)
 		{
-			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
+			var ctx = new CommandContext(ie.GetDefinition(), ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
 			ctx.Parameters["MoveBefore"] = Request["before"];
 			ctx.Parameters["MoveAfter"] = Request["after"];
 			Commands.Publish(ctx);
@@ -117,7 +118,7 @@ namespace N2.Edit
 
     	protected void OnPreviewCommand(object sender, CommandEventArgs e)
 		{
-			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
+			var ctx = new CommandContext(ie.GetDefinition(), ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
 			Commands.Save(ctx);
 
 			string returnUrl = Request["returnUrl"];
@@ -136,7 +137,7 @@ namespace N2.Edit
 
 		protected void OnSaveUnpublishedCommand(object sender, CommandEventArgs e)
 		{
-			var ctx = new CommandContext(ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
+			var ctx = new CommandContext(ie.GetDefinition(), ie.CurrentItem, Interfaces.Editing, User, ie, new PageValidator<CommandContext>(Page));
             Commands.Save(ctx);
 
 			Url redirectTo = ManagementPaths.GetEditExistingItemUrl(ctx.Content);
@@ -260,7 +261,7 @@ namespace N2.Edit
 				string template = Request["template"];
 				if (!string.IsNullOrEmpty(template))
 				{
-					var info = Templates.GetTemplate(template);
+					var info = Templates.GetTemplate(definition.ItemType, template);
 					definitionTitle = info.Title;
 				}
 
@@ -279,16 +280,22 @@ namespace N2.Edit
 			string dataType = Request["dataType"];
 			string discriminator = Request["discriminator"];
 			string template = Request["template"];
-			if (!string.IsNullOrEmpty(template))
+			
+			if (!string.IsNullOrEmpty(discriminator))
 			{
-				var info = Templates.GetTemplate(template);
-				ie.CurrentItem = info.Template;
-				ie.CurrentItem.Parent = Selection.SelectedItem;
-			}
-			if(!string.IsNullOrEmpty(discriminator))
-			{
-                ie.Discriminator = Definitions.GetDefinition(discriminator).Discriminator;
-                ie.ParentPath = Selection.SelectedItem.Path;
+				var definition = Definitions.GetDefinition(discriminator);
+				if (!string.IsNullOrEmpty(template))
+				{
+					var info = Templates.GetTemplate(definition.ItemType, template);
+					ie.Definition = info.Definition;
+					ie.CurrentItem = info.Template;
+					ie.CurrentItem.Parent = Selection.SelectedItem;
+				}
+				else
+				{
+					ie.Discriminator = definition.Discriminator;
+					ie.ParentPath = Selection.SelectedItem.Path;
+				}
 			}
 			else if (!string.IsNullOrEmpty(dataType))
 			{

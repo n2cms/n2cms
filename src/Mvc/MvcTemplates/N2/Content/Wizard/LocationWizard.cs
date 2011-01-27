@@ -47,7 +47,7 @@ namespace N2.Edit.Wizard
 				container.Name = WizardSettings.Name;
 				container.ZoneName = WizardSettings.ZoneName;
 			});
-			Items.MagicLocation ml = Context.Definitions.CreateInstance<Items.MagicLocation>(wonderland);
+			Items.MagicLocation ml = Context.Current.Resolve<ContentActivator>().CreateInstance<Items.MagicLocation>(wonderland);
 			ml.Location = location;
 			ml.ItemDiscriminator = discriminator;
 			ml.ContentTemplate = templateName;

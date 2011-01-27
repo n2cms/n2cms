@@ -4,7 +4,12 @@
     ViewBag.Title = "Test";
 }
 
+@{
+	Content.Define(re => re.Ignore = true);
+}
+
 <ul>
+	<li>@Model.ItemType</li>
 @foreach (var c in Model.Containables)
 {
 	<li>

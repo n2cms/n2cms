@@ -9,6 +9,7 @@ using N2.Web.Mvc;
 using N2.Templates.Mvc.Areas.Tests.Models;
 using N2.Templates.Mvc.Models.Pages;
 using N2.Definitions;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Areas.Tests.Controllers
 {
@@ -17,9 +18,12 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 	public class TestContentController : ContentController<ContentItem>
     {
 		IDefinitionManager definitions;
-		public TestContentController(IDefinitionManager definitions)
+		ContentActivator activator;
+
+		public TestContentController(IDefinitionManager definitions, ContentActivator activator)
 		{
 			this.definitions = definitions;
+			this.activator = activator;
 		}
 
 		public override ActionResult Index()
@@ -30,7 +34,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 			if (CurrentItem.IsPage)
 				return View();
 			else
-				return PartialView("Partial", definitions.GetAllowedChildren(definitions.GetDefinition(CurrentPage.GetContentType()), null, User));
+				return PartialView("Partial", definitions.GetAllowedChildren(CurrentPage, null, User));
 		}
 
 		public ActionResult Test()
@@ -41,7 +45,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 		[HttpPost]
 		public ActionResult Add(string name)
 		{
-			var part = definitions.CreateInstance<TestPart>(CurrentItem);
+			var part = activator.CreateInstance<TestPart>(CurrentItem);
 			part.Name = name;
 			part.Title = name;
 			part.ZoneName = "TestParts";
@@ -98,7 +102,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
 		private ContentItem Create(ContentItem parent, Type type, string name, int depth, int i)
 		{
-			ContentItem item = definitions.CreateInstance(type, parent);
+			ContentItem item = activator.CreateInstance(type, parent);
 			item.Name = name + i;
 			item.Title = name + " " + i + " (" + depth + ")";
 			if (item is PageBase)

@@ -17,11 +17,18 @@ namespace N2.Web.Mvc.Html
 
 	public static class RegisterExtensions
 	{
-		public static RegistrationExpression RegisterEditables<T>(this ContentContext<T> content, Action<RegistrationExpression> registration = null) where T: class
+		public static RegistrationExpression Define<T>(this ContentContext<T> content, Action<RegistrationExpression> registration = null) where T : class
 		{
 			var re = content.Html.ViewContext.HttpContext.Items["RegistrationExpression"] as RegistrationExpression;
-			if(re != null)
+			if (re != null)
+			{
+				if (typeof(ContentItem).IsAssignableFrom(typeof(T)) && re.ItemType == null)
+				{
+					re.ItemType = typeof(T);
+					re.Title = typeof(T).Name;
+				}
 				registration(re);
+			}
 			return re;
 		}
 
@@ -272,5 +279,10 @@ namespace N2.Web.Mvc.Html
 		public int CurrentSortOrder { get; set; }
 		public IList<IEditable> Editables { get; private set; }
 		public IList<IContainable> Containables { get; private set; }
+		public Type ItemType { get; set; }
+		public bool Ignore { get; set; }
+		public string Discriminator { get; set; }
+		public string SubType { get; set; }
+		public string Title { get; set; }
 	}
 }

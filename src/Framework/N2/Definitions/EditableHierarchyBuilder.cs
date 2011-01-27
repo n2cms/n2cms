@@ -17,12 +17,19 @@ namespace N2.Definitions
 		public virtual IEditableContainer Build<T>(IList<IEditableContainer> containers, IList<T> editables) where T : IContainable
 		{
 			IEditableContainer rootContainer = new RootContainer();
+			ClearContainers(containers);
 			AddContainersToRootContainer(rootContainer, containers);
 			AddEditorsToContainers(rootContainer, containers, editables);
 			return rootContainer;
 		}
 
 		#region Helpers
+
+		private void ClearContainers(IList<IEditableContainer> containers)
+		{
+			foreach (IEditableContainer container in containers)
+				container.ClearContained();
+		}
 
 		private static void AddContainersToRootContainer(IEditableContainer rootContainer, IEnumerable<IEditableContainer> containers)
 		{
@@ -66,9 +73,10 @@ namespace N2.Definitions
 				if (editable.ContainerName != null)
 				{
 					IEditableContainer container = FindContainer(editable.ContainerName, containers);
-					if (container == null)
-						throw new N2Exception("The editor '{0}' references a container '{1}' that doesn't seem to be defined. Either add a container with this name or remove the reference to that container.", editable.Name, editable.ContainerName);
-					container.AddContained(editable);
+					if (container != null)
+						container.AddContained(editable);
+					else
+						rootContainer.AddContained(editable);
 				}
 				else
 				{

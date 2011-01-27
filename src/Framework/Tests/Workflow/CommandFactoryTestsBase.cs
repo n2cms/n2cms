@@ -51,7 +51,7 @@ namespace N2.Tests.Workflow
             DynamicPermissionMap.SetRoles(item, Permission.Read, "None");
             if (useVersion)
                 item = MakeVersion(item);
-			var context = new CommandContext(item, userInterface, CreatePrincipal("someone"), new NullBinder<CommandContext>(), new NullValidator<CommandContext>());
+			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, userInterface, CreatePrincipal("someone"), new NullBinder<CommandContext>(), new NullValidator<CommandContext>());
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -70,7 +70,7 @@ namespace N2.Tests.Workflow
 			var validator = mocks.Stub<IValidator<CommandContext>>();
             mocks.ReplayAll();
 
-            var context = new CommandContext(item, userInterface, CreatePrincipal("admin"), nullBinder, validator);
+			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, userInterface, CreatePrincipal("admin"), nullBinder, validator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -81,7 +81,7 @@ namespace N2.Tests.Workflow
         [Test]
         public void DoesntMakeVersion_OfUnsavedItem()
         {
-            var context = new CommandContext(new StatefulItem(), Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(typeof(StatefulItem)), new StatefulItem(), Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -95,7 +95,7 @@ namespace N2.Tests.Workflow
             var version = MakeVersion(item);
             version.State = ContentState.Unpublished;
 
-            var context = new CommandContext(version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(version.GetContentType()), version, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
             var command = CreateCommand(context);
             dispatcher.Execute(command, context);
@@ -106,7 +106,7 @@ namespace N2.Tests.Workflow
 		[Test]
 		public void CreatesVersion_OfVersionableItem()
 		{
-			var context = new CommandContext(item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(item.GetContentType()), item, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 
 			dispatcher.Execute(CreateCommand(context), context);
 
@@ -117,7 +117,7 @@ namespace N2.Tests.Workflow
 		public void DoesntCreateVersion_OfNonVersionableItem()
 		{
 			var unversionable = new UnversionableStatefulItem();
-			var context = new CommandContext(unversionable, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
+			var context = new CommandContext(definitions.GetDefinition(unversionable.GetContentType()), unversionable, Interfaces.Editing, CreatePrincipal("admin"), nullBinder, nullValidator);
 			dispatcher.Execute(CreateCommand(context), context);
 
 			dispatcher.Execute(CreateCommand(context), context);

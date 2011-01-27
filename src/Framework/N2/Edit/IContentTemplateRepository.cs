@@ -9,9 +9,9 @@ namespace N2.Edit
 {
 	public interface IContentTemplateRepository
 	{
-		ContentTemplate GetTemplate(string templateName);
-		IEnumerable<ContentTemplate> GetAllTemplates();
-		IEnumerable<ContentTemplate> GetTemplates(Type contentType, IPrincipal User);
+		TemplateDefinition GetTemplate(string templateName);
+		IEnumerable<TemplateDefinition> GetAllTemplates();
+		IEnumerable<TemplateDefinition> GetTemplates(Type contentType, IPrincipal User);
 		void AddTemplate(ContentItem templateItem);
 		void RemoveTemplate(string templateName);
 	}

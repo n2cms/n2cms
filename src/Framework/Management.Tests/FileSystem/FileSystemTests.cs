@@ -12,6 +12,7 @@ using System.IO;
 using System.Diagnostics;
 using N2.Tests.Persistence;
 using System.Linq.Expressions;
+using N2.Persistence;
 
 namespace N2.Edit.Tests.FileSystem
 {
@@ -68,12 +69,12 @@ namespace N2.Edit.Tests.FileSystem
 			operations = new List<string>();
 			arguments = new List<FileEventArgs>();
 
-			root = engine.Definitions.CreateInstance<RootNode>(null);
+			root = engine.Resolve<ContentActivator>().CreateInstance<RootNode>(null);
 			engine.Persister.Save(root);
 			engine.Resolve<IHost>().DefaultSite.RootItemID = root.ID;
 			engine.Resolve<IHost>().DefaultSite.StartPageID = root.ID;
 
-			upload = engine.Definitions.CreateInstance<RootDirectory>(root);
+			upload = engine.Resolve<ContentActivator>().CreateInstance<RootDirectory>(root);
             upload.Title = "Upload";
             upload.Name = "Upload";
 			engine.Persister.Save(upload);			

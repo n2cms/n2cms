@@ -8,6 +8,7 @@ using N2.Details;
 using N2.Plugin;
 using N2.Persistence.Serialization;
 using N2.Templates.Mvc.Models.Pages;
+using N2.Persistence;
 
 namespace N2.Templates.Mvc.Areas.Tests.Demo
 {
@@ -103,7 +104,7 @@ namespace N2.Templates.Mvc.Areas.Tests.Demo
 		{
 			if (ConfigurationManager.AppSettings["Demo.CreateDemoPanel"] == "true")
 			{
-				var part = factory.Definitions.CreateInstance<Models.DemoPart>(item);
+				var part = factory.Resolve<ContentActivator>().CreateInstance<Models.DemoPart>(item);
 				part.ZoneName = "Right";
 				part.SortOrder = -1000000;
 				item.Children.Insert(0, part);

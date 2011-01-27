@@ -158,8 +158,10 @@
     <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
     <Compile Include="Edit\Installation\RebaseInfo.cs" />
+    <Compile Include="Edit\ITemplateProvider.cs" />
     <Compile Include="Edit\ToolbarArea.cs" />
     <Compile Include="Edit\ToolbarPlugInAttribute.cs" />
+    <Compile Include="Definitions\IAllowedDefinitionFilter.cs" />
     <Compile Include="Obsolete\AllowedParentsAttribute.cs" />
     <Compile Include="Integrity\AllowedZonesAttribute.cs" />
     <Compile Include="Definitions\ItemDefinition.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="CancellableDestinationEventArgs.cs" />
     <Compile Include="CancellableItemEventArgs.cs" />
     <Compile Include="DestinationEventArgs.cs" />
+    <Compile Include="Persistence\ContentActivator.cs" />
     <Compile Include="Persistence\IPersister.cs" />
     <Compile Include="Persistence\NH\ContentItemListFactoryOfT.cs" />
     <Compile Include="Persistence\NH\ContentListFactoryOfT.cs" />
@@ -420,7 +423,7 @@
     <Compile Include="Edit\Installation\MigrationEngine.cs" />
     <Compile Include="Edit\Installation\SystemStatusLevel.cs" />
     <Compile Include="Edit\IContentTemplateRepository.cs" />
-    <Compile Include="Edit\ContentTemplate.cs" />
+    <Compile Include="Edit\TemplateDefinition.cs" />
     <Compile Include="Edit\ToolbarOption.cs" />
     <Compile Include="Engine\IProviderOfT.cs" />
     <Compile Include="Engine\AttributeInfo.cs" />

@@ -19,6 +19,7 @@ using N2.Edit;
 using N2.Engine;
 using N2.Edit.Workflow;
 using System.Web;
+using N2.Persistence;
 
 namespace N2.Web.UI.WebControls
 {
@@ -70,20 +71,19 @@ namespace N2.Web.UI.WebControls
 			set { ViewState["Discriminator"] = value; }
 		}
 
+		/// <summary>The definition which is the source of editors.</summary>
+		public ItemDefinition Definition { get; set; }
+
 		/// <summary>Gets the type of the edited item.</summary>
 		/// <returns>The item's type.</returns>
 		public Type CurrentItemType
 		{
 			get
 			{
-				if (!string.IsNullOrEmpty(Discriminator))
-				{
-					ItemDefinition def = Engine.Definitions.GetDefinition(Discriminator);
-					if (def != null)
-					{
-						return def.ItemType;
-					}
-				}
+				var definition = GetDefinition();
+				if (definition != null)
+					return definition.ItemType;
+
 				return null;
 			}
 		}
@@ -103,7 +103,7 @@ namespace N2.Web.UI.WebControls
 				if (currentItem == null && !string.IsNullOrEmpty(Discriminator))
 				{
 					ContentItem parentItem = Engine.Resolve<Navigator>().Navigate(HttpUtility.UrlDecode(ParentPath));
-					currentItem = Engine.Definitions.CreateInstance(CurrentItemType, parentItem);
+					currentItem = Engine.Resolve<ContentActivator>().CreateInstance(CurrentItemType, parentItem);
 					currentItem.ZoneName = ZoneName;
 				}
 				return currentItem;
@@ -113,11 +113,12 @@ namespace N2.Web.UI.WebControls
 				currentItem = value;
 				if (value != null)
 				{
-					Discriminator = Engine.Definitions.GetDefinition(value.GetContentType()).Discriminator;
+					var definition = Engine.Definitions.GetDefinition(value.GetContentType());
+					Discriminator = definition.Discriminator;
 					if (value.VersionOf != null && value.ID == 0)
 						VersioningMode = ItemEditorVersioningMode.SaveOnly;
 					EnsureChildControls();
-					Engine.EditManager.UpdateEditors(value, AddedEditors, Page.User);
+					Engine.EditManager.UpdateEditors(definition, value, AddedEditors, Page.User);
 				}
 				else
 				{
@@ -146,24 +147,30 @@ namespace N2.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
-			Type itemType = CurrentItemType;
-			if (itemType != null)
+			var definition = GetDefinition();
+
+			if (definition != null)
 			{
-				AddedEditors = EditAdapter.AddDefinedEditors(itemType, this, Page.User);
+				AddedEditors = EditAdapter.AddDefinedEditors(definition, this, Page.User);
 				if (!Page.IsPostBack)
 				{
-					EditAdapter.LoadAddedEditors(CurrentItem, AddedEditors, Page.User);
+					EditAdapter.LoadAddedEditors(definition, CurrentItem, AddedEditors, Page.User);
 				}
 			}
 
 			base.CreateChildControls();
 		}
 
+		public ItemDefinition GetDefinition()
+		{
+			return Definition ?? Engine.Definitions.GetDefinition(Discriminator);
+		}
+
 		/// <summary>Saves <see cref="CurrentItem"/> with the values entered in the form.</summary>
 		public ContentItem Save(ContentItem item, ItemEditorVersioningMode mode)
 		{
 			EnsureChildControls();
-			BinderContext = new CommandContext(item, "Unknown", Page.User, this, new N2.Edit.Web.PageValidator<CommandContext>(Page));
+			BinderContext = new CommandContext(GetDefinition(), item, "Unknown", Page.User, this, new N2.Edit.Web.PageValidator<CommandContext>(Page));
 			item = EditAdapter.SaveItem(item, AddedEditors, mode, Page.User);
 			if (Saved != null)
 				Saved.Invoke(this, new ItemEventArgs(item));
@@ -181,7 +188,7 @@ namespace N2.Web.UI.WebControls
 		/// <summary>Updates the <see cref="CurrentItem"/> with the values entered in the form without saving it.</summary>
 		public void Update()
 		{
-			UpdateObject(new CommandContext(CurrentItem, "Unknown", Page.User, this, new NullValidator<CommandContext>()));
+			UpdateObject(new CommandContext(GetDefinition(), CurrentItem, "Unknown", Page.User, this, new NullValidator<CommandContext>()));
 		}
 
 		#endregion
@@ -213,7 +220,7 @@ namespace N2.Web.UI.WebControls
 				EnsureChildControls();
 				foreach (string key in AddedEditors.Keys)
 					BinderContext.GetDefinedDetails().Add(key);
-				var modifiedDetails = EditAdapter.UpdateItem(value.Content, AddedEditors, Page.User);
+				var modifiedDetails = EditAdapter.UpdateItem(value.Definition, value.Content, AddedEditors, Page.User);
 				if (modifiedDetails.Length == 0)
 					return false;
 				foreach (string detailName in modifiedDetails)
@@ -233,7 +240,7 @@ namespace N2.Web.UI.WebControls
 			{
 				BinderContext = value;
 				EnsureChildControls();
-				Engine.EditManager.UpdateEditors(value.Content, AddedEditors, Page.User);
+				Engine.EditManager.UpdateEditors(GetDefinition(), value.Content, AddedEditors, Page.User);
 			}
 			finally
 			{

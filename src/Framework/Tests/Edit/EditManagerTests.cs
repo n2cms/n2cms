@@ -18,6 +18,7 @@ namespace N2.Tests.Edit
 {
 	public abstract class EditManagerTests : TypeFindingBase
 	{
+		protected DefinitionManager definitions;
 		protected EditManager editManager;
 		protected IVersionManager versioner;
 
@@ -38,14 +39,14 @@ namespace N2.Tests.Edit
 		public override void SetUp()
 		{
 			base.SetUp();
-			var urls = new FakeEditUrlManager();
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection(), urls);
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			var changer = new N2.Edit.Workflow.StateChanger();
-			DefinitionManager definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, changer, notifier, new EmptyProxyFactory());
-			
+			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, new ContentActivator(changer, notifier, new EmptyProxyFactory()));
+
 			versioner = mocks.StrictMock<IVersionManager>();
+			var urls = new FakeEditUrlManager();
 			editManager = new EditManager(definitions, persister, versioner, null, null, null, urls, changer, new EditSection());
 			editManager.EnableVersioning = true;
 
@@ -61,7 +62,7 @@ namespace N2.Tests.Edit
 		{
 			Type itemType = item.GetContentType();
 			Control editorContainer = new Control();
-			IDictionary<string, Control> added = editManager.AddEditors(itemType, editorContainer, null);
+			IDictionary<string, Control> added = editManager.AddEditors(definitions.GetDefinition(itemType), editorContainer, null);
 			return added;
 		}
 

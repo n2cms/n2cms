@@ -20,7 +20,7 @@ namespace N2.Security
 	[Service]
 	public class ItemBridge
 	{
-		readonly private IDefinitionManager definitions;
+		readonly private ContentActivator activator;
 		readonly private IItemFinder finder;
 		readonly private IPersister persister;
 		readonly private ISecurityManager security;
@@ -31,10 +31,10 @@ namespace N2.Security
 		string[] administratorUsernames = new string[] { "admin" };
 		Type userType = typeof(User);
 
-		public ItemBridge(IDefinitionManager definitions, IItemFinder finder, IPersister persister, ISecurityManager security, IHost host, EditSection config)
+		public ItemBridge(ContentActivator activator, IItemFinder finder, IPersister persister, ISecurityManager security, IHost host, EditSection config)
 		{
 			this.security = security;
-			this.definitions = definitions;
+			this.activator = activator;
 			this.finder = finder;
 			this.persister = persister;
 			this.host = host;
@@ -74,7 +74,7 @@ namespace N2.Security
 			if(IsEditorOrAdmin(username))
 				throw new ArgumentException("Invalid username.", "username");
 
-			User u = (User)definitions.CreateInstance(userType, GetUserContainer(true));
+			User u = (User)activator.CreateInstance(userType, GetUserContainer(true));
 			u.Title = username;
 			u.Name = username;
 			u.Password = password;
@@ -135,7 +135,7 @@ namespace N2.Security
 
 		protected Items.UserList CreateUserContainer(ContentItem parent)
 		{
-			Items.UserList m = Context.Definitions.CreateInstance<Items.UserList>(parent);
+			Items.UserList m = Context.Current.Resolve<ContentActivator>().CreateInstance<Items.UserList>(parent);
 			m.Title = "Users";
 			m.Name = UserContainerName;
 			foreach (string role in DefaultRoles)

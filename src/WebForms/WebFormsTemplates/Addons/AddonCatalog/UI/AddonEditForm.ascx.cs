@@ -7,6 +7,7 @@ using N2.Edit.FileSystem;
 using N2.Resources;
 using N2.Templates.Web.UI;
 using N2.Web;
+using N2.Persistence;
 
 namespace N2.Addons.AddonCatalog.UI
 {
@@ -96,7 +97,7 @@ namespace N2.Addons.AddonCatalog.UI
             Items.Addon addon = CurrentItem as Items.Addon;
             if(addon == null)
             {
-                addon = Engine.Definitions.CreateInstance<Items.Addon>(CurrentPage);
+				addon = Engine.Resolve<ContentActivator>().CreateInstance<Items.Addon>(CurrentPage);
 				addon.AuthorUserName = Page.User.Identity.Name;
 			}
             else if(!IsAuthor(Page.User, addon))

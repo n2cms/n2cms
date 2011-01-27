@@ -24,6 +24,7 @@ namespace N2.Tests.Definitions
 
 		private IPrincipal user;
 		private DefinitionManager definitions;
+		private ContentActivator activator;
 
 		protected override Type[] GetTypes()
 		{
@@ -62,10 +63,11 @@ namespace N2.Tests.Definitions
 
 			user = CreatePrincipal("SomeSchmuck");
 
-			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection(), new FakeEditUrlManager());
+			DefinitionBuilder builder = new DefinitionBuilder(typeFinder, new EngineSection());
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
-			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
+			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
+			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, activator);
 		}
 
 		#endregion
@@ -134,7 +136,7 @@ namespace N2.Tests.Definitions
 		public void StartPage_IsntAllowed_BelowStartPage()
 		{
 			ItemDefinition startPageDef = definitions.GetDefinition(typeof (DefinitionStartPage));
-			var childDefinitions = definitions.GetAllowedChildren(startPageDef, string.Empty, user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionStartPage(), string.Empty, user);
 
 			EnumerableAssert.DoesntContain(childDefinitions, startPageDef, "One of the start page's child definitions was the start page itself.");
 		}
@@ -143,7 +145,7 @@ namespace N2.Tests.Definitions
 		public void TextPage_IsAllowed_BelowStartPage()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionStartPage));
-			var childDefinitions = definitions.GetAllowedChildren(definition, string.Empty, user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionStartPage(), string.Empty, user);
 
 			EnumerableAssert.Contains(childDefinitions, definitions.GetDefinition(typeof (DefinitionTextPage)));
 		}
@@ -152,7 +154,7 @@ namespace N2.Tests.Definitions
 		public void AllowTeaser_InStartPage_RightZone()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionStartPage));
-			var childDefinitions = definitions.GetAllowedChildren(definition, "Right", user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionStartPage(), "Right", user);
 
 			EnumerableAssert.Contains(childDefinitions, definitions.GetDefinition(typeof (DefinitionRightColumnTeaser)));
 		}
@@ -161,7 +163,7 @@ namespace N2.Tests.Definitions
 		public void Teaser_IsAllowed_InTextPage_RightZone()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionTextPage));
-			var childDefinitions = definitions.GetAllowedChildren(definition, "Right", user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionTextPage(), "Right", user);
 
 			EnumerableAssert.Contains(childDefinitions, definitions.GetDefinition(typeof (DefinitionRightColumnTeaser)));
 		}
@@ -170,7 +172,7 @@ namespace N2.Tests.Definitions
 		public void TextItem_IsAllowed_OnStartPage_LeftAndCenterZone()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionStartPage));
-			var childDefinitions = definitions.GetAllowedChildren(definition, "LeftAndCenter", user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionStartPage(), "LeftAndCenter", user);
 
 			EnumerableAssert.Contains(childDefinitions, definitions.GetDefinition(typeof (DefinitionTextItem)));
 		}
@@ -179,7 +181,7 @@ namespace N2.Tests.Definitions
 		public void Teaser_IsntAllowed_OnStartPage_LeftAndCenterZone()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionStartPage));
-			var childDefinitions = definitions.GetAllowedChildren(definition, "LeftAndCenter", user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionStartPage(), "LeftAndCenter", user);
 
 			EnumerableAssert.DoesntContain(childDefinitions, definitions.GetDefinition(typeof (DefinitionRightColumnTeaser)));
 		}
@@ -188,14 +190,14 @@ namespace N2.Tests.Definitions
 		public void Accessing_AnUnexistantZone_DoesntThrowException()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionTextPage));
-			definitions.GetAllowedChildren(definition, "LeftAndCenter", user);
+			definitions.GetAllowedChildren(new DefinitionTextPage(), "LeftAndCenter", user);
 		}
 
 		[Test]
 		public void Teaser_IsntAllowed_WithoutZone()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionStartPage));
-			var childDefinitions = definitions.GetAllowedChildren(definition, string.Empty, user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionStartPage(), string.Empty, user);
 
 			EnumerableAssert.DoesntContain(childDefinitions, definitions.GetDefinition(typeof (DefinitionTextItem)));
 		}
@@ -204,7 +206,7 @@ namespace N2.Tests.Definitions
 		public void NewsList_IsAllowed_OnNewsPageRightZone()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionNewsPage));
-			var childDefinitions = definitions.GetAllowedChildren(definition, "Right", user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionNewsPage(), "Right", user);
 
 			EnumerableAssert.Contains(childDefinitions, definitions.GetDefinition(typeof (DefinitionNewsList)));
 		}
@@ -221,7 +223,7 @@ namespace N2.Tests.Definitions
 		public void NewsList_IsAllowed_OnNewsPageEmptyZone()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionNewsPage));
-			IEnumerable<ItemDefinition> childDefinitions = definitions.GetAllowedChildren(definition, string.Empty, user);
+			IEnumerable<ItemDefinition> childDefinitions = definitions.GetAllowedChildren(new DefinitionNewsPage(), string.Empty, user);
 			EnumerableAssert.Contains(childDefinitions, definitions.GetDefinition(typeof (DefinitionNewsList)));
 		}
 
@@ -229,7 +231,7 @@ namespace N2.Tests.Definitions
 		public void NewsList_IsntAllowed_OnTextPage()
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof (DefinitionTextPage));
-			var childDefinitions = definitions.GetAllowedChildren(definition, "Right", user);
+			var childDefinitions = definitions.GetAllowedChildren(new DefinitionTextPage(), "Right", user);
 
 			EnumerableAssert.DoesntContain(childDefinitions, definitions.GetDefinition(typeof (DefinitionNewsList)));
 		}
@@ -261,10 +263,10 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void Interfaces_CanBeUsedToConstrainAllowedTypes()
 		{
-			ItemDefinition menuDefinition = definitions.GetDefinition(typeof (DefinitionMenuItem));
-			ItemDefinition startPageDefinition = definitions.GetDefinition(typeof (DefinitionStartPage));
+			ItemDefinition menuDefinition = definitions.GetDefinition(typeof(DefinitionMenuItem)); // RestrictParents: ILeftColumnlPage
+			ItemDefinition startPageDefinition = definitions.GetDefinition(typeof(DefinitionStartPage)); // RestrictParents: None, implements ILeftColumnlPage
 
-			EnumerableAssert.Contains(startPageDefinition.AllowedChildren, menuDefinition);
+			Assert.That(startPageDefinition.GetAllowedChildren(definitions, null).Contains(menuDefinition));
 		}
 
 		[Test]
@@ -273,7 +275,7 @@ namespace N2.Tests.Definitions
 			ItemDefinition menuDefinition = definitions.GetDefinition(typeof (DefinitionMenuItem));
 			ItemDefinition textPageDefinition = definitions.GetDefinition(typeof (DefinitionTextItem));
 
-			EnumerableAssert.DoesntContain(textPageDefinition.AllowedChildren, menuDefinition);
+			Assert.That(!textPageDefinition.GetAllowedChildren(definitions, null).Contains(menuDefinition));
 		}
 
 		[Test]
@@ -290,7 +292,7 @@ namespace N2.Tests.Definitions
 			var pageDefinition = definitions.GetDefinition(typeof(DefinitionTextPage));
 			var freeDefinition = definitions.GetDefinition(typeof(DefinitionFreeItem));
 
-			var allowedChildren = definitions.GetAllowedChildren(pageDefinition, "", CreatePrincipal("admin", "Administrator"));
+			var allowedChildren = definitions.GetAllowedChildren(new DefinitionTextPage(), "", CreatePrincipal("admin", "Administrator"));
 
 			Assert.That(allowedChildren.Contains(freeDefinition), Is.False);
 		}
@@ -300,7 +302,7 @@ namespace N2.Tests.Definitions
 		{
 			var pageDefinition = definitions.GetDefinition(typeof(DefinitionTextPage));
 			var freeDefinition = definitions.GetDefinition(typeof (DefinitionFreeItem));
-			var allowedChildren = definitions.GetAllowedChildren(pageDefinition, "SomeZone", user);
+			var allowedChildren = definitions.GetAllowedChildren(new DefinitionTextPage(), "SomeZone", user);
 			
 			Assert.That(allowedChildren.Contains(freeDefinition), Is.True);
 		}
@@ -311,8 +313,7 @@ namespace N2.Tests.Definitions
 			ItemDefinition autoDefinition = definitions.GetDefinition(typeof (DefinitionAutoCreatedItem));
 			foreach (ItemDefinition definition in definitions.GetDefinitions())
 			{
-				IEnumerable<ItemDefinition> allowedDefinitions =
-					definitions.GetAllowedChildren(definition, string.Empty, user);
+				IEnumerable<ItemDefinition> allowedDefinitions = definitions.GetAllowedChildren(Activator.CreateInstance(definition.ItemType) as ContentItem, string.Empty, user);
 				EnumerableAssert.DoesntContain(allowedDefinitions, autoDefinition);
 			}
 		}
@@ -336,7 +337,7 @@ namespace N2.Tests.Definitions
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionTextPage));
 			ItemDefinition replacingDefinition = definitions.GetDefinition(typeof(DefinitionReplacement));
-			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(definition, null, null);
+			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(new DefinitionTextPage(), null, null);
 
 			EnumerableAssert.Contains(allowedChildren, replacingDefinition);
 		}
@@ -346,7 +347,7 @@ namespace N2.Tests.Definitions
 		{
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionTextPage));
 			ItemDefinition replacedDefinition = definitions.GetDefinition(typeof(DefinitionReplaced));
-			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(definition, null, null);
+			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(new DefinitionTextPage(), null, null);
 
 			EnumerableAssert.DoesntContain(allowedChildren, replacedDefinition);
 		}
@@ -358,7 +359,7 @@ namespace N2.Tests.Definitions
 			ItemDefinition definitionOne = definitions.GetDefinition(typeof(DefinitionOne));
 			ItemDefinition definitionReplacement = definitions.GetDefinition(typeof(DefinitionReplacesNumber1));
 
-			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(definition, null, null);
+			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(new DefinitionTextPage(), null, null);
 			
 			EnumerableAssert.DoesntContain(allowedChildren, definitionOne, "Definition one shouldn't be in the list since it isn't enabled");
 			EnumerableAssert.Contains(allowedChildren, definitionReplacement);
@@ -371,7 +372,7 @@ namespace N2.Tests.Definitions
 			ItemDefinition definitionTwo = definitions.GetDefinition(typeof(DefinitionTwo));
 			ItemDefinition definitionReplacement = definitions.GetDefinition(typeof(DefinitionRemovesNumber2));
 
-			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(definition, null, null);
+			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(new DefinitionTextPage(), null, null);
 
 			Assert.That(definitionTwo, Is.Null);
 			EnumerableAssert.Contains(allowedChildren, definitionReplacement);
@@ -391,7 +392,7 @@ namespace N2.Tests.Definitions
 			ItemDefinition definition = definitions.GetDefinition(typeof(DefinitionTextPage));
 			ItemDefinition undefinedDefinition = definitions.GetDefinition(typeof(DefinitionUndefined));
 
-			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(definition, null, null);
+			IList<ItemDefinition> allowedChildren = definitions.GetAllowedChildren(new DefinitionTextPage(), null, null);
 
 			EnumerableAssert.DoesntContain(allowedChildren, undefinedDefinition);
 		}
@@ -408,7 +409,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void Item_Inherits_AllowedReaders_FromParent()
 		{
-			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), definitions, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext());
+			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), activator, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext());
 			enforcer.Start();
 			
 			DefinitionTextPage page = definitions.CreateInstance<DefinitionTextPage>(null);
@@ -431,7 +432,7 @@ namespace N2.Tests.Definitions
 		[Test]
 		public void Item_Inherits_AllowedEditors_FromParent()
 		{
-			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), definitions, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext());
+			var enforcer = new SecurityEnforcer(persister, new SecurityManager(new ThreadContext(), new EditSection()), activator, MockRepository.GenerateStub<IUrlParser>(), new ThreadContext());
 			enforcer.Start();
 
 			DefinitionTextPage page = definitions.CreateInstance<DefinitionTextPage>(null);
@@ -468,9 +469,8 @@ namespace N2.Tests.Definitions
 		{
 			var parentDefinition = definitions.GetDefinition(typeof(DefinitionControllingParent));
 			var childDefinition = definitions.GetDefinition(typeof(DefinitionOppressedChild));
-
-			Assert.That(parentDefinition.AllowedChildren.Contains(childDefinition));
-			Assert.That(parentDefinition.AllowedChildren.Count, Is.EqualTo(1));
+			var allowed = parentDefinition.GetAllowedChildren(definitions, null).ToList();
+			Assert.That(allowed.Single(), Is.EqualTo(childDefinition));
 		}
 
 		[Test]

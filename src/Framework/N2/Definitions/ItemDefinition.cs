@@ -21,6 +21,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Principal;
@@ -37,17 +38,23 @@ namespace N2.Definitions
 	/// Represents the definition of a content item. Expose reflected 
 	/// information a types attributes.
 	/// </summary>
-	public class ItemDefinition : IComparable<ItemDefinition>
+	public class ItemDefinition : IComparable<ItemDefinition>, ICloneable
 	{
-		private readonly IList<ItemDefinition> allowedChildren = new List<ItemDefinition>();
-		private readonly IList<AvailableZoneAttribute> availableZones = new List<AvailableZoneAttribute>();
+		private AttributeExplorer explorer = new AttributeExplorer();
+		private EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder();
 		private readonly Type itemType;
 		private AllowedZones allowedIn = AllowedZones.None;
-
-		private IList<string> allowedZoneNames = new List<string>();
-		private IList<string> authorizedRoles;
 		private bool enabled = true;
 		private string iconUrl;
+
+		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
+		/// <param name="itemType">The item type to define.</param>
+		public ItemDefinition(Type itemType, AttributeExplorer explorer, EditableHierarchyBuilder hierarchyBuilder)
+			: this(itemType)
+		{
+			this.explorer = explorer;
+			this.hierarchyBuilder = hierarchyBuilder;
+		}
 
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
@@ -63,32 +70,28 @@ namespace N2.Definitions
 			Description = "";
 			ToolTip = itemType.FullName;
 			SortOrder = 1000;
+			AllowedChildFilters = new List<IAllowedDefinitionFilter>();
+			AllowedParentFilters = new List<IAllowedDefinitionFilter>();
+			AvailableZones = new List<AvailableZoneAttribute>();
+			AllowedZoneNames = new List<string>();
 		}
 
+		/// <summary>Variant of an item with the same discriminator.</summary>
+		public string Template { get; set; }
+
+		/// <summary>Discriminator of an item this item is related to.</summary>
+		public string RelatedTo { get; set; }
+
+		/// <summary>Numbers of items of this type in the database.</summary>
 		public int NumberOfItems { get; set; }
 
-		/// <summary>
-		/// Gets or sets how to treat this definition during installation.
-		/// </summary>
+		/// <summary>Gets or sets how to treat this definition during installation.</summary>
 		public InstallerHint Installer { get; set; }
 
 		#region Properties
 
-		/// <summary>
-		/// An auto-generated attribute for left for to support some whicked user.
-		/// </summary>
-		[Obsolete("This is likely to be removed in the future. Please use the properties on the item definition.")]
-		public DefinitionAttribute DefinitionAttribute
-		{
-			get { return new DefinitionAttribute(Title, Discriminator, Description, ToolTip, SortOrder); }
-		}
-
 		/// <summary>Gets roles or users allowed to edit items defined by this definition.</summary>
-		public IList<string> AuthorizedRoles
-		{
-			get { return authorizedRoles; }
-			internal set { authorizedRoles = value; }
-		}
+		public IList<string> AuthorizedRoles { get; set; }
 
 		/// <summary>Gets the name used when presenting this item class to editors.</summary>
 		public string Title { get; set; }
@@ -122,17 +125,10 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets zones available in this items of this class.</summary>
-		public IList<AvailableZoneAttribute> AvailableZones
-		{
-			get { return availableZones; }
-		}
+		public IList<AvailableZoneAttribute> AvailableZones { get; private set; }
 
 		/// <summary>Gets zones this class of items can be placed in.</summary>
-		public IList<string> AllowedZoneNames
-		{
-			get { return allowedZoneNames; }
-			internal set { allowedZoneNames = value; }
-		}
+		public IList<string> AllowedZoneNames { get; set; }
 
 		/// <summary>Gets the IconUrl returned by a new instance of the item.</summary>
 		public string IconUrl
@@ -158,31 +154,53 @@ namespace N2.Definitions
 		}
 
 		/// <summary>Gets or sets editables defined for the item.</summary>
-		public IList<IEditable> Editables { get; set; }
+		public IList<IEditable> Editables { get; private set; }
 
 		/// <summary>Gets or sets containers defined for the item.</summary>
-		public IList<IEditableContainer> Containers { get; set; }
+		public IList<IEditableContainer> Containers { get; private set; }
 
 		/// <summary>Gets or sets the root container used to build the edit interface.</summary>
-		public IEditableContainer RootContainer { get; set; }
+		public IEditableContainer RootContainer { get; private set; }
 
 		/// <summary>Gets or sets additional child types allowed below this item.</summary>
-		public IList<ItemDefinition> AllowedChildren
+		public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
 		{
-			get { return allowedChildren; }
+			IEnumerable<ItemDefinition> all = definitions.GetDefinitions().ToList();
+			foreach (var d in all)
+			{
+				var ctx = new AllowedDefinitionContext { Parent = parentItem, ParentDefinition = this, ChildDefinition = d, Definitions = definitions };
+				var filters = AllowedChildFilters.Union(d.AllowedParentFilters).ToList();
+				if (filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Allow))
+					yield return d;
+				else if (filters.Any(f => f.IsAllowed(ctx) == AllowedDefinitionResult.Deny))
+					continue;
+				else
+					yield return d;
+			}
+		}
+
+		public bool IsChildAllowed(IDefinitionManager definitions, ItemDefinition itemDefinition)
+		{
+			return GetAllowedChildren(definitions, null).Contains(itemDefinition);
 		}
 
 		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
-		public IList<EditorModifierAttribute> Modifiers { get; set; }
+		public IList<EditorModifierAttribute> Modifiers { get; private set; }
 
 		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
-		public IList<IDisplayable> Displayables { get; set; }
+		public IList<IDisplayable> Displayables { get; private set; }
 
 		public AllowedZones AllowedIn
 		{
 			get { return allowedIn; }
 			set { allowedIn = value; }
 		}
+
+		/// <summary>Filters allowed definitions below this definition.</summary>
+		public IList<IAllowedDefinitionFilter> AllowedChildFilters { get; private set; }
+
+		/// <summary>Filters allowed definitions above this definition.</summary>
+		public List<IAllowedDefinitionFilter> AllowedParentFilters { get; private set; }
 
 		#endregion
 
@@ -262,20 +280,23 @@ namespace N2.Definitions
 
 		public override string ToString()
 		{
-			return Discriminator;
+			return Discriminator + (Template != null ? "/" + Template : null);
 		}
 
 		public override int GetHashCode()
 		{
-			return Discriminator.GetHashCode();
+			return ToString().GetHashCode();
 		}
 
 		public override bool Equals(object obj)
 		{
-			if (obj is ItemDefinition)
-				return (Discriminator.Equals((obj as ItemDefinition).Discriminator));
-			else
+			if (object.ReferenceEquals(obj, this))
+				return true;
+			var id = obj as ItemDefinition;
+			if (id == null)
 				return false;
+
+			return Discriminator == id.Discriminator && Template == id.Template;
 		}
 
 		#endregion
@@ -293,43 +314,43 @@ namespace N2.Definitions
 
 		public bool IsAuthorized(IPrincipal user)
 		{
-			if (user == null || authorizedRoles == null)
+			if (user == null || AuthorizedRoles == null)
 				return true;
-			foreach (string role in authorizedRoles)
+			foreach (string role in AuthorizedRoles)
 				if (string.Equals(user.Identity.Name, role, StringComparison.OrdinalIgnoreCase) || user.IsInRole(role))
 					return true;
 			return false;
 		}
 
-		/// <summary>Find out if this item allows sub-items of a certain type.</summary>
-		/// <param name="child">The item that should be checked whether it is allowed below this item.</param>
-		/// <returns>True if the specified child item is allowed below this item.</returns>
-		public bool IsChildAllowed(ItemDefinition child)
-		{
-			return AllowedChildren.Contains(child);
-		}
+		///// <summary>Find out if this item allows sub-items of a certain type.</summary>
+		///// <param name="child">The item that should be checked whether it is allowed below this item.</param>
+		///// <returns>True if the specified child item is allowed below this item.</returns>
+		//public bool IsChildAllowed(ItemDefinition child)
+		//{
+		//    return AllowedChildren.Contains(child);
+		//}
 
-		/// <summary>Adds an allowed child definition to the list of allowed definitions.</summary>
-		/// <param name="definition">The allowed child definition to add.</param>
-		public void AddAllowedChild(ItemDefinition definition)
-		{
-			if (!AllowedChildren.Contains(definition))
-				AllowedChildren.Add(definition);
-		}
+		///// <summary>Adds an allowed child definition to the list of allowed definitions.</summary>
+		///// <param name="definition">The allowed child definition to add.</param>
+		//public void AddAllowedChild(ItemDefinition definition)
+		//{
+		//    if (!AllowedChildren.Contains(definition))
+		//        AllowedChildren.Add(definition);
+		//}
 
-		/// <summary>Removes an allowed child definition from the list of allowed definitions if not already removed.</summary>
-		/// <param name="definition">The definition to remove.</param>
-		public void RemoveAllowedChild(ItemDefinition definition)
-		{
-			if (AllowedChildren.Contains(definition))
-				AllowedChildren.Remove(definition);
-		}
+		///// <summary>Removes an allowed child definition from the list of allowed definitions if not already removed.</summary>
+		///// <param name="definition">The definition to remove.</param>
+		//public void RemoveAllowedChild(ItemDefinition definition)
+		//{
+		//    if (AllowedChildren.Contains(definition))
+		//        AllowedChildren.Remove(definition);
+		//}
 
-		/// <summary>Clears the list of allowed children.</summary>
-		public void ClearAllowedChildren()
-		{
-			AllowedChildren.Clear();
-		}
+		///// <summary>Clears the list of allowed children.</summary>
+		//public void ClearAllowedChildren()
+		//{
+		//    AllowedChildren.Clear();
+		//}
 
 		/// <summary>Adds an allowed zone to the definition's list of allwed zones.</summary>
 		/// <param name="zone">The zone name to add.</param>
@@ -343,26 +364,21 @@ namespace N2.Definitions
 		/// <param name="containable">The editable to add.</param>
 		public void Add(IContainable containable)
 		{
-			if (string.IsNullOrEmpty(containable.ContainerName))
+			if (containable is IEditable)
 			{
-				RootContainer.AddContained(containable);
-				AddToCollection(containable);
+				var existing = Editables.FirstOrDefault(e => e.Name == containable.Name);
+				if (existing != null)
+					Editables.Remove(existing);
+				Editables.Add(containable as IEditable);
 			}
-			else
+			else if (containable is IEditableContainer)
 			{
-				foreach (IEditableContainer container in Containers)
-				{
-					if (container.Name == containable.ContainerName)
-					{
-						container.AddContained(containable);
-						AddToCollection(containable);
-						return;
-					}
-				}
-				throw new N2Exception(
-					"The editor '{0}' references a container '{1}' which doesn't seem to be defined on '{2}'. Either add a container with this name or remove the reference to that container.",
-					containable.Name, containable.ContainerName, ItemType);
+				var existing = Containers.FirstOrDefault(c => c.Name == containable.Name);
+				if (existing != null)
+					Containers.Remove(existing);
+				Containers.Add(containable as IEditableContainer);
 			}
+			ReloadRoot();
 		}
 
 		public IContainable Get(string containableName)
@@ -383,26 +399,79 @@ namespace N2.Definitions
 
 		public void Remove(IContainable containable)
 		{
-			if (!string.IsNullOrEmpty(containable.ContainerName))
-			{
-				var container = (IEditableContainer) Get(containable.ContainerName);
-				container.RemoveContained(containable);
-			}
-
 			if (containable is IEditable)
 				Editables.Remove((IEditable) containable);
 			else if (containable is IEditableContainer)
 				Containers.Remove((IEditableContainer) containable);
 			else
 				throw new ArgumentException("Invalid argument " + containable);
+
+			ReloadRoot();
 		}
 
-		private void AddToCollection(IContainable containable)
+		public ItemDefinition ReflectionAdd(Type type)
 		{
-			if (containable is IEditable)
-				Editables.Add(containable as IEditable);
-			else if (containable is IEditableContainer)
-				Containers.Add(containable as IEditableContainer);
+			Editables = Union(Editables, explorer.Find<IEditable>(type));
+			Containers = Union(Containers, explorer.Find<IEditableContainer>(type));
+			Modifiers = Union(Modifiers, explorer.Find<EditorModifierAttribute>(type));
+			Displayables = Union(Displayables, explorer.Find<IDisplayable>(type));
+
+			ReloadRoot();
+			return this;
 		}
+
+		private void ReloadRoot()
+		{
+			RootContainer = hierarchyBuilder.Build(Containers, Editables);
+		}
+
+		private static IList<T> Union<T>(IList<T> collection, IList<T> toAdd)
+		{
+			if (collection == null)
+				return new List<T>(toAdd);
+
+			var list = new List<T>(collection);
+			foreach (var item in toAdd)
+				list.Add(item);
+			return list;
+		}
+
+		public ItemDefinition Clone()
+		{
+			var id = new ItemDefinition(ItemType);
+			id.AllowedChildFilters = AllowedChildFilters.ToList();
+			id.AllowedIn = AllowedIn;
+			id.AllowedParentFilters = AllowedParentFilters.ToList();
+			id.AllowedZoneNames = AllowedZoneNames.ToList();
+			id.AuthorizedRoles = AuthorizedRoles.ToList();
+			id.AvailableZones = AvailableZones.ToList();
+			id.Containers = Containers.ToList();
+			id.Description = Description;
+			id.Discriminator = Discriminator;
+			id.Displayables = Displayables.ToList();
+			id.Editables = Editables.ToList();
+			id.Enabled = Enabled;
+			id.IconUrl = IconUrl;
+			id.Installer = Installer;
+			id.IsDefined = IsDefined;
+			id.Modifiers = Modifiers.ToList();
+			id.NumberOfItems = 0;
+			id.RelatedTo = RelatedTo;
+			id.SortOrder = SortOrder;
+			id.Template = Template;
+			id.Title = Title;
+			id.ToolTip = ToolTip;
+			id.ReloadRoot();
+			return id;
+		}
+
+		#region ICloneable Members
+
+		object ICloneable.Clone()
+		{
+			return Clone();
+		}
+
+		#endregion
 	}
 }

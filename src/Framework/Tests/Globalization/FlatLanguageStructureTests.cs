@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using N2.Web;
+using N2.Persistence;
 
 namespace N2.Tests.Globalization
 {
@@ -11,19 +12,19 @@ namespace N2.Tests.Globalization
 	{
 		protected override void CreatePageStructure()
 		{
-			root = engine.Definitions.CreateInstance<Items.TranslatedPage>(null);
+			root = engine.Resolve<ContentActivator>().CreateInstance<Items.TranslatedPage>(null);
 
-			english = engine.Definitions.CreateInstance<Items.LanguageRoot>(root);
+			english = engine.Resolve<ContentActivator>().CreateInstance<Items.LanguageRoot>(root);
 			english.LanguageCode = "en-GB";
 			english.Name = english.Title = "english";
             english.AddTo(root);
 
-			swedish = engine.Definitions.CreateInstance<Items.LanguageRoot>(root);
+			swedish = engine.Resolve<ContentActivator>().CreateInstance<Items.LanguageRoot>(root);
 			swedish.LanguageCode = "sv-SE";
 			swedish.Name = swedish.Title = "swedish";
             swedish.AddTo(root);
 
-			italian = engine.Definitions.CreateInstance<Items.LanguageRoot>(root);
+			italian = engine.Resolve<ContentActivator>().CreateInstance<Items.LanguageRoot>(root);
 			italian.LanguageCode = "it-IT";
 			italian.Name = italian.Title = "italian";
             italian.AddTo(root);

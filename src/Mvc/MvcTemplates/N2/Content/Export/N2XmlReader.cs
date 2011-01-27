@@ -8,6 +8,7 @@ using N2.Definitions;
 using N2.Details;
 using N2.Engine;
 using N2.Security;
+using N2.Persistence;
 
 namespace N2.Xml
 {
@@ -93,7 +94,7 @@ namespace N2.Xml
 			Dictionary<string, string> attributes = GetAttributes(navigator);
 
 			ItemDefinition definition = FindDefinition(attributes);
-			ContentItem item = engine.Definitions.CreateInstance(definition.ItemType, null);
+			ContentItem item = engine.Resolve<ContentActivator>().CreateInstance(definition.ItemType, null);
 
 			OnSettingDefaultAttributes(attributes, item);
 

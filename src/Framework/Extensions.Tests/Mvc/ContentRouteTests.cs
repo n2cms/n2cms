@@ -17,6 +17,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
 using N2.Persistence.Proxying;
+using N2.Persistence;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -60,8 +61,7 @@ namespace N2.Extensions.Tests.Mvc
 				.BelowNamespace("N2.Extensions.Tests.Mvc.Controllers").AssignableTo<IController>().Except(typeof(AnotherRegularController))
 				.ToArray();
 
-			var editUrlManager = new FakeEditUrlManager();
-			var definitions = new DefinitionManager(new [] { new ReflectingDefinitionProvider(new DefinitionBuilder(typeFinder, new EngineSection(), editUrlManager)) }, new N2.Edit.Workflow.StateChanger(), null, new EmptyProxyFactory());
+			var definitions = new DefinitionManager(new [] { new ReflectingDefinitionProvider(new DefinitionBuilder(typeFinder, new EngineSection())) }, new ContentActivator(new N2.Edit.Workflow.StateChanger(), null, new EmptyProxyFactory()));
 			var webContext = new ThreadContext();
 			var host = new Host(webContext, root.ID, root.ID);
 			var parser = new UrlParser(persister, webContext, host, new HostSection());
@@ -73,6 +73,7 @@ namespace N2.Extensions.Tests.Mvc
 			SetupResult.For(engine.Definitions).Return(definitions);
 			SetupResult.For(engine.UrlParser).Return(parser);
 			SetupResult.For(engine.Persister).Return(persister);
+			var editUrlManager = new FakeEditUrlManager();
 			SetupResult.For(engine.ManagementPaths).Return(editUrlManager);
 			engine.Replay();
 

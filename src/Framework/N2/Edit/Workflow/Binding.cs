@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using N2.Definitions;
 
 namespace N2.Edit.Workflow
 {
@@ -49,9 +50,9 @@ namespace N2.Edit.Workflow
 			return definedDetails as IList<string>;
 		}
 
-		public static CommandContext CreateNestedContext(this CommandContext context, IBinder<CommandContext> subBinder, ContentItem subItem)
+		public static CommandContext CreateNestedContext(this CommandContext context, IBinder<CommandContext> subBinder, ContentItem subItem, ItemDefinition subDefinition)
 		{
-			return new CommandContext(subItem, context.Interface, context.User)
+			return new CommandContext(subDefinition, subItem, context.Interface, context.User)
 			{
 				Binder = subBinder,
 				Errors = context.Errors,

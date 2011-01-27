@@ -7,6 +7,7 @@ using N2.Definitions;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Edit.Workflow;
+using N2.Persistence;
 
 namespace N2.Details
 {
@@ -82,6 +83,11 @@ namespace N2.Details
 			get { return Context.Definitions; }
 		}
 
+		protected virtual ContentActivator Activator
+		{
+			get { return Context.Current.Resolve<ContentActivator>(); }
+		}
+
 		#endregion
 
 		#region Methods
@@ -90,7 +96,7 @@ namespace N2.Details
 		{
 			ItemEditor itemEditor = editor as ItemEditor;
 			ItemEditor parentEditor = ItemUtility.FindInParents<ItemEditor>(editor.Parent);
-			return itemEditor.UpdateObject(parentEditor.BinderContext.CreateNestedContext(itemEditor, itemEditor.CurrentItem));
+			return itemEditor.UpdateObject(parentEditor.BinderContext.CreateNestedContext(itemEditor, itemEditor.CurrentItem, itemEditor.GetDefinition()));
 		}
 
 		public override void UpdateEditor(ContentItem item, Control editor)
@@ -147,7 +153,7 @@ namespace N2.Details
 			ContentItem child;
 			try
 			{
-				child = Definitions.CreateInstance(childItemType, item);
+				child = Activator.CreateInstance(childItemType, item);
 			}
 			catch (KeyNotFoundException ex)
 			{
