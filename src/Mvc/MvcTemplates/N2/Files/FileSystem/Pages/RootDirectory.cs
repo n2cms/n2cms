@@ -15,6 +15,7 @@ namespace N2.Edit.FileSystem.Items
     [ItemAuthorizedRoles("Administrators", "admin")]
     [Editables.EditableFolderPath]
 	[Template("info", "{ManagementUrl}/Files/FileSystem/Directory.aspx")]
+	[Disable]
     public class RootDirectory : AbstractDirectory
     {
         public RootDirectory()
