@@ -3,9 +3,10 @@
 @{
 	Content.Define(re => 
 	{
-		re.Container("Content", e => 
+		re.Container("Content", e =>
 		{
 			e.FreeTextArea("Text");
+			e.FreeTextArea("Text 2");
 		});
 		re.Title = "Howdy page";
 	});
@@ -16,4 +17,3 @@
 }
 
 <h2>@Model.Title</h2>
-

@@ -262,17 +262,19 @@ namespace N2.Web.Mvc.Html
 
 		public DefinitionRegistrationExpression Add<T>(T editable, string title, Action<T> config) where T : IEditable
 		{
-			Add(editable, config);
+			Add(editable, null);
 			editable.Title = title;
 			editable.SortOrder = NextSortOrder(null);
+			if (config != null) config(editable);
 
 			return this;
 		}
 
 		public DefinitionRegistrationExpression Add<T>(T editable, string name, string title, Action<T> config) where T : IEditable
 		{
-			Add(editable, title ?? name, config);
+			Add(editable, title ?? name, null);
 			editable.Name = name;
+			if (config != null) config(editable);
 
 			return this;
 		}

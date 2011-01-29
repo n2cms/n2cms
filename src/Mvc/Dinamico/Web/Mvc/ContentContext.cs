@@ -5,6 +5,7 @@ using System.Web;
 using N2.Collections;
 using N2.Web.Mvc.Html;
 using System.Web.Mvc;
+using N2.Persistence.Finder;
 
 namespace N2.Web.Mvc
 {
@@ -86,7 +87,7 @@ namespace N2.Web.Mvc
 
 		#endregion
 	}
-
+	
 	public class ContentContext<TModel> where TModel : class
 	{
 		ContentWebViewPage<TModel> page;
@@ -143,11 +144,13 @@ namespace N2.Web.Mvc
 
 		public IEnumerable<ContentItem> Descendants(ContentItem item, ItemFilter filter = null)
 		{
-			return Find.EnumerateChildren(item).Where((filter ?? DefaultFilter).Match);
+			return N2.Find.EnumerateChildren(item).Where((filter ?? DefaultFilter).Match);
 		}
 
-		public IEnumerable<ContentItem> Siblings(ContentItem item)
+		public IEnumerable<ContentItem> Siblings(ContentItem item = null)
 		{
+			if (item == null)
+				item = CurrentItem;
 			if (item.Parent == null)
 				return Enumerable.Empty<ContentItem>();
 
@@ -188,6 +191,18 @@ namespace N2.Web.Mvc
 		public ILinkBuilder LinkTo(ContentItem item)
 		{
 			return new LinkBuilder(item);
+		}
+
+		public IItemFinder Find()
+		{
+			return Html.ResolveService<IItemFinder>();
+		}
+
+		public IQueryAction FindDescendant(ContentItem root = null)
+		{
+			if (root == null)
+				root = CurrentItem;
+			return Html.ResolveService<IItemFinder>().Where.AncestralTrail.Like(Utility.GetTrail(root) + "%");
 		}
 	}
 }

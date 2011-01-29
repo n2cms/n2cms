@@ -8,8 +8,8 @@
 		Content.AppendDefinition(re => 
 			{
 				re.Tab("Content", "Content", e => e
-					.Title()
-					.Name());
+					.Title(config: c => c.SortOrder = -2)
+					.Name(config: c => c.SortOrder = -1));
 				re.Tab("Advanced", "Advanced", e =>
 					e.PublishedRange());
 			});
