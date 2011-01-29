@@ -95,8 +95,8 @@
 									<xs:attribute name="rewrite" use="optional">
 										<xs:simpleType>
 											<xs:restriction base="xs:string">
-												<xs:enumeration value="RewriteRequest"/>
-												<xs:enumeration value="TransferRequest"/>
+												<xs:enumeration value="BeginRequest"/>
+												<xs:enumeration value="SurroundMapRequestHandler"/>
 												<xs:enumeration value="None"/>
 											</xs:restriction>
 										</xs:simpleType>
