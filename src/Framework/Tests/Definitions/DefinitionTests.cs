@@ -14,6 +14,7 @@ using N2.Persistence.Proxying;
 using N2.Security;
 using Rhino.Mocks;
 using N2.Web;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Definitions
 {

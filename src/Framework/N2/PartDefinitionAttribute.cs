@@ -31,9 +31,9 @@ namespace N2
 			AllowedIn = AllowedZones.AllNamed;
 		}
 
-		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition currentDefinition)
 		{
-			base.Refine(currentDefinition, allDefinitions);
+			base.Refine(currentDefinition);
 
 			currentDefinition.AllowedIn = AllowedIn;
 			if (AllowedZoneNames != null)

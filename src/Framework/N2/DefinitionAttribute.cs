@@ -11,7 +11,8 @@ namespace N2
 	/// </summary>
 	/// <remarks>This attribute may be deprecated in the future. Use <see cref="PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/> instead.</remarks>
 	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-	public class DefinitionAttribute : AbstractDefinition
+	public class DefinitionAttribute : AbstractDefinition, ISimpleDefinitionRefiner
+
 	{
 		public DefinitionAttribute()
 		{
@@ -57,9 +58,9 @@ namespace N2
 		public InstallerHint Installer { get; set; }
 
 		/// <summary>Updates the item definition with the attribute.</summary>
-		public override void Refine(ItemDefinition definition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition definition)
 		{
-			base.Refine(definition, allDefinitions);
+			base.Refine(definition);
 
 			definition.Installer = Installer;
 		}

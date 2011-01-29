@@ -5,12 +5,14 @@
 	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 	@{ Html.Resources().JQuery(); }
 	@{
-		Content.Define(re => re
-			.Tab("Content", "Content", e => e
-				.Title()
-				.Name())
-			.Tab("Advanced", "Advanced", e => e.PublishedRange())
-			);
+		Content.AppendDefinition(re => 
+			{
+				re.Tab("Content", "Content", e => e
+					.Title()
+					.Name());
+				re.Tab("Advanced", "Advanced", e =>
+					e.PublishedRange());
+			});
 	 }
 </head>
 <body>

@@ -20,6 +20,7 @@ using N2.Edit.Workflow;
 using NHibernate;
 using NHibernate.Cfg;
 using N2.Edit.Installation;
+using N2.Definitions.Static;
 
 namespace N2.Engine.Configuration
 {

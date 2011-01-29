@@ -30,10 +30,11 @@ namespace N2
 			IconUrl = "{ManagementUrl}/Resources/icons/page.png";
 		}
 
-		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
+		public override void Refine(ItemDefinition currentDefinition)
 		{
 			currentDefinition.Installer = InstallerVisibility;
-			base.Refine(currentDefinition, allDefinitions);
+
+			base.Refine(currentDefinition);
 		}
 	}
 }

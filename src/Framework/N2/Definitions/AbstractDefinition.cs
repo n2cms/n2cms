@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using N2.Web;
 using N2.Definitions.Static;
+using System;
 
 namespace N2.Definitions
 {
 	/// <summary>
 	/// Generalizes features shared by <see cref="PartDefinitionAttribute"/> and <see cref="PageDefinitionAttribute"/>.
 	/// </summary>
-	public abstract class AbstractDefinition : AbstractDefinitionRefiner, IDefinitionRefiner, IPathFinder, IDescriptionRefiner
+	public abstract class AbstractDefinition : Attribute, ISimpleDefinitionRefiner, IPathFinder
 	{
 		/// <summary>The title used to present the item type when adding it.</summary>
 		public string Title { get; set; }
@@ -29,29 +30,13 @@ namespace N2.Definitions
 
 		/// <summary>The icon url is presented to editors and is used distinguish item types when creating and managing content nodes.</summary>
 		public string IconUrl { get; set; }
-		
+
 		/// <summary>Whether the defined item is a page or not. This affects whether the item is displayed in the edit tree and how it's url is calculated.</summary>
 		public bool IsPage { get; protected set; }
 
 		protected AbstractDefinition()
 		{
-			RefinementOrder = RefineOrder.First;
 		}
-
-		#region ISortableRefiner Members
-		
-		public override void Refine(ItemDefinition currentDefinition, IList<ItemDefinition> allDefinitions)
-		{
-			currentDefinition.Title = Title ?? currentDefinition.ItemType.Name;
-			currentDefinition.ToolTip = ToolTip ?? "";
-			currentDefinition.SortOrder = SortOrder;
-			currentDefinition.Description = Description ?? "";
-			currentDefinition.Discriminator = Name ?? currentDefinition.ItemType.Name;
-
-			currentDefinition.IsDefined = true;
-		}
-
-		#endregion
 
 		#region IPathFinder Members
 
@@ -66,12 +51,19 @@ namespace N2.Definitions
 
 		#endregion
 
-		#region IDescriptionRefiner Members
+		#region ISimpleDefinitionRefiner Members
 
-		void IDescriptionRefiner.Describe(System.Type entityType, Description description)
+		public virtual void Refine(ItemDefinition currentDefinition)
 		{
-			description.IsPage = IsPage;
-			description.IconUrl = IconUrl;
+			currentDefinition.Title = Title ?? currentDefinition.ItemType.Name;
+			currentDefinition.ToolTip = ToolTip ?? "";
+			currentDefinition.SortOrder = SortOrder;
+			currentDefinition.Description = Description ?? "";
+			currentDefinition.Discriminator = Name ?? currentDefinition.ItemType.Name;
+			currentDefinition.IconUrl = IconUrl;
+			currentDefinition.IsPage = IsPage;
+
+			currentDefinition.IsDefined = true;
 		}
 
 		#endregion

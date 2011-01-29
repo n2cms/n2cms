@@ -16,6 +16,7 @@ namespace N2.Edit.Workflow
 
 		public CommandContext(ItemDefinition definition, ContentItem content, string userInterface, IPrincipal user, IBinder<CommandContext> binder, IValidator<CommandContext> validator)
         {
+			Definition = definition;
             Content = content;
             Interface = userInterface;
             User = user;

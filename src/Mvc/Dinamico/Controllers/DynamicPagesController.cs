@@ -33,7 +33,7 @@ namespace Dinamico.Controllers
 				cctx.RouteData.Values.Add("controller", "DynamicPages");
 				var v = ViewEngines.Engines.FindView(cctx, file.VirtualPath, null);
 
-				var re = new RegistrationExpression();
+				var re = new DefinitionRegistrationExpression();
 				ControllerContext.HttpContext.Items["RegistrationExpression"] = re;
 				if (v.View == null)
 					sw.Write(string.Join(", ", v.SearchedLocations.ToArray()));

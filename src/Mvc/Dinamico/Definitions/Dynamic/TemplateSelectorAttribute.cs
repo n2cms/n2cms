@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using N2.Details;
-using N2.Edit;
 using System.Web.UI.WebControls;
+using N2.Definitions;
 
 namespace Dinamico.Definitions.Dynamic
 {
@@ -14,14 +14,14 @@ namespace Dinamico.Definitions.Dynamic
 		{
 		}
 
-		public TemplateDefinition[] Templates { get; set; }
+		public TemplateDefinition[] AllTemplates { get; set; }
 
 		protected override ListItem[] GetListItems()
 		{
-			if (Templates == null)
+			if (AllTemplates == null)
 				return new ListItem[0];
 
-			return Templates.Select(t => new ListItem(t.Title, t.Name)).ToArray();
+			return AllTemplates.Select(t => new ListItem(t.Title, t.Name)).ToArray();
 		}
 	}
 }

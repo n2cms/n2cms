@@ -13,8 +13,8 @@ using System.Security.Principal;
 
 namespace N2.Management.Content.Templates
 {
-	[Service(typeof(IContentTemplateRepository))]
-	public class ContentTemplateRepository : IContentTemplateRepository
+	[Service]
+	public class ContentTemplateRepository
 	{
 		public const string TemplateDescription = "TemplateDescription";
 
@@ -44,19 +44,21 @@ namespace N2.Management.Content.Templates
 		private TemplateDefinition CreateTemplateInfo(ContentItem template)
 		{
 			var clone = template.Clone(true);
+			clone.SetDetail(TemplateDescription, null, typeof(string));
+			clone.Title = "";
+			clone.Name = null;
+			clone["TemplateName"] = template.Name;
 			var info = new TemplateDefinition
 			{
 				Name = template.Name,
 				Title = template.Title,
 				Description = template.GetDetail(TemplateDescription, ""),
 				TemplateUrl = template.Url,
-				Definition = definitions.GetDefinition(template.GetContentType()),
+				Definition = definitions.GetDefinition(template.GetContentType()).Clone(),
 				Template = clone,
 				Original = template
 			};
-			clone.SetDetail(TemplateDescription, null, typeof(string));
-			clone.Title = "";
-			clone.Name = null;
+			info.Definition.Template = template.Name;
 			return info;
 		}
 

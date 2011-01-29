@@ -89,7 +89,7 @@ namespace Dinamico.Definitions.Dynamic
 			{
 				foreach (var t in templates)
 				{
-					t.Definition.Add(new TemplateSelectorAttribute { Name = "TemplateName", Templates = templates });
+					t.Definition.Add(new TemplateSelectorAttribute { Name = "TemplateName", AllTemplates = templates });
 				}
 			}
 
@@ -108,7 +108,10 @@ namespace Dinamico.Definitions.Dynamic
 				if (v.View == null)
 					continue;
 
-				var re = new RegistrationExpression();
+				var re = new DefinitionRegistrationExpression();
+				re.Template = N2.Web.Url.RemoveExtension(file.Name);
+				re.IsDefined = false;
+
 				httpContext.Items["RegistrationExpression"] = re;
 				try
 				{
@@ -123,17 +126,17 @@ namespace Dinamico.Definitions.Dynamic
 					httpContext.Items["RegistrationExpression"] = null;
 				}
 
-				if (re.Ignore)
+				if (!re.IsDefined)
 					continue;
 
 				var id = new ItemDefinition(re.ItemType);
-				id.ReflectionAdd(re.ItemType);
+				id.Initialize(re.ItemType);
 
 				foreach (IDefinitionRefiner refiner in re.ItemType.GetCustomAttributes(typeof(IDefinitionRefiner), true))
 					refiner.Refine(id, new[] { id });
 
 				id.Title = re.Title;
-				id.Template = N2.Web.Url.RemoveExtension(file.Name);
+				id.Template = re.Template;
 
 				foreach (var c in re.Containables)
 				{
@@ -144,6 +147,20 @@ namespace Dinamico.Definitions.Dynamic
 
 				yield return id;
 			}
+		}
+
+		public TemplateDefinition GetTemplate(N2.ContentItem item)
+		{
+			string templateName = item["TemplateName"] as string;
+			if (templateName == null)
+				return null;
+
+			return GetTemplates(item.GetContentType()).Where(t => t.Definition.Template == templateName).Select(t =>
+				{
+					t.Original = t.Template;
+					t.Template = item;
+					return t;
+				}).FirstOrDefault();
 		}
 
 		#endregion

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Engine;
+using N2.Definitions.Static;
 
 namespace N2.Definitions
 {

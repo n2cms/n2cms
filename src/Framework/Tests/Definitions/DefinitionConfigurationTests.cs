@@ -8,6 +8,7 @@ using N2.Tests.Definitions.Items;
 using N2.Tests.Fakes;
 using NUnit.Framework;
 using N2.Details;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Definitions
 {

@@ -9,6 +9,7 @@ using N2.Tests.Serialization.Items;
 using N2.Web;
 using Rhino.Mocks;
 using N2.Persistence.Proxying;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Serialization
 {

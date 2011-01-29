@@ -137,8 +137,10 @@
     <Compile Include="Definitions\IDefinitionManager.cs" />
     <Compile Include="Definitions\IDefinitionProvider.cs" />
     <Compile Include="Definitions\IFeed.cs" />
+    <Compile Include="Definitions\ISimpleDefinitionRefiner.cs" />
     <Compile Include="Definitions\ISyndicatable.cs" />
     <Compile Include="Definitions\ReflectingDefinitionProvider.cs" />
+    <Compile Include="Definitions\Static\StaticDefinitionDictionary.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />
@@ -158,7 +160,7 @@
     <Compile Include="Edit\IEditUrlManager.cs" />
     <Compile Include="Edit\Installation\AppPathRebaser.cs" />
     <Compile Include="Edit\Installation\RebaseInfo.cs" />
-    <Compile Include="Edit\ITemplateProvider.cs" />
+    <Compile Include="Definitions\ITemplateProvider.cs" />
     <Compile Include="Edit\ToolbarArea.cs" />
     <Compile Include="Edit\ToolbarPlugInAttribute.cs" />
     <Compile Include="Definitions\IAllowedDefinitionFilter.cs" />
@@ -389,7 +391,7 @@
     <Compile Include="Configuration\WebElement.cs" />
     <Compile Include="Definitions\AbstractDefinitionRefiner.cs" />
     <Compile Include="Definitions\AttributeExplorer.cs" />
-    <Compile Include="Definitions\DefinitionBuilder.cs" />
+    <Compile Include="Definitions\Static\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionManager.cs" />
     <Compile Include="Definitions\DisableAttribute.cs" />
     <Compile Include="Definitions\IPage.cs" />
@@ -403,9 +405,6 @@
     <Compile Include="Definitions\RemoveEditableAttribute.cs" />
     <Compile Include="Definitions\ReplaceDefinitionsAttribute.cs" />
     <Compile Include="Definitions\DefinitionReplacementMode.cs" />
-    <Compile Include="Definitions\Static\Description.cs" />
-    <Compile Include="Definitions\Static\DescriptionDictionary.cs" />
-    <Compile Include="Definitions\Static\IDescriptionRefiner.cs" />
     <Compile Include="Definitions\ThrowableAttribute.cs" />
     <Compile Include="Definitions\VersionableAttribute.cs" />
     <Compile Include="Details\EditableCheckBoxAttribute.cs" />
@@ -422,8 +421,7 @@
     <Compile Include="Edit\Installation\AbstractMigration.cs" />
     <Compile Include="Edit\Installation\MigrationEngine.cs" />
     <Compile Include="Edit\Installation\SystemStatusLevel.cs" />
-    <Compile Include="Edit\IContentTemplateRepository.cs" />
-    <Compile Include="Edit\TemplateDefinition.cs" />
+    <Compile Include="Definitions\TemplateDefinition.cs" />
     <Compile Include="Edit\ToolbarOption.cs" />
     <Compile Include="Engine\IProviderOfT.cs" />
     <Compile Include="Engine\AttributeInfo.cs" />
@@ -856,6 +854,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Definitions\Dynamic\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

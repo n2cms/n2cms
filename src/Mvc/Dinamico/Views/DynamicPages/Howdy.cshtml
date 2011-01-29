@@ -3,7 +3,10 @@
 @{
 	Content.Define(re => 
 	{
-		re.Container("Content", e => e.FreeTextArea("Text"));
+		re.Container("Content", e => 
+		{
+			e.FreeTextArea("Text");
+		});
 		re.Title = "Howdy page";
 	});
 }

@@ -1,13 +1,14 @@
+using N2.Definitions;
 using N2.Definitions.Static;
-using NUnit.Framework;
 using N2.Web;
+using NUnit.Framework;
 
 namespace N2.Tests.Definitions.Static
 {
 	[TestFixture]
 	public class PageDescriptionTests
 	{
-		Description description = DescriptionDictionary.GetDescription(typeof(DescribablePage));
+		ItemDefinition description = StaticDefinitionDictionary.Instance.GetDefinition(typeof(DescribablePage));
 		ContentItem page = new DescribablePage();
 
 		[Test]

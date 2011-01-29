@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using N2.Definitions;
 using N2.Edit.Wizard.Items;
+using N2.Edit;
 
 namespace N2.Edit.Wizard
 {
@@ -18,7 +19,7 @@ namespace N2.Edit.Wizard
 		protected IDefinitionManager Definitions;
 		protected IEditUrlManager Edits;
 		protected LocationWizard Wizard;
-		protected IContentTemplateRepository Templates;
+		protected ITemplateProvider[] Templates;
 
 		protected override void OnPreInit(EventArgs e)
 		{
@@ -27,7 +28,7 @@ namespace N2.Edit.Wizard
 			Definitions = Engine.Definitions;
 			Edits = Engine.ManagementPaths;
 			Wizard = Engine.Resolve<LocationWizard>();
-			Templates = Engine.Resolve<IContentTemplateRepository>();
+			Templates = Engine.Container.ResolveAll<ITemplateProvider>();
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -45,18 +46,17 @@ namespace N2.Edit.Wizard
 			ddlTypes.DataSource = Definitions.GetAllowedChildren(Selection.SelectedItem, "", User)
 				.SelectMany(d =>
 					{
-						return new []{new 
+						return new [] { new 
 						{
 							Value = d.Discriminator,
 							Title = d.Title
-						}}.Union(Templates.GetTemplates(d.ItemType, User).Select(t =>
+						}}.Union(Templates.GetTemplates(d.ItemType).Select(t =>
 							new 
-						{
-							Value = d.Discriminator + ":" + t.Name,
-							Title = "*  " + t.Title
-						}));
-					}
-					);
+							{
+								Value = d.Discriminator + ":" + t.Name,
+								Title = "*  " + t.Title
+							}));
+					});
 			ddlTypes.DataBind();
 		}
 

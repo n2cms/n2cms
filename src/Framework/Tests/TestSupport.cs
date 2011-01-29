@@ -16,6 +16,7 @@ using N2.Web;
 using N2.Edit.Workflow;
 using N2.Persistence.Proxying;
 using NHibernate;
+using N2.Definitions.Static;
 
 namespace N2.Tests
 {

@@ -15,14 +15,14 @@ namespace N2.Management.Content.Templates
 		GlobalResourceClassName = "Toolbar")]
 	public partial class Default : EditPage
 	{
-		protected IContentTemplateRepository Templates { get; set; }
+		protected ContentTemplateRepository Templates { get; set; }
 		protected IDefinitionManager Definitions { get; set; }
 		protected IEditUrlManager Edits { get; set; }
 		
 		protected override void OnPreInit(EventArgs e)
 		{
 			base.OnPreInit(e);
-			Templates = Engine.Resolve<IContentTemplateRepository>();
+			Templates = Engine.Resolve<ContentTemplateRepository>();
 			Definitions = Engine.Resolve<IDefinitionManager>();
 			Edits = Engine.Resolve<IEditUrlManager>();
 		}

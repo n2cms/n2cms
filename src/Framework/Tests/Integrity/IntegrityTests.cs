@@ -15,6 +15,7 @@ using Rhino.Mocks.Interfaces;
 using N2.Tests.Fakes;
 using System.Linq;
 using N2.Persistence.Proxying;
+using N2.Definitions.Static;
 
 namespace N2.Tests.Integrity
 {

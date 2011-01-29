@@ -310,6 +310,7 @@ namespace N2.Edit
 			}
 			else
 			{
+				ie.Definition = Templates.GetDefinition(Selection.SelectedItem);
                 ie.CurrentItem = Selection.SelectedItem;
 			}
 			ie.ZoneName = base.Page.Request["zoneName"];

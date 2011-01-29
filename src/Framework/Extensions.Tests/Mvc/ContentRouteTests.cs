@@ -18,6 +18,7 @@ using Rhino.Mocks;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
 using N2.Persistence.Proxying;
 using N2.Persistence;
+using N2.Definitions.Static;
 
 namespace N2.Extensions.Tests.Mvc
 {

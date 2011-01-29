@@ -74,6 +74,7 @@ namespace N2.Definitions
 			AllowedParentFilters = new List<IAllowedDefinitionFilter>();
 			AvailableZones = new List<AvailableZoneAttribute>();
 			AllowedZoneNames = new List<string>();
+			IsPage = true;
 		}
 
 		/// <summary>Variant of an item with the same discriminator.</summary>
@@ -87,6 +88,9 @@ namespace N2.Definitions
 
 		/// <summary>Gets or sets how to treat this definition during installation.</summary>
 		public InstallerHint Installer { get; set; }
+
+		/// <summary>Whether the defined type is a page or a part.</summary>
+		public bool IsPage { get; set; }
 
 		#region Properties
 
@@ -133,24 +137,11 @@ namespace N2.Definitions
 		/// <summary>Gets the IconUrl returned by a new instance of the item.</summary>
 		public string IconUrl
 		{
-			get
-			{
-				if (iconUrl == null)
-				{
-					try
-					{
-						iconUrl = DescriptionDictionary.GetDescription(ItemType).IconUrl
-						          ?? ((ContentItem) Activator.CreateInstance(ItemType)).IconUrl;
-					}
-					catch (Exception ex)
-					{
-						Trace.TraceWarning(ex.ToString());
-						iconUrl = "";
-					}
-				}
-				return Url.ResolveTokens(iconUrl);
-			}
-			set { iconUrl = value; }
+		    get
+		    {
+		        return Url.ResolveTokens(iconUrl);
+		    }
+		    set { iconUrl = value; }
 		}
 
 		/// <summary>Gets or sets editables defined for the item.</summary>
@@ -322,36 +313,6 @@ namespace N2.Definitions
 			return false;
 		}
 
-		///// <summary>Find out if this item allows sub-items of a certain type.</summary>
-		///// <param name="child">The item that should be checked whether it is allowed below this item.</param>
-		///// <returns>True if the specified child item is allowed below this item.</returns>
-		//public bool IsChildAllowed(ItemDefinition child)
-		//{
-		//    return AllowedChildren.Contains(child);
-		//}
-
-		///// <summary>Adds an allowed child definition to the list of allowed definitions.</summary>
-		///// <param name="definition">The allowed child definition to add.</param>
-		//public void AddAllowedChild(ItemDefinition definition)
-		//{
-		//    if (!AllowedChildren.Contains(definition))
-		//        AllowedChildren.Add(definition);
-		//}
-
-		///// <summary>Removes an allowed child definition from the list of allowed definitions if not already removed.</summary>
-		///// <param name="definition">The definition to remove.</param>
-		//public void RemoveAllowedChild(ItemDefinition definition)
-		//{
-		//    if (AllowedChildren.Contains(definition))
-		//        AllowedChildren.Remove(definition);
-		//}
-
-		///// <summary>Clears the list of allowed children.</summary>
-		//public void ClearAllowedChildren()
-		//{
-		//    AllowedChildren.Clear();
-		//}
-
 		/// <summary>Adds an allowed zone to the definition's list of allwed zones.</summary>
 		/// <param name="zone">The zone name to add.</param>
 		public void AddAllowedZone(string zone)
@@ -409,12 +370,14 @@ namespace N2.Definitions
 			ReloadRoot();
 		}
 
-		public ItemDefinition ReflectionAdd(Type type)
+		public ItemDefinition Initialize(Type type)
 		{
 			Editables = Union(Editables, explorer.Find<IEditable>(type));
 			Containers = Union(Containers, explorer.Find<IEditableContainer>(type));
 			Modifiers = Union(Modifiers, explorer.Find<EditorModifierAttribute>(type));
 			Displayables = Union(Displayables, explorer.Find<IDisplayable>(type));
+			foreach (ISimpleDefinitionRefiner refiner in type.GetCustomAttributes(typeof(ISimpleDefinitionRefiner), true))
+				refiner.Refine(this);
 
 			ReloadRoot();
 			return this;
@@ -443,7 +406,7 @@ namespace N2.Definitions
 			id.AllowedIn = AllowedIn;
 			id.AllowedParentFilters = AllowedParentFilters.ToList();
 			id.AllowedZoneNames = AllowedZoneNames.ToList();
-			id.AuthorizedRoles = AuthorizedRoles.ToList();
+			id.AuthorizedRoles = AuthorizedRoles != null ? AuthorizedRoles.ToList() : AuthorizedRoles;
 			id.AvailableZones = AvailableZones.ToList();
 			id.Containers = Containers.ToList();
 			id.Description = Description;

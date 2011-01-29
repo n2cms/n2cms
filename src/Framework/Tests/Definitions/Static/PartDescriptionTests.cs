@@ -1,3 +1,4 @@
+using N2.Definitions;
 using N2.Definitions.Static;
 using N2.Web;
 using NUnit.Framework;
@@ -7,7 +8,7 @@ namespace N2.Tests.Definitions.Static
 	[TestFixture]
 	public class PartDescriptionTests
 	{
-		Description description = DescriptionDictionary.GetDescription(typeof(DescribablePart));
+		ItemDefinition description = StaticDefinitionDictionary.Instance.GetDefinition(typeof(DescribablePart));
 		ContentItem item = new DescribablePart();
 
 		[Test]
