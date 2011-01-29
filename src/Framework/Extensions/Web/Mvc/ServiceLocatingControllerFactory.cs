@@ -90,7 +90,7 @@ namespace N2.Web.Mvc
 			var method = (MethodCallExpression)expression.Body;
 			var p = new Pair();
 			p.ControllerType = method.Object.Type;
-			p.RotueValues = new RouteValueDictionary { { "action", method.Method.Name } };
+			p.RotueValues = new RouteValueDictionary { { "controller", p.ControllerType.Name.Substring(0, p.ControllerType.Name.Length - "Controller".Length) }, {"action", method.Method.Name } };
 			NotFoundControllerSelector = (r) => p;
 		}
 	}
