@@ -7,6 +7,7 @@ using System.Web.Routing;
 using N2.Web.Mvc;
 using N2.Engine;
 using System.Reflection;
+using Dinamico.Definitions.Dynamic;
 
 namespace Dinamico
 {
@@ -47,12 +48,17 @@ namespace Dinamico
 
 		protected void Application_Start()
 		{
-			RegisterControllerFactory(ControllerBuilder.Current, N2.Context.Current);
+			var engine = N2.Context.Current;
+			RegisterControllerFactory(ControllerBuilder.Current, engine);
 
 			AreaRegistration.RegisterAllAreas();
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
-			RegisterRoutes(RouteTable.Routes, N2.Context.Current);
+			RegisterRoutes(RouteTable.Routes, engine);
+
+			engine.Resolve<RazorTemplateRegistrator>()
+				.Add<Controllers.DynamicPagesController>()
+				.Add<Controllers.DynamicPartsController>();
 		}
 	}
 }

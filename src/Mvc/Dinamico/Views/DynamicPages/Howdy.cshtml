@@ -6,7 +6,7 @@
 		re.Container("Content", e =>
 		{
 			e.FreeTextArea("Text");
-			e.FreeTextArea("Text 2");
+			e.FreeTextArea("Text2", "Text 2");
 		});
 		re.Title = "Howdy page";
 	});
@@ -16,4 +16,8 @@
     ViewBag.Title = Model.Title;
 }
 
-<h2>@Model.Title</h2>
+@Content.Display.Title
+
+@Content.Display.Text
+
+@Content.Display.Text2

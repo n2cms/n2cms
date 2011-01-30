@@ -46,6 +46,7 @@ namespace N2.Definitions
 		private AllowedZones allowedIn = AllowedZones.None;
 		private bool enabled = true;
 		private string iconUrl;
+		private HashSet<Type> initializedTypes = new HashSet<Type>();
 
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
@@ -372,6 +373,9 @@ namespace N2.Definitions
 
 		public ItemDefinition Initialize(Type type)
 		{
+			if (initializedTypes.Contains(type))
+				return this;
+
 			Editables = Union(Editables, explorer.Find<IEditable>(type));
 			Containers = Union(Containers, explorer.Find<IEditableContainer>(type));
 			Modifiers = Union(Modifiers, explorer.Find<EditorModifierAttribute>(type));
@@ -380,6 +384,8 @@ namespace N2.Definitions
 				refiner.Refine(this);
 
 			ReloadRoot();
+
+			initializedTypes.Add(type);
 			return this;
 		}
 

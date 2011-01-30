@@ -140,7 +140,7 @@
     <Compile Include="Definitions\ISimpleDefinitionRefiner.cs" />
     <Compile Include="Definitions\ISyndicatable.cs" />
     <Compile Include="Definitions\ReflectingDefinitionProvider.cs" />
-    <Compile Include="Definitions\Static\StaticDefinitionDictionary.cs" />
+    <Compile Include="Definitions\Static\DefinitionDictionary.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />

@@ -281,7 +281,7 @@ namespace N2
 		/// <summary>Gets whether this item is a page. This is used for and site map purposes.</summary>
 		public virtual bool IsPage
 		{
-			get { return Definitions.Static.StaticDefinitionDictionary.Instance.GetDefinition(GetContentType()).IsPage; }
+			get { return Definitions.Static.DefinitionDictionary.Instance.GetDefinition(GetContentType()).IsPage; }
 		}
 
 		/// <summary>Gets the public url to this item. This is computed by walking the parent path and prepending their names to the url.</summary>
@@ -309,7 +309,7 @@ namespace N2
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
 		public virtual string IconUrl
         {
-			get { return N2.Web.Url.ResolveTokens(Definitions.Static.StaticDefinitionDictionary.Instance.GetDefinition(GetContentType()).IconUrl); }
+			get { return N2.Web.Url.ResolveTokens(Definitions.Static.DefinitionDictionary.Instance.GetDefinition(GetContentType()).IconUrl); }
         }
 
 		/// <summary>Gets the non-friendly url to this item (e.g. "/Default.aspx?page=1"). This is used to uniquely identify this item when rewriting to the template page. Non-page items have two query string properties; page and item (e.g. "/Default.aspx?page=1&amp;item&#61;27").</summary>

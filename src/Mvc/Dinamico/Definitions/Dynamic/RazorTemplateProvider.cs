@@ -12,6 +12,9 @@ using N2.Web.Mvc.Html;
 using Dinamico.Models;
 using N2.Edit;
 using N2.Persistence;
+using N2.Web.Mvc;
+using N2;
+using System.Diagnostics;
 
 namespace Dinamico.Definitions.Dynamic
 {
@@ -33,19 +36,85 @@ namespace Dinamico.Definitions.Dynamic
 		#endregion
 	}
 
+	[Service(typeof(IProvider<ViewEngineCollection>))]
+	public class ViewEngineCollectionProvider : IProvider<ViewEngineCollection>
+	{
+		#region IProvider<ViewEngineCollection> Members
+
+		public ViewEngineCollection Get()
+		{
+			return ViewEngines.Engines;
+		}
+
+		public IEnumerable<ViewEngineCollection> GetAll()
+		{
+			return new[] { ViewEngines.Engines };
+		}
+
+		#endregion
+	}
+
+	[Service]
+	public class RazorTemplateRegistrator
+	{
+		public RazorTemplateRegistrator()
+		{
+			QueuedRegistrations = new Queue<Type>();
+		}
+
+		public RazorTemplateRegistrator Add<T>() where T : Controller
+		{
+			QueuedRegistrations.Enqueue(typeof(T));
+			if (RegistrationAdded != null)
+				RegistrationAdded.Invoke(this, new EventArgs());
+
+			return this;
+		}
+
+		public event EventHandler RegistrationAdded;
+
+		public Queue<Type> QueuedRegistrations { get; set; }
+	}
 
 	[Service(typeof(ITemplateProvider))]
 	public class RazorTemplateProvider : ITemplateProvider
 	{
 		IProvider<HttpContextBase> httpContextProvider;
+		IProvider<ViewEngineCollection> viewEnginesProvider;
 		IFileSystem fs;
 		ContentActivator activator;
+		RazorTemplateRegistrator registrator;
+		List<Tuple<string, Type>> sources = new List<Tuple<string, Type>>();
 
-		public RazorTemplateProvider(IProvider<HttpContextBase> httpContextProvider, IFileSystem fs, ContentActivator activator)
+		public RazorTemplateProvider(RazorTemplateRegistrator registrator, IFileSystem fs, ContentActivator activator, IProvider<HttpContextBase> httpContextProvider, IProvider<ViewEngineCollection> viewEnginesProvider)
 		{
-			this.httpContextProvider = httpContextProvider;
+			this.registrator = registrator;
+			registrator.RegistrationAdded += registrator_RegistrationAdded;
 			this.fs = fs;
 			this.activator = activator;
+			this.httpContextProvider = httpContextProvider;
+			this.viewEnginesProvider = viewEnginesProvider;
+			
+			HandleRegistrationQueue();
+		}
+
+		void registrator_RegistrationAdded(object sender, EventArgs e)
+		{
+			HandleRegistrationQueue();
+		}
+
+		private void HandleRegistrationQueue()
+		{
+			while (registrator.QueuedRegistrations.Count > 0)
+			{
+				var controllerType = registrator.QueuedRegistrations.Dequeue();
+				string controllerName = controllerType.Name.Substring(0, controllerType.Name.Length - "Controller".Length);
+				Type modelType = typeof(ContentItem);
+				Type contentControllerType = Utility.GetBaseTypes(controllerType).FirstOrDefault(t => t.GetGenericTypeDefinition() == typeof(ContentController<>));
+				if (contentControllerType != null)
+					modelType = contentControllerType.GetGenericArguments().First();
+				sources.Add(new Tuple<string, Type>(controllerName, modelType));
+			}
 		}
 
 		#region ITemplateProvider Members
@@ -98,55 +167,55 @@ namespace Dinamico.Definitions.Dynamic
 
 		public IEnumerable<ItemDefinition> BuildDefinitions(HttpContextBase httpContext)
 		{
-			StringWriter sw = new StringWriter();
-			foreach (var file in fs.GetFiles("~/Views/DynamicPages/").Where(f => f.Name.EndsWith(".cshtml")))
+			foreach (var source in sources)
 			{
-				var cctx = new ControllerContext(httpContext, new RouteData(), new StubController());
-				cctx.RouteData.Values.Add("controller", "DynamicPages");
-				var v = ViewEngines.Engines.FindView(cctx, file.VirtualPath, null);
+				string controllerName = source.Item1;
+				Type modelType = source.Item2;
 
-				if (v.View == null)
-					continue;
+				foreach (var file in fs.GetFiles("~/Views/" + controllerName).Where(f => f.Name.EndsWith(".cshtml")))
+				{
+					var definition = GetDefinition(httpContext, file, controllerName, modelType);
+					if (definition != null)
+						yield return definition;
+				}
+			}
+		}
 
-				var re = new DefinitionRegistrationExpression();
-				re.Template = N2.Web.Url.RemoveExtension(file.Name);
-				re.IsDefined = false;
+		private ItemDefinition GetDefinition(HttpContextBase httpContext, FileData file, string controllerName, Type modelType)
+		{
+			var cctx = new ControllerContext(httpContext, new RouteData(), new StubController());
+			cctx.RouteData.Values.Add("controller", controllerName);
+			var v = viewEnginesProvider.Get().FindView(cctx, file.VirtualPath, null);
 
-				httpContext.Items["RegistrationExpression"] = re;
-				try
+			if (v.View == null)
+				return null;
+
+			var re = new DefinitionRegistrationExpression();
+			re.Template = N2.Web.Url.RemoveExtension(file.Name);
+			re.IsDefined = false;
+
+			httpContext.Items["RegistrationExpression"] = re;
+			try
+			{
+				using (StringWriter sw = new StringWriter())
 				{
 					v.View.Render(new ViewContext(cctx, v.View, new ViewDataDictionary { Model = new DynamicPage() }, new TempDataDictionary(), sw), sw);
 				}
-				catch (Exception)
-				{
-					continue;
-				}
-				finally
-				{
-					httpContext.Items["RegistrationExpression"] = null;
-				}
-
-				if (!re.IsDefined)
-					continue;
-
-				var id = new ItemDefinition(re.ItemType);
-				id.Initialize(re.ItemType);
-
-				foreach (IDefinitionRefiner refiner in re.ItemType.GetCustomAttributes(typeof(IDefinitionRefiner), true))
-					refiner.Refine(id, new[] { id });
-
-				id.Title = re.Title;
-				id.Template = re.Template;
-
-				foreach (var c in re.Containables)
-				{
-					id.Add(c);
-				}
-				foreach (var e in re.Editables)
-					id.Add(e);
-
-				yield return id;
 			}
+			catch (Exception ex)
+			{
+				Trace.WriteLine(ex);
+				return null;
+			}
+			finally
+			{
+				httpContext.Items["RegistrationExpression"] = null;
+			}
+
+			if (!re.IsDefined)
+				return null;
+
+			return re.CreateDefinition(N2.Definitions.Static.DefinitionDictionary.Instance);
 		}
 
 		public TemplateDefinition GetTemplate(N2.ContentItem item)

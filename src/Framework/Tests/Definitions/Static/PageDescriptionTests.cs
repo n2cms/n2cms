@@ -8,7 +8,7 @@ namespace N2.Tests.Definitions.Static
 	[TestFixture]
 	public class PageDescriptionTests
 	{
-		ItemDefinition description = StaticDefinitionDictionary.Instance.GetDefinition(typeof(DescribablePage));
+		ItemDefinition description = DefinitionDictionary.Instance.GetDefinition(typeof(DescribablePage));
 		ContentItem page = new DescribablePage();
 
 		[Test]

@@ -11,6 +11,8 @@ namespace N2.Web.Mvc.Html
 	{
 		public static IHtmlString ToHtmlString(this object instance)
 		{
+			if (instance == null)
+				return null;
 			return new HtmlString(instance.ToString());
 		}
 	}
@@ -43,9 +45,10 @@ namespace N2.Web.Mvc.Html
 			return re;
 		}
 
-		private static DefinitionRegistrationExpression GetRegistrationExpression<T>(ContentContext<T> content) where T : class
+		public static DefinitionRegistrationExpression GetRegistrationExpression<T>(ContentContext<T> content) where T : class
 		{
-			return content.Html.ViewContext.HttpContext.Items["RegistrationExpression"] as DefinitionRegistrationExpression;
+			return content.Html.ViewContext.HttpContext.Items["RegistrationExpression"] as DefinitionRegistrationExpression
+				?? (content.Html.ViewData["RegistrationExpression"] = new DefinitionRegistrationExpression() { ItemType = content.Current.GetType() }) as DefinitionRegistrationExpression; //TODO prettify
 		}
 
 		// containables
@@ -303,5 +306,25 @@ namespace N2.Web.Mvc.Html
 		public string Template { get; set; }
 		public string Title { get; set; }
 		public bool IsDefined { get; set; }
+
+		public ItemDefinition CreateDefinition(Definitions.Static.DefinitionDictionary definitions)
+		{
+			var id = definitions.GetDefinition(ItemType).Initialize(ItemType).Clone();
+
+			foreach (IDefinitionRefiner refiner in ItemType.GetCustomAttributes(typeof(IDefinitionRefiner), true))
+				refiner.Refine(id, new[] { id });
+
+			id.Title = Title;
+			id.Template = Template;
+
+			foreach (var c in Containables)
+			{
+				id.Add(c);
+			}
+			foreach (var e in Editables)
+				id.Add(e);
+
+			return id;
+		}
 	}
 }

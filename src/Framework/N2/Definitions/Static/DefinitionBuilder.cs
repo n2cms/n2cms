@@ -16,11 +16,11 @@ namespace N2.Definitions.Static
 	[Service]
 	public class DefinitionBuilder
 	{
-		private readonly StaticDefinitionDictionary staticDefinitions;
+		private readonly DefinitionDictionary staticDefinitions;
 		private readonly ITypeFinder typeFinder;
 		private readonly EngineSection config;
 
-		public DefinitionBuilder(StaticDefinitionDictionary staticDefinitions, ITypeFinder typeFinder, EngineSection config)
+		public DefinitionBuilder(DefinitionDictionary staticDefinitions, ITypeFinder typeFinder, EngineSection config)
 		{
 			this.staticDefinitions = staticDefinitions;
 			this.typeFinder = typeFinder;
@@ -28,7 +28,7 @@ namespace N2.Definitions.Static
 		}
 
 		public DefinitionBuilder(ITypeFinder typeFinder, EngineSection config)
-			: this(StaticDefinitionDictionary.Instance, typeFinder, config)
+			: this(DefinitionDictionary.Instance, typeFinder, config)
 		{
 		}
 

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
-using N2.Collections;
-using N2.Web.Mvc.Html;
 using System.Web.Mvc;
+using N2.Collections;
 using N2.Persistence.Finder;
+using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -87,6 +88,61 @@ namespace N2.Web.Mvc
 
 		#endregion
 	}
+
+	public class DisplayHelper<TModel> : DynamicObject where TModel : class
+	{
+		ContentContext<TModel> content;
+		bool renderDisplayables;
+
+		public DisplayHelper(ContentContext<TModel> content, bool renderDisplayables)
+		{
+			this.content = content;
+			this.renderDisplayables = renderDisplayables;
+		}
+
+		public override IEnumerable<string> GetDynamicMemberNames()
+		{
+			return content.Current.GetType().GetProperties().Select(p => p.Name);
+		}
+		public override bool TryGetMember(GetMemberBinder binder, out object result)
+		{
+			string name = binder.Name;
+			if (renderDisplayables)
+			{
+				object html = content.Html.DisplayContent(name).SwallowExceptions().ToString();
+
+				if (html == null)
+					html = content.CurrentItem[name];
+
+				result = html.ToHtmlString();
+			}
+			else
+				result = content.CurrentItem[name];
+
+			return true;
+
+			//var id = RegisterExtensions.GetRegistrationExpression(content).CreateDefinition(Definitions.Static.DefinitionDictionary.Instance);
+
+			//var di = id.Displayables.FirstOrDefault(d => d.Name == binder.Name);
+
+			//if (di == null)
+			//{
+			//    result = null;
+			//    return false;
+			//}
+			
+			//Page p = new Page();
+			//di.AddTo(content.CurrentItem, binder.Name, p);
+
+			//using(var sw = new StringWriter())
+			//using(var htw = new HtmlTextWriter(sw))
+			//{
+			//    p.RenderControl(htw);
+			//    result = sw.ToHtmlString();
+			//    return true;
+			//}
+		}
+	}
 	
 	public class ContentContext<TModel> where TModel : class
 	{
@@ -107,7 +163,7 @@ namespace N2.Web.Mvc
 			get { return CurrentItem as TModel; }
 		}
 
-		private ContentItem CurrentItem
+		internal ContentItem CurrentItem
 		{
 			get { return page.Html.ViewContext.CurrentItem(); }
 		}
@@ -203,6 +259,16 @@ namespace N2.Web.Mvc
 			if (root == null)
 				root = CurrentItem;
 			return Html.ResolveService<IItemFinder>().Where.AncestralTrail.Like(Utility.GetTrail(root) + "%");
+		}
+
+		public dynamic Display
+		{
+			get { return new DisplayHelper<TModel>(this, true); }
+		}
+
+		public dynamic Data
+		{
+			get { return new DisplayHelper<TModel>(this, false); }
 		}
 	}
 }
