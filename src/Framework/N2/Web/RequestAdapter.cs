@@ -37,13 +37,11 @@ namespace N2.Web
 		/// <summary>Rewrites a dynamic/computed url to an actual template url.</summary>
 		public virtual void RewriteRequest(PathData path, RewriteMethod rewriteMethod)
 		{
-			if (path == null || path.IsEmpty() || !path.IsRewritable || path.Ignore)
+			if (path == null || path.IsEmpty() || !path.IsRewritable || path.Ignore || rewriteMethod == RewriteMethod.None)
 				return;
 
 			string templateUrl = GetHandlerPath(path);
-
-			if(rewriteMethod == RewriteMethod.BeginRequest || rewriteMethod == RewriteMethod.SurroundMapRequestHandler)
-				WebContext.RewritePath(templateUrl);
+			WebContext.RewritePath(templateUrl);
 		}
 
         /// <summary>Gets the path to the handler (aspx template) to rewrite to.</summary>

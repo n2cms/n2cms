@@ -21,7 +21,6 @@ namespace N2.Web
 		private readonly IErrorHandler errors;
 		private readonly IEditUrlManager editUrlManager;
 		private readonly InstallationManager installer;
-		private readonly bool isLegacyRewriteMode;
 		private readonly IWebContext webContext;
 		protected bool checkInstallation;
 		protected bool initialized;
@@ -47,7 +46,6 @@ namespace N2.Web
 			welcomeUrl = editConfig.Installer.WelcomeUrl;
 			managementUrl = editConfig.ManagementInterfaceUrl;
 			rewriteMethod = hostConfig.Web.Rewrite;
-			isLegacyRewriteMode = rewriteMethod == RewriteMethod.BeginRequest;
 			this.webContext = webContext;
 			this.broker = broker;
 			this.adapters = adapters;
@@ -100,9 +98,7 @@ namespace N2.Web
 			PathData data = dispatcher.GetCurrentPath();
 			webContext.CurrentPath = data;
 
-			webContext.RequestItems[this] = new RewriteMemory {OriginalPath = webContext.Url.LocalUrl};
-
-			if (isLegacyRewriteMode && data != null && !data.IsEmpty())
+			if (rewriteMethod == RewriteMethod.BeginRequest && data != null && !data.IsEmpty())
 			{
 				var adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage);
 				adapter.RewriteRequest(data, rewriteMethod);
@@ -120,12 +116,14 @@ namespace N2.Web
 
 		protected virtual void Application_PostResolveRequestCache(object sender, EventArgs e)
 		{
-			if (!isLegacyRewriteMode)
+			if (rewriteMethod == RewriteMethod.SurroundMapRequestHandler)
 			{
 				PathData data = webContext.CurrentPath;
 				if (data != null && !data.IsEmpty())
 				{
 					var adapter = adapters.ResolveAdapter<RequestAdapter>(data.CurrentPage);
+
+					webContext.RequestItems[this] = new RewriteMemory { OriginalPath = webContext.Url.LocalUrl };
 					adapter.RewriteRequest(data, rewriteMethod);
 				}
 			}
@@ -133,7 +131,7 @@ namespace N2.Web
 
 		protected virtual void Application_PostMapRequestHandler(object sender, EventArgs e)
 		{
-			if (!isLegacyRewriteMode)
+			if (rewriteMethod == RewriteMethod.SurroundMapRequestHandler)
 			{
 				var info = webContext.RequestItems[this] as RewriteMemory;
 				if (info != null)
