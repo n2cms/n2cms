@@ -306,7 +306,7 @@ namespace N2.Web.Mvc
 
 			foreach (var kvp in Url.ParseQueryString(Url.QueryPart(relativeUrl)))
 			{
-				if ("item".Equals(kvp.Value, StringComparison.InvariantCultureIgnoreCase))
+				if ("item".Equals(kvp.Key, StringComparison.InvariantCultureIgnoreCase))
 					continue;
 
 				actionUrl = actionUrl.AppendQuery(kvp.Key, kvp.Value);

@@ -2,7 +2,7 @@
 	Inherits="N2.Web.Mvc.ContentViewPage<SearchModel, SearchBase>" Title="" %>
 
 <asp:Content ContentPlaceHolderID="PostContent" runat="server">
-	<%using(Html.BeginForm("Index", "Search", FormMethod.Get)){%>
+	<%using(Html.BeginForm("Index", "Search", FormMethod.Post)){%>
 		<%=Html.TextBox("q")%>
 		<input type="submit" />
 	<%} %>
