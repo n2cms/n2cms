@@ -287,31 +287,64 @@ div#title
     text-align:left;
 }
 
-#logindisplay
+#topnav
 {
     font-size:1.1em;
     display:block;
     text-align:right;
     margin:10px;
     color:White;
+    position:relative;
 }
 
-#logindisplay a:link
+#topnav a:link
 {
     color: white;
     text-decoration: underline;
 }
 
-#logindisplay a:visited
+#topnav a:visited
 {
     color: white;
     text-decoration: underline;
 }
 
-#logindisplay a:hover
+#topnav a:hover
 {
     color: white;
     text-decoration: none;
+}
+
+ul.sitemap,
+ul.searchresults
+{
+	background-color:#5c87b2;
+	border:solid 1px #fff;
+	position:absolute;
+	top:10px;
+	text-align:left;
+	z-index:1000;
+	max-height:500px;
+	overflow:auto;
+	padding:20px;
+}
+
+#search
+{
+	display:inline;
+}
+
+#search input
+{
+	width:100px;
+	background:#fff url(/N2/Resources/icons/zoom.png) no-repeat 100% 1px;
+}
+#search button
+{
+	height:24px;
+	width:30px;
+	position:relative;
+	top:3px;
 }
 
 /* Styles for validation helpers

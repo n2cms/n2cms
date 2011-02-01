@@ -20,10 +20,11 @@
 	<div class="page">
 		<div id="header">
 			<div id="title">
-				<h1>
-					My MVC Application</h1>
+				<h1>My MVC Application</h1>
 			</div>
-			<div id="logindisplay">
+			<div id="topnav">
+				@Html.Partial("_SiteMapPartial")
+				@Html.Partial("_SearchPartial")
 				@Html.Partial("_LogOnPartial")
 			</div>
 			<div id="menucontainer">
@@ -32,8 +33,8 @@
 		</div>
 		<div id="main">
 			@if (IsSectionDefined("Main")) { RenderSection("Main"); }
-			else
-			{
+   else
+   {
 			<div id="sidebar">@if (IsSectionDefined("Sidebar")) { RenderSection("Sidebar"); } else { Html.DroppableZone("Sidebar").Render(); }</div>
 			<div id="content">@RenderBody()</div>
 			}

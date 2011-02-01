@@ -1,0 +1,14 @@
+﻿@{using (Html.BeginForm("Search", null, new { item = Content.StartPage }, FormMethod.Get, new { id = "search" }))
+  {
+	<input name="q" />
+	@*<button><img src="/N2/Resources/icons/zoom.png" alt="search" /></button>*@
+  }
+}
+<script type="text/javascript">//<![CDATA[
+	$("#search").submit(function (e) {
+		e.preventDefault();
+		var $sm = $("<ul class='searchresults'></ul>").appendTo(this.parentNode).css({ left: $(this).position().left + "px" }).load(this.action, $(this).serialize(), function () { $("a:first", this).focus(); });
+		var remove = function () { $sm.remove(); $(document.body).unbind("click", remove) };
+		setTimeout(function () { $(document.body).click(remove); }, 1);
+	});
+//]]></script>

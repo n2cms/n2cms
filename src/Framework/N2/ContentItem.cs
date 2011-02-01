@@ -641,6 +641,20 @@ namespace N2
 			return new ItemList(items, filter);
 		}
 
+		/// <summary>Gets children applying filters.</summary>
+		/// <param name="skip">Number of child items to skip at the database level.</param>
+		/// <param name="skip">Number of child items to take at the database level.</param>
+		/// <param name="filter">The filters to apply on the children after they have been loaded from the database.</param>
+		/// <returns>A list of filtered child items.</returns>
+		public virtual ItemList GetChildren(int skip, int take, ItemFilter filter)
+		{
+			var items = VersionOf == null ? Children : VersionOf.Children;
+			if (skip != 0 || take != int.MaxValue)
+				return new ItemList(items.FindRange(skip, take), filter);
+
+			return new ItemList(items, filter);
+		}
+
 		#endregion
 
 		#region IComparable & IComparable<ContentItem> Members

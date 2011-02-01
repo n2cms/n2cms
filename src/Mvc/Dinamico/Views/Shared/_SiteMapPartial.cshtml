@@ -1,0 +1,9 @@
+﻿[@Html.ActionLink("Site map", Content.StartPage, "SiteMap", null, new { id = "sitemap" })]
+<script type="text/javascript">//<![CDATA[
+	$("#sitemap").click(function (e) {
+		e.preventDefault();
+		var $sm = $("<ul class='sitemap'></ul>").appendTo(this.parentNode).css({ left: $(this).position().left + "px" }).load(this.href, null, function () { $("a:first", this).focus(); });
+		var remove = function () { $sm.remove(); $(document.body).unbind("click", remove) };
+		setTimeout(function(){$(document.body).click(remove);}, 1);
+	});
+//]]></script>
