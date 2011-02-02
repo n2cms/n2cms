@@ -15,6 +15,7 @@ using N2.Persistence;
 using N2.Web.Mvc;
 using N2;
 using System.Diagnostics;
+using N2.Definitions.Dynamic;
 
 namespace Dinamico.Definitions.Dynamic
 {
@@ -85,11 +86,13 @@ namespace Dinamico.Definitions.Dynamic
 		ContentActivator activator;
 		RazorTemplateRegistrator registrator;
 		List<Tuple<string, Type>> sources = new List<Tuple<string, Type>>();
+		bool rebuild = true;
 
 		public RazorTemplateProvider(RazorTemplateRegistrator registrator, IFileSystem fs, ContentActivator activator, IProvider<HttpContextBase> httpContextProvider, IProvider<ViewEngineCollection> viewEnginesProvider)
 		{
 			this.registrator = registrator;
 			registrator.RegistrationAdded += registrator_RegistrationAdded;
+
 			this.fs = fs;
 			this.activator = activator;
 			this.httpContextProvider = httpContextProvider;
@@ -114,6 +117,7 @@ namespace Dinamico.Definitions.Dynamic
 				if (contentControllerType != null)
 					modelType = contentControllerType.GetGenericArguments().First();
 				sources.Add(new Tuple<string, Type>(controllerName, modelType));
+				rebuild = true;
 			}
 		}
 
@@ -135,10 +139,11 @@ namespace Dinamico.Definitions.Dynamic
 				return new TemplateDefinition[0];
 			}
 
-			var definitions = httpContext.Items["RazorDefinitions"] as IEnumerable<ItemDefinition>;
-			if (definitions == null)
+			var definitions = httpContext.Cache["RazorDefinitions"] as IEnumerable<ItemDefinition>;
+			if (definitions == null || rebuild)
 			{
-				httpContext.Items["RazorDefinitions"] = definitions = BuildDefinitions(httpContext).ToList();
+				httpContext.Cache["RazorDefinitions"] = definitions = BuildDefinitions(httpContext).ToList();
+				rebuild = false;
 			}
 			var templates = definitions.Where(d => d.ItemType == contentType).Select(d =>
 				{
@@ -194,28 +199,24 @@ namespace Dinamico.Definitions.Dynamic
 			re.Template = N2.Web.Url.RemoveExtension(file.Name);
 			re.IsDefined = false;
 
-			httpContext.Items["RegistrationExpression"] = re;
 			try
 			{
 				using (StringWriter sw = new StringWriter())
 				{
-					v.View.Render(new ViewContext(cctx, v.View, new ViewDataDictionary { Model = new DynamicPage() }, new TempDataDictionary(), sw), sw);
+					var vdd = new ViewDataDictionary { Model = new DynamicPage() };
+					vdd["RegistrationExpression"] = re;
+					v.View.Render(new ViewContext(cctx, v.View, vdd, new TempDataDictionary(), sw), sw);
+
+					if (re.IsDefined)
+						return re.CreateDefinition(N2.Definitions.Static.DefinitionDictionary.Instance);
 				}
 			}
 			catch (Exception ex)
 			{
 				Trace.WriteLine(ex);
-				return null;
-			}
-			finally
-			{
-				httpContext.Items["RegistrationExpression"] = null;
 			}
 
-			if (!re.IsDefined)
-				return null;
-
-			return re.CreateDefinition(N2.Definitions.Static.DefinitionDictionary.Instance);
+			return null;
 		}
 
 		public TemplateDefinition GetTemplate(N2.ContentItem item)
@@ -224,7 +225,7 @@ namespace Dinamico.Definitions.Dynamic
 			if (templateName == null)
 				return null;
 
-			return GetTemplates(item.GetContentType()).Where(t => t.Definition.Template == templateName).Select(t =>
+			return GetTemplates(item.GetContentType()).Where(t => t.Name == templateName).Select(t =>
 				{
 					t.Original = t.Template;
 					t.Template = item;

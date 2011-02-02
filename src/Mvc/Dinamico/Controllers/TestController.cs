@@ -8,6 +8,7 @@ using N2.Edit.FileSystem;
 using System.Web.Routing;
 using N2.Web.Mvc.Html;
 using Dinamico.Models;
+using N2.Definitions.Dynamic;
 
 namespace Dinamico.Controllers
 {
@@ -20,23 +21,26 @@ namespace Dinamico.Controllers
 		{
 			StringWriter sw = new StringWriter();
 			IFileSystem files = N2.Context.Current.Resolve<IFileSystem>();
+			List<DefinitionRegistrationExpression> expressions = new List<DefinitionRegistrationExpression>();
 			foreach (var file in files.GetFiles("~/Views/DynamicPages/").Where(f => f.Name.EndsWith(".cshtml")))
 			{
 				var cctx = new ControllerContext(ControllerContext.HttpContext, new RouteData(), new DynamicPagesController());
 				cctx.RouteData.Values.Add("controller", "DynamicPages");
 				var v = ViewEngines.Engines.FindView(cctx, file.VirtualPath, null);
 
-				var re = new DefinitionRegistrationExpression();
-				ControllerContext.HttpContext.Items["RegistrationExpression"] = re;
 				if (v.View == null)
 					sw.Write(string.Join(", ", v.SearchedLocations.ToArray()));
 				else
-					v.View.Render(new ViewContext(cctx, v.View, new ViewDataDictionary { Model = new DynamicPage() }, new TempDataDictionary(), sw), sw);
-				ControllerContext.HttpContext.Items["RegistrationExpression"] = null;
-				return View(re);
+				{
+					var vdd = new ViewDataDictionary { Model = new DynamicPage() };
+					var re = new DefinitionRegistrationExpression();
+					vdd["RegistrationExpression"] = re;
+					v.View.Render(new ViewContext(cctx, v.View, vdd, new TempDataDictionary(), sw), sw);
+					expressions.Add(re);
+				}
 			}
-			return Content(sw.ToString());
-        }
+			return View(expressions);
+		}
 
     }
 }

@@ -1,23 +1,26 @@
-﻿@model N2.Web.Mvc.Html.DefinitionRegistrationExpression
+﻿@model IEnumerable<N2.Definitions.Dynamic.DefinitionRegistrationExpression>
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Test</h2>
+@foreach (var re in Model)
+{
 
+<h2>@re.Title</h2>
 
 <ul>
-	<li>@Model.ItemType</li>
-@foreach (var c in Model.Containables)
+	<li>@re.ItemType</li>
+@foreach (var c in re.Containables.OfType<N2.Definitions.IEditableContainer>().OrderBy(c => c.SortOrder))
 {
 	<li>
 		@c.Name (@c.SortOrder)
 		<ul>
-		@foreach (var e in Model.Editables.Where(e => e.ContainerName == c.Name))
+		@foreach (var e in re.Containables.OfType<N2.Definitions.IEditable>().Where(e => e.ContainerName == c.Name).OrderBy(e => e.SortOrder))
 		{
-			<li>@e.Title (@e.SortOrder)</li>
+			<li>@e.Name (@e.SortOrder)</li>
 		}
 		</ul>
 	</li>
 }
 </ul>
+}

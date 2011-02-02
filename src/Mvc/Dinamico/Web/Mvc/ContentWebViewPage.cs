@@ -8,11 +8,11 @@ namespace N2.Web.Mvc
 
 	public abstract class ContentWebViewPage<TModel> : WebViewPage<TModel> where TModel:class
 	{
-		private ContentContext<TModel> content;
+		private ContentHelper<TModel> content;
 
-		public ContentContext<TModel> Content
+		public ContentHelper<TModel> Content
 		{
-			get { return content ?? (content = new ContentContext<TModel>(this)); }
+			get { return content ?? (content = new ContentHelper<TModel>(this)); }
 			set { content = value; }
 		}
 	}

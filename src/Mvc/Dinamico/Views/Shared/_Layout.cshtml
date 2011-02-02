@@ -5,11 +5,11 @@
 	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 	@{ Html.Resources().JQuery(); }
 	@{
-		Content.AppendDefinition(re => 
+		Content.PrependDefinition(re => 
 			{
 				re.Tab("Content", "Content", e => e
-					.Title(config: c => c.SortOrder = -2)
-					.Name(config: c => c.SortOrder = -1));
+					.Title()
+					.Name());
 				re.Tab("Advanced", "Advanced", e =>
 					e.PublishedRange());
 			});

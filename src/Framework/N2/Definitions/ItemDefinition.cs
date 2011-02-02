@@ -42,12 +42,9 @@ namespace N2.Definitions
 	{
 		private AttributeExplorer explorer = new AttributeExplorer();
 		private EditableHierarchyBuilder hierarchyBuilder = new EditableHierarchyBuilder();
-		private readonly Type itemType;
-		private AllowedZones allowedIn = AllowedZones.None;
-		private bool enabled = true;
 		private string iconUrl;
-		private HashSet<Type> initializedTypes = new HashSet<Type>();
 
+		#region Constructors
 		/// <summary>Creates a new a instance of the ItemDefinition class loading the supplied type.</summary>
 		/// <param name="itemType">The item type to define.</param>
 		public ItemDefinition(Type itemType, AttributeExplorer explorer, EditableHierarchyBuilder hierarchyBuilder)
@@ -65,7 +62,7 @@ namespace N2.Definitions
 				throw new N2Exception(
 					"Can only create definitions of content items. This type is not a subclass of N2.ContentItem: " + itemType.FullName);
 
-			this.itemType = itemType;
+			ItemType = itemType;
 			Title = itemType.Name;
 			Discriminator = itemType.Name;
 			Description = "";
@@ -76,7 +73,13 @@ namespace N2.Definitions
 			AvailableZones = new List<AvailableZoneAttribute>();
 			AllowedZoneNames = new List<string>();
 			IsPage = true;
+			Enabled = true;
+			AllowedIn = AllowedZones.None;
 		}
+
+		#endregion
+
+		#region Properties
 
 		/// <summary>Variant of an item with the same discriminator.</summary>
 		public string Template { get; set; }
@@ -93,8 +96,6 @@ namespace N2.Definitions
 		/// <summary>Whether the defined type is a page or a part.</summary>
 		public bool IsPage { get; set; }
 
-		#region Properties
-
 		/// <summary>Gets roles or users allowed to edit items defined by this definition.</summary>
 		public IList<string> AuthorizedRoles { get; set; }
 
@@ -105,11 +106,7 @@ namespace N2.Definitions
 		public string Discriminator { get; set; }
 
 		/// <summary>Definitions which are not enabled are not available when creating new items.</summary>
-		public bool Enabled
-		{
-			get { return enabled; }
-			set { enabled = value; }
-		}
+		public bool Enabled { get; set; }
 
 		/// <summary>Gets or sets wheter this definition has been defined. Weirdly enough a definition may exist without beeing defined. To define a definition the class must implement the <see cref="N2.PageDefinitionAttribute"/> or <see cref="PartDefinitionAttribute"/>.</summary>
 		public bool IsDefined { get; internal set; }
@@ -124,10 +121,7 @@ namespace N2.Definitions
 		public string Description { get; set; }
 
 		/// <summary>Gets or sets the type of this item.</summary>
-		public Type ItemType
-		{
-			get { return itemType; }
-		}
+		public Type ItemType { get; private set; }
 
 		/// <summary>Gets zones available in this items of this class.</summary>
 		public IList<AvailableZoneAttribute> AvailableZones { get; private set; }
@@ -154,6 +148,26 @@ namespace N2.Definitions
 		/// <summary>Gets or sets the root container used to build the edit interface.</summary>
 		public IEditableContainer RootContainer { get; private set; }
 
+		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
+		public IList<EditorModifierAttribute> Modifiers { get; private set; }
+
+		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
+		public IList<IDisplayable> Displayables { get; private set; }
+
+		public AllowedZones AllowedIn { get; set; }
+
+		/// <summary>Filters allowed definitions below this definition.</summary>
+		public IList<IAllowedDefinitionFilter> AllowedChildFilters { get; private set; }
+
+		/// <summary>Filters allowed definitions above this definition.</summary>
+		public List<IAllowedDefinitionFilter> AllowedParentFilters { get; private set; }
+
+
+
+		#endregion
+
+		#region Methods
+
 		/// <summary>Gets or sets additional child types allowed below this item.</summary>
 		public IEnumerable<ItemDefinition> GetAllowedChildren(IDefinitionManager definitions, ContentItem parentItem)
 		{
@@ -175,28 +189,6 @@ namespace N2.Definitions
 		{
 			return GetAllowedChildren(definitions, null).Contains(itemDefinition);
 		}
-
-		/// <summary>Gets or sets all editor modifier attributes for this item.</summary>
-		public IList<EditorModifierAttribute> Modifiers { get; private set; }
-
-		/// <summary>Gets or sets displayable attributes defined for the item.</summary>
-		public IList<IDisplayable> Displayables { get; private set; }
-
-		public AllowedZones AllowedIn
-		{
-			get { return allowedIn; }
-			set { allowedIn = value; }
-		}
-
-		/// <summary>Filters allowed definitions below this definition.</summary>
-		public IList<IAllowedDefinitionFilter> AllowedChildFilters { get; private set; }
-
-		/// <summary>Filters allowed definitions above this definition.</summary>
-		public List<IAllowedDefinitionFilter> AllowedParentFilters { get; private set; }
-
-		#endregion
-
-		#region Methods
 
 		/// <summary>Find out if this item is allowed in a zone.</summary>
 		/// <param name="zoneName">The zone name to check.</param>
@@ -254,6 +246,118 @@ namespace N2.Definitions
 			return item;
 		}
 
+
+		public bool HasZone(string zone)
+		{
+			if (string.IsNullOrEmpty(zone))
+				return true;
+			if (AvailableZones != null)
+				foreach (AvailableZoneAttribute a in AvailableZones)
+					if (a.ZoneName == zone)
+						return true;
+			return false;
+		}
+
+		public bool IsAuthorized(IPrincipal user)
+		{
+			if (user == null || AuthorizedRoles == null)
+				return true;
+			foreach (string role in AuthorizedRoles)
+				if (string.Equals(user.Identity.Name, role, StringComparison.OrdinalIgnoreCase) || user.IsInRole(role))
+					return true;
+			return false;
+		}
+
+		/// <summary>Adds an allowed zone to the definition's list of allwed zones.</summary>
+		/// <param name="zone">The zone name to add.</param>
+		public void AddAllowedZone(string zone)
+		{
+			if (!AllowedZoneNames.Contains(zone))
+				AllowedZoneNames.Add(zone);
+		}
+
+		/// <summary>Adds an containable editor or container to existing editors and to a container.</summary>
+		/// <param name="containable">The editable to add.</param>
+		public void Add(IUniquelyNamed containable)
+		{
+			if (containable is IEditable)
+			{
+				Editables.AddOrReplace(containable as IEditable);
+			}
+			if (containable is IEditableContainer)
+			{
+				Containers.AddOrReplace(containable as IEditableContainer);
+			}
+			if (containable is IDisplayable)
+			{
+				Displayables.AddOrReplace(containable as IDisplayable);
+			}
+			ReloadRoot();
+		}
+
+		public IContainable Get(string containableName)
+		{
+			foreach (IEditable editable in Editables)
+			{
+				if (editable.Name == containableName)
+					return editable;
+			}
+			foreach (IEditableContainer container in Containers)
+			{
+				if (container.Name == containableName)
+					return container;
+			}
+			throw new ArgumentException("Could not find the containable '" + containableName +
+										"' amont the definition's Editables and Containers.");
+		}
+
+		public void Remove(IContainable containable)
+		{
+			if (containable is IEditable)
+				Editables.Remove((IEditable)containable);
+			else if (containable is IEditableContainer)
+				Containers.Remove((IEditableContainer)containable);
+			else
+				throw new ArgumentException("Invalid argument " + containable);
+
+			ReloadRoot();
+		}
+
+		private HashSet<Type> initializedTypes = new HashSet<Type>();
+		public ItemDefinition Initialize(Type type)
+		{
+			if (initializedTypes.Contains(type))
+				return this;
+
+			Editables = Union(Editables, explorer.Find<IEditable>(type));
+			Containers = Union(Containers, explorer.Find<IEditableContainer>(type));
+			Modifiers = Union(Modifiers, explorer.Find<EditorModifierAttribute>(type));
+			Displayables = Union(Displayables, explorer.Find<IDisplayable>(type));
+			foreach (ISimpleDefinitionRefiner refiner in type.GetCustomAttributes(typeof(ISimpleDefinitionRefiner), true))
+				refiner.Refine(this);
+
+			ReloadRoot();
+
+			initializedTypes.Add(type);
+			return this;
+		}
+
+		private void ReloadRoot()
+		{
+			RootContainer = hierarchyBuilder.Build(Containers, Editables);
+		}
+
+		private static IList<T> Union<T>(IList<T> collection, IList<T> toAdd)
+		{
+			if (collection == null)
+				return new List<T>(toAdd);
+
+			var list = new List<T>(collection);
+			foreach (var item in toAdd)
+				list.Add(item);
+			return list;
+		}
+
 		#endregion
 
 		#region IComparable<ItemDefinition> Members
@@ -293,117 +397,7 @@ namespace N2.Definitions
 
 		#endregion
 
-		public bool HasZone(string zone)
-		{
-			if (string.IsNullOrEmpty(zone))
-				return true;
-			if (AvailableZones != null)
-				foreach (AvailableZoneAttribute a in AvailableZones)
-					if (a.ZoneName == zone)
-						return true;
-			return false;
-		}
-
-		public bool IsAuthorized(IPrincipal user)
-		{
-			if (user == null || AuthorizedRoles == null)
-				return true;
-			foreach (string role in AuthorizedRoles)
-				if (string.Equals(user.Identity.Name, role, StringComparison.OrdinalIgnoreCase) || user.IsInRole(role))
-					return true;
-			return false;
-		}
-
-		/// <summary>Adds an allowed zone to the definition's list of allwed zones.</summary>
-		/// <param name="zone">The zone name to add.</param>
-		public void AddAllowedZone(string zone)
-		{
-			if (!AllowedZoneNames.Contains(zone))
-				AllowedZoneNames.Add(zone);
-		}
-
-		/// <summary>Adds an containable editor or container to existing editors and to a container.</summary>
-		/// <param name="containable">The editable to add.</param>
-		public void Add(IContainable containable)
-		{
-			if (containable is IEditable)
-			{
-				var existing = Editables.FirstOrDefault(e => e.Name == containable.Name);
-				if (existing != null)
-					Editables.Remove(existing);
-				Editables.Add(containable as IEditable);
-			}
-			else if (containable is IEditableContainer)
-			{
-				var existing = Containers.FirstOrDefault(c => c.Name == containable.Name);
-				if (existing != null)
-					Containers.Remove(existing);
-				Containers.Add(containable as IEditableContainer);
-			}
-			ReloadRoot();
-		}
-
-		public IContainable Get(string containableName)
-		{
-			foreach (IEditable editable in Editables)
-			{
-				if (editable.Name == containableName)
-					return editable;
-			}
-			foreach (IEditableContainer container in Containers)
-			{
-				if (container.Name == containableName)
-					return container;
-			}
-			throw new ArgumentException("Could not find the containable '" + containableName +
-			                            "' amont the definition's Editables and Containers.");
-		}
-
-		public void Remove(IContainable containable)
-		{
-			if (containable is IEditable)
-				Editables.Remove((IEditable) containable);
-			else if (containable is IEditableContainer)
-				Containers.Remove((IEditableContainer) containable);
-			else
-				throw new ArgumentException("Invalid argument " + containable);
-
-			ReloadRoot();
-		}
-
-		public ItemDefinition Initialize(Type type)
-		{
-			if (initializedTypes.Contains(type))
-				return this;
-
-			Editables = Union(Editables, explorer.Find<IEditable>(type));
-			Containers = Union(Containers, explorer.Find<IEditableContainer>(type));
-			Modifiers = Union(Modifiers, explorer.Find<EditorModifierAttribute>(type));
-			Displayables = Union(Displayables, explorer.Find<IDisplayable>(type));
-			foreach (ISimpleDefinitionRefiner refiner in type.GetCustomAttributes(typeof(ISimpleDefinitionRefiner), true))
-				refiner.Refine(this);
-
-			ReloadRoot();
-
-			initializedTypes.Add(type);
-			return this;
-		}
-
-		private void ReloadRoot()
-		{
-			RootContainer = hierarchyBuilder.Build(Containers, Editables);
-		}
-
-		private static IList<T> Union<T>(IList<T> collection, IList<T> toAdd)
-		{
-			if (collection == null)
-				return new List<T>(toAdd);
-
-			var list = new List<T>(collection);
-			foreach (var item in toAdd)
-				list.Add(item);
-			return list;
-		}
+		#region ICloneable Members
 
 		public ItemDefinition Clone()
 		{
@@ -434,13 +428,23 @@ namespace N2.Definitions
 			return id;
 		}
 
-		#region ICloneable Members
-
 		object ICloneable.Clone()
 		{
 			return Clone();
 		}
 
 		#endregion
+	}
+
+	internal static class CollectionExtensions
+	{
+		public static ICollection<T> AddOrReplace<T>(this ICollection<T> collection, T item) where T : IUniquelyNamed
+		{
+			var existing = collection.FirstOrDefault(i => i.Name == item.Name);
+			if (existing != null)
+				collection.Remove(existing);
+			collection.Add(item);
+			return collection;
+		}
 	}
 }

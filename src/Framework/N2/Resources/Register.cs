@@ -6,6 +6,7 @@ using N2.Edit;
 using N2.Engine;
 using System.Collections;
 using N2.Web;
+using System.Collections.Generic;
 
 namespace N2.Resources
 {
@@ -299,21 +300,21 @@ namespace N2.Resources
 		#endregion
 
 		#region MVC
-		public static bool RegisterResource(IDictionary stateCollection, string resourceUrl)
+		public static bool RegisterResource(IDictionary<string, object> stateCollection, string resourceUrl)
 		{
 			if (IsRegistered(stateCollection, resourceUrl))
 				return true;
 			
-			stateCollection[resourceUrl] = new object();
+			stateCollection[resourceUrl] = "";
 			return false;
 		}
 
-		public static bool IsRegistered(IDictionary stateCollection, string resourceUrl)
+		public static bool IsRegistered(IDictionary<string, object> stateCollection, string resourceUrl)
 		{
-			return stateCollection.Contains(resourceUrl);
+			return stateCollection.ContainsKey(resourceUrl);
 		}
 
-		public static string JavaScript(IDictionary stateCollection, string resourceUrl)
+		public static string JavaScript(IDictionary<string, object> stateCollection, string resourceUrl)
 		{
 			if (IsRegistered(stateCollection, resourceUrl))
 				return null;
@@ -325,7 +326,7 @@ namespace N2.Resources
 
 		const string scriptFormat = @"<script type='text/javascript'>//<![CDATA[
 {0}//]]></script>";
-		public static string JavaScript(IDictionary stateCollection, string script, ScriptOptions options)
+		public static string JavaScript(IDictionary<string, object> stateCollection, string script, ScriptOptions options)
 		{
 			if (IsRegistered(stateCollection, script))
 				return null;
@@ -344,27 +345,27 @@ namespace N2.Resources
 			throw new NotSupportedException(options + " not supported");
 		}
 
-		public static string JQuery(IDictionary stateCollection)
+		public static string JQuery(IDictionary<string, object> stateCollection)
 		{
 			return JavaScript(stateCollection, JQueryPath());
 		}
 
-		public static string JQueryPlugins(IDictionary stateCollection)
+		public static string JQueryPlugins(IDictionary<string, object> stateCollection)
 		{
 			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/plugins.ashx?v=" + typeof(Register).Assembly.GetName().Version);
 		}
 
-		public static string JQueryUi(IDictionary stateCollection)
+		public static string JQueryUi(IDictionary<string, object> stateCollection)
 		{
 			return JQuery(stateCollection) + JavaScript(stateCollection, "{ManagementUrl}/Resources/Js/jquery.ui.ashx?v=" + typeof(Register).Assembly.GetName().Version);
 		}
 
-		public static string TinyMCE(IDictionary stateCollection)
+		public static string TinyMCE(IDictionary<string, object> stateCollection)
 		{
 			return JavaScript(stateCollection, "{ManagementUrl}/Resources/tiny_mce/tiny_mce.js");
 		}
 
-		public static string StyleSheet(IDictionary stateCollection, string resourceUrl)
+		public static string StyleSheet(IDictionary<string, object> stateCollection, string resourceUrl)
 		{
 			if (IsRegistered(stateCollection, resourceUrl))
 				return null;

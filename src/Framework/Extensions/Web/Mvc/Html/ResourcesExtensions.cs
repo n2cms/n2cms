@@ -45,19 +45,19 @@ namespace N2.Web.Mvc.Html
 
 			public ResourcesHelper JavaScript(string resourceUrl)
 			{
-				Html.ViewContext.Writer.Write(N2.Resources.Register.JavaScript(Html.ViewContext.HttpContext.Items, resourceUrl));
+				Html.ViewContext.Writer.Write(N2.Resources.Register.JavaScript(Html.ViewData, resourceUrl));
 				return this;
 			}
 
 			public ResourcesHelper JavaScript(string script, ScriptOptions options)
 			{
-				Html.ViewContext.Writer.Write(N2.Resources.Register.JavaScript(Html.ViewContext.HttpContext.Items, script, options));
+				Html.ViewContext.Writer.Write(N2.Resources.Register.JavaScript(Html.ViewData, script, options));
 				return this;
 			}
 
 			public ResourcesHelper StyleSheet(string resourceUrl)
 			{
-				Html.ViewContext.Writer.Write(N2.Resources.Register.StyleSheet(Html.ViewContext.HttpContext.Items, resourceUrl));
+				Html.ViewContext.Writer.Write(N2.Resources.Register.StyleSheet(Html.ViewData, resourceUrl));
 				return this;
 			}
 		}
