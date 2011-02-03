@@ -173,7 +173,7 @@
             
             <h2>Assemblies</h2>
             <asp:Repeater ID="rptAssembly" runat="server">
-                <HeaderTemplate><table class="t"><thead><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td></tr></thead><tbody></HeaderTemplate>
+                <HeaderTemplate><table class="t"><thead><tr><td>Assembly Name</td><td>Version</td><td>Culture</td><td>Public Key</td><td>References N2</td><td>Definitions</td></tr></thead><tbody></HeaderTemplate>
                 <ItemTemplate><tr>
                 <asp:Repeater runat="server" DataSource=<%# Eval("FullName").ToString().Split(',') %>>
 					<ItemTemplate>
@@ -181,6 +181,7 @@
 					</ItemTemplate>
                 </asp:Repeater>
                 <td><%# Array.Find(((System.Reflection.Assembly)Container.DataItem).GetReferencedAssemblies(), delegate(System.Reflection.AssemblyName an) { return an.Name.StartsWith("N2"); }) != null %></td>
+				<td><%# GetDefinitions((System.Reflection.Assembly)Container.DataItem) %></td>
                 </tr></ItemTemplate>
                 <FooterTemplate></tbody></table></FooterTemplate>
             </asp:Repeater>

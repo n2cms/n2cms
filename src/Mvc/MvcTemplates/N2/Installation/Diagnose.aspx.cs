@@ -252,5 +252,10 @@ namespace N2.Edit.Install
 
 			return d.GetAllowedChildren(N2.Context.Current.Definitions, Activator.CreateInstance(d.ItemType) as ContentItem);
 		}
+
+		protected string GetDefinitions(Assembly a)
+		{
+			return string.Join(", ", N2.Context.Definitions.GetDefinitions().Where(d => d.ItemType.Assembly == a).Select(d => d.Title).ToArray());
+		}
 	}
 }
