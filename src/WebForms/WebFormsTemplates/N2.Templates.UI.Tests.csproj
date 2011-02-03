@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Addons\UITests\UI\AdaptiveItem.aspx" />
+    <Content Include="Addons\UITests\UI\StaticPage_PostContent.aspx" />
     <Content Include="Addons\UITests\UI\EditableUc1.ascx" />
     <Content Include="Addons\UITests\UI\EditableUc2.ascx" />
     <Content Include="Addons\UITests\UI\GridViewTest.aspx" />
