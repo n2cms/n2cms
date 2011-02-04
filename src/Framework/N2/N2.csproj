@@ -165,6 +165,10 @@
     <Compile Include="Edit\ToolbarArea.cs" />
     <Compile Include="Edit\ToolbarPlugInAttribute.cs" />
     <Compile Include="Definitions\IAllowedDefinitionFilter.cs" />
+    <Compile Include="Linq\ContentQueryable.cs" />
+    <Compile Include="Linq\ContentQueryProvider.cs" />
+    <Compile Include="Linq\EngineExtensions.cs" />
+    <Compile Include="Linq\QueryableExtensions.cs" />
     <Compile Include="Obsolete\AllowedParentsAttribute.cs" />
     <Compile Include="Integrity\AllowedZonesAttribute.cs" />
     <Compile Include="Definitions\ItemDefinition.cs" />

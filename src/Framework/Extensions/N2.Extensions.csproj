@@ -94,10 +94,6 @@
     </Compile>
     <Compile Include="Extensions\FilterExtensions.cs" />
     <Compile Include="Extensions\TrashExtensions.cs" />
-    <Compile Include="Linq\ContentQueryable.cs" />
-    <Compile Include="Linq\ContentQueryProvider.cs" />
-    <Compile Include="Linq\EngineExtensions.cs" />
-    <Compile Include="Linq\QueryableExtensions.cs" />
     <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
     <Compile Include="Web\Mvc\ContentController.cs" />

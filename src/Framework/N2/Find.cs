@@ -8,6 +8,9 @@
  */
 #endregion
 
+using System.Linq;
+using N2.Linq;
+
 namespace N2
 {
 	/// <summary>
@@ -15,5 +18,14 @@ namespace N2
 	/// </summary>
 	public sealed class Find : Persistence.GenericFind<ContentItem,ContentItem>
 	{
+		public static IQueryable<ContentItem> Query()
+		{
+			return Context.Current.QueryItems();
+		}
+
+		public static IQueryable<T> Query<T>()
+		{
+			return Context.Current.Query<T>();
+		}
 	}
 }

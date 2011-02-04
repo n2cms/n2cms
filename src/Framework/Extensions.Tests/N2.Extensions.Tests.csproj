@@ -109,12 +109,6 @@
     <Compile Include="Extensions\FilterExtensionsTests.cs" />
     <Compile Include="Extensions\TrashExtensionsTests.cs" />
     <Compile Include="Fakes\FakeHttpServerUtility.cs" />
-    <Compile Include="Linq\ExpressionBuilding.cs" />
-    <Compile Include="Linq\ExpressionQueryableExtensions.cs" />
-    <Compile Include="Linq\LinqTestsBase.cs" />
-    <Compile Include="Linq\LinqItem.cs" />
-    <Compile Include="Linq\SimpleQueryableExtensions.cs" />
-    <Compile Include="Linq\VanillaLinqing.cs" />
     <Compile Include="Mvc\ContentControllerTests.cs" />
     <Compile Include="Mvc\ContentRouteTests.cs" />
     <Compile Include="Mvc\ContentRouteTests_GetRouteData.cs" />
