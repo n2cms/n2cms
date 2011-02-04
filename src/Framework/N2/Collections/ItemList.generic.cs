@@ -201,9 +201,19 @@ namespace N2.Collections
 
 		#region IZonedList<T> Members
 
-		public IList<T> FindByZone(string zoneName)
+		public IList<T> FindParts(string zoneName)
 		{
 			return Inner.Where(i => i.ZoneName == zoneName).ToList();
+		}
+
+		public IList<T> FindPages()
+		{
+			return this.Where(i => i.ZoneName == null).ToList();
+		}
+
+		public IList<T> FindParts()
+		{
+			return this.Where(i => i.ZoneName != null).ToList();
 		}
 
 		#endregion

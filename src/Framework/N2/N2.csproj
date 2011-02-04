@@ -127,7 +127,7 @@
     <Compile Include="Collections\ItemCollectionEventArgs.cs" />
     <Compile Include="Collections\ItemList.cs" />
     <Compile Include="Collections\ItemList.generic.cs" />
-    <Compile Include="Collections\IZoneable.cs" />
+    <Compile Include="Collections\IPlaceable.cs" />
     <Compile Include="Collections\IZonedListOfT.cs" />
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />

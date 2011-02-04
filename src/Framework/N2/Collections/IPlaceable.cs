@@ -5,7 +5,7 @@ using System.Text;
 
 namespace N2.Collections
 {
-	public interface IZoneable
+	public interface IPlaceable
 	{
 		string ZoneName { get; }
 	}

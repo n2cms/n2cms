@@ -27,7 +27,7 @@ namespace N2.Persistence.NH
 
 		#region IZonedList<T> Members
 
-		public IList<T> FindByZone(string zoneName)
+		public IList<T> FindParts(string zoneName)
 		{
 			if (this.WasInitialized)
 				return this.Where(i => i.ZoneName == zoneName).ToList();
@@ -37,6 +37,24 @@ namespace N2.Persistence.NH
 				return session.CreateFilter(this, "where ZoneName is null").List<T>();
 			else
 				return session.CreateFilter(this, "where ZoneName=:zoneName").SetParameter("zoneName", zoneName).List<T>();
+		}
+
+		public IList<T> FindPages()
+		{
+			if (this.WasInitialized)
+				return this.Where(i => i.ZoneName == null).ToList();
+
+			var session = ((ISession)Session);
+			return session.CreateFilter(this, "where ZoneName is null").List<T>();
+		}
+
+		public IList<T> FindParts()
+		{
+			if (this.WasInitialized)
+				return this.Where(i => i.ZoneName != null).ToList();
+
+			var session = ((ISession)Session);
+			return session.CreateFilter(this, "where ZoneName is not null").List<T>();
 		}
 
 		#endregion

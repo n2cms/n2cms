@@ -458,17 +458,73 @@ namespace N2.Tests.Persistence.NH
 					var temp = item.Children[0]; // initilze
 				}
 
-				var nozone = item.Children.FindByZone(null);
-				var emptyzone = item.Children.FindByZone("");
-				var first = item.Children.FindByZone("First");
-				var second = item.Children.FindByZone("Second");
-				var third = item.Children.FindByZone("Third");
+				var nozone = item.Children.FindParts(null);
+				var emptyzone = item.Children.FindParts("");
+				var first = item.Children.FindParts("First");
+				var second = item.Children.FindParts("Second");
+				var third = item.Children.FindParts("Third");
 
 				Assert.That(nozone.Single(), Is.EqualTo(child3));
 				Assert.That(emptyzone.Count, Is.EqualTo(0));
 				Assert.That(first.Single(), Is.EqualTo(child1));
 				Assert.That(second.Single(), Is.EqualTo(child2));
 				Assert.That(third.Count, Is.EqualTo(0));
+			}
+		}
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void Children_WhichArePages_CanBeFound(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			child2.ZoneName = "Zone";
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initilze
+				}
+
+				var pages = item.Children.FindPages();
+
+				Assert.That(pages.Single(), Is.EqualTo(child1));
+			}
+		}
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void Children_WhichAreParts_CanBeFound(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			child2.ZoneName = "Zone";
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initilze
+				}
+
+				var pages = item.Children.FindParts();
+
+				Assert.That(pages.Single(), Is.EqualTo(child2));
 			}
 		}
 

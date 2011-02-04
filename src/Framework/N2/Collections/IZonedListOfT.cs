@@ -5,8 +5,10 @@ using System.Text;
 
 namespace N2.Collections
 {
-	public interface IZonedList<T> where T : class, IZoneable
+	public interface IZonedList<T> where T : class, IPlaceable
 	{
-		IList<T> FindByZone(string zoneName);
+		IList<T> FindPages();
+		IList<T> FindParts();
+		IList<T> FindParts(string zoneName);
 	}
 }

@@ -68,7 +68,7 @@ namespace N2
 		IUpdatable<ContentItem>, 
 		IInterceptableType,
 		INameable,
-		IZoneable
+		IPlaceable
     {
         #region Private Fields
         private int id;
