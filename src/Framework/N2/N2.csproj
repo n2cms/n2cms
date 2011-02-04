@@ -111,6 +111,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +195,18 @@
     <Compile Include="Web\Compilation\CodeExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\CurrentPageExpressionBuilder.cs" />
     <Compile Include="Web\Compilation\N2ExpressionBuilder.cs" />
+    <Compile Include="Web\Mvc\ActionResolver.cs" />
+    <Compile Include="Web\Mvc\ContentController.cs" />
+    <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
+    <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs" />
+    <Compile Include="Web\Mvc\ContentRoute.cs" />
+    <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
+    <Compile Include="Web\Mvc\ControllerMapper.cs" />
+    <Compile Include="Web\Mvc\IControllerMapper.cs" />
+    <Compile Include="Web\Mvc\RequestContextExtensions.cs" />
+    <Compile Include="Web\Mvc\RouteExtensions.cs" />
+    <Compile Include="Web\Mvc\Traversal.cs" />
+    <Compile Include="Web\Mvc\ViewPageResult.cs" />
     <Compile Include="Web\RssWriter.cs" />
     <Compile Include="Web\UI\ContentPageConcern.cs" />
     <Compile Include="Web\UI\ItemDataSourceSelectingEventArgs.cs" />

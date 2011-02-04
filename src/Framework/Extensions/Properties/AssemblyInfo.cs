@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using N2.Web.Mvc;
+using N2.Linq;
 
 // General Information about an assembly is controlled through the following set of attributes. Change these attribute values to modify the information associated with an assembly.
 [assembly: AssemblyTitle("N2.Extensions")]
@@ -19,3 +21,23 @@ using System.Runtime.InteropServices;
 [assembly: Guid("8857e546-b0bb-43b8-9c6d-5fd31b9d82e2")]
 
 [assembly: InternalsVisibleTo("N2.Extensions.Tests")]
+
+// N2.Linq
+[assembly: TypeForwardedTo(typeof(ContentQueryable<>))]
+[assembly: TypeForwardedTo(typeof(ContentQueryProvider))]
+[assembly: TypeForwardedTo(typeof(EngineExtensions))]
+[assembly: TypeForwardedTo(typeof(QueryableExtensions))]
+
+// N2.Web.Mvc
+[assembly: TypeForwardedTo(typeof(ActionResolver))]
+[assembly: TypeForwardedTo(typeof(ContentController))]
+[assembly: TypeForwardedTo(typeof(ContentController<>))]
+[assembly: TypeForwardedTo(typeof(ContentOutputCacheAttribute))]
+[assembly: TypeForwardedTo(typeof(ContentRoute))]
+[assembly: TypeForwardedTo(typeof(ContentRoute<>))]
+[assembly: TypeForwardedTo(typeof(ControllerMapper))]
+[assembly: TypeForwardedTo(typeof(IControllerMapper))]
+[assembly: TypeForwardedTo(typeof(RequestContextExtensions))]
+[assembly: TypeForwardedTo(typeof(RouteExtensions))]
+[assembly: TypeForwardedTo(typeof(Traversal))]
+[assembly: TypeForwardedTo(typeof(ViewPageResult))]

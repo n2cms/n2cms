@@ -94,13 +94,7 @@
     </Compile>
     <Compile Include="Extensions\FilterExtensions.cs" />
     <Compile Include="Extensions\TrashExtensions.cs" />
-    <Compile Include="Web\Mvc\ActionResolver.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
-    <Compile Include="Web\Mvc\ContentController.cs" />
-    <Compile Include="Web\Mvc\ContentControllerOfT.cs" />
-    <Compile Include="Web\Mvc\ContentOutputCacheAttribute.cs">
-    </Compile>
-    <Compile Include="Web\Mvc\ContentRouteOfT.cs" />
     <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
     <Compile Include="Web\Mvc\Html\AjaxExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />
@@ -113,10 +107,7 @@
     <Compile Include="Web\Mvc\NonContentConstraint.cs" />
     <Compile Include="Web\Mvc\Obsolete\N2ControllerFactory.cs" />
     <Compile Include="Web\Mvc\RouteCollectionExtensions.cs" />
-    <Compile Include="Web\Mvc\RouteExtensions.cs" />
     <Compile Include="Web\Mvc\ServiceLocatingControllerFactory.cs" />
-    <Compile Include="Web\Mvc\Traversal.cs" />
-    <Compile Include="Web\Mvc\ContentRoute.cs" />
     <Compile Include="Web\Mvc\ContentViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -124,7 +115,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\Mvc\ControllerExtensions.cs" />
-    <Compile Include="Web\Mvc\ControllerMapper.cs" />
     <Compile Include="Web\Mvc\Html\ContentItemExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ContextExtensions.cs" />
     <Compile Include="Web\Mvc\Html\DetailExtensions.cs" />
@@ -136,7 +126,6 @@
     <Compile Include="Web\Mvc\Html\TemplateRenderer.cs" />
     <Compile Include="Web\Mvc\Html\ZoneExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ZoneHelper.cs" />
-    <Compile Include="Web\Mvc\IControllerMapper.cs" />
     <Compile Include="Web\Mvc\IItemContainer.cs" />
     <Compile Include="Web\Mvc\MvcEngine.cs" />
     <Compile Include="Web\Mvc\MvcConventionTemplateAttribute.cs" />
@@ -158,8 +147,6 @@
     <Compile Include="Web\Mvc\Obsolete\N2ViewUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\Mvc\RequestContextExtensions.cs" />
-    <Compile Include="Web\Mvc\ViewPageResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

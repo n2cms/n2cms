@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -19,3 +20,5 @@ using System.Security;
 
 [assembly: CLSCompliant(true)]
 [assembly: AllowPartiallyTrustedCallers]
+
+[assembly: InternalsVisibleTo("N2.Extensions.Tests")]
