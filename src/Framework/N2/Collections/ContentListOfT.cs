@@ -16,10 +16,13 @@ namespace N2.Collections
 			set { inner = value; }
 		}
 
-		public IEnumerable<T> Subset(int skip, int take)
+		private static void EnsureName(string key, T value)
 		{
-			return inner.Skip(skip).Take(take);
+			if (value.Name != key)
+				throw new InvalidOperationException("Cannot add value with differnet name (" + key + " != " + value.Name + ")");
 		}
+
+		#region IList Members
 
 		public int IndexOf(T item)
 		{
@@ -115,6 +118,8 @@ namespace N2.Collections
 		{
 			get { return this; }
 		}
+
+		#endregion
 
 		#region INamedList<T> Members
 
@@ -220,15 +225,13 @@ namespace N2.Collections
 
 		#endregion
 
-		private static void EnsureName(string key, T value)
-		{
-			if (value.Name != key)
-				throw new InvalidOperationException("Cannot add value with differnet name (" + key + " != " + value.Name + ")");
-		}
+		#region IPageableList<T> Members
 
 		public IList<T> FindRange(int skip, int take)
 		{
 			return inner.Skip(skip).Take(take).ToList();
 		}
+
+		#endregion
 	}
 }

@@ -217,5 +217,14 @@ namespace N2.Collections
 		}
 
 		#endregion
+
+		#region IQueryableList<T> Members
+
+		public IQueryable<T> Query()
+		{
+			return this.AsQueryable<T>();
+		}
+
+		#endregion
 	}
 }

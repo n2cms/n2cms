@@ -565,5 +565,40 @@ namespace N2.Tests.Persistence.NH
 				Assert.That(third, Is.EqualTo(child3));
 			}
 		}
+
+		[TestCase(true)]
+		[TestCase(false)]
+		public void Children_CanBeQueried(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initilze
+				}
+
+				var one = item.Children.Query().Where(i => i.Name == "one").ToList();
+				var notone = item.Children.Query().Where(i => i.Name != "one").ToList();
+				var containso = item.Children.Query().Where(i => i.Name.Contains("o")).ToList();
+
+				Assert.That(one.Single(), Is.EqualTo(child1));
+				Assert.That(notone.Count(), Is.EqualTo(2));
+				Assert.That(notone.Any(i => i == child1), Is.False);
+				Assert.That(containso.Count(), Is.EqualTo(2));
+				Assert.That(containso.Contains(child1), Is.True);
+				Assert.That(containso.Contains(child2), Is.True);
+			}
+		}
 	}
 }

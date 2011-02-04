@@ -122,6 +122,7 @@
     <Compile Include="Collections\INameable.cs" />
     <Compile Include="Collections\INamedListOfT.cs" />
     <Compile Include="Collections\IPageableListOfT.cs" />
+    <Compile Include="Collections\IQueryableList.cs" />
     <Compile Include="Collections\ItemComparer.generic.cs" />
     <Compile Include="Collections\ItemFilter.cs" />
     <Compile Include="Collections\ItemCollectionEventArgs.cs" />

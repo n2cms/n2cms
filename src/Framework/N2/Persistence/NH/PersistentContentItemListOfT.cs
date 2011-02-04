@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections;
-using NHibernate.Collection.Generic;
-using NHibernate.UserTypes;
-using NHibernate.Engine;
-using NHibernate.Persister.Collection;
-using NHibernate.Collection;
-using NHibernate;
 using N2.Collections;
+using NHibernate;
+using NHibernate.Engine;
+using NHibernate.Linq;
 
 namespace N2.Persistence.NH
 {
@@ -55,6 +49,18 @@ namespace N2.Persistence.NH
 
 			var session = ((ISession)Session);
 			return session.CreateFilter(this, "where ZoneName is not null").List<T>();
+		}
+
+		#endregion
+
+		#region IQueryableList<T> Members
+
+		public IQueryable<T> Query()
+		{
+			if (WasInitialized)
+				return this.AsQueryable<T>();
+
+			return ((ISession)Session).Query<T>().Where(i => i.Parent == Owner);
 		}
 
 		#endregion

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using N2.Collections;
+using NHibernate;
 using NHibernate.Collection.Generic;
 using NHibernate.Engine;
-using N2.Collections;
-using NHibernate.Persister.Collection;
-using NHibernate;
 
 namespace N2.Persistence.NH
 {
@@ -21,8 +19,10 @@ namespace N2.Persistence.NH
 			: base(session, collection)
 		{
 		}
-		
-		public new int Count
+
+		#region IList overrides
+
+		new public int Count
 		{
 			get
 			{
@@ -32,6 +32,14 @@ namespace N2.Persistence.NH
 				return Convert.ToInt32(((ISession)Session).CreateFilter(this, "select count(*)").UniqueResult());
 			}
 		}
+
+		new public T this[int index]
+		{
+			get { return base[index] as T; }
+			set { base[index] = value; }
+		}
+
+		#endregion
 
 		#region INamedList<T> Members
 
@@ -103,17 +111,7 @@ namespace N2.Persistence.NH
 
 		#endregion
 
-		private static void EnsureName(string key, T value)
-		{
-			if (value.Name != key)
-				throw new InvalidOperationException("Cannot add value with differnet name (" + key + " != " + value.Name + ")");
-		}
-
-		new public T this[int index]
-		{
-			get { return base[index] as T; }
-			set { base[index] = value; }
-		}
+		#region IPageableList<T> Members
 
 		public virtual IList<T> FindRange(int skip, int take)
 		{
@@ -129,6 +127,14 @@ namespace N2.Persistence.NH
 				.SetCacheable(true);
 
 			return pagedList.List<T>();
+		}
+
+		#endregion
+
+		private static void EnsureName(string key, T value)
+		{
+			if (value.Name != key)
+				throw new InvalidOperationException("Cannot add value with differnet name (" + key + " != " + value.Name + ")");
 		}
 	}
 }
