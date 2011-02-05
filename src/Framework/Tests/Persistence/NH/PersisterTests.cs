@@ -9,6 +9,10 @@ using NHibernate.Tool.hbm2ddl;
 using N2.Persistence.NH.Finder;
 using N2.Tests.Fakes;
 using N2.Persistence.NH;
+using N2.Collections;
+using N2.Details;
+using System.Collections;
+using NHibernate.Engine;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -474,6 +478,38 @@ namespace N2.Tests.Persistence.NH
 
 		[TestCase(true)]
 		[TestCase(false)]
+		public void ZoneNames_CanBeFound(bool forceInitialize)
+		{
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
+			ContentItem child1 = CreateOneItem<Definitions.PersistableItem1>(0, "one", item);
+			child1.ZoneName = "TheZone";
+			ContentItem child2 = CreateOneItem<Definitions.PersistableItem1>(0, "two", item);
+			child2.ZoneName = "TheZone";
+			ContentItem child3 = CreateOneItem<Definitions.PersistableItem1>(0, "three", item);
+			using (persister)
+			{
+				persister.Save(item);
+			}
+
+			using (persister)
+			{
+				item = persister.Get(item.ID);
+
+				if (forceInitialize)
+				{
+					var temp = item.Children[0]; // initilze
+				}
+
+				var zones = item.Children.FindZoneNames();
+
+				Assert.That(zones.Count, Is.EqualTo(2));
+				Assert.That(zones.Contains(null));
+				Assert.That(zones.Contains("TheZone"));
+			}
+		}
+
+		[TestCase(true)]
+		[TestCase(false)]
 		public void Children_WhichArePages_CanBeFound(bool forceInitialize)
 		{
 			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "gettableRoot", null);
@@ -600,5 +636,33 @@ namespace N2.Tests.Persistence.NH
 				Assert.That(containso.Contains(child2), Is.True);
 			}
 		}
+
+		//[Test]
+		//public void EagerDetails()
+		//{
+		//    ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "item", null);
+		//    item["Hello"] = "world";
+		//    item.GetDetailCollection("World", true).Add("Hello");
+		//    using(persister)
+		//    {
+		//        persister.Save(item);
+		//    }
+		//    using(persister)
+		//    {
+		//        var mq = sessionProvider.OpenSession.Session.CreateMultiQuery()
+		//            .Add("item", sessionProvider.OpenSession.Session.CreateQuery("from ContentItem where ID=:id").SetParameter("id", item.ID))
+		//            .Add("details", sessionProvider.OpenSession.Session.CreateQuery("select ci.Details from ContentItem ci where ci.ID=:id").SetParameter("id", item.ID))
+		//            .Add("collections", sessionProvider.OpenSession.Session.CreateQuery("select dc from DetailCollection dc where dc.EnclosingItem.ID=:id join fetch dc.Details").SetParameter("id", item.ID))
+		//            .SetCacheable(true);
+		//        item = (ContentItem)((IList)mq.GetResult("item"))[0];
+		//        item.Details = new PersistentContentList<ContentDetail>((ISessionImplementor)sessionProvider.OpenSession.Session, ((IList)mq.GetResult("details")).Cast<ContentDetail>().ToList()) { Owner = item };
+		//        item.DetailCollections = new PersistentContentList<DetailCollection>((ISessionImplementor)sessionProvider.OpenSession.Session, ((IList)mq.GetResult("collections")).Cast<DetailCollection>().ToList()) { Owner = item };
+
+		//        //item["Added"] = "B there";
+		//        //item.DetailCollections["World"].Add("B there 2");
+		//        //item.GetDetailCollection("AddedCollection", true).Add("B there 3");
+		//        persister.Save(item);
+		//    }
+		//}
 	}
 }

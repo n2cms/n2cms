@@ -216,6 +216,11 @@ namespace N2.Collections
 			return this.Where(i => i.ZoneName != null).ToList();
 		}
 
+		public IList<string> FindZoneNames()
+		{
+			return this.Select(i => i.ZoneName).Distinct().ToList();
+		}
+
 		#endregion
 
 		#region IQueryableList<T> Members

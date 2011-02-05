@@ -29,6 +29,9 @@ namespace N2.Templates.Mvc.Areas.Tests.Controllers
 
         public override ActionResult Index()
         {
+			if (!CurrentItem.VisibleToEveryone && !Engine.SecurityManager.IsEditor(User))
+				return Content("");
+			
 			return View(new QueryViewData { 
 				All = () => CountToContextItemsAppender.GetOrCreateList("All"),
 				Queries = () => CountToContextItemsAppender.GetOrCreateList("Queries") 

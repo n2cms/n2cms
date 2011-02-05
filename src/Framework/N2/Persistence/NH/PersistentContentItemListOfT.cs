@@ -51,6 +51,15 @@ namespace N2.Persistence.NH
 			return session.CreateFilter(this, "where ZoneName is not null").List<T>();
 		}
 
+		public IList<string> FindZoneNames()
+		{
+			if (this.WasInitialized)
+				return this.Select(i => i.ZoneName).Distinct().ToList();
+
+			var session = ((ISession)Session);
+			return session.CreateFilter(this, "select distinct ZoneName").List<string>();
+		}
+
 		#endregion
 
 		#region IQueryableList<T> Members

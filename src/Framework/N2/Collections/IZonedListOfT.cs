@@ -10,5 +10,6 @@ namespace N2.Collections
 		IList<T> FindPages();
 		IList<T> FindParts();
 		IList<T> FindParts(string zoneName);
+		IList<string> FindZoneNames();
 	}
 }
