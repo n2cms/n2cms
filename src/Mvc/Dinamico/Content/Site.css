@@ -306,10 +306,10 @@ div#title
 a#search
 {
 	display:inline-block;
-	height:20px;
-	width:20px;
-	background:transparent url(/N2/Resources/icons/zoom.png) no-repeat 100% 2px;
+	background:transparent url(/N2/Resources/icons/zoom.png) no-repeat;
 	text-decoration:none;
+	padding-left:18px;
+	margin:0 5px;
 }
 a#search:hover
 {
@@ -353,6 +353,12 @@ ul.searchresults
 		padding:2px;
 	}
 
+#sitemap
+{
+	background:transparent url(/N2/Resources/icons/sitemap_color.png) no-repeat;
+	padding-left:20px;
+	margin:0 5px;
+}
 ul.sitemap
 {
 	background-color:#5c87b2;
