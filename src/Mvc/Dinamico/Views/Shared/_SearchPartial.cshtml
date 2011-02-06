@@ -1,14 +1,31 @@
-﻿@{using (Html.BeginForm("Search", null, new { item = Content.StartPage }, FormMethod.Get, new { id = "search" }))
+﻿
+<span class="searchcontainer">
+<a id="search" href="#" title="Search">&nbsp;</a>
+@{using (Html.BeginForm("Search", null, new { item = Content.StartPage }, FormMethod.Get, new { id = "searchform" }))
   {
 	<input name="q" />
-	@*<button><img src="/N2/Resources/icons/zoom.png" alt="search" /></button>*@
   }
 }
+</span>
 <script type="text/javascript">//<![CDATA[
-	$("#search").submit(function (e) {
-		e.preventDefault();
-		var $sm = $("<ul class='searchresults'></ul>").appendTo(this.parentNode).css({ left: $(this).position().left + "px" }).load(this.action, $(this).serialize(), function () { $("a:first", this).focus(); });
-		var remove = function () { $sm.remove(); $(document.body).unbind("click", remove) };
-		setTimeout(function () { $(document.body).click(remove); }, 1);
+	$(document).ready(function () {
+		$("#search").click(function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			$("#searchform").css({ display: "inline" })
+				.find("input:first").focus();
+		});
+		var $sm = null;
+		$("#searchform").submit(function (e) {
+			e.preventDefault();
+			$(".searchresults").remove();
+			$("<ul class='searchresults'></ul>").appendTo(this)
+				.load(this.action, $(this).serialize(), function () { $("a:first", this).focus(); });
+		}).click(function (e) {
+			e.stopPropagation();
+		});
+		$(document).click(function () {
+			$("#searchform").hide();
+		});
 	});
 //]]></script>

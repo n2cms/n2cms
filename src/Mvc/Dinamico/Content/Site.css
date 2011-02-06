@@ -297,26 +297,63 @@ div#title
     position:relative;
 }
 
-#topnav a:link
-{
-    color: white;
-    text-decoration: underline;
-}
-
+#topnav a:link,
 #topnav a:visited
 {
     color: white;
-    text-decoration: underline;
 }
 
-#topnav a:hover
+a#search
 {
-    color: white;
-    text-decoration: none;
+	display:inline-block;
+	height:20px;
+	width:20px;
+	background:transparent url(/N2/Resources/icons/zoom.png) no-repeat 100% 2px;
+	text-decoration:none;
+}
+a#search:hover
+{
+	text-decoration:none;
 }
 
-ul.sitemap,
+#searchform
+{
+	display:none;
+	position:relative;
+}
+
+#searchform input
+{
+	margin:1px 2px;
+	position:absolute;
+	width:140px;
+	right:0;
+	background:#fff url(/N2/Resources/icons/zoom.png) no-repeat 100% 1px;
+	border:none;
+}
+
 ul.searchresults
+{
+	background-color:#5c87b2;
+	border:solid 1px #fff;
+	position:absolute;
+	right:0;
+	top:6px;
+	text-align:left;
+	z-index:1000;
+	max-height:500px;
+	min-width:125px;
+	overflow:auto;
+	list-style-type:none;
+	padding:8px;
+}
+	ul.searchresults a
+	{
+		display:block;
+		padding:2px;
+	}
+
+ul.sitemap
 {
 	background-color:#5c87b2;
 	border:solid 1px #fff;
@@ -326,25 +363,7 @@ ul.searchresults
 	z-index:1000;
 	max-height:500px;
 	overflow:auto;
-	padding:20px;
-}
-
-#search
-{
-	display:inline;
-}
-
-#search input
-{
-	width:100px;
-	background:#fff url(/N2/Resources/icons/zoom.png) no-repeat 100% 1px;
-}
-#search button
-{
-	height:24px;
-	width:30px;
-	position:relative;
-	top:3px;
+	padding:10px 20px;
 }
 
 /* Styles for validation helpers
@@ -403,4 +422,8 @@ ul.searchresults
 .tri-state
 {
     width: 6em;
+}
+
+#search
+{
 }
