@@ -50,7 +50,7 @@ namespace N2.Tests.Integrity
 			IItemNotifier notifier = mocks.DynamicMock<IItemNotifier>();
 			mocks.Replay(notifier);
 			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, new EmptyProxyFactory());
-			definitions = new DefinitionManager(new [] {new ReflectingDefinitionProvider(builder)}, activator);
+			definitions = new DefinitionManager(new [] {new DefinitionProvider(builder)}, activator);
 			finder = new FakeItemFinder(definitions, () => Enumerable.Empty<ContentItem>());
 			integrityManger = new IntegrityManager(definitions, finder, parser);
 			IntegrityEnforcer enforcer = new IntegrityEnforcer(persister, integrityManger, activator);

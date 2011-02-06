@@ -207,24 +207,22 @@ body.framed ul.ajax { background: transparent url(../../Resources/Img/treeview/s
 body.framed .droppable-hover { background-color:#eee; }
 
 /* NEW */
-body.framed .type { clear:both; position:relative; width:99%; border-bottom:solid 1px #EED; }
-	body.framed .type a { display:block; padding:6px 1px 6px 26px; color:#666; background:transparent none no-repeat 5px 5px; }
+body.framed .type { clear:both; position:relative; width:99%; border-top:solid 1px #EED; }
+body.framed .d0 { border-top-style:none; }
+	body.framed .type a { font-size:.8em; margin-left:19px; padding:6px 1px 6px 22px; display:block; color:#666; background:transparent none no-repeat 5px 5px; }
+	body.framed .type a.t0 { font-size:1em; margin-left:0; padding-left:24px; }
+		body.framed .type a .title { font-weight:bold; color:#333; display:inline-block; min-width:110px; margin-right:10px; }
 	body.framed .type a:hover { color:#000; text-decoration:none; background-color:#f8f8f8; }
-		body.framed .type .title { font-weight:bold; color:#333; margin-right:20px; display:inline-block; }
-	body.framed .type.i0 > a, 
-	body.framed .type.i1 > a,
-	body.framed .type.i2 > a, 
-	body.framed .type.i3 > a { padding-bottom:8px; display:block; }
-	body.framed .type.i0 span.title, 
-	body.framed .type.i1 span.title,
-	body.framed .type.i2 span.title, 
-	body.framed .type.i3 span.title { clear:right; font-size:1.1em; }
-	body.framed .type.i0 span.description, 
-	body.framed .type.i1 span.description,
-	body.framed .type.i2 span.description, 
-	body.framed .type.i3 span.description { display:block; }
-		body.framed .type .template a { font-size:.8em; margin-left:26px; padding-left:10px; border-top: solid 1px #EED; }
 
+	body.framed .type.d0 > a, 
+	body.framed .type.d1 > a,
+	body.framed .type.d2 > a { padding-bottom:8px; display:block; }
+	body.framed .type.d0 span.title, 
+	body.framed .type.d1 span.title,
+	body.framed .type.d2 span.title { clear:right; font-size:1.1em; }
+	body.framed .type.d0 span.description, 
+	body.framed .type.d1 span.description,
+	body.framed .type.d2 span.description { display:block; }
 
 body.framed .position em { color:Green; font-weight:bold; }
 .position input, .position label { float:left; display:block; }

@@ -65,6 +65,14 @@ namespace N2.Definitions
 			return null;
 		}
 
+		/// <summary>Gets the definition for a certain item.</summary>
+		/// <param name="item">The item whose definition we want.</param>
+		/// <returns>The definition matching a certain item.</returns>
+		public virtual ItemDefinition GetDefinition(ContentItem item)
+		{
+			return GetDefinition(item.GetContentType());
+		}
+
 		/// <summary>Gets all item definitions.</summary>
 		/// <returns>A collection of item definitoins.</returns>
 		public virtual IEnumerable<ItemDefinition> GetDefinitions()

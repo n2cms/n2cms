@@ -142,8 +142,9 @@
     <Compile Include="Definitions\IFeed.cs" />
     <Compile Include="Definitions\ISimpleDefinitionRefiner.cs" />
     <Compile Include="Definitions\ISyndicatable.cs" />
-    <Compile Include="Definitions\ReflectingDefinitionProvider.cs" />
+    <Compile Include="Definitions\Static\DefinitionProvider.cs" />
     <Compile Include="Definitions\Static\DefinitionDictionary.cs" />
+    <Compile Include="Definitions\Static\TemplateProvider.cs" />
     <Compile Include="Details\BooleanDetail.cs" />
     <Compile Include="Details\ControlAssociationAttribute.cs" />
     <Compile Include="Details\DisplayableHeadingAttribute.cs" />

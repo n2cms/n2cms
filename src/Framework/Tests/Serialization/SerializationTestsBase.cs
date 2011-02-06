@@ -34,7 +34,7 @@ namespace N2.Tests.Serialization
 
 			activator = new ContentActivator(new N2.Edit.Workflow.StateChanger(), notifier, new InterceptingProxyFactory());
 			definitions = new DefinitionManager(
-				new [] {new ReflectingDefinitionProvider(new DefinitionBuilder(
+				new [] {new DefinitionProvider(new DefinitionBuilder(
 					finder, 
 					new EngineSection()))}, 
 				activator);

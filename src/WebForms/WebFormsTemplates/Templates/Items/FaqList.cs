@@ -5,7 +5,7 @@ using N2.Definitions;
 
 namespace N2.Templates.Items
 {
-    [PageDefinition("Frequently Asked Questions", 
+    [PageDefinition("FAQ", 
 		Description = "A list of frequently asked questions with answers.",
 		SortOrder = 200,
 		IconUrl = "~/Templates/UI/Img/help.png")]

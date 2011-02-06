@@ -8,27 +8,23 @@
 	<asp:CustomValidator ID="cvPermission" CssClass="validator info" ErrorMessage="Not authorized" Display="Dynamic" runat="server" />
     <n2:TabPanel runat="server" ToolTip="Select type" meta:resourceKey="tpType">
 		<div class="cf">
-		<n2:Repeater ID="rptTypes" runat="server" OnItemDataBound="rptTypes_OnItemDataBound">
-			<ItemTemplate>
-				<div class="type cf i<%# Container.ItemIndex %> a<%# Container.ItemIndex % 2 %>">
-					<asp:HyperLink ID="hlNew" NavigateUrl='<%# GetEditUrl((ItemDefinition)Container.DataItem) %>' ToolTip='<%# Eval("ToolTip") %>' runat="server" style='<%# "background-image:url(" + ResolveUrl((string)Eval("IconUrl")) + ")" %>'>
-						<span class="title"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Title") ?? Eval("Title") %></span>
-						<span class="description"><%# GetDefinitionString((ItemDefinition)Container.DataItem, "Description") ?? Eval("Description")%></span>
-					</asp:HyperLink>
-					<asp:Repeater runat="server" DataSource='<%# GetTemplates((Type)Eval("ItemType")) %>'>
-						<ItemTemplate>
-							<div class="template">
-								<a href="<%# GetEditUrl((ItemDefinition)Eval("Definition")) %>">
-									<span class="title"><%# Eval("Title") %></span>
-									<span><%# Eval("Description") %></span>
-								</a>
-							</div>
-						</ItemTemplate>
-					</asp:Repeater>
-				</div>
-			</ItemTemplate>
-			<EmptyTemplate><em><asp:Label ID="lblNone" Text="Nothing can be created here." meta:resourceKey="lblNone" runat="server" /></em></EmptyTemplate>
-		</n2:Repeater>
+		<asp:PlaceHolder runat="server">
+		<% for (int i = 0; i < AvailableDefinitions.Count; i++) { %>
+			<div class="type cf d<%= i %> a<%= i % 2 %>">
+			<% int templateIndex = 0; %>
+			<% foreach(var template in GetTemplates(AvailableDefinitions[i])){ %>
+				<a href="<%= GetEditUrl(template.Definition) %>" style="background-image:url(<%= ResolveUrl(template.Definition.IconUrl) %>)" class="<%= template.Definition.Template != null ? "template" : "definition"  %> t<%= templateIndex %>">
+					<span class="title"><%= GetLocalizedString("Definitions", template.Definition.Discriminator, "Title") ?? template.Title %></span>
+					<span class="description"><%= GetLocalizedString("Definitions", template.Definition.Discriminator, "Description") ?? template.Description %></span>
+				</a>
+				<% templateIndex++; %>
+			<% } %>
+			</div>
+		<% } %>
+		<% if (AvailableDefinitions.Count == 0) { %>
+		<em><asp:Label ID="lblNone" Text="Nothing can be created here." meta:resourceKey="lblNone" runat="server" /></em>
+		<% } %>
+		</asp:PlaceHolder>
 		</div>
     </n2:TabPanel>
     

@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using N2.Engine;
-using N2.Definitions.Static;
 
-namespace N2.Definitions
+namespace N2.Definitions.Static
 {
 	[Service(typeof(IDefinitionProvider))]
-	public class ReflectingDefinitionProvider : IDefinitionProvider
+	public class DefinitionProvider : IDefinitionProvider
 	{
 		ItemDefinition[] definitions;
 
-		public ReflectingDefinitionProvider(DefinitionBuilder definitionBuilder)
+		public DefinitionProvider(DefinitionBuilder definitionBuilder)
 		{
 			this.definitions = definitionBuilder.GetDefinitions().ToArray();
 		}

@@ -31,13 +31,13 @@ namespace N2.Edit {
         protected global::System.Web.UI.WebControls.CustomValidator cvPermission;
         
         /// <summary>
-        /// rptTypes control.
+        /// lblNone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::N2.Web.UI.WebControls.Repeater rptTypes;
+        protected global::System.Web.UI.WebControls.Label lblNone;
         
         /// <summary>
         /// lblPosition control.

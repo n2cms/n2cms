@@ -40,7 +40,8 @@ namespace N2.Edit
 		ItemDefinition ParentItemDefinition = null;
 		protected string ZoneName = null;
 		protected IDefinitionManager Definitions;
-		protected ITemplateProvider[] Templates;
+		protected ITemplateProvider[] TemplateProviders;
+		protected IList<ItemDefinition> AvailableDefinitions;
 
 		public ContentItem ActualItem
 		{
@@ -57,7 +58,7 @@ namespace N2.Edit
 		{
 			base.OnPreInit(e);
 			Definitions = Engine.Resolve<IDefinitionManager>();
-			Templates = Engine.Container.ResolveAll<ITemplateProvider>();
+			TemplateProviders = Engine.Container.ResolveAll<ITemplateProvider>();
 		}
 
 		protected override void OnInit(EventArgs e)
@@ -72,16 +73,6 @@ namespace N2.Edit
 			{
 				rblPosition.Items[0].Text = "Create new item before: " + BuildHierarchy(Selection.SelectedItem, CreationPosition.Before);
 				rblPosition.Items[1].Text = "Create new item below: " + BuildHierarchy(Selection.SelectedItem, CreationPosition.Below);
-			}
-        }
-
-        protected void rptTypes_OnItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemIndex == 0)
-			{
-				Control hlNew = e.Item.FindControl("hlNew");
-				if(hlNew != null)
-					hlNew.Focus();
 			}
         }
 
@@ -206,12 +197,16 @@ namespace N2.Edit
 			{
 				Title = string.Format(GetLocalResourceString("NewPage.Title.Select"), ActualItem.Title);
 
-				var mostPopular = allowedChildren.Where(d => d.NumberOfItems > 0).OrderByDescending(d => d.NumberOfItems).Take(2).ToList();
-				allowedChildren = mostPopular.Union(allowedChildren).ToList();
+				var top = allowedChildren.OrderByDescending(d => d.NumberOfItems).ThenBy(d => d.SortOrder).Take(1).ToList();
+				var rest = allowedChildren.Except(top).ToList();
 
-				rptTypes.DataSource = allowedChildren;
-				rptTypes.DataBind();
+				AvailableDefinitions = top.Union(rest).ToList();
 			}
+		}
+
+		public IEnumerable<TemplateDefinition> GetTemplates(ItemDefinition definition)
+		{
+			return TemplateProviders.SelectMany(t => t.GetTemplates(definition.ItemType)).OrderBy(t => t.Definition.Template == null ? 0 : 1);
 		}
 
 		private void LoadZones()
@@ -223,7 +218,7 @@ namespace N2.Edit
 			rblZone.Items.Insert(0, initialItem);
 			foreach (AvailableZoneAttribute zone in ParentItemDefinition.AvailableZones)
 			{
-				string title = GetZoneString(zone.ZoneName) ?? zone.Title;
+				string title = GetLocalizedString("Zones", zone.ZoneName) ?? zone.Title;
 				rblZone.Items.Add(new ListItem(title, zone.ZoneName));
 			}
 
@@ -249,19 +244,14 @@ namespace N2.Edit
             return newUrl.AppendQuery("returnUrl", Request["returnUrl"]);
         }
 
-		protected string GetDefinitionString(ItemDefinition definition, string key)
+		protected string GetLocalizedString(string classKey, string discriminator, string key)
 		{
-			return Utility.GetGlobalResourceString("Definitions", definition.Discriminator + "." + key);
+			return Utility.GetGlobalResourceString(classKey, discriminator + "." + key);
 		}
 
-		protected string GetZoneString(string key)
+		protected string GetLocalizedString(string classKey, string key)
 		{
-			return Utility.GetGlobalResourceString("Zones", key);
-		}
-
-		protected IEnumerable<TemplateDefinition> GetTemplates(Type contentType)
-		{
-			return Templates.SelectMany(tp => tp.GetTemplates(contentType));
+			return Utility.GetGlobalResourceString(classKey, key);
 		}
     }
     

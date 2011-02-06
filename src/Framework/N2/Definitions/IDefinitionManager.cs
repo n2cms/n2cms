@@ -37,6 +37,11 @@ namespace N2.Definitions
 		/// <returns>The definition matching the string.</returns>
 		ItemDefinition GetDefinition(string discriminator);
 
+		/// <summary>Gets the definition for a certain item.</summary>
+		/// <param name="item">The item whose definition we want.</param>
+		/// <returns>The definition matching a certain item.</returns>
+		ItemDefinition GetDefinition(ContentItem item);
+
 		/// <summary>Gets all item definitions.</summary>
 		/// <returns>A collection of item definitoins.</returns>
 		IEnumerable<ItemDefinition> GetDefinitions();

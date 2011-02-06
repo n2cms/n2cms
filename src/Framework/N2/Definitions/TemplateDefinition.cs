@@ -29,5 +29,23 @@ namespace N2.Definitions
 
 		/// <summary>The item definition of the template.</summary>
 		public ItemDefinition Definition { get; set; }
+
+		#region Equals & GetHashCode
+
+		public override bool Equals(object obj)
+		{
+			var other = obj as TemplateDefinition;
+			if (other == null)
+				return false;
+
+			return other.Definition.Equals(Definition);
+		}
+
+		public override int GetHashCode()
+		{
+			return Definition.GetHashCode();
+		}
+
+		#endregion
 	}
 }
