@@ -5,7 +5,7 @@ using System.Web;
 using N2;
 using N2.Details;
 using N2.Plugin;
-using N2.Serialization;
+using N2.Persistence.Serialization;
 using N2.Templates.Items;
 
 namespace Demo
@@ -27,12 +27,11 @@ namespace Demo
 
 		void Persister_ItemSaving(object sender, CancellableItemEventArgs e)
 		{
-			foreach (var cd in e.AffectedItem.Details.Values)
+			foreach (var cd in e.AffectedItem.Details)
 			{
-				var sd = cd as StringDetail;
-				if(sd != null)
+				if(cd.StringValue != null)
 				{
-					if(sd.StringValue.Contains("script"))
+					if(cd.StringValue.Contains("script"))
 					{
 						throw new Exception("The demo site does not allow scripts to be entered.");
 					}
@@ -43,7 +42,7 @@ namespace Demo
 		private static void CopyFiles(N2.Engine.IEngine engine)
 		{
 			HttpServerUtility server = HttpContext.Current.Server;
-			foreach (string folder in engine.ManagementPaths.UploadFolders)
+			foreach (string folder in engine.EditManager.UploadFolders)
 			{
                 string upload = server.MapPath(folder);
                 DeleteFilesAndFolders(upload);
