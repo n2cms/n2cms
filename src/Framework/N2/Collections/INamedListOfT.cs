@@ -5,6 +5,10 @@ using System.Text;
 
 namespace N2.Collections
 {
+	/// <summary>
+	/// A list of items that have a name with dictionary-like semantics.
+	/// </summary>
+	/// <typeparam name="T">The type of item to list.</typeparam>
 	public interface INamedList<T> where T : class, INameable
 	{
 		/// <summary>Finds an item with the given name.</summary>

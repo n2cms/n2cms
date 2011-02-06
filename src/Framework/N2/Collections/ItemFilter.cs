@@ -7,7 +7,7 @@ namespace N2.Collections
 	/// <summary>
 	/// The abstract base class of item filters.
 	/// </summary>
-	public abstract class ItemFilter : IPipeline, IDisposable
+	public abstract class ItemFilter : IPipeline<ContentItem>, IDisposable
 	{
 		/// <summary>Matches an item against the current filter.</summary>
 		/// <param name="item"></param>

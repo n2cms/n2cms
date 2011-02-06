@@ -5,6 +5,10 @@ using System.Text;
 
 namespace N2.Collections
 {
+	/// <summary>
+	/// Retrieves a subset of the list.
+	/// </summary>
+	/// <typeparam name="T">The type of item in the list.</typeparam>
 	public interface IPageableList<T>
 	{
 		/// <summary>Gets a subset of the list without causing the complete list to be loaded.</summary>
