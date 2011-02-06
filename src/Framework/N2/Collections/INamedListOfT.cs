@@ -14,7 +14,7 @@ namespace N2.Collections
 		/// <summary>Finds an item with the given name.</summary>
 		/// <param name="name">The name of the item to find.</param>
 		/// <returns>The item with the given name or null if no item was found.</returns>
-		T FindByName(string name);
+		T FindNamed(string name);
 
 		/// <summary>Gets an System.Collections.Generic.ICollection<T> containing the keys of the System.Collections.Generic.IDictionary<TKey,TValue>.</summary>
 		ICollection<string> Keys { get; }

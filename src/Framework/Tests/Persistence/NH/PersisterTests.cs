@@ -586,12 +586,12 @@ namespace N2.Tests.Persistence.NH
 					var temp = item.Children[0]; // initilze
 				}
 
-				var nullname = item.Children.FindByName(null);
-				var emptyname = item.Children.FindByName("");
-				var rootname = item.Children.FindByName("root");
-				var first = item.Children.FindByName("one");
-				var second = item.Children.FindByName("two");
-				var third = item.Children.FindByName("three");
+				var nullname = item.Children.FindNamed(null);
+				var emptyname = item.Children.FindNamed("");
+				var rootname = item.Children.FindNamed("root");
+				var first = item.Children.FindNamed("one");
+				var second = item.Children.FindNamed("two");
+				var third = item.Children.FindNamed("three");
 				
 				Assert.That(nullname, Is.Null);
 				Assert.That(emptyname, Is.Null);

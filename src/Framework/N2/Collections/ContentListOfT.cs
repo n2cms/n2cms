@@ -177,7 +177,7 @@ namespace N2.Collections
 			}
 		}
 
-		public T FindByName(string name)
+		public T FindNamed(string name)
 		{
 			return inner.FirstOrDefault(i => i.Name == name);
 		}

@@ -88,7 +88,7 @@ namespace N2.Persistence.NH
 		{
 			get
 			{
-				return FindByName(key);
+				return FindNamed(key);
 			}
 			set
 			{
@@ -102,7 +102,7 @@ namespace N2.Persistence.NH
 			}
 		}
 
-		public T FindByName(string name)
+		public T FindNamed(string name)
 		{
 			if (WasInitialized) return List.FirstOrDefault(i => i.Name == name);
 
