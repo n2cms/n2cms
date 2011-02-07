@@ -5,19 +5,14 @@
 	{
 		re.Container("Content", e =>
 		{
-			e.FreeTextArea("Text");
 			e.FreeTextArea("Text2", "Text 2");
 		});
 		re.Title = "Howdy page";
 	});
 }
-
 @{
-    ViewBag.Title = Model.Title;
+	Content.Data.Title = "Howdy (" + Content.Data.Title + ")";
 }
-
-@Content.Display.Title
-
-@Content.Display.Text
+@Html.Partial("_TextContentPartial")
 
 @Content.Display.Text2

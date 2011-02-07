@@ -138,7 +138,13 @@ namespace N2.Web.Mvc
 
 		public dynamic Data
 		{
-			get { return new DataHelper<TModel>(Html, CurrentItem); }
+			get 
+			{
+				var data = Html.ViewContext.ViewData["DataHelper" + CurrentItem.Path] as DataHelper;
+				if(data == null)
+					Html.ViewContext.ViewData["DataHelper" + CurrentItem.Path] = data = new DataHelper(CurrentItem);
+				return data;
+			}
 		}
 	}
 

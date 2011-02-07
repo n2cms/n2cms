@@ -1,0 +1,14 @@
+﻿@{
+	Content.PrependDefinition(re => 
+	{
+		re.Container("Content", e =>
+		{
+			e.Title();
+			e.Name();
+			e.FreeTextArea("Text");
+		});
+	});
+}
+
+@Content.Display.Title
+@Content.Display.Text

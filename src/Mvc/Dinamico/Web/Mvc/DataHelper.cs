@@ -8,14 +8,13 @@ using System.Dynamic;
 
 namespace N2.Web.Mvc
 {
-	public class DataHelper<TModel> : DynamicObject where TModel : class
+	public class DataHelper : DynamicObject
 	{
-		HtmlHelper<TModel> html;
 		ContentItem current;
+		Dictionary<string, object> overrides = new Dictionary<string, object>();
 
-		public DataHelper(HtmlHelper<TModel> html, ContentItem current)
+		public DataHelper(ContentItem current)
 		{
-			this.html = html;
 			this.current = current;
 		}
 		
@@ -26,14 +25,26 @@ namespace N2.Web.Mvc
 
 		public override bool TryGetMember(GetMemberBinder binder, out object result)
 		{
+			string name = binder.Name;
+
+			if (overrides.TryGetValue(name, out result))
+			{
+				return true;
+			}
+
 			if (current == null)
 			{
 				result = null;
 				return true;
 			}
 
-			string name = binder.Name;
 			result = current[name];
+			return true;
+		}
+
+		public override bool TrySetMember(SetMemberBinder binder, object value)
+		{
+			overrides[binder.Name] = value;
 			return true;
 		}
 	}

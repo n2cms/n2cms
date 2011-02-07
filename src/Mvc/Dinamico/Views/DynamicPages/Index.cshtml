@@ -3,19 +3,8 @@
 @{
 	Content.Define(re => 
 	{
-		re.Container("Content", e => 
-		{
-			e.FreeTextArea("Text");
-		});
-		re.
-		Title = "Default page";
+		re.Title = "Default page";
 	});
 }
 
-@{
-    ViewBag.Title = Model.Title;
-}
-
-@Content.Display.Title
-
-@Content.Display.Text
+@Html.Partial("_TextContentPartial")
