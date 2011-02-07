@@ -13,7 +13,6 @@ namespace N2.Web.Mvc
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
 	public class HandleThemeAttribute : FilterAttribute, IResultFilter
 	{
-		public const string ThemeKey = "theme";
 		#region IResultFilter Members
 
 		public void OnResultExecuted(ResultExecutedContext filterContext)
@@ -30,7 +29,7 @@ namespace N2.Web.Mvc
 			if (start == null)
 				return;
 
-			filterContext.RouteData.DataTokens[ThemeKey] = start.Theme;
+			filterContext.SetTheme(start.Theme);
 		}
 
 		#endregion

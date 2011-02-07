@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using N2.Web.Mvc.Html;
 
 namespace N2.Web.Mvc
 {
@@ -18,21 +19,21 @@ namespace N2.Web.Mvc
 
 		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
 		{
-			string theme = controllerContext.RouteData.DataTokens[HandleThemeAttribute.ThemeKey] as string;
+			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(theme);
 			return engine.FindPartialView(controllerContext, partialViewName, useCache);
 		}
 
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
 		{
-			string theme = controllerContext.RouteData.DataTokens[HandleThemeAttribute.ThemeKey] as string;
+			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(theme);
 			return engine.FindView(controllerContext, viewName, masterName, useCache);
 		}
 
 		public void ReleaseView(ControllerContext controllerContext, IView view)
 		{
-			string theme = controllerContext.RouteData.DataTokens[HandleThemeAttribute.ThemeKey] as string;
+			string theme = controllerContext.GetTheme();
 			var engine = GetOrCreateViewEngine(theme);
 			engine.ReleaseView(controllerContext, view);
 		}

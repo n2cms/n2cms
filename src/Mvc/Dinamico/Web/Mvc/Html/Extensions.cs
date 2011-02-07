@@ -19,7 +19,7 @@ namespace N2.Web.Mvc.Html
 
 		public static string ThemedContent(this UrlHelper url, string contentPath)
 		{
-			string theme = url.RequestContext.RouteData.DataTokens[HandleThemeAttribute.ThemeKey] as string;
+			string theme = url.RequestContext.HttpContext.GetTheme();
 			if (string.IsNullOrEmpty(theme))
 				return url.Content(contentPath);
 
@@ -28,6 +28,22 @@ namespace N2.Web.Mvc.Html
 				return url.Content(contentPath);
 
 			return url.Content(themeContentPath);
+		}
+
+		private const string ThemeKey = "theme";
+		public static string GetTheme(this ControllerContext context)
+		{
+			return context.HttpContext.GetTheme();
+		}
+		internal static string GetTheme(this HttpContextBase context)
+		{
+			return context.Request[ThemeKey] 
+				?? context.Items[ThemeKey] as string 
+				?? "Default";
+		}
+		public static void SetTheme(this ControllerContext context, string theme)
+		{
+			context.HttpContext.Items[ThemeKey] = theme;
 		}
 	}
 }

@@ -103,6 +103,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Themes\Terracotta\Content\fade.png" />
+    <Content Include="Themes\Terracotta\Content\Site.css" />
     <Content Include="Themes\Dark\Content\Site.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -204,6 +206,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_TextContentPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\Terracotta\Views\Web.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
