@@ -44,7 +44,11 @@ namespace Dinamico
 				"{controller}/{action}/{*id}", // URL with parameters
 				new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
 			);
+		}
 
+		public static void RegisterViewEngines(ViewEngineCollection viewEngines)
+		{
+			viewEngines.Insert(0, new ThemeViewEngine<RazorViewEngine>());
 		}
 
 		protected void Application_Start()
@@ -56,6 +60,7 @@ namespace Dinamico
 
 			RegisterGlobalFilters(GlobalFilters.Filters);
 			RegisterRoutes(RouteTable.Routes, engine);
+			RegisterViewEngines(ViewEngines.Engines);
 
 			engine.Resolve<RazorTemplateRegistrator>()
 				.Add<Controllers.DynamicPagesController>()
