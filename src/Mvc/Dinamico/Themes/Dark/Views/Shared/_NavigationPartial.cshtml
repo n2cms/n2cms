@@ -1,0 +1,3 @@
+﻿<ul id="menu" class="menu level1">
+	<li>@Content.LinkTo(Content.StartPage).Class(Content.CurrentPage == Content.StartPage ? "current" : "")</li>@Content.TreeFrom(Content.StartPage, takeLevels: 2, rootless: true)
+</ul>

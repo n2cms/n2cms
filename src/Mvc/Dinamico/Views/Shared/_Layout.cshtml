@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>@Content.Data.Title</title>
-	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.ThemedContent("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 	@{ Html.Resources().JQuery(); }
 	@{
 		Content.PrependDefinition(re => 
@@ -32,9 +32,13 @@
 			</div>
 		</div>
 		<div id="main">
-			@if (IsSectionDefined("Main")) { RenderSection("Main"); }
-   else
-   {
+			@if (IsSectionDefined("Main")) 
+			{ 
+				RenderSection("Main"); 
+			}
+			else
+			{
+			@Html.Partial("_SubNavigationPartial")
 			<div id="sidebar">@if (IsSectionDefined("Sidebar")) { RenderSection("Sidebar"); } else { Html.DroppableZone("Sidebar").Render(); }</div>
 			<div id="content">@RenderBody()</div>
 			}

@@ -82,6 +82,7 @@
     <Compile Include="Definitions\Dynamic\DefinitionRegistrationExpression.cs" />
     <Compile Include="Definitions\Dynamic\RazorTemplateProvider.cs" />
     <Compile Include="Definitions\Dynamic\TemplateSelectorAttribute.cs" />
+    <Compile Include="Details\EditableThemeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -95,11 +96,13 @@
     <Compile Include="Web\Mvc\ContentWebViewPage.cs" />
     <Compile Include="Web\Mvc\DataHelper.cs" />
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
+    <Compile Include="Web\Mvc\HandleThemeAttribute.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Themes\Dark\Content\Site.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -140,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Themes\Default\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Extensions\N2.Extensions.csproj">
@@ -184,6 +188,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_SearchPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_SubNavigationPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\Dark\Views\Shared\_SubNavigationPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Themes\Dark\Views\Shared\_NavigationPartial.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

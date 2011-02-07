@@ -57,7 +57,7 @@ namespace N2.Persistence
 		/// Gets the item at of the specified type.
 		/// </summary>
 		/// <returns>An ancestor at the specified level.</returns>
-		public static T Closest<T>(ContentItem item) where T : ContentItem
+		public static T Closest<T>(ContentItem item) where T : class
 		{
 			if (item == null)
 				return null;

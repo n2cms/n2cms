@@ -1,0 +1,9 @@
+﻿@foreach (var a in Content.AncestorsBetween(1, 5))
+{
+if(Content.Children(a).Any())
+{
+<ul class="submenu menu @("level"+Content.Level(a))">
+	@foreach (var c in Content.Children(a)){<li>@Content.LinkTo(c).Class(Content.GetNavigationClass(c))</li>}
+</ul>
+}
+}
