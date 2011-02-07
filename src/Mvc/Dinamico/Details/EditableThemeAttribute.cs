@@ -30,5 +30,22 @@ namespace N2.Details
 
 			return items.ToArray();
 		}
+
+		public override void UpdateEditor(ContentItem item, System.Web.UI.Control editor)
+		{
+			base.UpdateEditor(item, editor);
+
+			if (editor.FindControl(editor.ID + "_preview") != null)
+				return;
+
+			var preview = new HyperLink() 
+			{ 
+				ID = editor.ID + "_preview",
+				Text = "Preview", 
+				NavigateUrl = "#" 
+			};
+			preview.Attributes["onclick"] = "window.open('" + N2.Web.Url.Parse(item.Url).AppendQuery("theme", "") + "' + document.getElementById('" + editor.ClientID + "').value, 'previewTheme', 'width=900,height=500'); return false;";
+			editor.Parent.Controls.AddAt(editor.Parent.Controls.IndexOf(editor) + 1, preview);
+		}
 	}
 }
