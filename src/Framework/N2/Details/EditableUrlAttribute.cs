@@ -14,7 +14,7 @@ namespace N2.Details
 	/// }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableUrlAttribute : AbstractEditableAttribute, IRelativityTransformer
+	public class EditableUrlAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable
 	{
 		private UrlSelectorMode openingMode = UrlSelectorMode.Items;
 		private UrlSelectorMode availableModes = UrlSelectorMode.All;
@@ -85,6 +85,15 @@ namespace N2.Details
 		string IRelativityTransformer.Rebase(string currentPath, string fromAppPath, string toAppPath)
 		{
 			return N2.Web.Url.Rebase(currentPath, fromAppPath, toAppPath);
+		}
+
+		#endregion
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			writer.Write(item[propertyName]);
 		}
 
 		#endregion

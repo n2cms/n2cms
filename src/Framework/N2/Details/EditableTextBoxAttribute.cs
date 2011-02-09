@@ -43,7 +43,7 @@ namespace N2.Details
 	/// }
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableTextBoxAttribute : AbstractEditableAttribute, IDisplayable
+	public class EditableTextBoxAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable
 	{
 		private int maxLength = 0;
 		private int columns = 0;
@@ -171,5 +171,14 @@ namespace N2.Details
 			if (Columns > 0) tb.Rows = Rows;
 			tb.TextMode = TextMode;
 		}
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			writer.Write(item[propertyName]);
+		}
+
+		#endregion
 	}
 }

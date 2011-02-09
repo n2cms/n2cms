@@ -131,7 +131,7 @@ namespace N2.Web.Mvc
 			return Html.ResolveService<IItemFinder>().Where.AncestralTrail.Like(Utility.GetTrail(root) + "%");
 		}
 
-		public dynamic Display
+		public DisplayHelper<TModel> Display
 		{
 			get { return new DisplayHelper<TModel>(Html, CurrentItem); }
 		}
@@ -140,6 +140,9 @@ namespace N2.Web.Mvc
 		{
 			get 
 			{
+				if(CurrentItem == null)
+					return new DataHelper(null);
+
 				var data = Html.ViewContext.ViewData["DataHelper" + CurrentItem.Path] as DataHelper;
 				if(data == null)
 					Html.ViewContext.ViewData["DataHelper" + CurrentItem.Path] = data = new DataHelper(CurrentItem);

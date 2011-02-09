@@ -44,7 +44,7 @@ namespace N2.Web.Mvc.Html
         public static void RenderDisplay(this HtmlHelper helper, ContentItem item, string detailName)
         {
             new Displayable(helper, detailName, item)
-                .Render(helper);
+                .Render();
         }
 
 
@@ -61,7 +61,7 @@ namespace N2.Web.Mvc.Html
             where TItem : ContentItem
         {
             var member = (MemberExpression)expression.Body;
-			helper.DisplayContent(item, member.Member.Name).Render(helper);
+			helper.DisplayContent(item, member.Member.Name).Render();
         }
 	}
 }

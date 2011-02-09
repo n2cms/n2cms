@@ -97,6 +97,7 @@
     <Compile Include="Web\Mvc\DataHelper.cs" />
     <Compile Include="Web\Mvc\DisplayHelper.cs" />
     <Compile Include="Web\Mvc\HandleThemeAttribute.cs" />
+    <Compile Include="Web\Mvc\Html\DisplayHelperExtensions.cs" />
     <Compile Include="Web\Mvc\Html\Extensions.cs" />
     <Compile Include="Web\Mvc\Html\RegisterExtensions.cs" />
     <Compile Include="Web\Mvc\ThemeViewEngine.cs" />

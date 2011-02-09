@@ -14,7 +14,7 @@ namespace N2.Details
 	/// <summary>
 	/// Allows to upload or select a file to use.
 	/// </summary>
-	public class EditableFileUploadAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer
+	public class EditableFileUploadAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer, IWritingDisplayable
 	{
 		private string alt = string.Empty;
 		private string cssClass = string.Empty;
@@ -178,6 +178,40 @@ namespace N2.Details
 		string IRelativityTransformer.Rebase(string currentPath, string fromAppPath, string toAppPath)
 		{
 			return N2.Web.Url.Rebase(currentPath, fromAppPath, toAppPath);
+		}
+
+		#endregion
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, TextWriter writer)
+		{
+			string url = item[propertyName] as string;
+			if (string.IsNullOrEmpty(url))
+				return;
+			
+			string extension = VirtualPathUtility.GetExtension(url);
+			switch (extension.ToLower())
+			{
+				case ".gif":
+				case ".png":
+				case ".jpg":
+				case ".jpeg":
+					DisplayableImageAttribute.WriteImage(item, propertyName, alt, CssClass, writer);
+					return;
+				default:
+					WriteUrl(item, propertyName, cssClass, writer, url);
+					return;
+			}
+		}
+
+		private static void WriteUrl(ContentItem item, string propertyName, string cssClass, TextWriter writer, string url)
+		{
+			cssClass = item[propertyName + "_CssClass"] as string ?? cssClass;
+			if(string.IsNullOrEmpty(cssClass))
+				writer.Write(string.Format("<a href=\"{0}\">{2}</a>", url, VirtualPathUtility.GetFileName(url)));
+			else
+				writer.Write(string.Format("<a href=\"{0}\" class=\"{1}\">{2}</a>", url, cssClass, VirtualPathUtility.GetFileName(url)));
 		}
 
 		#endregion

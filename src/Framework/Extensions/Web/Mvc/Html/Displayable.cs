@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.UI;
@@ -7,9 +8,45 @@ using N2.Web.UI.WebControls;
 using N2.Details;
 using System.Web.Routing;
 using System.Diagnostics;
+using N2.Engine;
+using System.Collections.Generic;
+using N2.Web.Rendering;
 
 namespace N2.Web.Mvc.Html
 {
+	[Service]
+	public class DisplayableRendererSelector
+	{
+		IDisplayableRenderer[] renderers;
+		Dictionary<Type, IDisplayableRenderer> rendererForType = new Dictionary<Type, IDisplayableRenderer>();
+
+		public DisplayableRendererSelector(IDisplayableRenderer[] renderers)
+		{
+			this.renderers = renderers
+				.OrderByDescending(r => Utility.InheritanceDepth(r.HandledDisplayableType))
+				.ThenByDescending(r => Utility.InheritanceDepth(r.GetType()))
+				.ToArray();
+		}
+
+		public virtual IDisplayableRenderer ResolveRenderer(Type displayableType)
+		{
+			IDisplayableRenderer renderer;
+			if (rendererForType.TryGetValue(displayableType, out renderer))
+				return renderer;
+
+			var temp = new Dictionary<Type, IDisplayableRenderer>(rendererForType);
+			temp[displayableType] = renderer = renderers.FirstOrDefault(r => r.HandledDisplayableType.IsAssignableFrom(displayableType));
+			rendererForType = temp;
+
+			return renderer;
+		}
+
+		public void Render(RenderingContext context)
+		{
+			ResolveRenderer(context.Displayable.GetType()).Render(context);
+		}
+	}
+
 	public class Displayable : ItemHelper
 	{
 		readonly string propertyName;
@@ -74,7 +111,7 @@ namespace N2.Web.Mvc.Html
 				{
 					Html.ViewContext.Writer = writer;
 					
-					Render(Html);
+					Render();
 
 					return writer.ToString();
 				}
@@ -85,7 +122,7 @@ namespace N2.Web.Mvc.Html
 			}
 		}
 
-        internal void Render(HtmlHelper helper)
+        internal void Render()
         {
             if (!string.IsNullOrEmpty(path))
                 CurrentItem = ItemUtility.WalkPath(CurrentItem, path);
@@ -97,7 +134,7 @@ namespace N2.Web.Mvc.Html
 			{
 				try
 				{
-					RenderDisplayable(helper);
+					RenderDisplayable();
 				}
 				catch (Exception ex)
 				{
@@ -105,44 +142,23 @@ namespace N2.Web.Mvc.Html
 				}
 			}
 			else
-				RenderDisplayable(helper);
+				RenderDisplayable();
         }
 
-		private void RenderDisplayable(HtmlHelper helper)
+		private void RenderDisplayable()
 		{
 			var displayable = Display.GetDisplayableAttribute(propertyName, CurrentItem, swallowExceptions);
 			if (displayable == null) return;
 
 			if (Wrapper != null)
-				helper.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
+				Html.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.StartTag));
 
-			var referencedItem = CurrentItem[propertyName] as ContentItem;
-			if (referencedItem != null)
-			{
-				var adapter = Adapters.ResolveAdapter<MvcAdapter>(referencedItem);
-				adapter.RenderTemplate(helper, referencedItem);
-			}
-			else
-			{
-				var container = CreateContainer(displayable);
-				container.RenderControl(new HtmlTextWriter(helper.ViewContext.Writer));
-			}
+			var ctx = new RenderingContext { Content = CurrentItem, Displayable = displayable, Html = Html, PropertyName = propertyName, Writer = Html.ViewContext.Writer };
+			Html.ResolveService<DisplayableRendererSelector>()
+				.Render(ctx);
+
 			if (Wrapper != null)
-				helper.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
-		}
-
-		private ViewUserControl CreateContainer(IDisplayable displayable)
-		{
-			var viewData = new ViewDataDictionary(CurrentItem);
-
-			var container = new ViewUserControl
-			                	{
-									Page = (Html.ViewContext.View is Control) ? ((Control)Html.ViewContext.View).Page : null,
-			                		ViewData = viewData,
-			                	};
-			displayable.AddTo(CurrentItem, propertyName, container);
-
-			return container;
+				Html.ViewContext.Writer.Write(Wrapper.ToString(TagRenderMode.EndTag));
 		}
 	}
 }

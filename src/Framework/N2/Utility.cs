@@ -484,10 +484,13 @@ namespace N2
 			return html.Substring(0, separatorIndex + 1);
 		}
 
-		internal static int InheritanceDepth(Type type)
+		public static int InheritanceDepth(Type type)
 		{
 			if (type == null || type == typeof(object))
 				return 0;
+			if (type.IsInterface)
+				return type.GetInterfaces().Select(t => 1 + InheritanceDepth(t)).OrderByDescending(d => d).FirstOrDefault();
+
 			return 1 + InheritanceDepth(type.BaseType);
 		}
 

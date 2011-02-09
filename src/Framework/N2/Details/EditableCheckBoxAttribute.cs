@@ -4,7 +4,7 @@ using System.Web.UI.WebControls;
 namespace N2.Details
 {
 	/// <summary>An editable checkbox attribute. Besides creating a checkbox it also uses the checkbox's text property to display text.</summary>
-	public class EditableCheckBoxAttribute : EditableAttribute
+	public class EditableCheckBoxAttribute : EditableAttribute, IWritingDisplayable
 	{
 		private string checkBoxText;
 
@@ -38,5 +38,15 @@ namespace N2.Details
 			cb.Text = GetLocalizedText("CheckBoxText") ?? CheckBoxText;
 			return cb;
 		}
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			var value = item[propertyName];
+			writer.Write("<input type=\"checkbox\" disabled=\"disabled\"" + ((value != null && (bool)value) ? "checked=\"checked\"" : "") + "/>");			
+		}
+
+		#endregion
 	}
 }

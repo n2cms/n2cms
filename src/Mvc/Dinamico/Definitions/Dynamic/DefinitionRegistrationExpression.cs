@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using N2.Details;
 
 namespace N2.Definitions.Dynamic
 {
@@ -27,7 +28,7 @@ namespace N2.Definitions.Dynamic
 
 
 
-		public DefinitionRegistrationExpression Add<T>(T containable) where T : IContainable
+		public DefinitionRegistrationExpression AddContainable<T>(T containable) where T : IContainable
 		{
 			Containables.Add(containable);
 			containable.ContainerName = ContainerName;
@@ -35,18 +36,34 @@ namespace N2.Definitions.Dynamic
 			return this;
 		}
 
-		public DefinitionRegistrationExpression Add<T>(T containable, Action<T> config) where T : IContainable
+		public DefinitionRegistrationExpression AddContainable<T>(T containable, Action<T> config) where T : IContainable
 		{
-			Add(containable);
+			AddContainable(containable);
 
 			if (config != null) config(containable);
 
 			return this;
 		}
 
-		public DefinitionRegistrationExpression Add<T>(T editable, string title, Action<T> config) where T : IEditable
+		public DefinitionRegistrationExpression AddDisplayable<T>(T containable) where T : IDisplayable
 		{
-			Add(editable, null);
+			Containables.Add(containable);
+
+			return this;
+		}
+
+		public DefinitionRegistrationExpression AddDisplayable<T>(T containable, Action<T> config) where T : IDisplayable
+		{
+			AddDisplayable(containable);
+
+			if (config != null) config(containable);
+
+			return this;
+		}
+
+		public DefinitionRegistrationExpression AddEditable<T>(T editable, string title, Action<T> config) where T : IEditable
+		{
+			AddContainable(editable, null);
 			editable.Title = title;
 			editable.SortOrder = NextSortOrder(null);
 			if (config != null) config(editable);
@@ -54,9 +71,9 @@ namespace N2.Definitions.Dynamic
 			return this;
 		}
 
-		public DefinitionRegistrationExpression Add<T>(T editable, string name, string title, Action<T> config) where T : IEditable
+		public DefinitionRegistrationExpression AddEditable<T>(T editable, string name, string title, Action<T> config) where T : IEditable
 		{
-			Add(editable, title ?? name, null);
+			AddEditable(editable, title ?? name, null);
 			editable.Name = name;
 			if (config != null) config(editable);
 

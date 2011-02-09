@@ -9,6 +9,7 @@ using N2.Security;
 using N2.Engine;
 using N2.Persistence;
 using N2.Persistence.Proxying;
+using System.Diagnostics;
 
 namespace N2.Details
 {
@@ -17,7 +18,8 @@ namespace N2.Details
 	/// class implements properties, provides comparison and equality but does
 	/// not add any controls.
 	/// </summary>
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty
+	[DebuggerDisplay("{Name, nq} ({GetType().Name, nq})")]
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty, IDisplayable
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -419,6 +421,22 @@ namespace N2.Details
 		public PropertyPersistenceLocation PersistAs { get; set; }
 
 		public object DefaultValue { get; set; }
+
+		#endregion
+
+		#region IDisplayable Members
+
+		public Control AddTo(ContentItem item, string detailName, Control container)
+		{
+			var value = item[detailName];
+			if (value != null)
+			{
+				var literal = new LiteralControl(value.ToString());
+				container.Controls.Add(literal);
+				return literal;
+			}
+			return null;
+		}
 
 		#endregion
 	}

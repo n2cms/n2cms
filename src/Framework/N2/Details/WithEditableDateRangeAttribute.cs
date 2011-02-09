@@ -8,10 +8,15 @@ namespace N2.Details
     /// Decorates the content item with a date range editable that will update two date fields.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class WithEditableDateRangeAttribute : AbstractEditableAttribute
+    public class WithEditableDateRangeAttribute : AbstractEditableAttribute, IWritingDisplayable
     {
         private string betweenText = " - ";
         private string nameEndRange;
+
+		public WithEditableDateRangeAttribute()
+			: this("Dates", 20, "From", "To")
+		{
+		}
 
         public WithEditableDateRangeAttribute(string title, int sortOrder, string name, string nameEndRange)
             : base(title, sortOrder)
@@ -61,5 +66,14 @@ namespace N2.Details
             }
             return false;
         }
-    }
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			writer.Write(item[propertyName] + BetweenText + item[NameEndRange]);
+		}
+
+		#endregion
+	}
 }

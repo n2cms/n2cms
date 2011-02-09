@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -11,7 +12,7 @@ namespace N2.Details
 	/// Override and implement GetListItems to use.
 	/// Implement a CreateEditor() method to instantiate a desired editor control.
 	/// </summary>
-	public abstract class EditableListControlAttribute : AbstractEditableAttribute, IDisplayable
+	public abstract class EditableListControlAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable
 	{
 		public EditableListControlAttribute(): base() { }
 
@@ -71,6 +72,7 @@ namespace N2.Details
 		}
 
 		protected abstract ListItem[] GetListItems();
+
 		#region IDisplayable Members
 
 		Control IDisplayable.AddTo(ContentItem item, string detailName, Control container)
@@ -94,5 +96,15 @@ namespace N2.Details
 
 		#endregion
 
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			var selected = item[propertyName] as string;
+			if (selected != null)
+				writer.Write(GetListItems().Where(li => li.Value == selected).Select(li => li.Text).FirstOrDefault());
+		}
+
+		#endregion
 	}
 }

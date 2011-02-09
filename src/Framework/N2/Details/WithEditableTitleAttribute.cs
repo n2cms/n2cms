@@ -12,7 +12,7 @@ namespace N2.Details
     ///	}
     /// </example>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	public class WithEditableTitleAttribute : AbstractEditableAttribute
+	public class WithEditableTitleAttribute : AbstractEditableAttribute, IWritingDisplayable
     {
 		private bool focus = true;
 
@@ -71,5 +71,16 @@ namespace N2.Details
 			container.Controls.Add(tb);
 			return tb;
 		}
-    }
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			object value = item[propertyName];
+			if (value != null)
+				writer.Write("<h1>" + value + "</h1>");
+		}
+
+		#endregion
+	}
 }

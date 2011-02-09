@@ -22,5 +22,9 @@
 		</ul>
 	</li>
 }
+@foreach (var e in re.Containables.OfType<N2.Definitions.IEditable>().Where(e => e.ContainerName == null).OrderBy(e => e.SortOrder))
+{
+	<li>@e.Name (@e.SortOrder)</li>
+}
 </ul>
 }

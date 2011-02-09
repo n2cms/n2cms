@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
 using N2.Collections;
 using N2.Integrity;
+using N2.Definitions;
 
 namespace N2.Tests.Utility
 {
@@ -491,5 +493,33 @@ namespace N2.Tests.Utility
 			Assert.That(output, Is.EqualTo(input));
 		}
 
+		[TestCase(typeof(object), 0)]
+		[TestCase(typeof(ContentItem), 1)]
+		[TestCase(typeof(UtilityItem), 2)]
+		public void InheritanceDepth_Classes(Type type, int expectedDepth)
+		{
+			Assert.That(N2.Utility.InheritanceDepth(type), Is.EqualTo(expectedDepth));
+		}
+
+		[TestCase(typeof(ICloneable), 0)]
+		[TestCase(typeof(IEditable), 2)] // IEditable(0) : IContainable(1) : IUniquelyNamed(2)
+		public void InheritanceDepth_Interfaces(Type type, int expectedDepth)
+		{
+			Assert.That(N2.Utility.InheritanceDepth(type), Is.EqualTo(expectedDepth));
+		}
+
+		[TestCase(typeof(object), 0)]
+		[TestCase(typeof(ContentItem), 1)]
+		[TestCase(typeof(UtilityItem), 2)]
+		public void GetBaseTypes_Classes(Type type, int expectedDepth)
+		{
+			Assert.That(N2.Utility.GetBaseTypes(type).Count(), Is.EqualTo(expectedDepth));
+		}
+		
+		[Test]
+		public void GetBaseTypes_OfInterfaces_IsZero()
+		{
+			Assert.That(N2.Utility.GetBaseTypes(typeof(IEditable)).Count(), Is.EqualTo(0));
+		}
 	}
 }

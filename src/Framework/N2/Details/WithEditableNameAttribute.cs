@@ -16,7 +16,7 @@ namespace N2.Details
     ///	}
     /// </example>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	public class WithEditableNameAttribute : AbstractEditableAttribute
+	public class WithEditableNameAttribute : AbstractEditableAttribute, IWritingDisplayable
     {
     	private char? whitespaceReplacement = '-';
 		private bool? toLower;
@@ -146,5 +146,14 @@ namespace N2.Details
 			if (Focus) ne.Focus();
 			return ne;
 		}
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			writer.Write(item[propertyName]);
+		}
+
+		#endregion
 	}
 }

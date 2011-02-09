@@ -21,7 +21,7 @@ namespace N2.Details
 	/// 		}
 	///		}
 	/// </example>
-	public class EditableImageAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer
+	public class EditableImageAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer, IWritingDisplayable
 	{
 		private string alt = string.Empty;
 		private string cssClass = string.Empty;
@@ -99,6 +99,15 @@ namespace N2.Details
 		string IRelativityTransformer.Rebase(string currentPath, string fromAppPath, string toAppPath)
 		{
 			return N2.Web.Url.Rebase(currentPath, fromAppPath, toAppPath);
+		}
+
+		#endregion
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			DisplayableImageAttribute.WriteImage(item, propertyName, alt, CssClass, writer);
 		}
 
 		#endregion

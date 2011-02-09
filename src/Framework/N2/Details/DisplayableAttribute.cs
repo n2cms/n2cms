@@ -1,9 +1,11 @@
 using System;
 using System.Web.UI;
+using System.Diagnostics;
 
 namespace N2.Details
 {
 	/// <summary>Associate a property/detail with a control used for presentation.</summary>
+	[DebuggerDisplay("{Name, nq} ({GetType().Name, nq})")]
     public class DisplayableAttribute : Attribute, IDisplayable
 	{
 		public DisplayableAttribute(Type controlType, string controlPropertyName)
@@ -11,6 +13,7 @@ namespace N2.Details
 			this.ControlType = controlType;
 			this.ControlPropertyName = controlPropertyName;
 		}
+
         #region Private Members
         private Type controlType;
         private string controlPropertyName;

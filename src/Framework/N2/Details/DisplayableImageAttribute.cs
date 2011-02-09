@@ -1,9 +1,10 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Mvc;
 
 namespace N2.Details
 {
-	public class DisplayableImageAttribute : AbstractDisplayableAttribute
+	public class DisplayableImageAttribute : AbstractDisplayableAttribute, IWritingDisplayable
 	{
 		private string alt = string.Empty;
 
@@ -39,5 +40,34 @@ namespace N2.Details
 			}
 			return null;
 		}
+
+		/// <summary>Writes an image html to the given writer.</summary>
+		/// <param name="item">The item containing the data.</param>
+		/// <param name="propertyName">The name of the property to write.</param>
+		/// <param name="writer">The writer to write to.</param>
+		public static void WriteImage(ContentItem item, string propertyName, string alt, string cssClass, System.IO.TextWriter writer)
+		{
+			string imageUrl = item[propertyName] as string;
+			if (string.IsNullOrEmpty(imageUrl))
+				return;
+
+			TagBuilder tb = new TagBuilder("img");
+			tb.Attributes["src"] = N2.Web.Url.ToAbsolute(imageUrl);
+			tb.Attributes["alt"] = item[propertyName + "_Alt"] as string ?? alt;
+			cssClass = item[propertyName + "_CssClass"] as string ?? cssClass;
+			if (!string.IsNullOrEmpty(cssClass))
+				tb.AddCssClass(cssClass);
+
+			writer.Write(tb.ToString());
+		}
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			DisplayableImageAttribute.WriteImage(item, propertyName, alt, CssClass, writer);
+		}
+
+		#endregion
 	}
 }

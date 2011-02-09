@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 using N2.Definitions;
+using System.Diagnostics;
 
 namespace N2.Details
 {
+	[DebuggerDisplay("{Name, nq} ({GetType().Name, nq})")]
 	public abstract class AbstractDisplayableAttribute : Attribute, IDisplayable
 	{
 		private string cssClass = null;

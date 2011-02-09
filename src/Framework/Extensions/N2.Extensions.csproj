@@ -96,6 +96,7 @@
     <Compile Include="Extensions\TrashExtensions.cs" />
     <Compile Include="Web\Mvc\AreaRegistrationExtensions.cs" />
     <Compile Include="Web\Mvc\ControllerFactoryConfigurator.cs" />
+    <Compile Include="Web\Mvc\EditableItemRenderer.cs" />
     <Compile Include="Web\Mvc\Html\AjaxExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ContentHtmlExtensions.cs" />
     <Compile Include="Web\Mvc\Html\ControlPanelExtensions.cs" />

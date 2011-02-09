@@ -3,10 +3,6 @@
 @{
 	Content.Define(re => 
 	{
-		re.Container("Content", e =>
-		{
-			e.FreeTextArea("Text2", "Text 2");
-		});
 		re.Title = "Howdy page";
 	});
 }
@@ -15,4 +11,4 @@
 }
 @Html.Partial("_TextContentPartial")
 
-@Content.Display.Text2
+@Content.Display.FreeText("Text2")

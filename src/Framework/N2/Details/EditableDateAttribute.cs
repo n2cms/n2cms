@@ -8,7 +8,7 @@ namespace N2.Details
 	/// <summary>
 	/// Defines an editable date/time picker control for a content item.
 	/// </summary>
-	public class EditableDateAttribute : AbstractEditableAttribute, IDisplayable
+	public class EditableDateAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable
 	{
 		bool showDate = true;
 		bool showTime = true;
@@ -77,6 +77,15 @@ namespace N2.Details
 				return l;
 			}
 			return null;
+		}
+
+		#endregion
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		{
+			writer.Write(item[propertyName]);
 		}
 
 		#endregion
