@@ -8,7 +8,7 @@ namespace N2.Tests.Definitions.Static
 	[TestFixture]
 	public class PartDescriptionTests
 	{
-		ItemDefinition description = DefinitionDictionary.Instance.GetDefinition(typeof(DescribablePart));
+		ItemDefinition description = DefinitionTable.Instance.GetDefinition(typeof(DescribablePart));
 		ContentItem item = new DescribablePart();
 
 		[Test]

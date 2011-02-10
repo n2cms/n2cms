@@ -6,7 +6,7 @@ namespace N2.Details
 {
 	/// <summary>Associate a property/detail with a control used for presentation.</summary>
 	[DebuggerDisplay("{Name, nq} ({GetType().Name, nq})")]
-    public class DisplayableAttribute : Attribute, IDisplayable
+    public class DisplayableAttribute : AbstractDisplayableAttribute
 	{
 		public DisplayableAttribute(Type controlType, string controlPropertyName)
 		{
@@ -39,13 +39,6 @@ namespace N2.Details
             set { focus = value; }
         }
 
-        /// <summary>Gets or sets the name of the detail (property) on the content item's object.</summary>
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
         /// <summary>Gets or sets the label used for presentation.</summary>
         public string Title
         {
@@ -75,29 +68,9 @@ namespace N2.Details
         }
         #endregion
 
-        #region Equals & GetHashCode
-        /// <summary>Checks another object for equality.</summary>
-        /// <param name="obj">The other object to check.</param>
-        /// <returns>True if the items are of the same type and have the same name.</returns>
-        public override bool Equals(object obj)
-        {
-			DisplayableAttribute other = obj as DisplayableAttribute;
-            if (other == null)
-                return false;
-            return (this.Name == other.Name);
-        }
-
-        /// <summary>Gets a hash code based on the attribute's name.</summary>
-        /// <returns>A hash code.</returns>
-        public override int GetHashCode()
-        {
-            return this.Name.GetHashCode();
-        }
-        #endregion
-
 		#region IDisplayable Members
 
-		public virtual Control AddTo(ContentItem item, string detailName, Control container)
+		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
 			Control displayer = (Control)Activator.CreateInstance(ControlType);
 			Utility.SetProperty(displayer, ControlPropertyName, item[detailName]);

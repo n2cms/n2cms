@@ -18,7 +18,7 @@ namespace N2.Details
 	/// 		set { SetDetail("FeedRoot", value); }
 	///		}
 	/// </example>
-	public class EditableLinkAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer
+	public class EditableLinkAttribute : AbstractEditableAttribute, IRelativityTransformer
 	{
 		public EditableLinkAttribute()
 			: this(null, 100)
@@ -59,7 +59,7 @@ namespace N2.Details
 		}
 		
 		#region IDisplayable Members
-		public Control AddTo(ContentItem item, string detailName, Control container)
+		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
 			ContentItem itemToAdd = item[detailName] as ContentItem;
 			if (itemToAdd != null)

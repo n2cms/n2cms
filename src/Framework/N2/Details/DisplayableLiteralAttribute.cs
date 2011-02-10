@@ -5,7 +5,7 @@ using System.Web.UI.HtmlControls;
 namespace N2.Details
 {
 	/// <summary>Associate a property/detail with a literal used for presentation.</summary>
-	public class DisplayableLiteralAttribute : AbstractDisplayableAttribute, IWritingDisplayable
+	public class DisplayableLiteralAttribute : AbstractDisplayableAttribute, IWritingDisplayable, IDisplayable
 	{
 		public DisplayableLiteralAttribute()
 		{

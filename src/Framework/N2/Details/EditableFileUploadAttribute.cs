@@ -14,7 +14,7 @@ namespace N2.Details
 	/// <summary>
 	/// Allows to upload or select a file to use.
 	/// </summary>
-	public class EditableFileUploadAttribute : AbstractEditableAttribute, IDisplayable, IRelativityTransformer, IWritingDisplayable
+	public class EditableFileUploadAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable
 	{
 		private string alt = string.Empty;
 		private string cssClass = string.Empty;
@@ -147,7 +147,7 @@ namespace N2.Details
 
 		#region IDisplayable Members
 
-		public Control AddTo(ContentItem item, string detailName, Control container)
+		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
 			string url = item[detailName] as string;
 			if(!string.IsNullOrEmpty(url))

@@ -19,7 +19,7 @@ namespace N2.Details
 	/// not add any controls.
 	/// </summary>
 	[DebuggerDisplay("{Name, nq} ({GetType().Name, nq})")]
-	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty, IDisplayable
+	public abstract class AbstractEditableAttribute : Attribute, IEditable, ISecurable, IInterceptableProperty
 	{
 		private string[] authorizedRoles;
 		private string containerName = null;
@@ -426,7 +426,7 @@ namespace N2.Details
 
 		#region IDisplayable Members
 
-		public Control AddTo(ContentItem item, string detailName, Control container)
+		public virtual Control AddTo(ContentItem item, string detailName, Control container)
 		{
 			var value = item[detailName];
 			if (value != null)

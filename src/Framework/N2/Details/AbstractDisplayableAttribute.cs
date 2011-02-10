@@ -12,6 +12,7 @@ namespace N2.Details
 	{
 		private string cssClass = null;
 		private string name;
+		int? hashCode;
 
 		public string CssClass
 		{
@@ -20,13 +21,34 @@ namespace N2.Details
 		}
 
 		#region IDisplayable Members
-		string IUniquelyNamed.Name
+		/// <summary>Gets or sets the name of the detail (property) on the content item's object.</summary>
+		public string Name
 		{
 			get { return name; }
 			set { name = value; }
 		}
 
 		public abstract Control AddTo(ContentItem item, string detailName, Control container);
+		#endregion
+
+		#region Equals & GetHashCode
+		/// <summary>Checks another object for equality.</summary>
+		/// <param name="obj">The other object to check.</param>
+		/// <returns>True if the items are of the same type and have the same name.</returns>
+		public override bool Equals(object obj)
+		{
+			IDisplayable other = obj as IDisplayable;
+			if (other == null)
+				return false;
+			return name == other.Name;
+		}
+
+		/// <summary>Gets a hash code based on the attribute's name.</summary>
+		/// <returns>A hash code.</returns>
+		public override int GetHashCode()
+		{
+			return hashCode ?? (hashCode = (name == null) ? base.GetHashCode() : (GetType().FullName.GetHashCode() + name.GetHashCode())).Value;
+		}
 		#endregion
 	}
 }

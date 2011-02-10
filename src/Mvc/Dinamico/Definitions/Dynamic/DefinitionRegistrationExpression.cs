@@ -86,7 +86,7 @@ namespace N2.Definitions.Dynamic
 			return CurrentSortOrder + SortOffset;
 		}
 
-		public ItemDefinition CreateDefinition(Definitions.Static.DefinitionDictionary definitions)
+		public ItemDefinition CreateDefinition(Definitions.Static.DefinitionTable definitions)
 		{
 			var id = definitions.GetDefinition(ItemType).Initialize(ItemType).Clone();
 

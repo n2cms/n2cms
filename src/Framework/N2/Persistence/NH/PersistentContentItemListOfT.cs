@@ -69,7 +69,8 @@ namespace N2.Persistence.NH
 			if (WasInitialized)
 				return this.AsQueryable<T>();
 
-			return ((ISession)Session).Query<T>().Where(i => i.Parent == Owner);
+			var parent = Owner as ContentItem;
+			return ((ISession)Session).Query<T>().Where(i => i.Parent == parent);
 		}
 
 		#endregion

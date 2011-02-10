@@ -3,7 +3,7 @@ using N2.Details;
 
 namespace N2.Web.Rendering
 {
-	public abstract class DisplayableRendererBase<TDisplayable> : IDisplayableRenderer where TDisplayable : IDisplayable
+	public abstract class DisplayableRendererBase<TDisplayable> : IDisplayableRenderer
 	{
 		public abstract void Render(RenderingContext context, TDisplayable displayable);
 

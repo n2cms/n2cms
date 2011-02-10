@@ -59,9 +59,9 @@ namespace N2.Definitions
 			{
 				foreach (T editableOnProperty in propertyOnItem.GetCustomAttributes(typeof(T), false))
 				{
+					editableOnProperty.Name = propertyOnItem.Name;
 					if (!attributes.Contains(editableOnProperty))
 					{
-						editableOnProperty.Name = propertyOnItem.Name;
 						if (editableOnProperty is ISecurable)
 						{
 							foreach (DetailAuthorizedRolesAttribute rolesAttribute in propertyOnItem.GetCustomAttributes(typeof (DetailAuthorizedRolesAttribute), false))

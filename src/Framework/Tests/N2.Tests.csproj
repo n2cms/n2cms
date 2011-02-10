@@ -150,7 +150,7 @@
     <Compile Include="Definitions\Items\DefinitionReplacesNumber1.cs" />
     <Compile Include="Definitions\Static\DescribablePage.cs" />
     <Compile Include="Definitions\Static\DescribablePart.cs" />
-    <Compile Include="Definitions\Static\PageDescriptionTests.cs" />
+    <Compile Include="Definitions\Static\DefinitionTableTests.cs" />
     <Compile Include="Definitions\Static\PartDescriptionTests.cs" />
     <Compile Include="Details\DetailCollectionTests.cs" />
     <Compile Include="Details\EditableChildrenTest.cs" />

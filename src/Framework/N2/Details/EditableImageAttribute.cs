@@ -80,7 +80,7 @@ namespace N2.Details
 		}
 
 		#region IDisplayable Members
-		public Control AddTo(ContentItem item, string detailName, Control container)
+		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
 			return DisplayableImageAttribute.AddImage(container, item, detailName, CssClass, Alt);
 		}

@@ -208,7 +208,7 @@ namespace Dinamico.Definitions.Dynamic
 					v.View.Render(new ViewContext(cctx, v.View, vdd, new TempDataDictionary(), sw), sw);
 
 					if (re.IsDefined)
-						return re.CreateDefinition(N2.Definitions.Static.DefinitionDictionary.Instance);
+						return re.CreateDefinition(N2.Definitions.Static.DefinitionTable.Instance);
 				}
 			}
 			catch (Exception ex)

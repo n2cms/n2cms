@@ -11,6 +11,6 @@ namespace N2.Definitions
 	public interface IUniquelyNamed
 	{
 		/// <summary>Gets or sets the name of the prpoerty referenced by this attribute.</summary>
-		string Name { get; set;}
+		string Name { get; set; }
 	}
 }
