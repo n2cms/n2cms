@@ -1,31 +1,36 @@
 ﻿
-<span class="searchcontainer">
-<a id="search" href="#" title="Search">Search</a>
 @{using (Html.BeginForm("Search", null, new { item = Content.StartPage }, FormMethod.Get, new { id = "searchform" }))
   {
 	<input name="q" />
+	<button type="submit"></button>
   }
 }
-</span>
+
 <script type="text/javascript">//<![CDATA[
 	$(document).ready(function () {
-		$("#search").click(function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			$("#searchform").css({ display: "inline" })
-				.find("input:first").focus();
-		});
-		var $sm = null;
 		$("#searchform").submit(function (e) {
 			e.preventDefault();
-			$(".searchresults").remove();
-			$("<ul class='searchresults'></ul>").appendTo(this)
-				.load(this.action, $(this).serialize(), function () { $("a:first", this).focus(); });
-		}).click(function (e) {
-			e.stopPropagation();
+			var data = $(this).serialize();
+			var hash = "#" + data;
+			$("<ul id='searchresults'><li class='loading'>Loading...</li></ul>").appendTo(this)
+				.load(this.action, data, function () {
+					var here = location.href.replace(/#.*/, "");
+					$("a", this).each(function (i) {
+						if (i === 0) this.focus();
+						if (this.href === here) this.focus();
+						console.log(this, this.href, hash, here, data);
+						this.href += hash;
+					});
+				});
 		});
-		$(document).click(function () {
-			$("#searchform").hide();
+		$(document).click(function (e) {
+			if ($(e.target).closest("#searchform").length == 0)
+				$("#searchresults").remove();
 		});
+		if (location.hash.match("^#q="))
+		{
+			$("#searchform input").attr("value", location.hash.substr(3));
+			$("#searchform").submit();
+		}
 	});
 //]]></script>

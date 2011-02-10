@@ -123,7 +123,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the item's title. This is used in edit mode and probably in a custom implementation.</summary>
-		[Details.Displayable(typeof(Web.UI.WebControls.Hn), "Text")]
+		[DisplayableHeading(1)]
 		public virtual string Title
 		{
 			get { return title; }

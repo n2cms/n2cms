@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace N2.Details
 {
-	[DebuggerDisplay("{Name, nq} ({GetType().Name, nq})")]
+	[DebuggerDisplay("{name, nq} ({GetType().Name, nq})")]
 	public abstract class AbstractDisplayableAttribute : Attribute, IDisplayable
 	{
 		private string cssClass = null;

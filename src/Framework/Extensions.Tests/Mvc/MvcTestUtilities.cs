@@ -10,6 +10,7 @@ using N2.Extensions.Tests.Fakes;
 using Rhino.Mocks;
 using N2.Engine;
 using N2.Web.Mvc.Html;
+using N2.Web.Rendering;
 
 namespace N2.Extensions.Tests.Mvc
 {
@@ -53,8 +54,12 @@ namespace N2.Extensions.Tests.Mvc
 		private static IEngine StubEngine()
 		{
 			var engine = MockRepository.GenerateStub<IEngine>();
-			engine.Expect(e => e.Resolve<ITemplateRenderer>()).Return(new TemplateRenderer(
-				MockRepository.GenerateStub<IControllerMapper>())).Repeat.Any();
+			engine.Expect(e => e.Resolve<ITemplateRenderer>())
+				.Return(new TemplateRenderer(MockRepository.GenerateStub<IControllerMapper>()))
+				.Repeat.Any();
+			engine.Expect(e => e.Resolve<DisplayableRendererSelector>())
+				.Return(new DisplayableRendererSelector(new IDisplayableRenderer[] { new LiteralDisplayableRenderer(), new FallbackDisplayableRenderer() }))
+				.Repeat.Any();
 			return engine;
 		}
 

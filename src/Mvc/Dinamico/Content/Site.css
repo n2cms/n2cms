@@ -303,74 +303,90 @@ div#title
     color: white;
 }
 
-a#search
-{
-	display:inline-block;
-	background:transparent url(/N2/Resources/icons/zoom.png) no-repeat;
-	text-decoration:none;
-	padding-left:18px;
-	margin:0 5px;
-}
-a#search:hover
-{
-	text-decoration:none;
-}
-
 #searchform
 {
-	display:none;
+	display:inline-block;
 	position:relative;
 }
 
-#searchform input
-{
-	margin:1px 2px;
-	position:absolute;
-	width:140px;
-	right:0;
-	background:#fff url(/N2/Resources/icons/zoom.png) no-repeat 100% 1px;
-	border:none;
-}
-
-ul.searchresults
-{
-	background-color:#5c87b2;
-	border:solid 1px #fff;
-	position:absolute;
-	right:0;
-	top:6px;
-	text-align:left;
-	z-index:1000;
-	max-height:500px;
-	min-width:125px;
-	overflow:auto;
-	list-style-type:none;
-	padding:8px;
-}
-	ul.searchresults a
+	#searchform input
 	{
-		display:block;
-		padding:2px;
+		display:inline-block;
+		width:100px;
+		height:18px;
+		padding:1px;
+		border:none;
+		vertical-align:middle;
 	}
+
+	#searchform button
+	{
+		display:inline-block;
+		width:20px;
+		height:20px;
+		padding:0;
+		right:0;
+		background:#fff url(/N2/Resources/icons/zoom.png) no-repeat 50% 50%;
+		border:none;
+		vertical-align:middle;
+	}
+	
+	#searchresults
+	{
+		position:absolute;
+		z-index:1000;
+		right:0;
+		background:#46351C;
+		list-style-type:none;
+		padding:5px;
+		margin:4px 0;
+		max-height:500px;
+		min-width:200px;
+		text-align:left;
+	}
+		#searchresults a
+		{
+			display:block;
+		}
 
 #sitemap
 {
-	background:transparent url(/N2/Resources/icons/sitemap_color.png) no-repeat;
-	padding-left:20px;
-	margin:0 5px;
+	display:inline-block;
+	position:relative;
 }
-ul.sitemap
-{
-	background-color:#5c87b2;
-	border:solid 1px #fff;
-	position:absolute;
-	top:10px;
-	text-align:left;
-	z-index:1000;
-	max-height:500px;
-	overflow:auto;
-	padding:10px 20px;
-}
+	#sitemapopener
+	{
+		background:transparent url(/N2/Resources/icons/sitemap_color.png) no-repeat;
+		padding-left:20px;
+		margin:0 5px;
+	}
+	#sitemapresults
+	{
+		position:absolute;
+		z-index:1000;
+		right:0;
+		background-color:#46351C;
+		list-style-type:none;
+		text-align:left;
+		max-height:500px;
+		min-width:200px;
+		overflow:auto;
+		padding:5px;
+	}
+		#sitemapresults ul
+		{
+			padding-left:20px;
+			list-style-type:none;
+			margin:0;
+		}
+		#sitemapresults a
+		{
+			display:block;
+		}
+		#sitemapresults > li > a
+		{
+			font-weight:bold;
+		}
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/

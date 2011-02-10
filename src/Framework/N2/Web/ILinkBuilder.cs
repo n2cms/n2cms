@@ -43,6 +43,11 @@ namespace N2.Web
 		/// <returns>The same object for chaining.</returns>
 		ILinkBuilder AddQuery(string key, string value);
 
+		/// <summary>Sets a the link fragment (#fragment).</summary>
+		/// <param name="fragment">The fragment.</param>
+		/// <returns>The same object for chaining.</returns>
+		ILinkBuilder SetFragment(string fragment);
+
 		/// <summary>Sets an attribute on the link.</summary>
 		/// <param name="key">The attribute name.</param>
 		/// <param name="value">The attribute value.</param>

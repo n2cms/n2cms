@@ -22,7 +22,10 @@ namespace Dinamico.Controllers
 
 		public ActionResult SiteMap()
 		{
-			return Content(Tree.From(N2.Find.StartPage).Filters(new NavigationFilter()).ExcludeRoot(true).ToString());
+			string content = Tree.From(N2.Find.StartPage)
+				.Filters(new NavigationFilter())
+				.ExcludeRoot(true).ToString();
+			return Content(content);
 		}
 
 		public ActionResult Search(string q)

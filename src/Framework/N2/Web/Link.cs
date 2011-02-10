@@ -202,5 +202,15 @@ namespace N2.Web
 		}
 
 		#endregion
+
+		#region ILinkBuilder Members
+
+		public ILinkBuilder SetFragment(string fragment)
+		{
+			this.url = url.SetFragment(fragment);
+			return this;
+		}
+
+		#endregion
 	}
 }

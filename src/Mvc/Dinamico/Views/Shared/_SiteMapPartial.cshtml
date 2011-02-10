@@ -1,17 +1,26 @@
-﻿@Html.ActionLink("Site map", Content.StartPage, "SiteMap", null, new { id = "sitemap" })
+﻿<span id="sitemap">
+	@Html.ActionLink("Site map", Content.StartPage, "SiteMap", null, new { id = "sitemapopener" })
+</span>
 <script type="text/javascript">//<![CDATA[
 	$(document).ready(function () {
-		var $sm = null;
-		$("#sitemap").click(function (e) {
+		var hash = "#sm";
+		$("#sitemapopener").click(function (e) {
 			e.preventDefault();
-			e.stopPropagation();
-			$sm = $("<ul class='sitemap'></ul>").appendTo(this.parentNode)
-				.css({ left: $(this).position().left + "px" })
-				.load(this.href, null, function () { $("a:first", this).focus(); });
+			$sm = $("<ul id='sitemapresults'><li class='loading'>Loading...</li></ul>").appendTo("#sitemap")
+				.load(this.href, null, function () {
+					var here = location.href.replace(/#.*/, "");
+					$("a", this).each(function (i) {
+						if (i === 0) this.focus();
+						if (this.href === here) this.focus();
+						this.href += hash;
+					});
+				});
 		});
-		$(document).click(function () {
-			if ($sm) $sm.remove();
-			$sm = null;
+		$(document).click(function (e) {
+			if ($(e.target).closest("#sitemap").length == 0)
+				$("#sitemapresults").remove();
 		});
+		if (location.hash === hash)
+			$("#sitemapopener").click();
 	});
 //]]></script>
