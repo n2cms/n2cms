@@ -8,7 +8,7 @@ using N2.Web;
 
 namespace N2.Details
 {
-	public class DisplayableAnchorAttribute : AbstractDisplayableAttribute, IDisplayable
+	public class DisplayableAnchorAttribute : AbstractDisplayableAttribute, IDisplayable, IWritingDisplayable
 	{
 		private string target = null;
 		
@@ -21,24 +21,57 @@ namespace N2.Details
 		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
 			ContentItem linkedItem = item[detailName] as ContentItem;
-
 			if (linkedItem != null)
-			{
-				return AddAnchor(container, linkedItem, Target, CssClass);
-			}
+				return GetLinkBuilder(item, linkedItem, detailName, Target, CssClass).AddTo(container);
+
+			string url = item[detailName] as string;
+			if (url != null)
+				return GetLinkBuilder(item, url, detailName, Target, CssClass).AddTo(container);
+
 			return null;
 		}
 
-		public static Control AddAnchor(Control container, ContentItem linkedItem)
+		//[Obsolete]
+		//public static Control AddAnchor(Control container, ContentItem linkedItem)
+		//{
+		//    return AddAnchor(container, linkedItem, null, null);
+		//}
+
+		//[Obsolete]
+		//public static Control AddAnchor(Control container, ContentItem linkedItem, string target, string cssClass)
+		//{
+		//    Control anchor = GetLinkBuilder(linkedItem, target, cssClass).ToControl();
+		//    container.Controls.Add(anchor);
+		//    return anchor;
+		//}
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
 		{
-			return AddAnchor(container, linkedItem, null, null);
+			ContentItem linkedItem = item[detailName] as ContentItem;
+			if (linkedItem != null)
+				GetLinkBuilder(item, linkedItem, detailName, Target, CssClass).WriteTo(writer);
+
+			string url = item[detailName] as string;
+			if (url != null)
+				GetLinkBuilder(item, url, detailName, Target, CssClass).WriteTo(writer);
 		}
 
-		public static Control AddAnchor(Control container, ContentItem linkedItem, string target, string cssClass)
+		#endregion
+
+		internal static ILinkBuilder GetLinkBuilder(ContentItem item, ContentItem linkedItem, string detailName, string target, string cssClass)
 		{
-			Control anchor = Link.To(linkedItem).Target(target).Class(cssClass).ToControl();
-			container.Controls.Add(anchor);
-			return anchor;
+			return Link.To(linkedItem)
+				.Target(item.GetDetail(detailName + "_Target", target))
+				.Class(item.GetDetail(detailName + "_CssClass", cssClass));
+		}
+
+		internal static ILinkBuilder GetLinkBuilder(ContentItem item, string url, string detailName, string target, string cssClass)
+		{
+			ILinkBuilder builder = new Link(item.GetDetail(detailName + "_Text", detailName), url);
+			return builder.Target(item.GetDetail(detailName + "_Target", target))
+				.Class(item.GetDetail(detailName + "_CssClass", cssClass));
 		}
 	}
 }

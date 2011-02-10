@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Web.UI;
 using N2.Definitions;
+using N2.Web;
 using N2.Web.UI;
 using N2.Web.UI.WebControls;
 using N2.Edit.Workflow;
@@ -28,7 +29,7 @@ namespace N2.Details
 	///		}
 	/// </example>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class EditableItemAttribute : AbstractEditableAttribute, IDisplayable
+	public class EditableItemAttribute : AbstractEditableAttribute, IDisplayable, IWritingDisplayable
 	{
 		#region Fields
 
@@ -181,11 +182,24 @@ namespace N2.Details
 			if (linkedItem != null)
 			{
 				if (linkedItem.IsPage)
-					return DisplayableAnchorAttribute.AddAnchor(container, linkedItem);
+					return DisplayableAnchorAttribute.GetLinkBuilder(item, linkedItem, detailName, null, null).AddTo(container);
 				
 				return ItemUtility.AddUserControl(container, linkedItem);
 			}
 			return null;
+		}
+
+		#endregion
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
+		{
+			ContentItem linkedItem = item[detailName] as ContentItem;
+			if (linkedItem != null && linkedItem.IsPage)
+			{
+				DisplayableAnchorAttribute.GetLinkBuilder(item, linkedItem, detailName, null, null).WriteTo(writer);
+			}
 		}
 
 		#endregion

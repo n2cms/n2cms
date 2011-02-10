@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
+using N2.Web;
 using N2.Web.UI.WebControls;
 
 namespace N2.Details
@@ -18,7 +19,7 @@ namespace N2.Details
 	/// 		set { SetDetail("FeedRoot", value); }
 	///		}
 	/// </example>
-	public class EditableLinkAttribute : AbstractEditableAttribute, IRelativityTransformer
+	public class EditableLinkAttribute : AbstractEditableAttribute, IRelativityTransformer, IWritingDisplayable
 	{
 		public EditableLinkAttribute()
 			: this(null, 100)
@@ -61,13 +62,13 @@ namespace N2.Details
 		#region IDisplayable Members
 		public override Control AddTo(ContentItem item, string detailName, Control container)
 		{
-			ContentItem itemToAdd = item[detailName] as ContentItem;
-			if (itemToAdd != null)
+			ContentItem linkedItem = item[detailName] as ContentItem;
+			if (linkedItem != null)
 			{
-				if (itemToAdd.IsPage)
-					return DisplayableAnchorAttribute.AddAnchor(container, itemToAdd);
+				if (linkedItem.IsPage)
+					return DisplayableAnchorAttribute.GetLinkBuilder(item, linkedItem, detailName, null, null).AddTo(container);
 				else
-					return Web.UI.ItemUtility.AddUserControl(container, itemToAdd);
+					return Web.UI.ItemUtility.AddUserControl(container, linkedItem);
 			}
 			return null;
 		}
@@ -80,6 +81,19 @@ namespace N2.Details
 		string IRelativityTransformer.Rebase(string currentPath, string fromAppPath, string toAppPath)
 		{
 			return N2.Web.Url.Rebase(currentPath, fromAppPath, toAppPath);
+		}
+
+		#endregion
+
+		#region IWritingDisplayable Members
+
+		public void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
+		{
+			ContentItem linkedItem = item[detailName] as ContentItem;
+			if (linkedItem != null && linkedItem.IsPage)
+			{
+				DisplayableAnchorAttribute.GetLinkBuilder(item, linkedItem, detailName, null, null).WriteTo(writer);
+			}
 		}
 
 		#endregion

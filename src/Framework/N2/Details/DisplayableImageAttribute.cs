@@ -33,8 +33,8 @@ namespace N2.Details
 			{
 				Image image = new Image();
 				image.ImageUrl = N2.Web.Url.ToAbsolute(imageUrl);
-				image.Attributes["alt"] = altText;
-				image.CssClass = cssClass;
+				image.AlternateText = item.GetDetail(detailName + "_AlternateText", altText);
+				image.CssClass = item.GetDetail(detailName + "_CssClass", cssClass);
 				container.Controls.Add(image);
 				return image;
 			}
@@ -43,18 +43,18 @@ namespace N2.Details
 
 		/// <summary>Writes an image html to the given writer.</summary>
 		/// <param name="item">The item containing the data.</param>
-		/// <param name="propertyName">The name of the property to write.</param>
+		/// <param name="detailName">The name of the property to write.</param>
 		/// <param name="writer">The writer to write to.</param>
-		public static void WriteImage(ContentItem item, string propertyName, string alt, string cssClass, System.IO.TextWriter writer)
+		public static void WriteImage(ContentItem item, string detailName, string alt, string cssClass, System.IO.TextWriter writer)
 		{
-			string imageUrl = item[propertyName] as string;
+			string imageUrl = item[detailName] as string;
 			if (string.IsNullOrEmpty(imageUrl))
 				return;
 
 			TagBuilder tb = new TagBuilder("img");
 			tb.Attributes["src"] = N2.Web.Url.ToAbsolute(imageUrl);
-			tb.Attributes["alt"] = item[propertyName + "_Alt"] as string ?? alt;
-			cssClass = item[propertyName + "_CssClass"] as string ?? cssClass;
+			tb.Attributes["alt"] = item.GetDetail(detailName + "_AlternateText", alt);
+			cssClass = item.GetDetail(detailName + "_CssClass", cssClass);
 			if (!string.IsNullOrEmpty(cssClass))
 				tb.AddCssClass(cssClass);
 
@@ -63,9 +63,9 @@ namespace N2.Details
 
 		#region IWritingDisplayable Members
 
-		public void Write(ContentItem item, string propertyName, System.IO.TextWriter writer)
+		public void Write(ContentItem item, string detailName, System.IO.TextWriter writer)
 		{
-			DisplayableImageAttribute.WriteImage(item, propertyName, alt, CssClass, writer);
+			DisplayableImageAttribute.WriteImage(item, detailName, alt, CssClass, writer);
 		}
 
 		#endregion

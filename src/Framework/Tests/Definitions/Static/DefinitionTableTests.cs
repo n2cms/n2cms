@@ -45,9 +45,7 @@ namespace N2.Tests.Definitions.Static
 		[Test]
 		public void Definition_HasDisplayables()
 		{
-			DefinitionTable.Instance.Clear();
-			definition = DefinitionTable.Instance.GetDefinition(typeof(DescribablePage));
-			Assert.That(definition.Displayables.Count, Is.GreaterThanOrEqualTo(12));
+			Assert.That(definition.Displayables.Count, Is.GreaterThanOrEqualTo(16));
 		}
 	}
 }

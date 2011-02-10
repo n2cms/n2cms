@@ -1,4 +1,5 @@
 using System.Web.UI;
+using System.IO;
 
 namespace N2.Web
 {
@@ -61,5 +62,21 @@ namespace N2.Web
 		/// <summary>Creates an anchor control representing the link.</summary>
 		/// <returns>An anchor control.</returns>
 		Control ToControl();
+	}
+
+	internal static class LinkBuilderExtensions
+	{
+		public static Control AddTo(this ILinkBuilder builder, Control container)
+		{
+			var c = builder.ToControl();
+			if (c != null)
+				container.Controls.Add(c);
+			return c;
+		}
+
+		public static void WriteTo(this ILinkBuilder builder, TextWriter writer)
+		{
+			writer.Write(builder.ToString());
+		}
 	}
 }

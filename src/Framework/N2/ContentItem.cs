@@ -109,6 +109,7 @@ namespace N2
 
 		#region Persisted Properties
 		/// <summary>Gets or sets item ID.</summary>
+		[DisplayableLiteral]
 		public virtual int ID
 		{
 			get { return id; }
@@ -116,6 +117,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets this item's parent. This can be null for root items and previous versions but should be another page in other situations.</summary>
+		[DisplayableAnchor]
 		public virtual ContentItem Parent
 		{
 			get { return parent; }
@@ -132,6 +134,7 @@ namespace N2
 
         private static char[] invalidCharacters = new char[] { '%', '?', '&', '/', ':' };
 		/// <summary>Gets or sets the item's name. This is used to compute the item's url and can be used to uniquely identify the item among other items on the same level.</summary>
+		[DisplayableLiteral]
 		public virtual string Name
 		{
 			get 
@@ -285,6 +288,7 @@ namespace N2
 		}
 
 		/// <summary>Gets the public url to this item. This is computed by walking the parent path and prepending their names to the url.</summary>
+		[DisplayableAnchor]
 		public virtual string Url
 		{
 			get 
@@ -307,6 +311,7 @@ namespace N2
         }
 		
 		/// <summary>Gets the icon of this item. This can be used to distinguish item types in edit mode.</summary>
+		[DisplayableImage]
 		public virtual string IconUrl
         {
 			get { return N2.Web.Url.ResolveTokens(Definitions.Static.DefinitionTable.Instance.GetDefinition(GetContentType()).IconUrl); }

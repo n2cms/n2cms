@@ -8,13 +8,13 @@ namespace N2.Tests.Definitions.Static
 	[TestFixture]
 	public class PartDescriptionTests
 	{
-		ItemDefinition description = DefinitionTable.Instance.GetDefinition(typeof(DescribablePart));
+		ItemDefinition definition = DefinitionTable.Instance.GetDefinition(typeof(DescribablePart));
 		ContentItem item = new DescribablePart();
 
 		[Test]
 		public void Description_IsNotPage()
 		{
-			Assert.That(description.IsPage, Is.False);
+			Assert.That(definition.IsPage, Is.False);
 		}
 
 		[Test]
@@ -24,15 +24,15 @@ namespace N2.Tests.Definitions.Static
 		}
 
 		[Test]
-		public void Description_HasPartIconUrl()
+		public void Definition_HasPartIconUrl()
 		{
-			Assert.That(description.IsPage, Is.False);
+			Assert.That(definition.IsPage, Is.False);
 		}
 
 		[Test]
-		public void Description_HasDefinitionIconUrl()
+		public void Definition_HasDefinitionIconUrl()
 		{
-			Assert.That(description.IconUrl, Is.EqualTo("/N2/Resources/icons/page_white(description).png"));
+			Assert.That(definition.IconUrl, Is.EqualTo("/N2/Resources/icons/page_white(description).png"));
 		}
 
 		[Test]
@@ -46,6 +46,12 @@ namespace N2.Tests.Definitions.Static
 		{
 			PathData path = item.FindPath(PathData.DefaultAction);
 			Assert.That(path.TemplateUrl, Is.EqualTo("~/My/Template.ascx"));
+		}
+
+		[Test]
+		public void Definition_HasDisplayables()
+		{
+			Assert.That(definition.Displayables.Count, Is.GreaterThanOrEqualTo(16));
 		}
 	}
 }
