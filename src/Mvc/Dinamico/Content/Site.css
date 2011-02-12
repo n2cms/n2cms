@@ -326,7 +326,7 @@ div#title
 		height:20px;
 		padding:0;
 		right:0;
-		background:#fff url(/N2/Resources/icons/zoom.png) no-repeat 50% 50%;
+		background:transparent url(/N2/Resources/icons/zoom.png) no-repeat 50% 50%;
 		border:none;
 		vertical-align:middle;
 	}

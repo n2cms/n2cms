@@ -8,11 +8,17 @@
 
 <script type="text/javascript">//<![CDATA[
 	$(document).ready(function () {
+		function close(e) {
+			if ($(e.target).closest("#searchform").is("*"))
+				return;
+			$("#searchresults").remove();
+			$(document).unbind("click", close);
+		}
 		$("#searchform").submit(function (e) {
 			e.preventDefault();
 			var data = $(this).serialize();
 			var hash = "#" + data;
-			$("<ul id='searchresults'><li class='loading'>Loading...</li></ul>").appendTo(this)
+			$("<ul id='searchresults'><li class='loading'>Searching...</li></ul>").appendTo(this)
 				.load(this.action, data, function () {
 					var here = location.href.replace(/#.*/, "");
 					$("a", this).each(function (i) {
@@ -21,13 +27,9 @@
 						this.href += hash;
 					});
 				});
+			$(document).click(close);
 		});
-		$(document).click(function (e) {
-			if ($(e.target).closest("#searchform").length == 0)
-				$("#searchresults").remove();
-		});
-		if (location.hash.match("^#q="))
-		{
+		if (location.hash.match("^#q=")) {
 			$("#searchform input").attr("value", location.hash.substr(3));
 			$("#searchform").submit();
 		}

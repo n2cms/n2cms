@@ -33,7 +33,7 @@ namespace N2.Persistence
 		/// <returns>A new instance of an item.</returns>
 		public virtual ContentItem CreateInstance(Type itemType, ContentItem parentItem)
 		{
-			object intercepted = interceptor.Create(itemType.FullName);
+			object intercepted = interceptor.Create(itemType.FullName, 0);
 			ContentItem item = (intercepted ?? Activator.CreateInstance(itemType, true))
 				as ContentItem;
 			stateChanger.ChangeTo(item, ContentState.New);

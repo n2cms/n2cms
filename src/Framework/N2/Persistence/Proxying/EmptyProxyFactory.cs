@@ -15,7 +15,7 @@ namespace N2.Persistence.Proxying
 		{
 		}
 
-		public virtual object Create(string discriminator)
+		public virtual object Create(string discriminator, object id)
 		{
 			return null;
 		}

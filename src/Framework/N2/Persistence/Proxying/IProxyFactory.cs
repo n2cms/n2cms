@@ -14,8 +14,9 @@ namespace N2.Persistence.Proxying
 		
 		/// <summary>Creates a proxied instance.</summary>
 		/// <param name="typeName">The name of the type to create.</param>
+		/// <param name="id">The instance identifyer.</param>
 		/// <returns>A proxy intercepting access to certain properties.</returns>
-		object Create(string typeName);
+		object Create(string typeName, object id);
 
 		/// <summary>Optional modifications of a loaded instance.</summary>
 		/// <param name="instance">The instance to modify.</param>

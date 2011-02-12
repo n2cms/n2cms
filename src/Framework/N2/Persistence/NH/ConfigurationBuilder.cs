@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Linq;
+using Lucene.Net.Analysis.Standard;
 using N2.Configuration;
 using N2.Definitions;
+using N2.Engine;
+using N2.Web;
 using NHibernate;
 using NHibernate.Mapping;
-using N2.Engine;
+using NHibernate.Cfg.Loquacious;
+using NHibernate.Bytecode;
+using NHibernate.Proxy;
+using NHibernate.ByteCode.Castle;
+using Castle.DynamicProxy;
 
 namespace N2.Persistence.NH
 {
@@ -25,6 +32,7 @@ namespace N2.Persistence.NH
 
 		bool tryLocatingHbmResources = false;
 		readonly IDefinitionManager definitions;
+		readonly IWebContext webContext;
 		IDictionary<string, string> properties = new Dictionary<string, string>();
 		IList<Assembly> assemblies = new List<Assembly>();
 		IList<string> mappingNames = new List<string>();
@@ -36,13 +44,14 @@ namespace N2.Persistence.NH
 		string mappingStartTag = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <hibernate-mapping xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""urn:nhibernate-mapping-2.2"">";
 		string mappingEndTag = "</hibernate-mapping>";
-
+		bool searchEnabled = true;
 
 		/// <summary>Creates a new instance of the <see cref="ConfigurationBuilder"/>.</summary>
-		public ConfigurationBuilder(IDefinitionManager definitions, ClassMappingGenerator generator, DatabaseSection config, ConnectionStringsSection connectionStrings)
+		public ConfigurationBuilder(IDefinitionManager definitions, ClassMappingGenerator generator, IWebContext webContext, DatabaseSection config, ConnectionStringsSection connectionStrings)
 		{
 			this.definitions = definitions;
 			this.generator = generator;
+			this.webContext = webContext;
 
 			if (config == null) config = new DatabaseSection();
 
@@ -56,6 +65,7 @@ namespace N2.Persistence.NH
 			tablePrefix = config.TablePrefix;
 			batchSize = config.BatchSize;
 			childrenLaziness = config.ChildrenLaziness;
+			searchEnabled = config.Search.Enabled;
 		}
 
 		private void SetupMappings(DatabaseSection config)
@@ -74,10 +84,34 @@ namespace N2.Persistence.NH
 			NHibernate.Cfg.Environment.UseReflectionOptimizer = Utility.GetTrustLevel() > System.Web.AspNetHostingPermissionLevel.Medium;
 			Properties[NHibernate.Cfg.Environment.ProxyFactoryFactoryClass] = "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle";
 
+			// connection
+
 			Properties[NHibernate.Cfg.Environment.ConnectionStringName] = config.ConnectionStringName;
 			Properties[NHibernate.Cfg.Environment.ConnectionProvider] = "NHibernate.Connection.DriverConnectionProvider";
 			Properties[NHibernate.Cfg.Environment.Hbm2ddlKeyWords] = "none";
 
+			SetupFlavourProperties(config, connectionStrings);
+
+			SetupCacheProperties(config);
+
+			// search
+
+			Properties["hibernate.search.default.directory_provider"] = typeof(NHibernate.Search.Store.FSDirectoryProvider).AssemblyQualifiedName;
+			Properties["hibernate.search.default.indexBase"] = webContext.MapPath(config.Search.IndexPath);
+			Properties["hibernate.search.default.indexBase.create"] = "true";
+			Properties[NHibernate.Search.Environment.AnalyzerClass] = typeof(StandardAnalyzer).AssemblyQualifiedName;
+			Properties[NHibernate.Search.Environment.WorkerExecution] = config.Search.AsyncIndexing ? "async" : "sync";
+
+			// custom config properties
+
+			foreach (string key in config.HibernateProperties.AllKeys)
+			{
+				Properties[key] = config.HibernateProperties[key].Value;
+			}
+		}
+
+		private void SetupFlavourProperties(DatabaseSection config, ConnectionStringsSection connectionStrings)
+		{
 			DatabaseFlavour flavour = config.Flavour;
 			if (flavour == DatabaseFlavour.AutoDetect)
 			{
@@ -151,15 +185,6 @@ namespace N2.Persistence.NH
 				default:
 					throw new ConfigurationErrorsException("Couldn't determine database flavour. Please check the 'flavour' attribute of the n2/database configuration section.");
 			}
-
-			Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = config.Caching.ToString();
-			Properties[NHibernate.Cfg.Environment.UseQueryCache] = config.Caching.ToString();
-			Properties[NHibernate.Cfg.Environment.CacheProvider] = config.CacheProviderClass;
-
-			foreach (string key in config.HibernateProperties.AllKeys)
-			{
-				Properties[key] = config.HibernateProperties[key].Value;
-			}
 		}
 
 		private DatabaseFlavour DetectFlavor(ConnectionStringSettings css)
@@ -178,6 +203,13 @@ namespace N2.Persistence.NH
 				return DatabaseFlavour.SqlCe;
 
 			throw new ConfigurationErrorsException("Could not auto-detect the database flavor. Please configure this explicitly in the n2/database section.");
+		}
+
+		private void SetupCacheProperties(DatabaseSection config)
+		{
+			Properties[NHibernate.Cfg.Environment.UseSecondLevelCache] = config.Caching.ToString();
+			Properties[NHibernate.Cfg.Environment.UseQueryCache] = config.Caching.ToString();
+			Properties[NHibernate.Cfg.Environment.CacheProvider] = config.CacheProviderClass;
 		}
 
 		#region Properties
@@ -218,14 +250,79 @@ namespace N2.Persistence.NH
 		public virtual NHibernate.Cfg.Configuration BuildConfiguration()
 		{
 			NHibernate.Cfg.Configuration cfg = new NHibernate.Cfg.Configuration();
-			AddProperties(cfg);
 
+
+			//NHibernate.Cfg.Environment.Isolation
+			//Properties[NHibernate.Cfg.Environment.PropertyBytecodeProvider
+			AddProperties(cfg);
+			AddSearchEvents(cfg);
 			AddDefaultMapping(cfg);
 			AddMappings(cfg);
 			AddAssemblies(cfg);
 			GenerateMappings(cfg);
 
 			return cfg;
+		}
+
+		//class PFF : IProxyFactoryFactory
+		//{
+		//    #region IProxyFactoryFactory Members
+
+		//    public NHibernate.Proxy.IProxyFactory BuildProxyFactory()
+		//    {
+		//        return new PF();
+		//    }
+
+		//    public bool IsInstrumented(Type entityClass)
+		//    {
+		//        return true;
+		//    }
+
+		//    public NHibernate.Proxy.IProxyValidator ProxyValidator
+		//    {
+		//        get { return new PV(); }
+		//    }
+
+		//    #endregion
+		//}
+
+		//class PF : AbstractProxyFactory
+		//{
+		//    private readonly ProxyGenerator generator = new ProxyGenerator();
+		//    N2.Persistence.Proxying.DetailPropertyInterceptorFactory dpif = new N2.Persistence.Proxying.DetailPropertyInterceptorFactory();
+		//    private readonly Type[] additionalInterfacesToProxy = new Type[] { typeof(N2.Persistence.Proxying.IInterceptedType), typeof(N2.Persistence.Proxying.IInterceptableType) };
+						
+		//    public override INHibernateProxy GetProxy(object id, NHibernate.Engine.ISessionImplementor session)
+		//    {
+		//        var initializer = new LazyInitializer(EntityName, PersistentClass, id, GetIdentifierMethod, SetIdentifierMethod, ComponentIdType, session);
+		//        var interceptor = dpif.Create(PersistentClass);
+
+		//        var interceptors = (interceptor == null) ? new Castle.DynamicProxy.IInterceptor[] { initializer } : new Castle.DynamicProxy.IInterceptor[] { initializer, interceptor };
+
+		//        object generatedProxy = IsClassProxy
+		//                                    ? generator.CreateClassProxy(PersistentClass, Interfaces.Union(additionalInterfacesToProxy).ToArray(), interceptors)
+		//                                    : generator.CreateInterfaceProxyWithoutTarget(Interfaces[0], Interfaces.Union(additionalInterfacesToProxy).ToArray(), interceptors);
+
+		//        initializer._constructed = true;
+		//        return (INHibernateProxy)generatedProxy;
+
+		//    }
+		//}
+
+		//class PV : DynProxyTypeValidator
+		//{
+		//}
+
+
+		private void AddSearchEvents(NHibernate.Cfg.Configuration cfg)
+		{
+			if (!searchEnabled)
+				return;
+
+			var indexListener = new NHibernate.Search.Event.FullTextIndexEventListener();
+			cfg.SetListener(NHibernate.Event.ListenerType.PostInsert, indexListener);
+			cfg.SetListener(NHibernate.Event.ListenerType.PostUpdate, indexListener);
+			cfg.SetListener(NHibernate.Event.ListenerType.PostDelete, indexListener);
 		}
 
 		protected virtual void AddDefaultMapping(NHibernate.Cfg.Configuration cfg)

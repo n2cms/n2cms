@@ -4,6 +4,7 @@
 # Links
 src/WebForms/WebFormsTemplates/N2/
 src/Mvc/Dinamico/N2/
+src/Mvc/Dinamico/App_Data/SearchIndex/
 
 # User-specific files
 *.suo

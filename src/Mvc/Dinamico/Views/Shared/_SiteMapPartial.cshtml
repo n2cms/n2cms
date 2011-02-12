@@ -4,9 +4,15 @@
 <script type="text/javascript">//<![CDATA[
 	$(document).ready(function () {
 		var hash = "#sm";
+		function close(e) {
+			if ($(e.target).closest("#sitemap").is("*"))
+				return;
+			$("#sitemapresults").remove();
+			$(document).unbind("click", close);
+		}
 		$("#sitemapopener").click(function (e) {
 			e.preventDefault();
-			$sm = $("<ul id='sitemapresults'><li class='loading'>Loading...</li></ul>").appendTo("#sitemap")
+			$("<ul id='sitemapresults'><li class='loading'>Loading...</li></ul>").appendTo("#sitemap")
 				.load(this.href, null, function () {
 					var here = location.href.replace(/#.*/, "");
 					$("a", this).each(function (i) {
@@ -15,10 +21,7 @@
 						this.href += hash;
 					});
 				});
-		});
-		$(document).click(function (e) {
-			if ($(e.target).closest("#sitemap").length == 0)
-				$("#sitemapresults").remove();
+			$(document).click(close);
 		});
 		if (location.hash === hash)
 			$("#sitemapopener").click();

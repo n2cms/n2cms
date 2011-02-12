@@ -9,7 +9,7 @@ using N2.Details;
 
 namespace Dinamico.Models
 {
-	[PageDefinition]
+	[PageDefinition(InstallerVisibility = N2.Installation.InstallerHint.PreferredStartPage)]
 	[RestrictParents(typeof(IRootPage))]
 	public class StartPage : TextPage , IStartPage, IStructuralPage, IThemeable
 	{

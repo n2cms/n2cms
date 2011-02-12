@@ -26,13 +26,13 @@ namespace N2.Persistence.NH
 
 		public override object Instantiate(string clazz, EntityMode entityMode, object id)
 		{
-			Debug.WriteLine("Instantiate: " + clazz + " " + entityMode + " " + id);
-			object instance = interceptor.Create(clazz);
-			if (instance != null)
-			{
-				sessionFactory.GetClassMetadata(clazz).SetIdentifier(instance, id, entityMode);
-			}
-			return instance;
+		    Debug.WriteLine("Instantiate: " + clazz + " " + entityMode + " " + id);
+		    object instance = interceptor.Create(clazz, id);
+		    if (instance != null)
+		    {
+		        sessionFactory.GetClassMetadata(clazz).SetIdentifier(instance, id, entityMode);
+		    }
+		    return instance;
 		}
 
 		/// <summary>Sets rewriter and definition manager on a content item object at load time.</summary>
@@ -70,7 +70,7 @@ namespace N2.Persistence.NH
 
 		public override string GetEntityName(object entity)
 		{
-			return interceptor.GetTypeName(entity);
+		    return interceptor.GetTypeName(entity);
 		}
 
 		/// <summary>Invokes the notifier's saving event.</summary>

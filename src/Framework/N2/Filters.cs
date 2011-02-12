@@ -9,7 +9,7 @@ namespace N2
 	/// <summary>
 	/// Provides access to common filters.
 	/// </summary>
-	public static class Filter
+	public static class Filters
 	{
 		/// <summary>Filters by access</summary>
 		/// <returns>A filter.</returns>
@@ -77,6 +77,14 @@ namespace N2
 		public static ItemFilter Ancestor(ContentItem ancestor)
 		{
 			return new ParentFilter(ancestor);
+		}
+
+		/// <summary>Filters items below an ancestor or the ancestor itself.</summary>
+		/// <param name="ancestor">The ancestor of the items to pass.</param>
+		/// <returns>A filter.</returns>
+		public static ItemFilter AncestorOrSelf(ContentItem ancestor)
+		{
+			return Custom(i => i == ancestor || i.AncestralTrail.StartsWith(Utility.GetTrail(ancestor)));
 		}
 
 		/// <summary>Filters by items that are published and not expired.</summary>

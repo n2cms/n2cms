@@ -102,5 +102,13 @@ namespace N2.Configuration
 			get { return (MappingCollection)this["mappings"]; }
 			set { base["mappings"] = value; }
 		}
+
+		/// <summary>Search configuration.</summary>
+		[ConfigurationProperty("search")]
+		public SearchElement Search
+		{
+			get { return (SearchElement)this["search"]; }
+			set { base["search"] = value; }
+		}
 	}
 }

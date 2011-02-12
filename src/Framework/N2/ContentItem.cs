@@ -33,6 +33,7 @@ using N2.Web;
 using N2.Edit.Workflow;
 using N2.Definitions;
 using N2.Persistence.Proxying;
+using NHibernate.Search.Attributes;
 
 namespace N2
 {
@@ -60,6 +61,7 @@ namespace N2
 	[Serializable, DebuggerDisplay("{GetType().Name}: {Name}#{ID}")]
 	[DynamicTemplate]
 	[SortChildren(SortBy.CurrentOrder)]
+	[Indexed]
 	public abstract class ContentItem : IComparable, 
 		IComparable<ContentItem>, 
 		ICloneable,
@@ -110,6 +112,7 @@ namespace N2
 		#region Persisted Properties
 		/// <summary>Gets or sets item ID.</summary>
 		[DisplayableLiteral]
+		[DocumentId]
 		public virtual int ID
 		{
 			get { return id; }
@@ -126,6 +129,8 @@ namespace N2
 
 		/// <summary>Gets or sets the item's title. This is used in edit mode and probably in a custom implementation.</summary>
 		[DisplayableHeading(1)]
+		[Field(Index.Tokenized, Store = Store.Yes)]
+		[Boost(3)]
 		public virtual string Title
 		{
 			get { return title; }
@@ -135,6 +140,7 @@ namespace N2
         private static char[] invalidCharacters = new char[] { '%', '?', '&', '/', ':' };
 		/// <summary>Gets or sets the item's name. This is used to compute the item's url and can be used to uniquely identify the item among other items on the same level.</summary>
 		[DisplayableLiteral]
+		[Field(Index.Tokenized, Store = Store.Yes)]
 		public virtual string Name
 		{
 			get 
@@ -153,7 +159,8 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets zone name which is associated with data items and their placement on a page.</summary>
-        [DisplayableLiteral]
+		[DisplayableLiteral]
+		[Field(Index.UnTokenized, Store = Store.Yes)]
         public virtual string ZoneName
 		{
 			get { return zoneName; }
@@ -161,7 +168,8 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets when this item was initially created.</summary>
-        [DisplayableLiteral]
+		[DisplayableLiteral]
+		[Field(Index.UnTokenized, Store = Store.Yes)]
         public virtual DateTime Created
 		{
 			get { return created; }
@@ -169,7 +177,8 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the date this item was updated.</summary>
-        [DisplayableLiteral]
+		[DisplayableLiteral]
+		[Field(Index.UnTokenized, Store = Store.Yes)]
         public virtual DateTime Updated
 		{
 			get { return updated; }
@@ -178,6 +187,7 @@ namespace N2
 
 		/// <summary>Gets or sets the publish date of this item.</summary>
 		[DisplayableLiteral]
+		[Field(Index.UnTokenized, Store = Store.Yes)]
         public virtual DateTime? Published
 		{
 			get { return published; }
@@ -185,7 +195,8 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the expiration date of this item.</summary>
-        [DisplayableLiteral]
+		[DisplayableLiteral]
+		[Field(Index.UnTokenized, Store = Store.Yes)]
         public virtual DateTime? Expires
 		{
 			get { return expires; }
@@ -216,7 +227,8 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the name of the identity who saved this item.</summary>
-        [DisplayableLiteral]
+		[DisplayableLiteral]
+		[Field(Index.UnTokenized, Store = Store.Yes)]
         public virtual string SavedBy
 		{
 			get { return savedBy; }
@@ -224,6 +236,7 @@ namespace N2
 		}
 
 		/// <summary>Gets or sets the details collection. These are usually accessed using the e.g. item["Detailname"]. This is a place to store content data.</summary>
+		[IndexedEmbedded]
 		public virtual IContentList<ContentDetail> Details
 		{
 			get { return details; }
@@ -245,6 +258,7 @@ namespace N2
 		}
 
 		/// <summary>Represents the trail of id's uptil the current item e.g. "/1/10/14/"</summary>
+		[Field(Index.UnTokenized, Store = Store.Yes)]
 		public virtual string AncestralTrail
 		{
 			get { return ancestralTrail; }
@@ -259,7 +273,8 @@ namespace N2
             set { versionIndex = value; }
         }
 
-        [DisplayableLiteral]
+		[DisplayableLiteral]
+		[Field(Index.UnTokenized, Store = Store.Yes)]
         public virtual ContentState State
         {
             get { return state; }

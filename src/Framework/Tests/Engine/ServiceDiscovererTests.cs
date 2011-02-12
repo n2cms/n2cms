@@ -173,7 +173,7 @@ namespace N2.Tests.Engine
 			registrator.RegisterServices(registrator.FindServices());
 
 			var services = container.ResolveAll<IBarometer>();
-			Assert.That(services, Is.InstanceOfType<IBarometer[]>());
+			Assert.That(services, Is.InstanceOf<IBarometer[]>());
 		}
 
 		[Test]
@@ -184,7 +184,7 @@ namespace N2.Tests.Engine
 			registrator.RegisterServices(registrator.FindServices());
 
 			var services = container.ResolveAll(typeof(IBarometer));
-			Assert.That(services, Is.InstanceOfType<IBarometer[]>());
+			Assert.That(services, Is.InstanceOf<IBarometer[]>());
 		}
 
 		[Test]

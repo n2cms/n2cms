@@ -20,6 +20,7 @@
 
 using System;
 using N2.Collections;
+using NHibernate.Search.Attributes;
 
 namespace N2.Details
 {
@@ -28,6 +29,7 @@ namespace N2.Details
     /// </summary>
     /// <remarks>Usually content details are created below the hood when working with primitive .NET types against a contnet item.</remarks>
 	[Serializable]
+	[Indexed]
 	public class ContentDetail: ICloneable, INameable
 	{
 		#region TypeKeys
@@ -83,6 +85,7 @@ namespace N2.Details
 		#region Public Properties
 
         /// <summary>Gets or sets the detil's primary key.</summary>
+		[DocumentId]
 		public virtual int ID
 		{
 			get { return id; }
@@ -226,6 +229,7 @@ namespace N2.Details
 			set { valueTypeKey = value; }
 		}
 
+		[Field(Index.Tokenized, Store = Store.No)]
 		public virtual string StringValue
 		{
 			get { return stringValue; }
@@ -251,24 +255,28 @@ namespace N2.Details
 			set { linkValue = value; }
 		}
 
+		[Field(Index.UnTokenized, Store = Store.No)]
 		public virtual double? DoubleValue
 		{
 			get { return doubleValue; }
 			set { doubleValue = value; }
 		}
 
+		[Field(Index.UnTokenized, Store = Store.No)]
 		public virtual DateTime? DateTimeValue
 		{
 			get { return dateTimeValue; }
 			set { dateTimeValue = value; }
 		}
 
+		[Field(Index.UnTokenized, Store = Store.Yes)]
 		public virtual bool? BoolValue
 		{
 			get { return boolValue; }
 			set { boolValue = value; }
 		}
 
+		[Field(Index.UnTokenized, Store = Store.Yes)]
 		public virtual int? IntValue
 		{
 			get { return intValue; }

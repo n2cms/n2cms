@@ -13,6 +13,7 @@ using N2.Collections;
 using N2.Details;
 using System.Collections;
 using NHibernate.Engine;
+using N2.Edit.Workflow;
 
 namespace N2.Tests.Persistence.NH
 {
@@ -635,6 +636,55 @@ namespace N2.Tests.Persistence.NH
 				Assert.That(containso.Contains(child1), Is.True);
 				Assert.That(containso.Contains(child2), Is.True);
 			}
+		}
+
+		[Test]
+		public void NHibernateSearch_OnTitle()
+		{
+			var s = NHibernate.Search.Search.CreateFullTextSession(sessionProvider.OpenSession.Session);
+
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			item.Title = "hello world";
+			persister.Save(item);
+
+			var results = s.CreateFullTextQuery<ContentItem>("Title:hello").List();
+			Assert.That(results.Count, Is.GreaterThanOrEqualTo(1));
+			Assert.That(results.Contains(item));
+		}
+
+		[Test]
+		public void NHibernateSearch_OnDetail()
+		{
+			var s = NHibernate.Search.Search.CreateFullTextSession(sessionProvider.OpenSession.Session);
+
+			ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "root", null);
+			item.Title = "hello world";
+			item["Hej"] = "Världen";
+			persister.Save(item);
+
+			var results = s.CreateFullTextQuery<ContentItem>("Details.StringValue:Världen").List();
+			Assert.That(results.Count, Is.GreaterThanOrEqualTo(1));
+			Assert.That(results.Contains(item));
+		}
+
+		[Test]
+		public void NHibernateSearch_X()
+		{
+			//var s = NHibernate.Search.Search.CreateFullTextSession(sessionProvider.OpenSession.Session);
+
+			//ContentItem item = CreateOneItem<Definitions.PersistableItem1>(0, "saveableRoot", null);
+			//item.Title = "hello world";
+			//item.Name = "hello-world";
+			//item.Published = DateTime.Now;
+			//item.Expires = DateTime.Now.AddDays(1);
+			//item.SavedBy = "admin";
+			//item.State = ContentState.New;
+			//item["Hej"] = "Världen";
+			//persister.Save(item);
+
+			//var results = s.CreateFullTextQuery<ContentItem>("Title:hello").List();
+			//Assert.That(results.Count, Is.GreaterThanOrEqualTo(1));
+			//Assert.That(results.Contains(item));
 		}
 
 		//[Test]

@@ -87,6 +87,10 @@
       <HintPath>..\..\..\lib\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Lucene.Net, Version=2.9.2.2, Culture=neutral, PublicKeyToken=f5940d1699e37ff1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Lucene.Net.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.dll</HintPath>
@@ -98,6 +102,9 @@
     <Reference Include="NHibernate.Caches.SysCache2, Version=3.0.0.3000, Culture=neutral, PublicKeyToken=6876f2ea66c9f443, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate.Caches.SysCache2.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Search">
+      <HintPath>..\..\..\lib\NHibernate.Search.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Data.Linq, Version=1.13.41.2, Culture=neutral, PublicKeyToken=cab60358ab4081ea, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -140,6 +147,7 @@
     <Compile Include="Collections\TypeFilter.cs" />
     <Compile Include="Collections\ZoneFilter.cs" />
     <Compile Include="Configuration\MembershipElement.cs" />
+    <Compile Include="Configuration\SearchElement.cs" />
     <Compile Include="Definitions\ICommentable.cs" />
     <Compile Include="Definitions\IContentPage.cs" />
     <Compile Include="Definitions\IDefinitionManager.cs" />
@@ -175,7 +183,7 @@
     <Compile Include="Edit\ToolbarArea.cs" />
     <Compile Include="Edit\ToolbarPlugInAttribute.cs" />
     <Compile Include="Definitions\IAllowedDefinitionFilter.cs" />
-    <Compile Include="Filter.cs" />
+    <Compile Include="Filters.cs" />
     <Compile Include="Linq\ContentQueryable.cs" />
     <Compile Include="Linq\ContentQueryProvider.cs" />
     <Compile Include="Linq\EngineExtensions.cs" />

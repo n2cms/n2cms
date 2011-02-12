@@ -4,3 +4,8 @@ body
 {
     background:#ac3400 url(fade.png) no-repeat 50% 0;
 }
+
+	#searchform input
+	{
+		background-color:#bc5420;
+	}

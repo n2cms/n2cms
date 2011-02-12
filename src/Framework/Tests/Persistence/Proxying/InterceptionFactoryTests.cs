@@ -55,7 +55,7 @@ namespace N2.Tests.Persistence.Proxying
 		[SetUp]
 		public void SetUp()
 		{
-			item = factory.Create(typeof(InterceptableItem).FullName) as InterceptableItem;
+			item = factory.Create(typeof(InterceptableItem).FullName, 0) as InterceptableItem;
 		}
 
 		// BOOL
@@ -230,7 +230,7 @@ namespace N2.Tests.Persistence.Proxying
 		[Test]
 		public void InheritingClass_WithInterceptedProperties_Get_IsIntercepted()
 		{
-			var inheritor = factory.Create(typeof(InterceptableInheritorItem).FullName) as InterceptableInheritorItem;
+			var inheritor = factory.Create(typeof(InterceptableInheritorItem).FullName, 0) as InterceptableInheritorItem;
 			inheritor.SetDetail("StringProperty", "hello", typeof(string));
 
 			Assert.That(inheritor.StringProperty, Is.EqualTo("hello"));
@@ -239,7 +239,7 @@ namespace N2.Tests.Persistence.Proxying
 		[Test]
 		public void InheritingClass_WithInterceptedProperties_Set_IsIntercepted()
 		{
-			var inheritor = factory.Create(typeof(InterceptableInheritorItem).FullName) as InterceptableInheritorItem;
+			var inheritor = factory.Create(typeof(InterceptableInheritorItem).FullName, 0) as InterceptableInheritorItem;
 			inheritor.StringProperty = "world";
 
 			Assert.That(inheritor.GetDetail("StringProperty"), Is.EqualTo("world"));
@@ -250,7 +250,7 @@ namespace N2.Tests.Persistence.Proxying
 		[Test]
 		public void IgnoringClass_WithIgnoredProperty_Get_IsNotIntercepted()
 		{
-			var ignoring = factory.Create(typeof(IgnoringItem).FullName) as IgnoringItem;
+			var ignoring = factory.Create(typeof(IgnoringItem).FullName, 0) as IgnoringItem;
 			ignoring.SetDetail("IgnoredProperty", true, typeof(bool));
 
 			Assert.That(ignoring.IgnoredProperty, Is.False);
@@ -259,7 +259,7 @@ namespace N2.Tests.Persistence.Proxying
 		[Test]
 		public void IgnoringClass_WithIgnoredProperty_Set_IsNotIntercepted()
 		{
-			var ignoring = factory.Create(typeof(IgnoringItem).FullName) as IgnoringItem;
+			var ignoring = factory.Create(typeof(IgnoringItem).FullName, 0) as IgnoringItem;
 			ignoring.IgnoredProperty = true;
 
 			Assert.That(ignoring.GetDetail("IgnoredProperty"), Is.Null);

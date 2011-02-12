@@ -18,7 +18,6 @@ namespace N2.Details
         private Type controlType;
         private string controlPropertyName;
         private string title;
-        private string name;
         private int sortOrder;
         private bool dataBind = false;
         private bool focus = false;

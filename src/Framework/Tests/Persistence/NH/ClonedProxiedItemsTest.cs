@@ -50,7 +50,7 @@ namespace N2.Tests.Persistence.NH
 			InterceptableInheritorItem item1, item2;
 			using (persister)
 			{
-				item1 = proxyFactory.Create(typeof(InterceptableInheritorItem).FullName) as InterceptableInheritorItem;
+				item1 = proxyFactory.Create(typeof(InterceptableInheritorItem).FullName, 0) as InterceptableInheritorItem;
 				item1.Name = "Hello";
 				item1.StringProperty = "Howdy";
 				item1["Hello"] = "World";

@@ -4,9 +4,53 @@ using System.Linq;
 using Castle.DynamicProxy;
 using N2.Engine;
 using System.Reflection;
+using NHibernate.Proxy;
+using NHibernate.Engine;
 
 namespace N2.Persistence.Proxying
 {
+	public class DetailPropertyInterceptorFactory
+	{
+		public IInterceptor Create(Type type)
+		{
+			var interceptableProperties = GetInterceptableProperties(type).ToList();
+			if (interceptableProperties.Count == 0)
+				return null;
+
+			var interceptor = new DetailPropertyInterceptor(type, interceptableProperties);
+			//types[type.FullName] = new Tuple
+			//{
+			//    Type = type,
+			//    Interceptor = interceptor,
+			//    UnproxiedSaveSetters = GetSaveSetters(interceptableProperties).ToArray()
+			//};
+			return interceptor;
+		}
+		private IEnumerable<PropertyInfo> GetInterceptableProperties(Type type)
+		{
+			for (Type t = type; t != null; t = t.BaseType)
+			{
+				foreach (var property in t.GetProperties())
+				{
+					if (!property.CanRead)
+						continue;
+					if (!property.GetGetMethod().IsVirtual)
+						continue;
+					if (!property.IsCompilerGenerated())
+						continue;
+
+					var attributes = property.GetCustomAttributes(typeof(IInterceptableProperty), true).OfType<IInterceptableProperty>();
+					if (attributes.Any(a => a.PersistAs != PropertyPersistenceLocation.Detail))
+						continue;
+					if (!attributes.Any(a => a.PersistAs == PropertyPersistenceLocation.Detail))
+						continue;
+
+					yield return property;
+				}
+			}
+		}
+	}
+
 	/// <summary>
 	/// Creates a proxy that rewires auto-generated properties to detail get/set.
 	/// </summary>
@@ -22,7 +66,10 @@ namespace N2.Persistence.Proxying
 
 		private readonly Dictionary<string, Tuple> types = new Dictionary<string, Tuple>();
 		private readonly ProxyGenerator generator = new ProxyGenerator();
-		private readonly Type[] additionalInterfacesToProxy = new Type[] { typeof(IInterceptedType), typeof(IInterceptableType) };
+		private readonly Type[] additionalInterfacesToProxy = new Type[] { typeof(IInterceptedType), typeof(IInterceptableType)
+			, typeof(NHibernate.Search.Util.IProxiedEntity)
+		//	, typeof(INHibernateProxy) 
+		};
 
 		public override void Initialize(IEnumerable<Type> interceptedTypes)
 		{
@@ -91,13 +138,15 @@ namespace N2.Persistence.Proxying
 			}
 		}
 
-		public override object Create(string typeName)
+		public override object Create(string typeName, object id)
 		{
 			Tuple tuple;
 			if (!types.TryGetValue(typeName, out tuple))
 				return null;
 
-			return generator.CreateClassProxy(tuple.Type, additionalInterfacesToProxy, tuple.Interceptor);
+			return generator.CreateClassProxy(tuple.Type, additionalInterfacesToProxy, tuple.Interceptor
+				//, new NHibernateProxyInterceptor(new DetailPropertyLazyInitializer(tuple.Type, typeName, id, null))
+			);
 		}
 
 		public override bool OnSaving(object instance)
