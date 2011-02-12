@@ -5,6 +5,7 @@
 src/WebForms/WebFormsTemplates/N2/
 src/Mvc/Dinamico/N2/
 src/Mvc/Dinamico/App_Data/SearchIndex/
+src/Framework/Tests/App_Data/
 
 # User-specific files
 *.suo
